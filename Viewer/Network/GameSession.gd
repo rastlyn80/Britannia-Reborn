@@ -36,6 +36,8 @@ var packet_counts := {}
 var last_ping := 0
 var next_walk := 0
 var movement_deadline := 0
+var move_interval := 410
+var running := false
 
 static func signed(value: int, bits: int = 8) -> int:
 	return value - (1 << bits) if value & (1 << (bits-1)) else value
@@ -224,7 +226,7 @@ func _handle(p: PackedByteArray) -> void:
 		0x78:
 			if p.size() < 23: return
 			var serial := Login.read_be(p,3,4)
-			var entity := {"serial":serial,"x":Login.read_be(p,9,2),"y":Login.read_be(p,11,2),"z":signed(p[13]),"direction":int(p[14])&7,"facet":player.facet}
+			var entity := {"serial":serial,"x":Login.read_be(p,9,2),"y":Login.read_be(p,11,2),"z":signed(p[13]),"direction":int(p[14])&7,"running":(int(p[14])&0x80)!=0,"facet":player.facet}
 			entities[serial] = entity
 			if serial == player.serial:
 				var offset := 19
@@ -235,7 +237,7 @@ func _handle(p: PackedByteArray) -> void:
 			entity_changed.emit(serial,entity)
 		0x77:
 			var serial := Login.read_be(p,1,4)
-			var entity := {"serial":serial,"x":Login.read_be(p,7,2),"y":Login.read_be(p,9,2),"z":signed(p[11]),"direction":int(p[12])&7,"facet":player.facet}
+			var entity := {"serial":serial,"x":Login.read_be(p,7,2),"y":Login.read_be(p,9,2),"z":signed(p[11]),"direction":int(p[12])&7,"running":(int(p[12])&0x80)!=0,"facet":player.facet}
 			entities[serial] = entity
 			entity_changed.emit(serial,entity)
 		0x1d:
@@ -310,13 +312,19 @@ static func creation_packet(name: String, slot: int, city: int) -> PackedByteArr
 	p.append_array(Login.uint_be(3,2))
 	return p
 
-func walk(direction: int) -> bool:
+static func movement_packet(direction: int, seq: int, run: bool = false) -> PackedByteArray:
+	var packet := PackedByteArray([2,(direction&7)|(0x80 if run else 0),seq])
+	packet.append_array(Login.uint_be(0,4))
+	return packet
+
+func walk(direction: int, run: bool = false) -> bool:
 	if phase != "world" or outstanding != -1 or awaiting_position or Time.get_ticks_msec() < next_walk: return false
 	# Upstream foot-walk delay defaults to 400 ms; allow a small transport margin.
-	next_walk = Time.get_ticks_msec()+410
+	move_interval = 210 if run else 410
+	running = run
+	next_walk = Time.get_ticks_msec()+move_interval
 	requested_direction = direction & 7
-	var p := PackedByteArray([2,requested_direction,sequence])
-	p.append_array(Login.uint_be(0,4))
+	var p := movement_packet(direction,sequence,run)
 	outstanding = sequence
 	movement_deadline = Time.get_ticks_msec()+5000
 	sequence = 1 if sequence == 255 else sequence+1

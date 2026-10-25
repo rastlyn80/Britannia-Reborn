@@ -1,0 +1,38 @@
+{
+  "source": "https://kenney.nl/assets/furniture-kit",
+  "modifications": "Selected original GLB files; runtime scale, orientation and material warmth only.",
+  "archiveSha256": "E67652D0932CEE41683F74711C03D3E192A2AF9979EF8E6B237711F5482D46B0",
+  "author": "Kenney",
+  "edition": "Furniture Kit 2.0 (bundled notice)",
+  "files": [
+    {
+      "sha256": "C49B33E7D797D2BA1111895587DBA7FF63B17A712EB9B4CEEB40A598F73E476C",
+      "path": "bedDouble.glb"
+    },
+    {
+      "sha256": "CA00C63F9A12DA3138D902B2F5F18E0360FB6E8A5AC42CCB4BC3F185724B65D1",
+      "path": "bedSingle.glb"
+    },
+    {
+      "sha256": "BA05A6D23A5A5A44DA016757632070E47FF7587CE10E2F6D6D52328B4CF5489B",
+      "path": "bench.glb"
+    },
+    {
+      "sha256": "B651FAFB9E2C8E4ADCB8CAD3D10DC94404B46FE039B26E66B2C9020DF4E5301D",
+      "path": "cabinetBed.glb"
+    },
+    {
+      "sha256": "BC0DE1A0742CB490F9ED4BAE0BD284286EBB27E23149B9917C7D8C0D590B8B29",
+      "path": "LICENSE.txt"
+    },
+    {
+      "sha256": "FF1A94498D023957F4BC3FF6F55A7A82977D336DBF01A573B3364F03AFE5FF61",
+      "path": "table.glb"
+    },
+    {
+      "sha256": "64DE52B5C4370724C29FEEFD68A65B157C55C88592E2096987BBCE007AE80BCB",
+      "path": "tableCloth.glb"
+    }
+  ],
+  "license": "CC0-1.0"
+}

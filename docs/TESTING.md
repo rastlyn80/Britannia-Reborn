@@ -1,5 +1,7 @@
 # Testing
 
+Latest suite: 73 checks (19 converter, eight login, 16 game-session, 11 presentation, 19 graphics) plus import and crop smoke pass. Graphics adds complete ID/ordinal/XYZ accounting, grouping, run bytes/timing, roof boundaries, real camera collision/recovery and ceiling-aware jump tests. scripts/test-graphics.ps1 passed actual keyboard running, obstruction against a real Britain wall, jump apex and landing; scripts/test-play.ps1 passed wall rejection/recovery and backpack. See GRAPHICS_PASS.md for limits and evidence. The 54-check paragraph below records the earlier checkpoint.
+
 scripts/verify.ps1 builds the converter, imports art, runs 19 parser, eight login, 16 game-session and 11 presentation tests (54 total), then loads the real world headlessly. Current result: all pass. The playable region contains 4,096 samples and 2,689 statics; the earlier 2,304-sample crop is preserved separately. Added checks cover both tiledata flag layouts, intermediate XYZ, corners, rejection reset, frame-rate independence, source anchors and actual humanoid bone animation. See ART_AND_MOVEMENT.md for the first art pass and current live evidence.
 
 Parser: block/cell ordering, origin, signed elevations, static ID/hue/position, unaligned crop, lookup3 empty input, raw/zlib UOP, MUL/UOP equivalence, incomplete diffs, terrain precedence, duplicate static replacement and truncation. Fixtures share the writer/hash implementation, so production map import is extra evidence, not an exhaustive independent oracle.

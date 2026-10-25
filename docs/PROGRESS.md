@@ -1,5 +1,11 @@
 # Progress — 25 October 2026
 
+## Latest checkpoint: complete crop catalogue, solid camera and run/jump presentation
+
+All 187 used static IDs now have explicit persistent rules. All 2,689 source records retain ordinal/ID/XYZ and are accounted for: 2,645 visual owners and 44 grouped components. No unmapped crop IDs remain. Expanded Quaternius modules/nature plus audited CC0 Kenney furniture cover gaps; procedures supply continuous family-specific roofs, stairs, carpets and small props. Coverage is not exact original-art fidelity; confidence/substitutions are reported, including a post silhouette needing further review. Source artwork references are local-only, never game assets. Added chunked presentation collision (91,416 triangles), spherical camera sweep/recovery/near-body hiding and broad orbit/zoom.
+
+Real Shift run packets and per-segment walk/run timing are implemented, with speed-scaled animation and consistent tile-centre presentation. Space produces a ceiling-aware animated local hop, tested through apex and landing; it does not alter server Z or replicate physical jumping. Server remains unchanged and authoritative. All 73 offline checks pass. Live wall rejection/recovery/backpack and actual run/camera/jump pass; real corridor camera retracts to ~0.697 units, jump peaks ~0.95. Existing server remains running. See GRAPHICS_PASS.md for reproduction, source/asset provenance, screenshots and limitations. Earlier 54-check / 556-unmapped notes below are historical.
+
 Added reproducible original-colour radar comparison: scripts/capture-radar.ps1 renders terrain-only, static-overlay radar and an aligned north-up orthographic 3D view for the exact play crop. Local radarcol.mul/hues.mul supply original colours; highest drawable static base Z selects the overlay. Inspected outputs/validation/britain-map-comparison.png and separate 64×64/enlarged radar PNGs. This is a reconstruction of the static radar data, not an original-client UI screenshot; live mobiles and multis are excluded. Images remain ignored/local.
 
 ## Latest checkpoint: Quaternius art and smooth confirmed movement

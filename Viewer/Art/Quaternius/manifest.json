@@ -103,12 +103,36 @@
       "sha256": "C70DABF48574CDA55644D556BEAE1EE7CF1BDCF68A50D259D20F2F2358F27991"
     },
     {
+      "path": "Nature/Bark_DeadTree_Normal.png",
+      "sha256": "692DA2F58909263F074CB17B36DEFD09F56BF89AB7EFDA567A9A3E59261747B3"
+    },
+    {
+      "path": "Nature/Bark_DeadTree.png",
+      "sha256": "8F055724C35F8E8C5685A505775B3B9EBFC6B4745308EF35CE1CFE6FD976153F"
+    },
+    {
       "path": "Nature/Bark_NormalTree_Normal.png",
       "sha256": "852F6155404B8C39E100E41E26970E02A6A5C81B482D3726618DAB28E3AD03A2"
     },
     {
       "path": "Nature/Bark_NormalTree.png",
       "sha256": "F36E94FDD73255347325B998E02A0B2575FDF714B0315BFE5E8FF34BC8E13603"
+    },
+    {
+      "path": "Nature/Bark_TwistedTree_Normal.png",
+      "sha256": "692DA2F58909263F074CB17B36DEFD09F56BF89AB7EFDA567A9A3E59261747B3"
+    },
+    {
+      "path": "Nature/Bark_TwistedTree.png",
+      "sha256": "01608A96C42954EB725B32824530B51E67A2F3D85432D21A8D8ADFF958D2084A"
+    },
+    {
+      "path": "Nature/Bush_Common_Flowers.bin",
+      "sha256": "15F56A013AFE0EECADED0EB97FD8F323305AF11E1F0F7BB9B68472EC4CDC20D5"
+    },
+    {
+      "path": "Nature/Bush_Common_Flowers.gltf",
+      "sha256": "08768C680E3ABEAFD25858C9D3F369BCB7EED014661D3B6825A397F2A6A3DEEA"
     },
     {
       "path": "Nature/Bush_Common.bin",
@@ -127,6 +151,66 @@
       "sha256": "B51CDEA6545EDB51D102DD6C27CAAFE62AA75E3C328AC8F9039F4E7BFD690BFA"
     },
     {
+      "path": "Nature/CommonTree_2.bin",
+      "sha256": "A273D69DE31A675A9D7E3EB3C43F804AEF2D1B031692111B9E76EB3B0B686D0C"
+    },
+    {
+      "path": "Nature/CommonTree_2.gltf",
+      "sha256": "67160975F0AC991B4A2FFB2ADD4AB4037B5E9C1BEF9F66DAC5235FCF0BA9BD52"
+    },
+    {
+      "path": "Nature/CommonTree_3.bin",
+      "sha256": "24541F46FD9553E2389ABA15575F2697009226E82118ED76868284114FD12B49"
+    },
+    {
+      "path": "Nature/CommonTree_3.gltf",
+      "sha256": "17C6537AA8042BB7255FBB501BF7AEB2B6DB87C16766F794F9C37BE3CE70C976"
+    },
+    {
+      "path": "Nature/CommonTree_4.bin",
+      "sha256": "4FA52CC5BB9AA42D5CE1EEE6CFFCA0F0A7F25DD07FE4431E371548E89BC30233"
+    },
+    {
+      "path": "Nature/CommonTree_4.gltf",
+      "sha256": "DDF0E8837705702871D3F03DE8CF7AEED61AD4BF8EE92052B6F95BDD771297B6"
+    },
+    {
+      "path": "Nature/CommonTree_5.bin",
+      "sha256": "0E617612D50E6BB2CA3C64338383F8938CE9E04D55B548FF11CEC7A7B7D8F072"
+    },
+    {
+      "path": "Nature/CommonTree_5.gltf",
+      "sha256": "FB7061F2BF9FE850870B056431F8F66CD8FDEB443C90695C5EFBCF1FE6876D53"
+    },
+    {
+      "path": "Nature/DeadTree_1.bin",
+      "sha256": "D623CFC5199A732CC988175FAD149E8AFCB84516DF01A8DC1E378844019F408C"
+    },
+    {
+      "path": "Nature/DeadTree_1.gltf",
+      "sha256": "B7CA9E90CBD8E8E3B3B17FD9C8FD57184EBF4986FF433EE3F2212F37F3114469"
+    },
+    {
+      "path": "Nature/Flower_3_Group.bin",
+      "sha256": "5AB387DD3D6FE181DF3AF4EEAC4DF85533E4C27E77545AE39A61E0C2AAAAB248"
+    },
+    {
+      "path": "Nature/Flower_3_Group.gltf",
+      "sha256": "4DF1612371982C543F930D6B213967372E0D459622D7EFF7FC2ED1DDBFAA3B6C"
+    },
+    {
+      "path": "Nature/Flower_4_Group.bin",
+      "sha256": "3AC30B4C9EAA5078A17C061AA29E2E9618CC9EB58CB6D5D2AB0C07FA0B851AE1"
+    },
+    {
+      "path": "Nature/Flower_4_Group.gltf",
+      "sha256": "69EAD56B36B50F06A0CF18380797FCE7434302E9B2DA7BF68A85014B993C6134"
+    },
+    {
+      "path": "Nature/Flowers.png",
+      "sha256": "5C531F2329C241C625AAFD6CB769DE29F33B480EF2A16491C2489F3C68E62A6A"
+    },
+    {
       "path": "Nature/Grass_Common_Short.bin",
       "sha256": "7A0F0F7A9AC39CFA4B303BAC03A6594F43E48D873B73553FA06A79E4DF1271E9"
     },
@@ -135,8 +219,28 @@
       "sha256": "6957B50622C9E26E7296C1B47EA8653BC0D957E0A547DE444E2ED96F0075A21A"
     },
     {
+      "path": "Nature/Grass_Common_Tall.bin",
+      "sha256": "D7422B9360DD644F4095AC77A00DFA5D1F1078AF71EBF18865A28EF031651379"
+    },
+    {
+      "path": "Nature/Grass_Common_Tall.gltf",
+      "sha256": "783466C838163BF7DA44E10675ACE3851B8C9FB83322387125DF7A080B05CD70"
+    },
+    {
+      "path": "Nature/Grass_Wispy_Short.bin",
+      "sha256": "C38F46E5A66ED3917FD45104EFFB914228D43D3724F4659416E1533DCD71776D"
+    },
+    {
+      "path": "Nature/Grass_Wispy_Short.gltf",
+      "sha256": "3C1D3BDD332420E070ABDE72D73611D1F13ACFBE027E26B2FB943F9BCBD6B1C5"
+    },
+    {
       "path": "Nature/Grass.png",
       "sha256": "5D69048193B246A73C996B892607FB36C75D0C60AFCB2DAB8AA12DE3C0B2D9BD"
+    },
+    {
+      "path": "Nature/Leaf_Pine_C.png",
+      "sha256": "86F7FF7A214F5424DE48D269568F36A15485E61C80677E426C7BE9F45181EEF9"
     },
     {
       "path": "Nature/Leaves_NormalTree_C.png",
@@ -147,6 +251,46 @@
       "sha256": "0E459B56B14C0E81B1B7CF3D1E8C6F0BB71790EB6C46BB02A76A922D8DF646EA"
     },
     {
+      "path": "Nature/Leaves.png",
+      "sha256": "23248CEBE28A24E78ADD32DB3C2EE2F4D7B9219E9D2467279722F0197A7B6BD5"
+    },
+    {
+      "path": "Nature/Mushroom_Common.bin",
+      "sha256": "E4CEE9F2570505A172990A2754D52ED5775A4D75857A832FFFA1B573E38A4051"
+    },
+    {
+      "path": "Nature/Mushroom_Common.gltf",
+      "sha256": "2088B39D92F2F6331F45E59A048D02814DCD8B22767B024F4D220143BC8339F4"
+    },
+    {
+      "path": "Nature/Mushroom_Laetiporus.bin",
+      "sha256": "14F4835745947E7088BF706FBBBFDE6B800F89BEBF36122F40582FC8D45BB1AE"
+    },
+    {
+      "path": "Nature/Mushroom_Laetiporus.gltf",
+      "sha256": "88D264DF9DA6B0408EC276C36AE744AE79813046BA2938F03ED0837778F66FC9"
+    },
+    {
+      "path": "Nature/Mushrooms.png",
+      "sha256": "E29EED2DB831E44A29634FE25C62E9E31EDF201E978A52912B9E5221FFD4A1F3"
+    },
+    {
+      "path": "Nature/Pine_1.bin",
+      "sha256": "0CC0900D156359CAB7028D87CD5D8897FBCB0479DDF1DDF524D5462C11E17AF2"
+    },
+    {
+      "path": "Nature/Pine_1.gltf",
+      "sha256": "ADC85A72E6F46F71317CA5F7630876BFB207F687427BC9E37CD97EC4AF5F2CBC"
+    },
+    {
+      "path": "Nature/Pine_2.bin",
+      "sha256": "5BA81ED2B131243BF02F5FB18E278083205CE16B0F30C364CCBE9355E7637C60"
+    },
+    {
+      "path": "Nature/Pine_2.gltf",
+      "sha256": "57BD4732170B6C7E51BCF78FE5ADAABF142F95A50378D8D3051D1F20A04D3C2F"
+    },
+    {
       "path": "Nature/Rock_Medium_1.bin",
       "sha256": "EA79527D4C2B3BDB7A28BF589BF0C1FD96D192A4D0738636753911DD58681E99"
     },
@@ -155,8 +299,24 @@
       "sha256": "5D1AB1FA03218F4A908728ED0EABE6486344A7E4F510B0D3D6F837FD1D011BD8"
     },
     {
+      "path": "Nature/Rock_Medium_2.bin",
+      "sha256": "76B60BF8349F71ABDB0ED462B3223D93C2DCABDFB5754BC132E18B021CC6C805"
+    },
+    {
+      "path": "Nature/Rock_Medium_2.gltf",
+      "sha256": "FAC2D05A05F2D0D2098DE59C09B58F42CC875C9CACA4FD4C4BD57F3D36E7B12E"
+    },
+    {
       "path": "Nature/Rocks_Diffuse.png",
       "sha256": "B813696DF6081F469A127092EB0CE45CC39D56F3CCC0699152BFCD3804810B48"
+    },
+    {
+      "path": "Nature/TwistedTree_1.bin",
+      "sha256": "58E4C16C16E0A71051AF76A37BE0641EA8F7089652687F957383D3C4BD24723B"
+    },
+    {
+      "path": "Nature/TwistedTree_1.gltf",
+      "sha256": "8544B084E1FADFBEC981E964CE27463F50C39C460513E0D3442160880C5908A7"
     },
     {
       "path": "Outfit/Male_Peasant.bin",
@@ -191,6 +351,22 @@
       "sha256": "086C2EB25BDDFDB77D8E639CCBFFB8DF723EF4A1910D8E1B217E852F8668BFE5"
     },
     {
+      "path": "Village/Corner_Exterior_Wood.bin",
+      "sha256": "F3EAA2714897338FABEE249E32E4BE6846BAC86081FEE4576DF0CAC8D8AB6BBC"
+    },
+    {
+      "path": "Village/Corner_Exterior_Wood.gltf",
+      "sha256": "8F1AD0C8D0CB656601BE4B6A48CA1ED5574D182C814FF27508BC91C81D0959A0"
+    },
+    {
+      "path": "Village/Door_1_Flat.bin",
+      "sha256": "F2235EFCB17E3C7C761EBA632BBA8901F0299E65A27483528B486FBAECE29BB5"
+    },
+    {
+      "path": "Village/Door_1_Flat.gltf",
+      "sha256": "7E69BA9BCAF45238DAA22B96461E9AF6C80A59F422F9EFFB6DE7F32E1FC677D8"
+    },
+    {
       "path": "Village/Floor_Brick.bin",
       "sha256": "2205075C87D65D157C735206450B45183DFC24F8185E2E5DB706974AC2B5567E"
     },
@@ -207,12 +383,52 @@
       "sha256": "2EE57724A06289164FEE75AD62EB770F7F8CC9CB1B51C041DA477C086775CD8D"
     },
     {
+      "path": "Village/Prop_Chimney.bin",
+      "sha256": "D8FB86BAE7360511B362240C22431C6A463A38A3519059E0ABF7FC343EF920F9"
+    },
+    {
+      "path": "Village/Prop_Chimney.gltf",
+      "sha256": "EEDA2BD328BAA49CE2260B2DF1F0280DB4EBC3752FA784371B2DA5752697C3BA"
+    },
+    {
       "path": "Village/Prop_Crate.bin",
       "sha256": "B7DBDDF64868C84ABD62515CAAC55AC1A9CD70D897D9BF8A6B9B7191210365C4"
     },
     {
       "path": "Village/Prop_Crate.gltf",
       "sha256": "FB1D2AE668CC2761F9177110424E0C5C80A6698EF44F9CAC642CB4A766D37883"
+    },
+    {
+      "path": "Village/Prop_ExteriorBorder_Straight1.bin",
+      "sha256": "336D4110E55F663690CD5EF1C1AC2F109F7383EE36F86CA21D3067B0234453F8"
+    },
+    {
+      "path": "Village/Prop_ExteriorBorder_Straight1.gltf",
+      "sha256": "32D565F8338FC0B50A3493BAD39E5FC4E2DF536FF9E1506443708E92D969F5E4"
+    },
+    {
+      "path": "Village/Prop_Support.bin",
+      "sha256": "C0AA629B294C52071F66FEB89E7BC771480391BFE012F33C60B5CB4AA9881897"
+    },
+    {
+      "path": "Village/Prop_Support.gltf",
+      "sha256": "C7292AA4F0F73A3D83C2EA5D0F9F3C726E17B13156679C9DFA043646A9F08037"
+    },
+    {
+      "path": "Village/Prop_WoodenFence_Single.bin",
+      "sha256": "AAC37141AF8F33E762B330486FD1CBD1C12A96B2978F491BE4A58E24F1FE9EC1"
+    },
+    {
+      "path": "Village/Prop_WoodenFence_Single.gltf",
+      "sha256": "C9F787C03C62DD94268DA84BF3E4DACF554B2A5A9BEEE38314E37FF5D929C407"
+    },
+    {
+      "path": "Village/Roof_Log.bin",
+      "sha256": "AA78387C070126A4B4B56F289DDE263E315EB88B2733DC238D5A8D2A6CA97812"
+    },
+    {
+      "path": "Village/Roof_Log.gltf",
+      "sha256": "10EF55ACBB4CC3C9B4E6E5D8EC5B20D8EC82663ED229F993379AA7040F81536C"
     },
     {
       "path": "Village/Roof_Modular_RoundTiles.bin",
@@ -229,6 +445,14 @@
     {
       "path": "Village/Roof_Wooden_2x1.gltf",
       "sha256": "8B93DCB9BFA468842F45738F3D900C05EBF96DB276A8DBDD78788420372B60C0"
+    },
+    {
+      "path": "Village/Stair_Interior_Simple.bin",
+      "sha256": "56746E0B3BF1DC0A36F4B707C95CCCF800B5C2FC7C82733EE50B3420E5ED931A"
+    },
+    {
+      "path": "Village/Stair_Interior_Simple.gltf",
+      "sha256": "DAE162FB6F92B39714F72A9C7DDBF42A8D4D1B01A0357932144CE4F9F09D3BD4"
     },
     {
       "path": "Village/T_Brick_BaseColor.png",
@@ -303,12 +527,28 @@
       "sha256": "E888464FD4199D458D8CF39E00FA07D56F8A0BCB658AA03B4A7C95D466CEEFA3"
     },
     {
+      "path": "Village/Wall_Arch.bin",
+      "sha256": "F027B554CAECF05952C2A2DC9B103EFA5C39CA46BE477262ED683C1851D9547B"
+    },
+    {
+      "path": "Village/Wall_Arch.gltf",
+      "sha256": "4038E91FDD2DDBE2BCD098E34CCF401D5A40E9912FB75239A7A5ACB202E476CE"
+    },
+    {
       "path": "Village/Wall_Plaster_Door_Flat.bin",
       "sha256": "E169B64543F0EF818DAAC1A5F0A154BCBB665888E8B283979BFDE5F758FB5E37"
     },
     {
       "path": "Village/Wall_Plaster_Door_Flat.gltf",
       "sha256": "D2BF9BD8BB88068C79EC6C2BCB0915B0DFC94341F02D9612A4D97DA9583E75B3"
+    },
+    {
+      "path": "Village/Wall_Plaster_Straight_Base.bin",
+      "sha256": "DC92D6B119289637C9EF98180908F7E5398F95B6336F4D1949D86A43D5888449"
+    },
+    {
+      "path": "Village/Wall_Plaster_Straight_Base.gltf",
+      "sha256": "7A0872134768CCEECCB176C223915C53386EB8B563667AE922FA2D534AA5C629"
     },
     {
       "path": "Village/Wall_Plaster_Straight.bin",
@@ -327,6 +567,14 @@
       "sha256": "548AAB2C01D593A744A9704511068E5485D84BEE6F722C50E071CF866AA2BA62"
     },
     {
+      "path": "Village/Wall_Plaster_WoodGrid.bin",
+      "sha256": "C97643DB2A58AED8E5E8B4A9F62AFC08A27A23354CE746AF5E4A9E626AC8408C"
+    },
+    {
+      "path": "Village/Wall_Plaster_WoodGrid.gltf",
+      "sha256": "63493359C240943F1D70A53EA021FDF9726175642BC765AB5AF03967B3B8B0C0"
+    },
+    {
       "path": "Village/Wall_UnevenBrick_Straight.bin",
       "sha256": "4D3B14ACD4C5E6FE450E13D930F6C9240F719ED22B959BB2E7674E731225F103"
     },
@@ -335,5 +583,5 @@
       "sha256": "3B004772BACE43CC43BF76F3C75D47F68DCE175510A26690468EFE63BFC05F95"
     }
   ],
-  "modifications": "Selected original glTF/GLB files and dependencies. Character glTF reserialized; missing T_Hair_1_Normal_png.png and T_Eye_Normal_png.png references corrected to supplied T_Hair_1_Normal.png and T_Eye_Normal.png. Runtime head mask and shared-skeleton peasant outfit assembly; slate preview tint and per-tile scaling are presentation transforms."
+  "modifications": "Selected original glTF/GLB files and dependencies. Character glTF reserialized; missing normal-map aliases corrected to supplied textures. Runtime head mask and shared-skeleton peasant outfit assembly. Runtime foliage ignores wind vertex colours and replaces red TwistedTree leaf colour texture with the supplied green NormalTree colour texture. Source-scaled architectural modules, grouped foliage/bed/arch components, and procedural roof geometry using kit material detail; all original files otherwise retained."
 }

@@ -23,9 +23,19 @@ var tracks := {}
 var directions := {}
 var reconstruction := Reconstruction.new()
 var diagnostics := Node3D.new()
+var collision_builder := preload("res://Presentation/CollisionBuilder.gd").new()
+var boom := preload("res://Presentation/CameraBoom.gd").new()
+var jump_pressed := false
+var jump_requested := false
+var camera_target_ready := false
+var coverage_path := ""
 
 func point(x: int, y: int, z: int) -> Vector3:
 	return Vector3(x - int(world.originX), z * float(world.elevationScale), y - int(world.originY))
+
+func entity_point(x: int, y: int, z: int) -> Vector3:
+	# Characters stand at tile centres, consistently with static footprints.
+	return point(x,y,z)+Vector3(0.5,0,0.5)
 
 func material(color: Color) -> StandardMaterial3D:
 	var m := StandardMaterial3D.new()
@@ -41,6 +51,7 @@ func _ready() -> void:
 		if arg.begins_with("--screenshot="): screenshot = arg.substr(13)
 		if arg == "--hide-ui": hide_ui = true
 		if arg == "--map-view": map_view = true
+		if arg.begins_with("--coverage="): coverage_path = arg.substr(11)
 		if arg == "--close-view":
 			distance = 40
 			yaw = 0.5
@@ -79,10 +90,12 @@ func _ready() -> void:
 	add_child(static_root)
 	add_child(diagnostics)
 	reconstruction.index(world)
-	for s in world.statics:
-		var replacement: Node3D = reconstruction.build(s,world)
+	for ordinal in world.statics.size():
+		var s: Dictionary = world.statics[ordinal]
+		var replacement: Node3D = reconstruction.build(s,world,ordinal)
 		if replacement:
 			static_root.add_child(replacement)
+			collision_builder.add_visual(replacement)
 			continue
 		var mesh := MeshInstance3D.new()
 		var box := BoxMesh.new()
@@ -91,10 +104,13 @@ func _ready() -> void:
 		mesh.position = point(s.x,s.y,s.z) + Vector3(0.5,0.09,0.5)
 		mesh.material_override = material(Color("e7ba70"))
 		diagnostics.add_child(mesh)
-	print("ART MAPPING: %d replaced / %d unresolved" % [reconstruction.mapped,reconstruction.unresolved])
+	print("ART COVERAGE: %d accounted / %d unresolved" % [reconstruction.mapped,reconstruction.unresolved])
+	collision_builder.finish(self,terrain)
+	if not coverage_path.is_empty(): reconstruction.save_report(coverage_path)
+	print("PRESENTATION COLLISION: %d triangles in chunk bodies; %d grouped source components" % [collision_builder.triangles,reconstruction.grouped])
 	var sun := DirectionalLight3D.new()
 	sun.rotation_degrees = Vector3(-55,-25,0)
-	sun.light_energy = 1.3
+	sun.light_energy = 0.95
 	sun.shadow_enabled = true
 	add_child(sun)
 	var env := WorldEnvironment.new()
@@ -108,17 +124,21 @@ func _ready() -> void:
 	env.environment.sky.sky_material = sky
 	env.environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	env.environment.ambient_light_color = Color("b4c7db")
-	env.environment.ambient_light_energy = 0.7
+	env.environment.ambient_light_energy = 0.4
 	add_child(env)
 	add_child(pivot)
 	pivot.position = Vector3(float(world.width)/2,0,float(world.height)/2)
-	pivot.add_child(camera)
+	pivot.add_child(boom)
+	boom.add_child(camera)
+	camera.near = 0.06
 	if map_view:
 		yaw = 0
 		pitch = -PI/2
 		distance = 150
 		camera.projection = Camera3D.PROJECTION_ORTHOGONAL
 		camera.size = float(world.height)
+		boom.collision_mask = 0
+		boom.visual_distance = distance
 	camera.far = 1500
 	var canvas := CanvasLayer.new()
 	canvas.visible = not hide_ui
@@ -140,14 +160,18 @@ func _ready() -> void:
 	game.entity_changed.connect(_entity_changed)
 	game.entity_removed.connect(_entity_removed)
 	game.movement_result.connect(func(accepted: bool, position: Dictionary):
-		if not accepted and tracks.has(position.serial): tracks[position.serial].reset(point(position.x,position.y,position.z)))
+		if not accepted and tracks.has(position.serial):
+			tracks[position.serial].reset(entity_point(position.x,position.y,position.z)))
 	game.entered.connect(func(position: Dictionary):
 		player_serial = position.serial
 		_entity_changed(player_serial,position)
-		distance = 9
+		distance = 7
+		boom.visual_distance = distance
+		boom.spring_length = distance
 		pitch = -0.55
-		pivot.position = point(position.x,position.y,position.z)+Vector3(0,1.4,0)
-		status.text = "BRITAIN / CONNECTED TO MODERNUO\nTrammel • Quaternius art preview\n%d mapped pieces • %d unresolved\n\nWASD: walk • Drag: orbit • Wheel: zoom\nB: backpack • Tab: diagnostic markers\nMovement validated by server" % [reconstruction.mapped,reconstruction.unresolved]
+		pivot.position = entity_point(position.x,position.y,position.z)+Vector3(0,1.4,0)
+		camera_target_ready = true
+		status.text = "BRITAIN / TRAMMEL\n%d source pieces accounted for\n\nWASD: move • Shift: run • Space: hop\nDrag: orbit • Wheel: zoom • B: backpack\nServer validates horizontal movement" % reconstruction.mapped
 		if position.facet != 1 or position.x < int(world.originX) or position.x >= int(world.originX)+int(world.width) or position.y < int(world.originY) or position.y >= int(world.originY)+int(world.height):
 			status.text = "Character is outside the converted Trammel crop.\nNo geography is invented beyond the crop.")
 	game.ended.connect(func():
@@ -164,22 +188,42 @@ func _process(delta: float) -> void:
 	if Input.is_physical_key_pressed(KEY_S): movement.z += 1
 	if Input.is_physical_key_pressed(KEY_A): movement.x -= 1
 	if Input.is_physical_key_pressed(KEY_D): movement.x += 1
+	var joypads := Input.get_connected_joypads()
+	if not joypads.is_empty():
+		var joy: int = joypads[0]
+		var stick := Vector2(Input.get_joy_axis(joy,JOY_AXIS_LEFT_X),Input.get_joy_axis(joy,JOY_AXIS_LEFT_Y))
+		if stick.length() > 0.2: movement += Vector3(stick.x,0,stick.y)
+		var look := Vector2(Input.get_joy_axis(joy,JOY_AXIS_RIGHT_X),Input.get_joy_axis(joy,JOY_AXIS_RIGHT_Y))
+		if look.length() > 0.2:
+			yaw -= look.x*delta*2.0
+			pitch = clampf(pitch-look.y*delta*1.5,-1.5,0.9)
 	var focus := get_viewport().gui_get_focus_owner()
 	if focus is LineEdit: movement = Vector3.ZERO
+	var jump_down := Input.is_physical_key_pressed(KEY_SPACE)
+	if not joypads.is_empty(): jump_down = jump_down or Input.is_joy_button_pressed(joypads[0],JOY_BUTTON_A)
+	if jump_down and not jump_pressed and not focus is LineEdit: jump_requested = true
+	jump_pressed = jump_down
 	if game.phase == "world":
 		if movement != Vector3.ZERO:
 			var desired := movement.rotated(Vector3.UP,yaw)
 			var direction := int(round(atan2(desired.x,-desired.z)*4.0/PI)) & 7
-			game.walk(direction)
+			game.walk(direction,Input.is_physical_key_pressed(KEY_SHIFT) or (not joypads.is_empty() and Input.is_joy_button_pressed(joypads[0],JOY_BUTTON_LEFT_STICK)))
 	else: pivot.position += movement * delta * 20
 	for serial in avatars:
 		var before: Vector3 = avatars[serial].position
 		avatars[serial].position = tracks[serial].advance(delta)
 		var travelled := before.distance_to(avatars[serial].position)
 		avatars[serial].animate(travelled > 0.00001,directions[serial],delta,travelled/maxf(delta,0.00001))
-	if game.phase == "world" and avatars.has(player_serial): pivot.position = avatars[player_serial].position+Vector3(0,1.4,0)
+	if game.phase == "world" and avatars.has(player_serial):
+		var avatar: Node3D = avatars[player_serial]
+		var follow := avatar.position+Vector3(0,1.4+avatar.jump.height*0.25,0)
+		pivot.position = pivot.position.lerp(follow,1.0-exp(-18.0*delta)) if camera_target_ready else follow
+		camera_target_ready = true
+		avatar.visual_root.visible = boom.get_hit_length() > 1.15
+		avatar.get_node("Nameplate").visible = avatar.visual_root.visible
 	pivot.rotation = Vector3(pitch,yaw,0)
-	camera.position = Vector3(0,0,distance)
+	boom.collision_mask = 1 if game.phase == "world" and not map_view else 0
+	boom.set_distance(distance,delta)
 	ticks += 1
 	if ticks == 15 and screenshot != "":
 		await RenderingServer.frame_post_draw
@@ -187,13 +231,24 @@ func _process(delta: float) -> void:
 		print("SCREENSHOT ",error," ",screenshot)
 		get_tree().quit(error)
 
+func _physics_process(delta: float) -> void:
+	if game.phase != "world" or not avatars.has(player_serial):
+		jump_requested = false
+		return
+	var avatar: Node3D = avatars[player_serial]
+	var clearance := boom.headroom(get_world_3d().direct_space_state,avatar.position)
+	if jump_requested:
+		avatar.jump.start(clearance)
+		jump_requested = false
+	avatar.jump.advance(delta,clearance)
+
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+	if event is InputEventMouseMotion and (Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)):
 		yaw -= event.relative.x * 0.005
-		pitch = clampf(pitch-event.relative.y*0.005,-1.45,-0.1)
+		pitch = clampf(pitch-event.relative.y*0.005,-1.5,0.9)
 	if event is InputEventMouseButton and event.pressed:
-		if event.button_index == MOUSE_BUTTON_WHEEL_UP: distance = maxf(5,distance-4)
-		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN: distance = minf(250,distance+4)
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP: distance = maxf(1.2,distance-(0.8 if game.phase == "world" else 4))
+		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN: distance = minf(22 if game.phase == "world" else 250,distance+(0.8 if game.phase == "world" else 4))
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_B: game.open_backpack()
 		if event.keycode == KEY_ESCAPE: get_tree().quit()
@@ -201,15 +256,16 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.keycode == KEY_R:
 			yaw = -0.45
 			pitch = -0.55 if game.phase == "world" else -0.75
-			distance = 9 if game.phase == "world" else 65
+			distance = 7 if game.phase == "world" else 65
 			pivot.position = Vector3(float(world.width)/2,0,float(world.height)/2)
 
 func _entity_changed(serial: int,position: Dictionary) -> void:
 	if position.facet != 1: return
-	var location := point(position.x,position.y,position.z)
+	var location := entity_point(position.x,position.y,position.z)
 	if not avatars.has(serial):
 		var avatar := Avatar.new()
 		var label := Label3D.new()
+		label.name = "Nameplate"
 		label.text = "You" if serial == game.player.serial else "Player %d" % serial
 		label.position.y = 2.2
 		label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
@@ -223,7 +279,8 @@ func _entity_changed(serial: int,position: Dictionary) -> void:
 		tracks[serial].reset(location)
 	# Imported humanoid faces +Z; UO direction 0 faces north (-Z).
 	directions[serial] = PI-int(position.direction)*PI/4
-	tracks[serial].push(location)
+	if tracks[serial].position.distance_to(location) > 8.0: avatars[serial].jump.reset()
+	tracks[serial].push(location,float(game.move_interval)/1000.0 if serial == player_serial else (0.21 if position.get("running",false) else 0.41))
 	targets[serial] = location
 
 func _entity_removed(serial: int) -> void:

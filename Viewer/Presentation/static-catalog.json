@@ -1,0 +1,1252 @@
+{
+  "rules": {
+    "1476": {
+      "kind": "roof",
+      "asset": "procedural:continuous-roof-with-kit-material",
+      "axis": "x",
+      "confidence": "reference-family; source-elevation slope",
+      "material": "shingle",
+      "rise": [
+        1,
+        0
+      ],
+      "ridgeAxis": "x"
+    },
+    "6004": {
+      "kind": "rock",
+      "asset": "Nature/Rock_Medium_1.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2147": {
+      "kind": "fence",
+      "asset": "Village/Prop_WoodenFence_Single.gltf",
+      "axis": "x",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "3205": {
+      "kind": "flower",
+      "asset": "Nature/Flower_3_Group.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "300": {
+      "kind": "wall",
+      "asset": "Village/Wall_Plaster_Straight.gltf",
+      "axis": "x",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "310": {
+      "kind": "wall",
+      "asset": "Village/Wall_Plaster_Straight.gltf",
+      "axis": "x",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "314": {
+      "kind": "window",
+      "asset": "Village/Wall_Plaster_Window_Wide_Flat.gltf",
+      "axis": "x",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "307": {
+      "kind": "wall",
+      "asset": "Village/Wall_Plaster_Straight.gltf",
+      "axis": "x",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "1488": {
+      "kind": "roof",
+      "asset": "procedural:continuous-roof-with-kit-material",
+      "axis": "x",
+      "confidence": "reference-family; source-elevation slope",
+      "material": "shingle",
+      "rise": [
+        0,
+        1
+      ],
+      "ridgeAxis": "x"
+    },
+    "1194": {
+      "kind": "floor",
+      "asset": "Village/Floor_WoodDark.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1195": {
+      "kind": "floor",
+      "asset": "Village/Floor_WoodDark.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1193": {
+      "kind": "floor",
+      "asset": "Village/Floor_WoodDark.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1196": {
+      "kind": "floor",
+      "asset": "Village/Floor_WoodDark.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "301": {
+      "kind": "wall",
+      "asset": "Village/Wall_Plaster_Straight.gltf",
+      "axis": "y",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "2685": {
+      "kind": "bed",
+      "asset": "Kenney/bedSingle.glb",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2681": {
+      "kind": "bed",
+      "asset": "Kenney/bedSingle.glb",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2771": {
+      "kind": "carpet",
+      "asset": "procedural:woven-carpet-module",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2775": {
+      "kind": "carpet",
+      "asset": "procedural:woven-carpet-module",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2773": {
+      "kind": "carpet",
+      "asset": "procedural:woven-carpet-module",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "311": {
+      "kind": "wall",
+      "asset": "Village/Wall_Plaster_Straight.gltf",
+      "axis": "y",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "2653": {
+      "kind": "bed",
+      "asset": "Kenney/bedSingle.glb",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2684": {
+      "kind": "bed",
+      "asset": "Kenney/bedSingle.glb",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2658": {
+      "kind": "bed",
+      "asset": "Kenney/bedSingle.glb",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2680": {
+      "kind": "bed",
+      "asset": "Kenney/bedSingle.glb",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2774": {
+      "kind": "carpet",
+      "asset": "procedural:woven-carpet-module",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2769": {
+      "kind": "carpet",
+      "asset": "procedural:woven-carpet-module",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2776": {
+      "kind": "carpet",
+      "asset": "procedural:woven-carpet-module",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2772": {
+      "kind": "carpet",
+      "asset": "procedural:woven-carpet-module",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2777": {
+      "kind": "carpet",
+      "asset": "procedural:woven-carpet-module",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2770": {
+      "kind": "carpet",
+      "asset": "procedural:woven-carpet-module",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "312": {
+      "kind": "wall",
+      "asset": "Village/Wall_Plaster_Straight.gltf",
+      "axis": "x",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "1824": {
+      "kind": "landing",
+      "asset": "Village/Floor_WoodDark.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1827": {
+      "kind": "stairs",
+      "asset": "procedural:source-step-module",
+      "axis": "x",
+      "confidence": "semantic-substitute",
+      "rise": [
+        0,
+        -1
+      ]
+    },
+    "1197": {
+      "kind": "floor",
+      "asset": "Village/Floor_WoodDark.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1216": {
+      "kind": "floor",
+      "asset": "Village/Floor_WoodDark.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1212": {
+      "kind": "floor",
+      "asset": "Village/Floor_WoodDark.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1486": {
+      "kind": "roof",
+      "asset": "procedural:continuous-roof-with-kit-material",
+      "axis": "x",
+      "confidence": "reference-family; source-elevation slope",
+      "material": "shingle",
+      "rise": [
+        0,
+        0
+      ],
+      "ridgeAxis": "x"
+    },
+    "1208": {
+      "kind": "floor",
+      "asset": "Village/Floor_WoodDark.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1487": {
+      "kind": "roof",
+      "asset": "procedural:continuous-roof-with-kit-material",
+      "axis": "x",
+      "confidence": "reference-family; source-elevation slope",
+      "material": "shingle",
+      "rise": [
+        0,
+        -1
+      ],
+      "ridgeAxis": "x"
+    },
+    "308": {
+      "kind": "wall",
+      "asset": "Village/Wall_Plaster_Straight.gltf",
+      "axis": "y",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "295": {
+      "kind": "corner",
+      "asset": "Village/Wall_Plaster_Straight.gltf",
+      "axis": "x",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "3250": {
+      "kind": "grass",
+      "asset": "Nature/Grass_Wispy_Short.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3300": {
+      "kind": "canopy",
+      "asset": "group:matching-tree-crown",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3299": {
+      "kind": "tree",
+      "asset": "Nature/CommonTree_1.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3247": {
+      "kind": "grass",
+      "asset": "Nature/Grass_Common_Tall.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3375": {
+      "kind": "flower",
+      "asset": "Nature/Flower_3_Group.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3297": {
+      "kind": "canopy",
+      "asset": "group:matching-tree-crown",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3296": {
+      "kind": "tree",
+      "asset": "Nature/CommonTree_1.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3369": {
+      "kind": "flower",
+      "asset": "Nature/Flower_3_Group.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1474": {
+      "kind": "roof",
+      "asset": "procedural:continuous-roof-with-kit-material",
+      "axis": "x",
+      "confidence": "reference-family; source-elevation slope",
+      "material": "shingle",
+      "rise": [
+        0,
+        0
+      ],
+      "ridgeAxis": "y"
+    },
+    "1475": {
+      "kind": "roof",
+      "asset": "procedural:continuous-roof-with-kit-material",
+      "axis": "x",
+      "confidence": "reference-family; source-elevation slope",
+      "material": "shingle",
+      "rise": [
+        -1,
+        0
+      ],
+      "ridgeAxis": "x"
+    },
+    "296": {
+      "kind": "wall",
+      "asset": "Village/Wall_Plaster_Straight.gltf",
+      "axis": "x",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "309": {
+      "kind": "corner",
+      "asset": "Village/Wall_Plaster_Straight.gltf",
+      "axis": "x",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "2148": {
+      "kind": "fence",
+      "asset": "Village/Prop_WoodenFence_Single.gltf",
+      "axis": "y",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "1199": {
+      "kind": "floor",
+      "asset": "Village/Floor_WoodDark.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3248": {
+      "kind": "grass",
+      "asset": "Nature/Grass_Wispy_Short.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3253": {
+      "kind": "grass",
+      "asset": "Nature/Grass_Common_Tall.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3371": {
+      "kind": "flower",
+      "asset": "Nature/Flower_3_Group.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3254": {
+      "kind": "grass",
+      "asset": "Nature/Grass_Wispy_Short.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "6008": {
+      "kind": "rock",
+      "asset": "Nature/Rock_Medium_1.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3245": {
+      "kind": "grass",
+      "asset": "Nature/Grass_Common_Tall.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "4758": {
+      "kind": "post",
+      "asset": "Village/Prop_Support.gltf",
+      "axis": "x",
+      "confidence": "metadata-only; original silhouette needs further review"
+    },
+    "3744": {
+      "kind": "painting",
+      "asset": "procedural:framed-landscape",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "331": {
+      "kind": "trim",
+      "asset": "Village/Wall_Plaster_Straight.gltf",
+      "axis": "y",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "315": {
+      "kind": "window",
+      "asset": "Village/Wall_Plaster_Window_Wide_Flat.gltf",
+      "axis": "y",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "323": {
+      "kind": "beam",
+      "asset": "Village/Prop_ExteriorBorder_Straight1.gltf",
+      "axis": "y",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "320": {
+      "kind": "arch",
+      "asset": "Village/Wall_Arch.gltf",
+      "axis": "y",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "2880": {
+      "kind": "counter",
+      "asset": "Kenney/cabinetBed.glb",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2878": {
+      "kind": "counter",
+      "asset": "Kenney/cabinetBed.glb",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "317": {
+      "kind": "arch",
+      "asset": "Village/Wall_Arch.gltf",
+      "axis": "y",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "2931": {
+      "kind": "table",
+      "asset": "Kenney/table.glb",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2930": {
+      "kind": "table",
+      "asset": "Kenney/table.glb",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2928": {
+      "kind": "table",
+      "asset": "Kenney/table.glb",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2929": {
+      "kind": "table",
+      "asset": "Kenney/table.glb",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3287": {
+      "kind": "canopy",
+      "asset": "group:matching-tree-crown",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3286": {
+      "kind": "tree",
+      "asset": "Nature/Pine_1.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3291": {
+      "kind": "canopy",
+      "asset": "group:matching-tree-crown",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3290": {
+      "kind": "tree",
+      "asset": "Nature/CommonTree_1.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3391": {
+      "kind": "bush",
+      "asset": "Nature/Bush_Common.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3281": {
+      "kind": "canopy",
+      "asset": "group:matching-tree-crown",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3280": {
+      "kind": "tree",
+      "asset": "Nature/CommonTree_1.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3269": {
+      "kind": "grass",
+      "asset": "Nature/Grass_Common_Tall.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3306": {
+      "kind": "tree",
+      "asset": "Nature/CommonTree_2.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3211": {
+      "kind": "flower",
+      "asset": "Nature/Flower_3_Group.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3246": {
+      "kind": "grass",
+      "asset": "Nature/Grass_Wispy_Short.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3249": {
+      "kind": "grass",
+      "asset": "Nature/Grass_Common_Tall.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "6063": {
+      "kind": "water",
+      "asset": "procedural:animated-water-surface",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3392": {
+      "kind": "bush",
+      "asset": "Nature/Bush_Common.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3294": {
+      "kind": "canopy",
+      "asset": "group:matching-tree-crown",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3293": {
+      "kind": "tree",
+      "asset": "Nature/CommonTree_1.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "6051": {
+      "kind": "water",
+      "asset": "procedural:animated-water-surface",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3244": {
+      "kind": "grass",
+      "asset": "Nature/Grass_Wispy_Short.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "6052": {
+      "kind": "water",
+      "asset": "procedural:animated-water-surface",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "6056": {
+      "kind": "water",
+      "asset": "procedural:animated-water-surface",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "29": {
+      "kind": "post",
+      "asset": "Village/Wall_UnevenBrick_Straight.gltf",
+      "axis": "x",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "298": {
+      "kind": "post",
+      "asset": "Village/Prop_Support.gltf",
+      "axis": "x",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "27": {
+      "kind": "wall",
+      "asset": "Village/Wall_UnevenBrick_Straight.gltf",
+      "axis": "y",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "2973": {
+      "kind": "sign",
+      "asset": "procedural:wrought-sign-bracket",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "6047": {
+      "kind": "water",
+      "asset": "procedural:animated-water-surface",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "6054": {
+      "kind": "water",
+      "asset": "procedural:animated-water-surface",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "6048": {
+      "kind": "water",
+      "asset": "procedural:animated-water-surface",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "6060": {
+      "kind": "water",
+      "asset": "procedural:animated-water-surface",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "6040": {
+      "kind": "water",
+      "asset": "procedural:animated-water-surface",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "6044": {
+      "kind": "water",
+      "asset": "procedural:animated-water-surface",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "6043": {
+      "kind": "water",
+      "asset": "procedural:animated-water-surface",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "6042": {
+      "kind": "water",
+      "asset": "procedural:animated-water-surface",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "6039": {
+      "kind": "water",
+      "asset": "procedural:animated-water-surface",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "6041": {
+      "kind": "water",
+      "asset": "procedural:animated-water-surface",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "6059": {
+      "kind": "water",
+      "asset": "procedural:animated-water-surface",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "6064": {
+      "kind": "water",
+      "asset": "procedural:animated-water-surface",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1852": {
+      "kind": "stairs",
+      "asset": "procedural:source-step-module",
+      "axis": "x",
+      "confidence": "semantic-substitute",
+      "rise": [
+        -1,
+        0
+      ]
+    },
+    "28": {
+      "kind": "wall",
+      "asset": "Village/Wall_UnevenBrick_Straight.gltf",
+      "axis": "x",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "26": {
+      "kind": "corner",
+      "asset": "Village/Wall_UnevenBrick_Straight.gltf",
+      "axis": "x",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "1207": {
+      "kind": "floor",
+      "asset": "Village/Floor_WoodDark.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1443": {
+      "kind": "roof",
+      "asset": "procedural:continuous-roof-with-kit-material",
+      "axis": "x",
+      "confidence": "reference-family; source-elevation slope",
+      "material": "slate",
+      "rise": [
+        0,
+        1
+      ],
+      "ridgeAxis": "x"
+    },
+    "1206": {
+      "kind": "floor",
+      "asset": "Village/Floor_WoodDark.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2780": {
+      "kind": "carpet",
+      "asset": "procedural:woven-carpet-module",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2784": {
+      "kind": "carpet",
+      "asset": "procedural:woven-carpet-module",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1205": {
+      "kind": "floor",
+      "asset": "Village/Floor_WoodDark.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2782": {
+      "kind": "carpet",
+      "asset": "procedural:woven-carpet-module",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2927": {
+      "kind": "table",
+      "asset": "Kenney/table.glb",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2912": {
+      "kind": "bench",
+      "asset": "Kenney/bench.glb",
+      "axis": "y",
+      "confidence": "semantic-substitute"
+    },
+    "2783": {
+      "kind": "carpet",
+      "asset": "procedural:woven-carpet-module",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2778": {
+      "kind": "carpet",
+      "asset": "procedural:woven-carpet-module",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2785": {
+      "kind": "carpet",
+      "asset": "procedural:woven-carpet-module",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2911": {
+      "kind": "bench",
+      "asset": "Kenney/bench.glb",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1441": {
+      "kind": "roof",
+      "asset": "procedural:continuous-roof-with-kit-material",
+      "axis": "x",
+      "confidence": "reference-family; source-elevation slope",
+      "material": "slate",
+      "rise": [
+        0,
+        0
+      ],
+      "ridgeAxis": "x"
+    },
+    "2926": {
+      "kind": "table",
+      "asset": "Kenney/table.glb",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1442": {
+      "kind": "roof",
+      "asset": "procedural:continuous-roof-with-kit-material",
+      "axis": "x",
+      "confidence": "reference-family; source-elevation slope",
+      "material": "slate",
+      "rise": [
+        0,
+        -1
+      ],
+      "ridgeAxis": "x"
+    },
+    "2781": {
+      "kind": "carpet",
+      "asset": "procedural:woven-carpet-module",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2786": {
+      "kind": "carpet",
+      "asset": "procedural:woven-carpet-module",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2779": {
+      "kind": "carpet",
+      "asset": "procedural:woven-carpet-module",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2974": {
+      "kind": "sign",
+      "asset": "procedural:wrought-sign-bracket",
+      "axis": "y",
+      "confidence": "semantic-substitute"
+    },
+    "3277": {
+      "kind": "tree",
+      "asset": "Nature/CommonTree_1.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3278": {
+      "kind": "canopy",
+      "asset": "group:matching-tree-crown",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1204": {
+      "kind": "floor",
+      "asset": "Village/Floor_WoodDark.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1848": {
+      "kind": "landing",
+      "asset": "Village/Floor_WoodDark.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1200": {
+      "kind": "floor",
+      "asset": "Village/Floor_WoodDark.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1203": {
+      "kind": "floor",
+      "asset": "Village/Floor_WoodDark.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1202": {
+      "kind": "floor",
+      "asset": "Village/Floor_WoodDark.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1198": {
+      "kind": "floor",
+      "asset": "Village/Floor_WoodDark.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1201": {
+      "kind": "floor",
+      "asset": "Village/Floor_WoodDark.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1431": {
+      "kind": "roof",
+      "asset": "procedural:continuous-roof-with-kit-material",
+      "axis": "x",
+      "confidence": "reference-family; source-elevation slope",
+      "material": "slate",
+      "rise": [
+        1,
+        0
+      ],
+      "ridgeAxis": "x"
+    },
+    "1850": {
+      "kind": "stairs",
+      "asset": "procedural:source-step-module",
+      "axis": "x",
+      "confidence": "semantic-substitute",
+      "rise": [
+        1,
+        0
+      ]
+    },
+    "1429": {
+      "kind": "roof",
+      "asset": "procedural:continuous-roof-with-kit-material",
+      "axis": "x",
+      "confidence": "reference-family; source-elevation slope",
+      "material": "slate",
+      "rise": [
+        0,
+        0
+      ],
+      "ridgeAxis": "y"
+    },
+    "1430": {
+      "kind": "roof",
+      "asset": "procedural:continuous-roof-with-kit-material",
+      "axis": "x",
+      "confidence": "reference-family; source-elevation slope",
+      "material": "slate",
+      "rise": [
+        -1,
+        0
+      ],
+      "ridgeAxis": "x"
+    },
+    "1434": {
+      "kind": "roof",
+      "asset": "procedural:continuous-roof-with-kit-material",
+      "axis": "x",
+      "confidence": "reference-family; source-elevation slope",
+      "material": "slate",
+      "rise": [
+        1,
+        0
+      ],
+      "ridgeAxis": "x"
+    },
+    "1433": {
+      "kind": "roof",
+      "asset": "procedural:continuous-roof-with-kit-material",
+      "axis": "x",
+      "confidence": "reference-family; source-elevation slope",
+      "material": "slate",
+      "rise": [
+        -1,
+        0
+      ],
+      "ridgeAxis": "x"
+    },
+    "32": {
+      "kind": "wall",
+      "asset": "Village/Wall_UnevenBrick_Straight.gltf",
+      "axis": "y",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "1709": {
+      "kind": "door",
+      "asset": "Village/Door_1_Flat.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "330": {
+      "kind": "trim",
+      "asset": "Village/Wall_Plaster_Straight.gltf",
+      "axis": "x",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "31": {
+      "kind": "wall",
+      "asset": "Village/Wall_UnevenBrick_Straight.gltf",
+      "axis": "y",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "1437": {
+      "kind": "roof",
+      "asset": "procedural:continuous-roof-with-kit-material",
+      "axis": "x",
+      "confidence": "reference-family; source-elevation slope",
+      "material": "slate",
+      "rise": [
+        0,
+        0
+      ],
+      "ridgeAxis": "y"
+    },
+    "37": {
+      "kind": "trim",
+      "asset": "Village/Wall_UnevenBrick_Straight.gltf",
+      "axis": "x",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "3343": {
+      "kind": "mushroom",
+      "asset": "Nature/Mushroom_Common.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3252": {
+      "kind": "grass",
+      "asset": "Nature/Grass_Wispy_Short.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3373": {
+      "kind": "flower",
+      "asset": "Nature/Flower_3_Group.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3350": {
+      "kind": "mushroom",
+      "asset": "Nature/Mushroom_Common.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3347": {
+      "kind": "mushroom",
+      "asset": "Nature/Mushroom_Common.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3284": {
+      "kind": "canopy",
+      "asset": "group:matching-tree-crown",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3283": {
+      "kind": "tree",
+      "asset": "Nature/CommonTree_1.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3251": {
+      "kind": "grass",
+      "asset": "Nature/Grass_Common_Tall.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "6053": {
+      "kind": "water",
+      "asset": "procedural:animated-water-surface",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "6057": {
+      "kind": "water",
+      "asset": "procedural:animated-water-surface",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3289": {
+      "kind": "canopy",
+      "asset": "group:matching-tree-crown",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3288": {
+      "kind": "tree",
+      "asset": "Nature/Pine_1.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "6061": {
+      "kind": "water",
+      "asset": "procedural:animated-water-surface",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "6066": {
+      "kind": "water",
+      "asset": "procedural:animated-water-surface",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1461": {
+      "kind": "roof",
+      "asset": "procedural:continuous-roof-with-kit-material",
+      "axis": "x",
+      "confidence": "reference-family; source-elevation slope",
+      "material": "clay",
+      "rise": [
+        1,
+        0
+      ],
+      "ridgeAxis": "x"
+    },
+    "2659": {
+      "kind": "bed",
+      "asset": "Kenney/bedSingle.glb",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "2652": {
+      "kind": "bed",
+      "asset": "Kenney/bedSingle.glb",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "313": {
+      "kind": "wall",
+      "asset": "Village/Wall_Plaster_Straight.gltf",
+      "axis": "y",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "3317": {
+      "kind": "log",
+      "asset": "Village/Roof_Log.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3318": {
+      "kind": "log",
+      "asset": "Village/Roof_Log.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3319": {
+      "kind": "log",
+      "asset": "Village/Roof_Log.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3305": {
+      "kind": "tree",
+      "asset": "Nature/CommonTree_2.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3230": {
+      "kind": "tree",
+      "asset": "Nature/CommonTree_1.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3303": {
+      "kind": "canopy",
+      "asset": "group:matching-tree-crown",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "3302": {
+      "kind": "tree",
+      "asset": "Nature/TwistedTree_1.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1872": {
+      "kind": "landing",
+      "asset": "Village/Floor_WoodDark.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    },
+    "1459": {
+      "kind": "roof",
+      "asset": "procedural:continuous-roof-with-kit-material",
+      "axis": "x",
+      "confidence": "reference-family; source-elevation slope",
+      "material": "clay",
+      "rise": [
+        0,
+        0
+      ],
+      "ridgeAxis": "y"
+    },
+    "1460": {
+      "kind": "roof",
+      "asset": "procedural:continuous-roof-with-kit-material",
+      "axis": "x",
+      "confidence": "reference-family; source-elevation slope",
+      "material": "clay",
+      "rise": [
+        -1,
+        0
+      ],
+      "ridgeAxis": "x"
+    },
+    "1873": {
+      "kind": "stairs",
+      "asset": "procedural:source-step-module",
+      "axis": "x",
+      "confidence": "semantic-substitute",
+      "rise": [
+        0,
+        -1
+      ]
+    },
+    "9": {
+      "kind": "post",
+      "asset": "Village/Prop_Support.gltf",
+      "axis": "x",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "8": {
+      "kind": "wall",
+      "asset": "Village/Wall_Plaster_WoodGrid.gltf",
+      "axis": "y",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "15": {
+      "kind": "window",
+      "asset": "Village/Wall_Plaster_Window_Wide_Flat.gltf",
+      "axis": "y",
+      "confidence": "reference-shape-and-axis; modern-style-substitute"
+    },
+    "3341": {
+      "kind": "mushroom",
+      "asset": "Nature/Mushroom_Common.gltf",
+      "axis": "x",
+      "confidence": "semantic-substitute"
+    }
+  },
+  "scope": "Audited Britain crop IDs; no source positions or art payload",
+  "version": 2
+}

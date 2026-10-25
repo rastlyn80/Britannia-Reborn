@@ -28,9 +28,9 @@ function Copy-Model($pack, $name, $category) {
   foreach ($f in $files) { Copy-Item -LiteralPath $f -Destination $dest -Force }
   if ($file.Extension -eq '.gltf' -and $category -eq 'Character') { $model | ConvertTo-Json -Depth 100 | Set-Content (Join-Path $dest $file.Name) }
 }
-$village = @('Wall_Plaster_Straight','Wall_UnevenBrick_Straight','Floor_WoodDark','Floor_Brick','Roof_Wooden_2x1','Roof_Modular_RoundTiles','Prop_Crate','Wall_Plaster_Window_Wide_Flat','Wall_Plaster_Door_Flat')
+$village = @('Wall_Plaster_Straight','Wall_UnevenBrick_Straight','Floor_WoodDark','Floor_Brick','Roof_Wooden_2x1','Roof_Modular_RoundTiles','Prop_Crate','Wall_Plaster_Window_Wide_Flat','Wall_Plaster_Door_Flat','Wall_Arch','Door_1_Flat','Prop_WoodenFence_Single','Prop_Support','Prop_ExteriorBorder_Straight1','Corner_Exterior_Wood','Stair_Interior_Simple','Wall_Plaster_Straight_Base','Wall_Plaster_WoodGrid','Prop_Chimney','Roof_Log')
 foreach ($name in $village) { Copy-Model 'medieval-village-megakit' "$name.gltf" 'Village' }
-foreach ($name in @('CommonTree_1','Bush_Common','Rock_Medium_1','Grass_Common_Short')) {
+foreach ($name in @('CommonTree_1','CommonTree_2','CommonTree_3','CommonTree_4','CommonTree_5','Pine_1','Pine_2','TwistedTree_1','Bush_Common','Bush_Common_Flowers','Rock_Medium_1','Rock_Medium_2','Grass_Common_Short','Grass_Common_Tall','Grass_Wispy_Short','Flower_3_Group','Flower_4_Group','Mushroom_Common','Mushroom_Laetiporus','DeadTree_1')) {
   # Fail explicitly for selected model names absent from an edition.
   if (Get-ChildItem "$source/stylized-nature-megakit" -Recurse -Filter "$name.gltf") { Copy-Model 'stylized-nature-megakit' "$name.gltf" 'Nature' }
 }
@@ -45,6 +45,6 @@ foreach ($pack in @('medieval-village-megakit','stylized-nature-megakit','univer
 $inventory = Get-ChildItem $target -Recurse -File | Where-Object { $_.Extension -notin @('.import','.json') } | ForEach-Object {
   [ordered]@{path=[IO.Path]::GetRelativePath($target,$_.FullName).Replace('\','/');sha256=(Get-FileHash -LiteralPath $_.FullName).Hash}
 }
-@{packs=$manifest;files=@($inventory);modifications='Selected original glTF/GLB files and dependencies. Character glTF reserialized; missing T_Hair_1_Normal_png.png and T_Eye_Normal_png.png references corrected to supplied T_Hair_1_Normal.png and T_Eye_Normal.png. Runtime head mask and shared-skeleton peasant outfit assembly; slate preview tint and per-tile scaling are presentation transforms.'} | ConvertTo-Json -Depth 6 | Set-Content "$target/manifest.json"
+@{packs=$manifest;files=@($inventory);modifications='Selected original glTF/GLB files and dependencies. Character glTF reserialized; missing normal-map aliases corrected to supplied textures. Runtime head mask and shared-skeleton peasant outfit assembly. Runtime foliage ignores wind vertex colours and replaces red TwistedTree leaf colour texture with the supplied green NormalTree colour texture. Source-scaled architectural modules, grouped foliage/bed/arch components, and procedural roof geometry using kit material detail; all original files otherwise retained.'} | ConvertTo-Json -Depth 6 | Set-Content "$target/manifest.json"
 Write-Output 'Selected art prepared with licenses and SHA-256 manifest.'
 

@@ -15,6 +15,7 @@ static class Program {
    if(args.Length==0) throw new ArgumentException("Commands: fixture DIR | test DIR | convert DIR OUT [x y width height mapHeight]");
    if(args[0]=="fixture") { Fixture(args[1]); return; }
    if(args[0]=="test") { Tests(args[1]); return; }
+   if(args[0]=="reference") { ArtReference.Export(args[1],args[2],args[3]); return; }
    if(args[0]!="convert" || args.Length<3) throw new ArgumentException("convert DIR OUT [x y width height mapHeight]");
    int[] p={1408,1664,48,48,4096}; for(int i=3;i<args.Length;i++) p[i-3]=int.Parse(args[i]);
    var w=Convert(args[1],p[0],p[1],p[2],p[3],p[4]);
@@ -88,7 +89,7 @@ static class Program {
   public void Dispose(){data?.Dispose();index?.Dispose();}
  }
  // UOP uses lookup3/hashlittle2 with filename ASCII bytes; high 32 bits are b.
- static ulong Hash(string s) {
+ internal static ulong Hash(string s) {
   unchecked {
    uint a=0xdeadbeef+(uint)s.Length,b=a,c=a; int i=0;
    uint R(uint x,int k)=>(x<<k)|(x>>(32-k));

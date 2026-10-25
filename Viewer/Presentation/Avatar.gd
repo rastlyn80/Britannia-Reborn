@@ -4,10 +4,13 @@ var animator := AnimationPlayer.new()
 var facing := 0.0
 var walking := false
 var current_clip := "Idle"
+var visual_root := Node3D.new()
+var jump := preload("res://Presentation/JumpMotion.gd").new()
 
 func _ready() -> void:
 	var model: Node3D = load("res://Art/Quaternius/Character/Superhero_Male_FullBody.gltf").instantiate()
-	add_child(model)
+	add_child(visual_root)
+	visual_root.add_child(model)
 	var skeleton: Skeleton3D = model.find_children("*","Skeleton3D",true,false)[0]
 	# Standard supplies a full body rather than a separate head. Keep its head,
 	# eyes and brows; the compatible outfit supplies the rest of the body.
@@ -30,9 +33,9 @@ func _ready() -> void:
 	var animations: Node = load("res://Art/Quaternius/Animation/UAL1_Standard.glb").instantiate()
 	var source: AnimationPlayer = animations.find_child("AnimationPlayer",true,false)
 	var library := AnimationLibrary.new()
-	for clip in ["Idle","Walk","Jog_Fwd"]:
+	for clip in ["Idle","Walk","Jog_Fwd","Sprint","Jump_Start","Jump","Jump_Land"]:
 		var animation: Animation = source.get_animation(clip).duplicate(true)
-		animation.loop_mode = Animation.LOOP_LINEAR
+		animation.loop_mode = Animation.LOOP_NONE if clip in ["Jump_Start","Jump_Land"] else Animation.LOOP_LINEAR
 		library.add_animation(clip,animation)
 	model.add_child(animator)
 	animator.add_animation_library("",library)
@@ -43,10 +46,15 @@ func animate(moving: bool, direction: float, delta: float, speed: float = 2.44) 
 	facing = direction
 	rotation.y = lerp_angle(rotation.y,facing,1.0-exp(-14.0*delta))
 	walking = moving
-	var clip := ("Jog_Fwd" if speed > 1.8 else "Walk") if moving else "Idle"
+	var clip := ("Sprint" if speed > 4.0 else ("Jog_Fwd" if speed > 1.8 else "Walk")) if moving else "Idle"
+	if jump.airborne: clip = "Jump_Start" if jump.elapsed < 0.15 else "Jump"
+	elif jump.landing_time > 0: clip = "Jump_Land"
 	if current_clip != clip:
 		current_clip = clip
 		animator.play(clip,0.16)
 	# Presentation pace follows measured render speed; no animation root motion
 	# is allowed to move the server-authoritative avatar root.
-	animator.speed_scale = clampf(speed/(2.6 if clip == "Jog_Fwd" else 1.2),0.5,2.0) if moving else 1.0
+	animator.speed_scale = clampf(speed/(5.0 if clip == "Sprint" else (2.6 if clip == "Jog_Fwd" else 1.2)),0.5,2.0) if moving and not clip.begins_with("Jump") else 1.0
+	visual_root.position.y = jump.height
+	var nameplate := get_node_or_null("Nameplate")
+	if nameplate: nameplate.position.y = 2.2+jump.height
