@@ -35,6 +35,8 @@ var controller_enabled := false
 var intent_facing := 0.0
 var has_move_intent := false
 var accept_player_input := true
+var shoreline := preload("res://Presentation/ShorelinePlan.gd").new()
+var terrain_surface := preload("res://Presentation/TerrainSurface.gd").new()
 var movement_surface := preload("res://Presentation/MovementSurface.gd").new()
 
 func point(x: int, y: int, z: int) -> Vector3:
@@ -51,6 +53,7 @@ func material(color: Color) -> StandardMaterial3D:
 	return m
 
 func _ready() -> void:
+	get_viewport().use_taa = RenderingServer.get_current_rendering_method() == "forward_plus"
 	var path := "res://world.json"
 	if FileAccess.file_exists("res://play-world.json"): path = "res://play-world.json"
 	for arg in OS.get_cmdline_user_args():
@@ -73,37 +76,26 @@ func _ready() -> void:
 	movement_surface.index(world)
 	game.surface = movement_surface
 	game.preview_bounds = Rect2i(int(world.originX),int(world.originY),int(world.width)-1,int(world.height)-1)
-	var samples := {}
-	for t in world.terrain: samples[Vector2i(t.x,t.y)] = t
-	var surface := SurfaceTool.new()
-	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
-	for y in range(int(world.originY), int(world.originY)+int(world.height)-1):
-		for x in range(int(world.originX), int(world.originX)+int(world.width)-1):
-			var a: Dictionary = samples[Vector2i(x,y)]
-			var b: Dictionary = samples[Vector2i(x+1,y)]
-			var c: Dictionary = samples[Vector2i(x,y+1)]
-			var d: Dictionary = samples[Vector2i(x+1,y+1)]
-			var name := str(Reconstruction.info(world,a.id,false).get("name",""))
-			if name == "NODRAW": continue
-			var vertices := [a,b,d,a,d,c] if abs(int(a.z)-int(d.z)) <= abs(int(b.z)-int(c.z)) else [a,b,c,b,d,c]
-			for t in vertices:
-				var vertex_name := str(Reconstruction.info(world,t.id,false).get("name",""))
-				surface.set_color(Reconstruction.terrain_color(vertex_name).srgb_to_linear())
-				surface.set_uv(Vector2(t.x,t.y))
-				surface.set_uv2(Vector2(1.0 if vertex_name in ["cobblestones","stone","brick"] else 0.0,1.0 if vertex_name == "wooden floor" else 0.0))
-				surface.add_vertex(point(t.x,t.y,t.z))
-	surface.generate_normals()
-	surface.generate_tangents()
+	preload("res://Presentation/SurfaceLibrary.gd").source_origin = Vector2(world.originX,world.originY)
+	shoreline.index(world,reconstruction.catalog)
+	terrain_surface.index(world,shoreline)
 	var terrain := MeshInstance3D.new()
-	terrain.mesh = surface.commit()
+	terrain.name = "BlendedTerrain"
+	terrain.mesh = terrain_surface.build()
 	var terrain_mat := ShaderMaterial.new()
 	terrain_mat.shader = preload("res://Presentation/Ground.gdshader")
 	terrain_mat.set_shader_parameter("stone_detail",load("res://Art/Quaternius/Village/T_Brick_BaseColor.png"))
 	terrain_mat.set_shader_parameter("stone_normal",load("res://Art/Quaternius/Village/T_Brick_Normal.png"))
+	preload("res://Presentation/SurfaceLibrary.gd").bind(terrain_mat,"paving","cobblestone_floor_03")
+	preload("res://Presentation/SurfaceLibrary.gd").bind(terrain_mat,"ground","forest_ground_04")
+	preload("res://Presentation/SurfaceLibrary.gd").bind(terrain_mat,"rock","rock_face_03")
+	preload("res://Presentation/SurfaceLibrary.gd").bind(terrain_mat,"wood","brown_planks_03")
+	shoreline.apply(terrain_mat)
 	terrain.material_override = terrain_mat
 	add_child(terrain)
 	add_child(static_root)
 	add_child(diagnostics)
+	reconstruction.shoreline = shoreline
 	reconstruction.show_boundary_fragments = map_view
 	reconstruction.index(world)
 	for ordinal in world.statics.size():
@@ -124,29 +116,10 @@ func _ready() -> void:
 	collision_builder.finish(self,terrain)
 	if not coverage_path.is_empty(): reconstruction.save_report(coverage_path)
 	print("PRESENTATION COLLISION: %d triangles in chunk bodies; %d grouped source components" % [collision_builder.triangles,reconstruction.grouped])
-	var sun := DirectionalLight3D.new()
-	sun.rotation_degrees = Vector3(-38,-35,0)
-	sun.light_color = Color("fff0d6")
-	sun.directional_shadow_max_distance = 100
-	sun.shadow_blur = 2.0
-	sun.light_energy = 1.1
-	sun.shadow_enabled = true
-	add_child(sun)
-	var env := WorldEnvironment.new()
-	env.environment = Environment.new()
-	env.environment.background_mode = Environment.BG_SKY
-	env.environment.sky = Sky.new()
-	var sky := ProceduralSkyMaterial.new()
-	sky.sky_top_color = Color("638aa9")
-	sky.sky_horizon_color = Color("d5e2dd")
-	sky.ground_horizon_color = Color("d5e2dd")
-	sky.ground_bottom_color = Color("8cabb5")
-	env.environment.sky.sky_material = sky
-	env.environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.environment.ambient_light_color = Color("d6e1e6")
-	env.environment.ambient_light_energy = 0.55
-	env.environment.tonemap_mode = Environment.TONE_MAPPER_FILMIC
-	add_child(env)
+	var lighting := preload("res://Presentation/LightingRig.gd").new()
+	lighting.name = "DistrictLighting"
+	add_child(lighting)
+	lighting.configure(self,world,reconstruction,map_view)
 	add_child(pivot)
 	pivot.position = Vector3(float(world.width)/2,0,float(world.height)/2)
 	pivot.add_child(boom)

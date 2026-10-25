@@ -1,5 +1,11 @@
 # Progress — 25 October 2026
 
+## Current checkpoint: material, shoreline and lighting refinement
+
+Forward+ is the desktop default, with Launch-Compatibility.cmd available. Added 21 pinned CC0 PBR maps across seven surface sets, all verified and metre-scaled. Terrain retains original grid/elevation anchors and gentle-diagonal support while adaptively smoothing steep cells; rock/soil/vegetation, wet edges and shallow water blend from source masks and a signed shore field. Window glass/sills, roof-following rafters, warm client-only interior fixtures, contact shadows, indirect light and subtle haze improve the reference district. Tree/grass sway and water ripples pass both controlled-time and running-clock rendered tests. Source data and server gameplay were not modified.
+
+150 offline checks, 21 texture checksums, six GPU animation checks and real development-character entry pass. All 2,689 source placements remain accounted for. Fixed-camera screenshots and forest/water GIFs are local in outputs/validation. See VISUAL_PASS_03.md for precise scope, reproduction, renderer fallback, source/collision guarantees and remaining larger-map/streaming/art limits. Restart Launch.cmd to load the pass.
+
 ## Current checkpoint: shared wall repairs and living environment
 
 Supersedes the gable relocation described below: unsupported gable wedges are now suppressed, while exterior closures belong to the joined roof envelope. Explicit corners join neighboring wall planes; implicit perpendicular joins, one-Z storey seams, closed-door jambs and wide arch assembly address the other identified holes. The current audit records 14 corners / 34 branches, 20 implicit joins and 33 storey seams with no isolated corners. Furniture bevels/materials, finer paving/roof patterns, timber ceiling and lighting balance form the next visual pass. Trees, grass/small plants and water now animate using bounded shared shaders. This remains unfinished art, particularly terrain banks and complex roof intersections.

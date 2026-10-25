@@ -1,6 +1,8 @@
 shader_type spatial;
 render_mode cull_disabled;
 uniform sampler2D source_texture : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D source_normal : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform bool has_normal=false;
 uniform vec4 tint : source_color = vec4(1.0);
 uniform float base_y = 0.0;
 uniform float plant_height = 1.0;
@@ -24,6 +26,7 @@ void fragment() {
  ALBEDO = mix(vec3(luminance),source.rgb,0.78)*tint.rgb;
  ROUGHNESS = 0.88;
  SPECULAR = 0.22;
+ if(has_normal){ NORMAL_MAP=texture(source_normal,UV).rgb; NORMAL_MAP_DEPTH=0.5; }
  ALPHA_SCISSOR_THRESHOLD = 0.4;
  ALPHA = source.a;
 }

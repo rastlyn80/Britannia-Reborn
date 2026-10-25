@@ -11,3 +11,9 @@ if ($LASTEXITCODE) { throw 'Visual pass capture failed' }
 & $godot --path "$root/Viewer" --script res://Presentation/InteriorCapture.gd
 if ($LASTEXITCODE) { throw 'Interior capture failed' }
 Write-Output 'Screenshots, animation frames and architectural coverage are in outputs/validation.'
+
+$previewPython = Join-Path $env:USERPROFILE '.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe'
+if (Test-Path -LiteralPath $previewPython) {
+ & $previewPython "$root/scripts/make-environment-previews.py"
+ if ($LASTEXITCODE) { throw 'Animated preview assembly failed' }
+}

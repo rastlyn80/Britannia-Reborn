@@ -12,6 +12,7 @@ var architecture_materials := {}
 var nature_materials := {}
 var source_origin := Vector2.ZERO
 var water_material: ShaderMaterial
+var shoreline
 var show_boundary_fragments := false
 var boundary_fragments := 0
 var mapped := 0
@@ -229,10 +230,12 @@ func fitted(path: String, size: Vector3) -> Node3D:
 					var texture: Texture2D = original.albedo_texture
 					if original.resource_name == "Leaves_TwistedTree": texture = load("res://Art/Quaternius/Nature/Leaves_NormalTree_C.png")
 					mat.set_shader_parameter("source_texture",texture)
+					mat.set_shader_parameter("source_normal",original.normal_texture)
+					mat.set_shader_parameter("has_normal",original.normal_texture != null)
 					mat.set_shader_parameter("tint",Color("ced6b6") if "Leaves" in original.resource_name else Color("ded3bb"))
 					mat.set_shader_parameter("base_y",mesh.get_aabb().position.y)
 					mat.set_shader_parameter("plant_height",mesh.get_aabb().size.y)
-					mat.set_shader_parameter("amplitude",0.0 if show_boundary_fragments else minf(0.14,size.y*0.12))
+					mat.set_shader_parameter("amplitude",0.0 if show_boundary_fragments else minf(0.22,size.y*0.12))
 					mat.set_shader_parameter("flutter",0.0 if show_boundary_fragments else (0.012 if "Leaves" in original.resource_name else 0.004))
 					mat.set_shader_parameter("source_origin",source_origin)
 					nature_materials[key] = mat
@@ -249,6 +252,8 @@ func fitted(path: String, size: Vector3) -> Node3D:
 					var styled := ShaderMaterial.new()
 					styled.shader = preload("res://Presentation/Architecture.gdshader")
 					styled.set_shader_parameter("source_texture",original.albedo_texture)
+					styled.set_shader_parameter("wood", "wood" in label)
+					preload("res://Presentation/SurfaceLibrary.gd").bind(styled,"surface","brown_planks_03" if "wood" in label else ("plastered_wall_02" if "plaster" in label else "rock_wall_04"))
 					styled.set_shader_parameter("palette",Color("66523d") if "wood" in label else (Color("c4b89b") if "plaster" in label else Color("85867b")))
 					architecture_materials[key] = styled
 				mesh.set_surface_override_material(surface,architecture_materials[key])
@@ -267,6 +272,7 @@ func roof_material(kind: String) -> ShaderMaterial:
 		mat.set_shader_parameter("wood",kind == "shingle")
 		mat.set_shader_parameter("ceiling_color",Color("917454"))
 		mat.set_shader_parameter("kit_texture",load("res://Art/Quaternius/Village/T_WoodTrim_BaseColor.png"))
+		preload("res://Presentation/SurfaceLibrary.gd").bind(mat,"surface","brown_planks_03" if kind == "shingle" else "grey_roof_tiles_02")
 		roof_materials[kind] = mat
 	return roof_materials[kind]
 
@@ -355,6 +361,8 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 			"water":
 				var plane := PlaneMesh.new()
 				plane.size = Vector2.ONE
+				plane.subdivide_width = 3
+				plane.subdivide_depth = 3
 				visual = MeshInstance3D.new()
 				visual.mesh = plane
 				if water_material == null:
@@ -362,6 +370,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					water_material.shader = preload("res://Presentation/Water.gdshader")
 					water_material.set_shader_parameter("source_origin",source_origin)
 					water_material.set_shader_parameter("wave_strength",0.0 if show_boundary_fragments else 1.0)
+					if shoreline: shoreline.apply(water_material)
 				visual.material_override = water_material
 			_:
 				unresolved += 1

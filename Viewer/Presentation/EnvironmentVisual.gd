@@ -25,6 +25,7 @@ func run() -> void:
  camera.current = true
  var reconstruction = preload("res://Presentation/Reconstruction.gd").new()
  var failures := 0
+ var realtime_failures := 0
  for kind in ["tree","grass","water"]:
   reconstruction.nature_materials.clear()
   var plant: Node3D
@@ -63,6 +64,22 @@ func run() -> void:
   var ok: bool = changed > 80 and anchored == plant.transform
   if not ok: failures += 1
   print(("PASS " if ok else "FAIL ")+kind+" actual GPU motion; changed sample pixels "+str(changed)+"; root remains anchored")
+  for mat in materials: mat.set_shader_parameter("time_override",-1.0)
+  var live_first := await frame()
+  await create_timer(0.5).timeout
+  var live_second := await frame()
+  var live_changed := 0
+  for y in range(0,live_first.get_height(),2):
+   for x in range(0,live_first.get_width(),2):
+    var a := live_first.get_pixel(x,y)
+    var b := live_second.get_pixel(x,y)
+    if absf(a.r-b.r)+absf(a.g-b.g)+absf(a.b-b.b)>0.025: live_changed+=1
+  var live_ok: bool = live_changed>40 and anchored==plant.transform
+  if not live_ok: realtime_failures+=1
+  print(("PASS " if live_ok else "FAIL ")+kind+" running-clock animation; changed sample pixels "+str(live_changed))
   plant.free()
  print("ENVIRONMENT GPU: %d passed / 3 total" % [3-failures])
- quit(failures)
+ print("REALTIME GPU: %d passed / 3 total" % [3-realtime_failures])
+ stage.queue_free()
+ for i in 4: await process_frame
+ quit(failures+realtime_failures)

@@ -124,6 +124,19 @@ func roof(s: Dictionary, rule: Dictionary, shader: ShaderMaterial, plan: Diction
 			var center := float(plan.heights[4])-float(s.z)*0.2+0.025
 			if rule.get("ridgeAxis","x") == "x": beam(node,Vector3(-0.5,center,0),Vector3(0.5,center,0),0.085,"626260")
 			else: beam(node,Vector3(0,center,-0.5),Vector3(0,center,0.5),0.085,"626260")
+	# Interior rafters follow the same joined roof samples; no free-floating infill.
+	if not plan.is_empty() and not plan.get("boundary_fragment",false):
+		var rise: Array = rule.get("rise",[0,0])
+		var along_x: bool = int(rise[0]) != 0 or (rise == [0,0] and rule.get("ridgeAxis","x") == "y")
+		var line := int(s.y) if along_x else int(s.x)
+		if posmod(line,3) == 0:
+			var indices := [3,4,5] if along_x else [1,4,7]
+			for segment in 2:
+				var a: int = indices[segment]
+				var b: int = indices[segment+1]
+				var p := Vector3(float(a%3)*0.5-0.5,float(plan.heights[a])-float(s.z)*0.2-0.11,float(a/3)*0.5-0.5)
+				var q := Vector3(float(b%3)*0.5-0.5,float(plan.heights[b])-float(s.z)*0.2-0.11,float(b/3)*0.5-0.5)
+				beam(node,p,q,0.12,"59452e")
 	return node
 
 func beam(parent: Node3D, a: Vector3, b: Vector3, thickness: float, color: String) -> void:
@@ -152,13 +165,13 @@ func gable(width: float, height: float, plaster: Material) -> Node3D:
 func furniture(size: Vector2, kind: String) -> Node3D:
 	var node := Node3D.new()
 	var height := 0.5 if kind == "bench" else (1.0 if kind == "counter" else 0.82)
-	crafted_box(node,Vector3(size.x-0.06,0.12,size.y-0.06),Vector3(0,height-0.06,0),"795535")
+	crafted_box(node,Vector3(size.x-0.06,0.12,size.y-0.06),Vector3(0,height-0.06,0),"a17b4e")
 	var count_x := maxi(2,int(ceil(size.x/1.5))+1)
 	var count_y := maxi(2,int(ceil(size.y/1.5))+1)
 	for x in count_x:
 		for y in count_y:
 			var at := Vector3(lerpf(-size.x/2+0.13,size.x/2-0.13,float(x)/(count_x-1)),(height-0.12)/2,lerpf(-size.y/2+0.13,size.y/2-0.13,float(y)/(count_y-1)))
-			crafted_box(node,Vector3(0.12,height-0.12,0.12),at,"503b2b")
+			crafted_box(node,Vector3(0.12,height-0.12,0.12),at,"73563b")
 	if kind == "counter": crafted_box(node,Vector3(size.x-0.12,height-0.15,0.1),Vector3(0,(height-0.15)/2,size.y/2-0.1),"6b4c31")
 	return node
 
@@ -215,6 +228,7 @@ func crafted_box(parent: Node3D, size: Vector3, at: Vector3, color: String) -> M
 		var mat := ShaderMaterial.new()
 		mat.shader = preload("res://Presentation/Timber.gdshader")
 		mat.set_shader_parameter("tint",Color(color))
+		preload("res://Presentation/SurfaceLibrary.gd").bind(mat,"surface","brown_planks_03")
 		timber_materials[color] = mat
 	mesh.material_override = timber_materials[color]
 	mesh.position = at

@@ -1,5 +1,6 @@
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
+& "$root/scripts/prepare-surfaces.ps1" -VerifyOnly
 & "$root\build.ps1"
 if (Test-Path "$root/Server/runtime/Server.dll") { & "$root/scripts/build-preview-tools.ps1" -BuildOnly }
 $godot = (Get-ChildItem "$root\.tools\godot\*console.exe" | Select-Object -First 1).FullName
@@ -21,6 +22,8 @@ if ($LASTEXITCODE) { throw 'Mouse input/login memory tests failed' }
 if ($LASTEXITCODE) { throw 'Street reconstruction/retargeted movement tests failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/VisualPassTests.gd
 if ($LASTEXITCODE) { throw 'Shared architectural/nature presentation tests failed' }
+& $godot --headless --path "$root/Viewer" --script res://Presentation/SurfacePolishTests.gd
+if ($LASTEXITCODE) { throw 'Terrain/shoreline/PBR surface regression checks failed' }
 $argsForWorld = @()
 if (Test-Path "$root\Viewer\play-world.json") { $argsForWorld = @("--world=$root\Viewer\play-world.json") }
 elseif (Test-Path "$root\Viewer\local-world.json") { $argsForWorld = @("--world=$root\Viewer\local-world.json") }

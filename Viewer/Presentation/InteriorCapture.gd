@@ -13,9 +13,11 @@ func capture() -> void:
 	scene.camera.reparent(scene)
 	scene.camera.global_position = scene.entity_point(1619,1582,0)+Vector3(0,1.65,0)
 	scene.camera.look_at(scene.entity_point(1619,1587,0)+Vector3(0,1.8,0))
-	for i in 8: await process_frame
+	for i in 24: await process_frame
 	await RenderingServer.frame_post_draw
 	var output := OS.get_environment("UO_GRAPHICS_OUTPUT")
 	if output.is_empty(): output = ProjectSettings.globalize_path("res://../outputs/validation")
 	var result := root.get_texture().get_image().save_png(output.path_join("britain-interior.png"))
+	scene.queue_free()
+	for i in 5: await process_frame
 	quit(result)

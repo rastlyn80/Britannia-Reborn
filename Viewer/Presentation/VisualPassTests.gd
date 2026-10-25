@@ -53,7 +53,7 @@ func run() -> void:
  var grass: Node3D = reconstruction.fitted("Nature/Grass_Wispy_Short.gltf",Vector3(0.65,0.3,0.65))
  var bounded: bool = reconstruction.nature_materials.size() > 0
  for mat in reconstruction.nature_materials.values():
-  bounded = bounded and float(mat.get_shader_parameter("amplitude")) <= 0.14 and float(mat.get_shader_parameter("plant_height")) > 0
+  bounded = bounded and float(mat.get_shader_parameter("amplitude")) <= 0.22 and float(mat.get_shader_parameter("plant_height")) > 0
  check(bounded,"nature wind is bounded in metres and uses height-weighted materials")
  tree.free()
  if grass: grass.free()
