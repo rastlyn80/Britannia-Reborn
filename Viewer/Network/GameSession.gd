@@ -312,7 +312,8 @@ static func creation_packet(name: String, slot: int, city: int) -> PackedByteArr
 
 func walk(direction: int) -> bool:
 	if phase != "world" or outstanding != -1 or awaiting_position or Time.get_ticks_msec() < next_walk: return false
-	next_walk = Time.get_ticks_msec()+450
+	# Upstream foot-walk delay defaults to 400 ms; allow a small transport margin.
+	next_walk = Time.get_ticks_msec()+410
 	requested_direction = direction & 7
 	var p := PackedByteArray([2,requested_direction,sequence])
 	p.append_array(Login.uint_be(0,4))

@@ -1,5 +1,17 @@
 # Progress — 25 October 2026
 
+## Latest checkpoint: Quaternius art and smooth confirmed movement
+
+Imported five free CC0 Quaternius Standard packs with bundled licenses, pinned archive hashes and selected-file manifest. C# tiledata metadata supports 32/64-bit flags and static heights. Current crop replaces 2,133/2,689 static placements; 556 unresolved pieces remain gold markers. Provisional connectivity/slope rules need architectural review; slate uses tinted round-tile geometry over a continuous roof bed. Nature, classified procedural ground and shadows are integrated. Real humanoids wear fixed peasant outfits and animate idle/walk/jog; equipment appearance is not implemented.
+
+Confirmed server endpoints now drive continuous timed XYZ segments with preserved corners, rejection reset and bounded teleport/catch-up behavior; facing blends and camera follows after interpolation. Request cadence is 410 ms versus upstream's default 400 ms foot walk. Server collision and per-step resync remain authoritative; no prediction/continuous-physics claim. Full 54-check verification passes without warnings/errors. Live wall rejection/recovery/backpack and two-character visual keyboard test pass. Inspected playable.png and character-preview.png in ignored outputs/validation. Existing server left running; duplicate launch guard refused a second instance. Details and reproduction: ART_AND_MOVEMENT.md.
+
+Next: validate roof/wall orientation and pivots against source landmarks, implement explicit corner/door rules and confidence overrides, improve camera obstruction/foot placement, then replace per-step resync with a tested elevation strategy. Earlier notes below are historical and superseded where they describe art as unimported or motion pacing as 450 ms.
+
+User confirmed art sources: Medieval Village MegaKit for architectural statics and Stylized Nature MegaKit for nature, with Kenney only as a gap-filling fallback. Recorded in DECISIONS.md and ASSET_SHORTLIST.md. Import and archive-level license/provenance verification remain pending.
+
+Asset survey: inspected current Britain crop and local tiledata read-only; saved ignored local inventory. Verified publisher CC0 declarations for Quaternius Medieval Village/Stylized Nature MegaKits and Kenney Fantasy Town Kit. ASSET_SHORTLIST.md records edition restrictions and first reconstruction target. No third-party art downloaded/imported or purchased; visual placeholders remain.
+
 ## Current checkpoint: playable local proof of concept
 
 Added streaming Huffman and modern packet framing; creation/selection/spawn; server ACK/rejection and exact XYZ resynchronisation; nearby mobile replication; backpack open/content parsing; a character UI, interpolated capsule avatars and third-person WASD controller. Actual ModernUO created two distinct characters in Britain. Live tests verified wall rejection/recovery and a second client observing movement. The real viewer passed injected keyboard movement and captured outputs/validation/playable.png. Offline suite now has 39 checks. Server source remains unchanged; ClassicUO wire tables are adapted under BSD-2-Clause with retained notice.

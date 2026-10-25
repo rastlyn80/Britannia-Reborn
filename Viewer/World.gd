@@ -8,12 +8,20 @@ var pitch := -0.75
 var distance := 65.0
 var ticks := 0
 var screenshot := ""
+var hide_ui := false
 var status := Label.new()
 var static_root := Node3D.new()
 var game := preload("res://Network/GameSession.gd").new()
 var avatars := {}
 var targets := {}
 var player_serial := 0
+const Motion = preload("res://Presentation/MotionTrack.gd")
+const Avatar = preload("res://Presentation/Avatar.gd")
+const Reconstruction = preload("res://Presentation/Reconstruction.gd")
+var tracks := {}
+var directions := {}
+var reconstruction := Reconstruction.new()
+var diagnostics := Node3D.new()
 
 func point(x: int, y: int, z: int) -> Vector3:
 	return Vector3(x - int(world.originX), z * float(world.elevationScale), y - int(world.originY))
@@ -30,6 +38,7 @@ func _ready() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--world="): path = arg.substr(8)
 		if arg.begins_with("--screenshot="): screenshot = arg.substr(13)
+		if arg == "--hide-ui": hide_ui = true
 		if arg == "--close-view":
 			distance = 40
 			yaw = 0.5
@@ -51,34 +60,50 @@ func _ready() -> void:
 			var b: Dictionary = samples[Vector2i(x+1,y)]
 			var c: Dictionary = samples[Vector2i(x,y+1)]
 			var d: Dictionary = samples[Vector2i(x+1,y+1)]
-			# ID colors are diagnostic, not a UO texture or terrain classification.
-			var colors := [Color("668e6b"),Color("b6a580"),Color("5089ad")]
+			var name := str(Reconstruction.info(world,a.id,false).get("name",""))
+			if name == "NODRAW": continue
 			for t in [a,b,c,b,d,c]:
-				surface.set_color(colors[int(a.id)%3])
+				surface.set_color(Reconstruction.terrain_color(name))
+				surface.set_uv(Vector2(t.x,t.y))
+				surface.set_uv2(Vector2(2 if name == "wooden floor" else (1 if name in ["cobblestones","stone","brick"] else 0),0))
 				surface.add_vertex(point(t.x,t.y,t.z))
 	surface.generate_normals()
 	var terrain := MeshInstance3D.new()
 	terrain.mesh = surface.commit()
-	var terrain_mat := material(Color.WHITE)
-	terrain_mat.vertex_color_use_as_albedo = true
-	terrain_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+	var terrain_mat := ShaderMaterial.new()
+	terrain_mat.shader = preload("res://Presentation/Ground.gdshader")
 	terrain.material_override = terrain_mat
 	add_child(terrain)
 	add_child(static_root)
+	add_child(diagnostics)
+	reconstruction.index(world)
 	for s in world.statics:
+		var replacement: Node3D = reconstruction.build(s,world)
+		if replacement:
+			static_root.add_child(replacement)
+			continue
 		var mesh := MeshInstance3D.new()
 		var box := BoxMesh.new()
-		box.size = Vector3(0.7,1.6,0.7)
+		box.size = Vector3(0.18,0.18,0.18)
 		mesh.mesh = box
-		mesh.position = point(s.x,s.y,s.z) + Vector3(0,0.8,0)
+		mesh.position = point(s.x,s.y,s.z) + Vector3(0.5,0.09,0.5)
 		mesh.material_override = material(Color("e7ba70"))
-		static_root.add_child(mesh)
+		diagnostics.add_child(mesh)
+	print("ART MAPPING: %d replaced / %d unresolved" % [reconstruction.mapped,reconstruction.unresolved])
 	var sun := DirectionalLight3D.new()
 	sun.rotation_degrees = Vector3(-55,-25,0)
 	sun.light_energy = 1.3
+	sun.shadow_enabled = true
 	add_child(sun)
 	var env := WorldEnvironment.new()
 	env.environment = Environment.new()
+	env.environment.background_mode = Environment.BG_SKY
+	env.environment.sky = Sky.new()
+	var sky := ProceduralSkyMaterial.new()
+	sky.sky_top_color = Color("638aa9")
+	sky.sky_horizon_color = Color("d5e2dd")
+	sky.ground_horizon_color = Color("d5e2dd")
+	env.environment.sky.sky_material = sky
 	env.environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	env.environment.ambient_light_color = Color("b4c7db")
 	env.environment.ambient_light_energy = 0.7
@@ -88,6 +113,7 @@ func _ready() -> void:
 	pivot.add_child(camera)
 	camera.far = 1500
 	var canvas := CanvasLayer.new()
+	canvas.visible = not hide_ui
 	add_child(canvas)
 	var panel := PanelContainer.new()
 	panel.position = Vector2(24,24)
@@ -105,13 +131,15 @@ func _ready() -> void:
 	canvas.add_child(login_panel)
 	game.entity_changed.connect(_entity_changed)
 	game.entity_removed.connect(_entity_removed)
+	game.movement_result.connect(func(accepted: bool, position: Dictionary):
+		if not accepted and tracks.has(position.serial): tracks[position.serial].reset(point(position.x,position.y,position.z)))
 	game.entered.connect(func(position: Dictionary):
 		player_serial = position.serial
 		_entity_changed(player_serial,position)
 		distance = 9
 		pitch = -0.55
 		pivot.position = point(position.x,position.y,position.z)+Vector3(0,1.4,0)
-		status.text = "BRITAIN / CONNECTED TO MODERNUO\n%s\nSource crop x %d–%d / y %d–%d\n\nWASD: walk • Drag: orbit • Wheel: zoom\nB: backpack • Tab: static proxies • Esc: quit\nBlue: you • Purple: nearby players\nMovement and interactions validated by server" % [world.provenance,world.originX,int(world.originX)+int(world.width)-1,world.originY,int(world.originY)+int(world.height)-1]
+		status.text = "BRITAIN / CONNECTED TO MODERNUO\nTrammel • Quaternius art preview\n%d mapped pieces • %d unresolved\n\nWASD: walk • Drag: orbit • Wheel: zoom\nB: backpack • Tab: diagnostic markers\nMovement validated by server" % [reconstruction.mapped,reconstruction.unresolved]
 		if position.facet != 1 or position.x < int(world.originX) or position.x >= int(world.originX)+int(world.width) or position.y < int(world.originY) or position.y >= int(world.originY)+int(world.height):
 			status.text = "Character is outside the converted Trammel crop.\nNo geography is invented beyond the crop.")
 	game.ended.connect(func():
@@ -135,10 +163,13 @@ func _process(delta: float) -> void:
 			var desired := movement.rotated(Vector3.UP,yaw)
 			var direction := int(round(atan2(desired.x,-desired.z)*4.0/PI)) & 7
 			game.walk(direction)
-		if avatars.has(player_serial): pivot.position = avatars[player_serial].position+Vector3(0,1.4,0)
 	else: pivot.position += movement * delta * 20
 	for serial in avatars:
-		avatars[serial].position = avatars[serial].position.lerp(targets[serial],minf(1.0,delta*12))
+		var before: Vector3 = avatars[serial].position
+		avatars[serial].position = tracks[serial].advance(delta)
+		var travelled := before.distance_to(avatars[serial].position)
+		avatars[serial].animate(travelled > 0.00001,directions[serial],delta,travelled/maxf(delta,0.00001))
+	if game.phase == "world" and avatars.has(player_serial): pivot.position = avatars[player_serial].position+Vector3(0,1.4,0)
 	pivot.rotation = Vector3(pitch,yaw,0)
 	camera.position = Vector3(0,0,distance)
 	ticks += 1
@@ -158,7 +189,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_B: game.open_backpack()
 		if event.keycode == KEY_ESCAPE: get_tree().quit()
-		if event.keycode == KEY_TAB: static_root.visible = not static_root.visible
+		if event.keycode == KEY_TAB: diagnostics.visible = not diagnostics.visible
 		if event.keycode == KEY_R:
 			yaw = -0.45
 			pitch = -0.55 if game.phase == "world" else -0.75
@@ -169,15 +200,7 @@ func _entity_changed(serial: int,position: Dictionary) -> void:
 	if position.facet != 1: return
 	var location := point(position.x,position.y,position.z)
 	if not avatars.has(serial):
-		var avatar := Node3D.new()
-		var body := MeshInstance3D.new()
-		var capsule := CapsuleMesh.new()
-		capsule.radius = 0.3
-		capsule.height = 1.8
-		body.mesh = capsule
-		body.position.y = 0.9
-		body.material_override = material(Color("74d6ff") if serial == game.player.serial else Color("cf83ff"))
-		avatar.add_child(body)
+		var avatar := Avatar.new()
 		var label := Label3D.new()
 		label.text = "You" if serial == game.player.serial else "Player %d" % serial
 		label.position.y = 2.2
@@ -188,7 +211,11 @@ func _entity_changed(serial: int,position: Dictionary) -> void:
 		avatar.position = location
 		add_child(avatar)
 		avatars[serial] = avatar
-	avatars[serial].rotation.y = -int(position.direction)*PI/4
+		tracks[serial] = Motion.new()
+		tracks[serial].reset(location)
+	# Imported humanoid faces +Z; UO direction 0 faces north (-Z).
+	directions[serial] = PI-int(position.direction)*PI/4
+	tracks[serial].push(location)
 	targets[serial] = location
 
 func _entity_removed(serial: int) -> void:
@@ -196,3 +223,5 @@ func _entity_removed(serial: int) -> void:
 		avatars[serial].queue_free()
 		avatars.erase(serial)
 		targets.erase(serial)
+		tracks.erase(serial)
+		directions.erase(serial)

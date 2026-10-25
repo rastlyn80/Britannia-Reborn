@@ -6,7 +6,10 @@ if (!$Godot) {
   if (!$Godot) { $Godot = (Get-Command godot -ErrorAction Stop).Source }
 }
 $env:APPDATA = Join-Path $PSScriptRoot '.godot-user'
+$env:LOCALAPPDATA = $env:APPDATA
 New-Item -ItemType Directory -Force $env:APPDATA | Out-Null
+& $Godot --headless --path "$PSScriptRoot\Viewer" --editor --import
+if ($LASTEXITCODE) { throw 'Art import failed; run scripts/verify.ps1 for diagnostics' }
 $local = Join-Path $PSScriptRoot 'Viewer\local-world.json'
 $play = Join-Path $PSScriptRoot 'Viewer\play-world.json'
 if (Test-Path "$PSScriptRoot\Server\credentials.local.json") {

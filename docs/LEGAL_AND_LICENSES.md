@@ -8,4 +8,6 @@ Additional candidates: [CentrED# license](https://github.com/kaczy93/centredshar
 
 Original game data stays outside this repository. Game-derived local IR/screenshots/manifests, credentials/configuration and saves are excluded from Git. Emulator licenses do not grant game art/map/trademark distribution rights. No publication occurred.
 
-Godot is MIT; .NET retains distribution notices. NuGet graphs are locked under Server/dependency-locks; full transitive license/security audit is incomplete. No asset purchases or third-party art licenses were accepted. Human review of packaged assets/dependencies and GPL obligations is required before public distribution.
+Godot is MIT; .NET retains distribution notices. NuGet graphs are locked under Server/dependency-locks; full transitive license/security audit is incomplete. No asset purchases occurred. Human review of packaged assets/dependencies and GPL obligations is required before public distribution.
+
+Five Quaternius Standard art packs are now integrated under their bundled CC0-1.0 declarations: Medieval Village MegaKit, Stylized Nature MegaKit, Universal Base Characters, Universal Animation Library and Modular Character Outfits – Fantasy. Original URLs, exact archive/file SHA-256 and modifications are recorded in Viewer/Art/Quaternius/manifest.json. Bundled license notices are retained there. These independently licensed assets do not change the restrictions on proprietary UO source files, local map-derived IR or screenshots.

@@ -1,5 +1,7 @@
 # First playable proof of concept — 25 October 2026
 
+Update: the first Quaternius environment/clothed-character pass and continuous confirmed-segment movement are now implemented and verified. The latest suite has 54 checks; cadence is 410 ms. See ART_AND_MOVEMENT.md for current presentation scope. The capsule/diagnostic-art descriptions below record the earlier playable baseline.
+
 ## Verified acceptance
 
 | Requirement | Evidence |

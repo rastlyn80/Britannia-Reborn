@@ -93,10 +93,10 @@ func _ready() -> void:
 	session.entered.connect(func(position: Dictionary):
 		character_controls.hide()
 		world_controls.show()
-		message.text = "Online • Trammel (%d, %d, %d)\nWASD: walk • Drag: orbit • Wheel: zoom\nTab: hide/show static proxies" % [position.x,position.y,position.z])
+		message.text = "Online • Trammel (%d, %d, %d)\nWASD: walk • Drag: orbit • Wheel: zoom\nTab: hide/show diagnostic markers" % [position.x,position.y,position.z])
 	session.entity_changed.connect(func(serial: int,position: Dictionary):
 		if serial == session.player.serial:
-			message.text = "Online • Trammel (%d, %d, %d)\nWASD: walk • Drag: orbit • Wheel: zoom\nTab: hide/show static proxies" % [position.x,position.y,position.z])
+			message.text = "Online • Trammel (%d, %d, %d)\nWASD: walk • Drag: orbit • Wheel: zoom\nTab: hide/show diagnostic markers" % [position.x,position.y,position.z])
 	session.interaction_confirmed.connect(func(_description: String): inventory.text = "Backpack opened — server confirmed.")
 	session.inventory_received.connect(func(items: Array):
 		inventory.text = "BACKPACK • %d items\n" % items.size()

@@ -1,0 +1,2 @@
+# Preserve imported art/license bytes so provenance hashes survive checkout.
+Viewer/Art/** -text

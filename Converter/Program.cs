@@ -1,10 +1,12 @@
 using System.IO.Compression;
 using System.Text.Json;
 using System.Security.Cryptography;
+using System.Text;
 
 record Tile(int x,int y,int z,int id);
 record Static(int x,int y,int z,int id,int hue);
-record World(int schema,string facet,string provenance,int originX,int originY,int width,int height,double elevationScale,Tile[] terrain,Static[] statics,string mapSha256);
+record TileInfo(string name,ulong flags,int height);
+record World(int schema,string facet,string provenance,int originX,int originY,int width,int height,double elevationScale,Tile[] terrain,Static[] statics,string mapSha256,Dictionary<int,TileInfo>? landData=null,Dictionary<int,TileInfo>? staticData=null,string? tiledataSha256=null);
 
 static class Program {
  static readonly JsonSerializerOptions Json = new(){WriteIndented=true};
@@ -49,7 +51,30 @@ static class Program {
    for(int n=0;n<len/7;n++) {int id=sr.ReadUInt16(),lx=sr.ReadByte(),ly=sr.ReadByte(),z=sr.ReadSByte(),hue=sr.ReadUInt16(); if(lx>7||ly>7) throw new InvalidDataException("Invalid static local coordinate"); int x=bx*8+lx,y=by*8+ly; if(x>=ox&&x<ox+width&&y>=oy&&y<oy+height) statics.Add(new(x,y,z,id,hue));}
   }
   mr.BaseStream.Position=0; string sha=System.Convert.ToHexString(SHA256.HashData(mr.BaseStream));
-  return new(1,"Trammel (map1)",File.Exists(Path.Combine(dir,"SYNTHETIC.txt"))?"SYNTHETIC — invented terrain; NOT Britain geography":$"LOCAL TRAMMEL — base + local diffs ({landPatch.blocks.Count}/{staticPatch.blocks.Count}); generic proxies",ox,oy,width,height,0.2,tiles.ToArray(),statics.ToArray(),sha);
+  Dictionary<int,TileInfo>? land=null,objects=null;string? tileSha=null;
+  string tilePath=Path.Combine(dir,"tiledata.mul");
+  if(File.Exists(tilePath)) {
+   using var td=Read(tilePath);
+   land=tiles.Select(t=>t.id).Distinct().ToDictionary(id=>id,id=>ReadTileInfo(td,id,false));
+   objects=statics.Select(t=>t.id).Distinct().ToDictionary(id=>id,id=>ReadTileInfo(td,id,true));
+   td.BaseStream.Position=0;tileSha=System.Convert.ToHexString(SHA256.HashData(td.BaseStream));
+  }
+  return new(1,"Trammel (map1)",File.Exists(Path.Combine(dir,"SYNTHETIC.txt"))?"SYNTHETIC — invented terrain; NOT Britain geography":$"LOCAL TRAMMEL — base + local diffs ({landPatch.blocks.Count}/{staticPatch.blocks.Count})",ox,oy,width,height,0.2,tiles.ToArray(),statics.ToArray(),sha,land,objects,tileSha);
+ }
+ static TileInfo ReadTileInfo(BinaryReader reader,int id,bool statics) {
+  long length=reader.BaseStream.Length;
+  bool modern=length>=3188736;
+  int flags=modern?8:4,landRecord=flags+22,staticRecord=flags+33;
+  long landSize=512L*(4+32*landRecord);
+  if(length<landSize || (length-landSize)%(4+32*staticRecord)!=0) throw new InvalidDataException("Unsupported/truncated tiledata layout");
+  int record=statics?staticRecord:landRecord;
+  long offset=(statics?landSize:0)+(long)(id/32)*(4+32*record)+4+(id%32)*record;
+  if(id<0||(!statics&&id>=16384))throw new InvalidDataException("Invalid tiledata ID");
+  Range(offset,record,length);reader.BaseStream.Position=offset;
+  ulong value=modern?reader.ReadUInt64():reader.ReadUInt32();int height=0;
+  if(statics){reader.BaseStream.Position+=12;height=reader.ReadByte();}else reader.ReadUInt16();
+  string name=Encoding.ASCII.GetString(reader.ReadBytes(20)).TrimEnd('\0');
+  return new(name,value,height);
  }
  sealed class Patch : IDisposable {
   public readonly Dictionary<int,int> blocks=new(); public readonly BinaryReader? data,index;
@@ -127,6 +152,13 @@ static class Program {
   using(var index=new BinaryWriter(File.Create(Path.Combine(dir,"stadifi1.mul")))){index.Write(-1);index.Write(0);index.Write(0);index.Write(0);index.Write(7);index.Write(0);}
   var overlay=Convert(dir,1408,1664,48,48,4096);Check(overlay.terrain.Single(t=>t.x==1408&&t.y==1664).z==-11&&overlay.terrain.First().id==999,"terrain diff precedence");Check(overlay.statics.Length==71&&overlay.statics.Any(s=>s.id==500&&s.x==1409&&s.y==1666&&s.z==-12&&s.hue==42),"static diff replacement, last duplicate wins");
   foreach(var name in new[]{"mapdifl1.mul","mapdif1.mul","stadifl1.mul","stadif1.mul","stadifi1.mul"})File.Delete(Path.Combine(dir,name));
+  foreach(bool modern in new[]{false,true}) {
+   string path=Path.Combine(dir,"tiledata.mul");int flagBytes=modern?8:4;long landSize=512L*(4+32*(flagBytes+22));
+   using(var bw=new BinaryWriter(File.Create(path))){bw.BaseStream.SetLength(modern?3188736:2861056);bw.BaseStream.Position=4;if(modern)bw.Write(0x100000002UL);else bw.Write(2u);bw.Write((ushort)7);bw.Write(Encoding.ASCII.GetBytes("test grass"));}
+   using(var bw=new BinaryWriter(File.OpenWrite(path))){bw.BaseStream.Position=landSize+(1L)*(4+32*(flagBytes+33))+4+(1)*(flagBytes+33);if(modern)bw.Write(0x100000004UL);else bw.Write(4u);bw.Write(new byte[12]);bw.Write((byte)20);bw.Write(Encoding.ASCII.GetBytes("test wall"));}
+   using(var td=Read(path)){var a=ReadTileInfo(td,0,false);var b=ReadTileInfo(td,33,true);Check(a.name=="test grass"&&a.flags==(modern?0x100000002UL:2UL),"tiledata land layout/flags "+modern);Check(b.name=="test wall"&&b.height==20&&b.flags==(modern?0x100000004UL:4UL),"tiledata static group/height "+modern);}
+   File.Delete(path);
+  }
   using(var f=File.OpenWrite(Path.Combine(dir,"staidx1.mul")))f.SetLength(10);bool truncated=false;try{Convert(dir,1408,1664,48,48,4096);}catch(InvalidDataException){truncated=true;}Check(truncated,"truncation rejection");
   Console.WriteLine($"ALL {checks} CHECKS PASSED");
  }

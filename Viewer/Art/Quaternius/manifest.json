@@ -1,0 +1,339 @@
+{
+  "packs": [
+    {
+      "pack": "medieval-village-megakit",
+      "author": "Quaternius",
+      "edition": "Standard",
+      "license": "CC0-1.0",
+      "source": "https://quaternius.itch.io/medieval-village-megakit",
+      "archiveSha256": "E60DEA67C10F30DCCCCFBFF92A7933F5EA5CFE99BE0E2A0FA5118CCEABEEC5C4"
+    },
+    {
+      "pack": "stylized-nature-megakit",
+      "author": "Quaternius",
+      "edition": "Standard",
+      "license": "CC0-1.0",
+      "source": "https://quaternius.itch.io/stylized-nature-megakit",
+      "archiveSha256": "298F6732B872E4CF7B30E6E7ABF9641C7F6DC6B326DF37AC089533ED7E3D58C9"
+    },
+    {
+      "pack": "universal-base-characters",
+      "author": "Quaternius",
+      "edition": "Standard",
+      "license": "CC0-1.0",
+      "source": "https://quaternius.itch.io/universal-base-characters",
+      "archiveSha256": "FDBF1804C90DFC1EA03E992BFF7DA2DFD1A79318E13270A660180F9308455F40"
+    },
+    {
+      "pack": "universal-animation-library",
+      "author": "Quaternius",
+      "edition": "Standard",
+      "license": "CC0-1.0",
+      "source": "https://quaternius.itch.io/universal-animation-library",
+      "archiveSha256": "CC73FC4E495B82958207316596317A3F40B9FA38065BDE1027937452DA537724"
+    },
+    {
+      "pack": "modular-character-outfits-fantasy",
+      "author": "Quaternius",
+      "edition": "Standard",
+      "license": "CC0-1.0",
+      "source": "https://quaternius.itch.io/modular-character-outfits-fantasy",
+      "archiveSha256": "C3468B18871CC8C8F05AB14DF7712BAF22CB9F389CBD870BABF130E595187F70"
+    }
+  ],
+  "files": [
+    {
+      "path": "medieval-village-megakit-LICENSE.txt",
+      "sha256": "EC6FD5004514CB0515A7DC1065F474644D31698861597B32E1745945FFEC71DE"
+    },
+    {
+      "path": "modular-character-outfits-fantasy-LICENSE.txt",
+      "sha256": "2202CC2F608C4210790B112E5F121BC2E7F8DCED7B5B1C7F4BE6203461BDEBBB"
+    },
+    {
+      "path": "stylized-nature-megakit-LICENSE.txt",
+      "sha256": "120710E542C3EBAF83856C4EB55B4A1E680593B39302EBA7FDC5D942DFE78C58"
+    },
+    {
+      "path": "universal-animation-library-LICENSE.txt",
+      "sha256": "6D01F55C6E4C49A2C9963E147E561945AE2C83958C8CA667D90A6BFFDBFAC061"
+    },
+    {
+      "path": "universal-base-characters-LICENSE.txt",
+      "sha256": "0F4BEAF0FE360A7732E58BBE3DBF60A2422367FBEA60CB9EA4ADD968F383268E"
+    },
+    {
+      "path": "Animation/UAL1_Standard.glb",
+      "sha256": "69591853D817488EDAA8FD9BF8FC1D821EAEAF789F8627B3CD23B41C4ED67997"
+    },
+    {
+      "path": "Character/Superhero_Male_FullBody.bin",
+      "sha256": "459003F9745853AE562A85506A2B94DD56515C1F37728F9FA3D2CE1A3E4CD92F"
+    },
+    {
+      "path": "Character/Superhero_Male_FullBody.gltf",
+      "sha256": "96EDB76572B387B38CDCBAB746034D2534DA74C1BA86BCEF8D049FFF1A40AEC2"
+    },
+    {
+      "path": "Character/T_Eye_Brown.png",
+      "sha256": "D08E3356A83211BC6CA21FE3A8E39F4B5C1A3B8F85457FC2C0FB57BE09935025"
+    },
+    {
+      "path": "Character/T_Eye_Normal.png",
+      "sha256": "9ED61F7726A54FE346A78B9E5A18905D8E2B88F86235D97F53CD207A26F3F8C7"
+    },
+    {
+      "path": "Character/T_Hair_1_BaseColor.png",
+      "sha256": "BC7AA863BD22AB0A995CD838CCEB4D3A5186EE54EE2FB0108FAD85D20C057E6E"
+    },
+    {
+      "path": "Character/T_Hair_1_Normal.png",
+      "sha256": "57FD0AD8C96A4D01B38769637E066CECAA285B456F6E48CE00863754A457AFFB"
+    },
+    {
+      "path": "Character/T_Superhero_Male_Dark.png",
+      "sha256": "DF680CBC1967A61E85998BFAFB8F7BC0A36DD604BB3266486C4B06B1A184BB45"
+    },
+    {
+      "path": "Character/T_Superhero_Male_Normal.png",
+      "sha256": "9B25CF9200216EB754B79CF4C63B5380C419780788322F3C57CDD2B3E02679A6"
+    },
+    {
+      "path": "Character/T_Superhero_Male_Roughness.png",
+      "sha256": "C70DABF48574CDA55644D556BEAE1EE7CF1BDCF68A50D259D20F2F2358F27991"
+    },
+    {
+      "path": "Nature/Bark_NormalTree_Normal.png",
+      "sha256": "852F6155404B8C39E100E41E26970E02A6A5C81B482D3726618DAB28E3AD03A2"
+    },
+    {
+      "path": "Nature/Bark_NormalTree.png",
+      "sha256": "F36E94FDD73255347325B998E02A0B2575FDF714B0315BFE5E8FF34BC8E13603"
+    },
+    {
+      "path": "Nature/Bush_Common.bin",
+      "sha256": "A5E1A773C8BA78FD9C05A8B342131EBA4879302A8FDDD2C5186CAB9EE1EF4966"
+    },
+    {
+      "path": "Nature/Bush_Common.gltf",
+      "sha256": "77811FCA92610CB254713D3D49D5029AB6CF13050C3AFB61AA942786A7B2CA90"
+    },
+    {
+      "path": "Nature/CommonTree_1.bin",
+      "sha256": "9DD689E84E1AA2F5B08DB8DEF591254D582783C73737AF54BA0D89B3E549C3AE"
+    },
+    {
+      "path": "Nature/CommonTree_1.gltf",
+      "sha256": "B51CDEA6545EDB51D102DD6C27CAAFE62AA75E3C328AC8F9039F4E7BFD690BFA"
+    },
+    {
+      "path": "Nature/Grass_Common_Short.bin",
+      "sha256": "7A0F0F7A9AC39CFA4B303BAC03A6594F43E48D873B73553FA06A79E4DF1271E9"
+    },
+    {
+      "path": "Nature/Grass_Common_Short.gltf",
+      "sha256": "6957B50622C9E26E7296C1B47EA8653BC0D957E0A547DE444E2ED96F0075A21A"
+    },
+    {
+      "path": "Nature/Grass.png",
+      "sha256": "5D69048193B246A73C996B892607FB36C75D0C60AFCB2DAB8AA12DE3C0B2D9BD"
+    },
+    {
+      "path": "Nature/Leaves_NormalTree_C.png",
+      "sha256": "998612BDF0B76A22F5F54D65CD7A457815D2842D89653FA4348A4EBB42933AD3"
+    },
+    {
+      "path": "Nature/Leaves_TwistedTree_C.png",
+      "sha256": "0E459B56B14C0E81B1B7CF3D1E8C6F0BB71790EB6C46BB02A76A922D8DF646EA"
+    },
+    {
+      "path": "Nature/Rock_Medium_1.bin",
+      "sha256": "EA79527D4C2B3BDB7A28BF589BF0C1FD96D192A4D0738636753911DD58681E99"
+    },
+    {
+      "path": "Nature/Rock_Medium_1.gltf",
+      "sha256": "5D1AB1FA03218F4A908728ED0EABE6486344A7E4F510B0D3D6F837FD1D011BD8"
+    },
+    {
+      "path": "Nature/Rocks_Diffuse.png",
+      "sha256": "B813696DF6081F469A127092EB0CE45CC39D56F3CCC0699152BFCD3804810B48"
+    },
+    {
+      "path": "Outfit/Male_Peasant.bin",
+      "sha256": "E46BDE795F7B69B351D322D7A5628E07131CFB48ED0AFE366293F1B3F530433C"
+    },
+    {
+      "path": "Outfit/Male_Peasant.gltf",
+      "sha256": "8F5A6CF6C1CF96E0A0F8E1A861B4245D42B7F88D44E5076DA3D48F3FC52F4E76"
+    },
+    {
+      "path": "Outfit/T_Peasant_BaseColor.png",
+      "sha256": "A43635628D95571CD62FD4DB0CC3A6EA32778B2BC02F242DDA224C89D07F1ADE"
+    },
+    {
+      "path": "Outfit/T_Peasant_Normal.png",
+      "sha256": "7598FA7B63E46FD4DAC29708BF5A81E05EB9A67280F7B13C61E28A9110EEB679"
+    },
+    {
+      "path": "Outfit/T_Peasant_ORM.png",
+      "sha256": "E1932F5F91104AFCA89C501416A5FEC09069B8552734237FC09045FABC4CA9B4"
+    },
+    {
+      "path": "Outfit/T_Regular_Male_Dark_BaseColor.png",
+      "sha256": "B4DCC0F4139AAB548D7C070C4655BD2080EF16CAEAAABEE6C4AEB693C524E802"
+    },
+    {
+      "path": "Outfit/T_Regular_Male_Normal.png",
+      "sha256": "10CD71E2453E577FDD43E912B6016A99BAF64964F0593E524BDD304855E15E2A"
+    },
+    {
+      "path": "Outfit/T_Regular_Male_Roughness.png",
+      "sha256": "086C2EB25BDDFDB77D8E639CCBFFB8DF723EF4A1910D8E1B217E852F8668BFE5"
+    },
+    {
+      "path": "Village/Floor_Brick.bin",
+      "sha256": "2205075C87D65D157C735206450B45183DFC24F8185E2E5DB706974AC2B5567E"
+    },
+    {
+      "path": "Village/Floor_Brick.gltf",
+      "sha256": "95D965E18F1BFDC78846EB38B30FE04613D6FE4AA6B5B3A1C3D04F40FD47A0AD"
+    },
+    {
+      "path": "Village/Floor_WoodDark.bin",
+      "sha256": "CB43341C0969B62D82C11E2759CAEC854EA97ECBA3BCB505D3300D57EBBA7B81"
+    },
+    {
+      "path": "Village/Floor_WoodDark.gltf",
+      "sha256": "2EE57724A06289164FEE75AD62EB770F7F8CC9CB1B51C041DA477C086775CD8D"
+    },
+    {
+      "path": "Village/Prop_Crate.bin",
+      "sha256": "B7DBDDF64868C84ABD62515CAAC55AC1A9CD70D897D9BF8A6B9B7191210365C4"
+    },
+    {
+      "path": "Village/Prop_Crate.gltf",
+      "sha256": "FB1D2AE668CC2761F9177110424E0C5C80A6698EF44F9CAC642CB4A766D37883"
+    },
+    {
+      "path": "Village/Roof_Modular_RoundTiles.bin",
+      "sha256": "1794E8967D3DE91DC90A1D6DDFEAFD5D13F63A85E87C83706D1BDA1B1D1F7912"
+    },
+    {
+      "path": "Village/Roof_Modular_RoundTiles.gltf",
+      "sha256": "B49AC4330AF1E39DFF9DCE714BB4D92B165CB6975F3FB19D59FCA7761CCE49ED"
+    },
+    {
+      "path": "Village/Roof_Wooden_2x1.bin",
+      "sha256": "E8F8A04EFEF5FBAE79B450B04F93399429BC1025C7FD4BC0CE4B8634DBE85467"
+    },
+    {
+      "path": "Village/Roof_Wooden_2x1.gltf",
+      "sha256": "8B93DCB9BFA468842F45738F3D900C05EBF96DB276A8DBDD78788420372B60C0"
+    },
+    {
+      "path": "Village/T_Brick_BaseColor.png",
+      "sha256": "5515F57E61767838F53F4B9E25AA83B1382AD345FF6B446482718B5140C33813"
+    },
+    {
+      "path": "Village/T_Brick_Normal.png",
+      "sha256": "6349F1FB3EED9985E6F969C1DE04B9E92490020A12BA19A44B96EA808FB27C1A"
+    },
+    {
+      "path": "Village/T_Brick_Roughness.png",
+      "sha256": "981E7A4F8E3119749B2FB3D557E3D0BA0551E75A39B467CFF0A3A948A9392716"
+    },
+    {
+      "path": "Village/T_Plaster_BaseColor.png",
+      "sha256": "98547CA83888307E3FFA96384CE058B7622AFFE0A42ADD3B36D0B48618C5EDA4"
+    },
+    {
+      "path": "Village/T_Plaster_Normal.png",
+      "sha256": "8B9617B561466CCE00D5A0628EAE7BEF208DCF63445D72570E7F8E5057FED0D4"
+    },
+    {
+      "path": "Village/T_Plaster_ORM.png",
+      "sha256": "7BE9D64A6154BA12BB7086E1D6774A7D5BBBC95775EFB614F6FF40A4787FE0C7"
+    },
+    {
+      "path": "Village/T_RockTrim_BaseColor.png",
+      "sha256": "AA571CD612091A8F4C95393F8F938BD6E5D47A8CDFD9C896B60A4B37903E2C7C"
+    },
+    {
+      "path": "Village/T_RockTrim_Normal.png",
+      "sha256": "F93F82F7E69AA0BF1900F8AB3F252390F091B771F0B84A345C5FEFB0F0155CD3"
+    },
+    {
+      "path": "Village/T_RockTrim_ORM.png",
+      "sha256": "5287DD9A4E9FB7423AF8D8440A8DE8BDB8910F9F37BA148F619A6EDDF58D5BC8"
+    },
+    {
+      "path": "Village/T_RoundTiles_BaseColor.png",
+      "sha256": "ACF388EBD1A97346E1E5B59091CFC609ED15B4F70B83A626089F12A82A2D9997"
+    },
+    {
+      "path": "Village/T_RoundTiles_Normal.png",
+      "sha256": "E8CF202FBC1EC36C3F5389A25AB9C99F015D49AE0CA963D0404614C3E1E8F687"
+    },
+    {
+      "path": "Village/T_RoundTiles_Roughness.png",
+      "sha256": "02C5CDBB6768DE6AC674A343265C020C5BD6EF70FD7BA555D9B9DC7445179366"
+    },
+    {
+      "path": "Village/T_UnevenBrick_BaseColor.png",
+      "sha256": "EE0F096DF6110E943CD9739680B61BC0FFD6FE00DB752C5C3797941057A95EBC"
+    },
+    {
+      "path": "Village/T_UnevenBrick_Normal.png",
+      "sha256": "BBF623CC35720D67A02079B20B9A6D9641C3686952B288CDA97DEC41E4B8ACAD"
+    },
+    {
+      "path": "Village/T_UnevenBrick_Roughness.png",
+      "sha256": "DA170CB92AC5479B93CA0C0002B783F1186A146E6E3124891CE7BFE6E1A8A942"
+    },
+    {
+      "path": "Village/T_WoodTrim_BaseColor.png",
+      "sha256": "A59F410B07A9BC5F0664DF3BA7A2C1E37ACFFC7979795911F3FC8730AB60E33E"
+    },
+    {
+      "path": "Village/T_WoodTrim_Normal.png",
+      "sha256": "5847623E4ED6C206E59F32D1718EE75DCB2B49A1D55EDE7EF70A254739CAF4A8"
+    },
+    {
+      "path": "Village/T_WoodTrim_Roughness.png",
+      "sha256": "E888464FD4199D458D8CF39E00FA07D56F8A0BCB658AA03B4A7C95D466CEEFA3"
+    },
+    {
+      "path": "Village/Wall_Plaster_Door_Flat.bin",
+      "sha256": "E169B64543F0EF818DAAC1A5F0A154BCBB665888E8B283979BFDE5F758FB5E37"
+    },
+    {
+      "path": "Village/Wall_Plaster_Door_Flat.gltf",
+      "sha256": "D2BF9BD8BB88068C79EC6C2BCB0915B0DFC94341F02D9612A4D97DA9583E75B3"
+    },
+    {
+      "path": "Village/Wall_Plaster_Straight.bin",
+      "sha256": "986BF171C62E9019EEA9AAB709D19D07A3BD5021FF76AB749F57563F364858F3"
+    },
+    {
+      "path": "Village/Wall_Plaster_Straight.gltf",
+      "sha256": "3BEF920CBBA4D124DF4CA401439D893E0569F88F56049239E3480A04008FD0AC"
+    },
+    {
+      "path": "Village/Wall_Plaster_Window_Wide_Flat.bin",
+      "sha256": "45E3B1DE7FAC151E1192926C6156C6A8C16918D3FA5B0F85E2F56EB0026F0DF6"
+    },
+    {
+      "path": "Village/Wall_Plaster_Window_Wide_Flat.gltf",
+      "sha256": "548AAB2C01D593A744A9704511068E5485D84BEE6F722C50E071CF866AA2BA62"
+    },
+    {
+      "path": "Village/Wall_UnevenBrick_Straight.bin",
+      "sha256": "4D3B14ACD4C5E6FE450E13D930F6C9240F719ED22B959BB2E7674E731225F103"
+    },
+    {
+      "path": "Village/Wall_UnevenBrick_Straight.gltf",
+      "sha256": "3B004772BACE43CC43BF76F3C75D47F68DCE175510A26690468EFE63BFC05F95"
+    }
+  ],
+  "modifications": "Selected original glTF/GLB files and dependencies. Character glTF reserialized; missing T_Hair_1_Normal_png.png and T_Eye_Normal_png.png references corrected to supplied T_Hair_1_Normal.png and T_Eye_Normal.png. Runtime head mask and shared-skeleton peasant outfit assembly; slate preview tint and per-tile scaling are presentation transforms."
+}

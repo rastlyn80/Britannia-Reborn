@@ -1,6 +1,6 @@
 # Testing
 
-scripts/verify.ps1 builds the converter, runs 15 parser, eight login and 16 game-session tests (39 total), then loads the real world headlessly. Current result: all pass. The playable region contains 4,096 samples and 2,689 statics; the earlier 2,304-sample crop is preserved separately.
+scripts/verify.ps1 builds the converter, imports art, runs 19 parser, eight login, 16 game-session and 11 presentation tests (54 total), then loads the real world headlessly. Current result: all pass. The playable region contains 4,096 samples and 2,689 statics; the earlier 2,304-sample crop is preserved separately. Added checks cover both tiledata flag layouts, intermediate XYZ, corners, rejection reset, frame-rate independence, source anchors and actual humanoid bone animation. See ART_AND_MOVEMENT.md for the first art pass and current live evidence.
 
 Parser: block/cell ordering, origin, signed elevations, static ID/hue/position, unaligned crop, lookup3 empty input, raw/zlib UOP, MUL/UOP equivalence, incomplete diffs, terrain precedence, duplicate static replacement and truncation. Fixtures share the writer/hash implementation, so production map import is extra evidence, not an exhaustive independent oracle.
 
