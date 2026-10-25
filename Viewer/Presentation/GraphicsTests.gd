@@ -77,7 +77,7 @@ func run() -> void:
 	for mesh in scene.static_root.find_children("*","MeshInstance3D",true,false):
 		for surface in mesh.mesh.get_surface_count():
 			var mat: Material = mesh.get_active_material(surface)
-			if mat is StandardMaterial3D and mat.resource_name == "Leaves_TwistedTree": green = not mat.vertex_color_use_as_albedo and mat.albedo_texture.resource_path.ends_with("Leaves_NormalTree_C.png")
+			if mat is ShaderMaterial and mat.resource_name == "Leaves_TwistedTree": green = mat.get_shader_parameter("source_texture").resource_path.ends_with("Leaves_NormalTree_C.png")
 	check(green,"Britain foliage uses the green palette rather than default red leaves")
 	scene.queue_free()
 	await process_frame

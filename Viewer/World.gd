@@ -93,6 +93,7 @@ func _ready() -> void:
 				surface.set_uv2(Vector2(1.0 if vertex_name in ["cobblestones","stone","brick"] else 0.0,1.0 if vertex_name == "wooden floor" else 0.0))
 				surface.add_vertex(point(t.x,t.y,t.z))
 	surface.generate_normals()
+	surface.generate_tangents()
 	var terrain := MeshInstance3D.new()
 	terrain.mesh = surface.commit()
 	var terrain_mat := ShaderMaterial.new()
@@ -128,7 +129,7 @@ func _ready() -> void:
 	sun.light_color = Color("fff0d6")
 	sun.directional_shadow_max_distance = 100
 	sun.shadow_blur = 2.0
-	sun.light_energy = 0.95
+	sun.light_energy = 1.1
 	sun.shadow_enabled = true
 	add_child(sun)
 	var env := WorldEnvironment.new()
@@ -143,7 +144,7 @@ func _ready() -> void:
 	env.environment.sky.sky_material = sky
 	env.environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	env.environment.ambient_light_color = Color("d6e1e6")
-	env.environment.ambient_light_energy = 0.8
+	env.environment.ambient_light_energy = 0.55
 	env.environment.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 	add_child(env)
 	add_child(pivot)

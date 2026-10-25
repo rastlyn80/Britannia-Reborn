@@ -9,6 +9,9 @@ var scenes := {}
 var bounds := {}
 var roof_materials := {}
 var architecture_materials := {}
+var nature_materials := {}
+var source_origin := Vector2.ZERO
+var water_material: ShaderMaterial
 var show_boundary_fragments := false
 var boundary_fragments := 0
 var mapped := 0
@@ -40,6 +43,7 @@ func rule_for(id: int) -> Dictionary:
 	return catalog.get(str(id),{})
 
 func index(world: Dictionary) -> void:
+	source_origin = Vector2(world.get("originX",0),world.get("originY",0))
 	facade.index(world,catalog)
 	roofs.index(world,catalog)
 	groups.clear()
@@ -96,8 +100,14 @@ func index(world: Dictionary) -> void:
 			_group(members,world,assembled_kind)
 	for cell in arches:
 		var at: int = arches[cell]
-		if int(world.statics[at].id) == 320 and arches.has(cell+Vector3i(0,1,0)):
-			_group([at,arches[cell+Vector3i(0,1,0)]],world,"arch")
+		if int(world.statics[at].id) != 320: continue
+		var step := Vector3i(0,1,0) if rule_for(int(world.statics[at].id)).get("axis") == "y" else Vector3i(1,0,0)
+		for distance in range(1,5):
+			var end: Vector3i = cell+step*distance
+			if wall_cells.has(end): break
+			if not arches.has(end): continue
+			if int(world.statics[arches[end]].id) == 317: _group([at,arches[end]],world,"arch")
+			break
 
 	_plan_context(world)
 
@@ -148,16 +158,21 @@ func _plan_context(world: Dictionary) -> void:
 			if along < start or along >= start+length or absf(at-plane) > 8: continue
 			if not candidates.has(at): candidates[at] = {}
 			candidates[at][along] = true
-		var best := plane
-		var distance := INF
-		for at in candidates:
-			if candidates[at].size() < ceili(length*0.8): continue
-			if absf(at-plane) < distance:
-				distance = absf(at-plane)
-				best = float(at)
-		if distance < INF and distance > 0:
-			var offset := Vector3(best-plane,0,0) if axis_y else Vector3(0,0,best-plane)
-			presentation_adjustments[ordinal] = {"offset":offset,"reason":"source gable plane lacks supporting wall; attached to nearest parallel wall with matching top elevation and span"}
+		var supported: bool = candidates.has(int(plane)) and candidates[int(plane)].size() >= ceili(length*0.8)
+		var exterior := roofs.tiles.is_empty()
+		for roof_ordinal in roofs.tiles:
+			var tile: Dictionary = roofs.tiles[roof_ordinal]
+			var roof_source: Dictionary = world.statics[roof_ordinal]
+			var anchor: Array = rule_for(int(roof_source.id)).get("anchorOffset",[-1,-1])
+			for edge in ([1,3] if axis_y else [0,2]):
+				if not tile.exposed[edge]: continue
+				var normal_at := float(roof_source.x)+float(anchor[0])+(1.0 if edge == 1 else 0.0) if axis_y else float(roof_source.y)+float(anchor[1])+(1.0 if edge == 2 else 0.0)
+				var along_at := float(roof_source.y)+float(anchor[1]) if axis_y else float(roof_source.x)+float(anchor[0])
+				if absf(normal_at-(plane+0.5)) <= 0.55 and along_at >= start-1 and along_at <= start+length and float(tile.heights.max()) >= float(group.min_z)*float(world.elevationScale): exterior = true
+		if not roofs.tiles.is_empty() and exterior:
+			presentation_adjustments[ordinal] = {"suppress":true,"reason":"exterior gable closure belongs to the continuous roof envelope; omit duplicate source-wedge mesh"}
+		elif not supported or not exterior:
+			presentation_adjustments[ordinal] = {"suppress":true,"reason":"source gable has no supporting wall on its own plane or matching exterior roof edge; no speculative relocation"}
 
 func _group(indices: Array, world: Dictionary, kind: String) -> void:
 	var owner := int(indices[0])
@@ -200,14 +215,28 @@ func fitted(path: String, size: Vector3) -> Node3D:
 	var offset := Node3D.new()
 	var model: Node3D = scenes[path].instantiate()
 	if path.begins_with("Nature/"):
-		# Keep wind-weight colours out of the ordinary material. The twisted
-		# tree ships with red foliage; Britain uses the kit's green foliage palette.
 		for mesh in model.find_children("*","MeshInstance3D",true,false):
+			# Reserve space for bounded shader deformation at frustum/shadow edges.
+			var native_size: Vector3 = bounds[path].size
+			mesh.extra_cull_margin = 0.2*maxf(1.0,(native_size/size).length())
 			for surface in mesh.mesh.get_surface_count():
-				var mat: StandardMaterial3D = mesh.get_active_material(surface).duplicate()
-				mat.vertex_color_use_as_albedo = false
-				if mat.resource_name == "Leaves_TwistedTree": mat.albedo_texture = load("res://Art/Quaternius/Nature/Leaves_NormalTree_C.png")
-				mesh.set_surface_override_material(surface,mat)
+				var original: StandardMaterial3D = mesh.get_active_material(surface)
+				var key := path+"/"+mesh.name+"/"+str(surface)
+				if not nature_materials.has(key):
+					var mat := ShaderMaterial.new()
+					mat.resource_name = original.resource_name
+					mat.shader = preload("res://Presentation/Nature.gdshader")
+					var texture: Texture2D = original.albedo_texture
+					if original.resource_name == "Leaves_TwistedTree": texture = load("res://Art/Quaternius/Nature/Leaves_NormalTree_C.png")
+					mat.set_shader_parameter("source_texture",texture)
+					mat.set_shader_parameter("tint",Color("ced6b6") if "Leaves" in original.resource_name else Color("ded3bb"))
+					mat.set_shader_parameter("base_y",mesh.get_aabb().position.y)
+					mat.set_shader_parameter("plant_height",mesh.get_aabb().size.y)
+					mat.set_shader_parameter("amplitude",0.0 if show_boundary_fragments else minf(0.14,size.y*0.12))
+					mat.set_shader_parameter("flutter",0.0 if show_boundary_fragments else (0.012 if "Leaves" in original.resource_name else 0.004))
+					mat.set_shader_parameter("source_origin",source_origin)
+					nature_materials[key] = mat
+				mesh.set_surface_override_material(surface,nature_materials[key])
 	if path.begins_with("Village/"):
 		for mesh in model.find_children("*","MeshInstance3D",true,false):
 			for surface in mesh.mesh.get_surface_count():
@@ -248,6 +277,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 	var node := Node3D.new()
 	var detail := info(world,s.id,true)
 	var height := maxf(0.04,float(detail.get("height",0))*float(world.elevationScale))
+	height += float(facade.plans.get(ordinal,{}).get("height_extension",0.0))
 	var asset := str(rule.get("asset",""))
 	var family := "wood" if "wooden wall" in str(detail.get("name","")) else ("stone" if "stone wall" in str(detail.get("name","")) else "plaster")
 	var visual: Node3D
@@ -256,7 +286,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 		state = "group-component"
 		grouped += 1
 	elif presentation_adjustments.get(ordinal,{}).get("suppress",false) and not show_boundary_fragments:
-		state = "unsupported-duplicate"
+		state = "context-suppressed"
 		contextual_suppressed += 1
 	elif kind == "roof" and roofs.tiles.get(ordinal,{}).get("boundary_fragment",false) and not show_boundary_fragments:
 		state = "boundary-fragment"
@@ -264,15 +294,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 	else:
 		match kind:
 			"wall", "window": visual = facade.panel(height,kind == "window",facade.plans.get(ordinal,{}),family)
-			"corner":
-				visual = Node3D.new()
-				var first := facade.panel(height,false,{"left_post":true,"right_post":false},family)
-				var second := facade.panel(height,false,{"left_post":false,"right_post":false},family)
-				first.position.z = -0.42
-				second.position.x = -0.42
-				second.rotation.y = PI/2
-				visual.add_child(first)
-				visual.add_child(second)
+			"corner": visual = facade.corner(height,facade.corners.get(ordinal,{}),family)
 			"post": visual = fitted(asset,Vector3(0.15,height,0.15))
 			"gable":
 				var group: Dictionary = groups[ordinal]
@@ -283,7 +305,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 			"trim", "beam": visual = fitted(asset,Vector3(1,height,0.14))
 			"arch":
 				visual = Node3D.new()
-				var span := 2.0 if groups.has(ordinal) else 1.0
+				var span: float = maxf(groups[ordinal].size.x,groups[ordinal].size.y) if groups.has(ordinal) else 1.0
 				var opening_height := minf(height,2.7)
 				visual.add_child(fitted(asset,Vector3(span,opening_height,0.2)))
 				if height > opening_height: facade.piece(visual,Vector3(span,height-opening_height,0.18),Vector3(0,(height+opening_height)/2,0),"plaster")
@@ -296,7 +318,10 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 				visual.add_child(deck)
 			"stairs": visual = geometry.stairs(height,Vector2(rule.rise[0],rule.rise[1]))
 			"roof": visual = geometry.roof(s,rule,roof_material(rule.material),roofs.tiles.get(ordinal,{}),facade.material("plaster"))
-			"door": visual = fitted(asset,Vector3(0.86,height,0.12))
+			"door":
+				visual = fitted(asset,Vector3(0.86,height,0.12))
+				for side in [-1,1]: facade.piece(visual,Vector3(0.08,height,0.2),Vector3(side*0.46,height/2,0),"wood")
+				facade.piece(visual,Vector3(1,0.12,0.2),Vector3(0,height-0.06,0),"wood")
 			"fence": visual = fitted(asset,Vector3(1,1.2,0.10))
 			"bed":
 				var size: Vector2 = groups[ordinal].size if groups.has(ordinal) else Vector2.ONE
@@ -332,9 +357,12 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 				plane.size = Vector2.ONE
 				visual = MeshInstance3D.new()
 				visual.mesh = plane
-				var mat := ShaderMaterial.new()
-				mat.shader = preload("res://Presentation/Water.gdshader")
-				visual.material_override = mat
+				if water_material == null:
+					water_material = ShaderMaterial.new()
+					water_material.shader = preload("res://Presentation/Water.gdshader")
+					water_material.set_shader_parameter("source_origin",source_origin)
+					water_material.set_shader_parameter("wave_strength",0.0 if show_boundary_fragments else 1.0)
+				visual.material_override = water_material
 			_:
 				unresolved += 1
 				node.free()
@@ -355,12 +383,15 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 	node.set_meta("source_xyz",Vector3i(s.x,s.y,s.z))
 	node.set_meta("source_ordinal",ordinal)
 	node.set_meta("kind",kind)
-	node.set_meta("solid",kind in ["wall","window","corner","post","trim","gable","beam","arch","floor","landing","stairs","roof","door","fence","bed","table","bench","counter","rock","log"] and state not in ["group-component","boundary-fragment","unsupported-duplicate"])
+	node.set_meta("solid",kind in ["wall","window","corner","post","trim","gable","beam","arch","floor","landing","stairs","roof","door","fence","bed","table","bench","counter","rock","log"] and state not in ["group-component","boundary-fragment","context-suppressed"])
 	node.position = Vector3(s.x-int(world.originX)+0.5,s.z*float(world.elevationScale),s.y-int(world.originY)+0.5)
 	if facade.plans.has(ordinal): node.set_meta("facade_run",facade.plans[ordinal].run)
 	var entry := {"ordinal":ordinal,"id":s.id,"xyz":[s.x,s.y,s.z],"status":state,"kind":kind,"asset":asset,"axis":rule.get("axis","x"),"confidence":rule.get("confidence","semantic")}
 	if state == "boundary-fragment": entry.reason = "isolated roof row clipped by crop; retained in source and map view, suppressed in perspective"
-	if facade.plans.has(ordinal): entry.facade_run = facade.plans[ordinal].run
+	if facade.plans.has(ordinal):
+		entry.facade_run = facade.plans[ordinal].run
+		entry.seam_height_extension = facade.plans[ordinal].get("height_extension",0.0)
+	if facade.corners.has(ordinal): entry.corner_connections = facade.corners[ordinal].directions.size()
 	if roofs.tiles.has(ordinal):
 		entry.roof_joined = true
 		entry.visual_anchor_offset = rule.get("anchorOffset",[-1,-1])
@@ -374,4 +405,4 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 
 func save_report(path: String) -> void:
 	var file := FileAccess.open(path,FileAccess.WRITE)
-	file.store_string(JSON.stringify({"total":report.size(),"accounted":mapped,"group_components":grouped,"boundary_fragments":boundary_fragments,"contextual_suppressed":contextual_suppressed,"unmapped":unresolved,"exact_original_art_matches":0,"placements":report},"\t"))
+	file.store_string(JSON.stringify({"total":report.size(),"accounted":mapped,"group_components":grouped,"boundary_fragments":boundary_fragments,"contextual_suppressed":contextual_suppressed,"unmapped":unresolved,"exact_original_art_matches":0,"architecture":facade.audit(),"placements":report},"\t"))

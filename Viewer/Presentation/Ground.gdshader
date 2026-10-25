@@ -10,13 +10,14 @@ float noise(vec2 p) {
 void fragment() {
  float broad=noise(UV*0.55)*0.6+noise(UV*2.4)*0.4;
  vec3 ground=COLOR.rgb*mix(0.88,1.12,broad);
- vec2 paving=UV*vec2(2.15,1.65);
+ vec2 paving=UV*vec2(3.5,4.5);
  paving.x+=mod(floor(paving.y),2.0)*0.5;
  vec2 f=fract(paving);
  vec2 edge=min(f,1.0-f);
  float aa=length(fwidth(paving));
- float mortar=smoothstep(0.018,0.065+aa,min(edge.x,edge.y));
- float variation=mix(0.88,1.10,hash(floor(paving)));
+ float rounded=length(max(abs(f-0.5)-vec2(0.37,0.34),vec2(0.0)));
+ float mortar=1.0-smoothstep(0.09-aa,0.13+aa,rounded);
+ float variation=mix(0.94,1.06,hash(floor(paving)));
  vec3 texture_detail=texture(stone_detail,UV*0.32).rgb;
  float stone_light=dot(texture_detail,vec3(0.2126,0.7152,0.0722));
  vec3 stone=vec3(0.19,0.21,0.205)*variation*mix(0.80,1.12,stone_light);

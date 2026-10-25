@@ -19,6 +19,8 @@ if ($LASTEXITCODE) { throw 'Graphics/camera/traversal tests failed' }
 if ($LASTEXITCODE) { throw 'Mouse input/login memory tests failed' }
 & $godot --headless --path "$root\Viewer" --script res://Presentation/StreetTests.gd
 if ($LASTEXITCODE) { throw 'Street reconstruction/retargeted movement tests failed' }
+& $godot --headless --path "$root/Viewer" --script res://Presentation/VisualPassTests.gd
+if ($LASTEXITCODE) { throw 'Shared architectural/nature presentation tests failed' }
 $argsForWorld = @()
 if (Test-Path "$root\Viewer\play-world.json") { $argsForWorld = @("--world=$root\Viewer\play-world.json") }
 elseif (Test-Path "$root\Viewer\local-world.json") { $argsForWorld = @("--world=$root\Viewer\local-world.json") }

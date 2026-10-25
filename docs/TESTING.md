@@ -18,3 +18,5 @@ scripts/build-server.ps1 pins source and enforces package locks. Current server 
 capture.ps1 -Local renders the local map; images remain local. Logs: outputs/validation. Sandbox networking may need approval even for loopback. A timeout/fallback is not a passing integration test.
 
 Contextual interior regression: `scripts/verify.ps1` includes tests for supported versus unsupported upper-level furniture, preservation of source coordinates, wall-supported versus relocated gables, and the actual screenshot's two records when local data is available. Godot `--script res://Presentation/InteriorCapture.gd` recreates the same ground-level view in `outputs/validation/britain-interior.png` for visual inspection. Current aggregate: 127 offline checks.
+
+Current visual checkpoint: 135 offline checks via scripts/verify.ps1, plus three GPU animation checks via scripts/capture-visual-pass.ps1. Corner fixtures cover all orientations and translated locations; implicit joins and arch blockers are checked separately. See VISUAL_PASS_02.md for the current source/collision audit and remaining cross-region/chunk limits.

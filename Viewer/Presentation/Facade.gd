@@ -6,9 +6,11 @@ var geometry := preload("res://Presentation/GeometryLibrary.gd").new()
 var materials := {}
 var plans := {}
 var runs := 0
+var corners := {}
 
 func index(world: Dictionary, catalog: Dictionary) -> void:
 	plans.clear()
+	corners.clear()
 	runs = 0
 	var lines := {}
 	for i in world.statics.size():
@@ -30,6 +32,64 @@ func index(world: Dictionary, catalog: Dictionary) -> void:
 				run.clear()
 			run.append(cell)
 		finish_run(run)
+
+	# Explicit corner records connect to the same centre planes as neighboring
+	# walls. Previous full panels at -0.42m left disconnected parallel faces.
+	var cells := {}
+	for i in world.statics.size():
+		var source: Dictionary = world.statics[i]
+		var cell := Vector2i(source.x,source.y)
+		if not cells.has(cell): cells[cell] = []
+		cells[cell].append(i)
+	# Close only one-Z legacy storey seams, never open door/window cells.
+	for i in plans:
+		var source: Dictionary = world.statics[i]
+		var top := float(source.z)+float(world.staticData.get(str(int(source.id)),{}).get("height",20))
+		var extension := 0.0
+		for other_index in cells.get(Vector2i(source.x,source.y),[]):
+			var other: Dictionary = world.statics[other_index]
+			var rule: Dictionary = catalog.get(str(int(other.id)),{})
+			if rule.get("kind") not in ["wall","window","corner"]: continue
+			if rule.get("axis") != catalog[str(int(source.id))].get("axis"): continue
+			var gap := float(other.z)-top
+			if gap > 0 and gap <= 1: extension = maxf(extension,gap*float(world.get("elevationScale",0.2)))
+		plans[i].height_extension = extension
+		var axis_y: bool = catalog[str(int(source.id))].get("axis") == "y"
+		for direction in [-1,1]:
+			var offset := Vector2i(0,direction) if axis_y else Vector2i(direction,0)
+			for other_index in cells.get(Vector2i(source.x,source.y)+offset,[]):
+				var other: Dictionary = world.statics[other_index]
+				var rule: Dictionary = catalog.get(str(int(other.id)),{})
+				if rule.get("kind") != "wall" or (rule.get("axis") == "y") == axis_y: continue
+				if absf(float(other.z)-float(source.z)) > 1: continue
+				var local_direction: int = -direction if axis_y else direction
+				plans[i]["extend_left" if local_direction < 0 else "extend_right"] = true
+
+	for i in world.statics.size():
+		var source: Dictionary = world.statics[i]
+		if catalog.get(str(int(source.id)),{}).get("kind") != "corner": continue
+		var directions: Array[Vector2i] = []
+		for offset in [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
+			for neighbor in cells.get(Vector2i(source.x,source.y)+offset,[]):
+				var other: Dictionary = world.statics[neighbor]
+				var rule: Dictionary = catalog.get(str(int(other.id)),{})
+				if rule.get("kind") not in ["wall","window","corner","door","arch"]: continue
+				if absf(float(other.z)-float(source.z)) > 1: continue
+				if rule.get("kind") != "corner" and (rule.get("axis") == "y") != (offset.y != 0): continue
+				if not directions.has(offset): directions.append(offset)
+		corners[i] = {"directions":directions}
+
+func corner(height: float, plan: Dictionary, family: String) -> Node3D:
+	var root := Node3D.new()
+	var directions: Array = plan.get("directions",[])
+	# Isolated/crop-edge corners keep a closed central pier; never speculate
+	# across absent source cells or fill an intentional door/window opening.
+	piece(root,Vector3(0.22,height,0.22),Vector3(0,height/2,0),family)
+	for direction in directions:
+		var size := Vector3(0.61,height,0.18) if direction.x != 0 else Vector3(0.18,height,0.61)
+		piece(root,size,Vector3(direction.x*0.25,height/2,direction.y*0.25),family)
+	piece(root,Vector3(0.14,height,0.14),Vector3(0,height/2,0),"wood")
+	return root
 
 func finish_run(cells: Array) -> void:
 	if cells.is_empty(): return
@@ -68,10 +128,28 @@ func panel(height: float, window: bool, plan: Dictionary, family: String) -> Nod
 		piece(root,Vector3(0.035,opening,0.11),Vector3(0,sill+opening/2,0),"wood")
 		piece(root,Vector3(0.78,0.035,0.11),Vector3(0,sill+opening*0.58,0),"wood")
 	else:
-		piece(root,Vector3(1,h,0.18),Vector3(0,h/2,0),family)
+		piece(root,Vector3(1.01,h,0.18),Vector3(0,h/2,0),family)
 	if h > 0.6:
 		piece(root,Vector3(1,0.22,0.22),Vector3(0,0.11,0),"stone")
 		for y in [0.3,h-0.08]: piece(root,Vector3(1,0.13,0.23),Vector3(0,y,0),"wood")
 		if plan.get("left_post",true): piece(root,Vector3(0.12,h,0.24),Vector3(-0.44,h/2,0),"wood")
 		if plan.get("right_post",false): piece(root,Vector3(0.12,h,0.24),Vector3(0.44,h/2,0),"wood")
+	for side in [-1,1]:
+		if not plan.get("extend_left" if side < 0 else "extend_right",false): continue
+		piece(root,Vector3(0.51,h,0.18),Vector3(side*0.75,h/2,0),family)
+		if h > 0.6:
+			for y in [0.3,h-0.08]: piece(root,Vector3(0.51,0.13,0.23),Vector3(side*0.75,y,0),"wood")
 	return root
+
+func audit() -> Dictionary:
+	var branches := 0
+	var unconnected: Array[int] = []
+	for ordinal in corners:
+		branches += corners[ordinal].directions.size()
+		if corners[ordinal].directions.is_empty(): unconnected.append(ordinal)
+	var implicit := 0
+	var storeys := 0
+	for plan in plans.values():
+		implicit += int(plan.get("extend_left",false))+int(plan.get("extend_right",false))
+		if float(plan.get("height_extension",0)) > 0: storeys += 1
+	return {"corner_records":corners.size(),"joined_corner_branches":branches,"implicit_wall_joins":implicit,"storey_seams":storeys,"unconnected_corner_ordinals":unconnected}

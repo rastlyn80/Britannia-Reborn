@@ -1,6 +1,7 @@
 extends RefCounted
 
 var materials := {}
+var timber_materials := {}
 
 func material(color: String) -> StandardMaterial3D:
 	if not materials.has(color):
@@ -151,12 +152,78 @@ func gable(width: float, height: float, plaster: Material) -> Node3D:
 func furniture(size: Vector2, kind: String) -> Node3D:
 	var node := Node3D.new()
 	var height := 0.5 if kind == "bench" else (1.0 if kind == "counter" else 0.82)
-	box(node,Vector3(size.x-0.06,0.12,size.y-0.06),Vector3(0,height-0.06,0),"795535")
+	crafted_box(node,Vector3(size.x-0.06,0.12,size.y-0.06),Vector3(0,height-0.06,0),"795535")
 	var count_x := maxi(2,int(ceil(size.x/1.5))+1)
-	var count_y := 2
+	var count_y := maxi(2,int(ceil(size.y/1.5))+1)
 	for x in count_x:
 		for y in count_y:
-			var at := Vector3(lerpf(-size.x/2+0.13,size.x/2-0.13,float(x)/(count_x-1)),(height-0.12)/2,lerpf(-size.y/2+0.13,size.y/2-0.13,float(y)))
-			box(node,Vector3(0.12,height-0.12,0.12),at,"503b2b")
-	if kind == "counter": box(node,Vector3(size.x-0.12,height-0.15,0.1),Vector3(0,(height-0.15)/2,size.y/2-0.1),"6b4c31")
+			var at := Vector3(lerpf(-size.x/2+0.13,size.x/2-0.13,float(x)/(count_x-1)),(height-0.12)/2,lerpf(-size.y/2+0.13,size.y/2-0.13,float(y)/(count_y-1)))
+			crafted_box(node,Vector3(0.12,height-0.12,0.12),at,"503b2b")
+	if kind == "counter": crafted_box(node,Vector3(size.x-0.12,height-0.15,0.1),Vector3(0,(height-0.15)/2,size.y/2-0.1),"6b4c31")
 	return node
+
+# Small chamfers catch light without relying on oversized texture highlights.
+func crafted_box(parent: Node3D, size: Vector3, at: Vector3, color: String) -> MeshInstance3D:
+	var half := size/2
+	var bevel := minf(0.022,minf(size.x,minf(size.y,size.z))*0.16)
+	var inner := half-Vector3.ONE*bevel
+	var surface := SurfaceTool.new()
+	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for axis in 3:
+		var b := (axis+1)%3
+		var c := (axis+2)%3
+		for sign_value in [-1.0,1.0]:
+			var normal := Vector3.ZERO
+			normal[axis] = sign_value
+			var points: Array[Vector3] = []
+			for pair in [Vector2(-1,-1),Vector2(1,-1),Vector2(1,1),Vector2(-1,1)]:
+				var point := Vector3.ZERO
+				point[axis] = half[axis]*sign_value
+				point[b] = inner[b]*pair.x
+				point[c] = inner[c]*pair.y
+				points.append(point)
+			_face(surface,points,normal)
+	for axis_a in 3:
+		for axis_b in range(axis_a+1,3):
+			var along := 3-axis_a-axis_b
+			for sign_a in [-1.0,1.0]:
+				for sign_b in [-1.0,1.0]:
+					var points: Array[Vector3] = []
+					for pair in [Vector2(-1,0),Vector2(1,0),Vector2(1,1),Vector2(-1,1)]:
+						var point := Vector3.ZERO
+						point[along] = inner[along]*pair.x
+						point[axis_a] = (half[axis_a] if pair.y == 0 else inner[axis_a])*sign_a
+						point[axis_b] = (inner[axis_b] if pair.y == 0 else half[axis_b])*sign_b
+						points.append(point)
+					var normal := Vector3.ZERO
+					normal[axis_a] = sign_a
+					normal[axis_b] = sign_b
+					_face(surface,points,normal.normalized())
+	for x in [-1.0,1.0]:
+		for y in [-1.0,1.0]:
+			for z in [-1.0,1.0]:
+				var direction := Vector3(x,y,z)
+				var points: Array[Vector3] = []
+				for axis in 3:
+					var point := inner*direction
+					point[axis] = half[axis]*direction[axis]
+					points.append(point)
+				_face(surface,points,direction.normalized())
+	var mesh := MeshInstance3D.new()
+	mesh.mesh = surface.commit()
+	if not timber_materials.has(color):
+		var mat := ShaderMaterial.new()
+		mat.shader = preload("res://Presentation/Timber.gdshader")
+		mat.set_shader_parameter("tint",Color(color))
+		timber_materials[color] = mat
+	mesh.material_override = timber_materials[color]
+	mesh.position = at
+	parent.add_child(mesh)
+	return mesh
+
+func _face(surface: SurfaceTool, points: Array[Vector3], normal: Vector3) -> void:
+	if (points[1]-points[0]).cross(points[2]-points[0]).dot(normal) < 0: points.reverse()
+	var indices := [0,1,2] if points.size() == 3 else [0,1,2,0,2,3]
+	for index in indices:
+		surface.set_normal(normal)
+		surface.add_vertex(points[index])

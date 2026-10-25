@@ -1,5 +1,11 @@
 # Progress — 25 October 2026
 
+## Current checkpoint: shared wall repairs and living environment
+
+Supersedes the gable relocation described below: unsupported gable wedges are now suppressed, while exterior closures belong to the joined roof envelope. Explicit corners join neighboring wall planes; implicit perpendicular joins, one-Z storey seams, closed-door jambs and wide arch assembly address the other identified holes. The current audit records 14 corners / 34 branches, 20 implicit joins and 33 storey seams with no isolated corners. Furniture bevels/materials, finer paving/roof patterns, timber ceiling and lighting balance form the next visual pass. Trees, grass/small plants and water now animate using bounded shared shaders. This remains unfinished art, particularly terrain banks and complex roof intersections.
+
+135 offline checks and three real GPU animation checks pass. Full source accounting remains 2,689 / zero unmapped. Independent translated/rotated fixtures verify that the join rules apply beyond Britain. Loading larger regions reruns the rules; additional source IDs and streamed chunk halos remain explicit validation work. See VISUAL_PASS_02.md for scope, audit counts, evidence and reproduction. Restart the viewer to load changes; no server restart or account changes are required.
+
 ## Contextual interior repairs
 
 The previous capture still had two obvious artifacts. Read-only inspection of the original static block confirmed an elevated bench at (1621,1586,20), duplicating the bench at Z=0 with no supporting floor. Perspective rendering now suppresses only unsupported elevated duplicates; supported upper-storey furniture is retained. Source gable 330 at Y=1587 had no wall under it. Its assembly now attaches to the nearest sufficiently complete parallel wall with the same top elevation, Y=1591 (+4 visual tiles). Supported gables retain their original plane. Both adjustments are reported with reasons and offsets; source XYZ is unchanged. Map/debug rendering retains source placement.
