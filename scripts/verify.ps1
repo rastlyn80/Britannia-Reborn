@@ -10,6 +10,12 @@ $env:LOCALAPPDATA = $env:APPDATA
 if ($LASTEXITCODE) { throw 'Asset import failed' }
 & $godot --headless --path "$root\Viewer" --script res://Network/LoginTests.gd
 if ($LASTEXITCODE) { throw 'Protocol tests failed' }
+& $godot --headless --path "$root/Viewer" --script res://Presentation/GumpTests.gd
+if ($LASTEXITCODE) { throw 'Native gump layout/response checks failed' }
+& $godot --headless --path "$root/Viewer" --script res://Presentation/ItemResponseTests.gd
+if ($LASTEXITCODE) { throw 'Native item response/appearance checks failed' }
+& $godot --headless --path "$root/Viewer" --script res://Presentation/WorldItemTests.gd
+if ($LASTEXITCODE) { throw 'World item/doorway/sign regression checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/EnvironmentTests.gd
 if ($LASTEXITCODE) { throw 'Server environment regression checks failed' }
 & $godot --headless --path "$root\Viewer" --script res://Network/GameTests.gd

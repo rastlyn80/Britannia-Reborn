@@ -1,0 +1,61 @@
+# Server-owned Britain objects
+
+## Implemented scope
+
+The current 64x64 Trammel crop now contains 148 server-owned root placements: 131 upstream decorations, 12 native door leaves and 5 native signs. These include 65 native containers (some overlap furniture/game-board categories). Eight doors are single doors and four leaves form two linked double-door pairs. Three signs name buildings and two are River Road street signs. Nothing outside the crop or on another facet was populated; no creature/vendor spawn packs were run.
+
+scripts/prepare-population.py filters the pinned ModernUO Britannia/Trammel decoration definitions and signs.cfg against the current local IR bounds. It records source hashes in an ignored local manifest and reads the installed English Cliloc file without modifying it. PreviewWorld is an isolated GPL server extension; it calls the upstream decoration parser/constructors and door frame-matching/AddDoor APIs. Its temporary private-facet adapter is restored in a finally block. There are no ModernUO core/source changes and no custom serialized item classes.
+
+The loopback-only PreviewPopulate command preserves matching existing items and native linked/open door state. It does not run the global Decorate, DoorGen or SignGen commands. A second run created zero items, retained all root serials, and did not close an open door. Native containers keep their upstream fill/lock/permission behavior; no synthetic loot is inserted. Many containers are legitimately empty until the server's own fill rules apply.
+
+## 3D client and interaction
+
+GameSession handles modern F3 and legacy 1A world items, removals, grid-enabled container updates, display/contents packets and localized item labels. World items are separate from mobile avatars. Items moved into containers disappear from the world layer. Facet changes and disconnect clear the layer. The current UI shows one server-confirmed container at a time, including empty contents, with resolved names and quantities; it closes on range/visibility loss. Contained items are clickable and show a small 3D preview built by the same graphic/type appearance rules. Native books open a read-only title/author/page reader. There is no pickup/drop, loot transfer, equipment UI, book editing or playable board-game UI yet.
+
+Left-click sends ordinary native single/double-click packets; E uses the nearest rendered server object. Wall-aware ray picking prevents selecting a prop through opaque architecture. Native range, locks and permissions remain authoritative. Closed dynamic doors/obstructions inform conservative movement prediction; opening never overrides the server's movement response. Physical leaf colliders keep the camera outside the moving door.
+
+The renderer preserves native single/double leaves and derives their closed hinge anchors from the server's opening offsets. DoorwayPlan reads the adjacent source storey height, uses an approximately 2.5m opening, and adds a timber lintel plus plaster infill up to the original envelope. The upper infill has no horizontal render caps at floor height, preventing the earlier white-cap flicker regression. Door timber uses local coordinates so the grain turns with the leaf; bevels, iron straps, rivets and an exterior ring pull supply detail. Source XYZ, native door IDs and gameplay clearance remain unchanged. Visual and server door heights are deliberately distinct; the avatar fits the lower presentation opening.
+
+These shared presentation rules run for future converted regions; they are not hand-edited house scenes. Dynamic server doors/headers live in the runtime object layer, while the baked static map retains the source architecture. The current mapped door family is the upstream generator's dark-wood doors; other existing door families and additional source IDs need validation before broader compatibility is claimed.
+
+## Signs
+
+Native Sign/LocalizedSign records produce framed hanging plaques above entrances. Elevated street signs keep their source elevation; ground-anchored building signs receive a presentation lift and matching click target. Matching static sign brackets are hidden only while the native sign owns the replacement, then restored on visibility loss/disconnect. Original inn/tavern artwork from the owned client installation is placed on the sign faces; the source sprite shear is removed before mapping it onto a 3D plane. Procedural relief icons remain the fallback when local art is absent. Street signs use narrow boards, and bulletin boards show pinned papers.
+
+The building name comes from the clicked item's native label reply, identified by its serial, rather than an art-ID-to-name guess. The actual Salty Dog sign returned "The Salty Dog" in the live test. Its name appears above the plaque and in the interface. Custom ASCII/Unicode item names are also handled. English Cliloc strings remain in ignored Viewer/cliloc.local.json and are never published. Missing labels have an explicit numeric fallback.
+
+## Run and reproduce
+
+1. Prepare a real crop with scripts/prepare-play-world.ps1 using your own compatible client data.
+2. Build/install the preview extension with scripts/build-preview-tools.ps1. A running server needs a saved graceful restart after extension changes.
+3. Start the local server and create a development character if none exists.
+4. Double-click Populate-Britain.cmd (or run scripts/populate-preview.ps1). Python 3 is required for local input/label preparation.
+5. Restart Launch.cmd. Click objects, or press E for the nearest usable item. B still opens the backpack.
+
+The prepared manifest accepts only bounded Trammel regions up to 128x128. Unsupported placement extras stop before population. This is not full-facet generation/streaming. If map data, server definitions, item types or locale data change, rerun local preparation and validation. Do not manually copy generated local catalogues into Git.
+
+scripts/test-world-items.ps1 verifies real character entry, native single/linked-door state, open-door population idempotency, a populated library container, an empty drawer, the native sign name, 28 pages of Birds of Britannia, a native dice roll, an empty bulletin board and the native Help/description gumps. Add -Visual to inject actual mouse events and capture the scene; add -Compatibility for OpenGL. Tests use the development account and local PreviewVisit recovery helper; the user's ClassicUO character/account is not moved. The test character returns home on success. These tests require the prepared/populated slice and native fixture items.
+
+30 focused offline checks cover packet offsets/framing, item lifecycle, localized labels, doorway sizing under translation/rotation, floor-cap suppression, camera collision, sign targets and disconnect cleanup. They are included in scripts/verify.ps1. GPU evidence stays local in outputs/validation/server-items-*.png.
+
+A complete save/config backup was made before population under work/backups/population-*. All existing characters/accounts were retained. Native autosaves subsequently wrote the populated world. No reset, forced server termination or proprietary input edits occurred. A saved graceful restart loaded 297 native items and 3 mobiles; the interaction fixtures and idempotent population worked after reload. Systematic ClassicUO placement comparison remains separate validation work.
+
+## Graphic-specific objects and server actions
+
+ItemAppearance selects models using the exported native type and graphic ID, with distinct bottles, jugs, pewter/skull mugs, dice, books, ink/quills, cards, chessmen/checkers and water barrels. Furniture retains its family, empty shelves omit books, metal boxes change finish, and known east/west variants orient their furniture. Backgammon has a separate appearance variant. Unmapped IDs retain an explicit neutral fallback instead of being silently drawn as a cup. Additional graphic families still require modelling/validation as the crop expands.
+
+Clicking a native world or known contained item sends normal single/double-click packets. Dice results, container contents and book pages originate on ModernUO. Beverage scripts can request a native target: select another rendered/contained object, choose Use on yourself, or Cancel action. Target IDs and coordinates are returned unchanged; the server applies range, permissions and effects. Ground/static targeting, pickup/drop and equipped-item actions are not implemented. Beverage targeting has offline packet coverage; consumption/fill effects have not been live-validated.
+
+Bulletin-board display/header/content packets are decoded, with native message header/content requests and a read-only message UI. The current board is empty, so live verification covers opening/empty state; a synthetic native-format test covers message bodies. Posting/replying/removal is not exposed yet.
+
+## Reusable native gumps
+
+GumpProtocol decodes legacy 0xB0 and zlib-compressed 0xDD, bounds expanded blocks to 2 MiB, retains native serial/type/page/control IDs and UTF16BE strings, and produces 0xB1 replies. GumpView interprets a fixed set of layout commands rather than executing server text: pages, backgrounds, images, buttons, checkboxes, grouped radios, single/multiline text entries, plain HTML text and localized text. Responses contain the actual checked switches and text. Server close packets, replacement windows and disconnect cleanup are handled.
+
+The actual native Help window was displayed with 31 layout commands. Mouse clicks on its General question option invoked the original ModernUO OnResponse script and opened the native description form; Cancel returned the server's Help request aborted message. No help request was submitted. Offline tests cover compressed/legacy equivalence, every truncated packet prefix, decompression bounds, Unicode, response encoding, pages/state and unknown controls. Unsupported controls make the window read-only with a visible warning; this is a foundation, not full ClassicUO gump parity. Native font/hue fidelity, full HTML formatting, item tile pictures, special widgets, window dragging and every close/move flag are not complete.
+
+Run scripts/prepare-client-art.ps1 to refresh locally extracted sign and gump art. Populate-Britain.cmd also calls it. Converter has read-only item-art and gump-art adapters: sign art from artLegacyMUL.uop, gump RLE from gumpartLegacyMUL.uop or gumpart.mul/gumpidx.mul. Unsupported UOP compression fails explicitly. Rendered gumps collect requested image IDs in an ignored request list; rerun preparation after encountering new windows. Missing artwork uses a modern frame/button fallback until prepared. gump.def aliases and hue transforms are not currently applied.
+
+All classic art, Cliloc strings, item definitions and requested-art caches are ignored *.local.json files. They remain on the owner's machine; no proprietary artwork is published. The shared mapping and decoder code is committed, so future conversions inherit it without embedding local art.
+
+The old movement smoke test assumed a fixed walking route that no longer reached a wall after population. It now approaches a known native closed door, verifies a real server rejection and accepted recovery movement, then returns the development character home.

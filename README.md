@@ -11,6 +11,7 @@ This is an early playable proof of concept under active development. It is not a
 - **Read-only world conversion:** C#/.NET reads compatible MUL/UOP terrain, statics, tile metadata and supported local diffs into engine-independent JSON. Synthetic fixtures let you test the parser without game data.
 - **Shared reconstruction rules:** source-driven terrain, joined walls, floors, stairs and roofs. Repairs belong to the shared conversion/presentation pipeline rather than hand-edited building placements. Baking and runtime viewing use the same rules.
 - **Interactive Godot 4 viewer:** stylized CC0 environment and character assets, blended PBR terrain and shorelines, water ripples, foliage sway, architectural collision and a camera that retracts around solid geometry.
+- **Server-owned world objects:** bounded upstream population of doors, containers, signs and decoration. Single/double door layouts stay native; timber leaves use human-scaled lintels. Click doors to open/close, containers for real contents, and signs for their server-confirmed building names.
 - **Real ModernUO sessions:** account login, character creation/selection, server-confirmed movement, two-client movement replication and backpack contents. Native ClassicUO can connect to the same local server for comparison.
 - **Smoother traversal:** continuous presentation between server coordinates, gradual 360-degree facing, running/walking animation, stair foot contact and a ceiling-aware cosmetic jump. The server remains authoritative; jumping is not a replicated gameplay ability.
 - **Server-driven environment:** native light and rain/snow packets drive lighting and precipitation. An isolated local server extension supplies ModernUO's regional clock and initial/region-exit weather snapshots. Soft moving clouds, horizon haze and day/night presentation follow those inputs.
@@ -52,11 +53,11 @@ This generates clearly labeled synthetic terrain/statics. It does not recreate B
 .\scripts\prepare-play-world.ps1 -DataDir 'C:\Path\To\Ultima Online Classic'
 ```
 
-Then double-click **Start-Server.cmd**, followed by **Launch.cmd**. The launcher refuses a duplicate local server. Follow any upstream console initialization prompts on first setup. Use the local development account or enter a new local username/password, then create/select a character in Britain. A fresh shard does not include pre-created characters or a fully populated world. Server-owned doors, signs, containers and broader world population are the next integration milestone.
+Then double-click **Start-Server.cmd**, followed by **Launch.cmd**. The launcher refuses a duplicate local server. Follow any upstream console initialization prompts on first setup. Use the local development account or enter a new local username/password, then create/select a character in Britain. A fresh shard does not include pre-created characters or a fully populated world. After creating a development character, run **Populate-Britain.cmd** with the server running, then restart the viewer. This populates only the prepared crop and checks a repeated run creates no duplicates. The helper requires Python 3. It also prepares local-only item metadata and English client labels; neither is committed.
 
 The development server binds to loopback. Credentials, encrypted remembered logins and saves remain local. This configuration is for local development, not public hosting. **Launch-Compatibility.cmd** selects the fallback renderer. **Launch-Second-Client.cmd** uses a separate development account. The separately fetched ClassicUO comparison client uses the same local server; see [the comparison guide](docs/CLASSIC_COMPARISON.md).
 
-Controls: **WASD** move, **Shift** run, **Space** cosmetic jump, **right mouse drag** orbit, **wheel** zoom, **B** backpack, **F6** return to the preview start. Submitted logins can be remembered using Windows user-bound encryption. The rename preserves the existing vault location.
+Controls: **WASD** move, **Shift** run, **Space** cosmetic jump, **right mouse drag** orbit, **wheel** zoom, **B** backpack, **left click** use/inspect an object, **E** use nearest object, **F6** return to the preview start. Submitted logins can be remembered using Windows user-bound encryption. The rename preserves the existing vault location.
 
 ## Build and validate
 
@@ -65,16 +66,18 @@ Controls: **WASD** move, **Shift** run, **Space** cosmetic jump, **right mouse d
 .\scripts\test-login.ps1          # live server list and game relay
 .\scripts\test-play.ps1           # actual character entry, movement and backpack
 .\scripts\test-play.ps1 -Multiplayer
+.\scripts\test-world-items.ps1   # native door/container/sign interactions
+.\scripts\test-world-items.ps1 -Visual # actual mouse clicks and local captures
 .\scripts\test-environment.ps1    # real entry and server clock/light/weather
 .\scripts\capture-stability.ps1   # moving-camera floor/doorway checks
 .\scripts\capture-environment.ps1 # controlled day/night/rain/snow GPU captures
 ```
 
-Live checks need the local server and an existing development character. Some reconstruction tests need a locally prepared crop; fixture tests alone do not establish live gameplay. GPU captures and map-derived outputs remain ignored and are not distributed here. See [testing](docs/TESTING.md) and [server environment](docs/SERVER_ENVIRONMENT.md).
+Live checks need the local server and an existing development character. Some reconstruction tests need a locally prepared crop; fixture tests alone do not establish live gameplay. GPU captures and map-derived outputs remain ignored and are not distributed here. See [testing](docs/TESTING.md), [world objects](docs/WORLD_OBJECTS.md) and [server environment](docs/SERVER_ENVIRONMENT.md).
 
 ## Roadmap and contributions
 
-The next priorities are server-owned doors/containers/signs in the 3D client, comparison against original-style gameplay, and a larger converted region with chunk boundaries validated. Longer-term goals include streaming, broader source-ID coverage, equipment and inventory UI, combat, skills, crafting, NPCs and additional facets. None is implied complete by the preview.
+Bounded server-owned doors/containers/signs are now integrated in the current slice. The next priorities are systematic placement/behavior comparison against ClassicUO and a larger converted region with chunk boundaries validated. Longer-term goals include streaming, broader source-ID coverage, equipment and inventory UI, combat, skills, crafting, NPCs and additional facets. None is implied complete by the preview.
 
 Contributions are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md), [the master plan](docs/MASTER_PLAN.md), [progress](docs/PROGRESS.md) and [roadmap](docs/ROADMAP.md). Useful work includes small reproducible geometry fixtures, format validation, asset mappings, protocol regressions and measured rendering improvements. Open an issue to coordinate larger architectural changes. The master plan includes historical implementation instructions; this README describes the current public scope.
 
@@ -83,3 +86,6 @@ Contributions are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md), [the m
 Original project code is **GPL-3.0-or-later**; see [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md). Third-party notices remain in place: ClassicUO-derived protocol tables are BSD-2-Clause, and bundled Quaternius/Kenney/Poly Haven art is CC0. Sources and checksums are recorded alongside the assets. ModernUO is fetched separately under its own GPL license.
 
 **No proprietary Ultima Online map, art, sound, credentials, save or converted real-map dataset is distributed.** Obtain compatible game data separately and keep it local. Do not attach game-derived screenshots or source files to public issues. Britannia Reborn is an independent fan project, unaffiliated with or endorsed by Ultima Online's owners. See [the dependency/license audit](docs/LEGAL_AND_LICENSES.md) and its limits.
+
+
+The native object layer now includes graphic-specific props, local classic sign faces, clickable container contents, readable server books, native dice replies, bulletin-board reading and target selection. Server help opens a reusable native gump renderer with local classic artwork, native control IDs and server-side callbacks. See [world-object and gump scope](docs/WORLD_OBJECTS.md) for supported controls and remaining limits. Use scripts/prepare-client-art.ps1 to refresh local artwork after encountering new windows. Extracted artwork and game data are never included in this repository.

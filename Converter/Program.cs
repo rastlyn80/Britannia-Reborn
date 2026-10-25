@@ -16,6 +16,8 @@ static class Program {
    if(args[0]=="fixture") { Fixture(args[1]); return; }
    if(args[0]=="test") { Tests(args[1]); return; }
    if(args[0]=="reference") { ArtReference.Export(args[1],args[2],args[3]); return; }
+   if(args[0]=="item-art") { ArtReference.Export(args[1],"",args[2],args[3].Split(',').Select(int.Parse).ToArray()); return; }
+   if(args[0]=="gump-art") { GumpArt.Export(args[1],args[2],args[3].Split(',').Select(int.Parse).ToArray()); return; }
    if(args[0]!="convert" || args.Length<3) throw new ArgumentException("convert DIR OUT [x y width height mapHeight]");
    int[] p={1408,1664,48,48,4096}; for(int i=3;i<args.Length;i++) p[i-3]=int.Parse(args[i]);
    var w=Convert(args[1],p[0],p[1],p[2],p[3],p[4]);
@@ -161,6 +163,10 @@ static class Program {
    File.Delete(path);
   }
   using(var f=File.OpenWrite(Path.Combine(dir,"staidx1.mul")))f.SetLength(10);bool truncated=false;try{Convert(dir,1408,1664,48,48,4096);}catch(InvalidDataException){truncated=true;}Check(truncated,"truncation rejection");
+  var gumpPixels=GumpArt.Decode(new byte[]{1,0,0,0,0,124,1,0,0,0,1,0},2,1);
+  Check(gumpPixels[0]==255 && gumpPixels[3]==255 && gumpPixels[7]==0,"gump row lookup, RGB555 and transparent run");
+  bool badGump=false;try{GumpArt.Decode(new byte[]{1,0,0,0,0,124,3,0},2,1);}catch(InvalidDataException){badGump=true;}
+  Check(badGump,"gump row overflow rejected");
   Console.WriteLine($"ALL {checks} CHECKS PASSED");
  }
 }

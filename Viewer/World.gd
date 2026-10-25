@@ -12,6 +12,7 @@ var hide_ui := false
 var map_view := false
 var status := Label.new()
 var static_root := Node3D.new()
+var world_items := preload("res://Presentation/WorldItems.gd").new()
 var game := preload("res://Network/GameSession.gd").new()
 var avatars := {}
 var targets := {}
@@ -175,6 +176,8 @@ func _ready() -> void:
 	canvas.add_child(panel)
 	var login_panel := preload("res://Network/LoginPanel.gd").new()
 	add_child(game)
+	add_child(world_items)
+	world_items.configure(self,game)
 	login_panel.session = game
 	canvas.add_child(login_panel)
 	login_panel.controller_toggled.connect(func(enabled: bool): controller_enabled = enabled)
@@ -203,7 +206,7 @@ func _ready() -> void:
 		pitch = -0.28
 		pivot.position = entity_point(position.x,position.y,position.z)+Vector3(0,1.4,0)
 		camera_target_ready = true
-		status.text = "BRITAIN / TRAMMEL\nWASD move / Shift run / Space hop\nRight mouse look / Wheel zoom / B backpack / F6 return"
+		status.text = "BRITAIN / TRAMMEL\nWASD move / Shift run / Space hop\nRight mouse look / Wheel zoom / B backpack / F6 return\nClick object / E use nearest"
 		panel.position = Vector2(24,700)
 		status.add_theme_font_size_override("font_size",15)
 		panel.reset_size.call_deferred()
@@ -301,6 +304,8 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and not mouse_looking:
+		world_items.click(event.position)
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		mouse_return = get_viewport().get_mouse_position()
 		mouse_looking = true
@@ -313,6 +318,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_F6: game.return_to_britain()
 		if event.keycode == KEY_B: game.open_backpack()
+		if event.keycode == KEY_E: world_items.nearest()
 		if event.keycode == KEY_ESCAPE: get_tree().quit()
 		if event.keycode == KEY_TAB: diagnostics.visible = not diagnostics.visible
 		if event.keycode == KEY_R:

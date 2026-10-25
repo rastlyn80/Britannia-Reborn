@@ -3,9 +3,9 @@ using System.Text.Json;
 
 // Local inspection only: never package the resulting proprietary reference images.
 static class ArtReference {
- public static void Export(string dir,string worldPath,string output) {
-  using var world=JsonDocument.Parse(File.ReadAllText(worldPath));
-  var ids=world.RootElement.GetProperty("statics").EnumerateArray().Select(s=>s.GetProperty("id").GetInt32()).Distinct().Order().ToArray();
+ public static void Export(string dir,string worldPath,string output, int[]? requested=null) {
+  using var world=requested==null?JsonDocument.Parse(File.ReadAllText(worldPath)):null;
+  var ids=requested??world!.RootElement.GetProperty("statics").EnumerateArray().Select(s=>s.GetProperty("id").GetInt32()).Distinct().Order().ToArray();
   using var reader=new BinaryReader(File.OpenRead(Path.Combine(dir,"artLegacyMUL.uop")));
   if(reader.ReadUInt32()!=0x0050594d)throw new InvalidDataException("Art UOP signature");
   reader.ReadUInt32();reader.ReadUInt32();long next=reader.ReadInt64();

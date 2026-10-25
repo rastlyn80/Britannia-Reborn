@@ -9,7 +9,6 @@ var password := LineEdit.new()
 var message := Label.new()
 var choices := OptionButton.new()
 var new_name := LineEdit.new()
-var inventory := Label.new()
 var account_controls := VBoxContainer.new()
 var character_controls := VBoxContainer.new()
 var world_controls := VBoxContainer.new()
@@ -128,8 +127,6 @@ func _ready() -> void:
 		command_log.append_text(text+"\n")
 		if command_log.get_line_count() > 120: command_log.clear()
 		message.text = text)
-	world_controls.add_child(inventory)
-	inventory.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	content.add_child(message)
 	message.text = "Local ModernUO • 127.0.0.1:2593\nStart the server, then connect."
 	message.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -156,10 +153,39 @@ func _ready() -> void:
 	session.entity_changed.connect(func(serial: int,position: Dictionary):
 		if serial == session.player.serial:
 			message.text = "Online / Trammel")
-	session.interaction_confirmed.connect(func(_description: String): inventory.text = "Backpack opened — server confirmed.")
-	session.inventory_received.connect(func(items: Array):
-		inventory.text = "BACKPACK • %d items\n" % items.size()
-		for item in items.slice(0,12): inventory.text += "Tile 0x%04X × %d\n" % [item.id,item.amount])
+	var item_browser := preload("res://Network/ItemBrowser.gd").new()
+	add_child(item_browser)
+	item_browser.configure(session)
+	button(world_controls,"Server help",func(): session.request_help())
+	var server_windows := CanvasLayer.new()
+	add_child(server_windows)
+	session.gump_received.connect(func(value: Dictionary):
+		for old in server_windows.get_children():
+			if int(old.data.type) == int(value.type): old.free()
+		var window := preload("res://Network/GumpView.gd").new()
+		server_windows.add_child(window)
+		window.position = Vector2(clampi(int(value.x),0,600),clampi(int(value.y),0,100))
+		window.configure(session,value))
+	session.gump_closed.connect(func(type: int):
+		for window in server_windows.get_children():
+			if int(window.data.type) == type: window.queue_free())
+	session.ended.connect(func():
+		for window in server_windows.get_children(): window.queue_free())
+	var target_controls := VBoxContainer.new()
+	world_controls.add_child(target_controls)
+	target_controls.hide()
+	var target_help := Label.new()
+	target_help.text = "Choose an object, or:"
+	target_controls.add_child(target_help)
+	button(target_controls,"Use on yourself",func(): session.target_item(int(session.player.serial)))
+	button(target_controls,"Cancel action",func(): session.target_item())
+	session.target_changed.connect(func(active: bool): target_controls.visible = active)
+	session.ended.connect(func(): target_controls.hide())
+	var interaction_help := Label.new()
+	interaction_help.text = "Click objects / E: use nearest"
+	interaction_help.add_theme_font_size_override("font_size",13)
+	world_controls.add_child(interaction_help)
+
 	session.movement_result.connect(func(accepted: bool,_position: Dictionary):
 		if not accepted: message.text = "Movement blocked by server. Position corrected.")
 	session.failed.connect(func(reason: String): message.text = reason)

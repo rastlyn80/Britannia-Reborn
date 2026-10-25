@@ -1,3 +1,10 @@
+Current priorities after native-world integration:
+
+1. Compare every placement in the crop with ClassicUO, including unmodelled graphic IDs.
+2. Extend gump coverage beyond the live Help/description forms: tile pictures, hues/fonts, special widgets, richer HTML and window behavior. Keep native IDs and scripts authoritative.
+3. Add item transfer/equipment and board manipulation, with native permission checks; validate beverages and non-empty bulletin boards live.
+4. Expand conversion only after comparison; rerun the same population/mapping/reconstruction checks on the new bounds.
+
 # Roadmap
 
 | Milestone | Status | Acceptance / remaining work |
@@ -7,7 +14,7 @@
 | 2 ModernUO integration | Godot and native ClassicUO entry verified locally | Compressed game login, character creation/selection and actual spawn pass; ClassicUO observer and Godot primary both entered the running server |
 | 3 First playable multiplayer | Local proof of concept implemented and tested | Real character entry, ACK/wall rejection, two-client movement observation, backpack opening/contents and actual keyboard-driven scene pass |
 | 4 Reconstruction | Complete crop ID catalogue implemented/tested | All 187 IDs / 2,689 records accounted for with confidence and grouped parts; solid collision and modules/procedures; exact silhouette, gables/hips and other-region coverage remain |
-| 5 Gameplay presentation | Planned | Inventory/equipment, skills, combat, spells, NPCs and containers using server logic |
+| 5 Gameplay presentation | Partial: native world objects | Bounded upstream doors/containers/signs and real interactions implemented. Item transfer/equipment, skills, combat, spells and NPCs remain |
 | 6 Full facets | Planned | Complete streamed Trammel, other facets, deterministic chunks/LOD and seam tests |
 | 7 Platforms | Planned | Desktop exports, Android controls/performance, then Apple signing/testing |
 | 8 Polish | Graphics/traversal pass implemented/tested | CC0 environment/furniture, camera collision, real run, local ceiling-aware jump and animation; physical replicated jump, equipment and further polish remain |
@@ -34,3 +41,7 @@ Reproduced doorway flicker with moving GPU captures: lower-storey wall caps inte
 ### Britannia Reborn public checkpoint
 
 Canonical repository: https://github.com/rastlyn80/Britannia-Reborn. Original project code: GPL-3.0-or-later, with retained third-party licenses. Server-driven regional clock/light/weather, improved sky/clouds and sheltered precipitation are implemented; details in SERVER_ENVIRONMENT.md. Next: bounded upstream world population and server-owned item rendering/interactions, then expand and validate conversion seams. No full-world population, full facet conversion or production readiness is claimed.
+
+### Native world-object checkpoint
+
+Current Britain slice: 131 decorations + 12 door leaves + 5 signs; 8 single doors and 2 linked double pairs; 65 native containers. Repeat population preserves open doors and creates zero duplicates. Real mouse interactions and actual building names pass in both renderers; shared doorway proportions and item lifecycle have 30 regression checks. Next: systematic ClassicUO placement/behavior comparison, then a larger region and chunk seams. No map expansion or NPC spawning occurred. See WORLD_OBJECTS.md.

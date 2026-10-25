@@ -3,6 +3,7 @@ extends RefCounted
 # Conservative prediction: source-backed flat/gentle ground and floor surfaces.
 # Steep slopes, missing chunks and ambiguous supports use a server position update.
 const OFFSETS = [Vector2i(0,-1),Vector2i(1,-1),Vector2i(1,0),Vector2i(1,1),Vector2i(0,1),Vector2i(-1,1),Vector2i(-1,0),Vector2i(-1,-1)]
+var dynamic_items := {}
 var terrain := {}
 var statics := {}
 var land_data := {}
@@ -20,6 +21,12 @@ func index(world: Dictionary) -> void:
 		statics[cell].append(tile)
 
 func supported(cell: Vector2i, z: int) -> bool:
+	for item in dynamic_items.values():
+		if Vector2i(item.x,item.y) != cell: continue
+		var definition: Dictionary = item.get("definition",{})
+		if definition.get("is_open",false): continue
+		var flags := int(definition.get("flags",0))
+		if (flags & 64 or definition.get("family","") == "door") and int(item.z) < z+16 and int(item.z)+maxi(1,int(definition.get("height",0))) > z: return false
 	var support := false
 	var land := land_height(cell)
 	if not land.is_empty(): support = int(land.z) == z and int(land.spread) <= 4

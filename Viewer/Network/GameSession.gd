@@ -15,6 +15,26 @@ signal message_received(text: String)
 signal failed(reason: String)
 signal ended
 signal inventory_received(items: Array)
+signal world_item_changed(serial: int, item: Dictionary)
+signal world_item_removed(serial: int)
+signal container_opened(serial: int)
+signal container_contents_received(serial: int, items: Array)
+signal item_label_received(serial: int, label: String)
+signal book_received(book: Dictionary)
+signal board_received(board: Dictionary)
+signal board_post_received(post: Dictionary)
+signal gump_received(gump: Dictionary)
+signal gump_closed(type: int)
+var gumps := {}
+signal target_changed(active: bool)
+var target_request := PackedByteArray()
+var books := {}
+var board_serial := 0
+var board_posts := {}
+var world_items := {}
+var container_serial := 0
+var container_items := {}
+var labels := preload("res://Network/ItemLabels.gd").new()
 signal environment_changed(state: Dictionary)
 
 var environment_state := {}
@@ -102,6 +122,14 @@ func close() -> void:
 	decoder = Huffman.new()
 	pending.clear()
 	entities.clear()
+	world_items.clear()
+	container_items.clear()
+	gumps.clear()
+	books.clear()
+	board_posts.clear()
+	board_serial = 0
+	target_request.clear()
+	container_serial = 0
 	environment_state.clear()
 	last_environment_request = -30000
 	characters.clear()
@@ -193,6 +221,49 @@ func feed(bytes: PackedByteArray) -> void:
 func _handle(p: PackedByteArray) -> void:
 	var id := int(p[0])
 	match id:
+		0x6c:
+			if p.size() != 19: return
+			target_request = p.duplicate() if p[6] != 3 else PackedByteArray()
+			target_changed.emit(not target_request.is_empty())
+		0xb0,0xdd:
+			var gump := preload("res://Network/GumpProtocol.gd").decode(p)
+			if gump.is_empty():
+				message_received.emit("Unsupported or malformed server window received.")
+				return
+			var requested_art := preload("res://Network/GumpProtocol.gd").art_ids(gump)
+			var request_path := "res://gump-art-requests.local.json"
+			if FileAccess.file_exists(request_path):
+				var prior: Variant = JSON.parse_string(FileAccess.get_file_as_string(request_path))
+				if prior is Array:
+					for value in prior:
+						if not requested_art.has(int(value)): requested_art.append(int(value))
+			var request_file := FileAccess.open(request_path,FileAccess.WRITE)
+			if request_file: request_file.store_string(JSON.stringify(requested_art))
+			gumps[int(gump.type)] = gump
+			gump_received.emit(gump)
+		0xd4,0x66,0x71:
+			var response := preload("res://Network/ItemResponses.gd").decode(p)
+			if response.is_empty(): return
+			var serial := int(response.serial)
+			match response.kind:
+				"cover","pages":
+					if not (world_items.has(serial) or container_items.has(serial) or books.has(serial)): return
+					var book: Dictionary = books.get(serial,{"serial":serial,"title":"Book","author":"","pages":{}})
+					if response.kind == "cover": book.merge(response,true)
+					else: book.pages.merge(response.pages,true)
+					books[serial] = book
+					book_received.emit(book)
+				"board":
+					if not world_items.has(serial): return
+					board_serial = serial
+					board_posts.clear()
+					container_serial = serial
+					container_items.clear()
+					board_received.emit(response)
+				"post":
+					if serial != board_serial: return
+					board_posts[int(response.post)] = response
+					board_post_received.emit(response)
 		0xa9:
 			var count := int(p[3])
 			if p.size() < 5+count*60:
@@ -287,15 +358,49 @@ func _handle(p: PackedByteArray) -> void:
 			var entity := {"serial":serial,"x":Login.read_be(p,7,2),"y":Login.read_be(p,9,2),"z":signed(p[11]),"direction":int(p[12])&7,"running":(int(p[12])&0x80)!=0,"facet":player.facet}
 			entities[serial] = entity
 			entity_changed.emit(serial,entity)
+		0xf3:
+			if p.size() == 26 and int(p[3]) == 0:
+				var item := {"serial":Login.read_be(p,4,4),"id":Login.read_be(p,8,2),"amount":Login.read_be(p,11,2),"x":Login.read_be(p,15,2)&0x7fff,"y":Login.read_be(p,17,2)&0x3fff,"z":signed(p[19]),"hue":Login.read_be(p,21,2),"flags":int(p[23]),"facet":player.facet}
+				_world_item(item)
+		0x1a:
+			var item := legacy_item(p)
+			if not item.is_empty():
+				item.facet = player.facet
+				_world_item(item)
+		0x25:
+			var serial := Login.read_be(p,1,4)
+			_remove_world_item(serial)
+			if Login.read_be(p,15,4) == container_serial:
+				container_items[serial] = {"serial":serial,"id":Login.read_be(p,5,2),"amount":Login.read_be(p,8,2),"container":container_serial}
+				inventory_received.emit(container_items.values())
+		0xc1:
+			if p.size() >= 50:
+				var serial := Login.read_be(p,3,4)
+				var label := labels.resolve(Login.read_be(p,14,4),little_unicode_text(p,48))
+				item_label_received.emit(serial,label)
+				message_received.emit(label)
 		0x1d:
 			var serial := Login.read_be(p,1,4)
 			entities.erase(serial)
 			entity_removed.emit(serial)
+			_remove_world_item(serial)
+			if container_items.erase(serial): inventory_received.emit(container_items.values())
 		0x2e:
 			if p[8] == 21 and Login.read_be(p,9,4) == player.serial: backpack = Login.read_be(p,1,4)
 		0xbf:
-			if p.size() >= 6 and Login.read_be(p,3,2) == 8: player.facet = int(p[5])
-		0x24: interaction_confirmed.emit("Backpack opened by server (0x%08x)" % Login.read_be(p,1,4))
+			if p.size() == 13 and Login.read_be(p,3,2) == 4:
+				var type := Login.read_be(p,5,4)
+				gumps.erase(type)
+				gump_closed.emit(type)
+			if p.size() >= 6 and Login.read_be(p,3,2) == 8:
+				if player.facet != int(p[5]):
+					for serial in world_items.keys(): _remove_world_item(serial)
+				player.facet = int(p[5])
+		0x24:
+			container_serial = Login.read_be(p,1,4)
+			container_items.clear()
+			container_opened.emit(container_serial)
+			interaction_confirmed.emit("Container opened by server (0x%08x)" % container_serial)
 		0x3c:
 			if p.size() < 5: return
 			var count := Login.read_be(p,3,2)
@@ -306,7 +411,14 @@ func _handle(p: PackedByteArray) -> void:
 			for i in count:
 				var offset := 5+i*20
 				items.append({"serial":Login.read_be(p,offset,4),"id":Login.read_be(p,offset+4,2),"amount":Login.read_be(p,offset+7,2),"container":Login.read_be(p,offset+14,4)})
-			inventory_received.emit(items)
+			container_items.clear()
+			for item in items:
+				_remove_world_item(item.serial)
+				if item.container == container_serial: container_items[item.serial] = item
+			inventory_received.emit(container_items.values())
+			container_contents_received.emit(container_serial,container_items.values())
+			if container_serial == board_serial:
+				for item in container_items.values(): request_board_post(int(item.serial),false)
 		0x4f:
 			_environment_update({"global_light":clampi(int(p[1]),0,31)})
 		0x4e:
@@ -315,9 +427,17 @@ func _handle(p: PackedByteArray) -> void:
 		0x65:
 			_environment_update({"weather_type":int(p[1]),"density":clampi(int(p[2]),0,70),"temperature":signed(p[3])})
 		0x1c:
-			if p.size() > 44: _server_text(text(p,44,p.size()-44),Login.read_be(p,3,4) == 0xffffffff)
+			if p.size() > 44:
+				var label := text(p,44,p.size()-44)
+				var serial := Login.read_be(p,3,4)
+				if world_items.has(serial): item_label_received.emit(serial,label)
+				_server_text(label,serial == 0xffffffff)
 		0xae:
-			if p.size() >= 50: _server_text(unicode_text(p,48),Login.read_be(p,3,4) == 0xffffffff)
+			if p.size() >= 50:
+				var label := unicode_text(p,48)
+				var serial := Login.read_be(p,3,4)
+				if world_items.has(serial): item_label_received.emit(serial,label)
+				_server_text(label,serial == 0xffffffff)
 		0x82: _fail("Game login rejected")
 		0x53: _fail("Character entry rejected (%d)" % p[1])
 
@@ -460,3 +580,105 @@ func _server_text(message: String, system: bool = false) -> void:
 		_environment_update({"minute_of_day":hour*60+minute,"seconds_per_minute":seconds,"sample_msec":Time.get_ticks_msec()})
 		return
 	message_received.emit(message)
+
+func _world_item(item: Dictionary) -> void:
+	world_items[item.serial] = item
+	world_item_changed.emit(item.serial,item.duplicate())
+
+func _remove_world_item(serial: int) -> void:
+	if world_items.erase(serial): world_item_removed.emit(serial)
+
+static func legacy_item(p: PackedByteArray) -> Dictionary:
+	if p.size() < 14: return {}
+	var serial := Login.read_be(p,3,4)
+	var graphic := Login.read_be(p,7,2)
+	var cursor := 9
+	var amount := 1
+	if serial & 0x80000000:
+		if cursor+2 > p.size(): return {}
+		amount = Login.read_be(p,cursor,2)
+		cursor += 2
+	if graphic & 0x8000:
+		if cursor+1 > p.size(): return {}
+		graphic = (graphic&0x7fff)+int(p[cursor])
+		cursor += 1
+	if cursor+5 > p.size(): return {}
+	var x := Login.read_be(p,cursor,2)
+	var y := Login.read_be(p,cursor+2,2)
+	cursor += 4
+	if x & 0x8000: cursor += 1
+	if cursor >= p.size(): return {}
+	var z := signed(p[cursor])
+	cursor += 1
+	var hue := 0
+	var flags := 0
+	if y & 0x8000:
+		if cursor+2 > p.size(): return {}
+		hue = Login.read_be(p,cursor,2)
+		cursor += 2
+	if y & 0x4000:
+		if cursor >= p.size(): return {}
+		flags = int(p[cursor])
+	return {"serial":serial&0x7fffffff,"id":graphic,"amount":amount,"x":x&0x7fff,"y":y&0x3fff,"z":z,"hue":hue,"flags":flags}
+
+func use_item(serial: int) -> bool:
+	if phase != "world" or not (world_items.has(serial) or container_items.has(serial)): return false
+	var click := PackedByteArray([9])
+	click.append_array(Login.uint_be(serial,4))
+	send(click)
+	var use := PackedByteArray([6])
+	use.append_array(Login.uint_be(serial,4))
+	send(use)
+	return true
+
+static func little_unicode_text(bytes: PackedByteArray, start: int) -> String:
+	var end := start
+	while end+1 < bytes.size():
+		if bytes[end] == 0 and bytes[end+1] == 0: break
+		end += 2
+	return bytes.slice(start,end).get_string_from_utf16()
+
+func request_board_post(serial: int, content: bool = true) -> bool:
+	if phase != "world" or board_serial == 0 or not container_items.has(serial): return false
+	var packet := PackedByteArray([0x71,0,12,3 if content else 4])
+	packet.append_array(Login.uint_be(board_serial,4))
+	packet.append_array(Login.uint_be(serial,4))
+	send(packet)
+	return true
+
+static func target_packet(request: PackedByteArray, item: Dictionary = {}) -> PackedByteArray:
+	if request.size() != 19: return PackedByteArray()
+	var packet := PackedByteArray([0x6c,0])
+	packet.append_array(request.slice(2,7))
+	packet.append_array(Login.uint_be(int(item.get("serial",0)),4))
+	packet.append_array(Login.uint_be(int(item.get("x",65535)),2))
+	packet.append_array(Login.uint_be(int(item.get("y",65535)),2))
+	packet.append_array(PackedByteArray([0,int(item.get("z",0))&255]))
+	packet.append_array(Login.uint_be(int(item.get("id",0)),2))
+	return packet
+
+func target_item(serial: int = 0) -> bool:
+	if phase != "world" or target_request.is_empty(): return false
+	var item: Dictionary = {}
+	if serial == int(player.serial): item = player
+	elif world_items.has(serial): item = world_items[serial]
+	elif container_items.has(serial): item = container_items[serial]
+	elif serial != 0: return false
+	send(target_packet(target_request,item))
+	target_request.clear()
+	target_changed.emit(false)
+	return true
+
+func respond_gump(gump: Dictionary, button: int, switches: Array = [], entries: Dictionary = {}) -> bool:
+	if phase != "world" or not gumps.has(int(gump.type)) or int(gumps[int(gump.type)].serial) != int(gump.serial): return false
+	var packet := preload("res://Network/GumpProtocol.gd").response(gump,button,switches,entries)
+	if packet.is_empty(): return false
+	send(packet)
+	gumps.erase(int(gump.type))
+	return true
+
+func request_help() -> void:
+	if phase != "world": return
+	var packet := PackedByteArray([0x9b])
+	packet.resize(258)
+	send(packet)

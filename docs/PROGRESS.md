@@ -1,4 +1,21 @@
+# Current checkpoint — native world objects, artwork and gumps (2026-10-25)
+
+The 64x64 Britain crop has 148 native root placements (131 decorations, 12 door leaves, 5 signs). Doors preserve eight singles and two linked double pairs; human-height leaves, shared lintels and PBR timber replace the earlier oversized door presentation. Native sign replies display actual building names. Graphic/type mappings distinguish small objects and furniture; local classic sign art is applied to 3D faces without publishing it.
+
+Native containers and contained items are clickable; read-only books, dice-script replies, bulletin-board opening/reading and target-cursor responses are connected. A generic legacy/compressed gump renderer uses native pages/control IDs, local classic frames/buttons and real server replies. The Help option opened the server's description form and Cancel invoked its script, including actual mouse input under OpenGL. Full gump parity, item transfer and board-game manipulation remain incomplete; see docs/WORLD_OBJECTS.md for exact boundaries.
+
+Saved graceful restart loaded 297 items and 3 mobiles. Population remains idempotent and current interactions work after reload. Live development-character movement now tests against a native closed door, replacing the obsolete route assumption. Latest full offline verification and renderer checks are recorded in docs/TESTING.md. No source client data, derived local art, credentials or saves are included in Git.
+
 # Progress — 25 October 2026
+
+## Current checkpoint: native world objects and usable signs
+
+The current Trammel crop is populated with 131 upstream decorations, 12 native door leaves (8 singles plus 2 linked double pairs) and 5 native signs: 148 root world placements, including 65 native containers. Population is bounded to the prepared crop. Repeat population creates zero items, preserves serials and leaves open doors open. Native item types own contents, locks, permissions and saves; no synthetic loot or global spawn/decorate commands were used.
+
+The 3D client now tracks authoritative world items separately from avatars. Actual mouse clicks open/close single and linked doors, show real container contents (including empty containers), and resolve the clicked sign's actual building name. The Salty Dog sign returned its native name and displays it above the plaque and in the interface. Doors keep the original single/double layout, with character-scaled timber leaves, iron hardware, lower lintels and infill to the original wall envelope. Shared DoorwayPlan rules cover translated/rotated fixtures; these are runtime server-object rules, not house-specific edits to baked geometry.
+
+Validation: 248 offline checks (30 new world-item/doorway/sign checks), actual development-character entry and native item use, open-door population idempotency, and real mouse interactions/captures in Forward+ and OpenGL. The development character returns home after testing; the user's ClassicUO character/account is not moved. A save/config backup was made before population, and the resulting world was saved normally. Post-population restart/reload and systematic native/3D placement comparison remain unverified. No map expansion, NPC/vendor spawning, item transfer, equipment interface or board-game interaction is claimed. See WORLD_OBJECTS.md for setup, implementation boundaries and local evidence.
+
 
 ## Current checkpoint: material, shoreline and lighting refinement
 

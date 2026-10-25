@@ -22,3 +22,11 @@ Server/*.local.json
 **/*.uop
 **/*.idx
 **/Saves/
+
+# Owned-client strings and server-derived presentation metadata stay local.
+Viewer/cliloc.local.json
+Viewer/item-definitions.local.json
+
+Viewer/gump-art.local.json
+Viewer/item-art.local.json
+Viewer/gump-art-requests.local.json
