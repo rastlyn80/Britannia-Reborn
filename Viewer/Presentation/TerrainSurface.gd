@@ -8,6 +8,7 @@ var world: Dictionary
 var shoreline
 var heights := {}
 var peak_repairs := {}
+var floor_overrides := {}
 func index(input: Dictionary, shore = null) -> void:
  world = input
  land_data = input.landData if input.get("landData") is Dictionary else {}
@@ -15,7 +16,20 @@ func index(input: Dictionary, shore = null) -> void:
  samples.clear()
  heights.clear()
  peak_repairs.clear()
+ floor_overrides.clear()
  for tile in world.terrain: samples[Vector2i(tile.x,tile.y)] = tile
+ # Zero-height source board floors own the top surface where map.mul also
+ # supplies the same flat floor. Keep the canonical samples, emit only one mesh.
+ var static_data = world.get("staticData",{})
+ if static_data is Dictionary:
+  for source in world.get("statics",[]):
+   var detail: Dictionary = static_data.get(str(int(source.id)),{})
+   if detail.get("name","").to_lower() != "wooden boards" or int(detail.get("height",0)) != 0: continue
+   var cell := Vector2i(source.x,source.y)
+   var flat := true
+   for offset in [Vector2i.ZERO,Vector2i.RIGHT,Vector2i.DOWN,Vector2i.ONE]:
+    if not samples.has(cell+offset) or int(samples[cell+offset].z) != int(source.z): flat = false
+   if flat: floor_overrides[cell] = true
  # Conservative isolated natural outlier filter. Keep IR/navigation untouched,
  # never flatten ridges, buildings, paving, large peaks or incomplete borders.
  var protected := {}
@@ -95,6 +109,7 @@ func build() -> ArrayMesh:
   for source_x in range(origin.x,origin.x+int(world.width)-1):
    var source_cell := Vector2i(source_x,source_y)
    var tile: Dictionary = samples[source_cell]
+   if floor_overrides.has(source_cell): continue
    if land_data.get(str(int(tile.id)),{}).get("name") == "NODRAW": continue
    var corners := [z(source_cell),z(source_cell+Vector2i.RIGHT),z(source_cell+Vector2i.DOWN),z(source_cell+Vector2i.ONE)]
    var subdivisions := 4 if float(corners.max())-float(corners.min())>0.800001 else 2

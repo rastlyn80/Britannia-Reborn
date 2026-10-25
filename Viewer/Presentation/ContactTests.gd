@@ -92,10 +92,35 @@ func run() -> void:
 	var shell := preload("res://Presentation/InteriorShell.gd").new()
 	shell.index(roof_fixture,reconstruction)
 	check(shell.ceilings.has(0) and shell.wall_caps.has(1) and shell.wall_caps[1].height > 1.5,"short wall receives a supported closure up to the interior roof liner")
+	var floor_fixture := {"originX":0,"originY":0,"width":3,"height":3,"elevationScale":0.2,"terrain":[],"statics":[{"id":1194,"x":0,"y":0,"z":0}],"staticData":{"1194":{"name":"wooden boards","height":0}},"landData":{"1":{"name":"wooden floor"}}}
+	for y in 3:
+		for x in 3: floor_fixture.terrain.append({"id":1,"x":x,"y":y,"z":0})
+	terrain.index(floor_fixture)
+	check(terrain.floor_overrides.size() == 1 and terrain.floor_overrides.has(Vector2i.ZERO),"static floor owns a coincident terrain cell without double drawing")
+	floor_fixture.statics[0].z = -20
+	terrain.index(floor_fixture)
+	check(terrain.floor_overrides.is_empty(),"basement floor never removes the separate ground storey")
+	reconstruction.index(floor_fixture)
+	shell.index(floor_fixture,reconstruction)
+	floor_fixture.statics.append(floor_fixture.statics[0].duplicate())
+	reconstruction.index(floor_fixture)
+	check(reconstruction.groups[0].owner == reconstruction.groups[1].owner,"duplicate source floor records share one reconstruction owner")
+	var lining := shell.build(floor_fixture,reconstruction)
+	var liner: MeshInstance3D = lining.get_child(0)
+	check(liner.position.y+liner.mesh.size.y/2 <= -0.019,"basement ceiling top stays below the ground floor to prevent z-fighting")
+	lining.free()
 	var scene = load("res://Main.tscn").instantiate()
 	root.add_child(scene)
 	scene.set_process(false)
 	check(scene.reconstruction.floors.stair_rise.size() >= 10,"real Britain stair runs resolve source-backed directions")
+	var consistent_stairs := true
+	var material_fixture := preload("res://Presentation/Reconstruction.gd").new()
+	for id in [1824,1848,1872]:
+		var landing: Node3D = material_fixture.build({"id":id,"x":0,"y":0,"z":0,"hue":0},scene.world)
+		var expected: Material = material_fixture.facade.material("stone" if id == 1872 else "wood")
+		consistent_stairs = consistent_stairs and landing.get_child(0).get_child(0).material_override == expected and landing.get_child(0).get_child(1).material_override == expected
+		landing.free()
+	check(consistent_stairs,"wood and stone stair supports share the tread texture and surface material")
 	var on_stairs := {"x":1621,"y":1576,"z":-20}
 	var stair_path := true
 	for i in 5:

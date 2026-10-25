@@ -50,6 +50,16 @@ func index(world: Dictionary) -> void:
 	floors.index(world,catalog)
 	roofs.index(world,catalog)
 	groups.clear()
+	# Co-located floor art records remain in coverage but share one surface.
+	var floor_cells := {}
+	for i in world.statics.size():
+		var tile: Dictionary = world.statics[i]
+		if rule_for(tile.id).get("kind") != "floor": continue
+		var cell := Vector3i(tile.x,tile.y,tile.z)
+		if not floor_cells.has(cell): floor_cells[cell] = []
+		floor_cells[cell].append(i)
+	for cell in floor_cells:
+		if floor_cells[cell].size() > 1: _group(floor_cells[cell],world,"floor")
 	presentation_adjustments.clear()
 	wall_cells.clear()
 	var trees := {}
@@ -323,9 +333,11 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 				visual = Node3D.new()
 				# Bridge tiledata heights describe the art bounds; support is halfway up.
 				if int(detail.get("flags",0)) & 0x400: height *= 0.5
-				geometry.box(visual,Vector3(1,height,1),Vector3(0,height/2,0),"76634d" if int(s.id) != 1872 else "888b87")
-				var deck := fitted(asset,Vector3(1,0.035,1))
-				deck.position.y = height
+				var stair_material := facade.material("stone" if "stone" in str(detail.get("name","")) else "wood")
+				var support := geometry.box(visual,Vector3(1,height,1),Vector3(0,height/2,0),"ffffff")
+				support.material_override = stair_material
+				var deck := floors.slab("landing",stair_material)
+				deck.position.y += height
 				visual.add_child(deck)
 			"stairs":
 				visual = geometry.stairs(height,floors.stair_rise.get(ordinal,Vector2(rule.rise[0],rule.rise[1])))

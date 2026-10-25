@@ -24,7 +24,7 @@ func index(world: Dictionary, reconstruction) -> void:
 		var source: Dictionary = world.terrain[i]
 		if reconstruction.info(world,source.id,false).get("name","").to_lower() == "wooden floor": floor_sources[-i-1] = source
 	for i in world.statics.size():
-		if reconstruction.rule_for(world.statics[i].id).get("kind") == "floor": floor_sources[i] = world.statics[i]
+		if reconstruction.rule_for(world.statics[i].id).get("kind") == "floor" and reconstruction.groups.get(i,{}).get("owner",i) == i: floor_sources[i] = world.statics[i]
 	for at in reconstruction.floors.repairs: floor_sources[at] = {"x":at.x,"y":at.y,"z":at.z}
 	var scale := float(world.elevationScale)
 	var land_ceilings := {}
@@ -88,7 +88,12 @@ func build(world: Dictionary, reconstruction) -> Node3D:
 	for ordinal in ceilings:
 		var s: Dictionary = floor_sources[ordinal]
 		var slab: Node3D = reconstruction.floors.slab(ordinal,reconstruction.facade.material("wood"))
-		slab.position += Vector3(s.x-int(world.originX)+0.5,s.z*float(world.elevationScale)+ceilings[ordinal]+0.12,s.y-int(world.originY)+0.5)
+		# The ceiling underside is its own surface, below the upper floor.
+		# Its top must never coincide with the map.mul floor above it.
+		slab.mesh = slab.mesh.duplicate()
+		slab.mesh.size.y = 0.10
+		slab.position.y = -0.05
+		slab.position += Vector3(s.x-int(world.originX)+0.5,s.z*float(world.elevationScale)+ceilings[ordinal]+0.10,s.y-int(world.originY)+0.5)
 		root.add_child(slab)
 	for ordinal in wall_caps:
 		var s: Dictionary = world.statics[ordinal]

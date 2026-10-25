@@ -52,3 +52,5 @@ Double-click `Play-Classic-2D.cmd`, or `Play-Classic-2D-Observer.cmd` for a sepa
 Launch.cmd now uses Forward+ for the refined materials, lighting, blended terrain and subtle tree/grass/water animation. Launch-Compatibility.cmd selects OpenGL for machines needing that path. Surface provenance is in Viewer/Art/Surfaces/manifest.json; scripts/prepare-surfaces.ps1 restores or verifies the pinned CC0 maps. See docs/VISUAL_PASS_03.md for current scope and scripts/capture-visual-pass.ps1 for screenshots and animation evidence.
 
 The interior/contact update adds closed floors and corner joins, interior ceilings, fine stair treads, foot adjustment and smoother gait/camera transitions. Restart Launch.cmd after updating. scripts/capture-contacts.ps1 reproduces the current repair screenshots; docs/INTERIOR_CONTACT_PASS.md records checks and limits.
+
+The full conversion entry point is scripts/prepare-play-world.ps1: it now extracts the source JSON and automatically runs the shared 3D repair rules, saving a scene and versioned repair report under outputs/conversions. See docs/CONVERSION_PIPELINE.md. Raw Converter.dll convert remains the extraction stage.

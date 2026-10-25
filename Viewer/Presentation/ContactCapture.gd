@@ -11,6 +11,7 @@ func run() -> void:
 		if child is CanvasLayer: child.visible = false
 	scene.camera.reparent(scene)
 	var views := [
+		["tavern-floor-stable",Vector3(1616,1.7,1590),Vector3(1612,0.4,1587)],
 		["basement-repaired",Vector3(1619.5,-2.35,1589.5),Vector3(1616,-2.6,1584)],
 		["stairs-repaired",Vector3(1622,-1.7,1580),Vector3(1617,-2.0,1576.8)],
 		["basement-bedroom-repaired",Vector3(1625,-2.35,1589),Vector3(1628,-2.4,1583)],
