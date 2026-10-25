@@ -23,6 +23,7 @@ var groups := {}
 var wall_cells := {}
 var presentation_adjustments := {}
 var contextual_suppressed := 0
+var floors := preload("res://Presentation/FloorPlan.gd").new()
 
 static func info(world: Dictionary, id: int, statics: bool) -> Dictionary:
 	var data = world.get("staticData" if statics else "landData")
@@ -46,6 +47,7 @@ func rule_for(id: int) -> Dictionary:
 func index(world: Dictionary) -> void:
 	source_origin = Vector2(world.get("originX",0),world.get("originY",0))
 	facade.index(world,catalog)
+	floors.index(world,catalog)
 	roofs.index(world,catalog)
 	groups.clear()
 	presentation_adjustments.clear()
@@ -232,6 +234,7 @@ func fitted(path: String, size: Vector3) -> Node3D:
 					mat.set_shader_parameter("source_texture",texture)
 					mat.set_shader_parameter("source_normal",original.normal_texture)
 					mat.set_shader_parameter("has_normal",original.normal_texture != null)
+					mat.set_shader_parameter("camera_fade",not show_boundary_fragments and "Leaves" in original.resource_name)
 					mat.set_shader_parameter("tint",Color("ced6b6") if "Leaves" in original.resource_name else Color("ded3bb"))
 					mat.set_shader_parameter("base_y",mesh.get_aabb().position.y)
 					mat.set_shader_parameter("plant_height",mesh.get_aabb().size.y)
@@ -283,7 +286,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 	var node := Node3D.new()
 	var detail := info(world,s.id,true)
 	var height := maxf(0.04,float(detail.get("height",0))*float(world.elevationScale))
-	height += float(facade.plans.get(ordinal,{}).get("height_extension",0.0))
+	height += maxf(float(facade.plans.get(ordinal,{}).get("height_extension",0.0)),float(facade.cap_extensions.get(ordinal,0.0)))
 	var asset := str(rule.get("asset",""))
 	var family := "wood" if "wooden wall" in str(detail.get("name","")) else ("stone" if "stone wall" in str(detail.get("name","")) else "plaster")
 	var visual: Node3D
@@ -315,14 +318,18 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 				var opening_height := minf(height,2.7)
 				visual.add_child(fitted(asset,Vector3(span,opening_height,0.2)))
 				if height > opening_height: facade.piece(visual,Vector3(span,height-opening_height,0.18),Vector3(0,(height+opening_height)/2,0),"plaster")
-			"floor": visual = fitted(asset,Vector3(1,0.035,1))
+			"floor": visual = floors.slab(ordinal,facade.material("wood"))
 			"landing":
 				visual = Node3D.new()
+				# Bridge tiledata heights describe the art bounds; support is halfway up.
+				if int(detail.get("flags",0)) & 0x400: height *= 0.5
 				geometry.box(visual,Vector3(1,height,1),Vector3(0,height/2,0),"76634d" if int(s.id) != 1872 else "888b87")
 				var deck := fitted(asset,Vector3(1,0.035,1))
 				deck.position.y = height
 				visual.add_child(deck)
-			"stairs": visual = geometry.stairs(height,Vector2(rule.rise[0],rule.rise[1]))
+			"stairs":
+				visual = geometry.stairs(height,floors.stair_rise.get(ordinal,Vector2(rule.rise[0],rule.rise[1])))
+				for step in visual.get_children(): step.material_override = facade.material("stone" if "stone" in str(detail.get("name","")) else "wood")
 			"roof": visual = geometry.roof(s,rule,roof_material(rule.material),roofs.tiles.get(ordinal,{}),facade.material("plaster"))
 			"door":
 				visual = fitted(asset,Vector3(0.86,height,0.12))
@@ -414,4 +421,4 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 
 func save_report(path: String) -> void:
 	var file := FileAccess.open(path,FileAccess.WRITE)
-	file.store_string(JSON.stringify({"total":report.size(),"accounted":mapped,"group_components":grouped,"boundary_fragments":boundary_fragments,"contextual_suppressed":contextual_suppressed,"unmapped":unresolved,"exact_original_art_matches":0,"architecture":facade.audit(),"placements":report},"\t"))
+	file.store_string(JSON.stringify({"total":report.size(),"accounted":mapped,"group_components":grouped,"boundary_fragments":boundary_fragments,"contextual_suppressed":contextual_suppressed,"unmapped":unresolved,"exact_original_art_matches":0,"architecture":facade.audit(),"derived_floor_repairs":floors.repairs.map(func(at): return [at.x,at.y,at.z]),"stair_directions_inferred":floors.stair_rise.size(),"placements":report},"\t"))

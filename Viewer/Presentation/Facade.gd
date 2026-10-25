@@ -7,12 +7,16 @@ var materials := {}
 var plans := {}
 var runs := 0
 var corners := {}
+var diagonal_joins := 0
+var cap_extensions := {}
 var glass_material: StandardMaterial3D
 
 func index(world: Dictionary, catalog: Dictionary) -> void:
 	plans.clear()
 	corners.clear()
 	runs = 0
+	diagonal_joins = 0
+	cap_extensions.clear()
 	var lines := {}
 	for i in world.statics.size():
 		var s: Dictionary = world.statics[i]
@@ -65,6 +69,50 @@ func index(world: Dictionary, catalog: Dictionary) -> void:
 				if absf(float(other.z)-float(source.z)) > 1: continue
 				var local_direction: int = -direction if axis_y else direction
 				plans[i]["extend_left" if local_direction < 0 else "extend_right"] = true
+
+	# Diagonally adjacent perpendicular end tiles meet at their shared axis
+	# intersection. Legacy art draws that half-cell return inside the sprite.
+	for i in plans:
+		var a: Dictionary = world.statics[i]
+		var axis_y: bool = catalog[str(int(a.id))].get("axis") == "y"
+		for dx in [-1,1]:
+			for dy in [-1,1]:
+				for j in cells.get(Vector2i(a.x+dx,a.y+dy),[]):
+					if j <= i or not plans.has(j): continue
+					var b: Dictionary = world.statics[j]
+					if (catalog[str(int(b.id))].get("axis") == "y") == axis_y or absf(float(a.z)-float(b.z)) > 1: continue
+					var intersection := Vector2i(a.x,b.y) if axis_y else Vector2i(b.x,a.y)
+					var occupied := false
+					for k in cells.get(intersection,[]):
+						var c: Dictionary = world.statics[k]
+						if absf(float(c.z)-float(a.z)) <= 1 and catalog.get(str(int(c.id)),{}).get("kind") in ["wall","window","corner","door","arch"]: occupied = true
+					if occupied: continue
+					var side_a: int = -dy if axis_y else dx
+					var side_b: int = -dx if axis_y else dy
+					plans[i]["extend_left" if side_a < 0 else "extend_right"] = true
+					plans[j]["extend_left" if side_b < 0 else "extend_right"] = true
+					diagonal_joins += 1
+
+	# Close one-Z wall/corner-to-floor seams at the ceiling, including map.mul
+	# wooden floors. Source bottoms stay unchanged and door heights are untouched.
+	var land := {}
+	for tile in world.get("terrain",[]): land[Vector2i(tile.x,tile.y)] = tile
+	for i in world.statics.size():
+		var source: Dictionary = world.statics[i]
+		if catalog.get(str(int(source.id)),{}).get("kind") not in ["wall","window","corner"]: continue
+		var data = world.get("staticData",{})
+		if not data is Dictionary: continue
+		var top := float(source.z)+float(data.get(str(int(source.id)),{}).get("height",20))
+		var levels: Array[float] = []
+		for j in cells.get(Vector2i(source.x,source.y),[]):
+			var floor: Dictionary = world.statics[j]
+			if catalog.get(str(int(floor.id)),{}).get("kind") == "floor": levels.append(float(floor.z))
+		var land_data = world.get("landData",{})
+		for offset in [Vector2i.ZERO,Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
+			var terrain: Dictionary = land.get(Vector2i(source.x,source.y)+offset,{})
+			if not terrain.is_empty() and land_data is Dictionary and land_data.get(str(int(terrain.get("id",-1))),{}).get("name") == "wooden floor": levels.append(float(terrain.z))
+		for level in levels:
+			if level > top and level-top <= 1: cap_extensions[i] = (level-top)*float(world.get("elevationScale",0.2))
 
 	for i in world.statics.size():
 		var source: Dictionary = world.statics[i]
@@ -164,4 +212,4 @@ func audit() -> Dictionary:
 	for plan in plans.values():
 		implicit += int(plan.get("extend_left",false))+int(plan.get("extend_right",false))
 		if float(plan.get("height_extension",0)) > 0: storeys += 1
-	return {"corner_records":corners.size(),"joined_corner_branches":branches,"implicit_wall_joins":implicit,"storey_seams":storeys,"unconnected_corner_ordinals":unconnected}
+	return {"corner_records":corners.size(),"joined_corner_branches":branches,"implicit_wall_joins":implicit,"diagonal_corner_joins":diagonal_joins,"ceiling_seams":cap_extensions.size(),"storey_seams":storeys,"unconnected_corner_ordinals":unconnected}

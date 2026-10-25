@@ -37,6 +37,7 @@ var has_move_intent := false
 var accept_player_input := true
 var shoreline := preload("res://Presentation/ShorelinePlan.gd").new()
 var terrain_surface := preload("res://Presentation/TerrainSurface.gd").new()
+var interior_shell := preload("res://Presentation/InteriorShell.gd").new()
 var movement_surface := preload("res://Presentation/MovementSurface.gd").new()
 
 func point(x: int, y: int, z: int) -> Vector3:
@@ -112,6 +113,19 @@ func _ready() -> void:
 		mesh.position = point(s.x,s.y,s.z) + Vector3(0.5,0.09,0.5)
 		mesh.material_override = material(Color("e7ba70"))
 		diagnostics.add_child(mesh)
+	if not map_view:
+		interior_shell.index(world,reconstruction)
+		var shell := interior_shell.build(world,reconstruction)
+		static_root.add_child(shell)
+		collision_builder.add_visual(shell)
+		for at in reconstruction.floors.repairs:
+			var patch := Node3D.new()
+			patch.name = "DerivedFloorRepair_%d_%d_%d" % [at.x,at.y,at.z]
+			patch.position = point(at.x,at.y,at.z)+Vector3(0.5,0,0.5)
+			patch.set_meta("solid",true)
+			patch.add_child(reconstruction.floors.slab(at,reconstruction.facade.material("wood")))
+			static_root.add_child(patch)
+			collision_builder.add_visual(patch)
 	print("ART COVERAGE: %d accounted / %d unresolved" % [reconstruction.mapped,reconstruction.unresolved])
 	collision_builder.finish(self,terrain)
 	if not coverage_path.is_empty(): reconstruction.save_report(coverage_path)
@@ -158,7 +172,7 @@ func _ready() -> void:
 		if tracks.has(position.serial): tracks[position.serial].reset(at)
 		if avatars.has(position.serial):
 			avatars[position.serial].position = at
-			avatars[position.serial].jump.reset()
+			avatars[position.serial].reset_presentation()
 		pivot.position = at+Vector3(0,1.4,0)
 		camera_target_ready = true)
 	game.movement_started.connect(func(position: Dictionary,seconds: float):
@@ -227,13 +241,13 @@ func _process(delta: float) -> void:
 		avatars[serial].animate(travelled > 0.00001,intent_facing if serial == player_serial else directions[serial],delta,travelled/maxf(delta,0.00001))
 	if game.phase == "world" and avatars.has(player_serial):
 		var avatar: Node3D = avatars[player_serial]
-		var follow := avatar.position+Vector3(0,1.4+avatar.jump.height*0.25,0)
+		var follow := avatar.position+Vector3(0,1.4+avatar.ground_offset+avatar.jump.height*0.25,0)
 		pivot.position = pivot.position.lerp(follow,1.0-exp(-18.0*delta)) if camera_target_ready else follow
 		camera_target_ready = true
 		avatar.visual_root.visible = boom.get_hit_length() > 1.15
 		avatar.get_node("Nameplate").visible = avatar.visual_root.visible
 	pivot.rotation = Vector3(pitch,yaw,0)
-	boom.collision_mask = 1 if game.phase == "world" and not map_view else 0
+	boom.collision_mask = 3 if game.phase == "world" and not map_view else 0
 	boom.set_distance(distance,delta)
 	ticks += 1
 	if ticks == 15 and screenshot != "":
@@ -247,7 +261,7 @@ func _physics_process(delta: float) -> void:
 		jump_requested = false
 		return
 	var avatar: Node3D = avatars[player_serial]
-	var clearance := boom.headroom(get_world_3d().direct_space_state,avatar.position)
+	var clearance := boom.headroom(get_world_3d().direct_space_state,avatar.position+Vector3.UP*avatar.ground_offset)
 	if jump_requested:
 		avatar.jump.start(clearance)
 		jump_requested = false
@@ -315,7 +329,7 @@ func _entity_changed(serial: int,position: Dictionary) -> void:
 		tracks[serial].reset(location)
 	# Imported humanoid faces +Z; UO direction 0 faces north (-Z).
 	directions[serial] = PI-int(position.direction)*PI/4
-	if tracks[serial].position.distance_to(location) > 8.0: avatars[serial].jump.reset()
+	if tracks[serial].position.distance_to(location) > 8.0: avatars[serial].reset_presentation()
 	tracks[serial].push(location,float(game.move_interval)/1000.0 if serial == player_serial else (0.21 if position.get("running",false) else 0.41))
 	targets[serial] = location
 

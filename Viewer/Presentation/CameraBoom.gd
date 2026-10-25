@@ -15,11 +15,17 @@ func set_distance(distance: float, delta: float) -> void:
 	# SpringArm performs a shape sweep, catches corners with a real radius and
 	# places its camera child before the hit surface. Zoom changes are smoothed.
 	requested_distance = distance
-	var obstruction := get_hit_length()
-	if collision_mask != 0 and obstruction > 0.001 and obstruction < spring_length-0.04:
-		visual_distance = minf(visual_distance,obstruction)
-	visual_distance = lerpf(visual_distance,distance,1.0-exp(-12.0*delta))
-	spring_length = visual_distance
+	# Sweep the requested full range every physics frame. Smoothing the arm's
+	# length fed the shortened hit back into the next sweep and caused pumping.
+	spring_length = distance
+	var obstruction := get_hit_length() if collision_mask != 0 else distance
+	var target := minf(distance,maxf(0.0,obstruction))
+	visual_distance = target if target < visual_distance else lerpf(visual_distance,target,1.0-exp(-5.0*delta))
+	for child in get_children():
+		if child is Camera3D:
+			# SpringArm owns child position during physics; this extra inward offset
+			# only delays outward recovery, never moves through the sweep result.
+			child.position.z = minf(target,visual_distance)
 
 func headroom(space: PhysicsDirectSpaceState3D, ground: Vector3, maximum: float = 1.0) -> float:
 	var capsule := CapsuleShape3D.new()

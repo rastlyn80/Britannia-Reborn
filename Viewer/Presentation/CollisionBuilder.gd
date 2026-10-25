@@ -2,8 +2,10 @@ extends RefCounted
 
 var chunks := {}
 var triangles := 0
+var trunks: Array[Vector3] = []
 
 func add_visual(node: Node3D) -> void:
+	if node.get_meta("kind","") == "tree" and node.get_child_count() > 0: trunks.append(node.position)
 	if not bool(node.get_meta("solid",false)): return
 	var key := Vector2i(int(floor(node.position.x/16)),int(floor(node.position.z/16)))
 	var faces := PackedVector3Array()
@@ -22,6 +24,18 @@ func _collect(node: Node3D, parent: Transform3D, output: PackedVector3Array) -> 
 		if child is Node3D: _collect(child,transform,output)
 
 func finish(parent: Node3D, terrain: MeshInstance3D) -> void:
+	for at in trunks:
+		var body := StaticBody3D.new()
+		body.collision_layer = 2
+		body.collision_mask = 0
+		body.position = at+Vector3.UP*1.5
+		var collider := CollisionShape3D.new()
+		var trunk := CylinderShape3D.new()
+		trunk.radius = 0.18
+		trunk.height = 3.0
+		collider.shape = trunk
+		body.add_child(collider)
+		parent.add_child(body)
 	var terrain_faces := PackedVector3Array()
 	for vertex in terrain.mesh.get_faces(): terrain_faces.append(terrain.transform*vertex)
 	chunks[Vector2i(-1,-1)] = terrain_faces

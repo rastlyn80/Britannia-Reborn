@@ -1,5 +1,6 @@
 extends Node3D
 var fixture_positions: Array[Vector3] = []
+var fixture_spans: Array[Dictionary] = []
 var environment: Environment
 func configure(scene: Node3D,world: Dictionary,reconstruction,map_view: bool) -> void:
  var sun := DirectionalLight3D.new()
@@ -73,14 +74,29 @@ func configure(scene: Node3D,world: Dictionary,reconstruction,map_view: bool) ->
    if at.x < low.x or at.x > low.x+1 or at.z < low.y or at.z > low.y+1: continue
    var top := float(reconstruction.roofs.tiles[ordinal].heights[4])
    if top > at.y+2.8: roof = minf(roof,top)
+  # Stop at the first real floor/ceiling above the fitting. A basement lamp
+  # must not suspend its cable all the way through the bedroom above it.
+  for floor in world.statics:
+   if reconstruction.rule_for(floor.id).get("kind") != "floor": continue
+   if int(floor.x) == floori(at.x) and int(floor.y) == floori(at.z) and float(floor.z)*float(world.elevationScale) > at.y+1.85: roof = minf(roof,float(floor.z)*float(world.elevationScale))
+  for floor in world.terrain:
+   if int(floor.x) != floori(at.x) or int(floor.y) != floori(at.z): continue
+   if reconstruction.info(world,floor.id,false).get("name") == "NODRAW": continue
+   if float(floor.z)*float(world.elevationScale) > at.y+1.85: roof = minf(roof,float(floor.z)*float(world.elevationScale))
+  for ordinal in scene.interior_shell.ceilings:
+   var floor: Dictionary = scene.interior_shell.floor_sources[ordinal]
+   if int(floor.x) == floori(at.x) and int(floor.y) == floori(at.z):
+    var height := float(floor.z)*float(world.elevationScale)+float(scene.interior_shell.ceilings[ordinal])
+    if height > at.y+1.85: roof = minf(roof,height)
   if roof == INF: continue
-  var local := Vector3(at.x-float(world.originX),at.y+2.7,at.z-float(world.originY))
+  var local := Vector3(at.x-float(world.originX),at.y+minf(2.7,roof-at.y-0.35),at.z-float(world.originY))
   var clear := true
   for previous in fixture_positions:
    if previous.distance_to(local) < 4.5: clear = false
   if not clear: continue
   fixture_positions.append(local)
-  _fixture(local,roof-at.y-2.7)
+  fixture_spans.append({"source_x":at.x,"source_y":at.z,"lamp_y":local.y,"ceiling_y":roof,"floor_y":at.y})
+  _fixture(local,roof-(local.y)-0.13)
   if fixture_positions.size() >= 12: break
 func _fixture(at: Vector3, cable: float) -> void:
  var light := OmniLight3D.new()

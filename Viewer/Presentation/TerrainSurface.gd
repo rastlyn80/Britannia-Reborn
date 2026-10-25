@@ -7,16 +7,44 @@ var land_data := {}
 var world: Dictionary
 var shoreline
 var heights := {}
+var peak_repairs := {}
 func index(input: Dictionary, shore = null) -> void:
  world = input
  land_data = input.landData if input.get("landData") is Dictionary else {}
  shoreline = shore
  samples.clear()
  heights.clear()
+ peak_repairs.clear()
  for tile in world.terrain: samples[Vector2i(tile.x,tile.y)] = tile
-func z(cell: Vector2i) -> float:
+ # Conservative isolated natural outlier filter. Keep IR/navigation untouched,
+ # never flatten ridges, buildings, paving, large peaks or incomplete borders.
+ var protected := {}
+ for source in world.get("statics",[]):
+  var data = world.get("staticData",{})
+  if not data is Dictionary: continue
+  var name := str(data.get(str(int(source.id)),{}).get("name","")).to_lower()
+  if "wall" in name or "floor" in name or "stairs" in name:
+   for y in range(-1,2):
+    for x in range(-1,2): protected[Vector2i(source.x+x,source.y+y)] = true
+ for cell in samples:
+  var source: Dictionary = samples[cell]
+  var name := str(land_data.get(str(int(source.id)),{}).get("name","")).to_lower()
+  if name not in ["grass","forest","dirt"] or protected.has(cell): continue
+  var maximum := -INF
+  var complete := true
+  for offset in [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
+   if not samples.has(cell+offset):
+    complete = false
+    break
+   maximum = maxf(maximum,float(samples[cell+offset].z))
+  var prominence := float(source.z)-maximum
+  if complete and prominence >= 4 and prominence <= 8: peak_repairs[cell] = maximum+1
+func raw_z(cell: Vector2i) -> float:
  var bounded := Vector2i(clampi(cell.x,int(world.originX),int(world.originX)+int(world.width)-1),clampi(cell.y,int(world.originY),int(world.originY)+int(world.height)-1))
  return float(samples[bounded].z)*float(world.elevationScale)
+func z(cell: Vector2i) -> float:
+ var bounded := Vector2i(clampi(cell.x,int(world.originX),int(world.originX)+int(world.width)-1),clampi(cell.y,int(world.originY),int(world.originY)+int(world.height)-1))
+ return float(peak_repairs.get(bounded,samples[bounded].z))*float(world.elevationScale)
 static func curve(a: float,b: float,c: float,d: float,t: float) -> float:
  if absf(c-b) <= 0.8: return lerpf(b,c,t)
  var left := b-a

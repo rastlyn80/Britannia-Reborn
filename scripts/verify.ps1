@@ -24,6 +24,8 @@ if ($LASTEXITCODE) { throw 'Street reconstruction/retargeted movement tests fail
 if ($LASTEXITCODE) { throw 'Shared architectural/nature presentation tests failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/SurfacePolishTests.gd
 if ($LASTEXITCODE) { throw 'Terrain/shoreline/PBR surface regression checks failed' }
+& $godot --headless --path "$root/Viewer" --script res://Presentation/ContactTests.gd
+if ($LASTEXITCODE) { throw 'Interior/stair/foot-contact regression checks failed' }
 $argsForWorld = @()
 if (Test-Path "$root\Viewer\play-world.json") { $argsForWorld = @("--world=$root\Viewer\play-world.json") }
 elseif (Test-Path "$root\Viewer\local-world.json") { $argsForWorld = @("--world=$root\Viewer\local-world.json") }

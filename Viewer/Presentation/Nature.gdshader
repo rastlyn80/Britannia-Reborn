@@ -3,6 +3,7 @@ render_mode cull_disabled;
 uniform sampler2D source_texture : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D source_normal : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform bool has_normal=false;
+uniform bool camera_fade=false;
 uniform vec4 tint : source_color = vec4(1.0);
 uniform float base_y = 0.0;
 uniform float plant_height = 1.0;
@@ -22,6 +23,13 @@ void vertex() {
 }
 void fragment() {
  vec4 source = texture(source_texture,UV);
+ // A tiny dithered clearance around the lens keeps close leaves from filling
+ // the screen. Only foliage enables this; trunks retain their solid silhouette.
+ if(camera_fade){
+  float visibility=smoothstep(0.35,1.1,length(VERTEX));
+  float dither=fract(52.9829189*fract(dot(FRAGCOORD.xy,vec2(0.06711056,0.00583715))));
+  if(visibility<dither){discard;}
+ }
  float luminance = dot(source.rgb,vec3(0.2126,0.7152,0.0722));
  ALBEDO = mix(vec3(luminance),source.rgb,0.78)*tint.rgb;
  ROUGHNESS = 0.88;

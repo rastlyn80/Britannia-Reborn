@@ -31,7 +31,9 @@ func supported(cell: Vector2i, z: int) -> bool:
 		var top := int(tile.z)+(height/2 if flags & 0x400 else height)
 		if flags & 0x200 and not flags & 0x40 and top == z: support = true
 		# Body clearance. Wet or impassable source statics must never be predicted through.
-		if flags & 0xc0 and int(tile.z) < z+16 and int(tile.z)+maxi(height,1) > z: return false
+		var obstruction_top := int(tile.z)+(floori(height*0.5) if flags & 0x400 else height)
+		if flags & 0xc0: obstruction_top = int(tile.z)+maxi(height,1)
+		if flags & 0x2c0 and int(tile.z) < z+16 and obstruction_top > z: return false
 	return support
 
 func predict(player: Dictionary, direction: int) -> Dictionary:
@@ -42,8 +44,34 @@ func predict(player: Dictionary, direction: int) -> Dictionary:
 	var destination := z
 	if not supported(cell+offset,destination):
 		var land := land_height(cell+offset)
-		if land.is_empty() or abs(int(land.z)-z) > 2 or not supported(cell+offset,int(land.z)): return {}
-		destination = int(land.z)
+		if not land.is_empty() and abs(int(land.z)-z) <= 2 and supported(cell+offset,int(land.z)):
+			destination = int(land.z)
+		else:
+			# Cardinal, static-only stairs use the pinned server's bridge rule:
+			# reach is measured from the current support's full art top + 2Z;
+			# the new standing Z is the destination's half-height bridge top.
+			# Dynamic objects/diagonal stair corners still use server resync.
+			if offset.x != 0 and offset.y != 0: return {}
+			var start_top := z
+			for tile in statics.get(cell,[]):
+				var data: Dictionary = static_data.get(str(int(tile.id)),{})
+				var height := int(data.get("height",0))
+				var top := int(tile.z)+(floori(height*0.5) if int(data.get("flags",0)) & 0x400 else height)
+				if top == z: start_top = maxi(start_top,int(tile.z)+height)
+			var candidates: Array[int] = []
+			for tile in statics.get(cell+offset,[]):
+				var data: Dictionary = static_data.get(str(int(tile.id)),{})
+				var flags := int(data.get("flags",0))
+				var height := int(data.get("height",0))
+				if not flags & 0x200 or flags & 0xc0: continue
+				var bridge := bool(flags & 0x400)
+				var top := int(tile.z)+(floori(height*0.5) if bridge else height)
+				if absi(top-z) > 5 or (int(tile.z) if bridge else top) > start_top+2: continue
+				if not land.is_empty() and int(land.z) > top and int(land.z) < top+16: continue
+				if supported(cell+offset,top) and not candidates.has(top): candidates.append(top)
+			if candidates.is_empty(): return {}
+			candidates.sort_custom(func(a: int,b: int): return a < b if absi(a-z) == absi(b-z) else absi(a-z) < absi(b-z))
+			destination = candidates[0]
 	if offset.x != 0 and offset.y != 0:
 		if not supported(cell+Vector2i(offset.x,0),z) or not supported(cell+Vector2i(0,offset.y),z): return {}
 	var result := player.duplicate()
