@@ -1,6 +1,6 @@
 extends RefCounted
-# Monotone interpolation adds curved banks without overshoot or moving any
-# source grid anchor. Gentle/walkable edges retain linear support heights.
+# Canonical input is immutable. The displayed surface removes narrow natural
+# spurs and interpolates banks without overshoot; broad walkable ground is kept.
 const SUBDIVISIONS := 4
 var samples := {}
 var land_data := {}
@@ -9,6 +9,8 @@ var shoreline
 var heights := {}
 var peak_repairs := {}
 var floor_overrides := {}
+var wooden_cells := {}
+var source_ordinals := {}
 func index(input: Dictionary, shore = null) -> void:
  world = input
  land_data = input.landData if input.get("landData") is Dictionary else {}
@@ -17,7 +19,15 @@ func index(input: Dictionary, shore = null) -> void:
  heights.clear()
  peak_repairs.clear()
  floor_overrides.clear()
- for tile in world.terrain: samples[Vector2i(tile.x,tile.y)] = tile
+ wooden_cells.clear()
+ source_ordinals.clear()
+ for i in world.terrain.size():
+  var tile: Dictionary = world.terrain[i]
+  samples[Vector2i(tile.x,tile.y)] = tile
+  source_ordinals[Vector2i(tile.x,tile.y)] = i
+ for tile in world.get("terrainHalo",[]):
+  var cell := Vector2i(tile.x,tile.y)
+  if not samples.has(cell): samples[cell] = tile
  # Zero-height source board floors own the top surface where map.mul also
  # supplies the same flat floor. Keep the canonical samples, emit only one mesh.
  var static_data = world.get("staticData",{})
@@ -30,35 +40,56 @@ func index(input: Dictionary, shore = null) -> void:
    for offset in [Vector2i.ZERO,Vector2i.RIGHT,Vector2i.DOWN,Vector2i.ONE]:
     if not samples.has(cell+offset) or int(samples[cell+offset].z) != int(source.z): flat = false
    if flat: floor_overrides[cell] = true
+ # Indoor land is a constructed floor, not a blended landscape material.
+ for cell in source_ordinals:
+  var source: Dictionary = samples[cell]
+  if land_data.get(str(int(source.id)),{}).get("name","").to_lower() == "wooden floor" and not floor_overrides.has(cell):
+   wooden_cells[cell] = source
+   floor_overrides[cell] = true
  # Conservative isolated natural outlier filter. Keep IR/navigation untouched,
- # never flatten ridges, buildings, paving, large peaks or incomplete borders.
+ # protect broad ridges, buildings and paving; use neighbor halos at crop edges.
  var protected := {}
- for source in world.get("statics",[]):
+ for source in world.get("statics",[])+world.get("staticHalo",[]):
   var data = world.get("staticData",{})
   if not data is Dictionary: continue
   var name := str(data.get(str(int(source.id)),{}).get("name","")).to_lower()
   if "wall" in name or "floor" in name or "stairs" in name:
    for y in range(-1,2):
     for x in range(-1,2): protected[Vector2i(source.x+x,source.y+y)] = true
+ # Grayscale opening removes narrow one/two-cell spurs while retaining wide
+ # plateaus and cliff edges. Walkable correction is capped at 8Z; impassable
+ # coastal needles can be removed fully. Canonical source Z is never edited.
+ var erosion := {}
+ for cell in samples:
+  var low := INF
+  var complete := true
+  for y in range(-1,2):
+   for x in range(-1,2):
+    if not samples.has(cell+Vector2i(x,y)): complete = false
+    else: low = minf(low,float(samples[cell+Vector2i(x,y)].z))
+  if complete: erosion[cell] = low
  for cell in samples:
   var source: Dictionary = samples[cell]
   var name := str(land_data.get(str(int(source.id)),{}).get("name","")).to_lower()
   if name not in ["grass","forest","dirt"] or protected.has(cell): continue
-  var maximum := -INF
+  var opened := -INF
   var complete := true
-  for offset in [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
-   if not samples.has(cell+offset):
-    complete = false
-    break
-   maximum = maxf(maximum,float(samples[cell+offset].z))
-  var prominence := float(source.z)-maximum
-  if complete and prominence >= 4 and prominence <= 8: peak_repairs[cell] = maximum+1
+  for y in range(-1,2):
+   for x in range(-1,2):
+    if not erosion.has(cell+Vector2i(x,y)): complete = false
+    else: opened = maxf(opened,float(erosion[cell+Vector2i(x,y)]))
+  if not complete: continue
+  if float(source.z)-opened >= 4:
+   var impassable := bool(int(land_data.get(str(int(source.id)),{}).get("flags",0)) & 0x40)
+   peak_repairs[cell] = opened+1 if impassable else maxf(opened+1,float(source.z)-8)
+
 func raw_z(cell: Vector2i) -> float:
  var bounded := Vector2i(clampi(cell.x,int(world.originX),int(world.originX)+int(world.width)-1),clampi(cell.y,int(world.originY),int(world.originY)+int(world.height)-1))
- return float(samples[bounded].z)*float(world.elevationScale)
+ return float(samples.get(cell,samples[bounded]).z)*float(world.elevationScale)
 func z(cell: Vector2i) -> float:
  var bounded := Vector2i(clampi(cell.x,int(world.originX),int(world.originX)+int(world.width)-1),clampi(cell.y,int(world.originY),int(world.originY)+int(world.height)-1))
- return float(peak_repairs.get(bounded,samples[bounded].z))*float(world.elevationScale)
+ var key := cell if samples.has(cell) else bounded
+ return float(peak_repairs.get(key,samples[key].z))*float(world.elevationScale)
 static func curve(a: float,b: float,c: float,d: float,t: float) -> float:
  if absf(c-b) <= 0.8: return lerpf(b,c,t)
  var left := b-a

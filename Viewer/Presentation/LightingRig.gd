@@ -37,10 +37,10 @@ func configure(scene: Node3D,world: Dictionary,reconstruction,map_view: bool) ->
  environment.ssao_intensity = 1.2
  environment.ssao_power = 1.3
  environment.ssao_detail = 0.6
- environment.ssil_enabled = not map_view and RenderingServer.get_current_rendering_method() == "forward_plus"
+ environment.ssil_enabled = false # Screen-space bounce leaks across stacked floors and door silhouettes.
  environment.ssil_intensity = 0.55
  environment.ssil_radius = 3.0
- environment.ssr_enabled = not map_view and RenderingServer.get_current_rendering_method() == "forward_plus"
+ environment.ssr_enabled = false # Rough timber uses stable sky lighting, not unstable screen-space reflections.
  environment.ssr_max_steps = 48
  environment.glow_enabled = not map_view
  environment.glow_intensity = 0.25

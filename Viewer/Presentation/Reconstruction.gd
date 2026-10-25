@@ -11,6 +11,7 @@ var roof_materials := {}
 var architecture_materials := {}
 var nature_materials := {}
 var source_origin := Vector2.ZERO
+var gable_material: ShaderMaterial
 var water_material: ShaderMaterial
 var shoreline
 var show_boundary_fragments := false
@@ -328,7 +329,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 				var opening_height := minf(height,2.7)
 				visual.add_child(fitted(asset,Vector3(span,opening_height,0.2)))
 				if height > opening_height: facade.piece(visual,Vector3(span,height-opening_height,0.18),Vector3(0,(height+opening_height)/2,0),"plaster")
-			"floor": visual = floors.slab(ordinal,facade.material("wood"))
+			"floor": visual = floors.slab(ordinal,floors.material())
 			"landing":
 				visual = Node3D.new()
 				# Bridge tiledata heights describe the art bounds; support is halfway up.
@@ -342,7 +343,11 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 			"stairs":
 				visual = geometry.stairs(height,floors.stair_rise.get(ordinal,Vector2(rule.rise[0],rule.rise[1])))
 				for step in visual.get_children(): step.material_override = facade.material("stone" if "stone" in str(detail.get("name","")) else "wood")
-			"roof": visual = geometry.roof(s,rule,roof_material(rule.material),roofs.tiles.get(ordinal,{}),facade.material("plaster"))
+			"roof":
+				if gable_material == null:
+					gable_material = facade.material("plaster").duplicate()
+					gable_material.set_shader_parameter("double_sided",true)
+				visual = geometry.roof(s,rule,roof_material(rule.material),roofs.tiles.get(ordinal,{}),gable_material)
 			"door":
 				visual = fitted(asset,Vector3(0.86,height,0.12))
 				for side in [-1,1]: facade.piece(visual,Vector3(0.08,height,0.2),Vector3(side*0.46,height/2,0),"wood")

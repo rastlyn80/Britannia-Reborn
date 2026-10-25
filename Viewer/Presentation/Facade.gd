@@ -9,6 +9,7 @@ var runs := 0
 var corners := {}
 var diagonal_joins := 0
 var cap_extensions := {}
+var capless_materials := {}
 var glass_material: StandardMaterial3D
 
 func index(world: Dictionary, catalog: Dictionary) -> void:
@@ -163,6 +164,13 @@ func piece(parent: Node3D, size: Vector3, at: Vector3, kind: String) -> void:
 	if size.y <= 0.001: return
 	var mesh := geometry.box(parent,size,at,"ffffff")
 	mesh.material_override = material(kind)
+	# Wall tops meet the upper floor at the same plane. Their pale cap faces
+	# must not draw through that floor; lintels/sills retain their visible tops.
+	if size.y > 0.6:
+		if not capless_materials.has(kind):
+			capless_materials[kind] = material(kind).duplicate()
+			capless_materials[kind].set_shader_parameter("open_caps",true)
+		mesh.material_override = capless_materials[kind]
 
 func panel(height: float, window: bool, plan: Dictionary, family: String) -> Node3D:
 	var root := Node3D.new()

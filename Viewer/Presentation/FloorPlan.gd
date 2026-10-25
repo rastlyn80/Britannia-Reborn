@@ -5,6 +5,14 @@ var edges := {}
 var repairs: Array[Vector3i] = []
 var stair_rise := {}
 var scale := 0.2
+var floor_material: ShaderMaterial
+
+func material() -> ShaderMaterial:
+	if floor_material == null:
+		floor_material = ShaderMaterial.new()
+		floor_material.shader = preload("res://Presentation/Floor.gdshader")
+		preload("res://Presentation/SurfaceLibrary.gd").bind(floor_material,"surface","brown_planks_03")
+	return floor_material
 
 func index(world: Dictionary, catalog: Dictionary) -> void:
 	edges.clear()

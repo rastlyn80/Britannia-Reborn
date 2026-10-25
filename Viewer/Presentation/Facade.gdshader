@@ -6,6 +6,8 @@ uniform sampler2D source_texture : source_color, filter_linear_mipmap_anisotropi
 uniform sampler2D surface_normal : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform vec4 palette : source_color;
 uniform bool wood=false;
+uniform bool double_sided=false;
+uniform bool open_caps=false;
 varying vec3 world_position;
 void vertex(){world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz+vec3(source_origin.x,0.0,source_origin.y);}
 uniform sampler2D surface_albedo : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
@@ -13,7 +15,9 @@ uniform sampler2D surface_normal_map : hint_normal, filter_linear_mipmap_anisotr
 uniform sampler2D surface_roughness : filter_linear_mipmap_anisotropic, repeat_enable;
 uniform vec2 surface_scale=vec2(1.0);
 void fragment(){
+ if(!double_sided && !FRONT_FACING){discard;}
  vec3 n=abs((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
+ if(open_caps && n.y>0.99){discard;}
  vec2 uv=n.x>n.z?world_position.zy:world_position.xy;
  if(n.y>max(n.x,n.z))uv=world_position.xz;
  float broad=surface_fbm(uv*0.7);

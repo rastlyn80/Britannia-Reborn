@@ -1,0 +1,21 @@
+# Floor, doorway and terrain stability
+
+2026-10-25. Earlier still captures and overlap-only checks missed the upper-floor artifact. A GPU capture plus a geometry/ray audit reproduced the white doorway cross: pale wall-top faces from the storey below sat exactly on the floor above (source Y=8 m). Walls remain physically sealed; tall facade pieces now omit their horizontal render caps, while window sills, lintels and roof gables retain their intended visible faces. The renderer no longer draws those pale faces through the floor. This is a shared facade rule, not a coordinate-specific scene patch.
+
+Indoor map.mul wooden land cells now emit closed constructed slabs with an anisotropic mipmapped PBR floor material, matching static floors rather than blending grass/stone into door thresholds. Landscape triangles for these cells are omitted. Their immutable source records still drive gameplay. Screen-space reflection/indirect-light contributions are disabled in the shared lighting rig to avoid unstable cross-storey lighting; sky lighting, source-derived fixtures, shadows and ambient contact shading remain. The visible floor uses high roughness and distance-reduced normal detail.
+
+The remaining coastal needle was a narrow impassable dirt spur at the south crop edge. Grayscale opening across a five-by-five dependency neighborhood removes narrow connected spurs while preserving broad plateaus/cliffs and building/paving support. Walkable display changes are capped at 8Z; impassable narrow coastal needles can be lowered fully to the neighborhood envelope. Source Z/navigation remain unchanged.
+
+scripts/prepare-terrain-halo.ps1 reads two extra rows/columns of terrain and statics without expanding the playable region. It adds optional terrainHalo/staticHalo and additional metadata to the derived JSON; canonical interior terrain/statics were compared before/after and are identical. Current crop: 528 terrain neighbors, 335 static neighbors. Terrain rendering/filtering consumes the halo, but it never emits its extra cells as playable terrain/floors. This makes cropped repairs agree with the larger-map reference. Current helper supports interior Trammel crops up to 252 cells per axis; facet-edge width profiles remain future work.
+
+The full scripts/prepare-play-world.ps1 pipeline automatically extracts the halo and bakes the same shared rules. Final bake/reload matched 6,922 meshes; 2,689 accounted statics, zero unmapped IDs, 752 ceiling panels, 628 constructed land-floor cells, and 123,504 collision triangles. No original UO input file, server core, saves, credentials or user character was changed.
+
+## Evidence
+
+- scripts/verify.ps1: 205 offline checks pass (55 contact/interior plus the existing 150). Added coverage includes wall-cap ownership, retained sill tops, wide plateau preservation, complete coastal needle removal, crop/halo agreement, constructed terrain-floor ownership, and stable lighting defaults.
+- scripts/capture-stability.ps1: three 24-frame moving-camera captures (tavern, upstairs doorway, coastal bank) and return-view comparisons. Floor-area mean RGB difference after returning the camera was 0.00154 / 0.00123 / 0.00117, below 0.025. These controlled cameras freeze wind/water to isolate rendering; they do not prove stability for every scene or viewpoint.
+- Specific doorway regression pixel now reads (0.1961, 0.2118, 0.1804), a dark floor instead of the pale wall cap. GPU regression passes. Captures visibly show the doorway cross and shoreline needle gone.
+- Forward+ captures and OpenGL compatibility smoke load/exit pass. Full conversion + saved-scene reload pass with read-only source files.
+- Ignored logs: work/glitch-release-verify.log, glitch-release-gpu.log, glitch-conversion-release.log, glitch-compatibility.log. Moving previews: outputs/validation/stable-tavern.gif, stable-doorway.gif, stable-banks.gif (plus PNG frames). Shared-palette GIF encoding is scripts/make-stability-previews.py; capture script runs it when the bundled Python is available.
+
+Restart Launch.cmd to load this revision into an existing viewer. No map expansion was performed: the extra source cells are a computation halo only. Validate the next district separately before claiming universal tile-family coverage.

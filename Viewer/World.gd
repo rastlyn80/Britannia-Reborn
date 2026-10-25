@@ -99,6 +99,16 @@ func _ready() -> void:
 	reconstruction.shoreline = shoreline
 	reconstruction.show_boundary_fragments = map_view
 	reconstruction.index(world)
+	for cell in terrain_surface.wooden_cells:
+		var source: Dictionary = terrain_surface.wooden_cells[cell]
+		var ordinal: int = terrain_surface.source_ordinals[cell]
+		var floor_root := Node3D.new()
+		floor_root.name = "ConstructedLandFloor_%d_%d" % [source.x,source.y]
+		floor_root.position = point(source.x,source.y,source.z)+Vector3(0.5,0,0.5)
+		floor_root.set_meta("solid",true)
+		floor_root.add_child(reconstruction.floors.slab(-ordinal-1,reconstruction.floors.material()))
+		static_root.add_child(floor_root)
+		collision_builder.add_visual(floor_root)
 	for ordinal in world.statics.size():
 		var s: Dictionary = world.statics[ordinal]
 		var replacement: Node3D = reconstruction.build(s,world,ordinal)
@@ -123,7 +133,7 @@ func _ready() -> void:
 			patch.name = "DerivedFloorRepair_%d_%d_%d" % [at.x,at.y,at.z]
 			patch.position = point(at.x,at.y,at.z)+Vector3(0.5,0,0.5)
 			patch.set_meta("solid",true)
-			patch.add_child(reconstruction.floors.slab(at,reconstruction.facade.material("wood")))
+			patch.add_child(reconstruction.floors.slab(at,reconstruction.floors.material()))
 			static_root.add_child(patch)
 			collision_builder.add_visual(patch)
 	print("ART COVERAGE: %d accounted / %d unresolved" % [reconstruction.mapped,reconstruction.unresolved])

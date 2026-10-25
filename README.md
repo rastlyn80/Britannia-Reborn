@@ -54,3 +54,5 @@ Launch.cmd now uses Forward+ for the refined materials, lighting, blended terrai
 The interior/contact update adds closed floors and corner joins, interior ceilings, fine stair treads, foot adjustment and smoother gait/camera transitions. Restart Launch.cmd after updating. scripts/capture-contacts.ps1 reproduces the current repair screenshots; docs/INTERIOR_CONTACT_PASS.md records checks and limits.
 
 The full conversion entry point is scripts/prepare-play-world.ps1: it now extracts the source JSON and automatically runs the shared 3D repair rules, saving a scene and versioned repair report under outputs/conversions. See docs/CONVERSION_PIPELINE.md. Raw Converter.dll convert remains the extraction stage.
+
+Floor/doorway stability and coastal spike repairs are documented in docs/GLITCH_STABILITY_PASS.md. scripts/capture-stability.ps1 generates moving-camera proof. Conversion now reads a two-cell computation halo without expanding the playable crop.

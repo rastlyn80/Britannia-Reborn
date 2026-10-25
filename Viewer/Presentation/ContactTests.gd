@@ -83,9 +83,31 @@ func run() -> void:
 	terrain.index(terrain_world)
 	check(terrain.peak_repairs.is_empty(),"spike filter protects building foundations")
 	terrain_world.statics.clear()
-	terrain_world.terrain[13].z = 6
+	for tile in terrain_world.terrain:
+		if tile.x >= 91 and tile.x <= 93 and tile.y >= 81 and tile.y <= 83: tile.z = 6
 	terrain.index(terrain_world)
-	check(terrain.peak_repairs.is_empty(),"connected natural ridge is preserved")
+	check(terrain.peak_repairs.is_empty(),"broad natural plateau is preserved")
+	var edge_world := {"originX":0,"originY":0,"width":9,"height":9,"elevationScale":0.2,"terrain":[],"statics":[],"landData":{"1":{"name":"dirt","flags":64}},"staticData":{}}
+	for y in 9:
+		for x in 9: edge_world.terrain.append({"x":x,"y":y,"z":20 if y>=5 or (x==4 and y==4) else -15,"id":1})
+	var full_surface := preload("res://Presentation/TerrainSurface.gd").new()
+	full_surface.index(edge_world)
+	check(full_surface.peak_repairs.get(Vector2i(4,4),20) == -14,"narrow impassable coastal needle is removed without capping broad cliffs")
+	var crop: Dictionary = edge_world.duplicate(true)
+	crop.originX = 3
+	crop.originY = 3
+	crop.width = 3
+	crop.height = 3
+	crop.terrain = edge_world.terrain.filter(func(t): return t.x>=3 and t.x<=5 and t.y>=3 and t.y<=5)
+	crop.terrainHalo = edge_world.terrain.filter(func(t): return t.x<3 or t.x>5 or t.y<3 or t.y>5)
+	terrain.index(crop)
+	check(is_equal_approx(terrain.height_at(Vector2(4,4)),full_surface.height_at(Vector2(4,4))),"neighbor halo makes cropped coastal repair match the larger conversion")
+	var cap_facade := preload("res://Presentation/Facade.gd").new()
+	var cap_fixture := Node3D.new()
+	cap_facade.piece(cap_fixture,Vector3(1,4,0.18),Vector3(0,2,0),"plaster")
+	cap_facade.piece(cap_fixture,Vector3(1,0.1,0.3),Vector3.ZERO,"wood")
+	check(cap_fixture.get_child(0).material_override.get_shader_parameter("open_caps") and not cap_fixture.get_child(1).material_override.get_shader_parameter("open_caps"),"tall wall caps cannot draw through upper floors; visible sill tops remain")
+	cap_fixture.free()
 	var roof_fixture := {"originX":0,"originY":0,"width":4,"height":4,"elevationScale":0.2,"terrain":[],"landData":{},"staticData":{"1194":{"height":0},"300":{"height":10},"1476":{"height":3}},"statics":[{"x":0,"y":0,"z":0,"id":1194},{"x":0,"y":0,"z":0,"id":300},{"x":1,"y":1,"z":20,"id":1476}]}
 	var reconstruction := preload("res://Presentation/Reconstruction.gd").new()
 	reconstruction.index(roof_fixture)
@@ -96,10 +118,10 @@ func run() -> void:
 	for y in 3:
 		for x in 3: floor_fixture.terrain.append({"id":1,"x":x,"y":y,"z":0})
 	terrain.index(floor_fixture)
-	check(terrain.floor_overrides.size() == 1 and terrain.floor_overrides.has(Vector2i.ZERO),"static floor owns a coincident terrain cell without double drawing")
+	check(terrain.floor_overrides.size() == 9 and not terrain.wooden_cells.has(Vector2i.ZERO),"static floor owns a coincident terrain cell without double drawing")
 	floor_fixture.statics[0].z = -20
 	terrain.index(floor_fixture)
-	check(terrain.floor_overrides.is_empty(),"basement floor never removes the separate ground storey")
+	check(terrain.wooden_cells.size() == 9,"basement floor keeps every constructed ground-storey floor cell")
 	reconstruction.index(floor_fixture)
 	shell.index(floor_fixture,reconstruction)
 	floor_fixture.statics.append(floor_fixture.statics[0].duplicate())
@@ -141,6 +163,7 @@ func run() -> void:
 	var cables_safe := true
 	var basement_lights := 0
 	var lighting = scene.get_node("DistrictLighting")
+	check(not lighting.environment.ssr_enabled and not lighting.environment.ssil_enabled,"stacked floors and doorways use stable lighting without screen-space leakage")
 	for span in lighting.fixture_spans:
 		if span.floor_y < 0: basement_lights += 1
 		for floor in scene.world.terrain:
