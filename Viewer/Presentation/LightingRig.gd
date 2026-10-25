@@ -109,4 +109,3 @@ func _fixture(at: Vector3, cable: float) -> void:
  bulb.material_override = material
  for mesh in housing.get_children():
   if mesh is MeshInstance3D: mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-
