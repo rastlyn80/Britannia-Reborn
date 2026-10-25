@@ -180,6 +180,31 @@ func run() -> void:
 	var bench: Node3D = assembly.geometry.furniture(Vector2(3,0.5),"bench")
 	check(bench.get_child_count() == 7,"long bench uses one seat and spaced supports instead of overlapping whole models")
 	bench.free()
+	var context := {"originX":0,"originY":0,"elevationScale":0.2,"terrain":[{"x":4,"y":0,"z":0}],"staticData":{"300":{"height":20},"1207":{"height":0,"flags":512}},"statics":[{"id":330,"x":0,"y":0,"z":20},{"id":330,"x":1,"y":0,"z":20},{"id":300,"x":0,"y":4,"z":0},{"id":300,"x":1,"y":4,"z":0},{"id":2911,"x":4,"y":0,"z":0},{"id":2911,"x":4,"y":0,"z":20}]}
+	assembly.index(context)
+	check(assembly.presentation_adjustments[0].offset == Vector3(0,0,4),"unsupported interior gable attaches to matching parallel wall")
+	check(assembly.presentation_adjustments[5].get("suppress",false),"unsupported elevated furniture duplicate is suppressed")
+	var repaired: Node3D = assembly.build(context.statics[5],context,5)
+	check(repaired.get_child_count() == 0 and not repaired.get_meta("solid") and repaired.get_meta("source_xyz") == Vector3i(4,0,20),"duplicate repair removes visual and collision but preserves source anchor")
+	repaired.free()
+	context.statics.append({"id":1207,"x":4,"y":0,"z":20})
+	context.statics.append({"id":300,"x":0,"y":0,"z":0})
+	context.statics.append({"id":300,"x":1,"y":0,"z":0})
+	assembly.index(context)
+	check(not assembly.presentation_adjustments.has(5),"upper-storey furniture on an actual floor is preserved")
+	check(not assembly.presentation_adjustments.has(0),"gable already supported by a wall keeps its source plane")
+	if FileAccess.file_exists("res://play-world.json"):
+		var crop: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://play-world.json"))
+		var original := JSON.stringify(crop)
+		assembly.index(crop)
+		var found_bench := false
+		var found_gable := false
+		for ordinal in assembly.presentation_adjustments:
+			var source: Dictionary = crop.statics[ordinal]
+			if int(source.x) == 1621 and int(source.y) == 1586 and int(source.z) == 20: found_bench = assembly.presentation_adjustments[ordinal].get("suppress",false)
+			if int(source.id) == 330: found_gable = assembly.presentation_adjustments[ordinal].get("offset") == Vector3(0,0,4)
+		check(found_bench and found_gable,"actual screenshot bench and gable receive contextual repairs")
+		check(JSON.stringify(crop) == original,"contextual presentation leaves converter source data unchanged")
 	avatar.queue_free()
 	await process_frame
 	print("STREET/MOVEMENT: %d passed / %d total" % [checks-failures,checks])

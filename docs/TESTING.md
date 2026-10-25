@@ -16,3 +16,5 @@ scripts/test-play.ps1 verifies live character selection/spawn, real walking, wal
 scripts/build-server.ps1 pins source and enforces package locks. Current server build: zero warnings/errors. Full upstream unit tests, established-client coexistence, sustained reconnect/load tests, client geometry collision quality, chunk seams and non-Windows exports remain outstanding. Server wall rejection and two-Godot-client replication now pass; source inventory still does not imply full gameplay validation.
 
 capture.ps1 -Local renders the local map; images remain local. Logs: outputs/validation. Sandbox networking may need approval even for loopback. A timeout/fallback is not a passing integration test.
+
+Contextual interior regression: `scripts/verify.ps1` includes tests for supported versus unsupported upper-level furniture, preservation of source coordinates, wall-supported versus relocated gables, and the actual screenshot's two records when local data is available. Godot `--script res://Presentation/InteriorCapture.gd` recreates the same ground-level view in `outputs/validation/britain-interior.png` for visual inspection. Current aggregate: 127 offline checks.

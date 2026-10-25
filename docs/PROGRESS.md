@@ -1,5 +1,12 @@
 # Progress — 25 October 2026
 
+## Contextual interior repairs
+
+The previous capture still had two obvious artifacts. Read-only inspection of the original static block confirmed an elevated bench at (1621,1586,20), duplicating the bench at Z=0 with no supporting floor. Perspective rendering now suppresses only unsupported elevated duplicates; supported upper-storey furniture is retained. Source gable 330 at Y=1587 had no wall under it. Its assembly now attaches to the nearest sufficiently complete parallel wall with the same top elevation, Y=1591 (+4 visual tiles). Supported gables retain their original plane. Both adjustments are reported with reasons and offsets; source XYZ is unchanged. Map/debug rendering retains source placement.
+
+The roof underside now uses timber lining rather than exterior slate. Bench orientation follows the assembled footprint rather than the first component ID. Fresh interior capture shows no flying bench or central hanging gable. This is a correctness fix, not the intended final visual quality: furniture remains simple, roof intersections and other building shapes still need dedicated art refinement. `scripts/verify.ps1` passes 127 offline checks (43 street/presentation checks), and the actual crop still accounts for all 2,689 records. Perspective collision: 72,296 triangles; 184 grouped contributors, 35 boundary fragments and one unsupported duplicate suppressed. Source files and server state are unchanged.
+
+
 ## Interior and classic-client follow-up
 
 Source gable IDs 330/331 are now assembled from stacked wedges into continuous plaster infill, and adjoining furniture records become single brown wooden benches/tables/counters with spaced supports. This removes the staircase bands and overlapping pale full-model replacements shown in the user screenshot. Source positions are preserved. An elevated bench record at (1621,1586,20) remains visible above its ground-level duplicate; it is present in the source crop and requires support/data investigation. Roof junction silhouettes still need refinement. The interior capture is local evidence, not a finished-art claim.

@@ -17,6 +17,8 @@ var grouped := 0
 var report: Array = []
 var groups := {}
 var wall_cells := {}
+var presentation_adjustments := {}
+var contextual_suppressed := 0
 
 static func info(world: Dictionary, id: int, statics: bool) -> Dictionary:
 	var data = world.get("staticData" if statics else "landData")
@@ -41,6 +43,7 @@ func index(world: Dictionary) -> void:
 	facade.index(world,catalog)
 	roofs.index(world,catalog)
 	groups.clear()
+	presentation_adjustments.clear()
 	wall_cells.clear()
 	var trees := {}
 	var beds := {}
@@ -95,6 +98,66 @@ func index(world: Dictionary) -> void:
 		var at: int = arches[cell]
 		if int(world.statics[at].id) == 320 and arches.has(cell+Vector3i(0,1,0)):
 			_group([at,arches[cell+Vector3i(0,1,0)]],world,"arch")
+
+	_plan_context(world)
+
+# Legacy art can include unsupported decoration. Keep source XYZ immutable and
+# record conservative presentation repairs rather than inventing supports.
+func _plan_context(world: Dictionary) -> void:
+	var terrain := {}
+	var cells := {}
+	for tile in world.get("terrain",[]): terrain[Vector2i(tile.x,tile.y)] = tile
+	for tile in world.statics:
+		var cell := Vector2i(tile.x,tile.y)
+		if not cells.has(cell): cells[cell] = []
+		cells[cell].append(tile)
+	for ordinal in groups:
+		var group: Dictionary = groups[ordinal]
+		if group.owner != ordinal: continue
+		var source: Dictionary = world.statics[ordinal]
+		if group.kind in ["bench","table","counter"]:
+			var unsupported_duplicates := true
+			for member in group.indices:
+				var tile: Dictionary = world.statics[member]
+				var cell := Vector2i(tile.x,tile.y)
+				var supported: bool = terrain.has(cell) and int(terrain[cell].z) == int(tile.z)
+				var duplicate_below := false
+				for other in cells[cell]:
+					if int(other.id) == int(tile.id) and int(other.z) < int(tile.z): duplicate_below = true
+					var data := info(world,int(other.id),true)
+					var flags := int(data.get("flags",0))
+					var top := float(other.z)+float(data.get("height",0))*(0.5 if flags & 0x400 else 1.0)
+					if flags & 0x200 and not flags & 0x40 and absf(top-float(tile.z)) < 0.01: supported = true
+				if supported or not duplicate_below: unsupported_duplicates = false
+			if unsupported_duplicates:
+				presentation_adjustments[ordinal] = {"suppress":true,"reason":"unsupported elevated duplicate of source furniture below; retained in source/map view"}
+		if group.kind != "gable": continue
+		var axis_y: bool = rule_for(int(source.id)).get("axis") == "y"
+		var plane := float(group.low.x if axis_y else group.low.y)
+		var start := int(group.low.y if axis_y else group.low.x)
+		var length := int(group.size.y if axis_y else group.size.x)
+		var candidates := {}
+		for wall in world.statics:
+			var rule := rule_for(int(wall.id))
+			if rule.get("kind") not in ["wall","window","corner"]: continue
+			if rule.get("kind") != "corner" and (rule.get("axis") == "y") != axis_y: continue
+			var top := float(wall.z)+float(info(world,int(wall.id),true).get("height",0))
+			if absf(top-float(group.min_z)) > 1: continue
+			var along := int(wall.y if axis_y else wall.x)
+			var at := int(wall.x if axis_y else wall.y)
+			if along < start or along >= start+length or absf(at-plane) > 8: continue
+			if not candidates.has(at): candidates[at] = {}
+			candidates[at][along] = true
+		var best := plane
+		var distance := INF
+		for at in candidates:
+			if candidates[at].size() < ceili(length*0.8): continue
+			if absf(at-plane) < distance:
+				distance = absf(at-plane)
+				best = float(at)
+		if distance < INF and distance > 0:
+			var offset := Vector3(best-plane,0,0) if axis_y else Vector3(0,0,best-plane)
+			presentation_adjustments[ordinal] = {"offset":offset,"reason":"source gable plane lacks supporting wall; attached to nearest parallel wall with matching top elevation and span"}
 
 func _group(indices: Array, world: Dictionary, kind: String) -> void:
 	var owner := int(indices[0])
@@ -173,6 +236,7 @@ func roof_material(kind: String) -> ShaderMaterial:
 		mat.shader = preload("res://Presentation/Roof.gdshader")
 		mat.set_shader_parameter("roof_color",Color("586573") if kind == "slate" else (Color("a06345") if kind == "clay" else Color("796344")))
 		mat.set_shader_parameter("wood",kind == "shingle")
+		mat.set_shader_parameter("ceiling_color",Color("917454"))
 		mat.set_shader_parameter("kit_texture",load("res://Art/Quaternius/Village/T_WoodTrim_BaseColor.png"))
 		roof_materials[kind] = mat
 	return roof_materials[kind]
@@ -191,6 +255,9 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 	if groups.has(ordinal) and groups[ordinal].owner != ordinal:
 		state = "group-component"
 		grouped += 1
+	elif presentation_adjustments.get(ordinal,{}).get("suppress",false) and not show_boundary_fragments:
+		state = "unsupported-duplicate"
+		contextual_suppressed += 1
 	elif kind == "roof" and roofs.tiles.get(ordinal,{}).get("boundary_fragment",false) and not show_boundary_fragments:
 		state = "boundary-fragment"
 		boundary_fragments += 1
@@ -241,7 +308,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 			"table", "bench", "counter":
 				var size: Vector2 = groups[ordinal].size if groups.has(ordinal) else Vector2.ONE
 				if kind == "bench":
-					if rule.get("axis") == "y": size.x = 0.5
+					if size.y > size.x: size.x = 0.5
 					else: size.y = 0.5
 				visual = geometry.furniture(size,kind)
 			"sign": visual = geometry.sign()
@@ -281,13 +348,14 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 			if groups.has(ordinal) and kind in ["bed","arch","gable","bench","table","counter"]:
 				var group: Dictionary = groups[ordinal]
 				visual.position += Vector3(group.low.x+group.size.x/2-float(s.x)-0.5,0,group.low.y+group.size.y/2-float(s.y)-0.5)
+			if not show_boundary_fragments: visual.position += presentation_adjustments.get(ordinal,{}).get("offset",Vector3.ZERO)
 			node.add_child(visual)
 	mapped += 1
 	node.set_meta("source_id",s.id)
 	node.set_meta("source_xyz",Vector3i(s.x,s.y,s.z))
 	node.set_meta("source_ordinal",ordinal)
 	node.set_meta("kind",kind)
-	node.set_meta("solid",kind in ["wall","window","corner","post","trim","gable","beam","arch","floor","landing","stairs","roof","door","fence","bed","table","bench","counter","rock","log"] and state not in ["group-component","boundary-fragment"])
+	node.set_meta("solid",kind in ["wall","window","corner","post","trim","gable","beam","arch","floor","landing","stairs","roof","door","fence","bed","table","bench","counter","rock","log"] and state not in ["group-component","boundary-fragment","unsupported-duplicate"])
 	node.position = Vector3(s.x-int(world.originX)+0.5,s.z*float(world.elevationScale),s.y-int(world.originY)+0.5)
 	if facade.plans.has(ordinal): node.set_meta("facade_run",facade.plans[ordinal].run)
 	var entry := {"ordinal":ordinal,"id":s.id,"xyz":[s.x,s.y,s.z],"status":state,"kind":kind,"asset":asset,"axis":rule.get("axis","x"),"confidence":rule.get("confidence","semantic")}
@@ -296,10 +364,14 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 	if roofs.tiles.has(ordinal):
 		entry.roof_joined = true
 		entry.visual_anchor_offset = rule.get("anchorOffset",[-1,-1])
+	if presentation_adjustments.has(ordinal):
+		entry.presentation_reason = presentation_adjustments[ordinal].reason
+		var adjustment: Vector3 = presentation_adjustments[ordinal].get("offset",Vector3.ZERO)
+		entry.presentation_offset = [adjustment.x,adjustment.y,adjustment.z] if not show_boundary_fragments else [0,0,0]
 	if groups.has(ordinal): entry.group_owner = groups[ordinal].owner
 	report.append(entry)
 	return node
 
 func save_report(path: String) -> void:
 	var file := FileAccess.open(path,FileAccess.WRITE)
-	file.store_string(JSON.stringify({"total":report.size(),"accounted":mapped,"group_components":grouped,"boundary_fragments":boundary_fragments,"unmapped":unresolved,"exact_original_art_matches":0,"placements":report},"\t"))
+	file.store_string(JSON.stringify({"total":report.size(),"accounted":mapped,"group_components":grouped,"boundary_fragments":boundary_fragments,"contextual_suppressed":contextual_suppressed,"unmapped":unresolved,"exact_original_art_matches":0,"placements":report},"\t"))
