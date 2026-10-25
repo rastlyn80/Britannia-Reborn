@@ -14,3 +14,5 @@
 | 9 Production | Planned | Security, load tests, backup/restore, updates and operations |
 
 Next slice: replace per-step resync overhead with an efficient authoritative elevation strategy, strengthen reconnect/replication tests, improve character presentation and classified geometry/collision visuals, and implement an item pickup/drop path. Numeric facet/file profiles, input bounds/provenance, independent map comparison and ClassicUO coexistence remain explicit debt. See PLAYABLE_POC.md for exact scope.
+
+Input/login correction: mouse capture/release and focus handling tested; controller input requires opt-in; last Windows login is encrypted and prefilled. Visual material/lighting pass improves readability; faithful architectural silhouettes, roof joins, terrain materials and character art remain explicit presentation work.

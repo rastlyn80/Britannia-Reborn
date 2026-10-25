@@ -29,6 +29,9 @@ var jump_pressed := false
 var jump_requested := false
 var camera_target_ready := false
 var coverage_path := ""
+var mouse_looking := false
+var mouse_return := Vector2.ZERO
+var controller_enabled := false
 
 func point(x: int, y: int, z: int) -> Vector3:
 	return Vector3(x - int(world.originX), z * float(world.elevationScale), y - int(world.originY))
@@ -109,7 +112,10 @@ func _ready() -> void:
 	if not coverage_path.is_empty(): reconstruction.save_report(coverage_path)
 	print("PRESENTATION COLLISION: %d triangles in chunk bodies; %d grouped source components" % [collision_builder.triangles,reconstruction.grouped])
 	var sun := DirectionalLight3D.new()
-	sun.rotation_degrees = Vector3(-55,-25,0)
+	sun.rotation_degrees = Vector3(-38,-35,0)
+	sun.light_color = Color("fff0d6")
+	sun.directional_shadow_max_distance = 100
+	sun.shadow_blur = 2.0
 	sun.light_energy = 0.95
 	sun.shadow_enabled = true
 	add_child(sun)
@@ -121,10 +127,12 @@ func _ready() -> void:
 	sky.sky_top_color = Color("638aa9")
 	sky.sky_horizon_color = Color("d5e2dd")
 	sky.ground_horizon_color = Color("d5e2dd")
+	sky.ground_bottom_color = Color("8cabb5")
 	env.environment.sky.sky_material = sky
 	env.environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	env.environment.ambient_light_color = Color("b4c7db")
-	env.environment.ambient_light_energy = 0.4
+	env.environment.ambient_light_energy = 0.55
+	env.environment.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 	add_child(env)
 	add_child(pivot)
 	pivot.position = Vector3(float(world.width)/2,0,float(world.height)/2)
@@ -157,6 +165,7 @@ func _ready() -> void:
 	add_child(game)
 	login_panel.session = game
 	canvas.add_child(login_panel)
+	login_panel.controller_toggled.connect(func(enabled: bool): controller_enabled = enabled)
 	game.entity_changed.connect(_entity_changed)
 	game.entity_removed.connect(_entity_removed)
 	game.movement_result.connect(func(accepted: bool, position: Dictionary):
@@ -165,20 +174,23 @@ func _ready() -> void:
 	game.entered.connect(func(position: Dictionary):
 		player_serial = position.serial
 		_entity_changed(player_serial,position)
-		distance = 7
+		distance = 5.5
 		boom.visual_distance = distance
 		boom.spring_length = distance
-		pitch = -0.55
+		pitch = -0.28
 		pivot.position = entity_point(position.x,position.y,position.z)+Vector3(0,1.4,0)
 		camera_target_ready = true
-		status.text = "BRITAIN / TRAMMEL\n%d source pieces accounted for\n\nWASD: move • Shift: run • Space: hop\nDrag: orbit • Wheel: zoom • B: backpack\nServer validates horizontal movement" % reconstruction.mapped
+		status.text = "BRITAIN / TRAMMEL\nWASD move / Shift run / Space hop\nRight mouse look / Wheel zoom / B backpack"
+		panel.position = Vector2(24,700)
+		status.add_theme_font_size_override("font_size",15)
+		panel.reset_size.call_deferred()
 		if position.facet != 1 or position.x < int(world.originX) or position.x >= int(world.originX)+int(world.width) or position.y < int(world.originY) or position.y >= int(world.originY)+int(world.height):
 			status.text = "Character is outside the converted Trammel crop.\nNo geography is invented beyond the crop.")
 	game.ended.connect(func():
 		for serial in avatars.keys(): _entity_removed(serial)
 		player_serial = 0)
 	status.add_theme_font_size_override("font_size",18)
-	status.text = "UO WORLD STUDIO / BRITAIN\n%s\nTrammel • x %d–%d / y %d–%d\n%d samples • %d static proxies\n\nDrag: orbit    Wheel: zoom    WASD: pan\nTab: toggle statics    R: reset    Esc: quit\nEast +X / South +Z / UO elevation × 0.2 → +Y" % [world.provenance,world.originX,int(world.originX)+int(world.width)-1,world.originY,int(world.originY)+int(world.height)-1,world.terrain.size(),world.statics.size()]
+	status.text = "UO WORLD STUDIO / BRITAIN\n%s\nTrammel â€¢ x %dâ€“%d / y %dâ€“%d\n%d samples â€¢ %d static proxies\n\nRight mouse: orbit    Wheel: zoom    WASD: pan\nTab: toggle statics    R: reset    Esc: quit\nEast +X / South +Z / UO elevation Ã— 0.2 â†’ +Y" % [world.provenance,world.originX,int(world.originX)+int(world.width)-1,world.originY,int(world.originY)+int(world.height)-1,world.terrain.size(),world.statics.size()]
 	panel.add_child(status)
 	print("VIEWER PASS: schema, coordinate transform, %d terrain samples, %d statics" % [world.terrain.size(),world.statics.size()])
 
@@ -188,13 +200,13 @@ func _process(delta: float) -> void:
 	if Input.is_physical_key_pressed(KEY_S): movement.z += 1
 	if Input.is_physical_key_pressed(KEY_A): movement.x -= 1
 	if Input.is_physical_key_pressed(KEY_D): movement.x += 1
-	var joypads := Input.get_connected_joypads()
+	var joypads: Array = Input.get_connected_joypads() if controller_enabled else []
 	if not joypads.is_empty():
 		var joy: int = joypads[0]
 		var stick := Vector2(Input.get_joy_axis(joy,JOY_AXIS_LEFT_X),Input.get_joy_axis(joy,JOY_AXIS_LEFT_Y))
-		if stick.length() > 0.2: movement += Vector3(stick.x,0,stick.y)
+		if stick.length() > 0.35: movement += Vector3(stick.x,0,stick.y)
 		var look := Vector2(Input.get_joy_axis(joy,JOY_AXIS_RIGHT_X),Input.get_joy_axis(joy,JOY_AXIS_RIGHT_Y))
-		if look.length() > 0.2:
+		if look.length() > 0.35:
 			yaw -= look.x*delta*2.0
 			pitch = clampf(pitch-look.y*delta*1.5,-1.5,0.9)
 	var focus := get_viewport().gui_get_focus_owner()
@@ -242,10 +254,34 @@ func _physics_process(delta: float) -> void:
 		jump_requested = false
 	avatar.jump.advance(delta,clearance)
 
+func stop_mouse_look() -> void:
+	if not mouse_looking: return
+	mouse_looking = false
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	get_viewport().warp_mouse(mouse_return)
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_FOCUS_OUT: stop_mouse_look()
+
+func _input(event: InputEvent) -> void:
+	# Handle release before GUI routing, including releases over a login field.
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and not event.pressed:
+		stop_mouse_look()
+	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE and mouse_looking:
+		stop_mouse_look()
+		get_viewport().set_input_as_handled()
+	if event is InputEventMouseMotion and mouse_looking:
+		yaw -= event.relative.x * 0.003
+		pitch = clampf(pitch-event.relative.y*0.003,-1.35,0.65)
+		get_viewport().set_input_as_handled()
+
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion and (Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)):
-		yaw -= event.relative.x * 0.005
-		pitch = clampf(pitch-event.relative.y*0.005,-1.5,0.9)
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		mouse_return = get_viewport().get_mouse_position()
+		mouse_looking = true
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		get_viewport().set_input_as_handled()
+
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP: distance = maxf(1.2,distance-(0.8 if game.phase == "world" else 4))
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN: distance = minf(22 if game.phase == "world" else 250,distance+(0.8 if game.phase == "world" else 4))
@@ -255,8 +291,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.keycode == KEY_TAB: diagnostics.visible = not diagnostics.visible
 		if event.keycode == KEY_R:
 			yaw = -0.45
-			pitch = -0.55 if game.phase == "world" else -0.75
-			distance = 7 if game.phase == "world" else 65
+			pitch = -0.28 if game.phase == "world" else -0.75
+			distance = 5.5 if game.phase == "world" else 65
 			pivot.position = Vector3(float(world.width)/2,0,float(world.height)/2)
 
 func _entity_changed(serial: int,position: Dictionary) -> void:

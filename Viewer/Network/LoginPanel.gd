@@ -1,5 +1,8 @@
 extends PanelContainer
 
+signal controller_toggled(enabled: bool)
+var memory := preload("res://Network/LoginMemory.gd").new()
+var remember := CheckBox.new()
 var session: Node
 var username := LineEdit.new()
 var password := LineEdit.new()
@@ -10,6 +13,7 @@ var inventory := Label.new()
 var account_controls := VBoxContainer.new()
 var character_controls := VBoxContainer.new()
 var world_controls := VBoxContainer.new()
+var controller := CheckBox.new()
 
 func button(parent: Node, title: String, action: Callable) -> Button:
 	var control := Button.new()
@@ -28,7 +32,7 @@ func _ready() -> void:
 	var content := VBoxContainer.new()
 	add_child(content)
 	var title := Label.new()
-	title.text = "BRITAIN / PLAYABLE PROOF OF CONCEPT"
+	title.text = "BRITAIN"
 	content.add_child(title)
 	content.add_child(account_controls)
 	username.placeholder_text = "Account name (new accounts created locally)"
@@ -36,15 +40,33 @@ func _ready() -> void:
 	password.secret = true
 	account_controls.add_child(username)
 	account_controls.add_child(password)
+	remember.text = "Remember login on this Windows account"
+	remember.button_pressed = true
+	account_controls.add_child(remember)
+	var saved := memory.load_login()
+	username.text = saved.get("username",OS.get_environment("UO_DEV_USER"))
+	password.text = saved.get("password",OS.get_environment("UO_DEV_PASSWORD"))
+	remember.toggled.connect(func(enabled: bool):
+		if not enabled: memory.forget())
+	button(account_controls,"Forget saved login",func():
+		memory.forget()
+		username.clear()
+		password.clear())
+	controller.text = "Enable gamepad (optional)"
+	content.add_child(controller)
+	controller.toggled.connect(func(enabled: bool): controller_toggled.emit(enabled))
 	button(account_controls,"Connect / create local account",func():
 		message.text = "Connecting to ModernUO…"
+		store_login()
 		session.connect_account(username.text,password.text)
-		password.clear()
 		password.release_focus())
 	if OS.get_environment("UO_DEV_USER") != "":
 		button(account_controls,"Use local development account",func():
 			message.text = "Connecting to ModernUO…"
-			session.connect_account(OS.get_environment("UO_DEV_USER"),OS.get_environment("UO_DEV_PASSWORD")))
+			username.text = OS.get_environment("UO_DEV_USER")
+			password.text = OS.get_environment("UO_DEV_PASSWORD")
+			store_login()
+			session.connect_account(username.text,password.text))
 	content.add_child(character_controls)
 	character_controls.hide()
 	character_controls.add_child(choices)
@@ -92,11 +114,13 @@ func _ready() -> void:
 		message.text = "Choose an existing character, or create one in Britain.")
 	session.entered.connect(func(position: Dictionary):
 		character_controls.hide()
+		controller.hide()
 		world_controls.show()
-		message.text = "Online • Trammel (%d, %d, %d)\nWASD: move • Shift: run • Space: hop\nDrag: orbit • Wheel: zoom" % [position.x,position.y,position.z])
+		reset_size.call_deferred()
+		message.text = "Online • Trammel (%d, %d, %d)\nWASD: move • Shift: run • Space: hop\nRight mouse: look • Wheel: zoom" % [position.x,position.y,position.z])
 	session.entity_changed.connect(func(serial: int,position: Dictionary):
 		if serial == session.player.serial:
-			message.text = "Online • Trammel (%d, %d, %d)\nWASD: move • Shift: run • Space: hop\nDrag: orbit • Wheel: zoom" % [position.x,position.y,position.z])
+			message.text = "Online • Trammel (%d, %d, %d)\nWASD: move • Shift: run • Space: hop\nRight mouse: look • Wheel: zoom" % [position.x,position.y,position.z])
 	session.interaction_confirmed.connect(func(_description: String): inventory.text = "Backpack opened — server confirmed.")
 	session.inventory_received.connect(func(items: Array):
 		inventory.text = "BACKPACK • %d items\n" % items.size()
@@ -106,5 +130,10 @@ func _ready() -> void:
 	session.failed.connect(func(reason: String): message.text = reason)
 	session.ended.connect(func():
 		account_controls.show()
+		controller.show()
 		character_controls.hide()
 		world_controls.hide())
+
+func store_login() -> void:
+	if remember.button_pressed and not memory.save_login(username.text,password.text):
+		message.text = "Could not save this login securely on Windows."

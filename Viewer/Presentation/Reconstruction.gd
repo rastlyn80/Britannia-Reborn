@@ -6,6 +6,7 @@ var catalog: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res:/
 var scenes := {}
 var bounds := {}
 var roof_materials := {}
+var architecture_materials := {}
 var mapped := 0
 var unresolved := 0
 var grouped := 0
@@ -113,6 +114,21 @@ func fitted(path: String, size: Vector3) -> Node3D:
 				mat.vertex_color_use_as_albedo = false
 				if mat.resource_name == "Leaves_TwistedTree": mat.albedo_texture = load("res://Art/Quaternius/Nature/Leaves_NormalTree_C.png")
 				mesh.set_surface_override_material(surface,mat)
+	if path.begins_with("Village/"):
+		for mesh in model.find_children("*","MeshInstance3D",true,false):
+			for surface in mesh.mesh.get_surface_count():
+				var original: Material = mesh.get_active_material(surface)
+				if not original is StandardMaterial3D: continue
+				var label := original.resource_name.to_lower()
+				if not ("wood" in label or "plaster" in label or "brick" in label or "rock" in label): continue
+				var key: int = original.get_instance_id()
+				if not architecture_materials.has(key):
+					var styled := ShaderMaterial.new()
+					styled.shader = preload("res://Presentation/Architecture.gdshader")
+					styled.set_shader_parameter("source_texture",original.albedo_texture)
+					styled.set_shader_parameter("palette",Color("66523d") if "wood" in label else (Color("c4b89b") if "plaster" in label else Color("85867b")))
+					architecture_materials[key] = styled
+				mesh.set_surface_override_material(surface,architecture_materials[key])
 	var box: AABB = bounds[path]
 	offset.scale = size/box.size
 	offset.position = -Vector3(box.get_center().x,box.position.y,box.get_center().z)*offset.scale

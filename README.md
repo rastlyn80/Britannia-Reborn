@@ -32,3 +32,9 @@ The client requests a classic resync after every accepted move to obtain exact e
 Selected CC0 art and bundled notices/hashes are in Viewer/Art/Quaternius and Viewer/Art/Kenney. Reproduce with scripts/fetch-art.ps1, scripts/prepare-art.ps1, scripts/prepare-furniture.ps1 and scripts/verify.ps1. Archives are SHA-256 pinned; publisher updates require review. Reconvert the crop with scripts/prepare-play-world.ps1 to include tiledata metadata. See docs/GRAPHICS_PASS.md for current scope and evidence; docs/ART_AND_MOVEMENT.md records the earlier baseline.
 
 See [audit](docs/REPOSITORY_AUDIT.md), [roadmap](docs/ROADMAP.md), [progress](docs/PROGRESS.md) and [testing](docs/TESTING.md). Logs: outputs/validation. Historical prototype instructions: docs/PROTOTYPE_README.md.
+
+### Camera and remembered login
+
+Hold the **right mouse button** and move the mouse to look around; release to use the interface. The wheel zooms. Escape while looking or switching windows releases the pointer. Gamepads are disabled until enabled on the login screen.
+
+The latest submitted username/password are restored automatically on Windows. The password stays masked and is encrypted for the current Windows user in the ignored local Godot user-data directory. Use **Forget saved login** to remove it, or untick **Remember login**. With no saved login, the launcher prefills the existing development account. Secure remembered credentials are currently Windows-only. Restart the viewer after updating.

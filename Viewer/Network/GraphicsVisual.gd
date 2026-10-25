@@ -48,6 +48,15 @@ func start() -> void:
 		target_y = 1594 if absi(origin.y-1589) < 2 else 1589
 		movement_key = KEY_S if origin.y < target_y else KEY_W
 		print("LIVE START ",position," target corridor y ",target_y)
+		if "--preview-only" in OS.get_cmdline_user_args():
+			phase = "preview"
+			phase_time = 0
+			scene.yaw = 0.3
+			return
+		if origin.x != 1600:
+			push_error("Live traversal check requires the x=1600 test corridor; use -PreviewOnly for the current player location")
+			quit(1)
+			return
 		phase = "running"
 		scene.yaw = 0
 		key(KEY_SHIFT,true)
@@ -60,7 +69,7 @@ func _process(delta: float) -> bool:
 	if not is_instance_valid(scene): return false
 	phase_time += delta
 	if Time.get_ticks_msec()-started > 30000:
-		push_error("Graphics integration timed out in phase "+phase)
+		push_error("Graphics integration timed out in phase "+phase+" at "+str(scene.game.player)+" accepted "+str(accepted))
 		quit(1)
 	if phase == "running":
 		var current := Vector2i(scene.game.player.x,scene.game.player.y)
@@ -105,6 +114,15 @@ func _process(delta: float) -> bool:
 				quit(1)
 			else:
 				print("GRAPHICS LIVE PASS: accepted server run, real corridor camera obstruction, keyboard jump/apex/landing; peak ",jump_peak)
-				scene.game.close()
-				quit()
+				scene.distance = 5.5
+				scene.pitch = -0.28
+				phase = "preview"
+				phase_time = 0
+	elif phase == "preview" and phase_time > 0.8:
+		snapshot("updated-street.png")
+		phase = "finished"
+		phase_time = 0
+	elif phase == "finished" and phase_time > 0.4:
+		scene.game.close()
+		quit()
 	return false
