@@ -1,0 +1,21 @@
+{
+  "classicuo": {
+    "url": "https://github.com/ClassicUO/ClassicUO",
+    "role": "reference only; no source linked",
+    "license": "BSD-2-Clause",
+    "path": "work/reference/ClassicUO",
+    "revision": "ee79d7ebc1cc0e53ff84fe6cae17d389e2737f93"
+  },
+  "modernuo": {
+    "url": "https://github.com/modernuo/ModernUO",
+    "role": "unmodified authoritative server source",
+    "license": "GPL-3.0-or-later",
+    "path": "Server/ModernUO",
+    "revision": "ab59efea86fd9e399d261bed9d188ab4d95ad4c2"
+  },
+  "tools": {
+    "serverSdk": "10.0.201",
+    "converterSdk": "8.0.426",
+    "godot": "4.7.2-stable"
+  }
+}

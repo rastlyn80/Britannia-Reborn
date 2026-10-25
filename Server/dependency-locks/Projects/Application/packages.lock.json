@@ -1,0 +1,282 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net10.0": {
+      "Nerdbank.GitVersioning": {
+        "type": "Direct",
+        "requested": "[3.10.94, )",
+        "resolved": "3.10.94",
+        "contentHash": "sn6gFIx6bwFj3Me0XGmek3gLZi/MZC8C4tRLwslXGeBcXcVxvFpZyDrQA93G8TiYgxTS7J7triKB7hj5wXzSxA=="
+      },
+      "Serilog": {
+        "type": "Direct",
+        "requested": "[4.4.0, )",
+        "resolved": "4.4.0",
+        "contentHash": "ZC6Le3rr4TVJJjS4KsQAesxeF1EhW9qcZmmG7eP5Y2G3+gTGkJEUXkq4+tZNPtyp05I0wWOxnIjwtxFweJsObw=="
+      },
+      "Serilog.Sinks.Async": {
+        "type": "Direct",
+        "requested": "[2.1.0, )",
+        "resolved": "2.1.0",
+        "contentHash": "SnmRknWsSMgyo9wDXeZZCqSp48kkQYy44taSM6vcpxfiRICzSf09oLKEmVr0RCwQnfd8mJQ2WNN6nvhqf0RowQ==",
+        "dependencies": {
+          "Serilog": "4.1.0"
+        }
+      },
+      "Serilog.Sinks.Console": {
+        "type": "Direct",
+        "requested": "[6.1.1, )",
+        "resolved": "6.1.1",
+        "contentHash": "8jbqgjUyZlfCuSTaJk6lOca465OndqOz3KZP6Cryt/IqZYybyBu7GP0fE/AXBzrrQB3EBmQntBFAvMVz1COvAA==",
+        "dependencies": {
+          "Serilog": "4.0.0"
+        }
+      },
+      "Argon2.Bindings": {
+        "type": "Transitive",
+        "resolved": "1.20.0",
+        "contentHash": "T9ZoNV512CKJ67B1nGcuVtMcsRz62O5RkMB5B2gte2sUZGY2VrPH0GTSnfQHiuB+5MFclMNWPjlKUOF6yGUMiA=="
+      },
+      "BouncyCastle.Cryptography": {
+        "type": "Transitive",
+        "resolved": "2.7.0",
+        "contentHash": "U+12df8UEWHgBi04YVf/Lgi2dy3SItlIYvHjjEVa/BngCQIzDCDRBk50DDByCfDvSbe5pRNFr3b7UrVK2kMcLw=="
+      },
+      "CommunityToolkit.HighPerformance": {
+        "type": "Transitive",
+        "resolved": "8.4.2",
+        "contentHash": "2hmtrrU18x6NL3mbuAqwy0KpnoEEJOuK6sH5RKQfD/jHijn2pqvqBUC7WGy9dgNBL9BDA7eOC0kirsNPMp2f4Q=="
+      },
+      "IORingGroup": {
+        "type": "Transitive",
+        "resolved": "1.0.13",
+        "contentHash": "5ZE8jdvu5/18+g85z6LwF5uwgo2TWAq2xY4WmYmQ0YzbkShAakW6djyprmjxqib/VxwT8HW8CV1F39n7Izen+w=="
+      },
+      "LibDeflate.Bindings": {
+        "type": "Transitive",
+        "resolved": "1.0.4",
+        "contentHash": "R2nOf4bCJYSKtcyMhap1lloLucLIWrCxnQOHPUrXkxoNtdV+lBw2DiVE9cOPCMRNtk9GrBDAPJx9q7puizJb5w=="
+      },
+      "MailKit": {
+        "type": "Transitive",
+        "resolved": "4.18.2",
+        "contentHash": "ofqddpSbdrD00NqTD0ZyVfKvrl/ZZ70VFFEQ+DuR8r8CdbY3U02/sdb0CSQBNUqJifsXfVHIwRe1ToR2MvJJkw==",
+        "dependencies": {
+          "MimeKit": "4.18.2"
+        }
+      },
+      "Microsoft.Extensions.FileSystemGlobbing": {
+        "type": "Transitive",
+        "resolved": "10.0.13",
+        "contentHash": "vQVzmAbnzlhXSXA2caYnlxtG9GXxEwtj5bODiWLu06A6iqeJmfBtlfKjuOSJGRy0/CFaNUrm7u9nxEUlljc2Rg=="
+      },
+      "MimeKit": {
+        "type": "Transitive",
+        "resolved": "4.18.2",
+        "contentHash": "aYnwCCq+ZgQIsnHSJd3TMeGqf/Rz/9jYEItXpOoG3E2REOCZtLishwBSDFl2wQ/W2SB5wBsvE38DgHZ0IEyz4Q==",
+        "dependencies": {
+          "BouncyCastle.Cryptography": "2.7.0",
+          "System.Security.Cryptography.Pkcs": "10.0.13"
+        }
+      },
+      "ModernUO.CodeGeneratedEvents.Annotations": {
+        "type": "Transitive",
+        "resolved": "1.0.0",
+        "contentHash": "5ubZ6KteYbSOUDR8SVlnaZLLWAAOwW+1cxg4oIZKWBB4D+tgUkFV4aZS7Loh+FJuCZPqw6/2RvG50srrXKxp0A=="
+      },
+      "ModernUO.Serialization.Annotations": {
+        "type": "Transitive",
+        "resolved": "4.3.0",
+        "contentHash": "HhxzhuNwFta/FgDxr5eqnozC4hMycTpxXos/Cs5evRZdTXqbhtJjbIB5pcKecINf13Bz99/P9hYiJBo3yS2yPA=="
+      },
+      "System.IO.Hashing": {
+        "type": "Transitive",
+        "resolved": "10.0.13",
+        "contentHash": "ZlcywyQ7FJmgOV2nctdfOEPGS0kRK8T2CdOoPr6F4HPYpmjSo6GQfj3yTyOzNO6B+2U84/JKSPkJJMWqLmVsMw=="
+      },
+      "System.Security.Cryptography.Pkcs": {
+        "type": "Transitive",
+        "resolved": "10.0.13",
+        "contentHash": "a+EovgC1fBnwdlQ6cn3j4JFBfKqiFaFvoAhjisOoSvazLAcIznaBzPQP0oYnvccmeXfqUH1KebVZOxSeH6rMaw=="
+      },
+      "ZstdNet": {
+        "type": "Transitive",
+        "resolved": "1.5.7",
+        "contentHash": "BpQLIV4HtklLEkCkCjepKTxxy/dcBNSrEfh5LPcIjpPaN2Cmuwg1TUVCWhn5zGn4z3Aur6V9taWdvn+BJzmEhw=="
+      },
+      "logger": {
+        "type": "Project",
+        "dependencies": {
+          "Serilog": "[4.4.0, )",
+          "Serilog.Sinks.Async": "[2.1.0, )",
+          "Serilog.Sinks.Console": "[6.1.1, )"
+        }
+      },
+      "server": {
+        "type": "Project",
+        "dependencies": {
+          "CommunityToolkit.HighPerformance": "[8.4.2, )",
+          "IORingGroup": "[1.0.13, )",
+          "LibDeflate.Bindings": "[1.0.4, )",
+          "Logger": "[1.0.0, )",
+          "ModernUO.Serialization.Annotations": "[4.3.0, )",
+          "Serilog": "[4.4.0, )",
+          "Serilog.Sinks.Async": "[2.1.0, )",
+          "Serilog.Sinks.Console": "[6.1.1, )",
+          "System.IO.Hashing": "[10.0.13, )"
+        }
+      },
+      "uocontent": {
+        "type": "Project",
+        "dependencies": {
+          "Argon2.Bindings": "[1.20.0, )",
+          "CommunityToolkit.HighPerformance": "[8.4.2, )",
+          "LibDeflate.Bindings": "[1.0.4, )",
+          "Logger": "[1.0.0, )",
+          "MailKit": "[4.18.2, )",
+          "Microsoft.Extensions.FileSystemGlobbing": "[10.0.13, )",
+          "ModernUO.CodeGeneratedEvents.Annotations": "[1.0.0, )",
+          "ModernUO.Serialization.Annotations": "[4.3.0, )",
+          "Serilog": "[4.4.0, )",
+          "Serilog.Sinks.Async": "[2.1.0, )",
+          "Serilog.Sinks.Console": "[6.1.1, )",
+          "System.IO.Hashing": "[10.0.13, )",
+          "System.Security.Cryptography.Pkcs": "[10.0.13, )",
+          "ZstdNet": "[1.5.7, )"
+        }
+      }
+    },
+    "net10.0/linux-arm64": {
+      "Argon2.Bindings": {
+        "type": "Transitive",
+        "resolved": "1.20.0",
+        "contentHash": "T9ZoNV512CKJ67B1nGcuVtMcsRz62O5RkMB5B2gte2sUZGY2VrPH0GTSnfQHiuB+5MFclMNWPjlKUOF6yGUMiA=="
+      },
+      "LibDeflate.Bindings": {
+        "type": "Transitive",
+        "resolved": "1.0.4",
+        "contentHash": "R2nOf4bCJYSKtcyMhap1lloLucLIWrCxnQOHPUrXkxoNtdV+lBw2DiVE9cOPCMRNtk9GrBDAPJx9q7puizJb5w=="
+      },
+      "System.Security.Cryptography.Pkcs": {
+        "type": "Transitive",
+        "resolved": "10.0.13",
+        "contentHash": "a+EovgC1fBnwdlQ6cn3j4JFBfKqiFaFvoAhjisOoSvazLAcIznaBzPQP0oYnvccmeXfqUH1KebVZOxSeH6rMaw=="
+      },
+      "ZstdNet": {
+        "type": "Transitive",
+        "resolved": "1.5.7",
+        "contentHash": "BpQLIV4HtklLEkCkCjepKTxxy/dcBNSrEfh5LPcIjpPaN2Cmuwg1TUVCWhn5zGn4z3Aur6V9taWdvn+BJzmEhw=="
+      }
+    },
+    "net10.0/linux-x64": {
+      "Argon2.Bindings": {
+        "type": "Transitive",
+        "resolved": "1.20.0",
+        "contentHash": "T9ZoNV512CKJ67B1nGcuVtMcsRz62O5RkMB5B2gte2sUZGY2VrPH0GTSnfQHiuB+5MFclMNWPjlKUOF6yGUMiA=="
+      },
+      "LibDeflate.Bindings": {
+        "type": "Transitive",
+        "resolved": "1.0.4",
+        "contentHash": "R2nOf4bCJYSKtcyMhap1lloLucLIWrCxnQOHPUrXkxoNtdV+lBw2DiVE9cOPCMRNtk9GrBDAPJx9q7puizJb5w=="
+      },
+      "System.Security.Cryptography.Pkcs": {
+        "type": "Transitive",
+        "resolved": "10.0.13",
+        "contentHash": "a+EovgC1fBnwdlQ6cn3j4JFBfKqiFaFvoAhjisOoSvazLAcIznaBzPQP0oYnvccmeXfqUH1KebVZOxSeH6rMaw=="
+      },
+      "ZstdNet": {
+        "type": "Transitive",
+        "resolved": "1.5.7",
+        "contentHash": "BpQLIV4HtklLEkCkCjepKTxxy/dcBNSrEfh5LPcIjpPaN2Cmuwg1TUVCWhn5zGn4z3Aur6V9taWdvn+BJzmEhw=="
+      }
+    },
+    "net10.0/osx-arm64": {
+      "Argon2.Bindings": {
+        "type": "Transitive",
+        "resolved": "1.20.0",
+        "contentHash": "T9ZoNV512CKJ67B1nGcuVtMcsRz62O5RkMB5B2gte2sUZGY2VrPH0GTSnfQHiuB+5MFclMNWPjlKUOF6yGUMiA=="
+      },
+      "LibDeflate.Bindings": {
+        "type": "Transitive",
+        "resolved": "1.0.4",
+        "contentHash": "R2nOf4bCJYSKtcyMhap1lloLucLIWrCxnQOHPUrXkxoNtdV+lBw2DiVE9cOPCMRNtk9GrBDAPJx9q7puizJb5w=="
+      },
+      "System.Security.Cryptography.Pkcs": {
+        "type": "Transitive",
+        "resolved": "10.0.13",
+        "contentHash": "a+EovgC1fBnwdlQ6cn3j4JFBfKqiFaFvoAhjisOoSvazLAcIznaBzPQP0oYnvccmeXfqUH1KebVZOxSeH6rMaw=="
+      },
+      "ZstdNet": {
+        "type": "Transitive",
+        "resolved": "1.5.7",
+        "contentHash": "BpQLIV4HtklLEkCkCjepKTxxy/dcBNSrEfh5LPcIjpPaN2Cmuwg1TUVCWhn5zGn4z3Aur6V9taWdvn+BJzmEhw=="
+      }
+    },
+    "net10.0/osx-x64": {
+      "Argon2.Bindings": {
+        "type": "Transitive",
+        "resolved": "1.20.0",
+        "contentHash": "T9ZoNV512CKJ67B1nGcuVtMcsRz62O5RkMB5B2gte2sUZGY2VrPH0GTSnfQHiuB+5MFclMNWPjlKUOF6yGUMiA=="
+      },
+      "LibDeflate.Bindings": {
+        "type": "Transitive",
+        "resolved": "1.0.4",
+        "contentHash": "R2nOf4bCJYSKtcyMhap1lloLucLIWrCxnQOHPUrXkxoNtdV+lBw2DiVE9cOPCMRNtk9GrBDAPJx9q7puizJb5w=="
+      },
+      "System.Security.Cryptography.Pkcs": {
+        "type": "Transitive",
+        "resolved": "10.0.13",
+        "contentHash": "a+EovgC1fBnwdlQ6cn3j4JFBfKqiFaFvoAhjisOoSvazLAcIznaBzPQP0oYnvccmeXfqUH1KebVZOxSeH6rMaw=="
+      },
+      "ZstdNet": {
+        "type": "Transitive",
+        "resolved": "1.5.7",
+        "contentHash": "BpQLIV4HtklLEkCkCjepKTxxy/dcBNSrEfh5LPcIjpPaN2Cmuwg1TUVCWhn5zGn4z3Aur6V9taWdvn+BJzmEhw=="
+      }
+    },
+    "net10.0/win-arm64": {
+      "Argon2.Bindings": {
+        "type": "Transitive",
+        "resolved": "1.20.0",
+        "contentHash": "T9ZoNV512CKJ67B1nGcuVtMcsRz62O5RkMB5B2gte2sUZGY2VrPH0GTSnfQHiuB+5MFclMNWPjlKUOF6yGUMiA=="
+      },
+      "LibDeflate.Bindings": {
+        "type": "Transitive",
+        "resolved": "1.0.4",
+        "contentHash": "R2nOf4bCJYSKtcyMhap1lloLucLIWrCxnQOHPUrXkxoNtdV+lBw2DiVE9cOPCMRNtk9GrBDAPJx9q7puizJb5w=="
+      },
+      "System.Security.Cryptography.Pkcs": {
+        "type": "Transitive",
+        "resolved": "10.0.13",
+        "contentHash": "a+EovgC1fBnwdlQ6cn3j4JFBfKqiFaFvoAhjisOoSvazLAcIznaBzPQP0oYnvccmeXfqUH1KebVZOxSeH6rMaw=="
+      },
+      "ZstdNet": {
+        "type": "Transitive",
+        "resolved": "1.5.7",
+        "contentHash": "BpQLIV4HtklLEkCkCjepKTxxy/dcBNSrEfh5LPcIjpPaN2Cmuwg1TUVCWhn5zGn4z3Aur6V9taWdvn+BJzmEhw=="
+      }
+    },
+    "net10.0/win-x64": {
+      "Argon2.Bindings": {
+        "type": "Transitive",
+        "resolved": "1.20.0",
+        "contentHash": "T9ZoNV512CKJ67B1nGcuVtMcsRz62O5RkMB5B2gte2sUZGY2VrPH0GTSnfQHiuB+5MFclMNWPjlKUOF6yGUMiA=="
+      },
+      "LibDeflate.Bindings": {
+        "type": "Transitive",
+        "resolved": "1.0.4",
+        "contentHash": "R2nOf4bCJYSKtcyMhap1lloLucLIWrCxnQOHPUrXkxoNtdV+lBw2DiVE9cOPCMRNtk9GrBDAPJx9q7puizJb5w=="
+      },
+      "System.Security.Cryptography.Pkcs": {
+        "type": "Transitive",
+        "resolved": "10.0.13",
+        "contentHash": "a+EovgC1fBnwdlQ6cn3j4JFBfKqiFaFvoAhjisOoSvazLAcIznaBzPQP0oYnvccmeXfqUH1KebVZOxSeH6rMaw=="
+      },
+      "ZstdNet": {
+        "type": "Transitive",
+        "resolved": "1.5.7",
+        "contentHash": "BpQLIV4HtklLEkCkCjepKTxxy/dcBNSrEfh5LPcIjpPaN2Cmuwg1TUVCWhn5zGn4z3Aur6V9taWdvn+BJzmEhw=="
+      }
+    }
+  }
+}

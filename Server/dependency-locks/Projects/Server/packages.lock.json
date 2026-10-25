@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net10.0": {
+      "CommunityToolkit.HighPerformance": {
+        "type": "Direct",
+        "requested": "[8.4.2, )",
+        "resolved": "8.4.2",
+        "contentHash": "2hmtrrU18x6NL3mbuAqwy0KpnoEEJOuK6sH5RKQfD/jHijn2pqvqBUC7WGy9dgNBL9BDA7eOC0kirsNPMp2f4Q=="
+      },
+      "IORingGroup": {
+        "type": "Direct",
+        "requested": "[1.0.13, )",
+        "resolved": "1.0.13",
+        "contentHash": "5ZE8jdvu5/18+g85z6LwF5uwgo2TWAq2xY4WmYmQ0YzbkShAakW6djyprmjxqib/VxwT8HW8CV1F39n7Izen+w=="
+      },
+      "LibDeflate.Bindings": {
+        "type": "Direct",
+        "requested": "[1.0.4, )",
+        "resolved": "1.0.4",
+        "contentHash": "R2nOf4bCJYSKtcyMhap1lloLucLIWrCxnQOHPUrXkxoNtdV+lBw2DiVE9cOPCMRNtk9GrBDAPJx9q7puizJb5w=="
+      },
+      "ModernUO.Serialization.Annotations": {
+        "type": "Direct",
+        "requested": "[4.3.0, )",
+        "resolved": "4.3.0",
+        "contentHash": "HhxzhuNwFta/FgDxr5eqnozC4hMycTpxXos/Cs5evRZdTXqbhtJjbIB5pcKecINf13Bz99/P9hYiJBo3yS2yPA=="
+      },
+      "ModernUO.Serialization.Generator": {
+        "type": "Direct",
+        "requested": "[4.3.0, )",
+        "resolved": "4.3.0",
+        "contentHash": "XWjh63nIzRwbsWLM7lRqVND/qyTe2UYxiy6PJu3fWwoYClKPFQXorf+ie/MkJXVzWGMx8dlQUxHsjm0Ma2ukJw=="
+      },
+      "Nerdbank.GitVersioning": {
+        "type": "Direct",
+        "requested": "[3.10.94, )",
+        "resolved": "3.10.94",
+        "contentHash": "sn6gFIx6bwFj3Me0XGmek3gLZi/MZC8C4tRLwslXGeBcXcVxvFpZyDrQA93G8TiYgxTS7J7triKB7hj5wXzSxA=="
+      },
+      "Serilog": {
+        "type": "Direct",
+        "requested": "[4.4.0, )",
+        "resolved": "4.4.0",
+        "contentHash": "ZC6Le3rr4TVJJjS4KsQAesxeF1EhW9qcZmmG7eP5Y2G3+gTGkJEUXkq4+tZNPtyp05I0wWOxnIjwtxFweJsObw=="
+      },
+      "Serilog.Sinks.Async": {
+        "type": "Direct",
+        "requested": "[2.1.0, )",
+        "resolved": "2.1.0",
+        "contentHash": "SnmRknWsSMgyo9wDXeZZCqSp48kkQYy44taSM6vcpxfiRICzSf09oLKEmVr0RCwQnfd8mJQ2WNN6nvhqf0RowQ==",
+        "dependencies": {
+          "Serilog": "4.1.0"
+        }
+      },
+      "Serilog.Sinks.Console": {
+        "type": "Direct",
+        "requested": "[6.1.1, )",
+        "resolved": "6.1.1",
+        "contentHash": "8jbqgjUyZlfCuSTaJk6lOca465OndqOz3KZP6Cryt/IqZYybyBu7GP0fE/AXBzrrQB3EBmQntBFAvMVz1COvAA==",
+        "dependencies": {
+          "Serilog": "4.0.0"
+        }
+      },
+      "System.IO.Hashing": {
+        "type": "Direct",
+        "requested": "[10.0.13, )",
+        "resolved": "10.0.13",
+        "contentHash": "ZlcywyQ7FJmgOV2nctdfOEPGS0kRK8T2CdOoPr6F4HPYpmjSo6GQfj3yTyOzNO6B+2U84/JKSPkJJMWqLmVsMw=="
+      },
+      "logger": {
+        "type": "Project",
+        "dependencies": {
+          "Serilog": "[4.4.0, )",
+          "Serilog.Sinks.Async": "[2.1.0, )",
+          "Serilog.Sinks.Console": "[6.1.1, )"
+        }
+      }
+    },
+    "net10.0/linux-arm64": {
+      "LibDeflate.Bindings": {
+        "type": "Direct",
+        "requested": "[1.0.4, )",
+        "resolved": "1.0.4",
+        "contentHash": "R2nOf4bCJYSKtcyMhap1lloLucLIWrCxnQOHPUrXkxoNtdV+lBw2DiVE9cOPCMRNtk9GrBDAPJx9q7puizJb5w=="
+      }
+    },
+    "net10.0/linux-x64": {
+      "LibDeflate.Bindings": {
+        "type": "Direct",
+        "requested": "[1.0.4, )",
+        "resolved": "1.0.4",
+        "contentHash": "R2nOf4bCJYSKtcyMhap1lloLucLIWrCxnQOHPUrXkxoNtdV+lBw2DiVE9cOPCMRNtk9GrBDAPJx9q7puizJb5w=="
+      }
+    },
+    "net10.0/osx-arm64": {
+      "LibDeflate.Bindings": {
+        "type": "Direct",
+        "requested": "[1.0.4, )",
+        "resolved": "1.0.4",
+        "contentHash": "R2nOf4bCJYSKtcyMhap1lloLucLIWrCxnQOHPUrXkxoNtdV+lBw2DiVE9cOPCMRNtk9GrBDAPJx9q7puizJb5w=="
+      }
+    },
+    "net10.0/osx-x64": {
+      "LibDeflate.Bindings": {
+        "type": "Direct",
+        "requested": "[1.0.4, )",
+        "resolved": "1.0.4",
+        "contentHash": "R2nOf4bCJYSKtcyMhap1lloLucLIWrCxnQOHPUrXkxoNtdV+lBw2DiVE9cOPCMRNtk9GrBDAPJx9q7puizJb5w=="
+      }
+    },
+    "net10.0/win-arm64": {
+      "LibDeflate.Bindings": {
+        "type": "Direct",
+        "requested": "[1.0.4, )",
+        "resolved": "1.0.4",
+        "contentHash": "R2nOf4bCJYSKtcyMhap1lloLucLIWrCxnQOHPUrXkxoNtdV+lBw2DiVE9cOPCMRNtk9GrBDAPJx9q7puizJb5w=="
+      }
+    },
+    "net10.0/win-x64": {
+      "LibDeflate.Bindings": {
+        "type": "Direct",
+        "requested": "[1.0.4, )",
+        "resolved": "1.0.4",
+        "contentHash": "R2nOf4bCJYSKtcyMhap1lloLucLIWrCxnQOHPUrXkxoNtdV+lBw2DiVE9cOPCMRNtk9GrBDAPJx9q7puizJb5w=="
+      }
+    }
+  }
+}
