@@ -2,8 +2,21 @@ extends Node3D
 var fixture_positions: Array[Vector3] = []
 var fixture_spans: Array[Dictionary] = []
 var environment: Environment
+var sun: DirectionalLight3D
+var sky_material: ShaderMaterial
+var server_environment := {}
+var cloud_clock := 0.0
+var precipitation: MultiMeshInstance3D
+var shelter_check := 0.0
+var sheltered := false
+var visual_weather := 0.0
+var visual_light := 0.0
+var visual_minute := 900.0
+var frozen := false
+var sky_tick := 0.0
+
 func configure(scene: Node3D,world: Dictionary,reconstruction,map_view: bool) -> void:
- var sun := DirectionalLight3D.new()
+ sun = DirectionalLight3D.new()
  sun.name = "AfternoonSun"
  sun.rotation_degrees = Vector3(-43,-32,0)
  sun.light_color = Color("ffebce")
@@ -19,12 +32,23 @@ func configure(scene: Node3D,world: Dictionary,reconstruction,map_view: bool) ->
  node.environment = environment
  environment.background_mode = Environment.BG_SKY
  environment.sky = Sky.new()
- var sky := ProceduralSkyMaterial.new()
- sky.sky_top_color = Color("688b9f")
- sky.sky_horizon_color = Color("c7d2ca")
- sky.ground_horizon_color = Color("c7d2ca")
- sky.ground_bottom_color = Color("727765")
- environment.sky.sky_material = sky
+ sky_material = ShaderMaterial.new()
+ sky_material.shader = preload("res://Presentation/Atmosphere.gdshader")
+ var noise := FastNoiseLite.new()
+ noise.seed = 4171
+ noise.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
+ noise.frequency = 0.012
+ noise.fractal_octaves = 5
+ var cloud_texture := NoiseTexture2D.new()
+ cloud_texture.width = 512
+ cloud_texture.height = 512
+ cloud_texture.seamless = true
+ cloud_texture.generate_mipmaps = true
+ cloud_texture.noise = noise
+ sky_material.set_shader_parameter("cloud_noise",cloud_texture)
+ environment.sky.sky_material = sky_material
+ frozen = map_view
+ _apply_atmosphere(900.0,0.0,0.0,0.0)
  environment.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
  environment.ambient_light_color = Color("c6d4dc")
  environment.ambient_light_energy = 0.55
@@ -52,6 +76,7 @@ func configure(scene: Node3D,world: Dictionary,reconstruction,map_view: bool) ->
  environment.fog_aerial_perspective = 0.22
  add_child(node)
  if map_view: return
+ _create_precipitation()
  # Use sky/SSR reflections; Godot 4.7 reflection atlases retain seven texture
  # RIDs on scene teardown (upstream #122498). Do not allocate probe atlases.
  # Derive client-only fixtures from existing indoor furniture, never map coordinates.
@@ -125,3 +150,103 @@ func _fixture(at: Vector3, cable: float) -> void:
  bulb.material_override = material
  for mesh in housing.get_children():
   if mesh is MeshInstance3D: mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+
+func receive_server_environment(state: Dictionary) -> void:
+ server_environment = state.duplicate()
+
+func reset_server_environment() -> void:
+ server_environment.clear()
+ visual_weather = 0.0
+ visual_light = 0.0
+ visual_minute = 900.0
+ if sun and sky_material: _apply_atmosphere(900.0,0.0,0.0,0.0)
+ if precipitation: precipitation.visible = false
+
+static func weather_amount(state: Dictionary) -> float:
+ # Upstream emits 0=rain, 2=snow, FE/FF=clear. Unknown types cannot invent storms.
+ return clampf(float(state.get("density",0))/70.0,0.0,1.0) if int(state.get("weather_type",255)) in [0,2] else 0.0
+
+static func regional_minute(state: Dictionary, now: int) -> float:
+ if not state.has("minute_of_day"): return 900.0
+ # Extrapolate only between recent server samples. A lost bridge freezes after 30s.
+ var elapsed := clampf(float(now-int(state.get("sample_msec",now)))/1000.0,0.0,30.0)
+ return fposmod(float(state.minute_of_day)+elapsed/float(state.seconds_per_minute),1440.0)
+
+func _process(delta: float) -> void:
+ if not sky_material or frozen: return
+ cloud_clock += delta
+ var minute := regional_minute(server_environment,Time.get_ticks_msec())
+ var day_delta := fposmod(minute-visual_minute+720.0,1440.0)-720.0
+ visual_minute = fposmod(visual_minute+day_delta*(1.0-exp(-delta*1.8)),1440.0)
+ visual_weather = lerpf(visual_weather,weather_amount(server_environment),1.0-exp(-delta*0.65))
+ visual_light = lerpf(visual_light,float(server_environment.get("global_light",0)),1.0-exp(-delta*2.0))
+ sky_tick -= delta
+ if sky_tick <= 0.0:
+  sky_tick = 0.5
+  _apply_atmosphere(visual_minute,visual_weather,visual_light,float(server_environment.get("personal_light",0)))
+ _animate_precipitation(delta)
+
+func _apply_atmosphere(minute: float, wet: float, level: float, personal: float) -> void:
+ # Match upstream's unusually long day: dawn 04-06, daylight 06-22, dusk 22-24.
+ var hour := minute/60.0
+ var day := smoothstep(4.0,6.0,hour)*(1.0-smoothstep(22.0,24.0,hour))
+ var phase := clampf((hour-5.0)/18.0,0.0,1.0)*PI
+ var direction := Vector3(cos(phase),maxf(0.08,sin(phase)),0.35).normalized()
+ sun.rotation = Vector3(-asin(direction.y),atan2(direction.x,direction.z),0)
+ sun.light_color = Color("ffb978").lerp(Color("fff0d9"),smoothstep(0.05,0.6,direction.y))
+ var visibility := clampf(1.0-level/32.0,0.12,1.0)
+ sun.light_energy = day*1.2*visibility*(1.0-wet*0.65)
+ environment.ambient_light_energy = lerpf(0.24,0.58,day)*visibility
+ # Personal light improves local readability; it never changes astronomical time.
+ environment.tonemap_exposure = 1.05+clampf(personal/31.0,0.0,1.0)*0.25
+ environment.fog_light_color = Color("172238").lerp(Color("b4c9d5"),day).lerp(Color("758593"),wet*0.6)
+ environment.fog_density = 0.0015+wet*0.009
+ sky_material.set_shader_parameter("zenith",Color("071124").lerp(Color("3475a9"),day).lerp(Color("556a7e"),wet*0.75))
+ sky_material.set_shader_parameter("horizon",Color("27334d").lerp(Color("d1dfe2"),day).lerp(Color("8b9ba5"),wet*0.7))
+ sky_material.set_shader_parameter("sunlight",sun.light_color)
+ sky_material.set_shader_parameter("sun_direction",direction)
+ sky_material.set_shader_parameter("daylight",day)
+ sky_material.set_shader_parameter("cloud_cover",0.30+wet*0.70)
+ sky_material.set_shader_parameter("storm",wet)
+ # Update at 2Hz, avoiding continual reflection-cubemap regeneration.
+ sky_material.set_shader_parameter("cloud_clock",floorf(cloud_clock*2.0)/2.0)
+
+func _create_precipitation() -> void:
+ precipitation = MultiMeshInstance3D.new()
+ precipitation.name = "ServerPrecipitation"
+ var mesh := BoxMesh.new()
+ mesh.size = Vector3(0.012,0.22,0.012)
+ var material := StandardMaterial3D.new()
+ material.albedo_color = Color("b9d6e6")
+ material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+ mesh.material = material
+ precipitation.multimesh = MultiMesh.new()
+ precipitation.multimesh.transform_format = MultiMesh.TRANSFORM_3D
+ precipitation.multimesh.mesh = mesh
+ precipitation.multimesh.instance_count = 256
+ precipitation.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+ precipitation.visible = false
+ add_child(precipitation)
+
+func _animate_precipitation(delta: float) -> void:
+ if not precipitation: return
+ var camera := get_viewport().get_camera_3d()
+ if not camera: return
+ shelter_check -= delta
+ if shelter_check <= 0.0:
+  shelter_check = 0.25
+  var query := PhysicsRayQueryParameters3D.create(camera.global_position+Vector3.UP*0.15,camera.global_position+Vector3.UP*60.0,1)
+  sheltered = not get_world_3d().direct_space_state.intersect_ray(query).is_empty()
+ precipitation.visible = visual_weather > 0.02 and not sheltered
+ if not precipitation.visible: return
+ var snow := int(server_environment.get("weather_type",255)) == 2
+ var amount := ceili(visual_weather*256.0)
+ precipitation.multimesh.visible_instance_count = amount
+ precipitation.global_position = camera.global_position
+ for i in amount:
+  var x := fposmod(float(i)*7.371,24.0)-12.0
+  var z := fposmod(float(i)*13.517,24.0)-12.0
+  var y := 9.0-fposmod(float(i)*3.671+cloud_clock*(1.4 if snow else 13.0),16.0)
+  var scale := Vector3(3,0.14,3) if snow else Vector3.ONE
+  var position := Vector3(x+sin(cloud_clock+i)*0.25,y,z)
+  precipitation.multimesh.set_instance_transform(i,Transform3D(Basis.IDENTITY.scaled(scale),position))

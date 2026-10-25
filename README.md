@@ -1,58 +1,85 @@
-# Ultima Online 3D / UO World Studio
+# Britannia Reborn
 
-Project root: `C:\Coding Projects\UltimaClone`. The original Britannia prototype remains untouched in its previous workspace. This repository continues that implementation.
+**A modern, stylized 3D reimagining of the Ultima Online experience, built with ModernUO, a faithful world converter and Godot 4.**
 
-Double-click **Launch.cmd** for the playable Britain prototype. The crop contains 4,096 terrain samples and 2,689 static records. All 187 used static IDs have explicit mappings; all records are represented by models/procedural substitutes or grouped components, with no unmapped crop IDs. Characters wear fixed peasant outfits; the camera avoids solid geometry, movement blends between confirmed coordinates, and running/jump presentation is available. See docs/GRAPHICS_PASS.md for coverage, confidence and remaining fidelity limits.
+Britannia Reborn is an independent, open-source project exploring how Britannia's original geography and rich, skill-based MMORPG systems can become an interactive third-person world. The aim is to preserve the places and mechanics that make Ultima Online distinctive while presenting them through smoother movement, modern lighting and a coherent fantasy art style.
 
-1. Start **Start-Server.cmd**, unless the server is already running. The launcher refuses a duplicate server.
-2. Open **Launch.cmd**, click **Use local development account**, choose **Britain Explorer**, then **Enter with selected character**. Alternatively connect with a new local username/password and create a character in Britain.
-3. **WASD** moves; **Shift** runs; **Space** performs a ceiling-aware animated hop; drag with either mouse button to orbit, wheel to zoom; **B** opens the backpack. Movement waits for ModernUO acceptance and traverses accepted segments continuously. The camera retracts before solid geometry. The hop is currently local presentation: it cannot clear server walls or change the server's elevation.
-4. For multiplayer, open **Launch-Second-Client.cmd**, use its local development account and enter **Britain Companion**. Different accounts are required; entering the same character from another window disconnects its previous session.
+This is an early playable proof of concept under active development. It is not a complete game, an official Ultima Online client or a production-ready shard. The currently validated area is a small section of Britain in Trammel. Full facets, streaming and most gameplay interfaces remain future work.
 
-Generated credentials remain in ignored `Server/credentials.local.json`; do not share them. Both test characters were created through ModernUO's ordinary character creation. Use `save`, then `shutdown` in the server console; normal autosaves also run. The already-running user server was left running after testing.
+## What works today
 
-```powershell
-.\scripts\verify.ps1         # 73 checks, including static coverage, camera collision and jumping
-.\scripts\build-server.ps1   # pinned ModernUO build and locked dependencies
-.\scripts\test-login.ps1     # live handshake; start server first
-.\scripts\test-play.ps1      # live character entry, walking, wall rejection/recovery and backpack
-.\scripts\test-play.ps1 -Multiplayer # two Godot sessions and observed movement
-.\scripts\test-play.ps1 -Visual      # actual viewer keyboard input and screenshot
-.\scripts\test-graphics.ps1          # real running, corridor camera collision, keyboard jump/landing
+- **Read-only world conversion:** C#/.NET reads compatible MUL/UOP terrain, statics, tile metadata and supported local diffs into engine-independent JSON. Synthetic fixtures let you test the parser without game data.
+- **Shared reconstruction rules:** source-driven terrain, joined walls, floors, stairs and roofs. Repairs belong to the shared conversion/presentation pipeline rather than hand-edited building placements. Baking and runtime viewing use the same rules.
+- **Interactive Godot 4 viewer:** stylized CC0 environment and character assets, blended PBR terrain and shorelines, water ripples, foliage sway, architectural collision and a camera that retracts around solid geometry.
+- **Real ModernUO sessions:** account login, character creation/selection, server-confirmed movement, two-client movement replication and backpack contents. Native ClassicUO can connect to the same local server for comparison.
+- **Smoother traversal:** continuous presentation between server coordinates, gradual 360-degree facing, running/walking animation, stair foot contact and a ceiling-aware cosmetic jump. The server remains authoritative; jumping is not a replicated gameplay ability.
+- **Server-driven environment:** native light and rain/snow packets drive lighting and precipitation. An isolated local server extension supplies ModernUO's regional clock and initial/region-exit weather snapshots. Soft moving clouds, horizon haze and day/night presentation follow those inputs.
+
+The real-data development crop spans Trammel X=1576–1639, Y=1568–1631: 4,096 terrain samples and 2,689 static placements across 187 mapped IDs. These figures describe local validation; the map and converted data are not included. Passing that crop does not establish fidelity for every building, source ID or facet.
+
+## Architecture
+
+```text
+Your local UO data (read only)
+        |
+        v
+C#/.NET converter --> engine-independent JSON --> shared Godot reconstruction
+                                                      |
+ModernUO server <--- login, movement, interactions ---> Godot 4 client
 ```
 
-Portable SDKs and Godot are in `.tools`. Fresh Windows x64 setup: run `setup.ps1` for the converter/viewer and `scripts/setup-server.ps1` for ModernUO. Sandbox network permission may be required for server builds and loopback tests. SDK archive digests are not pinned yet.
+ModernUO is a pinned, separately fetched dependency. Its core is unchanged; preview recovery and environment bridging live in `Server/PreviewTools`. Rendering substitutions never rewrite original source coordinates or game files.
 
-Prepare the playable crop on a fresh setup with `scripts/prepare-play-world.ps1 -DataDir 'YOUR UO FOLDER'`. It writes ignored Viewer/play-world.json around the server's Britain starting city (1602,1591,20), preserving the earlier local-world.json crop. Synthetic IR is Viewer/world.json; `launch.ps1 -Synthetic` selects it. Game inputs are read-only. The scene does not invent geography outside the crop; returning characters must be within this region for a useful visual preview.
+## Try it on Windows
 
-Verified against the real server: authentication, compressed game session, character creation/selection/spawn, accepted walking, blocked-wall rejection/recovery, replicated movement seen by a second client, and backpack opening/contents. The visible scene was tested using injected keyboard events. No ModernUO core/gameplay source changes. A full client, combat, item pickup/drop, equipment appearance, streaming, established ClassicUO coexistence and cross-platform exports are not complete. Idle/walk/jog presentation is implemented; the full gameplay animation system remains pending.
+Current scripts target Windows x64 and PowerShell. Cross-platform exports are a goal, not a verified feature. Downloaded tools, generated data and saves stay inside the local checkout and are ignored by Git.
 
-Movement now predicts source-backed flat/gentle steps immediately, with server ACK/rejection and idle/periodic exact-position reconciliation. Ambiguous elevations retain the resync fallback. Pacing is 405 ms walking / 205 ms running; direction-only turns use a short 20 ms guard instead of a walking delay. Upstream speedhack_detection is disabled by its default profile; no production anti-cheat claim. See docs/GRAPHICS_PASS.md and docs/PLAYABLE_POC.md for scope.
+### Synthetic preview — no game files required
 
-Selected CC0 art and bundled notices/hashes are in Viewer/Art/Quaternius and Viewer/Art/Kenney. Reproduce with scripts/fetch-art.ps1, scripts/prepare-art.ps1, scripts/prepare-furniture.ps1 and scripts/verify.ps1. Archives are SHA-256 pinned; publisher updates require review. Reconvert the crop with scripts/prepare-play-world.ps1 to include tiledata metadata. See docs/GRAPHICS_PASS.md for current scope and evidence; docs/ART_AND_MOVEMENT.md records the earlier baseline.
+```powershell
+git clone https://github.com/rastlyn80/Britannia-Reborn.git
+cd Britannia-Reborn
+.\setup.ps1
+.\launch.ps1 -Synthetic
+```
 
-See [audit](docs/REPOSITORY_AUDIT.md), [roadmap](docs/ROADMAP.md), [progress](docs/PROGRESS.md) and [testing](docs/TESTING.md). Logs: outputs/validation. Historical prototype instructions: docs/PROTOTYPE_README.md.
+This generates clearly labeled synthetic terrain/statics. It does not recreate Britain or provide a running shard. Tool versions are pinned; Godot's archive and art inputs have recorded checksums. The .NET SDK archive digest is not yet pinned.
 
-### Camera and remembered login
+### Local playable Britain slice — bring your own compatible UO data
 
-Hold the **right mouse button** and move the mouse to look around; release to use the interface. The wheel zooms. Escape while looking or switching windows releases the pointer. Gamepads are disabled until enabled on the login screen.
+```powershell
+.\scripts\setup-server.ps1 -DataDir 'C:\Path\To\Ultima Online Classic'
+.\scripts\prepare-play-world.ps1 -DataDir 'C:\Path\To\Ultima Online Classic'
+```
 
-The latest submitted username/password are restored automatically on Windows. The password stays masked and is encrypted for the current Windows user in the ignored local Godot user-data directory. Use **Forget saved login** to remove it, or untick **Remember login**. With no saved login, the launcher prefills the existing development account. Secure remembered credentials are currently Windows-only. Restart the viewer after updating.
+Then double-click **Start-Server.cmd**, followed by **Launch.cmd**. The launcher refuses a duplicate local server. Follow any upstream console initialization prompts on first setup. Use the local development account or enter a new local username/password, then create/select a character in Britain. A fresh shard does not include pre-created characters or a fully populated world. Server-owned doors, signs, containers and broader world population are the next integration milestone.
 
-### Return to the preview and server commands
+The development server binds to loopback. Credentials, encrypted remembered logins and saves remain local. This configuration is for local development, not public hosting. **Launch-Compatibility.cmd** selects the fallback renderer. **Launch-Second-Client.cmd** uses a separate development account. The separately fetched ClassicUO comparison client uses the same local server; see [the comparison guide](docs/CLASSIC_COMPARISON.md).
 
-Press **F6** or click **Return to Britain** to return to Trammel (1602,1591,20). Regular movement stops at the converted area edge. Open **Server commands** for `[PreviewWhere`, `[PreviewCommands`, and native ModernUO text commands; staff commands retain their server permissions. The local recovery extension works for ordinary Player accounts. See docs/STREET_MOVEMENT_PASS.md for the current movement, roof-anchor correction, test evidence and limits.
+Controls: **WASD** move, **Shift** run, **Space** cosmetic jump, **right mouse drag** orbit, **wheel** zoom, **B** backpack, **F6** return to the preview start. Submitted logins can be remembered using Windows user-bound encryption. The rename preserves the existing vault location.
 
-## Original 2D comparison
+## Build and validate
 
-Double-click `Play-Classic-2D.cmd`, or `Play-Classic-2D-Observer.cmd` for a separate character alongside Godot. Both connect to the existing ModernUO server. See docs/CLASSIC_COMPARISON.md for controls, credentials and the pinned BSD client dependency.
+```powershell
+.\scripts\verify.ps1              # parser, protocol, reconstruction and regressions
+.\scripts\test-login.ps1          # live server list and game relay
+.\scripts\test-play.ps1           # actual character entry, movement and backpack
+.\scripts\test-play.ps1 -Multiplayer
+.\scripts\test-environment.ps1    # real entry and server clock/light/weather
+.\scripts\capture-stability.ps1   # moving-camera floor/doorway checks
+.\scripts\capture-environment.ps1 # controlled day/night/rain/snow GPU captures
+```
 
-## Refined desktop presentation
+Live checks need the local server and an existing development character. Some reconstruction tests need a locally prepared crop; fixture tests alone do not establish live gameplay. GPU captures and map-derived outputs remain ignored and are not distributed here. See [testing](docs/TESTING.md) and [server environment](docs/SERVER_ENVIRONMENT.md).
 
-Launch.cmd now uses Forward+ for the refined materials, lighting, blended terrain and subtle tree/grass/water animation. Launch-Compatibility.cmd selects OpenGL for machines needing that path. Surface provenance is in Viewer/Art/Surfaces/manifest.json; scripts/prepare-surfaces.ps1 restores or verifies the pinned CC0 maps. See docs/VISUAL_PASS_03.md for current scope and scripts/capture-visual-pass.ps1 for screenshots and animation evidence.
+## Roadmap and contributions
 
-The interior/contact update adds closed floors and corner joins, interior ceilings, fine stair treads, foot adjustment and smoother gait/camera transitions. Restart Launch.cmd after updating. scripts/capture-contacts.ps1 reproduces the current repair screenshots; docs/INTERIOR_CONTACT_PASS.md records checks and limits.
+The next priorities are server-owned doors/containers/signs in the 3D client, comparison against original-style gameplay, and a larger converted region with chunk boundaries validated. Longer-term goals include streaming, broader source-ID coverage, equipment and inventory UI, combat, skills, crafting, NPCs and additional facets. None is implied complete by the preview.
 
-The full conversion entry point is scripts/prepare-play-world.ps1: it now extracts the source JSON and automatically runs the shared 3D repair rules, saving a scene and versioned repair report under outputs/conversions. See docs/CONVERSION_PIPELINE.md. Raw Converter.dll convert remains the extraction stage.
+Contributions are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md), [the master plan](docs/MASTER_PLAN.md), [progress](docs/PROGRESS.md) and [roadmap](docs/ROADMAP.md). Useful work includes small reproducible geometry fixtures, format validation, asset mappings, protocol regressions and measured rendering improvements. Open an issue to coordinate larger architectural changes. The master plan includes historical implementation instructions; this README describes the current public scope.
 
-Floor/doorway stability and coastal spike repairs are documented in docs/GLITCH_STABILITY_PASS.md. scripts/capture-stability.ps1 generates moving-camera proof. Conversion now reads a two-cell computation halo without expanding the playable crop.
+## License, assets and game data
+
+Original project code is **GPL-3.0-or-later**; see [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md). Third-party notices remain in place: ClassicUO-derived protocol tables are BSD-2-Clause, and bundled Quaternius/Kenney/Poly Haven art is CC0. Sources and checksums are recorded alongside the assets. ModernUO is fetched separately under its own GPL license.
+
+**No proprietary Ultima Online map, art, sound, credentials, save or converted real-map dataset is distributed.** Obtain compatible game data separately and keep it local. Do not attach game-derived screenshots or source files to public issues. Britannia Reborn is an independent fan project, unaffiliated with or endorsed by Ultima Online's owners. See [the dependency/license audit](docs/LEGAL_AND_LICENSES.md) and its limits.

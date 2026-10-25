@@ -2,6 +2,10 @@
 using System.Net;
 using Server;
 using Server.Commands;
+using Server.Items;
+using Server.Network;
+using Server.Misc;
+using System.Reflection;
 
 namespace UltimaClone.PreviewTools;
 
@@ -15,6 +19,7 @@ public static class PreviewCommands
         CommandSystem.Register("PreviewHome", AccessLevel.Player, Home);
         CommandSystem.Register("PreviewWhere", AccessLevel.Player, Where);
         CommandSystem.Register("PreviewCommands", AccessLevel.Player, Help);
+        CommandSystem.Register("PreviewEnvironment", AccessLevel.Player, EnvironmentSnapshot);
     }
 
     private static bool Allowed(CommandEventArgs args)
@@ -37,6 +42,63 @@ public static class PreviewCommands
         if (!Allowed(args)) return;
         var mobile = args.Mobile;
         mobile.SendMessage($"Position: {mobile.X}, {mobile.Y}, {mobile.Z} / {mobile.Map}. Access: {mobile.AccessLevel}.");
+    }
+
+    // Read-only snapshot of the pinned upstream weather scheduler. Native weather
+    // packets have no initial snapshot or region-exit clear; this fills that gap
+    // for the requesting loopback client, without changing weather or the world.
+    private static void EnvironmentSnapshot(CommandEventArgs args)
+    {
+        if (!Allowed(args))
+        {
+            return;
+        }
+        var mobile = args.Mobile;
+        Clock.GetTime(mobile.Map, mobile.X, mobile.Y, out var hours, out int minutes);
+        mobile.SendMessage($"UCENV1|{hours}|{minutes}|{Clock.SecondsPerUOMinute}");
+        mobile.CheckLightLevels(true);
+        byte type = 0xFF, density = 0, temperature = 15;
+        var flags = BindingFlags.Instance | BindingFlags.NonPublic;
+        var activeField = typeof(Weather).GetField("m_Active", flags);
+        var stageField = typeof(Weather).GetField("m_Stage", flags);
+        var extremeField = typeof(Weather).GetField("m_ExtremeTemperature", flags);
+        // Fail explicitly if upgrading the pinned dependency changes its internals.
+        if (activeField == null || stageField == null || extremeField == null)
+        {
+            mobile.SendMessage("Environment weather snapshot unavailable: upstream weather layout changed.");
+            return;
+        }
+        var weatherList = Weather.GetWeatherList(mobile.Map);
+        if (weatherList != null)
+        {
+            foreach (var weather in weatherList)
+            {
+                if (!(bool)activeField.GetValue(weather)!)
+                {
+                    continue;
+                }
+                var contains = weather.Area.Length == 0;
+                foreach (var area in weather.Area)
+                {
+                    contains |= area.Contains(mobile.Location);
+                }
+                if (!contains)
+                {
+                    continue;
+                }
+                var stage = ((int)stageField.GetValue(weather)! + 29) % 30;
+                var amount = stage < 15 ? stage * 5 : Math.Clamp(150 - stage * 5, 10, 70);
+                if (amount <= density)
+                {
+                    continue;
+                }
+                var temp = weather.Temperature * ((bool)extremeField.GetValue(weather)! ? -1 : 1);
+                density = (byte)amount;
+                temperature = unchecked((byte)temp);
+                type = (byte)(temp > 0 ? 0 : 2);
+            }
+        }
+        mobile.NetState.SendWeather(type, density, temperature);
     }
 
     private static void Help(CommandEventArgs args)

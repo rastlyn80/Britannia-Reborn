@@ -15,6 +15,10 @@ signal message_received(text: String)
 signal failed(reason: String)
 signal ended
 signal inventory_received(items: Array)
+signal environment_changed(state: Dictionary)
+
+var environment_state := {}
+var last_environment_request := -30000
 
 var login: Node
 var socket := StreamPeerTCP.new()
@@ -98,6 +102,8 @@ func close() -> void:
 	decoder = Huffman.new()
 	pending.clear()
 	entities.clear()
+	environment_state.clear()
+	last_environment_request = -30000
 	characters.clear()
 	cities.clear()
 	phase = "idle"
@@ -145,6 +151,9 @@ func _process(_delta: float) -> void:
 	if phase == "world" and Time.get_ticks_msec()-last_ping > 10000:
 		send(PackedByteArray([0x73,0]))
 		last_ping = Time.get_ticks_msec()
+	if phase == "world" and Time.get_ticks_msec()-last_environment_request > 10000:
+		send(speech_packet("[PreviewEnvironment"))
+		last_environment_request = Time.get_ticks_msec()
 	if returning_home and Time.get_ticks_msec() > movement_deadline:
 		returning_home = false
 		next_walk = 0
@@ -298,10 +307,17 @@ func _handle(p: PackedByteArray) -> void:
 				var offset := 5+i*20
 				items.append({"serial":Login.read_be(p,offset,4),"id":Login.read_be(p,offset+4,2),"amount":Login.read_be(p,offset+7,2),"container":Login.read_be(p,offset+14,4)})
 			inventory_received.emit(items)
+		0x4f:
+			_environment_update({"global_light":clampi(int(p[1]),0,31)})
+		0x4e:
+			if Login.read_be(p,1,4) == player.serial:
+				_environment_update({"personal_light":clampi(int(p[5]),0,31)})
+		0x65:
+			_environment_update({"weather_type":int(p[1]),"density":clampi(int(p[2]),0,70),"temperature":signed(p[3])})
 		0x1c:
-			if p.size() > 44: message_received.emit(text(p,44,p.size()-44))
+			if p.size() > 44: _server_text(text(p,44,p.size()-44),Login.read_be(p,3,4) == 0xffffffff)
 		0xae:
-			if p.size() >= 50: message_received.emit(unicode_text(p,48))
+			if p.size() >= 50: _server_text(unicode_text(p,48),Login.read_be(p,3,4) == 0xffffffff)
 		0x82: _fail("Game login rejected")
 		0x53: _fail("Character entry rejected (%d)" % p[1])
 
@@ -428,3 +444,19 @@ func return_to_britain() -> void:
 	requested_position.clear()
 	needs_sync = false
 	send_command("[PreviewHome")
+
+func _environment_update(values: Dictionary) -> void:
+	environment_state.merge(values,true)
+	environment_changed.emit(environment_state.duplicate())
+
+func _server_text(message: String, system: bool = false) -> void:
+	if system and message.begins_with("UCENV1|"):
+		var fields := message.split("|")
+		if fields.size() != 4 or not fields[1].is_valid_int() or not fields[2].is_valid_int() or not fields[3].is_valid_float(): return
+		var hour := int(fields[1])
+		var minute := int(fields[2])
+		var seconds := float(fields[3])
+		if hour < 0 or hour > 23 or minute < 0 or minute > 59 or seconds < 1 or seconds > 3600: return
+		_environment_update({"minute_of_day":hour*60+minute,"seconds_per_minute":seconds,"sample_msec":Time.get_ticks_msec()})
+		return
+	message_received.emit(message)

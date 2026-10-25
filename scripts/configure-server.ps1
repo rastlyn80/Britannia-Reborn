@@ -1,8 +1,13 @@
-param([string]$DataDir = "$env:USERPROFILE\OneDrive\Electronic Arts\Ultima Online Classic")
+param([string]$DataDir)
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 $runtime = Join-Path $root 'Server\runtime'
-if (!(Test-Path (Join-Path $DataDir 'map1LegacyMUL.uop')) -and !(Test-Path (Join-Path $DataDir 'map1.mul'))) { throw 'Trammel source map not found' }
+if (!$DataDir -and (Test-Path "$runtime/Configuration/modernuo.json")) {
+  $existing = Get-Content "$runtime/Configuration/modernuo.json" -Raw | ConvertFrom-Json
+  $DataDir = $existing.dataDirectories | Where-Object { (Test-Path (Join-Path $_ 'map1LegacyMUL.uop')) -or (Test-Path (Join-Path $_ 'map1.mul')) } | Select-Object -First 1
+}
+if (!$DataDir) { $DataDir = "$env:USERPROFILE\OneDrive\Electronic Arts\Ultima Online Classic" }
+if (!(Test-Path (Join-Path $DataDir 'map1LegacyMUL.uop')) -and !(Test-Path (Join-Path $DataDir 'map1.mul'))) { throw 'Trammel source map not found; run scripts/setup-server.ps1 -DataDir YOUR_UO_FOLDER.' }
 if (!(Test-Path "$runtime\ModernUO.dll")) {
   New-Item -ItemType Directory -Force $runtime | Out-Null
   Copy-Item "$root\Server\ModernUO\Distribution\*" $runtime -Recurse -ErrorAction Stop
@@ -14,7 +19,7 @@ if (!(Test-Path "$runtime\Configuration\modernuo.json")) {
     dataDirectories = @($DataDir)
     listeners = @('127.0.0.1:2593')
     settings = @{
-      'serverListing.serverName' = 'UltimaClone Local Development'
+      'serverListing.serverName' = 'Britannia Reborn Local Development'
       'serverListing.address' = '127.0.0.1'
       'serverListing.autoDetect' = 'False'
       'pingServer.enabled' = 'True'

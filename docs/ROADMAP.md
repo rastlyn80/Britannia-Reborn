@@ -30,3 +30,7 @@ Interior/contact pass: closed source-height floor slabs and conservative void re
 Conversion pipeline and floor stability: end-to-end conversion now bakes the shared reconstruction rules and records rule/source hashes plus repair coverage. Stair supports/decks share the tread PBR material. Separated basement ceiling tops from ground floors and introduced single ownership for coincident terrain/static/duplicate floor surfaces. 201 offline checks and real conversion/bake/reload evidence; see CONVERSION_PIPELINE.md.
 
 Reproduced doorway flicker with moving GPU captures: lower-storey wall caps intersected upper floors. Tall facade caps no longer render through floors; sills/gables retained. Constructed indoor land floors replace blended landscape floors, screen-space leakage disabled, and connected coastal spurs use a two-cell source halo. Visible crop unchanged. 205 offline + four GPU stability checks, full conversion/bake/reload and compatibility pass. See GLITCH_STABILITY_PASS.md.
+
+### Britannia Reborn public checkpoint
+
+Canonical repository: https://github.com/rastlyn80/Britannia-Reborn. Original project code: GPL-3.0-or-later, with retained third-party licenses. Server-driven regional clock/light/weather, improved sky/clouds and sheltered precipitation are implemented; details in SERVER_ENVIRONMENT.md. Next: bounded upstream world population and server-owned item rendering/interactions, then expand and validate conversion seams. No full-world population, full facet conversion or production readiness is claimed.

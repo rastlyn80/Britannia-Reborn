@@ -10,6 +10,8 @@ $env:LOCALAPPDATA = $env:APPDATA
 if ($LASTEXITCODE) { throw 'Asset import failed' }
 & $godot --headless --path "$root\Viewer" --script res://Network/LoginTests.gd
 if ($LASTEXITCODE) { throw 'Protocol tests failed' }
+& $godot --headless --path "$root/Viewer" --script res://Presentation/EnvironmentTests.gd
+if ($LASTEXITCODE) { throw 'Server environment regression checks failed' }
 & $godot --headless --path "$root\Viewer" --script res://Network/GameTests.gd
 if ($LASTEXITCODE) { throw 'Game session tests failed' }
 & $godot --headless --path "$root\Viewer" --script res://Presentation/PresentationTests.gd

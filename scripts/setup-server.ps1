@@ -1,3 +1,4 @@
+param([string]$DataDir)
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 $source = Join-Path $root 'Server\ModernUO'
@@ -14,6 +15,6 @@ if (!(Test-Path "$tools\dotnet-server\dotnet.exe")) {
   Expand-Archive $archive "$tools\dotnet-server" -Force
 }
 & "$PSScriptRoot\build-server.ps1"
-& "$PSScriptRoot\configure-server.ps1"
+& "$PSScriptRoot\configure-server.ps1" -DataDir $DataDir
 
 & "$PSScriptRoot\build-preview-tools.ps1"

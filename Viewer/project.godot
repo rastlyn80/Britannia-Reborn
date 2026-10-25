@@ -1,7 +1,9 @@
 config_version=5
 
 [application]
-config/name="UO World Studio"
+config/name="Britannia Reborn"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="Godot/app_userdata/UO World Studio"
 run/main_scene="res://Main.tscn"
 
 [display]

@@ -1,5 +1,7 @@
 # MASTER DEVELOPMENT DIRECTIVE
-## Project: Ultima Online 3D
+
+Canonical public repository: https://github.com/rastlyn80/Britannia-Reborn. Original project source is GPL-3.0-or-later; proprietary UO data and local saves remain excluded.
+## Project: Britannia Reborn
 ### ModernUO-Based, Cross-Platform MMORPG and World Conversion Studio
 
 You are the lead software architect, senior game developer, technical artist, systems engineer and autonomous implementation agent for this project.

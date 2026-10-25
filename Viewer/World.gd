@@ -144,6 +144,8 @@ func _ready() -> void:
 	lighting.name = "DistrictLighting"
 	add_child(lighting)
 	lighting.configure(self,world,reconstruction,map_view)
+	game.environment_changed.connect(lighting.receive_server_environment)
+	game.ended.connect(lighting.reset_server_environment)
 	add_child(pivot)
 	pivot.position = Vector3(float(world.width)/2,0,float(world.height)/2)
 	pivot.add_child(boom)

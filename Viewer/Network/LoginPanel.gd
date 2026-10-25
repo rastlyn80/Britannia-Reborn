@@ -34,7 +34,7 @@ func _ready() -> void:
 	var content := VBoxContainer.new()
 	add_child(content)
 	var title := Label.new()
-	title.text = "BRITAIN"
+	title.text = "BRITANNIA REBORN · BRITAIN"
 	content.add_child(title)
 	content.add_child(account_controls)
 	username.placeholder_text = "Account name (new accounts created locally)"
