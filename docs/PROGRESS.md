@@ -1,5 +1,7 @@
 # Progress — 25 October 2026
 
+Added reproducible original-colour radar comparison: scripts/capture-radar.ps1 renders terrain-only, static-overlay radar and an aligned north-up orthographic 3D view for the exact play crop. Local radarcol.mul/hues.mul supply original colours; highest drawable static base Z selects the overlay. Inspected outputs/validation/britain-map-comparison.png and separate 64×64/enlarged radar PNGs. This is a reconstruction of the static radar data, not an original-client UI screenshot; live mobiles and multis are excluded. Images remain ignored/local.
+
 ## Latest checkpoint: Quaternius art and smooth confirmed movement
 
 Imported five free CC0 Quaternius Standard packs with bundled licenses, pinned archive hashes and selected-file manifest. C# tiledata metadata supports 32/64-bit flags and static heights. Current crop replaces 2,133/2,689 static placements; 556 unresolved pieces remain gold markers. Provisional connectivity/slope rules need architectural review; slate uses tinted round-tile geometry over a continuous roof bed. Nature, classified procedural ground and shadows are integrated. Real humanoids wear fixed peasant outfits and animate idle/walk/jog; equipment appearance is not implemented.

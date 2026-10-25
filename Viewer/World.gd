@@ -9,6 +9,7 @@ var distance := 65.0
 var ticks := 0
 var screenshot := ""
 var hide_ui := false
+var map_view := false
 var status := Label.new()
 var static_root := Node3D.new()
 var game := preload("res://Network/GameSession.gd").new()
@@ -39,6 +40,7 @@ func _ready() -> void:
 		if arg.begins_with("--world="): path = arg.substr(8)
 		if arg.begins_with("--screenshot="): screenshot = arg.substr(13)
 		if arg == "--hide-ui": hide_ui = true
+		if arg == "--map-view": map_view = true
 		if arg == "--close-view":
 			distance = 40
 			yaw = 0.5
@@ -111,6 +113,12 @@ func _ready() -> void:
 	add_child(pivot)
 	pivot.position = Vector3(float(world.width)/2,0,float(world.height)/2)
 	pivot.add_child(camera)
+	if map_view:
+		yaw = 0
+		pitch = -PI/2
+		distance = 150
+		camera.projection = Camera3D.PROJECTION_ORTHOGONAL
+		camera.size = float(world.height)
 	camera.far = 1500
 	var canvas := CanvasLayer.new()
 	canvas.visible = not hide_ui
