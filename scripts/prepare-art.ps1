@@ -37,6 +37,7 @@ foreach ($name in @('CommonTree_1','CommonTree_2','CommonTree_3','CommonTree_4',
 Copy-Model 'universal-base-characters' 'Superhero_Male_FullBody.gltf' 'Character'
 Copy-Model 'universal-animation-library' 'UAL1_Standard.glb' 'Animation'
 Copy-Model 'modular-character-outfits-fantasy' 'Male_Peasant.gltf' 'Outfit'
+Copy-Model 'modular-character-outfits-fantasy' 'Male_Ranger_Head_Hood.gltf' 'Outfit'
 foreach ($pack in @('medieval-village-megakit','stylized-nature-megakit','universal-base-characters','universal-animation-library','modular-character-outfits-fantasy')) {
   $license = Get-ChildItem "$source/$pack" -Recurse -Filter 'License*.txt' | Select-Object -First 1
   Copy-Item -LiteralPath $license.FullName -Destination "$target/$pack-LICENSE.txt" -Force
@@ -45,6 +46,6 @@ foreach ($pack in @('medieval-village-megakit','stylized-nature-megakit','univer
 $inventory = Get-ChildItem $target -Recurse -File | Where-Object { $_.Extension -notin @('.import','.json') } | ForEach-Object {
   [ordered]@{path=[IO.Path]::GetRelativePath($target,$_.FullName).Replace('\','/');sha256=(Get-FileHash -LiteralPath $_.FullName).Hash}
 }
-@{packs=$manifest;files=@($inventory);modifications='Selected original glTF/GLB files and dependencies. Character glTF reserialized; missing normal-map aliases corrected to supplied textures. Runtime head mask and shared-skeleton peasant outfit assembly. Runtime foliage ignores wind vertex colours and replaces red TwistedTree leaf colour texture with the supplied green NormalTree colour texture. Source-scaled architectural modules, grouped foliage/bed/arch components, and procedural roof geometry using kit material detail; runtime architectural palette shader preserves subdued original surface detail; all original files otherwise retained.'} | ConvertTo-Json -Depth 6 | Set-Content "$target/manifest.json"
+@{packs=$manifest;files=@($inventory);modifications='Selected original glTF/GLB files and dependencies. Character glTF reserialized; missing normal-map aliases corrected to supplied textures. Runtime head mask, source-to-target rest-pose animation retargeting, shared-skeleton peasant outfit and ranger hood assembly. Runtime foliage ignores wind vertex colours and replaces red TwistedTree leaf colour texture with the supplied green NormalTree colour texture. Continuous metre-authored facade panels using kit texture detail, connected roof samples and gable/ridge trim, source-scaled smaller architectural modules, grouped foliage/bed/arch components, and procedural roof geometry using kit material detail; runtime architectural palette shader preserves subdued original surface detail; all original files otherwise retained.'} | ConvertTo-Json -Depth 6 | Set-Content "$target/manifest.json"
 Write-Output 'Selected art prepared with licenses and SHA-256 manifest.'
 

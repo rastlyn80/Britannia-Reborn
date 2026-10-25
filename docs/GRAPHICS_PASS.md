@@ -1,5 +1,7 @@
 # Britain graphics and traversal checkpoint — 25 October 2026
 
+This is a historical checkpoint. STREET_MOVEMENT_PASS.md describes the current façade/roof anchor, prediction, recovery and 117-check implementation. In particular, either-button orbit and per-step resync statements below are superseded.
+
 ## Delivered
 
 The existing 64×64 Trammel crop now has explicit rules for all 187 used static IDs in Viewer/Presentation/static-catalog.json. All 2,689 source records are accounted for: 2,645 visual owners and 44 grouped contributors (26 canopies, 12 bed parts, six arch parts). No crop IDs fall back to diagnostic cubes. The ignored local-static-coverage.json records every original ordinal, ID, XYZ, target kind/asset, axis, confidence and group owner.

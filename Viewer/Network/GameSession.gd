@@ -7,6 +7,8 @@ signal characters_received(characters: Array, cities: Array)
 signal entered(position: Dictionary)
 signal entity_changed(serial: int, position: Dictionary)
 signal entity_removed(serial: int)
+signal position_reset(position: Dictionary)
+signal movement_started(position: Dictionary, seconds: float)
 signal movement_result(accepted: bool, position: Dictionary)
 signal interaction_confirmed(description: String)
 signal message_received(text: String)
@@ -38,6 +40,14 @@ var next_walk := 0
 var movement_deadline := 0
 var move_interval := 410
 var running := false
+var surface: RefCounted
+var requested_position := {}
+var turn_only := false
+var accepted_since_sync := 0
+var needs_sync := false
+var preview_bounds := Rect2i()
+var returning_home := false
+var last_boundary_message := 0
 
 static func signed(value: int, bits: int = 8) -> int:
 	return value - (1 << bits) if value & (1 << (bits-1)) else value
@@ -96,6 +106,11 @@ func close() -> void:
 	outstanding = -1
 	awaiting_position = false
 	backpack = 0
+	requested_position.clear()
+	returning_home = false
+	needs_sync = false
+	accepted_since_sync = 0
+	next_walk = 0
 	ended.emit()
 
 func _fail(reason: String) -> void:
@@ -111,6 +126,7 @@ func _process(_delta: float) -> void:
 	var state := socket.get_status()
 	if state == StreamPeerTCP.STATUS_CONNECTED:
 		if phase == "connecting":
+			socket.set_no_delay(true)
 			send(game_handshake(username,password,auth))
 			password = ""
 			phase = "characters_pending"
@@ -129,6 +145,12 @@ func _process(_delta: float) -> void:
 	if phase == "world" and Time.get_ticks_msec()-last_ping > 10000:
 		send(PackedByteArray([0x73,0]))
 		last_ping = Time.get_ticks_msec()
+	if returning_home and Time.get_ticks_msec() > movement_deadline:
+		returning_home = false
+		next_walk = 0
+		message_received.emit("Return to Britain was not confirmed. Check that preview tools are enabled on the local server.")
+	if phase == "world" and needs_sync and outstanding == -1 and not awaiting_position and (accepted_since_sync >= 12 or Time.get_ticks_msec() > next_walk+120):
+		request_position()
 	if phase == "world" and (outstanding != -1 or awaiting_position) and Time.get_ticks_msec() > movement_deadline:
 		_fail("Movement response timed out; reconnect to resynchronise")
 
@@ -205,6 +227,12 @@ func _handle(p: PackedByteArray) -> void:
 				player.direction = int(p[17]) & 7
 				if awaiting_position: sequence = 0 # classic resync resets the server movement sequence
 				awaiting_position = false
+				needs_sync = false
+				accepted_since_sync = 0
+				if returning_home and player.facet == 1 and player.x == 1602 and player.y == 1591 and player.z == 20:
+					returning_home = false
+					next_walk = 0
+					position_reset.emit(player.duplicate())
 				entity_changed.emit(player.serial,player.duplicate())
 		0x21:
 			player.x = Login.read_be(p,2,2)
@@ -214,15 +242,25 @@ func _handle(p: PackedByteArray) -> void:
 			sequence = 0
 			outstanding = -1
 			awaiting_position = false
+			requested_position.clear()
+			needs_sync = false
+			next_walk = Time.get_ticks_msec()+80
 			movement_result.emit(false,player.duplicate())
 			entity_changed.emit(player.serial,player.duplicate())
 		0x22:
 			if outstanding == int(p[1]):
 				outstanding = -1
-				awaiting_position = true
-				# ACK has no elevation. Ask the server for exact coordinates instead of inventing Z.
-				send(PackedByteArray([0x22,0,0]))
+				if turn_only:
+					player.direction = requested_direction
+				elif not requested_position.is_empty():
+					player = requested_position.duplicate()
+					needs_sync = true
+					accepted_since_sync += 1
+				else:
+					request_position()
+				requested_position.clear()
 				movement_result.emit(true,player.duplicate())
+				if not awaiting_position: entity_changed.emit(player.serial,player.duplicate())
 		0x78:
 			if p.size() < 23: return
 			var serial := Login.read_be(p,3,4)
@@ -262,6 +300,8 @@ func _handle(p: PackedByteArray) -> void:
 			inventory_received.emit(items)
 		0x1c:
 			if p.size() > 44: message_received.emit(text(p,44,p.size()-44))
+		0xae:
+			if p.size() >= 50: message_received.emit(unicode_text(p,48))
 		0x82: _fail("Game login rejected")
 		0x53: _fail("Character entry rejected (%d)" % p[1])
 
@@ -318,21 +358,73 @@ static func movement_packet(direction: int, seq: int, run: bool = false) -> Pack
 	return packet
 
 func walk(direction: int, run: bool = false) -> bool:
-	if phase != "world" or outstanding != -1 or awaiting_position or Time.get_ticks_msec() < next_walk: return false
-	# Upstream foot-walk delay defaults to 400 ms; allow a small transport margin.
-	move_interval = 210 if run else 410
+	if phase != "world" or returning_home or outstanding != -1 or awaiting_position or Time.get_ticks_msec() < next_walk: return false
+	turn_only = (direction & 7) != int(player.direction)
+	if preview_bounds.has_area() and not turn_only:
+		var offset: Vector2i = preload("res://Presentation/MovementSurface.gd").OFFSETS[direction & 7]
+		if player.facet != 1 or not preview_bounds.has_point(Vector2i(player.x,player.y)+offset):
+			if Time.get_ticks_msec()-last_boundary_message > 800:
+				message_received.emit("Edge of the converted area. Use Return to Britain (F6).")
+				last_boundary_message = Time.get_ticks_msec()
+			return false
+	# The pinned PlayerMobile has zero-cost turns; a turn must not consume a
+	# full 410 ms walking interval. Keep a short packet-rate guard for input jitter.
+	move_interval = 20 if turn_only else (205 if run else 405)
 	running = run
 	next_walk = Time.get_ticks_msec()+move_interval
 	requested_direction = direction & 7
+	requested_position = surface.predict(player,requested_direction) if surface != null and not turn_only else {}
 	var p := movement_packet(direction,sequence,run)
 	outstanding = sequence
 	movement_deadline = Time.get_ticks_msec()+5000
 	sequence = 1 if sequence == 255 else sequence+1
 	send(p)
+	if not requested_position.is_empty(): movement_started.emit(requested_position.duplicate(),float(move_interval)/1000.0)
 	return true
+
+func request_position() -> void:
+	awaiting_position = true
+	needs_sync = false
+	movement_deadline = Time.get_ticks_msec()+5000
+	send(PackedByteArray([0x22,0,0]))
 
 func open_backpack() -> void:
 	if phase == "world" and backpack != 0:
 		var p := PackedByteArray([6])
 		p.append_array(Login.uint_be(backpack,4))
 		send(p)
+
+static func speech_packet(message: String) -> PackedByteArray:
+	if message.is_empty() or message.length() > 128 or "\n" in message or "\r" in message or message.to_utf8_buffer().has(0): return PackedByteArray()
+	var bytes := PackedByteArray([0xad,0,0,0,0x03,0xb2,0,3,69,78,85,0])
+	var utf16 := message.to_utf16_buffer()
+	for i in range(0,utf16.size(),2):
+		bytes.append(utf16[i+1])
+		bytes.append(utf16[i])
+	bytes.append_array(PackedByteArray([0,0]))
+	bytes[1] = bytes.size() >> 8
+	bytes[2] = bytes.size() & 255
+	return bytes
+
+static func unicode_text(bytes: PackedByteArray, start: int) -> String:
+	var little_endian := PackedByteArray()
+	for i in range(start,bytes.size()-1,2):
+		if bytes[i] == 0 and bytes[i+1] == 0: break
+		little_endian.append(bytes[i+1])
+		little_endian.append(bytes[i])
+	return little_endian.get_string_from_utf16()
+
+func send_command(command: String) -> bool:
+	if phase != "world" or not command.begins_with("["): return false
+	var packet := speech_packet(command)
+	if packet.is_empty(): return false
+	send(packet)
+	request_position()
+	return true
+
+func return_to_britain() -> void:
+	if phase != "world": return
+	returning_home = true
+	requested_position.clear()
+	needs_sync = false
+	send_command("[PreviewHome")

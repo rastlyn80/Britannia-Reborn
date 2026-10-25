@@ -14,6 +14,8 @@ var account_controls := VBoxContainer.new()
 var character_controls := VBoxContainer.new()
 var world_controls := VBoxContainer.new()
 var controller := CheckBox.new()
+var command_input := LineEdit.new()
+var command_log := RichTextLabel.new()
 
 func button(parent: Node, title: String, action: Callable) -> Button:
 	var control := Button.new()
@@ -23,7 +25,7 @@ func button(parent: Node, title: String, action: Callable) -> Button:
 	return control
 
 func _ready() -> void:
-	position = Vector2(875,24)
+	self.position = Vector2(875,24)
 	custom_minimum_size = Vector2(380,0)
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(0.04,0.065,0.09,0.96)
@@ -95,6 +97,37 @@ func _ready() -> void:
 	content.add_child(world_controls)
 	world_controls.hide()
 	button(world_controls,"Open backpack (B)",func(): session.open_backpack())
+	button(world_controls,"Return to Britain (F6)",func(): session.return_to_britain())
+	var command_toggle := CheckButton.new()
+	command_toggle.text = "Server commands"
+	world_controls.add_child(command_toggle)
+	var command_panel := VBoxContainer.new()
+	world_controls.add_child(command_panel)
+	command_panel.hide()
+	command_toggle.toggled.connect(func(enabled: bool):
+		command_panel.visible = enabled
+		reset_size.call_deferred())
+	command_input.placeholder_text = "[PreviewCommands"
+	command_panel.add_child(command_input)
+	var submit := func(_text: String = ""):
+		var command := command_input.text.strip_edges()
+		if session.send_command(command):
+			command_log.append_text("> "+command+"\n")
+			command_input.clear()
+			command_input.release_focus()
+		else: message.text = "Use a command beginning with [, up to 128 characters."
+	command_input.text_submitted.connect(submit)
+	button(command_panel,"Run command",submit)
+	button(command_panel,"Commands / permissions",func(): session.send_command("[PreviewCommands"))
+	button(command_panel,"Server position",func(): session.send_command("[PreviewWhere"))
+	command_log.custom_minimum_size = Vector2(210,140)
+	command_log.bbcode_enabled = false
+	command_log.scroll_following = true
+	command_panel.add_child(command_log)
+	session.message_received.connect(func(text: String):
+		command_log.append_text(text+"\n")
+		if command_log.get_line_count() > 120: command_log.clear()
+		message.text = text)
 	world_controls.add_child(inventory)
 	inventory.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	content.add_child(message)
@@ -115,12 +148,14 @@ func _ready() -> void:
 	session.entered.connect(func(position: Dictionary):
 		character_controls.hide()
 		controller.hide()
+		custom_minimum_size.x = 240
+		self.position = Vector2(1015,24)
 		world_controls.show()
 		reset_size.call_deferred()
-		message.text = "Online • Trammel (%d, %d, %d)\nWASD: move • Shift: run • Space: hop\nRight mouse: look • Wheel: zoom" % [position.x,position.y,position.z])
+		message.text = "Online / Trammel")
 	session.entity_changed.connect(func(serial: int,position: Dictionary):
 		if serial == session.player.serial:
-			message.text = "Online • Trammel (%d, %d, %d)\nWASD: move • Shift: run • Space: hop\nRight mouse: look • Wheel: zoom" % [position.x,position.y,position.z])
+			message.text = "Online / Trammel")
 	session.interaction_confirmed.connect(func(_description: String): inventory.text = "Backpack opened — server confirmed.")
 	session.inventory_received.connect(func(items: Array):
 		inventory.text = "BACKPACK • %d items\n" % items.size()
@@ -129,6 +164,9 @@ func _ready() -> void:
 		if not accepted: message.text = "Movement blocked by server. Position corrected.")
 	session.failed.connect(func(reason: String): message.text = reason)
 	session.ended.connect(func():
+		custom_minimum_size.x = 380
+		self.position = Vector2(875,24)
+		reset_size.call_deferred()
 		account_controls.show()
 		controller.show()
 		character_controls.hide()

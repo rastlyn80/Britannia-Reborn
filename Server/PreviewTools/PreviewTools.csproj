@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>UltimaClone.PreviewTools</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Server"><HintPath>../runtime/Server.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UOContent"><HintPath>../runtime/Assemblies/UOContent.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+</Project>

@@ -327,6 +327,14 @@
       "sha256": "8F5A6CF6C1CF96E0A0F8E1A861B4245D42B7F88D44E5076DA3D48F3FC52F4E76"
     },
     {
+      "path": "Outfit/Male_Ranger_Head_Hood.bin",
+      "sha256": "D126C2E0438508983CA092847B772691C3CD6A80FC355C7EA7921324C1FF8053"
+    },
+    {
+      "path": "Outfit/Male_Ranger_Head_Hood.gltf",
+      "sha256": "57AFFA34C145D2C1A02A3D9B17066E22B84EB4CE2BB79C6C7B90588AF00846B6"
+    },
+    {
       "path": "Outfit/T_Peasant_BaseColor.png",
       "sha256": "A43635628D95571CD62FD4DB0CC3A6EA32778B2BC02F242DDA224C89D07F1ADE"
     },
@@ -337,6 +345,18 @@
     {
       "path": "Outfit/T_Peasant_ORM.png",
       "sha256": "E1932F5F91104AFCA89C501416A5FEC09069B8552734237FC09045FABC4CA9B4"
+    },
+    {
+      "path": "Outfit/T_Ranger_BaseColor.png",
+      "sha256": "846EF2170B04EE584AD83BB8A1E86DAB57A9A43B1193204505912C274D949925"
+    },
+    {
+      "path": "Outfit/T_Ranger_Normal.png",
+      "sha256": "DD64DA2AF3180F0C8F0B721CFC5F0D2720C351B97DA8285C6CF49E7717C84147"
+    },
+    {
+      "path": "Outfit/T_Ranger_ORM.png",
+      "sha256": "ACA03D2FBA12508EF07D5968CA22267FB207EA26AE898B6B2DEF8A296BD44F1C"
     },
     {
       "path": "Outfit/T_Regular_Male_Dark_BaseColor.png",
@@ -583,5 +603,5 @@
       "sha256": "3B004772BACE43CC43BF76F3C75D47F68DCE175510A26690468EFE63BFC05F95"
     }
   ],
-  "modifications": "Selected original glTF/GLB files and dependencies. Character glTF reserialized; missing normal-map aliases corrected to supplied textures. Runtime head mask and shared-skeleton peasant outfit assembly. Runtime foliage ignores wind vertex colours and replaces red TwistedTree leaf colour texture with the supplied green NormalTree colour texture. Source-scaled architectural modules, grouped foliage/bed/arch components, and procedural roof geometry using kit material detail; all original files otherwise retained."
+  "modifications": "Selected original glTF/GLB files and dependencies. Character glTF reserialized; missing normal-map aliases corrected to supplied textures. Runtime head mask, source-to-target rest-pose animation retargeting, shared-skeleton peasant outfit and ranger hood assembly. Runtime foliage ignores wind vertex colours and replaces red TwistedTree leaf colour texture with the supplied green NormalTree colour texture. Continuous metre-authored facade panels using kit texture detail, connected roof samples and gable/ridge trim, source-scaled smaller architectural modules, grouped foliage/bed/arch components, and procedural roof geometry using kit material detail; runtime architectural palette shader preserves subdued original surface detail; all original files otherwise retained."
 }

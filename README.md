@@ -27,7 +27,7 @@ Prepare the playable crop on a fresh setup with `scripts/prepare-play-world.ps1 
 
 Verified against the real server: authentication, compressed game session, character creation/selection/spawn, accepted walking, blocked-wall rejection/recovery, replicated movement seen by a second client, and backpack opening/contents. The visible scene was tested using injected keyboard events. No ModernUO core/gameplay source changes. A full client, combat, item pickup/drop, equipment appearance, streaming, established ClassicUO coexistence and cross-platform exports are not complete. Idle/walk/jog presentation is implemented; the full gameplay animation system remains pending.
 
-The client requests a classic resync after every accepted move to obtain exact elevation. This resets the movement sequence and resends nearby state: correct for this proof of concept but inefficient. Pacing is 410 ms walking / 210 ms running, above upstream default 400/200 ms foot delays. Upstream speedhack_detection is disabled by its default profile; no production anti-cheat claim. See docs/GRAPHICS_PASS.md and docs/PLAYABLE_POC.md for scope.
+Movement now predicts source-backed flat/gentle steps immediately, with server ACK/rejection and idle/periodic exact-position reconciliation. Ambiguous elevations retain the resync fallback. Pacing is 405 ms walking / 205 ms running; direction-only turns use a short 20 ms guard instead of a walking delay. Upstream speedhack_detection is disabled by its default profile; no production anti-cheat claim. See docs/GRAPHICS_PASS.md and docs/PLAYABLE_POC.md for scope.
 
 Selected CC0 art and bundled notices/hashes are in Viewer/Art/Quaternius and Viewer/Art/Kenney. Reproduce with scripts/fetch-art.ps1, scripts/prepare-art.ps1, scripts/prepare-furniture.ps1 and scripts/verify.ps1. Archives are SHA-256 pinned; publisher updates require review. Reconvert the crop with scripts/prepare-play-world.ps1 to include tiledata metadata. See docs/GRAPHICS_PASS.md for current scope and evidence; docs/ART_AND_MOVEMENT.md records the earlier baseline.
 
@@ -38,3 +38,11 @@ See [audit](docs/REPOSITORY_AUDIT.md), [roadmap](docs/ROADMAP.md), [progress](do
 Hold the **right mouse button** and move the mouse to look around; release to use the interface. The wheel zooms. Escape while looking or switching windows releases the pointer. Gamepads are disabled until enabled on the login screen.
 
 The latest submitted username/password are restored automatically on Windows. The password stays masked and is encrypted for the current Windows user in the ignored local Godot user-data directory. Use **Forget saved login** to remove it, or untick **Remember login**. With no saved login, the launcher prefills the existing development account. Secure remembered credentials are currently Windows-only. Restart the viewer after updating.
+
+### Return to the preview and server commands
+
+Press **F6** or click **Return to Britain** to return to Trammel (1602,1591,20). Regular movement stops at the converted area edge. Open **Server commands** for `[PreviewWhere`, `[PreviewCommands`, and native ModernUO text commands; staff commands retain their server permissions. The local recovery extension works for ordinary Player accounts. See docs/STREET_MOVEMENT_PASS.md for the current movement, roof-anchor correction, test evidence and limits.
+
+## Original 2D comparison
+
+Double-click `Play-Classic-2D.cmd`, or `Play-Classic-2D-Observer.cmd` for a separate character alongside Godot. Both connect to the existing ModernUO server. See docs/CLASSIC_COMPARISON.md for controls, credentials and the pinned BSD client dependency.

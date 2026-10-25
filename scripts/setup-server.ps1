@@ -15,3 +15,5 @@ if (!(Test-Path "$tools\dotnet-server\dotnet.exe")) {
 }
 & "$PSScriptRoot\build-server.ps1"
 & "$PSScriptRoot\configure-server.ps1"
+
+& "$PSScriptRoot\build-preview-tools.ps1"

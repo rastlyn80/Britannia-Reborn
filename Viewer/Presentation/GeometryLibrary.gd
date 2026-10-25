@@ -75,7 +75,7 @@ static func roof_height(u: float, v: float, rule: Dictionary) -> float:
 	if int(rise[1]) != 0: return (v if int(rise[1]) > 0 else 1.0-v)*0.6
 	return (1.0-abs((v if rule.get("ridgeAxis","x") == "x" else u)-0.5)*2.0)*0.28
 
-func roof(s: Dictionary, rule: Dictionary, shader: ShaderMaterial) -> Node3D:
+func roof(s: Dictionary, rule: Dictionary, shader: ShaderMaterial, plan: Dictionary = {}, gable_material: Material = null) -> Node3D:
 	var node := Node3D.new()
 	var surface := SurfaceTool.new()
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
@@ -83,14 +83,80 @@ func roof(s: Dictionary, rule: Dictionary, shader: ShaderMaterial) -> Node3D:
 	for y in 2:
 		for x in 2:
 			var points := [Vector2(x,y),Vector2(x,y+1),Vector2(x+1,y),Vector2(x+1,y+1)]
-			for index in [0,1,2,2,1,3]:
+			for index in [0,2,1,2,3,1]:
 				var uv: Vector2 = points[index]*0.5
 				surface.set_uv(Vector2(s.x,s.y)+uv)
-				surface.add_vertex(Vector3(uv.x-0.5,roof_height(uv.x,uv.y,rule),uv.y-0.5))
+				surface.add_vertex(Vector3(uv.x-0.5,(float(plan.heights[int(uv.y*2)*3+int(uv.x*2)])-float(s.z)*0.2 if not plan.is_empty() else roof_height(uv.x,uv.y,rule)),uv.y-0.5))
 	surface.generate_normals()
 	surface.generate_tangents()
 	var mesh := MeshInstance3D.new()
 	mesh.mesh = surface.commit()
 	mesh.material_override = shader
 	node.add_child(mesh)
+	if not plan.is_empty() and not plan.get("boundary_fragment",false):
+		var edges := [[0,1,2],[2,5,8],[8,7,6],[6,3,0]]
+		var bottom := float(plan.eave)-float(s.z)*0.2
+		var gables := SurfaceTool.new()
+		gables.begin(Mesh.PRIMITIVE_TRIANGLES)
+		var has_gables := false
+		for edge in 4:
+			if not plan.exposed[edge]: continue
+			for segment in 2:
+				var a: int = edges[edge][segment]
+				var b: int = edges[edge][segment+1]
+				var p := Vector3(float(a%3)*0.5-0.5,float(plan.heights[a])-float(s.z)*0.2,float(a/3)*0.5-0.5)
+				var q := Vector3(float(b%3)*0.5-0.5,float(plan.heights[b])-float(s.z)*0.2,float(b/3)*0.5-0.5)
+				beam(node,p,q,0.09,"65523f")
+				if maxf(p.y,q.y)-bottom < 0.08: continue
+				has_gables = true
+				for v in [p,Vector3(p.x,bottom,p.z),q,q,Vector3(p.x,bottom,p.z),Vector3(q.x,bottom,q.z)]:
+					gables.set_uv(Vector2(v.x+v.z,v.y))
+					gables.add_vertex(v)
+		if has_gables:
+			gables.generate_normals()
+			gables.generate_tangents()
+			var ends := MeshInstance3D.new()
+			ends.mesh = gables.commit()
+			ends.material_override = gable_material if gable_material != null else material("baa887")
+			node.add_child(ends)
+		if rule.get("rise",[0,0]) == [0,0]:
+			var center := float(plan.heights[4])-float(s.z)*0.2+0.025
+			if rule.get("ridgeAxis","x") == "x": beam(node,Vector3(-0.5,center,0),Vector3(0.5,center,0),0.085,"626260")
+			else: beam(node,Vector3(0,center,-0.5),Vector3(0,center,0.5),0.085,"626260")
+	return node
+
+func beam(parent: Node3D, a: Vector3, b: Vector3, thickness: float, color: String) -> void:
+	if a.distance_to(b) < 0.001: return
+	var mesh := box(parent,Vector3(thickness,thickness,a.distance_to(b)),(a+b)/2,color)
+	mesh.look_at_from_position((a+b)/2,b,Vector3.UP)
+
+# One continuous infill replaces stacked isometric wedge records.
+func gable(width: float, height: float, plaster: Material) -> Node3D:
+	var node := Node3D.new()
+	var mesh := MeshInstance3D.new()
+	var surface := SurfaceTool.new()
+	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for back in [false,true]:
+		var points := [Vector3(-width/2,0,0),Vector3(0,height,0),Vector3(width/2,0,0)]
+		if back: points.reverse()
+		for point in points:
+			surface.set_uv(Vector2(point.x,point.y))
+			surface.add_vertex(point+Vector3(0,0,0.06 if back else -0.06))
+	surface.generate_normals()
+	mesh.mesh = surface.commit()
+	mesh.material_override = plaster
+	node.add_child(mesh)
+	return node
+
+func furniture(size: Vector2, kind: String) -> Node3D:
+	var node := Node3D.new()
+	var height := 0.5 if kind == "bench" else (1.0 if kind == "counter" else 0.82)
+	box(node,Vector3(size.x-0.06,0.12,size.y-0.06),Vector3(0,height-0.06,0),"795535")
+	var count_x := maxi(2,int(ceil(size.x/1.5))+1)
+	var count_y := 2
+	for x in count_x:
+		for y in count_y:
+			var at := Vector3(lerpf(-size.x/2+0.13,size.x/2-0.13,float(x)/(count_x-1)),(height-0.12)/2,lerpf(-size.y/2+0.13,size.y/2-0.13,float(y)))
+			box(node,Vector3(0.12,height-0.12,0.12),at,"503b2b")
+	if kind == "counter": box(node,Vector3(size.x-0.12,height-0.15,0.1),Vector3(0,(height-0.15)/2,size.y/2-0.1),"6b4c31")
 	return node

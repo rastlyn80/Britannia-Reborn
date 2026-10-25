@@ -4,13 +4,17 @@
       "kind": "roof",
       "asset": "procedural:continuous-roof-with-kit-material",
       "axis": "x",
-      "confidence": "reference-family; source-elevation slope",
+      "confidence": "reference-family; source elevation; roof art anchor corrected against wall runs",
       "material": "shingle",
       "rise": [
         1,
         0
       ],
-      "ridgeAxis": "x"
+      "ridgeAxis": "x",
+      "anchorOffset": [
+        -1,
+        -1
+      ]
     },
     "6004": {
       "kind": "rock",
@@ -58,13 +62,17 @@
       "kind": "roof",
       "asset": "procedural:continuous-roof-with-kit-material",
       "axis": "x",
-      "confidence": "reference-family; source-elevation slope",
+      "confidence": "reference-family; source elevation; roof art anchor corrected against wall runs",
       "material": "shingle",
       "rise": [
         0,
         1
       ],
-      "ridgeAxis": "x"
+      "ridgeAxis": "x",
+      "anchorOffset": [
+        -1,
+        -1
+      ]
     },
     "1194": {
       "kind": "floor",
@@ -236,13 +244,17 @@
       "kind": "roof",
       "asset": "procedural:continuous-roof-with-kit-material",
       "axis": "x",
-      "confidence": "reference-family; source-elevation slope",
+      "confidence": "reference-family; source elevation; roof art anchor corrected against wall runs",
       "material": "shingle",
       "rise": [
         0,
         0
       ],
-      "ridgeAxis": "x"
+      "ridgeAxis": "x",
+      "anchorOffset": [
+        -1,
+        -1
+      ]
     },
     "1208": {
       "kind": "floor",
@@ -254,13 +266,17 @@
       "kind": "roof",
       "asset": "procedural:continuous-roof-with-kit-material",
       "axis": "x",
-      "confidence": "reference-family; source-elevation slope",
+      "confidence": "reference-family; source elevation; roof art anchor corrected against wall runs",
       "material": "shingle",
       "rise": [
         0,
         -1
       ],
-      "ridgeAxis": "x"
+      "ridgeAxis": "x",
+      "anchorOffset": [
+        -1,
+        -1
+      ]
     },
     "308": {
       "kind": "wall",
@@ -326,25 +342,33 @@
       "kind": "roof",
       "asset": "procedural:continuous-roof-with-kit-material",
       "axis": "x",
-      "confidence": "reference-family; source-elevation slope",
+      "confidence": "reference-family; source elevation; roof art anchor corrected against wall runs",
       "material": "shingle",
       "rise": [
         0,
         0
       ],
-      "ridgeAxis": "y"
+      "ridgeAxis": "y",
+      "anchorOffset": [
+        -1,
+        -1
+      ]
     },
     "1475": {
       "kind": "roof",
       "asset": "procedural:continuous-roof-with-kit-material",
       "axis": "x",
-      "confidence": "reference-family; source-elevation slope",
+      "confidence": "reference-family; source elevation; roof art anchor corrected against wall runs",
       "material": "shingle",
       "rise": [
         -1,
         0
       ],
-      "ridgeAxis": "x"
+      "ridgeAxis": "x",
+      "anchorOffset": [
+        -1,
+        -1
+      ]
     },
     "296": {
       "kind": "wall",
@@ -419,10 +443,10 @@
       "confidence": "semantic-substitute"
     },
     "331": {
-      "kind": "trim",
+      "kind": "gable",
       "asset": "Village/Wall_Plaster_Straight.gltf",
       "axis": "y",
-      "confidence": "reference-shape-and-axis; modern-style-substitute"
+      "confidence": "source-wedge-assembly; continuous plaster infill"
     },
     "315": {
       "kind": "window",
@@ -732,13 +756,17 @@
       "kind": "roof",
       "asset": "procedural:continuous-roof-with-kit-material",
       "axis": "x",
-      "confidence": "reference-family; source-elevation slope",
+      "confidence": "reference-family; source elevation; roof art anchor corrected against wall runs",
       "material": "slate",
       "rise": [
         0,
         1
       ],
-      "ridgeAxis": "x"
+      "ridgeAxis": "x",
+      "anchorOffset": [
+        -1,
+        -1
+      ]
     },
     "1206": {
       "kind": "floor",
@@ -810,13 +838,17 @@
       "kind": "roof",
       "asset": "procedural:continuous-roof-with-kit-material",
       "axis": "x",
-      "confidence": "reference-family; source-elevation slope",
+      "confidence": "reference-family; source elevation; roof art anchor corrected against wall runs",
       "material": "slate",
       "rise": [
         0,
         0
       ],
-      "ridgeAxis": "x"
+      "ridgeAxis": "x",
+      "anchorOffset": [
+        -1,
+        -1
+      ]
     },
     "2926": {
       "kind": "table",
@@ -828,13 +860,17 @@
       "kind": "roof",
       "asset": "procedural:continuous-roof-with-kit-material",
       "axis": "x",
-      "confidence": "reference-family; source-elevation slope",
+      "confidence": "reference-family; source elevation; roof art anchor corrected against wall runs",
       "material": "slate",
       "rise": [
         0,
         -1
       ],
-      "ridgeAxis": "x"
+      "ridgeAxis": "x",
+      "anchorOffset": [
+        -1,
+        -1
+      ]
     },
     "2781": {
       "kind": "carpet",
@@ -918,13 +954,17 @@
       "kind": "roof",
       "asset": "procedural:continuous-roof-with-kit-material",
       "axis": "x",
-      "confidence": "reference-family; source-elevation slope",
+      "confidence": "reference-family; source elevation; roof art anchor corrected against wall runs",
       "material": "slate",
       "rise": [
         1,
         0
       ],
-      "ridgeAxis": "x"
+      "ridgeAxis": "x",
+      "anchorOffset": [
+        -1,
+        -1
+      ]
     },
     "1850": {
       "kind": "stairs",
@@ -940,49 +980,65 @@
       "kind": "roof",
       "asset": "procedural:continuous-roof-with-kit-material",
       "axis": "x",
-      "confidence": "reference-family; source-elevation slope",
+      "confidence": "reference-family; source elevation; roof art anchor corrected against wall runs",
       "material": "slate",
       "rise": [
         0,
         0
       ],
-      "ridgeAxis": "y"
+      "ridgeAxis": "y",
+      "anchorOffset": [
+        -1,
+        -1
+      ]
     },
     "1430": {
       "kind": "roof",
       "asset": "procedural:continuous-roof-with-kit-material",
       "axis": "x",
-      "confidence": "reference-family; source-elevation slope",
+      "confidence": "reference-family; source elevation; roof art anchor corrected against wall runs",
       "material": "slate",
       "rise": [
         -1,
         0
       ],
-      "ridgeAxis": "x"
+      "ridgeAxis": "x",
+      "anchorOffset": [
+        -1,
+        -1
+      ]
     },
     "1434": {
       "kind": "roof",
       "asset": "procedural:continuous-roof-with-kit-material",
       "axis": "x",
-      "confidence": "reference-family; source-elevation slope",
+      "confidence": "reference-family; source elevation; roof art anchor corrected against wall runs",
       "material": "slate",
       "rise": [
         1,
         0
       ],
-      "ridgeAxis": "x"
+      "ridgeAxis": "x",
+      "anchorOffset": [
+        -1,
+        -1
+      ]
     },
     "1433": {
       "kind": "roof",
       "asset": "procedural:continuous-roof-with-kit-material",
       "axis": "x",
-      "confidence": "reference-family; source-elevation slope",
+      "confidence": "reference-family; source elevation; roof art anchor corrected against wall runs",
       "material": "slate",
       "rise": [
         -1,
         0
       ],
-      "ridgeAxis": "x"
+      "ridgeAxis": "x",
+      "anchorOffset": [
+        -1,
+        -1
+      ]
     },
     "32": {
       "kind": "wall",
@@ -997,10 +1053,10 @@
       "confidence": "semantic-substitute"
     },
     "330": {
-      "kind": "trim",
+      "kind": "gable",
       "asset": "Village/Wall_Plaster_Straight.gltf",
       "axis": "x",
-      "confidence": "reference-shape-and-axis; modern-style-substitute"
+      "confidence": "source-wedge-assembly; continuous plaster infill"
     },
     "31": {
       "kind": "wall",
@@ -1012,13 +1068,17 @@
       "kind": "roof",
       "asset": "procedural:continuous-roof-with-kit-material",
       "axis": "x",
-      "confidence": "reference-family; source-elevation slope",
+      "confidence": "reference-family; source elevation; roof art anchor corrected against wall runs",
       "material": "slate",
       "rise": [
         0,
         0
       ],
-      "ridgeAxis": "y"
+      "ridgeAxis": "y",
+      "anchorOffset": [
+        -1,
+        -1
+      ]
     },
     "37": {
       "kind": "trim",
@@ -1114,13 +1174,17 @@
       "kind": "roof",
       "asset": "procedural:continuous-roof-with-kit-material",
       "axis": "x",
-      "confidence": "reference-family; source-elevation slope",
+      "confidence": "reference-family; source elevation; roof art anchor corrected against wall runs",
       "material": "clay",
       "rise": [
         1,
         0
       ],
-      "ridgeAxis": "x"
+      "ridgeAxis": "x",
+      "anchorOffset": [
+        -1,
+        -1
+      ]
     },
     "2659": {
       "kind": "bed",
@@ -1192,25 +1256,33 @@
       "kind": "roof",
       "asset": "procedural:continuous-roof-with-kit-material",
       "axis": "x",
-      "confidence": "reference-family; source-elevation slope",
+      "confidence": "reference-family; source elevation; roof art anchor corrected against wall runs",
       "material": "clay",
       "rise": [
         0,
         0
       ],
-      "ridgeAxis": "y"
+      "ridgeAxis": "y",
+      "anchorOffset": [
+        -1,
+        -1
+      ]
     },
     "1460": {
       "kind": "roof",
       "asset": "procedural:continuous-roof-with-kit-material",
       "axis": "x",
-      "confidence": "reference-family; source-elevation slope",
+      "confidence": "reference-family; source elevation; roof art anchor corrected against wall runs",
       "material": "clay",
       "rise": [
         -1,
         0
       ],
-      "ridgeAxis": "x"
+      "ridgeAxis": "x",
+      "anchorOffset": [
+        -1,
+        -1
+      ]
     },
     "1873": {
       "kind": "stairs",

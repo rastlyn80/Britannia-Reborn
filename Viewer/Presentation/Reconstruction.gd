@@ -2,11 +2,15 @@ extends RefCounted
 
 const Geometry = preload("res://Presentation/GeometryLibrary.gd")
 var geometry := Geometry.new()
+var facade := preload("res://Presentation/Facade.gd").new()
+var roofs := preload("res://Presentation/RoofPlan.gd").new()
 var catalog: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://Presentation/static-catalog.json")).rules
 var scenes := {}
 var bounds := {}
 var roof_materials := {}
 var architecture_materials := {}
+var show_boundary_fragments := false
+var boundary_fragments := 0
 var mapped := 0
 var unresolved := 0
 var grouped := 0
@@ -34,6 +38,8 @@ func rule_for(id: int) -> Dictionary:
 	return catalog.get(str(id),{})
 
 func index(world: Dictionary) -> void:
+	facade.index(world,catalog)
+	roofs.index(world,catalog)
 	groups.clear()
 	wall_cells.clear()
 	var trees := {}
@@ -65,6 +71,26 @@ func index(world: Dictionary) -> void:
 			for offset in [Vector3i(1,0,0),Vector3i(-1,0,0),Vector3i(0,1,0),Vector3i(0,-1,0)]:
 				if beds.has(at+offset) and not visited.has(at+offset): pending.append(at+offset)
 		_group(members,world,"bed")
+	# Source gables are stacked wedges; furniture IDs are component tiles.
+	for assembled_kind in ["gable","bench","table","counter"]:
+		var remaining := {}
+		for i in world.statics.size():
+			if rule_for(world.statics[i].id).get("kind") == assembled_kind: remaining[i] = true
+		while not remaining.is_empty():
+			var pending := [remaining.keys()[0]]
+			var members := []
+			while not pending.is_empty():
+				var at: int = pending.pop_back()
+				if not remaining.has(at): continue
+				remaining.erase(at)
+				members.append(at)
+				var a: Dictionary = world.statics[at]
+				for other in remaining.keys():
+					var b: Dictionary = world.statics[other]
+					var same_axis: bool = rule_for(a.id).get("axis") == rule_for(b.id).get("axis")
+					var distance: int = absi(int(a.x)-int(b.x))+absi(int(a.y)-int(b.y))
+					if (same_axis or assembled_kind != "gable") and distance <= 1 and absi(int(a.z)-int(b.z)) <= (3 if assembled_kind == "gable" else 0): pending.append(other)
+			_group(members,world,assembled_kind)
 	for cell in arches:
 		var at: int = arches[cell]
 		if int(world.statics[at].id) == 320 and arches.has(cell+Vector3i(0,1,0)):
@@ -80,7 +106,12 @@ func _group(indices: Array, world: Dictionary, kind: String) -> void:
 		var s: Dictionary = world.statics[index]
 		low = low.min(Vector2(s.x,s.y))
 		high = high.max(Vector2(s.x,s.y))
-	var data := {"owner":owner,"indices":indices,"low":low,"size":high-low+Vector2.ONE,"kind":kind}
+	var min_z := 100000.0
+	var max_z := -100000.0
+	for index in indices:
+		min_z = minf(min_z,float(world.statics[index].z))
+		max_z = maxf(max_z,float(world.statics[index].z)+3.0)
+	var data := {"min_z":min_z,"max_z":max_z,"owner":owner,"indices":indices,"low":low,"size":high-low+Vector2.ONE,"kind":kind}
 	for index in indices: groups[index] = data
 
 func _collect_bounds(node: Node3D, transform: Transform3D, boxes: Array) -> void:
@@ -154,26 +185,41 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 	var detail := info(world,s.id,true)
 	var height := maxf(0.04,float(detail.get("height",0))*float(world.elevationScale))
 	var asset := str(rule.get("asset",""))
+	var family := "wood" if "wooden wall" in str(detail.get("name","")) else ("stone" if "stone wall" in str(detail.get("name","")) else "plaster")
 	var visual: Node3D
 	var state := "replacement"
 	if groups.has(ordinal) and groups[ordinal].owner != ordinal:
 		state = "group-component"
 		grouped += 1
+	elif kind == "roof" and roofs.tiles.get(ordinal,{}).get("boundary_fragment",false) and not show_boundary_fragments:
+		state = "boundary-fragment"
+		boundary_fragments += 1
 	else:
 		match kind:
-			"wall", "window": visual = fitted(asset,Vector3(1,height,0.16))
+			"wall", "window": visual = facade.panel(height,kind == "window",facade.plans.get(ordinal,{}),family)
 			"corner":
 				visual = Node3D.new()
-				var first := fitted(asset,Vector3(1,height,0.16))
-				var second := fitted(asset,Vector3(1,height,0.16))
+				var first := facade.panel(height,false,{"left_post":true,"right_post":false},family)
+				var second := facade.panel(height,false,{"left_post":false,"right_post":false},family)
 				first.position.z = -0.42
 				second.position.x = -0.42
 				second.rotation.y = PI/2
 				visual.add_child(first)
 				visual.add_child(second)
 			"post": visual = fitted(asset,Vector3(0.15,height,0.15))
+			"gable":
+				var group: Dictionary = groups[ordinal]
+				var span: float = maxf(group.size.x,group.size.y)+1.0
+				visual = geometry.gable(span,(group.max_z-group.min_z)*float(world.elevationScale),facade.material("plaster"))
+				visual.position.y = (group.min_z-float(s.z))*float(world.elevationScale)
+				if rule.get("axis") == "y": visual.rotation.y = PI/2
 			"trim", "beam": visual = fitted(asset,Vector3(1,height,0.14))
-			"arch": visual = fitted(asset,Vector3(2 if groups.has(ordinal) else 1,height,0.18))
+			"arch":
+				visual = Node3D.new()
+				var span := 2.0 if groups.has(ordinal) else 1.0
+				var opening_height := minf(height,2.7)
+				visual.add_child(fitted(asset,Vector3(span,opening_height,0.2)))
+				if height > opening_height: facade.piece(visual,Vector3(span,height-opening_height,0.18),Vector3(0,(height+opening_height)/2,0),"plaster")
 			"floor": visual = fitted(asset,Vector3(1,0.035,1))
 			"landing":
 				visual = Node3D.new()
@@ -182,7 +228,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 				deck.position.y = height
 				visual.add_child(deck)
 			"stairs": visual = geometry.stairs(height,Vector2(rule.rise[0],rule.rise[1]))
-			"roof": visual = geometry.roof(s,rule,roof_material(rule.material))
+			"roof": visual = geometry.roof(s,rule,roof_material(rule.material),roofs.tiles.get(ordinal,{}),facade.material("plaster"))
 			"door": visual = fitted(asset,Vector3(0.86,height,0.12))
 			"fence": visual = fitted(asset,Vector3(1,1.2,0.10))
 			"bed":
@@ -192,16 +238,12 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 				visual = fitted(asset,Vector3(minf(size.x,size.y),0.72,maxf(size.x,size.y)))
 				if size.x > size.y: visual.rotation.y = PI/2
 			"carpet": visual = geometry.carpet(s)
-			"table": visual = fitted(asset,Vector3(0.98,0.95,0.98))
-			"bench": visual = fitted(asset,Vector3(1,0.5,0.52))
-			"counter":
-				visual = fitted(asset,Vector3(1,1.0,0.8))
-				for mesh in visual.find_children("*","MeshInstance3D",true,false):
-					for surface in mesh.mesh.get_surface_count():
-						var mat: StandardMaterial3D = mesh.get_active_material(surface).duplicate()
-						mat.albedo_color *= Color("9b744e")
-						mat.roughness = 0.9
-						mesh.set_surface_override_material(surface,mat)
+			"table", "bench", "counter":
+				var size: Vector2 = groups[ordinal].size if groups.has(ordinal) else Vector2.ONE
+				if kind == "bench":
+					if rule.get("axis") == "y": size.x = 0.5
+					else: size.y = 0.5
+				visual = geometry.furniture(size,kind)
 			"sign": visual = geometry.sign()
 			"painting": visual = geometry.painting()
 			"tree", "canopy":
@@ -232,8 +274,11 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 				report.append({"ordinal":ordinal,"id":s.id,"xyz":[s.x,s.y,s.z],"status":"unmapped"})
 				return null
 		if visual:
-			if kind in ["wall","window","trim","beam","arch","door","fence","bench","sign","painting"] and rule.get("axis") == "y": visual.rotation.y = PI/2
-			if groups.has(ordinal) and kind in ["bed","arch"]:
+			if kind == "roof":
+				var anchor: Array = rule.get("anchorOffset",[-1,-1])
+				visual.position += Vector3(float(anchor[0]),0,float(anchor[1]))
+			if kind in ["wall","window","trim","beam","arch","door","fence","sign","painting"] and rule.get("axis") == "y": visual.rotation.y = PI/2
+			if groups.has(ordinal) and kind in ["bed","arch","gable","bench","table","counter"]:
 				var group: Dictionary = groups[ordinal]
 				visual.position += Vector3(group.low.x+group.size.x/2-float(s.x)-0.5,0,group.low.y+group.size.y/2-float(s.y)-0.5)
 			node.add_child(visual)
@@ -242,13 +287,19 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 	node.set_meta("source_xyz",Vector3i(s.x,s.y,s.z))
 	node.set_meta("source_ordinal",ordinal)
 	node.set_meta("kind",kind)
-	node.set_meta("solid",kind in ["wall","window","corner","post","trim","beam","arch","floor","landing","stairs","roof","door","fence","bed","table","bench","counter","rock","log"] and state != "group-component")
+	node.set_meta("solid",kind in ["wall","window","corner","post","trim","gable","beam","arch","floor","landing","stairs","roof","door","fence","bed","table","bench","counter","rock","log"] and state not in ["group-component","boundary-fragment"])
 	node.position = Vector3(s.x-int(world.originX)+0.5,s.z*float(world.elevationScale),s.y-int(world.originY)+0.5)
+	if facade.plans.has(ordinal): node.set_meta("facade_run",facade.plans[ordinal].run)
 	var entry := {"ordinal":ordinal,"id":s.id,"xyz":[s.x,s.y,s.z],"status":state,"kind":kind,"asset":asset,"axis":rule.get("axis","x"),"confidence":rule.get("confidence","semantic")}
+	if state == "boundary-fragment": entry.reason = "isolated roof row clipped by crop; retained in source and map view, suppressed in perspective"
+	if facade.plans.has(ordinal): entry.facade_run = facade.plans[ordinal].run
+	if roofs.tiles.has(ordinal):
+		entry.roof_joined = true
+		entry.visual_anchor_offset = rule.get("anchorOffset",[-1,-1])
 	if groups.has(ordinal): entry.group_owner = groups[ordinal].owner
 	report.append(entry)
 	return node
 
 func save_report(path: String) -> void:
 	var file := FileAccess.open(path,FileAccess.WRITE)
-	file.store_string(JSON.stringify({"total":report.size(),"accounted":mapped,"group_components":grouped,"unmapped":unresolved,"exact_original_art_matches":0,"placements":report},"\t"))
+	file.store_string(JSON.stringify({"total":report.size(),"accounted":mapped,"group_components":grouped,"boundary_fragments":boundary_fragments,"unmapped":unresolved,"exact_original_art_matches":0,"placements":report},"\t"))

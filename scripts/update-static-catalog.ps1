@@ -11,6 +11,7 @@ foreach ($property in $world.staticData.PSObject.Properties) {
   $kind=''; $asset=''; $confidence='semantic-substitute'
   if ($id -in $corner) { $kind='corner'; $asset='Village/Wall_Plaster_Straight.gltf' }
   elseif ($id -in @(9,29,298,4758)) { $kind='post'; $asset='Village/Prop_Support.gltf' }
+  elseif ($id -in @(330,331)) { $kind='gable'; $asset='Village/Wall_Plaster_Straight.gltf' }
   elseif ($name -match 'wall') { $kind=if($height -lt 15){'trim'}else{'wall'}; $asset=if($name -match 'stone'){'Village/Wall_UnevenBrick_Straight.gltf'}elseif($name -match 'wooden'){'Village/Wall_Plaster_WoodGrid.gltf'}else{'Village/Wall_Plaster_Straight.gltf'} }
   elseif ($name -eq 'window') { $kind='window'; $asset='Village/Wall_Plaster_Window_Wide_Flat.gltf' }
   elseif ($name -eq 'archway') { $kind='arch'; $asset='Village/Wall_Arch.gltf' }
@@ -45,6 +46,7 @@ foreach ($property in $world.staticData.PSObject.Properties) {
   if ($id -eq 29) { $entry.asset='Village/Wall_UnevenBrick_Straight.gltf' }
   if ($id -eq 4758) { $entry.confidence='metadata-only; original silhouette needs further review' }
   if ($kind -eq 'roof') {
+    $entry.anchorOffset=@(-1,-1)
     $entry.material=if($name -match 'slate'){'slate'}elseif($name -match 'tile roof'){'clay'}else{'shingle'}
     $entry.rise=if($slopes.ContainsKey($id)){$slopes[$id]}else{@(0,0)}
     $entry.ridgeAxis=if($id -in @(1429,1437,1459,1474)){'y'}else{'x'}

@@ -1,5 +1,22 @@
 # Progress — 25 October 2026
 
+## Interior and classic-client follow-up
+
+Source gable IDs 330/331 are now assembled from stacked wedges into continuous plaster infill, and adjoining furniture records become single brown wooden benches/tables/counters with spaced supports. This removes the staircase bands and overlapping pale full-model replacements shown in the user screenshot. Source positions are preserved. An elevated bench record at (1621,1586,20) remains visible above its ground-level duplicate; it is present in the source crop and requires support/data investigation. Roof junction silhouettes still need refinement. The interior capture is local evidence, not a finished-art claim.
+
+Added double-click ClassicUO primary/observer launchers for the existing ModernUO server; see CLASSIC_COMPARISON.md. The native observer and Godot primary both entered the server. Pinned portable binaries and local profiles are ignored, BSD license included.
+
+## Current checkpoint: retargeted movement, roof alignment and recovery
+
+Implemented continuous visible facing, correct source-to-equipped rest-pose animation retargeting, native stride pacing, and bounded source-backed prediction. The pinned server has zero-cost turns; the previous full walking delay on turns and per-step resync caused avoidable pauses. Flat/gentle steps now start immediately; server ACK/rejection and idle/12-step reconciliation remain authoritative. Live production-scene walk/run matched exact server XYZ, a second client observed the movement, and first visible motion measured 16-17 ms locally. Arbitrary-angle authoritative physics and latency/stress tests remain out of scope.
+
+Façade runs now share metre-authored structure/openings and kit surface materials. Connected roofs share mesh samples and have gable/ridge/fascia treatment. Both full building footprints showed the same one-coordinate east/south roof-art anchor bias; persistent [-1,-1] visual offsets correct it without changing source XYZ. Roof normals, ground materials/diagonal triangulation, lighting, hooded appearance and the HUD were improved. 2,689 records remain accounted for: 2,470 visible owners, 184 grouped components and 35 retained boundary roof fragments suppressed in perspective.
+
+Added F6/Return to Britain, a native text command panel, crop-edge guard and isolated loopback-only PreviewTools server extension. The latest saved account character was returned to Trammel (1602,1591,20), confirmed by a server position reply. No privilege promotion. The world was explicitly saved, gracefully stopped, backed up under ignored work/server-backups, then successfully reloaded with the extension; upstream source remains unchanged. The server is running.
+
+Current verification: 120 offline checks, converter/extension builds and real crop load pass; live login, recovery, six-step prediction/exact reconciliation and two-client observation pass. Updated screenshots, gait contact sheet and original-palette map comparison are local in outputs/validation. See STREET_MOVEMENT_PASS.md for reproduction, provenance and remaining fidelity/IK/physical-jump limits. Earlier checkpoints below are historical.
+
+
 ## Login memory and mouse camera correction
 
 Camera look now starts only with an unhandled right-button press, captures the pointer, consumes relative motion, and releases before GUI routing on mouse-up, Escape or window focus loss. Controllers are off until explicitly enabled; their stick deadzone is 0.35. No idle camera recentering is introduced. Login fields retain the latest submitted account/password, seeded from the existing local development account when no saved login exists. Windows CurrentUser DPAPI encrypts the local vault through anonymous pipes; passwords are never passed as process arguments. Remember is enabled initially, with explicit forget/opt-out controls. Non-Windows secure persistence is not implemented and reports failure.

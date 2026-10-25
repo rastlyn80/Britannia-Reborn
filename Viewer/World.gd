@@ -32,6 +32,10 @@ var coverage_path := ""
 var mouse_looking := false
 var mouse_return := Vector2.ZERO
 var controller_enabled := false
+var intent_facing := 0.0
+var has_move_intent := false
+var accept_player_input := true
+var movement_surface := preload("res://Presentation/MovementSurface.gd").new()
 
 func point(x: int, y: int, z: int) -> Vector3:
 	return Vector3(x - int(world.originX), z * float(world.elevationScale), y - int(world.originY))
@@ -66,6 +70,9 @@ func _ready() -> void:
 	world = JSON.parse_string(FileAccess.get_file_as_string(path))
 	assert(int(world.schema) == 1)
 	assert(point(int(world.originX)+3,int(world.originY)+7,-5).is_equal_approx(Vector3(3,-1,7)))
+	movement_surface.index(world)
+	game.surface = movement_surface
+	game.preview_bounds = Rect2i(int(world.originX),int(world.originY),int(world.width)-1,int(world.height)-1)
 	var samples := {}
 	for t in world.terrain: samples[Vector2i(t.x,t.y)] = t
 	var surface := SurfaceTool.new()
@@ -78,20 +85,25 @@ func _ready() -> void:
 			var d: Dictionary = samples[Vector2i(x+1,y+1)]
 			var name := str(Reconstruction.info(world,a.id,false).get("name",""))
 			if name == "NODRAW": continue
-			for t in [a,b,c,b,d,c]:
-				surface.set_color(Reconstruction.terrain_color(name))
+			var vertices := [a,b,d,a,d,c] if abs(int(a.z)-int(d.z)) <= abs(int(b.z)-int(c.z)) else [a,b,c,b,d,c]
+			for t in vertices:
+				var vertex_name := str(Reconstruction.info(world,t.id,false).get("name",""))
+				surface.set_color(Reconstruction.terrain_color(vertex_name).srgb_to_linear())
 				surface.set_uv(Vector2(t.x,t.y))
-				surface.set_uv2(Vector2(2 if name == "wooden floor" else (1 if name in ["cobblestones","stone","brick"] else 0),0))
+				surface.set_uv2(Vector2(1.0 if vertex_name in ["cobblestones","stone","brick"] else 0.0,1.0 if vertex_name == "wooden floor" else 0.0))
 				surface.add_vertex(point(t.x,t.y,t.z))
 	surface.generate_normals()
 	var terrain := MeshInstance3D.new()
 	terrain.mesh = surface.commit()
 	var terrain_mat := ShaderMaterial.new()
 	terrain_mat.shader = preload("res://Presentation/Ground.gdshader")
+	terrain_mat.set_shader_parameter("stone_detail",load("res://Art/Quaternius/Village/T_Brick_BaseColor.png"))
+	terrain_mat.set_shader_parameter("stone_normal",load("res://Art/Quaternius/Village/T_Brick_Normal.png"))
 	terrain.material_override = terrain_mat
 	add_child(terrain)
 	add_child(static_root)
 	add_child(diagnostics)
+	reconstruction.show_boundary_fragments = map_view
 	reconstruction.index(world)
 	for ordinal in world.statics.size():
 		var s: Dictionary = world.statics[ordinal]
@@ -130,8 +142,8 @@ func _ready() -> void:
 	sky.ground_bottom_color = Color("8cabb5")
 	env.environment.sky.sky_material = sky
 	env.environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.environment.ambient_light_color = Color("b4c7db")
-	env.environment.ambient_light_energy = 0.55
+	env.environment.ambient_light_color = Color("d6e1e6")
+	env.environment.ambient_light_energy = 0.8
 	env.environment.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 	add_child(env)
 	add_child(pivot)
@@ -167,12 +179,23 @@ func _ready() -> void:
 	canvas.add_child(login_panel)
 	login_panel.controller_toggled.connect(func(enabled: bool): controller_enabled = enabled)
 	game.entity_changed.connect(_entity_changed)
+	game.position_reset.connect(func(position: Dictionary):
+		var at := entity_point(position.x,position.y,position.z)
+		if tracks.has(position.serial): tracks[position.serial].reset(at)
+		if avatars.has(position.serial):
+			avatars[position.serial].position = at
+			avatars[position.serial].jump.reset()
+		pivot.position = at+Vector3(0,1.4,0)
+		camera_target_ready = true)
+	game.movement_started.connect(func(position: Dictionary,seconds: float):
+		if tracks.has(player_serial): tracks[player_serial].push(entity_point(position.x,position.y,position.z),seconds))
 	game.entity_removed.connect(_entity_removed)
 	game.movement_result.connect(func(accepted: bool, position: Dictionary):
 		if not accepted and tracks.has(position.serial):
 			tracks[position.serial].reset(entity_point(position.x,position.y,position.z)))
 	game.entered.connect(func(position: Dictionary):
 		player_serial = position.serial
+		intent_facing = PI-int(position.direction)*PI/4
 		_entity_changed(player_serial,position)
 		distance = 5.5
 		boom.visual_distance = distance
@@ -180,17 +203,17 @@ func _ready() -> void:
 		pitch = -0.28
 		pivot.position = entity_point(position.x,position.y,position.z)+Vector3(0,1.4,0)
 		camera_target_ready = true
-		status.text = "BRITAIN / TRAMMEL\nWASD move / Shift run / Space hop\nRight mouse look / Wheel zoom / B backpack"
+		status.text = "BRITAIN / TRAMMEL\nWASD move / Shift run / Space hop\nRight mouse look / Wheel zoom / B backpack / F6 return"
 		panel.position = Vector2(24,700)
 		status.add_theme_font_size_override("font_size",15)
 		panel.reset_size.call_deferred()
 		if position.facet != 1 or position.x < int(world.originX) or position.x >= int(world.originX)+int(world.width) or position.y < int(world.originY) or position.y >= int(world.originY)+int(world.height):
-			status.text = "Character is outside the converted Trammel crop.\nNo geography is invented beyond the crop.")
+			status.text = "Outside the converted area.\nPress F6 or click Return to Britain.")
 	game.ended.connect(func():
 		for serial in avatars.keys(): _entity_removed(serial)
 		player_serial = 0)
 	status.add_theme_font_size_override("font_size",18)
-	status.text = "UO WORLD STUDIO / BRITAIN\n%s\nTrammel â€¢ x %dâ€“%d / y %dâ€“%d\n%d samples â€¢ %d static proxies\n\nRight mouse: orbit    Wheel: zoom    WASD: pan\nTab: toggle statics    R: reset    Esc: quit\nEast +X / South +Z / UO elevation Ã— 0.2 â†’ +Y" % [world.provenance,world.originX,int(world.originX)+int(world.width)-1,world.originY,int(world.originY)+int(world.height)-1,world.terrain.size(),world.statics.size()]
+	status.text = "UO WORLD STUDIO / BRITAIN\n%s\nTrammel / x %d-%d / y %d-%d\n%d samples / %d static records\n\nRight mouse: orbit / Wheel: zoom / WASD: pan\nTab: statics / R: camera reset / Esc: quit\nEast +X / South +Z / elevation x 0.2 -> +Y" % [world.provenance,world.originX,int(world.originX)+int(world.width)-1,world.originY,int(world.originY)+int(world.height)-1,world.terrain.size(),world.statics.size()]
 	panel.add_child(status)
 	print("VIEWER PASS: schema, coordinate transform, %d terrain samples, %d statics" % [world.terrain.size(),world.statics.size()])
 
@@ -210,14 +233,16 @@ func _process(delta: float) -> void:
 			yaw -= look.x*delta*2.0
 			pitch = clampf(pitch-look.y*delta*1.5,-1.5,0.9)
 	var focus := get_viewport().gui_get_focus_owner()
-	if focus is LineEdit: movement = Vector3.ZERO
+	if focus is LineEdit or not accept_player_input: movement = Vector3.ZERO
 	var jump_down := Input.is_physical_key_pressed(KEY_SPACE)
 	if not joypads.is_empty(): jump_down = jump_down or Input.is_joy_button_pressed(joypads[0],JOY_BUTTON_A)
-	if jump_down and not jump_pressed and not focus is LineEdit: jump_requested = true
+	if jump_down and not jump_pressed and not focus is LineEdit and accept_player_input: jump_requested = true
 	jump_pressed = jump_down
+	has_move_intent = game.phase == "world" and movement != Vector3.ZERO
 	if game.phase == "world":
 		if movement != Vector3.ZERO:
 			var desired := movement.rotated(Vector3.UP,yaw)
+			intent_facing = atan2(desired.x,desired.z)
 			var direction := int(round(atan2(desired.x,-desired.z)*4.0/PI)) & 7
 			game.walk(direction,Input.is_physical_key_pressed(KEY_SHIFT) or (not joypads.is_empty() and Input.is_joy_button_pressed(joypads[0],JOY_BUTTON_LEFT_STICK)))
 	else: pivot.position += movement * delta * 20
@@ -225,7 +250,7 @@ func _process(delta: float) -> void:
 		var before: Vector3 = avatars[serial].position
 		avatars[serial].position = tracks[serial].advance(delta)
 		var travelled := before.distance_to(avatars[serial].position)
-		avatars[serial].animate(travelled > 0.00001,directions[serial],delta,travelled/maxf(delta,0.00001))
+		avatars[serial].animate(travelled > 0.00001,intent_facing if serial == player_serial else directions[serial],delta,travelled/maxf(delta,0.00001))
 	if game.phase == "world" and avatars.has(player_serial):
 		var avatar: Node3D = avatars[player_serial]
 		var follow := avatar.position+Vector3(0,1.4+avatar.jump.height*0.25,0)
@@ -286,6 +311,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP: distance = maxf(1.2,distance-(0.8 if game.phase == "world" else 4))
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN: distance = minf(22 if game.phase == "world" else 250,distance+(0.8 if game.phase == "world" else 4))
 	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_F6: game.return_to_britain()
 		if event.keycode == KEY_B: game.open_backpack()
 		if event.keycode == KEY_ESCAPE: get_tree().quit()
 		if event.keycode == KEY_TAB: diagnostics.visible = not diagnostics.visible

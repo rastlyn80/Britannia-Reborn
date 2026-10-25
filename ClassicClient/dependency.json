@@ -1,0 +1,12 @@
+{
+  "name": "ClassicUO",
+  "license": "BSD-2-Clause",
+  "release": "ClassicUO-main-release",
+  "assetId": 597459639,
+  "assetUpdatedUtc": "2026-09-29T06:25:33Z",
+  "url": "https://github.com/ClassicUO/ClassicUO/releases/download/ClassicUO-main-release/ClassicUO-win-x64-release.zip",
+  "sha256": "cb556a076ba7dfa6a200255e36f57a236813801cdec5e106226117dcde536473",
+  "executableSha256": "1d2faec6351bbf40e385788894ee3189912337726fab3e3db05509e7a55e3145",
+  "installPath": ".tools/classicuo",
+  "gameAssets": "Read directly from the user's existing UO installation; never bundled"
+}
