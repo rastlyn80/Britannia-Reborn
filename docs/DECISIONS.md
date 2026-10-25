@@ -9,3 +9,5 @@
 7. Local unencrypted classic login only. No public service configured. Remote transport/security needs a future review.
 8. Preserve canonical records; rendering scale, colors, proxy geometry and interpolation belong to presentation. Unknown architecture remains placeholders.
 9. Proprietary data, local IR, secrets and saves stay out of Git/distribution. No external art/purchases introduced.
+10. The first playable slice adapts ClassicUO's Huffman tree and packet sizes under BSD-2-Clause, retaining its full notice. Session logic and Godot presentation remain project code; no ModernUO core/gameplay changes.
+11. Temporarily request classic resync after each accepted move for exact server XYZ, reset the sequence accordingly, and pace requests at 450 ms minimum. This favors verifiable correctness in a tiny region over throughput; replace before wider multiplayer/streaming.

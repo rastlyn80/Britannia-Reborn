@@ -1,5 +1,7 @@
 # Repository audit — 25 October 2026
 
+Update: the subsequent playable slice now implements character/game session entry, server-validated movement, two-client replication and backpack interaction. See PLAYABLE_POC.md for current evidence and limits. The table below records the initial import audit; statements describing the missing game session are historical.
+
 Imported the latest working BritanniaPoC and portable tools, preserving the original. Converter/Program.cs is retained; the Godot viewer is extended rather than replaced. Original README is preserved in PROTOTYPE_README.md; root AUDIT.md and IR.md describe the earlier baseline.
 
 | Area | Evidence | Assessment |

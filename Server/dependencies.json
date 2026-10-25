@@ -1,7 +1,7 @@
 {
   "classicuo": {
     "url": "https://github.com/ClassicUO/ClassicUO",
-    "role": "reference only; no source linked",
+    "role": "Huffman decode tree and packet-size table adapted under BSD-2-Clause; remaining checkout reference-only",
     "license": "BSD-2-Clause",
     "path": "work/reference/ClassicUO",
     "revision": "ee79d7ebc1cc0e53ff84fe6cae17d389e2737f93"

@@ -10,6 +10,10 @@ var ticks := 0
 var screenshot := ""
 var status := Label.new()
 var static_root := Node3D.new()
+var game := preload("res://Network/GameSession.gd").new()
+var avatars := {}
+var targets := {}
+var player_serial := 0
 
 func point(x: int, y: int, z: int) -> Vector3:
 	return Vector3(x - int(world.originX), z * float(world.elevationScale), y - int(world.originY))
@@ -22,6 +26,7 @@ func material(color: Color) -> StandardMaterial3D:
 
 func _ready() -> void:
 	var path := "res://world.json"
+	if FileAccess.file_exists("res://play-world.json"): path = "res://play-world.json"
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--world="): path = arg.substr(8)
 		if arg.begins_with("--screenshot="): screenshot = arg.substr(13)
@@ -95,7 +100,23 @@ func _ready() -> void:
 	panel.add_theme_stylebox_override("panel",style)
 	canvas.add_child(panel)
 	var login_panel := preload("res://Network/LoginPanel.gd").new()
+	add_child(game)
+	login_panel.session = game
 	canvas.add_child(login_panel)
+	game.entity_changed.connect(_entity_changed)
+	game.entity_removed.connect(_entity_removed)
+	game.entered.connect(func(position: Dictionary):
+		player_serial = position.serial
+		_entity_changed(player_serial,position)
+		distance = 9
+		pitch = -0.55
+		pivot.position = point(position.x,position.y,position.z)+Vector3(0,1.4,0)
+		status.text = "BRITAIN / CONNECTED TO MODERNUO\n%s\nSource crop x %d–%d / y %d–%d\n\nWASD: walk • Drag: orbit • Wheel: zoom\nB: backpack • Tab: static proxies • Esc: quit\nBlue: you • Purple: nearby players\nMovement and interactions validated by server" % [world.provenance,world.originX,int(world.originX)+int(world.width)-1,world.originY,int(world.originY)+int(world.height)-1]
+		if position.facet != 1 or position.x < int(world.originX) or position.x >= int(world.originX)+int(world.width) or position.y < int(world.originY) or position.y >= int(world.originY)+int(world.height):
+			status.text = "Character is outside the converted Trammel crop.\nNo geography is invented beyond the crop.")
+	game.ended.connect(func():
+		for serial in avatars.keys(): _entity_removed(serial)
+		player_serial = 0)
 	status.add_theme_font_size_override("font_size",18)
 	status.text = "UO WORLD STUDIO / BRITAIN\n%s\nTrammel • x %d–%d / y %d–%d\n%d samples • %d static proxies\n\nDrag: orbit    Wheel: zoom    WASD: pan\nTab: toggle statics    R: reset    Esc: quit\nEast +X / South +Z / UO elevation × 0.2 → +Y" % [world.provenance,world.originX,int(world.originX)+int(world.width)-1,world.originY,int(world.originY)+int(world.height)-1,world.terrain.size(),world.statics.size()]
 	panel.add_child(status)
@@ -107,7 +128,17 @@ func _process(delta: float) -> void:
 	if Input.is_physical_key_pressed(KEY_S): movement.z += 1
 	if Input.is_physical_key_pressed(KEY_A): movement.x -= 1
 	if Input.is_physical_key_pressed(KEY_D): movement.x += 1
-	pivot.position += movement * delta * 20
+	var focus := get_viewport().gui_get_focus_owner()
+	if focus is LineEdit: movement = Vector3.ZERO
+	if game.phase == "world":
+		if movement != Vector3.ZERO:
+			var desired := movement.rotated(Vector3.UP,yaw)
+			var direction := int(round(atan2(desired.x,-desired.z)*4.0/PI)) & 7
+			game.walk(direction)
+		if avatars.has(player_serial): pivot.position = avatars[player_serial].position+Vector3(0,1.4,0)
+	else: pivot.position += movement * delta * 20
+	for serial in avatars:
+		avatars[serial].position = avatars[serial].position.lerp(targets[serial],minf(1.0,delta*12))
 	pivot.rotation = Vector3(pitch,yaw,0)
 	camera.position = Vector3(0,0,distance)
 	ticks += 1
@@ -125,10 +156,43 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP: distance = maxf(5,distance-4)
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN: distance = minf(250,distance+4)
 	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_B: game.open_backpack()
 		if event.keycode == KEY_ESCAPE: get_tree().quit()
 		if event.keycode == KEY_TAB: static_root.visible = not static_root.visible
 		if event.keycode == KEY_R:
 			yaw = -0.45
-			pitch = -0.75
-			distance = 65
+			pitch = -0.55 if game.phase == "world" else -0.75
+			distance = 9 if game.phase == "world" else 65
 			pivot.position = Vector3(float(world.width)/2,0,float(world.height)/2)
+
+func _entity_changed(serial: int,position: Dictionary) -> void:
+	if position.facet != 1: return
+	var location := point(position.x,position.y,position.z)
+	if not avatars.has(serial):
+		var avatar := Node3D.new()
+		var body := MeshInstance3D.new()
+		var capsule := CapsuleMesh.new()
+		capsule.radius = 0.3
+		capsule.height = 1.8
+		body.mesh = capsule
+		body.position.y = 0.9
+		body.material_override = material(Color("74d6ff") if serial == game.player.serial else Color("cf83ff"))
+		avatar.add_child(body)
+		var label := Label3D.new()
+		label.text = "You" if serial == game.player.serial else "Player %d" % serial
+		label.position.y = 2.2
+		label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+		label.no_depth_test = true
+		label.font_size = 32
+		avatar.add_child(label)
+		avatar.position = location
+		add_child(avatar)
+		avatars[serial] = avatar
+	avatars[serial].rotation.y = -int(position.direction)*PI/4
+	targets[serial] = location
+
+func _entity_removed(serial: int) -> void:
+	if avatars.has(serial):
+		avatars[serial].queue_free()
+		avatars.erase(serial)
+		targets.erase(serial)

@@ -2,7 +2,7 @@
 
 ModernUO ab59efea86fd9e399d261bed9d188ab4d95ad4c2 has GPL v3 text and source headers allowing v3 or later. Notices remain in its unchanged checkout. Used as a separate server; obligations for distributed products/extensions still need review. No license was selected for the owner's new project code.
 
-ClassicUO ee79d7ebc1cc0e53ff84fe6cae17d389e2737f93 has BSD-2-Clause LICENSE.md/parser SPDX headers. It is reference-only: no source linked/copied into the Godot login code. Reuse later requires notices/disclaimer. Exact pins: Server/dependencies.json.
+ClassicUO ee79d7ebc1cc0e53ff84fe6cae17d389e2737f93 has BSD-2-Clause LICENSE.md/parser SPDX headers. Its Huffman decode tree and packet-length table are now adapted into Viewer/Network/WireTables.gd. The full copyright notice, redistribution conditions and disclaimer are retained in THIRD_PARTY/ClassicUO-LICENSE.md and referenced in that file. Decoder, session state and presentation code are independently implemented. Include THIRD_PARTY notices in any client distribution. Exact pins: Server/dependencies.json. The previous reference-only statement is superseded for these tables.
 
 Additional candidates: [CentrED# license](https://github.com/kaczy93/centredsharp/blob/master/LICENSE) identifies MIT; [UOFiddler README](https://github.com/polserver/UOFiddler/blob/master/README.md) describes Beerware. Only public license/readme surfaces reviewed; exact revisions, components and per-file compatibility remain unaudited. Neither is integrated. Do not assume a blanket license permits all component reuse.
 

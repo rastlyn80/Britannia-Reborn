@@ -7,6 +7,7 @@
 Viewer/.godot/
 Viewer/world.json
 Viewer/local-world.json
+Viewer/play-world.json
 local-*.png
 local-*.json
 local-*
