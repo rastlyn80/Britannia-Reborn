@@ -119,6 +119,7 @@ func _initialize() -> void:
  var mount_world:={"elevationScale":.2,"originX":600,"originY":600,"terrain":[],"statics":[{"x":600,"y":599,"z":20,"id":87},{"x":600,"y":600,"z":20,"id":87},{"x":600,"y":601,"z":20,"id":87},{"x":601,"y":600,"z":32,"id":2567},{"x":610,"y":610,"z":32,"id":2567}],"staticData":names,"landData":{}}
  var mount_recon:=preload("res://Presentation/Reconstruction.gd").new()
  mount_recon.index(mount_world)
+ check(preload("res://Presentation/RegionalRules.gd").resolve(6428,{"name":"bar","height":8}).get("kind","")=="counter","Legacy bar art is a serving counter, not a fence")
  check(mount_recon.rule_for(2567).get("kind","")=="prop" and mount_recon.rule_for(2567).get("model","")=="wall_light","Wall torch name is an attachment, not a plaster wall")
  var hung: Dictionary=mount_recon.presentation_adjustments.get(3,{})
  check(hung.get("offset",Vector3.ZERO).is_equal_approx(Vector3(-.91,0,0)) and is_equal_approx(float(hung.get("yaw",0)),-PI/2),"Torch hangs on the west wall face and faces east")

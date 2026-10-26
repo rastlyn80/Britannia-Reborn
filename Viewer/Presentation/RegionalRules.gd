@@ -54,9 +54,10 @@ static func resolve(id: int,info: Dictionary) -> Dictionary:
  if n in ["cobblestones","stone pavers","stone pavers dark","marble floor","flagstones","wooden planks","wooden plank","wooden boards","wooden bridge"]: return base.merged({"kind":"floor","surface":"wood" if "wood" in n else "stone"})
  if "rug" in n or "carpet" in n: return base.merged({"kind":"carpet"})
  if "bench" in n: return base.merged({"kind":"bench"})
- if "table" in n or n=="counter": return base.merged({"kind":"counter" if n=="counter" else "table"})
+ # Legacy "bar" art is a panelled serving counter, not a rail.
+ if "table" in n or n in ["counter","bar"]: return base.merged({"kind":"counter" if n in ["counter","bar"] else "table"})
  if n=="bed" or n=="cot": return base.merged({"kind":"bed","asset":"Kenney/bedSingle.glb"})
- if "fence" in n or "banister" in n or n=="bar": return base.merged({"kind":"fence","asset":"Village/Prop_WoodenFence_Single.gltf"})
+ if "fence" in n or "banister" in n: return base.merged({"kind":"fence","asset":"Village/Prop_WoodenFence_Single.gltf"})
  if "signpost" in n: return base.merged({"kind":"sign"})
  if "column" in n or "pillar" in n or "buttress" in n or n=="stone post": return base.merged({"kind":"pillar"})
  if "post" in n or n=="wooden beam": return base.merged({"kind":"beam" if n=="wooden beam" else "post","asset":"Village/Prop_Support.gltf"})
