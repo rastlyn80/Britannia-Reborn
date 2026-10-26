@@ -1,3 +1,5 @@
+Live Britain checkpoint (2026-10-26): Launch.cmd now connects native gameplay to the converted 704×512 city, with nine physical districts, shared source-relative coordinates, full-city movement prediction, native movement packets and far scenery. A graphical development-account test completed 62 server-accepted run steps across x=1600 and beyond the former y=1568 boundary, reconciled exact XYZ (1599,1567,20), then returned home through the native recovery command. District retention/eviction and physical terrain checks are automated. Population/commerce remains concentrated in the original patch; combat, skills and city-wide native population are not claimed. See LIVE_BRITAIN.md.
+
 Current mapping/seam checkpoint (2026-10-26): all 1,597 Britain IDs / 136,662 static records have explicit shared rendering coverage, with honest semantic-substitute confidence. Joined full-region plans feed both a city architecture bake and nine nearby draw chunks. Shared terrain/roof normals, floors, ceilings, UV phase, stable grouped ownership and source-based overhang switching address district seams. New props and stone/thatched/flat-roof families replace missing markers. Source/context parity, 357 offline checks and graphical boundary/reload checks pass. Live gameplay/population is still the original patch. See BRITAIN_MAPPING_AND_SEAMS.md for evidence, first-plan timing and remaining art/production limits.
 
 Latest scope clarification: the requested expansion is the whole **city of Britain**. Explore-Britain.cmd (and the retained Explore-Britannia.cmd alias) now opens the native city bounds including castle/western outskirts, rounded to 704×512 / 88 chunks. All 360,448 terrain and 136,662 static records pass independent source parity. The city overview renders 42,382 simplified architectural/tree features; close-detail art and chunk seams remain unfinished. Live gameplay/population stays in the proven patch. See BRITANNIA_EXPLORER.md.
@@ -6,8 +8,8 @@ Latest: saved-world recovery and native commerce now pass headless and graphical
 
 Current priorities after the Britain mapping/seam pass:
 
-1. Connect streamed city districts to native movement/collision while keeping ModernUO authoritative. Live movement still uses the original patch.
-2. Expand native doors, signs, containers and vendors in bounded, auditable city batches; retain safety limits until that work is explicitly implemented and validated.
+1. Live city movement/collision is connected and a native boundary route passes. Extend traversal checks to castle, docks and varied elevations; reduce startup and district frame stalls.
+2. Expand native doors, signs, containers and vendors in bounded, auditable city batches; retain the existing population limits until that work is explicitly implemented and validated.
 3. Extend native gump/action coverage, selling and wardrobe presentation beyond the verified interaction loop.
 4. Review rare prop/landmark art, first-detail planning time and neighborhood performance. Semantic mapping coverage is not exact bespoke artwork fidelity.
 
@@ -21,7 +23,7 @@ Current priorities after the Britain mapping/seam pass:
 | 3 First playable multiplayer | Local proof of concept implemented and tested | Real character entry, ACK/wall rejection, two-client movement observation, backpack opening/contents and actual keyboard-driven scene pass |
 | 4 Reconstruction | Britain city mapping and seam pass verified | 1,597 IDs / 136,662 records mapped; joined roofs/walls/floors/terrain, source-based ownership and nine detail chunks. Exact art matching and other-region coverage remain |
 | 5 Gameplay presentation | Native objects, commerce and inventory verified in reference patch | Gumps, buying/payment, container/ground transfers and equipment pass. Selling, full wardrobe, skills/combat/spells and expanded city population remain |
-| 6 Full facets | Britannia geography/overview implemented | Full main-landmass binary chunks and independent source parity pass; near art coverage, architecture seams and live gameplay streaming remain |
+| 6 Full facets | Britannia geography/overview implemented | Full main-landmass binary chunks and independent source parity pass; live streaming now covers Britain city. Other regions, population and traversal coverage remain |
 | 7 Platforms | Planned | Desktop exports, Android controls/performance, then Apple signing/testing |
 | 8 Polish | Graphics/traversal pass implemented/tested | CC0 environment/furniture, camera collision, real run, local ceiling-aware jump and animation; physical replicated jump, equipment and further polish remain |
 | 9 Production | Planned | Security, load tests, backup/restore, updates and operations |

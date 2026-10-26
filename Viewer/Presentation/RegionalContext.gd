@@ -65,7 +65,7 @@ func prepare(data: RefCounted) -> void:
  print("REGIONAL PLAN: ",world.terrain.size()," land / ",world.statics.size()," context statics / ",reconstruction.catalog.size()," rules / ",elapsed_ms," ms")
 static func owner(s: Dictionary) -> Vector2i:
  return Vector2i(floori(float(s.x)/64)*64,floori(float(s.y)/64)*64)
-func build_chunk(at: Vector2i,tree: SceneTree) -> Node3D:
+func build_chunk(at: Vector2i,tree: SceneTree, physical: bool = false) -> Node3D:
  var rect:=Rect2i(at,Vector2i(64,64))
  var root:=Node3D.new()
  root.name="District_%d_%d" % [at.x,at.y]
@@ -74,10 +74,13 @@ func build_chunk(at: Vector2i,tree: SceneTree) -> Node3D:
  terrain.mesh=surface.build(rect)
  terrain.material_override=terrain_material
  root.add_child(terrain)
+ var collider:=preload("res://Presentation/CollisionBuilder.gd").new()
  var before:=reconstruction.unresolved
  for i in chunks.get(at,[]):
   var model:Node3D=reconstruction.build(world.statics[i],world,i)
-  if model:root.add_child(model)
+  if model:
+   root.add_child(model)
+   if physical:collider.add_visual(model)
   else:
    var source:Dictionary=world.statics[i]
    var marker:MeshInstance3D=reconstruction.geometry.box(root,Vector3.ONE*0.16,Vector3(source.x-world.originX+0.5,float(source.z)*0.2+0.08,source.y-world.originY+0.5),"e7ba70")
@@ -88,14 +91,24 @@ func build_chunk(at: Vector2i,tree: SceneTree) -> Node3D:
   var node:=Node3D.new()
   node.position=Vector3(tile.x-world.originX+0.5,float(tile.z)*0.2,tile.y-world.originY+0.5)
   node.add_child(reconstruction.floors.slab(-int(surface.source_ordinals[cell])-1,reconstruction.floors.material()))
+  node.set_meta("solid",true)
   root.add_child(node)
- root.add_child(shell.build(world,reconstruction,rect))
+  if physical:collider.add_visual(node)
+ var interior:Node3D=shell.build(world,reconstruction,rect)
+ root.add_child(interior)
+ if physical:collider.add_visual(interior)
  for cell in reconstruction.floors.repairs:
   if not rect.has_point(Vector2i(cell.x,cell.y)):continue
   var node:=Node3D.new()
   node.position=Vector3(cell.x-world.originX+0.5,float(cell.z)*0.2,cell.y-world.originY+0.5)
   node.add_child(reconstruction.floors.slab(cell,reconstruction.floors.material()))
+  node.set_meta("solid",true)
   root.add_child(node)
+  if physical:collider.add_visual(node)
+ if physical:
+  collider.finish(root,terrain)
+  root.set_meta("collision_triangles",collider.triangles)
+  preload("res://Presentation/DistrictBatch.gd").new().apply(root)
  root.set_meta("unmapped",reconstruction.unresolved-before)
  root.set_meta("count",chunks.get(at,[]).size())
  reconstruction.report.clear()

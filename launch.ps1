@@ -1,4 +1,4 @@
-param([string]$Godot,[switch]$Synthetic,[switch]$SecondClient,[switch]$Compatibility)
+param([string]$Godot,[switch]$Synthetic,[switch]$SecondClient,[switch]$Compatibility,[switch]$ReferencePatch)
 $ErrorActionPreference = 'Stop'
 if (!(Test-Path "$PSScriptRoot\Viewer\world.json")) { & "$PSScriptRoot\build.ps1" }
 if (!$Godot) {
@@ -22,6 +22,11 @@ if (Test-Path "$PSScriptRoot\Server\credentials.local.json") {
 }
 try {
   if ($Synthetic) { & $Godot @renderArgs --path "$PSScriptRoot\Viewer" -- '--world=res://world.json' }
+  elseif (!$ReferencePatch) {
+    if (!(Test-Path "$PSScriptRoot/outputs/britain/atlas.json")) { & "$PSScriptRoot/scripts/prepare-britain.ps1" }
+    & "$PSScriptRoot/scripts/bake-britain.ps1"
+    & $Godot @renderArgs --path "$PSScriptRoot/Viewer" -- --city
+  }
   elseif (Test-Path $play) { & $Godot @renderArgs --path "$PSScriptRoot\Viewer" -- "--world=$play" }
   elseif (Test-Path $local) { & $Godot @renderArgs --path "$PSScriptRoot\Viewer" -- "--world=$local" }
   else { & $Godot @renderArgs --path "$PSScriptRoot\Viewer" }

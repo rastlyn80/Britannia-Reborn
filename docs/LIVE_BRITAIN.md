@@ -1,0 +1,30 @@
+# Live Britain — 26 October 2026
+
+`Launch.cmd` now opens the real ModernUO client over the converted city of Britain: X=1088–1791, Y=1408–1919, Trammel. Account selection, remembered login and character persistence retain their existing locations. Server setup/start instructions in README still apply. The launch script prepares missing city data and checks the distant architecture bake; it does not start another server or change server saves.
+
+Controls: WASD move, Shift run, right mouse look, wheel zoom, B backpack, click objects, E nearest interaction and F6 return to Britain. The jump remains a cosmetic, ceiling-aware animation; it is not a native replicated ability. `launch.ps1 -ReferencePatch` retains the original small scene and `-Synthetic` retains the fixture. `Explore-Britain.cmd` remains an offline geographic explorer.
+
+## Shared conversion and live streaming
+
+The city uses the same RegionalContext topology, source metadata, terrain, floor repairs, roofs and interior shell as the converter/explorer. No buildings are individually repositioned. The immutable global source plan is retained, while nine 64×64 draw/collision districts surround the current native player coordinate. Six overlapping districts survive an ordinary cardinal boundary crossing. Outgoing districts lose their collision with their scene; new destinations become traversable only after physical terrain and architecture have been installed.
+
+The existing native walk protocol, ACK/rejection handling and idle XYZ reconciliation remain authoritative. A readiness callback gates packets to unloaded destinations without changing the character position or consuming a sequence. Whole-city source data feeds conservative movement prediction; uncertain geometry still relies on server reconciliation. Turns remain available during loading. Teleports and F6 select the new nearby neighborhood on subsequent frames.
+
+Live nodes retain the established source-origin-relative frame for avatars, collision, native doors, picking and ground placement. The shared explorer continues drawing in global coordinates. Source-origin shader offsets preserve terrain texture/water/wind phase in the live frame. Distant terrain, joined architecture and forest retain source ownership masks so they disappear where detailed districts have actually arrived.
+
+Dynamic native items continue to arrive from ModernUO. Sign-post suppression searches streamed descendants and is reapplied after district replacement. The old fixture-derived twelve-light placement pass is disabled for city mode: its scan order selected distant furniture and its all-region search was unsuitable for streaming. Native lamps and server-driven sky/light/weather remain; a bounded neighborhood fixture pass is still needed.
+
+Opaque stationary render surfaces are batched by material after collision construction. Native signs remain individually suppressible; wind, water and transparent surfaces retain their live renderers. The distant city architecture does not cast duplicate shadows into detailed neighborhoods. Collision meshes and source anchors survive batching. Far ownership uses a flat-interpolated chunk centre; comparing an interpolated origin exactly on a rectangle edge caused speckled overlap between coarse and detailed walls under OpenGL. `scripts/test-city-render.ps1` (optionally `-Compatibility`) freezes temporal AA/AO and cloud updates to compare 25,200 daylight wall pixels with the distant layer on/off, allowing at most 8/255 per channel. This owned-data GPU check catches coarse geometry leaking through installed detail. It is an offline render test, not a native session.
+
+## Evidence and limits
+
+- Fourteen readiness/protocol/batching regression checks cover missing/installed/unloaded districts, city edge, packet gating, native sequence behavior, unchanged player coordinates and turning while loading, plus merged material batches, nonduplicated surfaces, preserved signs/collision and source transforms.
+- The live check installs nine physical districts, verifies terrain collision beyond the original crop, retains six objects on a boundary shift and blocks an evicted district.
+- A development character enters the native world, opens the existing native tavern door, visits an outdoor reference object and follows 62 server-accepted run steps. It crosses the X=1600 district boundary and the former Y=1568 crop boundary. Idle server reconciliation confirms XYZ=(1599,1567,20), followed by native recovery to (1602,1591,20).
+- Native turns are acknowledged separately and do not count as route steps. Tests use the development credentials, never the user's remembered account. Source artwork, derived scenes/images, credentials and saves stay ignored.
+
+`scripts/verify.ps1` passes all 371 checks. Forward+ and OpenGL live runs pass actual entry, door interaction, 62 accepted steps, XYZ reconciliation and recovery. The settled OpenGL sample on the development RTX 2070 SUPER reached 60 FPS; this is one local view, not a city-wide performance guarantee. Earlier 5–9 FPS samples were taken during district construction; incoming chunk work can still stall frames.
+
+Run `scripts/verify.ps1`, `scripts/test-login.ps1` and `scripts/test-live-city.ps1`. Add `-Visual` or `-Visual -Compatibility` for graphical checks; local captures go to `outputs/validation/live-britain.png`.
+
+The region contains 360,448 terrain samples and 136,662 visible static records, plus planning context. Whole-city source/render coverage does not establish traversal through every building. Only the documented native route is validated live. Initial global planning takes about 20 seconds before district construction and shader warm-up; startup and incoming district frame stalls need optimization. The bounded native population tools still cover the original district: city-wide doors/signs/containers/vendors, combat, skills, harvesting and full gump parity remain separate work. Existing native shopping and inventory actions are preserved, not reimplemented locally.

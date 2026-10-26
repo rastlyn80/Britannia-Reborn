@@ -91,6 +91,7 @@ var requested_position := {}
 var turn_only := false
 var accepted_since_sync := 0
 var needs_sync := false
+var destination_ready := Callable()
 var preview_bounds := Rect2i()
 var returning_home := false
 var last_boundary_message := 0
@@ -597,6 +598,9 @@ func walk(direction: int, run: bool = false) -> bool:
 				message_received.emit("Edge of the converted area. Use Return to Britain (F6).")
 				last_boundary_message = Time.get_ticks_msec()
 			return false
+	if not turn_only and destination_ready.is_valid():
+		var offset: Vector2i = preload("res://Presentation/MovementSurface.gd").OFFSETS[direction & 7]
+		if not destination_ready.call(Vector2i(player.x,player.y)+offset): return false
 	# The pinned PlayerMobile has zero-cost turns; a turn must not consume a
 	# full 410 ms walking interval. Keep a short packet-rate guard for input jitter.
 	move_interval = 20 if turn_only else (205 if run else 405)

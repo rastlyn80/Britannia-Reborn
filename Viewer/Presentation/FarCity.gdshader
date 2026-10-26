@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode cull_disabled;
+uniform vec2 source_origin=vec2(0.0);
 uniform vec4 palette : source_color=vec4(1.0);
 uniform sampler2D surface_albedo : source_color,filter_linear_mipmap_anisotropic,repeat_enable;
 uniform vec2 surface_scale=vec2(1.0);
@@ -8,8 +9,10 @@ uniform bool local_uv=false;
 uniform vec4 detail_rects[16];
 uniform int detail_count=0;
 varying vec3 world_at;
-varying vec2 owner_chunk;
-void vertex(){world_at=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;owner_chunk=local_uv?INSTANCE_CUSTOM.xy:UV2;}
+// A constant source-cell centre avoids perspective interpolation flicker on
+// an exact rectangle boundary when the coarse and detailed models coincide.
+varying flat vec2 owner_chunk;
+void vertex(){world_at=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz+vec3(source_origin.x,0.0,source_origin.y);owner_chunk=(local_uv?INSTANCE_CUSTOM.xy:UV2)+vec2(32.0);}
 void fragment(){
  for(int i=0;i<16;i++){
   if(i>=detail_count)break;

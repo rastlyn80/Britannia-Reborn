@@ -15,7 +15,7 @@ var visual_minute := 900.0
 var frozen := false
 var sky_tick := 0.0
 
-func configure(scene: Node3D,world: Dictionary,reconstruction,map_view: bool) -> void:
+func configure(scene: Node3D,world: Dictionary,reconstruction,map_view: bool, derive_fixtures: bool = true) -> void:
  sun = DirectionalLight3D.new()
  sun.name = "AfternoonSun"
  sun.rotation_degrees = Vector3(-43,-32,0)
@@ -77,6 +77,7 @@ func configure(scene: Node3D,world: Dictionary,reconstruction,map_view: bool) ->
  add_child(node)
  if map_view: return
  _create_precipitation()
+ if not derive_fixtures: return
  # Use sky/SSR reflections; Godot 4.7 reflection atlases retain seven texture
  # RIDs on scene teardown (upstream #122498). Do not allocate probe atlases.
  # Derive client-only fixtures from existing indoor furniture, never map coordinates.

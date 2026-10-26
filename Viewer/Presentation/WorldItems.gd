@@ -189,7 +189,7 @@ func upsert(serial: int, item: Dictionary) -> void:
    building_name.hide()
    root.add_child(building_name)
    var posts: Array = []
-   for old in scene.static_root.get_children():
+   for old in scene.static_root.find_children("*","Node3D",true,false):
     if old.get_meta("kind","") == "sign" and old.get_meta("source_xyz",Vector3i.ZERO) == Vector3i(item.x,item.y,item.z):
      posts.append(old)
      old.hide()
@@ -380,3 +380,18 @@ func nearest() -> void:
    best = serial
  if best: activate(best)
  else: hint.text = "No server object within reach."
+
+func suppress_streamed_posts() -> void:
+ # New source chunks can arrive after a native sign packet. Reapply only the
+ # presentation suppression; do not recreate native entities or their state.
+ var posts: Array = scene.static_root.find_children("*","Node3D",true,false)
+ for serial in nodes:
+  if nodes[serial].get_meta("family","") != "sign": continue
+  if not session.world_items.has(serial): continue
+  var item: Dictionary = session.world_items[serial]
+  var hidden: Array = []
+  for post in posts:
+   if post.get_meta("kind","") == "sign" and post.get_meta("source_xyz",Vector3i.ZERO) == Vector3i(item.x,item.y,item.z):
+    post.hide()
+    hidden.append(post)
+  suppressed_posts[serial] = hidden

@@ -1,5 +1,7 @@
 extends Node3D
 
+var world_ready := false
+var city_stream: Node3D
 var world: Dictionary
 var pivot := Node3D.new()
 var camera := Camera3D.new()
@@ -56,6 +58,7 @@ func material(color: Color) -> StandardMaterial3D:
 
 func _ready() -> void:
 	get_viewport().use_taa = RenderingServer.get_current_rendering_method() == "forward_plus"
+	var city_mode := "--city" in OS.get_cmdline_user_args()
 	var path := "res://world.json"
 	if FileAccess.file_exists("res://play-world.json"): path = "res://play-world.json"
 	for arg in OS.get_cmdline_user_args():
@@ -75,76 +78,98 @@ func _ready() -> void:
 	world = JSON.parse_string(FileAccess.get_file_as_string(path))
 	assert(int(world.schema) == 1)
 	assert(point(int(world.originX)+3,int(world.originY)+7,-5).is_equal_approx(Vector3(3,-1,7)))
-	movement_surface.index(world)
-	game.surface = movement_surface
-	game.preview_bounds = Rect2i(int(world.originX),int(world.originY),int(world.width)-1,int(world.height)-1)
-	preload("res://Presentation/SurfaceLibrary.gd").source_origin = Vector2(world.originX,world.originY)
-	shoreline.index(world,reconstruction.catalog)
-	terrain_surface.index(world,shoreline)
-	var terrain := MeshInstance3D.new()
-	terrain.name = "BlendedTerrain"
-	terrain.mesh = terrain_surface.build()
-	var terrain_mat := ShaderMaterial.new()
-	terrain_mat.shader = preload("res://Presentation/Ground.gdshader")
-	terrain_mat.set_shader_parameter("stone_detail",load("res://Art/Quaternius/Village/T_Brick_BaseColor.png"))
-	terrain_mat.set_shader_parameter("stone_normal",load("res://Art/Quaternius/Village/T_Brick_Normal.png"))
-	preload("res://Presentation/SurfaceLibrary.gd").bind(terrain_mat,"paving","cobblestone_floor_03")
-	preload("res://Presentation/SurfaceLibrary.gd").bind(terrain_mat,"ground","forest_ground_04")
-	preload("res://Presentation/SurfaceLibrary.gd").bind(terrain_mat,"rock","rock_face_03")
-	preload("res://Presentation/SurfaceLibrary.gd").bind(terrain_mat,"wood","brown_planks_03")
-	shoreline.apply(terrain_mat)
-	terrain.material_override = terrain_mat
-	add_child(terrain)
-	add_child(static_root)
-	add_child(diagnostics)
-	reconstruction.shoreline = shoreline
-	reconstruction.show_boundary_fragments = map_view
-	reconstruction.index(world)
-	for cell in terrain_surface.wooden_cells:
-		var source: Dictionary = terrain_surface.wooden_cells[cell]
-		var ordinal: int = terrain_surface.source_ordinals[cell]
-		var floor_root := Node3D.new()
-		floor_root.name = "ConstructedLandFloor_%d_%d" % [source.x,source.y]
-		floor_root.position = point(source.x,source.y,source.z)+Vector3(0.5,0,0.5)
-		floor_root.set_meta("solid",true)
-		floor_root.add_child(reconstruction.floors.slab(-ordinal-1,reconstruction.floors.material()))
-		static_root.add_child(floor_root)
-		collision_builder.add_visual(floor_root)
-	for ordinal in world.statics.size():
-		var s: Dictionary = world.statics[ordinal]
-		var replacement: Node3D = reconstruction.build(s,world,ordinal)
-		if replacement:
-			static_root.add_child(replacement)
-			collision_builder.add_visual(replacement)
-			continue
-		var mesh := MeshInstance3D.new()
-		var box := BoxMesh.new()
-		box.size = Vector3(0.18,0.18,0.18)
-		mesh.mesh = box
-		mesh.position = point(s.x,s.y,s.z) + Vector3(0.5,0.09,0.5)
-		mesh.material_override = material(Color("e7ba70"))
-		diagnostics.add_child(mesh)
-	if not map_view:
-		interior_shell.index(world,reconstruction)
-		var shell := interior_shell.build(world,reconstruction)
-		static_root.add_child(shell)
-		collision_builder.add_visual(shell)
-		for at in reconstruction.floors.repairs:
-			var patch := Node3D.new()
-			patch.name = "DerivedFloorRepair_%d_%d_%d" % [at.x,at.y,at.z]
-			patch.position = point(at.x,at.y,at.z)+Vector3(0.5,0,0.5)
-			patch.set_meta("solid",true)
-			patch.add_child(reconstruction.floors.slab(at,reconstruction.floors.material()))
-			static_root.add_child(patch)
-			collision_builder.add_visual(patch)
-	print("ART COVERAGE: %d accounted / %d unresolved" % [reconstruction.mapped,reconstruction.unresolved])
-	collision_builder.finish(self,terrain)
-	if not coverage_path.is_empty(): reconstruction.save_report(coverage_path)
-	print("PRESENTATION COLLISION: %d triangles in chunk bodies; %d grouped source components" % [collision_builder.triangles,reconstruction.grouped])
+	if city_mode:
+		var loading := Label.new()
+		loading.text = "Preparing live Britain… first load can take a minute."
+		loading.position = Vector2(32,32)
+		add_child(loading)
+		await get_tree().process_frame
+		city_stream = preload("res://Presentation/LiveDistricts.gd").new()
+		add_child(static_root)
+		add_child(diagnostics)
+		static_root.add_child(city_stream)
+		if not await city_stream.prepare(self):
+			get_tree().quit(1)
+			return
+		loading.queue_free()
+		world = city_stream.regional.world
+		reconstruction = city_stream.regional.reconstruction
+		interior_shell = city_stream.regional.shell
+		movement_surface.index(world)
+		game.surface = movement_surface
+		game.preview_bounds = Rect2i(world.originX,world.originY,world.width,world.height)
+		game.destination_ready = city_stream.destination_ready
+	else:
+		movement_surface.index(world)
+		game.surface = movement_surface
+		game.preview_bounds = Rect2i(int(world.originX),int(world.originY),int(world.width)-1,int(world.height)-1)
+		preload("res://Presentation/SurfaceLibrary.gd").source_origin = Vector2(world.originX,world.originY)
+		shoreline.index(world,reconstruction.catalog)
+		terrain_surface.index(world,shoreline)
+		var terrain := MeshInstance3D.new()
+		terrain.name = "BlendedTerrain"
+		terrain.mesh = terrain_surface.build()
+		var terrain_mat := ShaderMaterial.new()
+		terrain_mat.shader = preload("res://Presentation/Ground.gdshader")
+		terrain_mat.set_shader_parameter("stone_detail",load("res://Art/Quaternius/Village/T_Brick_BaseColor.png"))
+		terrain_mat.set_shader_parameter("stone_normal",load("res://Art/Quaternius/Village/T_Brick_Normal.png"))
+		preload("res://Presentation/SurfaceLibrary.gd").bind(terrain_mat,"paving","cobblestone_floor_03")
+		preload("res://Presentation/SurfaceLibrary.gd").bind(terrain_mat,"ground","forest_ground_04")
+		preload("res://Presentation/SurfaceLibrary.gd").bind(terrain_mat,"rock","rock_face_03")
+		preload("res://Presentation/SurfaceLibrary.gd").bind(terrain_mat,"wood","brown_planks_03")
+		shoreline.apply(terrain_mat)
+		terrain.material_override = terrain_mat
+		add_child(terrain)
+		add_child(static_root)
+		add_child(diagnostics)
+		reconstruction.shoreline = shoreline
+		reconstruction.show_boundary_fragments = map_view
+		reconstruction.index(world)
+		for cell in terrain_surface.wooden_cells:
+			var source: Dictionary = terrain_surface.wooden_cells[cell]
+			var ordinal: int = terrain_surface.source_ordinals[cell]
+			var floor_root := Node3D.new()
+			floor_root.name = "ConstructedLandFloor_%d_%d" % [source.x,source.y]
+			floor_root.position = point(source.x,source.y,source.z)+Vector3(0.5,0,0.5)
+			floor_root.set_meta("solid",true)
+			floor_root.add_child(reconstruction.floors.slab(-ordinal-1,reconstruction.floors.material()))
+			static_root.add_child(floor_root)
+			collision_builder.add_visual(floor_root)
+		for ordinal in world.statics.size():
+			var s: Dictionary = world.statics[ordinal]
+			var replacement: Node3D = reconstruction.build(s,world,ordinal)
+			if replacement:
+				static_root.add_child(replacement)
+				collision_builder.add_visual(replacement)
+				continue
+			var mesh := MeshInstance3D.new()
+			var box := BoxMesh.new()
+			box.size = Vector3(0.18,0.18,0.18)
+			mesh.mesh = box
+			mesh.position = point(s.x,s.y,s.z) + Vector3(0.5,0.09,0.5)
+			mesh.material_override = material(Color("e7ba70"))
+			diagnostics.add_child(mesh)
+		if not map_view:
+			interior_shell.index(world,reconstruction)
+			var shell := interior_shell.build(world,reconstruction)
+			static_root.add_child(shell)
+			collision_builder.add_visual(shell)
+			for at in reconstruction.floors.repairs:
+				var patch := Node3D.new()
+				patch.name = "DerivedFloorRepair_%d_%d_%d" % [at.x,at.y,at.z]
+				patch.position = point(at.x,at.y,at.z)+Vector3(0.5,0,0.5)
+				patch.set_meta("solid",true)
+				patch.add_child(reconstruction.floors.slab(at,reconstruction.floors.material()))
+				static_root.add_child(patch)
+				collision_builder.add_visual(patch)
+		print("ART COVERAGE: %d accounted / %d unresolved" % [reconstruction.mapped,reconstruction.unresolved])
+		collision_builder.finish(self,terrain)
+		if not coverage_path.is_empty(): reconstruction.save_report(coverage_path)
+		print("PRESENTATION COLLISION: %d triangles in chunk bodies; %d grouped source components" % [collision_builder.triangles,reconstruction.grouped])
 	var lighting := preload("res://Presentation/LightingRig.gd").new()
 	lighting.name = "DistrictLighting"
 	add_child(lighting)
-	lighting.configure(self,world,reconstruction,map_view)
+	lighting.configure(self,world,reconstruction,map_view,not city_mode)
 	game.environment_changed.connect(lighting.receive_server_environment)
 	game.ended.connect(lighting.reset_server_environment)
 	add_child(pivot)
@@ -222,9 +247,13 @@ func _ready() -> void:
 	status.add_theme_font_size_override("font_size",18)
 	status.text = "UO WORLD STUDIO / BRITAIN\n%s\nTrammel / x %d-%d / y %d-%d\n%d samples / %d static records\n\nRight mouse: orbit / Wheel: zoom / WASD: pan\nTab: statics / R: camera reset / Esc: quit\nEast +X / South +Z / elevation x 0.2 -> +Y" % [world.provenance,world.originX,int(world.originX)+int(world.width)-1,world.originY,int(world.originY)+int(world.height)-1,world.terrain.size(),world.statics.size()]
 	panel.add_child(status)
+	world_ready = true
 	print("VIEWER PASS: schema, coordinate transform, %d terrain samples, %d statics" % [world.terrain.size(),world.statics.size()])
 
 func _process(delta: float) -> void:
+	if not world_ready: return
+	if city_stream and game.phase == "world":
+		city_stream.follow(Vector2i(game.player.x,game.player.y))
 	var movement := Vector3.ZERO
 	if Input.is_physical_key_pressed(KEY_W): movement.z -= 1
 	if Input.is_physical_key_pressed(KEY_S): movement.z += 1
@@ -276,6 +305,7 @@ func _process(delta: float) -> void:
 		get_tree().quit(error)
 
 func _physics_process(delta: float) -> void:
+	if not world_ready: return
 	if game.phase != "world" or not avatars.has(player_serial):
 		jump_requested = false
 		return
