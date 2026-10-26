@@ -1,0 +1,469 @@
+{
+  "pack": "Fantasy Props MegaKit",
+  "edition": "Standard",
+  "author": "Quaternius",
+  "license": "CC0-1.0",
+  "source": "https://quaternius.itch.io/fantasy-props-megakit",
+  "licenseSource": "Bundled License_Standard.txt, verified 2026-10-26",
+  "archiveSha256": "8b6f7e806d222e585478f0e1bdc6b271bbc7bc6f84dd6af8ca703a7c64f0cb1e",
+  "models": [
+    "Table_Large",
+    "Bench",
+    "Chair_1",
+    "Stool",
+    "Bed_Twin1",
+    "Bed_Twin2",
+    "Barrel",
+    "Chest_Wood",
+    "Crate_Wooden",
+    "Cabinet",
+    "Bookcase_2",
+    "Book_Simplified_Single",
+    "Book_Stack_1",
+    "Bottle_1",
+    "Mug",
+    "Table_Plate",
+    "Table_Fork",
+    "Table_Knife",
+    "Table_Spoon",
+    "Chalice",
+    "Pot_1",
+    "Bucket_Wooden_1",
+    "CandleStick",
+    "Lantern_Wall",
+    "Vase_2",
+    "Bag",
+    "Scroll_1",
+    "Anvil",
+    "Workbench",
+    "Nightstand_Shelf",
+    "SmallBottle",
+    "Potion_1",
+    "Potion_2",
+    "BookGroup_Small_1",
+    "BookGroup_Medium_1"
+  ],
+  "files": [
+    {
+      "path": "Anvil.bin",
+      "sha256": "d52a9ab436577e8ee8ca00b2929b15595a60b0294c6275a39ecfe1f27408bfcf",
+      "bytes": 24020
+    },
+    {
+      "path": "Anvil.gltf",
+      "sha256": "29e0a6a19f9a579ffe8d463c2a8d445c531a39271ba4eab9754d3f5d9f9d9ce1",
+      "bytes": 3189
+    },
+    {
+      "path": "Bag.bin",
+      "sha256": "6bf8ad99d0048264aa37157a92f394ab32aeeb5270dab2f3f76282b1eda4e012",
+      "bytes": 27188
+    },
+    {
+      "path": "Bag.gltf",
+      "sha256": "ccbf22a9162a2a2173caa7346e796b8f92a86dbbbe02a196530bf5642293e545",
+      "bytes": 4318
+    },
+    {
+      "path": "Barrel.bin",
+      "sha256": "d8f963e2975b6bbd4b631b5cd7ade2d5dfc76dfb9f8387e2d398935f5405cf20",
+      "bytes": 57144
+    },
+    {
+      "path": "Barrel.gltf",
+      "sha256": "cececb2da345addb21567e3ce1b30a9da071b689bcec59d85cd7a4446f531e87",
+      "bytes": 4311
+    },
+    {
+      "path": "Bed_Twin1.bin",
+      "sha256": "72bdaa973e348dea5429ea2ecf465e25b4a1ae834de068d14ace57ad5def6421",
+      "bytes": 77360
+    },
+    {
+      "path": "Bed_Twin1.gltf",
+      "sha256": "fcb79a79d71d1b24b74113f83684d4e4f0c69e9dacc8b5c9078ca88d286d253e",
+      "bytes": 6217
+    },
+    {
+      "path": "Bed_Twin2.bin",
+      "sha256": "57131a881f542545644676b26fc547cc35488f903183898c3a0a6fbae81bfea2",
+      "bytes": 76624
+    },
+    {
+      "path": "Bed_Twin2.gltf",
+      "sha256": "339511be568ed72a8a1f3af9890675d99ad7bc3a60396cd883c22bba0fd7e4c4",
+      "bytes": 6217
+    },
+    {
+      "path": "Bench.bin",
+      "sha256": "08d6976112645dc1f6a554019e2fc965d0bceba7a01c4f6013615ac46520b418",
+      "bytes": 19304
+    },
+    {
+      "path": "Bench.gltf",
+      "sha256": "0184d3b128a8a3bcc828d7bc6aa867038e2a85a339130ed015f2727e739f9ab7",
+      "bytes": 4298
+    },
+    {
+      "path": "Book_Simplified_Single.bin",
+      "sha256": "22aeb14e052eb5ffffa30a2565fa7e075dab1742f3d12c8ebf3646218d62cad1",
+      "bytes": 3192
+    },
+    {
+      "path": "Book_Simplified_Single.gltf",
+      "sha256": "70c50a7dd573f49e17a2767c9eabe249f82d72098d5080c553538eecbba814bf",
+      "bytes": 2428
+    },
+    {
+      "path": "Book_Stack_1.bin",
+      "sha256": "cdbe0b7f468ac1713989e0c7f67c93dd83a899825d518b4911d56f4613c85fb7",
+      "bytes": 12768
+    },
+    {
+      "path": "Book_Stack_1.gltf",
+      "sha256": "aac90f5a6859acb1edf12b248e12a914f652e8a0a0af0fa6cee6dda3225a7fd2",
+      "bytes": 2418
+    },
+    {
+      "path": "Bookcase_2.bin",
+      "sha256": "2d61ba836ecd93e3c0ac9d590b183c600bcb9e1bd32a84960e83b5f77520f2bb",
+      "bytes": 92968
+    },
+    {
+      "path": "Bookcase_2.gltf",
+      "sha256": "58bb7dcdc7f0a9e49b4edb6b9d6d142999133104965bd5ab1d0237dd3b5c1b55",
+      "bytes": 4329
+    },
+    {
+      "path": "BookGroup_Medium_1.bin",
+      "sha256": "cd8cefe75031456ef5418de5476faab904325a7c950b58b95294b839e31d9553",
+      "bytes": 25536
+    },
+    {
+      "path": "BookGroup_Medium_1.gltf",
+      "sha256": "4c6977e7e3f3380001a2b855255f35fe8bd11a740cf72316a440d1dd861c73cd",
+      "bytes": 2429
+    },
+    {
+      "path": "BookGroup_Small_1.bin",
+      "sha256": "0c76ff8480fadbee859acff78fdec4e0c693f2a5055e0b6dd6cdbb4ccfd20cb3",
+      "bytes": 6384
+    },
+    {
+      "path": "BookGroup_Small_1.gltf",
+      "sha256": "81228320dc30d9cb447627fae0405f77cabfac011267fb3cc62e106948536a37",
+      "bytes": 2423
+    },
+    {
+      "path": "Bottle_1.bin",
+      "sha256": "9f4147c9184b86c92f7cc290e525815ad5728141b59bb2a02dc4f0547273c68d",
+      "bytes": 13952
+    },
+    {
+      "path": "Bottle_1.gltf",
+      "sha256": "d23c52823303be9d7bbe068b069b8c470294f5c5a40986948ff35bc0d0d48d60",
+      "bytes": 2413
+    },
+    {
+      "path": "Bucket_Wooden_1.bin",
+      "sha256": "be608473cd78557d466be9b9e2f6ff15f1edf1e4f5fcdd27be75d494f52578f2",
+      "bytes": 32544
+    },
+    {
+      "path": "Bucket_Wooden_1.gltf",
+      "sha256": "b4f93568d96d38dca162098e75fb3eb4ffaf5ff6e41f8f788476abd3be4984cf",
+      "bytes": 3911
+    },
+    {
+      "path": "Cabinet.bin",
+      "sha256": "dcfed47cc915564061483171ea8b8a4b4563177a4692e37ea91308b8b6f41450",
+      "bytes": 114768
+    },
+    {
+      "path": "Cabinet.gltf",
+      "sha256": "43df513943cde0590ca1925c3920ace9d08e4694d51282a1f5ab70b42e79fe44",
+      "bytes": 4324
+    },
+    {
+      "path": "CandleStick.bin",
+      "sha256": "45ad392961f6389aa7616f5efa03b5f7edf7285866743b1c704670d01f7284cd",
+      "bytes": 21436
+    },
+    {
+      "path": "CandleStick.gltf",
+      "sha256": "f57eaff5b2b61bda1c3b17460295b9fc708e9700e5070aee6e3afd0c297131a3",
+      "bytes": 2199
+    },
+    {
+      "path": "Chair_1.bin",
+      "sha256": "dc16da2a14704460a4050ef08782bb46b56b911eb161965b3f2676a1b24c201d",
+      "bytes": 28096
+    },
+    {
+      "path": "Chair_1.gltf",
+      "sha256": "9c3e659f25c850990cbf8a4d850b6222110248cd5c1419a2c0f548a312dd8457",
+      "bytes": 4312
+    },
+    {
+      "path": "Chalice.bin",
+      "sha256": "5e71580a7eb8e26254edcdcb95ca5d5f4412354e7fb2124a0d1e9331bcf7e7f9",
+      "bytes": 15644
+    },
+    {
+      "path": "Chalice.gltf",
+      "sha256": "435d3f90c2be5f1d76cfd8a5d2f478ee9d384370f0a583e7c2d1e14fa870d271",
+      "bytes": 2197
+    },
+    {
+      "path": "Chest_Wood.bin",
+      "sha256": "e4aea6f99587b8ad9ac08fac82013c55111a748c2e3febedbc4de3e301253901",
+      "bytes": 184356
+    },
+    {
+      "path": "Chest_Wood.gltf",
+      "sha256": "b2022f69b76526fcbbc7f7a8855848beeefa6e8a6f55337d923bce38ed03b2b6",
+      "bytes": 21402
+    },
+    {
+      "path": "Crate_Wooden.bin",
+      "sha256": "7ae016386790e5998fbdf1656a5dc53a3f1374c3525b22798d84397a36ae937b",
+      "bytes": 66496
+    },
+    {
+      "path": "Crate_Wooden.gltf",
+      "sha256": "fb06d4b7b9bbfbb9dc51fa56ecff3fe7ba8e9142d643cabedd17a55d7ea46ee5",
+      "bytes": 4412
+    },
+    {
+      "path": "Lantern_Wall.bin",
+      "sha256": "fe9f3816130587308b73bb8b4b28031b71fe9405a111f115463022709fa04b2e",
+      "bytes": 120036
+    },
+    {
+      "path": "Lantern_Wall.gltf",
+      "sha256": "9e7623e1d3a16f9212ff7cb41c939746435187f0071bd94849ee7bc6a59785a2",
+      "bytes": 2203
+    },
+    {
+      "path": "LICENSE.txt",
+      "sha256": "edad12240087a33e08fc031e4e66c2b2b4b2a6d4f086339bde04f741b385fbda",
+      "bytes": 837
+    },
+    {
+      "path": "Mug.bin",
+      "sha256": "bbf61011611387a248b9107b13f40a9cddb31e605f677b2102b236147bf31691",
+      "bytes": 12488
+    },
+    {
+      "path": "Mug.gltf",
+      "sha256": "73c4cb7e575685d0220a5d1dd40f1a68de9e64bfd34a54bcba6085b62a119a9d",
+      "bytes": 3881
+    },
+    {
+      "path": "Nightstand_Shelf.bin",
+      "sha256": "8b3be7b1a3ae6e30ef2c263df48677304c4f4d224f866fbb1fb919b4e496e4a9",
+      "bytes": 21412
+    },
+    {
+      "path": "Nightstand_Shelf.gltf",
+      "sha256": "31d1a892ebfc4221c945c703cb5ad4f9d29968003fc6c5526a84a09a5b58e092",
+      "bytes": 2447
+    },
+    {
+      "path": "Pot_1.bin",
+      "sha256": "eebe6918dbdc743501bdcb2d9f576a52028eb3451bdcf95d92674b97918cafc9",
+      "bytes": 37160
+    },
+    {
+      "path": "Pot_1.gltf",
+      "sha256": "d925a5e5541d83d2d1885b9d3928fbf553cf4a37ff902cf22d33280805efcf6f",
+      "bytes": 2185
+    },
+    {
+      "path": "Potion_1.bin",
+      "sha256": "6838b7e7a740a91f3bbdce0c79482638f095a79f90e2e1a59158c9750171665c",
+      "bytes": 18200
+    },
+    {
+      "path": "Potion_1.gltf",
+      "sha256": "fc53caca616741a21790b54a742a4fe3b4b3dfc88f4d50716fa8f65eece5c2ef",
+      "bytes": 2418
+    },
+    {
+      "path": "Potion_2.bin",
+      "sha256": "f1eb3a0b72839076d0836f6fd0ae28c79a2b7759ba5aec09260aae1dccfc5d33",
+      "bytes": 19672
+    },
+    {
+      "path": "Potion_2.gltf",
+      "sha256": "42d889170fdad73d6f3f38070ecb0ae1b928de96ce71d78856dcebdbec7d3a15",
+      "bytes": 2418
+    },
+    {
+      "path": "Scroll_1.bin",
+      "sha256": "884fe80cb3075c274acbac22d44e1cb6dba63ac3e62d7df167ccbf52f8f35308",
+      "bytes": 20112
+    },
+    {
+      "path": "Scroll_1.gltf",
+      "sha256": "f8b03860718121bfe6975b31996a0bb36e978e208a7df5a52fe4b0f3efbb14aa",
+      "bytes": 3954
+    },
+    {
+      "path": "SmallBottle.bin",
+      "sha256": "b94056fc489201a821cb474a54e1ee455e990c1ac52a5617f6d26520d2ce1c09",
+      "bytes": 5700
+    },
+    {
+      "path": "SmallBottle.gltf",
+      "sha256": "70447d0fe55cbbf87ba61caafca816cf26133a57326a462dc575c1d45b72f10c",
+      "bytes": 2392
+    },
+    {
+      "path": "Stool.bin",
+      "sha256": "6ca3a6bc9b415409d842a338a74c174d0efe4d4972bf8a924fda87c8bda40191",
+      "bytes": 11472
+    },
+    {
+      "path": "Stool.gltf",
+      "sha256": "55a111d97463adb71a59eddb8bbee777c5743e66a58403b06e869cc35e4da670",
+      "bytes": 2423
+    },
+    {
+      "path": "T_Page_Noise.png",
+      "sha256": "4d4069a8d588dab3dcd36f9ea309fc617815b766ce225b78bcd487751585e312",
+      "bytes": 7486734
+    },
+    {
+      "path": "T_Trim_Cloth_BaseColor.png",
+      "sha256": "c4d0e14506e05cc56e7ca62ebeeb2d45de055296a55e5a8e9c1330ff8ff1833a",
+      "bytes": 1936754
+    },
+    {
+      "path": "T_Trim_Cloth_Normal.png",
+      "sha256": "e91a490f94bc00707fb5be08045e316b4a18962f07a3b6e3d9d7c2058cfc51c0",
+      "bytes": 3920858
+    },
+    {
+      "path": "T_Trim_Cloth_ORM.png",
+      "sha256": "9bdaa0d1be8c393b07d6185165d73c7cddc058d5c123ad49449945f45a7e0c0d",
+      "bytes": 623426
+    },
+    {
+      "path": "T_Trim_Furniture_BaseColor.png",
+      "sha256": "075fbc9ec2fabc15732bd4025b6f63a0b25762df38440d06bf30437565d39bab",
+      "bytes": 2232961
+    },
+    {
+      "path": "T_Trim_Furniture_Normal.png",
+      "sha256": "3340c4cc47ff06d5e94a2dbe2a2a12d914d0ef055fcf66f63d876666bd160e42",
+      "bytes": 3485710
+    },
+    {
+      "path": "T_Trim_Furniture_ORM.png",
+      "sha256": "7bf417e82baf313793c5791bf48cdc8e573f1f7136197785bf0eb235cb0f8153",
+      "bytes": 2064585
+    },
+    {
+      "path": "T_Trim_Metal_BaseColor.png",
+      "sha256": "50422bbda9661effc259caf8b386224cac4b5ca811d2c5b3b8b25ae8efc714db",
+      "bytes": 1361221
+    },
+    {
+      "path": "T_Trim_Metal_Normal.png",
+      "sha256": "ab7315c864c9a9e6d716c940a599928506e1569d3b0c9085f8f1a64ec520d790",
+      "bytes": 3625541
+    },
+    {
+      "path": "T_Trim_Metal_ORM.png",
+      "sha256": "7407bccfc39ca74ecd68a61217395959bf56ac2063e6c93b384b11f07f5687c5",
+      "bytes": 1871475
+    },
+    {
+      "path": "T_Trim_Props_BaseColor.png",
+      "sha256": "75225a4ccfd8cc358c871de7a7a3cab7118ef197419a88464e807b81716215c8",
+      "bytes": 2263132
+    },
+    {
+      "path": "T_Trim_Props_Normal.png",
+      "sha256": "c4b28a8ba8efe3108cd11356ecab67e8bf75a10cebf29c78ee7724552c305a3e",
+      "bytes": 4441458
+    },
+    {
+      "path": "T_Trim_Props_ORM.png",
+      "sha256": "2d83d8df79aca2c8f630d389b43f09113afee98e746dfd42ddc3ce3302a136a2",
+      "bytes": 3017151
+    },
+    {
+      "path": "Table_Fork.bin",
+      "sha256": "ea1fab5b06e061cca6e5d50c5900d701f29b165cd3a66cca1a9455b82261c72f",
+      "bytes": 4936
+    },
+    {
+      "path": "Table_Fork.gltf",
+      "sha256": "f64b0048d2f2facfc96508ee94296ddd4b27c1403d9f89076785b3804970fd02",
+      "bytes": 2189
+    },
+    {
+      "path": "Table_Knife.bin",
+      "sha256": "88c0560af9520d919c3d673487dd888e8319d0e6f4a49980b97a37a077df18a8",
+      "bytes": 2180
+    },
+    {
+      "path": "Table_Knife.gltf",
+      "sha256": "df21830a582ba5c1d39573ef6c3014280a315f312ee112f2652f473196e191f1",
+      "bytes": 2186
+    },
+    {
+      "path": "Table_Large.bin",
+      "sha256": "af7bfe0cbf0532e01543e4fd5d6d710df70106a7d938c4d74a50c8911ee9bf35",
+      "bytes": 56396
+    },
+    {
+      "path": "Table_Large.gltf",
+      "sha256": "ffd4e5b803f38f02922c2b0303ae3b5a602f7c239e717b725c0553019be8fcf2",
+      "bytes": 4316
+    },
+    {
+      "path": "Table_Plate.bin",
+      "sha256": "23c73317b3936f395002c7be5089c4e70ee1cbdcf9f1abdb49af314faf7fe7dc",
+      "bytes": 6792
+    },
+    {
+      "path": "Table_Plate.gltf",
+      "sha256": "306bf85a1b02df6dda78a13b47ad2c1cf0646aac47818ec937e0be0c5f2997a3",
+      "bytes": 2199
+    },
+    {
+      "path": "Table_Spoon.bin",
+      "sha256": "e48524e0b974fb0c251c804ce82fb00ec58c6f372041e10ff1f4254af95902c0",
+      "bytes": 4856
+    },
+    {
+      "path": "Table_Spoon.gltf",
+      "sha256": "f6bde9a1928e169af7a3b9e773f5c815577da837904e3f16d6edc5e4394e55f5",
+      "bytes": 2191
+    },
+    {
+      "path": "Vase_2.bin",
+      "sha256": "1dce19b5d65d83c271b4ca1340446a482aefbd4a03dac61bb2a94ca3c71f99ea",
+      "bytes": 21188
+    },
+    {
+      "path": "Vase_2.gltf",
+      "sha256": "92218a88b02bac2bf4b3855dff452f209068cbfd58724585b7bf20556ac17ab5",
+      "bytes": 2407
+    },
+    {
+      "path": "Workbench.bin",
+      "sha256": "d26f2a0ba01b4a8db8d6820d1bd0d281297fea30e48c9952484167d18a637b39",
+      "bytes": 63408
+    },
+    {
+      "path": "Workbench.gltf",
+      "sha256": "518fc5c955def18cfcb781b3b955da0e8edcf4f37830a21561ef32c03ad0397e",
+      "bytes": 4318
+    }
+  ],
+  "modifications": "Selected original glTF files and original shared textures/buffers. Runtime bottom-centre/orientation normalization to reviewed dimensions; vertex-colour albedo enabled; matte worn-wood/iron roughness and metallic limits; per-ID wine-body vertex palette preserving cork; library book assemblies. No downloaded source model/texture file edits."
+}

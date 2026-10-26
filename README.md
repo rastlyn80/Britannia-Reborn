@@ -22,7 +22,7 @@ Double-click **Launch.cmd** for live Britain. The first preparation builds local
 
 The original reference crop (still available with `./launch.ps1 -ReferencePatch`) spans Trammel X=1576–1639, Y=1568–1631: 4,096 terrain samples and 2,689 static placements across 187 mapped IDs. These figures describe local validation; the map and converted data are not included. Passing that crop does not establish fidelity for every building, source ID or facet.
 
-Visual quality is still provisional: semantic mappings do not establish faithful models, materials or placement. The next quality gate covers both exterior and interior artwork in one representative block; see [art fidelity priorities and sign idea](docs/ART_FIDELITY.md).
+The first reviewed art pass adds explicit per-graphic replacements, richer furniture, detailed doors/windows, masonry surfaces and source-backed support placement. Double-click **Review-Art.cmd** to build a local original-art/model comparison gallery and automatic scene captures. The catalogue has 108 choices (88 reviewed, 20 provisional); most Britain IDs still need detailed artistic review. See [art checkpoint, evidence and remaining gaps](docs/ART_CATALOGUE_PASS.md).
 
 ## Architecture
 

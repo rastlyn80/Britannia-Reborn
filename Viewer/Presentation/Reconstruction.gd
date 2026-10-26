@@ -10,6 +10,8 @@ var bounds := {}
 var roof_materials := {}
 var architecture_materials := {}
 var nature_materials := {}
+var prop_materials := {}
+var prop_mesh_variants := {}
 var source_origin := Vector2.ZERO
 var gable_material: ShaderMaterial
 var water_material: ShaderMaterial
@@ -25,6 +27,7 @@ var wall_cells := {}
 var presentation_adjustments := {}
 var contextual_suppressed := 0
 var floors := preload("res://Presentation/FloorPlan.gd").new()
+var supports := preload("res://Presentation/SupportPlan.gd").new()
 
 static func info(world: Dictionary, id: int, statics: bool) -> Dictionary:
 	var data = world.get("staticData" if statics else "landData")
@@ -47,6 +50,7 @@ func rule_for(id: int) -> Dictionary:
 
 func index(world: Dictionary) -> void:
 	preload("res://Presentation/RegionalRules.gd").extend(world,catalog)
+	preload("res://Presentation/ReviewedCatalog.gd").extend(catalog)
 	if world.get("render_cells",false):print("REGIONAL RULES DONE")
 	source_origin = Vector2(world.get("originX",0),world.get("originY",0))
 	facade.index(world,catalog)
@@ -160,6 +164,7 @@ func index(world: Dictionary) -> void:
 
 	if world.get("render_cells",false):print("REGIONAL GROUPS DONE")
 	_plan_context(world)
+	supports.index(world)
 
 # Legacy art can include unsupported decoration. Keep source XYZ immutable and
 # record conservative presentation repairs rather than inventing supports.
@@ -248,22 +253,41 @@ func _collect_bounds(node: Node3D, transform: Transform3D, boxes: Array) -> void
 	for child in node.get_children():
 		if child is Node3D: _collect_bounds(child,combined,boxes)
 
-func fitted(path: String, size: Vector3) -> Node3D:
+func fitted(path: String, size: Vector3, orientation: Array = [0,0,0]) -> Node3D:
 	var full := "res://Art/"+path if path.begins_with("Kenney/") else "res://Art/Quaternius/"+path
 	if not scenes.has(path):
 		scenes[path] = load(full)
 		assert(scenes[path] != null,"Missing catalogue asset: "+path)
+	var bounds_key := path if orientation == [0,0,0] else path+str(orientation)
+	if not bounds.has(bounds_key):
 		var sample: Node3D = scenes[path].instantiate()
+		sample.rotation_degrees = Vector3(orientation[0],orientation[1],orientation[2])
 		var boxes: Array = []
 		_collect_bounds(sample,Transform3D.IDENTITY,boxes)
 		assert(not boxes.is_empty())
 		var box: AABB = boxes[0]
 		for other in boxes: box = box.merge(other)
-		bounds[path] = box
+		bounds[bounds_key] = box
 		sample.free()
 	var node := Node3D.new()
 	var offset := Node3D.new()
 	var model: Node3D = scenes[path].instantiate()
+	model.rotation_degrees = Vector3(orientation[0],orientation[1],orientation[2])
+	if path.begins_with("Props/") or path == "Village/Door_2_Flat.gltf":
+		for mesh in model.find_children("*","MeshInstance3D",true,false):
+			for surface in mesh.mesh.get_surface_count():
+				var original: Material = mesh.get_active_material(surface)
+				if not original is StandardMaterial3D: continue
+				var key: int = original.get_instance_id()
+				if not prop_materials.has(key):
+					var material: StandardMaterial3D = original.duplicate()
+					if path.begins_with("Props/"):material.vertex_color_use_as_albedo = true
+					# Worn timber and iron should not reflect a bright outdoor sky
+					# like polished chrome inside an unbaked room.
+					material.metallic = minf(material.metallic,.25)
+					material.roughness = maxf(material.roughness,.8)
+					prop_materials[key] = material
+				mesh.set_surface_override_material(surface,prop_materials[key])
 	if path.begins_with("Nature/"):
 		for mesh in model.find_children("*","MeshInstance3D",true,false):
 			# Reserve space for bounded shader deformation at frustum/shadow edges.
@@ -290,7 +314,7 @@ func fitted(path: String, size: Vector3) -> Node3D:
 					mat.set_shader_parameter("source_origin",source_origin)
 					nature_materials[key] = mat
 				mesh.set_surface_override_material(surface,nature_materials[key])
-	if path.begins_with("Village/"):
+	if path.begins_with("Village/") and path != "Village/Door_2_Flat.gltf":
 		for mesh in model.find_children("*","MeshInstance3D",true,false):
 			for surface in mesh.mesh.get_surface_count():
 				var original: Material = mesh.get_active_material(surface)
@@ -307,12 +331,31 @@ func fitted(path: String, size: Vector3) -> Node3D:
 					styled.set_shader_parameter("palette",Color("66523d") if "wood" in label else (Color("c4b89b") if "plaster" in label else Color("85867b")))
 					architecture_materials[key] = styled
 				mesh.set_surface_override_material(surface,architecture_materials[key])
-	var box: AABB = bounds[path]
+	var box: AABB = bounds[bounds_key]
 	offset.scale = size/box.size
 	offset.position = -Vector3(box.get_center().x,box.position.y,box.get_center().z)*offset.scale
 	offset.add_child(model)
 	node.add_child(offset)
 	return node
+
+func tint_prop(node: Node3D, palette: String) -> void:
+	# Preserve the cork/metal vertex colours; only the selected bottle-body
+	# pigment changes. Original downloaded meshes and buffers stay immutable.
+	for mesh in node.find_children("*","MeshInstance3D",true,false):
+		var key := str(mesh.mesh.get_instance_id())+palette
+		if not prop_mesh_variants.has(key):
+			var variant := ArrayMesh.new()
+			for surface in mesh.mesh.get_surface_count():
+				var arrays: Array = mesh.mesh.surface_get_arrays(surface)
+				var colors: PackedColorArray = arrays[Mesh.ARRAY_COLOR]
+				for i in colors.size():
+					if colors[i].r > colors[i].g*2.5:
+						colors[i]=Color(.018,.065,.012,colors[i].a)
+				arrays[Mesh.ARRAY_COLOR]=colors
+				variant.add_surface_from_arrays(mesh.mesh.surface_get_primitive_type(surface),arrays)
+				variant.surface_set_material(surface,mesh.mesh.surface_get_material(surface))
+			prop_mesh_variants[key]=variant
+		mesh.mesh=prop_mesh_variants[key]
 
 func roof_material(kind: String) -> ShaderMaterial:
 	if not roof_materials.has(kind):
@@ -349,105 +392,110 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 		state = "boundary-fragment"
 		boundary_fragments += 1
 	else:
-		match kind:
-			"wall", "window": visual = facade.panel(height,kind == "window",facade.plans.get(ordinal,{}),family)
-			"corner": visual = facade.corner(height,facade.corners.get(ordinal,{}),family)
-			"post": visual = fitted(asset,Vector3(0.15,height,0.15))
-			"pillar":
-				visual=Node3D.new()
-				for y in [0.06,height-0.06]:
-					var base_mesh:MeshInstance3D=geometry.crafted_box(visual,Vector3(0.40,0.12,0.40),Vector3(0,y,0),"ffffff")
-					base_mesh.material_override=facade.material("stone")
-				var shaft:MeshInstance3D=geometry.cylinder(visual,0.15,maxf(0.05,height-0.24),Vector3(0,height/2,0),"ffffff")
-				shaft.material_override=facade.material("stone")
-			"gable":
-				var group: Dictionary = groups[ordinal]
-				var span: float = maxf(group.size.x,group.size.y)+1.0
-				visual = geometry.gable(span,(group.max_z-group.min_z)*float(world.elevationScale),facade.material("plaster"))
-				visual.position.y = (group.min_z-float(s.z))*float(world.elevationScale)
-				if rule.get("axis") == "y": visual.rotation.y = PI/2
-			"trim", "beam": visual = fitted(asset,Vector3(1,height,0.14))
-			"arch":
-				visual = Node3D.new()
-				var span: float = maxf(groups[ordinal].size.x,groups[ordinal].size.y) if groups.has(ordinal) else 1.0
-				var opening_height := minf(height,2.7)
-				visual.add_child(fitted(asset,Vector3(span,opening_height,0.2)))
-				if height > opening_height: facade.piece(visual,Vector3(span,height-opening_height,0.18),Vector3(0,(height+opening_height)/2,0),"plaster")
-			"floor": visual = floors.slab(ordinal,facade.material("stone") if rule.get("surface","")=="stone" else floors.material())
-			"asset": visual = fitted(asset,Vector3(rule.dimensions[0],rule.dimensions[1],rule.dimensions[2]))
-			"prop": visual = preload("res://Presentation/CityProps.gd").build(str(rule.model),s,detail,geometry)
-			"invisible": state="source-nodraw"
-			"landing":
-				visual = Node3D.new()
-				# Bridge tiledata heights describe the art bounds; support is halfway up.
-				if int(detail.get("flags",0)) & 0x400: height *= 0.5
-				var stair_material := facade.material("stone" if "stone" in str(detail.get("name","")) else "wood")
-				var support := geometry.box(visual,Vector3(1,height,1),Vector3(0,height/2,0),"ffffff")
-				support.material_override = stair_material
-				var deck := floors.slab("landing",stair_material)
-				deck.position.y += height
-				visual.add_child(deck)
-			"stairs":
-				visual = geometry.stairs(height,floors.stair_rise.get(ordinal,Vector2(rule.rise[0],rule.rise[1])))
-				for step in visual.get_children(): step.material_override = facade.material("stone" if "stone" in str(detail.get("name","")) else "wood")
-			"roof":
-				if gable_material == null:
-					gable_material = facade.material("plaster").duplicate()
-					gable_material.set_shader_parameter("double_sided",true)
-				visual = geometry.roof(s,rule,roof_material(rule.material),roofs.tiles.get(ordinal,{}),gable_material)
-			"door":
-				visual = fitted(asset,Vector3(0.86,height,0.12))
-				for side in [-1,1]: facade.piece(visual,Vector3(0.08,height,0.2),Vector3(side*0.46,height/2,0),"wood")
-				facade.piece(visual,Vector3(1,0.12,0.2),Vector3(0,height-0.06,0),"wood")
-			"fence": visual = fitted(asset,Vector3(1,1.2,0.10))
-			"bed":
-				var size: Vector2 = groups[ordinal].size if groups.has(ordinal) else Vector2.ONE
-				var double_bed := minf(size.x,size.y) > 1
-				asset = "Kenney/bedDouble.glb" if double_bed else asset
-				visual = fitted(asset,Vector3(minf(size.x,size.y),0.72,maxf(size.x,size.y)))
-				if size.x > size.y: visual.rotation.y = PI/2
-			"carpet": visual = geometry.carpet(s)
-			"table", "bench", "counter":
-				var size: Vector2 = groups[ordinal].size if groups.has(ordinal) else Vector2.ONE
-				if kind == "bench":
-					if size.y > size.x: size.x = 0.5
-					else: size.y = 0.5
-				visual = geometry.furniture(size,kind)
-			"sign": visual = geometry.sign()
-			"painting": visual = geometry.painting()
-			"tree", "canopy":
-				var name := str(detail.get("name",""))
-				var size := Vector3(3.2,5.8,3.2)
-				if name.contains("sapling"): size = Vector3(1,1.9,1)
-				if name.contains("cedar"): size = Vector3(2.6,6.2,2.6)
-				if kind == "canopy": asset = "Nature/CommonTree_1.gltf"
-				visual = fitted(asset,size)
-				visual.rotation.y = fmod(float(int(s.x)*17+int(s.y)*31),TAU)
-			"grass": visual = fitted(asset,Vector3(0.65,0.25+0.1*(int(s.id)%3),0.65))
-			"flower": visual = fitted(asset,Vector3(0.55,0.28,0.55))
-			"bush": visual = fitted(asset,Vector3(1.1,0.65,1.1))
-			"mushroom": visual = fitted(asset,Vector3(0.32,0.22,0.32))
-			"rock": visual = fitted(asset,Vector3(0.55,0.38,0.55))
-			"log": visual = fitted(asset,Vector3(0.9,0.35,0.4))
-			"water":
-				var plane := PlaneMesh.new()
-				plane.size = Vector2.ONE
-				plane.subdivide_width = 3
-				plane.subdivide_depth = 3
-				visual = MeshInstance3D.new()
-				visual.mesh = plane
-				if water_material == null:
-					water_material = ShaderMaterial.new()
-					water_material.shader = preload("res://Presentation/Water.gdshader")
-					water_material.set_shader_parameter("source_origin",source_origin)
-					water_material.set_shader_parameter("wave_strength",0.0 if show_boundary_fragments else 1.0)
-					if shoreline: shoreline.apply(water_material)
-				visual.material_override = water_material
-			_:
-				unresolved += 1
-				node.free()
-				report.append({"ordinal":ordinal,"id":s.id,"xyz":[s.x,s.y,s.z],"status":"unmapped"})
-				return null
+		visual = preload("res://Presentation/ReviewedCatalog.gd").build(self,int(s.id),groups.get(ordinal,{}))
+		if visual == null:
+			match kind:
+				"wall", "window":
+					var frame: Node3D = null
+					if kind=="window" and height>1.5: frame=fitted("Village/Window_Wide_Flat1.gltf",Vector3(.84,minf(1.4,height*.46)+.16,.30))
+					visual = facade.panel(height,kind == "window",facade.plans.get(ordinal,{}),family,frame)
+				"corner": visual = facade.corner(height,facade.corners.get(ordinal,{}),family)
+				"post": visual = fitted(asset,Vector3(0.15,height,0.15))
+				"pillar":
+					visual=Node3D.new()
+					for y in [0.06,height-0.06]:
+						var base_mesh:MeshInstance3D=geometry.crafted_box(visual,Vector3(0.40,0.12,0.40),Vector3(0,y,0),"ffffff")
+						base_mesh.material_override=facade.material("stone")
+					var shaft:MeshInstance3D=geometry.cylinder(visual,0.15,maxf(0.05,height-0.24),Vector3(0,height/2,0),"ffffff")
+					shaft.material_override=facade.material("stone")
+				"gable":
+					var group: Dictionary = groups[ordinal]
+					var span: float = maxf(group.size.x,group.size.y)+1.0
+					visual = geometry.gable(span,(group.max_z-group.min_z)*float(world.elevationScale),facade.material("plaster"))
+					visual.position.y = (group.min_z-float(s.z))*float(world.elevationScale)
+					if rule.get("axis") == "y": visual.rotation.y = PI/2
+				"trim", "beam": visual = fitted(asset,Vector3(1,height,0.14))
+				"arch":
+					visual = Node3D.new()
+					var span: float = maxf(groups[ordinal].size.x,groups[ordinal].size.y) if groups.has(ordinal) else 1.0
+					var opening_height := minf(height,2.7)
+					visual.add_child(fitted(asset,Vector3(span,opening_height,0.2)))
+					if height > opening_height: facade.piece(visual,Vector3(span,height-opening_height,0.18),Vector3(0,(height+opening_height)/2,0),"plaster")
+				"floor": visual = floors.slab(ordinal,facade.material("stone") if rule.get("surface","")=="stone" else floors.material())
+				"asset": visual = fitted(asset,Vector3(rule.dimensions[0],rule.dimensions[1],rule.dimensions[2]))
+				"prop": visual = preload("res://Presentation/CityProps.gd").build(str(rule.model),s,detail,geometry)
+				"invisible": state="source-nodraw"
+				"landing":
+					visual = Node3D.new()
+					# Bridge tiledata heights describe the art bounds; support is halfway up.
+					if int(detail.get("flags",0)) & 0x400: height *= 0.5
+					var stair_material := facade.material("stone" if "stone" in str(detail.get("name","")) else "wood")
+					var support := geometry.box(visual,Vector3(1,height,1),Vector3(0,height/2,0),"ffffff")
+					support.material_override = stair_material
+					var deck := floors.slab("landing",stair_material)
+					deck.position.y += height
+					visual.add_child(deck)
+				"stairs":
+					visual = geometry.stairs(height,floors.stair_rise.get(ordinal,Vector2(rule.rise[0],rule.rise[1])))
+					for step in visual.get_children(): step.material_override = facade.material("stone" if "stone" in str(detail.get("name","")) else "wood")
+				"roof":
+					if gable_material == null:
+						gable_material = facade.material("plaster").duplicate()
+						gable_material.set_shader_parameter("double_sided",true)
+					visual = geometry.roof(s,rule,roof_material(rule.material),roofs.tiles.get(ordinal,{}),gable_material)
+				"door":
+					visual = fitted(asset,Vector3(0.86,height,0.12))
+					for side in [-1,1]: facade.piece(visual,Vector3(0.08,height,0.2),Vector3(side*0.46,height/2,0),"wood")
+					facade.piece(visual,Vector3(1,0.12,0.2),Vector3(0,height-0.06,0),"wood")
+				"fence": visual = fitted(asset,Vector3(1,1.2,0.10))
+				"bed":
+					var size: Vector2 = groups[ordinal].size if groups.has(ordinal) else Vector2.ONE
+					var double_bed := minf(size.x,size.y) > 1
+					asset = "Kenney/bedDouble.glb" if double_bed else asset
+					visual = fitted(asset,Vector3(minf(size.x,size.y),0.72,maxf(size.x,size.y)))
+					if size.x > size.y: visual.rotation.y = PI/2
+				"carpet": visual = geometry.carpet(s)
+				"table", "bench", "counter":
+					var size: Vector2 = groups[ordinal].size if groups.has(ordinal) else Vector2.ONE
+					if kind == "bench":
+						if size.y > size.x: size.x = 0.5
+						else: size.y = 0.5
+					visual = geometry.furniture(size,kind)
+				"sign": visual = geometry.sign()
+				"painting": visual = geometry.painting()
+				"tree", "canopy":
+					var name := str(detail.get("name",""))
+					var size := Vector3(3.2,5.8,3.2)
+					if name.contains("sapling"): size = Vector3(1,1.9,1)
+					if name.contains("cedar"): size = Vector3(2.6,6.2,2.6)
+					if kind == "canopy": asset = "Nature/CommonTree_1.gltf"
+					visual = fitted(asset,size)
+					visual.rotation.y = fmod(float(int(s.x)*17+int(s.y)*31),TAU)
+				"grass": visual = fitted(asset,Vector3(0.65,0.25+0.1*(int(s.id)%3),0.65))
+				"flower": visual = fitted(asset,Vector3(0.55,0.28,0.55))
+				"bush": visual = fitted(asset,Vector3(1.1,0.65,1.1))
+				"mushroom": visual = fitted(asset,Vector3(0.32,0.22,0.32))
+				"rock": visual = fitted(asset,Vector3(0.55,0.38,0.55))
+				"log": visual = fitted(asset,Vector3(0.9,0.35,0.4))
+				"water":
+					var plane := PlaneMesh.new()
+					plane.size = Vector2.ONE
+					plane.subdivide_width = 3
+					plane.subdivide_depth = 3
+					visual = MeshInstance3D.new()
+					visual.mesh = plane
+					if water_material == null:
+						water_material = ShaderMaterial.new()
+						water_material.shader = preload("res://Presentation/Water.gdshader")
+						water_material.set_shader_parameter("source_origin",source_origin)
+						water_material.set_shader_parameter("wave_strength",0.0 if show_boundary_fragments else 1.0)
+						if shoreline: shoreline.apply(water_material)
+					visual.material_override = water_material
+				_:
+					unresolved += 1
+					node.free()
+					report.append({"ordinal":ordinal,"id":s.id,"xyz":[s.x,s.y,s.z],"status":"unmapped"})
+					return null
 		if visual:
 			if kind == "roof":
 				var anchor: Array = rule.get("anchorOffset",[-1,-1])
@@ -460,6 +508,10 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 				var group: Dictionary = groups[ordinal]
 				visual.position += Vector3(group.low.x+group.size.x/2-float(s.x)-0.5,0,group.low.y+group.size.y/2-float(s.y)-0.5)
 			if not show_boundary_fragments: visual.position += presentation_adjustments.get(ordinal,{}).get("offset",Vector3.ZERO)
+			if not show_boundary_fragments:
+				var contact: Dictionary = supports.placement(s)
+				visual.position += contact.offset
+				node.set_meta("contact",contact)
 			node.add_child(visual)
 	mapped += 1
 	node.set_meta("source_id",s.id)

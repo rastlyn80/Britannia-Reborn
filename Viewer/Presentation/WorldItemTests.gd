@@ -104,8 +104,12 @@ func run() -> void:
  game._world_item(closed)
  check(view.nodes.size() == 1,"native item creates one visible door")
  var door: Node3D = view.nodes[0x40000001]
- var leaf: MeshInstance3D = door.get_node("Hinge/TimberLeaf")
- check(leaf.mesh.get_aabb().size.y < 2.5 and leaf.material_override.shader == preload("res://Presentation/Door.gdshader"),"bevelled door uses local-space timber material at character scale")
+ var leaf: Node3D = door.get_node("Hinge/TimberLeaf")
+ var boxes: Array=[]
+ fixture.reconstruction._collect_bounds(leaf,Transform3D.IDENTITY,boxes)
+ var bounds: AABB=boxes[0]
+ for box in boxes:bounds=bounds.merge(box)
+ check(bounds.size.y<2.5 and is_equal_approx(bounds.size.x,.94) and leaf.get_meta("reviewed_asset","")=="Village/Door_2_Flat.gltf","reviewed medieval door retains human scale and native opening width")
  check(door.has_node("DoorLintel") and door.has_node("OverDoorWall") and door.has_node("HeaderCollision"),"lintel and upper wall seal the original tall opening")
  check(door.get_node("OverDoorWall").material_override.get_shader_parameter("open_caps"),"doorway infill cannot reintroduce coplanar white floor caps")
  var location := door.position
@@ -114,6 +118,7 @@ func run() -> void:
  check(door.get_node("Hinge/PickBody").collision_layer == 5,"server-open door retains camera collision on the rotating leaf")
  game._world_item({"serial":0x40000002,"id":0x6a7,"x":1006,"y":2005,"z":20,"facet":1})
  check(view.nodes.size() == 2,"native double doors keep two separate leaves")
+ check(view.nodes[0x40000002].get_node("Hinge/TimberLeaf").scale.x<0 and leaf.scale.x>0,"Opposite native hinges mirror the imported leaf so paired handles meet at the opening")
  game._remove_world_item(0x40000001)
  game._world_item({"serial":0x40000001,"id":0x6a6,"x":1004,"y":2006,"z":20,"facet":1})
  check(is_equal_approx(view.nodes[0x40000001].get_meta("doorway_plan").envelope,4.0),"joining while a door is open measures its original source frame")

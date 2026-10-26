@@ -1,3 +1,22 @@
+# Reviewed art checkpoint — 26 October 2026
+
+`scripts/verify.ps1`: **420 offline checks**, no errors/warnings. Includes 22 art-fidelity/contact checks and 34 world-item checks. Props: 35 models / 84 source files checked against pinned SHA-256; surfaces: 27 maps verified. Prepared parity: all 360,448 terrain samples and 136,662 statics across 88 chunks. Both GPU renderers pass all 262 first/last instance matrices and near/far ownership (25,200 unchanged wall pixels).
+
+`scripts/test-world-items.ps1` passes native doors, repeat population, containers/books, sign name, dice, bulletin board and server Help gumps. `-Visual -Compatibility` also passes actual mouse clicks and records local screenshots. Initial runs encountered stale/consumed development fixtures and open-door targeting; after the existing population refresh and fresh run, the complete sequence passes. No user credentials, account, saved-login vault or server code were changed.
+
+`scripts/test-live-city.ps1 -Visual` and `-Visual -Compatibility`: native entry, door use, 62 accepted run steps, exact reconciliation, minimap and recovery pass. Isolated Forward+ walking p95 **17.224 ms**, maximum **1,169.394 ms**; OpenGL p95 **17.058 ms**, maximum **1,202.135 ms**. An earlier concurrent/stale-test run had ~1 s p95 and is excluded from the isolated comparison, not represented as a successful performance result.
+
+`scripts/test-streaming.ps1` repeated 14-destination journeys retain nine source/physical districts and bounded far scenery, with a memory plateau:
+
+| Renderer | Prepared startup | End memory, lap 1 / lap 2 | Nodes | Frame p95 / p99 / max | Max activation |
+|---|---:|---:|---:|---:|---:|
+| OpenGL | 3.343 s | 317.15 / 317.17 MiB | 2,947 | 54.797 / 177.138 / 445.642 ms | 116.745 ms |
+| Forward+ | 3.334 s | 434.57 / 434.59 MiB | 2,947 | 56.850 / 169.859 / 1,755.064 ms | 102.118 ms |
+
+These are Godot engine allocation monitors, not OS working set or total GPU memory. Peak allocations were ~396 / 516 MiB. Rapid destination jumps intentionally stress loading; they are not steady walking FPS. Against the previous prepared checkpoint (~311 MB OpenGL / ~430 MB Forward+ retained), richer art increases resources modestly while bounded retention survives. Significant loading hitches remain.
+
+`Review-Art.cmd` generates ignored local source/model references and captures. Eight fixed reference views were compared with baseline `2598368`; riverbank and bridge views extend current inspection. This offline snapshot rendering is separate from native multiplayer checks. See ART_CATALOGUE_PASS.md for review coverage and explicit visual limits.
+
 Live Britain streaming: `scripts/test-live-city.ps1` checks physical district installation, retention/eviction, an actual development-character route, native door use, exact position reconciliation and recovery. `-Visual` adds a local screenshot; `-Visual -Compatibility` uses OpenGL. Fourteen readiness/protocol/batching checks are included in `scripts/verify.ps1` (371 checks total). The existing login test still verifies only the login relay; the city test enters the real native world. A separate `scripts/test-city-render.ps1` / `-Compatibility` checks 25,200 daylight wall pixels for far/near overlap; it opens no native session. See LIVE_BRITAIN.md for scope and evidence.
 
 # Testing

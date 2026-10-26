@@ -43,6 +43,10 @@ foreach ($pack in @('medieval-village-megakit','stylized-nature-megakit','univer
   Copy-Item -LiteralPath $license.FullName -Destination "$target/$pack-LICENSE.txt" -Force
   $manifest += [ordered]@{pack=$pack;author='Quaternius';edition='Standard';license='CC0-1.0';source="https://quaternius.itch.io/$pack";archiveSha256=(Get-FileHash -LiteralPath "$source/$pack.zip").Hash}
 }
+if (Test-Path "$target/Props/manifest.json") {
+  $props=Get-Content "$target/Props/manifest.json" -Raw | ConvertFrom-Json
+  $manifest += [ordered]@{pack='fantasy-props-megakit';author='Quaternius';edition='Standard';license='CC0-1.0';source=$props.source;archiveSha256=$props.archiveSha256}
+}
 $inventory = Get-ChildItem $target -Recurse -File | Where-Object { $_.Extension -notin @('.import','.json') } | ForEach-Object {
   [ordered]@{path=[IO.Path]::GetRelativePath($target,$_.FullName).Replace('\','/');sha256=(Get-FileHash -LiteralPath $_.FullName).Hash}
 }

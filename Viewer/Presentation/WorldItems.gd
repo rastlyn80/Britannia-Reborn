@@ -10,6 +10,7 @@ var source_records := {}
 var local_art := preload("res://Presentation/LocalItemArt.gd").new()
 var selected := 0
 var suppressed_posts := {}
+var contacts_pending:=false
 var hint := Label.new()
 
 func configure(owner_scene: Node3D, connection: Node) -> void:
@@ -74,6 +75,7 @@ func upsert(serial: int, item: Dictionary) -> void:
  # Native decoration floor patches replace source gaps, while the shared floor
  # pass already owns those surfaces. Avoid another coplanar floor layer.
  if rule.get("type","") == "Static" and int(rule.get("height",0)) == 0 and (int(rule.get("flags",0)) & 0x200) != 0: return
+ request_contact_refresh()
  var root := Node3D.new()
  root.name = "ServerItem_%08X" % serial
  root.set_meta("serial",serial)
@@ -84,6 +86,18 @@ func upsert(serial: int, item: Dictionary) -> void:
  add_child(root)
  nodes[serial] = root
  root.position = scene.entity_point(item.x,item.y,item.z)
+ var review: Dictionary=preload("res://Presentation/ReviewedCatalog.gd").entry(int(item.id))
+ if (review.has("asset") or review.get("construction","")=="wardrobe") and rule.family!="door":
+  var visual: Node3D=preload("res://Presentation/ReviewedCatalog.gd").build(scene.reconstruction,int(item.id))
+  visual.name="ReviewedVisual"
+  root.add_child(visual)
+  var boxes: Array=[]
+  scene.reconstruction._collect_bounds(visual,Transform3D.IDENTITY,boxes)
+  var box: AABB=boxes[0]
+  for other in boxes:box=box.merge(other)
+  _body(root,box.size,box.get_center(),serial,(int(rule.get("flags",0))&64)!=0)
+  request_contact_refresh()
+  return
  if rule.family == "door":
   if rule.get("is_open",false):
    var offset: Array = rule.get("offset",[0,0,0])
@@ -267,37 +281,12 @@ func _door(root: Node3D,rule: Dictionary) -> void:
  var height := float(plan.leaf_height)
  root.set_meta("doorway_plan",plan)
  preload("res://Presentation/DoorwayPlan.gd").header(root,plan,geometry,scene.reconstruction.facade)
- var leaf := geometry.crafted_box(pivot,Vector3(0.94,height,0.105),Vector3(center,height/2+0.025,0),"805e3a")
- leaf.name = "TimberLeaf"
- var timber := ShaderMaterial.new()
- timber.shader = preload("res://Presentation/Door.gdshader")
- preload("res://Presentation/SurfaceLibrary.gd").bind(timber,"surface","brown_planks_03")
- leaf.material_override = timber
- var iron := StandardMaterial3D.new()
- iron.albedo_color = Color("3c4144")
- iron.metallic = 0.7
- iron.roughness = 0.58
- for y in [0.26,height-0.24]:
-  var brace := geometry.crafted_box(pivot,Vector3(0.86,0.07,0.13),Vector3(center,y,0),"3e4447")
-  brace.material_override = iron
-  for side in [-1,1]:
-   var rivet := geometry.cylinder(pivot,0.023,0.018,Vector3(center+side*0.34,y,-0.075),"7e8384")
-   rivet.rotation.x = PI/2
-   rivet.material_override = iron
- var pull_x := center*1.78
- var plate := geometry.cylinder(pivot,0.055,0.015,Vector3(pull_x,height*0.45,0.063),"5c5650")
- plate.rotation.x = PI/2
- plate.material_override = iron
- var pull := MeshInstance3D.new()
- pull.name = "IronRingPull"
- var ring := TorusMesh.new()
- ring.inner_radius = 0.031
- ring.outer_radius = 0.048
- pull.mesh = ring
- pull.material_override = iron
- pull.position = Vector3(pull_x,height*0.45-0.035,0.10)
- pull.rotation.x = PI/2
- pivot.add_child(pull)
+ var leaf: Node3D=scene.reconstruction.fitted("Village/Door_2_Flat.gltf",Vector3(.94,height,.13))
+ leaf.name="TimberLeaf"
+ leaf.position=Vector3(center,.025,0)
+ leaf.scale.x=-1.0 if right else 1.0
+ leaf.set_meta("reviewed_asset","Village/Door_2_Flat.gltf")
+ pivot.add_child(leaf)
  _body(pivot,Vector3(0.94,height,0.13),Vector3(center,height/2+0.025,0),int(root.get_meta("serial")),true)
 
 func _door_state(root: Node3D,item: Dictionary,rule: Dictionary,instant: bool) -> void:
@@ -329,6 +318,7 @@ func remove_visual(serial: int) -> void:
   nodes[serial].free()
   nodes.erase(serial)
 func remove(serial: int) -> void:
+ request_contact_refresh()
  remove_visual(serial)
  if scene and scene.movement_surface: scene.movement_surface.dynamic_items.erase(serial)
  if serial == selected:
@@ -396,6 +386,38 @@ func suppress_streamed_posts() -> void:
   suppressed_posts[serial] = hidden
 
 func refresh_source_records() -> void:
+ if scene.reconstruction:
+  scene.reconstruction.supports.index(scene.world)
+  scene.reconstruction.supports.dynamic=session.world_items
+  scene.reconstruction.supports.dynamic_definitions=definitions
+  request_contact_refresh()
  source_records.clear()
  for tile in scene.world.statics:
   source_records[Vector4i(tile.x,tile.y,tile.z,tile.id)] = true
+
+func request_contact_refresh() -> void:
+ if contacts_pending:return
+ contacts_pending=true
+ refresh_contacts.call_deferred()
+
+func refresh_contacts() -> void:
+ contacts_pending=false
+ if not is_instance_valid(scene):return
+ var supports: RefCounted=scene.reconstruction.supports
+ supports.cache.clear()
+ for serial in nodes:
+  var node: Node3D=nodes[serial]
+  var visual: Node3D=node.get_node_or_null("ReviewedVisual")
+  if not session.world_items.has(serial):continue
+  var review: Dictionary=preload("res://Presentation/ReviewedCatalog.gd").entry(int(session.world_items[serial].id))
+  if review.get("attachment","") not in ["floor","surface"]:continue
+  var placement: Dictionary=supports.placement(session.world_items[serial])
+  if visual:
+   visual.position=placement.offset
+   node.get_node("PickBody").position=placement.offset
+  else:
+   var previous: Vector3=node.get_meta("contact_offset",Vector3.ZERO)
+   for child in node.get_children():
+    if child is Node3D:child.position+=placement.offset-previous
+  node.set_meta("contact_offset",placement.offset)
+  node.set_meta("contact",placement)

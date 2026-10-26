@@ -284,6 +284,86 @@
           "bytes": 638904
         }
       ]
+    },
+    {
+      "id": "medieval_blocks_03",
+      "name": "Medieval Blocks 03",
+      "source": "https://polyhaven.com/a/medieval_blocks_03",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://polyhaven.com/license",
+      "authors": [
+        "Rob Tuytel"
+      ],
+      "sizeMeters": [
+        2,
+        2
+      ],
+      "maps": [
+        {
+          "role": "albedo",
+          "file": "medieval_blocks_03_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/medieval_blocks_03/medieval_blocks_03_diff_1k.jpg",
+          "sha256": "3852b4a60e0f62d2914c895f884df8d58d8d12d788851d814859dae05b7620cf",
+          "sourceMd5": "05e4e5292463b7edbde4b4a16bce1b3d",
+          "bytes": 954113
+        },
+        {
+          "role": "normal",
+          "file": "medieval_blocks_03_nor_gl_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/medieval_blocks_03/medieval_blocks_03_nor_gl_1k.jpg",
+          "sha256": "52350ed4b577c9fd6b03effda069181ca0ed39ee99d88b912685266f6270c943",
+          "sourceMd5": "1372aac76bbc3316292e592e1f38a1b8",
+          "bytes": 1352681
+        },
+        {
+          "role": "roughness",
+          "file": "medieval_blocks_03_rough_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/medieval_blocks_03/medieval_blocks_03_rough_1k.jpg",
+          "sha256": "9eba5fed68b8a705c5280a274a9d8238be89bf82fa783154b25325211d67373b",
+          "sourceMd5": "2dd70625ebfc3c4d0f9694849e91fdac",
+          "bytes": 460951
+        }
+      ]
+    },
+    {
+      "id": "medieval_red_brick",
+      "name": "Medieval Red Brick",
+      "source": "https://polyhaven.com/a/medieval_red_brick",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://polyhaven.com/license",
+      "authors": [
+        "Rob Tuytel"
+      ],
+      "sizeMeters": [
+        2,
+        2
+      ],
+      "maps": [
+        {
+          "role": "albedo",
+          "file": "medieval_red_brick_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/medieval_red_brick/medieval_red_brick_diff_1k.jpg",
+          "sha256": "72f9d1c0479ca5872b04e2c52cfb2074fa53f0e524c1a49afa7a033fee571d1d",
+          "sourceMd5": "217f3e9db4fa2a89dfa49d5bf5e5bf97",
+          "bytes": 872053
+        },
+        {
+          "role": "normal",
+          "file": "medieval_red_brick_nor_gl_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/medieval_red_brick/medieval_red_brick_nor_gl_1k.jpg",
+          "sha256": "52e91425bd3fca954e492dc3b0993848df83286e1fcecfc031cba41e0a83fb1a",
+          "sourceMd5": "e4e1bde5cf80bd1aa9c4614d2d06ef53",
+          "bytes": 1186400
+        },
+        {
+          "role": "roughness",
+          "file": "medieval_red_brick_rough_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/medieval_red_brick/medieval_red_brick_rough_1k.jpg",
+          "sha256": "f281a14cf275aa4e8a56c794ef997d1b6b246a14a4c6b39dbfe8cf7320eb9a52",
+          "sourceMd5": "5af35ac7a1933a1f08fc5c83959b4edf",
+          "bytes": 432817
+        }
+      ]
     }
   ]
 }

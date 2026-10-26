@@ -1,3 +1,5 @@
+Current implementation: see [the reviewed art catalogue checkpoint](ART_CATALOGUE_PASS.md) for imported assets, actual per-ID choices, automatic review and remaining gaps. The priorities below remain the acceptance direction.
+
 # Exterior and interior fidelity gate
 
 The owner's latest review is explicit: exterior architecture and streets are rudimentary, furniture/props can float or be misrepresented, and materials can be contextually wrong. Geographic/source coverage is not visual approval. Do not expand the artistic treatment to another region until a representative Britain block passes a deliberate exterior and interior review.

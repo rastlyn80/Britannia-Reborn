@@ -1,6 +1,7 @@
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 & "$root/scripts/prepare-surfaces.ps1" -VerifyOnly
+& "$root/scripts/import-reviewed-art.ps1" -VerifyOnly
 & "$root\build.ps1"
 if (Test-Path "$root/Server/runtime/Server.dll") { & "$root/scripts/build-preview-tools.ps1" -BuildOnly }
 $godot = (Get-ChildItem "$root\.tools\godot\*console.exe" | Select-Object -First 1).FullName
@@ -10,6 +11,8 @@ $env:LOCALAPPDATA = $env:APPDATA
 if ($LASTEXITCODE) { throw 'Asset import failed' }
 & $godot --headless --path "$root\Viewer" --script res://Network/LoginTests.gd
 if ($LASTEXITCODE) { throw 'Protocol tests failed' }
+& $godot --headless --path "$root/Viewer" --script res://Presentation/ArtFidelityTests.gd
+if ($LASTEXITCODE) { throw 'Reviewed asset/support regression checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/MinimapTests.gd
 if ($LASTEXITCODE) { throw 'Native radar/minimap tests failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/PreparedTests.gd

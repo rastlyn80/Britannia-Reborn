@@ -6,6 +6,7 @@ uniform sampler2D source_texture : source_color, filter_linear_mipmap_anisotropi
 uniform sampler2D surface_normal : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform vec4 palette : source_color;
 uniform bool wood=false;
+uniform bool masonry=false;
 uniform bool double_sided=false;
 uniform bool open_caps=false;
 varying vec3 world_position;
@@ -32,6 +33,7 @@ void fragment(){
   NORMAL_MAP=texture(surface_normal_map,uv*surface_scale).rgb;
  }else{
   ALBEDO=palette.rgb*mix(0.90,1.04,broad)*mix(0.94,1.04,detail);
+  if(masonry)ALBEDO=mix(palette.rgb,source*palette.rgb*1.45,0.82);
   ROUGHNESS=0.87+fine*0.08;
   NORMAL_MAP=mix(vec3(0.5,0.5,1.0),texture(surface_normal_map,uv*surface_scale).rgb,0.55);
  }

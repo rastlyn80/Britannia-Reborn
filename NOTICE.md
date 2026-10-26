@@ -6,7 +6,7 @@ Original project source is GPL-3.0-or-later. You may redistribute and/or modify 
 
 - ModernUO: GPL-3.0-or-later; fetched separately at the revision in Server/dependencies.json. Our isolated server extension retains its SPDX header and bundled license.
 - ClassicUO-derived Huffman/packet tables: BSD-2-Clause; see THIRD_PARTY/ClassicUO-LICENSE.md. The separately downloaded comparison client retains ClassicClient/ClassicUO-LICENSE.txt.
-- Quaternius and Kenney assets: CC0-1.0; pack notices, source URLs and exact checksums are in Viewer/Art/Quaternius and Viewer/Art/Kenney.
+- Quaternius Fantasy Props MegaKit Standard, Medieval Village/Nature/character packs and Kenney assets: CC0-1.0; pack notices, source URLs and exact checksums are in Viewer/Art/Quaternius and Viewer/Art/Kenney.
 - Poly Haven surface textures: CC0-1.0; author/source credits are in Viewer/Art/Surfaces/NOTICE.md and manifest.json.
 - Godot and .NET: separately downloaded tools with upstream distribution notices, not bundled in this source repository.
 

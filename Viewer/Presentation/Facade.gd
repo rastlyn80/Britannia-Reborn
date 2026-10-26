@@ -156,7 +156,8 @@ func material(kind: String) -> ShaderMaterial:
 		m.set_shader_parameter("surface_normal",load("res://Art/Quaternius/Village/T_"+family+"_Normal.png"))
 		m.set_shader_parameter("palette",Color("796044") if kind == "wood" else (Color("aaa79c") if kind == "stone" else (Color("ad9276") if kind == "brick" else Color("ded2b7"))))
 		m.set_shader_parameter("wood",kind == "wood")
-		preload("res://Presentation/SurfaceLibrary.gd").bind(m,"surface","brown_planks_03" if kind == "wood" else ("rock_wall_04" if kind in ["stone","brick"] else "plastered_wall_02"))
+		m.set_shader_parameter("masonry",kind in ["stone","brick"])
+		preload("res://Presentation/SurfaceLibrary.gd").bind(m,"surface","brown_planks_03" if kind == "wood" else (("medieval_blocks_03" if kind=="stone" else "medieval_red_brick") if kind in ["stone","brick"] else "plastered_wall_02"))
 		materials[kind] = m
 	return materials[kind]
 
@@ -172,7 +173,7 @@ func piece(parent: Node3D, size: Vector3, at: Vector3, kind: String) -> void:
 			capless_materials[kind].set_shader_parameter("open_caps",true)
 		mesh.material_override = capless_materials[kind]
 
-func panel(height: float, window: bool, plan: Dictionary, family: String) -> Node3D:
+func panel(height: float, window: bool, plan: Dictionary, family: String, frame: Node3D = null) -> Node3D:
 	var root := Node3D.new()
 	var h := maxf(height,0.05)
 	var sill := minf(1.05,h*0.28)
@@ -181,20 +182,24 @@ func panel(height: float, window: bool, plan: Dictionary, family: String) -> Nod
 		piece(root,Vector3(1,sill,0.18),Vector3(0,sill/2,0),family)
 		piece(root,Vector3(1,h-sill-opening,0.18),Vector3(0,(h+sill+opening)/2,0),family)
 		for x in [-0.43,0.43]: piece(root,Vector3(0.14,opening,0.18),Vector3(x,sill+opening/2,0),family)
-		for y in [sill,sill+opening]: piece(root,Vector3(0.82,0.09,0.27),Vector3(0,y,0),"wood")
-		for x in [-0.33,0.33]: piece(root,Vector3(0.07,opening,0.24),Vector3(x,sill+opening/2,0),"wood")
-		piece(root,Vector3(0.035,opening,0.11),Vector3(0,sill+opening/2,0),"wood")
-		piece(root,Vector3(0.78,0.035,0.11),Vector3(0,sill+opening*0.58,0),"wood")
-		piece(root,Vector3(0.98,0.10,0.40),Vector3(0,sill-0.03,0),"stone")
-		if glass_material == null:
-			glass_material = StandardMaterial3D.new()
-			glass_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-			glass_material.albedo_color = Color(0.48,0.62,0.64,0.19)
-			glass_material.roughness = 0.18
-			glass_material.metallic = 0.12
-			glass_material.cull_mode = BaseMaterial3D.CULL_DISABLED
-		var glass := geometry.box(root,Vector3(0.74,opening-0.06,0.018),Vector3(0,sill+opening/2,0),"ffffff")
-		glass.material_override = glass_material
+		if frame:
+			frame.position=Vector3(0,sill-.08,0)
+			root.add_child(frame)
+		else:
+			for y in [sill,sill+opening]: piece(root,Vector3(0.82,0.09,0.27),Vector3(0,y,0),"wood")
+			for x in [-0.33,0.33]: piece(root,Vector3(0.07,opening,0.24),Vector3(x,sill+opening/2,0),"wood")
+			piece(root,Vector3(0.035,opening,0.11),Vector3(0,sill+opening/2,0),"wood")
+			piece(root,Vector3(0.78,0.035,0.11),Vector3(0,sill+opening*0.58,0),"wood")
+			piece(root,Vector3(0.98,0.10,0.40),Vector3(0,sill-0.03,0),"stone")
+			if glass_material == null:
+				glass_material = StandardMaterial3D.new()
+				glass_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+				glass_material.albedo_color = Color(0.48,0.62,0.64,0.19)
+				glass_material.roughness = 0.18
+				glass_material.metallic = 0.12
+				glass_material.cull_mode = BaseMaterial3D.CULL_DISABLED
+			var glass := geometry.box(root,Vector3(0.74,opening-0.06,0.018),Vector3(0,sill+opening/2,0),"ffffff")
+			glass.material_override = glass_material
 	else:
 		piece(root,Vector3(1.01,h,0.18),Vector3(0,h/2,0),family)
 	if h > 0.6 and family in ["wood","plaster"]:
