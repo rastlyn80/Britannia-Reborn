@@ -155,7 +155,7 @@ func material(kind: String) -> ShaderMaterial:
 		var family := "WoodTrim" if kind == "wood" else ("UnevenBrick" if kind == "brick" else ("RockTrim" if kind == "stone" else "Plaster"))
 		m.set_shader_parameter("source_texture",load("res://Art/Quaternius/Village/T_"+family+"_BaseColor.png"))
 		m.set_shader_parameter("surface_normal",load("res://Art/Quaternius/Village/T_"+family+"_Normal.png"))
-		m.set_shader_parameter("palette",Color("796044") if kind == "wood" else (Color("aaa79c") if kind == "stone" else (Color("ad9276") if kind == "brick" else Color("ded2b7"))))
+		m.set_shader_parameter("palette",Color("5e4631") if kind == "wood" else (Color("aaa79c") if kind == "stone" else (Color("ad9276") if kind == "brick" else Color("ded2b7"))))
 		m.set_shader_parameter("wood",kind == "wood")
 		m.set_shader_parameter("masonry",kind in ["stone","brick"])
 		preload("res://Presentation/SurfaceLibrary.gd").bind(m,"surface","brown_planks_03" if kind == "wood" else (("medieval_blocks_03" if kind=="stone" else "medieval_red_brick") if kind in ["stone","brick"] else "plastered_wall_02"))
@@ -207,14 +207,15 @@ func panel(height: float, window: bool, plan: Dictionary, family: String, frame:
 		piece(root,Vector3(1.01,h,0.18),Vector3(0,h/2,0),family)
 	if h > 0.6 and family in ["wood","plaster"]:
 		piece(root,Vector3(1,0.22,0.22),Vector3(0,0.11,0),"stone")
-		for y in [0.3,h-0.08]: piece(root,Vector3(1,0.13,0.23),Vector3(0,y,0),"wood")
-		if plan.get("left_post",true): piece(root,Vector3(0.12,h,0.24),Vector3(-0.44,h/2,0),"wood")
-		if plan.get("right_post",false): piece(root,Vector3(0.12,h,0.24),Vector3(0.44,h/2,0),"wood")
+		# Framing stands proud of the lime infill so it reads in raking light.
+		for y in [0.3,h-0.08]: piece(root,Vector3(1,0.15,0.29),Vector3(0,y,0),"wood")
+		if plan.get("left_post",true): piece(root,Vector3(0.15,h,0.30),Vector3(-0.43,h/2,0),"wood")
+		if plan.get("right_post",false): piece(root,Vector3(0.15,h,0.30),Vector3(0.43,h/2,0),"wood")
 	for side in [-1,1]:
 		if not plan.get("extend_left" if side < 0 else "extend_right",false): continue
 		piece(root,Vector3(0.51,h,0.18),Vector3(side*0.75,h/2,0),family)
 		if h > 0.6 and family in ["wood","plaster"]:
-			for y in [0.3,h-0.08]: piece(root,Vector3(0.51,0.13,0.23),Vector3(side*0.75,y,0),"wood")
+			for y in [0.3,h-0.08]: piece(root,Vector3(0.51,0.15,0.29),Vector3(side*0.75,y,0),"wood")
 	return root
 
 # Source-art masonry openings: a barred arrow slit or a narrow leaded arch cut

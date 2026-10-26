@@ -1,3 +1,11 @@
+# Free visual upgrade (step 2) — 26 October 2026
+
+Turf now uses two pinned Poly Haven CC0 photoscans (`leafy_grass` close detail, `aerial_grass_rock` 15 m colour field) instead of a procedural green ramp. Lighting uses the AgX tonemapper, a light contrast/saturation grade and SSAO that also affects lit areas. Facade plaster takes tonal variation from its photoscan, varies between cream/ochre/grey lime washes by neighbourhood, and gains base damp, staining and streaks recovered from each piece's base/height (also under MultiMesh instancing); timber is darker, deeper-grained and its framing now projects from the infill. The bake now refuses to run when a pinned surface is not imported (a previous bake had silently stamped blank materials as current).
+
+Tried and rejected: SDFGI bounce light plus volumetric haze made the streamed city GPU-bound (median ~30 ms, GPU p99 49 ms on the profile route); lower-cost SDFGI settings were still unstable while moving, so both are disabled. Measured back to back on the same route: GPU p99 20.6 → 21.6 ms, frame p99 22.5 → 22.5 ms.
+
+Honest status: ground and timber read clearly better; plaster walls still look smooth at street distance, and trees/props/building geometry remain the stylized low-poly library and simple box construction. Those are the dominant remaining "toy" cues and need better models (owner-approved art kit decision), not shader work.
+
 # Streaming stalls reduced — 26 October 2026
 
 District loading no longer produces 100 ms+ frames on the profiled walking route: worst frame 326 → 40 ms (OpenGL) and 306 → 80 ms (Forward+), frames over 100 ms 22/24 → 0, p99 32.1 → 18.7 ms / 29.3 → 21.3 ms, startup ~1 s faster. Cause and fix: collision shapes are now baked as bounded triangle slices built within the frame budget, and source-window/support indexing is incremental. Retained memory +~40 MiB; a few 60–80 ms Forward+ frames remain. See STREAMING_AND_MINIMAP.md.

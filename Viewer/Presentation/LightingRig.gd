@@ -54,13 +54,18 @@ func configure(scene: Node3D,world: Dictionary,reconstruction,map_view: bool, de
  environment.ambient_light_energy = 0.55
  environment.ambient_light_sky_contribution = 0.65
  environment.reflected_light_source = Environment.REFLECTION_SOURCE_SKY
- environment.tonemap_mode = Environment.TONE_MAPPER_ACES
+ # Filmic AgX response and a restrained grade avoid the saturated toy look.
+ environment.tonemap_mode = Environment.TONE_MAPPER_AGX
  environment.tonemap_exposure = 1.05
+ environment.adjustment_enabled = not map_view
+ environment.adjustment_contrast = 1.08
+ environment.adjustment_saturation = 0.96
  environment.ssao_enabled = not map_view
  environment.ssao_radius = 1.1
  environment.ssao_intensity = 1.2
  environment.ssao_power = 1.3
  environment.ssao_detail = 0.6
+ environment.ssao_light_affect = 0.25
  environment.ssil_enabled = false # Screen-space bounce leaks across stacked floors and door silhouettes.
  environment.ssil_intensity = 0.55
  environment.ssil_radius = 3.0
@@ -74,6 +79,8 @@ func configure(scene: Node3D,world: Dictionary,reconstruction,map_view: bool, de
  environment.fog_light_color = Color("aabbb8")
  environment.fog_density = 0.0015
  environment.fog_aerial_perspective = 0.22
+ # SDFGI/volumetric fog were measured on the StreamingProfile route and made
+ # this streamed city GPU-bound (median ~30 ms on an RTX 2070 SUPER); disabled.
  add_child(node)
  if map_view: return
  _create_precipitation()

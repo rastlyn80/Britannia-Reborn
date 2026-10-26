@@ -15,6 +15,15 @@ uniform sampler2D ground_albedo : source_color, filter_linear_mipmap_anisotropic
 uniform sampler2D ground_normal : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D ground_roughness : filter_linear_mipmap_anisotropic, repeat_enable;
 uniform vec2 ground_scale=vec2(1.0);
+// Photoscanned turf (close detail) and meadow (15 m colour variation).
+uniform sampler2D grass_albedo : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D grass_normal : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D grass_roughness : filter_linear_mipmap_anisotropic, repeat_enable;
+uniform vec2 grass_scale=vec2(0.5);
+uniform sampler2D meadow_albedo : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D meadow_normal : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D meadow_roughness : filter_linear_mipmap_anisotropic, repeat_enable;
+uniform vec2 meadow_scale=vec2(0.0667);
 uniform sampler2D rock_albedo : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D rock_normal : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D rock_roughness : filter_linear_mipmap_anisotropic, repeat_enable;
@@ -28,13 +37,18 @@ void vertex(){ world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz+vec3(source_or
 void fragment() {
  float broad=surface_fbm(UV*0.30);
  float detail=surface_fbm(UV*7.0);
- vec3 grass=mix(vec3(0.085,0.14,0.045),vec3(0.17,0.24,0.08),broad);
+ vec3 meadow=texture(meadow_albedo,UV*meadow_scale).rgb;
+ vec3 turf=texture(grass_albedo,UV*grass_scale).rgb;
+ // Natural, less saturated turf: meadow colour field with photoscanned blades
+ // and leaf litter, shifted from autumn toward summer green.
+ vec3 grass=mix(meadow*vec3(0.80,1.02,0.58),turf*vec3(0.70,1.0,0.52),0.5)*mix(0.82,1.12,broad);
  vec3 earth=mix(vec3(0.17,0.12,0.073),vec3(0.27,0.22,0.145),broad);
- float source_grass=smoothstep(0.01,0.07,COLOR.g-COLOR.r);
- float blend_noise=(surface_noise(UV*2.7)-0.5)*0.23;
- vec3 ground=mix(earth,grass,smoothstep(0.12,0.85,source_grass+blend_noise));
  vec3 ground_tex=texture(ground_albedo,UV*ground_scale).rgb;
- ground*=mix(0.72,1.22,clamp(dot(ground_tex,vec3(0.2126,0.7152,0.0722))*2.8,0.0,1.0));
+ earth*=mix(0.72,1.22,clamp(dot(ground_tex,vec3(0.2126,0.7152,0.0722))*2.8,0.0,1.0));
+ float source_grass=smoothstep(0.01,0.07,COLOR.g-COLOR.r);
+ float blend_noise=(surface_noise(UV*2.7)-0.5)*0.23+(dot(meadow,vec3(0.33))-0.3)*0.5;
+ float grass_weight=smoothstep(0.12,0.85,source_grass+blend_noise);
+ vec3 ground=mix(earth,grass,grass_weight);
  vec2 paving=UV*vec2(3.3,4.0);
  paving.x+=mod(floor(paving.y),2.0)*0.5;
  vec2 stone_id=floor(paving);
@@ -85,13 +99,13 @@ void fragment() {
   ROUGHNESS=mix(0.91,0.60,wet);
  } else { ROUGHNESS=0.91; }
  ALBEDO=color;
- vec3 base_n=texture(ground_normal,UV*ground_scale).rgb;
+ vec3 base_n=mix(texture(ground_normal,UV*ground_scale).rgb,texture(grass_normal,UV*grass_scale).rgb,grass_weight);
  vec3 paving_n=texture(paving_normal,UV*paving_scale).rgb;
  vec3 wood_n=texture(wood_normal,UV*wood_scale).rgb;
  vec2 cliff_uv=abs(world_normal.x)>abs(world_normal.z)?world_position.zy:world_position.xy;
  vec3 rock_n=texture(rock_normal,cliff_uv*rock_scale).rgb;
  NORMAL_MAP=mix(mix(mix(base_n,paving_n,paving_weight),wood_n,wood_weight),rock_n,cliff);
- NORMAL_MAP_DEPTH=0.43;
+ NORMAL_MAP_DEPTH=mix(0.43,0.8,grass_weight*(1.0-paving_weight));
  float surface_rough=mix(texture(ground_roughness,UV*ground_scale).r,texture(paving_roughness,UV*paving_scale).r,paving_weight);
  surface_rough=mix(surface_rough,texture(wood_roughness,UV*wood_scale).r,wood_weight);
  ROUGHNESS=clamp(mix(ROUGHNESS,surface_rough,0.55),0.45,0.97);

@@ -1,3 +1,7 @@
+# Visual upgrade checkpoint — 26 October 2026
+
+428 Godot-side checks pass; the 21 converter tests remain blocked by Windows Application Control (unsigned `Converter.dll`, 0x800711C7). `prepare-surfaces.ps1 -VerifyOnly`: 33 pinned maps (6 new, provider MD5 checked at download). GPU matrices/ownership pass in both renderers; native headless city traversal passes. Look/perf comparison used the same StreamingProfile route back to back after the display configuration changed mid-session (earlier 60 Hz runs are not directly comparable to the intervening 144 Hz-like runs).
+
 # Streaming stall checkpoint — 26 October 2026
 
 All 428 Godot-side checks of `scripts/verify.ps1` pass (including 2 new collision-slice round-trip checks). The 21 converter tests could not run: Windows Application Control blocked the freshly built unsigned `Converter.dll` (0x800711C7) on two attempts; no converter source changed in this session and they passed earlier the same day. Prepared parity, GPU matrices/ownership (both renderers), `test-streaming.ps1` bounded retention/plateau (both), native visual city traversal (both renderers) and native world-object checks pass. Same-route before/after measurements are in STREAMING_AND_MINIMAP.md.

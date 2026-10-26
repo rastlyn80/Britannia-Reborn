@@ -148,6 +148,13 @@ func run() -> void:
  for arg in OS.get_cmdline_user_args():
   if arg.begins_with("--dataset="): directory=arg.substr(10)
  directory=ProjectSettings.globalize_path(directory)
+ # A bake with a missing (e.g. not yet imported) surface would be stamped as
+ # current and silently keep blank materials; refuse it instead.
+ var surfaces: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://Art/Surfaces/manifest.json"))
+ for entry in surfaces.sets:
+  for map in entry.maps:
+   if not ResourceLoader.exists("res://Art/Surfaces/"+str(map.file)):
+    push_error("Surface texture is not imported: "+str(map.file)+". Run the Godot import (scripts/verify.ps1) first.");quit(1);return
  signature=Rules.fingerprint(directory)
  signature+=dependency_signature("res://Presentation/BakeStreaming.gd",{})
  signature=signature.sha256_text()

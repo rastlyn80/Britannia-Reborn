@@ -116,6 +116,8 @@ func _ready() -> void:
 		terrain_mat.set_shader_parameter("stone_normal",load("res://Art/Quaternius/Village/T_Brick_Normal.png"))
 		preload("res://Presentation/SurfaceLibrary.gd").bind(terrain_mat,"paving","cobblestone_floor_03")
 		preload("res://Presentation/SurfaceLibrary.gd").bind(terrain_mat,"ground","forest_ground_04")
+		preload("res://Presentation/SurfaceLibrary.gd").bind(terrain_mat,"grass","leafy_grass")
+		preload("res://Presentation/SurfaceLibrary.gd").bind(terrain_mat,"meadow","aerial_grass_rock")
 		preload("res://Presentation/SurfaceLibrary.gd").bind(terrain_mat,"rock","rock_face_03")
 		preload("res://Presentation/SurfaceLibrary.gd").bind(terrain_mat,"wood","brown_planks_03")
 		shoreline.apply(terrain_mat)

@@ -57,6 +57,8 @@ func prepare(data: RefCounted) -> void:
  var surfaces=preload("res://Presentation/SurfaceLibrary.gd")
  surfaces.bind(terrain_material,"paving","cobblestone_floor_03")
  surfaces.bind(terrain_material,"ground","forest_ground_04")
+ surfaces.bind(terrain_material,"grass","leafy_grass")
+ surfaces.bind(terrain_material,"meadow","aerial_grass_rock")
  surfaces.bind(terrain_material,"rock","rock_face_03")
  surfaces.bind(terrain_material,"wood","brown_planks_03")
  shore.apply(terrain_material)

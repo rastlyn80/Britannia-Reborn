@@ -1,3 +1,7 @@
+# Next after the free visual upgrade — 26 October 2026
+
+Free shader/lighting work has reached diminishing returns. Next: an art-kit comparison page (same Britain street, 2–3 candidate kits with exact prices/licences) for an owner decision, then building geometry depth (roof eaves thickness/overhang, recessed windows, door surrounds) through the shared facade/roof rules, and replacement trees with LODs. Keep paid assets out of the public repository.
+
 # Next after bridge/contact checkpoint — 26 October 2026
 
 Bridge parapets/piers, generic masonry window names and wall-hung attachments are fixed through shared rules (see PROGRESS.md). Next: re-run the context-aware contact audit and resolve bar/shelf support heights; profile and reduce district-loading stalls with same-route before/after measurements; then a lighting/material upgrade and an owner-approved art-kit comparison before broader artistic work.
