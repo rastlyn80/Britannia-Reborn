@@ -1,3 +1,7 @@
+# Roof ends follow their walls — 26 October 2026
+
+Owner-reported white blocks and "sails" over brick and timber buildings: every roof end (and source gable piece) was drawn in plaster regardless of the building, which became glaring once plaster was brightened. Each roof now takes the dominant family of the walls beneath it within three cells (brick, stone, timber or plaster), and source gables use their own family. 437 Godot checks (+1), parity, GPU and native city checks pass. Still open from the same screenshots: crude placeholder statues and an unidentified white board-on-posts prop near Britain's west bank.
+
 # Stair facing from tiledata — 26 October 2026
 
 Owner-reported crossing staircases: stair direction was inferred only from a same-graphic neighbour one step higher and otherwise defaulted to "rises north", so 316 of 926 Britain stair tiles (flight ends, landings, wide stairs, daises) faced the wrong way and intersected their flights. UO stair graphics carry their facing in tiledata (StairBack = east, StairRight = west, both = south, neither = north), which agreed with every unambiguous neighbour inference; it is now authoritative for "stairs" graphics, while low "step" pieces keep inference. 434 Godot checks (new four-direction test), parity, GPU and native city checks pass.

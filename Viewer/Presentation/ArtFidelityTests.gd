@@ -179,5 +179,10 @@ func _initialize() -> void:
   stair_world.staticData[str(7000+k)]={"name":"stone stairs","height":5,"flags":0x2600|(0x40000000 if k in [1,3] else 0)|(0x80000000 if k in [2,3] else 0)}
  stair_floor.index(stair_world,{"7000":{"kind":"stairs"},"7001":{"kind":"stairs"},"7002":{"kind":"stairs"},"7003":{"kind":"stairs"}})
  check(range(4).all(func(k): return stair_floor.stair_rise.get(k,Vector2.ZERO)==expected[k]),"Isolated stair tiles rise north/east/west/south from their tiledata facing flags")
+ # Roof ends take the material of the walls under the roof, not plaster.
+ var roof_world:={"elevationScale":.2,"originX":1100,"originY":1100,"width":12,"height":12,"terrain":[],"statics":[{"x":1100,"y":1100,"z":0,"id":53},{"x":1101,"y":1100,"z":0,"id":53},{"x":1100,"y":1100,"z":25,"id":1441},{"x":1110,"y":1110,"z":0,"id":310},{"x":1110,"y":1110,"z":25,"id":1441}],"staticData":{"53":{"name":"brick wall","height":20},"310":{"name":"plaster wall","height":20},"1441":{"name":"slate roof","height":3,"flags":0x10000000}},"landData":{}}
+ var roof_recon:=preload("res://Presentation/Reconstruction.gd").new()
+ roof_recon.index(roof_world)
+ check(roof_recon.roof_families.get(2,"")=="brick" and roof_recon.roof_families.get(4,"")=="plaster","Roof gable ends follow the brick or plaster walls beneath each roof")
  print("ART FIDELITY TESTS: ",checks," checks / ",failures," failures")
  quit(1 if failures else 0)

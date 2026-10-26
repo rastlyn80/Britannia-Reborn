@@ -14,6 +14,10 @@ var prop_materials := {}
 var prop_mesh_variants := {}
 var source_origin := Vector2.ZERO
 var gable_material: ShaderMaterial
+# Roof ends take the material of the walls actually under that roof; a brick
+# or stone building must not grow plaster gable sails.
+var gable_materials := {}
+var roof_families := {}
 var water_material: ShaderMaterial
 var shoreline
 var show_boundary_fragments := false
@@ -166,6 +170,7 @@ func index(world: Dictionary) -> void:
 	if world.get("render_cells",false):print("REGIONAL GROUPS DONE")
 	_plan_context(world)
 	_plan_mounts(world)
+	_plan_roof_families(world)
 	bridges.index(world,catalog)
 	supports.catalog = catalog
 	supports.index(world)
@@ -272,6 +277,39 @@ func _plan_mounts(world: Dictionary) -> void:
 		if sides.size() > 1: side = "west" if int(votes.get(id+"/west",0)) >= int(votes.get(id+"/north",0)) else "north"
 		var distance: float = sides[side]
 		presentation_adjustments[i] = {"offset":Vector3(-distance,0,0) if side == "west" else Vector3(0,0,-distance),"yaw":-PI/2 if side == "west" else PI,"reason":"hung on adjacent %s source wall face" % side}
+
+static func wall_family(world: Dictionary, id: int) -> String:
+	var name := str(info(world,id,true).get("name",""))
+	var family := "brick" if "brick wall" in name else ("wood" if "wooden wall" in name else ("stone" if "stone wall" in name else "plaster"))
+	return str(preload("res://Presentation/ReviewedCatalog.gd").entry(id).get("facadeFamily",family))
+
+func _plan_roof_families(world: Dictionary) -> void:
+	roof_families.clear()
+	var walls := {}
+	for tile in world.statics:
+		if rule_for(int(tile.id)).get("kind","") not in ["wall","window","corner","trim"]: continue
+		var cell := Vector2i(tile.x,tile.y)
+		if not walls.has(cell): walls[cell] = []
+		walls[cell].append([int(tile.z),wall_family(world,int(tile.id))])
+	for i in world.statics.size():
+		var roof: Dictionary = world.statics[i]
+		if rule_for(int(roof.id)).get("kind","") != "roof": continue
+		var votes := {}
+		for dy in range(-3,4):
+			for dx in range(-3,4):
+				for entry in walls.get(Vector2i(roof.x+dx,roof.y+dy),[]):
+					if int(entry[0]) < int(roof.z): votes[entry[1]] = int(votes.get(entry[1],0))+1
+		var best := "plaster"
+		for family in votes:
+			if int(votes[family]) > int(votes.get(best,0)): best = family
+		roof_families[i] = best
+
+func gable_for(family: String) -> ShaderMaterial:
+	if not gable_materials.has(family):
+		var material: ShaderMaterial = facade.material(family).duplicate()
+		material.set_shader_parameter("double_sided",true)
+		gable_materials[family] = material
+	return gable_materials[family]
 
 func _group(indices: Array, world: Dictionary, kind: String) -> void:
 	var owner := int(indices[0])
@@ -464,7 +502,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 				"gable":
 					var group: Dictionary = groups[ordinal]
 					var span: float = maxf(group.size.x,group.size.y)+1.0
-					visual = geometry.gable(span,(group.max_z-group.min_z)*float(world.elevationScale),facade.material("plaster"))
+					visual = geometry.gable(span,(group.max_z-group.min_z)*float(world.elevationScale),facade.material(family))
 					visual.position.y = (group.min_z-float(s.z))*float(world.elevationScale)
 					if rule.get("axis") == "y": visual.rotation.y = PI/2
 				"trim", "beam":
@@ -499,10 +537,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					visual = geometry.stairs(height,floors.stair_rise.get(ordinal,Vector2(rule.rise[0],rule.rise[1])))
 					for step in visual.get_children(): step.material_override = facade.material("stone" if "stone" in str(detail.get("name","")) else "wood")
 				"roof":
-					if gable_material == null:
-						gable_material = facade.material("plaster").duplicate()
-						gable_material.set_shader_parameter("double_sided",true)
-					visual = geometry.roof(s,rule,roof_material(rule.material),roofs.tiles.get(ordinal,{}),gable_material)
+					visual = geometry.roof(s,rule,roof_material(rule.material),roofs.tiles.get(ordinal,{}),gable_for(str(roof_families.get(ordinal,"plaster"))))
 				"door":
 					visual = fitted(asset,Vector3(0.86,height,0.12))
 					for side in [-1,1]: facade.piece(visual,Vector3(0.08,height,0.2),Vector3(side*0.46,height/2,0),"wood")
