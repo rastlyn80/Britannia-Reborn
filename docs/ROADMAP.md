@@ -1,3 +1,5 @@
+Latest scope clarification: the requested expansion is the whole **city of Britain**. Explore-Britain.cmd (and the retained Explore-Britannia.cmd alias) now opens the native city bounds including castle/western outskirts, rounded to 704×512 / 88 chunks. All 360,448 terrain and 136,662 static records pass independent source parity. The city overview renders 42,382 simplified architectural/tree features; close-detail art and chunk seams remain unfinished. Live gameplay/population stays in the proven patch. See BRITANNIA_EXPLORER.md.
+
 Latest: saved-world recovery and native commerce now pass headless and graphical checks. Full Britannia geographic conversion/overview is available via Explore-Britannia.cmd; all source records pass independent parity. Next gates: expand 3D mappings beyond the 187-ID reference catalogue, assemble architecture across chunk boundaries, then connect streamed gameplay/population. The full-world explorer is not full-world multiplayer.
 
 Current priorities after native-world integration:

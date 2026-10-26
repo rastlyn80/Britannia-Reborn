@@ -1,3 +1,5 @@
+Latest scope clarification: the requested expansion is the whole **city of Britain**. Explore-Britain.cmd (and the retained Explore-Britannia.cmd alias) now opens the native city bounds including castle/western outskirts, rounded to 704×512 / 88 chunks. All 360,448 terrain and 136,662 static records pass independent source parity. The city overview renders 42,382 simplified architectural/tree features; close-detail art and chunk seams remain unfinished. Live gameplay/population stays in the proven patch. See BRITANNIA_EXPLORER.md.
+
 # Current checkpoint — interaction, recovery and Britannia explorer (2026-10-26)
 
 The user-approved forced restart recovered the saved world; native autosaving resumed. Commerce passes headless and in Forward+: correct native gold debits, tavern/inn stock, owned backpack purchase, public ownership rejection, ground/container transfers and equipment. The separate ClassicUO development character entered the matching street and its sign returned The Wayfarer’s Inn. Gump frame bounds, draggable windows, icons/hues and item actions have regression coverage. See COMMERCE_PASS.md for exact limits.

@@ -46,6 +46,6 @@ def main():
  assert land_count==manifest['terrainCount'] and static_count==manifest['staticCount']
  assert len(seen)==manifest['width']//64*(manifest['height']//64)
  result={'passed':True,'terrain':land_count,'statics':static_count,'chunks':len(seen),'bounds':[manifest[k] for k in ('originX','originY','width','height')],'method':'Every terrain ID/elevation byte and static XYZ/ID/hue compared independently to owned base+diff inputs.'}
- out=a.atlas.parent/'validation/atlas-parity.local.json';out.parent.mkdir(exist_ok=True);out.write_text(json.dumps(result,indent=2))
+ out=a.atlas.parent/'validation'/f'{a.atlas.name}-parity.local.json';out.parent.mkdir(exist_ok=True);out.write_text(json.dumps(result,indent=2))
  print('FULL ATLAS PARITY PASS',result,flush=True)
 if __name__=='__main__':main()

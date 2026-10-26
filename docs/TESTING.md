@@ -40,3 +40,6 @@ scripts/verify.ps1 passes 333 offline checks (including 7 binary-atlas, 22 comme
 The separate development ClassicUO profile entered the live street; single-click sign reply was The Wayfarer's Inn. This establishes recognizable placement/name comparison, not exhaustive native/client behavior parity.
 
 scripts/audit-atlas.py independently compares all 20,971,520 terrain samples and 2,376,103 statics in the 5,120 exported chunks: pass. Whole-landmass overview and new district detail render in Forward+ on the local RTX 2070 SUPER. That district contains 2,596 static records, of which 581 still require art mappings and appear as gold markers. Full-world gameplay, new-ID art coverage and architecture chunk seams remain explicit gaps. Local evidence is excluded from Git; see BRITANNIA_EXPLORER.md.
+
+
+City scope correction (2026-10-26): scripts/prepare-britain.ps1 derives bounds from the unique native Trammel Britain TownRegion. Independent all-record comparison passes for 360,448 terrain and 136,662 statics (88 chunks). Forward+ city overview renders 42,382 simplified architectural/tree features. Four additional distant-massing classification/elevation tests join the atlas regression suite. No live gameplay or native population scope changed.

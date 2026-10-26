@@ -15,9 +15,12 @@ var ground_material := ShaderMaterial.new()
 var loading := false
 var screenshot := ""
 var frames := 0
+var overview_target := Vector3.ZERO
+var overview_distance := 3700.0
+var display_name := "Britannia"
 var initial_district := Vector2i(-1,-1)
 func _ready() -> void:
- var path := ProjectSettings.globalize_path("res://../outputs/atlas/atlas.json")
+ var path := ProjectSettings.globalize_path("res://../outputs/britain/atlas.json")
  for arg in OS.get_cmdline_user_args():
   if arg.begins_with("--atlas="): path = arg.substr(8)
   if arg.begins_with("--screenshot="): screenshot = arg.substr(13)
@@ -25,15 +28,20 @@ func _ready() -> void:
    var pair := arg.substr(11).split(",")
    initial_district=Vector2i(int(pair[0]),int(pair[1]))
  if not data.open(path):
-  push_error("Prepare Britannia first with scripts/prepare-britannia.ps1")
+  push_error("Prepare Britain first with scripts/prepare-britain.ps1")
   get_tree().quit(1)
   return
  target = Vector3(data.manifest.originX+data.manifest.width/2.0,0,data.manifest.originY+data.manifest.height/2.0)
+ display_name=str(data.manifest.get("displayName","Britannia"))
+ overview_target=target
+ overview_distance=maxf(float(data.manifest.width)*0.9,float(data.manifest.height)*1.2)
+ distance=overview_distance
  var terrain := MeshInstance3D.new()
  terrain.mesh = overview_mesh()
  ground_material.shader = preload("res://Presentation/AtlasGround.gdshader")
  terrain.material_override = ground_material
  add_child(terrain)
+ if data.manifest.get("scope","")=="city": add_child(preload("res://Presentation/CityOverview.gd").new().build(data,ground_material))
  var environment := WorldEnvironment.new()
  environment.environment = Environment.new()
  environment.environment.background_mode = Environment.BG_SKY
@@ -68,8 +76,8 @@ func _ready() -> void:
  var buttons := HBoxContainer.new()
  column.add_child(buttons)
  var home := Button.new()
- home.text = "Whole Britannia"
- home.pressed.connect(func(): distance=3700;target=Vector3(2560,0,2048))
+ home.text = "Whole "+display_name
+ home.pressed.connect(func(): distance=overview_distance;target=overview_target)
  buttons.add_child(home)
  var britain := Button.new()
  britain.text = "Britain district"
@@ -200,12 +208,7 @@ func _process(delta: float) -> void:
  camera.look_at(target)
  if not loading and distance<180 and Vector2i(floori(target.x/64)*64,floori(target.z/64)*64)!=detail_at: load_detail()
  if not loading:
-  status.text="BRITANNIA REBORN Â/ TRAMMEL EXPLORER
-5120 Ã— 4096 source tiles Â/ 5,120 local chunks
-WASD pan Â/ Right mouse orbit Â/ Wheel zoom
-Centre %d, %d Â/ detail uses existing art mappings
-Unmapped records shown as gold markers: %d
-Exploration preview Â/ gameplay remains in the validated Britain crop" % [target.x,target.z,int(detail.get_meta("unmapped",0))]
+  status.text="BRITANNIA REBORN / %s / TRAMMEL\n%d x %d source tiles / %d chunks\nCity-wide simplified massing; close detail uses existing art\nWASD pan / Right mouse orbit / Wheel zoom\nCentre %d, %d / district detail loads when close\nSelected detail: %s\nExploration preview / live gameplay remains in the tested patch" % [display_name.to_upper(),data.manifest.width,data.manifest.height,data.manifest.chunks.size(),target.x,target.z,("not loaded" if detail_at.x<0 else "%d unmapped records" % int(detail.get_meta("unmapped",0)))]
  if frames>=20 and not screenshot.is_empty() and not loading and (initial_district.x<0 or detail_at.x>=0):
   var output := screenshot
   screenshot=""

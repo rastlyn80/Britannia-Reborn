@@ -1,6 +1,18 @@
-# Britannia explorer and projecting signs
+# Britain city scope — clarified 2026-10-26
 
-Double-click **Explore-Britannia.cmd** in the project root. It opens the full Trammel Britannia landmass, X=0–5119, Y=0–4095. WASD pans, right mouse orbits, wheel zooms. Britain district focuses the reference area; Render detail here loads the selected source chunk. Detail also loads when zoomed close. Launch.cmd retains the validated playable district.
+The user clarified that the requested expansion is **the whole city of Britain**. Double-click **Explore-Britain.cmd**. The older Explore-Britannia.cmd now opens the same city view. Live Launch.cmd continues to use the tested playable patch.
+
+scripts/prepare-britain.ps1 reads the native Trammel Britain TownRegion from the installed, pinned ModernUO regions.json. Its six region areas cover the city, castle and western outskirts. Their bounding rectangle is rounded outward to 64-tile chunk boundaries: X=1088–1791, Y=1408–1919 (704×512). The extra border is rendering context, not a changed town/guard boundary. The manifest records the original areas and region-file hash; no server boundary is modified.
+
+All 360,448 terrain samples and 136,662 statics across 88 chunks independently match the owned source files. There are 1,597 distinct static IDs. The city overview renders 42,382 simplified wall/roof/tree features in batched meshes, keeping source anchors and elevations. These are explicitly distant geometric approximations, not finished asset replacements. Nearby districts still use shared detailed reconstruction; art mapping and architecture seams remain incomplete. Native population and gameplay are not expanded by the explorer.
+
+The launcher opens the whole city; WASD pans, right mouse orbits and wheel zooms. The Whole Britain button resets to the city overview. Britain district focuses the existing reference patch. Render detail here inspects the selected chunk. Source data and generated city outputs stay ignored locally. Reproduce source parity with scripts/audit-atlas.py --data-dir "YOUR UO DATA DIRECTORY" --atlas outputs/britain. City evidence is outputs/validation/britain-city-overview.png and britain-parity.local.json.
+
+The larger landmass export prepared before this clarification remains as an optional local dataset; it is not the default expansion target. Its implementation/evidence is recorded below.
+
+# Earlier landmass explorer and projecting signs
+
+The retained outputs/atlas dataset covers the full Trammel Britannia landmass, X=0–5119, Y=0–4095. WASD pans, right mouse orbits, wheel zooms. Britain district focuses the reference area; Render detail here loads the selected source chunk. Detail also loads when zoomed close. Launch.cmd retains the validated playable district.
 
 These bounds follow the pinned ModernUO WorldMap.SetDisplay(0,0,5119,4095) and Sextant implementation. The installed Trammel facet is 7168×4096; the additional atlas-space areas include the Lost Lands and other regions and are not part of the classic Britannia landmass requested here. Online references consulted: the official [facet maps](https://uo.com/wiki/ultima-online-wiki/world/facet-maps/) and [UOAM geography](https://uoam.net/geo.html). All geographic input comes from the user's read-only local map1, statics1 and local diffs.
 
