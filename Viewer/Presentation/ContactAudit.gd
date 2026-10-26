@@ -18,20 +18,29 @@ func run() -> void:
  supports.dynamic_definitions=snapshot.definitions
  var inspected:=0
  var catalogue: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory.path_join("prepared/index.json"))).catalog
+ supports.catalog=catalogue
+ # Reconstruction context decides suppressed duplicates and wall mounts; report
+ # those rather than counting them as unsupported placements.
+ var context:=preload("res://Presentation/Reconstruction.gd").new()
  for entry in data.manifest.chunks:
   var at:=Vector2i(entry.x,entry.y)
   var world:=data.world(at)
   geometry_findings.append_array(source_geometry(world,catalogue))
+  context.index(world)
   supports.index(world)
   supports.dynamic.clear()
   for item in snapshot.items:
    if Rect2i(at,Vector2i(64,64)).has_point(Vector2i(item.x,item.y)):supports.dynamic[int(item.serial)]=item
   var sources: Array=world.statics.duplicate()
   sources.append_array(supports.dynamic.values())
-  for source in sources:
+  for ordinal in sources.size():
+   var source: Dictionary=sources[ordinal]
    var review: Dictionary=known.get(str(int(source.id)),{})
    if review.get("attachment","") not in ["floor","surface"]:continue
    var placement:=supports.placement(source)
+   var owner:=int(context.groups.get(ordinal,{}).get("owner",ordinal))
+   if not source.has("serial") and context.presentation_adjustments.get(owner,{}).get("suppress",false):
+    placement=placement.duplicate();placement.status="context-suppressed";placement.confidence=context.presentation_adjustments[owner].reason
    counts[placement.status]=int(counts.get(placement.status,0))+1
    inspected+=1
    var offset: Vector3=placement.offset
@@ -79,6 +88,11 @@ static func source_geometry(world: Dictionary, catalogue: Dictionary) -> Array:
     if not land.has(cell):continue
     var bank: Dictionary=land[cell]
     if str(world.landData.get(str(int(bank.id)),{}).get("name","")).to_lower()=="water":continue
+    # Rivers are often water statics over a NoName riverbed, not a bank.
+    var wet:=false
+    for other in cells.get(cell,[]):
+     if str(world.staticData.get(str(int(other.id)),{}).get("name",""))=="water":wet=true
+    if wet:continue
     var gap: float=absf(float(bank.z)-float(tile.z)-height)
     var continuation:=false
     for other in cells.get(cell,[]):

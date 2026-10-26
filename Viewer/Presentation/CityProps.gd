@@ -89,6 +89,24 @@ static func build(kind: String,s: Dictionary,info: Dictionary,g: RefCounted) -> 
     g.box(root,Vector3(0.90,0.055,0.055),Vector3(0,1.38,0),wood)
     for x in [-0.31,-0.10,0.10,0.31]:g.box(root,Vector3(0.025,1.3,0.015),Vector3(x,0.68,-0.02),"a99362")
   "painting": root.add_child(g.painting())
+  "wall_light":
+   # Iron back plate on the wall face, a short bracket and either a leaning
+   # wooden torch or a candle cup. Front faces -Z; mounting comes from walls.
+   g.box(root,Vector3(0.09,0.34,0.03),Vector3(0,0.55,-0.015),iron)
+   g.box(root,Vector3(0.035,0.035,0.17),Vector3(0,0.45,-0.10),iron)
+   var flame_at:=Vector3(0,0.86,-0.24)
+   if "sconce" in name_text:
+    g.cylinder(root,0.06,0.03,Vector3(0,0.47,-0.19),iron)
+    g.cylinder(root,0.025,0.16,Vector3(0,0.57,-0.19),"e6dcc0")
+    flame_at=Vector3(0,0.68,-0.19)
+   else:
+    var torch:MeshInstance3D=g.cylinder(root,0.026,0.46,Vector3(0,0.64,-0.17),wood)
+    torch.rotation.x=0.28
+    g.cylinder(root,0.04,0.08,Vector3(0,0.84,-0.23),"3b2d22")
+   var flame:=MeshInstance3D.new()
+   var tip:=SphereMesh.new();tip.radius=0.045;tip.height=0.13;tip.radial_segments=8;tip.rings=4
+   var glow:=StandardMaterial3D.new();glow.albedo_color=Color("ffb347");glow.emission_enabled=true;glow.emission=Color("ff9a2e");glow.emission_energy_multiplier=2.5
+   flame.mesh=tip;flame.material_override=glow;flame.position=flame_at+Vector3(0,0.05,0);root.add_child(flame)
   "lamp":
    var tall:="post" in name_text
    var h:=2.5 if tall else 0.7

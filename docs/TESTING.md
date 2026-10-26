@@ -1,3 +1,7 @@
+# Bridge/attachment/contact checkpoint — 26 October 2026
+
+`scripts/verify.ps1`: **446 offline checks**, no errors/warnings. ArtFidelityTests adds 26 checks: bridge deck/pier/parapet detection at two translated origins, plaster/off-bridge exclusions, barred slit without timber casement, canonical source immutability, inspected window/battlement families, wall-torch attachment and west-face mounting, unmounted torch preservation, unreviewed-table, rug and barrel-stack contact, and an unresolved support case. `PreparedAudit.gd` parity passes (360,448 / 136,662 / 88 districts). `scripts/test-city-render.ps1` and `-Compatibility` pass 262 GPU matrices and 25,200 ownership pixels. `ArtBlockCapture.gd` now accepts `--view=name:x,y,z:tx,ty,tz` for targeted local inspection. The refreshed full-city ContactAudit, native object/traversal tests and streaming measurements were not re-run in this checkpoint.
+
 # Reviewed art checkpoint — 26 October 2026
 
 `scripts/verify.ps1`: **420 offline checks**, no errors/warnings. Includes 22 art-fidelity/contact checks and 34 world-item checks. Props: 35 models / 84 source files checked against pinned SHA-256; surfaces: 27 maps verified. Prepared parity: all 360,448 terrain samples and 136,662 statics across 88 chunks. Both GPU renderers pass all 262 first/last instance matrices and near/far ownership (25,200 unchanged wall pixels).

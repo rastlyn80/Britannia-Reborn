@@ -2,6 +2,7 @@ extends RefCounted
 # Native elevations identify attachment relationships; visual dimensions determine
 # contact height. Source records and authoritative movement are never rewritten.
 const Reviews=preload("res://Presentation/ReviewedCatalog.gd")
+const Geometry=preload("res://Presentation/GeometryLibrary.gd")
 var cells: Dictionary={}
 var land: Dictionary={}
 var metadata: Dictionary={}
@@ -10,6 +11,8 @@ var cache: Dictionary={}
 var issues: Array=[]
 var dynamic: Dictionary={}
 var dynamic_definitions: Dictionary={}
+# Reconstruction rules identify procedural supports whose visual top is known.
+var catalog: Dictionary={}
 func index(world: Dictionary, extra: Array=[]) -> void:
  cells.clear();land.clear();cache.clear();issues.clear()
  scale=float(world.get("elevationScale",.2))
@@ -39,17 +42,28 @@ func placement(item: Dictionary, depth: int=0) -> Dictionary:
   var layered:=int(support.z)==int(item.z) and int(support_review.get("supportRank",0))>0 and int(support_review.get("supportRank",0))<int(review.get("supportRank",0))
   var info: Dictionary=metadata.get(str(int(support.id)),dynamic_definitions.get(str(int(support.id)),support.get("definition",{})))
   var other:=Reviews.entry(int(support.id))
+  var kind:=str(other.get("kind",catalog.get(str(int(support.id)),{}).get("kind","")))
   var native_height:=float(info.get("height",0))*(.5 if int(info.get("flags",0))&0x400 else 1.0)
-  var floor:=int(info.get("flags",0))&0x200 and native_height==0
-  if int(support.z)>int(item.z) or (int(support.z)==int(item.z) and not layered and not floor):continue
-  if not other.get("providesSupport",false) and not floor:continue
+  var surface: bool=int(info.get("flags",0))&0x200!=0
+  var floor: bool=surface and native_height==0
+  # Legacy rugs carry height 1 without the surface flag; items rest on them.
+  var carpet: bool=kind=="carpet" and native_height<=1
+  if int(support.z)>int(item.z) or (int(support.z)==int(item.z) and not layered and not floor and not carpet):continue
   var native_top:=float(support.z)+native_height
   var gap:=absf(float(item.z)-native_top)
-  var tolerance:=2.0 if other.get("kind","") in ["table","counter"] else 1.0
-  if gap>tolerance:continue
+  # Same reviewed graphic stacked within the lower model's visual height
+  # (barrels on barrels): legacy tiledata heights understate the art.
+  var stacked: bool=int(support.id)==int(item.id) and other.has("dimensions") and other.get("providesSupport",false) and int(support.z)<int(item.z) and float(item.z)<=float(support.z)+float(other.dimensions[1])/scale+2.0
+  var exact: bool=gap<.01 and native_height>0
+  if not other.get("providesSupport",false) and not floor and not carpet and not surface and not exact and not stacked:continue
+  var tolerance:=2.0 if kind in ["table","counter"] or floor else 1.0
+  if gap>tolerance and not stacked:continue
   var visual_top:=native_top*scale
-  if other.has("dimensions"):visual_top=float(support.z)*scale+float(other.dimensions[1])+placement(support,depth+1).offset.y
-  candidates.append({"native":native_top,"visual":visual_top,"id":support.id,"z":support.z,"score":gap})
+  var basis:="native"
+  if other.has("dimensions"):visual_top=float(support.z)*scale+float(other.dimensions[1])+placement(support,depth+1).offset.y;basis="reviewed"
+  elif kind in ["table","counter","bench"]:visual_top=float(support.z)*scale+Geometry.furniture_height(kind);basis="procedural"
+  elif carpet:visual_top=float(support.z)*scale+Geometry.CARPET_LIFT;basis="carpet"
+  candidates.append({"native":native_top,"visual":visual_top,"id":support.id,"z":support.z,"score":0.0 if stacked else gap,"basis":basis,"stacked":stacked})
  if candidates.is_empty():
   result.status="unsupported-candidate"
  else:
@@ -57,7 +71,8 @@ func placement(item: Dictionary, depth: int=0) -> Dictionary:
   var chosen: Dictionary=candidates[0]
   result.offset=Vector3(0,chosen.visual-float(item.z)*scale,0)
   result.status="contact-adjusted" if absf(result.offset.y)>.015 else "supported"
-  result.support={"id":chosen.id,"z":chosen.z,"nativeContact":chosen.native}
-  result.confidence="source-height-match" if chosen.score<.01 else "bounded-native-contact-tolerance"
+  result.support={"id":chosen.id,"z":chosen.z,"nativeContact":chosen.native,"visualBasis":chosen.get("basis","terrain")}
+  result.confidence="same-graphic stack within reviewed model height" if chosen.get("stacked",false) else ("source-height-match" if chosen.score<.01 else "bounded-native-contact-tolerance")
+  if chosen.get("basis","")=="native" and chosen.id!=-1 and not Reviews.entry(int(chosen.id)).has("dimensions"):result.confidence+="; unreviewed support visual height"
  cache[key]=result
  return result

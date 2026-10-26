@@ -1,5 +1,5 @@
 extends SceneTree
-const FILES=["Reconstruction.gd","RegionalRules.gd","CityProps.gd","RegionalContext.gd","RoofPlan.gd","Facade.gd","FloorPlan.gd","InteriorShell.gd","GeometryLibrary.gd","SurfaceLibrary.gd","TerrainSurface.gd","FarCity.gdshader","Roof.gdshader","RegionalBake.gd","SourceOwnership.gd","static-catalog.json"]
+const FILES=["Reconstruction.gd","BridgePlan.gd","RegionalRules.gd","CityProps.gd","RegionalContext.gd","RoofPlan.gd","Facade.gd","FloorPlan.gd","InteriorShell.gd","GeometryLibrary.gd","SurfaceLibrary.gd","TerrainSurface.gd","FarCity.gdshader","Roof.gdshader","RegionalBake.gd","SourceOwnership.gd","static-catalog.json"]
 var batches:Dictionary={}
 var materials:Dictionary={}
 var directory:="res://../outputs/britain"

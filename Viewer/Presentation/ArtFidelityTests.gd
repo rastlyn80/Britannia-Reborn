@@ -1,6 +1,7 @@
 extends SceneTree
 const Support=preload("res://Presentation/SupportPlan.gd")
 const Reviews=preload("res://Presentation/ReviewedCatalog.gd")
+const Geometry=preload("res://Presentation/GeometryLibrary.gd")
 var checks:=0
 var failures:=0
 func check(ok: bool,label: String) -> void:
@@ -77,5 +78,62 @@ func _initialize() -> void:
  check(not green,"Wine palette customization cannot mutate the shared downloaded ale mesh")
  ale.free()
  check(Reviews.dimensions(Reviews.entry(2931),{"size":Vector2(2,5)}).is_equal_approx(Vector3(5,.82,2)),"Multi-piece table retains its complete native footprint and reviewed top height")
+ # Bridge context: stone pier towers/parapets, never plaster house walls.
+ var names:={"1994":{"name":"wooden bridge","height":1,"flags":0x200},"1872":{"name":"stone","height":10,"flags":0x600},"94":{"name":"window","height":20,"flags":0x1050},"99":{"name":"stone wall","height":5,"flags":0x50},"310":{"name":"plaster wall","height":20,"flags":0x50},"6039":{"name":"water","height":0,"flags":0x80},"87":{"name":"stone wall","height":20,"flags":0x50},"2567":{"name":"wall torch","height":15,"flags":0x4}}
+ for origin in [Vector2i(500,500),Vector2i(1381,1743)]:
+  var bridge_world:={"elevationScale":.2,"originX":origin.x,"originY":origin.y,"terrain":[],"statics":[],"staticData":names,"landData":{}}
+  for x in 4:
+   bridge_world.terrain.append({"x":origin.x+x,"y":origin.y+1,"z":-15,"id":2})
+   bridge_world.terrain.append({"x":origin.x+x,"y":origin.y,"z":-15,"id":2})
+   bridge_world.statics.append({"x":origin.x+x,"y":origin.y+1,"z":-5,"id":6039})
+   bridge_world.statics.append({"x":origin.x+x,"y":origin.y+1,"z":0,"id":1994})
+   bridge_world.statics.append({"x":origin.x+x,"y":origin.y,"z":-5,"id":6039})
+  for z in [-15,-10]:bridge_world.statics.append({"x":origin.x+1,"y":origin.y,"z":z,"id":1872})
+  bridge_world.statics.append({"x":origin.x+1,"y":origin.y,"z":-5,"id":94})
+  bridge_world.statics.append({"x":origin.x+2,"y":origin.y,"z":0,"id":99})
+  bridge_world.statics.append({"x":origin.x+3,"y":origin.y,"z":0,"id":310})
+  bridge_world.statics.append({"x":origin.x+20,"y":origin.y,"z":0,"id":94})
+  var unchanged:=JSON.stringify(bridge_world)
+  var bridge_recon:=preload("res://Presentation/Reconstruction.gd").new()
+  bridge_recon.index(bridge_world)
+  var plan: Dictionary=bridge_recon.bridges.parapets
+  var pier_window: int=bridge_world.statics.size()-4
+  check(bridge_recon.bridges.decks.size()==4,"Plank deck over a water riverbed is recognized as bridge deck: "+str(origin))
+  check(plan.get(pier_window,{}).get("reason","")=="stands on bridge pier" and plan[pier_window].family=="stone" and plan[pier_window].opening=="slit","Window art on a bridge pier becomes a stone tower with a slit opening: "+str(origin))
+  check(plan.get(pier_window+1,{}).get("reason","")=="parapet along bridge deck edge","Low stone wall beside the deck is a bridge parapet: "+str(origin))
+  check(not plan.has(pier_window+2),"Explicit plaster construction beside a bridge keeps its building treatment")
+  check(not plan.has(pier_window+3),"Same window graphic away from a bridge is not reinterpreted as a parapet")
+  var tower: Node3D=bridge_recon.build(bridge_world.statics[pier_window],bridge_world,pier_window)
+  var iron:=0
+  var frames:=0
+  for mesh in tower.find_children("*","MeshInstance3D",true,false):
+   if mesh.material_override==bridge_recon.facade.iron_material:iron+=1
+  for node in tower.find_children("*","Node3D",true,false):
+   if node.scene_file_path.contains("Window_Wide"):frames+=1
+  check(iron==3 and frames==0,"Pier slit keeps its barred opening without a timber casement")
+  tower.free()
+  check(JSON.stringify(bridge_world)==unchanged,"Bridge planning leaves canonical source records untouched")
+ for id in [93,94,202,203]:check(Reviews.entry(id).get("facadeFamily","")=="stone" and Reviews.entry(id).get("opening","")=="slit","Generic window name keeps its inspected stone slit art: "+str(id))
+ check(Reviews.entry(59).get("facadeFamily","")=="brick" and Reviews.entry(141).get("opening","")=="arched","Brick and ashlar arched windows keep their inspected material")
+ # Wall-hung torches attach to the adjacent source wall face.
+ var mount_world:={"elevationScale":.2,"originX":600,"originY":600,"terrain":[],"statics":[{"x":600,"y":599,"z":20,"id":87},{"x":600,"y":600,"z":20,"id":87},{"x":600,"y":601,"z":20,"id":87},{"x":601,"y":600,"z":32,"id":2567},{"x":610,"y":610,"z":32,"id":2567}],"staticData":names,"landData":{}}
+ var mount_recon:=preload("res://Presentation/Reconstruction.gd").new()
+ mount_recon.index(mount_world)
+ check(mount_recon.rule_for(2567).get("kind","")=="prop" and mount_recon.rule_for(2567).get("model","")=="wall_light","Wall torch name is an attachment, not a plaster wall")
+ var hung: Dictionary=mount_recon.presentation_adjustments.get(3,{})
+ check(hung.get("offset",Vector3.ZERO).is_equal_approx(Vector3(-.91,0,0)) and is_equal_approx(float(hung.get("yaw",0)),-PI/2),"Torch hangs on the west wall face and faces east")
+ check(not mount_recon.presentation_adjustments.get(4,{}).has("offset"),"Torch without a source wall is not moved")
+ # Source-backed contact on unreviewed procedural tables, rugs and stacks.
+ var contact:=Support.new()
+ contact.catalog={"2947":{"kind":"table"},"22224":{"kind":"carpet"}}
+ var plate:={"id":2519,"x":700,"y":700,"z":6}
+ var stacked:={"id":4014,"x":701,"y":700,"z":6}
+ var bed:={"id":2681,"x":702,"y":700,"z":22}
+ var stray:={"id":2681,"x":703,"y":700,"z":40}
+ contact.index({"elevationScale":.2,"terrain":[{"x":700,"y":700,"z":0},{"x":701,"y":700,"z":0},{"x":702,"y":700,"z":0},{"x":703,"y":700,"z":0}],"statics":[{"id":2947,"x":700,"y":700,"z":0},{"id":4014,"x":701,"y":700,"z":0},{"id":1309,"x":702,"y":700,"z":20},{"id":22224,"x":702,"y":700,"z":20},plate,stacked,bed,stray],"staticData":{"2947":{"height":6,"flags":0x200},"4014":{"height":3,"flags":0},"1309":{"height":0,"flags":0x200},"22224":{"height":1,"flags":0}}})
+ check(is_equal_approx(contact.placement(plate).offset.y,Geometry.furniture_height("table")-1.2),"Item on an unreviewed table rests on the procedural table top")
+ check(is_equal_approx(contact.placement(stacked).offset.y,float(Reviews.entry(4014).dimensions[1])-1.2),"Stacked barrel rests on the reviewed barrel below")
+ check(is_equal_approx(contact.placement(bed).offset.y,4.0+Geometry.CARPET_LIFT-4.4),"Bed on a legacy rug rests on the rug surface")
+ check(contact.placement(stray).status=="unsupported-candidate","Bed with no source support remains an unresolved candidate")
  print("ART FIDELITY TESTS: ",checks," checks / ",failures," failures")
  quit(1 if failures else 0)

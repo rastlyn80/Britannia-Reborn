@@ -43,12 +43,23 @@ func run() -> void:
   ["inn-room",Vector3(1583,5.65,1588),Vector3(1578,4.8,1585)],
   ["landscape",Vector3(1590,9,1618),Vector3(1599,2.8,1608)],
   ["riverbank",Vector3(1560,20,1534),Vector3(1551,0,1520)],
-  ["bridge",Vector3(1385,18,1736),Vector3(1394,2,1749)]
+  ["bridge",Vector3(1385,18,1736),Vector3(1394,2,1749)],
+  ["bridge-pier",Vector3(1394,1.2,1737),Vector3(1390,1.5,1743)],
+  ["bridge-east",Vector3(1556,3.5,1527),Vector3(1546,1.5,1520)]
  ]
+ # Targeted inspection: --view=name:x,y,z:tx,ty,tz (native X, metres, native Y)
+ # replaces the fixed set and streams districts around each target.
+ var custom:=[]
+ for arg in OS.get_cmdline_user_args():
+  if not arg.begins_with("--view="):continue
+  var parts:=arg.substr(7).split(":")
+  var eye:=parts[1].split_floats(",");var target:=parts[2].split_floats(",")
+  custom.append([parts[0],Vector3(eye[0],eye[1],eye[2]),Vector3(target[0],target[1],target[2])])
+ if not custom.is_empty():views=custom
  var captured:=0
  for view in views:
-  if "--extra-only" in OS.get_cmdline_user_args() and view[0] not in ["riverbank","bridge"]:continue
-  if scene.city_stream and view[0] in ["riverbank","bridge"]:
+  if "--extra-only" in OS.get_cmdline_user_args() and view[0] not in ["riverbank","bridge","bridge-pier","bridge-east"]:continue
+  if scene.city_stream and (not custom.is_empty() or view[0] in ["riverbank","bridge","bridge-pier","bridge-east"]):
    var focus:=Vector2i(int(view[2].x),int(view[2].z))
    scene.city_stream.requested=focus
    await scene.city_stream.refresh()

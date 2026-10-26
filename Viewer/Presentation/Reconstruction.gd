@@ -28,6 +28,7 @@ var presentation_adjustments := {}
 var contextual_suppressed := 0
 var floors := preload("res://Presentation/FloorPlan.gd").new()
 var supports := preload("res://Presentation/SupportPlan.gd").new()
+var bridges := preload("res://Presentation/BridgePlan.gd").new()
 
 static func info(world: Dictionary, id: int, statics: bool) -> Dictionary:
 	var data = world.get("staticData" if statics else "landData")
@@ -164,6 +165,9 @@ func index(world: Dictionary) -> void:
 
 	if world.get("render_cells",false):print("REGIONAL GROUPS DONE")
 	_plan_context(world)
+	_plan_mounts(world)
+	bridges.index(world,catalog)
+	supports.catalog = catalog
 	supports.index(world)
 
 # Legacy art can include unsupported decoration. Keep source XYZ immutable and
@@ -180,7 +184,7 @@ func _plan_context(world: Dictionary) -> void:
 		var group: Dictionary = groups[ordinal]
 		if group.owner != ordinal: continue
 		var source: Dictionary = world.statics[ordinal]
-		if group.kind in ["bench","table","counter"]:
+		if group.kind in ["bench","table","counter","bed"]:
 			var unsupported_duplicates := true
 			for member in group.indices:
 				var tile: Dictionary = world.statics[member]
@@ -228,6 +232,46 @@ func _plan_context(world: Dictionary) -> void:
 			presentation_adjustments[ordinal] = {"suppress":true,"reason":"exterior gable closure belongs to the continuous roof envelope; omit duplicate source-wedge mesh"}
 		elif not supported or not exterior:
 			presentation_adjustments[ordinal] = {"suppress":true,"reason":"source gable has no supporting wall on its own plane or matching exterior roof edge; no speculative relocation"}
+
+# Wall-hung torches, sconces and maps occupy the cell in front of their wall
+# (west or north, the faces legacy art shows). Hang them on that wall's face as a
+# recorded presentation offset; source XYZ, serial and picking ownership remain.
+func _plan_mounts(world: Dictionary) -> void:
+	var cells := {}
+	for i in world.statics.size():
+		var cell := Vector2i(world.statics[i].x,world.statics[i].y)
+		if not cells.has(cell): cells[cell] = []
+		cells[cell].append(i)
+	var found := {}
+	var votes := {}
+	for i in world.statics.size():
+		var s: Dictionary = world.statics[i]
+		if rule_for(int(s.id)).get("mount","") != "wall": continue
+		var sides := {}
+		for side in ["west","north"]:
+			var offset := Vector2i.LEFT if side == "west" else Vector2i.UP
+			for j in cells.get(Vector2i(s.x,s.y)+offset,[]):
+				var wall: Dictionary = world.statics[j]
+				var rule := rule_for(int(wall.id))
+				if rule.get("kind") not in ["wall","window","corner"]: continue
+				if int(s.z) < int(wall.z) or int(s.z) > int(wall.z)+int(info(world,int(wall.id),true).get("height",20)): continue
+				# A parallel wall presents its face; a perpendicular one only its end.
+				var face: bool = rule.get("kind") == "corner" or (rule.get("axis") == "y") == (side == "west")
+				sides[side] = 0.91 if face or sides.get(side,0.0) == 0.91 else 0.5
+		found[i] = sides
+		if sides.size() == 1:
+			var key := str(int(s.id))+"/"+str(sides.keys()[0])
+			votes[key] = int(votes.get(key,0))+1
+	for i in found:
+		var sides: Dictionary = found[i]
+		var id := str(int(world.statics[i].id))
+		if sides.is_empty():
+			presentation_adjustments[i] = {"reason":"wall attachment without adjacent source wall; left at its source cell"}
+			continue
+		var side: String = sides.keys()[0]
+		if sides.size() > 1: side = "west" if int(votes.get(id+"/west",0)) >= int(votes.get(id+"/north",0)) else "north"
+		var distance: float = sides[side]
+		presentation_adjustments[i] = {"offset":Vector3(-distance,0,0) if side == "west" else Vector3(0,0,-distance),"yaw":-PI/2 if side == "west" else PI,"reason":"hung on adjacent %s source wall face" % side}
 
 func _group(indices: Array, world: Dictionary, kind: String) -> void:
 	var owner := int(indices[0])
@@ -380,6 +424,15 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 	height += maxf(float(facade.plans.get(ordinal,{}).get("height_extension",0.0)),float(facade.cap_extensions.get(ordinal,0.0)))
 	var asset := str(rule.get("asset",""))
 	var family := "brick" if "brick wall" in str(detail.get("name","")) else "wood" if "wooden wall" in str(detail.get("name","")) else ("stone" if "stone wall" in str(detail.get("name","")) else "plaster")
+	# Generic tiledata names ("window", "arrow loop") hide the material their
+	# art shows; reviewed per-graphic facts and bridge context take precedence.
+	var review: Dictionary = preload("res://Presentation/ReviewedCatalog.gd").entry(int(s.id))
+	family = str(review.get("facadeFamily",family))
+	var opening := str(review.get("opening",""))
+	var bridge: Dictionary = bridges.parapets.get(ordinal,{})
+	if not bridge.is_empty():
+		family = str(review.get("facadeFamily",bridge.family))
+		if opening.is_empty(): opening = str(bridge.opening)
 	var visual: Node3D
 	var state := "replacement"
 	if groups.has(ordinal) and groups[ordinal].owner != ordinal:
@@ -397,8 +450,8 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 			match kind:
 				"wall", "window":
 					var frame: Node3D = null
-					if kind=="window" and height>1.5: frame=fitted("Village/Window_Wide_Flat1.gltf",Vector3(.84,minf(1.4,height*.46)+.16,.30))
-					visual = facade.panel(height,kind == "window",facade.plans.get(ordinal,{}),family,frame)
+					if kind=="window" and height>1.5 and opening.is_empty(): frame=fitted("Village/Window_Wide_Flat1.gltf",Vector3(.84,minf(1.4,height*.46)+.16,.30))
+					visual = facade.panel(height,kind == "window",facade.plans.get(ordinal,{}),family,frame,opening)
 				"corner": visual = facade.corner(height,facade.corners.get(ordinal,{}),family)
 				"post": visual = fitted(asset,Vector3(0.15,height,0.15))
 				"pillar":
@@ -414,7 +467,13 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					visual = geometry.gable(span,(group.max_z-group.min_z)*float(world.elevationScale),facade.material("plaster"))
 					visual.position.y = (group.min_z-float(s.z))*float(world.elevationScale)
 					if rule.get("axis") == "y": visual.rotation.y = PI/2
-				"trim", "beam": visual = fitted(asset,Vector3(1,height,0.14))
+				"trim", "beam":
+					if kind == "trim" and not bridge.is_empty():
+						# Low dressed-stone parapet with a projecting coping.
+						visual = Node3D.new()
+						facade.piece(visual,Vector3(1.01,maxf(0.05,height-0.08),0.3),Vector3(0,(height-0.08)/2,0),family)
+						facade.piece(visual,Vector3(1.01,0.08,0.38),Vector3(0,height-0.04,0),family)
+					else: visual = fitted(asset,Vector3(1,height,0.14))
 				"arch":
 					visual = Node3D.new()
 					var span: float = maxf(groups[ordinal].size.x,groups[ordinal].size.y) if groups.has(ordinal) else 1.0
@@ -507,7 +566,9 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 			if groups.has(ordinal) and kind in ["bed","arch","gable","bench","table","counter","prop"]:
 				var group: Dictionary = groups[ordinal]
 				visual.position += Vector3(group.low.x+group.size.x/2-float(s.x)-0.5,0,group.low.y+group.size.y/2-float(s.y)-0.5)
-			if not show_boundary_fragments: visual.position += presentation_adjustments.get(ordinal,{}).get("offset",Vector3.ZERO)
+			if not show_boundary_fragments:
+				visual.position += presentation_adjustments.get(ordinal,{}).get("offset",Vector3.ZERO)
+				visual.rotation.y += float(presentation_adjustments.get(ordinal,{}).get("yaw",0.0))
 			if not show_boundary_fragments:
 				var contact: Dictionary = supports.placement(s)
 				visual.position += contact.offset
@@ -535,9 +596,10 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 		var adjustment: Vector3 = presentation_adjustments[ordinal].get("offset",Vector3.ZERO)
 		entry.presentation_offset = [adjustment.x,adjustment.y,adjustment.z] if not show_boundary_fragments else [0,0,0]
 	if groups.has(ordinal): entry.group_owner = groups[ordinal].owner
+	if not bridge.is_empty(): entry.bridge_context = bridge.reason
 	report.append(entry)
 	return node
 
 func save_report(path: String) -> void:
 	var file := FileAccess.open(path,FileAccess.WRITE)
-	file.store_string(JSON.stringify({"total":report.size(),"accounted":mapped,"group_components":grouped,"boundary_fragments":boundary_fragments,"contextual_suppressed":contextual_suppressed,"unmapped":unresolved,"exact_original_art_matches":0,"architecture":facade.audit(),"derived_floor_repairs":floors.repairs.map(func(at): return [at.x,at.y,at.z]),"stair_directions_inferred":floors.stair_rise.size(),"placements":report},"\t"))
+	file.store_string(JSON.stringify({"total":report.size(),"accounted":mapped,"group_components":grouped,"boundary_fragments":boundary_fragments,"contextual_suppressed":contextual_suppressed,"unmapped":unresolved,"exact_original_art_matches":0,"architecture":facade.audit(),"bridges":bridges.audit(),"derived_floor_repairs":floors.repairs.map(func(at): return [at.x,at.y,at.z]),"stair_directions_inferred":floors.stair_rise.size(),"placements":report},"\t"))

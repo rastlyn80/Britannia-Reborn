@@ -58,6 +58,8 @@ func sign() -> Node3D:
 	ring.rotation_degrees.x = 25
 	return node
 
+const CARPET_LIFT := 0.025
+
 func carpet(s: Dictionary) -> MeshInstance3D:
 	var mesh := MeshInstance3D.new()
 	var plane := PlaneMesh.new()
@@ -67,7 +69,7 @@ func carpet(s: Dictionary) -> MeshInstance3D:
 	mat.shader = preload("res://Presentation/Carpet.gdshader")
 	mat.set_shader_parameter("base_color",Color("243f61") if s.id <= 2777 else Color("77502d"))
 	mesh.material_override = mat
-	mesh.position.y = 0.025
+	mesh.position.y = CARPET_LIFT
 	return mesh
 
 static func roof_height(u: float, v: float, rule: Dictionary) -> float:
@@ -164,9 +166,13 @@ func gable(width: float, height: float, plaster: Material) -> Node3D:
 	node.add_child(mesh)
 	return node
 
+# Procedural furniture top heights; support contact uses the same values.
+static func furniture_height(kind: String) -> float:
+	return 0.5 if kind == "bench" else (1.0 if kind == "counter" else 0.82)
+
 func furniture(size: Vector2, kind: String) -> Node3D:
 	var node := Node3D.new()
-	var height := 0.5 if kind == "bench" else (1.0 if kind == "counter" else 0.82)
+	var height := furniture_height(kind)
 	crafted_box(node,Vector3(size.x-0.06,0.12,size.y-0.06),Vector3(0,height-0.06,0),"a17b4e")
 	var count_x := maxi(2,int(ceil(size.x/1.5))+1)
 	var count_y := maxi(2,int(ceil(size.y/1.5))+1)

@@ -11,6 +11,7 @@ var diagonal_joins := 0
 var cap_extensions := {}
 var capless_materials := {}
 var glass_material: StandardMaterial3D
+var iron_material: StandardMaterial3D
 
 func index(world: Dictionary, catalog: Dictionary) -> void:
 	plans.clear()
@@ -173,12 +174,14 @@ func piece(parent: Node3D, size: Vector3, at: Vector3, kind: String) -> void:
 			capless_materials[kind].set_shader_parameter("open_caps",true)
 		mesh.material_override = capless_materials[kind]
 
-func panel(height: float, window: bool, plan: Dictionary, family: String, frame: Node3D = null) -> Node3D:
+func panel(height: float, window: bool, plan: Dictionary, family: String, frame: Node3D = null, masonry_opening: String = "") -> Node3D:
 	var root := Node3D.new()
 	var h := maxf(height,0.05)
 	var sill := minf(1.05,h*0.28)
 	var opening := minf(1.4,h*0.46)
-	if window and h > 1.5:
+	if window and h > 1.5 and masonry_opening in ["slit","arched"]:
+		masonry_window(root,h,family,masonry_opening)
+	elif window and h > 1.5:
 		piece(root,Vector3(1,sill,0.18),Vector3(0,sill/2,0),family)
 		piece(root,Vector3(1,h-sill-opening,0.18),Vector3(0,(h+sill+opening)/2,0),family)
 		for x in [-0.43,0.43]: piece(root,Vector3(0.14,opening,0.18),Vector3(x,sill+opening/2,0),family)
@@ -213,6 +216,32 @@ func panel(height: float, window: bool, plan: Dictionary, family: String, frame:
 		if h > 0.6 and family in ["wood","plaster"]:
 			for y in [0.3,h-0.08]: piece(root,Vector3(0.51,0.13,0.23),Vector3(side*0.75,y,0),"wood")
 	return root
+
+# Source-art masonry openings: a barred arrow slit or a narrow leaded arch cut
+# through the wall itself. No timber frame, plaster or glazed casement is added.
+func masonry_window(root: Node3D, h: float, family: String, style: String) -> void:
+	var width := 0.2 if style == "slit" else 0.46
+	var sill := minf(1.1,h*0.3)
+	var opening := minf(1.25 if style == "slit" else 1.5,h*0.45)
+	var jamb := (1.0-width)/2
+	piece(root,Vector3(1,sill,0.18),Vector3(0,sill/2,0),family)
+	piece(root,Vector3(1,h-sill-opening,0.18),Vector3(0,(h+sill+opening)/2,0),family)
+	for side in [-1,1]: piece(root,Vector3(jamb,opening,0.18),Vector3(side*(width+jamb)/2,sill+opening/2,0),family)
+	# Stepped voussoirs close the head of an arched opening.
+	if style == "arched":
+		for side in [-1,1]: piece(root,Vector3(width*0.3,0.14,0.18),Vector3(side*width*0.35,sill+opening-0.07,0),family)
+	piece(root,Vector3(width+0.16,0.07,0.26),Vector3(0,sill-0.035,0),family)
+	if iron_material == null:
+		iron_material = StandardMaterial3D.new()
+		iron_material.albedo_color = Color("2f3130")
+		iron_material.metallic = 0.3
+		iron_material.roughness = 0.75
+	var bars := [-width*0.22,width*0.22] if style == "slit" else [0.0]
+	for x in bars:
+		var bar := geometry.box(root,Vector3(0.025,opening,0.025),Vector3(x,sill+opening/2,0),"ffffff")
+		bar.material_override = iron_material
+	var rail := geometry.box(root,Vector3(width,0.025,0.025),Vector3(0,sill+opening*0.55,0),"ffffff")
+	rail.material_override = iron_material
 
 func audit() -> Dictionary:
 	var branches := 0

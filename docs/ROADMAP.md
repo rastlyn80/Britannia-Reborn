@@ -1,3 +1,7 @@
+# Next after bridge/contact checkpoint — 26 October 2026
+
+Bridge parapets/piers, generic masonry window names and wall-hung attachments are fixed through shared rules (see PROGRESS.md). Next: re-run the context-aware contact audit and resolve bar/shelf support heights; profile and reduce district-loading stalls with same-route before/after measurements; then a lighting/material upgrade and an owner-approved art-kit comparison before broader artistic work.
+
 # Art-first next gates — 26 October 2026
 
 The first shared replacement pass is implemented and inspected; see ART_CATALOGUE_PASS.md. Next: (1) resolve rendered bridge approaches, hanging attachments, remaining unsupported candidates and simplified architecture/materials through targeted captures; (2) extend reviewed per-graphic choices across Britain, prioritizing frequently visible exterior/interior items; (3) reduce district loading/upload stalls before further expansion. Keep catalogue status honest: 108 explicit choices / 88 reviewed does not mean all 1,597 static IDs are artistically approved. Source-level warnings are inspection candidates, not automatic repairs.
