@@ -34,7 +34,7 @@ func index(input: Dictionary, shore = null) -> void:
  if static_data is Dictionary:
   for source in world.get("statics",[]):
    var detail: Dictionary = static_data.get(str(int(source.id)),{})
-   if detail.get("name","").to_lower() != "wooden boards" or int(detail.get("height",0)) != 0: continue
+   if detail.get("name","").to_lower() not in ["wooden boards","wooden planks","wooden plank","wooden bridge","cobblestones","stone pavers","stone pavers dark","marble floor","flagstones"] or int(detail.get("height",0)) != 0: continue
    var cell := Vector2i(source.x,source.y)
    var flat := true
    for offset in [Vector2i.ZERO,Vector2i.RIGHT,Vector2i.DOWN,Vector2i.ONE]:
@@ -124,20 +124,24 @@ func weights(cell: Vector2i) -> Vector2:
 func attributes(at: Vector2) -> Dictionary:
  var cell := Vector2i(floori(at.x),floori(at.y))
  var f := at-Vector2(cell)
+ var bounded:=Vector2i(clampi(cell.x,int(world.originX),int(world.originX)+int(world.width)-1),clampi(cell.y,int(world.originY),int(world.originY)+int(world.height)-1))
+ var fallback:Dictionary=samples.get(cell,samples[bounded])
  var colors: Array[Color] = []
  var masks: Array[Vector2] = []
  for offset in [Vector2i.ZERO,Vector2i.RIGHT,Vector2i.DOWN,Vector2i.ONE]:
-  var tile: Dictionary = samples.get(cell+offset,samples[cell])
+  var tile: Dictionary = samples.get(cell+offset,fallback)
   var name := str(land_data.get(str(int(tile.id)),{}).get("name",""))
   colors.append(preload("res://Presentation/Reconstruction.gd").terrain_color(name).srgb_to_linear())
   masks.append(weights(cell+offset))
  return {"color":colors[0].lerp(colors[1],f.x).lerp(colors[2].lerp(colors[3],f.x),f.y),"mask":masks[0].lerp(masks[1],f.x).lerp(masks[2].lerp(masks[3],f.x),f.y)}
-func build() -> ArrayMesh:
+func build(region: Rect2i = Rect2i()) -> ArrayMesh:
  var surface := SurfaceTool.new()
  surface.begin(Mesh.PRIMITIVE_TRIANGLES)
  var origin := Vector2i(int(world.originX),int(world.originY))
- for source_y in range(origin.y,origin.y+int(world.height)-1):
-  for source_x in range(origin.x,origin.x+int(world.width)-1):
+ var draw := Rect2i(origin,Vector2i(int(world.width)-(0 if world.get("render_cells",false) else 1),int(world.height)-(0 if world.get("render_cells",false) else 1)))
+ if region.has_area(): draw = draw.intersection(region)
+ for source_y in range(draw.position.y,draw.end.y):
+  for source_x in range(draw.position.x,draw.end.x):
    var source_cell := Vector2i(source_x,source_y)
    var tile: Dictionary = samples[source_cell]
    if floor_overrides.has(source_cell): continue

@@ -10,6 +10,12 @@ func index(world: Dictionary, reconstruction) -> void:
 	ceilings.clear()
 	wall_caps.clear()
 	floor_sources.clear()
+	var floor_levels := {}
+	for s in world.statics:
+		if reconstruction.rule_for(s.id).get("kind")!="floor":continue
+		var at:=Vector2i(s.x,s.y)
+		if not floor_levels.has(at):floor_levels[at]=[]
+		floor_levels[at].append(s)
 	var overhead := {}
 	for ordinal in reconstruction.roofs.tiles:
 		var roof: Dictionary = reconstruction.roofs.tiles[ordinal]
@@ -54,7 +60,7 @@ func index(world: Dictionary, reconstruction) -> void:
 		if chosen == INF: continue
 		# A higher source floor already supplies the ceiling for lower storeys.
 		var covered := false
-		for other in world.statics:
+		for other in floor_levels.get(Vector2i(s.x,s.y),[]):
 			if other.x == s.x and other.y == s.y and other.z > s.z and other.z*scale <= chosen and reconstruction.rule_for(other.id).get("kind") == "floor": covered = true
 		if not covered: ceilings[i] = chosen-base
 
@@ -81,12 +87,13 @@ func index(world: Dictionary, reconstruction) -> void:
 			ceilings["wall/"+str(i)] = chosen-float(wall.z)*scale
 
 
-func build(world: Dictionary, reconstruction) -> Node3D:
+func build(world: Dictionary, reconstruction, region: Rect2i = Rect2i()) -> Node3D:
 	var root := Node3D.new()
 	root.name = "DerivedInteriorShell"
 	root.set_meta("solid",true)
 	for ordinal in ceilings:
 		var s: Dictionary = floor_sources[ordinal]
+		if region.has_area() and not region.has_point(Vector2i(s.x,s.y)): continue
 		var slab: Node3D = reconstruction.floors.slab(ordinal,reconstruction.facade.material("wood"))
 		# The ceiling underside is its own surface, below the upper floor.
 		# Its top must never coincide with the map.mul floor above it.
@@ -97,6 +104,7 @@ func build(world: Dictionary, reconstruction) -> Node3D:
 		root.add_child(slab)
 	for ordinal in wall_caps:
 		var s: Dictionary = world.statics[ordinal]
+		if region.has_area() and not region.has_point(Vector2i(s.x,s.y)): continue
 		var cap: Dictionary = wall_caps[ordinal]
 		var part: Node3D
 		if reconstruction.rule_for(s.id).kind == "corner": part = reconstruction.facade.corner(cap.height,reconstruction.facade.corners.get(ordinal,{}),"plaster")

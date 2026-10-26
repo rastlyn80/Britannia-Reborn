@@ -46,10 +46,13 @@ func rule_for(id: int) -> Dictionary:
 	return catalog.get(str(id),{})
 
 func index(world: Dictionary) -> void:
+	preload("res://Presentation/RegionalRules.gd").extend(world,catalog)
+	if world.get("render_cells",false):print("REGIONAL RULES DONE")
 	source_origin = Vector2(world.get("originX",0),world.get("originY",0))
 	facade.index(world,catalog)
 	floors.index(world,catalog)
 	roofs.index(world,catalog)
+	if world.get("render_cells",false):print("REGIONAL ROOFS/FACADES DONE")
 	groups.clear()
 	# Co-located floor art records remain in coverage but share one surface.
 	var floor_cells := {}
@@ -95,8 +98,14 @@ func index(world: Dictionary) -> void:
 	# Source gables are stacked wedges; furniture IDs are component tiles.
 	for assembled_kind in ["gable","bench","table","counter"]:
 		var remaining := {}
+		var nearby := {}
 		for i in world.statics.size():
-			if rule_for(world.statics[i].id).get("kind") == assembled_kind: remaining[i] = true
+			var tile:Dictionary=world.statics[i]
+			if rule_for(tile.id).get("kind")!=assembled_kind:continue
+			remaining[i]=true
+			var cell:=Vector2i(tile.x,tile.y)
+			if not nearby.has(cell):nearby[cell]=[]
+			nearby[cell].append(i)
 		while not remaining.is_empty():
 			var pending := [remaining.keys()[0]]
 			var members := []
@@ -106,12 +115,38 @@ func index(world: Dictionary) -> void:
 				remaining.erase(at)
 				members.append(at)
 				var a: Dictionary = world.statics[at]
-				for other in remaining.keys():
-					var b: Dictionary = world.statics[other]
-					var same_axis: bool = rule_for(a.id).get("axis") == rule_for(b.id).get("axis")
-					var distance: int = absi(int(a.x)-int(b.x))+absi(int(a.y)-int(b.y))
-					if (same_axis or assembled_kind != "gable") and distance <= 1 and absi(int(a.z)-int(b.z)) <= (3 if assembled_kind == "gable" else 0): pending.append(other)
+				for offset in [Vector2i.ZERO,Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
+					for other in nearby.get(Vector2i(a.x,a.y)+offset,[]):
+						if not remaining.has(other):continue
+						var b:Dictionary=world.statics[other]
+						var same_axis:bool=rule_for(a.id).get("axis")==rule_for(b.id).get("axis")
+						if (same_axis or assembled_kind!="gable") and absi(int(a.z)-int(b.z))<=(3 if assembled_kind=="gable" else 0):pending.append(other)
 			_group(members,world,assembled_kind)
+	# Multi-tile props are assemblies, not one complete model per sprite piece.
+	var prop_cells := {}
+	var prop_remaining := {}
+	for i in world.statics.size():
+		var source:Dictionary=world.statics[i]
+		var rule:=rule_for(source.id)
+		if rule.get("kind","")!="prop" or rule.get("model","") not in ["cannon","fountain","display_case","training","music"]:continue
+		var cell:=Vector2i(source.x,source.y)
+		if not prop_cells.has(cell):prop_cells[cell]=[]
+		prop_cells[cell].append(i)
+		prop_remaining[i]=true
+	while not prop_remaining.is_empty():
+		var pending: Array=[prop_remaining.keys()[0]]
+		var members: Array=[]
+		while not pending.is_empty():
+			var current:int=pending.pop_back()
+			if not prop_remaining.has(current):continue
+			prop_remaining.erase(current)
+			members.append(current)
+			var a:Dictionary=world.statics[current]
+			for offset in [Vector2i.ZERO,Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
+				for other in prop_cells.get(Vector2i(a.x,a.y)+offset,[]):
+					var b:Dictionary=world.statics[other]
+					if prop_remaining.has(other) and rule_for(a.id).model==rule_for(b.id).model and absi(int(a.z)-int(b.z))<=20:pending.append(other)
+		_group(members,world,"prop")
 	for cell in arches:
 		var at: int = arches[cell]
 		if int(world.statics[at].id) != 320: continue
@@ -123,6 +158,7 @@ func index(world: Dictionary) -> void:
 			if int(world.statics[arches[end]].id) == 317: _group([at,arches[end]],world,"arch")
 			break
 
+	if world.get("render_cells",false):print("REGIONAL GROUPS DONE")
 	_plan_context(world)
 
 # Legacy art can include unsupported decoration. Keep source XYZ immutable and
@@ -282,11 +318,12 @@ func roof_material(kind: String) -> ShaderMaterial:
 	if not roof_materials.has(kind):
 		var mat := ShaderMaterial.new()
 		mat.shader = preload("res://Presentation/Roof.gdshader")
-		mat.set_shader_parameter("roof_color",Color("586573") if kind == "slate" else (Color("a06345") if kind == "clay" else Color("796344")))
+		mat.set_shader_parameter("roof_color",Color("99988c") if kind == "stone" else Color("586573") if kind == "slate" else (Color("a06345") if kind == "clay" else (Color("b09355") if kind == "thatch" else Color("796344"))))
 		mat.set_shader_parameter("wood",kind == "shingle")
+		mat.set_shader_parameter("thatch",kind == "thatch")
 		mat.set_shader_parameter("ceiling_color",Color("917454"))
 		mat.set_shader_parameter("kit_texture",load("res://Art/Quaternius/Village/T_WoodTrim_BaseColor.png"))
-		preload("res://Presentation/SurfaceLibrary.gd").bind(mat,"surface","brown_planks_03" if kind == "shingle" else "grey_roof_tiles_02")
+		preload("res://Presentation/SurfaceLibrary.gd").bind(mat,"surface","brown_planks_03" if kind == "shingle" else ("rock_wall_04" if kind == "stone" else "grey_roof_tiles_02"))
 		roof_materials[kind] = mat
 	return roof_materials[kind]
 
@@ -299,7 +336,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 	var height := maxf(0.04,float(detail.get("height",0))*float(world.elevationScale))
 	height += maxf(float(facade.plans.get(ordinal,{}).get("height_extension",0.0)),float(facade.cap_extensions.get(ordinal,0.0)))
 	var asset := str(rule.get("asset",""))
-	var family := "wood" if "wooden wall" in str(detail.get("name","")) else ("stone" if "stone wall" in str(detail.get("name","")) else "plaster")
+	var family := "brick" if "brick wall" in str(detail.get("name","")) else "wood" if "wooden wall" in str(detail.get("name","")) else ("stone" if "stone wall" in str(detail.get("name","")) else "plaster")
 	var visual: Node3D
 	var state := "replacement"
 	if groups.has(ordinal) and groups[ordinal].owner != ordinal:
@@ -316,6 +353,13 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 			"wall", "window": visual = facade.panel(height,kind == "window",facade.plans.get(ordinal,{}),family)
 			"corner": visual = facade.corner(height,facade.corners.get(ordinal,{}),family)
 			"post": visual = fitted(asset,Vector3(0.15,height,0.15))
+			"pillar":
+				visual=Node3D.new()
+				for y in [0.06,height-0.06]:
+					var base_mesh:MeshInstance3D=geometry.crafted_box(visual,Vector3(0.40,0.12,0.40),Vector3(0,y,0),"ffffff")
+					base_mesh.material_override=facade.material("stone")
+				var shaft:MeshInstance3D=geometry.cylinder(visual,0.15,maxf(0.05,height-0.24),Vector3(0,height/2,0),"ffffff")
+				shaft.material_override=facade.material("stone")
 			"gable":
 				var group: Dictionary = groups[ordinal]
 				var span: float = maxf(group.size.x,group.size.y)+1.0
@@ -329,7 +373,10 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 				var opening_height := minf(height,2.7)
 				visual.add_child(fitted(asset,Vector3(span,opening_height,0.2)))
 				if height > opening_height: facade.piece(visual,Vector3(span,height-opening_height,0.18),Vector3(0,(height+opening_height)/2,0),"plaster")
-			"floor": visual = floors.slab(ordinal,floors.material())
+			"floor": visual = floors.slab(ordinal,facade.material("stone") if rule.get("surface","")=="stone" else floors.material())
+			"asset": visual = fitted(asset,Vector3(rule.dimensions[0],rule.dimensions[1],rule.dimensions[2]))
+			"prop": visual = preload("res://Presentation/CityProps.gd").build(str(rule.model),s,detail,geometry)
+			"invisible": state="source-nodraw"
 			"landing":
 				visual = Node3D.new()
 				# Bridge tiledata heights describe the art bounds; support is halfway up.
@@ -406,7 +453,10 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 				var anchor: Array = rule.get("anchorOffset",[-1,-1])
 				visual.position += Vector3(float(anchor[0]),0,float(anchor[1]))
 			if kind in ["wall","window","trim","beam","arch","door","fence","sign","painting"] and rule.get("axis") == "y": visual.rotation.y = PI/2
-			if groups.has(ordinal) and kind in ["bed","arch","gable","bench","table","counter"]:
+			if kind=="prop" and groups.has(ordinal):
+				visual.scale=Vector3(groups[ordinal].size.x,1.0,groups[ordinal].size.y)
+				visual.position.y+=(groups[ordinal].min_z-float(s.z))*float(world.elevationScale)
+			if groups.has(ordinal) and kind in ["bed","arch","gable","bench","table","counter","prop"]:
 				var group: Dictionary = groups[ordinal]
 				visual.position += Vector3(group.low.x+group.size.x/2-float(s.x)-0.5,0,group.low.y+group.size.y/2-float(s.y)-0.5)
 			if not show_boundary_fragments: visual.position += presentation_adjustments.get(ordinal,{}).get("offset",Vector3.ZERO)

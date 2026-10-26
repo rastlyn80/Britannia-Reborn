@@ -16,9 +16,11 @@ static partial class Program {
   string sha=System.Convert.ToHexString(SHA256.HashData(map.BaseStream));
   File.WriteAllText(Path.Combine(output,"converting.lock"),"Conversion in progress; retry prepare-britannia if interrupted.");
   var land=new Dictionary<int,TileInfo>();var objects=new Dictionary<int,TileInfo>();
-  var overview=new List<int[]>();var chunks=new List<object>();long staticCount=0;
+  var overview=new List<int[]>();var chunks=new List<object>();var contextChunks=new List<object>();long staticCount=0;
+  bool halo=args.Contains("--halo");int margin=halo?64:0;
   const int size=64;
-  for(int cy=y;cy<y+height;cy+=size)for(int cx=x;cx<x+width;cx+=size){
+  for(int cy=Math.Max(0,y-margin);cy<Math.Min(4096,y+height+margin);cy+=size)for(int cx=Math.Max(0,x-margin);cx<Math.Min(7168,x+width+margin);cx+=size){
+   bool core=cx>=x&&cx<x+width&&cy>=y&&cy<y+height;
    string name=$"{cx}_{cy}.brw",file=Path.Combine(output,name);
    var world=Convert(args[1],cx,cy,size,size,4096,false);
    foreach(var info in world.landData??new())land[info.Key]=info.Value;
@@ -30,13 +32,13 @@ static partial class Program {
     foreach(var s in world.statics){writer.Write((ushort)s.id);writer.Write((byte)(s.x-cx));writer.Write((byte)(s.y-cy));writer.Write((sbyte)s.z);writer.Write((ushort)s.hue);}
    }
    File.Move(file+".tmp",file,true);
-   foreach(var t in ordered)if((t.x%8==0||t.x==x+width-1)&&(t.y%8==0||t.y==y+height-1))overview.Add(new[]{t.x,t.y,t.z,t.id});
-   staticCount+=world.statics.Length;
-   chunks.Add(new {x=cx,y=cy,file=name,statics=world.statics.Length});
-   if(chunks.Count%64==0)Console.WriteLine($"ATLAS: {chunks.Count}/{width/64*(height/64)} chunks");
+   foreach(var t in ordered)if(core&&(t.x%8==0||t.x==x+width-1)&&(t.y%8==0||t.y==y+height-1))overview.Add(new[]{t.x,t.y,t.z,t.id});
+   if(core)staticCount+=world.statics.Length;
+   (core?chunks:contextChunks).Add(new {x=cx,y=cy,file=name,statics=world.statics.Length});
+   if((chunks.Count+contextChunks.Count)%64==0)Console.WriteLine($"ATLAS: {chunks.Count} visible / {contextChunks.Count} context chunks");
   }
   var inputs=Directory.EnumerateFiles(args[1]).Where(p=>new[]{source,"tiledata.mul","mapdifl1.mul","mapdif1.mul","stadifl1.mul","stadif1.mul","stadifi1.mul","staidx1.mul","statics1.mul"}.Contains(Path.GetFileName(p))).ToDictionary(p=>Path.GetFileName(p)!,p=>{using var f=Read(p);return System.Convert.ToHexString(SHA256.HashData(f.BaseStream));});
-  var result=new {provenance=File.Exists(Path.Combine(args[1],"SYNTHETIC.txt"))?"SYNTHETIC fixture — not Britannia":"LOCAL TRAMMEL — base + local diffs",inputs,schema=1,format="BRW1",facet="Trammel",originX=x,originY=y,width,height,chunkSize=size,elevationScale=0.2,overviewStep=8,terrainCount=(long)width*height,staticCount,mapSha256=sha,source,landData=land,staticData=objects,chunks,overview};
+  var result=new {provenance=File.Exists(Path.Combine(args[1],"SYNTHETIC.txt"))?"SYNTHETIC fixture — not Britannia":"LOCAL TRAMMEL — base + local diffs",inputs,schema=1,format="BRW1",facet="Trammel",originX=x,originY=y,width,height,chunkSize=size,elevationScale=0.2,overviewStep=8,terrainCount=(long)width*height,staticCount,mapSha256=sha,source,landData=land,staticData=objects,chunks,contextChunks,overview};
   File.WriteAllText(Path.Combine(output,"atlas.json.tmp"),JsonSerializer.Serialize(result));
   File.Move(Path.Combine(output,"atlas.json.tmp"),Path.Combine(output,"atlas.json"),true);
   File.Delete(Path.Combine(output,"converting.lock"));

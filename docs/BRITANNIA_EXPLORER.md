@@ -1,3 +1,9 @@
+# Current Britain rendering checkpoint
+
+Britain now has full graphic-rule coverage (1,597 IDs / 136,662 static records), joined city-wide architecture and a nine-chunk detail neighborhood. Existing CC0 trees replace the distant cone placeholders. The first detailed city plan takes about 20 seconds; subsequent chunk changes reuse it. Launch Explore-Britain.cmd as before. See [mapping/seam implementation and exact limits](BRITAIN_MAPPING_AND_SEAMS.md). Live gameplay/population remains in the tested patch; this is an offline geographic explorer.
+
+The scope and earlier checkpoint notes below are historical where superseded by that document.
+
 # Britain city scope — clarified 2026-10-26
 
 The user clarified that the requested expansion is **the whole city of Britain**. Double-click **Explore-Britain.cmd**. The older Explore-Britannia.cmd now opens the same city view. Live Launch.cmd continues to use the tested playable patch.

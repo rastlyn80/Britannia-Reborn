@@ -138,7 +138,7 @@ func corner(height: float, plan: Dictionary, family: String) -> Node3D:
 	for direction in directions:
 		var size := Vector3(0.61,height,0.18) if direction.x != 0 else Vector3(0.18,height,0.61)
 		piece(root,size,Vector3(direction.x*0.25,height/2,direction.y*0.25),family)
-	piece(root,Vector3(0.14,height,0.14),Vector3(0,height/2,0),"wood")
+	piece(root,Vector3(0.14,height,0.14),Vector3(0,height/2,0),"wood" if family in ["wood","plaster"] else family)
 	return root
 
 func finish_run(cells: Array) -> void:
@@ -197,7 +197,7 @@ func panel(height: float, window: bool, plan: Dictionary, family: String) -> Nod
 		glass.material_override = glass_material
 	else:
 		piece(root,Vector3(1.01,h,0.18),Vector3(0,h/2,0),family)
-	if h > 0.6:
+	if h > 0.6 and family in ["wood","plaster"]:
 		piece(root,Vector3(1,0.22,0.22),Vector3(0,0.11,0),"stone")
 		for y in [0.3,h-0.08]: piece(root,Vector3(1,0.13,0.23),Vector3(0,y,0),"wood")
 		if plan.get("left_post",true): piece(root,Vector3(0.12,h,0.24),Vector3(-0.44,h/2,0),"wood")
@@ -205,7 +205,7 @@ func panel(height: float, window: bool, plan: Dictionary, family: String) -> Nod
 	for side in [-1,1]:
 		if not plan.get("extend_left" if side < 0 else "extend_right",false): continue
 		piece(root,Vector3(0.51,h,0.18),Vector3(side*0.75,h/2,0),family)
-		if h > 0.6:
+		if h > 0.6 and family in ["wood","plaster"]:
 			for y in [0.3,h-0.08]: piece(root,Vector3(0.51,0.13,0.23),Vector3(side*0.75,y,0),"wood")
 	return root
 

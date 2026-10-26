@@ -85,6 +85,27 @@ func index(world: Dictionary, catalog: Dictionary) -> void:
 		for member in component: eave = minf(eave,tiles[member].heights.min())
 		for member in component: tiles[member].eave = eave
 
+	# A shared height is also a shared lighting normal. Computing these from
+	# the complete component avoids a shading seam at tile/chunk boundaries.
+	var profiles := {}
+	for ordinal in tiles:
+		var tile:Dictionary=tiles[ordinal]
+		if not profiles.has(tile.component):profiles[tile.component]={}
+		for y in 3:
+			for x in 3:profiles[tile.component][tile.cell*2+Vector2i(x,y)]=tile.heights[y*3+x]
+	for ordinal in tiles:
+		var tile:Dictionary=tiles[ordinal]
+		var profile:Dictionary=profiles[tile.component]
+		var normals:Array[Vector3]=[]
+		for y in 3:
+			for x in 3:
+				var at:Vector2i=tile.cell*2+Vector2i(x,y)
+				var center:float=profile[at]
+				var dx:float=(float(profile.get(at+Vector2i.RIGHT,center))-float(profile.get(at+Vector2i.LEFT,center)))/(0.5*(int(profile.has(at+Vector2i.RIGHT))+int(profile.has(at+Vector2i.LEFT)))) if profile.has(at+Vector2i.RIGHT) or profile.has(at+Vector2i.LEFT) else 0.0
+				var dy:float=(float(profile.get(at+Vector2i.DOWN,center))-float(profile.get(at+Vector2i.UP,center)))/(0.5*(int(profile.has(at+Vector2i.DOWN))+int(profile.has(at+Vector2i.UP)))) if profile.has(at+Vector2i.DOWN) or profile.has(at+Vector2i.UP) else 0.0
+				normals.append(Vector3(-dx,1,-dy).normalized())
+		tile.normals=normals
+
 func join_cluster(samples: Array) -> void:
 	if samples.is_empty(): return
 	var height := 0.0

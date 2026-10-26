@@ -18,6 +18,9 @@ var frames := 0
 var overview_target := Vector3.ZERO
 var overview_distance := 3700.0
 var display_name := "Britannia"
+var distant_materials: Array=[]
+var regional:=preload("res://Presentation/RegionalContext.gd").new()
+var loaded_chunks: Dictionary={}
 var initial_district := Vector2i(-1,-1)
 func _ready() -> void:
  var path := ProjectSettings.globalize_path("res://../outputs/britain/atlas.json")
@@ -41,7 +44,18 @@ func _ready() -> void:
  ground_material.shader = preload("res://Presentation/AtlasGround.gdshader")
  terrain.material_override = ground_material
  add_child(terrain)
- if data.manifest.get("scope","")=="city": add_child(preload("res://Presentation/CityOverview.gd").new().build(data,ground_material))
+ if data.manifest.get("scope","")=="city":
+  var architecture_path:=data.folder.path_join("architecture.scn")
+  var has_architecture:=FileAccess.file_exists(architecture_path)
+  var forest:Node3D=preload("res://Presentation/CityOverview.gd").new().build(data,ground_material,has_architecture)
+  add_child(forest)
+  distant_materials.append_array(forest.get_meta("mask_materials",[]))
+  if has_architecture:
+   var packed:PackedScene=load(architecture_path)
+   var architecture:Node3D=packed.instantiate()
+   add_child(architecture)
+   for mesh in architecture.get_children():
+    if mesh is MeshInstance3D and mesh.material_override is ShaderMaterial:distant_materials.append(mesh.material_override)
  var environment := WorldEnvironment.new()
  environment.environment = Environment.new()
  environment.environment.background_mode = Environment.BG_SKY
@@ -129,71 +143,48 @@ func overview_mesh() -> ArrayMesh:
  mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
  return mesh
 func load_detail() -> void:
- if loading: return
- var at := Vector2i(floori(target.x/64)*64,floori(target.z/64)*64)
- if at==detail_at: return
- var world := data.world(at)
- if world.is_empty(): return
- loading = true
- status.text = "Rendering source district…"
+ if loading:return
+ var at:=Vector2i(floori(target.x/64)*64,floori(target.z/64)*64)
+ if at==detail_at:return
+ loading=true
+ status.text="Planning joined city architecture..."
  await get_tree().process_frame
- for child in detail.get_children(): child.free()
- detail.position=Vector3(at.x,0,at.y)
- var reconstruction := Reconstruction.new()
- reconstruction.index(world)
- var shore := preload("res://Presentation/ShorelinePlan.gd").new()
- shore.index(world,reconstruction.catalog)
- var surface := preload("res://Presentation/TerrainSurface.gd").new()
- surface.index(world,shore)
- var terrain := MeshInstance3D.new()
- terrain.mesh=surface.build()
- var surfaces = preload("res://Presentation/SurfaceLibrary.gd")
- surfaces.source_origin=Vector2(at)
- var material := ShaderMaterial.new()
- material.shader=preload("res://Presentation/Ground.gdshader")
- material.set_shader_parameter("stone_detail",load("res://Art/Quaternius/Village/T_Brick_BaseColor.png"))
- material.set_shader_parameter("stone_normal",load("res://Art/Quaternius/Village/T_Brick_Normal.png"))
- surfaces.bind(material,"paving","cobblestone_floor_03")
- surfaces.bind(material,"ground","forest_ground_04")
- surfaces.bind(material,"rock","rock_face_03")
- surfaces.bind(material,"wood","brown_planks_03")
- shore.apply(material)
- terrain.material_override=material
- detail.add_child(terrain)
- for cell in surface.wooden_cells:
-  var source: Dictionary=surface.wooden_cells[cell]
-  var floor_node := Node3D.new()
-  floor_node.position=Vector3(source.x-at.x+0.5,float(source.z)*0.2,source.y-at.y+0.5)
-  floor_node.add_child(reconstruction.floors.slab(-int(surface.source_ordinals[cell])-1,reconstruction.floors.material()))
-  detail.add_child(floor_node)
- for i in world.statics.size():
-  var node := reconstruction.build(world.statics[i],world,i)
-  if node: detail.add_child(node)
-  else:
-   var marker := MeshInstance3D.new()
-   var cube := BoxMesh.new()
-   cube.size = Vector3(0.16,0.16,0.16)
-   marker.mesh=cube
-   marker.position=Vector3(world.statics[i].x-at.x+0.5,float(world.statics[i].z)*0.2+0.08,world.statics[i].y-at.y+0.5)
-   var missing := StandardMaterial3D.new()
-   missing.albedo_color=Color("e7ba70")
-   marker.material_override=missing
-   detail.add_child(marker)
-  if i%128==0: await get_tree().process_frame
- var shell := preload("res://Presentation/InteriorShell.gd").new()
- shell.index(world,reconstruction)
- detail.add_child(shell.build(world,reconstruction))
- for repair in reconstruction.floors.repairs:
-  var floor_node := Node3D.new()
-  floor_node.position=Vector3(repair.x-at.x+0.5,float(repair.z)*0.2,repair.y-at.y+0.5)
-  floor_node.add_child(reconstruction.floors.slab(repair,reconstruction.floors.material()))
-  detail.add_child(floor_node)
- ground_material.set_shader_parameter("detail_rect",Vector4(at.x,at.y,at.x+63,at.y+63))
+ if not regional.ready:regional.prepare(data)
+ var wanted:=[]
+ var bounds:=Rect2i(int(data.manifest.originX),int(data.manifest.originY),int(data.manifest.width),int(data.manifest.height))
+ for dy in range(-1,2):
+  for dx in range(-1,2):
+   var key:=at+Vector2i(dx,dy)*64
+   if bounds.has_point(key):wanted.append(key)
+ # Retain only the neighborhood; shared global plans survive draw eviction.
+ for key in loaded_chunks.keys():
+  if key not in wanted:
+   loaded_chunks[key].free()
+   loaded_chunks.erase(key)
+ update_detail_masks()
+ for key in wanted:
+  if loaded_chunks.has(key):continue
+  status.text="Rendering joined district %d / %d..." % [loaded_chunks.size()+1,wanted.size()]
+  var node:Node3D=await regional.build_chunk(key,get_tree())
+  detail.add_child(node)
+  loaded_chunks[key]=node
+  update_detail_masks()
+  await get_tree().process_frame
  detail_at=at
- detail.set_meta("unmapped",reconstruction.unresolved)
- detail.set_meta("count",world.statics.size())
+ var unmapped:=0
+ for node in loaded_chunks.values():unmapped+=int(node.get_meta("unmapped",0))
+ detail.set_meta("unmapped",unmapped)
  loading=false
- print("ATLAS DETAIL: ",at," / ",world.statics.size()," records / ",reconstruction.unresolved," unmapped")
+ print("ATLAS DETAIL: ",at," / ",loaded_chunks.size()," joined chunks / ",unmapped," unmapped")
+func update_detail_masks()->void:
+ var rectangles:=PackedVector4Array()
+ for key in loaded_chunks:rectangles.append(Vector4(key.x,key.y,key.x+64,key.y+64))
+ while rectangles.size()<16:rectangles.append(Vector4(-100,-100,-100,-100))
+ ground_material.set_shader_parameter("detail_rects",rectangles)
+ ground_material.set_shader_parameter("detail_count",loaded_chunks.size())
+ for material in distant_materials:
+  material.set_shader_parameter("detail_rects",rectangles)
+  material.set_shader_parameter("detail_count",loaded_chunks.size())
 func _process(delta: float) -> void:
  frames+=1
  var movement := Vector3.ZERO
@@ -208,7 +199,7 @@ func _process(delta: float) -> void:
  camera.look_at(target)
  if not loading and distance<180 and Vector2i(floori(target.x/64)*64,floori(target.z/64)*64)!=detail_at: load_detail()
  if not loading:
-  status.text="BRITANNIA REBORN / %s / TRAMMEL\n%d x %d source tiles / %d chunks\nCity-wide simplified massing; close detail uses existing art\nWASD pan / Right mouse orbit / Wheel zoom\nCentre %d, %d / district detail loads when close\nSelected detail: %s\nExploration preview / live gameplay remains in the tested patch" % [display_name.to_upper(),data.manifest.width,data.manifest.height,data.manifest.chunks.size(),target.x,target.z,("not loaded" if detail_at.x<0 else "%d unmapped records" % int(detail.get_meta("unmapped",0)))]
+  status.text="BRITANNIA REBORN / %s / TRAMMEL\n%d x %d source tiles / %d chunks\nDistant overview / joined 3D districts load nearby\nWASD pan / Right mouse orbit / Wheel zoom\nCentre %d, %d / district detail loads when close\nSelected detail: %s\nExploration preview / live gameplay remains in the tested patch" % [display_name.to_upper(),data.manifest.width,data.manifest.height,data.manifest.chunks.size(),target.x,target.z,("not loaded" if detail_at.x<0 else "%d unmapped records" % int(detail.get_meta("unmapped",0)))]
  if frames>=20 and not screenshot.is_empty() and not loading and (initial_district.x<0 or detail_at.x>=0):
   var output := screenshot
   screenshot=""

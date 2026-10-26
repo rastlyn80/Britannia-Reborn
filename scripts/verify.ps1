@@ -10,6 +10,8 @@ $env:LOCALAPPDATA = $env:APPDATA
 if ($LASTEXITCODE) { throw 'Asset import failed' }
 & $godot --headless --path "$root\Viewer" --script res://Network/LoginTests.gd
 if ($LASTEXITCODE) { throw 'Protocol tests failed' }
+& $godot --headless --path "$root/Viewer" --script res://Presentation/RegionalSeamTests.gd
+if ($LASTEXITCODE) { throw 'Regional architecture/terrain seam checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/AtlasTests.gd
 if ($LASTEXITCODE) { throw 'World atlas regression checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/CommerceUiTests.gd

@@ -12,8 +12,8 @@ var static_data := {}
 func index(world: Dictionary) -> void:
 	terrain.clear()
 	statics.clear()
-	land_data = world.get("landData",{})
-	static_data = world.get("staticData",{})
+	land_data = world.landData if world.get("landData") is Dictionary else {}
+	static_data = world.staticData if world.get("staticData") is Dictionary else {}
 	for tile in world.terrain: terrain[Vector2i(tile.x,tile.y)] = tile
 	for tile in world.statics:
 		var cell := Vector2i(tile.x,tile.y)

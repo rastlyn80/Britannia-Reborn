@@ -5,6 +5,7 @@ render_mode cull_disabled;
 uniform vec4 roof_color : source_color=vec4(0.3,0.34,0.4,1.0);
 uniform sampler2D kit_texture : source_color,filter_linear_mipmap_anisotropic,repeat_enable;
 uniform bool wood=false;
+uniform bool thatch=false;
 uniform vec4 ceiling_color : source_color=vec4(0.57,0.45,0.33,1.0);
 uniform sampler2D surface_albedo : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D surface_normal_map : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
@@ -26,6 +27,13 @@ void fragment(){
  NORMAL_MAP_DEPTH=0.6;
  ROUGHNESS=clamp(texture(surface_roughness,UV*surface_scale).r,0.55,0.95);
  AO=1.0;
+ if(thatch){
+  float straw=surface_noise(UV*vec2(95.0,2.5));
+  float bundles=smoothstep(0.04,0.15,fract(UV.y*4.0));
+  ALBEDO=roof_color.rgb*mix(0.65,1.18,straw)*mix(0.78,1.0,bundles);
+  NORMAL_MAP=normalize(vec3((straw-0.5)*0.25,0.08,1.0))*0.5+0.5;
+  ROUGHNESS=0.96;
+ }
  if(!FRONT_FACING){
   float board=fract(UV.x*4.0);
   float seam=smoothstep(0.004,0.02+fwidth(UV.x)*4.0,min(board,1.0-board));

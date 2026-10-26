@@ -71,6 +71,7 @@ func carpet(s: Dictionary) -> MeshInstance3D:
 	return mesh
 
 static func roof_height(u: float, v: float, rule: Dictionary) -> float:
+	if rule.get("profile","")=="flat":return 0.0
 	var rise: Array = rule.get("rise",[0,0])
 	if int(rise[0]) != 0: return (u if int(rise[0]) > 0 else 1.0-u)*0.6
 	if int(rise[1]) != 0: return (v if int(rise[1]) > 0 else 1.0-v)*0.6
@@ -87,8 +88,9 @@ func roof(s: Dictionary, rule: Dictionary, shader: ShaderMaterial, plan: Diction
 			for index in [0,2,1,2,3,1]:
 				var uv: Vector2 = points[index]*0.5
 				surface.set_uv(Vector2(s.x,s.y)+uv)
+				if plan.has("normals"):surface.set_normal(plan.normals[int(uv.y*2)*3+int(uv.x*2)])
 				surface.add_vertex(Vector3(uv.x-0.5,(float(plan.heights[int(uv.y*2)*3+int(uv.x*2)])-float(s.z)*0.2 if not plan.is_empty() else roof_height(uv.x,uv.y,rule)),uv.y-0.5))
-	surface.generate_normals()
+	if not plan.has("normals"):surface.generate_normals()
 	surface.generate_tangents()
 	var mesh := MeshInstance3D.new()
 	mesh.mesh = surface.commit()

@@ -97,3 +97,6 @@ Use scripts/setup-preview-shops.ps1 after loading the new preview extension; Pop
 
 
 Double-click **Explore-Britain.cmd** for the whole city of Britain, including the castle and western outskirts. The city view uses ModernUO's native region bounds, rounded outward to 88 local chunks (704×512 tiles). The older Explore-Britannia.cmd opens this same city scope. A simplified city-wide building/tree overview and nearby district detail are available; detailed art coverage, architecture seams and expanded gameplay remain unfinished. **Launch.cmd** retains the tested playable patch. See [city explorer scope and reproduction](docs/BRITANNIA_EXPLORER.md).
+
+
+Britain's explorer now has rendering rules for every city graphic ID, joined city-wide architecture and nine nearby detailed chunks. The same shared reconstruction rules feed conversion and rendering. Double-click **Explore-Britain.cmd**; initial preparation bakes the city, and first detailed planning takes about 20 seconds on the development machine. The new models are stylized substitutes; exact bespoke art matching and production streaming remain ongoing. See [mapping and seam evidence](docs/BRITAIN_MAPPING_AND_SEAMS.md). **Launch.cmd** retains the live playable patch.

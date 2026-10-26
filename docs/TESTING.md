@@ -43,3 +43,6 @@ scripts/audit-atlas.py independently compares all 20,971,520 terrain samples and
 
 
 City scope correction (2026-10-26): scripts/prepare-britain.ps1 derives bounds from the unique native Trammel Britain TownRegion. Independent all-record comparison passes for 360,448 terrain and 136,662 statics (88 chunks). Forward+ city overview renders 42,382 simplified architectural/tree features. Four additional distant-massing classification/elevation tests join the atlas regression suite. No live gameplay or native population scope changed.
+
+
+Britain mapping/seams: scripts/verify.ps1 passes 357 checks, including 20 new seam/unknown-family regressions. scripts/test-britain.ps1 verifies 1,597 graphic IDs and 136,662 unique city source assignments plus exact all-record source parity for 88 visible and 42 context chunks. RegionalVisualCheck exercises nine joined chunks, six retained neighbors after crossing, exact terrain reload and zero unmapped records under Forward+. These are offline source/rendering checks, not expanded multiplayer. Evidence and reproduction: BRITAIN_MAPPING_AND_SEAMS.md.

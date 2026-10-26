@@ -11,3 +11,6 @@ Record author, original URL, exact version/hash, license text, attribution and m
 Planned mapping record: original tile ID/classification, confidence, modern asset reference, deterministic variant seed, orientation/scale, biome and persistent override. Preserve canonical data; regenerate rendering from pinned source/config/assets. Ambiguous roofs/doors/stairs require confidence reporting and rules, not invented architecture.
 
 Automated import/material/collision/LOD processing follows tiledata classification and seam-safe terrain. No original UO art redistribution.
+
+
+RegionalRules and CityProps now extend the audited crop catalogue to every graphic ID in the prepared city of Britain. The original procedural models are GPL-3.0-or-later project code; no new third-party assets were imported. Existing pinned CC0 Quaternius/Kenney models and Poly Haven material provenance remain unchanged. Generated city coverage, raw reference art and all map-derived geometry remain local/ignored. Rules report semantic substitutes and inferred orientation rather than claiming exact artwork equivalence. See BRITAIN_MAPPING_AND_SEAMS.md.
