@@ -14,6 +14,35 @@ var visual_light := 0.0
 var visual_minute := 900.0
 var frozen := false
 var sky_tick := 0.0
+# Client-only viewing preference: "" follows the server clock and light level,
+# "day"/"night" pin the presented sky. Server time and gameplay never change.
+const VIEW_SETTINGS := "user://view.cfg"
+const SKY_MODES := ["","day","night"]
+var sky_mode := ""
+
+func _ready() -> void:
+ var settings := ConfigFile.new()
+ if settings.load(VIEW_SETTINGS) == OK: sky_mode = str(settings.get_value("view","sky",""))
+ if sky_mode not in SKY_MODES: sky_mode = ""
+
+func cycle_sky() -> String:
+ sky_mode = SKY_MODES[(SKY_MODES.find(sky_mode)+1)%SKY_MODES.size()]
+ var settings := ConfigFile.new()
+ settings.load(VIEW_SETTINGS)
+ settings.set_value("view","sky",sky_mode)
+ settings.save(VIEW_SETTINGS)
+ return sky_label()
+
+func sky_label() -> String:
+ return "Sky: always day (F7)" if sky_mode == "day" else ("Sky: always night (F7)" if sky_mode == "night" else "Sky: server time (F7)")
+
+func presented_minute(state: Dictionary, now: int) -> float:
+ if sky_mode == "day": return 900.0
+ if sky_mode == "night": return 0.0
+ return regional_minute(state,now)
+
+func presented_light(state: Dictionary) -> float:
+ return 0.0 if sky_mode != "" else float(state.get("global_light",0))
 
 func configure(scene: Node3D,world: Dictionary,reconstruction,map_view: bool, derive_fixtures: bool = true) -> void:
  sun = DirectionalLight3D.new()
@@ -183,11 +212,11 @@ static func regional_minute(state: Dictionary, now: int) -> float:
 func _process(delta: float) -> void:
  if not sky_material or frozen: return
  cloud_clock += delta
- var minute := regional_minute(server_environment,Time.get_ticks_msec())
+ var minute := presented_minute(server_environment,Time.get_ticks_msec())
  var day_delta := fposmod(minute-visual_minute+720.0,1440.0)-720.0
  visual_minute = fposmod(visual_minute+day_delta*(1.0-exp(-delta*1.8)),1440.0)
  visual_weather = lerpf(visual_weather,weather_amount(server_environment),1.0-exp(-delta*0.65))
- visual_light = lerpf(visual_light,float(server_environment.get("global_light",0)),1.0-exp(-delta*2.0))
+ visual_light = lerpf(visual_light,presented_light(server_environment),1.0-exp(-delta*2.0))
  sky_tick -= delta
  if sky_tick <= 0.0:
   sky_tick = 0.5

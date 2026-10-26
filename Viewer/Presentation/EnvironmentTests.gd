@@ -53,6 +53,13 @@ func run() -> void:
  check(night < 0.01 and day > 1.0 and rig.sun.light_energy < day,"server night and storms reduce sunlight")
  rig.reset_server_environment()
  check(is_equal_approx(rig.visual_minute,900.0) and rig.server_environment.is_empty(),"offline preview restores deterministic afternoon")
+ var night_state := {"minute_of_day":60,"seconds_per_minute":5,"global_light":26,"sample_msec":0}
+ rig.sky_mode = "day"
+ check(is_equal_approx(rig.presented_minute(night_state,0),900.0) and is_equal_approx(rig.presented_light(night_state),0.0),"always-day view shows afternoon at full light during server night")
+ rig.sky_mode = "night"
+ check(is_equal_approx(rig.presented_minute({"minute_of_day":840,"seconds_per_minute":5,"sample_msec":0},0),0.0),"always-night view shows midnight during server day")
+ rig.sky_mode = ""
+ check(is_equal_approx(rig.presented_minute(night_state,0),60.0) and is_equal_approx(rig.presented_light(night_state),26.0) and night_state.minute_of_day == 60,"server-time view follows the server; overrides never alter server state")
  rig.free()
  print("ENVIRONMENT CHECKS: %d passed / %d total" % [checks-failures,checks])
  quit(0 if failures == 0 else 1)

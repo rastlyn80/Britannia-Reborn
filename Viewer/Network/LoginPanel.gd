@@ -1,6 +1,8 @@
 extends PanelContainer
 
 signal controller_toggled(enabled: bool)
+signal sky_requested
+var sky_button: Button
 var memory := preload("res://Network/LoginMemory.gd").new()
 var remember := CheckBox.new()
 var session: Node
@@ -97,6 +99,7 @@ func _ready() -> void:
 	world_controls.hide()
 	button(world_controls,"Open backpack (B)",func(): session.open_backpack())
 	button(world_controls,"Return to Britain (F6)",func(): session.return_to_britain())
+	sky_button = button(world_controls,"Sky: server time (F7)",func(): sky_requested.emit())
 	var command_toggle := CheckButton.new()
 	command_toggle.text = "Server commands"
 	world_controls.add_child(command_toggle)

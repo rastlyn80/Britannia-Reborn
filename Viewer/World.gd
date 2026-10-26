@@ -3,6 +3,8 @@ extends Node3D
 var world_ready := false
 var city_stream: Node3D
 var minimap: Control
+var lighting_rig: Node3D
+var hud_panel: Control
 var world: Dictionary
 var pivot := Node3D.new()
 var camera := Camera3D.new()
@@ -170,6 +172,7 @@ func _ready() -> void:
 		if not coverage_path.is_empty(): reconstruction.save_report(coverage_path)
 		print("PRESENTATION COLLISION: %d triangles in chunk bodies; %d grouped source components" % [collision_builder.triangles,reconstruction.grouped])
 	var lighting := preload("res://Presentation/LightingRig.gd").new()
+	lighting_rig = lighting
 	lighting.name = "DistrictLighting"
 	add_child(lighting)
 	lighting.configure(self,world,reconstruction,map_view,not city_mode)
@@ -216,6 +219,9 @@ func _ready() -> void:
 			minimap.free()
 			minimap = null
 	login_panel.controller_toggled.connect(func(enabled: bool): controller_enabled = enabled)
+	hud_panel = login_panel
+	login_panel.sky_requested.connect(cycle_sky)
+	if lighting_rig and login_panel.sky_button: login_panel.sky_button.text = lighting_rig.sky_label()
 	game.entity_changed.connect(_entity_changed)
 	game.vendor_received.connect(func(serial: int,_stock: Array):
 		if avatars.has(serial): avatars[serial].get_node("Nameplate").text = game.entity_names.get(serial,"Vendor")+" · shopkeeper")
@@ -326,6 +332,13 @@ func _physics_process(delta: float) -> void:
 		jump_requested = false
 	avatar.jump.advance(delta,clearance)
 
+# Client-only sky view: server time, always day or always night (F7).
+func cycle_sky() -> void:
+	if not lighting_rig: return
+	var label: String = lighting_rig.cycle_sky()
+	if hud_panel and hud_panel.sky_button: hud_panel.sky_button.text = label
+	game.message_received.emit(label.replace(" (F7)","")+" — view only; server time unchanged")
+
 func stop_mouse_look() -> void:
 	if not mouse_looking: return
 	mouse_looking = false
@@ -366,6 +379,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN: distance = minf(22 if game.phase == "world" else 250,distance+(0.8 if game.phase == "world" else 4))
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_F6: game.return_to_britain()
+		if event.keycode == KEY_F7: cycle_sky()
 		if event.keycode == KEY_B: game.open_backpack()
 		if event.keycode == KEY_E: world_items.nearest()
 		if event.keycode == KEY_ESCAPE: get_tree().quit()
