@@ -2,6 +2,7 @@ $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 & "$root/scripts/prepare-surfaces.ps1" -VerifyOnly
 & "$root/scripts/import-reviewed-art.ps1" -VerifyOnly
+& "$root/scripts/prepare-polyhaven.ps1" -VerifyOnly
 & "$root\build.ps1"
 if (Test-Path "$root/Server/runtime/Server.dll") { & "$root/scripts/build-preview-tools.ps1" -BuildOnly }
 $godot = (Get-ChildItem "$root\.tools\godot\*console.exe" | Select-Object -First 1).FullName

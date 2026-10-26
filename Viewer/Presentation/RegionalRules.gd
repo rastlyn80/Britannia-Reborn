@@ -22,7 +22,7 @@ const MODELS := [
  ["ship","anchor|winch|spyglass|rope|pier|ladder"],
  ["book","book|deed|scroll|voyage scr|map$|ship plans|cards|checkers|chess"],
  ["bottle","bottle|flask|vial|jar|potion|machine coffee|coffee grinder"],
- ["cup","goblet|mug|pitcher|glass|jugs|bucket|pot$|tray|plate|bowl|flour sifter"],
+ ["cup","goblet|mug|pitcher|glass|jugs|bucket|pot$|tray|^plate$|plate of|bowl|flour sifter"],
  ["weapon","weapon|shield|sword|axe|dagger|knife|cleaver|crossbow|bow$|mace|maul|hammer|staff|wand|armor|platemail|plate helm|ringmail|chainmail|studded|whip"],
  ["tool","tool|silverware|saw|scissors|quill|pen and ink|inshave|plane$|tongs|brush|rolling pin|moulding board|clock|hourglass|springs|gears|wire|nails|arrow|bolts|horse shoes|sewing kit"],
  ["food","bread|cheese|cookie|cake|food|fish|bird|carcass|lamb|ribs|goat|deer|chicken|donut|honey|flour|dough|sausage|stew|limes|onion|cabbage|squash|corn|carrot|bacon|pie|muffin|spam|fruit|nest with eggs"],

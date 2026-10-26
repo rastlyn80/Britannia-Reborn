@@ -363,7 +363,7 @@ func _collect_bounds(node: Node3D, transform: Transform3D, boxes: Array) -> void
 		if child is Node3D: _collect_bounds(child,combined,boxes)
 
 func fitted(path: String, size: Vector3, orientation: Array = [0,0,0]) -> Node3D:
-	var full := "res://Art/"+path if path.begins_with("Kenney/") else "res://Art/Quaternius/"+path
+	var full := "res://Art/"+path if path.begins_with("Kenney/") or path.begins_with("PolyHaven/") else "res://Art/Quaternius/"+path
 	if not scenes.has(path):
 		scenes[path] = load(full)
 		assert(scenes[path] != null,"Missing catalogue asset: "+path)

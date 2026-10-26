@@ -1,3 +1,7 @@
+# Poly Haven props — 26 October 2026
+
+Stylized props are being replaced with realistic CC0 Poly Haven photoscans (ten models, 53 pinned files). Barrels, crates, stools and tables are reviewed in tavern, castle and barrel-stack captures; lantern, candlestick, bucket, bowl and plate entries are provisional. Chairs, benches, bookcases, beds, bags and chests keep the previous library models where Poly Haven has no period match. Armour names ("platemail", "plate helm") no longer match the dish rule. 442 Godot checks, parity, GPU, native city and object checks pass.
+
 # Rooted vegetation and flower-bed planters — 26 October 2026
 
 Owner-reported flying trees and flowers. 90 "FlowerBed" pieces were classified as flowers (name match), so the 1 m raised beds were missing and the flowers/trees planted on them floated; they are now stone-curbed planters with soil at source height. UO stores one height per tile while the presented terrain interpolates between tiles, so vegetation at raw tile height floated or sank on slopes; trees, flowers, grass, bushes, mushrooms, rocks and logs now root on the higher of the rendered terrain at the tile centre and any planter/floor top beneath them, as a presentation offset (source XYZ unchanged; cases more than 2.5 m away keep their source height). 442 Godot checks (+5), parity, GPU and native city checks pass.

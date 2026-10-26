@@ -10,7 +10,7 @@
   "entries": {
     "2930": {
       "kind": "table",
-      "asset": "Props/Table_Large.gltf",
+      "asset": "PolyHaven/wooden_table_02/wooden_table_02_1k.gltf",
       "dimensions": [
         2.8,
         0.82,
@@ -21,17 +21,17 @@
       "attachment": "floor",
       "providesSupport": true,
       "reviewStatus": "reviewed",
-      "reviewMethod": "Local original-art contact sheet, imported model turntable and reference-block inspection",
-      "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
+      "reviewMethod": "Poly Haven CC0 replacement inspected in tavern, castle dining and barrel-stack scene captures",
+      "confidence": "realistic photoscanned PBR substitute; source silhouette and usage retained",
       "notes": "",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
+      "provenance": "Art/PolyHaven/manifest.json"
     },
     "2931": {
       "kind": "table",
-      "asset": "Props/Table_Large.gltf",
+      "asset": "PolyHaven/wooden_table_02/wooden_table_02_1k.gltf",
       "dimensions": [
         2.8,
         0.82,
@@ -42,17 +42,17 @@
       "attachment": "floor",
       "providesSupport": true,
       "reviewStatus": "reviewed",
-      "reviewMethod": "Local original-art contact sheet, imported model turntable and reference-block inspection",
-      "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
+      "reviewMethod": "Poly Haven CC0 replacement inspected in tavern, castle dining and barrel-stack scene captures",
+      "confidence": "realistic photoscanned PBR substitute; source silhouette and usage retained",
       "notes": "",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
+      "provenance": "Art/PolyHaven/manifest.json"
     },
     "2932": {
       "kind": "table",
-      "asset": "Props/Table_Large.gltf",
+      "asset": "PolyHaven/wooden_table_02/wooden_table_02_1k.gltf",
       "dimensions": [
         2.8,
         0.82,
@@ -63,17 +63,17 @@
       "attachment": "floor",
       "providesSupport": true,
       "reviewStatus": "reviewed",
-      "reviewMethod": "Local original-art contact sheet, imported model turntable and reference-block inspection",
-      "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
+      "reviewMethod": "Poly Haven CC0 replacement inspected in tavern, castle dining and barrel-stack scene captures",
+      "confidence": "realistic photoscanned PBR substitute; source silhouette and usage retained",
       "notes": "",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
+      "provenance": "Art/PolyHaven/manifest.json"
     },
     "2928": {
       "kind": "table",
-      "asset": "Props/Table_Large.gltf",
+      "asset": "PolyHaven/wooden_table_02/wooden_table_02_1k.gltf",
       "dimensions": [
         2.8,
         0.82,
@@ -84,17 +84,17 @@
       "attachment": "floor",
       "providesSupport": true,
       "reviewStatus": "reviewed",
-      "reviewMethod": "Local original-art contact sheet, imported model turntable and reference-block inspection",
-      "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
+      "reviewMethod": "Poly Haven CC0 replacement inspected in tavern, castle dining and barrel-stack scene captures",
+      "confidence": "realistic photoscanned PBR substitute; source silhouette and usage retained",
       "notes": "",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
+      "provenance": "Art/PolyHaven/manifest.json"
     },
     "2929": {
       "kind": "table",
-      "asset": "Props/Table_Large.gltf",
+      "asset": "PolyHaven/wooden_table_02/wooden_table_02_1k.gltf",
       "dimensions": [
         2.8,
         0.82,
@@ -105,17 +105,17 @@
       "attachment": "floor",
       "providesSupport": true,
       "reviewStatus": "reviewed",
-      "reviewMethod": "Local original-art contact sheet, imported model turntable and reference-block inspection",
-      "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
+      "reviewMethod": "Poly Haven CC0 replacement inspected in tavern, castle dining and barrel-stack scene captures",
+      "confidence": "realistic photoscanned PBR substitute; source silhouette and usage retained",
       "notes": "",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
+      "provenance": "Art/PolyHaven/manifest.json"
     },
     "2926": {
       "kind": "table",
-      "asset": "Props/Table_Large.gltf",
+      "asset": "PolyHaven/wooden_table_02/wooden_table_02_1k.gltf",
       "dimensions": [
         2.8,
         0.82,
@@ -126,17 +126,17 @@
       "attachment": "floor",
       "providesSupport": true,
       "reviewStatus": "reviewed",
-      "reviewMethod": "Local original-art contact sheet, imported model turntable and reference-block inspection",
-      "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
+      "reviewMethod": "Poly Haven CC0 replacement inspected in tavern, castle dining and barrel-stack scene captures",
+      "confidence": "realistic photoscanned PBR substitute; source silhouette and usage retained",
       "notes": "",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
+      "provenance": "Art/PolyHaven/manifest.json"
     },
     "2927": {
       "kind": "table",
-      "asset": "Props/Table_Large.gltf",
+      "asset": "PolyHaven/wooden_table_02/wooden_table_02_1k.gltf",
       "dimensions": [
         2.8,
         0.82,
@@ -147,13 +147,13 @@
       "attachment": "floor",
       "providesSupport": true,
       "reviewStatus": "reviewed",
-      "reviewMethod": "Local original-art contact sheet, imported model turntable and reference-block inspection",
-      "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
+      "reviewMethod": "Poly Haven CC0 replacement inspected in tavern, castle dining and barrel-stack scene captures",
+      "confidence": "realistic photoscanned PBR substitute; source silhouette and usage retained",
       "notes": "",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
+      "provenance": "Art/PolyHaven/manifest.json"
     },
     "2911": {
       "kind": "bench",
@@ -388,7 +388,7 @@
     },
     "2910": {
       "kind": "prop",
-      "asset": "Props/Stool.gltf",
+      "asset": "PolyHaven/wooden_stool_02/wooden_stool_02_1k.gltf",
       "dimensions": [
         0.4,
         0.46,
@@ -399,17 +399,17 @@
       "attachment": "floor",
       "providesSupport": false,
       "reviewStatus": "reviewed",
-      "reviewMethod": "Local original-art contact sheet, imported model turntable and reference-block inspection",
-      "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
+      "reviewMethod": "Poly Haven CC0 replacement inspected in tavern, castle dining and barrel-stack scene captures",
+      "confidence": "realistic photoscanned PBR substitute; source silhouette and usage retained",
       "notes": "",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
+      "provenance": "Art/PolyHaven/manifest.json"
     },
     "2602": {
       "kind": "prop",
-      "asset": "Props/Stool.gltf",
+      "asset": "PolyHaven/wooden_stool_02/wooden_stool_02_1k.gltf",
       "dimensions": [
         0.4,
         0.46,
@@ -419,14 +419,14 @@
       "assembly": "single",
       "attachment": "floor",
       "providesSupport": false,
-      "reviewStatus": "provisional",
-      "reviewMethod": "Local original-art contact sheet, imported model turntable and reference-block inspection",
-      "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
+      "reviewStatus": "reviewed",
+      "reviewMethod": "Poly Haven CC0 replacement inspected in tavern, castle dining and barrel-stack scene captures",
+      "confidence": "realistic photoscanned PBR substitute; source silhouette and usage retained",
       "notes": "",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
+      "provenance": "Art/PolyHaven/manifest.json"
     },
     "2652": {
       "kind": "bed",
@@ -770,7 +770,7 @@
     },
     "3644": {
       "kind": "prop",
-      "asset": "Props/Crate_Wooden.gltf",
+      "asset": "PolyHaven/wooden_crate_01/wooden_crate_01_1k.gltf",
       "dimensions": [
         0.65,
         0.6,
@@ -780,18 +780,18 @@
       "assembly": "single",
       "attachment": "floor",
       "providesSupport": true,
-      "reviewStatus": "provisional",
-      "reviewMethod": "Local original-art contact sheet, imported model turntable and reference-block inspection",
-      "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
+      "reviewStatus": "reviewed",
+      "reviewMethod": "Poly Haven CC0 replacement inspected in tavern, castle dining and barrel-stack scene captures",
+      "confidence": "realistic photoscanned PBR substitute; source silhouette and usage retained",
       "notes": "",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
+      "provenance": "Art/PolyHaven/manifest.json"
     },
     "3645": {
       "kind": "prop",
-      "asset": "Props/Crate_Wooden.gltf",
+      "asset": "PolyHaven/wooden_crate_01/wooden_crate_01_1k.gltf",
       "dimensions": [
         0.65,
         0.6,
@@ -802,17 +802,17 @@
       "attachment": "floor",
       "providesSupport": true,
       "reviewStatus": "reviewed",
-      "reviewMethod": "Local original-art contact sheet, imported model turntable and reference-block inspection",
-      "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
+      "reviewMethod": "Poly Haven CC0 replacement inspected in tavern, castle dining and barrel-stack scene captures",
+      "confidence": "realistic photoscanned PBR substitute; source silhouette and usage retained",
       "notes": "",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
+      "provenance": "Art/PolyHaven/manifest.json"
     },
     "3703": {
       "kind": "prop",
-      "asset": "Props/Barrel.gltf",
+      "asset": "PolyHaven/wine_barrel_01/wine_barrel_01_1k.gltf",
       "dimensions": [
         0.66,
         0.95,
@@ -823,17 +823,17 @@
       "attachment": "floor",
       "providesSupport": true,
       "reviewStatus": "reviewed",
-      "reviewMethod": "Local original-art contact sheet, imported model turntable and reference-block inspection",
-      "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
+      "reviewMethod": "Poly Haven CC0 replacement inspected in tavern, castle dining and barrel-stack scene captures",
+      "confidence": "realistic photoscanned PBR substitute; source silhouette and usage retained",
       "notes": "",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
+      "provenance": "Art/PolyHaven/manifest.json"
     },
     "4014": {
       "kind": "prop",
-      "asset": "Props/Barrel.gltf",
+      "asset": "PolyHaven/wine_barrel_01/wine_barrel_01_1k.gltf",
       "dimensions": [
         0.66,
         0.95,
@@ -843,14 +843,14 @@
       "assembly": "single",
       "attachment": "floor",
       "providesSupport": true,
-      "reviewStatus": "provisional",
-      "reviewMethod": "Local original-art contact sheet, imported model turntable and reference-block inspection",
-      "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
+      "reviewStatus": "reviewed",
+      "reviewMethod": "Poly Haven CC0 replacement inspected in tavern, castle dining and barrel-stack scene captures",
+      "confidence": "realistic photoscanned PBR substitute; source silhouette and usage retained",
       "notes": "",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
+      "provenance": "Art/PolyHaven/manifest.json"
     },
     "2604": {
       "kind": "prop",
@@ -1097,10 +1097,10 @@
     },
     "2519": {
       "kind": "prop",
-      "asset": "Props/Table_Plate.gltf",
+      "asset": "PolyHaven/carved_wooden_plate/carved_wooden_plate_1k.gltf",
       "dimensions": [
         0.3,
-        0.025,
+        0.035,
         0.3
       ],
       "yawDegrees": 0,
@@ -1108,13 +1108,13 @@
       "attachment": "surface",
       "providesSupport": true,
       "reviewStatus": "provisional",
-      "reviewMethod": "Local original-art contact sheet, imported model turntable and reference-block inspection",
-      "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
+      "reviewMethod": "Poly Haven CC0 replacement for the stylized library model; pending scene inspection",
+      "confidence": "realistic photoscanned PBR substitute; source silhouette and usage retained",
       "notes": "",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
+      "provenance": "Art/PolyHaven/manifest.json"
     },
     "4030": {
       "kind": "prop",
@@ -2176,6 +2176,195 @@
       "provenance": "Art/Surfaces/manifest.json",
       "collision": "baked source-envelope collision",
       "lod": "source-owned near/far district geometry"
+    },
+    "3646": {
+      "kind": "prop",
+      "asset": "PolyHaven/wooden_crate_02/wooden_crate_02_1k.gltf",
+      "dimensions": [
+        0.65,
+        0.6,
+        0.65
+      ],
+      "yawDegrees": 0,
+      "assembly": "single",
+      "attachment": "floor",
+      "providesSupport": true,
+      "reviewStatus": "reviewed",
+      "reviewMethod": "Poly Haven CC0 replacement inspected in tavern, castle dining and barrel-stack scene captures",
+      "confidence": "realistic photoscanned PBR substitute; source silhouette and usage retained",
+      "notes": "",
+      "collision": "source-authoritative; matching local camera/picking bounds",
+      "lod": "shared geometry instanced inside bounded near districts",
+      "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
+      "provenance": "Art/PolyHaven/manifest.json"
+    },
+    "3647": {
+      "kind": "prop",
+      "asset": "PolyHaven/wooden_crate_02/wooden_crate_02_1k.gltf",
+      "dimensions": [
+        0.65,
+        0.6,
+        0.65
+      ],
+      "yawDegrees": 0,
+      "assembly": "single",
+      "attachment": "floor",
+      "providesSupport": true,
+      "reviewStatus": "reviewed",
+      "reviewMethod": "Poly Haven CC0 replacement inspected in tavern, castle dining and barrel-stack scene captures",
+      "confidence": "realistic photoscanned PBR substitute; source silhouette and usage retained",
+      "notes": "",
+      "collision": "source-authoritative; matching local camera/picking bounds",
+      "lod": "shared geometry instanced inside bounded near districts",
+      "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
+      "provenance": "Art/PolyHaven/manifest.json"
+    },
+    "3710": {
+      "kind": "prop",
+      "asset": "PolyHaven/wooden_crate_02/wooden_crate_02_1k.gltf",
+      "dimensions": [
+        0.65,
+        0.6,
+        0.65
+      ],
+      "yawDegrees": 0,
+      "assembly": "single",
+      "attachment": "floor",
+      "providesSupport": true,
+      "reviewStatus": "reviewed",
+      "reviewMethod": "Poly Haven CC0 replacement inspected in tavern, castle dining and barrel-stack scene captures",
+      "confidence": "realistic photoscanned PBR substitute; source silhouette and usage retained",
+      "notes": "",
+      "collision": "source-authoritative; matching local camera/picking bounds",
+      "lod": "shared geometry instanced inside bounded near districts",
+      "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
+      "provenance": "Art/PolyHaven/manifest.json"
+    },
+    "2581": {
+      "kind": "prop",
+      "asset": "PolyHaven/wooden_lantern_01/wooden_lantern_01_1k.gltf",
+      "dimensions": [
+        0.24,
+        0.36,
+        0.24
+      ],
+      "yawDegrees": 0,
+      "assembly": "single",
+      "attachment": "surface",
+      "providesSupport": false,
+      "reviewStatus": "provisional",
+      "reviewMethod": "Poly Haven CC0 replacement for the stylized library model; pending scene inspection",
+      "confidence": "realistic photoscanned PBR substitute; source silhouette and usage retained",
+      "notes": "",
+      "collision": "source-authoritative; matching local camera/picking bounds",
+      "lod": "shared geometry instanced inside bounded near districts",
+      "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
+      "provenance": "Art/PolyHaven/manifest.json"
+    },
+    "2842": {
+      "kind": "prop",
+      "asset": "PolyHaven/wooden_candlestick/wooden_candlestick_1k.gltf",
+      "dimensions": [
+        0.13,
+        0.24,
+        0.13
+      ],
+      "yawDegrees": 0,
+      "assembly": "single",
+      "attachment": "surface",
+      "providesSupport": false,
+      "reviewStatus": "provisional",
+      "reviewMethod": "Poly Haven CC0 replacement for the stylized library model; pending scene inspection",
+      "confidence": "realistic photoscanned PBR substitute; source silhouette and usage retained",
+      "notes": "",
+      "collision": "source-authoritative; matching local camera/picking bounds",
+      "lod": "shared geometry instanced inside bounded near districts",
+      "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
+      "provenance": "Art/PolyHaven/manifest.json"
+    },
+    "5344": {
+      "kind": "prop",
+      "asset": "PolyHaven/wooden_bucket_01/wooden_bucket_01_1k.gltf",
+      "dimensions": [
+        0.42,
+        0.34,
+        0.42
+      ],
+      "yawDegrees": 0,
+      "assembly": "single",
+      "attachment": "floor",
+      "providesSupport": false,
+      "reviewStatus": "provisional",
+      "reviewMethod": "Poly Haven CC0 replacement for the stylized library model; pending scene inspection",
+      "confidence": "realistic photoscanned PBR substitute; source silhouette and usage retained",
+      "notes": "",
+      "collision": "source-authoritative; matching local camera/picking bounds",
+      "lod": "shared geometry instanced inside bounded near districts",
+      "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
+      "provenance": "Art/PolyHaven/manifest.json"
+    },
+    "4090": {
+      "kind": "prop",
+      "asset": "PolyHaven/wooden_bucket_01/wooden_bucket_01_1k.gltf",
+      "dimensions": [
+        0.42,
+        0.34,
+        0.42
+      ],
+      "yawDegrees": 0,
+      "assembly": "single",
+      "attachment": "floor",
+      "providesSupport": false,
+      "reviewStatus": "provisional",
+      "reviewMethod": "Poly Haven CC0 replacement for the stylized library model; pending scene inspection",
+      "confidence": "realistic photoscanned PBR substitute; source silhouette and usage retained",
+      "notes": "",
+      "collision": "source-authoritative; matching local camera/picking bounds",
+      "lod": "shared geometry instanced inside bounded near districts",
+      "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
+      "provenance": "Art/PolyHaven/manifest.json"
+    },
+    "2590": {
+      "kind": "prop",
+      "asset": "PolyHaven/wooden_bowl_02/wooden_bowl_02_1k.gltf",
+      "dimensions": [
+        0.26,
+        0.13,
+        0.26
+      ],
+      "yawDegrees": 0,
+      "assembly": "single",
+      "attachment": "surface",
+      "providesSupport": false,
+      "reviewStatus": "provisional",
+      "reviewMethod": "Poly Haven CC0 replacement for the stylized library model; pending scene inspection",
+      "confidence": "realistic photoscanned PBR substitute; source silhouette and usage retained",
+      "notes": "",
+      "collision": "source-authoritative; matching local camera/picking bounds",
+      "lod": "shared geometry instanced inside bounded near districts",
+      "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
+      "provenance": "Art/PolyHaven/manifest.json"
+    },
+    "4323": {
+      "kind": "prop",
+      "asset": "PolyHaven/wooden_bowl_02/wooden_bowl_02_1k.gltf",
+      "dimensions": [
+        0.26,
+        0.13,
+        0.26
+      ],
+      "yawDegrees": 0,
+      "assembly": "single",
+      "attachment": "surface",
+      "providesSupport": false,
+      "reviewStatus": "provisional",
+      "reviewMethod": "Poly Haven CC0 replacement for the stylized library model; pending scene inspection",
+      "confidence": "realistic photoscanned PBR substitute; source silhouette and usage retained",
+      "notes": "",
+      "collision": "source-authoritative; matching local camera/picking bounds",
+      "lod": "shared geometry instanced inside bounded near districts",
+      "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
+      "provenance": "Art/PolyHaven/manifest.json"
     }
   }
 }
