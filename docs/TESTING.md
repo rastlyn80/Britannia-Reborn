@@ -1,3 +1,7 @@
+# Sea/plaster/merlon checkpoint — 26 October 2026
+
+428 Godot checks pass (ArtFidelityTests 54: sea bed/surface, no doubled river water, under-floor terrain drop, masonry merlon, studs vs window openings). Prepared parity, both GPU checks, native city traversal and world-object checks pass (the local server had stopped and was restarted with scripts/start-server.ps1). Converter tests remain blocked by Windows Application Control.
+
 # Visual upgrade checkpoint — 26 October 2026
 
 428 Godot-side checks pass; the 21 converter tests remain blocked by Windows Application Control (unsigned `Converter.dll`, 0x800711C7). `prepare-surfaces.ps1 -VerifyOnly`: 33 pinned maps (6 new, provider MD5 checked at download). GPU matrices/ownership pass in both renderers; native headless city traversal passes. Look/perf comparison used the same StreamingProfile route back to back after the display configuration changed mid-session (earlier 60 Hz runs are not directly comparable to the intervening 144 Hz-like runs).

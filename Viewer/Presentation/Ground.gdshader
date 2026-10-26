@@ -47,8 +47,11 @@ void fragment() {
  earth*=mix(0.72,1.22,clamp(dot(ground_tex,vec3(0.2126,0.7152,0.0722))*2.8,0.0,1.0));
  float source_grass=smoothstep(0.01,0.07,COLOR.g-COLOR.r);
  float blend_noise=(surface_noise(UV*2.7)-0.5)*0.23+(dot(meadow,vec3(0.33))-0.3)*0.5;
- float grass_weight=smoothstep(0.12,0.85,source_grass+blend_noise);
+ // Water land (blue source colour) is a silty bed below the sea surface.
+ float seabed=smoothstep(0.02,0.08,COLOR.b-COLOR.g);
+ float grass_weight=smoothstep(0.12,0.85,source_grass+blend_noise)*(1.0-seabed);
  vec3 ground=mix(earth,grass,grass_weight);
+ ground=mix(ground,mix(vec3(0.16,0.15,0.11),vec3(0.24,0.22,0.16),broad),seabed);
  vec2 paving=UV*vec2(3.3,4.0);
  paving.x+=mod(floor(paving.y),2.0)*0.5;
  vec2 stone_id=floor(paving);

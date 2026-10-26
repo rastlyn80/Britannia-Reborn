@@ -450,7 +450,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 			match kind:
 				"wall", "window":
 					var frame: Node3D = null
-					if kind=="window" and height>1.5 and opening.is_empty(): frame=fitted("Village/Window_Wide_Flat1.gltf",Vector3(.84,minf(1.4,height*.46)+.16,.30))
+					if kind=="window" and height>1.5 and opening.is_empty() and family != "plaster": frame=fitted("Village/Window_Wide_Flat1.gltf",Vector3(.84,minf(1.4,height*.46)+.16,.30))
 					visual = facade.panel(height,kind == "window",facade.plans.get(ordinal,{}),family,frame,opening)
 				"corner": visual = facade.corner(height,facade.corners.get(ordinal,{}),family)
 				"post": visual = fitted(asset,Vector3(0.15,height,0.15))
@@ -468,8 +468,9 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					visual.position.y = (group.min_z-float(s.z))*float(world.elevationScale)
 					if rule.get("axis") == "y": visual.rotation.y = PI/2
 				"trim", "beam":
-					if kind == "trim" and not bridge.is_empty():
-						# Low dressed-stone parapet with a projecting coping.
+					if kind == "trim" and (not bridge.is_empty() or family in ["stone","brick"]):
+						# Masonry parapets and merlons: solid dressed stone (or
+						# brick) with a projecting coping, not a plaster/timber kit wall.
 						visual = Node3D.new()
 						facade.piece(visual,Vector3(1.01,maxf(0.05,height-0.08),0.3),Vector3(0,(height-0.08)/2,0),family)
 						facade.piece(visual,Vector3(1.01,0.08,0.38),Vector3(0,height-0.04,0),family)
@@ -543,13 +544,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					plane.subdivide_depth = 3
 					visual = MeshInstance3D.new()
 					visual.mesh = plane
-					if water_material == null:
-						water_material = ShaderMaterial.new()
-						water_material.shader = preload("res://Presentation/Water.gdshader")
-						water_material.set_shader_parameter("source_origin",source_origin)
-						water_material.set_shader_parameter("wave_strength",0.0 if show_boundary_fragments else 1.0)
-						if shoreline: shoreline.apply(water_material)
-					visual.material_override = water_material
+					visual.material_override = water_surface()
 				_:
 					unresolved += 1
 					node.free()
@@ -599,6 +594,15 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 	if not bridge.is_empty(): entry.bridge_context = bridge.reason
 	report.append(entry)
 	return node
+
+func water_surface() -> ShaderMaterial:
+	if water_material == null:
+		water_material = ShaderMaterial.new()
+		water_material.shader = preload("res://Presentation/Water.gdshader")
+		water_material.set_shader_parameter("source_origin",source_origin)
+		water_material.set_shader_parameter("wave_strength",0.0 if show_boundary_fragments else 1.0)
+		if shoreline: shoreline.apply(water_material)
+	return water_material
 
 func save_report(path: String) -> void:
 	var file := FileAccess.open(path,FileAccess.WRITE)

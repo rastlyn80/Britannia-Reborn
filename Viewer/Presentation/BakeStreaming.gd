@@ -21,7 +21,7 @@ static func dependency_signature(path: String, visited: Dictionary) -> String:
  return signature
 
 func _initialize() -> void: call_deferred("run")
-func save_scene(node: Node3D, path: String, data: Resource = null) -> void:
+func save_scene(node: Node3D, path: String, data: Resource = null) -> bool:
  Compact.own(node,node)
  var packed := PackedScene.new()
  assert(packed.pack(node)==OK)
@@ -39,8 +39,13 @@ func save_scene(node: Node3D, path: String, data: Resource = null) -> void:
  assert(empty.pack(node)==OK)
  data.root_scene=empty
  var temporary := path.get_basename()+".pending.res"
- assert(ResourceSaver.save(data,temporary,ResourceSaver.FLAG_COMPRESS)==OK,"Prepared resource save failed")
- assert(DirAccess.rename_absolute(temporary,path)==OK,"Prepared resource installation failed")
+ # A running client keeps its resident districts open; Windows then refuses the
+ # replacement. Fail the bake rather than stamp stale geometry as current.
+ if ResourceSaver.save(data,temporary,ResourceSaver.FLAG_COMPRESS)!=OK:
+  push_error("Prepared resource save failed: "+path);return false
+ if DirAccess.rename_absolute(temporary,path)!=OK:
+  push_error("Prepared resource installation failed (close any running client using it): "+path);return false
+ return true
 
 func far_material(original: Material, frame: Vector2) -> ShaderMaterial:
  var material := ShaderMaterial.new()
@@ -139,7 +144,7 @@ func macros(data: RefCounted, frame: Vector2) -> Array:
   material.set_shader_parameter("source_origin",frame)
   node.material_override=material
   root.add_child(node)
-  save_scene(root,output.path_join("macro_%d_%d.res" % [at.x,at.y]))
+  if not save_scene(root,output.path_join("macro_%d_%d.res" % [at.x,at.y])):root.free();return []
   root.free()
   entries.append([at.x,at.y])
  return entries
@@ -193,20 +198,23 @@ func run() -> void:
    near.position=Vector3.ZERO
    var source: Dictionary=data.chunk(at)
    var far:=make_far(near,source.statics,frame,plan.reconstruction.catalog)
-   save_scene(far,output.path_join("far_"+tag+".res"))
+   var far_saved:=save_scene(far,output.path_join("far_"+tag+".res"))
    far.free()
+   if not far_saved:near.free();quit(1);return
    Compact.new().apply(near)
    var resource:=Prepared.new();resource.origin=at
    for tile in source.terrain: resource.land.append_array(PackedInt32Array([tile.id,tile.z]))
    for tile in source.statics: resource.statics.append_array(PackedInt32Array([tile.id,(int(tile.x)-at.x)|((int(tile.y)-at.y)<<6),tile.z,tile.hue]))
-   save_scene(near,output.path_join("near_"+tag+".res"),resource)
+   if not save_scene(near,output.path_join("near_"+tag+".res"),resource):near.free();quit(1);return
    print("STREAM BAKE: ",at," / ",resource.parts.size()," compact parts / ",near.get_meta("collision_triangles",0)," collision triangles")
    near.free()
    var marker:=FileAccess.open(stamp,FileAccess.WRITE);marker.store_string(signature);marker.close()
   entries.append([at.x,at.y])
   await process_frame
  var manifest: Dictionary=data.manifest
- var index: Dictionary={"schema":1,"signature":signature,"facet":1,"originX":manifest.originX,"originY":manifest.originY,"width":manifest.width,"height":manifest.height,"landData":manifest.landData,"staticData":manifest.staticData,"catalog":plan.reconstruction.catalog,"chunks":entries,"macros":macros(data,frame)}
+ var macro_entries:=macros(data,frame)
+ if macro_entries.is_empty():push_error("Regional horizon bake failed; prepared index not published");quit(1);return
+ var index: Dictionary={"schema":1,"signature":signature,"facet":1,"originX":manifest.originX,"originY":manifest.originY,"width":manifest.width,"height":manifest.height,"landData":manifest.landData,"staticData":manifest.staticData,"catalog":plan.reconstruction.catalog,"chunks":entries,"macros":macro_entries}
  var file:=FileAccess.open(index_path+".pending",FileAccess.WRITE);file.store_string(JSON.stringify(index));file.close()
  assert(DirAccess.rename_absolute(index_path+".pending",index_path)==OK)
  print("STREAM BAKE COMPLETE: ",entries.size()," independent districts; shared source topology / compact scenes / collision / regional horizons")

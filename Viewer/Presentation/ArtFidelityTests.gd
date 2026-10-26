@@ -136,5 +136,39 @@ func _initialize() -> void:
  check(is_equal_approx(contact.placement(stacked).offset.y,float(Reviews.entry(4014).dimensions[1])-1.2),"Stacked barrel rests on the reviewed barrel below")
  check(is_equal_approx(contact.placement(bed).offset.y,4.0+Geometry.CARPET_LIFT-4.4),"Bed on a legacy rug rests on the rug surface")
  check(contact.placement(stray).status=="unsupported-candidate","Bed with no source support remains an unresolved candidate")
+ # Sea land renders as a lowered bed under one water surface; river water
+ # objects are not doubled; floors at ground height never z-fight terrain.
+ var Terrain:=preload("res://Presentation/TerrainSurface.gd")
+ var sea_world:={"elevationScale":.2,"originX":800,"originY":800,"width":4,"height":2,"terrain":[],"statics":[{"x":801,"y":800,"z":-5,"id":6039},{"x":803,"y":801,"z":0,"id":1993}],"landData":{"168":{"name":"water"},"3":{"name":"grass"}},"staticData":{"6039":{"name":"water","height":0},"1993":{"name":"wooden plank","height":1,"flags":0x200}}}
+ for y in 2:
+  for x in 4:sea_world.terrain.append({"x":800+x,"y":800+y,"z":-5 if x<2 else 0,"id":168 if x<2 else 3})
+ var sea:=Terrain.new();sea.index(sea_world)
+ check(is_equal_approx(sea.z(Vector2i(800,800)),-1.0-Terrain.SEABED_DEPTH) and is_equal_approx(sea.raw_z(Vector2i(800,800)),-1.0),"Sea land is presented as a bed below its canonical source surface")
+ var water_mesh: ArrayMesh=sea.sea_mesh(Rect2i(800,800,4,2))
+ check(water_mesh!=null and water_mesh.surface_get_array_len(0)==18,"One sea quad per open-water cell, none where a river water object already exists")
+ check(sea.z(Vector2i(803,801))<0.0 and is_equal_approx(sea.raw_z(Vector2i(803,801)),0.0),"Terrain under a ground-level plank floor drops below the deck")
+ # Stone wall tops are masonry, never the plaster/timber kit model.
+ var merlon_world:={"elevationScale":.2,"originX":900,"originY":900,"terrain":[],"statics":[{"x":900,"y":900,"z":40,"id":99}],"staticData":{"99":{"name":"stone wall","height":5,"flags":0x50}},"landData":{}}
+ var merlon_recon:=preload("res://Presentation/Reconstruction.gd").new()
+ merlon_recon.index(merlon_world)
+ var merlon: Node3D=merlon_recon.build(merlon_world.statics[0],merlon_world,0)
+ var kit:=0
+ for node in merlon.find_children("*","Node3D",true,false):
+  if node.scene_file_path.contains("Village/"):kit+=1
+ check(kit==0 and merlon.find_children("*","MeshInstance3D",true,false).size()==2,"Stone merlon is solid masonry with a coping, not a kit wall")
+ merlon.free()
+ # Close studding never crosses a source window opening.
+ var tudor:=preload("res://Presentation/Facade.gd").new()
+ var window_panel:=tudor.panel(4.0,true,{"offset":1,"length":3,"run":1},"plaster")
+ var sill:=minf(1.05,4.0*0.28);var top_of_opening:=sill+minf(1.4,4.0*0.46)
+ var crossing:=false
+ var studs:=0
+ for mesh in window_panel.find_children("*","MeshInstance3D",true,false):
+  var box: Vector3=mesh.mesh.size if mesh.mesh is BoxMesh else Vector3.ZERO
+  var oak: bool=mesh.material_override==tudor.material("oak") or mesh.material_override==tudor.capless_materials.get("oak")
+  if oak:studs+=int(absf(box.x-0.11)<0.001)
+  if oak and absf(box.x-0.11)<0.001 and mesh.position.y-box.y/2<top_of_opening-0.01 and mesh.position.y+box.y/2>sill+0.01:crossing=true
+ check(studs==4 and not crossing,"Tudor studs stop at the sill and head of a window opening")
+ window_panel.free()
  print("ART FIDELITY TESTS: ",checks," checks / ",failures," failures")
  quit(1 if failures else 0)

@@ -76,6 +76,14 @@ func build_chunk(at: Vector2i,tree: SceneTree, physical: bool = false) -> Node3D
  terrain.mesh=surface.build(rect)
  terrain.material_override=terrain_material
  root.add_child(terrain)
+ var sea_surface:ArrayMesh=surface.sea_mesh(rect)
+ if sea_surface:
+  var sea:=MeshInstance3D.new()
+  sea.name="SeaSurface"
+  sea.mesh=sea_surface
+  sea.material_override=reconstruction.water_surface()
+  sea.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+  root.add_child(sea)
  var collider:=preload("res://Presentation/CollisionBuilder.gd").new()
  var before:=reconstruction.unresolved
  for i in chunks.get(at,[]):

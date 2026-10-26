@@ -2,6 +2,15 @@ extends RefCounted
 # Canonical input is immutable. The displayed surface removes narrow natural
 # spurs and interpolates banks without overshoot; broad walkable ground is kept.
 const SUBDIVISIONS := 4
+# Open water in map.mul is land named "water" at the sea surface. Present it as a
+# shallow bed under a separate water surface; source Z stays canonical.
+const SEABED_DEPTH := 1.5
+var water_cells := {}
+var static_water := {}
+# Ground directly under a constructed floor at the same height is lowered a few
+# centimetres so dock/plank tops never z-fight with the terrain they cover.
+const COVERED_DROP := 0.06
+var covered := {}
 var samples := {}
 var land_data := {}
 var world: Dictionary
@@ -21,6 +30,9 @@ func index(input: Dictionary, shore = null) -> void:
  floor_overrides.clear()
  wooden_cells.clear()
  source_ordinals.clear()
+ water_cells.clear()
+ static_water.clear()
+ covered.clear()
  for i in world.terrain.size():
   var tile: Dictionary = world.terrain[i]
   samples[Vector2i(tile.x,tile.y)] = tile
@@ -28,12 +40,20 @@ func index(input: Dictionary, shore = null) -> void:
  for tile in world.get("terrainHalo",[]):
   var cell := Vector2i(tile.x,tile.y)
   if not samples.has(cell): samples[cell] = tile
+ for cell in samples:
+  if str(land_data.get(str(int(samples[cell].id)),{}).get("name","")).to_lower() == "water": water_cells[cell] = true
  # Zero-height source board floors own the top surface where map.mul also
  # supplies the same flat floor. Keep the canonical samples, emit only one mesh.
  var static_data = world.get("staticData",{})
  if static_data is Dictionary:
   for source in world.get("statics",[]):
    var detail: Dictionary = static_data.get(str(int(source.id)),{})
+   var floor_name := str(detail.get("name","")).to_lower()
+   if floor_name == "water": static_water[Vector2i(source.x,source.y)] = true
+   if (floor_name in ["wooden boards","wooden planks","wooden plank","wooden bridge","cobblestones","stone pavers","stone pavers dark","marble floor","flagstones"] or int(detail.get("flags",0)) & 0x200) and int(detail.get("height",0)) <= 1:
+    var under := Vector2i(source.x,source.y)
+    if samples.has(under) and absi(int(samples[under].z)-int(source.z)) <= 1:
+     for corner in [Vector2i.ZERO,Vector2i.RIGHT,Vector2i.DOWN,Vector2i.ONE]: covered[under+corner] = true
    if detail.get("name","").to_lower() not in ["wooden boards","wooden planks","wooden plank","wooden bridge","cobblestones","stone pavers","stone pavers dark","marble floor","flagstones"] or int(detail.get("height",0)) != 0: continue
    var cell := Vector2i(source.x,source.y)
    var flat := true
@@ -89,7 +109,7 @@ func raw_z(cell: Vector2i) -> float:
 func z(cell: Vector2i) -> float:
  var bounded := Vector2i(clampi(cell.x,int(world.originX),int(world.originX)+int(world.width)-1),clampi(cell.y,int(world.originY),int(world.originY)+int(world.height)-1))
  var key := cell if samples.has(cell) else bounded
- return float(peak_repairs.get(key,samples[key].z))*float(world.elevationScale)
+ return float(peak_repairs.get(key,samples[key].z))*float(world.elevationScale)-(SEABED_DEPTH if water_cells.has(key) else 0.0)-(COVERED_DROP if covered.has(key) else 0.0)
 static func curve(a: float,b: float,c: float,d: float,t: float) -> float:
  if absf(c-b) <= 0.8: return lerpf(b,c,t)
  var left := b-a
@@ -168,3 +188,18 @@ func build(region: Rect2i = Rect2i()) -> ArrayMesh:
       surface.add_vertex(Vector3(at.x-origin.x,cached(grid),at.y-origin.y))
  surface.generate_tangents()
  return surface.commit()
+
+# Flat sea surface over water land at its source elevation, one quad per cell.
+func sea_mesh(region: Rect2i) -> ArrayMesh:
+ var surface := SurfaceTool.new()
+ surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+ var origin := Vector2i(int(world.originX),int(world.originY))
+ var count := 0
+ for cell in water_cells:
+  if not region.has_point(cell) or not source_ordinals.has(cell) or static_water.has(cell): continue
+  var level := float(samples[cell].z)*float(world.elevationScale)
+  for offset in [Vector2i.ZERO,Vector2i.RIGHT,Vector2i.ONE,Vector2i.ZERO,Vector2i.ONE,Vector2i.DOWN]:
+   surface.set_normal(Vector3.UP)
+   surface.add_vertex(Vector3(cell.x+offset.x-origin.x,level,cell.y+offset.y-origin.y))
+  count += 1
+ return surface.commit() if count > 0 else null

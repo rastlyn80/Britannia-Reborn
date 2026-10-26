@@ -12,7 +12,13 @@ func index(world: Dictionary, catalog: Dictionary) -> void:
  terrain.clear()
  field.clear()
  bounds = Rect2i(int(world.originX),int(world.originY),int(world.width),int(world.height))
- for tile in world.terrain: terrain[Vector2i(tile.x,tile.y)] = float(tile.z)*float(world.elevationScale)
+ var land_data = world.get("landData",{})
+ for tile in world.terrain:
+  terrain[Vector2i(tile.x,tile.y)] = float(tile.z)*float(world.elevationScale)
+  # Open water land: surface at its source Z over the presented shallow bed.
+  if land_data is Dictionary and str(land_data.get(str(int(tile.id)),{}).get("name","")).to_lower() == "water":
+   wet[Vector2i(tile.x,tile.y)] = float(tile.z)*float(world.elevationScale)
+   terrain[Vector2i(tile.x,tile.y)] -= preload("res://Presentation/TerrainSurface.gd").SEABED_DEPTH
  for tile in world.statics:
   if catalog.get(str(int(tile.id)),{}).get("kind") == "water": wet[Vector2i(tile.x,tile.y)] = float(tile.z)*float(world.elevationScale)
  var to_wet := {}

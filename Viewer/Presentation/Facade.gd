@@ -12,6 +12,7 @@ var cap_extensions := {}
 var capless_materials := {}
 var glass_material: StandardMaterial3D
 var iron_material: StandardMaterial3D
+var leaded_material: ShaderMaterial
 
 func index(world: Dictionary, catalog: Dictionary) -> void:
 	plans.clear()
@@ -139,7 +140,7 @@ func corner(height: float, plan: Dictionary, family: String) -> Node3D:
 	for direction in directions:
 		var size := Vector3(0.61,height,0.18) if direction.x != 0 else Vector3(0.18,height,0.61)
 		piece(root,size,Vector3(direction.x*0.25,height/2,direction.y*0.25),family)
-	piece(root,Vector3(0.14,height,0.14),Vector3(0,height/2,0),"wood" if family in ["wood","plaster"] else family)
+	piece(root,Vector3(0.14,height,0.14),Vector3(0,height/2,0),"oak" if family == "plaster" else ("wood" if family == "wood" else family))
 	return root
 
 func finish_run(cells: Array) -> void:
@@ -152,13 +153,14 @@ func material(kind: String) -> ShaderMaterial:
 	if not materials.has(kind):
 		var m := ShaderMaterial.new()
 		m.shader = preload("res://Presentation/Facade.gdshader")
-		var family := "WoodTrim" if kind == "wood" else ("UnevenBrick" if kind == "brick" else ("RockTrim" if kind == "stone" else "Plaster"))
+		var family := "WoodTrim" if kind in ["wood","oak"] else ("UnevenBrick" if kind == "brick" else ("RockTrim" if kind == "stone" else "Plaster"))
 		m.set_shader_parameter("source_texture",load("res://Art/Quaternius/Village/T_"+family+"_BaseColor.png"))
 		m.set_shader_parameter("surface_normal",load("res://Art/Quaternius/Village/T_"+family+"_Normal.png"))
-		m.set_shader_parameter("palette",Color("5e4631") if kind == "wood" else (Color("aaa79c") if kind == "stone" else (Color("ad9276") if kind == "brick" else Color("ded2b7"))))
-		m.set_shader_parameter("wood",kind == "wood")
+		# "oak" is the near-black weathered framing of close-studded houses.
+		m.set_shader_parameter("palette",Color("5e4631") if kind == "wood" else (Color("2f2722") if kind == "oak" else (Color("aaa79c") if kind == "stone" else (Color("ad9276") if kind == "brick" else Color("f1ede4")))))
+		m.set_shader_parameter("wood",kind in ["wood","oak"])
 		m.set_shader_parameter("masonry",kind in ["stone","brick"])
-		preload("res://Presentation/SurfaceLibrary.gd").bind(m,"surface","brown_planks_03" if kind == "wood" else (("medieval_blocks_03" if kind=="stone" else "medieval_red_brick") if kind in ["stone","brick"] else "plastered_wall_02"))
+		preload("res://Presentation/SurfaceLibrary.gd").bind(m,"surface","brown_planks_03" if kind in ["wood","oak"] else (("medieval_blocks_03" if kind=="stone" else "medieval_red_brick") if kind in ["stone","brick"] else "plastered_wall_02"))
 		materials[kind] = m
 	return materials[kind]
 
@@ -188,6 +190,8 @@ func panel(height: float, window: bool, plan: Dictionary, family: String, frame:
 		if frame:
 			frame.position=Vector3(0,sill-.08,0)
 			root.add_child(frame)
+		elif family == "plaster":
+			leaded_window(root,sill,opening)
 		else:
 			for y in [sill,sill+opening]: piece(root,Vector3(0.82,0.09,0.27),Vector3(0,y,0),"wood")
 			for x in [-0.33,0.33]: piece(root,Vector3(0.07,opening,0.24),Vector3(x,sill+opening/2,0),"wood")
@@ -205,7 +209,9 @@ func panel(height: float, window: bool, plan: Dictionary, family: String, frame:
 			glass.material_override = glass_material
 	else:
 		piece(root,Vector3(1.01,h,0.18),Vector3(0,h/2,0),family)
-	if h > 0.6 and family in ["wood","plaster"]:
+	if h > 0.6 and family == "plaster":
+		tudor_frame(root,h,plan,window and h > 1.5 and masonry_opening.is_empty(),sill,opening)
+	elif h > 0.6 and family == "wood":
 		piece(root,Vector3(1,0.22,0.22),Vector3(0,0.11,0),"stone")
 		# Framing stands proud of the lime infill so it reads in raking light.
 		for y in [0.3,h-0.08]: piece(root,Vector3(1,0.15,0.29),Vector3(0,y,0),"wood")
@@ -214,9 +220,52 @@ func panel(height: float, window: bool, plan: Dictionary, family: String, frame:
 	for side in [-1,1]:
 		if not plan.get("extend_left" if side < 0 else "extend_right",false): continue
 		piece(root,Vector3(0.51,h,0.18),Vector3(side*0.75,h/2,0),family)
-		if h > 0.6 and family in ["wood","plaster"]:
+		if h > 0.6 and family == "plaster":
+			piece(root,Vector3(0.51,0.16,0.30),Vector3(side*0.75,0.30,0),"oak")
+			piece(root,Vector3(0.51,0.24,0.36),Vector3(side*0.75,h-0.12,0),"oak")
+			piece(root,Vector3(0.11,h-0.6,0.28),Vector3(side*0.75,h/2,0),"oak")
+		elif h > 0.6 and family == "wood":
 			for y in [0.3,h-0.08]: piece(root,Vector3(0.51,0.15,0.29),Vector3(side*0.75,y,0),"wood")
 	return root
+
+# Close-studded framing after surviving York timber houses: dark oak studs
+# every half metre standing proud of white rough-cast, a sill rail, a heavy
+# bressumer at the floor line, run-end posts and occasional braces. Studs
+# never cross a source window opening.
+func tudor_frame(root: Node3D, h: float, plan: Dictionary, window: bool, sill: float, opening: float) -> void:
+	piece(root,Vector3(1,0.22,0.22),Vector3(0,0.11,0),"stone")
+	piece(root,Vector3(1,0.16,0.30),Vector3(0,0.30,0),"oak")
+	piece(root,Vector3(1.02,0.24,0.36),Vector3(0,h-0.12,0),"oak")
+	var rail := clampf(sill,0.6,h-0.6)
+	piece(root,Vector3(1,0.12,0.28),Vector3(0,rail,0),"oak")
+	var top := h-0.24
+	for x in [-0.25,0.25]:
+		if window:
+			if sill-0.38 > 0.05: piece(root,Vector3(0.11,sill-0.38,0.28),Vector3(x,0.38+(sill-0.38)/2,0),"oak")
+			var head := sill+opening
+			if top-head > 0.05: piece(root,Vector3(0.11,top-head,0.28),Vector3(x,head+(top-head)/2,0),"oak")
+		else:
+			piece(root,Vector3(0.11,top-0.38,0.28),Vector3(x,0.38+(top-0.38)/2,0),"oak")
+	if plan.get("offset",0) == 0: piece(root,Vector3(0.17,h,0.32),Vector3(-0.42,h/2,0),"oak")
+	if plan.get("offset",0) == plan.get("length",1)-1: piece(root,Vector3(0.17,h,0.32),Vector3(0.42,h/2,0),"oak")
+	# Diagonal braces in the upper band of every fourth solid bay.
+	if not window and int(plan.get("offset",0))%4 == 1 and top-rail > 0.6:
+		var span := Vector2(0.9,top-rail-0.1)
+		var brace := geometry.box(root,Vector3(span.length(),0.12,0.29),Vector3(0,(rail+top)/2,0),"ffffff")
+		brace.rotation.z = atan2(span.y,span.x)*(1.0 if int(plan.get("run",0))%2 == 0 else -1.0)
+		brace.material_override = material("oak")
+
+# Leaded lights in a heavy oak frame with a central mullion and transom.
+func leaded_window(root: Node3D, sill: float, opening: float) -> void:
+	for y in [sill,sill+opening]: piece(root,Vector3(0.88,0.10,0.30),Vector3(0,y,0),"oak")
+	for x in [-0.39,0.39]: piece(root,Vector3(0.10,opening,0.30),Vector3(x,sill+opening/2,0),"oak")
+	piece(root,Vector3(0.06,opening,0.16),Vector3(0,sill+opening/2,0),"oak")
+	piece(root,Vector3(0.78,0.05,0.16),Vector3(0,sill+opening*0.62,0),"oak")
+	if leaded_material == null:
+		leaded_material = ShaderMaterial.new()
+		leaded_material.shader = preload("res://Presentation/LeadedGlass.gdshader")
+	var glass := geometry.box(root,Vector3(0.70,opening-0.06,0.02),Vector3(0,sill+opening/2,0),"ffffff")
+	glass.material_override = leaded_material
 
 # Source-art masonry openings: a barred arrow slit or a narrow leaded arch cut
 # through the wall itself. No timber frame, plaster or glazed casement is added.
