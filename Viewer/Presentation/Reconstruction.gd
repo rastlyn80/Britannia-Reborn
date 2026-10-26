@@ -591,8 +591,12 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					if name.contains("sapling"): size = Vector3(1,1.9,1)
 					if name.contains("cedar"): size = Vector3(2.6,6.2,2.6)
 					if kind == "canopy": asset = "Nature/CommonTree_1.gltf"
-					visual = fitted(asset,size)
-					visual.rotation.y = fmod(float(int(s.x)*17+int(s.y)*31),TAU)
+					# Owner-licensed converted trees when present locally; CC0 library otherwise.
+					var local_tree: Node3D = preload("res://Presentation/LocalTrees.gd").build(name,int(s.x),int(s.y)) if kind == "tree" and preload("res://Presentation/LocalTrees.gd").available() else null
+					if local_tree: visual = local_tree
+					else:
+						visual = fitted(asset,size)
+						visual.rotation.y = fmod(float(int(s.x)*17+int(s.y)*31),TAU)
 				"grass": visual = fitted(asset,Vector3(0.65,0.25+0.1*(int(s.id)%3),0.65))
 				"flower": visual = fitted(asset,Vector3(0.55,0.28,0.55))
 				"planter":

@@ -71,6 +71,7 @@ func far_material(original: Material, frame: Vector2) -> ShaderMaterial:
  material.set_shader_parameter("source_origin",frame)
  return material
 
+var catalog_names: Dictionary={}
 func make_far(near: Node3D, sources: Array, frame: Vector2, catalog: Dictionary) -> Node3D:
  var result := Node3D.new()
  for node in near.get_children():
@@ -86,6 +87,29 @@ func make_far(near: Node3D, sources: Array, frame: Vector2, catalog: Dictionary)
   if catalog.get(str(int(source.id)),{}).get("kind","")=="tree": trees.append({"tile":source})
  if not trees.is_empty():
   var recon:=preload("res://Presentation/Reconstruction.gd").new()
+  var local_trees:=preload("res://Presentation/LocalTrees.gd")
+  if local_trees.available():
+   # Owner-licensed trees: per-variant coarse surfaces, same placement as near.
+   var by_variant: Dictionary={}
+   for record in trees:
+    var tile: Dictionary=record.tile
+    var tree_name:=str(catalog_names.get(str(int(tile.id)),"tree"))
+    var variant:=local_trees.pick(tree_name,int(tile.x),int(tile.y))
+    if variant.is_empty():continue
+    if not by_variant.has(variant):by_variant[variant]=[]
+    by_variant[variant].append(Transform3D(Basis.IDENTITY,Vector3(tile.x-frame.x+0.5,float(tile.z)*0.2,tile.y-frame.y+0.5))*local_trees.placement(tree_name,variant,int(tile.x),int(tile.y)))
+   for variant in by_variant:
+    for part in local_trees.far_surfaces(variant):
+     var far_tree:=preload("res://Presentation/InstancedPatch.gd").new()
+     far_tree.source_mesh=part.mesh
+     far_tree.material_override=local_trees.material(variant,part.leaves)
+     far_tree.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+     far_tree.instance_data=preload("res://Presentation/InstancedPatch.gd").encode(by_variant[variant])
+     var bounds: AABB=by_variant[variant][0]*part.mesh.get_aabb()
+     for transform in by_variant[variant]:bounds=bounds.merge(transform*part.mesh.get_aabb())
+     far_tree.baked_bounds=bounds.grow(0.25)
+     result.add_child(far_tree)
+   return result
   var model: Node3D=recon.fitted("Nature/CommonTree_3.gltf",Vector3(3.2,5.8,3.2))
   var parts: Array=[]
   preload("res://Presentation/CityOverview.gd").new().collect_meshes(model,Transform3D.IDENTITY,parts)
@@ -162,6 +186,8 @@ func run() -> void:
     push_error("Surface texture is not imported: "+str(map.file)+". Run the Godot import (scripts/verify.ps1) first.");quit(1);return
  signature=Rules.fingerprint(directory)
  signature+=dependency_signature("res://Presentation/BakeStreaming.gd",{})
+ # Optional local (owner-licensed) art changes the baked scenes too.
+ signature+=preload("res://Presentation/LocalTrees.gd").signature()
  signature=signature.sha256_text()
  output=directory.path_join("prepared")
  DirAccess.make_dir_recursive_absolute(output)
@@ -185,6 +211,7 @@ func run() -> void:
  var plan:=preload("res://Presentation/RegionalContext.gd").new()
  plan.prepare(data)
  var frame:=Vector2(plan.world.originX,plan.world.originY)
+ for key in data.manifest.staticData:catalog_names[key]=str(data.manifest.staticData[key].get("name","tree"))
  plan.reconstruction.source_origin=frame
  preload("res://Presentation/SurfaceLibrary.gd").source_origin=frame
  plan.terrain_material.set_shader_parameter("source_origin",frame)

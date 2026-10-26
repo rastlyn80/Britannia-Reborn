@@ -1,3 +1,7 @@
+# Realistic trees from owner-licensed packs (local only) — 26 October 2026
+
+46 Tree Creator trees from the owner's Unity Asset Store packs are converted locally (UnityPy-based `scripts/import-unity-trees.py`) with generated detail levels; Britain's 10,448 trees map by UO name to suitable species (cedar, willow, oak, birch saplings, elm/maple/beech, dead trees) and the distant layer uses the coarsest level of the same variants. Without the local packs the CC0 trees remain. Same-route Forward+ profile: p50 16.8→17.3 ms, p95 21.0→25.4 ms, GPU p99 21.6→26.7 ms, worst 91→80 ms; tree LOD/shadow cost reduction is still open. Grass tufts and bushes are still the stylized library. 442 Godot checks, parity, GPU and native city checks pass.
+
 # Poly Haven props — 26 October 2026
 
 Stylized props are being replaced with realistic CC0 Poly Haven photoscans (ten models, 53 pinned files). Barrels, crates, stools and tables are reviewed in tavern, castle and barrel-stack captures; lantern, candlestick, bucket, bowl and plate entries are provisional. Chairs, benches, bookcases, beds, bags and chests keep the previous library models where Poly Haven has no period match. Armour names ("platemail", "plate helm") no longer match the dish rule. 442 Godot checks, parity, GPU, native city and object checks pass.

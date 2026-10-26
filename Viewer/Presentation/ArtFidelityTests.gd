@@ -196,5 +196,18 @@ func _initialize() -> void:
  check(is_equal_approx(veg_recon.vegetation_ground(veg_world.statics[1],veg_world),1.0),"Flower on a raised bed roots on the bed top")
  check(is_equal_approx(veg_recon.vegetation_ground(veg_world.statics[2],veg_world),veg_terrain.height_at(Vector2(1202.5,1201.5))),"Tree on a slope roots on the rendered terrain at its tile centre")
  check(is_nan(veg_recon.vegetation_ground(veg_world.statics[3],veg_world)),"Vegetation far above any ground keeps its source height")
+ # Owner-licensed trees are optional: absent -> CC0 fallback; present ->
+ # uniformly scaled, bottom-centred and deterministic per source cell.
+ var LocalTrees:=preload("res://Presentation/LocalTrees.gd")
+ if not LocalTrees.available():
+  check(LocalTrees.build("oak tree",1500,1600)==null,"Without local licensed trees the CC0 library trees remain in use")
+ else:
+  var first: Node3D=LocalTrees.build("oak tree",1500,1600)
+  var again: Node3D=LocalTrees.build("oak tree",1500,1600)
+  var model: MeshInstance3D=first.get_child(0)
+  var bottom:=(model.transform*model.mesh.get_aabb()).position.y
+  var scale_axes:=model.transform.basis.get_scale()
+  check(first.get_meta("local_tree")==again.get_meta("local_tree") and absf(bottom)<0.01 and is_equal_approx(scale_axes.x,scale_axes.y) and is_equal_approx(scale_axes.y,scale_axes.z),"Local licensed trees are deterministic, uniformly scaled and rooted at their source cell")
+  first.free();again.free()
  print("ART FIDELITY TESTS: ",checks," checks / ",failures," failures")
  quit(1 if failures else 0)
