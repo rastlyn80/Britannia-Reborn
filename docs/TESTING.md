@@ -48,3 +48,8 @@ City scope correction (2026-10-26): scripts/prepare-britain.ps1 derives bounds f
 
 
 Britain mapping/seams: scripts/verify.ps1 passes 357 checks, including 20 new seam/unknown-family regressions. scripts/test-britain.ps1 verifies 1,597 graphic IDs and 136,662 unique city source assignments plus exact all-record source parity for 88 visible and 42 context chunks. RegionalVisualCheck exercises nine joined chunks, six retained neighbors after crossing, exact terrain reload and zero unmapped records under Forward+. These are offline source/rendering checks, not expanded multiplayer. Evidence and reproduction: BRITAIN_MAPPING_AND_SEAMS.md.
+
+
+## Prepared streaming and original radar — 26 October 2026
+
+The current suite passes 397 offline checks, with zero build/runtime warnings or errors. It includes packed native source, headless instance roundtrip, transitive rule-cache invalidation and original-radar palette/Z/hue/zoom regressions. scripts/test-streaming.ps1 (also -Compatibility) exercises 14 prepared destinations, bounded residency and repeated-route memory plateau, recording actual wall-clock frame tails rather than clamped game delta. PreparedAudit.gd compares every native city record and incremental/complete scene placement. CityRenderCheck checks actual GPU matrices and 25,200 near/far ownership pixels. LiveCityCheck enters the real server and checks native door use, 62 accepted steps, exact server XYZ, actual GUI-wheel radar zoom with unchanged camera, map textures/coordinates and F6 recovery. Run both renderers; see STREAMING_AND_MINIMAP.md for evidence and remaining hitches.

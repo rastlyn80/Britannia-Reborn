@@ -4,7 +4,9 @@ extends RefCounted
 var batches: Dictionary = {}
 var materials: Dictionary = {}
 var meshes: Array = []
-func collect(node: Node3D, parent: Transform3D) -> void:
+var distant: Dictionary = {}
+func collect(node: Node3D, parent: Transform3D, far: bool = false) -> void:
+ if node.has_meta("kind"): far = node.get_meta("kind") in ["wall","window","corner","gable","trim","beam","arch","pillar","post","floor","landing","stairs","roof","door","fence","asset"]
  if node.get_meta("kind","") in ["tree","sign","water"]: return
  var transform := parent*node.transform
  if node is MeshInstance3D and node.mesh:
@@ -14,16 +16,17 @@ func collect(node: Node3D, parent: Transform3D) -> void:
    if material is ShaderMaterial and ("Nature" in material.shader.resource_path or "Water" in material.shader.resource_path): return
   for i in node.mesh.get_surface_count():
    var material: Material = node.get_active_material(i)
-   var key := material.get_instance_id() if material else 0
+   var key := str(material.get_instance_id() if material else 0)+":"+str(far)
    if not batches.has(key):
     var tool := SurfaceTool.new()
     tool.begin(Mesh.PRIMITIVE_TRIANGLES)
     batches[key] = tool
     materials[key] = material
+    distant[key] = far
    batches[key].append_from(node.mesh,i,transform)
   meshes.append(node)
  for child in node.get_children():
-  if child is Node3D: collect(child,transform)
+  if child is Node3D: collect(child,transform,far)
 func apply(root: Node3D) -> void:
  # Terrain is already one draw surface. Preserve physics nodes and sign roots.
  for child in root.get_children():
@@ -34,6 +37,7 @@ func apply(root: Node3D) -> void:
   if mesh == null: continue
   var instance := MeshInstance3D.new()
   instance.name = "BatchedStatic"
+  instance.set_meta("distant",distant[key])
   instance.mesh = mesh
   instance.material_override = materials[key]
   root.add_child(instance)

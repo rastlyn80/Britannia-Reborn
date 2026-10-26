@@ -24,7 +24,8 @@ try {
   if ($Synthetic) { & $Godot @renderArgs --path "$PSScriptRoot\Viewer" -- '--world=res://world.json' }
   elseif (!$ReferencePatch) {
     if (!(Test-Path "$PSScriptRoot/outputs/britain/atlas.json")) { & "$PSScriptRoot/scripts/prepare-britain.ps1" }
-    & "$PSScriptRoot/scripts/bake-britain.ps1"
+    & "$PSScriptRoot/scripts/prepare-streaming.ps1"
+    & "$PSScriptRoot/scripts/prepare-minimap.ps1"
     & $Godot @renderArgs --path "$PSScriptRoot/Viewer" -- --city
   }
   elseif (Test-Path $play) { & $Godot @renderArgs --path "$PSScriptRoot\Viewer" -- "--world=$play" }

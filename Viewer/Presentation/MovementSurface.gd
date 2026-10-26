@@ -20,6 +20,24 @@ func index(world: Dictionary) -> void:
 		if not statics.has(cell): statics[cell] = []
 		statics[cell].append(tile)
 
+func add_chunk(source: Dictionary) -> void:
+	if source.has("terrain_index"):
+		terrain.merge(source.terrain_index,true)
+		statics.merge(source.static_index,true)
+		return
+	for tile in source.terrain: terrain[Vector2i(tile.x,tile.y)] = tile
+	for tile in source.statics:
+		var cell := Vector2i(tile.x,tile.y)
+		if not statics.has(cell): statics[cell]=[]
+		statics[cell].append(tile)
+
+func remove_chunk(origin: Vector2i) -> void:
+	for y in range(origin.y,origin.y+64):
+		for x in range(origin.x,origin.x+64):
+			var cell := Vector2i(x,y)
+			terrain.erase(cell)
+			statics.erase(cell)
+
 func supported(cell: Vector2i, z: int) -> bool:
 	for item in dynamic_items.values():
 		if Vector2i(item.x,item.y) != cell: continue

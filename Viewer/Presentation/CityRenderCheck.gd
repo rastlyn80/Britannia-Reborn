@@ -2,6 +2,19 @@ extends SceneTree
 # Owned-data graphical check, separate from native multiplayer tests. In this
 # reference view the wall probe is entirely inside an installed detail district.
 var scene: Node3D
+var instances_checked:=0
+func check_instances(node: Node) -> bool:
+ if node.get_script()==preload("res://Presentation/InstancedPatch.gd"):
+  if node.multimesh==null:return false
+  for i in [0,node.multimesh.instance_count-1]:
+   var a: PackedFloat32Array=node.instance_data
+   var j: int=i*12
+   var expected:=Transform3D(Basis(Vector3(a[j],a[j+4],a[j+8]),Vector3(a[j+1],a[j+5],a[j+9]),Vector3(a[j+2],a[j+6],a[j+10])),Vector3(a[j+3],a[j+7],a[j+11]))
+   if not node.multimesh.get_instance_transform(i).is_equal_approx(expected):return false
+   instances_checked+=1
+ for child in node.get_children():
+  if not check_instances(child):return false
+ return true
 func _initialize() -> void: call_deferred("run")
 func snapshot() -> Image:
  for frame in 8: await process_frame
@@ -15,6 +28,10 @@ func run() -> void:
  while not scene.world_ready:
   if Time.get_ticks_msec()-started>180000: push_error("City render startup timeout"); quit(1); return
   await process_frame
+ while not scene.city_stream.settled():await process_frame
+ if not check_instances(scene.city_stream) or instances_checked==0:
+  push_error("Prepared GPU instance transforms differ from saved CPU placement");quit(1);return
+ print("INSTANCE GPU PASS: ",instances_checked," first/last matrices match native prepared placement")
  scene.set_process(false)
  # Compare ownership, not temporal AA/AO history or moving sky irradiance.
  root.use_taa = false

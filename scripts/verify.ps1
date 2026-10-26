@@ -10,6 +10,10 @@ $env:LOCALAPPDATA = $env:APPDATA
 if ($LASTEXITCODE) { throw 'Asset import failed' }
 & $godot --headless --path "$root\Viewer" --script res://Network/LoginTests.gd
 if ($LASTEXITCODE) { throw 'Protocol tests failed' }
+& $godot --headless --path "$root/Viewer" --script res://Presentation/MinimapTests.gd
+if ($LASTEXITCODE) { throw 'Native radar/minimap tests failed' }
+& $godot --headless --path "$root/Viewer" --script res://Presentation/PreparedTests.gd
+if ($LASTEXITCODE) { throw 'Prepared resource/source/instancing checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/LiveDistrictTests.gd
 if ($LASTEXITCODE) { throw 'Live district readiness checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/RegionalSeamTests.gd

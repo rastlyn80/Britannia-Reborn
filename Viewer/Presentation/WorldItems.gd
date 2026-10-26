@@ -18,8 +18,7 @@ func configure(owner_scene: Node3D, connection: Node) -> void:
  if FileAccess.file_exists("res://item-definitions.local.json"):
   var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://item-definitions.local.json"))
   if parsed is Dictionary: definitions = parsed
- for tile in scene.world.statics:
-  source_records[Vector4i(tile.x,tile.y,tile.z,tile.id)] = true
+ refresh_source_records()
  session.world_item_changed.connect(upsert)
  session.world_item_removed.connect(remove)
  session.ended.connect(clear)
@@ -395,3 +394,8 @@ func suppress_streamed_posts() -> void:
     post.hide()
     hidden.append(post)
   suppressed_posts[serial] = hidden
+
+func refresh_source_records() -> void:
+ source_records.clear()
+ for tile in scene.world.statics:
+  source_records[Vector4i(tile.x,tile.y,tile.z,tile.id)] = true

@@ -6,7 +6,7 @@ Britannia Reborn is an independent, open-source project exploring how Britannia'
 
 This is an early playable proof of concept under active development. It is not a complete game, an official Ultima Online client or a production-ready shard. The live client now streams the converted city of Britain in Trammel. Native population and the verified shopping/inventory loop remain concentrated in the original district; full facets and most gameplay interfaces remain future work.
 
-Double-click **Launch.cmd** for live Britain. The first load plans city geometry and installs nearby collision before showing login; allow roughly a minute on the development machine. Use **Explore-Britain.cmd** for the separate offline explorer. See [live Britain scope and checks](docs/LIVE_BRITAIN.md).
+Double-click **Launch.cmd** for live Britain. The first preparation builds local streaming resources and takes several minutes; later prepared startup is roughly three to four seconds on the development machine. The lower-right minimap uses original UO radar colours; wheel over it or use +/− to zoom. Use **Explore-Britain.cmd** for the separate offline explorer. See [live Britain scope and checks](docs/LIVE_BRITAIN.md).
 
 ## What works today
 
@@ -14,12 +14,15 @@ Double-click **Launch.cmd** for live Britain. The first load plans city geometry
 - **Shared reconstruction rules:** source-driven terrain, joined walls, floors, stairs and roofs. Repairs belong to the shared conversion/presentation pipeline rather than hand-edited building placements. Baking and runtime viewing use the same rules.
 - **Interactive Godot 4 viewer:** stylized CC0 environment and character assets, blended PBR terrain and shorelines, water ripples, foliage sway, architectural collision and a camera that retracts around solid geometry.
 - **Server-owned world objects:** bounded upstream population of doors, containers, signs and decoration. Single/double door layouts stay native; timber leaves use human-scaled lintels. Click doors to open/close, containers for real contents, and signs for their server-confirmed building names.
-- **Live city streaming:** 704×512 source tiles, nine nearby districts with physical terrain/building collision, retained overlap and distant scenery. Unloaded destinations are gated before sending movement packets.
+- **Prepared live city streaming:** 704×512 source tiles, nine nearby physical districts, background resource/source loading, incremental scene activation/eviction and bounded distant scenery. Unloaded destinations are gated before sending movement packets. Local retained engine memory fell from about 1.49 GB to 311 MB in the OpenGL test; rapid moves still expose loading hitches. See [performance, limits and original radar](docs/STREAMING_AND_MINIMAP.md).
+- **Zoomable original-data minimap:** native land/statics and radar colours, character position/facing, coordinates and bounded tile textures. Game-derived imagery stays local.
 - **Real ModernUO sessions:** account login, character creation/selection, server-confirmed movement, two-client movement replication and backpack contents. Native ClassicUO can connect to the same local server for comparison.
 - **Smoother traversal:** continuous presentation between server coordinates, gradual 360-degree facing, running/walking animation, stair foot contact and a ceiling-aware cosmetic jump. The server remains authoritative; jumping is not a replicated gameplay ability.
 - **Server-driven environment:** native light and rain/snow packets drive lighting and precipitation. An isolated local server extension supplies ModernUO's regional clock and initial/region-exit weather snapshots. Soft moving clouds, horizon haze and day/night presentation follow those inputs.
 
 The original reference crop (still available with `./launch.ps1 -ReferencePatch`) spans Trammel X=1576–1639, Y=1568–1631: 4,096 terrain samples and 2,689 static placements across 187 mapped IDs. These figures describe local validation; the map and converted data are not included. Passing that crop does not establish fidelity for every building, source ID or facet.
+
+Visual quality is still provisional: semantic mappings do not establish faithful models, materials or placement. The next quality gate covers both exterior and interior artwork in one representative block; see [art fidelity priorities and sign idea](docs/ART_FIDELITY.md).
 
 ## Architecture
 

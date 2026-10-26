@@ -61,6 +61,17 @@ func _initialize() -> void:
  var batch: MeshInstance3D = district.get_child(district.get_child_count()-1)
  check(batch.mesh.get_aabb().position.is_equal_approx(Vector3(9.5,1.5,19.5)),"Batched vertices retain complete source model transform")
  check(batch.mesh.get_aabb().size.is_equal_approx(Vector3(3,1,1)),"Batch retains geometry extent and separate placements")
+ stream.horizon=Node3D.new();stream.add_child(stream.horizon)
+ var macro:=Node3D.new();stream.horizon.add_child(macro)
+ var coarse:=MeshInstance3D.new();macro.add_child(coarse)
+ coarse.material_override=ShaderMaterial.new()
+ coarse.material_override.shader=preload("res://Presentation/AtlasGround.gdshader")
+ stream.macro_nodes[Vector2i.ZERO]=macro
+ stream.activating[Vector2i(1536,1536)]=true
+ stream.activating[Vector2i(1600,1536)]=true
+ stream.update_horizon()
+ check(coarse.material_override.get_shader_parameter("detail_count")==2,"First installed terrain masks coarse overlap while duplicate active ownership stays unique")
+ check(not stream.destination_ready(Vector2i(1599,1591)),"Partially activated visual district never unlocks native movement before collision completes")
  district.free()
  game.free()
  stream.free()

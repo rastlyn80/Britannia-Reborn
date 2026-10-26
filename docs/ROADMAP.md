@@ -15,6 +15,8 @@ Current priorities after the Britain mapping/seam pass:
 
 # Roadmap
 
+Immediate priorities after the prepared streaming/minimap pass (26 October): (1) reviewed exterior AND interior fidelity for one representative Britain block, including floating/misrepresented objects and contextual materials; (2) further reduce measured loading/upload spikes and partition offline world topology; (3) then extend regions and native gameplay. Preserve the shared conversion rules. Directional sign text-on-surface idea is recorded in ART_FIDELITY.md. Source-ID coverage is not visual approval. See STREAMING_AND_MINIMAP.md and CLASSICUOMOSHU_REVIEW.md.
+
 | Milestone | Status | Acceptance / remaining work |
 |---|---|---|
 | 0 Audit | Completed for imported code/dependency inventory | Baseline tests and architecture documented |

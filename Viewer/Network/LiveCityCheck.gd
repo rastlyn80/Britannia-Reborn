@@ -4,6 +4,14 @@ var scene: Node3D
 var failure := ""
 var ack := -1
 var visited := 0
+var walking_active:=false
+var walking_samples: Array[float]=[]
+var previous_us:=0
+func _process(_delta: float) -> bool:
+ var now:=Time.get_ticks_usec()
+ if walking_active and previous_us>0:walking_samples.append((now-previous_us)/1000.0)
+ previous_us=now
+ return false
 func _initialize() -> void: call_deferred("run")
 func until(test: Callable, seconds: float = 15.0) -> bool:
  var start := Time.get_ticks_msec()
@@ -112,6 +120,7 @@ func run() -> void:
  if not await until(func(): return visited==lamp_serial and scene.game.player.z==0): fail("Outdoor native visit failed"); return
  var path := route(scene.game.player)
  if path.is_empty(): fail("No conservative native route beyond old crop"); return
+ walking_active=true
  for direction in path:
   var at: Dictionary = scene.game.player.duplicate()
   # The native protocol acknowledges turning separately from stepping.
@@ -127,13 +136,27 @@ func run() -> void:
      continue
     fail("Server rejected city traversal at "+str(at)+" direction "+str(direction))
     return
+ walking_active=false
+ walking_samples.sort()
+ if not walking_samples.is_empty():print("LIVE WALK FRAME TIMES: p95=",walking_samples[int(walking_samples.size()*0.95)]," ms / max=",walking_samples[-1]," ms / frames=",walking_samples.size())
  var endpoint: Dictionary = scene.game.player.duplicate()
  scene.game.request_position()
  if not await until(func(): return not scene.game.awaiting_position): fail("Native XYZ reconciliation timeout"); return
  if scene.game.player.x!=endpoint.x or scene.game.player.y!=endpoint.y or scene.game.player.z!=endpoint.z: fail("Native XYZ disagrees with prediction"); return
  if scene.game.player.x>=1600 or scene.game.player.y>=1568: fail("Did not cross old crop and district boundary"); return
  print("LIVE CITY WALK PASS: ",path.size()," accepted native run steps; crossed x=1600 district and y=1568 old crop; authoritative XYZ ",scene.game.player)
- if not await until(func(): return not stream.busy,90): fail("Background district completion timeout"); return
+ if not await until(func(): return stream.settled(),90): fail("Background district completion timeout"); return
+ if scene.minimap==null:fail("Native radar minimap missing");return
+ await process_frame
+ if not scene.minimap.visible or scene.minimap.location!=Vector2(endpoint.x+0.5,endpoint.y+0.5):fail("Radar position disagrees with native character");return
+ var camera_distance: float=scene.distance
+ var wheel:=InputEventMouseButton.new()
+ wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN;wheel.pressed=true
+ wheel.position=scene.minimap.get_global_rect().get_center()
+ root.push_input(wheel)
+ for frame in 3:await process_frame
+ if scene.minimap.pixels_per_cell!=0.5 or scene.distance!=camera_distance or scene.minimap.textures.is_empty() or scene.minimap.textures.size()>36 or not scene.minimap.footer.text.contains(str(endpoint.x)):fail("Radar zoom/cache limit wrong");return
+ print("LIVE MINIMAP PASS: native XYZ position, north-up marker, zoom and bounded original radar textures")
  if DisplayServer.get_name() != "headless":
   await create_timer(2.0).timeout
   await RenderingServer.frame_post_draw
@@ -144,7 +167,7 @@ func run() -> void:
   if saved != OK: fail("Screenshot write failed"); return
  scene.game.return_to_britain()
  if not await until(func(): return scene.game.player.x==1602 and scene.game.player.y==1591 and scene.game.player.z==20): fail("Native home recovery failed"); return
- if not await until(func(): return not stream.busy,90): fail("Background district completion timeout"); return
+ if not await until(func(): return stream.settled(),90): fail("Background district completion timeout"); return
  scene.game.close()
  scene.free()
  for frame in 3: await process_frame

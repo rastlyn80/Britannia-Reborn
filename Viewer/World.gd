@@ -2,6 +2,7 @@ extends Node3D
 
 var world_ready := false
 var city_stream: Node3D
+var minimap: Control
 var world: Dictionary
 var pivot := Node3D.new()
 var camera := Camera3D.new()
@@ -80,7 +81,7 @@ func _ready() -> void:
 	assert(point(int(world.originX)+3,int(world.originY)+7,-5).is_equal_approx(Vector3(3,-1,7)))
 	if city_mode:
 		var loading := Label.new()
-		loading.text = "Preparing live Britain… first load can take a minute."
+		loading.text = "Loading nearby prepared districts…"
 		loading.position = Vector2(32,32)
 		add_child(loading)
 		await get_tree().process_frame
@@ -92,10 +93,10 @@ func _ready() -> void:
 			get_tree().quit(1)
 			return
 		loading.queue_free()
-		world = city_stream.regional.world
-		reconstruction = city_stream.regional.reconstruction
-		interior_shell = city_stream.regional.shell
-		movement_surface.index(world)
+		world = city_stream.world
+		reconstruction = city_stream.reconstruction
+		interior_shell = city_stream.shell
+		movement_surface = city_stream.surface
 		game.surface = movement_surface
 		game.preview_bounds = Rect2i(world.originX,world.originY,world.width,world.height)
 		game.destination_ready = city_stream.destination_ready
@@ -205,6 +206,13 @@ func _ready() -> void:
 	world_items.configure(self,game)
 	login_panel.session = game
 	canvas.add_child(login_panel)
+	if city_mode:
+		minimap = preload("res://Presentation/Minimap.gd").new()
+		if minimap.configure(self,city_stream.folder.get_base_dir().path_join("minimap/index.json")):
+			canvas.add_child(minimap)
+		else:
+			minimap.free()
+			minimap = null
 	login_panel.controller_toggled.connect(func(enabled: bool): controller_enabled = enabled)
 	game.entity_changed.connect(_entity_changed)
 	game.vendor_received.connect(func(serial: int,_stock: Array):
