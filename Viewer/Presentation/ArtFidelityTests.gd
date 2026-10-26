@@ -170,5 +170,14 @@ func _initialize() -> void:
   if oak and absf(box.x-0.11)<0.001 and mesh.position.y-box.y/2<top_of_opening-0.01 and mesh.position.y+box.y/2>sill+0.01:crossing=true
  check(studs==4 and not crossing,"Tudor studs stop at the sill and head of a window opening")
  window_panel.free()
+ # Stair facing comes from tiledata flags, not an ambiguous neighbour guess.
+ var stair_floor:=preload("res://Presentation/FloorPlan.gd").new()
+ var stair_world:={"elevationScale":.2,"statics":[],"staticData":{}}
+ var expected:=[Vector2(0,-1),Vector2(1,0),Vector2(-1,0),Vector2(0,1)]
+ for k in 4:
+  stair_world.statics.append({"x":1000+k*5,"y":1000,"z":0,"id":7000+k})
+  stair_world.staticData[str(7000+k)]={"name":"stone stairs","height":5,"flags":0x2600|(0x40000000 if k in [1,3] else 0)|(0x80000000 if k in [2,3] else 0)}
+ stair_floor.index(stair_world,{"7000":{"kind":"stairs"},"7001":{"kind":"stairs"},"7002":{"kind":"stairs"},"7003":{"kind":"stairs"}})
+ check(range(4).all(func(k): return stair_floor.stair_rise.get(k,Vector2.ZERO)==expected[k]),"Isolated stair tiles rise north/east/west/south from their tiledata facing flags")
  print("ART FIDELITY TESTS: ",checks," checks / ",failures," failures")
  quit(1 if failures else 0)

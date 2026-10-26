@@ -38,6 +38,15 @@ func index(world: Dictionary, catalog: Dictionary) -> void:
 					var other: Dictionary = world.statics[j]
 					if other.id == s.id and other.z > s.z and other.z-s.z <= 5: rise += Vector2(offset)
 			if rise.length_squared() == 1: stair_rise[i] = rise
+			# Stair graphics encode their facing in tiledata: StairBack (0x40000000)
+			# rises east, StairRight (0x80000000) west, both south, neither north.
+			# Authoritative over neighbour inference, which is ambiguous at flight
+			# ends, landings and wide stairs. Low "step" pieces keep inference.
+			var info: Dictionary = world.get("staticData",{}).get(str(int(s.id)),{}) if world.get("staticData") is Dictionary else {}
+			if "stairs" in str(info.get("name","")):
+				var back := (int(info.get("flags",0)) & 0x40000000) != 0
+				var right := (int(info.get("flags",0)) & 0x80000000) != 0
+				stair_rise[i] = Vector2(0,1) if back and right else (Vector2(1,0) if back else (Vector2(-1,0) if right else Vector2(0,-1)))
 		if kind != "floor": continue
 		var extra := Vector4.ZERO # left, right, north, south
 		var offsets := [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]
