@@ -66,6 +66,34 @@ func apply(root: Node3D) -> void:
   root.add_child(instance)
  for node in originals:node.mesh=null
  prune(root,root)
+ defer_collision(root)
+
+# Concave shapes created by a loader thread are built on the main thread in one
+# burst (~0.8 us per triangle). Store bounded triangle slices as plain data; the
+# runtime materializes them within its frame budget before movement is allowed.
+const DEFERRED_FACES := 2000
+static func defer_collision(root: Node) -> void:
+ for node in root.find_children("*","CollisionShape3D",true,false):
+  var shape: Shape3D=node.shape
+  if not shape is ConcavePolygonShape3D:continue
+  var faces: PackedVector3Array=shape.get_faces()
+  var slice:=DEFERRED_FACES*3
+  for start in range(0,faces.size(),slice):
+   var target: CollisionShape3D=node
+   if start>0:
+    target=CollisionShape3D.new()
+    target.transform=node.transform
+    node.get_parent().add_child(target)
+   target.shape=null
+   target.set_meta("deferred_faces",faces.slice(start,mini(start+slice,faces.size())))
+   target.set_meta("backface_collision",shape.backface_collision)
+
+static func materialize(shape_node: CollisionShape3D) -> void:
+ var shape:=ConcavePolygonShape3D.new()
+ shape.backface_collision=shape_node.get_meta("backface_collision",true)
+ shape.set_faces(shape_node.get_meta("deferred_faces"))
+ shape_node.remove_meta("deferred_faces")
+ shape_node.shape=shape
 
 static func own(node: Node, root: Node) -> void:
  for child in node.get_children():

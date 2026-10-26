@@ -13,6 +13,10 @@ var dynamic: Dictionary={}
 var dynamic_definitions: Dictionary={}
 # Reconstruction rules identify procedural supports whose visual top is known.
 var catalog: Dictionary={}
+# Streamed districts register their worker-built cell indices instead of a
+# whole-window rebuild on every install/retirement.
+var chunk_cells: Dictionary={}
+var chunk_land: Dictionary={}
 func index(world: Dictionary, extra: Array=[]) -> void:
  cells.clear();land.clear();cache.clear();issues.clear()
  scale=float(world.get("elevationScale",.2))
@@ -23,6 +27,22 @@ func index(world: Dictionary, extra: Array=[]) -> void:
   var cell:=Vector2i(tile.x,tile.y)
   if not cells.has(cell):cells[cell]=[]
   cells[cell].append(tile)
+func add_chunk(origin: Vector2i, terrain_index: Dictionary, static_index: Dictionary) -> void:
+ chunk_land[origin]=terrain_index;chunk_cells[origin]=static_index;cache.clear()
+func remove_chunk(origin: Vector2i) -> void:
+ chunk_land.erase(origin);chunk_cells.erase(origin);cache.clear()
+static func chunk_of(cell: Vector2i) -> Vector2i:
+ return Vector2i(floori(cell.x/64.0)*64,floori(cell.y/64.0)*64)
+func tiles_at(cell: Vector2i) -> Array:
+ if cells.has(cell):return cells[cell]
+ return chunk_cells.get(chunk_of(cell),{}).get(cell,[])
+func land_at(cell: Vector2i) -> Dictionary:
+ if land.has(cell):return land[cell]
+ return chunk_land.get(chunk_of(cell),{}).get(cell,{})
+func has_record(item: Dictionary) -> bool:
+ for tile in tiles_at(Vector2i(item.x,item.y)):
+  if int(tile.z)==int(item.z) and int(tile.id)==int(item.id):return true
+ return false
 func placement(item: Dictionary, depth: int=0) -> Dictionary:
  var key:=Vector4i(item.x,item.y,item.z,item.id)
  if cache.has(key):return cache[key]
@@ -32,9 +52,10 @@ func placement(item: Dictionary, depth: int=0) -> Dictionary:
  if depth>12:result.status="ambiguous-stack";return result
  var cell:=Vector2i(item.x,item.y)
  var candidates: Array=[]
- if land.has(cell) and absf(float(item.z)-float(land[cell].z))<=1:
-  candidates.append({"native":float(land[cell].z),"visual":float(land[cell].z)*scale,"id":-1,"z":land[cell].z,"score":absf(float(item.z)-float(land[cell].z))})
- var nearby: Array=cells.get(cell,[]).duplicate()
+ var ground:=land_at(cell)
+ if not ground.is_empty() and absf(float(item.z)-float(ground.z))<=1:
+  candidates.append({"native":float(ground.z),"visual":float(ground.z)*scale,"id":-1,"z":ground.z,"score":absf(float(item.z)-float(ground.z))})
+ var nearby: Array=tiles_at(cell).duplicate()
  for support in dynamic.values():
   if int(support.x)==cell.x and int(support.y)==cell.y:nearby.append(support)
  for support in nearby:

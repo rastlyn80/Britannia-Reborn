@@ -1,3 +1,7 @@
+# Streaming stall checkpoint — 26 October 2026
+
+All 428 Godot-side checks of `scripts/verify.ps1` pass (including 2 new collision-slice round-trip checks). The 21 converter tests could not run: Windows Application Control blocked the freshly built unsigned `Converter.dll` (0x800711C7) on two attempts; no converter source changed in this session and they passed earlier the same day. Prepared parity, GPU matrices/ownership (both renderers), `test-streaming.ps1` bounded retention/plateau (both), native visual city traversal (both renderers) and native world-object checks pass. Same-route before/after measurements are in STREAMING_AND_MINIMAP.md.
+
 # Bridge/attachment/contact checkpoint — 26 October 2026
 
 `scripts/verify.ps1`: **447 offline checks**, no errors/warnings. ArtFidelityTests adds 26 checks: bridge deck/pier/parapet detection at two translated origins, plaster/off-bridge exclusions, barred slit without timber casement, canonical source immutability, inspected window/battlement families, wall-torch attachment and west-face mounting, unmounted torch preservation, unreviewed-table, rug and barrel-stack contact, and an unresolved support case. `PreparedAudit.gd` parity passes (360,448 / 136,662 / 88 districts). `scripts/test-city-render.ps1` and `-Compatibility` pass 262 GPU matrices and 25,200 ownership pixels. `ArtBlockCapture.gd` now accepts `--view=name:x,y,z:tx,ty,tz` for targeted local inspection. The refreshed full-city ContactAudit, native object/traversal tests and streaming measurements were not re-run in this checkpoint.

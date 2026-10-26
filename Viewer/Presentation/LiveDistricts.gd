@@ -3,6 +3,7 @@ extends Node3D
 # BakeStreaming; no source reconstruction or collision generation runs here.
 const MAX_PENDING := 2
 const FRAME_BUDGET_US := 2000
+const Compact := preload("res://Presentation/CompactDistrict.gd")
 var loaded: Dictionary = {}
 var far_nodes: Dictionary = {}
 var macro_nodes: Dictionary = {}
@@ -30,6 +31,22 @@ var stale_jobs := 0
 var source_dirty := false
 var retiring: Array[Node3D]=[]
 var activating: Dictionary={}
+# Main-thread phase timing for streaming-stall diagnosis: totals/maxima per
+# phase and individual phases over 4 ms with their frame number.
+var phases: Dictionary={}
+var slow_phases: Array=[]
+var fresh_nodes: Array[Node3D]=[]
+var events: Array=[]
+
+func note(event: String) -> void:
+ if events.size()<4096:events.append({"frame":Engine.get_process_frames(),"event":event})
+
+func measure(phase: String, started_us: int, detail: String="") -> void:
+ var spent:=Time.get_ticks_usec()-started_us
+ var entry: Dictionary=phases.get(phase,{"count":0,"total_us":0,"max_us":0})
+ entry.count+=1;entry.total_us+=spent;entry.max_us=maxi(entry.max_us,spent)
+ phases[phase]=entry
+ if spent>=4000 and slow_phases.size()<512:slow_phases.append({"frame":Engine.get_process_frames(),"phase":phase,"ms":spent/1000.0,"detail":detail})
 
 class DecodeJob extends RefCounted:
  var resource: Resource
@@ -108,6 +125,7 @@ func select_window() -> void:
    loaded.erase(at)
    sources.erase(at)
    surface.remove_chunk(at)
+   reconstruction.supports.remove_chunk(at)
    source_dirty=true
  for at in far_nodes.keys():
   if not wanted.has(path_for("far",at)) and (not near_wanted.has(at) or loaded.has(at)):
@@ -156,8 +174,10 @@ func _process(_delta: float) -> void:
  var start:=Time.get_ticks_usec()
  while not retiring.is_empty():
   var old: Node3D=retiring[0]
+  var free_start:=Time.get_ticks_usec()
   if old.get_child_count()>0:old.get_child(old.get_child_count()-1).free()
   else:retiring.pop_front();old.free()
+  measure("retire-free",free_start)
   if Time.get_ticks_usec()-start>=FRAME_BUDGET_US:return
  # At most two resource/decode jobs exist. A result is retrieved only after
  # completion, so load_threaded_get never waits on disk in the render thread.
@@ -168,6 +188,7 @@ func _process(_delta: float) -> void:
     if not WorkerThreadPool.is_task_completed(record.task):continue
     WorkerThreadPool.wait_for_task_completion(record.task)
     record.task_done=true
+    note("decoded "+str(record.kind))
    if not wanted.has(path):
     discard(record)
     pending.erase(path)
@@ -175,13 +196,22 @@ func _process(_delta: float) -> void:
     continue
    if not record.has("next_child"):
     record.next_child=0
+    var root_start:=Time.get_ticks_usec()
     record.node=record.resource.root_scene.instantiate()
     if record.kind=="near":add_child(record.node)
     else:horizon.add_child(record.node)
+    measure("root-"+str(record.kind),root_start)
    while record.next_child<record.resource.parts.size():
     var attach_start:=Time.get_ticks_usec()
     var part: Node=record.resource.parts[record.next_child].instantiate()
+    measure("instantiate-"+str(record.kind),attach_start,part.get_class())
+    if part is PhysicsBody3D:
+     if not record.has("deferred"):record.deferred=[]
+     for shape_node in part.find_children("*","CollisionShape3D",true,false):
+      if shape_node.has_meta("deferred_faces"):record.deferred.append(shape_node)
+    var tree_start:=Time.get_ticks_usec()
     record.node.add_child(part)
+    measure("enter-tree-"+str(record.kind),tree_start)
     if record.kind=="near" and record.next_child==0:
      # Terrain is the first baked part. Switch its coarse ownership now, while
      # remaining meshes warm up progressively; native entry stays gated until
@@ -192,7 +222,16 @@ func _process(_delta: float) -> void:
     max_install_us=maxi(max_install_us,Time.get_ticks_usec()-attach_start)
     record.next_child+=1
     if Time.get_ticks_usec()-start>=FRAME_BUDGET_US:break
-   if record.next_child==record.resource.parts.size():
+   # Bounded collision slices; before world entry the initial window
+   # materializes completely, as it previously did.
+   var deferred: Array=record.get("deferred",[])
+   while not deferred.is_empty():
+    if scene and scene.world_ready and Time.get_ticks_usec()-start>=FRAME_BUDGET_US:break
+    var shape_start:=Time.get_ticks_usec()
+    var shape_node: CollisionShape3D=deferred.pop_back()
+    if is_instance_valid(shape_node):Compact.materialize(shape_node)
+    measure("collision-slice",shape_start)
+   if record.next_child==record.resource.parts.size() and deferred.is_empty():
     install(record,record.node,record.job.result)
     pending.erase(path)
   else:
@@ -200,13 +239,20 @@ func _process(_delta: float) -> void:
    if status==ResourceLoader.THREAD_LOAD_FAILED or status==ResourceLoader.THREAD_LOAD_INVALID_RESOURCE:
     pending.erase(path);error("Prepared district could not load: "+path);return
    if status!=ResourceLoader.THREAD_LOAD_LOADED:continue
+   note("loaded "+str(record.kind))
+   var get_start:=Time.get_ticks_usec()
    var resource: Resource=ResourceLoader.load_threaded_get(path)
+   measure("threaded-get",get_start)
    if not wanted.has(path):pending.erase(path);stale_jobs+=1;continue
    var job:=DecodeJob.new();job.resource=resource
    record.resource=resource;record.job=job
    record.task=WorkerThreadPool.add_task(job.run)
   if Time.get_ticks_usec()-start>=FRAME_BUDGET_US:break
  if source_dirty:refresh_source_window()
+ if not window_queue.is_empty() or not releasing.is_empty():
+  var window_start:=Time.get_ticks_usec()
+  advance_source_window()
+  measure("source-window",window_start)
  busy=not near_complete()
  var queue: Array=wanted.values()
  queue.sort_custom(func(a:Dictionary,b:Dictionary):return a.priority<b.priority)
@@ -215,6 +261,7 @@ func _process(_delta: float) -> void:
   var path:=path_for(record.kind,record.at)
   if pending.has(path) or resident(record):continue
   if ResourceLoader.load_threaded_request(path,"Resource")!=OK:error("Cannot request prepared resource: "+path);return
+  note("request "+str(record.kind))
   pending[path]=record.duplicate()
 
 func install(record: Dictionary, node: Node3D, decoded: Dictionary) -> void:
@@ -225,8 +272,10 @@ func install(record: Dictionary, node: Node3D, decoded: Dictionary) -> void:
   loaded[record.at]=node
   sources[record.at]=decoded
   surface.add_chunk(decoded)
+  reconstruction.supports.add_chunk(record.at,decoded.terrain_index,decoded.static_index)
   decoded.erase("terrain_index")
   decoded.erase("static_index")
+  fresh_nodes.append(node)
   source_dirty=true
   if far_nodes.has(record.at):retire(far_nodes[record.at]);far_nodes.erase(record.at)
  else:
@@ -234,18 +283,47 @@ func install(record: Dictionary, node: Node3D, decoded: Dictionary) -> void:
   else:macro_nodes[record.at]=node
  update_horizon()
  max_install_us=maxi(max_install_us,Time.get_ticks_usec()-start)
+ measure("install-"+str(record.kind),start)
+ note("installed "+str(record.kind))
  installs+=1
+
+# The merged source window (~50k shared records) is rebuilt one district per
+# frame and swapped in when complete; replaced arrays are released in slices.
+# Support and movement lookups are already per district and update at install.
+var window_queue: Array=[]
+var next_terrain: Array=[]
+var next_statics: Array=[]
+var releasing: Array=[]
 
 func refresh_source_window() -> void:
  source_dirty=false
- world.terrain.clear()
- world.statics.clear()
- for source in sources.values():
-  world.terrain.append_array(source.terrain)
-  world.statics.append_array(source.statics)
- if scene and scene.world_ready:
-  scene.world_items.refresh_source_records()
-  scene.world_items.suppress_streamed_posts()
+ window_queue=sources.keys()
+ next_terrain=[]
+ next_statics=[]
+ # Startup consumers (fixtures, movement index) read the window immediately.
+ if not (scene and scene.world_ready):
+  while not window_queue.is_empty():advance_source_window()
+
+func advance_source_window() -> void:
+ if not window_queue.is_empty():
+  var at: Vector2i=window_queue.pop_back()
+  if sources.has(at):
+   next_terrain.append_array(sources[at].terrain)
+   next_statics.append_array(sources[at].statics)
+  if not window_queue.is_empty():return
+  releasing.append(world.terrain);releasing.append(world.statics)
+  world.terrain=next_terrain
+  world.statics=next_statics
+  next_terrain=[];next_statics=[]
+  if scene and scene.world_ready:
+   scene.world_items.refresh_source_records(true)
+   for node in fresh_nodes:
+    if is_instance_valid(node):scene.world_items.suppress_streamed_posts(node)
+  fresh_nodes.clear()
+ elif not releasing.is_empty():
+  var old: Array=releasing.back()
+  old.resize(maxi(0,old.size()-6000))
+  if old.is_empty():releasing.pop_back()
 
 func update_horizon() -> void:
  var rectangles:=PackedVector4Array()
@@ -265,6 +343,7 @@ func discard(record: Dictionary) -> void:
  if record.has("node") and is_instance_valid(record.node):record.node.free()
 
 func retire(node: Node3D) -> void:
+ note("retire")
  node.hide()
  retiring.append(node)
 

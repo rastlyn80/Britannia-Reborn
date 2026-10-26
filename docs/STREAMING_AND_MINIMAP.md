@@ -1,3 +1,19 @@
+# Streaming stall reduction — 26 October 2026
+
+`Presentation/StreamingProfile.gd` drives a fixed continuous run route (1602,1591 → 1780,1591 → 1780,1700 → 1480,1700 → 1480,1480 → 1602,1480 → home; 8 tiles/s; fixed per-frame advance; movement waits for destination districts as native movement does). It records wall-clock frames, GPU/render time, engine process/physics time, per-phase main-thread timings (`LiveDistricts.phases`) and a load/decode/install/retire event timeline for the worst frames. `--laps=2` repeats it. Before and after runs used the same route and renderer, one at a time, with no other graphical test running.
+
+Profiling found the dominant stall: collision shapes created by the background resource loader (~176k triangles per district) are built on the main thread in one burst (~0.8 µs per triangle; isolated: a collision-only district file stalled an idle frame 150–160 ms, the mesh-only remainder ~20 ms). The bake now stores collision as plain triangle slices of at most 2,000 faces; the runtime materializes them within the existing 2 ms frame budget and a district counts as loaded — and native movement into it is allowed — only after all its collision exists. Before world entry everything materializes immediately. Second: the merged source window (~50k records) was rebuilt and support-indexed on every install/retirement (up to 93 ms); support lookups are now registered per district from the worker-built indices, and the merged arrays are rebuilt one district per frame and released in slices (worst slice ~5 ms).
+
+| Same route, Windows / RTX 2070 SUPER | OpenGL before | OpenGL after | Forward+ before | Forward+ after |
+|---|---:|---:|---:|---:|
+| Startup to world-ready | 3.665 s | 2.659 s | 3.940 s | 3.067 s |
+| Frame p50 / p95 / p99 | 16.7 / 16.9 / 32.1 ms | 16.7 / 16.8 / 18.7 ms | 16.8 / 19.8 / 29.3 ms | 16.8 / 19.6 / 21.3 ms |
+| Worst frame | 326.2 ms | 40.4 ms | 306.4 ms | 79.6 ms |
+| Frames > 33 ms / > 100 ms | 75 / 22 | 5 / 0 | 73 / 24 | 6 / 0 |
+| Engine memory start / end / peak | 311 / 325 / 412 MiB | 315 / 364 / 453 MiB | 428 / 447 / 549 MiB | 433 / 489 / 592 MiB |
+
+Nine-district retention, instancing, prepared source parity (360,448 / 136,662) and native movement are unchanged. Retained engine memory rises ~40 MiB because per-district cell indices are kept for incremental support lookup. Remaining: a few 60–80 ms Forward+ frames tied to specific districts (single mesh parts that instantiate in ~14 ms in isolation take ~72 ms in the run; unresolved), and the deliberate instant-teleport stress test still reaches ~2 s worst frames in Forward+ / 0.55 s in OpenGL. These are local measurements, not a sustained-frame guarantee.
+
 # Prepared streaming and original radar — 26 October 2026
 
 Launch.cmd prepares local district resources and radar tiles when their source/rule fingerprints change, then opens live Britain. Later launches reuse the verified cache. Initial conversion takes several minutes; the measured three-second startup below is from already prepared data. The separate offline explorer still has its older planning path.

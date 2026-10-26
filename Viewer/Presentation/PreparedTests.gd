@@ -52,5 +52,23 @@ func _initialize()->void:
  var dependencies: Dictionary={}
  preload("res://Presentation/BakeStreaming.gd").dependency_signature("res://Presentation/BakeStreaming.gd",dependencies)
  check(dependencies.has("res://Presentation/CollisionBuilder.gd") and dependencies.has("res://Presentation/InstancedPatch.gd") and dependencies.has("res://Presentation/TerrainSurface.gd"),"Bake invalidation follows transitive collision, instancing and terrain rule dependencies")
+ # Collision is baked as bounded triangle slices and rebuilt without loss.
+ var Compact:=preload("res://Presentation/CompactDistrict.gd")
+ var collision_root:=Node3D.new()
+ var solid:=StaticBody3D.new();collision_root.add_child(solid)
+ var concave:=ConcavePolygonShape3D.new();concave.backface_collision=true
+ var triangles:=PackedVector3Array()
+ for i in Compact.DEFERRED_FACES*2+500:triangles.append_array(PackedVector3Array([Vector3(i,0,0),Vector3(i,1,0),Vector3(i,0,1)]))
+ concave.set_faces(triangles)
+ var holder:=CollisionShape3D.new();holder.shape=concave;holder.position=Vector3(2,3,4);solid.add_child(holder)
+ Compact.defer_collision(collision_root)
+ var slices:=solid.get_children()
+ check(slices.size()==3 and slices.all(func(n): return n.shape==null and n.has_meta("deferred_faces") and n.position==Vector3(2,3,4)),"Baked collision is split into bounded slices that keep their transform")
+ var rebuilt:=PackedVector3Array()
+ for node in slices:
+  Compact.materialize(node)
+  rebuilt.append_array(node.shape.get_faces())
+ check(rebuilt==triangles and slices.all(func(n): return n.shape.backface_collision and not n.has_meta("deferred_faces")),"Materialized slices reproduce every collision triangle and backface policy")
+ collision_root.free()
  print("PREPARED TESTS: ",checks," checks / ",failures," failures")
  quit(1 if failures else 0)

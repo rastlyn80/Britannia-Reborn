@@ -1,3 +1,7 @@
+# Streaming stalls reduced — 26 October 2026
+
+District loading no longer produces 100 ms+ frames on the profiled walking route: worst frame 326 → 40 ms (OpenGL) and 306 → 80 ms (Forward+), frames over 100 ms 22/24 → 0, p99 32.1 → 18.7 ms / 29.3 → 21.3 ms, startup ~1 s faster. Cause and fix: collision shapes are now baked as bounded triangle slices built within the frame budget, and source-window/support indexing is incremental. Retained memory +~40 MiB; a few 60–80 ms Forward+ frames remain. See STREAMING_AND_MINIMAP.md.
+
 # Bridges, wall attachments and contact corrections — 26 October 2026
 
 Shared `BridgePlan.gd` recognizes plank decks over water/riverbed, bridge-flagged stone piers and parapets from source relationships. Window art standing on bridge piers (graphic 94, 12 placements) now renders as dressed-stone towers with the source's barred slit instead of plaster walls with timber casements; low stone walls along decks render as stone parapets with a coping. Explicitly plaster/wooden construction beside a bridge is untouched, and the same graphic away from bridges is not reinterpreted. Fourteen window/battlement graphics whose tiledata names are generic ("window", "arrow loop", "battlement") now carry inspected art facts (stone/brick family, slit/arched opening) in `reviewed-catalog.json`; the castle curtain walls lost their plaster window slabs.

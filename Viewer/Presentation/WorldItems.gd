@@ -6,7 +6,6 @@ var session: Node
 var scene: Node3D
 var nodes := {}
 var definitions := {}
-var source_records := {}
 var local_art := preload("res://Presentation/LocalItemArt.gd").new()
 var selected := 0
 var suppressed_posts := {}
@@ -65,7 +64,7 @@ func upsert(serial: int, item: Dictionary) -> void:
   remove(serial)
   return
  if scene.movement_surface: scene.movement_surface.dynamic_items[serial] = item.merged({"definition":rule})
- if source_records.has(Vector4i(item.x,item.y,item.z,item.id)):
+ if scene.reconstruction and scene.reconstruction.supports.has_record(item):
   remove_visual(serial)
   return
  if nodes.has(serial) and rule.family == "door" and nodes[serial].get_meta("family","") == "door":
@@ -143,10 +142,8 @@ func upsert(serial: int, item: Dictionary) -> void:
   "sign","noticeboard","street_sign":
    size = Vector3(1.15,0.26,0.13) if kind == "street_sign" else (Vector3(1.1,0.85,0.17) if kind == "noticeboard" else Vector3(0.78,0.64,0.17))
    var ground := float(item.z)*float(scene.world.elevationScale)
-   for tile in scene.world.terrain:
-    if int(tile.x) == int(item.x) and int(tile.y) == int(item.y):
-     ground = float(tile.z)*float(scene.world.elevationScale)
-     break
+   var land: Dictionary = scene.reconstruction.supports.land_at(Vector2i(item.x,item.y)) if scene.reconstruction else {}
+   if not land.is_empty(): ground = float(land.z)*float(scene.world.elevationScale)
    var above_ground := float(item.z)*float(scene.world.elevationScale)-ground
    var board_y := maxf(0.40,2.80-above_ground) if rule.family == "sign" else 1.0
    geometry.crafted_box(root,size,Vector3(0,board_y,0),"725231")
@@ -370,30 +367,33 @@ func nearest() -> void:
  if best: activate(best)
  else: hint.text = "No server object within reach."
 
-func suppress_streamed_posts() -> void:
+func suppress_streamed_posts(root: Node = null) -> void:
  # New source chunks can arrive after a native sign packet. Reapply only the
  # presentation suppression; do not recreate native entities or their state.
- var posts: Array = scene.static_root.find_children("*","Node3D",true,false)
+ var signs := false
+ for serial in nodes:
+  if nodes[serial].get_meta("family","") == "sign": signs = true
+ if not signs: return
+ var posts: Array = (root if root else scene.static_root).find_children("*","Node3D",true,false)
  for serial in nodes:
   if nodes[serial].get_meta("family","") != "sign": continue
   if not session.world_items.has(serial): continue
   var item: Dictionary = session.world_items[serial]
-  var hidden: Array = []
+  var hidden: Array = suppressed_posts.get(serial,[]) if root else []
   for post in posts:
    if post.get_meta("kind","") == "sign" and post.get_meta("source_xyz",Vector3i.ZERO) == Vector3i(item.x,item.y,item.z):
     post.hide()
     hidden.append(post)
   suppressed_posts[serial] = hidden
 
-func refresh_source_records() -> void:
+# Streaming registers districts with the support plan incrementally; fixed
+# worlds rebuild the flat index here.
+func refresh_source_records(incremental: bool = false) -> void:
  if scene.reconstruction:
-  scene.reconstruction.supports.index(scene.world)
+  if not incremental: scene.reconstruction.supports.index(scene.world)
   scene.reconstruction.supports.dynamic=session.world_items
   scene.reconstruction.supports.dynamic_definitions=definitions
   request_contact_refresh()
- source_records.clear()
- for tile in scene.world.statics:
-  source_records[Vector4i(tile.x,tile.y,tile.z,tile.id)] = true
 
 func request_contact_refresh() -> void:
  if contacts_pending:return
