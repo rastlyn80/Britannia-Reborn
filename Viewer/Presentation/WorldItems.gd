@@ -164,9 +164,23 @@ func upsert(serial: int, item: Dictionary) -> void:
    geometry.crafted_box(root,Vector3(0.84,0.055,0.08),Vector3(0,board_y+0.59,0),"3b3e3e")
    if int(item.id)%2: root.rotation.y = PI/2
    pick_center = Vector3(0,board_y,0)
+   if rule.family == "sign":
+    # Source anchor stays fixed; the visible plaque and its pick volume hang
+    # perpendicular to the nearest facade, outside it on a forged bracket.
+    var plan := preload("res://Presentation/SignPlan.gd").layout(item,scene.world,scene.reconstruction.catalog)
+    root.rotation.y = float(plan.yaw)
+    root.position += Vector3(plan.mount.x,0,plan.mount.y)
+    for child in root.get_children():
+     if child is Node3D: child.position.x += float(plan.reach)
+    geometry.crafted_box(root,Vector3(0.06,0.44,0.10),Vector3(0,board_y+0.48,0),"353d40").name = "WallBracket"
+    geometry.crafted_box(root,Vector3(float(plan.reach)+0.47,0.055,0.07),Vector3((float(plan.reach)+0.40)/2,board_y+0.59,0),"353d40")
+    var brace := geometry.crafted_box(root,Vector3(float(plan.reach)*0.8,0.035,0.045),Vector3(float(plan.reach)*0.32,board_y+0.42,0),"353d40")
+    brace.rotation.z = 0.38
+    root.set_meta("sign_plan",plan)
+    pick_center.x = float(plan.reach)
    var building_name := Label3D.new()
    building_name.name = "BuildingName"
-   building_name.position.y = board_y+0.84
+   building_name.position = Vector3(pick_center.x,board_y+0.84,0)
    building_name.billboard = BaseMaterial3D.BILLBOARD_ENABLED
    building_name.font_size = 30
    building_name.pixel_size = 0.003
@@ -342,7 +356,16 @@ func click(at: Vector2) -> void:
  var direction: Vector3 = scene.camera.project_ray_normal(at)
  # Include walls so clicks cannot select an object hidden behind a building.
  var hit := get_world_3d().direct_space_state.intersect_ray(PhysicsRayQueryParameters3D.create(from,from+direction*30.0,5))
- if not hit.is_empty() and hit.collider.has_meta("server_serial"): activate(int(hit.collider.get_meta("server_serial")))
+ if not hit.is_empty() and session.placement_serial:
+  var cell := Vector3i(floori(hit.position.x+scene.world.originX),floori(hit.position.z+scene.world.originY),roundi(hit.position.y/float(scene.world.elevationScale)))
+  if maxi(absi(cell.x-int(session.player.x)),absi(cell.y-int(session.player.y)))>2 or absi(cell.z-int(session.player.z))>16:
+   hint.text = "Choose a surface within reach."
+   return
+  if session.move_item(session.placement_serial,0,false,cell): session.placement_serial = 0
+  return
+ if not hit.is_empty() and hit.collider.has_meta("server_mobile"):
+  session.request_context(int(hit.collider.get_meta("server_mobile")))
+ elif not hit.is_empty() and hit.collider.has_meta("server_serial"): activate(int(hit.collider.get_meta("server_serial")))
 
 func nearest() -> void:
  var best := 0

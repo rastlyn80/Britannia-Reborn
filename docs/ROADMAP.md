@@ -1,3 +1,5 @@
+Latest: saved-world recovery and native commerce now pass headless and graphical checks. Full Britannia geographic conversion/overview is available via Explore-Britannia.cmd; all source records pass independent parity. Next gates: expand 3D mappings beyond the 187-ID reference catalogue, assemble architecture across chunk boundaries, then connect streamed gameplay/population. The full-world explorer is not full-world multiplayer.
+
 Current priorities after native-world integration:
 
 1. Compare every placement in the crop with ClassicUO, including unmodelled graphic IDs.
@@ -15,7 +17,7 @@ Current priorities after native-world integration:
 | 3 First playable multiplayer | Local proof of concept implemented and tested | Real character entry, ACK/wall rejection, two-client movement observation, backpack opening/contents and actual keyboard-driven scene pass |
 | 4 Reconstruction | Complete crop ID catalogue implemented/tested | All 187 IDs / 2,689 records accounted for with confidence and grouped parts; solid collision and modules/procedures; exact silhouette, gables/hips and other-region coverage remain |
 | 5 Gameplay presentation | Partial: native world objects | Bounded upstream doors/containers/signs and real interactions implemented. Item transfer/equipment, skills, combat, spells and NPCs remain |
-| 6 Full facets | Planned | Complete streamed Trammel, other facets, deterministic chunks/LOD and seam tests |
+| 6 Full facets | Britannia geography/overview implemented | Full main-landmass binary chunks and independent source parity pass; near art coverage, architecture seams and live gameplay streaming remain |
 | 7 Platforms | Planned | Desktop exports, Android controls/performance, then Apple signing/testing |
 | 8 Polish | Graphics/traversal pass implemented/tested | CC0 environment/furniture, camera collision, real run, local ceiling-aware jump and animation; physical replicated jump, equipment and further polish remain |
 | 9 Production | Planned | Security, load tests, backup/restore, updates and operations |

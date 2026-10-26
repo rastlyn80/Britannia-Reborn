@@ -3,6 +3,12 @@ extends RefCounted
 # Shared by world objects and the inventory preview; no client art is copied.
 static func variant(id: int, rule: Dictionary = {}) -> String:
  var type := str(rule.get("type",""))
+ if id in [0xe75,0xe76,0x9b2] or type in ["Bag","Backpack"]: return "bag"
+ if id==0x103b: return "bread"
+ if id==0x97e: return "cheese"
+ if id in [0x9f0,0x1f95,0x1f97,0x1f99,0x1f9b,0x1f9d]: return "jug"
+ if id in [0x14f0,0x14f1]: return "scroll"
+ if id in [0xf51,0xf52,0x13ff]: return "weapon"
  if "Checker" in type and type != "CheckerBoard": return "checkers"
  if type.begins_with("Piece"): return "chessmen"
  if str(rule.get("display_name","")) == "book": return "book"
@@ -26,6 +32,44 @@ static func variant(id: int, rule: Dictionary = {}) -> String:
 static func small(root: Node3D, g: RefCounted, kind: String, id: int) -> Vector3:
  root.set_meta("appearance",kind)
  match kind:
+  "bag":
+   var body := MeshInstance3D.new()
+   var sphere := SphereMesh.new()
+   sphere.radius = 0.17
+   sphere.height = 0.36
+   body.mesh = sphere
+   body.scale.z = 0.6
+   body.position.y = 0.18
+   body.material_override = g.material("78543a")
+   root.add_child(body)
+   g.box(root,Vector3(0.26,0.13,0.025),Vector3(0,0.25,0.10),"a47d50")
+   for x in [-0.09,0.09]: g.box(root,Vector3(0.025,0.29,0.025),Vector3(x,0.17,-0.10),"523a2a")
+   g.box(root,Vector3(0.035,0.045,0.02),Vector3(0,0.20,0.12),"c2aa76")
+   return Vector3(0.35,0.37,0.23)
+  "bread","cheese":
+   var food := MeshInstance3D.new()
+   var shape := SphereMesh.new()
+   shape.radius = 0.17
+   shape.height = 0.16
+   food.mesh = shape
+   food.position.y = 0.08
+   food.scale.z = 1.8 if kind=="bread" else 1.0
+   food.material_override = g.material("be9252" if kind=="bread" else "d6b65e")
+   root.add_child(food)
+   if kind=="bread":
+    for z in [-0.10,0.0,0.10]: g.box(root,Vector3(0.16,0.007,0.012),Vector3(0,0.157,z),"e0c391")
+   return Vector3(0.35,0.17,0.62 if kind=="bread" else 0.35)
+  "scroll":
+   g.box(root,Vector3(0.20,0.012,0.28),Vector3(0,0.02,0),"d8caa6")
+   for z in [-0.13,0.13]:
+    var roll: MeshInstance3D = g.cylinder(root,0.028,0.23,Vector3(0,0.035,z),"e1d2aa")
+    roll.rotation.z = PI/2
+   return Vector3(0.24,0.07,0.34)
+  "weapon":
+   g.box(root,Vector3(0.035,0.018,0.48),Vector3(0,0.035,-0.13),"b5bcc0")
+   g.box(root,Vector3(0.13,0.025,0.025),Vector3(0,0.035,0.12),"a68d58")
+   g.box(root,Vector3(0.033,0.028,0.13),Vector3(0,0.035,0.20),"49382c")
+   return Vector3(0.16,0.07,0.65)
   "book":
    var cover: String = ["644e37","4b665b","804c42","465d78"][id%4]
    for y in [0.012,0.075]: g.crafted_box(root,Vector3(0.24,0.018,0.32),Vector3(0,y,0),cover)

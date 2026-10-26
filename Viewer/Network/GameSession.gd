@@ -15,6 +15,28 @@ signal message_received(text: String)
 signal failed(reason: String)
 signal ended
 signal inventory_received(items: Array)
+signal items_changed
+signal transfer_result(success: bool, description: String)
+signal context_received(menu: Dictionary)
+signal vendor_received(vendor: int, stock: Array)
+signal vendor_closed(vendor: int)
+signal entity_name_received(serial: int, name: String)
+const Commerce = preload("res://Network/CommerceProtocol.gd")
+var known_items := {}
+var equipment := {}
+var context_menu := {}
+var vendor_prices := {}
+var vendor_serial := 0
+var vendor_stock := []
+var pending_transfer := {}
+var transfer_deadline := 0
+var next_item_action := 0
+var placement_serial := 0
+var entity_names := {}
+var gold := -1
+var requested_icons := {}
+var icons_dirty := false
+var next_icon_save := 0
 signal world_item_changed(serial: int, item: Dictionary)
 signal world_item_removed(serial: int)
 signal container_opened(serial: int)
@@ -124,6 +146,17 @@ func close() -> void:
 	entities.clear()
 	world_items.clear()
 	container_items.clear()
+	known_items.clear()
+	equipment.clear()
+	pending_transfer.clear()
+	next_item_action = 0
+	placement_serial = 0
+	vendor_prices.clear()
+	vendor_stock.clear()
+	context_menu.clear()
+	entity_names.clear()
+	vendor_serial = 0
+	gold = -1
 	gumps.clear()
 	books.clear()
 	board_posts.clear()
@@ -155,6 +188,18 @@ func send(bytes: PackedByteArray) -> void:
 	if socket.put_data(bytes) != OK: _fail("Game send failed")
 
 func _process(_delta: float) -> void:
+	if icons_dirty and Time.get_ticks_msec()>=next_icon_save:
+		var path := "res://item-art-requests.local.json"
+		if FileAccess.file_exists(path):
+			var prior: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+			if prior is Array:
+				for id in prior: requested_icons[int(id)] = true
+		var file := FileAccess.open(path,FileAccess.WRITE)
+		if file: file.store_string(JSON.stringify(requested_icons.keys()))
+		icons_dirty = false
+		next_icon_save = Time.get_ticks_msec()+1000
+	if not pending_transfer.is_empty() and Time.get_ticks_msec() > transfer_deadline:
+		finish_transfer(false,"No server confirmation. Reopen the container to refresh.")
 	if phase in ["idle","login"]: return
 	socket.poll()
 	var state := socket.get_status()
@@ -350,6 +395,9 @@ func _handle(p: PackedByteArray) -> void:
 				var offset := 19
 				while offset+4 <= p.size() and Login.read_be(p,offset,4) != 0:
 					if offset+9 > p.size(): break
+					var worn := {"serial":Login.read_be(p,offset,4),"id":Login.read_be(p,offset+4,2),"amount":1,"layer":int(p[offset+6]),"container":int(player.serial),"hue":Login.read_be(p,offset+7,2)}
+					equipment[worn.layer] = worn
+					remember_item(worn)
 					if p[offset+6] == 21: backpack = Login.read_be(p,offset,4)
 					offset += 9
 			entity_changed.emit(serial,entity)
@@ -367,12 +415,26 @@ func _handle(p: PackedByteArray) -> void:
 			if not item.is_empty():
 				item.facet = player.facet
 				_world_item(item)
+		0x27:
+			finish_transfer(false,"Server rejected the item move (%d)." % int(p[1]))
+		0x74:
+			var prices := Commerce.prices(p)
+			if not prices.is_empty(): vendor_prices[int(prices.container)] = prices.entries
+		0x3b:
+			if p.size() >= 8:
+				next_item_action = Time.get_ticks_msec()+1100
+				vendor_closed.emit(Login.read_be(p,3,4))
+		0x11:
+			if p.size() >= 43:
+				var serial := Login.read_be(p,3,4)
+				entity_names[serial] = text(p,7,30)
+				entity_name_received.emit(serial,entity_names[serial])
+				if serial == int(player.serial) and int(p[42]) > 0 and p.size() >= 62: gold = Login.read_be(p,58,4)
 		0x25:
+			if p.size()!=21: return
 			var serial := Login.read_be(p,1,4)
 			_remove_world_item(serial)
-			if Login.read_be(p,15,4) == container_serial:
-				container_items[serial] = {"serial":serial,"id":Login.read_be(p,5,2),"amount":Login.read_be(p,8,2),"container":container_serial}
-				inventory_received.emit(container_items.values())
+			remember_item({"serial":serial,"id":Login.read_be(p,5,2)+int(p[7]),"amount":Login.read_be(p,8,2),"container":Login.read_be(p,15,4),"x":Login.read_be(p,10,2),"y":Login.read_be(p,12,2),"hue":Login.read_be(p,19,2)})
 		0xc1:
 			if p.size() >= 50:
 				var serial := Login.read_be(p,3,4)
@@ -381,13 +443,27 @@ func _handle(p: PackedByteArray) -> void:
 				message_received.emit(label)
 		0x1d:
 			var serial := Login.read_be(p,1,4)
+			if not pending_transfer.is_empty() and int(pending_transfer.serial)==serial: pending_transfer.lifted = true
 			entities.erase(serial)
 			entity_removed.emit(serial)
 			_remove_world_item(serial)
+			known_items.erase(serial)
+			for layer in equipment.keys():
+				if int(equipment[layer].serial) == serial: equipment.erase(layer)
 			if container_items.erase(serial): inventory_received.emit(container_items.values())
+			items_changed.emit()
 		0x2e:
-			if p[8] == 21 and Login.read_be(p,9,4) == player.serial: backpack = Login.read_be(p,1,4)
+			if p.size() != 15: return
+			var owner := Login.read_be(p,9,4)
+			var item := {"serial":Login.read_be(p,1,4),"id":Login.read_be(p,5,2),"amount":1,"layer":int(p[8]),"container":owner,"hue":Login.read_be(p,13,2)}
+			if owner == int(player.serial):
+				equipment[item.layer] = item
+				if item.layer == 21: backpack = int(item.serial)
+			remember_item(item)
 		0xbf:
+			if p.size()>=12 and Login.read_be(p,3,2)==0x14:
+				context_menu = Commerce.context(p)
+				if not context_menu.is_empty(): context_received.emit(context_menu)
 			if p.size() == 13 and Login.read_be(p,3,2) == 4:
 				var type := Login.read_be(p,5,4)
 				gumps.erase(type)
@@ -397,6 +473,18 @@ func _handle(p: PackedByteArray) -> void:
 					for serial in world_items.keys(): _remove_world_item(serial)
 				player.facet = int(p[5])
 		0x24:
+			next_item_action = maxi(next_item_action,Time.get_ticks_msec()+1100)
+			if Login.read_be(p,5,2)==0x30:
+				vendor_serial = Login.read_be(p,1,4)
+				vendor_stock.clear()
+				for parent in vendor_prices:
+					var stock := contents_of(int(parent))
+					stock.sort_custom(func(a: Dictionary,b: Dictionary): return int(a.x)<int(b.x))
+					var prices: Array = vendor_prices[parent]
+					if stock.size()!=prices.size(): continue
+					for i in stock.size(): vendor_stock.append(stock[i].merged(prices[i]))
+				vendor_received.emit(vendor_serial,vendor_stock)
+				return
 			container_serial = Login.read_be(p,1,4)
 			container_items.clear()
 			container_opened.emit(container_serial)
@@ -410,9 +498,15 @@ func _handle(p: PackedByteArray) -> void:
 			var items := []
 			for i in count:
 				var offset := 5+i*20
-				items.append({"serial":Login.read_be(p,offset,4),"id":Login.read_be(p,offset+4,2),"amount":Login.read_be(p,offset+7,2),"container":Login.read_be(p,offset+14,4)})
+				items.append({"serial":Login.read_be(p,offset,4),"id":Login.read_be(p,offset+4,2),"amount":Login.read_be(p,offset+7,2),"container":Login.read_be(p,offset+14,4),"x":Login.read_be(p,offset+9,2),"y":Login.read_be(p,offset+11,2),"hue":Login.read_be(p,offset+18,2)})
+			var parents := {}
+			for item in items: parents[int(item.container)] = true
+			if items.is_empty(): parents[container_serial] = true
+			for serial in known_items.keys():
+				if parents.has(int(known_items[serial].get("container",0))): known_items.erase(serial)
 			container_items.clear()
 			for item in items:
+				remember_item(item)
 				_remove_world_item(item.serial)
 				if item.container == container_serial: container_items[item.serial] = item
 			inventory_received.emit(container_items.values())
@@ -525,7 +619,8 @@ func request_position() -> void:
 	send(PackedByteArray([0x22,0,0]))
 
 func open_backpack() -> void:
-	if phase == "world" and backpack != 0:
+	if phase == "world" and backpack != 0 and pending_transfer.is_empty():
+		next_item_action = Time.get_ticks_msec()+1100
 		var p := PackedByteArray([6])
 		p.append_array(Login.uint_be(backpack,4))
 		send(p)
@@ -582,6 +677,7 @@ func _server_text(message: String, system: bool = false) -> void:
 	message_received.emit(message)
 
 func _world_item(item: Dictionary) -> void:
+	remember_item(item.merged({"container":0}))
 	world_items[item.serial] = item
 	world_item_changed.emit(item.serial,item.duplicate())
 
@@ -622,7 +718,9 @@ static func legacy_item(p: PackedByteArray) -> Dictionary:
 	return {"serial":serial&0x7fffffff,"id":graphic,"amount":amount,"x":x&0x7fff,"y":y&0x3fff,"z":z,"hue":hue,"flags":flags}
 
 func use_item(serial: int) -> bool:
-	if phase != "world" or not (world_items.has(serial) or container_items.has(serial)): return false
+	if not pending_transfer.is_empty(): return false
+	if phase != "world" or not (world_items.has(serial) or known_items.has(serial)): return false
+	next_item_action = Time.get_ticks_msec()+1100
 	var click := PackedByteArray([9])
 	click.append_array(Login.uint_be(serial,4))
 	send(click)
@@ -682,3 +780,73 @@ func request_help() -> void:
 	var packet := PackedByteArray([0x9b])
 	packet.resize(258)
 	send(packet)
+
+func contents_of(parent: int) -> Array:
+	var result := []
+	for item in known_items.values():
+		if int(item.get("container",0)) == parent: result.append(item)
+	return result
+func remember_item(item: Dictionary) -> void:
+	if not requested_icons.has(int(item.id)):
+		requested_icons[int(item.id)] = true
+		icons_dirty = true
+	var serial := int(item.serial)
+	known_items[serial] = item
+	if int(item.get("container",0)) == container_serial: container_items[serial] = item
+	else: container_items.erase(serial)
+	if not pending_transfer.is_empty() and serial == int(pending_transfer.serial):
+		if int(item.get("container",0)) == int(pending_transfer.destination): finish_transfer(true,"Item move confirmed by server.")
+		elif pending_transfer.get("lifted",false) and int(item.get("container",0)) == int(pending_transfer.source): finish_transfer(false,"Server returned the item to its original location.")
+	items_changed.emit()
+func finish_transfer(success: bool, description: String) -> void:
+	if pending_transfer.is_empty(): return
+	next_item_action = maxi(next_item_action,Time.get_ticks_msec()+1100)
+	pending_transfer.clear()
+	transfer_result.emit(success,description)
+	message_received.emit(description)
+func move_item(serial: int, destination: int, equip_item: bool = false, ground_point: Vector3i = Vector3i(-999,-999,-999)) -> bool:
+	if phase != "world" or not pending_transfer.is_empty() or not known_items.has(serial) or serial == backpack: return false
+	var item: Dictionary = known_items[serial]
+	var source := int(item.get("container",0))
+	if source == destination: return false
+	pending_transfer = {"serial":serial,"source":source,"destination":destination,"lifted":false}
+	var delay := maxf(0.0,float(next_item_action-Time.get_ticks_msec())/1000.0)
+	transfer_deadline = Time.get_ticks_msec()+int(delay*1000)+8000
+	next_item_action = Time.get_ticks_msec()+int(delay*1000)+1100
+	var packet := Commerce.lift(serial,int(item.get("amount",1)))
+	if equip_item: packet.append_array(Commerce.equip(serial,int(player.serial)))
+	else: packet.append_array(Commerce.drop(serial,destination,(ground_point if ground_point.x!=-999 else Vector3i(int(player.x),int(player.y),int(player.z))) if destination == 0 else Vector3i(-1,-1,0)))
+	if delay > 0:
+		get_tree().create_timer(delay).timeout.connect(func():
+			if phase == "world" and not pending_transfer.is_empty() and int(pending_transfer.serial)==serial: send(packet))
+	else: send(packet)
+	return true
+func request_context(serial: int) -> bool:
+	if phase != "world" or not (entities.has(serial) or known_items.has(serial)): return false
+	vendor_prices.clear()
+	send(Commerce.context_request(serial))
+	var status := PackedByteArray([0x34,0xed,0xed,0xed,0xed,4])
+	status.append_array(Login.uint_be(serial,4))
+	if entities.has(serial): send(status)
+	return true
+func choose_context(index: int) -> bool:
+	if phase != "world" or context_menu.is_empty(): return false
+	for option in context_menu.options:
+		if int(option.index)==index and (int(option.flags)&1)==0:
+			send(Commerce.context_reply(int(context_menu.serial),index))
+			return true
+	return false
+func buy_item(serial: int,amount: int = 1) -> bool:
+	if phase != "world" or vendor_serial == 0: return false
+	for item in vendor_stock:
+		if int(item.serial)==serial and amount>0 and amount<=int(item.amount):
+			next_item_action = Time.get_ticks_msec()+1100
+			send(Commerce.buy(vendor_serial,serial,amount))
+			return true
+	return false
+
+func begin_place(serial: int) -> bool:
+	if phase!="world" or not pending_transfer.is_empty() or not known_items.has(serial): return false
+	placement_serial = serial
+	message_received.emit("Click a nearby floor or ground surface to place the item. Escape cancels.")
+	return true

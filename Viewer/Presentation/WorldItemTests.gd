@@ -122,6 +122,15 @@ func run() -> void:
  game._world_item({"serial":0x40000003,"id":3000,"x":1009,"y":2009,"z":20,"facet":1})
  var sign: Node3D = view.nodes[0x40000003]
  check(sign.get_node("PickBody/PickShape").position.y > 2.5,"building sign and click target rise together above the entrance")
+ check(sign.has_node("WallBracket") and sign.get_node("PickBody/PickShape").position.x>0.5,"projecting building sign bracket and click volume share the outward offset")
+ var Sign = preload("res://Presentation/SignPlan.gd")
+ var sign_world := {"statics":[{"id":901,"x":4,"y":5,"z":0}]}
+ var sign_rules := {"901":{"kind":"wall","axis":"x"}}
+ var a := Sign.layout({"id":3000,"x":4,"y":6,"z":0},sign_world,sign_rules)
+ var b := Sign.layout({"id":3000,"x":4,"y":4,"z":0},sign_world,sign_rules)
+ check(is_equal_approx(absf(angle_difference(a.yaw,b.yaw)),PI),"sign brackets project to opposite sides of opposite-facing walls")
+ var turned_sign := Sign.layout({"id":3000,"x":6,"y":4,"z":0},{"statics":[{"id":901,"x":5,"y":4,"z":0}]},{"901":{"kind":"wall","axis":"z"}})
+ check(is_equal_approx(absf(angle_difference(a.yaw,turned_sign.yaw)),PI/2),"perpendicular facade rotates the sign plane by ninety degrees")
  game.item_label_received.emit(0x40000003,"The Quiet Inn")
  check(sign.get_node("BuildingName").text == "The Quiet Inn" and sign.get_node("BuildingName").visible,"server-confirmed building name appears on the clicked sign")
  game._remove_world_item(0x40000003)

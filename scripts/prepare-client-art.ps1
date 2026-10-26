@@ -16,8 +16,13 @@ $signs = @(2995,3011,3012,4761,4766)
 $catalog = "$root/Viewer/item-definitions.local.json"
 if (Test-Path $catalog) {
  $definitions = Get-Content $catalog -Raw | ConvertFrom-Json
- $signs += $definitions.PSObject.Properties | Where-Object { $_.Value.family -eq 'sign' } | ForEach-Object { [int]$_.Name }
+ $signs += $definitions.PSObject.Properties | ForEach-Object { [int]$_.Name }
 }
+$itemRequests = "$root/Viewer/item-art-requests.local.json"
+if (Test-Path $itemRequests) { $signs += Get-Content $itemRequests -Raw | ConvertFrom-Json }
+$signs += @(0xe75,0xeed,0x1f03,0xf51,0xefa)
+python "$root/scripts/prepare-hues.py" $DataDir
+if ($LASTEXITCODE) { throw 'Local hue preparation failed' }
 & $dotnet $dll item-art $DataDir "$root/Viewer/item-art.local.json" (($signs | Sort-Object -Unique) -join ',')
 if ($LASTEXITCODE) { throw 'Local sign artwork extraction failed' }
 $GumpIds += @(2600..2608)+@(2072,2073,5540,5541)

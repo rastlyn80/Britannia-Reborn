@@ -15,4 +15,5 @@ try {
  if ($LASTEXITCODE) { throw 'Local item presentation catalogue export failed' }
 } finally { Remove-Item Env:\UO_DEV_USER,Env:\UO_DEV_PASSWORD -ErrorAction SilentlyContinue }
 
+& "$root/scripts/setup-preview-shops.ps1"
 & "$root/scripts/prepare-client-art.ps1"

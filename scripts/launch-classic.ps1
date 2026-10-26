@@ -1,4 +1,4 @@
-param([switch]$Observer,[switch]$PrepareOnly,[switch]$Diagnostic)
+param([switch]$Observer,[switch]$PrepareOnly,[switch]$Diagnostic,[switch]$Development)
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 $settingsPath = $null
@@ -55,7 +55,7 @@ try {
   $clientRoot = Join-Path $root '.tools/classicuo'
   $profileDir = Join-Path $clientRoot 'UltimaClone'
   New-Item -ItemType Directory -Force $profileDir | Out-Null
-  $profileName = if ($Observer) { 'observer.json' } else { 'primary.json' }
+  $profileName = if ($Development) { 'development.json' } elseif ($Observer) { 'observer.json' } else { 'primary.json' }
   $settingsPath = Join-Path $profileDir $profileName
   if (!$PrepareOnly) {
     $existing = Get-CimInstance Win32_Process -Filter "Name='ClassicUO.exe'" | Where-Object { $_.CommandLine -and $_.CommandLine.Contains($settingsPath) }
@@ -106,7 +106,7 @@ try {
     }
     if (!$ready) { throw 'The local server did not become ready. Run Start-Server.cmd for details.' }
   }
-  $credentials = if ($Observer) { $null } else { Read-LastLogin }
+  $credentials = if ($Observer -or $Development) { $null } else { Read-LastLogin }
   if (!$credentials -or !$credentials.username -or !$credentials.password) {
     $credentials = Get-Content "$root/Server/credentials.local.json" -Raw | ConvertFrom-Json
     if ($Observer) { $credentials.username += '2' }

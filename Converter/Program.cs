@@ -8,11 +8,12 @@ record Static(int x,int y,int z,int id,int hue);
 record TileInfo(string name,ulong flags,int height);
 record World(int schema,string facet,string provenance,int originX,int originY,int width,int height,double elevationScale,Tile[] terrain,Static[] statics,string mapSha256,Dictionary<int,TileInfo>? landData=null,Dictionary<int,TileInfo>? staticData=null,string? tiledataSha256=null);
 
-static class Program {
+static partial class Program {
  static readonly JsonSerializerOptions Json = new(){WriteIndented=true};
  static void Main(string[] args) {
   try {
    if(args.Length==0) throw new ArgumentException("Commands: fixture DIR | test DIR | convert DIR OUT [x y width height mapHeight]");
+   if(args[0]=="atlas") { ExportAtlas(args); return; }
    if(args[0]=="fixture") { Fixture(args[1]); return; }
    if(args[0]=="test") { Tests(args[1]); return; }
    if(args[0]=="reference") { ArtReference.Export(args[1],args[2],args[3]); return; }
@@ -28,7 +29,7 @@ static class Program {
  }
  static BinaryReader Read(string path)=>new(File.Open(path,FileMode.Open,FileAccess.Read,FileShare.Read));
  static void Range(long offset,long size,long length) {if(offset<0||size<0||offset>length-size) throw new InvalidDataException("Truncated or invalid file range");}
- static World Convert(string dir,int ox,int oy,int width,int height,int mapHeight) {
+ static World Convert(string dir,int ox,int oy,int width,int height,int mapHeight,bool fingerprint=true) {
   if(mapHeight<=0||mapHeight%8!=0||ox<0||oy<0||width<2||height<2||width>256||height>256||oy+height>mapHeight) throw new ArgumentException("Invalid region (2..256) or map height");
   // Never silently substitute Felucca for Trammel.
   string map=Path.Combine(dir,"map1.mul"),uop=Path.Combine(dir,"map1LegacyMUL.uop");
@@ -53,14 +54,14 @@ static class Program {
    Range(off,len,sr.BaseStream.Length); sr.BaseStream.Position=off;
    for(int n=0;n<len/7;n++) {int id=sr.ReadUInt16(),lx=sr.ReadByte(),ly=sr.ReadByte(),z=sr.ReadSByte(),hue=sr.ReadUInt16(); if(lx>7||ly>7) throw new InvalidDataException("Invalid static local coordinate"); int x=bx*8+lx,y=by*8+ly; if(x>=ox&&x<ox+width&&y>=oy&&y<oy+height) statics.Add(new(x,y,z,id,hue));}
   }
-  mr.BaseStream.Position=0; string sha=System.Convert.ToHexString(SHA256.HashData(mr.BaseStream));
+  mr.BaseStream.Position=0; string sha=fingerprint?System.Convert.ToHexString(SHA256.HashData(mr.BaseStream)):"";
   Dictionary<int,TileInfo>? land=null,objects=null;string? tileSha=null;
   string tilePath=Path.Combine(dir,"tiledata.mul");
   if(File.Exists(tilePath)) {
    using var td=Read(tilePath);
    land=tiles.Select(t=>t.id).Distinct().ToDictionary(id=>id,id=>ReadTileInfo(td,id,false));
    objects=statics.Select(t=>t.id).Distinct().ToDictionary(id=>id,id=>ReadTileInfo(td,id,true));
-   td.BaseStream.Position=0;tileSha=System.Convert.ToHexString(SHA256.HashData(td.BaseStream));
+   td.BaseStream.Position=0;tileSha=fingerprint?System.Convert.ToHexString(SHA256.HashData(td.BaseStream)):null;
   }
   return new(1,"Trammel (map1)",File.Exists(Path.Combine(dir,"SYNTHETIC.txt"))?"SYNTHETIC — invented terrain; NOT Britain geography":$"LOCAL TRAMMEL — base + local diffs ({landPatch.blocks.Count}/{staticPatch.blocks.Count})",ox,oy,width,height,0.2,tiles.ToArray(),statics.ToArray(),sha,land,objects,tileSha);
  }

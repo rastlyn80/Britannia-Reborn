@@ -1,3 +1,9 @@
+# Current checkpoint — interaction, recovery and Britannia explorer (2026-10-26)
+
+The user-approved forced restart recovered the saved world; native autosaving resumed. Commerce passes headless and in Forward+: correct native gold debits, tavern/inn stock, owned backpack purchase, public ownership rejection, ground/container transfers and equipment. The separate ClassicUO development character entered the matching street and its sign returned The Wayfarer’s Inn. Gump frame bounds, draggable windows, icons/hues and item actions have regression coverage. See COMMERCE_PASS.md for exact limits.
+
+Building signs now project perpendicular to source facades on brackets, including their click targets. A separate whole-Britannia explorer converts Trammel X=0–5119/Y=0–4095 into 5,120 chunks. Every one of 20,971,520 terrain samples and 2,376,103 statics independently matches the owned inputs. The overview renders in Forward+, and a new district loads through shared terrain/reconstruction rules. Full-world art, chunk architecture ownership and gameplay streaming remain incomplete: new IDs appear as gold markers, not silently invented finished buildings. Live population/gameplay still uses the original validated crop. See BRITANNIA_EXPLORER.md.
+
 # Current checkpoint — native world objects, artwork and gumps (2026-10-25)
 
 The 64x64 Britain crop has 148 native root placements (131 decorations, 12 door leaves, 5 signs). Doors preserve eight singles and two linked double pairs; human-height leaves, shared lintels and PBR timber replace the earlier oversized door presentation. Native sign replies display actual building names. Graphic/type mappings distinguish small objects and furniture; local classic sign art is applied to 3D faces without publishing it.

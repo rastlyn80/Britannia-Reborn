@@ -89,3 +89,11 @@ Original project code is **GPL-3.0-or-later**; see [LICENSE](LICENSE) and [NOTIC
 
 
 The native object layer now includes graphic-specific props, local classic sign faces, clickable container contents, readable server books, native dice replies, bulletin-board reading and target selection. Server help opens a reusable native gump renderer with local classic artwork, native control IDs and server-side callbacks. See [world-object and gump scope](docs/WORLD_OBJECTS.md) for supported controls and remaining limits. Use scripts/prepare-client-art.ps1 to refresh local artwork after encountering new windows. Extracted artwork and game data are never included in this repository.
+
+
+The next interaction pass adds draggable gumps, classic item icons/hues, equipment and native item-placement controls, NPC context menus and a native vendor shop UI. Local setup derives the Salty Dog tavern keeper and innkeeper from the pinned source spawn file. Buying uses native stock/prices and existing character gold. See [commerce evidence and remaining limits](docs/COMMERCE_PASS.md): native purchases/payment, owned-container and ground transfers, equipment and rejection paths pass headless and graphical live checks.
+
+Use scripts/setup-preview-shops.ps1 after loading the new preview extension; Populate-Britain.cmd also invokes it. For ordinary play, click a vendor and choose Buy. B opens the backpack; select an item, then use the explicit inventory action. Place in world waits for a nearby surface click; Escape cancels. Public-container ownership restrictions remain native. scripts/test-commerce.ps1 uses only the development account for real purchases and transfers. scripts/audit-classic-parity.py checks the complete current crop against the owned UO files without modifying them.
+
+
+Double-click **Explore-Britannia.cmd** for the full Trammel Britannia landmass. It converts 5120×4096 source samples into bounded local chunks and offers a whole-world overview plus nearby district detail. **Launch.cmd** continues to open the playable Britain crop. Full-world art coverage and gameplay streaming remain unfinished; unknown objects appear as gold markers. See [explorer scope and reproduction](docs/BRITANNIA_EXPLORER.md). Building signs now project out from walls on shared brackets.

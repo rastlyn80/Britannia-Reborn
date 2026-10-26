@@ -182,6 +182,10 @@ func _ready() -> void:
 	canvas.add_child(login_panel)
 	login_panel.controller_toggled.connect(func(enabled: bool): controller_enabled = enabled)
 	game.entity_changed.connect(_entity_changed)
+	game.vendor_received.connect(func(serial: int,_stock: Array):
+		if avatars.has(serial): avatars[serial].get_node("Nameplate").text = game.entity_names.get(serial,"Vendor")+" · shopkeeper")
+	game.entity_name_received.connect(func(serial: int, name_text: String):
+		if avatars.has(serial): avatars[serial].get_node("Nameplate").text = name_text)
 	game.position_reset.connect(func(position: Dictionary):
 		var at := entity_point(position.x,position.y,position.z)
 		if tracks.has(position.serial): tracks[position.serial].reset(at)
@@ -304,6 +308,11 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel") and game.placement_serial:
+		game.placement_serial = 0
+		game.message_received.emit("Item placement cancelled.")
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and not mouse_looking:
 		world_items.click(event.position)
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
@@ -342,6 +351,18 @@ func _entity_changed(serial: int,position: Dictionary) -> void:
 		avatar.add_child(label)
 		avatar.position = location
 		add_child(avatar)
+		var picker := StaticBody3D.new()
+		picker.set_meta("server_mobile",serial)
+		picker.collision_layer = 4
+		picker.collision_mask = 0
+		var shape := CollisionShape3D.new()
+		var capsule := CapsuleShape3D.new()
+		capsule.radius = 0.35
+		capsule.height = 1.9
+		shape.shape = capsule
+		shape.position.y = 0.95
+		picker.add_child(shape)
+		avatar.add_child(picker)
 		avatars[serial] = avatar
 		tracks[serial] = Motion.new()
 		tracks[serial].reset(location)

@@ -10,6 +10,10 @@ var model := Node3D.new()
 var definitions := {}
 var selected := 0
 var mode := ""
+var last_container := 0
+var refresh_pending := false
+var status := Label.new()
+const Artwork = preload("res://Network/Artwork.gd")
 
 func configure(connection: Node) -> void:
  session = connection
@@ -28,10 +32,10 @@ func configure(connection: Node) -> void:
  column.add_child(title)
  var viewport_container := SubViewportContainer.new()
  viewport_container.name = "ObjectPreview"
- viewport_container.custom_minimum_size = Vector2(408,130)
+ viewport_container.custom_minimum_size = Vector2(408,90)
  column.add_child(viewport_container)
  preview = SubViewport.new()
- preview.size = Vector2i(408,130)
+ preview.size = Vector2i(408,90)
  preview.own_world_3d = true
  preview.transparent_bg = true
  preview.render_target_update_mode = SubViewport.UPDATE_DISABLED
@@ -54,14 +58,34 @@ func configure(connection: Node) -> void:
  environment.environment.ambient_light_energy = 0.65
  preview.add_child(environment)
  var scroll := ScrollContainer.new()
- scroll.custom_minimum_size = Vector2(408,220)
+ scroll.custom_minimum_size = Vector2(408,150)
  column.add_child(scroll)
  rows.size_flags_horizontal = Control.SIZE_EXPAND_FILL
  scroll.add_child(rows)
- reader.custom_minimum_size = Vector2(408,300)
+ reader.custom_minimum_size = Vector2(408,220)
  reader.bbcode_enabled = false
  reader.hide()
  column.add_child(reader)
+ var navigation := HBoxContainer.new()
+ column.add_child(navigation)
+ action(navigation,"Backpack",func(): session.open_backpack())
+ action(navigation,"Equipment",show_equipment)
+ action(navigation,"Last container",func():
+  if last_container: session.use_item(last_container))
+ var actions := GridContainer.new()
+ actions.columns = 2
+ column.add_child(actions)
+ action(actions,"Use selected",func():
+  if selected: session.use_item(selected))
+ action(actions,"Take / to backpack",func(): move_selected(session.backpack))
+ action(actions,"Put in last container",func():
+  if last_container: move_selected(last_container))
+ action(actions,"Place in world",func():
+  if selected and session.begin_place(selected): panel.hide())
+ action(actions,"Equip selected",func(): move_selected(int(session.player.serial),true))
+ status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+ status.custom_minimum_size.x = 408
+ column.add_child(status)
  var close := Button.new()
  close.text = "Close"
  close.pressed.connect(func(): panel.hide())
@@ -69,10 +93,17 @@ func configure(connection: Node) -> void:
  panel.hide()
  session.container_opened.connect(func(serial: int):
   mode = "container"
+  selected = 0
+  if serial != session.backpack: last_container = serial
   title.text = "Backpack" if serial == session.backpack else session.labels.item_name(int(session.world_items.get(serial,{"id":0}).id))
   reset_rows("Waiting for server contents…")
   panel.show())
  session.inventory_received.connect(contents)
+ session.items_changed.connect(func():
+  if not refresh_pending:
+   refresh_pending = true
+   refresh.call_deferred())
+ session.transfer_result.connect(func(_success: bool,text: String): status.text = text)
  session.book_received.connect(book)
  session.board_received.connect(func(board: Dictionary):
   mode = "board"
@@ -105,14 +136,19 @@ func contents(items: Array) -> void:
  for item in items:
   var button := Button.new()
   button.text = "%s × %d" % [session.labels.item_name(int(item.id)),int(item.amount)]
+  button.icon = Artwork.item(int(item.id),int(item.get("hue",0)))
+  button.expand_icon = true
+  button.icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
+  button.custom_minimum_size.y = 38
   button.alignment = HORIZONTAL_ALIGNMENT_LEFT
   button.set_meta("server_serial",int(item.serial))
   button.pressed.connect(func():
    if mode == "board": session.request_board_post(int(item.serial))
    else:
+    selected = int(item.serial)
+    status.text = "Selected: "+session.labels.item_name(int(item.id))
     show_preview(item)
-    if not session.target_request.is_empty(): session.target_item(int(item.serial))
-    else: session.use_item(int(item.serial)))
+    if not session.target_request.is_empty(): session.target_item(int(item.serial)))
   rows.add_child(button)
 
 func show_preview(item: Dictionary) -> void:
@@ -121,7 +157,16 @@ func show_preview(item: Dictionary) -> void:
  var kind := Appearance.variant(int(item.id),rule)
  var g := preload("res://Presentation/GeometryLibrary.gd").new()
  var size := Appearance.small(model,g,kind,int(item.id))
- if size == Vector3.ZERO: Appearance.small(model,g,"unknown",int(item.id))
+ if size == Vector3.ZERO:
+  var icon := Artwork.item(int(item.id),int(item.get("hue",0)))
+  if icon:
+   var sprite := Sprite3D.new()
+   sprite.texture = icon
+   sprite.pixel_size = 0.004
+   sprite.position.y = 0.1
+   sprite.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+   model.add_child(sprite)
+  else: Appearance.small(model,g,"unknown",int(item.id))
  preview.get_parent().show()
  preview.render_target_update_mode = SubViewport.UPDATE_ONCE
 
@@ -147,3 +192,39 @@ func post(value: Dictionary) -> void:
  if not value.lines.is_empty():
   reader.text = "%s\n%s · %s\n\n%s" % [value.title,value.author,value.date,"\n".join(value.lines)]
   reader.show()
+
+func action(parent: Node, text: String, callback: Callable) -> Button:
+ var button := Button.new()
+ button.text = text
+ button.pressed.connect(callback)
+ parent.add_child(button)
+ return button
+func move_selected(destination: int, equip_item: bool = false) -> void:
+ if not selected:
+  status.text = "Select an item first."
+  return
+ if session.move_item(selected,destination,equip_item): status.text = "Waiting for server confirmation…"
+ else: status.text = "Cannot start this move. Finish the current move or select another item."
+func refresh() -> void:
+ refresh_pending = false
+ if mode == "equipment": show_equipment()
+ elif mode == "container": contents(session.contents_of(session.container_serial))
+func show_equipment() -> void:
+ mode = "equipment"
+ title.text = "Equipment · server confirmed"
+ reset_rows()
+ for layer in session.equipment:
+  if int(layer) in [11,16,21,26,27,28,29]: continue
+  var item: Dictionary = session.equipment[layer]
+  if not session.known_items.has(int(item.serial)): continue
+  var row := Button.new()
+  row.text = "Layer %d · %s" % [layer,session.labels.item_name(int(item.id))]
+  row.icon = Artwork.item(int(item.id),int(item.get("hue",0)))
+  row.expand_icon = true
+  row.custom_minimum_size = Vector2(390,38)
+  row.pressed.connect(func():
+   selected = int(item.serial)
+   show_preview(item)
+   status.text = "Select Take / to backpack to unequip this item.")
+  rows.add_child(row)
+ panel.show()

@@ -30,3 +30,8 @@ Viewer/item-definitions.local.json
 Viewer/gump-art.local.json
 Viewer/item-art.local.json
 Viewer/gump-art-requests.local.json
+
+Viewer/hues.local.json
+Viewer/item-art-requests.local.json
+
+**/__pycache__/
