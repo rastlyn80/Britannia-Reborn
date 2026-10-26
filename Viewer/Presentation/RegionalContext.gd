@@ -44,6 +44,7 @@ func prepare(data: RefCounted) -> void:
  reconstruction.shoreline=shore
  print("REGIONAL PHASE: shoreline ",Time.get_ticks_msec()-start)
  surface.index(world,shore)
+ reconstruction.terrain_surface=surface
  print("REGIONAL PHASE: surface ",Time.get_ticks_msec()-start)
  shell.index(world,reconstruction)
  for cell in surface.wooden_cells:

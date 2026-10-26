@@ -52,6 +52,8 @@ static func resolve(id: int,info: Dictionary) -> Dictionary:
  if n in ["stone","marble","platform"]: return base.merged({"kind":"landing"})
  if "roof" in n or "shingle" in n: return base.merged({"kind":"roof","material":"thatch" if "thatch" in n else ("stone" if "stone" in n else ("clay" if "tile" in n else "slate")),"rise":[0,0],"ridgeAxis":"x","profile":"flat" if height==0 else "slope","anchorOffset":[-1,-1]})
  if n in ["cobblestones","stone pavers","stone pavers dark","marble floor","flagstones","wooden planks","wooden plank","wooden boards","wooden bridge"]: return base.merged({"kind":"floor","surface":"wood" if "wood" in n else "stone"})
+ # Raised flower beds are stone planters that flowers and trees stand on.
+ if n.replace(" ","").begins_with("flowerbed"): return base.merged({"kind":"planter"})
  if "rug" in n or "carpet" in n: return base.merged({"kind":"carpet"})
  if "bench" in n: return base.merged({"kind":"bench"})
  # Legacy "bar" art is a panelled serving counter, not a rail.

@@ -184,5 +184,17 @@ func _initialize() -> void:
  var roof_recon:=preload("res://Presentation/Reconstruction.gd").new()
  roof_recon.index(roof_world)
  check(roof_recon.roof_families.get(2,"")=="brick" and roof_recon.roof_families.get(4,"")=="plaster","Roof gable ends follow the brick or plaster walls beneath each roof")
+ # Vegetation roots on planters and on the rendered (interpolated) terrain.
+ check(preload("res://Presentation/RegionalRules.gd").resolve(2,{"name":"FlowerBed Corner NOR","height":5}).get("kind","")=="planter","Flower bed pieces are planters, not flower tufts")
+ var veg_world:={"elevationScale":.2,"originX":1200,"originY":1200,"width":4,"height":4,"terrain":[],"statics":[{"x":1200,"y":1200,"z":0,"id":9001},{"x":1200,"y":1200,"z":5,"id":9002},{"x":1202,"y":1201,"z":10,"id":9003},{"x":1203,"y":1203,"z":60,"id":9002}],"staticData":{"9001":{"name":"FlowerBed Middle EAS","height":5},"9002":{"name":"red poppies","height":0},"9003":{"name":"oak tree","height":20}},"landData":{"3":{"name":"grass"}}}
+ for y in 4:
+  for x in 4:veg_world.terrain.append({"x":1200+x,"y":1200+y,"z":x*5,"id":3})
+ var veg_recon:=preload("res://Presentation/Reconstruction.gd").new()
+ veg_recon.index(veg_world)
+ var veg_terrain:=preload("res://Presentation/TerrainSurface.gd").new();veg_terrain.index(veg_world)
+ veg_recon.terrain_surface=veg_terrain
+ check(is_equal_approx(veg_recon.vegetation_ground(veg_world.statics[1],veg_world),1.0),"Flower on a raised bed roots on the bed top")
+ check(is_equal_approx(veg_recon.vegetation_ground(veg_world.statics[2],veg_world),veg_terrain.height_at(Vector2(1202.5,1201.5))),"Tree on a slope roots on the rendered terrain at its tile centre")
+ check(is_nan(veg_recon.vegetation_ground(veg_world.statics[3],veg_world)),"Vegetation far above any ground keeps its source height")
  print("ART FIDELITY TESTS: ",checks," checks / ",failures," failures")
  quit(1 if failures else 0)

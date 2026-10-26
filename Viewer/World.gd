@@ -109,6 +109,7 @@ func _ready() -> void:
 		preload("res://Presentation/SurfaceLibrary.gd").source_origin = Vector2(world.originX,world.originY)
 		shoreline.index(world,reconstruction.catalog)
 		terrain_surface.index(world,shoreline)
+		reconstruction.terrain_surface = terrain_surface
 		var terrain := MeshInstance3D.new()
 		terrain.name = "BlendedTerrain"
 		terrain.mesh = terrain_surface.build()

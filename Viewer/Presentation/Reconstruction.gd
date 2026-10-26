@@ -18,6 +18,12 @@ var gable_material: ShaderMaterial
 # or stone building must not grow plaster gable sails.
 var gable_materials := {}
 var roof_families := {}
+# Rendered terrain (TerrainSurface) and source supports under vegetation. UO
+# stores one height per tile; the presented ground interpolates between tiles,
+# so plants placed at raw tile height float or sink on slopes and planters.
+var terrain_surface
+var ground_supports := {}
+const VEGETATION := ["tree","flower","grass","bush","mushroom","rock","log"]
 var water_material: ShaderMaterial
 var shoreline
 var show_boundary_fragments := false
@@ -171,6 +177,15 @@ func index(world: Dictionary) -> void:
 	_plan_context(world)
 	_plan_mounts(world)
 	_plan_roof_families(world)
+	ground_supports.clear()
+	for tile in world.statics:
+		var support_kind := str(rule_for(int(tile.id)).get("kind",""))
+		if support_kind not in ["floor","landing","planter","stairs"]: continue
+		var detail := info(world,int(tile.id),true)
+		var top := float(tile.z)+float(detail.get("height",0))*(0.5 if int(detail.get("flags",0)) & 0x400 else 1.0)
+		var cell := Vector2i(tile.x,tile.y)
+		if not ground_supports.has(cell): ground_supports[cell] = []
+		ground_supports[cell].append(top)
 	bridges.index(world,catalog)
 	supports.catalog = catalog
 	supports.index(world)
@@ -303,6 +318,18 @@ func _plan_roof_families(world: Dictionary) -> void:
 		for family in votes:
 			if int(votes[family]) > int(votes.get(best,0)): best = family
 		roof_families[i] = best
+
+# Height (metres) a plant should root at: the higher of the rendered terrain at
+# the tile centre and any planter/floor top beneath its source Z. Returns NAN
+# when nothing plausible is within 2.5 m, leaving the source height untouched.
+func vegetation_ground(s: Dictionary, world: Dictionary) -> float:
+	var scale := float(world.elevationScale)
+	var ground := -INF
+	if terrain_surface: ground = terrain_surface.height_at(Vector2(float(s.x)+0.5,float(s.y)+0.5))
+	for top in ground_supports.get(Vector2i(s.x,s.y),[]):
+		if float(top) <= float(s.z)+1.0: ground = maxf(ground,float(top)*scale)
+	if ground == -INF or absf(ground-float(s.z)*scale) > 2.5: return NAN
+	return ground
 
 func gable_for(family: String) -> ShaderMaterial:
 	if not gable_materials.has(family):
@@ -568,6 +595,12 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					visual.rotation.y = fmod(float(int(s.x)*17+int(s.y)*31),TAU)
 				"grass": visual = fitted(asset,Vector3(0.65,0.25+0.1*(int(s.id)%3),0.65))
 				"flower": visual = fitted(asset,Vector3(0.55,0.28,0.55))
+				"planter":
+					# Stone-curbed raised bed at its source height with a soil top.
+					visual = Node3D.new()
+					facade.piece(visual,Vector3(1.0,maxf(0.05,height-0.03),1.0),Vector3(0,(height-0.03)/2,0),"stone")
+					var soil := geometry.box(visual,Vector3(0.9,0.04,0.9),Vector3(0,height-0.01,0),"3b2c20")
+					soil.material_override = geometry.material("3b2c20")
 				"bush": visual = fitted(asset,Vector3(1.1,0.65,1.1))
 				"mushroom": visual = fitted(asset,Vector3(0.32,0.22,0.32))
 				"rock": visual = fitted(asset,Vector3(0.55,0.38,0.55))
@@ -596,6 +629,11 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 			if groups.has(ordinal) and kind in ["bed","arch","gable","bench","table","counter","prop"]:
 				var group: Dictionary = groups[ordinal]
 				visual.position += Vector3(group.low.x+group.size.x/2-float(s.x)-0.5,0,group.low.y+group.size.y/2-float(s.y)-0.5)
+			if not show_boundary_fragments and kind in VEGETATION:
+				var rooted := vegetation_ground(s,world)
+				if not is_nan(rooted):
+					visual.position.y += rooted-float(s.z)*float(world.elevationScale)
+					node.set_meta("ground_offset",rooted-float(s.z)*float(world.elevationScale))
 			if not show_boundary_fragments:
 				visual.position += presentation_adjustments.get(ordinal,{}).get("offset",Vector3.ZERO)
 				visual.rotation.y += float(presentation_adjustments.get(ordinal,{}).get("yaw",0.0))
@@ -609,7 +647,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 	node.set_meta("source_xyz",Vector3i(s.x,s.y,s.z))
 	node.set_meta("source_ordinal",ordinal)
 	node.set_meta("kind",kind)
-	node.set_meta("solid",kind in ["wall","window","corner","post","trim","gable","beam","arch","floor","landing","stairs","roof","door","fence","bed","table","bench","counter","rock","log"] and state not in ["group-component","boundary-fragment","context-suppressed"])
+	node.set_meta("solid",kind in ["wall","window","corner","post","trim","gable","beam","arch","floor","landing","stairs","roof","door","fence","bed","table","bench","counter","rock","log","planter"] and state not in ["group-component","boundary-fragment","context-suppressed"])
 	node.position = Vector3(s.x-int(world.originX)+0.5,s.z*float(world.elevationScale),s.y-int(world.originY)+0.5)
 	if facade.plans.has(ordinal): node.set_meta("facade_run",facade.plans[ordinal].run)
 	var entry := {"ordinal":ordinal,"id":s.id,"xyz":[s.x,s.y,s.z],"status":state,"kind":kind,"asset":asset,"axis":rule.get("axis","x"),"confidence":rule.get("confidence","semantic")}

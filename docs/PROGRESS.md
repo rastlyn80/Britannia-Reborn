@@ -1,3 +1,7 @@
+# Rooted vegetation and flower-bed planters — 26 October 2026
+
+Owner-reported flying trees and flowers. 90 "FlowerBed" pieces were classified as flowers (name match), so the 1 m raised beds were missing and the flowers/trees planted on them floated; they are now stone-curbed planters with soil at source height. UO stores one height per tile while the presented terrain interpolates between tiles, so vegetation at raw tile height floated or sank on slopes; trees, flowers, grass, bushes, mushrooms, rocks and logs now root on the higher of the rendered terrain at the tile centre and any planter/floor top beneath them, as a presentation offset (source XYZ unchanged; cases more than 2.5 m away keep their source height). 442 Godot checks (+5), parity, GPU and native city checks pass.
+
 # Roof ends follow their walls — 26 October 2026
 
 Owner-reported white blocks and "sails" over brick and timber buildings: every roof end (and source gable piece) was drawn in plaster regardless of the building, which became glaring once plaster was brightened. Each roof now takes the dominant family of the walls beneath it within three cells (brick, stone, timber or plaster), and source gables use their own family. 437 Godot checks (+1), parity, GPU and native city checks pass. Still open from the same screenshots: crude placeholder statues and an unidentified white board-on-posts prop near Britain's west bank.
