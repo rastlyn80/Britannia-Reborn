@@ -390,11 +390,18 @@ func chimney_stack(s: Dictionary, group: Dictionary, world: Dictionary) -> Node3
 	var root := Node3D.new()
 	var centre := Vector3(low.x+size.x/2-float(s.x)-0.5,0,low.y+size.y/2-float(s.y)-0.5)
 	var origin := float(s.z)*scale
-	facade.piece(root,Vector3(width.x,top-base,width.z),centre+Vector3(0,(base+top)/2-origin,0),"stone")
-	# Corbelled cap and dark flue opening read as a chimney top.
-	facade.piece(root,Vector3(width.x+0.16,0.14,width.z+0.16),centre+Vector3(0,top+0.07-origin,0),"stone")
-	var flue := geometry.box(root,Vector3(width.x*0.55,0.02,width.z*0.55),centre+Vector3(0,top+0.145-origin,0),"1c1916")
-	flue.material_override = geometry.material("1c1916")
+	# The visible top is the MedievalKit (CC0) chimney with its clay pots, one
+	# per footprint cell along the stack; masonry carries it down to the roof.
+	const CROWN := 2.29
+	var crown_base := maxf(base,top-CROWN)
+	if crown_base > base: facade.piece(root,Vector3(width.x,crown_base-base,width.z),centre+Vector3(0,(base+crown_base)/2-origin,0),"stone")
+	var along_x: bool = size.x >= size.y
+	var count := maxi(1,int(round(maxf(size.x,size.y))))
+	for i in count:
+		var shift := (float(i)-float(count-1)/2.0)*(width.x if along_x else width.z)/float(count)
+		var crown: Node3D = fitted("MedievalKit/Chimney.gltf",Vector3(width.x/float(count) if along_x else width.x,top-crown_base,width.z if along_x else width.z/float(count)))
+		crown.position = centre+Vector3(shift if along_x else 0.0,crown_base-origin,0.0 if along_x else shift)
+		root.add_child(crown)
 	return root
 
 func gable_for(family: String) -> ShaderMaterial:
@@ -429,7 +436,7 @@ func _collect_bounds(node: Node3D, transform: Transform3D, boxes: Array) -> void
 		if child is Node3D: _collect_bounds(child,combined,boxes)
 
 func fitted(path: String, size: Vector3, orientation: Array = [0,0,0]) -> Node3D:
-	var full := "res://Art/"+path if path.begins_with("Kenney/") or path.begins_with("PolyHaven/") else "res://Art/Quaternius/"+path
+	var full := "res://Art/"+path if path.begins_with("Kenney/") or path.begins_with("PolyHaven/") or path.begins_with("MedievalKit/") else "res://Art/Quaternius/"+path
 	if not scenes.has(path):
 		scenes[path] = load(full)
 		assert(scenes[path] != null,"Missing catalogue asset: "+path)

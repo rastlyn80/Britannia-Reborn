@@ -59,9 +59,12 @@ static func resolve(id: int,info: Dictionary) -> Dictionary:
  # Legacy "bar" art is a panelled serving counter, not a rail.
  if "table" in n or n in ["counter","bar"]: return base.merged({"kind":"counter" if n in ["counter","bar"] else "table"})
  if n=="bed" or n=="cot": return base.merged({"kind":"bed","asset":"Kenney/bedSingle.glb"})
+ if n=="wooden fence": return base.merged({"kind":"fence","asset":"MedievalKit/Fence_2m.gltf"})
  if "fence" in n or "banister" in n: return base.merged({"kind":"fence","asset":"Village/Prop_WoodenFence_Single.gltf"})
  if "signpost" in n: return base.merged({"kind":"sign"})
  if "column" in n or "pillar" in n or "buttress" in n or n=="stone post": return base.merged({"kind":"pillar"})
+ if n in ["lamp post","lantern post"]: return base.merged({"kind":"asset","asset":"MedievalKit/Lantern_Post.gltf","dimensions":[0.6,2.7,0.3]})
+ if "sack of flour" in n: return base.merged({"kind":"asset","asset":"MedievalKit/"+("Sack_Open" if "open" in n else "Sack")+".gltf","dimensions":[0.6,0.73,0.54]})
  if "post" in n or n=="wooden beam": return base.merged({"kind":"beam" if n=="wooden beam" else "post","asset":"Village/Prop_Support.gltf"})
  if n=="chimney": return base.merged({"kind":"chimney"})
  if "leaves" in n or "needles" in n: return base.merged({"kind":"canopy","asset":"Nature/CommonTree_1.gltf"})

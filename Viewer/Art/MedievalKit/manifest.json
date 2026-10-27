@@ -1,0 +1,625 @@
+{
+ "provider": "MedievalKit 5.1.1 (RenderHub listing by lichtbaer: https://www.renderhub.com/lichtbaer/medievalkit)",
+ "license": "CC0-1.0",
+ "licenseFile": "LICENSE.txt",
+ "source": {
+  "file": "MedievalKit.blend",
+  "sha256": "d55818ddf838917b3361aa4f02d2aedb7b3f7f02c6dcbde596bb0e8ea180789c",
+  "edition": "Blender download, owner-supplied"
+ },
+ "conversion": "Selected static modules exported with Blender 5.2.1 LTS by scripts/export-medievalkit.py (glTF separate, Y-up, origin at module origin); colour/roughness maps re-encoded as JPEG q92; normal maps unchanged PNG.",
+ "modules": {
+  "Door_Plank": {
+   "triangles": 708,
+   "dimensions": [
+    0.996,
+    0.185,
+    2.2
+   ]
+  },
+  "Door_Rect": {
+   "triangles": 656,
+   "dimensions": [
+    0.976,
+    0.2,
+    2.03
+   ]
+  },
+  "FShutter_Pair": {
+   "triangles": 368,
+   "dimensions": [
+    1.82,
+    0.111,
+    0.96
+   ]
+  },
+  "FShutter_Pair_Red": {
+   "triangles": 368,
+   "dimensions": [
+    1.82,
+    0.111,
+    0.96
+   ]
+  },
+  "FlowerBox": {
+   "triangles": 3228,
+   "dimensions": [
+    1.1,
+    0.328,
+    0.485
+   ]
+  },
+  "Lantern_Post": {
+   "triangles": 474,
+   "dimensions": [
+    0.598,
+    0.3,
+    2.714
+   ]
+  },
+  "Barrel": {
+   "triangles": 2732,
+   "dimensions": [
+    0.677,
+    0.67,
+    0.841
+   ]
+  },
+  "Crate": {
+   "triangles": 508,
+   "dimensions": [
+    0.62,
+    0.672,
+    0.56
+   ]
+  },
+  "Sack": {
+   "triangles": 1122,
+   "dimensions": [
+    0.596,
+    0.537,
+    0.734
+   ]
+  },
+  "Sack_Open": {
+   "triangles": 2106,
+   "dimensions": [
+    0.596,
+    0.537,
+    0.734
+   ]
+  },
+  "Woodpile": {
+   "triangles": 1392,
+   "dimensions": [
+    1.644,
+    0.787,
+    0.888
+   ]
+  },
+  "Well": {
+   "triangles": 5438,
+   "dimensions": [
+    1.99,
+    1.62,
+    2.523
+   ]
+  },
+  "Handcart": {
+   "triangles": 10644,
+   "dimensions": [
+    2.386,
+    1.222,
+    0.973
+   ]
+  },
+  "Planter_Pot": {
+   "triangles": 3876,
+   "dimensions": [
+    0.458,
+    0.42,
+    0.677
+   ]
+  },
+  "Basket_Produce": {
+   "triangles": 3284,
+   "dimensions": [
+    0.5,
+    0.5,
+    0.289
+   ]
+  },
+  "Rope_Coil": {
+   "triangles": 2880,
+   "dimensions": [
+    0.472,
+    0.457,
+    0.025
+   ]
+  },
+  "Sign_Plaque": {
+   "triangles": 24,
+   "dimensions": [
+    0.5,
+    0.038,
+    0.7
+   ]
+  },
+  "Chimney": {
+   "triangles": 1500,
+   "dimensions": [
+    0.72,
+    0.72,
+    2.29
+   ]
+  },
+  "Fence_2m": {
+   "triangles": 752,
+   "dimensions": [
+    2.0,
+    0.091,
+    1.029
+   ]
+  },
+  "Fountain_Statue": {
+   "triangles": 8368,
+   "dimensions": [
+    0.85,
+    0.85,
+    1.313
+   ]
+  }
+ },
+ "files": [
+  {
+   "path": "textures/Apple_Color.jpg",
+   "sha256": "94c123400cb93eaade3b3cb8149c9257db326e9c7566f3d43975daf8755c62f5",
+   "bytes": 112999
+  },
+  {
+   "path": "textures/Apple_NormalGL.png",
+   "sha256": "5a910f00b86d29505edff8efa45f075a0e38d9e02d6f49c321d15920edd51806",
+   "bytes": 1335983
+  },
+  {
+   "path": "textures/Apple_Roughness.jpg",
+   "sha256": "4adf481b4287de7969556f279a868bcbf3fee37b7300f73782408b8be2667c49",
+   "bytes": 377922
+  },
+  {
+   "path": "textures/Bread_Color.jpg",
+   "sha256": "f0949ec17390d0633a07af370319653d86c4e798309d4d487e8bcac9494683c3",
+   "bytes": 157125
+  },
+  {
+   "path": "textures/Bread_NormalGL.png",
+   "sha256": "7d8577e5224c68b24d24dfaf457af0017a62ac8b9b68e3d7326b813c00b55bed",
+   "bytes": 2526230
+  },
+  {
+   "path": "textures/Bread_Roughness.jpg",
+   "sha256": "1c4c978f00c31c3b0ee75777c824f053d0cae941422a985e101cecbb7e73f9e9",
+   "bytes": 374501
+  },
+  {
+   "path": "textures/Clay_Color.jpg",
+   "sha256": "ced8f0b2a2c7f25e57582bcda564ef08927638d59ce204d4fb23cbe3386379ac",
+   "bytes": 133348
+  },
+  {
+   "path": "textures/Clay_NormalGL.png",
+   "sha256": "57597a9f61645ea62b4bb4460e4ace5851b2b03a8c2eae7e52451320c2470ae9",
+   "bytes": 2040259
+  },
+  {
+   "path": "textures/Clay_Roughness.jpg",
+   "sha256": "37c1c9776b569209b0ee704e4bd60efd3610595c50ab3b94450a9737a4682600",
+   "bytes": 377787
+  },
+  {
+   "path": "textures/Clay_Tone_0.jpg",
+   "sha256": "f866f74b640e3112105feaae014e7dfbf730adcb578247252a379543b9975da3",
+   "bytes": 112926
+  },
+  {
+   "path": "textures/Clay_Tone_1.jpg",
+   "sha256": "25a5ef9cb213ddfc1c002286dda8ac4b76b6efda1143a17a0463623de4829bf3",
+   "bytes": 118689
+  },
+  {
+   "path": "textures/Clay_Tone_3.jpg",
+   "sha256": "80abf815b5cfa16d6c5b3ea81ebe70ffae3e035a123155f76aafeb14f7a2a5f7",
+   "bytes": 126176
+  },
+  {
+   "path": "textures/Crumb_Color.jpg",
+   "sha256": "2d6c3b19a4d17cd170bd6183571a692102e90ea5c124527f9a3050dce218ab67",
+   "bytes": 181531
+  },
+  {
+   "path": "textures/Crumb_NormalGL.png",
+   "sha256": "e5c765c12413126d42369af3982fb6f6beaf720c5d826b2c0de301b0c5f97e1c",
+   "bytes": 2345475
+  },
+  {
+   "path": "textures/Crumb_Roughness.jpg",
+   "sha256": "cf444b20ce47214eafcd7d69b4cdfe4019c6f7eb8d5a3ac3908ef1a93aa0f7ad",
+   "bytes": 288292
+  },
+  {
+   "path": "textures/Endgrain_Color.jpg",
+   "sha256": "5f64ccad659e8514430ea68909e22dade3d600ccb8da258ce0490baac95a9baf",
+   "bytes": 144603
+  },
+  {
+   "path": "textures/Endgrain_NormalGL.png",
+   "sha256": "3e1c3fd6f657314fa02a9bb09e70d4da7ae5adceee3dc9ffddaf3b57970383ed",
+   "bytes": 1548805
+  },
+  {
+   "path": "textures/Endgrain_Roughness.jpg",
+   "sha256": "e9940209c56639e3f6f579d217d2e70ff6f5d197b17c16ab7b613cee69f9e271",
+   "bytes": 198792
+  },
+  {
+   "path": "textures/Fabric045_2K-JPG_NormalGL.jpg",
+   "sha256": "bd977a2099dbe3f39037f35e52245f7b0f1d04d817e009da5ec172eb9b695c9d",
+   "bytes": 1557652
+  },
+  {
+   "path": "textures/Fabric045_2K-JPG_Roughness.jpg",
+   "sha256": "f97de67d0a4601a72154a8e53f90c5222c5e93b1a4ddfb25ab126e593c8857ec",
+   "bytes": 254352
+  },
+  {
+   "path": "textures/Iron_Color.jpg",
+   "sha256": "a43e733711d3b816d7526ea5cd51a7b05f7dbb3e4938dd87b3d1e91076288d74",
+   "bytes": 87036
+  },
+  {
+   "path": "textures/Iron_NormalGL.png",
+   "sha256": "9eade14d006bdd1de7ba937cc3d42522838f5903df88eb12ab4539bf00fa7786",
+   "bytes": 1987454
+  },
+  {
+   "path": "textures/Iron_Roughness.jpg",
+   "sha256": "1e0ce57d5ee9ca169115652d676e65154e5d4e041ce7a4c505a7b1f43103dd48",
+   "bytes": 377982
+  },
+  {
+   "path": "textures/Leaf_Color.jpg",
+   "sha256": "e68517604e6009aa74db24d1819953c6b99931d12256f73bf5b3964f2e509030",
+   "bytes": 18698
+  },
+  {
+   "path": "textures/Leaf_NormalGL.png",
+   "sha256": "88d526c1cd2bf05fa1a3bafb84604456343cddabd87c635f730a04204af79148",
+   "bytes": 12624
+  },
+  {
+   "path": "textures/Leaf_Roughness.jpg",
+   "sha256": "587302dab8691673e8d59eeb913a61e33e35de3a71fe5d2b9e4b056d9fce6e3c",
+   "bytes": 8051
+  },
+  {
+   "path": "textures/Limestone_Color.jpg",
+   "sha256": "18af8459a2a2719a383f0933892f71d9e8238c6e67af977489898b208d6cb528",
+   "bytes": 154476
+  },
+  {
+   "path": "textures/Limestone_NormalGL.png",
+   "sha256": "bc379c9a876d78e5ae00e01f0612902132d56193e90443def5790a60c37e29b6",
+   "bytes": 2283674
+  },
+  {
+   "path": "textures/Limestone_Roughness.jpg",
+   "sha256": "c71a7fe1512ddb781940d9195bf38995d08b5a10bcc3a679de798d97526f9417",
+   "bytes": 372077
+  },
+  {
+   "path": "textures/Linen_Color.jpg",
+   "sha256": "3221cb1d07531f13238b2443be5843d1b788c462c8576e7ada755e496f93b149",
+   "bytes": 449634
+  },
+  {
+   "path": "textures/Linen_Flax.jpg",
+   "sha256": "2308740112868272558a90a7d96f37551d71dde19fc5032203cfcb2d1fe46706",
+   "bytes": 173928
+  },
+  {
+   "path": "textures/Mortar_Color.jpg",
+   "sha256": "b63d6581c9f16510c760d151393761666d1a4903020d6c85f144fce8d4c576f2",
+   "bytes": 133543
+  },
+  {
+   "path": "textures/Mortar_NormalGL.png",
+   "sha256": "0e6c8957adbef1093647e7f2215b37184a387e3748379be33a4c1a55cff9ce5c",
+   "bytes": 1793493
+  },
+  {
+   "path": "textures/Mortar_Roughness.jpg",
+   "sha256": "cf444b20ce47214eafcd7d69b4cdfe4019c6f7eb8d5a3ac3908ef1a93aa0f7ad",
+   "bytes": 288292
+  },
+  {
+   "path": "textures/Oak_Counter_Color.jpg",
+   "sha256": "51ea2bfeb9aff22a140453b0aae38c9faaf86d909d339d7dd95113f3be140dcb",
+   "bytes": 605122
+  },
+  {
+   "path": "textures/Oak_Dark_Color.jpg",
+   "sha256": "cb49562bca9bd9c9c885b2da68dba5c2eceacf9f72e7e770b866effc821b7b3f",
+   "bytes": 558400
+  },
+  {
+   "path": "textures/Oak_Painted_Chalk.jpg",
+   "sha256": "48436e428afcda1068254ba16e575ed091705d1eaac5ab4c512da117c0f4b62f",
+   "bytes": 250548
+  },
+  {
+   "path": "textures/Oak_Painted_Umber.jpg",
+   "sha256": "2d073e4e54c2b67b3003c0aca573e5c6e41929df40c4c24ca00dbad35139c176",
+   "bytes": 182079
+  },
+  {
+   "path": "textures/Oak_Silver_Color.jpg",
+   "sha256": "69c3c08388152d21f308431f9c9e2fceb40e2088c345f6d5208b29ff4faa47ff",
+   "bytes": 550751
+  },
+  {
+   "path": "textures/Pear_Color.jpg",
+   "sha256": "1f9628e4e1b72c5895e597df26ebbb09a81ec0b98cf1de7b7fd7f2845b3cd8d1",
+   "bytes": 147372
+  },
+  {
+   "path": "textures/Pear_NormalGL.png",
+   "sha256": "a84470f5d19c58feb14367ae50c772af41c7b8193491a1242038346afc63ce17",
+   "bytes": 1615671
+  },
+  {
+   "path": "textures/Pear_Roughness.jpg",
+   "sha256": "9e3dd21d3f5a746a6426b02934d7d4b797c353f677fa51fa2c70648d1360afef",
+   "bytes": 377822
+  },
+  {
+   "path": "textures/Soil_Color.jpg",
+   "sha256": "2c0f3377c6dfed9d5e1e35c4abd5b9e819539d5eefbae58956903a04bfe5ac4d",
+   "bytes": 104462
+  },
+  {
+   "path": "textures/Soil_NormalGL.png",
+   "sha256": "d7ab8ef7565b6a1b550a5dea0b071c8537bf8003ef278b7da1ce1d11e6242b35",
+   "bytes": 2424184
+  },
+  {
+   "path": "textures/Soil_Roughness.jpg",
+   "sha256": "812e63e329ce9dc9769fbf2c212ad3af45e40ce44fac561282c593933f0efd43",
+   "bytes": 267992
+  },
+  {
+   "path": "textures/Wood059_2K-JPG_NormalGL.jpg",
+   "sha256": "485ebdeeb667b4298e93db8fc9aaa53ecbc6dddc3779ac47d15204f37cc25804",
+   "bytes": 1472778
+  },
+  {
+   "path": "textures/Wood059_2K-JPG_Roughness.jpg",
+   "sha256": "6f8a965e3cbe6b34b00f80fef9d1c4cf2a35b1d252c5cff88e4cd9ccd8bac4a3",
+   "bytes": 360016
+  },
+  {
+   "path": "textures/Wood062_2K-JPG_Color.jpg",
+   "sha256": "06ee0ea13d33f968894853c46307857ea67f04f0e9c796d8cec066583758117d",
+   "bytes": 714667
+  },
+  {
+   "path": "textures/Wood062_2K-JPG_NormalGL.jpg",
+   "sha256": "9e51b540d14402111dcae752538ea25faca457a71fe2f1ed880916c3c704d4e7",
+   "bytes": 1503050
+  },
+  {
+   "path": "textures/Wood062_2K-JPG_Roughness.jpg",
+   "sha256": "3b5c41cefc6462a0edca8b24f4f04f2c5ad9efbc5502c45452db5f6cee11c3b4",
+   "bytes": 352914
+  },
+  {
+   "path": "Barrel.bin",
+   "sha256": "ce21853e4073c7daf77b9126b8e6e7ca3fda3397699975d7731d2c1aae24cb46",
+   "bytes": 518984
+  },
+  {
+   "path": "Barrel.gltf",
+   "sha256": "d93963babb04fd2d1fb0763e53bc76c185c295bd880003b651765cd83a8a26d5",
+   "bytes": 8231
+  },
+  {
+   "path": "Basket_Produce.bin",
+   "sha256": "61e60b2a933720cd75b6fbdd51535c713232891a771a51704675ab472220d81f",
+   "bytes": 342736
+  },
+  {
+   "path": "Basket_Produce.gltf",
+   "sha256": "aec1e8c20552cbb942a14aa99038d5541e474c84fc2bc2a53b3b6d085eb401f3",
+   "bytes": 10011
+  },
+  {
+   "path": "Chimney.bin",
+   "sha256": "8f18470bcef898a0340cdbb91ba7b9d6e747bc8fbab314a9f1d67a256a6cee42",
+   "bytes": 737496
+  },
+  {
+   "path": "Chimney.gltf",
+   "sha256": "a98b3738e5f5323e1d89fc900aa1571cc5f00511e58c5a502d22a54a3a36e949",
+   "bytes": 10891
+  },
+  {
+   "path": "Crate.bin",
+   "sha256": "42174bd9cc410aef919e96deca753d9824f73e264cf6c1e4ef64cea4f0a17c8a",
+   "bytes": 264040
+  },
+  {
+   "path": "Crate.gltf",
+   "sha256": "c1c405c07d5931d874d5dada42159dcb9b6149d6976fd338ad2cd9af577d88ac",
+   "bytes": 8243
+  },
+  {
+   "path": "Door_Plank.bin",
+   "sha256": "944c89704bcee5b8b115db42aa101916ce2209e09d2cbab0459c5e8ef3a2acca",
+   "bytes": 164728
+  },
+  {
+   "path": "Door_Plank.gltf",
+   "sha256": "3cd35a6f996fd8b7484bfa6026d1198c01c08d9cb863ddc3799548cb1f2a3300",
+   "bytes": 6645
+  },
+  {
+   "path": "Door_Rect.bin",
+   "sha256": "2d5445c77adab10bfd5e17bde6c87aef53c246c35cb932296ce098e4ff916299",
+   "bytes": 155104
+  },
+  {
+   "path": "Door_Rect.gltf",
+   "sha256": "fde79b7b78be76a7d62a97ff008f4c2591a66750e3873cc759b88e0ee7c6ad2c",
+   "bytes": 6661
+  },
+  {
+   "path": "FShutter_Pair.bin",
+   "sha256": "d49bf44f53d11566c63cf221d9f3f867ad1dc3a1d162ab780a30f0d10793dd1f",
+   "bytes": 56736
+  },
+  {
+   "path": "FShutter_Pair.gltf",
+   "sha256": "719e7276764c226c20b4b85e61843beec4d8b9be05f937f018e23f79d690aaa8",
+   "bytes": 3616
+  },
+  {
+   "path": "FShutter_Pair_Red.bin",
+   "sha256": "017b512b2ce5fab2b5879c02cde12d7ffd5d9054bfee52275f20e035f0da600c",
+   "bytes": 56736
+  },
+  {
+   "path": "FShutter_Pair_Red.gltf",
+   "sha256": "643877aab78c1ce4298f7824ced06561af03bd2ca0451d3c61f4876170534cdd",
+   "bytes": 3631
+  },
+  {
+   "path": "Fence_2m.bin",
+   "sha256": "da9abdbdf0a96c0d0759eb1f4a20516c159328ec32e0b39ec5c2891a5ffa7636",
+   "bytes": 170208
+  },
+  {
+   "path": "Fence_2m.gltf",
+   "sha256": "1bc546ac61e331242204e5361dfe930b60755b2e4af6ee81b5eb867498eca3a5",
+   "bytes": 6580
+  },
+  {
+   "path": "FlowerBox.bin",
+   "sha256": "aee5ef6ecf18fc7319d30e4e1b99522b3f0abebd1e168501c08927fa92d816cb",
+   "bytes": 142928
+  },
+  {
+   "path": "FlowerBox.gltf",
+   "sha256": "0c5fb4852cca371e944f87876990ca7a301b8d87748a307bd64dbca7fe514418",
+   "bytes": 13563
+  },
+  {
+   "path": "Fountain_Statue.bin",
+   "sha256": "85959ec3b2e7055700216ebf68a67c075496456ac3638adf317a5d4091526152",
+   "bytes": 335120
+  },
+  {
+   "path": "Fountain_Statue.gltf",
+   "sha256": "57c1df425bf7582a763d74462a884f256772e3bcb7cccd76b7688b67d6913637",
+   "bytes": 6093
+  },
+  {
+   "path": "Handcart.bin",
+   "sha256": "ab23e9161d0c6825efc1d5e8e3bf972ad3d123aa8ae4bb4ea6d40189de0895af",
+   "bytes": 1586632
+  },
+  {
+   "path": "Handcart.gltf",
+   "sha256": "6cb8f39fa54e91abf8923fd9e87882ccd00c19c6d7e26313fc67c0145d7e629c",
+   "bytes": 11479
+  },
+  {
+   "path": "Lantern_Post.bin",
+   "sha256": "1730e4437da8ded1d8d0824e1004b6a4ac3066ee61f3b7418446d0c2c59433f7",
+   "bytes": 134412
+  },
+  {
+   "path": "Lantern_Post.gltf",
+   "sha256": "d51254dc6b254c29d470efbbb5066987f8d1fdc1ed1ade14ff3fe0816be21570",
+   "bytes": 5031
+  },
+  {
+   "path": "Planter_Pot.bin",
+   "sha256": "2234481949abaa33adddc536b150863c8e4b25082f268b248cf503c2a8377d52",
+   "bytes": 173096
+  },
+  {
+   "path": "Planter_Pot.gltf",
+   "sha256": "6f102ed92120f8858b10422959f2bf5877662c936030053b9ebe37d7449363e1",
+   "bytes": 10368
+  },
+  {
+   "path": "Rope_Coil.bin",
+   "sha256": "bcff15950c872a9cd94d295e41024bea1048cd2fcb53c1292b6896ef0de15769",
+   "bytes": 144640
+  },
+  {
+   "path": "Rope_Coil.gltf",
+   "sha256": "41b39c51bf2bf653a8d2388f31d05f34c559ea57368025624b0b99b9325832eb",
+   "bytes": 2030
+  },
+  {
+   "path": "Sack.bin",
+   "sha256": "17d7c1cd5a57424a66901e83ff4e7b98f9166a3d9a97074436669e582a3dc405",
+   "bytes": 55052
+  },
+  {
+   "path": "Sack.gltf",
+   "sha256": "f63721502c8de36a962a4006b16791fbcc396615d82175f2e046b1df9ea7e35b",
+   "bytes": 3510
+  },
+  {
+   "path": "Sack_Open.bin",
+   "sha256": "83793eaa8e91ca84794a32e59685a3826a4e4472c895b181413ee8b8225918e4",
+   "bytes": 119396
+  },
+  {
+   "path": "Sack_Open.gltf",
+   "sha256": "83c413a2eaa35b46ca186cf8458f5819c43bc8062e599521595ec0494b2cecbc",
+   "bytes": 6684
+  },
+  {
+   "path": "Sign_Plaque.bin",
+   "sha256": "16c5f655db376ac197404f0ed24490d9ab65e3b3aedf313bc5066f5b47b440ca",
+   "bytes": 9776
+  },
+  {
+   "path": "Sign_Plaque.gltf",
+   "sha256": "b1d9549de3d7104b6344d49763dafe46470a2ebe326fab02c48df6902d814ad6",
+   "bytes": 3178
+  },
+  {
+   "path": "Well.bin",
+   "sha256": "cd1e5111f1b748f9911c84ada9aecc8eb108ea56f2ee326bc75a3b1d6c9c1db7",
+   "bytes": 1530300
+  },
+  {
+   "path": "Well.gltf",
+   "sha256": "9a06e59632e646c933cd37c3deeeaef85fbb2907d2733f582e2b15ce8e3f6964",
+   "bytes": 15515
+  },
+  {
+   "path": "Woodpile.bin",
+   "sha256": "ed3f585796ef5db9130be89abef4046c48d12cb6a4c7eb7a74f7e64f4b4b7056",
+   "bytes": 110816
+  },
+  {
+   "path": "Woodpile.gltf",
+   "sha256": "53ed2bff689f05995b2f3ec4876045effa7b39046c71023c2d63a3c7588cb4b0",
+   "bytes": 5083
+  }
+ ]
+}

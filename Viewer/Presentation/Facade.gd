@@ -160,7 +160,7 @@ func material(kind: String) -> ShaderMaterial:
 		m.set_shader_parameter("palette",Color("5e4631") if kind == "wood" else (Color("2f2722") if kind == "oak" else (Color("aaa79c") if kind == "stone" else (Color("ad9276") if kind == "brick" else Color("f1ede4")))))
 		m.set_shader_parameter("wood",kind in ["wood","oak"])
 		m.set_shader_parameter("masonry",kind in ["stone","brick"])
-		preload("res://Presentation/SurfaceLibrary.gd").bind(m,"surface","brown_planks_03" if kind in ["wood","oak"] else (("medieval_blocks_03" if kind=="stone" else "medieval_red_brick") if kind in ["stone","brick"] else "plastered_wall_02"))
+		preload("res://Presentation/SurfaceLibrary.gd").bind(m,"surface","mk_oak_dark" if kind == "oak" else ("brown_planks_03" if kind == "wood" else (("medieval_blocks_03" if kind=="stone" else "medieval_red_brick") if kind in ["stone","brick"] else "mk_limewash")))
 		materials[kind] = m
 	return materials[kind]
 

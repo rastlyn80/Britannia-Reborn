@@ -250,8 +250,12 @@ func upsert(serial: int, item: Dictionary) -> void:
   "lamp":
    var lamp_height := 3.2 if "LampPost" in rule.get("type","") else (0.32 if rule.get("type","") == "CandleLarge" else 1.7)
    size = Vector3(0.30,lamp_height,0.30)
-   geometry.cylinder(root,0.045,lamp_height-0.25,Vector3(0,(lamp_height-0.25)/2,0),"3c4141")
-   geometry.crafted_box(root,Vector3(0.23,0.25,0.23),Vector3(0,lamp_height-0.125,0),"e4c88c")
+   if "LampPost" in rule.get("type",""):
+    # Timber post with a hanging iron lantern (MedievalKit, CC0).
+    root.add_child(scene.reconstruction.fitted("MedievalKit/Lantern_Post.gltf",Vector3(0.6,lamp_height,0.3)))
+   else:
+    geometry.cylinder(root,0.045,lamp_height-0.25,Vector3(0,(lamp_height-0.25)/2,0),"3c4141")
+    geometry.crafted_box(root,Vector3(0.23,0.25,0.23),Vector3(0,lamp_height-0.125,0),"e4c88c")
    var lamp := OmniLight3D.new()
    lamp.position.y = lamp_height-0.12
    lamp.light_color = Color("ffd398")
@@ -342,6 +346,8 @@ func _body(root: Node3D,size: Vector3,at: Vector3,serial: int,solid: bool) -> St
  root.add_child(body)
  return body
 
+# Square-headed plank leaf (MedievalKit, CC0) fits the native rectangular doorway.
+const DOOR_LEAF := "MedievalKit/Door_Rect.gltf"
 func _door(root: Node3D,rule: Dictionary) -> void:
  var pivot := Node3D.new()
  pivot.name = "Hinge"
@@ -354,11 +360,11 @@ func _door(root: Node3D,rule: Dictionary) -> void:
  var height := float(plan.leaf_height)
  root.set_meta("doorway_plan",plan)
  preload("res://Presentation/DoorwayPlan.gd").header(root,plan,geometry,scene.reconstruction.facade)
- var leaf: Node3D=scene.reconstruction.fitted("Village/Door_2_Flat.gltf",Vector3(.94,height,.13))
+ var leaf: Node3D=scene.reconstruction.fitted(DOOR_LEAF,Vector3(.94,height,.13))
  leaf.name="TimberLeaf"
  leaf.position=Vector3(center,.025,0)
  leaf.scale.x=-1.0 if right else 1.0
- leaf.set_meta("reviewed_asset","Village/Door_2_Flat.gltf")
+ leaf.set_meta("reviewed_asset",DOOR_LEAF)
  pivot.add_child(leaf)
  _body(pivot,Vector3(0.94,height,0.13),Vector3(center,height/2+0.025,0),int(root.get_meta("serial")),true)
 

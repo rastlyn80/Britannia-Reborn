@@ -1,3 +1,16 @@
+# MedievalKit modules and surfaces (step 3) — 27 October 2026
+
+The owner-supplied MedievalKit 5.1.1 (CC0) was exported with Blender 5.2.1 (portable, ignored in .tools; scripts/export-medievalkit.py) into Viewer/Art/MedievalKit. That is 20 lightweight modules (doors, shutters, lantern post, chimney, fence, sacks, woodpile, well, handcart, flower box, pots, plaque, basket, rope, crate, barrel, fountain statue) with a manifest of source hash, triangle counts and file SHA-256s. In use:
+- the square-headed plank door for all 377 server door leaves;
+- the lantern post for server lamp posts and the 8 lamp/lantern post statics;
+- the picket fence for the 364 wooden-fence statics;
+- the sack for flour sacks;
+- the kit chimney, with clay pots, as the crown of every grouped chimney stack.
+
+The kit's limewash and dark-oak PBR sets (with ambientCG Plaster002/Wood062 normals) replace the plaster and timber-frame surfaces of every facade. Whole-building kit modules are not tiled: a 2 m roof or stone-wall module is 24k–38k triangles, and UO buildings must keep their source footprints. Dexsoft Medieval Village 1–3 and Old Village were extracted locally (owner-licensed, ignored) but not used yet. They are mostly complete prefab houses with baked lighting; their props remain candidates.
+
+Verification: art fidelity 71 checks and all Godot suites pass; the live city, commerce and login tests pass. The live world-item test passed on rerun; its first run hit a transient single-door close timing failure.
+
 # Depth-aware water — 27 October 2026
 
 Water.gdshader reads the depth buffer and screen. Beds, piers and banks refract through the shallows and are absorbed with depth (red first). Contact foam forms wherever the surface meets anything, including piers, hulls and banks. Seabeds now shelve away from the shore (1.5 m plus 0.45 m per tile, up to 6 m), so open sea reads deep blue and the coast reads teal. When converted locally (scripts/import-unity-water.py), the owner's Tasharen Water normal map (RGB) and foam mask (alpha) replace the analytic ripples and noise foam; the public build keeps the analytic version. Verified in Forward+ and Compatibility. Same-route profile: p95 18.5 ms, p99 19.8 ms (was 18.4/20.3). All Godot suites pass.

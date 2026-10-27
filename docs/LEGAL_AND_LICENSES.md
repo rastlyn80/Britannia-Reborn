@@ -21,3 +21,8 @@ Kenney Furniture Kit (bundled notice: version 2.0) supplies selected GLB furnitu
 ## Owner-purchased Unity Asset Store packages (26 October 2026)
 
 The owner states these packages were bought on the Unity Asset Store (flash sale, 26 October 2026); order confirmations are to be recorded locally. Under the Asset Store EULA third-party assets may be used in other engines but not redistributed, so the packages (`local-art/`) and everything converted from them (`Viewer/local-art/`, prepared caches) are ignored by Git and never published. `scripts/import-unity-nature.py (and scripts/import-unity-water.py for the Tasharen Water normal/foam texture)` (no art) converts Tree Creator trees that ship baked atlases; the client uses them only when `res://local-art/trees/catalog.json` exists and otherwise keeps the CC0 library. Currently converted locally: Real Nature Pack 1 – Summer (33 trees) and BIG Environment Pack Vol1 (13 trees). The MedievalKit download in `local-art/` ships a CC0 1.0 licence file (its RenderHub page shows an Extended Use License; the shipped CC0 text is the stronger grant) and is AI-assisted per its listing.
+
+
+## MedievalKit (CC0)
+
+Viewer/Art/MedievalKit holds selected static modules of MedievalKit 5.1.1, dedicated to the public domain under CC0 1.0 (LICENSE.txt and CREDITS.md retained alongside; materials partly derived from ambientCG CC0). They were exported from the owner-supplied MedievalKit.blend (SHA-256 d55818dd…789c) with Blender 5.2.1 by scripts/export-medievalkit.py; colour/roughness maps were re-encoded as JPEG. Viewer/Art/Surfaces mk_limewash and mk_oak_dark come from the same file. manifest.json files record every hash. Blender itself (GPL) is a local tool in the ignored .tools folder and is not distributed.

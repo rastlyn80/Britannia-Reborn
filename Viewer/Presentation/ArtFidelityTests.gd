@@ -240,5 +240,9 @@ func _initialize() -> void:
  var appearance:=preload("res://Presentation/ItemAppearance.gd")
  check(appearance.variant(4764,{"family":"sign"})=="street_sign" and appearance.variant(7977,{"family":"sign"})=="plaque" and appearance.variant(2996,{"family":"sign"})=="sign","Street signs and wall plaques are not drawn as bracket-hung shop signs")
  check(int(preload("res://Presentation/ReviewedCatalog.gd").entry(2713).get("yawDegrees",0))==90 and int(preload("res://Presentation/ReviewedCatalog.gd").entry(2711).get("yawDegrees",0))==0,"Bookcases placed in north-south runs face east")
+ # MedievalKit (CC0) modules replace stylised fences, lamp posts, sacks and doors.
+ var rules:=preload("res://Presentation/RegionalRules.gd")
+ check(str(rules.resolve(9101,{"name":"wooden fence","height":10}).get("asset","")).begins_with("MedievalKit/") and str(rules.resolve(9102,{"name":"lamp post","height":20}).get("asset","")).begins_with("MedievalKit/") and str(rules.resolve(9103,{"name":"sack of flour","height":5}).get("asset","")).begins_with("MedievalKit/"),"Fences, lamp posts and flour sacks use MedievalKit modules")
+ check(ResourceLoader.exists("res://Art/MedievalKit/Door_Rect.gltf") and ResourceLoader.exists("res://Art/MedievalKit/Chimney.gltf") and FileAccess.file_exists("res://Art/MedievalKit/manifest.json"),"MedievalKit modules ship with their manifest")
  print("ART FIDELITY TESTS: ",checks," checks / ",failures," failures")
  quit(1 if failures else 0)
