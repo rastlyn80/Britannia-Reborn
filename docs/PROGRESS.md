@@ -1,3 +1,7 @@
+# Depth-aware water — 27 October 2026
+
+Water.gdshader reads the depth buffer and screen. Beds, piers and banks refract through the shallows and are absorbed with depth (red first). Contact foam forms wherever the surface meets anything, including piers, hulls and banks. Seabeds now shelve away from the shore (1.5 m plus 0.45 m per tile, up to 6 m), so open sea reads deep blue and the coast reads teal. When converted locally (scripts/import-unity-water.py), the owner's Tasharen Water normal map (RGB) and foam mask (alpha) replace the analytic ripples and noise foam; the public build keeps the analytic version. Verified in Forward+ and Compatibility. Same-route profile: p95 18.5 ms, p99 19.8 ms (was 18.4/20.3). All Godot suites pass.
+
 # City defect pass: chimneys, signs, bridges, roofs, walls — 27 October 2026
 
 Fixes from owner screenshots, each traced to a source cause and covered by checks (art fidelity 61→69):

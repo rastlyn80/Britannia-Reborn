@@ -753,6 +753,11 @@ func water_surface() -> ShaderMaterial:
 		water_material.set_shader_parameter("source_origin",source_origin)
 		water_material.set_shader_parameter("wave_strength",0.0 if show_boundary_fragments else 1.0)
 		if shoreline: shoreline.apply(water_material)
+		# Owner-licensed water normal/foam (scripts/import-unity-water.py), local only.
+		if FileAccess.file_exists("res://local-art/water/normal.png.import"):
+			water_material.set_shader_parameter("detail_normal",load("res://local-art/water/normal.png"))
+			water_material.set_shader_parameter("foam_mask",load("res://local-art/water/foam.png"))
+			water_material.set_shader_parameter("has_detail",true)
 	return water_material
 
 func save_report(path: String) -> void:

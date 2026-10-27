@@ -41,7 +41,27 @@ func index(input: Dictionary, shore = null) -> void:
   var cell := Vector2i(tile.x,tile.y)
   if not samples.has(cell): samples[cell] = tile
  for cell in samples:
-  if str(land_data.get(str(int(samples[cell].id)),{}).get("name","")).to_lower() == "water": water_cells[cell] = true
+  if str(land_data.get(str(int(samples[cell].id)),{}).get("name","")).to_lower() == "water": water_cells[cell] = SEABED_DEPTH
+ # The bed shelves away from the shore (0.45 m per tile, to 6 m) so open sea
+ # reads deep while banks and shallows stay visible through the water.
+ var frontier: Array = []
+ var distance := {}
+ for cell in water_cells:
+  for offset in [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
+   if samples.has(cell+offset) and not water_cells.has(cell+offset):
+    distance[cell] = 0
+    frontier.append(cell)
+    break
+ while not frontier.is_empty():
+  var next: Array = []
+  for cell in frontier:
+   for offset in [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
+    var other: Vector2i = cell+offset
+    if water_cells.has(other) and not distance.has(other) and int(distance[cell]) < 10:
+     distance[other] = int(distance[cell])+1
+     next.append(other)
+  frontier = next
+ for cell in water_cells: water_cells[cell] = SEABED_DEPTH+0.45*float(distance.get(cell,10))
  # Zero-height source board floors own the top surface where map.mul also
  # supplies the same flat floor. Keep the canonical samples, emit only one mesh.
  var static_data = world.get("staticData",{})
@@ -109,7 +129,7 @@ func raw_z(cell: Vector2i) -> float:
 func z(cell: Vector2i) -> float:
  var bounded := Vector2i(clampi(cell.x,int(world.originX),int(world.originX)+int(world.width)-1),clampi(cell.y,int(world.originY),int(world.originY)+int(world.height)-1))
  var key := cell if samples.has(cell) else bounded
- return float(peak_repairs.get(key,samples[key].z))*float(world.elevationScale)-(SEABED_DEPTH if water_cells.has(key) else 0.0)-(COVERED_DROP if covered.has(key) else 0.0)
+ return float(peak_repairs.get(key,samples[key].z))*float(world.elevationScale)-float(water_cells.get(key,0.0))-(COVERED_DROP if covered.has(key) else 0.0)
 static func curve(a: float,b: float,c: float,d: float,t: float) -> float:
  if absf(c-b) <= 0.8: return lerpf(b,c,t)
  var left := b-a

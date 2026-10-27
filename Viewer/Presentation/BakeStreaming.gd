@@ -186,6 +186,7 @@ func run() -> void:
     push_error("Surface texture is not imported: "+str(map.file)+". Run the Godot import (scripts/verify.ps1) first.");quit(1);return
  signature=Rules.fingerprint(directory)
  signature+=dependency_signature("res://Presentation/BakeStreaming.gd",{})
+ signature+=FileAccess.get_sha256("res://local-art/water/catalog.json") if FileAccess.file_exists("res://local-art/water/catalog.json") else "no-water"
  # Optional local (owner-licensed) art changes the baked scenes too.
  signature+=preload("res://Presentation/LocalTrees.gd").signature()
  signature+=preload("res://Presentation/LocalPlants.gd").signature()

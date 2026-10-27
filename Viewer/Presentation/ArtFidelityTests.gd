@@ -143,7 +143,7 @@ func _initialize() -> void:
  for y in 2:
   for x in 4:sea_world.terrain.append({"x":800+x,"y":800+y,"z":-5 if x<2 else 0,"id":168 if x<2 else 3})
  var sea:=Terrain.new();sea.index(sea_world)
- check(is_equal_approx(sea.z(Vector2i(800,800)),-1.0-Terrain.SEABED_DEPTH) and is_equal_approx(sea.raw_z(Vector2i(800,800)),-1.0),"Sea land is presented as a bed below its canonical source surface")
+ check(is_equal_approx(sea.z(Vector2i(801,800)),-1.0-Terrain.SEABED_DEPTH) and is_equal_approx(sea.z(Vector2i(800,800)),-1.0-Terrain.SEABED_DEPTH-0.45) and is_equal_approx(sea.raw_z(Vector2i(800,800)),-1.0),"Sea land is presented as a bed below its canonical source surface, shelving away from shore")
  var water_mesh: ArrayMesh=sea.sea_mesh(Rect2i(800,800,4,2))
  check(water_mesh!=null and water_mesh.surface_get_array_len(0)==18,"One sea quad per open-water cell, none where a river water object already exists")
  check(sea.z(Vector2i(803,801))<0.0 and is_equal_approx(sea.raw_z(Vector2i(803,801)),0.0),"Terrain under a ground-level plank floor drops below the deck")
