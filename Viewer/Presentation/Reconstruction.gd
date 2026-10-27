@@ -30,6 +30,8 @@ var foundations := {}
 var passage_cells := {}
 # Floor ordinal -> edges (0 N, 1 E, 2 S, 3 W) that drop into a stairwell.
 var stairwell_rails := {}
+# Topmost wall/post ordinal -> metres to raise it to the roof eave above it.
+var eave_extensions := {}
 var solid_arch_cells := {}
 # Rendered terrain (TerrainSurface) and source supports under vegetation. UO
 # stores one height per tile; the presented ground interpolates between tiles,
@@ -310,6 +312,7 @@ func index(world: Dictionary) -> void:
 	_plan_foundations(world)
 	_plan_stairwells(world)
 	_plan_stray_roofs(world)
+	_plan_eaves(world)
 	carpet_cells.clear()
 	for tile in world.statics:
 		if rule_for(int(tile.id)).get("kind","") != "carpet": continue
@@ -495,6 +498,11 @@ func _plan_pinnacles(world: Dictionary) -> void:
 	for i in world.statics.size():
 		var s: Dictionary = world.statics[i]
 		if rule_for(int(s.id)).get("kind","") != "pillar" or int(info(world,int(s.id),true).get("flags",0)) & 0x10 == 0 or int(info(world,int(s.id),true).get("height",0)) < 10: continue
+		# A column standing on the same graphic is its upper storey, not a spire.
+		var stacked := false
+		for other in world.statics:
+			if int(other.x) == int(s.x) and int(other.y) == int(s.y) and int(other.id) == int(s.id) and int(other.z) < int(s.z) and int(other.z) >= int(s.z)-22: stacked = true
+		if stacked: continue
 		for span in tops.get(Vector3i(s.x,s.y,0),[]):
 			if span.x < int(s.z) and span.y >= int(s.z)-4 and span.y <= int(s.z)+1: pinnacles[i] = true
 
@@ -559,7 +567,9 @@ func _plan_stairwells(world: Dictionary) -> void:
 		elif kind in ["stairs","landing"]:
 			var detail := info(world,int(tile.id),true)
 			if not stairs_at.has(cell): stairs_at[cell] = []
-			stairs_at[cell].append(Vector2i(int(tile.z),int(tile.z)+int(detail.get("height",0))))
+			# Bridge-flagged landings stand at half their tiledata height.
+			var rise := int(float(detail.get("height",0))*(0.5 if int(detail.get("flags",0)) & 0x400 else 1.0))
+			stairs_at[cell].append(Vector2i(int(tile.z),int(tile.z)+rise))
 		elif kind in ["wall","window","corner","trim","fence","door","arch"]:
 			if not walls_at.has(cell): walls_at[cell] = []
 			walls_at[cell].append(int(tile.z))
@@ -588,7 +598,8 @@ func _plan_stairwells(world: Dictionary) -> void:
 			for probe in [next,next+steps[(d+1)%4],next+steps[(d+3)%4],next+steps[d]]:
 				for span in stairs_at.get(probe,[]):
 					if span.x < z-1 and span.x >= z-30: below = true
-					if probe == next and span.y >= z-3 and span.y <= z+2: arrival = true
+					# Stairs or a platform reaching this floor's level continue it.
+					if probe == next and span.y >= z-3 and span.y <= z+3: arrival = true
 			if below and not arrival: edges.append(d)
 		if not edges.is_empty(): stairwell_rails[i] = edges
 
@@ -601,6 +612,11 @@ func _plan_stray_roofs(world: Dictionary) -> void:
 		var component := int(roofs.tiles[ordinal].get("component",-1))
 		if not members.has(component): members[component] = []
 		members[component].append(ordinal)
+	var roof_cells := {}
+	for ordinal in roofs.tiles:
+		var cell := Vector2i(world.statics[ordinal].x,world.statics[ordinal].y)
+		if not roof_cells.has(cell): roof_cells[cell] = []
+		roof_cells[cell].append(ordinal)
 	var tops := {}
 	for tile in world.statics:
 		if str(rule_for(int(tile.id)).get("kind","")) not in ["wall","window","corner","gable","trim","pillar","post","chimney","beam","arch"]: continue
@@ -617,9 +633,59 @@ func _plan_stray_roofs(world: Dictionary) -> void:
 				for dy in range(-1,2):
 					for span in tops.get(Vector2i(s.x+dx,s.y+dy),[]):
 						if span.y >= int(s.z)-6 and span.x <= int(s.z)+1: supported = true
+		# Ridge caps, dormers and material changes are small components too,
+		# but they touch the rest of their roof; only isolated tiles are strays.
+		for ordinal in list:
+			var s: Dictionary = world.statics[ordinal]
+			for dx in range(-1,2):
+				for dy in range(-1,2):
+					for other in roof_cells.get(Vector2i(s.x+dx,s.y+dy),[]):
+						if not list.has(other) and absi(int(world.statics[other].z)-int(s.z)) <= 4: supported = true
 		if supported: continue
 		for ordinal in list:
 			presentation_adjustments[ordinal] = {"suppress":true,"reason":"unsupported stray roof fragment"}
+
+# UO roof sprites draw down over the band between a wall's top and a roof
+# placed a few Z higher; in 3D that band was open sky and the roof hung in
+# the air. The topmost wall, post or pillar under (or beside) a roof eave
+# rises to meet it, up to 16 Z (3.2 m).
+func _plan_eaves(world: Dictionary) -> void:
+	eave_extensions.clear()
+	var roof_bases := {}
+	for ordinal in roofs.tiles:
+		if presentation_adjustments.get(ordinal,{}).get("suppress",false): continue
+		var tile: Dictionary = world.statics[ordinal]
+		var cell := Vector2i(tile.x,tile.y)
+		if not roof_bases.has(cell): roof_bases[cell] = []
+		roof_bases[cell].append(int(tile.z))
+	var stacks := {}
+	for i in world.statics.size():
+		var tile: Dictionary = world.statics[i]
+		if str(rule_for(int(tile.id)).get("kind","")) not in ["wall","window","corner","pillar","post","trim","gable","beam"]: continue
+		var cell := Vector2i(tile.x,tile.y)
+		if not stacks.has(cell): stacks[cell] = []
+		stacks[cell].append(i)
+	for cell in stacks:
+		for i in stacks[cell]:
+			var tile: Dictionary = world.statics[i]
+			var kind := str(rule_for(int(tile.id)).get("kind",""))
+			if kind in ["trim","gable","beam"]: continue
+			var top := int(tile.z)+int(info(world,int(tile.id),true).get("height",0))
+			var covered := false
+			for j in stacks[cell]:
+				if j != i and int(world.statics[j].z) >= top-1 and int(world.statics[j].z) <= top+16: covered = true
+			if covered: continue
+			# The roof over the wall line itself decides; otherwise the lowest
+			# eave tile beside it.
+			var eave := 1000
+			for z in roof_bases.get(cell,[]):
+				if int(z) > top and int(z) <= top+16: eave = mini(eave,int(z))
+			if eave == 1000:
+				for dx in range(-1,2):
+					for dy in range(-1,2):
+						for z in roof_bases.get(cell+Vector2i(dx,dy),[]):
+							if int(z) > top and int(z) <= top+16: eave = mini(eave,int(z))
+			if eave < 1000: eave_extensions[i] = float(eave-top)*float(world.elevationScale)
 
 func stairwell_balustrade(edges: Array) -> Node3D:
 	var root := Node3D.new()
@@ -981,7 +1047,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 	var node := Node3D.new()
 	var detail := info(world,s.id,true)
 	var height := maxf(0.04,float(detail.get("height",0))*float(world.elevationScale))
-	height += maxf(float(facade.plans.get(ordinal,{}).get("height_extension",0.0)),float(facade.cap_extensions.get(ordinal,0.0)))
+	height += maxf(maxf(float(facade.plans.get(ordinal,{}).get("height_extension",0.0)),float(facade.cap_extensions.get(ordinal,0.0))),float(eave_extensions.get(ordinal,0.0)))
 	var asset := str(rule.get("asset",""))
 	var family := preload("res://Presentation/Facade.gd").family_for(str(detail.get("name","")))
 	var tint := art_tint(int(s.id)) if rule.get("regional",false) else ""
