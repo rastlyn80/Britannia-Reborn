@@ -309,6 +309,7 @@ func index(world: Dictionary) -> void:
 	_plan_pinnacles(world)
 	_plan_foundations(world)
 	_plan_stairwells(world)
+	_plan_stray_roofs(world)
 	carpet_cells.clear()
 	for tile in world.statics:
 		if rule_for(int(tile.id)).get("kind","") != "carpet": continue
@@ -590,6 +591,35 @@ func _plan_stairwells(world: Dictionary) -> void:
 					if probe == next and span.y >= z-3 and span.y <= z+2: arrival = true
 			if below and not arrival: edges.append(d)
 		if not edges.is_empty(): stairwell_rails[i] = edges
+
+# One- or two-tile roof fragments with no wall, gable or roof under or beside
+# them at their eave are source leftovers (a lone shingle eight Z above a
+# ridge); drawn in 3D they float as loose planks, so they are not drawn.
+func _plan_stray_roofs(world: Dictionary) -> void:
+	var members := {}
+	for ordinal in roofs.tiles:
+		var component := int(roofs.tiles[ordinal].get("component",-1))
+		if not members.has(component): members[component] = []
+		members[component].append(ordinal)
+	var tops := {}
+	for tile in world.statics:
+		if str(rule_for(int(tile.id)).get("kind","")) not in ["wall","window","corner","gable","trim","pillar","post","chimney","beam","arch"]: continue
+		var cell := Vector2i(tile.x,tile.y)
+		if not tops.has(cell): tops[cell] = []
+		tops[cell].append(Vector2i(int(tile.z),int(tile.z)+int(info(world,int(tile.id),true).get("height",0))))
+	for component in members:
+		var list: Array = members[component]
+		if list.size() > 2: continue
+		var supported := false
+		for ordinal in list:
+			var s: Dictionary = world.statics[ordinal]
+			for dx in range(-1,2):
+				for dy in range(-1,2):
+					for span in tops.get(Vector2i(s.x+dx,s.y+dy),[]):
+						if span.y >= int(s.z)-6 and span.x <= int(s.z)+1: supported = true
+		if supported: continue
+		for ordinal in list:
+			presentation_adjustments[ordinal] = {"suppress":true,"reason":"unsupported stray roof fragment"}
 
 func stairwell_balustrade(edges: Array) -> Node3D:
 	var root := Node3D.new()

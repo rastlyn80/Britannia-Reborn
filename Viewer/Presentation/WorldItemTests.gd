@@ -123,6 +123,9 @@ func run() -> void:
  game._world_item({"serial":0x40000001,"id":0x6a6,"x":1004,"y":2006,"z":20,"facet":1})
  check(is_equal_approx(view.nodes[0x40000001].get_meta("doorway_plan").envelope,4.0),"joining while a door is open measures its original source frame")
  check(fixture.movement_surface.dynamic_items.size() == 2,"authoritative items feed local movement obstruction prediction")
+ # Exported metal door facings can be out of range; the door set decides.
+ for id in [1653,1655,1665]: view.definitions[str(id)] = {"family":"door","type":"MetalDoor","facing":id-1677,"closed_id":id,"opened_id":id+1,"offset":{1653:[-1,1,0],1655:[1,1,0],1665:[0,0,0]}[id],"is_open":false,"height":20,"flags":64}
+ check(view.definition({"id":1653}).facing == 0 and view.definition({"id":1655}).facing == 1 and view.definition({"id":1665}).facing == 6,"Metal door facings come from their door set (bank double doors hinge on opposite sides)")
  view.definitions["3000"] = {"family":"sign","height":0,"flags":0,"type":"LocalizedSign"}
  game._world_item({"serial":0x40000003,"id":3000,"x":1009,"y":2009,"z":20,"facet":1})
  var sign: Node3D = view.nodes[0x40000003]

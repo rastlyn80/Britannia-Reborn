@@ -58,6 +58,7 @@ func definition(item: Dictionary) -> Dictionary:
  if definitions.has(str(int(item.id))):
   var rule: Dictionary = definitions[str(int(item.id))].duplicate()
   if rule.get("type","") in ["Chessboard","CheckerBoard","Backgammon"]: rule.family = "gameboard"
+  if rule.get("family","") == "door" and (int(rule.get("facing",0)) < 0 or int(rule.get("facing",0)) > 7): rule.facing = door_facing(rule)
   return rule
  # Native generator's dark-wood door family remains usable without an exported catalogue.
  if int(item.id) >= 0x6a5 and int(item.id) <= 0x6b4:
@@ -65,6 +66,32 @@ func definition(item: Dictionary) -> Dictionary:
   var offsets := [[-1,1,0],[1,1,0],[-1,0,0],[1,-1,0],[1,1,0],[1,-1,0],[0,0,0],[0,-1,0]]
   return {"family":"door","facing":facing,"height":16,"flags":64,"is_open":(int(item.id)-0x6a5)%2 == 1,"offset":offsets[facing]}
  return {"family":"decoration","height":1,"flags":0,"container":false}
+
+# ModernUO door facings (WestCW, EastCCW, WestCCW, EastCW, SouthCW, NorthCCW,
+# SouthCCW, NorthCW) and the offset each open graphic moves by.
+const DOOR_OFFSETS := [Vector2i(-1,1),Vector2i(1,1),Vector2i(-1,0),Vector2i(1,-1),Vector2i(1,1),Vector2i(1,-1),Vector2i(0,0),Vector2i(0,-1)]
+var door_facings := {}
+# Some exported door definitions carry an out-of-range facing. The facing is
+# the closed graphic's position in its door set (two graphics per facing);
+# the set starts at the lowest closed graphic of the same type within 14 IDs,
+# and the open offset confirms it.
+func door_facing(rule: Dictionary) -> int:
+ var closed := int(rule.get("closed_id",0))
+ if door_facings.has(closed): return int(door_facings[closed])
+ var offset := Vector2i(int(rule.get("offset",[0,0])[0]),int(rule.get("offset",[0,0])[1]))
+ var base := closed
+ for id in range(closed-14,closed+1,2):
+  var other: Dictionary = definitions.get(str(id),{})
+  if str(other.get("type","")) == str(rule.get("type","")) and int(other.get("closed_id",-1)) == id:
+   base = id
+   break
+ var facing := clampi((closed-base)/2,0,7)
+ if DOOR_OFFSETS[facing] != offset:
+  # Fall back to the facing whose offset matches, preferring the set parity.
+  for candidate in 8:
+   if DOOR_OFFSETS[candidate] == offset and candidate%2 == facing%2: facing = candidate
+ door_facings[closed] = facing
+ return facing
 
 # A rebuilt sign repaints a known name at once; otherwise its text is queued.
 func _label_sign(serial: int) -> void:
@@ -217,7 +244,14 @@ func upsert(serial: int, item: Dictionary) -> void:
    var local: Node3D = LocalProps.build("barrel",int(item.x),int(item.y))
    if local:
     root.add_child(local)
-    if kind == "water_barrel": geometry.cylinder(root,0.30,0.012,Vector3(0,0.86,0),"467987")
+    # Water only shows in an upright barrel, just under its own rim (pack
+    # variants include barrels lying on a rack).
+    var barrel_boxes: Array = []
+    scene.reconstruction._collect_bounds(local,Transform3D.IDENTITY,barrel_boxes)
+    var barrel := AABB()
+    for i in barrel_boxes.size(): barrel = barrel_boxes[i] if i == 0 else barrel.merge(barrel_boxes[i])
+    if kind == "water_barrel" and barrel.size.y >= maxf(barrel.size.x,barrel.size.z):
+     geometry.cylinder(root,minf(barrel.size.x,barrel.size.z)*0.42,0.012,Vector3(barrel.get_center().x,barrel.end.y-0.05,barrel.get_center().z),"467987")
    else:
     geometry.cylinder(root,0.35,0.92,Vector3(0,0.46,0),"795638")
     for y in [0.16,0.74]: geometry.cylinder(root,0.365,0.06,Vector3(0,y,0),"42464a")

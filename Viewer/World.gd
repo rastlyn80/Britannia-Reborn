@@ -17,6 +17,8 @@ var screenshot := ""
 var hide_ui := false
 var map_view := false
 var status := Label.new()
+# Small always-on tile readout (top centre) so screenshots carry their place.
+var coordinates := Label.new()
 var static_root := Node3D.new()
 var world_items := preload("res://Presentation/WorldItems.gd").new()
 var game := preload("res://Network/GameSession.gd").new()
@@ -207,6 +209,17 @@ func _ready() -> void:
 	style.content_margin_bottom = 14
 	panel.add_theme_stylebox_override("panel",style)
 	canvas.add_child(panel)
+	coordinates.anchor_left = 0.5
+	coordinates.anchor_right = 0.5
+	coordinates.offset_left = -120
+	coordinates.offset_right = 120
+	coordinates.offset_top = 4
+	coordinates.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	coordinates.add_theme_font_size_override("font_size",13)
+	coordinates.add_theme_color_override("font_color",Color(1,1,1,0.75))
+	coordinates.add_theme_color_override("font_shadow_color",Color(0,0,0,0.8))
+	coordinates.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	canvas.add_child(coordinates)
 	var login_panel := preload("res://Network/LoginPanel.gd").new()
 	add_child(game)
 	add_child(world_items)
@@ -291,6 +304,9 @@ func _process(delta: float) -> void:
 		city_stream.follow(Vector2i(game.player.x,game.player.y))
 	# The status panel's first line carries the player's tile, so screenshots
 	# of defects identify their place.
+	if game.phase == "world":
+		var tile := "%d, %d, %d" % [int(game.player.x),int(game.player.y),int(game.player.z)]
+		if coordinates.text != tile: coordinates.text = tile
 	if game.phase == "world" and status.text.begins_with("BRITAIN / TRAMMEL"):
 		var line := "BRITAIN / TRAMMEL  ·  %d, %d, %d" % [int(game.player.x),int(game.player.y),int(game.player.z)]
 		var rest := status.text.substr(status.text.find("
