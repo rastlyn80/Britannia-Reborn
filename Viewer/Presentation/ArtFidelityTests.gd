@@ -244,5 +244,20 @@ func _initialize() -> void:
  var rules:=preload("res://Presentation/RegionalRules.gd")
  check(str(rules.resolve(9101,{"name":"wooden fence","height":10}).get("asset","")).begins_with("MedievalKit/") and str(rules.resolve(9102,{"name":"lamp post","height":20}).get("asset","")).begins_with("MedievalKit/") and str(rules.resolve(9103,{"name":"sack of flour","height":5}).get("asset","")).begins_with("MedievalKit/"),"Fences, lamp posts and flour sacks use MedievalKit modules")
  check(ResourceLoader.exists("res://Art/MedievalKit/Door_Rect.gltf") and ResourceLoader.exists("res://Art/MedievalKit/Chimney.gltf") and FileAccess.file_exists("res://Art/MedievalKit/manifest.json"),"MedievalKit modules ship with their manifest")
+ check(str(rules.resolve(9104,{"name":"logs","height":5}).get("asset",""))=="MedievalKit/Woodpile.gltf","Log piles use the MedievalKit woodpile")
+ var props:=preload("res://Presentation/LocalProps.gd")
+ check(props.kind_for("container","barrel")=="barrel" and props.kind_for("container","keg")=="barrel" and props.kind_for("container","crate")=="crate" and props.kind_for("fountain","water tub")=="tub" and props.kind_for("resource","hay")=="haystack" and props.kind_for("container","chest")=="","Local prop kinds map barrels, crates, tubs and hay only")
+ # Window dressing: a window in an x-axis wall between two solid walls, a roof
+ # over the cells north of it (indoors) and open street to the south.
+ var dress_catalog:={"1":{"kind":"window","axis":"x"},"2":{"kind":"wall","axis":"x"},"3":{"kind":"roof"},"4":{"kind":"floor"}}
+ var dress_statics:=[{"id":1,"x":10,"y":10,"z":0},{"id":2,"x":9,"y":10,"z":0},{"id":2,"x":11,"y":10,"z":0}]
+ for y in [7,8,9]: dress_statics.append({"id":3,"x":10,"y":y,"z":25})
+ dress_statics.append({"id":3,"x":10,"y":11,"z":22}) # eave just outside
+ var dressing:=preload("res://Presentation/WindowDressing.gd").new()
+ dressing.index({"statics":dress_statics},dress_catalog)
+ check(dressing.plans.get(0,{}).get("side",0)==1 and dressing.plans[0].shutters,"Window dressing faces the open street side, past an eave, with shutters between walls")
+ dress_statics.append({"id":4,"x":10,"y":12,"z":20}) # covered both sides now
+ dressing.index({"statics":dress_statics},dress_catalog)
+ check(not dressing.plans.has(0) and dressing.undecided==1,"Windows covered on both sides stay undressed")
  print("ART FIDELITY TESTS: ",checks," checks / ",failures," failures")
  quit(1 if failures else 0)

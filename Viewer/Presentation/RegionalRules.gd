@@ -74,7 +74,9 @@ static func resolve(id: int,info: Dictionary) -> Dictionary:
  if "grass" in n or n in ["weed","rushes","cattails"]: return base.merged({"kind":"grass","asset":"Nature/Grass_Common_Short.gltf"})
  if "bush" in n or n in ["hedge","vines","vanillaplantmedium s","vanillaplantlarge so"]: return base.merged({"kind":"bush","asset":"Nature/Bush_Common.gltf"})
  if n in ["rock","rocks","boulder"]: return base.merged({"kind":"rock","asset":"Nature/Rock_Medium_2.gltf"})
- if n in ["fallen log","logs","fallen branch"]: return base.merged({"kind":"log","asset":"Village/Roof_Log.gltf"})
+ # A stacked pile of split logs (CC0 MedievalKit woodpile), not a lone trunk.
+ if n=="logs": return base.merged({"kind":"asset","asset":"MedievalKit/Woodpile.gltf","dimensions":[1.2,0.6,0.65]})
+ if n in ["fallen log","fallen branch"]: return base.merged({"kind":"log","asset":"Village/Roof_Log.gltf"})
  if n=="water": return base.merged({"kind":"water"})
  for model in MODELS:
   var regex := RegEx.new()

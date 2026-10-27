@@ -2,6 +2,7 @@ extends Node3D
 const Geometry = preload("res://Presentation/GeometryLibrary.gd")
 var geometry := Geometry.new()
 const Appearance = preload("res://Presentation/ItemAppearance.gd")
+const LocalProps = preload("res://Presentation/LocalProps.gd")
 var session: Node
 var scene: Node3D
 var nodes := {}
@@ -115,7 +116,9 @@ func upsert(serial: int, item: Dictionary) -> void:
  match kind:
   "chest","crate","drawers","wardrobe","bookcase":
    size = Vector3(0.88,1.85 if rule.family in ["wardrobe","bookcase"] else (1.0 if rule.family == "drawers" else 0.65),0.60)
-   _cabinet(root,size,rule.family,rule)
+   var local: Node3D = LocalProps.build("crate",int(item.x),int(item.y)) if rule.family == "crate" else null
+   if local: root.add_child(local)
+   else: _cabinet(root,size,rule.family,rule)
    # Graphics drawn facing east: upstream decoration places them in
    # north-south runs against west walls (crates are square either way).
    if int(item.id) in [2612,2616,2641,2643,2718,3645,3648,3650]: root.rotation.y = PI/2
@@ -139,9 +142,14 @@ func upsert(serial: int, item: Dictionary) -> void:
      else: geometry.box(root,Vector3(0.075,0.006,0.075),Vector3(-0.2625+x*0.075,0.048,-0.2625+y*0.075),"d0b685" if (x+y)%2 == 0 else "554430")
   "barrel","water_barrel":
    size = Vector3(0.72,0.95,0.72)
-   geometry.cylinder(root,0.35,0.92,Vector3(0,0.46,0),"795638")
-   for y in [0.16,0.74]: geometry.cylinder(root,0.365,0.06,Vector3(0,y,0),"42464a")
-   if kind == "water_barrel": geometry.cylinder(root,0.32,0.012,Vector3(0,0.91,0),"467987")
+   var local: Node3D = LocalProps.build("barrel",int(item.x),int(item.y))
+   if local:
+    root.add_child(local)
+    if kind == "water_barrel": geometry.cylinder(root,0.30,0.012,Vector3(0,0.86,0),"467987")
+   else:
+    geometry.cylinder(root,0.35,0.92,Vector3(0,0.46,0),"795638")
+    for y in [0.16,0.74]: geometry.cylinder(root,0.365,0.06,Vector3(0,y,0),"42464a")
+    if kind == "water_barrel": geometry.cylinder(root,0.32,0.012,Vector3(0,0.91,0),"467987")
   "street_sign","plaque":
    # Text boards: the source XYZ is the post top (street signs) or the plaque
    # base beside its wall. The server label is engraved on the faces on click.

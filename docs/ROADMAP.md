@@ -1,3 +1,7 @@
+# Next after character sheet/skills — 27 October 2026
+
+Character sheet, skills and vitals HUD are live on native packets. Next gameplay presentation: an equipment paperdoll in the sheet (worn layers, drag to equip), skill-gain/stat-gain notices, war mode and a combat target/health bar for the selected mobile, then spellbook/casting. Keep the starting-up cost and the ~135 ms first-frame stall in view.
+
 # Next after the free visual upgrade — 26 October 2026
 
 Free shader/lighting work has reached diminishing returns. Next: an art-kit comparison page (same Britain street, 2–3 candidate kits with exact prices/licences) for an owner decision, then building geometry depth (roof eaves thickness/overhang, recessed windows, door surrounds) through the shared facade/roof rules, and replacement trees with LODs. Keep paid assets out of the public repository.

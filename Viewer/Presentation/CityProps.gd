@@ -9,6 +9,12 @@ static func build(kind: String,s: Dictionary,info: Dictionary,g: RefCounted) -> 
  var iron:="51585c"
  var stone:="9e9a87"
  var cloth:String=["854d49","405e72","66734e"][int(s.id)%3]
+ # Owner-licensed Dexsoft props replace barrels, crates, tubs and hay locally.
+ var local_kind:=preload("res://Presentation/LocalProps.gd").kind_for(kind,name_text)
+ var local:Node3D=preload("res://Presentation/LocalProps.gd").build(local_kind,int(s.x),int(s.y),0.7 if "keg" in name_text else 1.0) if local_kind!="" else null
+ if local:
+  root.add_child(local)
+  return root
  match kind:
   "globe","gem":
    var ball:=MeshInstance3D.new()

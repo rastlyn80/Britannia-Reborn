@@ -1,3 +1,44 @@
+# Window shutters, Dexsoft props, character sheet and skills — 27 October 2026
+
+**Shutters and flower boxes.** UO walls carry no inside/outside information. WindowDressing.gd reads the outdoor side from the source: indoor cells have a roof, upper floor or landing overhead within three cells. Outdoor cells are open to the sky two cells out, with at most a roof eave directly beside the wall. Windows covered on both sides, open on both sides, or facing another wall stay undressed. Of 1,042 Britain windows, 1,012 got an outdoor side and 30 stayed undressed. 946 got MedievalKit (CC0) open shutter pairs, because both neighbouring cells along the wall are solid wall; about half of those also got a flower box. Bridges and masonry slits/arches are never dressed. Dressing is excluded from collision and distant massing. Interior captures (tavern, two-storey house) show none indoors.
+
+**Dexsoft props (owner-licensed, local only).** scripts/import-dexsoft-props.py converts five small Dexsoft Medieval Village props into ignored Viewer/local-art/props: two barrels, a crate, a tub and a haystack (220–784 triangles each, with albedo and normal textures). They replace the procedural barrel/keg (44 statics), crate (13), water tub (3) and hay (13) models, and server barrels/crates. Each cell picks a stable variant. Without the local conversion the procedural/CC0 models remain. Log piles (6) now use the MedievalKit woodpile. The Dexsoft houses and the 12 m wood shed are not used: they cannot fit UO footprints.
+
+**Character sheet (C) and skills (K).** CharacterProtocol.gd handles:
+- the full 0x11 status: attributes, vitals, gold, weight/max, stat cap, followers, AOS resistances, luck, damage and tithing;
+- 0xA1–0xA3 vitals;
+- 0x3A skill lists and single updates, including caps and locks;
+- 0xBF/0x19 stat locks;
+- the outgoing status/skills query, skill use (0x12/0x24), skill lock (0x3A) and stat lock (0xBF/0x1A).
+
+Field layouts follow ModernUO's packet writers. The sheet shows:
+- a live 3D portrait;
+- attributes with stat-lock toggles;
+- hits/stamina/mana and weight bars;
+- the five resistances and the belongings figures.
+
+The skills page groups all 58 skills as the classic client does. It has a search box, value/base/cap tooltips, raise/lower/lock toggles, Use buttons for the 23 skills ModernUO registers a use handler for, and a skill total. A vitals HUD (top left) is always shown in game. Window art comes from the owner's Necromancer GUI pack (scripts/import-unity-gui.py → ignored Viewer/local-art/gui: parchment window, buttons, seal, Kingthings fonts); without it a drawn parchment style is used.
+
+**Verification:**
+- Offline:
+  - 27 new character checks: packet layouts, session merge, sheet/HUD values, filter and toggles.
+  - Art fidelity 75 checks: woodpile, prop mapping, dressing side/undecided.
+  - Full scripts/verify.ps1 passes.
+- Live (scripts/test-character.ps1, headless and -Visual):
+  - native v6 status for the development character (str 40, hits 70/70, weight 77/240, cap 225);
+  - 58 skills;
+  - Magery lock change confirmed by re-query, then restored;
+  - Anatomy opened the server target cursor, then cancelled.
+- Live world-item, city and login tests pass.
+- Same-route streaming profile p95 18.8–18.9 ms, p99 20.3–20.5 ms (was 18.5/19.8); startup 4.8 s (was 2.8 s).
+
+**Remaining gaps:**
+- The portrait is the generic avatar, not equipment-accurate.
+- No paperdoll equipment slots in the sheet; Equipment remains the separate list.
+- No title/karma/fame or skill-gain notifications.
+- Combat, spells and skill training loops are untested.
+- Kegs share the barrel model.
+
 # MedievalKit modules and surfaces (step 3) — 27 October 2026
 
 The owner-supplied MedievalKit 5.1.1 (CC0) was exported with Blender 5.2.1 (portable, ignored in .tools; scripts/export-medievalkit.py) into Viewer/Art/MedievalKit. That is 20 lightweight modules (doors, shutters, lantern post, chimney, fence, sacks, woodpile, well, handcart, flower box, pots, plaque, basket, rope, crate, barrel, fountain statue) with a manifest of source hash, triangle counts and file SHA-256s. In use:

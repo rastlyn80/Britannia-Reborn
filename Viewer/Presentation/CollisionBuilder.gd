@@ -21,7 +21,8 @@ func _collect(node: Node3D, parent: Transform3D, output: PackedVector3Array) -> 
 		var faces: PackedVector3Array = node.mesh.get_faces()
 		for vertex in faces: output.append(transform*vertex)
 	for child in node.get_children():
-		if child is Node3D: _collect(child,transform,output)
+		# Window shutters and flower boxes are decoration, not walls to bump into.
+		if child is Node3D and child.get_meta("kind","") != "dressing": _collect(child,transform,output)
 
 func finish(parent: Node3D, terrain: MeshInstance3D) -> void:
 	for at in trunks:

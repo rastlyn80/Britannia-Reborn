@@ -1,5 +1,5 @@
 extends SceneTree
-const FILES=["Reconstruction.gd","BridgePlan.gd","RegionalRules.gd","CityProps.gd","RegionalContext.gd","RoofPlan.gd","Facade.gd","FloorPlan.gd","InteriorShell.gd","GeometryLibrary.gd","SurfaceLibrary.gd","TerrainSurface.gd","FarCity.gdshader","Roof.gdshader","RegionalBake.gd","SourceOwnership.gd","static-catalog.json"]
+const FILES=["Reconstruction.gd","BridgePlan.gd","RegionalRules.gd","CityProps.gd","RegionalContext.gd","RoofPlan.gd","Facade.gd","FloorPlan.gd","InteriorShell.gd","GeometryLibrary.gd","SurfaceLibrary.gd","TerrainSurface.gd","FarCity.gdshader","Roof.gdshader","RegionalBake.gd","SourceOwnership.gd","WindowDressing.gd","static-catalog.json"]
 var batches:Dictionary={}
 var materials:Dictionary={}
 var directory:="res://../outputs/britain"
@@ -39,7 +39,8 @@ func append(node:Node3D,parent_transform:Transform3D,source:Dictionary)->void:
    var owned:=preload("res://Presentation/SourceOwnership.gd").mesh(node.mesh,i,source)
    batches[key].append_from(owned,0,transform)
  for child in node.get_children():
-  if child is Node3D:append(child,transform,source)
+  # Distant massing omits window shutters and flower boxes.
+  if child is Node3D and child.get_meta("kind","")!="dressing":append(child,transform,source)
 func run()->void:
  for arg in OS.get_cmdline_user_args():
   if arg.begins_with("--atlas="):directory=arg.substr(8).get_base_dir()

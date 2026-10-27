@@ -22,6 +22,12 @@ signal vendor_received(vendor: int, stock: Array)
 signal vendor_closed(vendor: int)
 signal entity_name_received(serial: int, name: String)
 const Commerce = preload("res://Network/CommerceProtocol.gd")
+const Character = preload("res://Network/CharacterProtocol.gd")
+# Player character sheet: native status, skills (by skill ID) and stat locks.
+signal status_changed(status: Dictionary)
+signal skills_changed(skills: Dictionary)
+var player_status := {}
+var skills := {}
 var known_items := {}
 var equipment := {}
 var context_menu := {}
@@ -158,6 +164,8 @@ func close() -> void:
 	entity_names.clear()
 	vendor_serial = 0
 	gold = -1
+	player_status.clear()
+	skills.clear()
 	gumps.clear()
 	books.clear()
 	board_posts.clear()
@@ -345,6 +353,7 @@ func _handle(p: PackedByteArray) -> void:
 			phase = "world"
 			last_ping = Time.get_ticks_msec()
 			entered.emit(player.duplicate())
+			request_character()
 		0x20:
 			if Login.read_be(p,1,4) == player.serial:
 				player.x = Login.read_be(p,11,2)
@@ -431,6 +440,20 @@ func _handle(p: PackedByteArray) -> void:
 				entity_names[serial] = text(p,7,30)
 				entity_name_received.emit(serial,entity_names[serial])
 				if serial == int(player.serial) and int(p[42]) > 0 and p.size() >= 62: gold = Login.read_be(p,58,4)
+				if serial == int(player.serial):
+					player_status.merge(Character.status(p),true)
+					status_changed.emit(player_status)
+		0xa1,0xa2,0xa3:
+			var vital := Character.vital(p)
+			if not vital.is_empty() and int(vital.serial) == int(player.serial):
+				player_status.merge(vital,true)
+				status_changed.emit(player_status)
+		0x3a:
+			var update := Character.skills(p)
+			if update.is_empty(): return
+			if update.full: skills.clear()
+			skills.merge(update.skills,true)
+			skills_changed.emit(skills)
 		0x25:
 			if p.size()!=21: return
 			var serial := Login.read_be(p,1,4)
@@ -469,6 +492,10 @@ func _handle(p: PackedByteArray) -> void:
 				var type := Login.read_be(p,5,4)
 				gumps.erase(type)
 				gump_closed.emit(type)
+			var locks := Character.stat_locks(p)
+			if not locks.is_empty() and int(locks.serial) == int(player.serial):
+				player_status.locks = locks
+				status_changed.emit(player_status)
 			if p.size() >= 6 and Login.read_be(p,3,2) == 8:
 				if player.facet != int(p[5]):
 					for serial in world_items.keys(): _remove_world_item(serial)
@@ -853,4 +880,29 @@ func begin_place(serial: int) -> bool:
 	if phase!="world" or not pending_transfer.is_empty() or not known_items.has(serial): return false
 	placement_serial = serial
 	message_received.emit("Click a nearby floor or ground surface to place the item. Escape cancels.")
+	return true
+
+# Ask the server for the player's full status and skill list.
+func request_character() -> void:
+	if phase != "world" or int(player.serial) == 0: return
+	send(Character.query(int(player.serial),false))
+	send(Character.query(int(player.serial),true))
+
+func use_skill(id: int) -> bool:
+	if phase != "world" or not Character.USABLE.has(id): return false
+	send(Character.use_skill(id))
+	return true
+
+# Lock: 0 raise, 1 lower, 2 locked. The server applies it without echoing.
+func set_skill_lock(id: int, lock: int) -> bool:
+	if phase != "world" or not skills.has(id): return false
+	send(Character.skill_lock(id,lock))
+	skills[id].lock = clampi(lock,0,2)
+	skills_changed.emit(skills)
+	return true
+
+# Stat: 0 strength, 1 dexterity, 2 intelligence.
+func set_stat_lock(stat: int, lock: int) -> bool:
+	if phase != "world" or stat < 0 or stat > 2: return false
+	send(Character.stat_lock(stat,lock))
 	return true

@@ -38,6 +38,8 @@ if ($LASTEXITCODE) { throw 'World item/doorway/sign regression checks failed' }
 if ($LASTEXITCODE) { throw 'Server environment regression checks failed' }
 & $godot --headless --path "$root\Viewer" --script res://Network/GameTests.gd
 if ($LASTEXITCODE) { throw 'Game session tests failed' }
+& $godot --headless --path "$root\Viewer" --script res://Network/CharacterTests.gd
+if ($LASTEXITCODE) { throw 'Character status/skills/sheet tests failed' }
 & $godot --headless --path "$root\Viewer" --script res://Presentation/PresentationTests.gd
 if ($LASTEXITCODE) { throw 'Presentation tests failed' }
 & $godot --headless --path "$root\Viewer" --script res://Presentation/GraphicsTests.gd

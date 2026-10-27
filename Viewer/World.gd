@@ -5,6 +5,7 @@ var city_stream: Node3D
 var minimap: Control
 var lighting_rig: Node3D
 var hud_panel: Control
+var character_sheet: Control
 var world: Dictionary
 var pivot := Node3D.new()
 var camera := Camera3D.new()
@@ -219,6 +220,15 @@ func _ready() -> void:
 		else:
 			minimap.free()
 			minimap = null
+	var vitals := preload("res://Network/VitalsHud.gd").new()
+	canvas.add_child(vitals)
+	vitals.configure(game)
+	character_sheet = preload("res://Network/CharacterSheet.gd").new()
+	canvas.add_child(character_sheet)
+	character_sheet.configure(game)
+	vitals.opened.connect(func(): character_sheet.toggle("character"))
+	login_panel.button(login_panel.world_controls,"Character (C)",func(): character_sheet.toggle("character"))
+	login_panel.button(login_panel.world_controls,"Skills (K)",func(): character_sheet.toggle("skills"))
 	login_panel.controller_toggled.connect(func(enabled: bool): controller_enabled = enabled)
 	hud_panel = login_panel
 	login_panel.sky_requested.connect(cycle_sky)
@@ -252,8 +262,8 @@ func _ready() -> void:
 		pitch = -0.28
 		pivot.position = entity_point(position.x,position.y,position.z)+Vector3(0,1.4,0)
 		camera_target_ready = true
-		status.text = "BRITAIN / TRAMMEL\nWASD move / Shift run / Space hop\nRight mouse look / Wheel zoom / B backpack / F6 return\nClick object / E use nearest"
-		panel.position = Vector2(24,700)
+		status.text = "BRITAIN / TRAMMEL\nWASD move / Shift run / Space hop\nRight mouse look / Wheel zoom / B backpack / F6 return\nC character / K skills / Click object / E use nearest"
+		panel.position = Vector2(24,get_viewport().get_visible_rect().size.y-130)
 		status.add_theme_font_size_override("font_size",15)
 		panel.reset_size.call_deferred()
 		if position.facet != 1 or position.x < int(world.originX) or position.x >= int(world.originX)+int(world.width) or position.y < int(world.originY) or position.y >= int(world.originY)+int(world.height):
@@ -383,6 +393,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.keycode == KEY_F7: cycle_sky()
 		if event.keycode == KEY_B: game.open_backpack()
 		if event.keycode == KEY_E: world_items.nearest()
+		if event.keycode == KEY_C and game.phase == "world": character_sheet.toggle("character")
+		if event.keycode == KEY_K and game.phase == "world": character_sheet.toggle("skills")
 		if event.keycode == KEY_ESCAPE: get_tree().quit()
 		if event.keycode == KEY_TAB: diagnostics.visible = not diagnostics.visible
 		if event.keycode == KEY_R:

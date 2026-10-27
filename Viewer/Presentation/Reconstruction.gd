@@ -41,6 +41,7 @@ var contextual_suppressed := 0
 var floors := preload("res://Presentation/FloorPlan.gd").new()
 var supports := preload("res://Presentation/SupportPlan.gd").new()
 var bridges := preload("res://Presentation/BridgePlan.gd").new()
+var windows := preload("res://Presentation/WindowDressing.gd").new()
 
 static func info(world: Dictionary, id: int, statics: bool) -> Dictionary:
 	var data = world.get("staticData" if statics else "landData")
@@ -67,6 +68,7 @@ func index(world: Dictionary) -> void:
 	if world.get("render_cells",false):print("REGIONAL RULES DONE")
 	source_origin = Vector2(world.get("originX",0),world.get("originY",0))
 	facade.index(world,catalog)
+	windows.index(world,catalog)
 	floors.index(world,catalog)
 	roofs.index(world,catalog)
 	if world.get("render_cells",false):print("REGIONAL ROOFS/FACADES DONE")
@@ -590,6 +592,10 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					var frame: Node3D = null
 					if kind=="window" and height>1.5 and opening.is_empty() and family != "plaster": frame=fitted("Village/Window_Wide_Flat1.gltf",Vector3(.84,minf(1.4,height*.46)+.16,.30))
 					visual = facade.panel(height,kind == "window",facade.plans.get(ordinal,{}),family,frame,opening)
+					# Outdoor shutters/flower boxes on house windows (never bridges or slits).
+					if kind == "window" and height > 1.5 and opening.is_empty() and bridge.is_empty():
+						var dressing: Node3D = windows.dress(self,windows.plans.get(ordinal,{}),minf(1.05,height*0.28),minf(1.4,height*0.46),family)
+						if dressing: visual.add_child(dressing)
 				"corner": visual = facade.corner(height,facade.corners.get(ordinal,{}),family)
 				"post": visual = fitted(asset,Vector3(0.15,height,0.15))
 				"pillar":
