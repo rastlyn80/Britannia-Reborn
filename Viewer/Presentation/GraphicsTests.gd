@@ -78,7 +78,9 @@ func run() -> void:
 		for surface in mesh.mesh.get_surface_count():
 			var mat: Material = mesh.get_active_material(surface)
 			if mat is ShaderMaterial and mat.resource_name == "Leaves_TwistedTree": green = mat.get_shader_parameter("source_texture").resource_path.ends_with("Leaves_NormalTree_C.png")
-	check(green,"Britain foliage uses the green palette rather than default red leaves")
+	# Owner-licensed local trees, when converted, replace the CC0 twisted tree.
+	if preload("res://Presentation/LocalTrees.gd").available(): green = not scene.static_root.find_children("*","",true,false).filter(func(n): return n.has_meta("local_tree")).is_empty()
+	check(green,"Britain foliage uses the green palette (or converted local trees) rather than default red leaves")
 	scene.queue_free()
 	await process_frame
 	var stage := Node3D.new()

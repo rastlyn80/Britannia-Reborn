@@ -1,8 +1,9 @@
 extends RefCounted
-# Optional owner-licensed trees converted by scripts/import-unity-trees.py into
+# Optional owner-licensed trees converted by scripts/import-unity-nature.py into
 # the ignored res://local-art/trees folder. When absent, callers keep the CC0
 # library trees, so the public build never depends on purchased art.
-const ROOT := "res://local-art/trees"
+const BASE := "res://local-art"
+const ROOT := BASE+"/trees"
 const CATALOG := ROOT+"/catalog.json"
 # UO tree names -> preferred species (first available variants are used).
 const SPECIES := {
@@ -32,7 +33,7 @@ static func available() -> bool:
 		loaded = true
 		if FileAccess.file_exists(CATALOG):
 			var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(CATALOG))
-			if parsed is Dictionary: catalog = parsed.get("trees",{})
+			if parsed is Dictionary: catalog = parsed.get("items",parsed.get("trees",{}))
 	return not catalog.is_empty()
 
 static func variants(tree_name: String) -> Array:
@@ -45,25 +46,26 @@ static func signature() -> String:
 	return FileAccess.get_sha256(CATALOG) if FileAccess.file_exists(CATALOG) else "none"
 
 # Mesh with generated detail levels, cached beside the converted source.
-static func mesh(name: String) -> ArrayMesh:
-	if meshes.has(name): return meshes[name]
-	var cached := ROOT+"/"+name+"/"+name+".lod.res"
+static func mesh(name: String, group := "trees") -> ArrayMesh:
+	var folder := BASE+"/"+group+"/"+name
+	if meshes.has(folder): return meshes[folder]
+	var cached := folder+"/"+name+".lod.res"
 	var result: ArrayMesh
 	if ResourceLoader.exists(cached): result = load(cached)
 	if result == null:
-		var source: Mesh = load(ROOT+"/"+name+"/"+name+".obj")
+		var source: Mesh = load(folder+"/"+name+".obj")
 		var importer := ImporterMesh.new()
 		for surface in source.get_surface_count():
 			importer.add_surface(source.surface_get_primitive_type(surface),source.surface_get_arrays(surface),[],{},null,source.surface_get_name(surface))
 		importer.generate_lods(25.0,60.0,[])
 		result = importer.get_mesh()
 		ResourceSaver.save(result,ProjectSettings.globalize_path(cached))
-	meshes[name] = result
+	meshes[folder] = result
 	return result
 
 # Coarsest generated detail level, one mesh per surface, for distant scenery.
-static func far_surfaces(name: String) -> Array:
-	var source: Mesh = load(ROOT+"/"+name+"/"+name+".obj")
+static func far_surfaces(name: String, group := "trees") -> Array:
+	var source: Mesh = load(BASE+"/"+group+"/"+name+"/"+name+".obj")
 	var importer := ImporterMesh.new()
 	for surface in source.get_surface_count():
 		importer.add_surface(source.surface_get_primitive_type(surface),source.surface_get_arrays(surface),[],{},null,source.surface_get_name(surface))
@@ -90,11 +92,11 @@ static func pick(tree_name: String, x: int, y: int) -> String:
 	var names := variants(tree_name)
 	return "" if names.is_empty() else str(names[absi(x*73856093^y*19349663)%names.size()])
 
-static func material(name: String, leaves: bool) -> StandardMaterial3D:
-	var key := name+("/leaves" if leaves else "/bark")
+static func material(name: String, leaves: bool, group := "trees") -> StandardMaterial3D:
+	var key := group+"/"+name+("/leaves" if leaves else "/bark")
 	if not materials.has(key):
 		var surface := StandardMaterial3D.new()
-		surface.albedo_texture = load(ROOT+"/"+name+"/diffuse.png")
+		surface.albedo_texture = load(BASE+"/"+group+"/"+name+"/diffuse.png")
 		surface.roughness = 0.85 if leaves else 0.95
 		surface.specular_mode = BaseMaterial3D.SPECULAR_SCHLICK_GGX
 		if leaves:
@@ -115,6 +117,7 @@ static func build(tree_name: String, x: int, y: int) -> Node3D:
 	for surface in source.get_surface_count():
 		instance.set_surface_override_material(surface,material(name,"leav" in source.surface_get_name(surface)))
 	instance.transform = placement(tree_name,name,x,y)
+	instance.set_meta("lod_cell",true)
 	var node := Node3D.new()
 	node.add_child(instance)
 	node.set_meta("local_tree",name)

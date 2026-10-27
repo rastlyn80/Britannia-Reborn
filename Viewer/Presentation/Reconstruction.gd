@@ -331,6 +331,11 @@ func vegetation_ground(s: Dictionary, world: Dictionary) -> float:
 	if ground == -INF or absf(ground-float(s.z)*scale) > 2.5: return NAN
 	return ground
 
+# Owner-licensed converted plants when present locally; CC0 library otherwise.
+func plant(kind: String, s: Dictionary, detail: Dictionary, asset: String, size: Vector3) -> Node3D:
+	var local: Node3D = preload("res://Presentation/LocalPlants.gd").build(kind,str(detail.get("name","")),int(s.x),int(s.y))
+	return local if local else fitted(asset,size)
+
 func gable_for(family: String) -> ShaderMaterial:
 	if not gable_materials.has(family):
 		var material: ShaderMaterial = facade.material(family).duplicate()
@@ -597,15 +602,15 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					else:
 						visual = fitted(asset,size)
 						visual.rotation.y = fmod(float(int(s.x)*17+int(s.y)*31),TAU)
-				"grass": visual = fitted(asset,Vector3(0.65,0.25+0.1*(int(s.id)%3),0.65))
-				"flower": visual = fitted(asset,Vector3(0.55,0.28,0.55))
+				"grass": visual = plant(kind,s,detail,asset,Vector3(0.65,0.25+0.1*(int(s.id)%3),0.65))
+				"flower": visual = plant(kind,s,detail,asset,Vector3(0.55,0.28,0.55))
 				"planter":
 					# Stone-curbed raised bed at its source height with a soil top.
 					visual = Node3D.new()
 					facade.piece(visual,Vector3(1.0,maxf(0.05,height-0.03),1.0),Vector3(0,(height-0.03)/2,0),"stone")
 					var soil := geometry.box(visual,Vector3(0.9,0.04,0.9),Vector3(0,height-0.01,0),"3b2c20")
 					soil.material_override = geometry.material("3b2c20")
-				"bush": visual = fitted(asset,Vector3(1.1,0.65,1.1))
+				"bush": visual = plant(kind,s,detail,asset,Vector3(1.1,0.65,1.1))
 				"mushroom": visual = fitted(asset,Vector3(0.32,0.22,0.32))
 				"rock": visual = fitted(asset,Vector3(0.55,0.38,0.55))
 				"log": visual = fitted(asset,Vector3(0.9,0.35,0.4))

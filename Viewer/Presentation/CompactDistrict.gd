@@ -18,6 +18,9 @@ func collect(node: Node3D, parent: Transform3D) -> void:
    digest.update(bytes)
    signatures[identity] = digest.finish().hex_encode()
   var key: String = signatures[identity]+str(node.cast_shadow)
+  # Detail levels are chosen per instanced batch; keep vegetation batches to
+  # 16 m cells so distant trees in a district do not render at full detail.
+  if node.has_meta("lod_cell"):key+="@"+str(Vector2i(floori(transform.origin.x/16.0),floori(transform.origin.z/16.0)))
   var materials: Array = []
   for i in node.mesh.get_surface_count():
    var material: Material = node.get_active_material(i)

@@ -16,5 +16,6 @@ textures/default_filters/use_nearest_mipmap_filter=false
 renderer/rendering_method="forward_plus"
 renderer/rendering_method.mobile="gl_compatibility"
 lights_and_shadows/directional_shadow/size=4096
+mesh_lod/lod_change/threshold_pixels=2.0
 textures/default_filters/anisotropic_filtering_level=3
 environment/defaults/default_clear_color=Color(0.035,0.055,0.08,1)
