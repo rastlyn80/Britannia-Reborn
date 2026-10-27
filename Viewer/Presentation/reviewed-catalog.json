@@ -854,11 +854,11 @@
     },
     "2604": {
       "kind": "prop",
-      "asset": "Props/Cabinet.gltf",
+      "asset": "PolyHaven/GothicCommode_01/GothicCommode_01_1k.gltf",
       "dimensions": [
-        0.85,
-        0.85,
-        0.48
+        1.0,
+        1.0,
+        0.5
       ],
       "yawDegrees": 0,
       "assembly": "single",
@@ -871,15 +871,15 @@
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
       "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "provenance": "Art/PolyHaven/manifest.json"
     },
     "2612": {
       "kind": "prop",
-      "asset": "Props/Cabinet.gltf",
+      "asset": "PolyHaven/GothicCommode_01/GothicCommode_01_1k.gltf",
       "dimensions": [
-        0.85,
-        0.85,
-        0.48
+        1.0,
+        1.0,
+        0.5
       ],
       "yawDegrees": 90,
       "assembly": "single",
@@ -892,7 +892,7 @@
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
       "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "provenance": "Art/PolyHaven/manifest.json"
     },
     "2459": {
       "kind": "prop",

@@ -1,0 +1,19 @@
+{
+ "notice": "UO item name (tiledata/server display name, lower case, plural markers removed) -> pinned CC0 Poly Haven model (Viewer/Art/PolyHaven/manifest.json) and its presented height in metres; proportions are the model's own.",
+ "items": {
+  "grandfather clock": {"model": "vintage_grandfather_clock_01", "height": 2.0},
+  "bucket": {"model": "wooden_bucket_01", "height": 0.42},
+  "wooden bucket": {"model": "wooden_bucket_01", "height": 0.42},
+  "wooden bowl": {"model": "wooden_bowl_01", "height": 0.08},
+  "empty wooden bowl": {"model": "wooden_bowl_01", "height": 0.08},
+  "plate": {"model": "carved_wooden_plate", "height": 0.03},
+  "wooden plate": {"model": "carved_wooden_plate", "height": 0.03},
+  "basket": {"model": "wicker_basket_01", "height": 0.16},
+  "apple": {"model": "food_apple_01", "height": 0.08},
+  "barrel": {"model": "wine_barrel_01", "height": 0.9},
+  "stool": {"model": "wooden_stool_01", "height": 0.46},
+  "foot stool": {"model": "wooden_stool_01", "height": 0.4},
+  "throne": {"model": "WoodenChair_01", "height": 1.9},
+  "pot": {"model": "brass_pot_01", "height": 0.24}
+ }
+}

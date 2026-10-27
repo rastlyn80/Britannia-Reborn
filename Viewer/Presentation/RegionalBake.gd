@@ -1,12 +1,12 @@
 extends SceneTree
-const FILES=["Reconstruction.gd","BridgePlan.gd","RegionalRules.gd","CityProps.gd","RegionalContext.gd","RoofPlan.gd","Facade.gd","FloorPlan.gd","InteriorShell.gd","GeometryLibrary.gd","SurfaceLibrary.gd","TerrainSurface.gd","FarCity.gdshader","Roof.gdshader","RegionalBake.gd","SourceOwnership.gd","WindowDressing.gd","LocalLibrary.gd","Lava.gdshader","Waterfall.gdshader","SurfaceVariants.gd","SurfaceVariants.gdshaderinc","Ground.gdshader","Facade.gdshader","Carpet.gdshader","DoorLeaf.gd","static-catalog.json"]
+const FILES=["Reconstruction.gd","BridgePlan.gd","RegionalRules.gd","CityProps.gd","RegionalContext.gd","RoofPlan.gd","Facade.gd","FloorPlan.gd","InteriorShell.gd","GeometryLibrary.gd","SurfaceLibrary.gd","TerrainSurface.gd","FarCity.gdshader","Roof.gdshader","RegionalBake.gd","SourceOwnership.gd","WindowDressing.gd","LocalLibrary.gd","Lava.gdshader","Waterfall.gdshader","SurfaceVariants.gd","SurfaceVariants.gdshaderinc","Ground.gdshader","Facade.gdshader","Carpet.gdshader","DoorLeaf.gd","PropReplacements.gd","prop-replacements.json","static-catalog.json"]
 var batches:Dictionary={}
 var materials:Dictionary={}
 var directory:="res://../outputs/britain"
 func _initialize()->void:call_deferred("run")
 static func fingerprint(folder:String)->String:
  var text:=FileAccess.get_sha256(folder.path_join("atlas.json"))+str(Engine.get_version_info().string)
- for asset in ["Quaternius","Kenney","Surfaces"]:text+=FileAccess.get_sha256("res://Art/"+asset+"/manifest.json")
+ for asset in ["Quaternius","Kenney","Surfaces","PolyHaven"]:text+=FileAccess.get_sha256("res://Art/"+asset+"/manifest.json")
  for name in FILES:text+=FileAccess.get_sha256("res://Presentation/"+name)
  return text.sha256_text()
 func append(node:Node3D,parent_transform:Transform3D,source:Dictionary)->void:

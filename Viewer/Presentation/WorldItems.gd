@@ -137,6 +137,20 @@ func upsert(serial: int, item: Dictionary) -> void:
     _body(root,Vector3(float(fit[0]),float(fit[1]),float(fit[2])),Vector3(0,float(fit[1])/2,0),serial,(int(rule.get("flags",0))&64)!=0)
     request_contact_refresh()
     return
+ # Photoscanned CC0 replacements by item name (prop-replacements.json).
+ var replacement_name := str(rule.get("display_name",scene.world.get("staticData",{}).get(str(int(item.id)),{}).get("name","")))
+ if not str(rule.family) in FIXED_FAMILIES and preload("res://Presentation/PropReplacements.gd").has(replacement_name):
+  var replaced: Node3D = preload("res://Presentation/PropReplacements.gd").build(scene.reconstruction,replacement_name)
+  if replaced:
+   replaced.name = "ReplacementVisual"
+   root.add_child(replaced)
+   var boxes: Array = []
+   scene.reconstruction._collect_bounds(replaced,Transform3D.IDENTITY,boxes)
+   var box: AABB = boxes[0]
+   for other in boxes: box = box.merge(other)
+   _body(root,box.size,box.get_center(),serial,(int(rule.get("flags",0))&64)!=0)
+   request_contact_refresh()
+   return
  var review: Dictionary=preload("res://Presentation/ReviewedCatalog.gd").entry(int(item.id))
  if (review.has("asset") or review.get("construction","")=="wardrobe") and rule.family!="door":
   var visual: Node3D=preload("res://Presentation/ReviewedCatalog.gd").build(scene.reconstruction,int(item.id))

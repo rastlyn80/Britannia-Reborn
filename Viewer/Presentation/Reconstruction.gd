@@ -840,6 +840,8 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 			var long_x := span.x >= span.y
 			visual = preload("res://Presentation/LocalLibrary.gd").run(furniture_slot,int(s.x),int(s.y),maxf(span.x,span.y),0.8 if kind == "table" else 0.48,minf(span.x,span.y)*(0.9 if kind == "table" else 0.5))
 			if visual and not long_x: visual.rotation.y = PI/2
+		# Photoscanned CC0 replacements by item name (prop-replacements.json).
+		if visual == null and kind in ["prop","asset"] and not groups.has(ordinal): visual = preload("res://Presentation/PropReplacements.gd").build(self,str(detail.get("name","")))
 		# Counters follow their real footprint (L and U shapes) cell by cell.
 		if visual == null and kind == "counter" and tint.is_empty(): visual = counter_run(s,groups.get(ordinal,{"indices":[ordinal],"min_z":float(s.z)}),world)
 		if visual == null and not (modern and rule.has("slot") and preload("res://Presentation/LocalLibrary.gd").has(str(rule.slot))):
