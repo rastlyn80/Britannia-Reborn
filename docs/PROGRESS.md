@@ -14,14 +14,6 @@ Owner-reported defects fixed with shared rules (each checked in offline captures
 
 Still open (owner screenshots): roofs standing off brick walls, floating interior windows/plants/boxes, mixed materials around a shop passage roof, flickering display cases, low-poly procedural props inside buildings, plaster material quality, terrain tiling. Next: an audit over the built 3D scene (not the source) for floating/misaligned visuals and coplanar surfaces. Tests: full verify passes.
 
-# Third Dawn human/ogre compatibility experiment — 27 October 2026
-
-Imported the preserved Third Dawn 2.0.4 Alpha Build 35 human male and ogre into the existing Godot Viewer as local-only textured/skinned glTF models. Independent bounded Python parser, no proprietary runtime. Human: 183 source vertices / 362 triangles / 34 bones; ogre: 229 / 452 / 37. Idle, walk and run match tracks by name; absent toe/hair leaves are reported. Corrected human authoring offset/coordinate frame and baked visual floor fit; entity roots remain stationary. `ThirdDawnBody.gd` has the Avatar animation contract but is used only in the comparison review, not live gameplay. `Review-Third-Dawn.cmd` compares both imports with the current CC0 avatar and offers clip buttons/pause/orbit/zoom.
-
-Six synthetic parser/image/coordinate tests pass. Godot validation passes 24 deformed mesh poses (two bodies × three clips × four phases), joint motion, stationary roots and ground tolerance in headless, Compatibility and Forward+. Sampled floor error <10 mm. Inspected idle/walk captures; run capture retained. Full `scripts/verify.ps1` passes, including actual-crop smoke load. During concurrent world-item edits, added an explicit Vector2i type to an inferred local that blocked import; no world-item behavior changed by that annotation. No live login/server changes were needed.
-
-Sources, converted models/textures, provenance and captures are ignored/local; Documents/Codex prototype, existing UO installation and saved login remain unchanged. These early coarse models/painted textures demonstrate technical feasibility, not finished modern art or a redistribution licence. Equipment/hues, terrain IK, native combat clips, Quaternius retargeting and live body-ID substitution remain unimplemented. See THIRD_DAWN_IMPORT.md for exact source hashes, reproduction and limits.
-
 # Modern sign-face textures — 27 October 2026
 
 Generated all 54 local sign references as separate modern painted fantasy sign-face PNGs in ignored `outputs/item-catalog/signs/modern`, preserving each `*_flat.png` filename. Every output decodes at 1254×1254; source/output filename parity is 54/54. Inspected the completed `review.png` contact sheet. `provenance.json` records exact source/output SHA-256 hashes and dimensions; `prompts.json` records all 54 built-in image-generation prompts. Originals remain unchanged. These reference-inspired outputs stay local and are not asserted to have a redistribution licence.

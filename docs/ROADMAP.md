@@ -1,9 +1,3 @@
-# Third Dawn body import checkpoint — 27 October 2026
-
-Local human/ogre rigged import and idle/walk/run review are implemented and tested in the existing Viewer; full verify passes. See THIRD_DAWN_IMPORT.md. This is an optional private compatibility experiment: the default avatar and live networking remain unchanged. Next gates, if this visual direction is pursued: owner review of the old-model silhouettes/style, native attack/death clips, explicit body-ID mapping with CC0 fallback, costume/hue assembly and terrain foot contact, then a separately verified opt-in live presentation. No original-derived art may enter commits or public packages; modern-quality art and distribution rights remain unresolved.
-
-Owner is interested in an automated visual refresh while preserving native equipment/monster coverage. Three male garments (chain shirt, plate breastpiece, robe) have no unmatched weighted bone names against the imported body; wardrobe fitting is not yet rendered/tested. Next useful experiment: one fully dressed human plus an ogre with original-versus-refreshed materials, preserving UVs/rigs and testing clothing through movement before any broad batch conversion.
-
 # Sign texture checkpoint — 27 October 2026
 
 All 54 requested sign-face reinterpretations are generated and locally reviewed in `outputs/item-catalog/signs/modern` (same filenames; 1254×1254 PNGs; source hashes and prompts recorded; ignored/local only). Next for integration: assign sign-face materials, fit UVs to each modeled board and inspect in-world at distance. Texture generation does not resolve the queued road-sign board geometry or permanent street-name display below.
