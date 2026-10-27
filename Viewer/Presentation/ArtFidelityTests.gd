@@ -209,5 +209,36 @@ func _initialize() -> void:
   var scale_axes:=model.transform.basis.get_scale()
   check(first.get_meta("local_tree")==again.get_meta("local_tree") and absf(bottom)<0.01 and is_equal_approx(scale_axes.x,scale_axes.y) and is_equal_approx(scale_axes.y,scale_axes.z),"Local licensed trees are deterministic, uniformly scaled and rooted at their source cell")
   first.free();again.free()
+ # Chimney sprite tiles become one stack rooted in the roof beneath them.
+ var chimney_world:={"elevationScale":.2,"originX":1300,"originY":1300,"width":8,"height":8,"terrain":[],"statics":[{"x":1301,"y":1301,"z":40,"id":1488},{"x":1302,"y":1301,"z":40,"id":1488},{"x":1301,"y":1301,"z":46,"id":2268},{"x":1302,"y":1301,"z":46,"id":2269},{"x":1301,"y":1301,"z":56,"id":2268}],"staticData":{"1488":{"name":"wooden shingles","height":3},"2268":{"name":"chimney","height":16},"2269":{"name":"chimney","height":16}},"landData":{}}
+ var chimney_recon:=preload("res://Presentation/Reconstruction.gd").new()
+ chimney_recon.index(chimney_world)
+ var chimney_group: Dictionary=chimney_recon.groups.get(2,{})
+ check(chimney_group.get("kind","")=="chimney" and chimney_group.indices.size()==3 and chimney_recon.chimney_bases.get(int(chimney_group.owner),0)==40,"Stacked/adjacent chimney tiles form one stack based on the roof below")
+ var stack: Node3D=chimney_recon.chimney_stack(chimney_world.statics[int(chimney_group.owner)],chimney_group,chimney_world)
+ var stack_boxes: Array=[];chimney_recon._collect_bounds(stack,Transform3D.IDENTITY,stack_boxes)
+ var stack_box: AABB=stack_boxes[0]
+ for other in stack_boxes: stack_box=stack_box.merge(other)
+ check(absf(stack_box.position.y-(40-int(chimney_world.statics[int(chimney_group.owner)].z))*.2)<0.01 and stack_box.size.x>1.5,"Chimney stack spans its two-tile footprint from the roof up")
+ stack.free()
+ # Bridge edge parapets record the deck side so they sit flush on its edge.
+ var bridge_world:={"elevationScale":.2,"statics":[{"x":10,"y":10,"z":40,"id":120},{"x":10,"y":11,"z":40,"id":1997}],"staticData":{"120":{"name":"stone wall","height":5},"1997":{"name":"wooden plank","height":0,"flags":0x200}},"terrain":[{"x":10,"y":11,"z":-5,"id":168},{"x":10,"y":10,"z":-5,"id":168}],"landData":{"168":{"name":"water"}}}
+ var bridge_plan:=preload("res://Presentation/BridgePlan.gd").new()
+ bridge_plan.index(bridge_world,{"120":{"kind":"trim","axis":"x"},"1997":{"kind":"floor"}})
+ check(bridge_plan.parapets.get(0,{}).get("toward",Vector2i.ZERO)==Vector2i(0,1),"An edge parapet shifts toward its bridge deck, not into the water gap")
+ # Wedge records in wood/brick assemble as gables like the plaster ones.
+ for id in ["24","25","193","194","85","86"]:
+  if roof_recon.catalog.get(id,{}).get("kind","")!="gable":check(false,"Wedge "+id+" is a gable")
+ check(roof_recon.catalog.get("194",{}).get("kind","")=="gable","Stacked timber/brick gable wedges assemble instead of poking through the roof")
+ check(preload("res://Presentation/RegionalRules.gd").resolve(1477,{"name":"wooden shingles","height":3}).get("material","")=="shingle","Wooden shingle hip/corner pieces use the shingle material, not slate")
+ # Hip steps close in roof material; true gable ends keep wall infill.
+ var hip_world:={"elevationScale":.2,"statics":[{"x":0,"y":0,"z":30,"id":1476},{"x":1,"y":0,"z":30,"id":1476},{"x":1,"y":1,"z":30,"id":1476}]}
+ var hip_plan:=preload("res://Presentation/RoofPlan.gd").new()
+ hip_plan.index(hip_world,{"1476":{"kind":"roof","material":"shingle","rise":[1,0],"ridgeAxis":"x","anchorOffset":[-1,-1]}})
+ check(hip_plan.tiles[0].hip_edges[2] and hip_plan.tiles[2].hip_edges[3] and hip_plan.tiles[1].gable_edges[1] and not hip_plan.tiles[1].hip_edges[1],"Stepped hip edges are told apart from open gable ends")
+ # Sign kinds and furniture facings from upstream placements.
+ var appearance:=preload("res://Presentation/ItemAppearance.gd")
+ check(appearance.variant(4764,{"family":"sign"})=="street_sign" and appearance.variant(7977,{"family":"sign"})=="plaque" and appearance.variant(2996,{"family":"sign"})=="sign","Street signs and wall plaques are not drawn as bracket-hung shop signs")
+ check(int(preload("res://Presentation/ReviewedCatalog.gd").entry(2713).get("yawDegrees",0))==90 and int(preload("res://Presentation/ReviewedCatalog.gd").entry(2711).get("yawDegrees",0))==0,"Bookcases placed in north-south runs face east")
  print("ART FIDELITY TESTS: ",checks," checks / ",failures," failures")
  quit(1 if failures else 0)

@@ -84,6 +84,30 @@ func index(world: Dictionary, catalog: Dictionary) -> void:
 		var eave := INF
 		for member in component: eave = minf(eave,tiles[member].heights.min())
 		for member in component: tiles[member].eave = eave
+	# An exposed edge that meets another roof (a hip, valley or a step between
+	# storeys) is not a gable end: it gets no wall infill or verge beam.
+	var sides := [Vector2i(0,-1),Vector2i(1,0),Vector2i(0,1),Vector2i(-1,0)]
+	for ordinal in tiles:
+		var tile: Dictionary = tiles[ordinal]
+		var gables := []
+		var hips := []
+		for edge in 4:
+			var open: bool = tile.exposed[edge]
+			if open:
+				for neighbor in cells.get(tile.cell+sides[edge],[]):
+					if absf(tiles[neighbor].base-tile.base) < 4.0: open = false
+			# A stepped hip leaves roof diagonally across the open edge; a true
+			# gable end looks onto open air there too. Hips close in roof.
+			var hip := false
+			if open:
+				var across: Vector2i = sides[(edge+1)%4]
+				for diagonal in [tile.cell+sides[edge]+across,tile.cell+sides[edge]-across]:
+					for neighbor in cells.get(diagonal,[]):
+						if tiles[neighbor].get("component",-1) == tile.get("component",-2): hip = true
+			gables.append(open)
+			hips.append(hip)
+		tile.gable_edges = gables
+		tile.hip_edges = hips
 
 	# A shared height is also a shared lighting normal. Computing these from
 	# the complete component avoids a shading seam at tile/chunk boundaries.

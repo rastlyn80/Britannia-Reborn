@@ -1,3 +1,19 @@
+# City defect pass: chimneys, signs, bridges, roofs, walls — 27 October 2026
+
+Fixes from owner screenshots, each traced to a source cause and covered by checks (art fidelity 61→69):
+- **Chimneys:** UO builds a chimney from stacked/adjacent sprite tiles; each was drawn as a full 3.2 m model at its own Z (floating clusters). Connected chimney tiles now form one capped stone stack over the group footprint, rooted at the roof/wall record beneath.
+- **Signs:** street signs (0x1297–0x129E) now sit on their post top, and plank plaques (0x1F28/0x1F29) lie flat against their wall or stand on two posts. Neither hangs from a shop bracket any more. On click, the server-confirmed text is engraved on both board faces ("the Great Northern Road", "the Northern Bridge").
+- **Bridges:** BridgePlan records the deck side of edge parapets, which now sit flush on the deck edge instead of mid-tile over the water. This is a presentation offset; source XYZ is unchanged.
+- **Roofs:**
+  - "wooden shingles" hip/corner pieces were mapped to slate, which made blue zigzags and broke joins.
+  - Gable infill was drawn on hip, valley and storey-step edges. It is now limited to edges open to air; stepped hips close in roof material.
+  - Timber/brick gable wedges (24, 25, 193, 194, 85, 86; stacked in >90% of Britain placements) assemble like the plaster ones instead of poking through rakes as teeth.
+  - Roofs with no walls beneath default to timber ends.
+- **White bands and blocks:** the interior shell's wall caps (wall top up to ceiling) and the masonry over arches were hard-coded to plaster. They now take the wall's or arch's own family.
+- **Furniture through walls:** bookcases 2713/2714/2716, chests 3648/3650, drawer 2616 and wardrobe 2641 occur only in north–south runs in upstream placements (e.g. 53/63/51 neighbour pairs along y). They now face east instead of standing sideways through walls.
+
+All Godot suites and the live world-item, city, commerce and login tests pass.
+
 # Server objects across the whole city — 27 October 2026
 
 ModernUO had populated doors, signs and decoration only for the first 64x64 crop. The bounded population tool now accepts the streamed city region, and it ran once against the real server: +3,935 decorations, +249 doors, +116 signs, existing items preserved, repeat run created zero, persisted across a restart. Doors and furniture render live in distant districts. Also fixed: build-preview-tools.ps1 nested assemblies.json on rerun, which stopped the server from starting. Details in WORLD_OBJECTS.md.

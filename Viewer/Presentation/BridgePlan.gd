@@ -74,11 +74,16 @@ func index(world: Dictionary, catalog: Dictionary) -> void:
   for top in pier_tops.get(cell,[]):
    if absf(float(top)-float(s.z))<=1:reason="stands on bridge pier"
   if reason.is_empty() and decks.has(cell) and int(s.z)>=int(decks[cell])-1 and int(s.z)<=int(decks[cell])+2:reason="stands on bridge deck"
+  # Deck side across the parapet's run (an x-running wall faces north/south).
+  var toward:=Vector2i.ZERO
+  var across:=[Vector2i.UP,Vector2i.DOWN] if str(catalog.get(str(int(s.id)),{}).get("axis","x"))=="x" else [Vector2i.LEFT,Vector2i.RIGHT]
+  for offset in across:
+   if decks.has(cell+offset) and not decks.has(cell-offset) and absi(int(s.z)-int(decks[cell+offset]))<=2:toward=offset
   if reason.is_empty():
    for offset in [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
     if decks.has(cell+offset) and absi(int(s.z)-int(decks[cell+offset]))<=2:reason="parapet along bridge deck edge"
   if reason.is_empty():continue
-  parapets[i]={"family":"brick" if "brick" in name_text else "stone","opening":"slit" if kind=="window" else "","reason":reason}
+  parapets[i]={"family":"brick" if "brick" in name_text else "stone","opening":"slit" if kind=="window" else "","reason":reason,"toward":toward if reason=="parapet along bridge deck edge" else Vector2i.ZERO}
 func audit() -> Dictionary:
  var reasons: Dictionary={}
  for entry in parapets.values():reasons[entry.reason]=int(reasons.get(entry.reason,0))+1

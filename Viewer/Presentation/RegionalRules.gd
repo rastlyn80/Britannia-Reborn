@@ -50,7 +50,7 @@ static func resolve(id: int,info: Dictionary) -> Dictionary:
  if "arch" in n and n not in ["arcanist statue"]: return base.merged({"kind":"arch","asset":"Village/Wall_Arch.gltf"})
  if "stairs" in n or n in ["stone step","carpeted stair"]: return base.merged({"kind":"stairs","rise":[0,-1]})
  if n in ["stone","marble","platform"]: return base.merged({"kind":"landing"})
- if "roof" in n or "shingle" in n: return base.merged({"kind":"roof","material":"thatch" if "thatch" in n else ("stone" if "stone" in n else ("clay" if "tile" in n else "slate")),"rise":[0,0],"ridgeAxis":"x","profile":"flat" if height==0 else "slope","anchorOffset":[-1,-1]})
+ if "roof" in n or "shingle" in n: return base.merged({"kind":"roof","material":"thatch" if "thatch" in n else ("stone" if "stone" in n else ("clay" if "tile" in n else ("shingle" if "shingle" in n else "slate"))),"rise":[0,0],"ridgeAxis":"x","profile":"flat" if height==0 else "slope","anchorOffset":[-1,-1]})
  if n in ["cobblestones","stone pavers","stone pavers dark","marble floor","flagstones","wooden planks","wooden plank","wooden boards","wooden bridge"]: return base.merged({"kind":"floor","surface":"wood" if "wood" in n else "stone"})
  # Raised flower beds are stone planters that flowers and trees stand on.
  if n.replace(" ","").begins_with("flowerbed"): return base.merged({"kind":"planter"})
@@ -63,7 +63,7 @@ static func resolve(id: int,info: Dictionary) -> Dictionary:
  if "signpost" in n: return base.merged({"kind":"sign"})
  if "column" in n or "pillar" in n or "buttress" in n or n=="stone post": return base.merged({"kind":"pillar"})
  if "post" in n or n=="wooden beam": return base.merged({"kind":"beam" if n=="wooden beam" else "post","asset":"Village/Prop_Support.gltf"})
- if n=="chimney": return base.merged({"kind":"asset","asset":"Village/Prop_Chimney.gltf","dimensions":[0.7,maxf(0.4,height*0.2),0.7]})
+ if n=="chimney": return base.merged({"kind":"chimney"})
  if "leaves" in n or "needles" in n: return base.merged({"kind":"canopy","asset":"Nature/CommonTree_1.gltf"})
  if "tree" in n or "sapling" in n or n=="tuscany pine": return base.merged({"kind":"tree","asset":"Nature/Pine_1.gltf" if "pine" in n else ("Nature/DeadTree_1.gltf" if "spider" in n else "Nature/CommonTree_1.gltf")})
  if "mushroom" in n: return base.merged({"kind":"mushroom","asset":"Nature/Mushroom_Common.gltf"})

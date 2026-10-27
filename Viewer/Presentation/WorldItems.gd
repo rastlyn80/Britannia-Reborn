@@ -28,7 +28,8 @@ func configure(owner_scene: Node3D, connection: Node) -> void:
    var plaque: Label3D = nodes[serial].get_node_or_null("BuildingName")
    if plaque:
     plaque.text = label
-    plaque.show())
+    plaque.show()
+   if nodes[serial].has_meta("engrave"): engrave(nodes[serial],label))
  var canvas := CanvasLayer.new()
  add_child(canvas)
  hint.position = Vector2(24,640)
@@ -115,7 +116,9 @@ func upsert(serial: int, item: Dictionary) -> void:
   "chest","crate","drawers","wardrobe","bookcase":
    size = Vector3(0.88,1.85 if rule.family in ["wardrobe","bookcase"] else (1.0 if rule.family == "drawers" else 0.65),0.60)
    _cabinet(root,size,rule.family,rule)
-   if int(item.id) in [2612,2643,2717,2718,3651,3645]: root.rotation.y = PI/2
+   # Graphics drawn facing east: upstream decoration places them in
+   # north-south runs against west walls (crates are square either way).
+   if int(item.id) in [2612,2616,2641,2643,2718,3645,3648,3650]: root.rotation.y = PI/2
   "gameboard","backgammon":
    size = Vector3(0.72,0.045,0.72)
    geometry.crafted_box(root,size,Vector3(0,0.0225,0),"5d432d")
@@ -139,8 +142,48 @@ func upsert(serial: int, item: Dictionary) -> void:
    geometry.cylinder(root,0.35,0.92,Vector3(0,0.46,0),"795638")
    for y in [0.16,0.74]: geometry.cylinder(root,0.365,0.06,Vector3(0,y,0),"42464a")
    if kind == "water_barrel": geometry.cylinder(root,0.32,0.012,Vector3(0,0.91,0),"467987")
-  "sign","noticeboard","street_sign":
-   size = Vector3(1.15,0.26,0.13) if kind == "street_sign" else (Vector3(1.1,0.85,0.17) if kind == "noticeboard" else Vector3(0.78,0.64,0.17))
+  "street_sign","plaque":
+   # Text boards: the source XYZ is the post top (street signs) or the plaque
+   # base beside its wall. The server label is engraved on the faces on click.
+   var street := kind == "street_sign"
+   size = Vector3(1.05,0.24,0.05) if street else Vector3(0.95,0.5,0.05)
+   var board_y := 0.06 if street else 0.45
+   var board := Node3D.new()
+   board.name = "TextBoard"
+   root.add_child(board)
+   geometry.crafted_box(board,size,Vector3.ZERO,"6b4a2c")
+   geometry.crafted_box(board,Vector3(size.x-0.06,size.y-0.06,size.z+0.01),Vector3.ZERO,"8a6a42")
+   board.position.y = board_y
+   if street:
+    # Graphic parity gives the board's axis; it crosses the post at its top.
+    board.rotation.y = PI/2 if int(item.id)%2 else 0.0
+   else:
+    var plan := preload("res://Presentation/SignPlan.gd").layout(item,scene.world,scene.reconstruction.catalog)
+    root.rotation.y = float(plan.yaw)+PI/2
+    root.set_meta("sign_plan",plan)
+    if Vector2(plan.mount).length() > 0.2:
+     root.position += Vector3(plan.mount.x,0,plan.mount.y)
+    else:
+     # No facade behind it (e.g. a bridge-head plaque): stand it on two posts.
+     var land: Dictionary = scene.reconstruction.supports.land_at(Vector2i(item.x,item.y)) if scene.reconstruction else {}
+     var drop := (float(item.z)-float(land.get("z",item.z)))*float(scene.world.elevationScale)
+     var post_height := drop+board_y
+     for side in [-1,1]: geometry.crafted_box(root,Vector3(0.09,post_height,0.09),Vector3(side*(size.x/2-0.1),board_y-post_height/2,0),"4a3524")
+   root.set_meta("engrave",Vector2(size.x-0.12,size.y-0.06)*0.85)
+   pick_center = Vector3(0,board_y,0)
+   size = Vector3(size.x,size.y,0.2)
+   var building_name := Label3D.new()
+   building_name.name = "BuildingName"
+   building_name.position = Vector3(0,board_y+0.5,0)
+   building_name.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+   building_name.font_size = 30
+   building_name.pixel_size = 0.003
+   building_name.outline_size = 6
+   building_name.modulate = Color("fff1ce")
+   building_name.hide()
+   root.add_child(building_name)
+  "sign","noticeboard":
+   size = Vector3(1.1,0.85,0.17) if kind == "noticeboard" else Vector3(0.78,0.64,0.17)
    var ground := float(item.z)*float(scene.world.elevationScale)
    var land: Dictionary = scene.reconstruction.supports.land_at(Vector2i(item.x,item.y)) if scene.reconstruction else {}
    if not land.is_empty(): ground = float(land.z)*float(scene.world.elevationScale)
@@ -229,6 +272,39 @@ func upsert(serial: int, item: Dictionary) -> void:
   _:
    size = Appearance.small(root,geometry,"unknown",int(item.id))
  _body(root,size,pick_center if pick_center != Vector3.ZERO else Vector3(0,size.y/2,0),serial,(int(rule.get("flags",0))&64)!=0)
+
+# Paint the server-confirmed text on both faces of a street sign or plaque,
+# scaled down until it fits the board.
+func engrave(root: Node3D, text: String) -> void:
+ var board: Node3D = root.get_node_or_null("TextBoard")
+ if board == null: return
+ var area: Vector2 = root.get_meta("engrave")
+ for side in [-1,1]:
+  var label: Label3D = board.get_node_or_null("Engraving_%d" % side)
+  if label == null:
+   label = Label3D.new()
+   label.name = "Engraving_%d" % side
+   label.font_size = 64
+   label.outline_size = 0
+   label.modulate = Color("f2e2bd")
+   label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+   label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+   label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+   label.position = Vector3(0,0,side*0.032)
+   if side < 0: label.rotation.y = PI
+   board.add_child(label)
+  label.text = text
+  # Fit: wrap to the board width, then shrink until the lines fit its height.
+  var font: Font = label.font if label.font else ThemeDB.fallback_font
+  var pixel := 0.004
+  for attempt in 12:
+   label.width = area.x/pixel
+   var lines := font.get_multiline_string_size(text,HORIZONTAL_ALIGNMENT_CENTER,label.width,label.font_size)
+   if lines.y*pixel <= area.y and lines.x*pixel <= area.x: break
+   pixel *= 0.85
+  label.pixel_size = pixel
+ var floating: Label3D = root.get_node_or_null("BuildingName")
+ if floating: floating.hide()
 
 func _cabinet(root: Node3D,size: Vector3,family: String,rule: Dictionary = {}) -> void:
  geometry.crafted_box(root,size,Vector3(0,size.y/2,0),"657076" if "Metal" in str(rule.get("type","")) else "6d4b30")

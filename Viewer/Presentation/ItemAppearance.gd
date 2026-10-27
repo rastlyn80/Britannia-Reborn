@@ -25,7 +25,10 @@ static func variant(id: int, rule: Dictionary = {}) -> String:
  if id in [3610,3611]: return "checkers"
  if id == 5453: return "water_barrel"
  if type == "BulletinBoard": return "noticeboard"
- if id in [4761,4766]: return "street_sign"
+ # 0x1297-0x129E: arrow boards on a free-standing post; 0x1F28/0x1F29: plank
+ # plaques fixed flat to a wall. Neither hangs from a bracket.
+ if id >= 4759 and id <= 4766: return "street_sign"
+ if id in [7976,7977]: return "plaque"
  if type == "Backgammon": return "backgammon"
  return str(rule.get("family","unknown"))
 

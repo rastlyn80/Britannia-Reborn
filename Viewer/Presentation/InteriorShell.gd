@@ -107,8 +107,10 @@ func build(world: Dictionary, reconstruction, region: Rect2i = Rect2i()) -> Node
 		if region.has_area() and not region.has_point(Vector2i(s.x,s.y)): continue
 		var cap: Dictionary = wall_caps[ordinal]
 		var part: Node3D
-		if reconstruction.rule_for(s.id).kind == "corner": part = reconstruction.facade.corner(cap.height,reconstruction.facade.corners.get(ordinal,{}),"plaster")
-		else: part = reconstruction.facade.panel(cap.height,false,reconstruction.facade.plans.get(ordinal,{}),"plaster")
+		# The cap continues the wall it tops (brick, stone, timber or plaster).
+		var family: String = reconstruction.wall_family(world,int(s.id))
+		if reconstruction.rule_for(s.id).kind == "corner": part = reconstruction.facade.corner(cap.height,reconstruction.facade.corners.get(ordinal,{}),family)
+		else: part = reconstruction.facade.panel(cap.height,false,reconstruction.facade.plans.get(ordinal,{}),family)
 		if reconstruction.rule_for(s.id).get("axis") == "y": part.rotation.y = PI/2
 		part.position = Vector3(s.x-int(world.originX)+0.5,s.z*float(world.elevationScale)+cap.bottom,s.y-int(world.originY)+0.5)
 		root.add_child(part)

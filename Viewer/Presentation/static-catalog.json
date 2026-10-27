@@ -442,6 +442,42 @@
       "axis": "x",
       "confidence": "semantic-substitute"
     },
+    "24": {
+      "kind": "gable",
+      "asset": "Village/Wall_Plaster_Straight.gltf",
+      "axis": "x",
+      "confidence": "source-wedge-assembly; continuous wooden infill (height-3 wedges stacked in >90% of Britain placements)"
+    },
+    "25": {
+      "kind": "gable",
+      "asset": "Village/Wall_Plaster_Straight.gltf",
+      "axis": "y",
+      "confidence": "source-wedge-assembly; continuous wooden infill (height-3 wedges stacked in >90% of Britain placements)"
+    },
+    "193": {
+      "kind": "gable",
+      "asset": "Village/Wall_Plaster_Straight.gltf",
+      "axis": "x",
+      "confidence": "source-wedge-assembly; continuous wooden infill (height-3 wedges stacked in >90% of Britain placements)"
+    },
+    "194": {
+      "kind": "gable",
+      "asset": "Village/Wall_Plaster_Straight.gltf",
+      "axis": "y",
+      "confidence": "source-wedge-assembly; continuous wooden infill (height-3 wedges stacked in >90% of Britain placements)"
+    },
+    "85": {
+      "kind": "gable",
+      "asset": "Village/Wall_Plaster_Straight.gltf",
+      "axis": "x",
+      "confidence": "source-wedge-assembly; continuous brick infill (height-3 wedges stacked in >90% of Britain placements)"
+    },
+    "86": {
+      "kind": "gable",
+      "asset": "Village/Wall_Plaster_Straight.gltf",
+      "axis": "y",
+      "confidence": "source-wedge-assembly; continuous brick infill (height-3 wedges stacked in >90% of Britain placements)"
+    },
     "331": {
       "kind": "gable",
       "asset": "Village/Wall_Plaster_Straight.gltf",

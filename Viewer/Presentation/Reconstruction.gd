@@ -33,6 +33,8 @@ var unresolved := 0
 var grouped := 0
 var report: Array = []
 var groups := {}
+# Chimney group owner -> source Z its stack descends to (roof or wall below).
+var chimney_bases := {}
 var wall_cells := {}
 var presentation_adjustments := {}
 var contextual_suppressed := 0
@@ -162,6 +164,45 @@ func index(world: Dictionary) -> void:
 					var b:Dictionary=world.statics[other]
 					if prop_remaining.has(other) and rule_for(a.id).model==rule_for(b.id).model and absi(int(a.z)-int(b.z))<=20:pending.append(other)
 		_group(members,world,"prop")
+	# A UO chimney is several stacked/adjacent sprite tiles; present each as one
+	# masonry stack that descends into the roof or wall it stands on.
+	var chimney_cells := {}
+	var chimney_remaining := {}
+	for i in world.statics.size():
+		if rule_for(world.statics[i].id).get("kind","") != "chimney": continue
+		var cell := Vector2i(world.statics[i].x,world.statics[i].y)
+		if not chimney_cells.has(cell): chimney_cells[cell] = []
+		chimney_cells[cell].append(i)
+		chimney_remaining[i] = true
+	if not chimney_cells.is_empty():
+		var below := {}
+		for i in world.statics.size():
+			var other: Dictionary = world.statics[i]
+			var cell := Vector2i(other.x,other.y)
+			if chimney_cells.has(cell) and rule_for(other.id).get("kind","") != "chimney":
+				if not below.has(cell): below[cell] = []
+				below[cell].append(int(other.z))
+		while not chimney_remaining.is_empty():
+			var pending: Array = [chimney_remaining.keys()[0]]
+			var members: Array = []
+			while not pending.is_empty():
+				var current: int = pending.pop_back()
+				if not chimney_remaining.has(current): continue
+				chimney_remaining.erase(current)
+				members.append(current)
+				var a: Dictionary = world.statics[current]
+				for offset in [Vector2i.ZERO,Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
+					for other in chimney_cells.get(Vector2i(a.x,a.y)+offset,[]):
+						if chimney_remaining.has(other) and absi(int(a.z)-int(world.statics[other].z)) <= 20: pending.append(other)
+			_group(members,world,"chimney")
+			var low_z := 1000
+			for member in members: low_z = mini(low_z,int(world.statics[member].z))
+			# Highest supporting record under the footprint, at most 30 Z below.
+			var support := -1000
+			for member in members:
+				for z in below.get(Vector2i(world.statics[member].x,world.statics[member].y),[]):
+					if z < low_z and low_z-z <= 30: support = maxi(support,z)
+			chimney_bases[groups[members[0]].owner] = support if support > -1000 else low_z-6
 	for cell in arches:
 		var at: int = arches[cell]
 		if int(world.statics[at].id) != 320: continue
@@ -314,7 +355,8 @@ func _plan_roof_families(world: Dictionary) -> void:
 			for dx in range(-3,4):
 				for entry in walls.get(Vector2i(roof.x+dx,roof.y+dy),[]):
 					if int(entry[0]) < int(roof.z): votes[entry[1]] = int(votes.get(entry[1],0))+1
-		var best := "plaster"
+		# No walls beneath (open lookouts, porches): timber, not white plaster.
+		var best := "wood"
 		for family in votes:
 			if int(votes[family]) > int(votes.get(best,0)): best = family
 		roof_families[i] = best
@@ -335,6 +377,25 @@ func vegetation_ground(s: Dictionary, world: Dictionary) -> float:
 func plant(kind: String, s: Dictionary, detail: Dictionary, asset: String, size: Vector3) -> Node3D:
 	var local: Node3D = preload("res://Presentation/LocalPlants.gd").build(kind,str(detail.get("name","")),int(s.x),int(s.y))
 	return local if local else fitted(asset,size)
+
+# One stone stack over the chimney group's footprint, from the record it stands
+# on to a capped top two metres above its highest sprite tile.
+func chimney_stack(s: Dictionary, group: Dictionary, world: Dictionary) -> Node3D:
+	var scale := float(world.elevationScale)
+	var size: Vector2 = group.get("size",Vector2.ONE)
+	var low: Vector2 = group.get("low",Vector2(s.x,s.y))
+	var base := float(chimney_bases.get(int(group.get("owner",-1)),int(s.z)-6))*scale
+	var top := (float(group.get("max_z",float(s.z)+3.0))-3.0+10.0)*scale
+	var width := Vector3(maxf(0.7,size.x*0.85),0,maxf(0.7,size.y*0.85))
+	var root := Node3D.new()
+	var centre := Vector3(low.x+size.x/2-float(s.x)-0.5,0,low.y+size.y/2-float(s.y)-0.5)
+	var origin := float(s.z)*scale
+	facade.piece(root,Vector3(width.x,top-base,width.z),centre+Vector3(0,(base+top)/2-origin,0),"stone")
+	# Corbelled cap and dark flue opening read as a chimney top.
+	facade.piece(root,Vector3(width.x+0.16,0.14,width.z+0.16),centre+Vector3(0,top+0.07-origin,0),"stone")
+	var flue := geometry.box(root,Vector3(width.x*0.55,0.02,width.z*0.55),centre+Vector3(0,top+0.145-origin,0),"1c1916")
+	flue.material_override = geometry.material("1c1916")
+	return root
 
 func gable_for(family: String) -> ShaderMaterial:
 	if not gable_materials.has(family):
@@ -544,13 +605,20 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 						visual = Node3D.new()
 						facade.piece(visual,Vector3(1.01,maxf(0.05,height-0.08),0.3),Vector3(0,(height-0.08)/2,0),family)
 						facade.piece(visual,Vector3(1.01,0.08,0.38),Vector3(0,height-0.04,0),family)
+						# Edge parapets sit flush on the deck edge rather than mid-tile
+						# over the water (presentation offset; source XYZ unchanged).
+						var toward: Vector2i = bridge.get("toward",Vector2i.ZERO)
+						visual.position += Vector3(toward.x,0,toward.y)*0.35
 					else: visual = fitted(asset,Vector3(1,height,0.14))
 				"arch":
 					visual = Node3D.new()
 					var span: float = maxf(groups[ordinal].size.x,groups[ordinal].size.y) if groups.has(ordinal) else 1.0
 					var opening_height := minf(height,2.7)
 					visual.add_child(fitted(asset,Vector3(span,opening_height,0.2)))
-					if height > opening_height: facade.piece(visual,Vector3(span,height-opening_height,0.18),Vector3(0,(height+opening_height)/2,0),"plaster")
+					# Masonry over the opening matches the arch's own material.
+					var arch_name := str(detail.get("name",""))
+					var arch_family := "stone" if "stone" in arch_name else ("brick" if "brick" in arch_name else ("wood" if "wood" in arch_name else family))
+					if height > opening_height: facade.piece(visual,Vector3(span,height-opening_height,0.18),Vector3(0,(height+opening_height)/2,0),arch_family)
 				"floor": visual = floors.slab(ordinal,facade.material("stone") if rule.get("surface","")=="stone" else floors.material())
 				"asset": visual = fitted(asset,Vector3(rule.dimensions[0],rule.dimensions[1],rule.dimensions[2]))
 				"prop": visual = preload("res://Presentation/CityProps.gd").build(str(rule.model),s,detail,geometry)
@@ -611,6 +679,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					var soil := geometry.box(visual,Vector3(0.9,0.04,0.9),Vector3(0,height-0.01,0),"3b2c20")
 					soil.material_override = geometry.material("3b2c20")
 				"bush": visual = plant(kind,s,detail,asset,Vector3(1.1,0.65,1.1))
+				"chimney": visual = chimney_stack(s,groups.get(ordinal,{}),world)
 				"mushroom": visual = fitted(asset,Vector3(0.32,0.22,0.32))
 				"rock": visual = fitted(asset,Vector3(0.55,0.38,0.55))
 				"log": visual = fitted(asset,Vector3(0.9,0.35,0.4))

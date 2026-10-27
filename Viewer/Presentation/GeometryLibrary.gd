@@ -104,19 +104,46 @@ func roof(s: Dictionary, rule: Dictionary, shader: ShaderMaterial, plan: Diction
 		var gables := SurfaceTool.new()
 		gables.begin(Mesh.PRIMITIVE_TRIANGLES)
 		var has_gables := false
+		var hips: SurfaceTool = null
+		var open_edges: Array = plan.get("gable_edges",plan.exposed)
 		for edge in 4:
-			if not plan.exposed[edge]: continue
+			if not open_edges[edge]: continue
 			for segment in 2:
 				var a: int = edges[edge][segment]
 				var b: int = edges[edge][segment+1]
 				var p := Vector3(float(a%3)*0.5-0.5,float(plan.heights[a])-float(s.z)*0.2,float(a/3)*0.5-0.5)
 				var q := Vector3(float(b%3)*0.5-0.5,float(plan.heights[b])-float(s.z)*0.2,float(b/3)*0.5-0.5)
 				beam(node,p,q,0.09,"65523f")
+				# Horizontal eave segments meet the wall (or its interior cap); only
+				# sloped verge segments close a gable down to the eave.
+				if absf(p.y-q.y) < 0.02: continue
 				if maxf(p.y,q.y)-bottom < 0.08: continue
-				has_gables = true
-				for v in [p,Vector3(p.x,bottom,p.z),q,q,Vector3(p.x,bottom,p.z),Vector3(q.x,bottom,q.z)]:
-					gables.set_uv(Vector2(v.x+v.z,v.y))
-					gables.add_vertex(v)
+				var target: SurfaceTool = gables
+				if plan.get("hip_edges",[false,false,false,false])[edge]:
+					if hips == null:
+						hips = SurfaceTool.new()
+						hips.begin(Mesh.PRIMITIVE_TRIANGLES)
+						# Flat normals: both windings share positions.
+						hips.set_smooth_group(0xFFFFFFFF)
+					target = hips
+				else: has_gables = true
+				var quad := [p,Vector3(p.x,bottom,p.z),q,q,Vector3(p.x,bottom,p.z),Vector3(q.x,bottom,q.z)]
+				# The roof shader draws back faces as ceiling boards; a hip closure
+				# shows shingles from either side, so it carries both windings.
+				if target == hips:
+					var back := quad.duplicate()
+					back.reverse()
+					quad.append_array(back)
+				for v in quad:
+					target.set_uv(Vector2(v.x+v.z,v.y)+(Vector2(s.x,s.y) if target == hips else Vector2.ZERO))
+					target.add_vertex(v)
+		if hips != null:
+			hips.generate_normals()
+			hips.generate_tangents()
+			var hip_mesh := MeshInstance3D.new()
+			hip_mesh.mesh = hips.commit()
+			hip_mesh.material_override = shader
+			node.add_child(hip_mesh)
 		if has_gables:
 			gables.generate_normals()
 			gables.generate_tangents()
