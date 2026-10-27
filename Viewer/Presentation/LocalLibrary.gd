@@ -9,6 +9,7 @@ static var loaded := false
 static var scenes: Dictionary = {}
 static var boxes: Dictionary = {}
 static var excluded: Dictionary = {}
+const WARM := {"table":"c79a6e","bench":"c79a6e","chair":"c79a6e","stool":"c79a6e","shelf":"c79a6e","chest":"d0a77a"}
 
 static func slots() -> Dictionary:
 	if not loaded:
@@ -52,7 +53,19 @@ static func pile(slot: String, x: int, y: int, size: Vector3, count: int) -> Nod
 		root.add_child(part)
 	return root if root.get_child_count() > 0 else null
 
-static func build(slot: String, x: int, y: int, size: Vector3, turn := true, variant := "") -> Node3D:
+# Furniture run: count pieces of a slot spaced along x over length, each fitted to
+# (length/count, height, depth) with its own longest side along the run.
+static func run(slot: String, x: int, y: int, length: float, height: float, depth: float) -> Node3D:
+	var root := Node3D.new()
+	var count := maxi(1,roundi(length/1.8))
+	for i in count:
+		var piece := build(slot,x+i,y,Vector3(length/count*0.94,height,depth),false,"",true)
+		if piece == null: return null
+		piece.position.x = -length/2+length/count*(i+0.5)
+		root.add_child(piece)
+	return root
+
+static func build(slot: String, x: int, y: int, size: Vector3, turn := true, variant := "", align_x := false) -> Node3D:
 	var options := choices(slot)
 	if not variant.is_empty(): options = options.filter(func(e: Dictionary) -> bool: return e.name == variant)
 	if options.is_empty(): return null
@@ -82,6 +95,13 @@ static func build(slot: String, x: int, y: int, size: Vector3, turn := true, var
 	for mesh in model.find_children("*","MeshInstance3D",true,false):
 		for surface in (mesh as MeshInstance3D).mesh.get_surface_count():
 			var material: Material = (mesh as MeshInstance3D).mesh.surface_get_material(surface)
+			# Grey weathered pack timber reads blue under the city light; furniture
+			# slots take a warm oak tone.
+			if material is BaseMaterial3D and WARM.has(slot):
+				var warm: BaseMaterial3D = material.duplicate()
+				warm.albedo_color = (material as BaseMaterial3D).albedo_color*Color(WARM[slot])
+				(mesh as MeshInstance3D).set_surface_override_material(surface,warm)
+				continue
 			if material is BaseMaterial3D and (material as BaseMaterial3D).transparency != BaseMaterial3D.TRANSPARENCY_DISABLED:
 				# Foliage and cut-out cards: alpha scissor sorts and shadows correctly.
 				var cut: BaseMaterial3D = material.duplicate()
@@ -92,6 +112,12 @@ static func build(slot: String, x: int, y: int, size: Vector3, turn := true, var
 	# Height and widest horizontal side bound the fit, so flat or thin models
 	# (shields, swords, coins) keep a sensible size whatever their orientation.
 	var scale := minf(size.y/maxf(box.size.y,0.0001),maxf(size.x,size.z)/maxf(maxf(box.size.x,box.size.z),0.0001))
+	# Runs: fit length and depth separately with the model's long side along x.
+	var across := align_x and box.size.z > box.size.x
+	if align_x:
+		var along: float = box.size.z if across else box.size.x
+		var side: float = box.size.x if across else box.size.z
+		scale = minf(size.y/maxf(box.size.y,0.0001),minf(size.x/maxf(along,0.0001),size.z/maxf(side,0.0001)))
 	var root := Node3D.new()
 	root.set_meta("library",str(entry.name))
 	model.scale = Vector3.ONE*scale
@@ -99,5 +125,6 @@ static func build(slot: String, x: int, y: int, size: Vector3, turn := true, var
 	var holder := Node3D.new()
 	holder.add_child(model)
 	if turn: holder.rotation.y = float(absi(x*31+y*17)%4)*PI/2
+	elif align_x and across: holder.rotation.y = PI/2
 	root.add_child(holder)
 	return root

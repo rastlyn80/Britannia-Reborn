@@ -1,3 +1,33 @@
+# Scene audit, classic/modern Britain, gables, plaster — 27 October 2026
+
+- SceneAudit.gd audits the built 3D city (not source records) per district: eave roof gaps, roof components touching no wall, floating loose objects, walls buried by terrain, overlapping props. After fixes: 33 eave gaps (one brick hall whose source roof starts 0.6 m above its parapet), 3 isolated roof tiles, remaining "floating" are mostly wall-hung decor and source-height props.
+- ContactSettle.gd rests loose objects on the presented surface under them in every district build; terrain is capped at wall bases (no buried houses); stacked duplicate props draw once; display-case glass uses a depth pre-pass (no flicker).
+- Classic/modern Britain: a "Britain: classic/modern" button (user://graphics.cfg) selects between two prepared caches (prepared/, prepared-modern/); prepare-streaming.ps1 follows the setting or -Classic/-Modern. Modern swaps loose props, server decoration, table/bench runs (library pieces along the run, warm oak tone) and shelves for owner-pack/CC0 library models; two unsuitable variants rejected.
+- Gables of timber houses continue the framing (post per one-metre bay, tie beam); a roof's gable material comes from the storey directly under it (no stone gables over timber houses).
+- Plaster: photoscanned Poly Haven white_rough_plaster (limewash) and clay_plaster, softened; lighter haze; ground textures sampled with anti-tiling offsets.
+
+Next (owner order): multi-variant surfaces (5–6 photoscans per repeated surface, never the same variant adjacent, blended).
+
+# Male chest/face refinement — 27 October 2026
+
+Owner requested softer chest/face angles after approving local rounding. Added the optional --anatomy recipe and retained previous rounded assets for comparison. Reduced/raised the low chest wedge, broadened chest rounding and softened cheek/jaw/chin transitions without increasing the existing 5,792 triangles. Orthographic head/bust comparisons and Front/Three-quarter/Profile controls show identical materials at matched angles. Ten synthetic tests, byte-level rig/animation preservation checks (34 bones / 186 channels), and sampled animation/garment checks in both renderers pass. Profile and three-quarter captures were inspected. Full verification log: outputs/third-dawn/anatomy-full-verify.log; its first attempt found a separate one-line roof negative-shift parser error, corrected with parentheses. Proprietary derivatives remain ignored/local. See THIRD_DAWN_ANATOMY.md for exact bounds and remaining facial/garment limits.
+
+# Focused male head/joint rounding — 27 October 2026
+
+Owner requested local silhouette improvements after the material pass. Added a masked rounding recipe for the head, elbows, knees, shoulders and ankles, with the same PBR v2 material on both comparison bodies. 93 unselected source vertices remain exactly fixed in the rest cage; selected geometry moves at most 32.585 mm in source coordinates. A bounded skin-weight pass softens joint transitions. Native rig/animations and original garment bindings remain in use. Head close-up visibly removes the pointed crown. Nine source-free tests and both-renderer sampled body/garment animation validation pass; final full verification log is outputs/third-dawn/rounded-full-verify.log. Generated assets/provenance/captures remain ignored/local. No live Avatar/server/login changes. See THIRD_DAWN_ROUNDING.md for reproduction and remaining limits.
+
+# Male material pass v2 — 27 October 2026
+
+Owner prefers shaders/textures over subdivision. Human review now compares the prior material and PBR v2 on the original 362-triangle body; shirt/robe also use original coarse configurations. Added a generated normal atlas, approximate shader de-lighting/neutral skin colour, differentiated face/palm/skin/linen roughness, derivative tangent reconstruction and mipmaps/filtering. Previous shader remains separately available. Skin detail/sheen sliders and a close material view support review. A new colour-atlas generation was blocked by the image tool; the existing atlas remains in use.
+
+Actual GPU normal, roughness and light-response tests pass in Forward+ and Compatibility, with stationary actor roots. Eight source-free tests, both-renderer sampled animation/garment checks and full verify pass. Fresh matching-camera and side-light captures were inspected. No live login/server/default Avatar changes. Source-derived maps and provenance remain local/ignored. These are approximate materials on coarse geometry, not scanned skin or final modern anatomy. See THIRD_DAWN_SKIN.md.
+
+# Male Third Dawn refresh, subdivision and first wardrobe — 27 October 2026
+
+`Review-Third-Dawn-Human.cmd` compares original, AI-textured, subdivided, chain-shirt and robe variants in the existing Viewer. The warm-skin atlas follows the original UV layout as a prompt constraint (front/rear visually inspected), with a shared skin shader and retained briefs. Bounded Loop subdivision softens the cage without replacing its skeleton: body 362→5,792 triangles (≤18 mm source movement), shirt 106→424 and robe 210→840 (≤9 mm). UV seams and normalized skin weights are preserved; no new anatomy is reconstructed.
+
+Garments use named Skin bindings on the same human skeleton/animator. Prototype coverage masks retain head/open collars/hands/feet and hide covered body regions. Eight synthetic tests and engine validation pass (60 body poses + 24 garment poses across Idle/Walk/Run, stationary roots, grounding and bounded deformation) in Forward+ and Compatibility. Reviewed front/rear/locomotion captures; full verify passes including the actual-crop smoke load. No live login/server/default Avatar changes. All source-derived art, prompts, provenance and captures remain ignored/local. Details and limits: THIRD_DAWN_HUMAN.md.
+
 # Britain defect pass 1, doors/windows, cannons and sign art — 27 October 2026
 
 Owner-reported defects fixed with shared rules (each checked in offline captures):

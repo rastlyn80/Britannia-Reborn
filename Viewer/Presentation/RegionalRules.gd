@@ -71,6 +71,7 @@ const SLOTS := [
  ["^(chair|wooden chair|straw chair)$","chair",[0.6,1.0,0.6]],
  ["^(bench|wooden bench)$","bench",[1.0,0.5,0.4]],
  ["^(chest|wooden chest|metal chest|ornate elven chest)$","chest",[0.9,0.6,0.55]],
+ ["^(wooden shelf|shelf|shelves)$","shelf",[1.0,1.9,0.45]],
  ["^(bottle|bottles|bottles of ale|bottle of wine|bottle of ale)$","bottle",[0.12,0.32,0.12]],
  ["^(mug|mug of ale|goblet|tankard|cup|pewter mug|ceramic mug|skull mug)$","cup",[0.12,0.18,0.12]],
  ["^(plate|plates)$","plate",[0.28,0.04,0.28]],

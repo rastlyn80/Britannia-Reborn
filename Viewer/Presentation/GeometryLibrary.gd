@@ -79,7 +79,10 @@ static func roof_height(u: float, v: float, rule: Dictionary) -> float:
 	if int(rise[1]) != 0: return (v if int(rise[1]) > 0 else 1.0-v)*0.6
 	return (1.0-abs((v if rule.get("ridgeAxis","x") == "x" else u)-0.5)*2.0)*0.28
 
-func roof(s: Dictionary, rule: Dictionary, shader: ShaderMaterial, plan: Dictionary = {}, gable_material: Material = null) -> Node3D:
+# framing (optional): timber continued up a gable (timber-framed houses): a post
+# at every tile centre (one-metre bays like the wall below) and a tie beam
+# along the eave line.
+func roof(s: Dictionary, rule: Dictionary, shader: ShaderMaterial, plan: Dictionary = {}, gable_material: Material = null, framing: Material = null) -> Node3D:
 	var node := Node3D.new()
 	var surface := SurfaceTool.new()
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
@@ -126,7 +129,20 @@ func roof(s: Dictionary, rule: Dictionary, shader: ShaderMaterial, plan: Diction
 						# Flat normals: both windings share positions.
 						hips.set_smooth_group(0xFFFFFFFF)
 					target = hips
-				else: has_gables = true
+				else:
+					has_gables = true
+					if framing != null:
+						# The edge midpoint (along-coordinate 0) is the tile centre.
+						var mid: Vector3 = q if segment == 0 else p
+						if mid.y-bottom > 0.15:
+							var post := box(node,Vector3(0.11,mid.y-bottom-0.04,0.11),Vector3(mid.x,(mid.y+bottom)/2-0.02,mid.z),"ffffff")
+							post.material_override = framing
+						var tie := box(node,Vector3(0.13,0.13,0.13),Vector3.ZERO,"ffffff")
+						var low_a := Vector3(p.x,bottom+0.065,p.z)
+						var low_b := Vector3(q.x,bottom+0.065,q.z)
+						tie.scale.z = low_a.distance_to(low_b)/0.13
+						tie.look_at_from_position((low_a+low_b)/2,low_b,Vector3.UP)
+						tie.material_override = framing
 				var quad := [p,Vector3(p.x,bottom,p.z),q,q,Vector3(p.x,bottom,p.z),Vector3(q.x,bottom,q.z)]
 				# The roof shader draws back faces as ceiling boards; a hip closure
 				# shows shingles from either side, so it carries both windings.

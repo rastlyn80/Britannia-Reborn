@@ -1,3 +1,19 @@
+# Male anatomy checkpoint — 27 October 2026
+
+Chest and facial transitions now have a bounded local shape refinement beyond the approved head/joint pass, with the prior rounded version preserved for matched-angle review. Ten synthetic tests and both-renderer sampled animation/garment checks pass; 34 bones, inverse binds and 186 original animation channels are unchanged. See THIRD_DAWN_ANATOMY.md. Next: owner artistic review, eye/lip/ear detail, extreme-pose garment clipping, and more wardrobe layers. Current art remains a private source-derived experiment; no facial-expression rig or universal clothing compatibility is claimed.
+
+# Focused male silhouette checkpoint — 27 October 2026
+
+Owner now requests targeted geometry changes for the pointed head and angular joints, while retaining the material work and acceptable body. Local masked rounding and bounded weight smoothing are implemented; same-material before/after review and Head close-up are available. Nine synthetic tests and both-renderer animation/garment samples pass; see THIRD_DAWN_ROUNDING.md. Next: owner artistic review, profile/rear and extreme-pose/clipping inspection, then face/eye/hair and additional garment layers. Old rig corrective deformation and distribution rights remain unresolved. The earlier broad subdivision rejection below is historical; current scope is local silhouette repair.
+
+# Male skin/material checkpoint — 27 October 2026
+
+Owner rejected further subdivision as low visual value. Prioritize the original male mesh with material/texture improvements. PBR v2 normal atlas, approximate de-lighting, skin roughness/specular regions, mipmaps and matched old/new review are implemented; actual GPU responses, animation and full verification pass. See THIRD_DAWN_SKIN.md. Next artistic gates: cleaner unlit albedo, face/eye/hair treatment, atlas seam review and more clothing masks/layers. Synthesized normal relief and material regions are approximate; old silhouette/anatomy and distribution rights remain unresolved.
+
+# Male body/wardrobe refresh checkpoint — 27 October 2026
+
+Private male-body comparison includes original, AI-textured, conservatively subdivided, chain-shirt and robe variants. Original skeleton/animations are retained; two garments share one rig and use prototype body-hiding masks. Eight synthetic tests, sampled deformation/ground checks and full verify pass; see THIRD_DAWN_HUMAN.md. Next: review face/hands and atlas seams, reduce painted lighting, extend explicit clothing hide rules and test attacks/deaths. Arbitrary equipment combinations, hues/hair/weapons, live native equipment mapping and distribution rights remain open. Two tested garments do not establish universal wardrobe compatibility.
+
 # Sign texture checkpoint — 27 October 2026
 
 All 54 requested sign-face reinterpretations are generated and locally reviewed in `outputs/item-catalog/signs/modern` (same filenames; 1254×1254 PNGs; source hashes and prompts recorded; ignored/local only). Next for integration: assign sign-face materials, fit UVs to each modeled board and inspect in-world at distance. Texture generation does not resolve the queued road-sign board geometry or permanent street-name display below.

@@ -392,7 +392,8 @@ func _plan_roof_families(world: Dictionary) -> void:
 	roof_families.clear()
 	var walls := {}
 	for tile in world.statics:
-		if rule_for(int(tile.id)).get("kind","") not in ["wall","window","corner","trim"]: continue
+		# Storey walls only: low trims and plinths (often stone) do not decide the gable.
+		if rule_for(int(tile.id)).get("kind","") not in ["wall","window","corner"]: continue
 		var cell := Vector2i(tile.x,tile.y)
 		if not walls.has(cell): walls[cell] = []
 		walls[cell].append([int(tile.z),wall_family(world,int(tile.id))])
@@ -402,8 +403,15 @@ func _plan_roof_families(world: Dictionary) -> void:
 		var votes := {}
 		for dy in range(-3,4):
 			for dx in range(-3,4):
+				# Only the highest wall under the roof in each column votes: the storey
+				# directly below decides (stone ground floor + timber upper = timber).
+				var storey_z: int = -1000000
+				var storey_family: String = ""
 				for entry in walls.get(Vector2i(roof.x+dx,roof.y+dy),[]):
-					if int(entry[0]) < int(roof.z): votes[entry[1]] = int(votes.get(entry[1],0))+1
+					if int(entry[0]) < int(roof.z) and int(entry[0]) > storey_z:
+						storey_z = int(entry[0])
+						storey_family = str(entry[1])
+				if storey_family != "": votes[storey_family] = int(votes.get(storey_family,0))+1
 		# No walls beneath (open lookouts, porches): timber, not white plaster.
 		var best := "wood"
 		for family in votes:
@@ -664,7 +672,14 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 		if modern and not rule.has("slot"):
 			var found: Array = preload("res://Presentation/RegionalRules.gd").slot_for(str(detail.get("name","")).strip_edges().to_lower())
 			if not found.is_empty(): rule = rule.merged({"slot":found[0],"slotSize":found[1]}.merged({"slotCount":found[2]} if int(found[2]) > 1 else {}))
-		if not (modern and rule.has("slot") and preload("res://Presentation/LocalLibrary.gd").has(str(rule.slot))):
+		# Modern Britain: table and bench runs become library pieces along the run.
+		var furniture_slot: String = {"table":"table","bench":"bench"}.get(kind,"") if preload("res://Presentation/GraphicsMode.gd").modern() and tint.is_empty() else ""
+		if furniture_slot != "" and preload("res://Presentation/LocalLibrary.gd").has(furniture_slot):
+			var span: Vector2 = groups[ordinal].size if groups.has(ordinal) else Vector2.ONE
+			var long_x := span.x >= span.y
+			visual = preload("res://Presentation/LocalLibrary.gd").run(furniture_slot,int(s.x),int(s.y),maxf(span.x,span.y),0.8 if kind == "table" else 0.48,minf(span.x,span.y)*(0.9 if kind == "table" else 0.5))
+			if visual and not long_x: visual.rotation.y = PI/2
+		if visual == null and not (modern and rule.has("slot") and preload("res://Presentation/LocalLibrary.gd").has(str(rule.slot))):
 			visual = preload("res://Presentation/ReviewedCatalog.gd").build(self,int(s.id),groups.get(ordinal,{}))
 		# Owner-library model for graphics outside the reviewed city (local only),
 		# and in Britain when modern graphics are selected.
@@ -759,7 +774,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					visual = geometry.stairs(height,floors.stair_rise.get(ordinal,Vector2(rule.rise[0],rule.rise[1])))
 					for step in visual.get_children(): step.material_override = facade.material(stair_surface(str(detail.get("name","")),tint))
 				"roof":
-					visual = geometry.roof(s,rule,roof_material(str(rule.material)+("#"+tint if not tint.is_empty() and rule.material in ["clay","stone","slate","marble","tent"] else "")),roofs.tiles.get(ordinal,{}),gable_for(str(roof_families.get(ordinal,"plaster"))))
+					visual = geometry.roof(s,rule,roof_material(str(rule.material)+("#"+tint if not tint.is_empty() and rule.material in ["clay","stone","slate","marble","tent"] else "")),roofs.tiles.get(ordinal,{}),gable_for(str(roof_families.get(ordinal,"plaster"))),facade.material("oak") if str(roof_families.get(ordinal,"plaster")) == "plaster" else null)
 				"door":
 					visual = fitted(asset,Vector3(0.86,height,0.12))
 					for side in [-1,1]: facade.piece(visual,Vector3(0.08,height,0.2),Vector3(side*0.46,height/2,0),"wood")
