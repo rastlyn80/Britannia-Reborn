@@ -241,6 +241,7 @@ func _ready() -> void:
 	login_panel.sky_requested.connect(cycle_sky)
 	if lighting_rig and login_panel.sky_button: login_panel.sky_button.text = lighting_rig.sky_label()
 	game.entity_changed.connect(_entity_changed)
+	game.appearance_changed.connect(_appearance_changed)
 	game.vendor_received.connect(func(serial: int,_stock: Array):
 		if avatars.has(serial): avatars[serial].get_node("Nameplate").text = game.entity_names.get(serial,"Vendor")+" · shopkeeper")
 	game.entity_name_received.connect(func(serial: int, name_text: String):
@@ -288,6 +289,14 @@ func _process(delta: float) -> void:
 	if not world_ready: return
 	if city_stream and game.phase == "world":
 		city_stream.follow(Vector2i(game.player.x,game.player.y))
+	# The status panel's first line carries the player's tile, so screenshots
+	# of defects identify their place.
+	if game.phase == "world" and status.text.begins_with("BRITAIN / TRAMMEL"):
+		var line := "BRITAIN / TRAMMEL  ·  %d, %d, %d" % [int(game.player.x),int(game.player.y),int(game.player.z)]
+		var rest := status.text.substr(status.text.find("
+"))
+		if not status.text.begins_with(line+"
+"): status.text = line+rest
 	var movement := Vector3.ZERO
 	if Input.is_physical_key_pressed(KEY_W): movement.z -= 1
 	if Input.is_physical_key_pressed(KEY_S): movement.z += 1
@@ -415,6 +424,7 @@ func _entity_changed(serial: int,position: Dictionary) -> void:
 	var location := entity_point(position.x,position.y,position.z)
 	if not avatars.has(serial):
 		var avatar := Avatar.new()
+		avatar.initial_body = int(position.get("body",0))
 		var label := Label3D.new()
 		label.name = "Nameplate"
 		label.text = "You" if serial == game.player.serial else "Player %d" % serial
@@ -440,11 +450,17 @@ func _entity_changed(serial: int,position: Dictionary) -> void:
 		avatars[serial] = avatar
 		tracks[serial] = Motion.new()
 		tracks[serial].reset(location)
+	avatars[serial].apply_server_appearance(position,game.mobile_equipment.get(serial,{}).values())
 	# Imported humanoid faces +Z; UO direction 0 faces north (-Z).
 	directions[serial] = PI-int(position.direction)*PI/4
 	if tracks[serial].position.distance_to(location) > 8.0: avatars[serial].reset_presentation()
 	tracks[serial].push(location,float(game.move_interval)/1000.0 if serial == player_serial else (0.21 if position.get("running",false) else 0.41))
 	targets[serial] = location
+
+func _appearance_changed(serial: int) -> void:
+	if not avatars.has(serial): return
+	var entity: Dictionary = game.player if serial==int(game.player.serial) else game.entities.get(serial,{})
+	avatars[serial].apply_server_appearance(entity,game.mobile_equipment.get(serial,{}).values())
 
 func _entity_removed(serial: int) -> void:
 	if avatars.has(serial):

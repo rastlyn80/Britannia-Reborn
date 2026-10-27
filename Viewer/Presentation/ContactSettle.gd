@@ -6,7 +6,7 @@ extends RefCounted
 # Wall-mounted pieces (torches, sconces, banners, paintings) are left alone.
 const LOOSE := ["prop","asset","table","bench","counter","bed","chimney"]
 const SUPPORT := ["wall","window","corner","trim","gable","beam","pier","pillar","post","archway","arch","floor","landing","stairs","roof","table","bench","counter","bed","prop","asset","fence","door","planter","rock","log"]
-const HUNG := ["wall ","banner","sconce","painting","tapestr","portrait","map","sign","mirror","clock"]
+const HUNG := ["wall ","banner","sconce","painting","tapestr","portrait","map","sign","mirror","clock","hanging","chandelier"]
 
 static func bounds(node: Node3D) -> AABB:
 	var boxes: Array = []
@@ -28,7 +28,7 @@ static func hung(name: String) -> bool:
 
 # models: built static nodes of one district (positions in the district frame);
 # ground: Callable(Vector2i native cell) -> presented terrain height or -INF.
-# Returns how many objects moved.
+# Floating objects drop and sunken ones rise. Returns how many objects moved.
 static func settle(models: Array, names: Dictionary, ground: Callable = Callable()) -> int:
 	var cells := {}
 	var entries: Array = []
@@ -54,11 +54,13 @@ static func settle(models: Array, names: Dictionary, ground: Callable = Callable
 					if other == entry or not other.kind in SUPPORT: continue
 					var under: AABB = other.box
 					if centre.x < under.position.x-0.02 or centre.x > under.end.x+0.02 or centre.y < under.position.z-0.02 or centre.y > under.end.z+0.02: continue
-					# Only surfaces at or below the object's base (with a small sink).
-					if under.end.y <= bottom+0.12 and under.position.y < bottom: support = maxf(support,under.end.y)
+					# Surfaces at or below the object's base, or up to 0.5 m above it
+					# when the object has sunk into them (models whose pivot is not
+					# at their base).
+					if under.end.y <= bottom+0.5 and under.position.y < bottom: support = maxf(support,under.end.y)
 		if support == -INF: continue
 		var gap := bottom-support
-		if gap > 0.03 and gap < 1.6:
+		if (gap > 0.03 and gap < 1.6) or (gap < -0.02 and gap > -0.5):
 			(entry.node as Node3D).position.y -= gap
 			entry.box = AABB(box.position-Vector3(0,gap,0),box.size)
 			moved += 1

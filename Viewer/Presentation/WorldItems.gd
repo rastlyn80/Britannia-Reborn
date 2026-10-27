@@ -648,33 +648,50 @@ func request_contact_refresh() -> void:
  contacts_pending=true
  refresh_contacts.call_deferred()
 
-# Unreviewed loose decoration (potted plants, goods, boxes) rests on what is
-# really under it: source Z stacks sprites, but presented counters, shelves
-# and tables have their own heights. Fixtures and wall-hung pieces stay put.
-const FIXED_FAMILIES := ["door","sign","lamp","noticeboard","street_sign","plaque","light"]
-func _settle_loose(node: Node3D, space: PhysicsDirectSpaceState3D) -> void:
- if not node.is_inside_tree() or str(node.get_meta("family","")) in FIXED_FAMILIES: return
+# Every free-standing item rests on what is really under it: source Z stacks
+# sprites, but presented counters, shelves, tables and floors have their own
+# heights, and imported models do not all have their pivot at their base. The
+# item's lowest mesh point (not its origin) is put on the surface found by a
+# downward ray. Doors, signs and wall-hung pieces stay where they are.
+const FIXED_FAMILIES := ["door","sign","noticeboard","street_sign","plaque","light"]
+func _free_standing(node: Node3D) -> bool:
+ if not node.is_inside_tree() or str(node.get_meta("family","")) in FIXED_FAMILIES: return false
  var item: Dictionary = session.world_items.get(int(node.get_meta("serial",0)),{})
- var rule := definition(item) if not item.is_empty() else {}
- if preload("res://Presentation/ContactSettle.gd").hung(str(rule.get("display_name","")).to_lower()) or "wall" in str(rule.get("display_name","")).to_lower(): return
- var previous := float(node.get_meta("settle_offset",0.0))
- var offset := _ray_rest(node,space,0.0)
- for child in node.get_children():
-  if child is Node3D: child.position.y += offset-previous
- node.set_meta("settle_offset",offset)
+ var label := str(definition(item).get("display_name","")).to_lower() if not item.is_empty() else ""
+ return not (preload("res://Presentation/ContactSettle.gd").hung(label) or "wall" in label)
 
-# Vertical correction that puts an item's base on the presented surface under
-# it (table, counter, shelf, floor collision), from base_y (local) above the
-# node; 0 when nothing is within 0.3 m above / 1.4 m below.
-func _ray_rest(node: Node3D, space: PhysicsDirectSpaceState3D, base_y: float) -> float:
- var base := node.global_position.y+base_y
- var query := PhysicsRayQueryParameters3D.create(Vector3(node.global_position.x,base+0.3,node.global_position.z),Vector3(node.global_position.x,base-1.4,node.global_position.z),1)
- var own := node.get_node_or_null("PickBody")
- if own: query.exclude = [own.get_rid()]
+# Lowest point of the node's meshes in its own frame (INF without meshes).
+func _local_bottom(node: Node3D) -> float:
+ var bottom := INF
+ var inverse := node.global_transform.affine_inverse()
+ for mesh in node.find_children("*","MeshInstance3D",true,false):
+  var box: AABB = (inverse*(mesh as MeshInstance3D).global_transform)*(mesh as MeshInstance3D).get_aabb()
+  bottom = minf(bottom,box.position.y)
+ return bottom
+
+# Moves the node's children so its lowest point sits on the surface below.
+# Idempotent: the previous correction is undone first unless the caller has
+# just reset the children (fresh = true).
+func _rest_on_surface(node: Node3D, space: PhysicsDirectSpaceState3D, fresh := false) -> void:
+ if not _free_standing(node): return
+ var previous := 0.0 if fresh else float(node.get_meta("rest_delta",0.0))
+ for child in node.get_children():
+  if child is Node3D: child.position.y -= previous
+ node.set_meta("rest_delta",0.0)
+ var bottom := _local_bottom(node)
+ if bottom == INF: return
+ var base := node.global_position.y+bottom
+ var from := Vector3(node.global_position.x,maxf(base,node.global_position.y)+0.6,node.global_position.z)
+ var query := PhysicsRayQueryParameters3D.create(from,from-Vector3(0,2.4,0),1)
+ var own := node.find_children("PickBody","StaticBody3D",true,false)
+ query.exclude = own.map(func(body: Node) -> RID: return (body as StaticBody3D).get_rid())
  var hit := space.intersect_ray(query)
- if hit.is_empty(): return 0.0
- var offset := float(hit.position.y)-base
- return 0.0 if offset > 0.3 or absf(offset) < 0.02 else offset
+ if hit.is_empty(): return
+ var delta := float(hit.position.y)-base
+ if absf(delta) < 0.01 or delta > 1.2 or delta < -1.6: return
+ for child in node.get_children():
+  if child is Node3D: child.position.y += delta
+ node.set_meta("rest_delta",delta)
 
 func refresh_contacts() -> void:
  contacts_pending=false
@@ -687,25 +704,19 @@ func refresh_contacts() -> void:
   var visual: Node3D=node.get_node_or_null("ReviewedVisual")
   if not session.world_items.has(serial):continue
   if node.has_meta("library_item") and node.is_inside_tree():
-   # Rest library models on the city surface under them (table, counter,
-   # shelf or floor collision), within a small band around the source height.
-   var from := node.global_position+Vector3(0,0.45,0)
-   var hit := space.intersect_ray(PhysicsRayQueryParameters3D.create(from,from-Vector3(0,1.6,0),1))
-   var library_visual: Node3D = node.get_node_or_null("LibraryVisual")
-   if library_visual and not hit.is_empty():
-    library_visual.position.y = float(hit.position.y)-node.global_position.y
-    node.get_node("PickBody").position.y = library_visual.position.y+float(node.get_meta("pick_half",0.2))
+   _rest_on_surface(node,space)
    continue
   var review: Dictionary=preload("res://Presentation/ReviewedCatalog.gd").entry(int(session.world_items[serial].id))
   if review.get("attachment","") not in ["floor","surface"]:
-   _settle_loose(node,space)
+   _rest_on_surface(node,space)
    continue
   var placement: Dictionary=supports.placement(session.world_items[serial])
-  # The plan's support height is an estimate of the presented model; the
-  # ray finds its real top (fitted tables differ from the procedural ones).
-  if node.is_inside_tree() and str(node.get_meta("family","")) not in FIXED_FAMILIES:
-   placement = placement.duplicate()
-   placement.offset = placement.offset+Vector3(0,_ray_rest(node,space,float(placement.offset.y)),0)
+  # Undo the last surface correction; the plan is re-applied, then the
+  # real surface under the model's lowest point decides the final height.
+  var rested := float(node.get_meta("rest_delta",0.0))
+  for child in node.get_children():
+   if child is Node3D: child.position.y -= rested
+  node.set_meta("rest_delta",0.0)
   if visual:
    visual.position=placement.offset
    node.get_node("PickBody").position=placement.offset
@@ -715,3 +726,4 @@ func refresh_contacts() -> void:
     if child is Node3D:child.position+=placement.offset-previous
   node.set_meta("contact_offset",placement.offset)
   node.set_meta("contact",placement)
+  _rest_on_surface(node,space,true)

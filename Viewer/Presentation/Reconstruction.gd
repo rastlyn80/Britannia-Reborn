@@ -26,6 +26,9 @@ var pinnacles := {}
 var carpet_cells := {}
 # Wall ordinal -> metres of foundation course down to what really supports it.
 var foundations := {}
+# Arcades: cells with walkable arch openings and with solid arch pieces (by Z).
+var passage_cells := {}
+var solid_arch_cells := {}
 # Rendered terrain (TerrainSurface) and source supports under vegetation. UO
 # stores one height per tile; the presented ground interpolates between tiles,
 # so plants placed at raw tile height float or sink on slopes and planters.
@@ -248,6 +251,23 @@ func index(world: Dictionary) -> void:
 	for i in world.statics.size():
 		var s: Dictionary = world.statics[i]
 		if passage(world,s): passages[Vector3i(s.x,s.y,s.z)] = i
+	# Cells holding wall-like records (any Z) and solid arch pieces, for
+	# two-tile arch spans below.
+	var arch_cells := {}
+	passage_cells.clear()
+	solid_arch_cells.clear()
+	for i in world.statics.size():
+		var tile: Dictionary = world.statics[i]
+		var tile_kind := str(rule_for(int(tile.id)).get("kind",""))
+		if tile_kind in ["wall","window","corner","arch","door","pillar","post"]:
+			arch_cells[Vector3i(tile.x,tile.y,1)] = true
+		if tile_kind == "arch" and not passage(world,tile):
+			arch_cells[Vector3i(tile.x,tile.y,0)] = true
+			if not solid_arch_cells.has(Vector2i(tile.x,tile.y)): solid_arch_cells[Vector2i(tile.x,tile.y)] = []
+			solid_arch_cells[Vector2i(tile.x,tile.y)].append(int(tile.z))
+	for cell in passages:
+		if not passage_cells.has(Vector2i(cell.x,cell.y)): passage_cells[Vector2i(cell.x,cell.y)] = []
+		passage_cells[Vector2i(cell.x,cell.y)].append(cell.z)
 	var joined := {}
 	for cell in passages:
 		if joined.has(cell): continue
@@ -262,6 +282,22 @@ func index(world: Dictionary) -> void:
 			members.append(passages[walk])
 			walk += step
 		_group(members,world,"archway")
+		# Wide arches: the source draws the arch over empty cells (up to five) to
+		# the next solid arch piece (arcades such as the Chamber of Virtue).
+		# The opening spans those cells instead of leaving a square hole.
+		var group: Dictionary = groups[members[0]]
+		for direction in [1,-1]:
+			var edge: Vector3i = (walk if direction > 0 else start-step)
+			var empty := 0
+			while empty < 6 and not _wall_at(world,edge,arch_cells):
+				empty += 1
+				edge += step*direction
+			if empty == 0 or empty > 5 or not arch_cells.has(Vector3i(edge.x,edge.y,0)): continue
+			var extended := Vector2(edge.x-step.x*direction,edge.y-step.y*direction)
+			var low: Vector2 = group.low.min(extended)
+			var high: Vector2 = (group.low+group.size-Vector2.ONE).max(extended)
+			group.low = low
+			group.size = high-low+Vector2.ONE
 
 	if world.get("render_cells",false):print("REGIONAL GROUPS DONE")
 	_plan_context(world)
@@ -492,6 +528,14 @@ func _plan_foundations(world: Dictionary) -> void:
 		if lowest < 1000 and lowest <= int(s.z): support = maxi(support,lowest)
 		var gap := int(s.z)-support
 		if support > -1000 and gap >= 1 and gap <= 15: foundations[i] = float(gap)*float(world.elevationScale)
+
+func _arch_at(cells: Dictionary, cell: Vector2i, z: int) -> bool:
+	for other in cells.get(cell,[]):
+		if absi(int(other)-z) <= 2: return true
+	return false
+
+func _wall_at(_world: Dictionary, cell: Vector3i, arch_cells: Dictionary) -> bool:
+	return arch_cells.has(Vector3i(cell.x,cell.y,1))
 
 func _plan_roof_families(world: Dictionary) -> void:
 	roof_families.clear()
@@ -750,8 +794,10 @@ func fitted(path: String, size: Vector3, orientation: Array = [0,0,0]) -> Node3D
 					mat.set_shader_parameter("tint",Color("ced6b6") if "Leaves" in original.resource_name else Color("ded3bb"))
 					mat.set_shader_parameter("base_y",mesh.get_aabb().position.y)
 					mat.set_shader_parameter("plant_height",mesh.get_aabb().size.y)
-					mat.set_shader_parameter("amplitude",0.0 if show_boundary_fragments else minf(0.22,size.y*0.12))
-					mat.set_shader_parameter("flutter",0.0 if show_boundary_fragments else (0.012 if "Leaves" in original.resource_name else 0.004))
+					# Rocks, logs and stumps share the nature shader but never sway.
+					var rigid := path.get_file().begins_with("Rock") or "Log" in path.get_file() or "Stump" in path.get_file() or "Pebble" in path.get_file()
+					mat.set_shader_parameter("amplitude",0.0 if show_boundary_fragments or rigid else minf(0.22,size.y*0.12))
+					mat.set_shader_parameter("flutter",0.0 if show_boundary_fragments or rigid else (0.012 if "Leaves" in original.resource_name else 0.004))
 					mat.set_shader_parameter("source_origin",source_origin)
 					nature_materials[key] = mat
 				mesh.set_surface_override_material(surface,nature_materials[key])
@@ -960,11 +1006,32 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					# Gateways and arcades in masonry stay stone; openings in timber-framed
 					# runs (galleries, carriage bays) are framed in oak.
 					if family in ["plaster","wood"] and window_families.has(ordinal): visual = timber_archway(maxf(run.size.x,run.size.y),height,family)
-					else: visual = facade.archway(maxf(run.size.x,run.size.y),height,"stone" if family.get_slice("#",0) == "plaster" else family)
+					else:
+						# In an arcade the arch springs from the slim columns either side,
+						# so the opening reaches into the neighbouring column cells.
+						var along := Vector2i(0,1) if rule.get("axis") == "y" else Vector2i(1,0)
+						var first := Vector2i(run.low)
+						var last := Vector2i(run.low+run.size-Vector2.ONE)
+						var reach_low := 0.32 if _arch_at(solid_arch_cells,first-along,int(s.z)) else 0.0
+						var reach_high := 0.32 if _arch_at(solid_arch_cells,last+along,int(s.z)) else 0.0
+						visual = facade.archway(maxf(run.size.x,run.size.y)+reach_low+reach_high,height,"stone" if family.get_slice("#",0) == "plaster" else family)
+						var inner: Node3D = visual
+						visual = Node3D.new()
+						inner.position.x = (reach_high-reach_low)/2
+						visual.add_child(inner)
 				"pier":
 					# Solid arch pieces are the masonry beside an opening.
 					# Timber houses keep framed panels beside their openings.
+					var pier_along := Vector2i(0,1) if rule.get("axis") == "y" else Vector2i(1,0)
+					var arcade := _arch_at(passage_cells,Vector2i(s.x,s.y)+pier_along,int(s.z)) or _arch_at(passage_cells,Vector2i(s.x,s.y)-pier_along,int(s.z))
 					if family in ["plaster","wood"] and window_families.has(ordinal): visual = facade.panel(height,false,{"offset":0,"length":1},family)
+					elif arcade and height > 2.0:
+						# Slim arcade column with a moulded base and capital.
+						visual = Node3D.new()
+						var column_family := family if family.get_slice("#",0) != "plaster" else "stone"
+						facade.piece(visual,Vector3(0.36,height,0.36),Vector3(0,height/2,0),column_family)
+						facade.piece(visual,Vector3(0.5,0.22,0.5),Vector3(0,0.11,0),column_family)
+						facade.piece(visual,Vector3(0.48,0.16,0.44),Vector3(0,minf(2.4,height-0.6),0),column_family)
 					else:
 						visual = Node3D.new()
 						facade.piece(visual,Vector3(1.0,height,0.26),Vector3(0,height/2,0),family if family.get_slice("#",0) != "plaster" else "stone")
@@ -1046,7 +1113,9 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					if name.contains("cedar"): size = Vector3(2.6,6.2,2.6)
 					if kind == "canopy": asset = "Nature/CommonTree_1.gltf"
 					# Owner-licensed converted trees when present locally; CC0 library otherwise.
-					var local_tree: Node3D = preload("res://Presentation/LocalTrees.gd").build(name,int(s.x),int(s.y)) if kind == "tree" and preload("res://Presentation/LocalTrees.gd").available() else null
+					# A crown without a trunk in its cell is a whole tree of its species.
+					var species := name if kind == "tree" else ("oak tree" if "oak" in name else ("walnut tree" if "walnut" in name else ("cedar tree" if "cedar" in name or "needles" in name else ("willow tree" if "willow" in name else "tree"))))
+					var local_tree: Node3D = preload("res://Presentation/LocalTrees.gd").build(species,int(s.x),int(s.y)) if preload("res://Presentation/LocalTrees.gd").available() else null
 					if local_tree: visual = local_tree
 					else:
 						visual = fitted(asset,size)
@@ -1107,6 +1176,10 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					node.free()
 					report.append({"ordinal":ordinal,"id":s.id,"xyz":[s.x,s.y,s.z],"status":"unmapped"})
 					return null
+		if visual and not bridge.is_empty() and kind in ["wall","window","corner"]:
+			# Bridge parapet walls sit on the deck edge like the trims beside them.
+			var deck_side: Vector2i = bridge.get("toward",Vector2i.ZERO)
+			visual.position += Vector3(deck_side.x,0,deck_side.y)*0.35
 		if visual and foundations.has(ordinal) and kind in ["wall","window","corner"]:
 			# Foundation course under a wall standing above its support.
 			var depth: float = foundations[ordinal]

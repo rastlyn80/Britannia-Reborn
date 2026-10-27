@@ -83,7 +83,26 @@ func index(world: Dictionary, catalog: Dictionary) -> void:
    for offset in [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
     if decks.has(cell+offset) and absi(int(s.z)-int(decks[cell+offset]))<=2:reason="parapet along bridge deck edge"
   if reason.is_empty():continue
-  parapets[i]={"family":"brick" if "brick" in name_text else "stone","opening":"slit" if kind=="window" else "","reason":reason,"toward":toward if reason=="parapet along bridge deck edge" else Vector2i.ZERO}
+  parapets[i]={"family":"brick" if "brick" in name_text else "stone","opening":"slit" if kind=="window" else "","reason":reason,"toward":toward if reason=="parapet along bridge deck edge" else Vector2i.ZERO,"cell":cell,"axis":str(catalog.get(str(int(s.id)),{}).get("axis","x")),"z":int(s.z)}
+ # A straight parapet run shares one offset: pieces standing on piers or the
+ # abutments take their run's deck-side shift, so the rail stays in line.
+ var by_line:={}
+ for i in parapets:
+  var entry: Dictionary=parapets[i]
+  by_line[Vector4i(entry.cell.x,entry.cell.y,entry.z,1 if entry.axis=="y" else 0)]=i
+ for pass_index in 8:
+  var changed:=false
+  for i in parapets:
+   var entry: Dictionary=parapets[i]
+   if entry.toward!=Vector2i.ZERO:continue
+   var along:=Vector2i(0,1) if entry.axis=="y" else Vector2i(1,0)
+   for step in [along,-along]:
+    for dz in range(-2,3):
+     var other: Variant=by_line.get(Vector4i(entry.cell.x+step.x,entry.cell.y+step.y,entry.z+dz,1 if entry.axis=="y" else 0))
+     if other!=null and parapets[other].toward!=Vector2i.ZERO and entry.toward==Vector2i.ZERO:
+      entry.toward=parapets[other].toward
+      changed=true
+  if not changed:break
 func audit() -> Dictionary:
  var reasons: Dictionary={}
  for entry in parapets.values():reasons[entry.reason]=int(reasons.get(entry.reason,0))+1

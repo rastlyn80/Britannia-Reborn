@@ -255,6 +255,8 @@ func _initialize() -> void:
  # Sign kinds and furniture facings from upstream placements.
  var appearance:=preload("res://Presentation/ItemAppearance.gd")
  check(appearance.variant(4764,{"family":"sign"})=="street_sign" and appearance.variant(7977,{"family":"sign"})=="plaque" and appearance.variant(2996,{"family":"sign"})=="sign","Street signs and wall plaques are not drawn as bracket-hung shop signs")
+ # ModernUO swaps armoires to their open graphic while used; both states keep the model.
+ for pair in [[2637,2636],[2639,2638],[2641,2640],[2643,2642]]:check(str(preload("res://Presentation/ReviewedCatalog.gd").entry(pair[1]).get("asset",""))!="" and preload("res://Presentation/ReviewedCatalog.gd").entry(pair[1]).get("asset")==preload("res://Presentation/ReviewedCatalog.gd").entry(pair[0]).get("asset"),"Open armoire graphic %d keeps its closed model" % pair[1])
  check(int(preload("res://Presentation/ReviewedCatalog.gd").entry(2713).get("yawDegrees",0))==90 and int(preload("res://Presentation/ReviewedCatalog.gd").entry(2711).get("yawDegrees",0))==0,"Bookcases placed in north-south runs face east")
  # MedievalKit (CC0) modules replace stylised fences, lamp posts, sacks and doors.
  var rules:=preload("res://Presentation/RegionalRules.gd")

@@ -2565,6 +2565,110 @@
         -90,
         0
       ]
+    },
+    "2636": {
+      "kind": "prop",
+      "dimensions": [
+        0.96,
+        1.95,
+        0.62
+      ],
+      "assembly": "single",
+      "attachment": "floor",
+      "providesSupport": true,
+      "yawDegrees": 0,
+      "reviewStatus": "reviewed",
+      "reviewMethod": "Carved two-door wardrobe scan replaces the code-built armoire; reviewed facing kept",
+      "confidence": "original two-door wardrobe construction; reviewed modern interpretation",
+      "provenance": "Art/Objaverse/manifest.json",
+      "materialPolicy": "museum/photoscan PBR textures (CC0 or CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "collision": "native-authoritative; contact-aligned local bounds",
+      "lod": "bounded near-district geometry",
+      "asset": "Objaverse/wardrobe_antique/wardrobe_antique.glb",
+      "modelRotation": [
+        0,
+        -90,
+        0
+      ],
+      "notes": "Open state of 2637: ModernUO swaps an armoire to this graphic while it is open (FurnitureContainer), so it keeps the same model."
+    },
+    "2638": {
+      "kind": "prop",
+      "dimensions": [
+        0.96,
+        1.95,
+        0.62
+      ],
+      "assembly": "single",
+      "attachment": "floor",
+      "providesSupport": true,
+      "yawDegrees": 0,
+      "reviewStatus": "reviewed",
+      "reviewMethod": "Carved two-door wardrobe scan replaces the code-built armoire; reviewed facing kept",
+      "confidence": "original two-door wardrobe construction; reviewed modern interpretation",
+      "provenance": "Art/Objaverse/manifest.json",
+      "materialPolicy": "museum/photoscan PBR textures (CC0 or CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "collision": "native-authoritative; contact-aligned local bounds",
+      "lod": "bounded near-district geometry",
+      "asset": "Objaverse/wardrobe_antique/wardrobe_antique.glb",
+      "modelRotation": [
+        0,
+        -90,
+        0
+      ],
+      "notes": "Open state of 2639: ModernUO swaps an armoire to this graphic while it is open (FurnitureContainer), so it keeps the same model."
+    },
+    "2640": {
+      "kind": "prop",
+      "dimensions": [
+        0.96,
+        1.95,
+        0.62
+      ],
+      "assembly": "single",
+      "attachment": "floor",
+      "providesSupport": true,
+      "yawDegrees": 90,
+      "reviewStatus": "reviewed",
+      "reviewMethod": "Carved two-door wardrobe scan replaces the code-built armoire; reviewed facing kept",
+      "confidence": "original two-door wardrobe construction; reviewed modern interpretation",
+      "provenance": "Art/Objaverse/manifest.json",
+      "materialPolicy": "museum/photoscan PBR textures (CC0 or CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "collision": "native-authoritative; contact-aligned local bounds",
+      "lod": "bounded near-district geometry",
+      "asset": "Objaverse/wardrobe_antique/wardrobe_antique.glb",
+      "modelRotation": [
+        0,
+        -90,
+        0
+      ],
+      "notes": "Open state of 2641: ModernUO swaps an armoire to this graphic while it is open (FurnitureContainer), so it keeps the same model."
+    },
+    "2642": {
+      "kind": "prop",
+      "dimensions": [
+        0.96,
+        1.95,
+        0.62
+      ],
+      "assembly": "single",
+      "attachment": "floor",
+      "providesSupport": true,
+      "yawDegrees": 90,
+      "reviewStatus": "reviewed",
+      "reviewMethod": "Carved two-door wardrobe scan replaces the code-built armoire; reviewed facing kept",
+      "confidence": "original two-door wardrobe construction; reviewed modern interpretation",
+      "provenance": "Art/Objaverse/manifest.json",
+      "materialPolicy": "museum/photoscan PBR textures (CC0 or CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "collision": "native-authoritative; contact-aligned local bounds",
+      "lod": "bounded near-district geometry",
+      "asset": "Objaverse/wardrobe_antique/wardrobe_antique.glb",
+      "modelRotation": [
+        0,
+        -90,
+        0
+      ],
+      "notes": "Open state of 2643: ModernUO swaps an armoire to this graphic while it is open (FurnitureContainer), so it keeps the same model."
     }
   }
 }
