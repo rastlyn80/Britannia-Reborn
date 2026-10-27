@@ -106,9 +106,24 @@ func configure(scene: Node3D,world: Dictionary,reconstruction,map_view: bool, de
  environment.glow_hdr_threshold = 1.7
  environment.fog_enabled = not map_view
  environment.fog_light_color = Color("aabbb8")
- # Light haze only: denser fog washed out mid-distance buildings.
- environment.fog_density = 0.0007
- environment.fog_aerial_perspective = 0.1
+ # Distance haze: depth fog clear for the street around the player, then
+ # thickening toward the horizon and taking the sky's colour (aerial
+ # perspective), so far roofs and hills soften instead of showing low detail.
+ environment.fog_mode = Environment.FOG_MODE_DEPTH
+ environment.fog_depth_begin = 70.0
+ environment.fog_depth_end = 700.0
+ environment.fog_depth_curve = 1.6
+ environment.fog_density = 0.55
+ environment.fog_aerial_perspective = 0.6
+ environment.fog_sky_affect = 0.2
+ # Gentle far depth-of-field: distant detail blurs like a camera lens.
+ if not map_view:
+  var lens := CameraAttributesPractical.new()
+  lens.dof_blur_far_enabled = true
+  lens.dof_blur_far_distance = 160.0
+  lens.dof_blur_far_transition = 260.0
+  lens.dof_blur_amount = 0.05
+  node.camera_attributes = lens
  # SDFGI/volumetric fog were measured on the StreamingProfile route and made
  # this streamed city GPU-bound (median ~30 ms on an RTX 2070 SUPER); disabled.
  add_child(node)
@@ -238,7 +253,7 @@ func _apply_atmosphere(minute: float, wet: float, level: float, personal: float)
  # Personal light improves local readability; it never changes astronomical time.
  environment.tonemap_exposure = 1.05+clampf(personal/31.0,0.0,1.0)*0.25
  environment.fog_light_color = Color("172238").lerp(Color("b4c9d5"),day).lerp(Color("758593"),wet*0.6)
- environment.fog_density = 0.0007+wet*0.004
+ environment.fog_density = 0.55+wet*0.35
  sky_material.set_shader_parameter("zenith",Color("071124").lerp(Color("3475a9"),day).lerp(Color("556a7e"),wet*0.75))
  sky_material.set_shader_parameter("horizon",Color("27334d").lerp(Color("d1dfe2"),day).lerp(Color("8b9ba5"),wet*0.7))
  sky_material.set_shader_parameter("sunlight",sun.light_color)

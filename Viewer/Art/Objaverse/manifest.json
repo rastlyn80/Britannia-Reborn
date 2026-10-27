@@ -209,6 +209,48 @@
         0.411
       ],
       "processing": "ground-centred, decimated to 9000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "hay_scan",
+      "title": "Hay",
+      "uid": "3b1f4e2b2bc04992a4cd0991da6f89fe",
+      "page": "https://sketchfab.com/3d-models/3b1f4e2b2bc04992a4cd0991da6f89fe",
+      "author": "Anvaratoustra",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-087/3b1f4e2b2bc04992a4cd0991da6f89fe.glb",
+      "sourceSha256": "67ec9c4e59956130ff73c5889b17b12d796cc51373cca21dbdfa27ab103c179a",
+      "sourceTriangles": 900000,
+      "file": "hay_scan/hay_scan.glb",
+      "sha256": "53c44ca27dfee20ac59fbbf53e67868fe7ba1d75b869ee6e32d2e3f30dddbb48",
+      "triangles": 33618,
+      "size": [
+        4.005,
+        3.396,
+        3.881
+      ],
+      "processing": "ground-centred, decimated to 12000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "dummy_combat",
+      "title": "Medieval Combat Dummy",
+      "uid": "0b3ab64360374a0e9ee3a5923c437995",
+      "page": "https://sketchfab.com/3d-models/0b3ab64360374a0e9ee3a5923c437995",
+      "author": "CaptainHC",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-094/0b3ab64360374a0e9ee3a5923c437995.glb",
+      "sourceSha256": "25f184f4347b304f1584d937daea52c433182670b3880a73c23964770fda38bb",
+      "sourceTriangles": 4840,
+      "file": "dummy_combat/dummy_combat.glb",
+      "sha256": "3a44092057e728a8d18ecdc2c1daf1b91086be91542bc82aaf4cfec65e012407",
+      "triangles": 4840,
+      "size": [
+        2.24,
+        4.419,
+        1.386
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
     }
   ]
 }

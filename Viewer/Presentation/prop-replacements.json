@@ -88,6 +88,14 @@
   "candelabra": {
    "model": "Objaverse/candlestick_four",
    "height": 1.6
+  },
+  "hay": {
+   "model": "Objaverse/hay_scan",
+   "height": 0.45
+  },
+  "training dummy": {
+   "model": "Objaverse/dummy_combat",
+   "height": 1.8
   }
  }
 }

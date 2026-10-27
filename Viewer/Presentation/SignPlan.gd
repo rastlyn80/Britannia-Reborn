@@ -14,7 +14,7 @@ static func layout(item: Dictionary,world: Dictionary,catalog: Dictionary,tiles_
  else: nearby = world.statics
  for source in nearby:
   var rule: Dictionary = catalog.get(str(int(source.id)),{})
-  if rule.get("kind","") not in ["wall","window"]: continue
+  if rule.get("kind","") not in ["wall","window","arch","pillar","post","corner"]: continue
   var delta := Vector2(float(item.x-source.x),float(item.y-source.y))
   if absf(float(source.z-item.z))>22 or delta.length_squared()>9: continue
   var score := delta.length_squared()

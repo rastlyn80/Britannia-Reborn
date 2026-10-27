@@ -28,6 +28,8 @@ var carpet_cells := {}
 var foundations := {}
 # Arcades: cells with walkable arch openings and with solid arch pieces (by Z).
 var passage_cells := {}
+# Floor ordinal -> edges (0 N, 1 E, 2 S, 3 W) that drop into a stairwell.
+var stairwell_rails := {}
 var solid_arch_cells := {}
 # Rendered terrain (TerrainSurface) and source supports under vegetation. UO
 # stores one height per tile; the presented ground interpolates between tiles,
@@ -306,6 +308,7 @@ func index(world: Dictionary) -> void:
 	_plan_window_families(world)
 	_plan_pinnacles(world)
 	_plan_foundations(world)
+	_plan_stairwells(world)
 	carpet_cells.clear()
 	for tile in world.statics:
 		if rule_for(int(tile.id)).get("kind","") != "carpet": continue
@@ -536,6 +539,72 @@ func _arch_at(cells: Dictionary, cell: Vector2i, z: int) -> bool:
 
 func _wall_at(_world: Dictionary, cell: Vector3i, arch_cells: Dictionary) -> bool:
 	return arch_cells.has(Vector3i(cell.x,cell.y,1))
+
+# A floor that ends at a stair opening gets a balustrade along that edge,
+# except where the stairs themselves arrive: a bare hole in a floor read as
+# a construction defect. The hole is a floorless cell with stairs below it
+# (or beside it, for wide stairwells).
+func _plan_stairwells(world: Dictionary) -> void:
+	stairwell_rails.clear()
+	var floors_at := {}
+	var stairs_at := {}
+	var walls_at := {}
+	for tile in world.statics:
+		var kind := str(rule_for(int(tile.id)).get("kind",""))
+		var cell := Vector2i(tile.x,tile.y)
+		if kind == "floor":
+			if not floors_at.has(cell): floors_at[cell] = []
+			floors_at[cell].append(int(tile.z))
+		elif kind in ["stairs","landing"]:
+			var detail := info(world,int(tile.id),true)
+			if not stairs_at.has(cell): stairs_at[cell] = []
+			stairs_at[cell].append(Vector2i(int(tile.z),int(tile.z)+int(detail.get("height",0))))
+		elif kind in ["wall","window","corner","trim","fence","door","arch"]:
+			if not walls_at.has(cell): walls_at[cell] = []
+			walls_at[cell].append(int(tile.z))
+	var steps := [Vector2i(0,-1),Vector2i(1,0),Vector2i(0,1),Vector2i(-1,0)]
+	for i in world.statics.size():
+		var s: Dictionary = world.statics[i]
+		if str(rule_for(int(s.id)).get("kind","")) != "floor": continue
+		var z := int(s.z)
+		var cell := Vector2i(s.x,s.y)
+		var blocked := false
+		for wz in walls_at.get(cell,[]):
+			if absi(int(wz)-z) <= 2: blocked = true
+		if blocked: continue
+		var edges: Array = []
+		for d in 4:
+			var next: Vector2i = cell+steps[d]
+			var floored := false
+			for fz in floors_at.get(next,[]):
+				if absi(int(fz)-z) <= 2: floored = true
+			var walled := false
+			for wz in walls_at.get(next,[]):
+				if absi(int(wz)-z) <= 2: walled = true
+			if floored or walled: continue
+			var below := false
+			var arrival := false
+			for probe in [next,next+steps[(d+1)%4],next+steps[(d+3)%4],next+steps[d]]:
+				for span in stairs_at.get(probe,[]):
+					if span.x < z-1 and span.x >= z-30: below = true
+					if probe == next and span.y >= z-3 and span.y <= z+2: arrival = true
+			if below and not arrival: edges.append(d)
+		if not edges.is_empty(): stairwell_rails[i] = edges
+
+func stairwell_balustrade(edges: Array) -> Node3D:
+	var root := Node3D.new()
+	var wood := preload("res://Presentation/DoorLeaf.gd").surface("medieval_wood",Color(0.62,0.48,0.36))
+	var box := preload("res://Presentation/DoorLeaf.gd")._box
+	for d in edges:
+		var along_x: bool = d in [0,2]
+		var normal := [Vector3(0,0,-1),Vector3(1,0,0),Vector3(0,0,1),Vector3(-1,0,0)][d] as Vector3
+		var centre: Vector3 = normal*0.46
+		var length := Vector3(1.0,0,0) if along_x else Vector3(0,0,1.0)
+		box.call(root,(Vector3(1.0,0.07,0.08) if along_x else Vector3(0.08,0.07,1.0)),centre+Vector3(0,0.93,0),wood)
+		box.call(root,(Vector3(1.0,0.05,0.06) if along_x else Vector3(0.06,0.05,1.0)),centre+Vector3(0,0.1,0),wood)
+		for end in [-0.46,0.46]: box.call(root,Vector3(0.09,0.97,0.09),centre+length*end+Vector3(0,0.485,0),wood)
+		for k in 3: box.call(root,Vector3(0.035,0.8,0.035),centre+length*(-0.25+0.25*k)+Vector3(0,0.52,0),wood)
+	return root
 
 func _plan_roof_families(world: Dictionary) -> void:
 	roof_families.clear()
@@ -918,7 +987,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 		# Modern Britain: library models replace the reviewed stand-ins for loose
 		# objects too (multi-cell furniture keeps its fitted assemblies).
 		var modern := preload("res://Presentation/GraphicsMode.gd").modern() and tint.is_empty() and kind in ["prop","asset"] and not groups.has(ordinal)
-		if modern and not rule.has("slot"):
+		if modern and not rule.has("slot") and not preload("res://Presentation/PropReplacements.gd").has(str(detail.get("name",""))):
 			var found: Array = preload("res://Presentation/RegionalRules.gd").slot_for(str(detail.get("name","")).strip_edges().to_lower())
 			if not found.is_empty(): rule = rule.merged({"slot":found[0],"slotSize":found[1]}.merged({"slotCount":found[2]} if int(found[2]) > 1 else {}))
 		# Modern Britain: table and bench runs become library pieces along the run.
@@ -1048,6 +1117,11 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					var surface := str(rule.get("surface","wood"))
 					if surface == "": surface = "wood"
 					visual = floors.slab(ordinal,floors.material() if surface == "wood" and tint.is_empty() else facade.material(surface+("#"+tint if not tint.is_empty() else "")))
+					if stairwell_rails.has(ordinal):
+						var slab: Node3D = visual
+						visual = Node3D.new()
+						visual.add_child(slab)
+						visual.add_child(stairwell_balustrade(stairwell_rails[ordinal]))
 				"asset": visual = fitted(asset,Vector3(rule.dimensions[0],rule.dimensions[1],rule.dimensions[2]))
 				"prop":
 					# Pinned CC0 Poly Haven cannon (smugglers' cove), real proportions:
