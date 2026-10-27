@@ -186,6 +186,10 @@ func upsert(serial: int, item: Dictionary) -> void:
     var metal := "Metal" in str(rule.get("type",""))
     size = Vector3(0.5,0.34,0.34) if metal else Vector3(0.82,0.56,0.5)
     _chest(root,size,metal)
+   elif rule.family == "drawers":
+    # Photoscanned carved commode (CC0 Poly Haven GothicCommode_01).
+    size = Vector3(0.96,0.97,0.46)
+    root.add_child(scene.reconstruction.fitted("PolyHaven/GothicCommode_01/GothicCommode_01_1k.gltf",size))
    else: _cabinet(root,size,rule.family,rule)
    # Graphics drawn facing east: upstream decoration places them in
    # north-south runs against west walls (crates are square either way).
@@ -339,11 +343,20 @@ func upsert(serial: int, item: Dictionary) -> void:
      old.hide()
    suppressed_posts[serial] = posts
   "lamp":
-   var lamp_height := 3.2 if "LampPost" in rule.get("type","") else (0.32 if rule.get("type","") == "CandleLarge" else 1.7)
+   var lamp_type := str(rule.get("type",""))
+   var lamp_height := 3.2 if "LampPost" in lamp_type else (0.32 if lamp_type == "CandleLarge" else (0.48 if lamp_type == "Candelabra" else 1.7))
    size = Vector3(0.30,lamp_height,0.30)
-   if "LampPost" in rule.get("type",""):
+   # Modern Britain: the owner packs' standing candelabrum, three-arm table
+   # candelabra and wax candles (slot names follow the pack import).
+   var light_slot: Array = {"CandelabraStand":["chandelier","chandelier_01"],"Candelabra":["candlestick","candlestick_03"],"CandleLarge":["candle","candle_02"]}.get(lamp_type,[])
+   var light_model: Node3D = null
+   if not light_slot.is_empty() and preload("res://Presentation/GraphicsMode.gd").modern() and preload("res://Presentation/LocalLibrary.gd").has(str(light_slot[0])):
+    light_model = preload("res://Presentation/LocalLibrary.gd").build(str(light_slot[0]),int(item.x),int(item.y),Vector3(lamp_height*0.32,lamp_height,lamp_height*0.32),true,str(light_slot[1]))
+   if "LampPost" in lamp_type:
     # Timber post with a hanging iron lantern (MedievalKit, CC0).
     root.add_child(scene.reconstruction.fitted("MedievalKit/Lantern_Post.gltf",Vector3(0.6,lamp_height,0.3)))
+   elif light_model:
+    root.add_child(light_model)
    else:
     geometry.cylinder(root,0.045,lamp_height-0.25,Vector3(0,(lamp_height-0.25)/2,0),"3c4141")
     geometry.crafted_box(root,Vector3(0.23,0.25,0.23),Vector3(0,lamp_height-0.125,0),"e4c88c")

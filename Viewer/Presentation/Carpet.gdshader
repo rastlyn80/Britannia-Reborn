@@ -20,16 +20,16 @@ void vertex(){
 }
 
 float figure(vec2 uv){
-	float lum=dot(texture(pattern,uv).rgb,vec3(0.299,0.587,0.114));
+	float lum=dot(texture(pattern,uv,0.8).rgb,vec3(0.299,0.587,0.114));
 	// source_color decodes to linear: the damask spans ~0.03-0.09 there.
-	return smoothstep(0.035,0.07,lum);
+	return smoothstep(0.03,0.085,lum);
 }
 
 void fragment(){
 	vec2 w=world_position.xz;
 	// Field: damask figure at a rug-sized repeat (about 0.75 m).
 	float field_figure=figure(w*vec2(1.33,0.88));
-	vec3 albedo=mix(base_color.rgb,motif_color.rgb*0.85,field_figure*0.65);
+	vec3 albedo=mix(base_color.rgb,motif_color.rgb*0.8,field_figure*0.42);
 	// Distance from this tile's point to the rug's outer edges.
 	float d=10.0;
 	if((edges&1)!=0) d=min(d,UV.x);

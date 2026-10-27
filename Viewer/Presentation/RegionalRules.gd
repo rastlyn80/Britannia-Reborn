@@ -168,7 +168,7 @@ static func _resolve(id: int,info: Dictionary) -> Dictionary:
  if "bench" in n: return base.merged({"kind":"bench"})
  # Legacy "bar" art is a panelled serving counter, not a rail.
  if "table" in n or n in ["counter","bar"]: return base.merged({"kind":"counter" if n in ["counter","bar"] else "table"})
- if n=="bed" or n=="cot": return base.merged({"kind":"bed","asset":"Kenney/bedSingle.glb"})
+ if n=="bed" or n=="cot": return base.merged({"kind":"bed","asset":"PolyHaven/GothicBed_01/GothicBed_01_1k.gltf"})
  if n=="wooden fence": return base.merged({"kind":"fence","asset":"MedievalKit/Fence_2m.gltf"})
  if "fence" in n or "banister" in n: return base.merged({"kind":"fence","asset":"Village/Prop_MetalFence_Simple.gltf" if "iron" in n or "metal" in n else "Village/Prop_WoodenFence_Single.gltf"})
  if "signpost" in n: return base.merged({"kind":"sign"})

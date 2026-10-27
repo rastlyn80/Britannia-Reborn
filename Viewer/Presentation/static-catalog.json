@@ -106,13 +106,13 @@
     },
     "2685": {
       "kind": "bed",
-      "asset": "Kenney/bedSingle.glb",
+      "asset": "PolyHaven/GothicBed_01/GothicBed_01_1k.gltf",
       "axis": "x",
       "confidence": "semantic-substitute"
     },
     "2681": {
       "kind": "bed",
-      "asset": "Kenney/bedSingle.glb",
+      "asset": "PolyHaven/GothicBed_01/GothicBed_01_1k.gltf",
       "axis": "x",
       "confidence": "semantic-substitute"
     },
@@ -142,25 +142,25 @@
     },
     "2653": {
       "kind": "bed",
-      "asset": "Kenney/bedSingle.glb",
+      "asset": "PolyHaven/GothicBed_01/GothicBed_01_1k.gltf",
       "axis": "x",
       "confidence": "semantic-substitute"
     },
     "2684": {
       "kind": "bed",
-      "asset": "Kenney/bedSingle.glb",
+      "asset": "PolyHaven/GothicBed_01/GothicBed_01_1k.gltf",
       "axis": "x",
       "confidence": "semantic-substitute"
     },
     "2658": {
       "kind": "bed",
-      "asset": "Kenney/bedSingle.glb",
+      "asset": "PolyHaven/GothicBed_01/GothicBed_01_1k.gltf",
       "axis": "x",
       "confidence": "semantic-substitute"
     },
     "2680": {
       "kind": "bed",
-      "asset": "Kenney/bedSingle.glb",
+      "asset": "PolyHaven/GothicBed_01/GothicBed_01_1k.gltf",
       "axis": "x",
       "confidence": "semantic-substitute"
     },
@@ -1224,13 +1224,13 @@
     },
     "2659": {
       "kind": "bed",
-      "asset": "Kenney/bedSingle.glb",
+      "asset": "PolyHaven/GothicBed_01/GothicBed_01_1k.gltf",
       "axis": "x",
       "confidence": "semantic-substitute"
     },
     "2652": {
       "kind": "bed",
-      "asset": "Kenney/bedSingle.glb",
+      "asset": "PolyHaven/GothicBed_01/GothicBed_01_1k.gltf",
       "axis": "x",
       "confidence": "semantic-substitute"
     },

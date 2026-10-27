@@ -24,6 +24,8 @@ var window_families := {}
 var pinnacles := {}
 # Carpet tiles by cell (source Z), so each tile knows the rug's outer edges.
 var carpet_cells := {}
+# Wall ordinal -> metres of foundation course down to what really supports it.
+var foundations := {}
 # Rendered terrain (TerrainSurface) and source supports under vegetation. UO
 # stores one height per tile; the presented ground interpolates between tiles,
 # so plants placed at raw tile height float or sink on slopes and planters.
@@ -267,6 +269,7 @@ func index(world: Dictionary) -> void:
 	_plan_roof_families(world)
 	_plan_window_families(world)
 	_plan_pinnacles(world)
+	_plan_foundations(world)
 	carpet_cells.clear()
 	for tile in world.statics:
 		if rule_for(int(tile.id)).get("kind","") == "carpet": carpet_cells[Vector2i(tile.x,tile.y)] = int(tile.z)
@@ -450,6 +453,41 @@ func _plan_pinnacles(world: Dictionary) -> void:
 		if rule_for(int(s.id)).get("kind","") != "pillar" or int(info(world,int(s.id),true).get("flags",0)) & 0x10 == 0 or int(info(world,int(s.id),true).get("height",0)) < 10: continue
 		for span in tops.get(Vector3i(s.x,s.y,0),[]):
 			if span.x < int(s.z) and span.y >= int(s.z)-4 and span.y <= int(s.z)+1: pinnacles[i] = true
+
+# UO walls often start a few Z above the plinth, floor or ground under them;
+# the 2D art overlaps, but in 3D a slot of daylight opened under the house
+# (the storey seemed to float). Each storey-base wall gets a foundation course
+# down to the highest support beneath it: a plinth/wall top, a floor, or the
+# lowest terrain corner of its cell. Gaps over 3 m are left alone (bridges,
+# galleries over passages).
+func _plan_foundations(world: Dictionary) -> void:
+	foundations.clear()
+	var land := {}
+	for tile in world.get("terrain",[])+world.get("terrainHalo",[]):
+		land[Vector2i(tile.x,tile.y)] = int(tile.z)
+	var tops := {}
+	for tile in world.statics:
+		var kind := str(rule_for(int(tile.id)).get("kind",""))
+		if kind not in ["wall","window","corner","trim","floor","landing","stairs","pier","post","pillar"]: continue
+		var detail := info(world,int(tile.id),true)
+		var top := int(tile.z)+int(float(detail.get("height",0))*(0.5 if int(detail.get("flags",0)) & 0x400 else 1.0))
+		var cell := Vector2i(tile.x,tile.y)
+		if not tops.has(cell): tops[cell] = []
+		tops[cell].append(top)
+	for i in world.statics.size():
+		var s: Dictionary = world.statics[i]
+		if str(rule_for(int(s.id)).get("kind","")) not in ["wall","window","corner"]: continue
+		if int(info(world,int(s.id),true).get("height",0)) < 10: continue
+		var cell := Vector2i(s.x,s.y)
+		var support := -1000
+		for top in tops.get(cell,[]):
+			if int(top) <= int(s.z): support = maxi(support,int(top))
+		var lowest := 1000
+		for corner in [Vector2i.ZERO,Vector2i.RIGHT,Vector2i.DOWN,Vector2i.ONE]:
+			if land.has(cell+corner): lowest = mini(lowest,int(land[cell+corner]))
+		if lowest < 1000 and lowest <= int(s.z): support = maxi(support,lowest)
+		var gap := int(s.z)-support
+		if support > -1000 and gap >= 1 and gap <= 15: foundations[i] = float(gap)*float(world.elevationScale)
 
 func _plan_roof_families(world: Dictionary) -> void:
 	roof_families.clear()
@@ -970,9 +1008,10 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 				"fence": visual = fitted(asset,Vector3(1,1.2,0.10))
 				"bed":
 					var size: Vector2 = groups[ordinal].size if groups.has(ordinal) else Vector2.ONE
-					var double_bed := minf(size.x,size.y) > 1
-					asset = "Kenney/bedDouble.glb" if double_bed else asset
-					visual = fitted(asset,Vector3(minf(size.x,size.y),0.72,maxf(size.x,size.y)))
+					# Photoscanned carved bed with linen (CC0 Poly Haven); a double bed
+					# is the same frame at the double footprint.
+					asset = "PolyHaven/GothicBed_01/GothicBed_01_1k.gltf"
+					visual = fitted(asset,Vector3(minf(size.x,size.y),1.3,maxf(size.x,size.y)))
 					if size.x > size.y: visual.rotation.y = PI/2
 				"carpet":
 					var edges := 0
@@ -1062,6 +1101,11 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					node.free()
 					report.append({"ordinal":ordinal,"id":s.id,"xyz":[s.x,s.y,s.z],"status":"unmapped"})
 					return null
+		if visual and foundations.has(ordinal) and kind in ["wall","window","corner"]:
+			# Foundation course under a wall standing above its support.
+			var depth: float = foundations[ordinal]
+			var course := "stone" if family.get_slice("#",0) in ["plaster","wood","log","clay","cloth","hide"] else family
+			facade.piece(visual,Vector3(1.0 if kind != "corner" else 0.34,depth,0.26 if kind != "corner" else 0.34),Vector3(0,-depth/2,0),course)
 		if visual:
 			if kind == "roof":
 				var anchor: Array = rule.get("anchorOffset",[-1,-1])
