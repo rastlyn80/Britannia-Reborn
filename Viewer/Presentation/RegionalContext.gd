@@ -59,6 +59,7 @@ func prepare(data: RefCounted) -> void:
  surfaces.bind(terrain_material,"paving","cobblestone_floor_03")
  surfaces.bind(terrain_material,"ground","forest_ground_04")
  surfaces.bind(terrain_material,"grass","leafy_grass")
+ for family in [["paving","cobbles"],["ground","dirt"],["grass","grass"]]:preload("res://Presentation/SurfaceVariants.gd").bind(terrain_material,family[0],family[1])
  surfaces.bind(terrain_material,"meadow","aerial_grass_rock")
  surfaces.bind(terrain_material,"rock","rock_face_03")
  surfaces.bind(terrain_material,"wood","brown_planks_03")

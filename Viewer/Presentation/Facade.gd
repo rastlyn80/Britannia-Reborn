@@ -211,6 +211,9 @@ func material(key: String) -> ShaderMaterial:
 		m.set_shader_parameter("masonry",kind in ["stone","brick"])
 		preload("res://Presentation/SurfaceLibrary.gd").bind(m,"surface","mk_oak_dark" if kind == "oak" else ("brown_planks_03" if kind == "wood" else (("medieval_blocks_03" if kind=="stone" else "medieval_red_brick") if kind in ["stone","brick"] else "white_rough_plaster")))
 		if "#" in key: m.set_shader_parameter("palette",Color(key.get_slice("#",1)).lightened(0.15))
+		# Several photoscans per repeated wall surface, never the same side by side.
+		var variants := {"plaster":"plaster","brick":"brick","stone":"stone"}
+		if variants.has(kind): preload("res://Presentation/SurfaceVariants.gd").bind(m,"surface",str(variants[kind]))
 		materials[key] = m
 	return materials[key]
 

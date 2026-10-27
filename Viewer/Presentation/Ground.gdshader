@@ -34,6 +34,22 @@ uniform sampler2D wood_roughness : filter_linear_mipmap_anisotropic, repeat_enab
 uniform vec2 wood_scale=vec2(1.0);
 varying vec3 world_position;
 void vertex(){ world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz+vec3(source_origin.x,0.0,source_origin.y); }
+#include "res://Presentation/SurfaceVariants.gdshaderinc"
+uniform sampler2DArray paving_variant_albedo : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2DArray paving_variant_normal : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform float paving_variant_scale[6];
+uniform vec3 paving_variant_mean[6];
+uniform int paving_variant_count=0;
+uniform sampler2DArray ground_variant_albedo : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2DArray ground_variant_normal : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform float ground_variant_scale[6];
+uniform vec3 ground_variant_mean[6];
+uniform int ground_variant_count=0;
+uniform sampler2DArray grass_variant_albedo : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2DArray grass_variant_normal : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform float grass_variant_scale[6];
+uniform vec3 grass_variant_mean[6];
+uniform int grass_variant_count=0;
 // Anti-tiling: two copies of the texture at pseudo-random offsets, chosen by
 // smooth low-frequency noise and blended, so large areas of one land type show
 // no repeating grid (explicit gradients avoid seams at the offset changes).
@@ -54,11 +70,16 @@ void fragment() {
  float detail=surface_fbm(UV*7.0);
  vec3 meadow=untiled(meadow_albedo,UV*meadow_scale);
  vec3 turf=untiled(grass_albedo,UV*grass_scale);
+ vec3 grass_vn=texture(grass_normal,UV*grass_scale).rgb;
+ // Several photoscans per land surface in three-tile cells, blended.
+ if(grass_variant_count>0) variant_sample(grass_variant_albedo,grass_variant_normal,grass_variant_scale,grass_variant_mean,grass_variant_count,UV,3.0,turf,grass_vn);
  // Natural, less saturated turf: meadow colour field with photoscanned blades
  // and leaf litter, shifted from autumn toward summer green.
  vec3 grass=mix(meadow*vec3(0.80,1.02,0.58),turf*vec3(0.70,1.0,0.52),0.5)*mix(0.82,1.12,broad);
  vec3 earth=mix(vec3(0.17,0.12,0.073),vec3(0.27,0.22,0.145),broad);
  vec3 ground_tex=untiled(ground_albedo,UV*ground_scale);
+ vec3 ground_vn=texture(ground_normal,UV*ground_scale).rgb;
+ if(ground_variant_count>0) variant_sample(ground_variant_albedo,ground_variant_normal,ground_variant_scale,ground_variant_mean,ground_variant_count,UV,3.0,ground_tex,ground_vn);
  earth*=mix(0.72,1.22,clamp(dot(ground_tex,vec3(0.2126,0.7152,0.0722))*2.8,0.0,1.0));
  float source_grass=smoothstep(0.01,0.07,COLOR.g-COLOR.r);
  float blend_noise=(surface_noise(UV*2.7)-0.5)*0.23+(dot(meadow,vec3(0.33))-0.3)*0.5;
@@ -78,6 +99,8 @@ void fragment() {
  float variation=mix(0.88,1.12,surface_hash(stone_id));
  vec3 stone=mix(vec3(0.085,0.091,0.075),vec3(0.22,0.235,0.21)*variation,block);
  vec3 paving_tex=untiled(paving_albedo,UV*paving_scale);
+ vec3 paving_vn=texture(paving_normal,UV*paving_scale).rgb;
+ if(paving_variant_count>0) variant_sample(paving_variant_albedo,paving_variant_normal,paving_variant_scale,paving_variant_mean,paving_variant_count,UV,3.0,paving_tex,paving_vn);
  stone=mix(vec3(dot(paving_tex,vec3(0.2126,0.7152,0.0722))),paving_tex,0.68)*mix(0.88,1.08,broad)*mix(0.93,1.05,surface_fbm(UV*0.045+vec2(5.0,2.0)));
  float paving_weight=smoothstep(0.08,0.9,UV2.x+(surface_fbm(UV*3.4)-0.5)*0.13);
  vec3 color=mix(ground,stone,paving_weight);
@@ -117,8 +140,8 @@ void fragment() {
   ROUGHNESS=mix(0.91,0.60,wet);
  } else { ROUGHNESS=0.91; }
  ALBEDO=color;
- vec3 base_n=mix(texture(ground_normal,UV*ground_scale).rgb,texture(grass_normal,UV*grass_scale).rgb,grass_weight);
- vec3 paving_n=texture(paving_normal,UV*paving_scale).rgb;
+ vec3 base_n=mix(ground_vn,grass_vn,grass_weight);
+ vec3 paving_n=paving_vn;
  vec3 wood_n=texture(wood_normal,UV*wood_scale).rgb;
  vec2 cliff_uv=abs(world_normal.x)>abs(world_normal.z)?world_position.zy:world_position.xy;
  vec3 rock_n=texture(rock_normal,cliff_uv*rock_scale).rgb;

@@ -37,6 +37,10 @@ def textures(ids):
         files = json.loads(fetch(f'https://api.polyhaven.com/files/{asset_id}'))
         maps = []
         for role, key in (('albedo', 'Diffuse'), ('normal', 'nor_gl'), ('roughness', 'Rough')):
+            if key not in files:
+                print('skip', asset_id, '(no', key, 'map)')
+                maps = []
+                break
             entry = files[key]['1k']['jpg']
             data = fetch(entry['url'])
             if hashlib.md5(data).hexdigest() != entry['md5']:
@@ -46,11 +50,16 @@ def textures(ids):
                 handle.write(data)
             maps.append({'role': role, 'file': name, 'url': entry['url'], 'sha256': hashlib.sha256(data).hexdigest(),
                          'sourceMd5': entry['md5'], 'bytes': len(data)})
+        if not maps:
+            continue
         size = [round(v / 1000.0, 2) for v in info.get('dimensions', [2000, 2000])[:2]]
         manifest['sets'].append({'id': asset_id, 'name': info.get('name', asset_id), 'source': f'https://polyhaven.com/a/{asset_id}',
                                  'license': 'CC0-1.0', 'licenseUrl': 'https://polyhaven.com/license',
                                  'authors': list(info.get('authors', {}).keys()), 'sizeMeters': size, 'maps': maps})
         print('pinned texture', asset_id, size)
+        # Saved after every set, so an interrupted run keeps what it pinned.
+        with open(manifest_path, 'w', encoding='utf-8', newline='\r\n') as handle:
+            json.dump(manifest, handle, indent=1)
     # The surfaces manifest is kept with CRLF line endings.
     with open(manifest_path, 'w', encoding='utf-8', newline='\r\n') as handle:
         json.dump(manifest, handle, indent=1)

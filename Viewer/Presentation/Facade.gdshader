@@ -23,6 +23,12 @@ uniform sampler2D surface_albedo : source_color, filter_linear_mipmap_anisotropi
 uniform sampler2D surface_normal_map : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D surface_roughness : filter_linear_mipmap_anisotropic, repeat_enable;
 uniform vec2 surface_scale=vec2(1.0);
+#include "res://Presentation/SurfaceVariants.gdshaderinc"
+uniform sampler2DArray surface_variant_albedo : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2DArray surface_variant_normal : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform float surface_variant_scale[6];
+uniform vec3 surface_variant_mean[6];
+uniform int surface_variant_count=0;
 void fragment(){
  if(!double_sided && !FRONT_FACING){discard;}
  vec3 world_normal=(INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz;
@@ -35,6 +41,11 @@ void fragment(){
  float broad=surface_fbm(uv*0.7);
  float fine=surface_noise(uv*30.0);
  vec3 source=texture(surface_albedo,uv*surface_scale).rgb;
+ vec3 variant_normal=texture(surface_normal_map,uv*surface_scale).rgb;
+ if(surface_variant_count>0){
+  // Several photoscans per wall family, two-metre cells, blended.
+  variant_sample(surface_variant_albedo,surface_variant_normal,surface_variant_scale,surface_variant_mean,surface_variant_count,uv*(masonry?1.0:0.4),2.0,source,variant_normal);
+ }
  float detail=dot(source,vec3(0.2126,0.7152,0.0722));
  float above=(world_position.y-piece_base);
  // Weathering only reads on full-height pieces; sills/lintels stay clean.
@@ -54,14 +65,14 @@ void fragment(){
   ALBEDO*=mix(0.72,1.06,smoothstep(0.12,0.55,detail));
   ALBEDO=mix(ALBEDO,ALBEDO*vec3(0.80,0.84,0.78),damp*0.7+stain*0.25);
   ROUGHNESS=0.88+fine*0.08;
-  NORMAL_MAP=texture(surface_normal_map,uv*surface_scale).rgb;
+  NORMAL_MAP=variant_normal;
  }else{
   // Rough-cast lime render from the photoscanned plaster itself (its own
   // chips, pores and grey patches), tinted by the wall's palette, with gentle
   // large-scale drift and soiling toward the base.
   // Sampled at 2.5 m so chips do not repeat; their contrast is softened so
   // the wall reads as clean limewash with real texture, not blotches.
-  vec3 plaster=texture(surface_albedo,uv*surface_scale*0.4).rgb;
+  vec3 plaster=surface_variant_count>0?source:texture(surface_albedo,uv*surface_scale*0.4).rgb;
   float grain=clamp(dot(plaster,vec3(0.2126,0.7152,0.0722))/0.72,0.0,1.2);
   vec3 lime=palette.rgb*mix(vec3(1.0),vec3(1.0,0.97,0.9),smoothstep(0.55,0.8,surface_fbm(world_position.xz*0.025+vec2(11.0,5.0))));
   ALBEDO=lime*mix(1.0,grain,0.4)*mix(0.94,1.03,broad);
@@ -69,7 +80,7 @@ void fragment(){
   ALBEDO=mix(ALBEDO,ALBEDO*vec3(0.55,0.52,0.46),damp*0.65);
   ALBEDO*=1.0-streak*0.15;
   ROUGHNESS=0.92;
-  NORMAL_MAP=texture(surface_normal_map,uv*surface_scale*0.4).rgb;
+  NORMAL_MAP=surface_variant_count>0?variant_normal:texture(surface_normal_map,uv*surface_scale*0.4).rgb;
  }
  NORMAL_MAP_DEPTH=wood?0.9:(masonry?1.0:1.6);
  ROUGHNESS=mix(ROUGHNESS,texture(surface_roughness,uv*surface_scale).r,0.5);
