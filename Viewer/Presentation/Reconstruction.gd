@@ -590,7 +590,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 	# Generic tiledata names ("window", "arrow loop") hide the material their
 	# art shows; reviewed per-graphic facts and bridge context take precedence.
 	var review: Dictionary = preload("res://Presentation/ReviewedCatalog.gd").entry(int(s.id))
-	family = str(review.get("facadeFamily",family))
+	family = str(review.get("facadeFamily",rule.get("facadeFamily",family)))
 	var opening := str(review.get("opening",""))
 	var bridge: Dictionary = bridges.parapets.get(ordinal,{})
 	if not bridge.is_empty():
@@ -614,6 +614,12 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 		boundary_fragments += 1
 	else:
 		visual = preload("res://Presentation/ReviewedCatalog.gd").build(self,int(s.id),groups.get(ordinal,{}))
+		# Owner-library model for graphics outside the reviewed city (local only).
+		if visual == null and rule.has("slot") and not tint.is_empty():
+			var fit: Array = rule.get("slotSize",[0.8,0.8,0.8])
+			var library := preload("res://Presentation/LocalLibrary.gd")
+			visual = library.pile(str(rule.slot),int(s.x),int(s.y),Vector3(fit[0],fit[1],fit[2]),int(rule.slotCount)) if rule.has("slotCount") else library.build(str(rule.slot),int(s.x),int(s.y),Vector3(fit[0],fit[1],fit[2]))
+			if visual: node.set_meta("library",str(rule.slot))
 		if visual == null:
 			match kind:
 				"wall", "window":

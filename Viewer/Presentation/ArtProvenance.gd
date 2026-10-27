@@ -82,6 +82,8 @@ func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -
 		return {"status":"built","detail":"built in code: "+Appearance.variant(id,server)}
 	var rule: Dictionary = audited if not audited.is_empty() else Rules.resolve(id,{"name":name,"height":item.height,"flags":flag_bits(item.flags)})
 	if rule.is_empty(): return {"status":"original","detail":"no 3D look yet"}
+	if rule.has("slot") and not preload("res://Presentation/Reconstruction.gd").art_tint(id).is_empty() and preload("res://Presentation/LocalLibrary.gd").has(str(rule.slot)):
+		return {"status":"owner","detail":"your packs: %s (local library)" % rule.slot}
 	var kind := str(rule.get("kind",""))
 	var asset := str(rule.get("asset",""))
 	match kind:

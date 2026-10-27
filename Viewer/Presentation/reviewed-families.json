@@ -2423,6 +2423,1822 @@
    ],
    "note": "tier 1 materials/nature: side-by-side render matches original material, colour and form",
    "sheet": "tier1"
+  },
+  {
+   "ids": [
+    3862,
+    3863
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    3913,
+    3914
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    4604
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    2448
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    9429,
+    9430,
+    9431,
+    9432,
+    9433,
+    9434,
+    9435,
+    9436,
+    9437
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    3911,
+    3912
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    6257,
+    6258
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    3621,
+    3622,
+    3623,
+    3624,
+    3625,
+    3626,
+    3627,
+    3628
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    3835,
+    3836,
+    3837,
+    3838,
+    3839,
+    3840,
+    3841,
+    3842,
+    3843,
+    3844
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    2464,
+    2465,
+    2466
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    40108,
+    40109,
+    40110,
+    40111,
+    40112,
+    40113,
+    40114,
+    40115,
+    40116
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    40129,
+    40130,
+    40131,
+    40132,
+    40133,
+    40134,
+    40135
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    2575,
+    2576,
+    2577
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    5164,
+    5165,
+    5166,
+    5167,
+    5168,
+    5169,
+    5170,
+    5171,
+    5172,
+    5173,
+    5174,
+    5175
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    2420,
+    2421
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    22339
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    7791
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    7800
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    3861
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    3875,
+    3876,
+    3884
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    3221
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    3819,
+    3820
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    3222
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    8782,
+    8783,
+    8784,
+    8785
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    3878,
+    3879,
+    3880,
+    3881,
+    3888
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    2444
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    16441
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    3822,
+    3823
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    3796,
+    3797,
+    3798,
+    3799,
+    3800,
+    3801,
+    3802,
+    3803,
+    3804,
+    3805,
+    3806
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    4656
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    4677,
+    4678,
+    4679
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    4702,
+    4703,
+    4704,
+    4705,
+    4712,
+    4713
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    2586,
+    2587,
+    2588,
+    2589
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    2594,
+    2595,
+    2596,
+    2597
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    17074,
+    17075
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    2456,
+    2457
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    2542,
+    2543
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    4389,
+    4390,
+    4391,
+    4392,
+    4393,
+    4394
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    8750,
+    8751,
+    8752,
+    8753
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    6872,
+    6873,
+    6874,
+    6875,
+    6876,
+    6877,
+    6878,
+    6879
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    2518
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    2477
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    4088,
+    4089
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    13345,
+    13346,
+    13347,
+    13348,
+    13350,
+    13351,
+    13352,
+    13353,
+    13354,
+    13355,
+    13356,
+    13357,
+    13358,
+    13359,
+    13360,
+    13361,
+    13362,
+    13363,
+    13364,
+    13365,
+    13366,
+    13367,
+    13368,
+    13369
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    13446,
+    13447,
+    13448,
+    13449,
+    13450
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    13484,
+    13485,
+    13486,
+    13487
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    13451,
+    13452,
+    13453,
+    13454,
+    13455
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    13488,
+    13489,
+    13490,
+    13491,
+    13492
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    4165
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    3857,
+    3858,
+    3865,
+    3871
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    8827
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    3637,
+    3638,
+    3639,
+    3640,
+    3641,
+    3642
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    8045,
+    8046,
+    8047,
+    8048,
+    8049,
+    8050
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    3825,
+    3826
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    6880,
+    6881,
+    6882,
+    6883,
+    6884
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    8707
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    6227,
+    6228,
+    6229,
+    6230,
+    6231,
+    6232,
+    6233,
+    6234
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    3225,
+    3226,
+    3227,
+    3228,
+    3229
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    3867,
+    3873
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    7807
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    9244
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    9245,
+    9246
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    2474
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    7808,
+    7809
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    2862,
+    2863,
+    2864,
+    2865
+   ],
+   "note": "owner library slot model matches the original object type and proportions",
+   "sheet": "lib"
+  },
+  {
+   "ids": [
+    527,
+    528,
+    529,
+    530,
+    531,
+    532,
+    533,
+    534,
+    535,
+    536,
+    537,
+    538
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    5510,
+    5511,
+    5512,
+    5513,
+    5514,
+    5515,
+    5516,
+    5517,
+    5518,
+    5520,
+    5521,
+    5522,
+    5523,
+    5524,
+    5525,
+    5526,
+    5527,
+    5528,
+    5529,
+    5530,
+    5531,
+    5532,
+    5533,
+    5536,
+    5537,
+    5538,
+    5539,
+    5540,
+    5541,
+    5542,
+    5543,
+    5544,
+    5545,
+    5546,
+    5547,
+    5548,
+    5549,
+    5550,
+    5551,
+    5552,
+    5553,
+    5554,
+    5555,
+    5556,
+    5557,
+    5558,
+    5559,
+    5560,
+    5561,
+    5562,
+    5563,
+    5564,
+    5565,
+    5566,
+    5567,
+    5568,
+    5569,
+    5570,
+    5571,
+    5572,
+    5573,
+    5574,
+    5575,
+    5576,
+    5577,
+    5578,
+    5579,
+    5580,
+    5581,
+    5582,
+    5583,
+    5584,
+    5585,
+    5586,
+    5587,
+    5588,
+    5589,
+    5590,
+    5591,
+    5592,
+    5593,
+    5594,
+    5595,
+    5596,
+    5597,
+    5598,
+    5599,
+    5600,
+    5601,
+    5602,
+    5603,
+    5604,
+    5605,
+    5606,
+    5607,
+    5608,
+    5609,
+    5610,
+    5611,
+    5612,
+    5613,
+    5614,
+    5615,
+    5616,
+    5617,
+    5618,
+    5619,
+    5620,
+    5621
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    371,
+    377,
+    378,
+    379,
+    380,
+    381
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    16750,
+    16751,
+    16756,
+    16760,
+    16761,
+    16762,
+    16763,
+    16764,
+    16765,
+    16766,
+    16767,
+    16768,
+    16769,
+    16770,
+    16771,
+    16772,
+    16773
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    1258,
+    1259,
+    1260,
+    1261,
+    1262,
+    1263,
+    1264,
+    1265,
+    1266
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    1344
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    10468,
+    10469,
+    10470,
+    10471,
+    10472,
+    10473,
+    10474,
+    10475,
+    10476,
+    10477,
+    10478,
+    10479,
+    10480,
+    10481,
+    10482,
+    10483,
+    10484,
+    10485,
+    10486,
+    10487,
+    10488,
+    10489,
+    10490,
+    10491,
+    10492,
+    10493,
+    10494,
+    10495,
+    10496,
+    10497,
+    10498,
+    10499,
+    10500,
+    10501,
+    10502,
+    10503,
+    10504,
+    10505,
+    10506,
+    10507,
+    10508,
+    10509,
+    10510,
+    10511,
+    10512,
+    10513,
+    10514,
+    10515,
+    10516,
+    10517,
+    10518,
+    10519,
+    10520,
+    10521,
+    10522,
+    10523,
+    10528,
+    10529,
+    10530,
+    10531,
+    10532,
+    10533,
+    10534,
+    10535,
+    10536,
+    10537,
+    10538,
+    10539,
+    10540,
+    10541,
+    10542,
+    10543,
+    10544,
+    10545,
+    10546,
+    10547,
+    10548,
+    10549
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    17175
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    16510,
+    16511,
+    16512,
+    16513,
+    16514,
+    16515,
+    16516,
+    16517,
+    16518,
+    16519,
+    16527,
+    16528,
+    16529,
+    16530,
+    16531,
+    16532,
+    16533,
+    16534,
+    16535,
+    16536,
+    16537,
+    16538
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    581,
+    582,
+    583,
+    584,
+    585,
+    586
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    39756,
+    39757,
+    39758,
+    39759
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    39659,
+    39660,
+    39661,
+    39662,
+    39663,
+    39664,
+    39665,
+    39666,
+    39667,
+    39668,
+    39669,
+    39670,
+    39671,
+    39672,
+    39673,
+    39674,
+    39675,
+    39676,
+    39677,
+    39678
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    1169,
+    1170,
+    1171,
+    1172,
+    1179
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    19947,
+    19948,
+    19949,
+    19950,
+    19951,
+    19952,
+    19953,
+    19954
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    19190,
+    19196
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    6013,
+    6014,
+    6015,
+    6016,
+    6017,
+    6018,
+    6019,
+    6020,
+    6021,
+    6022,
+    6023,
+    6024,
+    6025
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    2081,
+    2082,
+    2083
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    3518
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    1520,
+    1521,
+    1522,
+    1523,
+    1524,
+    1525,
+    1526,
+    1527,
+    1528,
+    1529,
+    1530,
+    1531,
+    1532,
+    1533,
+    1534
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    20707,
+    20708
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    7617,
+    7618,
+    7619,
+    7620,
+    7621,
+    7622
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    693,
+    694,
+    695,
+    696,
+    697,
+    698,
+    699,
+    700
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    20733,
+    20734,
+    20735,
+    20738,
+    20739,
+    20740,
+    20741,
+    20742,
+    20743,
+    20744,
+    20745,
+    20746,
+    20747,
+    20748,
+    20749,
+    20750,
+    20751,
+    20754
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    1057,
+    1058,
+    1059,
+    1060,
+    1061
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    1489,
+    1490,
+    1491,
+    1492,
+    1494,
+    1495,
+    1496,
+    1497,
+    1498,
+    1499,
+    1500,
+    1501,
+    1502,
+    1503,
+    1504,
+    1505,
+    1506,
+    1507,
+    1508,
+    1509,
+    1510,
+    1511,
+    1512,
+    1513,
+    1514,
+    1515,
+    1516
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    1981,
+    1982,
+    1983,
+    1984,
+    1985,
+    1986,
+    1987,
+    1988,
+    1989,
+    1990
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    20784
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    20785
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    18124
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    433,
+    434,
+    435,
+    436
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    474
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    18110,
+    18111,
+    18112,
+    18113,
+    18114,
+    18115,
+    18116,
+    18117,
+    18118,
+    18119,
+    18120,
+    18121,
+    18122,
+    18123,
+    18128,
+    18129,
+    18130,
+    18132,
+    18133,
+    18134,
+    18136,
+    18138,
+    18139,
+    18140
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    734,
+    735,
+    736,
+    738,
+    739,
+    740,
+    741,
+    742,
+    743,
+    744,
+    745,
+    746,
+    747,
+    748
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    872,
+    873,
+    874,
+    876,
+    877,
+    878,
+    879,
+    880,
+    881
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    14755,
+    14756,
+    14757,
+    14758,
+    14759,
+    14760,
+    14761,
+    14762,
+    14763,
+    14764,
+    14765,
+    14766,
+    14767,
+    14768,
+    14769,
+    14770,
+    14771,
+    14772,
+    14773,
+    14774,
+    14775,
+    14776,
+    14777,
+    14778,
+    14779,
+    14780,
+    14781,
+    14782,
+    14783,
+    14784,
+    14785,
+    14786,
+    14787,
+    14788,
+    14789,
+    14790,
+    14791,
+    14792,
+    14793,
+    14794,
+    14795,
+    14796,
+    14797,
+    14798,
+    14799,
+    14800,
+    14801,
+    14802,
+    14803,
+    14805,
+    14806,
+    14807,
+    14808,
+    14809,
+    14810,
+    14811,
+    14812,
+    14813,
+    14814,
+    14815,
+    14816,
+    14817,
+    14818,
+    14819,
+    14820,
+    14821,
+    14822,
+    14823,
+    14824,
+    14825,
+    14826,
+    14827,
+    14828,
+    14829,
+    14830,
+    14831,
+    14832,
+    14833,
+    14834,
+    14835,
+    14836,
+    14837,
+    14838,
+    14839,
+    14840,
+    14841,
+    14842,
+    14843,
+    14844,
+    14845,
+    14846,
+    14847,
+    14848,
+    14849,
+    14850,
+    14851,
+    14852,
+    14853,
+    14854,
+    14855,
+    14856,
+    14857,
+    14858,
+    14859,
+    14860,
+    14861,
+    14862,
+    14863,
+    14864,
+    14865,
+    14866,
+    14867,
+    14868,
+    14869,
+    14870,
+    14871,
+    14872,
+    14873,
+    14874,
+    14875,
+    14876,
+    14877,
+    14878,
+    14879,
+    14880,
+    14881,
+    14882,
+    14883,
+    14884,
+    14885,
+    14886,
+    14887,
+    14888,
+    14889,
+    14890,
+    14891,
+    14892,
+    14893,
+    14894,
+    14895,
+    14896,
+    14897,
+    14898,
+    14899,
+    14900,
+    14901,
+    14902,
+    14903,
+    14904,
+    14905,
+    14906,
+    14907,
+    14908,
+    14909,
+    14910,
+    14911,
+    14912,
+    14913,
+    14914,
+    14915,
+    14916,
+    14917,
+    14918,
+    14919,
+    14920,
+    14921,
+    14922,
+    14923,
+    14924,
+    14925,
+    14926,
+    14927,
+    14928,
+    14929,
+    14930,
+    14931,
+    14932
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    3166,
+    3167,
+    3168
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    492,
+    493,
+    494,
+    495
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    16722
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    16723
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    16785,
+    16787,
+    16789,
+    16791,
+    16796,
+    16801,
+    16804,
+    16805
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    16784,
+    16786,
+    16788,
+    16790
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    13422,
+    13423,
+    13424,
+    13425,
+    13426,
+    13427,
+    13428,
+    13429,
+    13430,
+    13431,
+    13432,
+    13433,
+    13434,
+    13435,
+    13436,
+    13437,
+    13438,
+    13439,
+    13440,
+    13441,
+    13442,
+    13443,
+    13444,
+    13445
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    13496,
+    13497,
+    13498,
+    13499,
+    13501,
+    13502,
+    13503,
+    13504,
+    13506,
+    13507,
+    13508,
+    13509,
+    13511,
+    13512,
+    13513,
+    13514,
+    13522
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    340,
+    341,
+    342,
+    343,
+    348,
+    349,
+    354,
+    355
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    10438,
+    10439,
+    10440,
+    10441,
+    10442,
+    10443,
+    10444,
+    10445,
+    10446,
+    10447,
+    10448,
+    10449,
+    10450,
+    10451,
+    10452,
+    10453,
+    10454,
+    10455,
+    10456,
+    10457,
+    10458
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    2222,
+    2223,
+    2224,
+    2225,
+    2226,
+    2227,
+    2228,
+    2229,
+    2230,
+    2231,
+    2232,
+    2233,
+    2234,
+    2235,
+    2236,
+    2237,
+    2238,
+    2239,
+    2240,
+    2241,
+    2242,
+    2243,
+    2244,
+    2245,
+    2246,
+    2247,
+    2248,
+    2249,
+    2250
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    10592,
+    10593,
+    10594,
+    10595,
+    10596,
+    10597,
+    10598,
+    10599,
+    10600,
+    10601,
+    10602,
+    10603,
+    10604,
+    10605,
+    10606,
+    10607,
+    10608,
+    10609,
+    10610,
+    10611,
+    10612,
+    10613,
+    10614,
+    10615,
+    10616,
+    10617,
+    10618,
+    10619,
+    10620,
+    10621,
+    10622,
+    10623,
+    10624,
+    10625,
+    10626,
+    10627,
+    10628,
+    10629,
+    10630,
+    10631,
+    10632,
+    10633,
+    10634,
+    10635,
+    10636,
+    10637,
+    10638,
+    10639
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    550,
+    551,
+    552,
+    554,
+    555
+   ],
+   "note": "materials/architecture batch 2: render matches original material, colour and form",
+   "sheet": "g2"
+  },
+  {
+   "ids": [
+    3219
+   ],
+   "note": "tropical plants (owner Tropical Nature Pack), woven mats and snow match the original",
+   "sheet": "trop"
+  },
+  {
+   "ids": [
+    3223
+   ],
+   "note": "tropical plants (owner Tropical Nature Pack), woven mats and snow match the original",
+   "sheet": "trop"
+  },
+  {
+   "ids": [
+    3224
+   ],
+   "note": "tropical plants (owner Tropical Nature Pack), woven mats and snow match the original",
+   "sheet": "trop"
+  },
+  {
+   "ids": [
+    3238
+   ],
+   "note": "tropical plants (owner Tropical Nature Pack), woven mats and snow match the original",
+   "sheet": "trop"
+  },
+  {
+   "ids": [
+    3241
+   ],
+   "note": "tropical plants (owner Tropical Nature Pack), woven mats and snow match the original",
+   "sheet": "trop"
+  },
+  {
+   "ids": [
+    6077,
+    6078,
+    6079,
+    6080,
+    6081,
+    6082,
+    6083,
+    6084,
+    6085,
+    6086,
+    6087,
+    6088,
+    6089,
+    6090,
+    6091,
+    6092,
+    6093,
+    6094
+   ],
+   "note": "tropical plants (owner Tropical Nature Pack), woven mats and snow match the original",
+   "sheet": "trop"
+  },
+  {
+   "ids": [
+    3332
+   ],
+   "note": "tropical plants (owner Tropical Nature Pack), woven mats and snow match the original",
+   "sheet": "trop"
+  },
+  {
+   "ids": [
+    4582,
+    4583,
+    4584,
+    4585
+   ],
+   "note": "tropical plants (owner Tropical Nature Pack), woven mats and snow match the original",
+   "sheet": "trop"
   }
  ]
 }

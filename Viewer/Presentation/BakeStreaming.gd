@@ -191,6 +191,7 @@ func run() -> void:
  signature+=preload("res://Presentation/LocalTrees.gd").signature()
  signature+=preload("res://Presentation/LocalPlants.gd").signature()
  signature+=preload("res://Presentation/LocalProps.gd").signature()
+ signature+=preload("res://Presentation/LocalLibrary.gd").signature()
  signature=signature.sha256_text()
  output=directory.path_join("prepared")
  DirAccess.make_dir_recursive_absolute(output)

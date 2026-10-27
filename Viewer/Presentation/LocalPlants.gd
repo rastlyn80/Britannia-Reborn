@@ -7,6 +7,15 @@ const BASE := "res://local-art"
 # UO vegetation kinds / names -> converted plant name prefixes and heights (m).
 const RULES := [
 	{"match":"fern","group":"plants","prefixes":["fern_"],"height":0.75},
+	# Tropical Nature Pack plants for the jungle/desert graphics (exact names).
+	{"match":"blade plant","group":"plants","prefixes":["plant3","plant4","plantsb6"],"height":1.1},
+	{"match":"snake plant","group":"plants","prefixes":["plant3","plant4","plantsb6"],"height":1.0},
+	{"match":"fan plant","group":"plants","prefixes":["plant15","plant11"],"height":0.8},
+	{"match":"elephant ear","group":"plants","prefixes":["plant5","plant6","plant7","plantsb3"],"height":1.0},
+	{"match":"ponytail palm","group":"plants","prefixes":["plant10"],"height":1.0},
+	{"match":"century plant","group":"plants","prefixes":["plant10"],"height":1.2},
+	{"match":"yucca","group":"plants","prefixes":["plant10"],"height":1.3},
+	{"match":"water plants","group":"plants","prefixes":["plant9"],"height":0.7},
 	{"kind":"bush","group":"bushes","prefixes":[""],"height":1.3},
 	{"kind":"grass","group":"plants","prefixes":["tallgrass_"],"height":0.55,"tint":"b8c48a"},
 	{"kind":"flower","group":"plants","prefixes":["wildflowers_grp","lavender_","groundcover_1"],"height":0.45},

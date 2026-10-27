@@ -1,3 +1,18 @@
+# Owner-reported Britain defects (queued after the catalogue matching) — 27 October 2026
+
+From the owner's in-game screenshots; fix with shared rules, then verify in captures:
+1. Wall caps 102/108 (stone wall pieces whose later tiledata names are "ornate elven bookshelf"/"ethereal voyage scroll") render as a bookcase/book on wall corners (14 + 2 in Britain). Wall-flagged graphics must stay masonry.
+2. Castle entrance just after the wooden drawbridge: the main gateway (between two arched side doors) is walkable in the source/server but is drawn as a solid wall; it must be rendered as an open passage. Find the passable gate cells under the wall run and open them. Compare rendered walls/collision with passable source arch cells (208/209/111/113/320 are passable, 206/207 piers impassable).
+3. Stone arches (206-227, 110-113, 317/320) use the Quaternius wooden Wall_Arch frame; build them in masonry of the wall family.
+4. Gatehouse: stacked "stone post" 204 render as thin detached poles above the roof, mixed wood/stone. Render posts as square masonry piers matching the walls, and check what the top-level pieces really are.
+5. Floating pieces on towers above crenellations; gaps between walls and roofs; an unexplained opening in a building.
+6. Clunky "York" houses: over-dense studs; dark plank houses with white plaster bands around windows.
+7. Road signs: two boards on one post have broken geometry; street names must be shown on the boards permanently, not only on click.
+8. White plaster panels over doorways and openings in brick (and other masonry) walls; lintel/infill pieces must take the wall's own family.
+9. Britain castle: roof fragments out of place on towers and wall tops (timber roof slabs hanging off battlements, white dashed lines along wall faces).
+
+Approach: every fix is a shared rule plus an automated whole-map audit (floating pieces with nothing beneath, roofs not resting on walls, wrong-family infill, rendered walls on passable cells and open cells on impassable ones), so the same defects are found and prevented automatically as the map expands, not fixed building by building.
+
 # Next after the item catalogue — 27 October 2026
 
 Use the catalogue ranking to choose replacement families. Next: model naming rule (`Art/Modern/<category>/<family>.glb`) with automatic registration, isometric silhouette fitting/flagging against the original art, picture-similarity and mirror grouping, and a family override file. Then equipment appearance on the shared Quaternius skeleton (skinned garments with body-region hiding and hue masks; socketed weapons and shields).

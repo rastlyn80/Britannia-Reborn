@@ -38,6 +38,7 @@ def main():
     parser.add_argument('--ids', default='')
     parser.add_argument('--families', default='')
     parser.add_argument('--label', default='review')
+    parser.add_argument('--detail', default='', help='only looks whose detail contains this text')
     args = parser.parse_args()
     catalog = load('catalog.js', 'window.CATALOG=')
     looks = load('current.js', 'window.CURRENT=')['looks']
@@ -51,7 +52,8 @@ def main():
             keys = args.families.split(',')
             families = [f for f in families if f['key'] in keys]
         else:
-            families = [f for f in families if f['world'] > 0 and looks[str(lead(f, items))]['status'] in wanted]
+            families = [f for f in families if f['world'] > 0 and looks[str(lead(f, items))]['status'] in wanted
+                        and args.detail in looks[str(lead(f, items))]['detail']]
         chosen = [lead(f, items) for f in families[args.skip:args.skip + args.top]]
     renders = os.path.join(OUT, 'compare', 'renders')
     os.makedirs(renders, exist_ok=True)

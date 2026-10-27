@@ -1,0 +1,14 @@
+{
+ "description": "Review of the local owner-pack library renders (outputs/item-catalog/library sheets). Variant names only; models stay local.",
+ "rejected": {
+  "altar_01": "whole temple-set scene, not an altar",
+  "brazier_02": "reads as a lamp post",
+  "fireplace_01": "round stone well-like pit, not a fireplace",
+  "stalagmite_01": "wooden-looking stake",
+  "stalagmite_02": "wooden-looking stake",
+  "stalagmite_03": "wooden-looking stake",
+  "stalagmite_04": "wooden-looking stake",
+  "stalagmite_05": "wooden-looking stake",
+  "palm_04": "fallen, bent palm"
+ }
+}

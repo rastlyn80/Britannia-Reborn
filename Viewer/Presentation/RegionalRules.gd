@@ -50,7 +50,80 @@ static func roof_material(n: String) -> String:
  if "shingle" in n or "log" in n or "wood" in n: return "shingle"
  return "slate"
 
+# Library slots (Presentation/LocalLibrary.gd): name pattern -> slot, size in metres
+# (width, height, depth). Used for graphics outside the reviewed city when the
+# owner's converted library has the slot; otherwise the rule's own look stays.
+const SLOTS := [
+ ["^small palm$","palm",[1.0,1.8,1.0]],
+ ["^(palm|palm tree|date palm|coconut palm)$","palm",[3.0,5.5,3.0]],
+ ["cypress tree","cypress",[2.0,7.0,2.0]],
+ ["pile of skulls","skull",[0.9,0.35,0.9],7],
+ ["^(skull|demon skull|skull with candle)$","skull",[0.3,0.22,0.3]],
+ ["^bone$","bone",[0.5,0.1,0.5]],
+ ["bone pile|^bones$|rib cage|spine|pelvis bone|jaw bone|bone shards","bone",[0.9,0.1,0.9],5],
+ ["gravestone|tombstone","gravestone",[0.8,1.1,0.35]],
+ ["mushroom","mushroom",[0.35,0.3,0.35]],
+ ["^(rock|rocks|boulder)$","rock",[0.9,0.6,0.9]],
+ ["candelabra|candlestick","candlestick",[0.35,0.5,0.35]],
+ ["^candle$|^candles$","candle",[0.12,0.2,0.12]],
+ ["^(lantern|hanging lantern|lamp)$","lantern",[0.3,0.45,0.3]],
+ ["^(stool|bamboo stool|wooden stool)$","stool",[0.45,0.5,0.45]],
+ ["^(chair|wooden chair|straw chair)$","chair",[0.6,1.0,0.6]],
+ ["^(bench|wooden bench)$","bench",[1.0,0.5,0.4]],
+ ["^(chest|wooden chest|metal chest|ornate elven chest)$","chest",[0.9,0.6,0.55]],
+ ["^(bottle|bottles|bottles of ale|bottle of wine|bottle of ale)$","bottle",[0.12,0.32,0.12]],
+ ["^(mug|mug of ale|goblet|tankard|cup|pewter mug|ceramic mug)$","cup",[0.12,0.18,0.12]],
+ ["^(plate|plates)$","plate",[0.28,0.04,0.28]],
+ ["^(pitcher|jug|pitcher of water|pitcher of milk)$","jug",[0.2,0.3,0.2]],
+ ["open book","book_open",[0.4,0.06,0.3]],
+ ["^(book|books)$","book",[0.18,0.05,0.25]],
+ ["^(scroll|scrolls|parchment)","scroll",[0.3,0.06,0.2]],
+ ["^(apple|apples|pear|pears|peach|peaches|lemon|lemons|lime|limes|grapes|bunch of grapes|fruit basket)$","fruit",[0.35,0.18,0.35]],
+ ["bread|loaf","bread",[0.3,0.1,0.15]],
+ ["^(sack|sack of flour|sack of grain|bag of grain|grain sack)","sack",[0.55,0.75,0.55]],
+ ["^basket","basket",[0.5,0.35,0.5]],
+ ["^(vase|large vase|amphora|urn)$","vase",[0.45,0.7,0.45]],
+ ["^(decorative sword|sword)$","sword",[0.15,1.0,0.15]],
+ ["^(axe|battle axe|decorative axe)$","axe",[0.3,0.9,0.3]],
+ ["^(shield|decorative shield|decorative shields)$","shield",[0.6,0.7,0.6]],
+ ["^(gold coins|copper coins|silver coins|coins|gold)$","coin",[0.5,0.05,0.5],6],
+ ["^(ruby|sapphire|star sapphire|emerald|diamond|amethyst|citrine|tourmaline|gem|gems)","gem",[0.12,0.1,0.12]],
+ ["^well$","well",[1.8,2.4,1.8]],
+ ["signpost|sign post","signpost",[0.8,2.3,0.4]],
+ ["market stall|booth","market_stall",[2.0,2.4,1.6]],
+ ["^(cart|wagon)$","cart",[2.2,1.4,1.2]],
+ ["chandelier","chandelier",[0.5,1.6,0.5]],
+ ["^bucket","bucket",[0.35,0.35,0.35]],
+ ["^(box|wooden box)$","box",[0.55,0.5,0.55]],
+ ["gallows","gallows",[2.4,3.0,2.4]],
+ ["guillotine","guillotine",[2.0,3.2,1.2]],
+ ["carcass|^(meat|ham|ribs)$","meat",[0.5,0.5,0.3]],
+ ["^(cauldron|pot|cooking pot)$","pot",[0.5,0.6,0.5]],
+]
+static var slot_patterns: Array = []
+
+static func slot_for(n: String) -> Array:
+ if slot_patterns.is_empty():
+  for entry in SLOTS: slot_patterns.append([_regex(str(entry[0])),entry[1],entry[2]]+(entry.slice(3) if entry.size()>3 else []))
+ for entry in slot_patterns:
+  if (entry[0] as RegEx).search(n): return [entry[1],entry[2],entry[3] if entry.size()>3 else 1]
+ return []
+
 static func resolve(id: int,info: Dictionary) -> Dictionary:
+ var rule := _resolve(id,info)
+ # Wall-flagged graphics are architecture whatever later tiledata names say.
+ if int(info.get("flags",0)) & 0x10 and int(info.get("height",0)) > 0 and rule.get("kind","") in ["prop","asset"]:
+  return {"axis":"x","confidence":"tiledata Wall flag overrides a later item name","regional":true,"kind":"trim" if int(info.get("height",0))<15 else "wall","asset":"Village/Wall_UnevenBrick_Straight.gltf","facadeFamily":"stone"}
+ var n := str(info.get("name","")).strip_edges().to_lower()
+ var slot := slot_for(n) if not n.is_empty() and not rule.get("kind","") in ["wall","window","trim","roof","floor","stairs","landing","fence","door","corner","arch","invisible","water","lava","canopy"] else []
+ if not slot.is_empty():
+  if rule.is_empty(): rule = {"axis":"x","confidence":"library slot","regional":true,"kind":"prop","model":"resource"}
+  rule["slot"] = slot[0]
+  rule["slotSize"] = slot[1]
+  if int(slot[2]) > 1: rule["slotCount"] = slot[2]
+ return rule
+
+static func _resolve(id: int,info: Dictionary) -> Dictionary:
  var n := str(info.get("name","")).strip_edges().to_lower()
  var height := int(info.get("height",0))
  var base := {"axis":"x","confidence":"semantic 3D substitute; orientation inferred from source topology","regional":true}
@@ -90,7 +163,7 @@ static func resolve(id: int,info: Dictionary) -> Dictionary:
  if n in ["swamp","water"]: return base.merged({"kind":"water"})
  # Raised flower beds are stone planters that flowers and trees stand on.
  if n.replace(" ","").begins_with("flowerbed"): return base.merged({"kind":"planter"})
- if "rug" in n or "carpet" in n: return base.merged({"kind":"carpet"})
+ if "rug" in n or "carpet" in n or n.ends_with(" mat") or n=="mat": return base.merged({"kind":"carpet"})
  if "bench" in n: return base.merged({"kind":"bench"})
  # Legacy "bar" art is a panelled serving counter, not a rail.
  if "table" in n or n in ["counter","bar"]: return base.merged({"kind":"counter" if n in ["counter","bar"] else "table"})
@@ -106,13 +179,14 @@ static func resolve(id: int,info: Dictionary) -> Dictionary:
  # Height-0 "leaves" are fallen leaf litter on the ground, not a canopy.
  if ("leaves" in n or "needles" in n) and height==0: return base.merged({"kind":"litter"})
  if "palisade" in n: return base.merged({"kind":"palisade"})
+ if n=="snow" and height<=2: return base.merged({"kind":"litter"})
  if "leaves" in n or "needles" in n or "palm frond" in n and height>0: return base.merged({"kind":"canopy","asset":"Nature/CommonTree_1.gltf"})
  if "fern" in n: return base.merged({"kind":"fern","asset":"Nature/Fern_1.gltf"})
  if TROPICAL.search(n): return base.merged({"kind":"plant","asset":"Nature/Plant_1_Big.gltf"})
  if "palm" in n or n in ["yew tree"]: return base.merged({"kind":"tree","asset":"Nature/Pine_1.gltf"})
  if "tree" in n or "sapling" in n or n=="tuscany pine": return base.merged({"kind":"tree","asset":"Nature/Pine_1.gltf" if "pine" in n else ("Nature/DeadTree_1.gltf" if "spider" in n else "Nature/CommonTree_1.gltf")})
  if "mushroom" in n: return base.merged({"kind":"mushroom","asset":"Nature/Mushroom_Common.gltf"})
- if "flower" in n or n in ["snowdrops","red poppies","rose of trinsic"]: return base.merged({"kind":"flower","asset":"Nature/Flower_4_Group.gltf"})
+ if "flower" in n or "poppies" in n or n in ["snowdrops","rose of trinsic"]: return base.merged({"kind":"flower","asset":"Nature/Flower_4_Group.gltf"})
  if n in ["cattails","bulrushes","reeds","wheat","flax"]: return base.merged({"kind":"reeds","asset":"Nature/Grass_Wispy_Tall.gltf"})
  if "grass" in n or n in ["weed","rushes"]: return base.merged({"kind":"grass","asset":"Nature/Grass_Common_Short.gltf"})
  if WATER_PLANT.search(n): return base.merged({"kind":"lilypad"})

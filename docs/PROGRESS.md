@@ -1,3 +1,15 @@
+# Catalogue matching: owner packs, free kits and rules — 27 October 2026
+
+Goal: give as many original graphics as possible a modern look from the owner's purchased packs, the CC0 kits and procedural rules, reviewed side by side.
+- Regional rules (graphics outside the reviewed Britain set; Britain rule outputs diffed and unchanged except the intended wall-cap fix) cover named floors, walls, roofs, lava/acid, waterfalls, reeds, ferns, cacti, crystals, stalagmites, palisades, lily pads, leaf litter, snow and mats. New facade families (sandstone, marble, dungeon, cave, basalt, log, clay, cloth, hide); optional local original-colour tints (`item-colors.local.json`, never committed, Britain excluded).
+- `scripts/import-owner-library.py` + `scripts/blender-library-convert.py` convert 180 models in 55 slots from 17 owner Dexsoft/Arteria3d packs (extracted locally with 7-Zip) into ignored `Viewer/local-art/library` (GLB, repaired textures, triangle budgets). `LocalLibrary.gd` fits a stable variant per cell (piles scatter copies); `library-review.json` records 9 rejected variants. `RegionalRules.SLOTS` maps names to slots with exact patterns; slots apply only to graphics outside Britain.
+- Tropical Nature Pack plants converted with the existing nature importer and mapped (blade, snake, fan, elephant-ear, ponytail and water plants).
+- Review loop: `ItemCompare.gd`/`scripts/compare-items.py` render sheets (original art next to this client's render from the classic viewpoint); `scripts/approve-families.py` records approved graphic IDs in `reviewed-families.json` (2,829 graphics); `ArtProvenance.gd` reports approved graphics by real status.
+- Coverage by world placements: built in code 56.8%, owner packs 22.7%, CC0 kits 13.7%, not drawn 1.5% (94.6% done); untested guesses 4.2%, original only 1.2%. By family: 579 of 2,506 placed families fully done; the remainder is a long tail of rarely placed graphics.
+- Fix: wall-flagged graphics renamed in later tiledata (102 "ornate elven bookshelf", 108) render as stone wall caps, not a bookcase/book on wall corners.
+
+Remaining: bone piles, blood/web decals, sarcophagi, graves, banners, braziers, hedges, yucca/century plants and the long tail; owner-reported Britain defects are queued in ROADMAP.md. Tests: art fidelity 87 checks, full verify passes.
+
 # Original item catalogue — 27 October 2026
 
 `scripts/build-item-catalog.ps1` (new converter command `item-catalog`) builds a local art-direction catalogue in ignored `outputs/item-catalog`, in about 30 seconds:
