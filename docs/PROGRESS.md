@@ -8,6 +8,8 @@
 
 10,697 graphics are placed somewhere. Families group graphics with the same name and category within 8 IDs of each other: 7,453 families, 2,506 of them placed. `index.html` ranks families (or single items) by world placements, with search by name/number, category and Britain filters, a detail panel per family (every member with counts per facet, an example location, flags and model status), `#family_key` links and CSV export.
 
+**Current look labels.** `Viewer/Presentation/ArtProvenance.gd` (run by the build script) mirrors Reconstruction/WorldItems dispatch and labels each graphic: kit model (CC0 Quaternius, Kenney, Medieval kit, Poly Haven), your packs (local Dexsoft/Unity conversions), built in code, not drawn, untested guess (a name rule matches but the graphic was never placed in Britain or reviewed), or original only. The page defaults to "Needs a model" and dims finished cards. By placements: built in code 40.8% (water alone is about a fifth), your packs 16.9%, kit 9.1%, not drawn 1.0%, untested guess 21.3%, original only 10.9%. Of placed graphics: 1,223 built, 210 kit, 55 your packs, 4,978 guesses, 4,221 original only. Worn items are all "original only" because the avatar's outfit is fixed.
+
 Limits: categories are name/flag heuristics (about 2,100 families remain "other"). Family grouping uses names and nearby IDs only, not picture similarity or mirrored pairs. Vendor stock, loot and multi (house/boat) components are not counted, so wearables and weapons rank near the bottom. The catalogue is proprietary-derived reference material; only the extractor and the viewer page are committed. Converter self-tests gained a PNG CRC check; scripts/verify.ps1 passes.
 
 # Window shutters, Dexsoft props, character sheet and skills — 27 October 2026

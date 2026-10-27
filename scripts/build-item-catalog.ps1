@@ -25,6 +25,11 @@ if ($LASTEXITCODE) { throw 'Converter build failed' }
 $out="$root/outputs/item-catalog"
 & $dotnet "$root/Converter/bin/Release/net8.0/Converter.dll" item-catalog $DataDir $out "$root/Server/runtime/Data/Decoration" $britain "$root/Viewer/Presentation/reviewed-catalog.json"
 if ($LASTEXITCODE) { throw 'Item catalogue extraction failed' }
+# Label what the client draws today for each graphic (kit, owner packs, code, nothing).
+$env:APPDATA=Join-Path $root '.godot-user';$env:LOCALAPPDATA=$env:APPDATA
+$godot=(Get-ChildItem "$root/.tools/godot/*console.exe" | Select-Object -First 1).FullName
+& $godot --headless --path "$root/Viewer" --script res://Presentation/ArtProvenance.gd -- "--catalog=$out/catalog.js" "--out=$out/current.js"
+if ($LASTEXITCODE) { throw 'Current-look labelling failed' }
 Copy-Item "$root/scripts/item-catalog.html" "$out/index.html" -Force
 Write-Host "Open $out/index.html (local reference only; do not redistribute)."
 if (!$NoOpen) { Start-Process "$out/index.html" }
