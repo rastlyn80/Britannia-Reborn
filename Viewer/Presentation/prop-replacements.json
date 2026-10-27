@@ -96,6 +96,110 @@
   "training dummy": {
    "model": "Objaverse/dummy_combat",
    "height": 1.8
+  },
+  "spoon": {
+   "model": "Objaverse/spoon",
+   "length": 0.22
+  },
+  "silverware": {
+   "model": "Objaverse/cutlery",
+   "length": 0.24
+  },
+  "knife": {
+   "model": "Objaverse/cutlery",
+   "length": 0.24
+  },
+  "fork": {
+   "model": "Objaverse/cutlery",
+   "length": 0.24
+  },
+  "tray": {
+   "model": "Objaverse/tray",
+   "length": 0.42
+  },
+  "bread loa": {
+   "model": "Objaverse/bread_loaf",
+   "length": 0.3
+  },
+  "bread loaf": {
+   "model": "Objaverse/bread_loaf",
+   "length": 0.3
+  },
+  "french bread": {
+   "model": "Objaverse/bread_loaf",
+   "length": 0.3
+  },
+  "kettle": {
+   "model": "Objaverse/kettle",
+   "height": 0.3
+  },
+  "fruit basket": {
+   "model": "Objaverse/fruit_basket",
+   "height": 0.3
+  },
+  "bellows": {
+   "model": "Objaverse/bellows",
+   "height": 1.2
+  },
+  "empty tub": {
+   "model": "Objaverse/tub",
+   "length": 0.9
+  },
+  "water tub": {
+   "model": "Objaverse/tub",
+   "length": 0.9
+  },
+  "dyeing tub": {
+   "model": "Objaverse/tub",
+   "length": 0.9
+  },
+  "tub": {
+   "model": "Objaverse/tub",
+   "length": 0.9
+  },
+  "iron ore": {
+   "model": "Objaverse/iron_ore",
+   "length": 0.35
+  },
+  "cauldron": {
+   "model": "Objaverse/cauldron",
+   "height": 0.6
+  },
+  "lute": {
+   "model": "Objaverse/lute",
+   "length": 0.8
+  },
+  "drum": {
+   "model": "Objaverse/drum",
+   "height": 0.6
+  },
+  "books": {
+   "model": "Objaverse/book_stack",
+   "height": 0.22
+  },
+  "damaged books": {
+   "model": "Objaverse/book_stack",
+   "height": 0.22
+  },
+  "spellbook": {
+   "model": "Objaverse/book_open",
+   "length": 0.35
+  },
+  "log": {
+   "model": "Objaverse/firewood",
+   "length": 0.9
+  },
+  "logs": {
+   "model": "Objaverse/firewood",
+   "length": 0.9
+  },
+  "wooden logs": {
+   "model": "Objaverse/firewood",
+   "length": 0.9
+  },
+  "kindling": {
+   "model": "Objaverse/firewood",
+   "length": 0.9
   }
  }
 }

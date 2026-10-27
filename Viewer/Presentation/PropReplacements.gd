@@ -30,6 +30,8 @@ static func build(reconstruction: RefCounted, name: String) -> Node3D:
 	var probe: Node3D = reconstruction.fitted(path,Vector3.ONE)
 	probe.free()
 	var box: AABB = reconstruction.bounds[path]
-	var placed: Node3D = reconstruction.fitted(path,box.size*(float(found.height)/maxf(box.size.y,0.001)))
+	# Flat goods (cutlery, trays, bread, ore) scale by their length instead.
+	var factor := float(found.length)/maxf(maxf(box.size.x,box.size.z),0.001) if found.has("length") else float(found.height)/maxf(box.size.y,0.001)
+	var placed: Node3D = reconstruction.fitted(path,box.size*factor)
 	placed.set_meta("replacement",model)
 	return placed

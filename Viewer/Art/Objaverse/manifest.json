@@ -251,6 +251,384 @@
         1.386
       ],
       "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "bellows",
+      "title": "Medieval Bellow",
+      "uid": "cd10ba96feed402baa7ab96eda3b2fa6",
+      "page": "https://sketchfab.com/3d-models/cd10ba96feed402baa7ab96eda3b2fa6",
+      "author": "Thangzy",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-042/cd10ba96feed402baa7ab96eda3b2fa6.glb",
+      "sourceSha256": "3c0eab4a93cf529292a832361bd16b1b082313c416da7a6e78dc5de133fea67e",
+      "sourceTriangles": 7206,
+      "file": "bellows/bellows.glb",
+      "sha256": "04622639b5a36ea4ef9169e2fdc4461ff9f06e1e2ec3ff97245edc50092c0154",
+      "triangles": 7206,
+      "size": [
+        2.0,
+        1.719,
+        1.234
+      ],
+      "processing": "ground-centred, decimated to 7300 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "bread_loaf",
+      "title": "(Game Ready Free) Bread Loaf / \u0411\u0443\u0445\u0430\u043d\u043a\u0430 \u0445\u043b\u0435\u0431\u0430",
+      "uid": "daf4801f72ae4f9eba9c338afbbb2926",
+      "page": "https://sketchfab.com/3d-models/daf4801f72ae4f9eba9c338afbbb2926",
+      "author": "Igrodev CG",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-087/daf4801f72ae4f9eba9c338afbbb2926.glb",
+      "sourceSha256": "6c3a64edbf3cc064d97dd41a775afa2a09bfeeac79c0b3365f759baf5c876c24",
+      "sourceTriangles": 958,
+      "file": "bread_loaf/bread_loaf.glb",
+      "sha256": "ae60972bae946696a60fdd9704c6ae56e8161689a82cddf5ebdd188aa8533c33",
+      "triangles": 958,
+      "size": [
+        40.526,
+        21.519,
+        26.256
+      ],
+      "processing": "ground-centred, decimated to 1000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "cauldron",
+      "title": "Cauldron : The Witch's House",
+      "uid": "4604543653494c789f6ab7a981bf8996",
+      "page": "https://sketchfab.com/3d-models/4604543653494c789f6ab7a981bf8996",
+      "author": "ReinoFeanor",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-002/4604543653494c789f6ab7a981bf8996.glb",
+      "sourceSha256": "e8f31366b5981573acb2210a444792d20678907184348dc2a563136a5fbb2a67",
+      "sourceTriangles": 4880,
+      "file": "cauldron/cauldron.glb",
+      "sha256": "8eb459564090dbd3472a19079032c100ed3d214d0b8fd6340dfeafa9c20cfa78",
+      "triangles": 4880,
+      "size": [
+        309.825,
+        203.83,
+        309.825
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "firewood",
+      "title": "Small wood stack",
+      "uid": "003b7bc7b771476dafcf24b8b2a2ddaa",
+      "page": "https://sketchfab.com/3d-models/003b7bc7b771476dafcf24b8b2a2ddaa",
+      "author": "matousekfoto",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-155/003b7bc7b771476dafcf24b8b2a2ddaa.glb",
+      "sourceSha256": "2c365ea3ffc930d7dd53538e5c0ddf4a6f7b13f80ba556f8e0a057eeb429031b",
+      "sourceTriangles": 267091,
+      "file": "firewood/firewood.glb",
+      "sha256": "2eb81a12d00591885f4c1da260265cc5d28cb4f4ad38749335fb6fdfa7ba3904",
+      "triangles": 14997,
+      "size": [
+        1.487,
+        0.66,
+        1.56
+      ],
+      "processing": "ground-centred, decimated to 15000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "fruit_basket",
+      "title": "Pears in a basket",
+      "uid": "df99c4f106bd4176ad467848994b7b8c",
+      "page": "https://sketchfab.com/3d-models/df99c4f106bd4176ad467848994b7b8c",
+      "author": "Lassi Kaukonen",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-083/df99c4f106bd4176ad467848994b7b8c.glb",
+      "sourceSha256": "a4c7bf246ff321a49a99dad26e2463eea4ca4b12292626e906c0423111505db4",
+      "sourceTriangles": 145744,
+      "file": "fruit_basket/fruit_basket.glb",
+      "sha256": "2e1e76087991bb089d5c6f4f66b8c9bc52c8b220eb003eb8f70a9d5b7c72d634",
+      "triangles": 11994,
+      "size": [
+        1.316,
+        0.975,
+        1.56
+      ],
+      "processing": "ground-centred, decimated to 12000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "iron_ore",
+      "title": "Iron Ore (FREE)",
+      "uid": "93118b922cbb48caa4f45b16592fa519",
+      "page": "https://sketchfab.com/3d-models/93118b922cbb48caa4f45b16592fa519",
+      "author": "VX-Designs",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-129/93118b922cbb48caa4f45b16592fa519.glb",
+      "sourceSha256": "226343ad1fd9ec5d71b191c9e59586fb15490372b429b58488fe3d4afddfe71f",
+      "sourceTriangles": 960,
+      "file": "iron_ore/iron_ore.glb",
+      "sha256": "306a4ba4fc7fdf6f2f8e6ad4987b50a912a2fe80f41a405699deed21057471d5",
+      "triangles": 960,
+      "size": [
+        1.038,
+        0.729,
+        1.051
+      ],
+      "processing": "ground-centred, decimated to 1000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "kettle",
+      "title": "#1 Antique Brass Kettle (Short)",
+      "uid": "3dfd3417a32f45f2a4174f2097d6308e",
+      "page": "https://sketchfab.com/3d-models/3dfd3417a32f45f2a4174f2097d6308e",
+      "author": "JFN",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-099/3dfd3417a32f45f2a4174f2097d6308e.glb",
+      "sourceSha256": "4451f14625837553ec62730c2c5c1407ee84b22329875440f58389ec865448e1",
+      "sourceTriangles": 12010,
+      "file": "kettle/kettle.glb",
+      "sha256": "0657402107cc6f20f5b34c5827f038c4592b40a0e2cf4270590779464b7eea88",
+      "triangles": 7999,
+      "size": [
+        0.584,
+        0.526,
+        0.433
+      ],
+      "processing": "ground-centred, decimated to 8000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "cutlery",
+      "title": "Medieval Cutlery",
+      "uid": "da492e35b8de44a2aa9963e882a36154",
+      "page": "https://sketchfab.com/3d-models/da492e35b8de44a2aa9963e882a36154",
+      "author": "FlukierJupiter",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-080/da492e35b8de44a2aa9963e882a36154.glb",
+      "sourceSha256": "8126ce8b0040f8d4afd18ffa119c62731587ea4d3b8d4d37a3eb5493b98c00ae",
+      "sourceTriangles": 484,
+      "file": "cutlery/cutlery.glb",
+      "sha256": "b8d96c06e34ac28f91d4cf2fee7a325e7d2199410952ffadefdcdec357e0d7f2",
+      "triangles": 484,
+      "size": [
+        20.792,
+        1.205,
+        10.796
+      ],
+      "processing": "ground-centred, decimated to 500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "lute",
+      "title": "Lute",
+      "uid": "35e718ca75094c82aa9e9d491ff77fdf",
+      "page": "https://sketchfab.com/3d-models/35e718ca75094c82aa9e9d491ff77fdf",
+      "author": "andreapena",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-080/35e718ca75094c82aa9e9d491ff77fdf.glb",
+      "sourceSha256": "7c4dcd37cb7c4d3a68c8372315d5fe092f6e0a05fe40d6a9915f4e98fb396e21",
+      "sourceTriangles": 91072,
+      "file": "lute/lute.glb",
+      "sha256": "72957d60dd15f3365813008277d8ef8f4d0c7a1cec75c1f85112328feb3d81fa",
+      "triangles": 10000,
+      "size": [
+        0.821,
+        2.0,
+        0.403
+      ],
+      "processing": "ground-centred, decimated to 10000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "drum",
+      "title": "Medieval Drum (Free)",
+      "uid": "cec0126bf9e0408cb291020279cf7ea2",
+      "page": "https://sketchfab.com/3d-models/cec0126bf9e0408cb291020279cf7ea2",
+      "author": "wolfgar74",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-109/cec0126bf9e0408cb291020279cf7ea2.glb",
+      "sourceSha256": "fb5dba8c4da1bd80ae3283f476dad7d051fc5d67f6d8a3edd5271b233ce700ac",
+      "sourceTriangles": 636,
+      "file": "drum/drum.glb",
+      "sha256": "a7e19608b7fa77e3753c1445a30749ca5ecee69eed2c1611cbb94d6dc45f1675",
+      "triangles": 636,
+      "size": [
+        50.0,
+        125.0,
+        50.0
+      ],
+      "processing": "ground-centred, decimated to 700 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "banner_worn",
+      "title": "Worn Medieval Banner",
+      "uid": "5f20fa1e87fb4042822356cc489bd984",
+      "page": "https://sketchfab.com/3d-models/5f20fa1e87fb4042822356cc489bd984",
+      "author": "LewisBaker",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-098/5f20fa1e87fb4042822356cc489bd984.glb",
+      "sourceSha256": "ef36814be0eaa3bd553792c992c9706674e891184991bd8115f4545f2fe13921",
+      "sourceTriangles": 416,
+      "file": "banner_worn/banner_worn.glb",
+      "sha256": "1828fa1eb3d852e953328e57b938dac784257046c67c991bc7cd58bb71a06258",
+      "triangles": 416,
+      "size": [
+        15.787,
+        742.651,
+        333.084
+      ],
+      "processing": "ground-centred, decimated to 500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "book_stack",
+      "title": "Medieval Book Stack",
+      "uid": "0ea43f7fdcb7411cb1123b987f297d41",
+      "page": "https://sketchfab.com/3d-models/0ea43f7fdcb7411cb1123b987f297d41",
+      "author": "GetDeadEntertainment",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-058/0ea43f7fdcb7411cb1123b987f297d41.glb",
+      "sourceSha256": "675b806d2fe3fd023b8483faffd85a87b782fb79478799659c872956844b5a5c",
+      "sourceTriangles": 2968,
+      "file": "book_stack/book_stack.glb",
+      "sha256": "b68288a87a83ab8ba1fa1d7ac79d9592eaaf83bcdad200c30a6b8e3b487183f3",
+      "triangles": 2968,
+      "size": [
+        31.384,
+        26.957,
+        41.246
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "book_open",
+      "title": "Medieval Open Book 1",
+      "uid": "b30b6a9018f842e7b12622387979b0fa",
+      "page": "https://sketchfab.com/3d-models/b30b6a9018f842e7b12622387979b0fa",
+      "author": "J0Y",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-030/b30b6a9018f842e7b12622387979b0fa.glb",
+      "sourceSha256": "eab5891f32fb490fe7bdfc065a3883d7abd6318d7c3f82f19df66a7a654c7d73",
+      "sourceTriangles": 513,
+      "file": "book_open/book_open.glb",
+      "sha256": "30031b1806c8328df26001d78b8a21779fb708c753f5fc34ca909ffd4b3babbf",
+      "triangles": 513,
+      "size": [
+        2.0,
+        1.558,
+        0.252
+      ],
+      "processing": "ground-centred, decimated to 600 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "wall_torch",
+      "title": "Medieval Wall Torch",
+      "uid": "77db436da2844cbfb4dde0bb9b396835",
+      "page": "https://sketchfab.com/3d-models/77db436da2844cbfb4dde0bb9b396835",
+      "author": "Kigha",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-042/77db436da2844cbfb4dde0bb9b396835.glb",
+      "sourceSha256": "e3da6d1b55efdf116d7f5b9241697504f819132356f7cbc83d76e1acf6e99c63",
+      "sourceTriangles": 1748,
+      "file": "wall_torch/wall_torch.glb",
+      "sha256": "3386180d0ef995489082bd6d14fb2b037854c68ec4c7981d23327a359a552ab8",
+      "triangles": 1748,
+      "size": [
+        30.234,
+        58.301,
+        16.1
+      ],
+      "processing": "ground-centred, decimated to 1800 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "table_wood_b",
+      "title": "Wooden Table",
+      "uid": "0dc1c7d6cbab4d74bef7c4f82abf2caf",
+      "page": "https://sketchfab.com/3d-models/0dc1c7d6cbab4d74bef7c4f82abf2caf",
+      "author": "FlukierJupiter",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-150/0dc1c7d6cbab4d74bef7c4f82abf2caf.glb",
+      "sourceSha256": "7ff85832318de6bbfeac39cd76ca760b7e278645f872dfe96b5712fb2e517f94",
+      "sourceTriangles": 984,
+      "file": "table_wood_b/table_wood_b.glb",
+      "sha256": "6e7e6e1beb7ee81a4dc8da8839c1ef4b1cc06de87511d6d360f6e646ce845fcd",
+      "triangles": 984,
+      "size": [
+        2.0,
+        0.818,
+        1.0
+      ],
+      "processing": "ground-centred, decimated to 1000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "spoon",
+      "title": "Wooden Spoon",
+      "uid": "862ac9fcc4104b5fb828fd5b2c3136a7",
+      "page": "https://sketchfab.com/3d-models/862ac9fcc4104b5fb828fd5b2c3136a7",
+      "author": "Nathaniel.F",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-124/862ac9fcc4104b5fb828fd5b2c3136a7.glb",
+      "sourceSha256": "4ed03929bfdc12666fe9a7b90f9f8306f511369f9fb216c0764d8c48c0c2bc56",
+      "sourceTriangles": 2144,
+      "file": "spoon/spoon.glb",
+      "sha256": "373cbe01a347f6bc304d0ebc35180b51fb213db63a7f39e215f54f009d5842bf",
+      "triangles": 2144,
+      "size": [
+        6.065,
+        0.451,
+        1.392
+      ],
+      "processing": "ground-centred, decimated to 2200 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "tray",
+      "title": "wooden tray",
+      "uid": "561787127c7f4f31a553171a48be87d9",
+      "page": "https://sketchfab.com/3d-models/561787127c7f4f31a553171a48be87d9",
+      "author": "moonomori",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-003/561787127c7f4f31a553171a48be87d9.glb",
+      "sourceSha256": "31ceff6c4a1681da8a74c31909995c12c49206702a54362ec514031006ea7e7f",
+      "sourceTriangles": 960,
+      "file": "tray/tray.glb",
+      "sha256": "0f38d937ab83c2706a8ef45e80f042b210d1223dfea6d3d7f5f492506b7c9e80",
+      "triangles": 960,
+      "size": [
+        2.0,
+        0.276,
+        2.0
+      ],
+      "processing": "ground-centred, decimated to 1000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "tub",
+      "title": "Wooden Tub",
+      "uid": "3d25ffa39ef24c48b2138a776e5cc931",
+      "page": "https://sketchfab.com/3d-models/3d25ffa39ef24c48b2138a776e5cc931",
+      "author": "doxyz",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-090/3d25ffa39ef24c48b2138a776e5cc931.glb",
+      "sourceSha256": "606fdae6d709b8e6e7939635342568fed78857d87f3a44ea657cb8c3620bd368",
+      "sourceTriangles": 59056,
+      "file": "tub/tub.glb",
+      "sha256": "7d9ead4cebaef9d878b6f754e316d9e1ae4d6df9b9cca252dd47a4605fc158d1",
+      "triangles": 7998,
+      "size": [
+        101.019,
+        37.602,
+        168.256
+      ],
+      "processing": "ground-centred, decimated to 8000 triangles, textures capped at 1024 px"
     }
   ]
 }

@@ -687,6 +687,20 @@ func _plan_eaves(world: Dictionary) -> void:
 							if int(z) > top and int(z) <= top+16: eave = mini(eave,int(z))
 			if eave < 1000: eave_extensions[i] = float(eave-top)*float(world.elevationScale)
 
+# Wooden table runs: a photoscan-textured trestle table (Objaverse,
+# CC-BY) repeated along the run, each piece at most about 1.9 m long.
+func trestle_run(size: Vector2) -> Node3D:
+	var root := Node3D.new()
+	var length := maxf(size.x,size.y)
+	var depth := minf(size.x,size.y)*0.9
+	var count := maxi(1,roundi(length/1.9))
+	for i in count:
+		var piece: Node3D = fitted("Objaverse/table_wood_b/table_wood_b.glb",Vector3(length/count*0.96,0.8,depth))
+		piece.position.x = -length/2+length/count*(i+0.5)
+		root.add_child(piece)
+	if size.y > size.x: root.rotation.y = PI/2
+	return root
+
 func stairwell_balustrade(edges: Array) -> Node3D:
 	var root := Node3D.new()
 	var wood := preload("res://Presentation/DoorLeaf.gd").surface("medieval_wood",Color(0.62,0.48,0.36))
@@ -1267,7 +1281,10 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					if kind == "bench":
 						if size.y > size.x: size.x = 0.5
 						else: size.y = 0.5
-					visual = geometry.furniture(size,kind)
+					var table_name := str(detail.get("name","")).to_lower()
+					if kind == "table" and not ("stone" in table_name or "marble" in table_name or "sandstone" in table_name) and ResourceLoader.exists("res://Art/Objaverse/table_wood_b/table_wood_b.glb"):
+						visual = trestle_run(size)
+					else: visual = geometry.furniture(size,kind)
 					# Stone and marble tables keep their material, not timber.
 					var table_surface := preload("res://Presentation/Facade.gd").surface_for(str(detail.get("name","")))
 					if not tint.is_empty() and table_surface != "wood" and ("stone" in str(detail.get("name","")) or "marble" in str(detail.get("name",""))):
