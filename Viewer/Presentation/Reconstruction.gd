@@ -158,7 +158,7 @@ func index(world: Dictionary) -> void:
 	for i in world.statics.size():
 		var source:Dictionary=world.statics[i]
 		var rule:=rule_for(source.id)
-		if rule.get("kind","")!="prop" or rule.get("model","") not in ["cannon","fountain","display_case","training","music"]:continue
+		if rule.get("kind","")!="prop" or rule.get("model","") not in ["cannon","fountain","display_case","training","music","hearth"]:continue
 		var cell:=Vector2i(source.x,source.y)
 		if not prop_cells.has(cell):prop_cells[cell]=[]
 		prop_cells[cell].append(i)
@@ -216,6 +216,24 @@ func index(world: Dictionary) -> void:
 				for z in below.get(Vector2i(world.statics[member].x,world.statics[member].y),[]):
 					if z < low_z and low_z-z <= 30: support = maxi(support,z)
 			chimney_bases[groups[members[0]].owner] = support if support > -1000 else low_z-6
+	# The same graphic repeated in a cell within two Z (stacked duplicates in the
+	# source) draws once; overlapping copies flicker against each other.
+	var stacked := {}
+	for i in world.statics.size():
+		var s: Dictionary = world.statics[i]
+		var key := Vector3i(s.x,s.y,int(s.id))
+		if not stacked.has(key): stacked[key] = []
+		stacked[key].append(i)
+	for key in stacked:
+		var copies: Array = stacked[key]
+		if copies.size() < 2: continue
+		copies.sort_custom(func(a,b): return int(world.statics[a].z) < int(world.statics[b].z))
+		var last := int(world.statics[copies[0]].z)
+		for n in range(1,copies.size()):
+			var z := int(world.statics[copies[n]].z)
+			if z-last <= 2 and str(rule_for(int(key.z)).get("kind","")) in ["prop","asset"]:
+				presentation_adjustments[copies[n]] = {"suppress":true,"reason":"stacked duplicate of the same graphic"}
+			else: last = z
 	# Walkable wall pieces (gateways, arch openings) run along their wall axis
 	# into one archway each; solid arch pieces become the piers beside them.
 	var passages := {}
@@ -640,9 +658,17 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 		state = "boundary-fragment"
 		boundary_fragments += 1
 	else:
-		visual = preload("res://Presentation/ReviewedCatalog.gd").build(self,int(s.id),groups.get(ordinal,{}))
-		# Owner-library model for graphics outside the reviewed city (local only).
-		if visual == null and rule.has("slot") and not tint.is_empty():
+		# Modern Britain: library models replace the reviewed stand-ins for loose
+		# objects too (multi-cell furniture keeps its fitted assemblies).
+		var modern := preload("res://Presentation/GraphicsMode.gd").modern() and tint.is_empty() and kind in ["prop","asset"] and not groups.has(ordinal)
+		if modern and not rule.has("slot"):
+			var found: Array = preload("res://Presentation/RegionalRules.gd").slot_for(str(detail.get("name","")).strip_edges().to_lower())
+			if not found.is_empty(): rule = rule.merged({"slot":found[0],"slotSize":found[1]}.merged({"slotCount":found[2]} if int(found[2]) > 1 else {}))
+		if not (modern and rule.has("slot") and preload("res://Presentation/LocalLibrary.gd").has(str(rule.slot))):
+			visual = preload("res://Presentation/ReviewedCatalog.gd").build(self,int(s.id),groups.get(ordinal,{}))
+		# Owner-library model for graphics outside the reviewed city (local only),
+		# and in Britain when modern graphics are selected.
+		if visual == null and rule.has("slot") and (not tint.is_empty() or modern):
 			var fit: Array = rule.get("slotSize",[0.8,0.8,0.8])
 			var library := preload("res://Presentation/LocalLibrary.gd")
 			visual = library.pile(str(rule.slot),int(s.x),int(s.y),Vector3(fit[0],fit[1],fit[2]),int(rule.slotCount)) if rule.has("slotCount") else library.build(str(rule.slot),int(s.x),int(s.y),Vector3(fit[0],fit[1],fit[2]))

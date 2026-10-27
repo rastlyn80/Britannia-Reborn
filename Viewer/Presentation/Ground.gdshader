@@ -34,16 +34,31 @@ uniform sampler2D wood_roughness : filter_linear_mipmap_anisotropic, repeat_enab
 uniform vec2 wood_scale=vec2(1.0);
 varying vec3 world_position;
 void vertex(){ world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz+vec3(source_origin.x,0.0,source_origin.y); }
+// Anti-tiling: two copies of the texture at pseudo-random offsets, chosen by
+// smooth low-frequency noise and blended, so large areas of one land type show
+// no repeating grid (explicit gradients avoid seams at the offset changes).
+vec3 untiled(sampler2D map, vec2 uv) {
+ vec2 dx=dFdx(uv);
+ vec2 dy=dFdy(uv);
+ float k=surface_noise(uv*0.13)*7.0;
+ float i=floor(k);
+ float f=fract(k);
+ vec2 a_off=sin(vec2(3.1,7.3)*i);
+ vec2 b_off=sin(vec2(3.1,7.3)*(i+1.0));
+ vec3 a=textureGrad(map,uv+a_off,dx,dy).rgb;
+ vec3 b=textureGrad(map,uv+b_off,dx,dy).rgb;
+ return mix(a,b,smoothstep(0.2,0.8,f-0.1*dot(a-b,vec3(1.0))));
+}
 void fragment() {
  float broad=surface_fbm(UV*0.30);
  float detail=surface_fbm(UV*7.0);
- vec3 meadow=texture(meadow_albedo,UV*meadow_scale).rgb;
- vec3 turf=texture(grass_albedo,UV*grass_scale).rgb;
+ vec3 meadow=untiled(meadow_albedo,UV*meadow_scale);
+ vec3 turf=untiled(grass_albedo,UV*grass_scale);
  // Natural, less saturated turf: meadow colour field with photoscanned blades
  // and leaf litter, shifted from autumn toward summer green.
  vec3 grass=mix(meadow*vec3(0.80,1.02,0.58),turf*vec3(0.70,1.0,0.52),0.5)*mix(0.82,1.12,broad);
  vec3 earth=mix(vec3(0.17,0.12,0.073),vec3(0.27,0.22,0.145),broad);
- vec3 ground_tex=texture(ground_albedo,UV*ground_scale).rgb;
+ vec3 ground_tex=untiled(ground_albedo,UV*ground_scale);
  earth*=mix(0.72,1.22,clamp(dot(ground_tex,vec3(0.2126,0.7152,0.0722))*2.8,0.0,1.0));
  float source_grass=smoothstep(0.01,0.07,COLOR.g-COLOR.r);
  float blend_noise=(surface_noise(UV*2.7)-0.5)*0.23+(dot(meadow,vec3(0.33))-0.3)*0.5;
@@ -62,8 +77,8 @@ void fragment() {
  float block=1.0-smoothstep(0.105-aa,0.145+aa,rounded);
  float variation=mix(0.88,1.12,surface_hash(stone_id));
  vec3 stone=mix(vec3(0.085,0.091,0.075),vec3(0.22,0.235,0.21)*variation,block);
- vec3 paving_tex=texture(paving_albedo,UV*paving_scale).rgb;
- stone=mix(vec3(dot(paving_tex,vec3(0.2126,0.7152,0.0722))),paving_tex,0.68)*mix(0.94,1.06,broad);
+ vec3 paving_tex=untiled(paving_albedo,UV*paving_scale);
+ stone=mix(vec3(dot(paving_tex,vec3(0.2126,0.7152,0.0722))),paving_tex,0.68)*mix(0.88,1.08,broad)*mix(0.93,1.05,surface_fbm(UV*0.045+vec2(5.0,2.0)));
  float paving_weight=smoothstep(0.08,0.9,UV2.x+(surface_fbm(UV*3.4)-0.5)*0.13);
  vec3 color=mix(ground,stone,paving_weight);
  float column=floor(UV.x*4.2);

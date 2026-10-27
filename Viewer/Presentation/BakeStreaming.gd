@@ -192,8 +192,9 @@ func run() -> void:
  signature+=preload("res://Presentation/LocalPlants.gd").signature()
  signature+=preload("res://Presentation/LocalProps.gd").signature()
  signature+=preload("res://Presentation/LocalLibrary.gd").signature()
+ signature+="modern-britain" if preload("res://Presentation/GraphicsMode.gd").modern() else "classic-britain"
  signature=signature.sha256_text()
- output=directory.path_join("prepared")
+ output=preload("res://Presentation/GraphicsMode.gd").prepared(directory)
  DirAccess.make_dir_recursive_absolute(output)
  var index_path:=output.path_join("index.json")
  if FileAccess.file_exists(index_path):

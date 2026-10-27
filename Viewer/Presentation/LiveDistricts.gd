@@ -70,7 +70,9 @@ static func owner(cell: Vector2i, size: int = 64) -> Vector2i:
 
 func prepare(owner_scene: Node3D) -> bool:
  scene=owner_scene
- var path:=ProjectSettings.globalize_path("res://../outputs/britain/prepared/index.json")
+ var path:=preload("res://Presentation/GraphicsMode.gd").prepared(ProjectSettings.globalize_path("res://../outputs/britain")).path_join("index.json")
+ # A modern cache that has not been prepared yet falls back to classic.
+ if not FileAccess.file_exists(path):path=ProjectSettings.globalize_path("res://../outputs/britain/prepared/index.json")
  for arg in OS.get_cmdline_user_args():
   if arg.begins_with("--stream-index="):path=arg.substr(15)
  if not FileAccess.file_exists(path):

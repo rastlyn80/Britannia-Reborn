@@ -676,6 +676,86 @@
      "bytes": 135023
     }
    ]
+  },
+  {
+   "id": "white_rough_plaster",
+   "name": "White Rough Plaster",
+   "source": "https://polyhaven.com/a/white_rough_plaster",
+   "license": "CC0-1.0",
+   "licenseUrl": "https://polyhaven.com/license",
+   "authors": [
+    "Rob Tuytel"
+   ],
+   "sizeMeters": [
+    1.0,
+    1.0
+   ],
+   "maps": [
+    {
+     "role": "albedo",
+     "file": "white_rough_plaster_diff_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/white_rough_plaster/white_rough_plaster_diff_1k.jpg",
+     "sha256": "8de3dbca955bc3c719863015b6542326d76e2004c5d4a1f60928525a2031a71a",
+     "sourceMd5": "a64b86b48c25fb2247142a177d82df98",
+     "bytes": 726568
+    },
+    {
+     "role": "normal",
+     "file": "white_rough_plaster_nor_gl_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/white_rough_plaster/white_rough_plaster_nor_gl_1k.jpg",
+     "sha256": "29420864bc82c81d0ca0f23420ddc669ad2ab74b6dd2fb6a2c93db4f315a033d",
+     "sourceMd5": "3908cf07f28f942983c12d36bda1792a",
+     "bytes": 814762
+    },
+    {
+     "role": "roughness",
+     "file": "white_rough_plaster_rough_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/white_rough_plaster/white_rough_plaster_rough_1k.jpg",
+     "sha256": "fbb5eee21c51e2495c0f61ea42b8b4ebbb9f7e8dc98d8ac65dfb6cd08f2194c2",
+     "sourceMd5": "5119b8fc9bb66c36e5369358f37f786f",
+     "bytes": 249222
+    }
+   ]
+  },
+  {
+   "id": "clay_plaster",
+   "name": "Clay Plaster",
+   "source": "https://polyhaven.com/a/clay_plaster",
+   "license": "CC0-1.0",
+   "licenseUrl": "https://polyhaven.com/license",
+   "authors": [
+    "Amal Kumar"
+   ],
+   "sizeMeters": [
+    2.0,
+    2.0
+   ],
+   "maps": [
+    {
+     "role": "albedo",
+     "file": "clay_plaster_diff_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_plaster/clay_plaster_diff_1k.jpg",
+     "sha256": "82e43c68bddebb55a18577ae3cb0d01c02c23f086d342a854ff8a174d9f4fd73",
+     "sourceMd5": "aab6ac83dcf134a370279825de143c26",
+     "bytes": 354209
+    },
+    {
+     "role": "normal",
+     "file": "clay_plaster_nor_gl_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_plaster/clay_plaster_nor_gl_1k.jpg",
+     "sha256": "359f814292005ab16be86807678a4a51e8256a87c282ebf5f5333ce18c428fba",
+     "sourceMd5": "82e9cc526a00b3b8fddf7e43c40bdb38",
+     "bytes": 784921
+    },
+    {
+     "role": "roughness",
+     "file": "clay_plaster_rough_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_plaster/clay_plaster_rough_1k.jpg",
+     "sha256": "e91a6238456b54a82dbf2c025e0b046851c90e7e772fe2affd26a46b243ce7b7",
+     "sourceMd5": "d46fdc82c0538d0905281a761c63d9cf",
+     "bytes": 345709
+    }
+   ]
   }
  ]
 }

@@ -106,8 +106,9 @@ func configure(scene: Node3D,world: Dictionary,reconstruction,map_view: bool, de
  environment.glow_hdr_threshold = 1.7
  environment.fog_enabled = not map_view
  environment.fog_light_color = Color("aabbb8")
- environment.fog_density = 0.0015
- environment.fog_aerial_perspective = 0.22
+ # Light haze only: denser fog washed out mid-distance buildings.
+ environment.fog_density = 0.0007
+ environment.fog_aerial_perspective = 0.1
  # SDFGI/volumetric fog were measured on the StreamingProfile route and made
  # this streamed city GPU-bound (median ~30 ms on an RTX 2070 SUPER); disabled.
  add_child(node)
@@ -237,7 +238,7 @@ func _apply_atmosphere(minute: float, wet: float, level: float, personal: float)
  # Personal light improves local readability; it never changes astronomical time.
  environment.tonemap_exposure = 1.05+clampf(personal/31.0,0.0,1.0)*0.25
  environment.fog_light_color = Color("172238").lerp(Color("b4c9d5"),day).lerp(Color("758593"),wet*0.6)
- environment.fog_density = 0.0015+wet*0.009
+ environment.fog_density = 0.0007+wet*0.004
  sky_material.set_shader_parameter("zenith",Color("071124").lerp(Color("3475a9"),day).lerp(Color("556a7e"),wet*0.75))
  sky_material.set_shader_parameter("horizon",Color("27334d").lerp(Color("d1dfe2"),day).lerp(Color("8b9ba5"),wet*0.7))
  sky_material.set_shader_parameter("sunlight",sun.light_color)

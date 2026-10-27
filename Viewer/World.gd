@@ -229,6 +229,13 @@ func _ready() -> void:
 	vitals.opened.connect(func(): character_sheet.toggle("character"))
 	login_panel.button(login_panel.world_controls,"Character (C)",func(): character_sheet.toggle("character"))
 	login_panel.button(login_panel.world_controls,"Skills (K)",func(): character_sheet.toggle("skills"))
+	# Classic/modern Britain: restart loads the matching prepared city cache.
+	var graphics_mode := preload("res://Presentation/GraphicsMode.gd")
+	var graphics_button: Button = login_panel.button(login_panel.world_controls,"Britain: %s" % ("modern" if graphics_mode.modern() else "classic"),func(): pass)
+	graphics_button.tooltip_text = "Switch Britain between the classic reviewed look and the modern pack models. Takes effect after restart."
+	graphics_button.pressed.connect(func():
+		graphics_mode.set_modern(not graphics_mode.modern())
+		graphics_button.text = "Britain: %s (restart)" % ("modern" if graphics_mode.modern() else "classic"))
 	login_panel.controller_toggled.connect(func(enabled: bool): controller_enabled = enabled)
 	hud_panel = login_panel
 	login_panel.sky_requested.connect(cycle_sky)

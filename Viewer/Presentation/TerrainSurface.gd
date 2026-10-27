@@ -18,6 +18,7 @@ var shoreline
 var heights := {}
 var peak_repairs := {}
 var floor_overrides := {}
+var wall_caps := {}
 var wooden_cells := {}
 var source_ordinals := {}
 func index(input: Dictionary, shore = null) -> void:
@@ -33,6 +34,7 @@ func index(input: Dictionary, shore = null) -> void:
  water_cells.clear()
  static_water.clear()
  covered.clear()
+ wall_caps.clear()
  for i in world.terrain.size():
   var tile: Dictionary = world.terrain[i]
   samples[Vector2i(tile.x,tile.y)] = tile
@@ -80,6 +82,16 @@ func index(input: Dictionary, shore = null) -> void:
    for offset in [Vector2i.ZERO,Vector2i.RIGHT,Vector2i.DOWN,Vector2i.ONE]:
     if not samples.has(cell+offset) or int(samples[cell+offset].z) != int(source.z): flat = false
    if flat: floor_overrides[cell] = true
+ # Ground never rises over the foot of a wall: each wall cell's corners are
+ # capped at the wall base (native Z), so houses set into slopes are not buried.
+ if static_data is Dictionary:
+  for source in world.get("statics",[])+world.get("staticHalo",[]):
+   var detail: Dictionary = static_data.get(str(int(source.id)),{})
+   if not int(detail.get("flags",0)) & 0x10 or int(detail.get("height",0)) < 10: continue
+   var cell := Vector2i(source.x,source.y)
+   if not samples.has(cell) or int(samples[cell].z) <= int(source.z): continue
+   for corner in [Vector2i.ZERO,Vector2i.RIGHT,Vector2i.DOWN,Vector2i.ONE]:
+    wall_caps[cell+corner] = minf(float(wall_caps.get(cell+corner,INF)),float(source.z))
  # Indoor land is a constructed floor, not a blended landscape material.
  for cell in source_ordinals:
   var source: Dictionary = samples[cell]
@@ -129,7 +141,8 @@ func raw_z(cell: Vector2i) -> float:
 func z(cell: Vector2i) -> float:
  var bounded := Vector2i(clampi(cell.x,int(world.originX),int(world.originX)+int(world.width)-1),clampi(cell.y,int(world.originY),int(world.originY)+int(world.height)-1))
  var key := cell if samples.has(cell) else bounded
- return float(peak_repairs.get(key,samples[key].z))*float(world.elevationScale)-float(water_cells.get(key,0.0))-(COVERED_DROP if covered.has(key) else 0.0)
+ var native := minf(float(peak_repairs.get(key,samples[key].z)),float(wall_caps.get(key,INF)))
+ return native*float(world.elevationScale)-float(water_cells.get(key,0.0))-(COVERED_DROP if covered.has(key) else 0.0)
 static func curve(a: float,b: float,c: float,d: float,t: float) -> float:
  if absf(c-b) <= 0.8: return lerpf(b,c,t)
  var left := b-a

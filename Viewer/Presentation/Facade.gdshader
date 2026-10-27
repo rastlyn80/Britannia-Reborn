@@ -56,16 +56,20 @@ void fragment(){
   ROUGHNESS=0.88+fine*0.08;
   NORMAL_MAP=texture(surface_normal_map,uv*surface_scale).rgb;
  }else{
-  // Rough-cast lime render (York close-studded houses): bright white with the
-  // photoscanned plaster's own relief, soft tonal drift, soiled toward the base.
-  vec3 lime=palette.rgb*mix(vec3(1.0),vec3(1.0,0.96,0.88),smoothstep(0.55,0.8,surface_fbm(world_position.xz*0.025+vec2(11.0,5.0))));
-  float tone=clamp((detail-0.45)*1.6+0.5,0.0,1.0);
-  ALBEDO=lime*mix(0.88,1.02,tone)*mix(0.95,1.02,broad);
-  ALBEDO=mix(ALBEDO,lime*vec3(0.70,0.67,0.60),stain*0.22);
-  ALBEDO=mix(ALBEDO,lime*vec3(0.52,0.50,0.45),damp*0.6);
+  // Rough-cast lime render from the photoscanned plaster itself (its own
+  // chips, pores and grey patches), tinted by the wall's palette, with gentle
+  // large-scale drift and soiling toward the base.
+  // Sampled at 2.5 m so chips do not repeat; their contrast is softened so
+  // the wall reads as clean limewash with real texture, not blotches.
+  vec3 plaster=texture(surface_albedo,uv*surface_scale*0.4).rgb;
+  float grain=clamp(dot(plaster,vec3(0.2126,0.7152,0.0722))/0.72,0.0,1.2);
+  vec3 lime=palette.rgb*mix(vec3(1.0),vec3(1.0,0.97,0.9),smoothstep(0.55,0.8,surface_fbm(world_position.xz*0.025+vec2(11.0,5.0))));
+  ALBEDO=lime*mix(1.0,grain,0.4)*mix(0.94,1.03,broad);
+  ALBEDO=mix(ALBEDO,ALBEDO*vec3(0.74,0.70,0.62),stain*0.3);
+  ALBEDO=mix(ALBEDO,ALBEDO*vec3(0.55,0.52,0.46),damp*0.65);
   ALBEDO*=1.0-streak*0.15;
-  ROUGHNESS=0.93;
-  NORMAL_MAP=texture(surface_normal_map,uv*surface_scale*1.6).rgb;
+  ROUGHNESS=0.92;
+  NORMAL_MAP=texture(surface_normal_map,uv*surface_scale*0.4).rgb;
  }
  NORMAL_MAP_DEPTH=wood?0.9:(masonry?1.0:1.6);
  ROUGHNESS=mix(ROUGHNESS,texture(surface_roughness,uv*surface_scale).r,0.5);

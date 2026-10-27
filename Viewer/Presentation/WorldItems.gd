@@ -119,6 +119,24 @@ func upsert(serial: int, item: Dictionary) -> void:
  nodes[serial] = root
  if rule.get("family","") == "sign": call_deferred("_label_sign",serial)
  root.position = scene.entity_point(item.x,item.y,item.z)
+ # Modern Britain: server decoration whose name matches a library slot uses
+ # the owner-pack/CC0 library model, set onto the surface under it.
+ if preload("res://Presentation/GraphicsMode.gd").modern() and not str(rule.family) in ["door","sign","lamp","noticeboard","gameboard","backgammon"]:
+  # Server definitions carry the tiledata name; map statics only know their own IDs.
+  var item_name := str(rule.get("display_name",scene.world.get("staticData",{}).get(str(int(item.id)),{}).get("name",""))).strip_edges().to_lower()
+  var found: Array = preload("res://Presentation/RegionalRules.gd").slot_for(item_name) if item_name != "" else []
+  if not found.is_empty() and preload("res://Presentation/LocalLibrary.gd").has(str(found[0])):
+   var fit: Array = found[1]
+   var library := preload("res://Presentation/LocalLibrary.gd")
+   var model: Node3D = library.pile(str(found[0]),int(item.x),int(item.y),Vector3(fit[0],fit[1],fit[2]),int(found[2])) if int(found[2]) > 1 else library.build(str(found[0]),int(item.x),int(item.y),Vector3(fit[0],fit[1],fit[2]))
+   if model:
+    model.name = "LibraryVisual"
+    root.add_child(model)
+    root.set_meta("library_item",str(found[0]))
+    root.set_meta("pick_half",float(fit[1])/2)
+    _body(root,Vector3(float(fit[0]),float(fit[1]),float(fit[2])),Vector3(0,float(fit[1])/2,0),serial,(int(rule.get("flags",0))&64)!=0)
+    request_contact_refresh()
+    return
  var review: Dictionary=preload("res://Presentation/ReviewedCatalog.gd").entry(int(item.id))
  if (review.has("asset") or review.get("construction","")=="wardrobe") and rule.family!="door":
   var visual: Node3D=preload("res://Presentation/ReviewedCatalog.gd").build(scene.reconstruction,int(item.id))
@@ -563,10 +581,21 @@ func refresh_contacts() -> void:
  if not is_instance_valid(scene):return
  var supports: RefCounted=scene.reconstruction.supports
  supports.cache.clear()
+ var space := get_world_3d().direct_space_state
  for serial in nodes:
   var node: Node3D=nodes[serial]
   var visual: Node3D=node.get_node_or_null("ReviewedVisual")
   if not session.world_items.has(serial):continue
+  if node.has_meta("library_item") and node.is_inside_tree():
+   # Rest library models on the city surface under them (table, counter,
+   # shelf or floor collision), within a small band around the source height.
+   var from := node.global_position+Vector3(0,0.45,0)
+   var hit := space.intersect_ray(PhysicsRayQueryParameters3D.create(from,from-Vector3(0,1.6,0),1))
+   var library_visual: Node3D = node.get_node_or_null("LibraryVisual")
+   if library_visual and not hit.is_empty():
+    library_visual.position.y = float(hit.position.y)-node.global_position.y
+    node.get_node("PickBody").position.y = library_visual.position.y+float(node.get_meta("pick_half",0.2))
+   continue
   var review: Dictionary=preload("res://Presentation/ReviewedCatalog.gd").entry(int(session.world_items[serial].id))
   if review.get("attachment","") not in ["floor","surface"]:continue
   var placement: Dictionary=supports.placement(session.world_items[serial])

@@ -155,7 +155,7 @@ const FAMILIES := {
 	"dungeon":["rock_wall_04","7a776d","masonry"],
 	"cave":["rock_face_03","80725f","masonry"],
 	"log":["brown_planks_03","6b5139","wood"],
-	"clay":["plastered_wall_02","c6a079","plaster"],
+	"clay":["clay_plaster","d8c2a4","plaster"],
 	"cloth":["plastered_wall_02","dccfb4","plaster"],
 	"hide":["plastered_wall_02","9a7856","plaster"],
 	"basalt":["rock_face_03","3f3a36","masonry"],
@@ -209,7 +209,7 @@ func material(key: String) -> ShaderMaterial:
 		m.set_shader_parameter("palette",Color("5e4631") if kind == "wood" else (Color("2f2722") if kind == "oak" else (Color("aaa79c") if kind == "stone" else (Color("ad9276") if kind == "brick" else Color("f1ede4")))))
 		m.set_shader_parameter("wood",kind in ["wood","oak"])
 		m.set_shader_parameter("masonry",kind in ["stone","brick"])
-		preload("res://Presentation/SurfaceLibrary.gd").bind(m,"surface","mk_oak_dark" if kind == "oak" else ("brown_planks_03" if kind == "wood" else (("medieval_blocks_03" if kind=="stone" else "medieval_red_brick") if kind in ["stone","brick"] else "mk_limewash")))
+		preload("res://Presentation/SurfaceLibrary.gd").bind(m,"surface","mk_oak_dark" if kind == "oak" else ("brown_planks_03" if kind == "wood" else (("medieval_blocks_03" if kind=="stone" else "medieval_red_brick") if kind in ["stone","brick"] else "white_rough_plaster")))
 		if "#" in key: m.set_shader_parameter("palette",Color(key.get_slice("#",1)).lightened(0.15))
 		materials[key] = m
 	return materials[key]

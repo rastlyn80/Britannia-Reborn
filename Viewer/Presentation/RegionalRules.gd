@@ -72,9 +72,9 @@ const SLOTS := [
  ["^(bench|wooden bench)$","bench",[1.0,0.5,0.4]],
  ["^(chest|wooden chest|metal chest|ornate elven chest)$","chest",[0.9,0.6,0.55]],
  ["^(bottle|bottles|bottles of ale|bottle of wine|bottle of ale)$","bottle",[0.12,0.32,0.12]],
- ["^(mug|mug of ale|goblet|tankard|cup|pewter mug|ceramic mug)$","cup",[0.12,0.18,0.12]],
+ ["^(mug|mug of ale|goblet|tankard|cup|pewter mug|ceramic mug|skull mug)$","cup",[0.12,0.18,0.12]],
  ["^(plate|plates)$","plate",[0.28,0.04,0.28]],
- ["^(pitcher|jug|pitcher of water|pitcher of milk)$","jug",[0.2,0.3,0.2]],
+ ["^(pitcher|jug|pitcher of water|pitcher of milk|glass pitcher)$","jug",[0.2,0.3,0.2]],
  ["open book","book_open",[0.4,0.06,0.3]],
  ["^(book|books)$","book",[0.18,0.05,0.25]],
  ["^(scroll|scrolls|parchment)","scroll",[0.3,0.06,0.2]],
@@ -97,7 +97,7 @@ const SLOTS := [
  ["^(box|wooden box)$","box",[0.55,0.5,0.55]],
  ["gallows","gallows",[2.4,3.0,2.4]],
  ["guillotine","guillotine",[2.0,3.2,1.2]],
- ["carcass|^(meat|ham|ribs)$","meat",[0.5,0.5,0.3]],
+ ["carcass|^(meat|ham|ribs|slab%s% of bacon|cooked bird%s%)$","meat",[0.5,0.5,0.3]],
  ["^(cauldron|pot|cooking pot)$","pot",[0.5,0.6,0.5]],
 ]
 static var slot_patterns: Array = []

@@ -66,7 +66,8 @@ static func build(kind: String,s: Dictionary,info: Dictionary,g: RefCounted) -> 
    for x in [-0.43,0.43]:
     for z in [-0.38,0.38]:g.box(root,Vector3(0.035,0.32,0.035),Vector3(x,1.02,z),wood)
    var glass:MeshInstance3D=g.box(root,Vector3(0.90,0.27,0.80),Vector3(0,1.02,0),"99b8bb")
-   var mat:=StandardMaterial3D.new();mat.albedo_color=Color(0.6,0.75,0.76,0.16);mat.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;mat.roughness=0.15
+   # Depth pre-pass glass: overlapping cases and their contents sort stably (no flicker).
+   var mat:=StandardMaterial3D.new();mat.albedo_color=Color(0.6,0.75,0.76,0.16);mat.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA_DEPTH_PRE_PASS;mat.roughness=0.15
    glass.material_override=mat
   "fountain":
    g.cylinder(root,0.46,0.30,Vector3(0,0.15,0),stone)

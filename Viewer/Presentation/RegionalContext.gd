@@ -87,16 +87,22 @@ func build_chunk(at: Vector2i,tree: SceneTree, physical: bool = false) -> Node3D
   root.add_child(sea)
  var collider:=preload("res://Presentation/CollisionBuilder.gd").new()
  var before:=reconstruction.unresolved
+ var models:Array=[]
  for i in chunks.get(at,[]):
   var model:Node3D=reconstruction.build(world.statics[i],world,i)
   if model:
    root.add_child(model)
-   if physical:collider.add_visual(model)
+   models.append(model)
   else:
    var source:Dictionary=world.statics[i]
    var marker:MeshInstance3D=reconstruction.geometry.box(root,Vector3.ONE*0.16,Vector3(source.x-world.originX+0.5,float(source.z)*0.2+0.08,source.y-world.originY+0.5),"e7ba70")
    marker.set_meta("unmapped_source_id",int(source.id))
   if root.get_child_count()%128==0:await tree.process_frame
+ # Loose objects rest on what is really under them before collision is built.
+ var settled:=preload("res://Presentation/ContactSettle.gd").settle(models,world.staticData)
+ root.set_meta("settled",settled)
+ if physical:
+  for model in models:collider.add_visual(model)
  for cell in floor_chunks.get(at,[]):
   var tile:Dictionary=surface.wooden_cells[cell]
   var node:=Node3D.new()
