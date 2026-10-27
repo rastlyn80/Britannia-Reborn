@@ -1636,6 +1636,128 @@
      "bytes": 765277
     }
    ]
+  },
+  {
+   "id": "floral_jacquard",
+   "name": "Floral Jacquard",
+   "source": "https://polyhaven.com/a/floral_jacquard",
+   "license": "CC0-1.0",
+   "licenseUrl": "https://polyhaven.com/license",
+   "authors": [
+    "colormass",
+    "Rico Cilliers"
+   ],
+   "sizeMeters": [
+    0.25,
+    0.38
+   ],
+   "maps": [
+    {
+     "role": "albedo",
+     "file": "floral_jacquard_diff_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/floral_jacquard/floral_jacquard_diff_1k.jpg",
+     "sha256": "4534bf28534ebd8f24544c389a76f42630bca7621ae55feabbb8da32f98e6bf4",
+     "sourceMd5": "465b278aab165f032234a462f8ce75e6",
+     "bytes": 1338234
+    },
+    {
+     "role": "normal",
+     "file": "floral_jacquard_nor_gl_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/floral_jacquard/floral_jacquard_nor_gl_1k.jpg",
+     "sha256": "30defdd06c3afbfac3a22b98c2027d24dc739fee9dbb70281e23b8f7889af5f7",
+     "sourceMd5": "313038660aa5ee7d76e76626b97af498",
+     "bytes": 1483519
+    },
+    {
+     "role": "roughness",
+     "file": "floral_jacquard_rough_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/floral_jacquard/floral_jacquard_rough_1k.jpg",
+     "sha256": "08070e242615135bc2420e3859659a5533325cb07c78a9decffe3e0373ec6ef7",
+     "sourceMd5": "52eda71bfa0c06a39371b86c3bfdea3b",
+     "bytes": 1283819
+    }
+   ]
+  },
+  {
+   "id": "dirty_carpet",
+   "name": "Dirty Carpet",
+   "source": "https://polyhaven.com/a/dirty_carpet",
+   "license": "CC0-1.0",
+   "licenseUrl": "https://polyhaven.com/license",
+   "authors": [
+    "Rohit Seervi"
+   ],
+   "sizeMeters": [
+    0.6,
+    0.6
+   ],
+   "maps": [
+    {
+     "role": "albedo",
+     "file": "dirty_carpet_diff_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/dirty_carpet/dirty_carpet_diff_1k.jpg",
+     "sha256": "b0ef2b248cb7dfa1d33f1b2215fb3b83e815527d4091a2c3a423bdcd63bef60a",
+     "sourceMd5": "97c0a4b94e5660c117cc511b240aa3b3",
+     "bytes": 978020
+    },
+    {
+     "role": "normal",
+     "file": "dirty_carpet_nor_gl_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/dirty_carpet/dirty_carpet_nor_gl_1k.jpg",
+     "sha256": "ba96f6f098ac64456f4cc310469200ff702596a9070d2553f990da8f7b86d29f",
+     "sourceMd5": "f6835454628831b0d8feceba6202e7a1",
+     "bytes": 1089297
+    },
+    {
+     "role": "roughness",
+     "file": "dirty_carpet_rough_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/dirty_carpet/dirty_carpet_rough_1k.jpg",
+     "sha256": "a2e13692bd7e5af9875150130ce9904c11879e693e70753d417b93121cf65be4",
+     "sourceMd5": "c2862c2725bddaa3ad6bbf5eb0ccb9d8",
+     "bytes": 434062
+    }
+   ]
+  },
+  {
+   "id": "hessian_230",
+   "name": "Hessian 230",
+   "source": "https://polyhaven.com/a/hessian_230",
+   "license": "CC0-1.0",
+   "licenseUrl": "https://polyhaven.com/license",
+   "authors": [
+    "colormass",
+    "Rico Cilliers"
+   ],
+   "sizeMeters": [
+    0.27,
+    0.27
+   ],
+   "maps": [
+    {
+     "role": "albedo",
+     "file": "hessian_230_diff_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/hessian_230/hessian_230_diff_1k.jpg",
+     "sha256": "ef9ac1a0129b6d0f44b6d5beb68db7be7a0adf11e09fe52fd2cdc9370b27d4ba",
+     "sourceMd5": "6d2cee5fb9e5584b7a202ab27e1a6dcc",
+     "bytes": 1062404
+    },
+    {
+     "role": "normal",
+     "file": "hessian_230_nor_gl_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/hessian_230/hessian_230_nor_gl_1k.jpg",
+     "sha256": "6d5a6d23c880dbaae98477ed33dbd5d7c0eeda910a39319aec2d0014892974aa",
+     "sourceMd5": "468a884ffa63d912053840b110674c0a",
+     "bytes": 1030521
+    },
+    {
+     "role": "roughness",
+     "file": "hessian_230_rough_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/hessian_230/hessian_230_rough_1k.jpg",
+     "sha256": "469ea3c219147ba83d7a650d7769cc43f25b5e3d8ea8ae4e5e89e7226a32658a",
+     "sourceMd5": "8d3a20d7cc91d00de7d5980d471b3c59",
+     "bytes": 923890
+    }
+   ]
   }
  ]
 }

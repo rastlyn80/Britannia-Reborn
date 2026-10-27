@@ -19,6 +19,7 @@ var heights := {}
 var peak_repairs := {}
 var floor_overrides := {}
 var wall_caps := {}
+const WALL_SET := 3
 var wooden_cells := {}
 var source_ordinals := {}
 func index(input: Dictionary, shore = null) -> void:
@@ -82,16 +83,18 @@ func index(input: Dictionary, shore = null) -> void:
    for offset in [Vector2i.ZERO,Vector2i.RIGHT,Vector2i.DOWN,Vector2i.ONE]:
     if not samples.has(cell+offset) or int(samples[cell+offset].z) != int(source.z): flat = false
    if flat: floor_overrides[cell] = true
- # Ground never rises over the foot of a wall: each wall cell's corners are
- # capped at the wall base (native Z), so houses set into slopes are not buried.
+ # Ground never buries a wall: each wall cell's corners are capped 3 Z
+ # (0.6 m) above the wall base, so houses set into slopes keep their walls,
+ # while a street sloping up past a house meets it at its plinth instead of
+ # being pressed down into a trench along the facade.
  if static_data is Dictionary:
   for source in world.get("statics",[])+world.get("staticHalo",[]):
    var detail: Dictionary = static_data.get(str(int(source.id)),{})
    if not int(detail.get("flags",0)) & 0x10 or int(detail.get("height",0)) < 10: continue
    var cell := Vector2i(source.x,source.y)
-   if not samples.has(cell) or int(samples[cell].z) <= int(source.z): continue
+   if not samples.has(cell) or int(samples[cell].z) <= int(source.z)+WALL_SET: continue
    for corner in [Vector2i.ZERO,Vector2i.RIGHT,Vector2i.DOWN,Vector2i.ONE]:
-    wall_caps[cell+corner] = minf(float(wall_caps.get(cell+corner,INF)),float(source.z))
+    wall_caps[cell+corner] = minf(float(wall_caps.get(cell+corner,INF)),float(source.z)+WALL_SET)
  # Indoor land is a constructed floor, not a blended landscape material.
  for cell in source_ordinals:
   var source: Dictionary = samples[cell]

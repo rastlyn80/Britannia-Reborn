@@ -18,6 +18,12 @@ var gable_material: ShaderMaterial
 # or stone building must not grow plaster gable sails.
 var gable_materials := {}
 var roof_families := {}
+# Generic "window" graphics take the material of the wall run they sit in.
+var window_families := {}
+# Wall-flagged pillars standing on a wall top: spire pinnacles, not towers.
+var pinnacles := {}
+# Carpet tiles by cell (source Z), so each tile knows the rug's outer edges.
+var carpet_cells := {}
 # Rendered terrain (TerrainSurface) and source supports under vegetation. UO
 # stores one height per tile; the presented ground interpolates between tiles,
 # so plants placed at raw tile height float or sink on slopes and planters.
@@ -259,6 +265,11 @@ func index(world: Dictionary) -> void:
 	_plan_context(world)
 	_plan_mounts(world)
 	_plan_roof_families(world)
+	_plan_window_families(world)
+	_plan_pinnacles(world)
+	carpet_cells.clear()
+	for tile in world.statics:
+		if rule_for(int(tile.id)).get("kind","") == "carpet": carpet_cells[Vector2i(tile.x,tile.y)] = int(tile.z)
 	ground_supports.clear()
 	for tile in world.statics:
 		var support_kind := str(rule_for(int(tile.id)).get("kind",""))
@@ -388,6 +399,58 @@ static func wall_family(world: Dictionary, id: int) -> String:
 	var family := preload("res://Presentation/Facade.gd").family_for(name)
 	return str(preload("res://Presentation/ReviewedCatalog.gd").entry(id).get("facadeFamily",family))
 
+# A window named only "window" is plaster by name, yet sits in log, plank,
+# brick or stone runs; the nearest wall along its own axis decides (reviewed
+# per-graphic families still win in build()).
+func _plan_window_families(world: Dictionary) -> void:
+	window_families.clear()
+	var walls := {}
+	for i in world.statics.size():
+		var tile: Dictionary = world.statics[i]
+		if rule_for(int(tile.id)).get("kind","") not in ["wall","corner"]: continue
+		var cell := Vector2i(tile.x,tile.y)
+		if not walls.has(cell): walls[cell] = []
+		walls[cell].append(tile)
+	for i in world.statics.size():
+		var s: Dictionary = world.statics[i]
+		var rule := rule_for(int(s.id))
+		if rule.get("kind","") not in ["window","arch"]: continue
+		var step := Vector2i(0,1) if rule.get("axis","x") == "y" else Vector2i(1,0)
+		var found := ""
+		# Galleries and window bands can run several cells between plain walls.
+		for distance in range(1,7):
+			for direction in [-1,1]:
+				if found != "": break
+				for other in walls.get(Vector2i(s.x,s.y)+step*distance*direction,[]):
+					if absi(int(other.z)-int(s.z)) > 1: continue
+					found = wall_family(world,int(other.id))
+					break
+			if found != "": break
+		if found != "": window_families[i] = found
+	# An archway run is one opening: any member's finding stands for all.
+	for i in window_families.keys():
+		var group: Dictionary = groups.get(i,{})
+		for member in group.get("indices",[]):
+			if not window_families.has(member): window_families[member] = window_families[i]
+
+# A "stone pillar" record on top of a wall is a corner pinnacle in the art
+# (a slim spire just above the coping); its tiledata height (20) describes the
+# sprite bounds, and drawn at full height it became a 4 m chimney-like pier.
+func _plan_pinnacles(world: Dictionary) -> void:
+	pinnacles.clear()
+	var tops := {}
+	for tile in world.statics:
+		if rule_for(int(tile.id)).get("kind","") not in ["wall","corner","trim","arch","pillar","window"]: continue
+		var cell := Vector2i(tile.x,tile.y)
+		var top := int(tile.z)+int(info(world,int(tile.id),true).get("height",0))
+		if not tops.has(Vector3i(cell.x,cell.y,0)): tops[Vector3i(cell.x,cell.y,0)] = []
+		tops[Vector3i(cell.x,cell.y,0)].append(Vector2i(int(tile.z),top))
+	for i in world.statics.size():
+		var s: Dictionary = world.statics[i]
+		if rule_for(int(s.id)).get("kind","") != "pillar" or int(info(world,int(s.id),true).get("flags",0)) & 0x10 == 0 or int(info(world,int(s.id),true).get("height",0)) < 10: continue
+		for span in tops.get(Vector3i(s.x,s.y,0),[]):
+			if span.x < int(s.z) and span.y >= int(s.z)-4 and span.y <= int(s.z)+1: pinnacles[i] = true
+
 func _plan_roof_families(world: Dictionary) -> void:
 	roof_families.clear()
 	var walls := {}
@@ -459,6 +522,103 @@ func chimney_stack(s: Dictionary, group: Dictionary, world: Dictionary) -> Node3
 		var crown: Node3D = fitted("MedievalKit/Chimney.gltf",Vector3(width.x/float(count) if along_x else width.x,top-crown_base,width.z if along_x else width.z/float(count)))
 		crown.position = centre+Vector3(shift if along_x else 0.0,crown_base-origin,0.0 if along_x else shift)
 		root.add_child(crown)
+	return root
+
+# A shop's display cases are one cabinet per source cell, joined into a run:
+# photoscanned timber carcass, felt bed at the native case height, a timber
+# rim on the run's outer edges and thin glass panes. The glass never writes
+# depth, so neighbouring panes and the goods inside cannot flicker.
+var display_glass: StandardMaterial3D
+func display_cases(s: Dictionary, group: Dictionary, world: Dictionary) -> Node3D:
+	var scale := float(world.elevationScale)
+	var root := Node3D.new()
+	var cells := {}
+	for index in group.indices: cells[Vector2i(world.statics[index].x,world.statics[index].y)] = true
+	var wood := preload("res://Presentation/DoorLeaf.gd").surface("medieval_wood",Color(0.62,0.5,0.4))
+	var felt := preload("res://Presentation/DoorLeaf.gd").surface("hessian_230",Color(0.42,0.12,0.1))
+	if display_glass == null:
+		display_glass = StandardMaterial3D.new()
+		display_glass.albedo_color = Color(0.82,0.9,0.92,0.1)
+		display_glass.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		display_glass.cull_mode = BaseMaterial3D.CULL_DISABLED
+		display_glass.roughness = 0.04
+		display_glass.metallic_specular = 0.9
+	var base := 0.6
+	var top := 0.98
+	var y := (float(group.min_z)-float(s.z))*scale
+	var box := preload("res://Presentation/DoorLeaf.gd")._box
+	for cell in cells:
+		var at := Vector3(cell.x-int(s.x),y,cell.y-int(s.y))
+		box.call(root,Vector3(1.0,base-0.06,1.0),at+Vector3(0,0.06+(base-0.06)/2,0),wood)
+		box.call(root,Vector3(0.96,0.06,0.96),at+Vector3(0,0.03,0),wood)
+		box.call(root,Vector3(0.98,0.012,0.98),at+Vector3(0,base+0.006,0),felt)
+		box.call(root,Vector3(1.0,0.008,1.0),at+Vector3(0,top,0),display_glass)
+		for side in [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
+			if cells.has(cell+side): continue
+			var along_x: bool = side.y != 0
+			var edge := at+Vector3(side.x*0.48,0,side.y*0.48)
+			# Plinth lip, glass pane and timber rails along the outer edge.
+			box.call(root,Vector3(1.0 if along_x else 0.04,0.05,0.04 if along_x else 1.0),edge+Vector3(0,base+0.025,0),wood)
+			box.call(root,Vector3(1.0 if along_x else 0.008,top-base-0.05,0.008 if along_x else 1.0),edge+Vector3(0,(base+0.05+top)/2,0),display_glass)
+			box.call(root,Vector3(1.0 if along_x else 0.04,0.035,0.04 if along_x else 1.0),edge+Vector3(0,top+0.012,0),wood)
+		for corner in [Vector2i(-1,-1),Vector2i(1,-1),Vector2i(-1,1),Vector2i(1,1)]:
+			if cells.has(cell+Vector2i(corner.x,0)) or cells.has(cell+Vector2i(0,corner.y)): continue
+			box.call(root,Vector3(0.04,top-base,0.04),at+Vector3(corner.x*0.48,(base+top)/2,corner.y*0.48),wood)
+	return root
+
+# Shop counter: a panelled timber carcass on a plinth with an overhanging top,
+# one module per source cell. Fronts and ends close only on the run's open
+# sides, so L and U counters read as one piece of joinery.
+func counter_run(s: Dictionary, group: Dictionary, world: Dictionary) -> Node3D:
+	var scale := float(world.elevationScale)
+	var root := Node3D.new()
+	root.set_meta("cell_assembly",true)
+	var cells := {}
+	for index in group.indices: cells[Vector2i(world.statics[index].x,world.statics[index].y)] = true
+	var leaf := preload("res://Presentation/DoorLeaf.gd")
+	var carcass := leaf.surface("medieval_wood",Color(0.6,0.47,0.36))
+	var top_wood := leaf.surface("medieval_wood",Color(0.78,0.62,0.46))
+	var height := preload("res://Presentation/GeometryLibrary.gd").furniture_height("counter")
+	var y := (float(group.get("min_z",s.z))-float(s.z))*scale
+	for cell in cells:
+		var at := Vector3(cell.x-int(s.x),y,cell.y-int(s.y))
+		leaf._box(root,Vector3(0.9,height-0.16,0.9),at+Vector3(0,0.08+(height-0.16)/2,0),carcass)
+		leaf._box(root,Vector3(0.86,0.08,0.86),at+Vector3(0,0.04,0),carcass)
+		for side in [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
+			var joined := cells.has(cell+side)
+			var along_x: bool = side.y != 0
+			var edge := at+Vector3(side.x*0.45,0,side.y*0.45)
+			if joined:
+				# Close the gap to the neighbouring module (drawn once per pair).
+				if side == Vector2i.LEFT or side == Vector2i.UP: continue
+				leaf._box(root,Vector3(0.9 if along_x else 0.1,height-0.16,0.1 if along_x else 0.9),at+Vector3(side.x*0.5,0.08+(height-0.16)/2,side.y*0.5),carcass)
+				continue
+			# Raised-panel front: stiles, rails and a recessed panel.
+			for rail_y in [0.16,height-0.14]: leaf._box(root,Vector3(0.9 if along_x else 0.03,0.07,0.03 if along_x else 0.9),edge+Vector3(side.x*0.015,rail_y,side.y*0.015),top_wood)
+			for stile in [-0.41,0.41]: leaf._box(root,Vector3(0.07 if along_x else 0.03,height-0.3,0.03 if along_x else 0.07),edge+Vector3(side.x*0.015+(stile if along_x else 0.0),0.16+(height-0.3)/2,side.y*0.015+(0.0 if along_x else stile)),top_wood)
+		var top_shift := Vector3.ZERO
+		for side in [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
+			if cells.has(cell+side): continue
+			top_shift += Vector3(side.x*0.015,0,side.y*0.015)
+		var top_size := Vector3(1.0+(0.03 if not cells.has(cell+Vector2i.LEFT) else 0.0)+(0.03 if not cells.has(cell+Vector2i.RIGHT) else 0.0),0.06,1.0+(0.03 if not cells.has(cell+Vector2i.UP) else 0.0)+(0.03 if not cells.has(cell+Vector2i.DOWN) else 0.0))
+		leaf._box(root,top_size,at+top_shift+Vector3(0,height-0.03,0),top_wood)
+	return root
+
+# Open bay of a timber-framed house (galleries, carriage openings): oak posts,
+# a heavy head beam with the infill above it and curved knee braces, left
+# open to walk through. Masonry families keep the extruded stone arch.
+func timber_archway(span: float, height: float, family: String) -> Node3D:
+	var root := Node3D.new()
+	var head := minf(2.6,height-0.3)
+	var oak := "oak" if family == "plaster" else "wood"
+	if height-head > 0.05: facade.piece(root,Vector3(span,height-head,0.18),Vector3(0,(height+head)/2,0),family)
+	facade.piece(root,Vector3(span+0.04,0.26,0.32),Vector3(0,head+0.13,0),oak)
+	facade.piece(root,Vector3(span+0.06,0.24,0.36),Vector3(0,height-0.12,0),oak)
+	for side in [-1,1]:
+		facade.piece(root,Vector3(0.2,head,0.3),Vector3(side*(span/2-0.1),head/2,0),oak)
+		var brace := geometry.box(root,Vector3(0.62,0.12,0.26),Vector3(side*(span/2-0.38),head-0.2,0),"ffffff")
+		brace.rotation.z = side*0.75
+		brace.material_override = facade.material(oak)
 	return root
 
 func gable_for(family: String) -> ShaderMaterial:
@@ -641,6 +801,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 	# Generic tiledata names ("window", "arrow loop") hide the material their
 	# art shows; reviewed per-graphic facts and bridge context take precedence.
 	var review: Dictionary = preload("res://Presentation/ReviewedCatalog.gd").entry(int(s.id))
+	if kind in ["window","arch"] and window_families.has(ordinal): family = str(window_families[ordinal])
 	family = str(review.get("facadeFamily",rule.get("facadeFamily",family)))
 	var opening := str(review.get("opening",""))
 	var bridge: Dictionary = bridges.parapets.get(ordinal,{})
@@ -679,6 +840,8 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 			var long_x := span.x >= span.y
 			visual = preload("res://Presentation/LocalLibrary.gd").run(furniture_slot,int(s.x),int(s.y),maxf(span.x,span.y),0.8 if kind == "table" else 0.48,minf(span.x,span.y)*(0.9 if kind == "table" else 0.5))
 			if visual and not long_x: visual.rotation.y = PI/2
+		# Counters follow their real footprint (L and U shapes) cell by cell.
+		if visual == null and kind == "counter" and tint.is_empty(): visual = counter_run(s,groups.get(ordinal,{"indices":[ordinal],"min_z":float(s.z)}),world)
 		if visual == null and not (modern and rule.has("slot") and preload("res://Presentation/LocalLibrary.gd").has(str(rule.slot))):
 			visual = preload("res://Presentation/ReviewedCatalog.gd").build(self,int(s.id),groups.get(ordinal,{}))
 		# Owner-library model for graphics outside the reviewed city (local only),
@@ -699,6 +862,23 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 						if dressing: visual.add_child(dressing)
 				"corner": visual = facade.corner(height,facade.corners.get(ordinal,{}),family)
 				"post": visual = fitted(asset,Vector3(0.15,height,0.15))
+				"pillar" when pinnacles.has(ordinal):
+					visual = Node3D.new()
+					var spire_family := "stone" if family.get_slice("#",0) in ["plaster","wood"] else family
+					facade.piece(visual,Vector3(0.36,0.5,0.36),Vector3(0,0.25,0),spire_family)
+					facade.piece(visual,Vector3(0.42,0.08,0.42),Vector3(0,0.54,0),spire_family)
+					var spire := MeshInstance3D.new()
+					var cone := CylinderMesh.new()
+					cone.top_radius = 0.0
+					cone.bottom_radius = 0.2
+					cone.height = 0.75
+					cone.radial_segments = 4
+					cone.rings = 1
+					spire.mesh = cone
+					spire.position.y = 0.58+0.375
+					spire.rotation.y = PI/4
+					spire.material_override = facade.material(spire_family)
+					visual.add_child(spire)
 				"pillar" when int(detail.get("flags",0)) & 0x10 != 0:
 					# Wall-flagged posts/pillars are square wall piers (corners and
 					# battlement posts), not free-standing round columns.
@@ -733,12 +913,17 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					else: visual = fitted(asset,Vector3(1,height,0.14))
 				"archway":
 					var run: Dictionary = groups[ordinal]
-					# Gateways and arcades are masonry even when the name is generic.
-					visual = facade.archway(maxf(run.size.x,run.size.y),height,"stone" if family.get_slice("#",0) == "plaster" else family)
+					# Gateways and arcades in masonry stay stone; openings in timber-framed
+					# runs (galleries, carriage bays) are framed in oak.
+					if family in ["plaster","wood"] and window_families.has(ordinal): visual = timber_archway(maxf(run.size.x,run.size.y),height,family)
+					else: visual = facade.archway(maxf(run.size.x,run.size.y),height,"stone" if family.get_slice("#",0) == "plaster" else family)
 				"pier":
 					# Solid arch pieces are the masonry beside an opening.
-					visual = Node3D.new()
-					facade.piece(visual,Vector3(1.0,height,0.26),Vector3(0,height/2,0),family if family.get_slice("#",0) != "plaster" else "stone")
+					# Timber houses keep framed panels beside their openings.
+					if family in ["plaster","wood"] and window_families.has(ordinal): visual = facade.panel(height,false,{"offset":0,"length":1},family)
+					else:
+						visual = Node3D.new()
+						facade.piece(visual,Vector3(1.0,height,0.26),Vector3(0,height/2,0),family if family.get_slice("#",0) != "plaster" else "stone")
 				"arch":
 					visual = Node3D.new()
 					var span: float = maxf(groups[ordinal].size.x,groups[ordinal].size.y) if groups.has(ordinal) else 1.0
@@ -758,6 +943,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					# 1.23 m wide, 0.79 m tall, 2.3 m long; procedural gun otherwise.
 					if str(rule.model) == "cannon" and ResourceLoader.exists("res://Art/PolyHaven/cannon_01/cannon_01_1k.gltf"):
 						visual = fitted("PolyHaven/cannon_01/cannon_01_1k.gltf",cannon_size())
+					elif str(rule.model) == "display_case" and groups.has(ordinal): visual = display_cases(s,groups[ordinal],world)
 					else: visual = preload("res://Presentation/CityProps.gd").build(str(rule.model),s,detail,geometry)
 				"invisible": state="source-nodraw"
 				"landing":
@@ -786,7 +972,12 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					asset = "Kenney/bedDouble.glb" if double_bed else asset
 					visual = fitted(asset,Vector3(minf(size.x,size.y),0.72,maxf(size.x,size.y)))
 					if size.x > size.y: visual.rotation.y = PI/2
-				"carpet": visual = geometry.carpet(s)
+				"carpet":
+					var edges := 0
+					for side in [[Vector2i.LEFT,1],[Vector2i.RIGHT,2],[Vector2i.UP,4],[Vector2i.DOWN,8]]:
+						var z = carpet_cells.get(Vector2i(s.x,s.y)+side[0])
+						if z == null or absi(int(z)-int(s.z)) > 2: edges |= int(side[1])
+					visual = geometry.carpet(s,edges)
 				"table", "bench", "counter":
 					var size: Vector2 = groups[ordinal].size if groups.has(ordinal) else Vector2.ONE
 					if kind == "bench":
@@ -797,7 +988,9 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					var table_surface := preload("res://Presentation/Facade.gd").surface_for(str(detail.get("name","")))
 					if not tint.is_empty() and table_surface != "wood" and ("stone" in str(detail.get("name","")) or "marble" in str(detail.get("name",""))):
 						for mesh in visual.find_children("*","MeshInstance3D",true,false): mesh.material_override = facade.material(table_surface)
-				"sign": visual = geometry.sign()
+				# Signposts are drawn by the server sign they carry (board, arm and
+				# wall bracket); the source stub alone read as bent iron remnants.
+				"sign": state = "source-nodraw"
 				"painting": visual = geometry.painting()
 				"tree", "canopy":
 					var name := str(detail.get("name",""))
@@ -876,10 +1069,10 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 				# A cannon keeps its proportions and points along its footprint.
 				if groups[ordinal].size.x > groups[ordinal].size.y: visual.rotation.y = PI/2
 				visual.position.y+=(groups[ordinal].min_z-float(s.z))*float(world.elevationScale)
-			elif kind=="prop" and groups.has(ordinal):
+			elif kind=="prop" and groups.has(ordinal) and str(rule.get("model","")) != "display_case":
 				visual.scale=Vector3(groups[ordinal].size.x,1.0,groups[ordinal].size.y)
 				visual.position.y+=(groups[ordinal].min_z-float(s.z))*float(world.elevationScale)
-			if groups.has(ordinal) and kind in ["bed","arch","archway","gable","bench","table","counter","prop"]:
+			if groups.has(ordinal) and kind in ["bed","arch","archway","gable","bench","table","counter","prop"] and str(rule.get("model","")) != "display_case" and not visual.has_meta("cell_assembly"):
 				var group: Dictionary = groups[ordinal]
 				visual.position += Vector3(group.low.x+group.size.x/2-float(s.x)-0.5,0,group.low.y+group.size.y/2-float(s.y)-0.5)
 			if not show_boundary_fragments and kind in VEGETATION:

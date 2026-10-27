@@ -300,27 +300,38 @@ func leaded_window(root: Node3D, sill: float, opening: float, stone_sill := fals
 	var glass := geometry.box(root,Vector3(0.70,opening-0.06,0.02),Vector3(0,sill+opening/2,0),"ffffff")
 	glass.material_override = leaded_material
 
-# Source-art masonry openings: a barred arrow slit or a narrow leaded arch cut
-# through the wall itself. No timber frame, plaster or glazed casement is added.
+# Source-art masonry openings. Slits stay barred arrow loops; "arched" house
+# windows are glazed leaded casements under a brick or stone segmental arch
+# with a projecting stone sill (a bare 0.46 m hole read as a slit from outside).
 func masonry_window(root: Node3D, h: float, family: String, style: String) -> void:
-	var width := 0.2 if style == "slit" else 0.46
-	var sill := minf(1.1,h*0.3)
-	var opening := minf(1.25 if style == "slit" else 1.5,h*0.45)
+	var width := 0.2 if style == "slit" else 0.8
+	var sill := minf(1.1,h*0.3) if style == "slit" else minf(1.05,h*0.28)
+	var opening := minf(1.25 if style == "slit" else 1.4,h*0.45)
 	var jamb := (1.0-width)/2
 	piece(root,Vector3(1,sill,0.18),Vector3(0,sill/2,0),family)
 	piece(root,Vector3(1,h-sill-opening,0.18),Vector3(0,(h+sill+opening)/2,0),family)
 	for side in [-1,1]: piece(root,Vector3(jamb,opening,0.18),Vector3(side*(width+jamb)/2,sill+opening/2,0),family)
-	# Stepped voussoirs close the head of an arched opening.
 	if style == "arched":
-		for side in [-1,1]: piece(root,Vector3(width*0.3,0.14,0.18),Vector3(side*width*0.35,sill+opening-0.07,0),family)
+		leaded_window(root,sill,opening,true)
+		# Segmental arch of radial voussoirs standing proud of the face.
+		var count := 9
+		var radius := 0.62
+		var spring := asin(0.48/radius)
+		var centre := sill+opening-radius*cos(spring)+0.02
+		for i in count:
+			var angle := lerpf(-spring,spring,(float(i)+0.5)/float(count))
+			var at := Vector3(sin(angle)*(radius+0.09),centre+cos(angle)*(radius+0.09),0)
+			var stone := geometry.box(root,Vector3(0.105,0.2,0.24),at,"ffffff")
+			stone.rotation.z = -angle
+			stone.material_override = material(family)
+		return
 	piece(root,Vector3(width+0.16,0.07,0.26),Vector3(0,sill-0.035,0),family)
 	if iron_material == null:
 		iron_material = StandardMaterial3D.new()
 		iron_material.albedo_color = Color("2f3130")
 		iron_material.metallic = 0.3
 		iron_material.roughness = 0.75
-	var bars := [-width*0.22,width*0.22] if style == "slit" else [0.0]
-	for x in bars:
+	for x in [-width*0.22,width*0.22]:
 		var bar := geometry.box(root,Vector3(0.025,opening,0.025),Vector3(x,sill+opening/2,0),"ffffff")
 		bar.material_override = iron_material
 	var rail := geometry.box(root,Vector3(width,0.025,0.025),Vector3(0,sill+opening*0.55,0),"ffffff")

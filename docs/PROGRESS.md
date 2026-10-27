@@ -1,3 +1,13 @@
+# Britain defect sweep: shops, windows, arches, doors, rugs — 27 October 2026
+
+- Counters follow their real footprint cell by cell (an L counter had become one bounding-box table) with a panelled photoscanned-oak carcass; the stand-in Quaternius cabinet is gone. Display-case blocks are one glazed cabinet per cell (timber carcass, felt bed, rim, thin non-depth-writing glass) instead of one case stretched over 5x3 m; the flicker came from that stretched depth-pre-pass glass.
+- Server decoration (potted plants, goods) rests on the presented surface by a downward ray; reviewed floor/surface items get the same final correction. Potted plants/trees are pinned CC0 Poly Haven scans (potted_plant_02/04); chests and metal boxes are iron-bound photoscanned chests.
+- Generic "window"/"archway" graphics take the family of the wall run they sit in (log/plank houses lost their white plaster window panels; the Wayfarer's Inn gallery is a timber-framed opening, castle gates stay stone). Brick "arched" windows are glazed leaded casements under a brick segmental arch. Wall-top "stone pillar" sprites are slim pinnacles (Chamber of Virtue), not 4 m piers. Signpost stubs are no longer drawn (the server sign builds its bracket).
+- Doors have jambs and a lintel; over-door infill continues posts and bressumer in timber walls. Plaster albedo lowered (no clipping to flat white in sun). Terrain may meet a wall 0.6 m above its base, so streets no longer form trenches along facades.
+- Rugs: woven damask field (floral_jacquard), pile and relief from dirty_carpet, guard stripes and border on each rug's true outer edges (CC0 Poly Haven, pinned).
+- Evidence: classic cache rebaked; captures outputs/art-review/defects-a..c; scripts/verify.ps1 passes (0 errors).
+- Gaps: inventory finds 1,951 Britain graphics (about 38,000 placements) still on code-built or stylised-kit stand-ins; a curated replacement pass (Poly Haven CC0 / owner packs) has started. Door opening direction report, a raised staircase on a brick house and the chimney screenshot are still to locate.
+
 # Scene audit, classic/modern Britain, gables, plaster — 27 October 2026
 
 - SceneAudit.gd audits the built 3D city (not source records) per district: eave roof gaps, roof components touching no wall, floating loose objects, walls buried by terrain, overlapping props. After fixes: 33 eave gaps (one brick hall whose source roof starts 0.6 m above its parapet), 3 isolated roof tiles, remaining "floating" are mostly wall-hung decor and source-height props.

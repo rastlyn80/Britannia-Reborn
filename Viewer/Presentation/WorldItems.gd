@@ -168,6 +168,10 @@ func upsert(serial: int, item: Dictionary) -> void:
    size = Vector3(0.88,1.85 if rule.family in ["wardrobe","bookcase"] else (1.0 if rule.family == "drawers" else 0.65),0.60)
    var local: Node3D = LocalProps.build("crate",int(item.x),int(item.y)) if rule.family == "crate" else null
    if local: root.add_child(local)
+   elif rule.family == "chest":
+    var metal := "Metal" in str(rule.get("type",""))
+    size = Vector3(0.5,0.34,0.34) if metal else Vector3(0.82,0.56,0.5)
+    _chest(root,size,metal)
    else: _cabinet(root,size,rule.family,rule)
    # Graphics drawn facing east: upstream decoration places them in
    # north-south runs against west walls (crates are square either way).
@@ -336,10 +340,13 @@ func upsert(serial: int, item: Dictionary) -> void:
    lamp.omni_range = 3.5
    root.add_child(lamp)
   "plant":
-   geometry.cylinder(root,0.20,0.3,Vector3(0,0.15,0),"a97150")
-   for i in 5:
-    var leaf := geometry.crafted_box(root,Vector3(0.12,0.50,0.05),Vector3(sin(i*1.3)*0.14,0.45,cos(i*1.3)*0.14),"466c3b")
-    leaf.rotation = Vector3(0.3,i*1.3,0.3)
+   # Photoscanned CC0 potted plants (Poly Haven): a potted tree stands tall,
+   # small pots sit on counters and sills.
+   var tree := "Tree" in str(rule.get("type",""))
+   size = Vector3(0.7,1.5,0.7) if tree else Vector3(0.42,0.62,0.42)
+   var plant: Node3D = scene.reconstruction.fitted("PolyHaven/potted_plant_02/potted_plant_02_1k.gltf" if tree else "PolyHaven/potted_plant_04/potted_plant_04_1k.gltf",size)
+   plant.rotation.y = float((int(item.x)*7+int(item.y)*13)%8)*PI/4
+   root.add_child(plant)
   "chair":
    size = Vector3(0.55,0.85,0.55)
    geometry.crafted_box(root,Vector3(0.55,0.10,0.55),Vector3(0,0.45,0),"785734")
@@ -382,6 +389,44 @@ func engrave(root: Node3D, text: String) -> void:
   label.pixel_size = pixel
  var floating: Label3D = root.get_node_or_null("BuildingName")
  if floating: floating.hide()
+
+# Iron-bound chest (or an all-iron strongbox) in photoscanned oak and rusted
+# iron: carcass, barrel lid, corner straps, bands and a hasp plate.
+func _chest(root: Node3D,size: Vector3,metal: bool) -> void:
+ var iron := DoorLeaf.surface("rusty_metal_02",Color(0.36,0.33,0.31),0.55)
+ var body := iron if metal else DoorLeaf.surface("medieval_wood",Color(0.62,0.48,0.36))
+ var lid_height := size.y*0.3
+ var base := size.y-lid_height
+ DoorLeaf._box(root,Vector3(size.x,base,size.z),Vector3(0,base/2,0),body)
+ var lid := MeshInstance3D.new()
+ var drum := CylinderMesh.new()
+ drum.top_radius = size.z/2
+ drum.bottom_radius = size.z/2
+ drum.height = size.x
+ drum.radial_segments = 16
+ lid.mesh = drum
+ lid.material_override = body
+ lid.rotation.z = PI/2
+ lid.scale = Vector3(1,1,lid_height/(size.z/2))
+ lid.position.y = base
+ root.add_child(lid)
+ DoorLeaf._box(root,Vector3(size.x,0.02,size.z+0.004),Vector3(0,base,0),iron)
+ for x in ([-size.x*0.32,size.x*0.32] if not metal else [-size.x*0.25,size.x*0.25]):
+  DoorLeaf._box(root,Vector3(0.045,base,size.z+0.012),Vector3(x,base/2,0),iron)
+  var band := MeshInstance3D.new()
+  var ring := CylinderMesh.new()
+  ring.top_radius = size.z/2+0.006
+  ring.bottom_radius = size.z/2+0.006
+  ring.height = 0.045
+  ring.radial_segments = 16
+  band.mesh = ring
+  band.material_override = iron
+  band.rotation.z = PI/2
+  band.scale = Vector3(1,1,lid_height/(size.z/2))
+  band.position = Vector3(x,base,0)
+  root.add_child(band)
+ for side in [-1,1]: DoorLeaf._box(root,Vector3(0.05,base,0.05),Vector3(side*(size.x/2-0.02),base/2,-size.z/2+0.02),iron)
+ DoorLeaf._box(root,Vector3(0.09,0.12,0.015),Vector3(0,base-0.02,-size.z/2-0.008),iron)
 
 func _cabinet(root: Node3D,size: Vector3,family: String,rule: Dictionary = {}) -> void:
  geometry.crafted_box(root,size,Vector3(0,size.y/2,0),"657076" if "Metal" in str(rule.get("type","")) else "6d4b30")
@@ -576,6 +621,34 @@ func request_contact_refresh() -> void:
  contacts_pending=true
  refresh_contacts.call_deferred()
 
+# Unreviewed loose decoration (potted plants, goods, boxes) rests on what is
+# really under it: source Z stacks sprites, but presented counters, shelves
+# and tables have their own heights. Fixtures and wall-hung pieces stay put.
+const FIXED_FAMILIES := ["door","sign","lamp","noticeboard","street_sign","plaque","light"]
+func _settle_loose(node: Node3D, space: PhysicsDirectSpaceState3D) -> void:
+ if not node.is_inside_tree() or str(node.get_meta("family","")) in FIXED_FAMILIES: return
+ var item: Dictionary = session.world_items.get(int(node.get_meta("serial",0)),{})
+ var rule := definition(item) if not item.is_empty() else {}
+ if preload("res://Presentation/ContactSettle.gd").hung(str(rule.get("display_name","")).to_lower()) or "wall" in str(rule.get("display_name","")).to_lower(): return
+ var previous := float(node.get_meta("settle_offset",0.0))
+ var offset := _ray_rest(node,space,0.0)
+ for child in node.get_children():
+  if child is Node3D: child.position.y += offset-previous
+ node.set_meta("settle_offset",offset)
+
+# Vertical correction that puts an item's base on the presented surface under
+# it (table, counter, shelf, floor collision), from base_y (local) above the
+# node; 0 when nothing is within 0.3 m above / 1.4 m below.
+func _ray_rest(node: Node3D, space: PhysicsDirectSpaceState3D, base_y: float) -> float:
+ var base := node.global_position.y+base_y
+ var query := PhysicsRayQueryParameters3D.create(Vector3(node.global_position.x,base+0.3,node.global_position.z),Vector3(node.global_position.x,base-1.4,node.global_position.z),1)
+ var own := node.get_node_or_null("PickBody")
+ if own: query.exclude = [own.get_rid()]
+ var hit := space.intersect_ray(query)
+ if hit.is_empty(): return 0.0
+ var offset := float(hit.position.y)-base
+ return 0.0 if offset > 0.3 or absf(offset) < 0.02 else offset
+
 func refresh_contacts() -> void:
  contacts_pending=false
  if not is_instance_valid(scene):return
@@ -597,8 +670,15 @@ func refresh_contacts() -> void:
     node.get_node("PickBody").position.y = library_visual.position.y+float(node.get_meta("pick_half",0.2))
    continue
   var review: Dictionary=preload("res://Presentation/ReviewedCatalog.gd").entry(int(session.world_items[serial].id))
-  if review.get("attachment","") not in ["floor","surface"]:continue
+  if review.get("attachment","") not in ["floor","surface"]:
+   _settle_loose(node,space)
+   continue
   var placement: Dictionary=supports.placement(session.world_items[serial])
+  # The plan's support height is an estimate of the presented model; the
+  # ray finds its real top (fitted tables differ from the procedural ones).
+  if node.is_inside_tree() and str(node.get_meta("family","")) not in FIXED_FAMILIES:
+   placement = placement.duplicate()
+   placement.offset = placement.offset+Vector3(0,_ray_rest(node,space,float(placement.offset.y)),0)
   if visual:
    visual.position=placement.offset
    node.get_node("PickBody").position=placement.offset

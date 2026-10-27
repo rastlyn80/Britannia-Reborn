@@ -60,15 +60,30 @@ func sign() -> Node3D:
 
 const CARPET_LIFT := 0.025
 
-func carpet(s: Dictionary) -> MeshInstance3D:
+# edges: which sides of this tile are the rug's outer edge (1 W, 2 E, 4 N, 8 S).
+static var carpet_materials := {}
+func carpet(s: Dictionary, edges := 15) -> MeshInstance3D:
 	var mesh := MeshInstance3D.new()
 	var plane := PlaneMesh.new()
 	plane.size = Vector2(1,1)
 	mesh.mesh = plane
-	var mat := ShaderMaterial.new()
-	mat.shader = preload("res://Presentation/Carpet.gdshader")
-	mat.set_shader_parameter("base_color",Color("243f61") if s.id <= 2777 else Color("77502d"))
-	mesh.material_override = mat
+	var blue: bool = s.id <= 2777
+	# One material per colour and edge mask: baked districts merge meshes by
+	# material, so per-instance parameters would not survive.
+	var key := "%s/%d" % [blue,edges]
+	if not carpet_materials.has(key):
+		var mat := ShaderMaterial.new()
+		mat.shader = preload("res://Presentation/Carpet.gdshader")
+		# Indigo field with a madder border, or madder field with an indigo one.
+		mat.set_shader_parameter("base_color",Color("1f2c4a") if blue else Color("6b2a1e"))
+		mat.set_shader_parameter("border_color",Color("6e2419") if blue else Color("23304d"))
+		mat.set_shader_parameter("motif_color",Color("c2a66e") if blue else Color("cdb27a"))
+		mat.set_shader_parameter("pattern",load("res://Art/Surfaces/floral_jacquard_diff_1k.jpg"))
+		mat.set_shader_parameter("pile",load("res://Art/Surfaces/dirty_carpet_diff_1k.jpg"))
+		mat.set_shader_parameter("pile_normal",load("res://Art/Surfaces/dirty_carpet_nor_gl_1k.jpg"))
+		mat.set_shader_parameter("edges",edges)
+		carpet_materials[key] = mat
+	mesh.material_override = carpet_materials[key]
 	mesh.position.y = CARPET_LIFT
 	return mesh
 

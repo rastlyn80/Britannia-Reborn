@@ -48,9 +48,16 @@ static func header(root: Node3D,plan: Dictionary,geometry,facade) -> void:
  var beam_height := minf(float(plan.lintel_height),envelope-opening)
  var family := str(plan.get("family","plaster"))
  var masonry: bool = family in preload("res://Presentation/Facade.gd").MASONRY
- var beam = geometry.crafted_box(root,Vector3(1.0,beam_height,0.22),Vector3(0,opening+beam_height/2,0),"745334")
+ var timber := "oak" if family == "plaster" else "wood"
+ var beam = geometry.crafted_box(root,Vector3(1.0,beam_height,0.26),Vector3(0,opening+beam_height/2,0),"745334")
  beam.name = "DoorLintel"
- if masonry: beam.material_override = facade.material(family)
+ beam.material_override = facade.material(family if masonry else timber)
+ # Door frame: jambs proud of the wall either side of the leaf, so the
+ # opening reads as built joinery rather than a hole with a slab over it.
+ for side in [-1,1]:
+  var jamb = geometry.box(root,Vector3(0.07,opening,0.26),Vector3(side*0.51,opening/2,0),"ffffff")
+  jamb.name = "DoorJamb"
+  jamb.material_override = facade.material(family if masonry else timber)
  var remainder := envelope-opening-beam_height
  if remainder > 0.001:
   var fill = geometry.box(root,Vector3(1.0,remainder,0.18),Vector3(0,opening+beam_height+remainder/2,0),"ded2b7")
@@ -58,6 +65,13 @@ static func header(root: Node3D,plan: Dictionary,geometry,facade) -> void:
   var infill: ShaderMaterial = facade.material(family).duplicate()
   infill.set_shader_parameter("open_caps",true)
   fill.material_override = infill
+  # Timber-framed walls continue their posts and bressumer over the door.
+  if family in ["plaster","wood"] and remainder > 0.3:
+   for side in [-1,1]:
+    var post = geometry.box(root,Vector3(0.12,remainder,0.28),Vector3(side*0.45,opening+beam_height+remainder/2,0),"ffffff")
+    post.material_override = facade.material(timber)
+   var top = geometry.box(root,Vector3(1.02,minf(0.24,remainder),0.36),Vector3(0,envelope-minf(0.24,remainder)/2,0),"ffffff")
+   top.material_override = facade.material(timber)
  var body := StaticBody3D.new()
  body.name = "HeaderCollision"
  body.collision_layer = 1

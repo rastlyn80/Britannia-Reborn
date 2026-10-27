@@ -75,7 +75,8 @@ void fragment(){
   vec3 plaster=surface_variant_count>0?source:texture(surface_albedo,uv*surface_scale*0.4).rgb;
   float grain=clamp(dot(plaster,vec3(0.2126,0.7152,0.0722))/0.72,0.0,1.2);
   vec3 lime=palette.rgb*mix(vec3(1.0),vec3(1.0,0.97,0.9),smoothstep(0.55,0.8,surface_fbm(world_position.xz*0.025+vec2(11.0,5.0))));
-  ALBEDO=lime*mix(1.0,grain,0.4)*mix(0.94,1.03,broad);
+  // Real limewash reflects ~75%; a near-white base clipped to flat white in sun.
+  ALBEDO=lime*0.84*mix(1.0,grain,0.55)*mix(0.92,1.04,broad);
   ALBEDO=mix(ALBEDO,ALBEDO*vec3(0.74,0.70,0.62),stain*0.3);
   ALBEDO=mix(ALBEDO,ALBEDO*vec3(0.55,0.52,0.46),damp*0.65);
   ALBEDO*=1.0-streak*0.15;
