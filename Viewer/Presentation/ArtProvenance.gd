@@ -1,6 +1,8 @@
 extends SceneTree
 # Labels every graphic in the local item catalogue with what this client draws
-# for it today: a free kit model, the owner's licensed packs, geometry built in
+# for it today: a photoscan / realistic PBR model (scan, final quality), code-
+# built joinery in photoscanned materials (crafted), the owner's licensed packs,
+# a low-poly stand-in kit model (kit, to be replaced), plain geometry built in
 # code, nothing (no-draw), or nothing yet (original only). Mirrors the dispatch
 # in Reconstruction.build and WorldItems.upsert. Name-rule looks for graphics
 # never placed in Britain or reviewed are reported as untested guesses.
@@ -48,6 +50,19 @@ func _initialize() -> void:
 	file.store_string("window.CURRENT="+JSON.stringify({"generated":Time.get_datetime_string_from_system(true),"looks":result})+";")
 	file.close()
 	print("CURRENT LOOKS: ",counts)
+	# Coverage weighted by Britain placements (map statics and server decoration).
+	var weights := {}
+	var total := 0
+	for item in catalog.items:
+		var n := int(item.get("britain",0))+int(item.get("decoration",0))
+		if n == 0: continue
+		var status := str(result[str(int(item.id))].status)
+		weights[status] = int(weights.get(status,0))+n
+		total += n
+	var summary := ""
+	for status in ["scan","crafted","owner","kit","built","guess","original","hidden"]:
+		summary += "%s %.1f%%  " % [status,100.0*float(weights.get(status,0))/maxf(total,1)]
+	print("BRITAIN COVERAGE (placements): ",summary)
 	quit(0)
 
 # Tiledata flag names (catalogue order) back to their bit values.
@@ -61,6 +76,8 @@ static func flag_bits(names: Array) -> int:
 
 static func pack(asset: String) -> Dictionary:
 	if asset.begins_with("procedural:") or asset.is_empty(): return {"status":"built","detail":"built in code"}
+	if asset.begins_with("PolyHaven/"): return {"status":"scan","detail":"Poly Haven photoscan (CC0): "+asset.get_file().get_basename()}
+	if asset.begins_with("Objaverse/"): return {"status":"scan","detail":"Sketchfab scan/PBR (see Art/Objaverse/NOTICE.md): "+asset.get_file().get_basename()}
 	var vendor := "Poly Haven" if asset.begins_with("PolyHaven/") else ("Kenney" if asset.begins_with("Kenney/") else ("Medieval kit" if asset.begins_with("MedievalKit/") else "Quaternius"))
 	return {"status":"kit","detail":"%s (CC0): %s" % [vendor,asset.get_file().get_basename()]}
 
@@ -70,15 +87,29 @@ func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -
 		if preload("res://Presentation/HumanWardrobe.gd").GRAPHICS.has(id):
 			return {"status":"kit","detail":"MakeHuman CC0: fitted human wardrobe category substitute"}
 		return {"status":"original","detail":"worn model outside the first human wardrobe batch"}
+	# Name-keyed scan replacements apply to map statics and server items alike.
+	var found: Dictionary = preload("res://Presentation/PropReplacements.gd").entry(name)
+	if not found.is_empty():
+		var model := str(found.model)
+		return pack(("Objaverse/%s/%s.glb" % [model.trim_prefix("Objaverse/"),model.trim_prefix("Objaverse/")]) if model.begins_with("Objaverse/") else "PolyHaven/%s/%s" % [model,model])
 	var review: Dictionary = Reviewed.entry(id)
+	# Counters are built cell by cell in photoscanned timber whatever their review says.
+	if str(review.get("kind",audited.get("kind",""))) == "counter": return {"status":"crafted","detail":"panelled counter in photoscanned timber"}
 	if review.has("asset"):
 		var reviewed := pack(str(review.asset))
 		reviewed.detail += " (reviewed)"
 		return reviewed
-	if review.has("construction") or str(review.get("renderer","")) == "shared-construction": return {"status":"built","detail":"built in code (reviewed)"}
+	if review.has("construction") or str(review.get("renderer","")) == "shared-construction":
+		var reviewed_kind := str(review.get("kind",audited.get("kind","")))
+		if reviewed_kind in ["wall","window","corner","trim","beam","gable","arch","floor","landing","stairs","roof","bridge"] or str(review.get("construction","")) in ["wall","bridge","facade"]:
+			return {"status":"crafted","detail":"built in code with photoscanned surfaces (reviewed)"}
+		return {"status":"built","detail":"built in code (reviewed)"}
 	if not server.is_empty() and audited.is_empty():
 		var family := str(server.get("family",""))
-		if family == "door": return pack("MedievalKit/Door_Rect.gltf")
+		if family == "door": return {"status":"crafted","detail":"door leaf in photoscanned timber and iron"}
+		if family in ["chest","drawers"]: return {"status":"crafted" if family == "chest" else "scan","detail":"iron-bound chest in photoscanned timber and iron" if family == "chest" else "Poly Haven photoscan (CC0): GothicCommode_01"}
+		if family == "plant": return {"status":"scan","detail":"Poly Haven photoscan (CC0): potted plant"}
+		if family == "sign": return {"status":"crafted","detail":"hanging sign board with painted face"}
 		if family in ["crate","barrel"] and not LocalProps.items().is_empty(): return {"status":"owner","detail":"Dexsoft %s (your pack, local)" % family}
 		if family == "lamp": return {"status":"kit","detail":"Medieval kit (CC0): lantern post, or built in code"}
 		return {"status":"built","detail":"built in code: "+Appearance.variant(id,server)}
@@ -90,6 +121,10 @@ func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -
 	var asset := str(rule.get("asset",""))
 	match kind:
 		"invisible": return {"status":"hidden","detail":"not drawn (editor marker)"}
+		"sign": return {"status":"hidden","detail":"signpost drawn by its server sign"}
+		"canopy":
+			if LocalTrees.available(): return {"status":"owner","detail":"your tree packs (local): crown of a whole tree"}
+			return pack(asset)
 		"tree":
 			if LocalTrees.available(): return {"status":"owner","detail":"your tree packs (local)"}
 			return pack(asset)
@@ -100,8 +135,18 @@ func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -
 		"prop":
 			var local := LocalProps.kind_for(str(rule.model),name.to_lower())
 			if local != "" and not LocalProps.items().is_empty(): return {"status":"owner","detail":"Dexsoft %s (your pack, local)" % local}
+			if str(rule.model) == "display_case": return {"status":"crafted","detail":"glazed display cabinets in photoscanned timber"}
+			if str(rule.model) == "cannon": return pack("PolyHaven/cannon_01/cannon_01_1k.gltf")
 			return {"status":"built","detail":"built in code: "+str(rule.model)}
 	if kind in FITTED: return pack(asset)
+	var named := name.to_lower()
+	if kind == "counter": return {"status":"crafted","detail":"panelled counter in photoscanned timber"}
+	if kind == "carpet": return {"status":"crafted","detail":"woven rug from photoscanned fabric"}
+	if kind == "table" and not ("stone" in named or "marble" in named or "sandstone" in named): return pack("Objaverse/table_wood_b/table_wood_b.glb")
+	if kind == "bed": return pack("PolyHaven/GothicBed_01/GothicBed_01_1k.gltf")
+	# Architecture and water are built from photoscanned surface sets.
+	if kind in ["wall","window","corner","trim","beam","gable","pillar","floor","landing","stairs","roof","chimney","water","lava","waterfall","palisade","planter"]:
+		return {"status":"crafted","detail":"built in code with photoscanned surfaces: "+kind}
 	if kind in BUILT:
 		var detail := "built in code: "+kind
 		if kind == "window": detail += " + Medieval kit shutters"

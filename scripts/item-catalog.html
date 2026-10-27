@@ -35,7 +35,7 @@ main{padding:14px 16px 60px}
 .rank{color:var(--accent);font-variant-numeric:tabular-nums}
 .badge{display:inline-block;font-size:11px;padding:1px 6px;border-radius:9px;border:1px solid var(--line);color:var(--dim);margin-top:4px}
 .badge{--c:var(--dim);color:var(--c);border-color:var(--c)}
-.s-kit{--c:#6fb26b}.s-owner{--c:#5fb0c9}.s-built{--c:#c9b25f}.s-guess{--c:#d07a3a}.s-original{--c:#c95f5f}.s-hidden{--c:#7d7468}
+.s-scan{--c:#3fd08a}.s-crafted{--c:#8fc96b}.s-kit{--c:#a8b26b}.s-owner{--c:#5fb0c9}.s-built{--c:#c9b25f}.s-guess{--c:#d07a3a}.s-original{--c:#c95f5f}.s-hidden{--c:#7d7468}
 .card.done{opacity:.55}.card.done:hover{opacity:1}
 .legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px;font-size:12px;color:var(--dim)}
 .legend b{font-weight:600;color:var(--c)}
@@ -72,11 +72,13 @@ main{padding:14px 16px 60px}
   </select>
   <select id="look">
    <option value="">Any current look</option>
-   <option value="todo" selected>Needs a model (original only or untested guess)</option>
-   <option value="done">Already done (kit, your packs, built in code)</option>
+   <option value="todo" selected>Needs a model (original, guess, low-poly stand-in or plain code)</option>
+   <option value="done">Done (photoscan, crafted, your packs)</option>
+   <option value="scan">Photoscan / realistic</option>
+   <option value="crafted">Crafted (photoscan materials)</option>
    <option value="original">Original only</option>
    <option value="guess">Untested guess</option>
-   <option value="kit">Kit model</option>
+   <option value="kit">Low-poly stand-in</option>
    <option value="owner">Your packs</option>
    <option value="built">Built in code</option>
   </select>
@@ -103,15 +105,15 @@ cats.forEach(c=>$('#cat').insertAdjacentHTML('beforeend',`<option>${c}</option>`
 $('#stats').textContent=`${fmt(C.items.length)} item graphics · ${fmt(placedItems.length)} placed in the world · ${fmt(C.families.length)} families (${fmt(C.families.filter(f=>f.world>0).length)} placed) · generated ${C.generated}`;
 const art=id=>`art/${id}.png`;
 // What this client draws today (current.js from Presentation/ArtProvenance.gd).
-const LOOKS=(window.CURRENT||{}).looks||{},DONE=['kit','owner','built','hidden'];
-const LABEL={kit:'Kit model',owner:'Your packs',built:'Built in code',guess:'Untested guess',original:'Original only',hidden:'Not drawn'};
+const LOOKS=(window.CURRENT||{}).looks||{},DONE=['scan','crafted','owner','hidden'];
+const LABEL={scan:'Photoscan / realistic',crafted:'Crafted (photoscan materials)',owner:'Your packs',kit:'Low-poly stand-in',built:'Built in code',guess:'Untested guess',original:'Original only',hidden:'Not drawn'};
 const look=id=>LOOKS[id]||{status:'original',detail:window.CURRENT?'no 3D look yet':'run build-item-catalog.ps1 to label'};
 function status(item){const l=look(item.id);return [l.status,LABEL[l.status]]}
 // A family's look: the status that covers most of its placements.
 function famLook(f){const w={};f.ids.forEach(id=>{const i=byId.get(id),s=look(id).status;w[s]=(w[s]||0)+Math.max(i.world,f.world?0:1)});return Object.entries(w).sort((a,b)=>b[1]-a[1])[0][0]}
-C.families.forEach(f=>{f.look=famLook(f);f.todo=f.ids.filter(id=>['original','guess'].includes(look(id).status)&&byId.get(id).world>0).length});
+C.families.forEach(f=>{f.look=famLook(f);f.todo=f.ids.filter(id=>['original','guess','kit','built'].includes(look(id).status)&&byId.get(id).world>0).length});
 C.items.forEach(i=>i.look=look(i.id).status);
-function lookMatch(e,want){if(!want)return true;if(want==='todo')return e.look==='original'||e.look==='guess';if(want==='done')return DONE.includes(e.look);return e.look===want}
+function lookMatch(e,want){if(!want)return true;if(want==='todo')return ['original','guess','kit','built'].includes(e.look);if(want==='done')return DONE.includes(e.look);return e.look===want}
 function lead(f){return f.ids.map(id=>byId.get(id)).sort((a,b)=>b.world-a.world||a.id-b.id)[0]}
 function matches(text,entry,ids){
  if(!text)return true;const t=text.trim().toLowerCase();
