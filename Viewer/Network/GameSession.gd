@@ -7,6 +7,7 @@ signal characters_received(characters: Array, cities: Array)
 signal entered(position: Dictionary)
 signal entity_changed(serial: int, position: Dictionary)
 signal entity_removed(serial: int)
+signal appearance_changed(serial: int)
 signal position_reset(position: Dictionary)
 signal movement_started(position: Dictionary, seconds: float)
 signal movement_result(accepted: bool, position: Dictionary)
@@ -30,6 +31,8 @@ var player_status := {}
 var skills := {}
 var known_items := {}
 var equipment := {}
+var mobile_equipment := {}
+const MobileLook = preload("res://Network/MobileAppearance.gd")
 var context_menu := {}
 var vendor_prices := {}
 var vendor_serial := 0
@@ -157,6 +160,7 @@ func close() -> void:
 	container_items.clear()
 	known_items.clear()
 	equipment.clear()
+	mobile_equipment.clear()
 	pending_transfer.clear()
 	next_item_action = 0
 	placement_serial = 0
@@ -347,6 +351,7 @@ func _handle(p: PackedByteArray) -> void:
 			send(response)
 		0x1b:
 			player.serial = Login.read_be(p,1,4)
+			player.body = Login.read_be(p,9,2)
 			player.x = Login.read_be(p,11,2)
 			player.y = Login.read_be(p,13,2)
 			player.z = signed(Login.read_be(p,15,2),16)
@@ -358,6 +363,8 @@ func _handle(p: PackedByteArray) -> void:
 			request_character()
 		0x20:
 			if Login.read_be(p,1,4) == player.serial:
+				player.body = Login.read_be(p,5,2)
+				player.hue = Login.read_be(p,8,2)
 				player.x = Login.read_be(p,11,2)
 				player.y = Login.read_be(p,13,2)
 				player.z = signed(p[18])
@@ -399,23 +406,25 @@ func _handle(p: PackedByteArray) -> void:
 				movement_result.emit(true,player.duplicate())
 				if not awaiting_position: entity_changed.emit(player.serial,player.duplicate())
 		0x78:
-			if p.size() < 23: return
-			var serial := Login.read_be(p,3,4)
-			var entity := {"serial":serial,"x":Login.read_be(p,9,2),"y":Login.read_be(p,11,2),"z":signed(p[13]),"direction":int(p[14])&7,"running":(int(p[14])&0x80)!=0,"facet":player.facet}
+			var snapshot := MobileLook.snapshot(p)
+			if snapshot.is_empty(): return
+			var entity: Dictionary = snapshot.entity
+			var serial := int(entity.serial)
+			entity.facet = player.facet
 			entities[serial] = entity
+			mobile_equipment[serial] = snapshot.worn
 			if serial == player.serial:
-				var offset := 19
-				while offset+4 <= p.size() and Login.read_be(p,offset,4) != 0:
-					if offset+9 > p.size(): break
-					var worn := {"serial":Login.read_be(p,offset,4),"id":Login.read_be(p,offset+4,2),"amount":1,"layer":int(p[offset+6]),"container":int(player.serial),"hue":Login.read_be(p,offset+7,2)}
-					equipment[worn.layer] = worn
+				equipment = snapshot.worn.duplicate(true)
+				player.body = entity.body
+				player.hue = entity.hue
+				for worn: Dictionary in equipment.values():
 					remember_item(worn)
-					if p[offset+6] == 21: backpack = Login.read_be(p,offset,4)
-					offset += 9
+					if int(worn.layer)==21: backpack = int(worn.serial)
+			appearance_changed.emit(serial)
 			entity_changed.emit(serial,entity)
 		0x77:
 			var serial := Login.read_be(p,1,4)
-			var entity := {"serial":serial,"x":Login.read_be(p,7,2),"y":Login.read_be(p,9,2),"z":signed(p[11]),"direction":int(p[12])&7,"running":(int(p[12])&0x80)!=0,"facet":player.facet}
+			var entity := {"serial":serial,"body":Login.read_be(p,5,2),"hue":Login.read_be(p,13,2),"x":Login.read_be(p,7,2),"y":Login.read_be(p,9,2),"z":signed(p[11]),"direction":int(p[12])&7,"running":(int(p[12])&0x80)!=0,"facet":player.facet}
 			entities[serial] = entity
 			entity_changed.emit(serial,entity)
 		0xf3:
@@ -472,6 +481,8 @@ func _handle(p: PackedByteArray) -> void:
 			var serial := Login.read_be(p,1,4)
 			if not pending_transfer.is_empty() and int(pending_transfer.serial)==serial: pending_transfer.lifted = true
 			entities.erase(serial)
+			mobile_equipment.erase(serial)
+			_forget_worn(serial)
 			entity_removed.emit(serial)
 			_remove_world_item(serial)
 			known_items.erase(serial)
@@ -483,10 +494,14 @@ func _handle(p: PackedByteArray) -> void:
 			if p.size() != 15: return
 			var owner := Login.read_be(p,9,4)
 			var item := {"serial":Login.read_be(p,1,4),"id":Login.read_be(p,5,2),"amount":1,"layer":int(p[8]),"container":owner,"hue":Login.read_be(p,13,2)}
+			_forget_worn(int(item.serial))
+			if not mobile_equipment.has(owner): mobile_equipment[owner] = {}
+			mobile_equipment[owner][int(item.layer)] = item
 			if owner == int(player.serial):
 				equipment[item.layer] = item
 				if item.layer == 21: backpack = int(item.serial)
 			remember_item(item)
+			appearance_changed.emit(owner)
 		0xbf:
 			if p.size()>=12 and Login.read_be(p,3,2)==0x14:
 				context_menu = Commerce.context(p)
@@ -582,7 +597,7 @@ func select_character(slot: int, name: String) -> void:
 	deadline = Time.get_ticks_msec()+20000
 	send(p)
 
-func create_character(name: String, slot: int, city: int) -> void:
+func create_character(name: String, slot: int, city: int, female: bool = false) -> void:
 	if phase != "characters": return
 	if name.length() < 2 or name.length() > 29:
 		failed.emit("Choose a 2–29 character name")
@@ -593,9 +608,9 @@ func create_character(name: String, slot: int, city: int) -> void:
 			return
 	phase = "entering"
 	deadline = Time.get_ticks_msec()+20000
-	send(creation_packet(name,slot,city))
+	send(creation_packet(name,slot,city,female))
 
-static func creation_packet(name: String, slot: int, city: int) -> PackedByteArray:
+static func creation_packet(name: String, slot: int, city: int, female: bool = false) -> PackedByteArray:
 	var p := PackedByteArray([0xf8])
 	p.append_array(Login.uint_be(0xedededed,4))
 	p.append_array(Login.uint_be(0xffffffff,4))
@@ -607,7 +622,7 @@ static func creation_packet(name: String, slot: int, city: int) -> PackedByteArr
 	p.append_array(Login.uint_be(0,4))
 	p.append(0) # custom profession: selected city is respected
 	p.resize(70)
-	p.append_array(PackedByteArray([2,40,30,20,40,30,27,30,17,30,1,30]))
+	p.append_array(PackedByteArray([3 if female else 2,40,30,20,40,30,27,30,17,30,1,30]))
 	for value in [0x03ea,0,0,0,0,city]: p.append_array(Login.uint_be(value,2))
 	p.append_array(Login.uint_be(slot,4))
 	p.append_array(Login.uint_be(0x7f000001,4))
@@ -833,6 +848,7 @@ func contents_of(parent: int) -> Array:
 		if int(item.get("container",0)) == parent: result.append(item)
 	return result
 func remember_item(item: Dictionary) -> void:
+	if not item.has("layer"): _forget_worn(int(item.serial))
 	if not requested_icons.has(int(item.id)):
 		requested_icons[int(item.id)] = true
 		icons_dirty = true
@@ -844,6 +860,15 @@ func remember_item(item: Dictionary) -> void:
 		if int(item.get("container",0)) == int(pending_transfer.destination): finish_transfer(true,"Item move confirmed by server.")
 		elif pending_transfer.get("lifted",false) and int(item.get("container",0)) == int(pending_transfer.source): finish_transfer(false,"Server returned the item to its original location.")
 	items_changed.emit()
+func _forget_worn(serial: int) -> void:
+	for owner in mobile_equipment.keys():
+		var changed := false
+		for layer in mobile_equipment[owner].keys():
+			if int(mobile_equipment[owner][layer].serial)==serial:
+				mobile_equipment[owner].erase(layer)
+				if int(owner)==int(player.serial): equipment.erase(layer)
+				changed = true
+		if changed: appearance_changed.emit(int(owner))
 func finish_transfer(success: bool, description: String) -> void:
 	if pending_transfer.is_empty(): return
 	next_item_action = maxi(next_item_action,Time.get_ticks_msec()+1100)

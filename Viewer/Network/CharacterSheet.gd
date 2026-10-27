@@ -30,6 +30,8 @@ func configure(game: Node) -> void:
 	session.status_changed.connect(func(_status: Dictionary): refresh_status())
 	session.skills_changed.connect(func(_skills: Dictionary): refresh_skills())
 	session.ended.connect(func(): hide())
+	session.appearance_changed.connect(func(serial: int):
+		if serial==int(session.player.serial): _refresh_portrait())
 
 func _ready() -> void:
 	theme = UiLook.theme()
@@ -299,12 +301,18 @@ func _build_portrait(view: SubViewport) -> void:
 	rim.light_color = Color("a8c4ff")
 	stage.add_child(rim)
 	portrait_avatar = preload("res://Presentation/Avatar.gd").new()
+	if session: portrait_avatar.initial_body = int(session.player.get("body",0))
 	portrait_avatar.rotation.y = 0.35
 	stage.add_child(portrait_avatar)
+	_refresh_portrait()
 	var camera := Camera3D.new()
 	camera.fov = 32
 	stage.add_child(camera)
 	camera.transform = Transform3D(Basis.looking_at(Vector3(0,0.98,0)-Vector3(0,1.15,3.6)),Vector3(0,1.15,3.6))
+
+func _refresh_portrait() -> void:
+	if session and portrait_avatar:
+		portrait_avatar.apply_server_appearance(session.player,session.mobile_equipment.get(int(session.player.serial),{}).values())
 
 func _process(delta: float) -> void:
 	if visible and portrait_avatar and page == "character":

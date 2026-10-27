@@ -11,6 +11,7 @@ var password := LineEdit.new()
 var message := Label.new()
 var choices := OptionButton.new()
 var new_name := LineEdit.new()
+var new_sex := OptionButton.new()
 var account_controls := VBoxContainer.new()
 var character_controls := VBoxContainer.new()
 var world_controls := VBoxContainer.new()
@@ -80,6 +81,9 @@ func _ready() -> void:
 		session.select_character(character.slot,character.name))
 	new_name.placeholder_text = "New character name"
 	character_controls.add_child(new_name)
+	new_sex.add_item("Male human")
+	new_sex.add_item("Female human")
+	character_controls.add_child(new_sex)
 	button(character_controls,"Create character in Britain",func():
 		var slot := -1
 		var city := -1
@@ -93,7 +97,7 @@ func _ready() -> void:
 			message.text = "No free character slot or Britain starting city."
 			return
 		message.text = "Creating character on ModernUO…"
-		session.create_character(new_name.text,slot,city)
+		session.create_character(new_name.text,slot,city,new_sex.selected==1)
 		new_name.release_focus())
 	content.add_child(world_controls)
 	world_controls.hide()

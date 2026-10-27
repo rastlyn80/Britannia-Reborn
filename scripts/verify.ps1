@@ -38,6 +38,10 @@ if ($LASTEXITCODE) { throw 'World item/doorway/sign regression checks failed' }
 if ($LASTEXITCODE) { throw 'Server environment regression checks failed' }
 & $godot --headless --path "$root\Viewer" --script res://Network/GameTests.gd
 if ($LASTEXITCODE) { throw 'Game session tests failed' }
+if (Test-Path "$root/Viewer/local-art/free-equipment-female/runtime/body-mask-31.glb") {
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanBatchTests.gd
+  if ($LASTEXITCODE) { throw 'Male/female shared wardrobe checks failed' }
+}
 & $godot --headless --path "$root\Viewer" --script res://Network/CharacterTests.gd
 if ($LASTEXITCODE) { throw 'Character status/skills/sheet tests failed' }
 & $godot --headless --path "$root\Viewer" --script res://Presentation/PresentationTests.gd

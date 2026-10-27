@@ -1,0 +1,161 @@
+extends SceneTree
+## Dedicated local test accounts only; never select an existing owner character.
+const Game = preload("res://Network/GameSession.gd")
+var game: Node
+var error := ""
+var results: Array=[]
+var visual: Node3D
+func _initialize() -> void: call_deferred("run")
+func until(condition: Callable, seconds: float=15.) -> bool:
+	var start:=Time.get_ticks_msec()
+	while not condition.call():
+		if not error.is_empty() or Time.get_ticks_msec()-start>seconds*1000: return false
+		await process_frame
+	return true
+func fail(message: String) -> void:
+	push_error(message+" "+error)
+	if game: game.close()
+	quit(1)
+func run() -> void:
+	var credentials_path:="res://../work/character-polish/human-test-accounts.json"
+	var credentials: Array=[]
+	if FileAccess.file_exists(credentials_path):
+		credentials=JSON.parse_string(FileAccess.get_file_as_string(credentials_path))
+	else:
+		for female in [false,true]:
+			credentials.append({"username":"hbatch"+str(Time.get_unix_time_from_system()).replace(".","").right(12)+("f" if female else "m"),"password":Crypto.new().generate_random_bytes(18).hex_encode().left(24)})
+		var f:=FileAccess.open(credentials_path,FileAccess.WRITE)
+		f.store_string(JSON.stringify(credentials))
+	for sex in 2:
+		if sex==1 and "--visual" in OS.get_cmdline_user_args():
+			visual=load("res://Main.tscn").instantiate()
+			root.add_child(visual)
+			visual.accept_player_input=false
+			game=visual.game
+		else:
+			game=Game.new()
+			root.add_child(game)
+		game.failed.connect(func(reason: String): error=reason)
+		var account: Dictionary=credentials[sex]
+		game.connect_account(account.username,account.password)
+		if not await until(func(): return game.phase=="characters"):
+			fail("Dedicated account login failed")
+			return
+		var character_name:="Batch Woman" if sex else "Batch Man"
+		var existing:=-1
+		for character in game.characters:
+			if character.name==character_name: existing=int(character.slot)
+		if existing>=0: game.select_character(existing,character_name)
+		else:
+			var slot:=-1
+			var city:=-1
+			for character in game.characters:
+				if character.name.is_empty(): slot=int(character.slot); break
+			for place in game.cities:
+				if place.name=="Britain": city=int(place.index)
+			if slot<0 or city<0:
+				fail("Missing test slot or Britain start")
+				return
+			game.create_character(character_name,slot,city,sex==1)
+		if not await until(func(): return game.phase=="world" and game.equipment.size()>=3):
+			fail("Native creation/entry or equipment timeout")
+			return
+		var expected:=0x191 if sex else 0x190
+		await create_timer(.5).timeout
+		print("LIVE BODY ",game.player.get("body",0)," WORN ",game.equipment.values().map(func(w): return {"id":int(w.id),"layer":int(w.layer)}))
+		if int(game.player.get("body",0))!=expected:
+			fail("Native body disagrees with requested sex")
+			return
+		var avatar:=preload("res://Presentation/Avatar.gd").new()
+		avatar.initial_body=expected
+		root.add_child(avatar)
+		avatar.set_physics_process(false)
+		avatar.apply_server_appearance(game.player,game.equipment.values())
+		if avatar.human_visual==null or int(avatar.human_visual.outfit_bits)!=14:
+			fail("Starter clothes did not appear on shared human renderer: bits="+str(avatar.human_visual.outfit_bits if avatar.human_visual else -1))
+			return
+		var item: Dictionary={}
+		for worn: Dictionary in game.equipment.values():
+			if int(worn.layer)==22: item=worn; break
+		if item.is_empty() or not game.move_item(int(item.serial),int(game.backpack)):
+			fail("Cannot begin native clothing removal")
+			return
+		if not await until(func(): return game.pending_transfer.is_empty() and not game.equipment.has(int(item.layer))):
+			fail("Native unequip did not clear appearance")
+			return
+		avatar.apply_server_appearance(game.player,game.equipment.values())
+		var removed_bits:=int(avatar.human_visual.outfit_bits)
+		if removed_bits!=7:
+			fail("Removed native clothing remained visible")
+			return
+		if not game.move_item(int(item.serial),int(game.player.serial),true):
+			fail("Cannot begin native clothing equip")
+			return
+		if not await until(func(): return game.pending_transfer.is_empty() and game.equipment.has(int(item.layer))):
+			fail("Native equip did not restore appearance")
+			return
+		avatar.apply_server_appearance(game.player,game.equipment.values())
+		if int(avatar.human_visual.outfit_bits)!=14:
+			fail("Re-equipped clothing not restored visually")
+			return
+		var original_serial:=int(game.player.serial)
+		results.append({"female":sex==1,"body":expected,"serial":original_serial,"equipment_ids":game.equipment.values().map(func(w): return int(w.id)),"unequip_bits":removed_bits,"reequip_bits":14})
+		avatar.hide()
+		avatar.queue_free()
+		await process_frame
+		game.close()
+		await create_timer(1.).timeout
+		error=""
+		game.connect_account(account.username,account.password)
+		if not await until(func(): return game.phase=="characters"):
+			fail("Reconnect account failed")
+			return
+		for character in game.characters:
+			if character.name==character_name: game.select_character(character.slot,character_name); break
+		if not await until(func(): return game.phase=="world" and game.equipment.size()>=3):
+			fail("Reconnect character failed")
+			return
+		if int(game.player.serial)!=original_serial or int(game.player.get("body",0))!=expected:
+			fail("Native identity/sex did not persist")
+			return
+		results[-1].reconnect=true
+		if sex==1:
+			var observer:=Game.new()
+			root.add_child(observer)
+			observer.failed.connect(func(reason: String): error=reason)
+			observer.connect_account(credentials[0].username,credentials[0].password)
+			if not await until(func(): return observer.phase=="characters"):
+				fail("Observer login failed"); return
+			for character in observer.characters:
+				if character.name=="Batch Man": observer.select_character(character.slot,character.name); break
+			if not await until(func(): return observer.phase=="world" and observer.mobile_equipment.has(original_serial)):
+				fail("Female appearance not received by second client"); return
+			if int(observer.entities[original_serial].body)!=0x191:
+				fail("Second client did not receive female body"); return
+			game.move_item(int(item.serial),int(game.backpack))
+			if not await until(func(): return game.pending_transfer.is_empty() and not observer.mobile_equipment[original_serial].has(22)):
+				fail("Second client retained removed robe"); return
+			game.move_item(int(item.serial),int(game.player.serial),true)
+			if not await until(func(): return game.pending_transfer.is_empty() and observer.mobile_equipment[original_serial].has(22)):
+				fail("Second client missed re-equipped robe"); return
+			results[-1].second_client_body_and_robe_updates=true
+			observer.close()
+			observer.queue_free()
+		if visual:
+			await create_timer(2.).timeout
+			visual.boom.spring_length=3.5
+			for i in 20: await process_frame
+			await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png("res://../outputs/third-dawn/female-live-britain.png")
+			visual.character_sheet.toggle("character")
+			for i in 20: await process_frame
+			await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png("res://../outputs/third-dawn/female-live-character-sheet.png")
+		game.close()
+		if visual: visual.queue_free()
+		else: game.queue_free()
+		await process_frame
+	var f:=FileAccess.open("res://../outputs/third-dawn/human-batch-live.json",FileAccess.WRITE)
+	f.store_string(JSON.stringify({"characters":results,"failures":[]},"\t"))
+	print("HUMAN BATCH LIVE PASS: male/female native creation or re-entry, clothes removal/re-equip, reconnect identity and sex")
+	quit(0)

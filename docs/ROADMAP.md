@@ -1,3 +1,19 @@
+# Live male/female batch checkpoint — 27 October 2026
+
+Stage 3 shared appearance/equipment rendering is integrated into the world and portrait, with native male/female creation and first-batch item mapping. Dedicated live creation, equipment changes, second-client replication and reconnect checks pass. See HUMAN_BATCH_INTEGRATION.md. Animation is the immediate quality priority: the owner rejects the stiff baseline. Compare the bundled UAL candidate clips, tune motion/cadence/transitions/contacts and rebake robe deformation before claiming natural movement. Full creator UI, native hair variety, broader skin/customisation, exact skirts/armour/weapons, arbitrary shapes and LOD/performance remain open.
+
+# Character foundation checkpoint — 27 October 2026
+
+Stages 1–2 of CHARACTER_SYSTEM_PLAN.md are implemented in the private review: continuous legs, stride/raised-heel skirt deformation, clean natural skin and eye/hair treatment. See CHARACTER_FOUNDATION_POLISH.md for source pins and measured checks. Next: owner artistic review, then a shared live/creator equipment renderer, server-valid creation controls and persistent cosmetic profiles (stages 3–5). Do not expose unverified body sliders or assume the creator/live avatar already uses these assets. Combat/sitting/other shapes, broader wardrobe matching and performance/LOD remain open.
+
+# Free wardrobe trial checkpoint — 27 October 2026
+
+Five CC0 wearable pieces and two combinations are fitted and sampled; the same-body skin/material comparison and actual GPU probes pass in Forward+ and Compatibility. See FREE_EQUIPMENT_TRIAL.md. Next: owner artistic review; exact armour/helm/weapon matching; more extreme poses and layered clipping checks; shared-rig runtime equipment swapping; then native item mapping and LOD/performance work. Do not call the full wardrobe solved: rare original designs, other body shapes/races and every server equipment combination have not been matched. Skirt motion is fitted skinning, not cloth physics.
+
+# Free human foundation checkpoint — 27 October 2026
+
+Owner now prefers a separate free human foundation instead of further repairing the UO body. A pinned CC0 MakeHuman-derived candidate and real chain-shirt/robe adaptation are implemented and sampled in both renderers, with independent rig/weights/animation checks. See FREE_HUMAN_WARDROBE.md. Next: owner approval of the candidate appearance, clothing-specific polish/extreme poses and additional garment types, then shared-rig equipment swapping/live mapping. Two fitted garments on one fixed shape do not establish arbitrary wardrobe or body-slider support; UO clothing redistribution remains unresolved.
+
 # Male anatomy checkpoint — 27 October 2026
 
 Chest and facial transitions now have a bounded local shape refinement beyond the approved head/joint pass, with the prior rounded version preserved for matched-angle review. Ten synthetic tests and both-renderer sampled animation/garment checks pass; 34 bones, inverse binds and 186 original animation channels are unchanged. See THIRD_DAWN_ANATOMY.md. Next: owner artistic review, eye/lip/ear detail, extreme-pose garment clipping, and more wardrobe layers. Current art remains a private source-derived experiment; no facial-expression rig or universal clothing compatibility is claimed.

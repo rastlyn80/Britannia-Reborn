@@ -66,8 +66,10 @@ static func pack(asset: String) -> Dictionary:
 
 func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -> Dictionary:
 	var name := str(item.name)
-	# The avatar wears a fixed outfit: no worn item has its own appearance yet.
-	if item.flags.has("wearable") and item.world == 0: return {"status":"original","detail":"worn appearance not implemented yet"}
+	if item.flags.has("wearable") and item.world == 0:
+		if preload("res://Presentation/HumanWardrobe.gd").GRAPHICS.has(id):
+			return {"status":"kit","detail":"MakeHuman CC0: fitted human wardrobe category substitute"}
+		return {"status":"original","detail":"worn model outside the first human wardrobe batch"}
 	var review: Dictionary = Reviewed.entry(id)
 	if review.has("asset"):
 		var reviewed := pack(str(review.asset))
