@@ -74,5 +74,5 @@ func receive(message: String) -> void:
   session.close()
   quit()
 func _process(_delta: float) -> bool:
- if Time.get_ticks_msec()-started > 30000: fail("Population response timed out")
+ if Time.get_ticks_msec()-started > 180000: fail("Population response timed out")
  return false

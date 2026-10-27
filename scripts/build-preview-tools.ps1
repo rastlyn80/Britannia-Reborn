@@ -15,7 +15,9 @@ $installed = "$runtime/Assemblies/UltimaClone.PreviewTools.dll"
 if (!(Test-Path -LiteralPath $installed) -or (Get-FileHash -LiteralPath $built).Hash -ne (Get-FileHash -LiteralPath $installed).Hash) {
   Copy-Item -LiteralPath $built -Destination $installed -Force
 }
-$assemblies = @(Get-Content "$runtime/Data/assemblies.json" -Raw | ConvertFrom-Json)
+# Windows PowerShell returns a JSON array as one object; unroll it so a rerun
+# does not nest the list (which stops the server reading its configuration).
+$assemblies = @(Get-Content "$runtime/Data/assemblies.json" -Raw | ConvertFrom-Json | ForEach-Object { $_ })
 if ('UltimaClone.PreviewTools.dll' -notin $assemblies) { $assemblies += 'UltimaClone.PreviewTools.dll' }
 ConvertTo-Json -InputObject $assemblies | Set-Content "$runtime/Data/assemblies.json"
 $configuration = Get-Content "$runtime/Configuration/modernuo.json" -Raw | ConvertFrom-Json

@@ -1,3 +1,7 @@
+## Whole-city population — 27 October 2026
+
+The server-owned objects now cover the full streamed Britain region (1088–1792 × 1408–1920), not just the 64x64 tavern crop. One idempotent run added 3,935 decorations, 249 doors and 116 signs; existing root items were preserved, and a repeat run created zero. The audit has 4,489 root items: 2,172 decorations, 377 door leaves, 419 chairs, 366 bookcases, 248 lamps, 246 barrels, 181 crates, 147 plants, 121 signs, 91 chests, 71 drawers, 48 wardrobes and 2 notice boards. The save was backed up first (Saves.previous-…-before-city-population), and the items survived a server restart. Live captures at (1474,1668) and (1231,1570) show server doors and furniture far outside the old crop. The live city, world-item, commerce and login checks pass, with their reference fixtures pinned to the original crop. Not yet validated: door families other than dark wood, and placement of the newly encountered item graphics (545 server-derived ID mappings, up from 77).
+
 # Server-owned Britain objects
 
 ## Implemented scope
@@ -32,7 +36,7 @@ The building name comes from the clicked item's native label reply, identified b
 4. Double-click Populate-Britain.cmd (or run scripts/populate-preview.ps1). Python 3 is required for local input/label preparation.
 5. Restart Launch.cmd. Click objects, or press E for the nearest usable item. B still opens the backpack.
 
-The prepared manifest accepts only bounded Trammel regions up to 128x128. Unsupported placement extras stop before population. This is not full-facet generation/streaming. If map data, server definitions, item types or locale data change, rerun local preparation and validation. Do not manually copy generated local catalogues into Git.
+For the whole streamed city, run scripts/populate-preview.ps1 -World outputs/britain/prepared/index.json. The manifest and PreviewWorld accept bounded Trammel regions up to 1024x1024 (the city is 704x512); this is still not a whole-facet Decorate. Unsupported placement extras stop before population. This is not full-facet generation/streaming. If map data, server definitions, item types or locale data change, rerun local preparation and validation. Do not manually copy generated local catalogues into Git.
 
 scripts/test-world-items.ps1 verifies real character entry, native single/linked-door state, open-door population idempotency, a populated library container, an empty drawer, the native sign name, 28 pages of Birds of Britannia, a native dice roll, an empty bulletin board and the native Help/description gumps. Add -Visual to inject actual mouse events and capture the scene; add -Compatibility for OpenGL. Tests use the development account and local PreviewVisit recovery helper; the user's ClassicUO character/account is not moved. The test character returns home on success. These tests require the prepared/populated slice and native fixture items.
 

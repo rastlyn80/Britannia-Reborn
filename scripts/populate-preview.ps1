@@ -1,6 +1,11 @@
+# -World selects the bounds: the play-world crop by default, or the prepared
+# streaming index (outputs/britain/prepared/index.json) for the whole city.
+param([string]$World)
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
-python "$root/scripts/prepare-population.py"
+$worldArgs = @()
+if ($World) { $worldArgs = @('--world', $World) }
+python "$root/scripts/prepare-population.py" @worldArgs
 if ($LASTEXITCODE) { throw 'Population input preparation failed' }
 $godot = (Get-ChildItem "$root/.tools/godot/*console.exe" | Select-Object -First 1).FullName
 $env:APPDATA = Join-Path $root '.godot-user'

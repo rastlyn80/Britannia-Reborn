@@ -30,7 +30,7 @@ public static class PreviewCommerce
         var b = plan.RootElement.GetProperty("bounds");
         var width = b.GetProperty("width").GetInt32();
         var height = b.GetProperty("height").GetInt32();
-        if (width is <= 0 or > 128 || height is <= 0 or > 128)
+        if (width is <= 0 or > PreviewWorld.MaxSide || height is <= 0 or > PreviewWorld.MaxSide)
         {
             throw new InvalidOperationException("Expected bounded preview crop.");
         }

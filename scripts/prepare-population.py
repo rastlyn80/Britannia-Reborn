@@ -2,6 +2,8 @@
 import argparse, hashlib, json, re, struct
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
+# The streamed Britain city region (704x512); PreviewWorld.cs enforces the same bound.
+MAX_SIDE = 1024
 
 def number(value):
     return int(value, 16) if value.lower().startswith('0x') else int(value)
@@ -18,8 +20,10 @@ def main():
     if not args.catalog_only:
         world = json.loads(args.world.read_text(encoding='utf-8-sig'))
         bounds = dict(x=int(world['originX']), y=int(world['originY']), width=int(world['width']), height=int(world['height']))
-        if not world['facet'].lower().startswith('trammel') or not (0 < bounds['width'] <= 128 and 0 < bounds['height'] <= 128):
-            raise ValueError('Population requires a bounded Trammel crop, at most 128x128')
+        # A play-world crop names its facet; a prepared streaming index uses map id 1.
+        trammel = world['facet'] == 1 if isinstance(world['facet'], int) else str(world['facet']).lower().startswith('trammel')
+        if not trammel or not (0 < bounds['width'] <= MAX_SIDE and 0 < bounds['height'] <= MAX_SIDE):
+            raise ValueError(f'Population requires a bounded Trammel region, at most {MAX_SIDE}x{MAX_SIDE}')
         contains = lambda x,y: bounds['x'] <= x < bounds['x']+bounds['width'] and bounds['y'] <= y < bounds['y']+bounds['height']
         placements, signs, sources = [], [], {}
         for facet in ['Britannia','Trammel']:

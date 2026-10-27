@@ -90,7 +90,11 @@ func run() -> void:
  var audit: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(audit_path))
  var door_serial := 0
  var lamp_serial := 0
+ # The audit now spans the whole city; keep the reference fixtures in the
+ # original tavern crop so the route below means the same thing.
+ var crop := Rect2i(1576,1568,64,64)
  for item in audit.items:
+  if not crop.has_point(Vector2i(int(item.x),int(item.y))): continue
   if item.family=="door" and int(item.z)==0 and door_serial==0: door_serial=int(item.serial)
   if item.family=="lamp" and int(item.z)==0: lamp_serial=int(item.serial)
  if door_serial==0 or lamp_serial==0: fail("Native door/outdoor lamp fixture missing"); return

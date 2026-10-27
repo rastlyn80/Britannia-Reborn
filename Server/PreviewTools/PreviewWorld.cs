@@ -28,6 +28,8 @@ public static class PreviewWorld
     {
         return args.Mobile.NetState is { } state && IPAddress.IsLoopback(state.Address);
     }
+    // Bounded to the streamed Britain city region; never a whole-facet decorate.
+    internal const int MaxSide = 1024;
     private static Plan ReadPlan()
     {
         var path = Path.Combine(Folder, "population.local.json");
@@ -36,7 +38,7 @@ public static class PreviewWorld
             throw new InvalidOperationException("Population plan too large.");
         }
         var plan = JsonSerializer.Deserialize<Plan>(File.ReadAllText(path), _json) ?? throw new InvalidOperationException("Missing plan.");
-        if (plan.Schema != 1 || plan.Facet != 1 || plan.Bounds.Width is <= 0 or > 128 || plan.Bounds.Height is <= 0 or > 128 || plan.Placements.Length + plan.Signs.Length > 20000)
+        if (plan.Schema != 1 || plan.Facet != 1 || plan.Bounds.Width is <= 0 or > MaxSide || plan.Bounds.Height is <= 0 or > MaxSide || plan.Placements.Length + plan.Signs.Length > 20000)
         {
             throw new InvalidOperationException("Expected a bounded Trammel plan.");
         }

@@ -132,7 +132,10 @@ func run() -> void:
  var container := {}
  var empty := {}
  var sign := {}
+ # The audit spans the whole city; reference fixtures stay in the original crop.
+ var crop := Rect2i(1576,1568,64,64)
  for item in audit.items:
+  if not crop.has_point(Vector2i(int(item.x),int(item.y))): continue
   if item.family == "door" and item.linked != null and int(item.z) == 0 and int(item.x) < 1620: door = item
   if item.family == "door" and item.linked == null and int(item.z) == 20: single = item
   if item.contents > 0 and item.type == "LibraryBookcase": container = item
@@ -164,7 +167,7 @@ func run() -> void:
   return
  print("WORLD ITEMS LIVE PASS: both native linked door leaves opened from one use")
  session.send_command("[PreviewPopulate")
- if not await until(func(): return repeat_created >= 0) or repeat_created != 0 or int(session.world_items[int(door.serial)].id) != open_id:
+ if not await until(func(): return repeat_created >= 0,30.0) or repeat_created != 0 or int(session.world_items[int(door.serial)].id) != open_id:
   fail("Population duplicated or reset an open native door")
   return
  print("WORLD ITEMS LIVE PASS: repeat population preserves open doors and creates zero duplicates")
