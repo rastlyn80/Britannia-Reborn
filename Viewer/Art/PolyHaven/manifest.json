@@ -486,6 +486,53 @@
           "bytes": 174545
         }
       ]
+    },
+    {
+      "id": "cannon_01",
+      "name": "Cannon 01",
+      "source": "https://polyhaven.com/a/cannon_01",
+      "authors": [
+        "Yann Kervran",
+        "James Ray Cock"
+      ],
+      "polycount": 41444,
+      "files": [
+        {
+          "path": "cannon_01/cannon_01_1k.gltf",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/cannon_01/cannon_01_1k.gltf",
+          "sourceMd5": "9eabdb63b0452e96f8d83a0f52352b37",
+          "sha256": "d46d014e0fa1818c51222260fe6cab3bc34b7568b6bf19f196e14b24406168ee",
+          "bytes": 16567
+        },
+        {
+          "path": "cannon_01/textures/cannon_01_nor_gl_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/cannon_01/cannon_01_nor_gl_1k.jpg",
+          "sourceMd5": "9933928d38f239cbb08dca4bc5dd7e90",
+          "sha256": "f041013490c5549c797485abf8479adbd8f4977438daa75eb42ff234c0175b4c",
+          "bytes": 758209
+        },
+        {
+          "path": "cannon_01/textures/cannon_01_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/cannon_01/cannon_01_diff_1k.jpg",
+          "sourceMd5": "2eda5b5c98962d0be24762f3c2a34c41",
+          "sha256": "5ea48e1e18f8a9156b9f6464d8a8679db169d6aa07e479cec54e3b61bb015fac",
+          "bytes": 729247
+        },
+        {
+          "path": "cannon_01/textures/cannon_01_arm_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/cannon_01/cannon_01_arm_1k.jpg",
+          "sourceMd5": "cb18f80585f0bf5e8e9d97d9908ea063",
+          "sha256": "7a7afd1a036964272219b514f9deaa29e512e9792ac6df9d33dcfd9ea909a881",
+          "bytes": 837622
+        },
+        {
+          "path": "cannon_01/cannon_01.bin",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/cannon_01/cannon_01.bin",
+          "sourceMd5": "1fe0c83db682df2b970bb2e0df481e5a",
+          "sha256": "4f035b40eecfd21cf29c7c2c13a85bb91804b0b486e11f6072a77c583f3a49e9",
+          "bytes": 1143768
+        }
+      ]
     }
   ]
 }

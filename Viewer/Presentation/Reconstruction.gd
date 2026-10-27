@@ -216,16 +216,26 @@ func index(world: Dictionary) -> void:
 				for z in below.get(Vector2i(world.statics[member].x,world.statics[member].y),[]):
 					if z < low_z and low_z-z <= 30: support = maxi(support,z)
 			chimney_bases[groups[members[0]].owner] = support if support > -1000 else low_z-6
-	for cell in arches:
-		var at: int = arches[cell]
-		if int(world.statics[at].id) != 320: continue
-		var step := Vector3i(0,1,0) if rule_for(int(world.statics[at].id)).get("axis") == "y" else Vector3i(1,0,0)
-		for distance in range(1,5):
-			var end: Vector3i = cell+step*distance
-			if wall_cells.has(end): break
-			if not arches.has(end): continue
-			if int(world.statics[arches[end]].id) == 317: _group([at,arches[end]],world,"arch")
-			break
+	# Walkable wall pieces (gateways, arch openings) run along their wall axis
+	# into one archway each; solid arch pieces become the piers beside them.
+	var passages := {}
+	for i in world.statics.size():
+		var s: Dictionary = world.statics[i]
+		if passage(world,s): passages[Vector3i(s.x,s.y,s.z)] = i
+	var joined := {}
+	for cell in passages:
+		if joined.has(cell): continue
+		var at: int = passages[cell]
+		var step := Vector3i(0,1,0) if str(rule_for(int(world.statics[at].id)).get("axis","x")) == "y" else Vector3i(1,0,0)
+		var start: Vector3i = cell
+		while passages.has(start-step) and not joined.has(start-step): start -= step
+		var members := []
+		var walk: Vector3i = start
+		while passages.has(walk) and not joined.has(walk):
+			joined[walk] = true
+			members.append(passages[walk])
+			walk += step
+		_group(members,world,"archway")
 
 	if world.get("render_cells",false):print("REGIONAL GROUPS DONE")
 	_plan_context(world)
@@ -346,6 +356,14 @@ func _plan_mounts(world: Dictionary) -> void:
 		if sides.size() > 1: side = "west" if int(votes.get(id+"/west",0)) >= int(votes.get(id+"/north",0)) else "north"
 		var distance: float = sides[side]
 		presentation_adjustments[i] = {"offset":Vector3(-distance,0,0) if side == "west" else Vector3(0,0,-distance),"yaw":-PI/2 if side == "west" else PI,"reason":"hung on adjacent %s source wall face" % side}
+
+# A wall-flagged source piece the native client lets you walk through
+# (gateway or arch opening), tall enough to stand under.
+func passage(world: Dictionary, s: Dictionary) -> bool:
+	if not str(rule_for(int(s.id)).get("kind","")) in ["wall","window","corner","arch","trim"]: return false
+	var detail := info(world,int(s.id),true)
+	var flags := int(detail.get("flags",0))
+	return flags & 0x10 != 0 and flags & 0x40 == 0 and int(detail.get("height",0)) >= 10
 
 static func wall_family(world: Dictionary, id: int) -> String:
 	var name := str(info(world,id,true).get("name",""))
@@ -552,6 +570,13 @@ func tint_prop(node: Node3D, palette: String) -> void:
 			prop_mesh_variants[key]=variant
 		mesh.mesh=prop_mesh_variants[key]
 
+# Cannon fit in the model's own axes: its longest horizontal side is the barrel.
+func cannon_size() -> Vector3:
+	var sample: Node3D = fitted("PolyHaven/cannon_01/cannon_01_1k.gltf",Vector3.ONE)
+	sample.free()
+	var box: AABB = bounds["PolyHaven/cannon_01/cannon_01_1k.gltf"]
+	return box.size*(2.1/maxf(box.size.x,box.size.z))
+
 # Britain keeps its reviewed stone-or-timber steps; regional graphics (with an
 # original colour) use their named material in that colour.
 static func stair_surface(name: String, tint: String) -> String:
@@ -601,6 +626,8 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 		# colour; close-studded timber framing is Britain's reviewed house style.
 		if family == "plaster": family = "clay" if "plaster" in str(detail.get("name","")) else "stone"
 		if family in preload("res://Presentation/Facade.gd").TINTED: family += "#"+tint
+	if groups.get(ordinal,{}).get("kind","") == "archway": kind = "archway"
+	elif kind == "arch": kind = "pier"
 	var visual: Node3D
 	var state := "replacement"
 	if groups.has(ordinal) and groups[ordinal].owner != ordinal:
@@ -624,7 +651,6 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 			match kind:
 				"wall", "window":
 					var frame: Node3D = null
-					if kind=="window" and height>1.5 and opening.is_empty() and family != "plaster": frame=fitted("Village/Window_Wide_Flat1.gltf",Vector3(.84,minf(1.4,height*.46)+.16,.30))
 					visual = facade.panel(height,kind == "window",facade.plans.get(ordinal,{}),family,frame,opening)
 					# Outdoor shutters/flower boxes on house windows (never bridges or slits).
 					if kind == "window" and height > 1.5 and opening.is_empty() and bridge.is_empty():
@@ -632,6 +658,13 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 						if dressing: visual.add_child(dressing)
 				"corner": visual = facade.corner(height,facade.corners.get(ordinal,{}),family)
 				"post": visual = fitted(asset,Vector3(0.15,height,0.15))
+				"pillar" when int(detail.get("flags",0)) & 0x10 != 0:
+					# Wall-flagged posts/pillars are square wall piers (corners and
+					# battlement posts), not free-standing round columns.
+					visual = Node3D.new()
+					var pier_family := "stone" if family.get_slice("#",0) in ["plaster","wood"] else family
+					facade.piece(visual,Vector3(0.46,maxf(0.05,height-0.1),0.46),Vector3(0,(height-0.1)/2,0),pier_family)
+					facade.piece(visual,Vector3(0.54,0.1,0.54),Vector3(0,height-0.05,0),pier_family)
 				"pillar":
 					visual=Node3D.new()
 					for y in [0.06,height-0.06]:
@@ -657,6 +690,14 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 						var toward: Vector2i = bridge.get("toward",Vector2i.ZERO)
 						visual.position += Vector3(toward.x,0,toward.y)*0.35
 					else: visual = fitted(asset,Vector3(1,height,0.14))
+				"archway":
+					var run: Dictionary = groups[ordinal]
+					# Gateways and arcades are masonry even when the name is generic.
+					visual = facade.archway(maxf(run.size.x,run.size.y),height,"stone" if family.get_slice("#",0) == "plaster" else family)
+				"pier":
+					# Solid arch pieces are the masonry beside an opening.
+					visual = Node3D.new()
+					facade.piece(visual,Vector3(1.0,height,0.26),Vector3(0,height/2,0),family if family.get_slice("#",0) != "plaster" else "stone")
 				"arch":
 					visual = Node3D.new()
 					var span: float = maxf(groups[ordinal].size.x,groups[ordinal].size.y) if groups.has(ordinal) else 1.0
@@ -671,7 +712,12 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					if surface == "": surface = "wood"
 					visual = floors.slab(ordinal,floors.material() if surface == "wood" and tint.is_empty() else facade.material(surface+("#"+tint if not tint.is_empty() else "")))
 				"asset": visual = fitted(asset,Vector3(rule.dimensions[0],rule.dimensions[1],rule.dimensions[2]))
-				"prop": visual = preload("res://Presentation/CityProps.gd").build(str(rule.model),s,detail,geometry)
+				"prop":
+					# Pinned CC0 Poly Haven cannon (smugglers' cove), real proportions:
+					# 1.23 m wide, 0.79 m tall, 2.3 m long; procedural gun otherwise.
+					if str(rule.model) == "cannon" and ResourceLoader.exists("res://Art/PolyHaven/cannon_01/cannon_01_1k.gltf"):
+						visual = fitted("PolyHaven/cannon_01/cannon_01_1k.gltf",cannon_size())
+					else: visual = preload("res://Presentation/CityProps.gd").build(str(rule.model),s,detail,geometry)
 				"invisible": state="source-nodraw"
 				"landing":
 					visual = Node3D.new()
@@ -784,11 +830,15 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 			if kind == "roof":
 				var anchor: Array = rule.get("anchorOffset",[-1,-1])
 				visual.position += Vector3(float(anchor[0]),0,float(anchor[1]))
-			if kind in ["wall","window","trim","beam","arch","door","fence","sign","painting"] and rule.get("axis") == "y": visual.rotation.y = PI/2
-			if kind=="prop" and groups.has(ordinal):
+			if kind in ["wall","window","trim","beam","arch","archway","pier","door","fence","sign","painting"] and rule.get("axis") == "y": visual.rotation.y = PI/2
+			if kind=="prop" and groups.has(ordinal) and str(rule.get("model","")) == "cannon":
+				# A cannon keeps its proportions and points along its footprint.
+				if groups[ordinal].size.x > groups[ordinal].size.y: visual.rotation.y = PI/2
+				visual.position.y+=(groups[ordinal].min_z-float(s.z))*float(world.elevationScale)
+			elif kind=="prop" and groups.has(ordinal):
 				visual.scale=Vector3(groups[ordinal].size.x,1.0,groups[ordinal].size.y)
 				visual.position.y+=(groups[ordinal].min_z-float(s.z))*float(world.elevationScale)
-			if groups.has(ordinal) and kind in ["bed","arch","gable","bench","table","counter","prop"]:
+			if groups.has(ordinal) and kind in ["bed","arch","archway","gable","bench","table","counter","prop"]:
 				var group: Dictionary = groups[ordinal]
 				visual.position += Vector3(group.low.x+group.size.x/2-float(s.x)-0.5,0,group.low.y+group.size.y/2-float(s.y)-0.5)
 			if not show_boundary_fragments and kind in VEGETATION:
@@ -809,7 +859,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 	node.set_meta("source_xyz",Vector3i(s.x,s.y,s.z))
 	node.set_meta("source_ordinal",ordinal)
 	node.set_meta("kind",kind)
-	node.set_meta("solid",kind in ["wall","window","corner","post","trim","gable","beam","arch","floor","landing","stairs","roof","door","fence","bed","table","bench","counter","rock","log","planter","stalagmite","crystal","palisade"] and state not in ["group-component","boundary-fragment","context-suppressed"])
+	node.set_meta("solid",kind in ["archway","pier","wall","window","corner","post","trim","gable","beam","arch","floor","landing","stairs","roof","door","fence","bed","table","bench","counter","rock","log","planter","stalagmite","crystal","palisade"] and state not in ["group-component","boundary-fragment","context-suppressed"])
 	node.position = Vector3(s.x-int(world.originX)+0.5,s.z*float(world.elevationScale),s.y-int(world.originY)+0.5)
 	if facade.plans.has(ordinal): node.set_meta("facade_run",facade.plans[ordinal].run)
 	var entry := {"ordinal":ordinal,"id":s.id,"xyz":[s.x,s.y,s.z],"status":state,"kind":kind,"asset":asset,"axis":rule.get("axis","x"),"confidence":rule.get("confidence","semantic")}

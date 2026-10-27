@@ -109,7 +109,7 @@ func run() -> void:
  fixture.reconstruction._collect_bounds(leaf,Transform3D.IDENTITY,boxes)
  var bounds: AABB=boxes[0]
  for box in boxes:bounds=bounds.merge(box)
- check(bounds.size.y<2.5 and is_equal_approx(bounds.size.x,.94) and leaf.get_meta("reviewed_asset","")=="MedievalKit/Door_Rect.gltf","reviewed medieval door retains human scale and native opening width")
+ check(bounds.size.y<2.5 and is_equal_approx(bounds.size.x,.94) and leaf.get_meta("door_style","")!="" and leaf.has_node("Planks"),"photoscanned plank door keeps human scale and the native opening width")
  check(door.has_node("DoorLintel") and door.has_node("OverDoorWall") and door.has_node("HeaderCollision"),"lintel and upper wall seal the original tall opening")
  check(door.get_node("OverDoorWall").material_override.get_shader_parameter("open_caps"),"doorway infill cannot reintroduce coplanar white floor caps")
  var location := door.position

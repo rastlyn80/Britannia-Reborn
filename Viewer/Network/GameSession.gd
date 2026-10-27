@@ -48,6 +48,7 @@ signal world_item_removed(serial: int)
 signal container_opened(serial: int)
 signal container_contents_received(serial: int, items: Array)
 signal item_label_received(serial: int, label: String)
+var quiet_labels := {}
 signal book_received(book: Dictionary)
 signal board_received(board: Dictionary)
 signal board_post_received(post: Dictionary)
@@ -149,6 +150,7 @@ func close() -> void:
 	login = null
 	socket.disconnect_from_host()
 	decoder = Huffman.new()
+	quiet_labels.clear()
 	pending.clear()
 	entities.clear()
 	world_items.clear()
@@ -464,7 +466,8 @@ func _handle(p: PackedByteArray) -> void:
 				var serial := Login.read_be(p,3,4)
 				var label := labels.resolve(Login.read_be(p,14,4),little_unicode_text(p,48))
 				item_label_received.emit(serial,label)
-				message_received.emit(label)
+				if not quiet_labels.has(serial): message_received.emit(label)
+				quiet_labels.erase(serial)
 		0x1d:
 			var serial := Login.read_be(p,1,4)
 			if not pending_transfer.is_empty() and int(pending_transfer.serial)==serial: pending_transfer.lifted = true
@@ -553,13 +556,15 @@ func _handle(p: PackedByteArray) -> void:
 				var label := text(p,44,p.size()-44)
 				var serial := Login.read_be(p,3,4)
 				if world_items.has(serial): item_label_received.emit(serial,label)
-				_server_text(label,serial == 0xffffffff)
+				if not quiet_labels.has(serial): _server_text(label,serial == 0xffffffff)
+				quiet_labels.erase(serial)
 		0xae:
 			if p.size() >= 50:
 				var label := unicode_text(p,48)
 				var serial := Login.read_be(p,3,4)
 				if world_items.has(serial): item_label_received.emit(serial,label)
-				_server_text(label,serial == 0xffffffff)
+				if not quiet_labels.has(serial): _server_text(label,serial == 0xffffffff)
+				quiet_labels.erase(serial)
 		0x82: _fail("Game login rejected")
 		0x53: _fail("Character entry rejected (%d)" % p[1])
 
@@ -747,6 +752,16 @@ static func legacy_item(p: PackedByteArray) -> Dictionary:
 		if cursor >= p.size(): return {}
 		flags = int(p[cursor])
 	return {"serial":serial&0x7fffffff,"id":graphic,"amount":amount,"x":x&0x7fff,"y":y&0x3fff,"z":z,"hue":hue,"flags":flags}
+
+# Ask the server for an item's label without echoing it to the message log
+# (street signs and plaques show their names on the boards themselves).
+func request_label(serial: int) -> bool:
+	if phase != "world" or not world_items.has(serial): return false
+	quiet_labels[serial] = true
+	var click := PackedByteArray([9])
+	click.append_array(Login.uint_be(serial,4))
+	send(click)
+	return true
 
 func use_item(serial: int) -> bool:
 	if not pending_transfer.is_empty(): return false

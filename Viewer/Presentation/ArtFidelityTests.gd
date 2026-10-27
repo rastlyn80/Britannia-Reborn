@@ -171,7 +171,7 @@ func _initialize() -> void:
   if node.scene_file_path.contains("Village/"):kit+=1
  check(kit==0 and merlon.find_children("*","MeshInstance3D",true,false).size()==2,"Stone merlon is solid masonry with a coping, not a kit wall")
  merlon.free()
- # Close studding never crosses a source window opening.
+ # Timber bays: one oak post per cell boundary, never across a window opening.
  var tudor:=preload("res://Presentation/Facade.gd").new()
  var window_panel:=tudor.panel(4.0,true,{"offset":1,"length":3,"run":1},"plaster")
  var sill:=minf(1.05,4.0*0.28);var top_of_opening:=sill+minf(1.4,4.0*0.46)
@@ -180,9 +180,11 @@ func _initialize() -> void:
  for mesh in window_panel.find_children("*","MeshInstance3D",true,false):
   var box: Vector3=mesh.mesh.size if mesh.mesh is BoxMesh else Vector3.ZERO
   var oak: bool=mesh.material_override==tudor.material("oak") or mesh.material_override==tudor.capless_materials.get("oak")
-  if oak:studs+=int(absf(box.x-0.11)<0.001)
-  if oak and absf(box.x-0.11)<0.001 and mesh.position.y-box.y/2<top_of_opening-0.01 and mesh.position.y+box.y/2>sill+0.01:crossing=true
- check(studs==4 and not crossing,"Tudor studs stop at the sill and head of a window opening")
+  if oak and absf(box.x-0.11)<0.001:
+   studs+=1
+   var spans_opening: bool=absf(mesh.position.x)-box.x/2<0.43 and mesh.position.y-box.y/2<top_of_opening-0.01 and mesh.position.y+box.y/2>sill+0.01
+   if spans_opening:crossing=true
+ check(studs==1 and not crossing,"Timber bays have one boundary post per cell that never crosses a window opening")
  window_panel.free()
  # Stair facing comes from tiledata flags, not an ambiguous neighbour guess.
  var stair_floor:=preload("res://Presentation/FloorPlan.gd").new()

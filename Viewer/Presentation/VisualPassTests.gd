@@ -43,12 +43,18 @@ func run() -> void:
  check(is_equal_approx(facade.plans[0].height_extension,0.2),"one-Z storey seam closes without moving source anchors")
  check(facade.plans[2].height_extension == 0,"isolated wall does not grow into an intentional opening")
  var reconstruction = preload("res://Presentation/Reconstruction.gd").new()
- var arch_world := {"staticData":{},"statics":[{"id":320,"x":0,"y":0,"z":20},{"id":317,"x":0,"y":3,"z":20}]}
+ # Walkable wall pieces (passable arch/gate cells) join along their axis into
+ # one archway; solid arch piers and walls end the run.
+ var arch_data := {"320":{"name":"archway","height":20,"flags":0x10},"317":{"name":"archway","height":20,"flags":0x50},"311":{"name":"stone wall","height":20,"flags":0x50}}
+ var arch_world := {"staticData":arch_data,"statics":[{"id":317,"x":0,"y":0,"z":20},{"id":320,"x":0,"y":1,"z":20},{"id":320,"x":0,"y":2,"z":20},{"id":317,"x":0,"y":3,"z":20}]}
+ reconstruction.catalog["320"] = {"kind":"arch","axis":"y"}
+ reconstruction.catalog["317"] = {"kind":"arch","axis":"y"}
  reconstruction.index(arch_world)
- check(reconstruction.groups[0].size == Vector2(1,4) and reconstruction.groups[0].indices.size() == 2,"separated complementary arch ends make one complete wide entrance")
- arch_world.statics.append({"id":311,"x":0,"y":1,"z":20})
+ check(reconstruction.groups.get(1,{}).get("kind","") == "archway" and reconstruction.groups[1].size == Vector2(1,2) and not reconstruction.groups.has(0),"walkable arch cells make one archway between solid piers")
+ arch_world.statics[2] = {"id":311,"x":0,"y":2,"z":20}
+ reconstruction.catalog["311"] = {"kind":"wall","axis":"y"}
  reconstruction.index(arch_world)
- check(not reconstruction.groups.has(0),"arch assembly cannot bridge an intervening source wall")
+ check(reconstruction.groups.get(1,{}).get("size",Vector2.ZERO) == Vector2(1,1),"an archway cannot bridge an intervening solid wall")
  var tree: Node3D = reconstruction.fitted("Nature/CommonTree_1.gltf",Vector3(3.2,5.8,3.2))
  var grass: Node3D = reconstruction.fitted("Nature/Grass_Wispy_Short.gltf",Vector3(0.65,0.3,0.65))
  var bounded: bool = reconstruction.nature_materials.size() > 0

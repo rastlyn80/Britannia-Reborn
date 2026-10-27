@@ -76,10 +76,8 @@ static func build(kind: String,s: Dictionary,info: Dictionary,g: RefCounted) -> 
     g.cylinder(root,0.28,0.08,Vector3(0,0.95,0),stone)
     for i in 4:g.cylinder(root,0.018,0.37,Vector3(sin(i*PI/2)*0.20,0.73,cos(i*PI/2)*0.20),"8bbbc1")
   "cannon":
-   for x in [-0.28,0.28]:
-    var wheel:MeshInstance3D=g.cylinder(root,0.22,0.07,Vector3(x,0.22,0.05),wood);wheel.rotation.z=PI/2
-   g.crafted_box(root,Vector3(0.45,0.25,0.70),Vector3(0,0.32,0),wood)
-   var barrel:MeshInstance3D=g.cylinder(root,0.11,1.1,Vector3(0,0.53,-0.18),iron);barrel.rotation.x=PI/2-0.12
+   # Muzzle-loading gun on a two-wheeled field carriage; muzzle faces -Z.
+   cannon(root,g,"2c2f31","6a4a2e")
   "statue":
    g.crafted_box(root,Vector3(0.62,0.16,0.62),Vector3(0,0.08,0),stone)
    g.cylinder(root,0.15,0.55,Vector3(0,0.43,0),stone)
@@ -196,3 +194,34 @@ static func build(kind: String,s: Dictionary,info: Dictionary,g: RefCounted) -> 
    for i in 5:
     var part:MeshInstance3D=g.box(root,Vector3(0.48,0.006,0.018),Vector3(0,0.007,0),"987348");part.rotation.y=i*TAU/5
  return root
+
+# Tapered iron barrel with reinforcing bands, muzzle swell and cascabel knob,
+# trunnioned between two carriage cheeks on spoked wheels with a trail.
+static func cannon(root: Node3D, g: RefCounted, iron: String, wood: String) -> void:
+ var axis_height:=0.62
+ var barrel:=MeshInstance3D.new()
+ var shape:=CylinderMesh.new();shape.top_radius=0.095;shape.bottom_radius=0.15;shape.height=1.45;shape.radial_segments=16
+ barrel.mesh=shape;barrel.rotation.x=-PI/2+0.08;barrel.position=Vector3(0,axis_height+0.03,-0.28)
+ barrel.material_override=g.material(iron);root.add_child(barrel)
+ var along:=Vector3(0,sin(0.08),-cos(0.08))
+ var breech:=barrel.position-along*0.725
+ for t in [0.06,0.30,0.62,1.38]:
+  var band:=MeshInstance3D.new();var ring:=CylinderMesh.new()
+  var r:=lerpf(0.15,0.095,t/1.45)+0.022
+  ring.top_radius=r;ring.bottom_radius=r;ring.height=0.05 if t<1.3 else 0.09;ring.radial_segments=16
+  band.mesh=ring;band.rotation=barrel.rotation;band.position=breech+along*t;band.material_override=g.material(iron);root.add_child(band)
+ var knob:=MeshInstance3D.new();var ball:=SphereMesh.new();ball.radius=0.06;ball.height=0.12;knob.mesh=ball
+ knob.position=breech-along*0.07;knob.material_override=g.material(iron);root.add_child(knob)
+ # Trunnions resting in the cheeks.
+ var trunnion:MeshInstance3D=g.cylinder(root,0.045,0.42,breech+along*0.62,iron);trunnion.rotation.z=PI/2
+ for x in [-0.17,0.17]:
+  var cheek:MeshInstance3D=g.crafted_box(root,Vector3(0.07,0.30,0.95),Vector3(x,0.45,0.05),wood);cheek.rotation.x=0.18
+  var wheel:MeshInstance3D=g.cylinder(root,0.30,0.07,Vector3(x*1.55,0.30,-0.12),wood);wheel.rotation.z=PI/2
+  var hub:MeshInstance3D=g.cylinder(root,0.07,0.12,Vector3(x*1.55,0.30,-0.12),iron);hub.rotation.z=PI/2
+  var tyre:=MeshInstance3D.new();var torus:=TorusMesh.new();torus.inner_radius=0.27;torus.outer_radius=0.31;torus.rings=20;torus.ring_segments=6
+  tyre.mesh=torus;tyre.rotation.z=PI/2;tyre.position=Vector3(x*1.55,0.30,-0.12);tyre.material_override=g.material(iron);root.add_child(tyre)
+  for k in 6:
+   var spoke:MeshInstance3D=g.box(root,Vector3(0.03,0.52,0.035),Vector3(x*1.55,0.30,-0.12),wood);spoke.rotation.x=float(k)*PI/6
+ var axle:MeshInstance3D=g.cylinder(root,0.045,0.62,Vector3(0,0.30,-0.12),iron);axle.rotation.z=PI/2
+ g.crafted_box(root,Vector3(0.40,0.08,0.62),Vector3(0,0.24,0.48),wood)
+ var trail:MeshInstance3D=g.crafted_box(root,Vector3(0.22,0.07,0.55),Vector3(0,0.14,0.82),wood);trail.rotation.x=0.22

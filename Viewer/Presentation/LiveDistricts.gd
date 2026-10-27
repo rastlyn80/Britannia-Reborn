@@ -48,6 +48,7 @@ func measure(phase: String, started_us: int, detail: String="") -> void:
  phases[phase]=entry
  if spent>=4000 and slow_phases.size()<512:slow_phases.append({"frame":Engine.get_process_frames(),"phase":phase,"ms":spent/1000.0,"detail":detail})
 
+var fresh_origins: Array[Vector2i] = []
 class DecodeJob extends RefCounted:
  var resource: Resource
  var result: Dictionary
@@ -273,6 +274,7 @@ func install(record: Dictionary, node: Node3D, decoded: Dictionary) -> void:
   sources[record.at]=decoded
   surface.add_chunk(decoded)
   reconstruction.supports.add_chunk(record.at,decoded.terrain_index,decoded.static_index)
+  fresh_origins.append(record.at)
   decoded.erase("terrain_index")
   decoded.erase("static_index")
   fresh_nodes.append(node)
@@ -317,6 +319,8 @@ func advance_source_window() -> void:
   next_terrain=[];next_statics=[]
   if scene and scene.world_ready:
    scene.world_items.refresh_source_records(true)
+   scene.world_items.rebuild_in_chunks(fresh_origins)
+   fresh_origins.clear()
    for node in fresh_nodes:
     if is_instance_valid(node):scene.world_items.suppress_streamed_posts(node)
   fresh_nodes.clear()

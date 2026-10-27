@@ -13,9 +13,12 @@ const COVER_RISE := 12
 var plans: Dictionary = {}
 var undecided := 0
 
+var fortified_count := 0
+const DoorLeaf := preload("res://Presentation/DoorLeaf.gd")
 func index(world: Dictionary, catalog: Dictionary) -> void:
 	plans.clear()
 	undecided = 0
+	fortified_count = 0
 	var cells := {}
 	for i in world.statics.size():
 		var cell := Vector2i(world.statics[i].x,world.statics[i].y)
@@ -35,6 +38,15 @@ func index(world: Dictionary, catalog: Dictionary) -> void:
 		var rule: Dictionary = catalog.get(str(int(s.id)),{})
 		if rule.get("kind","") != "window": continue
 		var cell := Vector2i(s.x,s.y)
+		# Fortified walls (a battlement in the same wall column above) are not
+		# dressed like town houses: no shutters or flower boxes on castles.
+		var fortified := false
+		for j in cells.get(cell,[]):
+			var above: Dictionary = world.statics[j]
+			if int(above.z) > int(s.z) and int(above.z)-int(s.z) <= 45 and kind_of.call(j) == "trim": fortified = true
+		if fortified:
+			fortified_count += 1
+			continue
 		var axis_y: bool = rule.get("axis","x") == "y"
 		var along := Vector2i(0,1) if axis_y else Vector2i(1,0)
 		var normal := Vector2i(1,0) if axis_y else Vector2i(0,1)
@@ -71,10 +83,18 @@ func dress(reconstruction: RefCounted, plan: Dictionary, sill: float, opening: f
 	# Outer face of the framing: Tudor oak stands 0.15 m proud, plain walls 0.09.
 	var face := 0.15 if family in ["plaster","wood"] else 0.09
 	if plan.get("shutters",false):
-		# The kit pair leaves a 0.96 m gap between 0.43 m leaves; open them
-		# just outside the 0.9 m window frame.
-		var leaves: Node3D = reconstruction.fitted("MedievalKit/FShutter_Pair_Red.gltf" if plan.get("flower_box",false) else "MedievalKit/FShutter_Pair.gltf",Vector3(1.71,opening,0.08))
-		leaves.position = Vector3(0,sill,side*(face+0.04))
+		# Two board shutters (photoscanned wood_shutter planks on ledges, iron
+		# strap hinges) folded open flat against the wall either side of the
+		# 0.9 m frame; painted ones on windows with flower boxes.
+		var leaves := Node3D.new()
+		var boards := DoorLeaf.surface("wood_shutter",Color(0.9,0.5,0.42) if plan.get("flower_box",false) else Color.WHITE)
+		var iron := DoorLeaf.surface("rusty_metal_02",Color(0.3,0.28,0.27),0.55)
+		for edge in [-1.0,1.0]:
+			var leaf := DoorLeaf._box(leaves,Vector3(0.42,opening,0.035),Vector3(edge*0.66,opening/2,0),boards)
+			leaf.name = "Shutter"
+			for t in [0.2,0.8]:
+				DoorLeaf._box(leaves,Vector3(0.3,0.04,0.01),Vector3(edge*(0.45+0.15),opening*t,0.022),iron)
+		leaves.position = Vector3(0,sill,side*(face+0.03))
 		if side < 0: leaves.rotation.y = PI
 		root.add_child(leaves)
 	if plan.get("flower_box",false):

@@ -1,3 +1,13 @@
+# Third Dawn body import checkpoint — 27 October 2026
+
+Local human/ogre rigged import and idle/walk/run review are implemented and tested in the existing Viewer; full verify passes. See THIRD_DAWN_IMPORT.md. This is an optional private compatibility experiment: the default avatar and live networking remain unchanged. Next gates, if this visual direction is pursued: owner review of the old-model silhouettes/style, native attack/death clips, explicit body-ID mapping with CC0 fallback, costume/hue assembly and terrain foot contact, then a separately verified opt-in live presentation. No original-derived art may enter commits or public packages; modern-quality art and distribution rights remain unresolved.
+
+Owner is interested in an automated visual refresh while preserving native equipment/monster coverage. Three male garments (chain shirt, plate breastpiece, robe) have no unmatched weighted bone names against the imported body; wardrobe fitting is not yet rendered/tested. Next useful experiment: one fully dressed human plus an ogre with original-versus-refreshed materials, preserving UVs/rigs and testing clothing through movement before any broad batch conversion.
+
+# Sign texture checkpoint — 27 October 2026
+
+All 54 requested sign-face reinterpretations are generated and locally reviewed in `outputs/item-catalog/signs/modern` (same filenames; 1254×1254 PNGs; source hashes and prompts recorded; ignored/local only). Next for integration: assign sign-face materials, fit UVs to each modeled board and inspect in-world at distance. Texture generation does not resolve the queued road-sign board geometry or permanent street-name display below.
+
 # Owner-reported Britain defects (queued after the catalogue matching) — 27 October 2026
 
 From the owner's in-game screenshots; fix with shared rules, then verify in captures:
@@ -10,6 +20,10 @@ From the owner's in-game screenshots; fix with shared rules, then verify in capt
 7. Road signs: two boards on one post have broken geometry; street names must be shown on the boards permanently, not only on click.
 8. White plaster panels over doorways and openings in brick (and other masonry) walls; lintel/infill pieces must take the wall's own family.
 9. Britain castle: roof fragments out of place on towers and wall tops (timber roof slabs hanging off battlements, white dashed lines along wall faces).
+
+Owner requests queued next: (1) replace the plaster wall material (current lime render reads flat and fake) with a photoscanned rough-cast/limewash set and real wall relief; (2) break up visible tiling on large uniform terrain: per-region texture variation, stochastic/rotated sampling and macro colour noise so neighbouring tiles of the same land type blend without a repeating pattern.
+
+Performance for richer models (after the defects): (a) automatic mesh LODs on import for owner/kit props and kit modules, plus MultiMesh batching of repeated props per district cell, so full-detail models are used near the camera; measure the streaming route before/after. (b) Where repeated shapes match (towers, gatehouses, long wall runs), substitute larger modules, and merge each building's pieces into single meshes.
 
 Approach: every fix is a shared rule plus an automated whole-map audit (floating pieces with nothing beneath, roofs not resting on walls, wrong-family infill, rendered walls on passable cells and open cells on impassable ones), so the same defects are found and prevented automatically as the map expands, not fixed building by building.
 

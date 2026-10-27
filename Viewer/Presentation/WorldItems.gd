@@ -12,6 +12,15 @@ var selected := 0
 var suppressed_posts := {}
 var contacts_pending:=false
 var hint := Label.new()
+# Signs ask the server for their text as they appear (a few per second), so
+# street and shop names are painted on the boards without clicking.
+var label_queue: Array[int] = []
+var sign_labels := {}
+var label_clock := 0.0
+const LABEL_INTERVAL := 0.25
+# Street-board arrow directions by graphic (x east, z south) from the source
+# art: "\\" boards run east-west, "/" north-south, level boards face the view.
+const STREET_BOARDS := {4759:Vector2(0.7071,-0.7071),4766:Vector2(-0.7071,0.7071),4760:Vector2(-0.7071,-0.7071),4763:Vector2(0.7071,0.7071),4761:Vector2(0,-1),4765:Vector2(0,1),4762:Vector2(1,0),4764:Vector2(-1,0)}
 
 func configure(owner_scene: Node3D, connection: Node) -> void:
  scene = owner_scene
@@ -26,6 +35,8 @@ func configure(owner_scene: Node3D, connection: Node) -> void:
  session.item_label_received.connect(func(serial: int, label: String):
   if serial == selected: hint.text = label
   if nodes.has(serial) and nodes[serial].get_meta("family","") == "sign":
+   sign_labels[serial] = label
+   nodes[serial].set_meta("labelled",true)
    var plaque: Label3D = nodes[serial].get_node_or_null("BuildingName")
    if plaque:
     plaque.text = label
@@ -54,6 +65,26 @@ func definition(item: Dictionary) -> Dictionary:
   var offsets := [[-1,1,0],[1,1,0],[-1,0,0],[1,-1,0],[1,1,0],[1,-1,0],[0,0,0],[0,-1,0]]
   return {"family":"door","facing":facing,"height":16,"flags":64,"is_open":(int(item.id)-0x6a5)%2 == 1,"offset":offsets[facing]}
  return {"family":"decoration","height":1,"flags":0,"container":false}
+
+# A rebuilt sign repaints a known name at once; otherwise its text is queued.
+func _label_sign(serial: int) -> void:
+ if not nodes.has(serial): return
+ if sign_labels.has(serial):
+  nodes[serial].set_meta("labelled",true)
+  if nodes[serial].has_meta("engrave"): engrave(nodes[serial],str(sign_labels[serial]))
+  else:
+   var plaque: Label3D = nodes[serial].get_node_or_null("BuildingName")
+   if plaque:
+    plaque.text = str(sign_labels[serial])
+    plaque.show()
+ elif not serial in label_queue: label_queue.append(serial)
+
+func _process(delta: float) -> void:
+ label_clock -= delta
+ if label_clock > 0.0 or label_queue.is_empty() or session == null: return
+ label_clock = LABEL_INTERVAL
+ var serial: int = label_queue.pop_front()
+ if nodes.has(serial) and not nodes[serial].has_meta("labelled"): session.request_label(serial)
 
 func upsert(serial: int, item: Dictionary) -> void:
  var bounds := Rect2i(int(scene.world.originX),int(scene.world.originY),int(scene.world.width),int(scene.world.height))
@@ -86,6 +117,7 @@ func upsert(serial: int, item: Dictionary) -> void:
  root.set_meta("appearance",Appearance.variant(int(item.id),rule))
  add_child(root)
  nodes[serial] = root
+ if rule.get("family","") == "sign": call_deferred("_label_sign",serial)
  root.position = scene.entity_point(item.x,item.y,item.z)
  var review: Dictionary=preload("res://Presentation/ReviewedCatalog.gd").entry(int(item.id))
  if (review.has("asset") or review.get("construction","")=="wardrobe") and rule.family!="door":
@@ -163,10 +195,18 @@ func upsert(serial: int, item: Dictionary) -> void:
    geometry.crafted_box(board,Vector3(size.x-0.06,size.y-0.06,size.z+0.01),Vector3.ZERO,"8a6a42")
    board.position.y = board_y
    if street:
-    # Graphic parity gives the board's axis; it crosses the post at its top.
-    board.rotation.y = PI/2 if int(item.id)%2 else 0.0
+    # The arrow board leaves the post in its pointing direction with a
+    # pointed tip; a post section always reaches it (stacked boards).
+    var toward: Vector2 = STREET_BOARDS.get(int(item.id),Vector2(1,0))
+    board.rotation.y = atan2(-toward.y,toward.x)
+    board.position += Vector3(toward.x,0,toward.y)*(size.x/2-0.05)
+    var tip := geometry.crafted_box(board,Vector3(0.17,0.17,size.z),Vector3(size.x/2,0,0),"6b4a2c")
+    tip.rotation.z = PI/4
+    var land: Dictionary = scene.reconstruction.supports.land_at(Vector2i(item.x,item.y)) if scene.reconstruction else {}
+    var drop := clampf((float(item.z)-float(land.get("z",item.z)))*float(scene.world.elevationScale),0.0,4.0)
+    geometry.crafted_box(root,Vector3(0.1,drop+board_y+0.16,0.1),Vector3(0,(board_y+0.16-drop)/2,0),"4a3524")
    else:
-    var plan := preload("res://Presentation/SignPlan.gd").layout(item,scene.world,scene.reconstruction.catalog)
+    var plan := preload("res://Presentation/SignPlan.gd").layout(item,scene.world,scene.reconstruction.catalog,scene.reconstruction.supports.tiles_at)
     root.rotation.y = float(plan.yaw)+PI/2
     root.set_meta("sign_plan",plan)
     if Vector2(plan.mount).length() > 0.2:
@@ -197,38 +237,45 @@ func upsert(serial: int, item: Dictionary) -> void:
    if not land.is_empty(): ground = float(land.z)*float(scene.world.elevationScale)
    var above_ground := float(item.z)*float(scene.world.elevationScale)-ground
    var board_y := maxf(0.40,2.80-above_ground) if rule.family == "sign" else 1.0
-   geometry.crafted_box(root,size,Vector3(0,board_y,0),"725231")
-   for side in [-1,1]:
-    geometry.crafted_box(root,Vector3(size.x-0.12,size.y-0.10,0.025),Vector3(0,board_y,side*0.10),"b79a62")
-   if kind == "noticeboard":
-    for i in 4: geometry.box(root,Vector3(0.19,0.27,0.008),Vector3(-0.32+i*0.21,board_y+(0.08 if i%2 else -0.07),-0.12),"e0d3ad")
-   var classic_face := local_art.apply_face(root,int(item.id),Vector3(0,board_y,0),Vector2(size.x-0.13,size.y-0.10)) if kind != "noticeboard" else false
-   for face in ([] if classic_face else [-1,1]):
-    var sign_type := (int(item.id)-0xb95)/2
-    if sign_type == 23:
-     geometry.box(root,Vector3(0.22,0.26,0.025),Vector3(-0.035,board_y,face*0.123),"59432b")
-     for bar_y in [-0.08,0.06]: geometry.box(root,Vector3(0.26,0.025,0.027),Vector3(-0.035,board_y+bar_y,face*0.14),"d1bb85")
-     var handle := MeshInstance3D.new()
-     var ring := TorusMesh.new()
-     ring.inner_radius = 0.045
-     ring.outer_radius = 0.075
-     handle.mesh = ring
-     handle.material_override = geometry.material("59432b")
-     handle.rotation.x = PI/2
-     handle.position = Vector3(0.115,board_y+0.02,face*0.128)
-     root.add_child(handle)
-    elif sign_type == 15:
-     geometry.box(root,Vector3(0.39,0.11,0.03),Vector3(0,board_y-0.03,face*0.13),"59432b")
-     for x in [-0.17,0.17]: geometry.box(root,Vector3(0.05,0.27,0.03),Vector3(x,board_y,face*0.13),"59432b")
-     geometry.box(root,Vector3(0.09,0.055,0.035),Vector3(-0.10,board_y+0.045,face*0.14),"ead6a4")
-   for side in [-1,1]: geometry.cylinder(root,0.015,0.26,Vector3(side*0.24,board_y+0.44,0),"3b3e3e")
-   geometry.crafted_box(root,Vector3(0.84,0.055,0.08),Vector3(0,board_y+0.59,0),"3b3e3e")
+   # Owner-painted sign faces: a square board hanging on two links from the arm.
+   var modern: StandardMaterial3D = preload("res://Presentation/LocalSignArt.gd").face(int(item.id)) if kind == "sign" else null
+   if modern:
+    size = Vector3(0.80,0.82,0.12)
+    preload("res://Presentation/LocalSignArt.gd").board(root,geometry,modern,0.74,board_y+0.59)
+    geometry.crafted_box(root,Vector3(0.84,0.055,0.08),Vector3(0,board_y+0.59,0),"3b3e3e")
+   else:
+    geometry.crafted_box(root,size,Vector3(0,board_y,0),"725231")
+    for side in [-1,1]:
+     geometry.crafted_box(root,Vector3(size.x-0.12,size.y-0.10,0.025),Vector3(0,board_y,side*0.10),"b79a62")
+    if kind == "noticeboard":
+     for i in 4: geometry.box(root,Vector3(0.19,0.27,0.008),Vector3(-0.32+i*0.21,board_y+(0.08 if i%2 else -0.07),-0.12),"e0d3ad")
+    var classic_face := local_art.apply_face(root,int(item.id),Vector3(0,board_y,0),Vector2(size.x-0.13,size.y-0.10)) if kind != "noticeboard" else false
+    for face in ([] if classic_face else [-1,1]):
+     var sign_type := (int(item.id)-0xb95)/2
+     if sign_type == 23:
+      geometry.box(root,Vector3(0.22,0.26,0.025),Vector3(-0.035,board_y,face*0.123),"59432b")
+      for bar_y in [-0.08,0.06]: geometry.box(root,Vector3(0.26,0.025,0.027),Vector3(-0.035,board_y+bar_y,face*0.14),"d1bb85")
+      var handle := MeshInstance3D.new()
+      var ring := TorusMesh.new()
+      ring.inner_radius = 0.045
+      ring.outer_radius = 0.075
+      handle.mesh = ring
+      handle.material_override = geometry.material("59432b")
+      handle.rotation.x = PI/2
+      handle.position = Vector3(0.115,board_y+0.02,face*0.128)
+      root.add_child(handle)
+     elif sign_type == 15:
+      geometry.box(root,Vector3(0.39,0.11,0.03),Vector3(0,board_y-0.03,face*0.13),"59432b")
+      for x in [-0.17,0.17]: geometry.box(root,Vector3(0.05,0.27,0.03),Vector3(x,board_y,face*0.13),"59432b")
+      geometry.box(root,Vector3(0.09,0.055,0.035),Vector3(-0.10,board_y+0.045,face*0.14),"ead6a4")
+    for side in [-1,1]: geometry.cylinder(root,0.015,0.26,Vector3(side*0.24,board_y+0.44,0),"3b3e3e")
+    geometry.crafted_box(root,Vector3(0.84,0.055,0.08),Vector3(0,board_y+0.59,0),"3b3e3e")
    if int(item.id)%2: root.rotation.y = PI/2
    pick_center = Vector3(0,board_y,0)
    if rule.family == "sign":
     # Source anchor stays fixed; the visible plaque and its pick volume hang
     # perpendicular to the nearest facade, outside it on a forged bracket.
-    var plan := preload("res://Presentation/SignPlan.gd").layout(item,scene.world,scene.reconstruction.catalog)
+    var plan := preload("res://Presentation/SignPlan.gd").layout(item,scene.world,scene.reconstruction.catalog,scene.reconstruction.supports.tiles_at)
     root.rotation.y = float(plan.yaw)
     root.position += Vector3(plan.mount.x,0,plan.mount.y)
     for child in root.get_children():
@@ -354,8 +401,8 @@ func _body(root: Node3D,size: Vector3,at: Vector3,serial: int,solid: bool) -> St
  root.add_child(body)
  return body
 
-# Square-headed plank leaf (MedievalKit, CC0) fits the native rectangular doorway.
-const DOOR_LEAF := "MedievalKit/Door_Rect.gltf"
+# Leaves are built at the doorway's size from photoscanned surfaces (DoorLeaf.gd).
+const DoorLeaf := preload("res://Presentation/DoorLeaf.gd")
 func _door(root: Node3D,rule: Dictionary) -> void:
  var pivot := Node3D.new()
  pivot.name = "Hinge"
@@ -364,15 +411,17 @@ func _door(root: Node3D,rule: Dictionary) -> void:
  pivot.position.x = 0.47 if right else -0.47
  var center := -0.47 if right else 0.47
  var cell := Vector3i(int(round(root.position.x+scene.world.originX-0.5)),int(round(root.position.z+scene.world.originY-0.5)),int(round(root.position.y/float(scene.world.elevationScale))))
- var plan := preload("res://Presentation/DoorwayPlan.gd").measure(scene.world,scene.reconstruction.catalog,cell,"y" if int(rule.get("facing",0)) >= 4 else "x")
+ var plan := preload("res://Presentation/DoorwayPlan.gd").measure(scene.world,scene.reconstruction.catalog,cell,"y" if int(rule.get("facing",0)) >= 4 else "x",scene.reconstruction.supports.tiles_at)
  var height := float(plan.leaf_height)
  root.set_meta("doorway_plan",plan)
  preload("res://Presentation/DoorwayPlan.gd").header(root,plan,geometry,scene.reconstruction.facade)
- var leaf: Node3D=scene.reconstruction.fitted(DOOR_LEAF,Vector3(.94,height,.13))
+ var style := DoorLeaf.style_for(str(rule.get("type","")))
+ var leaf: Node3D=DoorLeaf.build(0.94,height,style)
  leaf.name="TimberLeaf"
- leaf.position=Vector3(center,.025,0)
+ # The leaf's x origin is its hinge edge; mirror for right-hung leaves.
+ leaf.position=Vector3(0.0,.025,0)
  leaf.scale.x=-1.0 if right else 1.0
- leaf.set_meta("reviewed_asset",DOOR_LEAF)
+ leaf.set_meta("door_style",style)
  pivot.add_child(leaf)
  _body(pivot,Vector3(0.94,height,0.13),Vector3(center,height/2+0.025,0),int(root.get_meta("serial")),true)
 
@@ -397,6 +446,23 @@ func _door_state(root: Node3D,item: Dictionary,rule: Dictionary,instant: bool) -
  hinge.get_node("PickBody").collision_layer = 5 # The camera follows the physical leaf in either state.
  root.set_meta("open",open)
 
+# Doors and signs measure the walls around them; a district that finishes
+# streaming after they arrived rebuilds them against its real facades.
+func rebuild_in_chunks(origins: Array) -> void:
+ if origins.is_empty() or session == null: return
+ var wanted := {}
+ for origin in origins: wanted[origin] = true
+ for serial in nodes.keys():
+  var item: Dictionary = session.world_items.get(serial,{})
+  if item.is_empty() or not str(definition(item).get("family","")) in ["door","sign"]: continue
+  var near := false
+  for offset in [Vector2i.ZERO,Vector2i(3,0),Vector2i(-3,0),Vector2i(0,3),Vector2i(0,-3)]:
+   var cell: Vector2i = Vector2i(int(item.x),int(item.y))+offset
+   if wanted.has(Vector2i(floori(cell.x/64.0)*64,floori(cell.y/64.0)*64)): near = true
+  if not near: continue
+  remove_visual(serial)
+  upsert(serial,item)
+
 func remove_visual(serial: int) -> void:
  for post in suppressed_posts.get(serial,[]):
   if is_instance_valid(post): post.show()
@@ -414,6 +480,8 @@ func remove(serial: int) -> void:
 func clear() -> void:
  for serial in nodes.keys(): remove(serial)
  if scene and scene.movement_surface: scene.movement_surface.dynamic_items.clear()
+ label_queue.clear()
+ sign_labels.clear()
  hint.text = ""
 
 func activate(serial: int) -> bool:

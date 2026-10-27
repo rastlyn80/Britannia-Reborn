@@ -25,8 +25,11 @@ uniform sampler2D surface_roughness : filter_linear_mipmap_anisotropic, repeat_e
 uniform vec2 surface_scale=vec2(1.0);
 void fragment(){
  if(!double_sided && !FRONT_FACING){discard;}
- vec3 n=abs((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
- if(open_caps && n.y>0.99){discard;}
+ vec3 world_normal=(INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz;
+ vec3 n=abs(world_normal);
+ // Only upward caps hide under floors; undersides of overhangs (parapets,
+ // copings) must stay solid or the sky shows through as bright lines.
+ if(open_caps && world_normal.y>0.99){discard;}
  vec2 uv=n.x>n.z?world_position.zy:world_position.xy;
  if(n.y>max(n.x,n.z))uv=world_position.xz;
  float broad=surface_fbm(uv*0.7);

@@ -1,3 +1,33 @@
+# Britain defect pass 1, doors/windows, cannons and sign art — 27 October 2026
+
+Owner-reported defects fixed with shared rules (each checked in offline captures):
+- Walkable wall pieces (gateways, arch openings; tiledata Wall without Impassable) join along their axis into masonry archways with real openings (collision follows the mesh); solid arch pieces are masonry piers. The Britain castle gateway after the drawbridge is open; no more Quaternius wooden arch frames.
+- Wall-flagged stone posts/pillars render as square masonry piers in the wall's material, not thin round poles.
+- Door infill takes the surrounding wall's family and rises to any battlement on the neighbouring wall. Doors and signs that arrive before their streamed district are rebuilt when it loads (they previously measured an empty world: white plaster bands over doors, signs parallel to walls).
+- Facade shader discards only upward caps (overhang undersides showed the sky as white dashed lines along castle walls). No shutters or flower boxes on fortified walls.
+- Timber framing: one oak post per one-metre bay (the half-metre close studding read as heavy stripes).
+- Doors: DoorLeaf.gd builds plank, strong/metal, barred and gate leaves at the doorway's size from photoscanned CC0 Poly Haven surfaces (rough_pine_door, medieval_wood, rusty_metal_02) with Z-braces, strap hinges and ring pulls. Windows: every glazed window is an oak leaded casement (stone sill in masonry); shutters are wood_shutter board pairs with iron straps.
+- Cannons use the pinned CC0 Poly Haven cannon_01 at real proportions. scripts/add-polyhaven.py pins models and surface textures with hashes.
+- Street signs: arrow boards leave the post in their pointing direction; a post section always reaches every board; sign text is requested quietly from the server and painted on boards without clicking.
+- Owner sign art: scripts/install-sign-art.py installs the owner's 54 painted shop/guild sign faces into ignored Viewer/local-art/signs; LocalSignArt.gd hangs square framed boards from the forged bracket with the face on both sides. Generated from proprietary references, so local only.
+- Tools: AreaInspect.gd (source pieces in a rectangle) and ArchitectureAudit.gd (whole-map floating-architecture audit; the source data has only 13 floating pieces, so remaining "flying" defects come from presentation).
+
+Still open (owner screenshots): roofs standing off brick walls, floating interior windows/plants/boxes, mixed materials around a shop passage roof, flickering display cases, low-poly procedural props inside buildings, plaster material quality, terrain tiling. Next: an audit over the built 3D scene (not the source) for floating/misaligned visuals and coplanar surfaces. Tests: full verify passes.
+
+# Third Dawn human/ogre compatibility experiment — 27 October 2026
+
+Imported the preserved Third Dawn 2.0.4 Alpha Build 35 human male and ogre into the existing Godot Viewer as local-only textured/skinned glTF models. Independent bounded Python parser, no proprietary runtime. Human: 183 source vertices / 362 triangles / 34 bones; ogre: 229 / 452 / 37. Idle, walk and run match tracks by name; absent toe/hair leaves are reported. Corrected human authoring offset/coordinate frame and baked visual floor fit; entity roots remain stationary. `ThirdDawnBody.gd` has the Avatar animation contract but is used only in the comparison review, not live gameplay. `Review-Third-Dawn.cmd` compares both imports with the current CC0 avatar and offers clip buttons/pause/orbit/zoom.
+
+Six synthetic parser/image/coordinate tests pass. Godot validation passes 24 deformed mesh poses (two bodies × three clips × four phases), joint motion, stationary roots and ground tolerance in headless, Compatibility and Forward+. Sampled floor error <10 mm. Inspected idle/walk captures; run capture retained. Full `scripts/verify.ps1` passes, including actual-crop smoke load. During concurrent world-item edits, added an explicit Vector2i type to an inferred local that blocked import; no world-item behavior changed by that annotation. No live login/server changes were needed.
+
+Sources, converted models/textures, provenance and captures are ignored/local; Documents/Codex prototype, existing UO installation and saved login remain unchanged. These early coarse models/painted textures demonstrate technical feasibility, not finished modern art or a redistribution licence. Equipment/hues, terrain IK, native combat clips, Quaternius retargeting and live body-ID substitution remain unimplemented. See THIRD_DAWN_IMPORT.md for exact source hashes, reproduction and limits.
+
+# Modern sign-face textures — 27 October 2026
+
+Generated all 54 local sign references as separate modern painted fantasy sign-face PNGs in ignored `outputs/item-catalog/signs/modern`, preserving each `*_flat.png` filename. Every output decodes at 1254×1254; source/output filename parity is 54/54. Inspected the completed `review.png` contact sheet. `provenance.json` records exact source/output SHA-256 hashes and dimensions; `prompts.json` records all 54 built-in image-generation prompts. Originals remain unchanged. These reference-inspired outputs stay local and are not asserted to have a redistribution licence.
+
+The artwork omits posts and frames and can supply sign albedo; Godot material assignment, UV fitting to individual sign meshes and in-world visual validation remain undone. No gameplay/server changes. `scripts/verify.ps1` completed successfully.
+
 # Catalogue matching: owner packs, free kits and rules — 27 October 2026
 
 Goal: give as many original graphics as possible a modern look from the owner's purchased packs, the CC0 kits and procedural rules, reviewed side by side.

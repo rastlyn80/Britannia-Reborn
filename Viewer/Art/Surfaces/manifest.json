@@ -516,6 +516,166 @@
      "bytes": 329196
     }
    ]
+  },
+  {
+   "id": "medieval_wood",
+   "name": "Medieval Wood",
+   "source": "https://polyhaven.com/a/medieval_wood",
+   "license": "CC0-1.0",
+   "licenseUrl": "https://polyhaven.com/license",
+   "authors": [
+    "Rob Tuytel"
+   ],
+   "sizeMeters": [
+    2.0,
+    2.0
+   ],
+   "maps": [
+    {
+     "role": "albedo",
+     "file": "medieval_wood_diff_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/medieval_wood/medieval_wood_diff_1k.jpg",
+     "sha256": "66a36635dc3f2db696dbb6939b1d4f86c0b666c898c1b55c6b5d6d9f1896b43e",
+     "sourceMd5": "6c464ccb8e5dc5b1ab1b93c05dcc4a8c",
+     "bytes": 747216
+    },
+    {
+     "role": "normal",
+     "file": "medieval_wood_nor_gl_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/medieval_wood/medieval_wood_nor_gl_1k.jpg",
+     "sha256": "90b0ce551282d55830497397edad9b0c3ea690728483de45b7df13eb0850df01",
+     "sourceMd5": "f392a90a1e5155b0cfdc0c9534275594",
+     "bytes": 827061
+    },
+    {
+     "role": "roughness",
+     "file": "medieval_wood_rough_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/medieval_wood/medieval_wood_rough_1k.jpg",
+     "sha256": "e2fd3ab5e76a418bffceb88ce3837939e1039f94c432a3913c539b0d440ee7a5",
+     "sourceMd5": "ee1e5705fcd50448260e994cb09675cd",
+     "bytes": 321025
+    }
+   ]
+  },
+  {
+   "id": "rough_pine_door",
+   "name": "Rough Pine Door",
+   "source": "https://polyhaven.com/a/rough_pine_door",
+   "license": "CC0-1.0",
+   "licenseUrl": "https://polyhaven.com/license",
+   "authors": [
+    "Dimitrios Savva"
+   ],
+   "sizeMeters": [
+    2.0,
+    2.0
+   ],
+   "maps": [
+    {
+     "role": "albedo",
+     "file": "rough_pine_door_diff_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rough_pine_door/rough_pine_door_diff_1k.jpg",
+     "sha256": "1a9b6a8a75d299a52fbfdcadeb71dcac8915503cb88fc817ccb2d24dd1086d07",
+     "sourceMd5": "8c1036e566fe8e925e98123458aae385",
+     "bytes": 721865
+    },
+    {
+     "role": "normal",
+     "file": "rough_pine_door_nor_gl_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rough_pine_door/rough_pine_door_nor_gl_1k.jpg",
+     "sha256": "0ddb4e16752e9dd443918f63d07c8a23c04fd0da2a907f6717b071650e587557",
+     "sourceMd5": "4ea81cbe11f012f8dd9490de124ed1fd",
+     "bytes": 717358
+    },
+    {
+     "role": "roughness",
+     "file": "rough_pine_door_rough_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rough_pine_door/rough_pine_door_rough_1k.jpg",
+     "sha256": "ff2e2058c19e963619df52880c224f589a1b68cbe7a0245121c9ceeed3789d3a",
+     "sourceMd5": "12e7930c87c2df343b2eb9585e34cee3",
+     "bytes": 217135
+    }
+   ]
+  },
+  {
+   "id": "wood_shutter",
+   "name": "Wood Shutter",
+   "source": "https://polyhaven.com/a/wood_shutter",
+   "license": "CC0-1.0",
+   "licenseUrl": "https://polyhaven.com/license",
+   "authors": [
+    "Dimitrios Savva"
+   ],
+   "sizeMeters": [
+    1.0,
+    1.0
+   ],
+   "maps": [
+    {
+     "role": "albedo",
+     "file": "wood_shutter_diff_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/wood_shutter/wood_shutter_diff_1k.jpg",
+     "sha256": "105782fbf53fe803c8ef781bb441f525b23c571a3bc688d208989d805bfaaeea",
+     "sourceMd5": "aa04efa11722523b239bdfb98ada58b7",
+     "bytes": 718295
+    },
+    {
+     "role": "normal",
+     "file": "wood_shutter_nor_gl_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/wood_shutter/wood_shutter_nor_gl_1k.jpg",
+     "sha256": "b621593f96705004c2c5ce78b59c059d36c77920934b6f7ac26f8824ef4ecdf8",
+     "sourceMd5": "27017b4e111943d4798e60a22ebfb50c",
+     "bytes": 701234
+    },
+    {
+     "role": "roughness",
+     "file": "wood_shutter_rough_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/wood_shutter/wood_shutter_rough_1k.jpg",
+     "sha256": "134fbcb301c466ed54031056bb9c82ff92f21bf50782491f9212d26b3c94a5d1",
+     "sourceMd5": "8dc958fa2246109b1da5942f9fdd7954",
+     "bytes": 255193
+    }
+   ]
+  },
+  {
+   "id": "rusty_metal_02",
+   "name": "Rusty Metal 02",
+   "source": "https://polyhaven.com/a/rusty_metal_02",
+   "license": "CC0-1.0",
+   "licenseUrl": "https://polyhaven.com/license",
+   "authors": [
+    "Rob Tuytel"
+   ],
+   "sizeMeters": [
+    1.0,
+    1.0
+   ],
+   "maps": [
+    {
+     "role": "albedo",
+     "file": "rusty_metal_02_diff_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rusty_metal_02/rusty_metal_02_diff_1k.jpg",
+     "sha256": "adaf094391518b6afe787a123942110aa88ef521c844f970b124420f5ed5d3d9",
+     "sourceMd5": "476bff9959bc727bd4b83c0a9ac4aeaa",
+     "bytes": 564932
+    },
+    {
+     "role": "normal",
+     "file": "rusty_metal_02_nor_gl_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rusty_metal_02/rusty_metal_02_nor_gl_1k.jpg",
+     "sha256": "995197a62cac6fbb000e6e6591a3330a3b77ef069c4ac58f505b586b9bdbd97b",
+     "sourceMd5": "8d6dc7e26f2708ec59e2a739711c612b",
+     "bytes": 403156
+    },
+    {
+     "role": "roughness",
+     "file": "rusty_metal_02_rough_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rusty_metal_02/rusty_metal_02_rough_1k.jpg",
+     "sha256": "178deb5896232f0498555676e55a3be1d6d197e2211d8d17cb8386a868bfd54a",
+     "sourceMd5": "75551ad404e29489f9b75876da95a13a",
+     "bytes": 135023
+    }
+   ]
   }
  ]
 }

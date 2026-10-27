@@ -10,7 +10,6 @@ var corners := {}
 var diagonal_joins := 0
 var cap_extensions := {}
 var capless_materials := {}
-var glass_material: StandardMaterial3D
 var iron_material: StandardMaterial3D
 var leaded_material: ShaderMaterial
 
@@ -238,26 +237,8 @@ func panel(height: float, window: bool, plan: Dictionary, family: String, frame:
 		piece(root,Vector3(1,sill,0.18),Vector3(0,sill/2,0),family)
 		piece(root,Vector3(1,h-sill-opening,0.18),Vector3(0,(h+sill+opening)/2,0),family)
 		for x in [-0.43,0.43]: piece(root,Vector3(0.14,opening,0.18),Vector3(x,sill+opening/2,0),family)
-		if frame:
-			frame.position=Vector3(0,sill-.08,0)
-			root.add_child(frame)
-		elif family == "plaster":
-			leaded_window(root,sill,opening)
-		else:
-			for y in [sill,sill+opening]: piece(root,Vector3(0.82,0.09,0.27),Vector3(0,y,0),"wood")
-			for x in [-0.33,0.33]: piece(root,Vector3(0.07,opening,0.24),Vector3(x,sill+opening/2,0),"wood")
-			piece(root,Vector3(0.035,opening,0.11),Vector3(0,sill+opening/2,0),"wood")
-			piece(root,Vector3(0.78,0.035,0.11),Vector3(0,sill+opening*0.58,0),"wood")
-			piece(root,Vector3(0.98,0.10,0.40),Vector3(0,sill-0.03,0),"stone")
-			if glass_material == null:
-				glass_material = StandardMaterial3D.new()
-				glass_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-				glass_material.albedo_color = Color(0.48,0.62,0.64,0.19)
-				glass_material.roughness = 0.18
-				glass_material.metallic = 0.12
-				glass_material.cull_mode = BaseMaterial3D.CULL_DISABLED
-			var glass := geometry.box(root,Vector3(0.74,opening-0.06,0.018),Vector3(0,sill+opening/2,0),"ffffff")
-			glass.material_override = glass_material
+		# Every glazed window is an oak leaded casement; masonry adds a stone sill.
+		leaded_window(root,sill,opening,family.get_slice("#",0) in MASONRY)
 	else:
 		piece(root,Vector3(1.01,h,0.18),Vector3(0,h/2,0),family)
 	if h > 0.6 and family == "plaster":
@@ -279,10 +260,10 @@ func panel(height: float, window: bool, plan: Dictionary, family: String, frame:
 			for y in [0.3,h-0.08]: piece(root,Vector3(0.51,0.15,0.29),Vector3(side*0.75,y,0),"wood")
 	return root
 
-# Close-studded framing after surviving York timber houses: dark oak studs
-# every half metre standing proud of white rough-cast, a sill rail, a heavy
-# bressumer at the floor line, run-end posts and occasional braces. Studs
-# never cross a source window opening.
+# Timber framing after surviving York houses: dark oak posts on every one-metre
+# bay standing proud of white rough-cast, a sill rail, a heavy bressumer at the
+# floor line, run-end posts and occasional braces. (Half-metre close studding
+# read as heavy stripes over whole facades.) Posts never cross a window.
 func tudor_frame(root: Node3D, h: float, plan: Dictionary, window: bool, sill: float, opening: float) -> void:
 	piece(root,Vector3(1,0.22,0.22),Vector3(0,0.11,0),"stone")
 	piece(root,Vector3(1,0.16,0.30),Vector3(0,0.30,0),"oak")
@@ -290,13 +271,8 @@ func tudor_frame(root: Node3D, h: float, plan: Dictionary, window: bool, sill: f
 	var rail := clampf(sill,0.6,h-0.6)
 	piece(root,Vector3(1,0.12,0.28),Vector3(0,rail,0),"oak")
 	var top := h-0.24
-	for x in [-0.25,0.25]:
-		if window:
-			if sill-0.38 > 0.05: piece(root,Vector3(0.11,sill-0.38,0.28),Vector3(x,0.38+(sill-0.38)/2,0),"oak")
-			var head := sill+opening
-			if top-head > 0.05: piece(root,Vector3(0.11,top-head,0.28),Vector3(x,head+(top-head)/2,0),"oak")
-		else:
-			piece(root,Vector3(0.11,top-0.38,0.28),Vector3(x,0.38+(top-0.38)/2,0),"oak")
+	# Shared post on every cell boundary keeps the bay rhythm continuous.
+	piece(root,Vector3(0.11,top-0.38,0.27),Vector3(-0.5,0.38+(top-0.38)/2,0),"oak")
 	if plan.get("offset",0) == 0: piece(root,Vector3(0.17,h,0.32),Vector3(-0.42,h/2,0),"oak")
 	if plan.get("offset",0) == plan.get("length",1)-1: piece(root,Vector3(0.17,h,0.32),Vector3(0.42,h/2,0),"oak")
 	# Diagonal braces in the upper band of every fourth solid bay.
@@ -306,12 +282,15 @@ func tudor_frame(root: Node3D, h: float, plan: Dictionary, window: bool, sill: f
 		brace.rotation.z = atan2(span.y,span.x)*(1.0 if int(plan.get("run",0))%2 == 0 else -1.0)
 		brace.material_override = material("oak")
 
-# Leaded lights in a heavy oak frame with a central mullion and transom.
-func leaded_window(root: Node3D, sill: float, opening: float) -> void:
-	for y in [sill,sill+opening]: piece(root,Vector3(0.88,0.10,0.30),Vector3(0,y,0),"oak")
-	for x in [-0.39,0.39]: piece(root,Vector3(0.10,opening,0.30),Vector3(x,sill+opening/2,0),"oak")
-	piece(root,Vector3(0.06,opening,0.16),Vector3(0,sill+opening/2,0),"oak")
-	piece(root,Vector3(0.78,0.05,0.16),Vector3(0,sill+opening*0.62,0),"oak")
+# Leaded lights in a heavy photoscanned-oak frame with a central mullion and
+# transom, on a projecting sill (stone in masonry walls).
+func leaded_window(root: Node3D, sill: float, opening: float, stone_sill := false) -> void:
+	var oak := preload("res://Presentation/DoorLeaf.gd").surface("medieval_wood",Color(0.55,0.47,0.4))
+	for y in [sill,sill+opening]: preload("res://Presentation/DoorLeaf.gd")._box(root,Vector3(0.88,0.10,0.30),Vector3(0,y,0),oak)
+	for x in [-0.39,0.39]: preload("res://Presentation/DoorLeaf.gd")._box(root,Vector3(0.10,opening,0.30),Vector3(x,sill+opening/2,0),oak)
+	preload("res://Presentation/DoorLeaf.gd")._box(root,Vector3(0.06,opening,0.16),Vector3(0,sill+opening/2,0),oak)
+	preload("res://Presentation/DoorLeaf.gd")._box(root,Vector3(0.78,0.05,0.16),Vector3(0,sill+opening*0.62,0),oak)
+	if stone_sill: piece(root,Vector3(0.98,0.08,0.40),Vector3(0,sill-0.09,0),"stone")
 	if leaded_material == null:
 		leaded_material = ShaderMaterial.new()
 		leaded_material.shader = preload("res://Presentation/LeadedGlass.gdshader")
@@ -356,3 +335,55 @@ func audit() -> Dictionary:
 		implicit += int(plan.get("extend_left",false))+int(plan.get("extend_right",false))
 		if float(plan.get("height_extension",0)) > 0: storeys += 1
 	return {"corner_records":corners.size(),"joined_corner_branches":branches,"implicit_wall_joins":implicit,"diagonal_corner_joins":diagonal_joins,"ceiling_seams":cap_extensions.size(),"storey_seams":storeys,"unconnected_corner_ordinals":unconnected}
+
+# Masonry archway: a wall slab of the given span and height with an arched
+# opening across its full width (springing at a walkable head height), as one
+# extruded mesh so the opening stays open for collision too.
+func archway(span: float, height: float, family: String, thickness := 0.26) -> Node3D:
+	var root := Node3D.new()
+	var half := span/2.0
+	var rise := minf(half,maxf(0.15,height-2.0-0.25))
+	var spring := clampf(height-rise-0.25,minf(1.9,height*0.6),2.4)
+	rise = minf(rise,maxf(0.1,height-spring-0.15))
+	var outline := PackedVector2Array([Vector2(-half,height),Vector2(half,height)])
+	var steps := 14
+	for i in steps+1:
+		var t := float(i)/float(steps)*PI
+		outline.append(Vector2(cos(t)*half,spring+sin(t)*rise))
+	var polygon := PackedVector2Array([Vector2(-half,height),Vector2(half,height),Vector2(half,spring)])
+	for i in range(1,steps): polygon.append(outline[2+i])
+	polygon.append(Vector2(-half,spring))
+	var tool := SurfaceTool.new()
+	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var faces := Geometry2D.triangulate_polygon(polygon)
+	var middle := height/2.0
+	for side in [1.0,-1.0]:
+		for i in range(0,faces.size(),3):
+			var corners := [polygon[faces[i]],polygon[faces[i+1]],polygon[faces[i+2]]]
+			if side < 0: corners.reverse()
+			tool.set_normal(Vector3(0,0,side))
+			for p in corners: tool.add_vertex(Vector3(p.x,p.y-middle,side*thickness/2))
+	# Intrados (underside of the arch), jambs and top: quads between faces.
+	var ring := PackedVector2Array([Vector2(half,0),Vector2(half,spring)])
+	for i in range(1,steps): ring.append(polygon[2+i])
+	ring.append_array([Vector2(-half,spring),Vector2(-half,0)])
+	for i in ring.size()-1:
+		var a: Vector2 = ring[i]
+		var b: Vector2 = ring[i+1]
+		var normal := Vector3(-(b-a).y,(b-a).x,0).normalized()*-1.0
+		tool.set_normal(normal)
+		for p in [Vector3(a.x,a.y,thickness/2),Vector3(b.x,b.y,thickness/2),Vector3(b.x,b.y,-thickness/2),Vector3(a.x,a.y,thickness/2),Vector3(b.x,b.y,-thickness/2),Vector3(a.x,a.y,-thickness/2)]:
+			tool.add_vertex(Vector3(p.x,p.y-middle,p.z))
+	var mesh := MeshInstance3D.new()
+	mesh.mesh = tool.commit()
+	mesh.position.y = middle
+	# Extruded faces are wound by outline order; draw them from both sides.
+	if not materials.has(family+"/arch"):
+		var both: ShaderMaterial = material(family).duplicate()
+		both.set_shader_parameter("double_sided",true)
+		materials[family+"/arch"] = both
+	mesh.material_override = materials[family+"/arch"]
+	root.add_child(mesh)
+	# The top cap of the slab.
+	piece(root,Vector3(span,0.04,thickness),Vector3(0,height-0.02,0),family)
+	return root
