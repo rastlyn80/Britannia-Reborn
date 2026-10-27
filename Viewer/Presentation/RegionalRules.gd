@@ -29,6 +29,27 @@ const MODELS := [
  ["resource","ore|ingot|metal|iron|gem|rub%|amethyst|emerald|diamond|sapphire|citrine|tourmaline|amber|crystal|blackroc|pearl|blood|moss|reagent|nightshade|mandrake|ash|silk|batwing|feather|shell|conch|nautilus|jewel|necklace|bracelet|beads|ring$|earrings|coin|bones|skull|cannon balls|wood curls|stump|wood$|boards$|hay|wheat|woodworker|muck"],
  ["symbol","pentagram|alchemical|rune|humility|sacrifice|valor|compassion|spirituality|justice|honor|honesty|bell of courage|serpent crest|spiderweb|fire$|lava|icicle|snow$"]
 ]
+const Facade := preload("res://Presentation/Facade.gd")
+static var FLOOR := _regex("floor|tiles?$|^tile|paver|flagstone|cobble|slate tile|blacktile|blue tiles|^marble$|^sandstone$")
+static var LAVA := _regex("^(lava|acid|slime)( |$)|lava$")
+static var TROPICAL := _regex("blade plant|fan plant|elephant ear|snake plant|ponytail palm|agave|water plants|century plant|bamboo plant|small palm|banana|yucca")
+static var WATER_PLANT := _regex("lil+y ?pads?|water lil|water plant|seaweed|kelp|algae")
+
+static func _regex(pattern: String) -> RegEx:
+ var regex := RegEx.new()
+ regex.compile(pattern)
+ return regex
+
+static func roof_material(n: String) -> String:
+ if "thatch" in n: return "thatch"
+ if "palm" in n or "frond" in n or "leaf" in n or "reed" in n: return "palm"
+ if "tent" in n: return "tent"
+ if "marble" in n: return "marble"
+ if "stone" in n or "slate" in n and not "tile" in n: return "stone" if "stone" in n else "slate"
+ if "tile" in n or "ceramic" in n or "clay" in n: return "clay"
+ if "shingle" in n or "log" in n or "wood" in n: return "shingle"
+ return "slate"
+
 static func resolve(id: int,info: Dictionary) -> Dictionary:
  var n := str(info.get("name","")).strip_edges().to_lower()
  var height := int(info.get("height",0))
@@ -38,10 +59,16 @@ static func resolve(id: int,info: Dictionary) -> Dictionary:
  if n=="town_cryer": return base.merged({"kind":"prop","model":"newspaper","confidence":"local visual inspection: printed news sheet"})
  if id==13040: return base.merged({"kind":"asset","asset":"Nature/Rock_Medium_1.gltf","dimensions":[0.65,3.0,0.65],"confidence":"local visual inspection: tall crag fragment"})
  if id==7185: return base.merged({"kind":"prop","model":"gem","confidence":"local visual inspection: faceted blue ornament"})
+ var flags := int(info.get("flags",0))
  if n.is_empty():
   # Legacy rug components have empty tiledata labels; retain source modules.
   if id>=2787 and id<=2810: return base.merged({"kind":"carpet"})
   return {}
+ if "cloud" in n: return base.merged({"kind":"invisible","reason":"sky decoration above the play area"})
+ if "floor" in n and height<=2: return base.merged({"kind":"floor","surface":Facade.surface_for(n)})
+ if n in ["bricks","brick"]: return base.merged({"kind":"floor","surface":"brick"} if height<=2 else {"kind":"landing"})
+ if n=="waterfall": return base.merged({"kind":"waterfall"})
+ if "cactus" in n: return base.merged({"kind":"cactus"})
  # "wall torch", "wall sconce" and "wall map" name things hung on a wall.
  if n.begins_with("wall ") and n!="wall map": return base.merged({"kind":"prop","model":"wall_light" if "torch" in n or "sconce" in n else "painting","mount":"wall"})
  if "wall map" in n: return base.merged({"kind":"prop","model":"painting","mount":"wall"})
@@ -49,9 +76,18 @@ static func resolve(id: int,info: Dictionary) -> Dictionary:
   return base.merged({"kind":"window" if n in ["window","arrow loop"] else ("trim" if height<15 else "wall"),"asset":"Village/Wall_UnevenBrick_Straight.gltf" if "stone" in n or "brick" in n else "Village/Wall_Plaster_Straight.gltf"})
  if "arch" in n and n not in ["arcanist statue"]: return base.merged({"kind":"arch","asset":"Village/Wall_Arch.gltf"})
  if "stairs" in n or n in ["stone step","carpeted stair"]: return base.merged({"kind":"stairs","rise":[0,-1]})
- if n in ["stone","marble","platform"]: return base.merged({"kind":"landing"})
- if "roof" in n or "shingle" in n: return base.merged({"kind":"roof","material":"thatch" if "thatch" in n else ("stone" if "stone" in n else ("clay" if "tile" in n else ("shingle" if "shingle" in n else "slate"))),"rise":[0,0],"ridgeAxis":"x","profile":"flat" if height==0 else "slope","anchorOffset":[-1,-1]})
- if n in ["cobblestones","stone pavers","stone pavers dark","marble floor","flagstones","wooden planks","wooden plank","wooden boards","wooden bridge"]: return base.merged({"kind":"floor","surface":"wood" if "wood" in n else "stone"})
+ if n in ["stone","marble","platform","sandstone","eodon","white marble","gold stone","blue marble"]: return base.merged({"kind":"landing"})
+ if "ruin" in n and not "statue" in n: return base.merged({"kind":"trim" if height<15 else "wall","asset":"Village/Wall_UnevenBrick_Straight.gltf"})
+ if n=="wooden logs" and height<=3: return base.merged({"kind":"floor","surface":"wood"})
+ # Tiledata Roof flag covers frond, leaf and tent roofs whose names omit "roof".
+ if "roof" in n or "shingle" in n or (flags & 0x10000000 and not "leaves" in n and not "grass" in n): return base.merged({"kind":"roof","material":roof_material(n),"rise":[0,0],"ridgeAxis":"x","profile":"flat" if height==0 else "slope","anchorOffset":[-1,-1]})
+ if n in ["cobblestones","stone pavers","stone pavers dark","marble floor","flagstones","wooden planks","wooden plank","wooden boards","wooden bridge"] or (height<=2 and FLOOR.search(n)): return base.merged({"kind":"floor","surface":Facade.surface_for(n)})
+ # Only animated/damaging lava is molten; the rest is cooled black flow rock.
+ if LAVA.search(n):
+  if flags & 0x1000020: return base.merged({"kind":"lava","tint":"acid" if "acid" in n or "slime" in n else "lava"})
+  return base.merged({"kind":"floor","surface":"basalt"} if height<=2 else {"kind":"rock","asset":"Nature/Rock_Medium_3.gltf"})
+ if n in ["hover over","hoverover"]: return base.merged({"kind":"invisible","reason":"native movement helper"})
+ if n in ["swamp","water"]: return base.merged({"kind":"water"})
  # Raised flower beds are stone planters that flowers and trees stand on.
  if n.replace(" ","").begins_with("flowerbed"): return base.merged({"kind":"planter"})
  if "rug" in n or "carpet" in n: return base.merged({"kind":"carpet"})
@@ -60,23 +96,34 @@ static func resolve(id: int,info: Dictionary) -> Dictionary:
  if "table" in n or n in ["counter","bar"]: return base.merged({"kind":"counter" if n in ["counter","bar"] else "table"})
  if n=="bed" or n=="cot": return base.merged({"kind":"bed","asset":"Kenney/bedSingle.glb"})
  if n=="wooden fence": return base.merged({"kind":"fence","asset":"MedievalKit/Fence_2m.gltf"})
- if "fence" in n or "banister" in n: return base.merged({"kind":"fence","asset":"Village/Prop_WoodenFence_Single.gltf"})
+ if "fence" in n or "banister" in n: return base.merged({"kind":"fence","asset":"Village/Prop_MetalFence_Simple.gltf" if "iron" in n or "metal" in n else "Village/Prop_WoodenFence_Single.gltf"})
  if "signpost" in n: return base.merged({"kind":"sign"})
  if "column" in n or "pillar" in n or "buttress" in n or n=="stone post": return base.merged({"kind":"pillar"})
  if n in ["lamp post","lantern post"]: return base.merged({"kind":"asset","asset":"MedievalKit/Lantern_Post.gltf","dimensions":[0.6,2.7,0.3]})
  if "sack of flour" in n: return base.merged({"kind":"asset","asset":"MedievalKit/"+("Sack_Open" if "open" in n else "Sack")+".gltf","dimensions":[0.6,0.73,0.54]})
  if "post" in n or n=="wooden beam": return base.merged({"kind":"beam" if n=="wooden beam" else "post","asset":"Village/Prop_Support.gltf"})
  if n=="chimney": return base.merged({"kind":"chimney"})
- if "leaves" in n or "needles" in n: return base.merged({"kind":"canopy","asset":"Nature/CommonTree_1.gltf"})
+ # Height-0 "leaves" are fallen leaf litter on the ground, not a canopy.
+ if ("leaves" in n or "needles" in n) and height==0: return base.merged({"kind":"litter"})
+ if "palisade" in n: return base.merged({"kind":"palisade"})
+ if "leaves" in n or "needles" in n or "palm frond" in n and height>0: return base.merged({"kind":"canopy","asset":"Nature/CommonTree_1.gltf"})
+ if "fern" in n: return base.merged({"kind":"fern","asset":"Nature/Fern_1.gltf"})
+ if TROPICAL.search(n): return base.merged({"kind":"plant","asset":"Nature/Plant_1_Big.gltf"})
+ if "palm" in n or n in ["yew tree"]: return base.merged({"kind":"tree","asset":"Nature/Pine_1.gltf"})
  if "tree" in n or "sapling" in n or n=="tuscany pine": return base.merged({"kind":"tree","asset":"Nature/Pine_1.gltf" if "pine" in n else ("Nature/DeadTree_1.gltf" if "spider" in n else "Nature/CommonTree_1.gltf")})
  if "mushroom" in n: return base.merged({"kind":"mushroom","asset":"Nature/Mushroom_Common.gltf"})
  if "flower" in n or n in ["snowdrops","red poppies","rose of trinsic"]: return base.merged({"kind":"flower","asset":"Nature/Flower_4_Group.gltf"})
- if "grass" in n or n in ["weed","rushes","cattails"]: return base.merged({"kind":"grass","asset":"Nature/Grass_Common_Short.gltf"})
- if "bush" in n or n in ["hedge","vines","vanillaplantmedium s","vanillaplantlarge so"]: return base.merged({"kind":"bush","asset":"Nature/Bush_Common.gltf"})
- if n in ["rock","rocks","boulder"]: return base.merged({"kind":"rock","asset":"Nature/Rock_Medium_2.gltf"})
+ if n in ["cattails","bulrushes","reeds","wheat","flax"]: return base.merged({"kind":"reeds","asset":"Nature/Grass_Wispy_Tall.gltf"})
+ if "grass" in n or n in ["weed","rushes"]: return base.merged({"kind":"grass","asset":"Nature/Grass_Common_Short.gltf"})
+ if WATER_PLANT.search(n): return base.merged({"kind":"lilypad"})
+ if "vine" in n or "ivy" in n or "morning glor" in n: return base.merged({"kind":"vine","asset":"Village/Prop_Vine1.gltf"})
+ if "bush" in n or "hedge" in n or "shrub" in n or "cactus" in n or n in ["vanillaplantmedium s","vanillaplantlarge so"]: return base.merged({"kind":"bush","asset":"Nature/Bush_Common.gltf"})
+ if n in ["rock","rocks","boulder","stone","flowstone","rock formation"] or "boulder" in n: return base.merged({"kind":"rock","asset":"Nature/Rock_Medium_2.gltf" if height<8 else "Nature/Rock_Medium_1.gltf"})
+ if "stalag" in n: return base.merged({"kind":"stalagmite"})
+ if "crystal" in n: return base.merged({"kind":"crystal","scatter":"broken" in n or "shard" in n})
  # A stacked pile of split logs (CC0 MedievalKit woodpile), not a lone trunk.
  if n=="logs": return base.merged({"kind":"asset","asset":"MedievalKit/Woodpile.gltf","dimensions":[1.2,0.6,0.65]})
- if n in ["fallen log","fallen branch"]: return base.merged({"kind":"log","asset":"Village/Roof_Log.gltf"})
+ if n in ["fallen log","fallen branch","sunken log","wooden logs","log","stump"] or n.ends_with(" stump"): return base.merged({"kind":"log","asset":"Village/Roof_Log.gltf"})
  if n=="water": return base.merged({"kind":"water"})
  for model in MODELS:
   var regex := RegEx.new()

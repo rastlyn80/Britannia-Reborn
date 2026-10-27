@@ -23,7 +23,7 @@ $dotnet="$root/.tools/dotnet/dotnet.exe"
 & $dotnet build "$root/Converter" -c Release --configfile "$root/NuGet.Config" --nologo -v q
 if ($LASTEXITCODE) { throw 'Converter build failed' }
 $out="$root/outputs/item-catalog"
-& $dotnet "$root/Converter/bin/Release/net8.0/Converter.dll" item-catalog $DataDir $out "$root/Server/runtime/Data/Decoration" $britain "$root/Viewer/Presentation/reviewed-catalog.json"
+& $dotnet "$root/Converter/bin/Release/net8.0/Converter.dll" item-catalog $DataDir $out "$root/Server/runtime/Data/Decoration" $britain "$root/Viewer/Presentation/reviewed-catalog.json" "$root/Viewer/item-colors.local.json"
 if ($LASTEXITCODE) { throw 'Item catalogue extraction failed' }
 # Label what the client draws today for each graphic (kit, owner packs, code, nothing).
 $env:APPDATA=Join-Path $root '.godot-user';$env:LOCALAPPDATA=$env:APPDATA

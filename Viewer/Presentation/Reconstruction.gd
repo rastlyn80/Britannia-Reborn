@@ -23,7 +23,18 @@ var roof_families := {}
 # so plants placed at raw tile height float or sink on slopes and planters.
 var terrain_surface
 var ground_supports := {}
-const VEGETATION := ["tree","flower","grass","bush","mushroom","rock","log"]
+const VEGETATION := ["tree","flower","grass","bush","mushroom","rock","log","fern","plant","reeds","cactus","stalagmite","crystal"]
+var lava_materials := {}
+# Optional local average colours of original art (scripts/build-item-catalog.ps1);
+# graphics placed in Britain are excluded, so the reviewed city keeps its look.
+static var art_colors: Variant = null
+static func art_tint(id: int) -> String:
+	if art_colors == null:
+		art_colors = {}
+		if FileAccess.file_exists("res://item-colors.local.json"):
+			var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://item-colors.local.json"))
+			if parsed is Dictionary: art_colors = parsed
+	return str(art_colors.get(str(id),""))
 var water_material: ShaderMaterial
 var shoreline
 var show_boundary_fragments := false
@@ -338,7 +349,7 @@ func _plan_mounts(world: Dictionary) -> void:
 
 static func wall_family(world: Dictionary, id: int) -> String:
 	var name := str(info(world,id,true).get("name",""))
-	var family := "brick" if "brick wall" in name else ("wood" if "wooden wall" in name else ("stone" if "stone wall" in name else "plaster"))
+	var family := preload("res://Presentation/Facade.gd").family_for(name)
 	return str(preload("res://Presentation/ReviewedCatalog.gd").entry(id).get("facadeFamily",family))
 
 func _plan_roof_families(world: Dictionary) -> void:
@@ -541,18 +552,29 @@ func tint_prop(node: Node3D, palette: String) -> void:
 			prop_mesh_variants[key]=variant
 		mesh.mesh=prop_mesh_variants[key]
 
-func roof_material(kind: String) -> ShaderMaterial:
-	if not roof_materials.has(kind):
+# Britain keeps its reviewed stone-or-timber steps; regional graphics (with an
+# original colour) use their named material in that colour.
+static func stair_surface(name: String, tint: String) -> String:
+	if tint.is_empty(): return "stone" if "stone" in name else "wood"
+	var surface := preload("res://Presentation/Facade.gd").surface_for(name)
+	return surface+"#"+tint
+
+# "material#rrggbb" keys tint a roof material with a graphic's original colour.
+func roof_material(key: String) -> ShaderMaterial:
+	if not roof_materials.has(key):
+		var kind := key.get_slice("#",0)
 		var mat := ShaderMaterial.new()
 		mat.shader = preload("res://Presentation/Roof.gdshader")
-		mat.set_shader_parameter("roof_color",Color("99988c") if kind == "stone" else Color("586573") if kind == "slate" else (Color("a06345") if kind == "clay" else (Color("b09355") if kind == "thatch" else Color("796344"))))
+		# palm: dried frond thatch; tent: canvas; marble: pale dressed stone.
+		var colors := {"stone":"99988c","slate":"586573","clay":"a06345","thatch":"b09355","palm":"8f8a55","tent":"cfc2a2","marble":"d8d3c8","shingle":"796344"}
+		mat.set_shader_parameter("roof_color",Color(key.get_slice("#",1)) if "#" in key else Color(str(colors.get(kind,"796344"))))
 		mat.set_shader_parameter("wood",kind == "shingle")
-		mat.set_shader_parameter("thatch",kind == "thatch")
+		mat.set_shader_parameter("thatch",kind in ["thatch","palm"])
 		mat.set_shader_parameter("ceiling_color",Color("917454"))
 		mat.set_shader_parameter("kit_texture",load("res://Art/Quaternius/Village/T_WoodTrim_BaseColor.png"))
-		preload("res://Presentation/SurfaceLibrary.gd").bind(mat,"surface","brown_planks_03" if kind == "shingle" else ("rock_wall_04" if kind == "stone" else "grey_roof_tiles_02"))
-		roof_materials[kind] = mat
-	return roof_materials[kind]
+		preload("res://Presentation/SurfaceLibrary.gd").bind(mat,"surface","brown_planks_03" if kind == "shingle" else ("rock_wall_04" if kind in ["stone","marble"] else ("plastered_wall_02" if kind == "tent" else "grey_roof_tiles_02")))
+		roof_materials[key] = mat
+	return roof_materials[key]
 
 func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 	var rule := rule_for(s.id)
@@ -563,7 +585,8 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 	var height := maxf(0.04,float(detail.get("height",0))*float(world.elevationScale))
 	height += maxf(float(facade.plans.get(ordinal,{}).get("height_extension",0.0)),float(facade.cap_extensions.get(ordinal,0.0)))
 	var asset := str(rule.get("asset",""))
-	var family := "brick" if "brick wall" in str(detail.get("name","")) else "wood" if "wooden wall" in str(detail.get("name","")) else ("stone" if "stone wall" in str(detail.get("name","")) else "plaster")
+	var family := preload("res://Presentation/Facade.gd").family_for(str(detail.get("name","")))
+	var tint := art_tint(int(s.id)) if rule.get("regional",false) else ""
 	# Generic tiledata names ("window", "arrow loop") hide the material their
 	# art shows; reviewed per-graphic facts and bridge context take precedence.
 	var review: Dictionary = preload("res://Presentation/ReviewedCatalog.gd").entry(int(s.id))
@@ -573,6 +596,11 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 	if not bridge.is_empty():
 		family = str(review.get("facadeFamily",bridge.family))
 		if opening.is_empty(): opening = str(bridge.opening)
+	if not tint.is_empty() and kind in ["wall","window","corner","trim","arch"]:
+		# Outside Britain, unnamed walls are plain masonry or render in their own
+		# colour; close-studded timber framing is Britain's reviewed house style.
+		if family == "plaster": family = "clay" if "plaster" in str(detail.get("name","")) else "stone"
+		if family in preload("res://Presentation/Facade.gd").TINTED: family += "#"+tint
 	var visual: Node3D
 	var state := "replacement"
 	if groups.has(ordinal) and groups[ordinal].owner != ordinal:
@@ -612,7 +640,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					visual.position.y = (group.min_z-float(s.z))*float(world.elevationScale)
 					if rule.get("axis") == "y": visual.rotation.y = PI/2
 				"trim", "beam":
-					if kind == "trim" and (not bridge.is_empty() or family in ["stone","brick"]):
+					if kind == "trim" and (not bridge.is_empty() or family.get_slice("#",0) in preload("res://Presentation/Facade.gd").MASONRY):
 						# Masonry parapets and merlons: solid dressed stone (or
 						# brick) with a projecting coping, not a plaster/timber kit wall.
 						visual = Node3D.new()
@@ -630,9 +658,12 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					visual.add_child(fitted(asset,Vector3(span,opening_height,0.2)))
 					# Masonry over the opening matches the arch's own material.
 					var arch_name := str(detail.get("name",""))
-					var arch_family := "stone" if "stone" in arch_name else ("brick" if "brick" in arch_name else ("wood" if "wood" in arch_name else family))
+					var arch_family := family if preload("res://Presentation/Facade.gd").family_for(arch_name) == "plaster" else preload("res://Presentation/Facade.gd").family_for(arch_name)
 					if height > opening_height: facade.piece(visual,Vector3(span,height-opening_height,0.18),Vector3(0,(height+opening_height)/2,0),arch_family)
-				"floor": visual = floors.slab(ordinal,facade.material("stone") if rule.get("surface","")=="stone" else floors.material())
+				"floor":
+					var surface := str(rule.get("surface","wood"))
+					if surface == "": surface = "wood"
+					visual = floors.slab(ordinal,floors.material() if surface == "wood" and tint.is_empty() else facade.material(surface+("#"+tint if not tint.is_empty() else "")))
 				"asset": visual = fitted(asset,Vector3(rule.dimensions[0],rule.dimensions[1],rule.dimensions[2]))
 				"prop": visual = preload("res://Presentation/CityProps.gd").build(str(rule.model),s,detail,geometry)
 				"invisible": state="source-nodraw"
@@ -640,7 +671,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					visual = Node3D.new()
 					# Bridge tiledata heights describe the art bounds; support is halfway up.
 					if int(detail.get("flags",0)) & 0x400: height *= 0.5
-					var stair_material := facade.material("stone" if "stone" in str(detail.get("name","")) else "wood")
+					var stair_material := facade.material(stair_surface(str(detail.get("name","")),tint))
 					var support := geometry.box(visual,Vector3(1,height,1),Vector3(0,height/2,0),"ffffff")
 					support.material_override = stair_material
 					var deck := floors.slab("landing",stair_material)
@@ -648,9 +679,9 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					visual.add_child(deck)
 				"stairs":
 					visual = geometry.stairs(height,floors.stair_rise.get(ordinal,Vector2(rule.rise[0],rule.rise[1])))
-					for step in visual.get_children(): step.material_override = facade.material("stone" if "stone" in str(detail.get("name","")) else "wood")
+					for step in visual.get_children(): step.material_override = facade.material(stair_surface(str(detail.get("name","")),tint))
 				"roof":
-					visual = geometry.roof(s,rule,roof_material(rule.material),roofs.tiles.get(ordinal,{}),gable_for(str(roof_families.get(ordinal,"plaster"))))
+					visual = geometry.roof(s,rule,roof_material(str(rule.material)+("#"+tint if not tint.is_empty() and rule.material in ["clay","stone","slate","marble","tent"] else "")),roofs.tiles.get(ordinal,{}),gable_for(str(roof_families.get(ordinal,"plaster"))))
 				"door":
 					visual = fitted(asset,Vector3(0.86,height,0.12))
 					for side in [-1,1]: facade.piece(visual,Vector3(0.08,height,0.2),Vector3(side*0.46,height/2,0),"wood")
@@ -669,6 +700,10 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 						if size.y > size.x: size.x = 0.5
 						else: size.y = 0.5
 					visual = geometry.furniture(size,kind)
+					# Stone and marble tables keep their material, not timber.
+					var table_surface := preload("res://Presentation/Facade.gd").surface_for(str(detail.get("name","")))
+					if not tint.is_empty() and table_surface != "wood" and ("stone" in str(detail.get("name","")) or "marble" in str(detail.get("name",""))):
+						for mesh in visual.find_children("*","MeshInstance3D",true,false): mesh.material_override = facade.material(table_surface)
 				"sign": visual = geometry.sign()
 				"painting": visual = geometry.painting()
 				"tree", "canopy":
@@ -692,6 +727,36 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					var soil := geometry.box(visual,Vector3(0.9,0.04,0.9),Vector3(0,height-0.01,0),"3b2c20")
 					soil.material_override = geometry.material("3b2c20")
 				"bush": visual = plant(kind,s,detail,asset,Vector3(1.1,0.65,1.1))
+				"fern": visual = plant(kind,s,detail,asset,Vector3(0.9,0.6,0.9))
+				"reeds": visual = fitted(asset,Vector3(0.8,1.25,0.8))
+				"cactus": visual = geometry.cactus(s,maxf(0.7,minf(height,2.4)))
+				"litter": visual = geometry.litter(s,tint if not tint.is_empty() else "7a5a2e")
+				"palisade": visual = geometry.palisade(s,maxf(1.6,height),facade.material("log"))
+				"waterfall":
+					# A falling sheet across the cell diagonal, facing the classic viewpoint.
+					var sheet := QuadMesh.new()
+					sheet.size = Vector2(1.3,maxf(1.0,height))
+					visual = MeshInstance3D.new()
+					visual.mesh = sheet
+					visual.position.y = maxf(1.0,height)/2
+					visual.rotation.y = PI/4
+					var fall := ShaderMaterial.new()
+					fall.shader = preload("res://Presentation/Waterfall.gdshader")
+					visual.material_override = fall
+				"plant": visual = plant(kind,s,detail,asset,Vector3(1.0,maxf(0.8,minf(height,2.2)),1.0))
+				"lilypad": visual = geometry.lilypads(s)
+				"vine":
+					# Creepers hang on the wall face they share a cell with.
+					visual = fitted(asset,Vector3(1.0,maxf(1.6,height),0.35))
+					visual.position.z = -0.42
+				"stalagmite": visual = geometry.stalagmites(s,maxf(0.6,height))
+				"crystal": visual = geometry.crystals(s,maxf(0.4,height),bool(rule.get("scatter",false)),tint)
+				"lava":
+					var plane := PlaneMesh.new()
+					plane.size = Vector2.ONE
+					visual = MeshInstance3D.new()
+					visual.mesh = plane
+					visual.material_override = lava_surface(str(rule.get("tint","lava")))
 				"chimney": visual = chimney_stack(s,groups.get(ordinal,{}),world)
 				"mushroom": visual = fitted(asset,Vector3(0.32,0.22,0.32))
 				"rock": visual = fitted(asset,Vector3(0.55,0.38,0.55))
@@ -738,7 +803,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 	node.set_meta("source_xyz",Vector3i(s.x,s.y,s.z))
 	node.set_meta("source_ordinal",ordinal)
 	node.set_meta("kind",kind)
-	node.set_meta("solid",kind in ["wall","window","corner","post","trim","gable","beam","arch","floor","landing","stairs","roof","door","fence","bed","table","bench","counter","rock","log","planter"] and state not in ["group-component","boundary-fragment","context-suppressed"])
+	node.set_meta("solid",kind in ["wall","window","corner","post","trim","gable","beam","arch","floor","landing","stairs","roof","door","fence","bed","table","bench","counter","rock","log","planter","stalagmite","crystal","palisade"] and state not in ["group-component","boundary-fragment","context-suppressed"])
 	node.position = Vector3(s.x-int(world.originX)+0.5,s.z*float(world.elevationScale),s.y-int(world.originY)+0.5)
 	if facade.plans.has(ordinal): node.set_meta("facade_run",facade.plans[ordinal].run)
 	var entry := {"ordinal":ordinal,"id":s.id,"xyz":[s.x,s.y,s.z],"status":state,"kind":kind,"asset":asset,"axis":rule.get("axis","x"),"confidence":rule.get("confidence","semantic")}
@@ -758,6 +823,18 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 	if not bridge.is_empty(): entry.bridge_context = bridge.reason
 	report.append(entry)
 	return node
+
+func lava_surface(tint: String) -> ShaderMaterial:
+	if not lava_materials.has(tint):
+		var material := ShaderMaterial.new()
+		material.shader = preload("res://Presentation/Lava.gdshader")
+		material.set_shader_parameter("source_origin",source_origin)
+		if tint == "acid":
+			material.set_shader_parameter("hot",Color("8fe03a"))
+			material.set_shader_parameter("crust",Color("1d2a12"))
+			material.set_shader_parameter("glow",1.6)
+		lava_materials[tint] = material
+	return lava_materials[tint]
 
 func water_surface() -> ShaderMaterial:
 	if water_material == null:

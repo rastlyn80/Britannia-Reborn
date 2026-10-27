@@ -149,20 +149,71 @@ func finish_run(cells: Array) -> void:
 	for i in cells.size():
 		plans[cells[i].ordinal] = {"run":runs,"length":cells.size(),"offset":i,"left_post":i == 0 or i % 3 == 0,"right_post":i == cells.size()-1}
 
-func material(kind: String) -> ShaderMaterial:
-	if not materials.has(kind):
+# Families beyond plaster/wood/stone/brick: [surface set, palette, shading].
+const FAMILIES := {
+	"sandstone":["medieval_blocks_03","d0b088","masonry"],
+	"marble":["medieval_blocks_03","e6e2da","masonry"],
+	"dungeon":["rock_wall_04","7a776d","masonry"],
+	"cave":["rock_face_03","80725f","masonry"],
+	"log":["brown_planks_03","6b5139","wood"],
+	"clay":["plastered_wall_02","c6a079","plaster"],
+	"cloth":["plastered_wall_02","dccfb4","plaster"],
+	"hide":["plastered_wall_02","9a7856","plaster"],
+	"basalt":["rock_face_03","3f3a36","masonry"],
+}
+const MASONRY := ["stone","brick","sandstone","marble","dungeon","cave","basalt"]
+# Families whose regional graphics take their original average colour.
+const TINTED := ["brick","wood","stone","sandstone","marble","dungeon","cave","clay","basalt","cloth","hide"]
+
+# Wall material family from a tiledata name ("sandstone wall", "log wall"...).
+static func family_for(name: String) -> String:
+	var n := name.to_lower()
+	if "brick" in n: return "brick"
+	if "sandstone" in n: return "sandstone"
+	if "marble" in n: return "marble"
+	if "dungeon" in n: return "dungeon"
+	if "cave" in n or "rock wall" in n: return "cave"
+	if "log wall" in n or "palisade" in n or "bamboo" in n or "rattan" in n: return "log"
+	if "clay" in n or "adobe" in n: return "clay"
+	if "tent" in n: return "cloth"
+	if "hide" in n: return "hide"
+	if "wooden wall" in n or "boardbatten" in n or "plank wall" in n: return "wood"
+	if "stone" in n or "ruin" in n or "gothic" in n or "castle" in n or "fortress" in n: return "stone"
+	return "plaster"
+
+# Solid material for floors, stairs and landings: wood unless the name says stone.
+static func surface_for(name: String) -> String:
+	var n := name.to_lower()
+	if "wood" in n or "plank" in n or "board" in n: return "wood"
+	var family := family_for(n)
+	return "stone" if family == "plaster" else family
+
+# "family#rrggbb" keys tint a family with a graphic's original colour.
+func material(key: String) -> ShaderMaterial:
+	if not materials.has(key):
+		var kind := key.get_slice("#",0)
 		var m := ShaderMaterial.new()
 		m.shader = preload("res://Presentation/Facade.gdshader")
-		var family := "WoodTrim" if kind in ["wood","oak"] else ("UnevenBrick" if kind == "brick" else ("RockTrim" if kind == "stone" else "Plaster"))
+		var extra: Array = FAMILIES.get(kind,[])
+		var family := "WoodTrim" if kind in ["wood","oak"] or (not extra.is_empty() and extra[2] == "wood") else ("UnevenBrick" if kind == "brick" else ("RockTrim" if kind in MASONRY else "Plaster"))
 		m.set_shader_parameter("source_texture",load("res://Art/Quaternius/Village/T_"+family+"_BaseColor.png"))
 		m.set_shader_parameter("surface_normal",load("res://Art/Quaternius/Village/T_"+family+"_Normal.png"))
+		if not extra.is_empty():
+			m.set_shader_parameter("palette",Color(str(extra[1])))
+			m.set_shader_parameter("wood",extra[2] == "wood")
+			m.set_shader_parameter("masonry",extra[2] == "masonry")
+			preload("res://Presentation/SurfaceLibrary.gd").bind(m,"surface",str(extra[0]))
+			if "#" in key: m.set_shader_parameter("palette",Color(key.get_slice("#",1)).lightened(0.15))
+			materials[key] = m
+			return m
 		# "oak" is the near-black weathered framing of close-studded houses.
 		m.set_shader_parameter("palette",Color("5e4631") if kind == "wood" else (Color("2f2722") if kind == "oak" else (Color("aaa79c") if kind == "stone" else (Color("ad9276") if kind == "brick" else Color("f1ede4")))))
 		m.set_shader_parameter("wood",kind in ["wood","oak"])
 		m.set_shader_parameter("masonry",kind in ["stone","brick"])
 		preload("res://Presentation/SurfaceLibrary.gd").bind(m,"surface","mk_oak_dark" if kind == "oak" else ("brown_planks_03" if kind == "wood" else (("medieval_blocks_03" if kind=="stone" else "medieval_red_brick") if kind in ["stone","brick"] else "mk_limewash")))
-		materials[kind] = m
-	return materials[kind]
+		if "#" in key: m.set_shader_parameter("palette",Color(key.get_slice("#",1)).lightened(0.15))
+		materials[key] = m
+	return materials[key]
 
 func piece(parent: Node3D, size: Vector3, at: Vector3, kind: String) -> void:
 	if size.y <= 0.001: return

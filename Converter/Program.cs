@@ -18,7 +18,7 @@ static partial class Program {
    if(args[0]=="test") { Tests(args[1]); return; }
    if(args[0]=="reference") { ArtReference.Export(args[1],args[2],args[3]); return; }
    if(args[0]=="item-art") { ArtReference.Export(args[1],"",args[2],args[3].Split(',').Select(int.Parse).ToArray()); return; }
-   if(args[0]=="item-catalog") { ItemCatalog.Export(args[1],args[2],args[3],args[4].Split(',').Select(int.Parse).ToArray(),args[5]); return; }
+   if(args[0]=="item-catalog") { ItemCatalog.Export(args[1],args[2],args[3],args[4].Split(',').Select(int.Parse).ToArray(),args[5],args.Length>6?args[6]:null); return; }
    if(args[0]=="gump-art") { GumpArt.Export(args[1],args[2],args[3].Split(',').Select(int.Parse).ToArray()); return; }
    if(args[0]!="convert" || args.Length<3) throw new ArgumentException("convert DIR OUT [x y width height mapHeight]");
    int[] p={1408,1664,48,48,4096}; for(int i=3;i<args.Length;i++) p[i-3]=int.Parse(args[i]);

@@ -11,10 +11,10 @@ static class ItemCatalog {
  static readonly (int facet,string name,int height)[] Facets={(1,"Trammel",4096),(0,"Felucca",4096),(2,"Ilshenar",1600),(3,"Malas",2048),(4,"Tokuno",1448),(5,"TerMur",4096)};
  static readonly string[] FlagNames={"background","weapon","transparent","translucent","wall","damaging","impassable","wet","unknown","surface","bridge","stackable","window","noshoot","article-a","article-an","article-the","foliage","partial-hue","no-house","map","container","wearable","light","animated","hover","no-diagonal","armor","roof","door","stair-back","stair-right"};
  static readonly Dictionary<int,string> Layers=new(){{1,"one hand"},{2,"two hands / shield"},{3,"shoes"},{4,"pants"},{5,"shirt"},{6,"helm"},{7,"gloves"},{8,"ring"},{9,"talisman"},{10,"neck"},{11,"hair"},{12,"waist"},{13,"inner torso"},{14,"bracelet"},{16,"beard"},{17,"middle torso"},{18,"earrings"},{19,"arms"},{20,"cloak"},{21,"backpack"},{22,"outer torso"},{23,"outer legs"},{24,"inner legs"},{25,"mount"}};
- record Entry(int id,string name,ulong flags,int height,int weight,int layer,int anim,int width,int artHeight);
+ record Entry(int id,string name,ulong flags,int height,int weight,int layer,int anim,int width,int artHeight,string? color=null);
  sealed class Usage {public long world,felucca,britain,decoration;public Dictionary<string,long> facets=new();public string? example;}
 
- public static void Export(string dir,string output,string decoration,int[] britain,string reviewed) {
+ public static void Export(string dir,string output,string decoration,int[] britain,string reviewed,string? colors=null) {
   output=Path.GetFullPath(output);string art=Path.Combine(output,"art");Directory.CreateDirectory(art);
   var usage=new Dictionary<int,Usage>();Usage Use(int id)=>usage.TryGetValue(id,out var u)?u:usage[id]=new Usage();
   foreach(var (facet,name,height) in Facets) {
@@ -48,7 +48,7 @@ static class ItemCatalog {
    var image=arts.Decode(id+0x4000);var info=Read(tiles,id);
    if(image==null&&!usage.ContainsKey(id))continue;
    if(image!=null)Png.Write(Path.Combine(art,$"{id}.png"),image.Value.width,image.Value.height,image.Value.rgba);
-   entries.Add(info with{width=image?.width??0,artHeight=image?.height??0});
+   entries.Add(info with{width=image?.width??0,artHeight=image?.height??0,color=image==null?null:Average(image.Value.rgba)});
   }
   // Families: same name and category, members within a few IDs of the previous one.
   var family=new Dictionary<int,string>();var families=new Dictionary<string,List<int>>();var open=new Dictionary<string,(string key,int last)>();
@@ -60,7 +60,7 @@ static class ItemCatalog {
   var items=entries.Select(e=>{var u=usage.GetValueOrDefault(e.id)??new Usage();return new{
    e.id,hex=$"0x{e.id:X4}",name=Label(e.name),category=Category(e),family=family[e.id],flags=Flags(e.flags),e.height,e.weight,
    layer=(e.flags&0x400000)!=0?Layers.GetValueOrDefault(e.layer,$"layer {e.layer}"):null,anim=(e.flags&0x400000)!=0?e.anim:0,
-   art=e.width>0?new[]{e.width,e.artHeight}:null,u.world,u.felucca,u.britain,u.decoration,u.facets,u.example,model=models.GetValueOrDefault(e.id)};}).ToList();
+   art=e.width>0?new[]{e.width,e.artHeight}:null,e.color,u.world,u.felucca,u.britain,u.decoration,u.facets,u.example,model=models.GetValueOrDefault(e.id)};}).ToList();
   var byId=items.ToDictionary(i=>i.id);
   var familyList=families.Select(f=>{var members=f.Value.Select(id=>byId[id]).ToList();return new{
    key=f.Key,name=members[0].name,category=members[0].category,ids=f.Value,world=members.Sum(i=>i.world),britain=members.Sum(i=>i.britain),
@@ -68,9 +68,18 @@ static class ItemCatalog {
   var catalog=new{schema=1,notice="LOCAL REFERENCE ONLY: original Ultima Online artwork and names. Never commit or redistribute.",
    generated=DateTime.UtcNow.ToString("u"),britain,items=items.OrderByDescending(i=>i.world).ThenBy(i=>i.id),families=familyList};
   File.WriteAllText(Path.Combine(output,"catalog.js"),"window.CATALOG="+JsonSerializer.Serialize(catalog)+";");
+  // Average art colours for graphics never placed in Britain: the client tints
+  // regional floors, roofs and masonry with them. Local only (derived from art).
+  if(colors!=null) File.WriteAllText(colors,JsonSerializer.Serialize(entries.Where(e=>e.color!=null&&usage.GetValueOrDefault(e.id)?.britain is null or 0).ToDictionary(e=>e.id.ToString(),e=>e.color)));
   Console.WriteLine($"LOCAL REFERENCE ONLY: {items.Count:N0} items ({items.Count(i=>i.art!=null):N0} with art, {items.Count(i=>i.world>0):N0} placed) in {familyList.Count:N0} families -> {output}");
  }
 
+ // Mean colour of opaque pixels, ignoring near-black outline pixels.
+ static string? Average(byte[] rgba) {
+  long r=0,g=0,b=0,n=0;
+  for(int p=0;p<rgba.Length;p+=4){if(rgba[p+3]==0||rgba[p]+rgba[p+1]+rgba[p+2]<40)continue;r+=rgba[p];g+=rgba[p+1];b+=rgba[p+2];n++;}
+  return n==0?null:$"{r/n:x2}{g/n:x2}{b/n:x2}";
+ }
  static string Label(string name)=>string.IsNullOrWhiteSpace(name)?"unnamed":Regex.Replace(name.Trim().ToLowerInvariant(),@"\s+"," ");
  static string Slug(string label)=>Regex.Replace(label,@"[^a-z0-9]+","_").Trim('_') is var s&&s.Length>0?s:"unnamed";
  static List<string> Flags(ulong flags)=>Enumerable.Range(0,FlagNames.Length).Where(b=>(flags&(1UL<<b))!=0).Select(b=>FlagNames[b]).ToList();

@@ -276,3 +276,110 @@ func _face(surface: SurfaceTool, points: Array[Vector3], normal: Vector3) -> voi
 	for index in indices:
 		surface.set_normal(normal)
 		surface.add_vertex(points[index])
+
+# Stable pseudo-random value in [0,1) per source cell and salt.
+func _hash(s: Dictionary, salt: int) -> float:
+	return float(absi(int(s.x)*73856093^int(s.y)*19349663^salt*83492791)%1000)/1000.0
+
+# Floating pads: a few flat discs with a notch-free rim, varied per cell.
+func lilypads(s: Dictionary) -> Node3D:
+	var root := Node3D.new()
+	for i in 3:
+		var pad := cylinder(root,0.12+0.08*_hash(s,i),0.012,Vector3(_hash(s,i+7)-0.5,0.02,_hash(s,i+13)-0.5)*0.7,"3f6a2c" if i != 1 else "557a33")
+		pad.rotation.y = _hash(s,i+21)*TAU
+	if _hash(s,40) > 0.6: cylinder(root,0.035,0.05,Vector3(0.1,0.045,-0.08),"e9d6e6")
+	return root
+
+# Tapering rock cones for cave stalagmites (and flowstone columns).
+func stalagmites(s: Dictionary, height: float) -> Node3D:
+	var root := Node3D.new()
+	for i in 3:
+		var tall := height*(1.0 if i == 0 else 0.35+0.4*_hash(s,i))
+		var cone := MeshInstance3D.new()
+		var shape := CylinderMesh.new()
+		shape.top_radius = 0.02
+		shape.bottom_radius = 0.12+0.1*_hash(s,i+3)
+		shape.height = tall
+		shape.radial_segments = 7
+		cone.mesh = shape
+		cone.position = Vector3((_hash(s,i+5)-0.5)*0.5*float(i > 0),tall/2,(_hash(s,i+9)-0.5)*0.5*float(i > 0))
+		cone.material_override = material("7d7264")
+		root.add_child(cone)
+	return root
+
+# Clusters of hexagonal crystal prisms that glow faintly.
+# Scattered: broken shards lying on the ground. Colour from the original art
+# when known, else pale blue or violet.
+func crystals(s: Dictionary, height: float, scattered := false, color := "") -> Node3D:
+	var root := Node3D.new()
+	var tint := Color(color).lightened(0.2) if not color.is_empty() else (Color("8fc6ff") if _hash(s,1) < 0.6 else Color("c79bff"))
+	if not materials.has("crystal"+tint.to_html()):
+		var glass := StandardMaterial3D.new()
+		glass.albedo_color = Color(tint,0.82)
+		glass.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		glass.roughness = 0.15
+		glass.metallic_specular = 0.9
+		glass.emission_enabled = true
+		glass.emission = tint
+		glass.emission_energy_multiplier = 0.6
+		materials["crystal"+tint.to_html()] = glass
+	for i in (9 if scattered else 5):
+		var tall := minf(height,1.2)*(0.45+0.55*_hash(s,i+2))
+		if scattered: tall = 0.08+0.08*_hash(s,i+2)
+		var prism := MeshInstance3D.new()
+		var shape := CylinderMesh.new()
+		shape.top_radius = 0.015
+		shape.bottom_radius = 0.05+0.04*_hash(s,i+4)
+		shape.height = tall
+		shape.radial_segments = 6
+		shape.rings = 1
+		prism.mesh = shape
+		prism.position = Vector3((_hash(s,i+6)-0.5)*(0.8 if scattered else 0.4),0.03 if scattered else tall*0.45,(_hash(s,i+8)-0.5)*(0.8 if scattered else 0.4))
+		prism.rotation = Vector3(PI/2,_hash(s,i+10)*TAU,0) if scattered else Vector3((_hash(s,i+10)-0.5)*0.7,0,(_hash(s,i+12)-0.5)*0.7)
+		prism.material_override = materials["crystal"+tint.to_html()]
+		root.add_child(prism)
+	return root
+
+# Columnar cactus: a ribbed trunk with one or two upturned arms.
+func cactus(s: Dictionary, height: float) -> Node3D:
+	var root := Node3D.new()
+	var green := "5d7a3a"
+	cylinder(root,0.13,height,Vector3(0,height/2,0),green)
+	cylinder(root,0.12,0.02,Vector3(0,height,0),"6f8c48")
+	for side in ([-1,1] if _hash(s,3) > 0.4 else [1]):
+		var at := height*(0.35+0.2*_hash(s,side+5))
+		var reach := 0.22+0.06*_hash(s,side+9)
+		var arm := cylinder(root,0.08,reach,Vector3(side*(0.13+reach/2),at,0),green)
+		arm.rotation.z = PI/2
+		var up := height*(0.25+0.15*_hash(s,side+11))
+		cylinder(root,0.08,up,Vector3(side*(0.13+reach),at+up/2,0),green)
+	root.rotation.y = _hash(s,17)*TAU
+	return root
+
+# Fallen leaf litter: small flat flakes scattered over the cell.
+func litter(s: Dictionary, color: String) -> Node3D:
+	var root := Node3D.new()
+	for i in 10:
+		var flake := box(root,Vector3(0.09,0.006,0.06),Vector3((_hash(s,i)-0.5)*0.9,0.004,(_hash(s,i+20)-0.5)*0.9),color)
+		flake.rotation.y = _hash(s,i+40)*TAU
+	return root
+
+# Palisade: a row of sharpened stakes along the cell's x axis.
+func palisade(s: Dictionary, height: float, wood: Material) -> Node3D:
+	var root := Node3D.new()
+	for i in 4:
+		var x := -0.375+i*0.25
+		var tall := height*(0.92+0.08*_hash(s,i))
+		var stake := cylinder(root,0.12,tall-0.25,Vector3(x,(tall-0.25)/2,0),"6b5139")
+		stake.material_override = wood
+		var tip := MeshInstance3D.new()
+		var cone := CylinderMesh.new()
+		cone.top_radius = 0.0
+		cone.bottom_radius = 0.12
+		cone.height = 0.25
+		cone.radial_segments = 8
+		tip.mesh = cone
+		tip.position = Vector3(x,tall-0.125,0)
+		tip.material_override = wood
+		root.add_child(tip)
+	return root

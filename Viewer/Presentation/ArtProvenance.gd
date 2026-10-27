@@ -12,8 +12,8 @@ const LocalTrees := preload("res://Presentation/LocalTrees.gd")
 const LocalProps := preload("res://Presentation/LocalProps.gd")
 const Appearance := preload("res://Presentation/ItemAppearance.gd")
 # Kinds Reconstruction builds from code (with kit/Poly Haven materials).
-const BUILT := ["wall","window","corner","trim","beam","gable","pillar","floor","landing","stairs","roof","carpet","table","bench","counter","sign","painting","planter","chimney","water","door"]
-const FITTED := ["asset","post","fence","bed","mushroom","rock","log","canopy","arch"]
+const BUILT := ["litter","palisade","waterfall","cactus","lava","lilypad","stalagmite","crystal","wall","window","corner","trim","beam","gable","pillar","floor","landing","stairs","roof","carpet","table","bench","counter","sign","painting","planter","chimney","water","door"]
+const FITTED := ["reeds","vine","asset","post","fence","bed","mushroom","rock","log","canopy","arch"]
 
 func _initialize() -> void:
 	var args := {}
@@ -30,12 +30,16 @@ func _initialize() -> void:
 	var servers: Dictionary = {}
 	if FileAccess.file_exists("res://item-definitions.local.json"):
 		servers = JSON.parse_string(FileAccess.get_file_as_string("res://item-definitions.local.json"))
+	var approved := {}
+	if FileAccess.file_exists("res://Presentation/reviewed-families.json"):
+		for entry in JSON.parse_string(FileAccess.get_file_as_string("res://Presentation/reviewed-families.json")).approved:
+			for id in entry.ids: approved[int(id)] = true
 	var result := {}
 	var counts := {}
 	for item in catalog.items:
 		var id := int(item.id)
 		var look := look_for(id,item,audited.get(str(id),{}),servers.get(str(id),{}))
-		var checked: bool = audited.has(str(id)) or servers.has(str(id)) or int(item.britain) > 0 or not Reviewed.entry(id).is_empty()
+		var checked: bool = audited.has(str(id)) or servers.has(str(id)) or int(item.britain) > 0 or not Reviewed.entry(id).is_empty() or approved.has(id)
 		if look.status in ["kit","owner","built"] and not checked:
 			look = {"status":"guess","detail":"untested guess: "+str(look.detail)}
 		result[str(id)] = look
@@ -45,6 +49,15 @@ func _initialize() -> void:
 	file.close()
 	print("CURRENT LOOKS: ",counts)
 	quit(0)
+
+# Tiledata flag names (catalogue order) back to their bit values.
+const FLAG_NAMES := ["background","weapon","transparent","translucent","wall","damaging","impassable","wet","unknown","surface","bridge","stackable","window","noshoot","article-a","article-an","article-the","foliage","partial-hue","no-house","map","container","wearable","light","animated","hover","no-diagonal","armor","roof","door","stair-back","stair-right"]
+static func flag_bits(names: Array) -> int:
+	var bits := 0
+	for name in names:
+		var at := FLAG_NAMES.find(name)
+		if at >= 0: bits |= 1 << at
+	return bits
 
 static func pack(asset: String) -> Dictionary:
 	if asset.begins_with("procedural:") or asset.is_empty(): return {"status":"built","detail":"built in code"}
@@ -67,7 +80,7 @@ func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -
 		if family in ["crate","barrel"] and not LocalProps.items().is_empty(): return {"status":"owner","detail":"Dexsoft %s (your pack, local)" % family}
 		if family == "lamp": return {"status":"kit","detail":"Medieval kit (CC0): lantern post, or built in code"}
 		return {"status":"built","detail":"built in code: "+Appearance.variant(id,server)}
-	var rule: Dictionary = audited if not audited.is_empty() else Rules.resolve(id,{"name":name,"height":item.height})
+	var rule: Dictionary = audited if not audited.is_empty() else Rules.resolve(id,{"name":name,"height":item.height,"flags":flag_bits(item.flags)})
 	if rule.is_empty(): return {"status":"original","detail":"no 3D look yet"}
 	var kind := str(rule.get("kind",""))
 	var asset := str(rule.get("asset",""))
@@ -76,7 +89,7 @@ func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -
 		"tree":
 			if LocalTrees.available(): return {"status":"owner","detail":"your tree packs (local)"}
 			return pack(asset)
-		"grass","flower","bush":
+		"grass","flower","bush","fern","plant":
 			var plant := LocalPlants.rule(kind,name)
 			if not plant.is_empty() and not LocalPlants.items(str(plant.group)).is_empty(): return {"status":"owner","detail":"your nature packs (local)"}
 			return pack(asset)
