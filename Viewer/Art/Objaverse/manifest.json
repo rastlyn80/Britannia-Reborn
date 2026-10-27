@@ -1,0 +1,214 @@
+{
+  "assets": [
+    {
+      "id": "chair_zakopane",
+      "title": "Zakopane style chair",
+      "uid": "3f3e54908994487bb94f6358d52e75cf",
+      "page": "https://sketchfab.com/3d-models/3f3e54908994487bb94f6358d52e75cf",
+      "author": "Virtual Museums of Ma\u0142opolska",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-085/3f3e54908994487bb94f6358d52e75cf.glb",
+      "sourceSha256": "43ba6dda5dab196265f7e2da328b7b3be6b800798948cb8b5e1228491a29f5e0",
+      "sourceTriangles": 141569,
+      "file": "chair_zakopane/chair_zakopane.glb",
+      "sha256": "adda8407129607bd81090fb00a69d23ad30daed6f0d6b152fdab2d53efdc02b5",
+      "triangles": 11999,
+      "size": [
+        391.835,
+        917.683,
+        451.256
+      ],
+      "processing": "ground-centred, decimated to 12000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "chair_old",
+      "title": "Old wooden chair",
+      "uid": "a9c9bd930dca4ed39f547ec6139b1449",
+      "page": "https://sketchfab.com/3d-models/a9c9bd930dca4ed39f547ec6139b1449",
+      "author": "alban",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-064/a9c9bd930dca4ed39f547ec6139b1449.glb",
+      "sourceSha256": "e717b2ce0315a267e7b6d5658ccc9163c3319892c5509245a3756a3578650be8",
+      "sourceTriangles": 40393,
+      "file": "chair_old/chair_old.glb",
+      "sha256": "f37e254e353a0e547b0f7e87415d910ade66a99da1d6d537723911430afff225",
+      "triangles": 12000,
+      "size": [
+        8.241,
+        11.459,
+        8.49
+      ],
+      "processing": "ground-centred, decimated to 12000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "bookcase_antique",
+      "title": "Antique wooden bookcase - Game model",
+      "uid": "75aa9519195647d99cf1e2d4863dbe87",
+      "page": "https://sketchfab.com/3d-models/75aa9519195647d99cf1e2d4863dbe87",
+      "author": "Lorenzo Drago",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-009/75aa9519195647d99cf1e2d4863dbe87.glb",
+      "sourceSha256": "9eb4b8b00489547221a4cabec02c5e231abea123bff7cf086901e38be05d77c2",
+      "sourceTriangles": 2962,
+      "file": "bookcase_antique/bookcase_antique.glb",
+      "sha256": "12bb40d1457c17c49dbdb1d4ff43aa4aac65500b4c97aaf772235ca333b06ea9",
+      "triangles": 2962,
+      "size": [
+        3.835,
+        4.511,
+        0.679
+      ],
+      "processing": "ground-centred, decimated to 8000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "candlestick_four",
+      "title": "Candlestick for four candles",
+      "uid": "fa99528d3f3241ccb891900ed8cbd2d6",
+      "page": "https://sketchfab.com/3d-models/fa99528d3f3241ccb891900ed8cbd2d6",
+      "author": "Virtual Museums of Ma\u0142opolska",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-061/fa99528d3f3241ccb891900ed8cbd2d6.glb",
+      "sourceSha256": "e34836e92bcf554df14aa9b7622aff32fa6720d004fbbea9fa7ebe6313a08cdc",
+      "sourceTriangles": 329789,
+      "file": "candlestick_four/candlestick_four.glb",
+      "sha256": "8ad39647f77d2b756d5abdd69ef7f006b92a3fab62e62c37d98af0849976e376",
+      "triangles": 11982,
+      "size": [
+        15.999,
+        34.13,
+        23.344
+      ],
+      "processing": "ground-centred, decimated to 12000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "tankard_maryrose",
+      "title": "Mary Rose: A wooden tankard",
+      "uid": "8721cf07e6e04a578df9626e1eb54ce6",
+      "page": "https://sketchfab.com/3d-models/8721cf07e6e04a578df9626e1eb54ce6",
+      "author": "MicroPasts",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-001/8721cf07e6e04a578df9626e1eb54ce6.glb",
+      "sourceSha256": "41e8e68aee1008d4039b6614e91bbaa0d67d7cff12dfc6c45bf3a949bad31858",
+      "sourceTriangles": 100000,
+      "file": "tankard_maryrose/tankard_maryrose.glb",
+      "sha256": "e4b55d08b08d36bf01e3ac9baf45e525f2c1ba157b923d8240c30d55f85b6fb4",
+      "triangles": 6000,
+      "size": [
+        2.432,
+        2.58,
+        1.867
+      ],
+      "processing": "ground-centred, decimated to 6000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "chalice",
+      "title": "Chalice",
+      "uid": "18d6d563555a423485104c638a5e3d57",
+      "page": "https://sketchfab.com/3d-models/18d6d563555a423485104c638a5e3d57",
+      "author": "Virtual Museums of Ma\u0142opolska",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-002/18d6d563555a423485104c638a5e3d57.glb",
+      "sourceSha256": "edbc29f76a74083a7e947bdc880491a5a8bf1cb994ee964ca0eda10949db2690",
+      "sourceTriangles": 249826,
+      "file": "chalice/chalice.glb",
+      "sha256": "ed2606f8d0517223775cdd810c250bfc49ec4bc76cce5677030099cb92fb5e98",
+      "triangles": 5998,
+      "size": [
+        16.813,
+        30.19,
+        16.456
+      ],
+      "processing": "ground-centred, decimated to 6000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "fireplace_galway",
+      "title": "Medieval Firepalce - Galway City",
+      "uid": "3edbe61c816b4acca6913fb404639cf5",
+      "page": "https://sketchfab.com/3d-models/3edbe61c816b4acca6913fb404639cf5",
+      "author": "Galway3D_DH_AGe",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-147/3edbe61c816b4acca6913fb404639cf5.glb",
+      "sourceSha256": "efc5e2068a019a8a01a636bbbaae8a3951fac06341ddbc93b435bd3ab827fa91",
+      "sourceTriangles": 16153,
+      "file": "fireplace_galway/fireplace_galway.glb",
+      "sha256": "6cc7b39d2673c7dcd130ead110fbb0f83e81fa4222738d826d3db6438752db42",
+      "triangles": 16000,
+      "size": [
+        22.578,
+        18.176,
+        10.52
+      ],
+      "processing": "ground-centred, decimated to 16000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "wardrobe_antique",
+      "title": "Antique wardrobe Free",
+      "uid": "39498c5ba771460cad3caf12b2ac2f92",
+      "page": "https://sketchfab.com/3d-models/39498c5ba771460cad3caf12b2ac2f92",
+      "author": "Darya-web",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-042/39498c5ba771460cad3caf12b2ac2f92.glb",
+      "sourceSha256": "98e73206046edfa6c9a3ab605138ea45d2f81902dc37dd1530d476e1c1191bf4",
+      "sourceTriangles": 43968,
+      "file": "wardrobe_antique/wardrobe_antique.glb",
+      "sha256": "086cfe82c3f00f9cb848375dbb1b801c44046c5302113cee120a5485c8238194",
+      "triangles": 19979,
+      "size": [
+        0.679,
+        2.286,
+        1.604
+      ],
+      "processing": "ground-centred, decimated to 20000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "chandelier_iron",
+      "title": "Rusted Medieval Chandelier",
+      "uid": "0b116d7adcdb4427a9a30b28f86e7051",
+      "page": "https://sketchfab.com/3d-models/0b116d7adcdb4427a9a30b28f86e7051",
+      "author": "matthew.baldini",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-004/0b116d7adcdb4427a9a30b28f86e7051.glb",
+      "sourceSha256": "496f716ac17ab6b0d6b9c401fd6c91f99ae6c1321363e5f2bda24d3f094f09b2",
+      "sourceTriangles": 97792,
+      "file": "chandelier_iron/chandelier_iron.glb",
+      "sha256": "65694a1c70603fe895696757e8063e4aee5f1a44c011ad0ac9aebe69f6b0cc65",
+      "triangles": 19996,
+      "size": [
+        1.225,
+        0.692,
+        1.247
+      ],
+      "processing": "ground-centred, decimated to 20000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "anvil_pbr",
+      "title": "Anvil Nature Morte",
+      "uid": "970427a0aff3465689ac509f4fde9d94",
+      "page": "https://sketchfab.com/3d-models/970427a0aff3465689ac509f4fde9d94",
+      "author": "crazyshroomz",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-022/970427a0aff3465689ac509f4fde9d94.glb",
+      "sourceSha256": "43b9638918ba14541a46559619780252a53cb9b5b51c0da841c02c8195e3098e",
+      "sourceTriangles": 9220,
+      "file": "anvil_pbr/anvil_pbr.glb",
+      "sha256": "d7582f0cf7a315e5279691cbcfbfe353b5fa895f67cf6e30ae96fb65a34d0454",
+      "triangles": 8999,
+      "size": [
+        0.776,
+        1.215,
+        0.411
+      ],
+      "processing": "ground-centred, decimated to 9000 triangles, textures capped at 1024 px"
+    }
+  ]
+}

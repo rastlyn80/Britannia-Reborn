@@ -4,6 +4,10 @@ static func entries() -> Dictionary:
  if records.is_empty():records=JSON.parse_string(FileAccess.get_file_as_string("res://Presentation/reviewed-catalog.json")).entries
  return records
 static func entry(id: int) -> Dictionary:return entries().get(str(id),{})
+# Reviewed photoscans (Poly Haven, museum/Objaverse scans) outrank pack stand-ins.
+static func scanned(id: int) -> bool:
+ var asset:=str(entry(id).get("asset",""))
+ return asset.begins_with("PolyHaven/") or asset.begins_with("Objaverse/")
 static func extend(catalog: Dictionary) -> void:
  for id in entries():
   var review: Dictionary=entries()[id]

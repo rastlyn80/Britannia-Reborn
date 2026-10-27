@@ -22,7 +22,7 @@ var roof_families := {}
 var window_families := {}
 # Wall-flagged pillars standing on a wall top: spire pinnacles, not towers.
 var pinnacles := {}
-# Carpet tiles by cell (source Z), so each tile knows the rug's outer edges.
+# Carpet tiles by cell (source Zs), so each tile knows the rug's outer edges.
 var carpet_cells := {}
 # Wall ordinal -> metres of foundation course down to what really supports it.
 var foundations := {}
@@ -272,7 +272,11 @@ func index(world: Dictionary) -> void:
 	_plan_foundations(world)
 	carpet_cells.clear()
 	for tile in world.statics:
-		if rule_for(int(tile.id)).get("kind","") == "carpet": carpet_cells[Vector2i(tile.x,tile.y)] = int(tile.z)
+		if rule_for(int(tile.id)).get("kind","") != "carpet": continue
+		# Several storeys can carry rugs over the same cell.
+		var rug_cell := Vector2i(tile.x,tile.y)
+		if not carpet_cells.has(rug_cell): carpet_cells[rug_cell] = []
+		carpet_cells[rug_cell].append(int(tile.z))
 	ground_supports.clear()
 	for tile in world.statics:
 		var support_kind := str(rule_for(int(tile.id)).get("kind",""))
@@ -691,7 +695,7 @@ func _collect_bounds(node: Node3D, transform: Transform3D, boxes: Array) -> void
 		if child is Node3D: _collect_bounds(child,combined,boxes)
 
 func fitted(path: String, size: Vector3, orientation: Array = [0,0,0]) -> Node3D:
-	var full := "res://Art/"+path if path.begins_with("Kenney/") or path.begins_with("PolyHaven/") or path.begins_with("MedievalKit/") else "res://Art/Quaternius/"+path
+	var full := "res://Art/"+path if path.begins_with("Kenney/") or path.begins_with("PolyHaven/") or path.begins_with("MedievalKit/") or path.begins_with("Objaverse/") else "res://Art/Quaternius/"+path
 	if not scenes.has(path):
 		scenes[path] = load(full)
 		assert(scenes[path] != null,"Missing catalogue asset: "+path)
@@ -882,7 +886,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 		if visual == null and kind in ["prop","asset"] and not groups.has(ordinal): visual = preload("res://Presentation/PropReplacements.gd").build(self,str(detail.get("name","")))
 		# Counters follow their real footprint (L and U shapes) cell by cell.
 		if visual == null and kind == "counter" and tint.is_empty(): visual = counter_run(s,groups.get(ordinal,{"indices":[ordinal],"min_z":float(s.z)}),world)
-		if visual == null and not (modern and rule.has("slot") and preload("res://Presentation/LocalLibrary.gd").has(str(rule.slot))):
+		if visual == null and (preload("res://Presentation/ReviewedCatalog.gd").scanned(int(s.id)) or not (modern and rule.has("slot") and preload("res://Presentation/LocalLibrary.gd").has(str(rule.slot)))):
 			visual = preload("res://Presentation/ReviewedCatalog.gd").build(self,int(s.id),groups.get(ordinal,{}))
 		# Owner-library model for graphics outside the reviewed city (local only),
 		# and in Britain when modern graphics are selected.
@@ -1016,8 +1020,10 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 				"carpet":
 					var edges := 0
 					for side in [[Vector2i.LEFT,1],[Vector2i.RIGHT,2],[Vector2i.UP,4],[Vector2i.DOWN,8]]:
-						var z = carpet_cells.get(Vector2i(s.x,s.y)+side[0])
-						if z == null or absi(int(z)-int(s.z)) > 2: edges |= int(side[1])
+						var joined := false
+						for z in carpet_cells.get(Vector2i(s.x,s.y)+side[0],[]):
+							if absi(int(z)-int(s.z)) <= 2: joined = true
+						if not joined: edges |= int(side[1])
 					visual = geometry.carpet(s,edges)
 				"table", "bench", "counter":
 					var size: Vector2 = groups[ordinal].size if groups.has(ordinal) else Vector2.ONE

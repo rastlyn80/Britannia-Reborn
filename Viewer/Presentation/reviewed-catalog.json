@@ -304,10 +304,10 @@
     },
     "2902": {
       "kind": "prop",
-      "asset": "Props/Chair_1.gltf",
+      "asset": "Objaverse/chair_zakopane/chair_zakopane.glb",
       "dimensions": [
-        0.55,
-        1.03,
+        0.5,
+        1.0,
         0.55
       ],
       "yawDegrees": 90,
@@ -315,20 +315,20 @@
       "attachment": "floor",
       "providesSupport": false,
       "reviewStatus": "reviewed",
-      "reviewMethod": "Local original-art contact sheet, imported model turntable and reference-block inspection",
+      "reviewMethod": "Original-art facing kept (reviewed yaw); carved folk chair photoscan replaces the stylised kit chair",
       "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
       "notes": "Facing checked against source sprite and seating around reference tables/counters.",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "materialPolicy": "museum/photoscan PBR textures (CC0 or CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "provenance": "Art/Objaverse/manifest.json"
     },
     "2903": {
       "kind": "prop",
-      "asset": "Props/Chair_1.gltf",
+      "asset": "Objaverse/chair_zakopane/chair_zakopane.glb",
       "dimensions": [
-        0.55,
-        1.03,
+        0.5,
+        1.0,
         0.55
       ],
       "yawDegrees": 0,
@@ -336,20 +336,20 @@
       "attachment": "floor",
       "providesSupport": false,
       "reviewStatus": "reviewed",
-      "reviewMethod": "Local original-art contact sheet, imported model turntable and reference-block inspection",
+      "reviewMethod": "Original-art facing kept (reviewed yaw); carved folk chair photoscan replaces the stylised kit chair",
       "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
       "notes": "Facing checked against source sprite and seating around reference tables/counters.",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "materialPolicy": "museum/photoscan PBR textures (CC0 or CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "provenance": "Art/Objaverse/manifest.json"
     },
     "2904": {
       "kind": "prop",
-      "asset": "Props/Chair_1.gltf",
+      "asset": "Objaverse/chair_zakopane/chair_zakopane.glb",
       "dimensions": [
-        0.55,
-        1.03,
+        0.5,
+        1.0,
         0.55
       ],
       "yawDegrees": -90,
@@ -357,20 +357,20 @@
       "attachment": "floor",
       "providesSupport": false,
       "reviewStatus": "reviewed",
-      "reviewMethod": "Local original-art contact sheet, imported model turntable and reference-block inspection",
+      "reviewMethod": "Original-art facing kept (reviewed yaw); carved folk chair photoscan replaces the stylised kit chair",
       "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
       "notes": "Facing checked against source sprite and seating around reference tables/counters.",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "materialPolicy": "museum/photoscan PBR textures (CC0 or CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "provenance": "Art/Objaverse/manifest.json"
     },
     "2905": {
       "kind": "prop",
-      "asset": "Props/Chair_1.gltf",
+      "asset": "Objaverse/chair_zakopane/chair_zakopane.glb",
       "dimensions": [
-        0.55,
-        1.03,
+        0.5,
+        1.0,
         0.55
       ],
       "yawDegrees": 180,
@@ -378,13 +378,13 @@
       "attachment": "floor",
       "providesSupport": false,
       "reviewStatus": "reviewed",
-      "reviewMethod": "Local original-art contact sheet, imported model turntable and reference-block inspection",
+      "reviewMethod": "Original-art facing kept (reviewed yaw); carved folk chair photoscan replaces the stylised kit chair",
       "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
       "notes": "Facing checked against source sprite and seating around reference tables/counters.",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "materialPolicy": "museum/photoscan PBR textures (CC0 or CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "provenance": "Art/Objaverse/manifest.json"
     },
     "2910": {
       "kind": "prop",
@@ -640,91 +640,87 @@
     },
     "2713": {
       "kind": "prop",
-      "asset": "Props/Bookcase_2.gltf",
+      "asset": "Objaverse/bookcase_antique/bookcase_antique.glb",
       "dimensions": [
         0.94,
-        1.85,
-        0.34
+        1.9,
+        0.36
       ],
       "yawDegrees": 90,
       "assembly": "single",
       "attachment": "floor",
       "providesSupport": true,
       "reviewStatus": "reviewed",
-      "reviewMethod": "Local original-art contact sheet, imported model turntable and reference-block inspection; facing corrected from upstream placements (always north-south runs against west walls)",
+      "reviewMethod": "Book-filled bookcase replaces the kit shelf; reviewed facing kept",
       "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
       "notes": "Empty shelves stay empty; library variants receive publisher book groups.",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json",
-      "books": true
+      "materialPolicy": "museum/photoscan PBR textures (CC0 or CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "provenance": "Art/Objaverse/manifest.json"
     },
     "2714": {
       "kind": "prop",
-      "asset": "Props/Bookcase_2.gltf",
+      "asset": "Objaverse/bookcase_antique/bookcase_antique.glb",
       "dimensions": [
         0.94,
-        1.85,
-        0.34
+        1.9,
+        0.36
       ],
       "yawDegrees": 90,
       "assembly": "single",
       "attachment": "floor",
       "providesSupport": true,
       "reviewStatus": "reviewed",
-      "reviewMethod": "Local original-art contact sheet, imported model turntable and reference-block inspection; facing corrected from upstream placements (always north-south runs against west walls)",
+      "reviewMethod": "Book-filled bookcase replaces the kit shelf; reviewed facing kept",
       "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
       "notes": "Empty shelves stay empty; library variants receive publisher book groups.",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json",
-      "books": true
+      "materialPolicy": "museum/photoscan PBR textures (CC0 or CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "provenance": "Art/Objaverse/manifest.json"
     },
     "2715": {
       "kind": "prop",
-      "asset": "Props/Bookcase_2.gltf",
+      "asset": "Objaverse/bookcase_antique/bookcase_antique.glb",
       "dimensions": [
         0.94,
-        1.85,
-        0.34
+        1.9,
+        0.36
       ],
       "yawDegrees": 0,
       "assembly": "single",
       "attachment": "floor",
       "providesSupport": true,
       "reviewStatus": "provisional",
-      "reviewMethod": "Local original-art contact sheet, imported model turntable and reference-block inspection",
+      "reviewMethod": "Book-filled bookcase replaces the kit shelf; reviewed facing kept",
       "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
       "notes": "Empty shelves stay empty; library variants receive publisher book groups.",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json",
-      "books": true
+      "materialPolicy": "museum/photoscan PBR textures (CC0 or CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "provenance": "Art/Objaverse/manifest.json"
     },
     "2716": {
       "kind": "prop",
-      "asset": "Props/Bookcase_2.gltf",
+      "asset": "Objaverse/bookcase_antique/bookcase_antique.glb",
       "dimensions": [
         0.94,
-        1.85,
-        0.34
+        1.9,
+        0.36
       ],
       "yawDegrees": 90,
       "assembly": "single",
       "attachment": "floor",
       "providesSupport": true,
       "reviewStatus": "reviewed",
-      "reviewMethod": "Local original-art contact sheet, imported model turntable and reference-block inspection; facing corrected from upstream placements (always north-south runs against west walls)",
+      "reviewMethod": "Book-filled bookcase replaces the kit shelf; reviewed facing kept",
       "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
       "notes": "Empty shelves stay empty; library variants receive publisher book groups.",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json",
-      "books": true
+      "materialPolicy": "museum/photoscan PBR textures (CC0 or CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "provenance": "Art/Objaverse/manifest.json"
     },
     "3650": {
       "kind": "prop",
@@ -1961,11 +1957,9 @@
     },
     "2639": {
       "kind": "prop",
-      "renderer": "procedural-reviewed",
-      "construction": "wardrobe",
       "dimensions": [
         0.96,
-        1.88,
+        1.95,
         0.62
       ],
       "assembly": "single",
@@ -1973,20 +1967,24 @@
       "providesSupport": true,
       "yawDegrees": 0,
       "reviewStatus": "reviewed",
-      "reviewMethod": "Native armoire silhouette and reference-room inspection; door faces inward rather than showing a plain rear panel",
+      "reviewMethod": "Carved two-door wardrobe scan replaces the code-built armoire; reviewed facing kept",
       "confidence": "original two-door wardrobe construction; reviewed modern interpretation",
-      "provenance": "Presentation/ReviewedCatalog.gd; GPL-3.0-or-later + Art/Surfaces/manifest.json",
-      "materialPolicy": "warm timber panels; matte iron hinges and ring pulls",
+      "provenance": "Art/Objaverse/manifest.json",
+      "materialPolicy": "museum/photoscan PBR textures (CC0 or CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
       "collision": "native-authoritative; contact-aligned local bounds",
-      "lod": "bounded near-district geometry"
+      "lod": "bounded near-district geometry",
+      "asset": "Objaverse/wardrobe_antique/wardrobe_antique.glb",
+      "modelRotation": [
+        0,
+        -90,
+        0
+      ]
     },
     "2643": {
       "kind": "prop",
-      "renderer": "procedural-reviewed",
-      "construction": "wardrobe",
       "dimensions": [
         0.96,
-        1.88,
+        1.95,
         0.62
       ],
       "assembly": "single",
@@ -1994,12 +1992,18 @@
       "providesSupport": true,
       "yawDegrees": 90,
       "reviewStatus": "reviewed",
-      "reviewMethod": "Native armoire silhouette and reference-room inspection; door faces inward rather than showing a plain rear panel",
+      "reviewMethod": "Carved two-door wardrobe scan replaces the code-built armoire; reviewed facing kept",
       "confidence": "original two-door wardrobe construction; reviewed modern interpretation",
-      "provenance": "Presentation/ReviewedCatalog.gd; GPL-3.0-or-later + Art/Surfaces/manifest.json",
-      "materialPolicy": "warm timber panels; matte iron hinges and ring pulls",
+      "provenance": "Art/Objaverse/manifest.json",
+      "materialPolicy": "museum/photoscan PBR textures (CC0 or CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
       "collision": "native-authoritative; contact-aligned local bounds",
-      "lod": "bounded near-district geometry"
+      "lod": "bounded near-district geometry",
+      "asset": "Objaverse/wardrobe_antique/wardrobe_antique.glb",
+      "modelRotation": [
+        0,
+        -90,
+        0
+      ]
     },
     "59": {
       "kind": "window",
@@ -2365,6 +2369,202 @@
       "lod": "shared geometry instanced inside bounded near districts",
       "materialPolicy": "Poly Haven PBR textures (CC0), unmodified",
       "provenance": "Art/PolyHaven/manifest.json"
+    },
+    "2906": {
+      "kind": "prop",
+      "asset": "Objaverse/chair_old/chair_old.glb",
+      "dimensions": [
+        0.6,
+        1.0,
+        0.6
+      ],
+      "yawDegrees": 90,
+      "assembly": "single",
+      "attachment": "floor",
+      "providesSupport": false,
+      "reviewStatus": "reviewed",
+      "reviewMethod": "Straw-seat chair art (same four facings as 2902-2905); rush-seat chair scan",
+      "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
+      "notes": "Facing checked against source sprite and seating around reference tables/counters.",
+      "collision": "source-authoritative; matching local camera/picking bounds",
+      "lod": "shared geometry instanced inside bounded near districts",
+      "materialPolicy": "museum/photoscan PBR textures (CC0 or CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "provenance": "Art/Objaverse/manifest.json",
+      "modelRotation": [
+        0,
+        -138,
+        0
+      ]
+    },
+    "2907": {
+      "kind": "prop",
+      "asset": "Objaverse/chair_old/chair_old.glb",
+      "dimensions": [
+        0.6,
+        1.0,
+        0.6
+      ],
+      "yawDegrees": 0,
+      "assembly": "single",
+      "attachment": "floor",
+      "providesSupport": false,
+      "reviewStatus": "reviewed",
+      "reviewMethod": "Straw-seat chair art (same four facings as 2902-2905); rush-seat chair scan",
+      "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
+      "notes": "Facing checked against source sprite and seating around reference tables/counters.",
+      "collision": "source-authoritative; matching local camera/picking bounds",
+      "lod": "shared geometry instanced inside bounded near districts",
+      "materialPolicy": "museum/photoscan PBR textures (CC0 or CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "provenance": "Art/Objaverse/manifest.json",
+      "modelRotation": [
+        0,
+        -138,
+        0
+      ]
+    },
+    "2908": {
+      "kind": "prop",
+      "asset": "Objaverse/chair_old/chair_old.glb",
+      "dimensions": [
+        0.6,
+        1.0,
+        0.6
+      ],
+      "yawDegrees": -90,
+      "assembly": "single",
+      "attachment": "floor",
+      "providesSupport": false,
+      "reviewStatus": "reviewed",
+      "reviewMethod": "Straw-seat chair art (same four facings as 2902-2905); rush-seat chair scan",
+      "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
+      "notes": "Facing checked against source sprite and seating around reference tables/counters.",
+      "collision": "source-authoritative; matching local camera/picking bounds",
+      "lod": "shared geometry instanced inside bounded near districts",
+      "materialPolicy": "museum/photoscan PBR textures (CC0 or CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "provenance": "Art/Objaverse/manifest.json",
+      "modelRotation": [
+        0,
+        -138,
+        0
+      ]
+    },
+    "2909": {
+      "kind": "prop",
+      "asset": "Objaverse/chair_old/chair_old.glb",
+      "dimensions": [
+        0.6,
+        1.0,
+        0.6
+      ],
+      "yawDegrees": 180,
+      "assembly": "single",
+      "attachment": "floor",
+      "providesSupport": false,
+      "reviewStatus": "reviewed",
+      "reviewMethod": "Straw-seat chair art (same four facings as 2902-2905); rush-seat chair scan",
+      "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
+      "notes": "Facing checked against source sprite and seating around reference tables/counters.",
+      "collision": "source-authoritative; matching local camera/picking bounds",
+      "lod": "shared geometry instanced inside bounded near districts",
+      "materialPolicy": "museum/photoscan PBR textures (CC0 or CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "provenance": "Art/Objaverse/manifest.json",
+      "modelRotation": [
+        0,
+        -138,
+        0
+      ]
+    },
+    "2711": {
+      "kind": "prop",
+      "asset": "Objaverse/bookcase_antique/bookcase_antique.glb",
+      "dimensions": [
+        0.94,
+        1.9,
+        0.36
+      ],
+      "yawDegrees": 0,
+      "assembly": "single",
+      "attachment": "floor",
+      "providesSupport": true,
+      "reviewStatus": "reviewed",
+      "reviewMethod": "Book-filled bookcase scan; this graphic is placed in east-west runs (faces south)",
+      "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
+      "notes": "Empty shelves stay empty; library variants receive publisher book groups.",
+      "collision": "source-authoritative; matching local camera/picking bounds",
+      "lod": "shared geometry instanced inside bounded near districts",
+      "materialPolicy": "museum/photoscan PBR textures (CC0 or CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "provenance": "Art/Objaverse/manifest.json"
+    },
+    "2712": {
+      "kind": "prop",
+      "asset": "Objaverse/bookcase_antique/bookcase_antique.glb",
+      "dimensions": [
+        0.94,
+        1.9,
+        0.36
+      ],
+      "yawDegrees": 0,
+      "assembly": "single",
+      "attachment": "floor",
+      "providesSupport": true,
+      "reviewStatus": "reviewed",
+      "reviewMethod": "Book-filled bookcase scan; this graphic is placed in east-west runs (faces south)",
+      "confidence": "reviewed modern interpretation; original component silhouette and usage retained",
+      "notes": "Empty shelves stay empty; library variants receive publisher book groups.",
+      "collision": "source-authoritative; matching local camera/picking bounds",
+      "lod": "shared geometry instanced inside bounded near districts",
+      "materialPolicy": "museum/photoscan PBR textures (CC0 or CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "provenance": "Art/Objaverse/manifest.json"
+    },
+    "2641": {
+      "kind": "prop",
+      "dimensions": [
+        0.96,
+        1.95,
+        0.62
+      ],
+      "assembly": "single",
+      "attachment": "floor",
+      "providesSupport": true,
+      "yawDegrees": 90,
+      "reviewStatus": "reviewed",
+      "reviewMethod": "Carved two-door wardrobe scan replaces the code-built armoire; reviewed facing kept",
+      "confidence": "original two-door wardrobe construction; reviewed modern interpretation",
+      "provenance": "Art/Objaverse/manifest.json",
+      "materialPolicy": "museum/photoscan PBR textures (CC0 or CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "collision": "native-authoritative; contact-aligned local bounds",
+      "lod": "bounded near-district geometry",
+      "asset": "Objaverse/wardrobe_antique/wardrobe_antique.glb",
+      "modelRotation": [
+        0,
+        -90,
+        0
+      ]
+    },
+    "2637": {
+      "kind": "prop",
+      "dimensions": [
+        0.96,
+        1.95,
+        0.62
+      ],
+      "assembly": "single",
+      "attachment": "floor",
+      "providesSupport": true,
+      "yawDegrees": 0,
+      "reviewStatus": "reviewed",
+      "reviewMethod": "Carved two-door wardrobe scan replaces the code-built armoire; reviewed facing kept",
+      "confidence": "original two-door wardrobe construction; reviewed modern interpretation",
+      "provenance": "Art/Objaverse/manifest.json",
+      "materialPolicy": "museum/photoscan PBR textures (CC0 or CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "collision": "native-authoritative; contact-aligned local bounds",
+      "lod": "bounded near-district geometry",
+      "asset": "Objaverse/wardrobe_antique/wardrobe_antique.glb",
+      "modelRotation": [
+        0,
+        -90,
+        0
+      ]
     }
   }
 }

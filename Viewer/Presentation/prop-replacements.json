@@ -1,19 +1,93 @@
 {
- "notice": "UO item name (tiledata/server display name, lower case, plural markers removed) -> pinned CC0 Poly Haven model (Viewer/Art/PolyHaven/manifest.json) and its presented height in metres; proportions are the model's own.",
+ "notice": "UO item name (tiledata/server display name, lower case, plural markers removed) -> pinned model and its presented height in metres; proportions are the model's own. Plain ids are CC0 Poly Haven models (Viewer/Art/PolyHaven); \"Objaverse/<id>\" are reduced CC0/CC-BY scans (Viewer/Art/Objaverse, attribution in its NOTICE.md).",
  "items": {
-  "grandfather clock": {"model": "vintage_grandfather_clock_01", "height": 2.0},
-  "bucket": {"model": "wooden_bucket_01", "height": 0.42},
-  "wooden bucket": {"model": "wooden_bucket_01", "height": 0.42},
-  "wooden bowl": {"model": "wooden_bowl_01", "height": 0.08},
-  "empty wooden bowl": {"model": "wooden_bowl_01", "height": 0.08},
-  "plate": {"model": "carved_wooden_plate", "height": 0.03},
-  "wooden plate": {"model": "carved_wooden_plate", "height": 0.03},
-  "basket": {"model": "wicker_basket_01", "height": 0.16},
-  "apple": {"model": "food_apple_01", "height": 0.08},
-  "barrel": {"model": "wine_barrel_01", "height": 0.9},
-  "stool": {"model": "wooden_stool_01", "height": 0.46},
-  "foot stool": {"model": "wooden_stool_01", "height": 0.4},
-  "throne": {"model": "WoodenChair_01", "height": 1.9},
-  "pot": {"model": "brass_pot_01", "height": 0.24}
+  "grandfather clock": {
+   "model": "vintage_grandfather_clock_01",
+   "height": 2.0
+  },
+  "bucket": {
+   "model": "wooden_bucket_01",
+   "height": 0.42
+  },
+  "wooden bucket": {
+   "model": "wooden_bucket_01",
+   "height": 0.42
+  },
+  "wooden bowl": {
+   "model": "wooden_bowl_01",
+   "height": 0.08
+  },
+  "empty wooden bowl": {
+   "model": "wooden_bowl_01",
+   "height": 0.08
+  },
+  "plate": {
+   "model": "carved_wooden_plate",
+   "height": 0.03
+  },
+  "wooden plate": {
+   "model": "carved_wooden_plate",
+   "height": 0.03
+  },
+  "basket": {
+   "model": "wicker_basket_01",
+   "height": 0.16
+  },
+  "apple": {
+   "model": "food_apple_01",
+   "height": 0.08
+  },
+  "barrel": {
+   "model": "wine_barrel_01",
+   "height": 0.9
+  },
+  "stool": {
+   "model": "wooden_stool_01",
+   "height": 0.46
+  },
+  "foot stool": {
+   "model": "wooden_stool_01",
+   "height": 0.4
+  },
+  "throne": {
+   "model": "WoodenChair_01",
+   "height": 1.9
+  },
+  "pot": {
+   "model": "brass_pot_01",
+   "height": 0.24
+  },
+  "mug": {
+   "model": "Objaverse/tankard_maryrose",
+   "height": 0.15
+  },
+  "ceramic mug": {
+   "model": "Objaverse/tankard_maryrose",
+   "height": 0.15
+  },
+  "pewter mug": {
+   "model": "Objaverse/tankard_maryrose",
+   "height": 0.15
+  },
+  "tankard": {
+   "model": "Objaverse/tankard_maryrose",
+   "height": 0.17
+  },
+  "goblet": {
+   "model": "Objaverse/chalice",
+   "height": 0.2
+  },
+  "chalice": {
+   "model": "Objaverse/chalice",
+   "height": 0.2
+  },
+  "anvil": {
+   "model": "Objaverse/anvil_pbr",
+   "height": 0.85
+  },
+  "candelabra": {
+   "model": "Objaverse/candlestick_four",
+   "height": 1.6
+  }
  }
 }

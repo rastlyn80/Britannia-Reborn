@@ -121,7 +121,7 @@ func upsert(serial: int, item: Dictionary) -> void:
  root.position = scene.entity_point(item.x,item.y,item.z)
  # Modern Britain: server decoration whose name matches a library slot uses
  # the owner-pack/CC0 library model, set onto the surface under it.
- if preload("res://Presentation/GraphicsMode.gd").modern() and not str(rule.family) in ["door","sign","lamp","noticeboard","gameboard","backgammon"]:
+ if preload("res://Presentation/GraphicsMode.gd").modern() and not str(rule.family) in ["door","sign","lamp","noticeboard","gameboard","backgammon"] and not preload("res://Presentation/ReviewedCatalog.gd").scanned(int(item.id)):
   # Server definitions carry the tiledata name; map statics only know their own IDs.
   var item_name := str(rule.get("display_name",scene.world.get("staticData",{}).get(str(int(item.id)),{}).get("name",""))).strip_edges().to_lower()
   var found: Array = preload("res://Presentation/RegionalRules.gd").slot_for(item_name) if item_name != "" else []
