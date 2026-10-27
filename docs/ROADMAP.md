@@ -1,3 +1,7 @@
+# Next after the item catalogue — 27 October 2026
+
+Use the catalogue ranking to choose replacement families. Next: model naming rule (`Art/Modern/<category>/<family>.glb`) with automatic registration, isometric silhouette fitting/flagging against the original art, picture-similarity and mirror grouping, and a family override file. Then equipment appearance on the shared Quaternius skeleton (skinned garments with body-region hiding and hue masks; socketed weapons and shields).
+
 # Next after character sheet/skills — 27 October 2026
 
 Character sheet, skills and vitals HUD are live on native packets. Next gameplay presentation: an equipment paperdoll in the sheet (worn layers, drag to equip), skill-gain/stat-gain notices, war mode and a combat target/health bar for the selected mobile, then spellbook/casting. Keep the starting-up cost and the ~135 ms first-frame stall in view.

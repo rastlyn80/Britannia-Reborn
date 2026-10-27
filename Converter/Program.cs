@@ -18,6 +18,7 @@ static partial class Program {
    if(args[0]=="test") { Tests(args[1]); return; }
    if(args[0]=="reference") { ArtReference.Export(args[1],args[2],args[3]); return; }
    if(args[0]=="item-art") { ArtReference.Export(args[1],"",args[2],args[3].Split(',').Select(int.Parse).ToArray()); return; }
+   if(args[0]=="item-catalog") { ItemCatalog.Export(args[1],args[2],args[3],args[4].Split(',').Select(int.Parse).ToArray(),args[5]); return; }
    if(args[0]=="gump-art") { GumpArt.Export(args[1],args[2],args[3].Split(',').Select(int.Parse).ToArray()); return; }
    if(args[0]!="convert" || args.Length<3) throw new ArgumentException("convert DIR OUT [x y width height mapHeight]");
    int[] p={1408,1664,48,48,4096}; for(int i=3;i<args.Length;i++) p[i-3]=int.Parse(args[i]);
@@ -168,6 +169,7 @@ static partial class Program {
   Check(gumpPixels[0]==255 && gumpPixels[3]==255 && gumpPixels[7]==0,"gump row lookup, RGB555 and transparent run");
   bool badGump=false;try{GumpArt.Decode(new byte[]{1,0,0,0,0,124,3,0},2,1);}catch(InvalidDataException){badGump=true;}
   Check(badGump,"gump row overflow rejected");
+  Check(Png.Crc(Encoding.ASCII.GetBytes("IEND"))==0xAE426082u,"catalogue PNG chunk CRC");
   Console.WriteLine($"ALL {checks} CHECKS PASSED");
  }
 }

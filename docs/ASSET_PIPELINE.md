@@ -14,3 +14,7 @@ Automated import/material/collision/LOD processing follows tiledata classificati
 
 
 RegionalRules and CityProps now extend the audited crop catalogue to every graphic ID in the prepared city of Britain. The original procedural models are GPL-3.0-or-later project code; no new third-party assets were imported. Existing pinned CC0 Quaternius/Kenney models and Poly Haven material provenance remain unchanged. Generated city coverage, raw reference art and all map-derived geometry remain local/ignored. Rules report semantic substitutes and inferred orientation rather than claiming exact artwork equivalence. See BRITAIN_MAPPING_AND_SEAMS.md.
+
+## Original item catalogue (local reference)
+
+`scripts/build-item-catalog.ps1 [-DataDir DIR] [-NoOpen]` decodes every item graphic, its tiledata entry and world placement counts from your own UO installation into ignored `outputs/item-catalog` (art PNGs, `catalog.js`, `index.html`). Families are ranked by placements in the world, Felucca excluded. Everything in that folder is original artwork or derived from it: use it only as a private reference. Never commit, upload or trace it into shipped assets.

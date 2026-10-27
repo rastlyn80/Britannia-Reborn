@@ -1,3 +1,15 @@
+# Original item catalogue — 27 October 2026
+
+`scripts/build-item-catalog.ps1` (new converter command `item-catalog`) builds a local art-direction catalogue in ignored `outputs/item-catalog`, in about 30 seconds:
+- every original item graphic with art (36,527 PNGs, 141 MB) plus its tiledata name, flags, height, weight and worn layer;
+- placement counts across all six facets, with local diff blocks applied: Trammel 2,948,639, Felucca 2,901,057, Ilshenar 370,530, Malas 331,605, Tokuno 170,579 and Ter Mur 493,161 statics, plus 40,279 server decoration items from ModernUO's Decoration lists;
+- "placed in the world" counts every facet except Felucca, which mirrors Trammel and is reported separately; Britain counts use the native Britain region;
+- a reviewed-model marker from `reviewed-catalog.json`.
+
+10,697 graphics are placed somewhere. Families group graphics with the same name and category within 8 IDs of each other: 7,453 families, 2,506 of them placed. `index.html` ranks families (or single items) by world placements, with search by name/number, category and Britain filters, a detail panel per family (every member with counts per facet, an example location, flags and model status), `#family_key` links and CSV export.
+
+Limits: categories are name/flag heuristics (about 2,100 families remain "other"). Family grouping uses names and nearby IDs only, not picture similarity or mirrored pairs. Vendor stock, loot and multi (house/boat) components are not counted, so wearables and weapons rank near the bottom. The catalogue is proprietary-derived reference material; only the extractor and the viewer page are committed. Converter self-tests gained a PNG CRC check; scripts/verify.ps1 passes.
+
 # Window shutters, Dexsoft props, character sheet and skills — 27 October 2026
 
 **Shutters and flower boxes.** UO walls carry no inside/outside information. WindowDressing.gd reads the outdoor side from the source: indoor cells have a roof, upper floor or landing overhead within three cells. Outdoor cells are open to the sky two cells out, with at most a roof eave directly beside the wall. Windows covered on both sides, open on both sides, or facing another wall stay undressed. Of 1,042 Britain windows, 1,012 got an outdoor side and 30 stayed undressed. 946 got MedievalKit (CC0) open shutter pairs, because both neighbouring cells along the wall are solid wall; about half of those also got a flower box. Bridges and masonry slits/arches are never dressed. Dressing is excluded from collision and distant massing. Interior captures (tavern, two-storey house) show none indoors.
