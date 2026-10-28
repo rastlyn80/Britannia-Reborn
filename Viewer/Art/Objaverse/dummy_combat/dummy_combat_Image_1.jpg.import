@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://phnmj5k8wylw"
-path="res://.godot/imported/dummy_combat_Image_1.jpg-dc29788ebed5cf08d67ef187dab28603.ctex"
+path.s3tc="res://.godot/imported/dummy_combat_Image_1.jpg-dc29788ebed5cf08d67ef187dab28603.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "35a9f9ecc511fe080e9c57f211c40441"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/dummy_combat/dummy_combat_Image_1.jpg"
-dest_files=["res://.godot/imported/dummy_combat_Image_1.jpg-dc29788ebed5cf08d67ef187dab28603.ctex"]
+dest_files=["res://.godot/imported/dummy_combat_Image_1.jpg-dc29788ebed5cf08d67ef187dab28603.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://nqsf0t2gnqka"
-path="res://.godot/imported/bedroll_Image_5.jpg-3a311fb67f38481c9b96afb2b9945667.ctex"
+path.s3tc="res://.godot/imported/bedroll_Image_5.jpg-3a311fb67f38481c9b96afb2b9945667.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "6ce875aeced1688c455b6853104322b0"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/bedroll/bedroll_Image_5.jpg"
-dest_files=["res://.godot/imported/bedroll_Image_5.jpg-3a311fb67f38481c9b96afb2b9945667.ctex"]
+dest_files=["res://.godot/imported/bedroll_Image_5.jpg-3a311fb67f38481c9b96afb2b9945667.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

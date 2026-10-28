@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://by058q1mloj1j"
-path="res://.godot/imported/fruit_basket_Image_2.jpg-832d43c31fc1afb6cfd9e26e1ae670ed.ctex"
+path.s3tc="res://.godot/imported/fruit_basket_Image_2.jpg-832d43c31fc1afb6cfd9e26e1ae670ed.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "3674157aaf830de485a2448f960f2919"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/fruit_basket/fruit_basket_Image_2.jpg"
-dest_files=["res://.godot/imported/fruit_basket_Image_2.jpg-832d43c31fc1afb6cfd9e26e1ae670ed.ctex"]
+dest_files=["res://.godot/imported/fruit_basket_Image_2.jpg-832d43c31fc1afb6cfd9e26e1ae670ed.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

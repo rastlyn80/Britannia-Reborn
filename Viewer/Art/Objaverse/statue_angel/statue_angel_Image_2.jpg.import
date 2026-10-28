@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cmogi8j7nhtkx"
-path="res://.godot/imported/statue_angel_Image_2.jpg-9e14f95abf2487a7af877f4c674ebf7b.ctex"
+path.s3tc="res://.godot/imported/statue_angel_Image_2.jpg-9e14f95abf2487a7af877f4c674ebf7b.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "a72866fb62f1a4e84112cff95e994906"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/statue_angel/statue_angel_Image_2.jpg"
-dest_files=["res://.godot/imported/statue_angel_Image_2.jpg-9e14f95abf2487a7af877f4c674ebf7b.ctex"]
+dest_files=["res://.godot/imported/statue_angel_Image_2.jpg-9e14f95abf2487a7af877f4c674ebf7b.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

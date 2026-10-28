@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bhttg4ndjh2sd"
-path="res://.godot/imported/cauldron_Image_5.jpg-c922a0859cb3c95e0b680af32d6ca534.ctex"
+path.s3tc="res://.godot/imported/cauldron_Image_5.jpg-c922a0859cb3c95e0b680af32d6ca534.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "f5a26b9844f42bfa1a6a508bc2e1f05b"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/cauldron/cauldron_Image_5.jpg"
-dest_files=["res://.godot/imported/cauldron_Image_5.jpg-c922a0859cb3c95e0b680af32d6ca534.ctex"]
+dest_files=["res://.godot/imported/cauldron_Image_5.jpg-c922a0859cb3c95e0b680af32d6ca534.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

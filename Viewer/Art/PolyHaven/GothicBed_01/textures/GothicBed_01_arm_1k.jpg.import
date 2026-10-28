@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bn0svxxt38mx5"
-path="res://.godot/imported/GothicBed_01_arm_1k.jpg-3cd1946bee907bed47830f42c97b17e3.ctex"
+path.s3tc="res://.godot/imported/GothicBed_01_arm_1k.jpg-3cd1946bee907bed47830f42c97b17e3.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/PolyHaven/GothicBed_01/textures/GothicBed_01_arm_1k.jpg"
-dest_files=["res://.godot/imported/GothicBed_01_arm_1k.jpg-3cd1946bee907bed47830f42c97b17e3.ctex"]
+dest_files=["res://.godot/imported/GothicBed_01_arm_1k.jpg-3cd1946bee907bed47830f42c97b17e3.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

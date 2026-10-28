@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ub6n1p08b2mh"
-path="res://.godot/imported/cutlery_Image_0.jpg-2283bd67a5d0a10dacfba53743effe97.ctex"
+path.s3tc="res://.godot/imported/cutlery_Image_0.jpg-2283bd67a5d0a10dacfba53743effe97.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "63ee94e18287d74cee418f2b7dfad995"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/cutlery/cutlery_Image_0.jpg"
-dest_files=["res://.godot/imported/cutlery_Image_0.jpg-2283bd67a5d0a10dacfba53743effe97.ctex"]
+dest_files=["res://.godot/imported/cutlery_Image_0.jpg-2283bd67a5d0a10dacfba53743effe97.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

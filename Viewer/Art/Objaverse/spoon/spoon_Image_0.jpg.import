@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bkrqqnywouvos"
-path="res://.godot/imported/spoon_Image_0.jpg-ea6d0156f8b1cd6960872f8001daf16b.ctex"
+path.s3tc="res://.godot/imported/spoon_Image_0.jpg-ea6d0156f8b1cd6960872f8001daf16b.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "988dfaee7f4ba0ecfb343942fe365c0f"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/spoon/spoon_Image_0.jpg"
-dest_files=["res://.godot/imported/spoon_Image_0.jpg-ea6d0156f8b1cd6960872f8001daf16b.ctex"]
+dest_files=["res://.godot/imported/spoon_Image_0.jpg-ea6d0156f8b1cd6960872f8001daf16b.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

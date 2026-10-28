@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cpjfdamkhd4lh"
-path="res://.godot/imported/bottles_glass_Image_1.jpg-76c9678366b1d4ae051130f3efe5ccfc.ctex"
+path.s3tc="res://.godot/imported/bottles_glass_Image_1.jpg-76c9678366b1d4ae051130f3efe5ccfc.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "568d6962d875ae1714271589eebf9ea5"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/bottles_glass/bottles_glass_Image_1.jpg"
-dest_files=["res://.godot/imported/bottles_glass_Image_1.jpg-76c9678366b1d4ae051130f3efe5ccfc.ctex"]
+dest_files=["res://.godot/imported/bottles_glass_Image_1.jpg-76c9678366b1d4ae051130f3efe5ccfc.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

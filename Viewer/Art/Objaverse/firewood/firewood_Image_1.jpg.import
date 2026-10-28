@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dd0nq2kspyd24"
-path="res://.godot/imported/firewood_Image_1.jpg-419b6a499a10a541c795782a3c5d9168.ctex"
+path.s3tc="res://.godot/imported/firewood_Image_1.jpg-419b6a499a10a541c795782a3c5d9168.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "820be225b4500e586bf04f43cd5be738"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/firewood/firewood_Image_1.jpg"
-dest_files=["res://.godot/imported/firewood_Image_1.jpg-419b6a499a10a541c795782a3c5d9168.ctex"]
+dest_files=["res://.godot/imported/firewood_Image_1.jpg-419b6a499a10a541c795782a3c5d9168.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

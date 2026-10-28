@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ceuwhejdvqk76"
-path="res://.godot/imported/cannon_01_nor_gl_1k.jpg-4723cb6ca8161223775ead6714b07631.ctex"
+path.s3tc="res://.godot/imported/cannon_01_nor_gl_1k.jpg-4723cb6ca8161223775ead6714b07631.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/PolyHaven/cannon_01/textures/cannon_01_nor_gl_1k.jpg"
-dest_files=["res://.godot/imported/cannon_01_nor_gl_1k.jpg-4723cb6ca8161223775ead6714b07631.ctex"]
+dest_files=["res://.godot/imported/cannon_01_nor_gl_1k.jpg-4723cb6ca8161223775ead6714b07631.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b8h6avlg1isho"
-path="res://.godot/imported/drum_Image_1.jpg-966e0f1eacd27d4c5eb702101ff444b0.ctex"
+path.s3tc="res://.godot/imported/drum_Image_1.jpg-966e0f1eacd27d4c5eb702101ff444b0.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "ff1d06865c64742577c2fda4ccfc4193"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/drum/drum_Image_1.jpg"
-dest_files=["res://.godot/imported/drum_Image_1.jpg-966e0f1eacd27d4c5eb702101ff444b0.ctex"]
+dest_files=["res://.godot/imported/drum_Image_1.jpg-966e0f1eacd27d4c5eb702101ff444b0.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

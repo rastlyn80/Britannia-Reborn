@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://4gtamy0hwao0"
-path="res://.godot/imported/forest_ground_05_diff_1k.jpg-cd466ff339fc79eb8ce8215b455778dc.ctex"
+path.s3tc="res://.godot/imported/forest_ground_05_diff_1k.jpg-cd466ff339fc79eb8ce8215b455778dc.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/Surfaces/forest_ground_05_diff_1k.jpg"
-dest_files=["res://.godot/imported/forest_ground_05_diff_1k.jpg-cd466ff339fc79eb8ce8215b455778dc.ctex"]
+dest_files=["res://.godot/imported/forest_ground_05_diff_1k.jpg-cd466ff339fc79eb8ce8215b455778dc.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

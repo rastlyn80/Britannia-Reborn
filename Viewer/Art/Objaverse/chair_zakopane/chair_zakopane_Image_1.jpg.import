@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dn3f2dylgyiwe"
-path="res://.godot/imported/chair_zakopane_Image_1.jpg-944d2e16baf74cb255b47e842d9a9c22.ctex"
+path.s3tc="res://.godot/imported/chair_zakopane_Image_1.jpg-944d2e16baf74cb255b47e842d9a9c22.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "8c003d37e9b3bf02708fd06eedf95b6a"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/chair_zakopane/chair_zakopane_Image_1.jpg"
-dest_files=["res://.godot/imported/chair_zakopane_Image_1.jpg-944d2e16baf74cb255b47e842d9a9c22.ctex"]
+dest_files=["res://.godot/imported/chair_zakopane_Image_1.jpg-944d2e16baf74cb255b47e842d9a9c22.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

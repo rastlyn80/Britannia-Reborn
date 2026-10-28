@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://clak2j32110n0"
-path="res://.godot/imported/T_Regular_Male_Roughness.png-e1e33f3eae11a5c260035528d44034bf.ctex"
+path.s3tc="res://.godot/imported/T_Regular_Male_Roughness.png-e1e33f3eae11a5c260035528d44034bf.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/Quaternius/Outfit/T_Regular_Male_Roughness.png"
-dest_files=["res://.godot/imported/T_Regular_Male_Roughness.png-e1e33f3eae11a5c260035528d44034bf.ctex"]
+dest_files=["res://.godot/imported/T_Regular_Male_Roughness.png-e1e33f3eae11a5c260035528d44034bf.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://yk137xna0cow"
-path="res://.godot/imported/T_Peasant_ORM.png-f288b9c7890330ad2517053aac461dba.ctex"
+path.s3tc="res://.godot/imported/T_Peasant_ORM.png-f288b9c7890330ad2517053aac461dba.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/Quaternius/Outfit/T_Peasant_ORM.png"
-dest_files=["res://.godot/imported/T_Peasant_ORM.png-f288b9c7890330ad2517053aac461dba.ctex"]
+dest_files=["res://.godot/imported/T_Peasant_ORM.png-f288b9c7890330ad2517053aac461dba.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

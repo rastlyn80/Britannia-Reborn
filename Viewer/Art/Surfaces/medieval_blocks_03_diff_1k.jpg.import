@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cwecc2kb7u16c"
-path="res://.godot/imported/medieval_blocks_03_diff_1k.jpg-88a114a371b6c30cd76ee9b0e66d053a.ctex"
+path.s3tc="res://.godot/imported/medieval_blocks_03_diff_1k.jpg-88a114a371b6c30cd76ee9b0e66d053a.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/Surfaces/medieval_blocks_03_diff_1k.jpg"
-dest_files=["res://.godot/imported/medieval_blocks_03_diff_1k.jpg-88a114a371b6c30cd76ee9b0e66d053a.ctex"]
+dest_files=["res://.godot/imported/medieval_blocks_03_diff_1k.jpg-88a114a371b6c30cd76ee9b0e66d053a.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

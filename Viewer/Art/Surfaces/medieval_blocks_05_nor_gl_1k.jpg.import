@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d1mh4r6ehvy71"
-path="res://.godot/imported/medieval_blocks_05_nor_gl_1k.jpg-5842f6f218a7f2708b96416a744cf01e.ctex"
+path.s3tc="res://.godot/imported/medieval_blocks_05_nor_gl_1k.jpg-5842f6f218a7f2708b96416a744cf01e.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/Surfaces/medieval_blocks_05_nor_gl_1k.jpg"
-dest_files=["res://.godot/imported/medieval_blocks_05_nor_gl_1k.jpg-5842f6f218a7f2708b96416a744cf01e.ctex"]
+dest_files=["res://.godot/imported/medieval_blocks_05_nor_gl_1k.jpg-5842f6f218a7f2708b96416a744cf01e.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

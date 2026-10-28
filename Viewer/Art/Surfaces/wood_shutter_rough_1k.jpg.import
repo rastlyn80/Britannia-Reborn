@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c78k4k6belqn2"
-path="res://.godot/imported/wood_shutter_rough_1k.jpg-e26c2c6ef80466fd0a41dca8f821fe63.ctex"
+path.s3tc="res://.godot/imported/wood_shutter_rough_1k.jpg-e26c2c6ef80466fd0a41dca8f821fe63.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/Surfaces/wood_shutter_rough_1k.jpg"
-dest_files=["res://.godot/imported/wood_shutter_rough_1k.jpg-e26c2c6ef80466fd0a41dca8f821fe63.ctex"]
+dest_files=["res://.godot/imported/wood_shutter_rough_1k.jpg-e26c2c6ef80466fd0a41dca8f821fe63.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

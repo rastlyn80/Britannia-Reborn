@@ -332,6 +332,194 @@
      "skip": true
     }
    }
+  },
+  "stump": {
+   "models": [
+    "Objaverse/stump_boubin",
+    "Objaverse/stump_meadow"
+   ],
+   "length": 1.1
+  },
+  "debris": {
+   "model": "Objaverse/debris_sticks",
+   "length": 0.9
+  },
+  "brazier": {
+   "model": "Objaverse/brazier_pole",
+   "height": 1.5,
+   "flame": 0.13
+  },
+  "spine": {
+   "model": "Objaverse/bone_spine",
+   "height": 0.6,
+   "pitch": 90
+  },
+  "pelvis bone": {
+   "model": "Objaverse/bone_pelvis",
+   "length": 0.32
+  },
+  "flowers": {
+   "models": [
+    "Reduced/periwinkle_plant/periwinkle_plant_0",
+    "Reduced/periwinkle_plant/periwinkle_plant_1",
+    "Reduced/periwinkle_plant/periwinkle_plant_2",
+    "Reduced/flower_empodium/flower_empodium_0",
+    "Reduced/flower_empodium/flower_empodium_1",
+    "Reduced/flower_empodium/flower_empodium_2",
+    "Reduced/flower_gazania/flower_gazania_0",
+    "Reduced/flower_gazania/flower_gazania_1",
+    "Reduced/flower_gazania/flower_gazania_2"
+   ],
+   "cluster": 3,
+   "ids": {
+    "3148": {
+     "models": [
+      "Reduced/flower_empodium/flower_empodium_0",
+      "Reduced/flower_empodium/flower_empodium_1",
+      "Reduced/flower_empodium/flower_empodium_2",
+      "Reduced/flower_empodium/flower_empodium_3",
+      "Reduced/flower_empodium/flower_empodium_4",
+      "Reduced/flower_ursinia/flower_ursinia_0",
+      "Reduced/flower_ursinia/flower_ursinia_1",
+      "Reduced/flower_ursinia/flower_ursinia_2",
+      "Reduced/flower_ursinia/flower_ursinia_3",
+      "Reduced/flower_ursinia/flower_ursinia_4"
+     ]
+    },
+    "3147": {
+     "models": [
+      "Reduced/flower_empodium/flower_empodium_0",
+      "Reduced/flower_empodium/flower_empodium_1",
+      "Reduced/flower_empodium/flower_empodium_2",
+      "Reduced/flower_empodium/flower_empodium_3",
+      "Reduced/flower_empodium/flower_empodium_4",
+      "Reduced/flower_ursinia/flower_ursinia_0",
+      "Reduced/flower_ursinia/flower_ursinia_1",
+      "Reduced/flower_ursinia/flower_ursinia_2",
+      "Reduced/flower_ursinia/flower_ursinia_3",
+      "Reduced/flower_ursinia/flower_ursinia_4"
+     ]
+    },
+    "3127": {
+     "models": [
+      "Reduced/flower_empodium/flower_empodium_0",
+      "Reduced/flower_empodium/flower_empodium_1",
+      "Reduced/flower_empodium/flower_empodium_2",
+      "Reduced/flower_empodium/flower_empodium_3",
+      "Reduced/flower_empodium/flower_empodium_4",
+      "Reduced/flower_ursinia/flower_ursinia_0",
+      "Reduced/flower_ursinia/flower_ursinia_1",
+      "Reduced/flower_ursinia/flower_ursinia_2",
+      "Reduced/flower_ursinia/flower_ursinia_3",
+      "Reduced/flower_ursinia/flower_ursinia_4"
+     ]
+    },
+    "3382": {
+     "models": [
+      "Reduced/flower_empodium/flower_empodium_0",
+      "Reduced/flower_empodium/flower_empodium_1",
+      "Reduced/flower_empodium/flower_empodium_2",
+      "Reduced/flower_empodium/flower_empodium_3",
+      "Reduced/flower_empodium/flower_empodium_4",
+      "Reduced/flower_ursinia/flower_ursinia_0",
+      "Reduced/flower_ursinia/flower_ursinia_1",
+      "Reduced/flower_ursinia/flower_ursinia_2",
+      "Reduced/flower_ursinia/flower_ursinia_3",
+      "Reduced/flower_ursinia/flower_ursinia_4"
+     ]
+    },
+    "3144": {
+     "models": [
+      "Reduced/periwinkle_plant/periwinkle_plant_0",
+      "Reduced/periwinkle_plant/periwinkle_plant_1",
+      "Reduced/periwinkle_plant/periwinkle_plant_2",
+      "Reduced/periwinkle_plant/periwinkle_plant_3",
+      "Reduced/periwinkle_plant/periwinkle_plant_4",
+      "Reduced/periwinkle_plant/periwinkle_plant_5"
+     ]
+    },
+    "3145": {
+     "models": [
+      "Reduced/periwinkle_plant/periwinkle_plant_0",
+      "Reduced/periwinkle_plant/periwinkle_plant_1",
+      "Reduced/periwinkle_plant/periwinkle_plant_2",
+      "Reduced/periwinkle_plant/periwinkle_plant_3",
+      "Reduced/periwinkle_plant/periwinkle_plant_4",
+      "Reduced/periwinkle_plant/periwinkle_plant_5"
+     ]
+    },
+    "3141": {
+     "models": [
+      "Reduced/periwinkle_plant/periwinkle_plant_0",
+      "Reduced/periwinkle_plant/periwinkle_plant_1",
+      "Reduced/periwinkle_plant/periwinkle_plant_2",
+      "Reduced/periwinkle_plant/periwinkle_plant_3",
+      "Reduced/periwinkle_plant/periwinkle_plant_4",
+      "Reduced/periwinkle_plant/periwinkle_plant_5"
+     ]
+    },
+    "3143": {
+     "models": [
+      "Reduced/periwinkle_plant/periwinkle_plant_0",
+      "Reduced/periwinkle_plant/periwinkle_plant_1",
+      "Reduced/periwinkle_plant/periwinkle_plant_2",
+      "Reduced/periwinkle_plant/periwinkle_plant_3",
+      "Reduced/periwinkle_plant/periwinkle_plant_4",
+      "Reduced/periwinkle_plant/periwinkle_plant_5"
+     ]
+    },
+    "3142": {
+     "models": [
+      "Reduced/periwinkle_plant/periwinkle_plant_0",
+      "Reduced/periwinkle_plant/periwinkle_plant_1",
+      "Reduced/periwinkle_plant/periwinkle_plant_2",
+      "Reduced/periwinkle_plant/periwinkle_plant_3",
+      "Reduced/periwinkle_plant/periwinkle_plant_4",
+      "Reduced/periwinkle_plant/periwinkle_plant_5"
+     ]
+    }
+   },
+   "length": 0.32
+  },
+  "orfluer flowers": {
+   "models": [
+    "Reduced/flower_gazania/flower_gazania_0",
+    "Reduced/flower_gazania/flower_gazania_1",
+    "Reduced/flower_gazania/flower_gazania_2",
+    "Reduced/flower_gazania/flower_gazania_3",
+    "Reduced/flower_gazania/flower_gazania_4",
+    "Reduced/flower_gazania/flower_gazania_5",
+    "Reduced/flower_gazania/flower_gazania_6",
+    "Reduced/flower_gazania/flower_gazania_7"
+   ],
+   "cluster": 3,
+   "length": 0.4
+  },
+  "poppies": {
+   "models": [
+    "Reduced/flower_gazania/flower_gazania_0",
+    "Reduced/flower_gazania/flower_gazania_1",
+    "Reduced/flower_gazania/flower_gazania_2",
+    "Reduced/flower_gazania/flower_gazania_3",
+    "Reduced/flower_gazania/flower_gazania_4",
+    "Reduced/flower_gazania/flower_gazania_5",
+    "Reduced/flower_gazania/flower_gazania_6",
+    "Reduced/flower_gazania/flower_gazania_7"
+   ],
+   "cluster": 4,
+   "length": 0.4
+  },
+  "campion flowers": {
+   "models": [
+    "Reduced/periwinkle_plant/periwinkle_plant_0",
+    "Reduced/periwinkle_plant/periwinkle_plant_1",
+    "Reduced/periwinkle_plant/periwinkle_plant_2",
+    "Reduced/periwinkle_plant/periwinkle_plant_3",
+    "Reduced/periwinkle_plant/periwinkle_plant_4",
+    "Reduced/periwinkle_plant/periwinkle_plant_5"
+   ],
+   "cluster": 3,
+   "length": 0.35
   }
  }
 }

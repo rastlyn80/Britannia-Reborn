@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://33k7t0y35w4o"
-path="res://.godot/imported/chest_old_Image_0.jpg-7dfd167f4197d6d18ce7199a6cb7bc21.ctex"
+path.s3tc="res://.godot/imported/chest_old_Image_0.jpg-7dfd167f4197d6d18ce7199a6cb7bc21.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "86f199f9efca59d3dcfd5a42b5622295"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/chest_old/chest_old_Image_0.jpg"
-dest_files=["res://.godot/imported/chest_old_Image_0.jpg-7dfd167f4197d6d18ce7199a6cb7bc21.ctex"]
+dest_files=["res://.godot/imported/chest_old_Image_0.jpg-7dfd167f4197d6d18ce7199a6cb7bc21.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dync3vbcwnmvm"
-path="res://.godot/imported/Limestone_Color.jpg-7c6d5a6fa175125158fbf4aa3e7cb30f.ctex"
+path.s3tc="res://.godot/imported/Limestone_Color.jpg-7c6d5a6fa175125158fbf4aa3e7cb30f.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/MedievalKit/textures/Limestone_Color.jpg"
-dest_files=["res://.godot/imported/Limestone_Color.jpg-7c6d5a6fa175125158fbf4aa3e7cb30f.ctex"]
+dest_files=["res://.godot/imported/Limestone_Color.jpg-7c6d5a6fa175125158fbf4aa3e7cb30f.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

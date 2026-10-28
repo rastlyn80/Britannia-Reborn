@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bat5nrbecn8u5"
-path="res://.godot/imported/mushroom_agaric_Image_2.jpg-74913ce007e1394cb456e11e49c67766.ctex"
+path.s3tc="res://.godot/imported/mushroom_agaric_Image_2.jpg-74913ce007e1394cb456e11e49c67766.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "91d249d3c61d937ccece4583f5d86db0"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/mushroom_agaric/mushroom_agaric_Image_2.jpg"
-dest_files=["res://.godot/imported/mushroom_agaric_Image_2.jpg-74913ce007e1394cb456e11e49c67766.ctex"]
+dest_files=["res://.godot/imported/mushroom_agaric_Image_2.jpg-74913ce007e1394cb456e11e49c67766.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

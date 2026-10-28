@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://rx6giodnjnpv"
-path="res://.godot/imported/stony_dirt_path_diff_1k.jpg-94c0ba365113374205377d0a7897c8f3.ctex"
+path.s3tc="res://.godot/imported/stony_dirt_path_diff_1k.jpg-94c0ba365113374205377d0a7897c8f3.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/Surfaces/stony_dirt_path_diff_1k.jpg"
-dest_files=["res://.godot/imported/stony_dirt_path_diff_1k.jpg-94c0ba365113374205377d0a7897c8f3.ctex"]
+dest_files=["res://.godot/imported/stony_dirt_path_diff_1k.jpg-94c0ba365113374205377d0a7897c8f3.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

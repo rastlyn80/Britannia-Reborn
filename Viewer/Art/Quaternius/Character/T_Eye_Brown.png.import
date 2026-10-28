@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c4cb4wosy2ggs"
-path="res://.godot/imported/T_Eye_Brown.png-b361226a9c1328a2cb60cc111a13a404.ctex"
+path.s3tc="res://.godot/imported/T_Eye_Brown.png-b361226a9c1328a2cb60cc111a13a404.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/Quaternius/Character/T_Eye_Brown.png"
-dest_files=["res://.godot/imported/T_Eye_Brown.png-b361226a9c1328a2cb60cc111a13a404.ctex"]
+dest_files=["res://.godot/imported/T_Eye_Brown.png-b361226a9c1328a2cb60cc111a13a404.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

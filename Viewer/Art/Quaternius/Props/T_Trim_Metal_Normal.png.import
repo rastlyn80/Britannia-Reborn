@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://doberie3qrs1b"
-path="res://.godot/imported/T_Trim_Metal_Normal.png-3bb38ef8ba3db956ec35427c8d723be4.ctex"
+path.s3tc="res://.godot/imported/T_Trim_Metal_Normal.png-3bb38ef8ba3db956ec35427c8d723be4.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/Quaternius/Props/T_Trim_Metal_Normal.png"
-dest_files=["res://.godot/imported/T_Trim_Metal_Normal.png-3bb38ef8ba3db956ec35427c8d723be4.ctex"]
+dest_files=["res://.godot/imported/T_Trim_Metal_Normal.png-3bb38ef8ba3db956ec35427c8d723be4.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

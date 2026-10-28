@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://co1il7o1qlwx"
-path="res://.godot/imported/wicker_basket_01_nor_gl_1k.jpg-02b40d211e3c90a389bcc951ef55b3f2.ctex"
+path.s3tc="res://.godot/imported/wicker_basket_01_nor_gl_1k.jpg-02b40d211e3c90a389bcc951ef55b3f2.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/PolyHaven/wicker_basket_01/textures/wicker_basket_01_nor_gl_1k.jpg"
-dest_files=["res://.godot/imported/wicker_basket_01_nor_gl_1k.jpg-02b40d211e3c90a389bcc951ef55b3f2.ctex"]
+dest_files=["res://.godot/imported/wicker_basket_01_nor_gl_1k.jpg-02b40d211e3c90a389bcc951ef55b3f2.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

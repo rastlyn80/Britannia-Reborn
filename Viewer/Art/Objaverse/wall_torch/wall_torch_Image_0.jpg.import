@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://tu7os1odr1a"
-path="res://.godot/imported/wall_torch_Image_0.jpg-2fc3fd7b2ccd381fa7c91d9c42be4de0.ctex"
+path.s3tc="res://.godot/imported/wall_torch_Image_0.jpg-2fc3fd7b2ccd381fa7c91d9c42be4de0.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "2497383226998d0e9f34806daad27ea0"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/wall_torch/wall_torch_Image_0.jpg"
-dest_files=["res://.godot/imported/wall_torch_Image_0.jpg-2fc3fd7b2ccd381fa7c91d9c42be4de0.ctex"]
+dest_files=["res://.godot/imported/wall_torch_Image_0.jpg-2fc3fd7b2ccd381fa7c91d9c42be4de0.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

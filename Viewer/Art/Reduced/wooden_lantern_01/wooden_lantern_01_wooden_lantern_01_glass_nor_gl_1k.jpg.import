@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bt51k6efpieth"
-path="res://.godot/imported/wooden_lantern_01_wooden_lantern_01_glass_nor_gl_1k.jpg-6c0e66a8f408530b92336966ce0534b2.ctex"
+path.s3tc="res://.godot/imported/wooden_lantern_01_wooden_lantern_01_glass_nor_gl_1k.jpg-6c0e66a8f408530b92336966ce0534b2.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "4824dca9b85acd18f0ec34019f51beef"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Reduced/wooden_lantern_01/wooden_lantern_01_wooden_lantern_01_glass_nor_gl_1k.jpg"
-dest_files=["res://.godot/imported/wooden_lantern_01_wooden_lantern_01_glass_nor_gl_1k.jpg-6c0e66a8f408530b92336966ce0534b2.ctex"]
+dest_files=["res://.godot/imported/wooden_lantern_01_wooden_lantern_01_glass_nor_gl_1k.jpg-6c0e66a8f408530b92336966ce0534b2.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://kuoi368te6lu"
-path="res://.godot/imported/cards_Image_104.png-21460914aa7370ec104452fa424c279a.ctex"
+path.s3tc="res://.godot/imported/cards_Image_104.png-21460914aa7370ec104452fa424c279a.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "daf7626bd5b9f2bfd1f10bc9b5819b2b"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/cards/cards_Image_104.png"
-dest_files=["res://.godot/imported/cards_Image_104.png-21460914aa7370ec104452fa424c279a.ctex"]
+dest_files=["res://.godot/imported/cards_Image_104.png-21460914aa7370ec104452fa424c279a.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -67,8 +67,9 @@ static func build(reconstruction: RefCounted, name: String, seed := 0, id := -1)
 	return root
 
 static func _one(reconstruction: RefCounted, model: String, found: Dictionary, scale: float) -> Node3D:
-	# "Objaverse/name" entries are reduced museum/Sketchfab scans (Art/Objaverse).
-	var path := "Objaverse/%s/%s.glb" % [model.trim_prefix("Objaverse/"),model.trim_prefix("Objaverse/")] if model.begins_with("Objaverse/") else "PolyHaven/%s/%s_1k.gltf" % [model,model]
+	# "Objaverse/name" entries are reduced museum/Sketchfab scans (Art/Objaverse);
+	# "Reduced/set/set_N" one variant split out of a Poly Haven nature set.
+	var path := "Objaverse/%s/%s.glb" % [model.trim_prefix("Objaverse/"),model.trim_prefix("Objaverse/")] if model.begins_with("Objaverse/") else ("%s.gltf" % model if model.begins_with("Reduced/") else "PolyHaven/%s/%s_1k.gltf" % [model,model])
 	if not ResourceLoader.exists("res://Art/"+path): return null
 	var probe: Node3D = reconstruction.fitted(path,Vector3.ONE)
 	probe.free()
@@ -76,11 +77,15 @@ static func _one(reconstruction: RefCounted, model: String, found: Dictionary, s
 	# Flat goods (cutlery, trays, bread, ore) scale by their length instead.
 	var factor := (float(found.length)/maxf(maxf(box.size.x,box.size.z),0.001) if found.has("length") else float(found.height)/maxf(box.size.y,0.001))*scale
 	var placed: Node3D = reconstruction.fitted(path,box.size*factor)
-	if not (found.has("rotation") or found.has("anchor") or found.has("elevation") or found.has("flame") or found.has("pedestal")): return placed
+	if not (found.has("rotation") or found.has("anchor") or found.has("elevation") or found.has("flame") or found.has("pedestal") or found.has("pitch")): return placed
 	var pivot := Node3D.new()
 	pivot.add_child(placed)
 	placed.rotation.y = deg_to_rad(float(found.get("rotation",0.0)))
 	placed.position.y = float(found.get("elevation",0.0))
+	# "pitch": tip an upright scan over (degrees about X) to lie on the ground.
+	if found.has("pitch"):
+		placed.rotation.x = deg_to_rad(float(found.pitch))
+		placed.position.y += box.size.z*factor/2
 	# "pedestal": [width, height] stone column the model stands on.
 	if found.has("pedestal"):
 		var column: Array = found.pedestal
@@ -88,12 +93,14 @@ static func _one(reconstruction: RefCounted, model: String, found: Dictionary, s
 		placed.position.y += float(column[1])
 	var turned := Basis(Vector3.UP,placed.rotation.y)*(box.size*factor)
 	if str(found.get("anchor","")) == "back": placed.position.z = -absf(turned.z)/2
-	# "flame": a glowing tip in the torch head (the top, away from the wall).
+	# "flame": a glowing tip on top (a wall torch's head leans away from the wall).
 	if found.get("flame",false):
 		var flame := MeshInstance3D.new()
 		var tip := SphereMesh.new()
-		tip.radius = 0.05
-		tip.height = 0.16
+		# true: a torch tip; a number: that flame radius (a brazier's fire).
+		var radius := 0.05 if found.flame is bool else float(found.flame)
+		tip.radius = radius
+		tip.height = radius*3.2
 		tip.radial_segments = 8
 		tip.rings = 4
 		var glow := StandardMaterial3D.new()
@@ -103,6 +110,6 @@ static func _one(reconstruction: RefCounted, model: String, found: Dictionary, s
 		glow.emission_energy_multiplier = 2.5
 		flame.mesh = tip
 		flame.material_override = glow
-		flame.position = Vector3(0,placed.position.y+absf(turned.y)+0.02,placed.position.z-absf(turned.z)/2+0.07)
+		flame.position = Vector3(0,placed.position.y+absf(turned.y)+0.07-radius,placed.position.z-absf(turned.z)/2+0.07 if str(found.get("anchor","")) == "back" else 0.0)
 		pivot.add_child(flame)
 	return pivot

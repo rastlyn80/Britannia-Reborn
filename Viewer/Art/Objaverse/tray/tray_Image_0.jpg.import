@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://snllplxe8n45"
-path="res://.godot/imported/tray_Image_0.jpg-fb9d115d4dbdeb91135d6f73faeddee4.ctex"
+path.s3tc="res://.godot/imported/tray_Image_0.jpg-fb9d115d4dbdeb91135d6f73faeddee4.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "7c9a93e0c7e426781ce2420cc3d860bb"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/tray/tray_Image_0.jpg"
-dest_files=["res://.godot/imported/tray_Image_0.jpg-fb9d115d4dbdeb91135d6f73faeddee4.ctex"]
+dest_files=["res://.godot/imported/tray_Image_0.jpg-fb9d115d4dbdeb91135d6f73faeddee4.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

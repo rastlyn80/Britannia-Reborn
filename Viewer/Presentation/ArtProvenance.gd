@@ -46,24 +46,84 @@ func _initialize() -> void:
 			look = {"status":"guess","detail":"untested guess: "+str(look.detail)}
 		result[str(id)] = look
 		counts[look.status] = int(counts.get(look.status,0))+1
+	var coverage := coverage_for(catalog,result)
 	var file := FileAccess.open(args.get("out",""),FileAccess.WRITE)
-	file.store_string("window.CURRENT="+JSON.stringify({"generated":Time.get_datetime_string_from_system(true),"looks":result})+";")
+	file.store_string("window.CURRENT="+JSON.stringify({"generated":Time.get_datetime_string_from_system(true),"coverage":coverage,"looks":result})+";")
 	file.close()
 	print("CURRENT LOOKS: ",counts)
-	# Coverage weighted by Britain placements (map statics and server decoration).
-	var weights := {}
-	var total := 0
-	for item in catalog.items:
-		var n := int(item.get("britain",0))+int(item.get("decoration",0))
-		if n == 0: continue
-		var status := str(result[str(int(item.id))].status)
-		weights[status] = int(weights.get(status,0))+n
-		total += n
-	var summary := ""
-	for status in ["scan","crafted","owner","kit","built","guess","original","hidden"]:
-		summary += "%s %.1f%%  " % [status,100.0*float(weights.get(status,0))/maxf(total,1)]
-	print("BRITAIN COVERAGE (placements): ",summary)
+	for scope in ["britain","world"]+FACETS:
+		var line := ""
+		for status in STATUSES: line += "%s %.1f%%  " % [status,100.0*float(coverage[scope].placements.get(status,0))/maxf(coverage[scope].total,1)]
+		print("%s COVERAGE (placements): final %.1f%%  %s" % [scope.to_upper(),coverage[scope].final,line])
+	print("WORLD GRAPHICS: final %.1f%% of %d placed graphics (%d open)" % [coverage.graphics.final,coverage.graphics.total,coverage.graphics.open])
+	# The worklist: every placed family with graphics not yet at final quality.
+	if args.has("open"):
+		var open := open_work(catalog,result)
+		var out := FileAccess.open(args.open,FileAccess.WRITE)
+		out.store_string(JSON.stringify({"generated":Time.get_datetime_string_from_system(true),"families":open},"	"))
+		out.close()
+		print("OPEN WORK: %d families, %d graphics" % [open.size(),coverage.graphics.open])
 	quit(0)
+
+const STATUSES := ["scan","crafted","owner","kit","built","guess","original","hidden"]
+const FINAL := ["scan","crafted","owner","hidden"]
+const FACETS := ["Felucca","Trammel","Ilshenar","Malas","Tokuno","TerMur"]
+
+# Placements of a graphic across the world. Felucca largely repeats Trammel,
+# so the catalogue's "world" leaves it out; Felucca-only graphics still count.
+static func placed(item: Dictionary) -> int:
+	return maxi(int(item.get("world",0)),int(item.get("felucca",0)))
+
+# Final-quality shares by placements in Britain, the world and each facet,
+# and by distinct placed graphics.
+static func coverage_for(catalog: Dictionary, looks: Dictionary) -> Dictionary:
+	var scopes := {}
+	for scope in ["britain","world"]+FACETS: scopes[scope] = {"placements":{},"total":0}
+	var graphics := {"total":0,"open":0,"final":0.0}
+	for item in catalog.items:
+		var status := str(looks[str(int(item.id))].status)
+		var weights := {"britain":int(item.get("britain",0))+int(item.get("decoration",0)),"world":placed(item)}
+		var facets: Dictionary = item.get("facets",{}) if item.get("facets") is Dictionary else {}
+		for facet in FACETS: weights[facet] = int(facets.get(facet,0))
+		for scope in weights:
+			if weights[scope] == 0: continue
+			scopes[scope].placements[status] = int(scopes[scope].placements.get(status,0))+weights[scope]
+			scopes[scope].total += weights[scope]
+		if weights.world > 0:
+			graphics.total += 1
+			if not status in FINAL: graphics.open += 1
+	for scope in scopes:
+		var done := 0
+		for status in FINAL: done += int(scopes[scope].placements.get(status,0))
+		scopes[scope].final = snappedf(100.0*done/maxf(scopes[scope].total,1),0.1)
+	graphics.final = snappedf(100.0*(graphics.total-graphics.open)/maxf(graphics.total,1),0.1)
+	scopes["graphics"] = graphics
+	return scopes
+
+# Open families, most placed first: name, category, open graphic ids with
+# their current status, open placements overall and per facet.
+static func open_work(catalog: Dictionary, looks: Dictionary) -> Array:
+	var items := {}
+	for item in catalog.items: items[int(item.id)] = item
+	var rows := []
+	for family in catalog.families:
+		var open_ids := []
+		var statuses := {}
+		var total := 0
+		var facets := {}
+		for id in family.ids:
+			var item: Dictionary = items.get(int(id),{})
+			var status := str(looks.get(str(int(id)),{}).get("status","original"))
+			if item.is_empty() or placed(item) == 0 or status in FINAL: continue
+			open_ids.append(int(id))
+			statuses[status] = int(statuses.get(status,0))+1
+			total += placed(item)
+			var per: Dictionary = item.get("facets",{}) if item.get("facets") is Dictionary else {}
+			for facet in per: facets[facet] = int(facets.get(facet,0))+int(per[facet])
+		if open_ids.is_empty(): continue
+		rows.append({"key":family.key,"name":family.name,"category":family.category,"ids":open_ids,"statuses":statuses,"placements":total,"britain":int(family.get("britain",0)),"facets":facets})
+	rows.sort_custom(func(a,b): return a.placements > b.placements)
+	return rows
 
 # Tiledata flag names (catalogue order) back to their bit values.
 const FLAG_NAMES := ["background","weapon","transparent","translucent","wall","damaging","impassable","wet","unknown","surface","bridge","stackable","window","noshoot","article-a","article-an","article-the","foliage","partial-hue","no-house","map","container","wearable","light","animated","hover","no-diagonal","armor","roof","door","stair-back","stair-right"]
@@ -77,6 +137,7 @@ static func flag_bits(names: Array) -> int:
 static func pack(asset: String) -> Dictionary:
 	if asset.begins_with("procedural:") or asset.is_empty(): return {"status":"built","detail":"built in code"}
 	if asset.begins_with("PolyHaven/"): return {"status":"scan","detail":"Poly Haven photoscan (CC0): "+asset.get_file().get_basename()}
+	if asset.begins_with("Reduced/"): return {"status":"scan","detail":"Poly Haven photoscan (CC0), one variant: "+asset.get_file().get_basename()}
 	if asset.begins_with("Objaverse/"): return {"status":"scan","detail":"Sketchfab scan/PBR (see Art/Objaverse/NOTICE.md): "+asset.get_file().get_basename()}
 	var vendor := "Poly Haven" if asset.begins_with("PolyHaven/") else ("Kenney" if asset.begins_with("Kenney/") else ("Medieval kit" if asset.begins_with("MedievalKit/") else "Quaternius"))
 	return {"status":"kit","detail":"%s (CC0): %s" % [vendor,asset.get_file().get_basename()]}
@@ -91,6 +152,7 @@ func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -
 	var found: Dictionary = preload("res://Presentation/PropReplacements.gd").entry_for(name,id)
 	if not found.is_empty():
 		var model := str(found.get("model",found.get("models",[""])[0]))
+		if model.begins_with("Reduced/"): return pack(model)
 		return pack(("Objaverse/%s/%s.glb" % [model.trim_prefix("Objaverse/"),model.trim_prefix("Objaverse/")]) if model.begins_with("Objaverse/") else "PolyHaven/%s/%s" % [model,model])
 	var review: Dictionary = Reviewed.entry(id)
 	# Counters are built cell by cell in photoscanned timber whatever their review says.
@@ -139,6 +201,7 @@ func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -
 			if str(rule.model) == "display_case": return {"status":"crafted","detail":"glazed display cabinets in photoscanned timber"}
 			if str(rule.model) == "cannon": return pack("PolyHaven/cannon_01/cannon_01_1k.gltf")
 			return {"status":"built","detail":"built in code: "+str(rule.model)}
+	if kind == "fence" and preload("res://Presentation/FenceBuilder.gd").handles(name): return {"status":"crafted","detail":"fence built in photoscanned timber, stone and wrought iron"}
 	if kind in FITTED: return pack(asset)
 	var named := name.to_lower()
 	if kind == "counter": return {"status":"crafted","detail":"panelled counter in photoscanned timber"}

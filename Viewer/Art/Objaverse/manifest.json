@@ -1070,6 +1070,132 @@
         1.017
       ],
       "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "stump_boubin",
+      "title": "Boub\u00edn Stump",
+      "uid": "b968b5dc462148989cb87b072885da85",
+      "page": "https://sketchfab.com/3d-models/b968b5dc462148989cb87b072885da85",
+      "author": "3dhdscan",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-039/b968b5dc462148989cb87b072885da85.glb",
+      "sourceSha256": "21f96922c87c2d3e3c0853289a40b5e0a48ce5888763b8acef3737376383ff0c",
+      "sourceTriangles": 23581,
+      "file": "stump_boubin/stump_boubin.glb",
+      "sha256": "df176cf3c0074805d6f7b282883c280c1607a7eb2ab9f75bef82f77eb9acee47",
+      "triangles": 6000,
+      "size": [
+        56.94,
+        19.593,
+        54.725
+      ],
+      "processing": "ground-centred, decimated to 6000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "stump_meadow",
+      "title": "Stump in the meadow 3",
+      "uid": "e5317637f57d48b6ba0668cc7c074498",
+      "page": "https://sketchfab.com/3d-models/e5317637f57d48b6ba0668cc7c074498",
+      "author": "3dhdscan",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-046/e5317637f57d48b6ba0668cc7c074498.glb",
+      "sourceSha256": "48551376766fa49493ddf5363fc82d46d07650faeb1eb9b7f03ed82a875d42a5",
+      "sourceTriangles": 18196,
+      "file": "stump_meadow/stump_meadow.glb",
+      "sha256": "a46f8d3409eb44ca6542659e4f75154f8f1ac9be2ef43ff63d0dee424595072d",
+      "triangles": 5999,
+      "size": [
+        1.47,
+        0.421,
+        1.333
+      ],
+      "processing": "ground-centred, decimated to 6000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "debris_sticks",
+      "title": "That's one big pile of stick",
+      "uid": "ded075151a294ad094b43903ba2f8f59",
+      "page": "https://sketchfab.com/3d-models/ded075151a294ad094b43903ba2f8f59",
+      "author": "Lo\u00efc Norgeot",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-069/ded075151a294ad094b43903ba2f8f59.glb",
+      "sourceSha256": "2c2b1d09f260788c035af36c3566fa875554b0903b8781e1665feb3770266eaf",
+      "sourceTriangles": 314462,
+      "file": "debris_sticks/debris_sticks.glb",
+      "sha256": "16f482cf37a5f1ca74e5dd8f7845dc4ba88d94fb470fc1da231d49af8d1ad473",
+      "triangles": 5533,
+      "size": [
+        930.237,
+        60.392,
+        930.237
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "brazier_pole",
+      "title": "Brazier",
+      "uid": "653f30c424874a5a8ba4d71cef51d94e",
+      "page": "https://sketchfab.com/3d-models/653f30c424874a5a8ba4d71cef51d94e",
+      "author": "mSameja",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-020/653f30c424874a5a8ba4d71cef51d94e.glb",
+      "sourceSha256": "1f4e517e0eaf61533b0a86a3aec09e785f4bc6ac8ef54faba45089ecd22c9206",
+      "sourceTriangles": 5766,
+      "file": "brazier_pole/brazier_pole.glb",
+      "sha256": "221adde2e2d4c689eeb9b68818678edd374d24cf3be9cd13b1371bd86d504813",
+      "triangles": 5000,
+      "size": [
+        0.866,
+        2.0,
+        0.91
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "bone_spine",
+      "title": "Spine (collection of thunthu)",
+      "uid": "1ce94666922f48c9b68cd0e196b74a0a",
+      "page": "https://sketchfab.com/3d-models/1ce94666922f48c9b68cd0e196b74a0a",
+      "author": "thunthu",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-063/1ce94666922f48c9b68cd0e196b74a0a.glb",
+      "sourceSha256": "0a03cdf78df4c4ef22489eb7b0a73a7a5d8aaed30ae2377a4fd378c129667687",
+      "sourceTriangles": 57164,
+      "file": "bone_spine/bone_spine.glb",
+      "sha256": "bc462764baefebeea89f13cb9f467698cbc96e1970de79c7e98a5502a4ac31d9",
+      "triangles": 2980,
+      "size": [
+        5.728,
+        26.666,
+        4.142
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "bone_pelvis",
+      "title": "Pig Pelvis: EOA:2022.90.3",
+      "uid": "e1ee1a8086ed4bbaa9873341a9f9b448",
+      "page": "https://sketchfab.com/3d-models/e1ee1a8086ed4bbaa9873341a9f9b448",
+      "author": "Portland Museum",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-153/e1ee1a8086ed4bbaa9873341a9f9b448.glb",
+      "sourceSha256": "f372ee74ca5130cfaed6c97301dcf91d448b4ca1dde46e6e61ec0faf2826af94",
+      "sourceTriangles": 21775,
+      "file": "bone_pelvis/bone_pelvis.glb",
+      "sha256": "7114ff377367c926d8011f8b9d146841370e3bc6299318039ffd510064e2a525",
+      "triangles": 3000,
+      "size": [
+        0.571,
+        0.273,
+        1.111
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
     }
   ]
 }

@@ -918,7 +918,7 @@ func _collect_bounds(node: Node3D, transform: Transform3D, boxes: Array) -> void
 		if child is Node3D: _collect_bounds(child,combined,boxes)
 
 func fitted(path: String, size: Vector3, orientation: Array = [0,0,0]) -> Node3D:
-	var full := "res://Art/"+path if path.begins_with("Kenney/") or path.begins_with("PolyHaven/") or path.begins_with("MedievalKit/") or path.begins_with("Objaverse/") else "res://Art/Quaternius/"+path
+	var full := "res://Art/"+path if path.begins_with("Kenney/") or path.begins_with("PolyHaven/") or path.begins_with("MedievalKit/") or path.begins_with("Objaverse/") or path.begins_with("Reduced/") else "res://Art/Quaternius/"+path
 	# Heavy Poly Haven scans placed hundreds of times use their game-budget copy
 	# (scripts/reduce-polyhaven.py); the pinned original stays untouched.
 	if path.begins_with("PolyHaven/"):
@@ -1113,7 +1113,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 			visual = preload("res://Presentation/LocalLibrary.gd").run(furniture_slot,int(s.x),int(s.y),maxf(span.x,span.y),0.8 if kind == "table" else 0.48,minf(span.x,span.y)*(0.9 if kind == "table" else 0.5))
 			if visual and not long_x: visual.rotation.y = PI/2
 		# Photoscanned CC0 replacements by item name (prop-replacements.json).
-		if visual == null and kind in ["prop","asset","rock","log","mushroom","post"] and not groups.has(ordinal): visual = preload("res://Presentation/PropReplacements.gd").build(self,str(detail.get("name","")),int(s.x)*7919+int(s.y)*104729,int(s.id))
+		if visual == null and kind in ["prop","asset","rock","log","mushroom","post","flower","plant","fern"] and not groups.has(ordinal): visual = preload("res://Presentation/PropReplacements.gd").build(self,str(detail.get("name","")),int(s.x)*7919+int(s.y)*104729,int(s.id))
 		# Counters follow their real footprint (L and U shapes) cell by cell.
 		if visual == null and kind == "counter" and tint.is_empty(): visual = counter_run(s,groups.get(ordinal,{"indices":[ordinal],"min_z":float(s.z)}),world)
 		# Wooden benches are runs of the scanned bench whatever their review says.
@@ -1267,7 +1267,10 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					visual = fitted(asset,Vector3(0.86,height,0.12))
 					for side in [-1,1]: facade.piece(visual,Vector3(0.08,height,0.2),Vector3(side*0.46,height/2,0),"wood")
 					facade.piece(visual,Vector3(1,0.12,0.2),Vector3(0,height-0.06,0),"wood")
-				"fence": visual = fitted(asset,Vector3(1,1.2,0.10))
+				"fence":
+					# Wooden, iron and stone-pier fences are built in photoscanned materials.
+					if preload("res://Presentation/FenceBuilder.gd").handles(str(detail.get("name",""))): visual = preload("res://Presentation/FenceBuilder.gd").build(str(detail.get("name","")),int(s.id),geometry,facade)
+					else: visual = fitted(asset,Vector3(1,1.2,0.10))
 				"bed":
 					var size: Vector2 = groups[ordinal].size if groups.has(ordinal) else Vector2.ONE
 					# Photoscanned carved bed with linen (CC0 Poly Haven); a double bed

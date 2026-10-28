@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dymx7xlpd264b"
-path="res://.godot/imported/potted_plant_02_pot_diff_1k.jpg-2bf7ad7c943a00bec1b0fa3063bc1308.ctex"
+path.s3tc="res://.godot/imported/potted_plant_02_pot_diff_1k.jpg-2bf7ad7c943a00bec1b0fa3063bc1308.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/PolyHaven/potted_plant_02/textures/potted_plant_02_pot_diff_1k.jpg"
-dest_files=["res://.godot/imported/potted_plant_02_pot_diff_1k.jpg-2bf7ad7c943a00bec1b0fa3063bc1308.ctex"]
+dest_files=["res://.godot/imported/potted_plant_02_pot_diff_1k.jpg-2bf7ad7c943a00bec1b0fa3063bc1308.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

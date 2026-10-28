@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ctlbmloy3nt3h"
-path="res://.godot/imported/fireplace_rustic_Image_3.jpg-29d100244559834a675914f66eb037f5.ctex"
+path.s3tc="res://.godot/imported/fireplace_rustic_Image_3.jpg-29d100244559834a675914f66eb037f5.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "4aec0e101a438342ce11c68ad6aea1ad"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/fireplace_rustic/fireplace_rustic_Image_3.jpg"
-dest_files=["res://.godot/imported/fireplace_rustic_Image_3.jpg-29d100244559834a675914f66eb037f5.ctex"]
+dest_files=["res://.godot/imported/fireplace_rustic_Image_3.jpg-29d100244559834a675914f66eb037f5.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bdjq7gy61ocyn"
-path="res://.godot/imported/table_wood_b_Image_0.jpg-0d25e928784984e20622c5f3ff3b9643.ctex"
+path.s3tc="res://.godot/imported/table_wood_b_Image_0.jpg-0d25e928784984e20622c5f3ff3b9643.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "46f73c5d2def35d3b7cd19ffa5b956ce"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/table_wood_b/table_wood_b_Image_0.jpg"
-dest_files=["res://.godot/imported/table_wood_b_Image_0.jpg-0d25e928784984e20622c5f3ff3b9643.ctex"]
+dest_files=["res://.godot/imported/table_wood_b_Image_0.jpg-0d25e928784984e20622c5f3ff3b9643.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

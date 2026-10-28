@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cewpq7vse3s3w"
-path="res://.godot/imported/fireplace_galway_Image_0.jpg-c4886d2e91492af421cf81b474460daf.ctex"
+path.s3tc="res://.godot/imported/fireplace_galway_Image_0.jpg-c4886d2e91492af421cf81b474460daf.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "95773ab1da419102e135d790fa6c8b07"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/fireplace_galway/fireplace_galway_Image_0.jpg"
-dest_files=["res://.godot/imported/fireplace_galway_Image_0.jpg-c4886d2e91492af421cf81b474460daf.ctex"]
+dest_files=["res://.godot/imported/fireplace_galway_Image_0.jpg-c4886d2e91492af421cf81b474460daf.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

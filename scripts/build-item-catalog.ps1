@@ -28,7 +28,7 @@ if ($LASTEXITCODE) { throw 'Item catalogue extraction failed' }
 # Label what the client draws today for each graphic (kit, owner packs, code, nothing).
 $env:APPDATA=Join-Path $root '.godot-user';$env:LOCALAPPDATA=$env:APPDATA
 $godot=(Get-ChildItem "$root/.tools/godot/*console.exe" | Select-Object -First 1).FullName
-& $godot --headless --path "$root/Viewer" --script res://Presentation/ArtProvenance.gd -- "--catalog=$out/catalog.js" "--out=$out/current.js"
+& $godot --headless --path "$root/Viewer" --script res://Presentation/ArtProvenance.gd -- "--catalog=$out/catalog.js" "--out=$out/current.js" "--open=$out/open-work.json"
 if ($LASTEXITCODE) { throw 'Current-look labelling failed' }
 Copy-Item "$root/scripts/item-catalog.html" "$out/index.html" -Force
 Write-Host "Open $out/index.html (local reference only; do not redistribute)."

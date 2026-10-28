@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b17x2higa1hb"
-path="res://.godot/imported/Leaf_Color.jpg-114abbc77742dd978f71799bcc10fa11.ctex"
+path.s3tc="res://.godot/imported/Leaf_Color.jpg-114abbc77742dd978f71799bcc10fa11.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/MedievalKit/textures/Leaf_Color.jpg"
-dest_files=["res://.godot/imported/Leaf_Color.jpg-114abbc77742dd978f71799bcc10fa11.ctex"]
+dest_files=["res://.godot/imported/Leaf_Color.jpg-114abbc77742dd978f71799bcc10fa11.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

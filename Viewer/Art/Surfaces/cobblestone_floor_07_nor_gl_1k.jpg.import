@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ugnuygary2nt"
-path="res://.godot/imported/cobblestone_floor_07_nor_gl_1k.jpg-7d3a54b8af087589a53089d422f4df88.ctex"
+path.s3tc="res://.godot/imported/cobblestone_floor_07_nor_gl_1k.jpg-7d3a54b8af087589a53089d422f4df88.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/Surfaces/cobblestone_floor_07_nor_gl_1k.jpg"
-dest_files=["res://.godot/imported/cobblestone_floor_07_nor_gl_1k.jpg-7d3a54b8af087589a53089d422f4df88.ctex"]
+dest_files=["res://.godot/imported/cobblestone_floor_07_nor_gl_1k.jpg-7d3a54b8af087589a53089d422f4df88.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

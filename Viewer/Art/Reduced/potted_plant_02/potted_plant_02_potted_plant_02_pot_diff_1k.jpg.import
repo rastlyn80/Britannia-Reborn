@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dv3077nsd07kv"
-path="res://.godot/imported/potted_plant_02_potted_plant_02_pot_diff_1k.jpg-1b53394340a13538244670c9f5ab951c.ctex"
+path.s3tc="res://.godot/imported/potted_plant_02_potted_plant_02_pot_diff_1k.jpg-1b53394340a13538244670c9f5ab951c.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "d94eedad41af207c47c7f420d60187c0"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Reduced/potted_plant_02/potted_plant_02_potted_plant_02_pot_diff_1k.jpg"
-dest_files=["res://.godot/imported/potted_plant_02_potted_plant_02_pot_diff_1k.jpg-1b53394340a13538244670c9f5ab951c.ctex"]
+dest_files=["res://.godot/imported/potted_plant_02_potted_plant_02_pot_diff_1k.jpg-1b53394340a13538244670c9f5ab951c.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

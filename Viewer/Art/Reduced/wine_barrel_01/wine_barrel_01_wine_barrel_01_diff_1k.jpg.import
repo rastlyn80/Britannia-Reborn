@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b02uik8w2b40h"
-path="res://.godot/imported/wine_barrel_01_wine_barrel_01_diff_1k.jpg-a8a4f5110b1afa692c439f07ff62a5b0.ctex"
+path.s3tc="res://.godot/imported/wine_barrel_01_wine_barrel_01_diff_1k.jpg-a8a4f5110b1afa692c439f07ff62a5b0.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "907b119383b5adbf59d257309b216179"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Reduced/wine_barrel_01/wine_barrel_01_wine_barrel_01_diff_1k.jpg"
-dest_files=["res://.godot/imported/wine_barrel_01_wine_barrel_01_diff_1k.jpg-a8a4f5110b1afa692c439f07ff62a5b0.ctex"]
+dest_files=["res://.godot/imported/wine_barrel_01_wine_barrel_01_diff_1k.jpg-a8a4f5110b1afa692c439f07ff62a5b0.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

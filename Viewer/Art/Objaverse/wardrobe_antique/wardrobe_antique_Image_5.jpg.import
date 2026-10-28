@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ciolbs16bah6h"
-path="res://.godot/imported/wardrobe_antique_Image_5.jpg-858cd1337485a7caac175254287c561e.ctex"
+path.s3tc="res://.godot/imported/wardrobe_antique_Image_5.jpg-858cd1337485a7caac175254287c561e.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "80e054f6a360ea6e4452023373044bee"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/wardrobe_antique/wardrobe_antique_Image_5.jpg"
-dest_files=["res://.godot/imported/wardrobe_antique_Image_5.jpg-858cd1337485a7caac175254287c561e.ctex"]
+dest_files=["res://.godot/imported/wardrobe_antique_Image_5.jpg-858cd1337485a7caac175254287c561e.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

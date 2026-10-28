@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dlm2d76yxu16u"
-path="res://.godot/imported/park_dirt_rough_1k.jpg-9abea383a3203a7554bb9d59750d6f67.ctex"
+path.s3tc="res://.godot/imported/park_dirt_rough_1k.jpg-9abea383a3203a7554bb9d59750d6f67.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/Surfaces/park_dirt_rough_1k.jpg"
-dest_files=["res://.godot/imported/park_dirt_rough_1k.jpg-9abea383a3203a7554bb9d59750d6f67.ctex"]
+dest_files=["res://.godot/imported/park_dirt_rough_1k.jpg-9abea383a3203a7554bb9d59750d6f67.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

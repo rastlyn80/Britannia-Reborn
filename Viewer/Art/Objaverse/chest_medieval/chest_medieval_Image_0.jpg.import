@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cwjd031p507e3"
-path="res://.godot/imported/chest_medieval_Image_0.jpg-80aac3c4b9592c956ad493e61f74b8fd.ctex"
+path.s3tc="res://.godot/imported/chest_medieval_Image_0.jpg-80aac3c4b9592c956ad493e61f74b8fd.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "e233521085d6719a06a4b7484cd7e1c0"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/chest_medieval/chest_medieval_Image_0.jpg"
-dest_files=["res://.godot/imported/chest_medieval_Image_0.jpg-80aac3c4b9592c956ad493e61f74b8fd.ctex"]
+dest_files=["res://.godot/imported/chest_medieval_Image_0.jpg-80aac3c4b9592c956ad493e61f74b8fd.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

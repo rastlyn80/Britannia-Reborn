@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://da5dk3cnd3ckl"
-path="res://.godot/imported/GothicCommode_01_diff_1k.jpg-7e55aed0f1398d1d6fe8c650fff59117.ctex"
+path.s3tc="res://.godot/imported/GothicCommode_01_diff_1k.jpg-7e55aed0f1398d1d6fe8c650fff59117.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/PolyHaven/GothicCommode_01/textures/GothicCommode_01_diff_1k.jpg"
-dest_files=["res://.godot/imported/GothicCommode_01_diff_1k.jpg-7e55aed0f1398d1d6fe8c650fff59117.ctex"]
+dest_files=["res://.godot/imported/GothicCommode_01_diff_1k.jpg-7e55aed0f1398d1d6fe8c650fff59117.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

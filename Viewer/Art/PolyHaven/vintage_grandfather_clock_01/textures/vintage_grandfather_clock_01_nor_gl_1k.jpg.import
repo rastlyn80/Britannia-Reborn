@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cuppqa0q23jc7"
-path="res://.godot/imported/vintage_grandfather_clock_01_nor_gl_1k.jpg-71371910850b92a47866e36aa8db8489.ctex"
+path.s3tc="res://.godot/imported/vintage_grandfather_clock_01_nor_gl_1k.jpg-71371910850b92a47866e36aa8db8489.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/PolyHaven/vintage_grandfather_clock_01/textures/vintage_grandfather_clock_01_nor_gl_1k.jpg"
-dest_files=["res://.godot/imported/vintage_grandfather_clock_01_nor_gl_1k.jpg-71371910850b92a47866e36aa8db8489.ctex"]
+dest_files=["res://.godot/imported/vintage_grandfather_clock_01_nor_gl_1k.jpg-71371910850b92a47866e36aa8db8489.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dfapn1oi8p83w"
-path="res://.godot/imported/sparse_grass_nor_gl_1k.jpg-1c478a5adb6cb654abf8fbb832f5a118.ctex"
+path.s3tc="res://.godot/imported/sparse_grass_nor_gl_1k.jpg-1c478a5adb6cb654abf8fbb832f5a118.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/Surfaces/sparse_grass_nor_gl_1k.jpg"
-dest_files=["res://.godot/imported/sparse_grass_nor_gl_1k.jpg-1c478a5adb6cb654abf8fbb832f5a118.ctex"]
+dest_files=["res://.godot/imported/sparse_grass_nor_gl_1k.jpg-1c478a5adb6cb654abf8fbb832f5a118.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

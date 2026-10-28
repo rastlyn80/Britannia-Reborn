@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bd22oyw015lj8"
-path="res://.godot/imported/log_mossy_Image_0.jpg-b199e12bde28da2fd4a57c5e356d5a09.ctex"
+path.s3tc="res://.godot/imported/log_mossy_Image_0.jpg-b199e12bde28da2fd4a57c5e356d5a09.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "989f42c203154901b5f95fb8f2686468"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/log_mossy/log_mossy_Image_0.jpg"
-dest_files=["res://.godot/imported/log_mossy_Image_0.jpg-b199e12bde28da2fd4a57c5e356d5a09.ctex"]
+dest_files=["res://.godot/imported/log_mossy_Image_0.jpg-b199e12bde28da2fd4a57c5e356d5a09.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

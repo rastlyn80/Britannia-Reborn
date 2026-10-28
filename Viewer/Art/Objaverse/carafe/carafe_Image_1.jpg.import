@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b2same0oqpfut"
-path="res://.godot/imported/carafe_Image_1.jpg-df6132285c50ae34650dc01d5a228ce9.ctex"
+path.s3tc="res://.godot/imported/carafe_Image_1.jpg-df6132285c50ae34650dc01d5a228ce9.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "fad75ee96ffdcae5e36d76e6b50b5279"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/carafe/carafe_Image_1.jpg"
-dest_files=["res://.godot/imported/carafe_Image_1.jpg-df6132285c50ae34650dc01d5a228ce9.ctex"]
+dest_files=["res://.godot/imported/carafe_Image_1.jpg-df6132285c50ae34650dc01d5a228ce9.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cplt6lxqmyg8n"
-path="res://.godot/imported/Clay_Roughness.jpg-2fa76020adba77aadf311b634a5ab0c5.ctex"
+path.s3tc="res://.godot/imported/Clay_Roughness.jpg-2fa76020adba77aadf311b634a5ab0c5.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/MedievalKit/textures/Clay_Roughness.jpg"
-dest_files=["res://.godot/imported/Clay_Roughness.jpg-2fa76020adba77aadf311b634a5ab0c5.ctex"]
+dest_files=["res://.godot/imported/Clay_Roughness.jpg-2fa76020adba77aadf311b634a5ab0c5.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

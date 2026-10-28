@@ -4239,6 +4239,17 @@
    ],
    "note": "tropical plants (owner Tropical Nature Pack), woven mats and snow match the original",
    "sheet": "trop"
+  },
+  {
+   "ids": [
+    6870,
+    6871,
+    3711,
+    2473,
+    4468
+   ],
+   "note": "kegs and a small crate (owner Dexsoft barrel/crate) and a slab gravestone match the original; the other owner-pack guesses on the sheet (hedges, flowers, bones, autumn leaves, broken barrels, gems, stone bench, obelisk) do not and need real models",
+   "sheet": "ownerguess"
   }
  ]
 }

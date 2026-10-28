@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://byy21cjc0seh8"
-path="res://.godot/imported/mushroom_brown_Image_2-Image_1.jpg-0da25d402a7a25ef89e7cc2131c6db59.ctex"
+path.s3tc="res://.godot/imported/mushroom_brown_Image_2-Image_1.jpg-0da25d402a7a25ef89e7cc2131c6db59.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "2ce69ee2f2e2be39b1ee69c994ecccdd"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/mushroom_brown/mushroom_brown_Image_2-Image_1.jpg"
-dest_files=["res://.godot/imported/mushroom_brown_Image_2-Image_1.jpg-0da25d402a7a25ef89e7cc2131c6db59.ctex"]
+dest_files=["res://.godot/imported/mushroom_brown_Image_2-Image_1.jpg-0da25d402a7a25ef89e7cc2131c6db59.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

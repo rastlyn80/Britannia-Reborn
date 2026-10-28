@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://5b412w0bm145"
-path="res://.godot/imported/Iron_Color.jpg-b070750aa14b6dd20eea0d3a2bbc4dbc.ctex"
+path.s3tc="res://.godot/imported/Iron_Color.jpg-b070750aa14b6dd20eea0d3a2bbc4dbc.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/MedievalKit/textures/Iron_Color.jpg"
-dest_files=["res://.godot/imported/Iron_Color.jpg-b070750aa14b6dd20eea0d3a2bbc4dbc.ctex"]
+dest_files=["res://.godot/imported/Iron_Color.jpg-b070750aa14b6dd20eea0d3a2bbc4dbc.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

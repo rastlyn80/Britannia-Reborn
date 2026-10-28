@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://kr1fxaj731s2"
-path="res://.godot/imported/food_apple_01_food_apple_01_diff_1k.jpg-1e1c8e2c482e0f114cc195c1cae556ad.ctex"
+path.s3tc="res://.godot/imported/food_apple_01_food_apple_01_diff_1k.jpg-1e1c8e2c482e0f114cc195c1cae556ad.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "52330267b977b7da23e89b1a215e2369"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Reduced/food_apple_01/food_apple_01_food_apple_01_diff_1k.jpg"
-dest_files=["res://.godot/imported/food_apple_01_food_apple_01_diff_1k.jpg-1e1c8e2c482e0f114cc195c1cae556ad.ctex"]
+dest_files=["res://.godot/imported/food_apple_01_food_apple_01_diff_1k.jpg-1e1c8e2c482e0f114cc195c1cae556ad.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

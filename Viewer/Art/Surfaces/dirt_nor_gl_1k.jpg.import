@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://3jm8s6rlfwc3"
-path="res://.godot/imported/dirt_nor_gl_1k.jpg-168c3d601174b7de2c521821ad8f824c.ctex"
+path.s3tc="res://.godot/imported/dirt_nor_gl_1k.jpg-168c3d601174b7de2c521821ad8f824c.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/Surfaces/dirt_nor_gl_1k.jpg"
-dest_files=["res://.godot/imported/dirt_nor_gl_1k.jpg-168c3d601174b7de2c521821ad8f824c.ctex"]
+dest_files=["res://.godot/imported/dirt_nor_gl_1k.jpg-168c3d601174b7de2c521821ad8f824c.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

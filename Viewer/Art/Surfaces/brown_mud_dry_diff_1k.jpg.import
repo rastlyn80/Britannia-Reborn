@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://wm4qw2acghmh"
-path="res://.godot/imported/brown_mud_dry_diff_1k.jpg-9cf8143b58a99dab4d405e8c5f875a3b.ctex"
+path.s3tc="res://.godot/imported/brown_mud_dry_diff_1k.jpg-9cf8143b58a99dab4d405e8c5f875a3b.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/Surfaces/brown_mud_dry_diff_1k.jpg"
-dest_files=["res://.godot/imported/brown_mud_dry_diff_1k.jpg-9cf8143b58a99dab4d405e8c5f875a3b.ctex"]
+dest_files=["res://.godot/imported/brown_mud_dry_diff_1k.jpg-9cf8143b58a99dab4d405e8c5f875a3b.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -66,7 +66,7 @@ main{padding:14px 16px 60px}
   <input type="search" id="q" placeholder="Search name, ID (1234 or 0x4D2), family…">
   <select id="cat"><option value="">All categories</option></select>
   <select id="sort">
-   <option value="world">Most placed in the world</option>
+   <option value="placed">Most placed in the world</option>
    <option value="britain">Most placed in Britain</option>
    <option value="id">Item number</option>
   </select>
@@ -96,25 +96,31 @@ main{padding:14px 16px 60px}
 const C=window.CATALOG,byId=new Map(C.items.map(i=>[i.id,i])),PAGE=240;
 const $=s=>document.querySelector(s),fmt=n=>n.toLocaleString();
 let view='families',shown=0,list=[];
-// Family rank by world placements (the owner's priority order), fixed regardless of filters.
-C.families.forEach((f,i)=>f.rank=f.world>0?i+1:null);
-const placedItems=C.items.filter(i=>i.world>0);placedItems.forEach((i,n)=>i.rank=n+1);
+// Placements: "world" leaves out Felucca (largely a copy of Trammel); Felucca-only graphics still count.
+C.items.forEach(i=>i.placed=Math.max(i.world,i.felucca||0));
+C.families.forEach(f=>f.placed=f.ids.reduce((n,id)=>n+(byId.get(id)?byId.get(id).placed:0),0));
+// Family rank by placements (the owner's priority order), fixed regardless of filters.
+[...C.families].sort((a,b)=>b.placed-a.placed).forEach((f,i)=>f.rank=f.placed>0?i+1:null);
+const placedItems=C.items.filter(i=>i.placed>0).sort((a,b)=>b.placed-a.placed);placedItems.forEach((i,n)=>i.rank=n+1);
 const famOf=new Map();C.families.forEach(f=>f.ids.forEach(id=>famOf.set(id,f)));
 const cats=[...new Set(C.families.map(f=>f.category))].sort();
 cats.forEach(c=>$('#cat').insertAdjacentHTML('beforeend',`<option>${c}</option>`));
-$('#stats').textContent=`${fmt(C.items.length)} item graphics · ${fmt(placedItems.length)} placed in the world · ${fmt(C.families.length)} families (${fmt(C.families.filter(f=>f.world>0).length)} placed) · generated ${C.generated}`;
+$('#stats').textContent=`${fmt(C.items.length)} item graphics · ${fmt(placedItems.length)} placed in the world · ${fmt(C.families.length)} families (${fmt(C.families.filter(f=>f.placed>0).length)} placed) · generated ${C.generated}`;
 const art=id=>`art/${id}.png`;
 // What this client draws today (current.js from Presentation/ArtProvenance.gd).
 const LOOKS=(window.CURRENT||{}).looks||{},DONE=['scan','crafted','owner','hidden'];
+// Final-quality coverage (photoscan, crafted, your packs, not drawn) from ArtProvenance.gd.
+const COV=(window.CURRENT||{}).coverage;
+if(COV)$('#stats').insertAdjacentHTML('afterend',`<div class="stats">Final quality: <b>${COV.graphics.final}%</b> of placed graphics (${fmt(COV.graphics.open)} still open) · by placements: world ${COV.world.final}% · Britain ${COV.britain.final}% · ${['Felucca','Trammel','Ilshenar','Malas','Tokuno','TerMur'].map(f=>`${f} ${COV[f].final}%`).join(' · ')}</div>`);
 const LABEL={scan:'Photoscan / realistic',crafted:'Crafted (photoscan materials)',owner:'Your packs',kit:'Low-poly stand-in',built:'Built in code',guess:'Untested guess',original:'Original only',hidden:'Not drawn'};
 const look=id=>LOOKS[id]||{status:'original',detail:window.CURRENT?'no 3D look yet':'run build-item-catalog.ps1 to label'};
 function status(item){const l=look(item.id);return [l.status,LABEL[l.status]]}
 // A family's look: the status that covers most of its placements.
-function famLook(f){const w={};f.ids.forEach(id=>{const i=byId.get(id),s=look(id).status;w[s]=(w[s]||0)+Math.max(i.world,f.world?0:1)});return Object.entries(w).sort((a,b)=>b[1]-a[1])[0][0]}
-C.families.forEach(f=>{f.look=famLook(f);f.todo=f.ids.filter(id=>['original','guess','kit','built'].includes(look(id).status)&&byId.get(id).world>0).length});
+function famLook(f){const w={};f.ids.forEach(id=>{const i=byId.get(id),s=look(id).status;w[s]=(w[s]||0)+Math.max(i.placed,f.placed?0:1)});return Object.entries(w).sort((a,b)=>b[1]-a[1])[0][0]}
+C.families.forEach(f=>{f.look=famLook(f);f.todo=f.ids.filter(id=>['original','guess','kit','built'].includes(look(id).status)&&byId.get(id).placed>0).length});
 C.items.forEach(i=>i.look=look(i.id).status);
 function lookMatch(e,want){if(!want)return true;if(want==='todo')return ['original','guess','kit','built'].includes(e.look);if(want==='done')return DONE.includes(e.look);return e.look===want}
-function lead(f){return f.ids.map(id=>byId.get(id)).sort((a,b)=>b.world-a.world||a.id-b.id)[0]}
+function lead(f){return f.ids.map(id=>byId.get(id)).sort((a,b)=>b.placed-a.placed||a.id-b.id)[0]}
 function matches(text,entry,ids){
  if(!text)return true;const t=text.trim().toLowerCase();
  const n=/^0x[0-9a-f]+$/.test(t)?parseInt(t,16):/^\d+$/.test(t)?+t:null;
@@ -124,7 +130,7 @@ function matches(text,entry,ids){
 function compute(){
  const q=$('#q').value,cat=$('#cat').value,placed=$('#placed').checked,brit=$('#brit').checked,sort=$('#sort').value;
  const src=view==='families'?C.families:C.items;
- const want=$('#look').value;list=src.filter(e=>lookMatch(e,want)&&(!cat||e.category===cat)&&(!placed||e.world>0)&&(!brit||e.britain>0)&&matches(q,e,e.ids||[e.id]));
+ const want=$('#look').value;list=src.filter(e=>lookMatch(e,want)&&(!cat||e.category===cat)&&(!placed||e.placed>0)&&(!brit||e.britain>0)&&matches(q,e,e.ids||[e.id]));
  const key=sort==='id'?e=>(e.ids?e.ids[0]:e.id):null;
  list.sort(key?(a,b)=>key(a)-key(b):(a,b)=>b[sort]-a[sort]||(a.ids?a.ids[0]:a.id)-(b.ids?b.ids[0]:b.id));
  shown=0;$('#grid').innerHTML='';render();
@@ -136,7 +142,7 @@ function card(e){
  return `<div class="card${DONE.includes(e.look)?' done':''}" tabindex="0" data-k="${fam?e.key:e.id}">
   <div class="thumb"><img loading="lazy" src="${art(item.id)}" style="${scaled(item)}" alt=""></div>
   <div class="meta"><div class="name" title="${e.name}">${e.name}</div>
-  <div class="sub"><span class="rank">${e.rank?'#'+fmt(e.rank):'—'}</span><span>${fmt(e.world)} placed</span></div>
+  <div class="sub"><span class="rank">${e.rank?'#'+fmt(e.rank):'—'}</span><span>${fmt(e.placed)} placed</span></div>
   <div class="sub"><span>${fam?e.ids.length+' graphic'+(e.ids.length>1?'s':''):item.hex}</span></div>
   <div class="sub"><span>${e.category}</span></div>
   <span class="badge s-${st[0]}">${st[1]}</span>${fam&&e.britain?' <span class="badge">in Britain</span>':''}</div></div>`;
@@ -163,10 +169,10 @@ function member(i){
 }
 function open(k){
  const f=/^\d+$/.test(k)?famOf.get(+k):C.families.find(x=>x.key===k);if(!f)return;
- const members=f.ids.map(id=>byId.get(id)).sort((a,b)=>b.world-a.world||a.id-b.id);
+ const members=f.ids.map(id=>byId.get(id)).sort((a,b)=>b.placed-a.placed||a.id-b.id);
  const d=$('#detail');
  d.innerHTML=`<button class="close" id="x">Close (Esc)</button><h2>${f.name}</h2>
-  <div class="stats">Family <code>${f.key}</code> · ${f.category} · rank ${f.rank?'#'+fmt(f.rank):'not placed'} · ${fmt(f.world)} placed in the world${f.britain?`, ${fmt(f.britain)} in Britain`:''} · ${f.ids.length} graphic${f.ids.length>1?'s':''} (${f.ids[0]}–${f.ids[f.ids.length-1]})</div>
+  <div class="stats">Family <code>${f.key}</code> · ${f.category} · rank ${f.rank?'#'+fmt(f.rank):'not placed'} · ${fmt(f.placed)} placed in the world${f.britain?`, ${fmt(f.britain)} in Britain`:''} · ${f.ids.length} graphic${f.ids.length>1?'s':''} (${f.ids[0]}–${f.ids[f.ids.length-1]})</div>
   <div class="members">${members.map(member).join('')}</div>`;
  history.replaceState(null,'','#'+f.key);
  d.classList.add('open');d.setAttribute('aria-hidden','false');d.scrollTop=0;
@@ -185,11 +191,11 @@ $('#size').addEventListener('input',e=>{document.body.style.setProperty('--cell'
 $('#more').onclick=render;
 new IntersectionObserver(es=>{if(es[0].isIntersecting&&shown<list.length)render()},{rootMargin:'600px'}).observe($('#more'));
 $('#csv').onclick=()=>{
- const rows=[['rank','family','name','category','placed_world','placed_britain','graphics','ids']].concat(list.map(e=>e.ids?[e.rank||'',e.key,e.name,e.category,e.world,e.britain,e.ids.length,e.ids.join(' ')]:[e.rank||'',e.family,e.name,e.category,e.world,e.britain,1,e.id]));
+ const rows=[['rank','family','name','category','placed_world','placed_britain','graphics','ids']].concat(list.map(e=>e.ids?[e.rank||'',e.key,e.name,e.category,e.placed,e.britain,e.ids.length,e.ids.join(' ')]:[e.rank||'',e.family,e.name,e.category,e.placed,e.britain,1,e.id]));
  const blob=new Blob([rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n')],{type:'text/csv'});
  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`item-catalogue-${view}.csv`;a.click();
 };
-{const totals={};C.items.forEach(i=>{if(i.world>0)totals[i.look]=(totals[i.look]||0)+i.world});const all=Object.values(totals).reduce((a,b)=>a+b,0)||1;
+{const totals={};C.items.forEach(i=>{if(i.placed>0)totals[i.look]=(totals[i.look]||0)+i.placed});const all=Object.values(totals).reduce((a,b)=>a+b,0)||1;
  $('#legend').innerHTML=Object.keys(LABEL).filter(k=>totals[k]).map(k=>`<span class="s-${k}"><b>${LABEL[k]}</b> ${(100*totals[k]/all).toFixed(1)}% of placements</span>`).join('')+(window.CURRENT?'':' <span class="s-guess"><b>current.js missing</b></span>');}
 compute();
 if(location.hash.length>1)open(decodeURIComponent(location.hash.slice(1)));

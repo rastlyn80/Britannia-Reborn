@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c8d0g70e8mjbt"
-path="res://.godot/imported/wood_shutter_nor_gl_1k.jpg-af6e571904790a16c82f17941b747978.ctex"
+path.s3tc="res://.godot/imported/wood_shutter_nor_gl_1k.jpg-af6e571904790a16c82f17941b747978.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/Surfaces/wood_shutter_nor_gl_1k.jpg"
-dest_files=["res://.godot/imported/wood_shutter_nor_gl_1k.jpg-af6e571904790a16c82f17941b747978.ctex"]
+dest_files=["res://.godot/imported/wood_shutter_nor_gl_1k.jpg-af6e571904790a16c82f17941b747978.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

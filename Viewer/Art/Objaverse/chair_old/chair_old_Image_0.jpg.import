@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bxwlpbg5i58v7"
-path="res://.godot/imported/chair_old_Image_0.jpg-507270da5fa62f71b025fcb5c4098d74.ctex"
+path.s3tc="res://.godot/imported/chair_old_Image_0.jpg-507270da5fa62f71b025fcb5c4098d74.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "fb099b598d96c878210f62e13cc5cecd"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/chair_old/chair_old_Image_0.jpg"
-dest_files=["res://.godot/imported/chair_old_Image_0.jpg-507270da5fa62f71b025fcb5c4098d74.ctex"]
+dest_files=["res://.godot/imported/chair_old_Image_0.jpg-507270da5fa62f71b025fcb5c4098d74.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

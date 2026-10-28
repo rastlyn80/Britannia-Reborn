@@ -5,6 +5,8 @@ var samples: Array[float]=[]
 var sampling:=false
 var previous_us:=0
 var peak:=0
+# GPU memory (video total, textures, buffers): CPU MEMORY_STATIC misses it.
+var gpu_peak:={"video":0,"texture":0,"buffer":0}
 var deadline:=0
 func _initialize() -> void:call_deferred("run")
 func fail(message: String) -> void:
@@ -15,6 +17,7 @@ func _process(_delta: float) -> bool:
  if sampling and previous_us>0:samples.append((now-previous_us)/1000.0)
  previous_us=now
  peak=maxi(peak,int(Performance.get_monitor(Performance.MEMORY_STATIC)))
+ for key in gpu_peak:gpu_peak[key]=maxi(gpu_peak[key],int(RenderingServer.get_rendering_info({"video":RenderingServer.RENDERING_INFO_VIDEO_MEM_USED,"texture":RenderingServer.RENDERING_INFO_TEXTURE_MEM_USED,"buffer":RenderingServer.RENDERING_INFO_BUFFER_MEM_USED}[key])))
  if deadline>0 and Time.get_ticks_msec()>deadline:fail("Streaming stress timeout")
  return false
 func run() -> void:
@@ -43,7 +46,7 @@ func run() -> void:
   retained.append(int(Performance.get_monitor(Performance.MEMORY_STATIC)))
  sampling=false;samples.sort()
  if retained[1]>retained[0]+32*1024*1024:fail("Repeated identical journey retained more than 32 MiB of additional engine memory");return
- var report:={"renderer":RenderingServer.get_current_rendering_method(),"startup_ms":startup,"peak_godot_bytes":peak,"lap_end_godot_bytes":retained,"nodes":Performance.get_monitor(Performance.OBJECT_NODE_COUNT),"frames":samples.size(),"p95_ms":samples[int(samples.size()*0.95)],"p99_ms":samples[int(samples.size()*0.99)],"max_ms":samples[-1],"max_activation_ms":stream.max_install_us/1000.0,"installs":stream.installs}
+ var report:={"renderer":RenderingServer.get_current_rendering_method(),"startup_ms":startup,"peak_godot_bytes":peak,"peak_gpu_bytes":gpu_peak,"lap_end_godot_bytes":retained,"nodes":Performance.get_monitor(Performance.OBJECT_NODE_COUNT),"frames":samples.size(),"p95_ms":samples[int(samples.size()*0.95)],"p99_ms":samples[int(samples.size()*0.99)],"max_ms":samples[-1],"max_activation_ms":stream.max_install_us/1000.0,"installs":stream.installs}
  var file:=FileAccess.open("res://../outputs/validation/streaming-"+report.renderer+".local.json",FileAccess.WRITE)
  file.store_string(JSON.stringify(report));file.close()
  print("STREAMING STRESS PASS: 14 district destinations / bounded source, collision and scenery / memory plateau / ",JSON.stringify(report))

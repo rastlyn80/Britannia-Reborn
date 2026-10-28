@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://qdx40q0abane"
-path="res://.godot/imported/anvil_pbr_Image_1.jpg-a50b998f24f0ec139ff9588da6ca24dd.ctex"
+path.s3tc="res://.godot/imported/anvil_pbr_Image_1.jpg-a50b998f24f0ec139ff9588da6ca24dd.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "d4b868f55f87ce9d689197bab794de26"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/anvil_pbr/anvil_pbr_Image_1.jpg"
-dest_files=["res://.godot/imported/anvil_pbr_Image_1.jpg-a50b998f24f0ec139ff9588da6ca24dd.ctex"]
+dest_files=["res://.godot/imported/anvil_pbr_Image_1.jpg-a50b998f24f0ec139ff9588da6ca24dd.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

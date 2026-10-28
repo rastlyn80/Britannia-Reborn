@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bdh0roa7dfk5c"
-path="res://.godot/imported/tankard_maryrose_Image_0.jpg-c0ce8be5cd64580a29d9f83468ac5684.ctex"
+path.s3tc="res://.godot/imported/tankard_maryrose_Image_0.jpg-c0ce8be5cd64580a29d9f83468ac5684.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "f0216d8ee6c1f1200fdff9b93e21b7bb"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/tankard_maryrose/tankard_maryrose_Image_0.jpg"
-dest_files=["res://.godot/imported/tankard_maryrose_Image_0.jpg-c0ce8be5cd64580a29d9f83468ac5684.ctex"]
+dest_files=["res://.godot/imported/tankard_maryrose_Image_0.jpg-c0ce8be5cd64580a29d9f83468ac5684.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

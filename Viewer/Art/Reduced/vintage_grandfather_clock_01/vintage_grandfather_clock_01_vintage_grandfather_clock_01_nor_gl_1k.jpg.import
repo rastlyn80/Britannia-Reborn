@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://qosnlnuyb0h0"
-path="res://.godot/imported/vintage_grandfather_clock_01_vintage_grandfather_clock_01_nor_gl_1k.jpg-8448e233e9488aca5822b922d9b4ba02.ctex"
+path.s3tc="res://.godot/imported/vintage_grandfather_clock_01_vintage_grandfather_clock_01_nor_gl_1k.jpg-8448e233e9488aca5822b922d9b4ba02.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "d79f74aecb515c8f000919e080c8a350"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Reduced/vintage_grandfather_clock_01/vintage_grandfather_clock_01_vintage_grandfather_clock_01_nor_gl_1k.jpg"
-dest_files=["res://.godot/imported/vintage_grandfather_clock_01_vintage_grandfather_clock_01_nor_gl_1k.jpg-8448e233e9488aca5822b922d9b4ba02.ctex"]
+dest_files=["res://.godot/imported/vintage_grandfather_clock_01_vintage_grandfather_clock_01_nor_gl_1k.jpg-8448e233e9488aca5822b922d9b4ba02.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

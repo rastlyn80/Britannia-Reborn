@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://qvs3snjc13g0"
-path="res://.godot/imported/bookcase_antique_Image_1.jpg-cb428201664da9f62ca236f077a01377.ctex"
+path.s3tc="res://.godot/imported/bookcase_antique_Image_1.jpg-cb428201664da9f62ca236f077a01377.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "f5b7d34f8043ccaadc72132fa34b5d18"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/bookcase_antique/bookcase_antique_Image_1.jpg"
-dest_files=["res://.godot/imported/bookcase_antique_Image_1.jpg-cb428201664da9f62ca236f077a01377.ctex"]
+dest_files=["res://.godot/imported/bookcase_antique_Image_1.jpg-cb428201664da9f62ca236f077a01377.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

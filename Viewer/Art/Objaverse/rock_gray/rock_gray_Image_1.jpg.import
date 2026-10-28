@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://x3p3ub06frit"
-path="res://.godot/imported/rock_gray_Image_1.jpg-5880bfdc6fa56ce6d638cf3a49c6c7cb.ctex"
+path.s3tc="res://.godot/imported/rock_gray_Image_1.jpg-5880bfdc6fa56ce6d638cf3a49c6c7cb.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "a2d4cb45432e5cae1a02f2c7d3008ea3"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/rock_gray/rock_gray_Image_1.jpg"
-dest_files=["res://.godot/imported/rock_gray_Image_1.jpg-5880bfdc6fa56ce6d638cf3a49c6c7cb.ctex"]
+dest_files=["res://.godot/imported/rock_gray_Image_1.jpg-5880bfdc6fa56ce6d638cf3a49c6c7cb.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

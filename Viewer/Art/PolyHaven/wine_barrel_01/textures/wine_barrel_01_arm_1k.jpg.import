@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://clgx0b53lq16x"
-path="res://.godot/imported/wine_barrel_01_arm_1k.jpg-1175c2a7edd10af291a5696e6ac32576.ctex"
+path.s3tc="res://.godot/imported/wine_barrel_01_arm_1k.jpg-1175c2a7edd10af291a5696e6ac32576.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/PolyHaven/wine_barrel_01/textures/wine_barrel_01_arm_1k.jpg"
-dest_files=["res://.godot/imported/wine_barrel_01_arm_1k.jpg-1175c2a7edd10af291a5696e6ac32576.ctex"]
+dest_files=["res://.godot/imported/wine_barrel_01_arm_1k.jpg-1175c2a7edd10af291a5696e6ac32576.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

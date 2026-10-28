@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://y768ddiisq1b"
-path="res://.godot/imported/banner_worn_Image_0.jpg-a0792228712f13daa1548e3eaaefb502.ctex"
+path.s3tc="res://.godot/imported/banner_worn_Image_0.jpg-a0792228712f13daa1548e3eaaefb502.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "96c793cceff7af13d226a2227d11ab4f"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/banner_worn/banner_worn_Image_0.jpg"
-dest_files=["res://.godot/imported/banner_worn_Image_0.jpg-a0792228712f13daa1548e3eaaefb502.ctex"]
+dest_files=["res://.godot/imported/banner_worn_Image_0.jpg-a0792228712f13daa1548e3eaaefb502.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

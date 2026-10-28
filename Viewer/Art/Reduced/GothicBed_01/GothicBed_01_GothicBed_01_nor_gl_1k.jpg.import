@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dw86js2lvfgsp"
-path="res://.godot/imported/GothicBed_01_GothicBed_01_nor_gl_1k.jpg-044b50ecd29f34603ee7cb5e2a46a1ac.ctex"
+path.s3tc="res://.godot/imported/GothicBed_01_GothicBed_01_nor_gl_1k.jpg-044b50ecd29f34603ee7cb5e2a46a1ac.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "330e9c0cda44bcbdd6980ba7a15d7f8b"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Reduced/GothicBed_01/GothicBed_01_GothicBed_01_nor_gl_1k.jpg"
-dest_files=["res://.godot/imported/GothicBed_01_GothicBed_01_nor_gl_1k.jpg-044b50ecd29f34603ee7cb5e2a46a1ac.ctex"]
+dest_files=["res://.godot/imported/GothicBed_01_GothicBed_01_nor_gl_1k.jpg-044b50ecd29f34603ee7cb5e2a46a1ac.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

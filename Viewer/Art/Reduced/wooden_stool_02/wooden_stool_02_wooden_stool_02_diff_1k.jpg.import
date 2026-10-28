@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dwp806yktx3j0"
-path="res://.godot/imported/wooden_stool_02_wooden_stool_02_diff_1k.jpg-12950e497b3f1cce111f14af13f5f9e4.ctex"
+path.s3tc="res://.godot/imported/wooden_stool_02_wooden_stool_02_diff_1k.jpg-12950e497b3f1cce111f14af13f5f9e4.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "2f5f72ebde36364f7616cb16f2bad494"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Reduced/wooden_stool_02/wooden_stool_02_wooden_stool_02_diff_1k.jpg"
-dest_files=["res://.godot/imported/wooden_stool_02_wooden_stool_02_diff_1k.jpg-12950e497b3f1cce111f14af13f5f9e4.ctex"]
+dest_files=["res://.godot/imported/wooden_stool_02_wooden_stool_02_diff_1k.jpg-12950e497b3f1cce111f14af13f5f9e4.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

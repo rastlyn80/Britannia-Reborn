@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://7y8k0rnj1nge"
-path="res://.godot/imported/book_leather_Image_2.jpg-0f5d788e9592b837c1a5a8a140d66e21.ctex"
+path.s3tc="res://.godot/imported/book_leather_Image_2.jpg-0f5d788e9592b837c1a5a8a140d66e21.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "54191640432a9a1e79b79965703ff208"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/book_leather/book_leather_Image_2.jpg"
-dest_files=["res://.godot/imported/book_leather_Image_2.jpg-0f5d788e9592b837c1a5a8a140d66e21.ctex"]
+dest_files=["res://.godot/imported/book_leather_Image_2.jpg-0f5d788e9592b837c1a5a8a140d66e21.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

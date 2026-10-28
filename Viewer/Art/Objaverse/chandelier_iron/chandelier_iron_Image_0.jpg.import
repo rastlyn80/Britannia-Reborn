@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bmh8lxii66ka2"
-path="res://.godot/imported/chandelier_iron_Image_0.jpg-6edf2e9b17f3171aa187032ef0affca3.ctex"
+path.s3tc="res://.godot/imported/chandelier_iron_Image_0.jpg-6edf2e9b17f3171aa187032ef0affca3.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "fe53af1f1679d7435e39e0a8519eef76"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://Art/Objaverse/chandelier_iron/chandelier_iron_Image_0.jpg"
-dest_files=["res://.godot/imported/chandelier_iron_Image_0.jpg-6edf2e9b17f3171aa187032ef0affca3.ctex"]
+dest_files=["res://.godot/imported/chandelier_iron_Image_0.jpg-6edf2e9b17f3171aa187032ef0affca3.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

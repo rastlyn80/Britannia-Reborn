@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://buag8iquec52r"
-path="res://.godot/imported/carved_wooden_plate_nor_gl_1k.jpg-3a023d4b234714fc5d1103eac6f319d6.ctex"
+path.s3tc="res://.godot/imported/carved_wooden_plate_nor_gl_1k.jpg-3a023d4b234714fc5d1103eac6f319d6.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/PolyHaven/carved_wooden_plate/textures/carved_wooden_plate_nor_gl_1k.jpg"
-dest_files=["res://.godot/imported/carved_wooden_plate_nor_gl_1k.jpg-3a023d4b234714fc5d1103eac6f319d6.ctex"]
+dest_files=["res://.godot/imported/carved_wooden_plate_nor_gl_1k.jpg-3a023d4b234714fc5d1103eac6f319d6.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

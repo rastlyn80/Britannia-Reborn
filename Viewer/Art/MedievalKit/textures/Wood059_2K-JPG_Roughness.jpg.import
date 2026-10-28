@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ym7pt8fu5yxl"
-path="res://.godot/imported/Wood059_2K-JPG_Roughness.jpg-d05e5a668f421e0b7c57ec61d49f7634.ctex"
+path.s3tc="res://.godot/imported/Wood059_2K-JPG_Roughness.jpg-d05e5a668f421e0b7c57ec61d49f7634.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/MedievalKit/textures/Wood059_2K-JPG_Roughness.jpg"
-dest_files=["res://.godot/imported/Wood059_2K-JPG_Roughness.jpg-d05e5a668f421e0b7c57ec61d49f7634.ctex"]
+dest_files=["res://.godot/imported/Wood059_2K-JPG_Roughness.jpg-d05e5a668f421e0b7c57ec61d49f7634.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

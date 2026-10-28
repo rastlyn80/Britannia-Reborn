@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://1wtc8n55b206"
-path="res://.godot/imported/brown_planks_03_nor_gl_1k.jpg-0c4802db9d4cc955396cf3f2b3443ae5.ctex"
+path.s3tc="res://.godot/imported/brown_planks_03_nor_gl_1k.jpg-0c4802db9d4cc955396cf3f2b3443ae5.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/Surfaces/brown_planks_03_nor_gl_1k.jpg"
-dest_files=["res://.godot/imported/brown_planks_03_nor_gl_1k.jpg-0c4802db9d4cc955396cf3f2b3443ae5.ctex"]
+dest_files=["res://.godot/imported/brown_planks_03_nor_gl_1k.jpg-0c4802db9d4cc955396cf3f2b3443ae5.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
