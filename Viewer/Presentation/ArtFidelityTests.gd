@@ -144,6 +144,10 @@ func _initialize() -> void:
  for box in post_boxes:post_top=maxf(post_top,(box as AABB).end.y)
  check(is_equal_approx(post_top,1.2) and top.get_child_count()==2,"Stacked fence posts span the full 1.2 m step with no cap, so porch posts read as one pole; only the topmost piece is capped")
  lower.free();top.free()
+ var corner: Node3D=fences.build("wooden fence",2144,recon.geometry,recon.facade,1.2,false,[Vector2i(1,0),Vector2i(0,1)])
+ var straight_run: Node3D=fences.build("wooden fence",2144,recon.geometry,recon.facade,1.2,false,[Vector2i(1,0),Vector2i(-1,0)])
+ check(corner.has_meta("world_aligned") and corner.get_child_count()==4 and straight_run.get_child_count()==2,"Fence junctions: rails run only toward joined neighbours, and a rails-only piece gains a post where its run turns")
+ corner.free();straight_run.free()
  # Source-backed contact on unreviewed procedural tables, rugs and stacks.
  var contact:=Support.new()
  contact.catalog={"2947":{"kind":"table"},"22224":{"kind":"carpet"}}

@@ -62,7 +62,8 @@ var groups := {}
 # Chimney group owner -> source Z its stack descends to (roof or wall below).
 var chimney_bases := {}
 var wall_cells := {}
-# Fence pieces by source cell and Z: a stacked piece continues the post below.
+# Fence pieces (graphic id) by source cell and Z: stacked pieces continue the
+# post below; neighbouring pieces join their rails at junctions.
 var fence_cells := {}
 var presentation_adjustments := {}
 var contextual_suppressed := 0
@@ -122,7 +123,7 @@ func index(world: Dictionary) -> void:
 		var kind := str(rule_for(s.id).get("kind","unknown"))
 		var cell := Vector3i(s.x,s.y,s.z)
 		if kind in ["wall","window","corner"]: wall_cells[cell] = true
-		if kind == "fence": fence_cells[cell] = true
+		if kind == "fence": fence_cells[cell] = int(s.id)
 		if kind == "tree": trees[cell] = i
 		if kind == "bed": beds[cell] = i
 		if kind == "arch": arches[cell] = i
@@ -699,6 +700,20 @@ func _fence_above(s: Dictionary, source_height: int) -> bool:
 	for dz in [-1,0,1]:
 		if fence_cells.has(Vector3i(s.x,s.y,int(s.z)+source_height+dz)): return true
 	return false
+
+# World directions (x, y as UO east/south) toward neighbouring fence pieces at
+# about the same height whose rails can meet this piece's (post-only pieces,
+# such as porch posts, join nothing).
+func _fence_links(s: Dictionary) -> Array:
+	var links := []
+	if not preload("res://Presentation/FenceBuilder.gd").has_rails(int(s.id)): return links
+	for direction in [Vector2i(1,0),Vector2i(-1,0),Vector2i(0,1),Vector2i(0,-1)]:
+		for dz in range(-3,4):
+			var neighbour: Variant = fence_cells.get(Vector3i(s.x+direction.x,s.y+direction.y,int(s.z)+dz))
+			if neighbour != null and preload("res://Presentation/FenceBuilder.gd").has_rails(int(neighbour)):
+				links.append(direction)
+				break
+	return links
 
 func trestle_run(size: Vector2, model := "Objaverse/table_wood_b/table_wood_b.glb", height := 0.8, piece_length := 1.9) -> Node3D:
 	var root := Node3D.new()
@@ -1280,7 +1295,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					facade.piece(visual,Vector3(1,0.12,0.2),Vector3(0,height-0.06,0),"wood")
 				"fence":
 					# Wooden, iron and stone-pier fences are built in photoscanned materials.
-					if preload("res://Presentation/FenceBuilder.gd").handles(str(detail.get("name",""))): visual = preload("res://Presentation/FenceBuilder.gd").build(str(detail.get("name","")),int(s.id),geometry,facade,height,_fence_above(s,int(detail.get("height",6))))
+					if preload("res://Presentation/FenceBuilder.gd").handles(str(detail.get("name",""))): visual = preload("res://Presentation/FenceBuilder.gd").build(str(detail.get("name","")),int(s.id),geometry,facade,height,_fence_above(s,int(detail.get("height",6))),_fence_links(s))
 					else: visual = fitted(asset,Vector3(1,1.2,0.10))
 				"bed":
 					var size: Vector2 = groups[ordinal].size if groups.has(ordinal) else Vector2.ONE
@@ -1400,7 +1415,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 			if kind == "roof":
 				var anchor: Array = rule.get("anchorOffset",[-1,-1])
 				visual.position += Vector3(float(anchor[0]),0,float(anchor[1]))
-			if kind in ["wall","window","trim","beam","arch","archway","pier","door","fence","sign","painting"] and rule.get("axis") == "y": visual.rotation.y = PI/2
+			if kind in ["wall","window","trim","beam","arch","archway","pier","door","fence","sign","painting"] and rule.get("axis") == "y" and not visual.has_meta("world_aligned"): visual.rotation.y = PI/2
 			if kind=="prop" and groups.has(ordinal) and str(rule.get("model","")) == "cannon":
 				# A cannon keeps its proportions and points along its footprint.
 				if groups[ordinal].size.x > groups[ordinal].size.y: visual.rotation.y = PI/2
