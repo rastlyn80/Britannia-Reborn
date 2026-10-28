@@ -136,6 +136,14 @@ func _initialize() -> void:
  var patch: Node3D=swaps.build(recon,"mushrooms",7)
  check(patch!=null and patch.get_child_count()>=3,"A mushrooms tile is a small patch of scanned mushrooms, not one cap")
  if patch: patch.free()
+ var fences:=preload("res://Presentation/FenceBuilder.gd")
+ var lower: Node3D=fences.build("wooden fence",2148,recon.geometry,recon.facade,1.2,true)
+ var top: Node3D=fences.build("wooden fence",2149,recon.geometry,recon.facade,1.2,false)
+ var post_boxes: Array=[];recon._collect_bounds(lower,Transform3D.IDENTITY,post_boxes)
+ var post_top:=0.0
+ for box in post_boxes:post_top=maxf(post_top,(box as AABB).end.y)
+ check(is_equal_approx(post_top,1.2) and top.get_child_count()==2,"Stacked fence posts span the full 1.2 m step with no cap, so porch posts read as one pole; only the topmost piece is capped")
+ lower.free();top.free()
  # Source-backed contact on unreviewed procedural tables, rugs and stacks.
  var contact:=Support.new()
  contact.catalog={"2947":{"kind":"table"},"22224":{"kind":"carpet"}}

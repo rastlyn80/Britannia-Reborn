@@ -62,6 +62,8 @@ var groups := {}
 # Chimney group owner -> source Z its stack descends to (roof or wall below).
 var chimney_bases := {}
 var wall_cells := {}
+# Fence pieces by source cell and Z: a stacked piece continues the post below.
+var fence_cells := {}
 var presentation_adjustments := {}
 var contextual_suppressed := 0
 var floors := preload("res://Presentation/FloorPlan.gd").new()
@@ -111,6 +113,7 @@ func index(world: Dictionary) -> void:
 		if floor_cells[cell].size() > 1: _group(floor_cells[cell],world,"floor")
 	presentation_adjustments.clear()
 	wall_cells.clear()
+	fence_cells.clear()
 	var trees := {}
 	var beds := {}
 	var arches := {}
@@ -119,6 +122,7 @@ func index(world: Dictionary) -> void:
 		var kind := str(rule_for(s.id).get("kind","unknown"))
 		var cell := Vector3i(s.x,s.y,s.z)
 		if kind in ["wall","window","corner"]: wall_cells[cell] = true
+		if kind == "fence": fence_cells[cell] = true
 		if kind == "tree": trees[cell] = i
 		if kind == "bed": beds[cell] = i
 		if kind == "arch": arches[cell] = i
@@ -689,6 +693,13 @@ func _plan_eaves(world: Dictionary) -> void:
 
 # Wooden table runs: a photoscan-textured trestle table (Objaverse,
 # CC-BY) repeated along the run, each piece at most about 1.9 m long.
+# Another fence piece starts where this one ends (UO stacks pieces into tall
+# railings and porch posts), so its post runs on without a cap.
+func _fence_above(s: Dictionary, source_height: int) -> bool:
+	for dz in [-1,0,1]:
+		if fence_cells.has(Vector3i(s.x,s.y,int(s.z)+source_height+dz)): return true
+	return false
+
 func trestle_run(size: Vector2, model := "Objaverse/table_wood_b/table_wood_b.glb", height := 0.8, piece_length := 1.9) -> Node3D:
 	var root := Node3D.new()
 	var length := maxf(size.x,size.y)
@@ -1269,7 +1280,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					facade.piece(visual,Vector3(1,0.12,0.2),Vector3(0,height-0.06,0),"wood")
 				"fence":
 					# Wooden, iron and stone-pier fences are built in photoscanned materials.
-					if preload("res://Presentation/FenceBuilder.gd").handles(str(detail.get("name",""))): visual = preload("res://Presentation/FenceBuilder.gd").build(str(detail.get("name","")),int(s.id),geometry,facade)
+					if preload("res://Presentation/FenceBuilder.gd").handles(str(detail.get("name",""))): visual = preload("res://Presentation/FenceBuilder.gd").build(str(detail.get("name","")),int(s.id),geometry,facade,height,_fence_above(s,int(detail.get("height",6))))
 					else: visual = fitted(asset,Vector3(1,1.2,0.10))
 				"bed":
 					var size: Vector2 = groups[ordinal].size if groups.has(ordinal) else Vector2.ONE

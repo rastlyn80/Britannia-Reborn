@@ -17,7 +17,9 @@ static func handles(name: String) -> bool:
 	var n := name.to_lower()
 	return n == "wooden fence" or n == "iron fence" or n == "stone rail"
 
-static func build(name: String, id: int, geometry: RefCounted, facade: RefCounted) -> Node3D:
+# height: the source piece's height in metres; stacked: another fence piece
+# continues above, so posts run the full height without a cap and meet it.
+static func build(name: String, id: int, geometry: RefCounted, facade: RefCounted, height := 1.2, stacked := false) -> Node3D:
 	var root := Node3D.new()
 	root.set_meta("model","fence")
 	var n := name.to_lower()
@@ -31,7 +33,7 @@ static func build(name: String, id: int, geometry: RefCounted, facade: RefCounte
 		facade.piece(root,Vector3(0.40,0.08,0.40),Vector3(-0.33,1.19,0),"stone")
 		if parts != "post": _rails(root,geometry,-0.16,0.5,[0.45,0.85])
 		return root
-	if parts in ["post","post+rails","corner"]: _post(root,geometry,Vector3(-0.44,0,0))
+	if parts in ["post","post+rails","corner"]: _post(root,geometry,Vector3(-0.44,0,0),maxf(height,0.6),stacked)
 	if parts in ["rails","post+rails","corner"]: _rails(root,geometry,-0.5,0.5,[0.32,0.62,0.92])
 	if parts == "corner":
 		var turned := Node3D.new()
@@ -40,10 +42,12 @@ static func build(name: String, id: int, geometry: RefCounted, facade: RefCounte
 		_rails(turned,geometry,-0.5,0.5,[0.32,0.62,0.92])
 	return root
 
-# Split log post, slightly irregular, with a weathered cut top.
-static func _post(parent: Node3D, geometry: RefCounted, at: Vector3) -> void:
-	geometry.crafted_box(parent,Vector3(0.15,1.12,0.14),at+Vector3(0,0.56,0),LOG)
-	geometry.crafted_box(parent,Vector3(0.12,0.04,0.11),at+Vector3(0,1.14,0),"5b4936")
+# Split log post spanning the whole piece height, with a weathered cut top
+# where nothing continues above.
+static func _post(parent: Node3D, geometry: RefCounted, at: Vector3, height: float, stacked: bool) -> void:
+	var shaft := height if stacked else height-0.04
+	geometry.crafted_box(parent,Vector3(0.15,shaft,0.14),at+Vector3(0,shaft/2,0),LOG)
+	if not stacked: geometry.crafted_box(parent,Vector3(0.12,0.04,0.11),at+Vector3(0,shaft+0.02,0),"5b4936")
 
 # Split rails at the given heights; each sags and twists a little.
 static func _rails(parent: Node3D, geometry: RefCounted, from: float, to: float, heights: Array) -> void:
