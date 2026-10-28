@@ -4675,6 +4675,13 @@
    ],
    "note": "large multi-tile trees of the newer facets (44 px slices named tree): assembled into one owner-pack tree per footprint, matching the original single large tree",
    "sheet": "tree slices"
+  },
+  {
+   "ids": [
+    3326
+   ],
+   "note": "cypress trunk: drawn with its crown (3327/3328) as one whole cypress from the owner tree packs, as for 3320/3323",
+   "sheet": "after66"
   }
  ]
 }

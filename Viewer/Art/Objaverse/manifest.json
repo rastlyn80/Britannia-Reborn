@@ -4296,14 +4296,14 @@
       "sourceSha256": "6045443e0c7dace63e1e9b4b1f04ebdaaa25808cb5cfe8a5df4d5d45c32abd9e",
       "sourceTriangles": 152756,
       "file": "hedge_scan/hedge_scan.glb",
-      "sha256": "00ad070e55318b897bfa487db45ddb003024988de08476669ec1eca3b4ed2827",
-      "triangles": 5996,
+      "sha256": "18abe0cbd0d24e7896e50acbc0b654ffde9b58fa998eef09e0a4f2b53162f1bb",
+      "triangles": 2147,
       "size": [
-        83.321,
-        193.905,
-        685.539
+        64.467,
+        120.055,
+        169.346
       ],
-      "processing": "ground-centred, decimated to 6000 triangles, textures capped at 1024 px"
+      "processing": "ground-centred, decimated to 6000 triangles, textures capped at 1024 px; foliage only, one-tile section cut (scripts/blender-hedge-section.py)"
     },
     {
       "id": "meat_hook",
@@ -6446,6 +6446,279 @@
         1.141
       ],
       "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "dead_body_covered",
+      "title": "Low Poly Dead Body Covered Game Ready",
+      "uid": "1e6ae13f6c2e46429eaca4d22d8bdbaa",
+      "page": "https://sketchfab.com/3d-models/1e6ae13f6c2e46429eaca4d22d8bdbaa",
+      "author": "-Arthur-",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-109/1e6ae13f6c2e46429eaca4d22d8bdbaa.glb",
+      "sourceSha256": "b13a55c899b61a631f437a57b1ac5db54fd66a3e7d4b08a96ea56fc0772965d6",
+      "sourceTriangles": 1501,
+      "file": "dead_body_covered/dead_body_covered.glb",
+      "sha256": "895198659ba6f097eecb5056dd1b8023c20c062e2e58518e790949f5cdd4753f",
+      "triangles": 1501,
+      "size": [
+        2.431,
+        0.282,
+        1.462
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "zombie_head",
+      "title": "Zombie Head",
+      "uid": "f9598fedee9f43ad9c8e90345aef1590",
+      "page": "https://sketchfab.com/3d-models/f9598fedee9f43ad9c8e90345aef1590",
+      "author": "Jonathan Baker",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-135/f9598fedee9f43ad9c8e90345aef1590.glb",
+      "sourceSha256": "6d5e7baca3e52f94dd4fe9c32fa24df47707a1046aaec9c7cbe3ecc01af4152d",
+      "sourceTriangles": 241274,
+      "file": "zombie_head/zombie_head.glb",
+      "sha256": "151997bb46391fd95a7fba638d52f4ca5336bf03b1a5ef2a16e31211663668af",
+      "triangles": 7993,
+      "size": [
+        1.07,
+        1.997,
+        1.373
+      ],
+      "processing": "ground-centred, decimated to 8000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "balaclava",
+      "title": "Balaclava Ski Mask",
+      "uid": "5830d02e255246789c340d89693ce6c2",
+      "page": "https://sketchfab.com/3d-models/5830d02e255246789c340d89693ce6c2",
+      "author": "Leandro Nicolas",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-143/5830d02e255246789c340d89693ce6c2.glb",
+      "sourceSha256": "5dc20d9c65a868fcce4af8f68ecc9dd3c44060c50d7ca05716f8c9bf8dbdbeb6",
+      "sourceTriangles": 33096,
+      "file": "balaclava/balaclava.glb",
+      "sha256": "e90854bcae86cbf896b854f88ea662c3bbed4a7e7c70ae607015a844ee9ddd0f",
+      "triangles": 5000,
+      "size": [
+        0.195,
+        0.292,
+        0.227
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "shaffron",
+      "title": "Pegasus Shaffron",
+      "uid": "b69b7e87558b489f955ad7fb235f1c23",
+      "page": "https://sketchfab.com/3d-models/b69b7e87558b489f955ad7fb235f1c23",
+      "author": "Haley Nettleton",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-129/b69b7e87558b489f955ad7fb235f1c23.glb",
+      "sourceSha256": "7db3d6a565323645c212b32d06cb0d870b05f6023b21203e7fdcb84268f9de7f",
+      "sourceTriangles": 14474,
+      "file": "shaffron/shaffron.glb",
+      "sha256": "866e68b9f1aca4f5b4f62a36ff81f748ecde301989b02b8455f80310bb6474b2",
+      "triangles": 7998,
+      "size": [
+        36.046,
+        77.907,
+        64.134
+      ],
+      "processing": "ground-centred, decimated to 8000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "garden_urn",
+      "title": "Garden Urn",
+      "uid": "c0c7f5fa24704a23b0f3cbdd689b8176",
+      "page": "https://sketchfab.com/3d-models/c0c7f5fa24704a23b0f3cbdd689b8176",
+      "author": "Lyskilde",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-020/c0c7f5fa24704a23b0f3cbdd689b8176.glb",
+      "sourceSha256": "f29b74b331ac32307fb256886e612a86baa594b5633e7eebb9fbd44c846f139c",
+      "sourceTriangles": 4706,
+      "file": "garden_urn/garden_urn.glb",
+      "sha256": "86086926cf903468e1239b504b39a61709f1444c29b59511bdace6b15ca96ddb",
+      "triangles": 4706,
+      "size": [
+        65.132,
+        117.131,
+        68.919
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "orc_sculpt",
+      "title": "Fast Zbrush Orc Sculpting",
+      "uid": "065bfb95edcf4a4d9cee9ae9997212cd",
+      "page": "https://sketchfab.com/3d-models/065bfb95edcf4a4d9cee9ae9997212cd",
+      "author": "Renato Aruffo",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-013/065bfb95edcf4a4d9cee9ae9997212cd.glb",
+      "sourceSha256": "a2525f8d21a7cfead994d7730e971e9aaffaf4130116c295644b486d2c4e6ebd",
+      "sourceTriangles": 479604,
+      "file": "orc_sculpt/orc_sculpt.glb",
+      "sha256": "e5a684a9591f3d12283f1a975872ced06d514a34ddbcf7bcbb7f278ba8b6fc6c",
+      "triangles": 19993,
+      "size": [
+        665.016,
+        1823.194,
+        473.761
+      ],
+      "processing": "ground-centred, decimated to 20000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "tentacle_plant",
+      "title": "Tentacle Plant",
+      "uid": "8372c5e8dfca49a1ae1046e02f47e2d0",
+      "page": "https://sketchfab.com/3d-models/8372c5e8dfca49a1ae1046e02f47e2d0",
+      "author": "meowskie",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-048/8372c5e8dfca49a1ae1046e02f47e2d0.glb",
+      "sourceSha256": "503e61abbb96ffa06bf7cff4e763a6c2b7166c00d2a32475d22916ebaf185d63",
+      "sourceTriangles": 3388,
+      "file": "tentacle_plant/tentacle_plant.glb",
+      "sha256": "4627f67fdc0f229e2971b6b4dbc3d749be837b918cd843fae267bda0046e5053",
+      "triangles": 3388,
+      "size": [
+        14.757,
+        7.04,
+        16.795
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "dragon_statuette",
+      "title": "Dragon statuette",
+      "uid": "6e142983fac847ec97adaeef74ecf829",
+      "page": "https://sketchfab.com/3d-models/6e142983fac847ec97adaeef74ecf829",
+      "author": "Lo\u00efc Norgeot",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-010/6e142983fac847ec97adaeef74ecf829.glb",
+      "sourceSha256": "cfb1b6d2dfa337c43f5dc48e98e599221d661d04803664e2148f255ca77f5374",
+      "sourceTriangles": 14979,
+      "file": "dragon_statuette/dragon_statuette.glb",
+      "sha256": "9faab06793e3c9e8cc5695502cbcd96d28991ee87febe31fdd65a1ba6791b892",
+      "triangles": 8000,
+      "size": [
+        189.567,
+        409.315,
+        338.777
+      ],
+      "processing": "ground-centred, decimated to 8000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "pigeon",
+      "title": "Pigeon 3",
+      "uid": "4383b3f88d9646c7b2f336266eaad947",
+      "page": "https://sketchfab.com/3d-models/4383b3f88d9646c7b2f336266eaad947",
+      "author": "tomkranis",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-016/4383b3f88d9646c7b2f336266eaad947.glb",
+      "sourceSha256": "941c0b263508eadf4324613114086d313cf83181049637f86e6690f598a0c5c3",
+      "sourceTriangles": 2508,
+      "file": "pigeon/pigeon.glb",
+      "sha256": "2bcd4a31a6b63189baa6e253933f13cc08c097e2bded085d0e3c46b168e3f080",
+      "triangles": 1497,
+      "size": [
+        5.797,
+        12.3,
+        14.245
+      ],
+      "processing": "ground-centred, decimated to 1500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "mannequin_leg",
+      "title": "Mannequin Leg Lowpoly",
+      "uid": "2732eddf65d049baa25b1c2b4b522631",
+      "page": "https://sketchfab.com/3d-models/2732eddf65d049baa25b1c2b4b522631",
+      "author": "Dan Andersen",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-123/2732eddf65d049baa25b1c2b4b522631.glb",
+      "sourceSha256": "4d7bff4b300a4b734e72d23e30e9bb05c42d9801ecdfd33be967033d1ab476a2",
+      "sourceTriangles": 5046,
+      "file": "mannequin_leg/mannequin_leg.glb",
+      "sha256": "8037206ff11d72ef4850cafd19ca70095b60dd89ac243e86bfca3a0eb0041983",
+      "triangles": 4999,
+      "size": [
+        765887.312,
+        571913.0,
+        587987.562
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "pig_head_practice",
+      "title": "Practice Pig Head",
+      "uid": "d5d953cefab7448fa3feef01cd9f6f05",
+      "page": "https://sketchfab.com/3d-models/d5d953cefab7448fa3feef01cd9f6f05",
+      "author": "JimmothySanchez",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-154/d5d953cefab7448fa3feef01cd9f6f05.glb",
+      "sourceSha256": "300e7c1339174a9507c64be3b2ad5c56cc34e6175e2ead7cd9b11669ea5e4349",
+      "sourceTriangles": 6992,
+      "file": "pig_head_practice/pig_head_practice.glb",
+      "sha256": "a9e3f2bca4644e0f1d8adcff999d10ac2b49dd6a833c3584fad55ea0c526947a",
+      "triangles": 6992,
+      "size": [
+        210.649,
+        191.648,
+        331.708
+      ],
+      "processing": "ground-centred, decimated to 7000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "horse_bit",
+      "title": "Bit (horse)",
+      "uid": "f2df9cdd4973408d926281e677b41369",
+      "page": "https://sketchfab.com/3d-models/f2df9cdd4973408d926281e677b41369",
+      "author": "Virtual Museums of Ma\u0142opolska",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-006/f2df9cdd4973408d926281e677b41369.glb",
+      "sourceSha256": "444b3533349fbab8915cd38a04a1f9304a732a8a217bd1d7a2ef2d0dbf1f9a17",
+      "sourceTriangles": 10296,
+      "file": "horse_bit/horse_bit.glb",
+      "sha256": "fad8738a4a00cb2e098481700f773be5680ecfff7b2069e25324396d3aabb35c",
+      "triangles": 2999,
+      "size": [
+        38.965,
+        5.484,
+        43.775
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "eagle_sculpture",
+      "title": "Eagle Sculpture",
+      "uid": "811daf3a66fe4777a2d26b2fca951528",
+      "page": "https://sketchfab.com/3d-models/811daf3a66fe4777a2d26b2fca951528",
+      "author": "jerryfisher",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-116/811daf3a66fe4777a2d26b2fca951528.glb",
+      "sourceSha256": "285f81d138692905a5e2a84601e116cf92a151ce5088b171cef3cfd46926b8f2",
+      "sourceTriangles": 200000,
+      "file": "eagle_sculpture/eagle_sculpture.glb",
+      "sha256": "b57a79222f18a1d802a9c7505948c9276ef26ae63703d437a0ddec26e69f4762",
+      "triangles": 9999,
+      "size": [
+        20.722,
+        23.701,
+        22.831
+      ],
+      "processing": "ground-centred, decimated to 10000 triangles, textures capped at 1024 px"
     }
   ]
 }

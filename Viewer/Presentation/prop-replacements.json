@@ -3580,10 +3580,17 @@
      "height": 1.9
     },
     "4648": {
-     "skip": true
+     "model": "Objaverse/eagle_sculpture",
+     "height": 1.4
     },
     "5019": {
-     "skip": true
+     "model": "Objaverse/dragon_statuette",
+     "height": 1.6,
+     "material": {
+      "color": "9a9894",
+      "metallic": 0.0,
+      "roughness": 0.85
+     }
     }
    }
   },
@@ -3850,6 +3857,197 @@
    "anchor": "back",
    "rotation": 180,
    "elevation": 1.3
+  },
+  "hedge": {
+   "model": "Objaverse/hedge_scan",
+   "height": 1.4,
+   "size": [
+    1.0,
+    1.4,
+    0.9
+   ],
+   "only_ids": true,
+   "ids": {
+    "3512": {
+     "height": 1.4
+    },
+    "3513": {
+     "height": 1.4
+    }
+   }
+  },
+  "untrimmed hedge": {
+   "model": "Objaverse/hedge_scan",
+   "height": 1.2,
+   "size": [
+    0.95,
+    1.2,
+    0.95
+   ]
+  },
+  "grasses": {
+   "model": "Objaverse/grass_clump",
+   "height": 0.9,
+   "cluster": 2,
+   "only_ids": true,
+   "ids": {
+    "3259": {
+     "height": 0.9
+    },
+    "3261": {
+     "height": 0.8
+    }
+   }
+  },
+  "torso": {
+   "model": "Objaverse/dead_body_covered",
+   "length": 1.2
+  },
+  "head": {
+   "model": "Objaverse/zombie_head",
+   "height": 0.28
+  },
+  "leg": {
+   "model": "Objaverse/mannequin_leg",
+   "length": 0.85,
+   "lay": true,
+   "material": {
+    "color": "c89878",
+    "metallic": 0.0,
+    "roughness": 0.6
+   }
+  },
+  "legs": {
+   "model": "Objaverse/mannequin_leg",
+   "length": 0.85,
+   "lay": true,
+   "cluster": 2,
+   "material": {
+    "color": "c89878",
+    "metallic": 0.0,
+    "roughness": 0.6
+   }
+  },
+  "raw bird": {
+   "model": "Objaverse/pigeon",
+   "length": 0.3,
+   "lay": true,
+   "material": {
+    "color": "e8b4a0",
+    "metallic": 0.0,
+    "roughness": 0.55
+   }
+  },
+  "plucked chicken": {
+   "model": "Objaverse/pigeon",
+   "length": 0.35,
+   "lay": true,
+   "material": {
+    "color": "e8b4a0",
+    "metallic": 0.0,
+    "roughness": 0.55
+   }
+  },
+  "chicken": {
+   "model": "Objaverse/pigeon",
+   "length": 0.35,
+   "lay": true,
+   "material": {
+    "color": "e8b4a0",
+    "metallic": 0.0,
+    "roughness": 0.55
+   }
+  },
+  "bird": {
+   "model": "Objaverse/pigeon",
+   "length": 0.3,
+   "lay": true,
+   "material": {
+    "color": "6a4a30",
+    "metallic": 0.0,
+    "roughness": 0.8
+   }
+  },
+  "batwing": {
+   "model": "Objaverse/bat_wing",
+   "length": 0.25
+  },
+  "pig's head": {
+   "model": "Objaverse/pig_head_practice",
+   "length": 0.35
+  },
+  "orc mask": {
+   "model": "Objaverse/tribal_mask",
+   "height": 0.3
+  },
+  "ninja mask": {
+   "model": "Objaverse/balaclava",
+   "height": 0.25
+  },
+  "orc frame": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 1.9,
+   "material": {
+    "color": "6a7a4a",
+    "metallic": 0.0,
+    "roughness": 0.7
+   }
+  },
+  "corpser frame": {
+   "model": "Objaverse/tentacle_plant",
+   "height": 1.2
+  },
+  "horse barding": {
+   "model": "Objaverse/shaffron",
+   "height": 0.55,
+   "ids": {
+    "4982": {
+     "skip": true
+    },
+    "4984": {
+     "skip": true
+    }
+   }
+  },
+  "memorial to gwenno": {
+   "model": "Objaverse/garden_urn",
+   "height": 1.8,
+   "only_ids": true,
+   "ids": {
+    "4486": {
+     "height": 1.8
+    },
+    "4489": {
+     "height": 1.8
+    }
+   }
+  },
+  "tree": {
+   "model": "Objaverse/tree_dead",
+   "height": 4.0,
+   "only_ids": true,
+   "ids": {
+    "3274": {
+     "height": 4.0
+    },
+    "3275": {
+     "model": "Objaverse/tree_bare_scan",
+     "height": 4.5
+    },
+    "3276": {
+     "height": 3.8
+    }
+   }
+  },
+  "bird%s": {
+   "model": "Objaverse/pigeon",
+   "length": 0.3,
+   "lay": true,
+   "material": {
+    "color": "6a4a30",
+    "metallic": 0.0,
+    "roughness": 0.8
+   }
   }
  }
 }

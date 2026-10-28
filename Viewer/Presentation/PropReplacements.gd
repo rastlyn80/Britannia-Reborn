@@ -106,7 +106,8 @@ static func _one(reconstruction: RefCounted, model: String, found: Dictionary, s
 	var lay: bool = found.get("lay",false)
 	var longest := maxf(box.size.x,maxf(box.size.y,box.size.z)) if lay else maxf(box.size.x,box.size.z)
 	var factor := (float(found.length)/maxf(longest,0.001) if found.has("length") else float(found.height)/maxf(box.size.y,0.001))*scale
-	var placed: Node3D = reconstruction.fitted(path,box.size*factor)
+	# "size" [x, y, z] fits a block-like scan to exact proportions (a clipped hedge).
+	var placed: Node3D = reconstruction.fitted(path,Vector3(found.size[0],found.size[1],found.size[2])*scale if found.has("size") else box.size*factor)
 	if found.has("material"): _repaint(placed,found.material)
 	if lay:
 		# fitted() stands the model on y = 0, centred in x and z.

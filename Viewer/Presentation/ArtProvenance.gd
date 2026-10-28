@@ -156,14 +156,15 @@ func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -
 	var name := "" if str(item.name) == "unnamed" else str(item.name)
 	# No original artwork (or a blank strip under 3 px): the native client draws nothing.
 	if (item.get("art") == null or int(item.art[1]) < 3) and audited.is_empty() and server.is_empty(): return {"status":"hidden","detail":"no original artwork (the native client draws nothing)"}
-	if item.flags.has("wearable") and item.world == 0:
+	# Worn pieces placed loose by decoration draw their crafted or scanned look.
+	if item.flags.has("wearable") and item.world == 0 and not (int(item.get("decoration",0)) > 0 and (preload("res://Presentation/CraftedProps.gd").handles(name) or preload("res://Presentation/PropReplacements.gd").has(name,id))):
 		if preload("res://Presentation/HumanWardrobe.gd").mapped(id):
 			return {"status":"kit","detail":"MakeHuman CC0: fitted human wardrobe category substitute"}
 		return {"status":"original","detail":"worn model outside the first human wardrobe batch"}
 	# Name-keyed scan replacements apply to map statics and server items alike.
 	var found: Dictionary = preload("res://Presentation/PropReplacements.gd").entry_for(name,id)
 	var found_rule: Dictionary = audited if not audited.is_empty() else Rules.resolve(id,{"name":name,"height":item.height,"flags":flag_bits(item.flags)})
-	if not found.is_empty() and not preload("res://Presentation/PropReplacements.gd").applies(str(found_rule.get("kind","prop"))): found = {}
+	if not found.is_empty() and not preload("res://Presentation/PropReplacements.gd").applies(str(found_rule.get("kind","prop"))) and not (str(found_rule.get("kind","")) == "tree" and found.get("only_ids",false)): found = {}
 	if found.is_empty() and preload("res://Presentation/PropReplacements.gd").applies(str(found_rule.get("kind","prop"))) and preload("res://Presentation/CraftedProps.gd").handles(name):
 		return {"status":"crafted","detail":"built from photoscanned timber, iron, cloth and stone"}
 	if not found.is_empty():

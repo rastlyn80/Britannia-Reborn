@@ -4,7 +4,8 @@ extends RefCounted
 # rope, cloth bolts, wire coils, gears and springs, nails and hinges, barrel
 # staves and hoops, boards and shafts, axles, curtain rods, troughs, hide
 # frames, music stands, looms, winches, harrows, millstones, hourglasses,
-# cannonballs and arrows. Sizes are real-world metres; the object stands on
+# cannonballs and arrows, loose armour pieces, a backpack, a memorial and
+# dust-sheeted chairs. Sizes are real-world metres; the object stands on
 # y = 0 centred on its tile. Shapes follow the original art.
 const NAMES := {
 	"rope":"rope","tightrope":"rope","bolt of cloth":"cloth","pile of wool":"wool","bale of cotton":"bale",
@@ -22,6 +23,10 @@ const NAMES := {
 	"sewing kit":"sewing","paints and brush":"palette","baked pie":"pie:b8783a","unbaked pie":"pie:e8d0a0","full vials":"vials:1","empty vials":"vials:0","flask stand":"vials:0",
 	"decorative armor":"armorstand","dough":"dough","horse shoes":"horseshoes","tambourine":"tambourine","blood moss":"reagent:8a1a14","sulfurous ash":"reagent:d8c030","spider's silk":"reagent:f0f0f0",
 	"sextant parts":"brassparts","carrot":"carrot","dyes":"dyes","knitting":"knitting","bowl of lettuce":"bowl:5a9a3a","bowl of carrots":"bowl:d06a20","rudder":"rudder","bolas":"bolas","feather":"feather","feather%s":"feather","eye of newt":"reagent:a02020","sign":"plank",
+	"chainmail leggings":"leggings:mail:b8bcc2","ringmail leggings":"leggings:mail:9a8058","leather sleeves":"sleeves:leather:6a4628","studded sleeves":"sleeves:studded:5a3a20","ringmail sleeves":"sleeves:mail:9a8058",
+	"leather gorget":"gorget:leather:6a4628","studded gorget":"gorget:studded:5a3a20","platemail gorget":"gorget:plate:b8bcc2","bone armor":"bones:armor","bone gloves":"bones:gloves","bone legs":"bones:legs",
+	"raw cotton":"cotton","bridle":"bridle","prow":"prow","dart trap":"darttrap","serpent crest":"crest","void essence":"essence","covered chair":"coveredchair","iron maiden":"ironmaiden",
+	"century plant":"agave","backpack":"backpack","pampas grass":"pampas","memorial to gwenno":"memorial","horse barding":"barding",
 	"glass":"glassmug","dice and cup":"dice","eggs":"eggs","egg case":"eggcase","lockpick":"picks:1","lockpicks":"picks:3","spike trap":"spikes","hatch":"hatch","rope ladder":"ropeladder","brush":"brush","coconut":"coconut","full apron":"garment:apron:9a968a","half apron":"garment:apron:9a968a",
 }
 static var materials := {}
@@ -56,6 +61,16 @@ static func _wood() -> StandardMaterial3D: return _mat("medieval_wood",Color("c8
 static func _iron() -> StandardMaterial3D: return _mat("rusty_metal_02",Color("8a8a8a"),0.7,0.55,3.0)
 static func _stone() -> StandardMaterial3D: return _mat("castle_wall_varriation",Color("d0ccc4"),0.0,0.9,3.0)
 static func _cloth(c: String) -> StandardMaterial3D: return _mat("hessian_230",Color(c),0.0,0.95,4.0)
+# Polished mail and plate: the rust scan would read as brown, so plain steel.
+static func _steel(c: String) -> StandardMaterial3D:
+	var key := "steel/"+c
+	if not materials.has(key):
+		var m := StandardMaterial3D.new()
+		m.albedo_color = Color(c)
+		m.metallic = 0.6
+		m.roughness = 0.4
+		materials[key] = m
+	return materials[key]
 
 static func _box(p: Node3D, size: Vector3, at: Vector3, m: Material, rot := Vector3.ZERO) -> MeshInstance3D:
 	var mi := MeshInstance3D.new(); var b := BoxMesh.new(); b.size = size; mi.mesh = b; mi.material_override = m; mi.position = at; mi.rotation = rot; p.add_child(mi); return mi
@@ -307,12 +322,12 @@ static func build(name: String, seed := 0) -> Node3D:
 				_box(root,Vector3(0.015,0.25,0.01),Vector3(rnd.randf_range(-0.15,0.15),cy,-0.49),crack,Vector3(0,0,rnd.randf_range(-0.6,0.6)))
 				cy += 0.2
 		"coveredchair":
-			_model(root,"res://Art/Objaverse/chair_old/chair_old.glb",1.0)
-			var drape := StandardMaterial3D.new()
-			drape.albedo_color = Color("ece8e0")
-			drape.roughness = 0.95
-			var sheet := _sphere(root,0.42,Vector3(0,0.55,0),drape)
-			sheet.scale = Vector3(0.8,1.3,0.8)
+			# A dust sheet over a chair: draped skirt, seat and tall back.
+			var sh := _mat("white_plaster_02",Color("f4f2ec"),0.0,0.95,3.0)
+			var low := _cyl(root,0.3,0.5,Vector3(0,0.25,0),sh,Vector3(0,PI/8,0),0.36,8)
+			low.scale = Vector3(1.0,1.0,0.9)
+			_box(root,Vector3(0.48,0.6,0.14),Vector3(0,0.78,-0.2),sh,Vector3(-0.08,0,0))
+			_cyl(root,0.07,0.48,Vector3(0,1.08,-0.22),sh,Vector3(0,0,PI/2),-1,10)
 		"cake":
 			_cyl(root,0.14,0.12,Vector3(0,0.06,0),_mat("white_plaster_02",Color("f4e8c8"),0.0,0.6,6.0))
 			for i in 6: _sphere(root,0.015,Vector3(cos(i)*0.1,0.125,sin(i)*0.1),_mat("white_plaster_02",Color("c02030"),0.0,0.3,6.0))
@@ -389,6 +404,148 @@ static func build(name: String, seed := 0) -> Node3D:
 			fe.scale = Vector3(2.4,0.06,0.5)
 		"plank":
 			_box(root,Vector3(0.7,0.4,0.04),Vector3(0,1.3,-0.46),_wood())
+		"leggings":
+			# Mail leggings laid flat: two legs joined at the waist.
+			var lm := _steel(kind.get_slice(":",2))
+			_box(root,Vector3(0.34,0.05,0.14),Vector3(0,0.025,-0.33),lm)
+			for sx in [-1.0,1.0]: _box(root,Vector3(0.15,0.05,0.72),Vector3(sx*0.1,0.025,0.08),lm,Vector3(0,sx*0.1,0))
+		"sleeves":
+			var style := kind.get_slice(":",1)
+			var sm := _steel(kind.get_slice(":",2)) if style == "mail" else _mat("brown_mud_dry",Color(kind.get_slice(":",2)),0.0,0.6,6.0)
+			for sx in [-1.0,1.0]:
+				var yaw: float = sx*0.3
+				_cyl(root,0.045,0.5,Vector3(sx*0.14,0.06,0),sm,Vector3(PI/2,yaw,0),0.06,12)
+				if style == "studded":
+					for k in 4: _sphere(root,0.012,Vector3(sx*0.14+sin(yaw)*(k*0.1-0.15),0.11,cos(yaw)*(k*0.1-0.15)),_iron())
+		"gorget":
+			var gstyle := kind.get_slice(":",1)
+			var gm := _steel(kind.get_slice(":",2)) if gstyle == "plate" else _mat("brown_mud_dry",Color(kind.get_slice(":",2)),0.0,0.6,6.0)
+			_cyl(root,0.075,0.08,Vector3(0,0.06,0),gm,Vector3.ZERO,0.085,20)
+			var flare := _torus(root,0.08,0.16,Vector3(0,0.02,0),gm)
+			flare.scale = Vector3(1.0,0.5,0.85)
+			if gstyle == "studded":
+				for k in 8: _sphere(root,0.01,Vector3(cos(k*TAU/8)*0.15,0.026,sin(k*TAU/8)*0.12),_iron())
+		"bones":
+			var bone := _mat("white_plaster_02",Color("d8cca0"),0.0,0.7,6.0)
+			match kind.get_slice(":",1):
+				"armor":
+					for k in 6: _cyl(root,0.03,0.05,Vector3(0,0.03,-0.25+k*0.1),bone,Vector3(PI/2,0,0),-1,8)
+					for k in 5:
+						for sx in [-1.0,1.0]: _cyl(root,0.012,0.3,Vector3(sx*0.16,0.025,-0.2+k*0.09),bone,Vector3(0,sx*0.25,PI/2),-1,6)
+					for sx in [-1.0,1.0]:
+						var pad := _sphere(root,0.11,Vector3(sx*0.3,0.04,-0.3),bone)
+						pad.scale = Vector3(1.0,0.35,1.0)
+					_box(root,Vector3(0.5,0.015,0.06),Vector3(0,0.065,-0.32),_mat("brown_mud_dry",Color("5a3a20"),0.0,0.6,6.0))
+				"gloves":
+					for sx in [-1.0,1.0]:
+						_box(root,Vector3(0.09,0.03,0.1),Vector3(sx*0.12,0.015,0),bone)
+						for f in 4: _cyl(root,0.008,0.08,Vector3(sx*0.12-0.03+f*0.02,0.012,0.09),bone,Vector3(PI/2,0,0),-1,6)
+				"legs":
+					for sx in [-1.0,1.0]:
+						_cyl(root,0.025,0.45,Vector3(sx*0.12,0.03,-0.22),bone,Vector3(PI/2,0,0),-1,8)
+						_cyl(root,0.02,0.42,Vector3(sx*0.12,0.03,0.24),bone,Vector3(PI/2,0,0),-1,8)
+						_sphere(root,0.045,Vector3(sx*0.12,0.04,0.01),bone)
+		"cotton":
+			for i in 7: _sphere(root,rnd.randf_range(0.04,0.06),Vector3(rnd.randf_range(-0.1,0.1),0.045,rnd.randf_range(-0.1,0.1)),_mat("white_plaster_02",Color("fbfaf6"),0.0,0.95,8.0))
+		"bridle":
+			var lt := _mat("brown_mud_dry",Color("7a4a24"),0.0,0.6,6.0)
+			_torus(root,0.13,0.145,Vector3(0,0.008,0),lt)
+			_torus(root,0.07,0.085,Vector3(0.12,0.008,0.1),lt)
+			_cyl(root,0.008,0.6,Vector3(-0.15,0.008,-0.15),lt,Vector3(PI/2,0.8,0),-1,6)
+			_model(root,"res://Art/Objaverse/horse_bit/horse_bit.glb",0.16,Vector3(0.18,0,0.05))
+		"prow":
+			# A ship's bow section: a planked wedge of hull, decked over, with its stem post.
+			var hull := _cyl(root,0.4,0.9,Vector3(0,0.45,0),_wood(),Vector3.ZERO,0.55,3)
+			hull.scale = Vector3(1.4,1.0,0.8)
+			var deck := _cyl(root,0.41,0.04,Vector3(0,0.91,0),_mat("medieval_wood",Color("e0c8a0"),0.0,0.85,2.5),Vector3.ZERO,-1,3)
+			deck.scale = Vector3(1.4,1.0,0.8)
+			_box(root,Vector3(0.08,1.1,0.08),Vector3(0.56,0.55,0),_wood())
+		"darttrap":
+			_box(root,Vector3(0.3,0.3,0.03),Vector3(0,1.0,-0.48),_stone())
+			var hole := StandardMaterial3D.new()
+			hole.albedo_color = Color(0.05,0.04,0.04)
+			for k in 3: _cyl(root,0.015,0.02,Vector3(-0.08+k*0.08,1.0,-0.46),hole,Vector3(PI/2,0,0),-1,8)
+		"crest":
+			# Oval silver plaque with the red serpent ring, hung on the wall.
+			var silver := _steel("c9ccd2")
+			var plaque := _cyl(root,0.22,0.03,Vector3(0,1.6,-0.47),silver,Vector3(PI/2,0,0),-1,24)
+			plaque.scale = Vector3(0.7,1.0,1.0)
+			var ring := _torus(root,0.1,0.14,Vector3(0,1.6,-0.45),_mat("brown_mud_dry",Color("a01818"),0.0,0.4,6.0),Vector3(PI/2,0,0))
+			ring.scale = Vector3(0.7,1.0,1.0)
+			_sphere(root,0.04,Vector3(0,1.6,-0.45),_mat("rusty_metal_02",Color("2a2a2e"),0.8,0.4,6.0))
+		"essence":
+			var em := StandardMaterial3D.new()
+			em.albedo_color = Color("ff9a20")
+			em.emission_enabled = true
+			em.emission = Color("ff8a10")
+			em.emission_energy_multiplier = 3.0
+			var es := _sphere(root,0.22,Vector3(0,0.06,0),em)
+			es.scale = Vector3(1.6,0.35,0.9)
+			var ol := OmniLight3D.new()
+			ol.light_color = Color("ff9a30")
+			ol.omni_range = 1.5
+			ol.light_energy = 1.2
+			ol.position = Vector3(0,0.3,0)
+			root.add_child(ol)
+		"ironmaiden":
+			var im := _mat("rusty_metal_02",Color("4a5060"),0.8,0.5,3.0)
+			var body := _cyl(root,0.24,1.7,Vector3(0,0.85,0),im,Vector3.ZERO,0.3,8)
+			body.scale = Vector3(1.0,1.0,0.75)
+			var crown := _sphere(root,0.24,Vector3(0,1.72,0),im)
+			crown.scale = Vector3(1.0,0.7,0.75)
+			var face := _sphere(root,0.11,Vector3(0,1.55,0.17),_mat("rusty_metal_02",Color("8a8a90"),0.9,0.4,6.0))
+			face.scale = Vector3(0.8,1.0,0.4)
+			for k in 3: _box(root,Vector3(0.52,0.03,0.04),Vector3(0,0.4+k*0.45,0.2),_iron())
+		"agave":
+			# Century plant: a low rosette of blades and a tall flowering stalk.
+			var lf := _mat("leafy_grass",Color("6a8a6a"),0.0,0.7,6.0)
+			for i in 9:
+				var a := TAU*i/9.0
+				_box(root,Vector3(0.07,0.5,0.015),Vector3(cos(a)*0.12,0.22,sin(a)*0.12),lf,Vector3(0.6,PI/2-a,0))
+			_cyl(root,0.02,2.4,Vector3(0,1.4,0),_mat("medieval_wood",Color("8a8a50"),0.0,0.85,4.0),Vector3.ZERO,0.035,8)
+			var yel := _mat("leafy_grass",Color("e8c030"),0.0,0.8,8.0)
+			for k in 6:
+				var ka := k*2.4
+				for j in 3: _sphere(root,0.045,Vector3(cos(ka)*(0.1+j*0.04),1.55+k*0.22+j*0.03,sin(ka)*(0.1+j*0.04)),yel)
+		"pampas":
+			_model(root,"res://Art/Objaverse/grass_clump/grass_clump.glb",0.9)
+			var plume := _mat("white_plaster_02",Color("f2ecdc"),0.0,0.95,8.0)
+			var stem := _mat("leafy_grass",Color("a0a070"),0.0,0.9,8.0)
+			for i in 10:
+				var a := TAU*i/10.0+rnd.randf()*0.4
+				var top := Vector3(cos(a)*rnd.randf_range(0.1,0.3),rnd.randf_range(1.3,1.7),sin(a)*rnd.randf_range(0.1,0.3))
+				var q := Quaternion(Vector3.UP,top.normalized())
+				var st := _cyl(root,0.006,top.length(),top/2.0,stem,Vector3.ZERO,-1,5)
+				st.quaternion = q
+				var pl := _sphere(root,0.05,top,plume)
+				pl.quaternion = q
+				pl.scale = Vector3(1.5,4.0,1.5)
+		"memorial":
+			# Gwenno's memorial: an inscribed headstone over a bed of flowers.
+			_box(root,Vector3(0.9,0.12,0.5),Vector3(0,0.06,0),_stone())
+			var pale := _mat("castle_wall_varriation",Color("e0dcd2"),0.0,0.8,3.0)
+			_box(root,Vector3(0.7,1.1,0.12),Vector3(0,0.67,-0.12),pale)
+			_cyl(root,0.35,0.12,Vector3(0,1.22,-0.12),pale,Vector3(PI/2,0,0),-1,20)
+			var leaf := _mat("leafy_grass",Color("4a7a3a"),0.0,0.8,6.0)
+			for i in 10: _sphere(root,0.05,Vector3(rnd.randf_range(-0.4,0.4),0.14,rnd.randf_range(0.02,0.22)),leaf)
+			for i in 10: _sphere(root,0.03,Vector3(rnd.randf_range(-0.4,0.4),0.19,rnd.randf_range(0.02,0.22)),_mat("leafy_grass",Color(["d02a2a","e8c030","f0f0f0","c060c0"][i%4]),0.0,0.6,8.0))
+		"barding":
+			# Horse barding hung over a sawhorse, the shaffron at its head.
+			for x in [-0.6,0.6]:
+				for sz in [-1.0,1.0]: _box(root,Vector3(0.06,0.95,0.06),Vector3(x,0.45,sz*0.18),_wood(),Vector3(-sz*0.3,0,0))
+			_box(root,Vector3(1.5,0.1,0.1),Vector3(0,0.9,0),_wood())
+			var mail := _steel("b8bcc2")
+			for sz in [-1.0,1.0]: _box(root,Vector3(1.4,0.6,0.03),Vector3(0,0.68,sz*0.2),mail,Vector3(-sz*0.35,0,0))
+			_box(root,Vector3(1.4,0.04,0.3),Vector3(0,0.96,0),mail)
+			_model(root,"res://Art/Objaverse/shaffron/shaffron.glb",0.55,Vector3(0.85,0.5,0),Vector3(0,-PI/2,0))
+		"backpack":
+			# Leather backpack: body, rounded flap with a buckle, shoulder straps.
+			var lb := _mat("brown_mud_dry",Color("8a5a30"),0.0,0.6,6.0)
+			_box(root,Vector3(0.32,0.38,0.16),Vector3(0,0.19,0),lb)
+			_box(root,Vector3(0.33,0.2,0.02),Vector3(0,0.3,0.09),lb,Vector3(0.12,0,0))
+			_cyl(root,0.08,0.33,Vector3(0,0.38,0.0),lb,Vector3(0,0,PI/2),-1,10)
+			_box(root,Vector3(0.04,0.04,0.012),Vector3(0,0.22,0.105),_mat("rusty_metal_02",Color("d0a040"),1.0,0.3,8.0))
+			for sx in [-1.0,1.0]: _box(root,Vector3(0.04,0.34,0.012),Vector3(sx*0.09,0.2,-0.085),_mat("brown_mud_dry",Color("5a3a1e"),0.0,0.6,6.0))
 		"bar":
 			_box(root,Vector3(0.3,0.03,0.05),Vector3(0,0.015,0),_iron())
 	for mi in root.find_children("*","MeshInstance3D",true,false): (mi as MeshInstance3D).cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON

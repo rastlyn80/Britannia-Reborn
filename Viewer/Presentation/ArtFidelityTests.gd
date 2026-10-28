@@ -131,7 +131,7 @@ func _initialize() -> void:
  check(regional.resolve(5677,{"name":"banner","height":0}).get("mount","")=="wall" and regional.resolve(1062,{"name":"tattered banner","height":0}).get("mount","")=="wall","Banners hang flat on the wall beside them")
  var swaps:=preload("res://Presentation/PropReplacements.gd")
  var statue_part: Node3D=swaps.build(recon,"statue",0,5023)
- check(swaps.has("statue",5022) and statue_part.get_child_count()==0 and not swaps.has("statue",4648),"Multi-tile statue draws once; graphics the scan does not depict keep their own look")
+ check(swaps.has("statue",5022) and statue_part.get_child_count()==0 and str(swaps.entry_for("statue",4648).get("model","")) == "Objaverse/eagle_sculpture","Multi-tile statue draws once; statues the angel does not depict draw their own scans")
  statue_part.free()
  var patch: Node3D=swaps.build(recon,"mushrooms",7)
  check(patch!=null and patch.get_child_count()>=3,"A mushrooms tile is a small patch of scanned mushrooms, not one cap")

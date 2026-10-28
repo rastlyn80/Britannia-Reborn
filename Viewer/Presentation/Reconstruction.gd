@@ -1532,9 +1532,13 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					# Owner-licensed converted trees when present locally; CC0 library otherwise.
 					# A crown without a trunk in its cell is a whole tree of its species.
 					var species := name if kind == "tree" else ("oak tree" if "oak" in name else ("walnut tree" if "walnut" in name else ("cedar tree" if "cedar" in name or "needles" in name else ("willow tree" if "willow" in name else "tree"))))
-					var local_tree: Node3D = preload("res://Presentation/LocalTrees.gd").build(species,int(s.x),int(s.y)) if preload("res://Presentation/LocalTrees.gd").available() else null
-					if local_tree: visual = local_tree
-					else:
+					# Graphics listed in a scan entry's "only_ids" (bare dead trees) draw that scan.
+					var scan_tree: Dictionary = preload("res://Presentation/PropReplacements.gd").entry_for(name,int(s.id)) if kind == "tree" else {}
+					if not scan_tree.get("only_ids",false): scan_tree = {}
+					var local_tree: Node3D = preload("res://Presentation/LocalTrees.gd").build(species,int(s.x),int(s.y)) if preload("res://Presentation/LocalTrees.gd").available() and scan_tree.is_empty() else null
+					if not scan_tree.is_empty(): visual = preload("res://Presentation/PropReplacements.gd").build(self,name,int(s.x)*7919+int(s.y)*104729,int(s.id))
+					if visual == null and local_tree: visual = local_tree
+					elif visual == null:
 						visual = fitted(asset,size)
 						visual.rotation.y = fmod(float(int(s.x)*17+int(s.y)*31),TAU)
 					# A large tree UO draws as narrow slices over several tiles is one
