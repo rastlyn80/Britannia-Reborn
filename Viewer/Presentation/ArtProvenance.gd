@@ -56,6 +56,7 @@ func _initialize() -> void:
 		for status in STATUSES: line += "%s %.1f%%  " % [status,100.0*float(coverage[scope].placements.get(status,0))/maxf(coverage[scope].total,1)]
 		print("%s COVERAGE (placements): final %.1f%%  %s" % [scope.to_upper(),coverage[scope].final,line])
 	print("WORLD GRAPHICS: final %.1f%% of %d placed graphics (%d open)" % [coverage.graphics.final,coverage.graphics.total,coverage.graphics.open])
+	print("BRITAIN GRAPHICS: final %.1f%% of %d placed graphics (%d open)" % [coverage.britain_graphics.final,coverage.britain_graphics.total,coverage.britain_graphics.open])
 	# The worklist: every placed family with graphics not yet at final quality.
 	if args.has("open"):
 		var open := open_work(catalog,result)
@@ -80,6 +81,7 @@ static func coverage_for(catalog: Dictionary, looks: Dictionary) -> Dictionary:
 	var scopes := {}
 	for scope in ["britain","world"]+FACETS: scopes[scope] = {"placements":{},"total":0}
 	var graphics := {"total":0,"open":0,"final":0.0}
+	var britain_graphics := {"total":0,"open":0,"final":0.0}
 	for item in catalog.items:
 		var status := str(looks[str(int(item.id))].status)
 		var weights := {"britain":int(item.get("britain",0))+int(item.get("decoration",0)),"world":placed(item)}
@@ -92,12 +94,17 @@ static func coverage_for(catalog: Dictionary, looks: Dictionary) -> Dictionary:
 		if weights.world > 0:
 			graphics.total += 1
 			if not status in FINAL: graphics.open += 1
+		if weights.britain > 0:
+			britain_graphics.total += 1
+			if not status in FINAL: britain_graphics.open += 1
 	for scope in scopes:
 		var done := 0
 		for status in FINAL: done += int(scopes[scope].placements.get(status,0))
 		scopes[scope].final = snappedf(100.0*done/maxf(scopes[scope].total,1),0.1)
 	graphics.final = snappedf(100.0*(graphics.total-graphics.open)/maxf(graphics.total,1),0.1)
+	britain_graphics.final = snappedf(100.0*(britain_graphics.total-britain_graphics.open)/maxf(britain_graphics.total,1),0.1)
 	scopes["graphics"] = graphics
+	scopes["britain_graphics"] = britain_graphics
 	return scopes
 
 # Open families, most placed first: name, category, open graphic ids with
@@ -143,6 +150,8 @@ static func pack(asset: String) -> Dictionary:
 	return {"status":"kit","detail":"%s (CC0): %s" % [vendor,asset.get_file().get_basename()]}
 
 func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -> Dictionary:
+	# Shop and guild sign boards placed by decoration (WorldItems.definition).
+	if id >= 2979 and id <= 3086 and not "broken" in str(item.name) and not "bench" in str(item.name) and not "signpost" in str(item.name): return {"status":"crafted","detail":"hanging sign board with painted face"}
 	# The catalogue shows empty tiledata names as "unnamed"; the client sees "".
 	var name := "" if str(item.name) == "unnamed" else str(item.name)
 	# No original artwork (or a blank strip under 3 px): the native client draws nothing.
@@ -173,9 +182,15 @@ func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -
 		if reviewed_kind in ["wall","window","corner","trim","beam","gable","arch","floor","landing","stairs","roof","bridge"] or str(review.get("construction","")) in ["wall","bridge","facade"]:
 			return {"status":"crafted","detail":"built in code with photoscanned surfaces (reviewed)"}
 		return {"status":"built","detail":"built in code (reviewed)"}
-	if not server.is_empty() and audited.is_empty():
+	# Map statics draw from their static rule even if the server decoration
+	# also places a few copies; only server-only items use the item stand-ins.
+	if not server.is_empty() and audited.is_empty() and int(item.get("britain",0)) == 0 and int(item.get("world",0)) == 0 and int(item.get("felucca",0)) <= int(item.get("decoration",0)):
 		var family := str(server.get("family",""))
 		if family == "door": return {"status":"crafted","detail":"door leaf in photoscanned timber and iron"}
+		# Decoration drawn by the static builders (WorldItems mirrors Reconstruction).
+		var built_rule := Rules.resolve(id,{"name":name,"height":item.height,"flags":flag_bits(item.flags)})
+		if str(built_rule.get("kind","")) in ["effect","decal"] or (str(built_rule.get("kind","")) == "vine" and built_rule.has("builder")) or (str(built_rule.get("kind","")) == "fence" and preload("res://Presentation/FenceBuilder.gd").handles(name)):
+			return {"status":"crafted","detail":"built from photoscanned materials / effects: "+str(built_rule.kind)}
 		if family in ["chest","drawers"]: return {"status":"crafted" if family == "chest" else "scan","detail":"iron-bound chest in photoscanned timber and iron" if family == "chest" else "Poly Haven photoscan (CC0): GothicCommode_01"}
 		if family == "plant": return {"status":"scan","detail":"Poly Haven photoscan (CC0): potted plant"}
 		if family == "sign": return {"status":"crafted","detail":"hanging sign board with painted face"}

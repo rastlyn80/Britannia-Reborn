@@ -57,6 +57,7 @@ func configure(owner_scene: Node3D, connection: Node) -> void:
 func definition(item: Dictionary) -> Dictionary:
  if definitions.has(str(int(item.id))):
   var rule: Dictionary = definitions[str(int(item.id))].duplicate()
+  if rule.get("family","") == "decoration" and _sign_graphic(item): rule.family = "sign"
   if rule.get("type","") in ["Chessboard","CheckerBoard","Backgammon"]: rule.family = "gameboard"
   if rule.get("family","") == "door" and (int(rule.get("facing",0)) < 0 or int(rule.get("facing",0)) > 7): rule.facing = door_facing(rule)
   return rule
@@ -65,7 +66,14 @@ func definition(item: Dictionary) -> Dictionary:
   var facing := (int(item.id)-0x6a5)/2
   var offsets := [[-1,1,0],[1,1,0],[-1,0,0],[1,-1,0],[1,1,0],[1,-1,0],[0,0,0],[0,-1,0]]
   return {"family":"door","facing":facing,"height":16,"flags":64,"is_open":(int(item.id)-0x6a5)%2 == 1,"offset":offsets[facing]}
+ # Shop and guild sign boards (0xBA3-0xC1E) placed by decoration without an
+ # exported definition hang like the server signs.
+ if _sign_graphic(item): return {"family":"sign","height":1,"flags":0,"container":false}
  return {"family":"decoration","height":1,"flags":0,"container":false}
+
+func _sign_graphic(item: Dictionary) -> bool:
+ var sign_name := str(scene.world.get("staticData",{}).get(str(int(item.id)),{}).get("name",""))
+ return int(item.id) >= 2979 and int(item.id) <= 3086 and not "broken" in sign_name and not "bench" in sign_name and not "signpost" in sign_name
 
 # ModernUO door facings (WestCW, EastCCW, WestCCW, EastCW, SouthCW, NorthCCW,
 # SouthCCW, NorthCW) and the offset each open graphic moves by.
@@ -164,10 +172,25 @@ func upsert(serial: int, item: Dictionary) -> void:
     _body(root,Vector3(float(fit[0]),float(fit[1]),float(fit[2])),Vector3(0,float(fit[1])/2,0),serial,(int(rule.get("flags",0))&64)!=0)
     request_contact_refresh()
     return
+ # Decoration that the static builders draw (effects, ground decals, vines,
+ # fences): the same builder as the map static of that name.
+ if rule.family == "decoration":
+  var static_rule: Dictionary = preload("res://Presentation/RegionalRules.gd").resolve(int(item.id),scene.world.get("staticData",{}).get(str(int(item.id)),{}))
+  var built: Node3D = null
+  match str(static_rule.get("kind","")):
+   "effect": built = preload("res://Presentation/EffectBuilder.gd").build(str(static_rule.effect))
+   "decal": built = preload("res://Presentation/GroundDecal.gd").build(str(static_rule.decal),Vector2i(item.x,item.y))
+   "vine": if str(static_rule.get("builder","")) == "vine": built = preload("res://Presentation/VineBuilder.gd").build(str(scene.world.staticData.get(str(int(item.id)),{}).get("name","")),int(item.id),1.8,serial,scene.reconstruction)
+   "fence": if preload("res://Presentation/FenceBuilder.gd").handles(str(scene.world.staticData.get(str(int(item.id)),{}).get("name",""))): built = preload("res://Presentation/FenceBuilder.gd").build(str(scene.world.staticData.get(str(int(item.id)),{}).get("name","")),int(item.id),scene.reconstruction.geometry,scene.reconstruction.facade)
+  if built:
+   built.name = "BuilderVisual"
+   root.add_child(built)
+   _body(root,Vector3(0.6,0.4,0.6),Vector3(0,0.2,0),serial,(int(rule.get("flags",0))&64)!=0)
+   return
  # Photoscanned CC0 replacements by item name (prop-replacements.json).
  var replacement_name := str(rule.get("display_name",scene.world.get("staticData",{}).get(str(int(item.id)),{}).get("name","")))
  if not str(rule.family) in FIXED_FAMILIES and preload("res://Presentation/PropReplacements.gd").has(replacement_name,int(item.id)):
-  var replaced: Node3D = preload("res://Presentation/PropReplacements.gd").build(scene.reconstruction,replacement_name,serial,int(item.id))
+  var replaced: Node3D = _footprint_replacement(item,replacement_name,serial) if str(preload("res://Presentation/PropReplacements.gd").entry_for(replacement_name,int(item.id)).get("assembly","")) == "footprint" else preload("res://Presentation/PropReplacements.gd").build(scene.reconstruction,replacement_name,serial,int(item.id))
   if replaced:
    replaced.name = "ReplacementVisual"
    root.add_child(replaced)
@@ -721,6 +744,42 @@ func _local_bottom(node: Node3D) -> float:
 # Moves the node's children so its lowest point sits on the surface below.
 # Idempotent: the previous correction is undone first unless the caller has
 # just reset the children (fresh = true).
+# Server-placed multi-tile decoration (one item per tile, e.g. a fireplace or
+# loom): neighbouring items of the same name/group within 6 Z are one object.
+# The lowest serial draws the model centred over the footprint; the others
+# keep only their pick body.
+func _footprint_replacement(item: Dictionary, name: String, serial: int) -> Node3D:
+ var Swaps := preload("res://Presentation/PropReplacements.gd")
+ var group := str(Swaps.entry_for(name,int(item.id)).get("group",Swaps.key(name)))
+ var members := {serial:item}
+ var pending := [item]
+ while not pending.is_empty():
+  var at: Dictionary = pending.pop_back()
+  for other_serial in session.world_items:
+   if members.has(other_serial): continue
+   var other: Dictionary = session.world_items[other_serial]
+   if absi(int(other.x)-int(at.x)) > 1 or absi(int(other.y)-int(at.y)) > 1 or absi(int(other.z)-int(at.z)) > 6: continue
+   var other_name := str(definitions.get(str(int(other.id)),{}).get("display_name",scene.world.get("staticData",{}).get(str(int(other.id)),{}).get("name","")))
+   if other_name == "" or Swaps.entry_for(other_name,int(other.id)).is_empty(): continue
+   if str(Swaps.entry_for(other_name,int(other.id)).get("group",Swaps.key(other_name))) != group: continue
+   members[other_serial] = other
+   pending.append(other)
+ var root := Node3D.new()
+ if serial != members.keys().min(): return root
+ var low := Vector2i(100000,100000)
+ var high := Vector2i(-100000,-100000)
+ for m in members.values():
+  low = low.min(Vector2i(m.x,m.y))
+  high = high.max(Vector2i(m.x,m.y))
+ var span := Vector2(high-low)+Vector2.ONE
+ var model: Node3D = Swaps.build(scene.reconstruction,name,0,int(item.id),{"length":maxf(span.x,span.y)*0.92})
+ if model == null: return root
+ var centre := Vector2(low+high)/2.0+Vector2(0.5,0.5)
+ model.position = Vector3(centre.x-float(item.x)-0.5,0,centre.y-float(item.y)-0.5)
+ if span.y > span.x+0.5: model.rotation.y = PI/2
+ root.add_child(model)
+ return root
+
 func _rest_on_surface(node: Node3D, space: PhysicsDirectSpaceState3D, fresh := false) -> void:
  if not _free_standing(node): return
  var previous := 0.0 if fresh else float(node.get_meta("rest_delta",0.0))

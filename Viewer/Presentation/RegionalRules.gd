@@ -153,7 +153,11 @@ static func _resolve(id: int,info: Dictionary) -> Dictionary:
  if "cloud" in n: return base.merged({"kind":"invisible","reason":"sky decoration above the play area"})
  # Animated magic and fire sprites become particle effects (EffectBuilder.gd).
  if preload("res://Presentation/EffectBuilder.gd").preset_for(n) != "": return base.merged({"kind":"effect","effect":preload("res://Presentation/EffectBuilder.gd").preset_for(n)})
- if n=="sinkhole": return base.merged({"kind":"decal","decal":"sinkhole"})
+ if n=="sinkhole" or n=="hole": return base.merged({"kind":"decal","decal":"sinkhole"})
+ if n in ["blood smear","bloodspawn","daemon blood","dragon's blood","bloody water"]: return base.merged({"kind":"decal","decal":"blood"})
+ if n=="horse dung": return base.merged({"kind":"decal","decal":"mud"})
+ if n=="patch": return base.merged({"kind":"decal","decal":"dirt patch"})
+ if n in ["tent pole","wooden pole","pole","wood pole","short post","wooden half post"]: return base.merged({"kind":"post"})
  # Gargoyle-city stair pieces and spire masonry (Ter Mur).
  if n.begins_with("gargstair") or n.begins_with("gragstair"): return base.merged({"kind":"stairs","rise":[0,-1]})
  if n.begins_with("spire "): return base.merged({"kind":"wall","facadeFamily":"stone","asset":"Village/Wall_UnevenBrick_Straight.gltf"})
@@ -182,7 +186,7 @@ static func _resolve(id: int,info: Dictionary) -> Dictionary:
  if "wall map" in n: return base.merged({"kind":"prop","model":"painting","mount":"wall"})
  # Banners hang flat on the wall beside them (a free-standing one keeps its cell).
  if n in ["banner","tattered banner","tapestry"]: return base.merged({"kind":"prop","model":"fabric","mount":"wall"})
- if n in ["decorative shield","decorative shields","trophy","painting","wall sconce","lever","clock"]: return base.merged({"kind":"prop","model":"replacement","mount":"wall"})
+ if n in ["decorative shield","decorative shields","trophy","painting","portrait","wall sconce","lever","clock","dartboard","dartboard w/knives","switch","tribal mask"]: return base.merged({"kind":"prop","model":"replacement","mount":"wall"})
  if "wall" in n or n in ["window","arrow loop","battlement"]:
   return base.merged({"kind":"window" if n in ["window","arrow loop"] else ("trim" if height<15 else "wall"),"asset":"Village/Wall_UnevenBrick_Straight.gltf" if "stone" in n or "brick" in n else "Village/Wall_Plaster_Straight.gltf"})
  if "arch" in n and n not in ["arcanist statue"]: return base.merged({"kind":"arch","asset":"Village/Wall_Arch.gltf"})

@@ -3024,6 +3024,455 @@
   "seaweed": {
    "model": "Objaverse/kelp_scan",
    "length": 0.8
+  },
+  "portrait": {
+   "model": "fancy_picture_frame_01",
+   "height": 0.7,
+   "anchor": "back",
+   "rotation": 180,
+   "elevation": 1.3
+  },
+  "backgammon board": {
+   "model": "Objaverse/backgammon",
+   "length": 0.5
+  },
+  "backgammon game": {
+   "model": "Objaverse/backgammon",
+   "length": 0.5
+  },
+  "beef carcass": {
+   "model": "Objaverse/carcass_pig",
+   "height": 1.4
+  },
+  "sheep carcass": {
+   "model": "Objaverse/carcass_pig",
+   "height": 1.1
+  },
+  "bees": {
+   "model": "Objaverse/bee",
+   "height": 0.04,
+   "cluster": 6
+  },
+  "bell of courage": {
+   "model": "Objaverse/bell_hanging",
+   "height": 1.6
+  },
+  "bulletin board": {
+   "model": "Objaverse/notice_board",
+   "height": 1.8
+  },
+  "brimstone": {
+   "model": "Objaverse/sulfur_rock",
+   "length": 0.15
+  },
+  "brain": {
+   "model": "Objaverse/brain",
+   "length": 0.15
+  },
+  "chisels": {
+   "model": "Objaverse/chisel",
+   "length": 0.25,
+   "lay": true
+  },
+  "coffee grinder south": {
+   "model": "Objaverse/coffee_grinder",
+   "height": 0.3
+  },
+  "machine coffee": {
+   "model": "Objaverse/coffee_grinder",
+   "height": 0.35
+  },
+  "conch shell": {
+   "model": "Objaverse/conch",
+   "length": 0.2
+  },
+  "chess pieces": {
+   "model": "Objaverse/chess_set",
+   "length": 0.3
+  },
+  "chessmen": {
+   "model": "Objaverse/chess_set",
+   "length": 0.3
+  },
+  "bulk order deed": {
+   "model": "Objaverse/parchment_rolled",
+   "length": 0.3,
+   "lay": true
+  },
+  "deed": {
+   "model": "Objaverse/parchment_rolled",
+   "length": 0.3,
+   "lay": true
+  },
+  "ship plans": {
+   "model": "Objaverse/parchment_rolled",
+   "length": 0.4,
+   "lay": true
+  },
+  "map": {
+   "model": "Objaverse/parchment_rolled",
+   "length": 0.4,
+   "lay": true
+  },
+  "cookie mix": {
+   "model": "Objaverse/rolling_pin",
+   "length": 0.4
+  },
+  "rolling pin": {
+   "model": "Objaverse/rolling_pin",
+   "length": 0.4
+  },
+  "crook": {
+   "model": "Objaverse/crook_staff",
+   "height": 1.7
+  },
+  "cut of raw ribs": {
+   "model": "Objaverse/meat_ribs",
+   "length": 0.3
+  },
+  "cut of ribs": {
+   "model": "Objaverse/meat_ribs",
+   "length": 0.3,
+   "material": {
+    "color": "6a3a20",
+    "metallic": 0.0,
+    "roughness": 0.6
+   }
+  },
+  "dartboard": {
+   "model": "Objaverse/dartboard",
+   "height": 0.45,
+   "anchor": "back",
+   "elevation": 1.5
+  },
+  "dartboard w/knives": {
+   "model": "Objaverse/dartboard",
+   "height": 0.45,
+   "anchor": "back",
+   "elevation": 1.5
+  },
+  "deer mask": {
+   "model": "Objaverse/deer_skull",
+   "length": 0.5
+  },
+  "dirty frypan": {
+   "model": "Objaverse/frying_pan",
+   "length": 0.45
+  },
+  "pan": {
+   "model": "Objaverse/frying_pan",
+   "length": 0.4
+  },
+  "dirty pan": {
+   "model": "Objaverse/frying_pan",
+   "length": 0.4
+  },
+  "dress form": {
+   "model": "Objaverse/dress_form",
+   "height": 1.6
+  },
+  "dried flowers": {
+   "model": "Objaverse/dried_flower",
+   "height": 0.5
+  },
+  "easel": {
+   "model": "Objaverse/easel",
+   "height": 1.7
+  },
+  "easel with canvas": {
+   "model": "Objaverse/easel",
+   "height": 1.7
+  },
+  "empty jar": {
+   "model": "Objaverse/glass_jar",
+   "height": 0.18
+  },
+  "full jar": {
+   "model": "Objaverse/jam_jar",
+   "height": 0.15
+  },
+  "jar of honey": {
+   "model": "Objaverse/jam_jar",
+   "height": 0.15,
+   "material": {
+    "color": "d89a30",
+    "metallic": 0.0,
+    "roughness": 0.2
+   }
+  },
+  "flour sifter": {
+   "model": "Objaverse/sieve",
+   "length": 0.35
+  },
+  "game board": {
+   "model": "Objaverse/chess_board",
+   "length": 0.5
+  },
+  "checkers": {
+   "model": "Objaverse/chess_board",
+   "length": 0.5
+  },
+  "hook": {
+   "model": "Objaverse/meat_hook",
+   "height": 0.4
+  },
+  "juniper bush": {
+   "model": "Objaverse/juniper",
+   "height": 2.0
+  },
+  "kabuto": {
+   "model": "Objaverse/kabuto",
+   "height": 0.32
+  },
+  "feathered hat": {
+   "model": "Objaverse/hat_cavalier",
+   "height": 0.2
+  },
+  "key ring": {
+   "model": "Objaverse/key_ring",
+   "length": 0.1
+  },
+  "lemon": {
+   "model": "Objaverse/lime",
+   "length": 0.08,
+   "material": {
+    "color": "e8d040",
+    "metallic": 0.0,
+    "roughness": 0.5
+   }
+  },
+  "mallet and chisel": {
+   "model": "Objaverse/hammer_old",
+   "length": 0.35,
+   "lay": true
+  },
+  "mortar and pestle": {
+   "model": "Objaverse/mortar_pestle",
+   "height": 0.15
+  },
+  "nautilus": {
+   "model": "Objaverse/nautilus_shell",
+   "length": 0.2
+  },
+  "nest with eggs": {
+   "model": "Objaverse/nest",
+   "length": 0.35
+  },
+  "pickpocket dip": {
+   "model": "Objaverse/dummy_post",
+   "height": 1.8
+  },
+  "pig iron": {
+   "model": "Objaverse/ingot_metal",
+   "length": 0.25
+  },
+  "pizza": {
+   "model": "Objaverse/pizza",
+   "length": 0.35
+  },
+  "uncooked pizza": {
+   "model": "Objaverse/pizza",
+   "length": 0.35
+  },
+  "plate of cookies": {
+   "model": "Objaverse/cookies_plate",
+   "length": 0.25
+  },
+  "pan of cookies": {
+   "model": "Objaverse/cookies_plate",
+   "length": 0.3
+  },
+  "raw leg of lamb": {
+   "model": "Objaverse/meat_raw",
+   "length": 0.3
+  },
+  "leg of lamb": {
+   "model": "Objaverse/meat_raw",
+   "length": 0.3,
+   "material": {
+    "color": "7a4020",
+    "metallic": 0.0,
+    "roughness": 0.6
+   }
+  },
+  "reactive armor scr": {
+   "model": "Objaverse/scroll_ancient",
+   "length": 0.3,
+   "lay": true
+  },
+  "summon daemon": {
+   "model": "Objaverse/scroll_ancient",
+   "length": 0.3,
+   "lay": true
+  },
+  "recall rune": {
+   "model": "Objaverse/rune_stone",
+   "length": 0.15
+  },
+  "ring": {
+   "model": "Objaverse/ring_old",
+   "length": 0.04
+  },
+  "roast pig": {
+   "model": "Objaverse/roast_pig",
+   "length": 0.7
+  },
+  "rusty iron key": {
+   "model": "Objaverse/key_old",
+   "length": 0.15,
+   "lay": true
+  },
+  "orc helm": {
+   "model": "Objaverse/helm_horned",
+   "height": 0.35
+  },
+  "safe left": {
+   "model": "Objaverse/safe_iron",
+   "height": 1.0
+  },
+  "scales": {
+   "model": "Objaverse/balance_scale",
+   "height": 0.4
+  },
+  "shackles": {
+   "model": "Objaverse/shackles_iron",
+   "height": 0.6
+  },
+  "sheet music": {
+   "model": "Objaverse/sheet_music",
+   "length": 0.3
+  },
+  "shell": {
+   "model": "Objaverse/seashell_scan",
+   "length": 0.12
+  },
+  "shells": {
+   "model": "Objaverse/seashell_scan",
+   "length": 0.15,
+   "cluster": 3
+  },
+  "shoes": {
+   "model": "Objaverse/boots_old",
+   "length": 0.3
+  },
+  "sandals": {
+   "model": "Objaverse/boots_old",
+   "length": 0.28,
+   "material": {
+    "color": "7a5030",
+    "metallic": 0.0,
+    "roughness": 0.8
+   }
+  },
+  "thigh boots": {
+   "model": "Objaverse/boots_old",
+   "length": 0.35
+  },
+  "skullcap": {
+   "model": "Objaverse/skullcap",
+   "length": 0.2
+  },
+  "switch": {
+   "model": "Objaverse/lever_wall",
+   "height": 0.4,
+   "anchor": "back",
+   "elevation": 1.0
+  },
+  "tiller man": {
+   "model": "Objaverse/ships_wheel",
+   "height": 1.4
+  },
+  "tinker's tools": {
+   "model": "Objaverse/tools_set",
+   "length": 0.4
+  },
+  "tongs": {
+   "model": "Objaverse/pliers",
+   "length": 0.4,
+   "lay": true
+  },
+  "tool kit": {
+   "model": "Objaverse/toolbox_red",
+   "length": 0.45
+  },
+  "town_cryer": {
+   "model": "Objaverse/newspaper",
+   "length": 0.35
+  },
+  "tribal mask": {
+   "model": "Objaverse/tribal_mask",
+   "height": 0.5,
+   "anchor": "back",
+   "elevation": 1.5
+  },
+  "tricorne hat": {
+   "model": "Objaverse/tricorn",
+   "length": 0.3
+  },
+  "vault east": {
+   "model": "Objaverse/vault_door",
+   "height": 2.0
+  },
+  "wheel of cheese": {
+   "model": "Objaverse/cheese_half",
+   "length": 0.3
+  },
+  "whip": {
+   "model": "Objaverse/whip",
+   "length": 0.5
+  },
+  "wizard's hat": {
+   "model": "Objaverse/wizard_hat",
+   "height": 0.35
+  },
+  "saddle": {
+   "model": "Objaverse/saddle_western",
+   "length": 0.7
+  },
+  "clean bandage": {
+   "model": "Objaverse/towel_folded",
+   "length": 0.15,
+   "material": {
+    "color": "f2efe6",
+    "metallic": 0.0,
+    "roughness": 0.9
+   }
+  },
+  "pear": {
+   "model": "Reduced/food_apple_01/food_apple_01",
+   "height": 0.09,
+   "material": {
+    "color": "b8c848",
+    "metallic": 0.0,
+    "roughness": 0.5
+   }
+  },
+  "peach": {
+   "model": "Reduced/food_apple_01/food_apple_01",
+   "height": 0.08,
+   "material": {
+    "color": "e89050",
+    "metallic": 0.0,
+    "roughness": 0.5
+   }
+  },
+  "pewter bowl": {
+   "model": "wooden_bowl_01",
+   "length": 0.2,
+   "material": {
+    "color": "8a8c90",
+    "metallic": 0.8,
+    "roughness": 0.4
+   }
+  },
+  "large pewter bowl": {
+   "model": "wooden_bowl_01",
+   "length": 0.3,
+   "material": {
+    "color": "8a8c90",
+    "metallic": 0.8,
+    "roughness": 0.4
+   }
   }
  }
 }
