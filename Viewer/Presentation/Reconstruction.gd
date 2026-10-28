@@ -68,6 +68,8 @@ var fence_cells := {}
 # Multi-tile objects UO splits into one graphic per tile ("assembly":
 # "footprint" replacements): ordinal -> {anchor, offset (m), span (tiles)}.
 var footprints := {}
+# Slices of large multi-tile trees (ordinal -> {anchor, offset, span}).
+var tree_slices := {}
 var presentation_adjustments := {}
 var contextual_suppressed := 0
 var floors := preload("res://Presentation/FloorPlan.gd").new()
@@ -711,6 +713,42 @@ func _plan_eaves(world: Dictionary) -> void:
 # object; its lowest ordinal draws the model over the whole footprint.
 func _plan_footprints(world: Dictionary) -> void:
 	footprints.clear()
+	tree_slices.clear()
+	# Large trees of the newer facets come as 44-pixel slices named "tree"
+	# (12444-12487, 14761-15086), one per tile; join neighbouring slices.
+	var slice_cells := {}
+	for i in world.statics.size():
+		var t: Dictionary = world.statics[i]
+		var tid := int(t.id)
+		if not ((tid >= 12444 and tid <= 12487) or (tid >= 14761 and tid <= 15086)): continue
+		if str(info(world,tid,true).get("name","")).to_lower() != "tree": continue
+		slice_cells[Vector2i(t.x,t.y)] = slice_cells.get(Vector2i(t.x,t.y),[])+[i]
+	var slice_seen := {}
+	for start in slice_cells:
+		for first in slice_cells[start]:
+			if slice_seen.has(first): continue
+			var members := []
+			var queue := [first]
+			slice_seen[first] = true
+			while not queue.is_empty():
+				var at_index: int = queue.pop_back()
+				members.append(at_index)
+				var at: Dictionary = world.statics[at_index]
+				for dx in range(-1,2):
+					for dy in range(-1,2):
+						for other in slice_cells.get(Vector2i(at.x+dx,at.y+dy),[]):
+							if not slice_seen.has(other) and absi(int(world.statics[other].z)-int(at.z)) <= 6:
+								slice_seen[other] = true
+								queue.append(other)
+			var lo := Vector2i(100000,100000)
+			var hi := Vector2i(-100000,-100000)
+			for m in members:
+				lo = lo.min(Vector2i(world.statics[m].x,world.statics[m].y))
+				hi = hi.max(Vector2i(world.statics[m].x,world.statics[m].y))
+			var anchor_index: int = members.min()
+			var a: Dictionary = world.statics[anchor_index]
+			var centre := Vector2(lo+hi)/2.0+Vector2(0.5,0.5)
+			for m in members: tree_slices[m] = {"anchor":m == anchor_index,"offset":Vector3(centre.x-float(a.x)-0.5,0,centre.y-float(a.y)-0.5),"span":Vector2(hi-lo)+Vector2.ONE}
 	var Swaps := preload("res://Presentation/PropReplacements.gd")
 	var members := {}
 	for i in world.statics.size():
@@ -1253,7 +1291,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 			visual = preload("res://Presentation/LocalLibrary.gd").run(furniture_slot,int(s.x),int(s.y),maxf(span.x,span.y),0.8 if kind == "table" else 0.48,minf(span.x,span.y)*(0.9 if kind == "table" else 0.5))
 			if visual and not long_x: visual.rotation.y = PI/2
 		# Photoscanned CC0 replacements by item name (prop-replacements.json).
-		if visual == null and kind in ["prop","asset","rock","log","mushroom","post","flower","plant","fern","crystal","stalagmite","grass","reeds","lilypad"] and not groups.has(ordinal): visual = preload("res://Presentation/PropReplacements.gd").build(self,str(detail.get("name","")),int(s.x)*7919+int(s.y)*104729,int(s.id))
+		if visual == null and preload("res://Presentation/PropReplacements.gd").applies(kind) and not groups.has(ordinal): visual = preload("res://Presentation/PropReplacements.gd").build(self,str(detail.get("name","")),int(s.x)*7919+int(s.y)*104729,int(s.id))
 		if kind in ["prop","asset"] and footprints.has(ordinal) and not groups.has(ordinal): visual = _footprint_visual(ordinal,str(detail.get("name","")),int(s.id),visual)
 		# Furniture that stands against a wall ("face": "wall") turns its back to it.
 		elif visual != null and kind in ["prop","asset"] and str(preload("res://Presentation/PropReplacements.gd").entry_for(str(detail.get("name","")),int(s.id)).get("face","")) == "wall":
@@ -1286,7 +1324,12 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 						var dressing: Node3D = windows.dress(self,windows.plans.get(ordinal,{}),minf(1.05,height*0.28),minf(1.4,height*0.46),family)
 						if dressing: visual.add_child(dressing)
 				"corner": visual = facade.corner(height,facade.corners.get(ordinal,{}),family)
-				"post": visual = fitted(asset,Vector3(0.15,height,0.15))
+				"post":
+					# Posts and poles in the photoscanned timber; stone posts in masonry.
+					visual = Node3D.new()
+					var post_name := str(detail.get("name","")).to_lower()
+					if "sandstone" in post_name or "stone" in post_name or "marble" in post_name: facade.piece(visual,Vector3(0.3,height,0.3),Vector3(0,height/2,0),"sandstone" if "sandstone" in post_name else "stone")
+					else: geometry.crafted_box(visual,Vector3(0.16,maxf(height,0.3),0.16),Vector3(0,maxf(height,0.3)/2,0),"5a4a3a" if "log" in post_name or "pole" in post_name else "6b5644")
 				"pillar" when pinnacles.has(ordinal):
 					visual = Node3D.new()
 					var spire_family := "stone" if family.get_slice("#",0) in ["plaster","wood"] else family
@@ -1491,6 +1534,19 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					else:
 						visual = fitted(asset,size)
 						visual.rotation.y = fmod(float(int(s.x)*17+int(s.y)*31),TAU)
+					# A large tree UO draws as narrow slices over several tiles is one
+					# tree: its anchor slice draws it at the footprint centre, the rest nothing.
+					if tree_slices.has(ordinal):
+						var slice: Dictionary = tree_slices[ordinal]
+						if not slice.anchor:
+							visual.free()
+							visual = Node3D.new()
+						else:
+							var holder := Node3D.new()
+							holder.add_child(visual)
+							visual.position += slice.offset
+							visual.scale *= clampf(maxf(slice.span.x,slice.span.y)/2.0,1.0,1.8)
+							visual = holder
 				"grass": visual = plant(kind,s,detail,asset,Vector3(0.65,0.25+0.1*(int(s.id)%3),0.65))
 				"flower": visual = plant(kind,s,detail,asset,Vector3(0.55,0.28,0.55))
 				"planter":
@@ -1505,6 +1561,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 				"cactus": visual = geometry.cactus(s,maxf(0.7,minf(height,2.4)))
 				"litter": visual = geometry.litter(s,tint if not tint.is_empty() else "7a5a2e")
 				"decal": visual = preload("res://Presentation/GroundDecal.gd").build(str(rule.get("decal","dirt")),Vector2i(s.x,s.y))
+				"effect": visual = preload("res://Presentation/EffectBuilder.gd").build(str(rule.get("effect","sparkle")))
 				"palisade": visual = geometry.palisade(s,maxf(1.6,height),facade.material("log"))
 				"waterfall":
 					# A falling sheet across the cell diagonal, facing the classic viewpoint.
@@ -1520,9 +1577,15 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 				"plant": visual = plant(kind,s,detail,asset,Vector3(1.0,maxf(0.8,minf(height,2.2)),1.0))
 				"lilypad": visual = geometry.lilypads(s)
 				"vine":
-					# Creepers hang on the wall face they share a cell with.
-					visual = fitted(asset,Vector3(1.0,maxf(1.6,height),0.35))
-					visual.position.z = -0.42
+					# Creepers climb the wall face they share a cell with: photoscanned
+					# woody stems (and ivy leaves on leafy graphics) via VineBuilder.
+					if str(rule.get("builder","")) == "vine":
+						visual = preload("res://Presentation/VineBuilder.gd").build(str(detail.get("name","")),int(s.id),height,int(s.x)*7919+int(s.y)*104729,self)
+						var vine_yaw: float = _wall_yaw(s)
+						if not is_nan(vine_yaw): visual.rotation.y = vine_yaw
+					else:
+						visual = fitted(asset,Vector3(1.0,maxf(1.6,height),0.35))
+						visual.position.z = -0.42
 				"stalagmite": visual = geometry.stalagmites(s,maxf(0.6,height))
 				"crystal": visual = geometry.crystals(s,maxf(0.4,height),bool(rule.get("scatter",false)),tint)
 				"lava":

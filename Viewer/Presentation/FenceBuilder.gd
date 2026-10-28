@@ -22,7 +22,7 @@ static var iron_material: StandardMaterial3D
 
 static func handles(name: String) -> bool:
 	var n := name.to_lower()
-	return n == "wooden fence" or n == "wooden rail" or n == "iron fence" or n == "iron gate" or n == "stone rail"
+	return n == "wooden fence" or n == "wooden rail" or n == "wooden banister" or n in ["rail east","rail south","sandstone rail","railing"] or n == "iron fence" or n == "iron gate" or n == "stone rail"
 
 # Post-only pieces (porch posts, run ends drawn as a lone post) join no rails.
 static func has_rails(id: int) -> bool:

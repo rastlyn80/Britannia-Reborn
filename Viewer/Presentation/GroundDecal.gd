@@ -13,6 +13,8 @@ const PRESETS := {
 	"blood":["brown_mud_dry","4a0806",0.5,0.0,0.0,0.22],
 	"spilled flour":["white_plaster_02","fbf6ea",0.7,0.9,0.0,0.95],
 	"stain":["dirt","3a3530c0",0.6,0.0,0.0,0.8],
+	"grave":["brown_mud_dry","5a4434",0.62,0.0,0.0,0.95],
+	"sinkhole":["brown_mud_dry","2a2018",0.78,0.0,0.0,0.95],
 }
 static var materials := {}
 

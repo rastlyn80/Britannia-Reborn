@@ -186,8 +186,8 @@
    "length": 0.35
   },
   "log": {
-   "model": "Objaverse/firewood",
-   "length": 0.9
+   "model": "Objaverse/log_mossy",
+   "length": 1.2
   },
   "logs": {
    "model": "Objaverse/firewood",
@@ -933,22 +933,31 @@
   "kite shield": {
    "model": "Objaverse/s_kite",
    "length": 0.9,
-   "lay": true
+   "lay": true,
+   "flip": true
   },
   "heater shield": {
    "model": "Objaverse/s_heater",
    "length": 0.75,
-   "lay": true
+   "lay": true,
+   "flip": true,
+   "material": {
+    "color": "8f949b",
+    "metallic": 1.0,
+    "roughness": 0.32
+   }
   },
   "buckler": {
    "model": "Objaverse/s_buckler",
    "length": 0.45,
-   "lay": true
+   "lay": true,
+   "flip": true
   },
   "chaos shield": {
    "model": "Objaverse/s_round_viking",
    "length": 0.7,
-   "lay": true
+   "lay": true,
+   "flip": true
   },
   "two handed axe": {
    "model": "Objaverse/w_two_handed_axe",
@@ -1042,46 +1051,6 @@
   "fire pit": {
    "model": "Reduced/stone_fire_pit/stone_fire_pit",
    "length": 1.0
-  },
-  "chainmail tunic": {
-   "model": "Objaverse/armor_hauberk",
-   "length": 0.75,
-   "lay": true
-  },
-  "ringmail tunic": {
-   "model": "Objaverse/armor_hauberk",
-   "length": 0.75,
-   "lay": true
-  },
-  "platemail": {
-   "model": "Objaverse/armor_plate",
-   "length": 0.6,
-   "lay": true,
-   "material": {
-    "color": "8f949b",
-    "metallic": 1.0,
-    "roughness": 0.32
-   }
-  },
-  "plate armor": {
-   "model": "Objaverse/armor_plate",
-   "length": 0.6,
-   "lay": true,
-   "material": {
-    "color": "8f949b",
-    "metallic": 1.0,
-    "roughness": 0.32
-   }
-  },
-  "plate do": {
-   "model": "Objaverse/armor_plate",
-   "length": 0.6,
-   "lay": true,
-   "material": {
-    "color": "8f949b",
-    "metallic": 1.0,
-    "roughness": 0.32
-   }
   },
   "plate helm": {
    "model": "Objaverse/armor_helm",
@@ -1332,6 +1301,1695 @@
    "assembly": "footprint",
    "length": 1.0,
    "group": "crane"
+  },
+  "4 post bed 02 south": {
+   "model": "Reduced/GothicBed_01/GothicBed_01",
+   "assembly": "footprint",
+   "length": 1.0
+  },
+  "al book south": {
+   "model": "Objaverse/book_leather",
+   "height": 0.06
+  },
+  "alchemist_bookcase": {
+   "model": "Objaverse/bookcase_antique",
+   "height": 1.9,
+   "face": "wall"
+  },
+  "amethyst": {
+   "model": "Objaverse/gem_diamond",
+   "length": 0.035,
+   "material": {
+    "color": "8a4fa8",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "arcane circle scrol": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "archcure scroll": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "bag": {
+   "model": "Objaverse/flour_bag",
+   "height": 0.25
+  },
+  "black pearl": {
+   "model": "Objaverse/gem_diamond",
+   "length": 0.035,
+   "material": {
+    "color": "181818",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "black potion": {
+   "model": "Objaverse/flask_round",
+   "height": 0.16,
+   "material": {
+    "color": "202020",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "blackmoor": {
+   "model": "Objaverse/gem_diamond",
+   "length": 0.035,
+   "material": {
+    "color": "181818",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "blank scroll": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "bloodblade": {
+   "model": "Objaverse/w_viking_sword",
+   "length": 0.95,
+   "lay": true
+  },
+  "blue potion": {
+   "model": "Objaverse/flask_round",
+   "height": 0.16,
+   "material": {
+    "color": "2440c0",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "bone pile": {
+   "model": "Objaverse/skeleton_bones",
+   "height": 1.7,
+   "pitch": 90
+  },
+  "book of arms": {
+   "model": "Objaverse/book_leather",
+   "height": 0.06
+  },
+  "book of truth": {
+   "model": "Objaverse/book_leather",
+   "height": 0.06
+  },
+  "bookshelf_east": {
+   "model": "Objaverse/bookcase_antique",
+   "height": 1.9,
+   "face": "wall"
+  },
+  "bronze shield": {
+   "model": "Objaverse/s_round_viking",
+   "length": 0.65,
+   "lay": true,
+   "flip": true
+  },
+  "bulk order book": {
+   "model": "Objaverse/book_leather",
+   "height": 0.06
+  },
+  "burned wood": {
+   "model": "dry_branches_medium_01",
+   "length": 1.0
+  },
+  "bushel": {
+   "model": "Reduced/wicker_basket_01/wicker_basket_01",
+   "height": 0.45
+  },
+  "campfire": {
+   "model": "Reduced/stone_fire_pit/stone_fire_pit",
+   "length": 1.0,
+   "flame": 0.18
+  },
+  "candle": {
+   "model": "wooden_candlestick",
+   "height": 0.3
+  },
+  "chainmail coif": {
+   "model": "Objaverse/armor_helm",
+   "height": 0.3,
+   "material": {
+    "color": "8f949b",
+    "metallic": 1.0,
+    "roughness": 0.32
+   }
+  },
+  "chest of drawers": {
+   "model": "GothicCommode_01",
+   "height": 0.9,
+   "face": "wall"
+  },
+  "citrine": {
+   "model": "Objaverse/gem_diamond",
+   "length": 0.035,
+   "material": {
+    "color": "e0a030",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "close helm": {
+   "model": "Objaverse/armor_helm",
+   "height": 0.3,
+   "material": {
+    "color": "8f949b",
+    "metallic": 1.0,
+    "roughness": 0.32
+   }
+  },
+  "cloth": {
+   "model": "Objaverse/towel_folded",
+   "length": 0.45,
+   "material": {
+    "color": "e2dccb",
+    "metallic": 0.0,
+    "roughness": 0.9
+   }
+  },
+  "clumsy scroll": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "copper coin": {
+   "model": "Objaverse/coin_pile",
+   "length": 0.2
+  },
+  "create food scroll": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "cunning scroll": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "curse scroll": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "cut cloth": {
+   "model": "Objaverse/towel_folded",
+   "length": 0.45,
+   "material": {
+    "color": "e2dccb",
+    "metallic": 0.0,
+    "roughness": 0.9
+   }
+  },
+  "cutlass": {
+   "model": "Objaverse/w_scimitar",
+   "length": 0.95,
+   "lay": true
+  },
+  "dagges": {
+   "model": "Objaverse/w_dagger",
+   "length": 0.4,
+   "lay": true
+  },
+  "daisho": {
+   "model": "Objaverse/w_scimitar",
+   "length": 0.95,
+   "lay": true
+  },
+  "dead wood": {
+   "model": "dry_branches_medium_01",
+   "length": 1.0
+  },
+  "deck of tarot": {
+   "model": "Objaverse/cards",
+   "length": 0.2
+  },
+  "dirty plate": {
+   "model": "carved_wooden_plate",
+   "length": 0.26
+  },
+  "disc mace": {
+   "model": "Objaverse/w_mace",
+   "length": 0.85,
+   "lay": true
+  },
+  "dishing stump": {
+   "model": "Objaverse/stump_meadow",
+   "length": 0.9
+  },
+  "dispel field scrol": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "dispel scroll": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "dread sword": {
+   "model": "Objaverse/w_viking_sword",
+   "length": 0.95,
+   "lay": true
+  },
+  "dual pointed spear": {
+   "model": "Objaverse/w_spear",
+   "length": 1.9,
+   "lay": true
+  },
+  "dual short axes": {
+   "model": "Objaverse/w_double_axe",
+   "length": 0.8,
+   "lay": true
+  },
+  "elven anvil": {
+   "model": "Objaverse/anvil_pbr",
+   "height": 0.8
+  },
+  "embers": {
+   "model": "Reduced/stone_fire_pit/stone_fire_pit",
+   "length": 1.0
+  },
+  "emerald": {
+   "model": "Objaverse/gem_diamond",
+   "length": 0.035,
+   "material": {
+    "color": "2a9a4a",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "empty bottle": {
+   "model": "Objaverse/flask_round",
+   "height": 0.16,
+   "material": {
+    "color": "cfe0dc",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "empty vial": {
+   "model": "Objaverse/flask_round",
+   "height": 0.16,
+   "material": {
+    "color": "cfe0dc",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "energy fied scroll": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "ettin hammer": {
+   "model": "Objaverse/w_war_hammer",
+   "length": 0.6,
+   "lay": true
+  },
+  "executioner's axe": {
+   "model": "Objaverse/w_two_handed_axe",
+   "length": 1.2,
+   "lay": true
+  },
+  "fallen branch": {
+   "model": "dry_branches_medium_01",
+   "length": 1.0
+  },
+  "feeblemind scroll": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "fire field scrol": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "fireball scroll": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "flamestrike scroll": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "folded rich sheet": {
+   "model": "Objaverse/towel_folded",
+   "length": 0.45,
+   "material": {
+    "color": "e2dccb",
+    "metallic": 0.0,
+    "roughness": 0.9
+   }
+  },
+  "folded sheet": {
+   "model": "Objaverse/towel_folded",
+   "length": 0.45,
+   "material": {
+    "color": "e2dccb",
+    "metallic": 0.0,
+    "roughness": 0.9
+   }
+  },
+  "fruit bowl": {
+   "model": "Objaverse/fruit_basket",
+   "length": 0.4
+  },
+  "gargish chaos shield": {
+   "model": "Objaverse/s_round_viking",
+   "length": 0.65,
+   "lay": true,
+   "flip": true
+  },
+  "gargish dagger": {
+   "model": "Objaverse/w_dagger",
+   "length": 0.4,
+   "lay": true
+  },
+  "gargish order shield": {
+   "model": "Objaverse/s_heater",
+   "length": 0.8,
+   "lay": true,
+   "flip": true
+  },
+  "gargish talwar": {
+   "model": "Objaverse/w_scimitar",
+   "length": 0.95,
+   "lay": true
+  },
+  "gargish wooden shiel": {
+   "model": "Objaverse/s_kite",
+   "length": 0.85,
+   "lay": true,
+   "flip": true
+  },
+  "gift of life scroll": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "glass of cider": {
+   "model": "Objaverse/tankard_maryrose",
+   "height": 0.16
+  },
+  "glass of liquor": {
+   "model": "Objaverse/tankard_maryrose",
+   "height": 0.16
+  },
+  "glass of milk": {
+   "model": "Objaverse/tankard_maryrose",
+   "height": 0.16
+  },
+  "glass of water": {
+   "model": "Objaverse/tankard_maryrose",
+   "height": 0.16
+  },
+  "glass of wine": {
+   "model": "Objaverse/tankard_maryrose",
+   "height": 0.16
+  },
+  "glass sword": {
+   "model": "Objaverse/w_viking_sword",
+   "length": 0.95,
+   "lay": true
+  },
+  "gold coin": {
+   "model": "Objaverse/coin_pile",
+   "length": 0.2
+  },
+  "green potion": {
+   "model": "Objaverse/flask_round",
+   "height": 0.16,
+   "material": {
+    "color": "2c9a30",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "hammer": {
+   "model": "Objaverse/w_war_hammer",
+   "length": 0.6,
+   "lay": true
+  },
+  "hammer pick": {
+   "model": "Objaverse/w_war_hammer",
+   "length": 0.6,
+   "lay": true
+  },
+  "harm scroll": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "hatchet": {
+   "model": "Objaverse/w_double_axe",
+   "length": 0.8,
+   "lay": true
+  },
+  "heal scroll": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "inkwell": {
+   "model": "Objaverse/inkwell",
+   "height": 0.08
+  },
+  "katana": {
+   "model": "Objaverse/w_scimitar",
+   "length": 0.95,
+   "lay": true
+  },
+  "keg": {
+   "model": "Reduced/wine_barrel_01/wine_barrel_01",
+   "height": 0.7
+  },
+  "kryss": {
+   "model": "Objaverse/w_dagger",
+   "length": 0.4,
+   "lay": true
+  },
+  "lantern": {
+   "model": "Reduced/wooden_lantern_01/wooden_lantern_01",
+   "height": 0.4
+  },
+  "lantern post": {
+   "model": "Objaverse/lamp_post_english",
+   "height": 3.2
+  },
+  "large battle axe": {
+   "model": "Objaverse/w_two_handed_axe",
+   "length": 1.2,
+   "lay": true
+  },
+  "large plate shield": {
+   "model": "Objaverse/s_heater",
+   "length": 0.8,
+   "lay": true,
+   "flip": true
+  },
+  "large stone shield": {
+   "model": "Objaverse/s_kite",
+   "length": 0.85,
+   "lay": true,
+   "flip": true
+  },
+  "large wooden bowl": {
+   "model": "wooden_bowl_01",
+   "length": 0.22
+  },
+  "lizardman's mace": {
+   "model": "Objaverse/w_mace",
+   "length": 0.85,
+   "lay": true
+  },
+  "magic sword": {
+   "model": "Objaverse/w_viking_sword",
+   "length": 0.95,
+   "lay": true
+  },
+  "magic untrap scrol": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "mark scroll": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "mass dispel scrol": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "medium plate shield": {
+   "model": "Objaverse/s_heater",
+   "length": 0.8,
+   "lay": true,
+   "flip": true
+  },
+  "metal shield": {
+   "model": "Objaverse/s_heater",
+   "length": 0.8,
+   "lay": true,
+   "flip": true
+  },
+  "milk": {
+   "model": "Objaverse/carafe",
+   "height": 0.26
+  },
+  "miniwinebarrel east": {
+   "model": "Reduced/wine_barrel_01/wine_barrel_01",
+   "height": 0.7
+  },
+  "miniwinebarrel south": {
+   "model": "Reduced/wine_barrel_01/wine_barrel_01",
+   "height": 0.7
+  },
+  "necromancer book": {
+   "model": "Objaverse/book_leather",
+   "height": 0.06
+  },
+  "no-dachi": {
+   "model": "Objaverse/w_scimitar",
+   "length": 0.95,
+   "lay": true
+  },
+  "obsidian": {
+   "model": "Objaverse/gem_diamond",
+   "length": 0.035,
+   "material": {
+    "color": "181818",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "oil flask": {
+   "model": "Objaverse/flask_round",
+   "height": 0.16,
+   "material": {
+    "color": "cfe0dc",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "orange potion": {
+   "model": "Objaverse/flask_round",
+   "height": 0.16,
+   "material": {
+    "color": "e07020",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "order shield": {
+   "model": "Objaverse/s_heater",
+   "length": 0.8,
+   "lay": true,
+   "flip": true
+  },
+  "paladin spellbook": {
+   "model": "Objaverse/book_leather",
+   "height": 0.06
+  },
+  "paladin sword": {
+   "model": "Objaverse/w_viking_sword",
+   "length": 0.95,
+   "lay": true
+  },
+  "paralyze scroll": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "piece of amber": {
+   "model": "Objaverse/gem_diamond",
+   "length": 0.035,
+   "material": {
+    "color": "e0a030",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "pitcher of ale": {
+   "model": "Objaverse/carafe",
+   "height": 0.26
+  },
+  "pitcher of cider": {
+   "model": "Objaverse/carafe",
+   "height": 0.26
+  },
+  "pitcher of liquor": {
+   "model": "Objaverse/carafe",
+   "height": 0.26
+  },
+  "pitcher of water": {
+   "model": "Objaverse/carafe",
+   "height": 0.26
+  },
+  "pitcher of wine": {
+   "model": "Objaverse/carafe",
+   "height": 0.26
+  },
+  "playing cards": {
+   "model": "Objaverse/cards",
+   "length": 0.2
+  },
+  "poison field scrol": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "protection scroll": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "purple potion": {
+   "model": "Objaverse/flask_round",
+   "height": 0.16,
+   "material": {
+    "color": "7a2aa0",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "radiant scimitar": {
+   "model": "Objaverse/w_scimitar",
+   "length": 0.95,
+   "lay": true
+  },
+  "recall": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "red potion": {
+   "model": "Objaverse/flask_round",
+   "height": 0.16,
+   "material": {
+    "color": "b0201c",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "reveal scroll": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "rolled map": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "runebook": {
+   "model": "Objaverse/book_leather",
+   "height": 0.06
+  },
+  "sake": {
+   "model": "Objaverse/bottle_wine",
+   "height": 0.28
+  },
+  "sapphire": {
+   "model": "Objaverse/gem_diamond",
+   "length": 0.035,
+   "material": {
+    "color": "2c48b8",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "shelves": {
+   "model": "Objaverse/bookcase_antique",
+   "height": 1.9,
+   "face": "wall"
+  },
+  "shortblade": {
+   "model": "Objaverse/w_dagger",
+   "length": 0.4,
+   "lay": true
+  },
+  "shortsword": {
+   "model": "Objaverse/w_viking_sword",
+   "length": 0.95,
+   "lay": true
+  },
+  "silver coin": {
+   "model": "Objaverse/coin_pile",
+   "length": 0.2
+  },
+  "smith's hammer": {
+   "model": "Objaverse/w_war_hammer",
+   "length": 0.6,
+   "lay": true
+  },
+  "soul glaive": {
+   "model": "Objaverse/w_spear",
+   "length": 1.9,
+   "lay": true
+  },
+  "star sapphire": {
+   "model": "Objaverse/gem_diamond",
+   "length": 0.035,
+   "material": {
+    "color": "2c48b8",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "stone war sword": {
+   "model": "Objaverse/w_viking_sword",
+   "length": 0.95,
+   "lay": true
+  },
+  "strength scroll": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "tarot": {
+   "model": "Objaverse/cards",
+   "length": 0.2
+  },
+  "terathan spear": {
+   "model": "Objaverse/w_spear",
+   "length": 1.9,
+   "lay": true
+  },
+  "tiki torch east": {
+   "model": "Objaverse/wall_torch",
+   "height": 0.6,
+   "anchor": "back",
+   "rotation": 90,
+   "elevation": 0.35,
+   "flame": true
+  },
+  "torch": {
+   "model": "Objaverse/wall_torch",
+   "length": 0.55,
+   "lay": true
+  },
+  "torch holder": {
+   "model": "Objaverse/wall_torch",
+   "height": 0.6,
+   "anchor": "back",
+   "rotation": 90,
+   "elevation": 0.35,
+   "flame": true
+  },
+  "tourmaline": {
+   "model": "Objaverse/gem_diamond",
+   "length": 0.035,
+   "material": {
+    "color": "8a4fa8",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "towel": {
+   "model": "Objaverse/towel_folded",
+   "length": 0.45,
+   "material": {
+    "color": "e2dccb",
+    "metallic": 0.0,
+    "roughness": 0.9
+   }
+  },
+  "twigs": {
+   "model": "dry_branches_medium_01",
+   "length": 1.0
+  },
+  "vial of vitriol": {
+   "model": "Objaverse/flask_round",
+   "height": 0.16,
+   "material": {
+    "color": "cfe0dc",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "war axe": {
+   "model": "Objaverse/w_double_axe",
+   "length": 0.8,
+   "lay": true
+  },
+  "war fork": {
+   "model": "Objaverse/w_spear",
+   "length": 1.9,
+   "lay": true
+  },
+  "weapon racks a a sou": {
+   "model": "Objaverse/weapon_rack",
+   "assembly": "footprint",
+   "length": 1.0,
+   "group": "weapon racks"
+  },
+  "weapon racks a b eas": {
+   "model": "Objaverse/weapon_rack",
+   "assembly": "footprint",
+   "length": 1.0,
+   "group": "weapon racks"
+  },
+  "weapon racks b a sou": {
+   "model": "Objaverse/weapon_rack",
+   "assembly": "footprint",
+   "length": 1.0,
+   "group": "weapon racks"
+  },
+  "weapon racks b b eas": {
+   "model": "Objaverse/weapon_rack",
+   "assembly": "footprint",
+   "length": 1.0,
+   "group": "weapon racks"
+  },
+  "weapon racks c a sou": {
+   "model": "Objaverse/weapon_rack",
+   "assembly": "footprint",
+   "length": 1.0,
+   "group": "weapon racks"
+  },
+  "weapon racks c b eas": {
+   "model": "Objaverse/weapon_rack",
+   "assembly": "footprint",
+   "length": 1.0,
+   "group": "weapon racks"
+  },
+  "white potion": {
+   "model": "Objaverse/flask_round",
+   "height": 0.16,
+   "material": {
+    "color": "e8e8e8",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "wildfire scroll": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "wooden chair": {
+   "model": "Objaverse/chair_old",
+   "height": 1.0
+  },
+  "wooden shelf": {
+   "model": "Objaverse/bookcase_antique",
+   "height": 1.9,
+   "face": "wall"
+  },
+  "wooden shield": {
+   "model": "Objaverse/s_kite",
+   "length": 0.85,
+   "lay": true,
+   "flip": true
+  },
+  "yellow potion": {
+   "model": "Objaverse/flask_round",
+   "height": 0.16,
+   "material": {
+    "color": "d8c020",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "": {
+   "only_ids": true,
+   "model": "Objaverse/fish",
+   "length": 0.3,
+   "ids": {
+    "13794": {
+     "model": "Objaverse/crystal_green",
+     "height": 1.0,
+     "material": {
+      "color": "4ec8d0",
+      "metallic": 0.0,
+      "roughness": 0.15
+     }
+    },
+    "13795": {
+     "model": "Objaverse/crystal_green",
+     "height": 1.0,
+     "material": {
+      "color": "4ec8d0",
+      "metallic": 0.0,
+      "roughness": 0.15
+     }
+    },
+    "13796": {
+     "model": "Objaverse/crystal_green",
+     "height": 1.0,
+     "material": {
+      "color": "4ec8d0",
+      "metallic": 0.0,
+      "roughness": 0.15
+     }
+    },
+    "13797": {
+     "model": "Objaverse/crystal_green",
+     "height": 1.0,
+     "material": {
+      "color": "4ec8d0",
+      "metallic": 0.0,
+      "roughness": 0.15
+     }
+    },
+    "13798": {
+     "model": "Objaverse/crystal_green",
+     "height": 1.0,
+     "material": {
+      "color": "4ec8d0",
+      "metallic": 0.0,
+      "roughness": 0.15
+     }
+    },
+    "13799": {
+     "model": "Objaverse/crystal_green",
+     "height": 1.0,
+     "material": {
+      "color": "4ec8d0",
+      "metallic": 0.0,
+      "roughness": 0.15
+     }
+    },
+    "13800": {
+     "model": "Objaverse/crystal_green",
+     "height": 1.0,
+     "material": {
+      "color": "4ec8d0",
+      "metallic": 0.0,
+      "roughness": 0.15
+     }
+    },
+    "13801": {
+     "model": "Objaverse/crystal_green",
+     "height": 1.0,
+     "material": {
+      "color": "4ec8d0",
+      "metallic": 0.0,
+      "roughness": 0.15
+     }
+    },
+    "13802": {
+     "model": "Objaverse/crystal_green",
+     "height": 1.0,
+     "material": {
+      "color": "4ec8d0",
+      "metallic": 0.0,
+      "roughness": 0.15
+     }
+    },
+    "13803": {
+     "model": "Objaverse/crystal_green",
+     "height": 1.0,
+     "material": {
+      "color": "4ec8d0",
+      "metallic": 0.0,
+      "roughness": 0.15
+     }
+    },
+    "13804": {
+     "model": "Objaverse/crystal_green",
+     "height": 1.0,
+     "material": {
+      "color": "4ec8d0",
+      "metallic": 0.0,
+      "roughness": 0.15
+     }
+    },
+    "13829": {
+     "model": "Objaverse/crystal_green",
+     "height": 1.0,
+     "material": {
+      "color": "4ec8d0",
+      "metallic": 0.0,
+      "roughness": 0.15
+     }
+    },
+    "13830": {
+     "model": "Objaverse/crystal_green",
+     "height": 1.0,
+     "material": {
+      "color": "4ec8d0",
+      "metallic": 0.0,
+      "roughness": 0.15
+     }
+    },
+    "13831": {
+     "model": "Objaverse/crystal_green",
+     "height": 1.0,
+     "material": {
+      "color": "4ec8d0",
+      "metallic": 0.0,
+      "roughness": 0.15
+     }
+    },
+    "13832": {
+     "model": "Objaverse/crystal_green",
+     "height": 1.0,
+     "material": {
+      "color": "4ec8d0",
+      "metallic": 0.0,
+      "roughness": 0.15
+     }
+    },
+    "13900": {
+     "model": "Objaverse/stalagmite_b",
+     "height": 1.6,
+     "material": {
+      "color": "1a161c",
+      "metallic": 0.0,
+      "roughness": 0.3
+     }
+    },
+    "13903": {
+     "model": "Objaverse/stalagmite_b",
+     "height": 1.6,
+     "material": {
+      "color": "1a161c",
+      "metallic": 0.0,
+      "roughness": 0.3
+     }
+    },
+    "13904": {
+     "model": "Objaverse/stalagmite_b",
+     "height": 1.6,
+     "material": {
+      "color": "1a161c",
+      "metallic": 0.0,
+      "roughness": 0.3
+     }
+    },
+    "13901": {
+     "model": "Objaverse/rock_gray",
+     "length": 0.9,
+     "material": {
+      "color": "221c22",
+      "metallic": 0.0,
+      "roughness": 0.35
+     }
+    },
+    "13902": {
+     "model": "Objaverse/rock_gray",
+     "length": 0.9,
+     "material": {
+      "color": "221c22",
+      "metallic": 0.0,
+      "roughness": 0.35
+     }
+    },
+    "15102": {
+     "model": "Objaverse/fish",
+     "length": 0.22,
+     "material": {
+      "color": "2a4ad8",
+      "metallic": 0.0,
+      "roughness": 0.4
+     }
+    },
+    "15103": {
+     "model": "Objaverse/fish",
+     "length": 0.22,
+     "material": {
+      "color": "d8b878",
+      "metallic": 0.0,
+      "roughness": 0.4
+     }
+    },
+    "15104": {
+     "model": "Objaverse/fish",
+     "length": 0.22,
+     "material": {
+      "color": "e07a30",
+      "metallic": 0.0,
+      "roughness": 0.4
+     }
+    },
+    "15105": {
+     "model": "Objaverse/fish",
+     "length": 0.22,
+     "material": {
+      "color": "d8d040",
+      "metallic": 0.0,
+      "roughness": 0.4
+     }
+    },
+    "15106": {
+     "model": "Objaverse/fish",
+     "length": 0.22,
+     "material": {
+      "color": "283a8a",
+      "metallic": 0.0,
+      "roughness": 0.4
+     }
+    },
+    "15107": {
+     "model": "Objaverse/fish",
+     "length": 0.22,
+     "material": {
+      "color": "f07030",
+      "metallic": 0.0,
+      "roughness": 0.4
+     }
+    },
+    "15108": {
+     "model": "Objaverse/fish",
+     "length": 0.22,
+     "material": {
+      "color": "c8d0d8",
+      "metallic": 0.0,
+      "roughness": 0.4
+     }
+    },
+    "15110": {
+     "model": "Objaverse/fish",
+     "length": 0.22,
+     "material": {
+      "color": "f0c020",
+      "metallic": 0.0,
+      "roughness": 0.4
+     }
+    },
+    "15111": {
+     "model": "Objaverse/fish",
+     "length": 0.22,
+     "material": {
+      "color": "3a3a7a",
+      "metallic": 0.0,
+      "roughness": 0.4
+     }
+    },
+    "15112": {
+     "model": "Objaverse/fish",
+     "length": 0.22,
+     "material": {
+      "color": "e05a20",
+      "metallic": 0.0,
+      "roughness": 0.4
+     }
+    },
+    "15113": {
+     "model": "Objaverse/fish",
+     "length": 0.22,
+     "material": {
+      "color": "c8a040",
+      "metallic": 0.0,
+      "roughness": 0.4
+     }
+    },
+    "15114": {
+     "model": "Objaverse/fish",
+     "length": 0.22,
+     "material": {
+      "color": "7a50c8",
+      "metallic": 0.0,
+      "roughness": 0.4
+     }
+    },
+    "15115": {
+     "model": "Objaverse/fish",
+     "length": 0.22,
+     "material": {
+      "color": "e0c080",
+      "metallic": 0.0,
+      "roughness": 0.4
+     }
+    },
+    "16140": {
+     "model": "Objaverse/cherry_tree",
+     "height": 4.5
+    },
+    "6479": {
+     "model": "Reduced/wicker_basket_01/wicker_basket_01",
+     "height": 0.45
+    },
+    "15287": {
+     "model": "Objaverse/scroll_old",
+     "length": 0.3,
+     "lay": true
+    },
+    "8318": {
+     "model": "Objaverse/table_wood_b",
+     "height": 0.75
+    },
+    "8314": {
+     "model": "Objaverse/cauldron",
+     "height": 0.9
+    },
+    "15783": {
+     "model": "Objaverse/curtains_red",
+     "height": 2.2,
+     "anchor": "back"
+    }
+   }
+  },
+  "anchor": {
+   "model": "Objaverse/anchor_iron",
+   "height": 1.6
+  },
+  "target": {
+   "model": "Objaverse/archery_target",
+   "height": 1.4
+  },
+  "archery butte": {
+   "model": "Objaverse/archery_target",
+   "height": 1.4
+  },
+  "beehive": {
+   "model": "Objaverse/beehive_skep",
+   "height": 0.6
+  },
+  "bust": {
+   "model": "Objaverse/bust_lady",
+   "height": 0.6
+  },
+  "cactus": {
+   "model": "Objaverse/cactus_pack",
+   "length": 1.0
+  },
+  "pipe cactus": {
+   "model": "Objaverse/cactus_pack",
+   "length": 0.9
+  },
+  "plough": {
+   "model": "Objaverse/plough_wood",
+   "assembly": "footprint",
+   "length": 1.0
+  },
+  "fur": {
+   "model": "Objaverse/hide_dark",
+   "length": 0.9
+  },
+  "fur%s%": {
+   "model": "Objaverse/hide_dark",
+   "length": 0.9
+  },
+  "pil of hides": {
+   "model": "Objaverse/hide_dark",
+   "length": 0.9
+  },
+  "cut up leather": {
+   "model": "Objaverse/hide_dark",
+   "length": 0.6
+  },
+  "leather tunic": {
+   "model": "Objaverse/armor_hauberk",
+   "length": 0.7,
+   "lay": true,
+   "material": {
+    "color": "6b4a2e",
+    "metallic": 0.0,
+    "roughness": 0.75
+   }
+  },
+  "studded tunic": {
+   "model": "Objaverse/armor_hauberk",
+   "length": 0.7,
+   "lay": true,
+   "material": {
+    "color": "4a3424",
+    "metallic": 0.2,
+    "roughness": 0.6
+   }
+  },
+  "gargoyle armor leath": {
+   "model": "Objaverse/armor_hauberk",
+   "length": 0.7,
+   "lay": true,
+   "material": {
+    "color": "6b4a2e",
+    "metallic": 0.0,
+    "roughness": 0.75
+   }
+  },
+  "chainmail tunic": {
+   "model": "Objaverse/armor_hauberk",
+   "length": 0.75,
+   "lay": true
+  },
+  "ringmail tunic": {
+   "model": "Objaverse/armor_hauberk",
+   "length": 0.75,
+   "lay": true
+  },
+  "leather leggings": {
+   "model": "Objaverse/pants_leather",
+   "length": 0.9,
+   "lay": true
+  },
+  "studded leggings": {
+   "model": "Objaverse/pants_leather",
+   "length": 0.9,
+   "lay": true,
+   "material": {
+    "color": "4a3424",
+    "metallic": 0.2,
+    "roughness": 0.6
+   }
+  },
+  "leather gloves": {
+   "model": "Objaverse/gauntlet_leather",
+   "length": 0.3,
+   "lay": true
+  },
+  "studded gloves": {
+   "model": "Objaverse/gauntlet_leather",
+   "length": 0.3,
+   "lay": true,
+   "material": {
+    "color": "4a3424",
+    "metallic": 0.2,
+    "roughness": 0.6
+   }
+  },
+  "ringmail gloves": {
+   "model": "Objaverse/gauntlet_leather",
+   "length": 0.3,
+   "lay": true,
+   "material": {
+    "color": "8f949b",
+    "metallic": 1.0,
+    "roughness": 0.32
+   }
+  },
+  "platemail gloves": {
+   "model": "Objaverse/gauntlet_leather",
+   "length": 0.3,
+   "lay": true,
+   "material": {
+    "color": "8f949b",
+    "metallic": 1.0,
+    "roughness": 0.32
+   }
+  },
+  "crystal ball": {
+   "model": "Objaverse/crystal_ball",
+   "length": 0.3
+  },
+  "gargoyle armor plate": {
+   "model": "Objaverse/armor_plate",
+   "length": 0.6,
+   "lay": true,
+   "material": {
+    "color": "8f949b",
+    "metallic": 1.0,
+    "roughness": 0.32
+   }
+  },
+  "decorative weapons": {
+   "model": "Objaverse/weapon_rack",
+   "height": 1.2,
+   "anchor": "back",
+   "face": "wall"
+  },
+  "rub": {
+   "model": "Objaverse/hide_dark",
+   "length": 0.6
+  },
+  "stone face": {
+   "model": "Objaverse/bust_lady",
+   "height": 0.5,
+   "material": {
+    "color": "8a867c",
+    "metallic": 0.0,
+    "roughness": 0.85
+   }
+  },
+  "oar": {
+   "model": "Objaverse/w_long_spear",
+   "length": 2.0,
+   "lay": true,
+   "material": {
+    "color": "7a5a3a",
+    "metallic": 0.0,
+    "roughness": 0.8
+   }
+  },
+  "empty jars": {
+   "model": "Objaverse/bottle_wine",
+   "height": 0.25,
+   "material": {
+    "color": "cfe0dc",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "jars": {
+   "model": "Objaverse/bottle_wine",
+   "height": 0.25,
+   "material": {
+    "color": "cfe0dc",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "full jars": {
+   "model": "Objaverse/bottle_wine",
+   "height": 0.25,
+   "material": {
+    "color": "a87030",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "drawer": {
+   "model": "GothicCommode_01",
+   "height": 0.6,
+   "face": "wall"
+  },
+  "dresser": {
+   "model": "GothicCommode_01",
+   "height": 0.9,
+   "face": "wall"
+  },
+  "plate of food": {
+   "model": "carved_wooden_plate",
+   "length": 0.26
+  },
+  "tray of sushi": {
+   "model": "Objaverse/tray",
+   "length": 0.35
+  },
+  "bento box": {
+   "model": "Objaverse/tray",
+   "length": 0.3
+  },
+  "skull mug": {
+   "model": "Objaverse/tankard_maryrose",
+   "height": 0.16
+  },
+  "gourd": {
+   "model": "Objaverse/garlic_bulb",
+   "height": 0.2,
+   "material": {
+    "color": "b08a40",
+    "metallic": 0.0,
+    "roughness": 0.6
+   }
+  },
+  "hops": {
+   "model": "Objaverse/ivy_hanging",
+   "height": 1.2,
+   "anchor": "back"
+  },
+  "__vine leaves": {
+   "model": "Objaverse/ivy_hanging",
+   "height": 1.4
+  },
+  "magical crystal": {
+   "model": "Objaverse/crystal_green",
+   "height": 0.45
+  },
+  "apple tree": {
+   "model": "Objaverse/tree_bare_old",
+   "height": 4.5
+  },
+  "peach tree": {
+   "model": "Objaverse/tree_bare_old",
+   "height": 4.5
+  },
+  "pear tree": {
+   "model": "Objaverse/tree_bare_old",
+   "height": 4.5
+  },
+  "plum tree": {
+   "model": "Objaverse/tree_bare_old",
+   "height": 4.5
+  },
+  "maple tree": {
+   "model": "Objaverse/tree_maple",
+   "height": 6.0
+  },
+  "sculpture": {
+   "model": "Objaverse/stone_lantern",
+   "height": 1.4
+  },
+  "gold ingot": {
+   "model": "Objaverse/ingot_bar",
+   "length": 0.22,
+   "material": {
+    "color": "e2b04a",
+    "metallic": 1.0,
+    "roughness": 0.3
+   }
+  },
+  "iron ingot": {
+   "model": "Objaverse/ingot_bar",
+   "length": 0.22,
+   "material": {
+    "color": "6d6e70",
+    "metallic": 0.9,
+    "roughness": 0.55
+   }
+  },
+  "garlic bulb": {
+   "model": "Objaverse/garlic_bulb",
+   "height": 0.06
+  },
+  "grape bunch": {
+   "model": "Objaverse/grapes_bunch",
+   "height": 0.18
+  },
+  "stew": {
+   "model": "wooden_bowl_01",
+   "length": 0.22
+  },
+  "basin": {
+   "model": "wooden_bowl_01",
+   "length": 0.5
+  },
+  "fishing pole": {
+   "model": "Objaverse/w_long_spear",
+   "length": 2.2,
+   "lay": true,
+   "material": {
+    "color": "7a5a3a",
+    "metallic": 0.0,
+    "roughness": 0.8
+   }
+  },
+  "quarter staff": {
+   "model": "Objaverse/w_long_spear",
+   "length": 1.8,
+   "lay": true,
+   "material": {
+    "color": "6b4a2e",
+    "metallic": 0.0,
+    "roughness": 0.8
+   }
+  },
+  "gnarled staff": {
+   "model": "Objaverse/w_long_spear",
+   "length": 1.8,
+   "lay": true,
+   "material": {
+    "color": "5a4030",
+    "metallic": 0.0,
+    "roughness": 0.85
+   }
+  },
+  "platemail": {
+   "model": "Objaverse/armor_plate",
+   "length": 0.6,
+   "lay": true,
+   "material": {
+    "color": "8f949b",
+    "metallic": 1.0,
+    "roughness": 0.32
+   }
+  },
+  "platemail legs": {
+   "model": "Objaverse/pants_leather",
+   "length": 0.9,
+   "lay": true,
+   "material": {
+    "color": "8f949b",
+    "metallic": 1.0,
+    "roughness": 0.32
+   }
+  },
+  "platemail arms": {
+   "model": "Objaverse/gauntlet_leather",
+   "length": 0.4,
+   "lay": true,
+   "material": {
+    "color": "8f949b",
+    "metallic": 1.0,
+    "roughness": 0.32
+   }
+  },
+  "frypan": {
+   "model": "Objaverse/cooking_pots",
+   "length": 0.4
+  },
+  "tree stump": {
+   "model": "Objaverse/stump_meadow",
+   "length": 0.9
+  },
+  "flower pot": {
+   "model": "Reduced/potted_plant_04/potted_plant_04",
+   "height": 0.5
+  },
+  "candle of love": {
+   "model": "wooden_candlestick",
+   "height": 0.3
+  },
+  "hay sheave": {
+   "model": "Objaverse/hay_pile",
+   "length": 0.7
+  },
+  "head of cabbage": {
+   "model": "Objaverse/cabbage",
+   "height": 0.2
+  },
+  "cabbage": {
+   "model": "Objaverse/cabbage",
+   "height": 0.2
+  },
+  "pumpkin": {
+   "model": "Objaverse/pumpkin",
+   "height": 0.3
+  },
+  "watermelon": {
+   "model": "Objaverse/watermelon",
+   "length": 0.35
+  },
+  "honeydew melon": {
+   "model": "Objaverse/watermelon",
+   "length": 0.25,
+   "material": {
+    "color": "c8d890",
+    "metallic": 0.0,
+    "roughness": 0.5
+   }
+  },
+  "canteloupe": {
+   "model": "Objaverse/watermelon",
+   "length": 0.22,
+   "material": {
+    "color": "d8b880",
+    "metallic": 0.0,
+    "roughness": 0.6
+   }
+  },
+  "shovel": {
+   "model": "Objaverse/shovel_old",
+   "length": 1.2,
+   "lay": true
+  },
+  "globe": {
+   "model": "Objaverse/globe_antique",
+   "height": 0.5
+  },
+  "clock": {
+   "model": "Objaverse/clock_wall",
+   "height": 0.7,
+   "anchor": "back",
+   "elevation": 1.2
+  },
+  "bow": {
+   "model": "Objaverse/bow_long",
+   "length": 1.4,
+   "lay": true
+  },
+  "ham": {
+   "model": "Objaverse/ham_baked",
+   "length": 0.3
+  },
+  "slab of bacon": {
+   "model": "Objaverse/ham_baked",
+   "length": 0.25
+  },
+  "sausage": {
+   "model": "Objaverse/ham_baked",
+   "length": 0.2
   }
  }
 }

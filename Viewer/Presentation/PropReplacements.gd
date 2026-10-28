@@ -24,7 +24,16 @@ static func entry_for(name: String, id := -1) -> Dictionary:
 	if found.is_empty() or id < 0: return found
 	var override: Dictionary = found.get("ids",{}).get(str(id),{})
 	if override.get("skip",false): return {}
+	# An entry that only lists graphics ("only_ids": unnamed records) needs one of them.
+	if found.get("only_ids",false) and override.is_empty(): return {}
 	return found.merged(override,true)
+
+# Rule kinds built as architecture or by their own builders never take a
+# name replacement (a wall-flagged "fireplace" is masonry, a "table" a trestle
+# run); Reconstruction and the art catalogue both ask here.
+const BUILT_KINDS := ["wall","window","corner","trim","beam","gable","floor","landing","stairs","roof","door","fence","water","lava","carpet","counter","bench","table","bed","decal","litter","invisible","sign","archway","pier","arch","pillar","chimney","palisade","planter","waterfall","tree","canopy","effect"]
+static func applies(kind: String) -> bool:
+	return not kind in BUILT_KINDS
 
 static func has(name: String, id := -1) -> bool:
 	return not entry_for(name,id).is_empty()
@@ -104,10 +113,12 @@ static func _one(reconstruction: RefCounted, model: String, found: Dictionary, s
 		var size := box.size*factor
 		var pivot := Node3D.new()
 		pivot.add_child(placed)
+		# "flip": the model's front (shield face) lies upward instead of down.
+		var flip: bool = found.get("flip",false)
 		if size.z < size.y and size.z <= size.x:
 			# About X: z becomes up (y' = -z), y runs along z' (0..size.y).
-			placed.rotation.x = PI/2
-			placed.position = Vector3(0,size.z/2,-size.y/2)
+			placed.rotation.x = -PI/2 if flip else PI/2
+			placed.position = Vector3(0,size.z/2,size.y/2 if flip else -size.y/2)
 		elif size.x < size.y and size.x < size.z:
 			# About Z: x becomes up (y' = x), y runs along -x' (-size.y..0).
 			placed.rotation.z = PI/2

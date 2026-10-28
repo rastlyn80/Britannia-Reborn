@@ -3023,6 +3023,552 @@
         5.325
       ],
       "processing": "ground-centred, decimated to 8000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "bust_lady",
+      "title": "Lady Bust - Benlliure",
+      "uid": "a668103a96874b80a8421f22fbb5c74f",
+      "page": "https://sketchfab.com/3d-models/a668103a96874b80a8421f22fbb5c74f",
+      "author": "Mo\u00f8kan",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-144/a668103a96874b80a8421f22fbb5c74f.glb",
+      "sourceSha256": "e20dfe3a0a2fee9593a01ea166035339775b40530afce8f664a92db33f15f1ac",
+      "sourceTriangles": 30000,
+      "file": "bust_lady/bust_lady.glb",
+      "sha256": "464f2ee242e7e26bc6a1ce003d6517ba79d93292847e6d3739beb7188ddb7f68",
+      "triangles": 4000,
+      "size": [
+        0.365,
+        0.666,
+        0.374
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "seashells",
+      "title": "Seashell",
+      "uid": "410be9cdc3d84f6a9f139189309b4891",
+      "page": "https://sketchfab.com/3d-models/410be9cdc3d84f6a9f139189309b4891",
+      "author": "TraianDumbrava",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-030/410be9cdc3d84f6a9f139189309b4891.glb",
+      "sourceSha256": "d4b0187727553ef572383cb68a4a2caab40db2013f1372df79f0b8a686d1059c",
+      "sourceTriangles": 906,
+      "file": "seashells/seashells.glb",
+      "sha256": "c91efcb717913021acb5ef1735f50f2c1872da10636f480ebab642ab64916865",
+      "triangles": 906,
+      "size": [
+        1398.972,
+        678.565,
+        405.113
+      ],
+      "processing": "ground-centred, decimated to 2000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "coral_piece",
+      "title": "Coral Piece",
+      "uid": "bd879158d2c9496fa40eb9a8fd8e75f8",
+      "page": "https://sketchfab.com/3d-models/bd879158d2c9496fa40eb9a8fd8e75f8",
+      "author": "Sharon Kunne",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-137/bd879158d2c9496fa40eb9a8fd8e75f8.glb",
+      "sourceSha256": "06fb298f8e9b24a3cfa67a843a43724d871b5da109b23cffc52110dd865a89a8",
+      "sourceTriangles": 7399,
+      "file": "coral_piece/coral_piece.glb",
+      "sha256": "2b42fd0e4d9d7bbbcc7d601b36fc5c6938f5d5fa285c5ebcd5db45923850db25",
+      "triangles": 2999,
+      "size": [
+        3.098,
+        4.059,
+        2.636
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "cactus_pack",
+      "title": "Cactus | Pack",
+      "uid": "588596f1601d48e6ad4cb24b31c3f33c",
+      "page": "https://sketchfab.com/3d-models/588596f1601d48e6ad4cb24b31c3f33c",
+      "author": "YadroGames",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-158/588596f1601d48e6ad4cb24b31c3f33c.glb",
+      "sourceSha256": "6ffb0da6cb58ed2b53e5bd389a4dfa1400991a8af829970f6d6082088ead3fa7",
+      "sourceTriangles": 5010,
+      "file": "cactus_pack/cactus_pack.glb",
+      "sha256": "cde1b832a6e3e62b1b406ec208d6afa0fddd8dcbe5821fc140a0ed0bfbf19f07",
+      "triangles": 3991,
+      "size": [
+        7.665,
+        4.12,
+        6.941
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "archery_target",
+      "title": "Target (archery)",
+      "uid": "bafac3d3d41048fa8cd42c8d5ca81a4c",
+      "page": "https://sketchfab.com/3d-models/bafac3d3d41048fa8cd42c8d5ca81a4c",
+      "author": "Arkikon",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-006/bafac3d3d41048fa8cd42c8d5ca81a4c.glb",
+      "sourceSha256": "02592d6a2e01cec0ce4e304ffd7ef17891a10cea8ae16760bcdb26c505cdeb4c",
+      "sourceTriangles": 1870,
+      "file": "archery_target/archery_target.glb",
+      "sha256": "106df2718e884c24341c1e45b606832f8ee63d11d78c5b45afa9fa532ab983cb",
+      "triangles": 1870,
+      "size": [
+        122.189,
+        181.869,
+        163.31
+      ],
+      "processing": "ground-centred, decimated to 2500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "plough_wood",
+      "title": "Medieval Plough",
+      "uid": "cd6921ec6eae484b93a31919d7fb106d",
+      "page": "https://sketchfab.com/3d-models/cd6921ec6eae484b93a31919d7fb106d",
+      "author": "Andy Woodhead",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-140/cd6921ec6eae484b93a31919d7fb106d.glb",
+      "sourceSha256": "3d5dc4bc2710462b2abae4e31f560b68b34d045518e3458351532e41428a8fe7",
+      "sourceTriangles": 21804,
+      "file": "plough_wood/plough_wood.glb",
+      "sha256": "88d3f18c370d5b4463ee1e554b9e90f4f7c3fe44c6092c8425db18c05b2366bc",
+      "triangles": 5000,
+      "size": [
+        0.476,
+        0.488,
+        1.325
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "anchor_iron",
+      "title": "Medieval Anchor (Free)",
+      "uid": "5896ac54d63e4b84bd32e0b232619dfd",
+      "page": "https://sketchfab.com/3d-models/5896ac54d63e4b84bd32e0b232619dfd",
+      "author": "wolfgar74",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-024/5896ac54d63e4b84bd32e0b232619dfd.glb",
+      "sourceSha256": "1728b6c0c7162ee379990d08acd0fc13fdee9da658d2fb49c65ae81afc8ff1a0",
+      "sourceTriangles": 2350,
+      "file": "anchor_iron/anchor_iron.glb",
+      "sha256": "75888e7c331a4ed52a2af7599ab03a73d22974f093097cf208ab44e49f9e1f8f",
+      "triangles": 2350,
+      "size": [
+        121.194,
+        171.693,
+        27.068
+      ],
+      "processing": "ground-centred, decimated to 2500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "beehive_skep",
+      "title": "Skep - Straw Beehive - Rothe House",
+      "uid": "1c7fcf31196b42cdb6fdcafe7200b64a",
+      "page": "https://sketchfab.com/3d-models/1c7fcf31196b42cdb6fdcafe7200b64a",
+      "author": "Kilkenny3D DH_Age",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-150/1c7fcf31196b42cdb6fdcafe7200b64a.glb",
+      "sourceSha256": "04c155d2f0e6618e3ebb4b20f2b78c1f24a42c5db1a8ffac1a9af843d9057054",
+      "sourceTriangles": 400000,
+      "file": "beehive_skep/beehive_skep.glb",
+      "sha256": "edc58e8494c10710c8a54d653bfd009abf1f8476182f8bcf43697e10e59a1c29",
+      "triangles": 4998,
+      "size": [
+        2.482,
+        2.152,
+        2.315
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "ivy_hanging",
+      "title": "Ivy",
+      "uid": "d8991bd2a8c84e96b15a721a833bd4c3",
+      "page": "https://sketchfab.com/3d-models/d8991bd2a8c84e96b15a721a833bd4c3",
+      "author": "Daniel Gryningstjerna",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-059/d8991bd2a8c84e96b15a721a833bd4c3.glb",
+      "sourceSha256": "25fdefa75e7ec7b13521993531c07b24c053e924d37d4115dea3d4788e790e22",
+      "sourceTriangles": 1044,
+      "file": "ivy_hanging/ivy_hanging.glb",
+      "sha256": "850f938f32fb96d10b2ef0b26ab10973fb15b1a78bc8fb918a7df57304df104f",
+      "triangles": 1044,
+      "size": [
+        200.0,
+        235.447,
+        67.875
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "hide_dark",
+      "title": "Viking \"Tea\" Party - Animal Hide",
+      "uid": "210d7548d63649dcbb0f3739bf28f370",
+      "page": "https://sketchfab.com/3d-models/210d7548d63649dcbb0f3739bf28f370",
+      "author": "Nicholas Olsen",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-132/210d7548d63649dcbb0f3739bf28f370.glb",
+      "sourceSha256": "eb06392e8541c073708fa53eeb1c250f88b312b2440798ccfa133488778fb877",
+      "sourceTriangles": 10400,
+      "file": "hide_dark/hide_dark.glb",
+      "sha256": "b899d51f6f5c5bc23dfc83d341e70e250d554e9a16f07cc584050f5feb311b18",
+      "triangles": 2500,
+      "size": [
+        1.201,
+        0.433,
+        2.0
+      ],
+      "processing": "ground-centred, decimated to 2500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "rope_coil",
+      "title": "Coil Of Rope | \u041c\u043e\u0442\u043e\u043a \u0432\u0435\u0440\u0451\u0432\u043a\u0438",
+      "uid": "25fc28346ef44f37bf212486fd905080",
+      "page": "https://sketchfab.com/3d-models/25fc28346ef44f37bf212486fd905080",
+      "author": "Freede",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-111/25fc28346ef44f37bf212486fd905080.glb",
+      "sourceSha256": "36b2b279d1a6e147f190f46348cf414e351880b5779ef51d63689009f712beaf",
+      "sourceTriangles": 3024,
+      "file": "rope_coil/rope_coil.glb",
+      "sha256": "679662727acc9d52661a8f4810caaefaeb724bc5b859e8baf57d718ab5d87691",
+      "triangles": 2497,
+      "size": [
+        48.0,
+        21.0,
+        1.0
+      ],
+      "processing": "ground-centred, decimated to 2500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "crystal_ball",
+      "title": "Crystal ball",
+      "uid": "d6d5e784e727471fb4ac62025d156bc4",
+      "page": "https://sketchfab.com/3d-models/d6d5e784e727471fb4ac62025d156bc4",
+      "author": "SamRi",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-051/d6d5e784e727471fb4ac62025d156bc4.glb",
+      "sourceSha256": "325eca03a65494644e52497d8566040fb195cd947dd43bed3c04f2250c3e06df",
+      "sourceTriangles": 27296,
+      "file": "crystal_ball/crystal_ball.glb",
+      "sha256": "01eef8a7cd46f908f4022ee80e35bb6b90046de710c5d498353b8f6cfff4f4bf",
+      "triangles": 2990,
+      "size": [
+        223.045,
+        226.897,
+        647.933
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "pants_leather",
+      "title": "Leather Pants (Free)",
+      "uid": "f3d8e925db784591ad54ce18a27e540d",
+      "page": "https://sketchfab.com/3d-models/f3d8e925db784591ad54ce18a27e540d",
+      "author": "wolfgar74",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-035/f3d8e925db784591ad54ce18a27e540d.glb",
+      "sourceSha256": "c43151055591cf41853e537061930f15b20df56945766e502914573cb1719da4",
+      "sourceTriangles": 15177,
+      "file": "pants_leather/pants_leather.glb",
+      "sha256": "c64ef45760cfedbb90496f3619da0b9e430f50e20ad6f92efb2d79898333e165",
+      "triangles": 3000,
+      "size": [
+        37.475,
+        99.341,
+        26.004
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "gauntlet_leather",
+      "title": "BB Gauntlet",
+      "uid": "65dd42be366041169216568d5919cbd5",
+      "page": "https://sketchfab.com/3d-models/65dd42be366041169216568d5919cbd5",
+      "author": "DannyAg",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-066/65dd42be366041169216568d5919cbd5.glb",
+      "sourceSha256": "bb9e63c4fa50b285300c2540c132d1e24f9a61d8b710776332b0db0d6a3881ce",
+      "sourceTriangles": 3276,
+      "file": "gauntlet_leather/gauntlet_leather.glb",
+      "sha256": "d32ac45188efae24c84f050d8738a72737e5714564d827951320f63e088e6d8c",
+      "triangles": 2500,
+      "size": [
+        1.225,
+        0.441,
+        0.435
+      ],
+      "processing": "ground-centred, decimated to 2500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "wheat_stalk",
+      "title": "Wheat",
+      "uid": "22fc307dabed485e8a53b6a3543842f8",
+      "page": "https://sketchfab.com/3d-models/22fc307dabed485e8a53b6a3543842f8",
+      "author": "DigitalFlow",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-119/22fc307dabed485e8a53b6a3543842f8.glb",
+      "sourceSha256": "19bf57305775af7e70d4938d270e844bd0b661befed4b9377fc8a9fa493a64d9",
+      "sourceTriangles": 194244,
+      "file": "wheat_stalk/wheat_stalk.glb",
+      "sha256": "c50cfc5884d653cc7aad2d1b7bd19704e983e45420e1a509174fde3a1a1df1de",
+      "triangles": 1998,
+      "size": [
+        0.754,
+        1.946,
+        0.514
+      ],
+      "processing": "ground-centred, decimated to 2000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "tree_bare_old",
+      "title": "Old tree",
+      "uid": "3cb4d59eb4844dc4802480e9ee53785e",
+      "page": "https://sketchfab.com/3d-models/3cb4d59eb4844dc4802480e9ee53785e",
+      "author": "evolveduk",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-120/3cb4d59eb4844dc4802480e9ee53785e.glb",
+      "sourceSha256": "81ea058ac90c75809c6c822b29ffe852cfe45e1859806f504b277a59a51d087c",
+      "sourceTriangles": 6124,
+      "file": "tree_bare_old/tree_bare_old.glb",
+      "sha256": "ca860a1a0912bacac7ccf247bfa8f4e38f80c467149684fd37c39b99f8bb1fe1",
+      "triangles": 5997,
+      "size": [
+        2.571,
+        4.238,
+        2.355
+      ],
+      "processing": "ground-centred, decimated to 6000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "tree_maple",
+      "title": "Maple Tree",
+      "uid": "b5e945e7abcc471da6547c04e314774c",
+      "page": "https://sketchfab.com/3d-models/b5e945e7abcc471da6547c04e314774c",
+      "author": "evolveduk",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-131/b5e945e7abcc471da6547c04e314774c.glb",
+      "sourceSha256": "fcc45a1669886931ca8f3a92d27ba16aaec8f9f675927fa1dde0a0a7bc855450",
+      "sourceTriangles": 12855,
+      "file": "tree_maple/tree_maple.glb",
+      "sha256": "847889282c51612a8f3b19dc3f233ab2935fe2a1ef7d1a8e3be57d788e33a940",
+      "triangles": 5999,
+      "size": [
+        7.876,
+        10.272,
+        7.732
+      ],
+      "processing": "ground-centred, decimated to 6000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "stone_lantern",
+      "title": "Japanese Stone Lantern",
+      "uid": "e0417d1e05984727a50f9ab1451d162d",
+      "page": "https://sketchfab.com/3d-models/e0417d1e05984727a50f9ab1451d162d",
+      "author": "Sahir Virmani",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-129/e0417d1e05984727a50f9ab1451d162d.glb",
+      "sourceSha256": "8bd77af7bcd6e46188d943efdc84078f270acd67677ed2a670d680bb1c37fb9f",
+      "sourceTriangles": 3140,
+      "file": "stone_lantern/stone_lantern.glb",
+      "sha256": "6a39faa41bc35a5444a29e33efb01f82946bdddf4d8682451c9fdfa0b707e657",
+      "triangles": 2999,
+      "size": [
+        64.016,
+        146.144,
+        64.016
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "cabbage",
+      "title": "Cabbage",
+      "uid": "654306fc3ae344c7b9e7a9a40faca45b",
+      "page": "https://sketchfab.com/3d-models/654306fc3ae344c7b9e7a9a40faca45b",
+      "author": "Meerschaum Digital",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-077/654306fc3ae344c7b9e7a9a40faca45b.glb",
+      "sourceSha256": "301f6090db79aaf6e25d471c48f1c04d974a65a81d36b10d63921d3c76b6d7e9",
+      "sourceTriangles": 3072,
+      "file": "cabbage/cabbage.glb",
+      "sha256": "72f00d6e384fe1f645a2ea63f8fb9930b8615080f4a82c1cfcb0349c97799df2",
+      "triangles": 1999,
+      "size": [
+        16.877,
+        12.211,
+        17.487
+      ],
+      "processing": "ground-centred, decimated to 2000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "pumpkin",
+      "title": "Pumpkin LP",
+      "uid": "0e99d8fdb29b4bb9a56f354e87536ac3",
+      "page": "https://sketchfab.com/3d-models/0e99d8fdb29b4bb9a56f354e87536ac3",
+      "author": "Karolina Renkiewicz",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-078/0e99d8fdb29b4bb9a56f354e87536ac3.glb",
+      "sourceSha256": "8a1704cc8fd4f62bcf22e43590fef52a55fd01666df111b7352c1a1cbad0319a",
+      "sourceTriangles": 2416,
+      "file": "pumpkin/pumpkin.glb",
+      "sha256": "41a8e69adfa4eba890439bec7047cfddefb79c43622a3a47196d5574a512de21",
+      "triangles": 1997,
+      "size": [
+        41.073,
+        34.862,
+        41.743
+      ],
+      "processing": "ground-centred, decimated to 2000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "watermelon",
+      "title": "Watermelon",
+      "uid": "294b5774d94141358a7b6b1708860dde",
+      "page": "https://sketchfab.com/3d-models/294b5774d94141358a7b6b1708860dde",
+      "author": "Lassi Kaukonen",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-111/294b5774d94141358a7b6b1708860dde.glb",
+      "sourceSha256": "59541a7d750246bc81f1f3774eda08838b2e7934b0517040d95d89bb22afe56c",
+      "sourceTriangles": 77827,
+      "file": "watermelon/watermelon.glb",
+      "sha256": "0a0fd5d8eea124f035a2dfc1b7cd15bbd01e99f3d96d0bbe01929dce7748df2d",
+      "triangles": 1999,
+      "size": [
+        5.057,
+        4.689,
+        4.504
+      ],
+      "processing": "ground-centred, decimated to 2000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "shovel_old",
+      "title": "Old Shovel",
+      "uid": "5ea945cb4d9a4bd387fb9d6ed74527f1",
+      "page": "https://sketchfab.com/3d-models/5ea945cb4d9a4bd387fb9d6ed74527f1",
+      "author": "Oliver Triplett",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-124/5ea945cb4d9a4bd387fb9d6ed74527f1.glb",
+      "sourceSha256": "8ba472d34b3d4473e12f9b3d0a076a2aa601d73e3d2dfa72d714f6ffc2b08338",
+      "sourceTriangles": 1040,
+      "file": "shovel_old/shovel_old.glb",
+      "sha256": "2c8cce3141810cf0338f6953ccd98f274951c335dda5176dead61e4fd9d82d28",
+      "triangles": 1040,
+      "size": [
+        0.333,
+        2.0,
+        0.468
+      ],
+      "processing": "ground-centred, decimated to 1500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "globe_antique",
+      "title": "Globe",
+      "uid": "2d40c8805443463283c1b1547e50e650",
+      "page": "https://sketchfab.com/3d-models/2d40c8805443463283c1b1547e50e650",
+      "author": "padmadev2005",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-003/2d40c8805443463283c1b1547e50e650.glb",
+      "sourceSha256": "42a80e978aa468f8ed0f6c9156d28a53dda47dd0eeab46e9adfe4d96c7cc1559",
+      "sourceTriangles": 2228,
+      "file": "globe_antique/globe_antique.glb",
+      "sha256": "53e89126db628eb60c57a11ebac78a97caa296b6dc1e906128ebc469e26a58f3",
+      "triangles": 2000,
+      "size": [
+        2.422,
+        2.984,
+        2.0
+      ],
+      "processing": "ground-centred, decimated to 2000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "clock_wall",
+      "title": "Old wall clock",
+      "uid": "8e920e8b129842718099a3f772cec024",
+      "page": "https://sketchfab.com/3d-models/8e920e8b129842718099a3f772cec024",
+      "author": "AndreiVNK",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-005/8e920e8b129842718099a3f772cec024.glb",
+      "sourceSha256": "1091b88dce50e7b47aaf4ac4691e974cefe0ca54ef7970f6479352d243c9fcbb",
+      "sourceTriangles": 1538,
+      "file": "clock_wall/clock_wall.glb",
+      "sha256": "d15b25272d3279c72dbd111d7afd1befb5633cb4ae77cf5250900e51096e8b6b",
+      "triangles": 1538,
+      "size": [
+        0.299,
+        0.552,
+        0.191
+      ],
+      "processing": "ground-centred, decimated to 2000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "bow_long",
+      "title": "Bow",
+      "uid": "04e556fb494e4d6bb5b113ebc1c2f48c",
+      "page": "https://sketchfab.com/3d-models/04e556fb494e4d6bb5b113ebc1c2f48c",
+      "author": "DNC44",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-036/04e556fb494e4d6bb5b113ebc1c2f48c.glb",
+      "sourceSha256": "2233961fd65417cb389bf85a6e28d6f3f5cb2cae94797340cad08497852872c3",
+      "sourceTriangles": 1608,
+      "file": "bow_long/bow_long.glb",
+      "sha256": "21e9fe2fe0b592b214e02f114676b307e8b668168f0ee7a89895125e11708398",
+      "triangles": 1499,
+      "size": [
+        9.495,
+        9.621,
+        2.096
+      ],
+      "processing": "ground-centred, decimated to 1500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "ham_baked",
+      "title": "Baked ham (lowpoly)",
+      "uid": "afe78859d8444319a2984a000866f659",
+      "page": "https://sketchfab.com/3d-models/afe78859d8444319a2984a000866f659",
+      "author": "Zuckergelee",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-121/afe78859d8444319a2984a000866f659.glb",
+      "sourceSha256": "08bd281c175fabedb3de52babac529697a3bcf2fcbe1e2db4879a9417e4393c5",
+      "sourceTriangles": 602,
+      "file": "ham_baked/ham_baked.glb",
+      "sha256": "5ca032d461c5831509c9e903aec7dbb73f0dec7aabd93b8a2875dda6ef80534d",
+      "triangles": 602,
+      "size": [
+        2.0,
+        0.665,
+        0.755
+      ],
+      "processing": "ground-centred, decimated to 1500 triangles, textures capped at 1024 px"
     }
   ]
 }

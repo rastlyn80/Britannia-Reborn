@@ -153,6 +153,8 @@ func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -
 		return {"status":"original","detail":"worn model outside the first human wardrobe batch"}
 	# Name-keyed scan replacements apply to map statics and server items alike.
 	var found: Dictionary = preload("res://Presentation/PropReplacements.gd").entry_for(name,id)
+	var found_rule: Dictionary = audited if not audited.is_empty() else Rules.resolve(id,{"name":name,"height":item.height,"flags":flag_bits(item.flags)})
+	if not found.is_empty() and not preload("res://Presentation/PropReplacements.gd").applies(str(found_rule.get("kind","prop"))): found = {}
 	if not found.is_empty():
 		var model := str(found.get("model",found.get("models",[""])[0]))
 		if found.get("hide",false): return {"status":"scan","detail":"part drawn by the scanned model of its whole object"}
@@ -206,11 +208,15 @@ func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -
 			if str(rule.model) == "cannon": return pack("PolyHaven/cannon_01/cannon_01_1k.gltf")
 			return {"status":"built","detail":"built in code: "+str(rule.model)}
 	if kind == "fence" and preload("res://Presentation/FenceBuilder.gd").handles(name): return {"status":"crafted","detail":"fence built in photoscanned timber, stone and wrought iron"}
+	if kind == "vine" and str(rule.get("builder","")) == "vine": return {"status":"crafted","detail":"vine stems in photoscanned bark with scanned ivy"}
+	if kind == "arch": return {"status":"crafted","detail":"arch pier/archway built in photoscanned masonry"}
+	if kind == "post": return {"status":"crafted","detail":"post in photoscanned timber or masonry"}
 	if kind in FITTED: return pack(asset)
 	var named := name.to_lower()
 	if kind == "counter": return {"status":"crafted","detail":"panelled counter in photoscanned timber"}
 	if kind == "carpet": return {"status":"crafted","detail":"woven rug from photoscanned fabric"}
 	if kind == "door": return {"status":"crafted","detail":"door leaf in photoscanned timber and iron"}
+	if kind == "effect": return {"status":"crafted","detail":"particle and glow effect: "+str(rule.get("effect",""))}
 	if kind == "decal": return {"status":"crafted","detail":"ground decal on a photoscanned surface: "+str(rule.get("decal",""))}
 	if kind == "table" and not ("stone" in named or "marble" in named or "sandstone" in named): return pack("Objaverse/table_wood_b/table_wood_b.glb")
 	if kind == "bed": return pack("PolyHaven/GothicBed_01/GothicBed_01_1k.gltf")

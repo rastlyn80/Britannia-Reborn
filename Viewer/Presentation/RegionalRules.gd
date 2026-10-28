@@ -139,10 +139,25 @@ static func _resolve(id: int,info: Dictionary) -> Dictionary:
   if id>=2787 and id<=2810: return base.merged({"kind":"carpet"})
   # Unnamed dark dungeon masonry (checked against their art): a stone floor
   # tile, a cut-stone block and two wall faces.
-  if id==13852: return base.merged({"kind":"floor","surface":"stone"})
+  if id==13852 or id==13854: return base.merged({"kind":"floor","surface":"stone"})
+  if id in [13846, 13849, 13878, 13879, 13880, 13881, 13882, 13883, 13884, 13885, 13886, 13887, 13835, 13836, 13838, 13839, 13840, 13841, 13842, 13843, 13844, 13847, 13834]: return base.merged({"kind":"wall","facadeFamily":"dungeon","asset":"Village/Wall_UnevenBrick_Straight.gltf"})
+  if id in [13906,13907,13908,13909,13910]: return base.merged({"kind":"floor","surface":"dungeon"})
+  if id in [16106,16108]: return base.merged({"kind":"wall","facadeFamily":"wood","asset":"Village/Wall_Plaster_Straight.gltf"})
+  if id in [16136,16137,16138,16141,16145,16151,16152]: return base.merged({"kind":"carpet"})
+  # Placeholder "UNUSED" sprites: the native client shows nothing meaningful.
+  if id==0 or (id>=8858 and id<=8875): return base.merged({"kind":"invisible","reason":"placeholder UNUSED art"})
+  # Other unnamed pieces with a photoscan replacement (prop-replacements.json "" ids).
+  if preload("res://Presentation/PropReplacements.gd").has("",id): return base.merged({"kind":"prop","model":"replacement"})
   if id in [13833,13882,13883]: return base.merged({"kind":"wall","facadeFamily":"dungeon","asset":"Village/Wall_UnevenBrick_Straight.gltf"})
   return {}
  if "cloud" in n: return base.merged({"kind":"invisible","reason":"sky decoration above the play area"})
+ # Animated magic and fire sprites become particle effects (EffectBuilder.gd).
+ if preload("res://Presentation/EffectBuilder.gd").preset_for(n) != "": return base.merged({"kind":"effect","effect":preload("res://Presentation/EffectBuilder.gd").preset_for(n)})
+ if n=="sinkhole": return base.merged({"kind":"decal","decal":"sinkhole"})
+ # Gargoyle-city stair pieces and spire masonry (Ter Mur).
+ if n.begins_with("gargstair") or n.begins_with("gragstair"): return base.merged({"kind":"stairs","rise":[0,-1]})
+ if n.begins_with("spire "): return base.merged({"kind":"wall","facadeFamily":"stone","asset":"Village/Wall_UnevenBrick_Straight.gltf"})
+ if n=="wooden banister": return base.merged({"kind":"fence"})
  # Masonry sets of the other facets (checked against their art): serpent
  # mosaics are stone floor tiles, marble/sandstone arch pieces are pillars
  # carrying a springer, gargoyle bases are stone pedestals, wall carvings are
@@ -167,7 +182,7 @@ static func _resolve(id: int,info: Dictionary) -> Dictionary:
  if "wall map" in n: return base.merged({"kind":"prop","model":"painting","mount":"wall"})
  # Banners hang flat on the wall beside them (a free-standing one keeps its cell).
  if n in ["banner","tattered banner","tapestry"]: return base.merged({"kind":"prop","model":"fabric","mount":"wall"})
- if n in ["decorative shield","decorative shields","trophy","painting","wall sconce","lever"]: return base.merged({"kind":"prop","model":"replacement","mount":"wall"})
+ if n in ["decorative shield","decorative shields","trophy","painting","wall sconce","lever","clock"]: return base.merged({"kind":"prop","model":"replacement","mount":"wall"})
  if "wall" in n or n in ["window","arrow loop","battlement"]:
   return base.merged({"kind":"window" if n in ["window","arrow loop"] else ("trim" if height<15 else "wall"),"asset":"Village/Wall_UnevenBrick_Straight.gltf" if "stone" in n or "brick" in n else "Village/Wall_Plaster_Straight.gltf"})
  if "arch" in n and n not in ["arcanist statue"]: return base.merged({"kind":"arch","asset":"Village/Wall_Arch.gltf"})
@@ -195,7 +210,19 @@ static func _resolve(id: int,info: Dictionary) -> Dictionary:
  if n=="stone rail": return base.merged({"kind":"fence"})
  if n in ["iron gate","wooden rail"]: return base.merged({"kind":"fence"})
  # Map-placed doors and gates (not server doors) as closed leaves.
- if n in ["magical door","secret door","wooden door","door","rattan door","gate","wooden gate","iron door","metal door","barred metal door","dark wooden door","light wooden door"] and not flags & 0x10: return base.merged({"kind":"door"})
+ if n in ["magical door","secret door","wooden door","door","rattan door","gate","wooden gate","iron door","metal door","barred metal door","dark wooden door","light wooden door","marble door south","marble door east","green marble doorway","bar door","sliding door"]: return base.merged({"kind":"door"})
+ # Ship decks, holds, gang planks and boards are timber floors; cave steps stairs.
+ if n in ["deck","hold","gang plank","boards","platform","wooden ramp","dungeon ramp","multitile assets"] and height<=5: return base.merged({"kind":"floor","surface":"wood"})
+ if n=="cave steps": return base.merged({"kind":"stairs","rise":[0,-1]})
+ # Masonry trims, battlements, rails and supports.
+ if n in ["gold stone battlemen","marbletrim east","marbletrim corner","edging","short intricate wal","gold stone block"]: return base.merged({"kind":"trim","facadeFamily":"marble" if "marble" in n else "stone","asset":"Village/Wall_UnevenBrick_Straight.gltf"})
+ if n in ["rail east","rail south","sandstone rail","railing"]: return base.merged({"kind":"fence"})
+ if n in ["wood supports","pier"]: return base.merged({"kind":"post"})
+ if n in ["window shutter","wooded window","gothic window south","blue marble window"]: return base.merged({"kind":"window","asset":"Village/Wall_Plaster_Window_Wide_Flat.gltf"})
+ if n in ["dark blue marble","green marble","blue marble angle"]: return base.merged({"kind":"landing"})
+ # Ponds and waves are water surfaces.
+ if n in ["pond","wave","ripples"]: return base.merged({"kind":"water"})
+ if n=="grave" and height<=3: return base.merged({"kind":"decal","decal":"grave"})
  if "fence" in n or "banister" in n: return base.merged({"kind":"fence","asset":"Village/Prop_MetalFence_Simple.gltf" if "iron" in n or "metal" in n else "Village/Prop_WoodenFence_Single.gltf"})
  if "signpost" in n: return base.merged({"kind":"sign"})
  if "column" in n or "pillar" in n or "buttress" in n or n=="stone post": return base.merged({"kind":"pillar"})
@@ -219,6 +246,7 @@ static func _resolve(id: int,info: Dictionary) -> Dictionary:
  if n in ["cattails","bulrushes","reeds","wheat","flax"]: return base.merged({"kind":"reeds","asset":"Nature/Grass_Wispy_Tall.gltf"})
  if "grass" in n or n in ["weed","rushes"]: return base.merged({"kind":"grass","asset":"Nature/Grass_Common_Short.gltf"})
  if WATER_PLANT.search(n): return base.merged({"kind":"lilypad"})
+ if preload("res://Presentation/VineBuilder.gd").handles(n): return base.merged({"kind":"vine","builder":"vine"})
  if "vine" in n or "ivy" in n or "morning glor" in n: return base.merged({"kind":"vine","asset":"Village/Prop_Vine1.gltf"})
  if "bush" in n or "hedge" in n or "shrub" in n or "cactus" in n or n in ["vanillaplantmedium s","vanillaplantlarge so"]: return base.merged({"kind":"bush","asset":"Nature/Bush_Common.gltf"})
  if n in ["rock","rocks","boulder","stone","flowstone","rock formation"] or "boulder" in n: return base.merged({"kind":"rock","asset":"Nature/Rock_Medium_2.gltf" if height<8 else "Nature/Rock_Medium_1.gltf"})
