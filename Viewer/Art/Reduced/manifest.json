@@ -1,0 +1,159 @@
+{
+  "notice": "Reduced copies of CC0-1.0 Poly Haven models (https://polyhaven.com/license); originals pinned in Art/PolyHaven.",
+  "assets": [
+    {
+      "id": "potted_plant_02",
+      "source": "Art/PolyHaven/potted_plant_02/potted_plant_02_1k.gltf",
+      "sourceSha256": "c533dcce0d1aa4379eb7db04601a04983f8df2422b28578de922655a416e64a9",
+      "license": "CC0-1.0",
+      "page": "https://polyhaven.com/a/potted_plant_02",
+      "file": "potted_plant_02/potted_plant_02.glb",
+      "sha256": "4369596a16b4a48037ad4b48115ea7aa7105686778552a16b37da3c243ff0a33",
+      "sourceTriangles": 69806,
+      "triangles": 5999
+    },
+    {
+      "id": "cannon_01",
+      "source": "Art/PolyHaven/cannon_01/cannon_01_1k.gltf",
+      "sourceSha256": "d46d014e0fa1818c51222260fe6cab3bc34b7568b6bf19f196e14b24406168ee",
+      "license": "CC0-1.0",
+      "page": "https://polyhaven.com/a/cannon_01",
+      "file": "cannon_01/cannon_01.glb",
+      "sha256": "a21e130bad4101c439909fe4184584203959d7f14a15a5b332131119d7458257",
+      "sourceTriangles": 41444,
+      "triangles": 5991
+    },
+    {
+      "id": "wicker_basket_01",
+      "source": "Art/PolyHaven/wicker_basket_01/wicker_basket_01_1k.gltf",
+      "sourceSha256": "9ad86c33f00f46a18c9bc8bfc28c0036090ee819f7270d0028ec408512c04094",
+      "license": "CC0-1.0",
+      "page": "https://polyhaven.com/a/wicker_basket_01",
+      "file": "wicker_basket_01/wicker_basket_01.glb",
+      "sha256": "38fce31a60e560288c235819c5f7884cad6e61f39bb57b621966fc9cf84ab800",
+      "sourceTriangles": 22276,
+      "triangles": 3000
+    },
+    {
+      "id": "WoodenChair_01",
+      "source": "Art/PolyHaven/WoodenChair_01/WoodenChair_01_1k.gltf",
+      "sourceSha256": "d7139c63be77bb91ceb25cb38733008156bf93d2299a6ca4673ea3c49f5fdec6",
+      "license": "CC0-1.0",
+      "page": "https://polyhaven.com/a/WoodenChair_01",
+      "file": "WoodenChair_01/WoodenChair_01.glb",
+      "sha256": "f80b14b12dc9a4b29a4e3c9f2bed464c248a6dd96af88517ced2ec03ccfa6f0f",
+      "sourceTriangles": 19992,
+      "triangles": 3999
+    },
+    {
+      "id": "GothicBed_01",
+      "source": "Art/PolyHaven/GothicBed_01/GothicBed_01_1k.gltf",
+      "sourceSha256": "67df189dd3a645936827f3cc123fb9e97ca9d2201d1e4090762bf477cab82fc0",
+      "license": "CC0-1.0",
+      "page": "https://polyhaven.com/a/GothicBed_01",
+      "file": "GothicBed_01/GothicBed_01.glb",
+      "sha256": "88bf1fdd2d7e8a49edcaef7ee63d5c2bf30136556d4988af1861b9861fe3c6aa",
+      "sourceTriangles": 18745,
+      "triangles": 5000
+    },
+    {
+      "id": "wooden_bowl_01",
+      "source": "Art/PolyHaven/wooden_bowl_01/wooden_bowl_01_1k.gltf",
+      "sourceSha256": "7fe0d6aa4b58e1b9bfc704a8142f4f23f651640c5701b26037fbee3c01613c3b",
+      "license": "CC0-1.0",
+      "page": "https://polyhaven.com/a/wooden_bowl_01",
+      "file": "wooden_bowl_01/wooden_bowl_01.glb",
+      "sha256": "1c78511619aa05a6ce34f13ae50cf5b56766757e3a54f7613f6f955c93485759",
+      "sourceTriangles": 14122,
+      "triangles": 1500
+    },
+    {
+      "id": "vintage_grandfather_clock_01",
+      "source": "Art/PolyHaven/vintage_grandfather_clock_01/vintage_grandfather_clock_01_1k.gltf",
+      "sourceSha256": "5d3aa1d5daabe830aed603e448a8f14f3993ec8a1116e083c181420a4fe1573a",
+      "license": "CC0-1.0",
+      "page": "https://polyhaven.com/a/vintage_grandfather_clock_01",
+      "file": "vintage_grandfather_clock_01/vintage_grandfather_clock_01.glb",
+      "sha256": "eab596c7ddfd5ffbca791757036dddf01c1100e6825b85bff916029740a8ad92",
+      "sourceTriangles": 8582,
+      "triangles": 3999
+    },
+    {
+      "id": "wooden_stool_02",
+      "source": "Art/PolyHaven/wooden_stool_02/wooden_stool_02_1k.gltf",
+      "sourceSha256": "8bb8bc3e420db0f69cee3d2ee74eccad7cabd1110a864a7d945549684e6f32cf",
+      "license": "CC0-1.0",
+      "page": "https://polyhaven.com/a/wooden_stool_02",
+      "file": "wooden_stool_02/wooden_stool_02.glb",
+      "sha256": "8dce0360ca6c0b52e97327220956e7bdc5e6aa8ef280cdb39d4282be892ec574",
+      "sourceTriangles": 11146,
+      "triangles": 2000
+    },
+    {
+      "id": "wooden_stool_01",
+      "source": "Art/PolyHaven/wooden_stool_01/wooden_stool_01_1k.gltf",
+      "sourceSha256": "f28566454af27175839c10645a37a2a16b373e4be8aecddd0d8a3d704cfc0330",
+      "license": "CC0-1.0",
+      "page": "https://polyhaven.com/a/wooden_stool_01",
+      "file": "wooden_stool_01/wooden_stool_01.glb",
+      "sha256": "9bd550f745b19d595018c28d78e7cd05e87f175e3cd9816da32e81d261b00d41",
+      "sourceTriangles": 10946,
+      "triangles": 2000
+    },
+    {
+      "id": "wine_barrel_01",
+      "source": "Art/PolyHaven/wine_barrel_01/wine_barrel_01_1k.gltf",
+      "sourceSha256": "503d3339677217c3241a3cdbc1c803ed1eb82d1a48f51436d1545ec5745ae8d8",
+      "license": "CC0-1.0",
+      "page": "https://polyhaven.com/a/wine_barrel_01",
+      "file": "wine_barrel_01/wine_barrel_01.glb",
+      "sha256": "9657de033bca5337d054d40cd4bd281f5f8f4c7d221c846ff12df3a6a57dafa7",
+      "sourceTriangles": 10820,
+      "triangles": 2497
+    },
+    {
+      "id": "wooden_lantern_01",
+      "source": "Art/PolyHaven/wooden_lantern_01/wooden_lantern_01_1k.gltf",
+      "sourceSha256": "2380275a5c90bf3442c426f3363e826e6b1ceff12a7e65f83b03cc8fac70a099",
+      "license": "CC0-1.0",
+      "page": "https://polyhaven.com/a/wooden_lantern_01",
+      "file": "wooden_lantern_01/wooden_lantern_01.glb",
+      "sha256": "849de11b43034e571b0bc790e19460c25715d8793adc2f7a6363e2f64e9c2223",
+      "sourceTriangles": 8321,
+      "triangles": 2498
+    },
+    {
+      "id": "food_apple_01",
+      "source": "Art/PolyHaven/food_apple_01/food_apple_01_1k.gltf",
+      "sourceSha256": "6a7dc1cda1271c8b08e36e2b9fd44371b7149cca6262c71bc36d971cdac4325f",
+      "license": "CC0-1.0",
+      "page": "https://polyhaven.com/a/food_apple_01",
+      "file": "food_apple_01/food_apple_01.glb",
+      "sha256": "fcb7b3bc64f531deede4c44dfee493b66e2b407eaad3b9ed118350e97142f03f",
+      "sourceTriangles": 7012,
+      "triangles": 800
+    },
+    {
+      "id": "wooden_crate_01",
+      "source": "Art/PolyHaven/wooden_crate_01/wooden_crate_01_1k.gltf",
+      "sourceSha256": "fd9c6073acfc671e12b64666053f2805ae33aff5d3dbbcfe5c97c08c06644927",
+      "license": "CC0-1.0",
+      "page": "https://polyhaven.com/a/wooden_crate_01",
+      "file": "wooden_crate_01/wooden_crate_01.glb",
+      "sha256": "c1ea8166bcb63a7f9c509f281e754f069120042fc744dd282f101f97b43f43b2",
+      "sourceTriangles": 6576,
+      "triangles": 1999
+    },
+    {
+      "id": "potted_plant_04",
+      "source": "Art/PolyHaven/potted_plant_04/potted_plant_04_1k.gltf",
+      "sourceSha256": "b3a3bc3e97da75844999c4da07b7104b6c023f729a7c045979929b9504184339",
+      "license": "CC0-1.0",
+      "page": "https://polyhaven.com/a/potted_plant_04",
+      "file": "potted_plant_04/potted_plant_04.glb",
+      "sha256": "6191ca475bdacb7e4846ac2b4460f4fe533fb3a723f04edc783908c50eb21dec",
+      "sourceTriangles": 8929,
+      "triangles": 2499
+    }
+  ]
+}

@@ -212,7 +212,12 @@ func upsert(serial: int, item: Dictionary) -> void:
    elif rule.family == "chest":
     var metal := "Metal" in str(rule.get("type",""))
     size = Vector3(0.5,0.34,0.34) if metal else Vector3(0.82,0.56,0.5)
-    _chest(root,size,metal)
+    # Scanned/PBR chests (CC-BY, Art/Objaverse) when pinned; crafted otherwise.
+    var chest_model := "Objaverse/chest_old/chest_old.glb" if metal else "Objaverse/chest_medieval/chest_medieval.glb"
+    if ResourceLoader.exists("res://Art/"+chest_model):
+     var chest: Node3D = scene.reconstruction.fitted(chest_model,size,[0,180,0] if metal else [0,0,0])
+     root.add_child(chest)
+    else: _chest(root,size,metal)
    elif rule.family == "drawers":
     # Photoscanned carved commode (CC0 Poly Haven GothicCommode_01).
     size = Vector3(0.96,0.97,0.46)

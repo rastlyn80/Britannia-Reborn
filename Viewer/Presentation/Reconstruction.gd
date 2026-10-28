@@ -689,13 +689,13 @@ func _plan_eaves(world: Dictionary) -> void:
 
 # Wooden table runs: a photoscan-textured trestle table (Objaverse,
 # CC-BY) repeated along the run, each piece at most about 1.9 m long.
-func trestle_run(size: Vector2) -> Node3D:
+func trestle_run(size: Vector2, model := "Objaverse/table_wood_b/table_wood_b.glb", height := 0.8, piece_length := 1.9) -> Node3D:
 	var root := Node3D.new()
 	var length := maxf(size.x,size.y)
 	var depth := minf(size.x,size.y)*0.9
-	var count := maxi(1,roundi(length/1.9))
+	var count := maxi(1,roundi(length/piece_length))
 	for i in count:
-		var piece: Node3D = fitted("Objaverse/table_wood_b/table_wood_b.glb",Vector3(length/count*0.96,0.8,depth))
+		var piece: Node3D = fitted(model,Vector3(length/count*0.96,height,depth))
 		piece.position.x = -length/2+length/count*(i+0.5)
 		root.add_child(piece)
 	if size.y > size.x: root.rotation.y = PI/2
@@ -919,6 +919,11 @@ func _collect_bounds(node: Node3D, transform: Transform3D, boxes: Array) -> void
 
 func fitted(path: String, size: Vector3, orientation: Array = [0,0,0]) -> Node3D:
 	var full := "res://Art/"+path if path.begins_with("Kenney/") or path.begins_with("PolyHaven/") or path.begins_with("MedievalKit/") or path.begins_with("Objaverse/") else "res://Art/Quaternius/"+path
+	# Heavy Poly Haven scans placed hundreds of times use their game-budget copy
+	# (scripts/reduce-polyhaven.py); the pinned original stays untouched.
+	if path.begins_with("PolyHaven/"):
+		var asset_id := path.get_slice("/",1)
+		if ResourceLoader.exists("res://Art/Reduced/%s/%s.glb" % [asset_id,asset_id]): full = "res://Art/Reduced/%s/%s.glb" % [asset_id,asset_id]
 	if not scenes.has(path):
 		scenes[path] = load(full)
 		assert(scenes[path] != null,"Missing catalogue asset: "+path)
@@ -1108,7 +1113,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 			visual = preload("res://Presentation/LocalLibrary.gd").run(furniture_slot,int(s.x),int(s.y),maxf(span.x,span.y),0.8 if kind == "table" else 0.48,minf(span.x,span.y)*(0.9 if kind == "table" else 0.5))
 			if visual and not long_x: visual.rotation.y = PI/2
 		# Photoscanned CC0 replacements by item name (prop-replacements.json).
-		if visual == null and kind in ["prop","asset"] and not groups.has(ordinal): visual = preload("res://Presentation/PropReplacements.gd").build(self,str(detail.get("name","")))
+		if visual == null and kind in ["prop","asset","rock","log"] and not groups.has(ordinal): visual = preload("res://Presentation/PropReplacements.gd").build(self,str(detail.get("name","")))
 		# Counters follow their real footprint (L and U shapes) cell by cell.
 		if visual == null and kind == "counter" and tint.is_empty(): visual = counter_run(s,groups.get(ordinal,{"indices":[ordinal],"min_z":float(s.z)}),world)
 		if visual == null and (preload("res://Presentation/ReviewedCatalog.gd").scanned(int(s.id)) or not (modern and rule.has("slot") and preload("res://Presentation/LocalLibrary.gd").has(str(rule.slot)))):
@@ -1281,9 +1286,12 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					if kind == "bench":
 						if size.y > size.x: size.x = 0.5
 						else: size.y = 0.5
+					var bench_name := str(detail.get("name","")).to_lower()
 					var table_name := str(detail.get("name","")).to_lower()
 					if kind == "table" and not ("stone" in table_name or "marble" in table_name or "sandstone" in table_name) and ResourceLoader.exists("res://Art/Objaverse/table_wood_b/table_wood_b.glb"):
 						visual = trestle_run(size)
+					elif kind == "bench" and not ("stone" in bench_name or "marble" in bench_name) and ResourceLoader.exists("res://Art/Objaverse/bench_scan/bench_scan.glb"):
+						visual = trestle_run(size,"Objaverse/bench_scan/bench_scan.glb",0.47,1.1)
 					else: visual = geometry.furniture(size,kind)
 					# Stone and marble tables keep their material, not timber.
 					var table_surface := preload("res://Presentation/Facade.gd").surface_for(str(detail.get("name","")))

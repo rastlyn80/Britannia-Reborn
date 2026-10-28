@@ -724,7 +724,7 @@
     },
     "3650": {
       "kind": "prop",
-      "asset": "Props/Chest_Wood.gltf",
+      "asset": "Objaverse/chest_medieval/chest_medieval.glb",
       "dimensions": [
         0.85,
         0.54,
@@ -740,12 +740,12 @@
       "notes": "",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "materialPolicy": "scan/PBR textures (CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "provenance": "Art/Objaverse/manifest.json"
     },
     "3651": {
       "kind": "prop",
-      "asset": "Props/Chest_Wood.gltf",
+      "asset": "Objaverse/chest_medieval/chest_medieval.glb",
       "dimensions": [
         0.85,
         0.54,
@@ -761,8 +761,8 @@
       "notes": "",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "materialPolicy": "scan/PBR textures (CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "provenance": "Art/Objaverse/manifest.json"
     },
     "3644": {
       "kind": "prop",
@@ -892,7 +892,7 @@
     },
     "2459": {
       "kind": "prop",
-      "asset": "Props/Bottle_1.gltf",
+      "asset": "Objaverse/carafe/carafe.glb",
       "dimensions": [
         0.12,
         0.33,
@@ -908,12 +908,12 @@
       "notes": "",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "materialPolicy": "scan/PBR textures (CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "provenance": "Art/Objaverse/manifest.json"
     },
     "2503": {
       "kind": "prop",
-      "asset": "Props/Bottle_1.gltf",
+      "asset": "Objaverse/bottle_wine/bottle_wine.glb",
       "dimensions": [
         0.12,
         0.33,
@@ -929,8 +929,8 @@
       "notes": "Publisher vertex colours enabled; original runtime green body palette preserves brown cork.",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json",
+      "materialPolicy": "scan/PBR textures (CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "provenance": "Art/Objaverse/manifest.json",
       "palette": "green-glass-body"
     },
     "2500": {
@@ -957,7 +957,7 @@
     },
     "2463": {
       "kind": "prop",
-      "asset": "Props/Bottle_1.gltf",
+      "asset": "Objaverse/bottle_wine/bottle_wine.glb",
       "dimensions": [
         0.12,
         0.33,
@@ -973,8 +973,8 @@
       "notes": "",
       "collision": "source-authoritative; matching local camera/picking bounds",
       "lod": "shared geometry instanced inside bounded near districts",
-      "materialPolicy": "publisher shared PBR textures; native physical dimensions",
-      "provenance": "Art/Quaternius/Props/manifest.json"
+      "materialPolicy": "scan/PBR textures (CC-BY, see Art/Objaverse/NOTICE.md), reduced to a game budget",
+      "provenance": "Art/Objaverse/manifest.json"
     },
     "4095": {
       "kind": "prop",

@@ -90,8 +90,8 @@
    "height": 1.6
   },
   "hay": {
-   "model": "Objaverse/hay_scan",
-   "height": 0.45
+   "model": "Objaverse/hay_pile",
+   "length": 0.9
   },
   "training dummy": {
    "model": "Objaverse/dummy_combat",
@@ -200,6 +200,62 @@
   "kindling": {
    "model": "Objaverse/firewood",
    "length": 0.9
+  },
+  "fallen log": {
+   "model": "Objaverse/log_mossy",
+   "length": 1.2
+  },
+  "rock": {
+   "model": "Objaverse/rock_gray",
+   "height": 0.55
+  },
+  "book": {
+   "model": "Objaverse/book_leather",
+   "length": 0.3
+  },
+  "pen and ink": {
+   "model": "Objaverse/inkwell",
+   "height": 0.12
+  },
+  "small fish": {
+   "model": "Objaverse/fish",
+   "length": 0.35
+  },
+  "fish": {
+   "model": "Objaverse/fish",
+   "length": 0.4
+  },
+  "sack of flour": {
+   "model": "Objaverse/flour_bag",
+   "length": 0.6
+  },
+  "open sack of flour": {
+   "model": "Objaverse/flour_bag",
+   "length": 0.6
+  },
+  "bedroll": {
+   "model": "Objaverse/bedroll",
+   "length": 1.9
+  },
+  "cards": {
+   "model": "Objaverse/cards",
+   "length": 0.25
+  },
+  "bottles of wine": {
+   "model": "Objaverse/bottles_glass",
+   "length": 0.5
+  },
+  "bottles of liquor": {
+   "model": "Objaverse/bottles_glass",
+   "length": 0.5
+  },
+  "bottles of ale": {
+   "model": "Objaverse/bottles_glass",
+   "length": 0.5
+  },
+  "bottles": {
+   "model": "Objaverse/bottles_glass",
+   "length": 0.5
   }
  }
 }

@@ -57,26 +57,16 @@ func _initialize() -> void:
  var boxes: Array=[];recon._collect_bounds(book,Transform3D.IDENTITY,boxes)
  check(boxes[0].size.y<.071,"Standing publisher book is oriented flat before bound normalization")
  book.free()
- var bottle: Node3D=Reviews.build(recon,2503)
- var colored:=false
- var cork:=false
- var vertex_material:=false
- for mesh in bottle.find_children("*","MeshInstance3D",true,false):
-  for surface in mesh.mesh.get_surface_count():
-   vertex_material=vertex_material or mesh.get_active_material(surface).vertex_color_use_as_albedo
-   for color in mesh.mesh.surface_get_arrays(surface)[Mesh.ARRAY_COLOR]:
-    colored=colored or color.g>color.r*2
-    cork=cork or color.r>color.g
- check(vertex_material,"Publisher vertex colours are enabled instead of rendering every prop as pale ceramic")
- check(colored and cork,"Reviewed wine pigment preserves a green body and a separate brown cork")
- bottle.free()
- var ale: Node3D=Reviews.build(recon,2459)
- var green:=false
- for mesh in ale.find_children("*","MeshInstance3D",true,false):
-  for surface in mesh.mesh.get_surface_count():
-   for color in mesh.mesh.surface_get_arrays(surface)[Mesh.ARRAY_COLOR]:green=green or color.g>color.r*2
- check(not green,"Wine palette customization cannot mutate the shared downloaded ale mesh")
- ale.free()
+ # Bottles are photoscans now (wine 2503, carafe 2459): textured PBR, not pale untextured ceramic.
+ for bottle_id in [2503,2459]:
+  var bottle: Node3D=Reviews.build(recon,bottle_id)
+  var textured:=false
+  for mesh in bottle.find_children("*","MeshInstance3D",true,false):
+   for surface in mesh.mesh.get_surface_count():
+    var material=mesh.get_active_material(surface)
+    textured=textured or (material is BaseMaterial3D and material.albedo_texture!=null)
+  check(textured,"Reviewed bottle %d renders its scanned albedo texture" % bottle_id)
+  bottle.free()
  check(Reviews.dimensions(Reviews.entry(2931),{"size":Vector2(2,5)}).is_equal_approx(Vector3(5,.82,2)),"Multi-piece table retains its complete native footprint and reviewed top height")
  # Bridge context: stone pier towers/parapets, never plaster house walls.
  var names:={"1994":{"name":"wooden bridge","height":1,"flags":0x200},"1872":{"name":"stone","height":10,"flags":0x600},"94":{"name":"window","height":20,"flags":0x1050},"99":{"name":"stone wall","height":5,"flags":0x50},"310":{"name":"plaster wall","height":20,"flags":0x50},"6039":{"name":"water","height":0,"flags":0x80},"87":{"name":"stone wall","height":20,"flags":0x50},"2567":{"name":"wall torch","height":15,"flags":0x4}}

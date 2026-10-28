@@ -6,7 +6,7 @@ var directory:="res://../outputs/britain"
 func _initialize()->void:call_deferred("run")
 static func fingerprint(folder:String)->String:
  var text:=FileAccess.get_sha256(folder.path_join("atlas.json"))+str(Engine.get_version_info().string)
- for asset in ["Quaternius","Kenney","Surfaces","PolyHaven","Objaverse"]:text+=FileAccess.get_sha256("res://Art/"+asset+"/manifest.json")
+ for asset in ["Quaternius","Kenney","Surfaces","PolyHaven","Objaverse","Reduced"]:text+=FileAccess.get_sha256("res://Art/"+asset+"/manifest.json")
  for name in FILES:text+=FileAccess.get_sha256("res://Presentation/"+name)
  return text.sha256_text()
 func append(node:Node3D,parent_transform:Transform3D,source:Dictionary)->void:

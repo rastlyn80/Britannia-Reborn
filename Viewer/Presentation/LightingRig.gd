@@ -116,14 +116,7 @@ func configure(scene: Node3D,world: Dictionary,reconstruction,map_view: bool, de
  environment.fog_density = 0.55
  environment.fog_aerial_perspective = 0.6
  environment.fog_sky_affect = 0.2
- # Gentle far depth-of-field: distant detail blurs like a camera lens.
- if not map_view:
-  var lens := CameraAttributesPractical.new()
-  lens.dof_blur_far_enabled = true
-  lens.dof_blur_far_distance = 160.0
-  lens.dof_blur_far_transition = 260.0
-  lens.dof_blur_amount = 0.05
-  node.camera_attributes = lens
+ # No depth-of-field: the far blur read as a blurry screen and cost frame time.
  # SDFGI/volumetric fog were measured on the StreamingProfile route and made
  # this streamed city GPU-bound (median ~30 ms on an RTX 2070 SUPER); disabled.
  add_child(node)

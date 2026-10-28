@@ -64,7 +64,11 @@ def main():
             print('already pinned', name)
             continue
         uid = os.path.splitext(os.path.basename(path))[0]
-        info = json.loads(fetch('https://api.sketchfab.com/v3/models/' + uid))
+        try:
+            info = json.loads(fetch('https://api.sketchfab.com/v3/models/' + uid))
+        except Exception as error:  # removed or private on Sketchfab: licence unverifiable
+            print('skip', name, 'licence lookup failed:', error)
+            continue
         licence = (info.get('license') or {}).get('slug', '')
         if licence not in ACCEPTED:
             print('skip', name, 'licence', licence)
