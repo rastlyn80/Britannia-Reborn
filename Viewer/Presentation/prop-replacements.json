@@ -3720,6 +3720,136 @@
     "metallic": 0.9,
     "roughness": 0.35
    }
+  },
+  "spittoon": {
+   "model": "brass_pot_01",
+   "height": 0.2
+  },
+  "wash basin": {
+   "model": "wooden_bowl_01",
+   "length": 0.5,
+   "material": {
+    "color": "9a9a98",
+    "metallic": 0.6,
+    "roughness": 0.4
+   }
+  },
+  "muffins": {
+   "model": "Objaverse/bread_loaf",
+   "length": 0.08,
+   "cluster": 3
+  },
+  "sextant": {
+   "model": "Objaverse/sextant",
+   "length": 0.25
+  },
+  "fish heads": {
+   "model": "Objaverse/fish",
+   "length": 0.15,
+   "cluster": 3
+  },
+  "raw fish steak": {
+   "model": "Objaverse/meat_raw",
+   "length": 0.18,
+   "material": {
+    "color": "e08070",
+    "metallic": 0.0,
+    "roughness": 0.5
+   }
+  },
+  "fish steak": {
+   "model": "Objaverse/meat_raw",
+   "length": 0.18,
+   "material": {
+    "color": "c8905a",
+    "metallic": 0.0,
+    "roughness": 0.6
+   }
+  },
+  "skinned goat": {
+   "model": "Objaverse/carcass_pig",
+   "length": 0.9,
+   "pitch": 90,
+   "material": {
+    "color": "8a2a20",
+    "metallic": 0.0,
+    "roughness": 0.5
+   }
+  },
+  "skinned deer": {
+   "model": "Objaverse/carcass_pig",
+   "length": 1.1,
+   "pitch": 90,
+   "material": {
+    "color": "8a2a20",
+    "metallic": 0.0,
+    "roughness": 0.5
+   }
+  },
+  "curtain sash": {
+   "model": "Objaverse/curtains_red",
+   "height": 1.0,
+   "anchor": "back"
+  },
+  "nox crystal": {
+   "model": "Objaverse/crystal_green",
+   "length": 0.06
+  },
+  "ringmail armor": {
+   "model": "Objaverse/armor_hauberk",
+   "length": 0.7,
+   "lay": true
+  },
+  "ship model": {
+   "model": "Objaverse/rowboat_old",
+   "length": 0.5
+  },
+  "worldgem bit": {
+   "model": "Objaverse/gem_diamond",
+   "length": 0.04,
+   "material": {
+    "color": "4a80d8",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "belt pouch": {
+   "model": "Objaverse/pouch_leather",
+   "height": 0.15
+  },
+  "haramaki-do": {
+   "model": "Objaverse/armor_plate",
+   "length": 0.6,
+   "lay": true,
+   "material": {
+    "color": "8a2a20",
+    "metallic": 0.3,
+    "roughness": 0.4
+   }
+  },
+  "armor_platetunic_sou": {
+   "model": "Objaverse/armor_plate",
+   "length": 0.6,
+   "lay": true,
+   "material": {
+    "color": "8f949b",
+    "metallic": 1.0,
+    "roughness": 0.32
+   }
+  },
+  "painting_virtue_scal": {
+   "model": "fancy_picture_frame_01",
+   "height": 0.7,
+   "anchor": "back",
+   "rotation": 180,
+   "elevation": 1.3
+  },
+  "elven wall map": {
+   "model": "fancy_picture_frame_01",
+   "height": 0.7,
+   "anchor": "back",
+   "rotation": 180,
+   "elevation": 1.3
   }
  }
 }

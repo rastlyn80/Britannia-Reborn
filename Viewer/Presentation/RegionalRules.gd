@@ -145,7 +145,7 @@ static func _resolve(id: int,info: Dictionary) -> Dictionary:
   if id in [16106,16108]: return base.merged({"kind":"wall","facadeFamily":"wood","asset":"Village/Wall_Plaster_Straight.gltf"})
   if id in [16136,16137,16138,16141,16145,16151,16152]: return base.merged({"kind":"carpet"})
   # Placeholder "UNUSED" sprites: the native client shows nothing meaningful.
-  if id==0 or (id>=8858 and id<=8875): return base.merged({"kind":"invisible","reason":"placeholder UNUSED art"})
+  if id==0 or id in [5401,4116] or (id>=8858 and id<=8875): return base.merged({"kind":"invisible","reason":"placeholder UNUSED art"})
   # Other unnamed pieces with a photoscan replacement (prop-replacements.json "" ids).
   if preload("res://Presentation/PropReplacements.gd").has("",id): return base.merged({"kind":"prop","model":"replacement"})
   if id in [13833,13882,13883]: return base.merged({"kind":"wall","facadeFamily":"dungeon","asset":"Village/Wall_UnevenBrick_Straight.gltf"})
@@ -186,7 +186,7 @@ static func _resolve(id: int,info: Dictionary) -> Dictionary:
  if "wall map" in n: return base.merged({"kind":"prop","model":"painting","mount":"wall"})
  # Banners hang flat on the wall beside them (a free-standing one keeps its cell).
  if n in ["banner","tattered banner","tapestry"]: return base.merged({"kind":"prop","model":"fabric","mount":"wall"})
- if n in ["decorative shield","decorative shields","trophy","painting","portrait","wall sconce","lever","clock","dartboard","dartboard w/knives","switch","tribal mask"]: return base.merged({"kind":"prop","model":"replacement","mount":"wall"})
+ if n in ["decorative shield","decorative shields","trophy","painting","portrait","painting_virtue_scal","elven wall map","curtain sash","wall sconce","lever","clock","dartboard","dartboard w/knives","switch","tribal mask"]: return base.merged({"kind":"prop","model":"replacement","mount":"wall"})
  if "wall" in n or n in ["window","arrow loop","battlement"]:
   return base.merged({"kind":"window" if n in ["window","arrow loop"] else ("trim" if height<15 else "wall"),"asset":"Village/Wall_UnevenBrick_Straight.gltf" if "stone" in n or "brick" in n else "Village/Wall_Plaster_Straight.gltf"})
  if "arch" in n and n not in ["arcanist statue"]: return base.merged({"kind":"arch","asset":"Village/Wall_Arch.gltf"})

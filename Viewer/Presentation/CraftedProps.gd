@@ -17,6 +17,11 @@ const NAMES := {
 	"arrow":"arrow","arrows":"arrows","peg board":"pegboard","spool of thread":"spool","forged metal":"bar","shaft%s":"shaft","board%s":"board",
 	"shirt":"garment:shirt:d8d0bc","fancy shirt":"garment:shirt:e8e0f0","ninja shirt":"garment:shirt:2a2a2e","long pants":"garment:pants:5a4a38","ninja pants":"garment:pants:2a2a2e","skirt":"garment:skirt:6a3a3a","cloak":"garment:cloak:3a3a48","gargish robe":"garment:cloak:2c4a50","kimono":"garment:robe:8a2a30","bandana":"garment:cloth:8a2020",
 	"necklace":"jewel:e2b04a:0.09","silver necklace":"jewel:c9ccd2:0.09","beads":"jewel:8a3a2a:0.07","bracelet":"jewel:e2b04a:0.04","earrings":"earrings","gold belt":"jewel:e2b04a:0.2",
+	"wood curls":"curls","cocoon":"eggcase","gruesome standard":"standard","broken furniture":"brokenshelf","standing harp":"harp:1.5","lap harp":"harp:0.6",
+	"wall cracks":"cracks","cake":"cake","pilllow":"pillow","dried herbs":"herbs","bloody bandage":"bandage:b02020",
+	"sewing kit":"sewing","paints and brush":"palette","baked pie":"pie:b8783a","unbaked pie":"pie:e8d0a0","full vials":"vials:1","empty vials":"vials:0","flask stand":"vials:0",
+	"decorative armor":"armorstand","dough":"dough","horse shoes":"horseshoes","tambourine":"tambourine","blood moss":"reagent:8a1a14","sulfurous ash":"reagent:d8c030","spider's silk":"reagent:f0f0f0",
+	"sextant parts":"brassparts","carrot":"carrot","dyes":"dyes","knitting":"knitting","bowl of lettuce":"bowl:5a9a3a","bowl of carrots":"bowl:d06a20","rudder":"rudder","bolas":"bolas","feather":"feather","feather%s":"feather","eye of newt":"reagent:a02020","sign":"plank",
 	"glass":"glassmug","dice and cup":"dice","eggs":"eggs","egg case":"eggcase","lockpick":"picks:1","lockpicks":"picks:3","spike trap":"spikes","hatch":"hatch","rope ladder":"ropeladder","brush":"brush","coconut":"coconut","full apron":"garment:apron:9a968a","half apron":"garment:apron:9a968a",
 }
 static var materials := {}
@@ -65,6 +70,31 @@ static func _torus(p: Node3D, inner: float, outer: float, at: Vector3, m: Materi
 
 static func _sphere(p: Node3D, r: float, at: Vector3, m: Material) -> MeshInstance3D:
 	var mi := MeshInstance3D.new(); var s := SphereMesh.new(); s.radius = r; s.height = r*2; mi.mesh = s; mi.material_override = m; mi.position = at; p.add_child(mi); return mi
+
+static func _model(p: Node3D, path: String, size: float, at := Vector3.ZERO, rot := Vector3.ZERO, tint: Variant = null) -> Node3D:
+	if not ResourceLoader.exists(path): return null
+	var n: Node3D = (load(path) as PackedScene).instantiate()
+	var box := AABB()
+	var first := true
+	for mi in n.find_children("*","MeshInstance3D",true,false):
+		var b: AABB = (mi as MeshInstance3D).get_aabb()
+		box = b if first else box.merge(b)
+		first = false
+	var k := size/maxf(maxf(box.size.x,box.size.y),maxf(box.size.z,0.001))
+	var holder := Node3D.new()
+	holder.add_child(n)
+	n.scale = Vector3.ONE*k
+	n.position = -Vector3(box.get_center().x,box.position.y,box.get_center().z)*k
+	holder.position = at
+	holder.rotation = rot
+	if tint != null:
+		var m := StandardMaterial3D.new()
+		m.albedo_color = tint
+		m.metallic = 0.9
+		m.roughness = 0.35
+		for mi in n.find_children("*","MeshInstance3D",true,false): (mi as MeshInstance3D).material_override = m
+	p.add_child(holder)
+	return holder
 
 static func build(name: String, seed := 0) -> Node3D:
 	var kind: String = NAMES.get(_key(name),"")
@@ -253,6 +283,112 @@ static func build(name: String, seed := 0) -> Node3D:
 			_box(root,Vector3(0.15,0.025,0.055),Vector3(0,0.012,0),_cloth("3a2a1a"))
 		"coconut":
 			_sphere(root,0.07,Vector3(0,0.07,0),_mat("brown_mud_dry",Color("6a4a30"),0.0,0.9,6.0))
+		"curls":
+			for i in 8: _torus(root,0.012,0.018,Vector3(rnd.randf_range(-0.2,0.2),0.012,rnd.randf_range(-0.2,0.2)),_mat("medieval_wood",Color("e0b880"),0.0,0.8,8.0),Vector3(rnd.randf()*PI,rnd.randf()*PI,0))
+		"standard":
+			_cyl(root,0.025,1.9,Vector3(0,0.95,0),_wood(),Vector3.ZERO,-1,8)
+			_model(root,"res://Art/Objaverse/deer_skull/deer_skull.glb",0.35,Vector3(0,1.9,0))
+			_box(root,Vector3(0.3,0.5,0.01),Vector3(0.17,1.5,0),_cloth("6a2a20"))
+		"brokenshelf":
+			_box(root,Vector3(0.04,1.4,0.35),Vector3(-0.4,0.7,0),_wood())
+			_box(root,Vector3(0.04,0.9,0.35),Vector3(0.4,0.45,0),_wood(),Vector3(0,0,0.15))
+			for i in 3: _box(root,Vector3(0.8,0.03,0.33),Vector3(0,0.3+i*0.4,0),_wood(),Vector3(0,0,(i-1)*0.12))
+		"harp":
+			var hh := float(kind.get_slice(":",1))
+			_box(root,Vector3(0.05,hh,0.05),Vector3(-hh*0.25,hh*0.5,0),_wood())
+			_box(root,Vector3(hh*0.55,0.05,0.05),Vector3(0,hh*0.95,0),_wood(),Vector3(0,0,-0.2))
+			_box(root,Vector3(0.05,hh*0.9,0.06),Vector3(hh*0.22,hh*0.5,0),_wood(),Vector3(0,0,0.25))
+			for i in 8: _cyl(root,0.002,hh*(0.85-i*0.07),Vector3(-hh*0.2+i*hh*0.05,hh*0.5,0),_mat("rusty_metal_02",Color("e2c070"),1.0,0.3,8.0),Vector3.ZERO,-1,4)
+		"cracks":
+			var crack := StandardMaterial3D.new()
+			crack.albedo_color = Color(0.08,0.07,0.06)
+			var cy := 0.4
+			for i in 6:
+				_box(root,Vector3(0.015,0.25,0.01),Vector3(rnd.randf_range(-0.15,0.15),cy,-0.49),crack,Vector3(0,0,rnd.randf_range(-0.6,0.6)))
+				cy += 0.2
+		"coveredchair":
+			_model(root,"res://Art/Objaverse/chair_old/chair_old.glb",1.0)
+			var drape := StandardMaterial3D.new()
+			drape.albedo_color = Color("ece8e0")
+			drape.roughness = 0.95
+			var sheet := _sphere(root,0.42,Vector3(0,0.55,0),drape)
+			sheet.scale = Vector3(0.8,1.3,0.8)
+		"cake":
+			_cyl(root,0.14,0.12,Vector3(0,0.06,0),_mat("white_plaster_02",Color("f4e8c8"),0.0,0.6,6.0))
+			for i in 6: _sphere(root,0.015,Vector3(cos(i)*0.1,0.125,sin(i)*0.1),_mat("white_plaster_02",Color("c02030"),0.0,0.3,6.0))
+		"pillow":
+			var pl := _sphere(root,0.25,Vector3(0,0.06,0),_cloth("d8d4cc"))
+			pl.scale = Vector3(1.0,0.25,1.0)
+		"herbs":
+			for i in 5: _cyl(root,0.004,0.25,Vector3(rnd.randf_range(-0.02,0.02),0.12,rnd.randf_range(-0.02,0.02)),_mat("leafy_grass",Color("8a9a4a"),0.0,0.9,8.0),Vector3(rnd.randf_range(-0.3,0.3),0,rnd.randf_range(-0.3,0.3)),0.012,4)
+			_torus(root,0.012,0.018,Vector3(0,0.2,0),_cloth("b89a68"))
+		"bandage":
+			for i in 3: _cyl(root,0.025,0.05,Vector3(i*0.06-0.06,0.025,0),_cloth("f2efe6"),Vector3(0,0,PI/2))
+			_box(root,Vector3(0.12,0.002,0.04),Vector3(0,0.051,0),_mat("brown_mud_dry",Color(kind.get_slice(":",1)),0.0,0.3,6.0))
+		"sewing":
+			_cyl(root,0.1,0.06,Vector3(0,0.03,0),_mat("hessian_230",Color("c8a878"),0.0,0.9,6.0))
+			for i in 3: _cyl(root,0.015,0.035,Vector3(i*0.035-0.035,0.075,0),_cloth(["b02020","2040a0","e0d0a0"][i]))
+		"palette":
+			var pal := _cyl(root,0.14,0.008,Vector3(0,0.004,0),_wood())
+			pal.scale = Vector3(1.0,1.0,0.75)
+			for i in 5: _sphere(root,0.012,Vector3(cos(i*1.2)*0.08,0.01,sin(i*1.2)*0.06),_mat("white_plaster_02",Color(["c02020","2050c0","e0c020","30a040","f0f0f0"][i]),0.0,0.3,6.0))
+			_cyl(root,0.004,0.22,Vector3(0.1,0.012,0.05),_wood(),Vector3(0,0.5,PI/2),-1,6)
+		"pie":
+			_cyl(root,0.12,0.045,Vector3(0,0.0225,0),_mat("brown_mud_dry",Color(kind.get_slice(":",1)),0.0,0.8,8.0),Vector3.ZERO,0.105)
+		"vials":
+			_box(root,Vector3(0.3,0.04,0.08),Vector3(0,0.02,0),_wood())
+			var vg := StandardMaterial3D.new()
+			vg.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			vg.roughness = 0.05
+			vg.albedo_color = Color(0.4,0.6,1.0,0.6) if kind.get_slice(":",1) == "1" else Color(0.85,0.9,0.95,0.3)
+			for i in 4: _cyl(root,0.012,0.16,Vector3(i*0.07-0.105,0.1,0),vg,Vector3.ZERO,-1,8)
+		"armorstand":
+			_cyl(root,0.03,1.6,Vector3(0,0.8,0),_wood(),Vector3.ZERO,-1,8)
+			_box(root,Vector3(0.45,0.05,0.45),Vector3(0,0.025,0),_wood())
+			_model(root,"res://Art/Objaverse/armor_plate/armor_plate.glb",0.6,Vector3(0,0.95,0),Vector3.ZERO,Color("9a9ea6"))
+			_model(root,"res://Art/Objaverse/armor_helm/armor_helm.glb",0.32,Vector3(0,1.55,0),Vector3.ZERO,Color("9a9ea6"))
+		"dough":
+			var dg := _sphere(root,0.1,Vector3(0,0.04,0),_mat("white_plaster_02",Color("f0e4c8"),0.0,0.7,6.0))
+			dg.scale = Vector3(1.0,0.45,0.85)
+		"horseshoes":
+			for i in 3: _torus(root,0.035,0.05,Vector3(i*0.07-0.07,0.008,rnd.randf_range(-0.03,0.03)),_iron())
+		"tambourine":
+			_torus(root,0.1,0.12,Vector3(0,0.02,0),_wood())
+			_cyl(root,0.1,0.004,Vector3(0,0.035,0),_mat("white_plaster_02",Color("e8dcc0"),0.0,0.7,6.0))
+			for i in 5: _cyl(root,0.012,0.005,Vector3(cos(i*1.25)*0.11,0.02,sin(i*1.25)*0.11),_mat("rusty_metal_02",Color("e2c070"),1.0,0.3,8.0))
+		"reagent":
+			var rm := _mat("brown_mud_dry",Color(kind.get_slice(":",1)),0.0,0.8,8.0)
+			for i in 3: _cyl(root,0.0,0.04,Vector3(rnd.randf_range(-0.04,0.04),0.02,rnd.randf_range(-0.04,0.04)),rm,Vector3.ZERO,0.04,10)
+		"brassparts":
+			var br := _mat("rusty_metal_02",Color("d0a040"),1.0,0.3,8.0)
+			_torus(root,0.06,0.07,Vector3(0,0.005,0),br)
+			_box(root,Vector3(0.12,0.006,0.012),Vector3(0.05,0.006,0.04),br,Vector3(0,0.5,0))
+		"carrot":
+			_cyl(root,0.02,0.16,Vector3(0,0.02,0),_mat("brown_mud_dry",Color("e07020"),0.0,0.6,8.0),Vector3(0,0,PI/2),0.002,8)
+			_cyl(root,0.012,0.08,Vector3(-0.1,0.02,0),_mat("leafy_grass",Color("4a8a2a"),0.0,0.8,8.0),Vector3(0,0,PI/2),0.0,6)
+		"dyes":
+			for i in 3:
+				_cyl(root,0.05,0.09,Vector3(i*0.11-0.11,0.045,0),_mat("brown_mud_dry",Color("8a6a4a"),0.0,0.8,6.0))
+				_cyl(root,0.045,0.005,Vector3(i*0.11-0.11,0.09,0),_mat("white_plaster_02",Color(["3040a0","a02020","d8b030"][i]),0.0,0.4,6.0))
+		"knitting":
+			_sphere(root,0.06,Vector3(0,0.06,0),_cloth("d8d4cc"))
+			for x in [-0.03,0.03]: _cyl(root,0.003,0.25,Vector3(x,0.08,0),_wood(),Vector3(0.6,0,0.4),-1,6)
+		"bowl":
+			_cyl(root,0.12,0.07,Vector3(0,0.035,0),_wood(),Vector3.ZERO,0.08)
+			for i in 6: _sphere(root,0.03,Vector3(rnd.randf_range(-0.06,0.06),0.075,rnd.randf_range(-0.06,0.06)),_mat("leafy_grass",Color(kind.get_slice(":",1)),0.0,0.7,8.0))
+		"rudder":
+			_box(root,Vector3(0.08,1.6,0.06),Vector3(0,0.03,0),_wood(),Vector3(PI/2,0,0))
+			_box(root,Vector3(0.45,0.05,0.8),Vector3(0.2,0.03,0.4),_wood())
+		"bolas":
+			for i in 3:
+				var ba := TAU*i/3.0
+				_sphere(root,0.035,Vector3(cos(ba)*0.25,0.035,sin(ba)*0.25),_stone())
+				_cyl(root,0.004,0.25,Vector3(cos(ba)*0.125,0.01,sin(ba)*0.125),_cloth("8a6a40"),Vector3(0,-ba,PI/2),-1,4)
+		"feather":
+			var fe := _sphere(root,0.05,Vector3(0,0.005,0),_cloth("f2efe6"))
+			fe.scale = Vector3(2.4,0.06,0.5)
+		"plank":
+			_box(root,Vector3(0.7,0.4,0.04),Vector3(0,1.3,-0.46),_wood())
 		"bar":
 			_box(root,Vector3(0.3,0.03,0.05),Vector3(0,0.015,0),_iron())
 	for mi in root.find_children("*","MeshInstance3D",true,false): (mi as MeshInstance3D).cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON

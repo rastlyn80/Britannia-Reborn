@@ -186,7 +186,8 @@ func index(world: Dictionary) -> void:
 		var rule:=rule_for(source.id)
 		if rule.get("kind","")!="prop" or rule.get("model","") not in ["cannon","fountain","display_case","training","music","hearth"]:continue
 		# Photoscan footprint assemblies (fountains, fireplaces) draw the whole object themselves.
-		if str(preload("res://Presentation/PropReplacements.gd").entry_for(str(info(world,int(source.id),true).get("name","")),int(source.id)).get("assembly","")) == "footprint":continue
+		# Names with a photoscan or crafted look draw themselves (footprints assemble on their own).
+		if preload("res://Presentation/PropReplacements.gd").has(str(info(world,int(source.id),true).get("name","")),int(source.id)) or preload("res://Presentation/CraftedProps.gd").handles(str(info(world,int(source.id),true).get("name",""))):continue
 		var cell:=Vector2i(source.x,source.y)
 		if not prop_cells.has(cell):prop_cells[cell]=[]
 		prop_cells[cell].append(i)
