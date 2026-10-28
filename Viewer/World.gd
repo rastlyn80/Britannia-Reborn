@@ -388,6 +388,9 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	add_child(runner)
 	runner.configure(game)
 	runner.hovered = world_items.hovered_serial
+	var names := preload("res://Network/MobileNames.gd").new()
+	add_child(names)
+	names.configure(game)
 	var journal := preload("res://Network/Journal.gd").new()
 	canvas.add_child(journal)
 	journal.configure(game)

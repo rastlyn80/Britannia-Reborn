@@ -7,6 +7,7 @@ Enabled only by `ultimaClone.previewTools=True`; commands also require a loopbac
 - `[PreviewHome`: move the caller to Trammel (1602,1591,20), ending combat.
 - `[PreviewWhere`: server coordinates, map and access level.
 - `[PreviewCommands`: available preview commands and native staff-command examples.
+- `[PreviewSpawn`: builds the upstream Trammel spawners (Data/Spawns, shared plus the era folder, as the world-generation menu selects them) that lie inside the prepared preview bounds, with the upstream DTO builder. Spawners already in place (same GUID) are kept, so repeats create nothing; a free-standing vendor from `[PreviewShop`/`[PreviewInn` next to its native spawner is retired. `[PreviewSpawnAudit` writes spawner and creature counts to Data/UltimaClonePreview/spawns.local.json.
 
 Use `scripts/build-preview-tools.ps1 -BuildOnly` to compile without touching a running server. Omit the switch to install the assembly and local configuration; a saved, graceful server restart is needed to load a new assembly. `scripts/setup-server.ps1` installs it on fresh setup. Core assemblies and game data remain unchanged.
 

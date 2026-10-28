@@ -72,6 +72,7 @@ func run() -> void:
 	check(Protocol.combat_ability(7,1) == bytes([0xD7,0,15,0,0,0,7,0,0x19,0,0,0,0,1,0x0A]),"Weapon special is encoded 0xD7 command 0x19")
 	check(Protocol.equip_last_weapon(7) == bytes([0xD7,0,10,0,0,0,7,0,0x1E,0x0A]),"Equip last weapon is encoded 0xD7 command 0x1E")
 	check(Protocol.toggle_flying() == bytes([0xBF,0,11,0,0x32,0,1,0,0,0,0]),"Gargoyle flying is 0xBF 0x32")
+	check(preload("res://Network/MobileNames.gd").query(0x200) == bytes([0x34,0xed,0xed,0xed,0xed,4,0,0,2,0]),"A creature's name and health are asked for with a 0x34 status query")
 	var yell := Protocol.speech("hi",9)
 	check(yell.size() == 18 and yell[0] == 0xAD and yell[3] == 9 and yell.slice(12) == bytes([0,104,0,105,0,0]),"Yell is unicode speech type 9")
 	# The classic action list.

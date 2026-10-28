@@ -76,10 +76,8 @@ func _process(delta: float) -> void:
 		return
 	if serial != shown:
 		shown = serial
-		# 0x34 status query (type 4): the server answers with name and hits.
-		var query := PackedByteArray([0x34,0xed,0xed,0xed,0xed,4])
-		query.append_array(Login.uint_be(serial,4))
-		session.send(query)
+		# The server answers a status query with name and hits.
+		session.send(preload("res://Network/MobileNames.gd").query(serial))
 	show()
 	var entity: Dictionary = session.entities[serial]
 	var stats: Dictionary = session.mobile_statistics.get(serial,{})
