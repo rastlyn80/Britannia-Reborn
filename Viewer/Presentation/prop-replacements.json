@@ -2990,6 +2990,40 @@
   "sausage": {
    "model": "Objaverse/ham_baked",
    "length": 0.2
+  },
+  "reeds": {
+   "model": "Objaverse/reeds_plants",
+   "height": 1.4
+  },
+  "jaw bone": {
+   "model": "Objaverse/jaw_mandible",
+   "length": 0.14
+  },
+  "ankh": {
+   "model": "Objaverse/ankh",
+   "height": 2.0,
+   "material": {
+    "color": "8a867c",
+    "metallic": 0.0,
+    "roughness": 0.85
+   }
+  },
+  "ankh of sacrifice": {
+   "model": "Objaverse/ankh",
+   "height": 2.0,
+   "material": {
+    "color": "8a867c",
+    "metallic": 0.0,
+    "roughness": 0.85
+   }
+  },
+  "chains": {
+   "model": "Objaverse/chain_iron",
+   "height": 1.2
+  },
+  "seaweed": {
+   "model": "Objaverse/kelp_scan",
+   "length": 0.8
   }
  }
 }

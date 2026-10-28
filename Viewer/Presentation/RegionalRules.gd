@@ -210,7 +210,7 @@ static func _resolve(id: int,info: Dictionary) -> Dictionary:
  if n=="stone rail": return base.merged({"kind":"fence"})
  if n in ["iron gate","wooden rail"]: return base.merged({"kind":"fence"})
  # Map-placed doors and gates (not server doors) as closed leaves.
- if n in ["magical door","secret door","wooden door","door","rattan door","gate","wooden gate","iron door","metal door","barred metal door","dark wooden door","light wooden door","marble door south","marble door east","green marble doorway","bar door","sliding door"]: return base.merged({"kind":"door"})
+ if n in ["magical door","secret door","wooden door","door","rattan door","gate","wooden gate","iron door","metal door","barred metal door","dark wooden door","light wooden door","marble door south","marble door east","green marble doorway","bar door","sliding door","portcullis"]: return base.merged({"kind":"door"})
  # Ship decks, holds, gang planks and boards are timber floors; cave steps stairs.
  if n in ["deck","hold","gang plank","boards","platform","wooden ramp","dungeon ramp","multitile assets"] and height<=5: return base.merged({"kind":"floor","surface":"wood"})
  if n=="cave steps": return base.merged({"kind":"stairs","rise":[0,-1]})

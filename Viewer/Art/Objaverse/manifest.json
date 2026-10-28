@@ -3569,6 +3569,111 @@
         0.755
       ],
       "processing": "ground-centred, decimated to 1500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "reeds_plants",
+      "title": "Reed Plants Pack",
+      "uid": "bc77ea5218e44f2dbc23b2a4aef0c898",
+      "page": "https://sketchfab.com/3d-models/bc77ea5218e44f2dbc23b2a4aef0c898",
+      "author": "Nicholas-3D",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-118/bc77ea5218e44f2dbc23b2a4aef0c898.glb",
+      "sourceSha256": "2db2233a209add60abc76a0bcc8bf0b52456496cbf6ca75304667ffa149d8cd9",
+      "sourceTriangles": 1619,
+      "file": "reeds_plants/reeds_plants.glb",
+      "sha256": "8adff015535e96c3138a08206598b8734c8009499ecd2020d4b4b6fd20f3eafc",
+      "triangles": 1619,
+      "size": [
+        2.709,
+        0.977,
+        0.511
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "jaw_mandible",
+      "title": "Mandible",
+      "uid": "e04a4ea60e2f48e4825a31140f3d9a43",
+      "page": "https://sketchfab.com/3d-models/e04a4ea60e2f48e4825a31140f3d9a43",
+      "author": "Team Skeleton Wars",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-044/e04a4ea60e2f48e4825a31140f3d9a43.glb",
+      "sourceSha256": "7e56c624cfd154493b2826ae0bdf05235349e95a53a6b3736dff79d39e594ac6",
+      "sourceTriangles": 13986,
+      "file": "jaw_mandible/jaw_mandible.glb",
+      "sha256": "54e61d823039cf37ba4bbea8b531baa67dad4e1695dbe6aecda2bbb8e701822a",
+      "triangles": 1999,
+      "size": [
+        0.431,
+        0.29,
+        0.358
+      ],
+      "processing": "ground-centred, decimated to 2000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "ankh",
+      "title": "Ankh Asset",
+      "uid": "fbeb7776320b47ff81060097d17d2669",
+      "page": "https://sketchfab.com/3d-models/fbeb7776320b47ff81060097d17d2669",
+      "author": "scrampunk",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-144/fbeb7776320b47ff81060097d17d2669.glb",
+      "sourceSha256": "48b24a5a1883f954025513c4e6cb47d4ffbe4d3b078ca3a8572b860c0b23cd69",
+      "sourceTriangles": 516,
+      "file": "ankh/ankh.glb",
+      "sha256": "739b66f88887402b5ba01a86ac084bb71497a622566c03af0d0145304568a49f",
+      "triangles": 516,
+      "size": [
+        17.107,
+        170.407,
+        114.785
+      ],
+      "processing": "ground-centred, decimated to 1500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "chain_iron",
+      "title": "Iron chain",
+      "uid": "6d079f01c7c142e0be54d7f2d33b33e6",
+      "page": "https://sketchfab.com/3d-models/6d079f01c7c142e0be54d7f2d33b33e6",
+      "author": "dabori",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-128/6d079f01c7c142e0be54d7f2d33b33e6.glb",
+      "sourceSha256": "c7516f3fd3e8b6469666acb5c5f291b3489162d4f7fc0ae74f774c745d2c752d",
+      "sourceTriangles": 58080,
+      "file": "chain_iron/chain_iron.glb",
+      "sha256": "ef22c3f2db56abf264a3409b7917c59985a18b29a29951ab003090177a84dc47",
+      "triangles": 2997,
+      "size": [
+        265.339,
+        3032.745,
+        265.339
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "kelp_scan",
+      "title": "Scan of Kelp and Seaweed on sand beach",
+      "uid": "c9b5ef07047a4b7a90a4ffd6930ec22c",
+      "page": "https://sketchfab.com/3d-models/c9b5ef07047a4b7a90a4ffd6930ec22c",
+      "author": "sterlingcrispin",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-071/c9b5ef07047a4b7a90a4ffd6930ec22c.glb",
+      "sourceSha256": "037555496eb1aab2c28d3c60896f89a16cc47d90af55c2b6a7b7312fd9b046fa",
+      "sourceTriangles": 241406,
+      "file": "kelp_scan/kelp_scan.glb",
+      "sha256": "bae27396298ea2391d11f4b1d54fafd3d281b82be823093744c5db8a908dee56",
+      "triangles": 3997,
+      "size": [
+        3.536,
+        0.648,
+        3.437
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
     }
   ]
 }

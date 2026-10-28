@@ -9,6 +9,7 @@ records each source page, author, licence, source and output SHA-256.
 
 - "Stone Altar" by TheoClarke (https://sketchfab.com/3d-models/3d4f2edb18e4424cabb41b60aa160cb5), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Medieval Anchor (Free)" by wolfgar74 (https://sketchfab.com/3d-models/5896ac54d63e4b84bd32e0b232619dfd), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
+- "Ankh Asset" by scrampunk (https://sketchfab.com/3d-models/fbeb7776320b47ff81060097d17d2669), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Anvil Nature Morte" by crazyshroomz (https://sketchfab.com/3d-models/970427a0aff3465689ac509f4fde9d94), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Target (archery)" by Arkikon (https://sketchfab.com/3d-models/bafac3d3d41048fa8cd42c8d5ca81a4c), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Hauberk" by askei (https://sketchfab.com/3d-models/8881e32f0595469fa12b18e28155cc78), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
@@ -46,6 +47,7 @@ records each source page, author, licence, source and output SHA-256.
 - "Cattail Plant" by SXuno (https://sketchfab.com/3d-models/c50630051edd4a7daa9708f6b31c021f), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Cattails" by AlkaliDragon (https://sketchfab.com/3d-models/2f35ed566d3d4d74abd6e7c48d82f8eb), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Cauldron : The Witch's House" by ReinoFeanor (https://sketchfab.com/3d-models/4604543653494c789f6ab7a981bf8996), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
+- "Iron chain" by dabori (https://sketchfab.com/3d-models/6d079f01c7c142e0be54d7f2d33b33e6), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Imperfect & Broken Chair" by Jimmy Gunawan (https://sketchfab.com/3d-models/0f5bf969c7404cf1ada939d09f17f350), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Old wooden chair" by alban (https://sketchfab.com/3d-models/a9c9bd930dca4ed39f547ec6139b1449), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Zakopane style chair" by Virtual Museums of Małopolska (https://sketchfab.com/3d-models/3f3e54908994487bb94f6358d52e75cf), CC0-1.0, https://creativecommons.org/publicdomain/zero/1.0/. Reduced (decimated, textures resized) for this project.
@@ -94,6 +96,8 @@ records each source page, author, licence, source and output SHA-256.
 - "Inkwell" by The Hunt Museum (https://sketchfab.com/3d-models/7313a70bf25d4db2911f81c9f561cc64), CC0-1.0, https://creativecommons.org/publicdomain/zero/1.0/. Reduced (decimated, textures resized) for this project.
 - "Iron Ore (FREE)" by VX-Designs (https://sketchfab.com/3d-models/93118b922cbb48caa4f45b16592fa519), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Ivy" by Daniel Gryningstjerna (https://sketchfab.com/3d-models/d8991bd2a8c84e96b15a721a833bd4c3), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
+- "Mandible" by Team Skeleton Wars (https://sketchfab.com/3d-models/e04a4ea60e2f48e4825a31140f3d9a43), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
+- "Scan of Kelp and Seaweed on sand beach" by sterlingcrispin (https://sketchfab.com/3d-models/c9b5ef07047a4b7a90a4ffd6930ec22c), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "#1 Antique Brass Kettle (Short)" by JFN (https://sketchfab.com/3d-models/3dfd3417a32f45f2a4174f2097d6308e), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Wooden Ladder" by dgonlinebr (https://sketchfab.com/3d-models/51b5dbc46b0c44f787a1fbb728e0b513), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Old English Street Lamp (.obj)" by rhcreations (https://sketchfab.com/3d-models/6341be23fc704d19967944359a410d68), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
@@ -111,6 +115,7 @@ records each source page, author, licence, source and output SHA-256.
 - "Pillory" by Froggreen (https://sketchfab.com/3d-models/bc5bbebd695441689d9e6d2889f34ef8), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Medieval Plough" by Andy Woodhead (https://sketchfab.com/3d-models/cd6921ec6eae484b93a31919d7fb106d), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Pumpkin LP" by Karolina Renkiewicz (https://sketchfab.com/3d-models/0e99d8fdb29b4bb9a56f354e87536ac3), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
+- "Reed Plants Pack" by Nicholas-3D (https://sketchfab.com/3d-models/bc77ea5218e44f2dbc23b2a4aef0c898), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Gray Big Rock" by 3dhdscan (https://sketchfab.com/3d-models/70b586d54a1e46ab9398f25369a39df3), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Coil Of Rope | Моток верёвки" by Freede (https://sketchfab.com/3d-models/25fc28346ef44f37bf212486fd905080), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Old Rowboat" by TooManyDemons (https://sketchfab.com/3d-models/9922d5678af84adeb1c9b479856446ca), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
