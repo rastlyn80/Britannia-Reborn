@@ -3484,24 +3484,6 @@
    "assembly": "footprint",
    "length": 1.0
   },
-  "full apron": {
-   "model": "Objaverse/apron",
-   "height": 0.9,
-   "material": {
-    "color": "7a7670",
-    "metallic": 0.0,
-    "roughness": 0.9
-   }
-  },
-  "half apron": {
-   "model": "Objaverse/apron",
-   "height": 0.6,
-   "material": {
-    "color": "7a7670",
-    "metallic": 0.0,
-    "roughness": 0.9
-   }
-  },
   "jug of cider": {
    "model": "Objaverse/clay_pots",
    "height": 0.3
@@ -3658,6 +3640,85 @@
     "color": "7a5a40",
     "metallic": 0.0,
     "roughness": 0.8
+   }
+  },
+  "bone shards": {
+   "model": "Objaverse/bone_tibia",
+   "length": 0.15,
+   "cluster": 3
+  },
+  "rib cage": {
+   "model": "Objaverse/bone_spine",
+   "length": 0.4,
+   "pitch": 90
+  },
+  "bone legs": {
+   "model": "Objaverse/bone_tibia",
+   "length": 0.45,
+   "cluster": 2
+  },
+  "bone leggings": {
+   "model": "Objaverse/bone_tibia",
+   "length": 0.45,
+   "cluster": 2
+  },
+  "daemon bone": {
+   "model": "Objaverse/bone_tibia",
+   "length": 0.35,
+   "material": {
+    "color": "7a1a14",
+    "metallic": 0.0,
+    "roughness": 0.4
+   }
+  },
+  "entrails": {
+   "model": "Objaverse/meat_pieces",
+   "length": 0.25,
+   "material": {
+    "color": "7a1a14",
+    "metallic": 0.0,
+    "roughness": 0.4
+   }
+  },
+  "heart": {
+   "model": "Objaverse/meat_raw",
+   "length": 0.12,
+   "material": {
+    "color": "7a1a14",
+    "metallic": 0.0,
+    "roughness": 0.4
+   }
+  },
+  "skeleton with meat": {
+   "model": "Objaverse/skeleton_bones",
+   "height": 1.7,
+   "pitch": 90
+  },
+  "wyrm's heart": {
+   "model": "Objaverse/gem_diamond",
+   "length": 0.05,
+   "material": {
+    "color": "6a70c8",
+    "metallic": 0.0,
+    "roughness": 0.08
+   }
+  },
+  "strong box": {
+   "model": "Objaverse/chest_old",
+   "length": 0.45,
+   "material": {
+    "color": "c8a050",
+    "metallic": 0.9,
+    "roughness": 0.35
+   }
+  },
+  "metal box": {
+   "model": "Objaverse/chest_old",
+   "length": 0.4,
+   "material": {
+    "color": "c8a050",
+    "metallic": 0.9,
+    "roughness": 0.35
    }
   }
  }
