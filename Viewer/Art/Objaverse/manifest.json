@@ -1196,6 +1196,195 @@
         1.111
       ],
       "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "crystal_green",
+      "title": "Mineral Cluster - Now Free to download!",
+      "uid": "e1b2ae7ce5c8411f8d129cc06d42f4ee",
+      "page": "https://sketchfab.com/3d-models/e1b2ae7ce5c8411f8d129cc06d42f4ee",
+      "author": "Sylvia Atienza",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-053/e1b2ae7ce5c8411f8d129cc06d42f4ee.glb",
+      "sourceSha256": "0e55ed755b0a04643702db0175c7d6b9042e93c8235b815dbcfdc7e0e7cbdb91",
+      "sourceTriangles": 196,
+      "file": "crystal_green/crystal_green.glb",
+      "sha256": "84a7d0e584b77ba7c2d43036563c5c6d991e5c0772a4b388ac57909fc5db71e6",
+      "triangles": 196,
+      "size": [
+        57.967,
+        76.809,
+        66.313
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "stalagmite_a",
+      "title": "Stalagmite Formation 1",
+      "uid": "da1f7a9e2fe04549a03d479d938b3088",
+      "page": "https://sketchfab.com/3d-models/da1f7a9e2fe04549a03d479d938b3088",
+      "author": "Kallvin",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-085/da1f7a9e2fe04549a03d479d938b3088.glb",
+      "sourceSha256": "e2df3ef40bb0c8dc7cdd2cc2d17361033d71a5a38337a8ba1d2dd8e3ff8bc0d3",
+      "sourceTriangles": 3124,
+      "file": "stalagmite_a/stalagmite_a.glb",
+      "sha256": "199286edafe3268b30395e721765a2291bbaab634160b87f4cc6c2d38a137639",
+      "triangles": 3124,
+      "size": [
+        3.154,
+        6.167,
+        3.294
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "stalagmite_b",
+      "title": "Stalagmite Formation 2",
+      "uid": "736323ad07334c49be26da6f44f0c609",
+      "page": "https://sketchfab.com/3d-models/736323ad07334c49be26da6f44f0c609",
+      "author": "Kallvin",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-019/736323ad07334c49be26da6f44f0c609.glb",
+      "sourceSha256": "b557e8c69b97d95d1b3f1a4909e7ffa9d7d7c5fdb5178ae1af460b5e9739ff08",
+      "sourceTriangles": 2570,
+      "file": "stalagmite_b/stalagmite_b.glb",
+      "sha256": "1af400791451afaefea573df33b683630e53b1d668ac87221aceb72b851a464e",
+      "triangles": 2570,
+      "size": [
+        4.545,
+        10.104,
+        4.857
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "bone_tibia",
+      "title": "Tibia with injuries - 167690",
+      "uid": "e00a9d46dda7432787d14a794b23a0c3",
+      "page": "https://sketchfab.com/3d-models/e00a9d46dda7432787d14a794b23a0c3",
+      "author": "Historiska",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-143/e00a9d46dda7432787d14a794b23a0c3.glb",
+      "sourceSha256": "5b6d8c38b766999ccafcb25c85d117a61f30d5a85c7d6d2af1ae44f8149a9647",
+      "sourceTriangles": 24980,
+      "file": "bone_tibia/bone_tibia.glb",
+      "sha256": "7ac51268ed66266144f4cde0c0d38e95b198319b90b19b08136c917afa2f186a",
+      "triangles": 2500,
+      "size": [
+        41.157,
+        6.526,
+        8.872
+      ],
+      "processing": "ground-centred, decimated to 2500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "cattails_clump",
+      "title": "Cattails",
+      "uid": "2f35ed566d3d4d74abd6e7c48d82f8eb",
+      "page": "https://sketchfab.com/3d-models/2f35ed566d3d4d74abd6e7c48d82f8eb",
+      "author": "AlkaliDragon",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-116/2f35ed566d3d4d74abd6e7c48d82f8eb.glb",
+      "sourceSha256": "72450339a1d55c34356aadd5e2beef1d4595eeee20250bdf8c66f20bccbb1831",
+      "sourceTriangles": 2454,
+      "file": "cattails_clump/cattails_clump.glb",
+      "sha256": "67c8bc3ed095c6ad1f7797f399432b9f71df37d2f30d6563fb52518116523b24",
+      "triangles": 2454,
+      "size": [
+        0.612,
+        1.615,
+        0.695
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "cattail_plant",
+      "title": "Cattail Plant",
+      "uid": "c50630051edd4a7daa9708f6b31c021f",
+      "page": "https://sketchfab.com/3d-models/c50630051edd4a7daa9708f6b31c021f",
+      "author": "SXuno",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-040/c50630051edd4a7daa9708f6b31c021f.glb",
+      "sourceSha256": "b39b897a3d10b27459d5e9f83243867b4cd30f103ba93f1b18f27686d962a6e3",
+      "sourceTriangles": 1314,
+      "file": "cattail_plant/cattail_plant.glb",
+      "sha256": "0d224affb43734d03d5200d6c29e7e86f84f2df0ebd104ab91d2df09403d6a50",
+      "triangles": 1314,
+      "size": [
+        0.695,
+        1.22,
+        0.796
+      ],
+      "processing": "ground-centred, decimated to 2000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "lilypad_flower",
+      "title": "Lily pads",
+      "uid": "695d23db452744e2bc0bc90f6c95b5cb",
+      "page": "https://sketchfab.com/3d-models/695d23db452744e2bc0bc90f6c95b5cb",
+      "author": "kkay1456",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-024/695d23db452744e2bc0bc90f6c95b5cb.glb",
+      "sourceSha256": "136a9e902505d74a8ea7c41244e92fe8bad99077cb8a634a835044a8a9dcd881",
+      "sourceTriangles": 106212,
+      "file": "lilypad_flower/lilypad_flower.glb",
+      "sha256": "5b23b0044c5a45ebebc0f2b4b1c24815f8c96c85891103b63768baa3ee0bff8b",
+      "triangles": 3987,
+      "size": [
+        58.091,
+        10.416,
+        52.485
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "stalagmite_set",
+      "title": "Stalagmites, Collums and Stalacites",
+      "uid": "3e06d8e13be64faf85d6ba6a1049b769",
+      "page": "https://sketchfab.com/3d-models/3e06d8e13be64faf85d6ba6a1049b769",
+      "author": "RBG_illustrations",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-011/3e06d8e13be64faf85d6ba6a1049b769.glb",
+      "sourceSha256": "c8e1f84a50feec1e3ea096caf3936439cbf0e48c7c54ec58c582d0c53b0dde03",
+      "sourceTriangles": 4060,
+      "file": "stalagmite_set/stalagmite_set.glb",
+      "sha256": "7298c2371182f2b79b2742227e41b74f3451e9865588cc47d1c65d84fcdea9b8",
+      "triangles": 4060,
+      "size": [
+        649.33,
+        444.299,
+        358.435
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "skeleton_bones",
+      "title": "skeleton",
+      "uid": "aad392aff87246179789ac23063856a6",
+      "page": "https://sketchfab.com/3d-models/aad392aff87246179789ac23063856a6",
+      "author": "sanik.pdo",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-152/aad392aff87246179789ac23063856a6.glb",
+      "sourceSha256": "8a8a9a3521334700fda9f6fe3fe65ca0d24f858d6291b4d5859e4e7230b1f42d",
+      "sourceTriangles": 75379,
+      "file": "skeleton_bones/skeleton_bones.glb",
+      "sha256": "af3af0fb4f2f3960e9c2a5d1e094f1c1c59ac5a310b4f42732e58d6d456c1d61",
+      "triangles": 5997,
+      "size": [
+        1.12,
+        3.514,
+        0.568
+      ],
+      "processing": "ground-centred, decimated to 6000 triangles, textures capped at 1024 px"
     }
   ]
 }

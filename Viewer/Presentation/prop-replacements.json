@@ -520,6 +520,81 @@
    ],
    "cluster": 3,
    "length": 0.35
+  },
+  "crystal": {
+   "model": "Objaverse/crystal_green",
+   "height": 0.9
+  },
+  "tall crystal": {
+   "model": "Objaverse/crystal_green",
+   "height": 2.0
+  },
+  "broken crystals": {
+   "model": "Objaverse/crystal_green",
+   "height": 0.28,
+   "cluster": 4
+  },
+  "flowstone": {
+   "models": [
+    "Objaverse/stalagmite_a",
+    "Objaverse/stalagmite_b"
+   ],
+   "height": 2.4
+  },
+  "sunken log": {
+   "model": "Objaverse/log_mossy",
+   "length": 1.6
+  },
+  "bone": {
+   "model": "Objaverse/bone_tibia",
+   "length": 0.42
+  },
+  "cattails": {
+   "models": [
+    "Objaverse/cattail_plant",
+    "Objaverse/cattails_clump"
+   ],
+   "height": 1.4,
+   "cluster": 2
+  },
+  "bulrushes": {
+   "model": "Objaverse/cattails_clump",
+   "height": 1.2,
+   "cluster": 2
+  },
+  "lilypad": {
+   "model": "Objaverse/lilypad_flower",
+   "length": 0.9
+  },
+  "lilypads": {
+   "model": "Objaverse/lilypad_flower",
+   "length": 0.9
+  },
+  "lilly pad": {
+   "model": "Objaverse/lilypad_flower",
+   "length": 0.9
+  },
+  "lilly pads": {
+   "model": "Objaverse/lilypad_flower",
+   "length": 0.9
+  },
+  "water lilly": {
+   "model": "Objaverse/lilypad_flower",
+   "length": 0.9
+  },
+  "stalagmites": {
+   "model": "Objaverse/stalagmite_set",
+   "length": 1.3
+  },
+  "bones": {
+   "model": "Objaverse/skeleton_bones",
+   "height": 1.7,
+   "pitch": 90
+  },
+  "skeleton": {
+   "model": "Objaverse/skeleton_bones",
+   "height": 1.7,
+   "pitch": 90
   }
  }
 }

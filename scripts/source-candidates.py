@@ -11,6 +11,7 @@ go to scripts/pin-picks.py.
 usage: python source-candidates.py --label NAME [--top 48] [--skip 0]
          [--category "nature"] [--match REGEX] [--exclude REGEX] [--per 5]
 Outputs (ignored, local): outputs/sourcing/NAME/candidates.json, sheet-NN.png
+Family names that are too generic use the search terms in scripts/sourcing-queries.json.
 """
 import argparse
 import gzip
@@ -50,7 +51,13 @@ def objaverse_index():
     return paths
 
 
+QUERIES = json.load(open(os.path.join(ROOT, 'scripts', 'sourcing-queries.json'), encoding='utf-8'))['queries']
+
+
 def query_for(name):
+    plain = re.sub(r'%[^%]*%', '', name.lower()).strip()
+    if plain in QUERIES:
+        return QUERIES[plain]
     text = re.sub(r'%[^%]*%', '', name.lower())
     text = re.sub(DIRECTIONS, ' ', text)
     text = re.sub(r'[^a-z ]', ' ', text)
@@ -72,7 +79,7 @@ def search(query):
 
 def candidates_for(query, index, per, max_mb, max_faces):
     found, seen = [], set()
-    stems = [word.rstrip('s') for word in query.split() if len(word) > 2]
+    stems = [word.rstrip('s') for word in query.split() if len(word) > 2 and word not in ('medieval', 'antique', 'stone', 'large', 'pile', 'wooden')]
     for text in (query, query + ' medieval'):
         for result in search(text):
             uid = result['uid']

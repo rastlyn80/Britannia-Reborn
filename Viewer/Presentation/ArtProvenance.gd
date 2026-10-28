@@ -152,6 +152,7 @@ func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -
 	var found: Dictionary = preload("res://Presentation/PropReplacements.gd").entry_for(name,id)
 	if not found.is_empty():
 		var model := str(found.get("model",found.get("models",[""])[0]))
+		if found.get("hide",false): return {"status":"scan","detail":"part drawn by the scanned model of its whole object"}
 		if model.begins_with("Reduced/"): return pack(model)
 		return pack(("Objaverse/%s/%s.glb" % [model.trim_prefix("Objaverse/"),model.trim_prefix("Objaverse/")]) if model.begins_with("Objaverse/") else "PolyHaven/%s/%s" % [model,model])
 	var review: Dictionary = Reviewed.entry(id)
