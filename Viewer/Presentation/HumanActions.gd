@@ -1,6 +1,6 @@
 extends RefCounted
 ## Human-only native action families. Unsupported requests remain explicit.
-const CLASSIC := {0:"Walk",1:"Sword_Walk",2:"Run",3:"Sword_Run",4:"Idle",7:"Sword_Idle",8:"Sword_Idle",9:"Sword_A",10:"Punch_Jab",11:"Punch_Cross",12:"Heavy_Attack",13:"Sword_B",14:"Sword_C",15:"Sword_Walk",16:"Cast",17:"Cast",20:"Hit",21:"Death",22:"Death",31:"Punch_Jab",32:"Bow"}
+const CLASSIC := {0:"Walk",1:"Sword_Walk",2:"Run",3:"Sword_Run",4:"Idle",5:"Fidget_Talk",6:"Fidget_Look",7:"Sword_Idle",8:"Sword_Idle",9:"Sword_A",10:"Punch_Jab",11:"Punch_Cross",12:"Heavy_Attack",13:"Sword_B",14:"Sword_C",15:"Sword_Walk",16:"Cast",17:"Cast",20:"Hit",21:"Death",22:"Death",31:"Punch_Jab",32:"Bow"}
 static func resolve(request: Dictionary) -> String:
 	if int(request.get("body",0)) not in [400,401]: return ""
 	if str(request.get("protocol",""))=="classic": return str(CLASSIC.get(int(request.get("action",-1)),""))

@@ -6,7 +6,7 @@ from mathutils import Vector
 from mathutils.bvhtree import BVHTree
 ROOT=Path(__file__).resolve().parents[1]
 bpy.context.preferences.filepaths.file_preview_type='NONE'
-rows=[];failures=[]
+rows=[];failures=[];silhouettes=[]
 MODERN='--motion' in sys.argv
 def hem_landmarks(mesh):
  # glTF splits UV seams; weld equal positions for topology analysis only.
@@ -63,10 +63,20 @@ for female in [False,True]:
       outside+=1
       if len(outliers)<8:outliers.append({'vertex':i,'point':list(p),'left':list(left) if left is not None else None,'right':list(right) if right is not None else None})
     min_z=min(p.z for p in coords)
+    if MODERN and action.name.split('.')[0]=='Idle' and phase==0:
+     pelvis=rig.pose.bones['pelvis'];unpose=(rig.matrix_world@pelvis.matrix@rig.data.bones['pelvis'].matrix_local.inverted()).inverted()
+     lower=[unpose@p for p in coords if .65<(unpose@p).z<.85]
+     thighs=[unpose@(skin.matrix_world@skin.data.vertices[i].co) for i in leg_ids]
+     thighs=[p for p in thighs if .65<p.z<.85]
+     width=max(p.x for p in lower)-min(p.x for p in lower);body_width=max(p.x for p in thighs)-min(p.x for p in thighs)
+     silhouette={'female':female,'piece':piece,'body_thigh_width':body_width,'cloth_thigh_width':width,'excess_width':width-body_width}
+     silhouettes.append(silhouette)
+     if width>body_width+.22:failures.append(dict(silhouette,reason='Idle thigh silhouette exceeds 110 mm ease per side'))
     row={'female':female,'piece':piece,'clip':action.name.split('.')[0],'phase':phase,'checked':checked,'outside':outside,'min_height':min_z,'opening_top':hem_top};rows.append(row)
     if outside or min_z<.01:failures.append(dict(row,outliers=outliers))
   for ob in imported:bpy.data.objects.remove(ob,do_unlink=True)
 report={'samples':rows,'failures':failures,'scope':'Two fixed bodies, side-ray enclosure above animated openings; 17 prepared locomotion/combat/cast/hit/bow clips with --motion, otherwise native Idle/Walk/Run. Not cloth physics or all actions.'}
+report['idle_thigh_silhouettes']=silhouettes
 (ROOT/'outputs/third-dawn'/('human-motion-cloth-validation.json' if MODERN else 'expanded-skirt-validation.json')).write_text(json.dumps(report,indent=2))
 print('EXPANDED SKIRTS:',len(rows),'poses,',len(failures),'failures')
 if failures:raise RuntimeError(str(failures[:5]))

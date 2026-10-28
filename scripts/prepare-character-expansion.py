@@ -27,7 +27,10 @@ ITEMS={
  'beard_goatee':('culturalibre_faun_beard','head'),
  'beard_moustache':('rehmanpolanski_moustache_viking','head'),
  'hair_bob':('bob02','hair'), 'hair_long':('long01','hair'),
- 'hair_ponytail':('ponytail01','hair'), 'hair_afro':('afro01','hair')}
+ 'hair_ponytail':('ponytail01','hair'), 'hair_afro':('afro01','hair'),
+ 'shirt':('toigo_fisherman_sweater','torso'),
+ 'cap':('jujube_newsboy_cap','head'),
+ 'felt_hat':('aethelraed_unraed_cloche_hat','head')}
 bpy.context.preferences.filepaths.file_preview_type='NONE'
 bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
 bpy.ops.import_scene.gltf(filepath=str(ART/'equipment-base.glb'))
@@ -69,7 +72,7 @@ body.data.calc_loop_triangles()
 bvh=BVHTree.FromPolygons([local@v.co for v in body.data.vertices],[tuple(t.vertices) for t in body.data.loop_triangles],all_triangles=True)
 def material(folder,filename,cosmetic=False,metal=False):
  fields={}
- for line in (folder/filename).read_text(errors='replace').splitlines():
+ for line in ((folder/filename).read_text(errors='replace').splitlines() if filename else []):
   fields_line=line.split()
   if fields_line and not fields_line[0].startswith(('#','//')):fields[fields_line[0]]=' '.join(fields_line[1:])
  mat=bpy.data.materials.new('Expansion_'+folder.name);mat.use_nodes=True;nodes=mat.node_tree.nodes;links=mat.node_tree.links;shader=nodes.get('Principled BSDF')
@@ -81,7 +84,7 @@ def material(folder,filename,cosmetic=False,metal=False):
    links.new(tex.outputs['Alpha'],shader.inputs['Alpha']);mat.surface_render_method='DITHERED';mat.use_transparency_overlap=False
  else:shader.inputs['Base Color'].default_value=(.22,.16,.10,1)
  if metal and 'diffuseTexture' not in fields:shader.inputs['Base Color'].default_value=(.32,.35,.39,1)
- if folder.name=='toigo_long_full_skirt':
+ if folder.name in ['toigo_long_full_skirt','jujube_newsboy_cap','aethelraed_unraed_cloche_hat']:
   # Use the project's traced CC0 woven linen instead of the floral print.
   for link in list(shader.inputs['Base Color'].links):links.remove(link)
   tex=nodes.new('ShaderNodeTexImage');tex.image=bpy.data.images.load(str(ROOT/'Viewer/Art/MedievalKit/textures/Linen_Color.jpg'),check_existing=True);links.new(tex.outputs['Color'],shader.inputs['Base Color'])
@@ -116,8 +119,13 @@ for slot,(asset,kind) in ITEMS.items():
    w=motion.control_weights(co) or {'pelvis':1.}
   if kind not in ['weapon','skirt','kilt']:
    point,normal,face,distance=bvh.find_nearest(co)
-   clearance=.006 if kind=='gloves' else (.009 if kind=='hair' else .003)
+   clearance=.006 if kind=='gloves' else (.009 if kind=='hair' else (.008 if kind=='torso' else .003))
    if point is not None and distance<.06 and (co-point).dot(normal)<clearance:co+=normal*(clearance-(co-point).dot(normal))
+  if slot=='shirt' and co.z<1.07 and sum(value for name,value in w.items() if name.startswith(('upperarm','lowerarm','hand','clavicle'))) < .05:
+   # The shirt is outside trousers. Skin-only clearance leaves the thicker
+   # trouser waistband poking through the hem during a torso twist/cast.
+   radial=Vector((co.x,co.y+.015,0.))
+   if radial.length>1e-6:co+=radial.normalized()*.025*max(0.,min(1.,(1.07-co.z)/.08))
   chosen=sorted(((n,v) for n,v in w.items() if v>1e-7),key=lambda x:-x[1])[:4];total=sum(v for _,v in chosen);assert total>0
   coords.append(co);skin.append([(n,v/total) for n,v in chosen])
  if kind=='weapon':
@@ -136,8 +144,10 @@ for slot,(asset,kind) in ITEMS.items():
  for i,w in enumerate(skin):
   for name,value in w:ob.vertex_groups[name].add([i],value,'REPLACE')
  ob.parent=rig;ob.matrix_parent_inverse=Matrix.Identity(4);ob.matrix_basis=Matrix.Identity(4);mod=ob.modifiers.new('Shared human rig','ARMATURE');mod.object=rig
- mesh.materials.append(material(folder,proxy['fields']['material'],slot.startswith(('hair','beard')),slot in ['helmet','closed_helmet','sword','hammer','staff']))
+ silhouette=motion.fit_silhouette(ob,body,rig) if kind in ['skirt','kilt'] else None
+ mesh.materials.append(material(folder,proxy['fields'].get('material'),slot.startswith(('hair','beard')),slot in ['helmet','closed_helmet','sword','hammer','staff']))
  evidence['parts'][slot]={'asset':asset,'kind':kind,'vertices':len(coords),'sha256':export(OUT/(slot+'.glb'),ob),'licence':record['license'],'author':record['author']}
+ if silhouette:evidence['parts'][slot]['silhouette']=silhouette
  bpy.data.objects.remove(ob,do_unlink=True)
 # Orthogonal hand coverage avoids doubling every equipment combination in the
 # base builder. Keep all existing UVs, binds and the rest of each body mask.

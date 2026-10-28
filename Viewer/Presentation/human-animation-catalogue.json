@@ -1,0 +1,291 @@
+{
+  "scope": "Classic human player/NPC action groups only; no monster or animal action tables. Mounted rider groups are catalogued but deferred. Not every new-format animation sequence is equivalent to a classic group.",
+  "reference": {
+    "repository": "https://github.com/ClassicUO/ClassicUO",
+    "revision": "ee79d7ebc1cc0e53ff84fe6cae17d389e2737f93",
+    "path": "src/ClassicUO.Assets/AnimationsLoader.cs",
+    "enum": "PeopleAnimationGroup"
+  },
+  "groups": [
+    {
+      "id": 0,
+      "native_group": "WalkUnarmed",
+      "label": "Walk Unarmed",
+      "quality": "category motion",
+      "note": "Retargeted human category; exact original pose fidelity and every garment remain separate checks",
+      "priority": 2
+    },
+    {
+      "id": 1,
+      "native_group": "WalkArmed",
+      "label": "Walk Armed",
+      "quality": "category motion",
+      "note": "Retargeted human category; exact original pose fidelity and every garment remain separate checks",
+      "priority": 2
+    },
+    {
+      "id": 2,
+      "native_group": "RunUnarmed",
+      "label": "Run Unarmed",
+      "quality": "category motion",
+      "note": "Retargeted human category; exact original pose fidelity and every garment remain separate checks",
+      "priority": 2
+    },
+    {
+      "id": 3,
+      "native_group": "RunArmed",
+      "label": "Run Armed",
+      "quality": "category motion",
+      "note": "Retargeted human category; exact original pose fidelity and every garment remain separate checks",
+      "priority": 2
+    },
+    {
+      "id": 4,
+      "native_group": "Stand",
+      "label": "Stand",
+      "quality": "category motion",
+      "note": "Retargeted human category; exact original pose fidelity and every garment remain separate checks",
+      "priority": 2
+    },
+    {
+      "id": 5,
+      "native_group": "Fidget1",
+      "label": "Fidget1",
+      "quality": "category motion",
+      "note": "Retargeted human category; exact original pose fidelity and every garment remain separate checks",
+      "priority": 2
+    },
+    {
+      "id": 6,
+      "native_group": "Fidget2",
+      "label": "Fidget2",
+      "quality": "category motion",
+      "note": "Retargeted human category; exact original pose fidelity and every garment remain separate checks",
+      "priority": 2
+    },
+    {
+      "id": 7,
+      "native_group": "StandOnehandedAttack",
+      "label": "Stand Onehanded Attack",
+      "quality": "category motion",
+      "note": "Retargeted human category; exact original pose fidelity and every garment remain separate checks",
+      "priority": 2
+    },
+    {
+      "id": 8,
+      "native_group": "StandTwohandedAttack",
+      "label": "Stand Twohanded Attack",
+      "quality": "approximation or pending",
+      "note": "Two-handed guard still uses a one-handed category pose",
+      "priority": 1
+    },
+    {
+      "id": 9,
+      "native_group": "AttackOnehanded",
+      "label": "Attack Onehanded",
+      "quality": "category motion",
+      "note": "Retargeted human category; exact original pose fidelity and every garment remain separate checks",
+      "priority": 2
+    },
+    {
+      "id": 10,
+      "native_group": "AttackUnarmed1",
+      "label": "Attack Unarmed1",
+      "quality": "approximation or pending",
+      "note": "Weapon-specific thrust is not distinguished from unarmed punch",
+      "priority": 1
+    },
+    {
+      "id": 11,
+      "native_group": "AttackUnarmed2",
+      "label": "Attack Unarmed2",
+      "quality": "approximation or pending",
+      "note": "Weapon-specific bash is not distinguished from unarmed punch",
+      "priority": 1
+    },
+    {
+      "id": 12,
+      "native_group": "AttackTwohandedDown",
+      "label": "Attack Twohanded Down",
+      "quality": "approximation or pending",
+      "note": "Two-handed downward attack needs paired-hand contact",
+      "priority": 1
+    },
+    {
+      "id": 13,
+      "native_group": "AttackTwohandedWide",
+      "label": "Attack Twohanded Wide",
+      "quality": "approximation or pending",
+      "note": "Two-handed wide slash needs paired-hand contact",
+      "priority": 1
+    },
+    {
+      "id": 14,
+      "native_group": "AttackTwohandedJab",
+      "label": "Attack Twohanded Jab",
+      "quality": "approximation or pending",
+      "note": "Two-handed jab needs paired-hand contact",
+      "priority": 1
+    },
+    {
+      "id": 15,
+      "native_group": "WalkWarmode",
+      "label": "Walk Warmode",
+      "quality": "approximation or pending",
+      "note": "Guard locomotion shares the armed gait",
+      "priority": 1
+    },
+    {
+      "id": 16,
+      "native_group": "CastDirected",
+      "label": "Cast Directed",
+      "quality": "approximation or pending",
+      "note": "Directed/area spells share a cast category",
+      "priority": 1
+    },
+    {
+      "id": 17,
+      "native_group": "CastArea",
+      "label": "Cast Area",
+      "quality": "approximation or pending",
+      "note": "Directed/area spells share a cast category",
+      "priority": 1
+    },
+    {
+      "id": 18,
+      "native_group": "AttackBow",
+      "label": "Attack Bow",
+      "quality": "approximation or pending",
+      "note": "Bow grip, aim and release not implemented",
+      "priority": 1
+    },
+    {
+      "id": 19,
+      "native_group": "AttackCrossbow",
+      "label": "Attack Crossbow",
+      "quality": "approximation or pending",
+      "note": "Crossbow grip, aim and release not implemented",
+      "priority": 1
+    },
+    {
+      "id": 20,
+      "native_group": "GetHit",
+      "label": "Get Hit",
+      "quality": "category motion",
+      "note": "Retargeted human category; exact original pose fidelity and every garment remain separate checks",
+      "priority": 2
+    },
+    {
+      "id": 21,
+      "native_group": "Die1",
+      "label": "Die1",
+      "quality": "approximation or pending",
+      "note": "Both death groups share one authored death",
+      "priority": 1
+    },
+    {
+      "id": 22,
+      "native_group": "Die2",
+      "label": "Die2",
+      "quality": "approximation or pending",
+      "note": "Both death groups share one authored death",
+      "priority": 1
+    },
+    {
+      "id": 23,
+      "native_group": "OnmountRideSlow",
+      "label": "Onmount Ride Slow",
+      "quality": "deferred mounted rider",
+      "note": "Mounted human group catalogued; mount/rider presentation deferred",
+      "priority": 3
+    },
+    {
+      "id": 24,
+      "native_group": "OnmountRideFast",
+      "label": "Onmount Ride Fast",
+      "quality": "deferred mounted rider",
+      "note": "Mounted human group catalogued; mount/rider presentation deferred",
+      "priority": 3
+    },
+    {
+      "id": 25,
+      "native_group": "OnmountStand",
+      "label": "Onmount Stand",
+      "quality": "deferred mounted rider",
+      "note": "Mounted human group catalogued; mount/rider presentation deferred",
+      "priority": 3
+    },
+    {
+      "id": 26,
+      "native_group": "OnmountAttack",
+      "label": "Onmount Attack",
+      "quality": "deferred mounted rider",
+      "note": "Mounted human group catalogued; mount/rider presentation deferred",
+      "priority": 3
+    },
+    {
+      "id": 27,
+      "native_group": "OnmountAttackBow",
+      "label": "Onmount Attack Bow",
+      "quality": "deferred mounted rider",
+      "note": "Mounted human group catalogued; mount/rider presentation deferred",
+      "priority": 3
+    },
+    {
+      "id": 28,
+      "native_group": "OnmountAttackCrossbow",
+      "label": "Onmount Attack Crossbow",
+      "quality": "deferred mounted rider",
+      "note": "Mounted human group catalogued; mount/rider presentation deferred",
+      "priority": 3
+    },
+    {
+      "id": 29,
+      "native_group": "OnmountSlapHorse",
+      "label": "Onmount Slap Horse",
+      "quality": "deferred mounted rider",
+      "note": "Mounted human group catalogued; mount/rider presentation deferred",
+      "priority": 3
+    },
+    {
+      "id": 30,
+      "native_group": "Turn",
+      "label": "Turn",
+      "quality": "approximation or pending",
+      "note": "Dedicated turning motion not prepared",
+      "priority": 1
+    },
+    {
+      "id": 31,
+      "native_group": "AttackUnarmedAndWalk",
+      "label": "Attack Unarmed And Walk",
+      "quality": "approximation or pending",
+      "note": "Stationary punch substitute; moving attack layering is pending",
+      "priority": 1
+    },
+    {
+      "id": 32,
+      "native_group": "EmoteBow",
+      "label": "Emote Bow",
+      "quality": "category motion",
+      "note": "Retargeted human category; exact original pose fidelity and every garment remain separate checks",
+      "priority": 2
+    },
+    {
+      "id": 33,
+      "native_group": "EmoteSalute",
+      "label": "Emote Salute",
+      "quality": "approximation or pending",
+      "note": "Dedicated salute not prepared",
+      "priority": 1
+    },
+    {
+      "id": 34,
+      "native_group": "Fidget3",
+      "label": "Fidget3",
+      "quality": "approximation or pending",
+      "note": "Third distinct fidget not prepared",
+      "priority": 1
+    }
+  ]
+}

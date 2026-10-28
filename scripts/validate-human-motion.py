@@ -27,7 +27,7 @@ for female in [False,True]:
  def inverse_binds(d,raw):return {d['nodes'][joint]['name']:matrix for joint,matrix in zip(d['skins'][0]['joints'],g.values(d,raw,d['skins'][0]['inverseBindMatrices']))}
  old=inverse_binds(source,sraw);new=inverse_binds(data,raw)
  assert max(abs(x-y) for name in old for x,y in zip(old[name],new[name]))<1e-5,'Changed inverse bind matrices'
- assert {a['name'] for a in data['animations']}==set(metadata['clips']) and len(metadata['clips'])==43
+ assert {a['name'] for a in data['animations']}==set(metadata['clips']) and len(metadata['clips'])==45
  for animation in data['animations']:
   controls=set()
   for channel in animation['channels']:

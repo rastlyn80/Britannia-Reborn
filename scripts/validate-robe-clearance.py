@@ -18,7 +18,7 @@ body=next(o for o in bpy.data.objects if o.type=='MESH' and o.name.startswith('B
 robe=next(o for o in bpy.data.objects if o.type=='MESH' and o.name.startswith('Free_robe'))
 ids=[v.index for v in body.data.vertices if .25<(body.matrix_world@v.co).z<.85]
 hem_ids=[v.index for v in robe.data.vertices if (robe.matrix_world@v.co).z<.18]
-cuff_ids=[v.index for v in robe.data.vertices if .85<(robe.matrix_world@v.co).z<1.0 and abs((robe.matrix_world@v.co).x)>.37] if FEMALE else []
+cuff_ids=[v.index for v in robe.data.vertices if .85<(robe.matrix_world@v.co).z<1.0 and abs((robe.matrix_world@v.co).x)>.37 and sum(g.weight for g in v.groups if robe.vertex_groups[g.group].name.startswith(('lowerarm','hand')))>.5] if FEMALE else []
 if FEMALE:assert cuff_ids,'Could not identify shorter-body sleeve cuffs'
 assert hem_ids,'Could not identify the authored lower opening'
 for tr in rig.animation_data.nla_tracks:tr.mute=True

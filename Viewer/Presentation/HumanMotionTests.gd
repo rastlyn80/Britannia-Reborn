@@ -44,7 +44,7 @@ func run() -> void:
 	for female in [false,true]:
 		var actor:=Visual.new();actor.female=female;root.add_child(actor);actor.set_process(false)
 		var tag:="female" if female else "male"
-		check(actor.motion_profile.get("clips",{}).size()==43,tag+": complete prepared motion set installed")
+		check(actor.motion_profile.get("clips",{}).size()==45,tag+": complete prepared motion set installed")
 		var finite:=true;var paths:=true;var root_fixed:=true;var loops:=true
 		var rig: Skeleton3D=actor.skeleton;var start:=actor.global_transform
 		var roots: Dictionary={}
@@ -62,7 +62,7 @@ func run() -> void:
 				root_fixed=root_fixed and actor.global_transform==start and not roots.is_empty()
 				for bone in roots:root_fixed=root_fixed and rig.get_bone_pose_position(bone).distance_to(roots[bone])<.001
 			loops=loops and (animation.loop_mode==Animation.LOOP_LINEAR)==bool(actor.motion_profile.clips[clip].loop)
-		check(finite and paths,tag+": all 43 clips sampled with finite poses and resolved track paths")
+		check(finite and paths,tag+": all 45 clips sampled with finite poses and resolved track paths")
 		check(root_fixed,tag+": no animation changes the authoritative mobile root")
 		check(loops,tag+": locomotion loops and finite actions retain distinct playback modes")
 		var excursion:=0.;var loop_error:=0.

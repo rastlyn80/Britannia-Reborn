@@ -27,6 +27,17 @@ func _initialize() -> void:
 	var file:=FileAccess.open(out,FileAccess.WRITE)
 	report.animation_transport=["0x6e classic action/frame/repeat/reverse/delay","0xe2 type/subaction/variation; historical aliases retained"]
 	report.server_action_playback={"bodies":[400,401],"classic_groups":preload("res://Presentation/HumanActions.gd").CLASSIC.keys(),"new_types":[0,3,4,11],"new_attack_subactions":[0,3,4,5,6,7,8],"status":"human category replacements; mounts and unsupported requests excluded"}
+	report.server_action_playback.classic_replacements=preload("res://Presentation/HumanActions.gd").CLASSIC.duplicate()
+	var requests: Dictionary={}
+	for kind in range(32):
+		for subaction in range(-1,35):
+			var replacement:=preload("res://Presentation/HumanActions.gd").resolve({"body":400,"protocol":"new","type":kind,"subaction":subaction})
+			if not replacement.is_empty():requests["%d:%d" % [kind,subaction]]=replacement
+	report.server_action_playback.new_replacements=requests
+	var categories: Array=Wardrobe.SLOTS.duplicate()
+	for entry: Array in Wardrobe.EXTRA.values():
+		if not categories.has(entry[1]):categories.append(entry[1])
+	report.equipment_categories=categories
 	report.prepared_locomotion=["Walk","Jog","Run","Sprint"]
 	report.scope+=" Prepared human action playback is a subset; see HUMAN_MOTION_PASS.md."
 	report.source_catalog = {"path":catalog_path,"sha256":FileAccess.get_sha256(catalog_path),"item_count":catalog.items.size()}

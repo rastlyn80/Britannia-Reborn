@@ -1,5 +1,7 @@
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
+& python -B "$root/scripts/test-uo-human-sequences.py"
+if ($LASTEXITCODE) { throw 'Human sequence parser bounds/format checks failed' }
 & "$root/scripts/prepare-surfaces.ps1" -VerifyOnly
 & "$root/scripts/import-reviewed-art.ps1" -VerifyOnly
 & "$root/scripts/prepare-polyhaven.ps1" -VerifyOnly
@@ -45,6 +47,10 @@ if (Test-Path "$root/Viewer/local-art/free-equipment-female/runtime/body-mask-31
 if (Test-Path "$root/Viewer/local-art/free-equipment-female/expansion/closed_helmet.glb") {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/CharacterExpansionTests.gd
   if ($LASTEXITCODE) { throw 'Expanded equipment/cosmetic checks failed' }
+}
+if (Test-Path "$root/Viewer/local-art/free-equipment-female/expansion/shirt.glb") {
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanWardrobeBatchTests.gd
+  if ($LASTEXITCODE) { throw 'Civilian wardrobe/native dye checks failed' }
 }
 & $godot --headless --path "$root\Viewer" --script res://Network/CharacterTests.gd
 if ($LASTEXITCODE) { throw 'Character status/skills/sheet tests failed' }

@@ -27,6 +27,7 @@ CLIPS={
  'Heavy_Attack':(2,'Sword_Regular_C',False),
  'Harvest':(2,'Farm_Harvest',False),'Chop':(2,'TreeChopping_Loop',True),
  'Consume':(2,'Consume',False),'Yes':(2,'Yes',False),
+ 'Fidget_Talk':(1,'Idle_Talking_Loop',False),'Fidget_Look':(2,'Idle_No_Loop',False),
 }
 bpy.context.preferences.filepaths.file_preview_type='NONE'
 bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)

@@ -66,8 +66,18 @@ func run() -> void:
 			return
 		var expected:=0x191 if sex else 0x190
 		var expected_worn:=12 if sex else 14
-		var expected_unworn:=5 if sex else 7
+		var expected_unworn:=4 if sex else 7
 		await create_timer(.5).timeout
+		# Recover only these dedicated fixtures if an interrupted test left its
+		# robe in the backpack. Never operate on an owner's selected character.
+		if not game.equipment.has(22):
+			game.open_backpack()
+			if not await until(func():return game.container_serial==int(game.backpack) and not game.container_items.is_empty()):fail("Dedicated fixture backpack unavailable");return
+			var restore: Dictionary={}
+			for candidate: Dictionary in game.container_items.values():
+				if int(candidate.id) in [0x1f03,0x1f04]:restore=candidate;break
+			if restore.is_empty() or not game.move_item(int(restore.serial),int(game.player.serial),true):fail("Dedicated fixture robe unavailable");return
+			if not await until(func():return game.pending_transfer.is_empty() and game.equipment.has(22)):fail("Dedicated fixture robe restore failed");return
 		print("LIVE BODY ",game.player.get("body",0)," WORN ",game.equipment.values().map(func(w): return {"id":int(w.id),"layer":int(w.layer)}))
 		if int(game.player.get("body",0))!=expected:
 			fail("Native body disagrees with requested sex")
@@ -116,6 +126,8 @@ func run() -> void:
 		if removed_bits!=expected_unworn:
 			fail("Removed native clothing remained visible")
 			return
+		if sex==1 and (not avatar.human_visual.parts.any(func(part: MeshInstance3D):return part.name.begins_with("Extra_shirt")) or not avatar.human_visual.parts.any(func(part: MeshInstance3D):return part.name.begins_with("Extra_kilt"))):
+			fail("Native shirt/skirt layers did not appear beneath the removed robe");return
 		if not game.move_item(int(item.serial),int(game.player.serial),true):
 			fail("Cannot begin native clothing equip")
 			return

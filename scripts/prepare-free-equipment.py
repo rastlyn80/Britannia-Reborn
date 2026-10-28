@@ -114,6 +114,7 @@ for slot,foldername in ITEMS.items():
 # Bake garment-only controls while the complete, unmasked body is available.
 import importlib.util
 spec=importlib.util.spec_from_file_location('robe_motion',ROOT/'scripts/robe-motion.py');motion=importlib.util.module_from_spec(spec);spec.loader.exec_module(motion)
+EVIDENCE['robe_silhouette']=motion.fit_silhouette(assets['robe'],body,rig)
 EVIDENCE['robe_motion']=motion.bake(rig,body,assets['robe'])
 EVIDENCE['robe_recipe_sha256']=hashlib.sha256((ROOT/'scripts/robe-motion.py').read_bytes()).hexdigest()
 # Natural albedo candidates and original normal/spec maps retain source pixels.

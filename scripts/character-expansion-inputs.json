@@ -29,6 +29,16 @@
       "url": "https://files.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip",
       "sha256": "b542127a8e25547c7c29c19f2d1d2adb9a664c80396ecd694095dbc8028a0107",
       "local": "work/free-human/makehuman_system_assets_cc0.zip"
+    },
+    "hats01": {
+      "url": "https://files.makehumancommunity.org/asset_packs/hats01/hats01_cc0.zip",
+      "sha256": "97b70d7bd90e74ee87a49faeb7c4a1b2762b311902974db575851daaae05b50e",
+      "local": "work/human-wardrobe-batch/hats01_cc0.zip"
+    },
+    "shirts01": {
+      "url": "https://files.makehumancommunity.org/asset_packs/shirts01/shirts01_cc0.zip",
+      "sha256": "a5a723b0e84a109bb190fcfeac7f1de4138d875da3e30fe5b3340eac9f38bcd3",
+      "local": "work/human-wardrobe-batch/shirts01_cc0.zip"
     }
   },
   "assets": {
@@ -230,6 +240,66 @@
         "clothes/javherre_casco_caballero_templario_templar_knight_helmet/casco.jpg": "132ba523c5479d38aba62189de7b07118b01a8d36a0395f70c6ea485d4327136",
         "clothes/javherre_casco_caballero_templario_templar_knight_helmet/javherre_casco_caballero_templario_templar_knight_helmet.thumb": "615432dce8a1fed5c41a0521b7f235a9ce453d862e1e0ede80781f526cc41c97",
         "clothes/javherre_casco_caballero_templario_templar_knight_helmet/javherre_casco_caballero_templario_templar_knight_helmet.mhclo": "ef866f620206b410467e150479637137f07a7187ad24b0a0cdfc150c73637656"
+      }
+    },
+    "jujube_newsboy_cap": {
+      "pack": "hats01",
+      "folder": "clothes/jujube_newsboy_cap",
+      "author": "jujube",
+      "license": "CC0",
+      "source": "http://www.makehumancommunity.org/node/78",
+      "files": {
+        "clothes/jujube_newsboy_cap/jujube_newsboy_cap.mhclo": "5e62bf1986288ddf433a7c07fc5d318a7aba7cf1d65a97cd600d7d692e54684f",
+        "clothes/jujube_newsboy_cap/newsboy_cap.mhmat": "661d18a8b971fb991f837428089921e7d0ab73cb0f659d77c76bfc0e96c0aa96",
+        "clothes/jujube_newsboy_cap/newsboy_cap.obj": "a4caf393c8b2e2e9648c47b43b21ec76a3dde2abd251c99f1a718fc7531d191b",
+        "clothes/jujube_newsboy_cap/jujube_newsboy_cap.thumb": "ef06c156d5025ab2b6aae07597b541a153a399cbc9db7495c6d5f19a9692161e",
+        "clothes/jujube_newsboy_cap/newsboy_cap_normals.png": "02ebc9a06c335c6ed1dd17f0dfe33af3bb10a9bdbc1d2c1b7c9b132877c40f05",
+        "clothes/jujube_newsboy_cap/newsboy_cap.png": "9162edcb5b3181bb5af369383df6b433373d0fb2b8e99dae66e5e0d96a766cfe"
+      }
+    },
+    "aethelraed_unraed_cloche_hat": {
+      "pack": "hats01",
+      "folder": "clothes/aethelraed_unraed_cloche_hat",
+      "author": "Aethelraed_Unraed",
+      "license": "CC0",
+      "source": "http://www.makehumancommunity.org/node/582",
+      "files": {
+        "clothes/aethelraed_unraed_cloche_hat/aethelraed_unraed_cloche_hat.mhclo": "dcfa569d163704756704e418af8a43b737d92cc3368361fcfabea5bbf4efed74",
+        "clothes/aethelraed_unraed_cloche_hat/cloche_hat_green.png": "7764d82de8abc541184774426e24b380cb84a94b8b7e302c880f4e948fd69b92",
+        "clothes/aethelraed_unraed_cloche_hat/cloche_hat.obj": "cee2439cf0c15cb93bc00c2c1cdf3cfc033bb1e4872e0fda275f649e5f3d846b",
+        "clothes/aethelraed_unraed_cloche_hat/green.mhmat": "ed0efb4e9f929dc20ecb31fb7cfb702007830aa2a8efec08bc891140277163c9",
+        "clothes/aethelraed_unraed_cloche_hat/aethelraed_unraed_cloche_hat.thumb": "f946001f4dc875f7c84409697150783ab1f68fb5fc1ebcfc5ee7cdea9cfe9a04"
+      }
+    },
+    "toigo_fisherman_sweater": {
+      "pack": "shirts01",
+      "folder": "clothes/toigo_fisherman_sweater",
+      "author": "MargaretToigo",
+      "license": "CC0",
+      "source": "http://www.makehumancommunity.org/node/1187",
+      "files": {
+        "clothes/toigo_fisherman_sweater/sweater_fisherman.obj": "2844465f4e798666a90f631ea4a89ae30d3e526ef045a978d338908750d21d09",
+        "clothes/toigo_fisherman_sweater/shirt-knit-NORM.png": "c3458d9b5174d7c34beed74618828c26f479200512d691a6bada34e7ea5d9a62",
+        "clothes/toigo_fisherman_sweater/toigo_fisherman_sweater.mhclo": "b454960bdd61985f246e88e547a127a75d590dc87d6c1a4062fb7c7c281d8999",
+        "clothes/toigo_fisherman_sweater/toigo_fisherman_sweater.thumb": "a64cdf427b565eb72d69c4e3b93cd6021df66fe4a7e30c14c55fbced8c3df391",
+        "clothes/toigo_fisherman_sweater/shirt-knit.png": "a7d526797da4cdc1a79603a35abebf41e577277267f36db6641cdb6cebe6ffb1",
+        "clothes/toigo_fisherman_sweater/sweater_fisherman.mhmat": "254c011b3edae8cbab7adb2d082de670dd41b26324bf5772318b7557a127fd64"
+      }
+    },
+    "toigo_bodice-style_top": {
+      "pack": "shirts01",
+      "folder": "clothes/toigo_bodice-style_top",
+      "author": "MargaretToigo",
+      "license": "CC0",
+      "source": "http://www.makehumancommunity.org/node/1667",
+      "files": {
+        "clothes/toigo_bodice-style_top/Bodice-spec.png": "915cd0dd9acf3caed0cee1b72df921693752e05ed58476247f137f36bb6839c8",
+        "clothes/toigo_bodice-style_top/toigo_bodice-style_top.thumb": "b402a4d3817bbc81237f30d0775bb6c66f78fdffced990db258b141777b149be",
+        "clothes/toigo_bodice-style_top/toigo_bodice-style_top.mhclo": "995f41209f5366483a94158d779e1dae2d8fd580914c1b15673c4b6722b81030",
+        "clothes/toigo_bodice-style_top/Bodice.png": "291ca9c9bfdef0d1684f0c94e7fe1e1b4264ac5ecd3a08f89c243b2be49ecc6a",
+        "clothes/toigo_bodice-style_top/Bodice-NORM.png": "f0ee8ff32f153d1b7d691d72d901c9f47e4af1846c787cde8db7b59dcc9752fe",
+        "clothes/toigo_bodice-style_top/bodice_style_top.mhmat": "b67abab1e4ba409122b093bf773ee686d00fee19c77f34a1f7bbbcfc581b262a",
+        "clothes/toigo_bodice-style_top/bodice_style_top.obj": "08be587b0a95de97e331a8432e9f33444783411f2060614a4f0776749fd70c25"
       }
     }
   },

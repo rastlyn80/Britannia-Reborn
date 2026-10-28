@@ -146,7 +146,7 @@ func set_equipment(worn: Array) -> void:
 			mesh.visible = bool(resolved.hair) and not hide_hair and not extra_hair
 			_shade(mesh,int(resolved.hair_hue),true)
 		if mesh.name.begins_with("Cloth_briefs"): mesh.visible = not (outfit_bits&3) and not extra_parts.has("outer_legs")
-		if mesh.name.begins_with("Cloth_bra"): mesh.visible = not (outfit_bits&9)
+		if mesh.name.begins_with("Cloth_bra"): mesh.visible = not (outfit_bits&9) and not extra_parts.has("shirt")
 	if masked:
 		var mask_path := folder+"/expansion/body-mask-%02d-gloves.glb" % outfit_bits if gloves else folder+"/runtime/body-mask-%02d.glb" % outfit_bits
 		_attach(mask_path,"Body",true)

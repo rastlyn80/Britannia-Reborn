@@ -8,6 +8,62 @@ from mathutils import Vector,Matrix
 
 LEVELS=(.88,.65,.40,.18)
 
+def leg_vertices(body):
+    # Height alone includes fingertips in the body's A bind pose. Those
+    # fingers later move at thigh height and must never widen a skirt.
+    return [v.index for v in body.data.vertices if .16<(body.matrix_world@v.co).z<.94 and sum(g.weight for g in v.groups if body.vertex_groups[g.group].name.startswith(('pelvis','thigh','calf','foot','ball')))>.5]
+
+def fit_silhouette(garment,body,rig):
+    """Refit flared lower cloth to the fixed body's anatomical cross sections.
+
+    Preserve folds, UVs, weights and the waist join; remove the source hoop
+    silhouette before fitting motion. Sleeves never participate in the fit.
+    """
+    inverse=rig.matrix_world.inverted();cloth_transform=inverse@garment.matrix_world
+    body_transform=inverse@body.matrix_world
+    def sleeve(ob,v):return any(g.weight>1e-7 and ob.vertex_groups[g.group].name.startswith(('upperarm','lowerarm','hand','clavicle')) for g in v.groups)
+    skin=[body_transform@v.co for v in body.data.vertices if sum(g.weight for g in v.groups if body.vertex_groups[g.group].name.startswith(('pelvis','thigh','calf','foot','ball')))>.5]
+    cloth=[cloth_transform@v.co for v in garment.data.vertices if not sleeve(garment,v)]
+    levels=[.95,.88,.80,.70,.65,.50,.40,.25,.15]
+    profiles=[]
+    for z in levels:
+        near=[p for p in skin if abs(p.z-z)<.04]
+        old=[p for p in cloth if abs(p.z-z)<.055]
+        if not near or not old:continue
+        old_width=max(abs(p.x) for p in old)
+        ease=.025+.025*max(0.,min(1.,(.7-z)/.55))
+        width=max(abs(p.x) for p in near)+ease
+        front=min(p.y for p in near)-ease;back=max(p.y for p in near)+ease
+        profiles.append((z,old_width,min(p.y for p in old),max(p.y for p in old),width,front,back))
+    changed=0
+    for vertex in garment.data.vertices:
+        if sleeve(garment,vertex):continue
+        co=cloth_transform@vertex.co
+        if co.z>=.95:continue
+        a=b=profiles[-1]
+        if co.z>=profiles[0][0]:a=b=profiles[0]
+        else:
+            for upper,lower in zip(profiles,profiles[1:]):
+                if upper[0]>=co.z>=lower[0]:a,b=upper,lower;break
+        t=0. if a[0]==b[0] else (a[0]-co.z)/(a[0]-b[0])
+        values=[x+(y-x)*t for x,y in zip(a[1:],b[1:])]
+        old_width,old_front,old_back,width,front,back=values
+        weight=max(0.,min(1.,(.95-co.z)/.07));weight=weight*weight*(3-2*weight)
+        old_middle=(old_front+old_back)*.5;old_depth=max(.025,(old_back-old_front)*.5)
+        nx=co.x/max(.05,old_width);ny=(co.y-old_middle)/old_depth
+        # A rounded rectangle wraps two thighs without requiring a broad
+        # circular hoop to enclose the front/outside corners of both legs.
+        # Compress deep source folds without collapsing distinct radial
+        # layers onto the same surface (which would cause self intersections).
+        angle=math.atan2(ny,nx);pleat=1.+.15*(math.hypot(nx,ny)-1.)
+        cosine=math.cos(angle);sine=math.sin(angle)
+        new_x=width*math.copysign(abs(cosine)**.5,cosine)*pleat
+        new_y=(front+back)*.5+(back-front)*.5*math.copysign(abs(sine)**.5,sine)*pleat
+        co.x+=(new_x-co.x)*weight;co.y+=(new_y-co.y)*weight
+        vertex.co=cloth_transform.inverted()@co;changed+=1
+    garment.data.update()
+    return {'method':'body section fit, 25-50 mm ease, preserved waist and sleeve geometry','vertices':changed,'profiles':profiles}
+
 def bake_envelopes(rig,body,garments,actions):
     """Fit shared controls in pelvis space, including turning/wide stances.
 
@@ -16,7 +72,7 @@ def bake_envelopes(rig,body,garments,actions):
     No body triangles are hidden to solve a clothing intersection.
     """
     inverse=rig.matrix_world.inverted()
-    leg_ids=[v.index for v in body.data.vertices if .16<(body.matrix_world@v.co).z<.94]
+    leg_ids=leg_vertices(body)
     foot_ids=[v.index for v in body.data.vertices if (body.matrix_world@v.co).z<.16]
     bands=[]
     for z in LEVELS:
@@ -50,16 +106,16 @@ def bake_envelopes(rig,body,garments,actions):
                 factor=(LEVELS[0]-z)/(LEVELS[0]-LEVELS[-1])
                 vertical=(lift['front']+lift['back'])*.5*factor
                 sample_z=z+(unpose.to_3x3()@inverse.to_3x3()@Vector((0,0,vertical))).z
-                near=[point for point in points if abs(point.z-sample_z)<.16]
-                lo=min(front,min((p.y for p in near),default=front)-.09)
-                hi=max(back,max((p.y for p in near),default=back)+.09)
+                near=[point for point in points if abs(point.z-sample_z)<.075]
+                lo=min(front,min((p.y for p in near),default=front)-.045)
+                hi=max(back,max((p.y for p in near),default=back)+.045)
                 left=min((p.x for p in near),default=-width);right=max((p.x for p in near),default=width)
                 centre=(left+right)*.5
                 middle=(lo+hi)*.5;depth=max(.05,(hi-lo)*.5)
-                scale=1.1
+                scale=.70
                 for p in near:
                     axial=(p.y-middle)/depth
-                    scale=max(scale,(abs(p.x-centre)+.035)/(max(.05,width)*math.sqrt(max(.03,1-axial*axial))))
+                    scale=max(scale,(abs(p.x-centre)+.08)/(max(.05,width)*max(.03,1-abs(axial)**4)**.25))
                 for side in ['front','back']:
                     name=f'robe_{side}_{i}';pose=rig.pose.bones[name];rest=rig.data.bones[name].matrix_local
                     delta=lo-front if side=='front' else hi-back
@@ -78,7 +134,7 @@ def bake_envelopes(rig,body,garments,actions):
         evidence[action.name]={'frames':end-start+1,'max_lateral_scale':max_scale,'max_panel_translation_m':max_shift}
     rig.animation_data.action=None
     for pose in rig.pose.bones:pose.matrix_basis=Matrix.Identity(4)
-    return {'method':'pelvis-space shared robe/skirt/kilt cross-section envelope; retain all body geometry','clips':evidence}
+    return {'method':'anatomical pelvis/leg-only rounded-rectangle envelope; retain all body geometry','leg_vertices':len(leg_ids),'clips':evidence}
 
 def control_weights(co):
     z=co.z
@@ -101,7 +157,7 @@ def control_weights(co):
 
 def bake(rig,body,robe):
     actions=[tr.strips[0].action for tr in rig.animation_data.nla_tracks]
-    leg_ids=[v.index for v in body.data.vertices if .16<(body.matrix_world@v.co).z<.94]
+    leg_ids=leg_vertices(body)
     foot_ids=[v.index for v in body.data.vertices if (body.matrix_world@v.co).z<.16]
     bpy.context.view_layer.objects.active=rig
     bpy.ops.object.mode_set(mode='EDIT')

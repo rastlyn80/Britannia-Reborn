@@ -12,6 +12,10 @@ if (Test-Path "$root/Viewer/local-art/free-equipment-female/expansion/closed_hel
 }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanMotionAudit.gd
 if ($LASTEXITCODE) { throw 'Animation feasibility audit failed' }
+if (Test-Path "$root/Viewer/local-art/free-equipment-female/expansion/shirt.glb") {
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanWardrobeBatchTests.gd
+  if ($LASTEXITCODE) { throw 'Civilian wardrobe/native dye checks failed' }
+}
 if (Test-Path "$root/Viewer/local-art/free-equipment-female/motion/human-motion.glb") {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanMotionTests.gd
   if ($LASTEXITCODE) { throw 'Prepared human motion checks failed' }

@@ -48,6 +48,9 @@ func wear(name: String, is_female: bool = false) -> Array:
 		"sword": selected=[0x1fa1,0x1539,0x170b,0x0f5e]
 		"hammer": selected=[0x1fa1,0x1539,0x170b,0x1439]
 		"staff": selected=[0x1f03,0x0e81]
+		"shirt": selected=[0x1517,0x1539,0x170b]
+		"cap": selected=[0x1517,0x1539,0x170b,0x1715]
+		"felt_hat": selected=[0x1517,0x1539,0x170b,0x1713]
 	for id in selected: items.append({"id":id,"layer":0,"hue":0})
 	return items
 
@@ -100,11 +103,12 @@ func build() -> void:
 	ui.position=Vector2(24,20)
 	root.add_child(ui)
 	var title:=Label.new()
-	title.text="BRITANNIA REBORN / HUMAN FOUNDATION\nMale (left) / Female (right) • expanded wardrobe + native hair/beards • movement polish pending"
+	title.text="BRITANNIA REBORN / HUMAN FOUNDATION\nMale (left) / Female (right) • expanded wardrobe • game-driven hair and clothing colours"
 	ui.add_child(title)
-	var row:=HBoxContainer.new()
+	var row:=HFlowContainer.new()
+	row.custom_minimum_size.x=1120
 	ui.add_child(row)
-	for name in ["base","viking","monk","robe","tunic","pants","boots","hood","skirt","kilt","guard","sword","hammer","staff"]:
+	for name in ["base","viking","monk","robe","tunic","pants","boots","hood","skirt","kilt","guard","sword","hammer","staff","shirt","cap","felt_hat"]:
 		var b:=Button.new()
 		b.text=name.capitalize()
 		b.pressed.connect(func():
