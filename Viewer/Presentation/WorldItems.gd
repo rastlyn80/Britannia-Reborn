@@ -156,7 +156,7 @@ func upsert(serial: int, item: Dictionary) -> void:
  root.position = scene.entity_point(item.x,item.y,item.z)
  # Modern Britain: server decoration whose name matches a library slot uses
  # the owner-pack/CC0 library model, set onto the surface under it.
- if preload("res://Presentation/GraphicsMode.gd").modern() and not str(rule.family) in ["door","sign","lamp","noticeboard","gameboard","backgammon"] and not preload("res://Presentation/ReviewedCatalog.gd").scanned(int(item.id)) and not preload("res://Presentation/PropReplacements.gd").has(str(rule.get("display_name",scene.world.get("staticData",{}).get(str(int(item.id)),{}).get("name",""))),int(item.id)):
+ if preload("res://Presentation/GraphicsMode.gd").modern() and not str(rule.family) in ["door","sign","lamp","noticeboard","gameboard","backgammon"] and not preload("res://Presentation/ReviewedCatalog.gd").scanned(int(item.id)) and not preload("res://Presentation/PropReplacements.gd").has(str(rule.get("display_name",scene.world.get("staticData",{}).get(str(int(item.id)),{}).get("name",""))),int(item.id)) and not preload("res://Presentation/CraftedProps.gd").handles(str(rule.get("display_name",scene.world.get("staticData",{}).get(str(int(item.id)),{}).get("name","")))):
   # Server definitions carry the tiledata name; map statics only know their own IDs.
   var item_name := str(rule.get("display_name",scene.world.get("staticData",{}).get(str(int(item.id)),{}).get("name",""))).strip_edges().to_lower()
   var found: Array = preload("res://Presentation/RegionalRules.gd").slot_for(item_name) if item_name != "" else []
@@ -187,6 +187,15 @@ func upsert(serial: int, item: Dictionary) -> void:
    root.add_child(built)
    _body(root,Vector3(0.6,0.4,0.6),Vector3(0,0.2,0),serial,(int(rule.get("flags",0))&64)!=0)
    return
+ # Simple objects built from photoscanned materials (CraftedProps.gd).
+ var crafted_name := str(rule.get("display_name",scene.world.get("staticData",{}).get(str(int(item.id)),{}).get("name","")))
+ if not str(rule.family) in FIXED_FAMILIES and not preload("res://Presentation/PropReplacements.gd").has(crafted_name,int(item.id)) and preload("res://Presentation/CraftedProps.gd").handles(crafted_name):
+  var crafted: Node3D = preload("res://Presentation/CraftedProps.gd").build(crafted_name,serial)
+  crafted.name = "CraftedVisual"
+  root.add_child(crafted)
+  _body(root,Vector3(0.6,0.5,0.6),Vector3(0,0.25,0),serial,(int(rule.get("flags",0))&64)!=0)
+  request_contact_refresh()
+  return
  # Photoscanned CC0 replacements by item name (prop-replacements.json).
  var replacement_name := str(rule.get("display_name",scene.world.get("staticData",{}).get(str(int(item.id)),{}).get("name","")))
  if not str(rule.family) in FIXED_FAMILIES and preload("res://Presentation/PropReplacements.gd").has(replacement_name,int(item.id)):

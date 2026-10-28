@@ -164,6 +164,8 @@ func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -
 	var found: Dictionary = preload("res://Presentation/PropReplacements.gd").entry_for(name,id)
 	var found_rule: Dictionary = audited if not audited.is_empty() else Rules.resolve(id,{"name":name,"height":item.height,"flags":flag_bits(item.flags)})
 	if not found.is_empty() and not preload("res://Presentation/PropReplacements.gd").applies(str(found_rule.get("kind","prop"))): found = {}
+	if found.is_empty() and preload("res://Presentation/PropReplacements.gd").applies(str(found_rule.get("kind","prop"))) and preload("res://Presentation/CraftedProps.gd").handles(name):
+		return {"status":"crafted","detail":"built from photoscanned timber, iron, cloth and stone"}
 	if not found.is_empty():
 		var model := str(found.get("model",found.get("models",[""])[0]))
 		if found.get("hide",false): return {"status":"scan","detail":"part drawn by the scanned model of its whole object"}

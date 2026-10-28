@@ -1278,7 +1278,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 		# Modern Britain: library models replace the reviewed stand-ins for loose
 		# objects too (multi-cell furniture keeps its fitted assemblies).
 		var modern := preload("res://Presentation/GraphicsMode.gd").modern() and tint.is_empty() and kind in ["prop","asset"] and not groups.has(ordinal)
-		if modern and not rule.has("slot") and not preload("res://Presentation/PropReplacements.gd").has(str(detail.get("name","")),int(s.id)):
+		if modern and not rule.has("slot") and not preload("res://Presentation/PropReplacements.gd").has(str(detail.get("name","")),int(s.id)) and not preload("res://Presentation/CraftedProps.gd").handles(str(detail.get("name",""))):
 			var found: Array = preload("res://Presentation/RegionalRules.gd").slot_for(str(detail.get("name","")).strip_edges().to_lower())
 			if not found.is_empty(): rule = rule.merged({"slot":found[0],"slotSize":found[1]}.merged({"slotCount":found[2]} if int(found[2]) > 1 else {}))
 		# Modern Britain: table and bench runs become library pieces along the run.
@@ -1292,6 +1292,8 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 			if visual and not long_x: visual.rotation.y = PI/2
 		# Photoscanned CC0 replacements by item name (prop-replacements.json).
 		if visual == null and preload("res://Presentation/PropReplacements.gd").applies(kind) and not groups.has(ordinal): visual = preload("res://Presentation/PropReplacements.gd").build(self,str(detail.get("name","")),int(s.x)*7919+int(s.y)*104729,int(s.id))
+		# Simple objects built from photoscanned materials (CraftedProps.gd).
+		if visual == null and preload("res://Presentation/PropReplacements.gd").applies(kind) and not groups.has(ordinal) and preload("res://Presentation/CraftedProps.gd").handles(str(detail.get("name","")).to_lower()): visual = preload("res://Presentation/CraftedProps.gd").build(str(detail.get("name","")),int(s.x)*7919+int(s.y))
 		if kind in ["prop","asset"] and footprints.has(ordinal) and not groups.has(ordinal): visual = _footprint_visual(ordinal,str(detail.get("name","")),int(s.id),visual)
 		# Furniture that stands against a wall ("face": "wall") turns its back to it.
 		elif visual != null and kind in ["prop","asset"] and str(preload("res://Presentation/PropReplacements.gd").entry_for(str(detail.get("name","")),int(s.id)).get("face","")) == "wall":

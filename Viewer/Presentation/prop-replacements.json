@@ -3604,6 +3604,61 @@
      "skip": true
     }
    }
+  },
+  "bananas": {
+   "model": "bananas",
+   "length": 0.25
+  },
+  "banana": {
+   "model": "bananas",
+   "length": 0.18
+  },
+  "bunch of dates": {
+   "model": "bananas",
+   "length": 0.15,
+   "material": {
+    "color": "5a2a20",
+    "metallic": 0.0,
+    "roughness": 0.6
+   }
+  },
+  "saw": {
+   "model": "handsaw_wood",
+   "length": 0.6
+  },
+  "dovetail saw": {
+   "model": "handsaw_wood",
+   "length": 0.35
+  },
+  "jointing plane": {
+   "model": "hand_plane_no4",
+   "length": 0.4
+  },
+  "smoothing plane": {
+   "model": "hand_plane_no4",
+   "length": 0.25
+  },
+  "moulding planes": {
+   "model": "hand_plane_no4",
+   "length": 0.3
+  },
+  "dried onions": {
+   "model": "yellow_onion",
+   "height": 0.07,
+   "cluster": 3
+  },
+  "ginseng": {
+   "model": "food_ginger_01",
+   "length": 0.1
+  },
+  "mandrake root": {
+   "model": "food_ginger_01",
+   "length": 0.12,
+   "material": {
+    "color": "7a5a40",
+    "metallic": 0.0,
+    "roughness": 0.8
+   }
   }
  }
 }

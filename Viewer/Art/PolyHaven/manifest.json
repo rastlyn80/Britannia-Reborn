@@ -1687,6 +1687,236 @@
           "bytes": 681441
         }
       ]
+    },
+    {
+      "id": "bananas",
+      "name": "Bananas",
+      "source": "https://polyhaven.com/a/bananas",
+      "authors": [
+        "Alexander Shulha"
+      ],
+      "polycount": 46868,
+      "files": [
+        {
+          "path": "bananas/bananas_1k.gltf",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/bananas/bananas_1k.gltf",
+          "sourceMd5": "b710301bd65174db1d3a6dccccb299e0",
+          "sha256": "4709a758c91cbfb5df7df23fb6d9ed21778ed0030c260b11f9171ed28659e700",
+          "bytes": 8796
+        },
+        {
+          "path": "bananas/textures/bananas_nor_gl_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/bananas/bananas_nor_gl_1k.jpg",
+          "sourceMd5": "34cd2865e2b78ef0995997c71f357ff4",
+          "sha256": "e760512ee4ed3135d23e7b87c995a4c8ec6a2b7fd767689deb11b6dd1e50e9a5",
+          "bytes": 319878
+        },
+        {
+          "path": "bananas/textures/bananas_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/bananas/bananas_diff_1k.jpg",
+          "sourceMd5": "e874066e400c0c04220723288505506c",
+          "sha256": "b659aca29f68d038c942cf37f3a89c206c8fea81ff69a5c89d6d7b139bdca6d9",
+          "bytes": 497595
+        },
+        {
+          "path": "bananas/textures/bananas_arm_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/bananas/bananas_arm_1k.jpg",
+          "sourceMd5": "71d93781b8e7774b6e303f5418e4753f",
+          "sha256": "f5b9a110b75545bec9d80279b02f38c995a257eea5ae5a1f6f6c39e601d4c8a5",
+          "bytes": 564855
+        },
+        {
+          "path": "bananas/bananas.bin",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/bananas/bananas.bin",
+          "sourceMd5": "1e1c9dfb934eb50a8edbd6ab848dc11a",
+          "sha256": "c98b7dbabd8ceb70c9b8ea92611c7c7833dd86c118c8013b941eb379bee26774",
+          "bytes": 1088376
+        }
+      ]
+    },
+    {
+      "id": "handsaw_wood",
+      "name": "Handsaw Wood",
+      "source": "https://polyhaven.com/a/handsaw_wood",
+      "authors": [
+        "Konrad Sza\u0142ankiewicz"
+      ],
+      "polycount": 2548,
+      "files": [
+        {
+          "path": "handsaw_wood/handsaw_wood_1k.gltf",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/handsaw_wood/handsaw_wood_1k.gltf",
+          "sourceMd5": "2b685f9c8f55c9d7b6c1268be3357eae",
+          "sha256": "b2815ea7de69c2cec56f16cbdf65822aa0380673c76039edac1f92b9a6c4da79",
+          "bytes": 2762
+        },
+        {
+          "path": "handsaw_wood/handsaw_wood.bin",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/4k/handsaw_wood/handsaw_wood.bin",
+          "sourceMd5": "a6c9236ed8f9201bbd13f1ef984b21ca",
+          "sha256": "15563872e8c8e55bf24b00f1aafb9722d38d06f8c395bc7441914543761fc58b",
+          "bytes": 89624
+        },
+        {
+          "path": "handsaw_wood/textures/handsaw_wood_nor_gl_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/handsaw_wood/handsaw_wood_nor_gl_1k.jpg",
+          "sourceMd5": "3d4b36392ce0517862f9c45fce6ca5eb",
+          "sha256": "e6500ee722af2de1bce76d341c3a334588f83a426bc3bb3a1792b461c7016327",
+          "bytes": 716898
+        },
+        {
+          "path": "handsaw_wood/textures/handsaw_wood_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/handsaw_wood/handsaw_wood_diff_1k.jpg",
+          "sourceMd5": "87f284a7b1b1ef73a72acbd67082accb",
+          "sha256": "bf210b9862fc8d13e7ad6d2066c10d4aa577f50467ac75a25a1117f2b5935ed4",
+          "bytes": 737874
+        },
+        {
+          "path": "handsaw_wood/textures/handsaw_wood_arm_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/handsaw_wood/handsaw_wood_arm_1k.jpg",
+          "sourceMd5": "d17f9336d40d0dffd54bece4918cf435",
+          "sha256": "548e7436ec0cd42d8a4ad254187b76eb25947dabc5f4de56daeca89fb446372f",
+          "bytes": 932131
+        }
+      ]
+    },
+    {
+      "id": "hand_plane_no4",
+      "name": "Hand Plane No4",
+      "source": "https://polyhaven.com/a/hand_plane_no4",
+      "authors": [
+        "Satyaki Mandal"
+      ],
+      "polycount": 8220,
+      "files": [
+        {
+          "path": "hand_plane_no4/hand_plane_no4_1k.gltf",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/hand_plane_no4/hand_plane_no4_1k.gltf",
+          "sourceMd5": "b55927f3de30b83c6dd1761f92a1206d",
+          "sha256": "2c16b27d3ad132d46bee11fca83ceb63ec957fc042af4343fb4830fe3da7e22e",
+          "bytes": 2917
+        },
+        {
+          "path": "hand_plane_no4/textures/hand_plane_no4_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/hand_plane_no4/hand_plane_no4_diff_1k.jpg",
+          "sourceMd5": "fb9fa732a71e8fd39daedb78e0d551a1",
+          "sha256": "b109c8f6df977c5a8d78588302c06d44adb2ba34009983f31b0d528550e11ba6",
+          "bytes": 733120
+        },
+        {
+          "path": "hand_plane_no4/textures/hand_plane_no4_arm_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/hand_plane_no4/hand_plane_no4_arm_1k.jpg",
+          "sourceMd5": "cc5885ccbbc6bd3b1a3799946426d2e7",
+          "sha256": "e73a35d2ba880a63a4a7091a0b1ccf959425c6bfb5efb0e2c65b341c6baafd98",
+          "bytes": 711004
+        },
+        {
+          "path": "hand_plane_no4/textures/hand_plane_no4_nor_gl_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/hand_plane_no4/hand_plane_no4_nor_gl_1k.jpg",
+          "sourceMd5": "1125b3d2e2541b1bb80296dfa0563a38",
+          "sha256": "b06dea7a3499772eaa4d059a849ea0e5d448eeff583c00420e145302b6e186a1",
+          "bytes": 875917
+        },
+        {
+          "path": "hand_plane_no4/hand_plane_no4.bin",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/hand_plane_no4/hand_plane_no4.bin",
+          "sourceMd5": "100169419da665726938e1a5bcc24121",
+          "sha256": "5c4b28d2a931f0e66de91dd976c04f109419a8d0bda527096d2b4d4d0e00b9f7",
+          "bytes": 229256
+        }
+      ]
+    },
+    {
+      "id": "yellow_onion",
+      "name": "Yellow Onion",
+      "source": "https://polyhaven.com/a/yellow_onion",
+      "authors": [
+        "Kuutti Siitonen"
+      ],
+      "polycount": 5444,
+      "files": [
+        {
+          "path": "yellow_onion/yellow_onion_1k.gltf",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/yellow_onion/yellow_onion_1k.gltf",
+          "sourceMd5": "dae6fea89c74167e9140866b0b16201d",
+          "sha256": "0d4aaa4046c5b471ea7f9197c453f3d48699bc85e06fd13606c8ea09a1dce699",
+          "bytes": 2785
+        },
+        {
+          "path": "yellow_onion/textures/yellow_onion_nor_gl_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/yellow_onion/yellow_onion_nor_gl_1k.jpg",
+          "sourceMd5": "649caf0e1fa5a79a9aa1319012def387",
+          "sha256": "f471dbeb82baaf3d743f28a254ed94587f83bd6131f03e656655c6d48717f137",
+          "bytes": 715114
+        },
+        {
+          "path": "yellow_onion/textures/yellow_onion_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/yellow_onion/yellow_onion_diff_1k.jpg",
+          "sourceMd5": "65504103b6b8af63ba39e2b7d8f6805a",
+          "sha256": "ad28b9926c9190398f1006fcf0b89c44255eb41aee5d52391a41ad5fc0f13e80",
+          "bytes": 455175
+        },
+        {
+          "path": "yellow_onion/textures/yellow_onion_arm_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/yellow_onion/yellow_onion_arm_1k.jpg",
+          "sourceMd5": "b3cf49965fa2ee909b819a19ba321c6f",
+          "sha256": "77398ea7072602555a86510bfe37a7427a22932efc13de799c6fe2bbe62d2b8d",
+          "bytes": 492495
+        },
+        {
+          "path": "yellow_onion/yellow_onion.bin",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/yellow_onion/yellow_onion.bin",
+          "sourceMd5": "d85feec8c46d2aa13479cabbaf6a27cc",
+          "sha256": "586c1e459e31e0647d090df4497e88c4e905e598607e9632590fb74cce7ef5f5",
+          "bytes": 139832
+        }
+      ]
+    },
+    {
+      "id": "food_ginger_01",
+      "name": "Food Ginger 01",
+      "source": "https://polyhaven.com/a/food_ginger_01",
+      "authors": [
+        "Oliver Harries"
+      ],
+      "polycount": 7205,
+      "files": [
+        {
+          "path": "food_ginger_01/food_ginger_01_1k.gltf",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/food_ginger_01/food_ginger_01_1k.gltf",
+          "sourceMd5": "fcd801cc9d49fe6e757d44b037fd92a8",
+          "sha256": "d08d23765047a58ba29dcebd72a4aa481690cc7774179e42a4af5cb66b2c9ffb",
+          "bytes": 2715
+        },
+        {
+          "path": "food_ginger_01/textures/food_ginger_01_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/food_ginger_01/food_ginger_01_diff_1k.jpg",
+          "sourceMd5": "a52194196f9ed0e196ad81edcbccfe24",
+          "sha256": "3f2117a9f5718a797bcbb22557cad1599ffb6eec50232b71ee4be3c7cf304890",
+          "bytes": 201419
+        },
+        {
+          "path": "food_ginger_01/food_ginger_01.bin",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/food_ginger_01/food_ginger_01.bin",
+          "sourceMd5": "527a57b696cb4d40c8b3f286b587006a",
+          "sha256": "b1967c29b2f38dbc63ca2374486c9eb1d90870795b40bc1c2728ffcc760ebcd4",
+          "bytes": 175232
+        },
+        {
+          "path": "food_ginger_01/textures/food_ginger_01_rough_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/food_ginger_01/food_ginger_01_rough_1k.jpg",
+          "sourceMd5": "9a794479505c0c5745271476e16921b9",
+          "sha256": "19eba8b9048838849a4cb033d83b43efcaaf45bff14364285fa19b0c9aa12951",
+          "bytes": 55655
+        },
+        {
+          "path": "food_ginger_01/textures/food_ginger_01_nor_gl_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/food_ginger_01/food_ginger_01_nor_gl_1k.jpg",
+          "sourceMd5": "2bd05ffea56c8e0d140e7af7ccaf9e57",
+          "sha256": "0bcef5efbb8c14fe758278a42713dfd6a5cc25c5eaaaffa9ff594fcaee0a5910",
+          "bytes": 151771
+        }
+      ]
     }
   ]
 }

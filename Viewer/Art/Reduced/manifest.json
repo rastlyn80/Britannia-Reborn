@@ -736,6 +736,17 @@
       "sha256": "51552c1d6503851cc1aa62cce8eeabb095c205597069229e79426a8ecb2f8822",
       "sourceTriangles": 3887,
       "triangles": 2999
+    },
+    {
+      "id": "bananas",
+      "source": "Art/PolyHaven/bananas/bananas_1k.gltf",
+      "sourceSha256": "4709a758c91cbfb5df7df23fb6d9ed21778ed0030c260b11f9171ed28659e700",
+      "license": "CC0-1.0",
+      "page": "https://polyhaven.com/a/bananas",
+      "file": "bananas/bananas.glb",
+      "sha256": "bee1178d2d94a1e464b75ef30d20a4de159e94a57b2db78f9161d2a41dcacf84",
+      "sourceTriangles": 46868,
+      "triangles": 2996
     }
   ]
 }
