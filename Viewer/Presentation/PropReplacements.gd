@@ -16,22 +16,93 @@ static func entry(name: String) -> Dictionary:
 		table = data.items if data is Dictionary else {"": {}}
 	return table.get(key(name),{})
 
-static func has(name: String) -> bool:
-	return not entry(name).is_empty()
+# Per-graphic overrides under "ids": {"<id>": {...}} refine one entry (a
+# pedestal height, "hide" for the extra tiles of a multi-tile piece, "skip"
+# where the name's model does not fit that graphic).
+static func entry_for(name: String, id := -1) -> Dictionary:
+	var found := entry(name)
+	if found.is_empty() or id < 0: return found
+	var override: Dictionary = found.get("ids",{}).get(str(id),{})
+	if override.get("skip",false): return {}
+	return found.merged(override,true)
+
+static func has(name: String, id := -1) -> bool:
+	return not entry_for(name,id).is_empty()
 
 # reconstruction: Reconstruction.gd instance (its fitted() caches bounds).
-static func build(reconstruction: RefCounted, name: String) -> Node3D:
-	var found := entry(name)
+# Optional keys: "models" (variants picked by seed), "cluster" (that many
+# jittered copies, e.g. a patch of mushrooms), "rotation" (yaw degrees that
+# turn the model's front to -Z), "anchor": "back" (its back face on z = 0,
+# for wall mounts) and "elevation" (metres above the placement).
+static func build(reconstruction: RefCounted, name: String, seed := 0, id := -1) -> Node3D:
+	var found := entry_for(name,id)
 	if found.is_empty(): return null
+	if found.get("hide",false):
+		var part := Node3D.new()
+		part.set_meta("replacement","part of a multi-tile piece")
+		return part
+	var models: Array = found.get("models",[found.get("model","")])
+	var count := int(found.get("cluster",1))
+	if count == 1:
+		var single := _one(reconstruction,str(models[abs(seed)%models.size()]),found,1.0)
+		if single: single.set_meta("replacement",str(models[abs(seed)%models.size()]))
+		return single
+	var random := RandomNumberGenerator.new()
+	random.seed = hash([key(name),seed])
+	var root := Node3D.new()
+	for i in count:
+		var model := str(models[(i+abs(seed))%models.size()])
+		var placed := _one(reconstruction,model,found,random.randf_range(0.65,1.15))
+		if placed == null: continue
+		var angle := TAU*float(i)/count+random.randf_range(-0.5,0.5)
+		var radius := 0.0 if i == 0 else random.randf_range(0.12,0.3)
+		placed.position = Vector3(cos(angle)*radius,0,sin(angle)*radius)
+		placed.rotation.y = random.randf_range(0,TAU)
+		root.add_child(placed)
+	if root.get_child_count() == 0:
+		root.free()
+		return null
+	var first := str(models[0])
+	root.set_meta("replacement",first)
+	return root
+
+static func _one(reconstruction: RefCounted, model: String, found: Dictionary, scale: float) -> Node3D:
 	# "Objaverse/name" entries are reduced museum/Sketchfab scans (Art/Objaverse).
-	var model := str(found.model)
 	var path := "Objaverse/%s/%s.glb" % [model.trim_prefix("Objaverse/"),model.trim_prefix("Objaverse/")] if model.begins_with("Objaverse/") else "PolyHaven/%s/%s_1k.gltf" % [model,model]
 	if not ResourceLoader.exists("res://Art/"+path): return null
 	var probe: Node3D = reconstruction.fitted(path,Vector3.ONE)
 	probe.free()
 	var box: AABB = reconstruction.bounds[path]
 	# Flat goods (cutlery, trays, bread, ore) scale by their length instead.
-	var factor := float(found.length)/maxf(maxf(box.size.x,box.size.z),0.001) if found.has("length") else float(found.height)/maxf(box.size.y,0.001)
+	var factor := (float(found.length)/maxf(maxf(box.size.x,box.size.z),0.001) if found.has("length") else float(found.height)/maxf(box.size.y,0.001))*scale
 	var placed: Node3D = reconstruction.fitted(path,box.size*factor)
-	placed.set_meta("replacement",model)
-	return placed
+	if not (found.has("rotation") or found.has("anchor") or found.has("elevation") or found.has("flame") or found.has("pedestal")): return placed
+	var pivot := Node3D.new()
+	pivot.add_child(placed)
+	placed.rotation.y = deg_to_rad(float(found.get("rotation",0.0)))
+	placed.position.y = float(found.get("elevation",0.0))
+	# "pedestal": [width, height] stone column the model stands on.
+	if found.has("pedestal"):
+		var column: Array = found.pedestal
+		reconstruction.geometry.crafted_box(pivot,Vector3(float(column[0]),float(column[1]),float(column[0])),Vector3(0,float(column[1])/2,0),"9e9a87")
+		placed.position.y += float(column[1])
+	var turned := Basis(Vector3.UP,placed.rotation.y)*(box.size*factor)
+	if str(found.get("anchor","")) == "back": placed.position.z = -absf(turned.z)/2
+	# "flame": a glowing tip in the torch head (the top, away from the wall).
+	if found.get("flame",false):
+		var flame := MeshInstance3D.new()
+		var tip := SphereMesh.new()
+		tip.radius = 0.05
+		tip.height = 0.16
+		tip.radial_segments = 8
+		tip.rings = 4
+		var glow := StandardMaterial3D.new()
+		glow.albedo_color = Color("ffb347")
+		glow.emission_enabled = true
+		glow.emission = Color("ff9a2e")
+		glow.emission_energy_multiplier = 2.5
+		flame.mesh = tip
+		flame.material_override = glow
+		flame.position = Vector3(0,placed.position.y+absf(turned.y)+0.02,placed.position.z-absf(turned.z)/2+0.07)
+		pivot.add_child(flame)
+	return pivot

@@ -986,6 +986,90 @@
         9.04
       ],
       "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "mushroom_agaric",
+      "title": "Fly Agaric Mushroom",
+      "uid": "d6c3876f091b4de49a38553a177bab0f",
+      "page": "https://sketchfab.com/3d-models/d6c3876f091b4de49a38553a177bab0f",
+      "author": "Timothy Hsu",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-061/d6c3876f091b4de49a38553a177bab0f.glb",
+      "sourceSha256": "be2ee620d4dae5ac2e020ddd70674c0777ca493404cef3b981b5dcf39de96d24",
+      "sourceTriangles": 5208,
+      "file": "mushroom_agaric/mushroom_agaric.glb",
+      "sha256": "9e9c72ecd884500ebb01e197b784dce67a9afcae1eff53b8e41ac32d97b28476",
+      "triangles": 2996,
+      "size": [
+        102.696,
+        127.496,
+        100.57
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "mushroom_amanita",
+      "title": "Musmir\u0117  - Amanita muscaria",
+      "uid": "8b804eac1165473fbf80a57caf82b8cb",
+      "page": "https://sketchfab.com/3d-models/8b804eac1165473fbf80a57caf82b8cb",
+      "author": "Mantas Talmantas",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-109/8b804eac1165473fbf80a57caf82b8cb.glb",
+      "sourceSha256": "91baad76458495b96c9a648e0dc1d851fd76101f0e44ce8b3cd3491a3cc3d52a",
+      "sourceTriangles": 11798,
+      "file": "mushroom_amanita/mushroom_amanita.glb",
+      "sha256": "d2b147f35ed51cf4d51540c5c18b991e709cf9ef7ff85473d768999fa8c84923",
+      "triangles": 2998,
+      "size": [
+        0.938,
+        1.127,
+        1.014
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "mushroom_brown",
+      "title": "Mushroom",
+      "uid": "767a395d901d40128eb6c18bc64bd202",
+      "page": "https://sketchfab.com/3d-models/767a395d901d40128eb6c18bc64bd202",
+      "author": "Asia Matusik",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-067/767a395d901d40128eb6c18bc64bd202.glb",
+      "sourceSha256": "28b6cf8ac56052dca5a1626c5f9de2371260f62b1c0c23a92b86c83fc642a4d9",
+      "sourceTriangles": 2446,
+      "file": "mushroom_brown/mushroom_brown.glb",
+      "sha256": "c916195c4da3d408a58184bcbdef87e727fee33eff76f22cac50f17011331930",
+      "triangles": 2446,
+      "size": [
+        5.684,
+        9.949,
+        5.684
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "lamp_post_english",
+      "title": "Old English Street Lamp (.obj)",
+      "uid": "6341be23fc704d19967944359a410d68",
+      "page": "https://sketchfab.com/3d-models/6341be23fc704d19967944359a410d68",
+      "author": "rhcreations",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-018/6341be23fc704d19967944359a410d68.glb",
+      "sourceSha256": "d16940a59d7dba02f9949b9166bcc9f693cf88d97860c23c20a2007880df599f",
+      "sourceTriangles": 10407,
+      "file": "lamp_post_english/lamp_post_english.glb",
+      "sha256": "19ff5b2bbc5e298fa824c46119038d90bd88cce928872b1668d8dfd4ac037f23",
+      "triangles": 4997,
+      "size": [
+        1.412,
+        9.05,
+        1.017
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
     }
   ]
 }

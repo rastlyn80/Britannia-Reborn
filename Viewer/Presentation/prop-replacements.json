@@ -256,6 +256,82 @@
   "bottles": {
    "model": "Objaverse/bottles_glass",
    "length": 0.5
+  },
+  "mushroom": {
+   "models": [
+    "Objaverse/mushroom_agaric",
+    "Objaverse/mushroom_brown"
+   ],
+   "height": 0.32
+  },
+  "mushrooms": {
+   "models": [
+    "Objaverse/mushroom_amanita",
+    "Objaverse/mushroom_agaric",
+    "Objaverse/mushroom_brown"
+   ],
+   "height": 0.28,
+   "cluster": 4
+  },
+  "lamp post": {
+   "model": "Objaverse/lamp_post_english",
+   "height": 3.2
+  },
+  "candlabra": {
+   "model": "Objaverse/candlestick_four",
+   "height": 1.6
+  },
+  "wall torch": {
+   "model": "Objaverse/wall_torch",
+   "height": 0.6,
+   "rotation": 90,
+   "anchor": "back",
+   "elevation": 0.35,
+   "flame": true
+  },
+  "banner": {
+   "model": "Objaverse/banner_worn",
+   "height": 1.5,
+   "rotation": 90,
+   "anchor": "back"
+  },
+  "tattered banner": {
+   "model": "Objaverse/banner_worn",
+   "height": 1.5,
+   "rotation": 90,
+   "anchor": "back"
+  },
+  "statue": {
+   "model": "Objaverse/statue_angel",
+   "height": 2.0,
+   "ids": {
+    "5023": {
+     "hide": true
+    },
+    "5024": {
+     "hide": true
+    },
+    "4824": {
+     "pedestal": [
+      0.7,
+      1.6
+     ],
+     "height": 1.9
+    },
+    "4825": {
+     "pedestal": [
+      0.7,
+      1.6
+     ],
+     "height": 1.9
+    },
+    "4648": {
+     "skip": true
+    },
+    "5019": {
+     "skip": true
+    }
+   }
   }
  }
 }

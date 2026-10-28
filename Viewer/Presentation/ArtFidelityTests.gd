@@ -128,6 +128,14 @@ func _initialize() -> void:
  var hung: Dictionary=mount_recon.presentation_adjustments.get(3,{})
  check(hung.get("offset",Vector3.ZERO).is_equal_approx(Vector3(-.91,0,0)) and is_equal_approx(float(hung.get("yaw",0)),-PI/2),"Torch hangs on the west wall face and faces east")
  check(not mount_recon.presentation_adjustments.get(4,{}).has("offset"),"Torch without a source wall is not moved")
+ check(regional.resolve(5677,{"name":"banner","height":0}).get("mount","")=="wall" and regional.resolve(1062,{"name":"tattered banner","height":0}).get("mount","")=="wall","Banners hang flat on the wall beside them")
+ var swaps:=preload("res://Presentation/PropReplacements.gd")
+ var statue_part: Node3D=swaps.build(recon,"statue",0,5023)
+ check(swaps.has("statue",5022) and statue_part.get_child_count()==0 and not swaps.has("statue",4648),"Multi-tile statue draws once; graphics the scan does not depict keep their own look")
+ statue_part.free()
+ var patch: Node3D=swaps.build(recon,"mushrooms",7)
+ check(patch!=null and patch.get_child_count()>=3,"A mushrooms tile is a small patch of scanned mushrooms, not one cap")
+ if patch: patch.free()
  # Source-backed contact on unreviewed procedural tables, rugs and stacks.
  var contact:=Support.new()
  contact.catalog={"2947":{"kind":"table"},"22224":{"kind":"carpet"}}

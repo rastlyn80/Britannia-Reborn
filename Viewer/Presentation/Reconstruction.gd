@@ -1102,7 +1102,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 		# Modern Britain: library models replace the reviewed stand-ins for loose
 		# objects too (multi-cell furniture keeps its fitted assemblies).
 		var modern := preload("res://Presentation/GraphicsMode.gd").modern() and tint.is_empty() and kind in ["prop","asset"] and not groups.has(ordinal)
-		if modern and not rule.has("slot") and not preload("res://Presentation/PropReplacements.gd").has(str(detail.get("name",""))):
+		if modern and not rule.has("slot") and not preload("res://Presentation/PropReplacements.gd").has(str(detail.get("name","")),int(s.id)):
 			var found: Array = preload("res://Presentation/RegionalRules.gd").slot_for(str(detail.get("name","")).strip_edges().to_lower())
 			if not found.is_empty(): rule = rule.merged({"slot":found[0],"slotSize":found[1]}.merged({"slotCount":found[2]} if int(found[2]) > 1 else {}))
 		# Modern Britain: table and bench runs become library pieces along the run.
@@ -1113,10 +1113,12 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 			visual = preload("res://Presentation/LocalLibrary.gd").run(furniture_slot,int(s.x),int(s.y),maxf(span.x,span.y),0.8 if kind == "table" else 0.48,minf(span.x,span.y)*(0.9 if kind == "table" else 0.5))
 			if visual and not long_x: visual.rotation.y = PI/2
 		# Photoscanned CC0 replacements by item name (prop-replacements.json).
-		if visual == null and kind in ["prop","asset","rock","log"] and not groups.has(ordinal): visual = preload("res://Presentation/PropReplacements.gd").build(self,str(detail.get("name","")))
+		if visual == null and kind in ["prop","asset","rock","log","mushroom","post"] and not groups.has(ordinal): visual = preload("res://Presentation/PropReplacements.gd").build(self,str(detail.get("name","")),int(s.x)*7919+int(s.y)*104729,int(s.id))
 		# Counters follow their real footprint (L and U shapes) cell by cell.
 		if visual == null and kind == "counter" and tint.is_empty(): visual = counter_run(s,groups.get(ordinal,{"indices":[ordinal],"min_z":float(s.z)}),world)
-		if visual == null and (preload("res://Presentation/ReviewedCatalog.gd").scanned(int(s.id)) or not (modern and rule.has("slot") and preload("res://Presentation/LocalLibrary.gd").has(str(rule.slot)))):
+		# Wooden benches are runs of the scanned bench whatever their review says.
+		var scanned_bench := kind == "bench" and tint.is_empty() and not ("stone" in str(detail.get("name","")).to_lower() or "marble" in str(detail.get("name","")).to_lower()) and ResourceLoader.exists("res://Art/Objaverse/bench_scan/bench_scan.glb")
+		if visual == null and not scanned_bench and (preload("res://Presentation/ReviewedCatalog.gd").scanned(int(s.id)) or not (modern and rule.has("slot") and preload("res://Presentation/LocalLibrary.gd").has(str(rule.slot)))):
 			visual = preload("res://Presentation/ReviewedCatalog.gd").build(self,int(s.id),groups.get(ordinal,{}))
 		# Owner-library model for graphics outside the reviewed city (local only),
 		# and in Britain when modern graphics are selected.

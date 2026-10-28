@@ -148,7 +148,7 @@ func upsert(serial: int, item: Dictionary) -> void:
  root.position = scene.entity_point(item.x,item.y,item.z)
  # Modern Britain: server decoration whose name matches a library slot uses
  # the owner-pack/CC0 library model, set onto the surface under it.
- if preload("res://Presentation/GraphicsMode.gd").modern() and not str(rule.family) in ["door","sign","lamp","noticeboard","gameboard","backgammon"] and not preload("res://Presentation/ReviewedCatalog.gd").scanned(int(item.id)) and not preload("res://Presentation/PropReplacements.gd").has(str(rule.get("display_name",scene.world.get("staticData",{}).get(str(int(item.id)),{}).get("name","")))):
+ if preload("res://Presentation/GraphicsMode.gd").modern() and not str(rule.family) in ["door","sign","lamp","noticeboard","gameboard","backgammon"] and not preload("res://Presentation/ReviewedCatalog.gd").scanned(int(item.id)) and not preload("res://Presentation/PropReplacements.gd").has(str(rule.get("display_name",scene.world.get("staticData",{}).get(str(int(item.id)),{}).get("name",""))),int(item.id)):
   # Server definitions carry the tiledata name; map statics only know their own IDs.
   var item_name := str(rule.get("display_name",scene.world.get("staticData",{}).get(str(int(item.id)),{}).get("name",""))).strip_edges().to_lower()
   var found: Array = preload("res://Presentation/RegionalRules.gd").slot_for(item_name) if item_name != "" else []
@@ -166,14 +166,14 @@ func upsert(serial: int, item: Dictionary) -> void:
     return
  # Photoscanned CC0 replacements by item name (prop-replacements.json).
  var replacement_name := str(rule.get("display_name",scene.world.get("staticData",{}).get(str(int(item.id)),{}).get("name","")))
- if not str(rule.family) in FIXED_FAMILIES and preload("res://Presentation/PropReplacements.gd").has(replacement_name):
-  var replaced: Node3D = preload("res://Presentation/PropReplacements.gd").build(scene.reconstruction,replacement_name)
+ if not str(rule.family) in FIXED_FAMILIES and preload("res://Presentation/PropReplacements.gd").has(replacement_name,int(item.id)):
+  var replaced: Node3D = preload("res://Presentation/PropReplacements.gd").build(scene.reconstruction,replacement_name,serial,int(item.id))
   if replaced:
    replaced.name = "ReplacementVisual"
    root.add_child(replaced)
    var boxes: Array = []
    scene.reconstruction._collect_bounds(replaced,Transform3D.IDENTITY,boxes)
-   var box: AABB = boxes[0]
+   var box: AABB = boxes[0] if not boxes.is_empty() else AABB(Vector3(-0.2,0,-0.2),Vector3(0.4,0.4,0.4))
    for other in boxes: box = box.merge(other)
    _body(root,box.size,box.get_center(),serial,(int(rule.get("flags",0))&64)!=0)
    request_contact_refresh()
@@ -391,7 +391,16 @@ func upsert(serial: int, item: Dictionary) -> void:
    var light_model: Node3D = null
    if not light_slot.is_empty() and preload("res://Presentation/GraphicsMode.gd").modern() and preload("res://Presentation/LocalLibrary.gd").has(str(light_slot[0])):
     light_model = preload("res://Presentation/LocalLibrary.gd").build(str(light_slot[0]),int(item.x),int(item.y),Vector3(lamp_height*0.32,lamp_height,lamp_height*0.32),true,str(light_slot[1]))
-   if "LampPost" in lamp_type:
+   # Scanned street lamps and candelabra by name (prop-replacements.json); the light stays.
+   var scanned_lamp: Node3D = preload("res://Presentation/PropReplacements.gd").build(scene.reconstruction,replacement_name,serial,int(item.id)) if preload("res://Presentation/GraphicsMode.gd").modern() else null
+   if scanned_lamp:
+    var lamp_boxes: Array = []
+    scene.reconstruction._collect_bounds(scanned_lamp,Transform3D.IDENTITY,lamp_boxes)
+    lamp_height = (lamp_boxes[0] as AABB).end.y
+    for other in lamp_boxes: lamp_height = maxf(lamp_height,(other as AABB).end.y)
+    size = Vector3(0.30,lamp_height,0.30)
+    root.add_child(scanned_lamp)
+   elif "LampPost" in lamp_type:
     # Timber post with a hanging iron lantern (MedievalKit, CC0).
     root.add_child(scene.reconstruction.fitted("MedievalKit/Lantern_Post.gltf",Vector3(0.6,lamp_height,0.3)))
    elif light_model:
@@ -693,7 +702,7 @@ func request_contact_refresh() -> void:
 # heights, and imported models do not all have their pivot at their base. The
 # item's lowest mesh point (not its origin) is put on the surface found by a
 # downward ray. Doors, signs and wall-hung pieces stay where they are.
-const FIXED_FAMILIES := ["door","sign","noticeboard","street_sign","plaque","light"]
+const FIXED_FAMILIES := ["door","sign","noticeboard","street_sign","plaque","light","lamp"]
 func _free_standing(node: Node3D) -> bool:
  if not node.is_inside_tree() or str(node.get_meta("family","")) in FIXED_FAMILIES: return false
  var item: Dictionary = session.world_items.get(int(node.get_meta("serial",0)),{})

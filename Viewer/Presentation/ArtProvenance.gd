@@ -88,13 +88,14 @@ func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -
 			return {"status":"kit","detail":"MakeHuman CC0: fitted human wardrobe category substitute"}
 		return {"status":"original","detail":"worn model outside the first human wardrobe batch"}
 	# Name-keyed scan replacements apply to map statics and server items alike.
-	var found: Dictionary = preload("res://Presentation/PropReplacements.gd").entry(name)
+	var found: Dictionary = preload("res://Presentation/PropReplacements.gd").entry_for(name,id)
 	if not found.is_empty():
-		var model := str(found.model)
+		var model := str(found.get("model",found.get("models",[""])[0]))
 		return pack(("Objaverse/%s/%s.glb" % [model.trim_prefix("Objaverse/"),model.trim_prefix("Objaverse/")]) if model.begins_with("Objaverse/") else "PolyHaven/%s/%s" % [model,model])
 	var review: Dictionary = Reviewed.entry(id)
 	# Counters are built cell by cell in photoscanned timber whatever their review says.
 	if str(review.get("kind",audited.get("kind",""))) == "counter": return {"status":"crafted","detail":"panelled counter in photoscanned timber"}
+	if str(review.get("kind","")) == "bench" and not ("stone" in name.to_lower() or "marble" in name.to_lower()): return pack("Objaverse/bench_scan/bench_scan.glb")
 	if review.has("asset"):
 		var reviewed := pack(str(review.asset))
 		reviewed.detail += " (reviewed)"
@@ -144,6 +145,7 @@ func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -
 	if kind == "carpet": return {"status":"crafted","detail":"woven rug from photoscanned fabric"}
 	if kind == "table" and not ("stone" in named or "marble" in named or "sandstone" in named): return pack("Objaverse/table_wood_b/table_wood_b.glb")
 	if kind == "bed": return pack("PolyHaven/GothicBed_01/GothicBed_01_1k.gltf")
+	if kind == "bench" and not ("stone" in named or "marble" in named): return pack("Objaverse/bench_scan/bench_scan.glb")
 	# Architecture and water are built from photoscanned surface sets.
 	if kind in ["wall","window","corner","trim","beam","gable","pillar","floor","landing","stairs","roof","chimney","water","lava","waterfall","palisade","planter"]:
 		return {"status":"crafted","detail":"built in code with photoscanned surfaces: "+kind}
