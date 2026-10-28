@@ -12,6 +12,9 @@ var appearance_key := ""
 var unsupported_items: Array[int] = []
 var skin_hue := 1002
 var current_clip := "Idle"
+var missing_art: Array[int] = []
+var native_cosmetics := {}
+var grip: SkeletonModifier3D
 var folder: String:
 	get: return "res://local-art/free-equipment" + ("-female" if female else "")
 
@@ -23,6 +26,8 @@ func _ready() -> void:
 	add_child(model)
 	skeleton = model.find_children("*","Skeleton3D",true,false)[0]
 	animator = model.find_children("*","AnimationPlayer",true,false)[0]
+	grip = preload("res://Presentation/WeaponGrip.gd").new()
+	skeleton.add_child(grip)
 	skin = ShaderMaterial.new()
 	skin.shader = preload("res://Presentation/FreeHumanSkin.gdshader")
 	if get_viewport().transparent_bg:
@@ -97,33 +102,70 @@ func set_equipment(worn: Array) -> void:
 	if key == appearance_key: return
 	appearance_key = key
 	unsupported_items.assign(resolved.unsupported)
+	missing_art.clear()
+	native_cosmetics = {"hair_id":resolved.hair_id,"hair_hue":resolved.hair_hue,"beard_id":resolved.beard_id,"beard_hue":resolved.beard_hue,"hair_family_mapped":resolved.hair_exact_family,"beard_family_mapped":resolved.beard_exact_family}
 	for part in parts:
 		part.visible = false
 		part.get_parent().remove_child(part)
 		part.queue_free()
 	parts.clear()
 	outfit_bits = int(resolved.bits)
+	var extra_parts: Dictionary = resolved.pieces.duplicate(true)
+	for slot in extra_parts.keys():
+		if not ResourceLoader.exists(folder+"/expansion/"+str(extra_parts[slot].asset)+".glb"):
+			missing_art.append(int(extra_parts[slot].id))
+			extra_parts.erase(slot)
+	var gloves: bool = extra_parts.has("hands") and ResourceLoader.exists(folder+"/expansion/body-mask-%02d-gloves.glb" % outfit_bits)
+	var masked := outfit_bits!=0 or gloves
+	var hide_hair := (outfit_bits&16)!=0 or extra_parts.has("head")
+	var hide_beard: bool = extra_parts.has("head") and str(extra_parts.head.asset)=="closed_helmet"
+	grip.holding = extra_parts.has("weapon")
+	var hair_style := str(resolved.hair_style)
+	var extra_hair := hair_style not in ["","short"] and ResourceLoader.exists(folder+"/expansion/hair_"+hair_style+".glb")
+	if hair_style not in ["","short"] and not extra_hair: missing_art.append(int(resolved.hair_id))
+	if not bool(resolved.hair_exact_family): missing_art.append(int(resolved.hair_id))
+	if not bool(resolved.beard_exact_family): missing_art.append(int(resolved.beard_id))
 	for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
-		if mesh.name.begins_with("Body"): mesh.visible = outfit_bits == 0
-		if mesh.name.begins_with("Hair_"): mesh.visible = bool(resolved.hair) and not (outfit_bits&16)
-		if mesh.name.begins_with("Cloth_briefs"): mesh.visible = not (outfit_bits&3)
+		if mesh.name.begins_with("Body"): mesh.visible = not masked
+		if mesh.name.begins_with("Hair_"):
+			mesh.visible = bool(resolved.hair) and not hide_hair and not extra_hair
+			_shade(mesh,int(resolved.hair_hue),true)
+		if mesh.name.begins_with("Cloth_briefs"): mesh.visible = not (outfit_bits&3) and not extra_parts.has("outer_legs")
 		if mesh.name.begins_with("Cloth_bra"): mesh.visible = not (outfit_bits&9)
-	if outfit_bits:
-		_attach(folder+"/runtime/body-mask-%02d.glb" % outfit_bits,"Body",true)
+	if masked:
+		var mask_path := folder+"/expansion/body-mask-%02d-gloves.glb" % outfit_bits if gloves else folder+"/runtime/body-mask-%02d.glb" % outfit_bits
+		_attach(mask_path,"Body",true)
 	for i in Wardrobe.SLOTS.size():
 		if outfit_bits&(1<<i):
 			var slot: String = Wardrobe.SLOTS[i]
 			_attach(folder+"/runtime/part-"+slot+".glb","Free_")
 			var garment := parts[-1]
 			var hue := int(resolved.hues.get(slot,0))
-			if hue&0x3fff:
-				var tint: Color = preload("res://Network/Artwork.gd").color(hue,Color.WHITE)
-				for surface in garment.mesh.get_surface_count():
-					var material: StandardMaterial3D = garment.get_active_material(surface).duplicate()
-					material.albedo_color = Color(lerpf(.35,1.,tint.r),lerpf(.35,1.,tint.g),lerpf(.35,1.,tint.b))
-					garment.set_surface_override_material(surface,material)
+			_shade(garment,hue)
+	for slot in extra_parts:
+		var item: Dictionary = extra_parts[slot]
+		_attach(folder+"/expansion/"+str(item.asset)+".glb","Extra_")
+		_shade(parts[-1],int(item.hue))
+	if extra_hair and not hide_hair:
+		_attach(folder+"/expansion/hair_"+hair_style+".glb","Extra_")
+		_shade(parts[-1],int(resolved.hair_hue),true)
+	for style: String in resolved.beard_styles:
+		if hide_beard: continue
+		var path := folder+"/expansion/beard_"+style+".glb"
+		if ResourceLoader.exists(path):
+			_attach(path,"Extra_")
+			_shade(parts[-1],int(resolved.beard_hue),true)
+		else: missing_art.append(int(resolved.beard_id))
 	set_meta("wardrobe_bits",outfit_bits)
 	set_meta("unsupported_wearables",unsupported_items)
+	set_meta("missing_art",missing_art)
+	set_meta("native_cosmetics",native_cosmetics)
+
+func _shade(mesh: MeshInstance3D, hue: int, cosmetic: bool = false) -> void:
+	for surface in mesh.mesh.get_surface_count():
+		var original := mesh.mesh.surface_get_material(surface) as StandardMaterial3D
+		if original==null: continue
+		mesh.set_surface_override_material(surface,preload("res://Presentation/HumanHue.gd").material(original,hue,cosmetic) if (hue&0x3fff)!=0 or cosmetic else null)
 
 func play(clip: String, blend: float = .15) -> void:
 	if clip == current_clip and animator.current_animation == clip: return

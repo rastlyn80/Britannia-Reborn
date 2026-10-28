@@ -1,5 +1,12 @@
 # Character foundation and creation plan
 
+Full-port requirement, 28 October 2026: target every native mobile, wearable
+and animation family, with the same server-driven appearance contract for
+players and NPCs. Hair/beard IDs and independent hues, body/skin, references
+and received statistics must remain authoritative. See CHARACTER_PORT_PLAN.md
+for acceptance/coverage rules and CHARACTER_EQUIPMENT_EXPANSION.md for the
+second batch and native creation/update/persistence work.
+
 ## Animation requirement — 27 October 2026
 
 The owner reports that the present movement looks like a mannequin. Smooth,

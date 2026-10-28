@@ -84,7 +84,7 @@ static func pack(asset: String) -> Dictionary:
 func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -> Dictionary:
 	var name := str(item.name)
 	if item.flags.has("wearable") and item.world == 0:
-		if preload("res://Presentation/HumanWardrobe.gd").GRAPHICS.has(id):
+		if preload("res://Presentation/HumanWardrobe.gd").mapped(id):
 			return {"status":"kit","detail":"MakeHuman CC0: fitted human wardrobe category substitute"}
 		return {"status":"original","detail":"worn model outside the first human wardrobe batch"}
 	# Name-keyed scan replacements apply to map statics and server items alike.

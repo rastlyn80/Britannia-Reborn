@@ -24,6 +24,8 @@ def parse_proxy(path):
   if not s or s[0].startswith(('#','//')):continue
   if s[0]=='verts':mode='verts';continue
   if s[0]=='delete_verts':mode='delete';continue
+  # Some official system hair places its material after the verts declaration.
+  if s[0]=='material':fields['material']=' '.join(s[1:]);continue
   if mode=='verts':
    if len(s)==1:
     i=int(s[0]);row=((i,i,i),(1.,0.,0.),(0.,0.,0.))

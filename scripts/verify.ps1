@@ -42,6 +42,10 @@ if (Test-Path "$root/Viewer/local-art/free-equipment-female/runtime/body-mask-31
   & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanBatchTests.gd
   if ($LASTEXITCODE) { throw 'Male/female shared wardrobe checks failed' }
 }
+if (Test-Path "$root/Viewer/local-art/free-equipment-female/expansion/closed_helmet.glb") {
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/CharacterExpansionTests.gd
+  if ($LASTEXITCODE) { throw 'Expanded equipment/cosmetic checks failed' }
+}
 & $godot --headless --path "$root\Viewer" --script res://Network/CharacterTests.gd
 if ($LASTEXITCODE) { throw 'Character status/skills/sheet tests failed' }
 & $godot --headless --path "$root\Viewer" --script res://Presentation/PresentationTests.gd

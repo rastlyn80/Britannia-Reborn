@@ -466,7 +466,7 @@ func _entity_changed(serial: int,position: Dictionary) -> void:
 		avatars[serial] = avatar
 		tracks[serial] = Motion.new()
 		tracks[serial].reset(location)
-	avatars[serial].apply_server_appearance(position,game.mobile_equipment.get(serial,{}).values())
+	avatars[serial].apply_server_appearance(position,game.mobile_equipment.get(serial,{}).values(),game.appearance_for(serial))
 	# Imported humanoid faces +Z; UO direction 0 faces north (-Z).
 	directions[serial] = PI-int(position.direction)*PI/4
 	if tracks[serial].position.distance_to(location) > 8.0: avatars[serial].reset_presentation()
@@ -476,7 +476,7 @@ func _entity_changed(serial: int,position: Dictionary) -> void:
 func _appearance_changed(serial: int) -> void:
 	if not avatars.has(serial): return
 	var entity: Dictionary = game.player if serial==int(game.player.serial) else game.entities.get(serial,{})
-	avatars[serial].apply_server_appearance(entity,game.mobile_equipment.get(serial,{}).values())
+	avatars[serial].apply_server_appearance(entity,game.mobile_equipment.get(serial,{}).values(),game.appearance_for(serial))
 
 func _entity_removed(serial: int) -> void:
 	if avatars.has(serial):

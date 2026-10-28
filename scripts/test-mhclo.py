@@ -6,6 +6,9 @@ TEST_WORK=Path(__file__).resolve().parents[1]/'work/free-equipment'
 TEST_WORK.mkdir(parents=True,exist_ok=True)
 HEADER='basemesh hm08\nx_scale 0 1 1\ny_scale 0 1 1\nz_scale 0 1 1\nobj_file cloth.obj\nmaterial cloth.mhmat\nverts 0\n'
 class ProxyBoundaries(unittest.TestCase):
+ def test_official_hair_material_after_verts(self):
+  d=self.read(HEADER+'material long01.mhmat\n0\n')
+  self.assertEqual(d['fields']['material'],'long01.mhmat');self.assertEqual(len(d['rows']),1)
  def read(self,text):
   with tempfile.TemporaryDirectory(dir=Path(__file__).resolve().parents[1]/"work/free-equipment") as d:
    self.assertTrue(Path(d).resolve().is_relative_to(Path(__file__).resolve().parents[1]));p=Path(d)/'fixture.mhclo';p.write_text(text);return parse_proxy(p)

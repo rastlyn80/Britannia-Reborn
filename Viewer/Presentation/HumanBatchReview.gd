@@ -7,6 +7,12 @@ var outfit := "base"
 var angle := 0.
 var frames := 0
 var camera: Camera3D
+var hair_type := 0x203b
+var hair_hue := 0
+var beard_type := 0
+var beard_hue := 0
+var varied := false
+var head_view := false
 
 func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
@@ -15,10 +21,18 @@ func _initialize() -> void:
 		if arg.begins_with("--clip="): clip=arg.substr(7)
 		if arg=="--profile": angle=PI/2
 		if arg=="--rear": angle=PI
+		if arg.begins_with("--hair-id="): hair_type=arg.substr(10).hex_to_int()
+		if arg.begins_with("--hair-hue="): hair_hue=arg.substr(11).to_int()
+		if arg.begins_with("--beard-id="): beard_type=arg.substr(11).hex_to_int()
+		if arg.begins_with("--beard-hue="): beard_hue=arg.substr(12).to_int()
+		if arg=="--varied": varied=true
+		if arg=="--head": head_view=true
 	call_deferred("build")
 
-func wear(name: String) -> Array:
-	var items: Array = [{"id":0x203b,"layer":11,"hue":0}]
+func wear(name: String, is_female: bool = false) -> Array:
+	var items: Array = []
+	if hair_type: items.append({"id":0x203c if varied and is_female else hair_type,"layer":11,"hue":1118 if varied and is_female else hair_hue})
+	if beard_type and not is_female: items.append({"id":beard_type,"layer":16,"hue":beard_hue})
 	var selected: Array = []
 	match name:
 		"viking": selected=[0x1fa1,0x1539,0x170b]
@@ -28,6 +42,12 @@ func wear(name: String) -> Array:
 		"pants": selected=[0x1539]
 		"boots": selected=[0x170b]
 		"hood": selected=[0x278f]
+		"skirt": selected=[0x1516]
+		"kilt": selected=[0x1fa1,0x1537,0x170b]
+		"guard": selected=[0x1fa1,0x1539,0x170b,0x13c6,0x1412,0x0f5e]
+		"sword": selected=[0x1fa1,0x1539,0x170b,0x0f5e]
+		"hammer": selected=[0x1fa1,0x1539,0x170b,0x1439]
+		"staff": selected=[0x1f03,0x0e81]
 	for id in selected: items.append({"id":id,"layer":0,"hue":0})
 	return items
 
@@ -60,10 +80,10 @@ func build() -> void:
 	for female in [false,true]:
 		var actor:=preload("res://Presentation/HumanVisual.gd").new()
 		actor.female=female
-		actor.position.x=.8 if female else -.8
+		actor.position.x=(.24 if female else -.24) if head_view else (.8 if female else -.8)
 		actor.rotation.y=angle
 		stage.add_child(actor)
-		actor.set_equipment(wear(outfit))
+		actor.set_equipment(wear(outfit,female))
 		actor.play(clip,0.)
 		actors.append(actor)
 	camera=Camera3D.new()
@@ -71,20 +91,41 @@ func build() -> void:
 	stage.add_child(camera)
 	camera.position=Vector3(0,1.65,4.5)
 	camera.look_at(Vector3(0,.98,0))
+	if head_view:
+		camera.fov=28.
+		camera.position=Vector3(0,1.67,1.7)
+		camera.look_at(Vector3(0,1.62,0))
 	var ui:=VBoxContainer.new()
 	ui.position=Vector2(24,20)
 	root.add_child(ui)
 	var title:=Label.new()
-	title.text="BRITANNIA REBORN / HUMAN FOUNDATION\nMale (left) / Female (right) • first clothing batch • movement polish pending"
+	title.text="BRITANNIA REBORN / HUMAN FOUNDATION\nMale (left) / Female (right) • expanded wardrobe + native hair/beards • movement polish pending"
 	ui.add_child(title)
 	var row:=HBoxContainer.new()
 	ui.add_child(row)
-	for name in ["base","viking","monk","robe","tunic","pants","boots","hood"]:
+	for name in ["base","viking","monk","robe","tunic","pants","boots","hood","skirt","kilt","guard","sword","hammer","staff"]:
 		var b:=Button.new()
 		b.text=name.capitalize()
 		b.pressed.connect(func():
-			for actor in actors: actor.set_equipment(wear(name)))
+			outfit=name
+			for actor in actors: actor.set_equipment(wear(name,actor.female)))
 		row.add_child(b)
+	var cosmetics:=HBoxContainer.new()
+	ui.add_child(cosmetics)
+	for entry in [["Bald",0],["Short",0x203b],["Long",0x203c],["Ponytail",0x203d],["Pageboy",0x2045],["Afro",0x2047]]:
+		var b:=Button.new()
+		b.text=str(entry[0])
+		b.pressed.connect(func():
+			hair_type=int(entry[1])
+			for actor in actors: actor.set_equipment(wear(outfit,actor.female)))
+		cosmetics.add_child(b)
+	for entry in [["Clean shave",0],["Beard",0x203e],["Short beard",0x203f],["Goatee",0x2040],["Moustache",0x2041]]:
+		var b:=Button.new()
+		b.text=str(entry[0])
+		b.pressed.connect(func():
+			beard_type=int(entry[1])
+			for actor in actors: actor.set_equipment(wear(outfit,actor.female)))
+		cosmetics.add_child(b)
 	var motion:=HBoxContainer.new()
 	ui.add_child(motion)
 	for name in ["Idle","Walk","Run"]:

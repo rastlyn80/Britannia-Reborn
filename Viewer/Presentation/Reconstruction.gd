@@ -1013,11 +1013,11 @@ func tint_prop(node: Node3D, palette: String) -> void:
 			var variant := ArrayMesh.new()
 			for surface in mesh.mesh.get_surface_count():
 				var arrays: Array = mesh.mesh.surface_get_arrays(surface)
-				var colors: PackedColorArray = arrays[Mesh.ARRAY_COLOR]
+				var colors: PackedColorArray = arrays[Mesh.ARRAY_COLOR] if arrays[Mesh.ARRAY_COLOR] is PackedColorArray else PackedColorArray()
 				for i in colors.size():
 					if colors[i].r > colors[i].g*2.5:
 						colors[i]=Color(.018,.065,.012,colors[i].a)
-				arrays[Mesh.ARRAY_COLOR]=colors
+				if not colors.is_empty(): arrays[Mesh.ARRAY_COLOR]=colors
 				variant.add_surface_from_arrays(mesh.mesh.surface_get_primitive_type(surface),arrays)
 				variant.surface_set_material(surface,mesh.mesh.surface_get_material(surface))
 			prop_mesh_variants[key]=variant

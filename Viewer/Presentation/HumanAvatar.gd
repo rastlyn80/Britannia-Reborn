@@ -5,6 +5,7 @@ const Wardrobe = preload("res://Presentation/HumanWardrobe.gd")
 var initial_body := 0
 var human_visual: Node3D
 var native_body := 0
+var server_appearance := {}
 
 func _ready() -> void:
 	if Wardrobe.human(initial_body) and Human.available(Wardrobe.female(initial_body)):
@@ -45,10 +46,13 @@ func _switch_human(is_female: bool) -> void:
 	current_clip = "Idle"
 	set_meta("human_batch",true)
 
-func apply_server_appearance(entity: Dictionary, worn: Array) -> void:
+func apply_server_appearance(entity: Dictionary, worn: Array, details: Dictionary = {}) -> void:
+	server_appearance = details.duplicate(true) if not details.is_empty() else preload("res://Network/MobileAppearance.gd").profile(entity,worn)
+	set_meta("server_appearance",server_appearance)
 	var body := int(entity.get("body",0))
 	native_body = body
 	if not Wardrobe.human(body):
+		set_meta("art_status","missing native body art" if body>0 else "offline fallback")
 		if body>0 and human_visual != null:
 			if foot_contact.get_parent(): foot_contact.get_parent().remove_child(foot_contact)
 			for child in visual_root.get_children():
@@ -66,6 +70,7 @@ func apply_server_appearance(entity: Dictionary, worn: Array) -> void:
 	human_visual.set_skin(int(entity.get("hue",1002)))
 	human_visual.set_equipment(worn)
 	set_meta("native_body",body)
+	set_meta("art_status","human category replacement")
 
 func animate(moving: bool, direction: float, delta: float, speed: float = 2.44) -> void:
 	if human_visual == null:

@@ -12,6 +12,11 @@ var message := Label.new()
 var choices := OptionButton.new()
 var new_name := LineEdit.new()
 var new_sex := OptionButton.new()
+var new_hair := OptionButton.new()
+var new_beard := OptionButton.new()
+var new_hair_colour := OptionButton.new()
+var new_beard_colour := OptionButton.new()
+var new_skin := OptionButton.new()
 var account_controls := VBoxContainer.new()
 var character_controls := VBoxContainer.new()
 var world_controls := VBoxContainer.new()
@@ -84,6 +89,23 @@ func _ready() -> void:
 	new_sex.add_item("Male human")
 	new_sex.add_item("Female human")
 	character_controls.add_child(new_sex)
+	for entry in [["Hair: Bald",0],["Hair: Short",0x203b],["Hair: Long",0x203c],["Hair: Ponytail",0x203d],["Hair: Pageboy",0x2045],["Hair: Afro",0x2047]]:
+		new_hair.add_item(str(entry[0]),int(entry[1]))
+	character_controls.add_child(new_hair)
+	for entry in [["Beard: Clean shaven",0],["Beard: Long",0x203e],["Beard: Short",0x203f],["Beard: Goatee",0x2040],["Beard: Moustache",0x2041],["Beard: Short + moustache",0x204b],["Beard: Long + moustache",0x204c],["Beard: Vandyke",0x204d]]:
+		new_beard.add_item(str(entry[0]),int(entry[1]))
+	character_controls.add_child(new_beard)
+	for entry in [["Dark brown",1147],["Charcoal",1109],["Blond",1118],["Copper",1135],["Silver",1102]]:
+		new_hair_colour.add_item("Hair colour: "+str(entry[0]),int(entry[1]))
+		new_beard_colour.add_item("Beard colour: "+str(entry[0]),int(entry[1]))
+	character_controls.add_child(new_hair_colour)
+	character_controls.add_child(new_beard_colour)
+	for entry in [["Skin: Light",1002],["Skin: Medium",1021],["Skin: Dark",1040]]: new_skin.add_item(str(entry[0]),int(entry[1]))
+	character_controls.add_child(new_skin)
+	new_sex.item_selected.connect(func(index: int):
+		new_beard.disabled=index==1
+		new_beard_colour.disabled=index==1
+		if index==1: new_beard.select(0))
 	button(character_controls,"Create character in Britain",func():
 		var slot := -1
 		var city := -1
@@ -97,7 +119,7 @@ func _ready() -> void:
 			message.text = "No free character slot or Britain starting city."
 			return
 		message.text = "Creating character on ModernUO…"
-		session.create_character(new_name.text,slot,city,new_sex.selected==1)
+		session.create_character(new_name.text,slot,city,new_sex.selected==1,{"skin_hue":new_skin.get_selected_id(),"hair_id":new_hair.get_selected_id(),"hair_hue":new_hair_colour.get_selected_id(),"beard_id":new_beard.get_selected_id(),"beard_hue":new_beard_colour.get_selected_id()})
 		new_name.release_focus())
 	content.add_child(world_controls)
 	world_controls.hide()

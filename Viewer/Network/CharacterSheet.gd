@@ -312,7 +312,7 @@ func _build_portrait(view: SubViewport) -> void:
 
 func _refresh_portrait() -> void:
 	if session and portrait_avatar:
-		portrait_avatar.apply_server_appearance(session.player,session.mobile_equipment.get(int(session.player.serial),{}).values())
+		portrait_avatar.apply_server_appearance(session.player,session.mobile_equipment.get(int(session.player.serial),{}).values(),session.appearance_for(int(session.player.serial)))
 
 func _process(delta: float) -> void:
 	if visible and portrait_avatar and page == "character":

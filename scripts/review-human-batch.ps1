@@ -1,4 +1,4 @@
-param([ValidateSet('base','viking','monk','robe','tunic','pants','boots','hood')][string]$Outfit='viking',[ValidateSet('Idle','Walk','Run')][string]$Clip='Idle',[string]$Screenshot,[switch]$Compatibility)
+param([ValidateSet('base','viking','monk','robe','tunic','pants','boots','hood','skirt','kilt','guard','sword','hammer','staff')][string]$Outfit='viking',[ValidateSet('Idle','Walk','Run')][string]$Clip='Idle',[string]$Screenshot,[switch]$Compatibility)
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent
 $godot=(Get-ChildItem "$root/.tools/godot/*console.exe" | Select-Object -First 1).FullName

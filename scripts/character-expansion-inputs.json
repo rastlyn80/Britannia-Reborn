@@ -1,0 +1,246 @@
+{
+  "archives": {
+    "skirts01": {
+      "url": "https://files.makehumancommunity.org/asset_packs/skirts01/skirts01_cc0.zip",
+      "sha256": "293fa0c15e28e8dcea8dfff20cae31aa4b0d1268a6e6ba0a53a92ebb0f36c882",
+      "bytes": 29554534
+    },
+    "hats02": {
+      "url": "https://files.makehumancommunity.org/asset_packs/hats02/hats02_cc0.zip",
+      "sha256": "838b9b51ba31d27f21198ad4506eb9b23e1c03eb246fe68f26da99e26b40e1aa",
+      "bytes": 24018546
+    },
+    "bodyparts05": {
+      "url": "https://files.makehumancommunity.org/asset_packs/bodyparts05/bodyparts05_cc0.zip",
+      "sha256": "262bba42246f85b2a91f493dd920296b258a3b4544eb495c91c4d08e57c528fd",
+      "bytes": 6616507
+    },
+    "equipment01": {
+      "url": "https://files.makehumancommunity.org/asset_packs/equipment01/equipment01_cc0.zip",
+      "sha256": "d8afa9d98c52f0a5e92a0d3e9f691f5699dd878499d9f6681740d38ca2640236",
+      "bytes": 18111388
+    },
+    "gloves01": {
+      "url": "https://files.makehumancommunity.org/asset_packs/gloves01/gloves01_cc0.zip",
+      "sha256": "ecdaee1d02749d17352791d415cb622a883350cc8a4b90eda3725aef35d9afb2",
+      "bytes": 3192691
+    },
+    "system": {
+      "url": "https://files.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip",
+      "sha256": "b542127a8e25547c7c29c19f2d1d2adb9a664c80396ecd694095dbc8028a0107",
+      "local": "work/free-human/makehuman_system_assets_cc0.zip"
+    }
+  },
+  "assets": {
+    "toigo_long_full_skirt": {
+      "pack": "skirts01",
+      "folder": "clothes/toigo_long_full_skirt",
+      "author": "MargaretToigo",
+      "license": "CC0",
+      "source": "http://www.makehumancommunity.org/node/1727",
+      "files": {
+        "clothes/toigo_long_full_skirt/skirtFullLong.png": "a4475e2bf9a3906a2e6c39df90f3c8aefadfc5e2b16a76a3445390a7f48296db",
+        "clothes/toigo_long_full_skirt/skirt_full_long.mhmat": "98ad203aa9fcb4a7d160101caedb183594f35b4c7389ef12ba5681fd51061720",
+        "clothes/toigo_long_full_skirt/skirt_full_long.obj": "876bbae3c54414fdb93d38b581629fdc80ffe58dd4504731d47ed0c668a08561",
+        "clothes/toigo_long_full_skirt/toigo_long_full_skirt.mhclo": "29ee266a19f81b4d5159782ed652b5df5574d0ace240112d1fea63b643a28dd4",
+        "clothes/toigo_long_full_skirt/toigo_long_full_skirt.thumb": "0152b75aec45c84d2e8985107e69e9c3d7da4eba7e5537f4dcb54e0b34aebe44"
+      }
+    },
+    "rehmanpolanski_beard_viking": {
+      "pack": "bodyparts05",
+      "folder": "clothes/rehmanpolanski_beard_viking",
+      "author": "RehmanPolanski",
+      "license": "CC0",
+      "source": "http://www.makehumancommunity.org/node/2614",
+      "files": {
+        "clothes/rehmanpolanski_beard_viking/beardviking.mhmat": "e1e7c48c0931d5cd17db9088258bcb670fc3483aa4173998ad995336a305cf85",
+        "clothes/rehmanpolanski_beard_viking/beardviking.obj": "517f4005fecc8b63e05115103295d755e6eaa22e9a72f94cbe1431808e81d515",
+        "clothes/rehmanpolanski_beard_viking/rehmanpolanski_beard_viking.thumb": "cd4d335c505b5345d7cf8593a393cc62c311cb6a900a204c504bbfb87a02e82e",
+        "clothes/rehmanpolanski_beard_viking/rehmanpolanski_beard_viking.mhclo": "87e313af6cb9aaa66dc99f81a1fc537bd3fb134a2df83c80e51e590dbb970344",
+        "clothes/rehmanpolanski_beard_viking/BeardViking.png": "5e2d2163cd7157a3a53fc128495f3a86c7a7c91810943d62eb18e2cfc6c0aed2"
+      }
+    },
+    "rehmanpolanski_moustache_viking": {
+      "pack": "bodyparts05",
+      "folder": "clothes/rehmanpolanski_moustache_viking",
+      "author": "RehmanPolanski",
+      "license": "CC0",
+      "source": "http://www.makehumancommunity.org/node/2615",
+      "files": {
+        "clothes/rehmanpolanski_moustache_viking/rehmanpolanski_moustache_viking.mhclo": "7623518490914b5f968db07d6fd744c048bae02da4cde54003d896fc0489d6c1",
+        "clothes/rehmanpolanski_moustache_viking/MoustacheViking.png": "a04f14f45e2beb1fee055a87754846057fb8cd15c4f84f76d57fcb86d3f949ee",
+        "clothes/rehmanpolanski_moustache_viking/moustacheviking.mhmat": "38eaa94425e54214bad95240f92362393b63986625930f0dd2f93eae1ab17052",
+        "clothes/rehmanpolanski_moustache_viking/rehmanpolanski_moustache_viking.thumb": "bbab13a138542ae28408d22d80b98f8c74afcce247fa9f12984cf01f74686c94",
+        "clothes/rehmanpolanski_moustache_viking/moustacheviking.obj": "297c14a76a9d0796d95129afdf8e614efa0a080558b4034d56926932bc69ed3e"
+      }
+    },
+    "culturalibre_faun_beard": {
+      "pack": "bodyparts05",
+      "folder": "clothes/culturalibre_faun_beard",
+      "author": "culturalibre",
+      "license": "CC0",
+      "source": "http://www.makehumancommunity.org/node/2356",
+      "files": {
+        "clothes/culturalibre_faun_beard/faun_beard.obj": "a4724d225b813d31aa98846541cff8002e7c4d311ecd6abcc83ef4fcc3141084",
+        "clothes/culturalibre_faun_beard/brown.png": "74e9328fc5dc5149c3cb3b0deac362a6cc15738bd81fd9a053f14debcaa28543",
+        "clothes/culturalibre_faun_beard/culturalibre_faun_beard.mhclo": "a13f5810f1dbf6c18146a1107758bb6b4fd10b9cac1c8106afea43bd384bca0a",
+        "clothes/culturalibre_faun_beard/faun_beard.mhmat": "c070de4e8bcc0bcdbdcca35d9503d1d7378bf9aeeef69b67a9c7d7878027bba4",
+        "clothes/culturalibre_faun_beard/culturalibre_faun_beard.thumb": "f8159bf042380b029748c8e80962511b01b8640b463a71ea51536b6ba7b4f00f"
+      }
+    },
+    "joepal_crude_sword": {
+      "pack": "equipment01",
+      "folder": "clothes/joepal_crude_sword",
+      "author": "Joel Palmius",
+      "license": "CC0",
+      "source": "http://www.makehumancommunity.org/node/428",
+      "files": {
+        "clothes/joepal_crude_sword/joepal_crude_sword.thumb": "db0e816a339ce6682068c9b3bdaf75855450d817e39aa2aacee03df972d64041",
+        "clothes/joepal_crude_sword/crudesword.mhmat": "bb4391e319e5450d434a73f207b09a63ce5a6f7ca1a8f0695758eee873b10bb3",
+        "clothes/joepal_crude_sword/joepal_crude_sword.mhclo": "e2753195dd3fcc8eb663ce841deb1217fa4ff4f63549b17f75f9c337062240ad",
+        "clothes/joepal_crude_sword/crudesword.png": "38dddaf07bcc4aa26853f3932706a2f4080d9ac410314391fc8a0830300785e8",
+        "clothes/joepal_crude_sword/crudesword.obj": "ed76acb13c4a571c77c11eb0238fe6efbd40702ea7c4cbea187e162598228a8e"
+      }
+    },
+    "culturalibre_war_hammer": {
+      "pack": "equipment01",
+      "folder": "clothes/culturalibre_war_hammer",
+      "author": "culturalibre",
+      "license": "CC0",
+      "source": "http://www.makehumancommunity.org/node/2051",
+      "files": {
+        "clothes/culturalibre_war_hammer/warhammer.mhmat": "9cacd0561c2165d0f6d709de80cc57c801f88179d3db89db1f8e1185906e8e9b",
+        "clothes/culturalibre_war_hammer/warhammer.obj": "4bb50626d07015312f5e696373a64ca49f7831e9ce9cc2c50646305ba273cbe6",
+        "clothes/culturalibre_war_hammer/hammer.png": "efe2dcc222935b64d7809b13a84d34313b6ff92b830e557993ea8cab30484415",
+        "clothes/culturalibre_war_hammer/culturalibre_war_hammer.thumb": "8b1d980258c3873eff1bf9191c82870dcdb4b5f555f0f8d213da26ead8b4a35a",
+        "clothes/culturalibre_war_hammer/culturalibre_war_hammer.mhclo": "d0c279bf0aa2ccf2cada49be2f0045b2049c04d0e7de68eee86d6a9fc5bcf254"
+      }
+    },
+    "toigo_gloves_short": {
+      "pack": "gloves01",
+      "folder": "clothes/toigo_gloves_short",
+      "author": "MargaretToigo",
+      "license": "CC0",
+      "source": "http://www.makehumancommunity.org/node/1852",
+      "files": {
+        "clothes/toigo_gloves_short/gloves_hand.obj": "a8b6fdd27ccb8f912dfe970ee59e7d19b242611aab9ba849f9ad074742c1a7b3",
+        "clothes/toigo_gloves_short/toigo_gloves_short.thumb": "f8d41f7a86e3273696bc44def9c42fa03611def04e5306d42c180d5f5a0ca74e",
+        "clothes/toigo_gloves_short/Gloves03UV.png": "968a107a7bb51130a2bced729867071283f621445d49a5e6481b31a615f5c753",
+        "clothes/toigo_gloves_short/toigo_gloves_short.mhclo": "cf06eb65ea34018b629a735c879930e5c41c06737b6fc6794dcd2bb1237b1659",
+        "clothes/toigo_gloves_short/gloves_hand.mhmat": "dc0ab8dc8fd1d18f5d84990bd995cf115ca0fac6fbd553316ca04f58de2116ad"
+      }
+    },
+    "bob02": {
+      "pack": "system",
+      "folder": "hair/bob02",
+      "author": "MakeHuman system assets",
+      "license": "CC0",
+      "source": "https://static.makehumancommunity.org/assets/assetpacks/makehuman_system_assets.html",
+      "files": {
+        "hair/bob02/bob02.mhclo": "a48dcf87c6a618f9c6e90fcb00eed07cd59ab024d8d994606fa1b070da515b96",
+        "hair/bob02/bob02_diffuse.png": "38c88e6f71631356591f09b1f17a1bb5a99c3bb095b1a29003f1dc3d3e839b0d",
+        "hair/bob02/bob02.thumb": "88bb4a58e5dc55ebb6809bcf99968f8967ba2424b119c10df83ce1afb34bf4e3",
+        "hair/bob02/bob02.obj": "30d44038836d786364eb4134a9259cf93ca0c707f883861b0135ebfb149caa08",
+        "hair/bob02/bob02.mhmat": "32c1712308159f4f5b3775a633352070245bf1ea8b6f837ab4f4ba82b5e9fccd"
+      }
+    },
+    "long01": {
+      "pack": "system",
+      "folder": "hair/long01",
+      "author": "MakeHuman system assets",
+      "license": "CC0",
+      "source": "https://static.makehumancommunity.org/assets/assetpacks/makehuman_system_assets.html",
+      "files": {
+        "hair/long01/long01_diffuse.png": "e8dc25d90f8f62467e8630420e1240a400d070054fb7c3f1d3f7bf3e457d6c2c",
+        "hair/long01/long01.mhmat": "74ec88267e679d316f8037a074511ffc887b27e198ea381d0ae4a3f180f96760",
+        "hair/long01/long01.obj": "7f1d6dadbdf9e96435251955d6657e77ea5433c9bc7c85a5c5f5e4eae0cb9a8c",
+        "hair/long01/long01.mhclo": "94ecbebfd834da2cbee2ce90b730972590eb22a252ecd9592038ea736e063646",
+        "hair/long01/long01.thumb": "4cb13248134980fc69fdbe298e2bdde58864aec764243cb3c50cb0da7dc0ed98"
+      }
+    },
+    "ponytail01": {
+      "pack": "system",
+      "folder": "hair/ponytail01",
+      "author": "MakeHuman system assets",
+      "license": "CC0",
+      "source": "https://static.makehumancommunity.org/assets/assetpacks/makehuman_system_assets.html",
+      "files": {
+        "hair/ponytail01/ponytail01.obj": "d9f5fe96fbedbc8006220d87aad0e4a33d15286eb6b21f5929661cdc490ebf5a",
+        "hair/ponytail01/ponytail01_diffuse.png": "dcb364300cac06ce8bef91b2f7c0970baf310898bbdd06b0c6b884ee9306eb97",
+        "hair/ponytail01/ponytail01.mhclo": "97fc50b12bcb3b1c7b33edddd8d427a2604ffb06fe79b31132bf47f82d7afbac",
+        "hair/ponytail01/ponytail01.thumb": "1dd14d9ce1c7bb7368f49757e3299a961190ea374c8dc140ff964b5f437d3383",
+        "hair/ponytail01/ponytail01.mhmat": "b145f5a7c9606859ad523f5113482a1cf989cf0e26dccc2ea95c377cb1c2557f"
+      }
+    },
+    "afro01": {
+      "pack": "system",
+      "folder": "hair/afro01",
+      "author": "MakeHuman system assets",
+      "license": "CC0",
+      "source": "https://static.makehumancommunity.org/assets/assetpacks/makehuman_system_assets.html",
+      "files": {
+        "hair/afro01/afro01.thumb": "d371c511ce6b4c66ada60c5986d022a2f0113400088da20b532fc950fdf2845e",
+        "hair/afro01/afro01.mhclo": "9977bd4507e2dd1408504b7a39a6f585ffa2d3ba3aa40ad4bdc2844884bbebb5",
+        "hair/afro01/afro01.mhmat": "6da1c6778df2450b135009274ed0145dc2dffbc5d8e287fc1d4c69ba539b483c",
+        "hair/afro01/afro01.obj": "8344fffef15120a05a89219f31184ca2958537223fa885c885137ad1e97edcb8",
+        "hair/afro01/afro_diffuse.png": "dc0db7dd8a13802f02303ca7e49844b219e09db134471b7061538a8af8f7c7fb"
+      }
+    },
+    "culturalibre_magic_sceptre": {
+      "pack": "equipment01",
+      "folder": "clothes/culturalibre_magic_sceptre",
+      "license": "CC0",
+      "author": "culturalibre",
+      "source": "http://www.makehumancommunity.org/node/2358",
+      "files": {
+        "clothes/culturalibre_magic_sceptre/sceptre_texture.png": "bf2c5459448fa81a721ef64a8e8134c09da46f3b6e68cc7cb75e4234ef9863d4",
+        "clothes/culturalibre_magic_sceptre/magic_sceptre.mhmat": "748612f5cc977fe72328c673e427ad29602245bd5b48098eab006d2e19029406",
+        "clothes/culturalibre_magic_sceptre/magic_sceptre.obj": "c13d8eea0651a423365ed9584a6ca4b79044b8c5af3c8dbbf60a2d2b5bc0d3ae",
+        "clothes/culturalibre_magic_sceptre/culturalibre_magic_sceptre.mhclo": "70e50055b211aba0f0e22fa5385e82a5c944d38cca2bf1f46fec5f87d7fbfbcb",
+        "clothes/culturalibre_magic_sceptre/culturalibre_magic_sceptre.thumb": "a56d892f3051432acf14e6027eb2b6bda364042d4a87127b8bfd80007df0ea46"
+      }
+    },
+    "grinsegold_corinthian_helmet": {
+      "pack": "hats02",
+      "folder": "clothes/grinsegold_corinthian_helmet",
+      "license": "CC0",
+      "author": "grinsegold",
+      "source": "http://www.makehumancommunity.org/node/667",
+      "license_evidence": "Official current CC0 pack catalogue and author metadata; original MakeClothes AGPL boilerplate retained unchanged in source header",
+      "files": {
+        "clothes/grinsegold_corinthian_helmet/Corinthian_helmet_ROUGH.png": "f2e5b938b6d5e349817a57b3c5d0118afce1cf9eb26a0fbe0cd6ee5a34728af3",
+        "clothes/grinsegold_corinthian_helmet/corinthian_helmet.mhmat": "385183bfb2f684cce3f787372d95a4a26dac22fb5f4e14d5483716d6ebeae138",
+        "clothes/grinsegold_corinthian_helmet/grinsegold_corinthian_helmet.thumb": "acedb82cc7f3560c1a71c94528ee8c71de9ffafb4b9e8137089932af9a7b2ad1",
+        "clothes/grinsegold_corinthian_helmet/corinthian_helmet_NOR.png": "5110a5ac78fad5e4c719b072207cc189346dfc1d4eee9a8ffb0d4151aafe14d7",
+        "clothes/grinsegold_corinthian_helmet/grinsegold_corinthian_helmet.mhclo": "2605ff8b36a3f1e46196416cede7ad88de753f6a297f51c9e8833de6ab35455f",
+        "clothes/grinsegold_corinthian_helmet/corinthian_helmet.obj": "f3458ec481b0e737d348a865600c3f500d548af69e67507fefd4e3422d027e8e",
+        "clothes/grinsegold_corinthian_helmet/Corinthian_helmet_DIF.png": "61b7cf4ad8e3cc737256a5369598b2c5d3cb4cb0841a2cc40b14221bf1b18af6"
+      }
+    },
+    "javherre_casco_caballero_templario_templar_knight_helmet": {
+      "pack": "hats02",
+      "folder": "clothes/javherre_casco_caballero_templario_templar_knight_helmet",
+      "license": "CC0",
+      "author": "javherre",
+      "source": "http://www.makehumancommunity.org/node/2014",
+      "license_evidence": "Official current CC0 pack catalogue and author metadata; original MakeClothes AGPL boilerplate retained unchanged in source header",
+      "files": {
+        "clothes/javherre_casco_caballero_templario_templar_knight_helmet/casco_templario.mhmat": "52edfedea547656ebc6c75948f19747f3d41000ddb8f942e5e86ad0c45209c12",
+        "clothes/javherre_casco_caballero_templario_templar_knight_helmet/casco_templario.obj": "dbb17d21e96cbba419509ba8722588bf7f292581eec2e8e74825ae39995cf7c0",
+        "clothes/javherre_casco_caballero_templario_templar_knight_helmet/casco.jpg": "132ba523c5479d38aba62189de7b07118b01a8d36a0395f70c6ea485d4327136",
+        "clothes/javherre_casco_caballero_templario_templar_knight_helmet/javherre_casco_caballero_templario_templar_knight_helmet.thumb": "615432dce8a1fed5c41a0521b7f235a9ce453d862e1e0ede80781f526cc41c97",
+        "clothes/javherre_casco_caballero_templario_templar_knight_helmet/javherre_casco_caballero_templario_templar_knight_helmet.mhclo": "ef866f620206b410467e150479637137f07a7187ad24b0a0cdfc150c73637656"
+      }
+    }
+  },
+  "material_inputs": {
+    "Viewer/Art/MedievalKit/textures/Linen_Color.jpg": {
+      "sha256": "3221cb1d07531f13238b2443be5843d1b788c462c8576e7ada755e496f93b149",
+      "licence": "CC0-1.0; Viewer/Art/MedievalKit/NOTICE.md and CREDITS.md"
+    },
+    "Viewer/Art/MedievalKit/textures/Fabric045_2K-JPG_NormalGL.jpg": {
+      "sha256": "bd977a2099dbe3f39037f35e52245f7b0f1d04d817e009da5ec172eb9b695c9d",
+      "licence": "CC0-1.0; Viewer/Art/MedievalKit/NOTICE.md and CREDITS.md"
+    }
+  }
+}

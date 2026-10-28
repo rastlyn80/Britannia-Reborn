@@ -17,6 +17,8 @@ func fail(message: String) -> void:
 	if game: game.close()
 	quit(1)
 func run() -> void:
+	var cosmetics:= "--cosmetics" in OS.get_cmdline_user_args()
+	var male_test_name:="Styled Man" if cosmetics else "Batch Man"
 	var credentials_path:="res://../work/character-polish/human-test-accounts.json"
 	var credentials: Array=[]
 	if FileAccess.file_exists(credentials_path):
@@ -41,7 +43,8 @@ func run() -> void:
 		if not await until(func(): return game.phase=="characters"):
 			fail("Dedicated account login failed")
 			return
-		var character_name:="Batch Woman" if sex else "Batch Man"
+		var character_name:=("Styled Woman" if sex else male_test_name) if cosmetics else ("Batch Woman" if sex else male_test_name)
+		var desired:={"skin_hue":1002,"hair_id":0x203c if sex else 0x203d,"hair_hue":1118 if sex else 1147,"beard_id":0 if sex else 0x204d,"beard_hue":1102}
 		var existing:=-1
 		for character in game.characters:
 			if character.name==character_name: existing=int(character.slot)
@@ -56,22 +59,28 @@ func run() -> void:
 			if slot<0 or city<0:
 				fail("Missing test slot or Britain start")
 				return
-			game.create_character(character_name,slot,city,sex==1)
+			game.create_character(character_name,slot,city,sex==1,desired if cosmetics else {})
 		if not await until(func(): return game.phase=="world" and game.equipment.size()>=3):
 			fail("Native creation/entry or equipment timeout")
 			return
 		var expected:=0x191 if sex else 0x190
+		var expected_worn:=12 if sex else 14
+		var expected_unworn:=5 if sex else 7
 		await create_timer(.5).timeout
 		print("LIVE BODY ",game.player.get("body",0)," WORN ",game.equipment.values().map(func(w): return {"id":int(w.id),"layer":int(w.layer)}))
 		if int(game.player.get("body",0))!=expected:
 			fail("Native body disagrees with requested sex")
 			return
+		if cosmetics:
+			var native: Dictionary=game.appearance_for(int(game.player.serial))
+			if int(native.hair_id)!=int(desired.hair_id) or int(native.hair_hue)!=int(desired.hair_hue) or int(native.beard_id)!=int(desired.beard_id) or (sex==0 and int(native.beard_hue)!=int(desired.beard_hue)):
+				fail("Server hair/beard appearance disagrees with requested native fields"); return
 		var avatar:=preload("res://Presentation/Avatar.gd").new()
 		avatar.initial_body=expected
 		root.add_child(avatar)
 		avatar.set_physics_process(false)
 		avatar.apply_server_appearance(game.player,game.equipment.values())
-		if avatar.human_visual==null or int(avatar.human_visual.outfit_bits)!=14:
+		if avatar.human_visual==null or int(avatar.human_visual.outfit_bits)!=expected_worn:
 			fail("Starter clothes did not appear on shared human renderer: bits="+str(avatar.human_visual.outfit_bits if avatar.human_visual else -1))
 			return
 		var item: Dictionary={}
@@ -85,7 +94,7 @@ func run() -> void:
 			return
 		avatar.apply_server_appearance(game.player,game.equipment.values())
 		var removed_bits:=int(avatar.human_visual.outfit_bits)
-		if removed_bits!=7:
+		if removed_bits!=expected_unworn:
 			fail("Removed native clothing remained visible")
 			return
 		if not game.move_item(int(item.serial),int(game.player.serial),true):
@@ -95,11 +104,11 @@ func run() -> void:
 			fail("Native equip did not restore appearance")
 			return
 		avatar.apply_server_appearance(game.player,game.equipment.values())
-		if int(avatar.human_visual.outfit_bits)!=14:
+		if int(avatar.human_visual.outfit_bits)!=expected_worn:
 			fail("Re-equipped clothing not restored visually")
 			return
 		var original_serial:=int(game.player.serial)
-		results.append({"female":sex==1,"body":expected,"serial":original_serial,"equipment_ids":game.equipment.values().map(func(w): return int(w.id)),"unequip_bits":removed_bits,"reequip_bits":14})
+		results.append({"female":sex==1,"body":expected,"serial":original_serial,"equipment_ids":game.equipment.values().map(func(w): return int(w.id)),"unequip_bits":removed_bits,"reequip_bits":expected_worn})
 		avatar.hide()
 		avatar.queue_free()
 		await process_frame
@@ -119,6 +128,11 @@ func run() -> void:
 			fail("Native identity/sex did not persist")
 			return
 		results[-1].reconnect=true
+		if cosmetics:
+			var persisted: Dictionary=game.appearance_for(original_serial)
+			if persisted.hair_id!=desired.hair_id or persisted.hair_hue!=desired.hair_hue or persisted.beard_id!=desired.beard_id or (sex==0 and persisted.beard_hue!=desired.beard_hue):
+				fail("Native hair/beard types or colours did not persist"); return
+			results[-1].native_appearance=persisted
 		if sex==1:
 			var observer:=Game.new()
 			root.add_child(observer)
@@ -127,11 +141,13 @@ func run() -> void:
 			if not await until(func(): return observer.phase=="characters"):
 				fail("Observer login failed"); return
 			for character in observer.characters:
-				if character.name=="Batch Man": observer.select_character(character.slot,character.name); break
+				if character.name==male_test_name: observer.select_character(character.slot,character.name); break
 			if not await until(func(): return observer.phase=="world" and observer.mobile_equipment.has(original_serial)):
 				fail("Female appearance not received by second client"); return
 			if int(observer.entities[original_serial].body)!=0x191:
 				fail("Second client did not receive female body"); return
+			if cosmetics and (observer.appearance_for(original_serial).hair_id!=desired.hair_id or observer.appearance_for(original_serial).hair_hue!=desired.hair_hue):
+				fail("Second client hair type/colour mismatch"); return
 			game.move_item(int(item.serial),int(game.backpack))
 			if not await until(func(): return game.pending_transfer.is_empty() and not observer.mobile_equipment[original_serial].has(22)):
 				fail("Second client retained removed robe"); return
