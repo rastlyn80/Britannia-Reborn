@@ -20,6 +20,15 @@ const MAGERY := [
 	["Earthquake","BM GS MR SA"],["Energy Vortex","BP BM MR NS"],["Resurrection","BM GA GS"],["Air Elemental","BM MR SS"],["Summon Daemon","BM MR SS SA"],["Earth Elemental","BM MR SS"],["Fire Elemental","BM MR SS SA"],["Water Elemental","BM MR SS"],
 ]
 const CIRCLE_MANA := [4,6,9,11,14,20,40,50]
+# Words of power, in Magery order.
+const WORDS := ["Uus Jux","In Mani Ylem","Rel Wis","In Mani","In Por Ylem","In Lor","Flam Sanct","Des Mani",
+	"Ex Uus","Uus Wis","An Nox","An Mani","In Jux","An Jux","Uus Sanct","Uus Mani",
+	"Rel Sanct","Vas Flam","An Por","In Nox","Ort Por Ylem","Rel Por","Ex Por","In Sanct Ylem",
+	"Vas An Nox","Vas Uus Sanct","Des Sanct","In Flam Grav","In Vas Mani","Por Ort Grav","Ort Rel","Kal Ort Por",
+	"In Jux Hur Ylem","An Grav","Kal In Ex","In Jux Sanct","Por Corp Wis","An Ex Por","In Nox Grav","Kal Xen",
+	"An Ort","Corp Por","Vas Ort Flam","An Lor Xen","Kal Por Ylem","Vas Des Sanct","In Ex Grav","Wis Quas",
+	"Vas Ort Grav","In Sanct Grav","Kal Vas Flam","Vas Rel Por","Ort Sanct","Vas An Ort","Flam Kal Des Ylem","Vas Ylem Rel",
+	"In Vas Por","Vas Corp Por","An Corp","Kal Vas Xen Hur","Kal Vas Xen Corp","Kal Vas Xen Ylem","Kal Vas Xen Flam","Kal Vas Xen An Flam"]
 const REAGENTS := {"BP":[0x0F7A,"Black Pearl"],"BM":[0x0F7B,"Blood Moss"],"GA":[0x0F84,"Garlic"],"GS":[0x0F85,"Ginseng"],"MR":[0x0F86,"Mandrake Root"],"NS":[0x0F88,"Nightshade"],"SA":[0x0F8C,"Sulfurous Ash"],"SS":[0x0F8D,"Spider's Silk"]}
 # Other schools: [first spell ID, spellbook type for "open", names].
 const SCHOOLS := {
@@ -146,7 +155,7 @@ static func skill_id(name: String) -> int:
 static func spells() -> Array:
 	var result := []
 	for i in MAGERY.size():
-		result.append({"name":MAGERY[i][0],"id":i+1,"school":"Magery","circle":i/8+1,"reagents":str(MAGERY[i][1]).split(" "),"mana":CIRCLE_MANA[i/8]})
+		result.append({"name":MAGERY[i][0],"id":i+1,"school":"Magery","circle":i/8+1,"reagents":Array(str(MAGERY[i][1]).split(" ")),"mana":CIRCLE_MANA[i/8],"words":WORDS[i]})
 	for school in SCHOOLS:
 		if school == "Magery": continue
 		var names: Array = SCHOOLS[school][2]

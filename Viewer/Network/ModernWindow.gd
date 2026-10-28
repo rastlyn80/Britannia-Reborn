@@ -1,0 +1,128 @@
+extends PanelContainer
+# Shared frame for the modern windows: a brass-edged glass panel with a title
+# bar to drag, a close button, and its position remembered between sessions
+# (user://ui/windows.json). Subclasses put their content in `body`.
+const Look = preload("res://Network/ModernSkin.gd")
+const PLACES := "user://ui/windows.json"
+var window_id := ""
+var body := VBoxContainer.new()
+var title_label := Label.new()
+var title_bar := HBoxContainer.new()
+var dragging := false
+var drag_from := Vector2.ZERO
+
+func setup(id: String, title: String, minimum: Vector2, default_position: Vector2) -> void:
+	window_id = id
+	theme = Look.theme()
+	custom_minimum_size = minimum
+	add_theme_stylebox_override("panel",Look.box(Color(0.055,0.063,0.078,0.95),Color(0.84,0.7,0.43,0.45),14,1,0))
+	var column := VBoxContainer.new()
+	column.add_theme_constant_override("separation",0)
+	add_child(column)
+	var bar := PanelContainer.new()
+	bar.add_theme_stylebox_override("panel",_bar_style())
+	bar.mouse_filter = Control.MOUSE_FILTER_STOP
+	bar.gui_input.connect(_drag)
+	column.add_child(bar)
+	title_bar.add_theme_constant_override("separation",6)
+	bar.add_child(title_bar)
+	title_label.text = title
+	title_label.add_theme_font_override("font",Look.title_font())
+	title_label.add_theme_font_size_override("font_size",18)
+	title_label.add_theme_color_override("font_color",Color("f3ebd9"))
+	title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	title_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	title_bar.add_child(title_label)
+	var close := Button.new()
+	close.icon = Look.icon("close",Look.ASH,16)
+	close.flat = true
+	close.tooltip_text = "Close (%s)" % id.capitalize()
+	close.focus_mode = Control.FOCUS_NONE
+	close.pressed.connect(hide)
+	title_bar.add_child(close)
+	var margin := MarginContainer.new()
+	for side in ["left","right","top","bottom"]: margin.add_theme_constant_override("margin_"+side,16 if side != "top" else 12)
+	margin.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	column.add_child(margin)
+	body.add_theme_constant_override("separation",10)
+	margin.add_child(body)
+	position = _remembered(default_position)
+	hide()
+
+static func _bar_style() -> StyleBoxFlat:
+	var style := Look.box(Color(0.84,0.7,0.43,0.07),Color(0.84,0.7,0.43,0.25),14,0,0)
+	style.border_width_bottom = 1
+	style.corner_radius_bottom_left = 0
+	style.corner_radius_bottom_right = 0
+	style.content_margin_left = 16
+	style.content_margin_right = 8
+	style.content_margin_top = 8
+	style.content_margin_bottom = 8
+	return style
+
+func toggle() -> void:
+	visible = not visible
+	if visible:
+		move_to_front()
+		_keep_on_screen()
+
+func _drag(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		dragging = event.pressed
+		drag_from = event.global_position-global_position
+		if event.pressed: move_to_front()
+		else: _remember()
+	elif event is InputEventMouseMotion and dragging:
+		global_position = event.global_position-drag_from
+		_keep_on_screen()
+
+func _keep_on_screen() -> void:
+	var screen := get_viewport_rect().size
+	position = position.clamp(Vector2.ZERO,(screen-size).max(Vector2.ZERO))
+
+static func _places() -> Dictionary:
+	if not FileAccess.file_exists(PLACES): return {}
+	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(PLACES))
+	return data if data is Dictionary else {}
+
+func _remembered(fallback: Vector2) -> Vector2:
+	var at: Variant = _places().get(window_id,null)
+	return Vector2(float(at[0]),float(at[1])) if at is Array and at.size() == 2 else fallback
+
+func _remember() -> void:
+	var places := _places()
+	places[window_id] = [position.x,position.y]
+	DirAccess.make_dir_recursive_absolute(PLACES.get_base_dir())
+	var file := FileAccess.open(PLACES,FileAccess.WRITE)
+	if file: file.store_string(JSON.stringify(places))
+
+# Small shared builders.
+static func chip(text: String, pressed := false) -> Button:
+	var b := Button.new()
+	b.text = text
+	b.toggle_mode = true
+	b.button_pressed = pressed
+	b.focus_mode = Control.FOCUS_NONE
+	b.add_theme_stylebox_override("normal",Look.box(Color(0,0,0,0),Color(0.84,0.7,0.43,0.22),999,1,6))
+	b.add_theme_stylebox_override("hover",Look.box(Color(0.84,0.7,0.43,0.1),Look.BRASS,999,1,6))
+	b.add_theme_stylebox_override("pressed",Look.box(Color(0.84,0.7,0.43,0.22),Look.BRASS,999,1,6))
+	b.add_theme_color_override("font_color",Look.ASH)
+	b.add_theme_color_override("font_pressed_color",Look.IVORY)
+	b.add_theme_font_override("font",Look.ui_font(600))
+	b.add_theme_font_size_override("font_size",13)
+	return b
+
+static func meter(color: Color, height := 10) -> ProgressBar:
+	var bar := ProgressBar.new()
+	bar.show_percentage = false
+	bar.custom_minimum_size = Vector2(0,height)
+	bar.add_theme_stylebox_override("background",Look.box(Color(1,1,1,0.08),Color(0,0,0,0),height/2,0,0))
+	bar.add_theme_stylebox_override("fill",Look.box(color,Color(0,0,0,0),height/2,0,0))
+	return bar
+
+# Empty a container now (queue_free alone leaves the children counted until
+# the end of the frame).
+static func clear(node: Node) -> void:
+	for child in node.get_children():
+		node.remove_child(child)
+		child.queue_free()

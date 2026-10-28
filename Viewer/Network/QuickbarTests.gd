@@ -14,6 +14,9 @@ class FakeSession extends Node:
 	signal ended
 	signal items_changed
 	signal status_changed(status: Dictionary)
+	signal skills_changed(skills: Dictionary)
+	signal entity_changed(serial: int, position: Dictionary)
+	signal message_received(text: String)
 	var phase := "world"
 	var username := "tester"
 	var player := {"serial":0x100,"x":100,"y":100,"z":0,"flags":0}
@@ -24,6 +27,8 @@ class FakeSession extends Node:
 	var entity_names := {}
 	var player_status := {"mana":50}
 	var equipment := {}
+	var skills := {}
+	var mobile_statistics := {}
 	var target_request := PackedByteArray()
 	var labels := preload("res://Network/ItemLabels.gd").new()
 	var sent := []
@@ -150,5 +155,33 @@ func run() -> void:
 	reloaded.load_profile(path.get_file().get_basename())
 	check(str(reloaded.slot_at(1,"ctrl",0).steps[0].text) == "Vas Corp" and reloaded.key_of(1,0) == "F1","The layout is saved and comes back")
 	DirAccess.remove_absolute(path)
+	# The modern windows on the same recorded session.
+	game.skills = {40:{"id":40,"value":100.0,"base":100.0,"lock":2,"cap":100.0},25:{"id":25,"value":60.0,"base":60.0,"lock":0,"cap":100.0},0:{"id":0,"value":0.0,"base":0.0,"lock":0,"cap":100.0}}
+	var skills_window := preload("res://Network/SkillsWindow.gd").new()
+	root.add_child(skills_window)
+	skills_window.configure(game)
+	skills_window.toggle()
+	check(skills_window.rows.get_child_count() == 2 and skills_window.total_label.text == "Total 160.0","Skills window lists trained skills and their total")
+	skills_window.trained_only = false
+	skills_window.search.text = "alch"
+	skills_window.refresh()
+	check(skills_window.rows.get_child_count() == 1,"Skills search finds untrained skills when shown")
+	var book := preload("res://Network/SpellbookWindow.gd").new()
+	root.add_child(book)
+	book.configure(runner)
+	book.circle = 4
+	book.toggle()
+	check(book.grid.get_child_count() == 8 and book._missing(Catalog.spell("Recall")) == ["Black Pearl","Blood Moss"],"Spellbook shows a circle's eight spells and names missing reagents")
+	var pack := preload("res://Network/BackpackWindow.gd").new()
+	root.add_child(pack)
+	pack.configure(game)
+	pack.toggle()
+	check(pack.items().size() == game.contents_of(game.backpack).size() and pack.grid.get_child_count() == pack.items().size(),"Backpack shows every item in the pack")
+	var added := {"slot":{}}
+	pack.add_requested.connect(func(value: Dictionary): added.slot = value)
+	pack._slot_for(game.known_items[0x40000010]).steps[0].action == "Use Item Type"
+	bar.add_to_first_empty(pack._slot_for(game.known_items[0x40000010]))
+	check(str(bar.slot_at(0,"",0).get("steps",[{}])[0].get("action","")) != "" and int(bar.profile.bars["1"][""].size()) >= 1,"Add to quickbar fills the first empty slot of the set on screen")
+	DirAccess.remove_absolute(bar.profile_path)
 	print("QUICKBAR TESTS: %d checks / %d failures" % [checks,failures])
 	quit(0 if failures == 0 else 1)

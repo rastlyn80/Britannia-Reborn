@@ -233,7 +233,7 @@ func _ready() -> void:
 		else:
 			minimap.free()
 			minimap = null
-	var vitals := preload("res://Network/VitalsHud.gd").new()
+	var vitals := preload("res://Network/VitalsCard.gd").new()
 	canvas.add_child(vitals)
 	vitals.configure(game)
 	character_sheet = preload("res://Network/CharacterSheet.gd").new()
@@ -242,7 +242,7 @@ func _ready() -> void:
 	vitals.opened.connect(func(): character_sheet.toggle("character"))
 	login_panel.button(login_panel.world_controls,"Character (C)",func(): character_sheet.toggle("character"))
 	login_panel.button(login_panel.world_controls,"Skills (K)",func(): character_sheet.toggle("skills"))
-	_add_quickbar(canvas)
+	_add_modern_hud(canvas,login_panel)
 	# Classic/modern Britain: restart loads the matching prepared city cache.
 	var graphics_mode := preload("res://Presentation/GraphicsMode.gd")
 	var graphics_button: Button = login_panel.button(login_panel.world_controls,"Britain: %s" % ("modern" if graphics_mode.modern() else "classic"),func(): pass)
@@ -380,23 +380,74 @@ func _physics_process(delta: float) -> void:
 	avatar.jump.advance(delta,clearance)
 
 # Client-only sky view: server time, always day or always night (F7).
-# Quickbar: classic macro actions on Shift/Ctrl/Alt sets (Network/Quickbar.gd).
-func _add_quickbar(canvas: CanvasLayer) -> void:
+# Modern HUD (docs/MODERN_UI.md): quickbar with classic macro actions on
+# Shift/Ctrl/Alt sets, skills, spellbook and backpack windows, target frame,
+# journal, window menu and notices.
+func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	var runner := preload("res://Network/ActionRunner.gd").new()
 	add_child(runner)
 	runner.configure(game)
 	runner.hovered = world_items.hovered_serial
+	var journal := preload("res://Network/Journal.gd").new()
+	canvas.add_child(journal)
+	journal.configure(game)
+	var target := preload("res://Network/TargetFrame.gd").new()
+	canvas.add_child(target)
+	target.configure(game)
+	var toasts := preload("res://Network/Toasts.gd").new()
+	canvas.add_child(toasts)
+	toasts.configure(game)
 	var quickbar := preload("res://Network/Quickbar.gd").new()
 	canvas.add_child(quickbar)
 	quickbar.configure(runner)
+	runner.feedback.connect(func(text: String): journal.add(text,"Quickbar"))
+	var skills := preload("res://Network/SkillsWindow.gd").new()
+	canvas.add_child(skills)
+	skills.configure(game)
+	var spellbook := preload("res://Network/SpellbookWindow.gd").new()
+	canvas.add_child(spellbook)
+	spellbook.configure(runner)
+	spellbook.add_requested.connect(quickbar.add_to_first_empty)
+	var backpack := preload("res://Network/BackpackWindow.gd").new()
+	canvas.add_child(backpack)
+	backpack.configure(game)
+	backpack.add_requested.connect(quickbar.add_to_first_empty)
+	# The modern backpack replaces the plain item list for the pack itself.
+	for child in login_panel.get_children():
+		if child.get_script() == preload("res://Network/ItemBrowser.gd"):
+			game.container_opened.connect(func(serial: int):
+				if serial == int(game.backpack): (func(): child.panel.hide()).call_deferred())
 	var editor := preload("res://Network/SlotEditor.gd").new()
 	canvas.add_child(editor)
 	quickbar.edit_requested.connect(func(row: int, layer: String, index: int): editor.open(quickbar,row,layer,index))
+	var menu := preload("res://Network/MenuBar.gd").new()
+	canvas.add_child(menu)
+	game.entered.connect(func(_position: Dictionary): menu.show())
+	# In the world the journal takes the old key-help panel's corner, and the
+	# minimap sits above the window menu.
+	game.entered.connect(func(_position: Dictionary): status.get_parent().hide.call_deferred())
+	game.ended.connect(func(): status.get_parent().show())
+	if minimap:
+		minimap.offset_top -= 72
+		minimap.offset_bottom -= 72
+	game.ended.connect(menu.hide)
+	var open := func(window: String) -> bool:
+		match window:
+			"character", "Paperdoll", "Status": character_sheet.toggle("character")
+			"backpack", "Backpack": backpack.toggle()
+			"skills", "Skills": skills.toggle()
+			"spellbook": spellbook.toggle()
+			"journal", "Journal": journal.visible = not journal.visible
+			"map", "World Map":
+				if minimap: minimap.visible = not minimap.visible
+				else: return false
+			_: return false
+		return true
+	menu.chosen.connect(func(window: String):
+		if not open.call(window): quickbar.show_feedback("The %s is not in this client yet." % window))
 	runner.window_requested.connect(func(window: String, verb: String):
 		if verb == "Quit": get_tree().quit()
-		elif window in ["Paperdoll","Status"]: character_sheet.toggle("character")
-		elif window == "Skills": character_sheet.toggle("skills")
-		elif window == "Backpack": game.open_backpack()
+		elif verb in ["Open","Close"] and open.call(window): pass
 		else: quickbar.show_feedback("%s %s is not in this client yet." % [verb,window]))
 	runner.client_requested.connect(func(action: String, option: String):
 		if action == "Zoom":

@@ -249,3 +249,14 @@ func move_slot(from: Array, to: Array) -> void:
 	var b := slot_at(int(to[0]),str(to[1]),int(to[2]))
 	set_slot(int(to[0]),str(to[1]),int(to[2]),a)
 	set_slot(int(from[0]),str(from[1]),int(from[2]),b)
+
+# "Add to quickbar" from a window: the first empty slot of the set on screen.
+func add_to_first_empty(value: Dictionary) -> void:
+	var layer := visible_layer()
+	for row in int(profile.get("rows",2)):
+		for index in int(profile.get("slots",12)):
+			if slot_at(row,layer,index).is_empty():
+				set_slot(row,layer,index,value)
+				show_feedback("Added to slot %d of the %s set." % [index+1,LAYER_NAMES[layer]])
+				return
+	show_feedback("The %s set is full: drag it onto a slot to replace one." % LAYER_NAMES[layer])

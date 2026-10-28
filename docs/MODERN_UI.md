@@ -14,6 +14,22 @@ Design reference: the owner-approved mockups on the "Britannia Reborn Modern UI"
 | Slot editor | `Viewer/Network/SlotEditor.gd` | The classic macro editor in the new look. Sets one action or a sequence of steps (add, remove, reorder); kind, action and choice; free text for speech and delays; a picker of carried items with their art; how the slot targets; a label; and its key (press a key; Escape clears; one key, one slot). |
 | World hooks | `Viewer/World.gd`, `Viewer/Presentation/WorldItems.gd` | The quickbar and editor are added to the HUD. Paperdoll, Status, Skills and Backpack open the existing windows, and Zoom drives the camera. Clicking a creature while a target cursor is open now targets it, where it used to open its menu. Clicking a creature otherwise selects it, so Attack Selected and Last Target work. |
 
+## HUD and windows (second build)
+
+| Piece | File | What it does |
+| --- | --- | --- |
+| Window frame | `ModernWindow.gd` | Glass panel with a title bar to drag, a close button and its position remembered (`user://ui/windows.json`); shared chips and meters. |
+| Vitals | `VitalsCard.gd` | Top left: name, attributes, gold and weight, hits/stamina/mana with numbers (hits turn green when poisoned). Replaces the old vitals box; click opens the character sheet. |
+| Target | `TargetFrame.gd` | Top centre: the selected or last-targeted creature, its name in its notoriety colour, health (the server is asked for its status) and distance. |
+| Journal | `Journal.gd` | Bottom left: server text and quickbar notes with tabs; Enter to talk, `/e` `/w` `/y` `/p` for emote, whisper, yell, party, `[` for server commands, Escape to stop typing. |
+| Window menu | `MenuBar.gd` | Bottom right: Character C, Backpack B, Skills K, Spellbook P, Journal J, Map M. |
+| Notices | `Toasts.gd` | Right side: skill gains and losses, gold changes, fading after five seconds. |
+| Skills | `SkillsWindow.gd` | The server's skills by group with search, value against cap, raise/lower/lock sent to the server, Use, gains this session, the total; drag a skill onto the quickbar. |
+| Spellbook | `SpellbookWindow.gd` | Every school, Magery by circle, reagents in the pack (missing in red), spell cards naming what is missing, words of power, mana, Cast, Add to quickbar, drag onto the quickbar. |
+| Backpack | `BackpackWindow.gd`, `ItemTile.gd` | The pack's items with their own art and counts, search and sort, weight against the limit, details, Use, Drop (asks twice), Add to quickbar, drag onto the quickbar (a slot that uses any item of that kind). The plain item list no longer opens on top of it for the pack. |
+
+Checked live: a login in the real game scene over streamed Britain shows the card, journal, quickbar, menu and each window with the character's real values and pack.
+
 ## Evidence
 
 - `Viewer/Network/QuickbarTests.gd` (in `scripts/verify.ps1`), 37 checks:
@@ -41,7 +57,7 @@ Design reference: the owner-approved mockups on the "Britannia Reborn Modern UI"
 
 ## Open
 
-- **Purpose-built windows:** skills, spellbook, backpack, character and journal as on the canvas. Dragging a skill, spell or backpack item onto a slot needs those windows to offer drag data. Until then the slot editor's pickers do this job.
+- **Windows still to modernise:** the character sheet (paperdoll), other containers, the world map, buff bar, party frames. Speaker names in the journal need the session to pass them on (0x1C/0xAE carry them; GameSession emits text only).
 - **Server gumps:** the modern rendering of server gumps, and the purpose-built crafting, vendor, runebook, bulletin and book windows.
 - **Actions that only report "not in this client yet":** these need client features that do not exist yet.
   - Windows: health bars, buff icons, Close Gump and Kill Gump Open, chat visibility, Save Desktop, Minimize and Maximize.
@@ -49,5 +65,5 @@ Design reference: the owner-approved mockups on the "Britannia Reborn Modern UI"
   - Visual toggles: roofs, vegetation, tree stumps and cave tiles, update range, range colour, aura and circle of transparency.
   - Camera: Look At Mouse and Look Forwards/Backwards.
   - Use Counter Bar Slot.
-- **Cooldowns:** the protocol carries no cooldown timers, so slots only flash on use. Buff timers (0xDF) can show real durations once the buff bar exists.
+- **Action timers (owner requirement):** each kind of action (skill, spell, potion, bandage) gets a visible timer on its slot and is refused until it expires, then the slot refreshes. The protocol carries no cooldown packet, so durations must come from server feedback (buff 0xDF, "you must wait" messages, ModernUO's delays), not guesses.
 - **Settings:** interface scale, bar sets that switch on war mode, crafting or riding, a gamepad wheel and a settings page for rows, slots per row and which modifier sets are enabled. The profile format already stores rows, slots and keys.
