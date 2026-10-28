@@ -714,6 +714,28 @@
           ]
         }
       ]
+    },
+    {
+      "id": "throw_pillows_01",
+      "source": "Art/PolyHaven/throw_pillows_01/throw_pillows_01_1k.gltf",
+      "sourceSha256": "dd3f985a4446c82035028392ae905b9d996b8be10316a4572a870561a57f76fa",
+      "license": "CC0-1.0",
+      "page": "https://polyhaven.com/a/throw_pillows_01",
+      "file": "throw_pillows_01/throw_pillows_01.glb",
+      "sha256": "45b2b765712d4abdef3b6b3196836bd7422bc06e9b319be23070ef07dbce782b",
+      "sourceTriangles": 6362,
+      "triangles": 2999
+    },
+    {
+      "id": "stone_fire_pit",
+      "source": "Art/PolyHaven/stone_fire_pit/stone_fire_pit_1k.gltf",
+      "sourceSha256": "40034b326d28c06f25cf1cdb39a5ab3f3b1d1a9415d490af39621efe6c31cee6",
+      "license": "CC0-1.0",
+      "page": "https://polyhaven.com/a/stone_fire_pit",
+      "file": "stone_fire_pit/stone_fire_pit.glb",
+      "sha256": "51552c1d6503851cc1aa62cce8eeabb095c205597069229e79426a8ecb2f8822",
+      "sourceTriangles": 3887,
+      "triangles": 2999
     }
   ]
 }

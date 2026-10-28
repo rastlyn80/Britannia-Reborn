@@ -1385,6 +1385,405 @@
         0.568
       ],
       "processing": "ground-centred, decimated to 6000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "weapon_rack",
+      "title": "Weapon rack",
+      "uid": "ed98bee2cb75463eaf8c5460c9b15bb0",
+      "page": "https://sketchfab.com/3d-models/ed98bee2cb75463eaf8c5460c9b15bb0",
+      "author": "Wandcaster",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-140/ed98bee2cb75463eaf8c5460c9b15bb0.glb",
+      "sourceSha256": "5b4538e873023bb81111c049ffdb61d2aca0de1a4057c949cb6dae3c37d8d959",
+      "sourceTriangles": 572,
+      "file": "weapon_rack/weapon_rack.glb",
+      "sha256": "080526d647f09631e4163dc03e521c521c64615e1ede8c42ccfd52d1d48dd161",
+      "triangles": 572,
+      "size": [
+        1.554,
+        1.239,
+        0.939
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "paper_lantern",
+      "title": "Japanese paper lantern",
+      "uid": "4450069fee444ae0920aa5babd5d9239",
+      "page": "https://sketchfab.com/3d-models/4450069fee444ae0920aa5babd5d9239",
+      "author": "Abel Gamero",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-120/4450069fee444ae0920aa5babd5d9239.glb",
+      "sourceSha256": "630fcdd1e770af31356620e3635584833dd453fe2a4c671ee4e3db645a3deaec",
+      "sourceTriangles": 1312,
+      "file": "paper_lantern/paper_lantern.glb",
+      "sha256": "e86db67fc6db1b659e75369283db4f259552a8d9e59ce61b97a989f0df3e3ac5",
+      "triangles": 1312,
+      "size": [
+        1.226,
+        1.853,
+        1.226
+      ],
+      "processing": "ground-centred, decimated to 2000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "coin_pile",
+      "title": "Pile of Coins (3)",
+      "uid": "8c7efafa0470436688b67c90a5b423fb",
+      "page": "https://sketchfab.com/3d-models/8c7efafa0470436688b67c90a5b423fb",
+      "author": "SebastianSosnowski",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-117/8c7efafa0470436688b67c90a5b423fb.glb",
+      "sourceSha256": "99ba0fa2bbba8d0b503ee1268e433f473ec070dd7a3332e3bbce66e1dfc19f6b",
+      "sourceTriangles": 24448,
+      "file": "coin_pile/coin_pile.glb",
+      "sha256": "52ed0a2aa9e2ce52d391fa415e3042076bbcdb8942f914217c2809fd94402c90",
+      "triangles": 4966,
+      "size": [
+        0.18,
+        0.017,
+        0.381
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "ladder_wood",
+      "title": "Wooden Ladder",
+      "uid": "51b5dbc46b0c44f787a1fbb728e0b513",
+      "page": "https://sketchfab.com/3d-models/51b5dbc46b0c44f787a1fbb728e0b513",
+      "author": "dgonlinebr",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-061/51b5dbc46b0c44f787a1fbb728e0b513.glb",
+      "sourceSha256": "8358018ae97d4f9751510c903df86ea6da2ba72a0547b8ab601ba43086e1ab11",
+      "sourceTriangles": 3944,
+      "file": "ladder_wood/ladder_wood.glb",
+      "sha256": "b5a1132d255475579612658bd6ed0264969f14e302dd05e505ec13bd6b5b7428",
+      "triangles": 3000,
+      "size": [
+        0.569,
+        4.164,
+        0.084
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "shield_round",
+      "title": "Medieval Shield",
+      "uid": "b98b8f64d935415aab0fe9b70074511f",
+      "page": "https://sketchfab.com/3d-models/b98b8f64d935415aab0fe9b70074511f",
+      "author": "Artem Mykhailov",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-091/b98b8f64d935415aab0fe9b70074511f.glb",
+      "sourceSha256": "e7b1c4841ebf77cb7eb4767c5c0527f225c14afddd144225953f961443f92329",
+      "sourceTriangles": 4970,
+      "file": "shield_round/shield_round.glb",
+      "sha256": "513e434b0731d1e97f597b8afab552760ef9f5111ebe7c7ef77545e7378c4c4c",
+      "triangles": 3999,
+      "size": [
+        1.015,
+        0.912,
+        0.509
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "shield_heater",
+      "title": "Wall Shield (Free)",
+      "uid": "b575f2bf5f9d469291b426a03b2e6aa5",
+      "page": "https://sketchfab.com/3d-models/b575f2bf5f9d469291b426a03b2e6aa5",
+      "author": "wolfgar74",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-024/b575f2bf5f9d469291b426a03b2e6aa5.glb",
+      "sourceSha256": "e0b43ebfd9387625bf06427c70cad4ddb715a809e5d46f213abef346efef6b8c",
+      "sourceTriangles": 484,
+      "file": "shield_heater/shield_heater.glb",
+      "sha256": "0094d9c77f935e7a9d37a17c3164922346f9c4f3640627e9bc8d750cea8e6198",
+      "triangles": 484,
+      "size": [
+        0.545,
+        0.955,
+        0.095
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "flask_potion",
+      "title": "Potion Flask",
+      "uid": "598809e9ebab4dad8b26c456e7271b76",
+      "page": "https://sketchfab.com/3d-models/598809e9ebab4dad8b26c456e7271b76",
+      "author": "Incg5764",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-090/598809e9ebab4dad8b26c456e7271b76.glb",
+      "sourceSha256": "a79ba49fe2f1e1b536665de719319c76b12b175235cc4321275658825cdd3e13",
+      "sourceTriangles": 4506,
+      "file": "flask_potion/flask_potion.glb",
+      "sha256": "c5724d09e41ddfa56f9710b505d902867e9626356f1faaba9740f9bda03e8bcc",
+      "triangles": 2996,
+      "size": [
+        2.279,
+        2.634,
+        2.014
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "flask_round",
+      "title": "Full Rejuvernation Potion - [ Diablo II ]",
+      "uid": "c29531095aa24d7399fcc777e821e90b",
+      "page": "https://sketchfab.com/3d-models/c29531095aa24d7399fcc777e821e90b",
+      "author": "Ole Gunnar Isager",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-027/c29531095aa24d7399fcc777e821e90b.glb",
+      "sourceSha256": "fa5728d0622e251fd9d3f16d6d89fb9ff8018929349d49af67b633a347c19364",
+      "sourceTriangles": 5432,
+      "file": "flask_round/flask_round.glb",
+      "sha256": "d0b1fcac35534422e582e9435cf185bb7d2e9f628e4b4496bf68206487cb782d",
+      "triangles": 3000,
+      "size": [
+        18.003,
+        19.517,
+        15.146
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "chest_wood",
+      "title": "Medieval Chest",
+      "uid": "037b03a3e0274279be4b93b7c7cedf01",
+      "page": "https://sketchfab.com/3d-models/037b03a3e0274279be4b93b7c7cedf01",
+      "author": "AIV",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-051/037b03a3e0274279be4b93b7c7cedf01.glb",
+      "sourceSha256": "fb5085e098e2464c36923b5cd49e429e2b7303f72c9c18f86fe16997faaa1812",
+      "sourceTriangles": 7622,
+      "file": "chest_wood/chest_wood.glb",
+      "sha256": "2dfd709d83c3ff29b6b22a9205563676a0c7f8b4b95cf19dc1e4a1f8fc61b4ae",
+      "triangles": 4999,
+      "size": [
+        1.999,
+        1.027,
+        1.154
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "trophy_deer",
+      "title": "Laughing Deer Trophy",
+      "uid": "f4e2f8ce26c3422b8f36b562511fc443",
+      "page": "https://sketchfab.com/3d-models/f4e2f8ce26c3422b8f36b562511fc443",
+      "author": "ZeKa Arts",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-012/f4e2f8ce26c3422b8f36b562511fc443.glb",
+      "sourceSha256": "d314e64fe9eea2bff680138f7c37620c6e74420415aa991cef2fbdfc9c3afba3",
+      "sourceTriangles": 2952,
+      "file": "trophy_deer/trophy_deer.glb",
+      "sha256": "7297a754a3a55038cf221ee025894c58a0e1d4d9280bd30d7e2f7e9c089b60f7",
+      "triangles": 2952,
+      "size": [
+        1.902,
+        3.028,
+        2.766
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "vat_wood",
+      "title": "Holzbottich - wooden vat",
+      "uid": "98a5ce99c6574f7b9f33c031696e1bad",
+      "page": "https://sketchfab.com/3d-models/98a5ce99c6574f7b9f33c031696e1bad",
+      "author": "Mario_Wallner",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-134/98a5ce99c6574f7b9f33c031696e1bad.glb",
+      "sourceSha256": "a03510a4c0aa5e5c23ed19572204bfa30c8bc07111085e5bd4e1bb6fc4fb2d25",
+      "sourceTriangles": 100000,
+      "file": "vat_wood/vat_wood.glb",
+      "sha256": "56e8f0f049d08129a0c9f69045ebf04730c3d828ffcddc3c222dca6e0f19f80f",
+      "triangles": 5000,
+      "size": [
+        23.479,
+        41.626,
+        23.279
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "coffin_old",
+      "title": "Old Coffin",
+      "uid": "3057a15a0c9242b881b85624e15fb0f7",
+      "page": "https://sketchfab.com/3d-models/3057a15a0c9242b881b85624e15fb0f7",
+      "author": "bilgehan.korkmaz",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-055/3057a15a0c9242b881b85624e15fb0f7.glb",
+      "sourceSha256": "307e9a4fbd39215581c1175ff8718e5b80cff519e933be3fe17980f190cc4e70",
+      "sourceTriangles": 2446,
+      "file": "coffin_old/coffin_old.glb",
+      "sha256": "2663f3d4d43744cc0b9a9ca990496eb4d7e57d279f1db311e0e80dfc4fdd31d2",
+      "triangles": 2446,
+      "size": [
+        88.312,
+        58.909,
+        201.339
+      ],
+      "processing": "ground-centred, decimated to 2500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "fountain_medieval",
+      "title": "Medieval Fountain Empty (Free)",
+      "uid": "952a9c257db641229902c36abb97e8bc",
+      "page": "https://sketchfab.com/3d-models/952a9c257db641229902c36abb97e8bc",
+      "author": "wolfgar74",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-144/952a9c257db641229902c36abb97e8bc.glb",
+      "sourceSha256": "3f785640a2c916780c537159999d6cfe1351aa255cdf6762370768c9aff3fc82",
+      "sourceTriangles": 4540,
+      "file": "fountain_medieval/fountain_medieval.glb",
+      "sha256": "121fbe54627323d0bf3cbae85b41f3d5df242335068d8fe24fd62dd8da4f7637",
+      "triangles": 4540,
+      "size": [
+        250.0,
+        251.604,
+        250.0
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "pillory_wood",
+      "title": "Pillory",
+      "uid": "bc5bbebd695441689d9e6d2889f34ef8",
+      "page": "https://sketchfab.com/3d-models/bc5bbebd695441689d9e6d2889f34ef8",
+      "author": "Froggreen",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-120/bc5bbebd695441689d9e6d2889f34ef8.glb",
+      "sourceSha256": "7a487786758e639aadfe5164aa87c9628afdc322f13af35178f957f4e26d4c04",
+      "sourceTriangles": 8410,
+      "file": "pillory_wood/pillory_wood.glb",
+      "sha256": "16b27f03841690e9c402a4616ca56c0a3646a134e49c68e034cc1b417fe4657f",
+      "triangles": 4999,
+      "size": [
+        3126.243,
+        2823.457,
+        2086.495
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "catapult_wood",
+      "title": "[ FREE ] Catapult",
+      "uid": "7e220a92e1064da797e80d43a1cdc349",
+      "page": "https://sketchfab.com/3d-models/7e220a92e1064da797e80d43a1cdc349",
+      "author": "ArchViz",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-138/7e220a92e1064da797e80d43a1cdc349.glb",
+      "sourceSha256": "60001b8dbaa991c35235bb39387d9fbf922f3038f56fccddca353e8283529104",
+      "sourceTriangles": 36295,
+      "file": "catapult_wood/catapult_wood.glb",
+      "sha256": "b4100a77902226ba3e3be9adbd91d62a0dc1f9ae2a2edd68ec516e689e68826c",
+      "triangles": 8000,
+      "size": [
+        1.862,
+        1.827,
+        1.998
+      ],
+      "processing": "ground-centred, decimated to 8000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "telescope_brass",
+      "title": "antique brass compass telescope",
+      "uid": "657201873c364634833bdba71af3ecb3",
+      "page": "https://sketchfab.com/3d-models/657201873c364634833bdba71af3ecb3",
+      "author": "juan-miguelbauwens",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-084/657201873c364634833bdba71af3ecb3.glb",
+      "sourceSha256": "500f20109c2720aa1322d29d607f5ca26eb92ef85ff8525a7ec6d2ba483c3373",
+      "sourceTriangles": 18730,
+      "file": "telescope_brass/telescope_brass.glb",
+      "sha256": "5d7e5a035e33e588336a9161e9b190834c4d8ab4a5e164522faf12b2215404cb",
+      "triangles": 5996,
+      "size": [
+        124.28,
+        136.276,
+        85.015
+      ],
+      "processing": "ground-centred, decimated to 6000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "sarcophagus_stone",
+      "title": "bloody sarcophagus",
+      "uid": "92713a72968c4bc481074cb982488639",
+      "page": "https://sketchfab.com/3d-models/92713a72968c4bc481074cb982488639",
+      "author": "persnetto",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-048/92713a72968c4bc481074cb982488639.glb",
+      "sourceSha256": "ac65a1c48d30b4c07da35b6ae567eb2a6cb7dd6eb9d044a945d168afcb27a6ff",
+      "sourceTriangles": 2540,
+      "file": "sarcophagus_stone/sarcophagus_stone.glb",
+      "sha256": "d50d66045d4d9eb341e25386211402ba3799c9d92ec93fa4644d6334cf742a9a",
+      "triangles": 2540,
+      "size": [
+        1.137,
+        0.736,
+        2.0
+      ],
+      "processing": "ground-centred, decimated to 3500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "bridge_rope",
+      "title": "Wood Suspention Bridge",
+      "uid": "4a10fd65104e42828640a786b5547655",
+      "page": "https://sketchfab.com/3d-models/4a10fd65104e42828640a786b5547655",
+      "author": "BenjiToddArtist",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-013/4a10fd65104e42828640a786b5547655.glb",
+      "sourceSha256": "7a8a5183b6288ba0e5210a655c10dee227f2441ec090670ccae5304bcab8abb6",
+      "sourceTriangles": 1128,
+      "file": "bridge_rope/bridge_rope.glb",
+      "sha256": "5facd95bdd232878232b926e384125f89ef1053366dffd0abf80eacd0b73c2a5",
+      "triangles": 1128,
+      "size": [
+        5.982,
+        2.672,
+        13.081
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "lighthouse_brick",
+      "title": "lighthouse",
+      "uid": "dab98033118949728804bfc5f4076b8f",
+      "page": "https://sketchfab.com/3d-models/dab98033118949728804bfc5f4076b8f",
+      "author": "Lora",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-055/dab98033118949728804bfc5f4076b8f.glb",
+      "sourceSha256": "b3852447b49af389a57166a45b02d620bdd48d0f88d9214cdb445357613b6759",
+      "sourceTriangles": 12922,
+      "file": "lighthouse_brick/lighthouse_brick.glb",
+      "sha256": "73132ef050002e4ec803b04add053bec82ed5d605438be476861dbf4bedc32ac",
+      "triangles": 5997,
+      "size": [
+        24.8,
+        39.991,
+        23.178
+      ],
+      "processing": "ground-centred, decimated to 6000 triangles, textures capped at 1024 px"
     }
   ]
 }

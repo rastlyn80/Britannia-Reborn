@@ -137,8 +137,22 @@ static func _resolve(id: int,info: Dictionary) -> Dictionary:
  if n.is_empty():
   # Legacy rug components have empty tiledata labels; retain source modules.
   if id>=2787 and id<=2810: return base.merged({"kind":"carpet"})
+  # Unnamed dark dungeon masonry (checked against their art): a stone floor
+  # tile, a cut-stone block and two wall faces.
+  if id==13852: return base.merged({"kind":"floor","surface":"stone"})
+  if id in [13833,13882,13883]: return base.merged({"kind":"wall","facadeFamily":"dungeon","asset":"Village/Wall_UnevenBrick_Straight.gltf"})
   return {}
  if "cloud" in n: return base.merged({"kind":"invisible","reason":"sky decoration above the play area"})
+ # Masonry sets of the other facets (checked against their art): serpent
+ # mosaics are stone floor tiles, marble/sandstone arch pieces are pillars
+ # carrying a springer, gargoyle bases are stone pedestals, wall carvings are
+ # carved marble panels; one rule covers every facing of a set.
+ if n.begins_with("serpentdesign"): return base.merged({"kind":"floor","surface":"stone"})
+ if n in ["marble arch","sandstone arch"]: return base.merged({"kind":"pillar","facadeFamily":"marble" if "marble" in n else "sandstone"})
+ if n.begins_with("gargoylebase"): return base.merged({"kind":"pillar","facadeFamily":"stone"})
+ if n == "wall carving": return base.merged({"kind":"wall","facadeFamily":"marble","asset":"Village/Wall_Plaster_Straight.gltf"})
+ # Fallen masonry of ruined walls (wasteland, broken brick/stone/check): rubble.
+ if n.begins_with("wasteland") or n.begins_with("breakbrick") or n.begins_with("breakstone") or n.begins_with("breakcheck"): return base.merged({"kind":"rock","asset":"Nature/Rock_Medium_3.gltf"})
  if "floor" in n and height<=2: return base.merged({"kind":"floor","surface":Facade.surface_for(n)})
  if n in ["bricks","brick"]: return base.merged({"kind":"floor","surface":"brick"} if height<=2 else {"kind":"landing"})
  if n=="waterfall": return base.merged({"kind":"waterfall"})
@@ -147,7 +161,8 @@ static func _resolve(id: int,info: Dictionary) -> Dictionary:
  if n.begins_with("wall ") and n!="wall map": return base.merged({"kind":"prop","model":"wall_light" if "torch" in n or "sconce" in n else "painting","mount":"wall"})
  if "wall map" in n: return base.merged({"kind":"prop","model":"painting","mount":"wall"})
  # Banners hang flat on the wall beside them (a free-standing one keeps its cell).
- if n in ["banner","tattered banner"]: return base.merged({"kind":"prop","model":"fabric","mount":"wall"})
+ if n in ["banner","tattered banner","tapestry"]: return base.merged({"kind":"prop","model":"fabric","mount":"wall"})
+ if n in ["decorative shield","decorative shields","trophy","painting"]: return base.merged({"kind":"prop","model":"replacement","mount":"wall"})
  if "wall" in n or n in ["window","arrow loop","battlement"]:
   return base.merged({"kind":"window" if n in ["window","arrow loop"] else ("trim" if height<15 else "wall"),"asset":"Village/Wall_UnevenBrick_Straight.gltf" if "stone" in n or "brick" in n else "Village/Wall_Plaster_Straight.gltf"})
  if "arch" in n and n not in ["arcanist statue"]: return base.merged({"kind":"arch","asset":"Village/Wall_Arch.gltf"})
@@ -173,6 +188,7 @@ static func _resolve(id: int,info: Dictionary) -> Dictionary:
  if n=="bed" or n=="cot": return base.merged({"kind":"bed","asset":"PolyHaven/GothicBed_01/GothicBed_01_1k.gltf"})
  if n=="wooden fence": return base.merged({"kind":"fence","asset":"MedievalKit/Fence_2m.gltf"})
  if n=="stone rail": return base.merged({"kind":"fence"})
+ if n in ["iron gate","wooden rail"]: return base.merged({"kind":"fence"})
  if "fence" in n or "banister" in n: return base.merged({"kind":"fence","asset":"Village/Prop_MetalFence_Simple.gltf" if "iron" in n or "metal" in n else "Village/Prop_WoodenFence_Single.gltf"})
  if "signpost" in n: return base.merged({"kind":"sign"})
  if "column" in n or "pillar" in n or "buttress" in n or n=="stone post": return base.merged({"kind":"pillar"})
@@ -207,6 +223,8 @@ static func _resolve(id: int,info: Dictionary) -> Dictionary:
   var regex := RegEx.new()
   regex.compile(str(model[1]))
   if regex.search(n): return base.merged({"kind":"prop","model":model[0]})
+ # Names with a photoscan replacement (prop-replacements.json) are props.
+ if preload("res://Presentation/PropReplacements.gd").has(n): return base.merged({"kind":"prop","model":"replacement"})
  return {}
 static func extend(world: Dictionary,catalog: Dictionary) -> void:
  if not world.get("staticData") is Dictionary:return

@@ -1527,6 +1527,166 @@
           "bytes": 176176
         }
       ]
+    },
+    {
+      "id": "fancy_picture_frame_01",
+      "name": "Fancy Picture Frame 01",
+      "source": "https://polyhaven.com/a/fancy_picture_frame_01",
+      "authors": [
+        "Rob Tuytel",
+        "Rico Cilliers"
+      ],
+      "polycount": 938,
+      "files": [
+        {
+          "path": "fancy_picture_frame_01/fancy_picture_frame_01_1k.gltf",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/fancy_picture_frame_01/fancy_picture_frame_01_1k.gltf",
+          "sourceMd5": "40491160e255225326cb1c1146dd5d48",
+          "sha256": "c54803abf9e43c28a6b3fe76b38a60e827647a4f9a10747e6d4efba842289578",
+          "bytes": 5059
+        },
+        {
+          "path": "fancy_picture_frame_01/textures/fancy_picture_frame_01_nor_gl_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/fancy_picture_frame_01/fancy_picture_frame_01_nor_gl_1k.jpg",
+          "sourceMd5": "23f759eb934c191140da30761f832442",
+          "sha256": "b200c284bbdc9c16f6705b1f4c7bca2486898d83333f2e490d298c4422ee4b4a",
+          "bytes": 216212
+        },
+        {
+          "path": "fancy_picture_frame_01/textures/fancy_picture_frame_01_canvas_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/fancy_picture_frame_01/fancy_picture_frame_01_canvas_diff_1k.jpg",
+          "sourceMd5": "11a8824c54066ce7f46be6cc2223ff75",
+          "sha256": "86619612e96004b3c8dd61a6e745edda46b8d1793d5a1fb8306abed11448ffd9",
+          "bytes": 100534
+        },
+        {
+          "path": "fancy_picture_frame_01/fancy_picture_frame_01.bin",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/fancy_picture_frame_01/fancy_picture_frame_01.bin",
+          "sourceMd5": "aeaeb6fcb58e4fa3cdd8a084d7757072",
+          "sha256": "5d5a01ce8b89f1fbea87bac0ca9ab24771f0d2827ab0308f19878007e45f442f",
+          "bytes": 25948
+        },
+        {
+          "path": "fancy_picture_frame_01/textures/fancy_picture_frame_01_canvas_rough_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/fancy_picture_frame_01/fancy_picture_frame_01_canvas_rough_1k.jpg",
+          "sourceMd5": "106564b4147a2aa199214641e21b2da6",
+          "sha256": "58efa8c350534ef0161e37a6eeed480cab611c992deae9df5d64797cef5a269e",
+          "bytes": 71299
+        },
+        {
+          "path": "fancy_picture_frame_01/textures/fancy_picture_frame_01_canvas_nor_gl_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/fancy_picture_frame_01/fancy_picture_frame_01_canvas_nor_gl_1k.jpg",
+          "sourceMd5": "ec41bf924450fca040afb0d299ea1294",
+          "sha256": "a77c51fc74606c177b79a1f2e5ebafde1e1d4f6ca851f3f39469afadae0e66ab",
+          "bytes": 52182
+        },
+        {
+          "path": "fancy_picture_frame_01/textures/fancy_picture_frame_01_rough_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/fancy_picture_frame_01/fancy_picture_frame_01_rough_1k.jpg",
+          "sourceMd5": "66d1fe3bb6963788e049a814b3eb93c0",
+          "sha256": "a393111f86fa9ffb8fa09f26c7f72a2a519f4120e9a68ee462280444a8a6055f",
+          "bytes": 119837
+        },
+        {
+          "path": "fancy_picture_frame_01/textures/fancy_picture_frame_01_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/fancy_picture_frame_01/fancy_picture_frame_01_diff_1k.jpg",
+          "sourceMd5": "8506baa4f1cf9ea2a07e060fb3303ff5",
+          "sha256": "e511bd3a45b6979d505a652bc21bbb7b0d1cffb9908c67d9b5cd0d77b732a1b1",
+          "bytes": 150435
+        }
+      ]
+    },
+    {
+      "id": "throw_pillows_01",
+      "name": "Throw Pillows 01",
+      "source": "https://polyhaven.com/a/throw_pillows_01",
+      "authors": [
+        "Serhii Khromov"
+      ],
+      "polycount": 6362,
+      "files": [
+        {
+          "path": "throw_pillows_01/throw_pillows_01_1k.gltf",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/throw_pillows_01/throw_pillows_01_1k.gltf",
+          "sourceMd5": "ffffc13de5ce464056e24217dc565d19",
+          "sha256": "dd3f985a4446c82035028392ae905b9d996b8be10316a4572a870561a57f76fa",
+          "bytes": 4548
+        },
+        {
+          "path": "throw_pillows_01/textures/throw_pillows_01_rough_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/throw_pillows_01/throw_pillows_01_rough_1k.jpg",
+          "sourceMd5": "47b3576090f2b98a9d18bd9bbd5265ab",
+          "sha256": "05518d80893cd4b0a1390ccf1330e94ecae7f386b60e2b55761a1e9856e29f9b",
+          "bytes": 339241
+        },
+        {
+          "path": "throw_pillows_01/textures/throw_pillows_01_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/throw_pillows_01/throw_pillows_01_diff_1k.jpg",
+          "sourceMd5": "8e140f48bf4a9c48ccca4ecc941bba19",
+          "sha256": "1d52fb47f06b88b5079f20a99309ae1e94547e778a5f89614d70f842c0696412",
+          "bytes": 299887
+        },
+        {
+          "path": "throw_pillows_01/throw_pillows_01.bin",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/4k/throw_pillows_01/throw_pillows_01.bin",
+          "sourceMd5": "dd26dd164ecfa138e0bb51d94a4197ed",
+          "sha256": "cac134c38612894a301d265a0b2ad4ddbe57d15d7473d57592c397d445366476",
+          "bytes": 146012
+        },
+        {
+          "path": "throw_pillows_01/textures/throw_pillows_01_nor_gl_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/throw_pillows_01/throw_pillows_01_nor_gl_1k.jpg",
+          "sourceMd5": "0a57d294ef66db004709f76a961a5f7b",
+          "sha256": "074da9df1286aecf0d107bdd0839f0ec382fa99b16313626c7f6690d2765b4d7",
+          "bytes": 404720
+        }
+      ]
+    },
+    {
+      "id": "stone_fire_pit",
+      "name": "Stone Fire Pit",
+      "source": "https://polyhaven.com/a/stone_fire_pit",
+      "authors": [
+        "Sebastian Platen"
+      ],
+      "polycount": 3887,
+      "files": [
+        {
+          "path": "stone_fire_pit/stone_fire_pit_1k.gltf",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/stone_fire_pit/stone_fire_pit_1k.gltf",
+          "sourceMd5": "f3a23e45ee66802ccc7a5462a9371ae3",
+          "sha256": "40034b326d28c06f25cf1cdb39a5ab3f3b1d1a9415d490af39621efe6c31cee6",
+          "bytes": 2792
+        },
+        {
+          "path": "stone_fire_pit/stone_fire_pit.bin",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/4k/stone_fire_pit/stone_fire_pit.bin",
+          "sourceMd5": "1652ba5fb374b6c15cddb64445a0bb5b",
+          "sha256": "83528a314ac1ff67a583a59640612e7f8dca803dbb581188b8226d9b661ef0d6",
+          "bytes": 96220
+        },
+        {
+          "path": "stone_fire_pit/textures/stone_fire_pit_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/stone_fire_pit/stone_fire_pit_diff_1k.jpg",
+          "sourceMd5": "a7ec1828062280c20e265d2c99497d1d",
+          "sha256": "3f2a2340a7dc7207d5b24deb7697c11c43bbd1963533b8f7c41644d32872d1ff",
+          "bytes": 785670
+        },
+        {
+          "path": "stone_fire_pit/textures/stone_fire_pit_nor_gl_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/stone_fire_pit/stone_fire_pit_nor_gl_1k.jpg",
+          "sourceMd5": "75923471613207e5c9f309a1df752753",
+          "sha256": "6ba240fbdc1ab6dac4b06ac342e7fca9fa6064c7d4f98e75cfccad44214c533a",
+          "bytes": 969822
+        },
+        {
+          "path": "stone_fire_pit/textures/stone_fire_pit_arm_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/stone_fire_pit/stone_fire_pit_arm_1k.jpg",
+          "sourceMd5": "506392ebeef9bb696f907a972fc185c6",
+          "sha256": "9812f7511ccbddcb8340fd47a6fffcf3897820fad31004241639d6d2ea523e2c",
+          "bytes": 681441
+        }
+      ]
     }
   ]
 }

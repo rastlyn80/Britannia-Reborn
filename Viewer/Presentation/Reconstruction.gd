@@ -65,6 +65,9 @@ var wall_cells := {}
 # Fence pieces (graphic id) by source cell and Z: stacked pieces continue the
 # post below; neighbouring pieces join their rails at junctions.
 var fence_cells := {}
+# Multi-tile objects UO splits into one graphic per tile ("assembly":
+# "footprint" replacements): ordinal -> {anchor, offset (m), span (tiles)}.
+var footprints := {}
 var presentation_adjustments := {}
 var contextual_suppressed := 0
 var floors := preload("res://Presentation/FloorPlan.gd").new()
@@ -115,6 +118,7 @@ func index(world: Dictionary) -> void:
 	presentation_adjustments.clear()
 	wall_cells.clear()
 	fence_cells.clear()
+	_plan_footprints(world)
 	var trees := {}
 	var beds := {}
 	var arches := {}
@@ -701,6 +705,70 @@ func _plan_eaves(world: Dictionary) -> void:
 							if int(z) > top and int(z) <= top+16: eave = mini(eave,int(z))
 			if eave < 1000: eave_extensions[i] = float(eave-top)*float(world.elevationScale)
 
+# Neighbouring tiles (8-connected, within 6 Z) of one multi-tile name form one
+# object; its lowest ordinal draws the model over the whole footprint.
+func _plan_footprints(world: Dictionary) -> void:
+	footprints.clear()
+	var Swaps := preload("res://Presentation/PropReplacements.gd")
+	var members := {}
+	for i in world.statics.size():
+		var s: Dictionary = world.statics[i]
+		var name := Swaps.key(str(info(world,int(s.id),true).get("name","")))
+		if str(Swaps.entry(name).get("assembly","")) != "footprint": continue
+		if not members.has(name): members[name] = {}
+		var cell := Vector2i(s.x,s.y)
+		if not members[name].has(cell): members[name][cell] = []
+		members[name][cell].append(i)
+	for name in members:
+		var cells: Dictionary = members[name]
+		var seen := {}
+		for start in cells:
+			for first in cells[start]:
+				if seen.has(first): continue
+				var component := []
+				var pending := [first]
+				seen[first] = true
+				while not pending.is_empty():
+					var current: int = pending.pop_back()
+					component.append(current)
+					var at: Dictionary = world.statics[current]
+					for dx in range(-1,2):
+						for dy in range(-1,2):
+							for other in cells.get(Vector2i(at.x+dx,at.y+dy),[]):
+								if not seen.has(other) and absi(int(world.statics[other].z)-int(at.z)) <= 6:
+									seen[other] = true
+									pending.append(other)
+				var low := Vector2i(100000,100000)
+				var high := Vector2i(-100000,-100000)
+				var anchor: int = component.min()
+				for i in component:
+					low = low.min(Vector2i(world.statics[i].x,world.statics[i].y))
+					high = high.max(Vector2i(world.statics[i].x,world.statics[i].y))
+				var a: Dictionary = world.statics[anchor]
+				var centre := Vector2(low+high)/2.0+Vector2(0.5,0.5)
+				for i in component:
+					footprints[i] = {"anchor":i == anchor,"offset":Vector3(centre.x-float(a.x)-0.5,0,centre.y-float(a.y)-0.5),"span":Vector2(high-low)+Vector2.ONE}
+
+func _footprint_visual(ordinal: int, name: String, id: int, single: Node3D) -> Node3D:
+	var plan: Dictionary = footprints[ordinal]
+	if single: single.free()
+	var root := Node3D.new()
+	root.set_meta("replacement","multi-tile footprint")
+	if not plan.anchor: return root
+	var span: Vector2 = plan.span
+	var model: Node3D = preload("res://Presentation/PropReplacements.gd").build(self,name,0,id,{"length":maxf(span.x,span.y)*0.92})
+	if model == null: return root
+	var boxes := []
+	_collect_bounds(model,Transform3D.IDENTITY,boxes)
+	if not boxes.is_empty():
+		var box: AABB = boxes[0]
+		for other in boxes: box = box.merge(other)
+		# Turn the model's long side along the footprint's long side.
+		if absf(span.x-span.y) > 0.5 and (span.x > span.y) != (box.size.x >= box.size.z): model.rotation.y = PI/2
+	model.position = plan.offset
+	root.add_child(model)
+	return root
+
 # Another fence piece starts where this one ends (UO stacks pieces into tall
 # railings and porch posts), so its post runs on without a cap.
 func _fence_above(s: Dictionary, source_height: int) -> bool:
@@ -1149,6 +1217,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 			if visual and not long_x: visual.rotation.y = PI/2
 		# Photoscanned CC0 replacements by item name (prop-replacements.json).
 		if visual == null and kind in ["prop","asset","rock","log","mushroom","post","flower","plant","fern","crystal","stalagmite","grass","reeds","lilypad"] and not groups.has(ordinal): visual = preload("res://Presentation/PropReplacements.gd").build(self,str(detail.get("name","")),int(s.x)*7919+int(s.y)*104729,int(s.id))
+		if kind in ["prop","asset"] and footprints.has(ordinal) and not groups.has(ordinal): visual = _footprint_visual(ordinal,str(detail.get("name","")),int(s.id),visual)
 		# Counters follow their real footprint (L and U shapes) cell by cell.
 		if visual == null and kind == "counter" and tint.is_empty(): visual = counter_run(s,groups.get(ordinal,{"indices":[ordinal],"min_z":float(s.z)}),world)
 		# Wooden benches are runs of the scanned bench whatever their review says.
@@ -1199,11 +1268,13 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					facade.piece(visual,Vector3(0.54,0.1,0.54),Vector3(0,height-0.05,0),pier_family)
 				"pillar":
 					visual=Node3D.new()
+					# Marble/sandstone pillars keep their stone (rule facadeFamily).
+					var pillar_stone:=str(rule.get("facadeFamily","stone"))
 					for y in [0.06,height-0.06]:
 						var base_mesh:MeshInstance3D=geometry.crafted_box(visual,Vector3(0.40,0.12,0.40),Vector3(0,y,0),"ffffff")
-						base_mesh.material_override=facade.material("stone")
+						base_mesh.material_override=facade.material(pillar_stone)
 					var shaft:MeshInstance3D=geometry.cylinder(visual,0.15,maxf(0.05,height-0.24),Vector3(0,height/2,0),"ffffff")
-					shaft.material_override=facade.material("stone")
+					shaft.material_override=facade.material(pillar_stone)
 				"gable":
 					var group: Dictionary = groups[ordinal]
 					var span: float = maxf(group.size.x,group.size.y)+1.0

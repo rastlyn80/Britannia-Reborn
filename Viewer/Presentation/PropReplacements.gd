@@ -34,9 +34,13 @@ static func has(name: String, id := -1) -> bool:
 # jittered copies, e.g. a patch of mushrooms), "rotation" (yaw degrees that
 # turn the model's front to -Z), "anchor": "back" (its back face on z = 0,
 # for wall mounts) and "elevation" (metres above the placement).
-static func build(reconstruction: RefCounted, name: String, seed := 0, id := -1) -> Node3D:
+# overrides: caller-fitted keys (a multi-tile footprint sets "length").
+static func build(reconstruction: RefCounted, name: String, seed := 0, id := -1, overrides: Dictionary = {}) -> Node3D:
 	var found := entry_for(name,id)
 	if found.is_empty(): return null
+	if not overrides.is_empty():
+		found = found.merged(overrides,true)
+		if overrides.has("length"): found.erase("height")
 	if found.get("hide",false):
 		var part := Node3D.new()
 		part.set_meta("replacement","part of a multi-tile piece")
@@ -69,7 +73,7 @@ static func build(reconstruction: RefCounted, name: String, seed := 0, id := -1)
 static func _one(reconstruction: RefCounted, model: String, found: Dictionary, scale: float) -> Node3D:
 	# "Objaverse/name" entries are reduced museum/Sketchfab scans (Art/Objaverse);
 	# "Reduced/set/set_N" one variant split out of a Poly Haven nature set.
-	var path := "Objaverse/%s/%s.glb" % [model.trim_prefix("Objaverse/"),model.trim_prefix("Objaverse/")] if model.begins_with("Objaverse/") else ("%s.gltf" % model if model.begins_with("Reduced/") else "PolyHaven/%s/%s_1k.gltf" % [model,model])
+	var path := "Objaverse/%s/%s.glb" % [model.trim_prefix("Objaverse/"),model.trim_prefix("Objaverse/")] if model.begins_with("Objaverse/") else (("%s.gltf" % model if ResourceLoader.exists("res://Art/%s.gltf" % model) else "%s.glb" % model) if model.begins_with("Reduced/") else "PolyHaven/%s/%s_1k.gltf" % [model,model])
 	if not ResourceLoader.exists("res://Art/"+path): return null
 	var probe: Node3D = reconstruction.fitted(path,Vector3.ONE)
 	probe.free()

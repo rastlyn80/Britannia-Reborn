@@ -143,7 +143,10 @@ static func pack(asset: String) -> Dictionary:
 	return {"status":"kit","detail":"%s (CC0): %s" % [vendor,asset.get_file().get_basename()]}
 
 func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -> Dictionary:
-	var name := str(item.name)
+	# The catalogue shows empty tiledata names as "unnamed"; the client sees "".
+	var name := "" if str(item.name) == "unnamed" else str(item.name)
+	# No original artwork (or a blank strip under 3 px): the native client draws nothing.
+	if (item.get("art") == null or int(item.art[1]) < 3) and audited.is_empty() and server.is_empty(): return {"status":"hidden","detail":"no original artwork (the native client draws nothing)"}
 	if item.flags.has("wearable") and item.world == 0:
 		if preload("res://Presentation/HumanWardrobe.gd").mapped(id):
 			return {"status":"kit","detail":"MakeHuman CC0: fitted human wardrobe category substitute"}

@@ -22,7 +22,7 @@ static var iron_material: StandardMaterial3D
 
 static func handles(name: String) -> bool:
 	var n := name.to_lower()
-	return n == "wooden fence" or n == "iron fence" or n == "stone rail"
+	return n == "wooden fence" or n == "wooden rail" or n == "iron fence" or n == "iron gate" or n == "stone rail"
 
 # Post-only pieces (porch posts, run ends drawn as a lone post) join no rails.
 static func has_rails(id: int) -> bool:
@@ -34,7 +34,8 @@ static func has_rails(id: int) -> bool:
 static func build(name: String, id: int, geometry: RefCounted, facade: RefCounted, height := 1.2, stacked := false, links: Array = []) -> Node3D:
 	var root := Node3D.new()
 	root.set_meta("model","fence")
-	var n := name.to_lower()
+	# An iron gate is a leaf of the same wrought-iron railing.
+	var n := "iron fence" if name.to_lower() == "iron gate" else name.to_lower()
 	var parts: String = str((STONE if n == "stone rail" else WOOD).get(id,"post+rails"))
 	if not links.is_empty():
 		root.set_meta("world_aligned",true)

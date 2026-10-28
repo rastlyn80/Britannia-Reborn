@@ -595,6 +595,237 @@
    "model": "Objaverse/skeleton_bones",
    "height": 1.7,
    "pitch": 90
+  },
+  "wasteland south": {
+   "models": [
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_0",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_1",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_2",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_3",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_4"
+   ],
+   "length": 0.45,
+   "cluster": 3
+  },
+  "wasteland east": {
+   "models": [
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_0",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_1",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_2",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_3",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_4"
+   ],
+   "length": 0.45,
+   "cluster": 3
+  },
+  "breakbrick east": {
+   "models": [
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_0",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_1",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_2",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_3",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_4"
+   ],
+   "length": 0.45,
+   "cluster": 3
+  },
+  "breakbrick south": {
+   "models": [
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_0",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_1",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_2",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_3",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_4"
+   ],
+   "length": 0.45,
+   "cluster": 3
+  },
+  "breakstone east": {
+   "models": [
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_0",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_1",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_2",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_3",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_4"
+   ],
+   "length": 0.45,
+   "cluster": 3
+  },
+  "breakstone south": {
+   "models": [
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_0",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_1",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_2",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_3",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_4"
+   ],
+   "length": 0.45,
+   "cluster": 3
+  },
+  "breakcheck south": {
+   "models": [
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_0",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_1",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_2",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_3",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_4"
+   ],
+   "length": 0.45,
+   "cluster": 3
+  },
+  "breakcheck east": {
+   "models": [
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_0",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_1",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_2",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_3",
+    "Reduced/namaqualand_stones_01/namaqualand_stones_01_4"
+   ],
+   "length": 0.45,
+   "cluster": 3
+  },
+  "block": {
+   "model": "wooden_crate_01",
+   "height": 0.75
+  },
+  "tapestry": {
+   "model": "Objaverse/banner_worn",
+   "height": 1.8,
+   "rotation": 90,
+   "anchor": "back"
+  },
+  "sarcophagus": {
+   "model": "Objaverse/sarcophagus_stone",
+   "assembly": "footprint",
+   "length": 1.0
+  },
+  "coffin": {
+   "model": "Objaverse/coffin_old",
+   "assembly": "footprint",
+   "length": 1.0
+  },
+  "casket": {
+   "model": "Objaverse/coffin_old",
+   "assembly": "footprint",
+   "length": 1.0
+  },
+  "telescope": {
+   "model": "Objaverse/telescope_brass",
+   "assembly": "footprint",
+   "length": 1.0
+  },
+  "catapult": {
+   "model": "Objaverse/catapult_wood",
+   "assembly": "footprint",
+   "length": 1.0
+  },
+  "fountain": {
+   "model": "Objaverse/fountain_medieval",
+   "assembly": "footprint",
+   "length": 1.0
+  },
+  "pillory": {
+   "model": "Objaverse/pillory_wood",
+   "assembly": "footprint",
+   "length": 1.0
+  },
+  "rack": {
+   "model": "Objaverse/weapon_rack",
+   "length": 1.4
+  },
+  "paper lantern": {
+   "model": "Objaverse/paper_lantern",
+   "height": 0.55
+  },
+  "treasure": {
+   "model": "Objaverse/coin_pile",
+   "length": 0.7
+  },
+  "wooden ladder": {
+   "model": "Objaverse/ladder_wood",
+   "height": 2.4
+  },
+  "decorative shield": {
+   "model": "Objaverse/shield_round",
+   "height": 0.7,
+   "anchor": "back",
+   "rotation": 90,
+   "elevation": 1.2
+  },
+  "decorative shields": {
+   "model": "Objaverse/shield_heater",
+   "height": 0.8,
+   "anchor": "back",
+   "rotation": -90,
+   "elevation": 1.1
+  },
+  "flask": {
+   "models": [
+    "Objaverse/flask_potion",
+    "Objaverse/flask_round"
+   ],
+   "height": 0.18
+  },
+  "chest": {
+   "model": "Objaverse/chest_wood",
+   "length": 0.9
+  },
+  "trophy": {
+   "model": "Objaverse/trophy_deer",
+   "height": 0.8,
+   "anchor": "back",
+   "rotation": -90,
+   "elevation": 1.4
+  },
+  "vat": {
+   "model": "Objaverse/vat_wood",
+   "height": 1.1
+  },
+  "wood": {
+   "model": "Objaverse/firewood",
+   "length": 0.9
+  },
+  "suspension bridge": {
+   "model": "Objaverse/bridge_rope",
+   "assembly": "footprint",
+   "length": 1.0
+  },
+  "lighthouse": {
+   "model": "Objaverse/lighthouse_brick",
+   "assembly": "footprint",
+   "length": 1.0
+  },
+  "soulforge baseanvil": {
+   "model": "Objaverse/anvil_pbr",
+   "height": 0.8
+  },
+  "sword display": {
+   "model": "Objaverse/weapon_rack",
+   "length": 1.2
+  },
+  "fireplace": {
+   "models": [
+    "Objaverse/fireplace_galway",
+    "Objaverse/fireplace_rustic"
+   ],
+   "assembly": "footprint",
+   "length": 1.0
+  },
+  "large gargoyle bed (": {
+   "model": "GothicBed_01",
+   "assembly": "footprint",
+   "length": 1.0
+  },
+  "painting": {
+   "model": "fancy_picture_frame_01",
+   "height": 0.7,
+   "anchor": "back",
+   "rotation": 180,
+   "elevation": 1.3
+  },
+  "pillow": {
+   "model": "Reduced/throw_pillows_01/throw_pillows_01",
+   "length": 0.55
   }
  }
 }

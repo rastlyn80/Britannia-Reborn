@@ -148,6 +148,11 @@ func _initialize() -> void:
  var straight_run: Node3D=fences.build("wooden fence",2144,recon.geometry,recon.facade,1.2,false,[Vector2i(1,0),Vector2i(-1,0)])
  check(corner.has_meta("world_aligned") and corner.get_child_count()==4 and straight_run.get_child_count()==2,"Fence junctions: rails run only toward joined neighbours, and a rails-only piece gains a post where its run turns")
  corner.free();straight_run.free()
+ var tomb_world:={"elevationScale":.2,"originX":700,"originY":700,"terrain":[],"statics":[{"x":700,"y":700,"z":0,"id":7001},{"x":701,"y":700,"z":0,"id":7002},{"x":702,"y":700,"z":0,"id":7003},{"x":720,"y":700,"z":0,"id":7001}],"staticData":{"7001":{"name":"sarcophagus","height":5,"flags":0},"7002":{"name":"sarcophagus","height":5,"flags":0},"7003":{"name":"sarcophagus","height":5,"flags":0}},"landData":{}}
+ var tomb_recon:=preload("res://Presentation/Reconstruction.gd").new()
+ tomb_recon.index(tomb_world)
+ var tomb: Dictionary=tomb_recon.footprints.get(0,{})
+ check(tomb.get("anchor",false) and not tomb_recon.footprints[1].anchor and not tomb_recon.footprints[2].anchor and tomb.span==Vector2(3,1) and tomb.offset.is_equal_approx(Vector3(1,0,0)) and tomb_recon.footprints[3].anchor,"A multi-tile object (one graphic per tile) is drawn once, centred over its whole footprint; a separate one stays separate")
  # Source-backed contact on unreviewed procedural tables, rugs and stacks.
  var contact:=Support.new()
  contact.catalog={"2947":{"kind":"table"},"22224":{"kind":"carpet"}}
