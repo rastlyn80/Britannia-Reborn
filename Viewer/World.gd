@@ -242,6 +242,7 @@ func _ready() -> void:
 	vitals.opened.connect(func(): character_sheet.toggle("character"))
 	login_panel.button(login_panel.world_controls,"Character (C)",func(): character_sheet.toggle("character"))
 	login_panel.button(login_panel.world_controls,"Skills (K)",func(): character_sheet.toggle("skills"))
+	_add_quickbar(canvas)
 	# Classic/modern Britain: restart loads the matching prepared city cache.
 	var graphics_mode := preload("res://Presentation/GraphicsMode.gd")
 	var graphics_button: Button = login_panel.button(login_panel.world_controls,"Britain: %s" % ("modern" if graphics_mode.modern() else "classic"),func(): pass)
@@ -379,6 +380,29 @@ func _physics_process(delta: float) -> void:
 	avatar.jump.advance(delta,clearance)
 
 # Client-only sky view: server time, always day or always night (F7).
+# Quickbar: classic macro actions on Shift/Ctrl/Alt sets (Network/Quickbar.gd).
+func _add_quickbar(canvas: CanvasLayer) -> void:
+	var runner := preload("res://Network/ActionRunner.gd").new()
+	add_child(runner)
+	runner.configure(game)
+	runner.hovered = world_items.hovered_serial
+	var quickbar := preload("res://Network/Quickbar.gd").new()
+	canvas.add_child(quickbar)
+	quickbar.configure(runner)
+	var editor := preload("res://Network/SlotEditor.gd").new()
+	canvas.add_child(editor)
+	quickbar.edit_requested.connect(func(row: int, layer: String, index: int): editor.open(quickbar,row,layer,index))
+	runner.window_requested.connect(func(window: String, verb: String):
+		if verb == "Quit": get_tree().quit()
+		elif window in ["Paperdoll","Status"]: character_sheet.toggle("character")
+		elif window == "Skills": character_sheet.toggle("skills")
+		elif window == "Backpack": game.open_backpack()
+		else: quickbar.show_feedback("%s %s is not in this client yet." % [verb,window]))
+	runner.client_requested.connect(func(action: String, option: String):
+		if action == "Zoom":
+			distance = 5.5 if option in ["","Default Zoom"] else clampf(distance+(-0.8 if option == "Zoom In" else 0.8),1.2,22.0)
+		else: quickbar.show_feedback("%s is not in this client yet." % action))
+
 func cycle_sky() -> void:
 	if not lighting_rig: return
 	var label: String = lighting_rig.cycle_sky()

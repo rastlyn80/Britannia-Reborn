@@ -663,7 +663,8 @@ func activate(serial: int) -> bool:
   return false
  selected = serial
  hint.text = session.labels.item_name(int(item.id))
- return session.target_item(serial) if not session.target_request.is_empty() else session.use_item(serial)
+ if not session.target_request.is_empty(): return preload("res://Network/ActionRunner.gd").target_entity(session,serial)
+ return session.use_item(serial)
 
 func click(at: Vector2) -> void:
  if session.phase != "world": return
@@ -679,8 +680,25 @@ func click(at: Vector2) -> void:
   if session.move_item(session.placement_serial,0,false,cell): session.placement_serial = 0
   return
  if not hit.is_empty() and hit.collider.has_meta("server_mobile"):
-  session.request_context(int(hit.collider.get_meta("server_mobile")))
+  var mobile := int(hit.collider.get_meta("server_mobile"))
+  # An open target cursor takes the creature; otherwise it is selected (for
+  # the quickbar's attack and target actions) and its menu opens.
+  if not session.target_request.is_empty():
+   preload("res://Network/ActionRunner.gd").target_entity(session,mobile)
+   return
+  preload("res://Network/ActionRunner.gd").selected = mobile
+  session.request_context(mobile)
  elif not hit.is_empty() and hit.collider.has_meta("server_serial"): activate(int(hit.collider.get_meta("server_serial")))
+
+# The server object or creature under the mouse (quickbar "under the mouse").
+func hovered_serial() -> int:
+ if session.phase != "world": return 0
+ var at := get_viewport().get_mouse_position()
+ var from: Vector3 = scene.camera.project_ray_origin(at)
+ var hit := get_world_3d().direct_space_state.intersect_ray(PhysicsRayQueryParameters3D.create(from,from+scene.camera.project_ray_normal(at)*30.0,5))
+ if hit.is_empty(): return 0
+ if hit.collider.has_meta("server_mobile"): return int(hit.collider.get_meta("server_mobile"))
+ return int(hit.collider.get_meta("server_serial",0))
 
 func nearest() -> void:
  var best := 0
