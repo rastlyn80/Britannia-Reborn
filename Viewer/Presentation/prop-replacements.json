@@ -301,38 +301,6 @@
    "rotation": 90,
    "anchor": "back"
   },
-  "statue": {
-   "model": "Objaverse/statue_angel",
-   "height": 2.0,
-   "ids": {
-    "5023": {
-     "hide": true
-    },
-    "5024": {
-     "hide": true
-    },
-    "4824": {
-     "pedestal": [
-      0.7,
-      1.6
-     ],
-     "height": 1.9
-    },
-    "4825": {
-     "pedestal": [
-      0.7,
-      1.6
-     ],
-     "height": 1.9
-    },
-    "4648": {
-     "skip": true
-    },
-    "5019": {
-     "skip": true
-    }
-   }
-  },
   "stump": {
    "models": [
     "Objaverse/stump_boubin",
@@ -3472,6 +3440,169 @@
     "color": "8a8c90",
     "metallic": 0.8,
     "roughness": 0.4
+   }
+  },
+  "arm": {
+   "model": "Objaverse/arm_anatomy",
+   "length": 0.6
+  },
+  "ball of yarn": {
+   "model": "Objaverse/yarn_ball",
+   "length": 0.12
+  },
+  "bone arms": {
+   "model": "Objaverse/skeleton_arm",
+   "length": 0.6
+  },
+  "broken armoire": {
+   "model": "Objaverse/wardrobe_wood",
+   "height": 1.9,
+   "face": "wall"
+  },
+  "broken dresser": {
+   "model": "Objaverse/dresser_worn",
+   "height": 0.9,
+   "face": "wall"
+  },
+  "broken clock": {
+   "model": "Objaverse/clock_grandfather",
+   "height": 1.9,
+   "face": "wall"
+  },
+  "clock frame": {
+   "model": "Objaverse/clock_case",
+   "height": 1.9,
+   "face": "wall"
+  },
+  "club": {
+   "model": "Objaverse/club_wood",
+   "length": 0.8,
+   "lay": true
+  },
+  "forge": {
+   "model": "Objaverse/forge_brick",
+   "assembly": "footprint",
+   "length": 1.0
+  },
+  "full apron": {
+   "model": "Objaverse/apron",
+   "height": 0.9,
+   "material": {
+    "color": "7a7670",
+    "metallic": 0.0,
+    "roughness": 0.9
+   }
+  },
+  "half apron": {
+   "model": "Objaverse/apron",
+   "height": 0.6,
+   "material": {
+    "color": "7a7670",
+    "metallic": 0.0,
+    "roughness": 0.9
+   }
+  },
+  "jug of cider": {
+   "model": "Objaverse/clay_pots",
+   "height": 0.3
+  },
+  "jugs of cider": {
+   "model": "Objaverse/clay_pots",
+   "height": 0.35
+  },
+  "maul": {
+   "model": "Objaverse/sledgehammer",
+   "length": 0.9,
+   "lay": true
+  },
+  "moulding board": {
+   "model": "Objaverse/cutting_board",
+   "length": 0.4
+  },
+  "nightshade": {
+   "model": "Objaverse/flower_purple",
+   "height": 0.4
+  },
+  "pedestal": {
+   "model": "Objaverse/pedestal_stone",
+   "height": 1.0,
+   "material": {
+    "color": "d8d2c4",
+    "metallic": 0.0,
+    "roughness": 0.7
+   }
+  },
+  "pig's feet": {
+   "model": "Objaverse/meat_pieces",
+   "length": 0.3
+  },
+  "pot of wax": {
+   "model": "Objaverse/cauldron_wax",
+   "height": 0.3
+  },
+  "pouch": {
+   "model": "Objaverse/pouch_leather",
+   "height": 0.2
+  },
+  "pullies": {
+   "model": "Objaverse/pulley_block",
+   "height": 0.25
+  },
+  "scissors": {
+   "model": "Objaverse/scissors",
+   "length": 0.18
+  },
+  "barber scissors": {
+   "model": "Objaverse/scissors",
+   "length": 0.18
+  },
+  "spyglass": {
+   "model": "Objaverse/telescope_stand",
+   "height": 0.4
+  },
+  "stone chair": {
+   "model": "Objaverse/stone_chair_lion",
+   "height": 1.2
+  },
+  "straw pillow": {
+   "model": "Objaverse/hay_bales",
+   "length": 0.7
+  },
+  "wand": {
+   "model": "Objaverse/wand_wood",
+   "length": 0.35,
+   "lay": true
+  },
+  "statue": {
+   "model": "Objaverse/statue_angel",
+   "height": 2.0,
+   "ids": {
+    "5023": {
+     "hide": true
+    },
+    "5024": {
+     "hide": true
+    },
+    "4824": {
+     "pedestal": [
+      0.7,
+      1.6
+     ],
+     "height": 1.9
+    },
+    "4825": {
+     "pedestal": [
+      0.7,
+      1.6
+     ],
+     "height": 1.9
+    },
+    "4648": {
+     "skip": true
+    },
+    "5019": {
+     "skip": true
+    }
    }
   }
  }
