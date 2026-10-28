@@ -39,6 +39,16 @@
       "url": "https://files.makehumancommunity.org/asset_packs/shirts01/shirts01_cc0.zip",
       "sha256": "a5a723b0e84a109bb190fcfeac7f1de4138d875da3e30fe5b3340eac9f38bcd3",
       "local": "work/human-wardrobe-batch/shirts01_cc0.zip"
+    },
+    "shoes02": {
+      "url": "https://files.makehumancommunity.org/asset_packs/shoes02/shoes02_ccby.zip",
+      "sha256": "1b544d87dd8b3d3a9c8317e4f059be456491be979cbc9984fc53f403046f5061",
+      "local": "work/human-wardrobe-2/shoes02_ccby.zip"
+    },
+    "suits02": {
+      "url": "https://files.makehumancommunity.org/asset_packs/suits02/suits02_cc0.zip",
+      "sha256": "437f4d7ab92b698c1fb1047e7d62b22c11f195b2473e936118661dc8e6b7eb7a",
+      "local": "work/free-equipment/suits02_cc0.zip"
     }
   },
   "assets": {
@@ -301,6 +311,67 @@
         "clothes/toigo_bodice-style_top/bodice_style_top.mhmat": "b67abab1e4ba409122b093bf773ee686d00fee19c77f34a1f7bbbcfc581b262a",
         "clothes/toigo_bodice-style_top/bodice_style_top.obj": "08be587b0a95de97e331a8432e9f33444783411f2060614a4f0776749fd70c25"
       }
+    },
+    "elvs_caesar_sandals1": {
+      "pack": "shoes02",
+      "folder": "clothes/elvs_caesar_sandals1",
+      "author": "Elvaerwyn",
+      "license": "CC-BY",
+      "source": "http://www.makehumancommunity.org/node/1915",
+      "files": {
+        "clothes/elvs_caesar_sandals1/sandaltex.png": "9bd16e45fe68da9cf4d5158c8fe649d175f75f0560b95b2e72bf965f8736960a",
+        "clothes/elvs_caesar_sandals1/sandalsnormals.png": "e2b882342d5eef3265de57c7b678f98efea1047d0538d6d2a613066704a330d5",
+        "clothes/elvs_caesar_sandals1/elvs_mh_cesaersandalf1.obj": "e7fd226917a17da36e3d0fe1afc6ba7cee38c14ecd3c1af769d921dad41768a5",
+        "clothes/elvs_caesar_sandals1/elvs_mh_cesaersandalf1.mhmat": "2523cf738f8af83f6217797c651c5e96596338f1218b47501534a64ec55867ff",
+        "clothes/elvs_caesar_sandals1/elvs_caesar_sandals1.thumb": "71c3b6ddb419f64964ab5afb66953f5fd58b89bf68281fe6c2f8555340acf672",
+        "clothes/elvs_caesar_sandals1/elvs_caesar_sandals1.mhclo": "6b49b80e65903e41f6bc102d9ed0377ce01cdd00649d72866129396206d5a68d"
+      },
+      "attribution": "elvs_caesar_sandals1 by Elvaerwyn / CC BY 4.0 / http://www.makehumancommunity.org/node/1915 / fitted to Britannia Reborn bodies; materials and height adjusted"
+    },
+    "elvs_flatshoe_pointy1": {
+      "pack": "shoes02",
+      "folder": "clothes/elvs_flatshoe_pointy1",
+      "author": "Elvaerwyn",
+      "license": "CC-BY",
+      "source": "http://www.makehumancommunity.org/node/1714",
+      "files": {
+        "clothes/elvs_flatshoe_pointy1/elvs_flatshoe_pointy1.mhclo": "9968a5d6c88591d536266c38e9fd8024202185fd6d4e0a4f693a6732222270ef",
+        "clothes/elvs_flatshoe_pointy1/normals.png": "e3e16ed67ee256aa923129b69107bbce72bd66a60aa38799f419c5f249ce37e8",
+        "clothes/elvs_flatshoe_pointy1/pointflattex1.png": "b032d9656436e8d1d3f98cbe090d40e4088103d512c9b3e5b162139955aa8431",
+        "clothes/elvs_flatshoe_pointy1/elvs_flatshoe_pointy1.thumb": "1554f5c2fb60a0d3a21a6ea859ae0da536d798af95271560d9adf8ac337c4140",
+        "clothes/elvs_flatshoe_pointy1/elvs_basic_flatshoe2.obj": "8e5e6ae43e7bf4cb172baf01fab8e4e25f9caf60498e54dd34a560e9d6534500",
+        "clothes/elvs_flatshoe_pointy1/elvs_basic_flatshoe2.mhmat": "671ebe470ed8f85f374e349d1930770e7047ae4357482e05d58f4b79a0f34618"
+      },
+      "attribution": "elvs_flatshoe_pointy1 by Elvaerwyn / CC BY 4.0 / http://www.makehumancommunity.org/node/1714 / fitted to Britannia Reborn bodies; materials and height adjusted",
+      "runtime_status": "Rejected after rendered review; pinned only as research evidence. Installed low shoes derive from the CC0 Viking boots."
+    },
+    "rehmanpolanski_viking_tunic": {
+      "pack": "suits02",
+      "folder": "clothes/rehmanpolanski_viking_tunic",
+      "author": "RehmanPolanski",
+      "license": "CC0",
+      "source": "http://www.makehumancommunity.org/node/2617",
+      "files": {
+        "clothes/rehmanpolanski_viking_tunic/tunicviking.mhmat": "8b69e430954fe0df4ea832bdb60f3786244118e4ac2e539a782e32a38c51f3dd",
+        "clothes/rehmanpolanski_viking_tunic/rehmanpolanski_viking_tunic.thumb": "5146814cfe8e6555567a9833f439ce9e146a5b3f2d9d821e7895566a93de33f5",
+        "clothes/rehmanpolanski_viking_tunic/tunicviking.obj": "78c593d23151c4f9cd63481bd7f5101cae920623404bbf5f3daa01a5f2ea050b",
+        "clothes/rehmanpolanski_viking_tunic/TUNIC_Viking.png": "9fcb9e17fad6ec1a36e3a0e0562cac3ca0ea72208da617875eed9bf294d9f870",
+        "clothes/rehmanpolanski_viking_tunic/rehmanpolanski_viking_tunic.mhclo": "349b5b7b2abc44a7bd0b52ca99bd352e7d3b316cd4be5d539bbd9587462e801c"
+      }
+    },
+    "rehmanpolanski_viking_boots": {
+      "pack": "suits02",
+      "folder": "clothes/rehmanpolanski_viking_boots",
+      "author": "RehmanPolanski",
+      "license": "CC0",
+      "source": "http://www.makehumancommunity.org/node/2619",
+      "files": {
+        "clothes/rehmanpolanski_viking_boots/BootsViking.png": "114622c571ff7249bbd25223f6563d174894c426afb6ab92d35551b712bf1413",
+        "clothes/rehmanpolanski_viking_boots/rehmanpolanski_viking_boots.mhclo": "d864ac895a662031026615b5e042fb2160e63f432029576fa6faaf2ad692eb92",
+        "clothes/rehmanpolanski_viking_boots/bootsviking.mhmat": "48c23f652484411447b1c04a9c64f421331c5b02ce3697e023f9fc140bb3ca39",
+        "clothes/rehmanpolanski_viking_boots/rehmanpolanski_viking_boots.thumb": "8f8222d6c41f3aee8f0c7a9af01227e71857f9b7688ba00a0b69756f13e854b3",
+        "clothes/rehmanpolanski_viking_boots/bootsviking.obj": "9cc5a9cc4160ff2230144490244117eaddc4596152556304ca59d1129e4c196b"
+      }
     }
   },
   "material_inputs": {
@@ -311,6 +382,30 @@
     "Viewer/Art/MedievalKit/textures/Fabric045_2K-JPG_NormalGL.jpg": {
       "sha256": "bd977a2099dbe3f39037f35e52245f7b0f1d04d817e009da5ec172eb9b695c9d",
       "licence": "CC0-1.0; Viewer/Art/MedievalKit/NOTICE.md and CREDITS.md"
+    },
+    "work/human-wardrobe-2/materials/Leather001_1K-JPG_Color.jpg": {
+      "sha256": "65e1a0fcc16cd9939881abe8e92cfd27114ef2f62ebfe09f66203a293c12be66",
+      "licence": "CC0-1.0; ambientCG Leather001",
+      "source": "https://ambientcg.com/a/Leather001",
+      "archive_url": "https://ambientcg.com/get?file=Leather001_1K-JPG.zip",
+      "archive_sha256": "8d3ac9280bec6a1e1e5384b93e5130414a085033290dde305bacaddd0aa6b96a",
+      "archive_member": "Leather001_1K-JPG_Color.jpg"
+    },
+    "work/human-wardrobe-2/materials/Leather001_1K-JPG_NormalGL.jpg": {
+      "sha256": "9db4139a524ea674cf5b8e73538c1d26ce7576be29600c1cbf44445076237afa",
+      "licence": "CC0-1.0; ambientCG Leather001",
+      "source": "https://ambientcg.com/a/Leather001",
+      "archive_url": "https://ambientcg.com/get?file=Leather001_1K-JPG.zip",
+      "archive_sha256": "8d3ac9280bec6a1e1e5384b93e5130414a085033290dde305bacaddd0aa6b96a",
+      "archive_member": "Leather001_1K-JPG_NormalGL.jpg"
+    },
+    "work/human-wardrobe-2/materials/Leather001_1K-JPG_Roughness.jpg": {
+      "sha256": "474c661108a552a7cf26efe038525f5545bfe0d7e9f42b4c2aacfa7b1293a811",
+      "licence": "CC0-1.0; ambientCG Leather001",
+      "source": "https://ambientcg.com/a/Leather001",
+      "archive_url": "https://ambientcg.com/get?file=Leather001_1K-JPG.zip",
+      "archive_sha256": "8d3ac9280bec6a1e1e5384b93e5130414a085033290dde305bacaddd0aa6b96a",
+      "archive_member": "Leather001_1K-JPG_Roughness.jpg"
     }
   }
 }

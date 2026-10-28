@@ -2,12 +2,16 @@ extends RefCounted
 ## First licensed human wardrobe. IDs are pinned ModernUO item graphics.
 const SLOTS := ["tunic","pants","boots","robe","hood"]
 const GRAPHICS := {
-	0x1fa1:1,0x1fa2:1,0x13bf:1,0x13c0:1,0x1f7b:1,0x1f7c:1,
+	0x1fa1:1,0x1fa2:1,0x13bf:1,0x13c0:1,
 	0x152e:2,0x152f:2,0x1539:2,0x153a:2,
-	0x170b:4,0x170c:4,0x170d:4,0x170e:4,0x170f:4,0x1710:4,0x1711:4,0x1712:4,
+	0x170b:4,0x170c:4,0x1711:4,0x1712:4,
 	0x1f03:8,0x1f04:8,0x2687:24,0x2683:24,0x2684:24,0x204e:24,0x278f:16,0x27da:16
 }
 const EXTRA := {
+	0x1f7b:["doublet","doublet"],0x1f7c:["doublet","doublet"],
+	0x1515:["cloak","cloak"],0x1530:["cloak","cloak"],
+	0x170f:["feet","shoes"],0x1710:["feet","shoes"],
+	0x170d:["feet","sandals"],0x170e:["feet","sandals"],
 	0x1517:["shirt","shirt"],0x1518:["shirt","shirt"],
 	0x1efd:["shirt","shirt"],0x1efe:["shirt","shirt"],
 	0x1715:["head","cap"],0x1713:["head","felt_hat"],
@@ -71,7 +75,8 @@ static func resolve(worn: Array) -> Dictionary:
 	# Outer robe obscures the shirt, while trousers/boots can show at its opening.
 	if bits & 8: bits &= ~1
 	if bits & 8:
-		pieces.erase("outer_legs");pieces.erase("shirt")
-	if bits & 1:pieces.erase("shirt")
+		pieces.erase("outer_legs");pieces.erase("shirt");pieces.erase("doublet")
+	if bits & 1:pieces.erase("shirt");pieces.erase("doublet")
+	if pieces.has("feet"):bits &= ~4
 	if pieces.has("head"): bits &= ~16
 	return {"bits":bits,"hues":hues,"hair":hair,"hair_id":hair_id,"hair_hue":hair_hue,"hair_style":HAIR.get(hair_id,"short" if hair else ""),"hair_exact_family":not hair or HAIR.has(hair_id),"beard_id":beard_id,"beard_hue":beard_hue,"beard_styles":BEARDS.get(beard_id,[]),"beard_exact_family":beard_id==0 or BEARDS.has(beard_id),"pieces":pieces,"gloves":pieces.has("hands"),"unsupported":unsupported}

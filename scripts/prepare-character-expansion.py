@@ -1,4 +1,4 @@
-"""Fit a second CC0 equipment/cosmetics batch to each fixed native human rig."""
+"""Fit pinned licensed equipment/cosmetics to each fixed native human rig."""
 import bpy,bmesh,json,hashlib,sys,importlib.util
 from pathlib import Path
 from collections import defaultdict
@@ -6,7 +6,7 @@ from mathutils import Vector,Matrix
 from mathutils.kdtree import KDTree
 from mathutils.bvhtree import BVHTree
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'scripts'))
-from mhclo_inspect import parse_obj,parse_proxy
+from mhclo_inspect import parse_obj,parse_proxy,offset_scales
 spec=importlib.util.spec_from_file_location('robe_motion',ROOT/'scripts/robe-motion.py');motion=importlib.util.module_from_spec(spec);spec.loader.exec_module(motion)
 FEMALE='--female' in sys.argv
 ART=ROOT/('Viewer/local-art/free-equipment-female' if FEMALE else 'Viewer/local-art/free-equipment')
@@ -30,7 +30,8 @@ ITEMS={
  'hair_ponytail':('ponytail01','hair'), 'hair_afro':('afro01','hair'),
  'shirt':('toigo_fisherman_sweater','torso'),
  'cap':('jujube_newsboy_cap','head'),
- 'felt_hat':('aethelraed_unraed_cloche_hat','head')}
+ 'felt_hat':('aethelraed_unraed_cloche_hat','head'),
+ 'sandals':('elvs_caesar_sandals1','sandals')}
 bpy.context.preferences.filepaths.file_preview_type='NONE'
 bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
 bpy.ops.import_scene.gltf(filepath=str(ART/'equipment-base.glb'))
@@ -91,6 +92,12 @@ def material(folder,filename,cosmetic=False,metal=False):
   normal_image=nodes.new('ShaderNodeTexImage');normal_image.image=bpy.data.images.load(str(ROOT/'Viewer/Art/MedievalKit/textures/Fabric045_2K-JPG_NormalGL.jpg'),check_existing=True);normal_image.image.colorspace_settings.name='Non-Color';normal=nodes.new('ShaderNodeNormalMap');normal.inputs['Strength'].default_value=.35;links.new(normal_image.outputs['Color'],normal.inputs['Color']);links.new(normal.outputs['Normal'],shader.inputs['Normal'])
  if 'normalmapTexture' in fields:
   tex=nodes.new('ShaderNodeTexImage');tex.image=bpy.data.images.load(str(folder/fields['normalmapTexture']),check_existing=True);tex.image.colorspace_settings.name='Non-Color';normal=nodes.new('ShaderNodeNormalMap');links.new(tex.outputs['Color'],normal.inputs['Color']);links.new(normal.outputs['Normal'],shader.inputs['Normal'])
+ if folder.name=='elvs_flatshoe_pointy1':
+  for link in list(shader.inputs['Base Color'].links)+list(shader.inputs['Normal'].links):links.remove(link)
+  leather=ROOT/'work/human-wardrobe-2/materials'
+  tex=nodes.new('ShaderNodeTexImage');tex.image=bpy.data.images.load(str(leather/'Leather001_1K-JPG_Color.jpg'),check_existing=True);links.new(tex.outputs['Color'],shader.inputs['Base Color'])
+  tex=nodes.new('ShaderNodeTexImage');tex.image=bpy.data.images.load(str(leather/'Leather001_1K-JPG_NormalGL.jpg'),check_existing=True);tex.image.colorspace_settings.name='Non-Color'
+  normal=nodes.new('ShaderNodeNormalMap');normal.inputs['Strength'].default_value=.3;links.new(tex.outputs['Color'],normal.inputs['Color']);links.new(normal.outputs['Normal'],shader.inputs['Normal']);shader.inputs['Roughness'].default_value=.72
  return mat
 def export(path,ob,materials='EXPORT'):
  bpy.ops.object.select_all(action='DESELECT');rig.select_set(True);ob.select_set(True);bpy.context.view_layer.objects.active=rig
@@ -99,7 +106,7 @@ def export(path,ob,materials='EXPORT'):
 evidence={'female':FEMALE,'source_manifest_sha256':hashlib.sha256((ROOT/'scripts/character-expansion-inputs.json').read_bytes()).hexdigest(),'recipe_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'parts':{}}
 for slot,(asset,kind) in ITEMS.items():
  record=PIN['assets'][asset];folder=SRC/record['folder'];proxy=parse_proxy(next(folder.glob('*.mhclo')));obj=parse_obj(folder/proxy['fields']['obj_file']);assert len(obj['points'])==len(proxy['rows'])
- scales={axis:abs(full[a][component]-full[b][component])/distance for axis,component in [('x',0),('y',2),('z',1)] for a,b,distance in [proxy['fields'][axis+'_scale']]}
+ scales=offset_scales(proxy['fields'],full)
  coords=[];skin=[]
  for refs,ws,offset in proxy['rows']:
   co=sum((full[i]*w for i,w in zip(refs,ws)),Vector())+Vector((offset[0]*scales['x'],-offset[2]*scales['z'],offset[1]*scales['y']))
@@ -121,6 +128,10 @@ for slot,(asset,kind) in ITEMS.items():
    point,normal,face,distance=bvh.find_nearest(co)
    clearance=.006 if kind=='gloves' else (.009 if kind=='hair' else (.008 if kind=='torso' else .003))
    if point is not None and distance<.06 and (co-point).dot(normal)<clearance:co+=normal*(clearance-(co-point).dot(normal))
+   if kind in ['footwear','sandals'] and point is not None:
+    references=body.data.loop_triangles[face].vertices;factors=[1/max((local@body.data.vertices[i].co-point).length,.0001)**2 for i in references];total=sum(factors);w={}
+    for i,factor in zip(references,factors):
+     for name,value in vertex_weights(i).items():w[name]=w.get(name,0.)+value*factor/total
   if slot=='shirt' and co.z<1.07 and sum(value for name,value in w.items() if name.startswith(('upperarm','lowerarm','hand','clavicle'))) < .05:
    # The shirt is outside trousers. Skin-only clearance leaves the thicker
    # trouser waistband poking through the hem during a torso twist/cast.
@@ -144,11 +155,20 @@ for slot,(asset,kind) in ITEMS.items():
  for i,w in enumerate(skin):
   for name,value in w:ob.vertex_groups[name].add([i],value,'REPLACE')
  ob.parent=rig;ob.matrix_parent_inverse=Matrix.Identity(4);ob.matrix_basis=Matrix.Identity(4);mod=ob.modifiers.new('Shared human rig','ARMATURE');mod.object=rig
+ if kind=='sandals':
+  # Keep the original foot/sole and ankle straps; remove the fashion-height
+  # calf straps for a short native sandal silhouette.
+  cutoff=rig.data.bones['foot_l'].head_local.z+.10
+  bm=bmesh.new();bm.from_mesh(mesh)
+  bmesh.ops.bisect_plane(bm,geom=list(bm.verts)+list(bm.edges)+list(bm.faces),dist=1e-6,plane_co=(0,0,cutoff),plane_no=(0,0,1),clear_outer=True)
+  bm.to_mesh(mesh);bm.free();mesh.update()
  silhouette=motion.fit_silhouette(ob,body,rig) if kind in ['skirt','kilt'] else None
  mesh.materials.append(material(folder,proxy['fields'].get('material'),slot.startswith(('hair','beard')),slot in ['helmet','closed_helmet','sword','hammer','staff']))
  evidence['parts'][slot]={'asset':asset,'kind':kind,'vertices':len(coords),'sha256':export(OUT/(slot+'.glb'),ob),'licence':record['license'],'author':record['author']}
  if silhouette:evidence['parts'][slot]['silhouette']=silhouette
  bpy.data.objects.remove(ob,do_unlink=True)
+spec=importlib.util.spec_from_file_location('civilian',ROOT/'scripts/human-civilian-clothes.py');civilian=importlib.util.module_from_spec(spec);spec.loader.exec_module(civilian)
+evidence['parts'].update(civilian.build(rig,body,ART,OUT,export))
 # Orthogonal hand coverage avoids doubling every equipment combination in the
 # base builder. Keep all existing UVs, binds and the rest of each body mask.
 for bits in range(32):
@@ -160,5 +180,13 @@ for bits in range(32):
  hand_ids={v.index for v in mask.data.vertices if sum(g.weight for g in v.groups if mask.vertex_groups[g.group].name.startswith(('hand','index','middle','ring','pinky','thumb')))>.5}
  bm=bmesh.new();bm.from_mesh(mask.data);bm.verts.ensure_lookup_table();remove=[f for f in bm.faces if any(v.index in hand_ids for v in f.verts)];bmesh.ops.delete(bm,geom=remove,context='FACES');bm.to_mesh(mask.data);bm.free()
  export(OUT/('body-mask-%02d-gloves.glb'%bits),mask,'NONE')
+
  for ob in imported:bpy.data.objects.remove(ob,do_unlink=True)
 (OUT/'provenance.json').write_text(json.dumps(evidence,indent=2));print('EXPANSION READY',FEMALE,len(evidence['parts']),'pieces and 32 hand-coverage masks')
+if (ART/'motion/human-motion.glb').exists():
+ spec=importlib.util.spec_from_file_location('civilian_fit',ROOT/'scripts/fit-human-civilian-clothes.py');civilian_fit=importlib.util.module_from_spec(spec);spec.loader.exec_module(civilian_fit);civilian_fit.fit(ART)
+else:
+ evidence['civilian_pose_fit']={'status':'pending','reason':'Prepare modern human motion, then rerun this builder before accepting the civilian garments.'}
+ (OUT/'provenance.json').write_text(json.dumps(evidence,indent=2))
+ print('CIVILIAN POSE FIT PENDING: prepare motion and rerun expansion')
+spec=importlib.util.spec_from_file_location('hair_layers',ROOT/'scripts/prepare-human-hair-layers.py');hair_layers=importlib.util.module_from_spec(spec);spec.loader.exec_module(hair_layers);hair_layers.prepare(ART)

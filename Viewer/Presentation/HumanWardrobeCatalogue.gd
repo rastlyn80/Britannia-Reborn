@@ -25,10 +25,12 @@ func run() -> void:
 			var actor:=preload("res://Presentation/HumanVisual.gd").new();actor.female=female;stage.add_child(actor);actors.append(actor);actor.visible=false
 	camera=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;stage.add_child(camera)
 	var audit: Array=[]
+	var credit:=Label.new();credit.add_theme_font_size_override("font_size",14);credit.add_theme_color_override("font_shadow_color",Color.BLACK);credit.add_theme_constant_override("shadow_offset_x",1);credit.add_theme_constant_override("shadow_offset_y",1);viewport.add_child(credit)
 	for job: Dictionary in catalogue.jobs:
 		for actor in actors:actor.visible=false
 		var counts:={false:0,true:0}
 		viewport.size=Vector2i(int(job.size[0]),int(job.size[1]));camera.size=float(job.height)
+		credit.position=Vector2(14,viewport.size.y-48);credit.text=str(job.get("attribution",""))
 		camera.position=Vector3(0,float(job.center)+.06,5.);camera.look_at(Vector3(0,float(job.center),0))
 		for person: Dictionary in job.people:
 			var female: bool=person.female;var index: int=(2 if female else 0)+counts[female];counts[female]+=1

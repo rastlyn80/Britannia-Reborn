@@ -2,6 +2,8 @@ $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 & python -B "$root/scripts/test-uo-human-sequences.py"
 if ($LASTEXITCODE) { throw 'Human sequence parser bounds/format checks failed' }
+& python -B "$root/scripts/test-mhclo.py"
+if ($LASTEXITCODE) { throw 'Static clothing importer checks failed' }
 & "$root/scripts/prepare-surfaces.ps1" -VerifyOnly
 & "$root/scripts/import-reviewed-art.ps1" -VerifyOnly
 & "$root/scripts/prepare-polyhaven.ps1" -VerifyOnly
@@ -53,6 +55,10 @@ if (Test-Path "$root/Viewer/local-art/free-equipment-female/expansion/closed_hel
 if (Test-Path "$root/Viewer/local-art/free-equipment-female/expansion/shirt.glb") {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanWardrobeBatchTests.gd
   if ($LASTEXITCODE) { throw 'Civilian wardrobe/native dye checks failed' }
+}
+if (Test-Path "$root/Viewer/local-art/free-equipment-female/expansion/cloak.glb") {
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanCivilianTests.gd
+  if ($LASTEXITCODE) { throw 'Layered civilian clothing/footwear checks failed' }
 }
 & $godot --headless --path "$root\Viewer" --script res://Network/CharacterTests.gd
 if ($LASTEXITCODE) { throw 'Character status/skills/sheet tests failed' }

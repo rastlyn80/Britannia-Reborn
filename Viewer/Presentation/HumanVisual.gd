@@ -136,6 +136,14 @@ func set_equipment(worn: Array) -> void:
 	grip.holding = extra_parts.has("weapon")
 	grip.active = true
 	var hair_style := str(resolved.hair_style)
+	var long_hair := hair_style in ["long","ponytail"]
+	var hair_asset := "hair_"+hair_style
+	if long_hair and ((outfit_bits&25)!=0 or extra_parts.has("head") or extra_parts.has("shirt") or extra_parts.has("doublet") or extra_parts.has("cloak")):
+		var variant := "hood" if (outfit_bits&16)!=0 else ("covered" if extra_parts.has("head") else "layered")
+		if extra_parts.has("cloak"):variant += "_cloak"
+		if ResourceLoader.exists(folder+"/expansion/"+hair_asset+"_"+variant+".glb"):
+			hair_asset += "_"+variant
+			hide_hair = false
 	var extra_hair := hair_style not in ["","short"] and ResourceLoader.exists(folder+"/expansion/hair_"+hair_style+".glb")
 	if hair_style not in ["","short"] and not extra_hair: missing_art.append(int(resolved.hair_id))
 	if not bool(resolved.hair_exact_family): missing_art.append(int(resolved.hair_id))
@@ -146,7 +154,7 @@ func set_equipment(worn: Array) -> void:
 			mesh.visible = bool(resolved.hair) and not hide_hair and not extra_hair
 			_shade(mesh,int(resolved.hair_hue),true)
 		if mesh.name.begins_with("Cloth_briefs"): mesh.visible = not (outfit_bits&3) and not extra_parts.has("outer_legs")
-		if mesh.name.begins_with("Cloth_bra"): mesh.visible = not (outfit_bits&9) and not extra_parts.has("shirt")
+		if mesh.name.begins_with("Cloth_bra"): mesh.visible = not (outfit_bits&9) and not extra_parts.has("shirt") and not extra_parts.has("doublet")
 	if masked:
 		var mask_path := folder+"/expansion/body-mask-%02d-gloves.glb" % outfit_bits if gloves else folder+"/runtime/body-mask-%02d.glb" % outfit_bits
 		_attach(mask_path,"Body",true)
@@ -162,7 +170,7 @@ func set_equipment(worn: Array) -> void:
 		_attach(folder+"/expansion/"+str(item.asset)+".glb","Extra_")
 		_shade(parts[-1],int(item.hue))
 	if extra_hair and not hide_hair:
-		_attach(folder+"/expansion/hair_"+hair_style+".glb","Extra_")
+		_attach(folder+"/expansion/"+hair_asset+".glb","Extra_")
 		_shade(parts[-1],int(resolved.hair_hue),true)
 	for style: String in resolved.beard_styles:
 		if hide_beard: continue
@@ -214,7 +222,7 @@ func stance_clip(base: String) -> String:
 func clothing_clip(name: String) -> String:
 	if motion_profile.is_empty():return name
 	var resolved:=Wardrobe.resolve(server_equipment)
-	if not ((int(resolved.bits)&8)!=0 or resolved.pieces.has("outer_legs")):return name
+	if not ((int(resolved.bits)&8)!=0 or resolved.pieces.has("outer_legs") or resolved.pieces.has("cloak")):return name
 	if animator.has_animation(name+"_Cloth"):return name+"_Cloth"
 	if name.ends_with("Run") or name.ends_with("Sprint"):
 		var prefix: String="Sword_" if name.begins_with("Sword_") else ("Unarmed_" if name.begins_with("Unarmed_") else "")

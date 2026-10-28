@@ -19,7 +19,15 @@ func _initialize() -> void:
 		var id:=int(item.id)
 		var covered:=Wardrobe.mapped(id)
 		if covered: mapped+=1
-		records.append({"id":id,"name":item.name,"layer":item.get("layer"),"status":"category replacement" if covered else "missing","source_animation_reference":item.get("anim",0)})
+		var current_parts: Array[String]=[]
+		var mask: int=Wardrobe.GRAPHICS.get(id,0)
+		for index in Wardrobe.SLOTS.size():
+			if mask&(1<<index):current_parts.append(Wardrobe.SLOTS[index])
+		if Wardrobe.EXTRA.has(id):current_parts.append(str(Wardrobe.EXTRA[id][1]))
+		if Wardrobe.HAIR.has(id):current_parts.append("hair_"+str(Wardrobe.HAIR[id]))
+		if Wardrobe.BEARDS.has(id):
+			for family in Wardrobe.BEARDS[id]:current_parts.append("beard_"+str(family))
+		records.append({"id":id,"name":item.name,"layer":item.get("layer"),"status":"category replacement" if covered else "missing","current_parts":", ".join(current_parts),"source_animation_reference":item.get("anim",0)})
 	var hair: Array=[]
 	for id in [0x203b,0x203c,0x203d,0x2044,0x2045,0x2046,0x2047,0x2048,0x2049,0x204a]:
 		hair.append({"id":id,"status":"family replacement" if Wardrobe.HAIR.has(id) else "short-hair fallback; native identity preserved"})

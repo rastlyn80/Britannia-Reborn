@@ -1,11 +1,16 @@
 """Boundary tests for static clothing/proxy import; no game data."""
 import unittest,tempfile
 from pathlib import Path
-from mhclo_inspect import parse_proxy,parse_obj
+from mhclo_inspect import parse_proxy,parse_obj,offset_scales
 TEST_WORK=Path(__file__).resolve().parents[1]/'work/free-equipment'
 TEST_WORK.mkdir(parents=True,exist_ok=True)
 HEADER='basemesh hm08\nx_scale 0 1 1\ny_scale 0 1 1\nz_scale 0 1 1\nobj_file cloth.obj\nmaterial cloth.mhmat\nverts 0\n'
 class ProxyBoundaries(unittest.TestCase):
+ def test_signed_reference_box_offsets(self):
+  header='basemesh hm08\nl_shear_x 0 1 3 1\nl_shear_y 0 1 4 2\nl_shear_z 0 1 8 6\nobj_file cloth.obj\nverts 0\n'
+  data=self.read(header+'0\n')
+  for value in offset_scales(data['fields'],[(.3,-.8,.4),(.1,-.6,.2)]).values():self.assertAlmostEqual(value,.1)
+  with self.assertRaises(ValueError):self.read(header.replace('3 1','3 3')+'0\n')
  def test_official_hair_material_after_verts(self):
   d=self.read(HEADER+'material long01.mhmat\n0\n')
   self.assertEqual(d['fields']['material'],'long01.mhmat');self.assertEqual(len(d['rows']),1)

@@ -61,6 +61,7 @@ func _ready() -> void:
 		memory.forget()
 		username.clear()
 		password.clear())
+	button(account_controls,"Character art credits",func(): preload("res://Presentation/CharacterCredits.gd").show_dialog(self))
 	controller.text = "Enable gamepad (optional)"
 	content.add_child(controller)
 	controller.toggled.connect(func(enabled: bool): controller_toggled.emit(enabled))

@@ -16,9 +16,17 @@ if (Test-Path "$root/Viewer/local-art/free-equipment-female/expansion/shirt.glb"
   & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanWardrobeBatchTests.gd
   if ($LASTEXITCODE) { throw 'Civilian wardrobe/native dye checks failed' }
 }
+if (Test-Path "$root/Viewer/local-art/free-equipment-female/expansion/cloak.glb") {
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanCivilianTests.gd
+  if ($LASTEXITCODE) { throw 'Layered civilian clothing/footwear checks failed' }
+}
 if (Test-Path "$root/Viewer/local-art/free-equipment-female/motion/human-motion.glb") {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanMotionTests.gd
   if ($LASTEXITCODE) { throw 'Prepared human motion checks failed' }
+}
+if ($Visual -and (Test-Path "$root/Viewer/local-art/free-equipment-female/expansion/hair_long_layered_cloak.glb")) {
+  & $godot --path "$root/Viewer" --script res://Presentation/HumanHairLayerTests.gd
+  if ($LASTEXITCODE) { throw 'Rendered long-hair garment depth checks failed' }
 }
 if ($Live) {
   $engine=@('--path',"$root/Viewer",'--script','res://Network/HumanBatchLive.gd')

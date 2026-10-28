@@ -1,5 +1,13 @@
 # Human clothing and action worklist — 28 October 2026
 
+Latest checkpoint: **HUMAN_CIVILIAN_BATCH.md** adds doublet, cloak, low shoes and
+sandals, bringing equipment to **20 categories / 86 of 1,126 indexed graphics**.
+Long hair/ponytails now retain their tails over garments and headwear, with
+cloak-specific bindings. Current replacement part names appear in the worklist
+and item/action CSV. Full project verification and sampled checks pass; current
+live re-entry is blocked by connections aborting before login. Details below
+describe the preceding skirt/shirt/headwear batch unless stated otherwise.
+
 Current scope is human players and human NPCs, bodies 400/401. Monsters and
 animals are outside this batch. ModernUO remains authoritative for identity,
 equipment layers, item serials, graphic IDs, hues, hair/beard fields and stats.
@@ -25,12 +33,12 @@ replacement mappings directly from HumanActions and HumanWardrobe. Update the
 mapping and registry with each accepted batch, rebuild, and record actual
 validation here and in PROGRESS/ROADMAP.
 
-The current audit has 84/1,126 graphics mapped to category art. This denominator
+The preceding audit had 84/1,126 graphics mapped to category art. This denominator
 includes racial candidates and is not a complete census of ModernUO item
 classes. Names identify obvious non-human candidates, but server class/race
 restrictions still require an audit. Native IDs are never rewritten to match art.
 
-## This batch
+## Preceding skirt/shirt/headwear batch
 
 Adds three fitted categories for both bodies: knitted civilian shirt, soft cap
 and cloth hat. Shirts 0x1517/1518 and fancy shirts 0x1efd/1efe now use the civilian

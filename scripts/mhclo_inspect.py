@@ -42,7 +42,30 @@ def parse_proxy(path):
     deleted.update(range(first,last+1))
   else:fields[s[0]]=' '.join(s[1:])
  if fields.get('basemesh')!='hm08' or not rows:raise ValueError('Expected hm08 clothing data')
+ mode=next((mode for mode in ['scale','shear','l_shear','r_shear'] if all((axis+'_scale' if mode=='scale' else mode+'_'+axis) in fields for axis in ['x','y','z'])),None)
+ if mode is None:raise ValueError('Missing complete proxy offset transform')
+ fields['offset_mode']=mode
  for axis in ['x','y','z']:
-  a,b,d=fields[axis+'_scale'].split();fields[axis+'_scale']=(int(a),int(b),float(d))
-  if float(d)<=0:raise ValueError('Non-positive reference scale')
+  key=axis+'_scale' if mode=='scale' else mode+'_'+axis
+  values=fields[key].split();expected=3 if mode=='scale' else 4
+  if len(values)!=expected:raise ValueError('Malformed offset transform')
+  a,b=map(int,values[:2]);numbers=tuple(map(float,values[2:]))
+  if min(a,b)<0 or not all(math.isfinite(v) for v in numbers):raise ValueError('Invalid offset transform')
+  if (mode=='scale' and numbers[0]<=0) or (mode!='scale' and abs(numbers[0]-numbers[1])<1e-8):raise ValueError('Degenerate offset transform')
+  fields[key]=(a,b,*numbers)
  return dict(fields=fields,rows=rows,deleted=deleted)
+
+def offset_scales(fields,coordinates):
+ """Axis-aligned reference-box offsets, converted to our metre/Z-up space.
+
+ Scale headers give a distance; shear headers give signed source box limits.
+ Only the offset is transformed: barycentric surface placement is separate.
+ """
+ mode=fields['offset_mode'];result={}
+ for axis,component,sign in [('x',0,1),('y',2,1),('z',1,-1)]:
+  key=axis+'_scale' if mode=='scale' else mode+'_'+axis
+  a,b,*values=fields[key]
+  if max(a,b)>=len(coordinates):raise ValueError('Reference box outside base mesh')
+  distance=coordinates[a][component]-coordinates[b][component]
+  result[axis]=abs(distance)/values[0] if mode=='scale' else sign*distance/(values[0]-values[1])
+ return result

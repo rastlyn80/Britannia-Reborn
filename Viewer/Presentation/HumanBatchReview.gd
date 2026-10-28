@@ -51,6 +51,10 @@ func wear(name: String, is_female: bool = false) -> Array:
 		"shirt": selected=[0x1517,0x1539,0x170b]
 		"cap": selected=[0x1517,0x1539,0x170b,0x1715]
 		"felt_hat": selected=[0x1517,0x1539,0x170b,0x1713]
+		"doublet": selected=[0x1517,0x1f7b,0x1539,0x170f]
+		"cloak": selected=[0x1517,0x1f7b,0x1539,0x170f,0x1515]
+		"shoes": selected=[0x1517,0x1539,0x170f]
+		"sandals": selected=[0x1517,0x1539,0x170d]
 	for id in selected: items.append({"id":id,"layer":0,"hue":0})
 	return items
 
@@ -108,7 +112,7 @@ func build() -> void:
 	var row:=HFlowContainer.new()
 	row.custom_minimum_size.x=1120
 	ui.add_child(row)
-	for name in ["base","viking","monk","robe","tunic","pants","boots","hood","skirt","kilt","guard","sword","hammer","staff","shirt","cap","felt_hat"]:
+	for name in ["base","viking","monk","robe","tunic","pants","boots","hood","skirt","kilt","guard","sword","hammer","staff","shirt","cap","felt_hat","doublet","cloak","shoes","sandals"]:
 		var b:=Button.new()
 		b.text=name.capitalize()
 		b.pressed.connect(func():

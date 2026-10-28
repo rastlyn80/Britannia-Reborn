@@ -65,8 +65,8 @@ func run() -> void:
 			fail("Native creation/entry or equipment timeout")
 			return
 		var expected:=0x191 if sex else 0x190
-		var expected_worn:=12 if sex else 14
-		var expected_unworn:=4 if sex else 7
+		var expected_worn:=8 if sex else 10
+		var expected_unworn:=0 if sex else 2
 		await create_timer(.5).timeout
 		# Recover only these dedicated fixtures if an interrupted test left its
 		# robe in the backpack. Never operate on an owner's selected character.
@@ -128,6 +128,8 @@ func run() -> void:
 			return
 		if sex==1 and (not avatar.human_visual.parts.any(func(part: MeshInstance3D):return part.name.begins_with("Extra_shirt")) or not avatar.human_visual.parts.any(func(part: MeshInstance3D):return part.name.begins_with("Extra_kilt"))):
 			fail("Native shirt/skirt layers did not appear beneath the removed robe");return
+		if not avatar.human_visual.parts.any(func(part: MeshInstance3D):return part.name.begins_with("Extra_shoes")) or (sex==0 and not avatar.human_visual.parts.any(func(part: MeshInstance3D):return part.name.begins_with("Extra_doublet"))):
+			fail("Native civilian doublet/shoes were not presented after robe removal");return
 		if not game.move_item(int(item.serial),int(game.player.serial),true):
 			fail("Cannot begin native clothing equip")
 			return
