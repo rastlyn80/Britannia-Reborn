@@ -63,13 +63,16 @@ entries instead of calling an approximate category "fully ported".
    the mannequin-like gait. Compare authored candidates, match cadence to
    measured motion, improve hip/torso/arm movement, turning and stopping,
    contact/foot sliding, and rebake garment controls for the selected motion.
-   The current MakeHuman Idle/Walk/Run is still a baseline, not final quality.
+   A prepared CC0 motion/action pass is now installed when its local assets are
+   available; the original MakeHuman gait remains the fallback/comparison.
+   See HUMAN_MOTION_PASS.md. Artistic acceptance remains open.
 3. Implement human action families: armed/unarmed stances, attacks, parries,
    casting, hit reactions, death, emotes, interaction, work/crafting and sitting.
    Connect received 0x6e/0xe2 requests to verified clips. Test one-/two-handed
    equipment, grips, hiding/layer rules and body coverage throughout actions.
-   Capturing native requests is implemented; general server-action playback
-   is not yet implemented.
+   Capturing native requests and a human-only playback subset are implemented,
+   including classic and selected new-format families. Mounted, ranged and
+   remaining body/action requests stay explicit gaps.
 4. Build non-human body families with body-specific rigs and action mappings.
    Reuse motion only after measured retargeting and visual review. Add mounted
    rider/mount combinations, death/corpse transitions and polymorph handling.

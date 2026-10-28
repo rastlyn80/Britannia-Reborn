@@ -255,6 +255,9 @@ func _ready() -> void:
 	if lighting_rig and login_panel.sky_button: login_panel.sky_button.text = lighting_rig.sky_label()
 	game.entity_changed.connect(_entity_changed)
 	game.appearance_changed.connect(_appearance_changed)
+	game.mobile_action_received.connect(func(request: Dictionary):
+		var serial:=int(request.get("serial",0))
+		if avatars.has(serial):avatars[serial].receive_native_action(request))
 	game.vendor_received.connect(func(serial: int,_stock: Array):
 		if avatars.has(serial): avatars[serial].get_node("Nameplate").text = game.entity_names.get(serial,"Vendor")+" · shopkeeper")
 	game.entity_name_received.connect(func(serial: int, name_text: String):

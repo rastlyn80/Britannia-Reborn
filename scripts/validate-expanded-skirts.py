@@ -1,5 +1,5 @@
 """Sample the exact shared-rig skirt attachments against animated leg geometry."""
-import bpy,json
+import bpy,json,sys
 from collections import Counter,defaultdict
 from pathlib import Path
 from mathutils import Vector
@@ -7,6 +7,7 @@ from mathutils.bvhtree import BVHTree
 ROOT=Path(__file__).resolve().parents[1]
 bpy.context.preferences.filepaths.file_preview_type='NONE'
 rows=[];failures=[]
+MODERN='--motion' in sys.argv
 def hem_landmarks(mesh):
  # glTF splits UV seams; weld equal positions for topology analysis only.
  canonical={};reverse=defaultdict(list);index_to_key={}
@@ -34,22 +35,23 @@ def hem_landmarks(mesh):
 for female in [False,True]:
  bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
  art=ROOT/('Viewer/local-art/free-equipment-female' if female else 'Viewer/local-art/free-equipment')
- bpy.ops.import_scene.gltf(filepath=str(art/'equipment-base.glb'))
+ bpy.ops.import_scene.gltf(filepath=str(art/('motion/human-motion.glb' if MODERN else 'equipment-base.glb')))
  rig=next(o for o in bpy.data.objects if o.type=='ARMATURE')
  body=next(o for o in bpy.data.objects if o.name=='Body')
  for tr in rig.animation_data.nla_tracks:tr.mute=True
- actions=[a for a in bpy.data.actions if a.name in ['Idle','Walk','Run']]
+ names=['Idle','Walk','Jog','Sword_Idle','Sword_Walk','Sword_Jog','Unarmed_Idle','Unarmed_Jog','Sword_A_Cloth','Sword_B_Cloth','Sword_C_Cloth','Heavy_Attack_Cloth','Punch_Jab_Cloth','Punch_Cross_Cloth','Cast_Cloth','Hit','Bow'] if MODERN else ['Idle','Walk','Run']
+ actions=[track.strips[0].action for track in rig.animation_data.nla_tracks if track.name in names]
  leg_ids=[v.index for v in body.data.vertices if .25<(body.matrix_world@v.co).z<.88 and sum(g.weight for g in v.groups if body.vertex_groups[g.group].name.startswith(('thigh','calf','foot')))>.5]
- for piece in ['skirt','kilt']:
-  before=set(bpy.data.objects);bpy.ops.import_scene.gltf(filepath=str(art/'expansion'/(piece+'.glb')));imported=set(bpy.data.objects)-before
-  cloth=next(o for o in imported if o.type=='MESH' and o.name.startswith('Extra_'))
+ for piece in (['robe','skirt','kilt'] if MODERN else ['skirt','kilt']):
+  before=set(bpy.data.objects);bpy.ops.import_scene.gltf(filepath=str(art/('runtime/part-robe.glb' if piece=='robe' else 'expansion/'+piece+'.glb')));imported=set(bpy.data.objects)-before
+  cloth=next(o for o in imported if o.type=='MESH' and o.name.startswith(('Extra_','Free_')))
   for mod in cloth.modifiers:
    if mod.type=='ARMATURE':mod.object=rig
   cloth.parent=rig
   hem_ids=hem_landmarks(cloth.data)
   for action in actions:
    rig.animation_data.action=action;rig.animation_data.action_slot=action.slots[0]
-   for phase in [i/16 for i in range(16)]:
+   for phase in [i/(8 if MODERN else 16) for i in range(8 if MODERN else 16)]:
     f=action.frame_range[0]+(action.frame_range[1]-action.frame_range[0])*phase;bpy.context.scene.frame_set(int(f),subframe=f-int(f));bpy.context.view_layer.update()
     deps=bpy.context.evaluated_depsgraph_get();ev=cloth.evaluated_get(deps);ev.data.calc_loop_triangles();coords=[ev.matrix_world@v.co for v in ev.data.vertices];hem_top=max(coords[i].z for i in hem_ids)
     tree=BVHTree.FromPolygons(coords,[tuple(t.vertices) for t in ev.data.loop_triangles],all_triangles=True);skin=body.evaluated_get(deps);outside=0;checked=0;outliers=[]
@@ -61,10 +63,10 @@ for female in [False,True]:
       outside+=1
       if len(outliers)<8:outliers.append({'vertex':i,'point':list(p),'left':list(left) if left is not None else None,'right':list(right) if right is not None else None})
     min_z=min(p.z for p in coords)
-    row={'female':female,'piece':piece,'clip':action.name,'phase':phase,'checked':checked,'outside':outside,'min_height':min_z,'opening_top':hem_top};rows.append(row)
+    row={'female':female,'piece':piece,'clip':action.name.split('.')[0],'phase':phase,'checked':checked,'outside':outside,'min_height':min_z,'opening_top':hem_top};rows.append(row)
     if outside or min_z<.01:failures.append(dict(row,outliers=outliers))
   for ob in imported:bpy.data.objects.remove(ob,do_unlink=True)
-report={'samples':rows,'failures':failures,'scope':'Two fixed bodies, side-ray enclosure above animated openings, native Idle/Walk/Run only; not cloth physics or all actions.'}
-(ROOT/'outputs/third-dawn/expanded-skirt-validation.json').write_text(json.dumps(report,indent=2))
+report={'samples':rows,'failures':failures,'scope':'Two fixed bodies, side-ray enclosure above animated openings; 17 prepared locomotion/combat/cast/hit/bow clips with --motion, otherwise native Idle/Walk/Run. Not cloth physics or all actions.'}
+(ROOT/'outputs/third-dawn'/('human-motion-cloth-validation.json' if MODERN else 'expanded-skirt-validation.json')).write_text(json.dumps(report,indent=2))
 print('EXPANDED SKIRTS:',len(rows),'poses,',len(failures),'failures')
 if failures:raise RuntimeError(str(failures[:5]))

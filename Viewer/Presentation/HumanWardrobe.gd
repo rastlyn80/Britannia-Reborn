@@ -21,6 +21,7 @@ const EXTRA := {
 	0x0f5e:["weapon","sword"],0x0f5f:["weapon","sword"],
 	0x0f60:["weapon","sword"],0x0f61:["weapon","sword"],
 	0x13b9:["weapon","sword"],0x13ba:["weapon","sword"],
+	0x13ff:["weapon","sword"],0x13fe:["weapon","sword"],
 	0x1438:["weapon","hammer"],0x1439:["weapon","hammer"],
 	0x0e81:["weapon","staff"],0x0e82:["weapon","staff"],
 	0x0e89:["weapon","staff"],0x0e8a:["weapon","staff"],

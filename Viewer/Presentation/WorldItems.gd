@@ -399,6 +399,7 @@ func upsert(serial: int, item: Dictionary) -> void:
    else:
     geometry.cylinder(root,0.045,lamp_height-0.25,Vector3(0,(lamp_height-0.25)/2,0),"3c4141")
     geometry.crafted_box(root,Vector3(0.23,0.25,0.23),Vector3(0,lamp_height-0.125,0),"e4c88c")
+   if light_model and light_model.get_parent()==null: light_model.free()
    var lamp := OmniLight3D.new()
    lamp.position.y = lamp_height-0.12
    lamp.light_color = Color("ffd398")

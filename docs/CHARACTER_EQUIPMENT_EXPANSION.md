@@ -1,5 +1,11 @@
 # Equipment and native appearance expansion — 28 October 2026
 
+Subsequent checkpoint: HUMAN_MOTION_PASS.md replaces the stiff prepared gait
+and connects a human native-action subset. It also corrects the interpretation
+of 0xe2 to type/subaction/variation, retaining the original raw aliases, and
+maps the starter katana category (82 indexed wearable graphics now mapped).
+The initial test/limitation record below describes this equipment checkpoint.
+
 The second human batch adds long skirt, shortened kilt, gloves, two helmet
 shapes, sword, war hammer and staff/sceptre to both fixed bodies. Together with
 the first five pieces, this is 13 distinct equipment meshes, not 13 exact

@@ -15,6 +15,17 @@ var current_clip := "Idle"
 var missing_art: Array[int] = []
 var native_cosmetics := {}
 var grip: SkeletonModifier3D
+var use_modern_motion := true
+var motion_profile := {}
+var war_mode := false
+var native_action := {}
+var action_clip := ""
+var action_elapsed := 0.
+var action_duration := 0.
+var action_cycles := 0
+var action_reverse := false
+var action_holding := false
+var action_rate := 1.
 var folder: String:
 	get: return "res://local-art/free-equipment" + ("-female" if female else "")
 
@@ -61,6 +72,8 @@ func _ready() -> void:
 					mat.alpha_scissor_threshold = .38
 					mat.metallic_specular = 0.
 				mesh.set_surface_override_material(surface,mat)
+	if use_modern_motion: motion_profile=preload("res://Presentation/HumanMotion.gd").install(self)
+	if not motion_profile.is_empty():grip.use_prepared_clip(animator.get_animation("Sword_Idle"))
 	for clip in ["Idle","Walk","Run"]: animator.get_animation(clip).loop_mode = Animation.LOOP_LINEAR
 	animator.play("Idle")
 	set_equipment([])
@@ -97,6 +110,7 @@ func _attach(path: String, prefix: String, body_part: bool = false) -> void:
 
 func set_equipment(worn: Array) -> void:
 	if model == null: return
+	server_equipment=worn.duplicate(true)
 	var resolved := Wardrobe.resolve(worn)
 	var key := JSON.stringify(resolved)
 	if key == appearance_key: return
@@ -120,6 +134,7 @@ func set_equipment(worn: Array) -> void:
 	var hide_hair := (outfit_bits&16)!=0 or extra_parts.has("head")
 	var hide_beard: bool = extra_parts.has("head") and str(extra_parts.head.asset)=="closed_helmet"
 	grip.holding = extra_parts.has("weapon")
+	grip.active = true
 	var hair_style := str(resolved.hair_style)
 	var extra_hair := hair_style not in ["","short"] and ResourceLoader.exists(folder+"/expansion/hair_"+hair_style+".glb")
 	if hair_style not in ["","short"] and not extra_hair: missing_art.append(int(resolved.hair_id))
@@ -160,6 +175,18 @@ func set_equipment(worn: Array) -> void:
 	set_meta("unsupported_wearables",unsupported_items)
 	set_meta("missing_art",missing_art)
 	set_meta("native_cosmetics",native_cosmetics)
+	if not action_clip.is_empty():
+		var replacement:=clothing_clip(action_clip)
+		if replacement!=action_clip:
+			var phase:=animator.current_animation_position
+			action_clip=replacement
+			animator.play(replacement,.1,-action_rate if action_reverse else action_rate,action_reverse);animator.seek(phase,true)
+	elif not motion_profile.is_empty() and not current_clip.is_empty():
+		var replacement:=clothing_clip(current_clip)
+		if replacement!=current_clip:
+			var was_playing:=animator.is_playing()
+			play(replacement)
+			if not was_playing:animator.pause()
 
 func _shade(mesh: MeshInstance3D, hue: int, cosmetic: bool = false) -> void:
 	for surface in mesh.mesh.get_surface_count():
@@ -168,9 +195,66 @@ func _shade(mesh: MeshInstance3D, hue: int, cosmetic: bool = false) -> void:
 		mesh.set_surface_override_material(surface,preload("res://Presentation/HumanHue.gd").material(original,hue,cosmetic) if (hue&0x3fff)!=0 or cosmetic else null)
 
 func play(clip: String, blend: float = .15) -> void:
+	if not action_clip.is_empty(): return
+	clip=clothing_clip(clip)
 	if clip == current_clip and animator.current_animation == clip: return
 	var previous := current_clip
 	var phase := animator.current_animation_position/maxf(.001,animator.current_animation_length)
 	current_clip = clip
 	animator.play(clip,blend)
-	if previous in ["Walk","Run"] and clip in ["Walk","Run"]: animator.seek(fmod(phase,1.)*animator.current_animation_length,true)
+	if preload("res://Presentation/HumanActions.gd").locomotion(previous) and preload("res://Presentation/HumanActions.gd").locomotion(clip): animator.seek(fmod(phase,1.)*animator.current_animation_length,true)
+
+func stance_clip(base: String) -> String:
+	if motion_profile.is_empty(): return base
+	var resolved:=Wardrobe.resolve(server_equipment)
+	var prefix: String="Sword_" if resolved.pieces.has("weapon") and (war_mode or base!="Idle") else ("Unarmed_" if war_mode else "")
+	var name:=prefix+base
+	return clothing_clip(name if animator.has_animation(name) else base)
+
+func clothing_clip(name: String) -> String:
+	if motion_profile.is_empty():return name
+	var resolved:=Wardrobe.resolve(server_equipment)
+	if not ((int(resolved.bits)&8)!=0 or resolved.pieces.has("outer_legs")):return name
+	if animator.has_animation(name+"_Cloth"):return name+"_Cloth"
+	if name.ends_with("Run") or name.ends_with("Sprint"):
+		var prefix: String="Sword_" if name.begins_with("Sword_") else ("Unarmed_" if name.begins_with("Unarmed_") else "")
+		return prefix+"Jog"
+	return name
+
+var server_equipment: Array=[]
+func request_action(request: Dictionary) -> bool:
+	native_action=request.duplicate(true)
+	set_meta("native_action",native_action)
+	var clip:=preload("res://Presentation/HumanActions.gd").resolve(request)
+	clip=clothing_clip(clip)
+	if motion_profile.is_empty() or clip.is_empty() or not animator.has_animation(clip):
+		set_meta("unsupported_action",request.duplicate(true));return false
+	if has_meta("unsupported_action"):remove_meta("unsupported_action")
+	action_clip=clip;action_elapsed=0.;action_holding=false
+	var animation:=animator.get_animation(clip)
+	action_duration=preload("res://Presentation/HumanActions.gd").duration(request,animation.length)
+	action_reverse=bool(request.get("reverse",false))
+	action_rate=animation.length/action_duration
+	action_cycles=0 if bool(request.get("repeat",false)) else int(request.get("repeat_count",1))
+	animator.speed_scale=1.
+	animator.stop(true)
+	animator.play(clip,.1,-action_rate if action_reverse else action_rate,action_reverse)
+	animator.seek(animation.length if action_reverse else 0.,true)
+	return true
+
+func cancel_action() -> void:
+	action_clip="";action_holding=false;action_elapsed=0.;animator.speed_scale=1.;current_clip=""
+
+func _process(delta: float) -> void:
+	if action_clip.is_empty() or action_holding:return
+	action_elapsed+=delta
+	if action_elapsed<action_duration:return
+	action_elapsed=fmod(action_elapsed,action_duration)
+	if action_cycles==1:
+		if action_clip=="Death" and not action_reverse:
+			animator.seek(animator.get_animation(action_clip).length,true);animator.pause();action_holding=true
+		else:cancel_action()
+		return
+	if action_cycles>1:action_cycles-=1
+	animator.stop(true)
+	animator.play(action_clip,0.,-action_rate if action_reverse else action_rate,action_reverse)

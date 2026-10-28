@@ -38,5 +38,5 @@ static func action(p: PackedByteArray) -> Dictionary:
 	if p.size()==14 and p[0]==0x6e:
 		return {"serial":Wire.read_be(p,1,4),"protocol":"classic","action":Wire.read_be(p,5,2),"frames":Wire.read_be(p,7,2),"repeat_count":Wire.read_be(p,9,2),"reverse":p[11]!=0,"repeat":p[12]!=0,"delay":int(p[13])}
 	if p.size()==10 and p[0]==0xe2:
-		return {"serial":Wire.read_be(p,1,4),"protocol":"new","action":Wire.read_be(p,5,2),"frames":Wire.read_be(p,7,2),"delay":int(p[9])}
+		return {"serial":Wire.read_be(p,1,4),"protocol":"new","type":Wire.read_be(p,5,2),"subaction":Wire.read_be(p,7,2),"variation":int(p[9]),"action":Wire.read_be(p,5,2),"frames":Wire.read_be(p,7,2),"delay":int(p[9])}
 	return {}

@@ -124,6 +124,8 @@ func _ready() -> void:
 	content.add_child(world_controls)
 	world_controls.hide()
 	button(world_controls,"Open backpack (B)",func(): session.open_backpack())
+	button(world_controls,"Toggle war / peace",func(): session.set_war_mode((int(session.player.get("flags",0))&0x40)==0))
+	button(world_controls,"Bow",func(): session.request_emote("bow"))
 	button(world_controls,"Return to Britain (F6)",func(): session.return_to_britain())
 	sky_button = button(world_controls,"Sky: server time (F7)",func(): sky_requested.emit())
 	var command_toggle := CheckButton.new()

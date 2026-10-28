@@ -80,6 +80,7 @@ func build() -> void:
 	for female in [false,true]:
 		var actor:=preload("res://Presentation/HumanVisual.gd").new()
 		actor.female=female
+		actor.use_modern_motion=not "--baseline" in OS.get_cmdline_user_args()
 		actor.position.x=(.24 if female else -.24) if head_view else (.8 if female else -.8)
 		actor.rotation.y=angle
 		stage.add_child(actor)

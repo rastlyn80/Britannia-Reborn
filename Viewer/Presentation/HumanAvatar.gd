@@ -32,6 +32,7 @@ func _switch_human(is_female: bool) -> void:
 	animator.remove_animation_library("")
 	animator.add_animation_library("",library)
 	for clip in ["Jump_Start","Jump","Jump_Land"]:
+		if not human_visual.motion_profile.is_empty():continue
 		var animation := preload("res://Presentation/AnimationRetarget.gd").retarget(player.get_animation(clip),source_rig,human_visual.skeleton,{"Head":"head"})
 		for track in range(animation.get_track_count()-1,-1,-1):
 			var path := animation.track_get_path(track)
@@ -68,9 +69,17 @@ func apply_server_appearance(entity: Dictionary, worn: Array, details: Dictionar
 	if not Human.available(sex): return
 	if human_visual == null or human_visual.female != sex: _switch_human(sex)
 	human_visual.set_skin(int(entity.get("hue",1002)))
+	human_visual.war_mode=(int(entity.get("flags",0))&0x40)!=0
 	human_visual.set_equipment(worn)
+	if not walking and human_visual.action_clip.is_empty():human_visual.play(human_visual.stance_clip("Idle"))
 	set_meta("native_body",body)
 	set_meta("art_status","human category replacement")
+
+func receive_native_action(request: Dictionary) -> bool:
+	if human_visual==null:return false
+	for item: Dictionary in server_appearance.get("equipment",[]):
+		if int(item.get("layer",0))==25:return false
+	return human_visual.request_action(request)
 
 func animate(moving: bool, direction: float, delta: float, speed: float = 2.44) -> void:
 	if human_visual == null:
@@ -84,15 +93,24 @@ func animate(moving: bool, direction: float, delta: float, speed: float = 2.44) 
 	if moving and displayed_speed<.1: displayed_speed = speed
 	displayed_speed = lerpf(displayed_speed,speed if moving else 0.,1.-exp(-12.*delta))
 	walking = moving
+	if moving and not human_visual.action_clip.is_empty() and human_visual.action_cycles==0 and not human_visual.action_holding:human_visual.cancel_action()
 	var threshold := 3.35 if current_clip == "Run" else 3.8
 	var clip := ("Run" if displayed_speed>threshold else "Walk") if moving else "Idle"
+	if not human_visual.motion_profile.is_empty():
+		clip=preload("res://Presentation/HumanActions.gd").gait(displayed_speed,current_clip) if moving else "Idle"
+		clip=human_visual.stance_clip(clip)
 	if jump.airborne: clip = "Jump_Start" if jump.elapsed<.15 else "Jump"
 	elif jump.landing_time>0: clip = "Jump_Land"
 	current_clip = clip
 	human_visual.play(clip,.20 if clip == "Idle" else .12)
 	animator.speed_scale = clampf(displayed_speed/(3.0 if clip=="Run" else 1.4),.75,2.) if moving and not clip.begins_with("Jump") else 1.
+	if not human_visual.motion_profile.is_empty():
+		var pace: float=float(human_visual.motion_profile.clips.get(clip,{}).get("native_speed_mps",1.))
+		animator.speed_scale=clampf(displayed_speed/maxf(.1,pace),.65,1.8) if moving and preload("res://Presentation/HumanActions.gd").locomotion(clip) else 1.
+		if not human_visual.action_clip.is_empty():animator.speed_scale=1.
 	visual_root.position.y = jump.height+ground_offset
 	foot_contact.grounded = not jump.airborne
+	if human_visual.action_clip=="Death":foot_contact.grounded=false
 	foot_contact.body_offset = ground_offset
 	var plate := get_node_or_null("Nameplate")
 	if plate: plate.position.y = 2.2+jump.height

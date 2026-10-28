@@ -25,7 +25,11 @@ func _initialize() -> void:
 		hair.append({"id":id,"status":"family replacement" if Wardrobe.HAIR.has(id) else "short-hair fallback; native identity preserved"})
 	var report:={"generated":Time.get_datetime_string_from_system(true),"wearables":{"catalogued_graphics":records.size(),"mapped_graphics":mapped,"records":records},"human_hair":hair,"human_beard_ids":Wardrobe.BEARDS.keys(),"body_art":{"400":"male human","401":"female human"},"animation_transport":["0x6e classic action/frame/repeat/reverse/delay","0xe2 new action/frame/delay"],"server_action_playback":[],"locomotion_baseline":["Idle","Walk","Run"],"scope":"Local indexed client tile graphics, not a complete census of equippable server item classes. Category art, individual mesh quality and animation coverage are separate. Non-human bodies, exact head styles and full action playback remain open."}
 	var file:=FileAccess.open(out,FileAccess.WRITE)
+	report.animation_transport=["0x6e classic action/frame/repeat/reverse/delay","0xe2 type/subaction/variation; historical aliases retained"]
+	report.server_action_playback={"bodies":[400,401],"classic_groups":preload("res://Presentation/HumanActions.gd").CLASSIC.keys(),"new_types":[0,3,4,11],"new_attack_subactions":[0,3,4,5,6,7,8],"status":"human category replacements; mounts and unsupported requests excluded"}
+	report.prepared_locomotion=["Walk","Jog","Run","Sprint"]
+	report.scope+=" Prepared human action playback is a subset; see HUMAN_MOTION_PASS.md."
 	report.source_catalog = {"path":catalog_path,"sha256":FileAccess.get_sha256(catalog_path),"item_count":catalog.items.size()}
 	file.store_string(JSON.stringify(report,"\t"))
-	print("CHARACTER COVERAGE: ",mapped," / ",records.size()," indexed wearable graphics have category replacements; 2 body arts; server action playback remains unimplemented")
+	print("CHARACTER COVERAGE: ",mapped," / ",records.size()," indexed wearable graphics have category replacements; 2 body arts; human action subset installed")
 	quit(0)

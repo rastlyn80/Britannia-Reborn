@@ -18,6 +18,7 @@ func fail(message: String) -> void:
 	quit(1)
 func run() -> void:
 	var cosmetics:= "--cosmetics" in OS.get_cmdline_user_args()
+	var motion:= "--motion" in OS.get_cmdline_user_args()
 	var male_test_name:="Styled Man" if cosmetics else "Batch Man"
 	var credentials_path:="res://../work/character-polish/human-test-accounts.json"
 	var credentials: Array=[]
@@ -80,6 +81,24 @@ func run() -> void:
 		root.add_child(avatar)
 		avatar.set_physics_process(false)
 		avatar.apply_server_appearance(game.player,game.equipment.values())
+		var motion_receiver: Callable
+		if motion:
+			motion_receiver=func(request: Dictionary):
+				if int(request.serial)==int(game.player.serial):avatar.receive_native_action(request)
+			game.mobile_action_received.connect(motion_receiver)
+			game.set_war_mode(true)
+			if not await until(func():return (int(game.player.get("flags",0))&0x40)!=0):fail("Native war-mode confirmation timeout");return
+			avatar.apply_server_appearance(game.player,game.equipment.values())
+			if not avatar.human_visual.war_mode:fail("Native guard stance not applied");return
+			var armed: bool=preload("res://Presentation/HumanWardrobe.gd").resolve(game.equipment.values()).pieces.has("weapon")
+			if avatar.human_visual.animator.current_animation!=("Sword_Idle" if armed else "Unarmed_Idle"):fail("Confirmed war mode did not select the ready pose");return
+			game.set_war_mode(false)
+			if not await until(func():return (int(game.player.get("flags",0))&0x40)==0):fail("Native peace confirmation timeout");return
+			avatar.apply_server_appearance(game.player,game.equipment.values())
+			if avatar.human_visual.animator.current_animation!="Idle":fail("Confirmed peace mode did not restore the relaxed pose");return
+			game.request_emote("bow")
+			if not await until(func():return avatar.human_visual.action_clip=="Bow"):fail("Server bow did not reach human motion playback");return
+			if visual and visual.avatars.has(int(game.player.serial)) and visual.avatars[int(game.player.serial)].human_visual.action_clip!="Bow":fail("Live-world action signal did not reach player avatar");return
 		if avatar.human_visual==null or int(avatar.human_visual.outfit_bits)!=expected_worn:
 			fail("Starter clothes did not appear on shared human renderer: bits="+str(avatar.human_visual.outfit_bits if avatar.human_visual else -1))
 			return
@@ -109,7 +128,10 @@ func run() -> void:
 			return
 		var original_serial:=int(game.player.serial)
 		results.append({"female":sex==1,"body":expected,"serial":original_serial,"equipment_ids":game.equipment.values().map(func(w): return int(w.id)),"unequip_bits":removed_bits,"reequip_bits":expected_worn})
+		if motion:results[-1].native_war_mode_and_bow_playback=true
 		avatar.hide()
+		if motion:
+			game.mobile_action_received.disconnect(motion_receiver);motion_receiver=Callable()
 		avatar.queue_free()
 		await process_frame
 		game.close()
@@ -155,6 +177,16 @@ func run() -> void:
 			if not await until(func(): return game.pending_transfer.is_empty() and observer.mobile_equipment[original_serial].has(22)):
 				fail("Second client missed re-equipped robe"); return
 			results[-1].second_client_body_and_robe_updates=true
+			if motion:
+				var remote:=preload("res://Presentation/Avatar.gd").new();remote.initial_body=0x191;root.add_child(remote);remote.set_physics_process(false)
+				remote.apply_server_appearance(observer.entities[original_serial],observer.mobile_equipment[original_serial].values())
+				var remote_receiver: Callable=func(request: Dictionary):
+					if int(request.serial)==original_serial:remote.receive_native_action(request)
+				observer.mobile_action_received.connect(remote_receiver)
+				game.request_emote("bow")
+				if not await until(func():return remote.human_visual.action_clip=="Bow"):fail("Second client missed native bow playback");return
+				results[-1].second_client_native_action_playback=true
+				observer.mobile_action_received.disconnect(remote_receiver);remote_receiver=Callable();remote.queue_free()
 			observer.close()
 			observer.queue_free()
 		if visual:
@@ -171,7 +203,9 @@ func run() -> void:
 		if visual: visual.queue_free()
 		else: game.queue_free()
 		await process_frame
+	for i in 4:await process_frame
 	var f:=FileAccess.open("res://../outputs/third-dawn/human-batch-live.json",FileAccess.WRITE)
 	f.store_string(JSON.stringify({"characters":results,"failures":[]},"\t"))
 	print("HUMAN BATCH LIVE PASS: male/female native creation or re-entry, clothes removal/re-equip, reconnect identity and sex")
+	if motion:print("NATIVE MOTION LIVE PASS: server war/peace, bow on both bodies, live-world player and second-client action playback")
 	quit(0)

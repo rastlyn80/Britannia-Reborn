@@ -48,6 +48,10 @@ if (Test-Path "$root/Viewer/local-art/free-equipment-female/expansion/closed_hel
 }
 & $godot --headless --path "$root\Viewer" --script res://Network/CharacterTests.gd
 if ($LASTEXITCODE) { throw 'Character status/skills/sheet tests failed' }
+if (Test-Path "$root/Viewer/local-art/free-equipment-female/motion/human-motion.glb") {
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanMotionTests.gd
+  if ($LASTEXITCODE) { throw 'Prepared human motion checks failed' }
+}
 & $godot --headless --path "$root\Viewer" --script res://Presentation/PresentationTests.gd
 if ($LASTEXITCODE) { throw 'Presentation tests failed' }
 & $godot --headless --path "$root\Viewer" --script res://Presentation/GraphicsTests.gd

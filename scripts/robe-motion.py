@@ -8,6 +8,78 @@ from mathutils import Vector,Matrix
 
 LEVELS=(.88,.65,.40,.18)
 
+def bake_envelopes(rig,body,garments,actions):
+    """Fit shared controls in pelvis space, including turning/wide stances.
+
+    Use the most restrictive cross section of robe, skirt and kilt. The old
+    axial bake assumed a forward-facing pelvis and one ankle-length garment.
+    No body triangles are hidden to solve a clothing intersection.
+    """
+    inverse=rig.matrix_world.inverted()
+    leg_ids=[v.index for v in body.data.vertices if .16<(body.matrix_world@v.co).z<.94]
+    foot_ids=[v.index for v in body.data.vertices if (body.matrix_world@v.co).z<.16]
+    bands=[]
+    for z in LEVELS:
+        widths=[];fronts=[];backs=[]
+        for garment in garments:
+            transform=inverse@garment.matrix_world
+            points=[]
+            for vertex in garment.data.vertices:
+                if any(garment.vertex_groups[g.group].name.startswith(('upperarm','lowerarm','hand','clavicle')) and g.weight>1e-7 for g in vertex.groups):continue
+                co=transform@vertex.co
+                if abs(co.z-z)<.1:points.append(co)
+            if points:
+                widths.append(max(abs(p.x) for p in points));fronts.append(min(p.y for p in points));backs.append(max(p.y for p in points))
+        assert widths
+        bands.append((min(widths),max(fronts),min(backs)))
+    evidence={}
+    for action in actions:
+        rig.animation_data.action=action;rig.animation_data.action_slot=action.slots[0]
+        start,end=map(int,action.frame_range);max_scale=1.;max_shift=0.
+        for frame in range(start,end+1):
+            bpy.context.scene.frame_set(frame);bpy.context.view_layer.update()
+            deps=bpy.context.evaluated_depsgraph_get();evaluated=body.evaluated_get(deps)
+            pelvis=rig.pose.bones['pelvis'];skin=pelvis.matrix@rig.data.bones['pelvis'].matrix_local.inverted();unpose=skin.inverted()
+            convert=unpose@inverse@evaluated.matrix_world
+            points=[convert@evaluated.data.vertices[i].co for i in leg_ids]
+            feet=[(convert@evaluated.data.vertices[i].co,evaluated.matrix_world@evaluated.data.vertices[i].co) for i in foot_ids]
+            hem=rig.matrix_world@skin@Vector((0,0,.16))
+            lift={side:min(.46,max(0.,max((world.z for local,world in feet if sign*local.y>.08),default=.1)+.075-hem.z)) for side,sign in [('front',-1),('back',1)]}
+            for i,z in enumerate(LEVELS):
+                width,front,back=bands[i]
+                factor=(LEVELS[0]-z)/(LEVELS[0]-LEVELS[-1])
+                vertical=(lift['front']+lift['back'])*.5*factor
+                sample_z=z+(unpose.to_3x3()@inverse.to_3x3()@Vector((0,0,vertical))).z
+                near=[point for point in points if abs(point.z-sample_z)<.16]
+                lo=min(front,min((p.y for p in near),default=front)-.09)
+                hi=max(back,max((p.y for p in near),default=back)+.09)
+                left=min((p.x for p in near),default=-width);right=max((p.x for p in near),default=width)
+                centre=(left+right)*.5
+                middle=(lo+hi)*.5;depth=max(.05,(hi-lo)*.5)
+                scale=1.1
+                for p in near:
+                    axial=(p.y-middle)/depth
+                    scale=max(scale,(abs(p.x-centre)+.035)/(max(.05,width)*math.sqrt(max(.03,1-axial*axial))))
+                for side in ['front','back']:
+                    name=f'robe_{side}_{i}';pose=rig.pose.bones[name];rest=rig.data.bones[name].matrix_local
+                    delta=lo-front if side=='front' else hi-back
+                    y=-.18 if side=='front' else .13
+                    desired=skin@rest
+                    desired.translation=skin@Vector((centre,y+delta,z))
+                    factor=(LEVELS[0]-z)/(LEVELS[0]-LEVELS[-1])
+                    vertical=(lift[side]+max(0.,.10-hem.z))*factor
+                    desired.translation+=inverse.to_3x3()@Vector((0,0,vertical))
+                    desired.col[0]*=scale
+                    pose.matrix=desired
+                    pose.keyframe_insert(data_path='location',frame=frame,group='Garment envelope')
+                    pose.keyframe_insert(data_path='rotation_quaternion',frame=frame,group='Garment envelope')
+                    pose.keyframe_insert(data_path='scale',frame=frame,group='Garment envelope')
+                    max_scale=max(max_scale,scale);max_shift=max(max_shift,abs(delta))
+        evidence[action.name]={'frames':end-start+1,'max_lateral_scale':max_scale,'max_panel_translation_m':max_shift}
+    rig.animation_data.action=None
+    for pose in rig.pose.bones:pose.matrix_basis=Matrix.Identity(4)
+    return {'method':'pelvis-space shared robe/skirt/kilt cross-section envelope; retain all body geometry','clips':evidence}
+
 def control_weights(co):
     z=co.z
     if z>=.95:return None

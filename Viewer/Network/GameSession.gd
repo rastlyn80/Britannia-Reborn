@@ -442,6 +442,9 @@ func _handle(p: PackedByteArray) -> void:
 				action.body = int(mobile.get("body",0))
 				last_mobile_actions[int(action.serial)] = action
 				mobile_action_received.emit(action.duplicate(true))
+		0x72:
+			player.flags=(int(player.get("flags",0))&~0x40)|(0x40 if p[1]!=0 else 0)
+			appearance_changed.emit(int(player.serial))
 		0xf3:
 			if p.size() == 26 and int(p[3]) == 0:
 				var item := {"serial":Login.read_be(p,4,4),"id":Login.read_be(p,8,2),"amount":Login.read_be(p,11,2),"x":Login.read_be(p,15,2)&0x7fff,"y":Login.read_be(p,17,2)&0x3fff,"z":signed(p[19]),"hue":Login.read_be(p,21,2),"flags":int(p[23]),"facet":player.facet}
@@ -876,6 +879,13 @@ func appearance_for(serial: int) -> Dictionary:
 	var entity: Dictionary = player if serial==int(player.serial) else entities.get(serial,{"serial":serial})
 	var stats: Dictionary = player_status if serial==int(player.serial) else mobile_statistics.get(serial,{})
 	return MobileLook.profile(entity,mobile_equipment.get(serial,{}).values(),stats,str(entity_names.get(serial,stats.get("name",""))))
+func set_war_mode(enabled: bool) -> void:
+	if phase=="world":send(PackedByteArray([0x72,1 if enabled else 0,0,0x32,0]))
+func request_emote(name: String) -> bool:
+	if phase!="world" or name!="bow":return false
+	var payload:=PackedByteArray([0xc7]);payload.append_array(name.to_ascii_buffer());payload.append(0)
+	var packet:=PackedByteArray([0x12]);packet.append_array(Login.uint_be(payload.size()+3,2));packet.append_array(payload);send(packet)
+	return true
 func remember_item(item: Dictionary) -> void:
 	if not item.has("layer"): _forget_worn(int(item.serial))
 	if not requested_icons.has(int(item.id)):

@@ -1,5 +1,11 @@
 # Character foundation and creation plan
 
+Motion checkpoint, 28 October 2026: HUMAN_MOTION_PASS.md records prepared free
+CC0 locomotion, guard/attack/cast/hit/death motion, garment-safe variants and
+native human action playback. Both sexes retain the original body/bindings.
+The rejected baseline remains for comparison/fallback; owner quality review
+and complete mobile/action coverage are still open.
+
 Full-port requirement, 28 October 2026: target every native mobile, wearable
 and animation family, with the same server-driven appearance contract for
 players and NPCs. Hair/beard IDs and independent hues, body/skin, references
