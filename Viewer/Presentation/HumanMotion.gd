@@ -1,15 +1,16 @@
 extends RefCounted
 ## Prepared CC0 motion on the exact body rig, including garment-only controls.
 static var prepared := {}
-static func install(visual: Node3D) -> Dictionary:
-	var path: String=visual.folder+"/motion/human-motion.glb"
+static func install(visual: Node3D, motion_folder: String = "") -> Dictionary:
+	if motion_folder.is_empty():motion_folder=visual.folder+"/motion"
+	var path: String=motion_folder+"/human-motion.glb"
 	if not ResourceLoader.exists(path): return {}
 	var destination: String=str(visual.animator.get_node(visual.animator.root_node).get_path_to(visual.skeleton))
-	var key: String=visual.folder+"|"+destination
+	var key: String=motion_folder+"|"+destination
 	if prepared.has(key):
 		visual.animator.stop();visual.animator.remove_animation_library("");visual.animator.add_animation_library("",prepared[key].library)
 		return prepared[key].metadata.duplicate(true)
-	var metadata: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(visual.folder+"/motion/motion.json"))
+	var metadata: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(motion_folder+"/motion.json"))
 	var source: Node3D=load(path).instantiate()
 	var rig: Skeleton3D=source.find_children("*","Skeleton3D",true,false)[0]
 	var player: AnimationPlayer=source.find_children("*","AnimationPlayer",true,false)[0]

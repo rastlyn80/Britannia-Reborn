@@ -1,3 +1,7 @@
+# Walking-arm feedback checkpoint — 28 October 2026
+
+The owner still found arms stiff in the prepared gait. Armed/unarmed-guard walks now retain independent shoulder/elbow motion, a free swinging arm and the carrying-hand grip; the slow walk and intermediate jog also retain more authored arm follow-through. Both bodies rebuilt without body/bind/server changes. All 52 motion checks, 86 exported clips, 816 garment poses and full project verification pass. Actual before/after compares the previous prepared pass with this revision; see HUMAN_ARM_MOTION.md. Owner artistic acceptance remains open. Next motion work includes starts/stops/turns, better robe drape (enclosure is verified, appearance still inflates in some poses), exact hammer/sceptre and two-handed grips, and moving combat.
+
 # Human motion checkpoint — 28 October 2026
 
 The first prepared motion pass is integrated on both fixed human bodies: 43 clips each, armed/unarmed guards and gait, separate attacks/recoveries, native human action subset, sender timing/reverse/repeats, garment-safe footwork and server-confirmed ready/relaxed poses. See HUMAN_MOTION_PASS.md for sources and limits, and Review-Human-Motion.cmd for animated old/new comparison. Body/bindings and authoritative server state remain unchanged; sampled garment and native/live checks pass. Source preparation is automated and hash-pinned. This does not establish owner artistic acceptance or a complete mobile/action port.

@@ -132,6 +132,27 @@ print('RETARGET COMPLETE',flush=True)
 # Bake carry/guard variants in local joint space so an equipped hand does not
 # swing a sword through the thigh. Legs keep the authored locomotion phase.
 base_actions={track.name:track.strips[0].action for track in rig.animation_data.nla_tracks}
+# Keep the publisher's opposing arm/leg phase, but give the slow walk more
+# shoulder follow-through and elbow compliance. Amplify deviations from the
+# cycle mean, not the bind pose: the latter changes elbow roll and arm spread.
+walk=base_actions['Walk'];walk_samples=[];count=metadata['Walk']['frames']-1
+for frame in range(count+1):
+ rig.animation_data.action=walk;rig.animation_data.action_slot=walk.slots[0]
+ bpy.context.scene.frame_set(frame+1);bpy.context.view_layer.update()
+ walk_samples.append({p.name:p.rotation_quaternion.copy() for p in rig.pose.bones})
+for bone in native:
+ amount=1.8 if bone.name.startswith('lowerarm_') else (1.18 if bone.name.startswith(('upperarm_','clavicle_')) else 1.)
+ if amount==1.:continue
+ mean=walk_samples[0][bone.name].copy()
+ for index,sample in enumerate(walk_samples[1:-1],2):mean=mean.slerp(sample[bone.name],1/index)
+ for frame,sample in enumerate(walk_samples):
+  pose=rig.pose.bones[bone.name]
+  delta=mean.inverted()@sample[bone.name]
+  if delta.w<0:delta.negate()
+  axis,angle=delta.to_axis_angle()
+  pose.rotation_quaternion=mean@Quaternion(axis,angle*amount)
+  pose.keyframe_insert(data_path='rotation_quaternion',frame=frame+1,group=bone.name)
+metadata['Walk']['arm_motion']='Authored counter-swing, shoulder follow-through and flexible elbows'
 if 'Run' in base_actions:
  # The publisher's jog covers ~5.36 m/s. Build a shorter-stride intermediate
  # gait for native walking speed (~2.44 m/s) instead of playing it in slow
@@ -148,7 +169,7 @@ if 'Run' in base_actions:
   rig.animation_data.action=jog
   for bone in native:
    pose=rig.pose.bones[bone.name];a=neutral[bone.name];b=poses[bone.name]
-   amount=.55 if bone.name.startswith(('pelvis','thigh','calf','foot','ball')) else .72
+   amount=.55 if bone.name.startswith(('pelvis','thigh','calf','foot','ball')) else (.9 if bone.name.startswith(('upperarm','clavicle')) else .82)
    pose.matrix_basis=b;pose.rotation_quaternion=a.to_quaternion().slerp(b.to_quaternion(),amount)
    pose.location=a.translation.lerp(b.translation,amount)
    pose.keyframe_insert(data_path='rotation_quaternion',frame=frame+1,group=bone.name)
@@ -165,18 +186,30 @@ for prefix,stance in [('Sword','Sword_Idle'),('Unarmed','Punch_Jab')]:
    bpy.context.scene.frame_set(frame+1);bpy.context.view_layer.update()
    base_pose={p.name:p.matrix_basis.copy() for p in rig.pose.bones}
    rig.animation_data.action=base_actions[stance];rig.animation_data.action_slot=base_actions[stance].slots[0]
-   phase=1+(frame%max(1,round(metadata[stance]['duration']*FPS))) if prefix=='Sword' else 1
-   bpy.context.scene.frame_set(phase);bpy.context.view_layer.update()
+   # A stable reference avoids wrapping a partial idle breathing cycle at
+   # the much shorter stride boundary. The gait supplies all cyclic motion.
+   bpy.context.scene.frame_set(1);bpy.context.view_layer.update()
    guard_pose={p.name:p.matrix_basis.copy() for p in rig.pose.bones}
    rig.animation_data.action=new
    for bone in native:
     pose=rig.pose.bones[bone.name];a=base_pose[bone.name];b=guard_pose[bone.name]
-    weight=1. if bone.name.startswith(('clavicle','upperarm','lowerarm','hand','thumb','index','middle','ring','pinky')) else (.35 if bone.name in ['spine_02','spine_03'] else 0.)
+    weight=0.
+    if bone.name.startswith(('thumb','index','middle','ring','pinky')):
+     weight=0. if prefix=='Sword' and bone.name.endswith('_l') else 1.
+    elif base=='Idle' and bone.name.startswith(('clavicle','upperarm','lowerarm','hand')):weight=1.
+    elif bone.name.startswith('clavicle'):weight=.10
+    elif bone.name.startswith(('upperarm','lowerarm','hand')):
+     # The free arm follows the stride. The carrying arm keeps a bounded
+     # swing and a compliant elbow; never replace both arms by an idle pose.
+     if prefix=='Sword':
+      weight=(.45 if bone.name.startswith('upperarm') else .55) if bone.name.endswith('_r') else .08
+     else:weight=.55 if bone.name.startswith('upperarm') else .65
+    elif bone.name in ['spine_02','spine_03']:weight=.15
     pose.matrix_basis=a;pose.rotation_quaternion=a.to_quaternion().slerp(b.to_quaternion(),weight)
     pose.keyframe_insert(data_path='rotation_quaternion',frame=frame+1,group=bone.name)
     if bone.name=='pelvis':pose.keyframe_insert(data_path='location',frame=frame+1,group=bone.name)
   retargeted.append(new);base_actions[name]=new
-  metadata[name]={'source':'composite','clip':base+' + '+stance,'duration':duration,'loop':True,'frames':count+1}
+  metadata[name]={'source':'composite','clip':base+' + '+stance,'duration':duration,'loop':True,'frames':count+1,'arm_motion':'Stride-driven shoulders/elbows, bounded carrying arm and retained finger grip'}
   rig.animation_data.action=None;track=rig.animation_data.nla_tracks.new();track.name=name;track.strips.new(name,1,new);track.mute=True
 rig.animation_data.action=base_actions['Idle'];rig.animation_data.action_slot=base_actions['Idle'].slots[0]
 bpy.context.scene.frame_set(1);bpy.context.view_layer.update()

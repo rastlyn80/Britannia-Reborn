@@ -52,7 +52,7 @@ func run() -> void:
 		check(root_fixed,tag+": no animation changes the authoritative mobile root")
 		check(loops,tag+": locomotion loops and finite actions retain distinct playback modes")
 		var excursion:=0.;var loop_error:=0.
-		for clip in ["Walk","Jog","Run","Sprint"]:
+		for clip in ["Walk","Jog","Run","Sprint","Sword_Walk","Sword_Jog","Sword_Run","Sword_Sprint","Unarmed_Walk","Unarmed_Jog","Unarmed_Run","Unarmed_Sprint"]:
 			actor.play(clip,0.);actor.animator.seek(0.,true)
 			var poses: Array=[]
 			for bone in rig.get_bone_count():poses.append(rig.get_bone_pose_rotation(bone))
@@ -64,6 +64,22 @@ func run() -> void:
 			for bone in rig.get_bone_count():
 				if not rig.get_bone_name(bone).begins_with("robe_"):loop_error=maxf(loop_error,poses[bone].angle_to(rig.get_bone_pose_rotation(bone)))
 		check(excursion>.15 and loop_error<.035,tag+": active leg motion and continuous loop endpoints (max %.4f rad)" % loop_error)
+		# Check independent arm joints, not just a wrist moving with the torso.
+		# An idle arm pasted onto moving legs used to pass the foot/loop checks.
+		var shoulder_motion:=INF;var elbow_motion:=INF
+		for clip in ["Walk","Jog","Sword_Walk","Sword_Jog","Unarmed_Walk","Unarmed_Jog"]:
+			actor.play(clip,0.)
+			for side in ["l","r"]:
+				for joint in ["upperarm_","lowerarm_"]:
+					var rotations: Array[Quaternion]=[];var excursion_arm:=0.
+					for sample in 24:
+						actor.animator.seek(actor.animator.current_animation_length*sample/24.,true)
+						var q:=rig.get_bone_pose_rotation(rig.find_bone(joint+side))
+						for previous: Quaternion in rotations:excursion_arm=maxf(excursion_arm,q.angle_to(previous))
+						rotations.append(q)
+					if joint=="upperarm_":shoulder_motion=minf(shoulder_motion,excursion_arm)
+					else:elbow_motion=minf(elbow_motion,excursion_arm)
+		check(shoulder_motion>.18 and elbow_motion>.05,tag+": every walking shoulder/elbow moves independently (minimum %.1f / %.1f degrees)" % [rad_to_deg(shoulder_motion),rad_to_deg(elbow_motion)])
 		var seam_error:=0.
 		for entry in [["Sword_A",13./30.],["Sword_B",16./30.]]:
 			actor.play(str(entry[0]),0.);actor.animator.seek(float(entry[1]),true)
@@ -99,6 +115,17 @@ func run() -> void:
 		check(actor.animator.get_animation("Walk")==other.animator.get_animation("Walk") and is_equal_approx(actor.animator.current_animation_position,.1) and is_equal_approx(other.animator.current_animation_position,.4),tag+": NPCs share immutable motion resources while retaining independent clocks")
 		other.free()
 		actor.free()
+		var avatar:=preload("res://Presentation/HumanAvatar.gd").new()
+		avatar.initial_body=401 if female else 400;root.add_child(avatar)
+		avatar.apply_server_appearance({"body":avatar.initial_body,"hue":1002,"flags":0},[{"id":0x13ff,"layer":1}])
+		var samples: Array[Quaternion]=[];var arm_travel:=0.
+		for frame in 60:
+			avatar.animate(true,0.,1./30.,2.44);avatar.animator.advance(1./30.)
+			var q: Quaternion=avatar.human_visual.skeleton.get_bone_pose_rotation(avatar.human_visual.skeleton.find_bone("upperarm_l"))
+			for previous: Quaternion in samples:arm_travel=maxf(arm_travel,q.angle_to(previous))
+			samples.append(q)
+		check(avatar.current_clip=="Sword_Jog" and arm_travel>.3,tag+": actual avatar controller keeps the starter-weapon arm swing advancing at native walking speed")
+		avatar.free()
 	var fallback:=Visual.new();fallback.use_modern_motion=false;root.add_child(fallback)
 	check(fallback.motion_profile.is_empty() and fallback.animator.has_animation("Walk") and not fallback.request_action({"body":400,"protocol":"classic","action":9}),"unprepared/previous renderer remains a working locomotion fallback")
 	fallback.free()
