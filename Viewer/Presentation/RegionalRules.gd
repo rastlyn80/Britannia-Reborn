@@ -197,6 +197,8 @@ static func _resolve(id: int,info: Dictionary) -> Dictionary:
  if "post" in n or n=="wooden beam": return base.merged({"kind":"beam" if n=="wooden beam" else "post","asset":"Village/Prop_Support.gltf"})
  if n=="chimney": return base.merged({"kind":"chimney"})
  # Height-0 "leaves" are fallen leaf litter on the ground, not a canopy.
+ # Ground decals drawn with photoscanned surfaces (GroundDecal.gd).
+ if (n in ["snow","sand","dirt","dirt patch","mud","blood","spilled flour","stain"] and height<=2) or (n=="leaves" and height==0): return base.merged({"kind":"decal","decal":n})
  if ("leaves" in n or "needles" in n) and height==0: return base.merged({"kind":"litter"})
  if "palisade" in n: return base.merged({"kind":"palisade"})
  if n=="snow" and height<=2: return base.merged({"kind":"litter"})

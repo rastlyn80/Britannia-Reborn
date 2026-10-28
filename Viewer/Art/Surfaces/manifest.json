@@ -1758,6 +1758,126 @@
      "bytes": 923890
     }
    ]
+  },
+  {
+   "id": "forest_leaves_02",
+   "name": "Forest Leaves 02",
+   "source": "https://polyhaven.com/a/forest_leaves_02",
+   "license": "CC0-1.0",
+   "licenseUrl": "https://polyhaven.com/license",
+   "authors": [
+    "Rob Tuytel"
+   ],
+   "sizeMeters": [
+    3.0,
+    3.0
+   ],
+   "maps": [
+    {
+     "role": "albedo",
+     "file": "forest_leaves_02_diffuse_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/forest_leaves_02/forest_leaves_02_diffuse_1k.jpg",
+     "sha256": "2bac85cdc76927fa7dc311037bbbc4dfa2633ea56eb0a24c9cabe163a68c9aa5",
+     "sourceMd5": "13e9bfac07cb72ca143e153cc2f589a8",
+     "bytes": 437891
+    },
+    {
+     "role": "normal",
+     "file": "forest_leaves_02_nor_gl_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/forest_leaves_02/forest_leaves_02_nor_gl_1k.jpg",
+     "sha256": "cf6a40ab24f44d3e891a92a1c252416ed1192af54ac92a5704bdfbda0805e290",
+     "sourceMd5": "72002432222467c74cd9980cbddb25a4",
+     "bytes": 577163
+    },
+    {
+     "role": "roughness",
+     "file": "forest_leaves_02_rough_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/forest_leaves_02/forest_leaves_02_rough_1k.jpg",
+     "sha256": "3d2163acb9e22801caa4d34cb3e9bb443dfd0e6f2bebbd559c61e9b14f945dd4",
+     "sourceMd5": "578e637510d8fdd7acf97afc6f329e9d",
+     "bytes": 192523
+    }
+   ]
+  },
+  {
+   "id": "snow_02",
+   "name": "Snow 02",
+   "source": "https://polyhaven.com/a/snow_02",
+   "license": "CC0-1.0",
+   "licenseUrl": "https://polyhaven.com/license",
+   "authors": [
+    "Rob Tuytel"
+   ],
+   "sizeMeters": [
+    2.0,
+    2.0
+   ],
+   "maps": [
+    {
+     "role": "albedo",
+     "file": "snow_02_diff_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/snow_02/snow_02_diff_1k.jpg",
+     "sha256": "523a4e69c90b96d787dd69b897f29a2b3761a017024405c60aa630d1e8e9009a",
+     "sourceMd5": "fc54766c6b36ff298699115a619d440b",
+     "bytes": 325497
+    },
+    {
+     "role": "normal",
+     "file": "snow_02_nor_gl_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/snow_02/snow_02_nor_gl_1k.jpg",
+     "sha256": "9495ec680616b8340e2cbecbd151bff84c690cfad4209e90cc98d2d0ba81f810",
+     "sourceMd5": "f16b5701f9ad521cdd6af10c1d6d2b48",
+     "bytes": 1081858
+    },
+    {
+     "role": "roughness",
+     "file": "snow_02_rough_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/snow_02/snow_02_rough_1k.jpg",
+     "sha256": "b6dea8039ac2a5beaed6fd41834fb55540cc76b492edd1d48ba2da2f30f1cb75",
+     "sourceMd5": "1dbae0269e53dbf80d4fd1c4335f25a2",
+     "bytes": 146089
+    }
+   ]
+  },
+  {
+   "id": "coast_sand_01",
+   "name": "Coast Sand 01",
+   "source": "https://polyhaven.com/a/coast_sand_01",
+   "license": "CC0-1.0",
+   "licenseUrl": "https://polyhaven.com/license",
+   "authors": [
+    "Rob Tuytel"
+   ],
+   "sizeMeters": [
+    15.0,
+    15.0
+   ],
+   "maps": [
+    {
+     "role": "albedo",
+     "file": "coast_sand_01_diff_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/coast_sand_01/coast_sand_01_diff_1k.jpg",
+     "sha256": "58af2e40100f7f405703a86d593af64379f822c4786850def23ecfc921450d54",
+     "sourceMd5": "a1e243fc8635806381505c7dc44b192a",
+     "bytes": 960614
+    },
+    {
+     "role": "normal",
+     "file": "coast_sand_01_nor_gl_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/coast_sand_01/coast_sand_01_nor_gl_1k.jpg",
+     "sha256": "fe4d045aec99e71e80f682fcf0ad958d2dff1fe614b73178b304d1bac047b54a",
+     "sourceMd5": "38bbe6863249a3d20d8417c9db207780",
+     "bytes": 1146826
+    },
+    {
+     "role": "roughness",
+     "file": "coast_sand_01_rough_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/coast_sand_01/coast_sand_01_rough_1k.jpg",
+     "sha256": "cbc3e0bf2214e04318a643c9dc81f50f33cc5f7b935a20016c5d9efd9a6d1696",
+     "sourceMd5": "978aca9e374cf988095392a91d3a4f71",
+     "bytes": 383892
+    }
+   ]
   }
  ]
 }

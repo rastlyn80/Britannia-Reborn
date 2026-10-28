@@ -1439,6 +1439,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 				"reeds": visual = fitted(asset,Vector3(0.8,1.25,0.8))
 				"cactus": visual = geometry.cactus(s,maxf(0.7,minf(height,2.4)))
 				"litter": visual = geometry.litter(s,tint if not tint.is_empty() else "7a5a2e")
+				"decal": visual = preload("res://Presentation/GroundDecal.gd").build(str(rule.get("decal","dirt")),Vector2i(s.x,s.y))
 				"palisade": visual = geometry.palisade(s,maxf(1.6,height),facade.material("log"))
 				"waterfall":
 					# A falling sheet across the cell diagonal, facing the classic viewpoint.

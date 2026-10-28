@@ -826,6 +826,219 @@
   "pillow": {
    "model": "Reduced/throw_pillows_01/throw_pillows_01",
    "length": 0.55
+  },
+  "pickaxe": {
+   "model": "Objaverse/w_pickaxe",
+   "length": 0.9,
+   "lay": true
+  },
+  "sledge hammer": {
+   "model": "Objaverse/w_sledge",
+   "length": 0.9,
+   "lay": true
+  },
+  "cleaver": {
+   "model": "Objaverse/w_cleaver",
+   "length": 0.35,
+   "lay": true
+  },
+  "butcher knife": {
+   "model": "Objaverse/w_butcher_knife",
+   "length": 0.35,
+   "lay": true
+  },
+  "crossbow": {
+   "model": "Objaverse/w_crossbow",
+   "length": 0.8,
+   "lay": true
+  },
+  "heavy crossbow": {
+   "model": "Objaverse/w_heavy_crossbow",
+   "length": 0.95,
+   "lay": true
+  },
+  "longsword": {
+   "model": "Objaverse/w_zweihander",
+   "length": 1.4,
+   "lay": true
+  },
+  "long sword": {
+   "model": "Objaverse/w_long_sword",
+   "length": 1.1,
+   "lay": true
+  },
+  "broadsword": {
+   "model": "Objaverse/w_broadsword",
+   "length": 1.0,
+   "lay": true
+  },
+  "viking sword": {
+   "model": "Objaverse/w_viking_sword",
+   "length": 0.95,
+   "lay": true
+  },
+  "skinning knife": {
+   "model": "Objaverse/w_knife",
+   "length": 0.3,
+   "lay": true
+  },
+  "mace": {
+   "model": "Objaverse/w_mace",
+   "length": 0.75,
+   "lay": true
+  },
+  "war mace": {
+   "model": "Objaverse/w_flanged_mace",
+   "length": 0.85,
+   "lay": true
+  },
+  "double axe": {
+   "model": "Objaverse/w_double_axe",
+   "length": 1.0,
+   "lay": true
+  },
+  "scimitar": {
+   "model": "Objaverse/w_scimitar",
+   "length": 0.95,
+   "lay": true
+  },
+  "dagger": {
+   "model": "Objaverse/w_dagger",
+   "length": 0.35,
+   "lay": true
+  },
+  "long spear": {
+   "model": "Objaverse/w_long_spear",
+   "length": 2.4,
+   "lay": true
+  },
+  "spear": {
+   "model": "Objaverse/w_spear",
+   "length": 2.0,
+   "lay": true
+  },
+  "short spear": {
+   "model": "Objaverse/w_short_spear",
+   "length": 1.5,
+   "lay": true
+  },
+  "pitchfork": {
+   "model": "Objaverse/w_pitchfork",
+   "length": 1.6,
+   "lay": true
+  },
+  "kite shield": {
+   "model": "Objaverse/s_kite",
+   "length": 0.9,
+   "lay": true
+  },
+  "heater shield": {
+   "model": "Objaverse/s_heater",
+   "length": 0.75,
+   "lay": true
+  },
+  "buckler": {
+   "model": "Objaverse/s_buckler",
+   "length": 0.45,
+   "lay": true
+  },
+  "chaos shield": {
+   "model": "Objaverse/s_round_viking",
+   "length": 0.7,
+   "lay": true
+  },
+  "two handed axe": {
+   "model": "Objaverse/w_two_handed_axe",
+   "length": 1.2,
+   "lay": true
+  },
+  "war hammer": {
+   "model": "Objaverse/w_war_hammer",
+   "length": 0.9,
+   "lay": true
+  },
+  "bardiche": {
+   "model": "Objaverse/w_bardiche",
+   "length": 1.7,
+   "lay": true
+  },
+  "halberd": {
+   "model": "Objaverse/w_halberd",
+   "length": 2.0,
+   "lay": true
+  },
+  "gold ingots": {
+   "model": "Objaverse/ingot_bar",
+   "length": 0.22,
+   "material": {
+    "color": "e2b04a",
+    "metallic": 1.0,
+    "roughness": 0.3
+   }
+  },
+  "silver ingots": {
+   "model": "Objaverse/ingot_bar",
+   "length": 0.22,
+   "material": {
+    "color": "c9ccd2",
+    "metallic": 1.0,
+    "roughness": 0.28
+   }
+  },
+  "iron ingots": {
+   "model": "Objaverse/ingot_bar",
+   "length": 0.22,
+   "material": {
+    "color": "6d6e70",
+    "metallic": 0.9,
+    "roughness": 0.55
+   }
+  },
+  "copper ingots": {
+   "model": "Objaverse/ingot_bar",
+   "length": 0.22,
+   "material": {
+    "color": "b8734a",
+    "metallic": 1.0,
+    "roughness": 0.35
+   }
+  },
+  "diamond": {
+   "model": "Objaverse/gem_diamond",
+   "length": 0.04
+  },
+  "wedge of cheese": {
+   "model": "Objaverse/cheese_wedge",
+   "length": 0.16
+  },
+  "garlic": {
+   "model": "Objaverse/garlic_bulb",
+   "height": 0.06,
+   "cluster": 3
+  },
+  "grapes": {
+   "model": "Objaverse/grapes_bunch",
+   "height": 0.18
+  },
+  "raw fish": {
+   "model": "Objaverse/fish",
+   "length": 0.4
+  },
+  "cooked fish": {
+   "model": "Objaverse/fish",
+   "length": 0.35
+  },
+  "bowl": {
+   "model": "wooden_bowl_01",
+   "length": 0.18
+  },
+  "glass pitcher": {
+   "model": "Objaverse/carafe",
+   "height": 0.26
+  },
+  "fire pit": {
+   "model": "Reduced/stone_fire_pit/stone_fire_pit",
+   "length": 1.0
   }
  }
 }

@@ -210,6 +210,7 @@ func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -
 	var named := name.to_lower()
 	if kind == "counter": return {"status":"crafted","detail":"panelled counter in photoscanned timber"}
 	if kind == "carpet": return {"status":"crafted","detail":"woven rug from photoscanned fabric"}
+	if kind == "decal": return {"status":"crafted","detail":"ground decal on a photoscanned surface: "+str(rule.get("decal",""))}
 	if kind == "table" and not ("stone" in named or "marble" in named or "sandstone" in named): return pack("Objaverse/table_wood_b/table_wood_b.glb")
 	if kind == "bed": return pack("PolyHaven/GothicBed_01/GothicBed_01_1k.gltf")
 	if kind == "bench" and not ("stone" in named or "marble" in named): return pack("Objaverse/bench_scan/bench_scan.glb")

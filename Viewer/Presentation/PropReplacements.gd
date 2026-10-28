@@ -70,6 +70,19 @@ static func build(reconstruction: RefCounted, name: String, seed := 0, id := -1,
 	root.set_meta("replacement",first)
 	return root
 
+# PBR repaint for metal variants of one model (an ingot in gold, silver,
+# iron, copper): {"color": hex, "metallic": 0-1, "roughness": 0-1}.
+static var repaints := {}
+static func _repaint(node: Node3D, spec: Dictionary) -> void:
+	var key := JSON.stringify(spec)
+	if not repaints.has(key):
+		var material := StandardMaterial3D.new()
+		material.albedo_color = Color(str(spec.get("color","ffffff")))
+		material.metallic = float(spec.get("metallic",0.0))
+		material.roughness = float(spec.get("roughness",0.6))
+		repaints[key] = material
+	for mesh in node.find_children("*","MeshInstance3D",true,false): (mesh as MeshInstance3D).material_override = repaints[key]
+
 static func _one(reconstruction: RefCounted, model: String, found: Dictionary, scale: float) -> Node3D:
 	# "Objaverse/name" entries are reduced museum/Sketchfab scans (Art/Objaverse);
 	# "Reduced/set/set_N" one variant split out of a Poly Haven nature set.
@@ -78,9 +91,28 @@ static func _one(reconstruction: RefCounted, model: String, found: Dictionary, s
 	var probe: Node3D = reconstruction.fitted(path,Vector3.ONE)
 	probe.free()
 	var box: AABB = reconstruction.bounds[path]
-	# Flat goods (cutlery, trays, bread, ore) scale by their length instead.
-	var factor := (float(found.length)/maxf(maxf(box.size.x,box.size.z),0.001) if found.has("length") else float(found.height)/maxf(box.size.y,0.001))*scale
+	# Flat goods (cutlery, trays, bread, ore) scale by their length instead;
+	# "lay" items (weapons, shields) lie flat: scaled by their longest side and
+	# turned so their thinnest side is vertical.
+	var lay: bool = found.get("lay",false)
+	var longest := maxf(box.size.x,maxf(box.size.y,box.size.z)) if lay else maxf(box.size.x,box.size.z)
+	var factor := (float(found.length)/maxf(longest,0.001) if found.has("length") else float(found.height)/maxf(box.size.y,0.001))*scale
 	var placed: Node3D = reconstruction.fitted(path,box.size*factor)
+	if found.has("material"): _repaint(placed,found.material)
+	if lay:
+		# fitted() stands the model on y = 0, centred in x and z.
+		var size := box.size*factor
+		var pivot := Node3D.new()
+		pivot.add_child(placed)
+		if size.z < size.y and size.z <= size.x:
+			# About X: z becomes up (y' = -z), y runs along z' (0..size.y).
+			placed.rotation.x = PI/2
+			placed.position = Vector3(0,size.z/2,-size.y/2)
+		elif size.x < size.y and size.x < size.z:
+			# About Z: x becomes up (y' = x), y runs along -x' (-size.y..0).
+			placed.rotation.z = PI/2
+			placed.position = Vector3(size.y/2,size.x/2,0)
+		return pivot
 	if not (found.has("rotation") or found.has("anchor") or found.has("elevation") or found.has("flame") or found.has("pedestal") or found.has("pitch")): return placed
 	var pivot := Node3D.new()
 	pivot.add_child(placed)
