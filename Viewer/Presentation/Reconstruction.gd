@@ -656,10 +656,19 @@ func _plan_stray_roofs(world: Dictionary) -> void:
 # rises to meet it, up to 16 Z (3.2 m).
 func _plan_eaves(world: Dictionary) -> void:
 	eave_extensions.clear()
+	# Only a roof's eave course (its lowest tiles, within 3 Z) pulls a wall up:
+	# an interior partition under mid-slope tiles stays in the attic instead of
+	# climbing in steps until its top pokes through the slope.
 	var roof_bases := {}
+	var component_low := {}
+	for ordinal in roofs.tiles:
+		if presentation_adjustments.get(ordinal,{}).get("suppress",false): continue
+		var component := int(roofs.tiles[ordinal].get("component",-1))
+		component_low[component] = mini(int(component_low.get(component,1000)),int(world.statics[ordinal].z))
 	for ordinal in roofs.tiles:
 		if presentation_adjustments.get(ordinal,{}).get("suppress",false): continue
 		var tile: Dictionary = world.statics[ordinal]
+		if int(tile.z) > int(component_low[int(roofs.tiles[ordinal].get("component",-1))])+3: continue
 		var cell := Vector2i(tile.x,tile.y)
 		if not roof_bases.has(cell): roof_bases[cell] = []
 		roof_bases[cell].append(int(tile.z))
@@ -692,8 +701,6 @@ func _plan_eaves(world: Dictionary) -> void:
 							if int(z) > top and int(z) <= top+16: eave = mini(eave,int(z))
 			if eave < 1000: eave_extensions[i] = float(eave-top)*float(world.elevationScale)
 
-# Wooden table runs: a photoscan-textured trestle table (Objaverse,
-# CC-BY) repeated along the run, each piece at most about 1.9 m long.
 # Another fence piece starts where this one ends (UO stacks pieces into tall
 # railings and porch posts), so its post runs on without a cap.
 func _fence_above(s: Dictionary, source_height: int) -> bool:
@@ -715,6 +722,8 @@ func _fence_links(s: Dictionary) -> Array:
 				break
 	return links
 
+# Wooden table runs: a photoscan-textured trestle table (Objaverse,
+# CC-BY) repeated along the run, each piece at most about 1.9 m long.
 func trestle_run(size: Vector2, model := "Objaverse/table_wood_b/table_wood_b.glb", height := 0.8, piece_length := 1.9) -> Node3D:
 	var root := Node3D.new()
 	var length := maxf(size.x,size.y)

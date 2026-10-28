@@ -6,15 +6,17 @@ extends RefCounted
 # follows the original art. Rails run from the tile centre toward each
 # neighbouring fence piece (links, from Reconstruction), so runs meet cleanly
 # at corners, T-junctions and ends; a post stands at the centre wherever the
-# art has one or the run ends or turns. A piece with no neighbours keeps the
-# original layout along local X (-0.5..0.5) and Reconstruction turns y-axis
-# pieces.
+# art has one or the run ends or turns. A piece with no neighbours lays its
+# rails along local X (-0.5..0.5) through a centred post and Reconstruction
+# turns y-axis pieces.
 const WOOD := {2141:"post+rails",2142:"post+rails",2143:"post",2144:"rails",2145:"rails",2146:"post+rails",2147:"post+rails",2148:"post+rails",2149:"post"}
 const IRON_CORNERS := [2082,2122]
 const STONE := {2288:"post",2297:"post+rails",2298:"post+rails"}
 const LOG := "5a4a3a"
 const RAIL := "6b5644"
-const WOOD_RAILS := [0.32,0.62,0.92]
+# The top rail reaches just under the source piece height (1.2 m), so what UO lays on a
+# fence (hay over a stall divider) rests on a real rail.
+const WOOD_RAILS := [0.36,0.75,1.13]
 const STONE_RAILS := [0.45,0.85]
 static var iron_material: StandardMaterial3D
 
@@ -53,13 +55,14 @@ static func build(name: String, id: int, geometry: RefCounted, facade: RefCounte
 		if id in IRON_CORNERS: _iron_run(root,Transform3D(Basis(Vector3.UP,PI/2),Vector3.ZERO))
 		return root
 	if n == "stone rail":
-		var pier := Node3D.new()
-		pier.position.x = -0.33
-		root.add_child(pier)
-		_pier(pier,facade)
-		if parts != "post": _rails(root,geometry,-0.16,0.5,STONE_RAILS,true)
+		_pier(root,facade)
+		if parts != "post":
+			_rails(root,geometry,-0.5,-0.17,STONE_RAILS,false)
+			_rails(root,geometry,0.17,0.5,STONE_RAILS,false)
 		return root
-	if parts in ["post","post+rails"]: _post(root,geometry,Vector3(-0.44,0,0),maxf(height,0.6),stacked)
+	# Posts always stand at the tile centre, so stacked post-only pieces (porch
+	# posts) line up with the railing posts below them, linked or not.
+	if parts in ["post","post+rails"]: _post(root,geometry,Vector3.ZERO,maxf(height,0.6),stacked)
 	if parts in ["rails","post+rails"]: _rails(root,geometry,-0.5,0.5,WOOD_RAILS,true)
 	return root
 
