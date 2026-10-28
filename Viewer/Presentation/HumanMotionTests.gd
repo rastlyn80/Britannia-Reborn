@@ -12,6 +12,20 @@ func check(ok: bool, label: String) -> void:
 	checks+=1
 	if ok:print("PASS ",label)
 	else:failures+=1;push_error(label)
+func grip_snapshot(actor: Node3D) -> Dictionary:
+	# Called by modification_processed, while the modified skinning pose is
+	# available. Ordinary frame callbacks see the restored animation pose.
+	var rig: Skeleton3D=actor.skeleton;var fold: Array=[];var rotations: Dictionary={}
+	for finger in ["index","middle","ring","pinky"]:
+		var points: Array[Vector3]=[]
+		for segment in ["01","02","03"]:points.append(rig.get_bone_global_pose(rig.find_bone(finger+"_"+segment+"_r")).origin)
+		var last:=rig.get_bone_global_pose(rig.find_bone(finger+"_03_r"))
+		points.append(last.origin+last.basis.y.normalized()*points[1].distance_to(points[2])*.65)
+		var length:=0.
+		for i in 3:length+=points[i].distance_to(points[i+1])
+		fold.append(points[0].distance_to(points[-1])/length)
+	for name in ["hand_r","thumb_02_r","index_01_l","middle_02_l","pinky_03_l"]:rotations[name]=rig.get_bone_pose_rotation(rig.find_bone(name))
+	return {"fold":fold,"rotations":rotations}
 func run() -> void:
 	var game:=preload("res://Network/GameSession.gd").new();root.add_child(game);game.set_process(false);game.player.serial=7
 	game.feed(PackedByteArray([0x72,1,0,0x32,0]))
@@ -114,17 +128,47 @@ func run() -> void:
 		actor.play("Walk",0.);actor.animator.seek(.1,true);other.play("Walk",0.);other.animator.seek(.4,true)
 		check(actor.animator.get_animation("Walk")==other.animator.get_animation("Walk") and is_equal_approx(actor.animator.current_animation_position,.1) and is_equal_approx(other.animator.current_animation_position,.4),tag+": NPCs share immutable motion resources while retaining independent clocks")
 		other.free()
+		actor.war_mode=false
+		var observed: Dictionary={}
+		var watcher:=func():observed.merge(grip_snapshot(actor),true)
+		actor.grip.modification_processed.connect(watcher)
+		var closed:=true;var untouched:=true;var worst_fold:=0.
+		for item in [0xf5e,0x1438,0xe81]:
+			actor.set_equipment([{"id":item}])
+			for base in ["Idle","Walk","Jog","Run","Cast","Sword_A"]:
+				actor.play(actor.stance_clip(base),0.);actor.animator.seek(actor.animator.current_animation_length*.31,true);actor.animator.pause()
+				var before: Dictionary={}
+				for name in ["hand_r","index_01_l","middle_02_l","pinky_03_l"]:before[name]=rig.get_bone_pose_rotation(rig.find_bone(name))
+				observed.clear()
+				for frame in 3:await process_frame
+				closed=closed and observed.has("fold")
+				if not observed.has("fold"):continue
+				for ratio in observed.fold:worst_fold=maxf(worst_fold,ratio);closed=closed and ratio<.83
+				for name in before:untouched=untouched and before[name].angle_to(observed.rotations[name])<.002
+		check(closed,tag+": rendered holding fingers stay curled in idle/walk/run/actions with sword, hammer and sceptre (max span %.3f)" % worst_fold)
+		check(untouched,tag+": grip leaves the free fingers and carrying wrist animation unchanged")
+		var closed_thumb: Quaternion=observed.get("rotations",{}).get("thumb_02_r",Quaternion.IDENTITY)
+		actor.set_equipment([]);actor.play("Walk",0.);actor.animator.seek(.3,true);actor.animator.pause();observed.clear()
+		for frame in 3:await process_frame
+		var released: bool=observed.has("fold") and not actor.grip.holding
+		if released:
+			for ratio in observed.fold:released=released and ratio>.90
+			released=released and closed_thumb.angle_to(observed.rotations.thumb_02_r)>.3
+		check(released,tag+": removing the held item releases fingers and thumb to the walk animation")
+		actor.grip.modification_processed.disconnect(watcher)
 		actor.free()
 		var avatar:=preload("res://Presentation/HumanAvatar.gd").new()
 		avatar.initial_body=401 if female else 400;root.add_child(avatar)
 		avatar.apply_server_appearance({"body":avatar.initial_body,"hue":1002,"flags":0},[{"id":0x13ff,"layer":1}])
-		var samples: Array[Quaternion]=[];var arm_travel:=0.
-		for frame in 60:
-			avatar.animate(true,0.,1./30.,2.44);avatar.animator.advance(1./30.)
-			var q: Quaternion=avatar.human_visual.skeleton.get_bone_pose_rotation(avatar.human_visual.skeleton.find_bone("upperarm_l"))
-			for previous: Quaternion in samples:arm_travel=maxf(arm_travel,q.angle_to(previous))
-			samples.append(q)
-		check(avatar.current_clip=="Sword_Jog" and arm_travel>.3,tag+": actual avatar controller keeps the starter-weapon arm swing advancing at native walking speed")
+		for speed in [.98,2.44]:
+			var samples: Array[Quaternion]=[];var arm_travel:=0.
+			for frame in 60:
+				avatar.animate(true,0.,1./30.,speed);avatar.animator.advance(1./30.)
+				var q: Quaternion=avatar.human_visual.skeleton.get_bone_pose_rotation(avatar.human_visual.skeleton.find_bone("upperarm_l"))
+				for previous: Quaternion in samples:arm_travel=maxf(arm_travel,q.angle_to(previous))
+				samples.append(q)
+			var expected: String="Sword_Walk" if speed<1. else "Sword_Jog"
+			check(avatar.current_clip==expected and arm_travel>.3,tag+": actual avatar controller keeps the starter-weapon arm swing advancing at %.2f m/s" % speed)
 		avatar.free()
 	var fallback:=Visual.new();fallback.use_modern_motion=false;root.add_child(fallback)
 	check(fallback.motion_profile.is_empty() and fallback.animator.has_animation("Walk") and not fallback.request_action({"body":400,"protocol":"classic","action":9}),"unprepared/previous renderer remains a working locomotion fallback")

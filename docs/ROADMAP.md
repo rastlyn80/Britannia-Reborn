@@ -1,3 +1,7 @@
+# Holding-hand and slow-walk checkpoint — 28 October 2026
+
+Owner accepts the relaxed arms. Both slow and normal-speed walking retain that motion; current male/female clips and holding-hand close-ups are available through the motion review. Corrected the grip reference's static open fingers with fitted right finger curls/thumb opposition, leaving the wrist/free hand animated and releasing on unequip. All 60 motion checks and full project verification pass, including actual post-modifier closure on both bodies and avatar playback at 0.98/2.44 m/s. See HUMAN_ARM_MOTION.md. Exact per-prop handle contact, left/two-handed holds, starts/stops/turns and robe drape remain separate work.
+
 # Walking-arm feedback checkpoint — 28 October 2026
 
 The owner still found arms stiff in the prepared gait. Armed/unarmed-guard walks now retain independent shoulder/elbow motion, a free swinging arm and the carrying-hand grip; the slow walk and intermediate jog also retain more authored arm follow-through. Both bodies rebuilt without body/bind/server changes. All 52 motion checks, 86 exported clips, 816 garment poses and full project verification pass. Actual before/after compares the previous prepared pass with this revision; see HUMAN_ARM_MOTION.md. Owner artistic acceptance remains open. Next motion work includes starts/stops/turns, better robe drape (enclosure is verified, appearance still inflates in some poses), exact hammer/sceptre and two-handed grips, and moving combat.

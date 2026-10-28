@@ -9,6 +9,8 @@ var capture:=""
 var compare_prepared:=false
 var angle:=0.
 var sex:="both"
+var current_only:=false
+var grip_closeup:=false
 func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--clip="):clip=arg.substr(7)
@@ -17,6 +19,8 @@ func _initialize() -> void:
 		if arg=="--compare-prepared":compare_prepared=true
 		if arg.begins_with("--angle="):angle=float(arg.substr(8))
 		if arg.begins_with("--sex="):sex=arg.substr(6)
+		if arg=="--current-only":current_only=true
+		if arg=="--grip-closeup":grip_closeup=true
 	call_deferred("build")
 func build() -> void:
 	var stage:=Node3D.new();root.add_child(stage)
@@ -29,6 +33,7 @@ func build() -> void:
 	var floor_node:=MeshInstance3D.new();var mesh:=BoxMesh.new();mesh.size=Vector3(20,.1,12);floor_node.mesh=mesh;floor_node.position.y=-.05
 	var material:=StandardMaterial3D.new();material.albedo_color=Color("5b6264");floor_node.material_override=material;stage.add_child(floor_node)
 	var indices: Array=[0,1] if sex=="male" else ([2,3] if sex=="female" else [0,1,2,3])
+	if current_only:indices=[1] if sex=="male" else ([3] if sex=="female" else [1,3])
 	for slot in indices.size():
 		var i: int=indices[slot]
 		var actor:=preload("res://Presentation/HumanVisual.gd").new()
@@ -47,17 +52,25 @@ func build() -> void:
 		if outfit=="kilt":ids=[0x1fa1,0x1537,0x170b]
 		for id in ids:worn.append({"id":id})
 		actor.set_equipment(worn);actors.append(actor)
-		var label:=Label3D.new();label.text=("Female" if i>=2 else "Male")+(" · NEW" if i%2==1 else " · previous")
+		var label:=Label3D.new();label.text=("Female" if i>=2 else "Male")+("" if current_only else (" · NEW" if i%2==1 else " · previous"))
 		label.font_size=32;label.pixel_size=.003;label.position=Vector3(actor.position.x,2.05,0);label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;stage.add_child(label);labels.append(label)
 	var camera:=Camera3D.new();camera.fov=43.;stage.add_child(camera);camera.position=Vector3(0,2.2,7.2);camera.look_at(Vector3(0,1.1,0))
 	if indices.size()==2:camera.position=Vector3(0,1.9,4.6);camera.look_at(Vector3(0,1.05,0))
+	if indices.size()==1:camera.position=Vector3(0,1.9,3.6);camera.look_at(Vector3(0,1.05,0))
 	var ui:=VBoxContainer.new();ui.position=Vector2(24,18);root.add_child(ui)
-	var title:=Label.new();title.text="BRITANNIA REBORN · HUMAN MOTION\n"+("Previous prepared / relaxed arm motion" if compare_prepared else "Original fallback / prepared motion")+" · same bodies, materials and wardrobe";ui.add_child(title)
+	var title:=Label.new();title.text="BRITANNIA REBORN · HUMAN MOTION\n"+("Current walking motion and carrying grip" if current_only else ("Previous prepared / relaxed arm motion" if compare_prepared else "Original fallback / prepared motion"))+" · same bodies, materials and wardrobe";ui.add_child(title)
 	var row:=HBoxContainer.new();ui.add_child(row)
 	for name in ["Idle","Walk","Jog","Run","Sword_Idle","Sword_A","Punch_Jab","Sword_Block","Cast","Hit"]:
 		var button:=Button.new();button.text=name.replace("_"," ");row.add_child(button)
 		button.pressed.connect(func():clip=name;elapsed=0.;play_all())
 	play_all()
+	if grip_closeup:
+		assert(actors.size()==1,"Choose one sex and current-only for a grip close-up")
+		actors[0].animator.seek(0.,true);actors[0].animator.pause()
+		for i in 10:await process_frame
+		var actor: Node3D=actors[0]
+		var point: Vector3=actor.skeleton.global_transform*actor.skeleton.get_bone_global_pose(actor.skeleton.find_bone("hand_r")).origin
+		camera.position=point+Vector3(-.35,.20,.50);camera.look_at(point)
 	if not capture.is_empty():
 		for actor in actors:actor.animator.seek(actor.animator.current_animation_length*.23,true);actor.animator.pause()
 		for i in 15:await process_frame

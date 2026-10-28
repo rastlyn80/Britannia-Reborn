@@ -1,4 +1,4 @@
-param([string]$Clip='Jog',[ValidateSet('viking','sword','carry','robe','robe-sword','kilt')][string]$Outfit='viking',[string]$Screenshot,[switch]$Compatibility,[switch]$ComparePrepared,[float]$Angle=0,[ValidateSet('both','male','female')][string]$Sex='both')
+param([string]$Clip='Jog',[ValidateSet('viking','sword','carry','robe','robe-sword','kilt')][string]$Outfit='viking',[string]$Screenshot,[switch]$Compatibility,[switch]$ComparePrepared,[float]$Angle=0,[ValidateSet('both','male','female')][string]$Sex='both',[switch]$CurrentOnly,[switch]$GripCloseup)
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent
 $godot=(Get-ChildItem "$root/.tools/godot/*console.exe" | Select-Object -First 1).FullName
@@ -9,6 +9,8 @@ $review=@("--clip=$Clip","--outfit=$Outfit")
 if ($ComparePrepared) { $review+='--compare-prepared' }
 $review+="--angle=$Angle"
 $review+="--sex=$Sex"
+if ($CurrentOnly) { $review+='--current-only' }
+if ($GripCloseup) { $review+='--grip-closeup' }
 if ($Screenshot) { $review+="--screenshot=$Screenshot" }
 & $godot @engine -- @review
 if ($LASTEXITCODE) { throw 'Human motion review failed' }

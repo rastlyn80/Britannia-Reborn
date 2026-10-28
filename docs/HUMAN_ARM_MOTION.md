@@ -69,3 +69,35 @@ licence was introduced. HUMAN_MOTION_PASS.md records the base preparation.
 Full verification passes with no engine/script errors. Logs:
 work/human-arm-motion/preparation-final.log, motion-final.log and verify.log.
 Concurrent world/prop work is kept separate from this character change.
+
+## Closed carrying hand and walking review follow-up
+
+The owner approved the improved arm movement and asked to see it in the slow
+walk, with the item-holding hand closed. A close-up exposed that the active
+grip helper was copying static open fingers from the library's sword idle.
+Its presence alone had not established an actual closed grip.
+
+WeaponGrip now adds fitted local phalanx curls and thumb opposition to the
+fixed target hand reference. It changes the fifteen right finger bones only;
+the carrying wrist and free-hand animation retain the stride motion. Removing
+the weapon releases the override. Sword, hammer and sceptre currently attach
+to this right hand; exact handle contact and future left/two-handed equipment
+still require their own fitting. No prepared mesh/animation rebuild is needed.
+
+HumanMotionTests samples the skinning pose inside modification_processed,
+not the restored animation pose after a frame. For both bodies it checks
+folded finger-chain span through idle, slow walk, intermediate gait, run,
+cast and sword attack with each of the three held categories; checks that
+the wrist/free fingers are untouched; and verifies release of fingers/thumb
+on unequip. Actual avatar-controller checks cover both 0.98 and 2.44 m/s.
+Final result: 60 motion checks pass; full project verification passes without
+engine/script errors. Rendered hand close-ups are checked in Forward+ and
+Compatibility. Final evidence: work/human-grip/verify.log.
+
+Current male/female motion and hand detail can be reviewed without a baseline:
+
+```powershell
+./scripts/review-human-motion.ps1 -CurrentOnly -Clip Walk -Outfit carry -Angle 35
+./scripts/review-human-motion.ps1 -CurrentOnly -Clip Jog -Outfit carry -Angle 35
+./scripts/review-human-motion.ps1 -CurrentOnly -Sex male -Clip Idle -Outfit carry -GripCloseup
+```
