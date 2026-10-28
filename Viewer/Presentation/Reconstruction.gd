@@ -1660,6 +1660,8 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 	node.set_meta("source_xyz",Vector3i(s.x,s.y,s.z))
 	node.set_meta("source_ordinal",ordinal)
 	node.set_meta("kind",kind)
+	# Live developer editing needs to know whether this static owns its own visual.
+	node.set_meta("source_state",state+("+group" if groups.has(ordinal) else ""))
 	node.set_meta("solid",kind in ["archway","pier","wall","window","corner","post","trim","gable","beam","arch","floor","landing","stairs","roof","door","fence","bed","table","bench","counter","rock","log","planter","stalagmite","crystal","palisade"] and state not in ["group-component","boundary-fragment","context-suppressed"])
 	node.position = Vector3(s.x-int(world.originX)+0.5,s.z*float(world.elevationScale),s.y-int(world.originY)+0.5)
 	if facade.plans.has(ordinal): node.set_meta("facade_run",facade.plans[ordinal].run)

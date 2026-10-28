@@ -1,0 +1,21 @@
+{
+ "format": "britannia-reborn-dev-edit-assets",
+ "schema": 1,
+ "note": "Graphic ids approved for live developer placement/replacement. Non-blocking decorations only: placed objects are visual overlay and have no ModernUO collision. Labels are project-written; art comes from the existing reviewed mappings.",
+ "bounds": {"minX": 1088, "minY": 1408, "maxX": 1791, "maxY": 1919},
+ "assets": [
+  {"id": 2451, "label": "Fruit basket"},
+  {"id": 2481, "label": "Basket"},
+  {"id": 2524, "label": "Clay pot"},
+  {"id": 3144, "label": "Flowers"},
+  {"id": 3203, "label": "Campion"},
+  {"id": 3204, "label": "Foxglove"},
+  {"id": 3206, "label": "Red poppies"},
+  {"id": 3208, "label": "Snowdrops"},
+  {"id": 3211, "label": "White flowers"},
+  {"id": 3244, "label": "Grasses"},
+  {"id": 3340, "label": "Mushrooms"},
+  {"id": 4153, "label": "Sack of flour"},
+  {"id": 4154, "label": "Open sack"}
+ ]
+}

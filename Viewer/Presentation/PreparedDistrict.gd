@@ -6,6 +6,12 @@ extends Resource
 @export var parts: Array[PackedScene]=[]
 @export var land := PackedInt32Array()
 @export var statics := PackedInt32Array()
+# Live developer editing: static key "x:y:z:id:k" -> render ownership entries
+# and "kind|state|solid". Empty in caches baked before the source map existed.
+@export var source_map: Dictionary = {}
+@export var source_info: Dictionary = {}
+# Original positions of live-editable batched statics (one array per range).
+@export var source_positions: Dictionary = {}
 
 func decode() -> Dictionary:
  var terrain: Array = []

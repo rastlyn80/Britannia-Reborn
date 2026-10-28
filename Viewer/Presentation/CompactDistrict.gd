@@ -5,8 +5,9 @@ var groups: Dictionary = {}
 var originals: Array = []
 var signatures: Dictionary = {}
 
-func collect(node: Node3D, parent: Transform3D) -> void:
+func collect(node: Node3D, parent: Transform3D, source: String = "") -> void:
  if node.get_meta("kind","")=="sign" or node is PhysicsBody3D: return
+ if node.has_meta("source_key"):source=node.get_meta("source_key")
  var transform := parent*node.transform
  if node is MeshInstance3D and node.mesh and not node.has_meta("distant"):
   var identity: int = node.mesh.get_instance_id()
@@ -26,12 +27,13 @@ func collect(node: Node3D, parent: Transform3D) -> void:
    var material: Material = node.get_active_material(i)
    materials.append(material)
    key += ":"+str(material.get_instance_id() if material else 0)
-  if not groups.has(key): groups[key]={"mesh":node.mesh,"materials":materials,"shadow":node.cast_shadow,"transforms":[],"nodes":[]}
+  if not groups.has(key): groups[key]={"mesh":node.mesh,"materials":materials,"shadow":node.cast_shadow,"transforms":[],"nodes":[],"sources":[]}
   groups[key].transforms.append(transform)
+  groups[key].sources.append(source)
   groups[key].nodes.append(node)
   originals.append(node)
  for child in node.get_children():
-  if child is Node3D: collect(child,transform)
+  if child is Node3D: collect(child,transform,source)
 
 func prune(node: Node, root: Node) -> void:
  if node.get_meta("kind","")=="sign" or node is PhysicsBody3D: return
@@ -41,7 +43,17 @@ func prune(node: Node, root: Node) -> void:
  if node is MultiMeshInstance3D or node is CollisionShape3D: return
  if node.get_child_count()==0 and node is Node3D: node.free()
 
+# Live developer editing maps each static to its own instance or node:
+# [node name, 1, instance index, 0] or [node name, 2, 0, 0]. Batched ranges
+# ([name, 0, first vertex, count]) were recorded by DistrictBatch.
+func map_source(map: Dictionary, source: String, entry: Array) -> void:
+ if source.is_empty():return
+ if not map.has(source):map[source]=[]
+ map[source].append(entry)
+
 func apply(root: Node3D) -> void:
+ var map: Dictionary=root.get_meta("source_map",{})
+ var serial:=0
  for child in root.get_children():
   if child is Node3D: collect(child,Transform3D.IDENTITY)
  for group in groups.values():
@@ -51,9 +63,14 @@ func apply(root: Node3D) -> void:
     node.owner=null
     node.reparent(root,false)
    node.transform=group.transforms[0]
+   if not str(group.sources[0]).is_empty():
+    node.name="SourceMesh_%d" % serial;serial+=1
+    map_source(map,group.sources[0],[str(node.name),2,0,0])
    originals.erase(node)
    continue
   var instance:=preload("res://Presentation/InstancedPatch.gd").new()
+  instance.name="Instanced_%d" % serial;serial+=1
+  for i in group.sources.size():map_source(map,group.sources[i],[str(instance.name),1,i,0])
   var mesh: Mesh=group.mesh
   if mesh.get_surface_count()==1:
    instance.material_override=group.materials[0]
@@ -68,6 +85,7 @@ func apply(root: Node3D) -> void:
   instance.cast_shadow=group.shadow
   root.add_child(instance)
  for node in originals:node.mesh=null
+ root.set_meta("source_map",map)
  prune(root,root)
  defer_collision(root)
 

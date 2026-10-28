@@ -80,6 +80,15 @@ if ($LASTEXITCODE) { throw 'Shared architectural/nature presentation tests faile
 if ($LASTEXITCODE) { throw 'Terrain/shoreline/PBR surface regression checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/ContactTests.gd
 if ($LASTEXITCODE) { throw 'Interior/stair/foot-contact regression checks failed' }
+# Developer edit session: server logic (no ModernUO needed) and client overlay.
+$env:DOTNET_CLI_HOME = Join-Path $root '.dotnet-home'
+$env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
+Push-Location "$root/Server/PreviewTools.Tests"
+try { & "$root/.tools/dotnet-server/dotnet.exe" run -c Release }
+finally { Pop-Location }
+if ($LASTEXITCODE) { throw 'Developer edit session tests failed' }
+& $godot --headless --path "$root/Viewer" --script res://DevEdit/DevEditTests.gd
+if ($LASTEXITCODE) { throw 'Developer edit overlay tests failed' }
 $argsForWorld = @()
 if (Test-Path "$root\Viewer\play-world.json") { $argsForWorld = @("--world=$root\Viewer\play-world.json") }
 elseif (Test-Path "$root\Viewer\local-world.json") { $argsForWorld = @("--world=$root\Viewer\local-world.json") }

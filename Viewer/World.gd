@@ -2,6 +2,8 @@ extends Node3D
 
 var world_ready := false
 var city_stream: Node3D
+# Developer edit mode (F9, DevEdit/); only in live streamed Britain.
+var dev_edit: CanvasLayer
 var minimap: Control
 var lighting_rig: Node3D
 var hud_panel: Control
@@ -105,6 +107,9 @@ func _ready() -> void:
 		game.surface = movement_surface
 		game.preview_bounds = Rect2i(world.originX,world.originY,world.width,world.height)
 		game.destination_ready = city_stream.destination_ready
+		dev_edit = preload("res://DevEdit/DevEditMode.gd").new()
+		add_child(dev_edit)
+		dev_edit.configure(self)
 	else:
 		movement_surface.index(world)
 		game.surface = movement_surface
@@ -491,7 +496,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and not mouse_looking:
-		world_items.click(event.position)
+		if dev_edit and dev_edit.active: dev_edit.click(event.position)
+		else: world_items.click(event.position)
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		mouse_return = get_viewport().get_mouse_position()
 		mouse_looking = true
@@ -504,6 +510,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_F6: game.return_to_britain()
 		if event.keycode == KEY_F7: cycle_sky()
+		if event.keycode == KEY_F9 and dev_edit: dev_edit.toggle()
 		if event.keycode == KEY_B: game.open_backpack()
 		if event.keycode == KEY_E: world_items.nearest()
 		if event.keycode == KEY_C and game.phase == "world": character_sheet.toggle("character")

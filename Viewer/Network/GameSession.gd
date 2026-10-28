@@ -71,9 +71,14 @@ var container_serial := 0
 var container_items := {}
 var labels := preload("res://Network/ItemLabels.gd").new()
 signal environment_changed(state: Dictionary)
+# Developer edit session records (system messages prefixed UCEDIT1|).
+signal dev_edit_received(line: String)
 
 var environment_state := {}
 var last_environment_request := -30000
+# Speech packets are throttled server-side; edit commands are spaced out.
+var dev_edit_queue: Array[String] = []
+var next_dev_edit := 0
 
 var login: Node
 var socket := StreamPeerTCP.new()
@@ -247,6 +252,10 @@ func _process(_delta: float) -> void:
 	if phase == "world" and Time.get_ticks_msec()-last_environment_request > 10000:
 		send(speech_packet("[PreviewEnvironment"))
 		last_environment_request = Time.get_ticks_msec()
+		next_dev_edit = maxi(next_dev_edit,Time.get_ticks_msec()+60)
+	if phase == "world" and not dev_edit_queue.is_empty() and Time.get_ticks_msec() >= next_dev_edit:
+		send(speech_packet(dev_edit_queue.pop_front()))
+		next_dev_edit = Time.get_ticks_msec()+60
 	if returning_home and Time.get_ticks_msec() > movement_deadline:
 		returning_home = false
 		next_walk = 0
@@ -732,6 +741,13 @@ func send_command(command: String) -> bool:
 	request_position()
 	return true
 
+# Developer edit commands do not resynchronise movement, unlike send_command.
+func send_dev_edit(command: String) -> bool:
+	var line := "[DevEdit "+command
+	if phase != "world" or speech_packet(line).is_empty(): return false
+	dev_edit_queue.append(line)
+	return true
+
 func return_to_britain() -> void:
 	if phase != "world": return
 	returning_home = true
@@ -752,6 +768,9 @@ func _server_text(message: String, system: bool = false) -> void:
 		var seconds := float(fields[3])
 		if hour < 0 or hour > 23 or minute < 0 or minute > 59 or seconds < 1 or seconds > 3600: return
 		_environment_update({"minute_of_day":hour*60+minute,"seconds_per_minute":seconds,"sample_msec":Time.get_ticks_msec()})
+		return
+	if system and message.begins_with("UCEDIT1|"):
+		dev_edit_received.emit(message.substr(8))
 		return
 	message_received.emit(message)
 

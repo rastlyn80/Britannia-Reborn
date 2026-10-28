@@ -235,6 +235,9 @@ func run() -> void:
    if not far_saved:near.free();quit(1);return
    Compact.new().apply(near)
    var resource:=Prepared.new();resource.origin=at
+   resource.source_map=near.get_meta("source_map",{})
+   resource.source_info=near.get_meta("source_info",{})
+   resource.source_positions=near.get_meta("source_positions",{})
    for tile in source.terrain: resource.land.append_array(PackedInt32Array([tile.id,tile.z]))
    for tile in source.statics: resource.statics.append_array(PackedInt32Array([tile.id,(int(tile.x)-at.x)|((int(tile.y)-at.y)<<6),tile.z,tile.hue]))
    if not save_scene(near,output.path_join("near_"+tag+".res"),resource):near.free();quit(1);return

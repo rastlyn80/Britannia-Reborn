@@ -1,0 +1,107 @@
+# Live collaborative developer editing — 28 October 2026
+
+Authorized developers can edit statics and terrain from inside the running Godot client, see each other's previews and accepted edits without restarting the server or rebaking the world, and keep the result as a reviewable edit set. This is a working vertical slice inside live streamed Britain (Trammel X 1088–1791, Y 1408–1919), not a world editor for every facet.
+
+Owner direction (28 October): this is the foundation for talking to the world. A developer or game master states a change, and the change happens through the same command model. That covers the in-game panel, scripts and Claude Code now, and voice later. Voice/AI integration is follow-up work; nothing here depends on an external AI service.
+
+## What exists and how it fits
+
+Nothing replaces the converter → IR → prepared-district pipeline. Additions:
+
+| Layer | Files | Role |
+|---|---|---|
+| Bake source map | `Presentation/DistrictBatch.gd`, `CompactDistrict.gd`, `PreparedDistrict.gd`, `BakeStreaming.gd`, one tag in `Reconstruction.gd` | Each prepared district records which merged vertex range, multimesh instance or node belongs to each static (`x:y:z:id:k`). It also stores the kind/state, and the original positions of live-editable batched statics. Geometry is unchanged; caches baked before this have no map and refuse static edits with a clear reason. |
+| Server authority | `Server/PreviewTools/DevEditSession.cs` (pure logic), `DevEditCommands.cs` (ModernUO adapter) | Validated, totally ordered operations with per-target revisions, attribution, reservations, shared previews, undo/redo rules, an append-only journal and deterministic edit sets. Isolated extension assembly; no core or gameplay edits. |
+| Transport | `Network/GameSession.gd` (`send_dev_edit`, `dev_edit_received`) | Reuses the native connection: `[DevEdit …` speech commands (≤128 chars, paced ≥60 ms for the speech throttle). Replies are `UCEDIT1|…` system messages, the pattern already used by `UCENV1`. No extra service. |
+| Client model | `DevEdit/DevEditState.gd` | Mirror of accepted server state, history-derived undo/redo stacks, request lifecycle (pending/applied/failed) and the textual command builders. |
+| Overlay | `DevEdit/DevEditOverlay.gd`, `DevEditTerrain.gd`, `Presentation/LiveDistricts.gd` signals | Applies the overlay to installed districts and re-applies it on every install, covering unload/reload. Handles selection by ray against source records, previews and terrain jobs. |
+| Panel | `DevEdit/DevEditMode.gd`, `World.gd` (F9) | Developer panel; click routing while active. |
+| Assistant bridge | `DevEdit/DevEditCli.gd`, `scripts/dev-edit.ps1` | Same commands from a terminal, with JSON results, so Claude Code can act in a live session. |
+
+### Edit model
+
+The converted world stays an immutable baseline. The overlay maps stable targets to canonical states. `""` means baseline.
+
+- `s:X:Y:Z:ID:K` — an existing static. K ranks identical source records in source order. States: `hide`, or `m:X:Y:Z:YAW:ID`, an absolute placement that may move it (fractional tiles, ≤8 tiles / 40 Z from the original), rotate it, or replace it with an approved graphic.
+- `p:N` — a placed decorative object, numbered by the server: `a:ID:X:Y:Z:YAW`. Only graphics in `DevEdit/approved-assets.json` (non-blocking decorations) are accepted.
+- `t:X:Y` — a terrain height sample: `h:DZ:SURFACE` (±40 UO Z; surfaces grass, forest, dirt, cobblestones, sand, brick, or `-` to keep).
+
+Each change records its revision and author. An edit must name the revision it was made from; otherwise it is refused as a conflict that names the newer editor. Undo/redo apply only to the requester's own operations, and only while every touched target still holds the revision that operation produced. An undo that would overwrite someone else's newer change is refused, never merged silently. Reservations (`lock`, 120 s, refreshed by edits, released on leave/disconnect) cover single targets and terrain discs (`r:X:Y:R`). Terrain brushes are discs of radius ≤6 with a deterministic integer falloff shared by server and client. Concurrent brushes compose in server order.
+
+### Rendering, without a second converter
+
+- **Hide / move / replace an existing static.** Its own baked geometry is collapsed in place: the static's contiguous vertex range in the merged batch (one position-stream upload of the stored original positions; no GPU readback), its multimesh instance (zero-scaled), or its node (hidden). Moved or replaced statics get a live visual built by the shared `Reconstruction.build`. Restore writes the stored originals back exactly.
+- **Joined architecture** (walls, roofs, floors, stairs, doors, fences, trims, signs, water and other joined/special surfaces) and multi-tile assemblies can be selected and inspected, but are not live-editable. Collapsing one would break joined wall/roof topology; this needs a district rebake. The panel shows the reason.
+- **Terrain.** Each affected district's baked terrain mesh is deformed from its immutable base by the bilinear interpolation of per-sample deltas, and surface paint blends the existing vertex colour/mask channels used by `Ground.gdshader`. Shared border vertices sit at identical source positions and receive identical displacement, so neighbours meet without cracks. Only cells that changed are recomputed, on a worker thread (at most two jobs). The new mesh is swapped in on the main thread, and the previous mesh stays visible until then. A generation counter, bumped when an edit is *scheduled*, discards stale results.
+- **States.** Local drafts (yellow, "DRAFT"), shared previews (per-author colour, "PREVIEW · name", translucent, never persisted) and accepted edits (normal rendering plus a green "author · rN" tag while the panel is open) are visually distinct. The activity list shows pending/applied/failed requests and remote operations.
+
+### ModernUO authority and collision
+
+Everything in this slice is a **visual overlay**. ModernUO's map, statics, items, movement, line of sight and saves are not changed. Client collision and native movement prediction keep the baked baseline, so they agree with the server:
+
+- Hiding or moving a blocking static leaves its tile blocked; the panel says so ("VISUAL PREVIEW ONLY …").
+- Terrain height edits do not change walkable elevation; the avatar keeps following server Z, so a raised patch can visibly bury its feet. This is flagged, not hidden.
+- Placed objects are non-blocking decorations with no collision on either side.
+- The far/middle-distance LOD and the radar keep the baseline until a rebake.
+
+Making any of these authoritative needs a ModernUO-side map/statics change: either map/statics file regeneration plus a server restart, or a server-side runtime map overlay. The pinned server does not support either without core edits. That is the precise remaining blocker, and it was not bypassed.
+
+### Persistence and review
+
+- `Server/runtime/DevEdit/session-<name>.json` — the session journal: every accepted operation in order, with before/after states. It is written atomically before an operation is announced, and replayed and fully re-validated at startup; a journal that does not replay is refused rather than partially loaded. It is ignored (under `Server/runtime/`), separate from ModernUO saves, and never touches the gameplay world.
+- `save NAME` writes `Server/runtime/DevEdit/sets/NAME.edits.json`, a deterministic, sorted, schema-1 edit set of final states with attribution. `load NAME` imports one as a single undoable operation after validating format, baseline and every entry.
+- Edit sets contain exact source coordinates and graphic ids of locally owned game data and are marked `"privacy": "local …"`. Like derived map outputs, they stay out of commits until the owner decides what may be published. Nothing is committed or pushed automatically.
+
+## Launch: shared session with two clients
+
+1. Once: `./scripts/build-preview-tools.ps1` (installs the extension and approved-asset list), then `./scripts/configure-dev-edit.ps1`. This authorizes exactly the two local development accounts; pass `-Accounts a,b` to choose others; `-Disable` turns the session off. Restart the server gracefully (save, shutdown, `Start-Server.cmd`).
+2. `Launch.cmd` (first client) and `Launch-Second-Client.cmd` (second development account). The first launch after this change rebakes the prepared city once, since the bake now records source maps. That takes several minutes per graphics mode.
+3. In the world, press **F9** to open the panel and join. Tools: **Select** (click a static or placed object to inspect and reserve it, then X/Y/Z/rotate/Hide/Replace/Baseline), **Place** (choose an approved asset, click the ground), **Terrain** (radius, height, surface, click the ground). The scope line shows exactly what an operation will affect before you press **Preview** (share), **Accept** or **Cancel**. **Undo/Redo** show the revision they target. **Save set / Load** manage edit sets.
+4. From a terminal (or Claude Code), while the clients are connected: `./scripts/dev-edit.ps1 -Commands 'inspect 1602 1591 2; place 4153 1604 1588 20 30; list'`. This uses the second development account by default, so log that client out first or pass `-Account 1`.
+
+## Evidence (this machine: Windows, RTX 2070 SUPER, Godot 4.7.2, local ModernUO)
+
+Automated, offline — `scripts/test-dev-edit.ps1`:
+
+- Server session logic: **49/49** (validation, ordering, stale-revision conflicts, reservations incl. region overlap, undo/redo ownership and conflict refusal, clamping, previews never persisted, byte-identical journal round trip, tampered/other-session journal refused, deterministic edit-set export/import/undo).
+- Client, headless: **42/42** (protocol parsing and malformed/incomplete records refused, request lifecycle, undo/redo derivation, canonical numbers and brush parity with the server, synthetic border continuity, exact baseline restore; on real prepared districts: architecture identified as non-editable, hide/move persistence across unload and reload from disk, cross-border terrain rebuilding only the two touched districts with zero cracks, terrain re-applied after reload, stale terrain result discarded).
+- Client with a renderer (`-Gpu`): the same 42 checks, plus byte-level verification that a hidden static's batched vertices collapse, that neighbouring vertices are untouched, and that undo restores the exact baked bytes, including after reload from disk.
+
+Automated, live (`-Live`, two independent headless clients, two accounts, real local ModernUO): **31/31**. Placement replicated with attribution and revision; shared preview shown and cleared without touching accepted state; reservation refused the other editor; stale-revision edit rejected as a conflict; undo refused because the other editor had changed the object since (B's change left intact); own undo/redo replicated; five invalid commands rejected with the revision unchanged; a real baked static hidden for both; reconnect/late join received the newer edit, revision and undo history; cross-district brush replicated with the deterministic falloff; edit set saved with digest; every test edit returned to baseline.
+
+Session restart: an edit placed by `-Live -Mark` was present with the same revision and author after a server restart (`-VerifyMarker`, 4/4), then removed.
+
+Graphical (scripted, not hand-driven): `DevEditVisual.gd --role=a` and `--role=b` run as two real windowed clients with the two development accounts. They return to the Britain start point, open F9 and join one session. A places, hides and brushes; B sees each change without any restart, and A sees B's shared preview. Both panels list the same editors, revisions and attributed activity. A manual, hand-driven session with a human at each client has not been recorded yet.
+
+## Measurements
+
+Windows 11, RTX 2070 SUPER, Godot 4.7.2 Forward+, local ModernUO on loopback. Timings are wall clock. Edit-to-visible ends at the first frame drawn after the overlay applied the change (for terrain, after the rebuilt mesh was swapped in).
+
+| | Editor A (sender) | Client B (receiver) |
+|---|---:|---:|
+| Place approved asset | 118 ms | 134 ms |
+| Hide a baked static | 86 ms | 136 ms |
+| Terrain brush r4 +14 Z crossing the X=1600 district border | 290 ms | 256 ms |
+| Districts rebuilt by that brush (of 9 resident) | 2 | 2 |
+| Worst frame from command to visible | 50 / 72 / 50 ms (place / hide / brush) | 44 / 58 / 46 ms |
+| Frame p50, same session at rest | 19 ms | 45 ms |
+
+Both graphical clients ran on one GPU at the same time, so B (the background window) had a slower baseline. The worst edit frames sit close to each client's normal frame time.
+
+- Command round trip on loopback, headless clients: 31–47 ms (placement and brush).
+- Static hide/restore/move apply: under 0.1 ms per batched static, from the stored baked positions as one contiguous upload with no GPU readback. Building a live visual for a moved/placed object: 0.5–33 ms after warm-up.
+- Terrain: the worker job takes 31–39 ms for a district's dirty cells (main thread unaffected), and the main-thread mesh swap 2.3–3.9 ms per district. Only districts whose rendered terrain changes are rebuilt. In the headless and GPU suites, a stale result was discarded when a newer edit arrived first.
+- One-time join cost (F9): approved assets are loaded and resident districts' terrain bases are read back, one item per frame. That is 7–51 ms per district readback on this machine (a GPU synchronization), which would otherwise land on the first terrain edit there. Districts streamed in later pay it on their first terrain edit.
+- Earlier runs before these mitigations measured a 558 ms first placement (cold asset load) and a 113 ms first hide (vertex readback). Those are the reasons for the warm-up and the baked positions.
+
+Captures: `outputs/validation/dev-edit-a-*.png` / `dev-edit-b-*.png` (joined, placed, inspector before/after hide, terrain, shared preview), with per-client JSON alongside. They are local and ignored, because they show converted owned map data.
+
+## Remaining gaps
+
+- Authoritative gameplay edits (walkable terrain, blocking statics, doors, line of sight) need ModernUO-side map/statics support. They stay visual previews and are labelled as such.
+- Joined architecture and multi-tile assemblies are inspect-only; editing them needs a partial district rebake path that keeps joined topology.
+- The far/middle-distance LOD, radar and the macro horizon show the baseline until the next bake.
+- Moved/replaced statics are rebuilt by the shared rules without the bake's contact settling, so a few props can sit slightly differently from their baked look.
+- Sessions cover the converted Britain bounds only; other regions need prepared districts first.
+- The modern-Britain cache must be rebaked (the next `Launch.cmd` in modern mode does it) before static edits work in that mode; terrain/placements work regardless.
+- Transform controls are buttons (¼/1 tile, 1 Z, 15°), not drag gizmos; there is no multi-select or rule-based ("every barrel on this street") scope yet. The command model is ready for an assistant to add them.

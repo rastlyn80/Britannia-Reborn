@@ -37,6 +37,11 @@ var phases: Dictionary={}
 var slow_phases: Array=[]
 var fresh_nodes: Array[Node3D]=[]
 var events: Array=[]
+# Developer editing (DevEdit/): per-district static render ownership from the
+# bake, and lifecycle signals so overlays re-apply after unload/reload.
+signal district_installed(at: Vector2i, node: Node3D)
+signal district_retired(at: Vector2i)
+var source_maps: Dictionary = {}
 
 func note(event: String) -> void:
  if events.size()<4096:events.append({"frame":Engine.get_process_frames(),"event":event})
@@ -124,9 +129,11 @@ func select_window() -> void:
  # Outgoing nodes and source indices are actually released, never hidden caches.
  for at in loaded.keys():
   if not near_wanted.has(at):
+   district_retired.emit(at)
    retire(loaded[at])
    loaded.erase(at)
    sources.erase(at)
+   source_maps.erase(at)
    surface.remove_chunk(at)
    reconstruction.supports.remove_chunk(at)
    source_dirty=true
@@ -274,6 +281,7 @@ func install(record: Dictionary, node: Node3D, decoded: Dictionary) -> void:
   activating.erase(record.at)
   loaded[record.at]=node
   sources[record.at]=decoded
+  source_maps[record.at]={"map":record.resource.get("source_map") if record.resource.get("source_map")!=null else {},"info":record.resource.get("source_info") if record.resource.get("source_info")!=null else {},"positions":record.resource.get("source_positions") if record.resource.get("source_positions")!=null else {}}
   surface.add_chunk(decoded)
   reconstruction.supports.add_chunk(record.at,decoded.terrain_index,decoded.static_index)
   fresh_origins.append(record.at)
@@ -282,6 +290,7 @@ func install(record: Dictionary, node: Node3D, decoded: Dictionary) -> void:
   fresh_nodes.append(node)
   source_dirty=true
   if far_nodes.has(record.at):retire(far_nodes[record.at]);far_nodes.erase(record.at)
+  district_installed.emit(record.at,node)
  else:
   if record.kind=="far":far_nodes[record.at]=node
   else:macro_nodes[record.at]=node
