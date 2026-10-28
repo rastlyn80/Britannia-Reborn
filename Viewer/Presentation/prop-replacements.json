@@ -697,17 +697,20 @@
   "sarcophagus": {
    "model": "Objaverse/sarcophagus_stone",
    "assembly": "footprint",
-   "length": 1.0
+   "length": 1.0,
+   "group": "sarcophagus"
   },
   "coffin": {
    "model": "Objaverse/coffin_old",
    "assembly": "footprint",
-   "length": 1.0
+   "length": 1.0,
+   "group": "coffin"
   },
   "casket": {
    "model": "Objaverse/coffin_old",
    "assembly": "footprint",
-   "length": 1.0
+   "length": 1.0,
+   "group": "coffin"
   },
   "telescope": {
    "model": "Objaverse/telescope_brass",
@@ -1039,6 +1042,296 @@
   "fire pit": {
    "model": "Reduced/stone_fire_pit/stone_fire_pit",
    "length": 1.0
+  },
+  "chainmail tunic": {
+   "model": "Objaverse/armor_hauberk",
+   "length": 0.75,
+   "lay": true
+  },
+  "ringmail tunic": {
+   "model": "Objaverse/armor_hauberk",
+   "length": 0.75,
+   "lay": true
+  },
+  "platemail": {
+   "model": "Objaverse/armor_plate",
+   "length": 0.6,
+   "lay": true,
+   "material": {
+    "color": "8f949b",
+    "metallic": 1.0,
+    "roughness": 0.32
+   }
+  },
+  "plate armor": {
+   "model": "Objaverse/armor_plate",
+   "length": 0.6,
+   "lay": true,
+   "material": {
+    "color": "8f949b",
+    "metallic": 1.0,
+    "roughness": 0.32
+   }
+  },
+  "plate do": {
+   "model": "Objaverse/armor_plate",
+   "length": 0.6,
+   "lay": true,
+   "material": {
+    "color": "8f949b",
+    "metallic": 1.0,
+    "roughness": 0.32
+   }
+  },
+  "plate helm": {
+   "model": "Objaverse/armor_helm",
+   "height": 0.3,
+   "material": {
+    "color": "8f949b",
+    "metallic": 1.0,
+    "roughness": 0.32
+   }
+  },
+  "norse helm": {
+   "model": "Objaverse/armor_helm",
+   "height": 0.3,
+   "material": {
+    "color": "8f949b",
+    "metallic": 1.0,
+    "roughness": 0.32
+   }
+  },
+  "bascinet": {
+   "model": "Objaverse/armor_helm",
+   "height": 0.3,
+   "material": {
+    "color": "8f949b",
+    "metallic": 1.0,
+    "roughness": 0.32
+   }
+  },
+  "helmet": {
+   "model": "Objaverse/armor_helm",
+   "height": 0.3,
+   "material": {
+    "color": "8f949b",
+    "metallic": 1.0,
+    "roughness": 0.32
+   }
+  },
+  "close helmet": {
+   "model": "Objaverse/armor_helm",
+   "height": 0.3,
+   "material": {
+    "color": "8f949b",
+    "metallic": 1.0,
+    "roughness": 0.32
+   }
+  },
+  "ship": {
+   "model": "Objaverse/rowboat_old",
+   "assembly": "footprint",
+   "length": 1.0
+  },
+  "shipwreckbow west": {
+   "model": "Objaverse/boat_wreck",
+   "assembly": "footprint",
+   "length": 1.0,
+   "group": "shipwreck"
+  },
+  "shipwreckbow east": {
+   "model": "Objaverse/boat_wreck",
+   "assembly": "footprint",
+   "length": 1.0,
+   "group": "shipwreck"
+  },
+  "shipsails d2 north": {
+   "model": "Objaverse/boat_wreck",
+   "assembly": "footprint",
+   "length": 1.0,
+   "group": "shipwreck"
+  },
+  "britanianship sails": {
+   "model": "Objaverse/boat_wreck",
+   "assembly": "footprint",
+   "length": 1.0,
+   "group": "shipwreck"
+  },
+  "armoire": {
+   "model": "Objaverse/wardrobe_red",
+   "height": 2.0,
+   "face": "wall"
+  },
+  "simple elvin armoir": {
+   "model": "Objaverse/wardrobe_red",
+   "height": 2.0,
+   "face": "wall"
+  },
+  "fancy elvin armoire": {
+   "model": "Objaverse/wardrobe_red",
+   "height": 2.1,
+   "face": "wall"
+  },
+  "cabinet": {
+   "model": "Objaverse/cabinet_old",
+   "height": 1.9,
+   "face": "wall"
+  },
+  "spinning wheel": {
+   "model": "Objaverse/spinning_wheel",
+   "height": 1.0
+  },
+  "elven spinning whee": {
+   "model": "Objaverse/spinning_wheel",
+   "height": 1.0
+  },
+  "stone coffin": {
+   "model": "Objaverse/sarcophagus_stone",
+   "assembly": "footprint",
+   "length": 1.0,
+   "group": "sarcophagus"
+  },
+  "sarcophagus lid": {
+   "model": "Objaverse/sarcophagus_stone",
+   "assembly": "footprint",
+   "length": 1.0,
+   "group": "sarcophagus"
+  },
+  "coffin lid": {
+   "model": "Objaverse/coffin_old",
+   "assembly": "footprint",
+   "length": 1.0,
+   "group": "coffin"
+  },
+  "refuse": {
+   "model": "Objaverse/trash_pile",
+   "length": 1.0
+  },
+  "garbage": {
+   "model": "Objaverse/trash_pile",
+   "length": 0.8
+  },
+  "pile of garbage": {
+   "model": "Objaverse/trash_pile",
+   "length": 1.0
+  },
+  "bamboo": {
+   "model": "Objaverse/bamboo_clump",
+   "height": 4.0
+  },
+  "wall sconce": {
+   "model": "Objaverse/sconce_candle",
+   "height": 0.35,
+   "anchor": "back",
+   "rotation": 0,
+   "elevation": 1.3
+  },
+  "hanging pole": {
+   "model": "Objaverse/fish_rack",
+   "assembly": "footprint",
+   "length": 1.0
+  },
+  "broken chair": {
+   "model": "Objaverse/chair_broken",
+   "height": 0.9
+  },
+  "ore cart": {
+   "model": "Objaverse/mine_cart",
+   "assembly": "footprint",
+   "length": 1.0
+  },
+  "altar": {
+   "model": "Objaverse/altar_stone",
+   "assembly": "footprint",
+   "length": 1.0
+  },
+  "body": {
+   "model": "Objaverse/corpse_shroud",
+   "length": 1.8
+  },
+  "body part": {
+   "model": "Objaverse/corpse_shroud",
+   "length": 0.7
+  },
+  "fishing net": {
+   "model": "Objaverse/fishing_net",
+   "length": 1.0
+  },
+  "curtain": {
+   "model": "Objaverse/curtains_red",
+   "height": 2.2,
+   "anchor": "back"
+  },
+  "curtains": {
+   "model": "Objaverse/curtains_red",
+   "height": 2.2,
+   "anchor": "back"
+  },
+  "paper screen": {
+   "model": "Objaverse/folding_screen",
+   "assembly": "footprint",
+   "length": 1.0
+  },
+  "cherry blossoms": {
+   "model": "Objaverse/cherry_tree",
+   "height": 4.5
+  },
+  "plum blossoms": {
+   "model": "Objaverse/cherry_tree",
+   "height": 4.0
+  },
+  "scroll": {
+   "model": "Objaverse/scroll_old",
+   "length": 0.3,
+   "lay": true
+  },
+  "dirty pot": {
+   "model": "Objaverse/cooking_pots",
+   "length": 0.45
+  },
+  "lever": {
+   "model": "Objaverse/lever_old",
+   "height": 0.5,
+   "anchor": "back",
+   "elevation": 1.0
+  },
+  "bottle": {
+   "model": "Objaverse/bottle_wine",
+   "height": 0.3
+  },
+  "folded cloth": {
+   "model": "Objaverse/towel_folded",
+   "length": 0.45
+  },
+  "sheets": {
+   "model": "Objaverse/towel_folded",
+   "length": 0.6
+  },
+  "folded blanket": {
+   "model": "Objaverse/towel_folded",
+   "length": 0.6
+  },
+  "heating stand": {
+   "model": "Objaverse/brazier_pole",
+   "height": 1.1,
+   "flame": 0.08
+  },
+  "davies locker south": {
+   "model": "Objaverse/sea_chest",
+   "assembly": "footprint",
+   "length": 1.0
+  },
+  "pulley crane north": {
+   "model": "Objaverse/crane_wood",
+   "assembly": "footprint",
+   "length": 1.0,
+   "group": "crane"
+  },
+  "pulley crane south": {
+   "model": "Objaverse/crane_wood",
+   "assembly": "footprint",
+   "length": 1.0,
+   "group": "crane"
   }
  }
 }

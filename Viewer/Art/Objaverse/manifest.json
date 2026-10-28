@@ -2477,6 +2477,552 @@
         17.735
       ],
       "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "armor_hauberk",
+      "title": "Hauberk",
+      "uid": "8881e32f0595469fa12b18e28155cc78",
+      "page": "https://sketchfab.com/3d-models/8881e32f0595469fa12b18e28155cc78",
+      "author": "askei",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-036/8881e32f0595469fa12b18e28155cc78.glb",
+      "sourceSha256": "0e3094fcfe35d34eab48f38f3f16f62d1e714e9f0c5df2b1350428be9eb02fe7",
+      "sourceTriangles": 798,
+      "file": "armor_hauberk/armor_hauberk.glb",
+      "sha256": "18556edeccb9a38d89d94db02f65b0101ddb2114c22082beca26e25ff93c021d",
+      "triangles": 798,
+      "size": [
+        151.622,
+        127.496,
+        47.753
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "armor_plate",
+      "title": "Avacynian Knight Armor",
+      "uid": "d6cc1b40412c4eb9bcf61e6accfbc89b",
+      "page": "https://sketchfab.com/3d-models/d6cc1b40412c4eb9bcf61e6accfbc89b",
+      "author": "shaundrodgers",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-007/d6cc1b40412c4eb9bcf61e6accfbc89b.glb",
+      "sourceSha256": "64ba7bb28b659bfbac3691f7544136b859535ef4d55250b2ef0b760dedb79c5f",
+      "sourceTriangles": 9352,
+      "file": "armor_plate/armor_plate.glb",
+      "sha256": "3ee7ea5bda78ec40141a6dd51de318af14211baf75426413945dd7af292f04cf",
+      "triangles": 3999,
+      "size": [
+        7.486,
+        11.509,
+        14.636
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "armor_helm",
+      "title": "Simple Steel Helmet (Game Model)",
+      "uid": "1603f60804c941cba0ffeacea20a7f32",
+      "page": "https://sketchfab.com/3d-models/1603f60804c941cba0ffeacea20a7f32",
+      "author": "Michael Makivic",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-084/1603f60804c941cba0ffeacea20a7f32.glb",
+      "sourceSha256": "1820fed5e8fb34c9aa66d27f5cdb190b2df43469f3dc7bf10fe66fc1cb74a9e6",
+      "sourceTriangles": 2364,
+      "file": "armor_helm/armor_helm.glb",
+      "sha256": "945db5046f3934d3d5cde4bf2dd195f1bbe70271ac8037272f4e060ac69ce38d",
+      "triangles": 2364,
+      "size": [
+        8.079,
+        9.861,
+        10.437
+      ],
+      "processing": "ground-centred, decimated to 2500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "boat_wreck",
+      "title": "Point Reyes Shipwreck - Marin County",
+      "uid": "b93140adf486475db064eab7da4a675a",
+      "page": "https://sketchfab.com/3d-models/b93140adf486475db064eab7da4a675a",
+      "author": "David Antalek",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-028/b93140adf486475db064eab7da4a675a.glb",
+      "sourceSha256": "f8126d7f0b7df7612af2b02f8f39dd74ffb7993aa9bfc8aed381997880d2c972",
+      "sourceTriangles": 250160,
+      "file": "boat_wreck/boat_wreck.glb",
+      "sha256": "79cdccd9dd84e8d2673f5e17363d487196668b072d7bc6d7c63c83419614673d",
+      "triangles": 7998,
+      "size": [
+        25.761,
+        8.953,
+        30.507
+      ],
+      "processing": "ground-centred, decimated to 8000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "wardrobe_red",
+      "title": "Antique Wardrobe",
+      "uid": "9e194868da754d55afc876127dc8f74b",
+      "page": "https://sketchfab.com/3d-models/9e194868da754d55afc876127dc8f74b",
+      "author": "matejbiskup97",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-089/9e194868da754d55afc876127dc8f74b.glb",
+      "sourceSha256": "ace44edd816ca301d54bd44ae4d30adcdbe704e362548e19ef3c28ce0e287980",
+      "sourceTriangles": 8372,
+      "file": "wardrobe_red/wardrobe_red.glb",
+      "sha256": "ca8a963d687ba9a939a47146dbe54e45bc238a1ee94c58dbbda00d3479520e70",
+      "triangles": 4998,
+      "size": [
+        0.545,
+        1.841,
+        0.91
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "cabinet_old",
+      "title": "Old Wooden Cabinet",
+      "uid": "919f4e79b11d4feca575fdc9213109dd",
+      "page": "https://sketchfab.com/3d-models/919f4e79b11d4feca575fdc9213109dd",
+      "author": "Helyeouka",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-128/919f4e79b11d4feca575fdc9213109dd.glb",
+      "sourceSha256": "a38556ffb9c1639e796f2ef9c77fec4cbc449367b444129da1fa61a56bb6197c",
+      "sourceTriangles": 5148,
+      "file": "cabinet_old/cabinet_old.glb",
+      "sha256": "87e8d441763f17ea6a0baab41fac79f64bcd3f09c443a34edc4c4ee546831cb3",
+      "triangles": 4000,
+      "size": [
+        3.449,
+        5.115,
+        2.31
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "spinning_wheel",
+      "title": "Spinning Wheel 01 4k",
+      "uid": "dbce21719ba64993b5fbcce0c0da8e20",
+      "page": "https://sketchfab.com/3d-models/dbce21719ba64993b5fbcce0c0da8e20",
+      "author": "mohamedhussien",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-000/dbce21719ba64993b5fbcce0c0da8e20.glb",
+      "sourceSha256": "71046e2e3c27bf1b82cd666a3cb2c9f064a4d65d6acb6dfc452e5e667c1b1dad",
+      "sourceTriangles": 52023,
+      "file": "spinning_wheel/spinning_wheel.glb",
+      "sha256": "6c6955a193ef8595ab5cf513292de8a69a5b32e87f44fd78ead0dd8a8566de6a",
+      "triangles": 5000,
+      "size": [
+        0.49,
+        0.966,
+        1.024
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "rowboat_old",
+      "title": "Old Rowboat",
+      "uid": "9922d5678af84adeb1c9b479856446ca",
+      "page": "https://sketchfab.com/3d-models/9922d5678af84adeb1c9b479856446ca",
+      "author": "TooManyDemons",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-083/9922d5678af84adeb1c9b479856446ca.glb",
+      "sourceSha256": "e0f3b6e4a91994270d564aa8d9d98575f6ee737b744b9e9624d76a9c81db8758",
+      "sourceTriangles": 5484,
+      "file": "rowboat_old/rowboat_old.glb",
+      "sha256": "087a57322c9bbbba22c6572c939160acc1f2752b5fd5d2ab958b69bbf27ffe3f",
+      "triangles": 4991,
+      "size": [
+        658.625,
+        196.011,
+        671.525
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "trash_pile",
+      "title": "Trash / Garbage 002 3D Scan",
+      "uid": "bf25a01bf66b4e2bbf2772397a67c588",
+      "page": "https://sketchfab.com/3d-models/bf25a01bf66b4e2bbf2772397a67c588",
+      "author": "Alben Tan",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-061/bf25a01bf66b4e2bbf2772397a67c588.glb",
+      "sourceSha256": "0de2d065b81ed7c8c933a388773ce81ce676729ccec424f3446610bc8274d745",
+      "sourceTriangles": 88507,
+      "file": "trash_pile/trash_pile.glb",
+      "sha256": "2c14300da04582106ae45aacf055eb54a434691dc338b5d646d5602eadc8f5e1",
+      "triangles": 5999,
+      "size": [
+        1.253,
+        0.877,
+        3.095
+      ],
+      "processing": "ground-centred, decimated to 6000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "bamboo_clump",
+      "title": "bamboo",
+      "uid": "a02bf0e3ffe44617ad49daf3cd94fe59",
+      "page": "https://sketchfab.com/3d-models/a02bf0e3ffe44617ad49daf3cd94fe59",
+      "author": "evolveduk",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-118/a02bf0e3ffe44617ad49daf3cd94fe59.glb",
+      "sourceSha256": "d3129580902fa5ca0b9c2b1513fe62694d037b828f1688517986382a3d63b2bf",
+      "sourceTriangles": 2180,
+      "file": "bamboo_clump/bamboo_clump.glb",
+      "sha256": "8a445a7d6dd8b399319263bd6563b84c723475f470f1da61c2d130e0b9da506f",
+      "triangles": 2180,
+      "size": [
+        2.453,
+        4.404,
+        2.491
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "sconce_candle",
+      "title": "Candle Wall Lamp",
+      "uid": "65cbbefb7774468e80ea4d815ce3cfd0",
+      "page": "https://sketchfab.com/3d-models/65cbbefb7774468e80ea4d815ce3cfd0",
+      "author": "DanSilva",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-034/65cbbefb7774468e80ea4d815ce3cfd0.glb",
+      "sourceSha256": "3f9e6a3b7a279d7b48049b68ebb32f8bf1ec626e5a9b4e86aca4f759338bf69d",
+      "sourceTriangles": 1560,
+      "file": "sconce_candle/sconce_candle.glb",
+      "sha256": "4e822b4b776dac37d962ae2edad6d6ddb6bba8a01a863dcd19358fcd4b19c1a9",
+      "triangles": 1560,
+      "size": [
+        17.026,
+        22.472,
+        12.463
+      ],
+      "processing": "ground-centred, decimated to 2500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "fish_rack",
+      "title": "Fish Drying Rack",
+      "uid": "545a67028e45488cbdad553d9e1e4811",
+      "page": "https://sketchfab.com/3d-models/545a67028e45488cbdad553d9e1e4811",
+      "author": "rodgercarr13601",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-017/545a67028e45488cbdad553d9e1e4811.glb",
+      "sourceSha256": "bd3d740f584ea4b28e06d270dc39b56a984aa6cbe001c45472da5b6db0db2884",
+      "sourceTriangles": 2721,
+      "file": "fish_rack/fish_rack.glb",
+      "sha256": "489c9caecbc2af2d8f12f1c089f5e2dfdbf8c8de535bb364a1bc62e30a19840e",
+      "triangles": 2721,
+      "size": [
+        0.281,
+        0.247,
+        0.279
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "chair_broken",
+      "title": "Imperfect & Broken Chair",
+      "uid": "0f5bf969c7404cf1ada939d09f17f350",
+      "page": "https://sketchfab.com/3d-models/0f5bf969c7404cf1ada939d09f17f350",
+      "author": "Jimmy Gunawan",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-077/0f5bf969c7404cf1ada939d09f17f350.glb",
+      "sourceSha256": "1cf8797268dd0cb38da44d718a511d2df4dd9133f86d82ce5159ae673ca9f273",
+      "sourceTriangles": 6900,
+      "file": "chair_broken/chair_broken.glb",
+      "sha256": "b5d7f071cd46ae3801d5de14898c51f8095422d383f8a99eb43990883f13d153",
+      "triangles": 3998,
+      "size": [
+        0.604,
+        0.762,
+        0.672
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "mine_cart",
+      "title": "Basic Mine Cart",
+      "uid": "dc081b6e60544218baf91027b0251485",
+      "page": "https://sketchfab.com/3d-models/dc081b6e60544218baf91027b0251485",
+      "author": "Blender3D",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-129/dc081b6e60544218baf91027b0251485.glb",
+      "sourceSha256": "bebde33edebbccbab680c60754544a3454fb6ef9d505fe4bcc340c8b8ae07819",
+      "sourceTriangles": 4276,
+      "file": "mine_cart/mine_cart.glb",
+      "sha256": "9bbb719c913b88cb5153a8671cd547d8611b738344c4e6bb56b435ca8ac2168e",
+      "triangles": 3999,
+      "size": [
+        455.323,
+        634.961,
+        655.138
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "altar_stone",
+      "title": "Stone Altar",
+      "uid": "3d4f2edb18e4424cabb41b60aa160cb5",
+      "page": "https://sketchfab.com/3d-models/3d4f2edb18e4424cabb41b60aa160cb5",
+      "author": "TheoClarke",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-133/3d4f2edb18e4424cabb41b60aa160cb5.glb",
+      "sourceSha256": "b6f54122b7e04d91793e7d53aebf8068018da1d4ad3fa32b4b66a1b372b762ba",
+      "sourceTriangles": 3132,
+      "file": "altar_stone/altar_stone.glb",
+      "sha256": "1ac075b6ac2805c53fbcdf1e2debd3c87fdf21888ce76d6f3c844c9c4101424d",
+      "triangles": 3000,
+      "size": [
+        294.812,
+        81.402,
+        151.819
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "corpse_shroud",
+      "title": "Corpse",
+      "uid": "be9b034525c246cebab3620acb5a8027",
+      "page": "https://sketchfab.com/3d-models/be9b034525c246cebab3620acb5a8027",
+      "author": "Tamal De Quezo",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-043/be9b034525c246cebab3620acb5a8027.glb",
+      "sourceSha256": "c624039fddac57314a52caf46c4b2625d385a17e492beeafb9d86fe6863f9653",
+      "sourceTriangles": 624,
+      "file": "corpse_shroud/corpse_shroud.glb",
+      "sha256": "63538404bdda215b1e7d36565f34a0f94e51f4428c983a1d0a60888b8b03313c",
+      "triangles": 624,
+      "size": [
+        0.966,
+        0.301,
+        2.108
+      ],
+      "processing": "ground-centred, decimated to 1500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "fishing_net",
+      "title": "fishing net",
+      "uid": "cbb4bfc4e5654500a70dfe72ffc0ce0a",
+      "page": "https://sketchfab.com/3d-models/cbb4bfc4e5654500a70dfe72ffc0ce0a",
+      "author": "cozee4sure",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-083/cbb4bfc4e5654500a70dfe72ffc0ce0a.glb",
+      "sourceSha256": "063cbe5bb8c2e634e2dbb8a9170c807f4e9f305ed51a4fbd6f32a17bcda4f504",
+      "sourceTriangles": 86064,
+      "file": "fishing_net/fishing_net.glb",
+      "sha256": "3514a1fcac117fb16c4388177890b48131fff504821c103de23862ce8babfca3",
+      "triangles": 3999,
+      "size": [
+        400.76,
+        262.061,
+        401.236
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "curtains_red",
+      "title": "Curtains",
+      "uid": "e5b01c717dbd4244b861168eddd67375",
+      "page": "https://sketchfab.com/3d-models/e5b01c717dbd4244b861168eddd67375",
+      "author": "CommunicationNode",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-114/e5b01c717dbd4244b861168eddd67375.glb",
+      "sourceSha256": "3db7d2560f4789bc1c3912b2db9ad23f8c60dcfc8add5739ae5790c31b6721b3",
+      "sourceTriangles": 4505,
+      "file": "curtains_red/curtains_red.glb",
+      "sha256": "96dafcb43ca47e3f035aee7b809a476f3a188f990a290b36f1f92959fe9fa997",
+      "triangles": 3998,
+      "size": [
+        1731.615,
+        1615.136,
+        344.883
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "folding_screen",
+      "title": "'Chrysanthemums by a Stream', by\u014dbu",
+      "uid": "cbbc0ab5634946d3bfc949c0aff685e6",
+      "page": "https://sketchfab.com/3d-models/cbbc0ab5634946d3bfc949c0aff685e6",
+      "author": "Thomas Flynn",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-134/cbbc0ab5634946d3bfc949c0aff685e6.glb",
+      "sourceSha256": "c94aba4a2421c08d347da9e68e402fc733f4900c4016d514fd42cbdd2e3ae51d",
+      "sourceTriangles": 52,
+      "file": "folding_screen/folding_screen.glb",
+      "sha256": "58bdd3160ad14fe06415acbfec023ba9aaf7eb389b8c6ba14e9839f55b50f075",
+      "triangles": 52,
+      "size": [
+        3.847,
+        1.763,
+        0.197
+      ],
+      "processing": "ground-centred, decimated to 2000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "cherry_tree",
+      "title": "Organics: Small Tree",
+      "uid": "81f88945fc274c0da9fea9d777e8beb6",
+      "page": "https://sketchfab.com/3d-models/81f88945fc274c0da9fea9d777e8beb6",
+      "author": "ZoeChuiYan",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-093/81f88945fc274c0da9fea9d777e8beb6.glb",
+      "sourceSha256": "83e73e6bad12178909f6a9c0bf0fda8a82d8c0ec9f2f59289e7ea98976edf2e7",
+      "sourceTriangles": 3880,
+      "file": "cherry_tree/cherry_tree.glb",
+      "sha256": "d21a4fbd4f6f1a9e0410e7ffce5e89ee64373b85c876a84b3dda52ec0a6fd258",
+      "triangles": 3880,
+      "size": [
+        9.2,
+        13.136,
+        11.821
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "scroll_old",
+      "title": "Old / Ancient Scroll",
+      "uid": "73e9333251c7490786f99e67beb41d6e",
+      "page": "https://sketchfab.com/3d-models/73e9333251c7490786f99e67beb41d6e",
+      "author": "Kigha",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-017/73e9333251c7490786f99e67beb41d6e.glb",
+      "sourceSha256": "c2e8f0d6d223454f35f49d54765b7c91667e28852f40f819cc28837e450aa0de",
+      "sourceTriangles": 1280,
+      "file": "scroll_old/scroll_old.glb",
+      "sha256": "b509023f9d21b9cb2ed226e0b36076c2294006f6404772aa8f69b0d678ec0d18",
+      "triangles": 1280,
+      "size": [
+        30.887,
+        3.853,
+        4.228
+      ],
+      "processing": "ground-centred, decimated to 1500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "cooking_pots",
+      "title": "Camping Cooking Pots",
+      "uid": "3cf2b0e0d285408f97e2a33d6f19ee1c",
+      "page": "https://sketchfab.com/3d-models/3cf2b0e0d285408f97e2a33d6f19ee1c",
+      "author": "Guy in a Poncho",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-149/3cf2b0e0d285408f97e2a33d6f19ee1c.glb",
+      "sourceSha256": "3e72bce49aef680353d635b95d0148f68a332c6f5a77da9ae3486c21ff49fe5b",
+      "sourceTriangles": 12952,
+      "file": "cooking_pots/cooking_pots.glb",
+      "sha256": "2299010d8b10bf6b4474e0aa8757b61e5391ceed81a693f3848da4005674f77f",
+      "triangles": 3998,
+      "size": [
+        2.063,
+        0.387,
+        1.494
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "lever_old",
+      "title": "Old lever",
+      "uid": "f1075e12ba4a49368e0f29c62881ac73",
+      "page": "https://sketchfab.com/3d-models/f1075e12ba4a49368e0f29c62881ac73",
+      "author": "Gunnar Correa",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-137/f1075e12ba4a49368e0f29c62881ac73.glb",
+      "sourceSha256": "bcfea47ee0fc26efef3e7d92d5064897fdd87707387cab5dac43fe81c11c8dcc",
+      "sourceTriangles": 524,
+      "file": "lever_old/lever_old.glb",
+      "sha256": "5444287594b21c13d1e7b11e279843926ae4cf0ff9bcb24af07af308f74c5e8a",
+      "triangles": 524,
+      "size": [
+        26.371,
+        41.235,
+        16.782
+      ],
+      "processing": "ground-centred, decimated to 1500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "towel_folded",
+      "title": "Folded Towel",
+      "uid": "c5f9e72edf7d4b5eaa2ec9b95c3b099d",
+      "page": "https://sketchfab.com/3d-models/c5f9e72edf7d4b5eaa2ec9b95c3b099d",
+      "author": "Nicothin",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-109/c5f9e72edf7d4b5eaa2ec9b95c3b099d.glb",
+      "sourceSha256": "400ddec3a94795e5231057077b70a0470d4ee93efbcf14e707fd0be46a14d8b9",
+      "sourceTriangles": 34304,
+      "file": "towel_folded/towel_folded.glb",
+      "sha256": "59a67587948422918f1fdb25ce13247195800b728814f536d946478096a2eba8",
+      "triangles": 2000,
+      "size": [
+        540.136,
+        53.896,
+        879.413
+      ],
+      "processing": "ground-centred, decimated to 2000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "sea_chest",
+      "title": "Pirate Chest",
+      "uid": "fd6455462e8e4533848d17f0fca42678",
+      "page": "https://sketchfab.com/3d-models/fd6455462e8e4533848d17f0fca42678",
+      "author": "Kirilllucas",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-038/fd6455462e8e4533848d17f0fca42678.glb",
+      "sourceSha256": "8a6ef8f23af6197b4aea5a5f6f63b99f11f0629a4df9810527a7d767f91f0134",
+      "sourceTriangles": 1054,
+      "file": "sea_chest/sea_chest.glb",
+      "sha256": "6c0f09ac54e37c1ee83d35cb8d70c9a29c6567a5d386f2b22dc05c462e0d102c",
+      "triangles": 1054,
+      "size": [
+        2.241,
+        1.932,
+        1.44
+      ],
+      "processing": "ground-centred, decimated to 1500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "crane_wood",
+      "title": "Medieval Wooden Crane",
+      "uid": "6bf347756e374d17ab4cbf3fb33f6a10",
+      "page": "https://sketchfab.com/3d-models/6bf347756e374d17ab4cbf3fb33f6a10",
+      "author": "rautkrutant055",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-054/6bf347756e374d17ab4cbf3fb33f6a10.glb",
+      "sourceSha256": "3ec76f736c98d418e0c7444d69c11761fc73f74c34c1d73fa1a4bce34c5e14bd",
+      "sourceTriangles": 75260,
+      "file": "crane_wood/crane_wood.glb",
+      "sha256": "cbf351484c4e97d9731554fb55a7e4a8d80d543d828e070c65e6ea9686465e8d",
+      "triangles": 7997,
+      "size": [
+        10.198,
+        14.277,
+        5.325
+      ],
+      "processing": "ground-centred, decimated to 8000 triangles, textures capped at 1024 px"
     }
   ]
 }

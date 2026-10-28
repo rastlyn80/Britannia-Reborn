@@ -210,10 +210,12 @@ func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -
 	var named := name.to_lower()
 	if kind == "counter": return {"status":"crafted","detail":"panelled counter in photoscanned timber"}
 	if kind == "carpet": return {"status":"crafted","detail":"woven rug from photoscanned fabric"}
+	if kind == "door": return {"status":"crafted","detail":"door leaf in photoscanned timber and iron"}
 	if kind == "decal": return {"status":"crafted","detail":"ground decal on a photoscanned surface: "+str(rule.get("decal",""))}
 	if kind == "table" and not ("stone" in named or "marble" in named or "sandstone" in named): return pack("Objaverse/table_wood_b/table_wood_b.glb")
 	if kind == "bed": return pack("PolyHaven/GothicBed_01/GothicBed_01_1k.gltf")
 	if kind == "bench" and not ("stone" in named or "marble" in named): return pack("Objaverse/bench_scan/bench_scan.glb")
+	if kind in ["table","bench"]: return {"status":"crafted","detail":"stone furniture built in photoscanned masonry"}
 	# Architecture and water are built from photoscanned surface sets.
 	if kind in ["wall","window","corner","trim","beam","gable","pillar","floor","landing","stairs","roof","chimney","water","lava","waterfall","palisade","planter"]:
 		return {"status":"crafted","detail":"built in code with photoscanned surfaces: "+kind}
