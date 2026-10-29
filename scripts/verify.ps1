@@ -38,6 +38,8 @@ if ($LASTEXITCODE) { throw 'Native gump layout/response checks failed' }
 if ($LASTEXITCODE) { throw 'Quickbar/classic macro action checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Network/FrontEndTests.gd
 if ($LASTEXITCODE) { throw 'Front end / game menu checks failed' }
+& $godot --headless --path "$root/Viewer" --script res://Network/ProtocolTests.gd
+if ($LASTEXITCODE) { throw 'Protocol coverage/fixture checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/ItemResponseTests.gd
 if ($LASTEXITCODE) { throw 'Native item response/appearance checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/WorldItemTests.gd

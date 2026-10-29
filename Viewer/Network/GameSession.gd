@@ -113,6 +113,50 @@ var destination_ready := Callable()
 var preview_bounds := Rect2i()
 var returning_home := false
 var last_boundary_message := 0
+# Protocol systems (Network/Packets/*): each registers the server packets it
+# parses here. Packets nothing handles are counted for the protocol census.
+const MODULES := {
+	"tooltips":preload("res://Network/Packets/Tooltips.gd"),
+	"mobiles":preload("res://Network/Packets/Mobiles.gd"),
+	"messages":preload("res://Network/Packets/Messages.gd"),
+	"environment":preload("res://Network/Packets/Environment.gd"),
+	"effects":preload("res://Network/Packets/Effects.gd"),
+	"combat":preload("res://Network/Packets/Combat.gd"),
+	"connection":preload("res://Network/Packets/Connection.gd"),
+	"items":preload("res://Network/Packets/Items.gd"),
+	"player":preload("res://Network/Packets/Player.gd"),
+	"buffs":preload("res://Network/Packets/Buffs.gd"),
+	"dialogs":preload("res://Network/Packets/Dialogs.gd"),
+	"social":preload("res://Network/Packets/Social.gd"),
+	"world":preload("res://Network/Packets/WorldSystems.gd"),
+	"requests":preload("res://Network/Packets/Requests.gd"),
+}
+# Server packets the match in _handle handles itself (ProtocolTests checks
+# that every packet ModernUO sends is here or routed to a module).
+const OWN_PACKETS := [0x6c,0xb0,0xdd,0xd4,0x66,0x71,0xa9,0xbd,0x1b,0x55,0x20,0x21,0x22,0x78,0x77,0x6e,0xe2,0x72,0xf3,0x1a,0x27,0x74,0x3b,0x11,0xa1,0xa2,0xa3,0x3a,0x25,0xc1,0x1d,0x2e,0xbf,0x24,0x3c,0x4f,0x4e,0x65,0x1c,0xae,0x82,0x53]
+# 0xBF subcommands the match below handles itself.
+const OWN_EXTENDED := [0x04,0x08,0x14,0x19]
+var modules := {}
+var routes := {}
+var extended_routes := {}
+var unhandled := {}
+var unhandled_extended := {}
+
+func _init() -> void:
+	for key in MODULES:
+		modules[key] = MODULES[key].new()
+		modules[key].attach(self)
+
+func module(key: String) -> RefCounted:
+	return modules.get(key)
+
+func route(id: int, handler: Callable) -> void:
+	if not routes.has(id): routes[id] = []
+	routes[id].append(handler)
+
+func route_extended(sub: int, handler: Callable) -> void:
+	if not extended_routes.has(sub): extended_routes[sub] = []
+	extended_routes[sub].append(handler)
 
 static func signed(value: int, bits: int = 8) -> int:
 	return value - (1 << bits) if value & (1 << (bits-1)) else value
@@ -203,6 +247,9 @@ func close() -> void:
 	needs_sync = false
 	accepted_since_sync = 0
 	next_walk = 0
+	unhandled.clear()
+	unhandled_extended.clear()
+	for key in modules: modules[key].reset()
 	ended.emit()
 
 func _fail(reason: String) -> void:
@@ -213,6 +260,8 @@ func send(bytes: PackedByteArray) -> void:
 	if socket.put_data(bytes) != OK: _fail("Game send failed")
 
 func _process(_delta: float) -> void:
+	if phase == "world":
+		for key in modules: modules[key].tick()
 	if icons_dirty and Time.get_ticks_msec()>=next_icon_save:
 		var path := "res://item-art-requests.local.json"
 		if FileAccess.file_exists(path):
@@ -294,6 +343,14 @@ func feed(bytes: PackedByteArray) -> void:
 
 func _handle(p: PackedByteArray) -> void:
 	var id := int(p[0])
+	var routed := routes.has(id)
+	if routed:
+		for handler in routes[id]: handler.call(p)
+	if id == 0xbf and p.size() >= 5:
+		var sub := Login.read_be(p,3,2)
+		if extended_routes.has(sub):
+			for handler in extended_routes[sub]: handler.call(p)
+		elif not sub in OWN_EXTENDED: unhandled_extended[sub] = int(unhandled_extended.get(sub,0))+1
 	match id:
 		0x6c:
 			if p.size() != 19: return
@@ -357,7 +414,7 @@ func _handle(p: PackedByteArray) -> void:
 			phase = "characters"
 			characters_received.emit(characters,cities)
 		0xbd:
-			var version := "7.0.104.0".to_ascii_buffer()
+			var version := Login.version_text().to_ascii_buffer()
 			version.append(0)
 			var response := PackedByteArray([0xbd])
 			response.append_array(Login.uint_be(version.size()+3,2))
@@ -375,6 +432,8 @@ func _handle(p: PackedByteArray) -> void:
 			last_ping = Time.get_ticks_msec()
 			entered.emit(player.duplicate())
 			request_character()
+			# As the classic client does after login: its view range.
+			send(preload("res://Network/Packets/Environment.gd").view_range_packet(18))
 		0x20:
 			if Login.read_be(p,1,4) == player.serial:
 				player.body = Login.read_be(p,5,2)
@@ -619,6 +678,8 @@ func _handle(p: PackedByteArray) -> void:
 				quiet_labels.erase(serial)
 		0x82: _fail("Game login rejected")
 		0x53: _fail("Character entry rejected (%d)" % p[1])
+		_:
+			if not routed: unhandled[id] = int(unhandled.get(id,0))+1
 
 func select_character(slot: int, name: String) -> void:
 	if phase != "characters": return

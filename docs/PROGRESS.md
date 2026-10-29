@@ -1,3 +1,17 @@
+# Full protocol layer: every ModernUO packet parsed or built — 29 October 2026
+
+The owner requires full interaction with the server: nothing it sends dropped, nothing it accepts unreachable. Following the second blueprint (PROTOCOL_BLUEPRINT.md), with ClassicUO and ModernUO's source as references:
+
+- **Dispatch:** a router feeds 14 protocol modules (`Network/Packets/`).
+- **Coverage:** all 99 server packet types and 16 extended subcommands ModernUO sends have handlers. Every packet it accepts has a builder, or is deliberately not sent with a stated reason.
+- **Client version:** now matches the owner's install (7.0.102.3).
+- **Evidence:**
+  - ProtocolTests 42/0, in verify.
+  - Live census: 35 packet types, 0 unhandled. Tooltips now arrive for every object (148, one query each).
+  - Paperdoll, profile, name and spell requests were answered live.
+  - Full verify and the login tests pass.
+- **Remaining:** presentation for each system, phase by phase. It must look good, with items rendered from our 3D models in backpack, containers, gumps and games (owner rule).
+
 # Front end without a district; the right-hand panel replaced — 29 October 2026
 
 The play launchers now open on a front end with its own small moonlit stage, with nothing from the map loaded: sign in, choose a character (shown on a plinth with its remembered look), create one with live swatches, and a loading screen.

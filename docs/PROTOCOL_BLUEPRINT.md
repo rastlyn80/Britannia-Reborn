@@ -34,6 +34,26 @@ The first blueprint (MASTER_PLAN.md) set the direction: ModernUO is the authorit
 - **Audio:** none yet; sounds and music come from the install (local only).
 - **Monster and animal bodies:** not drawn, which limits combat feedback even once the packets work.
 
+## Status: protocol layer complete (2026-10-29)
+
+Phase 0 is done, and the protocol layer of every later phase is in place: our client now parses everything ModernUO sends and can build everything it accepts. What remains in each phase is presentation: windows, visuals and audio that use this state. Per the owner's rule, these must look good and draw items with our 3D models everywhere.
+
+- **Dispatch:**
+  - `GameSession.route`/`route_extended` feed 14 modules in `Network/Packets/`: Tooltips, Mobiles, Messages, Environment, Effects, Combat, Connection, Items, Player, Buffs, Dialogs, Social, WorldSystems and Requests.
+  - The original 42 handlers stay in `GameSession` (`OWN_PACKETS`).
+  - Anything else is counted in `unhandled` for the census.
+- **Server to client:**
+  - All 99 game-connection packet types ModernUO sends have a handler, and so do all 16 extended subcommands. The login-connection packets are handled by LoginProtocol.
+  - That includes tooltips (0xDC/0xD6, queried in batches of 12 every 120 ms), health flags, names, attributes, affixed clilocs, time, season, features, view range, sound, music, all graphic effects, damage, swings, attack target and buffs with timers.
+  - It also covers death, paperdoll and profile, character-list changes, menus, hue picker, prompts, URLs, tips, signs and help.
+  - And the social and world systems: party, trade, sell lists, chat, arrows, member locations, maps, multi placement, custom houses (planes decompressed and decoded), boats, spellbook contents, corpse equipment and packed item lists.
+- **Client to server:** every packet ModernUO accepts has a builder, except ones deliberately not sent (enhanced or assistant clients, crash and hardware reports, the store, new movement), each with its reason in `Requests.gd`. That covers all 23 accepted extended subcommands and the house-designer encoded commands.
+- **Client version:** announced as the install's 7.0.102.3. After login the client sends its view range, as ClassicUO does.
+- **Evidence:**
+  - `ProtocolTests.gd` (verify): 42/0. It covers coverage, builders, ModernUO fixed lengths and fixtures for every new parser family.
+  - `scripts/test-protocol-census.ps1` (live): 35 packet types received, **0 unhandled**. Tooltips: 148 lists received, one per object; before the fix it was 970 replies.
+  - Requests answered live: paperdoll 0x88, profile 0xB8, name 0x98, and spell cast 0xBF 0x1C (3 replies). The tip request (0xA7) gets no reply on this shard.
+
 ## Ground rules for every phase
 
 1. **One handler module per system:** `Network/Packets/<System>.gd`, registered in a dispatch table. This replaces new `match` arms in `GameSession.gd`, which is shared with another session and already 1,000 lines. GameSession keeps only framing and session state.

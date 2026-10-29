@@ -26,9 +26,16 @@ static func field(text: String) -> PackedByteArray:
 	bytes.resize(30)
 	return bytes
 
+# The client version we announce: the owner's installed client (client.exe
+# 7.0.102.3), so the server formats packets for the same data files.
+const CLIENT_VERSION := [7,0,102,3]
+
+static func version_text() -> String:
+	return ".".join(CLIENT_VERSION.map(func(v): return str(v)))
+
 static func seed_packet(seed_value: int = 0x12345678) -> PackedByteArray:
 	var bytes := PackedByteArray([0xef])
-	for value in [seed_value, 7, 0, 104, 0]: bytes.append_array(uint_be(value, 4))
+	for value in [seed_value]+CLIENT_VERSION: bytes.append_array(uint_be(value, 4))
 	return bytes
 
 static func account_packet(username: String, password: String) -> PackedByteArray:
