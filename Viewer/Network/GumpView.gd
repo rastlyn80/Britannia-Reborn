@@ -21,6 +21,8 @@ var movable := true
 var closable := true
 var content_bounds := Rect2()
 var reply_buttons: Array[BaseButton] = []
+# Item pictures waiting for their 3D icon: [TextureRect, graphic, hue].
+var pending_icons: Array = []
 # Classic button art the HUD draws as its own buttons: normal art id ->
 # [label, primary]. Arrows stay pictures as small modern chevrons.
 const MODERN_BUTTONS := {247:["Okay",true],248:["Okay",true],249:["Okay",true],241:["Cancel",false],242:["Cancel",false],243:["Cancel",false],2072:["Cancel",false],2073:["Cancel",false],
@@ -77,16 +79,12 @@ func configure(connection: Node, value: Dictionary) -> void:
     var classic: Texture2D = Artwork.item(int(command[3]),item_hue)
     # The item's 3D icon in the classic art's footprint (classic art meanwhile).
     var rendered := Studio.lookup(int(command[3]),item_hue)
-    tile.texture = rendered if rendered else classic
+    tile.texture = rendered if rendered else (classic if classic else Look.icon("rune",Look.DIM,40))
     tile.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
     tile.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-    if classic: tile.size = classic.get_size().max(Vector2(44,44)) if rendered else classic.get_size()
-    elif rendered: tile.size = Vector2(44,44)
-    else:
-     var placeholder := Label.new()
-     placeholder.text = "[item %d]" % int(command[3])
-     control = placeholder
-    if not control: control = tile
+    tile.size = classic.get_size().max(Vector2(44,44)) if classic else Vector2(44,44)
+    if not rendered: pending_icons.append([tile,int(command[3]),item_hue])
+    control = tile
    "gumppic","gumppictiled","gumppichued","gumppicphued","virtuegumpitem":
     if command.size() < (6 if name == "gumppictiled" else 4): unsupported.append(name); continue
     var id := int(command[5] if name == "gumppictiled" else command[3])
@@ -268,6 +266,11 @@ func configure(connection: Node, value: Dictionary) -> void:
   add_child(drag)
  show_page(1)
  _place.call_deferred()
+ if Studio.instance and not pending_icons.is_empty(): Studio.instance.icon_ready.connect(_icon_ready)
+
+func _icon_ready(graphic: int, hue: int, texture: Texture2D) -> void:
+ for entry in pending_icons:
+  if is_instance_valid(entry[0]) and int(entry[1]) == graphic and int(entry[2]) == hue: entry[0].texture = texture
 
 # Server windows draw above the HUD; one the server puts in the far top-left
 # corner (most send 0..100) is centred instead of covering the vitals card.
