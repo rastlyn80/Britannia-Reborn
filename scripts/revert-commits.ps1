@@ -2,6 +2,8 @@
 # change. Without -To the committed overrides are removed (original converted
 # world); -To <history file name> restores that earlier commit. Every commit
 # leaves a copy in outputs/<region>/overrides/history/. -List shows them.
+# This rolls back the local copy only; a published edit (Viewer/DevEdit/overrides/)
+# is reverted by reverting its pull request.
 param([string]$Region = 'britain',[string]$To,[switch]$List,[switch]$Modern,[switch]$Classic)
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent

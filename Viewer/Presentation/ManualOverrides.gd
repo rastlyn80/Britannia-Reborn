@@ -4,13 +4,19 @@ extends RefCounted
 # rules ("always hide weeds on the streets"). Overrides are presentation only:
 # hidden or moved statics keep their original collision, placed objects have
 # none, and terrain collision keeps the source heights, so the baked client
-# stays consistent with ModernUO. Files are local by default:
-# <dataset>/overrides/committed.overrides.json (ignored with the dataset), plus
-# res://DevEdit/overrides/*.overrides.json if the owner chooses to publish some.
-# Schema 1: {"format","schema","baseline","statics":{key:[state,author]},
+# stays consistent with ModernUO. Client-side edits (statics, placed objects,
+# terrain, rules) are shared through Git: every Commit writes one change file
+# and scripts/publish-world-edit.ps1 publishes it as
+# res://DevEdit/overrides/<id>.overrides.json on a branch with a pull request;
+# merged files reach every collaborator on pull. Until merged, the cumulative
+# local copy <dataset>/overrides/committed.overrides.json keeps the edits in
+# this world. Server-only state (the ModernUO session journal) never goes to Git.
+# Schema 1: {"format","schema","baseline","id","commits","statics":{key:[state,author]},
 # "placed":{"N":[state,author]},"terrain":{"x:y":[dz,surface,author]},
-# "rules":[{"rule","action","author","text"}]}
+# "rules":[{"rule","action","author","text"}]}. A "" static/placed state or a
+# [0,"-"] terrain entry restores the baseline over earlier files.
 const FORMAT := "britannia-reborn-overrides"
+const PUBLISHED := "res://DevEdit/overrides"
 const SURFACES := ["grass","forest","dirt","cobblestones","sand","brick"]
 var statics: Dictionary = {}
 var placed: Dictionary = {}
@@ -33,25 +39,38 @@ static func read(path: String) -> Dictionary:
 	if not data is Dictionary or data.get("format","") != FORMAT or int(data.get("schema",0)) != 1: return {}
 	return data
 
-# Merges published then local files in name order (later wins); returns false
-# and records nothing from a malformed file.
-func load_from(dataset: String) -> void:
+# Merges the published change files in name (time) order, then the local
+# cumulative copy unless every commit in it is already published; later wins
+# and a malformed file is skipped. Restore entries are dropped after merging.
+func load_from(dataset: String, published: String = PUBLISHED) -> void:
 	var paths: Array = []
-	for base in ["res://DevEdit/overrides",folder(dataset)]:
-		if not DirAccess.dir_exists_absolute(base): continue
-		var names := Array(DirAccess.get_files_at(base)).filter(func(n: String): return n.ends_with(".overrides.json"))
+	if DirAccess.dir_exists_absolute(published):
+		var names := Array(DirAccess.get_files_at(published)).filter(func(n: String): return n.ends_with(".overrides.json"))
 		names.sort()
-		for name in names: paths.append(base.path_join(name))
+		for name in names: paths.append(published.path_join(name))
+	paths.append(committed_path(dataset))
+	var ids := {}
 	for path in paths:
 		var data := read(path)
 		if data.is_empty():
-			push_error("Ignoring malformed overrides file: "+path)
+			if FileAccess.file_exists(path): push_error("Ignoring malformed overrides file: "+path)
 			continue
+		if path == committed_path(dataset):
+			var local: Array = data.get("commits",[])
+			if not local.is_empty() and local.all(func(id: String): return ids.has(id)): continue
+		elif data.has("id"): ids[str(data.id)] = true
 		files.append(path)
 		statics.merge(data.get("statics",{}),true)
 		placed.merge(data.get("placed",{}),true)
 		for cell in data.get("terrain",{}): terrain[cell] = data.terrain[cell]
-		rules.append_array(data.get("rules",[]))
+		for rule in data.get("rules",[]):
+			if not rules.any(func(r: Dictionary): return r.rule == rule.rule and r.action == rule.action): rules.append(rule)
+	for key in statics.keys():
+		if str(statics[key][0]) == "": statics.erase(key)
+	for n in placed.keys():
+		if str(placed[n][0]) == "": placed.erase(n)
+	for cell in terrain.keys():
+		if int(terrain[cell][0]) == 0 and str(terrain[cell][1]) == "-": terrain.erase(cell)
 
 func is_empty() -> bool:
 	return statics.is_empty() and placed.is_empty() and terrain.is_empty() and rules.is_empty()
@@ -99,45 +118,57 @@ static func rule_matches(rule: Dictionary, s: Dictionary, name: String, kind: St
 
 # ---- writing (client Commit) ----
 
-# Folds the session's current overlay into the committed file. Statics and
-# placed objects take the new absolute state; terrain deltas add to what was
-# already committed (the session edits relative to the baked result). A copy
-# goes to history/ so a commit can be reviewed or reverted.
-static func commit(dataset: String, targets: Dictionary, new_rules: Array, author: String) -> Dictionary:
+# Folds the session's current overlay into the committed overrides. Statics and
+# placed objects take the new absolute state ("" restores); terrain deltas add
+# to what the world already shows (published plus local: the session edits
+# relative to the baked result). Writes the local cumulative copy (plus a
+# history/ copy for revert) and this commit's change file in outgoing/, which
+# the caller publishes to Git. Returns counts, the commit id and change path.
+static func commit(dataset: String, targets: Dictionary, new_rules: Array, author: String, published: String = PUBLISHED) -> Dictionary:
 	var path := committed_path(dataset)
 	var data := read(path)
 	if data.is_empty(): data = empty()
-	var counts := {"statics":0,"placed":0,"terrain":0,"rules":new_rules.size()}
+	var world: RefCounted = load("res://Presentation/ManualOverrides.gd").new()
+	world.load_from(dataset,published)
+	var stamp := Time.get_datetime_string_from_system(true).replace(":","").replace("-","")
+	var id := "%s-%s" % [stamp,author.to_lower().replace(" ","-").validate_filename()]
+	var change := empty()
+	change.id = id
+	var counts := {"statics":0,"placed":0,"terrain":0,"rules":new_rules.size(),"id":id}
 	for target in targets:
 		var state: String = targets[target].state
 		var who: String = targets[target].author
-		if target.begins_with("s:"):
-			if state == "": data.statics.erase(target.substr(2))
-			else: data.statics[target.substr(2)] = [state,who]
-			counts.statics += 1
-		elif target.begins_with("p:"):
-			if state == "": data.placed.erase(target.substr(2))
-			else: data.placed[target.substr(2)] = [state,who]
-			counts.placed += 1
+		if target.begins_with("s:") or target.begins_with("p:"):
+			var group: String = "statics" if target.begins_with("s:") else "placed"
+			data[group][target.substr(2)] = [state,who]
+			change[group][target.substr(2)] = [state,who]
+			counts[group] += 1
 		elif target.begins_with("t:") and state != "":
 			var f := state.split(":")
 			var key: String = target.substr(2)
-			var before: Array = data.terrain.get(key,[0,"-",""])
+			var before: Array = world.terrain.get(key,[0,"-",""])
 			var dz := clampi(int(before[0])+int(f[1]),-40,40)
 			var surface: String = f[2] if f[2] != "-" else str(before[1])
-			if dz == 0 and surface == "-": data.terrain.erase(key)
-			else: data.terrain[key] = [dz,surface,who]
+			data.terrain[key] = [dz,surface,who]
+			change.terrain[key] = [dz,surface,who]
 			counts.terrain += 1
-	for rule in new_rules: data.rules.append(rule)
-	DirAccess.make_dir_recursive_absolute(folder(dataset).path_join("history"))
+	for rule in new_rules:
+		data.rules.append(rule)
+		change.rules.append(rule)
+	var commits: Array = data.get("commits",[])
+	commits.append(id)
+	data.commits = commits
+	for sub in ["history","outgoing"]: DirAccess.make_dir_recursive_absolute(folder(dataset).path_join(sub))
 	var text := JSON.stringify(data,"  ",true)
-	var stamp := Time.get_datetime_string_from_system(true).replace(":","").replace("-","")
-	var history := FileAccess.open(folder(dataset).path_join("history/%s-%s.overrides.json" % [stamp,author.to_lower().replace(" ","-")]),FileAccess.WRITE)
-	history.store_string(text)
-	history.close()
+	write(folder(dataset).path_join("history/%s.overrides.json" % id),text)
+	write(path,text)
+	counts.change = folder(dataset).path_join("outgoing/%s.overrides.json" % id)
+	write(counts.change,JSON.stringify(change,"  ",true))
+	counts.digest = text.sha256_text().left(16)
+	return counts
+
+static func write(path: String, text: String) -> void:
 	var file := FileAccess.open(path+".pending",FileAccess.WRITE)
 	file.store_string(text)
 	file.close()
 	DirAccess.rename_absolute(path+".pending",path)
-	counts.digest = text.sha256_text().left(16)
-	return counts

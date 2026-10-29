@@ -10,6 +10,8 @@ $env:DOTNET_CLI_HOME = Join-Path $root '.dotnet-home'
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 $env:APPDATA = Join-Path $root '.godot-user'
 $env:LOCALAPPDATA = $env:APPDATA
+# Test commits never publish to Git.
+$env:UC_DEV_EDIT_PUBLISH = '0'
 $godot = (Get-ChildItem "$root/.tools/godot/*console.exe" | Select-Object -First 1).FullName
 if (!$VerifyMarker) {
  # Run from the test folder so its own global.json (server SDK) applies.

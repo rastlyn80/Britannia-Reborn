@@ -65,6 +65,9 @@ var bake_pid := 0
 var bake_started := 0
 var committing: Dictionary = {}
 var commit_digest := ""
+var commit_change := ""
+var publish_pid := 0
+var publishing := ""
 var follow_cursor := true
 var next_cursor := 0
 
@@ -141,6 +144,7 @@ func click(screen: Vector2) -> void:
 # Place tool: the chosen asset follows the cursor until a click fixes it.
 func _process(_delta: float) -> void:
 	if bake_pid > 0: _poll_bake()
+	if publish_pid > 0: _poll_publish()
 	if not active or tool != "place" or not follow_cursor or Input.mouse_mode != Input.MOUSE_MODE_VISIBLE: return
 	if Time.get_ticks_msec() < next_cursor or panel.get_global_rect().has_point(panel.get_viewport().get_mouse_position()): return
 	next_cursor = Time.get_ticks_msec()+100
@@ -318,7 +322,7 @@ func review_commit() -> void:
 	pending = [{"ok":true,"kind":"commit","targets":edits.keys(),"description":"commit","line":"commit"}]
 	pending_ask = 0
 	overlay.highlight(edits.keys().filter(func(t: String): return not t.begins_with("t:")),Color("7ee08a"))
-	plan_label.text = "Commit %d static edit(s), %d placed object(s), %d terrain sample(s) by %s into the converted world.\nScope: about %d district(s) rebake in the background (%s); every connected client reloads them without restarting, then these edits leave the live session.\nCommitted edits stay visual: collision and movement keep what ModernUO has. Stored locally in %s (not published).\nPress Accept to commit." % [counts.s,counts.p,counts.t,", ".join(edits.values().map(func(e: Dictionary): return e.author).reduce(func(a: Array, b: String): return a if b in a else a+[b],[])),districts.size(),", ".join(districts.keys().map(func(d: Vector2i): return "%d,%d" % [d.x,d.y])),Overrides.committed_path(world.city_stream.dataset())]
+	plan_label.text = "Commit %d static edit(s), %d placed object(s), %d terrain sample(s) by %s into the converted world.\nScope: about %d district(s) rebake in the background (%s); every connected client reloads them without restarting, then these edits leave the live session.\nCommitted edits stay visual: collision and movement keep what ModernUO has. Kept in %s and published to Git as a branch with a pull request; merging it gives every collaborator these edits.\nPress Accept to commit." % [counts.s,counts.p,counts.t,", ".join(edits.values().map(func(e: Dictionary): return e.author).reduce(func(a: Array, b: String): return a if b in a else a+[b],[])),districts.size(),", ".join(districts.keys().map(func(d: Vector2i): return "%d,%d" % [d.x,d.y])),Overrides.committed_path(world.city_stream.dataset())]
 	refresh()
 
 func review_rule(rule: Dictionary, text: String) -> void:
@@ -338,6 +342,7 @@ func start_bake(new_rules: Array) -> void:
 	var dataset: String = world.city_stream.dataset()
 	committing = session_edits() if new_rules.is_empty() else {}
 	var counts := Overrides.commit(dataset,committing,new_rules,state.me)
+	commit_change = counts.change
 	var merged := Overrides.new()
 	merged.load_from(dataset)
 	commit_digest = merged.digest()
@@ -366,9 +371,30 @@ func _poll_bake() -> void:
 		else: skipped += 1
 	for start in range(0,items.size(),256):
 		state.batch("commit",items.slice(start,start+256),"commit %d edit(s) into the world" % items.size(),sender())
-	plan_label.text = "Committed. %d edit(s) are now part of the converted world%s." % [items.size(),"; %d changed during the bake stay in the session" % skipped if skipped > 0 else ""]
+	plan_label.text = "Committed. %d edit(s) are now part of the converted world%s; publishing to Git…" % [items.size(),"; %d changed during the bake stay in the session" % skipped if skipped > 0 else ""]
 	committing.clear()
+	publish(commit_change)
 	refresh()
+
+# Client-side edits go to Git (a branch and pull request) once baked; the
+# server's session journal stays on the server.
+func publish(change: String) -> void:
+	if change.is_empty() or OS.get_environment("UC_DEV_EDIT_PUBLISH") == "0": return
+	var script := ProjectSettings.globalize_path("res://../scripts/publish-world-edit.ps1")
+	publish_pid = OS.create_process("powershell.exe",["-NoProfile","-ExecutionPolicy","Bypass","-File",script,"-Change",change])
+	publishing = change
+	if publish_pid <= 0: note("Could not start the Git publish; the edit stays local: "+change)
+
+func _poll_publish() -> void:
+	if OS.is_process_running(publish_pid): return
+	publish_pid = 0
+	var outcome: Variant = JSON.parse_string(FileAccess.get_file_as_string(publishing+".publish.json")) if FileAccess.file_exists(publishing+".publish.json") else null
+	if not outcome is Dictionary or outcome.has("error"):
+		note("Git publish failed (%s); the edit stays committed locally. Retry: scripts/publish-world-edit.ps1 -Change \"%s\"" % [str(outcome.get("error","no result")) if outcome is Dictionary else "no result",publishing])
+	else:
+		note("Published to Git: %s" % str(outcome.get("pr",outcome.get("compare",outcome.get("branch","")))))
+		plan_label.text = "Committed and published: %s" % str(outcome.get("pr",outcome.get("compare","branch "+str(outcome.get("branch","")))))
+	publishing = ""
 
 func apply_pending() -> void:
 	if pending.size() == 1 and pending[0].kind in ["commit","rule"]:

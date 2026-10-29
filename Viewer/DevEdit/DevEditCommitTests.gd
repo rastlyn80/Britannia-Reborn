@@ -40,6 +40,26 @@ func files() -> void:
 	check(plain.chunk_digest(Vector2i(1600,1536)) == "" and plain.digest() == "","no overrides, no digest (baseline stamps unchanged)")
 	check(Overrides.rule_matches({"rule":"name~weed;rect=1500,1500,1700,1700"},{"x":1600,"y":1590,"id":3271},"weed","grass") and not Overrides.rule_matches({"rule":"name~weed;rect=1500,1500,1550,1550"},{"x":1600,"y":1590,"id":3271},"weed","grass"),"rule name and rectangle matching")
 	check(DirAccess.get_files_at(Overrides.folder(dataset).path_join("history")).size() >= 2,"each commit keeps a history copy")
+	# Git sharing: each commit writes a change file with only its own edits.
+	var change := Overrides.read(first.change)
+	check(change.get("id","") == first.id and change.statics.size() == 1 and change.placed.size() == 1,"change file holds only that commit, with its id")
+	var published := dataset.path_join("published")
+	DirAccess.make_dir_recursive_absolute(published)
+	for f in DirAccess.get_files_at(published): DirAccess.remove_absolute(published.path_join(f))
+	DirAccess.copy_absolute(first.change,published.path_join(first.id+".overrides.json"))
+	var partly := Overrides.new()
+	partly.load_from(dataset,published)
+	check(partly.files.size() == 2 and partly.terrain["1600:1590"][0] == 7,"local copy still applies while one of its commits is unpublished")
+	var second_id: String = Overrides.read(Overrides.committed_path(dataset)).commits[-1]
+	DirAccess.copy_absolute(Overrides.folder(dataset).path_join("outgoing/%s.overrides.json" % second_id),published.path_join(second_id+".overrides.json"))
+	var shared := Overrides.new()
+	shared.load_from(dataset,published)
+	check(shared.files.size() == 2 and not shared.files.has(Overrides.committed_path(dataset)),"local copy skipped once every commit is published (pulled from Git)")
+	check(not shared.statics.has("1600:1590:20:3206:0") and shared.terrain["1600:1590"][0] == 7 and shared.rules.size() == 1,"a later published restore overrides an earlier published hide; terrain and rules merge")
+	# Another collaborator's published terrain is the base for my next delta.
+	DirAccess.remove_absolute(Overrides.committed_path(dataset))
+	var third := Overrides.commit(dataset,{"t:1600:1590":{"state":"h:1:-","author":"Cy"}},[],"Cy",published)
+	check(Overrides.read(third.change).terrain["1600:1590"][0] == 8,"terrain delta builds on published edits")
 
 func converter() -> void:
 	var directory := ProjectSettings.globalize_path("res://../outputs/britain")
