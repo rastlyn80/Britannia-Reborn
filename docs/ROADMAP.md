@@ -1,5 +1,7 @@
 # Horse riding checkpoint — 29 October 2026
 
+Owner follow-up: horse appearance must always follow native server identity/hue. Next expansion order is horse coat/hue fidelity, motion/clothing polish, the remaining human wardrobe and state/action gaps, then other mount families. Implementation gates and catalogue requirements are recorded in [CHARACTER_EXPANSION_PLAN.md](CHARACTER_EXPANSION_PLAN.md).
+
 Done: ordinary horse body/mount routing, source idle/walk/canter/rear, both human riders fitted to saddle/stirrups/reins, native mounting/dismounting and mounted movement, seven rider action categories, camera/picking/observer updates and prototype split riding garments. Verified: 2,468 runtime/contact checks, 384 GPU clothing views and 270 real server/two-client checks. Human category catalogue is now 35/35 connected, including 7/7 rider groups for supported ordinary horses; wearable scope stays 234/1,126 (20.78%). See [HORSE_RIDING.md](HORSE_RIDING.md).
 
 Next: owner visual review; improve split garment tailoring, action transitions and rein/weapon detail; author full climb-on/off motion, exact coat/tack variants, hoof contact on slopes and a complete horse hit/death/jump/gallop library. Other mount families still need their own art/rig/behaviour validation. Continue the existing wearable worklist independently; this milestone does not mean every mount or every human server variation is complete.
