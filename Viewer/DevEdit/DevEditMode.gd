@@ -70,6 +70,11 @@ var bake_started := 0
 var committing: Dictionary = {}
 var commit_digest := ""
 var commit_change := ""
+var code_preview: Dictionary = {}
+var code_after := false
+var code_example := -1
+var code_row: HBoxContainer
+var code_toggle: Button
 var publish_pid := 0
 var publishing := ""
 var follow_cursor := true
@@ -307,6 +312,11 @@ func review(lines: Array, ask_id: int, summary := "") -> void:
 	cancel()
 	pending.clear()
 	pending_ask = ask_id
+	if lines.size() == 1 and str(lines[0]).begins_with("codepreview "):
+		var p: Dictionary = commands.plan(str(lines[0]))
+		if p.ok:
+			review_code(str(p.id),ask_id)
+			return
 	var described: Array[String] = []
 	var targets: Array = []
 	var problems: Array[String] = []
@@ -329,6 +339,58 @@ func review(lines: Array, ask_id: int, summary := "") -> void:
 	text += "\nPress Accept to apply, Cancel to discard."
 	plan_label.text = text
 	refresh()
+
+# ---- Code fix previews: a converter change seen in the world before approval ----
+
+# scripts/code-preview.ps1 bakes the affected districts with the patched code
+# into <dataset>/previews/<id>/<mode>/ and writes preview.json (title,
+# description, districts, examples). Before/After swaps those districts live;
+# Accept tells Claude to make the change permanent, Cancel discards it.
+func review_code(id: String, ask_id: int) -> void:
+	var root: String = world.city_stream.dataset().path_join("previews").path_join(id)
+	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(root.path_join("preview.json"))) if FileAccess.file_exists(root.path_join("preview.json")) else null
+	var mode := "modern" if preload("res://Presentation/GraphicsMode.gd").modern() else "classic"
+	if not data is Dictionary or not DirAccess.dir_exists_absolute(root.path_join(mode)):
+		plan_label.text = "Code fix preview \"%s\" is not available on this computer for %s graphics." % [id,mode]
+		return
+	code_preview = data
+	code_preview.folder = root.path_join(mode)
+	code_preview.at = []
+	for d in data.get("districts",[]): code_preview.at.append(Vector2i(int(d[0]),int(d[1])))
+	pending = [{"ok":true,"kind":"codepreview","id":id,"targets":[],"description":"code fix "+id,"line":"codepreview "+id}]
+	pending_ask = ask_id
+	code_example = -1
+	overlay.set_beacons(data.get("examples",[]))
+	code_row.visible = true
+	show_code(true)
+	plan_label.text = "Code fix preview: %s
+%s
+Scope: %d district(s) rebuilt with the patched converter; %d example(s) marked with beacons (Next example). Use Before/After to compare.
+Accept makes it a permanent code change (committed by Claude, then the world is rebaked); Cancel discards it.
+Visual only: collision and gameplay stay as ModernUO has them." % [str(data.get("title",id)),str(data.get("description","")),code_preview.at.size(),data.get("examples",[]).size()]
+	refresh()
+
+func show_code(after: bool) -> void:
+	code_after = after
+	var reloading: int = world.city_stream.set_preview(str(code_preview.folder) if after else "",code_preview.get("at",[]))
+	code_toggle.text = "Showing: AFTER (fix)" if after else "Showing: BEFORE"
+	note("%s; %d nearby district(s) reload" % ["Showing the fix" if after else "Showing the current world",reloading])
+
+func next_example() -> void:
+	var examples: Array = code_preview.get("examples",[])
+	if examples.is_empty(): return
+	code_example = (code_example+1) % examples.size()
+	var e: Dictionary = examples[code_example]
+	var offset := Vector2(float(e.x)-game.player.x,float(e.y)-game.player.y)
+	var compass: String = ["east","south-east","south","south-west","west","north-west","north","north-east"][posmod(int(round(offset.angle()/(PI/4))),8)]
+	overlay.focus_beacon(code_example)
+	plan_label.text = "Example %d of %d: %s
+At %d, %d — %d tiles %s of you (beacon highlighted)." % [code_example+1,examples.size(),str(e.get("label","")),int(e.x),int(e.y),int(offset.length()),compass]
+
+func _end_code_preview() -> void:
+	if code_after: show_code(false)
+	overlay.set_beacons([])
+	if code_row: code_row.visible = false
 
 # ---- Commit: make the session's edits part of the converted world ----
 
@@ -431,6 +493,16 @@ func _poll_publish() -> void:
 	publishing = ""
 
 func apply_pending() -> void:
+	if pending.size() == 1 and pending[0].kind == "codepreview":
+		var id: String = pending[0].id
+		if pending_ask > 0: state.resolve(pending_ask,"applied",sender())
+		pending.clear()
+		pending_ask = 0
+		_end_code_preview()
+		note("Approved code fix "+id)
+		plan_label.text = "Approved: Claude now makes \"%s\" a permanent code change, runs the tests and rebakes the world; districts reload when it is done." % str(code_preview.get("title",id))
+		refresh()
+		return
 	if pending.size() == 1 and pending[0].kind in ["commit","rule"]:
 		var p: Dictionary = pending[0]
 		pending.clear()
@@ -525,6 +597,7 @@ func cancel() -> void:
 	follow_cursor = true
 	if not pending.is_empty():
 		if pending_ask > 0: state.resolve(pending_ask,"declined",sender())
+		if pending[0].kind == "codepreview": _end_code_preview()
 		pending.clear()
 		pending_ask = 0
 		state.clear_preview(sender())
@@ -718,6 +791,10 @@ func _build() -> void:
 	speak_box.tooltip_text = "Read answers aloud with the system voice"
 	asking.add_child(speak_box)
 	_voice_controls(column)
+	code_row = _row(column)
+	code_toggle = _button("Showing: AFTER (fix)","Switch the previewed districts between the fix and the current world",func(): show_code(not code_after),code_row)
+	_button("Next example","Highlight the next building the fix changes and say where it is",next_example,code_row)
+	code_row.visible = false
 	plan_label = _text(column,12,Color("ffe28a"))
 	var tools := _row(column)
 	for entry in [["select","Select","Select a static or placed object (click)"],["place","Place","Place an approved decorative asset (click the ground)"],["terrain","Terrain","Bounded terrain brush (click the ground)"]]:

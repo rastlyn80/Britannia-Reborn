@@ -354,6 +354,25 @@ func set_draft(target: String, desired: String, label: String) -> void:
 	draft = preview_node(target,desired,Color("ffd34d"),label)
 	if draft: add_child(draft)
 
+# Code fix previews: a tall marker over each example building the fix changes.
+var beacons: Array[Node3D] = []
+func set_beacons(examples: Array) -> void:
+	for b in beacons: b.queue_free()
+	beacons.clear()
+	for e in examples:
+		var at := scene_point(float(e.x)+0.5,float(e.y)+0.5,int(e.get("z",0)))
+		var root := Node3D.new()
+		root.position = at
+		root.add_child(box(Vector3(0,6,0),Vector3(0.25,12,0.25),Color("7ee08a")))
+		ghostify(root,Color("7ee08a"),"FIX · "+str(e.get("label","")).left(40))
+		root.get_child(root.get_child_count()-1).position = Vector3(0,12.5,0)
+		add_child(root)
+		beacons.append(root)
+
+func focus_beacon(index: int) -> void:
+	for i in beacons.size():
+		beacons[i].scale = Vector3.ONE*(1.8 if i == index else 1.0)
+
 # Draft of a reviewed plan (typed/spoken request, Claude proposal, group
 # action): the same previews the manual tools draw, one per planned change.
 func set_plan_draft(plans: Array) -> void:

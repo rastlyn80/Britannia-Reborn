@@ -49,6 +49,8 @@ signal districts_reloading(count: int)
 var stamps: Dictionary = {}
 var files: Dictionary = {}
 var reloading: Dictionary = {}
+var preview_folder := ""
+var preview_districts: Dictionary = {}
 var index_time := 0
 var next_index_check := 0
 var reloads := 0
@@ -126,7 +128,31 @@ func destination_ready(cell: Vector2i) -> bool:
 
 func path_for(kind: String, at: Vector2i) -> String:
  var name:="%s_%d_%d.res" % [kind,at.x,at.y]
+ if kind!="macro" and preview_districts.has(at) and FileAccess.file_exists(preview_folder.path_join(name)):return preview_folder.path_join(name)
  return folder.path_join(str(files.get(name,name)))
+
+# Code-fix preview (scripts/code-preview.ps1): the listed districts are read
+# from a separate preview bake instead of this cache, swapped in place like a
+# reload; an empty folder switches back. Returns how many districts reload.
+func set_preview(preview: String, districts: Array) -> int:
+ var affected:=preview_districts.duplicate()
+ preview_folder=preview
+ preview_districts.clear()
+ if not preview.is_empty():
+  for at in districts:
+   preview_districts[at]=true
+   affected[at]=true
+ var changed:=0
+ for at in affected:
+  if loaded.has(at):
+   reloading[at]=true
+   changed+=1
+  if far_nodes.has(at):
+   retire(far_nodes[at]);far_nodes.erase(at)
+ # The wanted set is keyed by file path; rebuild it so the new paths load.
+ if not known.is_empty():select_window()
+ if changed>0:districts_reloading.emit(changed)
+ return changed
 
 # The dataset this cache was baked from (overrides live beside it).
 func dataset() -> String:

@@ -53,6 +53,10 @@ func plan(line: String) -> Dictionary:
 	var a := line.strip_edges().split(" ",false)
 	if a.is_empty(): return fail(line,"empty command")
 	var verb := a[0].to_lower()
+	# A code fix to review in the world (scripts/code-preview.ps1); nothing is sent.
+	if verb == "codepreview":
+		if a.size() != 2 or RegEx.create_from_string("^[a-z][a-z0-9-]{2,40}$").search(a[1]) == null: return fail(line,"codepreview takes one preview id")
+		return {"ok":true,"line":line,"kind":"codepreview","id":a[1],"targets":[],"description":"code fix preview "+a[1]}
 	var all := a.size() > 2 and a[1] == "all"
 	if all:
 		var scope := resolve(a[2])

@@ -174,3 +174,20 @@ Evidence on a Ryzen 9 9900X (CPU only, small-q8_0, 12 threads):
 | Italian, CC0 sample, language set to Italian | about 2.4 s | Word-perfect; English translation good |
 
 With Auto, the small model misidentified the Italian sample as Latin; choosing the language avoids that, as does the larger model. The real microphone delivered 72,704 samples in 1.5 s at 48 kHz. Voice tests: 7/7 headless, plus the microphone check with `-Gpu`. Not yet exercised: a real person speaking into Talk in the running game.
+
+## Code fix previews (29 October 2026)
+
+Some requests need a converter code change, not a world edit, for example "the wall is peeking through the roof; fix all similar cases". The owner judges such fixes in the world before they become permanent code. `scripts/code-preview.ps1` runs the whole cycle:
+
+1. **`-New -Id <id>`** copies `Viewer` to `work/code-previews/<id>/Viewer`. The 6,789 code and text files are copied; the 9 GB of art is hard-linked, which takes about 30 s and no extra disk space. Claude edits only the copy; the main project and `main` stay untouched.
+2. **`-Bake -Districts "x,y;..."`** bakes those districts with the copy's code into `outputs/<region>/previews/<id>/<classic|modern>/` (`BakeStreaming.gd --preview-output --districts`). The published cache and its index are not touched, and batches add up, so the districts near the player can come first.
+3. **`-Publish -Title -Description -Examples "x,y,z,label;..."`** writes `preview.json`. Claude then proposes `codepreview <id>` in the conversation.
+4. **In game:** the proposal opens a review card. The changed districts swap to the preview bake in place (`LiveDistricts.set_preview`, the same no-restart path as Commit reloads), and beacons mark example buildings. **Before/After** flips between the published world and the fix; **Next example** says where each beacon is.
+   - **Accept** marks the request applied, and Claude runs `-Accept`: the changed files are copied into the main project, refused if any of them changed there meanwhile. Claude then runs the tests, commits and rebakes.
+   - **Cancel** declines; `-Discard` removes the copy and the preview bake.
+5. **`-Status`** lists the files a preview changes.
+
+Code fixes are client presentation only; collision and gameplay stay as ModernUO has them. Preview bakes are local to the machine that holds the dataset.
+
+`DevEdit/CodePreviewShots.gd` renders the same district from the cache and from a preview with one camera, to produce before/after pictures for diagnosis.
+

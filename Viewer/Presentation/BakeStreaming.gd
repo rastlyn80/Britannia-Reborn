@@ -183,9 +183,69 @@ func macros(data: RefCounted, frame: Vector2) -> Array:
   entries.append([at.x,at.y])
  return entries
 
+func bake_preview(folder: String, districts: Array) -> void:
+ var started:=Time.get_ticks_msec()
+ DirAccess.make_dir_recursive_absolute(folder)
+ var manual:=preload("res://Presentation/ManualOverrides.gd").new()
+ manual.load_from(directory)
+ var data:=preload("res://Presentation/AtlasData.gd").new()
+ if not data.open(directory.path_join("atlas.json")): push_error("Missing owned atlas data");quit(1);return
+ var known:={}
+ for entry in data.manifest.chunks:known[Vector2i(entry.x,entry.y)]=true
+ var plan:=preload("res://Presentation/RegionalContext.gd").new()
+ plan.overrides=manual
+ plan.prepare(data)
+ var frame:=Vector2(plan.world.originX,plan.world.originY)
+ for key in data.manifest.staticData:catalog_names[key]=str(data.manifest.staticData[key].get("name","tree"))
+ plan.reconstruction.source_origin=frame
+ preload("res://Presentation/SurfaceLibrary.gd").source_origin=frame
+ plan.terrain_material.set_shader_parameter("source_origin",frame)
+ var baked: Array=[]
+ for at in districts:
+  if not known.has(at):push_warning("Not a district of this dataset: "+str(at));continue
+  if not await bake_district(plan,data,frame,at,folder):quit(1);return
+  baked.append([at.x,at.y])
+  await process_frame
+ var report:={"districts":baked,"seconds":(Time.get_ticks_msec()-started)/1000.0,"mode":"modern" if preload("res://Presentation/GraphicsMode.gd").modern() else "classic"}
+ var file:=FileAccess.open(folder.path_join("baked.json"),FileAccess.WRITE);file.store_string(JSON.stringify(report));file.close()
+ print("STREAM BAKE PREVIEW: %d district(s) in %.0f s" % [baked.size(),report.seconds])
+ quit()
+
+# One district's near (compact, collision) and far scenes into folder.
+func bake_district(plan, data, frame: Vector2, at: Vector2i, folder: String) -> bool:
+ var tag:="%d_%d" % [at.x,at.y]
+ var near: Node3D=await plan.build_chunk(at,self,true)
+ near.position=Vector3.ZERO
+ var source: Dictionary=data.chunk(at)
+ var far:=make_far(near,source.statics,frame,plan.reconstruction.catalog)
+ var far_saved:=save_scene(far,folder.path_join("far_"+tag+".res"))
+ far.free()
+ if not far_saved:near.free();return false
+ Compact.new().apply(near)
+ var resource:=Prepared.new();resource.origin=at
+ resource.source_map=near.get_meta("source_map",{})
+ resource.source_info=near.get_meta("source_info",{})
+ resource.source_positions=near.get_meta("source_positions",{})
+ for tile in source.terrain: resource.land.append_array(PackedInt32Array([tile.id,tile.z]))
+ for tile in source.statics: resource.statics.append_array(PackedInt32Array([tile.id,(int(tile.x)-at.x)|((int(tile.y)-at.y)<<6),tile.z,tile.hue]))
+ if not save_scene(near,folder.path_join("near_"+tag+".res"),resource):near.free();return false
+ print("STREAM BAKE: ",at," / ",resource.parts.size()," compact parts / ",near.get_meta("collision_triangles",0)," collision triangles")
+ near.free()
+ return true
+
 func run() -> void:
+ # Code-fix preview: --preview-output=<folder> --districts=x,y;x,y bakes only
+ # those districts into the folder with this project's (patched) code and
+ # leaves the published cache and its index untouched.
+ var preview_output:=""
+ var preview_list: Array=[]
  for arg in OS.get_cmdline_user_args():
   if arg.begins_with("--dataset="): directory=arg.substr(10)
+  if arg.begins_with("--preview-output="): preview_output=arg.substr(17)
+  if arg.begins_with("--districts="):
+   for pair in arg.substr(12).split(";",false):
+    var xy:=pair.split(",")
+    if xy.size()==2:preview_list.append(Vector2i(int(xy[0]),int(xy[1])))
  directory=ProjectSettings.globalize_path(directory)
  # A bake with a missing (e.g. not yet imported) surface would be stamped as
  # current and silently keep blank materials; refuse it instead.
@@ -205,6 +265,9 @@ func run() -> void:
  signature+="modern-britain" if preload("res://Presentation/GraphicsMode.gd").modern() else "classic-britain"
  signature=signature.sha256_text()
  output=preload("res://Presentation/GraphicsMode.gd").prepared(directory)
+ if not preview_output.is_empty():
+  await bake_preview(preview_output,preview_list)
+  return
  DirAccess.make_dir_recursive_absolute(output)
  var index_path:=output.path_join("index.json")
  # Committed developer edits: only districts they touch are rebaked.
@@ -249,23 +312,7 @@ func run() -> void:
   stamps[tag]=expected.sha256_text().left(16)
   if not FileAccess.file_exists(stamp) or FileAccess.get_file_as_string(stamp).trim_suffix(":")!=expected.trim_suffix(":"):
    rebuilt+=1
-   var near: Node3D=await plan.build_chunk(at,self,true)
-   near.position=Vector3.ZERO
-   var source: Dictionary=data.chunk(at)
-   var far:=make_far(near,source.statics,frame,plan.reconstruction.catalog)
-   var far_saved:=save_scene(far,output.path_join("far_"+tag+".res"))
-   far.free()
-   if not far_saved:near.free();quit(1);return
-   Compact.new().apply(near)
-   var resource:=Prepared.new();resource.origin=at
-   resource.source_map=near.get_meta("source_map",{})
-   resource.source_info=near.get_meta("source_info",{})
-   resource.source_positions=near.get_meta("source_positions",{})
-   for tile in source.terrain: resource.land.append_array(PackedInt32Array([tile.id,tile.z]))
-   for tile in source.statics: resource.statics.append_array(PackedInt32Array([tile.id,(int(tile.x)-at.x)|((int(tile.y)-at.y)<<6),tile.z,tile.hue]))
-   if not save_scene(near,output.path_join("near_"+tag+".res"),resource):near.free();quit(1);return
-   print("STREAM BAKE: ",at," / ",resource.parts.size()," compact parts / ",near.get_meta("collision_triangles",0)," collision triangles")
-   near.free()
+   if not await bake_district(plan,data,frame,at,output):quit(1);return
    var marker:=FileAccess.open(stamp,FileAccess.WRITE);marker.store_string(expected);marker.close()
   entries.append([at.x,at.y])
   await process_frame

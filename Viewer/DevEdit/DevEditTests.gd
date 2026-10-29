@@ -118,6 +118,21 @@ func conversation() -> void:
 	var id: int = commands.send(plan)
 	check(id > 0 and sent.size() == 4 and sent[0] == "batch %d begin 2 hide" % id and sent[-1] == "batch %d commit" % id and sent.all(func(t: String): return t.length() <= 115),"batch sent as begin/add/commit within the speech limit")
 	check(not commands.plan("replace all kind=flower;near=1602,1591,8 999").ok,"group replace refuses unapproved assets")
+	var preview: Dictionary = commands.plan("codepreview gable-under-roof")
+	check(preview.ok and preview.kind == "codepreview" and preview.id == "gable-under-roof" and not commands.plan("codepreview ../etc").ok and not commands.plan("codepreview").ok,"codepreview names one safe preview id; nothing is sent")
+	# The live loader reads previewed districts from the preview bake, then back.
+	var live: Node = preload("res://Presentation/LiveDistricts.gd").new()
+	var folder := OS.get_user_data_dir().path_join("preview-test")
+	DirAccess.make_dir_recursive_absolute(folder)
+	FileAccess.open(folder.path_join("near_1408_1600.res"),FileAccess.WRITE).close()
+	live.folder = "C:/cache"
+	live.loaded[Vector2i(1408,1600)] = Node3D.new()
+	var reloads: int = live.set_preview(folder,[Vector2i(1408,1600),Vector2i(1472,1600)])
+	check(reloads == 1 and live.reloading.has(Vector2i(1408,1600)) and live.path_for("near",Vector2i(1408,1600)) == folder.path_join("near_1408_1600.res") and live.path_for("near",Vector2i(1472,1600)) == "C:/cache/near_1472_1600.res" and live.path_for("macro",Vector2i(1408,1600)).begins_with("C:/cache"),"preview districts read the preview bake (only where baked; never horizons)")
+	live.reloading.clear()
+	check(live.set_preview("",[]) == 1 and live.path_for("near",Vector2i(1408,1600)) == "C:/cache/near_1408_1600.res","switching back reloads the same district from the cache")
+	live.loaded[Vector2i(1408,1600)].free()
+	live.free()
 	commands.selection = ["s:1600:1590:20:3206:0","s:1603:1592:20:3204:0"]
 	var shift: Dictionary = commands.plan("shift all selection 1 -0.5")
 	check(shift.ok and shift.items[0][1] == "m:1601:1589.5:20:0:3206" and shift.items[1][1] == "m:1604:1591.5:20:0:3204","selection shift computes each absolute placement")
