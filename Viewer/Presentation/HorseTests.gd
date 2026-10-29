@@ -45,8 +45,8 @@ func run() -> void:
 				check(is_equal_approx(actor.human_visual.action_duration,1.44) and is_equal_approx(actor.animator.speed_scale,1.),"Mounted actions preserve server frame timing even while the horse canters faster")
 			check(actor.receive_native_action({"body":actor.initial_body,"protocol":"new","type":0,"subaction":1}) and actor.human_visual.action_clip=="Rider_Bow","New protocol ranged attack selects its seated action")
 		actor.apply_server_appearance({"body":actor.initial_body,"hue":1002},[])
-		await create_timer(.4).timeout
-		check(actor.horse_visual==null and actor.human_visual.position.length()<.001,"Server unequip releases rider and returns the body to ground")
+		await create_timer(1.7).timeout
+		check(actor.horse_visual==null and absf(actor.human_visual.position.y)<.001 and actor.ground_visual_offset.length()<1.,"Server unequip completes the leg-over dismount beside the horse without moving the authoritative root")
 		actor.apply_server_appearance({"body":actor.initial_body},[{"id":0x3e90,"layer":25}])
 		check(actor.horse_visual==null and not actor.human_visual.mounted_live_enabled and actor.has_meta("deferred_mount"),"Unknown/non-horse mount is explicit and never becomes a horse")
 		actor.free()

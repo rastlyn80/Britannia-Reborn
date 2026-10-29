@@ -85,6 +85,8 @@ if (Test-Path "$root/Viewer/local-art/free-equipment-female/coverage/crossbow.gl
 if (Test-Path "$root/Viewer/local-art/horses/warhorse.glb") {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/HorseTests.gd
   if ($LASTEXITCODE) { throw 'Horse identity, mounted actions and rider contact checks failed' }
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/HorsePolishTests.gd
+  if ($LASTEXITCODE) { throw 'Horse appearance, transitions and slope support checks failed' }
 }
 & $godot --headless --path "$root\Viewer" --script res://Presentation/PresentationTests.gd
 if ($LASTEXITCODE) { throw 'Presentation tests failed' }

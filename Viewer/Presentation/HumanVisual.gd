@@ -22,6 +22,7 @@ var mounted := false
 # Explicit local rider preview remains available independently of live mounting.
 var rider_preview_enabled := false
 var mounted_live_enabled := false
+var mount_transition_active:=false
 var native_action := {}
 var action_clip := ""
 var action_elapsed := 0.
@@ -147,6 +148,9 @@ func set_equipment(worn: Array) -> void:
 	var gloves: bool = extra_parts.has("hands") and ResourceLoader.exists(folder+"/expansion/body-mask-%02d-gloves.glb" % mask_bits)
 	var masked := mask_bits!=0 or gloves
 	var needs_undercoat: bool=(extra_parts.has("torso") or extra_parts.has("arms") or extra_parts.has("gorget")) and not (outfit_bits&9) and not extra_parts.has("shirt") and not extra_parts.has("doublet")
+	# The riding robe opens/flexes at the waist. A continuous cloth lining,
+	# matching the existing armour backing, prevents exposed torso seams.
+	needs_undercoat=needs_undercoat or (riding() and (outfit_bits&8)!=0)
 	var hide_hair := (outfit_bits&16)!=0 or extra_parts.has("head")
 	var hide_beard: bool = extra_parts.has("head") and str(extra_parts.head.asset)=="closed_helmet"
 	grip.holding = extra_parts.has("weapon")
@@ -187,7 +191,9 @@ func set_equipment(worn: Array) -> void:
 			_shade(garment,hue)
 	if needs_undercoat:
 		var lining_path:=_part_path("coverage/armour_undercoat")
-		if ResourceLoader.exists(lining_path):_attach(lining_path,"Extra_")
+		if ResourceLoader.exists(lining_path):
+			_attach(lining_path,"Extra_")
+			if riding() and (outfit_bits&8)!=0:_shade(parts[-1],int(resolved.hues.get("robe",0)))
 		else:
 			for slot in ["torso","arms","gorget"]:
 				if extra_parts.has(slot):missing_art.append(int(extra_parts[slot].id))
@@ -245,7 +251,7 @@ func play(clip: String, blend: float = .15) -> void:
 	animator.play(clip,blend)
 	if preload("res://Presentation/HumanActions.gd").locomotion(previous) and preload("res://Presentation/HumanActions.gd").locomotion(clip): animator.seek(fmod(phase,1.)*animator.current_animation_length,true)
 
-func riding() -> bool:return mounted and (mounted_live_enabled or rider_preview_enabled)
+func riding() -> bool:return mount_transition_active or (mounted and (mounted_live_enabled or rider_preview_enabled))
 
 func stance_clip(base: String) -> String:
 	if motion_profile.is_empty(): return base

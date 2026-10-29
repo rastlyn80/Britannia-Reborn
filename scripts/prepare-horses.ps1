@@ -37,6 +37,9 @@ if (!$VerifyOnly) {
    if ((Get-FileHash -LiteralPath $target).Hash.ToLowerInvariant() -ne $file.Value) { throw "Changed horse member $($file.Name)" }
   }
  } finally { $zip.Dispose() }
+ $blender=(Get-ChildItem "$root/.tools/blender/*/blender.exe"|Select-Object -First 1).FullName
+ & $blender --background --factory-startup --python-exit-code 1 --python "$root/scripts/prepare-horse-regions.py"
+ if ($LASTEXITCODE) { throw 'Horse coat/tack region preparation failed' }
  if (Test-Path "$root/Viewer/local-art/free-equipment-female/expansion/kilt.glb") {
   $blender=(Get-ChildItem "$root/.tools/blender/*/blender.exe"|Select-Object -First 1).FullName
   & $blender --background --factory-startup --python-exit-code 1 --python "$root/scripts/prepare-riding-clothes.py"

@@ -1,3 +1,7 @@
+# Horse colour/motion checkpoint — 29 October 2026
+
+Expansion batches 1 and 2 are implemented: four native coats/hues and riding polish, including an interruptible leg-over sequence, ground/rein fitting and lined riding garments. Evidence, limits and the separate animal/action worklist: [HORSE_POLISH.md](HORSE_POLISH.md). Next: owner review; remaining exact coat/cloth/cadence/reaction quality, horse corpse presentation and unsupported animal actions; then resume missing human wearables without changing the catalogue denominator. Other mount families remain deferred. Shared uncommitted bridge fixture diagnostics are recorded separately and that work is preserved.
+
 # Horse riding checkpoint — 29 October 2026
 
 Owner follow-up: horse appearance must always follow native server identity/hue. Next expansion order is horse coat/hue fidelity, motion/clothing polish, the remaining human wardrobe and state/action gaps, then other mount families. Implementation gates and catalogue requirements are recorded in [CHARACTER_EXPANSION_PLAN.md](CHARACTER_EXPANSION_PLAN.md).

@@ -34,8 +34,12 @@ for female in [False,True]:
   fabric=Counter(p.material_index for p in ob.data.polygons).most_common(1)[0][0]
   bm=bmesh.new();bm.from_mesh(ob.data);groups=bm.verts.layers.deform.active
   def sleeve(v):return groups and any(ob.vertex_groups[i].name.startswith(('upperarm','lowerarm','hand','clavicle')) and w>.05 for i,w in v[groups].items())
-  remove=[f for f in bm.faces if all(v.co.z<waist+.025 for v in f.verts) and not any(sleeve(v) for v in f.verts)]
-  bmesh.ops.delete(bm,geom=remove,context='FACES');bm.to_mesh(ob.data);bm.free()
+  torso=[f for f in bm.faces if not any(sleeve(v) for v in f.verts)]
+  geometry=set(torso)|{e for f in torso for e in f.edges}|{v for f in torso for v in f.verts}
+  # A clean cut avoids leaving isolated original rope-belt triangles at the
+  # seam. Sleeve geometry below waist height is deliberately excluded.
+  bmesh.ops.bisect_plane(bm,geom=list(geometry),plane_co=(0,0,waist+.09),plane_no=(0,0,1),clear_inner=True,clear_outer=False)
+  bm.to_mesh(ob.data);bm.free()
   for vertex in ob.data.vertices:
    replacements=[(g.group,g.weight) for g in vertex.groups if ob.vertex_groups[g.group].name.startswith('robe_')]
    if replacements:
@@ -44,19 +48,28 @@ for female in [False,True]:
     pelvis=ob.vertex_groups.get('pelvis') or ob.vertex_groups.new(name='pelvis');pelvis.add([vertex.index],amount,'ADD')
   panel=bpy.data.meshes.new('Tailored_riding_panels');verts=[];faces=[];skin=[];uvs=[];steps=24
   hem=(.28 if name=='robe' else .42 if name=='skirt' else .62)*ratio
-  levels=[waist+.07,waist-.02,waist-.12]+[waist-.12+(hem-(waist-.12))*i/6 for i in range(1,7)]
+  levels=[waist+.14,waist+.015,waist-.10]+[waist-.10+(hem-(waist-.10))*i/6 for i in range(1,7)]
   for side in [-1,1]:
    start=len(verts);tree,refs=trees[side]
    for j,z in enumerate(levels):
     near=[p for i,p in enumerate(points) if i in lower and p.x*side>.015 and abs(p.z-z)<.055*ratio]
     centre=Vector((side*.11*ratio,0,z))
     if near:centre.x=(min(p.x for p in near)+max(p.x for p in near))*.5;centre.y=(min(p.y for p in near)+max(p.y for p in near))*.5
-    rx=max([abs(p.x-centre.x) for p in near]+[.045*ratio])+.065*ratio
-    ry=max([abs(p.y-centre.y) for p in near]+[.045*ratio])+.065*ratio
+    ease=(.035+.015*j/(len(levels)-1))*ratio
+    rx=max([abs(p.x-centre.x) for p in near]+[.045*ratio])+ease
+    ry=max([abs(p.y-centre.y) for p in near]+[.045*ratio])+ease
+    if j<2:
+     # Both side panels meet as one waist, rather than two separate tubes.
+     seam=[p for p in points if abs(p.z-z)<.06*ratio and abs(p.x)<.26*ratio]
+     centre.x=0.;centre.y=0.
+     rx=(.182 if j==0 else .205)*ratio
+     ry=(.115 if j==0 else .140)*ratio
     for i in range(steps+1):
-     angle=-2.05+4.10*i/steps;co=centre+Vector((side*rx*math.cos(angle),ry*math.sin(angle),0));verts.append(co)
+     angle=-1.69+3.38*i/steps
+     fold=1.+.025*math.sin(angle*6.)*j/(len(levels)-1)
+     co=centre+Vector((side*rx*math.cos(angle)*fold,ry*math.sin(angle)*fold,0));verts.append(co)
      point,normal,face,distance=tree.find_nearest(co);weights={}
-     if j<2:weights={'pelvis':1.}
+     if j==1:weights={'pelvis':1.}
      else:
       ids=refs[face];factors=[1/max((points[k]-point).length,.0001)**2 for k in ids];total=sum(factors)
       for k,factor in zip(ids,factors):
@@ -71,10 +84,10 @@ for female in [False,True]:
   # traced cloth material, rather than accidentally repeating that atlas.
   cloth=bpy.data.materials.new('Riding_woven_cloth');cloth.use_nodes=True;n=cloth.node_tree.nodes;l=cloth.node_tree.links;s=n.get('Principled BSDF');s.inputs['Roughness'].default_value=.9
   tex=n.new('ShaderNodeTexImage');tex.image=bpy.data.images.load(str(ROOT/'Viewer/Art/MedievalKit/textures/Linen_Color.jpg'),check_existing=True)
-  tint=n.new('ShaderNodeMixRGB');tint.blend_type='MULTIPLY';tint.inputs[0].default_value=1.;tint.inputs[2].default_value=(.26,.18,.12,1);l.new(tex.outputs['Color'],tint.inputs[1]);l.new(tint.outputs['Color'],s.inputs['Base Color'])
+  tint=n.new('ShaderNodeMixRGB');tint.blend_type='MULTIPLY';tint.inputs[0].default_value=1.;tint.inputs[2].default_value=(.52,.38,.29,1);l.new(tex.outputs['Color'],tint.inputs[1]);l.new(tint.outputs['Color'],s.inputs['Base Color'])
   # Bake only this simple material multiplication for standard glTF export.
   import numpy as np
-  source=tex.image;data=np.empty(len(source.pixels),np.float32);source.pixels.foreach_get(data);data=data.reshape(source.size[1],source.size[0],4);data[:,:,:3]*=(.26,.18,.12)
+  source=tex.image;data=np.empty(len(source.pixels),np.float32);source.pixels.foreach_get(data);data=data.reshape(source.size[1],source.size[0],4);data[:,:,:3]*=(.52,.38,.29)
   image=bpy.data.images.new('Riding_brown_linen',source.size[0],source.size[1]);image.pixels.foreach_set(data.ravel());image.filepath_raw=str(ROOT/'work/horse-session/riding-brown-linen.png');image.file_format='PNG';image.save();tex.image=image;l.new(tex.outputs['Color'],s.inputs['Base Color'])
   panel.materials.append(cloth);uv=panel.uv_layers.new(name='UVMap')
   for polygon in panel.polygons:

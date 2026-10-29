@@ -1,7 +1,10 @@
 extends Node3D
 ## Licensed horse art; server body/mount identities remain authoritative.
 const PATH := "res://local-art/horses/warhorse.glb"
+const REGIONS_PATH := "res://local-art/horses/warhorse-regions.glb"
 const BODIES := {0xc8:0x3e9f,0xe2:0x3ea0,0xe4:0x3ea1,0xcc:0x3ea2}
+# Matched to private original stand frames, not inferred from array order.
+const COATS := {0xc8:["golden tan",Color("b6a07b")],0xe2:["dapple grey",Color("9c9f9f")],0xe4:["dun",Color("96846a")],0xcc:["dark brown",Color("5e4130")]}
 var model: Node3D
 var skeleton: Skeleton3D
 var animator: AnimationPlayer
@@ -11,6 +14,13 @@ var native_hue := 0
 var identity_key := ""
 var reins: MeshInstance3D
 var rein_mesh := ImmediateMesh.new()
+var contact: SkeletonModifier3D
+var target_rate:=1.
+var lean:=0.
+var acceleration:=0.
+var last_speed:=0.
+var action_remaining:=0.
+var dead:=false
 static func available() -> bool:return ResourceLoader.exists(PATH)
 static func mount_item(worn: Array) -> Dictionary:
 	for item: Dictionary in worn:
@@ -23,13 +33,15 @@ static func horse_body(item: int) -> int:
 static func step_seconds(worn: Array, running: bool) -> float:
 	return (.10 if running else .20) if not mount_item(worn).is_empty() else (.20 if running else .40)
 func _ready() -> void:
-	model=load(PATH).instantiate();add_child(model)
+	model=load(REGIONS_PATH if ResourceLoader.exists(REGIONS_PATH) else PATH).instantiate();add_child(model)
 	skeleton=model.find_children("*","Skeleton3D",true,false)[0]
 	animator=model.find_children("*","AnimationPlayer",true,false)[0]
 	var library:=animator.get_animation_library("").duplicate(true)
 	animator.remove_animation_library("");animator.add_animation_library("",library)
-	for clip in ["idle","walk","canter"]:animator.get_animation(clip).loop_mode=Animation.LOOP_LINEAR
+	preload("res://Presentation/HorseMotion.gd").install(animator,skeleton)
+	for clip in ["idle","walk","canter","gallop"]:animator.get_animation(clip).loop_mode=Animation.LOOP_LINEAR
 	animator.play("idle")
+	contact=preload("res://Presentation/HorseContact.gd").new();skeleton.add_child(contact)
 	reins=MeshInstance3D.new();reins.name="RiderReins";reins.mesh=rein_mesh;add_child(reins)
 	var leather:=StandardMaterial3D.new();leather.albedo_color=Color("30251d");leather.roughness=.85;reins.material_override=leather
 	apply_identity(native_body,native_hue)
@@ -38,6 +50,7 @@ func apply_identity(body: int,hue: int) -> void:
 	if key==identity_key and model!=null:return
 	native_body=body;native_hue=hue
 	set_meta("native_body",body);set_meta("native_hue",hue)
+	set_meta("coat_name",COATS.get(body,COATS[0xcc])[0])
 	if model==null:return
 	identity_key=key
 	for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
@@ -51,6 +64,10 @@ func apply_identity(body: int,hue: int) -> void:
 			material.set_shader_parameter("hue_palette",preload("res://Presentation/HumanHue.gd").palette(hue))
 			material.set_shader_parameter("use_hue",preload("res://Presentation/HumanHue.gd").palette(hue)!=null)
 			material.set_shader_parameter("partial_hue",(hue&0x8000)!=0)
+			material.set_shader_parameter("coat_colour",COATS.get(body,COATS[0xcc])[1])
+			material.set_shader_parameter("coat_change",0. if body==0xcc else 1.)
+			material.set_shader_parameter("grey_coat",body==0xe2)
+			material.set_shader_parameter("use_vertex_regions",ResourceLoader.exists(REGIONS_PATH))
 			mesh.set_surface_override_material(surface,material)
 func socket(name: String, rotation_delta: bool = false) -> Transform3D:
 	var index:=skeleton.find_bone(name)
@@ -61,13 +78,42 @@ func seat() -> Transform3D:return socket("saddle_socket",true)
 func stirrup(left: bool) -> Vector3:
 	return socket("stirrup_L" if left else "stirrup_R").origin+seat().basis*Vector3(.025 if left else -.025,-.245,0)
 func play_gait(moving: bool,speed: float) -> void:
-	var clip:="idle" if not moving else "canter" if speed>3.2 else "walk"
-	if current_clip=="rear" and animator.is_playing():return
+	var fast:=speed>(2.9 if current_clip in ["canter","gallop"] else 3.6)
+	var galloping:=speed>(6.0 if current_clip=="gallop" else 6.8)
+	var clip:="idle" if not moving else "gallop" if galloping else "canter" if fast else "walk"
+	if dead or action_remaining>0. or (current_clip=="rear" and animator.is_playing()):return
 	if current_clip!=clip:
-		current_clip=clip;animator.play(clip,.18)
-	animator.speed_scale=1. if not moving else clampf(speed/(5. if clip=="canter" else 1.8),.65,1.65)
+		var phase:=animator.current_animation_position/maxf(.001,animator.current_animation_length)
+		var travelling:=current_clip in ["walk","canter","gallop"] and clip in ["walk","canter","gallop"]
+		current_clip=clip;animator.play(clip,.28 if clip=="idle" else .24)
+		if travelling:animator.seek(fmod(phase,1.)*animator.get_animation(clip).length,true)
+	target_rate=1. if not moving else clampf(speed/(8.5 if clip=="gallop" else 5. if clip=="canter" else 1.8),.65,1.65)
+func motion(speed: float,turn_rate: float,delta: float) -> void:
+	lean=lerpf(lean,clampf(turn_rate*minf(speed,6.)*.009,-.065,.065),1.-exp(-6.*delta))
+	acceleration=lerpf(acceleration,clampf((speed-last_speed)/maxf(delta,.001)*.0015,-.035,.035),1.-exp(-7.*delta));last_speed=speed
+func _process(delta: float) -> void:
+	if action_remaining>0.:
+		action_remaining=maxf(0.,action_remaining-delta)
+		if action_remaining==0. and dead:animator.seek(animator.current_animation_length,true);animator.pause()
+	elif current_clip!="rear" and not dead:animator.speed_scale=lerpf(animator.speed_scale,target_rate,1.-exp(-8.*delta))
+	if contact!=null:
+		model.rotation.x=lerp_angle(model.rotation.x,-contact.support_tilt.x+acceleration,1.-exp(-7.*delta))
+		model.rotation.z=lerp_angle(model.rotation.z,contact.support_tilt.y+lean,1.-exp(-7.*delta))
+func _physics_process(_delta: float) -> void:
+	if contact!=null:contact.sample(get_world_3d().direct_space_state,global_position)
 func rear() -> void:
+	if dead:return
 	current_clip="rear";animator.speed_scale=1.;animator.play("rear",.15)
+func receive_action(request: Dictionary) -> bool:
+	var clip:=""
+	if str(request.get("protocol",""))=="classic":clip=str({0:"walk",1:"gallop",2:"idle",5:"rear",6:"rear",7:"rear",8:"death",9:"idle",10:"idle",12:"death"}.get(int(request.get("action",-1)),""))
+	elif str(request.get("protocol",""))=="new":clip=str({0:"rear",3:"death",4:"hit"}.get(int(request.get("type",-1)),""))
+	if clip.is_empty():set_meta("unsupported_action",request.duplicate(true));return false
+	if dead and clip!="death":return false
+	current_clip=clip;dead=clip=="death";contact.enabled=not dead
+	var duration:=preload("res://Presentation/HumanActions.gd").duration(request,animator.get_animation(clip).length)
+	action_remaining=duration;animator.speed_scale=1.;animator.play(clip,.12,animator.get_animation(clip).length/duration)
+	set_meta("native_action",request.duplicate(true));return true
 func set_reins(left: Vector3,right: Vector3) -> void:
 	rein_mesh.clear_surfaces()
 	var mouth:=socket("mouth_socket").origin

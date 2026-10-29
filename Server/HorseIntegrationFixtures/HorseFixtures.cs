@@ -75,6 +75,11 @@ public static class HorseFixtures
             }
             owner.SendMessage("UCHORSE|blocked");
         }
+        else if (command == "colour" && args.Length > 1 && Horses.TryGetValue(owner, out var colouredHorse))
+        {
+            colouredHorse.Hue = args.GetInt32(1) & 0xFFFF;
+            owner.SendMessage($"UCHORSE|colour|{colouredHorse.Hue}");
+        }
         else if (command == "action" && owner.Mounted && args.Length > 1)
         {
             var action = args.GetInt32(1);

@@ -1,5 +1,7 @@
 # Ordinary horses and human riders — 29 October 2026
 
+**Latest milestone:** four matched native base coats, full/partial hues, leg-over mounting/dismounting, gait/ground/rein improvements and fitted riding garments are implemented. See [HORSE_POLISH.md](HORSE_POLISH.md) for the current evidence and remaining gaps. The first-batch account below is retained as the baseline and source/licence record; its shared-coat and simple-transition limitations are superseded by that milestone.
+
 Ordinary horses now render as genuine skinned 3D animals, alone and under male/female human riders. Mounting, dismounting, ownership, speed and world position remain controlled by pinned ModernUO. Double-click an owned horse to mount; double-click the rider to dismount. The client consumes native mobile/equipment updates and the layer-25 mount item; it never invents ownership or a successful mount.
 
 ## Implemented scope

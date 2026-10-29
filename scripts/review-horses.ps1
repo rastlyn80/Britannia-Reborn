@@ -1,4 +1,4 @@
-param([string]$Capture='', [switch]$Walk, [switch]$Run)
+param([string]$Capture='', [switch]$Walk, [switch]$Run, [switch]$Coats, [int]$Hue=0, [switch]$MountCycle)
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent
 $godot=(Get-ChildItem "$root/.tools/godot/*console.exe"|Select-Object -First 1).FullName
@@ -8,5 +8,8 @@ $options=@()
 if ($Capture) { $options+="--capture=$Capture" }
 if ($Walk) { $options+='--walk' }
 if ($Run) { $options+='--run' }
+if ($Coats) { $options+='--coats' }
+if ($Hue) { $options+="--hue=$Hue" }
+if ($MountCycle) { $options+='--mount-cycle' }
 & $godot --path "$root/Viewer" --script res://Presentation/HorseReview.gd -- @options
 if ($LASTEXITCODE) { throw 'Horse review failed' }

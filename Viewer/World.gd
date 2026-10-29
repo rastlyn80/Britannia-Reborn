@@ -378,7 +378,7 @@ func _process(delta: float) -> void:
 		avatars[serial].animate(travelled > 0.00001,intent_facing if serial == player_serial else directions[serial],delta,travelled/maxf(delta,0.00001))
 	if game.phase == "world" and avatars.has(player_serial):
 		var avatar: Node3D = avatars[player_serial]
-		var follow := avatar.position+Vector3(0,float(avatar.get_meta("camera_height",1.4))+avatar.ground_offset+avatar.jump.height*0.25,0)
+		var follow: Vector3 = avatar.position+avatar.get_meta("camera_visual_offset",Vector3.ZERO)+Vector3(0,float(avatar.get_meta("camera_height",1.4))+avatar.ground_offset+avatar.jump.height*0.25,0)
 		pivot.position = pivot.position.lerp(follow,1.0-exp(-18.0*delta)) if camera_target_ready else follow
 		camera_target_ready = true
 		avatar.visual_root.visible = boom.get_hit_length() > 1.15

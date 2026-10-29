@@ -1,3 +1,9 @@
+# Horse colours and riding polish — 29 October 2026
+
+Implemented four native base coats (matched against private original stand frames) and server-driven full/partial hues, stable coat/tack regions, cycle-preserving gait transitions, turn balance, real bounded hoof support, authored interruptible leg-over mount/dismount, fitted riding garments and continuous robe lining. Camera/nameplate/picking track the dismounted visual body. Added canter-derived fast gait and prototype hit/death poses; corpse art, eating/lying, distinct fidgets and other mount families remain gaps. No source textures, bind/UV inputs, authoritative coordinates or upstream source changed.
+
+Evidence: 414 native server/observer/re-entry checks; 134 actual GPU appearance checks; expanded 512 clothing views; 267 runtime/transition/slope checks and the prior 2,468 saddle/runtime checks. Latest evidence and finite-test limits: [HORSE_POLISH.md](HORSE_POLISH.md); separate worklist: `Viewer/Presentation/horse-catalogue.json`. Human wearables remain 234/1,126 (20.78%). Shared verify passes assertions but reports an error in concurrent uncommitted bridge fixture handling; committed reconstruction passes the same street tests. That parallel work is preserved.
+
 # Ordinary horses and seated human actions — 29 October 2026
 
 Implemented the first horse batch in the shared client: real skinned horse art with idle/walk/canter/rear, male and female saddle/stirrup/rein fitting, native double-click mounting/dismounting, mounted speed/camera/picking and observer updates. The four ordinary UO horse identities currently share one dark-bay warhorse. Seven rider groups now connect live; other mount families, exact coats, climb-on motion and the full animal action library remain deferred. Riding robe/skirt/kilt variants keep covered legs opaque; final tailoring remains open.

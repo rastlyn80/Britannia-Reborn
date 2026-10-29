@@ -9,7 +9,9 @@ var native_body := 0
 var server_appearance := {}
 var horse_visual: Node3D
 var rider_contact: SkeletonModifier3D
-var dismount_time:=0.
+var appearance_seen:=false
+var retiring_horse:=false
+var ground_visual_offset:=Vector3.ZERO
 
 func _ready() -> void:
 	if Horse.BODIES.has(initial_body) and Horse.available():
@@ -20,6 +22,7 @@ func _ready() -> void:
 	else: super._ready()
 
 func _switch_human(is_female: bool) -> void:
+	retiring_horse=false;ground_visual_offset=Vector3.ZERO
 	if visual_root.get_parent() == null: add_child(visual_root)
 	if foot_contact.get_parent(): foot_contact.get_parent().remove_child(foot_contact)
 	horse_visual=null;rider_contact=null
@@ -80,14 +83,20 @@ func _sync_mount(worn: Array) -> void:
 		if horse_visual==null:
 			horse_visual=Horse.new();visual_root.add_child(horse_visual)
 			rider_contact=preload("res://Presentation/HorseRider.gd").new();rider_contact.rider=human_visual;rider_contact.horse=horse_visual;human_visual.skeleton.add_child(rider_contact)
+			rider_contact.begin_mount(appearance_seen)
 			human_visual.cancel_action()
-			dismount_time=0.
+		elif retiring_horse:rider_contact.begin_mount(true)
+		retiring_horse=false;horse_visual.visible=true;ground_visual_offset=Vector3.ZERO;human_visual.mount_transition_active=false
 		horse_visual.apply_identity(body,int(item.get("hue",0)))
 		human_visual.grip.holding=true;human_visual.grip.left_holding=true
 	else:
-		if rider_contact!=null:rider_contact.free();rider_contact=null
-		if horse_visual!=null:
-			horse_visual.free();horse_visual=null;dismount_time=.3;human_visual.cancel_action()
+		if not item.is_empty() and horse_visual!=null:
+			_finish_dismount();ground_visual_offset=Vector3.ZERO;human_visual.position=Vector3.ZERO
+		if horse_visual!=null and not retiring_horse:
+			retiring_horse=true;human_visual.mount_transition_active=true;human_visual.cancel_action();rider_contact.begin_dismount()
+			# The server returns the real loose horse immediately. Keep only its
+			# invisible animated sockets while this rider steps off, avoiding twins.
+			horse_visual.visible=false
 		if not item.is_empty():set_meta("deferred_mount",item)
 		elif has_meta("deferred_mount"):remove_meta("deferred_mount")
 	_update_pick_volume(supported or Horse.BODIES.has(native_body))
@@ -96,16 +105,42 @@ func _update_pick_volume(large: bool) -> void:
 	for child in get_children():
 		if child is StaticBody3D and child.has_meta("server_mobile"):
 			var shape: CollisionShape3D=child.get_child(0)
+			shape.position.x=0.;shape.position.z=0.
 			if large:
 				var box:=BoxShape3D.new();box.size=Vector3(1.,2.7 if human_visual!=null else 2.1,2.6);shape.shape=box;shape.position.y=box.size.y/2.
 			else:
 				var capsule:=CapsuleShape3D.new();capsule.radius=.35;capsule.height=1.9;shape.shape=capsule;shape.position.y=.95
 
 func _process(delta: float) -> void:
-	if dismount_time>0. and human_visual!=null:
-		dismount_time=maxf(0.,dismount_time-delta)
-		human_visual.position=human_visual.position.lerp(Vector3.ZERO,minf(1.,delta*18.)) if dismount_time>0. else Vector3.ZERO
-		human_visual.quaternion=human_visual.quaternion.slerp(Quaternion.IDENTITY,minf(1.,delta*18.)) if dismount_time>0. else Quaternion.IDENTITY
+	if retiring_horse and rider_contact!=null and rider_contact.finished:_finish_dismount()
+	if human_visual!=null and not human_visual.riding() and ground_visual_offset.length_squared()>.00001:
+		if walking:ground_visual_offset=ground_visual_offset.lerp(Vector3.ZERO,1.-exp(-12.*delta))
+		human_visual.position=ground_visual_offset
+	var offset: Vector3=ground_visual_offset if human_visual!=null and not human_visual.riding() else Vector3.ZERO
+	set_meta("camera_visual_offset",global_basis*offset)
+	var plate:=get_node_or_null("Nameplate")
+	if plate!=null:plate.position.x=offset.x;plate.position.z=offset.z
+	for child in get_children():
+		if child is StaticBody3D and child.has_meta("server_mobile"):
+			var shape: CollisionShape3D=child.get_child(0);shape.position.x=offset.x;shape.position.z=offset.z
+
+func _finish_dismount() -> void:
+	ground_visual_offset=Vector3(human_visual.position.x,0.,human_visual.position.z)
+	if rider_contact!=null:rider_contact.free();rider_contact=null
+	if horse_visual!=null:horse_visual.free();horse_visual=null
+	retiring_horse=false;human_visual.mount_transition_active=false;human_visual.quaternion=Quaternion.IDENTITY
+	human_visual.position=ground_visual_offset;human_visual.appearance_key="";human_visual.set_equipment(human_visual.server_equipment)
+	human_visual.cancel_action();human_visual.play(human_visual.stance_clip("Idle"));foot_contact.grounded=true
+
+func _physics_process(delta: float) -> void:
+	super._physics_process(delta)
+	if rider_contact==null or rider_contact.mode!="mount" or rider_contact.progress>.15:return
+	var space:=get_world_3d().direct_space_state
+	var top:=global_position+Vector3.UP*2.65
+	var side:=global_basis.x*.85
+	for line in [[top,top+Vector3.UP*.85],[global_position+Vector3.UP*1.1,global_position+Vector3.UP*1.1+side],[top,top+side]]:
+		if not space.intersect_ray(PhysicsRayQueryParameters3D.create(line[0],line[1],1)).is_empty():
+			rider_contact.begin_mount(false);set_meta("mount_transition_skipped","bounded geometry clearance");return
 
 func apply_server_appearance(entity: Dictionary, worn: Array, details: Dictionary = {}) -> void:
 	server_appearance = details.duplicate(true) if not details.is_empty() else preload("res://Network/MobileAppearance.gd").profile(entity,worn)
@@ -134,14 +169,19 @@ func apply_server_appearance(entity: Dictionary, worn: Array, details: Dictionar
 	if human_visual == null or human_visual.female != sex: _switch_human(sex)
 	human_visual.set_skin(int(entity.get("hue",1002)))
 	human_visual.war_mode=(int(entity.get("flags",0))&0x40)!=0
+	if horse_visual!=null and human_visual.mounted_live_enabled and Horse.mount_item(worn).is_empty():human_visual.mount_transition_active=true
 	human_visual.set_equipment(worn)
 	_sync_mount(worn)
+	appearance_seen=true
 	if not walking and human_visual.action_clip.is_empty():human_visual.play(human_visual.stance_clip("Idle"))
 	set_meta("native_body",body)
 	set_meta("art_status","human category replacement")
 
 func receive_native_action(request: Dictionary) -> bool:
-	if human_visual==null:return false
+	if human_visual==null:return horse_visual.receive_action(request) if horse_visual!=null else false
+	if retiring_horse:
+		_finish_dismount()
+	elif rider_contact!=null and rider_contact.mode!="seated":rider_contact.hurry()
 	for item: Dictionary in server_appearance.get("equipment",[]):
 		if int(item.get("layer",0))==25:
 			if not (human_visual.mounted_live_enabled or human_visual.rider_preview_enabled) or not preload("res://Presentation/HumanActions.gd").resolve(request,true).begins_with("Rider_"):return false
@@ -150,10 +190,11 @@ func receive_native_action(request: Dictionary) -> bool:
 func animate(moving: bool, direction: float, delta: float, speed: float = 2.44) -> void:
 	if human_visual == null:
 		if horse_visual!=null:
-			rotation.y=lerp_angle(rotation.y,direction,1.-exp(-10.*delta));horse_visual.play_gait(moving,speed);visual_root.position.y=ground_offset;return
+			var previous:=rotation.y;rotation.y=lerp_angle(rotation.y,direction,1.-exp(-10.*delta));horse_visual.motion(speed,angle_difference(previous,rotation.y)/maxf(delta,.001),delta);horse_visual.play_gait(moving,speed);visual_root.position.y=ground_offset;return
 		super.animate(moving,direction,delta,speed)
 		return
 	facing = direction
+	var previous_facing:=rotation.y
 	rotation.y = lerp_angle(rotation.y,facing,1.-exp(-10.*delta))
 	if moving: moving_grace = .10
 	else: moving_grace = maxf(0.,moving_grace-delta)
@@ -177,7 +218,11 @@ func animate(moving: bool, direction: float, delta: float, speed: float = 2.44) 
 		animator.speed_scale=clampf(displayed_speed/maxf(.1,pace),.65,1.8) if moving and preload("res://Presentation/HumanActions.gd").locomotion(clip) else 1.
 		if not human_visual.action_clip.is_empty():animator.speed_scale=1.
 	if horse_visual!=null:
-		horse_visual.play_gait(moving,displayed_speed)
+		horse_visual.motion(displayed_speed,angle_difference(previous_facing,rotation.y)/maxf(delta,.001),delta)
+		horse_visual.play_gait(moving and not retiring_horse,displayed_speed)
+		if rider_contact!=null:
+			rider_contact.turn_balance=-horse_visual.lean*.35
+			if moving and rider_contact.mode!="seated":rider_contact.hurry()
 		# Horse and human clips have independent source durations. Seat/feet are
 		# constrained to animated sockets instead of assuming their phases match.
 		animator.speed_scale=horse_visual.animator.speed_scale if human_visual.action_clip.is_empty() else 1.

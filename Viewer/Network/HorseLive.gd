@@ -39,6 +39,7 @@ func run() -> void:
 		session.create_character("Rider Woman" if sex else "Rider Man",slot,city,sex==1)
 		if not check(await until(func():return session.phase=="world"),"actual world entry on isolated ModernUO"):return
 		var actor:=preload("res://Presentation/HumanAvatar.gd").new();actor.initial_body=401 if sex else 400;root.add_child(actor);actor.set_physics_process(false);avatars.append(actor)
+		actor.apply_server_appearance(session.player,session.equipment.values())
 		session.mobile_action_received.connect(func(action: Dictionary):
 			if int(action.serial)==int(session.player.serial):actor.receive_native_action(action))
 	for sex in 2:
@@ -60,6 +61,24 @@ func run() -> void:
 			if not check(actor.horse_visual!=null and actor.human_visual.mounted_live_enabled and actor.horse_visual.native_body==body,"real server mount selects matching horse and seated rider"):return
 			if not check(await until(func():return actor.rider_contact.seated_weight>=1.),"rider completes seat transition"):return
 			if not check(actor.rider_contact.seat_error<.002,"live rider remains on animated saddle"):return
+			for hue in [53,1153,0x8000|53,0,53]:
+				session.send_command("[HorseFixture colour "+str(hue))
+				if not check(await until(func():return int(session.equipment.get(25,{}).get("hue",-1))==hue),"server hue change reaches the ridden mount item"):return
+				if not check(await until(func():return int(observer.mobile_equipment.get(me,{}).get(25,{}).get("hue",-1))==hue),"observer receives the same full raw mount hue"):return
+				actor.apply_server_appearance(session.player,session.equipment.values())
+				if not check(actor.horse_visual.native_hue==hue and actor.horse_visual.native_body==body,"live coat keeps both server identity and changed hue"):return
+			if variant==3:
+				var acknowledged:=[false]
+				observer.module("player").logged_out.connect(func():acknowledged[0]=true,CONNECT_ONE_SHOT)
+				observer.send(preload("res://Network/Packets/Player.gd").logout_request())
+				if not check(await until(func():return acknowledged[0]),"observer native logout is acknowledged"):return
+				observer.close();await create_timer(2.).timeout
+				observer.connect_account(accounts[1-sex].username,accounts[1-sex].password,2594)
+				if not check(await until(func():return observer.phase=="characters"),"observer reconnects to the isolated account"):return
+				for character in observer.characters:
+					if character.name==("Rider Man" if sex else "Rider Woman"):observer.select_character(character.slot,character.name);break
+				if not check(await until(func():return observer.phase=="world"),"observer genuinely re-enters the world"):return
+				if not check(await until(func():return int(observer.mobile_equipment.get(me,{}).get(25,{}).get("hue",-1))==53),"re-entry restores the other rider's changed mount hue"):return
 			for group in [26,27,28,29]:
 				session.send_command("[HorseFixture action "+str(group))
 				if not check(await until(func():return int(session.last_mobile_actions.get(me,{}).get("action",-1))==group),"server sends mounted action "+str(group)):return
@@ -86,7 +105,9 @@ func run() -> void:
 			if not check(await until(func():return not session.equipment.has(25)),"server removes native mount equipment"):return
 			if not check(await until(func():return not observer.mobile_equipment.get(me,{}).has(25)),"second client receives dismount"):return
 			if not check(await until(func():return session.entities.has(serial) and observer.entities.has(serial)),"horse returns as a real world mobile on both clients"):return
+			if not check(int(session.entities[serial].get("hue",-1))==53 and int(observer.entities[serial].get("hue",-1))==53,"changed hue survives conversion back to the loose horse"):return
 			actor.apply_server_appearance(session.player,session.equipment.values())
+			if not check(await until(func():return actor.horse_visual==null),"visual leg-over dismount completes after authoritative unequip"):return
 			if not check(actor.horse_visual==null and not actor.human_visual.mounted_live_enabled,"rider returns to on-foot presentation"):return
 			replies[sex].clear();session.send_command("[HorseFixture cleanup")
 			if not check(await until(func():return replies[sex].has("UCHORSE|cleaned")),"disposable fixture cleaned"):return

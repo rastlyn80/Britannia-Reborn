@@ -26,10 +26,12 @@ func run() -> void:
 			var meshes:=actor.find_children("*","MeshInstance3D",true,false);var states:={}
 			var base: MeshInstance3D=human.model.find_children("Body*","MeshInstance3D",true,false)[0]
 			for mesh: MeshInstance3D in meshes:states[mesh]={"visible":mesh.visible,"material":mesh.material_override,"mesh":mesh.mesh,"probe":preload("res://Presentation/HumanArmourCoverageTests.gd").skin_probe(mesh,human.skeleton) if mesh.name.begins_with("Body") else mesh.mesh}
-			for pair in [["Rider_Idle","idle"],["Rider_Walk","walk"],["Rider_Run","canter"],["Rider_Attack","canter"],["Rider_Bow","idle"],["Rider_Crossbow","idle"]]:
+			for pair in [["Rider_Idle","idle"],["Rider_Walk","walk"],["Rider_Run","gallop"],["Rider_Attack","canter"],["Rider_Bow","idle"],["Rider_Crossbow","idle"],["mount","idle"],["dismount","idle"]]:
 				for phase in [.15,.65]:
 					for angle in [0,90,180,270]:
-						actor.rotation_degrees.y=angle;human.cancel_action();human.play(pair[0],0.);human.animator.seek(human.animator.current_animation_length*phase,true);human.animator.pause()
+						var transition: bool=pair[0] in ["mount","dismount"]
+						actor.rider_contact.mode=pair[0] if transition else "seated";actor.rider_contact.progress=phase if transition else 1.;actor.rider_contact.transition_duration=100000.;actor.rider_contact.finished=false
+						actor.rotation_degrees.y=angle;human.cancel_action();human.play("Rider_Idle" if transition else pair[0],0.);human.animator.seek(human.animator.current_animation_length*phase,true);human.animator.pause()
 						actor.horse_visual.animator.play(pair[1],0.);actor.horse_visual.animator.seek(actor.horse_visual.animator.current_animation_length*phase,true);actor.horse_visual.animator.pause()
 						for mesh: MeshInstance3D in meshes:mesh.visible=states[mesh].visible;mesh.material_override=pink if mesh.name.begins_with("Body") else white;mesh.mesh=states[mesh].probe
 						var skin:=await capture()
@@ -60,5 +62,5 @@ func run() -> void:
 			print("HORSE GPU CLOTH ",female," ",family)
 		actor.free()
 	var file:=FileAccess.open("res://../outputs/horse-session/clothing-validation.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"samples":rows,"failures":failures,"scope":"Actual GPU masked skin and complete unmasked-body opacity reference: two mounted bodies, plate/robe/skirt/kilt, six rider/horse action pairs, two phases and four angles. Head/neck intentionally excluded by native bone weights. <=4 skin pixels, >=98% body and >=99.5% seat opacity. Finite visual coverage, not universal triangle collision."},"\t"));file.close()
+	file.store_string(JSON.stringify({"samples":rows,"failures":failures,"scope":"Actual GPU masked skin and complete unmasked-body opacity reference: two bodies, plate/robe/skirt/kilt, six seated pairs plus mount/dismount, two phases and four angles. Head/neck intentionally excluded by native bone weights. <=4 skin pixels, >=98% body and >=99.5% seat opacity. Finite visual coverage, not universal triangle collision."},"\t"));file.close()
 	print("HORSE GPU CLOTHING: ",rows.size()," poses / ",failures," failures");quit(1 if failures else 0)

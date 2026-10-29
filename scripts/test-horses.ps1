@@ -1,4 +1,4 @@
-param([switch]$Live,[switch]$SkipContact)
+param([switch]$Live,[switch]$SkipContact,[switch]$Gpu)
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent
 $godot=(Get-ChildItem "$root/.tools/godot/*console.exe"|Select-Object -First 1).FullName
@@ -11,6 +11,14 @@ try {
  if (!$SkipContact) {
   & $godot --headless --path Viewer --script res://Presentation/HorseTests.gd
   if ($LASTEXITCODE) { throw 'Horse contact/playback checks failed' }
+  & $godot --headless --path Viewer --script res://Presentation/HorsePolishTests.gd
+  if ($LASTEXITCODE) { throw 'Horse colour/transition/slope checks failed' }
+ }
+ if ($Gpu) {
+  & $godot --path Viewer --script res://Presentation/HorseAppearanceTests.gd
+  if ($LASTEXITCODE) { throw 'Horse rendered appearance checks failed' }
+  & $godot --path Viewer --script res://Presentation/HorseClothingTests.gd
+  if ($LASTEXITCODE) { throw 'Mounted and transition clothing coverage failed' }
  }
  if (!$Live) { return }
  $runtime=Join-Path $root 'work/horse-session/server'

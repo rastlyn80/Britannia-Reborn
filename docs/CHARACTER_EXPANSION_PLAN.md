@@ -2,6 +2,8 @@
 
 Owner direction: gradually fill the remaining character, wearable, animation and mount gaps. Horse colours must follow the server's properties. A good-looking preview is not completion of the original client's coverage.
 
+Implementation checkpoint: batches 1 and 2 now have functional implementations and separate appearance/transition/contact, GPU clothing and native observer tests. [HORSE_POLISH.md](HORSE_POLISH.md) records the delivered scope and remaining animation/art-quality gaps. The mount catalogue distinguishes verified routing from prototype gait/reaction art and missing animal actions; it does not inflate the human wearable count. Next expansion remains the human wardrobe worklist, alongside owner review and focused horse quality fixes.
+
 ## Appearance contract
 
 ModernUO remains authoritative for body, mount graphic, hue, equipment, hair/beard and state. Never randomly choose a horse colour on the client. Retain raw native identifiers/hues even when the matching art is missing.
