@@ -10,7 +10,10 @@ The owner requires full interaction with the server: nothing it sends dropped, n
   - Live census: 35 packet types, 0 unhandled. Tooltips now arrive for every object (148, one query each).
   - Paperdoll, profile, name and spell requests were answered live.
   - Full verify and the login tests pass.
-- **Remaining:** presentation for each system, phase by phase. It must look good, with items rendered from our 3D models in backpack, containers, gumps and games (owner rule).
+- **Presentation (owner rule: it must look good, with items as 3D models):**
+  - Phases 1-3 are built: effects, audio, shops, action timers, containers, paperdoll, modern gumps and crafting.
+  - Phase 4 is built: party frames, secure trade, books, bulletin boards, the quest arrow and journal tabs. Live with two local accounts: party invite through the server's cursor, accept, party chat, and a traded dice cup arriving in the other pack. A book was written and read back.
+  - Remaining: Phase 5 world systems (maps, houses, boats, mounts, tracking) and Phase 6 robustness. The board and quest arrow are shown with sample data only, and there is no chat-channel window.
 
 # Front end without a district; the right-hand panel replaced — 29 October 2026
 

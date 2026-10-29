@@ -29,7 +29,7 @@ func _ready() -> void:
 	var bar := HBoxContainer.new()
 	bar.add_theme_constant_override("separation",4)
 	column.add_child(bar)
-	for name in ["All","Server","Quickbar"]:
+	for name in ["All","Server","Party","Chat","Quickbar"]:
 		var b := preload("res://Network/ModernWindow.gd").chip(name,name == tab)
 		b.pressed.connect(func():
 			tab = name
@@ -64,6 +64,10 @@ func _ready() -> void:
 func configure(game: Node) -> void:
 	session = game
 	session.message_received.connect(func(text: String): add(text,"Server"))
+	if session.has_method("module"):
+		var social: RefCounted = session.module("social")
+		social.party_message.connect(func(serial: int, text: String, private: bool): add("%s%s: %s" % ["(private) " if private else "",session.entity_names.get(serial,"Member"),text],"Party"))
+		social.chat.connect(func(command: int, first: String, second: String): add(" ".join([first,second]).strip_edges() if first != "" or second != "" else "Chat %d" % command,"Chat"))
 	session.entered.connect(func(_p: Dictionary): show())
 	session.ended.connect(func():
 		input.release_focus()

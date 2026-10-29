@@ -59,8 +59,9 @@ Phase 0 is done, and the protocol layer of every later phase is in place: our cl
 - **Phase 1** is built: tooltips, health flags, damage numbers, effects, sound and music.
 - **Phase 2** is built: context menus, shops, action timers, buff bar, containers, paperdoll, spellbook contents and the death screen.
 - **Phase 3** is built: modern gumps for every command, server dialogs and the crafting window.
+- **Phase 4** is built: party frames, secure trade, books, bulletin boards, the quest arrow and journal tabs. Two local accounts partied up, chatted and traded live, and a book was written and read back.
 
-See MODERN_UI.md for details and live evidence. Next: Phase 4 (party, trade, chat, books and boards, quests).
+See MODERN_UI.md for details and live evidence. Next: Phase 5 (maps, houses, boats, mounts, tracking).
 
 ## Ground rules for every phase
 

@@ -147,9 +147,26 @@ The owner approved the plan on the design canvas: a front end with no map distri
     - **Behaviour:** every click answers the server's gump, which sends the next state. CraftTests 8/0 use a fixture built as CraftGump.cs builds it.
     - **Not checked live:** the test character has no crafting tool, and the preview tools cannot give one.
   - **Bank and runebook:** the bank box opens in the container window. The runebook uses the modern-styled generic gump for now.
+- **Phase 4, commerce and social (built 2026-10-29):**
+  - **Party frames** (`Network/PartyFrames.gd`, under the vitals card): one card per member with name and health. Invite asks the server (0xBF 0x06 1), which opens its own target cursor. An invitation shows Accept and Decline. Leave and a loot-rights switch sit below the cards. Member locations are asked for every 3 s (0xF0). The minimap shows members out of view and the quest target.
+  - **Trade** (`Network/TradeWindow.gd`): your offer and theirs as 3D-icon grids, each with its accept state, gold to offer, Accept and Cancel. Backpack items dropped on the window go onto your side.
+  - **Books** (`Network/BookWindow.gd`): two facing parchment pages with page turns, title and author. Writable books are edited in place and saved (0xD4 header, 0x66 pages).
+  - **Bulletin boards** (`Network/BoardWindow.gd`): messages newest first with author and date, the chosen message's text, Reply, Remove and a form for new posts.
+  - **Quest arrow** (`Network/QuestArrow.gd`): a gold diamond with the distance over a target in view, or an arrow on the edge of the open view (clear of the quickbar) pointing the way. Left-click acknowledges, right-click cancels.
+  - **Journal tabs:** All, Server, Party, Chat and Quickbar. Party messages and chat channel lines are routed in.
+  - **Live check (two local accounts):**
+    - The dev character invited a second, auto-created account through the server's cursor; the invitation arrived and was accepted, and both party lists showed both members.
+    - A party message was heard by the other member.
+    - A dice cup was dropped on the other character, both accepted, and it arrived in their backpack.
+    - A writable book in the pack was retitled and written, and read back from the server.
+    - Screenshots of the party card, trade window, book, board and arrow were checked.
+  - **Limits:**
+    - Member locations came back empty because both characters stood together (the server only reports members out of view).
+    - The board and the arrow were shown with sample data: no board or quest is near the test character.
+    - Chat channels (0xB2) and guild gumps go through the journal and the modern gump renderer; there is no dedicated chat window yet.
 - **Original idea:** any item (in the backpack, a container, the paperdoll, a vendor or trade window, or the world) can be opened in an inspect view, as in modern games. It shows the item's 3D model, lit, with drag to rotate and wheel to zoom, and its server tooltip lines (name, properties) beside it. It uses the same model as the world and the 3D icon renderer.
 - **Front end still to do:** deleting characters, profession and skill choice at creation, a server-status probe before sign-in, and remembered looks updating while you play (they are saved on entering and on logging out).
-- **Windows still to modernise:** the character sheet (paperdoll), other containers, the world map, buff bar, party frames. Speaker names in the journal need the session to pass them on (0x1C/0xAE carry them; GameSession emits text only).
+- **Windows still to modernise:** the world map and a chat-channel window. Speaker names in the journal need the session to pass them on (0x1C/0xAE carry them; GameSession emits text only).
 - **Server gumps:** the modern rendering of server gumps, and the purpose-built crafting, vendor, runebook, bulletin and book windows.
 - **Actions that only report "not in this client yet":** these need client features that do not exist yet.
   - Windows: health bars, buff icons, Close Gump and Kill Gump Open, chat visibility, Save Desktop, Minimize and Maximize.

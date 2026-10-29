@@ -85,6 +85,17 @@ func _draw() -> void:
    var texture: Texture2D=textures[at]
    var source:=Rect2(Vector2(at),texture.get_size()).intersection(view)
    if source.has_area():draw_texture_rect_region(texture,Rect2(marker(source.position,location,pixels_per_cell),source.size*pixels_per_cell),Rect2(source.position-Vector2(at),source.size))
+ # Party members (0xF0) and the quest arrow's target (0xBA).
+ if scene and scene.game.has_method("module"):
+  var social: RefCounted=scene.game.module("social")
+  for serial in social.member_locations:
+   var member: Dictionary=social.member_locations[serial]
+   var spot:=marker(Vector2(member.x+0.5,member.y+0.5),location,pixels_per_cell)
+   if MAP.has_point(spot):draw_circle(spot,5,Color("0b1620"));draw_circle(spot,4,Color("8fc1ff"))
+  if social.arrow.get("active",false):
+   var goal:=marker(Vector2(social.arrow.x+0.5,social.arrow.y+0.5),location,pixels_per_cell)
+   goal=goal.clamp(MAP.position+Vector2(6,6),MAP.end-Vector2(6,6))
+   draw_colored_polygon(PackedVector2Array([goal+Vector2(0,-7),goal+Vector2(5,0),goal+Vector2(0,7),goal+Vector2(-5,0)]),Color("e2c27a"))
  var center:=MAP.get_center()
  var north:=Vector2(0,-1).rotated(direction*PI/4)
  var side:=north.orthogonal()
