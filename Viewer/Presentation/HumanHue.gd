@@ -60,4 +60,5 @@ static func material(original: StandardMaterial3D, hue: int, cosmetic: bool = fa
 	result.set_shader_parameter("pigmentation_gain",cosmetic_gain(original.albedo_texture) if cosmetic else 1.)
 	result.set_shader_parameter("roughness",.82 if cosmetic else original.roughness)
 	result.set_shader_parameter("metalness",0. if cosmetic else original.metallic)
+	result.set_shader_parameter("emission_colour",original.emission*original.emission_energy_multiplier if original.emission_enabled else Color.BLACK)
 	return result

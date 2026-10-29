@@ -14,6 +14,7 @@ uniform float pigmentation_gain = 1.8;
 uniform float normal_strength = 1.0;
 uniform float roughness = .8;
 uniform float metalness = 0.0;
+uniform vec4 emission_colour : source_color = vec4(0.0);
 void fragment() {
  vec4 source = base_colour;
  if (has_texture) { source *= texture(source_texture,UV); }
@@ -33,5 +34,6 @@ void fragment() {
  if (has_normal) { NORMAL_MAP = texture(normal_texture,UV).rgb; NORMAL_MAP_DEPTH = normal_strength; }
  ROUGHNESS = roughness;
  METALLIC = metalness;
+ EMISSION = emission_colour.rgb;
  SPECULAR = cutout ? .2 : .4;
 }

@@ -1,3 +1,9 @@
+# Human wearable catalogue checkpoint — 29 October 2026
+
+Seven headwear/held-accessory gaps are connected and tested on both bodies walking/running and riding: bonnet, feathered hat, tricorne, jester hat, coif, spellbook and lantern. Catalogue: **246/1,126 (21.85%), 72 categories**. Native hues/on-off state, actual grips, coif hair/cape depth and saddle contact have finite GPU/geometry evidence. [HUMAN_TAILORING_BATCH.md](HUMAN_TAILORING_BATCH.md) records sources, reproduction and limits.
+
+Next: full/half aprons and sash need a different waist/lap construction after rejected prototypes; then surcoat, dresses and missing armour/weapon families. They remain uncounted. Review exact silhouettes, book opening/casting and other lantern variants separately; no new monsters or action categories in this batch. Existing bridge fixture/teardown diagnostics remain outside this character work.
+
 # Horse colour/motion checkpoint — 29 October 2026
 
 Expansion batches 1 and 2 are implemented: four native coats/hues and riding polish, including an interruptible leg-over sequence, ground/rein fitting and lined riding garments. Evidence, limits and the separate animal/action worklist: [HORSE_POLISH.md](HORSE_POLISH.md). Next: owner review; remaining exact coat/cloth/cadence/reaction quality, horse corpse presentation and unsupported animal actions; then resume missing human wearables without changing the catalogue denominator. Other mount families remain deferred. Shared uncommitted bridge fixture diagnostics are recorded separately and that work is preserved.

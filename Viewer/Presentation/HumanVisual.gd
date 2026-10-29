@@ -15,6 +15,7 @@ var current_clip := "Idle"
 var missing_art: Array[int] = []
 var native_cosmetics := {}
 var grip: SkeletonModifier3D
+var held_accessories: SkeletonModifier3D
 var use_modern_motion := true
 var motion_profile := {}
 var war_mode := false
@@ -44,6 +45,8 @@ func _ready() -> void:
 	animator = model.find_children("*","AnimationPlayer",true,false)[0]
 	grip = preload("res://Presentation/WeaponGrip.gd").new()
 	skeleton.add_child(grip)
+	held_accessories=preload("res://Presentation/HumanHeldAccessories.gd").new()
+	skeleton.add_child(held_accessories)
 	skin = ShaderMaterial.new()
 	skin.shader = preload("res://Presentation/FreeHumanSkin.gdshader")
 	if get_viewport().transparent_bg:
@@ -156,12 +159,15 @@ func set_equipment(worn: Array) -> void:
 	grip.holding = extra_parts.has("weapon")
 	grip.left_holding = extra_parts.has("shield") or (extra_parts.has("weapon") and str(extra_parts.weapon.asset) in ["coverage/bow","coverage/crossbow","coverage/heavy_crossbow"])
 	grip.active = true
+	held_accessories.book=str(extra_parts.get("weapon",{}).get("asset",""))=="coverage/spellbook"
+	held_accessories.lantern=str(extra_parts.get("shield",{}).get("asset",""))=="coverage/lantern"
 	var hair_style := str(resolved.hair_style)
 	var long_hair := hair_style in ["long","ponytail"]
 	var hair_asset := "hair_"+hair_style
 	if long_hair and ((outfit_bits&25)!=0 or extra_parts.has("head") or extra_parts.has("shirt") or extra_parts.has("doublet") or extra_parts.has("cloak") or extra_parts.has("torso")):
 		var variant := "hood" if (outfit_bits&16)!=0 else ("covered" if extra_parts.has("head") else "layered")
 		if extra_parts.has("cloak"):variant += "_cloak"
+		if str(extra_parts.get("head",{}).get("asset",""))=="coverage/chain_coif":variant+="_coif"
 		if ResourceLoader.exists(folder+"/expansion/"+hair_asset+"_"+variant+".glb"):
 			hair_asset += "_"+variant
 			hide_hair = false
@@ -202,7 +208,10 @@ func set_equipment(worn: Array) -> void:
 		# A split riding robe reveals padded trousers at its inner opening;
 		# suppress rigid leg plates beneath it while retaining native item stats.
 		if slot=="legs" and riding() and (outfit_bits&8):_attach(folder+"/runtime/part-pants.glb","Free_")
-		else:_attach(_part_path(str(item.asset)),"Extra_")
+		else:
+			var asset:=str(item.asset)
+			if asset=="coverage/lantern" and int(item.id) in [0x0a15,0x0a17,0x0a22]:asset+="_lit"
+			_attach(_part_path(asset),"Extra_")
 		_shade(parts[-1],int(item.hue))
 	if extra_hair and not hide_hair:
 		_attach(folder+"/expansion/"+hair_asset+".glb","Extra_")

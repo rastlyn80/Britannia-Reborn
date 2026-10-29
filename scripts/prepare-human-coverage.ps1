@@ -55,6 +55,8 @@ try {
   if ($LASTEXITCODE) { throw 'Glove wrist masks failed' }
   & $blender --background --factory-startup --python-exit-code 1 --python scripts/prepare-human-hair-layers.py
   if ($LASTEXITCODE) { throw 'Updated wardrobe hair fitting failed' }
+  & $blender --background --factory-startup --python-exit-code 1 --python scripts/prepare-coif-hair.py
+  if ($LASTEXITCODE) { throw 'Coif hair layering failed' }
  }
  & python -B scripts/validate-human-coverage.py
  if ($LASTEXITCODE) { throw 'Coverage export validation failed' }

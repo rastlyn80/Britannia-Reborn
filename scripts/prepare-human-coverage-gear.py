@@ -16,6 +16,8 @@ PINS=json.loads((ROOT/'scripts/human-coverage-inputs.json').read_text())
 RECIPES=json.loads((ROOT/'scripts/human-coverage-recipes.json').read_text())['assets']
 PROPS_ONLY='--props-only' in sys.argv
 ARMOUR_ONLY='--armour-only' in sys.argv
+TAILORING_ONLY='--tailoring-only' in sys.argv
+if TAILORING_ONLY:RECIPES=[r for r in RECIPES if r['kind']=='tailoring']
 if ARMOUR_ONLY:RECIPES=[r for r in RECIPES if r['kind']=='shell']
 if PROPS_ONLY:RECIPES=[r for r in RECIPES if r['kind']=='prop']
 for file,digest in PINS['foundation']['files'].items():assert hashlib.sha256((ROOT/file).read_bytes()).hexdigest()==digest,file
@@ -172,13 +174,22 @@ def prop(row):
   if extra!=ob:bpy.data.objects.remove(extra,do_unlink=True)
  return ob
 evidence={'female':FEMALE,'recipe_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'inputs_sha256':hashlib.sha256((ROOT/'scripts/human-coverage-inputs.json').read_bytes()).hexdigest(),'parts':{}}
-if (PROPS_ONLY or ARMOUR_ONLY) and (OUT/'provenance.json').exists():evidence=json.loads((OUT/'provenance.json').read_text())
+if (PROPS_ONLY or ARMOUR_ONLY or TAILORING_ONLY) and (OUT/'provenance.json').exists():evidence=json.loads((OUT/'provenance.json').read_text())
 evidence.update(female=FEMALE,recipe_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),inputs_sha256=hashlib.sha256((ROOT/'scripts/human-coverage-inputs.json').read_bytes()).hexdigest())
+tailor=None
 for row in RECIPES:
- kind=row['kind'];ob=shell(row) if kind=='shell' else (prop(row) if kind=='prop' else authored(row))
+ kind=row['kind']
+ if kind=='tailoring':
+  if tailor is None:
+   spec=importlib.util.spec_from_file_location('tailoring',ROOT/'scripts/human-tailoring.py');tailoring=importlib.util.module_from_spec(spec);spec.loader.exec_module(tailoring);tailor=tailoring.Tailor(rig,body,ART,M,idle_pose)
+  for lit in ([False,True] if row['key']=='lantern' else [False]):
+   name,ob=tailor.build(row['key'],lit)
+   evidence['parts'][name]=dict(finish(ob,name),kind=kind,source='Original Britannia Reborn parametric topology fitted to pinned CC0 human rig',licence='GPL-3.0-or-later original generator; selected CC0 foundation/material inputs',recipe_sha256=hashlib.sha256((ROOT/'scripts/human-tailoring.py').read_bytes()).hexdigest(),lit=lit)
+  print('COVERAGE TAILORING',FEMALE,row['key'],flush=True);continue
+ ob=shell(row) if kind=='shell' else (prop(row) if kind=='prop' else authored(row))
  evidence['parts'][row['key']]=dict(finish(ob,row['key']),recipe_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),kind=kind,source=row.get('source','Britannia Reborn authored on the traced CC0 body/cloth foundation'),fidelity='category replacement; original item ornament and exact silhouette require individual review')
  print('COVERAGE GEAR',FEMALE,row['key'],flush=True)
-if not PROPS_ONLY:
+if not PROPS_ONLY and not TAILORING_ONLY:
  ob=armour.undercoat(rig,ART,body);evidence['parts']['armour_undercoat']=dict(finish(ob,'armour_undercoat'),kind='support',source='Pinned CC0 Toigo fitted shirt, neutral woven lining material',recipe_sha256=hashlib.sha256((ROOT/'scripts/human-armour.py').read_bytes()).hexdigest())
  ob=armour.boots(rig,ART);evidence['parts']['armour_boots']=dict(finish(ob,'armour_boots'),kind='support',source='Pinned CC0 Viking boots, ankle section under articulated greaves')
  evidence['armour_construction']={'recipe_sha256':hashlib.sha256((ROOT/'scripts/human-armour.py').read_bytes()).hexdigest(),'method':'Continuous tailored trousers and undercoat; independent rigid plates, overlapping waist/joint guards, thickness, rolled edges and rivets. No body-surface armour shells.'}

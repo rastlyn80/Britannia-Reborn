@@ -1,3 +1,9 @@
+# Human accessories: seven catalogue gaps — 29 October 2026
+
+Added bonnet, feathered hat, tricorne, jester hat, chain coif, spellbook and native lit/unlit lantern on both human bodies. Corrected flipped coif routing; native dyes/emission, closed holding fingers, arm clearance and coif/long-hair/cape layering are connected. Catalogue: **246/1,126 graphics (21.85%), 72 categories**, twelve newly covered graphics; action counts remain 35/35 classic and 28/28 on foot with seven supported horse rider groups. Rejected apron/sash experiments are not mapped or counted.
+
+Evidence: 16 accessory + eight hair exports; 995 checks / 448 actual GPU views; 256 hair views; 32 direct posed prop-geometry checks; all passed. Reproduction, sources, finite-test limits and the next clothing gaps: [HUMAN_TAILORING_BATCH.md](HUMAN_TAILORING_BATCH.md). Full verify passes assertions/exit status but retains existing bridge fixture script errors and teardown diagnostics; that shared work is preserved. Login: eight unit checks and the existing server list/relay smoke passed; no new live world-entry claim. Original body/bind inputs, upstream source, saves and remembered login are unchanged.
+
 # Trinsic bridges: timber footbridges and solid stone piers — 29 October 2026
 
 Owner report: a Trinsic bridge "looks really bad", and asked to look for a free model. Captures showed two defects. Trinsic's six canal footbridges were flat boxes on stilts with loose rail pieces. The long sandstone east bridge (2067–2104, 2790–2800) had wooden balustrades on its pier tops and hollow, slotted piers.

@@ -1,3 +1,5 @@
+Latest expansion: [HUMAN_TAILORING_BATCH.md](HUMAN_TAILORING_BATCH.md), 246/1,126 mapped graphics (21.85%) and 72 categories. The milestone table below is historical.
+
 # Human coverage and armour correction - 29 October 2026
 
 The requested category targets are reached on both existing human bodies, using

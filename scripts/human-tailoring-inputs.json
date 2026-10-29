@@ -1,0 +1,70 @@
+{
+  "scope": "Seven original headwear/held-accessory families; rejected apron/sash experiments are excluded.",
+  "native_reference": {
+    "repository": "https://github.com/modernuo/ModernUO",
+    "revision": "ab59efea86fd9e399d261bed9d188ab4d95ad4c2",
+    "files": [
+      "Projects/UOContent/Items/Clothing/MiddleTorso.cs",
+      "Projects/UOContent/Items/Clothing/Waist.cs",
+      "Projects/UOContent/Items/Clothing/Hats.cs",
+      "Projects/UOContent/Items/Armor/Helmets/ChainCoif.cs",
+      "Projects/UOContent/Items/Lights/Lantern.cs",
+      "Projects/UOContent/Items/Lights/BaseEquipableLight.cs",
+      "Projects/UOContent/Items/Skill Items/Magical/Spellbook.cs"
+    ]
+  },
+  "source_manifests": [
+    "scripts/human-coverage-inputs.json",
+    "scripts/character-expansion-inputs.json",
+    "scripts/human-motion-inputs.json",
+    "scripts/horse-inputs.json"
+  ],
+  "foundation": "https://github.com/kblood/CharacterCreator/tree/852e48f316b90a0937234886630e4fb4cdfd1f78",
+  "foundation_license": "CC0-1.0 for selected MakeHuman art; upstream code is not imported",
+  "materials": {
+    "Viewer/Art/MedievalKit/textures/Linen_Color.jpg": {
+      "sha256": "3221cb1d07531f13238b2443be5843d1b788c462c8576e7ada755e496f93b149",
+      "licence": "CC0-1.0; Viewer/Art/MedievalKit/NOTICE.md and CREDITS.md"
+    },
+    "Viewer/Art/MedievalKit/textures/Fabric045_2K-JPG_NormalGL.jpg": {
+      "sha256": "bd977a2099dbe3f39037f35e52245f7b0f1d04d817e009da5ec172eb9b695c9d",
+      "licence": "CC0-1.0; Viewer/Art/MedievalKit/NOTICE.md and CREDITS.md"
+    },
+    "work/human-wardrobe-2/materials/Leather001_1K-JPG_Color.jpg": {
+      "sha256": "65e1a0fcc16cd9939881abe8e92cfd27114ef2f62ebfe09f66203a293c12be66",
+      "licence": "CC0-1.0; ambientCG Leather001",
+      "source": "https://ambientcg.com/a/Leather001",
+      "archive_url": "https://ambientcg.com/get?file=Leather001_1K-JPG.zip",
+      "archive_sha256": "8d3ac9280bec6a1e1e5384b93e5130414a085033290dde305bacaddd0aa6b96a",
+      "archive_member": "Leather001_1K-JPG_Color.jpg"
+    },
+    "work/human-wardrobe-2/materials/Leather001_1K-JPG_NormalGL.jpg": {
+      "sha256": "9db4139a524ea674cf5b8e73538c1d26ce7576be29600c1cbf44445076237afa",
+      "licence": "CC0-1.0; ambientCG Leather001",
+      "source": "https://ambientcg.com/a/Leather001",
+      "archive_url": "https://ambientcg.com/get?file=Leather001_1K-JPG.zip",
+      "archive_sha256": "8d3ac9280bec6a1e1e5384b93e5130414a085033290dde305bacaddd0aa6b96a",
+      "archive_member": "Leather001_1K-JPG_NormalGL.jpg"
+    }
+  },
+  "files": {
+    "Viewer/local-art/free-equipment/equipment-base.glb": "b5134f97fd6a4179cd0d692e748f9b917c49656d05fe31dc0969f42846ae20a9",
+    "Viewer/local-art/free-equipment-female/equipment-base.glb": "951b8c1424714707b3178ca66a5b1f9e57f8c3e41f301c3a082cd312b861fc8c",
+    "Viewer/Art/MedievalKit/textures/Linen_Color.jpg": "3221cb1d07531f13238b2443be5843d1b788c462c8576e7ada755e496f93b149",
+    "Viewer/Art/MedievalKit/textures/Fabric045_2K-JPG_NormalGL.jpg": "bd977a2099dbe3f39037f35e52245f7b0f1d04d817e009da5ec172eb9b695c9d",
+    "work/human-wardrobe-2/materials/Leather001_1K-JPG_Color.jpg": "65e1a0fcc16cd9939881abe8e92cfd27114ef2f62ebfe09f66203a293c12be66",
+    "work/human-wardrobe-2/materials/Leather001_1K-JPG_NormalGL.jpg": "9db4139a524ea674cf5b8e73538c1d26ce7576be29600c1cbf44445076237afa",
+    "Viewer/local-art/free-equipment/expansion/hair_long_covered.glb": "09a1c02f7e1f644405062fadde7d19bc8c6c214d2121a778c668e06a3458c061",
+    "Viewer/local-art/free-equipment/expansion/hair_long_covered_cloak.glb": "ebd58d9b7ec91bfb63927f5f074aa9b0a57193d2467811141d33346b9f92771f",
+    "Viewer/local-art/free-equipment/expansion/hair_ponytail_covered.glb": "53a8fb13dadc4f442b2c635771b15d675c56e116dd7bceda324b67ccdb7d8f2a",
+    "Viewer/local-art/free-equipment/expansion/hair_ponytail_covered_cloak.glb": "fec867a2aa1195626ba64145d3d392813c5b075941fbee8a29f9187aca72b963",
+    "Viewer/local-art/free-equipment-female/expansion/hair_long_covered.glb": "4a9e1bed70382dea53a0b82b15157af7d2ed3359bab5684f453bab8a3a203903",
+    "Viewer/local-art/free-equipment-female/expansion/hair_long_covered_cloak.glb": "4925d697778fe750c1dee22a6a533cbab4c546fd93949a5fceb4d6a2ee2bdc56",
+    "Viewer/local-art/free-equipment-female/expansion/hair_ponytail_covered.glb": "8efe1942a56bed31479f3580b575f52b1d8e9a7f4a2f98982e9abcf03796f000",
+    "Viewer/local-art/free-equipment-female/expansion/hair_ponytail_covered_cloak.glb": "57404b9a594e8b3f868e81975f0acc5cf2e8e900a8fa30db48cdfb29c3287ea6",
+    "work/human-coverage-session/mail-rings.png": "60bb0ad54214c14faf2f8a9acd6cd4a3a1a049cbe3cee28157af5dba57ce28bc"
+  },
+  "authored_materials": {
+    "work/human-coverage-session/mail-rings.png": "Original interlocked ring tile from scripts/prepare-human-coverage-gear.py::mat(mail); no third-party texture input."
+  }
+}

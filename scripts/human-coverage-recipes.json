@@ -549,9 +549,72 @@
         5911
       ],
       "kind": "hat"
+    },
+    {
+      "key": "bonnet",
+      "slot": "head",
+      "graphics": [
+        5913
+      ],
+      "kind": "tailoring"
+    },
+    {
+      "key": "feathered_hat",
+      "slot": "head",
+      "graphics": [
+        5914
+      ],
+      "kind": "tailoring"
+    },
+    {
+      "key": "tricorne_hat",
+      "slot": "head",
+      "graphics": [
+        5915
+      ],
+      "kind": "tailoring"
+    },
+    {
+      "key": "jester_hat",
+      "slot": "head",
+      "graphics": [
+        5916
+      ],
+      "kind": "tailoring"
+    },
+    {
+      "key": "chain_coif",
+      "slot": "head",
+      "graphics": [
+        5051,
+        5056
+      ],
+      "kind": "tailoring"
+    },
+    {
+      "key": "spellbook",
+      "slot": "weapon",
+      "graphics": [
+        3834,
+        3643
+      ],
+      "kind": "tailoring"
+    },
+    {
+      "key": "lantern",
+      "slot": "shield",
+      "graphics": [
+        2581,
+        2583,
+        2584,
+        2594,
+        2597
+      ],
+      "kind": "tailoring"
     }
   ],
   "deferred_experiments": [
-    "Sleeveless dress, apron and surcoat experiments rejected at visual review; no native IDs mapped or counted."
+    "Sleeveless dress, apron and surcoat experiments rejected at visual review; no native IDs mapped or counted.",
+    "Full/half apron and body sash prototypes failed real-rider occlusion/visual review; no native IDs mapped or counted. Rejected pose-fit evidence retained only in ignored outputs/human-tailoring."
   ]
 }
