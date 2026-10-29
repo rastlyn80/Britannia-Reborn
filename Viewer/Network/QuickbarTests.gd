@@ -127,7 +127,8 @@ func run() -> void:
 	check(game.sent.back().slice(7,11) == bytes([0,0,2,2]),"Last Target answers an open cursor with a creature")
 	var before: int = game.sent.size()
 	await runner.run([{"action":"Say","text":"hail"},{"action":"Delay","text":"20"},{"action":"Emote","text":"waves"}])
-	check(game.sent.size() == before+2 and game.sent[before][3] == 0 and game.sent[before+1][3] == 2,"A macro runs its steps in order, with delays")
+	# "hail" is a speech keyword, so that line goes out encoded (type | 0xC0).
+	check(game.sent.size() == before+2 and game.sent[before][3] & 0x3f == 0 and game.sent[before+1][3] == 2,"A macro runs its steps in order, with delays")
 	game.known_items.erase(0x40000011)
 	await runner.run([{"action":"Use Potion","option":"Heal"}])
 	check("No heal potion" in str(said.back()),"An empty slot says why instead of failing silently")

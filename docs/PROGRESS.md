@@ -13,7 +13,8 @@ The owner requires full interaction with the server: nothing it sends dropped, n
 - **Presentation (owner rule: it must look good, with items as 3D models):**
   - Phases 1-3 are built: effects, audio, shops, action timers, containers, paperdoll, modern gumps and crafting.
   - Phase 4 is built: party frames, secure trade, books, bulletin boards, the quest arrow and journal tabs. Live with two local accounts: party invite through the server's cursor, accept, party chat, and a traded dice cup arriving in the other pack. A book was written and read back.
-  - Remaining: Phase 5 world systems (maps, houses, boats, mounts, tracking) and Phase 6 robustness. The board and quest arrow are shown with sample data only, and there is no chat-channel window.
+  - Phase 5 is built: houses and boats (tile-built houses, procedural ships, custom-house designs), placement previews, speech keywords (ModernUO's spoken commands now work), a movable helm, world and treasure maps, A* walking to a tile, and the house designer. Live: a house placed, a custom house built and committed, a boat sailed by speech and from the helm, a treasure map decoded and read.
+  - Remaining: Phase 6 robustness and breadth; mounts (creature bodies); full models for houses and ships (owner-approved sourcing). The board and quest arrow are shown with sample data only, and there is no chat-channel window.
 
 # Front end without a district; the right-hand panel replaced — 29 October 2026
 

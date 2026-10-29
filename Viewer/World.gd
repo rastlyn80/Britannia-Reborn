@@ -23,6 +23,8 @@ var status := Label.new()
 var coordinates := Label.new()
 var static_root := Node3D.new()
 var world_items := preload("res://Presentation/WorldItems.gd").new()
+var multis: Node3D
+var autowalk: Node
 var game := preload("res://Network/GameSession.gd").new()
 var avatars := {}
 var targets := {}
@@ -240,6 +242,9 @@ func _ready() -> void:
 	add_child(game)
 	add_child(world_items)
 	world_items.configure(self,game)
+	multis = preload("res://Presentation/MultiPresenter.gd").new()
+	add_child(multis)
+	multis.configure(self)
 	login_panel.session = game
 	canvas.add_child(login_panel)
 	if city_mode:
@@ -456,6 +461,7 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	var studio := preload("res://Presentation/ItemStudio.gd").new()
 	add_child(studio)
 	studio.configure(world_items)
+	studio.tile_builder = multis.tile_model
 	var inspector := preload("res://Network/InspectWindow.gd").new()
 	canvas.add_child(inspector)
 	inspector.configure(game,world_items)
@@ -484,6 +490,27 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	var board := preload("res://Network/BoardWindow.gd").new()
 	canvas.add_child(board)
 	board.configure(game)
+	autowalk = preload("res://Presentation/AutoWalk.gd").new()
+	add_child(autowalk)
+	autowalk.configure(game)
+	var world_map := preload("res://Network/WorldMapWindow.gd").new()
+	canvas.add_child(world_map)
+	world_map.configure(self)
+	world_map.hide()
+	var server_map := preload("res://Network/ServerMapWindow.gd").new()
+	canvas.add_child(server_map)
+	server_map.configure(game)
+	server_map.hide()
+	var helm := preload("res://Network/HelmPanel.gd").new()
+	canvas.add_child(helm)
+	helm.configure(game)
+	var designer := preload("res://Network/HouseDesigner.gd").new()
+	canvas.add_child(designer)
+	designer.configure(self)
+	designer.hide()
+	var placing := preload("res://Presentation/PlacementGhost.gd").new()
+	add_child(placing)
+	placing.configure(self,canvas)
 	var arrow := preload("res://Network/QuestArrow.gd").new()
 	canvas.add_child(arrow)
 	canvas.move_child(arrow,1)
@@ -552,9 +579,7 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 			"menu":
 				if game_menu: game_menu.toggle()
 				else: return false
-			"map", "World Map":
-				if minimap: minimap.visible = not minimap.visible
-				else: return false
+			"map", "World Map": world_map.toggle()
 			_: return false
 		return true
 	menu.chosen.connect(func(window: String):

@@ -164,9 +164,41 @@ The owner approved the plan on the design canvas: a front end with no map distri
     - Member locations came back empty because both characters stood together (the server only reports members out of view).
     - The board and the arrow were shown with sample data: no board or quest is near the test character.
     - Chat channels (0xB2) and guild gumps go through the journal and the modern gump renderer; there is no dedicated chat window yet.
+- **Phase 5, world systems (built 2026-10-29):**
+  - **Houses and boats (multis):** the session keeps multis (0xF3 type 2, legacy 0x1A from 0x4000) instead of dropping them. `Presentation/MultiPresenter.gd` draws them.
+    - **Component data:** `scripts/prepare-multis.py` indexes the install's MultiCollection.uop, tiledata and house-designer catalogues (local, git-ignored).
+    - **Houses:** built tile by tile with the city's own reconstruction rules, so a classic house looks like Britain's.
+    - **Custom houses:** their server design (0xD8, asked for when 0xBF 0x1D announces a newer revision).
+    - **Full models:** `Presentation/multi-models.json` maps a multi ID to one fitted model (the owner's idea: classic houses and boats can be single full models). It is empty until models are sourced and approved through the usual pipeline.
+    - **Walking:** the components feed local movement, so floors, decks and stairs carry the player.
+  - **Ships** (`Presentation/ShipBuilder.gd`): every classic boat (small, medium, large, plain and dragon) is drawn whole: a lofted plank hull, deck, rails, mast, yard, square sail, rigging, a bowsprit or dragon prow, and a rudder, sized from the footprint and turned to its facing. Boats glide to each 0xF6 position, and their passengers move with them.
+  - **Placement** (`Presentation/PlacementGhost.gd`): a 0x99 multi target shows a translucent copy of the house or ship following the mouse. Left-click places it and Esc cancels. On water it aims at the water tile itself, which boats need.
+  - **Speech keywords** (`Network/SpeechKeywords.gd`, `scripts/prepare-speech.py`): spoken lines are sent with their speech.mul keyword IDs (0xAD encoded), byte-for-byte as ClassicUO. ModernUO recognises "bank", "vendor buy", guards and boat orders this way; before this they went unanswered.
+  - **Helm** (`Network/HelmPanel.gd`): opens when you board and closes when you leave. It is a movable window like the others. Arrows sail in eight directions, with turn, come about, stop, anchor and slow; each control speaks the tillerman's order.
+  - **Maps:**
+    - **World map** (M, `Network/WorldMapWindow.gd`): the whole Trammel radar map from `scripts/prepare-world-map.py` (one pixel per tile, local). It shows you, your party, the quest target, houses and boats; follow, zoom and pan, and right-click to walk there.
+    - **Server maps** (`Network/ServerMapWindow.gd`): treasure and cartography maps are drawn as old charts on parchment, with numbered pins and the course between them. Treasure pins are red, as the server's message says. "Plot course" edits pins (0x56).
+  - **Walking to a tile** (`Presentation/AutoWalk.gd`): A* over the client's own step prediction, followed one normal step at a time and replanned when a step is refused. It is used for the server's pathfind order (0x38) and the world map.
+  - **House designer** (`Network/HouseDesigner.gd`): opens when customising starts (0xBF 0x20).
+    - **Palette:** floors 1-4, Build or Erase, the install's catalogues (walls, doors, floors, stairs, roofs, misc, teleporters), styles, and pieces photographed in 3D by the icon studio with the house's own rules.
+    - **Editing:** the outlined cell under the mouse builds (left-click) or erases (right-click). Each edit is followed by Sync, so the design shown is always the server's.
+    - **Commands:** backup, restore, revert, clear, commit and close.
+  - **Test kit** (owner-approved exception, `Server/PreviewTools/PreviewKit.cs`, loopback and previewTools only): `[PreviewKit house|boat|map|site [multi]|dock` hands out ordinary upstream deeds, a placement tool with bank gold and a treasure map, or moves the caller beside the nearest spot the server's own rules accept.
+  - **Live checks:**
+    - **House:** a small brick house was previewed, placed by the server (144 tiles, none unmapped) and drawn with walls, door, sign and roof.
+    - **Boat:** a small boat was placed on the canal and unlocked with its key. The character boarded and gave orders ("raise anchor", "forward", "back", "stop"), and the tillerman answered. The boat sailed 11 to 12 steps with the character aboard, also from the helm.
+    - **Treasure map:** decoded after a few tries, then opened over the right area with its pin.
+    - **World map:** shown at street and continent scale.
+    - **Walking:** an A* walk of 117 steps across Britain to the boat.
+    - **Custom house:** on a second account, a 7x7 foundation was placed through the placement tool's gumps (30,500 gold), then the sign's Customize button was used. The designer opened with 182 wall styles; five walls were built (revisions 1-5, each confirmed by the server) and committed (2,500 gold).
+  - **Limits:**
+    - **Mounts:** need the horse and creature bodies (art track) and the deferred rider clips in the human character work, so riders still stand. Dismounting works through the server's context menu.
+    - **Full models:** none are registered for houses or ships yet. Houses use tile building and ships the procedural builder.
+    - **Roof and floor previews:** roof pieces in the designer use the default height, and there is no floor-height preview of the piece itself, only the outlined cell.
+    - **Leftovers:** the dev character's brick house and two test boats, and the second account's custom house, remain on the local shard.
 - **Original idea:** any item (in the backpack, a container, the paperdoll, a vendor or trade window, or the world) can be opened in an inspect view, as in modern games. It shows the item's 3D model, lit, with drag to rotate and wheel to zoom, and its server tooltip lines (name, properties) beside it. It uses the same model as the world and the 3D icon renderer.
 - **Front end still to do:** deleting characters, profession and skill choice at creation, a server-status probe before sign-in, and remembered looks updating while you play (they are saved on entering and on logging out).
-- **Windows still to modernise:** the world map and a chat-channel window. Speaker names in the journal need the session to pass them on (0x1C/0xAE carry them; GameSession emits text only).
+- **Windows still to modernise:** a chat-channel window. Speaker names in the journal need the session to pass them on (0x1C/0xAE carry them; GameSession emits text only).
 - **Server gumps:** the modern rendering of server gumps, and the purpose-built crafting, vendor, runebook, bulletin and book windows.
 - **Actions that only report "not in this client yet":** these need client features that do not exist yet.
   - Windows: health bars, buff icons, Close Gump and Kill Gump Open, chat visibility, Save Desktop, Minimize and Maximize.

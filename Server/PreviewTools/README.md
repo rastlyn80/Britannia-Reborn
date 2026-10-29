@@ -6,6 +6,7 @@ Enabled only by `ultimaClone.previewTools=True`; commands also require a loopbac
 
 - `[PreviewHome`: move the caller to Trammel (1602,1591,20), ending combat.
 - `[PreviewWhere`: server coordinates, map and access level.
+- `[PreviewKit house|boat|map|site [multi]|dock` (`PreviewKit.cs`): a test kit for the client's world systems, an owner-approved exception (2026-10-29) to the no-staff-powers rule, still loopback- and previewTools-only. It hands the caller ordinary upstream items (a small brick house deed, a house placement tool with 200,000 gold in the bank, a small boat deed, a level 1 treasure map), or moves the caller beside the nearest spot inside the prepared area where the server's own rules accept a house (`site`, optionally for another multi such as 5100, a 7x7 custom foundation) or a small boat (`dock`).
 - `[PreviewCommands`: available preview commands and native staff-command examples.
 - `[PreviewSpawn`: builds the upstream Trammel spawners (Data/Spawns, shared plus the era folder, as the world-generation menu selects them) that lie inside the prepared preview bounds, with the upstream DTO builder. Spawners already in place (same GUID) are kept, so repeats create nothing; a free-standing vendor from `[PreviewShop`/`[PreviewInn` next to its native spawner is retired. `[PreviewSpawnAudit` writes spawner and creature counts to Data/UltimaClonePreview/spawns.local.json.
 

@@ -1367,7 +1367,8 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					var shaft:MeshInstance3D=geometry.cylinder(visual,0.15,maxf(0.05,height-0.24),Vector3(0,height/2,0),"ffffff")
 					shaft.material_override=facade.material(pillar_stone)
 				"gable":
-					var group: Dictionary = groups[ordinal]
+					# A lone gable (multi tiles are built without city grouping) spans its own tile.
+					var group: Dictionary = groups.get(ordinal,{"size":Vector2.ONE,"min_z":float(s.z),"max_z":float(s.z)+maxf(1.0,float(detail.get("height",0)))})
 					var span: float = maxf(group.size.x,group.size.y)+1.0
 					visual = geometry.gable(span,(group.max_z-group.min_z)*float(world.elevationScale),facade.material(family))
 					visual.position.y = (group.min_z-float(s.z))*float(world.elevationScale)

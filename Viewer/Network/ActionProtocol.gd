@@ -63,14 +63,10 @@ static func _utf16_be(text: String) -> PackedByteArray:
 	bytes.append_array(PackedByteArray([0,0]))
 	return bytes
 
-# 0xAD unicode speech with a message type (say, emote, whisper, yell).
+# 0xAD unicode speech with a message type (say, emote, whisper, yell). Lines
+# with speech keywords go out encoded (Network/SpeechKeywords.gd).
 static func speech(text: String, type := 0) -> PackedByteArray:
-	if text.is_empty() or text.length() > 128 or "\n" in text or "\r" in text: return PackedByteArray()
-	var packet := PackedByteArray([0xAD,0,0,type,0x03,0xB2,0,3,69,78,85,0])
-	packet.append_array(_utf16_be(text))
-	packet[1] = packet.size() >> 8
-	packet[2] = packet.size() & 255
-	return packet
+	return preload("res://Network/SpeechKeywords.gd").packet(text,type)
 
 # 0xD7 encoded commands carry the player serial and a 16-bit command.
 static func encoded(player: int, command: int, payload: PackedByteArray) -> PackedByteArray:

@@ -69,6 +69,20 @@ func icon(graphic: int, hue := 0) -> Texture2D:
 static func lookup(graphic: int, hue := 0) -> Texture2D:
 	return instance.icon(graphic,hue) if instance else null
 
+# Building pieces (house designer palette): built by `tile_builder` (the
+# multi presenter, with the city's own rules) and photographed the same way.
+# icon_ready reports them with hue -1.
+var tile_builder: Callable
+func tile_icon(graphic: int) -> Texture2D:
+	var k := "t:%d" % graphic
+	if icons.has(k): return icons[k]
+	if fallback.has(k) or not tile_builder.is_valid(): return null
+	if not k in queue: queue.append(k)
+	return null
+
+static func tile_lookup(graphic: int) -> Texture2D:
+	return instance.tile_icon(graphic) if instance else null
+
 # Bounds of every mesh under a node: world space once it is in a scene (the
 # cameras frame in world space), the node's own space before that.
 static func bounds(root: Node3D) -> AABB:
@@ -104,14 +118,15 @@ static func frame(target: Camera3D, box: AABB, yaw := 0.6, pitch := -0.45, margi
 	target.look_at(box.get_center())
 
 func _process(_delta: float) -> void:
-	if busy or queue.is_empty() or world_items == null: return
+	if busy or queue.is_empty() or (world_items == null and not tile_builder.is_valid()): return
 	_render(queue.pop_front())
 
 func _render(k: String) -> void:
 	busy = true
 	var parts := k.split(":")
-	var model: Node3D = world_items.studio_model(int(parts[0]),int(parts[1]))
-	if model == null or str(model.get_meta("studio_quality","")) != "model":
+	var tile := parts[0] == "t"
+	var model: Node3D = tile_builder.call(int(parts[1])) if tile else world_items.studio_model(int(parts[0]),int(parts[1]))
+	if model == null or (not tile and str(model.get_meta("studio_quality","")) != "model"):
 		fallback[k] = true
 		if model: model.free()
 		busy = false
@@ -126,5 +141,5 @@ func _render(k: String) -> void:
 	if image and not image.is_empty():
 		image.generate_mipmaps()
 		icons[k] = ImageTexture.create_from_image(image)
-		icon_ready.emit(int(parts[0]),int(parts[1]),icons[k])
+		icon_ready.emit(int(parts[1]) if tile else int(parts[0]),-1 if tile else int(parts[1]),icons[k])
 	busy = false

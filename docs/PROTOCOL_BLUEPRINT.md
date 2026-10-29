@@ -61,7 +61,9 @@ Phase 0 is done, and the protocol layer of every later phase is in place: our cl
 - **Phase 3** is built: modern gumps for every command, server dialogs and the crafting window.
 - **Phase 4** is built: party frames, secure trade, books, bulletin boards, the quest arrow and journal tabs. Two local accounts partied up, chatted and traded live, and a book was written and read back.
 
-See MODERN_UI.md for details and live evidence. Next: Phase 5 (maps, houses, boats, mounts, tracking).
+- **Phase 5** is built: houses and boats drawn from their components (custom houses from their designs), placement previews, ships, speech keywords, the helm, world and treasure maps, walking to a tile, and the house designer. A house was placed and customised, a boat sailed and a treasure map was read, live. Mounts wait for creature bodies.
+
+See MODERN_UI.md for details and live evidence. Next: Phase 6 (robustness and breadth).
 
 ## Ground rules for every phase
 

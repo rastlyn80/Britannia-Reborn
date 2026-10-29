@@ -5,7 +5,9 @@ extends "res://Network/Packets/PacketModule.gd"
 # placement, house designer 0xD7 commands, design queries). ClassicUO:
 # MapData, DisplayMap, MultiPlacement, CustomHouse, BoatMoving.
 signal map_opened(map: Dictionary)
-signal map_command(serial: int, command: int, point: Vector2i, editable: bool)
+# 0x56: 1 add pin, 2 insert at number, 3 move number, 4 remove number, 5 clear
+# (sent when the map opens), 7 editing allowed. Points are map-window pixels.
+signal map_command(serial: int, command: int, point: Vector2i, number: int)
 signal placement_requested(request: Dictionary)
 signal house_design(serial: int)
 signal house_revision(serial: int, revision: int)
@@ -21,9 +23,15 @@ var customizing_house := 0
 
 func routes() -> void:
 	for id in [0x90,0xf5]: session.route(id,_map)
-	session.route(0x56,func(p: PackedByteArray): map_command.emit(u32(p,1),u8(p,5),Vector2i(u16(p,7),u16(p,9)),u8(p,6) != 0))
+	session.route(0x56,func(p: PackedByteArray): map_command.emit(u32(p,1),u8(p,5),Vector2i(i16(p,7),i16(p,9)),u8(p,6)))
 	session.route(0x99,func(p: PackedByteArray):
 		placement = {"ground":u8(p,1) != 0,"id":u32(p,2),"flags":u8(p,6),"multi":u16(p,18),"offset":Vector3i(i16(p,20),i16(p,22),i16(p,24))}
+		# It is a target cursor too: Esc, the target prompt and cancelling work as for 0x6C.
+		var request := PackedByteArray([0x6c,1])
+		request.append_array(p.slice(2,7))
+		request.resize(19)
+		session.target_request = request
+		session.target_changed.emit(true)
 		placement_requested.emit(placement))
 	session.route(0xd8,_design)
 	session.route_extended(0x1d,func(p: PackedByteArray):
@@ -92,9 +100,39 @@ func _boat(p: PackedByteArray) -> void:
 		if at+10 > p.size(): break
 		boat.passengers.append({"serial":u32(p,at),"x":u16(p,at+4),"y":u16(p,at+6),"z":i16(p,at+8)})
 		at += 10
+	# The boat and everything aboard move together, as ClassicUO's BoatMovingManager.
+	if session.multis.has(boat.serial):
+		session.multis[boat.serial].merge({"x":boat.x,"y":boat.y,"z":boat.z},true)
 	boat_moved.emit(boat)
+	for rider in boat.passengers:
+		var serial := int(rider.serial)
+		var place := {"x":int(rider.x),"y":int(rider.y),"z":int(rider.z)}
+		if serial == int(session.player.get("serial",0)):
+			session.player.merge(place,true)
+			session.entity_changed.emit(serial,session.player.duplicate())
+		elif session.entities.has(serial):
+			session.entities[serial].merge(place,true)
+			session.entity_changed.emit(serial,session.entities[serial])
+		elif session.world_items.has(serial):
+			session.world_items[serial].merge(place,true)
+			session.world_item_changed.emit(serial,session.world_items[serial].duplicate())
 
 # --- requests ---
+# Answer a multi target (0x99) with the chosen tile (0x6C, location). Graphic
+# 0 is the ground (the server takes the land height there); a static's
+# graphic aims at that static (boats are placed on water tiles this way).
+static func place_multi(request: Dictionary, x: int, y: int, z: int, graphic := 0) -> PackedByteArray:
+	var packet := PackedByteArray([0x6c,1])
+	packet.append_array(be32(int(request.id)))
+	packet.append(int(request.flags))
+	packet.append_array(be32(0))
+	packet.append_array(be16(x))
+	packet.append_array(be16(y))
+	packet.append_array(PackedByteArray([0,z&255]))
+	packet.append_array(be16(graphic))
+	return packet
+
+
 # Map pin edits (0x56): 1 add, 2 insert, 3 move, 4 remove, 5 clear, 6 toggle editing.
 static func map_pin(serial: int, command: int, point := Vector2i.ZERO, index := 0) -> PackedByteArray:
 	var packet := PackedByteArray([0x56])

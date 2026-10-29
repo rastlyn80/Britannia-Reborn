@@ -79,6 +79,7 @@ func run() -> void:
 	coverage()
 	builders()
 	fixtures()
+	world_systems()
 	print("PROTOCOL TESTS: %d checks / %d failures" % [checks,failures])
 	quit(1 if failures else 0)
 
@@ -195,3 +196,37 @@ func fixtures() -> void:
 	check(session.unhandled.is_empty(),"Routed packets are not counted as unhandled")
 	session._handle(packet([0xfe,1,2]))
 	check(session.unhandled.has(0xfe),"Unknown packets are counted for the census")
+
+# Phase 5: multis, placement, maps, boats, speech keywords, custom-house planes.
+func world_systems() -> void:
+	var Systems := preload("res://Network/Packets/WorldSystems.gd")
+	var Keywords := preload("res://Network/SpeechKeywords.gd")
+	check(Keywords.pack([54,79,353]) == PackedByteArray([0,0x30,0x36,0x04,0xf1,0x61]),"Speech keyword ids pack in 12 bits as ClassicUO writes them")
+	check(Keywords.pack([2]) == PackedByteArray([0,0x10,0x02]),"One keyword packs as count, id")
+	check(Keywords.matches("stop the ship",{"words":["stop"],"open_start":false,"open_end":true}) and not Keywords.matches("nonstop",{"words":["stop"],"open_start":true,"open_end":true}),"Keywords match whole words with open ends")
+	session._handle(packet([0xf3,be(1,2),2,be(0x40020,4),be(0x13ec,2),0,be(1,2),be(1,2),be(1500,2),be(1600,2),0,0,be(0,2),0,be(0,2)]))
+	check(session.multis.has(0x40020) and int(session.multis[0x40020].id) == 0x13ec and not session.world_items.has(0x40020),"A multi (0xF3 type 2) is kept as a house, not an item")
+	session._handle(packet([0x1d,be(0x40020,4)]))
+	check(not session.multis.has(0x40020),"Removing a multi forgets it")
+	var target := packet([0x99,1,be(5,4),0,be(0,4),be(0,4),PackedByteArray([0,0,0]),be(0x68,2),be(0,2),be(4,2),be(0,2),be(0,4)])
+	session._handle(target)
+	var world: RefCounted = session.module("world")
+	check(int(world.placement.multi) == 0x68 and world.placement.offset == Vector3i(0,4,0) and session.target_request.size() == 19,"Multi placement (0x99) is a target cursor with its multi and offset")
+	var answer := Systems.place_multi(world.placement,1637,1466,-5,0x1797)
+	check(answer.size() == 19 and answer[1] == 1 and answer[17] == 0x17 and answer[18] == 0x97 and answer[16] == 251,"Placement answers a location; on water it names the water tile")
+	var pins: Array = []
+	world.map_command.connect(func(s,c,p,n): pins.append([c,p,n]))
+	session._handle(packet([0x56,be(9,4),1,0,be(203,2),be(181,2)]))
+	session._handle(packet([0x56,be(9,4),4,2,be(0,2),be(0,2)]))
+	check(pins.size() == 2 and pins[0][1] == Vector2i(203,181) and pins[1][0] == 4 and pins[1][2] == 2,"Map pins (0x56) carry their point and pin number")
+	session.multis[0x40030] = {"serial":0x40030,"id":0,"x":100,"y":100,"z":-5}
+	session.entities[0x50] = {"serial":0x50,"x":101,"y":101,"z":-2}
+	session._handle(packet([0xf6,be(0x40030,4),1,1,0,be(100,2),be(99,2),be(-5 & 0xffff,2),be(1,2),be(0x50,4),be(101,2),be(100,2),be(-2 & 0xffff,2)],true))
+	check(int(session.multis[0x40030].y) == 99 and int(session.entities[0x50].y) == 100,"A boat move (0xF6) carries its passengers")
+	# A mode-2 plane: rows over the house bounds (ClassicUO ReadUnsafeCustomHouseData).
+	var plane := sample_plane()
+	var parts: Array = preload("res://Presentation/MultiPresenter.gd").design_parts({"planes":[plane]},-1)
+	check(parts.is_empty(),"Designs of unknown multis build nothing")
+
+static func sample_plane() -> Dictionary:
+	return preload("res://Network/Packets/WorldSystems.gd").decode_plane(PackedByteArray([0,10,0,0]),2,1)

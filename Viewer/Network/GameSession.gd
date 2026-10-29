@@ -51,6 +51,10 @@ var icons_dirty := false
 var next_icon_save := 0
 signal world_item_changed(serial: int, item: Dictionary)
 signal world_item_removed(serial: int)
+# Houses and boats (multis: 0xF3 data type 2, legacy 0x1A graphics from 0x4000).
+signal multi_changed(serial: int, multi: Dictionary)
+signal multi_removed(serial: int)
+var multis := {}
 signal container_opened(serial: int)
 signal container_contents_received(serial: int, items: Array)
 signal item_label_received(serial: int, label: String)
@@ -209,6 +213,7 @@ func close() -> void:
 	pending.clear()
 	entities.clear()
 	world_items.clear()
+	multis.clear()
 	container_items.clear()
 	known_items.clear()
 	equipment.clear()
@@ -514,14 +519,20 @@ func _handle(p: PackedByteArray) -> void:
 			player.flags=(int(player.get("flags",0))&~0x40)|(0x40 if p[1]!=0 else 0)
 			appearance_changed.emit(int(player.serial))
 		0xf3:
-			if p.size() == 26 and int(p[3]) == 0:
+			if p.size() == 26 and int(p[3]) in [0,2]:
 				var item := {"serial":Login.read_be(p,4,4),"id":Login.read_be(p,8,2),"amount":Login.read_be(p,11,2),"x":Login.read_be(p,15,2)&0x7fff,"y":Login.read_be(p,17,2)&0x3fff,"z":signed(p[19]),"hue":Login.read_be(p,21,2),"flags":int(p[23]),"facet":player.facet}
-				_world_item(item)
+				if int(p[3]) == 2:
+					item.id = int(item.id)&0x3fff
+					_multi(item)
+				else: _world_item(item)
 		0x1a:
 			var item := legacy_item(p)
 			if not item.is_empty():
 				item.facet = player.facet
-				_world_item(item)
+				if int(item.id) >= 0x4000:
+					item.id = int(item.id)-0x4000
+					_multi(item)
+				else: _world_item(item)
 		0x27:
 			finish_transfer(false,"Server rejected the item move (%d)." % int(p[1]))
 		0x74:
@@ -612,7 +623,7 @@ func _handle(p: PackedByteArray) -> void:
 				status_changed.emit(player_status)
 			if p.size() >= 6 and Login.read_be(p,3,2) == 8:
 				if player.facet != int(p[5]):
-					for serial in world_items.keys(): _remove_world_item(serial)
+					for serial in world_items.keys()+multis.keys(): _remove_world_item(serial)
 				player.facet = int(p[5])
 		0x24:
 			next_item_action = maxi(next_item_action,Time.get_ticks_msec()+1100)
@@ -774,17 +785,9 @@ func open_backpack() -> void:
 		p.append_array(Login.uint_be(backpack,4))
 		send(p)
 
+# Speech keywords ("bank", "vendor buy", boat orders) go out encoded.
 static func speech_packet(message: String) -> PackedByteArray:
-	if message.is_empty() or message.length() > 128 or "\n" in message or "\r" in message or message.to_utf8_buffer().has(0): return PackedByteArray()
-	var bytes := PackedByteArray([0xad,0,0,0,0x03,0xb2,0,3,69,78,85,0])
-	var utf16 := message.to_utf16_buffer()
-	for i in range(0,utf16.size(),2):
-		bytes.append(utf16[i+1])
-		bytes.append(utf16[i])
-	bytes.append_array(PackedByteArray([0,0]))
-	bytes[1] = bytes.size() >> 8
-	bytes[2] = bytes.size() & 255
-	return bytes
+	return preload("res://Network/SpeechKeywords.gd").packet(message)
 
 static func unicode_text(bytes: PackedByteArray, start: int) -> String:
 	var little_endian := PackedByteArray()
@@ -842,6 +845,12 @@ func _world_item(item: Dictionary) -> void:
 
 func _remove_world_item(serial: int) -> void:
 	if world_items.erase(serial): world_item_removed.emit(serial)
+	if multis.erase(serial): multi_removed.emit(serial)
+
+func _multi(item: Dictionary) -> void:
+	world_items.erase(int(item.serial))
+	multis[int(item.serial)] = item
+	multi_changed.emit(int(item.serial),item.duplicate())
 
 static func legacy_item(p: PackedByteArray) -> Dictionary:
 	if p.size() < 14: return {}
