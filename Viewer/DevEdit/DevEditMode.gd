@@ -57,6 +57,10 @@ var talk_label: Label
 var claude_button: Button
 var review_button: Button
 var speak_box: CheckBox
+# Talk: one utterance through Windows speech recognition (scripts/listen.ps1).
+var talk_button: Button
+var listen_pid := 0
+var listen_out := ""
 var spoken: Dictionary = {}
 # Commit: session edits folded into the converter's committed overrides and
 # rebaked in the background; then cleared from the live session.
@@ -145,6 +149,7 @@ func click(screen: Vector2) -> void:
 func _process(_delta: float) -> void:
 	if bake_pid > 0: _poll_bake()
 	if publish_pid > 0: _poll_publish()
+	if listen_pid > 0 and not OS.is_process_running(listen_pid): _heard()
 	if not active or tool != "place" or not follow_cursor or Input.mouse_mode != Input.MOUSE_MODE_VISIBLE: return
 	if Time.get_ticks_msec() < next_cursor or panel.get_global_rect().has_point(panel.get_viewport().get_mouse_position()): return
 	next_cursor = Time.get_ticks_msec()+100
@@ -255,20 +260,55 @@ func submit_request(text: String) -> void:
 		return
 	if not understood.understood:
 		pending.clear()
-		plan_label.text = "Not understood here (%s). Ask Claude to handle: \"%s\"" % [understood.reason,text]
-		claude_button.disabled = not state.synced
 		note("Request not understood offline: "+text)
+		if state.synced:
+			# Anything the game does not know goes to Claude; its proposal comes back for review.
+			plan_label.text = "Sent to Claude (the game does not know this request): \"%s\"
+Claude answers here; any change comes back as a proposal you preview and accept." % text
+			ask_claude()
+		else:
+			plan_label.text = "Not understood here, and Claude cannot be asked: %s" % (("this account is not authorized for developer editing (scripts/configure-dev-edit.ps1 -Accounts ...)") if state.denied != "" else "not joined to the edit session yet")
 		refresh()
 		return
 	note("Request: %s → %s" % [text,understood.summary])
 	review(understood.lines,0,understood.summary)
+
+func talk() -> void:
+	if listen_pid > 0: return
+	listen_out = OS.get_user_data_dir().path_join("dev-edit-heard.json")
+	if FileAccess.file_exists(listen_out): DirAccess.remove_absolute(listen_out)
+	listen_pid = OS.create_process("powershell.exe",["-NoProfile","-ExecutionPolicy","Bypass","-WindowStyle","Hidden","-File",ProjectSettings.globalize_path("res://../scripts/listen.ps1"),"-Out",listen_out])
+	if listen_pid <= 0:
+		listen_pid = 0
+		note("Could not start speech recognition.")
+		return
+	talk_button.text = "Listening…"
+	talk_button.disabled = true
+	plan_label.text = "Listening — say your request."
+
+func _heard() -> void:
+	listen_pid = 0
+	talk_button.text = "Talk"
+	talk_button.disabled = false
+	var heard: Variant = JSON.parse_string(FileAccess.get_file_as_string(listen_out)) if FileAccess.file_exists(listen_out) else null
+	if not heard is Dictionary:
+		plan_label.text = "Speech recognition did not return a result."
+		return
+	var tip := "" if str(heard.get("online","")) == "on" else "
+For accurate speech, turn on Windows Settings → Privacy & security → Speech → Online speech recognition (now using the weaker offline recognizer)."
+	if str(heard.text).strip_edges().is_empty():
+		plan_label.text = {"NoSpeech":"Heard nothing — press Talk and speak.","LowConfidence":"Did not catch that clearly — try again, closer to the microphone."}.get(str(heard.status),"Speech recognition: "+str(heard.status).left(160))+tip
+		return
+	ask_box.text = str(heard.text)
+	note("Heard: "+ask_box.text)
+	submit_request(ask_box.text)
+	if tip != "": plan_label.text += tip
 
 func ask_claude() -> void:
 	var text := ask_box.text.strip_edges()
 	if text.is_empty() or not state.ask(text,sender()): return
 	note("Asked Claude: "+text)
 	ask_box.text = ""
-	claude_button.disabled = true
 
 # Dry-runs every line, shows the exact scope and highlights the targets.
 func review(lines: Array, ask_id: int, summary := "") -> void:
@@ -554,6 +594,7 @@ func scope() -> String:
 
 func refresh() -> void:
 	if panel == null: return
+	if claude_button: claude_button.disabled = not state.synced
 	var status := "offline (enter the world first)"
 	if state.denied != "": status = "NOT AUTHORIZED: "+state.denied
 	elif state.synced: status = "session %s · r%d · you: %s · editors: %s" % [state.session,state.revision,state.me,", ".join(state.editors.keys())]
@@ -635,12 +676,13 @@ func _build() -> void:
 	session_label = _text(column,12)
 	column.add_child(Modern.label("Ask",14,Modern.IVORY,700))
 	ask_box = LineEdit.new()
-	ask_box.placeholder_text = "e.g. hide the flowers near me (Win+H to speak)"
-	ask_box.tooltip_text = "Type a request, or use Windows voice typing (Win+H) in this box. Enter shows the plan and its scope; nothing changes until Accept."
+	ask_box.placeholder_text = "e.g. hide the flowers near me — or press Talk"
+	ask_box.tooltip_text = "Type a request (or press Talk and say it). Enter shows the plan and its scope; requests the game does not know go to Claude. Nothing changes until Accept."
 	ask_box.custom_minimum_size.x = 340
 	ask_box.text_submitted.connect(submit_request)
 	column.add_child(ask_box)
 	var asking := _row(column)
+	talk_button = _button("Talk","Say your request: Windows speech recognition fills the box, then the plan is shown (nothing changes until Accept)",talk,asking)
 	_button("Plan","Interpret the request and show its scope",func(): submit_request(ask_box.text),asking)
 	claude_button = _button("Ask Claude","Send the request to Claude Code (connected through scripts/dev-edit-bridge.ps1); its proposal comes back for review",ask_claude,asking)
 	speak_box = CheckBox.new()
