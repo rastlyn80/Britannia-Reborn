@@ -374,7 +374,7 @@ func _process(delta: float) -> void:
 		avatars[serial].animate(travelled > 0.00001,intent_facing if serial == player_serial else directions[serial],delta,travelled/maxf(delta,0.00001))
 	if game.phase == "world" and avatars.has(player_serial):
 		var avatar: Node3D = avatars[player_serial]
-		var follow := avatar.position+Vector3(0,1.4+avatar.ground_offset+avatar.jump.height*0.25,0)
+		var follow := avatar.position+Vector3(0,float(avatar.get_meta("camera_height",1.4))+avatar.ground_offset+avatar.jump.height*0.25,0)
 		pivot.position = pivot.position.lerp(follow,1.0-exp(-18.0*delta)) if camera_target_ready else follow
 		camera_target_ready = true
 		avatar.visual_root.visible = boom.get_hit_length() > 1.15
@@ -702,7 +702,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and not mouse_looking:
 		if dev_edit and dev_edit.active: dev_edit.click(event.position)
-		else: world_items.click(event.position)
+		else: world_items.click(event.position,event.double_click)
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		mouse_return = get_viewport().get_mouse_position()
 		mouse_looking = true
@@ -774,7 +774,7 @@ func _entity_changed(serial: int,position: Dictionary) -> void:
 	# Imported humanoid faces +Z; UO direction 0 faces north (-Z).
 	directions[serial] = PI-int(position.direction)*PI/4
 	if tracks[serial].position.distance_to(location) > 8.0: avatars[serial].reset_presentation()
-	tracks[serial].push(location,float(game.move_interval)/1000.0 if serial == player_serial else (0.21 if position.get("running",false) else 0.41))
+	tracks[serial].push(location,float(game.move_interval)/1000.0 if serial == player_serial else preload("res://Presentation/HorseVisual.gd").step_seconds(game.mobile_equipment.get(serial,{}).values(),bool(position.get("running",false)))+.005)
 	targets[serial] = location
 
 func _appearance_changed(serial: int) -> void:

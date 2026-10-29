@@ -14,7 +14,7 @@ func capture() -> Image:
 func solid(colour: Vector3) -> ShaderMaterial:
 	var shader:=Shader.new();shader.code="shader_type spatial;render_mode unshaded;void fragment(){ALBEDO=vec3(%s,%s,%s);}" % [colour.x,colour.y,colour.z]
 	var result:=ShaderMaterial.new();result.shader=shader;return result
-func skin_probe(mesh: MeshInstance3D, rig: Skeleton3D) -> ArrayMesh:
+static func skin_probe(mesh: MeshInstance3D, rig: Skeleton3D) -> ArrayMesh:
 	# Classify the intentionally bare head/neck from original skin bindings,
 	# before animation, so a bent head cannot be mistaken for exposed torso.
 	var result:=ArrayMesh.new()

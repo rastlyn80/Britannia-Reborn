@@ -182,7 +182,7 @@ static func game_handshake(user: String, secret: String, token: int) -> PackedBy
 	bytes.append_array(Login.field(secret))
 	return bytes
 
-func connect_account(user: String, secret: String) -> void:
+func connect_account(user: String, secret: String, port: int = 2593) -> void:
 	close()
 	username = user
 	password = secret
@@ -202,7 +202,7 @@ func connect_account(user: String, secret: String) -> void:
 			phase = "connecting"
 			deadline = Time.get_ticks_msec()+20000)
 	phase = "login"
-	login.start(user,secret)
+	login.start(user,secret,port)
 
 func close() -> void:
 	if is_instance_valid(login):
@@ -765,7 +765,7 @@ func walk(direction: int, run: bool = false) -> bool:
 		if not destination_ready.call(Vector2i(player.x,player.y)+offset): return false
 	# The pinned PlayerMobile has zero-cost turns; a turn must not consume a
 	# full 410 ms walking interval. Keep a short packet-rate guard for input jitter.
-	move_interval = 20 if turn_only else (205 if run else 405)
+	move_interval = 20 if turn_only else roundi(preload("res://Presentation/HorseVisual.gd").step_seconds(equipment.values(),run)*1000.)+5
 	running = run
 	next_walk = Time.get_ticks_msec()+move_interval
 	requested_direction = direction & 7
@@ -899,6 +899,14 @@ func request_label(serial: int) -> bool:
 	var click := PackedByteArray([9])
 	click.append_array(Login.uint_be(serial,4))
 	send(click)
+	return true
+
+func use_mobile(serial: int) -> bool:
+	if phase!="world" or not pending_transfer.is_empty():return false
+	if serial!=int(player.get("serial",0)) and not entities.has(serial):return false
+	# Mount ownership, range, war mode and all permission checks belong to ModernUO.
+	next_item_action=Time.get_ticks_msec()+1100
+	send(preload("res://Network/ActionProtocol.gd").double_click(serial))
 	return true
 
 func use_item(serial: int) -> bool:

@@ -1,17 +1,23 @@
 extends RefCounted
 ## Human-only native action families. Unsupported requests remain explicit.
 const CLASSIC := {0:"Walk",1:"Sword_Walk",2:"Run",3:"Sword_Run",4:"Idle",5:"Fidget_Talk",6:"Fidget_Look",7:"Sword_Idle",8:"Sword_Idle",9:"Sword_A",10:"Punch_Jab",11:"Punch_Cross",12:"Heavy_Attack",13:"Sword_B",14:"Sword_C",15:"Sword_Walk",16:"Cast",17:"Cast",18:"Bow_Attack",19:"Crossbow_Attack",20:"Hit",21:"Death",22:"Death",23:"Rider_Walk",24:"Rider_Run",25:"Rider_Idle",26:"Rider_Attack",27:"Rider_Bow",28:"Rider_Crossbow",29:"Rider_Slap",30:"Turn",33:"Salute",34:"Fidget3",31:"Punch_Jab",32:"Bow"}
-static func resolve(request: Dictionary) -> String:
+static func resolve(request: Dictionary, mounted: bool = false) -> String:
 	if int(request.get("body",0)) not in [400,401]: return ""
-	if str(request.get("protocol",""))=="classic": return str(CLASSIC.get(int(request.get("action",-1)),""))
+	if str(request.get("protocol",""))=="classic":
+		var group:=int(request.get("action",-1))
+		if mounted and group not in [23,24,25,26,27,28,29]:
+			return str({0:"Rider_Walk",1:"Rider_Walk",2:"Rider_Run",3:"Rider_Run",4:"Rider_Idle",7:"Rider_Idle",8:"Rider_Idle",9:"Rider_Attack",10:"Rider_Attack",11:"Rider_Attack",12:"Rider_Attack",13:"Rider_Attack",14:"Rider_Attack",15:"Rider_Walk",18:"Rider_Bow",19:"Rider_Crossbow"}.get(group,""))
+		return str(CLASSIC.get(group,""))
 	if str(request.get("protocol",""))!="new": return ""
 	# 0xe2 contains type/subaction/variation, not classic frame timing. The
 	# sender's historical parameter names are misleading; keep the raw aliases.
 	var kind:=int(request.get("type",request.get("action",-1)))
 	var action:=int(request.get("subaction",request.get("frames",0)))
+	if mounted and kind!=0:return ""
 	match kind:
 		0:
-			return str({0:"Punch_Jab",3:"Punch_Cross",4:"Sword_A",5:"Punch_Jab",6:"Heavy_Attack",7:"Sword_B",8:"Sword_C"}.get(action,""))
+			if mounted:return "Rider_Bow" if action==1 else "Rider_Crossbow" if action==2 else "Rider_Attack" if action in [0,3,4,5,6,7,8] else ""
+			return str({0:"Punch_Jab",1:"Bow_Attack",2:"Crossbow_Attack",3:"Punch_Cross",4:"Sword_A",5:"Punch_Jab",6:"Heavy_Attack",7:"Sword_B",8:"Sword_C"}.get(action,""))
 		3: return "Death"
 		4: return "Hit"
 		11: return "Cast"

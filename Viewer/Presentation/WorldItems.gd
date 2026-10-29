@@ -691,7 +691,7 @@ func activate(serial: int) -> bool:
  if not session.target_request.is_empty(): return preload("res://Network/ActionRunner.gd").target_entity(session,serial)
  return session.use_item(serial)
 
-func click(at: Vector2) -> void:
+func click(at: Vector2, double: bool = false) -> void:
  if session.phase != "world": return
  var from: Vector3 = scene.camera.project_ray_origin(at)
  var direction: Vector3 = scene.camera.project_ray_normal(at)
@@ -712,7 +712,10 @@ func click(at: Vector2) -> void:
    preload("res://Network/ActionRunner.gd").target_entity(session,mobile)
    return
   preload("res://Network/ActionRunner.gd").selected = mobile
-  session.request_context(mobile)
+  if double:session.use_mobile(mobile)
+  elif preload("res://Presentation/HorseVisual.gd").BODIES.has(int(session.entities.get(mobile,{}).get("body",0))):hint.text="Double-click the horse to ride."
+  elif mobile==int(session.player.get("serial",0)) and not preload("res://Presentation/HorseVisual.gd").mount_item(session.equipment.values()).is_empty():hint.text="Double-click yourself to dismount."
+  else:session.request_context(mobile)
  elif not hit.is_empty() and hit.collider.has_meta("server_serial"): activate(int(hit.collider.get_meta("server_serial")))
 
 # The server object or creature under the mouse (quickbar "under the mouse").

@@ -1,5 +1,5 @@
 {
-  "scope": "35 classic human player/NPC action categories: all have prepared human replacement clips; 28 on-foot categories are connected. Seven rider clips are opt-in previews. Mounted playback, horse art and mounting gameplay remain deferred; extended mode/variation fidelity is a separate worklist.",
+  "scope": "35 classic human player/NPC action categories with prepared replacements. All 28 on-foot groups are connected; seven mounted groups connect to supported ordinary horses when the licensed horse art is installed. Other mount families, exact pose fidelity and extended modes remain separate worklists.",
   "reference": {
     "repository": "https://github.com/ClassicUO/ClassicUO",
     "revision": "ee79d7ebc1cc0e53ff84fe6cae17d389e2737f93",
@@ -195,56 +195,56 @@
       "id": 23,
       "native_group": "OnmountRideSlow",
       "label": "Onmount Ride Slow",
-      "quality": "human rider pose category",
-      "note": "Prepared human rider clip for explicit preview only. Disabled in live playback until horse/saddle integration; mounted gameplay remains deferred.",
+      "quality": "horse-mounted category",
+      "note": "Native ordinary-horse rider playback with animated saddle/stirrup fitting; other mount families remain deferred.",
       "priority": 3
     },
     {
       "id": 24,
       "native_group": "OnmountRideFast",
       "label": "Onmount Ride Fast",
-      "quality": "human rider pose category",
-      "note": "Prepared human rider clip for explicit preview only. Disabled in live playback until horse/saddle integration; mounted gameplay remains deferred.",
+      "quality": "horse-mounted category",
+      "note": "Native ordinary-horse rider playback with animated saddle/stirrup fitting; other mount families remain deferred.",
       "priority": 3
     },
     {
       "id": 25,
       "native_group": "OnmountStand",
       "label": "Onmount Stand",
-      "quality": "human rider pose category",
-      "note": "Prepared human rider clip for explicit preview only. Disabled in live playback until horse/saddle integration; mounted gameplay remains deferred.",
+      "quality": "horse-mounted category",
+      "note": "Native ordinary-horse rider playback with animated saddle/stirrup fitting; other mount families remain deferred.",
       "priority": 3
     },
     {
       "id": 26,
       "native_group": "OnmountAttack",
       "label": "Onmount Attack",
-      "quality": "human rider pose category",
-      "note": "Prepared human rider clip for explicit preview only. Disabled in live playback until horse/saddle integration; mounted gameplay remains deferred.",
+      "quality": "horse-mounted category",
+      "note": "Native ordinary-horse rider playback with animated saddle/stirrup fitting; other mount families remain deferred.",
       "priority": 3
     },
     {
       "id": 27,
       "native_group": "OnmountAttackBow",
       "label": "Onmount Attack Bow",
-      "quality": "human rider pose category",
-      "note": "Prepared human rider clip for explicit preview only. Disabled in live playback until horse/saddle integration; mounted gameplay remains deferred.",
+      "quality": "horse-mounted category",
+      "note": "Native ordinary-horse rider playback with animated saddle/stirrup fitting; other mount families remain deferred.",
       "priority": 3
     },
     {
       "id": 28,
       "native_group": "OnmountAttackCrossbow",
       "label": "Onmount Attack Crossbow",
-      "quality": "human rider pose category",
-      "note": "Prepared human rider clip for explicit preview only. Disabled in live playback until horse/saddle integration; mounted gameplay remains deferred.",
+      "quality": "horse-mounted category",
+      "note": "Native ordinary-horse rider playback with animated saddle/stirrup fitting; other mount families remain deferred.",
       "priority": 3
     },
     {
       "id": 29,
       "native_group": "OnmountSlapHorse",
       "label": "Onmount Slap Horse",
-      "quality": "human rider pose category",
-      "note": "Prepared human rider clip for explicit preview only. Disabled in live playback until horse/saddle integration; mounted gameplay remains deferred.",
+      "quality": "horse-mounted category",
+      "note": "Native ordinary-horse rider playback with animated saddle/stirrup fitting; other mount families remain deferred.",
       "priority": 3
     },
     {

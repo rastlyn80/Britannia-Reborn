@@ -1,3 +1,9 @@
+# Horse riding checkpoint — 29 October 2026
+
+Done: ordinary horse body/mount routing, source idle/walk/canter/rear, both human riders fitted to saddle/stirrups/reins, native mounting/dismounting and mounted movement, seven rider action categories, camera/picking/observer updates and prototype split riding garments. Verified: 2,468 runtime/contact checks, 384 GPU clothing views and 270 real server/two-client checks. Human category catalogue is now 35/35 connected, including 7/7 rider groups for supported ordinary horses; wearable scope stays 234/1,126 (20.78%). See [HORSE_RIDING.md](HORSE_RIDING.md).
+
+Next: owner visual review; improve split garment tailoring, action transitions and rein/weapon detail; author full climb-on/off motion, exact coat/tack variants, hoof contact on slopes and a complete horse hit/death/jump/gallop library. Other mount families still need their own art/rig/behaviour validation. Continue the existing wearable worklist independently; this milestone does not mean every mount or every human server variation is complete.
+
 # Protocol blueprint — 29 October 2026
 
 Protocol work follows docs/PROTOCOL_BLUEPRINT.md (second blueprint): Phase 0 foundation (dispatch modules, version match, census, full cliloc), then world truth (tooltips, health bars, effects, audio), interactions, every gump/prompt, commerce/social, world systems, robustness. Census 2026-10-29: 9 of 30 received packet types dropped (0xDC tooltips x1580, 0x17 health bars x192, time, music, features, season).

@@ -1,0 +1,15 @@
+{
+  "source_chain": "scripts/download-free-human.py; scripts/download-free-equipment.py; scripts/prepare-free-equipment.py; scripts/character-expansion-inputs.json; scripts/prepare-character-expansion.py",
+  "license": "CC0-1.0 for the selected existing body/robe/skirt/kilt inputs and linen from the MedievalKit material pipeline (Viewer/Art/MedievalKit/NOTICE.md and CREDITS.md)",
+  "files": {
+    "Viewer/Art/MedievalKit/textures/Linen_Color.jpg": "3221cb1d07531f13238b2443be5843d1b788c462c8576e7ada755e496f93b149",
+    "Viewer/local-art/free-equipment/equipment-base.glb": "b5134f97fd6a4179cd0d692e748f9b917c49656d05fe31dc0969f42846ae20a9",
+    "Viewer/local-art/free-equipment/runtime/part-robe.glb": "071c660ef992be9eed2e89ac00cd07b8ce27da92e37bb675af1ccbbc58633c69",
+    "Viewer/local-art/free-equipment/expansion/skirt.glb": "92566a8bd44215d8a662d1799e95d19e9d444f5a703312b4574f7f0f7800aace",
+    "Viewer/local-art/free-equipment/expansion/kilt.glb": "cfe942c0bfe90af168d038c515610069a5439365b7a0a9b9718a2714423f8b9f",
+    "Viewer/local-art/free-equipment-female/equipment-base.glb": "951b8c1424714707b3178ca66a5b1f9e57f8c3e41f301c3a082cd312b861fc8c",
+    "Viewer/local-art/free-equipment-female/runtime/part-robe.glb": "679def9db1905969a80af287d5f46d5042a91b72ae9fec4b043d1c0aab73cbaf",
+    "Viewer/local-art/free-equipment-female/expansion/skirt.glb": "a78454d539657a38aeef9b33550df339d818c0cf55bef828258f674f54b3c32b",
+    "Viewer/local-art/free-equipment-female/expansion/kilt.glb": "9ec67258986f638abd7b30b8a518b536d79c3243aba19257984eea1415bd3d47"
+  }
+}

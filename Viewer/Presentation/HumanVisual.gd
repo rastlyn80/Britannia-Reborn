@@ -19,8 +19,9 @@ var use_modern_motion := true
 var motion_profile := {}
 var war_mode := false
 var mounted := false
-# Rider clips can be reviewed before the deferred horse/saddle integration.
+# Explicit local rider preview remains available independently of live mounting.
 var rider_preview_enabled := false
+var mounted_live_enabled := false
 var native_action := {}
 var action_clip := ""
 var action_elapsed := 0.
@@ -112,6 +113,7 @@ func _attach(path: String, prefix: String, body_part: bool = false) -> void:
 	source.free()
 
 func _part_path(asset: String) -> String:
+	if riding() and asset in ["skirt","kilt"] and ResourceLoader.exists(folder+"/riding/"+asset+".glb"):return folder+"/riding/"+asset+".glb"
 	return folder+"/"+asset+".glb" if asset.begins_with("coverage/") else folder+"/expansion/"+asset+".glb"
 
 func set_equipment(worn: Array) -> void:
@@ -178,6 +180,7 @@ func set_equipment(worn: Array) -> void:
 			var slot: String = Wardrobe.SLOTS[i]
 			if slot=="boots" and str(extra_parts.get("legs",{}).get("asset",""))=="coverage/plate_legs":
 				_attach(_part_path("coverage/armour_boots"),"Extra_")
+			elif slot=="robe" and riding() and ResourceLoader.exists(folder+"/riding/robe.glb"):_attach(folder+"/riding/robe.glb","Free_")
 			else:_attach(folder+"/runtime/part-"+slot+".glb","Free_")
 			var garment := parts[-1]
 			var hue := int(resolved.hues.get(slot,0))
@@ -190,7 +193,10 @@ func set_equipment(worn: Array) -> void:
 				if extra_parts.has(slot):missing_art.append(int(extra_parts[slot].id))
 	for slot in extra_parts:
 		var item: Dictionary = extra_parts[slot]
-		_attach(_part_path(str(item.asset)),"Extra_")
+		# A split riding robe reveals padded trousers at its inner opening;
+		# suppress rigid leg plates beneath it while retaining native item stats.
+		if slot=="legs" and riding() and (outfit_bits&8):_attach(folder+"/runtime/part-pants.glb","Free_")
+		else:_attach(_part_path(str(item.asset)),"Extra_")
 		_shade(parts[-1],int(item.hue))
 	if extra_hair and not hide_hair:
 		_attach(folder+"/expansion/"+hair_asset+".glb","Extra_")
@@ -239,10 +245,12 @@ func play(clip: String, blend: float = .15) -> void:
 	animator.play(clip,blend)
 	if preload("res://Presentation/HumanActions.gd").locomotion(previous) and preload("res://Presentation/HumanActions.gd").locomotion(clip): animator.seek(fmod(phase,1.)*animator.current_animation_length,true)
 
+func riding() -> bool:return mounted and (mounted_live_enabled or rider_preview_enabled)
+
 func stance_clip(base: String) -> String:
 	if motion_profile.is_empty(): return base
 	var resolved:=Wardrobe.resolve(server_equipment)
-	if mounted and rider_preview_enabled:
+	if riding():
 		var rider: String="Rider_"+("Idle" if base=="Idle" else "Run" if base in ["Run","Sprint"] else "Walk")
 		if animator.has_animation(rider):return rider
 	var weapon: String=str(resolved.pieces.get("weapon",{}).get("asset",""))
@@ -268,9 +276,9 @@ var server_equipment: Array=[]
 func request_action(request: Dictionary) -> bool:
 	native_action=request.duplicate(true)
 	set_meta("native_action",native_action)
-	var clip:=preload("res://Presentation/HumanActions.gd").resolve(request)
+	var clip:=preload("res://Presentation/HumanActions.gd").resolve(request,riding())
 	clip=clothing_clip(clip)
-	if clip.begins_with("Rider_") and not rider_preview_enabled:
+	if clip.begins_with("Rider_") and not (rider_preview_enabled or mounted_live_enabled):
 		set_meta("deferred_action",request.duplicate(true));return false
 	if has_meta("deferred_action"):remove_meta("deferred_action")
 	if motion_profile.is_empty() or clip.is_empty() or not animator.has_animation(clip):

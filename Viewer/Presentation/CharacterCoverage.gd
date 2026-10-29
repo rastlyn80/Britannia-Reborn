@@ -42,7 +42,8 @@ func _initialize() -> void:
 	var report:={"generated":Time.get_datetime_string_from_system(true),"wearables":{"catalogued_graphics":records.size(),"mapped_graphics":mapped,"records":records},"human_hair":hair,"human_beard_ids":Wardrobe.BEARDS.keys(),"body_art":{"400":"male human","401":"female human"},"animation_transport":["0x6e classic action/frame/repeat/reverse/delay","0xe2 new action/frame/delay"],"server_action_playback":[],"locomotion_baseline":["Idle","Walk","Run"],"scope":"Local indexed client tile graphics, not a complete census of equippable server item classes. Category art, individual mesh quality and animation coverage are separate. Non-human bodies, exact head styles and full action playback remain open."}
 	var file:=FileAccess.open(out,FileAccess.WRITE)
 	report.animation_transport=["0x6e classic action/frame/repeat/reverse/delay","0xe2 type/subaction/variation; historical aliases retained"]
-	report.server_action_playback={"bodies":[400,401],"classic_groups":preload("res://Presentation/HumanActions.gd").CLASSIC.keys(),"new_types":[0,3,4,11],"new_attack_subactions":[0,3,4,5,6,7,8],"status":"human category replacements; human rider clips prepared for opt-in review; mounted playback and horse art deferred"}
+	report.horse_mounts={"available":preload("res://Presentation/HorseVisual.gd").available(),"body_to_mount":preload("res://Presentation/HorseVisual.gd").BODIES,"source_clips":["idle","walk","canter","rear"],"scope":"ordinary horses; one bay warhorse category with native hues; other mount families deferred"}
+	report.server_action_playback={"bodies":[400,401],"classic_groups":preload("res://Presentation/HumanActions.gd").CLASSIC.keys(),"new_types":[0,3,4,11],"new_attack_subactions":[0,1,2,3,4,5,6,7,8],"status":"human on-foot categories and native ordinary-horse rider playback; other mount families and extended fidelity remain separate"}
 	report.server_action_playback.classic_replacements=preload("res://Presentation/HumanActions.gd").CLASSIC.duplicate()
 	# Audit actual prepared libraries on both bodies, rather than counting only
 	# a declared mapping while the motion art is missing or being rebuilt.
@@ -68,7 +69,7 @@ func _initialize() -> void:
 		if not categories.has(entry[1]):categories.append(entry[1])
 	report.equipment_categories=categories
 	report.prepared_locomotion=["Walk","Jog","Run","Sprint"]
-	report.scope+=" 35 classic human categories; rider clips do not establish mounting gameplay. See HUMAN_COVERAGE_SESSION.md."
+	report.scope+=" 35 classic human categories; seven rider categories connect to ordinary horses when the licensed art is installed. Other mount families remain deferred. See HORSE_RIDING.md."
 	report.source_catalog = {"path":catalog_path,"sha256":FileAccess.get_sha256(catalog_path),"item_count":catalog.items.size()}
 	file.store_string(JSON.stringify(report,"\t"))
 	print("CHARACTER COVERAGE: ",mapped," / ",records.size()," indexed wearable graphics have category replacements; 2 body arts; classic human action replacements installed")

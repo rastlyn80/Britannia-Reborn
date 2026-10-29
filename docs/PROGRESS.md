@@ -1,3 +1,9 @@
+# Ordinary horses and seated human actions — 29 October 2026
+
+Implemented the first horse batch in the shared client: real skinned horse art with idle/walk/canter/rear, male and female saddle/stirrup/rein fitting, native double-click mounting/dismounting, mounted speed/camera/picking and observer updates. The four ordinary UO horse identities currently share one dark-bay warhorse. Seven rider groups now connect live; other mount families, exact coats, climb-on motion and the full animal action library remain deferred. Riding robe/skirt/kilt variants keep covered legs opaque; final tailoring remains open.
+
+Evidence: 2,468 contact/runtime checks including 768 poses; 384 actual GPU clothing views; 270 native checks on two characters/clients in an isolated pinned ModernUO world (loopback 2594), all passed. Production 2593, remembered login, upstream source and original UO data remain unchanged. Human catalogue: 35/35 classic categories connected for supported humans/horses, 28/28 on-foot, unchanged 234/1,126 wearable graphics (20.78%). These are category counts, not exact item or universal animation fidelity. Source/licence pins, reproduction, local visual review and remaining gaps: [HORSE_RIDING.md](HORSE_RIDING.md). Licensed raw art stays ignored; standalone redistribution is prohibited.
+
 # Full protocol layer: every ModernUO packet parsed or built — 29 October 2026
 
 The owner requires full interaction with the server: nothing it sends dropped, nothing it accepts unreachable. Following the second blueprint (PROTOCOL_BLUEPRINT.md), with ClassicUO and ModernUO's source as references:

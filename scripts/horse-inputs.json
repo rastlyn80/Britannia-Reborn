@@ -1,0 +1,15 @@
+{
+  "publisher": "https://literock-studios.itch.io/warhorse-lite",
+  "author": "Literock Studios / Literock Ventures",
+  "version": "1.0.0",
+  "upload_id": 19716484,
+  "archive_name": "Warhorse_Lite_v1.0.0.zip",
+  "archive_sha256": "39cf8dcbe73290fc015bbdbb8ad34e8a8e55ba3f40b2f8410dc14f5d57122f08",
+  "license": "Warhorse Lite Free Licence (custom; game use/modification allowed, standalone asset redistribution prohibited)",
+  "license_file": "Warhorse_Lite/LICENSE.txt",
+  "files": {
+    "Warhorse_Lite/LICENSE.txt": "d712b245c62affbbe3acc7be55f0056799e8512d447136aa5a4ff91846ae0698",
+    "Warhorse_Lite/README.md": "bd30d624b8bcf86879ae9af17261f3a8534b0868dd2618ee8be3108e07a005cd",
+    "Warhorse_Lite/Warhorse_Lite.glb": "745ccfa9dc9fa390496e7147d258fc390a791c914653779194a26da7e1386fcc"
+  }
+}
