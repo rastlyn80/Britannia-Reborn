@@ -7,6 +7,8 @@ extends Node
 signal feedback(text: String)
 signal window_requested(window: String, verb: String)
 signal client_requested(action: String, option: String)
+# A spell was sent to the server (the cast bar and caster glow, CastBar.gd).
+signal cast_started(spell: Dictionary)
 const Catalog = preload("res://Network/ActionCatalog.gd")
 const Protocol = preload("res://Network/ActionProtocol.gd")
 const WAIT_FOR_TARGET := 5.0
@@ -201,11 +203,14 @@ func _step(step: Dictionary, slot_aim: String) -> float:
 			send(Protocol.cast_spell(int(spell.id)))
 			last_spell = int(spell.id)
 			cooldowns.start("spell",Cooldowns.spell_delay(last_spell))
+			cast_started.emit(spell)
 		"Last Spell":
 			if last_spell < 0: feedback.emit("No spell cast yet.")
 			else:
 				send(Protocol.cast_spell(last_spell))
 				cooldowns.start("spell",Cooldowns.spell_delay(last_spell))
+				for entry in Catalog.spells():
+					if int(entry.id) == last_spell: cast_started.emit(entry)
 		"Invoke Virtue":
 			var virtue := ["Honor","Sacrifice","Valor"].find(option)
 			if virtue >= 0: send(Protocol.invoke_virtue(virtue+1))

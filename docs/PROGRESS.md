@@ -1,3 +1,21 @@
+# Gameplay polish: paperdoll, gains, combat target, casting — 29 October 2026
+
+Owner request. Details are in [MODERN_UI.md](MODERN_UI.md) under "Gameplay polish".
+- **Paperdoll:** drag to wear onto the model or any slot, with the target slot lit from local tiledata layers. Slots flash on equip, refusals give their reason, and four more slots were added.
+- **Gain cards:** skill and stat gain cards with a bar toward the cap, merged per skill.
+- **Combat target:** overhead health bars in fights, a ground ring on the target, and a target frame that puts the attack target first, flashes on hits and trails the bar.
+- **Casting:** a cast bar with words of power, glow at the hands, a coloured target reticle, and fizzle and mana endings.
+
+**Evidence:**
+- `PolishTests.gd` passes 22/0.
+- A live drag with real mouse input equipped a shirt, confirmed by the server.
+- Live captures of every state.
+
+**Gaps:**
+- A real server cast is untested until the test kit's new `magic` option loads at the next server restart. The running server was started by another session and did not accept the console shutdown, so it was left running.
+- Other casters get no glow.
+- Overhead bars for party members are not separate from the party frames.
+
 # Human accessories: seven catalogue gaps — 29 October 2026
 
 Added bonnet, feathered hat, tricorne, jester hat, chain coif, spellbook and native lit/unlit lantern on both human bodies. Corrected flipped coif routing; native dyes/emission, closed holding fingers, arm clearance and coif/long-hair/cape layering are connected. Catalogue: **246/1,126 graphics (21.85%), 72 categories**, twelve newly covered graphics; action counts remain 35/35 classic and 28/28 on foot with seven supported horse rider groups. Rejected apron/sash experiments are not mapped or counted.

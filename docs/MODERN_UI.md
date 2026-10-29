@@ -233,6 +233,32 @@ The owner approved the plan on the design canvas: a front end with no map distri
   - **What shows:** emotes read *like this*, yells are a little larger and whispers quieter. System messages and single-click labels stay in the journal only.
   - **Colours:** each speaker has their own soft tone (muted gold, sky, sage, rose, lavender, sand, teal), chosen by serial; you are plain ivory, and server-given hues are kept, softened. The journal now names the speaker ("Trader Tess: Hail, traveller!") in the same colour, under the Chat tab. Live with two accounts.
 - **Settings per account and character (2026-10-29, owner request):** `Network/Profile.gd` keeps sound and music volume, interface size, gamepad, sky and every window's place per character, with the same key as its quickbar, and switches them when the character enters. A character that has never played starts from the last values used. Volume and gamepad were not saved at all before. The world look stays per computer, because it picks the prepared world before sign-in. ProfileTests 6/0, in verify.
+- **Gameplay polish (2026-10-29, owner request):**
+  - **Paperdoll drag to wear (`Network/PaperdollWindow.gd`):**
+    - An item dropped on the model or on any slot is worn. The 3D view keeps drops for itself, so while an item is dragged a catcher over the model takes the drop.
+    - While you drag, the frame lights up and the slot the item will go to is highlighted ("Drop to wear · shirt").
+    - The slot flashes when the server equips the item. A refusal shows the reason on the paperdoll: classic lift-refusal wording, from the 0x27 reason.
+    - Slots now also cover talisman, tunic, skirt and leg armour.
+    - Layers come from your install's tiledata: `scripts/prepare-wearables.py` writes `local-items/wearables.json`, 1,126 wearables, and `launch.ps1` runs it when missing.
+  - **Gain cards (`Network/Toasts.gd`):**
+    - Each card shows the skill or stat, the change, the new value and a bar toward the cap.
+    - More gains of the same skill add up on its card.
+    - Stat gains are single-point changes of str/dex/int. Larger jumps, or changes within 2.5 s of equipment or buffs changing, are not reported, since the status packet includes item and spell modifiers.
+    - Cards sit top right, clear of the minimap.
+  - **Combat target:**
+    - `Network/OverheadBars.gd` draws a health bar under the name of your target and of anyone in a fight near you in the last 10 s. Your own bar shows in war mode.
+    - A pulsing ground ring marks the target: red when it is the server's attack target (0xAA), gold when only selected.
+    - The target frame shows the attack target first, with "Attacking", flashes on a hit with the damage, and slides the bar down over a pale trail.
+  - **Spellcasting (`Network/CastBar.gd`):**
+    - Every cast sent (quickbar, spellbook, Last Spell) shows a bar over the quickbar with the spell and its words of power. The bar fills over ModernUO's cast delay.
+    - Light and motes gather at your hands in the school's colour.
+    - A target request turns the bar into a prompt, and the cursor becomes a reticle: red for harmful spells, blue for helpful ones, gold otherwise.
+    - A fizzle, broken concentration, missing mana or reagents, or being frozen end the cast with the reason, a shake and a puff of smoke.
+  - **Evidence:**
+    - `PolishTests.gd`: 22 checks, in verify.
+    - Live against the local server, the shirt was taken off and worn again by dragging it from the backpack onto the model with real mouse input. The slot lit "Drop to wear · shirt" during the drag, and the server confirmed the equip.
+    - Gain cards, the target ring, overhead bar, damage flash and cast states were captured live by driving the client's own signals.
+    - A real cast against the server waits for the test kit's new `magic` option (spellbook and reagents), which loads at the next server restart.
 - **Original idea:** any item (in the backpack, a container, the paperdoll, a vendor or trade window, or the world) can be opened in an inspect view, as in modern games. It shows the item's 3D model, lit, with drag to rotate and wheel to zoom, and its server tooltip lines (name, properties) beside it. It uses the same model as the world and the 3D icon renderer.
 - **Front end still to do:** deleting characters, profession and skill choice at creation, a server-status probe before sign-in, and remembered looks updating while you play (they are saved on entering and on logging out).
 - **Windows still to modernise:** a chat-channel window. Speaker names in the journal need the session to pass them on (0x1C/0xAE carry them; GameSession emits text only).

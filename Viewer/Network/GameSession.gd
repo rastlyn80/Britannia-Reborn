@@ -539,7 +539,9 @@ func _handle(p: PackedByteArray) -> void:
 					_multi(item)
 				else: _world_item(item)
 		0x27:
-			finish_transfer(false,"Server rejected the item move (%d)." % int(p[1]))
+			# Lift refusal reasons as the classic client words them.
+			var reasons := ["You cannot pick that up.","That is too far away.","That is out of sight.","That item does not belong to you.","You are already holding an item."]
+			finish_transfer(false,reasons[int(p[1])] if p.size() > 1 and int(p[1]) < reasons.size() else "The server refused to move that item.")
 		0x74:
 			var prices := Commerce.prices(p)
 			if not prices.is_empty(): vendor_prices[int(prices.container)] = prices.entries

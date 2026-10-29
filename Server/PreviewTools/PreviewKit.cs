@@ -11,7 +11,8 @@ using Server.Multis.Deeds;
 
 namespace UltimaClone.PreviewTools;
 
-// Development test kit for the client's world systems (houses, boats, maps).
+// Development test kit for the client's world systems (houses, boats, maps,
+// spellcasting).
 // An explicit, owner-approved exception to "no staff powers" (2026-10-29): it
 // only exists when ultimaClone.previewTools is enabled, only answers a loopback
 // connection, and hands the caller ordinary upstream items, which then go
@@ -45,9 +46,18 @@ public static class PreviewKit
         }
         if (what is "all" or "boat") pack.DropItem(new SmallBoatDeed());
         if (what is "all" or "map") pack.DropItem(new TreasureMap(1, Map.Trammel));
+        if (what is "all" or "magic")
+        {
+            // A spellbook with the first two circles and reagents loose in the pack.
+            pack.DropItem(new Spellbook(0xFFFF));
+            foreach (var reagent in new Item[] { new BlackPearl(30), new Bloodmoss(30), new Garlic(30), new Ginseng(30), new MandrakeRoot(30), new Nightshade(30), new SulfurousAsh(30), new SpidersSilk(30) })
+            {
+                pack.DropItem(reagent);
+            }
+        }
         if (what == "site") { HouseSite(mobile, args.Length > 1 ? Utility.ToInt32(args.GetString(1)) : 0); return; }
         if (what == "dock") { BoatSite(mobile); return; }
-        if (what is not ("all" or "house" or "boat" or "map")) { mobile.SendMessage("[PreviewKit all|house|boat|map|site|dock"); return; }
+        if (what is not ("all" or "house" or "boat" or "map" or "magic")) { mobile.SendMessage("[PreviewKit all|house|boat|map|magic|site|dock"); return; }
         mobile.SendMessage($"Preview kit ({what}) is in your backpack" + (what is "all" or "house" ? $"; {HouseGold} gold was deposited in your bank." : "."));
     }
 

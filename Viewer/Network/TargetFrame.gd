@@ -1,7 +1,10 @@
 extends PanelContainer
-# Top-centre target frame: the creature you selected or last targeted, its
-# name in its notoriety colour, health, and distance in tiles. The server is
-# asked for the creature's status when the target changes so health shows.
+# Top-centre target frame: the creature you are fighting (the server's attack
+# target, 0xAA) or else the one you selected or last targeted, its name in
+# its notoriety colour, health, and distance in tiles. The server is asked
+# for the creature's status when the target changes so health shows. A hit
+# flashes the frame and shows the damage; the bar slides down with a pale
+# trail of what was just lost.
 const Look = preload("res://Network/ModernSkin.gd")
 const Frame = preload("res://Network/ModernWindow.gd")
 const Runner = preload("res://Network/ActionRunner.gd")
@@ -13,7 +16,10 @@ var shown := 0
 var name_label: Label
 var standing: Label
 var health: ProgressBar
+var trail: ProgressBar
 var health_text: Label
+var fighting: Label
+var hit_label: Label
 var clock := 0.0
 
 func _ready() -> void:
@@ -39,6 +45,9 @@ func _ready() -> void:
 	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	head.add_child(name_label)
+	fighting = Look.label("Attacking",12,Color("f0716a"),700)
+	fighting.hide()
+	head.add_child(fighting)
 	standing = Look.label("",12,Look.ASH,600)
 	head.add_child(standing)
 	var clear := Button.new()
@@ -50,10 +59,24 @@ func _ready() -> void:
 		Runner.selected = 0
 		Runner.last_target = 0)
 	head.add_child(clear)
+	# The bar over a pale trail that follows it down after a hit.
+	var bars := Control.new()
+	bars.custom_minimum_size = Vector2(0,10)
+	column.add_child(bars)
+	trail = Frame.meter(Color("f2c3a0"),10)
+	trail.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	bars.add_child(trail)
 	health = Frame.meter(Look.BLOOD,10)
-	column.add_child(health)
+	health.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	health.add_theme_stylebox_override("background",Look.box(Color(0,0,0,0),Color(0,0,0,0),5,0,0))
+	bars.add_child(health)
+	var foot := HBoxContainer.new()
+	column.add_child(foot)
 	health_text = Look.label("",11,Look.ASH,500)
-	column.add_child(health_text)
+	health_text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	foot.add_child(health_text)
+	hit_label = Look.label("",12,Color("ffd27a"),700)
+	foot.add_child(hit_label)
 	hide()
 
 func configure(game: Node) -> void:
@@ -61,9 +84,21 @@ func configure(game: Node) -> void:
 	session.ended.connect(func():
 		shown = 0
 		hide())
+	session.module("combat").damaged.connect(_hit)
 
 func current() -> int:
-	return Runner.selected if Runner.selected != 0 else Runner.last_target
+	return preload("res://Network/OverheadBars.gd").target_of(session)
+
+func _hit(serial: int, amount: int) -> void:
+	if serial != shown or not visible or amount <= 0: return
+	hit_label.text = "−%d" % amount
+	hit_label.modulate.a = 1.0
+	modulate = Color(1.5,1.1,1.0)
+	var flash := create_tween()
+	flash.tween_property(self,"modulate",Color.WHITE,0.35)
+	var fade := hit_label.create_tween()
+	fade.tween_interval(1.2)
+	fade.tween_property(hit_label,"modulate:a",0.0,0.5)
 
 func _process(delta: float) -> void:
 	if session == null or session.phase != "world": return
@@ -76,6 +111,8 @@ func _process(delta: float) -> void:
 		return
 	if serial != shown:
 		shown = serial
+		hit_label.text = ""
+		trail.value = 0
 		# The server answers a status query with name and hits.
 		session.send(preload("res://Network/MobileNames.gd").query(serial))
 	show()
@@ -96,5 +133,17 @@ func _process(delta: float) -> void:
 	if poisoned: standing.text += " · poisoned"
 	var top := maxi(1,int(stats.get("hits_max",0)))
 	health.max_value = top
-	health.value = int(stats.get("hits",top))
+	trail.max_value = top
+	var hits := int(stats.get("hits",top))
+	if hits != int(health.value):
+		create_tween().tween_property(health,"value",float(hits),0.25)
+	# The trail waits a moment, then follows; healing moves it at once.
+	if hits >= trail.value: trail.value = hits
+	elif not has_meta("trailing"):
+		set_meta("trailing",true)
+		var follow := create_tween()
+		follow.tween_interval(0.5)
+		follow.tween_property(trail,"value",float(hits),0.6)
+		follow.tween_callback(func(): remove_meta("trailing"))
+	fighting.visible = session.module("combat").attack_target == serial
 	health_text.text = "%d%%" % roundi(100.0*float(stats.get("hits",top))/top) if stats.has("hits") else "Health unknown"

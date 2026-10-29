@@ -48,6 +48,8 @@ if ($LASTEXITCODE) { throw 'Malformed-packet fuzz checks failed' }
 if ($LASTEXITCODE) { throw 'Movable panel checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Network/ProfileTests.gd
 if ($LASTEXITCODE) { throw 'Per-character settings checks failed' }
+& $godot --headless --path "$root/Viewer" --script res://Network/PolishTests.gd
+if ($LASTEXITCODE) { throw 'Gameplay polish (gains, paperdoll, target, cast bar) checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/ItemResponseTests.gd
 if ($LASTEXITCODE) { throw 'Native item response/appearance checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/WorldItemTests.gd
