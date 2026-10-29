@@ -195,3 +195,7 @@ Code fixes are client presentation only; collision and gameplay stay as ModernUO
 ## Tame creatures: `pet <kind>` (29 October 2026)
 
 `pet horse` (also packhorse, llama, packllama, desertostard, forestostard, dog, cat) asks the server for a creature tamed to the developer, at their feet and coming to them. Claude proposes it on a card and the developer accepts it, like every other edit; the assistant account itself is refused. It is server-only: an ordinary ModernUO creature in the world save, nothing written to Git. Kinds are an allowlist shared by `DevEditSession.PetKinds` and `DevEditCommands.PETS`; the follower limit still applies. Evidence: server tests 67/67, client tests 77/77.
+
+## Responsive assistant (29 October 2026)
+
+The bridge answers every new ask at once ("Got it, I'm on it…") before Claude's real reply, and the panel's conversation list ends with "Claude is online" or "Claude is offline: asks are saved and answered when it reconnects"; asking while it is offline says so in Activity. `scripts/dev-edit-bridge.ps1` now reconnects by itself after a server restart (retry every 10 s until "quit" is written to the inbox after launch), and `-Detached` runs it in its own hidden process so it outlives the shell that started it. Client tests 77/77.

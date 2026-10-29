@@ -101,6 +101,7 @@ func configure(owner_world: Node3D) -> void:
 	state.locks_changed.connect(func(_t: String): refresh())
 	state.rejected.connect(func(_r: int, code: String, detail: String): note("Refused (%s): %s" % [code,detail]))
 	state.conversation_changed.connect(_conversation_changed)
+	state.session_changed.connect(_show_talk)
 	commands = Commands.new(state,sender(),overlay.records_in)
 	_build()
 	panel.hide()
@@ -304,7 +305,7 @@ func _voice_failed(reason: String) -> void:
 func ask_claude() -> void:
 	var text := ask_box.text.strip_edges()
 	if text.is_empty() or not state.ask(text,sender()): return
-	note("Asked Claude: "+text)
+	note("Asked Claude: "+text if claude_online() else "Asked Claude: %s (Claude is offline right now; the ask is saved)" % text)
 	ask_box.text = ""
 
 # Dry-runs every line, shows the exact scope and highlights the targets.
@@ -528,11 +529,9 @@ func apply_pending() -> void:
 	else: overlay.highlight(commands.selection)
 	refresh()
 
-func _conversation_changed(id: int) -> void:
-	var ask: Dictionary = state.asks[id]
-	if ask.status == "proposed" and ask.author == state.me:
-		note("%s proposed %d command(s) for: %s" % [ask.proposed_by,ask.proposal.size(),ask.text])
-		review(ask.proposal,id)
+# The latest asks, with Claude's presence so a silent wait is never a mystery.
+func _show_talk() -> void:
+	if not talk_label: return
 	var latest: Array[String] = []
 	var ids := state.asks.keys()
 	ids.sort()
@@ -541,7 +540,17 @@ func _conversation_changed(id: int) -> void:
 		var line := "#%d %s: %s [%s]" % [k,a.author,a.text,a.status]
 		for answer in a.answers: line += "\n   "+str(answer)
 		latest.append(line)
-	if talk_label: talk_label.text = "\n".join(latest)
+	latest.append("Claude is online." if claude_online() else "Claude is offline: asks are saved and answered when it reconnects.")
+	talk_label.text = "\n".join(latest)
+
+func claude_online() -> bool: return state.editors.has("Claude")
+
+func _conversation_changed(id: int) -> void:
+	var ask: Dictionary = state.asks[id]
+	if ask.status == "proposed" and ask.author == state.me:
+		note("%s proposed %d command(s) for: %s" % [ask.proposed_by,ask.proposal.size(),ask.text])
+		review(ask.proposal,id)
+	_show_talk()
 	if speak_box and speak_box.button_pressed and ask.author == state.me:
 		var said: int = int(spoken.get(id,0))
 		var lines: Array = ask.answers.slice(said)

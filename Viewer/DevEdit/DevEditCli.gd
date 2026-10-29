@@ -20,6 +20,7 @@ var state := State.new()
 var commands: Commands
 var index: Dictionary = {}
 var outbox := ""
+const ACKNOWLEDGE := "Got it, I'm on it. A reply usually takes under a minute."
 var resources: Dictionary = {}
 
 func _initialize() -> void: call_deferred("run")
@@ -87,8 +88,14 @@ func run() -> void:
 
 # Bridge loop: report conversation events, execute appended inbox lines.
 func serve(inbox: String) -> void:
+	# Every new ask gets an instant reply from the bridge itself, so the asker
+	# knows it arrived while the assistant works on the real answer.
+	var acknowledged := {}
 	state.conversation_changed.connect(func(id: int):
 		var ask: Dictionary = state.asks[id]
+		if ask.status == "open" and ask.answers.is_empty() and ask.author != state.me and not acknowledged.has(id):
+			acknowledged[id] = true
+			state.answer(id,ACKNOWLEDGE,send())
 		emit({"event":"conversation","id":id,"author":ask.author,"text":ask.text,"status":ask.status,"answers":ask.answers,"proposal":ask.proposal,"near":position_hint(ask.author)}))
 	state.targets_changed.connect(func(targets: Array, seq: int, author: String, action: String):
 		if action != "sync": emit({"event":"edit","revision":seq,"author":author,"action":action,"targets":targets.size()}))
