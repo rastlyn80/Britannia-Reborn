@@ -1,3 +1,9 @@
+# Human action, wearable coverage and armour correction - 29 October 2026
+
+Reached the owner's category targets with unchanged denominators: 35/35 original action groups have prepared clips; 28/28 on-foot groups are connected; 234/1,126 indexed wearable graphics (20.78%) have category art on both bodies. Totals: 65 categories and 59 clips per body. Seven rider clips are opt-in previews; mounted live playback and mount gameplay remain deferred. Replaced rejected body-derived armour shells with continuous tailored trousers/undercoat and separate manufactured plates, matte leather and brushed steel. Backing retains its cloth colour under native metal dyes. Full body/UV/bind foundation, native identity and existing movement are preserved.
+
+Evidence: 94 new exports, 118 clips, 761 focused runtime checks, 1,152 cloth poses, 2,400 armour rigidity/floor poses, 320 actual GPU armour coverage cases and 400 hair-depth cases. Full verification, native login and live human re-entry/equipment/action checks pass. Remaining: category prototype silhouettes and layer polish, exact designs/dye masks, two-handed/support-hand/string/reload detail, remaining wearables and protocol variations. Category coverage is separate from final per-item quality and owner approval. Monsters remain out of scope. Sources, reproduction and finite-test limits: HUMAN_COVERAGE_SESSION.md and HUMAN_COVERAGE_SOURCES.md.
+
 # Live developer editing checkpoint — 28 October 2026
 
 Done and tested (DEV_EDIT.md): a server-authoritative shared edit session for statics and terrain in live Britain, with an in-game panel (F9), two-client sync, conflicts/undo rules, reconnect, restart persistence, edit sets and the `scripts/dev-edit.ps1` Claude Code bridge. Visual overlay only.

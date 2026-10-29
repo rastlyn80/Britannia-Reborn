@@ -25,13 +25,14 @@ def prepare(art):
  bpy.context.view_layer.update()
  neck=rig.data.bones['neck_01'].head_local;head=rig.data.bones['head'].head_local
  trees=[];hood_tree=None;cloak_data=None
- for slot in ['tunic','robe','hood','shirt','doublet','cloak']:
-  path=art/('runtime/part-'+slot+'.glb' if slot in ['tunic','robe','hood'] else 'expansion/'+slot+'.glb')
+ for slot in ['tunic','robe','hood','shirt','doublet','cloak','plate_torso','plate_arms','leather_torso','studded_torso','mail_torso','leather_gorget','studded_gorget','plate_gorget']:
+  path=art/('runtime/part-'+slot+'.glb' if slot in ['tunic','robe','hood'] else ('coverage/' if slot.startswith(('plate_','leather_','studded_','mail_')) else 'expansion/')+slot+'.glb')
+  if not path.exists():continue
   before=set(bpy.data.objects);bpy.ops.import_scene.gltf(filepath=str(path));added=set(bpy.data.objects)-before
   mesh=next(o for o in added if o.type=='MESH' and o.name.startswith(('Free_','Extra_')))
   transform=rig.matrix_world.inverted()@mesh.matrix_world
   coords=[transform@v.co for v in mesh.data.vertices];mesh.data.calc_loop_triangles()
-  torso={v.index for v in mesh.data.vertices if sum(g.weight for g in v.groups if mesh.vertex_groups[g.group].name.startswith(('head','neck','spine','clavicle','pelvis','robe_')))>.55}
+  torso={v.index for v in mesh.data.vertices if sum(g.weight for g in v.groups if mesh.vertex_groups[g.group].name.startswith(('head','neck','spine','clavicle','pelvis','robe_')))>.55 or (slot=='plate_arms' and coords[v.index].z>neck.z-.18)}
   faces=[tuple(t.vertices) for t in mesh.data.loop_triangles if all(i in torso for i in t.vertices)]
   tree=BVHTree.FromPolygons(coords,faces,all_triangles=True)
   if slot=='cloak':cloak_data=(tree,faces,[{mesh.vertex_groups[g.group].name:g.weight for g in v.groups} for v in mesh.data.vertices],coords)
@@ -56,13 +57,12 @@ def prepare(art):
     bm=bmesh.new();bm.from_mesh(hair.data)
     bmesh.ops.bisect_plane(bm,geom=list(bm.verts)+list(bm.edges)+list(bm.faces),dist=1e-6,plane_co=(0,0,head.z+.12),plane_no=(0,0,1),clear_outer=True)
     bm.to_mesh(hair.data);bm.free()
-   if variant.endswith('_cloak'):
-    # Sparse cards can cross a curved cape between correctly fitted vertices.
-    # Add local samples while preserving the original UV/alpha silhouette.
-    bm=bmesh.new();bm.from_mesh(hair.data)
-    edges=[edge for edge in bm.edges if edge.calc_length()>.045 and min(v.co.z for v in edge.verts)<neck.z+.05]
-    bmesh.ops.subdivide_edges(bm,edges=edges,cuts=2,use_grid_fill=True)
-    bm.to_mesh(hair.data);bm.free()
+   # Sparse cards can cross a curved cape between correctly fitted vertices.
+   # Add local samples while preserving the original UV/alpha silhouette.
+   bm=bmesh.new();bm.from_mesh(hair.data)
+   edges=[edge for edge in bm.edges if edge.calc_length()>.045 and min(v.co.z for v in edge.verts)<neck.z+.05]
+   bmesh.ops.subdivide_edges(bm,edges=edges,cuts=2,use_grid_fill=True)
+   bm.to_mesh(hair.data);bm.free()
    moved=0;maximum=0.
    for vertex in hair.data.vertices:
     co=vertex.co;source_co=co.copy()
@@ -73,13 +73,13 @@ def prepare(art):
     for tree in trees+([hood_tree] if base_variant=='hood' else []):
      if tree is None:continue
      point,normal,face,distance=tree.ray_cast(center+direction*.8,-direction, .8)
-     if point is not None:radius=max(radius,(point-center).dot(direction)+.012)
+     if point is not None:radius=max(radius,(point-center).dot(direction)+.060)
     target=center+direction*radius;delta=target-co
     # Reject unrelated sleeve surfaces; preserve a compact hair silhouette.
-    if delta.length>.16:delta*=.16/delta.length
+    if delta.length>.22:delta*=.22/delta.length
     if delta.length>.0001:co+=delta
     # Tail follows the shoulders instead of rotating as one rigid head slab.
-    amount=min(.85,max(0.,(head.z-co.z)/.22));weights={'head':1.-amount,'spine_03':amount}
+    amount=min(1.,max(0.,(head.z-co.z)/.18));weights={'head':1.-amount,'spine_03':amount}
     if variant.endswith('_cloak') and co.z<neck.z+.04:
      tree,faces,skin,coords=cloak_data
      # Lay long sections behind the cape. A radial ray misses its back
@@ -105,7 +105,7 @@ def prepare(art):
    bpy.ops.export_scene.gltf(filepath=str(destination),export_format='GLB',use_selection=True,export_animations=False,export_morph=False,export_tangents=True)
    report['parts'][name]={'source_part':'hair_'+style,'source_sha256':source_sha,'licence':'CC0-1.0','sha256':hashlib.sha256(destination.read_bytes()).hexdigest(),'vertices':len(hair.data.vertices),'moved_vertices':moved,'max_push_m':maximum,'scalp_trimmed':base_variant!='layered','follows_cloak':variant.endswith('_cloak'),'recipe_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
    for ob in added:bpy.data.objects.remove(ob,do_unlink=True)
- report['hair_layers']={'styles':['long','ponytail'],'variants':['layered','covered','hood','layered_cloak','covered_cloak','hood_cloak'],'clearance_m':.012,'cloak_clearance_m':.050,'scope':'Fixed-body wardrobe envelope, shoulder-following tails, cloak-specific barycentric surface bindings, scalp tucked beneath headwear; depth-tested geometry. Not strand simulation or universal collision proof.'}
+ report['hair_layers']={'styles':['long','ponytail'],'variants':['layered','covered','hood','layered_cloak','covered_cloak','hood_cloak'],'clearance_m':.060,'cloak_clearance_m':.050,'scope':'Fixed-body wardrobe envelope including plate pauldrons, shoulder-following tails, cloak-specific barycentric surface bindings, scalp tucked beneath headwear; depth-tested geometry. Not strand simulation or universal collision proof.'}
  (art/'expansion/provenance.json').write_text(json.dumps(report,indent=2))
  print('LAYERED LONG HAIR READY',art.name,flush=True)
 

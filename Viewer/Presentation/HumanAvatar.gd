@@ -78,7 +78,8 @@ func apply_server_appearance(entity: Dictionary, worn: Array, details: Dictionar
 func receive_native_action(request: Dictionary) -> bool:
 	if human_visual==null:return false
 	for item: Dictionary in server_appearance.get("equipment",[]):
-		if int(item.get("layer",0))==25:return false
+		if int(item.get("layer",0))==25:
+			if not human_visual.rider_preview_enabled or not preload("res://Presentation/HumanActions.gd").resolve(request).begins_with("Rider_"):return false
 	return human_visual.request_action(request)
 
 func animate(moving: bool, direction: float, delta: float, speed: float = 2.44) -> void:
@@ -109,7 +110,7 @@ func animate(moving: bool, direction: float, delta: float, speed: float = 2.44) 
 		animator.speed_scale=clampf(displayed_speed/maxf(.1,pace),.65,1.8) if moving and preload("res://Presentation/HumanActions.gd").locomotion(clip) else 1.
 		if not human_visual.action_clip.is_empty():animator.speed_scale=1.
 	visual_root.position.y = jump.height+ground_offset
-	foot_contact.grounded = not jump.airborne
+	foot_contact.grounded = not jump.airborne and not (human_visual.rider_preview_enabled and (human_visual.mounted or human_visual.action_clip.begins_with("Rider_")))
 	if human_visual.action_clip=="Death":foot_contact.grounded=false
 	foot_contact.body_offset = ground_offset
 	var plate := get_node_or_null("Nameplate")

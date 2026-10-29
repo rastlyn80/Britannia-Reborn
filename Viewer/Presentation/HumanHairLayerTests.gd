@@ -7,7 +7,7 @@ var failures:=0
 func _initialize() -> void:call_deferred("run")
 func capture_tail() -> int:
 	await process_frame
-	await RenderingServer.frame_post_draw
+	RenderingServer.force_draw(false)
 	var picture:=viewport.get_texture().get_image()
 	var count:=0
 	# Camera covers world heights 0.8..2.0 m. Count only below the neck.
@@ -26,7 +26,12 @@ func run() -> void:
 	for female in [false,true]:
 		var actor:=preload("res://Presentation/HumanVisual.gd").new();actor.female=female;viewport.add_child(actor);actor.rotation.y=PI
 		for hair in [0x203c,0x203d]:
-			for outfit in [["robe",[0x1f03]],["cloak",[0x1515,0x1517,0x1f7b]],["hood",[0x2687]],["hat",[0x1715,0x1517]],["helmet",[0x1412,0x1fa1]],["cloak-hood",[0x1515,0x2687]],["cloak-helmet",[0x1515,0x1412,0x1fa1]]]:
+			var outfits: Array=[["robe",[0x1f03]],["cloak",[0x1515,0x1517,0x1f7b]],["hood",[0x2687]],["hat",[0x1715,0x1517]],["helmet",[0x1412,0x1fa1]],["cloak-hood",[0x1515,0x2687]],["cloak-helmet",[0x1515,0x1412,0x1fa1]]]
+			if ResourceLoader.exists(actor.folder+"/coverage/plate_torso.glb"):
+				outfits.append(["plate",[0x1415,0x1410,0x1413]])
+				outfits.append(["cloak-plate",[0x1515,0x1415,0x1410]])
+				outfits.append(["wizard-plate",[0x1718,0x1415]])
+			for outfit in outfits:
 				var worn: Array=[{"id":hair,"layer":11,"hue":1118}]
 				for id in outfit[1]:worn.append({"id":id})
 				actor.set_equipment(worn)
@@ -44,7 +49,9 @@ func run() -> void:
 							material.set_shader_parameter("has_texture",source.albedo_texture!=null)
 							mesh.set_surface_override_material(surface,material)
 					elif not mesh.name.begins_with("Body"):garments.append(mesh)
-				for clip in ["Idle","Walk","Cast"]:
+				var clips: Array=["Idle","Walk","Cast"]
+				if actor.animator.has_animation("Bow_Attack"):clips.append_array(["Bow_Attack","Salute"])
+				for clip in clips:
 					for phase in [.23,.62]:
 						actor.current_clip="";actor.play(clip,0.);actor.animator.seek(actor.animator.current_animation_length*phase,true);actor.animator.pause()
 						for mesh in garments:mesh.visible=true
@@ -58,5 +65,5 @@ func run() -> void:
 				for mesh in garments:mesh.visible=true
 		actor.queue_free();await process_frame
 	var file:=FileAccess.open("res://../outputs/human-wardrobe-2/hair-visibility.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"samples":rows,"failures":failures,"scope":"Rear camera tail pixels with complete-body depth retained, two fixed bodies/styles, seven clothing combinations, Idle/Walk/Cast at two phases. At least 98% of reference tail pixels retained. Scalp deliberately excluded. Finite view/pose check, not universal collision proof."},"\t"));file.close()
+	file.store_string(JSON.stringify({"samples":rows,"failures":failures,"scope":"Rear camera tail pixels with complete-body depth retained, two fixed bodies/styles, the installed clothing/armour combinations, Idle/Walk/Cast plus available ranged/salute actions at two phases. At least 98% of reference tail pixels retained. Scalp deliberately excluded. Finite view/pose check, not universal collision proof."},"\t"));file.close()
 	print("HUMAN HAIR DEPTH: %d poses / %d failures" % [rows.size(),failures]);quit(0 if failures==0 else 1)

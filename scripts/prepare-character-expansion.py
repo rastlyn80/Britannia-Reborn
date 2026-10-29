@@ -177,7 +177,7 @@ for bits in range(32):
  for mod in mask.modifiers:
   if mod.type=='ARMATURE':mod.object=rig
  mask.parent=rig
- hand_ids={v.index for v in mask.data.vertices if sum(g.weight for g in v.groups if mask.vertex_groups[g.group].name.startswith(('hand','index','middle','ring','pinky','thumb')))>.5}
+ hand_ids={v.index for v in mask.data.vertices if sum(g.weight for g in v.groups if mask.vertex_groups[g.group].name.startswith(('hand','index','middle','ring','pinky','thumb')))>.05}
  bm=bmesh.new();bm.from_mesh(mask.data);bm.verts.ensure_lookup_table();remove=[f for f in bm.faces if any(v.index in hand_ids for v in f.verts)];bmesh.ops.delete(bm,geom=remove,context='FACES');bm.to_mesh(mask.data);bm.free()
  export(OUT/('body-mask-%02d-gloves.glb'%bits),mask,'NONE')
 

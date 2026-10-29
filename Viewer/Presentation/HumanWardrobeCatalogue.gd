@@ -3,6 +3,11 @@ var catalogue: Dictionary
 var actors: Array=[]
 var viewport: SubViewport
 var camera: Camera3D
+var step_began:=Time.get_ticks_msec()
+func _process(_delta: float) -> bool:
+	if Time.get_ticks_msec()-step_began>90000:
+		push_error("Human catalogue render stalled");quit(1)
+	return false
 func _initialize() -> void:call_deferred("run")
 func run() -> void:
 	var file:="res://../outputs/human-wardrobe-batch/jobs.json"
@@ -15,7 +20,9 @@ func run() -> void:
 	var env:=WorldEnvironment.new();env.environment=Environment.new()
 	env.environment.background_mode=Environment.BG_COLOR;env.environment.background_color=Color("22323e")
 	env.environment.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;env.environment.ambient_light_color=Color("c9d6df");env.environment.ambient_light_energy=.5
-	env.environment.tonemap_mode=Environment.TONE_MAPPER_AGX;stage.add_child(env)
+	env.environment.tonemap_mode=Environment.TONE_MAPPER_AGX
+	var sky:=Sky.new();var sky_material:=ProceduralSkyMaterial.new();sky_material.sky_top_color=Color("738fa8");sky_material.sky_horizon_color=Color("d4dce1");sky_material.ground_bottom_color=Color("3b4145");sky_material.ground_horizon_color=Color("8e979f");sky.sky_material=sky_material;env.environment.sky=sky;env.environment.reflected_light_source=Environment.REFLECTION_SOURCE_SKY
+	stage.add_child(env)
 	var sun:=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-45,-25,0);sun.light_energy=1.1;sun.shadow_enabled=true;stage.add_child(sun)
 	var fill:=DirectionalLight3D.new();fill.rotation_degrees=Vector3(-20,140,0);fill.light_energy=.25;stage.add_child(fill)
 	var floor_node:=MeshInstance3D.new();var floor_mesh:=BoxMesh.new();floor_mesh.size=Vector3(20,.1,20);floor_node.mesh=floor_mesh;floor_node.position.y=-.05
@@ -27,6 +34,7 @@ func run() -> void:
 	var audit: Array=[]
 	var credit:=Label.new();credit.add_theme_font_size_override("font_size",14);credit.add_theme_color_override("font_shadow_color",Color.BLACK);credit.add_theme_constant_override("shadow_offset_x",1);credit.add_theme_constant_override("shadow_offset_y",1);viewport.add_child(credit)
 	for job: Dictionary in catalogue.jobs:
+		step_began=Time.get_ticks_msec()
 		for actor in actors:actor.visible=false
 		var counts:={false:0,true:0}
 		viewport.size=Vector2i(int(job.size[0]),int(job.size[1]));camera.size=float(job.height)
@@ -58,7 +66,7 @@ func run() -> void:
 			camera.size=maxf(bounds.size.y,bounds.size.x/((float(viewport.size.x))/viewport.size.y))*1.4
 			camera.position=middle+Vector3(0,0,5.);camera.look_at(middle)
 		for frame in 6:await process_frame
-		await RenderingServer.frame_post_draw
+		RenderingServer.force_draw(false)
 		var path: String=str(catalogue.output)+"/"+str(job.key)+".png"
 		assert(viewport.get_texture().get_image().save_png(path)==OK,"Could not save catalogue render")
 		print("CATALOGUE ",job.key)

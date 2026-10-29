@@ -6,21 +6,24 @@ const CURL_DEGREES := {
 	"ring":[58.,78.,50.],"pinky":[60.,80.,55.],"thumb":[20.,45.,35.]
 }
 var holding := false
+var left_holding := false
+var left_rotations := {}
 var rotations := {}
 func use_prepared_clip(animation: Animation) -> void:
-	rotations.clear()
+	rotations.clear();left_rotations.clear()
 	var rig:=get_skeleton()
 	for track in animation.get_track_count():
 		var path:=animation.track_get_path(track)
 		if path.get_subname_count()==0 or animation.track_get_type(track)!=Animation.TYPE_ROTATION_3D:continue
 		var bone:=str(path.get_subname(0))
-		if bone.ends_with("_r") and bone.get_slice("_",0) in ["index","middle","ring","pinky","thumb"]:
+		if (bone.ends_with("_r") or bone.ends_with("_l")) and bone.get_slice("_",0) in ["index","middle","ring","pinky","thumb"]:
 			var index:=rig.find_bone(bone)
 			if index>=0:
 				var finger:=bone.get_slice("_",0)
 				var segment:=int(bone.get_slice("_",1))-1
 				var neutral:=animation.rotation_track_interpolate(track,0.)
-				rotations[index]=(neutral*Quaternion(Vector3.RIGHT,deg_to_rad(CURL_DEGREES[finger][segment]))).normalized()
+				var target: Dictionary=rotations if bone.ends_with("_r") else left_rotations
+				target[index]=(neutral*Quaternion(Vector3.RIGHT,deg_to_rad(CURL_DEGREES[finger][segment])*(1. if bone.ends_with("_r") else -1.))).normalized()
 func _ready() -> void:
 	var rig := get_skeleton()
 	var source: Node3D = load("res://Art/Quaternius/Animation/UAL1_Standard.glb").instantiate()
@@ -30,6 +33,9 @@ func _ready() -> void:
 	use_prepared_clip(animation)
 	source.free()
 func _process_modification_with_delta(_delta: float) -> void:
-	if not holding: return
+	if not holding and not left_holding: return
 	var rig := get_skeleton()
-	for index in rotations: rig.set_bone_pose_rotation(int(index),rotations[index])
+	if holding:
+		for index in rotations:rig.set_bone_pose_rotation(int(index),rotations[index])
+	if left_holding:
+		for index in left_rotations:rig.set_bone_pose_rotation(int(index),left_rotations[index])

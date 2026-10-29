@@ -36,7 +36,7 @@ func run() -> void:
 	modern.body=400
 	check(modern.type==0 and modern.subaction==4 and modern.variation==2 and Actions.resolve(modern)=="Sword_A","new native protocol uses type/subaction/variation rather than classic frame timing")
 	check(Actions.resolve({"body":17,"protocol":"classic","action":9}).is_empty(),"human attack mapping never leaks onto a monster body")
-	check(Actions.resolve({"body":400,"protocol":"classic","action":18}).is_empty(),"unsupported bow/crossbow attacks remain explicit")
+	check(Actions.resolve({"body":400,"protocol":"classic","action":18})=="Bow_Attack","classic bow attack selects its prepared ranged replacement")
 	check(Actions.gait(2.44)=="Jog" and Actions.gait(4.88)=="Run" and Actions.gait(1.51,"Jog")=="Jog","native travel speeds select short-stride jog/run with hysteresis")
 	var starter:=preload("res://Presentation/HumanWardrobe.gd").resolve([{"id":0x13ff,"layer":1}])
 	check(starter.pieces.weapon.asset=="sword" and starter.pieces.weapon.id==0x13ff,"native starter katana selects an armed category while retaining its exact graphic")
@@ -44,7 +44,7 @@ func run() -> void:
 	for female in [false,true]:
 		var actor:=Visual.new();actor.female=female;root.add_child(actor);actor.set_process(false)
 		var tag:="female" if female else "male"
-		check(actor.motion_profile.get("clips",{}).size()==45,tag+": complete prepared motion set installed")
+		check(actor.motion_profile.get("clips",{}).size()==59,tag+": complete prepared motion set installed")
 		var finite:=true;var paths:=true;var root_fixed:=true;var loops:=true
 		var rig: Skeleton3D=actor.skeleton;var start:=actor.global_transform
 		var roots: Dictionary={}
@@ -62,7 +62,7 @@ func run() -> void:
 				root_fixed=root_fixed and actor.global_transform==start and not roots.is_empty()
 				for bone in roots:root_fixed=root_fixed and rig.get_bone_pose_position(bone).distance_to(roots[bone])<.001
 			loops=loops and (animation.loop_mode==Animation.LOOP_LINEAR)==bool(actor.motion_profile.clips[clip].loop)
-		check(finite and paths,tag+": all 45 clips sampled with finite poses and resolved track paths")
+		check(finite and paths,tag+": all 59 clips sampled with finite poses and resolved track paths")
 		check(root_fixed,tag+": no animation changes the authoritative mobile root")
 		check(loops,tag+": locomotion loops and finite actions retain distinct playback modes")
 		var excursion:=0.;var loop_error:=0.

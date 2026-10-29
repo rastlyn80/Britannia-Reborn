@@ -18,6 +18,9 @@ var grip: SkeletonModifier3D
 var use_modern_motion := true
 var motion_profile := {}
 var war_mode := false
+var mounted := false
+# Rider clips can be reviewed before the deferred horse/saddle integration.
+var rider_preview_enabled := false
 var native_action := {}
 var action_clip := ""
 var action_elapsed := 0.
@@ -108,9 +111,15 @@ func _attach(path: String, prefix: String, body_part: bool = false) -> void:
 		parts.append(mesh)
 	source.free()
 
+func _part_path(asset: String) -> String:
+	return folder+"/"+asset+".glb" if asset.begins_with("coverage/") else folder+"/expansion/"+asset+".glb"
+
 func set_equipment(worn: Array) -> void:
 	if model == null: return
 	server_equipment=worn.duplicate(true)
+	mounted=false
+	for item: Dictionary in worn:
+		if int(item.get("layer",0))==25:mounted=true
 	var resolved := Wardrobe.resolve(worn)
 	var key := JSON.stringify(resolved)
 	if key == appearance_key: return
@@ -121,24 +130,30 @@ func set_equipment(worn: Array) -> void:
 	for part in parts:
 		part.visible = false
 		part.get_parent().remove_child(part)
-		part.queue_free()
+		# Retire the mesh and its materials before rebuilding the outfit.
+		part.free()
 	parts.clear()
 	outfit_bits = int(resolved.bits)
 	var extra_parts: Dictionary = resolved.pieces.duplicate(true)
 	for slot in extra_parts.keys():
-		if not ResourceLoader.exists(folder+"/expansion/"+str(extra_parts[slot].asset)+".glb"):
+		if not ResourceLoader.exists(_part_path(str(extra_parts[slot].asset))):
 			missing_art.append(int(extra_parts[slot].id))
 			extra_parts.erase(slot)
-	var gloves: bool = extra_parts.has("hands") and ResourceLoader.exists(folder+"/expansion/body-mask-%02d-gloves.glb" % outfit_bits)
-	var masked := outfit_bits!=0 or gloves
+	# The new leg models include complete tailored trousers beneath the plates.
+	# Reuse the proven trouser body mask without drawing the old trousers twice.
+	var mask_bits: int=outfit_bits|(2 if extra_parts.has("legs") else 0)
+	var gloves: bool = extra_parts.has("hands") and ResourceLoader.exists(folder+"/expansion/body-mask-%02d-gloves.glb" % mask_bits)
+	var masked := mask_bits!=0 or gloves
+	var needs_undercoat: bool=(extra_parts.has("torso") or extra_parts.has("arms") or extra_parts.has("gorget")) and not (outfit_bits&9) and not extra_parts.has("shirt") and not extra_parts.has("doublet")
 	var hide_hair := (outfit_bits&16)!=0 or extra_parts.has("head")
 	var hide_beard: bool = extra_parts.has("head") and str(extra_parts.head.asset)=="closed_helmet"
 	grip.holding = extra_parts.has("weapon")
+	grip.left_holding = extra_parts.has("shield") or (extra_parts.has("weapon") and str(extra_parts.weapon.asset) in ["coverage/bow","coverage/crossbow","coverage/heavy_crossbow"])
 	grip.active = true
 	var hair_style := str(resolved.hair_style)
 	var long_hair := hair_style in ["long","ponytail"]
 	var hair_asset := "hair_"+hair_style
-	if long_hair and ((outfit_bits&25)!=0 or extra_parts.has("head") or extra_parts.has("shirt") or extra_parts.has("doublet") or extra_parts.has("cloak")):
+	if long_hair and ((outfit_bits&25)!=0 or extra_parts.has("head") or extra_parts.has("shirt") or extra_parts.has("doublet") or extra_parts.has("cloak") or extra_parts.has("torso")):
 		var variant := "hood" if (outfit_bits&16)!=0 else ("covered" if extra_parts.has("head") else "layered")
 		if extra_parts.has("cloak"):variant += "_cloak"
 		if ResourceLoader.exists(folder+"/expansion/"+hair_asset+"_"+variant+".glb"):
@@ -153,21 +168,29 @@ func set_equipment(worn: Array) -> void:
 		if mesh.name.begins_with("Hair_"):
 			mesh.visible = bool(resolved.hair) and not hide_hair and not extra_hair
 			_shade(mesh,int(resolved.hair_hue),true)
-		if mesh.name.begins_with("Cloth_briefs"): mesh.visible = not (outfit_bits&3) and not extra_parts.has("outer_legs")
-		if mesh.name.begins_with("Cloth_bra"): mesh.visible = not (outfit_bits&9) and not extra_parts.has("shirt") and not extra_parts.has("doublet")
+		if mesh.name.begins_with("Cloth_briefs"): mesh.visible = not (outfit_bits&3) and not extra_parts.has("outer_legs") and not extra_parts.has("legs")
+		if mesh.name.begins_with("Cloth_bra"): mesh.visible = not (outfit_bits&9) and not extra_parts.has("shirt") and not extra_parts.has("doublet") and not extra_parts.has("torso") and not needs_undercoat
 	if masked:
-		var mask_path := folder+"/expansion/body-mask-%02d-gloves.glb" % outfit_bits if gloves else folder+"/runtime/body-mask-%02d.glb" % outfit_bits
+		var mask_path := folder+"/expansion/body-mask-%02d-gloves.glb" % mask_bits if gloves else folder+"/runtime/body-mask-%02d.glb" % mask_bits
 		_attach(mask_path,"Body",true)
 	for i in Wardrobe.SLOTS.size():
 		if outfit_bits&(1<<i):
 			var slot: String = Wardrobe.SLOTS[i]
-			_attach(folder+"/runtime/part-"+slot+".glb","Free_")
+			if slot=="boots" and str(extra_parts.get("legs",{}).get("asset",""))=="coverage/plate_legs":
+				_attach(_part_path("coverage/armour_boots"),"Extra_")
+			else:_attach(folder+"/runtime/part-"+slot+".glb","Free_")
 			var garment := parts[-1]
 			var hue := int(resolved.hues.get(slot,0))
 			_shade(garment,hue)
+	if needs_undercoat:
+		var lining_path:=_part_path("coverage/armour_undercoat")
+		if ResourceLoader.exists(lining_path):_attach(lining_path,"Extra_")
+		else:
+			for slot in ["torso","arms","gorget"]:
+				if extra_parts.has(slot):missing_art.append(int(extra_parts[slot].id))
 	for slot in extra_parts:
 		var item: Dictionary = extra_parts[slot]
-		_attach(folder+"/expansion/"+str(item.asset)+".glb","Extra_")
+		_attach(_part_path(str(item.asset)),"Extra_")
 		_shade(parts[-1],int(item.hue))
 	if extra_hair and not hide_hair:
 		_attach(folder+"/expansion/"+hair_asset+".glb","Extra_")
@@ -180,6 +203,7 @@ func set_equipment(worn: Array) -> void:
 			_shade(parts[-1],int(resolved.beard_hue),true)
 		else: missing_art.append(int(resolved.beard_id))
 	set_meta("wardrobe_bits",outfit_bits)
+	set_meta("body_mask_bits",mask_bits)
 	set_meta("unsupported_wearables",unsupported_items)
 	set_meta("missing_art",missing_art)
 	set_meta("native_cosmetics",native_cosmetics)
@@ -200,6 +224,9 @@ func _shade(mesh: MeshInstance3D, hue: int, cosmetic: bool = false) -> void:
 	for surface in mesh.mesh.get_surface_count():
 		var original := mesh.mesh.surface_get_material(surface) as StandardMaterial3D
 		if original==null: continue
+		# Padding stays cloth-coloured when a steel item receives a native dye.
+		if original.resource_name.begins_with("Armour_Lining"):
+			mesh.set_surface_override_material(surface,null);continue
 		mesh.set_surface_override_material(surface,preload("res://Presentation/HumanHue.gd").material(original,hue,cosmetic) if (hue&0x3fff)!=0 or cosmetic else null)
 
 func play(clip: String, blend: float = .15) -> void:
@@ -215,12 +242,20 @@ func play(clip: String, blend: float = .15) -> void:
 func stance_clip(base: String) -> String:
 	if motion_profile.is_empty(): return base
 	var resolved:=Wardrobe.resolve(server_equipment)
+	if mounted and rider_preview_enabled:
+		var rider: String="Rider_"+("Idle" if base=="Idle" else "Run" if base in ["Run","Sprint"] else "Walk")
+		if animator.has_animation(rider):return rider
+	var weapon: String=str(resolved.pieces.get("weapon",{}).get("asset",""))
+	var stance: String=str(Wardrobe.Coverage.STANCES.get(weapon,""))
+	if base=="Idle" and not stance.is_empty():
+		var ranged: String="Bow_Idle" if stance=="bow" else "Crossbow_Idle"
+		if animator.has_animation(ranged):return ranged
 	var prefix: String="Sword_" if resolved.pieces.has("weapon") and (war_mode or base!="Idle") else ("Unarmed_" if war_mode else "")
 	var name:=prefix+base
 	return clothing_clip(name if animator.has_animation(name) else base)
 
 func clothing_clip(name: String) -> String:
-	if motion_profile.is_empty():return name
+	if motion_profile.is_empty() or name.begins_with("Rider_"):return name
 	var resolved:=Wardrobe.resolve(server_equipment)
 	if not ((int(resolved.bits)&8)!=0 or resolved.pieces.has("outer_legs") or resolved.pieces.has("cloak")):return name
 	if animator.has_animation(name+"_Cloth"):return name+"_Cloth"
@@ -235,6 +270,9 @@ func request_action(request: Dictionary) -> bool:
 	set_meta("native_action",native_action)
 	var clip:=preload("res://Presentation/HumanActions.gd").resolve(request)
 	clip=clothing_clip(clip)
+	if clip.begins_with("Rider_") and not rider_preview_enabled:
+		set_meta("deferred_action",request.duplicate(true));return false
+	if has_meta("deferred_action"):remove_meta("deferred_action")
 	if motion_profile.is_empty() or clip.is_empty() or not animator.has_animation(clip):
 		set_meta("unsupported_action",request.duplicate(true));return false
 	if has_meta("unsupported_action"):remove_meta("unsupported_action")

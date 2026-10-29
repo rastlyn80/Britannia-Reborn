@@ -24,6 +24,10 @@ if (Test-Path "$root/Viewer/local-art/free-equipment-female/motion/human-motion.
   & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanMotionTests.gd
   if ($LASTEXITCODE) { throw 'Prepared human motion checks failed' }
 }
+if (Test-Path "$root/Viewer/local-art/free-equipment-female/coverage/crossbow.glb") {
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanCoverageTests.gd
+  if ($LASTEXITCODE) { throw 'Human category coverage checks failed' }
+}
 if ($Visual -and (Test-Path "$root/Viewer/local-art/free-equipment-female/expansion/hair_long_layered_cloak.glb")) {
   & $godot --path "$root/Viewer" --script res://Presentation/HumanHairLayerTests.gd
   if ($LASTEXITCODE) { throw 'Rendered long-hair garment depth checks failed' }

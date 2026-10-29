@@ -36,6 +36,11 @@ try {
     if ($LASTEXITCODE) { throw 'Male motion preparation failed' }
     & $blender --background --factory-startup --python-exit-code 1 --python scripts/prepare-human-motion.py -- --female
     if ($LASTEXITCODE) { throw 'Female motion preparation failed' }
+    foreach ($sex in @('male','female')) {
+      $extra=@();if ($sex -eq 'female') { $extra=@('--','--female') }
+      & $blender --background --factory-startup --python-exit-code 1 --python scripts/prepare-human-coverage-motion.py @extra
+      if ($LASTEXITCODE) { throw 'Human coverage motion extension failed; run prepare-human-coverage.ps1 to obtain its pinned free inputs' }
+    }
   }
   & python -B -X utf8 scripts/validate-human-motion.py
   if ($LASTEXITCODE) { throw 'Prepared motion validation failed' }

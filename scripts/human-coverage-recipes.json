@@ -1,0 +1,557 @@
+{
+  "scope": "Human category replacements; exact decorative/item design fidelity tracked separately. Racial/monster items excluded.",
+  "assets": [
+    {
+      "key": "battle_axe",
+      "slot": "weapon",
+      "graphics": [
+        3911,
+        3912,
+        3913,
+        3914,
+        5039,
+        5040
+      ],
+      "kind": "prop",
+      "source": "w_two_handed_axe",
+      "length": 0.85,
+      "grip": 0.2
+    },
+    {
+      "key": "execution_axe",
+      "slot": "weapon",
+      "graphics": [
+        3909,
+        3910,
+        5114,
+        5115,
+        5186,
+        5187
+      ],
+      "kind": "prop",
+      "source": "w_two_handed_axe",
+      "length": 1.1,
+      "grip": 0.22
+    },
+    {
+      "key": "bardiche",
+      "slot": "weapon",
+      "graphics": [
+        3917,
+        3918
+      ],
+      "kind": "prop",
+      "source": "w_bardiche",
+      "length": 1.65,
+      "grip": 0.4
+    },
+    {
+      "key": "halberd",
+      "slot": "weapon",
+      "graphics": [
+        5182,
+        5183
+      ],
+      "kind": "prop",
+      "source": "w_halberd",
+      "length": 1.8,
+      "grip": 0.4,
+      "reverse_axis": true
+    },
+    {
+      "key": "dagger",
+      "slot": "weapon",
+      "graphics": [
+        3921,
+        3922,
+        5120,
+        5121
+      ],
+      "kind": "prop",
+      "source": "w_dagger",
+      "length": 0.42,
+      "grip": 0.25
+    },
+    {
+      "key": "cleaver",
+      "slot": "weapon",
+      "graphics": [
+        3778,
+        3779
+      ],
+      "kind": "prop",
+      "source": "w_cleaver",
+      "length": 0.43,
+      "grip": 0.25
+    },
+    {
+      "key": "knife",
+      "slot": "weapon",
+      "graphics": [
+        3780,
+        3781,
+        5110,
+        5111
+      ],
+      "kind": "prop",
+      "source": "w_butcher_knife",
+      "length": 0.35,
+      "grip": 0.22
+    },
+    {
+      "key": "mace",
+      "slot": "weapon",
+      "graphics": [
+        3932,
+        3933,
+        5178,
+        5179
+      ],
+      "kind": "prop",
+      "source": "w_mace",
+      "length": 0.7,
+      "grip": 0.18
+    },
+    {
+      "key": "war_mace",
+      "slot": "weapon",
+      "graphics": [
+        5126,
+        5127
+      ],
+      "kind": "prop",
+      "source": "w_flanged_mace",
+      "length": 0.85,
+      "grip": 0.18,
+      "reverse_axis": true
+    },
+    {
+      "key": "long_sword",
+      "slot": "weapon",
+      "graphics": [
+        5047,
+        5048
+      ],
+      "kind": "prop",
+      "source": "w_long_sword",
+      "length": 1.1,
+      "grip": 0.2
+    },
+    {
+      "key": "scimitar",
+      "slot": "weapon",
+      "graphics": [
+        5045,
+        5046,
+        5184,
+        5185
+      ],
+      "kind": "prop",
+      "source": "w_scimitar",
+      "length": 0.85,
+      "grip": 0.18
+    },
+    {
+      "key": "spear",
+      "slot": "weapon",
+      "graphics": [
+        3938,
+        3939
+      ],
+      "kind": "prop",
+      "source": "w_long_spear",
+      "length": 1.9,
+      "grip": 0.4,
+      "reverse_axis": true
+    },
+    {
+      "key": "short_spear",
+      "slot": "weapon",
+      "graphics": [
+        5122,
+        5123
+      ],
+      "kind": "prop",
+      "source": "w_short_spear",
+      "length": 1.2,
+      "grip": 0.4,
+      "reverse_axis": true
+    },
+    {
+      "key": "fork",
+      "slot": "weapon",
+      "graphics": [
+        5124,
+        5125,
+        3719,
+        3720
+      ],
+      "kind": "prop",
+      "source": "w_pitchfork",
+      "length": 1.7,
+      "grip": 0.4,
+      "reverse_axis": true
+    },
+    {
+      "key": "pickaxe",
+      "slot": "weapon",
+      "graphics": [
+        3717,
+        3718,
+        5180,
+        5181
+      ],
+      "kind": "prop",
+      "source": "w_pickaxe",
+      "length": 0.8,
+      "grip": 0.2
+    },
+    {
+      "key": "smith_hammer",
+      "slot": "weapon",
+      "graphics": [
+        5091,
+        5092,
+        4020,
+        4021
+      ],
+      "kind": "prop",
+      "source": "w_sledge",
+      "length": 0.65,
+      "grip": 0.2
+    },
+    {
+      "key": "wand",
+      "slot": "weapon",
+      "graphics": [
+        3570,
+        3571,
+        3572,
+        3573
+      ],
+      "kind": "prop",
+      "source": "wand_wood",
+      "length": 0.42,
+      "grip": 0.18
+    },
+    {
+      "key": "crossbow",
+      "slot": "weapon",
+      "graphics": [
+        3919,
+        3920,
+        9923,
+        9933
+      ],
+      "kind": "prop",
+      "source": "w_crossbow",
+      "length": 0.85,
+      "grip": 0.35,
+      "stance": "crossbow"
+    },
+    {
+      "key": "heavy_crossbow",
+      "slot": "weapon",
+      "graphics": [
+        5116,
+        5117
+      ],
+      "kind": "prop",
+      "source": "w_heavy_crossbow",
+      "length": 1.05,
+      "grip": 0.35,
+      "stance": "crossbow"
+    },
+    {
+      "key": "bow",
+      "slot": "weapon",
+      "graphics": [
+        5041,
+        5042,
+        9922,
+        9932,
+        11551,
+        11563,
+        9585
+      ],
+      "kind": "bow",
+      "stance": "bow"
+    },
+    {
+      "key": "round_shield",
+      "slot": "shield",
+      "graphics": [
+        7026,
+        7027,
+        7034,
+        7035
+      ],
+      "kind": "prop",
+      "source": "shield_round",
+      "length": 0.65,
+      "grip": 0.5
+    },
+    {
+      "key": "heater_shield",
+      "slot": "shield",
+      "graphics": [
+        7028,
+        7029,
+        7030,
+        7031,
+        7032,
+        7033,
+        7107,
+        7108,
+        7109,
+        7110,
+        7111
+      ],
+      "kind": "prop",
+      "source": "shield_heater",
+      "length": 0.75,
+      "grip": 0.5
+    },
+    {
+      "key": "leather_torso",
+      "slot": "torso",
+      "graphics": [
+        5068,
+        5075,
+        7174,
+        7175,
+        7178,
+        7179
+      ],
+      "kind": "shell",
+      "material": "leather"
+    },
+    {
+      "key": "studded_torso",
+      "slot": "torso",
+      "graphics": [
+        5083,
+        5090,
+        7170,
+        7171,
+        7180,
+        7181
+      ],
+      "kind": "shell",
+      "material": "studded"
+    },
+    {
+      "key": "plate_torso",
+      "slot": "torso",
+      "graphics": [
+        5141,
+        5142,
+        7172,
+        7173
+      ],
+      "kind": "shell",
+      "material": "plate"
+    },
+    {
+      "key": "mail_torso",
+      "slot": "torso",
+      "graphics": [
+        5060,
+        5100,
+        5101
+      ],
+      "kind": "shell",
+      "material": "mail"
+    },
+    {
+      "key": "leather_arms",
+      "slot": "arms",
+      "graphics": [
+        5061,
+        5069
+      ],
+      "kind": "shell",
+      "material": "leather"
+    },
+    {
+      "key": "studded_arms",
+      "slot": "arms",
+      "graphics": [
+        5076,
+        5084
+      ],
+      "kind": "shell",
+      "material": "studded"
+    },
+    {
+      "key": "plate_arms",
+      "slot": "arms",
+      "graphics": [
+        5136,
+        5143
+      ],
+      "kind": "shell",
+      "material": "plate"
+    },
+    {
+      "key": "mail_arms",
+      "slot": "arms",
+      "graphics": [
+        5102,
+        5103
+      ],
+      "kind": "shell",
+      "material": "mail"
+    },
+    {
+      "key": "leather_legs",
+      "slot": "legs",
+      "graphics": [
+        5067,
+        5074
+      ],
+      "kind": "shell",
+      "material": "leather"
+    },
+    {
+      "key": "studded_legs",
+      "slot": "legs",
+      "graphics": [
+        5082,
+        5089
+      ],
+      "kind": "shell",
+      "material": "studded"
+    },
+    {
+      "key": "plate_legs",
+      "slot": "legs",
+      "graphics": [
+        5137,
+        5146
+      ],
+      "kind": "shell",
+      "material": "plate"
+    },
+    {
+      "key": "mail_legs",
+      "slot": "legs",
+      "graphics": [
+        5054,
+        5059,
+        5104,
+        5105
+      ],
+      "kind": "shell",
+      "material": "mail"
+    },
+    {
+      "key": "leather_gorget",
+      "slot": "gorget",
+      "graphics": [
+        5063
+      ],
+      "kind": "shell",
+      "material": "leather"
+    },
+    {
+      "key": "studded_gorget",
+      "slot": "gorget",
+      "graphics": [
+        5078
+      ],
+      "kind": "shell",
+      "material": "studded"
+    },
+    {
+      "key": "plate_gorget",
+      "slot": "gorget",
+      "graphics": [
+        5139
+      ],
+      "kind": "shell",
+      "material": "plate"
+    },
+    {
+      "key": "necklace",
+      "slot": "necklace",
+      "graphics": [
+        4229,
+        4232,
+        4233,
+        7941,
+        7944,
+        7946
+      ],
+      "kind": "jewel"
+    },
+    {
+      "key": "bracelet",
+      "slot": "bracelet",
+      "graphics": [
+        4230,
+        7942
+      ],
+      "kind": "jewel"
+    },
+    {
+      "key": "earrings",
+      "slot": "earrings",
+      "graphics": [
+        4231,
+        7943
+      ],
+      "kind": "jewel"
+    },
+    {
+      "key": "ring",
+      "slot": "ring",
+      "graphics": [
+        4234,
+        7945
+      ],
+      "kind": "jewel"
+    },
+    {
+      "key": "skullcap",
+      "slot": "head",
+      "graphics": [
+        5443,
+        5444,
+        7609,
+        7610
+      ],
+      "kind": "cap"
+    },
+    {
+      "key": "bandana",
+      "slot": "head",
+      "graphics": [
+        5439,
+        5440
+      ],
+      "kind": "cap"
+    },
+    {
+      "key": "wizard_hat",
+      "slot": "head",
+      "graphics": [
+        5912
+      ],
+      "kind": "hat"
+    },
+    {
+      "key": "straw_hat",
+      "slot": "head",
+      "graphics": [
+        5908,
+        5910,
+        5911
+      ],
+      "kind": "hat"
+    }
+  ],
+  "deferred_experiments": [
+    "Sleeveless dress, apron and surcoat experiments rejected at visual review; no native IDs mapped or counted."
+  ]
+}

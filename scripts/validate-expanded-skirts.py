@@ -39,7 +39,7 @@ for female in [False,True]:
  rig=next(o for o in bpy.data.objects if o.type=='ARMATURE')
  body=next(o for o in bpy.data.objects if o.name=='Body')
  for tr in rig.animation_data.nla_tracks:tr.mute=True
- names=['Idle','Walk','Jog','Sword_Idle','Sword_Walk','Sword_Jog','Unarmed_Idle','Unarmed_Jog','Sword_A_Cloth','Sword_B_Cloth','Sword_C_Cloth','Heavy_Attack_Cloth','Punch_Jab_Cloth','Punch_Cross_Cloth','Cast_Cloth','Hit','Bow'] if MODERN else ['Idle','Walk','Run']
+ names=['Idle','Walk','Jog','Sword_Idle','Sword_Walk','Sword_Jog','Unarmed_Idle','Unarmed_Jog','Sword_A_Cloth','Sword_B_Cloth','Sword_C_Cloth','Heavy_Attack_Cloth','Punch_Jab_Cloth','Punch_Cross_Cloth','Cast_Cloth','Hit','Bow','Bow_Attack','Crossbow_Attack','Bow_Idle','Crossbow_Idle','Turn','Salute','Fidget3'] if MODERN else ['Idle','Walk','Run']
  actions=[track.strips[0].action for track in rig.animation_data.nla_tracks if track.name in names]
  leg_ids=[v.index for v in body.data.vertices if .25<(body.matrix_world@v.co).z<.88 and sum(g.weight for g in v.groups if body.vertex_groups[g.group].name.startswith(('thigh','calf','foot')))>.5]
  for piece in (['robe','skirt','kilt'] if MODERN else ['skirt','kilt']):

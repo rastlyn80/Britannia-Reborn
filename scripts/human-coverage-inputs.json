@@ -1,0 +1,643 @@
+{
+  "publisher": "https://kaylousberg.itch.io/kaykit-character-animations",
+  "author": "Kay Lousberg / KayKit",
+  "license": "CC0-1.0",
+  "edition": "Free 1.1",
+  "upload_id": 15799903,
+  "archive_sha256": "65882f31f905ad2e953819648a59287cdeab8f623908d5ef701971d3758be20f",
+  "animation_folder": "work/human-coverage-session/kaykit/KayKit_Character_Animations_1.1/Animations/gltf/Rig_Medium",
+  "animation_files": {
+    "work/human-coverage-session/kaykit/KayKit_Character_Animations_1.1/Animations/gltf/Rig_Medium/Rig_Medium_General.glb": "5f725c0f745f36078c7238968cd5c04843cbc6260689eb6e7f5e2bbd7ffdd7ad",
+    "work/human-coverage-session/kaykit/KayKit_Character_Animations_1.1/Animations/gltf/Rig_Medium/Rig_Medium_CombatRanged.glb": "7fef1fc0e7b0feafd34b8e12d23f514c8c1f9d068047a691b854b56f1774dff5"
+  },
+  "gear": {
+    "w_two_handed_axe": {
+      "id": "w_two_handed_axe",
+      "title": "Two Handed Battle Axe",
+      "uid": "e2e3e143c83f4296a22704ec90992985",
+      "page": "https://sketchfab.com/3d-models/e2e3e143c83f4296a22704ec90992985",
+      "author": "iedalton",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-069/e2e3e143c83f4296a22704ec90992985.glb",
+      "sourceSha256": "5b8d1b697d60aa9b3a8cb4d17682f9b54faa885d7575d7f598dec86e2a1a9d76",
+      "sourceTriangles": 1568,
+      "file": "w_two_handed_axe/w_two_handed_axe.glb",
+      "sha256": "f3db07d77adc4580c31dd5cd9d3223931682812d94fb3ffb8840d407ab17e3db",
+      "triangles": 1568,
+      "size": [
+        0.238,
+        1.327,
+        1.779
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px",
+      "files": {
+        "Viewer/Art/Objaverse/w_two_handed_axe/w_two_handed_axe.glb": "f3db07d77adc4580c31dd5cd9d3223931682812d94fb3ffb8840d407ab17e3db",
+        "Viewer/Art/Objaverse/w_two_handed_axe/w_two_handed_axe_Image_0.jpg": "fc639b1dd690c578d543645526da84bb148d06a28841035fa7e01122024f9cb2",
+        "Viewer/Art/Objaverse/w_two_handed_axe/w_two_handed_axe_Image_1.jpg": "671135c4a8751cb5cd0d4bf4445a94dc24c4611986ecdd03221ad20aa73738e0",
+        "Viewer/Art/Objaverse/w_two_handed_axe/w_two_handed_axe_Image_2.jpg": "7e8ee4a705c21d2397e06a3eeb865fdcbb823f10506d6b76bc6e4cd0cb54b965",
+        "Viewer/Art/Objaverse/w_two_handed_axe/w_two_handed_axe_Image_3.jpg": "c48619d63e5f43d337da2766697280cfe1769f59197857777c76f9d6e9f8ca3e",
+        "Viewer/Art/Objaverse/w_two_handed_axe/w_two_handed_axe_Image_4.jpg": "8969d5335ab7df3bdda79e46f8ec1b4c4667a4f56d8c5da3ca9df3fc7ced231d",
+        "Viewer/Art/Objaverse/w_two_handed_axe/w_two_handed_axe_Image_5.jpg": "f3294b9b33b9e8fb9242714be716201ab55e6dced4db0f633e1bc2ef8560ac28",
+        "Viewer/Art/Objaverse/w_two_handed_axe/w_two_handed_axe_Image_6.jpg": "1d50653882604134600d79d8a8b81bc163cb23021248be1db9456200db53535e",
+        "Viewer/Art/Objaverse/w_two_handed_axe/w_two_handed_axe_Image_7.jpg": "40e3219056ebd4e0b084589c11e57efb86366a28c46b6c0f977dafcebaba4e92",
+        "Viewer/Art/Objaverse/w_two_handed_axe/w_two_handed_axe_Image_8.jpg": "f2a45fd1b84897b58ae4b6d000a9449a09e049fd7f9482e8e2c4d8d28352253e"
+      }
+    },
+    "w_bardiche": {
+      "id": "w_bardiche",
+      "title": "Medieval-Fantasy Multipurpose War Axe. lowpoly",
+      "uid": "69cd66f552864bad89da8f2ce8223eb7",
+      "page": "https://sketchfab.com/3d-models/69cd66f552864bad89da8f2ce8223eb7",
+      "author": "sethsaemann",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-027/69cd66f552864bad89da8f2ce8223eb7.glb",
+      "sourceSha256": "80e7966330e12956aad9cc8c2d9158b7ca466aa8969814eacf0a6d332c8b0ce1",
+      "sourceTriangles": 4942,
+      "file": "w_bardiche/w_bardiche.glb",
+      "sha256": "bc308a159c84642e5e6357e7c17d32d99df41f004286e8f5c3da5f2bacfad50a",
+      "triangles": 2998,
+      "size": [
+        19.164,
+        3.601,
+        58.343
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px",
+      "files": {
+        "Viewer/Art/Objaverse/w_bardiche/w_bardiche.glb": "bc308a159c84642e5e6357e7c17d32d99df41f004286e8f5c3da5f2bacfad50a"
+      }
+    },
+    "w_halberd": {
+      "id": "w_halberd",
+      "title": "Viking Halberd",
+      "uid": "cf31d68f5115433a91e07a5d712e9250",
+      "page": "https://sketchfab.com/3d-models/cf31d68f5115433a91e07a5d712e9250",
+      "author": "beyondmatter",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-124/cf31d68f5115433a91e07a5d712e9250.glb",
+      "sourceSha256": "d7d94848dd91e9fcd38a06bea9c3d0a15e31e0989644db893ac5b6a9045ad9ff",
+      "sourceTriangles": 1912,
+      "file": "w_halberd/w_halberd.glb",
+      "sha256": "c374ffb9bea298353a59ed2ad081487e72e78470ef9bd2352f2fc95ec563310d",
+      "triangles": 1912,
+      "size": [
+        361.037,
+        147.674,
+        17.735
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px",
+      "files": {
+        "Viewer/Art/Objaverse/w_halberd/w_halberd.glb": "c374ffb9bea298353a59ed2ad081487e72e78470ef9bd2352f2fc95ec563310d",
+        "Viewer/Art/Objaverse/w_halberd/w_halberd_Image_0.jpg": "4c3ce642eaf40476b9ba026df73dbc529f2d436b0ea59c8ab4eebf7e895f255c",
+        "Viewer/Art/Objaverse/w_halberd/w_halberd_Image_1.jpg": "e493d3dc7ac196867130207a959d6a8d16b13bb41f79a4f902d2d37b4cd3ae06",
+        "Viewer/Art/Objaverse/w_halberd/w_halberd_Image_2.jpg": "ff2d29eaaad59b07b675be84d00c8afff4e80ca768c25cea1316aa91e656d4f5"
+      }
+    },
+    "w_dagger": {
+      "id": "w_dagger",
+      "title": "Dagger Low poly",
+      "uid": "01db689d606a4cbb879b1fba67b55fa8",
+      "page": "https://sketchfab.com/3d-models/01db689d606a4cbb879b1fba67b55fa8",
+      "author": "Teliri",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-096/01db689d606a4cbb879b1fba67b55fa8.glb",
+      "sourceSha256": "18349ddcb42a4875944fc1e941b6003e0f3ed21de25c79b28d3118f471ea9d54",
+      "sourceTriangles": 1334,
+      "file": "w_dagger/w_dagger.glb",
+      "sha256": "20ca8d0758a17ad8c84f3b0e0284a953a37ce6de4834604d715b54416f00415f",
+      "triangles": 1334,
+      "size": [
+        0.591,
+        0.403,
+        4.76
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px",
+      "files": {
+        "Viewer/Art/Objaverse/w_dagger/w_dagger.glb": "20ca8d0758a17ad8c84f3b0e0284a953a37ce6de4834604d715b54416f00415f",
+        "Viewer/Art/Objaverse/w_dagger/w_dagger_Image_0.jpg": "38c30a58ecdc0e72d510fe78052eb9c1b89013aed8925c44fc3a589fef80764b",
+        "Viewer/Art/Objaverse/w_dagger/w_dagger_Image_1.jpg": "75d1b222ab0c8c93d7cb9e6b249afc09bb00c2faaba42366eeb024e6f473e2b2",
+        "Viewer/Art/Objaverse/w_dagger/w_dagger_Image_2.jpg": "7c3c298f05966cbff01f7b7d3c4ad67912d2da61bc15447c31642e54275b5951"
+      }
+    },
+    "w_cleaver": {
+      "id": "w_cleaver",
+      "title": "Cleaver - Butcher's Best Friend",
+      "uid": "8b3a394b1e6741e187e15b8dc5075b54",
+      "page": "https://sketchfab.com/3d-models/8b3a394b1e6741e187e15b8dc5075b54",
+      "author": "3dsofsan",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-053/8b3a394b1e6741e187e15b8dc5075b54.glb",
+      "sourceSha256": "597085deb13d276f698c4ffc6e667685c4ceea4379f25b3a220f1c046c8ebd7d",
+      "sourceTriangles": 980,
+      "file": "w_cleaver/w_cleaver.glb",
+      "sha256": "35bba3714bd0e969b036fb129eae2baf208f38d99e8173b365055fa8950afdbd",
+      "triangles": 980,
+      "size": [
+        0.909,
+        0.746,
+        0.059
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px",
+      "files": {
+        "Viewer/Art/Objaverse/w_cleaver/w_cleaver.glb": "35bba3714bd0e969b036fb129eae2baf208f38d99e8173b365055fa8950afdbd",
+        "Viewer/Art/Objaverse/w_cleaver/w_cleaver_Image_0.jpg": "78310536189de0523384b2c1b5be3696924c03d6c6a03530443ce07102826605",
+        "Viewer/Art/Objaverse/w_cleaver/w_cleaver_Image_1.jpg": "08981a8884a4ca6770f200260dee4a11004a7eddfbf5f24e8c0f75817d5f58f4",
+        "Viewer/Art/Objaverse/w_cleaver/w_cleaver_Image_2.jpg": "d3f321915b157074d448ffd1f7fe7a7d01337d5829340e32a00b20aa4f80bf75"
+      }
+    },
+    "w_butcher_knife": {
+      "id": "w_butcher_knife",
+      "title": "Butcher Knife",
+      "uid": "a8677d9c7a5b43fe966ac48d2798dad2",
+      "page": "https://sketchfab.com/3d-models/a8677d9c7a5b43fe966ac48d2798dad2",
+      "author": "beyondmatter",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-105/a8677d9c7a5b43fe966ac48d2798dad2.glb",
+      "sourceSha256": "88102b396f708b16b5bac5f01530140137fc571663133e4f69dcdad430df22cf",
+      "sourceTriangles": 758,
+      "file": "w_butcher_knife/w_butcher_knife.glb",
+      "sha256": "e40adb36b7de01bd410679b063b6bf5277065eeb71c9232005848abe7b88445d",
+      "triangles": 758,
+      "size": [
+        40.718,
+        10.867,
+        1.914
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px",
+      "files": {
+        "Viewer/Art/Objaverse/w_butcher_knife/w_butcher_knife.glb": "e40adb36b7de01bd410679b063b6bf5277065eeb71c9232005848abe7b88445d",
+        "Viewer/Art/Objaverse/w_butcher_knife/w_butcher_knife_Image_0.jpg": "a2d2e864f4d01ddf9e8bf4890ddfe8cb35f69f6cceea4e6865b8c88a6e77d2d3",
+        "Viewer/Art/Objaverse/w_butcher_knife/w_butcher_knife_Image_1.jpg": "55a34ad022cb78945e608f6b5ff3bfa69e55f71f4166e1c091a7f2a72d3f16c9",
+        "Viewer/Art/Objaverse/w_butcher_knife/w_butcher_knife_Image_2.jpg": "53b50d85088159676a20efdc36f23a46b8bd0e94bf60fd549789c88221aa4701"
+      }
+    },
+    "w_mace": {
+      "id": "w_mace",
+      "title": "Medieval Steel Mace (Game Model)",
+      "uid": "70f78341e5124b4b895dd40389d34eb9",
+      "page": "https://sketchfab.com/3d-models/70f78341e5124b4b895dd40389d34eb9",
+      "author": "Michael Makivic",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-155/70f78341e5124b4b895dd40389d34eb9.glb",
+      "sourceSha256": "2840785e1015798549c46399b3957b1b9f5994ea0458414a667b2fc8b0e23c45",
+      "sourceTriangles": 1516,
+      "file": "w_mace/w_mace.glb",
+      "sha256": "8e78ebfeaca639b4c253372347a63637ffa023a311eab247f543270ac14b6be1",
+      "triangles": 1516,
+      "size": [
+        115.673,
+        508.851,
+        115.673
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px",
+      "files": {
+        "Viewer/Art/Objaverse/w_mace/w_mace.glb": "8e78ebfeaca639b4c253372347a63637ffa023a311eab247f543270ac14b6be1",
+        "Viewer/Art/Objaverse/w_mace/w_mace_Image_0.jpg": "ca064a1a33bd18bf8777713862f479f9ec0e77854dfb2c3fa34ed5817d381a4c",
+        "Viewer/Art/Objaverse/w_mace/w_mace_Image_1.jpg": "9ca1adc8df8c3d61a738b4078ba9ab2e8e18833bf729036471a00c8a1fffa9aa",
+        "Viewer/Art/Objaverse/w_mace/w_mace_Image_2.jpg": "3b2223b6ae63d7d3908581b7364b04fc246fd32ff032474b37189c8075c788c5"
+      }
+    },
+    "w_flanged_mace": {
+      "id": "w_flanged_mace",
+      "title": "Medieval flanged mace (worn)",
+      "uid": "c55524ad4602410abf01519d038ca6ff",
+      "page": "https://sketchfab.com/3d-models/c55524ad4602410abf01519d038ca6ff",
+      "author": "reddification",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-066/c55524ad4602410abf01519d038ca6ff.glb",
+      "sourceSha256": "15c0ede01c5998e2aa30cae53b92b86b9ff29deea6de533f11d7a9e9ccbb61c5",
+      "sourceTriangles": 1056,
+      "file": "w_flanged_mace/w_flanged_mace.glb",
+      "sha256": "4fed3aec76f3024f3caa395a4d20d3ba7a8d80be0fb9ddd2cbc18ad55e100aa1",
+      "triangles": 1056,
+      "size": [
+        68.147,
+        12.485,
+        12.485
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px",
+      "files": {
+        "Viewer/Art/Objaverse/w_flanged_mace/w_flanged_mace.glb": "4fed3aec76f3024f3caa395a4d20d3ba7a8d80be0fb9ddd2cbc18ad55e100aa1",
+        "Viewer/Art/Objaverse/w_flanged_mace/w_flanged_mace_Image_0.jpg": "586484c4fc479f2e98a34707994d8f6fb28c3f261d4a6fc5b23f3b9b2dbe489e",
+        "Viewer/Art/Objaverse/w_flanged_mace/w_flanged_mace_Image_1.jpg": "feaee4e290a084d1456cd973e85c1f7fd1edbedf652041a9ac3984f6d4bfb421",
+        "Viewer/Art/Objaverse/w_flanged_mace/w_flanged_mace_Image_1_3.jpg": "c05e023ac3d6cdb57444cd3af74da8e32ee2ca38c993dc37b3477f01ac49af33",
+        "Viewer/Art/Objaverse/w_flanged_mace/w_flanged_mace_Image_2.jpg": "e21193db3efff391f1c0d6d37a342b82529475e62c249e7e718ff574e0116fbb"
+      }
+    },
+    "w_long_sword": {
+      "id": "w_long_sword",
+      "title": "Long Sword",
+      "uid": "17c5c88972044168ad1da2d19196a3fd",
+      "page": "https://sketchfab.com/3d-models/17c5c88972044168ad1da2d19196a3fd",
+      "author": "Multipainkiller Studio",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-133/17c5c88972044168ad1da2d19196a3fd.glb",
+      "sourceSha256": "fad15687683092fc3fb1c7afc8c00326b0e569c1c5a51d623305ea0fc68d5372",
+      "sourceTriangles": 1416,
+      "file": "w_long_sword/w_long_sword.glb",
+      "sha256": "7a7b6564f8bf743552540dc9e8cd8ab7bddab735cdeb51232807b46e157f6064",
+      "triangles": 1416,
+      "size": [
+        2.0,
+        0.065,
+        0.41
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px",
+      "files": {
+        "Viewer/Art/Objaverse/w_long_sword/w_long_sword.glb": "7a7b6564f8bf743552540dc9e8cd8ab7bddab735cdeb51232807b46e157f6064",
+        "Viewer/Art/Objaverse/w_long_sword/w_long_sword_Image_0.jpg": "1c9cc22d21349c0d9344c0b41b29e37177232c66653b4ab6ea86b8ed698081b8",
+        "Viewer/Art/Objaverse/w_long_sword/w_long_sword_Image_1.jpg": "5232c7dacba2164ab7e4ba56e41fb083c7b59e1b43e40a60c22089707bcaf2a3",
+        "Viewer/Art/Objaverse/w_long_sword/w_long_sword_Image_2.jpg": "4b482cff0fc3534e97c128ddc8fe2bd3ee35857e104813a8c20d69240146b85f"
+      }
+    },
+    "w_scimitar": {
+      "id": "w_scimitar",
+      "title": "Curved Sword",
+      "uid": "0b6bf732396441329257957a21596111",
+      "page": "https://sketchfab.com/3d-models/0b6bf732396441329257957a21596111",
+      "author": "Turstrigo",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-096/0b6bf732396441329257957a21596111.glb",
+      "sourceSha256": "623803ffed90221e36c3b30aafc9897ecd43725c394c2e946c0c9a384c3f3e62",
+      "sourceTriangles": 1818,
+      "file": "w_scimitar/w_scimitar.glb",
+      "sha256": "5cf50eddd01bfce87db9a2753799a00effd6a8bbc772d9044cd4a71f4ea8a147",
+      "triangles": 1818,
+      "size": [
+        17.155,
+        2.294,
+        63.428
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px",
+      "files": {
+        "Viewer/Art/Objaverse/w_scimitar/w_scimitar.glb": "5cf50eddd01bfce87db9a2753799a00effd6a8bbc772d9044cd4a71f4ea8a147",
+        "Viewer/Art/Objaverse/w_scimitar/w_scimitar_Image_0.jpg": "63612d1c8e41a3194a5b7d0b6fc4867d100627ff16167ad126662b85a856ab60",
+        "Viewer/Art/Objaverse/w_scimitar/w_scimitar_Image_1.jpg": "c1747a51430ce9e02a5613f982c5a38e3311369088e59b288415428f68511cbc",
+        "Viewer/Art/Objaverse/w_scimitar/w_scimitar_Image_2.jpg": "201e2401b14d98f43b04d007d1ea3130db1e2c3140831435addfe871878e0019"
+      }
+    },
+    "w_long_spear": {
+      "id": "w_long_spear",
+      "title": "Medieval Spear",
+      "uid": "f61070945153418fa11c4abae286b292",
+      "page": "https://sketchfab.com/3d-models/f61070945153418fa11c4abae286b292",
+      "author": "iedalton",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-034/f61070945153418fa11c4abae286b292.glb",
+      "sourceSha256": "a5fcc8fa2673f4a7ed363357d8fc7808cf54ef83a5c3d1db98ceca9002bdb9b1",
+      "sourceTriangles": 2270,
+      "file": "w_long_spear/w_long_spear.glb",
+      "sha256": "a2f30d50c85bc2840302b061a6a905162c7f6f9ab1f75a26b66933fce278002f",
+      "triangles": 2270,
+      "size": [
+        0.042,
+        1.281,
+        1.552
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px",
+      "files": {
+        "Viewer/Art/Objaverse/w_long_spear/w_long_spear.glb": "a2f30d50c85bc2840302b061a6a905162c7f6f9ab1f75a26b66933fce278002f",
+        "Viewer/Art/Objaverse/w_long_spear/w_long_spear_Image_0.jpg": "276855e990e446a6c06b255414a7bc2f7d71333add0e29d28ee58362f05ef5ef",
+        "Viewer/Art/Objaverse/w_long_spear/w_long_spear_Image_1.jpg": "06c23c7e54275d10d2ca087cbc088dc852170b88127073475569483b3099bec5",
+        "Viewer/Art/Objaverse/w_long_spear/w_long_spear_Image_2.jpg": "b6fd284745b5a135c9ff9e29cc29fc7b3ea94fa32a8e22a753f150ba8ebdd118",
+        "Viewer/Art/Objaverse/w_long_spear/w_long_spear_Image_3.jpg": "bb5f5cfd7068bde7995a2c939864706df5f1611899cfbb0ded774a13f5905042",
+        "Viewer/Art/Objaverse/w_long_spear/w_long_spear_Image_4.jpg": "0eb89ffdfc5acd830bde3518e974463df614f92649dbb604a027a0b20264221c",
+        "Viewer/Art/Objaverse/w_long_spear/w_long_spear_Image_5.jpg": "5fc7a38714c716462f964dc3f389e35cf38d0a9b2a87738e9f8a0eee19596d5c",
+        "Viewer/Art/Objaverse/w_long_spear/w_long_spear_Image_6.jpg": "6514555a147bdab6dbf5d5cee04992cdac1a2d5ac73fe4631d0f01151935d236",
+        "Viewer/Art/Objaverse/w_long_spear/w_long_spear_Image_7.jpg": "ee21c7580e9594f02a51e2744c64025a67da7afd28f40906ac5b1da02eda6e36",
+        "Viewer/Art/Objaverse/w_long_spear/w_long_spear_Image_8.jpg": "976f4e471d7e0725e04c1fead459d8356471118d5427d0db7c9e1d0dcd22c800"
+      }
+    },
+    "w_short_spear": {
+      "id": "w_short_spear",
+      "title": "Short Spear",
+      "uid": "4914f35dd1764f34ad91994b34388615",
+      "page": "https://sketchfab.com/3d-models/4914f35dd1764f34ad91994b34388615",
+      "author": "Vlad_MT3D",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-027/4914f35dd1764f34ad91994b34388615.glb",
+      "sourceSha256": "685eaef42af5c07bdf36d28f0f7595287b5ed06bf3170282908cf0e550c59901",
+      "sourceTriangles": 356,
+      "file": "w_short_spear/w_short_spear.glb",
+      "sha256": "1f41e15addad889b53fde237ebe69f4fdb7c6ba7fc5d66b9371daedc8cbcb57f",
+      "triangles": 356,
+      "size": [
+        59.706,
+        1.926,
+        1.48
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px",
+      "files": {
+        "Viewer/Art/Objaverse/w_short_spear/w_short_spear.glb": "1f41e15addad889b53fde237ebe69f4fdb7c6ba7fc5d66b9371daedc8cbcb57f",
+        "Viewer/Art/Objaverse/w_short_spear/w_short_spear_Image_0.jpg": "42e809145d2d6f3e35d00e5759f6dba38c05d2d1326828e24b3a1d7343f18872",
+        "Viewer/Art/Objaverse/w_short_spear/w_short_spear_Image_1.jpg": "b8d7ba0b6582031eaabe27e1b9b3ed3085b97817a7ab9c198a9c8eae2f35ca5b",
+        "Viewer/Art/Objaverse/w_short_spear/w_short_spear_Image_2.jpg": "a980eacedc41fc5c8abd959bae051108ea3aa28482ade3fbca7c2947bca78e39"
+      }
+    },
+    "w_pitchfork": {
+      "id": "w_pitchfork",
+      "title": "Pitchfork",
+      "uid": "c8d37a31d890495aba98c435136b3301",
+      "page": "https://sketchfab.com/3d-models/c8d37a31d890495aba98c435136b3301",
+      "author": "Lodgelus",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-065/c8d37a31d890495aba98c435136b3301.glb",
+      "sourceSha256": "c7265505261b7dea157de2268f00e0e169c76a4180570c9c7ad54c4b54a64dca",
+      "sourceTriangles": 2140,
+      "file": "w_pitchfork/w_pitchfork.glb",
+      "sha256": "771a8aaf7200fb2f2f6345b784cf187d66ac8eb55c0972a8740b6c454dc9910a",
+      "triangles": 2140,
+      "size": [
+        14.211,
+        5.04,
+        133.291
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px",
+      "files": {
+        "Viewer/Art/Objaverse/w_pitchfork/w_pitchfork.glb": "771a8aaf7200fb2f2f6345b784cf187d66ac8eb55c0972a8740b6c454dc9910a",
+        "Viewer/Art/Objaverse/w_pitchfork/w_pitchfork_Image_0.jpg": "a5cf2ceca1c4a479ad2e8f621e0accfb005eb99721dc05a52afa4d716c038573",
+        "Viewer/Art/Objaverse/w_pitchfork/w_pitchfork_Image_1.jpg": "ae16324ae4d5652ab72089da48e5eba5481d229b47927c0c610b0a2938ac9926",
+        "Viewer/Art/Objaverse/w_pitchfork/w_pitchfork_Image_2.jpg": "2bb98d3dd09cfaf2b7a451b6b090214bdfb306fb7cc1dabbbbaa079727d23ddf"
+      }
+    },
+    "w_pickaxe": {
+      "id": "w_pickaxe",
+      "title": "Survival Pickaxe",
+      "uid": "d1fe496bfc16495187d5515433fd1eb8",
+      "page": "https://sketchfab.com/3d-models/d1fe496bfc16495187d5515433fd1eb8",
+      "author": "Charlie Tinley",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-083/d1fe496bfc16495187d5515433fd1eb8.glb",
+      "sourceSha256": "c979980bb3066d031c9fef3955553b2728319297f679c1b3e9456ca98697021a",
+      "sourceTriangles": 3380,
+      "file": "w_pickaxe/w_pickaxe.glb",
+      "sha256": "83b2c31b1d3895e74b104001a4bb48a248457abbee6dbaec2f2b7966d5bf5bcc",
+      "triangles": 2998,
+      "size": [
+        1.783,
+        2.0,
+        0.2
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px",
+      "files": {
+        "Viewer/Art/Objaverse/w_pickaxe/w_pickaxe.glb": "83b2c31b1d3895e74b104001a4bb48a248457abbee6dbaec2f2b7966d5bf5bcc",
+        "Viewer/Art/Objaverse/w_pickaxe/w_pickaxe_Image_0.jpg": "3b23a348d9236e7008aef1e7cfa8e8f0a1ee41999c4e799028eb978199b45ff6",
+        "Viewer/Art/Objaverse/w_pickaxe/w_pickaxe_Image_1.jpg": "b54afee9b0a5a7a747ebdb85c8c839dc6d1443d97c8d0068309d137147794b4f",
+        "Viewer/Art/Objaverse/w_pickaxe/w_pickaxe_Image_2.jpg": "6f10738f17210c66587275f0c7ac29871ed8567a2f5752c9fa90c9cfa6f43d3b",
+        "Viewer/Art/Objaverse/w_pickaxe/w_pickaxe_Image_3.jpg": "a6c2569d8c52cb8a7ecfe619cc9ef342d1bf5266dbc3c908f66a4418702ed870",
+        "Viewer/Art/Objaverse/w_pickaxe/w_pickaxe_Image_4.jpg": "2451b86b09ea6c78d1cbebc7ff4ebcf8a1c47307281dea45997c4e10adc092da",
+        "Viewer/Art/Objaverse/w_pickaxe/w_pickaxe_Image_5.jpg": "bd0c7bb328ba7ab69c9ebd42021f4ed4471640c31cdef4d43f2ddacb35aaf02f"
+      }
+    },
+    "w_sledge": {
+      "id": "w_sledge",
+      "title": "Sledge Hammer",
+      "uid": "acf95762a6064791b95452c468b7fb3e",
+      "page": "https://sketchfab.com/3d-models/acf95762a6064791b95452c468b7fb3e",
+      "author": "George Hager",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-116/acf95762a6064791b95452c468b7fb3e.glb",
+      "sourceSha256": "369af4d41ff5a56e85474023c19c9c33fb4f10aeeddc7d257bfae7c65547500b",
+      "sourceTriangles": 5314,
+      "file": "w_sledge/w_sledge.glb",
+      "sha256": "e16ee933aa19ebfbb35cdb28d8e6af58c416101f8a88d708229407970f5b9f7f",
+      "triangles": 3000,
+      "size": [
+        0.157,
+        2.0,
+        0.479
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px",
+      "files": {
+        "Viewer/Art/Objaverse/w_sledge/w_sledge.glb": "e16ee933aa19ebfbb35cdb28d8e6af58c416101f8a88d708229407970f5b9f7f",
+        "Viewer/Art/Objaverse/w_sledge/w_sledge_Image_0.jpg": "cca05234c1af4096c5f6999658334608c62be785eaa1963e76d65d376262a0b3",
+        "Viewer/Art/Objaverse/w_sledge/w_sledge_Image_1.jpg": "f82c17d93fcd9cca539c2a7965bc37a8be95ac56060d14d4a6f9d95f26b96355",
+        "Viewer/Art/Objaverse/w_sledge/w_sledge_Image_2.jpg": "e21958c16f64f8028876cc4925fd409b8d9aa423a671d888e8d781371c85cb68"
+      }
+    },
+    "wand_wood": {
+      "id": "wand_wood",
+      "title": "Magic Wand",
+      "uid": "ca53cda967c04aeebe88a5e3c7157b43",
+      "page": "https://sketchfab.com/3d-models/ca53cda967c04aeebe88a5e3c7157b43",
+      "author": "xenosmashgames",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-024/ca53cda967c04aeebe88a5e3c7157b43.glb",
+      "sourceSha256": "dc074f6ed4edbf62859bd5fd142c4f8816e7cf1db150b76b75156c843db101a1",
+      "sourceTriangles": 130478,
+      "file": "wand_wood/wand_wood.glb",
+      "sha256": "751b2140ad1e403446923bb7aed1c09dc8fe2a725ada900be73e0ad153c82857",
+      "triangles": 1497,
+      "size": [
+        1150.613,
+        110.842,
+        63.434
+      ],
+      "processing": "ground-centred, decimated to 1500 triangles, textures capped at 1024 px",
+      "files": {
+        "Viewer/Art/Objaverse/wand_wood/wand_wood.glb": "751b2140ad1e403446923bb7aed1c09dc8fe2a725ada900be73e0ad153c82857"
+      }
+    },
+    "w_crossbow": {
+      "id": "w_crossbow",
+      "title": "Medieval Crossbow",
+      "uid": "cc36ed347db340d59bd2ec7b06ae0d63",
+      "page": "https://sketchfab.com/3d-models/cc36ed347db340d59bd2ec7b06ae0d63",
+      "author": "iedalton",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-132/cc36ed347db340d59bd2ec7b06ae0d63.glb",
+      "sourceSha256": "a0870f31f4fb4e075ac1e0b9121790edc899e48ab0367467be7375ff3f2b4b87",
+      "sourceTriangles": 9512,
+      "file": "w_crossbow/w_crossbow.glb",
+      "sha256": "e68e30dfc54b40555417dd2fbe315b06ae780a11e70e440b1e4c2f4fc2880736",
+      "triangles": 2997,
+      "size": [
+        1.917,
+        0.602,
+        1.59
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px",
+      "files": {
+        "Viewer/Art/Objaverse/w_crossbow/w_crossbow.glb": "e68e30dfc54b40555417dd2fbe315b06ae780a11e70e440b1e4c2f4fc2880736",
+        "Viewer/Art/Objaverse/w_crossbow/w_crossbow_Image_0.jpg": "8609f87e9871b0291fec788bb6aae09499c57eaafd829c930c949deb0ae11c88",
+        "Viewer/Art/Objaverse/w_crossbow/w_crossbow_Image_1.jpg": "ca69841c72bc789007d5b4b60e8b4773fe84a5c5078dd1494a94f3d01afa4fed",
+        "Viewer/Art/Objaverse/w_crossbow/w_crossbow_Image_10.jpg": "6597f6d9d12979f46b16d6eaeab555cc12a70b223925e0cb14229a54cc2b20ad",
+        "Viewer/Art/Objaverse/w_crossbow/w_crossbow_Image_11.jpg": "0efe3b6cfe726907136e6023beb4f6e26d165a64f57c2f73a240406d2ece0574",
+        "Viewer/Art/Objaverse/w_crossbow/w_crossbow_Image_2.jpg": "e99e8d3e5400f68fdb8f9cc8796ba694602cd2cc81a03e868b2d61182cce3f24",
+        "Viewer/Art/Objaverse/w_crossbow/w_crossbow_Image_3.jpg": "33367cb94036957c5150eafa962d35073410890f7eca4dd73cf6e6bba46c1bf4",
+        "Viewer/Art/Objaverse/w_crossbow/w_crossbow_Image_4.jpg": "2407f1722fac48a8c485da5f0588b990a4ffeefdb547057097ed2dcfac16ffcf",
+        "Viewer/Art/Objaverse/w_crossbow/w_crossbow_Image_5.jpg": "dab2ada37ef4f5657a248f4c9104f8055167133fefcf2988fb0566142fb1b482",
+        "Viewer/Art/Objaverse/w_crossbow/w_crossbow_Image_6.jpg": "6b859117bae2f358ec2bcd767f3ba15054cd4bcc496f94f172c39ba918629362",
+        "Viewer/Art/Objaverse/w_crossbow/w_crossbow_Image_7.jpg": "0a10be10e029ec5b8f6fa6b8dbd95f283df438b5f59a2991c2c949bde79e9f56",
+        "Viewer/Art/Objaverse/w_crossbow/w_crossbow_Image_8.jpg": "1134c3e228a9db7cc8556e60a33578fe961675eda1afedf5419b0c53691f4fe0",
+        "Viewer/Art/Objaverse/w_crossbow/w_crossbow_Image_9.jpg": "1598369d43bfbabdfecc3d4f64fc6218d719a0f2b95951aa14e167f752438349"
+      }
+    },
+    "w_heavy_crossbow": {
+      "id": "w_heavy_crossbow",
+      "title": "Heavy Crossbow (Free)",
+      "uid": "1dc0b1e982a749c6a2fd595372b094c4",
+      "page": "https://sketchfab.com/3d-models/1dc0b1e982a749c6a2fd595372b094c4",
+      "author": "wolfgar74",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-048/1dc0b1e982a749c6a2fd595372b094c4.glb",
+      "sourceSha256": "3f5bdb52ce07306e3ea839b106dd7f142acea8658e0881da0d036fe3a38122dd",
+      "sourceTriangles": 2358,
+      "file": "w_heavy_crossbow/w_heavy_crossbow.glb",
+      "sha256": "d4246fbffe6c9fa230dc681d159e5553b0cc1ebc2510f15fa3dcf470920a481a",
+      "triangles": 2358,
+      "size": [
+        111.4,
+        83.512,
+        15.926
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px",
+      "files": {
+        "Viewer/Art/Objaverse/w_heavy_crossbow/w_heavy_crossbow.glb": "d4246fbffe6c9fa230dc681d159e5553b0cc1ebc2510f15fa3dcf470920a481a",
+        "Viewer/Art/Objaverse/w_heavy_crossbow/w_heavy_crossbow_Image_0.jpg": "d7fc554cb3521cb1df28ba297f4aa770bc3875b6b66d72b80c075e231dfd614b",
+        "Viewer/Art/Objaverse/w_heavy_crossbow/w_heavy_crossbow_Image_1.jpg": "65eefeebf30baae2454435f463120519172c985959c0f552c2e7b4483ef2a142",
+        "Viewer/Art/Objaverse/w_heavy_crossbow/w_heavy_crossbow_Image_10.jpg": "fca9f1b3aeb668abfc63be67ce5dc52966dc668332c29f3ab45f615dee768202",
+        "Viewer/Art/Objaverse/w_heavy_crossbow/w_heavy_crossbow_Image_11.jpg": "265f3731eaaf7deb72229ea8dfe29739a0280336a8e55ce97993f7fbe2c2791d",
+        "Viewer/Art/Objaverse/w_heavy_crossbow/w_heavy_crossbow_Image_12.jpg": "2e9d8de10e1f845495ade774da788c40c381e5ad75de496e9a2b8d63d443ec36",
+        "Viewer/Art/Objaverse/w_heavy_crossbow/w_heavy_crossbow_Image_13.jpg": "7fcb7f2d1b9cd46acf989bc6afdd480a897eb2a922353011f6a271bdda1b2d0e",
+        "Viewer/Art/Objaverse/w_heavy_crossbow/w_heavy_crossbow_Image_14.jpg": "58e6b2a6700547aff994b526918b2db9256d79c05f4633aa92973a747cfbb3eb",
+        "Viewer/Art/Objaverse/w_heavy_crossbow/w_heavy_crossbow_Image_15.jpg": "2eff905a5a3fa00de33c225b7a83827748ec0654f962414783e2ed03054a13ff",
+        "Viewer/Art/Objaverse/w_heavy_crossbow/w_heavy_crossbow_Image_16.jpg": "d7d93501421b30eb3a06d602899874b8ddee55f4fd3f235edb35ae844746fb0d",
+        "Viewer/Art/Objaverse/w_heavy_crossbow/w_heavy_crossbow_Image_17.jpg": "124350806fd806162d44dba13e460938521978606cdd7a165d56638bd57a684d",
+        "Viewer/Art/Objaverse/w_heavy_crossbow/w_heavy_crossbow_Image_18.jpg": "4be2ca979011bc6a5390c52793e935059684ae8cb5da35f235f499e726dd0e4a",
+        "Viewer/Art/Objaverse/w_heavy_crossbow/w_heavy_crossbow_Image_19.jpg": "5054449252d34e013f6c7d6c23c7b250c5ec9f408bb788e1e7adecbe3b5e67d6",
+        "Viewer/Art/Objaverse/w_heavy_crossbow/w_heavy_crossbow_Image_2.jpg": "fd360a7aef628b9d84d080fe7f2c1afeeb667ce265b70961b87ec9cbed610719",
+        "Viewer/Art/Objaverse/w_heavy_crossbow/w_heavy_crossbow_Image_20.jpg": "d4073639b67a2c363c2e83f5a2f613037e6ad5a2003afa8221e97ffa48ab017f",
+        "Viewer/Art/Objaverse/w_heavy_crossbow/w_heavy_crossbow_Image_3.jpg": "21ba1cc88fc78d56ecffa2f6245ff93f7fdaff3a5071eea7a9774425dbe3118d",
+        "Viewer/Art/Objaverse/w_heavy_crossbow/w_heavy_crossbow_Image_4.jpg": "169b61f9657f5b719c67a41abe43e2036b4148fe2a43f680f50374f50028c3b6",
+        "Viewer/Art/Objaverse/w_heavy_crossbow/w_heavy_crossbow_Image_5.jpg": "fb1a5ad1a87616c417e039d7dc4110aa1acd324304c61fa764f64c4ec647bf42",
+        "Viewer/Art/Objaverse/w_heavy_crossbow/w_heavy_crossbow_Image_6.jpg": "5fa6b7561f2ad75ba392133c8560dc3fd425c25017f8053de384901dddf5d659",
+        "Viewer/Art/Objaverse/w_heavy_crossbow/w_heavy_crossbow_Image_7.jpg": "32367aa1fc02195a0f8ad5ae315af08efdc860071c28f79fff2f5b733a11c104",
+        "Viewer/Art/Objaverse/w_heavy_crossbow/w_heavy_crossbow_Image_8.jpg": "5272bd85b8b45ed48001a9aadab9a67797833ffe39e358f43a504b5f6465818b",
+        "Viewer/Art/Objaverse/w_heavy_crossbow/w_heavy_crossbow_Image_9.jpg": "ab44bec3a428819b69d477f3d4085ad8ad7d4b5d342ae02e4f51289971d1dfd2"
+      }
+    },
+    "shield_round": {
+      "id": "shield_round",
+      "title": "Medieval Shield",
+      "uid": "b98b8f64d935415aab0fe9b70074511f",
+      "page": "https://sketchfab.com/3d-models/b98b8f64d935415aab0fe9b70074511f",
+      "author": "Artem Mykhailov",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-091/b98b8f64d935415aab0fe9b70074511f.glb",
+      "sourceSha256": "e7b1c4841ebf77cb7eb4767c5c0527f225c14afddd144225953f961443f92329",
+      "sourceTriangles": 4970,
+      "file": "shield_round/shield_round.glb",
+      "sha256": "513e434b0731d1e97f597b8afab552760ef9f5111ebe7c7ef77545e7378c4c4c",
+      "triangles": 3999,
+      "size": [
+        1.015,
+        0.912,
+        0.509
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px",
+      "files": {
+        "Viewer/Art/Objaverse/shield_round/shield_round.glb": "513e434b0731d1e97f597b8afab552760ef9f5111ebe7c7ef77545e7378c4c4c",
+        "Viewer/Art/Objaverse/shield_round/shield_round_Image_0.jpg": "2e6b207fc4ebdf6452bab0f7d3429cb3b965adab8c4cf0163e961407d1bef3cd",
+        "Viewer/Art/Objaverse/shield_round/shield_round_Image_1.jpg": "8a08d9ba3660c36492b81c616256a6aa54be21a5055f769ef0b444d2c0ab7b36",
+        "Viewer/Art/Objaverse/shield_round/shield_round_Image_2.jpg": "81cae311a991a10f9e957a359621b3a55b0835e7a9eced9a17c94f3e6ed331bd"
+      }
+    },
+    "shield_heater": {
+      "id": "shield_heater",
+      "title": "Wall Shield (Free)",
+      "uid": "b575f2bf5f9d469291b426a03b2e6aa5",
+      "page": "https://sketchfab.com/3d-models/b575f2bf5f9d469291b426a03b2e6aa5",
+      "author": "wolfgar74",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-024/b575f2bf5f9d469291b426a03b2e6aa5.glb",
+      "sourceSha256": "e0b43ebfd9387625bf06427c70cad4ddb715a809e5d46f213abef346efef6b8c",
+      "sourceTriangles": 484,
+      "file": "shield_heater/shield_heater.glb",
+      "sha256": "0094d9c77f935e7a9d37a17c3164922346f9c4f3640627e9bc8d750cea8e6198",
+      "triangles": 484,
+      "size": [
+        0.545,
+        0.955,
+        0.095
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px",
+      "files": {
+        "Viewer/Art/Objaverse/shield_heater/shield_heater.glb": "0094d9c77f935e7a9d37a17c3164922346f9c4f3640627e9bc8d750cea8e6198",
+        "Viewer/Art/Objaverse/shield_heater/shield_heater_Image_0.jpg": "a2b32c82a52bc63c1ff9f7f2610fabfa493f83c575c603846bf7aa4d6a9b834c",
+        "Viewer/Art/Objaverse/shield_heater/shield_heater_Image_1.jpg": "55dd06e6f699f076990bc7b59a6d67e5ec3d22f2cf6074fb0bbab9bff9bd6215",
+        "Viewer/Art/Objaverse/shield_heater/shield_heater_Image_2.jpg": "f78dc97d6ce7d3e9d09fff454a0cf34ba0339d6c7f646d526fb3a40d80b8663b"
+      }
+    }
+  },
+  "material_files": {
+    "Viewer/Art/MedievalKit/textures/Linen_Color.jpg": "3221cb1d07531f13238b2443be5843d1b788c462c8576e7ada755e496f93b149",
+    "Viewer/Art/MedievalKit/textures/Fabric045_2K-JPG_NormalGL.jpg": "bd977a2099dbe3f39037f35e52245f7b0f1d04d817e009da5ec172eb9b695c9d",
+    "work/human-wardrobe-2/materials/Leather001_1K-JPG_Color.jpg": "65e1a0fcc16cd9939881abe8e92cfd27114ef2f62ebfe09f66203a293c12be66",
+    "work/human-wardrobe-2/materials/Leather001_1K-JPG_NormalGL.jpg": "9db4139a524ea674cf5b8e73538c1d26ce7576be29600c1cbf44445076237afa"
+  },
+  "material_provenance": {
+    "Viewer/Art/MedievalKit/textures/Linen_Color.jpg": {
+      "sha256": "3221cb1d07531f13238b2443be5843d1b788c462c8576e7ada755e496f93b149",
+      "licence": "CC0-1.0; Viewer/Art/MedievalKit/NOTICE.md and CREDITS.md"
+    },
+    "Viewer/Art/MedievalKit/textures/Fabric045_2K-JPG_NormalGL.jpg": {
+      "sha256": "bd977a2099dbe3f39037f35e52245f7b0f1d04d817e009da5ec172eb9b695c9d",
+      "licence": "CC0-1.0; Viewer/Art/MedievalKit/NOTICE.md and CREDITS.md"
+    },
+    "work/human-wardrobe-2/materials/Leather001_1K-JPG_Color.jpg": {
+      "sha256": "65e1a0fcc16cd9939881abe8e92cfd27114ef2f62ebfe09f66203a293c12be66",
+      "licence": "CC0-1.0; ambientCG Leather001",
+      "source": "https://ambientcg.com/a/Leather001",
+      "archive_url": "https://ambientcg.com/get?file=Leather001_1K-JPG.zip",
+      "archive_sha256": "8d3ac9280bec6a1e1e5384b93e5130414a085033290dde305bacaddd0aa6b96a",
+      "archive_member": "Leather001_1K-JPG_Color.jpg"
+    },
+    "work/human-wardrobe-2/materials/Leather001_1K-JPG_NormalGL.jpg": {
+      "sha256": "9db4139a524ea674cf5b8e73538c1d26ce7576be29600c1cbf44445076237afa",
+      "licence": "CC0-1.0; ambientCG Leather001",
+      "source": "https://ambientcg.com/a/Leather001",
+      "archive_url": "https://ambientcg.com/get?file=Leather001_1K-JPG.zip",
+      "archive_sha256": "8d3ac9280bec6a1e1e5384b93e5130414a085033290dde305bacaddd0aa6b96a",
+      "archive_member": "Leather001_1K-JPG_NormalGL.jpg"
+    }
+  },
+  "foundation": {
+    "source": "https://github.com/kblood/CharacterCreator/tree/852e48f316b90a0937234886630e4fb4cdfd1f78",
+    "license": "CC0-1.0 for selected MakeHuman art; upstream code is not imported",
+    "source_recipe": "scripts/download-free-human.py; scripts/prepare-free-equipment.py; scripts/prepare-human-motion.py",
+    "files": {
+      "Viewer/local-art/free-equipment/equipment-base.glb": "b5134f97fd6a4179cd0d692e748f9b917c49656d05fe31dc0969f42846ae20a9",
+      "Viewer/local-art/free-equipment-female/equipment-base.glb": "951b8c1424714707b3178ca66a5b1f9e57f8c3e41f301c3a082cd312b861fc8c",
+      "Viewer/local-art/free-equipment/expansion/shirt.glb": "e01c11855961d30e398d3ff33a7935001578b2cbfa2c3bbb5f88ac66857f02e4",
+      "Viewer/local-art/free-equipment/expansion/doublet.glb": "14d979d0246840d640a38047740db997a223299da734bd7e0a0f6cfb51943662",
+      "Viewer/local-art/free-equipment/runtime/part-pants.glb": "f435c3298e2e95f66f33ca3bd94a6be1310a3306f8e01113c41d99c7e894c3b5",
+      "Viewer/local-art/free-equipment/runtime/part-tunic.glb": "1dbf4110c963156a4d6230e93c413934d7c586d579f6ba08b65db8edfa025a01",
+      "Viewer/local-art/free-equipment-female/expansion/shirt.glb": "18d75d7983a9d75973254a96eeece74244d933fee72649e55b7b3e3377c3de16",
+      "Viewer/local-art/free-equipment-female/expansion/doublet.glb": "2c2f6289aa8315f8cd6eabd0b9191cfe87ae2b944f1c347b363c8f6a96d0a821",
+      "Viewer/local-art/free-equipment-female/runtime/part-pants.glb": "b1bee60aa0dac272de53205048966b150fd41b544f1d1dd605088ebfe37dcc65",
+      "Viewer/local-art/free-equipment-female/runtime/part-tunic.glb": "235d2d9375d010a39ed29ca0660d2ae34851d5dc37fcafdf28d3985d2703ecf0",
+      "Viewer/local-art/free-equipment/runtime/part-boots.glb": "491f925477be2e9014b44615330bb0615953abfd1c04f15754c3b91a2ee01f35",
+      "Viewer/local-art/free-equipment-female/runtime/part-boots.glb": "0ed8a06a12ed8a15c0e2f9a695073426e9386dc5c290eb7c961502e91e71224d"
+    }
+  }
+}

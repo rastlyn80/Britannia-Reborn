@@ -1,5 +1,6 @@
 extends RefCounted
 ## First licensed human wardrobe. IDs are pinned ModernUO item graphics.
+const Coverage = preload("res://Presentation/HumanCoverageWardrobe.gd")
 const SLOTS := ["tunic","pants","boots","robe","hood"]
 const GRAPHICS := {
 	0x1fa1:1,0x1fa2:1,0x13bf:1,0x13c0:1,
@@ -38,7 +39,8 @@ const EXTRA := {
 }
 const HAIR := {0x203b:"short",0x203c:"long",0x203d:"ponytail",0x2045:"bob",0x2047:"afro"}
 const BEARDS := {0x203e:["long"],0x203f:["short"],0x2040:["goatee"],0x2041:["moustache"],0x204b:["short","moustache"],0x204c:["long","moustache"],0x204d:["goatee","moustache"]}
-static func mapped(id: int) -> bool: return GRAPHICS.has(id) or EXTRA.has(id) or HAIR.has(id) or BEARDS.has(id)
+static func mapped(id: int) -> bool: return GRAPHICS.has(id) or EXTRA.has(id) or HAIR.has(id) or BEARDS.has(id) or Coverage.ITEMS.has(id)
+static func extra(id: int) -> Array: return EXTRA.get(id,Coverage.ITEMS.get(id,[]))
 static func human(body: int) -> bool: return body in [0x190,0x191]
 static func female(body: int) -> bool: return body == 0x191
 static func resolve(worn: Array) -> Dictionary:
@@ -67,15 +69,21 @@ static func resolve(worn: Array) -> Dictionary:
 		bits |= mask
 		for i in SLOTS.size():
 			if mask & (1<<i): hues[SLOTS[i]] = int(item.get("hue",0))
-		if EXTRA.has(id):
-			var extra: Array = EXTRA[id]
+		if not extra(id).is_empty():
+			var extra: Array = extra(id)
 			pieces[str(extra[0])] = {"asset":str(extra[1]),"hue":int(item.get("hue",0)),"id":id}
-		if mask == 0 and not EXTRA.has(id) and layer not in [0,11,16,18,21,25,26,27]:
+		if mask == 0 and extra(id).is_empty() and layer not in [0,11,16,18,21,25,26,27]:
 			unsupported.append(id)
 	# Outer robe obscures the shirt, while trousers/boots can show at its opening.
 	if bits & 8: bits &= ~1
 	if bits & 8:
 		pieces.erase("outer_legs");pieces.erase("shirt");pieces.erase("doublet")
+	if bits & 8:
+		for slot in ["torso","arms"]:pieces.erase(slot)
+	if pieces.has("torso"):
+		bits &= ~1
+		pieces.erase("shirt");pieces.erase("doublet")
+	if pieces.has("legs"):bits &= ~2
 	if bits & 1:pieces.erase("shirt");pieces.erase("doublet")
 	if pieces.has("feet"):bits &= ~4
 	if pieces.has("head"): bits &= ~16

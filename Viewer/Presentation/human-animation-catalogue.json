@@ -1,5 +1,5 @@
 {
-  "scope": "Classic human player/NPC action groups only; no monster or animal action tables. Mounted rider groups are catalogued but deferred. Not every new-format animation sequence is equivalent to a classic group.",
+  "scope": "35 classic human player/NPC action categories: all have prepared human replacement clips; 28 on-foot categories are connected. Seven rider clips are opt-in previews. Mounted playback, horse art and mounting gameplay remain deferred; extended mode/variation fidelity is a separate worklist.",
   "reference": {
     "repository": "https://github.com/ClassicUO/ClassicUO",
     "revision": "ee79d7ebc1cc0e53ff84fe6cae17d389e2737f93",
@@ -195,56 +195,56 @@
       "id": 23,
       "native_group": "OnmountRideSlow",
       "label": "Onmount Ride Slow",
-      "quality": "deferred mounted rider",
-      "note": "Mounted human group catalogued; mount/rider presentation deferred",
+      "quality": "human rider pose category",
+      "note": "Prepared human rider clip for explicit preview only. Disabled in live playback until horse/saddle integration; mounted gameplay remains deferred.",
       "priority": 3
     },
     {
       "id": 24,
       "native_group": "OnmountRideFast",
       "label": "Onmount Ride Fast",
-      "quality": "deferred mounted rider",
-      "note": "Mounted human group catalogued; mount/rider presentation deferred",
+      "quality": "human rider pose category",
+      "note": "Prepared human rider clip for explicit preview only. Disabled in live playback until horse/saddle integration; mounted gameplay remains deferred.",
       "priority": 3
     },
     {
       "id": 25,
       "native_group": "OnmountStand",
       "label": "Onmount Stand",
-      "quality": "deferred mounted rider",
-      "note": "Mounted human group catalogued; mount/rider presentation deferred",
+      "quality": "human rider pose category",
+      "note": "Prepared human rider clip for explicit preview only. Disabled in live playback until horse/saddle integration; mounted gameplay remains deferred.",
       "priority": 3
     },
     {
       "id": 26,
       "native_group": "OnmountAttack",
       "label": "Onmount Attack",
-      "quality": "deferred mounted rider",
-      "note": "Mounted human group catalogued; mount/rider presentation deferred",
+      "quality": "human rider pose category",
+      "note": "Prepared human rider clip for explicit preview only. Disabled in live playback until horse/saddle integration; mounted gameplay remains deferred.",
       "priority": 3
     },
     {
       "id": 27,
       "native_group": "OnmountAttackBow",
       "label": "Onmount Attack Bow",
-      "quality": "deferred mounted rider",
-      "note": "Mounted human group catalogued; mount/rider presentation deferred",
+      "quality": "human rider pose category",
+      "note": "Prepared human rider clip for explicit preview only. Disabled in live playback until horse/saddle integration; mounted gameplay remains deferred.",
       "priority": 3
     },
     {
       "id": 28,
       "native_group": "OnmountAttackCrossbow",
       "label": "Onmount Attack Crossbow",
-      "quality": "deferred mounted rider",
-      "note": "Mounted human group catalogued; mount/rider presentation deferred",
+      "quality": "human rider pose category",
+      "note": "Prepared human rider clip for explicit preview only. Disabled in live playback until horse/saddle integration; mounted gameplay remains deferred.",
       "priority": 3
     },
     {
       "id": 29,
       "native_group": "OnmountSlapHorse",
       "label": "Onmount Slap Horse",
-      "quality": "deferred mounted rider",
-      "note": "Mounted human group catalogued; mount/rider presentation deferred",
+      "quality": "human rider pose category",
+      "note": "Prepared human rider clip for explicit preview only. Disabled in live playback until horse/saddle integration; mounted gameplay remains deferred.",
       "priority": 3
     },
     {
