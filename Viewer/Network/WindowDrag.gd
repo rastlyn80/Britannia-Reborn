@@ -3,6 +3,8 @@ var target: Control
 var dragging := false
 func _gui_input(event: InputEvent) -> void:
  if event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT:
+  # Releasing remembers the place when the window has an id (Movable.gd).
+  if dragging and not event.pressed and target: preload("res://Network/Movable.gd").remember(target)
   dragging = event.pressed
   accept_event()
  elif event is InputEventMouseMotion and dragging:

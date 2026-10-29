@@ -277,6 +277,9 @@ func _place() -> void:
  var screen := get_viewport().get_visible_rect().size
  if int(data.get("x",0)) <= 120 and int(data.get("y",0)) <= 120:
   position = ((screen-content_bounds.size)/2.0-content_bounds.position).round()
+ # A gump of this kind opens where you last dragged it.
+ set_meta("movable_id","gump:%d" % int(data.get("type",0)))
+ if preload("res://Network/Movable.gd").has_place(str(get_meta("movable_id"))): position = preload("res://Network/Movable.gd").place(str(get_meta("movable_id")),position)
  position = position.clamp(-content_bounds.position,screen-content_bounds.end.min(screen))
 
 func _unhandled_key_input(event: InputEvent) -> void:

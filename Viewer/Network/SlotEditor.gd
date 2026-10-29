@@ -25,6 +25,7 @@ var key_button := Button.new()
 var carried_items := []
 
 func _ready() -> void:
+	preload("res://Network/Movable.gd").attach(self,"sloteditor")
 	theme = Look.theme()
 	add_theme_stylebox_override("panel",Look.box(Color(0.055,0.063,0.078,0.97),Look.BRASS,14,1,18))
 	custom_minimum_size = Vector2(760,0)
@@ -137,7 +138,9 @@ func open(quickbar: Node, at_row: int, at_layer: String, at_index: int) -> void:
 	_list_steps(0)
 	show()
 	reset_size()
-	(func(): position = (get_viewport_rect().size-size)/2.0).call_deferred()
+	(func():
+		position = preload("res://Network/Movable.gd").place("sloteditor",(get_viewport_rect().size-size)/2.0)
+		preload("res://Network/Movable.gd").keep_on_screen(self)).call_deferred()
 
 func _carried() -> Array:
 	var seen := {}

@@ -20,6 +20,8 @@ func _ready() -> void:
 		if event is InputEventMouseButton and event.pressed: close())
 	add_child(dim)
 	card = PanelContainer.new()
+	# Settings and the rest of the menu: drag it anywhere by its background.
+	preload("res://Network/Movable.gd").attach(card,"gamemenu")
 	card.add_theme_stylebox_override("panel",Look.box(Color(0.055,0.063,0.078,0.97),Color(0.84,0.7,0.43,0.45),16,1,22))
 	card.custom_minimum_size = Vector2(440,0)
 	add_child(card)
@@ -56,7 +58,8 @@ func _reset(title: String) -> void:
 	body.add_child(head)
 	(func():
 		card.reset_size()
-		card.position = (size-card.size)/2).call_deferred()
+		card.position = preload("res://Network/Movable.gd").place("gamemenu",(size-card.size)/2)
+		preload("res://Network/Movable.gd").keep_on_screen(card)).call_deferred()
 
 func _row(text: String, hint: String, action: Callable, primary := false) -> Button:
 	var button := Button.new()

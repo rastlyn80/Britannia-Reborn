@@ -1,11 +1,13 @@
 extends Control
-# One quickbar slot: icon (native item art for items, line icons otherwise),
+# One quickbar slot: icon (the item's 3D icon for items and potions, as in the
+# backpack, classic art while it renders; line icons otherwise),
 # its key in the corner, what is left in your pack, and a red frame with the
 # reason on hover when it cannot be used. Click to use, right-click to edit,
 # drag to move; items, skills and spells dropped on it fill it.
 const Look = preload("res://Network/ModernSkin.gd")
 const Catalog = preload("res://Network/ActionCatalog.gd")
 const Artwork = preload("res://Network/Artwork.gd")
+const Studio = preload("res://Presentation/ItemStudio.gd")
 const AIMS := {"cursor":"","self":"on yourself","last":"on your last target","hover":"on what is under the mouse"}
 var bar: Node
 var row := 0
@@ -27,6 +29,10 @@ const SHORT_KEYS := {"Minus":"−","Equal":"=","BracketLeft":"[","BracketRight":
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	focus_mode = Control.FOCUS_NONE
+	# The 3D icon replaces the classic art as soon as it is photographed.
+	if Studio.instance: Studio.instance.icon_ready.connect(func(graphic: int, hue: int, _texture: Texture2D):
+		var shown := item_graphic()
+		if shown.x == graphic and shown.y == hue: show_slot(data,key,layer))
 
 func steps() -> Array:
 	return data.get("steps",[])
@@ -44,8 +50,10 @@ func show_slot(value: Dictionary, bound_key: String, shown_layer: String) -> voi
 	if not steps().is_empty():
 		var first: Dictionary = steps()[0]
 		cool_kind = Cooldowns.kind_of(first)
-		if str(first.get("action","")) in ["Use Item Type","Use Item"] and Artwork.item(int(first.get("graphic",0)),int(first.get("hue",0))):
-			picture = Artwork.item(int(first.get("graphic",0)),int(first.get("hue",0)))
+		var item := item_graphic()
+		var art: Texture2D = (Studio.lookup(item.x,item.y) if Studio.instance else null) if item.x > 0 else null
+		if art == null and item.x > 0: art = Artwork.item(item.x,item.y)
+		if art: picture = art
 		else:
 			picture = Look.icon(str(data.get("icon",Catalog.icon_for(first))),_ink(first),30)
 		if bar and bar.runner:
@@ -56,6 +64,15 @@ func show_slot(value: Dictionary, bound_key: String, shown_layer: String) -> voi
 			active = bool(state.get("active",false))
 	tooltip_text = _describe()
 	queue_redraw()
+
+# The item a slot uses, as (graphic, hue): items and potions; zero otherwise.
+func item_graphic() -> Vector2i:
+	if steps().is_empty(): return Vector2i.ZERO
+	var first: Dictionary = steps()[0]
+	match str(first.get("action","")):
+		"Use Item Type", "Use Item": return Vector2i(int(first.get("graphic",0)),int(first.get("hue",0)))
+		"Use Potion": return Vector2i(int(Catalog.POTIONS.get(str(first.get("option","")),0)),0)
+	return Vector2i.ZERO
 
 func _ink(first: Dictionary) -> Color:
 	match Catalog.icon_for(first):

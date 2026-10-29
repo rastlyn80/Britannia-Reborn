@@ -27,6 +27,8 @@ func _ready() -> void:
 	body.add_theme_constant_override("separation",10)
 	card.add_child(body)
 	card.hide()
+	# Drag the card by its background; it reopens where it was left.
+	preload("res://Network/Movable.gd").attach(card,"dialog")
 
 func configure(game: Node) -> void:
 	session = game
@@ -68,7 +70,8 @@ func _next() -> void:
 	card.show()
 	(func():
 		card.reset_size()
-		card.position = ((size-card.size)/2.0).round()).call_deferred()
+		card.position = preload("res://Network/Movable.gd").place("dialog",((size-card.size)/2.0).round())
+		preload("res://Network/Movable.gd").keep_on_screen(card)).call_deferred()
 
 func _close() -> void:
 	current = {}

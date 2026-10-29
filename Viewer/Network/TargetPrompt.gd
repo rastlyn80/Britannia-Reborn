@@ -14,6 +14,12 @@ func _ready() -> void:
 	grow_horizontal = Control.GROW_DIRECTION_BOTH
 	grow_vertical = Control.GROW_DIRECTION_BEGIN
 	offset_bottom = -196
+	preload("res://Network/Movable.gd").attach(self,"targetprompt")
+	if preload("res://Network/Movable.gd").has_place("targetprompt"):
+		set_anchors_preset(Control.PRESET_TOP_LEFT)
+		grow_horizontal = Control.GROW_DIRECTION_END
+		grow_vertical = Control.GROW_DIRECTION_END
+		position = preload("res://Network/Movable.gd").place("targetprompt",position)
 	add_theme_stylebox_override("panel",Look.box(Color(0.055,0.063,0.078,0.95),Look.BRASS,22,1,6))
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation",10)

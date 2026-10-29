@@ -37,7 +37,8 @@ func _ready() -> void:
 	theme = UiLook.theme()
 	size = SIZE
 	custom_minimum_size = SIZE
-	position = Vector2(300,36)
+	set_meta("movable_id","charactersheet")
+	position = preload("res://Network/Movable.gd").place("charactersheet",Vector2(300,36))
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	var back := UiLook.background()
 	back.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
