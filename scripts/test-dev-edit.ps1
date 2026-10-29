@@ -19,6 +19,11 @@ if (!$VerifyMarker) {
  if ($LASTEXITCODE) { throw 'Developer edit session tests failed' }
  & $godot --headless --path "$root/Viewer" --script res://DevEdit/DevEditTests.gd
  if ($LASTEXITCODE) { throw 'Developer edit client tests failed' }
+ # Committed overrides through the real converter (owned data; about a minute).
+ if (Test-Path "$root/outputs/britain/atlas.json") {
+  & $godot --headless --path "$root/Viewer" --script res://DevEdit/DevEditCommitTests.gd -- --classic-britain
+  if ($LASTEXITCODE) { throw 'Committed override converter tests failed' }
+ }
  if ($Gpu) {
   & $godot --path "$root/Viewer" --script res://DevEdit/DevEditTests.gd
   if ($LASTEXITCODE) { throw 'Developer edit GPU tests failed' }

@@ -10,6 +10,7 @@ const State = preload("res://DevEdit/DevEditState.gd")
 const Overlay = preload("res://DevEdit/DevEditOverlay.gd")
 const Commands = preload("res://DevEdit/DevEditCommands.gd")
 const Intent = preload("res://DevEdit/DevEditIntent.gd")
+const Overrides = preload("res://Presentation/ManualOverrides.gd")
 const Modern = preload("res://Network/ModernSkin.gd")
 var world: Node3D
 var game: Node
@@ -57,6 +58,15 @@ var claude_button: Button
 var review_button: Button
 var speak_box: CheckBox
 var spoken: Dictionary = {}
+# Commit: session edits folded into the converter's committed overrides and
+# rebaked in the background; then cleared from the live session.
+var commit_button: Button
+var bake_pid := 0
+var bake_started := 0
+var committing: Dictionary = {}
+var commit_digest := ""
+var follow_cursor := true
+var next_cursor := 0
 
 func configure(owner_world: Node3D) -> void:
 	world = owner_world
@@ -121,11 +131,25 @@ func click(screen: Vector2) -> void:
 		"place":
 			if hit.has("ground"):
 				var g: Vector3 = hit.ground
+				follow_cursor = false
 				_set_draft("n","a:%d:%s:%s:%d:0" % [current_asset(),State.number(g.x-0.5),State.number(g.y-0.5),int(g.z)])
 		"terrain":
 			if hit.has("ground"):
 				var g: Vector3 = hit.ground
 				_set_draft("b:%d:%d:%d:%d:%s" % [roundi(g.x),roundi(g.y),int(radius_box.value),int(delta_box.value),surface()],"")
+
+# Place tool: the chosen asset follows the cursor until a click fixes it.
+func _process(_delta: float) -> void:
+	if bake_pid > 0: _poll_bake()
+	if not active or tool != "place" or not follow_cursor or Input.mouse_mode != Input.MOUSE_MODE_VISIBLE: return
+	if Time.get_ticks_msec() < next_cursor or panel.get_global_rect().has_point(panel.get_viewport().get_mouse_position()): return
+	next_cursor = Time.get_ticks_msec()+100
+	var hit: Dictionary = overlay.pick(world.camera,panel.get_viewport().get_mouse_position())
+	if hit.has("ground"):
+		var g: Vector3 = hit.ground
+		draft_target = "n"
+		draft_state = "a:%d:%s:%s:%d:0" % [current_asset(),State.number(g.x-0.5),State.number(g.y-0.5),int(g.z)]
+		overlay.set_draft(draft_target,draft_state,"%s — click to place here" % str(assets[asset_picker.selected].label) if asset_picker.selected >= 0 else "")
 
 func select(target: String, record: Dictionary) -> void:
 	if reserved != "" and reserved != target:
@@ -219,6 +243,12 @@ func submit_request(text: String) -> void:
 	text = text.strip_edges()
 	if text.is_empty(): return
 	var understood: Dictionary = intent.interpret(text,context())
+	if understood.get("commit",false):
+		review_commit()
+		return
+	if understood.has("rule"):
+		review_rule(understood.rule,text)
+		return
 	if not understood.understood:
 		pending.clear()
 		plan_label.text = "Not understood here (%s). Ask Claude to handle: \"%s\"" % [understood.reason,text]
@@ -262,7 +292,94 @@ func review(lines: Array, ask_id: int, summary := "") -> void:
 	plan_label.text = text
 	refresh()
 
+# ---- Commit: make the session's edits part of the converted world ----
+
+func session_edits() -> Dictionary:
+	var edits := {}
+	for target in state.targets:
+		if state.state_of(target) != "": edits[target] = {"state":state.state_of(target),"author":state.author_of(target),"rev":state.revision_of(target)}
+	return edits
+
+func review_commit() -> void:
+	cancel()
+	var edits := session_edits()
+	if edits.is_empty():
+		plan_label.text = "Nothing to commit: the session has no edits."
+		return
+	var counts := {"s":0,"p":0,"t":0}
+	var districts := {}
+	for target in edits:
+		counts[target[0]] = int(counts.get(target[0],0))+1
+		var f: PackedStringArray = target.split(":")
+		if target.begins_with("p:"):
+			var p := State.placement(edits[target].state)
+			districts[Vector2i(floori(p.x/64)*64,floori(p.y/64)*64)] = true
+		else: districts[Vector2i(floori(float(f[1])/64)*64,floori(float(f[2])/64)*64)] = true
+	pending = [{"ok":true,"kind":"commit","targets":edits.keys(),"description":"commit","line":"commit"}]
+	pending_ask = 0
+	overlay.highlight(edits.keys().filter(func(t: String): return not t.begins_with("t:")),Color("7ee08a"))
+	plan_label.text = "Commit %d static edit(s), %d placed object(s), %d terrain sample(s) by %s into the converted world.\nScope: about %d district(s) rebake in the background (%s); every connected client reloads them without restarting, then these edits leave the live session.\nCommitted edits stay visual: collision and movement keep what ModernUO has. Stored locally in %s (not published).\nPress Accept to commit." % [counts.s,counts.p,counts.t,", ".join(edits.values().map(func(e: Dictionary): return e.author).reduce(func(a: Array, b: String): return a if b in a else a+[b],[])),districts.size(),", ".join(districts.keys().map(func(d: Vector2i): return "%d,%d" % [d.x,d.y])),Overrides.committed_path(world.city_stream.dataset())]
+	refresh()
+
+func review_rule(rule: Dictionary, text: String) -> void:
+	cancel()
+	var shown := 0
+	var parsed := preload("res://DevEdit/DevEditQuery.gd").parse(str(rule.rule)+";rect=%d,%d,%d,%d" % [int(game.player.x)-32,int(game.player.y)-32,int(game.player.x)+32,int(game.player.y)+32])
+	if not parsed.has("error"):
+		var found := preload("res://DevEdit/DevEditQuery.gd").evaluate(parsed,overlay.records_in(parsed.area),state)
+		shown = found.targets.size()
+		overlay.highlight(found.targets,Color("7ee08a"))
+	pending = [{"ok":true,"kind":"rule","rule":rule,"text":text,"targets":[],"description":"rule","line":"rule"}]
+	pending_ask = 0
+	plan_label.text = "Persistent rule: %s → %s, applied on every bake of the whole dataset (not just here).\n%d matching object(s) highlighted within 32 tiles. Joined architecture is never changed by rules.\nPress Accept to store the rule and rebake." % [rule.rule,rule.action,shown]
+	refresh()
+
+func start_bake(new_rules: Array) -> void:
+	var dataset: String = world.city_stream.dataset()
+	committing = session_edits() if new_rules.is_empty() else {}
+	var counts := Overrides.commit(dataset,committing,new_rules,state.me)
+	var merged := Overrides.new()
+	merged.load_from(dataset)
+	commit_digest = merged.digest()
+	var args := ["--headless","--path",ProjectSettings.globalize_path("res://"),"--script","res://Presentation/BakeStreaming.gd","--","--dataset="+dataset,"--modern-britain" if preload("res://Presentation/GraphicsMode.gd").modern() else "--classic-britain"]
+	bake_pid = OS.create_process(OS.get_executable_path(),args)
+	bake_started = Time.get_ticks_msec()
+	note("Committed %s; rebaking affected districts (process %d)…" % [JSON.stringify(counts),bake_pid] if bake_pid > 0 else "Could not start the bake process.")
+	plan_label.text = "Committing… the affected districts are rebaking in the background. Keep editing; the world reloads when it is done."
+	refresh()
+
+func _poll_bake() -> void:
+	if Time.get_ticks_msec()-bake_started < 1000 or OS.is_process_running(bake_pid): return
+	bake_pid = 0
+	var index: Variant = JSON.parse_string(FileAccess.get_file_as_string(world.city_stream.folder.path_join("index.json"))) if FileAccess.file_exists(world.city_stream.folder.path_join("index.json")) else null
+	var seconds := (Time.get_ticks_msec()-bake_started)/1000.0
+	if not index is Dictionary or str(index.get("overrides","")) != commit_digest:
+		note("Commit bake did not finish (%.0f s); the session keeps its edits. See the bake log." % seconds)
+		plan_label.text = "Commit bake failed; nothing was removed from the session."
+		return
+	note("Commit baked in %.0f s; districts reload now." % seconds)
+	# Clear exactly what was committed, if nobody changed it meanwhile.
+	var items: Array = []
+	var skipped := 0
+	for target in committing:
+		if state.revision_of(target) == int(committing[target].rev): items.append([target,""])
+		else: skipped += 1
+	for start in range(0,items.size(),256):
+		state.batch("commit",items.slice(start,start+256),"commit %d edit(s) into the world" % items.size(),sender())
+	plan_label.text = "Committed. %d edit(s) are now part of the converted world%s." % [items.size(),"; %d changed during the bake stay in the session" % skipped if skipped > 0 else ""]
+	committing.clear()
+	refresh()
+
 func apply_pending() -> void:
+	if pending.size() == 1 and pending[0].kind in ["commit","rule"]:
+		var p: Dictionary = pending[0]
+		pending.clear()
+		overlay.highlight(commands.selection)
+		if bake_pid > 0:
+			note("A commit is already baking; try again when it finishes.")
+			return
+		start_bake([] if p.kind == "commit" else [{"rule":p.rule.rule,"action":p.rule.action,"author":state.me,"text":p.text}])
+		return
 	var sent := 0
 	for p in pending:
 		var id: int = commands.send(p)
@@ -321,6 +438,7 @@ func preview() -> void:
 	note("Shared preview of %s" % draft_target)
 
 func accept() -> void:
+	follow_cursor = true
 	if not pending.is_empty():
 		apply_pending()
 		state.clear_preview(sender())
@@ -343,6 +461,7 @@ func accept() -> void:
 	refresh()
 
 func cancel() -> void:
+	follow_cursor = true
 	if not pending.is_empty():
 		if pending_ask > 0: state.resolve(pending_ask,"declined",sender())
 		pending.clear()
@@ -535,6 +654,9 @@ func _build() -> void:
 	asset_picker = OptionButton.new()
 	asset_picker.tooltip_text = "Approved decorative assets (DevEdit/approved-assets.json)"
 	for asset in assets: asset_picker.add_item("%s (%d)" % [asset.label,int(asset.id)])
+	# Choosing an asset previews it: on the cursor (Place) or as the selection's replacement.
+	asset_picker.item_selected.connect(func(_i: int):
+		if tool == "select" and editable(): replace())
 	column.add_child(asset_picker)
 	terrain_box = VBoxContainer.new()
 	column.add_child(terrain_box)
@@ -560,6 +682,7 @@ func _build() -> void:
 	_button("Save set","Write a deterministic edit set on the server (Server/runtime/DevEdit/sets)",func():
 		if DevEditSessionName.valid(set_name.text): state.save(set_name.text,sender())
 		else: note("Edit set names use a-z, 0-9 and '-'."),sets)
+	commit_button = _button("Commit","Make the session's edits part of the converted world: shows the scope first, then rebakes only the affected districts",review_commit,sets)
 	_button("Load","Apply a saved edit set as one undoable operation",func():
 		if DevEditSessionName.valid(set_name.text): state.load_set(set_name.text,sender()),sets)
 	column.add_child(Modern.label("Conversation",14,Modern.IVORY,700))

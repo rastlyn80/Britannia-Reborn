@@ -186,14 +186,14 @@ func _commit(seq: int, op: Dictionary) -> void:
 func latest_edit() -> int:
 	var latest := 0
 	for seq in history:
-		if history[seq].author == me and not history[seq].action in ["undo","redo"]: latest = maxi(latest,seq)
+		if history[seq].author == me and not history[seq].action in ["undo","redo","commit"]: latest = maxi(latest,seq)
 	return latest
 
 func undo_candidate() -> int:
 	var best := 0
 	for seq in history:
 		var h: Dictionary = history[seq]
-		if h.author == me and h.action != "undo" and int(h.reverted_by) == 0: best = maxi(best,seq)
+		if h.author == me and not h.action in ["undo","commit"] and int(h.reverted_by) == 0: best = maxi(best,seq)
 	return best
 
 func redo_candidate() -> int:

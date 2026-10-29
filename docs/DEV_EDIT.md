@@ -61,6 +61,45 @@ Making any of these authoritative needs a ModernUO-side map/statics change: eith
 
 Evidence: server 64/64 (batches atomic/stale/duplicate/one-undo; conversation parts, answers, proposals, asker-only resolution); client 67/67 (24 new: interpreter phrasings and refusals, bounded/malformed rules, skip reporting, batch encoding within the speech limit, selection shift/rotate, multi-part asks, proposal assembly); live two-client 40/40 (a three-object group moved in one revision and undone in one step for both clients; the assistant role received a request, answered, proposed two commands; the asker dry-ran and applied them as its own edits and closed the request). Real bridge run: a developer client asked "make the corner by the inn at 1606 1588 look festive with flowers"; the offline interpreter declined it; Claude, watching the bridge in this session, inspected the spot, answered and proposed four placements with scope; the asker received the proposal after reconnecting and declined the demo.
 
+## Commit, persistent rules and live reload — 29 October 2026
+
+Owner request: preview statics before placing them, commit static and terrain work whenever needed, and state *future* rules by voice ("make sure all roofs are always attached to the walls") so they take effect in the world.
+
+- **Previews.** In the Place tool the chosen asset follows the cursor as a translucent preview until a click fixes it; choosing a different asset while a static is selected previews it as the replacement in place. Shared previews (Preview button) remain separate from accepted edits.
+- **Commit** (panel button, or saying "commit", "make this permanent", "bake it into the world"). The plan shows how many statics, placed objects and terrain samples will be committed, by whom, and which districts rebake. Accept does three things:
+  1. It folds the session into `outputs/<region>/overrides/committed.overrides.json` (`Presentation/ManualOverrides.gd`): absolute states for statics/placed objects, while terrain deltas add to previously committed heights. A timestamped copy goes to `history/`.
+  2. It starts `BakeStreaming.gd` in a background process. Each district's stamp now includes a digest of the overrides that touch it, so only those districts rebake.
+  3. When the new index is published, every running client on that machine reloads the changed districts in place (`LiveDistricts.check_index`). The old district stays visible, with its collision, until the replacement is fully installed. The committing client then clears exactly the committed targets from the live session in a `commit` batch; targets someone changed during the bake stay in the session.
+- **What the converter does with committed edits** (`RegionalContext.apply_overrides`/`build_chunk`, `TerrainSurface`):
+  - Hidden and moved statics still contribute their original collision but are not rendered (moved ones render at the new place, keeping their identity so they remain live-editable).
+  - Placed objects render without collision.
+  - Terrain renders committed heights and paint, while its collision is built from source heights.
+  - Collision is therefore identical to the uncommitted bake, consistent with ModernUO.
+- **Persistent rules.** "Never show weeds", "always hide the mushrooms around here", "from now on replace weeds with grasses" become bake rules (`rules` in the committed file). They apply to every matching non-architectural static in the dataset on every bake, including districts rebaked later. They are shown with their current nearby matches before Accept.
+- **Behaviour rules.** "Make sure all the roofs are always attached to the walls" is not data: it is how reconstruction builds roofs. The interpreter says so and offers **Ask Claude**. Through the bridge, Claude Code receives the sentence, changes and tests the reconstruction code, and rebakes; the clients reload the result. Expect minutes, not seconds, and review the code change before it is pushed.
+- **Revert.** `scripts/revert-commits.ps1` removes the committed overrides (kept in history), or `-To <history file>` restores an earlier commit, then rebakes the affected districts. `-List` shows the history.
+- **Files held by running clients.** If Windows refuses to replace a district file because a client has it open, the bake installs it under a versioned name recorded in the index (`files`), and clients follow the index.
+- **Privacy.** Committed overrides and their history live with the dataset under `outputs/` (ignored). Only code, tests and docs go to Git. Publishing committed edits needs the owner's decision (they contain exact source coordinates and graphic ids); `res://DevEdit/overrides/` is read by the bake if they are ever published.
+
+### Commit evidence (29 October 2026, same machine)
+
+- Converter tests on real Britain data (`DevEditCommitTests.gd`, 15/15). Building one district with and without overrides gives identical collision (594,309 triangles). Hidden statics and a hidden tree are not rendered, and the tree keeps its trunk collision. The moved static keeps its identity, the placed object renders without collision, and rendered terrain rises by the committed 10 Z. Terrain deltas accumulate across commits; rules match by name and rectangle.
+- End to end with two graphical clients (`DevEditCommitVisual.gd`). A placed a basket, hid a baked plant and brushed 29 terrain samples, then committed. The scope showed 1 static, 1 placed object, 29 samples and 2 districts.
+
+  | | |
+  |---|---:|
+  | Background bake (planning ~45 s + 2 districts) | 75 s |
+  | Commit to both clients reloaded | 85 s |
+  | Districts reloaded per client | 2 of 9 |
+  | Worst frame during the bake / during the reload (A) | 146 / 144 ms |
+  | Worst frame during the reload (B) | 123 ms |
+  | Session edits after the commit | 0 of 31 (all committed) |
+
+  The baked world looked identical to the edited one before the commit: no flicker, no double application. The commit could not be undone from the session; the server and client both refuse it, because an undo would re-apply the edits on top of the baked result.
+- An earlier run reloaded with `CACHE_MODE_REPLACE` and stalled 2–3 s: Godot rewrote the meshes the old district was still showing. Loading fresh copies (`CACHE_MODE_IGNORE`) fixed it.
+- Revert: commit → 1 district rebuilt; `revert-commits.ps1 -Classic` → the same district rebuilt; the next bake reported `current`. The versioned-file fallback was not triggered on this machine (Godot did not hold district files open), so it is implemented but not yet exercised.
+- A one-time full rebake (88 districts, about 7 minutes) follows these code changes in each graphics mode. Later commits rebuild only the touched districts.
+
 ## Launch: shared session with two clients
 
 1. Once: `./scripts/build-preview-tools.ps1` (installs the extension and approved-asset list), then `./scripts/configure-dev-edit.ps1`. This authorizes exactly the two local development accounts; pass `-Accounts a,b` to choose others; `-Disable` turns the session off. Restart the server gracefully (save, shutdown, `Start-Server.cmd`).

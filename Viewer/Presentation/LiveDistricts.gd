@@ -42,6 +42,15 @@ var events: Array=[]
 signal district_installed(at: Vector2i, node: Node3D)
 signal district_retired(at: Vector2i)
 var source_maps: Dictionary = {}
+# Live reload after a rebake (developer Commit): per-district stamps from the
+# index; changed districts are reloaded while the old ones stay visible.
+signal districts_reloading(count: int)
+var stamps: Dictionary = {}
+var files: Dictionary = {}
+var reloading: Dictionary = {}
+var index_time := 0
+var next_index_check := 0
+var reloads := 0
 
 func note(event: String) -> void:
  if events.size()<4096:events.append({"frame":Engine.get_process_frames(),"event":event})
@@ -86,6 +95,9 @@ func prepare(owner_scene: Node3D) -> bool:
  var index: Variant=JSON.parse_string(FileAccess.get_file_as_string(path))
  if not index is Dictionary or int(index.get("schema",0))!=1:return false
  folder=path.get_base_dir()
+ stamps=index.get("stamps",{})
+ files=index.get("files",{})
+ index_time=FileAccess.get_modified_time(path)
  bounds=Rect2i(index.originX,index.originY,index.width,index.height)
  for pair in index.chunks:known[Vector2i(int(pair[0]),int(pair[1]))]=true
  for pair in index.macros:macro_known[Vector2i(int(pair[0]),int(pair[1]))]=true
@@ -104,7 +116,35 @@ func destination_ready(cell: Vector2i) -> bool:
  return bounds.has_point(cell) and loaded.has(owner(cell))
 
 func path_for(kind: String, at: Vector2i) -> String:
- return folder.path_join("%s_%d_%d.res" % [kind,at.x,at.y])
+ var name:="%s_%d_%d.res" % [kind,at.x,at.y]
+ return folder.path_join(str(files.get(name,name)))
+
+# The dataset this cache was baked from (overrides live beside it).
+func dataset() -> String:
+ return folder.get_base_dir()
+
+func check_index() -> void:
+ var path:=folder.path_join("index.json")
+ if not FileAccess.file_exists(path):return
+ var modified:=FileAccess.get_modified_time(path)
+ if modified==index_time:return
+ var index: Variant=JSON.parse_string(FileAccess.get_file_as_string(path))
+ if not index is Dictionary or int(index.get("schema",0))!=1:return
+ index_time=modified
+ var fresh: Dictionary=index.get("stamps",{})
+ files=index.get("files",{})
+ var changed:=0
+ for at in loaded.keys()+far_nodes.keys():
+  var tag:="%d_%d" % [at.x,at.y]
+  if str(fresh.get(tag,""))==str(stamps.get(tag,"")):continue
+  changed+=1
+  if loaded.has(at):reloading[at]=true
+  elif far_nodes.has(at):
+   retire(far_nodes[at]);far_nodes.erase(at)
+ stamps=fresh
+ if changed>0:
+  note("reload %d" % changed)
+  districts_reloading.emit(changed)
 
 func follow(cell: Vector2i) -> void:
  requested=cell
@@ -130,6 +170,7 @@ func select_window() -> void:
  for at in loaded.keys():
   if not near_wanted.has(at):
    district_retired.emit(at)
+   reloading.erase(at)
    retire(loaded[at])
    loaded.erase(at)
    sources.erase(at)
@@ -164,7 +205,7 @@ func settled() -> bool:
 
 func resident(record: Dictionary) -> bool:
  match record.kind:
-  "near":return loaded.has(record.at)
+  "near":return loaded.has(record.at) and not reloading.has(record.at)
   "far":return far_nodes.has(record.at)
   "macro":return macro_nodes.has(record.at)
  return false
@@ -181,6 +222,9 @@ func error(message: String) -> void:
 
 func _process(_delta: float) -> void:
  if folder.is_empty() or not failed.is_empty():return
+ if Time.get_ticks_msec()>=next_index_check:
+  next_index_check=Time.get_ticks_msec()+2000
+  check_index()
  var start:=Time.get_ticks_usec()
  while not retiring.is_empty():
   var old: Node3D=retiring[0]
@@ -208,6 +252,8 @@ func _process(_delta: float) -> void:
     record.next_child=0
     var root_start:=Time.get_ticks_usec()
     record.node=record.resource.root_scene.instantiate()
+    # A reloading district stays hidden until complete; the old one remains.
+    if record.kind=="near" and reloading.has(record.at):record.node.hide()
     if record.kind=="near":add_child(record.node)
     else:horizon.add_child(record.node)
     measure("root-"+str(record.kind),root_start)
@@ -222,7 +268,7 @@ func _process(_delta: float) -> void:
     var tree_start:=Time.get_ticks_usec()
     record.node.add_child(part)
     measure("enter-tree-"+str(record.kind),tree_start)
-    if record.kind=="near" and record.next_child==0:
+    if record.kind=="near" and record.next_child==0 and not reloading.has(record.at):
      # Terrain is the first baked part. Switch its coarse ownership now, while
      # remaining meshes warm up progressively; native entry stays gated until
      # every collision/render part is installed.
@@ -270,7 +316,10 @@ func _process(_delta: float) -> void:
   if pending.size()>=MAX_PENDING:break
   var path:=path_for(record.kind,record.at)
   if pending.has(path) or resident(record):continue
-  if ResourceLoader.load_threaded_request(path,"Resource")!=OK:error("Cannot request prepared resource: "+path);return
+  # A reload reads fresh copies; REPLACE would rewrite the meshes the old
+  # district is still showing, re-uploading them all in one frame.
+  var mode:=ResourceLoader.CACHE_MODE_IGNORE if record.kind=="near" and reloading.has(record.at) else ResourceLoader.CACHE_MODE_REUSE
+  if ResourceLoader.load_threaded_request(path,"Resource",false,mode)!=OK:error("Cannot request prepared resource: "+path);return
   note("request "+str(record.kind))
   pending[path]=record.duplicate()
 
@@ -279,6 +328,13 @@ func install(record: Dictionary, node: Node3D, decoded: Dictionary) -> void:
  node.show()
  if record.kind=="near":
   activating.erase(record.at)
+  if loaded.has(record.at) and loaded[record.at]!=node:
+   # Reloaded district: swap only now that its replacement is complete.
+   retire(loaded[record.at])
+   surface.remove_chunk(record.at)
+   reconstruction.supports.remove_chunk(record.at)
+   reloading.erase(record.at)
+   reloads+=1
   loaded[record.at]=node
   sources[record.at]=decoded
   source_maps[record.at]={"map":record.resource.get("source_map") if record.resource.get("source_map")!=null else {},"info":record.resource.get("source_info") if record.resource.get("source_info")!=null else {},"positions":record.resource.get("source_positions") if record.resource.get("source_positions")!=null else {}}

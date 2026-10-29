@@ -9,7 +9,7 @@ const Overlay = preload("res://DevEdit/DevEditOverlay.gd")
 const Terrain = preload("res://DevEdit/DevEditTerrain.gd")
 var passed := 0
 var failed := 0
-var expected := 50
+var expected := 55
 # The dummy (headless) renderer does not store vertex-region uploads; byte-level
 # batch checks run when this suite is started with a real renderer.
 var gpu := DisplayServer.get_name() != "headless"
@@ -90,6 +90,12 @@ func conversation() -> void:
 	check(lines.call("undo that") == ["undo"] and lines.call("save this as market-day") == ["save market-day"],"undo and save")
 	check(lines.call("bring back the flowers near me") == ["restore all kind=flower;near=1602,1591,8;edited"],"restore by rule")
 	check(not intent.interpret("make the square look festive",here).understood and not intent.interpret("place a dragon here",here).understood,"unknown requests and unapproved assets are not guessed")
+	check(intent.interpret("commit",here).get("commit",false) and intent.interpret("make this permanent",here).get("commit",false) and intent.interpret("bake it into the world",here).get("commit",false),"commit phrases")
+	check(intent.interpret("never show weeds",here).get("rule",{}) == {"rule":"name~weed","action":"hide"},"'never show weeds' becomes a persistent hide rule")
+	check(intent.interpret("always hide the mushrooms around here",here).get("rule",{}).get("rule","") == "kind=mushroom;rect=1570,1559,1634,1623","local persistent rule bounded around the speaker")
+	check(intent.interpret("from now on replace weeds with grasses",here).get("rule",{}).get("action","") == "replace:3244","persistent replace rule")
+	var roofs: Dictionary = intent.interpret("make sure all the roofs are always attached to the walls",here)
+	check(not roofs.understood and roofs.get("behaviour",false),"roof/wall attachment is recognised as a behaviour rule for Claude, not a data rule")
 	var Query := preload("res://DevEdit/DevEditQuery.gd")
 	check(Query.parse("kind=flower").has("error") and Query.parse("near=1,1,40").has("error") and Query.parse("rect=0,0,200,10").has("error") and Query.parse("bogus=1;near=1,1,2").has("error"),"unbounded or malformed rules refused")
 	var s := State.new()

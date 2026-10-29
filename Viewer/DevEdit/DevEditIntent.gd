@@ -73,6 +73,28 @@ static func result(lines: Array, summary: String) -> Dictionary:
 func interpret(text: String, context: Dictionary) -> Dictionary:
 	var t := text.to_lower().strip_edges().trim_suffix(".").trim_suffix("!").replace("please ","").replace(",","")
 	var m: RegExMatch
+	if re("^(commit( (it|this|these|them|the edits|my edits|everything))?|make (it|this|these|them|the edits|everything) permanent|bake (it|this|the edits|everything)( into the world)?|save (it|this|everything) (into|to) the world)$").search(t):
+		return {"understood":true,"commit":true,"lines":[],"summary":"commit the session's edits into the converted world"}
+	# Persistent rules: data rules are stored for every bake; anything about how
+	# things are built (roofs meeting walls, …) is a code change for Claude.
+	m = re("^(?:always |from now on |everywhere |make sure (?:that )?|never )(.*)$").search(t)
+	if m:
+		var never := t.begins_with("never")
+		var body := m.get_string(1).replace("always ","").replace("everywhere","").strip_edges()
+		var local := ""
+		for phrase in [" in this area"," around here"," near here"," here"]:
+			if body.ends_with(phrase):
+				body = body.trim_suffix(phrase)
+				local = ";rect=%d,%d,%d,%d" % [int(context.x)-32,int(context.y)-32,int(context.x)+32,int(context.y)+32]
+		var r := re("^(?:hide|remove|get rid of|don't show|do not show|show no|show|have|place|put)? ?(?:all |every |the |any )?(.+?)$").search(body)
+		var rr := re("^replace (?:all |every |the |any )?(.+?) with (?:an? |some )?(.+)$").search(body)
+		if rr:
+			var asset := asset_for(rr.get_string(2))
+			if asset != 0: return {"understood":true,"rule":{"rule":thing_rule(rr.get_string(1))+local,"action":"replace:%d" % asset},"lines":[],"summary":"persistent rule: replace %s with %s" % [rr.get_string(1),assets[asset]]}
+		var hides := never or body.begins_with("hide") or body.begins_with("remove") or body.begins_with("get rid") or body.begins_with("don't show") or body.begins_with("do not show") or body.begins_with("show no")
+		if hides and r and singular(r.get_string(1)).strip_edges().split(" ",false).size() <= 2:
+			return {"understood":true,"rule":{"rule":thing_rule(r.get_string(1))+local,"action":"hide"},"lines":[],"summary":"persistent rule: never show %s" % r.get_string(1)}
+		return {"understood":false,"behaviour":true,"reason":"a behaviour rule changes how the world is reconstructed; Ask Claude to change the converter code"}
 	m = re("^(undo|redo)( that| it| the last( edit| change)?)?$").search(t)
 	if m: return result([m.get_string(1)],m.get_string(1)+" your latest edit")
 	m = re("^save (?:this |these |the edits |it |everything )?(?:as |to )?([a-z0-9-]{1,32})$").search(t)

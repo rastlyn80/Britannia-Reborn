@@ -49,6 +49,9 @@ static func owner(x: float, y: float) -> Vector2i:
 # ---- district lifecycle ----
 
 func _installed(at: Vector2i, node: Node3D) -> void:
+	# A reinstalled (rebaked) district has new meshes: forget the old terrain base.
+	terrain.erase(at)
+	terrain_pending.erase(at)
 	var maps: Dictionary = stream.source_maps.get(at,{"map":{},"info":{}})
 	var records: Array = []
 	var cells: Dictionary = {}

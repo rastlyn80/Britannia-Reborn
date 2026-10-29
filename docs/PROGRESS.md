@@ -1,3 +1,14 @@
+# Commit, persistent rules and talking to the world — 29 October 2026
+
+Roadmap items 1–3 done plus the owner's follow-up.
+
+- **Talking to the world.** An Ask box (typed, or Windows voice typing) feeds an offline interpreter that maps requests to the shared command grammar and never guesses; everything else goes to Claude Code through a server-side ask/answer/propose queue and `scripts/dev-edit-bridge.ps1`. A real round trip answered a developer's request with a scoped proposal.
+- **Group edits.** Bounded rule scopes and shift-click multi-select apply as atomic batches with one undo.
+- **Commit.** Session statics, placements and terrain fold into local committed overrides that the converter applies on every bake. Collision is kept consistent with ModernUO; only touched districts rebake, and running clients reload them live: 75 s bake, 2 districts, worst frame 146 ms. Persistent "always/never" data rules are supported; behaviour rules such as roof/wall attachment are routed to Claude as code changes.
+- **Previews and revert.** Assets follow the cursor and replacements preview in place; `revert-commits.ps1` rolls back.
+
+Tests: server 65, client 72 (headless and GPU), converter 15, live 40; verify.ps1 and test-login.ps1 pass. See DEV_EDIT.md.
+
 # Live collaborative developer editing — 28 October 2026
 
 Owner goal: build and fix the world from inside it, together, and eventually just by talking (Claude Code now, voice later). Delivered a working vertical slice in live Britain. F9 opens a developer panel that joins a server-authoritative edit session in the isolated ModernUO extension (`[DevEdit` over the native connection; explicit account allowlist plus loopback; separate journal, never world saves). Supported: select and inspect statics (identity, coordinates, prepared source record), place approved decorative assets, move/rotate/replace/hide existing decorative statics, and bounded terrain height/surface brushes. Drafts, shared previews and accepted edits are visually distinct; preview/accept/cancel, history-derived undo/redo, reservations, revision conflicts, reconnect/late-join snapshots and deterministic edit sets all work. The converted bake stays immutable. It now records per-static render ownership, so edits collapse or restore only that static's geometry, and terrain deforms only affected district meshes on a worker thread, crack-free across borders. `scripts/dev-edit.ps1` is a Claude Code bridge using the same command model.

@@ -137,5 +137,10 @@ Check(!talk.Resolve(asked.Id, "Claude", "applied").Ok, "only the asker resolves"
 Check(talk.Resolve(asked.Id, "Ann", "applied").Ok && asked.Status == "applied", "asker marks applied");
 Check(!talk.ProposePart(asked.Id, "Claude", "1/1", "undo", out _).Ok, "closed request takes no proposals");
 
+var committedSession = new DevEditSession("commit", "baseline-a", Rules());
+committedSession.Set("Ann", Barrel, 0, "hide", now);
+var commitBatch = committedSession.Batch("Ann", new List<(string, int, string)> { (Barrel, 1, "") }, now, "commit");
+Check(commitBatch.Ok && !committedSession.Undo("Ann", commitBatch.Operation!.Seq, now).Ok && committedSession.Current(Barrel).State == "", "a commit batch cannot be undone (would double-apply)");
+
 Console.WriteLine($"DEV EDIT SESSION TESTS: {passes} passed, {failures} failed");
 return failures;

@@ -433,7 +433,7 @@ public sealed class DevEditSession
         {
             return Result.Fail("invalid", $"a batch holds 1-{MaxBatch} targets");
         }
-        if (action is not ("move" or "rotate" or "replace" or "hide" or "restore" or "remove" or "set"))
+        if (action is not ("move" or "rotate" or "replace" or "hide" or "restore" or "remove" or "set" or "commit"))
         {
             return Result.Fail("invalid", "unknown batch action");
         }
@@ -577,6 +577,11 @@ public sealed class DevEditSession
         {
             return Result.Fail("invalid", $"operation {seq} is already undone or is an undo");
         }
+        if (operation.Action == "commit")
+        {
+            // Undoing would re-apply the edits on top of the rebaked world.
+            return Result.Fail("invalid", "committed work is part of the converted world; revert it with scripts/revert-commits.ps1");
+        }
         if (Blocked(operation, author, now, seq) is { } reason)
         {
             return Result.Fail("conflict", reason);
@@ -679,7 +684,7 @@ public sealed class DevEditSession
             var action = entry.GetProperty("action").GetString() ?? "";
             var reverts = entry.GetProperty("reverts").GetInt32();
             if (seq != session._log.Count + 1 || !ValidAuthor(author) || reverts < 0 || reverts >= seq ||
-                action is not ("set" or "move" or "rotate" or "replace" or "hide" or "restore" or "remove" or "place" or "brush" or "undo" or "redo" or "import"))
+                action is not ("set" or "move" or "rotate" or "replace" or "hide" or "restore" or "remove" or "place" or "brush" or "undo" or "redo" or "import" or "commit"))
             {
                 throw new InvalidDataException($"Invalid operation header at {seq}.");
             }

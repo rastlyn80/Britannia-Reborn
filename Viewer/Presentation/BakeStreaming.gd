@@ -5,6 +5,9 @@ const Rules = preload("res://Presentation/RegionalBake.gd")
 var directory := "res://../outputs/britain"
 var signature := ""
 var output := ""
+# Published file name -> the file actually written, when a running client held
+# the published one open (live reload after a developer Commit).
+var alternates: Dictionary = {}
 
 static func dependency_signature(path: String, visited: Dictionary) -> String:
  if visited.has(path):return ""
@@ -39,12 +42,19 @@ func save_scene(node: Node3D, path: String, data: Resource = null) -> bool:
  assert(empty.pack(node)==OK)
  data.root_scene=empty
  var temporary := path.get_basename()+".pending.res"
- # A running client keeps its resident districts open; Windows then refuses the
- # replacement. Fail the bake rather than stamp stale geometry as current.
  if ResourceSaver.save(data,temporary,ResourceSaver.FLAG_COMPRESS)!=OK:
   push_error("Prepared resource save failed: "+path);return false
- if DirAccess.rename_absolute(temporary,path)!=OK:
-  push_error("Prepared resource installation failed (close any running client using it): "+path);return false
+ if DirAccess.rename_absolute(temporary,path)==OK:
+  alternates.erase(path.get_file())
+  return true
+ # A running client keeps its resident districts open, so Windows refuses the
+ # replacement. Install under a versioned name that the index points to; the
+ # running clients reload it without restarting.
+ var versioned := "%s_v%d.res" % [path.get_basename(),Time.get_unix_time_from_system()]
+ if DirAccess.rename_absolute(temporary,versioned)!=OK:
+  push_error("Prepared resource installation failed: "+path);return false
+ alternates[path.get_file()]=versioned.get_file()
+ print("STREAM BAKE: ",path.get_file()," is in use; installed as ",versioned.get_file())
  return true
 
 func far_material(original: Material, frame: Vector2) -> ShaderMaterial:
@@ -197,9 +207,13 @@ func run() -> void:
  output=preload("res://Presentation/GraphicsMode.gd").prepared(directory)
  DirAccess.make_dir_recursive_absolute(output)
  var index_path:=output.path_join("index.json")
+ # Committed developer edits: only districts they touch are rebaked.
+ var manual:=preload("res://Presentation/ManualOverrides.gd").new()
+ manual.load_from(directory)
  if FileAccess.file_exists(index_path):
   var previous: Variant=JSON.parse_string(FileAccess.get_file_as_string(index_path))
-  if previous is Dictionary and previous.get("signature","")==signature:
+  if previous is Dictionary: alternates=previous.get("files",{})
+  if previous is Dictionary and previous.get("signature","")==signature and previous.get("overrides","")==manual.digest():
    var complete:=true
    for at in previous.chunks:
     for prefix in ["near","far"]:
@@ -214,6 +228,7 @@ func run() -> void:
  if data.manifest.chunks.size()>128:
   push_error("Runtime streaming is bounded, but offline joined-topology planning is currently limited to 128 chunks. Prepare a city dataset; full-facet offline partitioning remains pending.");quit(1);return
  var plan:=preload("res://Presentation/RegionalContext.gd").new()
+ plan.overrides=manual
  plan.prepare(data)
  var frame:=Vector2(plan.world.originX,plan.world.originY)
  for key in data.manifest.staticData:catalog_names[key]=str(data.manifest.staticData[key].get("name","tree"))
@@ -221,11 +236,16 @@ func run() -> void:
  preload("res://Presentation/SurfaceLibrary.gd").source_origin=frame
  plan.terrain_material.set_shader_parameter("source_origin",frame)
  var entries: Array=[]
+ var stamps: Dictionary={}
+ var rebuilt:=0
  for entry in data.manifest.chunks:
   var at:=Vector2i(entry.x,entry.y)
   var tag:="%d_%d" % [at.x,at.y]
   var stamp:=output.path_join(tag+".stamp")
-  if not FileAccess.file_exists(stamp) or FileAccess.get_file_as_string(stamp)!=signature:
+  var expected:=signature+":"+manual.chunk_digest(at)
+  stamps[tag]=expected.sha256_text().left(16)
+  if not FileAccess.file_exists(stamp) or FileAccess.get_file_as_string(stamp).trim_suffix(":")!=expected.trim_suffix(":"):
+   rebuilt+=1
    var near: Node3D=await plan.build_chunk(at,self,true)
    near.position=Vector3.ZERO
    var source: Dictionary=data.chunk(at)
@@ -243,14 +263,15 @@ func run() -> void:
    if not save_scene(near,output.path_join("near_"+tag+".res"),resource):near.free();quit(1);return
    print("STREAM BAKE: ",at," / ",resource.parts.size()," compact parts / ",near.get_meta("collision_triangles",0)," collision triangles")
    near.free()
-   var marker:=FileAccess.open(stamp,FileAccess.WRITE);marker.store_string(signature);marker.close()
+   var marker:=FileAccess.open(stamp,FileAccess.WRITE);marker.store_string(expected);marker.close()
   entries.append([at.x,at.y])
   await process_frame
  var manifest: Dictionary=data.manifest
  var macro_entries:=macros(data,frame)
  if macro_entries.is_empty():push_error("Regional horizon bake failed; prepared index not published");quit(1);return
- var index: Dictionary={"schema":1,"signature":signature,"facet":1,"originX":manifest.originX,"originY":manifest.originY,"width":manifest.width,"height":manifest.height,"landData":manifest.landData,"staticData":manifest.staticData,"catalog":plan.reconstruction.catalog,"chunks":entries,"macros":macro_entries}
+ var index: Dictionary={"schema":1,"signature":signature,"facet":1,"originX":manifest.originX,"originY":manifest.originY,"width":manifest.width,"height":manifest.height,"landData":manifest.landData,"staticData":manifest.staticData,"catalog":plan.reconstruction.catalog,"chunks":entries,"macros":macro_entries,"stamps":stamps,"overrides":manual.digest(),"files":alternates}
  var file:=FileAccess.open(index_path+".pending",FileAccess.WRITE);file.store_string(JSON.stringify(index));file.close()
  assert(DirAccess.rename_absolute(index_path+".pending",index_path)==OK)
+ print("STREAM BAKE REBUILT: ",rebuilt," district(s)")
  print("STREAM BAKE COMPLETE: ",entries.size()," independent districts; shared source topology / compact scenes / collision / regional horizons")
  quit()

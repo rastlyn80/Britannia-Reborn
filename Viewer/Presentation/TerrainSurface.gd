@@ -22,6 +22,12 @@ var wall_caps := {}
 const WALL_SET := 3
 var wooden_cells := {}
 var source_ordinals := {}
+# Committed developer overrides (ManualOverrides.gd): rendered height deltas
+# (UO Z units) and surface paint per sample. Collision builds disable them so
+# walkable ground keeps the source heights ModernUO uses.
+var manual_heights := {}
+var manual_paint := {}
+var manual_enabled := true
 func index(input: Dictionary, shore = null) -> void:
  world = input
  land_data = input.landData if input.get("landData") is Dictionary else {}
@@ -145,6 +151,7 @@ func z(cell: Vector2i) -> float:
  var bounded := Vector2i(clampi(cell.x,int(world.originX),int(world.originX)+int(world.width)-1),clampi(cell.y,int(world.originY),int(world.originY)+int(world.height)-1))
  var key := cell if samples.has(cell) else bounded
  var native := minf(float(peak_repairs.get(key,samples[key].z)),float(wall_caps.get(key,INF)))
+ if manual_enabled: native += float(manual_heights.get(key,0))
  return native*float(world.elevationScale)-float(water_cells.get(key,0.0))-(COVERED_DROP if covered.has(key) else 0.0)
 static func curve(a: float,b: float,c: float,d: float,t: float) -> float:
  if absf(c-b) <= 0.8: return lerpf(b,c,t)
@@ -173,9 +180,12 @@ func height_at(at: Vector2) -> float:
 func cached(grid: Vector2i) -> float:
  if not heights.has(grid): heights[grid] = height_at(Vector2(grid)/SUBDIVISIONS)
  return float(heights[grid])
+func surface_name(cell: Vector2i, tile: Dictionary) -> String:
+ if manual_enabled and manual_paint.has(cell): return str(manual_paint[cell])
+ return str(land_data.get(str(int(tile.get("id",0))),{}).get("name",""))
 func weights(cell: Vector2i) -> Vector2:
  var tile: Dictionary = samples.get(cell,{})
- var name := str(land_data.get(str(int(tile.get("id",0))),{}).get("name",""))
+ var name := surface_name(cell,tile)
  return Vector2(1 if name in ["cobblestones","stone","brick"] else 0,1 if name == "wooden floor" else 0)
 func attributes(at: Vector2) -> Dictionary:
  var cell := Vector2i(floori(at.x),floori(at.y))
@@ -186,7 +196,7 @@ func attributes(at: Vector2) -> Dictionary:
  var masks: Array[Vector2] = []
  for offset in [Vector2i.ZERO,Vector2i.RIGHT,Vector2i.DOWN,Vector2i.ONE]:
   var tile: Dictionary = samples.get(cell+offset,fallback)
-  var name := str(land_data.get(str(int(tile.id)),{}).get("name",""))
+  var name := surface_name(cell+offset,tile)
   colors.append(preload("res://Presentation/Reconstruction.gd").terrain_color(name).srgb_to_linear())
   masks.append(weights(cell+offset))
  return {"color":colors[0].lerp(colors[1],f.x).lerp(colors[2].lerp(colors[3],f.x),f.y),"mask":masks[0].lerp(masks[1],f.x).lerp(masks[2].lerp(masks[3],f.x),f.y)}
