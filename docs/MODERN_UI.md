@@ -61,8 +61,34 @@ Checked live: a login in the real game scene over streamed Britain shows the car
 - **Sharp captions:** nameplates and building names were `Label3D`s drawn into the 3D scene, so they were resampled and looked soft. `Network/ScreenLabels.gd` keeps them as the source of text, colour and visibility, culls them from the cameras, and draws them as 2D labels in Inter at native pixel size, slightly smaller with distance and hidden beyond 32 m. Engravings on sign boards stay 3D because they belong to the surface.
 - **See-through trees:** trees between the camera and the player open a soft, ordered-dither circle around the character, instead of leaves dissolving at the lens. The circle is a cone from the camera to the player's chest, 1.5 m wide at the player, and only covers geometry nearer the camera than the player. Shadows keep the whole tree, because the clearance applies only to the main camera's pass. `Presentation/Foliage.gdshader` plus `FoliageClearance.gd` swap the owner-licensed tree materials as near districts load, so no re-bake is needed; World.gd sets the globals every frame. Checked in a GPU render (tree, a stand-in character behind it, shadow intact). CC0 fallback trees and scanned dead trees still use their old shaders.
 
+## Front end and the end of the right-hand panel (2026-10-29)
+
+The owner approved the plan on the design canvas: a front end with no map district behind it, and the right-hand panel replaced by **Option A**: no dock, with a game menu behind the gear and Esc.
+
+- **Front end (`Network/FrontEnd.gd`, `Presentation/FrontStage.gd`):** the play launchers pass `--front-end`, so `World.gd` prepares the streaming index without loading any district (`LiveDistricts.prepare(scene, true)`). The world's own 3D view is switched off under the front end.
+  - **The stage:** a small scene of its own in a SubViewport, built from CC0 Quaternius trees and primitives with nothing from the map. It has a night sky shader with stars and the moon, a castle silhouette with lit windows, a moongate and a brass-trimmed plinth.
+  - **Still fallback:** the Compatibility renderer, or `--front-still`, gets a still night gradient instead of the stage.
+  - **Sign in:** account and password, remember me (the same Windows-protected store as before), Enter, and a dev-account shortcut when the environment provides one. Settings, Credits and Quit sit in the footer.
+  - **Characters:** each name from the server's list, with where it was last seen. The chosen character stands on the plinth, and you can drag to turn it. The list (0xA9) carries names only, so `Network/CharacterLooks.gd` remembers each character's body, skin, worn items and place in `user://characters/<account>.json` (no secrets).
+  - **Create:** male or female, skin, hair, hair colour, beard and beard colour (beard rows for male characters only), all as buttons and swatches with a live preview. Only starting cities inside the prepared region are offered, with Britain preselected. Profession and skills stay at the server's defaults for now.
+  - **Loading:** the place name and a progress bar of near districts installed at the character's real position. When all are in, the stage and its viewport are freed and the world takes over. Logging out or losing the connection brings the sign-in screen back.
+- **Old panel controls, now:**
+  - **Game menu (`Network/GameMenu.gd`; Esc or the gear on the menu bar):** Resume, Settings (world look, sky, gamepad), Keys and help (key list plus the server's help request), Developer (console, Return to Britain, world editor), Log out and Quit. Esc used to quit the game outright.
+  - **Elsewhere in the HUD:**
+    - Peace/War is a switch on the vitals card.
+    - Targeting is a prompt above the quickbar with Self and Esc (`Network/TargetPrompt.gd`).
+    - Server commands live in a console window on the ` key (`Network/DevConsole.gd`), with history and quick buttons.
+    - Connection state is a chip above the minimap (`Network/ConnectionChip.gd`).
+    - A blocked move and the first-entry hint show as notices.
+  - **Without `--front-end`:** tests and tools keep the original login panel and the preloaded district, unchanged.
+- **Nameplates stack:** captions that would overlap are moved above the nearer one.
+- **Evidence:**
+  - `FrontEndTests.gd` passes 26/26 and is part of verify.
+  - **Live run against the local server (2026-10-29):** 0 districts were loaded at sign-in. Choosing the character showed the loading screen, and 9/9 near districts were in about 14 s later. The HUD then appeared without the old panel. The game menu, settings and console worked (`[PreviewWhere` was answered), and logging out returned to the sign-in screen.
+
 ## Open
 
+- **Front end still to do:** deleting characters, profession and skill choice at creation, a server-status probe before sign-in, and remembered looks updating while you play (they are saved on entering and on logging out).
 - **Windows still to modernise:** the character sheet (paperdoll), other containers, the world map, buff bar, party frames. Speaker names in the journal need the session to pass them on (0x1C/0xAE carry them; GameSession emits text only).
 - **Server gumps:** the modern rendering of server gumps, and the purpose-built crafting, vendor, runebook, bulletin and book windows.
 - **Actions that only report "not in this client yet":** these need client features that do not exist yet.

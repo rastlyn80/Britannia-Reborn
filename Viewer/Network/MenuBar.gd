@@ -1,10 +1,10 @@
 extends PanelContainer
 # Bottom-right window menu: one button per window with its key, so every
 # window is a click or a key away (Character C, Backpack B, Skills K,
-# Spellbook P, Journal J, Map M).
+# Spellbook P, Journal J, Map M), and the game menu (Esc).
 signal chosen(window: String)
 const Look = preload("res://Network/ModernSkin.gd")
-const ENTRIES := [["character","Character","C","user"],["backpack","Backpack","B","bag"],["skills","Skills","K","skills"],["spellbook","Spellbook","P","book"],["journal","Journal","J","chat"],["map","World map","M","map"]]
+const ENTRIES := [["character","Character","C","user"],["backpack","Backpack","B","bag"],["skills","Skills","K","skills"],["spellbook","Spellbook","P","book"],["journal","Journal","J","chat"],["map","World map","M","map"],["menu","Game menu","Esc","gear"]]
 const KEYS := {KEY_B:"backpack",KEY_K:"skills",KEY_P:"spellbook",KEY_J:"journal",KEY_M:"map"}
 
 func _ready() -> void:

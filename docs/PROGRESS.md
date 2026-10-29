@@ -1,3 +1,12 @@
+# Front end without a district; the right-hand panel replaced — 29 October 2026
+
+The play launchers now open on a front end with its own small moonlit stage, with nothing from the map loaded: sign in, choose a character (shown on a plinth with its remembered look), create one with live swatches, and a loading screen.
+
+- **Loading at the character:** districts load only once the server sends the character's position, so a character in Trinsic loads Trinsic.
+- **The old right-hand panel is gone:** a game menu (Esc or the gear) holds settings, keys and help, developer tools, Log out and Quit. Peace/War moved to the vitals card, targeting to a prompt with Self and Esc, server commands to a console on the ` key, and connection state to a chip above the minimap.
+- **Evidence:** front-end tests pass 26/26 and are part of verify. In a live run against the local server, sign-in had 0 districts loaded; after choosing the character, 9/9 near districts were in about 14 s. The HUD showed without the panel; the game menu, settings and console worked, and logging out returned to sign-in. Tests and tools without `--front-end` are unchanged.
+- **Remaining:** deleting characters; profession and skills at creation; a server probe before sign-in. See MODERN_UI.md.
+
 # Human action, wearable coverage and armour correction - 29 October 2026
 
 Reached the owner's category targets with unchanged denominators: 35/35 original action groups have prepared clips; 28/28 on-foot groups are connected; 234/1,126 indexed wearable graphics (20.78%) have category art on both bodies. Totals: 65 categories and 59 clips per body. Seven rider clips are opt-in previews; mounted live playback and mount gameplay remain deferred. Replaced rejected body-derived armour shells with continuous tailored trousers/undercoat and separate manufactured plates, matte leather and brushed steel. Backing retains its cloth colour under native metal dyes. Full body/UV/bind foundation, native identity and existing movement are preserved.

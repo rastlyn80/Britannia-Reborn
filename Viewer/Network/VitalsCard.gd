@@ -12,6 +12,8 @@ var detail: Label
 var purse: Label
 var bars := {}
 var numbers := {}
+# Peace/War switch (replaces the old panel's war toggle).
+var stance := Button.new()
 
 func _ready() -> void:
 	position = Vector2(20,20)
@@ -47,9 +49,19 @@ func _ready() -> void:
 	names.add_child(name_label)
 	detail = Look.label("",12,Look.ASH,500)
 	names.add_child(detail)
+	stance.focus_mode = Control.FOCUS_NONE
+	stance.custom_minimum_size = Vector2(64,26)
+	stance.add_theme_font_override("font",Look.ui_font(700))
+	stance.add_theme_font_size_override("font_size",11)
+	stance.tooltip_text = "Switch between peace and war"
+	stance.pressed.connect(func(): session.set_war_mode((int(session.player.get("flags",0))&0x40)==0))
 	purse = Look.label("",12,Look.ASH,500)
 	purse.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	head.add_child(purse)
+	var stance_box := VBoxContainer.new()
+	stance_box.alignment = BoxContainer.ALIGNMENT_CENTER
+	stance_box.add_child(stance)
+	head.add_child(stance_box)
 	for entry in [["hits","HITS",Look.BLOOD],["stam","STAM",Look.AMBER],["mana","MANA",Look.SKY]]:
 		var line := HBoxContainer.new()
 		line.add_theme_constant_override("separation",8)
@@ -89,6 +101,12 @@ func refresh() -> void:
 	detail.text = "Str %d · Dex %d · Int %d" % [int(s.get("str",0)),int(s.get("dex",0)),int(s.get("int",0))] if s.has("str") else ""
 	purse.text = "%s gold\n%d / %d st" % [_grouped(int(s.get("gold",0))),int(s.get("weight",0)),int(s.get("weight_max",0))] if s.has("gold") else ""
 	var poisoned := (int(session.player.get("flags",0)) & 0x04) != 0
+	var war := (int(session.player.get("flags",0)) & 0x40) != 0
+	stance.text = "War" if war else "Peace"
+	var tone: Color = Look.BLOOD if war else Look.HERB
+	for state in ["normal","hover","pressed"]: stance.add_theme_stylebox_override(state,Look.box(Color(tone.r,tone.g,tone.b,0.16 if state == "normal" else 0.28),Color(tone.r,tone.g,tone.b,0.6),13,1,4))
+	stance.add_theme_color_override("font_color",tone.lightened(0.3))
+	stance.add_theme_color_override("font_hover_color",tone.lightened(0.45))
 	for key in bars:
 		var top := maxi(1,int(s.get(key+"_max",0)))
 		bars[key].max_value = top

@@ -92,7 +92,9 @@ static func region() -> String:
   if arg.begins_with("--region=") and arg.substr(9).is_valid_filename():return arg.substr(9)
  return "britain"
 
-func prepare(owner_scene: Node3D) -> bool:
+# deferred: index only; districts load when follow() names a position (the
+# front end, which signs in before anything of the map is loaded).
+func prepare(owner_scene: Node3D, deferred := false) -> bool:
  scene=owner_scene
  var dataset:=ProjectSettings.globalize_path("res://../outputs/"+region())
  var path:=preload("res://Presentation/GraphicsMode.gd").prepared(dataset).path_join("index.json")
@@ -120,6 +122,7 @@ func prepare(owner_scene: Node3D) -> bool:
  horizon=Node3D.new()
  horizon.name="StreamedHorizon"
  add_child(horizon)
+ if deferred:return true
  await refresh()
  return failed.is_empty()
 
@@ -225,6 +228,13 @@ func select_window() -> void:
    activating.erase(record.at)
  update_horizon()
  busy=not near_complete()
+
+# Near districts installed of those wanted around the current position.
+func progress() -> Vector2i:
+ var done:=0
+ for at in near_wanted:
+  if loaded.has(at):done+=1
+ return Vector2i(done,near_wanted.size())
 
 func near_complete() -> bool:
  for at in near_wanted:

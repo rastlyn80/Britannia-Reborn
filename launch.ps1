@@ -28,13 +28,14 @@ try {
     if (!(Test-Path "$dataset/atlas.json")) { throw "Region $Region is not prepared; run scripts/prepare-region.ps1 first" }
     & "$PSScriptRoot/scripts/prepare-streaming.ps1" -Dataset $dataset -Modern
     & "$PSScriptRoot/scripts/prepare-minimap.ps1" -Dataset $dataset
-    & $Godot @renderArgs --path "$PSScriptRoot/Viewer" -- --city --modern-britain "--region=$Region"
+    & $Godot @renderArgs --path "$PSScriptRoot/Viewer" -- --city --modern-britain "--region=$Region" --front-end
   }
   elseif (!$ReferencePatch) {
     if (!(Test-Path "$PSScriptRoot/outputs/britain/atlas.json")) { & "$PSScriptRoot/scripts/prepare-britain.ps1" }
     & "$PSScriptRoot/scripts/prepare-streaming.ps1"
     & "$PSScriptRoot/scripts/prepare-minimap.ps1"
-    & $Godot @renderArgs --path "$PSScriptRoot/Viewer" -- --city
+    # --front-end: sign in on the front-end stage; districts load at the character.
+    & $Godot @renderArgs --path "$PSScriptRoot/Viewer" -- --city --front-end
   }
   elseif (Test-Path $play) { & $Godot @renderArgs --path "$PSScriptRoot\Viewer" -- "--world=$play" }
   elseif (Test-Path $local) { & $Godot @renderArgs --path "$PSScriptRoot\Viewer" -- "--world=$local" }

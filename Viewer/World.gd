@@ -50,6 +50,14 @@ var shoreline := preload("res://Presentation/ShorelinePlan.gd").new()
 var terrain_surface := preload("res://Presentation/TerrainSurface.gd").new()
 var interior_shell := preload("res://Presentation/InteriorShell.gd").new()
 var movement_surface := preload("res://Presentation/MovementSurface.gd").new()
+# Front end (--front-end, the play launchers): sign in on a stage of its own and
+# load districts only once the server names the character's position. Without
+# it the viewer keeps its original login panel and preloaded Britain (tests).
+var front_end := false
+var front: Control
+var game_menu: Control
+var console: Control
+var toasts: Control
 
 func point(x: int, y: int, z: int) -> Vector3:
 	return Vector3(x - int(world.originX), z * float(world.elevationScale), y - int(world.originY))
@@ -67,6 +75,7 @@ func material(color: Color) -> StandardMaterial3D:
 func _ready() -> void:
 	get_viewport().use_taa = RenderingServer.get_current_rendering_method() == "forward_plus"
 	var city_mode := "--city" in OS.get_cmdline_user_args()
+	front_end = city_mode and "--front-end" in OS.get_cmdline_user_args()
 	var path := "res://world.json"
 	if FileAccess.file_exists("res://play-world.json"): path = "res://play-world.json"
 	for arg in OS.get_cmdline_user_args():
@@ -96,7 +105,7 @@ func _ready() -> void:
 		add_child(static_root)
 		add_child(diagnostics)
 		static_root.add_child(city_stream)
-		if not await city_stream.prepare(self):
+		if not await city_stream.prepare(self,front_end):
 			get_tree().quit(1)
 			return
 		loading.queue_free()
@@ -257,6 +266,7 @@ func _ready() -> void:
 		graphics_button.text = "Britain: %s (restart)" % ("modern" if graphics_mode.modern() else "classic"))
 	login_panel.controller_toggled.connect(func(enabled: bool): controller_enabled = enabled)
 	hud_panel = login_panel
+	if front_end: _add_front_end(login_panel,panel)
 	login_panel.sky_requested.connect(cycle_sky)
 	if lighting_rig and login_panel.sky_button: login_panel.sky_button.text = lighting_rig.sky_label()
 	game.entity_changed.connect(_entity_changed)
@@ -410,7 +420,7 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	var target := preload("res://Network/TargetFrame.gd").new()
 	canvas.add_child(target)
 	target.configure(game)
-	var toasts := preload("res://Network/Toasts.gd").new()
+	toasts = preload("res://Network/Toasts.gd").new()
 	canvas.add_child(toasts)
 	toasts.configure(game)
 	var quickbar := preload("res://Network/Quickbar.gd").new()
@@ -454,6 +464,9 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 			"skills", "Skills": skills.toggle()
 			"spellbook": spellbook.toggle()
 			"journal", "Journal": journal.visible = not journal.visible
+			"menu":
+				if game_menu: game_menu.toggle()
+				else: return false
 			"map", "World Map":
 				if minimap: minimap.visible = not minimap.visible
 				else: return false
@@ -469,6 +482,62 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 		if action == "Zoom":
 			distance = 5.5 if option in ["","Default Zoom"] else clampf(distance+(-0.8 if option == "Zoom In" else 0.8),1.2,22.0)
 		else: quickbar.show_feedback("%s is not in this client yet." % action))
+
+# The front end, game menu, target prompt, console and connection chip that
+# replace the old right-hand panel (docs/MODERN_UI.md).
+func _add_front_end(login_panel: Control, help_panel: Control) -> void:
+	login_panel.hide()
+	help_panel.hide()
+	var hud: CanvasLayer = help_panel.get_parent()
+	var target := preload("res://Network/TargetPrompt.gd").new()
+	hud.add_child(target)
+	target.configure(game)
+	console = preload("res://Network/DevConsole.gd").new()
+	hud.add_child(console)
+	console.configure(game)
+	var chip := preload("res://Network/ConnectionChip.gd").new()
+	hud.add_child(chip)
+	chip.configure(game)
+	game.movement_result.connect(func(accepted: bool, _position: Dictionary):
+		if not accepted: toasts.notify("Movement","blocked; the server corrected your position",preload("res://Network/ModernSkin.gd").AMBER))
+	game.entered.connect(func(_position: Dictionary):
+		toasts.notify("Tip","E uses the nearest object · Esc opens the game menu"),CONNECT_ONE_SHOT)
+	var front_layer := CanvasLayer.new()
+	front_layer.layer = 10
+	add_child(front_layer)
+	front = preload("res://Network/FrontEnd.gd").new()
+	front_layer.add_child(front)
+	front.configure(game,self,login_panel)
+	var menu_layer := CanvasLayer.new()
+	menu_layer.layer = 20
+	add_child(menu_layer)
+	game_menu = preload("res://Network/GameMenu.gd").new()
+	menu_layer.add_child(game_menu)
+	game_menu.configure(self)
+	front_end_shown(true)
+
+func front_end_shown(shown: bool) -> void:
+	accept_player_input = not shown
+	# The world's own 3D view is not drawn under the front end's stage.
+	get_viewport().disable_3d = shown
+
+func region_contains(x: int, y: int) -> bool:
+	return city_stream == null or city_stream.bounds.has_point(Vector2i(x,y))
+
+func district_progress() -> Vector2i:
+	return city_stream.progress() if city_stream and game.phase == "world" else Vector2i.ZERO
+
+func log_out() -> void:
+	if game.phase == "world":
+		preload("res://Network/CharacterLooks.gd").remember(front.account,str(front.chosen.get("name","")),preload("res://Network/CharacterLooks.gd").capture(game))
+	game.close()
+
+func open_settings() -> void:
+	game_menu.open()
+	game_menu._settings()
+
+func open_console() -> void:
+	console.open()
 
 func cycle_sky() -> void:
 	if not lighting_rig: return
@@ -523,7 +592,14 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.keycode == KEY_E: world_items.nearest()
 		if event.keycode == KEY_C and game.phase == "world": character_sheet.toggle("character")
 		if event.keycode == KEY_K and game.phase == "world": character_sheet.toggle("skills")
-		if event.keycode == KEY_ESCAPE: get_tree().quit()
+		if event.keycode == KEY_ESCAPE:
+			if not front_end: get_tree().quit()
+			elif front.visible: pass
+			elif not game.target_request.is_empty(): game.target_item()
+			else: game_menu.toggle()
+		if event.keycode == KEY_QUOTELEFT and front_end and game.phase == "world" and not get_viewport().gui_get_focus_owner() is LineEdit:
+			if console.visible: console.hide()
+			else: console.open()
 		if event.keycode == KEY_TAB: diagnostics.visible = not diagnostics.visible
 		if event.keycode == KEY_R:
 			yaw = -0.45

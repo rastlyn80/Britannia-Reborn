@@ -36,6 +36,8 @@ if ($LASTEXITCODE) { throw 'Native commerce/inventory regression checks failed' 
 if ($LASTEXITCODE) { throw 'Native gump layout/response checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Network/QuickbarTests.gd
 if ($LASTEXITCODE) { throw 'Quickbar/classic macro action checks failed' }
+& $godot --headless --path "$root/Viewer" --script res://Network/FrontEndTests.gd
+if ($LASTEXITCODE) { throw 'Front end / game menu checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/ItemResponseTests.gd
 if ($LASTEXITCODE) { throw 'Native item response/appearance checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/WorldItemTests.gd

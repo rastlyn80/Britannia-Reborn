@@ -32,9 +32,14 @@ func _caption() -> Label:
 
 func _process(_delta: float) -> void:
 	var seen: Dictionary = {}
+	# Nearest first, so a nearer caption keeps its place and farther ones that
+	# would cover it stack above instead of drawing on top.
+	var placed: Array[Rect2] = []
 	if camera and camera.is_inside_tree():
 		var eye := camera.global_position
-		for source in get_tree().get_nodes_in_group(GROUP):
+		var sources := get_tree().get_nodes_in_group(GROUP)
+		sources.sort_custom(func(a: Node, b: Node): return eye.distance_squared_to(a.global_position) < eye.distance_squared_to(b.global_position))
+		for source in sources:
 			var label := source as Label3D
 			if label == null or not label.is_visible_in_tree() or label.text.is_empty(): continue
 			var at := label.global_position
@@ -53,7 +58,16 @@ func _process(_delta: float) -> void:
 			if caption.get_theme_font_size("font_size") != size: caption.add_theme_font_size_override("font_size",size)
 			caption.reset_size()
 			var point := camera.unproject_position(at)
-			caption.position = (point-Vector2(caption.size.x/2,caption.size.y)).round()
+			var box := Rect2((point-Vector2(caption.size.x/2,caption.size.y)).round(),caption.size)
+			for attempt in 4:
+				var blocked := false
+				for other in placed:
+					if other.grow(1).intersects(box):
+						box.position.y = other.position.y-box.size.y-2
+						blocked = true
+				if not blocked: break
+			placed.append(box)
+			caption.position = box.position
 			caption.show()
 	for key in drawn.keys():
 		if not seen.has(key):
