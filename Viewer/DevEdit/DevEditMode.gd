@@ -57,10 +57,10 @@ var talk_label: Label
 var claude_button: Button
 var review_button: Button
 var speak_box: CheckBox
-# Talk: one utterance through Windows speech recognition (scripts/listen.ps1).
+# Talk: in-game recording recognized by local Whisper (DevEditVoice.gd).
+const Voice = preload("res://DevEdit/DevEditVoice.gd")
+var voice: Node
 var talk_button: Button
-var listen_pid := 0
-var listen_out := ""
 var spoken: Dictionary = {}
 # Commit: session edits folded into the converter's committed overrides and
 # rebaked in the background; then cleared from the live session.
@@ -149,7 +149,6 @@ func click(screen: Vector2) -> void:
 func _process(_delta: float) -> void:
 	if bake_pid > 0: _poll_bake()
 	if publish_pid > 0: _poll_publish()
-	if listen_pid > 0 and not OS.is_process_running(listen_pid): _heard()
 	if not active or tool != "place" or not follow_cursor or Input.mouse_mode != Input.MOUSE_MODE_VISIBLE: return
 	if Time.get_ticks_msec() < next_cursor or panel.get_global_rect().has_point(panel.get_viewport().get_mouse_position()): return
 	next_cursor = Time.get_ticks_msec()+100
@@ -274,35 +273,22 @@ Claude answers here; any change comes back as a proposal you preview and accept.
 	review(understood.lines,0,understood.summary)
 
 func talk() -> void:
-	if listen_pid > 0: return
-	listen_out = OS.get_user_data_dir().path_join("dev-edit-heard.json")
-	if FileAccess.file_exists(listen_out): DirAccess.remove_absolute(listen_out)
-	listen_pid = OS.create_process("powershell.exe",["-NoProfile","-ExecutionPolicy","Bypass","-WindowStyle","Hidden","-File",ProjectSettings.globalize_path("res://../scripts/listen.ps1"),"-Out",listen_out])
-	if listen_pid <= 0:
-		listen_pid = 0
-		note("Could not start speech recognition.")
-		return
-	talk_button.text = "Listening…"
-	talk_button.disabled = true
-	plan_label.text = "Listening — say your request."
+	voice.toggle()
 
-func _heard() -> void:
-	listen_pid = 0
-	talk_button.text = "Talk"
-	talk_button.disabled = false
-	var heard: Variant = JSON.parse_string(FileAccess.get_file_as_string(listen_out)) if FileAccess.file_exists(listen_out) else null
-	if not heard is Dictionary:
-		plan_label.text = "Speech recognition did not return a result."
-		return
-	var tip := "" if str(heard.get("online","")) == "on" else "
-For accurate speech, turn on Windows Settings → Privacy & security → Speech → Online speech recognition (now using the weaker offline recognizer)."
-	if str(heard.text).strip_edges().is_empty():
-		plan_label.text = {"NoSpeech":"Heard nothing — press Talk and speak.","LowConfidence":"Did not catch that clearly — try again, closer to the microphone."}.get(str(heard.status),"Speech recognition: "+str(heard.status).left(160))+tip
-		return
-	ask_box.text = str(heard.text)
-	note("Heard: "+ask_box.text)
-	submit_request(ask_box.text)
-	if tip != "": plan_label.text += tip
+func _voice_state(value: String) -> void:
+	talk_button.text = {"recording":"Stop","recognizing":"…"}.get(value,"Talk")
+	talk_button.disabled = value == "recognizing"
+	match value:
+		"recording": plan_label.text = "Listening — say your request, then pause (or press Stop)."
+		"recognizing": plan_label.text = "Recognizing…" if not Voice.engine().is_empty() else "Listening (Windows speech recognition) — say your request."
+
+func _voice_heard(text: String, info: Dictionary) -> void:
+	ask_box.text = text
+	note("Heard (%s%s, %d ms): %s" % [info.engine," "+str(info.get("language","")) if info.get("language","") != "" else "",int(info.ms),text])
+	submit_request(text)
+
+func _voice_failed(reason: String) -> void:
+	plan_label.text = reason
 
 func ask_claude() -> void:
 	var text := ask_box.text.strip_edges()
@@ -636,6 +622,42 @@ func refresh() -> void:
 
 # ---- panel ----
 
+func _voice_controls(column: Container) -> void:
+	voice = Voice.new()
+	add_child(voice)
+	voice.state_changed.connect(_voice_state)
+	voice.heard.connect(_voice_heard)
+	voice.failed.connect(_voice_failed)
+	var row := _row(column)
+	var languages := OptionButton.new()
+	languages.tooltip_text = "Language you speak (Auto detects it; choosing yours is more reliable)"
+	for i in Voice.LANGUAGES.size():
+		languages.add_item(Voice.LANGUAGES[i][1])
+		if Voice.LANGUAGES[i][0] == voice.language: languages.select(i)
+	languages.item_selected.connect(func(i: int):
+		voice.language = Voice.LANGUAGES[i][0]
+		voice.save_settings())
+	row.add_child(languages)
+	var english := CheckBox.new()
+	english.text = "English commands"
+	english.tooltip_text = "Translate what you say into English, so the built-in commands understand every language. Off: Claude receives your own words."
+	english.button_pressed = voice.translate
+	english.toggled.connect(func(on: bool):
+		voice.translate = on
+		voice.save_settings())
+	row.add_child(english)
+	var microphones := OptionButton.new()
+	microphones.tooltip_text = "Microphone"
+	microphones.custom_minimum_size.x = 120
+	microphones.clip_text = true
+	var list: PackedStringArray = voice.devices()
+	for i in list.size():
+		microphones.add_item(list[i])
+		if list[i] == voice.device: microphones.select(i)
+	microphones.item_selected.connect(func(i: int): voice.set_device(microphones.get_item_text(i)))
+	row.add_child(microphones)
+	if Voice.engine().is_empty(): note("Whisper speech is not installed (scripts/setup-speech.ps1); Talk uses Windows speech recognition.")
+
 func _button(text: String, tip: String, action: Callable, parent: Container) -> Button:
 	var b := Button.new()
 	b.text = text
@@ -682,13 +704,14 @@ func _build() -> void:
 	ask_box.text_submitted.connect(submit_request)
 	column.add_child(ask_box)
 	var asking := _row(column)
-	talk_button = _button("Talk","Say your request: Windows speech recognition fills the box, then the plan is shown (nothing changes until Accept)",talk,asking)
+	talk_button = _button("Talk","Say your request in any language: recorded in the game and recognized locally by Whisper, then the plan is shown (nothing changes until Accept). Press again to stop early.",talk,asking)
 	_button("Plan","Interpret the request and show its scope",func(): submit_request(ask_box.text),asking)
 	claude_button = _button("Ask Claude","Send the request to Claude Code (connected through scripts/dev-edit-bridge.ps1); its proposal comes back for review",ask_claude,asking)
 	speak_box = CheckBox.new()
 	speak_box.text = "Speak replies"
 	speak_box.tooltip_text = "Read answers aloud with the system voice"
 	asking.add_child(speak_box)
+	_voice_controls(column)
 	plan_label = _text(column,12,Color("ffe28a"))
 	var tools := _row(column)
 	for entry in [["select","Select","Select a static or placed object (click)"],["place","Place","Place an approved decorative asset (click the ground)"],["terrain","Terrain","Bounded terrain brush (click the ground)"]]:

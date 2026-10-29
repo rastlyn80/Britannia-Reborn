@@ -6,6 +6,10 @@ config/use_custom_user_dir=true
 config/custom_user_dir_name="Godot/app_userdata/UO World Studio"
 run/main_scene="res://Main.tscn"
 
+[audio]
+
+driver/enable_input=true
+
 [display]
 window/size/viewport_width=1280
 window/size/viewport_height=800

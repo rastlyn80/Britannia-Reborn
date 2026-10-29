@@ -156,3 +156,21 @@ Captures: `outputs/validation/dev-edit-a-*.png` / `dev-edit-b-*.png` (joined, pl
 - Sessions cover the converted Britain bounds only; other regions need prepared districts first.
 - The modern-Britain cache must be rebaked (the next `Launch.cmd` in modern mode does it) before static edits work in that mode; terrain/placements work regardless.
 - Transform controls are buttons (¼/1 tile, 1 Z, 15°), not drag gizmos; there is no multi-select or rule-based ("every barrel on this street") scope yet. The command model is ready for an assistant to add them.
+
+## Talk: local, multilingual speech (29 October 2026)
+
+**Talk** in the F9 panel records one request from the microphone inside the game (Godot `AudioStreamMicrophone` and `AudioEffectCapture`, on a silent bus). Recording stops on the second press, after 1.3 s of silence following speech, or after 20 s. The clip is resampled to 16 kHz mono and recognized by local Whisper (whisper.cpp). It is free and offline, covers 99 languages, and no audio leaves the computer. The text fills the Ask box and opens the usual review: requests the built-in interpreter knows show their plan, and anything else goes to Claude. Nothing changes until Accept.
+
+- **Install once:** `./scripts/setup-speech.ps1` (whisper.cpp CPU/BLAS build plus `small-q8_0`, about 270 MB in total). `-Model large-v3-turbo-q5_0 -Gpu` installs the best multilingual model with the CUDA build. Without Whisper, Talk falls back to Windows speech recognition (`scripts/listen.ps1`).
+- **Panel controls:** spoken language (Auto or one of 17 listed; any Whisper code works in the settings file), **English commands** (translate speech into English so the built-in commands work in every language; turn it off to send Claude your own words), and the microphone. Settings persist in `user://dev-edit-voice.cfg`.
+- **Speed:** the encoder window is sized to the clip (50 frames per second) instead of a fixed 30 s, which makes short commands about twice as fast.
+
+Evidence on a Ryzen 9 9900X (CPU only, small-q8_0, 12 threads):
+
+| Clip | Time | Result |
+|---|---:|---|
+| 8 s English command (Windows voice), through the game's own encoder | 1.55–1.65 s | Word-perfect |
+| German, CC BY-SA spoken Wikipedia | about 3 s | Word-perfect; English translation good |
+| Italian, CC0 sample, language set to Italian | about 2.4 s | Word-perfect; English translation good |
+
+With Auto, the small model misidentified the Italian sample as Latin; choosing the language avoids that, as does the larger model. The real microphone delivered 72,704 samples in 1.5 s at 48 kHz. Voice tests: 7/7 headless, plus the microphone check with `-Gpu`. Not yet exercised: a real person speaking into Talk in the running game.

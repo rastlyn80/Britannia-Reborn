@@ -262,22 +262,32 @@ func batch(action: String, items: Array, description: String, sender: Callable) 
 	return _request(action,description,"batch %d commit",sender)
 
 # Plain-language request, split into numbered parts within the speech limit.
-func ask(text: String, sender: Callable) -> bool:
-	var words := text.strip_edges().replace("|","/").split(" ",false)
+# Splits text at word boundaries into pieces that fit one speech line.
+static func pieces(text: String, width: int) -> Array[String]:
 	var parts: Array[String] = []
 	var current := ""
-	for word in words:
-		if (current+" "+word).length() > 100 and current != "":
+	for word in text.strip_edges().replace("|","/").split(" ",false):
+		word = word.left(width)
+		if (current+" "+word).length() > width and current != "":
 			parts.append(current);current = word
 		else: current = word if current == "" else current+" "+word
 	if current != "": parts.append(current)
+	return parts
+
+func ask(text: String, sender: Callable) -> bool:
+	var parts := pieces(text,100)
 	if parts.is_empty() or parts.size() > 4: return false
 	for i in parts.size():
 		if not sender.call("ask %d/%d %s" % [i+1,parts.size(),parts[i]]): return false
 	return true
 
+# A long answer goes out as consecutive answer lines (up to 8).
 func answer(id: int, text: String, sender: Callable) -> bool:
-	return sender.call("answer %d %s" % [id,text.replace("|","/").left(110)])
+	var parts := pieces(text,110)
+	if parts.is_empty() or parts.size() > 8: return false
+	for part in parts:
+		if not sender.call("answer %d %s" % [id,part]): return false
+	return true
 
 func propose(id: int, lines: Array, sender: Callable) -> bool:
 	if lines.is_empty() or lines.size() > 32: return false

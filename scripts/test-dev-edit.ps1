@@ -21,6 +21,15 @@ if (!$VerifyMarker) {
  if ($LASTEXITCODE) { throw 'Developer edit session tests failed' }
  & $godot --headless --path "$root/Viewer" --script res://DevEdit/DevEditTests.gd
  if ($LASTEXITCODE) { throw 'Developer edit client tests failed' }
+ # Talk: a command spoken by the Windows voice, through the game's encoder and local Whisper.
+ $clip = Join-Path $env:APPDATA 'voice-test-command.wav'
+ Add-Type -AssemblyName System.Speech
+ $voice = New-Object System.Speech.Synthesis.SpeechSynthesizer
+ $voice.SetOutputToWaveFile($clip, (New-Object System.Speech.AudioFormat.SpeechAudioFormatInfo 48000,([System.Speech.AudioFormat.AudioBitsPerSample]::Sixteen),([System.Speech.AudioFormat.AudioChannel]::Mono)))
+ $voice.Speak('The wall in this building is peeking through the roof. Can you fix this, and all similar occurrences?')
+ $voice.Dispose()
+ & $godot --headless --path "$root/Viewer" --script res://DevEdit/DevEditVoiceTests.gd -- "--clip=$clip"
+ if ($LASTEXITCODE) { throw 'Developer edit voice tests failed' }
  # Committed overrides through the real converter (owned data; about a minute).
  if (Test-Path "$root/outputs/britain/atlas.json") {
   & $godot --headless --path "$root/Viewer" --script res://DevEdit/DevEditCommitTests.gd -- --classic-britain
@@ -29,6 +38,8 @@ if (!$VerifyMarker) {
  if ($Gpu) {
   & $godot --path "$root/Viewer" --script res://DevEdit/DevEditTests.gd
   if ($LASTEXITCODE) { throw 'Developer edit GPU tests failed' }
+  & $godot --path "$root/Viewer" --script res://DevEdit/DevEditVoiceTests.gd -- --mic
+  if ($LASTEXITCODE) { throw 'Microphone capture check failed' }
  }
 }
 if ($Live -or $VerifyMarker) {

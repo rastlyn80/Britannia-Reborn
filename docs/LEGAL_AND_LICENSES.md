@@ -26,3 +26,7 @@ The owner states these packages were bought on the Unity Asset Store (flash sale
 ## MedievalKit (CC0)
 
 Viewer/Art/MedievalKit holds selected static modules of MedievalKit 5.1.1, dedicated to the public domain under CC0 1.0 (LICENSE.txt and CREDITS.md retained alongside; materials partly derived from ambientCG CC0). They were exported from the owner-supplied MedievalKit.blend (SHA-256 d55818dd…789c) with Blender 5.2.1 by scripts/export-medievalkit.py; colour/roughness maps were re-encoded as JPEG. Viewer/Art/Surfaces mk_limewash and mk_oak_dark come from the same file. manifest.json files record every hash. Blender itself (GPL) is a local tool in the ignored .tools folder and is not distributed.
+
+## Local speech-to-text (29 October 2026)
+
+`scripts/setup-speech.ps1` downloads, into the ignored `.tools/whisper` folder, whisper.cpp release b5454 (v1.9.5, MIT, github.com/ggml-org/whisper.cpp; the Windows BLAS build bundles OpenBLAS, BSD-3-Clause) and a Whisper model converted to ggml (OpenAI Whisper weights, MIT; huggingface.co/ggerganov/whisper.cpp at revision 5359861c739e955e79d9a303bcbc70fb988958b1). Every file is pinned by SHA-256 in the script. Nothing is committed or redistributed. Test audio downloaded from Wikimedia Commons (CC0 / CC BY-SA 3.0 de) stayed in a scratch folder and is not part of the repository.
