@@ -1,3 +1,27 @@
+# Trinsic bridges: timber footbridges and solid stone piers — 29 October 2026
+
+Owner report: a Trinsic bridge "looks really bad", and asked to look for a free model. Captures showed two defects. Trinsic's six canal footbridges were flat boxes on stilts with loose rail pieces. The long sandstone east bridge (2067–2104, 2790–2800) had wooden balustrades on its pier tops and hollow, slotted piers.
+
+**Model search.** Sketchfab and the Objaverse mirror were searched through the existing pinning pipeline (CC0 / CC-BY 4.0 only), with eight bridge queries and 33 licensed candidates; Poly Haven was also checked. None fits a UO bridge footprint. The candidates are single fixed-proportion spans (stylised, low-poly or multi-million-triangle scans), while UO bridges are tile-built at exact walking heights and every crossing has its own length, width and ramps. Poly Haven's CC0 `modular_wooden_pier` and `modular_fort_01` kits are the best free matches for later dock and tower work.
+
+**Shared rules instead of a model:**
+- `TimberBridge.gd` recognises a deck of boards over water with a ramp as one footbridge. Docks without ramps keep their pieces. The bridge is drawn once, by its first deck board, fitted to its own footprint:
+  - weathered boards (pinned CC0 Poly Haven `rough_wood`) laid along the walking surface, ramps included and gently rounded;
+  - stringers and side fascias;
+  - trestle bents with cap beams and cross bracing, down to the bank or riverbed;
+  - sills, and post-and-rail handrails on both sides.
+  Its members are accounted as components, and source XYZ is unchanged.
+- **Solid piers.** A closed 2×2 ring of masonry wall pieces under a paved top is drawn as solid blocks. This applies to bridge piers and to paved thick-wall walks.
+- **Stairwell rails.** They no longer appear on a pier top, and a stone block paved on top counts as a foundation, not a stairwell step.
+- **Stacked landings.** A stack of stone blocks draws one paved top.
+
+**Evidence:**
+- Before and after captures of every Trinsic footbridge, the east bridge, the docks, Britain castle and the Trinsic west wall. These are local captures from preview bakes, not committed.
+- A whole-region comparison (britain-trinsic) against the previous code: stairwell rails go from 245 to 139. Every one removed is in Trinsic bridge, footbridge or pier footprints; none is in Britain. 662 pier blocks; 6 footbridges with 580 records.
+- `BridgeTests.gd`: 15 checks, run in verify.
+
+**Remaining:** Trinsic's sandstone still reads dark brown, because of the regional art tint on `medieval_blocks_03`. The east bridge stays a solid causeway, as the source stacks it. The docks keep their individual planks and posts.
+
 # Horse colours and riding polish — 29 October 2026
 
 Implemented four native base coats (matched against private original stand frames) and server-driven full/partial hues, stable coat/tack regions, cycle-preserving gait transitions, turn balance, real bounded hoof support, authored interruptible leg-over mount/dismount, fitted riding garments and continuous robe lining. Camera/nameplate/picking track the dismounted visual body. Added canter-derived fast gait and prototype hit/death poses; corpse art, eating/lying, distinct fidgets and other mount families remain gaps. No source textures, bind/UV inputs, authoritative coordinates or upstream source changed.

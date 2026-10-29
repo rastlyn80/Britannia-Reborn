@@ -111,6 +111,8 @@ All 54 requested sign-face reinterpretations are generated and locally reviewed 
 
 # Owner-reported Britain defects (queued after the catalogue matching) — 27 October 2026
 
+Status 29 October 2026: items 1–9 were addressed in the Britain defect passes of 27–28 October (see PROGRESS.md). Photoscanned plaster and multi-variant surfaces with anti-tiling are in place. Trinsic bridges were added on 29 October: timber footbridges, solid piers and no balustrades on pier tops. Still open: Trinsic sandstone colour (too dark), finer terrain macro variation, and the per-district scene audit run after each bake.
+
 From the owner's in-game screenshots; fix with shared rules, then verify in captures:
 1. Wall caps 102/108 (stone wall pieces whose later tiledata names are "ornate elven bookshelf"/"ethereal voyage scroll") render as a bookcase/book on wall corners (14 + 2 in Britain). Wall-flagged graphics must stay masonry.
 2. Castle entrance just after the wooden drawbridge: the main gateway (between two arched side doors) is walkable in the source/server but is drawn as a solid wall; it must be rendered as an open passage. Find the passable gate cells under the wall run and open them. Compare rendered walls/collision with passable source arch cells (208/209/111/113/320 are passable, 206/207 piers impassable).

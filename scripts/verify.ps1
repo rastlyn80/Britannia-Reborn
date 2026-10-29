@@ -102,6 +102,8 @@ if ($LASTEXITCODE) { throw 'Shared architectural/nature presentation tests faile
 if ($LASTEXITCODE) { throw 'Terrain/shoreline/PBR surface regression checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/ContactTests.gd
 if ($LASTEXITCODE) { throw 'Interior/stair/foot-contact regression checks failed' }
+& $godot --headless --path "$root/Viewer" --script res://Presentation/BridgeTests.gd
+if ($LASTEXITCODE) { throw 'Footbridge/pier presentation checks failed' }
 # Developer edit session: server logic (no ModernUO needed) and client overlay.
 $env:DOTNET_CLI_HOME = Join-Path $root '.dotnet-home'
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'

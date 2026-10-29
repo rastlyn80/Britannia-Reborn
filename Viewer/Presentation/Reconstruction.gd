@@ -38,6 +38,13 @@ var solid_arch_cells := {}
 # so plants placed at raw tile height float or sink on slopes and planters.
 var terrain_surface
 var ground_supports := {}
+# Landing (stone block) bases by cell and Z: a block with another on top is
+# part of a column and gets no paved top of its own.
+var landing_bases := {}
+# Masonry wall pieces closing a 2x2 ring (a bridge pier, a square pillar):
+# ordinal -> true; each draws a solid block instead of a thin wall face.
+var pillar_blocks := {}
+var pillar_tops := {}
 const VEGETATION := ["tree","flower","grass","bush","mushroom","rock","log","fern","plant","reeds","cactus","stalagmite","crystal"]
 var lava_materials := {}
 # Optional local average colours of original art (scripts/build-item-catalog.ps1);
@@ -75,6 +82,7 @@ var contextual_suppressed := 0
 var floors := preload("res://Presentation/FloorPlan.gd").new()
 var supports := preload("res://Presentation/SupportPlan.gd").new()
 var bridges := preload("res://Presentation/BridgePlan.gd").new()
+var timber_bridges := preload("res://Presentation/TimberBridge.gd").new()
 var windows := preload("res://Presentation/WindowDressing.gd").new()
 
 static func info(world: Dictionary, id: int, statics: bool) -> Dictionary:
@@ -324,6 +332,7 @@ func index(world: Dictionary) -> void:
 	_plan_window_families(world)
 	_plan_pinnacles(world)
 	_plan_foundations(world)
+	_plan_pillar_blocks(world)
 	_plan_stairwells(world)
 	_plan_stray_roofs(world)
 	_plan_eaves(world)
@@ -335,15 +344,18 @@ func index(world: Dictionary) -> void:
 		if not carpet_cells.has(rug_cell): carpet_cells[rug_cell] = []
 		carpet_cells[rug_cell].append(int(tile.z))
 	ground_supports.clear()
+	landing_bases.clear()
 	for tile in world.statics:
 		var support_kind := str(rule_for(int(tile.id)).get("kind",""))
 		if support_kind not in ["floor","landing","planter","stairs"]: continue
+		if support_kind == "landing": landing_bases[Vector3i(tile.x,tile.y,tile.z)] = true
 		var detail := info(world,int(tile.id),true)
 		var top := float(tile.z)+float(detail.get("height",0))*(0.5 if int(detail.get("flags",0)) & 0x400 else 1.0)
 		var cell := Vector2i(tile.x,tile.y)
 		if not ground_supports.has(cell): ground_supports[cell] = []
 		ground_supports[cell].append(top)
 	bridges.index(world,catalog)
+	timber_bridges.index(world,catalog)
 	supports.catalog = catalog
 	supports.index(world)
 
@@ -583,7 +595,7 @@ func _plan_stairwells(world: Dictionary) -> void:
 			if not stairs_at.has(cell): stairs_at[cell] = []
 			# Bridge-flagged landings stand at half their tiledata height.
 			var rise := int(float(detail.get("height",0))*(0.5 if int(detail.get("flags",0)) & 0x400 else 1.0))
-			stairs_at[cell].append(Vector2i(int(tile.z),int(tile.z)+rise))
+			stairs_at[cell].append(Vector3i(int(tile.z),int(tile.z)+rise,1 if kind == "landing" else 0))
 		elif kind in ["wall","window","corner","trim","fence","door","arch"]:
 			if not walls_at.has(cell): walls_at[cell] = []
 			walls_at[cell].append(int(tile.z))
@@ -596,6 +608,8 @@ func _plan_stairwells(world: Dictionary) -> void:
 		var blocked := false
 		for wz in walls_at.get(cell,[]):
 			if absi(int(wz)-z) <= 2: blocked = true
+		# The paved top of a solid pier is a platform, not a stairwell's edge.
+		if pillar_tops.has(cell): continue
 		if blocked: continue
 		var edges: Array = []
 		for d in 4:
@@ -611,11 +625,58 @@ func _plan_stairwells(world: Dictionary) -> void:
 			var arrival := false
 			for probe in [next,next+steps[(d+1)%4],next+steps[(d+3)%4],next+steps[d]]:
 				for span in stairs_at.get(probe,[]):
+					# A stone block paved on top is a foundation (a bridge deck's
+					# or pier's masonry), not a step of a stairwell.
+					var paved := false
+					if span.z == 1:
+						for fz in floors_at.get(probe,[]):
+							if absi(int(fz)-span.y) <= 2: paved = true
+					if paved: continue
 					if span.x < z-1 and span.x >= z-30: below = true
 					# Stairs or a platform reaching this floor's level continue it.
 					if probe == next and span.y >= z-3 and span.y <= z+3: arrival = true
 			if below and not arrival: edges.append(d)
 		if not edges.is_empty(): stairwell_rails[i] = edges
+
+# UO draws a square pier as four wall pieces round a 2x2 footprint (both
+# axes, same Z) under a paved top. Thin faces at the tile edges leave it
+# hollow with slots, so masonry rings of that kind become solid blocks.
+func _plan_pillar_blocks(world: Dictionary) -> void:
+	pillar_blocks.clear()
+	pillar_tops.clear()
+	var at := {}
+	var paved := {}
+	for tile in world.statics:
+		if str(rule_for(int(tile.id)).get("kind","")) != "floor": continue
+		var cell := Vector2i(tile.x,tile.y)
+		paved[cell] = paved.get(cell,[])+[int(tile.z)]
+	for i in world.statics.size():
+		var s: Dictionary = world.statics[i]
+		var rule := rule_for(int(s.id))
+		if str(rule.get("kind","")) not in ["wall","trim","corner"]: continue
+		var detail := info(world,int(s.id),true)
+		if not int(detail.get("flags",0)) & 0x40: continue
+		if preload("res://Presentation/Facade.gd").family_for(str(detail.get("name",""))) not in preload("res://Presentation/Facade.gd").MASONRY: continue
+		var key := Vector3i(s.x,s.y,s.z)
+		if not at.has(key): at[key] = []
+		at[key].append([i,str(rule.get("axis","x"))])
+	for key in at:
+		var ring: Array = []
+		var axes := {}
+		var closed := true
+		for d in [Vector3i(0,0,0),Vector3i(1,0,0),Vector3i(0,1,0),Vector3i(1,1,0)]:
+			var capped := false
+			for fz in paved.get(Vector2i(key.x+d.x,key.y+d.y),[]):
+				if int(fz) > key.z and int(fz) <= key.z+40: capped = true
+			if not at.has(key+d) or not capped:
+				closed = false
+				break
+			ring.append_array(at[key+d])
+		if not closed: continue
+		for entry in ring: axes[entry[1]] = true
+		if axes.size() < 2: continue
+		for entry in ring: pillar_blocks[entry[0]] = true
+		for d in [Vector2i(0,0),Vector2i(1,0),Vector2i(0,1),Vector2i(1,1)]: pillar_tops[Vector2i(key.x,key.y)+d] = true
 
 # One- or two-tile roof fragments with no wall, gable or roof under or beside
 # them at their eave are source leftovers (a lone shingle eight Z above a
@@ -1266,9 +1327,13 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 	elif kind == "arch": kind = "pier"
 	var visual: Node3D
 	var state := "replacement"
-	if groups.has(ordinal) and groups[ordinal].owner != ordinal:
+	if groups.has(ordinal) and groups[ordinal].owner != ordinal or timber_bridges.members.get(ordinal,ordinal) != ordinal:
 		state = "group-component"
 		grouped += 1
+	elif timber_bridges.plans.has(ordinal):
+		# The first deck board draws its whole wooden footbridge (TimberBridge.gd).
+		var whole: Node3D = timber_bridges.build(s,world,ordinal)
+		node.add_child(whole)
 	elif presentation_adjustments.get(ordinal,{}).get("suppress",false) and not show_boundary_fragments:
 		state = "context-suppressed"
 		contextual_suppressed += 1
@@ -1317,6 +1382,10 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 			var library := preload("res://Presentation/LocalLibrary.gd")
 			visual = library.pile(str(rule.slot),int(s.x),int(s.y),Vector3(fit[0],fit[1],fit[2]),int(rule.slotCount)) if rule.has("slotCount") else library.build(str(rule.slot),int(s.x),int(s.y),Vector3(fit[0],fit[1],fit[2]))
 			if visual: node.set_meta("library",str(rule.slot))
+		if visual == null and pillar_blocks.has(ordinal):
+			visual = Node3D.new()
+			visual.set_meta("world_aligned",true)
+			facade.piece(visual,Vector3(1.0,height,1.0),Vector3(0,height/2,0),family)
 		if visual == null:
 			match kind:
 				"wall", "window":
@@ -1453,9 +1522,14 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					var stair_material := facade.material(stair_surface(str(detail.get("name","")),tint))
 					var support := geometry.box(visual,Vector3(1,height,1),Vector3(0,height/2,0),"ffffff")
 					support.material_override = stair_material
-					var deck := floors.slab("landing",stair_material)
-					deck.position.y += height
-					visual.add_child(deck)
+					var native_top := int(s.z)+roundi(height/float(world.elevationScale))
+					var capped := false
+					for dz in range(-1,2):
+						if landing_bases.has(Vector3i(s.x,s.y,native_top+dz)): capped = true
+					if not capped:
+						var deck := floors.slab("landing",stair_material)
+						deck.position.y += height
+						visual.add_child(deck)
 				"stairs":
 					visual = geometry.stairs(height,floors.stair_rise.get(ordinal,Vector2(rule.rise[0],rule.rise[1])))
 					for step in visual.get_children(): step.material_override = facade.material(stair_surface(str(detail.get("name","")),tint))
@@ -1619,7 +1693,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					node.free()
 					report.append({"ordinal":ordinal,"id":s.id,"xyz":[s.x,s.y,s.z],"status":"unmapped"})
 					return null
-		if visual and not bridge.is_empty() and kind in ["wall","window","corner"]:
+		if visual and not bridge.is_empty() and kind in ["wall","window","corner"] and not pillar_blocks.has(ordinal):
 			# Bridge parapet walls sit on the deck edge like the trims beside them.
 			var deck_side: Vector2i = bridge.get("toward",Vector2i.ZERO)
 			visual.position += Vector3(deck_side.x,0,deck_side.y)*0.35
@@ -1681,6 +1755,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 		entry.presentation_offset = [adjustment.x,adjustment.y,adjustment.z] if not show_boundary_fragments else [0,0,0]
 	if groups.has(ordinal): entry.group_owner = groups[ordinal].owner
 	if not bridge.is_empty(): entry.bridge_context = bridge.reason
+	if timber_bridges.members.has(ordinal): entry.bridge_context = "timber footbridge drawn by record %d" % timber_bridges.members[ordinal]
 	report.append(entry)
 	return node
 
@@ -1712,4 +1787,4 @@ func water_surface() -> ShaderMaterial:
 
 func save_report(path: String) -> void:
 	var file := FileAccess.open(path,FileAccess.WRITE)
-	file.store_string(JSON.stringify({"total":report.size(),"accounted":mapped,"group_components":grouped,"boundary_fragments":boundary_fragments,"contextual_suppressed":contextual_suppressed,"unmapped":unresolved,"exact_original_art_matches":0,"architecture":facade.audit(),"bridges":bridges.audit(),"derived_floor_repairs":floors.repairs.map(func(at): return [at.x,at.y,at.z]),"stair_directions_inferred":floors.stair_rise.size(),"placements":report},"\t"))
+	file.store_string(JSON.stringify({"total":report.size(),"accounted":mapped,"group_components":grouped,"boundary_fragments":boundary_fragments,"contextual_suppressed":contextual_suppressed,"unmapped":unresolved,"exact_original_art_matches":0,"architecture":facade.audit(),"bridges":bridges.audit(),"timber_bridges":timber_bridges.audit(),"derived_floor_repairs":floors.repairs.map(func(at): return [at.x,at.y,at.z]),"stair_directions_inferred":floors.stair_rise.size(),"placements":report},"\t"))

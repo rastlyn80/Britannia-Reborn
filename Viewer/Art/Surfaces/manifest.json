@@ -1878,6 +1878,46 @@
      "bytes": 383892
     }
    ]
+  },
+  {
+   "id": "rough_wood",
+   "name": "Rough Wood",
+   "source": "https://polyhaven.com/a/rough_wood",
+   "license": "CC0-1.0",
+   "licenseUrl": "https://polyhaven.com/license",
+   "authors": [
+    "Rob Tuytel"
+   ],
+   "sizeMeters": [
+    0.5,
+    0.5
+   ],
+   "maps": [
+    {
+     "role": "albedo",
+     "file": "rough_wood_diff_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rough_wood/rough_wood_diff_1k.jpg",
+     "sha256": "abc46d8e3163d911220f4ec3a4043b68d2b0c6d750513f80871211acfefb2a98",
+     "sourceMd5": "92d4b3dd46bab95248f5a7680b7882e7",
+     "bytes": 567074
+    },
+    {
+     "role": "normal",
+     "file": "rough_wood_nor_gl_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rough_wood/rough_wood_nor_gl_1k.jpg",
+     "sha256": "3d1c6f098b66d93e52071b41834dd14a424d8cd2f7c4130c62dc062acfa65011",
+     "sourceMd5": "1c9829c9023f74c74eaeba28e56e5144",
+     "bytes": 790334
+    },
+    {
+     "role": "roughness",
+     "file": "rough_wood_rough_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rough_wood/rough_wood_rough_1k.jpg",
+     "sha256": "4e9ea9962a7e8b69057937e6723c4b0134b949c1ee5cdb5f3687a54113027b09",
+     "sourceMd5": "ef62954e4ea0e9cd78757ce79e6eeb58",
+     "bytes": 195056
+    }
+   ]
   }
  ]
 }
