@@ -1,3 +1,5 @@
+Protocol work follows docs/PROTOCOL_BLUEPRINT.md (second blueprint): Phase 0 foundation (dispatch modules, version match, census, full cliloc), then world truth (tooltips, health bars, effects, audio), interactions, every gump/prompt, commerce/social, world systems, robustness. Census 2026-10-29: 9 of 30 received packet types dropped (0xDC tooltips x1580, 0x17 health bars x192, time, music, features, season).
+
 # Human action, wearable coverage and armour correction - 29 October 2026
 
 Reached the owner's category targets with unchanged denominators: 35/35 original action groups have prepared clips; 28/28 on-foot groups are connected; 234/1,126 indexed wearable graphics (20.78%) have category art on both bodies. Totals: 65 categories and 59 clips per body. Seven rider clips are opt-in previews; mounted live playback and mount gameplay remain deferred. Replaced rejected body-derived armour shells with continuous tailored trousers/undercoat and separate manufactured plates, matte leather and brushed steel. Backing retains its cloth colour under native metal dyes. Full body/UV/bind foundation, native identity and existing movement are preserved.
