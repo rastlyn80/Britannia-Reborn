@@ -79,10 +79,11 @@ func _characters(p: PackedByteArray) -> void:
 # --- requests ---
 # Ghost choice after death (0x2C: 0 = resurrect, 1 = remain a ghost).
 static func death_choice(action: int) -> PackedByteArray: return PackedByteArray([0x2c,action])
-# Paperdoll of a mobile: double-click with the paperdoll bit for the player.
-static func open_paperdoll(serial: int) -> PackedByteArray:
+# Paperdoll: your own is a double-click with the paperdoll bit (ModernUO
+# answers the bit only for yourself); anyone else's is a plain double-click.
+static func open_paperdoll(serial: int, own := true) -> PackedByteArray:
 	var packet := PackedByteArray([0x06])
-	packet.append_array(be32(serial|0x80000000))
+	packet.append_array(be32(serial|0x80000000 if own else serial))
 	return packet
 # Profile request (0xB8 mode 0) and update (mode 1, new body text).
 static func profile_request(serial: int) -> PackedByteArray:

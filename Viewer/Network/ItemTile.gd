@@ -12,7 +12,7 @@ var payload := {}
 var title := ""
 
 func _ready() -> void:
-	custom_minimum_size = Vector2(84,84)
+	if custom_minimum_size == Vector2.ZERO: custom_minimum_size = Vector2(84,84)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 
 func _draw() -> void:

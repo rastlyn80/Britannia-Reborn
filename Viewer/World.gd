@@ -59,6 +59,7 @@ var game_menu: Control
 var console: Control
 var toasts: Control
 var audio: Node3D
+var paperdoll_window: Control
 
 func point(x: int, y: int, z: int) -> Vector3:
 	return Vector3(x - int(world.originX), z * float(world.elevationScale), y - int(world.originY))
@@ -459,6 +460,10 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	backpack.configure(game)
 	backpack.add_requested.connect(quickbar.add_to_first_empty)
 	backpack.inspect_requested.connect(inspector.inspect)
+	var paperdoll := preload("res://Network/PaperdollWindow.gd").new()
+	canvas.add_child(paperdoll)
+	paperdoll.configure(game)
+	paperdoll_window = paperdoll
 	# Context menus and shops in the modern style; the old panel stops answering.
 	var vendor := preload("res://Network/VendorWindow.gd").new()
 	canvas.add_child(vendor)
@@ -505,7 +510,8 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	game.ended.connect(menu.hide)
 	var open := func(window: String) -> bool:
 		match window:
-			"character", "Paperdoll", "Status": character_sheet.toggle("character")
+			"character", "Paperdoll": paperdoll.toggle()
+			"Status": character_sheet.toggle("character")
 			"backpack", "Backpack": backpack.toggle()
 			"skills", "Skills": skills.toggle()
 			"spellbook": spellbook.toggle()
@@ -636,7 +642,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.keycode == KEY_F9 and dev_edit: dev_edit.toggle()
 		if event.keycode == KEY_B: game.open_backpack()
 		if event.keycode == KEY_E: world_items.nearest()
-		if event.keycode == KEY_C and game.phase == "world": character_sheet.toggle("character")
+		if event.keycode == KEY_C and game.phase == "world" and not get_viewport().gui_get_focus_owner() is LineEdit:
+			if paperdoll_window: paperdoll_window.toggle()
+			else: character_sheet.toggle("character")
 		if event.keycode == KEY_K and game.phase == "world": character_sheet.toggle("skills")
 		if event.keycode == KEY_ESCAPE:
 			if not front_end: get_tree().quit()

@@ -123,6 +123,12 @@ The owner approved the plan on the design canvas: a front end with no map distri
   - **Closing:** the window closes when the container is gone or more than 3 tiles away.
   - **The old item browser** now only shows books and bulletin boards.
   - **Live check:** bread was moved into a bag and back with Take all.
+- **Paperdoll (Phase 2, built 2026-10-29):** C and the menu bar open `Network/PaperdollWindow.gd`.
+  - **Layout:** the character's real 3D model with its worn equipment, lit and slowly turning (drag to turn), with 16 equipment slots showing 3D icons and tooltips.
+  - **Your own paperdoll:** the server title (from 0x88), attributes and resistances. Drag backpack items onto it to wear them, drag worn items back to the backpack, and double-click to use.
+  - **Other characters:** their paperdoll opens when the server sends theirs (Open Paperdoll in the context menu, or double-click). ModernUO honours the paperdoll bit only for yourself, so others are asked with a plain double-click.
+  - **Live check:** the weapon was moved to the pack, the dagger worn and removed, and another player's paperdoll opened.
+  - **Attributes sheet:** the full sheet stays on the vitals card.
 - **Original idea:** any item (in the backpack, a container, the paperdoll, a vendor or trade window, or the world) can be opened in an inspect view, as in modern games. It shows the item's 3D model, lit, with drag to rotate and wheel to zoom, and its server tooltip lines (name, properties) beside it. It uses the same model as the world and the 3D icon renderer.
 - **Front end still to do:** deleting characters, profession and skill choice at creation, a server-status probe before sign-in, and remembered looks updating while you play (they are saved on entering and on logging out).
 - **Windows still to modernise:** the character sheet (paperdoll), other containers, the world map, buff bar, party frames. Speaker names in the journal need the session to pass them on (0x1C/0xAE carry them; GameSession emits text only).
