@@ -275,11 +275,17 @@ Claude answers here; any change comes back as a proposal you preview and accept.
 func talk() -> void:
 	voice.toggle()
 
+# F8: hold to talk while the panel is open.
+func _input(event: InputEvent) -> void:
+	if active and voice and event is InputEventKey and event.keycode == KEY_F8 and not event.echo:
+		voice.hold(event.pressed)
+		get_viewport().set_input_as_handled()
+
 func _voice_state(value: String) -> void:
 	talk_button.text = {"recording":"Stop","recognizing":"…"}.get(value,"Talk")
 	talk_button.disabled = value == "recognizing"
 	match value:
-		"recording": plan_label.text = "Listening — say your request, then pause (or press Stop)."
+		"recording": plan_label.text = "Listening — release F8 when done." if voice.held else "Listening — say your request; it stops after a 3.5 s pause (or press Stop)."
 		"recognizing": plan_label.text = "Recognizing…" if not Voice.engine().is_empty() else "Listening (Windows speech recognition) — say your request."
 
 func _voice_heard(text: String, info: Dictionary) -> void:
@@ -704,7 +710,7 @@ func _build() -> void:
 	ask_box.text_submitted.connect(submit_request)
 	column.add_child(ask_box)
 	var asking := _row(column)
-	talk_button = _button("Talk","Say your request in any language: recorded in the game and recognized locally by Whisper, then the plan is shown (nothing changes until Accept). Press again to stop early.",talk,asking)
+	talk_button = _button("Talk","Say your request in any language (or hold F8 while speaking): recorded in the game and recognized locally by Whisper, then the plan is shown (nothing changes until Accept). Stops after 3.5 s of silence or when pressed again.",talk,asking)
 	_button("Plan","Interpret the request and show its scope",func(): submit_request(ask_box.text),asking)
 	claude_button = _button("Ask Claude","Send the request to Claude Code (connected through scripts/dev-edit-bridge.ps1); its proposal comes back for review",ask_claude,asking)
 	speak_box = CheckBox.new()

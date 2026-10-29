@@ -3,8 +3,8 @@ extends Node
 # into text with local Whisper (whisper.cpp, scripts/setup-speech.ps1): free,
 # offline, 99 languages, nothing leaves the computer. Without Whisper installed
 # it falls back to Windows speech recognition (scripts/listen.ps1).
-# Recording stops on the second press, after ~1.3 s of silence following
-# speech, or after 20 s. Emits heard(text, info) or failed(reason).
+# Recording stops on the second press, after 3.5 s of silence following
+# speech, or after 20 s; held with the hotkey (F8) it records until release. Emits heard(text, info) or failed(reason).
 signal heard(text: String, info: Dictionary)
 signal failed(reason: String)
 signal state_changed(state: String)
@@ -12,7 +12,7 @@ signal state_changed(state: String)
 const BUS := "DevEditMic"
 const SETTINGS := "user://dev-edit-voice.cfg"
 const MAX_SECONDS := 20.0
-const SILENCE_SECONDS := 1.3
+const SILENCE_SECONDS := 3.5
 # Whisper language codes offered in the panel ("auto" detects).
 const LANGUAGES := [["auto","Auto-detect"],["en","English"],["it","Italiano"],["es","Español"],["fr","Français"],["de","Deutsch"],["pt","Português"],["nl","Nederlands"],["pl","Polski"],["sv","Svenska"],["ru","Русский"],["uk","Українська"],["tr","Türkçe"],["ar","العربية"],["hi","हिन्दी"],["ja","日本語"],["ko","한국어"],["zh","中文"]]
 
@@ -25,6 +25,7 @@ var capture: AudioEffectCapture
 var samples := PackedFloat32Array()
 var rate := 48000.0
 var started := 0
+var held := false
 var spoke := false
 var quiet_since := 0
 var level := 0.0
@@ -78,6 +79,16 @@ func _setup() -> void:
 	player.bus = BUS
 	add_child(player)
 
+# Hold-to-talk: records while the key is down, recognizes on release.
+func hold(down: bool) -> void:
+	if down and state == "idle":
+		held = true
+		start()
+		held = state == "recording"
+	elif not down and held:
+		held = false
+		stop()
+
 # Press once to start, again to stop.
 func toggle() -> void:
 	if state == "recording": stop()
@@ -125,7 +136,7 @@ func _process(_delta: float) -> void:
 	if state == "recording":
 		_drain()
 		var now := Time.get_ticks_msec()
-		if (now-started)/1000.0 > MAX_SECONDS or (spoke and (now-quiet_since)/1000.0 > SILENCE_SECONDS): stop()
+		if (now-started)/1000.0 > MAX_SECONDS*(3 if held else 1) or (not held and spoke and (now-quiet_since)/1000.0 > SILENCE_SECONDS): stop()
 	elif state == "recognizing" and pid > 0 and not OS.is_process_running(pid): _finished()
 
 func _drain() -> void:
