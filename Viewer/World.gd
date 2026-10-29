@@ -77,6 +77,8 @@ func material(color: Color) -> StandardMaterial3D:
 	return m
 
 func _ready() -> void:
+	# The interface scales with the window and keeps its proportions.
+	preload("res://Presentation/InterfaceScale.gd").apply(get_tree().root)
 	get_viewport().use_taa = RenderingServer.get_current_rendering_method() == "forward_plus"
 	var city_mode := "--city" in OS.get_cmdline_user_args()
 	front_end = city_mode and "--front-end" in OS.get_cmdline_user_args()
@@ -449,6 +451,13 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	toasts.configure(game)
 	var quickbar := preload("res://Network/Quickbar.gd").new()
 	canvas.add_child(quickbar)
+	# The journal ends before the quickbar on any screen shape (full width when there is room).
+	var fit_journal := func():
+		if not is_instance_valid(journal) or not is_instance_valid(quickbar): return
+		journal.offset_right = clampf(quickbar.get_global_rect().position.x-16.0,300.0,540.0)
+	get_viewport().size_changed.connect(func(): fit_journal.call_deferred())
+	quickbar.resized.connect(func(): fit_journal.call_deferred())
+	fit_journal.call_deferred()
 	quickbar.configure(runner)
 	runner.feedback.connect(func(text: String): journal.add(text,"Quickbar"))
 	var skills := preload("res://Network/SkillsWindow.gd").new()

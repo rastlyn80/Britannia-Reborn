@@ -133,6 +133,33 @@ func _settings() -> void:
 			row.add_child(slider)
 			body.add_child(row)
 	else: body.add_child(Look.label("Sound: run scripts/prepare-audio.py to use your UO install's audio.",13,Look.ASH,500))
+	# Interface size: on top of the automatic scaling to the window.
+	var scale_row := HBoxContainer.new()
+	scale_row.add_theme_constant_override("separation",12)
+	var scale_name := Look.label("Interface size",14,Look.IVORY,500)
+	scale_name.custom_minimum_size = Vector2(130,0)
+	scale_row.add_child(scale_name)
+	var Scale := preload("res://Presentation/InterfaceScale.gd")
+	var scale_slider := HSlider.new()
+	scale_slider.min_value = Scale.SMALLEST
+	scale_slider.max_value = Scale.LARGEST
+	scale_slider.step = 0.05
+	scale_slider.value = Scale.size()
+	scale_slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scale_slider.custom_minimum_size = Vector2(0,30)
+	var scale_value := Look.label("%d%%" % roundi(Scale.size()*100),13,Look.ASH,600)
+	scale_value.custom_minimum_size = Vector2(48,0)
+	# Applied on release, so the slider does not move under the mouse while dragging.
+	scale_slider.drag_ended.connect(func(_changed: bool):
+		Scale.set_size(get_tree().root,scale_slider.value)
+		(func():
+			card.reset_size()
+			card.position = (size-card.size)/2
+			preload("res://Network/Movable.gd").keep_on_screen(card)).call_deferred())
+	scale_slider.value_changed.connect(func(value: float): scale_value.text = "%d%%" % roundi(value*100))
+	scale_row.add_child(scale_slider)
+	scale_row.add_child(scale_value)
+	body.add_child(scale_row)
 	var pad := CheckButton.new()
 	pad.text = "Gamepad"
 	pad.button_pressed = scene.controller_enabled
