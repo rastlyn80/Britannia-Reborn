@@ -55,6 +55,12 @@ Checked live: a login in the real game scene over streamed Britain shows the car
 
   It passed on 2026-10-28; the server's replies confirmed each action. It logs in with the dev account, so run it only while the owner's client is closed.
 
+## Names, captions and trees (2026-10-29)
+
+- **Real names only:** a nameplate never shows a placeholder. It starts empty (or with a name already known from an earlier sighting) and fills in when the server's status reply (0x11) arrives. `MobileNames.gd` repeats an unanswered request every 2.5 s, up to 6 times. Before this, a creature that left view and came back showed "Player <serial>" for good, because its name was already known and never sent again.
+- **Sharp captions:** nameplates and building names were `Label3D`s drawn into the 3D scene, so they were resampled and looked soft. `Network/ScreenLabels.gd` keeps them as the source of text, colour and visibility, culls them from the cameras, and draws them as 2D labels in Inter at native pixel size, slightly smaller with distance and hidden beyond 32 m. Engravings on sign boards stay 3D because they belong to the surface.
+- **See-through trees:** trees between the camera and the player open a soft, ordered-dither circle around the character, instead of leaves dissolving at the lens. The circle is a cone from the camera to the player's chest, 1.5 m wide at the player, and only covers geometry nearer the camera than the player. Shadows keep the whole tree, because the clearance applies only to the main camera's pass. `Presentation/Foliage.gdshader` plus `FoliageClearance.gd` swap the owner-licensed tree materials as near districts load, so no re-bake is needed; World.gd sets the globals every frame. Checked in a GPU render (tree, a stand-in character behind it, shadow intact). CC0 fallback trees and scanned dead trees still use their old shaders.
+
 ## Open
 
 - **Windows still to modernise:** the character sheet (paperdoll), other containers, the world map, buff bar, party frames. Speaker names in the journal need the session to pass them on (0x1C/0xAE carry them; GameSession emits text only).

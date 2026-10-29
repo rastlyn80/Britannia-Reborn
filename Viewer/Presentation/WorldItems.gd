@@ -340,6 +340,7 @@ func upsert(serial: int, item: Dictionary) -> void:
    building_name.outline_size = 6
    building_name.modulate = Color("fff1ce")
    building_name.hide()
+   preload("res://Network/ScreenLabels.gd").track(building_name)
    root.add_child(building_name)
   "sign","noticeboard":
    size = Vector3(1.1,0.85,0.17) if kind == "noticeboard" else Vector3(0.78,0.64,0.17)
@@ -406,6 +407,7 @@ func upsert(serial: int, item: Dictionary) -> void:
    building_name.outline_size = 6
    building_name.modulate = Color("fff1ce")
    building_name.hide()
+   preload("res://Network/ScreenLabels.gd").track(building_name)
    root.add_child(building_name)
    var posts: Array = []
    for old in scene.static_root.find_children("*","Node3D",true,false):

@@ -365,6 +365,10 @@ func _process(delta: float) -> void:
 	pivot.rotation = Vector3(pitch,yaw,0)
 	boom.collision_mask = 3 if game.phase == "world" and not map_view else 0
 	boom.set_distance(distance,delta)
+	# Trees between the camera and the player open a soft see-through circle.
+	var clearing: bool = game.phase == "world" and avatars.has(player_serial) and not map_view
+	var chest: Vector3 = avatars[player_serial].global_position+Vector3.UP*(1.0+avatars[player_serial].ground_offset) if clearing else Vector3.ZERO
+	preload("res://Presentation/FoliageClearance.gd").update(chest,camera.global_position,1.5 if clearing else 0.0)
 	ticks += 1
 	if ticks == 15 and screenshot != "":
 		await RenderingServer.frame_post_draw
@@ -389,6 +393,10 @@ func _physics_process(delta: float) -> void:
 # Shift/Ctrl/Alt sets, skills, spellbook and backpack windows, target frame,
 # journal, window menu and notices.
 func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
+	var captions := preload("res://Network/ScreenLabels.gd").new()
+	captions.camera = camera
+	canvas.add_child(captions)
+	canvas.move_child(captions,0)
 	var runner := preload("res://Network/ActionRunner.gd").new()
 	add_child(runner)
 	runner.configure(game)
@@ -531,12 +539,14 @@ func _entity_changed(serial: int,position: Dictionary) -> void:
 		avatar.initial_body = int(position.get("body",0))
 		var label := Label3D.new()
 		label.name = "Nameplate"
-		label.text = "You" if serial == game.player.serial else "Player %d" % serial
+		# Never a placeholder: the real name arrives with the status reply (MobileNames).
+		label.text = "You" if serial == game.player.serial else str(game.entity_names.get(serial,""))
 		label.position.y = 2.2
 		label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 		label.no_depth_test = true
 		label.font_size = 32
 		avatar.add_child(label)
+		preload("res://Network/ScreenLabels.gd").track(label)
 		avatar.position = location
 		add_child(avatar)
 		var picker := StaticBody3D.new()

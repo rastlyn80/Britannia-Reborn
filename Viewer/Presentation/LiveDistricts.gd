@@ -4,6 +4,7 @@ extends Node3D
 const MAX_PENDING := 2
 const FRAME_BUDGET_US := 2000
 const Compact := preload("res://Presentation/CompactDistrict.gd")
+const Foliage := preload("res://Presentation/FoliageClearance.gd")
 var loaded: Dictionary = {}
 var far_nodes: Dictionary = {}
 var macro_nodes: Dictionary = {}
@@ -268,6 +269,8 @@ func _process(_delta: float) -> void:
    while record.next_child<record.resource.parts.size():
     var attach_start:=Time.get_ticks_usec()
     var part: Node=record.resource.parts[record.next_child].instantiate()
+    # Owner-licensed trees open a see-through clearance around the player.
+    if record.kind=="near":Foliage.adopt(part)
     measure("instantiate-"+str(record.kind),attach_start,part.get_class())
     if part is PhysicsBody3D:
      if not record.has("deferred"):record.deferred=[]

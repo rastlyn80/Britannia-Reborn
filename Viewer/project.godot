@@ -14,6 +14,21 @@ driver/enable_input=true
 window/size/viewport_width=1280
 window/size/viewport_height=800
 
+[shader_globals]
+
+clearance_focus={
+"type": "vec3",
+"value": Vector3(0, 0, 0)
+}
+clearance_eye={
+"type": "vec3",
+"value": Vector3(0, 0, 0)
+}
+clearance_radius={
+"type": "float",
+"value": 0.0
+}
+
 [importer_defaults]
 
 texture={
