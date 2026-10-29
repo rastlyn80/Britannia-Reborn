@@ -131,7 +131,7 @@ public static class DevEditCommands
             // name; authorization is still that of the account it uses.
             if (a.Length > 1 && a[1] == "assistant")
             {
-                author = "Claude";
+                author = DevEditSession.AssistantAuthor;
             }
             Joined[mobile] = author;
             Snapshot(mobile, session, author);
@@ -156,6 +156,11 @@ public static class DevEditCommands
             return;
         }
         var request = a.Length > 1 && int.TryParse(a[1], NumberStyles.None, CultureInfo.InvariantCulture, out var req) ? req : 0;
+        if (author == DevEditSession.AssistantAuthor && !DevEditSession.AssistantMay(verb))
+        {
+            Reply(mobile, $"reject|{request}|assistant|{verb}: the assistant proposes; the developer who asked reviews and accepts");
+            return;
+        }
         var now = Core.Now;
         Result result;
         switch (verb)

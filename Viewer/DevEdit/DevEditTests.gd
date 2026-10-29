@@ -269,6 +269,10 @@ func real_districts() -> void:
 	state.feed("op|2|Ann|move|1|0|0");state.feed("chg|2|%s|%s" % [other.record.target,moved_state]);state.feed("end|2")
 	check(not standalone.visible and overlay.live.has(other.record.target),"moved static hides its baked node and gets a live visual")
 	check(overlay.live[other.record.target].position.distance_to(overlay.scene_point(other.record.x+1.5,other.record.y,other.record.z)) < 0.6,"live visual at the new coordinates")
+	# A reviewed plan (request or Claude proposal) draws its result like the manual tools.
+	overlay.set_plan_draft([{"kind":"place","id":3204,"x":float(other.record.x),"y":float(other.record.y),"z":int(other.record.z),"yaw":0,"description":"place"},{"kind":"batch","items":[[batched.record.target,"hide"]],"description":"hide"},{"kind":"brush","x":int(other.record.x),"y":int(other.record.y),"r":2,"dz":4,"surface":"dirt","description":"brush"}])
+	check(overlay.draft != null and overlay.draft.get_child_count() == 3,"reviewed plan drafts every change before Accept (placement, hide, terrain)")
+	overlay.clear_draft()
 	# Unload and reload district a from disk: edits must re-apply.
 	unload(a)
 	check(not overlay.live.has(other.record.target),"live visual leaves with its district")

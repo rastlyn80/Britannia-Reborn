@@ -207,6 +207,8 @@ func full() -> void:
 	b.synced = false
 	b.join(send(1),true)
 	check(await until(func(): return b.synced and b.me == "Claude"),"B rejoins as the assistant 'Claude'")
+	var direct := b.place(3204,1612,1599,20,0,send(1))
+	check(await request_done(1,direct) and status(1,direct) != "applied" and a.revision == b.revision,"the assistant cannot apply edits itself; it only proposes")
 	check(a.ask("make the corner by the inn look festive with flowers",send(0)),"A asks in plain language")
 	check(await until(func(): return b.asks.values().any(func(q: Dictionary): return "festive" in q.text and q.author == a.me)),"assistant receives the request")
 	var ask_id: int = b.asks.keys().filter(func(k: int): return "festive" in b.asks[k].text)[-1]

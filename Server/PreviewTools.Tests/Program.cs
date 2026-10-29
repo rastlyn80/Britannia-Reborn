@@ -142,5 +142,7 @@ committedSession.Set("Ann", Barrel, 0, "hide", now);
 var commitBatch = committedSession.Batch("Ann", new List<(string, int, string)> { (Barrel, 1, "") }, now, "commit");
 Check(commitBatch.Ok && !committedSession.Undo("Ann", commitBatch.Operation!.Seq, now).Ok && committedSession.Current(Barrel).State == "", "a commit batch cannot be undone (would double-apply)");
 
+Check(DevEditSession.AssistantMay("propose") && DevEditSession.AssistantMay("preview") && new[] { "set", "place", "brush", "batch", "undo", "redo", "lock", "save", "load" }.All(v => !DevEditSession.AssistantMay(v)), "assistant may propose and preview, never apply, undo, lock or load");
+
 Console.WriteLine($"DEV EDIT SESSION TESTS: {passes} passed, {failures} failed");
 return failures;

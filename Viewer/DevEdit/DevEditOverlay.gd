@@ -354,6 +354,33 @@ func set_draft(target: String, desired: String, label: String) -> void:
 	draft = preview_node(target,desired,Color("ffd34d"),label)
 	if draft: add_child(draft)
 
+# Draft of a reviewed plan (typed/spoken request, Claude proposal, group
+# action): the same previews the manual tools draw, one per planned change.
+func set_plan_draft(plans: Array) -> void:
+	clear_draft()
+	var root := Node3D.new()
+	for p in plans:
+		var items: Array = []
+		match str(p.kind):
+			"set": items = [[p.target,p.state]]
+			"batch": items = p.items
+			"place": items = [["n","a:%d:%s:%s:%d:%d" % [int(p.id),State.number(p.x),State.number(p.y),int(p.z),int(p.yaw)]]]
+			"brush": items = [["b:%d:%d:%d" % [int(p.x),int(p.y),int(p.r)],"%+d Z %s" % [int(p.dz),p.surface]]]
+		for item in items:
+			var desired: String = item[1]
+			var node: Node3D = null
+			if desired == "" and str(item[0]).begins_with("s:"):
+				# Restore: mark where the original returns.
+				var at := target_point(item[0])
+				if at != Vector3.INF: node = ghostify(box(at,Vector3(1,1,1),Color("7ee08a")),Color("ffd34d"),"DRAFT · restore")
+			else: node = preview_node(item[0],desired,Color("ffd34d"),"DRAFT · "+str(p.description).left(40) if items.size() == 1 else "")
+			if node: root.add_child(node)
+	if root.get_child_count() == 0:
+		root.free()
+		return
+	draft = root
+	add_child(draft)
+
 func clear_draft() -> void:
 	if draft: draft.queue_free()
 	draft = null

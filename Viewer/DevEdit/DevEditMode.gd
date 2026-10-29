@@ -287,6 +287,8 @@ func review(lines: Array, ask_id: int, summary := "") -> void:
 		described.append("• "+str(p.description))
 		targets.append_array(p.targets)
 	overlay.highlight(targets,Color("ffd34d"))
+	# The result itself, drawn as a draft exactly like the manual tools.
+	overlay.set_plan_draft(pending)
 	var head := summary if summary != "" else ("Proposal from %s" % state.asks.get(ask_id,{}).get("proposed_by","") if ask_id > 0 else "Group action")
 	var text := "%s\nScope (%d target(s) highlighted):\n%s" % [head,targets.size(),"\n".join(described)]
 	if not problems.is_empty(): text += "\nCannot run:\n"+"\n".join(problems)
@@ -468,6 +470,7 @@ func accept() -> void:
 	if not pending.is_empty():
 		apply_pending()
 		state.clear_preview(sender())
+		overlay.clear_draft()
 		return
 	if draft_target.is_empty(): return
 	var id := 0

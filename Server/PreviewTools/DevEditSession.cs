@@ -422,6 +422,14 @@ public sealed class DevEditSession
 
     public const int MaxBatch = 256;
 
+    // The assistant (Claude Code through the bridge) never changes the world
+    // itself: it answers, proposes and shows previews; the developer who asked
+    // reviews the drafted result and accepts it, then commits as usual.
+    public const string AssistantAuthor = "Claude";
+
+    public static bool AssistantMay(string verb) =>
+        verb is "join" or "leave" or "ask" or "answer" or "propose" or "resolve" or "preview" or "status";
+
     public static bool ValidRule(string rule) =>
         rule.Length is > 0 and <= 100 && rule.All(c => c is >= 'a' and <= 'z' or >= '0' and <= '9' or ':' or ',' or '.' or '~' or '=' or ';' or '_' or '-');
 
