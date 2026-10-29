@@ -456,6 +456,17 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	backpack.configure(game)
 	backpack.add_requested.connect(quickbar.add_to_first_empty)
 	backpack.inspect_requested.connect(inspector.inspect)
+	# Context menus and shops in the modern style; the old panel stops answering.
+	var vendor := preload("res://Network/VendorWindow.gd").new()
+	canvas.add_child(vendor)
+	vendor.configure(game)
+	var menu_popup := preload("res://Network/ContextMenu.gd").new()
+	canvas.add_child(menu_popup)
+	menu_popup.configure(game)
+	for child in login_panel.get_children():
+		if child.get_script() == preload("res://Network/ShopPanel.gd"):
+			if game.context_received.is_connected(child.context): game.context_received.disconnect(child.context)
+			if game.vendor_received.is_connected(child.shop): game.vendor_received.disconnect(child.shop)
 	# The modern backpack replaces the plain item list for the pack itself.
 	for child in login_panel.get_children():
 		if child.get_script() == preload("res://Network/ItemBrowser.gd"):

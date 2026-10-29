@@ -59,6 +59,19 @@ static func prices(p: PackedByteArray) -> Dictionary:
   cursor += length
  if cursor != p.size(): return {}
  return {"container":Wire.read_be(p,3,4),"entries":entries}
+# Several stock lines in one purchase (0x3B): [{serial, amount}].
+static func buy_many(vendor: int,lines: Array) -> PackedByteArray:
+ var p := PackedByteArray([0x3b,0,0])
+ p.append_array(Wire.uint_be(vendor,4))
+ p.append(2)
+ for line in lines:
+  if int(line.amount)<1 or int(line.amount)>32767: continue
+  p.append(0x1a)
+  p.append_array(Wire.uint_be(int(line.serial),4))
+  p.append_array(Wire.uint_be(int(line.amount),2))
+ p[1] = p.size()>>8
+ p[2] = p.size()&255
+ return p
 static func buy(vendor: int,serial: int,amount: int) -> PackedByteArray:
  if amount<1 or amount>32767: return PackedByteArray()
  var p := PackedByteArray([0x3b,0,15])

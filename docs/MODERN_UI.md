@@ -99,6 +99,14 @@ The owner approved the plan on the design canvas: a front end with no map distri
   - **Effects** (`Presentation/EffectPresenter.gd`): moving bolts with a glowing core, trail and light, bursting on arrival when they explode. Fixed effects bloom on a creature (following it) or at a spot. Lightning strikes from the sky with a flash. Particles are soft round sprites with a halo. Colour comes from the server hue (the install's hue table), or the art family when the hue is 0: fire, smoke, holy, poison, energy, magic.
   - **Audio** (`scripts/prepare-audio.py`, `Presentation/AudioPlayer.gd`): the owner's install is indexed locally, 1,655 sounds and 57 music tracks (git-ignored), and read straight from the install at run time. Sounds play in 3D at their tile, with 16 voices and a cache. Music crossfades. Volume sliders are in Game menu › Settings.
   - **Live check:** music track 9 started on login, sound 0x1F1 decoded (112 KB), and effects and damage numbers drew over Britain.
+- **Context menus and shops (Phase 2, built 2026-10-29):**
+  - **Context menu** (`Network/ContextMenu.gd`): the server's menu (0xBF 0x14) opens as a glass card at the cursor, titled with the name and with entries greyed when the server says so. Choosing sends 0xBF 0x15. (An earlier note that the server never answered context requests was wrong: the census never measured them, and the shard answers every one.)
+  - **Vendor window** (`Network/VendorWindow.gd`):
+    - Buy and Sell tabs. A tab asks the vendor itself when its list has not come yet.
+    - Item cards with 3D icons, prices and counts. Sell offers of one kind are grouped.
+    - An order with − and + controls, the total against your gold, and one Buy (0x3B with every line) or Sell (0x9F) for the whole order.
+    - The old shop panel no longer answers in the modern HUD.
+  - **Live check:** 35 stock lines and 12 sell offers (3 cards). Bread bought (903 → 897 gold). Two dice cups sold from one card (897 → 899).
 - **Original idea:** any item (in the backpack, a container, the paperdoll, a vendor or trade window, or the world) can be opened in an inspect view, as in modern games. It shows the item's 3D model, lit, with drag to rotate and wheel to zoom, and its server tooltip lines (name, properties) beside it. It uses the same model as the world and the 3D icon renderer.
 - **Front end still to do:** deleting characters, profession and skill choice at creation, a server-status probe before sign-in, and remembered looks updating while you play (they are saved on entering and on logging out).
 - **Windows still to modernise:** the character sheet (paperdoll), other containers, the world map, buff bar, party frames. Speaker names in the journal need the session to pass them on (0x1C/0xAE carry them; GameSession emits text only).
