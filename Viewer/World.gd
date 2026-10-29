@@ -432,6 +432,10 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	var target := preload("res://Network/TargetFrame.gd").new()
 	canvas.add_child(target)
 	target.configure(game)
+	var death := preload("res://Network/DeathScreen.gd").new()
+	canvas.add_child(death)
+	canvas.move_child(death,2)
+	death.configure(game)
 	var buff_bar := preload("res://Network/BuffBar.gd").new()
 	canvas.add_child(buff_bar)
 	buff_bar.configure(game)
@@ -484,6 +488,8 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 				(func():
 					if serial == int(game.board_serial): return
 					child.panel.hide()
+					# Spellbooks open as containers; the spellbook window shows them.
+					if int(game.known_items.get(serial,game.world_items.get(serial,{})).get("id",0)) in preload("res://Network/SpellbookWindow.gd").BOOKS or game.module("items").spellbooks.has(serial): return
 					if serial == int(game.backpack): return
 					if containers.has(serial) and is_instance_valid(containers[serial]):
 						containers[serial].move_to_front()

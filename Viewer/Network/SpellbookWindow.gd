@@ -14,6 +14,9 @@ var reagent_row := HBoxContainer.new()
 var grid := GridContainer.new()
 var detail := VBoxContainer.new()
 var feedback: Label
+# The spells each school's book actually holds (0xBF 0x1B), by book graphic.
+const BOOKS := {0x0efa:"Magery",0x2253:"Necromancy",0x2252:"Chivalry",0x238c:"Bushido",0x23a0:"Ninjitsu",0x2d50:"Spellweaving",0x2d9d:"Mysticism"}
+var known := {}
 
 func _ready() -> void:
 	setup("spellbook","Spellbook",Vector2(960,600),Vector2(120,110))
@@ -26,6 +29,7 @@ func _ready() -> void:
 			school = name
 			circle = 1
 			chosen = ""
+			if not known.has(name): _ask_book()
 			refresh())
 		schools.add_child(c)
 		school_chips[name] = c
@@ -60,11 +64,30 @@ func configure(action_runner: Node) -> void:
 	runner.session.items_changed.connect(func(): if visible: refresh())
 	runner.session.status_changed.connect(func(_s: Dictionary): if visible: refresh())
 	runner.feedback.connect(func(text: String): if visible: feedback.text = text)
-	runner.session.ended.connect(hide)
+	runner.session.ended.connect(func():
+		known.clear()
+		hide())
+	if runner.session.has_method("module"):
+		var items: RefCounted = runner.session.module("items")
+		items.spellbook_changed.connect(func(book: int):
+			var contents: Dictionary = items.spellbooks.get(book,{})
+			var school_name: String = BOOKS.get(int(contents.get("graphic",0)),"")
+			if school_name != "":
+				known[school_name] = contents.spells
+				if visible: refresh())
 
 func toggle() -> void:
 	super.toggle()
-	if visible: refresh()
+	if visible:
+		_ask_book()
+		refresh()
+
+# Ask the server what this school's book holds (it answers with the contents).
+func _ask_book() -> void:
+	if runner and runner.in_world(): runner.send(preload("res://Network/ActionProtocol.gd").open_spellbook(int(Catalog.SCHOOLS[school][1])))
+
+func _owned(spell: Dictionary) -> bool:
+	return not known.has(school) or int(spell.id) in known[school]
 
 func _spells() -> Array:
 	return Catalog.spells().filter(func(s): return s.school == school and (school != "Magery" or int(s.circle) == circle))
@@ -99,6 +122,10 @@ func refresh() -> void:
 				chosen = ""
 				refresh())
 			circle_row.add_child(b)
+	# Without the school's book the server will refuse every cast: say so.
+	var graphic := int(BOOKS.find_key(school)) if BOOKS.find_key(school) != null else 0
+	if runner and graphic and runner.count_of(graphic) == 0 and not known.has(school):
+		reagent_row.add_child(Look.label("  ·  No %s spellbook in your pack" % school,12,Color("f0a39a"),600))
 	var spells := _spells()
 	if chosen == "" and not spells.is_empty(): chosen = spells[0].name
 	for spell in spells: grid.add_child(_card(spell))
@@ -106,7 +133,7 @@ func refresh() -> void:
 	if not selected.is_empty(): _detail(selected)
 
 func _card(spell: Dictionary) -> Control:
-	var missing := _missing(spell)
+	var missing := _missing(spell) if _owned(spell) else ["(not in your spellbook)"]
 	var step := {"action":"Cast Spell","option":spell.name}
 	var card := Button.new()
 	card.custom_minimum_size = Vector2(290,58)
@@ -142,7 +169,7 @@ func _card(spell: Dictionary) -> Control:
 	var name_line := Look.label(spell.name,15,Look.IVORY,600)
 	name_line.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	text.add_child(name_line)
-	var note := "Missing "+", ".join(missing) if not missing.is_empty() else (" · ".join(spell.reagents.map(func(r): return Catalog.REAGENTS[r][1])) if not spell.reagents.is_empty() else "")
+	var note := ("Not in your spellbook" if not _owned(spell) else "Missing "+", ".join(missing)) if not missing.is_empty() else (" · ".join(spell.reagents.map(func(r): return Catalog.REAGENTS[r][1])) if not spell.reagents.is_empty() else "")
 	var note_line := Look.label(note,12,Color("f0a39a") if not missing.is_empty() else Look.ASH,500)
 	note_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	note_line.mouse_filter = Control.MOUSE_FILTER_IGNORE
