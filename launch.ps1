@@ -10,6 +10,8 @@ $env:LOCALAPPDATA = $env:APPDATA
 New-Item -ItemType Directory -Force $env:APPDATA | Out-Null
 & $Godot --headless --path "$PSScriptRoot\Viewer" --editor --import
 if ($LASTEXITCODE) { throw 'Art import failed; run scripts/verify.ps1 for diagnostics' }
+# Sound and music from the owner's install: a local index (scripts/prepare-audio.py).
+if (!(Test-Path "$PSScriptRoot\Viewer\local-audio\index.json") -and (Get-Command python -ErrorAction SilentlyContinue)) { python "$PSScriptRoot\scripts\prepare-audio.py" }
 $renderArgs = @()
 if ($Compatibility) { $renderArgs = @('--rendering-method','gl_compatibility') }
 $local = Join-Path $PSScriptRoot 'Viewer\local-world.json'
