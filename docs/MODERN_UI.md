@@ -117,6 +117,12 @@ The owner approved the plan on the design canvas: a front end with no map distri
   - **On the quickbar:** an action whose kind is waiting is refused with "Skills ready in N s". Every slot of that kind shows a dark clockwise sweep with the seconds left, and flashes when ready.
   - **Buff bar** (`Network/BuffBar.gd`, under the vitals card): one chip per buff from 0xDF, with an icon chosen by name, a ring that empties as time runs out, and the seconds left. Hover shows the server's title and description; debuffs have a red edge.
   - **Evidence:** QuickbarTests 49/0, with 6 new timer checks. Live: using Hiding started the 10 s skill timer on the Hiding and Meditation slots, a second skill was refused, and the server confirmed ("You fail to hide"). No real buff arrived in that session, so the buff bar was shown with one sample Bless packet.
+- **Container windows (Phase 2, built 2026-10-29):** every container the server opens other than the backpack gets its own window (`Network/ContainerWindow.gd`): corpses, chests, bags in the pack, the bank box.
+  - **In the window:** 3D icons with server tooltips; double-click uses an item (nested bags open their own window).
+  - **Moving items:** drag items between containers and the backpack, dropping on a tile or on the window. Take all moves everything to the pack one item at a time.
+  - **Closing:** the window closes when the container is gone or more than 3 tiles away.
+  - **The old item browser** now only shows books and bulletin boards.
+  - **Live check:** bread was moved into a bag and back with Take all.
 - **Original idea:** any item (in the backpack, a container, the paperdoll, a vendor or trade window, or the world) can be opened in an inspect view, as in modern games. It shows the item's 3D model, lit, with drag to rotate and wheel to zoom, and its server tooltip lines (name, properties) beside it. It uses the same model as the world and the 3D icon renderer.
 - **Front end still to do:** deleting characters, profession and skill choice at creation, a server-status probe before sign-in, and remembered looks updating while you play (they are saved on entering and on logging out).
 - **Windows still to modernise:** the character sheet (paperdoll), other containers, the world map, buff bar, party frames. Speaker names in the journal need the session to pass them on (0x1C/0xAE carry them; GameSession emits text only).

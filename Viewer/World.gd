@@ -470,11 +470,25 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 		if child.get_script() == preload("res://Network/ShopPanel.gd"):
 			if game.context_received.is_connected(child.context): game.context_received.disconnect(child.context)
 			if game.vendor_received.is_connected(child.shop): game.vendor_received.disconnect(child.shop)
-	# The modern backpack replaces the plain item list for the pack itself.
+	# The modern backpack and container windows replace the plain item list;
+	# it still shows books and bulletin boards.
+	var containers := {}
 	for child in login_panel.get_children():
 		if child.get_script() == preload("res://Network/ItemBrowser.gd"):
 			game.container_opened.connect(func(serial: int):
-				if serial == int(game.backpack): (func(): child.panel.hide()).call_deferred())
+				(func():
+					if serial == int(game.board_serial): return
+					child.panel.hide()
+					if serial == int(game.backpack): return
+					if containers.has(serial) and is_instance_valid(containers[serial]):
+						containers[serial].move_to_front()
+						return
+					var window := preload("res://Network/ContainerWindow.gd").new()
+					canvas.add_child(window)
+					window.open(game,serial,Vector2(140+containers.size()*40,150+containers.size()*34))
+					window.position = Vector2(140+containers.size()*40,150+containers.size()*34) if containers.size() > 0 else window.position
+					containers[serial] = window
+					window.closed.connect(func(closed: int): containers.erase(closed))).call_deferred())
 	var editor := preload("res://Network/SlotEditor.gd").new()
 	canvas.add_child(editor)
 	quickbar.edit_requested.connect(func(row: int, layer: String, index: int): editor.open(quickbar,row,layer,index))

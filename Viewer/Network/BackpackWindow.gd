@@ -103,6 +103,14 @@ func name_of(item: Dictionary) -> String:
 	var text := named if named != "" else str(labels.get(int(item.serial),session.labels.item_name(int(item.id))))
 	return text.capitalize() if text != "" else "Item"
 
+# Items dragged from a container window come into the pack.
+func accepts_item(value: Variant) -> bool:
+	return value is Dictionary and value.has("item_serial") and int(session.known_items.get(int(value.item_serial),{}).get("container",0)) != int(session.backpack)
+func take_item(value: Variant) -> void:
+	session.move_item(int(value.item_serial),int(session.backpack))
+func _can_drop_data(_at: Vector2, value: Variant) -> bool: return accepts_item(value)
+func _drop_data(_at: Vector2, value: Variant) -> void: take_item(value)
+
 func _weight() -> void:
 	var s: Dictionary = session.player_status
 	var limit := int(s.get("weight_max",0))
@@ -150,7 +158,7 @@ func _tile(item: Dictionary) -> Control:
 	tile.chosen = int(item.serial) == chosen
 	tile.title = name_of(item)
 	tile.tooltip_text = "%s\nClick: details · Double-click: use · Drag: onto the quickbar" % name_of(item)
-	tile.payload = {"quickbar_slot":_slot_for(item)}
+	tile.payload = {"quickbar_slot":_slot_for(item),"item_serial":int(item.serial)}
 	tile.picked.connect(func():
 		chosen = int(item.serial)
 		_show_chosen())
