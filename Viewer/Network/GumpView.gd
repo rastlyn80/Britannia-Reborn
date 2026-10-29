@@ -134,19 +134,16 @@ func configure(connection: Node, value: Dictionary) -> void:
     if command.size() < 8: unsupported.append(name); continue
     var button: BaseButton
     var art_id := int(command[3])
+    var wrapper: Control = null
     if MODERN_BUTTONS.has(art_id):
-     var modern := Button.new()
-     var spec: Array = MODERN_BUTTONS[art_id]
-     modern.text = spec[0]
-     modern.focus_mode = Control.FOCUS_NONE
-     var size_hint: Vector2 = art[art_id].get_size() if art.has(art_id) else Vector2(26,22)
-     modern.custom_minimum_size = Vector2(maxf(size_hint.x,28 if spec[0].length() == 1 else 76),maxf(size_hint.y,24))
-     modern.add_theme_font_size_override("font_size",15 if spec[0].length() == 1 else 13)
-     if spec[1]:
-      modern.add_theme_stylebox_override("normal",Look.box(Look.BRASS,Look.BRASS,6,1,4))
-      modern.add_theme_stylebox_override("hover",Look.box(Color("e6c588"),Color("e6c588"),6,1,4))
-      modern.add_theme_color_override("font_color",Color("14110b"))
-      modern.add_theme_color_override("font_hover_color",Color("14110b"))
+     # Centred on the classic art's footprint, so rows of text still line up.
+     var footprint: Vector2 = art[art_id].get_size() if art.has(art_id) else Vector2(30,22)
+     var modern := modern_button(MODERN_BUTTONS[art_id])
+     wrapper = Control.new()
+     wrapper.size = footprint
+     wrapper.mouse_filter = Control.MOUSE_FILTER_IGNORE
+     modern.position = ((footprint-modern.custom_minimum_size)/2.0).round()
+     wrapper.add_child(modern)
      button = modern
     elif art.has(art_id):
      var textured := TextureButton.new()
@@ -164,7 +161,7 @@ func configure(connection: Node, value: Dictionary) -> void:
     else:
      reply_buttons.append(button)
      button.pressed.connect(func(): reply(int(command[7])))
-    control = button
+    control = wrapper if wrapper else button
     # buttontileart: an item drawn on the button (id, hue, offset).
     if name == "buttontileart" and command.size() >= 12:
      var on_button := TextureRect.new()
@@ -341,6 +338,35 @@ func background(id: int, dimensions: Vector2) -> Control:
     result.add_child(tile)
     tile.set_deferred("size",Vector2(widths[col],heights[row]))
  return result
+# The HUD's own button for a classic one: a round icon button for glyphs
+# (arrows, close, check, dots), a pill for words (Okay, Cancel).
+const GLYPHS := {"›":"chevron_right","‹":"chevron_left","»":"chevrons_right","×":"close","✓":"check","•":"dot","≡":"list","?":"question","+":"plus"}
+static func modern_button(spec: Array) -> Button:
+ var b := Button.new()
+ b.focus_mode = Control.FOCUS_NONE
+ var primary: bool = spec[1]
+ var ink: Color = Color("14110b") if primary else Look.IVORY
+ var fill := Look.BRASS if primary else Color(1,1,1,0.05)
+ var edge := Look.BRASS if primary else Color(0.84,0.7,0.43,0.5)
+ if GLYPHS.has(str(spec[0])):
+  b.custom_minimum_size = Vector2(26,26)
+  b.icon = Look.icon(GLYPHS[str(spec[0])],ink,16)
+  b.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+  b.tooltip_text = {"›":"Next","‹":"Back","»":"Forward","×":"Close","✓":"Confirm","?":"Help","+":"Add"}.get(str(spec[0]),"")
+  for state in ["normal","hover","pressed"]:
+   var tint := fill if state == "normal" else (Color("e6c588") if primary else Color(0.84,0.7,0.43,0.22 if state == "hover" else 0.34))
+   b.add_theme_stylebox_override(state,Look.box(tint,edge if state == "normal" else Look.BRASS,13,1,0))
+ else:
+  b.text = str(spec[0])
+  b.custom_minimum_size = Vector2(96,30)
+  b.add_theme_font_override("font",Look.ui_font(600))
+  b.add_theme_font_size_override("font_size",13)
+  for state in ["normal","hover","pressed"]:
+   var tint := fill if state == "normal" else (Color("e6c588") if primary else Color(0.84,0.7,0.43,0.2 if state == "hover" else 0.3))
+   b.add_theme_stylebox_override(state,Look.box(tint,edge if state == "normal" else Look.BRASS,15,1,6))
+  for state in ["font_color","font_hover_color","font_pressed_color"]: b.add_theme_color_override(state,ink if primary or state == "font_color" else Color.WHITE)
+ return b
+
 # Classic hues are tuned for parchment; on dark glass, lift dark ones.
 static func readable(colour: Color) -> Color:
  return colour.lightened(clampf(0.55-colour.get_luminance(),0.0,0.55)) if colour.get_luminance() < 0.55 else colour
