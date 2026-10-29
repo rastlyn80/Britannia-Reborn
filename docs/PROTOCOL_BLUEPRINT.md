@@ -54,6 +54,14 @@ Phase 0 is done, and the protocol layer of every later phase is in place: our cl
   - `scripts/test-protocol-census.ps1` (live): 35 packet types received, **0 unhandled**. Tooltips: 148 lists received, one per object; before the fix it was 970 replies.
   - Requests answered live: paperdoll 0x88, profile 0xB8, name 0x98, and spell cast 0xBF 0x1C (3 replies). The tip request (0xA7) gets no reply on this shard.
 
+### Presentation progress
+
+- **Phase 1** is built: tooltips, health flags, damage numbers, effects, sound and music.
+- **Phase 2** is built: context menus, shops, action timers, buff bar, containers, paperdoll, spellbook contents and the death screen.
+- **Phase 3** is built: modern gumps for every command, server dialogs and the crafting window.
+
+See MODERN_UI.md for details and live evidence. Next: Phase 4 (party, trade, chat, books and boards, quests).
+
 ## Ground rules for every phase
 
 1. **One handler module per system:** `Network/Packets/<System>.gd`, registered in a dispatch table. This replaces new `match` arms in `GameSession.gd`, which is shared with another session and already 1,000 lines. GameSession keeps only framing and session state.

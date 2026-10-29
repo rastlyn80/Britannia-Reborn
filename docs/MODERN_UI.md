@@ -135,6 +135,18 @@ The owner approved the plan on the design canvas: a front end with no map distri
   - **Limits:**
     - The test character owns no spellbook, so the contents path is covered only by the protocol fixture.
     - Dying was not attempted live: the death screen was shown with a sample death packet.
+- **Phase 3, every server window (built 2026-10-29):**
+  - **Gumps** (`GumpView.gd`): every command ModernUO's GumpLayoutBuilder writes, plus ClassicUO's extras.
+    - **Panels and text:** background frames become glass panels and alpha regions dark glass. Text uses Inter, with dark parchment hues lifted for readability. Inputs use the HUD theme.
+    - **Buttons:** the classic buttons ModernUO uses most become modern buttons: Okay, Cancel, gem arrows, close, check and dots, all taken from a frequency count over UOContent. Rarer art is kept.
+    - **Items, tooltips and placement:** items show their 3D icon, and tooltips and item properties attach to the element they describe. Windows the server places in the top-left are centred above the HUD, and Esc closes the top one.
+    - **Live check:** the help menu rendered fully modern.
+  - **Dialogs** (`ServerDialogs.gd`): item and question menus (with 3D icons), text prompts, a hue palette from the install's hues, web links that open only after confirmation, tips with Next, and sign text. Each is a centred card, and Esc cancels. The hue picker was shown with a sample packet.
+  - **Crafting** (`CraftWindow.gd`): ModernUO's craft gump is read by its button scheme (1 + type + index×7).
+    - **Layout:** categories and Last ten on the left; item cards with 3D icons (graphic from the item's 1020000+id name) and a details button; Make last, material, smelt, repair, enhance and maker's mark along the bottom, with the server's notice.
+    - **Behaviour:** every click answers the server's gump, which sends the next state. CraftTests 8/0 use a fixture built as CraftGump.cs builds it.
+    - **Not checked live:** the test character has no crafting tool, and the preview tools cannot give one.
+  - **Bank and runebook:** the bank box opens in the container window. The runebook uses the modern-styled generic gump for now.
 - **Original idea:** any item (in the backpack, a container, the paperdoll, a vendor or trade window, or the world) can be opened in an inspect view, as in modern games. It shows the item's 3D model, lit, with drag to rotate and wheel to zoom, and its server tooltip lines (name, properties) beside it. It uses the same model as the world and the 3D icon renderer.
 - **Front end still to do:** deleting characters, profession and skill choice at creation, a server-status probe before sign-in, and remembered looks updating while you play (they are saved on entering and on logging out).
 - **Windows still to modernise:** the character sheet (paperdoll), other containers, the world map, buff bar, party frames. Speaker names in the journal need the session to pass them on (0x1C/0xAE carry them; GameSession emits text only).
