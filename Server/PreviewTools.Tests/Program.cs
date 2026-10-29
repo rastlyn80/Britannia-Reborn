@@ -112,5 +112,30 @@ Check(!new DevEditSession("x", "baseline-b", Rules()).Import("Cy", set, now).Ok,
 Check(!fresh.Import("Cy", set.Replace("hide", "explode"), now).Ok, "malformed edit set refused");
 Check(fresh.Undo("Cy", import.Operation!.Seq, now).Ok && fresh.Targets.All(t => t.Value.State == ""), "import is undoable");
 
+// Batches: atomic, one operation, one undo; any invalid or stale target refuses all.
+var group = new DevEditSession("group", "baseline-a", Rules());
+var flowers = new[] { "s:1600:1590:20:3206:0", "s:1601:1590:20:3206:0", "s:1602:1590:20:3206:0" };
+var batch = group.Batch("Ann", flowers.Select(t => (t, 0, "hide")).ToList(), now, "hide");
+Check(batch.Ok && batch.Operation!.Changes.Count == 3 && group.Revision == 1, "batch applies three targets as one operation");
+var mixed = group.Batch("Ann", new List<(string, int, string)> { (flowers[0], 1, ""), ("s:10:10:0:1:0", 0, "hide") }, now, "restore");
+Check(!mixed.Ok && group.Current(flowers[0]).State == "hide" && group.Revision == 1, "one invalid target refuses the whole batch");
+var stale = group.Batch("Bob", flowers.Select(t => (t, 0, "")).ToList(), now, "restore");
+Check(!stale.Ok && stale.Code == "conflict" && group.Revision == 1, "stale base revision refuses the whole batch");
+Check(!group.Batch("Ann", new List<(string, int, string)> { (flowers[0], 1, ""), (flowers[0], 1, "") }, now, "restore").Ok, "duplicate target refused");
+Check(group.Undo("Ann", 1, now).Ok && flowers.All(t => group.Current(t).State == ""), "one undo reverts the whole batch");
+Check(group.Preview("Ann", "g:12", "name~barrel;near=1602,1591,12").Ok && !group.Preview("Ann", "g:12", "NAME|x").Ok, "group previews carry a validated rule");
+
+// Conversation queue: multi-part asks, answers, proposals, resolution.
+var talk = new DevEditConversation();
+Check(talk.AddPart("Ann", "1/2", "make the market square", out var none).Ok && none == null, "first ask part waits for the rest");
+Check(talk.AddPart("Ann", "2/2", "look festive | please", out var asked).Ok && asked!.Text == "make the market square look festive  please", "ask assembled and cleaned");
+Check(!talk.AddPart("Bob", "2/2", "orphan", out _).Ok, "out-of-order ask part refused");
+Check(talk.Answer(asked.Id, "Claude", "Placing flowers along the square.").Ok && asked.Status == "answered", "answer recorded");
+Check(talk.ProposePart(asked.Id, "Claude", "1/2", "place 3206 1600 1590 20 0", out var done1).Ok && !done1, "proposal line 1 of 2");
+Check(talk.ProposePart(asked.Id, "Claude", "2/2", "place 3204 1601 1590 20 0", out var done2).Ok && done2 && asked.Proposal.Length == 2 && asked.Status == "proposed", "proposal complete");
+Check(!talk.Resolve(asked.Id, "Claude", "applied").Ok, "only the asker resolves");
+Check(talk.Resolve(asked.Id, "Ann", "applied").Ok && asked.Status == "applied", "asker marks applied");
+Check(!talk.ProposePart(asked.Id, "Claude", "1/1", "undo", out _).Ok, "closed request takes no proposals");
+
 Console.WriteLine($"DEV EDIT SESSION TESTS: {passes} passed, {failures} failed");
 return failures;

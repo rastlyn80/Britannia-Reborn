@@ -2,10 +2,14 @@ extends CanvasLayer
 # In-game developer edit mode (F9). Joins the server-authoritative session,
 # shows selection/inspection, transform, placement and terrain brush tools with
 # preview / accept / cancel, undo / redo, saved edit sets and live session
-# status. Every action becomes a DevEditState command, the same textual model a
-# future conversational assistant (or scripts/dev-edit.ps1) uses.
+# status. Every action becomes a command in the shared grammar (DevEditCommands)
+# that typed/spoken requests, Claude Code proposals and scripts/dev-edit.ps1
+# also use. Requests and multi-object actions are shown with their exact scope
+# and applied only after Accept.
 const State = preload("res://DevEdit/DevEditState.gd")
 const Overlay = preload("res://DevEdit/DevEditOverlay.gd")
+const Commands = preload("res://DevEdit/DevEditCommands.gd")
+const Intent = preload("res://DevEdit/DevEditIntent.gd")
 const Modern = preload("res://Network/ModernSkin.gd")
 var world: Node3D
 var game: Node
@@ -41,6 +45,18 @@ var terrain_box: Container
 var accept_button: Button
 var undo_button: Button
 var redo_button: Button
+var commands: Commands
+var intent := Intent.new()
+# Reviewed plans waiting for Accept (from a request, a proposal or a group action).
+var pending: Array = []
+var pending_ask := 0
+var ask_box: LineEdit
+var plan_label: Label
+var talk_label: Label
+var claude_button: Button
+var review_button: Button
+var speak_box: CheckBox
+var spoken: Dictionary = {}
 
 func configure(owner_world: Node3D) -> void:
 	world = owner_world
@@ -62,6 +78,8 @@ func configure(owner_world: Node3D) -> void:
 	state.targets_changed.connect(_targets_changed)
 	state.locks_changed.connect(func(_t: String): refresh())
 	state.rejected.connect(func(_r: int, code: String, detail: String): note("Refused (%s): %s" % [code,detail]))
+	state.conversation_changed.connect(_conversation_changed)
+	commands = Commands.new(state,sender(),overlay.records_in)
 	_build()
 	panel.hide()
 
@@ -85,8 +103,21 @@ func click(screen: Vector2) -> void:
 	var hit: Dictionary = overlay.pick(world.camera,screen)
 	match tool:
 		"select":
-			if hit.has("target"): select(hit.target,hit.get("record",{}))
-			else: select("",{})
+			# Shift+click builds a multi-selection for group actions.
+			if Input.is_key_pressed(KEY_SHIFT) and hit.has("target"):
+				if commands.selection.is_empty() and selected != "": commands.selection.append(selected)
+				if hit.target in commands.selection: commands.selection.erase(hit.target)
+				else: commands.selection.append(hit.target)
+				overlay.highlight(commands.selection)
+				refresh()
+			elif hit.has("target"):
+				commands.selection.clear()
+				overlay.highlight([])
+				select(hit.target,hit.get("record",{}))
+			else:
+				commands.selection.clear()
+				overlay.highlight([])
+				select("",{})
 		"place":
 			if hit.has("ground"):
 				var g: Vector3 = hit.ground
@@ -134,12 +165,18 @@ func encode(target: String, place: Dictionary) -> String:
 	if target.begins_with("p:"): return "a:%d:%s:%s:%d:%d" % [place.id,State.number(place.x),State.number(place.y),place.z,posmod(int(place.yaw),360)]
 	return "m:%s:%s:%d:%d:%d" % [State.number(place.x),State.number(place.y),place.z,posmod(int(place.yaw),360),place.id]
 
+func group() -> bool:
+	return commands.selection.size() > 1
+
 func nudge(dx: float, dy: float, dz: int, dyaw: int) -> void:
+	var step := 1.0 if step_picker.selected == 1 else 0.25
+	if group():
+		review([("rotate all selection %d" % dyaw) if dyaw != 0 else "shift all selection %s %s %d" % [State.number(dx*step),State.number(dy*step),dz]],0)
+		return
 	if not editable(): return
 	var drafted := State.placement(draft_state) if draft_target == selected else {}
 	var base := drafted if not drafted.is_empty() else placement_of(selected)
 	if base.is_empty(): return
-	var step := 1.0 if step_picker.selected == 1 else 0.25
 	base.x = float(base.x)+dx*step
 	base.y = float(base.y)+dy*step
 	base.z = int(base.z)+dz
@@ -147,16 +184,21 @@ func nudge(dx: float, dy: float, dz: int, dyaw: int) -> void:
 	_set_draft(selected,encode(selected,base))
 
 func replace() -> void:
+	if group():
+		review(["replace all selection %d" % current_asset()],0)
+		return
 	if not editable(): return
 	var base := placement_of(selected)
 	base.id = current_asset()
 	_set_draft(selected,encode(selected,base))
 
 func hide_selected() -> void:
-	if selected.begins_with("s:") and editable(): _set_draft(selected,"hide")
+	if group(): review(["hide all selection"],0)
+	elif selected.begins_with("s:") and editable(): _set_draft(selected,"hide")
 
 func restore_selected() -> void:
-	if editable() or (selected.begins_with("s:") and state.state_of(selected) != ""): _set_draft(selected,"")
+	if group(): review(["restore all selection"],0)
+	elif editable() or (selected.begins_with("s:") and state.state_of(selected) != ""): _set_draft(selected,"")
 
 func _set_draft(target: String, desired: String) -> void:
 	draft_target = target
@@ -168,12 +210,121 @@ func _set_draft(target: String, desired: String) -> void:
 		overlay.set_draft(target,desired,label)
 	refresh()
 
+# ---- requests, proposals and group actions: review, then Accept ----
+
+func context() -> Dictionary:
+	return {"x":int(game.player.x),"y":int(game.player.y),"z":int(game.player.z),"facing":int(game.player.direction) & 7,"me":state.me}
+
+func submit_request(text: String) -> void:
+	text = text.strip_edges()
+	if text.is_empty(): return
+	var understood: Dictionary = intent.interpret(text,context())
+	if not understood.understood:
+		pending.clear()
+		plan_label.text = "Not understood here (%s). Ask Claude to handle: \"%s\"" % [understood.reason,text]
+		claude_button.disabled = not state.synced
+		note("Request not understood offline: "+text)
+		refresh()
+		return
+	note("Request: %s → %s" % [text,understood.summary])
+	review(understood.lines,0,understood.summary)
+
+func ask_claude() -> void:
+	var text := ask_box.text.strip_edges()
+	if text.is_empty() or not state.ask(text,sender()): return
+	note("Asked Claude: "+text)
+	ask_box.text = ""
+	claude_button.disabled = true
+
+# Dry-runs every line, shows the exact scope and highlights the targets.
+func review(lines: Array, ask_id: int, summary := "") -> void:
+	cancel()
+	pending.clear()
+	pending_ask = ask_id
+	var described: Array[String] = []
+	var targets: Array = []
+	var problems: Array[String] = []
+	for line in lines:
+		var p: Dictionary = commands.plan(str(line))
+		if not p.ok:
+			problems.append("%s — %s" % [line,p.error])
+			continue
+		pending.append(p)
+		described.append("• "+str(p.description))
+		targets.append_array(p.targets)
+	overlay.highlight(targets,Color("ffd34d"))
+	var head := summary if summary != "" else ("Proposal from %s" % state.asks.get(ask_id,{}).get("proposed_by","") if ask_id > 0 else "Group action")
+	var text := "%s\nScope (%d target(s) highlighted):\n%s" % [head,targets.size(),"\n".join(described)]
+	if not problems.is_empty(): text += "\nCannot run:\n"+"\n".join(problems)
+	if pending.any(func(p: Dictionary): return p.kind == "brush" or (p.kind in ["set","batch"] and p.get("targets",[]).any(func(t: String): return overlay.record_for(t).size() > 0 and overlay.info_for(overlay.record_for(t)).blocking))):
+		text += "\nVISUAL PREVIEW ONLY: ModernUO movement/collision stay as they are."
+	text += "\nPress Accept to apply, Cancel to discard."
+	plan_label.text = text
+	refresh()
+
+func apply_pending() -> void:
+	var sent := 0
+	for p in pending:
+		var id: int = commands.send(p)
+		if id == -1:
+			overlay.highlight(commands.selection)
+			note("Selected %d object(s)" % commands.selection.size())
+		elif id > 0: sent += 1
+		else: note("Not sent: "+str(p.line))
+	if pending_ask > 0: state.resolve(pending_ask,"applied",sender())
+	pending.clear()
+	pending_ask = 0
+	plan_label.text = "Applied %d command(s); see Activity." % sent if sent > 0 else plan_label.text
+	if commands.selection.is_empty(): overlay.highlight([])
+	else: overlay.highlight(commands.selection)
+	refresh()
+
+func _conversation_changed(id: int) -> void:
+	var ask: Dictionary = state.asks[id]
+	if ask.status == "proposed" and ask.author == state.me:
+		note("%s proposed %d command(s) for: %s" % [ask.proposed_by,ask.proposal.size(),ask.text])
+		review(ask.proposal,id)
+	var latest: Array[String] = []
+	var ids := state.asks.keys()
+	ids.sort()
+	for k in ids.slice(maxi(0,ids.size()-4)):
+		var a: Dictionary = state.asks[k]
+		var line := "#%d %s: %s [%s]" % [k,a.author,a.text,a.status]
+		for answer in a.answers: line += "\n   "+str(answer)
+		latest.append(line)
+	if talk_label: talk_label.text = "\n".join(latest)
+	if speak_box and speak_box.button_pressed and ask.author == state.me:
+		var said: int = int(spoken.get(id,0))
+		var lines: Array = ask.answers.slice(said)
+		spoken[id] = ask.answers.size()
+		var voices := DisplayServer.tts_get_voices_for_language(OS.get_locale_language())
+		if not voices.is_empty():
+			for line in lines: DisplayServer.tts_speak(str(line).split(": ",true,1)[-1],voices[0])
+	refresh()
+
 func preview() -> void:
+	if not pending.is_empty():
+		var p: Dictionary = pending[0]
+		if p.kind == "batch" and str(p.get("rule","")) != "selection" and str(p.get("rule","")) != "":
+			state.preview("g:%d" % p.targets.size(),p.rule,sender())
+			note("Shared preview of %d objects (%s)" % [p.targets.size(),p.rule])
+		else:
+			for t in p.get("targets",[]).slice(0,8):
+				if p.kind == "set": state.preview(t,p.state,sender())
+				elif p.kind == "batch":
+					for item in p.items:
+						if item[0] == t: state.preview(t,item[1],sender())
+			note("Shared preview of %d target(s)" % mini(8,p.get("targets",[]).size()))
+		return
 	if draft_target.is_empty(): return
 	state.preview(draft_target,draft_state,sender())
 	note("Shared preview of %s" % draft_target)
 
 func accept() -> void:
+	if not pending.is_empty():
+		apply_pending()
+		state.clear_preview(sender())
+		return
 	if draft_target.is_empty(): return
 	var id := 0
 	if draft_target == "n":
@@ -192,6 +343,13 @@ func accept() -> void:
 	refresh()
 
 func cancel() -> void:
+	if not pending.is_empty():
+		if pending_ask > 0: state.resolve(pending_ask,"declined",sender())
+		pending.clear()
+		pending_ask = 0
+		state.clear_preview(sender())
+		overlay.highlight(commands.selection)
+		if plan_label: plan_label.text = ""
 	if not draft_target.is_empty(): state.clear_preview(sender())
 	overlay.clear_draft()
 	draft_target = ""
@@ -279,7 +437,8 @@ func refresh() -> void:
 	transform_box.visible = tool == "select"
 	terrain_box.visible = tool == "terrain"
 	var locked_by_other: bool = state.locks.get(selected,"") not in ["",state.me]
-	accept_button.disabled = draft_target.is_empty() or not state.synced or (draft_target == selected and locked_by_other)
+	accept_button.disabled = (draft_target.is_empty() and pending.is_empty()) or not state.synced or (draft_target == selected and locked_by_other)
+	if group(): inspector.text = "%d objects selected (Shift+click to add/remove). Buttons act on all of them." % commands.selection.size()
 	undo_button.disabled = state.undo_candidate() == 0 or not state.synced
 	redo_button.disabled = state.redo_candidate() == 0 or not state.synced
 	undo_button.text = "Undo r%d" % state.undo_candidate() if state.undo_candidate() > 0 else "Undo"
@@ -326,6 +485,21 @@ func _build() -> void:
 	scroll.add_child(column)
 	column.add_child(Modern.label("Developer edit  (F9)",17,Modern.IVORY,700))
 	session_label = _text(column,12)
+	column.add_child(Modern.label("Ask",14,Modern.IVORY,700))
+	ask_box = LineEdit.new()
+	ask_box.placeholder_text = "e.g. hide the flowers near me (Win+H to speak)"
+	ask_box.tooltip_text = "Type a request, or use Windows voice typing (Win+H) in this box. Enter shows the plan and its scope; nothing changes until Accept."
+	ask_box.custom_minimum_size.x = 340
+	ask_box.text_submitted.connect(submit_request)
+	column.add_child(ask_box)
+	var asking := _row(column)
+	_button("Plan","Interpret the request and show its scope",func(): submit_request(ask_box.text),asking)
+	claude_button = _button("Ask Claude","Send the request to Claude Code (connected through scripts/dev-edit-bridge.ps1); its proposal comes back for review",ask_claude,asking)
+	speak_box = CheckBox.new()
+	speak_box.text = "Speak replies"
+	speak_box.tooltip_text = "Read answers aloud with the system voice"
+	asking.add_child(speak_box)
+	plan_label = _text(column,12,Color("ffe28a"))
 	var tools := _row(column)
 	for entry in [["select","Select","Select a static or placed object (click)"],["place","Place","Place an approved decorative asset (click the ground)"],["terrain","Terrain","Bounded terrain brush (click the ground)"]]:
 		var b := _button(entry[1],entry[2],func():
@@ -388,6 +562,8 @@ func _build() -> void:
 		else: note("Edit set names use a-z, 0-9 and '-'."),sets)
 	_button("Load","Apply a saved edit set as one undoable operation",func():
 		if DevEditSessionName.valid(set_name.text): state.load_set(set_name.text,sender()),sets)
+	column.add_child(Modern.label("Conversation",14,Modern.IVORY,700))
+	talk_label = _text(column,12,Color("cfe8ff"))
 	column.add_child(Modern.label("Activity",14,Modern.IVORY,700))
 	activity_label = _text(column,12,Color("d8d2c4"))
 	refresh()

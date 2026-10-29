@@ -185,6 +185,40 @@ func full() -> void:
 	check(await request_done(0,brush) and status(0,brush) == "applied","cross-district terrain brush accepted")
 	check(await until(func(): return b.state_of("t:1664:1560") == "h:6:dirt" and b.state_of("t:1662:1560") == "h:2:dirt" and b.state_of("t:1663:1560") == "h:4:dirt"),"B receives the brushed samples with the deterministic falloff")
 	stats.brush_round_trip_ms = now_ms()-brush_started
+	# Group operation: one atomic batch, one revision, one undo.
+	var places: Array = []
+	for i in 3:
+		var id := a.place(3204,1610+i,1595,20,0,send(0))
+		await request_done(0,id)
+		places.append(a.requests[id].seq)
+	var placed_targets: Array = a.targets.keys().filter(func(t: String): return t.begins_with("p:") and a.revision_of(t) in places)
+	var commands := preload("res://DevEdit/DevEditCommands.gd").new(a,send(0),func(_r: Rect2i) -> Array: return [])
+	commands.selection = placed_targets
+	var group_plan: Dictionary = commands.plan("shift all selection 0 2")
+	var group_id: int = commands.send(group_plan)
+	check(await request_done(0,group_id) and status(0,group_id) == "applied","three selected objects moved as one batch")
+	var group_seq: int = a.requests[group_id].seq
+	check(await until(func(): return placed_targets.all(func(t: String): return b.revision_of(t) == group_seq and b.state_of(t).contains(":1597:"))),"B receives the whole group in one revision")
+	var group_undo := a.undo(send(0))
+	check(await request_done(0,group_undo) and await until(func(): return placed_targets.all(func(t: String): return b.state_of(t).contains(":1595:"))),"one undo reverts the whole group for both")
+	# Conversation: B acts as the assistant; A asks, B proposes, A applies.
+	clients[1].send_dev_edit("leave")
+	await until(func(): return not a.editors.has(b.me),3000)
+	b.synced = false
+	b.join(send(1),true)
+	check(await until(func(): return b.synced and b.me == "Claude"),"B rejoins as the assistant 'Claude'")
+	check(a.ask("make the corner by the inn look festive with flowers",send(0)),"A asks in plain language")
+	check(await until(func(): return b.asks.values().any(func(q: Dictionary): return "festive" in q.text and q.author == a.me)),"assistant receives the request")
+	var ask_id: int = b.asks.keys().filter(func(k: int): return "festive" in b.asks[k].text)[-1]
+	b.answer(ask_id,"Two foxgloves and poppies by the corner.",send(1))
+	b.propose(ask_id,["place 3204 1612 1599 20 0","place 3206 1613 1599 20 0"],send(1))
+	check(await until(func(): return a.asks.get(ask_id,{}).get("status","") == "proposed" and a.asks[ask_id].proposal.size() == 2 and a.asks[ask_id].answers.size() == 1),"A receives the answer and a two-command proposal")
+	var reviewed: Array = a.asks[ask_id].proposal.map(func(l: String): return commands.plan(l))
+	check(reviewed.all(func(p: Dictionary): return p.ok),"proposal dry-runs with explicit scope before applying")
+	var before_apply := a.revision
+	for p in reviewed: await request_done(0,commands.send(p))
+	a.resolve(ask_id,"applied",send(0))
+	check(a.revision == before_apply+2 and await until(func(): return b.asks[ask_id].status == "applied"),"A applied the proposal as its own attributed edits; request closed")
 	# Saved edit set.
 	var saved := a.save("live-check",send(0))
 	check(await request_done(0,saved) and status(0,saved) == "applied" and "sha256" in a.requests[saved].detail,"edit set saved: %s" % a.requests[saved].get("detail",""))

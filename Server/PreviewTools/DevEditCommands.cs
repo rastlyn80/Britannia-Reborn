@@ -18,6 +18,8 @@ public static class DevEditCommands
 {
     private static DevEditSession? _session;
     private static readonly Dictionary<Mobile, string> Joined = new();
+    private static readonly DevEditConversation Conversation = new();
+    private static readonly Dictionary<Mobile, (int Request, string Action, int Count, List<(string, int, string)> Items)> Batches = new();
     private static HashSet<string> _accounts = new(StringComparer.OrdinalIgnoreCase);
     private static string _directory = "";
     private static string _journal = "";
@@ -125,6 +127,12 @@ public static class DevEditCommands
         var verb = a.Length > 0 ? a[0].ToLowerInvariant() : "";
         if (verb == "join")
         {
+            // An assistant (Claude Code via the bridge) edits under its own
+            // name; authorization is still that of the account it uses.
+            if (a.Length > 1 && a[1] == "assistant")
+            {
+                author = "Claude";
+            }
             Joined[mobile] = author;
             Snapshot(mobile, session, author);
             Broadcast($"who|{author}|on");
@@ -135,10 +143,16 @@ public static class DevEditCommands
             Reply(mobile, "reject|0|state|join the session first");
             return;
         }
+        author = Joined[mobile];
         if (verb == "leave")
         {
             Leave(mobile);
             Reply(mobile, "left");
+            return;
+        }
+        if (verb is "ask" or "answer" or "propose" or "resolve")
+        {
+            Converse(mobile, author, verb, args.ArgString);
             return;
         }
         var request = a.Length > 1 && int.TryParse(a[1], NumberStyles.None, CultureInfo.InvariantCulture, out var req) ? req : 0;
@@ -164,6 +178,33 @@ public static class DevEditCommands
                     ? session.Place(author, asset, a[3], a[4], z, yaw)
                     : Result.Fail("invalid", "malformed placement");
                 break;
+            // batch <req> begin <count> <action> | add <target> <base> [state] | commit | cancel
+            case "batch" when a.Length >= 3:
+                {
+                    switch (a[2])
+                    {
+                        case "begin" when a.Length == 5 && Parse(a[3], out var count) && count is > 0 and <= DevEditSession.MaxBatch:
+                            Batches[mobile] = (request, a[4], count, new List<(string, int, string)>());
+                            return;
+                        case "add" when (a.Length == 5 || a.Length == 6) && Batches.TryGetValue(mobile, out var open) && open.Request == request &&
+                                        Parse(a[4], out var baseRevision) && open.Items.Count < open.Count:
+                            open.Items.Add((a[3], baseRevision, a.Length == 6 && a[5] != "-" ? a[5] : ""));
+                            return;
+                        case "commit" when Batches.Remove(mobile, out var ready) && ready.Request == request:
+                            result = ready.Items.Count != ready.Count
+                                ? Result.Fail("invalid", $"batch received {ready.Items.Count} of {ready.Count} targets")
+                                : session.Batch(author, ready.Items, now, ready.Action);
+                            break;
+                        case "cancel":
+                            Batches.Remove(mobile);
+                            return;
+                        default:
+                            Batches.Remove(mobile);
+                            result = Result.Fail("invalid", "malformed or out-of-order batch");
+                            break;
+                    }
+                    break;
+                }
             case "brush" when a.Length == 7:
                 result = session.Brush(author, a[2], a[3], a[4], a[5], a[6], now);
                 break;
@@ -252,6 +293,73 @@ public static class DevEditCommands
         Announce(operation, request);
     }
 
+    private static void Converse(Mobile mobile, string author, string verb, string argString)
+    {
+        var words = argString.Trim().Split(' ', 3, StringSplitOptions.RemoveEmptyEntries);
+        Result result;
+        switch (verb)
+        {
+            case "ask" when words.Length >= 3:
+                result = Conversation.AddPart(author, words[1], words[2], out var ask);
+                if (ask != null)
+                {
+                    Broadcast($"ask|{ask.Id}|{ask.Author}|{ask.Text}");
+                    Log($"ask {ask.Id} {ask.Author}: {ask.Text}");
+                }
+                break;
+            case "answer" when words.Length >= 3 && Parse(words[1], out var answerId):
+                result = Conversation.Answer(answerId, author, words[2]);
+                if (result.Ok)
+                {
+                    Broadcast($"answer|{answerId}|{author}|{DevEditConversation.Clean(words[2])}");
+                    Log($"answer {answerId} {author}: {words[2]}");
+                }
+                break;
+            case "propose" when words.Length >= 3 && Parse(words[1], out var proposeId):
+                var parts = argString.Trim().Split(' ', 4, StringSplitOptions.RemoveEmptyEntries);
+                result = parts.Length == 4
+                    ? Conversation.ProposePart(proposeId, author, parts[2], parts[3], out _)
+                    : Result.Fail("invalid", "propose <id> <n/total> <command>");
+                if (result.Ok && result.Code == "proposed" && Conversation.Find(proposeId) is { } proposed)
+                {
+                    for (var i = 0; i < proposed.Proposal.Length; i++)
+                    {
+                        Broadcast($"prop|{proposeId}|{author}|{i + 1}|{proposed.Proposal.Length}|{proposed.Proposal[i]}");
+                    }
+                    Log($"proposal {proposeId} {author}: {string.Join(" ; ", proposed.Proposal)}");
+                }
+                break;
+            case "resolve" when words.Length >= 3 && Parse(words[1], out var resolveId):
+                result = Conversation.Resolve(resolveId, author, words[2]);
+                if (result.Ok)
+                {
+                    Broadcast($"resolved|{resolveId}|{author}|{words[2]}");
+                    Log($"resolved {resolveId} {words[2]}");
+                }
+                break;
+            default:
+                result = Result.Fail("invalid", "ask <n/total> <text> | answer <id> <text> | propose <id> <n/total> <command> | resolve <id> applied|declined");
+                break;
+        }
+        if (!result.Ok)
+        {
+            Reply(mobile, $"reject|0|{result.Code}|{result.Detail}");
+        }
+    }
+
+    // Conversation audit trail next to the journal (local, ignored).
+    private static void Log(string line)
+    {
+        try
+        {
+            File.AppendAllText(Path.Combine(_directory, "conversation.log"), $"{Core.Now:O} {line}{Environment.NewLine}");
+        }
+        catch (IOException)
+        {
+            // The audit log is informational; edits are journaled separately.
+        }
+    }
+
     private static bool Parse(string text, out int value) =>
         int.TryParse(text, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out value);
 
@@ -318,6 +426,20 @@ public static class DevEditCommands
         foreach (var editor in Joined.Values.Distinct())
         {
             Reply(mobile, $"who|{editor}|on");
+        }
+        // Open conversation so a late-joining editor or assistant can respond.
+        foreach (var ask in Conversation.Asks.Where(a => a.Status is "open" or "answered" or "proposed"))
+        {
+            Reply(mobile, $"ask|{ask.Id}|{ask.Author}|{ask.Text}");
+            foreach (var answer in ask.Answers)
+            {
+                var split = answer.IndexOf(": ", StringComparison.Ordinal);
+                Reply(mobile, $"answer|{ask.Id}|{answer[..split]}|{answer[(split + 2)..]}");
+            }
+            for (var i = 0; i < ask.Proposal.Length; i++)
+            {
+                Reply(mobile, $"prop|{ask.Id}|{ask.ProposedBy}|{i + 1}|{ask.Proposal.Length}|{ask.Proposal[i]}");
+            }
         }
         Reply(mobile, $"synced|{session.Revision}");
     }

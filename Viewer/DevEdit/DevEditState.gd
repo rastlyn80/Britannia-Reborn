@@ -10,6 +10,7 @@ signal locks_changed(target: String)
 signal session_changed
 signal request_changed(request: int)
 signal rejected(request: int, code: String, detail: String)
+signal conversation_changed(ask: int)
 
 const SURFACES := ["-","grass","forest","dirt","cobblestones","sand","brick"]
 var me := ""
@@ -28,6 +29,9 @@ var next_request := 1
 var last_saved := ""
 var building: Dictionary = {}
 var malformed := 0
+# Conversation: id -> {author, text, status, answers, proposal, proposed_by}.
+var asks: Dictionary = {}
+var proposal_parts: Dictionary = {}
 
 static func is_int(text: String) -> bool:
 	return text.is_valid_int() and str(int(text)) == text
@@ -124,6 +128,31 @@ func feed(line: String) -> bool:
 				previews.erase(f[1])
 				previews_changed.emit(f[1])
 			session_changed.emit()
+		"ask":
+			if f.size() < 4 or not is_int(f[1]): return _bad()
+			asks[int(f[1])] = {"author":f[2],"text":"|".join(f.slice(3)),"status":"open","answers":[],"proposal":[],"proposed_by":""}
+			conversation_changed.emit(int(f[1]))
+		"answer":
+			if f.size() < 4 or not is_int(f[1]) or not asks.has(int(f[1])): return _bad()
+			asks[int(f[1])].answers.append("%s: %s" % [f[2],"|".join(f.slice(3))])
+			if asks[int(f[1])].status == "open": asks[int(f[1])].status = "answered"
+			conversation_changed.emit(int(f[1]))
+		"prop":
+			if f.size() < 6 or not is_int(f[1]) or not is_int(f[3]) or not is_int(f[4]) or not asks.has(int(f[1])): return _bad()
+			var id := int(f[1])
+			if int(f[3]) == 1: proposal_parts[id] = []
+			if not proposal_parts.has(id) or proposal_parts[id].size() != int(f[3])-1: return _bad()
+			proposal_parts[id].append("|".join(f.slice(5)))
+			if int(f[3]) == int(f[4]):
+				asks[id].proposal = proposal_parts[id]
+				asks[id].proposed_by = f[2]
+				asks[id].status = "proposed"
+				proposal_parts.erase(id)
+				conversation_changed.emit(id)
+		"resolved":
+			if f.size() != 4 or not is_int(f[1]) or not asks.has(int(f[1])): return _bad()
+			asks[int(f[1])].status = f[3]
+			conversation_changed.emit(int(f[1]))
 		"status", "left":
 			session_changed.emit()
 		_:
@@ -186,7 +215,7 @@ func _request(kind: String, description: String, command: String, sender: Callab
 	request_changed.emit(id)
 	return id
 
-func join(sender: Callable) -> bool: return sender.call("join")
+func join(sender: Callable, assistant := false) -> bool: return sender.call("join assistant" if assistant else "join")
 func leave(sender: Callable) -> bool: return sender.call("leave")
 
 func set_state(target: String, state: String, description: String, sender: Callable) -> int:
@@ -217,6 +246,47 @@ func preview(target: String, state: String, sender: Callable) -> bool:
 
 func clear_preview(sender: Callable) -> bool:
 	return sender.call("preview clear")
+
+# Several targets as one atomic, attributed operation (one undo). items are
+# [target, state] pairs; base revisions come from the synced state.
+func batch(action: String, items: Array, description: String, sender: Callable) -> int:
+	if items.is_empty() or items.size() > 256: return 0
+	var lines: Array[String] = []
+	for item in items:
+		var line := "batch %%d add %s %d %s" % [item[0],revision_of(item[0]),item[1] if item[1] != "" else "-"]
+		if line.length() > 115: return 0
+		lines.append(line)
+	var id := next_request
+	if not sender.call("batch %d begin %d %s" % [id,items.size(),action]): return 0
+	for line in lines: sender.call(line % id)
+	return _request(action,description,"batch %d commit",sender)
+
+# Plain-language request, split into numbered parts within the speech limit.
+func ask(text: String, sender: Callable) -> bool:
+	var words := text.strip_edges().replace("|","/").split(" ",false)
+	var parts: Array[String] = []
+	var current := ""
+	for word in words:
+		if (current+" "+word).length() > 100 and current != "":
+			parts.append(current);current = word
+		else: current = word if current == "" else current+" "+word
+	if current != "": parts.append(current)
+	if parts.is_empty() or parts.size() > 4: return false
+	for i in parts.size():
+		if not sender.call("ask %d/%d %s" % [i+1,parts.size(),parts[i]]): return false
+	return true
+
+func answer(id: int, text: String, sender: Callable) -> bool:
+	return sender.call("answer %d %s" % [id,text.replace("|","/").left(110)])
+
+func propose(id: int, lines: Array, sender: Callable) -> bool:
+	if lines.is_empty() or lines.size() > 32: return false
+	for i in lines.size():
+		if not sender.call("propose %d %d/%d %s" % [id,i+1,lines.size(),str(lines[i])]): return false
+	return true
+
+func resolve(id: int, outcome: String, sender: Callable) -> bool:
+	return sender.call("resolve %d %s" % [id,outcome])
 
 func save(name: String, sender: Callable) -> int:
 	return _request("save","save edit set "+name,"save %%d %s" % name,sender)

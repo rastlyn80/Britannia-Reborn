@@ -9,7 +9,7 @@ const Overlay = preload("res://DevEdit/DevEditOverlay.gd")
 const Terrain = preload("res://DevEdit/DevEditTerrain.gd")
 var passed := 0
 var failed := 0
-var expected := 26
+var expected := 50
 # The dummy (headless) renderer does not store vertex-region uploads; byte-level
 # batch checks run when this suite is started with a real renderer.
 var gpu := DisplayServer.get_name() != "headless"
@@ -24,6 +24,7 @@ func _initialize() -> void: call_deferred("run")
 
 func run() -> void:
 	protocol()
+	conversation()
 	synthetic_terrain()
 	await real_districts()
 	# A script error aborts a section silently; require every check to have run.
@@ -70,6 +71,58 @@ func protocol() -> void:
 	s.feed("who|Bob|off")
 	check(not s.previews.has("Bob"),"departing editor's previews cleared")
 	check(s.set_state("s:1600:1590:20:3645:0","m:"+"9".repeat(120),"x",sender) == 0,"overlong command refused locally")
+
+# Typed/spoken requests -> commands, rule scopes and group operations.
+func conversation() -> void:
+	var intent := preload("res://DevEdit/DevEditIntent.gd").new()
+	var here := {"x":1602,"y":1591,"z":20,"facing":2,"me":"Ann Lee"}
+	var lines := func(text: String) -> Array: return intent.interpret(text,here).get("lines",[])
+	check(lines.call("Hide the flowers near me.") == ["hide all kind=flower;near=1602,1591,8"],"hide flowers near me -> bounded kind rule")
+	check(lines.call("please hide all barrels within 12 tiles") == ["hide all name~barrel;near=1602,1591,12"],"named things within a radius")
+	check(lines.call("put two baskets in front of me") == ["place 2481 1604 1590.5 20 0","place 2481 1604 1591.5 20 0"],"count and 'in front of me' (facing east), side by side")
+	check(lines.call("add red poppies 3 tiles north") == ["place 3206 1602 1588 20 0"],"plural asset label and compass offset")
+	check(lines.call("raise the ground here by 6 radius 3") == ["brush 1604 1591 3 6 -"],"raise terrain")
+	check(lines.call("lower the terrain at 1650 1600") == ["brush 1650 1600 2 -4 -"],"lower terrain at coordinates")
+	check(lines.call("paint the ground here with dirt") == ["brush 1604 1591 2 0 dirt"],"paint surface")
+	check(lines.call("remove everything I placed") == ["remove all placed;by=Ann_Lee"],"remove my placements")
+	check(lines.call("replace the mushrooms within 5 tiles with foxglove") == ["replace all kind=mushroom;near=1602,1591,5 3204"],"replace by rule")
+	check(lines.call("move them 2 tiles north") == ["shift all selection 0 -2"] and lines.call("rotate it 90 degrees left") == ["rotate all selection -90"],"selection move/rotate")
+	check(lines.call("undo that") == ["undo"] and lines.call("save this as market-day") == ["save market-day"],"undo and save")
+	check(lines.call("bring back the flowers near me") == ["restore all kind=flower;near=1602,1591,8;edited"],"restore by rule")
+	check(not intent.interpret("make the square look festive",here).understood and not intent.interpret("place a dragon here",here).understood,"unknown requests and unapproved assets are not guessed")
+	var Query := preload("res://DevEdit/DevEditQuery.gd")
+	check(Query.parse("kind=flower").has("error") and Query.parse("near=1,1,40").has("error") and Query.parse("rect=0,0,200,10").has("error") and Query.parse("bogus=1;near=1,1,2").has("error"),"unbounded or malformed rules refused")
+	var s := State.new()
+	s.feed("hello|britain-dev|Ann Lee|0|b");s.feed("synced|0")
+	var records := [
+		{"target":"s:1600:1590:20:3206:0","x":1600,"y":1590,"z":20,"id":3206,"name":"red poppies","kind":"flower","editable":true,"reason":""},
+		{"target":"s:1603:1592:20:3204:0","x":1603,"y":1592,"z":20,"id":3204,"name":"foxglove flowers","kind":"flower","editable":true,"reason":""},
+		{"target":"s:1640:1592:20:3204:0","x":1640,"y":1592,"z":20,"id":3204,"name":"foxglove flowers","kind":"flower","editable":true,"reason":""},
+		{"target":"s:1601:1591:20:1000:0","x":1601,"y":1591,"z":20,"id":1000,"name":"stone wall","kind":"wall","editable":false,"reason":"joined architecture (wall)"}]
+	var rule := Query.parse("near=1602,1591,8")
+	var found := Query.evaluate(rule,records,s)
+	check(found.targets.size() == 2 and found.matched == 3 and found.skipped.size() == 1,"rule scope: in-radius editable targets, architecture reported as skipped")
+	check("2 statics within 8 tiles of 1602,1591" in Query.describe(rule,found) and "skipped 1 joined architecture" in Query.describe(rule,found),"scope description explains the skip")
+	var sent: Array = []
+	var commands := preload("res://DevEdit/DevEditCommands.gd").new(s,func(t: String) -> bool:
+		sent.append(t)
+		return true,func(_area: Rect2i) -> Array: return records)
+	var plan: Dictionary = commands.plan("hide all kind=flower;near=1602,1591,8")
+	check(plan.ok and plan.kind == "batch" and plan.items.size() == 2 and plan.targets.size() == 2,"group hide plans one batch")
+	var id: int = commands.send(plan)
+	check(id > 0 and sent.size() == 4 and sent[0] == "batch %d begin 2 hide" % id and sent[-1] == "batch %d commit" % id and sent.all(func(t: String): return t.length() <= 115),"batch sent as begin/add/commit within the speech limit")
+	check(not commands.plan("replace all kind=flower;near=1602,1591,8 999").ok,"group replace refuses unapproved assets")
+	commands.selection = ["s:1600:1590:20:3206:0","s:1603:1592:20:3204:0"]
+	var shift: Dictionary = commands.plan("shift all selection 1 -0.5")
+	check(shift.ok and shift.items[0][1] == "m:1601:1589.5:20:0:3206" and shift.items[1][1] == "m:1604:1591.5:20:0:3204","selection shift computes each absolute placement")
+	check(commands.plan("rotate all selection 45").items[0][1] == "m:1600:1590:20:45:3206","selection rotate")
+	check(not commands.plan("hide all kind=flower").ok and not commands.plan("explode everything").ok,"unbounded and unknown commands refused")
+	check(s.ask("x ".repeat(150),func(t: String) -> bool:
+		sent.append(t)
+		return t.length() <= 128) and sent[-1].begins_with("ask 3/3 "),"long requests split into numbered parts")
+	s.feed("ask|7|Ann Lee|make it festive")
+	s.feed("prop|7|Claude|1|2|place 3206 1600 1590 20 0");s.feed("prop|7|Claude|2|2|place 3204 1601 1590 20 0")
+	check(s.asks[7].status == "proposed" and s.asks[7].proposal.size() == 2 and s.asks[7].proposed_by == "Claude","proposal assembled from parts")
 
 # Two synthetic 64x64 districts share the border x = 64.
 func synthetic_terrain() -> void:

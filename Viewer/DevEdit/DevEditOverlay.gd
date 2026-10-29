@@ -269,7 +269,53 @@ static func author_color(author: String, mine: bool) -> Color:
 func scene_point(x: float, y: float, z: float) -> Vector3:
 	return Vector3(x-origin().x+0.5,z*0.2,y-origin().y+0.5)
 
+# Source records with eligibility, for rule scopes (loaded districts only).
+func records_in(area: Rect2i) -> Array:
+	var found: Array = []
+	for at in districts:
+		if not Rect2i(at,Vector2i(64,64)).intersects(area): continue
+		for record in districts[at].records:
+			if not area.has_point(Vector2i(record.x,record.y)): continue
+			var info := info_for(record)
+			found.append({"target":record.target,"x":record.x,"y":record.y,"z":record.z,"id":record.id,"name":info.name,"kind":info.kind,"editable":info.editable,"reason":info.reason})
+	return found
+
+func target_point(target: String) -> Vector3:
+	if live.has(target): return live[target].position
+	var place := State.placement(state.state_of(target))
+	if target.begins_with("p:") and not place.is_empty(): return scene_point(place.x,place.y,place.z)
+	var record := record_for(target)
+	return Vector3.INF if record.is_empty() else scene_point(record.x,record.y,record.z)
+
+# Scope highlight: one translucent box per target (selection, rule results).
+var highlighted: Node3D
+func highlight(targets: Array, color: Color = Color("4fc3f7")) -> void:
+	if highlighted: highlighted.queue_free()
+	highlighted = null
+	if targets.is_empty(): return
+	highlighted = Node3D.new()
+	for target in targets:
+		var at := target_point(target)
+		if at != Vector3.INF: highlighted.add_child(box(at,Vector3(0.9,0.9,0.9),color))
+	add_child(highlighted)
+
 func preview_node(target: String, desired: String, color: Color, label: String) -> Node3D:
+	if target.begins_with("g:"):
+		# Group preview: evaluate the shared rule on this client's own records.
+		var rule := preload("res://DevEdit/DevEditQuery.gd").parse(desired)
+		if rule.has("error") or not rule.has("area"): return null
+		var result := preload("res://DevEdit/DevEditQuery.gd").evaluate(rule,records_in(rule.area),state)
+		var root := Node3D.new()
+		for t in result.targets:
+			var at := target_point(t)
+			if at != Vector3.INF: root.add_child(box(at,Vector3(1.0,1.2,1.0),color))
+		if root.get_child_count() == 0:
+			root.free()
+			return null
+		var first: Vector3 = root.get_child(0).position
+		ghostify(root,color,"%s · %d objects" % [label,result.targets.size()])
+		root.get_child(root.get_child_count()-1).position = first+Vector3(0,2.2,0)
+		return root
 	if target.begins_with("b:"):
 		var f := target.split(":")
 		var cx := int(f[1]);var cy := int(f[2]);var r := int(f[3])

@@ -329,6 +329,15 @@ public sealed class DevEditSession
                 return Result.Fail("invalid", placeReason);
             }
         }
+        else if (target.StartsWith("g:", StringComparison.Ordinal))
+        {
+            // Group preview: "g:N" with a compact rule (or "selection") every
+            // client evaluates on its own loaded source records.
+            if (!Int(target[2..], 1, MaxBatch, out _) || !ValidRule(state))
+            {
+                return Result.Fail("invalid", "malformed group preview");
+            }
+        }
         else if (target.StartsWith("b:", StringComparison.Ordinal))
         {
             var parts = target.Split(':');
@@ -409,6 +418,52 @@ public sealed class DevEditSession
         }
         Touch(author, target, now);
         return Commit(author, action, new List<Change> { new() { Target = target, Before = current.State, After = state } });
+    }
+
+    public const int MaxBatch = 256;
+
+    public static bool ValidRule(string rule) =>
+        rule.Length is > 0 and <= 100 && rule.All(c => c is >= 'a' and <= 'z' or >= '0' and <= '9' or ':' or ',' or '.' or '~' or '=' or ';' or '_' or '-');
+
+    // Several targets in one ordered, attributed operation: all validated
+    // first, all applied or none; one undo reverts the whole group.
+    public Result Batch(string author, IReadOnlyList<(string Target, int Base, string State)> items, DateTime now, string action)
+    {
+        if (items.Count is 0 or > MaxBatch)
+        {
+            return Result.Fail("invalid", $"a batch holds 1-{MaxBatch} targets");
+        }
+        if (action is not ("move" or "rotate" or "replace" or "hide" or "restore" or "remove" or "set"))
+        {
+            return Result.Fail("invalid", "unknown batch action");
+        }
+        var seen = new HashSet<string>(StringComparer.Ordinal);
+        var changes = new List<Change>();
+        foreach (var (target, baseRevision, state) in items)
+        {
+            if (!seen.Add(target))
+            {
+                return Result.Fail("invalid", $"{target} appears twice in the batch");
+            }
+            if ((CheckTarget(target) ?? CheckState(target, state)) is { } reason)
+            {
+                return Result.Fail("invalid", $"{target}: {reason}");
+            }
+            var current = Current(target);
+            if (current.Revision != baseRevision)
+            {
+                return Result.Fail("conflict", $"{target} is at revision {current.Revision} by {current.Author}; you edited revision {baseRevision}");
+            }
+            if (ReservedBy(target, author, now) is { } holder)
+            {
+                return Result.Fail("reserved", $"{target} is reserved by {holder}");
+            }
+            if (current.State != state)
+            {
+                changes.Add(new Change { Target = target, Before = current.State, After = state });
+            }
+        }
+        return changes.Count == 0 ? Result.Fail("noop", "every target already has that state") : Commit(author, action, changes);
     }
 
     public Result Place(string author, int asset, string x, string y, int z, int yaw)

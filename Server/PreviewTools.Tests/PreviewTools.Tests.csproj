@@ -8,5 +8,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="../PreviewTools/DevEditSession.cs" Link="DevEditSession.cs" />
+    <Compile Include="../PreviewTools/DevEditConversation.cs" Link="DevEditConversation.cs" />
   </ItemGroup>
 </Project>
