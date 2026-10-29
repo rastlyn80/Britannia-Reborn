@@ -10,6 +10,8 @@ extends RefCounted
 # T is a target (s:…, p:…); RULE is a DevEditQuery rule or "selection".
 const State = preload("res://DevEdit/DevEditState.gd")
 const Query = preload("res://DevEdit/DevEditQuery.gd")
+# Tame creatures "pet <kind>" asks the server for (Server DevEditSession.PetKinds).
+const PETS := ["horse","packhorse","llama","packllama","desertostard","forestostard","dog","cat"]
 var state: State
 var sender: Callable
 # Callable(area: Rect2i) -> Array of source records (see DevEditQuery).
@@ -57,6 +59,10 @@ func plan(line: String) -> Dictionary:
 	if verb == "codepreview":
 		if a.size() != 2 or RegEx.create_from_string("^[a-z][a-z0-9-]{2,40}$").search(a[1]) == null: return fail(line,"codepreview takes one preview id")
 		return {"ok":true,"line":line,"kind":"codepreview","id":a[1],"targets":[],"description":"code fix preview "+a[1]}
+	# A tame creature at the developer's feet: server-only, nothing goes to Git.
+	if verb == "pet":
+		if a.size() != 2 or not a[1].to_lower() in PETS: return fail(line,"pet takes one of: "+", ".join(PETS))
+		return {"ok":true,"line":line,"kind":"pet","pet":a[1].to_lower(),"targets":[],"description":"a tame %s at your feet (server only)" % a[1].to_lower()}
 	var all := a.size() > 2 and a[1] == "all"
 	if all:
 		var scope := resolve(a[2])
@@ -146,4 +152,5 @@ func send(p: Dictionary) -> int:
 		"redo": return state.redo(sender)
 		"save": return state.save(p.name,sender)
 		"load": return state.load_set(p.name,sender)
+		"pet": return state.pet(p.pet,sender)
 	return 0

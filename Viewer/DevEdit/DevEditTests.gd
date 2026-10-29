@@ -120,6 +120,10 @@ func conversation() -> void:
 	check(not commands.plan("replace all kind=flower;near=1602,1591,8 999").ok,"group replace refuses unapproved assets")
 	var preview: Dictionary = commands.plan("codepreview gable-under-roof")
 	check(preview.ok and preview.kind == "codepreview" and preview.id == "gable-under-roof" and not commands.plan("codepreview ../etc").ok and not commands.plan("codepreview").ok,"codepreview names one safe preview id; nothing is sent")
+	var pet: Dictionary = commands.plan("pet Horse")
+	sent.clear()
+	var pet_id: int = commands.send(pet)
+	check(pet.ok and pet.kind == "pet" and pet_id > 0 and sent == ["pet %d horse" % pet_id] and not commands.plan("pet dragon").ok and not commands.plan("pet").ok,"pet sends one listed tame kind")
 	# The live loader reads previewed districts from the preview bake, then back.
 	var live: Node = preload("res://Presentation/LiveDistricts.gd").new()
 	var folder := OS.get_user_data_dir().path_join("preview-test")

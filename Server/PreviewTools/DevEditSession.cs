@@ -427,6 +427,11 @@ public sealed class DevEditSession
     // reviews the drafted result and accepts it, then commits as usual.
     public const string AssistantAuthor = "Claude";
 
+    // Tame creatures a developer may conjure at their feet ("pet <kind>").
+    public static readonly string[] PetKinds = ["horse", "packhorse", "llama", "packllama", "desertostard", "forestostard", "dog", "cat"];
+
+    public static bool ValidPet(string kind) => Array.IndexOf(PetKinds, kind) >= 0;
+
     public static bool AssistantMay(string verb) =>
         verb is "join" or "leave" or "ask" or "answer" or "propose" or "resolve" or "preview" or "status";
 

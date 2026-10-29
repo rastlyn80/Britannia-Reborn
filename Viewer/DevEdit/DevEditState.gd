@@ -227,6 +227,9 @@ func place(asset: int, x: float, y: float, z: int, yaw: int, sender: Callable) -
 func brush(x: int, y: int, radius: int, delta: int, surface: String, sender: Callable) -> int:
 	return _request("brush","terrain brush r%d %+d %s at %d,%d" % [radius,delta,surface,x,y],"brush %%d %d %d %d %d %s" % [x,y,radius,delta,surface],sender)
 
+func pet(kind: String, sender: Callable) -> int:
+	return _request("pet","tame %s" % kind,"pet %%d %s" % kind,sender)
+
 func undo(sender: Callable) -> int:
 	var seq := undo_candidate()
 	return 0 if seq == 0 else _request("undo","undo revision %d" % seq,"undo %%d %d" % seq,sender)

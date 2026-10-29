@@ -7,8 +7,9 @@ using UltimaClone.PreviewTools.DevEdit;
 
 namespace UltimaClone.PreviewTools;
 
-// ModernUO adapter for the developer edit session. It never changes the map,
-// items or world saves: the overlay lives in its own journal under DevEdit/.
+// ModernUO adapter for the developer edit session. It never changes the map
+// or items: the overlay lives in its own journal under DevEdit/. The one
+// server-only exception is "pet", which adds a tame creature (DevEditPets).
 // Disabled unless ultimaClone.devEdit=True; callers must be on loopback AND
 // their account must be listed in ultimaClone.devEdit.accounts (local config,
 // never in the repository). Commands use the native speech protocol; replies
@@ -270,6 +271,10 @@ public static class DevEditCommands
                         : session.Import(author, File.ReadAllText(path), now);
                     break;
                 }
+            case "pet" when a.Length == 3:
+                result = !DevEditSession.ValidPet(a[2]) ? Result.Fail("invalid", "pet kinds: " + string.Join(", ", DevEditSession.PetKinds))
+                    : DevEditPets.Conjure(mobile, a[2]);
+                break;
             case "status":
                 Reply(mobile, $"status|{session.Name}|{session.Revision}|{session.Targets.Count(t => t.Value.State.Length > 0)}|{string.Join(',', Joined.Values.Distinct())}");
                 return;
