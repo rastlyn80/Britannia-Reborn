@@ -10,6 +10,10 @@ signal client_requested(action: String, option: String)
 const Catalog = preload("res://Network/ActionCatalog.gd")
 const Protocol = preload("res://Network/ActionProtocol.gd")
 const WAIT_FOR_TARGET := 5.0
+const Cooldowns = preload("res://Network/Cooldowns.gd")
+# Per-kind action timers shown on the slots (Cooldowns.gd).
+var cooldowns := Cooldowns.new()
+var last_skill_name := ""
 # The last entity targeted and the selected one; world clicks set them too.
 static var last_target := 0
 static var selected := 0
@@ -27,6 +31,8 @@ var _in_hand := {}
 func configure(game: Node) -> void:
 	session = game
 	session.target_changed.connect(_target_changed)
+	if "labels" in session: cooldowns.labels = session.labels
+	if session.has_signal("message_received"): session.message_received.connect(cooldowns.hear)
 	session.item_label_received.connect(func(serial: int, label: String): labels[serial] = label)
 
 func player_serial() -> int:
@@ -78,6 +84,12 @@ func find_object(name: String) -> Dictionary:
 # Whether a slot can run now, and what to show on it (count, reason).
 func availability(steps: Array) -> Dictionary:
 	if steps.is_empty(): return {"ok":true,"count":-1,"reason":""}
+	var state := _availability(steps)
+	var kind := Cooldowns.kind_of(steps[0])
+	if kind != "" and cooldowns.remaining(kind) > 0.0: state.cooling = cooldowns.remaining(kind)
+	return state
+
+func _availability(steps: Array) -> Dictionary:
 	var step: Dictionary = steps[0]
 	match str(step.get("action","")):
 		"War/Peace": return {"ok":true,"count":-1,"reason":"","active":session != null and (int(session.player.get("flags",0)) & 0x40) != 0}
@@ -126,6 +138,11 @@ func _step(step: Dictionary, slot_aim: String) -> float:
 	var option := str(step.get("option",""))
 	var text := str(step.get("text",""))
 	var me := player_serial()
+	# An action whose kind is still waiting is refused, as the server would.
+	var kind := Cooldowns.kind_of(step)
+	if kind != "" and cooldowns.remaining(kind) > 0.05:
+		feedback.emit("%s ready in %.1f s." % [Cooldowns.LABELS[kind],cooldowns.remaining(kind)])
+		return -1
 	if Catalog.targets(step) and slot_aim != "cursor": aim = {"mode":slot_aim,"until":Time.get_ticks_msec()+int(WAIT_FOR_TARGET*1000)}
 	match id:
 		"Say", "Emote", "Whisper", "Yell":
@@ -162,14 +179,18 @@ func _step(step: Dictionary, slot_aim: String) -> float:
 				feedback.emit("No target for the bandage.")
 				return -1
 			send(Protocol.bandage(int(bandage.serial),target))
+			cooldowns.start("bandage",Cooldowns.bandage_delay(target == me,int(session.player_status.get("dex",50))))
 		"Use Skill":
 			var skill := Catalog.skill_id(option)
 			if skill < 0 or not session.use_skill(skill):
 				feedback.emit("%s cannot be used directly." % option)
 				return -1
 			last_skill = skill
+			last_skill_name = option
+			cooldowns.start("skill",Cooldowns.skill_delay(option))
 		"Last Skill":
 			if last_skill < 0 or not session.use_skill(last_skill): feedback.emit("No skill used yet.")
+			else: cooldowns.start("skill",Cooldowns.skill_delay(last_skill_name))
 		"Cast Spell":
 			var spell := Catalog.spell(option)
 			var ready := availability([step])
@@ -179,9 +200,12 @@ func _step(step: Dictionary, slot_aim: String) -> float:
 				return -1
 			send(Protocol.cast_spell(int(spell.id)))
 			last_spell = int(spell.id)
+			cooldowns.start("spell",Cooldowns.spell_delay(last_spell))
 		"Last Spell":
 			if last_spell < 0: feedback.emit("No spell cast yet.")
-			else: send(Protocol.cast_spell(last_spell))
+			else:
+				send(Protocol.cast_spell(last_spell))
+				cooldowns.start("spell",Cooldowns.spell_delay(last_spell))
 		"Invoke Virtue":
 			var virtue := ["Honor","Sacrifice","Valor"].find(option)
 			if virtue >= 0: send(Protocol.invoke_virtue(virtue+1))
@@ -202,6 +226,9 @@ func _step(step: Dictionary, slot_aim: String) -> float:
 				feedback.emit("No %s potion in your pack." % option.to_lower())
 				return -1
 			_use(int(potion.serial))
+			if option == "Heal":
+				var potion_name: String = session.module("tooltips").name_of(int(potion.serial)) if session.has_method("module") else ""
+				cooldowns.start("heal_potion",Cooldowns.potion_delay(potion_name if potion_name != "" else _label(potion)))
 		"Use Object":
 			var object := find_object(option)
 			if object.is_empty():

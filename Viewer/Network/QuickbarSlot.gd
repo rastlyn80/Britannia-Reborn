@@ -18,6 +18,10 @@ var count := -1
 var usable := true
 var reason := ""
 var active := false
+# The slot's action kind and whether its timer was running last frame.
+var cool_kind := ""
+var was_cooling := false
+const Cooldowns = preload("res://Network/Cooldowns.gd")
 const SHORT_KEYS := {"Minus":"−","Equal":"=","BracketLeft":"[","BracketRight":"]","Semicolon":";","Apostrophe":"'","Comma":",","Period":".","Slash":"/","Backslash":"\\","QuoteLeft":"`","Space":"Spc","Escape":"Esc"}
 
 func _ready() -> void:
@@ -36,8 +40,10 @@ func show_slot(value: Dictionary, bound_key: String, shown_layer: String) -> voi
 	usable = true
 	reason = ""
 	active = false
+	cool_kind = ""
 	if not steps().is_empty():
 		var first: Dictionary = steps()[0]
+		cool_kind = Cooldowns.kind_of(first)
 		if str(first.get("action","")) in ["Use Item Type","Use Item"] and Artwork.item(int(first.get("graphic",0)),int(first.get("hue",0))):
 			picture = Artwork.item(int(first.get("graphic",0)),int(first.get("hue",0)))
 		else:
@@ -95,8 +101,35 @@ func _draw() -> void:
 	if count >= 0:
 		var text := str(count) if count < 10000 else "%dk" % (count/1000)
 		draw_string(font,Vector2(0,size.y-4),text,HORIZONTAL_ALIGNMENT_RIGHT,size.x-4,11,Look.BLOOD if count == 0 else Look.IVORY)
+	if cool_kind != "" and bar and bar.runner: _draw_cooldown()
 	if str(data.get("aim","cursor")) != "cursor" and not empty:
 		draw_circle(Vector2(size.x-7,7),4.0,Look.HERB if data.aim == "self" else (Look.BLOOD if data.aim == "last" else Color("8fc1ff")))
+
+# While the slot's kind is waiting, redraw every frame; flash when ready.
+func _process(_delta: float) -> void:
+	if cool_kind == "" or bar == null or bar.runner == null: return
+	var cooling: bool = bar.runner.cooldowns.remaining(cool_kind) > 0.0
+	if cooling or was_cooling: queue_redraw()
+	if was_cooling and not cooling: bar.used_until["%d/%s/%d" % [row,layer,index]] = Time.get_ticks_msec()+300
+	was_cooling = cooling
+
+func _draw_cooldown() -> void:
+	var share: float = bar.runner.cooldowns.fraction(cool_kind)
+	if share <= 0.0: return
+	# A dark sweep over the part of the wait still to go, clockwise from the top.
+	var center := size/2.0
+	var radius := size.length()
+	var points := PackedVector2Array([center])
+	var steps_count := 32
+	for i in steps_count+1:
+		var angle := -PI/2+TAU*(1.0-share)+TAU*share*float(i)/steps_count
+		points.append(center+Vector2(cos(angle),sin(angle))*radius)
+	var clip := Rect2(Vector2(1,1),size-Vector2(2,2))
+	var clipped := Geometry2D.intersect_polygons(points,PackedVector2Array([clip.position,Vector2(clip.end.x,clip.position.y),clip.end,Vector2(clip.position.x,clip.end.y)]))
+	for shape in clipped: draw_colored_polygon(shape,Color(0.02,0.03,0.05,0.62))
+	var left: float = bar.runner.cooldowns.remaining(cool_kind)
+	var text := "%.1f" % left if left < 10.0 else str(int(ceil(left)))
+	draw_string(Look.ui_font(700),Vector2(0,size.y/2+7),text,HORIZONTAL_ALIGNMENT_CENTER,size.x,17,Look.IVORY)
 
 func _gui_input(event: InputEvent) -> void:
 	if not event is InputEventMouseButton: return

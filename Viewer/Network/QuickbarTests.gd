@@ -183,6 +183,20 @@ func run() -> void:
 	pack._slot_for(game.known_items[0x40000010]).steps[0].action == "Use Item Type"
 	bar.add_to_first_empty(pack._slot_for(game.known_items[0x40000010]))
 	check(str(bar.slot_at(0,"",0).get("steps",[{}])[0].get("action","")) != "" and int(bar.profile.bars["1"][""].size()) >= 1,"Add to quickbar fills the first empty slot of the set on screen")
+	# Action timers (Cooldowns.gd): ModernUO's delays, refusal while waiting,
+	# and the server's "you must wait" message.
+	var Timers := preload("res://Network/Cooldowns.gd")
+	check(Timers.kind_of({"action":"Use Skill"}) == "skill" and Timers.kind_of({"action":"Cast Spell"}) == "spell" and Timers.kind_of({"action":"Bandage Self"}) == "bandage" and Timers.kind_of({"action":"Say"}) == "","Actions map to their timer kinds")
+	check(is_equal_approx(Timers.skill_delay("Hiding"),10.0) and is_equal_approx(Timers.skill_delay("Anatomy"),1.0) and is_equal_approx(Timers.skill_delay("Animal Taming"),30.0),"Skill delays follow ModernUO's skill handlers")
+	check(is_equal_approx(Timers.spell_delay(1),2.25) and is_equal_approx(Timers.spell_delay(64),4.0),"Spell wait is the circle's cast delay plus cast recovery")
+	check(is_equal_approx(Timers.bandage_delay(true,120),5.0) and is_equal_approx(Timers.bandage_delay(true,20),10.0),"Self bandaging time follows dexterity")
+	runner.cooldowns.start("skill",5.0)
+	var used_before: int = game.skills_used.size()
+	await runner.run([{"action":"Use Skill","option":"Hiding"}])
+	check(game.skills_used.size() == used_before and runner.availability([{"action":"Use Skill","option":"Hiding"}]).has("cooling"),"A waiting kind is refused and its slots show the wait")
+	runner.cooldowns.timers.clear()
+	game.message_received.emit(game.labels.resolve(500118))
+	check(runner.cooldowns.remaining("skill") > 1.5,"The server's 'you must wait' message restarts the skill timer")
 	DirAccess.remove_absolute(bar.profile_path)
 	print("QUICKBAR TESTS: %d checks / %d failures" % [checks,failures])
 	quit(0 if failures == 0 else 1)

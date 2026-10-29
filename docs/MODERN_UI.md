@@ -107,6 +107,16 @@ The owner approved the plan on the design canvas: a front end with no map distri
     - An order with − and + controls, the total against your gold, and one Buy (0x3B with every line) or Sell (0x9F) for the whole order.
     - The old shop panel no longer answers in the modern HUD.
   - **Live check:** 35 stock lines and 12 sell offers (3 cards). Bread bought (903 → 897 gold). Two dice cups sold from one card (897 → 899).
+- **Action timers and buff bar (owner requirement, built 2026-10-29):**
+  - **Timer model** (`Network/Cooldowns.gd`): every kind waits as ModernUO enforces it, with durations from its pinned source.
+    - One shared skill timer: lore skills 1 s; Hiding, Stealth, Tracking, Poisoning, Remove Trap and Meditation 10 s; Spirit Speak 5 s; Discordance 12 s; Detect Hidden, Taming, Begging and Stealing 30 s.
+    - Spells: the circle's cast delay plus 1.5 s recovery.
+    - Bandages: by dexterity, self or other.
+    - Heal potions: 3, 8 or 10 s.
+    - The server's "you must wait" messages (500118, 500119, 502644, 500235) restart a timer that ran out early.
+  - **On the quickbar:** an action whose kind is waiting is refused with "Skills ready in N s". Every slot of that kind shows a dark clockwise sweep with the seconds left, and flashes when ready.
+  - **Buff bar** (`Network/BuffBar.gd`, under the vitals card): one chip per buff from 0xDF, with an icon chosen by name, a ring that empties as time runs out, and the seconds left. Hover shows the server's title and description; debuffs have a red edge.
+  - **Evidence:** QuickbarTests 49/0, with 6 new timer checks. Live: using Hiding started the 10 s skill timer on the Hiding and Meditation slots, a second skill was refused, and the server confirmed ("You fail to hide"). No real buff arrived in that session, so the buff bar was shown with one sample Bless packet.
 - **Original idea:** any item (in the backpack, a container, the paperdoll, a vendor or trade window, or the world) can be opened in an inspect view, as in modern games. It shows the item's 3D model, lit, with drag to rotate and wheel to zoom, and its server tooltip lines (name, properties) beside it. It uses the same model as the world and the 3D icon renderer.
 - **Front end still to do:** deleting characters, profession and skill choice at creation, a server-status probe before sign-in, and remembered looks updating while you play (they are saved on entering and on logging out).
 - **Windows still to modernise:** the character sheet (paperdoll), other containers, the world map, buff bar, party frames. Speaker names in the journal need the session to pass them on (0x1C/0xAE carry them; GameSession emits text only).

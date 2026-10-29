@@ -71,8 +71,8 @@ func configure(game: Node) -> void:
 	session.status_changed.connect(func(_s: Dictionary): if visible: _weight())
 	session.item_label_received.connect(func(serial: int, label: String): labels[serial] = label)
 	session.ended.connect(hide)
-	var tooltips: RefCounted = session.module("tooltips")
-	tooltips.changed.connect(func(changed: int): if visible and changed == chosen: _show_chosen())
+	var tooltips := _tooltips()
+	if tooltips: tooltips.changed.connect(func(changed: int): if visible and changed == chosen: _show_chosen())
 	if Studio.instance:
 		Studio.instance.icon_ready.connect(func(graphic: int, hue: int, texture: Texture2D):
 			if not visible: return
@@ -81,6 +81,10 @@ func configure(game: Node) -> void:
 					tile.picture = texture
 					tile.queue_redraw()
 			if session.known_items.has(chosen) and int(session.known_items[chosen].id) == graphic: _show_chosen())
+
+# The server tooltips (protocol module), when the session has them.
+func _tooltips() -> RefCounted:
+	return session.module("tooltips") if session and session.has_method("module") else null
 
 # The item's 3D icon when ready, its classic art meanwhile or otherwise.
 static func picture_for(item: Dictionary) -> Texture2D:
@@ -95,7 +99,7 @@ func toggle() -> void:
 		refresh()
 
 func name_of(item: Dictionary) -> String:
-	var named: String = session.module("tooltips").name_of(int(item.serial)) if session.module("tooltips") else ""
+	var named: String = _tooltips().name_of(int(item.serial)) if _tooltips() else ""
 	var text := named if named != "" else str(labels.get(int(item.serial),session.labels.item_name(int(item.id))))
 	return text.capitalize() if text != "" else "Item"
 
@@ -178,8 +182,8 @@ func _detail(item: Dictionary) -> void:
 		if int(other.id) == int(item.id): same += maxi(1,int(other.get("amount",1)))
 	if same > amount: detail.add_child(Look.label("%d of this kind in the pack" % same,13,Look.ASH,500))
 	# The server's tooltip: every property line under the name.
-	var properties: Array = session.module("tooltips").lines_of(int(item.serial)).slice(1)
-	if properties.is_empty(): session.module("tooltips").request(int(item.serial),true)
+	var properties: Array = _tooltips().lines_of(int(item.serial)).slice(1) if _tooltips() else []
+	if properties.is_empty() and _tooltips(): _tooltips().request(int(item.serial),true)
 	for line in properties:
 		var property := Look.label(str(line),13,Look.IVORY,500)
 		property.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
