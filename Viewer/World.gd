@@ -501,6 +501,9 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	canvas.add_child(server_map)
 	server_map.configure(game)
 	server_map.hide()
+	var facet_notice := preload("res://Network/FacetNotice.gd").new()
+	canvas.add_child(facet_notice)
+	facet_notice.configure(game)
 	var helm := preload("res://Network/HelmPanel.gd").new()
 	canvas.add_child(helm)
 	helm.configure(game)
@@ -624,6 +627,7 @@ func _add_front_end(login_panel: Control, help_panel: Control) -> void:
 	game_menu = preload("res://Network/GameMenu.gd").new()
 	menu_layer.add_child(game_menu)
 	game_menu.configure(self)
+	game.module("player").logged_out.connect(_logged_out)
 	front_end_shown(true)
 
 func front_end_shown(shown: bool) -> void:
@@ -637,9 +641,23 @@ func region_contains(x: int, y: int) -> bool:
 func district_progress() -> Vector2i:
 	return city_stream.progress() if city_stream and game.phase == "world" else Vector2i.ZERO
 
-func log_out() -> void:
-	if game.phase == "world":
-		preload("res://Network/CharacterLooks.gd").remember(front.account,str(front.chosen.get("name","")),preload("res://Network/CharacterLooks.gd").capture(game))
+# Log out properly: ask the server (0xD1) and close on its acknowledgement
+# (or after 3 s). `next` tells the front end where to go: the sign-in screen,
+# or straight back to the character list ("characters").
+var logging_out := false
+func log_out(next := "signin") -> void:
+	if front: front.after_end = next
+	if game.phase != "world":
+		game.close()
+		return
+	preload("res://Network/CharacterLooks.gd").remember(front.account,str(front.chosen.get("name","")),preload("res://Network/CharacterLooks.gd").capture(game))
+	logging_out = true
+	game.send(preload("res://Network/Packets/Player.gd").logout_request())
+	get_tree().create_timer(3.0).timeout.connect(func(): if logging_out: _logged_out())
+
+func _logged_out() -> void:
+	if not logging_out: return
+	logging_out = false
 	game.close()
 
 func open_settings() -> void:

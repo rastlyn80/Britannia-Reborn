@@ -1,5 +1,7 @@
 # Live protocol census against the local shard (docs/PROTOCOL_BLUEPRINT.md).
 # Logs in with the development account: run only while the owner's client is closed.
+# -Long: minutes of mixed play, a proper logout and a reconnect (protocol Phase 6).
+param([switch]$Long)
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 $godot = (Get-ChildItem "$root\.tools\godot\*console.exe" | Select-Object -First 1).FullName
@@ -9,6 +11,6 @@ $credentials = Get-Content "$root\Server\credentials.local.json" -Raw | ConvertF
 $env:UO_DEV_USER = $credentials.username
 $env:UO_DEV_PASSWORD = $credentials.password
 try {
-  & $godot --headless --path "$root\Viewer" --script res://Network/ProtocolCensus.gd
+  & $godot --headless --path "$root\Viewer" --script res://Network/ProtocolCensus.gd -- $(if ($Long) { '--long' })
   if ($LASTEXITCODE) { throw 'Protocol census found unhandled packets' }
 } finally { Remove-Item Env:\UO_DEV_USER,Env:\UO_DEV_PASSWORD -ErrorAction SilentlyContinue }

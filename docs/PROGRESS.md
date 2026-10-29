@@ -14,7 +14,8 @@ The owner requires full interaction with the server: nothing it sends dropped, n
   - Phases 1-3 are built: effects, audio, shops, action timers, containers, paperdoll, modern gumps and crafting.
   - Phase 4 is built: party frames, secure trade, books, bulletin boards, the quest arrow and journal tabs. Live with two local accounts: party invite through the server's cursor, accept, party chat, and a traded dice cup arriving in the other pack. A book was written and read back.
   - Phase 5 is built: houses and boats (tile-built houses, procedural ships, custom-house designs), placement previews, speech keywords (ModernUO's spoken commands now work), a movable helm, world and treasure maps, A* walking to a tile, and the house designer. Live: a house placed, a custom house built and committed, a boat sailed by speech and from the helm, a treasure map decoded and read.
-  - Remaining: Phase 6 robustness and breadth; mounts (creature bodies); full models for houses and ships (owner-approved sourcing). The board and quest arrow are shown with sample data only, and there is no chat-channel window.
+  - Phase 6 is built: fuzzing of every packet type in verify (12,040 packets, no failures; a full-scene pass also clean), proper logout, Change character, Reconnect, character deletion, server popup reasons (the idle warning no longer disconnects), every facet's map with a notice away from Trammel, and the race-change card. Live long census: 42 packet types, 0 unhandled, logout acknowledged, reconnect into the same character.
+  - Remaining: mounts and creature bodies (in progress elsewhere), full models for houses and ships (owner-approved sourcing), and 3D for the other facets (world pipeline). The board and quest arrow are shown with sample data only, and there is no chat-channel window.
 
 # Front end without a district; the right-hand panel replaced — 29 October 2026
 

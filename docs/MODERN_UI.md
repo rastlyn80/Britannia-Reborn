@@ -196,6 +196,33 @@ The owner approved the plan on the design canvas: a front end with no map distri
     - **Full models:** none are registered for houses or ships yet. Houses use tile building and ships the procedural builder.
     - **Roof and floor previews:** roof pieces in the designer use the default height, and there is no floor-height preview of the piece itself, only the outlined cell.
     - **Leftovers:** the dev character's brick house and two test boats, and the second account's custom house, remain on the local shard.
+- **Phase 6, robustness and breadth (built 2026-10-29):**
+  - **Malformed-packet fuzzing** (`Network/FuzzTests.gd`, in verify): every packet type ModernUO sends and every 0xBF subcommand get random contents at their real framing, against a fresh session and one that already knows the serials involved. Random gump layouts are built from the real command words and opened as windows. Godot's Logger counts any script error, and any engine error raised from a script. 12,040 packets with no failures.
+    - **`--scene` pass:** the same fuzz against the full client with every window and presenter connected: 3,980 packets, clean.
+    - **Bugs it found and fixed:** a short character list (0xA9); maps with reversed corners; garbage compressed gumps (0xDD) and house designs (0xD8), now checked for a zlib header and size before use; a prompt focusing after it closed.
+  - **Logout and reconnect:**
+    - Log out asks the server (0xD1) and closes on its acknowledgement.
+    - "Change character" in the game menu signs straight back in to the roster.
+    - A dropped connection offers "Reconnect as <name>", which re-enters the same character.
+  - **Characters:** the roster can delete a character after a confirmation naming it (0x83). The server's answer shows on the roster: the reason (0x85) or the shorter list (0x86).
+  - **Server popups:** 0x53 codes and 0x82 login rejections now say why, in ClassicUO's wording. The idle warning (0x53 code 7) no longer disconnects you; before, the client cut itself off when the server only warned.
+  - **Facets:** `scripts/prepare-world-map.py` now renders every facet (Felucca, Trammel, Ilshenar, Malas, Tokuno, Ter Mur).
+    - **World map:** follows your facet and can show any other.
+    - **Server maps:** use the facet given in 0xF5.
+    - **Elsewhere:** away from Trammel, a banner says where you are and points to the map. Building other facets in 3D is world-pipeline work.
+  - **Race change** (0xBF 0x2A): a card offers exactly the skin tones, hair (or horns), hair colours and beards ModernUO's race rules accept for the new race and your sex. Not now declines; the server's withdrawal closes it.
+  - **Already complete:**
+    - Gargoyle flying (quickbar action, 0xBF 0x32).
+    - Map patches (0xBF 0x18, kept for diagnostics; the converted world does not use them).
+    - All seven spellbook types of the pinned ModernUO, which has no Book of Masteries; their graphics match.
+  - **Live:**
+    - **Long census** (`scripts/test-protocol-census.ps1 -Long`): minutes of mixed play (walking, vendor speech, skill, spellbook, help, a decoded treasure map, 45 s idle with pings), then a logout the server acknowledged, then a reconnect into the same character. 42 packet types, 0 unhandled, every request answered.
+    - **Front end:** enter, Change character (logout acknowledged, roster shown), a simulated lost connection, Reconnect back into the world, and Log out to sign-in.
+    - **Deletion:** deleting a new throwaway character was refused by the server ("not old enough to delete"), and the list was resent.
+  - **Limits:**
+    - Bank speech needs a banker within earshot; the census start point has none.
+    - Riding and other creature bodies are in progress in the other session's horse work.
+    - The other facets have maps, but no 3D world yet.
 - **Original idea:** any item (in the backpack, a container, the paperdoll, a vendor or trade window, or the world) can be opened in an inspect view, as in modern games. It shows the item's 3D model, lit, with drag to rotate and wheel to zoom, and its server tooltip lines (name, properties) beside it. It uses the same model as the world and the 3D icon renderer.
 - **Front end still to do:** deleting characters, profession and skill choice at creation, a server-status probe before sign-in, and remembered looks updating while you play (they are saved on entering and on logging out).
 - **Windows still to modernise:** a chat-channel window. Speaker names in the journal need the session to pass them on (0x1C/0xAE carry them; GameSession emits text only).

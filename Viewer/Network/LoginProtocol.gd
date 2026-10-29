@@ -130,7 +130,7 @@ func feed(bytes: PackedByteArray) -> void:
 		var packet := pending.slice(0, length)
 		pending = pending.slice(length)
 		if id == 0x82:
-			_fail("Login rejected (reason %d)" % packet[1])
+			_fail(rejection(int(packet[1])))
 			return
 		if id == 0xa8:
 			if phase != "login":
@@ -159,3 +159,8 @@ func feed(bytes: PackedByteArray) -> void:
 			socket.disconnect_from_host()
 			relay_received.emit(address, read_be(packet, 5, 2), read_be(packet, 7, 4))
 			return
+
+# 0x82 login rejections, as ClassicUO words them.
+const REJECTIONS := ["Incorrect account name or password.","Someone is already using this account.","This account has been blocked.","This account's credentials are invalid.","There was a problem communicating with the server.","The concurrency limit has been met.","The time limit has been met.","General authentication failure."]
+static func rejection(code: int) -> String:
+	return REJECTIONS[code] if code >= 0 and code < REJECTIONS.size() else "Login rejected (reason %d)." % code

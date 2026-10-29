@@ -227,6 +227,15 @@ func world_systems() -> void:
 	var plane := sample_plane()
 	var parts: Array = preload("res://Presentation/MultiPresenter.gd").design_parts({"planes":[plane]},-1)
 	check(parts.is_empty(),"Designs of unknown multis build nothing")
+	# Phase 6: an idle warning (0x53 code 7) is a message, not a disconnect.
+	var heard: Array = []
+	session.message_received.connect(func(text: String): heard.append(text))
+	var ended := [false]
+	session.ended.connect(func(): ended[0] = true)
+	session._handle(PackedByteArray([0x53,7]))
+	check(not ended[0] and not heard.is_empty() and heard.back() == session.POPUPS[7],"An idle warning (0x53 7) warns without disconnecting")
+	check(preload("res://Network/LoginProtocol.gd").rejection(1) == "Someone is already using this account.","Login rejections (0x82) say why")
+	check(world.maps.size() > 0 and int(world.maps[9].facet) == 1,"A 0xF5 map keeps its facet")
 
 static func sample_plane() -> Dictionary:
 	return preload("res://Network/Packets/WorldSystems.gd").decode_plane(PackedByteArray([0,10,0,0]),2,1)

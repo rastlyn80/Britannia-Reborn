@@ -63,7 +63,9 @@ Phase 0 is done, and the protocol layer of every later phase is in place: our cl
 
 - **Phase 5** is built: houses and boats drawn from their components (custom houses from their designs), placement previews, ships, speech keywords, the helm, world and treasure maps, walking to a tile, and the house designer. A house was placed and customised, a boat sailed and a treasure map was read, live. Mounts wait for creature bodies.
 
-See MODERN_UI.md for details and live evidence. Next: Phase 6 (robustness and breadth).
+- **Phase 6** is built: malformed-packet fuzzing in verify (12,040 packets, plus a full-scene pass), proper logout and reconnect, character deletion, server popup and rejection reasons (an idle warning no longer disconnects), maps for every facet with a notice away from Trammel, and the race-change card. Done-when met: the long mixed census has 0 unhandled packets, and the fuzz tests pass.
+
+See MODERN_UI.md for details and live evidence. All six phases are built; what remains is art and world data (creature bodies and mounts, full house and ship models, 3D for the other facets).
 
 ## Ground rules for every phase
 

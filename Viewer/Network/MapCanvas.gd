@@ -1,12 +1,14 @@
 extends Control
-# A view of the Trammel radar map (scripts/prepare-world-map.py: 512-tile PNGs,
-# one pixel per map tile, local and git-ignored). `view` is the world rectangle
+# A view of a facet's radar map (scripts/prepare-world-map.py: one folder per
+# facet of 512-tile PNGs, one pixel per map tile, local and git-ignored).
+# `facet` picks the map (0 Felucca ... 5 Ter Mur), `view` the world rectangle
 # shown; tiles load lazily and are cached for the session. Markers are drawn
 # in world coordinates. Without the prepared map it says how to make it.
 const Look = preload("res://Network/ModernSkin.gd")
 const FOLDER := "res://local-worldmap"
-static var index := {}
+static var indexes := {}
 static var cache := {}
+var facet := 1
 var view := Rect2(0,0,7168,4096)
 # {at: Vector2 (world), color, label, shape ("dot", "diamond", "player", "pin", "house"), size, facing}
 var markers: Array = []
@@ -15,17 +17,28 @@ var course: Array = []
 var tint := Color.WHITE
 var loading: Array = []
 
-static func available() -> bool:
-	if index.is_empty() and FileAccess.file_exists(FOLDER+"/index.json"):
-		var parsed = JSON.parse_string(FileAccess.get_file_as_string(FOLDER+"/index.json"))
-		if parsed is Dictionary: index = parsed
-	return not index.is_empty()
+static func index_of(map: int) -> Dictionary:
+	if not indexes.has(map):
+		var path := "%s/%d/index.json" % [FOLDER,map]
+		var parsed = JSON.parse_string(FileAccess.get_file_as_string(path)) if FileAccess.file_exists(path) else null
+		indexes[map] = parsed if parsed is Dictionary else {}
+	return indexes[map]
 
-static func tile_texture(at: Vector2i) -> Texture2D:
-	var key := "%d_%d" % [at.x,at.y]
+# Facet names and sizes, for windows that switch maps.
+static func facets() -> Array:
+	var root = JSON.parse_string(FileAccess.get_file_as_string(FOLDER+"/index.json")) if FileAccess.file_exists(FOLDER+"/index.json") else null
+	return root.get("facets",[]) if root is Dictionary else []
+
+func available() -> bool:
+	return not index_of(facet).is_empty()
+
+func index() -> Dictionary:
+	return index_of(facet)
+
+static func tile_texture(map: int, at: Vector2i) -> Texture2D:
+	var key := "%d/%d_%d" % [map,at.x,at.y]
 	if cache.has(key): return cache[key]
-	var path := ProjectSettings.globalize_path(FOLDER+"/"+key+".png")
-	var image := Image.load_from_file(path)
+	var image := Image.load_from_file(ProjectSettings.globalize_path("%s/%s.png" % [FOLDER,key]))
 	var texture: Texture2D = ImageTexture.create_from_image(image) if image else null
 	cache[key] = texture
 	return texture
@@ -81,38 +94,47 @@ func _process(_delta: float) -> void:
 	# A few tiles per frame, so opening a big view never stalls the game.
 	var done := 0
 	while not loading.is_empty() and done < 3:
-		tile_texture(loading.pop_front())
+		var next: Array = loading.pop_front()
+		tile_texture(int(next[0]),next[1])
 		done += 1
 		queue_redraw()
 
 func _draw() -> void:
 	draw_rect(Rect2(Vector2.ZERO,size),Color("0d1a22"))
 	if not available():
-		draw_string(Look.ui_font(600),Vector2(16,size.y/2),"Map not prepared: run scripts/prepare-world-map.py",HORIZONTAL_ALIGNMENT_LEFT,size.x-32,14,Look.ASH)
+		draw_string(Look.ui_font(600),Vector2(16,size.y/2),"No map for this facet: run scripts/prepare-world-map.py",HORIZONTAL_ALIGNMENT_LEFT,size.x-32,14,Look.ASH)
 		return
-	var step := int(index.get("tile",512))
+	var info := index()
+	var step := int(info.get("tile",512))
+	var bounds := Vector2(float(info.get("width",0)),float(info.get("height",0)))
 	# Far out, the overview stands in for the full tiles.
-	var overview_scale := float(index.get("overview",8))
-	if view.size.x/size.x > 4.0 and FileAccess.file_exists(FOLDER+"/overview.png"):
-		if not cache.has("overview"):
-			var image := Image.load_from_file(ProjectSettings.globalize_path(FOLDER+"/overview.png"))
-			cache["overview"] = ImageTexture.create_from_image(image) if image else null
-		var overview: Texture2D = cache.get("overview")
+	var overview_scale := float(info.get("overview",8))
+	var overview_path := "%s/%d/overview.png" % [FOLDER,facet]
+	if view.size.x/size.x > 4.0 and FileAccess.file_exists(overview_path):
+		var key := "%d/overview" % facet
+		if not cache.has(key):
+			var image := Image.load_from_file(ProjectSettings.globalize_path(overview_path))
+			cache[key] = ImageTexture.create_from_image(image) if image else null
+		var overview: Texture2D = cache.get(key)
 		if overview:
-			draw_texture_rect_region(overview,Rect2(Vector2.ZERO,size),Rect2(view.position/overview_scale,view.size/overview_scale),tint)
+			var shown := view.intersection(Rect2(Vector2.ZERO,bounds))
+			if shown.has_area(): draw_texture_rect_region(overview,Rect2(to_local_point(shown.position),shown.size/view.size*size),Rect2(shown.position/overview_scale,shown.size/overview_scale),tint)
 	else:
 		var first := Vector2i(floori(view.position.x/step),floori(view.position.y/step))
 		var last := Vector2i(floori(view.end.x/step),floori(view.end.y/step))
-		for ty in range(maxi(first.y,0),mini(last.y,int(index.height)/step-1)+1):
-			for tx in range(maxi(first.x,0),mini(last.x,int(index.width)/step-1)+1):
+		var columns := ceili(bounds.x/step)
+		var rows := ceili(bounds.y/step)
+		for ty in range(maxi(first.y,0),mini(last.y,rows-1)+1):
+			for tx in range(maxi(first.x,0),mini(last.x,columns-1)+1):
 				var at := Vector2i(tx*step,ty*step)
-				var key := "%d_%d" % [at.x,at.y]
+				var key := "%d/%d_%d" % [facet,at.x,at.y]
 				if not cache.has(key):
-					if not at in loading: loading.append(at)
+					if not loading.any(func(e): return e[0] == facet and e[1] == at): loading.append([facet,at])
 					continue
 				var texture: Texture2D = cache[key]
 				if texture == null: continue
-				var source := Rect2(Vector2(at),Vector2(step,step)).intersection(view)
+				# Edge tiles are smaller than a full tile.
+				var source := Rect2(Vector2(at),texture.get_size()).intersection(view)
 				if not source.has_area(): continue
 				draw_texture_rect_region(texture,Rect2(to_local_point(source.position),source.size/view.size*size),Rect2(source.position-Vector2(at),source.size),tint)
 

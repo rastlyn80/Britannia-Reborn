@@ -1,14 +1,15 @@
 extends "res://Network/ModernWindow.gd"
-# World map (M): the whole Trammel radar map with you, your party, the quest
-# target, houses and boats the server has shown you, and pins you add.
+# World map (M): your facet's radar map with you, your party, the quest
+# target, houses and boats the server has shown you; any other facet can be
+# looked at from the picker.
 # Wheel zooms around the mouse, drag pans, double-click centres, right-click
-# walks there; Follow keeps you in the middle. Facets other than Trammel show a note until their data
-# is prepared.
+# walks there; Follow keeps you in the middle.
 const Canvas = preload("res://Network/MapCanvas.gd")
 var scene: Node3D
 var canvas: Control
 var follow: CheckButton
 var note: Label
+var facet_pick: OptionButton
 var dragging_map := false
 var last := Vector2.ZERO
 
@@ -31,8 +32,22 @@ func _ready() -> void:
 	whole.text = "Whole map"
 	whole.pressed.connect(func():
 		follow.button_pressed = false
-		canvas.view = Rect2(0,0,5120,4096))
+		var info: Dictionary = canvas.index()
+		# Felucca and Trammel: the mainland without the dungeons' strip.
+		var width := 5120.0 if canvas.facet in [0,1] else float(info.get("width",5120))
+		canvas.view = Rect2(0,0,width,float(info.get("height",4096))))
 	bar.add_child(whole)
+	# Any facet's map; following you returns to yours.
+	facet_pick = OptionButton.new()
+	for facet in Canvas.facets(): facet_pick.add_item(str(Canvas.index_of(int(facet)).get("name","Facet %d" % facet)),int(facet))
+	facet_pick.item_selected.connect(func(index: int):
+		var chosen := facet_pick.get_item_id(index)
+		if chosen == canvas.facet: return
+		follow.button_pressed = chosen == _player_facet()
+		canvas.facet = chosen
+		var info: Dictionary = canvas.index()
+		canvas.view = Rect2(0,0,float(info.get("width",4096)),float(info.get("height",4096))))
+	bar.add_child(facet_pick)
 	note = Look.label("",12,Look.ASH,500)
 	note.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	note.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -87,7 +102,12 @@ func _process(_delta: float) -> void:
 	if not visible or scene == null or scene.game.phase != "world": return
 	var game: Node = scene.game
 	var me := Vector2(float(game.player.x)+0.5,float(game.player.y)+0.5)
-	if follow.button_pressed: canvas.view.position = me-canvas.view.size/2
+	if follow.button_pressed:
+		if canvas.facet != _player_facet():
+			canvas.facet = _player_facet()
+			facet_pick.select(maxi(0,facet_pick.get_item_index(canvas.facet)))
+		canvas.view.position = me-canvas.view.size/2
+	var here: bool = canvas.facet == _player_facet()
 	var marks: Array = []
 	for multi in game.multis.values():
 		var boat: bool = preload("res://Presentation/ShipBuilder.gd").handles(int(multi.id))
@@ -99,6 +119,9 @@ func _process(_delta: float) -> void:
 	if social.arrow.get("active",false): marks.append({"at":Vector2(social.arrow.x+0.5,social.arrow.y+0.5),"shape":"diamond","color":Look.GOLD,"size":7.0,"label":"Quest"})
 	if scene.autowalk and scene.autowalk.active(): marks.append({"at":Vector2(scene.autowalk.goal)+Vector2(0.5,0.5),"shape":"pin","color":Look.HERB,"size":5.0})
 	marks.append({"at":me,"shape":"player","color":Look.IVORY,"size":7.0,"facing":(int(game.player.get("direction",0))&7)*PI/4})
-	canvas.markers = marks
-	if not (scene.autowalk and scene.autowalk.active()): note.text = "%s · X %d  Y %d" % ["Trammel" if int(game.player.get("facet",1)) == 1 else "This facet is not prepared yet",game.player.x,game.player.y]
+	canvas.markers = marks if here else []
+	if not (scene.autowalk and scene.autowalk.active()): note.text = "%s · X %d  Y %d" % [str(canvas.index().get("name","Facet %d" % canvas.facet)),game.player.x,game.player.y] if here else str(canvas.index().get("name",""))
 	canvas.queue_redraw()
+
+func _player_facet() -> int:
+	return int(scene.game.player.get("facet",1))

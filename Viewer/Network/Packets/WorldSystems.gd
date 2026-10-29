@@ -52,7 +52,7 @@ func reset() -> void:
 	customizing_house = 0
 
 func _map(p: PackedByteArray) -> void:
-	var map := {"serial":u32(p,1),"gump":u16(p,5),"from":Vector2i(u16(p,7),u16(p,9)),"to":Vector2i(u16(p,11),u16(p,13)),"size":Vector2i(u16(p,15),u16(p,17)),"facet":u16(p,19) if p[0] == 0xf5 else 0}
+	var map := {"serial":u32(p,1),"gump":u16(p,5),"from":Vector2i(u16(p,7),u16(p,9)),"to":Vector2i(u16(p,11),u16(p,13)),"size":Vector2i(u16(p,15),u16(p,17)),"facet":u16(p,19) if p[0] == 0xf5 else -1}
 	maps[map.serial] = map
 	map_opened.emit(map)
 
@@ -69,7 +69,16 @@ func _design(p: PackedByteArray) -> void:
 		var plane_z := (header & 0x0f000000) >> 24
 		var mode := (header & 0xf0000000) >> 28
 		if packed <= 0 or at+packed > p.size(): continue
-		var data := p.slice(at,at+packed).decompress(unpacked,FileAccess.COMPRESSION_DEFLATE) if u8(p,3) == 3 else p.slice(at,at+packed)
+		var data := p.slice(at,at+packed)
+		if u8(p,3) == 3:
+			# zlib streams start 0x78 with a header check; anything else is not a design.
+			if data.size() < 2 or data[0] & 0x0f != 8 or (data[0]*256+data[1]) % 31 != 0:
+				at += packed
+				continue
+			data = data.decompress(unpacked,FileAccess.COMPRESSION_DEFLATE)
+			if data.size() != unpacked:
+				at += packed
+				continue
 		at += packed
 		planes.append(decode_plane(data,mode,plane_z))
 	designs[serial] = {"revision":u32(p,9),"planes":planes}

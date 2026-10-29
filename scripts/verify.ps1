@@ -42,6 +42,8 @@ if ($LASTEXITCODE) { throw 'Front end / game menu checks failed' }
 if ($LASTEXITCODE) { throw 'Protocol coverage/fixture checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Network/CraftTests.gd
 if ($LASTEXITCODE) { throw 'Crafting window checks failed' }
+& $godot --headless --path "$root/Viewer" --script res://Network/FuzzTests.gd
+if ($LASTEXITCODE) { throw 'Malformed-packet fuzz checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/ItemResponseTests.gd
 if ($LASTEXITCODE) { throw 'Native item response/appearance checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/WorldItemTests.gd

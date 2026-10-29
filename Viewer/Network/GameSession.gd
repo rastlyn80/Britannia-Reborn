@@ -137,6 +137,8 @@ const MODULES := {
 }
 # Server packets the match in _handle handles itself (ProtocolTests checks
 # that every packet ModernUO sends is here or routed to a module).
+# 0x53 popup messages, as ClassicUO words them.
+const POPUPS := ["Incorrect password.","This character no longer exists.","This character already exists.","Could not attach to the game server.","Could not attach to the game server.","Another character from this account is already in the world.","Synchronisation error; please reconnect.","You have been idle too long. If you do nothing in the next minute you will be logged out.","Could not attach to the game server.","This character is being transferred."]
 const OWN_PACKETS := [0x6c,0xb0,0xdd,0xd4,0x66,0x71,0xa9,0xbd,0x1b,0x55,0x20,0x21,0x22,0x78,0x77,0x6e,0xe2,0x72,0xf3,0x1a,0x27,0x74,0x3b,0x11,0xa1,0xa2,0xa3,0x3a,0x25,0xc1,0x1d,0x2e,0xbf,0x24,0x3c,0x4f,0x4e,0x65,0x1c,0xae,0x82,0x53]
 # 0xBF subcommands the match below handles itself.
 const OWN_EXTENDED := [0x04,0x08,0x14,0x19]
@@ -401,7 +403,7 @@ func _handle(p: PackedByteArray) -> void:
 					board_posts[int(response.post)] = response
 					board_post_received.emit(response)
 		0xa9:
-			var count := int(p[3])
+			var count := int(p[3]) if p.size() > 3 else 0
 			if p.size() < 5+count*60:
 				_fail("Truncated character list")
 				return
@@ -687,8 +689,12 @@ func _handle(p: PackedByteArray) -> void:
 				if world_items.has(serial): item_label_received.emit(serial,label)
 				if not quiet_labels.has(serial): _server_text(label,serial == 0xffffffff)
 				quiet_labels.erase(serial)
-		0x82: _fail("Game login rejected")
-		0x53: _fail("Character entry rejected (%d)" % p[1])
+		0x82: _fail(Login.rejection(int(p[1]) if p.size() > 1 else 4))
+		0x53:
+			# Popup messages: most refuse entry, but 7 only warns of idling.
+			var code := int(p[1]) if p.size() > 1 else 3
+			if code == 7: message_received.emit(POPUPS[7])
+			else: _fail(POPUPS[code] if code < POPUPS.size() else "The server refused the character (%d)." % code)
 		_:
 			if not routed: unhandled[id] = int(unhandled.get(id,0))+1
 

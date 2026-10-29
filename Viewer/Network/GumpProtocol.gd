@@ -22,7 +22,10 @@ static func packed(data: PackedByteArray, cursor: int) -> Dictionary:
  if length < 5 or cursor+4+length > data.size(): return {}
  var expanded := Wire.read_be(data,cursor+4,4)
  if expanded < 1 or expanded > MAX_EXPANDED: return {}
- var raw := data.slice(cursor+8,cursor+4+length).decompress(expanded,FileAccess.COMPRESSION_DEFLATE)
+ var stream := data.slice(cursor+8,cursor+4+length)
+ # Only a zlib stream (header 0x78.., check bits) is decompressed.
+ if stream.size() < 2 or stream[0] & 0x0f != 8 or (stream[0]*256+stream[1]) % 31 != 0: return {}
+ var raw := stream.decompress(expanded,FileAccess.COMPRESSION_DEFLATE)
  if raw.size() != expanded: return {}
  return {"data":raw,"cursor":cursor+4+length}
 static func decode(data: PackedByteArray) -> Dictionary:

@@ -49,11 +49,15 @@ func configure(game: Node) -> void:
 	session.ended.connect(hide)
 
 func _open(value: Dictionary) -> void:
+	# A map with no area (or corners reversed) has nothing to draw.
+	if value.to.x <= value.from.x or value.to.y <= value.from.y or value.size.x <= 0 or value.size.y <= 0: return
 	map = value
 	pins.clear()
 	editing = false
 	plot.set_pressed_no_signal(false)
 	var area := Rect2(Vector2(value.from),Vector2(value.to-value.from))
+	# 0xF5 names the map's facet; the older 0x90 means your own.
+	canvas.facet = int(value.facet) if int(value.get("facet",-1)) >= 0 else int(session.player.get("facet",1))
 	canvas.view = area
 	var pixels: Vector2 = Vector2(value.size)
 	var fit := minf(440.0/maxf(pixels.x,1.0),440.0/maxf(pixels.y,1.0))

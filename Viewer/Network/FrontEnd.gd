@@ -68,8 +68,20 @@ func configure(game: Node, world_scene: Node3D, panel: Control) -> void:
 		loading_title.text = Looks.place(int(position.x),int(position.y))
 		loading_started = Time.get_ticks_msec()
 		go("loading"))
-	session.ended.connect(func():
-		if not visible: back_to_front("Signed out."))
+	session.ended.connect(_ended)
+	if not session.has_method("module"): return
+	session.module("player").character_list.connect(func(_names: Array):
+		if not (visible and screens.characters.visible): return
+		var note := message.text if delete_noted else ""
+		delete_noted = false
+		_show_roster(session.characters)
+		if note != "": message.text = note)
+	session.module("player").delete_result.connect(func(code: int):
+		# The server's reason (for example: not old enough to delete) shows on the roster.
+		deleting = {}
+		var reasons: Array = preload("res://Network/Packets/Player.gd").DELETE_REASONS
+		message.text = reasons[code] if code < reasons.size() else "The character could not be deleted."
+		delete_noted = true)
 
 # --- the stage --------------------------------------------------------------
 static func _still() -> bool:
@@ -123,6 +135,36 @@ func go(screen: String) -> void:
 	if screen in ["create","loading"]: message.text = ""
 	if screen == "create": _preview_creation()
 	if screen == "signin" and username.text.is_empty(): username.grab_focus.call_deferred()
+
+# Why the session ended decides where the front end goes: a logout returns
+# to sign-in, "Change character" signs straight back in to the roster, and an
+# unexpected end offers Reconnect (signs in and re-enters the same character).
+var after_end := ""
+var auto_enter := ""
+var deleting := {}
+var delete_noted := false
+var reconnect: Button
+var confirm_delete: PanelContainer
+func _ended() -> void:
+	var why := after_end
+	after_end = ""
+	if visible and why == "": return
+	if why == "characters":
+		back_to_front("")
+		message.text = "Returning to your characters…"
+		_enter()
+	elif why == "signin":
+		back_to_front("Signed out.")
+	else:
+		var last := str(chosen.get("name",""))
+		back_to_front("Connection lost.")
+		reconnect.text = "Reconnect as %s" % last if last != "" else "Reconnect"
+		reconnect.show()
+
+func _reconnect() -> void:
+	auto_enter = str(chosen.get("name",""))
+	reconnect.hide()
+	_enter()
 
 # Logging out (or losing the connection) in the world brings the front end back.
 func back_to_front(text: String) -> void:
@@ -227,6 +269,10 @@ func _signin() -> Control:
 	remember.button_pressed = true
 	remember.toggled.connect(func(enabled: bool): if not enabled and login_panel: login_panel.memory.forget())
 	form.add_child(remember)
+	# After a lost connection, Reconnect comes first.
+	reconnect = _primary("Reconnect",_reconnect)
+	reconnect.hide()
+	form.add_child(reconnect)
 	form.add_child(_primary("Enter",_enter))
 	var note := Look.label("New name? A local account is created when you enter.",13,Look.ASH,500)
 	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -266,6 +312,7 @@ func _enter() -> void:
 		message.text = "Enter an account name."
 		return
 	account = username.text.strip_edges()
+	if reconnect: reconnect.hide()
 	message.text = "Connecting…"
 	if login_panel:
 		login_panel.username.text = username.text
@@ -326,6 +373,43 @@ func _characters() -> Control:
 		if chosen.is_empty(): return
 		message.text = "Entering…"
 		session.select_character(int(chosen.slot),str(chosen.name)),56))
+	var remove := _secondary("Delete character…",func(): if not chosen.is_empty(): confirm_delete.show())
+	remove.add_theme_color_override("font_color",Color("f0a59b"))
+	right.add_child(remove)
+	# Deleting asks first, naming the character; the server has the last word
+	# (0x85 explains a refusal; 0x86 sends the shorter list).
+	confirm_delete = _card(420)
+	confirm_delete.hide()
+	screen.add_child(confirm_delete)
+	var ask := VBoxContainer.new()
+	ask.add_theme_constant_override("separation",14)
+	confirm_delete.add_child(ask)
+	var question := _heading("Delete this character?",22)
+	ask.add_child(question)
+	var warning := Look.label("It is removed from the shard for good, with everything it carries.",14,Look.ASH,500)
+	warning.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	ask.add_child(warning)
+	var answers := HBoxContainer.new()
+	answers.add_theme_constant_override("separation",10)
+	ask.add_child(answers)
+	var keep := _secondary("Keep",func(): confirm_delete.hide())
+	keep.custom_minimum_size = Vector2(0,44)
+	keep.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	answers.add_child(keep)
+	var really := _primary("Delete",func():
+		confirm_delete.hide()
+		deleting = chosen
+		message.text = "Deleting %s…" % chosen.name
+		session.send(preload("res://Network/Packets/Player.gd").delete_character(int(chosen.slot),password.text)),44)
+	really.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	answers.add_child(really)
+	confirm_delete.visibility_changed.connect(func():
+		if not confirm_delete.visible: return
+		question.text = "Delete %s?" % chosen.get("name","")
+		# Centred over the stage once its size is known.
+		(func():
+			confirm_delete.reset_size()
+			confirm_delete.position = ((screen.size-confirm_delete.size)/2.0).round()).call_deferred())
 	return screen
 
 func _show_roster(characters: Array) -> void:
@@ -356,6 +440,14 @@ func _show_roster(characters: Array) -> void:
 		return
 	go("characters")
 	_choose(first)
+	# Reconnecting: straight back into the same character.
+	if auto_enter != "":
+		for character in characters:
+			if str(character.name) == auto_enter:
+				_choose(character)
+				message.text = "Entering…"
+				session.select_character(int(character.slot),str(character.name))
+		auto_enter = ""
 
 func _clear(node: Node) -> void:
 	preload("res://Network/ModernWindow.gd").clear(node)

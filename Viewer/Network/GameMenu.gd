@@ -81,7 +81,9 @@ func _main() -> void:
 	var pair := HBoxContainer.new()
 	pair.add_theme_constant_override("separation",8)
 	body.add_child(pair)
-	for entry in [["Log out",func():
+	for entry in [["Change character",func():
+		close()
+		scene.log_out("characters")],["Log out",func():
 		close()
 		scene.log_out()],["Quit game",func(): get_tree().quit()]]:
 		var b := Button.new()
@@ -90,7 +92,7 @@ func _main() -> void:
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		b.pressed.connect(entry[1])
 		pair.add_child(b)
-	pair.get_child(1).add_theme_color_override("font_color",Color("f0a59b"))
+	pair.get_child(2).add_theme_color_override("font_color",Color("f0a59b"))
 
 func _back() -> void:
 	_row("Back","",_main)
