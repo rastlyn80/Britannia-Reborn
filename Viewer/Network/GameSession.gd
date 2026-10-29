@@ -14,6 +14,9 @@ signal movement_started(position: Dictionary, seconds: float)
 signal movement_result(accepted: bool, position: Dictionary)
 signal interaction_confirmed(description: String)
 signal message_received(text: String)
+# Speech with its speaker, for the overhead text: message type (0 regular,
+# 2 emote, 6 label, 8 whisper, 9 yell, 10 spell...) and hue.
+signal speech_received(serial: int, text: String, type: int, hue: int)
 signal failed(reason: String)
 signal ended
 signal inventory_received(items: Array)
@@ -581,6 +584,7 @@ func _handle(p: PackedByteArray) -> void:
 			if p.size() >= 50:
 				var serial := Login.read_be(p,3,4)
 				var label := labels.resolve(Login.read_be(p,14,4),little_unicode_text(p,48))
+				speech_received.emit(serial,label,int(p[9]),Login.read_be(p,10,2))
 				item_label_received.emit(serial,label)
 				if not quiet_labels.has(serial): message_received.emit(label)
 				quiet_labels.erase(serial)
@@ -679,6 +683,7 @@ func _handle(p: PackedByteArray) -> void:
 			if p.size() > 44:
 				var label := text(p,44,p.size()-44)
 				var serial := Login.read_be(p,3,4)
+				speech_received.emit(serial,label,int(p[9]),Login.read_be(p,10,2))
 				if world_items.has(serial): item_label_received.emit(serial,label)
 				if not quiet_labels.has(serial): _server_text(label,serial == 0xffffffff)
 				quiet_labels.erase(serial)
@@ -686,6 +691,7 @@ func _handle(p: PackedByteArray) -> void:
 			if p.size() >= 50:
 				var label := unicode_text(p,48)
 				var serial := Login.read_be(p,3,4)
+				speech_received.emit(serial,label,int(p[9]),Login.read_be(p,10,2))
 				if world_items.has(serial): item_label_received.emit(serial,label)
 				if not quiet_labels.has(serial): _server_text(label,serial == 0xffffffff)
 				quiet_labels.erase(serial)

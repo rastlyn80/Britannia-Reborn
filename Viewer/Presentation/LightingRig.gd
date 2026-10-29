@@ -21,16 +21,18 @@ const SKY_MODES := ["","day","night"]
 var sky_mode := ""
 
 func _ready() -> void:
+ load_sky()
+
+# Per character (Network/Profile.gd); the older computer-wide file is the default.
+func load_sky() -> void:
  var settings := ConfigFile.new()
- if settings.load(VIEW_SETTINGS) == OK: sky_mode = str(settings.get_value("view","sky",""))
+ var older := str(settings.get_value("view","sky","")) if settings.load(VIEW_SETTINGS) == OK else ""
+ sky_mode = str(preload("res://Network/Profile.gd").value("view","sky",older))
  if sky_mode not in SKY_MODES: sky_mode = ""
 
 func cycle_sky() -> String:
  sky_mode = SKY_MODES[(SKY_MODES.find(sky_mode)+1)%SKY_MODES.size()]
- var settings := ConfigFile.new()
- settings.load(VIEW_SETTINGS)
- settings.set_value("view","sky",sky_mode)
- settings.save(VIEW_SETTINGS)
+ preload("res://Network/Profile.gd").store("view","sky",sky_mode)
  return sky_label()
 
 func sky_label() -> String:

@@ -38,6 +38,7 @@ func _ready() -> void:
 	size = SIZE
 	custom_minimum_size = SIZE
 	set_meta("movable_id","charactersheet")
+	add_to_group("movable_panels")
 	position = preload("res://Network/Movable.gd").place("charactersheet",Vector2(300,36))
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	var back := UiLook.background()

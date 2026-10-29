@@ -61,9 +61,22 @@ func _ready() -> void:
 	talk.add_child(input)
 	hide()
 
+var speech := {}
+
 func configure(game: Node) -> void:
 	session = game
-	session.message_received.connect(func(text: String): add(text,"Server"))
+	# Spoken lines come with their speaker just before the text itself: the
+	# journal names the speaker, in the same colour as the overhead text.
+	session.speech_received.connect(func(serial: int, text: String, type: int, hue: int): speech = {"serial":serial,"text":text,"type":type,"hue":hue})
+	session.message_received.connect(func(text: String):
+		if not speech.is_empty() and str(speech.text) == text and int(speech.type) not in [1,6,7] and int(speech.serial) not in [0,0xffffffff]:
+			var serial := int(speech.serial)
+			var own := serial == int(session.player.get("serial",0))
+			var name := str(session.entity_names.get(serial,""))
+			var shown := ("*%s*" % text) if int(speech.type) == 2 and not text.begins_with("*") else text
+			add("%s: %s" % [name,shown] if name != "" else shown,"Chat",preload("res://Network/OverheadText.gd").voice(serial,int(speech.hue),own))
+		else: add(text,"Server")
+		speech = {})
 	if session.has_method("module"):
 		var social: RefCounted = session.module("social")
 		social.party_message.connect(func(serial: int, text: String, private: bool): add("%s%s: %s" % ["(private) " if private else "",session.entity_names.get(serial,"Member"),text],"Party"))
@@ -73,8 +86,8 @@ func configure(game: Node) -> void:
 		input.release_focus()
 		hide())
 
-func add(text: String, kind: String) -> void:
-	entries.append([Time.get_time_string_from_system().left(5),kind,text])
+func add(text: String, kind: String, colour := Color(0,0,0,0)) -> void:
+	entries.append([Time.get_time_string_from_system().left(5),kind,text,colour])
 	if entries.size() > KEEP: entries = entries.slice(entries.size()-KEEP)
 	_render()
 
@@ -83,6 +96,7 @@ func _render() -> void:
 	for entry in entries:
 		if tab != "All" and entry[1] != tab: continue
 		var color: String = {"Server":"eee7d7","Quickbar":"8fc1ff"}.get(entry[1],"dcd5c5")
+		if entry.size() > 3 and entry[3].a > 0.0: color = entry[3].to_html(false)
 		lines.append("[color=#7d776b]%s[/color] [color=#%s]%s[/color]" % [entry[0],color,str(entry[2]).replace("[","[lb]")])
 	log.text = "\n".join(lines)
 

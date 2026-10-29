@@ -19,5 +19,6 @@ func _affixed(p: PackedByteArray) -> void:
 	if not str(affix[0]).is_empty(): text = str(affix[0])+text if flags & 1 else text+str(affix[0])
 	var system := (flags & 2) != 0 or kind == 1 or serial == 0xffffffff
 	spoken.emit(serial,text,system)
+	if not system: session.speech_received.emit(serial,text,kind,u16(p,10))
 	if session.world_items.has(serial): session.item_label_received.emit(serial,text)
 	session._server_text(text,system)

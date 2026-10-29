@@ -1,7 +1,7 @@
 extends RefCounted
 # Makes any panel movable like the modern windows: drag it by any empty part
 # (buttons, fields and lists keep their clicks), it stays on screen, and its
-# place is remembered under `id` with the windows' (user://ui/windows.json).
+# place is remembered under `id` with the windows' places, per character.
 # Used by the panels that are not ModernWindows: the game menu, server
 # dialog cards, the slot editor, the target prompt, server gumps and the
 # character sheet. The HUD stays where it is.
@@ -9,6 +9,7 @@ const Windows = preload("res://Network/ModernWindow.gd")
 
 static func attach(panel: Control, id: String) -> void:
 	panel.set_meta("movable_id",id)
+	panel.add_to_group("movable_panels")
 	panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	panel.gui_input.connect(func(event: InputEvent): _drag(panel,event))
 
@@ -22,11 +23,13 @@ static func has_place(id: String) -> bool:
 
 static func remember(panel: Control) -> void:
 	if not panel.has_meta("movable_id"): return
-	var places := Windows._places()
-	places[str(panel.get_meta("movable_id"))] = [panel.position.x,panel.position.y]
-	DirAccess.make_dir_recursive_absolute(Windows.PLACES.get_base_dir())
-	var file := FileAccess.open(Windows.PLACES,FileAccess.WRITE)
-	if file: file.store_string(JSON.stringify(places))
+	Windows._write_place(str(panel.get_meta("movable_id")),panel.position)
+
+# A character entered: panels that are already built take its places.
+static func restore(panel: Control) -> void:
+	if panel.has_meta("movable_id") and has_place(str(panel.get_meta("movable_id"))):
+		panel.position = place(str(panel.get_meta("movable_id")),panel.position)
+		keep_on_screen(panel)
 
 # Keeps at least a grip's worth of the panel on screen.
 static func keep_on_screen(panel: Control) -> void:

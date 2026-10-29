@@ -1,9 +1,10 @@
 extends PanelContainer
 # Shared frame for the modern windows: a brass-edged glass panel with a title
-# bar to drag, a close button, and its position remembered between sessions
-# (user://ui/windows.json). Subclasses put their content in `body`.
+# bar to drag, a close button, and its position remembered between sessions,
+# per character (Network/Profile.gd). Subclasses put their content in `body`.
 const Look = preload("res://Network/ModernSkin.gd")
 const PLACES := "user://ui/windows.json"
+const Profile = preload("res://Network/Profile.gd")
 var window_id := ""
 var body := VBoxContainer.new()
 var title_label := Label.new()
@@ -47,6 +48,8 @@ func setup(id: String, title: String, minimum: Vector2, default_position: Vector
 	body.add_theme_constant_override("separation",10)
 	margin.add_child(body)
 	position = _remembered(default_position)
+	set_meta("default_position",default_position)
+	add_to_group("modern_windows")
 	hide()
 
 static func _bar_style() -> StyleBoxFlat:
@@ -80,21 +83,40 @@ func _keep_on_screen() -> void:
 	var screen := get_viewport_rect().size
 	position = position.clamp(Vector2.ZERO,(screen-size).max(Vector2.ZERO))
 
+# Places: the character's own over the last used anywhere (Profile.gd).
 static func _places() -> Dictionary:
-	if not FileAccess.file_exists(PLACES): return {}
-	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(PLACES))
+	var places := _read(PLACES)
+	if Profile.active(): places.merge(_read(Profile.windows_path()),true)
+	return places
+
+static func _read(path: String) -> Dictionary:
+	if not FileAccess.file_exists(path): return {}
+	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
 	return data if data is Dictionary else {}
+
+static func _write_place(id: String, at: Vector2) -> void:
+	var paths: Array = [PLACES]
+	if Profile.active(): paths.append(Profile.windows_path())
+	for path in paths:
+		var places := _read(path)
+		places[id] = [at.x,at.y]
+		DirAccess.make_dir_recursive_absolute(str(path).get_base_dir())
+		var file := FileAccess.open(path,FileAccess.WRITE)
+		if file:
+			file.store_string(JSON.stringify(places))
+			file.close()
 
 func _remembered(fallback: Vector2) -> Vector2:
 	var at: Variant = _places().get(window_id,null)
 	return Vector2(float(at[0]),float(at[1])) if at is Array and at.size() == 2 else fallback
 
 func _remember() -> void:
-	var places := _places()
-	places[window_id] = [position.x,position.y]
-	DirAccess.make_dir_recursive_absolute(PLACES.get_base_dir())
-	var file := FileAccess.open(PLACES,FileAccess.WRITE)
-	if file: file.store_string(JSON.stringify(places))
+	_write_place(window_id,position)
+
+# A character entered: its own places (the world calls this for every window).
+func restore_place() -> void:
+	position = _remembered(get_meta("default_position",position))
+	_keep_on_screen()
 
 # Small shared builders.
 static func chip(text: String, pressed := false) -> Button:

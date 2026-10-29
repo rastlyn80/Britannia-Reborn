@@ -301,6 +301,8 @@ func _ready() -> void:
 	game.movement_result.connect(func(accepted: bool, position: Dictionary):
 		if not accepted and tracks.has(position.serial):
 			tracks[position.serial].reset(entity_point(position.x,position.y,position.z)))
+	game.entered.connect(func(_position: Dictionary): _apply_profile())
+	game.ended.connect(func(): preload("res://Network/Profile.gd").deactivate())
 	game.entered.connect(func(position: Dictionary):
 		player_serial = position.serial
 		intent_facing = PI-int(position.direction)*PI/4
@@ -523,6 +525,11 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	var placing := preload("res://Presentation/PlacementGhost.gd").new()
 	add_child(placing)
 	placing.configure(self,canvas)
+	# Speech over heads, beneath the windows like the quest arrow.
+	var overhead := preload("res://Network/OverheadText.gd").new()
+	canvas.add_child(overhead)
+	canvas.move_child(overhead,1)
+	overhead.configure(self)
 	var arrow := preload("res://Network/QuestArrow.gd").new()
 	canvas.add_child(arrow)
 	canvas.move_child(arrow,1)
@@ -668,6 +675,24 @@ func _logged_out() -> void:
 	if not logging_out: return
 	logging_out = false
 	game.close()
+
+# This account's and character's settings (Network/Profile.gd), the same key
+# as its quickbar: interface size, volumes, gamepad, sky and window places.
+func _apply_profile() -> void:
+	var Profile := preload("res://Network/Profile.gd")
+	Profile.activate("%s-%d" % [str(game.username),int(game.player.get("serial",0))])
+	preload("res://Presentation/InterfaceScale.gd").apply(get_tree().root)
+	if audio:
+		audio.sound_volume = float(Profile.value("audio","sound_volume",audio.sound_volume))
+		audio.music_volume = float(Profile.value("audio","music_volume",audio.music_volume))
+		for player in audio.music_players:
+			if player.playing: player.volume_db = linear_to_db(maxf(0.001,audio.music_volume))
+	controller_enabled = bool(Profile.value("input","gamepad",controller_enabled))
+	if lighting_rig:
+		lighting_rig.load_sky()
+		if hud_panel and hud_panel.sky_button: hud_panel.sky_button.text = lighting_rig.sky_label()
+	get_tree().call_group("modern_windows","restore_place")
+	for panel in get_tree().get_nodes_in_group("movable_panels"): preload("res://Network/Movable.gd").restore(panel)
 
 func open_settings() -> void:
 	game_menu.open()

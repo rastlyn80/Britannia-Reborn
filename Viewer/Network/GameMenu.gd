@@ -127,6 +127,7 @@ func _settings() -> void:
 			slider.custom_minimum_size = Vector2(0,30)
 			slider.value_changed.connect(func(value: float):
 				scene.audio.set(entry[1],value)
+				preload("res://Network/Profile.gd").store("audio",entry[1],value)
 				if entry[1] == "music_volume":
 					for player in scene.audio.music_players:
 						if player.playing: player.volume_db = linear_to_db(maxf(0.001,value)))
@@ -164,7 +165,9 @@ func _settings() -> void:
 	pad.text = "Gamepad"
 	pad.button_pressed = scene.controller_enabled
 	pad.custom_minimum_size = Vector2(0,44)
-	pad.toggled.connect(func(enabled: bool): scene.controller_enabled = enabled)
+	pad.toggled.connect(func(enabled: bool):
+		scene.controller_enabled = enabled
+		preload("res://Network/Profile.gd").store("input","gamepad",enabled))
 	body.add_child(pad)
 	_back()
 
