@@ -1,4 +1,4 @@
-param([string]$Godot,[switch]$Synthetic,[switch]$SecondClient,[switch]$Compatibility,[switch]$ReferencePatch)
+param([string]$Godot,[switch]$Synthetic,[switch]$SecondClient,[switch]$Compatibility,[switch]$ReferencePatch,[string]$Region)
 $ErrorActionPreference = 'Stop'
 if (!(Test-Path "$PSScriptRoot\Viewer\world.json")) { & "$PSScriptRoot\build.ps1" }
 if (!$Godot) {
@@ -22,6 +22,14 @@ if (Test-Path "$PSScriptRoot\Server\credentials.local.json") {
 }
 try {
   if ($Synthetic) { & $Godot @renderArgs --path "$PSScriptRoot\Viewer" -- '--world=res://world.json' }
+  elseif ($Region) {
+    # A larger streamed region (scripts/prepare-region.ps1); only its modern bake exists so far.
+    $dataset = Join-Path $PSScriptRoot "outputs/$Region"
+    if (!(Test-Path "$dataset/atlas.json")) { throw "Region $Region is not prepared; run scripts/prepare-region.ps1 first" }
+    & "$PSScriptRoot/scripts/prepare-streaming.ps1" -Dataset $dataset -Modern
+    & "$PSScriptRoot/scripts/prepare-minimap.ps1" -Dataset $dataset
+    & $Godot @renderArgs --path "$PSScriptRoot/Viewer" -- --city --modern-britain "--region=$Region"
+  }
   elseif (!$ReferencePatch) {
     if (!(Test-Path "$PSScriptRoot/outputs/britain/atlas.json")) { & "$PSScriptRoot/scripts/prepare-britain.ps1" }
     & "$PSScriptRoot/scripts/prepare-streaming.ps1"
