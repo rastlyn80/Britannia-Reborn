@@ -1,3 +1,5 @@
+# Protocol blueprint — 29 October 2026
+
 Protocol work follows docs/PROTOCOL_BLUEPRINT.md (second blueprint): Phase 0 foundation (dispatch modules, version match, census, full cliloc), then world truth (tooltips, health bars, effects, audio), interactions, every gump/prompt, commerce/social, world systems, robustness. Census 2026-10-29: 9 of 30 received packet types dropped (0xDC tooltips x1580, 0x17 health bars x192, time, music, features, season).
 
 # Human action, wearable coverage and armour correction - 29 October 2026
