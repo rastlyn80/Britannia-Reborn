@@ -58,6 +58,7 @@ var front: Control
 var game_menu: Control
 var console: Control
 var toasts: Control
+var audio: Node3D
 
 func point(x: int, y: int, z: int) -> Vector3:
 	return Vector3(x - int(world.originX), z * float(world.elevationScale), y - int(world.originY))
@@ -407,6 +408,16 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	captions.camera = camera
 	canvas.add_child(captions)
 	canvas.move_child(captions,0)
+	var damage := preload("res://Network/DamageNumbers.gd").new()
+	canvas.add_child(damage)
+	canvas.move_child(damage,1)
+	damage.configure(self,camera)
+	var effects := preload("res://Presentation/EffectPresenter.gd").new()
+	add_child(effects)
+	effects.configure(self)
+	audio = preload("res://Presentation/AudioPlayer.gd").new()
+	add_child(audio)
+	audio.configure(self)
 	var runner := preload("res://Network/ActionRunner.gd").new()
 	add_child(runner)
 	runner.configure(game)

@@ -100,7 +100,7 @@ func refresh() -> void:
 	portrait.text = name.left(1).to_upper()
 	detail.text = "Str %d · Dex %d · Int %d" % [int(s.get("str",0)),int(s.get("dex",0)),int(s.get("int",0))] if s.has("str") else ""
 	purse.text = "%s gold\n%d / %d st" % [_grouped(int(s.get("gold",0))),int(s.get("weight",0)),int(s.get("weight_max",0))] if s.has("gold") else ""
-	var poisoned := (int(session.player.get("flags",0)) & 0x04) != 0
+	var poisoned := (int(session.player.get("flags",0)) & 0x04) != 0 or bool(s.get("poisoned",false))
 	var war := (int(session.player.get("flags",0)) & 0x40) != 0
 	stance.text = "War" if war else "Peace"
 	var tone: Color = Look.BLOOD if war else Look.HERB

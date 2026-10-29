@@ -88,6 +88,12 @@ func _process(delta: float) -> void:
 	var tiles := maxi(absi(int(entity.get("x",0))-int(me.get("x",0))),absi(int(entity.get("y",0))-int(me.get("y",0))))
 	standing.text = "%s · %d tiles" % [kind[1],tiles] if kind[1] != "" else "%d tiles" % tiles
 	standing.add_theme_color_override("font_color",Color(kind[0]))
+	# Poison turns the bar green and the server's yellow bar (cannot be
+	# harmed) gold, as the health-bar flags (0x16/0x17) say.
+	var poisoned := bool(stats.get("poisoned",false)) or (int(entity.get("flags",0)) & 0x04) != 0
+	var tone: Color = Color("6dbe5a") if poisoned else (Look.GOLD if stats.get("yellow_bar",false) else Look.BLOOD)
+	health.add_theme_stylebox_override("fill",Look.box(tone,Color(0,0,0,0),6,0,0))
+	if poisoned: standing.text += " · poisoned"
 	var top := maxi(1,int(stats.get("hits_max",0)))
 	health.max_value = top
 	health.value = int(stats.get("hits",top))

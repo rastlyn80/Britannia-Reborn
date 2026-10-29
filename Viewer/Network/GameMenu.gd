@@ -106,6 +106,28 @@ func _settings() -> void:
 	sky_button.pressed.connect(func():
 		scene.cycle_sky()
 		if scene.lighting_rig: sky_button.text = scene.lighting_rig.sky_label())
+	if scene.audio and scene.audio.available():
+		for entry in [["Sound effects","sound_volume"],["Music","music_volume"]]:
+			var row := HBoxContainer.new()
+			row.add_theme_constant_override("separation",12)
+			var name := Look.label(entry[0],14,Look.IVORY,500)
+			name.custom_minimum_size = Vector2(130,0)
+			row.add_child(name)
+			var slider := HSlider.new()
+			slider.min_value = 0.0
+			slider.max_value = 1.0
+			slider.step = 0.05
+			slider.value = scene.audio.get(entry[1])
+			slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			slider.custom_minimum_size = Vector2(0,30)
+			slider.value_changed.connect(func(value: float):
+				scene.audio.set(entry[1],value)
+				if entry[1] == "music_volume":
+					for player in scene.audio.music_players:
+						if player.playing: player.volume_db = linear_to_db(maxf(0.001,value)))
+			row.add_child(slider)
+			body.add_child(row)
+	else: body.add_child(Look.label("Sound: run scripts/prepare-audio.py to use your UO install's audio.",13,Look.ASH,500))
 	var pad := CheckButton.new()
 	pad.text = "Gamepad"
 	pad.button_pressed = scene.controller_enabled
