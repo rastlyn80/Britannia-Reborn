@@ -29,6 +29,15 @@ func run() -> void:
  var startup:=Time.get_ticks_msec()-start
  var stream: Node3D=scene.city_stream
  var route:=[Vector2i(1602,1591),Vector2i(1665,1591),Vector2i(1729,1591),Vector2i(1665,1591),Vector2i(1602,1591),Vector2i(1535,1591),Vector2i(1602,1591)]
+ # --route=trinsic: the road from Britain's east gate to Trinsic and back
+ # (needs --region=britain-trinsic), one stop about every 100 tiles.
+ var label:="britain"
+ if "--route=trinsic" in OS.get_cmdline_user_args():
+  label="trinsic"
+  deadline=Time.get_ticks_msec()+1500000
+  var road:=[Vector2i(1602,1591),Vector2i(1500,1650),Vector2i(1480,1750),Vector2i(1480,1850),Vector2i(1500,1950),Vector2i(1540,2050),Vector2i(1590,2150),Vector2i(1640,2250),Vector2i(1690,2350),Vector2i(1740,2450),Vector2i(1790,2550),Vector2i(1840,2650),Vector2i(1880,2750),Vector2i(1900,2850)]
+  route=road.duplicate()
+  for i in range(road.size()-2,-1,-1):route.append(road[i])
  var retained: Array[int]=[]
  sampling=true
  for lap in 2:
@@ -47,9 +56,11 @@ func run() -> void:
  sampling=false;samples.sort()
  if retained[1]>retained[0]+32*1024*1024:fail("Repeated identical journey retained more than 32 MiB of additional engine memory");return
  var report:={"renderer":RenderingServer.get_current_rendering_method(),"startup_ms":startup,"peak_godot_bytes":peak,"peak_gpu_bytes":gpu_peak,"lap_end_godot_bytes":retained,"nodes":Performance.get_monitor(Performance.OBJECT_NODE_COUNT),"frames":samples.size(),"p95_ms":samples[int(samples.size()*0.95)],"p99_ms":samples[int(samples.size()*0.99)],"max_ms":samples[-1],"max_activation_ms":stream.max_install_us/1000.0,"installs":stream.installs}
- var file:=FileAccess.open("res://../outputs/validation/streaming-"+report.renderer+".local.json",FileAccess.WRITE)
+ report["route"]=label
+ report["stops"]=route.size()*2
+ var file:=FileAccess.open("res://../outputs/validation/streaming-"+report.renderer+("" if label=="britain" else "-"+label)+".local.json",FileAccess.WRITE)
  file.store_string(JSON.stringify(report));file.close()
- print("STREAMING STRESS PASS: 14 district destinations / bounded source, collision and scenery / memory plateau / ",JSON.stringify(report))
+ print("STREAMING STRESS PASS: ",route.size()*2," district destinations / bounded source, collision and scenery / memory plateau / ",JSON.stringify(report))
  scene.free()
  await process_frame
  quit()

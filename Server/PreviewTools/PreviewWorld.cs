@@ -29,7 +29,7 @@ public static class PreviewWorld
         return args.Mobile.NetState is { } state && IPAddress.IsLoopback(state.Address);
     }
     // Bounded to the streamed Britain city region; never a whole-facet decorate.
-    internal const int MaxSide = 1024;
+    internal const int MaxSide = 2048;
     private static Plan ReadPlan()
     {
         var path = Path.Combine(Folder, "population.local.json");

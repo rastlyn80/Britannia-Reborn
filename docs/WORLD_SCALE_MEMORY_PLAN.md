@@ -33,6 +33,22 @@ Architecture facts behind those numbers (file references in the 2026-10-28 surve
 - Terrain is an unindexed mesh (up to ~131k triangles per district); there are no
   visibility ranges or occlusion culling; collision is built on the main thread.
 
+## First expansion: Britain to Trinsic (measured 2026-10-29, modern mode)
+
+`scripts/prepare-region.ps1 -Name britain-trinsic -Towns Britain,Trinsic` converts the union of the two native town regions: X 1088–2175, Y 1408–2943. That is 408 districts (Britain alone has 88), with 453,507 statics. The bake now accepts up to 512 districts. The client streams the region with `--region=britain-trinsic`; the default stays Britain.
+
+| Measure | Britain (88 districts) | Britain to Trinsic (408) | Budget |
+|---|---|---|---|
+| Bake: joined-topology planning peak | not measured | 3.65 GB (about 4 min) | — |
+| Bake: whole-run peak | not measured | 5.55 GB | — |
+| Disk, modern cache | 1.8 GB | 14 GB | <= 8 GB per facet |
+| GPU memory, peak (stress walk) | 1.26 GB | 1.52 GB | <= 3.0 GB |
+| CPU memory, peak | 0.89 GB | 1.48 GB | <= 2.5 GB |
+| Memory retained between identical laps | <32 MiB | +2 MB | <= 32 MiB |
+| Frame time p95 / p99 | 17.5 / 48.9 ms | 24.8 / 26.6 ms | p99 <= 33 ms |
+
+The stress walk (`scripts/test-streaming.ps1 -Region britain-trinsic -Route trinsic`) covers 54 stops, Britain to Trinsic and back twice, with 1,019 district installs. Its worst frames (2.8 s) come from 100-tile teleports between stops, not from walking. Runtime memory therefore does not grow with the region. What grows is offline: the bake holds the whole region (5.55 GB at 408 districts, so Phase B3 out-of-core baking is needed before a whole facet), and disk is over budget, with dense wilderness trees driving most of it (Phase B2 shared assets out of district files). The first bake attempt was stopped by Claude Code's low-memory reaper while other heavy processes ran (a local model server and two visual clients); it completed once they finished.
+
 ## Targets
 
 | Budget | Target |

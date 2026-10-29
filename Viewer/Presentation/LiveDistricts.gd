@@ -82,11 +82,19 @@ class DecodeJob extends RefCounted:
 static func owner(cell: Vector2i, size: int = 64) -> Vector2i:
  return Vector2i(floori(float(cell.x)/size)*size,floori(float(cell.y)/size)*size)
 
+# The streamed region: outputs/britain unless --region=<name> picks another
+# prepared dataset (scripts/prepare-region.ps1), e.g. britain-trinsic.
+static func region() -> String:
+ for arg in OS.get_cmdline_user_args():
+  if arg.begins_with("--region=") and arg.substr(9).is_valid_filename():return arg.substr(9)
+ return "britain"
+
 func prepare(owner_scene: Node3D) -> bool:
  scene=owner_scene
- var path:=preload("res://Presentation/GraphicsMode.gd").prepared(ProjectSettings.globalize_path("res://../outputs/britain")).path_join("index.json")
+ var dataset:=ProjectSettings.globalize_path("res://../outputs/"+region())
+ var path:=preload("res://Presentation/GraphicsMode.gd").prepared(dataset).path_join("index.json")
  # A modern cache that has not been prepared yet falls back to classic.
- if not FileAccess.file_exists(path):path=ProjectSettings.globalize_path("res://../outputs/britain/prepared/index.json")
+ if not FileAccess.file_exists(path):path=dataset.path_join("prepared/index.json")
  for arg in OS.get_cmdline_user_args():
   if arg.begins_with("--stream-index="):path=arg.substr(15)
  if not FileAccess.file_exists(path):

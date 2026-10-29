@@ -3,7 +3,7 @@ import argparse, hashlib, json, re, struct
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 # The streamed Britain city region (704x512); PreviewWorld.cs enforces the same bound.
-MAX_SIDE = 1024
+MAX_SIDE = 2048
 
 def number(value):
     return int(value, 16) if value.lower().startswith('0x') else int(value)

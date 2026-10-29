@@ -225,11 +225,14 @@ func run() -> void:
  if FileAccess.file_exists(index_path): DirAccess.rename_absolute(index_path,index_path+".previous")
  var data:=preload("res://Presentation/AtlasData.gd").new()
  if not data.open(directory.path_join("atlas.json")): push_error("Missing owned atlas data");quit(1);return
- if data.manifest.chunks.size()>128:
-  push_error("Runtime streaming is bounded, but offline joined-topology planning is currently limited to 128 chunks. Prepare a city dataset; full-facet offline partitioning remains pending.");quit(1);return
+ # Joined-topology planning holds the whole region in memory (about 4-5 GB at
+ # 400 districts); a region past 512 districts needs the out-of-core bake.
+ if data.manifest.chunks.size()>512:
+  push_error("Offline joined-topology planning is limited to 512 districts. Prepare a smaller region; full-facet out-of-core baking remains pending.");quit(1);return
  var plan:=preload("res://Presentation/RegionalContext.gd").new()
  plan.overrides=manual
  plan.prepare(data)
+ print("STREAM BAKE MEMORY: planning peak %.2f GB" % (OS.get_static_memory_peak_usage()/1073741824.0))
  var frame:=Vector2(plan.world.originX,plan.world.originY)
  for key in data.manifest.staticData:catalog_names[key]=str(data.manifest.staticData[key].get("name","tree"))
  plan.reconstruction.source_origin=frame
@@ -273,5 +276,5 @@ func run() -> void:
  var file:=FileAccess.open(index_path+".pending",FileAccess.WRITE);file.store_string(JSON.stringify(index));file.close()
  assert(DirAccess.rename_absolute(index_path+".pending",index_path)==OK)
  print("STREAM BAKE REBUILT: ",rebuilt," district(s)")
- print("STREAM BAKE COMPLETE: ",entries.size()," independent districts; shared source topology / compact scenes / collision / regional horizons")
+ print("STREAM BAKE COMPLETE: ",entries.size()," independent districts; shared source topology / compact scenes / collision / regional horizons; memory peak %.2f GB" % (OS.get_static_memory_peak_usage()/1073741824.0))
  quit()
