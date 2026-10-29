@@ -1,9 +1,12 @@
 extends "res://Network/ModernWindow.gd"
 # Backpack (B): what you carry as a grid of the items' own art with their
-# counts, search and sort, your weight against your limit, and the chosen
+# counts (drawn from the world's 3D models where one exists, classic art
+# otherwise), search and sort, your weight against your limit, and the chosen
 # item's details with Use, Drop and Add to quickbar. Drag any item onto the
 # quickbar: the slot uses an item of that kind ("a bandage"), whichever stack.
 signal add_requested(slot: Dictionary)
+signal inspect_requested(item: Dictionary)
+const Studio = preload("res://Presentation/ItemStudio.gd")
 const Artwork = preload("res://Network/Artwork.gd")
 var session: Node
 var search := LineEdit.new()
@@ -68,6 +71,21 @@ func configure(game: Node) -> void:
 	session.status_changed.connect(func(_s: Dictionary): if visible: _weight())
 	session.item_label_received.connect(func(serial: int, label: String): labels[serial] = label)
 	session.ended.connect(hide)
+	var tooltips: RefCounted = session.module("tooltips")
+	tooltips.changed.connect(func(changed: int): if visible and changed == chosen: _show_chosen())
+	if Studio.instance:
+		Studio.instance.icon_ready.connect(func(graphic: int, hue: int, texture: Texture2D):
+			if not visible: return
+			for tile in grid.get_children():
+				if "item" in tile and int(tile.item.id) == graphic and int(tile.item.get("hue",0)) == hue:
+					tile.picture = texture
+					tile.queue_redraw()
+			if session.known_items.has(chosen) and int(session.known_items[chosen].id) == graphic: _show_chosen())
+
+# The item's 3D icon when ready, its classic art meanwhile or otherwise.
+static func picture_for(item: Dictionary) -> Texture2D:
+	var rendered := Studio.lookup(int(item.id),int(item.get("hue",0)))
+	return rendered if rendered else Artwork.item(int(item.id),int(item.get("hue",0)))
 
 func toggle() -> void:
 	super.toggle()
@@ -77,7 +95,8 @@ func toggle() -> void:
 		refresh()
 
 func name_of(item: Dictionary) -> String:
-	var text := str(labels.get(int(item.serial),session.labels.item_name(int(item.id))))
+	var named: String = session.module("tooltips").name_of(int(item.serial)) if session.module("tooltips") else ""
+	var text := named if named != "" else str(labels.get(int(item.serial),session.labels.item_name(int(item.id))))
 	return text.capitalize() if text != "" else "Item"
 
 func _weight() -> void:
@@ -123,7 +142,7 @@ func _slot_for(item: Dictionary) -> Dictionary:
 func _tile(item: Dictionary) -> Control:
 	var tile := preload("res://Network/ItemTile.gd").new()
 	tile.item = item
-	tile.picture = Artwork.item(int(item.id),int(item.get("hue",0)))
+	tile.picture = picture_for(item)
 	tile.chosen = int(item.serial) == chosen
 	tile.title = name_of(item)
 	tile.tooltip_text = "%s\nClick: details · Double-click: use · Drag: onto the quickbar" % name_of(item)
@@ -139,8 +158,8 @@ func _detail(item: Dictionary) -> void:
 	head.add_theme_constant_override("separation",10)
 	detail.add_child(head)
 	var art := TextureRect.new()
-	art.texture = Artwork.item(int(item.id),int(item.get("hue",0)))
-	art.custom_minimum_size = Vector2(56,56)
+	art.texture = picture_for(item)
+	art.custom_minimum_size = Vector2(72,72)
 	art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	head.add_child(art)
@@ -158,7 +177,14 @@ func _detail(item: Dictionary) -> void:
 	for other in session.contents_of(int(session.backpack)):
 		if int(other.id) == int(item.id): same += maxi(1,int(other.get("amount",1)))
 	if same > amount: detail.add_child(Look.label("%d of this kind in the pack" % same,13,Look.ASH,500))
-	if str(labels.get(int(item.serial),"")) != "" and str(labels[int(item.serial)]).to_lower() != session.labels.item_name(int(item.id)).to_lower():
+	# The server's tooltip: every property line under the name.
+	var properties: Array = session.module("tooltips").lines_of(int(item.serial)).slice(1)
+	if properties.is_empty(): session.module("tooltips").request(int(item.serial),true)
+	for line in properties:
+		var property := Look.label(str(line),13,Look.IVORY,500)
+		property.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		detail.add_child(property)
+	if properties.is_empty() and str(labels.get(int(item.serial),"")) != "" and str(labels[int(item.serial)]).to_lower() != session.labels.item_name(int(item.id)).to_lower():
 		var label := Look.label(str(labels[int(item.serial)]),13,Look.ASH,500)
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		detail.add_child(label)
@@ -172,6 +198,11 @@ func _detail(item: Dictionary) -> void:
 	use.add_theme_color_override("font_color",Color("14110b"))
 	use.pressed.connect(func(): session.use_item(int(item.serial)))
 	detail.add_child(use)
+	var inspect := Button.new()
+	inspect.text = "Inspect in 3D"
+	inspect.custom_minimum_size = Vector2(0,38)
+	inspect.pressed.connect(func(): inspect_requested.emit(item))
+	detail.add_child(inspect)
 	var add := Button.new()
 	add.text = "Add to quickbar"
 	add.custom_minimum_size = Vector2(0,38)

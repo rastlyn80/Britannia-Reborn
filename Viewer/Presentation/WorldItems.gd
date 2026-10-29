@@ -121,6 +121,29 @@ func _process(delta: float) -> void:
  var serial: int = label_queue.pop_front()
  if nodes.has(serial) and not nodes[serial].has_meta("labelled"): session.request_label(serial)
 
+# Item studio (3D icons, inspect view): the model an item graphic gets in the
+# world, built by the same code path, then detached from the world without
+# its physics body, picking or labels. Meta "studio_quality" is "model" when
+# a real model or crafted shape drew it and "fallback" for the generic box.
+var studio_serial := -1
+func studio_model(graphic: int, hue := 0, amount := 1) -> Node3D:
+ if scene == null or scene.world.is_empty(): return null
+ var serial := studio_serial
+ studio_serial -= 1
+ upsert(serial,{"serial":serial,"id":graphic,"hue":hue,"amount":amount,"x":int(scene.world.originX)+1,"y":int(scene.world.originY)+1,"z":0,"facet":1})
+ var root: Node3D = nodes.get(serial)
+ nodes.erase(serial)
+ suppressed_posts.erase(serial)
+ if scene.movement_surface: scene.movement_surface.dynamic_items.erase(serial)
+ if root == null: return null
+ remove_child(root)
+ var stripped: Array = root.find_children("*","CollisionObject3D",true,false)+root.find_children("*","Label3D",true,false)
+ for node in stripped:
+  if is_instance_valid(node): node.free()
+ root.position = Vector3.ZERO
+ root.set_meta("studio_quality","fallback" if str(root.get_meta("appearance","")) == "unknown" else "model")
+ return root
+
 func upsert(serial: int, item: Dictionary) -> void:
  var bounds := Rect2i(int(scene.world.originX),int(scene.world.originY),int(scene.world.width),int(scene.world.height))
  var rule := definition(item)

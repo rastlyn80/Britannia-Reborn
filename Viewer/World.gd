@@ -434,10 +434,17 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	canvas.add_child(spellbook)
 	spellbook.configure(runner)
 	spellbook.add_requested.connect(quickbar.add_to_first_empty)
+	var studio := preload("res://Presentation/ItemStudio.gd").new()
+	add_child(studio)
+	studio.configure(world_items)
+	var inspector := preload("res://Network/InspectWindow.gd").new()
+	canvas.add_child(inspector)
+	inspector.configure(game,world_items)
 	var backpack := preload("res://Network/BackpackWindow.gd").new()
 	canvas.add_child(backpack)
 	backpack.configure(game)
 	backpack.add_requested.connect(quickbar.add_to_first_empty)
+	backpack.inspect_requested.connect(inspector.inspect)
 	# The modern backpack replaces the plain item list for the pack itself.
 	for child in login_panel.get_children():
 		if child.get_script() == preload("res://Network/ItemBrowser.gd"):

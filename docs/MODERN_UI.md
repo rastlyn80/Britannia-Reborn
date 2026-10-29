@@ -88,7 +88,12 @@ The owner approved the plan on the design canvas: a front end with no map distri
 
 ## Open
 
-- **3D item inspection (owner idea, 2026-10-29):** any item (in the backpack, a container, the paperdoll, a vendor or trade window, or the world) can be opened in an inspect view, as in modern games. It shows the item's 3D model, lit, with drag to rotate and wheel to zoom, and its server tooltip lines (name, properties) beside it. It uses the same model as the world and the 3D icon renderer.
+- **3D item icons and inspection (built 2026-10-29):**
+  - **The model:** `WorldItems.studio_model` builds an item graphic with the world's own code path and strips physics and labels.
+  - **Icons:** `Presentation/ItemStudio.gd` photographs each model once in a three-point-lit studio (192 px), one per frame, cached per session. The backpack grid and detail use the icon; classic art shows only while it renders, or where the world has no model of its own.
+  - **Inspect window (`Network/InspectWindow.gd`, "Inspect in 3D" in the backpack):** the lit model turns slowly until dragged; drag rotates and the wheel zooms. Framing fits the narrower view axis. The server tooltip lines sit beside it, and the backpack detail now lists them too.
+  - **Live result:** 7 of the 9 item kinds in the test pack draw in 3D (book, gold, dagger, scissors, dice cup, pouches). Bandages and the candle keep classic art until they get models.
+- **Original idea:** any item (in the backpack, a container, the paperdoll, a vendor or trade window, or the world) can be opened in an inspect view, as in modern games. It shows the item's 3D model, lit, with drag to rotate and wheel to zoom, and its server tooltip lines (name, properties) beside it. It uses the same model as the world and the 3D icon renderer.
 - **Front end still to do:** deleting characters, profession and skill choice at creation, a server-status probe before sign-in, and remembered looks updating while you play (they are saved on entering and on logging out).
 - **Windows still to modernise:** the character sheet (paperdoll), other containers, the world map, buff bar, party frames. Speaker names in the journal need the session to pass them on (0x1C/0xAE carry them; GameSession emits text only).
 - **Server gumps:** the modern rendering of server gumps, and the purpose-built crafting, vendor, runebook, bulletin and book windows.
