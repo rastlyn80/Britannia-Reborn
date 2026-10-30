@@ -133,6 +133,9 @@ static func _resolve(id: int,info: Dictionary) -> Dictionary:
  if id==13040: return base.merged({"kind":"asset","asset":"Nature/Rock_Medium_1.gltf","dimensions":[0.65,3.0,0.65],"confidence":"local visual inspection: tall crag fragment"})
  if id==7185: return base.merged({"kind":"prop","model":"gem","confidence":"local visual inspection: faceted blue ornament"})
  var flags := int(info.get("flags",0))
+ # "crystalline fragment" 512 is drawn as a dressed sandstone wall section
+ # (Trinsic's town walls); its name, not its art, says crystal.
+ if id == 512: return base.merged({"kind":"wall","facadeFamily":"sandstone","asset":"Village/Wall_UnevenBrick_Straight.gltf"})
  if n.is_empty():
   # Legacy rug components have empty tiledata labels; retain source modules.
   if id>=2787 and id<=2810: return base.merged({"kind":"carpet"})

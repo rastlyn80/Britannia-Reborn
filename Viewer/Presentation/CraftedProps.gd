@@ -29,7 +29,7 @@ const NAMES := {
 	"century plant":"agave","backpack":"backpack","pampas grass":"pampas","memorial to gwenno":"memorial","horse barding":"barding",
 	"gravestone":"grave",
 	"crossbow bolts":"bolts","inshave":"inshave","floor saw":"floorsaw","rabbit on a spit":"spit:rabbit","chicken on a spit":"spit:chicken",
-	"flax bundle":"flaxbundle","gargoyle floormirror":"mirror","gargoyle floor mirro":"mirror",
+	"flax bundle":"flaxbundle","fancy dress":"garment:robe:ece4d2","slice of bacon":"bacon","gargoyle floormirror":"mirror","gargoyle floor mirro":"mirror",
 	"tapestry":"tapestry","small elven tapestr":"tapestry","elven tapestry":"tapestry","colorful tapestry":"tapestry","sosaria tapestry":"tapestry",
 	"glass":"glassmug","dice and cup":"dice","eggs":"eggs","egg case":"eggcase","lockpick":"picks:1","lockpicks":"picks:3","spike trap":"spikes","hatch":"hatch","rope ladder":"ropeladder","brush":"brush","coconut":"coconut","full apron":"garment:apron:9a968a","half apron":"garment:apron:9a968a",
 }
@@ -363,6 +363,11 @@ static func build(name: String, seed := 0, id := -1) -> Node3D:
 				_cyl(a,0.004,0.75,Vector3(0,0,0),_wood(),flat,-1,6)
 				_cyl(a,0.008,0.05,Vector3(0.38,0,0),_iron(),Vector3(0,0,-PI/2),0.0,6)
 				_box(a,Vector3(0.1,0.002,0.025),Vector3(-0.33,0,0),_cloth("e8e0d0"))
+		"bacon":
+			# Rashers of cured belly: lean and fat in bands, a little curl.
+			for i in 3:
+				var r := Node3D.new(); r.position = Vector3(0,0.006+i*0.007,i*0.03-0.03); r.rotation.y = rnd.randf_range(-0.2,0.2); root.add_child(r)
+				for band in 3: _box(r,Vector3(0.2,0.006,0.012),Vector3(0,0,band*0.012-0.012),_mat("brown_mud_dry",Color(["8a2c22","e8d0b8","a83a2a"][band]),0.0,0.5,8.0),Vector3(0,0,0.08*sin(i+band)))
 		"bolts":
 			# A sheaf of short crossbow quarrels: thick shafts, square heads, leather vanes.
 			for i in 9:

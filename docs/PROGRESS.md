@@ -1,3 +1,17 @@
+# Trinsic graphics complete — 30 October 2026
+
+Owner request: finish Trinsic. Trinsic was measured with the same extraction as Britain, using the server's Trinsic town region (1796,2636 + 321×291), into a local `outputs/item-catalog-trinsic`. Before this pass: 758 of 765 placed graphics final, 99.85% of 64,500 placements.
+
+The last seven:
+- **"Crystalline fragment" 512** (92 placements in Trinsic, 142 in the world) is a dressed sandstone wall section by its art. It is now a sandstone wall (`RegionalRules`).
+- **Rocks 13492:** the grey rock scan.
+- **Axe 3913:** the two-handed axe scan.
+- **Leather cap:** the skullcap scan, recoloured leather.
+- **Executioner's cap:** the balaclava scan in dark red. Its tiledata name ends in a single `%`, so the replacement key keeps it.
+- **Crafted:** rashers of bacon and a laid-out fancy gown.
+
+**Result:** Trinsic is 100% (765 of 765 placed graphics, 100.00% of placements); Britain stays at 100%; the world is at 94.5% (596 open). The britain-trinsic bake rebuilds on the next launch (`RegionalRules` changed).
+
 # Human wearable 35% checkpoint — 30 October 2026
 
 **400/1,126 native wearable graphics (35.52%), 152 categories**: +152 graphics / +79 categories. The denominator is unchanged. Added armour, Tokuno headwear, blades/polearms/martial weapons, two bows and six school books on both bodies. Generated art remains local/ignored; source/class/hash evidence and construction are recorded in [HUMAN_FRONTIER_BATCH.md](HUMAN_FRONTIER_BATCH.md).

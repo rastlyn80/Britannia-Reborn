@@ -4386,6 +4386,9 @@
    "ids": {
     "4967": {
      "height": 0.5
+    },
+    "13492": {
+     "height": 0.5
     }
    }
   },
@@ -4684,6 +4687,35 @@
     "16573": {
      "height": 1.5
     }
+   }
+  },
+  "axe": {
+   "model": "Objaverse/w_two_handed_axe",
+   "length": 1.1,
+   "lay": true,
+   "only_ids": true,
+   "ids": {
+    "3913": {
+     "length": 1.1
+    }
+   }
+  },
+  "leather cap": {
+   "model": "Objaverse/skullcap",
+   "length": 0.22,
+   "material": {
+    "color": "7a4a26",
+    "metallic": 0.0,
+    "roughness": 0.75
+   }
+  },
+  "executioner's cap%": {
+   "model": "Objaverse/balaclava",
+   "length": 0.25,
+   "material": {
+    "color": "5a1418",
+    "metallic": 0.0,
+    "roughness": 0.9
    }
   }
  }
