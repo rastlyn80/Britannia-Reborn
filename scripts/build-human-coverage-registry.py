@@ -12,7 +12,16 @@ def build():
  lines+=['}','const STANCES := {']
  for row in rows:
   if 'stance' in row:lines.append('\t"coverage/%s":"%s",'%(row['key'],row['stance']))
- lines+=['}','']
+ lines+=['}','const HELD_FAMILIES := {']
+ for row in rows:
+  if 'held_family' in row:lines.append('\t"coverage/%s":"%s",'%(row['key'],row['held_family']))
+ lines+=['\t"coverage/spellbook":"book",','}','const HAIR_FITS := {']
+ for row in rows:
+  if 'hair_fit' in row:lines.append('\t"coverage/%s":"%s",'%(row['key'],row['hair_fit']))
+ lines+=['\t"coverage/chain_coif":"coif",','}','const BOOT_FITS := {']
+ for row in rows:
+  if 'boot_fit' in row:lines.append('\t"coverage/%s":"%s",'%(row['key'],row['boot_fit']))
+ lines+=['\t"coverage/plate_legs":"armour",','}','']
  (ROOT/'Viewer/Presentation/HumanCoverageWardrobe.gd').write_text('\n'.join(lines))
  print('HUMAN CATEGORY REGISTRY:',len(rows),'assets,',len(seen),'native graphics')
 if __name__=='__main__':build()

@@ -1,3 +1,13 @@
+# Human wearable 35% checkpoint — 30 October 2026
+
+**400/1,126 native wearable graphics (35.52%), 152 categories**: +152 graphics / +79 categories. The denominator is unchanged. Added armour, Tokuno headwear, blades/polearms/martial weapons, two bows and six school books on both bodies. Generated art remains local/ignored; source/class/hash evidence and construction are recorded in [HUMAN_FRONTIER_BATCH.md](HUMAN_FRONTIER_BATCH.md).
+
+Final finite evidence: **19,472 checks / 5,056 pose views**, **1,600 armour-opacity views**, **864 hair/cape views**, **158 new exports**, **268 total coverage exports** and **316 review frames**. All batch checks passed. Full `scripts/verify.ps1` exited 0, including 1,095 human coverage and 2,468 horse checks / 768 contact poses. It still logs the two existing TimberBridge fixture missing-`id` errors, teardown diagnostics and PreviewTools nullable warnings; unrelated work was preserved.
+
+Coverage means fitted category replacements. This batch includes shared armour silhouettes and school-book topology; exact ornament, haidate/suneate cuts, the second daisho blade, distinct Lajatang/kabuto profiles, two-handed/dual-wield choreography, opening books and arbitrary combinations remain open. Native hues, inherited race restrictions, long-hair depth and current action counts are preserved. No new monsters, live login/world-entry or multiplayer evidence.
+
+Next: owner visual review of `outputs/human-frontier/index.html`, targeted art/weapon-motion refinement, then the rejected apron waist/lap fit and missing dresses/surcoats before further expansion.
+
 # Human sash checkpoint — 30 October 2026
 
 Body sash (0x1541/0x1542) is connected on male/female humans with civilian and rigid plate fits. Catalogue: **248/1,126 (22.02%), 73 categories**. Native dyes preserve cloth cutouts, middle/robe layering and long hair remain independent, and no additional body masks are used. Evidence: **304 checks / 128 GPU views**, **64 hair views**, four exports / 32 actual modifier poses, eight review frames. See [HUMAN_WORKWEAR_BATCH.md](HUMAN_WORKWEAR_BATCH.md).

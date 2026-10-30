@@ -1,0 +1,2139 @@
+{
+  "scope": "Human wearable category replacements. Exact native ornament and per-item combat choreography remain separate. No racial restrictions are changed.",
+  "native_reference": {
+    "repository": "https://github.com/modernuo/ModernUO",
+    "revision": "ab59efea86fd9e399d261bed9d188ab4d95ad4c2"
+  },
+  "licence": "Original geometry/material pattern generator GPL-3.0-or-later. Selected CC0 MakeHuman/Toigo/grinsegold clothing, headwear and rig; provenance in the exact source manifests. No game mesh inputs.",
+  "source_manifests": [
+    "scripts/character-expansion-inputs.json",
+    "scripts/human-coverage-inputs.json",
+    "scripts/human-tailoring-inputs.json",
+    "scripts/human-motion-inputs.json"
+  ],
+  "foundation": "https://github.com/kblood/CharacterCreator/tree/852e48f316b90a0937234886630e4fb4cdfd1f78",
+  "files": {
+    "Viewer/local-art/free-equipment/motion/human-motion.glb": "91b606bea1fd0a3b1e57d08e308c33c6989b7d4cad1ef78abef69d829ebe0f69",
+    "Viewer/local-art/free-equipment/expansion/shirt.glb": "e01c11855961d30e398d3ff33a7935001578b2cbfa2c3bbb5f88ac66857f02e4",
+    "Viewer/local-art/free-equipment/coverage/plate_arms.glb": "a0d84c7f97b950d5de37b3d81bb14182452dd32859e8ec0f746e0183dc8a7ff1",
+    "Viewer/local-art/free-equipment/coverage/plate_torso.glb": "e1e8f09cf06274408df0367f348046532364167fbe9b34dd6bf702479bac2b5b",
+    "Viewer/local-art/free-equipment/coverage/leather_torso.glb": "36f17b7f201996e2ce5960a9264657803dcb73cb2166f8489dae62a30baabb64",
+    "Viewer/local-art/free-equipment/expansion/helmet.glb": "897549ff6b2f190f3ca528b9dd7f89c6ed7ca896fd47ed9cf584d50830877c7c",
+    "Viewer/local-art/free-equipment/coverage/studded_arms.glb": "142b952d36f20ca843e5c5f0a2a8eb91437879a356117e61f541fd2a9894ddca",
+    "Viewer/local-art/free-equipment/coverage/spellbook.glb": "bee3eaa004ca5de120625d61a97068ed5d3020b99c28010754742245a75aff50",
+    "Viewer/local-art/free-equipment/expansion/gloves.glb": "70d7ac457bdd48d226be90f2f17b16e8aa1682b909d8ecdcb69737fd095a0749",
+    "Viewer/local-art/free-equipment/equipment-base.glb": "b5134f97fd6a4179cd0d692e748f9b917c49656d05fe31dc0969f42846ae20a9",
+    "Viewer/local-art/free-equipment/coverage/leather_legs.glb": "88882650c021e1749064befd8d439e3d56f845474244cc4a39e9ff74b52bbdc0",
+    "Viewer/local-art/free-equipment/coverage/leather_arms.glb": "be764757cf68ac03cb2fe30628655e212dc1f723e349affd7c5c648851634a27",
+    "Viewer/local-art/free-equipment/coverage/plate_legs.glb": "800333863c5617e1844698655492e37f6f961e9ebfecf5ad5410c942be789fc3",
+    "Viewer/local-art/free-equipment/coverage/studded_torso.glb": "6e9a701f2433435584d62f2ab7d173b5e0ffdaea1289fc06aa0b68f2d597aa59",
+    "Viewer/local-art/free-equipment/coverage/studded_legs.glb": "fa05e9eb4f5b9f7f07736706e34872d4d37999698704770e6d8bc11e271e5820",
+    "Viewer/local-art/free-equipment-female/motion/human-motion.glb": "7f20ee73ce686237880cf7abcf74dfa5509d52b433dc98d2ca75dccd7d68f7a0",
+    "Viewer/local-art/free-equipment-female/expansion/shirt.glb": "18d75d7983a9d75973254a96eeece74244d933fee72649e55b7b3e3377c3de16",
+    "Viewer/local-art/free-equipment-female/coverage/plate_arms.glb": "a1417199a0207be0fff3e389e44a778a8b627fcd93c3e71b5c98496e99d99ccd",
+    "Viewer/local-art/free-equipment-female/coverage/plate_torso.glb": "a8ee078c3f37f2fec4bf4bf9f997527aa0a8790b5bc10d4475c242f8630e0c9c",
+    "Viewer/local-art/free-equipment-female/coverage/leather_torso.glb": "3ab967f237e8028c7320e13b693a9a8c704ee12c22e64f72b1445b2dca014b3c",
+    "Viewer/local-art/free-equipment-female/expansion/helmet.glb": "62ab6a8a95492250103c86d482779310daef4ee6a4c675f9036d52e98388933f",
+    "Viewer/local-art/free-equipment-female/coverage/studded_arms.glb": "e90a5deb6b6ee9da5f4ecc265f7537e9be253926a8d39c69c3d1147fc90109b9",
+    "Viewer/local-art/free-equipment-female/coverage/spellbook.glb": "3bfa08e5b6a87f9a033c136d3eeabdb0395f08b395430dcbbd4828dc8bc81688",
+    "Viewer/local-art/free-equipment-female/expansion/gloves.glb": "952a386b2d1a2e3021efe145cb1f8ba0b227139e9b886f9f5fa503c779008bb6",
+    "Viewer/local-art/free-equipment-female/equipment-base.glb": "951b8c1424714707b3178ca66a5b1f9e57f8c3e41f301c3a082cd312b861fc8c",
+    "Viewer/local-art/free-equipment-female/coverage/leather_legs.glb": "fe21f09d3248f38740d622eb220d3624beb5de45df0910a8e25494ad952a850e",
+    "Viewer/local-art/free-equipment-female/coverage/leather_arms.glb": "369cda23b5a4afac570a4804625b0a5cac644b2bc1c6d0dbffacd0577df263d9",
+    "Viewer/local-art/free-equipment-female/coverage/plate_legs.glb": "9f10746565390d8faa166a203901022759b0519eb69e9075723fc0e775f0874d",
+    "Viewer/local-art/free-equipment-female/coverage/studded_torso.glb": "e689bae6819062019c2e1d3f2691680f00d0a705cd9c8a8efd55cc5a79cb5bec",
+    "Viewer/local-art/free-equipment-female/coverage/studded_legs.glb": "c2d23581a5d1c4a9e6896012936dc9feea68346c0619688a9bb36193fceffbc7",
+    "Viewer/Art/MedievalKit/textures/Fabric045_2K-JPG_NormalGL.jpg": "bd977a2099dbe3f39037f35e52245f7b0f1d04d817e009da5ec172eb9b695c9d"
+  },
+  "native_graphics": {
+    "9793": [
+      {
+        "class": "DragonChest",
+        "file": "Projects/UOContent/Items/Armor/Dragon/DragonChest.cs",
+        "sha256": "50fd5b9d293cd664c968fc8e8b9a1b7360f497a26c1a70dae83e5804bbcdb259",
+        "race_restricted": false,
+        "ids": [
+          9793,
+          9794
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "9794": [
+      {
+        "class": "DragonChest",
+        "file": "Projects/UOContent/Items/Armor/Dragon/DragonChest.cs",
+        "sha256": "50fd5b9d293cd664c968fc8e8b9a1b7360f497a26c1a70dae83e5804bbcdb259",
+        "race_restricted": false,
+        "ids": [
+          9793,
+          9794
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "9795": [
+      {
+        "class": "DragonGloves",
+        "file": "Projects/UOContent/Items/Armor/Dragon/DragonGloves.cs",
+        "sha256": "90fb4df77d6d1bf9d74cceacde2bb2484d999fefc2d7793425e46a048a51c069",
+        "race_restricted": false,
+        "ids": [
+          9795,
+          9796
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "9796": [
+      {
+        "class": "DragonGloves",
+        "file": "Projects/UOContent/Items/Armor/Dragon/DragonGloves.cs",
+        "sha256": "90fb4df77d6d1bf9d74cceacde2bb2484d999fefc2d7793425e46a048a51c069",
+        "race_restricted": false,
+        "ids": [
+          9795,
+          9796
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "9797": [
+      {
+        "class": "DragonHelm",
+        "file": "Projects/UOContent/Items/Armor/Dragon/DragonHelm.cs",
+        "sha256": "8349a398be061cbc35b6ca0c62d66a6cfb2fd177d8a0ac02d7241229a65464d8",
+        "race_restricted": false,
+        "ids": [
+          9797,
+          9798
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "9798": [
+      {
+        "class": "DragonHelm",
+        "file": "Projects/UOContent/Items/Armor/Dragon/DragonHelm.cs",
+        "sha256": "8349a398be061cbc35b6ca0c62d66a6cfb2fd177d8a0ac02d7241229a65464d8",
+        "race_restricted": false,
+        "ids": [
+          9797,
+          9798
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "9799": [
+      {
+        "class": "DragonLegs",
+        "file": "Projects/UOContent/Items/Armor/Dragon/DragonLegs.cs",
+        "sha256": "f269b25f9c404021002197da5ff117180a98bad1b83a3d90cdaec384f756a8d2",
+        "race_restricted": false,
+        "ids": [
+          9799,
+          9800
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "9800": [
+      {
+        "class": "DragonLegs",
+        "file": "Projects/UOContent/Items/Armor/Dragon/DragonLegs.cs",
+        "sha256": "f269b25f9c404021002197da5ff117180a98bad1b83a3d90cdaec384f756a8d2",
+        "race_restricted": false,
+        "ids": [
+          9799,
+          9800
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "9815": [
+      {
+        "class": "DragonArms",
+        "file": "Projects/UOContent/Items/Armor/Dragon/DragonArms.cs",
+        "sha256": "2fea3dce2979cead70505706ba569363ee1115cdf18c1c4d2845d1e69f5e4414",
+        "race_restricted": false,
+        "ids": [
+          9815,
+          9816
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "9816": [
+      {
+        "class": "DragonArms",
+        "file": "Projects/UOContent/Items/Armor/Dragon/DragonArms.cs",
+        "sha256": "2fea3dce2979cead70505706ba569363ee1115cdf18c1c4d2845d1e69f5e4414",
+        "race_restricted": false,
+        "ids": [
+          9815,
+          9816
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10107": [
+      {
+        "class": "LeatherDo",
+        "file": "Projects/UOContent/Items/Armor/Leather/LeatherDo.cs",
+        "sha256": "fc87bdc0a9962afa70901214aff8720986965595b63e84f8adc689673967df6f",
+        "race_restricted": false,
+        "ids": [
+          10182
+        ],
+        "alias_basis": "client tile counterpart of 0x27c6: same name and nonzero animation reference"
+      }
+    ],
+    "10182": [
+      {
+        "class": "LeatherDo",
+        "file": "Projects/UOContent/Items/Armor/Leather/LeatherDo.cs",
+        "sha256": "fc87bdc0a9962afa70901214aff8720986965595b63e84f8adc689673967df6f",
+        "race_restricted": false,
+        "ids": [
+          10182
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10122": [
+      {
+        "class": "LeatherHaidate",
+        "file": "Projects/UOContent/Items/Armor/Leather/LeatherHaidate.cs",
+        "sha256": "0c99c073653ee2d0095760cd607c216a8cd222bcd9cb746a9e9935f285b4f2ad",
+        "race_restricted": false,
+        "ids": [
+          10122
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10197": [
+      {
+        "class": "LeatherHaidate",
+        "file": "Projects/UOContent/Items/Armor/Leather/LeatherHaidate.cs",
+        "sha256": "0c99c073653ee2d0095760cd607c216a8cd222bcd9cb746a9e9935f285b4f2ad",
+        "race_restricted": false,
+        "ids": [
+          10122
+        ],
+        "alias_basis": "client tile counterpart of 0x278a: same name and nonzero animation reference"
+      }
+    ],
+    "10118": [
+      {
+        "class": "LeatherSuneate",
+        "file": "Projects/UOContent/Items/Armor/Leather/LeatherSuneate.cs",
+        "sha256": "b8c73907367a1b7bc9f30f2f0f1510ae3de090a9b6247fd18d0dd9d887b5581c",
+        "race_restricted": false,
+        "ids": [
+          10118
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10193": [
+      {
+        "class": "LeatherSuneate",
+        "file": "Projects/UOContent/Items/Armor/Leather/LeatherSuneate.cs",
+        "sha256": "b8c73907367a1b7bc9f30f2f0f1510ae3de090a9b6247fd18d0dd9d887b5581c",
+        "race_restricted": false,
+        "ids": [
+          10118
+        ],
+        "alias_basis": "client tile counterpart of 0x2786: same name and nonzero animation reference"
+      }
+    ],
+    "10108": [
+      {
+        "class": "StuddedDo",
+        "file": "Projects/UOContent/Items/Armor/Studded/StuddedDo.cs",
+        "sha256": "c74e2434f304810cce1af69d8452b6c6865c24e2536085c8e6938c6180199d10",
+        "race_restricted": false,
+        "ids": [
+          10183
+        ],
+        "alias_basis": "client tile counterpart of 0x27c7: same name and nonzero animation reference"
+      }
+    ],
+    "10183": [
+      {
+        "class": "StuddedDo",
+        "file": "Projects/UOContent/Items/Armor/Studded/StuddedDo.cs",
+        "sha256": "c74e2434f304810cce1af69d8452b6c6865c24e2536085c8e6938c6180199d10",
+        "race_restricted": false,
+        "ids": [
+          10183
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10123": [
+      {
+        "class": "StuddedHaidate",
+        "file": "Projects/UOContent/Items/Armor/Studded/StuddedHaidate.cs",
+        "sha256": "0a8510e2de92f3cf7b60e0fdd4d4a0be94c5a565aa9acf3568802f97c9220985",
+        "race_restricted": false,
+        "ids": [
+          10123
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10198": [
+      {
+        "class": "StuddedHaidate",
+        "file": "Projects/UOContent/Items/Armor/Studded/StuddedHaidate.cs",
+        "sha256": "0a8510e2de92f3cf7b60e0fdd4d4a0be94c5a565aa9acf3568802f97c9220985",
+        "race_restricted": false,
+        "ids": [
+          10123
+        ],
+        "alias_basis": "client tile counterpart of 0x278b: same name and nonzero animation reference"
+      }
+    ],
+    "10119": [
+      {
+        "class": "StuddedSuneate",
+        "file": "Projects/UOContent/Items/Armor/Studded/StuddedSuneate.cs",
+        "sha256": "f3a46614e55d2c977f28987576dccc639b2d3cb107a9fb01fab5ab37fc6bfc0f",
+        "race_restricted": false,
+        "ids": [
+          10194
+        ],
+        "alias_basis": "client tile counterpart of 0x27d2: same name and nonzero animation reference"
+      }
+    ],
+    "10194": [
+      {
+        "class": "StuddedSuneate",
+        "file": "Projects/UOContent/Items/Armor/Studded/StuddedSuneate.cs",
+        "sha256": "f3a46614e55d2c977f28987576dccc639b2d3cb107a9fb01fab5ab37fc6bfc0f",
+        "race_restricted": false,
+        "ids": [
+          10194
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10109": [
+      {
+        "class": "PlateDo",
+        "file": "Projects/UOContent/Items/Armor/Plate/PlateDo.cs",
+        "sha256": "567468cbb93a66428e744e2f6c7da63f0cfea60e4fbfeb4c30281111b50b23b6",
+        "race_restricted": false,
+        "ids": [
+          10109
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10184": [
+      {
+        "class": "PlateDo",
+        "file": "Projects/UOContent/Items/Armor/Plate/PlateDo.cs",
+        "sha256": "567468cbb93a66428e744e2f6c7da63f0cfea60e4fbfeb4c30281111b50b23b6",
+        "race_restricted": false,
+        "ids": [
+          10109
+        ],
+        "alias_basis": "client tile counterpart of 0x277d: same name and nonzero animation reference"
+      }
+    ],
+    "10125": [
+      {
+        "class": "PlateHaidate",
+        "file": "Projects/UOContent/Items/Armor/Plate/PlateHaidate.cs",
+        "sha256": "748700648cdc9687dc2f240dab28bd24f12084e83ed9d1b1b7a60101be0ae11d",
+        "race_restricted": false,
+        "ids": [
+          10125
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10200": [
+      {
+        "class": "PlateHaidate",
+        "file": "Projects/UOContent/Items/Armor/Plate/PlateHaidate.cs",
+        "sha256": "748700648cdc9687dc2f240dab28bd24f12084e83ed9d1b1b7a60101be0ae11d",
+        "race_restricted": false,
+        "ids": [
+          10125
+        ],
+        "alias_basis": "client tile counterpart of 0x278d: same name and nonzero animation reference"
+      }
+    ],
+    "10120": [
+      {
+        "class": "PlateSuneate",
+        "file": "Projects/UOContent/Items/Armor/Plate/PlateSuneate.cs",
+        "sha256": "e67d64472dea5589472e3363feb4794b04ca2fa39902ac40097db40a0eed9f46",
+        "race_restricted": false,
+        "ids": [
+          10120
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10195": [
+      {
+        "class": "PlateSuneate",
+        "file": "Projects/UOContent/Items/Armor/Plate/PlateSuneate.cs",
+        "sha256": "e67d64472dea5589472e3363feb4794b04ca2fa39902ac40097db40a0eed9f46",
+        "race_restricted": false,
+        "ids": [
+          10120
+        ],
+        "alias_basis": "client tile counterpart of 0x2788: same name and nonzero animation reference"
+      }
+    ],
+    "10110": [
+      {
+        "class": "LeatherHiroSode",
+        "file": "Projects/UOContent/Items/Armor/Leather/LeatherHiroSode.cs",
+        "sha256": "00575313084d23763b2dcd50317886f767536ed80754a0f7dec10f45a0adb56e",
+        "race_restricted": false,
+        "ids": [
+          10110
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10185": [
+      {
+        "class": "LeatherHiroSode",
+        "file": "Projects/UOContent/Items/Armor/Leather/LeatherHiroSode.cs",
+        "sha256": "00575313084d23763b2dcd50317886f767536ed80754a0f7dec10f45a0adb56e",
+        "race_restricted": false,
+        "ids": [
+          10110
+        ],
+        "alias_basis": "client tile counterpart of 0x277e: same name and nonzero animation reference"
+      }
+    ],
+    "10111": [
+      {
+        "class": "StuddedHiroSode",
+        "file": "Projects/UOContent/Items/Armor/Studded/StuddedHiroSode.cs",
+        "sha256": "2bded3c7be22ce8fb11569c381caaea267ff067645392280d84253803d0dce5d",
+        "race_restricted": false,
+        "ids": [
+          10111
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10186": [
+      {
+        "class": "StuddedHiroSode",
+        "file": "Projects/UOContent/Items/Armor/Studded/StuddedHiroSode.cs",
+        "sha256": "2bded3c7be22ce8fb11569c381caaea267ff067645392280d84253803d0dce5d",
+        "race_restricted": false,
+        "ids": [
+          10111
+        ],
+        "alias_basis": "client tile counterpart of 0x277f: same name and nonzero animation reference"
+      }
+    ],
+    "10112": [
+      {
+        "class": "PlateHiroSode",
+        "file": "Projects/UOContent/Items/Armor/Plate/PlateHiroSode.cs",
+        "sha256": "d1698717c5a1c453f236df2553baee68c000ea5ff59654aa744c74ccf787cf42",
+        "race_restricted": false,
+        "ids": [
+          10112
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10187": [
+      {
+        "class": "PlateHiroSode",
+        "file": "Projects/UOContent/Items/Armor/Plate/PlateHiroSode.cs",
+        "sha256": "d1698717c5a1c453f236df2553baee68c000ea5ff59654aa744c74ccf787cf42",
+        "race_restricted": false,
+        "ids": [
+          10112
+        ],
+        "alias_basis": "client tile counterpart of 0x2780: same name and nonzero animation reference"
+      }
+    ],
+    "5099": [
+      {
+        "class": "RingmailGloves",
+        "file": "Projects/UOContent/Items/Armor/Ring/RingmailGloves.cs",
+        "sha256": "572156d9467fedea4f769bc74501a5a6fefbaa805c663ee85b0913181b18191c",
+        "race_restricted": false,
+        "ids": [
+          5099,
+          5106
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      },
+      {
+        "class": "RingmailGlovesOfMining",
+        "file": "Projects/UOContent/Items/Special/Bulk Order Rewards/Blacksmithy/GlovesOfMining.cs",
+        "sha256": "59444b36214f86ab59e4eca59ddf4ac682650aa359ae46952d4beaaa4a89f73c",
+        "race_restricted": false,
+        "ids": [
+          5099,
+          5106
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "5106": [
+      {
+        "class": "RingmailGloves",
+        "file": "Projects/UOContent/Items/Armor/Ring/RingmailGloves.cs",
+        "sha256": "572156d9467fedea4f769bc74501a5a6fefbaa805c663ee85b0913181b18191c",
+        "race_restricted": false,
+        "ids": [
+          5099,
+          5106
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      },
+      {
+        "class": "RingmailGlovesOfMining",
+        "file": "Projects/UOContent/Items/Special/Bulk Order Rewards/Blacksmithy/GlovesOfMining.cs",
+        "sha256": "59444b36214f86ab59e4eca59ddf4ac682650aa359ae46952d4beaaa4a89f73c",
+        "race_restricted": false,
+        "ids": [
+          5099,
+          5106
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10130": [
+      {
+        "class": "LeatherNinjaMitts",
+        "file": "Projects/UOContent/Items/Armor/Leather/LeatherNinjaMitts.cs",
+        "sha256": "90e525a7c0d252c74f6451c83f7d68f067127ecd65a604594d0225ada0155b64",
+        "race_restricted": false,
+        "ids": [
+          10130
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10205": [
+      {
+        "class": "LeatherNinjaMitts",
+        "file": "Projects/UOContent/Items/Armor/Leather/LeatherNinjaMitts.cs",
+        "sha256": "90e525a7c0d252c74f6451c83f7d68f067127ecd65a604594d0225ada0155b64",
+        "race_restricted": false,
+        "ids": [
+          10130
+        ],
+        "alias_basis": "client tile counterpart of 0x2792: same name and nonzero animation reference"
+      }
+    ],
+    "10131": [
+      {
+        "class": "LeatherNinjaJacket",
+        "file": "Projects/UOContent/Items/Armor/Leather/LeatherNinjaJacket.cs",
+        "sha256": "0a804741d67b76a6f9fb8e43304de705890011815cd6970d71f783573acd491b",
+        "race_restricted": false,
+        "ids": [
+          10131
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10206": [
+      {
+        "class": "LeatherNinjaJacket",
+        "file": "Projects/UOContent/Items/Armor/Leather/LeatherNinjaJacket.cs",
+        "sha256": "0a804741d67b76a6f9fb8e43304de705890011815cd6970d71f783573acd491b",
+        "race_restricted": false,
+        "ids": [
+          10131
+        ],
+        "alias_basis": "client tile counterpart of 0x2793: same name and nonzero animation reference"
+      }
+    ],
+    "10132": [
+      {
+        "class": "ClothNinjaJacket",
+        "file": "Projects/UOContent/Items/Clothing/Shirts.cs",
+        "sha256": "c38a7a682e1a64363da58012880de2b5b8751eb86dc6c48260cbde0371642a58",
+        "race_restricted": false,
+        "ids": [
+          10132,
+          10207
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10207": [
+      {
+        "class": "ClothNinjaJacket",
+        "file": "Projects/UOContent/Items/Clothing/Shirts.cs",
+        "sha256": "c38a7a682e1a64363da58012880de2b5b8751eb86dc6c48260cbde0371642a58",
+        "race_restricted": false,
+        "ids": [
+          10132,
+          10207
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10129": [
+      {
+        "class": "LeatherNinjaPants",
+        "file": "Projects/UOContent/Items/Armor/Leather/LeatherNinjaPants.cs",
+        "sha256": "b982bb707256ec7b8ed7d11d494e56112502c2ca6929b00966ed841a2d65c13d",
+        "race_restricted": false,
+        "ids": [
+          10129
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10204": [
+      {
+        "class": "LeatherNinjaPants",
+        "file": "Projects/UOContent/Items/Armor/Leather/LeatherNinjaPants.cs",
+        "sha256": "b982bb707256ec7b8ed7d11d494e56112502c2ca6929b00966ed841a2d65c13d",
+        "race_restricted": false,
+        "ids": [
+          10129
+        ],
+        "alias_basis": "client tile counterpart of 0x2791: same name and nonzero animation reference"
+      }
+    ],
+    "5199": [
+      {
+        "class": "BoneChest",
+        "file": "Projects/UOContent/Items/Armor/Bone/BoneChest.cs",
+        "sha256": "7f59fe68e8e9bde3f2a386fba30f7a9043066653cbdd02258f14d68f7054917c",
+        "race_restricted": false,
+        "ids": [
+          5199,
+          5204
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      },
+      {
+        "class": "DaemonChest",
+        "file": "Projects/UOContent/Items/Armor/DaemonBone/DaemonChest.cs",
+        "sha256": "22c3dd1ba206bc2a7828ae1f5feec8a77a9108330b425680666b0757954127c2",
+        "race_restricted": false,
+        "ids": [
+          5199,
+          5204
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "5204": [
+      {
+        "class": "BoneChest",
+        "file": "Projects/UOContent/Items/Armor/Bone/BoneChest.cs",
+        "sha256": "7f59fe68e8e9bde3f2a386fba30f7a9043066653cbdd02258f14d68f7054917c",
+        "race_restricted": false,
+        "ids": [
+          5199,
+          5204
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      },
+      {
+        "class": "DaemonChest",
+        "file": "Projects/UOContent/Items/Armor/DaemonBone/DaemonChest.cs",
+        "sha256": "22c3dd1ba206bc2a7828ae1f5feec8a77a9108330b425680666b0757954127c2",
+        "race_restricted": false,
+        "ids": [
+          5199,
+          5204
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "5198": [
+      {
+        "class": "BoneArms",
+        "file": "Projects/UOContent/Items/Armor/Bone/BoneArms.cs",
+        "sha256": "90c7f9de4083ccf1fb21bf4c1110c0bab6eec7630d057e5321b3ac19ea45e401",
+        "race_restricted": false,
+        "ids": [
+          5198,
+          5203
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      },
+      {
+        "class": "DaemonArms",
+        "file": "Projects/UOContent/Items/Armor/DaemonBone/DaemonArms.cs",
+        "sha256": "4c08abeb4caf4994819c78c40b2ca63b604bb01bb72dcc8944791206b4d569c8",
+        "race_restricted": false,
+        "ids": [
+          5198,
+          5203
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "5203": [
+      {
+        "class": "BoneArms",
+        "file": "Projects/UOContent/Items/Armor/Bone/BoneArms.cs",
+        "sha256": "90c7f9de4083ccf1fb21bf4c1110c0bab6eec7630d057e5321b3ac19ea45e401",
+        "race_restricted": false,
+        "ids": [
+          5198,
+          5203
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      },
+      {
+        "class": "DaemonArms",
+        "file": "Projects/UOContent/Items/Armor/DaemonBone/DaemonArms.cs",
+        "sha256": "4c08abeb4caf4994819c78c40b2ca63b604bb01bb72dcc8944791206b4d569c8",
+        "race_restricted": false,
+        "ids": [
+          5198,
+          5203
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "5202": [
+      {
+        "class": "BoneLegs",
+        "file": "Projects/UOContent/Items/Armor/Bone/BoneLegs.cs",
+        "sha256": "c7b56b0098e525f886366c3b1738c1efa6bf7a0c21517afddfe07af84c162cc9",
+        "race_restricted": false,
+        "ids": [
+          5202,
+          5207
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      },
+      {
+        "class": "DaemonLegs",
+        "file": "Projects/UOContent/Items/Armor/DaemonBone/DaemonLegs.cs",
+        "sha256": "02c79294eec282bb29766aa6fd18e062b7aeaeb8e13e9f05d18ff917cf3fd8b5",
+        "race_restricted": false,
+        "ids": [
+          5202,
+          5207
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "5207": [
+      {
+        "class": "BoneLegs",
+        "file": "Projects/UOContent/Items/Armor/Bone/BoneLegs.cs",
+        "sha256": "c7b56b0098e525f886366c3b1738c1efa6bf7a0c21517afddfe07af84c162cc9",
+        "race_restricted": false,
+        "ids": [
+          5202,
+          5207
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      },
+      {
+        "class": "DaemonLegs",
+        "file": "Projects/UOContent/Items/Armor/DaemonBone/DaemonLegs.cs",
+        "sha256": "02c79294eec282bb29766aa6fd18e062b7aeaeb8e13e9f05d18ff917cf3fd8b5",
+        "race_restricted": false,
+        "ids": [
+          5202,
+          5207
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "5200": [
+      {
+        "class": "BoneGloves",
+        "file": "Projects/UOContent/Items/Armor/Bone/BoneGloves.cs",
+        "sha256": "65285e472127233cbd1dc46520ca464f9b4eebcf311d4fe92ebe90a95abb25b2",
+        "race_restricted": false,
+        "ids": [
+          5200,
+          5205
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      },
+      {
+        "class": "DaemonGloves",
+        "file": "Projects/UOContent/Items/Armor/DaemonBone/DaemonGloves.cs",
+        "sha256": "04480034067fafe3ec58946781ca828a3cd7bb8fd1f8e9571056e173e36b1605",
+        "race_restricted": false,
+        "ids": [
+          5200,
+          5205
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "5205": [
+      {
+        "class": "BoneGloves",
+        "file": "Projects/UOContent/Items/Armor/Bone/BoneGloves.cs",
+        "sha256": "65285e472127233cbd1dc46520ca464f9b4eebcf311d4fe92ebe90a95abb25b2",
+        "race_restricted": false,
+        "ids": [
+          5200,
+          5205
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      },
+      {
+        "class": "DaemonGloves",
+        "file": "Projects/UOContent/Items/Armor/DaemonBone/DaemonGloves.cs",
+        "sha256": "04480034067fafe3ec58946781ca828a3cd7bb8fd1f8e9571056e173e36b1605",
+        "race_restricted": false,
+        "ids": [
+          5200,
+          5205
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "5201": [
+      {
+        "class": "BoneHelm",
+        "file": "Projects/UOContent/Items/Armor/Helmets/BoneHelm.cs",
+        "sha256": "034ff5a87477c74aa8bb232cb2b5e4ccafa5144a38fefd9231723c0c3fea40bb",
+        "race_restricted": false,
+        "ids": [
+          5201,
+          5206
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      },
+      {
+        "class": "DaemonHelm",
+        "file": "Projects/UOContent/Items/Armor/Helmets/DaemonHelm.cs",
+        "sha256": "f4ddaff8aff7bc45cc8b7fc8e50bde29494e0a5944e5607830bc6e528e5596c9",
+        "race_restricted": false,
+        "ids": [
+          5201,
+          5206
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "5206": [
+      {
+        "class": "BoneHelm",
+        "file": "Projects/UOContent/Items/Armor/Helmets/BoneHelm.cs",
+        "sha256": "034ff5a87477c74aa8bb232cb2b5e4ccafa5144a38fefd9231723c0c3fea40bb",
+        "race_restricted": false,
+        "ids": [
+          5201,
+          5206
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      },
+      {
+        "class": "DaemonHelm",
+        "file": "Projects/UOContent/Items/Armor/Helmets/DaemonHelm.cs",
+        "sha256": "f4ddaff8aff7bc45cc8b7fc8e50bde29494e0a5944e5607830bc6e528e5596c9",
+        "race_restricted": false,
+        "ids": [
+          5201,
+          5206
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10103": [
+      {
+        "class": "HeavyPlateJingasa",
+        "file": "Projects/UOContent/Items/Armor/Plate/HeavyPlateJingasa.cs",
+        "sha256": "2a69665f9e63478dd6842f4181277ceb2b66cb4177047301a9f1e705a9180e21",
+        "race_restricted": false,
+        "ids": [
+          10103
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10178": [
+      {
+        "class": "HeavyPlateJingasa",
+        "file": "Projects/UOContent/Items/Armor/Plate/HeavyPlateJingasa.cs",
+        "sha256": "2a69665f9e63478dd6842f4181277ceb2b66cb4177047301a9f1e705a9180e21",
+        "race_restricted": false,
+        "ids": [
+          10103
+        ],
+        "alias_basis": "client tile counterpart of 0x2777: same name and nonzero animation reference"
+      }
+    ],
+    "10113": [
+      {
+        "class": "LightPlateJingasa",
+        "file": "Projects/UOContent/Items/Armor/Plate/LightPlateJingasa.cs",
+        "sha256": "02d24ded155573f50272b9ca7235f1d084dd25ca4f9f41c36e70a3f4aa8034bd",
+        "race_restricted": false,
+        "ids": [
+          10113
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10188": [
+      {
+        "class": "LightPlateJingasa",
+        "file": "Projects/UOContent/Items/Armor/Plate/LightPlateJingasa.cs",
+        "sha256": "02d24ded155573f50272b9ca7235f1d084dd25ca4f9f41c36e70a3f4aa8034bd",
+        "race_restricted": false,
+        "ids": [
+          10113
+        ],
+        "alias_basis": "client tile counterpart of 0x2781: same name and nonzero animation reference"
+      }
+    ],
+    "10116": [
+      {
+        "class": "SmallPlateJingasa",
+        "file": "Projects/UOContent/Items/Armor/Plate/SmallPlateJingasa.cs",
+        "sha256": "f39ac81f313984c26f2fc52b0f05b411ce3a15c10c5fd708fdab6a321cec0847",
+        "race_restricted": false,
+        "ids": [
+          10116
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10191": [
+      {
+        "class": "SmallPlateJingasa",
+        "file": "Projects/UOContent/Items/Armor/Plate/SmallPlateJingasa.cs",
+        "sha256": "f39ac81f313984c26f2fc52b0f05b411ce3a15c10c5fd708fdab6a321cec0847",
+        "race_restricted": false,
+        "ids": [
+          10116
+        ],
+        "alias_basis": "client tile counterpart of 0x2784: same name and nonzero animation reference"
+      }
+    ],
+    "10102": [
+      {
+        "class": "LeatherJingasa",
+        "file": "Projects/UOContent/Items/Armor/Leather/LeatherJingasa.cs",
+        "sha256": "e4b2628b9edcfbef7a6c638fd383de873fab5200fcf28d326836f6281619e140",
+        "race_restricted": false,
+        "ids": [
+          10102
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10177": [
+      {
+        "class": "LeatherJingasa",
+        "file": "Projects/UOContent/Items/Armor/Leather/LeatherJingasa.cs",
+        "sha256": "e4b2628b9edcfbef7a6c638fd383de873fab5200fcf28d326836f6281619e140",
+        "race_restricted": false,
+        "ids": [
+          10102
+        ],
+        "alias_basis": "client tile counterpart of 0x2776: same name and nonzero animation reference"
+      }
+    ],
+    "10104": [
+      {
+        "class": "DecorativePlateKabuto",
+        "file": "Projects/UOContent/Items/Armor/Plate/DecorativePlateKabuto.cs",
+        "sha256": "7a22dca630d81c3fa888c994003c83fb9fac06982e5f75575344fc17bbc39206",
+        "race_restricted": false,
+        "ids": [
+          10104
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10179": [
+      {
+        "class": "DecorativePlateKabuto",
+        "file": "Projects/UOContent/Items/Armor/Plate/DecorativePlateKabuto.cs",
+        "sha256": "7a22dca630d81c3fa888c994003c83fb9fac06982e5f75575344fc17bbc39206",
+        "race_restricted": false,
+        "ids": [
+          10104
+        ],
+        "alias_basis": "client tile counterpart of 0x2778: same name and nonzero animation reference"
+      }
+    ],
+    "10117": [
+      {
+        "class": "PlateBattleKabuto",
+        "file": "Projects/UOContent/Items/Armor/Plate/PlateBattleKabuto.cs",
+        "sha256": "f61f914a6aa4e7495e627c976c34fcaa6840d07871f2c558c84257e22787e0c1",
+        "race_restricted": false,
+        "ids": [
+          10117
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10192": [
+      {
+        "class": "PlateBattleKabuto",
+        "file": "Projects/UOContent/Items/Armor/Plate/PlateBattleKabuto.cs",
+        "sha256": "f61f914a6aa4e7495e627c976c34fcaa6840d07871f2c558c84257e22787e0c1",
+        "race_restricted": false,
+        "ids": [
+          10117
+        ],
+        "alias_basis": "client tile counterpart of 0x2785: same name and nonzero animation reference"
+      }
+    ],
+    "10121": [
+      {
+        "class": "StandardPlateKabuto",
+        "file": "Projects/UOContent/Items/Armor/Plate/StandardPlateKabuto.cs",
+        "sha256": "c36b8a799030b2a36a323d27219d29bbf06e745059a0523fcd0d6173b1c36833",
+        "race_restricted": false,
+        "ids": [
+          10121
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10196": [
+      {
+        "class": "StandardPlateKabuto",
+        "file": "Projects/UOContent/Items/Armor/Plate/StandardPlateKabuto.cs",
+        "sha256": "c36b8a799030b2a36a323d27219d29bbf06e745059a0523fcd0d6173b1c36833",
+        "race_restricted": false,
+        "ids": [
+          10121
+        ],
+        "alias_basis": "client tile counterpart of 0x2789: same name and nonzero animation reference"
+      }
+    ],
+    "10100": [
+      {
+        "class": "ChainHatsuburi",
+        "file": "Projects/UOContent/Items/Armor/Chain/ChainHatsuburi.cs",
+        "sha256": "79e4ffe02e6f3e879ec84e447876ca7b733cd85694e038a9b40f0afa3cf50a61",
+        "race_restricted": false,
+        "ids": [
+          10100
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10175": [
+      {
+        "class": "ChainHatsuburi",
+        "file": "Projects/UOContent/Items/Armor/Chain/ChainHatsuburi.cs",
+        "sha256": "79e4ffe02e6f3e879ec84e447876ca7b733cd85694e038a9b40f0afa3cf50a61",
+        "race_restricted": false,
+        "ids": [
+          10100
+        ],
+        "alias_basis": "client tile counterpart of 0x2774: same name and nonzero animation reference"
+      }
+    ],
+    "10101": [
+      {
+        "class": "PlateHatsuburi",
+        "file": "Projects/UOContent/Items/Armor/Plate/PlateHatsuburi.cs",
+        "sha256": "52101dadc6ba1e5805c9c15c414fe447df5169ec34509b3ab6a080fd97f4dbdf",
+        "race_restricted": false,
+        "ids": [
+          10101
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10176": [
+      {
+        "class": "PlateHatsuburi",
+        "file": "Projects/UOContent/Items/Armor/Plate/PlateHatsuburi.cs",
+        "sha256": "52101dadc6ba1e5805c9c15c414fe447df5169ec34509b3ab6a080fd97f4dbdf",
+        "race_restricted": false,
+        "ids": [
+          10101
+        ],
+        "alias_basis": "client tile counterpart of 0x2775: same name and nonzero animation reference"
+      }
+    ],
+    "10126": [
+      {
+        "class": "LeatherNinjaHood",
+        "file": "Projects/UOContent/Items/Armor/Leather/LeatherNinjaHood.cs",
+        "sha256": "2788c4ff88c61735f78a3a7987814d16dd04d6f323b47ef15e12d083409055e1",
+        "race_restricted": false,
+        "ids": [
+          10126
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10201": [
+      {
+        "class": "LeatherNinjaHood",
+        "file": "Projects/UOContent/Items/Armor/Leather/LeatherNinjaHood.cs",
+        "sha256": "2788c4ff88c61735f78a3a7987814d16dd04d6f323b47ef15e12d083409055e1",
+        "race_restricted": false,
+        "ids": [
+          10126
+        ],
+        "alias_basis": "client tile counterpart of 0x278e: same name and nonzero animation reference"
+      }
+    ],
+    "10136": [
+      {
+        "class": "Kasa",
+        "file": "Projects/UOContent/Items/Clothing/Hats.cs",
+        "sha256": "8caa025b197a5fab0e9f98b948fce94313c268f377c3b20fd1ab9f5176aea33d",
+        "race_restricted": false,
+        "ids": [
+          10136,
+          10211
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10211": [
+      {
+        "class": "Kasa",
+        "file": "Projects/UOContent/Items/Clothing/Hats.cs",
+        "sha256": "8caa025b197a5fab0e9f98b948fce94313c268f377c3b20fd1ab9f5176aea33d",
+        "race_restricted": false,
+        "ids": [
+          10136,
+          10211
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "7947": [
+      {
+        "class": "OrcHelm",
+        "file": "Projects/UOContent/Items/Armor/Helmets/OrcHelm.cs",
+        "sha256": "4545aa19b96f701933d627c63bf0d1547d6e19d02cdc0a459a4f79ebe6301a81",
+        "race_restricted": false,
+        "ids": [
+          7947
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "7948": [
+      {
+        "class": "OrcHelm",
+        "file": "Projects/UOContent/Items/Armor/Helmets/OrcHelm.cs",
+        "sha256": "4545aa19b96f701933d627c63bf0d1547d6e19d02cdc0a459a4f79ebe6301a81",
+        "race_restricted": false,
+        "ids": [
+          7947
+        ],
+        "alias_basis": "client tile counterpart of 0x1f0b: same name and nonzero animation reference"
+      }
+    ],
+    "8965": [
+      {
+        "class": "FlowerGarland",
+        "file": "Projects/UOContent/Items/Clothing/Hats.cs",
+        "sha256": "8caa025b197a5fab0e9f98b948fce94313c268f377c3b20fd1ab9f5176aea33d",
+        "race_restricted": false,
+        "ids": [
+          8965,
+          8966
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "8966": [
+      {
+        "class": "FlowerGarland",
+        "file": "Projects/UOContent/Items/Clothing/Hats.cs",
+        "sha256": "8caa025b197a5fab0e9f98b948fce94313c268f377c3b20fd1ab9f5176aea33d",
+        "race_restricted": false,
+        "ids": [
+          8965,
+          8966
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "3915": [
+      {
+        "class": "DoubleAxe",
+        "file": "Projects/UOContent/Items/Weapons/Axes/DoubleAxe.cs",
+        "sha256": "62ca1ef08192ce68db2493e90f9e49021f80846a2dc8d5e5089f8820caeb75cd",
+        "race_restricted": false,
+        "ids": [
+          3915,
+          3916
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "3916": [
+      {
+        "class": "DoubleAxe",
+        "file": "Projects/UOContent/Items/Weapons/Axes/DoubleAxe.cs",
+        "sha256": "62ca1ef08192ce68db2493e90f9e49021f80846a2dc8d5e5089f8820caeb75cd",
+        "race_restricted": false,
+        "ids": [
+          3915,
+          3916
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "5043": [
+      {
+        "class": "Club",
+        "file": "Projects/UOContent/Items/Weapons/Maces/Club.cs",
+        "sha256": "fda2b6a6b4b0ce0a7c94a4fd85ba498260b77155cbdfc9e406ede3e1157563f4",
+        "race_restricted": false,
+        "ids": [
+          5043,
+          5044
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "5044": [
+      {
+        "class": "Club",
+        "file": "Projects/UOContent/Items/Weapons/Maces/Club.cs",
+        "sha256": "fda2b6a6b4b0ce0a7c94a4fd85ba498260b77155cbdfc9e406ede3e1157563f4",
+        "race_restricted": false,
+        "ids": [
+          5043,
+          5044
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "9914": [
+      {
+        "class": "Scythe",
+        "file": "Projects/UOContent/Items/Weapons/PoleArms/Scythe.cs",
+        "sha256": "114759880c6dbe0e96bfe942643793549789870b4805a4776f4fa4406db1ab6e",
+        "race_restricted": false,
+        "ids": [
+          9914,
+          9924
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "9924": [
+      {
+        "class": "Scythe",
+        "file": "Projects/UOContent/Items/Weapons/PoleArms/Scythe.cs",
+        "sha256": "114759880c6dbe0e96bfe942643793549789870b4805a4776f4fa4406db1ab6e",
+        "race_restricted": false,
+        "ids": [
+          9914,
+          9924
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "9915": [
+      {
+        "class": "BoneHarvester",
+        "file": "Projects/UOContent/Items/Weapons/Swords/BoneHarvester.cs",
+        "sha256": "8bbd9f1572147a2a19a2254917f9594487db20478b762a1270451bf57b047067",
+        "race_restricted": false,
+        "ids": [
+          9915,
+          9925
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "9925": [
+      {
+        "class": "BoneHarvester",
+        "file": "Projects/UOContent/Items/Weapons/Swords/BoneHarvester.cs",
+        "sha256": "8bbd9f1572147a2a19a2254917f9594487db20478b762a1270451bf57b047067",
+        "race_restricted": false,
+        "ids": [
+          9915,
+          9925
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "9917": [
+      {
+        "class": "BladedStaff",
+        "file": "Projects/UOContent/Items/Weapons/SpearsAndForks/BladedStaff.cs",
+        "sha256": "78b6b22f69da8031aacbd037fcf8bd527d4bda5d4fc3b3dc99a31b007e4d2abb",
+        "race_restricted": false,
+        "ids": [
+          9917,
+          9927
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "9927": [
+      {
+        "class": "BladedStaff",
+        "file": "Projects/UOContent/Items/Weapons/SpearsAndForks/BladedStaff.cs",
+        "sha256": "78b6b22f69da8031aacbd037fcf8bd527d4bda5d4fc3b3dc99a31b007e4d2abb",
+        "race_restricted": false,
+        "ids": [
+          9917,
+          9927
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "9919": [
+      {
+        "class": "DoubleBladedStaff",
+        "file": "Projects/UOContent/Items/Weapons/SpearsAndForks/DoubleBladedStaff.cs",
+        "sha256": "e93cd2ae5157d37848a7ab5969af7d70221485b47a8a4ba9916ecd9473605f4d",
+        "race_restricted": false,
+        "ids": [
+          9919,
+          9929
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "9929": [
+      {
+        "class": "DoubleBladedStaff",
+        "file": "Projects/UOContent/Items/Weapons/SpearsAndForks/DoubleBladedStaff.cs",
+        "sha256": "e93cd2ae5157d37848a7ab5969af7d70221485b47a8a4ba9916ecd9473605f4d",
+        "race_restricted": false,
+        "ids": [
+          9919,
+          9929
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "9918": [
+      {
+        "class": "Pike",
+        "file": "Projects/UOContent/Items/Weapons/SpearsAndForks/Pike.cs",
+        "sha256": "481421f923e7ac73d37cd15000e8be5763de6a1bb85fbf6e47439cc677b97b94",
+        "race_restricted": false,
+        "ids": [
+          9918,
+          9928
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "9928": [
+      {
+        "class": "Pike",
+        "file": "Projects/UOContent/Items/Weapons/SpearsAndForks/Pike.cs",
+        "sha256": "481421f923e7ac73d37cd15000e8be5763de6a1bb85fbf6e47439cc677b97b94",
+        "race_restricted": false,
+        "ids": [
+          9918,
+          9928
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "9920": [
+      {
+        "class": "Lance",
+        "file": "Projects/UOContent/Items/Weapons/Swords/Lance.cs",
+        "sha256": "bfc8b2d1a34d4799666120af58c9e263a2d27d47ca17ca6cda1ce6aab099e9a6",
+        "race_restricted": false,
+        "ids": [
+          9920,
+          9930
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "9930": [
+      {
+        "class": "Lance",
+        "file": "Projects/UOContent/Items/Weapons/Swords/Lance.cs",
+        "sha256": "bfc8b2d1a34d4799666120af58c9e263a2d27d47ca17ca6cda1ce6aab099e9a6",
+        "race_restricted": false,
+        "ids": [
+          9920,
+          9930
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10146": [
+      {
+        "class": "NoDachi",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/NoDachi.cs",
+        "sha256": "c2ec7e04c4d1950ebc6f25dcacf49af1e0909b38609d01809e03c35c6d95eee1",
+        "race_restricted": false,
+        "ids": [
+          10146,
+          10221
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10221": [
+      {
+        "class": "NoDachi",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/NoDachi.cs",
+        "sha256": "c2ec7e04c4d1950ebc6f25dcacf49af1e0909b38609d01809e03c35c6d95eee1",
+        "race_restricted": false,
+        "ids": [
+          10146,
+          10221
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10148": [
+      {
+        "class": "Wakizashi",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/Wakizashi.cs",
+        "sha256": "3b97942fe23e386a25e5cadef7ce2bae63e7ffea3a51356928d5de99bd88a1d4",
+        "race_restricted": false,
+        "ids": [
+          10148,
+          10223
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10223": [
+      {
+        "class": "Wakizashi",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/Wakizashi.cs",
+        "sha256": "3b97942fe23e386a25e5cadef7ce2bae63e7ffea3a51356928d5de99bd88a1d4",
+        "race_restricted": false,
+        "ids": [
+          10148,
+          10223
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10152": [
+      {
+        "class": "Bokuto",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/Bokuto.cs",
+        "sha256": "1373d890947722a444fb40002baa2718b8d024eec2ea93d17935d4be6c1dcd52",
+        "race_restricted": false,
+        "ids": [
+          10152,
+          10227
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10227": [
+      {
+        "class": "Bokuto",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/Bokuto.cs",
+        "sha256": "1373d890947722a444fb40002baa2718b8d024eec2ea93d17935d4be6c1dcd52",
+        "race_restricted": false,
+        "ids": [
+          10152,
+          10227
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10153": [
+      {
+        "class": "Daisho",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/Daisho.cs",
+        "sha256": "536ad35023158700bb15c29de06513372f36ca65552b231c3a8a9acf468f8c15",
+        "race_restricted": false,
+        "ids": [
+          10153,
+          10228
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10228": [
+      {
+        "class": "Daisho",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/Daisho.cs",
+        "sha256": "536ad35023158700bb15c29de06513372f36ca65552b231c3a8a9acf468f8c15",
+        "race_restricted": false,
+        "ids": [
+          10153,
+          10228
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10151": [
+      {
+        "class": "Lajatang",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/Lajatang.cs",
+        "sha256": "046dc7c76fddb335f6dd9d10e7ff662f580f018ec57b01901ea7d6e588d01637",
+        "race_restricted": false,
+        "ids": [
+          10151,
+          10226
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10226": [
+      {
+        "class": "Lajatang",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/Lajatang.cs",
+        "sha256": "046dc7c76fddb335f6dd9d10e7ff662f580f018ec57b01901ea7d6e588d01637",
+        "race_restricted": false,
+        "ids": [
+          10151,
+          10226
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10157": [
+      {
+        "class": "Kama",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/Kama.cs",
+        "sha256": "eccb2bacdb586bbf5c2c41da402b0233b8ffc6db85d24d1e560c0edfc276363d",
+        "race_restricted": false,
+        "ids": [
+          10157,
+          10232
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10232": [
+      {
+        "class": "Kama",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/Kama.cs",
+        "sha256": "eccb2bacdb586bbf5c2c41da402b0233b8ffc6db85d24d1e560c0edfc276363d",
+        "race_restricted": false,
+        "ids": [
+          10157,
+          10232
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10150": [
+      {
+        "class": "Tetsubo",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/Tetsubo.cs",
+        "sha256": "dfdb6bbfb9f3f43836737645316e39865879cc71c98b6c6cab003f00509bd29c",
+        "race_restricted": false,
+        "ids": [
+          10150,
+          10225
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10225": [
+      {
+        "class": "Tetsubo",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/Tetsubo.cs",
+        "sha256": "dfdb6bbfb9f3f43836737645316e39865879cc71c98b6c6cab003f00509bd29c",
+        "race_restricted": false,
+        "ids": [
+          10150,
+          10225
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10158": [
+      {
+        "class": "Nunchaku",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/Nunchaku.cs",
+        "sha256": "3e870f5ac1907f8a276592e2a0092827c266868a99f1b513a4899b2808946519",
+        "race_restricted": false,
+        "ids": [
+          10158,
+          10233
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10233": [
+      {
+        "class": "Nunchaku",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/Nunchaku.cs",
+        "sha256": "3e870f5ac1907f8a276592e2a0092827c266868a99f1b513a4899b2808946519",
+        "race_restricted": false,
+        "ids": [
+          10158,
+          10233
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10159": [
+      {
+        "class": "Sai",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/Sai.cs",
+        "sha256": "dee8ba35ea05d28fcbc71a40c10773213ca9c70f067120b04b1f3f92f351185a",
+        "race_restricted": false,
+        "ids": [
+          10159,
+          10234
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10234": [
+      {
+        "class": "Sai",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/Sai.cs",
+        "sha256": "dee8ba35ea05d28fcbc71a40c10773213ca9c70f067120b04b1f3f92f351185a",
+        "race_restricted": false,
+        "ids": [
+          10159,
+          10234
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10155": [
+      {
+        "class": "Tekagi",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/Tekagi.cs",
+        "sha256": "5f35e32f07aea97ca6dacd72c4f668aadf399725d62bc16284d8121925a44b9f",
+        "race_restricted": false,
+        "ids": [
+          10155,
+          10230
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10230": [
+      {
+        "class": "Tekagi",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/Tekagi.cs",
+        "sha256": "5f35e32f07aea97ca6dacd72c4f668aadf399725d62bc16284d8121925a44b9f",
+        "race_restricted": false,
+        "ids": [
+          10155,
+          10230
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10147": [
+      {
+        "class": "Tessen",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/Tessen.cs",
+        "sha256": "15d0c362f060eb3edc534f74c17b28b438500abc93e980048ae244ac90ec8aa2",
+        "race_restricted": false,
+        "ids": [
+          10147,
+          10222
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10222": [
+      {
+        "class": "Tessen",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/Tessen.cs",
+        "sha256": "15d0c362f060eb3edc534f74c17b28b438500abc93e980048ae244ac90ec8aa2",
+        "race_restricted": false,
+        "ids": [
+          10147,
+          10222
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10154": [
+      {
+        "class": "Fukiya",
+        "file": "Projects/UOContent/Items/Skill Items/Ninjitsu/Fukiya.cs",
+        "sha256": "c1b1adc6312b1919024dfc81d3accde1c0232f66b3b4c4d8830c2f70941011b5",
+        "race_restricted": false,
+        "ids": [
+          10154,
+          10229
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10229": [
+      {
+        "class": "Fukiya",
+        "file": "Projects/UOContent/Items/Skill Items/Ninjitsu/Fukiya.cs",
+        "sha256": "c1b1adc6312b1919024dfc81d3accde1c0232f66b3b4c4d8830c2f70941011b5",
+        "race_restricted": false,
+        "ids": [
+          10154,
+          10229
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "3519": [
+      {
+        "class": "FishingPole",
+        "file": "Projects/UOContent/Items/Skill Items/Fishing/FishingPole.cs",
+        "sha256": "ecec8e659a9fa9ff04f9009bae2d8e8b96e2354184fb99011c078753a4eb356a",
+        "race_restricted": false,
+        "ids": [
+          3520
+        ],
+        "alias_basis": "client tile counterpart of 0x0dc0: same name and nonzero animation reference"
+      }
+    ],
+    "3520": [
+      {
+        "class": "FishingPole",
+        "file": "Projects/UOContent/Items/Skill Items/Fishing/FishingPole.cs",
+        "sha256": "ecec8e659a9fa9ff04f9009bae2d8e8b96e2354184fb99011c078753a4eb356a",
+        "race_restricted": false,
+        "ids": [
+          3520
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11553": [
+      {
+        "class": "AssassinSpike",
+        "file": "Projects/UOContent/Items/Weapons/ML Weapons/AssassinSpike.cs",
+        "sha256": "53fa60e15728694afbecd91f884952448c9fc0b495db342be85e24b74a630835",
+        "race_restricted": false,
+        "ids": [
+          11553,
+          11565
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11565": [
+      {
+        "class": "AssassinSpike",
+        "file": "Projects/UOContent/Items/Weapons/ML Weapons/AssassinSpike.cs",
+        "sha256": "53fa60e15728694afbecd91f884952448c9fc0b495db342be85e24b74a630835",
+        "race_restricted": false,
+        "ids": [
+          11553,
+          11565
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11554": [
+      {
+        "class": "Leafblade",
+        "file": "Projects/UOContent/Items/Weapons/ML Weapons/Leafblade.cs",
+        "sha256": "ab759e5e7aabca2b6e6bd66adcc18c8367bf1c018fd7f5fe637c7eece8b08c7b",
+        "race_restricted": false,
+        "ids": [
+          11554,
+          11566
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11566": [
+      {
+        "class": "Leafblade",
+        "file": "Projects/UOContent/Items/Weapons/ML Weapons/Leafblade.cs",
+        "sha256": "ab759e5e7aabca2b6e6bd66adcc18c8367bf1c018fd7f5fe637c7eece8b08c7b",
+        "race_restricted": false,
+        "ids": [
+          11554,
+          11566
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11555": [
+      {
+        "class": "RaedsGlory",
+        "file": "Projects/UOContent/Items/Minor Artifacts/ML/RaedsGlory.cs",
+        "sha256": "1bab2b177b227095dfda41a512897299d8b1776cbcf6a89f719afa6b6b60d97c",
+        "race_restricted": false,
+        "ids": [
+          11555
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      },
+      {
+        "class": "WarCleaver",
+        "file": "Projects/UOContent/Items/Weapons/ML Weapons/WarCleaver.cs",
+        "sha256": "12e42291abfb836b5bf1d53b4ba02c72847c61f435935c2fa768c808b4003905",
+        "race_restricted": false,
+        "ids": [
+          11555,
+          11567
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11567": [
+      {
+        "class": "WarCleaver",
+        "file": "Projects/UOContent/Items/Weapons/ML Weapons/WarCleaver.cs",
+        "sha256": "12e42291abfb836b5bf1d53b4ba02c72847c61f435935c2fa768c808b4003905",
+        "race_restricted": false,
+        "ids": [
+          11555,
+          11567
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11556": [
+      {
+        "class": "DiamondMace",
+        "file": "Projects/UOContent/Items/Weapons/ML Weapons/DiamondMace.cs",
+        "sha256": "d9e347e9f787ea760fda6ff31f0068e1f3b6586ff825dc18e595acf6c24b82ec",
+        "race_restricted": false,
+        "ids": [
+          11556,
+          11568
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11568": [
+      {
+        "class": "Bonesmasher",
+        "file": "Projects/UOContent/Items/Minor Artifacts/ML/Bonesmasher.cs",
+        "sha256": "c1caff13e7bc5b6e970e59e88f7d1f437a1f9495778bfa6d464d11f0549d222d",
+        "race_restricted": false,
+        "ids": [
+          11568
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      },
+      {
+        "class": "DiamondMace",
+        "file": "Projects/UOContent/Items/Weapons/ML Weapons/DiamondMace.cs",
+        "sha256": "d9e347e9f787ea760fda6ff31f0068e1f3b6586ff825dc18e595acf6c24b82ec",
+        "race_restricted": false,
+        "ids": [
+          11556,
+          11568
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11557": [
+      {
+        "class": "WildStaff",
+        "file": "Projects/UOContent/Items/Weapons/ML Weapons/WildStaff.cs",
+        "sha256": "25c8e280b9508e5bfade56a5f55dd94c404d8f2cc50c974d5c1ee58efcb52d93",
+        "race_restricted": false,
+        "ids": [
+          11557,
+          11569
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11569": [
+      {
+        "class": "WildStaff",
+        "file": "Projects/UOContent/Items/Weapons/ML Weapons/WildStaff.cs",
+        "sha256": "25c8e280b9508e5bfade56a5f55dd94c404d8f2cc50c974d5c1ee58efcb52d93",
+        "race_restricted": false,
+        "ids": [
+          11557,
+          11569
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11558": [
+      {
+        "class": "RuneBlade",
+        "file": "Projects/UOContent/Items/Weapons/ML Weapons/RuneBlade.cs",
+        "sha256": "9c9f88dc317984acaf8f86aa183fe99660378e57d921b998883bc2c4e4accc13",
+        "race_restricted": false,
+        "ids": [
+          11558,
+          11570
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11570": [
+      {
+        "class": "RuneBlade",
+        "file": "Projects/UOContent/Items/Weapons/ML Weapons/RuneBlade.cs",
+        "sha256": "9c9f88dc317984acaf8f86aa183fe99660378e57d921b998883bc2c4e4accc13",
+        "race_restricted": false,
+        "ids": [
+          11558,
+          11570
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11559": [
+      {
+        "class": "RadiantScimitar",
+        "file": "Projects/UOContent/Items/Weapons/ML Weapons/RadiantScimitar.cs",
+        "sha256": "da9d4dee5fb273a66429907e913d87b33e9e267443fba0b7f15c2e5b7ae11f79",
+        "race_restricted": false,
+        "ids": [
+          11559,
+          11571
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      },
+      {
+        "class": "OverseerSunderedBlade",
+        "file": "Projects/UOContent/Items/Weapons/ML Weapons/Artifacts/OverseerSunderedBlade.cs",
+        "sha256": "b657578f51889ae6fe27ea43d89a240d6adcf1c6ec3456cd66cb0a3790e9fdfc",
+        "race_restricted": false,
+        "ids": [
+          11559
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11571": [
+      {
+        "class": "RadiantScimitar",
+        "file": "Projects/UOContent/Items/Weapons/ML Weapons/RadiantScimitar.cs",
+        "sha256": "da9d4dee5fb273a66429907e913d87b33e9e267443fba0b7f15c2e5b7ae11f79",
+        "race_restricted": false,
+        "ids": [
+          11559,
+          11571
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11560": [
+      {
+        "class": "OrnateAxe",
+        "file": "Projects/UOContent/Items/Weapons/ML Weapons/OrnateAxe.cs",
+        "sha256": "5fd3527aa0fa1c3967e1d99103d2ecc2b328f341464c53c0f12a37d8cd3d0f4e",
+        "race_restricted": false,
+        "ids": [
+          11560,
+          11572
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11572": [
+      {
+        "class": "TalonBite",
+        "file": "Projects/UOContent/Items/Minor Artifacts/ML/TalonBite.cs",
+        "sha256": "9715208d9d574d3d125634974ea6a0b9b5b7f5f532a92ee8b09d4cdb4f5a7bd3",
+        "race_restricted": false,
+        "ids": [
+          11572
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      },
+      {
+        "class": "OrnateAxe",
+        "file": "Projects/UOContent/Items/Weapons/ML Weapons/OrnateAxe.cs",
+        "sha256": "5fd3527aa0fa1c3967e1d99103d2ecc2b328f341464c53c0f12a37d8cd3d0f4e",
+        "race_restricted": false,
+        "ids": [
+          11560,
+          11572
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11561": [
+      {
+        "class": "ElvenMachete",
+        "file": "Projects/UOContent/Items/Weapons/ML Weapons/ElvenMachete.cs",
+        "sha256": "9bae27418a02187eb4eb1a9301c19fcaed488026a349a916e990852f00d254e5",
+        "race_restricted": false,
+        "ids": [
+          11561,
+          11573
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11573": [
+      {
+        "class": "ElvenMachete",
+        "file": "Projects/UOContent/Items/Weapons/ML Weapons/ElvenMachete.cs",
+        "sha256": "9bae27418a02187eb4eb1a9301c19fcaed488026a349a916e990852f00d254e5",
+        "race_restricted": false,
+        "ids": [
+          11561,
+          11573
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11552": [
+      {
+        "class": "ElvenSpellblade",
+        "file": "Projects/UOContent/Items/Weapons/ML Weapons/ElvenSpellblade.cs",
+        "sha256": "65b849c8ecf593f3e0b30cd4a88609a42b448d3d64c77a90fe2b1873df52cc03",
+        "race_restricted": false,
+        "ids": [
+          11552,
+          11564
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11564": [
+      {
+        "class": "ElvenSpellblade",
+        "file": "Projects/UOContent/Items/Weapons/ML Weapons/ElvenSpellblade.cs",
+        "sha256": "65b849c8ecf593f3e0b30cd4a88609a42b448d3d64c77a90fe2b1873df52cc03",
+        "race_restricted": false,
+        "ids": [
+          11552,
+          11564
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "8787": [
+      {
+        "class": "NecromancerSpellbook",
+        "file": "Projects/UOContent/Items/Skill Items/Magical/NecromancerSpellbook.cs",
+        "sha256": "46a7b5f337a2043e990b8df39ca6197cef02dabb6c6556a5a4e6f80c72fad630",
+        "race_restricted": false,
+        "ids": [
+          8787
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "8786": [
+      {
+        "class": "BookOfChivalry",
+        "file": "Projects/UOContent/Items/Skill Items/Magical/BookOfChivalry.cs",
+        "sha256": "0ac17e8a0711a4040694d2e9cac7d0668cd345857bea4769b8de5da7133a4fb5",
+        "race_restricted": false,
+        "ids": [
+          8786
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "9100": [
+      {
+        "class": "BookOfBushido",
+        "file": "Projects/UOContent/Items/Skill Items/Magical/BookOfBushido.cs",
+        "sha256": "7e212a1a1efcfd9909650fa07765bc49da5ef8f29a2fe06946d3e092dd605cbc",
+        "race_restricted": false,
+        "ids": [
+          9100
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "9120": [
+      {
+        "class": "BookOfNinjitsu",
+        "file": "Projects/UOContent/Items/Skill Items/Magical/BookOfNinjitsu.cs",
+        "sha256": "3186cacea32e58ccd127dacb65fd4d7fbc68edc953716bf9c9919172633ba0ee",
+        "race_restricted": false,
+        "ids": [
+          9120
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11600": [
+      {
+        "class": "SpellweavingBook",
+        "file": "Projects/UOContent/Items/Skill Items/Magical/SpellweavingBook.cs",
+        "sha256": "9a5183b94d3d3263c86ee164ac2eea70a1ccb95c8e8d7e065fca212cc5de96be",
+        "race_restricted": false,
+        "ids": [
+          11600
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11677": [
+      {
+        "class": "MysticSpellbook",
+        "file": "Projects/UOContent/Items/Skill Items/Magical/MysticSpellbook.cs",
+        "sha256": "b14d0f0d9dceb6174ae1910f01b2a9f75889614c1a7ca5d4f2a2339db439b4c7",
+        "race_restricted": false,
+        "ids": [
+          11677
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10149": [
+      {
+        "class": "Yumi",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/Yumi.cs",
+        "sha256": "6710a257ce71d1daf6991809f838ec5e8b5aab41df6bbffe64159763ec537363",
+        "race_restricted": false,
+        "ids": [
+          10149,
+          10224
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "10224": [
+      {
+        "class": "Yumi",
+        "file": "Projects/UOContent/Items/Weapons/SE Weapons/Yumi.cs",
+        "sha256": "6710a257ce71d1daf6991809f838ec5e8b5aab41df6bbffe64159763ec537363",
+        "race_restricted": false,
+        "ids": [
+          10149,
+          10224
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11550": [
+      {
+        "class": "ElvenCompositeLongbow",
+        "file": "Projects/UOContent/Items/Weapons/ML Weapons/ElvenCompositeLongbow.cs",
+        "sha256": "ec6b76a880a022c920f4e7be63196aad21c6c7f30518272e6e91e08c313e1f39",
+        "race_restricted": false,
+        "ids": [
+          11550,
+          11562
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ],
+    "11562": [
+      {
+        "class": "ElvenCompositeLongbow",
+        "file": "Projects/UOContent/Items/Weapons/ML Weapons/ElvenCompositeLongbow.cs",
+        "sha256": "ec6b76a880a022c920f4e7be63196aad21c6c7f30518272e6e91e08c313e1f39",
+        "race_restricted": false,
+        "ids": [
+          11550,
+          11562
+        ],
+        "alias_basis": "native class literal or Flippable attribute"
+      }
+    ]
+  },
+  "construction": "Existing continuous armour/cloth/glove topology, positions and weights retained for material variants. Original parametric hats, weapons and bows; school books retain the fitted tome geometry. All output art and generated previews remain local and ignored."
+}

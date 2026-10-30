@@ -52,6 +52,8 @@ try {
    if ($LASTEXITCODE) { throw "$sex equipment build failed" }
    & $blender --background --factory-startup --python-exit-code 1 --python scripts/prepare-human-workwear.py @argsForSex
    if ($LASTEXITCODE) { throw "$sex workwear build failed" }
+   & $blender --background --factory-startup --python-exit-code 1 --python scripts/prepare-human-frontier.py @argsForSex
+   if ($LASTEXITCODE) { throw "$sex frontier equipment build failed" }
   }
   & $blender --background --factory-startup --python-exit-code 1 --python scripts/prepare-human-hand-masks.py
   if ($LASTEXITCODE) { throw 'Glove wrist masks failed' }

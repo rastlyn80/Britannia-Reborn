@@ -620,6 +620,892 @@
         5442
       ],
       "kind": "workwear"
+    },
+    {
+      "key": "dragon_torso",
+      "slot": "torso",
+      "graphics": [
+        9793,
+        9794
+      ],
+      "base": "coverage/plate_torso",
+      "design": "dragon",
+      "kind": "expansion35"
+    },
+    {
+      "key": "dragon_hands",
+      "slot": "hands",
+      "graphics": [
+        9795,
+        9796
+      ],
+      "base": "expansion/gloves",
+      "design": "dragon",
+      "kind": "expansion35"
+    },
+    {
+      "key": "dragon_head",
+      "slot": "head",
+      "graphics": [
+        9797,
+        9798
+      ],
+      "base": "expansion/helmet",
+      "design": "dragon",
+      "kind": "expansion35"
+    },
+    {
+      "key": "dragon_legs",
+      "slot": "legs",
+      "graphics": [
+        9799,
+        9800
+      ],
+      "base": "coverage/plate_legs",
+      "design": "dragon",
+      "kind": "expansion35",
+      "boot_fit": "armour"
+    },
+    {
+      "key": "dragon_arms",
+      "slot": "arms",
+      "graphics": [
+        9815,
+        9816
+      ],
+      "base": "coverage/plate_arms",
+      "design": "dragon",
+      "kind": "expansion35"
+    },
+    {
+      "key": "leather_do",
+      "slot": "torso",
+      "graphics": [
+        10107,
+        10182
+      ],
+      "base": "coverage/leather_torso",
+      "design": "lamellar_leather",
+      "kind": "expansion35"
+    },
+    {
+      "key": "leather_haidate",
+      "slot": "legs",
+      "graphics": [
+        10122,
+        10197
+      ],
+      "base": "coverage/leather_legs",
+      "design": "lamellar_leather",
+      "kind": "expansion35"
+    },
+    {
+      "key": "leather_suneate",
+      "slot": "legs",
+      "graphics": [
+        10118,
+        10193
+      ],
+      "base": "coverage/leather_legs",
+      "design": "lamellar_leather",
+      "kind": "expansion35"
+    },
+    {
+      "key": "studded_do",
+      "slot": "torso",
+      "graphics": [
+        10108,
+        10183
+      ],
+      "base": "coverage/studded_torso",
+      "design": "lamellar_studded",
+      "kind": "expansion35"
+    },
+    {
+      "key": "studded_haidate",
+      "slot": "legs",
+      "graphics": [
+        10123,
+        10198
+      ],
+      "base": "coverage/studded_legs",
+      "design": "lamellar_studded",
+      "kind": "expansion35"
+    },
+    {
+      "key": "studded_suneate",
+      "slot": "legs",
+      "graphics": [
+        10119,
+        10194
+      ],
+      "base": "coverage/studded_legs",
+      "design": "lamellar_studded",
+      "kind": "expansion35"
+    },
+    {
+      "key": "plate_do",
+      "slot": "torso",
+      "graphics": [
+        10109,
+        10184
+      ],
+      "base": "coverage/plate_torso",
+      "design": "lamellar_plate",
+      "kind": "expansion35"
+    },
+    {
+      "key": "plate_haidate",
+      "slot": "legs",
+      "graphics": [
+        10125,
+        10200
+      ],
+      "base": "coverage/plate_legs",
+      "design": "lamellar_plate",
+      "kind": "expansion35",
+      "boot_fit": "armour"
+    },
+    {
+      "key": "plate_suneate",
+      "slot": "legs",
+      "graphics": [
+        10120,
+        10195
+      ],
+      "base": "coverage/plate_legs",
+      "design": "lamellar_plate",
+      "kind": "expansion35",
+      "boot_fit": "armour"
+    },
+    {
+      "key": "leather_hiro_sode",
+      "slot": "arms",
+      "graphics": [
+        10110,
+        10185
+      ],
+      "base": "coverage/leather_arms",
+      "design": "lamellar_leather",
+      "kind": "expansion35"
+    },
+    {
+      "key": "studded_hiro_sode",
+      "slot": "arms",
+      "graphics": [
+        10111,
+        10186
+      ],
+      "base": "coverage/studded_arms",
+      "design": "lamellar_studded",
+      "kind": "expansion35"
+    },
+    {
+      "key": "plate_hiro_sode",
+      "slot": "arms",
+      "graphics": [
+        10112,
+        10187
+      ],
+      "base": "coverage/plate_arms",
+      "design": "lamellar_plate",
+      "kind": "expansion35"
+    },
+    {
+      "key": "ringmail_gloves",
+      "slot": "hands",
+      "graphics": [
+        5099,
+        5106
+      ],
+      "base": "expansion/gloves",
+      "design": "mail",
+      "kind": "expansion35"
+    },
+    {
+      "key": "ninja_mitts",
+      "slot": "hands",
+      "graphics": [
+        10130,
+        10205
+      ],
+      "base": "expansion/gloves",
+      "design": "ninja",
+      "kind": "expansion35"
+    },
+    {
+      "key": "ninja_jacket",
+      "slot": "torso",
+      "graphics": [
+        10131,
+        10206
+      ],
+      "base": "coverage/leather_torso",
+      "design": "ninja",
+      "kind": "expansion35"
+    },
+    {
+      "key": "cloth_ninja_jacket",
+      "slot": "torso",
+      "graphics": [
+        10132,
+        10207
+      ],
+      "base": "expansion/shirt",
+      "design": "ninja",
+      "kind": "expansion35"
+    },
+    {
+      "key": "ninja_pants",
+      "slot": "legs",
+      "graphics": [
+        10129,
+        10204
+      ],
+      "base": "coverage/leather_legs",
+      "design": "ninja",
+      "kind": "expansion35"
+    },
+    {
+      "key": "bone_torso",
+      "slot": "torso",
+      "graphics": [
+        5199,
+        5204
+      ],
+      "base": "coverage/plate_torso",
+      "design": "bone",
+      "kind": "expansion35"
+    },
+    {
+      "key": "bone_arms",
+      "slot": "arms",
+      "graphics": [
+        5198,
+        5203
+      ],
+      "base": "coverage/plate_arms",
+      "design": "bone",
+      "kind": "expansion35"
+    },
+    {
+      "key": "bone_legs",
+      "slot": "legs",
+      "graphics": [
+        5202,
+        5207
+      ],
+      "base": "coverage/plate_legs",
+      "design": "bone",
+      "kind": "expansion35",
+      "boot_fit": "armour"
+    },
+    {
+      "key": "bone_hands",
+      "slot": "hands",
+      "graphics": [
+        5200,
+        5205
+      ],
+      "base": "expansion/gloves",
+      "design": "bone",
+      "kind": "expansion35"
+    },
+    {
+      "key": "bone_head",
+      "slot": "head",
+      "graphics": [
+        5201,
+        5206
+      ],
+      "base": "expansion/helmet",
+      "design": "bone",
+      "kind": "expansion35"
+    },
+    {
+      "key": "heavy_jingasa",
+      "slot": "head",
+      "graphics": [
+        10103,
+        10178
+      ],
+      "base": null,
+      "design": "jingasa",
+      "kind": "expansion35",
+      "hair_fit": "coif"
+    },
+    {
+      "key": "light_jingasa",
+      "slot": "head",
+      "graphics": [
+        10113,
+        10188
+      ],
+      "base": null,
+      "design": "jingasa",
+      "kind": "expansion35",
+      "hair_fit": "coif"
+    },
+    {
+      "key": "small_jingasa",
+      "slot": "head",
+      "graphics": [
+        10116,
+        10191
+      ],
+      "base": null,
+      "design": "jingasa",
+      "kind": "expansion35",
+      "hair_fit": "coif"
+    },
+    {
+      "key": "leather_jingasa",
+      "slot": "head",
+      "graphics": [
+        10102,
+        10177
+      ],
+      "base": null,
+      "design": "jingasa_leather",
+      "kind": "expansion35",
+      "hair_fit": "coif"
+    },
+    {
+      "key": "standard_kabuto",
+      "slot": "head",
+      "graphics": [
+        10121,
+        10196
+      ],
+      "base": null,
+      "design": "kabuto",
+      "kind": "expansion35",
+      "hair_fit": "coif"
+    },
+    {
+      "key": "decorative_kabuto",
+      "slot": "head",
+      "graphics": [
+        10104,
+        10179
+      ],
+      "base": null,
+      "design": "kabuto",
+      "kind": "expansion35",
+      "hair_fit": "coif"
+    },
+    {
+      "key": "battle_kabuto",
+      "slot": "head",
+      "graphics": [
+        10117,
+        10192
+      ],
+      "base": null,
+      "design": "kabuto",
+      "kind": "expansion35",
+      "hair_fit": "coif"
+    },
+    {
+      "key": "chain_hatsuburi",
+      "slot": "head",
+      "graphics": [
+        10100,
+        10175
+      ],
+      "base": null,
+      "design": "coif_mail",
+      "kind": "expansion35",
+      "hair_fit": "coif"
+    },
+    {
+      "key": "plate_hatsuburi",
+      "slot": "head",
+      "graphics": [
+        10101,
+        10176
+      ],
+      "base": null,
+      "design": "coif_metal",
+      "kind": "expansion35",
+      "hair_fit": "coif"
+    },
+    {
+      "key": "ninja_hood",
+      "slot": "head",
+      "graphics": [
+        10126,
+        10201
+      ],
+      "base": null,
+      "design": "coif_ninja",
+      "kind": "expansion35",
+      "hair_fit": "coif"
+    },
+    {
+      "key": "kasa",
+      "slot": "head",
+      "graphics": [
+        10136,
+        10211
+      ],
+      "base": null,
+      "design": "kasa",
+      "kind": "expansion35",
+      "hair_fit": "coif"
+    },
+    {
+      "key": "orc_helm",
+      "slot": "head",
+      "graphics": [
+        7947,
+        7948
+      ],
+      "base": null,
+      "design": "horned",
+      "kind": "expansion35"
+    },
+    {
+      "key": "flower_garland",
+      "slot": "head",
+      "graphics": [
+        8965,
+        8966
+      ],
+      "base": null,
+      "design": "garland",
+      "kind": "expansion35"
+    },
+    {
+      "key": "double_axe",
+      "slot": "weapon",
+      "graphics": [
+        3915,
+        3916
+      ],
+      "base": null,
+      "design": "axe",
+      "kind": "expansion35"
+    },
+    {
+      "key": "club",
+      "slot": "weapon",
+      "graphics": [
+        5043,
+        5044
+      ],
+      "base": null,
+      "design": "club",
+      "kind": "expansion35"
+    },
+    {
+      "key": "scythe",
+      "slot": "weapon",
+      "graphics": [
+        9914,
+        9924
+      ],
+      "base": null,
+      "design": "scythe",
+      "kind": "expansion35"
+    },
+    {
+      "key": "bone_harvester",
+      "slot": "weapon",
+      "graphics": [
+        9915,
+        9925
+      ],
+      "base": null,
+      "design": "scythe_short",
+      "kind": "expansion35"
+    },
+    {
+      "key": "bladed_staff",
+      "slot": "weapon",
+      "graphics": [
+        9917,
+        9927
+      ],
+      "base": null,
+      "design": "bladed_staff",
+      "kind": "expansion35"
+    },
+    {
+      "key": "double_bladed_staff",
+      "slot": "weapon",
+      "graphics": [
+        9919,
+        9929
+      ],
+      "base": null,
+      "design": "double_staff",
+      "kind": "expansion35"
+    },
+    {
+      "key": "pike",
+      "slot": "weapon",
+      "graphics": [
+        9918,
+        9928
+      ],
+      "base": null,
+      "design": "pike",
+      "kind": "expansion35"
+    },
+    {
+      "key": "lance",
+      "slot": "weapon",
+      "graphics": [
+        9920,
+        9930
+      ],
+      "base": null,
+      "design": "lance",
+      "kind": "expansion35"
+    },
+    {
+      "key": "no_dachi",
+      "slot": "weapon",
+      "graphics": [
+        10146,
+        10221
+      ],
+      "base": null,
+      "design": "katana_long",
+      "kind": "expansion35"
+    },
+    {
+      "key": "wakizashi",
+      "slot": "weapon",
+      "graphics": [
+        10148,
+        10223
+      ],
+      "base": null,
+      "design": "katana_short",
+      "kind": "expansion35"
+    },
+    {
+      "key": "bokuto",
+      "slot": "weapon",
+      "graphics": [
+        10152,
+        10227
+      ],
+      "base": null,
+      "design": "bokuto",
+      "kind": "expansion35"
+    },
+    {
+      "key": "daisho",
+      "slot": "weapon",
+      "graphics": [
+        10153,
+        10228
+      ],
+      "base": null,
+      "design": "daisho",
+      "kind": "expansion35"
+    },
+    {
+      "key": "lajatang",
+      "slot": "weapon",
+      "graphics": [
+        10151,
+        10226
+      ],
+      "base": null,
+      "design": "double_staff",
+      "kind": "expansion35"
+    },
+    {
+      "key": "kama",
+      "slot": "weapon",
+      "graphics": [
+        10157,
+        10232
+      ],
+      "base": null,
+      "design": "kama",
+      "kind": "expansion35"
+    },
+    {
+      "key": "tetsubo",
+      "slot": "weapon",
+      "graphics": [
+        10150,
+        10225
+      ],
+      "base": null,
+      "design": "tetsubo",
+      "kind": "expansion35"
+    },
+    {
+      "key": "nunchaku",
+      "slot": "weapon",
+      "graphics": [
+        10158,
+        10233
+      ],
+      "base": null,
+      "design": "nunchaku",
+      "kind": "expansion35"
+    },
+    {
+      "key": "sai",
+      "slot": "weapon",
+      "graphics": [
+        10159,
+        10234
+      ],
+      "base": null,
+      "design": "sai",
+      "kind": "expansion35"
+    },
+    {
+      "key": "tekagi",
+      "slot": "weapon",
+      "graphics": [
+        10155,
+        10230
+      ],
+      "base": null,
+      "design": "claw",
+      "kind": "expansion35"
+    },
+    {
+      "key": "tessen",
+      "slot": "weapon",
+      "graphics": [
+        10147,
+        10222
+      ],
+      "base": null,
+      "design": "fan",
+      "kind": "expansion35"
+    },
+    {
+      "key": "fukiya",
+      "slot": "weapon",
+      "graphics": [
+        10154,
+        10229
+      ],
+      "base": null,
+      "design": "fukiya",
+      "kind": "expansion35"
+    },
+    {
+      "key": "fishing_pole",
+      "slot": "weapon",
+      "graphics": [
+        3519,
+        3520
+      ],
+      "base": null,
+      "design": "fishing_pole",
+      "kind": "expansion35"
+    },
+    {
+      "key": "assassin_spike",
+      "slot": "weapon",
+      "graphics": [
+        11553,
+        11565
+      ],
+      "base": null,
+      "design": "spike",
+      "kind": "expansion35"
+    },
+    {
+      "key": "leafblade",
+      "slot": "weapon",
+      "graphics": [
+        11554,
+        11566
+      ],
+      "base": null,
+      "design": "leafblade",
+      "kind": "expansion35"
+    },
+    {
+      "key": "war_cleaver",
+      "slot": "weapon",
+      "graphics": [
+        11555,
+        11567
+      ],
+      "base": null,
+      "design": "cleaver",
+      "kind": "expansion35"
+    },
+    {
+      "key": "diamond_mace",
+      "slot": "weapon",
+      "graphics": [
+        11556,
+        11568
+      ],
+      "base": null,
+      "design": "diamond_mace",
+      "kind": "expansion35"
+    },
+    {
+      "key": "wild_staff",
+      "slot": "weapon",
+      "graphics": [
+        11557,
+        11569
+      ],
+      "base": null,
+      "design": "wild_staff",
+      "kind": "expansion35"
+    },
+    {
+      "key": "rune_blade",
+      "slot": "weapon",
+      "graphics": [
+        11558,
+        11570
+      ],
+      "base": null,
+      "design": "greatsword",
+      "kind": "expansion35"
+    },
+    {
+      "key": "radiant_scimitar",
+      "slot": "weapon",
+      "graphics": [
+        11559,
+        11571
+      ],
+      "base": null,
+      "design": "scimitar",
+      "kind": "expansion35"
+    },
+    {
+      "key": "ornate_axe",
+      "slot": "weapon",
+      "graphics": [
+        11560,
+        11572
+      ],
+      "base": null,
+      "design": "axe",
+      "kind": "expansion35"
+    },
+    {
+      "key": "elven_machete",
+      "slot": "weapon",
+      "graphics": [
+        11561,
+        11573
+      ],
+      "base": null,
+      "design": "cleaver",
+      "kind": "expansion35"
+    },
+    {
+      "key": "elven_spellblade",
+      "slot": "weapon",
+      "graphics": [
+        11552,
+        11564
+      ],
+      "base": null,
+      "design": "greatsword",
+      "kind": "expansion35"
+    },
+    {
+      "key": "necromancer_book",
+      "slot": "weapon",
+      "graphics": [
+        8787
+      ],
+      "base": "coverage/spellbook",
+      "design": "book",
+      "kind": "expansion35",
+      "held_family": "book"
+    },
+    {
+      "key": "chivalry_book",
+      "slot": "weapon",
+      "graphics": [
+        8786
+      ],
+      "base": "coverage/spellbook",
+      "design": "book",
+      "kind": "expansion35",
+      "held_family": "book"
+    },
+    {
+      "key": "bushido_book",
+      "slot": "weapon",
+      "graphics": [
+        9100
+      ],
+      "base": "coverage/spellbook",
+      "design": "book",
+      "kind": "expansion35",
+      "held_family": "book"
+    },
+    {
+      "key": "ninjitsu_book",
+      "slot": "weapon",
+      "graphics": [
+        9120
+      ],
+      "base": "coverage/spellbook",
+      "design": "book",
+      "kind": "expansion35",
+      "held_family": "book"
+    },
+    {
+      "key": "spellweaving_book",
+      "slot": "weapon",
+      "graphics": [
+        11600
+      ],
+      "base": "coverage/spellbook",
+      "design": "book",
+      "kind": "expansion35",
+      "held_family": "book"
+    },
+    {
+      "key": "mystic_book",
+      "slot": "weapon",
+      "graphics": [
+        11677
+      ],
+      "base": "coverage/spellbook",
+      "design": "book",
+      "kind": "expansion35",
+      "held_family": "book"
+    },
+    {
+      "key": "yumi",
+      "slot": "weapon",
+      "graphics": [
+        10149,
+        10224
+      ],
+      "base": null,
+      "design": "bow_yumi",
+      "kind": "expansion35",
+      "stance": "bow"
+    },
+    {
+      "key": "elven_composite_bow",
+      "slot": "weapon",
+      "graphics": [
+        11550,
+        11562
+      ],
+      "base": null,
+      "design": "bow_composite",
+      "kind": "expansion35",
+      "stance": "bow"
     }
   ],
   "deferred_experiments": [
