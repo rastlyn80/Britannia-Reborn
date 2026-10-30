@@ -10,6 +10,7 @@ var recall := 0
 
 func _ready() -> void:
 	setup("console","Console",Vector2(520,340),Vector2(460,120))
+	right_click_closes = false
 	log_view.custom_minimum_size = Vector2(0,190)
 	log_view.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	log_view.bbcode_enabled = true

@@ -180,6 +180,10 @@ func upsert(serial: int, item: Dictionary) -> void:
  # A corpse (0x2006) carries its creature's body in the amount field: horses
  # lie as the shared horse model held at the end of its death clip.
  if int(item.id) == 0x2006 and _equine_corpse(root,item,serial): return
+ # Blood spilled in a fight: a projected splatter that lies on the ground.
+ if preload("res://Presentation/BloodSplatter.gd").handles(int(item.id)):
+  root.add_child(preload("res://Presentation/BloodSplatter.gd").build(serial,int(item.id)))
+  return
  # Modern Britain: server decoration whose name matches a library slot uses
  # the owner-pack/CC0 library model, set onto the surface under it.
  if preload("res://Presentation/GraphicsMode.gd").modern() and not str(rule.family) in ["door","sign","lamp","noticeboard","gameboard","backgammon"] and not preload("res://Presentation/ReviewedCatalog.gd").scanned(int(item.id)) and not preload("res://Presentation/PropReplacements.gd").has(str(rule.get("display_name",scene.world.get("staticData",{}).get(str(int(item.id)),{}).get("name",""))),int(item.id)) and not preload("res://Presentation/CraftedProps.gd").handles(str(rule.get("display_name",scene.world.get("staticData",{}).get(str(int(item.id)),{}).get("name","")))):

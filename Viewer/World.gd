@@ -44,6 +44,10 @@ var camera_target_ready := false
 var coverage_path := ""
 var mouse_looking := false
 var mouse_return := Vector2.ZERO
+# A creature pressed in the world: dragging it out leaves its health bar.
+var bar_layer: Node
+var bar_drag := 0
+var bar_drag_from := Vector2.ZERO
 var controller_enabled := false
 var intent_facing := 0.0
 var has_move_intent := false
@@ -387,7 +391,7 @@ func _process(delta: float) -> void:
 	pivot.rotation = Vector3(pitch,yaw,0)
 	boom.collision_mask = 3 if game.phase == "world" and not map_view else 0
 	boom.set_distance(distance,delta)
-	# Trees between the camera and the player open a soft see-through circle.
+	# Trees between the camera and the player, or at the lens, drop their leaves.
 	var clearing: bool = game.phase == "world" and avatars.has(player_serial) and not map_view
 	var chest: Vector3 = avatars[player_serial].global_position+Vector3.UP*(1.0+avatars[player_serial].ground_offset) if clearing else Vector3.ZERO
 	preload("res://Presentation/FoliageClearance.gd").update(chest,camera.global_position,1.5 if clearing else 0.0)
@@ -449,6 +453,7 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	voice_chat.configure(game,journal)
 	var target := preload("res://Network/TargetFrame.gd").new()
 	canvas.add_child(target)
+	bar_layer = canvas
 	target.configure(game)
 	var death := preload("res://Network/DeathScreen.gd").new()
 	canvas.add_child(death)
@@ -574,7 +579,10 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 					if serial == int(game.board_serial): return
 					child.panel.hide()
 					# Spellbooks open as containers; the spellbook window shows them.
-					if int(game.known_items.get(serial,game.world_items.get(serial,{})).get("id",0)) in preload("res://Network/SpellbookWindow.gd").BOOKS or game.module("items").spellbooks.has(serial): return
+					var graphic := int(game.known_items.get(serial,game.world_items.get(serial,{})).get("id",0))
+					if graphic in preload("res://Network/SpellbookWindow.gd").BOOKS or game.module("items").spellbooks.has(serial):
+						spellbook.open_book(serial,graphic)
+						return
 					if serial == int(game.backpack): return
 					if containers.has(serial) and is_instance_valid(containers[serial]):
 						containers[serial].move_to_front()
@@ -639,8 +647,7 @@ func _add_front_end(login_panel: Control, help_panel: Control) -> void:
 	var chip := preload("res://Network/ConnectionChip.gd").new()
 	hud.add_child(chip)
 	chip.configure(game)
-	game.movement_result.connect(func(accepted: bool, _position: Dictionary):
-		if not accepted: toasts.notify("Movement","blocked; the server corrected your position",preload("res://Network/ModernSkin.gd").AMBER))
+	# A refused step just snaps back quietly (the server's correction), as in UO.
 	game.entered.connect(func(_position: Dictionary):
 		toasts.notify("Tip","E uses the nearest object · Esc opens the game menu"),CONNECT_ONE_SHOT)
 	var front_layer := CanvasLayer.new()
@@ -755,6 +762,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and not mouse_looking:
 		if dev_edit and dev_edit.active: dev_edit.click(event.position)
 		else: world_items.click(event.position,event.double_click)
+		var pressed_on: int = world_items.hovered_serial() if game.phase == "world" else 0
+		bar_drag = pressed_on if game.entities.has(pressed_on) or pressed_on == int(game.player.get("serial",-1)) else 0
+		bar_drag_from = event.position
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed and bar_drag != 0:
+		if bar_layer and event.position.distance_to(bar_drag_from) > 14.0: preload("res://Network/MobileBar.gd").pull(bar_layer,game,bar_drag,event.position)
+		bar_drag = 0
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		mouse_return = get_viewport().get_mouse_position()
 		mouse_looking = true

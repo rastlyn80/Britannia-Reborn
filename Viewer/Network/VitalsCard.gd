@@ -124,5 +124,8 @@ static func _grouped(value: int) -> String:
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		opened.emit()
+		# A waiting target cursor (a spell, a bandage) takes you; otherwise
+		# the card opens your character sheet.
+		if session != null and not session.target_request.is_empty(): preload("res://Network/ActionRunner.gd").target_entity(session,int(session.player.get("serial",0)))
+		else: opened.emit()
 		accept_event()

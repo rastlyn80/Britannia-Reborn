@@ -28,6 +28,8 @@ func _ready() -> void:
 	canvas.parchment()
 	canvas.mouse_filter = Control.MOUSE_FILTER_STOP
 	canvas.gui_input.connect(_canvas_input)
+	# Right-click on the map keeps its own use; elsewhere it closes the window.
+	right_click_keep = [canvas]
 	frame.add_child(canvas)
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation",8)

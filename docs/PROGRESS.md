@@ -1,3 +1,25 @@
+# Window handling, creature bars, blood and bare trees — 30 October 2026
+
+Owner requests from live play:
+- **Right-click closes** every modern window (paperdoll, backpack, containers, skills, spellbook, maps, ...) and every server gump that is closable (it answers button 0, as the native client does). The HUD, the developer console, the house designer, server no-close gumps and map canvases (where right-drag pans) keep it.
+- **Click to raise:** a left or right press on a window or gump brings it to the front.
+- **Spellbook:** using a spellbook opens the casting window on that book's school. No extra HUD button was added (P already opens it).
+- **Blood** (ModernUO's Blood item, 0x1645 and 0x122A-0x122F) is a projected decal now, with generated albedo/normal/roughness maps (six variants: pooled dark centre, wet rim, droplets, streaks). It spreads in over a quarter second with a short spray of drops, and it lies on terrain and floors, so it no longer flickers.
+- **Creature bars:**
+  - The target frame is smaller. Click it to answer a waiting target cursor (or select), double-click it in war mode to attack, and drag it out to leave a bar for that creature.
+  - Dragging a creature (or yourself) in the world also leaves its bar (`MobileBar.gd`): small, movable, notoriety-coloured, red-edged while you fight it and gold-edged when selected. It dims out of sight and closes on right-click, with the same click and double-click actions. Party cards and your own vitals card answer target cursors too.
+- **Trees:** the see-through circle is gone. A tree whose crown stands on the line from the camera to the player (up to just past them), or that the camera is within about 3 m of, fades its whole crown out with an ordered dither by its own origin (per instance in a MultiMesh). The trunk and branches stay, and shadows keep the full tree.
+- **No movement-blocked toasts:** a refused step just snaps back quietly.
+
+**Tests:**
+- PolishTests 40/0: right-click close, raise on click, target bar target/attack/drag-out, pulled bar attack and close.
+- GumpTests 19/19: a closable gump's right-click sends button 0.
+- WorldItemTests 43/43: blood decal.
+- A scratch render check of the foliage shader: an occluding crown is gone and its bark is kept; a far tree or one behind the player is full.
+- The full verify passes.
+
+**Not yet:** checked live in a fight. No drag of a creature bar from party cards.
+
 # Whole-creature programme / complete source ostard family - 30 October 2026
 
 Owner approved the desert result and requested all creature families, equines first. [CREATURE_MODERNISATION.md](CREATURE_MODERNISATION.md) now tracks the whole programme and source-family queue. Forest, frenzied and ethereal source forms each have their own generated high-detail atlas, 2,960-triangle refined mesh and seven imported source clips. Ethereal uses a separate translucent/emissive shader; raw 0x4001 is not treated as dye 1. All four forms: 27,741 checks / 1,008 sampled skinned poses; new forms each pass real Forward+ and Compatibility material-response tests. Added 93 actual stills / 288 sequence frames; combined review at outputs/ostard-trial/family.html. Full verify exits 0 with existing unrelated bridge/Unicode/teardown diagnostics; final spectral assertions rerun on all forms.

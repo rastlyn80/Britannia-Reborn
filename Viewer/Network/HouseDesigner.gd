@@ -33,6 +33,8 @@ var cell := Vector2i(-9999,-9999)
 
 func _ready() -> void:
 	setup("designer","House designer",Vector2(640,600),Vector2(20,110))
+	# Right-click erases pieces in the world; the designer closes deliberately.
+	right_click_closes = false
 	var floors := HBoxContainer.new()
 	floors.add_theme_constant_override("separation",6)
 	body.add_child(floors)

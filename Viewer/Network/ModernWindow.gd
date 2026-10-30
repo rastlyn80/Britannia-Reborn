@@ -63,6 +63,26 @@ static func _bar_style() -> StyleBoxFlat:
 	style.content_margin_bottom = 8
 	return style
 
+# Clicking a window raises it. Right-clicking anywhere over a window closes it, as gumps do in the native
+# client; the frontmost window under the mouse wins, and child controls that
+# swallow mouse events (item tiles, buttons) cannot block it. Windows opt
+# out (the developer console, the house designer) or keep right-click for
+# a control of theirs whose right-click is a feature (a map's walk-here).
+var right_click_closes := true
+var right_click_keep: Array = []
+
+func _input(event: InputEvent) -> void:
+	if not is_visible_in_tree() or not (event is InputEventMouseButton and event.pressed): return
+	var hovered := get_viewport().gui_get_hovered_control()
+	if hovered == null or not (hovered == self or is_ancestor_of(hovered)): return
+	# Any press over a window brings it to the top of the stack.
+	if event.button_index in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_RIGHT]: move_to_front()
+	if not right_click_closes or event.button_index != MOUSE_BUTTON_RIGHT: return
+	for keep in right_click_keep:
+		if is_instance_valid(keep) and (keep == hovered or keep.is_ancestor_of(hovered)): return
+	hide()
+	get_viewport().set_input_as_handled()
+
 func toggle() -> void:
 	visible = not visible
 	if visible:

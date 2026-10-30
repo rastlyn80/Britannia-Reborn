@@ -147,7 +147,81 @@ func run() -> void:
 	loot.serial = 0x40000002
 	check(not loot.lootable(),"a bag inside your own backpack is not loot")
 	loot.free()
+	# Clicking the target bar answers a waiting target cursor with that creature.
+	var bar := preload("res://Network/TargetFrame.gd").new()
+	bar.session = war
+	bar.shown = 0x300
+	war.sent.clear()
+	war.target_request = PackedByteArray([0x6c,0,0,0,0,1,1]); war.target_request.resize(19)
+	var press := InputEventMouseButton.new(); press.button_index = MOUSE_BUTTON_LEFT; press.pressed = true
+	bar._gui_input(press)
+	check(war.sent.size() == 1 and war.sent[0][0] == 0x6c and war.target_request.is_empty(),"clicking the target bar answers the target cursor with that creature")
+	# A double-click on the target bar in war mode attacks; dragging pulls out a bar.
+	root.add_child(bar)
+	war.player.flags = 0x40
+	war.sent.clear()
+	press.double_click = true
+	bar._gui_input(press)
+	check(war.sent.size() == 1 and war.sent[0][0] == 0x05,"double-clicking the target bar in war mode attacks it")
+	var release := InputEventMouseButton.new(); release.button_index = MOUSE_BUTTON_LEFT; release.position = Vector2(200,90)
+	bar._gui_input(release)
+	var pulled: Array = root.get_children().filter(func(n): return n.get_script() == preload("res://Network/MobileBar.gd"))
+	check(pulled.size() == 1 and pulled[0].serial == 0x300,"dragging the target bar out leaves a bar for that creature")
+	check(preload("res://Network/MobileBar.gd").pull(root,war,0x300,Vector2(400,300)) == pulled[0],"pulling the same creature again moves its bar instead of adding one")
+	war.sent.clear()
+	press.double_click = true
+	pulled[0]._gui_input(press)
+	check(war.sent.size() == 1 and war.sent[0][0] == 0x05,"double-clicking a pulled bar in war mode attacks")
+	var shut_bar := InputEventMouseButton.new(); shut_bar.button_index = MOUSE_BUTTON_RIGHT; shut_bar.pressed = true
+	pulled[0]._gui_input(shut_bar)
+	check(pulled[0].is_queued_for_deletion(),"right-clicking a pulled bar closes it")
+	root.remove_child(bar)
+	war.player.flags = 0
+	press.double_click = false
+	bar.free()
 	war.free()
+	# Right-click over a window closes it; an opted-out window stays.
+	root.size = Vector2i(1280,720)
+	var shut := preload("res://Network/ModernWindow.gd").new()
+	root.add_child(shut)
+	shut.setup("polish-test","Test",Vector2(300,200),Vector2(60,60))
+	shut.position = Vector2(60,60)
+	shut.show()
+	for frame in 3: await process_frame
+	var inside := shut.get_global_rect().get_center()
+	var hover := InputEventMouseMotion.new(); hover.position = inside; hover.global_position = inside
+	root.push_input(hover)
+	await process_frame
+	var right := InputEventMouseButton.new(); right.button_index = MOUSE_BUTTON_RIGHT; right.pressed = true; right.position = inside; right.global_position = inside
+	root.push_input(right)
+	await process_frame
+	check(not shut.visible,"right-clicking a window closes it")
+	shut.right_click_closes = false
+	shut.show()
+	await process_frame
+	root.push_input(hover)
+	await process_frame
+	root.push_input(right)
+	await process_frame
+	check(shut.visible,"a window that keeps right-click for itself stays open")
+	# Clicking a window behind another raises it.
+	var back := preload("res://Network/ModernWindow.gd").new()
+	root.add_child(back)
+	back.setup("polish-back","Back",Vector2(300,200),Vector2(700,60))
+	back.position = Vector2(700,60)
+	back.show()
+	root.move_child(back,shut.get_index())
+	await process_frame
+	var on_back := back.get_global_rect().get_center()
+	var hover2 := InputEventMouseMotion.new(); hover2.position = on_back; hover2.global_position = on_back
+	root.push_input(hover2)
+	await process_frame
+	var left := InputEventMouseButton.new(); left.button_index = MOUSE_BUTTON_LEFT; left.pressed = true; left.position = on_back; left.global_position = on_back
+	root.push_input(left)
+	await process_frame
+	check(back.get_index() > shut.get_index(),"clicking a window brings it to the front")
+	back.queue_free()
+	shut.queue_free()
 	# Voice chat: long speech goes out as several lines, split between words.
 	var Chat := preload("res://Network/VoiceChat.gd")
 	var long_lines: PackedStringArray = Chat.lines(" ".join(PackedStringArray(range(60).map(func(i): return "word%d" % i))))

@@ -58,6 +58,8 @@ func _ready() -> void:
 	canvas.view = Rect2(1300,1400,600,420)
 	canvas.mouse_filter = Control.MOUSE_FILTER_STOP
 	canvas.gui_input.connect(_canvas_input)
+	# Right-click on the map keeps its own use; elsewhere it closes the window.
+	right_click_keep = [canvas]
 	body.add_child(canvas)
 
 func configure(world_scene: Node3D) -> void:

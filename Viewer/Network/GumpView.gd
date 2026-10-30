@@ -388,3 +388,27 @@ func reply(button: int) -> void:
  var texts := {}
  for key in entries: texts[key] = entries[key].text
  if session.respond_gump(data,button,values,texts): queue_free()
+
+# Clicking a gump raises it; right-click anywhere over a closable gump closes it (button 0, as the native
+# client), even over its art and labels, which let the mouse through; the
+# topmost gump under the mouse wins, and windows above it keep the click.
+func _input(event: InputEvent) -> void:
+ if not is_visible_in_tree() or not (event is InputEventMouseButton and event.pressed): return
+ if not under_mouse(): return
+ var hovered := get_viewport().gui_get_hovered_control()
+ if hovered != null and not (hovered == self or is_ancestor_of(hovered)):
+  var node: Node = hovered
+  while node != null:
+   if "right_click_closes" in node: return
+   node = node.get_parent()
+ for i in range(get_index()+1,get_parent().get_child_count()):
+  var above := get_parent().get_child(i)
+  if above.has_method("under_mouse") and above.is_visible_in_tree() and above.under_mouse(): return
+ # Clicking a gump raises it above the other gumps.
+ if event.button_index == MOUSE_BUTTON_LEFT: move_to_front()
+ if event.button_index != MOUSE_BUTTON_RIGHT or not closable: return
+ get_viewport().set_input_as_handled()
+ reply(0)
+
+func under_mouse() -> bool:
+ return content_bounds.has_area() and (get_global_transform()*content_bounds).has_point(get_global_mouse_position())

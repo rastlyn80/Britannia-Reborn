@@ -76,6 +76,21 @@ func configure(action_runner: Node) -> void:
 				known[school_name] = contents.spells
 				if visible: refresh())
 
+# Double-clicking a spellbook opens this window on that book's school (the
+# server answers the open with the book's contents).
+func open_book(book: int, graphic: int) -> void:
+	var school_name: String = BOOKS.get(graphic,"")
+	if school_name == "":
+		var contents: Dictionary = runner.session.module("items").spellbooks.get(book,{})
+		school_name = BOOKS.get(int(contents.get("graphic",0)),"")
+	if school_name != "" and school_name != school:
+		school = school_name
+		circle = 1
+		chosen = ""
+	if not visible: show()
+	move_to_front()
+	refresh()
+
 func toggle() -> void:
 	super.toggle()
 	if visible:

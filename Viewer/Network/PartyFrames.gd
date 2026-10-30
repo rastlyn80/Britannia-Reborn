@@ -89,6 +89,14 @@ func _rebuild() -> void:
 		var card := PanelContainer.new()
 		card.add_theme_stylebox_override("panel",Look.box(Look.NIGHT,Look.EDGE,10,1,8))
 		card.set_meta("serial",int(member))
+		# Clicking a party member's card answers a waiting target cursor (heal,
+		# cure, buff) with them, and otherwise selects them.
+		card.mouse_filter = Control.MOUSE_FILTER_STOP
+		card.gui_input.connect(func(event: InputEvent):
+			if not (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT): return
+			if not session.target_request.is_empty(): preload("res://Network/ActionRunner.gd").target_entity(session,int(member))
+			else: preload("res://Network/ActionRunner.gd").selected = int(member)
+			card.accept_event())
 		var column := VBoxContainer.new()
 		column.add_theme_constant_override("separation",4)
 		card.add_child(column)

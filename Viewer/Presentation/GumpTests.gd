@@ -81,6 +81,20 @@ func run() -> void:
  check(view.switches[7].button_pressed and view.entries[4].text == "Åda 🌿","page transitions preserve switch and text-entry state")
  view.reply(9)
  check(connection.replies.size() == 1 and connection.replies[0][2] == [7],"rendered controls relay actual state to server callback")
+ # A right-click over a gump's art (not only its panels) closes it.
+ var shut := preload("res://Network/GumpView.gd").new()
+ root.add_child(shut)
+ shut.configure(connection,decoded)
+ await process_frame
+ var over: Vector2 = (shut.get_global_transform()*shut.content_bounds).get_center()
+ var hover := InputEventMouseMotion.new(); hover.position = over; hover.global_position = over
+ root.push_input(hover)
+ await process_frame
+ var right := InputEventMouseButton.new(); right.button_index = MOUSE_BUTTON_RIGHT; right.pressed = true; right.position = over; right.global_position = over
+ root.push_input(right)
+ await process_frame
+ check(connection.replies.size() == 2 and connection.replies[1][1] == 0,"right-clicking a closable gump closes it with button 0")
+ if connection.replies.size() == 2: connection.replies.pop_back()
  var unsupported := preload("res://Network/GumpView.gd").new()
  root.add_child(unsupported)
  var unknown := decoded.duplicate(true)

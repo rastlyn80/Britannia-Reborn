@@ -151,6 +151,10 @@ func run() -> void:
   game._world_item({"serial":0x40000011,"id":0x2006,"amount":0x190,"x":1008,"y":2007,"z":20,"facet":1})
   check(view.nodes[0x40000011].get_node_or_null("CorpseVisual") == null,"other creatures' corpses keep their generic look")
   game._remove_world_item(0x40000010)
+  # Blood spilled in a fight is a projected splatter, not a floating patch.
+  game._world_item({"serial":0x40000012,"id":0x122C,"amount":1,"x":1009,"y":2007,"z":20,"facet":1})
+  check(view.nodes[0x40000012].get_node_or_null("Blood/Splatter") is Decal,"combat blood is a decal projected onto the ground")
+  game._remove_world_item(0x40000012)
   game._remove_world_item(0x40000011)
  # Boats draw a scanned ship: hull under a swaying child, deck at the server deck.
  var Ships := preload("res://Presentation/ShipBuilder.gd")

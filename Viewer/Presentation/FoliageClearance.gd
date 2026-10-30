@@ -1,7 +1,7 @@
 extends RefCounted
 # Streamed districts keep their baked tree materials; when a near district part
 # draws owner-licensed trees, its surfaces switch to Foliage.gdshader, which
-# opens a see-through clearance around the player (World.gd feeds the globals).
+# drops the leaves of a tree that hides the player (World.gd feeds the globals).
 # Runs at load time, so no re-bake is needed and offline art stays unchanged.
 const SHADER := preload("res://Presentation/Foliage.gdshader")
 static var swapped: Dictionary = {}

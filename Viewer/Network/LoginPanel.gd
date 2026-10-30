@@ -222,8 +222,6 @@ func _ready() -> void:
 	interaction_help.add_theme_font_size_override("font_size",13)
 	world_controls.add_child(interaction_help)
 
-	session.movement_result.connect(func(accepted: bool,_position: Dictionary):
-		if not accepted: message.text = "Movement blocked by server. Position corrected.")
 	session.failed.connect(func(reason: String): message.text = reason)
 	session.ended.connect(func():
 		custom_minimum_size.x = 380
