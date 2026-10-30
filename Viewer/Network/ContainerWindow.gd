@@ -4,6 +4,9 @@ extends "res://Network/ModernWindow.gd"
 # the items' 3D icons; double-click uses (opens nested bags), drag an item to
 # the backpack or another container window to move it, and Take all moves
 # everything into your backpack, one item at a time as the server allows.
+# Loot (anything not inside your own backpack: corpses, chests, the ground's
+# containers): a single click takes the item into your pack, and T takes all
+# in the loot window you used last (shown on the button).
 # Closes itself when the container goes away or you walk out of reach.
 signal closed(serial: int)
 const Studio = preload("res://Presentation/ItemStudio.gd")
@@ -13,6 +16,9 @@ var serial := 0
 var grid := GridContainer.new()
 var status: Label
 var taking: Array = []
+var take: Button
+# The loot window T acts on: the one opened or clicked last.
+static var active: Node
 
 func open(game: Node, container: int, place: Vector2) -> void:
 	session = game
@@ -24,8 +30,9 @@ func open(game: Node, container: int, place: Vector2) -> void:
 	status = Look.label("",12,Look.ASH,500)
 	status.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	tools.add_child(status)
-	var take := Button.new()
-	take.text = "Take all"
+	take = Button.new()
+	take.text = "Take all  [T]" if lootable() else "Take all"
+	take.tooltip_text = "Move everything into your backpack (T)" if lootable() else "Move everything into your backpack"
 	take.custom_minimum_size = Vector2(110,34)
 	take.add_theme_stylebox_override("normal",Look.box(Look.BRASS,Look.BRASS,8,1,6))
 	take.add_theme_color_override("font_color",Color("14110b"))
@@ -52,6 +59,8 @@ func open(game: Node, container: int, place: Vector2) -> void:
 	_title()
 	refresh()
 	show()
+	if lootable(): active = self
+	gui_input.connect(func(event: InputEvent): if event is InputEventMouseButton and event.pressed and lootable(): active = self)
 
 func _title() -> void:
 	var name: String = session.module("tooltips").name_of(serial)
@@ -76,11 +85,14 @@ func refresh() -> void:
 		tile.picture = rendered if rendered else Artwork.item(int(item.id),int(item.get("hue",0)))
 		var name: String = session.module("tooltips").name_of(int(item.serial))
 		tile.title = name.capitalize() if name != "" else str(session.labels.item_name(int(item.id))).capitalize()
-		tile.tooltip_text = "%s\n%s\nDouble-click: use · Drag: to your backpack or another container" % [tile.title,"\n".join(session.module("tooltips").lines_of(int(item.serial)).slice(1))]
+		tile.tooltip_text = "%s\n%s\n%s" % [tile.title,"\n".join(session.module("tooltips").lines_of(int(item.serial)).slice(1)),"Click: take into your backpack · Double-click: use · T: take all" if lootable() else "Double-click: use · Drag: to your backpack or another container"]
 		tile.payload = {"item_serial":int(item.serial),"quickbar_slot":{"steps":[{"action":"Use Item Type","graphic":int(item.id),"hue":int(item.get("hue",0)),"name":tile.title}],"aim":"cursor"}}
-		tile.used.connect(func(): session.use_item(int(item.serial)))
+		tile.used.connect(func():
+			tile.set_meta("used_at",Time.get_ticks_msec())
+			session.use_item(int(item.serial)))
+		if lootable(): tile.clicked.connect(_loot.bind(tile,int(item.serial)))
 		grid.add_child(tile)
-	status.text = "%d item%s" % [list.size(),"" if list.size() == 1 else "s"] if not list.is_empty() else "Empty"
+	status.text = ("%d item%s" % [list.size(),"" if list.size() == 1 else "s"] if not list.is_empty() else "Empty")+("   ·   Click an item to loot it · T: take all" if lootable() and not list.is_empty() else "")
 	if taking.is_empty(): return
 	status.text = "Taking %d…" % taking.size()
 
@@ -91,6 +103,33 @@ func take_item(value: Variant) -> void:
 	session.move_item(int(value.item_serial),serial)
 func _can_drop_data(_at: Vector2, value: Variant) -> bool: return accepts_item(value)
 func _drop_data(_at: Vector2, value: Variant) -> void: take_item(value)
+
+# Not inside your own backpack (followed up the container chain).
+func lootable() -> bool:
+	if session == null: return false
+	var at := serial
+	for depth in 12:
+		if at == int(session.backpack) or at == int(session.player.get("serial",0)): return false
+		var holder: Dictionary = session.known_items.get(at,{})
+		if holder.is_empty(): return true
+		at = int(holder.get("container",0))
+		if at == 0: return true
+	return true
+
+# A single click loots, unless it was the first half of a double-click
+# (which uses the item, e.g. opens a bag inside the corpse).
+func _loot(tile: Control, item: int) -> void:
+	await get_tree().create_timer(0.3).timeout
+	if not is_instance_valid(tile) or not session.known_items.has(item): return
+	if Time.get_ticks_msec()-int(tile.get_meta("used_at",-100000)) < 600: return
+	session.move_item(item,int(session.backpack))
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if not (event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_T): return
+	if not visible or active != self or not lootable(): return
+	if get_viewport().gui_get_focus_owner() is LineEdit: return
+	take_all()
+	get_viewport().set_input_as_handled()
 
 func take_all() -> void:
 	taking = items().map(func(item): return int(item.serial))

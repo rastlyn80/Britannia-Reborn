@@ -4,12 +4,15 @@ extends Control
 # (a quickbar slot) onto the quickbar.
 signal picked
 signal used
+# A plain click: pressed and released on the tile without dragging it away.
+signal clicked
 const Look = preload("res://Network/ModernSkin.gd")
 var item := {}
 var picture: Texture2D
 var chosen := false
 var payload := {}
 var title := ""
+var pressed_at := Vector2(-1000,-1000)
 
 func _ready() -> void:
 	if custom_minimum_size == Vector2.ZERO: custom_minimum_size = Vector2(84,84)
@@ -28,9 +31,13 @@ func _draw() -> void:
 	if amount > 1: draw_string(Look.ui_font(700),Vector2(0,15),str(amount) if amount < 100000 else "%dk" % (amount/1000),HORIZONTAL_ALIGNMENT_RIGHT,size.x-6,12,Look.IVORY)
 
 func _gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		if event.double_click: used.emit()
-		else: picked.emit()
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			pressed_at = event.position
+			if event.double_click: used.emit()
+			else: picked.emit()
+		elif event.position.distance_to(pressed_at) < 6.0:
+			clicked.emit()
 		accept_event()
 
 func _get_drag_data(_at: Vector2) -> Variant:

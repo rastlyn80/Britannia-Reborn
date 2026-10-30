@@ -3,7 +3,7 @@ extends Control
 # and help, Developer, Log out and Quit. It replaces the old right-hand panel's
 # buttons; everything that panel did lives here or in the HUD.
 const Look = preload("res://Network/ModernSkin.gd")
-const KEYS := [["W A S D","Walk; hold Shift to run"],["Space","Hop"],["Right mouse","Look around"],["Wheel","Zoom"],["E","Use the nearest object"],["Click","Use or pick up what you click"],["1 – 0, - , =","Quickbar; hold Shift, Ctrl or Alt for other sets"],["C · B · K · P · J · M","Character, backpack, skills, spellbook, journal, map"],["Enter","Talk; /e emote, /w whisper, /y yell, /p party"],["V (hold)","Voice chat: speak, release to say it"],["`","Developer console"],["F6","Return to Britain (developer)"],["F7","Cycle the sky (view only)"],["F9","World editor (developer)"],["Esc","This menu"]]
+const KEYS := [["W A S D","Walk; hold Shift to run"],["Space","Hop"],["Tab","War / peace"],["T","Take all from the loot window; click an item to loot it"],["Right mouse","Look around"],["Wheel","Zoom"],["E","Use the nearest object"],["Click","Use or pick up what you click"],["1 – 0, - , =","Quickbar; hold Shift, Ctrl or Alt for other sets"],["C · B · K · P · J · M","Character, backpack, skills, spellbook, journal, map"],["Enter","Talk; /e emote, /w whisper, /y yell, /p party"],["V (hold)","Voice chat: speak, release to say it"],["`","Developer console"],["F6","Return to Britain (developer)"],["F7","Cycle the sky (view only)"],["F9","World editor (developer)"],["Esc","This menu"]]
 var scene: Node3D
 var card: PanelContainer
 var body: VBoxContainer

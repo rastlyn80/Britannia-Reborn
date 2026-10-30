@@ -748,7 +748,11 @@ func click(at: Vector2, double: bool = false) -> void:
   preload("res://Network/ActionRunner.gd").selected = mobile
   # In war mode a double-click on another creature attacks it (as in the
   # native client); otherwise it is used (paperdoll, mount, ...).
-  if double and session.in_war_mode() and mobile != int(session.player.get("serial",0)):
+  # In war mode a double-click on yourself opens your paperdoll rather than
+  # dismounting, so a fight cannot throw you off your horse by accident.
+  if double and session.in_war_mode() and mobile == int(session.player.get("serial",0)):
+   session.send(preload("res://Network/Packets/Player.gd").open_paperdoll(mobile))
+  elif double and session.in_war_mode() and mobile != int(session.player.get("serial",0)):
    if session.attack(mobile): preload("res://Network/ActionRunner.gd").last_target = mobile
   elif double:
    session.use_mobile(mobile)

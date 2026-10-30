@@ -735,6 +735,12 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE and mouse_looking:
 		stop_mouse_look()
 		get_viewport().set_input_as_handled()
+	# Tab toggles war and peace, as in the original client. Taken before the
+	# GUI so a focused button cannot swallow it for focus navigation.
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_TAB and not event.shift_pressed and game.phase == "world" and not get_viewport().gui_get_focus_owner() is LineEdit:
+		game.set_war_mode(not game.in_war_mode())
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventMouseMotion and mouse_looking:
 		yaw -= event.relative.x * 0.003
 		pitch = clampf(pitch-event.relative.y*0.003,-1.35,0.65)
@@ -776,7 +782,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.keycode == KEY_QUOTELEFT and front_end and game.phase == "world" and not get_viewport().gui_get_focus_owner() is LineEdit:
 			if console.visible: console.hide()
 			else: console.open()
-		if event.keycode == KEY_TAB: diagnostics.visible = not diagnostics.visible
+		# Shift+Tab (or Tab outside the world) shows the developer diagnostics;
+		# plain Tab in the world is war/peace, handled in _input.
+		if event.keycode == KEY_TAB and (event.shift_pressed or game.phase != "world"): diagnostics.visible = not diagnostics.visible
 		if event.keycode == KEY_R:
 			yaw = -0.45
 			pitch = -0.28 if game.phase == "world" else -0.75

@@ -135,6 +135,18 @@ func run() -> void:
 	war.known_items = {0x41:{"serial":0x41,"id":0x1517,"container":0x40000001},0x42:{"serial":0x42,"id":0x13ff,"container":0x40000001},0x43:{"serial":0x43,"id":0x1517,"container":0x100}}
 	check(war.wear_on_use(0x41) and not war.wear_on_use(0x42) and not war.wear_on_use(0x43),"a shirt in the pack is worn on double-click; a katana keeps its use; a worn shirt is left alone")
 	Paperdoll2.wearables = {}
+	# Loot: corpses and anything outside your own backpack are lootable.
+	var loot := preload("res://Network/ContainerWindow.gd").new()
+	loot.session = war
+	war.backpack = 0x40000001
+	war.known_items = {0x40000002:{"serial":0x40000002,"container":0x40000001},0x40000006:{"serial":0x40000006,"container":0x40000005}}
+	loot.serial = 0x40000005
+	check(loot.lootable(),"a corpse on the ground is lootable")
+	loot.serial = 0x40000006
+	check(loot.lootable(),"a bag inside a corpse is lootable")
+	loot.serial = 0x40000002
+	check(not loot.lootable(),"a bag inside your own backpack is not loot")
+	loot.free()
 	war.free()
 	# Voice chat: long speech goes out as several lines, split between words.
 	var Chat := preload("res://Network/VoiceChat.gd")
