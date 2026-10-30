@@ -151,7 +151,16 @@ func _build(serial: int, multi: Dictionary) -> void:
 	var entry := {"root":root,"id":id,"anchor":anchor,"cells":{},"design":systems.designs.has(serial),"unmapped":0}
 	built[serial] = entry
 	var model: Dictionary = models().get(str(id),{})
-	if not model.is_empty() and not entry.design:
+	var Houses := preload("res://Presentation/HouseModel.gd")
+	if Houses.supported(id) and not entry.design:
+		# A whole house built from this multi's own layout (HouseModel.gd),
+		# baked by BakeHouses.gd or made now; its tiles still carry movement.
+		var baked := "res://local-multis/houses/%x.scn" % id
+		var house: Node3D = (load(baked) as PackedScene).instantiate() if ResourceLoader.exists(baked) else Houses.build(parts,_tiles_of(parts),id)
+		house.position = Vector3(0.5-float(scene.world.originX),0,0.5-float(scene.world.originY))
+		root.add_child(house)
+		model = {"house":true}
+	elif not model.is_empty() and not entry.design:
 		_full_model(root,model,anchor)
 	elif Ships.handles(id):
 		# Boats are drawn whole; their components only carry movement.
@@ -178,7 +187,13 @@ func _build(serial: int, multi: Dictionary) -> void:
 	# Houses built from their layout get chimneys, window boxes, lanterns,
 	# a garden and ivy around the authentic shell (HouseDressing).
 	if model.is_empty() or entry.design: preload("res://Presentation/HouseDressing.gd").dress(root,parts,scene.reconstruction,scene.world,serial)
+	elif model.has("house"): preload("res://Presentation/HouseDressing.gd").dress(root,parts,scene.reconstruction,scene.world,serial,false)
 	root.position = _offset(anchor)
+
+static func _tiles_of(parts: Array) -> Dictionary:
+	var info := {}
+	for part in parts: info[str(int(part[0]))] = tile(int(part[0]))
+	return info
 
 # Tiles the converted region never had get their tiledata and the shared
 # rule for their name, as the converter would have given them.

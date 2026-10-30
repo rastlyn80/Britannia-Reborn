@@ -16,7 +16,7 @@ const MASONRY := ["stone","brick","sandstone","marble","dungeon","cave","basalt"
 
 # parts: [graphic, dx, dy, dz] relative to the multi; local positions follow
 # Reconstruction.build minus MultiPresenter's anchor offset.
-static func dress(root: Node3D, parts: Array, recon: RefCounted, world: Dictionary, serial: int) -> void:
+static func dress(root: Node3D, parts: Array, recon: RefCounted, world: Dictionary, serial: int, chimney := true) -> void:
 	var origin := Vector2(float(world.originX),float(world.originY))
 	var scale := float(world.elevationScale)
 	var rnd := RandomNumberGenerator.new()
@@ -66,7 +66,7 @@ static func dress(root: Node3D, parts: Array, recon: RefCounted, world: Dictiona
 		var off := Vector2(float(s[1])-centre.x,float(s[2])-centre.y)
 		front = Vector2i(signi(int(off.x)),0) if absf(off.x)/maxf(1.0,float(high.x-low.x)) > absf(off.y)/maxf(1.0,float(high.y-low.y)) else Vector2i(0,signi(int(off.y)))
 		if front == Vector2i.ZERO: front = Vector2i(0,1)
-	_chimney(dressing,roofs,local,rnd,scale)
+	if chimney: _chimney(dressing,roofs,local,rnd,scale)
 	_window_boxes(dressing,windows,walls,cells,local,rnd,scale)
 	_lanterns(dressing,steps,front,local,scale,base_z)
 	_garden(dressing,low,high,front,local,rnd)

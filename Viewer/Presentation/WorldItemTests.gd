@@ -32,6 +32,7 @@ class Fixture extends Node3D:
  var reconstruction := preload("res://Presentation/Reconstruction.gd").new()
  var static_root := Node3D.new()
  var camera := Camera3D.new()
+ var game: Node
  func entity_point(x: int,y: int,z: int) -> Vector3: return Vector3(x-world.originX+0.5,z*0.2,y-world.originY+0.5)
 func run() -> void:
  var game := Game.new()
@@ -160,6 +161,21 @@ func run() -> void:
   check(dragon.get_meta("ship_model","") == "ship_longship","a dragon boat is the dragon-prow longship")
   dragon.free()
   ship.free()
+ # A small house multi draws the whole house built from its own layout,
+ # while its tiles still carry movement.
+ var Multis := preload("res://Presentation/MultiPresenter.gd")
+ if not Multis.components(0x64).is_empty():
+  fixture.game = game
+  var multis := Multis.new()
+  fixture.add_child(multis)
+  multis.configure(fixture)
+  game._multi({"serial":0x40000020,"id":0x64,"x":1015,"y":2015,"z":0,"facet":1})
+  for frame in 8: await process_frame
+  var built: Node3D = multis.built.get(0x40000020,{}).get("root",null)
+  check(built != null and built.get_node_or_null("HouseModel") != null and built.get_node_or_null("HouseModel/Walls/Doorway") != null and built.get_node_or_null("HouseModel/Roof") != null,"a small house is one whole house with a doorway and a roof")
+  check(built != null and built.get_node_or_null("HouseDressing") != null and built.find_children("Chimney","",true,false).size() == 1,"the house keeps its dressing and has exactly one chimney")
+  check(fixture.movement_surface.statics.has(Vector2i(1015-3,2015)) and fixture.movement_surface.statics.has(Vector2i(1015,2015+3)),"the house's wall cells still feed movement")
+  multis.remove(0x40000020)
  game._remove_world_item(0x40000003)
  check(not view.nodes.has(0x40000003),"server visibility removal also removes sign visuals")
  game.close()

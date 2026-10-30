@@ -1,3 +1,31 @@
+# Small house rebuilt as a whole house from its own layout — 30 October 2026
+
+Owner direction: try the small house first, built with our own materials by copying the existing multi layout, and baked; then do the others progressively.
+
+**`HouseModel.gd`** builds a house multi as one coherent building from its component list (the same layout the server uses) and the photoscanned surfaces in `Art/Surfaces`:
+- **Plinth, floors and walls:**
+  - a stone plinth to floor level with a dressed cap course, and plank floors;
+  - walls 0.32 m thick on the wall cells' centre lines, so they stand exactly where the server's walls are. Arms run to wall neighbours, and window and door openings are left real.
+- **Windows:** oak frames, a cross mullion, leaded glass, stone sills and painted shutters (the colour is seeded per house).
+- **Doorway:** a gap between two wall cells in a line becomes the doorway, with an oak frame, a threshold stone and a pent canopy on brackets. The opening is 2.52 m, the server door's DoorwayPlan opening, so the server's own door leaf hangs exactly in it; its header pieces sit inside the thicker wall.
+- **Plaster houses:** an oak frame (sole plate, mid rail, wall plate, corner posts, opening trimmers, studs and braces) over limewash, with sandstone quoins.
+- **Roof:**
+  - the ridge follows the topmost roof tiles (anchor-shifted) and the eaves sit at the lowest;
+  - clay tiles with overhang, fascia, bargeboards and a ridge cap;
+  - timber-framed gable ends.
+- **Chimney and steps:** a stone chimney with pots and smoke, and stone front steps with dressed treads and cheek walls.
+
+**Baking and use:**
+- `BakeHouses.gd` saves each supported multi to the ignored `local-multis/houses/<id>.scn`. It is derived from the install layout, so it is never committed.
+- `MultiPresenter` uses the baked scene, or builds the house on the fly, instead of the tiles. The tiles still feed movement, and server doors stay server items.
+- `HouseDressing` keeps the window boxes, lanterns, garden and ivy around it, without a second chimney.
+
+**Scope:** `SUPPORTED = [0x64]` (small stone-and-plaster house) for owner review before the other house types.
+
+**Tests:** `WorldItemTests` checks that the small house arrives through the real multi path as one house with a doorway and roof, that it keeps its dressing with exactly one chimney, and that its wall cells still feed movement (42/42). The full verify passes.
+
+**Not yet:** checked in a live game on a placed house.
+
 # Equine family expansion - 30 October 2026
 
 Reused the licensed Warhorse rig for **15/26 indexed equine body IDs**, including the four existing horses, plus **two additional item-only ethereal routes**. New: three nightmare identities, silver/fire steed, unicorn, four faction warhorses and unrideable pack horse; ethereal horse/unicorn retain native item identity and 0x4001 semantics. Original head-bound horn, spine-bound panniers and magic effects; owner-authorized profile proportions with scaled hoof support. [Catalogue, sources, reproduction and remaining gaps](EQUINE_EXPANSION.md).
