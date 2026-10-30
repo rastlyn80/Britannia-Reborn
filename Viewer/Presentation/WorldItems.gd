@@ -228,7 +228,7 @@ func upsert(serial: int, item: Dictionary) -> void:
  # Photoscanned CC0 replacements by item name (prop-replacements.json).
  var replacement_name := str(rule.get("display_name",scene.world.get("staticData",{}).get(str(int(item.id)),{}).get("name","")))
  if not str(rule.family) in FIXED_FAMILIES and preload("res://Presentation/PropReplacements.gd").has(replacement_name,int(item.id)):
-  var replaced: Node3D = _footprint_replacement(item,replacement_name,serial) if str(preload("res://Presentation/PropReplacements.gd").entry_for(replacement_name,int(item.id)).get("assembly","")) == "footprint" else preload("res://Presentation/PropReplacements.gd").build(scene.reconstruction,replacement_name,serial,int(item.id))
+  var replaced: Node3D = _footprint_replacement(item,replacement_name,serial) if str(preload("res://Presentation/PropReplacements.gd").entry_for(replacement_name,int(item.id)).get("assembly","")) == "footprint" and not preload("res://Presentation/PropReplacements.gd").entry_for(replacement_name,int(item.id)).get("hide",false) else preload("res://Presentation/PropReplacements.gd").build(scene.reconstruction,replacement_name,serial,int(item.id))
   if replaced:
    replaced.name = "ReplacementVisual"
    root.add_child(replaced)

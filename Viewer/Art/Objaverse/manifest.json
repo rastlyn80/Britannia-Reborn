@@ -8236,6 +8236,90 @@
         0.155
       ],
       "processing": "ground-centred, decimated to 2500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "ship_caravel",
+      "title": "Caravel Ship",
+      "uid": "c9819a0e8a57429f888b74978219fb7a",
+      "page": "https://sketchfab.com/3d-models/c9819a0e8a57429f888b74978219fb7a",
+      "author": "Ginny Sutton",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-158/c9819a0e8a57429f888b74978219fb7a.glb",
+      "sourceSha256": "56b4075e41c9101c35fe3eb6bdccff81e70522c2bb8cf7166b4a488c52451403",
+      "sourceTriangles": 75666,
+      "file": "ship_caravel/ship_caravel.glb",
+      "sha256": "bc54a133dff58e73c14f983d88b4eaec62c1a1c14e506be1c9f4c4a59406c01c",
+      "triangles": 40760,
+      "size": [
+        138.172,
+        192.513,
+        264.6
+      ],
+      "processing": "ground-centred, decimated to 40000\r triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "ship_nao",
+      "title": "Nao Victoria Galleon Ship",
+      "uid": "4b4d85651cde46478fc70177d30be296",
+      "page": "https://sketchfab.com/3d-models/4b4d85651cde46478fc70177d30be296",
+      "author": "Javier L\u00f3pez Cuadrado",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-154/4b4d85651cde46478fc70177d30be296.glb",
+      "sourceSha256": "c1b7394408a8d02c90feb3603c7b908be643f5f838a28c3a2adff552850e30e3",
+      "sourceTriangles": 21239,
+      "file": "ship_nao/ship_nao.glb",
+      "sha256": "a75f0d7279350b7a2ba8b105a69c35d659c0a56259fcede64fec83a692d34de6",
+      "triangles": 21239,
+      "size": [
+        15.246,
+        32.181,
+        42.051
+      ],
+      "processing": "ground-centred, decimated to 30000\r triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "ship_longship",
+      "title": "Viking Longship",
+      "uid": "ecc03f0875e34a0cb2e66c40b22383e5",
+      "page": "https://sketchfab.com/3d-models/ecc03f0875e34a0cb2e66c40b22383e5",
+      "author": "Foxx Assets",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-151/ecc03f0875e34a0cb2e66c40b22383e5.glb",
+      "sourceSha256": "bf5c8aad358ead33bc9dc6b566d1e89388d85777e80357dd4628fdabdc32eeb2",
+      "sourceTriangles": 14812,
+      "file": "ship_longship/ship_longship.glb",
+      "sha256": "d7ec058524bf59a232e533bf41b0d8067f75d8dd413dafd11183a4b7ff64f976",
+      "triangles": 14812,
+      "size": [
+        5.806,
+        11.646,
+        19.149
+      ],
+      "processing": "ground-centred, decimated to 20000\r triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "ship_galleon",
+      "title": "Old pirates ship",
+      "uid": "ca1fd59494a64abf813c6833d6a36aa9",
+      "page": "https://sketchfab.com/3d-models/ca1fd59494a64abf813c6833d6a36aa9",
+      "author": "White_sniper",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/ca1fd59494a64abf813c6833d6a36aa9 (download API)",
+      "sourceSha256": "a126e06462ff909b518a1700329e2099d6b05af4da6de46a1454ace6dc8363cd",
+      "sourceTriangles": 69162,
+      "file": "ship_galleon/ship_galleon.glb",
+      "sha256": "0be61d04b0bee8703fe8129cacb4e88d23a4ff206e05c55ffff83aa3d05eccfe",
+      "triangles": 49996,
+      "size": [
+        6.81,
+        24.657,
+        24.07
+      ],
+      "processing": "ground-centred, decimated to 50000 triangles, textures capped at 1024 px"
     }
   ]
 }

@@ -1062,7 +1062,21 @@
   "ship": {
    "model": "Objaverse/rowboat_old",
    "assembly": "footprint",
-   "length": 1.0
+   "length": 1.0,
+   "ids": {
+    "16049": {
+     "hide": true
+    },
+    "16050": {
+     "hide": true
+    },
+    "16005": {
+     "hide": true
+    },
+    "16010": {
+     "hide": true
+    }
+   }
   },
   "shipwreckbow west": {
    "model": "Objaverse/boat_wreck",

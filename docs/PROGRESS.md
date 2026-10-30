@@ -1,3 +1,42 @@
+# Ships and houses — 30 October 2026
+
+Owner request: full houses and ships, "surprise me".
+
+**Ships: scanned models.** All six classic boats (ModernUO ships no High Seas multis) now draw CC-BY Sketchfab ships, pinned through the Sketchfab API:
+
+| Boat | Model |
+|---|---|
+| Small | caravel |
+| Medium | the Nao Victoria |
+| Large | weathered three-masted galleon |
+| Dragon boats | dragon-prow Norse longship with shields along the rail |
+
+- **Fit:** each model is fitted to the boat's footprint length and turned to its facing. Its deck is lifted to the server deck (DECK_Z above the boat), using deck heights measured by ray casts onto each hull, so passengers stand on the planking.
+- **`ShipMotion`:**
+  - the hull rides a gentle swell (heave, roll and pitch), which is small at deck level and smaller on bigger ships;
+  - a foam wake trails from the stern, and spray curls off the bow while under way;
+  - a warm stern lantern is lit.
+
+  The root, server position and movement cells are untouched.
+- **Closed gangplanks** are hidden, since the hull's rail stands in for them, but stay clickable. They had drawn a rowboat scan.
+- **Fallback:** the procedural ships remain for clients without the pinned art.
+- **Tooling:** `blender-objaverse-reduce.py` clears shape keys before decimating, because animated sails blocked reduction.
+- **Rejected after review:** a blocky carrack scan and a plain Snekkar.
+
+**Houses: lived-in dressing.** Classic and custom houses keep the shell built tile by tile from the server layout. Floors, interior doors, stairs and multi-storey rooms are what players walk, open and decorate, so a store-bought shell cannot match them. The original art also mixes materials on purpose (the stone-and-plaster small house). `HouseDressing` adds, outside the walls and on the roof, seeded per house:
+- a stone chimney with drifting smoke on the ridge end;
+- flower window boxes under the windows;
+- hanging lanterns on iron posts either side of the front steps;
+- shrubs and flowers along the sides and back;
+- ivy up two masonry corners.
+
+**Open:**
+- full-model exteriors for the simple small houses, swapped for the shell when the player is inside, need a decision on door handling;
+- the garden flowers read small;
+- ships and dressing were checked in rendered scenes, not yet on a live server boat or house.
+
+`WorldItemTests` covers the caravel, longship, swaying hull and stern lantern (39/39).
+
 # Horse corpses use the horse model — 30 October 2026
 
 Owner request: use the new horse model as the base for horse corpses.

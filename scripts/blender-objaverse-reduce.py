@@ -39,6 +39,11 @@ source_triangles = triangles()
 if source_triangles > budget:
     ratio = budget / source_triangles
     for obj in meshes:
+        # Shape keys (e.g. billowing sails) block applying a modifier; the
+        # static game copy keeps the basis shape.
+        if obj.data.shape_keys:
+            bpy.context.view_layer.objects.active = obj
+            obj.shape_key_clear()
         modifier = obj.modifiers.new('reduce', 'DECIMATE')
         modifier.ratio = ratio
         bpy.context.view_layer.objects.active = obj

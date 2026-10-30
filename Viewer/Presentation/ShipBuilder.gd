@@ -26,6 +26,26 @@ static func _surface(name: String, tint: Color, scale := 1.0) -> StandardMateria
 	material.roughness = 0.85
 	return material
 
+# Scanned ships (CC-BY Sketchfab, Art/Objaverse) per size and kind: a caravel,
+# the Nao Victoria and a weathered galleon; dragon boats are a Norse longship
+# with a carved dragon prow and shields along the rail. bow: +1 when the model's bow points
+# to +Z, -1 to -Z. deck: the deck's height as a share of the model's length
+# (measured by ray casts onto the hull), so the scaled deck meets the server
+# deck, DECK_Z above the boat.
+const MODELS := {
+	"0/false":{"model":"ship_caravel","bow":1,"deck":0.111},
+	"1/false":{"model":"ship_nao","bow":1,"deck":0.218},
+	"2/false":{"model":"ship_galleon","bow":1,"deck":0.161},
+	"0/true":{"model":"ship_longship","bow":-1,"deck":0.063},
+	"1/true":{"model":"ship_longship","bow":-1,"deck":0.063},
+	"2/true":{"model":"ship_longship","bow":-1,"deck":0.063},
+}
+
+static func scanned(id: int) -> Dictionary:
+	var spec: Dictionary = MODELS.get("%d/%s" % [id/8,(id/4)%2 == 1],{})
+	if spec.is_empty() or not ResourceLoader.exists("res://Art/Objaverse/%s/%s.glb" % [spec.model,spec.model]): return {}
+	return spec
+
 # Bounds are the component bounds of the north-facing shape (Rect2i of tiles).
 static func build(id: int, bounds: Rect2i) -> Node3D:
 	var facing := id%4
@@ -34,6 +54,8 @@ static func build(id: int, bounds: Rect2i) -> Node3D:
 	# Bounds of the ship as if facing north: length along y.
 	var length_tiles := maxi(bounds.size.x,bounds.size.y)+1
 	var width_tiles := mini(bounds.size.x,bounds.size.y)+1
+	var spec := scanned(id)
+	if not spec.is_empty(): return _scanned_ship(spec,facing,length_tiles,width_tiles,id)
 	var root := Node3D.new()
 	root.name = "Ship"
 	var hull_wood := _surface("brown_planks_03",Color(0.72,0.6,0.48),0.9)
@@ -183,6 +205,35 @@ static func build(id: int, bounds: Rect2i) -> Node3D:
 	rudder.position = Vector3(0,deck_y-0.35,half_length+0.22)
 	rudder.material_override = trim
 	root.add_child(rudder)
+	root.rotation.y = [0.0,-PI/2,PI,PI/2][facing]
+	return root
+
+# The scanned hull, scaled so its length is the footprint's, its deck lifted
+# to the server deck, the bow turned to the boat's facing; ShipMotion gives it
+# the swell and the foam.
+static func _scanned_ship(spec: Dictionary, facing: int, length_tiles: int, width_tiles: int, id: int) -> Node3D:
+	var root := Node3D.new()
+	root.name = "Ship"
+	root.set_script(preload("res://Presentation/ShipMotion.gd"))
+	var hull := Node3D.new()
+	hull.name = "Hull"
+	root.add_child(hull)
+	var model: Node3D = load("res://Art/Objaverse/%s/%s.glb" % [spec.model,spec.model]).instantiate()
+	var box := AABB()
+	var first := true
+	for mesh in model.find_children("*","MeshInstance3D",true,false):
+		var part: AABB = (mesh as MeshInstance3D).transform*(mesh as MeshInstance3D).get_aabb()
+		box = part if first else box.merge(part)
+		first = false
+	var length := float(length_tiles)
+	var k := length/maxf(box.size.z,0.001)
+	model.scale = Vector3.ONE*k
+	model.position = Vector3(-box.get_center().x*k,DECK_Z*ELEVATION-float(spec.deck)*length,-box.get_center().z*k)
+	if int(spec.bow) > 0: model.rotation.y = PI; model.position.x = -model.position.x; model.position.z = -model.position.z
+	hull.add_child(model)
+	for mesh in model.find_children("*","MeshInstance3D",true,false): (mesh as MeshInstance3D).cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+	root.set_meta("ship_model",str(spec.model))
+	root.call("setup",hull,length,float(width_tiles),id)
 	root.rotation.y = [0.0,-PI/2,PI,PI/2][facing]
 	return root
 

@@ -151,6 +151,15 @@ func run() -> void:
   check(view.nodes[0x40000011].get_node_or_null("CorpseVisual") == null,"other creatures' corpses keep their generic look")
   game._remove_world_item(0x40000010)
   game._remove_world_item(0x40000011)
+ # Boats draw a scanned ship: hull under a swaying child, deck at the server deck.
+ var Ships := preload("res://Presentation/ShipBuilder.gd")
+ if not Ships.scanned(0).is_empty():
+  var ship: Node3D = Ships.build(0,Rect2i(-2,-5,4,10))
+  check(ship.get_meta("ship_model","") == "ship_caravel" and ship.get_node("Hull") != null and ship.hull == ship.get_node("Hull") and ship.get_node("Hull/SternLantern") != null,"a small boat is the scanned caravel with a swaying hull and a stern lantern")
+  var dragon: Node3D = Ships.build(4,Rect2i(-2,-5,4,10))
+  check(dragon.get_meta("ship_model","") == "ship_longship","a dragon boat is the dragon-prow longship")
+  dragon.free()
+  ship.free()
  game._remove_world_item(0x40000003)
  check(not view.nodes.has(0x40000003),"server visibility removal also removes sign visuals")
  game.close()

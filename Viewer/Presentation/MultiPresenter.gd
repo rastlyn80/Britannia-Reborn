@@ -175,6 +175,9 @@ func _build(serial: int, multi: Dictionary) -> void:
 		if i%48 == 47:
 			await get_tree().process_frame
 			if not built.has(serial) or built[serial].root != root: return
+	# Houses built from their layout get chimneys, window boxes, lanterns,
+	# a garden and ivy around the authentic shell (HouseDressing).
+	if model.is_empty() or entry.design: preload("res://Presentation/HouseDressing.gd").dress(root,parts,scene.reconstruction,scene.world,serial)
 	root.position = _offset(anchor)
 
 # Tiles the converted region never had get their tiledata and the shared
