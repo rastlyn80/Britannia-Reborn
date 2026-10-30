@@ -43,7 +43,8 @@ func run() -> void:
 		var id := int(text)
 		if not items.has(id): continue
 		var item: Dictionary = items[id]
-		var data := {str(id):{"name":str(item.name),"height":int(item.height),"flags":Provenance.flag_bits(item.flags)}}
+		# The catalogue shows empty tiledata names as "unnamed"; the client sees "".
+		var data := {str(id):{"name":"" if str(item.name) == "unnamed" else str(item.name),"height":int(item.height),"flags":Provenance.flag_bits(item.flags)}}
 		var world := {"elevationScale":0.2,"originX":100,"originY":100,"width":8,"height":8,"terrain":[],"statics":[],"staticData":data,"landData":{}}
 		var probe := preload("res://Presentation/Reconstruction.gd").new()
 		probe.index({"elevationScale":0.2,"originX":100,"originY":100,"width":8,"height":8,"terrain":[],"statics":[{"x":103,"y":103,"z":0,"id":id}],"staticData":data,"landData":{}})

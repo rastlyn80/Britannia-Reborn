@@ -1,3 +1,36 @@
+# Item catalogue: Ter Mur architecture, reuse pass, character equipment — 30 October 2026
+
+Owner direction: creature corpses (and creature figurines and trophy frames) wait for creature models. Reuse models whenever suitable, including the character equipment.
+
+**Ter Mur architecture** (`RegionalRules`):
+- **Masonry:** pale greek-key walls and corners, water-spout walls, canal channels, fill walls and the tall pink "floor tile" wall (3,046 placements) are dressed marble-family masonry. Stone cubes are landings.
+- **Windows:** "qc" windows are timber window walls.
+- **Crystals:** the Exodus nexus and the cyan "sand" formations use the crystal scan.
+- **Stone spike:** crafted as a four-sided stone taper. A new `keep` flag stops the wall-flag override for sculptural graphics.
+- **Other pieces:** hoards are tall gold heaps (coin-pile scan), dragon heads are stone dragon statuettes, floor spikes use the iron spike-trap scan, and the marble bar is a counter.
+
+**Reuse pass** (owner: reuse models whenever suitable): about 100 open families now use scans already pinned, with size and colour variants:
+- **Statues and stone:** statues, minotaur, gargoyles, vases and urns, planters, crystals.
+- **Furniture and fittings:** chests, cabinets, bookstands, bookshelves, forges, frames and paintings.
+- **Arms and armour:** armour, helms, staffs and bows.
+- **Food:** food and drink.
+- **City flags:** the worn-banner scan tinted per city.
+
+Garments, crafting materials and tools are crafted laid-out cloth, reagents, spools and the like (`CraftedProps` names).
+
+**Character equipment:** loose weapons, shields, headwear, gloves, footwear and jewellery with no curated entry, crafted build or library slot now draw the avatars' own local equipment mesh at its real size (`PropReplacements.wardrobe`, labelled "character equipment mesh (local)"). In use: kasa, tessen, fukiya, elven composite bow, tabi, spectacles, mempos, bone gloves, bone machete.
+
+**Next 53:**
+- **Ground and furniture:** footprints (mud decal), elven beds (Gothic bed), windchimes (hanging bells).
+- **Crafted:** scaffolds, skull spikes on stakes, ship masts, spars and sails, Ter Mur tower toppers.
+- **Reused scans:** severed limbs (anatomy scans in flesh), an unnamed stand (bookstand) and a dark obelisk (rune stone).
+
+**Fixes:**
+- `ItemCompare` used the catalogue label "unnamed" instead of the empty name the client sees.
+- The catalogue labelling step had stalled for over an hour, most likely in Godot's debugger; run with stdin closed, it finishes.
+
+**Count:** world 94.8% → 98.0% (559 → 214 open). Britain and Trinsic stay at 100%. Most of what remains is creature corpses, figurines and frames (deferred), ship-wreck pieces, unnamed records, nets and a few dozen one-offs.
+
 # Human wearable 50% checkpoint — 30 October 2026
 
 **572/1,126 indexed graphics (50.80%), 258 equipment categories**: +172 graphics / +106 categories from the 35% checkpoint, with the same denominator. The new set has 280 local exports, including 34 independent riding variants per body. Class/property/counterpart evidence covers 92 graphics; 80 are curated client EQUIPMENT variants without an active pinned-server eligibility claim. See [HUMAN_WARDROBE_50.md](HUMAN_WARDROBE_50.md).

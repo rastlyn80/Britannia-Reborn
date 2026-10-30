@@ -112,7 +112,7 @@ static func slot_for(n: String) -> Array:
 static func resolve(id: int,info: Dictionary) -> Dictionary:
  var rule := _resolve(id,info)
  # Wall-flagged graphics are architecture whatever later tiledata names say.
- if int(info.get("flags",0)) & 0x10 and int(info.get("height",0)) > 0 and rule.get("kind","") in ["prop","asset"]:
+ if int(info.get("flags",0)) & 0x10 and int(info.get("height",0)) > 0 and rule.get("kind","") in ["prop","asset"] and not rule.get("keep",false):
   return {"axis":"x","confidence":"tiledata Wall flag overrides a later item name","regional":true,"kind":"trim" if int(info.get("height",0))<15 else "wall","asset":"Village/Wall_UnevenBrick_Straight.gltf","facadeFamily":"stone"}
  var n := str(info.get("name","")).strip_edges().to_lower()
  var slot := slot_for(n) if not n.is_empty() and not rule.get("kind","") in ["wall","window","trim","roof","floor","stairs","landing","fence","door","corner","arch","invisible","water","lava","canopy"] else []
@@ -133,6 +133,24 @@ static func _resolve(id: int,info: Dictionary) -> Dictionary:
  if id==13040: return base.merged({"kind":"asset","asset":"Nature/Rock_Medium_1.gltf","dimensions":[0.65,3.0,0.65],"confidence":"local visual inspection: tall crag fragment"})
  if id==7185: return base.merged({"kind":"prop","model":"gem","confidence":"local visual inspection: faceted blue ornament"})
  var flags := int(info.get("flags",0))
+ # Ter Mur (gargoyle) architecture, checked against the art: pale greek-key
+ # stone walls and corners, water-spout walls, canal channels, stone blocks
+ # and the pink brick "floor tile" wall; timber window walls ("qc window").
+ if n == "floor tile" and height >= 10: return base.merged({"kind":"wall","facadeFamily":"marble","asset":"Village/Wall_UnevenBrick_Straight.gltf"})
+ if n == "staitcube east" or n == "staitcube south": return base.merged({"kind":"landing"})
+ if (n.begins_with("angle ") or n.begins_with("gargspout") or n.begins_with("canal ") or n.begins_with("gargwater")) and height > 0: return base.merged({"kind":"trim" if height < 15 else "wall","facadeFamily":"marble","asset":"Village/Wall_UnevenBrick_Straight.gltf"})
+ if n.begins_with("qc window"): return base.merged({"kind":"window","facadeFamily":"wood","asset":"Village/Wall_Plaster_Straight.gltf"})
+ if n.begins_with("fill ") and height > 0: return base.merged({"kind":"wall","facadeFamily":"marble","asset":"Village/Wall_UnevenBrick_Straight.gltf"})
+ # Wall-flagged but sculptural: "keep" stops the wall-flag override.
+ if n == "stone spike" or n.begins_with("exodus nexus"): return base.merged({"kind":"prop","model":"replacement","keep":true})
+ if n == "marble bar exterior": return base.merged({"kind":"counter"})
+ if n == "footprints": return base.merged({"kind":"decal","decal":"mud"})
+ if n == "elven bed": return base.merged({"kind":"bed","asset":"PolyHaven/GothicBed_01/GothicBed_01_1k.gltf"})
+ # Ship rigging and Ter Mur tower toppers are built pieces, not foliage.
+ if n in ["mast","spar","sail","gargoyle tower toppe"]: return base.merged({"kind":"prop","model":"replacement","keep":true})
+ # Named "sand" but drawn as tall cyan crystal clusters.
+ if id in [13814,13815,13816]: return base.merged({"kind":"prop","model":"replacement"})
+ if id == 16105: return base.merged({"kind":"fence","asset":"MedievalKit/Fence_2m.gltf"})
  # "crystalline fragment" 512 is drawn as a dressed sandstone wall section
  # (Trinsic's town walls); its name, not its art, says crystal.
  if id == 512: return base.merged({"kind":"wall","facadeFamily":"sandstone","asset":"Village/Wall_UnevenBrick_Straight.gltf"})

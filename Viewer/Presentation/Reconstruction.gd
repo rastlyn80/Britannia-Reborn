@@ -1168,7 +1168,8 @@ func _collect_bounds(node: Node3D, transform: Transform3D, boxes: Array) -> void
 		if child is Node3D: _collect_bounds(child,combined,boxes)
 
 func fitted(path: String, size: Vector3, orientation: Array = [0,0,0]) -> Node3D:
-	var full := "res://Art/"+path if path.begins_with("Kenney/") or path.begins_with("PolyHaven/") or path.begins_with("MedievalKit/") or path.begins_with("Objaverse/") or path.begins_with("Reduced/") else "res://Art/Quaternius/"+path
+	# "Local/": the owner's local character-equipment meshes (ignored folder).
+	var full := "res://local-art/free-equipment-female/"+path.trim_prefix("Local/") if path.begins_with("Local/") else "res://Art/"+path if path.begins_with("Kenney/") or path.begins_with("PolyHaven/") or path.begins_with("MedievalKit/") or path.begins_with("Objaverse/") or path.begins_with("Reduced/") else "res://Art/Quaternius/"+path
 	# Heavy Poly Haven scans placed hundreds of times use their game-budget copy
 	# (scripts/reduce-polyhaven.py); the pinned original stays untouched.
 	if path.begins_with("PolyHaven/"):

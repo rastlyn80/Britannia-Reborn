@@ -2507,6 +2507,27 @@
       "metallic": 0.0,
       "roughness": 0.9
      }
+    },
+    "8317": {
+     "model": "Objaverse/rune_stone",
+     "size": [
+      0.5,
+      1.6,
+      0.4
+     ],
+     "material": {
+      "color": "3a3a40",
+      "metallic": 0.1,
+      "roughness": 0.6
+     }
+    },
+    "8319": {
+     "model": "Objaverse/bookstand_wood",
+     "size": [
+      0.55,
+      1.1,
+      0.45
+     ]
     }
    }
   },
@@ -4805,6 +4826,807 @@
   "half empty jar": {
    "model": "Objaverse/glass_jar2",
    "height": 0.2
+  },
+  "floor spikes": {
+   "model": "Objaverse/spike_trap_floor",
+   "length": 0.6,
+   "material": {
+    "color": "4a4a4e",
+    "metallic": 0.7,
+    "roughness": 0.45
+   }
+  },
+  "hordesmall south": {
+   "model": "Objaverse/coin_pile",
+   "height": 0.6,
+   "size": [
+    0.6,
+    0.6,
+    0.6
+   ],
+   "material": {
+    "color": "e8c040",
+    "metallic": 0.9,
+    "roughness": 0.3
+   }
+  },
+  "hordemedium south": {
+   "model": "Objaverse/coin_pile",
+   "height": 0.9,
+   "size": [
+    0.75,
+    0.9,
+    0.75
+   ],
+   "material": {
+    "color": "e8c040",
+    "metallic": 0.9,
+    "roughness": 0.3
+   }
+  },
+  "hordelarge south": {
+   "model": "Objaverse/coin_pile",
+   "height": 1.3,
+   "size": [
+    0.9,
+    1.3,
+    0.9
+   ],
+   "material": {
+    "color": "e8c040",
+    "metallic": 0.9,
+    "roughness": 0.3
+   }
+  },
+  "dragonhead": {
+   "model": "Objaverse/dragon_statuette",
+   "height": 1.0,
+   "material": {
+    "color": "6e6a62",
+    "metallic": 0.0,
+    "roughness": 0.9
+   }
+  },
+  "exodus nexus south": {
+   "model": "Objaverse/crystal_green",
+   "height": 1.6,
+   "material": {
+    "color": "5ad0e0",
+    "metallic": 0.1,
+    "roughness": 0.1
+   }
+  },
+  "sand": {
+   "model": "Objaverse/crystal_green",
+   "height": 2.4,
+   "only_ids": true,
+   "ids": {
+    "13814": {
+     "material": {
+      "color": "62c8d8",
+      "metallic": 0.1,
+      "roughness": 0.1
+     }
+    },
+    "13815": {
+     "material": {
+      "color": "62c8d8",
+      "metallic": 0.1,
+      "roughness": 0.1
+     }
+    },
+    "13816": {
+     "material": {
+      "color": "62c8d8",
+      "metallic": 0.1,
+      "roughness": 0.1
+     }
+    }
+   }
+  },
+  "mandrake": {
+   "model": "Objaverse/farm_plants/split/plant_21",
+   "length": 0.45
+  },
+  "string of shells": {
+   "model": "Objaverse/seashells",
+   "length": 0.3
+  },
+  "gopher mound": {
+   "model": "Objaverse/hay_pile",
+   "size": [
+    0.9,
+    0.3,
+    0.9
+   ],
+   "height": 0.3,
+   "material": {
+    "color": "6a5238",
+    "metallic": 0,
+    "roughness": 0.95
+   }
+  },
+  "ant hill": {
+   "model": "Objaverse/hay_pile",
+   "size": [
+    0.9,
+    1.0,
+    0.9
+   ],
+   "height": 1.0,
+   "material": {
+    "color": "8a6a48",
+    "metallic": 0,
+    "roughness": 0.95
+   }
+  },
+  "sea sponge south": {
+   "model": "Objaverse/coral_pocillopora",
+   "length": 0.3,
+   "cluster": 3,
+   "material": {
+    "color": "4a3a2a",
+    "metallic": 0,
+    "roughness": 0.9
+   }
+  },
+  "warrior statue": {
+   "model": "Objaverse/statue_angel",
+   "height": 1.8,
+   "pedestal": [
+    0.6,
+    0.4
+   ]
+  },
+  "minotaur statue": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 1.8,
+   "pedestal": [
+    0.7,
+    0.5
+   ],
+   "material": {
+    "color": "6a6e66",
+    "metallic": 0,
+    "roughness": 0.85
+   }
+  },
+  "ornate elven chest": {
+   "model": "Objaverse/chest_medieval",
+   "length": 0.9,
+   "material": {
+    "color": "c8ccd2",
+    "metallic": 0.7,
+    "roughness": 0.35
+   }
+  },
+  "green tea": {
+   "model": "Reduced/wicker_basket_01/wicker_basket_01",
+   "height": 0.4
+  },
+  "loose grain": {
+   "model": "Objaverse/hay_pile",
+   "size": [
+    0.6,
+    0.08,
+    0.6
+   ],
+   "height": 0.08,
+   "material": {
+    "color": "c8a050",
+    "metallic": 0,
+    "roughness": 0.9
+   }
+  },
+  "hops cones": {
+   "model": "Objaverse/grapes_bunch",
+   "length": 0.2,
+   "material": {
+    "color": "7ab048",
+    "metallic": 0,
+    "roughness": 0.7
+   }
+  },
+  "rock and sand": {
+   "model": "Objaverse/rock_gray",
+   "height": 0.25,
+   "cluster": 3
+  },
+  "grapevines": {
+   "model": "Objaverse/ivy_hanging",
+   "height": 2.0
+  },
+  "gargoyle tower vines": {
+   "model": "Objaverse/ivy_hanging",
+   "height": 2.8
+  },
+  "gargoyle musical ins": {
+   "model": "Objaverse/harp_wood",
+   "height": 1.4
+  },
+  "gargoyle painting (s": {
+   "model": "fancy_picture_frame_01",
+   "height": 0.7,
+   "anchor": "back",
+   "rotation": 180,
+   "elevation": 1.3
+  },
+  "anniversary vase b": {
+   "model": "Objaverse/vase_glazed",
+   "height": 0.6
+  },
+  "wheat sprouts": {
+   "model": "Objaverse/wheat_field",
+   "height": 0.3,
+   "material": {
+    "color": "8aa848",
+    "metallic": 0,
+    "roughness": 0.8
+   }
+  },
+  "gargoyle vase (south": {
+   "model": "Objaverse/garden_urn",
+   "height": 1.3
+  },
+  "gargoyle vase (east)": {
+   "model": "Objaverse/garden_urn",
+   "height": 1.3
+  },
+  "field of blades": {
+   "model": "Objaverse/spike_trap_floor",
+   "length": 0.9,
+   "material": {
+    "color": "8a8e94",
+    "metallic": 0.8,
+    "roughness": 0.35
+   }
+  },
+  "banner assembly east": {
+   "model": "Objaverse/banner_post",
+   "height": 3.0
+  },
+  "gargoyle armor stone": {
+   "model": "Objaverse/armor_plate",
+   "length": 0.6,
+   "material": {
+    "color": "8a8a82",
+    "metallic": 0,
+    "roughness": 0.85
+   }
+  },
+  "winnoning basket": {
+   "model": "Reduced/wicker_basket_01/wicker_basket_01",
+   "height": 0.3
+  },
+  "ornate elven chairs": {
+   "model": "Objaverse/elven_chair",
+   "height": 1.4
+  },
+  "dragonhead east": {
+   "model": "Objaverse/dragon_statuette",
+   "height": 1.0,
+   "material": {
+    "color": "6e6a62",
+    "metallic": 0,
+    "roughness": 0.9
+   }
+  },
+  "gargoyle traditional": {
+   "model": "Objaverse/gargoyle_stone",
+   "height": 1.0
+  },
+  "rack of canvases": {
+   "model": "Objaverse/easel",
+   "height": 1.6
+  },
+  "dartboard w/axe": {
+   "model": "Objaverse/dartboard",
+   "height": 0.5,
+   "anchor": "back",
+   "elevation": 1.3
+  },
+  "elven bookstand": {
+   "model": "Objaverse/bookstand_wood",
+   "height": 1.2
+  },
+  "zen rock garden": {
+   "model": "Objaverse/rock_gray",
+   "height": 0.25,
+   "cluster": 3
+  },
+  "stair cabinet": {
+   "model": "Objaverse/cabinet_old",
+   "height": 1.6,
+   "face": "wall"
+  },
+  "wall painting": {
+   "model": "fancy_picture_frame_01",
+   "height": 0.8,
+   "anchor": "back",
+   "rotation": 180,
+   "elevation": 1.3
+  },
+  "bone helmet": {
+   "model": "Objaverse/helm_horned",
+   "length": 0.3,
+   "material": {
+    "color": "d8d0b8",
+    "metallic": 0,
+    "roughness": 0.7
+   }
+  },
+  "arrow shafts": {
+   "model": "Objaverse/arrow_lowpoly",
+   "length": 0.7,
+   "lay": true,
+   "cluster": 4,
+   "spread": [
+    0.02,
+    0.04
+   ],
+   "aligned": true
+  },
+  "sundial": {
+   "model": "Objaverse/pedestal_stone",
+   "height": 0.9
+  },
+  "burned food": {
+   "model": "Objaverse/roast_chicken",
+   "length": 0.25,
+   "material": {
+    "color": "2a1e18",
+    "metallic": 0,
+    "roughness": 0.9
+   }
+  },
+  "crystal pedastal": {
+   "model": "Objaverse/pedestal_stone",
+   "height": 1.2
+  },
+  "elven reading desk": {
+   "model": "Objaverse/bookstand_wood",
+   "height": 1.2
+  },
+  "lemons": {
+   "model": "Objaverse/lime",
+   "length": 0.08,
+   "cluster": 3,
+   "material": {
+    "color": "e8d040",
+    "metallic": 0,
+    "roughness": 0.5
+   }
+  },
+  "bamboo flute": {
+   "model": "Objaverse/wand_wood",
+   "length": 0.4,
+   "lay": true,
+   "material": {
+    "color": "c8b070",
+    "metallic": 0,
+    "roughness": 0.6
+   }
+  },
+  "elven forge": {
+   "model": "Objaverse/forge_brick",
+   "height": 1.4
+  },
+  "soulforge": {
+   "model": "Objaverse/forge_brick",
+   "height": 1.4
+  },
+  "tall ladder": {
+   "model": "Objaverse/ladder_wood",
+   "height": 3.0
+  },
+  "elven bookshelf": {
+   "model": "Objaverse/bookcase_antique",
+   "height": 2.0,
+   "face": "wall"
+  },
+  "library": {
+   "model": "Objaverse/bookcase_antique",
+   "height": 2.0,
+   "face": "wall"
+  },
+  "serpentstone staff": {
+   "model": "Objaverse/crook_staff",
+   "length": 1.6,
+   "lay": true,
+   "material": {
+    "color": "4a4a40",
+    "metallic": 0.0,
+    "roughness": 0.7
+   }
+  },
+  "terathan staff": {
+   "model": "Objaverse/crook_staff",
+   "length": 1.6,
+   "lay": true,
+   "material": {
+    "color": "3a3430",
+    "metallic": 0.0,
+    "roughness": 0.7
+   }
+  },
+  "ancientstone planter": {
+   "model": "Objaverse/garden_urn",
+   "height": 0.8
+  },
+  "modernplanter south": {
+   "model": "Reduced/potted_plant_02/potted_plant_02",
+   "height": 0.8
+  },
+  "roasting pig grill f": {
+   "model": "Objaverse/roast_pig",
+   "length": 1.0
+  },
+  "round bush east": {
+   "model": "Objaverse/juniper",
+   "height": 0.8
+  },
+  "raw chicken leg": {
+   "model": "Objaverse/meat_raw",
+   "length": 0.15
+  },
+  "liver": {
+   "model": "Objaverse/meat_raw",
+   "length": 0.12,
+   "material": {
+    "color": "5a1a18",
+    "metallic": 0,
+    "roughness": 0.4
+   }
+  },
+  "samurai armor arms": {
+   "model": "Objaverse/armor_plate",
+   "length": 0.5,
+   "material": {
+    "color": "8a5a20",
+    "metallic": 0.4,
+    "roughness": 0.5
+   }
+  },
+  "plate do": {
+   "model": "Objaverse/armor_plate",
+   "length": 0.55,
+   "material": {
+    "color": "8a1a1a",
+    "metallic": 0.3,
+    "roughness": 0.5
+   }
+  },
+  "empty tool kit": {
+   "model": "Objaverse/toolbox_red",
+   "length": 0.4
+  },
+  "fish head": {
+   "model": "Objaverse/fish",
+   "length": 0.25
+  },
+  "talisman": {
+   "model": "Objaverse/necklace_pendant",
+   "length": 0.25
+  },
+  "elven loveseat": {
+   "model": "Objaverse/elven_chair",
+   "height": 1.4,
+   "size": [
+    1.3,
+    1.4,
+    0.7
+   ]
+  },
+  "crystal shards": {
+   "model": "Objaverse/crystal_green",
+   "height": 0.4,
+   "material": {
+    "color": "8ad0e8",
+    "metallic": 0.1,
+    "roughness": 0.1
+   }
+  },
+  "void orb": {
+   "model": "Objaverse/crystal_ball",
+   "height": 0.25,
+   "material": {
+    "color": "4a2a6a",
+    "metallic": 0.3,
+    "roughness": 0.1
+   }
+  },
+  "icy heart": {
+   "model": "Objaverse/crystal_green",
+   "height": 0.25,
+   "material": {
+    "color": "c0e8f8",
+    "metallic": 0.1,
+    "roughness": 0.1
+   }
+  },
+  "wall fern south": {
+   "model": "Objaverse/fern_wall",
+   "height": 0.7
+  },
+  "castle_painting": {
+   "model": "fancy_picture_frame_01",
+   "height": 0.8,
+   "anchor": "back",
+   "rotation": 180,
+   "elevation": 1.3
+  },
+  "ship_painting": {
+   "model": "fancy_picture_frame_01",
+   "height": 0.8,
+   "anchor": "back",
+   "rotation": 180,
+   "elevation": 1.3
+  },
+  "lime": {
+   "model": "Objaverse/lime",
+   "length": 0.08
+  },
+  "jester's cap": {
+   "model": "Objaverse/jester_hat",
+   "length": 0.4
+  },
+  "goblets": {
+   "model": "Objaverse/chalice",
+   "height": 0.18,
+   "cluster": 4
+  },
+  "sliced ham": {
+   "model": "Objaverse/ham_baked",
+   "length": 0.3
+  },
+  "fried eggs": {
+   "model": "Objaverse/frying_pan",
+   "length": 0.4
+  },
+  "muffin": {
+   "model": "Objaverse/baked_goods",
+   "length": 0.12,
+   "material": {
+    "color": "c8883a",
+    "metallic": 0.0,
+    "roughness": 0.7
+   }
+  },
+  "mahjong game": {
+   "model": "Objaverse/backgammon",
+   "length": 0.5
+  },
+  "magic key": {
+   "model": "Objaverse/key_old",
+   "length": 0.15,
+   "lay": true,
+   "material": {
+    "color": "8ab0e8",
+    "metallic": 0.8,
+    "roughness": 0.3
+   }
+  },
+  "bear mask": {
+   "model": "Objaverse/tribal_mask",
+   "height": 0.35
+  },
+  "tomato soup": {
+   "model": "Reduced/wooden_bowl_01/wooden_bowl_01",
+   "length": 0.2
+  },
+  "small bagball": {
+   "model": "Objaverse/bag_leather",
+   "height": 0.25
+  },
+  "ogre's club": {
+   "model": "Objaverse/club_wood",
+   "length": 1.0,
+   "lay": true
+  },
+  "troll maul": {
+   "model": "Objaverse/w_sledge",
+   "length": 1.0,
+   "lay": true
+  },
+  "plate armor": {
+   "model": "Objaverse/armor_plate",
+   "length": 0.6
+  },
+  "raven helm": {
+   "model": "Objaverse/helm_horned",
+   "length": 0.3,
+   "material": {
+    "color": "2a2a30",
+    "metallic": 0.5,
+    "roughness": 0.4
+   }
+  },
+  "winged helm": {
+   "model": "Objaverse/armor_helm",
+   "length": 0.3,
+   "material": {
+    "color": "c8ccd2",
+    "metallic": 0.8,
+    "roughness": 0.35
+   }
+  },
+  "elvin dresser": {
+   "model": "Objaverse/cabinet_old",
+   "height": 1.5,
+   "face": "wall"
+  },
+  "magical shortbow": {
+   "model": "Objaverse/bow_long",
+   "length": 1.1,
+   "lay": true
+  },
+  "daemon claw": {
+   "model": "Objaverse/bone_tibia",
+   "length": 0.35,
+   "material": {
+    "color": "6a2a20",
+    "metallic": 0,
+    "roughness": 0.6
+   }
+  },
+  "elven fletching": {
+   "model": "Objaverse/feathers",
+   "length": 0.25,
+   "lay": true
+  },
+  "couchsmall east": {
+   "model": "Objaverse/chair_zakopane",
+   "height": 1.2
+  },
+  "zoogi fungus": {
+   "model": "Objaverse/mushroom_brown",
+   "length": 0.15,
+   "material": {
+    "color": "7a3a8a",
+    "metallic": 0.0,
+    "roughness": 0.7
+   }
+  },
+  "cityflag trinsic sou": {
+   "model": "Objaverse/banner_worn",
+   "height": 2.0,
+   "rotation": 90,
+   "anchor": "back",
+   "tint": "c8a040"
+  },
+  "cityflag moonglow so": {
+   "model": "Objaverse/banner_worn",
+   "height": 2.0,
+   "rotation": 90,
+   "anchor": "back",
+   "tint": "4a6ac8"
+  },
+  "cityflag brittain so": {
+   "model": "Objaverse/banner_worn",
+   "height": 2.0,
+   "rotation": 90,
+   "anchor": "back",
+   "tint": "2a3a8a"
+  },
+  "cityflag jhelom sout": {
+   "model": "Objaverse/banner_worn",
+   "height": 2.0,
+   "rotation": 90,
+   "anchor": "back",
+   "tint": "8a2a2a"
+  },
+  "cityflag skara south": {
+   "model": "Objaverse/banner_worn",
+   "height": 2.0,
+   "rotation": 90,
+   "anchor": "back",
+   "tint": "3a8a6a"
+  },
+  "cityflag yew east": {
+   "model": "Objaverse/banner_worn",
+   "height": 2.0,
+   "rotation": 90,
+   "anchor": "back",
+   "tint": "4a7a3a"
+  },
+  "cityflag minoc east": {
+   "model": "Objaverse/banner_worn",
+   "height": 2.0,
+   "rotation": 90,
+   "anchor": "back",
+   "tint": "8a6a3a"
+  },
+  "cityflag vesper east": {
+   "model": "Objaverse/banner_worn",
+   "height": 2.0,
+   "rotation": 90,
+   "anchor": "back",
+   "tint": "3a6a9a"
+  },
+  "cityflag newmagencia": {
+   "model": "Objaverse/banner_worn",
+   "height": 2.0,
+   "rotation": 90,
+   "anchor": "back",
+   "tint": "6a3a8a"
+  },
+  "iron ingot%s": {
+   "model": "Objaverse/ingot_bar",
+   "length": 0.22,
+   "material": {
+    "color": "6d6e70",
+    "metallic": 0.9,
+    "roughness": 0.55
+   }
+  },
+  "log%s": {
+   "model": "Objaverse/log_mossy",
+   "length": 1.2
+  },
+  "crank": {
+   "model": "Objaverse/lever_old",
+   "length": 0.35,
+   "lay": true
+  },
+  "elven plate": {
+   "model": "Objaverse/armor_plate",
+   "length": 0.6,
+   "material": {
+    "color": "d8c890",
+    "metallic": 0.8,
+    "roughness": 0.35
+   }
+  },
+  "left leg": {
+   "model": "Objaverse/mannequin_leg",
+   "length": 0.9,
+   "lay": true,
+   "material": {
+    "color": "a86a5a",
+    "metallic": 0.0,
+    "roughness": 0.6
+   }
+  },
+  "right leg": {
+   "model": "Objaverse/mannequin_leg",
+   "length": 0.9,
+   "lay": true,
+   "material": {
+    "color": "a86a5a",
+    "metallic": 0.0,
+    "roughness": 0.6
+   }
+  },
+  "left arm": {
+   "model": "Objaverse/arm_anatomy",
+   "length": 0.7,
+   "lay": true,
+   "material": {
+    "color": "a86a5a",
+    "metallic": 0.0,
+    "roughness": 0.6
+   }
+  },
+  "right arm": {
+   "model": "Objaverse/arm_anatomy",
+   "length": 0.7,
+   "lay": true,
+   "material": {
+    "color": "a86a5a",
+    "metallic": 0.0,
+    "roughness": 0.6
+   }
+  },
+  "windchimes": {
+   "model": "Objaverse/bell_hanging",
+   "height": 0.35,
+   "elevation": 1.2,
+   "cluster": 3,
+   "spread": [
+    0.06,
+    0.08
+   ],
+   "aligned": true
   }
  }
 }

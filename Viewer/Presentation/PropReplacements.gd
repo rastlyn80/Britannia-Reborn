@@ -23,6 +23,7 @@ static func entry_for(name: String, id := -1) -> Dictionary:
 	# Spell scrolls of every school share the scroll scans (spell_scroll()).
 	if id >= 0 and not spell_scroll(id).is_empty(): return spell_scroll(id)
 	var found := entry(name)
+	if found.is_empty() and id >= 0: return wardrobe(id,name)
 	if found.is_empty() or id < 0: return found
 	var override: Dictionary = found.get("ids",{}).get(str(id),{})
 	if override.get("skip",false): return {}
@@ -44,6 +45,22 @@ static func spell_scroll(id: int) -> Dictionary:
 		# A small tied bundle like the original art: two or three rolls.
 		return {"models":[SCROLL_MODELS[id%SCROLL_MODELS.size()],SCROLL_MODELS[(id+1)%SCROLL_MODELS.size()]],"cluster":2+id%2,"spread":[0.03,0.05],"aligned":true,"length":0.26+float(id%4)*0.025,"lay":true,"tint":tone.to_html(false)}
 	return {}
+
+# Weapons, shields, helmets, gloves, footwear and jewellery lying loose draw
+# the same local character-equipment mesh the avatars wear (HumanWardrobe), at
+# its real size, when no curated entry, crafted build or library slot exists. Body garments keep their
+# laid-out cloth builds (CraftedProps): a body-fitted shell reads wrong.
+const LOOSE_SLOTS := ["weapon","shield","head","hands","feet","gorget","necklace","talisman","bracelet","earrings","ring","waist"]
+const LAID_SLOTS := ["weapon","shield","hands","necklace","talisman","bracelet","earrings","ring","waist","gorget"]
+const EQUIPMENT := "res://local-art/free-equipment-female/"
+static func wardrobe(id: int, name := "") -> Dictionary:
+	# Crafted builds and owner-library slots already give these a better look.
+	if preload("res://Presentation/CraftedProps.gd").handles(name) or not preload("res://Presentation/RegionalRules.gd").slot_for(key(name)).is_empty(): return {}
+	var piece: Array = preload("res://Presentation/HumanWardrobe.gd").extra(id)
+	if piece.size() < 2 or not str(piece[0]) in LOOSE_SLOTS: return {}
+	var file := str(piece[1]) if "/" in str(piece[1]) else "expansion/"+str(piece[1])
+	if not ResourceLoader.exists(EQUIPMENT+file+".glb"): return {}
+	return {"model":"Local/"+file,"native":true,"lay":str(piece[0]) in LAID_SLOTS}
 
 # Rule kinds built as architecture or by their own builders never take a
 # name replacement (a wall-flagged "fireplace" is masonry, a "table" a trestle
@@ -183,7 +200,8 @@ static func _one(reconstruction: RefCounted, model: String, found: Dictionary, s
 	# "Reduced/set/set_N" one variant split out of a Poly Haven nature set;
 	# "Objaverse/set/split/part_N" one variant split out of a pinned scan set.
 	var path := ("Objaverse/%s.gltf" % model.trim_prefix("Objaverse/") if "/" in model.trim_prefix("Objaverse/") else "Objaverse/%s/%s.glb" % [model.trim_prefix("Objaverse/"),model.trim_prefix("Objaverse/")]) if model.begins_with("Objaverse/") else (("%s.gltf" % model if ResourceLoader.exists("res://Art/%s.gltf" % model) else "%s.glb" % model) if model.begins_with("Reduced/") else "PolyHaven/%s/%s_1k.gltf" % [model,model])
-	if not ResourceLoader.exists("res://Art/"+path): return null
+	if model.begins_with("Local/"): path = model+".glb"
+	if not ResourceLoader.exists(EQUIPMENT+model.trim_prefix("Local/")+".glb" if model.begins_with("Local/") else "res://Art/"+path): return null
 	var probe: Node3D = reconstruction.fitted(path,Vector3.ONE)
 	probe.free()
 	var box: AABB = reconstruction.bounds[path]
@@ -192,7 +210,7 @@ static func _one(reconstruction: RefCounted, model: String, found: Dictionary, s
 	# turned so their thinnest side is vertical.
 	var lay: bool = found.get("lay",false)
 	var longest := maxf(box.size.x,maxf(box.size.y,box.size.z)) if lay else maxf(box.size.x,box.size.z)
-	var factor := (float(found.length)/maxf(longest,0.001) if found.has("length") else float(found.height)/maxf(box.size.y,0.001))*scale
+	var factor := (1.0 if found.get("native",false) else (float(found.length)/maxf(longest,0.001) if found.has("length") else float(found.height)/maxf(box.size.y,0.001)))*scale
 	# "size" [x, y, z] fits a block-like scan to exact proportions (a clipped hedge).
 	var placed: Node3D = reconstruction.fitted(path,Vector3(found.size[0],found.size[1],found.size[2])*scale if found.has("size") else box.size*factor)
 	if found.has("material"): _repaint(placed,found.material)

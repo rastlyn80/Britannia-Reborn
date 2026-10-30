@@ -28,7 +28,17 @@ const NAMES := {
 	"raw cotton":"cotton","bridle":"bridle","prow":"prow","dart trap":"darttrap","serpent crest":"crest","void essence":"essence","covered chair":"coveredchair","iron maiden":"ironmaiden",
 	"century plant":"agave","backpack":"backpack","pampas grass":"pampas","memorial to gwenno":"memorial","horse barding":"barding",
 	"gravestone":"grave",
-	"crossbow bolts":"bolts","inshave":"inshave","floor saw":"floorsaw","rabbit on a spit":"spit:rabbit","chicken on a spit":"spit:chicken",
+	"barrle hoops":"hoops","shafts":"arrows","grave dust":"reagent:8a8478","draw knife":"inshave","bead necklace":"jewel:8a3a2a:0.07",
+	"eggshells":"eggs","circlet":"jewel:c9ccd2:0.08","gemmed circlet":"jewel:e2b04a:0.08","millstone":"millstones",
+	"crossbow bolt":"bolts","roll of string":"spool","spit":"spit:empty",
+	"kilt":"garment:skirt:b0b0b0","robe":"garment:robe:e0e0e0","plain dress":"garment:robe:e8e4dc","short pants":"garment:pants:7a6a50",
+	"jester pants":"garment:pants:8a2a6a","death shroud":"garment:cloak:2a2a30","hooded shroud":"garment:cloak:3a3a40","body sash":"garment:cloth:8a8a8a",
+	"hakama-shita":"garment:pants:6a2a6a","gargoyle clothing ch":"garment:shirt:3a4a6a","gargoyle clothing ar":"garment:cloth:3a4a6a","gargoyle clothing ki":"garment:skirt:5a3a2a",
+	"lt_armor_kilt":"leggings:leather:6a4628","ltf_chest":"garment:shirt:6a4628","elven arm plate":"sleeves:mail:c8ccd2",
+	"gargoyle_plate_chest":"gorget:plate:8a8e94",
+
+	"scaffold":"scaffold","skull spikes":"skullspikes","mast":"pole:mast","spar":"pole:spar","sail":"sail","gargoyle tower toppe":"stonespike",
+	"crossbow bolts":"bolts","stone spike":"stonespike","inshave":"inshave","floor saw":"floorsaw","rabbit on a spit":"spit:rabbit","chicken on a spit":"spit:chicken",
 	"flax bundle":"flaxbundle","fancy dress":"garment:robe:ece4d2","slice of bacon":"bacon","gargoyle floormirror":"mirror","gargoyle floor mirro":"mirror",
 	"tapestry":"tapestry","small elven tapestr":"tapestry","elven tapestry":"tapestry","colorful tapestry":"tapestry","sosaria tapestry":"tapestry",
 	"glass":"glassmug","dice and cup":"dice","eggs":"eggs","egg case":"eggcase","lockpick":"picks:1","lockpicks":"picks:3","spike trap":"spikes","hatch":"hatch","rope ladder":"ropeladder","brush":"brush","coconut":"coconut","full apron":"garment:apron:9a968a","half apron":"garment:apron:9a968a",
@@ -363,6 +373,35 @@ static func build(name: String, seed := 0, id := -1) -> Node3D:
 				_cyl(a,0.004,0.75,Vector3(0,0,0),_wood(),flat,-1,6)
 				_cyl(a,0.008,0.05,Vector3(0.38,0,0),_iron(),Vector3(0,0,-PI/2),0.0,6)
 				_box(a,Vector3(0.1,0.002,0.025),Vector3(-0.33,0,0),_cloth("e8e0d0"))
+		"scaffold":
+			# Builders' scaffold: four lashed poles, ledgers and a plank deck.
+			for x in [-0.45,0.45]:
+				for z in [-0.4,0.4]: _cyl(root,0.04,3.0,Vector3(x,1.5,z),_wood(),Vector3.ZERO,0.045,8)
+			for y in [0.9,1.9]:
+				for z in [-0.4,0.4]: _box(root,Vector3(1.0,0.07,0.07),Vector3(0,y,z),_wood())
+				_box(root,Vector3(0.95,0.04,0.85),Vector3(0,y+0.055,0),_mat("rough_wood",Color("c8b8a0"),0.0,0.9,2.0))
+			_box(root,Vector3(0.05,1.3,0.05),Vector3(0,1.4,0.42),_wood(),Vector3(0,0,0.9))
+		"skullspikes":
+			# Sharpened stakes, each topped with a skull.
+			for i in 3:
+				var at := Vector3(i*0.28-0.28,0,rnd.randf_range(-0.12,0.12))
+				_cyl(root,0.0,1.3,at+Vector3(0,0.65,0),_wood(),Vector3.ZERO,0.035,6)
+				_model(root,"res://Art/Objaverse/skull_candle/skull_candle.glb",0.16,at+Vector3(0,1.05,0))
+		"pole":
+			# Ship timber: a mast stands, a spar (yard) lies across up high.
+			if kind.ends_with("mast"): _cyl(root,0.12,5.5,Vector3(0,2.75,0),_wood(),Vector3.ZERO,0.15,12)
+			else: _cyl(root,0.07,3.0,Vector3(0,3.4,0),_wood(),Vector3(0,0,PI/2),-1,10)
+		"sail":
+			# Canvas hanging from its yard, a little belly in the cloth.
+			var canvas := _mat("hessian_230",Color("ece4cc"),0.0,0.95,2.0)
+			var sheet := _box(root,Vector3(2.4,2.6,0.03),Vector3(0,2.05,0.08),canvas)
+			sheet.rotation.x = -0.06
+		"stonespike":
+			# Ter Mur carved spike: a tall four-sided taper in pale dressed stone
+			# with a band of darker carving at its foot.
+			var pale := _mat("medieval_blocks_03",Color("c8c6b4"),0.0,0.85,3.0)
+			_cyl(root,0.0,3.4,Vector3(0,1.7,0),pale,Vector3(0,PI/4,0),0.62,4)
+			_cyl(root,0.6,0.35,Vector3(0,0.175,0),_mat("medieval_blocks_03",Color("8a8878"),0.0,0.85,4.0),Vector3(0,PI/4,0),0.66,4)
 		"bacon":
 			# Rashers of cured belly: lean and fat in bands, a little curl.
 			for i in 3:
@@ -391,7 +430,7 @@ static func build(name: String, seed := 0, id := -1) -> Node3D:
 				_cyl(root,0.02,0.6,Vector3(x,0.3,0),_wood(),Vector3.ZERO,0.025,6)
 				for side in [-1.0,1.0]: _cyl(root,0.012,0.12,Vector3(x+side*0.03,0.62,0),_wood(),Vector3(0,0,side*0.5),-1,5)
 			_cyl(root,0.009,0.95,Vector3(0,0.6,0),_iron(),flat,-1,6)
-			var meat := _model(root,"res://Art/Objaverse/roast_chicken/roast_chicken.glb",0.32 if kind.ends_with("rabbit") else 0.36,Vector3(0,0.5,0))
+			var meat: Node3D = null if kind.ends_with("empty") else _model(root,"res://Art/Objaverse/roast_chicken/roast_chicken.glb",0.32 if kind.ends_with("rabbit") else 0.36,Vector3(0,0.5,0))
 			if meat and kind.ends_with("rabbit"): meat.scale = Vector3(1.25,0.75,0.75)
 		"flaxbundle":
 			# Retted flax tied in a bundle, seed heads still blue at the top.
