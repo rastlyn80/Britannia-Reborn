@@ -1,3 +1,9 @@
+# All-creature programme, equines first - 30 October 2026
+
+Owner direction now covers all creature families. Desert approved; forest/frenzied/ethereal upgraded comparisons complete locally, all four forms checked over 1,008 skinned poses (27,741 assertions), and new materials checked in both renderers. Full verify exits 0 with existing unrelated diagnostics. [CREATURE_MODERNISATION.md](CREATURE_MODERNISATION.md) tracks the 147-mesh / 51-source-group queue and separates parsed source, art trials and live replacements. No new live creature coverage is claimed.
+
+Next: finish equines (ki-rin replacement/matching texture after bounded diagnostic repair; distinct skeletal-mount source; historical identities), then rideable llamas, other animals and monster families. Validate both riders/outfits, transitions, terrain, hue semantics, native actions/corpses and real server routes independently. Eight source candidates still fail parsing and six parsed candidates reference absent textures; later UO creatures may be absent from this early archive. All other source groups remain queued. Preserve accepted humans/horses and current coverage counts; ignored art is not a distributable pack.
+
 # Desert ostard trial ready for art review - 30 October 2026
 
 Original Third Dawn desert ostard now has an animated original / geometry-only / upgraded-material comparison, seven source clips, 2,960 refined triangles and a generated 1,254-square atlas. See [OSTARD_TRIAL.md](OSTARD_TRIAL.md) and Review-Ostard.cmd. Evidence: 252 skinned poses / 6,933 checks, actual Forward+ and Compatibility shader response checks, 31 stills / 96 sequence frames, full verification exit 0 with existing unrelated diagnostics. Source root motion is adjusted for the flat review floor; no terrain, rider or live creature coverage is added.

@@ -2,6 +2,7 @@ extends SceneTree
 ## Three treatments of the same source creature in normal Godot render frames.
 const Visual=preload("res://Presentation/OstardVisual.gd")
 var stage: Node3D
+var kind:="desert"
 var camera: Camera3D
 var actors: Array=[]
 var labels: Array=[]
@@ -16,6 +17,7 @@ var pose_slider: HSlider
 var pose_caption: Label
 func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--kind="):kind=arg.trim_prefix("--kind=")
 		if arg.begins_with("--capture-dir="):capture_dir=arg.trim_prefix("--capture-dir=")
 		if arg.begins_with("--sequence-dir="):sequence_dir=arg.trim_prefix("--sequence-dir=")
 		if arg.begins_with("--material-test="):material_test_path=arg.trim_prefix("--material-test=")
@@ -30,7 +32,7 @@ func build() -> void:
 	var fill:=DirectionalLight3D.new();fill.rotation_degrees=Vector3(-25,145,0);fill.light_energy=.35;stage.add_child(fill)
 	var floor_mesh:=MeshInstance3D.new();var box:=BoxMesh.new();box.size=Vector3(30,.1,30);floor_mesh.mesh=box;floor_mesh.position.y=-.05;var floor_mat:=StandardMaterial3D.new();floor_mat.albedo_color=Color("596660");floor_mat.roughness=.95;floor_mesh.material_override=floor_mat;stage.add_child(floor_mesh)
 	for treatment in ["original","rounded","modern"]:
-		var actor:=Visual.new();actor.treatment=treatment;stage.add_child(actor);actors.append(actor)
+		var actor:=Visual.new();actor.kind=kind;actor.treatment=treatment;stage.add_child(actor);actors.append(actor)
 		var label:=Label3D.new();label.font_size=28;label.pixel_size=.0026;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;label.no_depth_test=true
 		label.text={"original":"ORIGINAL\n185 triangles / 128 px","rounded":"REFINED GEOMETRY\n2,960 triangles / original atlas","modern":"REFINED + NEW MATERIAL\n2,960 triangles / 1,254 px"}[treatment];stage.add_child(label);labels.append(label)
 		if treatment=="modern":
@@ -39,7 +41,7 @@ func build() -> void:
 			label.text="REFINED + NEW MATERIAL\n2,960 triangles / %d px"%material.albedo_texture.get_width()
 	camera=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;stage.add_child(camera)
 	var canvas:=CanvasLayer.new();root.add_child(canvas);var ui:=VBoxContainer.new();ui.position=Vector2(18,14);canvas.add_child(ui)
-	var title:=Label.new();title.text="BRITANNIA REBORN / THIRD DAWN DESERT OSTARD / PRIVATE COMPARISON";title.add_theme_font_size_override("font_size",21);ui.add_child(title)
+	var title:=Label.new();title.text="BRITANNIA REBORN / THIRD DAWN "+kind.to_upper()+" OSTARD / PRIVATE COMPARISON";title.add_theme_font_size_override("font_size",21);ui.add_child(title)
 	var note:=Label.new();note.text="Left: source / centre: geometry only / right: geometry + generated atlas + surface detail\nSame 24-bone rig and seven source clips / local visual trial / no live creature replacement";ui.add_child(note)
 	var actions:=HBoxContainer.new();ui.add_child(actions)
 	for clip in Visual.CLIPS:button(actions,clip,func():choose_clip(clip))

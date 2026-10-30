@@ -110,6 +110,8 @@ animated original/upgraded comparison before deciding to replace them. Reuse
 existing modern assets where suitable for ordinary creatures. See
 docs/CREATURE_ART_PIPELINE.md for the source order, review gates and local audit;
 docs/OSTARD_TRIAL.md records the first animated original/upgraded art trial.
+The owner has approved that result and requested all creature families, equines
+first; track batches and actual completion in docs/CREATURE_MODERNISATION.md.
 
 Develop automated tools for asset importing, classification, material assignment, collision generation, optimisation and cataloguing.
 

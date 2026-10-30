@@ -3,7 +3,10 @@
 Requires Pillow. Clip timing comes from the imported source animations.
 """
 import html
+import argparse
 import json
+import subprocess
+import sys
 from pathlib import Path
 from PIL import Image
 
@@ -12,6 +15,17 @@ OUTPUT = ROOT / 'outputs/ostard-trial'
 
 
 def main():
+    global OUTPUT
+    parser=argparse.ArgumentParser();parser.add_argument('--kind',choices=['desert','forest','frenzied','ethereal','all'],default='desert');args=parser.parse_args()
+    if args.kind=='all':
+        for kind in ['desert','forest','frenzied','ethereal']:subprocess.run([sys.executable,__file__,'--kind',kind],check=True)
+        cards=[]
+        for kind in ['desert','forest','frenzied','ethereal']:
+            prefix='' if kind=='desert' else kind+'/'
+            cards.append(f'<h2>{kind.title()} ostard</h2><a href="{prefix}index.html"><img loading="lazy" width="1080" src="{prefix}walk-comparison.gif" alt="{kind} walking comparison"></a><p><a href="{prefix}index.html">Full animated review and all seven clips</a></p>')
+        (OUTPUT/'family.html').write_text('<!doctype html><meta charset="utf-8"><title>Ostard family</title><style>body{background:#202d36;color:#eee;font:18px system-ui;max-width:1080px;margin:30px auto}img{max-width:100%}a{color:#e0c98a}</style><h1>Britannia Reborn / complete source ostard family</h1><p>Four local art trials. Original left, geometry-only centre, modern material right. All are actual Godot frames. Rider and live creature integration remain pending.</p>'+''.join(cards),encoding='utf-8')
+        return
+    if args.kind!='desert':OUTPUT=OUTPUT/args.kind
     timings = json.loads((OUTPUT / 'frames/timings.json').read_text())
     for clip, timing in timings.items():
         paths = sorted((OUTPUT / 'frames').glob(clip + '-[0-9][0-9].png'))
@@ -49,6 +63,8 @@ def main():
 <p><a href="validation.json">252 sampled skinned poses</a> · <a href="material-forward.json">GPU material checks</a> · <a href="captures.json">Capture manifest</a></p>
 <h2>All seven clips / two angles / two phases</h2><div class="grid">''' +
         '\n'.join(rows) + '</div></html>', encoding='utf-8')
+    if args.kind!='desert':
+        page=OUTPUT/'index.html';page.write_text(page.read_text(encoding='utf-8').replace('Desert ostard',args.kind.title()+' ostard').replace('desert ostard',args.kind+' ostard'),encoding='utf-8')
     print('OSTARD GALLERY:', OUTPUT / 'index.html')
 
 

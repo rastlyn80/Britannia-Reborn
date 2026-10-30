@@ -3,6 +3,11 @@
 30 October 2026. A local animated comparison is implemented. This is an art
 trial for owner review, with no live creature/body/mount replacement yet.
 
+The owner subsequently approved the desert result. Forest, frenzied and ethereal
+comparisons and the all-creature programme now follow in
+[CREATURE_MODERNISATION.md](CREATURE_MODERNISATION.md); the measurements below
+remain the original desert checkpoint.
+
 ## Result and review
 
 Open `Review-Ostard.cmd` for the interactive comparison, or the local

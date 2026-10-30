@@ -16,9 +16,11 @@ $env:APPDATA = Join-Path $root '.godot-user'
 $env:LOCALAPPDATA = $env:APPDATA
 & $godot --headless --path "$root\Viewer" --editor --import
 if ($LASTEXITCODE) { throw 'Asset import failed' }
-if (Test-Path "$root/Viewer/local-art/ostards/desert-modern.gltf") {
-  & $godot --headless --path "$root/Viewer" --script res://Presentation/OstardTests.gd
+foreach ($kind in @('desert','forest','frenzied','ethereal')) {
+ if (Test-Path "$root/Viewer/local-art/ostards/$kind-modern.gltf") {
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/OstardTests.gd -- "--kind=$kind"
   if ($LASTEXITCODE) { throw 'Original/refined ostard deformation checks failed' }
+ }
 }
 & $godot --headless --path "$root\Viewer" --script res://Network/LoginTests.gd
 if ($LASTEXITCODE) { throw 'Protocol tests failed' }

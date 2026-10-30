@@ -5,6 +5,10 @@ as ostards, **try the original Third Dawn models and modernise them before
 deciding whether to replace them**. Preserve their recognisable shape and
 character. The owner will judge the result from an animated comparison.
 
+The owner has approved the desert result and requested the same programme for
+**all creature families, equines first**. The full source queue, current batch
+and remaining work are tracked in [CREATURE_MODERNISATION.md](CREATURE_MODERNISATION.md).
+
 ## Source order
 
 - Reuse suitable existing modern assets for ordinary animals and shared forms.

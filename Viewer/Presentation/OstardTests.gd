@@ -2,9 +2,13 @@ extends SceneTree
 ## Exercise actual imported skin vertices, not a box around the animated joints.
 const Visual=preload("res://Presentation/OstardVisual.gd")
 var checks:=0
+var kind:="desert"
 var failures:=0
 var records: Array=[]
-func _initialize() -> void:call_deferred("run")
+func _initialize() -> void:
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--kind="):kind=arg.trim_prefix("--kind=")
+	call_deferred("run")
 func check(ok: bool,label: String) -> void:
 	checks+=1
 	if not ok:failures+=1;push_error(label)
@@ -32,7 +36,7 @@ func run() -> void:
 	var reference_parents: Array=[]
 	var reference_lengths: Dictionary={}
 	for treatment in ["original","rounded","modern"]:
-		var actor:=Visual.new();actor.treatment=treatment;root.add_child(actor)
+		var actor:=Visual.new();actor.kind=kind;actor.treatment=treatment;root.add_child(actor)
 		var rig: Skeleton3D=actor.skeleton
 		check(rig.get_bone_count()==24,"All treatments retain the 24-bone source rig")
 		for i in rig.get_bone_count():
@@ -81,13 +85,17 @@ func run() -> void:
 			check(moved,"Clip changes actual articulated bone rotations: "+treatment+" "+clip)
 		if treatment=="modern":
 			var rig_id:=rig.get_instance_id()
-			for hue in [0,53,0x8000|53]:
+			for hue in [0,53,0x8000|53,0x4001]:
 				actor.set_hue(hue)
 				var mat: ShaderMaterial=mesh.get_surface_override_material(0)
 				check(actor.hue==hue and rig.get_instance_id()==rig_id,"Preview retains exact native hue bits without rebuilding the rig")
 				check(mat.get_shader_parameter("partial_hue")==((hue&0x8000)!=0),"Partial hue flag reaches the surface shader")
+				if kind=="ethereal" and hue==0x4001:check(not mat.get_shader_parameter("use_hue"),"Spectral marker is not misinterpreted as palette dye 1")
 		actor.free()
 	var report:={"checks":checks,"failures":failures,"sampled_poses":records.size(),"samples":records,"scope":"Offline actual Godot imported skin vertices: seven clips, twelve phases, three treatments. Flat-floor export correction; no live movement, rider, terrain IK or mount claims."}
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://../outputs/ostard-trial"))
-	var file:=FileAccess.open("res://../outputs/ostard-trial/validation.json",FileAccess.WRITE);file.store_string(JSON.stringify(report,"\t"));file.close()
+	var folder:="res://../outputs/ostard-trial"+("" if kind=="desert" else "/"+kind)
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(folder))
+	report["kind"]=kind
+	var file:=FileAccess.open(folder+"/validation.json",FileAccess.WRITE);file.store_string(JSON.stringify(report,"\t"));file.close()
 	print("OSTARD TESTS: ",checks-failures," / ",checks,"; ",records.size()," skinned poses");quit(1 if failures else 0)
