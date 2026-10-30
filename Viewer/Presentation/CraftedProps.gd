@@ -37,6 +37,7 @@ const NAMES := {
 	"lt_armor_kilt":"leggings:leather:6a4628","ltf_chest":"garment:shirt:6a4628","elven arm plate":"sleeves:mail:c8ccd2",
 	"gargoyle_plate_chest":"gorget:plate:8a8e94",
 
+	"scorp":"inshave","net":"net","oars":"oars","egg bomb":"eggs","lobsterbuoyframe02 s":"buoy","lobsterbuoyframe03 s":"buoy","mini house":"minihouse","parrot perch":"perch","snowman":"snowman",
 	"scaffold":"scaffold","skull spikes":"skullspikes","mast":"pole:mast","spar":"pole:spar","sail":"sail","gargoyle tower toppe":"stonespike",
 	"crossbow bolts":"bolts","stone spike":"stonespike","inshave":"inshave","floor saw":"floorsaw","rabbit on a spit":"spit:rabbit","chicken on a spit":"spit:chicken",
 	"flax bundle":"flaxbundle","fancy dress":"garment:robe:ece4d2","slice of bacon":"bacon","gargoyle floormirror":"mirror","gargoyle floor mirro":"mirror",
@@ -373,6 +374,38 @@ static func build(name: String, seed := 0, id := -1) -> Node3D:
 				_cyl(a,0.004,0.75,Vector3(0,0,0),_wood(),flat,-1,6)
 				_cyl(a,0.008,0.05,Vector3(0.38,0,0),_iron(),Vector3(0,0,-PI/2),0.0,6)
 				_box(a,Vector3(0.1,0.002,0.025),Vector3(-0.33,0,0),_cloth("e8e0d0"))
+		"net":
+			# A fishing net hung to dry: cords in a loose diamond mesh, cork floats.
+			var cord := _cloth("c8b078")
+			for i in 7:
+				var x := (i-3)*0.12
+				_cyl(root,0.005,1.5,Vector3(x,0.95,0),cord,Vector3(0,0,0.18*(1 if i%2 == 0 else -1)),-1,4)
+			for j in 6: _cyl(root,0.005,0.8,Vector3(0,0.35+j*0.25,0),cord,Vector3(0,0,PI/2),-1,4)
+			for x in [-0.3,0.0,0.3]: _sphere(root,0.035,Vector3(x,0.25,0.02),_mat("rough_wood",Color("d8b890"),0.0,0.9,6.0))
+		"oars":
+			# A pair of oars: long looms with flat blades.
+			for i in 2:
+				var o := Node3D.new(); o.position = Vector3(0,0.03+i*0.04,i*0.18-0.09); o.rotation.y = 0.1*i; root.add_child(o)
+				_cyl(o,0.025,2.2,Vector3.ZERO,_wood(),flat,-1,8)
+				_box(o,Vector3(0.5,0.02,0.16),Vector3(1.2,0,0),_wood())
+		"buoy":
+			# Lobster-pot buoy: painted float on a stick.
+			_cyl(root,0.08,0.22,Vector3(0,0.11,0),_mat("rough_wood",Color("d86a2a"),0.0,0.6,4.0),Vector3.ZERO,0.1,12)
+			_cyl(root,0.012,0.4,Vector3(0,0.42,0),_wood(),Vector3.ZERO,-1,6)
+		"minihouse":
+			# A doll's-house model: plastered walls under a pitched roof.
+			_box(root,Vector3(0.4,0.25,0.3),Vector3(0,0.125,0),_mat("white_rough_plaster",Color("e8dcc4"),0.0,0.9,6.0))
+			for sx in [-1.0,1.0]: _box(root,Vector3(0.44,0.02,0.2),Vector3(0,0.31,sx*0.08),_mat("brown_planks_03",Color("8a5a3a"),0.0,0.8,6.0),Vector3(sx*0.6,0,0))
+		"perch":
+			# Parrot perch: a turned post on a foot with a crossbar.
+			_box(root,Vector3(0.4,0.04,0.4),Vector3(0,0.02,0),_wood())
+			_cyl(root,0.025,1.4,Vector3(0,0.72,0),_wood(),Vector3.ZERO,-1,8)
+			_cyl(root,0.015,0.5,Vector3(0,1.4,0),_wood(),flat,-1,8)
+		"snowman":
+			var snow := _mat("snow_02",Color("ffffff"),0.0,0.9,2.0)
+			for k in 3: _sphere(root,[0.45,0.33,0.24][k],Vector3(0,[0.42,1.05,1.55][k],0),snow)
+			_cyl(root,0.16,0.25,Vector3(0,1.85,0),_cloth("2a2a2e"),Vector3.ZERO,-1,12)
+			_cyl(root,0.03,0.18,Vector3(0,1.57,0.25),_mat("rough_wood",Color("e07020"),0.0,0.6,4.0),Vector3(PI/2,0,0),0.0,8)
 		"scaffold":
 			# Builders' scaffold: four lashed poles, ledgers and a plank deck.
 			for x in [-0.45,0.45]:

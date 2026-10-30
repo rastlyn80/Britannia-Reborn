@@ -1,3 +1,33 @@
+# Item catalogue: everything except corpses — 30 October 2026
+
+Owner request: do everything except corpses. **World 99.9% (214 → 7 open).** The 7 left are creature corpses, waiting for creature models. Britain and Trinsic stay at 100%.
+
+**Creature figurines and trophies** (about 60) reuse statue scans by body type, small, in stone or bronze:
+- dragons, serpents, the hydra and dinosaurs → the dragon statuette;
+- four-legged beasts → the tiger statue;
+- humanoids and demons → the stone figure;
+- insects and small crawlers → the newt;
+- gargoyles → the stone gargoyle.
+
+They will move to the real creature models once creatures exist in the animations.
+
+**Unnamed records and one-offs**, from graphic-keyed overrides on scans already pinned:
+- **Sea and stone:** sea life (coral scan), white drapes (curtains scan), cauldron over a fire, crystal formations, a blue orb (globe scan), an altar.
+- **Furniture and figures:** a bone chair (elven chair in white), statues, armour stands, small pots, scrolls and maps, a firewood pile.
+- **Machines and fireplaces:** Ter Mur moon machines and stasis elements (lighthouse scan in steel blue), marble fireplaces.
+
+**Crafted:** nets with cork floats, oars, lobster buoys, a doll's house, a parrot perch, a snowman.
+
+**By rule:**
+- **Effects:** light source (glow), dark source (death vortex), explosions, fire snake and fire trap (fire).
+- **Surfaces:** water and floor tiles, dark wall panels, a stone block landing, a counter.
+- **Hidden:** two "UNUSED" placeholders.
+- **Foliage:** leaf columns, tree stumps and bonsai become props, so your tree pack no longer swaps them for whole trees.
+
+**Fixes:**
+- A per-graphic override inside an `only_ids` entry falls back to the equipment mesh when it has none.
+- `scorp` is the woodworking tool, not a scorpion.
+
 # Human wearable 65% checkpoint � 30 October 2026
 
 **732/1,126 indexed graphics (65.01%), 351 registered categories**: +160 graphics / +93 category mappings from 50.80%, unchanged denominator. These additions are historical/indexed human fitted variants, **not newly certified active-server equip classes**. Source references include 103 EQUIPMENT, 9 HUMAN, 16 MONSTER and 32 absent mobtypes rows; the independent audit checks the actual wearable flag/layer/name/animation field. No creature bodies or server rules changed. See [HUMAN_WARDROBE_65.md](HUMAN_WARDROBE_65.md).

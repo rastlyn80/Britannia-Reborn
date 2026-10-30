@@ -2528,6 +2528,524 @@
       1.1,
       0.45
      ]
+    },
+    "15097": {
+     "model": "Objaverse/coral_pocillopora",
+     "length": 0.35,
+     "material": {
+      "color": "9a9a94",
+      "metallic": 0,
+      "roughness": 0.9
+     }
+    },
+    "15098": {
+     "model": "Objaverse/coral_pocillopora",
+     "length": 0.35,
+     "material": {
+      "color": "9a9a94",
+      "metallic": 0,
+      "roughness": 0.9
+     }
+    },
+    "15099": {
+     "model": "Objaverse/coral_pocillopora",
+     "length": 0.35,
+     "material": {
+      "color": "9a9a94",
+      "metallic": 0,
+      "roughness": 0.9
+     }
+    },
+    "15109": {
+     "model": "Objaverse/coral_pocillopora",
+     "length": 0.35,
+     "material": {
+      "color": "9a9a94",
+      "metallic": 0,
+      "roughness": 0.9
+     }
+    },
+    "15118": {
+     "model": "Objaverse/coral_pocillopora",
+     "length": 0.35,
+     "material": {
+      "color": "9a9a94",
+      "metallic": 0,
+      "roughness": 0.9
+     }
+    },
+    "15120": {
+     "model": "Objaverse/coral_pocillopora",
+     "length": 0.35,
+     "material": {
+      "color": "9a9a94",
+      "metallic": 0,
+      "roughness": 0.9
+     }
+    },
+    "15125": {
+     "model": "Objaverse/coral_pocillopora",
+     "length": 0.35,
+     "material": {
+      "color": "9a9a94",
+      "metallic": 0,
+      "roughness": 0.9
+     }
+    },
+    "15170": {
+     "model": "Objaverse/coral_pocillopora",
+     "length": 0.35,
+     "material": {
+      "color": "9a9a94",
+      "metallic": 0,
+      "roughness": 0.9
+     }
+    },
+    "15171": {
+     "model": "Objaverse/coral_pocillopora",
+     "length": 0.35,
+     "material": {
+      "color": "9a9a94",
+      "metallic": 0,
+      "roughness": 0.9
+     }
+    },
+    "15772": {
+     "model": "Objaverse/curtains_red",
+     "size": [
+      0.7,
+      2.0,
+      0.15
+     ],
+     "height": 2.0,
+     "anchor": "back",
+     "material": {
+      "color": "b8b8b4",
+      "metallic": 0,
+      "roughness": 0.9
+     }
+    },
+    "15775": {
+     "model": "Objaverse/curtains_red",
+     "size": [
+      0.7,
+      2.0,
+      0.15
+     ],
+     "height": 2.0,
+     "anchor": "back",
+     "material": {
+      "color": "b8b8b4",
+      "metallic": 0,
+      "roughness": 0.9
+     }
+    },
+    "15779": {
+     "model": "Objaverse/curtains_red",
+     "size": [
+      0.7,
+      2.0,
+      0.15
+     ],
+     "height": 2.0,
+     "anchor": "back",
+     "material": {
+      "color": "b8b8b4",
+      "metallic": 0,
+      "roughness": 0.9
+     }
+    },
+    "15781": {
+     "model": "Objaverse/curtains_red",
+     "size": [
+      0.7,
+      2.0,
+      0.15
+     ],
+     "height": 2.0,
+     "anchor": "back",
+     "material": {
+      "color": "b8b8b4",
+      "metallic": 0,
+      "roughness": 0.9
+     }
+    },
+    "15787": {
+     "model": "Objaverse/curtains_red",
+     "size": [
+      0.7,
+      2.0,
+      0.15
+     ],
+     "height": 2.0,
+     "anchor": "back",
+     "material": {
+      "color": "b8b8b4",
+      "metallic": 0,
+      "roughness": 0.9
+     }
+    },
+    "15788": {
+     "model": "Objaverse/curtains_red",
+     "size": [
+      0.7,
+      2.0,
+      0.15
+     ],
+     "height": 2.0,
+     "anchor": "back",
+     "material": {
+      "color": "b8b8b4",
+      "metallic": 0,
+      "roughness": 0.9
+     }
+    },
+    "15789": {
+     "model": "Objaverse/curtains_red",
+     "size": [
+      0.7,
+      2.0,
+      0.15
+     ],
+     "height": 2.0,
+     "anchor": "back",
+     "material": {
+      "color": "b8b8b4",
+      "metallic": 0,
+      "roughness": 0.9
+     }
+    },
+    "15790": {
+     "model": "Objaverse/curtains_red",
+     "size": [
+      0.7,
+      2.0,
+      0.15
+     ],
+     "height": 2.0,
+     "anchor": "back",
+     "material": {
+      "color": "b8b8b4",
+      "metallic": 0,
+      "roughness": 0.9
+     }
+    },
+    "15793": {
+     "model": "Objaverse/cauldron",
+     "size": [
+      0.7,
+      0.8,
+      0.7
+     ],
+     "height": 0.8
+    },
+    "16150": {
+     "model": "Objaverse/juniper",
+     "size": [
+      0.9,
+      1.2,
+      0.9
+     ],
+     "height": 1.2
+    },
+    "16154": {
+     "model": "Objaverse/statue_angel",
+     "size": [
+      0.3,
+      0.8,
+      0.3
+     ],
+     "height": 0.8
+    },
+    "16164": {
+     "model": "Objaverse/chair_old",
+     "size": [
+      0.5,
+      1.0,
+      0.5
+     ],
+     "height": 1.0
+    },
+    "12676": {
+     "model": "Reduced/celandine_01/celandine_01_2",
+     "size": [
+      0.4,
+      0.45,
+      0.4
+     ],
+     "height": 0.45,
+     "recolor": {
+      "from": "f2d020",
+      "to": "f4f1ea"
+     }
+    },
+    "12684": {
+     "model": "Objaverse/skeleton_bones",
+     "length": 0.7,
+     "lay": true,
+     "material": {
+      "color": "a85a5a",
+      "metallic": 0.0,
+      "roughness": 0.7
+     }
+    },
+    "731": {
+     "model": "Reduced/celandine_01/celandine_01_2",
+     "size": [
+      0.4,
+      0.45,
+      0.4
+     ],
+     "height": 0.45,
+     "recolor": {
+      "from": "f2d020",
+      "to": "f4f1ea"
+     }
+    },
+    "13920": {
+     "model": "Objaverse/globe_antique",
+     "size": [
+      1.3,
+      1.4,
+      1.3
+     ],
+     "height": 1.4,
+     "material": {
+      "color": "2a7a8a",
+      "metallic": 0.3,
+      "roughness": 0.15
+     }
+    },
+    "3760": {
+     "model": "Objaverse/vase_glazed",
+     "size": [
+      0.2,
+      0.35,
+      0.2
+     ],
+     "height": 0.35
+    },
+    "10840": {
+     "model": "Objaverse/elven_chair",
+     "size": [
+      0.8,
+      1.2,
+      0.7
+     ],
+     "height": 1.2,
+     "material": {
+      "color": "e0dcd0",
+      "metallic": 0,
+      "roughness": 0.6
+     }
+    },
+    "10849": {
+     "model": "fancy_picture_frame_01",
+     "height": 0.8,
+     "anchor": "back",
+     "rotation": 180,
+     "elevation": 1.3,
+     "size": [
+      0.8,
+      0.8,
+      0.06
+     ]
+    },
+    "10861": {
+     "model": "fancy_picture_frame_01",
+     "height": 0.8,
+     "anchor": "back",
+     "rotation": 180,
+     "elevation": 1.3,
+     "size": [
+      0.6,
+      0.8,
+      0.06
+     ]
+    },
+    "15286": {
+     "model": "fancy_picture_frame_01",
+     "height": 0.8,
+     "anchor": "back",
+     "rotation": 180,
+     "elevation": 1.3,
+     "size": [
+      0.8,
+      0.9,
+      0.06
+     ]
+    },
+    "12252": {
+     "model": "Objaverse/crystal_green",
+     "size": [
+      0.7,
+      1.8,
+      0.7
+     ],
+     "height": 1.8,
+     "material": {
+      "color": "3ab878",
+      "metallic": 0.1,
+      "roughness": 0.1
+     }
+    },
+    "13980": {
+     "model": "Objaverse/banner_post",
+     "size": [
+      0.4,
+      2.0,
+      0.4
+     ],
+     "height": 2.0,
+     "material": {
+      "color": "3a2a2e",
+      "metallic": 0.1,
+      "roughness": 0.6
+     }
+    },
+    "10844": {
+     "model": "Objaverse/table_wood_b",
+     "size": [
+      1.0,
+      0.8,
+      0.8
+     ],
+     "height": 0.8
+    },
+    "15786": {
+     "model": "Objaverse/armor_hauberk",
+     "size": [
+      0.6,
+      1.8,
+      0.4
+     ],
+     "height": 1.8
+    },
+    "12584": {
+     "model": "Objaverse/tree_dead",
+     "size": [
+      0.7,
+      0.9,
+      0.7
+     ],
+     "height": 0.9,
+     "material": {
+      "color": "8a2a20",
+      "metallic": 0,
+      "roughness": 0.7
+     }
+    },
+    "8196": {
+     "model": "Objaverse/clay_pots",
+     "size": [
+      0.2,
+      0.2,
+      0.2
+     ],
+     "height": 0.2
+    },
+    "7971": {
+     "model": "Objaverse/parchment_rolled",
+     "size": [
+      0.3,
+      0.06,
+      0.06
+     ],
+     "height": 0.06
+    },
+    "6468": {
+     "model": "Objaverse/parchment_rolled",
+     "size": [
+      0.3,
+      0.06,
+      0.06
+     ],
+     "height": 0.06
+    },
+    "6473": {
+     "model": "Objaverse/altar_stone",
+     "size": [
+      0.9,
+      1.2,
+      0.9
+     ],
+     "height": 1.2
+    },
+    "526": {
+     "model": "Objaverse/w_cleaver",
+     "length": 0.5,
+     "lay": true,
+     "material": {
+      "color": "d8d0c0",
+      "metallic": 0,
+      "roughness": 0.6
+     }
+    },
+    "13916": {
+     "model": "Objaverse/banner_worn",
+     "size": [
+      0.3,
+      0.9,
+      0.05
+     ],
+     "height": 0.9,
+     "anchor": "back",
+     "material": {
+      "color": "2a2a30",
+      "metallic": 0,
+      "roughness": 0.8
+     }
+    },
+    "13917": {
+     "model": "Objaverse/banner_worn",
+     "size": [
+      0.3,
+      0.9,
+      0.05
+     ],
+     "height": 0.9,
+     "anchor": "back",
+     "material": {
+      "color": "2a2a30",
+      "metallic": 0,
+      "roughness": 0.8
+     }
+    },
+    "16105": {
+     "model": "Objaverse/bench_scan",
+     "size": [
+      1.0,
+      0.9,
+      0.2
+     ],
+     "height": 0.9
+    },
+    "16153": {
+     "model": "Objaverse/statue_angel",
+     "size": [
+      0.3,
+      0.8,
+      0.3
+     ],
+     "height": 0.8
+    },
+    "16155": {
+     "model": "Objaverse/armor_hauberk",
+     "size": [
+      0.4,
+      1.0,
+      0.3
+     ],
+     "height": 1.0
+    },
+    "16156": {
+     "model": "Objaverse/armor_hauberk",
+     "size": [
+      0.4,
+      1.0,
+      0.3
+     ],
+     "height": 1.0
     }
    }
   },
@@ -5627,6 +6145,855 @@
     0.08
    ],
    "aligned": true
+  },
+  "sea serpent": {
+   "model": "Objaverse/dragon_statuette",
+   "height": 0.45,
+   "material": {
+    "color": "8a8678",
+    "metallic": 0,
+    "roughness": 0.85
+   }
+  },
+  "silver serpent": {
+   "model": "Objaverse/dragon_statuette",
+   "height": 0.45,
+   "material": {
+    "color": "8a8678",
+    "metallic": 0,
+    "roughness": 0.85
+   }
+  },
+  "hydra": {
+   "model": "Objaverse/dragon_statuette",
+   "height": 0.45,
+   "material": {
+    "color": "8a8678",
+    "metallic": 0,
+    "roughness": 0.85
+   }
+  },
+  "dragon turtle statue": {
+   "model": "Objaverse/dragon_statuette",
+   "height": 0.45,
+   "material": {
+    "color": "8a8678",
+    "metallic": 0,
+    "roughness": 0.85
+   }
+  },
+  "allosaurus statue": {
+   "model": "Objaverse/dragon_statuette",
+   "height": 0.45,
+   "material": {
+    "color": "8a8678",
+    "metallic": 0,
+    "roughness": 0.85
+   }
+  },
+  "anchisaur statue": {
+   "model": "Objaverse/dragon_statuette",
+   "height": 0.45,
+   "material": {
+    "color": "8a8678",
+    "metallic": 0,
+    "roughness": 0.85
+   }
+  },
+  "saurosaurus statue": {
+   "model": "Objaverse/dragon_statuette",
+   "height": 0.45,
+   "material": {
+    "color": "8a8678",
+    "metallic": 0,
+    "roughness": 0.85
+   }
+  },
+  "najasaurus statue": {
+   "model": "Objaverse/dragon_statuette",
+   "height": 0.45,
+   "material": {
+    "color": "8a8678",
+    "metallic": 0,
+    "roughness": 0.85
+   }
+  },
+  "gallusaurus statue": {
+   "model": "Objaverse/dragon_statuette",
+   "height": 0.45,
+   "material": {
+    "color": "8a8678",
+    "metallic": 0,
+    "roughness": 0.85
+   }
+  },
+  "dimetrosaur statue": {
+   "model": "Objaverse/dragon_statuette",
+   "height": 0.45,
+   "material": {
+    "color": "8a8678",
+    "metallic": 0,
+    "roughness": 0.85
+   }
+  },
+  "ridgeback": {
+   "model": "Objaverse/dragon_statuette",
+   "height": 0.45,
+   "material": {
+    "color": "8a8678",
+    "metallic": 0,
+    "roughness": 0.85
+   }
+  },
+  "kirin": {
+   "model": "Objaverse/dragon_statuette",
+   "height": 0.45,
+   "material": {
+    "color": "8a8678",
+    "metallic": 0,
+    "roughness": 0.85
+   }
+  },
+  "gorilla": {
+   "model": "Objaverse/tiger_statue",
+   "length": 0.5
+  },
+  "silverback gorilla": {
+   "model": "Objaverse/tiger_statue",
+   "length": 0.5
+  },
+  "silver wolf": {
+   "model": "Objaverse/tiger_statue",
+   "length": 0.5
+  },
+  "sphinx": {
+   "model": "Objaverse/tiger_statue",
+   "length": 0.5
+  },
+  "squirrel statue": {
+   "model": "Objaverse/tiger_statue",
+   "length": 0.5
+  },
+  "juggernaut": {
+   "model": "Objaverse/tiger_statue",
+   "length": 0.5
+  },
+  "bullfrog": {
+   "model": "Objaverse/tiger_statue",
+   "length": 0.5
+  },
+  "demon knight": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "daemon": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "reaper": {
+   "model": "Objaverse/tree_dead",
+   "height": 0.6,
+   "material": {
+    "color": "3a3430",
+    "metallic": 0,
+    "roughness": 0.8
+   }
+  },
+  "shadow knight": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "lord blackthorn": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "elf male": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "lady melisande": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "chief paroxysmus": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "efreet": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "fire elemental": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "moloch demon": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "horde demon": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "bone daemon": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "patchwork skeleton": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "abyssmal horror": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "devourer of souls": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "impaler": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "gore fiend": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "ravager": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "flesh renderer": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "darknight creeper": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "wanderer of the voi": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "exodus overseer": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "exodus minion": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "changeling": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "monstrous interred": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "giant beetle": {
+   "model": "Objaverse/newt",
+   "length": 0.4,
+   "material": {
+    "color": "4a3a2a",
+    "metallic": 0.2,
+    "roughness": 0.5
+   }
+  },
+  "giant scorpion": {
+   "model": "Objaverse/newt",
+   "length": 0.4,
+   "material": {
+    "color": "4a3a2a",
+    "metallic": 0.2,
+    "roughness": 0.5
+   }
+  },
+  "solen worker": {
+   "model": "Objaverse/newt",
+   "length": 0.4,
+   "material": {
+    "color": "4a3a2a",
+    "metallic": 0.2,
+    "roughness": 0.5
+   }
+  },
+  "solen warrior": {
+   "model": "Objaverse/newt",
+   "length": 0.4,
+   "material": {
+    "color": "4a3a2a",
+    "metallic": 0.2,
+    "roughness": 0.5
+   }
+  },
+  "solen queen": {
+   "model": "Objaverse/newt",
+   "length": 0.4,
+   "material": {
+    "color": "4a3a2a",
+    "metallic": 0.2,
+    "roughness": 0.5
+   }
+  },
+  "terathan warrior": {
+   "model": "Objaverse/newt",
+   "length": 0.4,
+   "material": {
+    "color": "4a3a2a",
+    "metallic": 0.2,
+    "roughness": 0.5
+   }
+  },
+  "swarm": {
+   "model": "Objaverse/newt",
+   "length": 0.4,
+   "material": {
+    "color": "4a3a2a",
+    "metallic": 0.2,
+    "roughness": 0.5
+   }
+  },
+  "sand vortex": {
+   "model": "Objaverse/newt",
+   "length": 0.4,
+   "material": {
+    "color": "4a3a2a",
+    "metallic": 0.2,
+    "roughness": 0.5
+   }
+  },
+  "troll frame": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "ogre frame": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "lizardman frame": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "ettin frame": {
+   "model": "Objaverse/orc_sculpt",
+   "height": 0.5,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "gargoyle frame": {
+   "model": "Objaverse/gargoyle_stone",
+   "height": 0.5
+  },
+  "large glowing beetl": {
+   "model": "Objaverse/crystal_green",
+   "height": 0.3,
+   "material": {
+    "color": "6ae070",
+    "metallic": 0.1,
+    "roughness": 0.1
+   }
+  },
+  "moonpoweredmachine s": {
+   "model": "Objaverse/lighthouse_brick",
+   "height": 1.6,
+   "material": {
+    "color": "7a8494",
+    "metallic": 0.2,
+    "roughness": 0.6
+   }
+  },
+  "stasiselement frame0": {
+   "model": "Objaverse/lighthouse_brick",
+   "height": 1.4,
+   "material": {
+    "color": "6a7484",
+    "metallic": 0.2,
+    "roughness": 0.6
+   }
+  },
+  "moonstone_element_c": {
+   "model": "Objaverse/crystal_ball",
+   "height": 0.3,
+   "material": {
+    "color": "d8dce4",
+    "metallic": 0.6,
+    "roughness": 0.2
+   }
+  },
+  "skinned rabbit": {
+   "model": "Objaverse/meat_raw",
+   "length": 0.3
+  },
+  "dragon prow": {
+   "model": "Objaverse/dragon_statuette",
+   "height": 1.4,
+   "material": {
+    "color": "7a5a36",
+    "metallic": 0,
+    "roughness": 0.8
+   }
+  },
+  "cyclone": {
+   "model": "Objaverse/w_dagger",
+   "length": 0.35,
+   "lay": true,
+   "cluster": 2,
+   "spread": [
+    0.02,
+    0.03
+   ]
+  },
+  "boomerang": {
+   "model": "Objaverse/bone_tibia",
+   "length": 0.4,
+   "lay": true,
+   "material": {
+    "color": "8a6a3a",
+    "metallic": 0,
+    "roughness": 0.6
+   }
+  },
+  "wall set 1 south": {
+   "model": "Objaverse/weapon_rack",
+   "height": 1.2,
+   "anchor": "back"
+  },
+  "wall set 1 east": {
+   "model": "Objaverse/weapon_rack",
+   "height": 1.2,
+   "anchor": "back"
+  },
+  "weapon glave animate": {
+   "model": "Objaverse/w_halberd",
+   "length": 1.6,
+   "lay": true
+  },
+  "crab south": {
+   "model": "Objaverse/lobster",
+   "length": 0.3,
+   "material": {
+    "color": "c86a30",
+    "metallic": 0,
+    "roughness": 0.6
+   }
+  },
+  "crab east": {
+   "model": "Objaverse/lobster",
+   "length": 0.3,
+   "rotation": 90,
+   "material": {
+    "color": "c86a30",
+    "metallic": 0,
+    "roughness": 0.6
+   }
+  },
+  "crabmount south": {
+   "model": "Objaverse/lobster",
+   "length": 0.5,
+   "anchor": "back",
+   "elevation": 1.3,
+   "pitch": 90,
+   "material": {
+    "color": "c86a30",
+    "metallic": 0,
+    "roughness": 0.6
+   }
+  },
+  "pulley crane west": {
+   "model": "Objaverse/crane_wood",
+   "height": 2.4
+  },
+  "resin south": {
+   "model": "Objaverse/clay_pots",
+   "height": 0.2
+  },
+  "gloss south": {
+   "model": "Objaverse/clay_pots",
+   "height": 0.2
+  },
+  "decorative acorn": {
+   "model": "Objaverse/pumpkin",
+   "height": 0.8,
+   "material": {
+    "color": "8a5a2a",
+    "metallic": 0,
+    "roughness": 0.6
+   }
+  },
+  "bonsai tree": {
+   "model": "Reduced/potted_plant_02/potted_plant_02",
+   "height": 0.6
+  },
+  "fertile dirt": {
+   "model": "Objaverse/hay_pile",
+   "size": [
+    0.3,
+    0.1,
+    0.3
+   ],
+   "height": 0.1,
+   "material": {
+    "color": "3a2a1e",
+    "metallic": 0,
+    "roughness": 0.95
+   }
+  },
+  "cut hair": {
+   "model": "Objaverse/hay_pile",
+   "size": [
+    0.3,
+    0.04,
+    0.3
+   ],
+   "height": 0.04,
+   "material": {
+    "color": "5a4a3a",
+    "metallic": 0,
+    "roughness": 0.9
+   }
+  },
+  "fukiya darts": {
+   "model": "Objaverse/arrow_lowpoly",
+   "length": 0.18,
+   "lay": true,
+   "cluster": 3,
+   "spread": [
+    0.01,
+    0.02
+   ],
+   "aligned": true
+  },
+  "elven bow stringer": {
+   "model": "Objaverse/pliers",
+   "length": 0.25,
+   "lay": true
+  },
+  "virtue stone": {
+   "model": "Objaverse/rune_stone",
+   "height": 0.3,
+   "material": {
+    "color": "c8c0e0",
+    "metallic": 0.2,
+    "roughness": 0.4
+   }
+  },
+  "mangled dread horn": {
+   "model": "Objaverse/bone_tibia",
+   "length": 0.35,
+   "lay": true,
+   "material": {
+    "color": "4a3a3a",
+    "metallic": 0,
+    "roughness": 0.6
+   }
+  },
+  "incense_south": {
+   "model": "Objaverse/brazier_pole",
+   "height": 0.5
+  },
+  "roasting pig grill e": {
+   "model": "Objaverse/firewood",
+   "length": 1.0
+  },
+  "silver snake skin": {
+   "model": "Objaverse/rope_coil",
+   "length": 0.3,
+   "material": {
+    "color": "c8ccd2",
+    "metallic": 0.6,
+    "roughness": 0.3
+   }
+  },
+  "landscape l 01 south": {
+   "model": "fancy_picture_frame_01",
+   "height": 0.8,
+   "anchor": "back",
+   "rotation": 180,
+   "elevation": 1.3
+  },
+  "landscape s 02 south": {
+   "model": "fancy_picture_frame_01",
+   "height": 0.8,
+   "anchor": "back",
+   "rotation": 180,
+   "elevation": 1.3
+  },
+  "landscape s 01 south": {
+   "model": "fancy_picture_frame_01",
+   "height": 0.8,
+   "anchor": "back",
+   "rotation": 180,
+   "elevation": 1.3
+  },
+  "dragonhead south": {
+   "model": "Objaverse/dragon_statuette",
+   "height": 1.0,
+   "material": {
+    "color": "6e6a62",
+    "metallic": 0,
+    "roughness": 0.9
+   }
+  },
+  "incubator": {
+   "model": "Objaverse/chest_wood",
+   "length": 0.8,
+   "material": {
+    "color": "5a3a6a",
+    "metallic": 0,
+    "roughness": 0.6
+   }
+  },
+  "spell stone": {
+   "model": "Objaverse/gem_diamond",
+   "length": 0.1,
+   "material": {
+    "color": "8a3ad0",
+    "metallic": 0.2,
+    "roughness": 0.1
+   }
+  },
+  "dragon head": {
+   "model": "Objaverse/dragon_statuette",
+   "height": 0.9,
+   "anchor": "back",
+   "elevation": 1.0,
+   "material": {
+    "color": "a02818",
+    "metallic": 0.1,
+    "roughness": 0.5
+   }
+  },
+  "valentinerose dropsp": {
+   "model": "Objaverse/rose_purple",
+   "length": 0.3,
+   "lay": true,
+   "palette": {
+    "Pedals": "b01828"
+   }
+  },
+  "barrel tap": {
+   "model": "Objaverse/lever_old",
+   "length": 0.15
+  },
+  "gargoyle_plate_kilt_": {
+   "model": "Objaverse/armor_plate",
+   "length": 0.5,
+   "material": {
+    "color": "8a8e94",
+    "metallic": 0.7,
+    "roughness": 0.4
+   }
+  },
+  "fireplaceb marble gr": {
+   "model": "Objaverse/fireplace_rustic",
+   "height": 1.4,
+   "face": "wall",
+   "material": {
+    "color": "6a8a78",
+    "metallic": 0,
+    "roughness": 0.5
+   }
+  },
+  "fireplacea marble gr": {
+   "model": "Objaverse/fireplace_rustic",
+   "height": 1.4,
+   "face": "wall",
+   "material": {
+    "color": "6a8a78",
+    "metallic": 0,
+    "roughness": 0.5
+   }
+  },
+  "fireplacec marble gr": {
+   "model": "Objaverse/fireplace_rustic",
+   "height": 1.4,
+   "face": "wall",
+   "material": {
+    "color": "6a8a78",
+    "metallic": 0,
+    "roughness": 0.5
+   }
+  },
+  "wig": {
+   "model": "Objaverse/hide_dark",
+   "length": 0.25,
+   "lay": true,
+   "material": {
+    "color": "8a8a88",
+    "metallic": 0,
+    "roughness": 0.9
+   }
+  },
+  "leaves": {
+   "model": "Objaverse/hedge_scan",
+   "size": [
+    0.6,
+    1.8,
+    0.4
+   ],
+   "height": 1.8
+  },
+  "leather do": {
+   "model": "Objaverse/armor_plate",
+   "length": 0.55,
+   "material": {
+    "color": "8a5a20",
+    "metallic": 0,
+    "roughness": 0.6
+   }
+  },
+  "leather haidate": {
+   "model": "Objaverse/armor_plate",
+   "length": 0.5,
+   "material": {
+    "color": "8a5a20",
+    "metallic": 0,
+    "roughness": 0.6
+   }
   }
  }
 }

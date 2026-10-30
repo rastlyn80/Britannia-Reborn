@@ -143,14 +143,26 @@ static func _resolve(id: int,info: Dictionary) -> Dictionary:
  if n.begins_with("fill ") and height > 0: return base.merged({"kind":"wall","facadeFamily":"marble","asset":"Village/Wall_UnevenBrick_Straight.gltf"})
  # Wall-flagged but sculptural: "keep" stops the wall-flag override.
  if n == "stone spike" or n.begins_with("exodus nexus"): return base.merged({"kind":"prop","model":"replacement","keep":true})
- if n == "marble bar exterior": return base.merged({"kind":"counter"})
+ if n == "marble bar exterior" or n == "marble bar sink fill": return base.merged({"kind":"counter"})
  if n == "footprints": return base.merged({"kind":"decal","decal":"mud"})
+ # Remaining one-offs checked against their art.
+ if id == 13477: return base.merged({"kind":"water"})
+ if id in [13895,13896,13897,13898]: return base.merged({"kind":"wall","facadeFamily":"dungeon","asset":"Village/Wall_UnevenBrick_Straight.gltf"})
+ if id == 13837: return base.merged({"kind":"landing"})
+ if id == 13905: return base.merged({"kind":"floor","surface":"dungeon"})
+ if id == 1045: return base.merged({"kind":"floor","surface":"cave"})
+ if n in ["forest","ree"]: return base.merged({"kind":"floor","surface":"grass"})
+ if id in [6345,3674]: return base.merged({"kind":"invisible","reason":"placeholder UNUSED art"})
+ if n == "light source": return base.merged({"kind":"effect","effect":"glow"})
+ if n == "dark source": return base.merged({"kind":"effect","effect":"death vortex"})
+ if n in ["explosion","explosion ball","fire snake","fire trap"]: return base.merged({"kind":"effect","effect":"fire"})
+ if (n == "leaves" and id >= 12488 and id <= 12499) or n in ["tree stump","bonsai tree"]: return base.merged({"kind":"prop","model":"replacement","keep":true})
+ if id == 16105: return base.merged({"kind":"prop","model":"replacement","keep":true})
  if n == "elven bed": return base.merged({"kind":"bed","asset":"PolyHaven/GothicBed_01/GothicBed_01_1k.gltf"})
  # Ship rigging and Ter Mur tower toppers are built pieces, not foliage.
  if n in ["mast","spar","sail","gargoyle tower toppe"]: return base.merged({"kind":"prop","model":"replacement","keep":true})
  # Named "sand" but drawn as tall cyan crystal clusters.
  if id in [13814,13815,13816]: return base.merged({"kind":"prop","model":"replacement"})
- if id == 16105: return base.merged({"kind":"fence","asset":"MedievalKit/Fence_2m.gltf"})
  # "crystalline fragment" 512 is drawn as a dressed sandstone wall section
  # (Trinsic's town walls); its name, not its art, says crystal.
  if id == 512: return base.merged({"kind":"wall","facadeFamily":"sandstone","asset":"Village/Wall_UnevenBrick_Straight.gltf"})

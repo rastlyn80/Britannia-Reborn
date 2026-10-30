@@ -28,7 +28,7 @@ static func entry_for(name: String, id := -1) -> Dictionary:
 	var override: Dictionary = found.get("ids",{}).get(str(id),{})
 	if override.get("skip",false): return {}
 	# An entry that only lists graphics ("only_ids": unnamed records) needs one of them.
-	if found.get("only_ids",false) and override.is_empty(): return {}
+	if found.get("only_ids",false) and override.is_empty(): return wardrobe(id,name)
 	return found.merged(override,true)
 
 # Spell scrolls by graphic range: Magery, Necromancy, Spellweaving and
