@@ -177,6 +177,9 @@ func upsert(serial: int, item: Dictionary) -> void:
  nodes[serial] = root
  if rule.get("family","") == "sign": call_deferred("_label_sign",serial)
  root.position = scene.entity_point(item.x,item.y,item.z)
+ # A corpse (0x2006) carries its creature's body in the amount field: horses
+ # lie as the shared horse model held at the end of its death clip.
+ if int(item.id) == 0x2006 and _equine_corpse(root,item,serial): return
  # Modern Britain: server decoration whose name matches a library slot uses
  # the owner-pack/CC0 library model, set onto the surface under it.
  if preload("res://Presentation/GraphicsMode.gd").modern() and not str(rule.family) in ["door","sign","lamp","noticeboard","gameboard","backgammon"] and not preload("res://Presentation/ReviewedCatalog.gd").scanned(int(item.id)) and not preload("res://Presentation/PropReplacements.gd").has(str(rule.get("display_name",scene.world.get("staticData",{}).get(str(int(item.id)),{}).get("name",""))),int(item.id)) and not preload("res://Presentation/CraftedProps.gd").handles(str(rule.get("display_name",scene.world.get("staticData",{}).get(str(int(item.id)),{}).get("name","")))):
@@ -525,6 +528,34 @@ func engrave(root: Node3D, text: String) -> void:
   label.pixel_size = pixel
  var floating: Label3D = root.get_node_or_null("BuildingName")
  if floating: floating.hide()
+
+# Horse corpses use the living horse's model, coat and hue (HorseVisual),
+# posed at the last frame of its authored death clip and left still: no reins,
+# gait or ground-contact sway. Other creatures keep the generic corpse look
+# until their models exist.
+func _equine_corpse(root: Node3D,item: Dictionary,serial: int) -> bool:
+ var Horse := preload("res://Presentation/HorseVisual.gd")
+ var body := int(item.get("amount",0))
+ if not Horse.available() or not Horse.BODIES.has(body): return false
+ var horse: Node3D = Horse.new()
+ horse.name = "CorpseVisual"
+ horse.native_body = body
+ horse.native_hue = int(item.get("hue",0))
+ root.add_child(horse)
+ horse.apply_identity(body,int(item.get("hue",0)))
+ horse.dead = true
+ horse.current_clip = "death"
+ horse.contact.enabled = false
+ horse.reins.visible = false
+ horse.animator.play("death")
+ horse.animator.seek(horse.animator.get_animation("death").length,true)
+ horse.animator.pause()
+ horse.set_process(false)
+ horse.set_physics_process(false)
+ horse.rotation.y = fposmod(float(serial)*0.618034,1.0)*TAU
+ root.set_meta("corpse_body",body)
+ _body(root,Vector3(2.2,0.7,1.2),Vector3(0,0.35,0),serial,false)
+ return true
 
 # Iron-bound chest (or an all-iron strongbox) in photoscanned oak and rusted
 # iron: carcass, barrel lid, corner straps, bands and a hasp plate.

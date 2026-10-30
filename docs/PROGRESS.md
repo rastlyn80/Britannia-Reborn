@@ -1,3 +1,15 @@
+# Horse corpses use the horse model — 30 October 2026
+
+Owner request: use the new horse model as the base for horse corpses.
+
+- **How it works:** a corpse item (0x2006) carries its creature's body in the amount field. When that body is one of the four ordinary horse coats, `WorldItems._equine_corpse` draws the shared horse model (local `warhorse`) with that coat and hue. It holds the last frame of the authored death clip, fixed in place: no reins, gait or ground-contact sway, a deterministic yaw per serial and a pick and contact body.
+- **Unchanged:** other creatures' corpses keep their generic look until their models exist.
+- **Test:** `WorldItemTests` checks that a horse corpse holds the final death pose and that a human corpse is unaffected (37/37).
+- **Known gap:** the warhorse asset bakes its saddle and tack into the body mesh, so a horse corpse still wears its tack.
+- **Expanded equines:** nightmares, steeds and unicorns follow once the Codex equine registry lands (currently it uses the committed `HorseVisual.BODIES`).
+- **Process note:** while reverting a temporary edit, the Codex session's uncommitted `HorseVisual.gd` changes were discarded by `git checkout`. They were rebuilt line for line from earlier reads; every function sits at its original line and `EquineTests` passes 4,477/4,477. The file is left uncommitted for that session.
+- **Codex WIP fails a committed test:** `HorsePolishTests` reports 32 failures against the work-in-progress registry names ("Horse / golden tan" against "golden tan"). This is outside this change.
+
 # Item catalogue: everything except corpses — 30 October 2026
 
 Owner request: do everything except corpses. **World 99.9% (214 → 7 open).** The 7 left are creature corpses, waiting for creature models. Britain and Trinsic stay at 100%.

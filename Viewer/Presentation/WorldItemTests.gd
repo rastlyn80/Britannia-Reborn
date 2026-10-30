@@ -141,6 +141,16 @@ func run() -> void:
  check(is_equal_approx(absf(angle_difference(a.yaw,turned_sign.yaw)),PI/2),"perpendicular facade rotates the sign plane by ninety degrees")
  game.item_label_received.emit(0x40000003,"The Quiet Inn")
  check(sign.get_node("BuildingName").text == "The Quiet Inn" and sign.get_node("BuildingName").visible,"server-confirmed building name appears on the clicked sign")
+ # Horse corpses (0x2006, body in the amount) lie as the horse model in its
+ # held death pose when the local horse art is present.
+ if preload("res://Presentation/HorseVisual.gd").available():
+  game._world_item({"serial":0x40000010,"id":0x2006,"amount":0xe2,"x":1007,"y":2007,"z":20,"facet":1})
+  var corpse: Node3D = view.nodes[0x40000010].get_node_or_null("CorpseVisual")
+  check(corpse != null and corpse.dead and corpse.animator.assigned_animation == "death" and not corpse.animator.is_playing() and not corpse.reins.visible,"a horse corpse holds the horse model's final death pose")
+  game._world_item({"serial":0x40000011,"id":0x2006,"amount":0x190,"x":1008,"y":2007,"z":20,"facet":1})
+  check(view.nodes[0x40000011].get_node_or_null("CorpseVisual") == null,"other creatures' corpses keep their generic look")
+  game._remove_world_item(0x40000010)
+  game._remove_world_item(0x40000011)
  game._remove_world_item(0x40000003)
  check(not view.nodes.has(0x40000003),"server visibility removal also removes sign visuals")
  game.close()
