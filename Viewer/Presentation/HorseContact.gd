@@ -6,13 +6,14 @@ var hoof_errors: Array[float]=[]
 var support_tilt:=Vector2.ZERO
 var enabled:=true
 var support_origin_y:=0.
+var hoof_height:=.17
 func sample(space: PhysicsDirectSpaceState3D,origin: Vector3) -> void:
 	var rig:=get_skeleton()
 	support_origin_y=origin.y
 	if rig==null:return
 	for chain: Array in CHAINS:
 		var end:=rig.find_bone(chain[3])
-		var hoof: Vector3=rig.global_transform*rig.get_bone_global_pose(end).origin-Vector3.UP*.17
+		var hoof: Vector3=rig.global_transform*rig.get_bone_global_pose(end).origin-Vector3.UP*hoof_height
 		var from:=Vector3(hoof.x,origin.y+.65,hoof.z)
 		var hit:=space.intersect_ray(PhysicsRayQueryParameters3D.create(from,from-Vector3.UP*1.3,1))
 		if enabled and not hit.is_empty() and hit.normal.y>.75 and absf(hit.position.y-origin.y)<.45:contacts[chain[3]]=hit
@@ -38,7 +39,7 @@ func _process_modification_with_delta(_delta: float) -> void:
 		if not contacts.has(chain[3]):continue
 		var a:=rig.find_bone(chain[0]);var b:=rig.find_bone(chain[1]);var c:=rig.find_bone(chain[2]);var end:=rig.find_bone(chain[3])
 		var ankle:=rig.get_bone_global_pose(c);var knee:=rig.get_bone_global_pose(b).origin;var hip:=rig.get_bone_global_pose(a).origin
-		var hoof: Vector3=rig.global_transform*rig.get_bone_global_pose(end).origin-Vector3.UP*.17
+		var hoof: Vector3=rig.global_transform*rig.get_bone_global_pose(end).origin-Vector3.UP*hoof_height
 		var hit: Dictionary=contacts[chain[3]]
 		# Only stance feet follow support. Animated swing clearance is retained.
 		var lift:=maxf(0.,hoof.y-support_origin_y)
@@ -50,5 +51,5 @@ func _process_modification_with_delta(_delta: float) -> void:
 		var pose:=rig.get_bone_global_pose(c)
 		var up: Vector3=(rig.global_basis.inverse()*hit.normal).normalized()
 		pose.basis=Basis(Quaternion.IDENTITY.slerp(Quaternion(Vector3.UP,up),strength*.5))*ankle.basis;rig.set_bone_global_pose(c,pose)
-		var corrected: Vector3=rig.global_transform*rig.get_bone_global_pose(end).origin-Vector3.UP*.17
+		var corrected: Vector3=rig.global_transform*rig.get_bone_global_pose(end).origin-Vector3.UP*hoof_height
 		if strength>.95:hoof_errors.append(absf(corrected.y-hit.position.y))

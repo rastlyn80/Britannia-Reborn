@@ -97,6 +97,12 @@ if (Test-Path "$root/Viewer/local-art/horses/warhorse.glb") {
   if ($LASTEXITCODE) { throw 'Horse identity, mounted actions and rider contact checks failed' }
   & $godot --headless --path "$root/Viewer" --script res://Presentation/HorsePolishTests.gd
   if ($LASTEXITCODE) { throw 'Horse appearance, transitions and slope support checks failed' }
+  if (Test-Path "$root/Server/ModernUO/Projects/UOContent/Mobiles/Animals/Mounts/Horse.cs") {
+    & python -B "$root/scripts/audit-equines.py"
+    if ($LASTEXITCODE) { throw 'Equine native identity audit failed' }
+  }
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/EquineTests.gd
+  if ($LASTEXITCODE) { throw 'Equine body, accessory, hue and rider checks failed' }
 }
 & $godot --headless --path "$root\Viewer" --script res://Presentation/PresentationTests.gd
 if ($LASTEXITCODE) { throw 'Presentation tests failed' }

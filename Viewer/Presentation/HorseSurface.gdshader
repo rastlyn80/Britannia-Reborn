@@ -11,6 +11,8 @@ uniform float coat_change = 0.;
 uniform bool grey_coat = false;
 uniform bool show_regions = false;
 uniform bool use_vertex_regions = false;
+uniform float magic_glow = 0.;
+uniform vec3 magic_colour : source_color = vec3(0.);
 varying vec3 bind_position;
 void vertex(){bind_position=VERTEX;}
 void fragment() {
@@ -40,6 +42,7 @@ void fragment() {
   }
  }
  ALBEDO=colour;
+ EMISSION=magic_colour*magic_glow*fur;
  if(show_regions){ALBEDO=vec3(0.);EMISSION=vec3(fur);}
  NORMAL_MAP=texture(normal_texture,UV).rgb;
  NORMAL_MAP_DEPTH=.65;

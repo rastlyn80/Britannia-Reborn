@@ -1,3 +1,9 @@
+# Equine family expansion - 30 October 2026
+
+Implemented **15/26 equine body routes** (four previously supported), plus ethereal horse/unicorn item-only mounts, by reusing the licensed horse rig with new coats, fitted accessories, effects and bounded proportion changes. Evidence: 4,537 runtime checks / 1,152 rider poses, 15 scaled terrain-support samples, 158 GPU checks, 581 actual isolated-server/two-client checks and 34 review frames; full verification exits 0. Human wearable denominator/coverage and existing action-category counts are unchanged. See [EQUINE_EXPANSION.md](EQUINE_EXPANSION.md).
+
+Next: owner art review; acquire and inspect skeletal/ki-rin candidates, retarget and fit their distinct geometry; resolve nine historical/client-only aliases; extend animal actions and corpse routes. Continue traced asset reuse, native hue/identity and server riding restrictions. Free page listings are not acquired/verified rigs. Keep optional art packaging and clean-install validation explicit; a Git clone still needs asset setup.
+
 # Human wearable 65% checkpoint — 30 October 2026
 
 **732/1,126 indexed graphics (65.01%), 351 registered categories**: +160 graphics / +93 category mappings from 50.80%, unchanged denominator. These additions are historical/indexed human fitted variants, **not newly certified active-server equip classes**. Source references include 103 EQUIPMENT, 9 HUMAN, 16 MONSTER and 32 absent mobtypes rows; the independent audit checks the actual wearable flag/layer/name/animation field. No creature bodies or server rules changed. See [HUMAN_WARDROBE_65.md](HUMAN_WARDROBE_65.md).

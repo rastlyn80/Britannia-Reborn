@@ -16,7 +16,7 @@
     {"name": "rear", "origin": "publisher", "state": "verified", "native_use": "prototype classic attack category; preview is not a new gameplay command"},
     {"name": "gallop", "origin": "authored canter-derived leg rephasing and suspension", "state": "prototype", "native_use": "connected fast travel; further cadence/biomechanical polish remains"},
     {"name": "hit", "origin": "authored recoil", "state": "prototype", "native_use": "new-protocol type 4; runtime checked, combat-scene quality remains"},
-    {"name": "death", "origin": "authored fold/roll/hold", "state": "prototype", "native_use": "classic 8/12 and new type 3; mobile action route only, corpse replacement still missing"},
+    {"name": "death", "origin": "authored fold/roll/hold", "state": "prototype", "native_use": "classic 8/12 and new type 3; mobile actions plus ordinary-horse corpses in the world-item layer; expanded equine corpse routes remain open"},
     {"name": "mount", "origin": "authored saddle/stirrup/hand IK trajectory", "state": "verified", "native_use": "after authoritative mount equip; initial already-mounted appearances seat directly"},
     {"name": "dismount", "origin": "authored reverse leg-over trajectory", "state": "verified", "native_use": "after authoritative unequip; movement/action/remount interruptible"},
     {"name": "eat", "state": "missing"},
@@ -27,6 +27,6 @@
   "rider_groups": {"connected": 7, "total": 7, "quality": "seated category replacements, not every variation final"},
   "contacts": {"saddle_stirrups": "verified sampled", "ground": "bounded physics support on modest slopes; swing retained", "reins": "free hand or pommel when both hands occupied; equipment grips preserved"},
   "clothing": {"riding_variants": ["robe", "skirt", "kilt"], "bodies": [400, 401], "state": "prototype with sampled GPU opacity verification", "limits": "no full cloth simulation or universal interpenetration proof"},
-  "other_mount_families": "missing; do not substitute ordinary horse art",
+  "other_mount_families": "Expanded equine routes and explicit gaps: EquineRegistry.gd and docs/EQUINE_EXPANSION.md. Non-equine mounts remain missing; do not substitute ordinary horse art.",
   "owner_review": "first horse batch approved; this polish batch awaiting visual review"
 }

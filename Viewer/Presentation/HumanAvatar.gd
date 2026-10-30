@@ -14,7 +14,7 @@ var retiring_horse:=false
 var ground_visual_offset:=Vector3.ZERO
 
 func _ready() -> void:
-	if Horse.BODIES.has(initial_body) and Horse.available():
+	if Horse.supports_body(initial_body) and Horse.available():
 		add_child(visual_root);_switch_horse(initial_body,0)
 	elif Wardrobe.human(initial_body) and Human.available(Wardrobe.female(initial_body)):
 		add_child(visual_root)
@@ -87,7 +87,7 @@ func _sync_mount(worn: Array) -> void:
 			human_visual.cancel_action()
 		elif retiring_horse:rider_contact.begin_mount(true)
 		retiring_horse=false;horse_visual.visible=true;ground_visual_offset=Vector3.ZERO;human_visual.mount_transition_active=false
-		horse_visual.apply_identity(body,int(item.get("hue",0)))
+		horse_visual.apply_identity(body,int(item.get("hue",0)),int(item.get("id",0)))
 		human_visual.grip.holding=true;human_visual.grip.left_holding=true
 	else:
 		if not item.is_empty() and horse_visual!=null:
@@ -99,7 +99,7 @@ func _sync_mount(worn: Array) -> void:
 			horse_visual.visible=false
 		if not item.is_empty():set_meta("deferred_mount",item)
 		elif has_meta("deferred_mount"):remove_meta("deferred_mount")
-	_update_pick_volume(supported or Horse.BODIES.has(native_body))
+	_update_pick_volume(supported or Horse.supports_body(native_body))
 
 func _update_pick_volume(large: bool) -> void:
 	for child in get_children():
@@ -147,7 +147,7 @@ func apply_server_appearance(entity: Dictionary, worn: Array, details: Dictionar
 	set_meta("server_appearance",server_appearance)
 	var body := int(entity.get("body",0))
 	native_body = body
-	if Horse.BODIES.has(body) and Horse.available():
+	if Horse.supports_body(body) and Horse.available():
 		if horse_visual==null or human_visual!=null:_switch_horse(body,int(entity.get("hue",0)))
 		horse_visual.apply_identity(body,int(entity.get("hue",0)));_update_pick_volume(true);return
 	if not Wardrobe.human(body):

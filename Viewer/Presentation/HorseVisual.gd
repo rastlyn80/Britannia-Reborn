@@ -2,6 +2,8 @@ extends Node3D
 ## Licensed horse art; server body/mount identities remain authoritative.
 const PATH := "res://local-art/horses/warhorse.glb"
 const REGIONS_PATH := "res://local-art/horses/warhorse-regions.glb"
+const Equines = preload("res://Presentation/EquineRegistry.gd")
+# Original four-coat API retained for existing reviews and regression fixtures.
 const BODIES := {0xc8:0x3e9f,0xe2:0x3ea0,0xe4:0x3ea1,0xcc:0x3ea2}
 # Matched to private original stand frames, not inferred from array order.
 const COATS := {0xc8:["golden tan",Color("b6a07b")],0xe2:["dapple grey",Color("9c9f9f")],0xe4:["dun",Color("96846a")],0xcc:["dark brown",Color("5e4130")]}
@@ -11,7 +13,9 @@ var animator: AnimationPlayer
 var current_clip := "idle"
 var native_body := 0xc8
 var native_hue := 0
+var native_mount_item := 0
 var identity_key := ""
+var accessory_style := ""
 var reins: MeshInstance3D
 var rein_mesh := ImmediateMesh.new()
 var contact: SkeletonModifier3D
@@ -22,14 +26,13 @@ var last_speed:=0.
 var action_remaining:=0.
 var dead:=false
 static func available() -> bool:return ResourceLoader.exists(PATH)
+static func supports_body(body: int) -> bool:return Equines.supports_body(body)
 static func mount_item(worn: Array) -> Dictionary:
 	for item: Dictionary in worn:
 		if int(item.get("layer",0))==25:return item.duplicate(true)
 	return {}
 static func horse_body(item: int) -> int:
-	for body: int in BODIES:
-		if BODIES[body]==item:return body
-	return 0
+	return Equines.body_for_mount(item)
 static func step_seconds(worn: Array, running: bool) -> float:
 	return (.10 if running else .20) if not mount_item(worn).is_empty() else (.20 if running else .40)
 func _ready() -> void:
@@ -44,31 +47,43 @@ func _ready() -> void:
 	contact=preload("res://Presentation/HorseContact.gd").new();skeleton.add_child(contact)
 	reins=MeshInstance3D.new();reins.name="RiderReins";reins.mesh=rein_mesh;add_child(reins)
 	var leather:=StandardMaterial3D.new();leather.albedo_color=Color("30251d");leather.roughness=.85;reins.material_override=leather
-	apply_identity(native_body,native_hue)
-func apply_identity(body: int,hue: int) -> void:
-	var key:=str(body)+"|"+str(hue)
+	apply_identity(native_body,native_hue,native_mount_item)
+func apply_identity(body: int,hue: int,mount_id: int=0) -> void:
+	var key:=str(body)+"|"+str(hue)+"|"+str(mount_id)
 	if key==identity_key and model!=null:return
-	native_body=body;native_hue=hue
+	native_body=body;native_hue=hue;native_mount_item=mount_id
 	set_meta("native_body",body);set_meta("native_hue",hue)
-	set_meta("coat_name",COATS.get(body,COATS[0xcc])[0])
+	var profile:=Equines.profile(body,mount_id)
+	set_meta("coat_name",COATS[body][0] if COATS.has(body) and not bool(profile.get("ethereal",false)) else str(profile.get("name","Unsupported equine")))
+	set_meta("equine_profile",profile)
+	set_meta("native_mount_item",mount_id)
 	if model==null:return
 	identity_key=key
+	model.scale=profile.get("scale",Vector3.ONE)
+	contact.hoof_height=.17*model.scale.y
 	for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
 		for surface in mesh.mesh.get_surface_count():
 			var original:=mesh.mesh.surface_get_material(surface) as StandardMaterial3D
 			if original==null:continue
-			var material:=ShaderMaterial.new();material.shader=preload("res://Presentation/HorseSurface.gdshader")
+			var material:=ShaderMaterial.new();material.shader=preload("res://Presentation/HorseEthereal.gdshader") if bool(profile.get("ethereal",false)) else preload("res://Presentation/HorseSurface.gdshader")
 			material.set_shader_parameter("albedo_texture",original.albedo_texture)
 			material.set_shader_parameter("normal_texture",original.normal_texture)
 			material.set_shader_parameter("orm_texture",original.roughness_texture)
-			material.set_shader_parameter("hue_palette",preload("res://Presentation/HumanHue.gd").palette(hue))
-			material.set_shader_parameter("use_hue",preload("res://Presentation/HumanHue.gd").palette(hue)!=null)
+			var dye: Texture2D=null if hue==0x4001 and bool(profile.get("ethereal",false)) else preload("res://Presentation/HumanHue.gd").palette(hue)
+			material.set_shader_parameter("hue_palette",dye)
+			material.set_shader_parameter("use_hue",dye!=null)
 			material.set_shader_parameter("partial_hue",(hue&0x8000)!=0)
-			material.set_shader_parameter("coat_colour",COATS.get(body,COATS[0xcc])[1])
-			material.set_shader_parameter("coat_change",0. if body==0xcc else 1.)
-			material.set_shader_parameter("grey_coat",body==0xe2)
+			material.set_shader_parameter("coat_colour",profile.get("colour",Color.WHITE))
+			material.set_shader_parameter("coat_change",float(profile.get("change",1.)))
+			material.set_shader_parameter("grey_coat",bool(profile.get("grey",false)))
+			material.set_shader_parameter("magic_glow",float(profile.get("glow",0.)))
+			material.set_shader_parameter("magic_colour",profile.get("magic",Color.BLACK))
 			material.set_shader_parameter("use_vertex_regions",ResourceLoader.exists(REGIONS_PATH))
 			mesh.set_surface_override_material(surface,material)
+	if accessory_style!=str(profile.get("style","")):
+		preload("res://Presentation/EquineAccessories.gd").rebuild(self,profile)
+		accessory_style=str(profile.get("style",""))
+	preload("res://Presentation/EquineAccessories.gd").tint_spectral_horn(self,profile,hue)
 func socket(name: String, rotation_delta: bool = false) -> Transform3D:
 	var index:=skeleton.find_bone(name)
 	var pose:=skeleton.get_bone_global_pose(index)

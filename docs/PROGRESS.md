@@ -1,3 +1,11 @@
+# Equine family expansion - 30 October 2026
+
+Reused the licensed Warhorse rig for **15/26 indexed equine body IDs**, including the four existing horses, plus **two additional item-only ethereal routes**. New: three nightmare identities, silver/fire steed, unicorn, four faction warhorses and unrideable pack horse; ethereal horse/unicorn retain native item identity and 0x4001 semantics. Original head-bound horn, spine-bound panniers and magic effects; owner-authorized profile proportions with scaled hoof support. [Catalogue, sources, reproduction and remaining gaps](EQUINE_EXPANSION.md).
+
+Evidence: **4,537 runtime checks / 1,152 rider poses**, **15 scaled flat/slope samples**, **158 GPU checks**, **581 actual native server/two-client checks**, **34 real review frames**. Both bodies, robe/plate fits, native dyes, server Unicorn restriction and ethereal casting/dismount are covered in finite tests. Full `scripts/verify.ps1` exited 0; ordinary horse and human wardrobe regressions pass. Two existing TimberBridge fixture missing-id errors and shared Unicode/fuzz/teardown/nullable diagnostics remain. `Review-Equines.cmd` and ignored `outputs/equines/index.html` provide review.
+
+**Eleven equine body IDs remain deferred**: skeletal/HellSteed and ki-rin need distinct meshes; remaining historical/client-only aliases need identity audit. Free candidates researched with exact primary pages/licences; skeletal CC0 download requires sign-in, and the Meshy ki-rin candidate has no verified acquired rig. No unsuitable ordinary-horse substitutes are counted. This is category routing/art reuse, not 15 bespoke models or a completed animal action library. Wearables remain **732/1,126 (65.01%)**. No new production spawn/gameplay/core changes; generated art remains local, with a distributable-client pack still pending. Concurrent ship/building/item work preserved.
+
 # Ships and houses — 30 October 2026
 
 Owner request: full houses and ships, "surprise me".

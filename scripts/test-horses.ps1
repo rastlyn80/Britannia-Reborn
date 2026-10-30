@@ -1,4 +1,4 @@
-param([switch]$Live,[switch]$SkipContact,[switch]$Gpu)
+param([switch]$Live,[switch]$SkipContact,[switch]$Gpu,[switch]$Equines)
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent
 $godot=(Get-ChildItem "$root/.tools/godot/*console.exe"|Select-Object -First 1).FullName
@@ -65,7 +65,7 @@ try {
    if (!$ready) { Start-Sleep -Milliseconds 200 }
   } while (!$ready -and [DateTime]::UtcNow -lt $deadline)
   if (!$ready) { throw 'Isolated server readiness timeout' }
-  & $godot --headless --path Viewer --script res://Network/HorseLive.gd
+  & $godot --headless --path Viewer --script $(if ($Equines) {'res://Network/EquineLive.gd'} else {'res://Network/HorseLive.gd'})
   if ($LASTEXITCODE) { throw 'Native isolated horse integration test failed' }
  } finally {
   # This exact process was created above for the disposable runtime. The
