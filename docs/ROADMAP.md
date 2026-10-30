@@ -1,3 +1,13 @@
+# Human wearable 65% checkpoint — 30 October 2026
+
+**732/1,126 indexed graphics (65.01%), 351 registered categories**: +160 graphics / +93 category mappings from 50.80%, unchanged denominator. These additions are historical/indexed human fitted variants, **not newly certified active-server equip classes**. Source references include 103 EQUIPMENT, 9 HUMAN, 16 MONSTER and 32 absent mobtypes rows; the independent audit checks the actual wearable flag/layer/name/animation field. No creature bodies or server rules changed. See [HUMAN_WARDROBE_65.md](HUMAN_WARDROBE_65.md).
+
+Accepted evidence: **19,664 checks / 5,952 pose views**, **1,664 opacity views**, **864 long-hair views** (8,480 new finite views, 0 failures), **816 native layer/resource checks**, **198 new exports** and **666 total base exports**. Six outer garments per body have explicit split riding variants and integrated matching cloth linings with declared millimetre clearance. Full `scripts/verify.ps1` exited 0, including 1,759 human coverage and 2,468 horse checks / 768 contact poses; existing fixture/Unicode/teardown/nullable diagnostics remain.
+
+Backpack 0x0E75/0x09B2 was rejected after 16 hair failures and is uncounted. Earlier mask, apron/middle and inaccurate-cut rejections remain unmapped. Category mappings share fitted silhouettes; exact cuts/ornament, dynamic whip choreography, arbitrary outfits/actions and active server eligibility remain separate. Existing 35/35 classic, 28/28 on-foot and 7/7 ordinary-horse action counts are unchanged. No new login/world-entry or multiplayer evidence.
+
+Next: review `outputs/human-wardrobe65/index.html` (372 real frames/eight sheets), repair precise garment/hair gaps, and build a separately versioned redistributable character pack with a clean-install test. **A Git clone still does not contain these ignored generated assets**; no playable-client asset distribution is claimed. Licensed inputs/provenance, local game-derived references and captures remain ignored. Concurrent terrain/item work was preserved.
+
 # Human wearable 50% checkpoint â€” 30 October 2026
 
 **572/1,126 indexed graphics (50.80%), 258 equipment categories**: +172 graphics / +106 categories from the 35% checkpoint, with the same denominator. The new set has 280 local exports, including 34 independent riding variants per body. Class/property/counterpart evidence covers 92 graphics; 80 are curated client EQUIPMENT variants without an active pinned-server eligibility claim. See [HUMAN_WARDROBE_50.md](HUMAN_WARDROBE_50.md).

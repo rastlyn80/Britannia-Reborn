@@ -33,6 +33,9 @@ def build():
  lines+=['}','const RIDING_VARIANTS := {']
  for row in rows:
   if row.get('riding_base'):lines.append('\t"coverage/%s":true,'%row['key'])
+ lines+=['}','const INTEGRATED_LININGS := {']
+ for row in rows:
+  if row.get('integrated_lining'):lines.append('\t"coverage/%s":true,'%row['key'])
  lines+=['}','']
  (ROOT/'Viewer/Presentation/HumanCoverageWardrobe.gd').write_text('\n'.join(lines))
  print('HUMAN CATEGORY REGISTRY:',len(rows),'assets,',len(seen),'native graphics')

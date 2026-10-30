@@ -2709,12 +2709,1047 @@
       "base": "coverage/lantern",
       "design": "brass",
       "held_family": "lantern"
+    },
+    {
+      "key": "legacy_daemon_sword",
+      "graphics": [
+        9556
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/rune_blade"
+    },
+    {
+      "key": "legacy_ettin_hammer",
+      "graphics": [
+        9557
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/smith_hammer"
+    },
+    {
+      "key": "legacy_liche_staff",
+      "graphics": [
+        9558
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/skull_staff"
+    },
+    {
+      "key": "legacy_lizard_mace",
+      "graphics": [
+        9559
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/mace"
+    },
+    {
+      "key": "legacy_lizard_spear",
+      "graphics": [
+        9560
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/spear"
+    },
+    {
+      "key": "legacy_ogre_club",
+      "graphics": [
+        9561
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/club"
+    },
+    {
+      "key": "legacy_ophidian_staff",
+      "graphics": [
+        9562
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/wild_staff"
+    },
+    {
+      "key": "legacy_ophidian_bardiche",
+      "graphics": [
+        9563
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/bardiche"
+    },
+    {
+      "key": "legacy_orc_club",
+      "graphics": [
+        9564
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/club"
+    },
+    {
+      "key": "legacy_ratman_axe",
+      "graphics": [
+        9565
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/hatchet"
+    },
+    {
+      "key": "legacy_ratman_sword",
+      "graphics": [
+        9566
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/long_sword"
+    },
+    {
+      "key": "legacy_skeleton_axe",
+      "graphics": [
+        9567
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/battle_axe"
+    },
+    {
+      "key": "legacy_skeleton_scimitar",
+      "graphics": [
+        9568
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/scimitar"
+    },
+    {
+      "key": "legacy_terathan_staff",
+      "graphics": [
+        9569
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/wild_staff"
+    },
+    {
+      "key": "legacy_terathan_spear",
+      "graphics": [
+        9570
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/spear"
+    },
+    {
+      "key": "legacy_terathan_mace",
+      "graphics": [
+        9571
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/mace"
+    },
+    {
+      "key": "legacy_troll_axe",
+      "graphics": [
+        9572
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/double_axe"
+    },
+    {
+      "key": "legacy_troll_maul",
+      "graphics": [
+        9573
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/war_mace"
+    },
+    {
+      "key": "legacy_frost_club",
+      "graphics": [
+        9574
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/club"
+    },
+    {
+      "key": "legacy_orc_lord_axe",
+      "graphics": [
+        9575
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/battle_axe"
+    },
+    {
+      "key": "legacy_orc_mage_staff",
+      "graphics": [
+        9576
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/skull_staff"
+    },
+    {
+      "key": "legacy_bone_mage_staff",
+      "graphics": [
+        9577
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/skull_staff"
+    },
+    {
+      "key": "legacy_scale_shield",
+      "graphics": [
+        9578
+      ],
+      "kind": "expansion65",
+      "slot": "shield",
+      "design": "historical_variant",
+      "base": "coverage/round_shield"
+    },
+    {
+      "key": "legacy_magic_staff",
+      "graphics": [
+        9579,
+        9580,
+        9581,
+        9582
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/wild_staff"
+    },
+    {
+      "key": "legacy_smith_hammer",
+      "graphics": [
+        9583
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/smith_hammer"
+    },
+    {
+      "key": "legacy_hatchet",
+      "graphics": [
+        9584
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/hatchet"
+    },
+    {
+      "key": "legacy_javelin",
+      "graphics": [
+        9586
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/short_spear"
+    },
+    {
+      "key": "legacy_magic_sword",
+      "graphics": [
+        9587,
+        9588,
+        9589,
+        9590
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/rune_blade"
+    },
+    {
+      "key": "legacy_naginata",
+      "graphics": [
+        9591
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/halberd"
+    },
+    {
+      "key": "legacy_no_dachi",
+      "graphics": [
+        9592
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/no_dachi"
+    },
+    {
+      "key": "legacy_pick",
+      "graphics": [
+        9593
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/pickaxe"
+    },
+    {
+      "key": "legacy_spear",
+      "graphics": [
+        9594,
+        9595
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/spear"
+    },
+    {
+      "key": "legacy_sword",
+      "graphics": [
+        9596
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/long_sword"
+    },
+    {
+      "key": "legacy_longsword",
+      "graphics": [
+        9597
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/long_sword"
+    },
+    {
+      "key": "legacy_shortsword",
+      "graphics": [
+        9598
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/wakizashi"
+    },
+    {
+      "key": "legacy_war_mace",
+      "graphics": [
+        9599
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/war_mace"
+    },
+    {
+      "key": "paladin_sword",
+      "graphics": [
+        9934,
+        9935
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "historical_variant",
+      "base": "coverage/rune_blade"
+    },
+    {
+      "key": "book_of_arms",
+      "graphics": [
+        8788
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "book",
+      "base": "coverage/chivalry_book",
+      "held_family": "book"
+    },
+    {
+      "key": "bard_book",
+      "graphics": [
+        8794,
+        8795
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "book",
+      "base": "coverage/spellbook",
+      "held_family": "book"
+    },
+    {
+      "key": "legacy_jester_cap",
+      "graphics": [
+        5934
+      ],
+      "kind": "expansion65",
+      "slot": "head",
+      "design": "historical_variant",
+      "base": "coverage/jester_hat"
+    },
+    {
+      "key": "legacy_winged_helm",
+      "graphics": [
+        9865,
+        9866
+      ],
+      "kind": "expansion65",
+      "slot": "head",
+      "design": "historical_variant",
+      "base": "coverage/spirituality_helm"
+    },
+    {
+      "key": "legacy_kabuto_mempo",
+      "graphics": [
+        9871,
+        9872
+      ],
+      "kind": "expansion65",
+      "slot": "gorget",
+      "design": "historical_variant",
+      "base": "coverage/plate_mempo"
+    },
+    {
+      "key": "legacy_ninja_mask",
+      "graphics": [
+        9891,
+        9892
+      ],
+      "kind": "expansion65",
+      "slot": "head",
+      "design": "historical_variant",
+      "base": "coverage/ninja_hood",
+      "hair_fit": "coif"
+    },
+    {
+      "key": "legacy_robin_cap",
+      "graphics": [
+        9885,
+        9886
+      ],
+      "kind": "expansion65",
+      "slot": "head",
+      "design": "historical_variant",
+      "base": "coverage/feathered_hat"
+    },
+    {
+      "key": "legacy_jester_pants",
+      "graphics": [
+        9801,
+        9802
+      ],
+      "kind": "expansion65",
+      "slot": "legs",
+      "design": "historical_variant",
+      "base": "coverage/wedding_pants"
+    },
+    {
+      "key": "legacy_ninja_pants",
+      "graphics": [
+        9809,
+        9810
+      ],
+      "kind": "expansion65",
+      "slot": "legs",
+      "design": "historical_variant",
+      "base": "coverage/ninja_pants"
+    },
+    {
+      "key": "legacy_checkered_shirt",
+      "graphics": [
+        9706,
+        9707
+      ],
+      "kind": "expansion65",
+      "slot": "shirt",
+      "design": "historical_variant",
+      "base": "coverage/dark_shirt"
+    },
+    {
+      "key": "legacy_robe",
+      "graphics": [
+        9710,
+        9711
+      ],
+      "kind": "expansion65",
+      "slot": "outer",
+      "design": "historical_variant",
+      "base": "coverage/veteran_robe",
+      "body_flags": 8,
+      "riding_base": "coverage/veteran_robe_riding",
+      "integrated_lining": true,
+      "outer_depth_offset": 0.006,
+      "lining_depth_offset": -0.002,
+      "front_depth_offset": 0.012
+    },
+    {
+      "key": "legacy_death_shroud",
+      "graphics": [
+        9712,
+        9713,
+        9861,
+        9862
+      ],
+      "kind": "expansion65",
+      "slot": "outer",
+      "design": "historical_variant",
+      "base": "coverage/gm_robe",
+      "body_flags": 8,
+      "riding_base": "coverage/gm_robe_riding",
+      "integrated_lining": true,
+      "outer_depth_offset": 0.006,
+      "lining_depth_offset": -0.002,
+      "front_depth_offset": 0.012
+    },
+    {
+      "key": "legacy_amazon_armour",
+      "graphics": [
+        9817,
+        9818,
+        9819,
+        9820,
+        9821,
+        9822
+      ],
+      "kind": "expansion65",
+      "slot": "torso",
+      "design": "historical_variant",
+      "base": "coverage/leather_torso"
+    },
+    {
+      "key": "legacy_amazon_harness",
+      "graphics": [
+        9702,
+        9703
+      ],
+      "kind": "expansion65",
+      "slot": "torso",
+      "design": "historical_variant",
+      "base": "coverage/leather_torso"
+    },
+    {
+      "key": "legacy_elite_harness",
+      "graphics": [
+        9704,
+        9705
+      ],
+      "kind": "expansion65",
+      "slot": "torso",
+      "design": "historical_variant",
+      "base": "coverage/studded_torso"
+    },
+    {
+      "key": "legacy_cloth_shirt",
+      "graphics": [
+        9823,
+        9824,
+        9825,
+        9826,
+        9827,
+        9828,
+        9829,
+        9830
+      ],
+      "kind": "expansion65",
+      "slot": "shirt",
+      "design": "historical_variant",
+      "base": "coverage/dark_shirt"
+    },
+    {
+      "key": "legacy_ninja_shirt",
+      "graphics": [
+        9831,
+        9832
+      ],
+      "kind": "expansion65",
+      "slot": "torso",
+      "design": "historical_variant",
+      "base": "coverage/cloth_ninja_jacket"
+    },
+    {
+      "key": "legacy_kote_sleeves",
+      "graphics": [
+        9835,
+        9836,
+        9837,
+        9838
+      ],
+      "kind": "expansion65",
+      "slot": "arms",
+      "design": "historical_variant",
+      "base": "coverage/plate_hiro_sode"
+    },
+    {
+      "key": "legacy_do_maru",
+      "graphics": [
+        9841,
+        9842
+      ],
+      "kind": "expansion65",
+      "slot": "torso",
+      "design": "historical_variant",
+      "base": "coverage/plate_do"
+    },
+    {
+      "key": "legacy_haramaki",
+      "graphics": [
+        9843
+      ],
+      "kind": "expansion65",
+      "slot": "torso",
+      "design": "historical_variant",
+      "base": "coverage/studded_do"
+    },
+    {
+      "key": "legacy_haramaki_arms",
+      "graphics": [
+        9844
+      ],
+      "kind": "expansion65",
+      "slot": "arms",
+      "design": "historical_variant",
+      "base": "coverage/studded_hiro_sode"
+    },
+    {
+      "key": "legacy_kote_gloves",
+      "graphics": [
+        9847,
+        9848,
+        9849,
+        9850
+      ],
+      "kind": "expansion65",
+      "slot": "hands",
+      "design": "historical_variant",
+      "base": "coverage/dragon_hands"
+    },
+    {
+      "key": "legacy_plate_gorget",
+      "graphics": [
+        9803,
+        9804
+      ],
+      "kind": "expansion65",
+      "slot": "gorget",
+      "design": "historical_variant",
+      "base": "coverage/plate_gorget"
+    },
+    {
+      "key": "legacy_haidate",
+      "graphics": [
+        9805,
+        9806
+      ],
+      "kind": "expansion65",
+      "slot": "legs",
+      "design": "historical_variant",
+      "base": "coverage/plate_haidate",
+      "boot_fit": "armour"
+    },
+    {
+      "key": "legacy_kobakama",
+      "graphics": [
+        9807,
+        9808
+      ],
+      "kind": "expansion65",
+      "slot": "legs",
+      "design": "historical_variant",
+      "base": "coverage/tattsuke_hakama"
+    },
+    {
+      "key": "legacy_long_dress",
+      "graphics": [
+        9855,
+        9856
+      ],
+      "kind": "expansion65",
+      "slot": "outer",
+      "design": "historical_variant",
+      "base": "coverage/plain_dress",
+      "body_flags": 8,
+      "riding_base": "coverage/plain_dress_riding",
+      "integrated_lining": true,
+      "outer_depth_offset": 0.006,
+      "lining_depth_offset": -0.002,
+      "front_depth_offset": 0.012
+    },
+    {
+      "key": "legacy_kimono",
+      "graphics": [
+        9857,
+        9858
+      ],
+      "kind": "expansion65",
+      "slot": "outer",
+      "design": "historical_variant",
+      "base": "coverage/male_kimono",
+      "body_flags": 8,
+      "riding_base": "coverage/male_kimono_riding",
+      "integrated_lining": true,
+      "outer_depth_offset": 0.006,
+      "lining_depth_offset": -0.002,
+      "front_depth_offset": 0.012
+    },
+    {
+      "key": "legacy_male_kimono_dress",
+      "graphics": [
+        10142,
+        10217
+      ],
+      "kind": "expansion65",
+      "slot": "outer",
+      "design": "historical_variant",
+      "base": "coverage/male_kimono",
+      "body_flags": 8,
+      "riding_base": "coverage/male_kimono_riding",
+      "integrated_lining": true,
+      "outer_depth_offset": 0.006,
+      "lining_depth_offset": -0.002,
+      "front_depth_offset": 0.012
+    },
+    {
+      "key": "legacy_female_kimono_dress",
+      "graphics": [
+        10143,
+        10218
+      ],
+      "kind": "expansion65",
+      "slot": "outer",
+      "design": "historical_variant",
+      "base": "coverage/female_kimono",
+      "body_flags": 8,
+      "riding_base": "coverage/female_kimono_riding",
+      "integrated_lining": true,
+      "outer_depth_offset": 0.006,
+      "lining_depth_offset": -0.002,
+      "front_depth_offset": 0.012
+    },
+    {
+      "key": "legacy_waraji",
+      "graphics": [
+        9811,
+        9812
+      ],
+      "kind": "expansion65",
+      "slot": "feet",
+      "design": "historical_variant",
+      "base": "coverage/samurai_tabi"
+    },
+    {
+      "key": "tall_tabi",
+      "graphics": [
+        10133,
+        10208
+      ],
+      "kind": "expansion65",
+      "slot": "feet",
+      "design": "historical_variant",
+      "base": "coverage/ninja_tabi",
+      "foot_mask": 4
+    },
+    {
+      "key": "mail_haidate",
+      "graphics": [
+        10124,
+        10199
+      ],
+      "kind": "expansion65",
+      "slot": "legs",
+      "design": "historical_variant",
+      "base": "coverage/mail_legs"
+    },
+    {
+      "key": "virtue_cape",
+      "graphics": [
+        11012,
+        11013
+      ],
+      "kind": "expansion65",
+      "slot": "cloak",
+      "design": "historical_variant",
+      "base": "coverage/arcane_cloak"
+    },
+    {
+      "key": "virtue_legs",
+      "graphics": [
+        11014,
+        11015
+      ],
+      "kind": "expansion65",
+      "slot": "legs",
+      "design": "historical_variant",
+      "base": "coverage/plate_legs",
+      "boot_fit": "armour"
+    },
+    {
+      "key": "virtue_torso",
+      "graphics": [
+        11016,
+        11017
+      ],
+      "kind": "expansion65",
+      "slot": "torso",
+      "design": "historical_variant",
+      "base": "coverage/plate_torso"
+    },
+    {
+      "key": "virtue_arms",
+      "graphics": [
+        11018,
+        11019
+      ],
+      "kind": "expansion65",
+      "slot": "arms",
+      "design": "historical_variant",
+      "base": "coverage/plate_arms"
+    },
+    {
+      "key": "virtue_gorget",
+      "graphics": [
+        11022,
+        11023,
+        15285
+      ],
+      "kind": "expansion65",
+      "slot": "gorget",
+      "design": "historical_variant",
+      "base": "coverage/plate_gorget"
+    },
+    {
+      "key": "virtue_boots",
+      "graphics": [
+        11026,
+        11027
+      ],
+      "kind": "expansion65",
+      "slot": "feet",
+      "design": "historical_variant",
+      "base": "coverage/arcane_boots",
+      "foot_mask": 4
+    },
+    {
+      "key": "female_shirt_variants",
+      "graphics": [
+        12663,
+        12664
+      ],
+      "kind": "expansion65",
+      "slot": "shirt",
+      "design": "historical_variant",
+      "base": "coverage/dark_shirt"
+    },
+    {
+      "key": "tuxedo_shirt",
+      "graphics": [
+        40699,
+        40700
+      ],
+      "kind": "expansion65",
+      "slot": "shirt",
+      "design": "historical_variant",
+      "base": "coverage/dark_shirt"
+    },
+    {
+      "key": "legacy_talisman",
+      "graphics": [
+        4246
+      ],
+      "kind": "expansion65",
+      "slot": "talisman",
+      "design": "historical_variant",
+      "base": "coverage/totem_charm"
+    },
+    {
+      "key": "tailoring_talisman",
+      "graphics": [
+        40485
+      ],
+      "kind": "expansion65",
+      "slot": "talisman",
+      "design": "historical_variant",
+      "base": "coverage/totem_charm"
+    },
+    {
+      "key": "alchemy_talisman",
+      "graphics": [
+        40486
+      ],
+      "kind": "expansion65",
+      "slot": "talisman",
+      "design": "historical_variant",
+      "base": "coverage/totem_charm"
+    },
+    {
+      "key": "cooking_talisman",
+      "graphics": [
+        40487
+      ],
+      "kind": "expansion65",
+      "slot": "talisman",
+      "design": "historical_variant",
+      "base": "coverage/totem_charm"
+    },
+    {
+      "key": "inscription_talisman",
+      "graphics": [
+        40488
+      ],
+      "kind": "expansion65",
+      "slot": "talisman",
+      "design": "historical_variant",
+      "base": "coverage/totem_charm"
+    },
+    {
+      "key": "fletching_talisman",
+      "graphics": [
+        40489
+      ],
+      "kind": "expansion65",
+      "slot": "talisman",
+      "design": "historical_variant",
+      "base": "coverage/totem_charm"
+    },
+    {
+      "key": "blacksmithing_talisman",
+      "graphics": [
+        40490
+      ],
+      "kind": "expansion65",
+      "slot": "talisman",
+      "design": "historical_variant",
+      "base": "coverage/totem_charm"
+    },
+    {
+      "key": "tinkering_talisman",
+      "graphics": [
+        40491
+      ],
+      "kind": "expansion65",
+      "slot": "talisman",
+      "design": "historical_variant",
+      "base": "coverage/totem_charm"
+    },
+    {
+      "key": "carpentry_talisman",
+      "graphics": [
+        40492
+      ],
+      "kind": "expansion65",
+      "slot": "talisman",
+      "design": "historical_variant",
+      "base": "coverage/totem_charm"
+    },
+    {
+      "key": "hachimaki",
+      "graphics": [
+        9867,
+        9868
+      ],
+      "kind": "expansion65",
+      "slot": "head",
+      "design": "headband",
+      "hair_fit": "keep"
+    },
+    {
+      "key": "shepherd_crook",
+      "graphics": [
+        5108,
+        5109
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "crook"
+    },
+    {
+      "key": "fellowship_medallion",
+      "graphics": [
+        42025,
+        42026
+      ],
+      "kind": "expansion65",
+      "slot": "necklace",
+      "design": "medallion"
+    },
+    {
+      "key": "octopus_necklace",
+      "graphics": [
+        41801
+      ],
+      "kind": "expansion65",
+      "slot": "necklace",
+      "design": "octopus"
+    },
+    {
+      "key": "barbed_whip",
+      "graphics": [
+        41609,
+        41610,
+        41611,
+        41617
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "whip_barbed"
+    },
+    {
+      "key": "spiked_whip",
+      "graphics": [
+        41618
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "whip_spiked"
+    },
+    {
+      "key": "bladed_whip",
+      "graphics": [
+        41619
+      ],
+      "kind": "expansion65",
+      "slot": "weapon",
+      "design": "whip_bladed"
     }
   ],
   "deferred_experiments": [
     "Sleeveless dress, apron and surcoat experiments rejected at visual review; those native IDs remain unmapped.",
     "Earlier sampled full/half apron and sash pose-fit prototypes were rejected. The matched-topology body sash is accepted separately; apron waist/lap defects remain uncounted. Diagnostic evidence stays in ignored outputs/human-workwear and work/human-workwear.",
     "50-percent batch: tribal/horned/orc/bear/deer/kitsune/Ankur/tiger masks and haunted veil rejected at actual render review. Their native IDs remain unmapped; coarse rectangular face geometry was not accepted. Diagnostics stay local.",
-    "50-percent batch: formal shirt, jester suit, surcoat and jin-baori passed civilian views but failed strict over-plate cloth-retention checks (512 initial views/52 failures; 128-view larger-offset trial still had 5 failures). All eight IDs remain unmapped. Leather shorts, tiger short pants and modern jester shoes also remain unmapped because their available prototype silhouettes were inaccurate. Diagnostics and draft code remain ignored."
+    "50-percent batch: formal shirt, jester suit, surcoat and jin-baori passed civilian views but failed strict over-plate cloth-retention checks (512 initial views/52 failures; 128-view larger-offset trial still had 5 failures). All eight IDs remain unmapped. Leather shorts, tiger short pants and modern jester shoes also remain unmapped because their available prototype silhouettes were inaccurate. Diagnostics and draft code remain ignored.",
+    "65% batch: field backpack (0x0E75/0x09B2) rejected because it occluded depth-tested long hair. Original parametric draft and failure evidence remain local. It is not counted."
   ]
 }

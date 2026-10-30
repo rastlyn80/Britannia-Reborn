@@ -30,7 +30,7 @@ func run() -> void:
 	for row: Dictionary in data.assets:
 		if row.kind!=batch_kind:continue
 		if not selected.is_empty() and row.key!=selected:continue
-		if row.slot in ["head","torso","arms","outer","middle","outer_legs","cloak","waist","gorget"]:
+		if row.slot in ["head","torso","arms","outer","middle","outer_legs","cloak","waist","gorget","backpack","necklace"]:
 			items[row.key]=[int(row.graphics[0]),0];item_slots[row.key]=row.slot
 	for female in [false,true]:
 		for mounted in [false,true]:

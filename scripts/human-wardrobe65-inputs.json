@@ -1,0 +1,953 @@
+{
+  "scope": "Human category mappings for historical player/NPC equipment and additional ordinary human accessories. Shared silhouettes, exact ornament and individual action fidelity remain separate.",
+  "native_reference": {
+    "repository": "https://github.com/modernuo/ModernUO",
+    "revision": "ab59efea86fd9e399d261bed9d188ab4d95ad4c2"
+  },
+  "source_manifests": [
+    "scripts/character-expansion-inputs.json",
+    "scripts/human-coverage-inputs.json",
+    "scripts/human-tailoring-inputs.json",
+    "scripts/horse-riding-inputs.json",
+    "scripts/human-frontier-inputs.json",
+    "scripts/human-wardrobe50-inputs.json"
+  ],
+  "licence": "Fitted variants retain their source licences: selected CC0 MakeHuman clothing/rig and ambientCG fabric inputs; CC-BY-4.0 weapon/shield art retains the exact authors/URLs/notices in scripts/human-coverage-inputs.json. Original parametric geometry and generator code are GPL-3.0-or-later. No proprietary UO artwork is exported.",
+  "client_files": {
+    "mobtypes.txt": "a4f1c98057c5bcf10ccdb575a9154260651e49b852bfe548059ff55fcbbf29d8",
+    "tiledata.mul": "382388dc5b4f78e9aad923bf5bf20387d15e22716b3199974a36891ba2da9624",
+    "Equipconv.def": "ee650d81d88205745958cc6b6adf0c1f656f294dd0e97d58716e95142a2243ff"
+  },
+  "files": {
+    "Viewer/local-art/free-equipment/coverage/rune_blade.glb": "548014f94f6725863ffed278ca97347b937a32f48ed4af31e4f7fdd1aebf87f2",
+    "Viewer/local-art/free-equipment-female/coverage/rune_blade.glb": "8a035b94db7e16b84567786c9b9c461bf65b7aa2f5d1c13e4c74e476517f524a",
+    "Viewer/local-art/free-equipment/coverage/smith_hammer.glb": "82bfa056a2fcf6adf59a145aca5335d88abef29183f6510d7904f7401a621c5b",
+    "Viewer/local-art/free-equipment-female/coverage/smith_hammer.glb": "41e05c4fabd7392936be7d627594fd6c866ee078223345f19fd8de5cc3d7e32b",
+    "Viewer/local-art/free-equipment/coverage/skull_staff.glb": "0516f0f9a022a038719e8c486b375a2d468af27f9ef5c47284c433ef8e6331d4",
+    "Viewer/local-art/free-equipment-female/coverage/skull_staff.glb": "b9e74ef690af8067cbc9fa001709b7b6648c1ff0400a0623ff9b267722a5ce5b",
+    "Viewer/local-art/free-equipment/coverage/mace.glb": "5659128ca0302f794a6167853973cff263de34a8ca237e5eabca3cc54fefa658",
+    "Viewer/local-art/free-equipment-female/coverage/mace.glb": "f0777212358d5af46c13182c8ed0c0f47c19ebcaf8c518c869a03878fc795776",
+    "Viewer/local-art/free-equipment/coverage/spear.glb": "6d9a1f239aeac0743533c42aaefff2ce472391fafd564319a04fcd4722cd043e",
+    "Viewer/local-art/free-equipment-female/coverage/spear.glb": "7bc9611e71fceaf518fbb6e36cd7ff6fafec4583f52c2ff4686b103cf166ea70",
+    "Viewer/local-art/free-equipment/coverage/club.glb": "9175153af527681e245e64e44baabb3ebeff48bd94967c4093b668ea2cbfd464",
+    "Viewer/local-art/free-equipment-female/coverage/club.glb": "8e92e75145e91f5f8c1d39c6125c8e6f068fa95eed4576e114f4625d054571d0",
+    "Viewer/local-art/free-equipment/coverage/wild_staff.glb": "ae93b198d11d5f4e225f91de7f64cb3c8624ff05db53b96ccf71ed9d1d8dc301",
+    "Viewer/local-art/free-equipment-female/coverage/wild_staff.glb": "e9fd40567c4cecce7b62873ad3887aa657c197bc6932d9d761a6a52ce3dd900b",
+    "Viewer/local-art/free-equipment/coverage/bardiche.glb": "170794ad47e1a07fe8ebe3cc8e03a0478d380ef72311bb1067f454a8ed00116f",
+    "Viewer/local-art/free-equipment-female/coverage/bardiche.glb": "622e1f355fbd5b9225d01d5acc811c6792d8d4ecf94881e33757aa65cae1e935",
+    "Viewer/local-art/free-equipment/coverage/hatchet.glb": "e89427b26ba3901e2897a6f32463dcf41987014c2bc7344863b90b0ab5d355ce",
+    "Viewer/local-art/free-equipment-female/coverage/hatchet.glb": "07a4f7f2a5a71f1d400ae61efe6b4a14e68c93ef61ff4d17b29947a501e83a90",
+    "Viewer/local-art/free-equipment/coverage/long_sword.glb": "2e54674210bfbdf9a971d7e99cc51e03a6a28202547b8c53bd499d0c74c18606",
+    "Viewer/local-art/free-equipment-female/coverage/long_sword.glb": "e1b70633bf57786b706952bc0521cc931e875a6ad9b5a1f3c500778d1ac40aae",
+    "Viewer/local-art/free-equipment/coverage/battle_axe.glb": "ac4d750d662722f758d6b2e3b0c6cb01761a8c75c30acffa0d5b00b14b8993bc",
+    "Viewer/local-art/free-equipment-female/coverage/battle_axe.glb": "dfd83f8c112a57f15f3285f63a76f785659a1e12876d6ac1e94a6493f2ec089d",
+    "Viewer/local-art/free-equipment/coverage/scimitar.glb": "ce1f22bf95fbfbda7fc4c846f6a052f8bc6c3a5d1d85e63b7b34cf0f827fdf66",
+    "Viewer/local-art/free-equipment-female/coverage/scimitar.glb": "0308cd816740ca606ba182a0b3bebf480281b8947fb614140b97026d7ea33172",
+    "Viewer/local-art/free-equipment/coverage/double_axe.glb": "86a8afa77cc6b8c4d81c39bc1e7bebb3080fea44de18f2ea94f363b16bf3f710",
+    "Viewer/local-art/free-equipment-female/coverage/double_axe.glb": "2372141e3af2e2e5e012a23dca8939400853aa3b52e097e441aec061a28301d9",
+    "Viewer/local-art/free-equipment/coverage/war_mace.glb": "b41cd76284c6af8fd3d3df3a932191530e8cec0f2ce03813de127c94dd69adcf",
+    "Viewer/local-art/free-equipment-female/coverage/war_mace.glb": "f2eaae2f1e1abe7b5c8fc90e1a89fc4343960bb41e9b96d2586c16239eef8201",
+    "Viewer/local-art/free-equipment/coverage/round_shield.glb": "89abde966d0f5a70bd6729263df54974c0cd8e7b951cb7876712e00eea95f530",
+    "Viewer/local-art/free-equipment-female/coverage/round_shield.glb": "4c44d0e0e6ed4d6a650d12ef16ed1baf362f4f50b6b9ecff116fcdbc70f9d242",
+    "Viewer/local-art/free-equipment/coverage/short_spear.glb": "1409225e5ebb25aaf23a1bee521310cd1311ff8db7277019f18f6c83fca3889a",
+    "Viewer/local-art/free-equipment-female/coverage/short_spear.glb": "89f017e9fc6ad96633fbfc51ed99b1662a70e113f6a42c9f299aaf715d6b53a7",
+    "Viewer/local-art/free-equipment/coverage/halberd.glb": "f7449c37701d0faf718a9a034307f9b048f264778db555f740837645e9c95db5",
+    "Viewer/local-art/free-equipment-female/coverage/halberd.glb": "09242ab4d714b1ffa7aff2721422f71d66b40927f74883a18cd406a3fc8f7a45",
+    "Viewer/local-art/free-equipment/coverage/no_dachi.glb": "00864c24379a898f6bfbc1abbb5b035c1d9e6c25bf3bf63c07173778144f431b",
+    "Viewer/local-art/free-equipment-female/coverage/no_dachi.glb": "3cc6f8adccc43fb63ee620b5fc49303c4510e59611883241fcf54c97fc8ce180",
+    "Viewer/local-art/free-equipment/coverage/pickaxe.glb": "f61e84550e1ad5fd3aa6fe8338f11f3e28cc8d2d87e8c0eff07003ea69fae34c",
+    "Viewer/local-art/free-equipment-female/coverage/pickaxe.glb": "05cdb7b0e0ac456262edb0208d3de4b4370754bbc9967559f8ee5935d60cc0ec",
+    "Viewer/local-art/free-equipment/coverage/wakizashi.glb": "794ce1ae993a33c72e7f74bbee6b7aa30e7a17cb956c7a166c09e49abba7b47c",
+    "Viewer/local-art/free-equipment-female/coverage/wakizashi.glb": "ab6a3badd4cff6f8eb96aea8dadd2e05f0ac1357e9cbc8516d3e98d481e02b0d",
+    "Viewer/local-art/free-equipment/coverage/chivalry_book.glb": "b18d482c4555fcbc1a441b3a5b2b45ebfe0564dc98d43d06dfa872c0615a604d",
+    "Viewer/local-art/free-equipment-female/coverage/chivalry_book.glb": "ff912fe27d670fd3df941f54e98ca259c1365c92bc1c73dbfad4730a9de74463",
+    "Viewer/local-art/free-equipment/coverage/spellbook.glb": "bee3eaa004ca5de120625d61a97068ed5d3020b99c28010754742245a75aff50",
+    "Viewer/local-art/free-equipment-female/coverage/spellbook.glb": "3bfa08e5b6a87f9a033c136d3eeabdb0395f08b395430dcbbd4828dc8bc81688",
+    "Viewer/local-art/free-equipment/coverage/jester_hat.glb": "0ee8b6c552f1147fac397ce52babb5d91b368ae6bd66c11f52a02931ac8f4734",
+    "Viewer/local-art/free-equipment-female/coverage/jester_hat.glb": "e60febd7625b110dc95bee887054ce7a6bffcc9fa163eee4a4a14b1caf318ada",
+    "Viewer/local-art/free-equipment/coverage/spirituality_helm.glb": "c8ef36e91e0f2d8f17286ec765a36789bebbc17a3ce07c090d760b4c16f13f9f",
+    "Viewer/local-art/free-equipment-female/coverage/spirituality_helm.glb": "2405af771daf70636257fcb144561700ad62d8b7902444e869983f63c8649cd7",
+    "Viewer/local-art/free-equipment/coverage/plate_mempo.glb": "1f3f8628ec87044f8c18321d9b97c827d190fba45b994a55721d911ad6be5791",
+    "Viewer/local-art/free-equipment-female/coverage/plate_mempo.glb": "67e6ade473581c096f8ad8fee3ef0139cf59eb222b42d3c39e35330882dba945",
+    "Viewer/local-art/free-equipment/coverage/ninja_hood.glb": "2596c7db29daf5131ae003af2bc1adffadfed539615c8ead441769c94b37dfad",
+    "Viewer/local-art/free-equipment-female/coverage/ninja_hood.glb": "a2b850dd5df5b8083d71c4b9729683e62042dfdb16f35dc5c73083f226e156a7",
+    "Viewer/local-art/free-equipment/coverage/feathered_hat.glb": "a270a2e36f8cd0dbfa2b548429761ebec5dae0c6dfc14be89c4819e57073685a",
+    "Viewer/local-art/free-equipment-female/coverage/feathered_hat.glb": "dbb042e8648e3c06c3a53592cf21ea151e901c194299dd56a8c30f3ae605ea80",
+    "Viewer/local-art/free-equipment/coverage/wedding_pants.glb": "7d51a9e7db76385461b6b07332159acb8f5436df8d24a4504c5346f39ac890b7",
+    "Viewer/local-art/free-equipment-female/coverage/wedding_pants.glb": "6b1fd8dd630d9e3eacd834dea37a0e1fbb25f5b673b8d79af97bf655f7f6608d",
+    "Viewer/local-art/free-equipment/coverage/ninja_pants.glb": "69cee73e3acede74ff13e37ad274b661812ec70157e22213ae9e0c52b6c2fb6a",
+    "Viewer/local-art/free-equipment-female/coverage/ninja_pants.glb": "ba582a85ad4bfbeb9e0b70a1ee6b0cd20c97778944740a41e0cb69cbd6c40169",
+    "Viewer/local-art/free-equipment/coverage/dark_shirt.glb": "ff67e2c68a601f0ee20ed4be482836dfe927316657f314c2a7336b23595ac6a6",
+    "Viewer/local-art/free-equipment-female/coverage/dark_shirt.glb": "16a4c5094ac94362f206fcd47e8f0212f132e790cc6e413e2d5a2707bf8671fe",
+    "Viewer/local-art/free-equipment/coverage/veteran_robe.glb": "d990652e8b20d4fce99243e06bcbf0e78e9e8a8295d99608ff99f620a79ed8d1",
+    "Viewer/local-art/free-equipment-female/coverage/veteran_robe.glb": "de316b9f353cfbf426dad98104b46e5c2c118df415fbe55f3dfd4d5de20b8001",
+    "Viewer/local-art/free-equipment/coverage/veteran_robe_riding.glb": "53a6967436a78013c20a84ec90043be87cfe6c3e2de055fbfc29493bd6454b00",
+    "Viewer/local-art/free-equipment-female/coverage/veteran_robe_riding.glb": "c044136b0c41b4e2dca0fefc94bb9a36b8e1c8d7e92ab94322d61faeea147680",
+    "Viewer/local-art/free-equipment/coverage/gm_robe.glb": "76a92adecc6766dbfebb9d6b90c898aa32a61d422ce8835097b03caacc42e13c",
+    "Viewer/local-art/free-equipment-female/coverage/gm_robe.glb": "c73fe6a702cbe9d02b13f3732368b94338a34bf8af80713372169d2874d6ec66",
+    "Viewer/local-art/free-equipment/coverage/gm_robe_riding.glb": "edf605553e1d5813054c32aae829ab5e59311a5cf6724081d50ffe901edec645",
+    "Viewer/local-art/free-equipment-female/coverage/gm_robe_riding.glb": "3fcfa1da56a008b3ea8b9d5c681df4513eaa619288b7b272c365ccaad809636a",
+    "Viewer/local-art/free-equipment/coverage/leather_torso.glb": "36f17b7f201996e2ce5960a9264657803dcb73cb2166f8489dae62a30baabb64",
+    "Viewer/local-art/free-equipment-female/coverage/leather_torso.glb": "3ab967f237e8028c7320e13b693a9a8c704ee12c22e64f72b1445b2dca014b3c",
+    "Viewer/local-art/free-equipment/coverage/studded_torso.glb": "6e9a701f2433435584d62f2ab7d173b5e0ffdaea1289fc06aa0b68f2d597aa59",
+    "Viewer/local-art/free-equipment-female/coverage/studded_torso.glb": "e689bae6819062019c2e1d3f2691680f00d0a705cd9c8a8efd55cc5a79cb5bec",
+    "Viewer/local-art/free-equipment/coverage/cloth_ninja_jacket.glb": "56021d19d35cda5351ed0e455baf997b1bc589d32d38c381f6d0bac292260e5d",
+    "Viewer/local-art/free-equipment-female/coverage/cloth_ninja_jacket.glb": "b7b1683fd80e7e9ce5180fba0d9ef9bd9e214701786762cbc35c6a88f8fdebe5",
+    "Viewer/local-art/free-equipment/coverage/plate_hiro_sode.glb": "c478e0d1a9afeb38715d422eed30210cf7e922306520635b6b9784d15963f8e0",
+    "Viewer/local-art/free-equipment-female/coverage/plate_hiro_sode.glb": "a027e8e23c06998134efa618cae74fc8c64c3787cdcf8449f2dbb7185ef4dff4",
+    "Viewer/local-art/free-equipment/coverage/plate_do.glb": "3359f38d3438d4f93367ced670bc4665d0841bba8234c2082855562d64b66ca6",
+    "Viewer/local-art/free-equipment-female/coverage/plate_do.glb": "6962535ea25a1ccea7e9b4982d80b441d55e7e2e68f7f4f8dfc2d972bc23175d",
+    "Viewer/local-art/free-equipment/coverage/studded_do.glb": "dacdd65563c88d0cf7f759ed22e13f4758a344898c278404fba7ff10d390cb1a",
+    "Viewer/local-art/free-equipment-female/coverage/studded_do.glb": "ee162a5f9a0f422950108331299f662bcb218609eeba5b3122f6039ce08dc467",
+    "Viewer/local-art/free-equipment/coverage/studded_hiro_sode.glb": "d7d6a4c519e3986e5562422c48cf5a47a9d3e77637e8d24a8af1695a7a1328c5",
+    "Viewer/local-art/free-equipment-female/coverage/studded_hiro_sode.glb": "1c8ebc195a46cd30e862a72e3e83c04ac91464361e32a2777af56b858088eb06",
+    "Viewer/local-art/free-equipment/coverage/dragon_hands.glb": "0608e7404205cfd4b5e9ea6987f95c0655abe973a32dc49b911fd83cff7539e9",
+    "Viewer/local-art/free-equipment-female/coverage/dragon_hands.glb": "60c49b05dacbc57bae505bba86fffe1c7275e9cc14d2d59c4782a3c2b4717864",
+    "Viewer/local-art/free-equipment/coverage/plate_gorget.glb": "46909b0b04993e68d45ed5666718e75463f4285d48cada92094cdf3015717739",
+    "Viewer/local-art/free-equipment-female/coverage/plate_gorget.glb": "7cc56a0551da2ed12793361446a59891e5c999d295896ff85d634594e50f33db",
+    "Viewer/local-art/free-equipment/coverage/plate_haidate.glb": "82d6b9a920aa77eb7990e191107d7346557eeb36a7d8a5dec3218f09cf5add94",
+    "Viewer/local-art/free-equipment-female/coverage/plate_haidate.glb": "dc8ee27d0ce56832e0764fa1edc6aa8f5762fa098e6f13dd815d90fc6fe51d91",
+    "Viewer/local-art/free-equipment/coverage/tattsuke_hakama.glb": "33d9a40eed7b4b852a6ff78d6a27594f7da6ae76be331f6f781e104e879bcf93",
+    "Viewer/local-art/free-equipment-female/coverage/tattsuke_hakama.glb": "ccd4226f58a27b3a3c962d525725ca75f24301fbea39fbda398ed8cc0ecfb5d2",
+    "Viewer/local-art/free-equipment/coverage/plain_dress.glb": "1c83773c0979234e4a46e294dc370079c27d28c84054547b10947263a5d94b70",
+    "Viewer/local-art/free-equipment-female/coverage/plain_dress.glb": "ab5313cc2f0515e9c8b660b4d4fde96c272e2b03d9a8a5fd250a696f06bd37c3",
+    "Viewer/local-art/free-equipment/coverage/plain_dress_riding.glb": "3dd2068b827352c077a08daaa34d3fc8ce2ba7bb74768e73b19c2b90658babd4",
+    "Viewer/local-art/free-equipment-female/coverage/plain_dress_riding.glb": "368de40253aa6d3659451eef53dfee4c3d3a44a5797d4ab962eb7c2c2fadd852",
+    "Viewer/local-art/free-equipment/coverage/male_kimono.glb": "d0bac0fa4a10b0ebf7fc4057421e935b2a7d68946808bba5186d7b1554ba4796",
+    "Viewer/local-art/free-equipment-female/coverage/male_kimono.glb": "015a8213139532e5c4f72cbe68a1f71fb81d979a844ae87e609764d4b296caee",
+    "Viewer/local-art/free-equipment/coverage/male_kimono_riding.glb": "892b06770029accc55c567ec56b81c769df2b214990c7987ed3f4d92bc986570",
+    "Viewer/local-art/free-equipment-female/coverage/male_kimono_riding.glb": "6d258c4cc834bb74954e882fd7524eaedda8dd754d996b73dcb7b367ea17538e",
+    "Viewer/local-art/free-equipment/coverage/female_kimono.glb": "e71af23fddc9ccb5cd7b2000842eece8382552d0c84569b3c4232cb95355cae6",
+    "Viewer/local-art/free-equipment-female/coverage/female_kimono.glb": "94c03201a0fb1042f9c97a218cdccf625bef952bce10f617501d1ef06d46204a",
+    "Viewer/local-art/free-equipment/coverage/female_kimono_riding.glb": "467f743ac913835adbcdbfad41977b26b7bc42681fd63c9e6ad353962a6f84b0",
+    "Viewer/local-art/free-equipment-female/coverage/female_kimono_riding.glb": "9596ad7cdfe02896f4480db60290449444100d47afe00bc4bb6cddd00ee59786",
+    "Viewer/local-art/free-equipment/coverage/samurai_tabi.glb": "fdae03a3221255067920ad8a2ea0dac0627f8e5b373796702440cdc91a88526d",
+    "Viewer/local-art/free-equipment-female/coverage/samurai_tabi.glb": "e99bdc357cc4e4606766a821fc7c1bd633396bdd0ceac11b8e314e0771fd7501",
+    "Viewer/local-art/free-equipment/coverage/ninja_tabi.glb": "34f2a52339c5dc5f95197232261daa33575733b3a806c4425ace58f8fc530ebb",
+    "Viewer/local-art/free-equipment-female/coverage/ninja_tabi.glb": "d616ae1044659d11e74fc60957493f917d1fc83f92d857a15f56040f3bb6f188",
+    "Viewer/local-art/free-equipment/coverage/mail_legs.glb": "efa9dac6f3a4cafa5d658e8dcae1c928add7a68b0c8e1f5c9b597aa46c11dc41",
+    "Viewer/local-art/free-equipment-female/coverage/mail_legs.glb": "20f903fc24760da0dea578c3fbb0bbacba2fc98d2a377553be28dac6b931ffef",
+    "Viewer/local-art/free-equipment/coverage/arcane_cloak.glb": "8f27f7a5bc36257852cdbe0bf31144f93ce6822be315903c495d12f00b62d39c",
+    "Viewer/local-art/free-equipment-female/coverage/arcane_cloak.glb": "a7a17130f5c1579f9958a7bb646fd39fafb8f3a85ba45abd93ff3085444853f8",
+    "Viewer/local-art/free-equipment/coverage/plate_legs.glb": "800333863c5617e1844698655492e37f6f961e9ebfecf5ad5410c942be789fc3",
+    "Viewer/local-art/free-equipment-female/coverage/plate_legs.glb": "9f10746565390d8faa166a203901022759b0519eb69e9075723fc0e775f0874d",
+    "Viewer/local-art/free-equipment/coverage/plate_torso.glb": "e1e8f09cf06274408df0367f348046532364167fbe9b34dd6bf702479bac2b5b",
+    "Viewer/local-art/free-equipment-female/coverage/plate_torso.glb": "a8ee078c3f37f2fec4bf4bf9f997527aa0a8790b5bc10d4475c242f8630e0c9c",
+    "Viewer/local-art/free-equipment/coverage/plate_arms.glb": "a0d84c7f97b950d5de37b3d81bb14182452dd32859e8ec0f746e0183dc8a7ff1",
+    "Viewer/local-art/free-equipment-female/coverage/plate_arms.glb": "a1417199a0207be0fff3e389e44a778a8b627fcd93c3e71b5c98496e99d99ccd",
+    "Viewer/local-art/free-equipment/coverage/arcane_boots.glb": "0409fe847535152fd1abd789ab0fb92c64aed59a2d2c6a38727f5e890c289ed3",
+    "Viewer/local-art/free-equipment-female/coverage/arcane_boots.glb": "360d8e6ab793c1decdbcd53e514e424eb26983bfa3048ae3dde635500e8cc5a3",
+    "Viewer/local-art/free-equipment/coverage/totem_charm.glb": "8daadb4a0263730a4c37ed4c55a99eab439df45b924b95af58f70e989f6d99a4",
+    "Viewer/local-art/free-equipment-female/coverage/totem_charm.glb": "becebb137cd0d75f0b57838fb77180476e4cc2775073d33952e360d4d90c6f9f",
+    "Viewer/local-art/free-equipment/equipment-base.glb": "b5134f97fd6a4179cd0d692e748f9b917c49656d05fe31dc0969f42846ae20a9",
+    "Viewer/local-art/free-equipment/motion/human-motion.glb": "91b606bea1fd0a3b1e57d08e308c33c6989b7d4cad1ef78abef69d829ebe0f69",
+    "Viewer/local-art/free-equipment-female/equipment-base.glb": "951b8c1424714707b3178ca66a5b1f9e57f8c3e41f301c3a082cd312b861fc8c",
+    "Viewer/local-art/free-equipment-female/motion/human-motion.glb": "7f20ee73ce686237880cf7abcf74dfa5509d52b433dc98d2ca75dccd7d68f7a0",
+    "Viewer/Art/MedievalKit/textures/Fabric045_2K-JPG_NormalGL.jpg": "bd977a2099dbe3f39037f35e52245f7b0f1d04d817e009da5ec172eb9b695c9d",
+    "Viewer/local-art/free-equipment/coverage/armour_undercoat.glb": "2c544a0b8e9438bee607abc61a235cf1392f796420177068ce19bdd4ae261b04",
+    "Viewer/local-art/free-equipment-female/coverage/armour_undercoat.glb": "00581393e85da592b04372ba04cb95c4a9b29dc4904a66dd9831e0d03335d569"
+  },
+  "native_graphics": {
+    "9556": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 584,
+      "classes": []
+    },
+    "9557": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 585,
+      "classes": []
+    },
+    "9558": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 586,
+      "classes": []
+    },
+    "9559": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 587,
+      "classes": []
+    },
+    "9560": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 588,
+      "classes": []
+    },
+    "9561": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 589,
+      "classes": []
+    },
+    "9562": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 590,
+      "classes": []
+    },
+    "9563": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 591,
+      "classes": []
+    },
+    "9564": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 592,
+      "classes": []
+    },
+    "9565": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 593,
+      "classes": []
+    },
+    "9566": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 594,
+      "classes": []
+    },
+    "9567": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 595,
+      "classes": []
+    },
+    "9568": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 596,
+      "classes": []
+    },
+    "9569": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 597,
+      "classes": []
+    },
+    "9570": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 598,
+      "classes": []
+    },
+    "9571": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 744,
+      "classes": []
+    },
+    "9572": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 599,
+      "classes": []
+    },
+    "9573": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 600,
+      "classes": []
+    },
+    "9574": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 601,
+      "classes": []
+    },
+    "9575": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 602,
+      "classes": []
+    },
+    "9576": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 603,
+      "classes": []
+    },
+    "9577": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 604,
+      "classes": []
+    },
+    "9578": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 605,
+      "classes": []
+    },
+    "9579": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 668,
+      "classes": []
+    },
+    "9580": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 669,
+      "classes": []
+    },
+    "9581": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 670,
+      "classes": []
+    },
+    "9582": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 671,
+      "classes": []
+    },
+    "9583": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 745,
+      "classes": []
+    },
+    "9584": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 654,
+      "classes": []
+    },
+    "9586": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 626,
+      "classes": []
+    },
+    "9587": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 655,
+      "classes": []
+    },
+    "9588": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 656,
+      "classes": []
+    },
+    "9589": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 657,
+      "classes": []
+    },
+    "9590": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 658,
+      "classes": []
+    },
+    "9591": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 659,
+      "classes": []
+    },
+    "9592": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 660,
+      "classes": []
+    },
+    "9593": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 662,
+      "classes": []
+    },
+    "9594": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 0,
+      "classes": []
+    },
+    "9595": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 663,
+      "classes": []
+    },
+    "9596": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 664,
+      "classes": []
+    },
+    "9597": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 0,
+      "classes": []
+    },
+    "9598": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 666,
+      "classes": []
+    },
+    "9599": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 667,
+      "classes": []
+    },
+    "9934": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 940,
+      "classes": []
+    },
+    "9935": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 940,
+      "classes": []
+    },
+    "8788": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 883,
+      "classes": []
+    },
+    "8794": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 1062,
+      "classes": []
+    },
+    "8795": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 1062,
+      "classes": []
+    },
+    "5934": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 413,
+      "classes": []
+    },
+    "9865": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 866,
+      "classes": []
+    },
+    "9866": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 866,
+      "classes": []
+    },
+    "9871": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 674,
+      "classes": []
+    },
+    "9872": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 674,
+      "classes": []
+    },
+    "9891": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 692,
+      "classes": []
+    },
+    "9892": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 692,
+      "classes": []
+    },
+    "9885": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 740,
+      "classes": []
+    },
+    "9886": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 740,
+      "classes": []
+    },
+    "9801": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 715,
+      "classes": []
+    },
+    "9802": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 715,
+      "classes": []
+    },
+    "9809": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 693,
+      "classes": []
+    },
+    "9810": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 693,
+      "classes": []
+    },
+    "9706": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 911,
+      "classes": []
+    },
+    "9707": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 911,
+      "classes": []
+    },
+    "9710": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 732,
+      "classes": []
+    },
+    "9711": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 732,
+      "classes": []
+    },
+    "9712": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 731,
+      "classes": []
+    },
+    "9713": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 731,
+      "classes": []
+    },
+    "9861": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 731,
+      "classes": []
+    },
+    "9862": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 731,
+      "classes": []
+    },
+    "9817": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 684,
+      "classes": []
+    },
+    "9818": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 684,
+      "classes": []
+    },
+    "9819": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 685,
+      "classes": []
+    },
+    "9820": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 685,
+      "classes": []
+    },
+    "9821": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 686,
+      "classes": []
+    },
+    "9822": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 686,
+      "classes": []
+    },
+    "9702": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 921,
+      "classes": []
+    },
+    "9703": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 921,
+      "classes": []
+    },
+    "9704": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 922,
+      "classes": []
+    },
+    "9705": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 922,
+      "classes": []
+    },
+    "9823": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 733,
+      "classes": []
+    },
+    "9824": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 733,
+      "classes": []
+    },
+    "9825": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 734,
+      "classes": []
+    },
+    "9826": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 734,
+      "classes": []
+    },
+    "9827": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 735,
+      "classes": []
+    },
+    "9828": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 735,
+      "classes": []
+    },
+    "9829": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 736,
+      "classes": []
+    },
+    "9830": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 736,
+      "classes": []
+    },
+    "9831": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 691,
+      "classes": []
+    },
+    "9832": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 691,
+      "classes": []
+    },
+    "9835": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 676,
+      "classes": []
+    },
+    "9836": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 676,
+      "classes": []
+    },
+    "9837": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 0,
+      "classes": []
+    },
+    "9838": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 0,
+      "classes": []
+    },
+    "9841": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 675,
+      "classes": []
+    },
+    "9842": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 675,
+      "classes": []
+    },
+    "9843": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 695,
+      "classes": []
+    },
+    "9844": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 695,
+      "classes": []
+    },
+    "9847": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 677,
+      "classes": []
+    },
+    "9848": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 677,
+      "classes": []
+    },
+    "9849": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 0,
+      "classes": []
+    },
+    "9850": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 0,
+      "classes": []
+    },
+    "9803": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 531,
+      "classes": []
+    },
+    "9804": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 531,
+      "classes": []
+    },
+    "9805": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 678,
+      "classes": []
+    },
+    "9806": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 678,
+      "classes": []
+    },
+    "9807": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 0,
+      "classes": []
+    },
+    "9808": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 0,
+      "classes": []
+    },
+    "9855": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 447,
+      "classes": []
+    },
+    "9856": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 447,
+      "classes": []
+    },
+    "9857": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 690,
+      "classes": []
+    },
+    "9858": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 690,
+      "classes": []
+    },
+    "10142": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 0,
+      "classes": []
+    },
+    "10217": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 0,
+      "classes": []
+    },
+    "10143": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 0,
+      "classes": []
+    },
+    "10218": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 0,
+      "classes": []
+    },
+    "9811": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 0,
+      "classes": []
+    },
+    "9812": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 0,
+      "classes": []
+    },
+    "10133": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 0,
+      "classes": []
+    },
+    "10208": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 0,
+      "classes": []
+    },
+    "10124": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 0,
+      "classes": []
+    },
+    "10199": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 0,
+      "classes": []
+    },
+    "11012": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 876,
+      "classes": []
+    },
+    "11013": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 876,
+      "classes": []
+    },
+    "11014": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 874,
+      "classes": []
+    },
+    "11015": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 874,
+      "classes": []
+    },
+    "11016": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 871,
+      "classes": []
+    },
+    "11017": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 871,
+      "classes": []
+    },
+    "11018": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 872,
+      "classes": []
+    },
+    "11019": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 872,
+      "classes": []
+    },
+    "11022": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 870,
+      "classes": []
+    },
+    "11023": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 870,
+      "classes": []
+    },
+    "15285": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 865,
+      "classes": []
+    },
+    "11026": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 875,
+      "classes": []
+    },
+    "11027": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 875,
+      "classes": []
+    },
+    "12663": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 915,
+      "classes": []
+    },
+    "12664": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 914,
+      "classes": []
+    },
+    "40699": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 1413,
+      "classes": []
+    },
+    "40700": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 1413,
+      "classes": []
+    },
+    "4246": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 1234,
+      "classes": []
+    },
+    "40485": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 1310,
+      "classes": []
+    },
+    "40486": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 1311,
+      "classes": []
+    },
+    "40487": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 1312,
+      "classes": []
+    },
+    "40488": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 1313,
+      "classes": []
+    },
+    "40489": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 1314,
+      "classes": []
+    },
+    "40490": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 1315,
+      "classes": []
+    },
+    "40491": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 1316,
+      "classes": []
+    },
+    "40492": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 1317,
+      "classes": []
+    },
+    "9867": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 694,
+      "classes": []
+    },
+    "9868": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 694,
+      "classes": []
+    },
+    "5108": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 621,
+      "classes": []
+    },
+    "5109": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 621,
+      "classes": []
+    },
+    "42025": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 9972,
+      "classes": []
+    },
+    "42026": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 9974,
+      "classes": []
+    },
+    "41801": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 9978,
+      "classes": []
+    },
+    "41609": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 1486,
+      "classes": []
+    },
+    "41610": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 1486,
+      "classes": []
+    },
+    "41611": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 1486,
+      "classes": []
+    },
+    "41617": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 1486,
+      "classes": []
+    },
+    "41618": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 1486,
+      "classes": []
+    },
+    "41619": {
+      "basis": "curated indexed wearable; active server eligibility unverified",
+      "animation_reference": 1486,
+      "classes": []
+    }
+  },
+  "construction": "Complete fitted CC0/CC-BY variants retain topology and named weights. New outer garments retain their complete source plus an integrated fitted inner shirt, with specified 6 mm rear/12 mm front outward and 2 mm inward lining depth clearance; the lining uses matching outer cloth. Source notices and manifests retained. New parametric props are original GPL-3.0-or-later. No UO mesh, texture or animation frame exported."
+}

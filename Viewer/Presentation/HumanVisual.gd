@@ -156,6 +156,7 @@ func set_equipment(worn: Array) -> void:
 	# The riding robe opens/flexes at the waist. A continuous cloth lining,
 	# matching the existing armour backing, prevents exposed torso seams.
 	needs_undercoat=needs_undercoat or (riding() and (outfit_bits&8)!=0)
+	if bool(Wardrobe.Coverage.INTEGRATED_LININGS.get(str(extra_parts.get("outer",{}).get("asset","")),false)):needs_undercoat=false
 	var hide_hair := (outfit_bits&16)!=0 or extra_parts.has("head")
 	var head_asset: String=str(extra_parts.get("head",{}).get("asset",""))
 	var head_hair_fit: String=str(Wardrobe.Coverage.HAIR_FITS.get(head_asset,""))

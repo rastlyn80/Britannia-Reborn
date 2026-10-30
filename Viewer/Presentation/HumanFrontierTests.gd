@@ -86,6 +86,14 @@ func run() -> void:
 				if mounted:actor.rider_contact.modification_processed.disconnect(watcher)
 				print("FRONTIER GPU ",female," mounted=",mounted," ",row.key)
 			actor.free()
+	if batch_kind=="expansion65":
+		for female in [false,true]:
+			for mounted in [false,true]:
+				for row: Dictionary in definitions():
+					var best:=0
+					for sample: Dictionary in samples:
+						if sample.item==row.key and sample.female==female and sample.mounted==mounted:best=maxi(best,int(sample.reference_pixels))
+					check(best>=12,"Actual rendered presence "+row.key+" female="+str(female)+" mounted="+str(mounted))
 	var file:=FileAccess.open("res://../outputs/"+output_folder+"/gpu-validation.json",FileAccess.WRITE);file.store_string(JSON.stringify({"checks":checks,"failures":failures,"samples":samples,"scope":"Every new model on both bodies, Walk/Run and actual seated horse poses, two phases/four angles. Every new indexed ID tested with default/full/partial native hues in each body/mount state. Headwear >=98% retention (or <=4 raster pixels) against full-body reference. Props retain legitimate body/sleeve/horse occluders in both images; images establish rendered presence, not a collision proof. Exact preserved armour backing is checked independently. Actual grips and saddle/stirrup contacts. Finite samples; no live world-entry claim."},"\t"));file.close()
 	file=FileAccess.open("res://../outputs/"+output_folder+"/poses.json",FileAccess.WRITE);file.store_string(JSON.stringify({"poses":prop_poses}));file.close()
 	print("HUMAN FRONTIER: ",checks," checks, ",samples.size()," views, ",failures," failures");quit(1 if failures else 0)

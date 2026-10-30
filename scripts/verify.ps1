@@ -88,6 +88,10 @@ if (Test-Path "$root/Viewer/local-art/free-equipment-female/coverage/gilded_dres
   & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanWardrobe50LayerTests.gd
   if ($LASTEXITCODE) { throw 'Native wardrobe layer/variant checks failed' }
 }
+if (Test-Path "$root/Viewer/local-art/free-equipment-female/coverage/legacy_long_dress_riding.glb") {
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanWardrobe65LayerTests.gd
+  if ($LASTEXITCODE) { throw 'Native historical wardrobe layer/variant checks failed' }
+}
 if (Test-Path "$root/Viewer/local-art/horses/warhorse.glb") {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/HorseTests.gd
   if ($LASTEXITCODE) { throw 'Horse identity, mounted actions and rider contact checks failed' }
