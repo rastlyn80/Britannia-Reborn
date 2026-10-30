@@ -1,0 +1,226 @@
+{
+ "source": "Art Institute of Chicago open access (CC0 images of public-domain artworks)",
+ "licence": "CC0-1.0",
+ "textures": {
+  "bluehunt": {
+   "artwork": 88699,
+   "title": "Bear Hunt and Falconry from a Hunts series",
+   "date": "c. 1525",
+   "artist": "Franco-Flemish",
+   "page": "https://www.artic.edu/artworks/88699",
+   "iiif": "https://www.artic.edu/iiif/2/d1be42f5-8ae6-d476-7b1f-98cc783fa02b/full/1024,/0/default.jpg",
+   "crop": [
+    151,
+    81,
+    871,
+    1281
+   ],
+   "crop_of": [
+    1023,
+    1362
+   ],
+   "file": "bluehunt.jpg",
+   "sha256": "2e5c968d812df7d4a40c4e70ba2271e0a9b9d67a79f0fcf63787555f23b4f83b"
+  },
+  "falconer": {
+   "artwork": 6792,
+   "title": "A Falconer with Two Ladies and a Foot Soldier",
+   "date": "c. 1500",
+   "artist": "Franco-Flemish, possibly Paris or Bruges",
+   "page": "https://www.artic.edu/artworks/6792",
+   "iiif": "https://www.artic.edu/iiif/2/cd0f60d9-2f55-d570-ba9b-fc74f31b0ef3/full/1024,/0/default.jpg",
+   "crop": [
+    379,
+    48,
+    643,
+    763
+   ],
+   "crop_of": [
+    1023,
+    811
+   ],
+   "file": "falconer.jpg",
+   "sha256": "5c653cc0c20a9ebf2a5f1bc61a013289857d722cbaf18e33e18d44a2ae141a06"
+  },
+  "elephant": {
+   "artwork": 2102,
+   "title": "The Elephant, from The Berain Grotesques Series",
+   "date": "c. 1688/1732",
+   "artist": "After a design by Jean Baptiste Monnoyer (1636–1699) in the style of Jean I Berain (1640–1711); border design by Jean I Berain\nWoven at the Manufacture Royale de Beauvais under the direction of the Behagle family (directors, 1684–1711), the Filleul brothers (codirectors, 1711–22), or Noël-Antoine Mérou (director, 1722–33)\nFrance, Beauvais",
+   "page": "https://www.artic.edu/artworks/2102",
+   "iiif": "https://www.artic.edu/iiif/2/d0042a79-ccf5-6442-f237-8b39152e153a/full/1024,/0/default.jpg",
+   "crop": [
+    303,
+    41,
+    720,
+    655
+   ],
+   "crop_of": [
+    1023,
+    696
+   ],
+   "file": "elephant.jpg",
+   "sha256": "c159f820225988a18ed98b66daa23fce749d145a0ce1f9d364d1d0fafc234a86"
+  },
+  "verdure": {
+   "artwork": 18166,
+   "title": "Large Leaf Verdure with Animals and Birds",
+   "date": "1525-1550",
+   "artist": "Southern Netherlands, possibly Bruges, 1525/50",
+   "page": "https://www.artic.edu/artworks/18166",
+   "iiif": "https://www.artic.edu/iiif/2/adf4bbb7-abe8-63bc-0852-c86647378643/full/1024,/0/default.jpg",
+   "crop": [
+    351,
+    34,
+    671,
+    543
+   ],
+   "crop_of": [
+    1023,
+    577
+   ],
+   "file": "verdure.jpg",
+   "sha256": "27fd652ad84de1cb7de7384952af98c014f9488b2f86dec5df74d46d236f0275"
+  },
+  "woodland": {
+   "artwork": 9756,
+   "title": "Woodland with a Pond",
+   "date": "1660/70",
+   "artist": "Flanders, possibly Brussels",
+   "page": "https://www.artic.edu/artworks/9756",
+   "iiif": "https://www.artic.edu/iiif/2/f9686be6-7dc4-cda7-886d-e0aa7d2c645a/full/1024,/0/default.jpg",
+   "crop": [
+    294,
+    46,
+    728,
+    736
+   ],
+   "crop_of": [
+    1023,
+    782
+   ],
+   "file": "woodland.jpg",
+   "sha256": "167fb7749c0813b6ac78847d770309566ad2e364c7b69dba918642763e8cfd49"
+  },
+  "phaeton": {
+   "artwork": 49208,
+   "title": "The Fall of Phaeton",
+   "date": "after 1776",
+   "artist": "After a design based on an etching by Antonio Tempesta (1555–1630), The Fall of Phaeton (Phaetontis casus) from Ovid’s Metamorphoses\nPossibly woven at the workshop of Gabriel Babonneix (born 1756?) at the Manufacture Royale d’Aubusson\nFrance, Aubusson",
+   "page": "https://www.artic.edu/artworks/49208",
+   "iiif": "https://www.artic.edu/iiif/2/e9f20a59-e277-c399-9e58-5e053c8ef31f/full/1024,/0/default.jpg",
+   "crop": [
+    210,
+    51,
+    812,
+    804
+   ],
+   "crop_of": [
+    1023,
+    855
+   ],
+   "file": "phaeton.jpg",
+   "sha256": "32afcb491e29b004afacdac0d5c45cfa0c4451d63efc12e8bf3746a096500224"
+  },
+  "pheasants": {
+   "artwork": 52679,
+   "title": "The Pheasants from the \"Verdures of the Vatican\" Series",
+   "date": "c. 1799",
+   "artist": "Designed by Jean Démosthène Dugourc (French, 1749–1825)\nManufactured by Camille Pernon & Cie\nFrance, Lyon",
+   "page": "https://www.artic.edu/artworks/52679",
+   "iiif": "https://www.artic.edu/iiif/2/02738f67-3be4-4a69-0d80-ec33b7e6429c/full/1024,/0/default.jpg",
+   "crop": [
+    61,
+    275,
+    962,
+    2646
+   ],
+   "crop_of": [
+    1023,
+    2922
+   ],
+   "file": "pheasants.jpg",
+   "sha256": "2c433e839a4b1e592a4890c247f7faeb4cf5c1019328772dbc417a2698752c76"
+  },
+  "nymphs": {
+   "artwork": 7957,
+   "title": "Diana and Her Nymphs with the Ox Hunt",
+   "date": "c. 1600",
+   "artist": "With a scene after an engraving by Adriaen Collaert (c. 1560–1618) after Hans Bol (1534–1593), Ox Hunt \nBrussels",
+   "page": "https://www.artic.edu/artworks/7957",
+   "iiif": "https://www.artic.edu/iiif/2/e5a702f8-9ba1-4890-310d-7e96c7364ced/full/1024,/0/default.jpg",
+   "crop": [
+    342,
+    41,
+    680,
+    657
+   ],
+   "crop_of": [
+    1023,
+    698
+   ],
+   "file": "nymphs.jpg",
+   "sha256": "2f00dfe5f2adc776ef9080b11ea175323d2cfcd4ab8e33bccde4cc002032c6ae"
+  },
+  "emperor": {
+   "artwork": 189775,
+   "title": "The Emperor Sailing from The Story of the Emperor of China",
+   "date": "1716/22",
+   "artist": "After a design by Guy-Louis Vernansal (French, 1648–1729) and others\nWoven at the Manufacture Royale de Beauvais under the direction of Pierre and Etienne Filleul (codirectors, 1711–22)\nFrance, Beauvais",
+   "page": "https://www.artic.edu/artworks/189775",
+   "iiif": "https://www.artic.edu/iiif/2/17455fc4-14ec-b892-93d2-ebf89c7c689e/full/1024,/0/default.jpg",
+   "crop": [
+    61,
+    124,
+    962,
+    822
+   ],
+   "crop_of": [
+    1023,
+    947
+   ],
+   "file": "emperor.jpg",
+   "sha256": "c3547dbfadbf76d99e4bdc000bb4784b6457f61e30e00ae43704606d0319211f"
+  },
+  "cleopatra": {
+   "artwork": 147054,
+   "title": "Caesar and Cleopatra Enjoying Themselves from The Story of Caesar and Cleopatra",
+   "date": "c. 1680",
+   "artist": "After a design by Justus van Egmont (1601–1674)\nWoven at the workshop of Gerard Peemans (1637/39–1725)\nBrussels",
+   "page": "https://www.artic.edu/artworks/147054",
+   "iiif": "https://www.artic.edu/iiif/2/899e8e1c-ce4a-0158-0cb8-ebeb0dcd1fb4/full/1024,/0/default.jpg",
+   "crop": [
+    61,
+    163,
+    962,
+    861
+   ],
+   "crop_of": [
+    1023,
+    1025
+   ],
+   "file": "cleopatra.jpg",
+   "sha256": "32318c3d70882b3b8f7c46efd77c28c2724b618a1471ed960e554d4e55b77538"
+  },
+  "apollo": {
+   "artwork": 2104,
+   "title": "Apollo Exposing Mars and Venus to the Ridicule of the Olympians, from Ovid's Metamorphoses",
+   "date": "c. 1650",
+   "artist": "France, possibly Aubusson",
+   "page": "https://www.artic.edu/artworks/2104",
+   "iiif": "https://www.artic.edu/iiif/2/39b4e4ab-2a23-f4dd-90ac-c05a457094e4/full/1024,/0/default.jpg",
+   "crop": [
+    261,
+    46,
+    761,
+    722
+   ],
+   "crop_of": [
+    1023,
+    768
+   ],
+   "file": "apollo.jpg",
+   "sha256": "8919f30820efb4cddc52714713ed8d66ea399b8763bcc739931ddce75ab4d2c0"
+  }
+ }
+}

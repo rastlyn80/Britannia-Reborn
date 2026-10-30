@@ -10,6 +10,10 @@ source and output hashes plus attribution; NOTICE.md lists every CC-BY credit.
 
 usage: python add-objaverse.py NAME=GLB_PATH[@TRIANGLES] [...]
        GLB_PATH as in object-paths.json, e.g. 000-085/3f3e5490...cf.glb
+       NAME=sketchfab:UID[@TRIANGLES] fetches a model missing from the mirror
+       through Sketchfab's download API (same licence checks); it needs a
+       personal API token in SKETCHFAB_TOKEN or .tools/sketchfab-token.txt
+       (ignored, never committed).
 """
 import hashlib
 import json
@@ -32,6 +36,19 @@ def fetch(url):
         return response.read()
 
 
+def sketchfab_glb(uid):
+    token = os.environ.get('SKETCHFAB_TOKEN', '')
+    token_file = os.path.join(ROOT, '.tools', 'sketchfab-token.txt')
+    if not token and os.path.exists(token_file):
+        token = open(token_file, encoding='utf-8').read().strip()
+    if not token:
+        raise SystemExit('Sketchfab download needs a token: SKETCHFAB_TOKEN or .tools/sketchfab-token.txt')
+    request = urllib.request.Request('https://api.sketchfab.com/v3/models/%s/download' % uid, headers=dict(AGENT, Authorization='Token ' + token))
+    with urllib.request.urlopen(request, timeout=120) as response:
+        links = json.loads(response.read())
+    return links['glb']['url']
+
+
 def sha256(path):
     with open(path, 'rb') as handle:
         return hashlib.sha256(handle.read()).hexdigest()
@@ -40,7 +57,8 @@ def sha256(path):
 def write_notice(manifest):
     lines = ['# Objaverse / Sketchfab models', '',
              'Realistic models from Sketchfab, fetched from the public Objaverse 1.0 mirror',
-             '(https://huggingface.co/datasets/allenai/objaverse) and reduced for the game by',
+             '(https://huggingface.co/datasets/allenai/objaverse) or, when missing there, from',
+             "Sketchfab's download API, and reduced for the game by",
              'scripts/add-objaverse.py. Only CC0-1.0 and CC-BY-4.0 models are pinned; the manifest',
              'records each source page, author, licence, source and output SHA-256.', '',
              '## Attribution', '']
@@ -63,7 +81,8 @@ def main():
         if name in known:
             print('already pinned', name)
             continue
-        uid = os.path.splitext(os.path.basename(path))[0]
+        direct = path.startswith('sketchfab:')
+        uid = path.removeprefix('sketchfab:') if direct else os.path.splitext(os.path.basename(path))[0]
         try:
             info = json.loads(fetch('https://api.sketchfab.com/v3/models/' + uid))
         except Exception as error:  # removed or private on Sketchfab: licence unverifiable
@@ -74,8 +93,9 @@ def main():
             print('skip', name, 'licence', licence)
             continue
         source = os.path.join(work, uid + '.glb')
+        source_url = 'https://sketchfab.com/3d-models/%s (download API)' % uid if direct else HF + path
         with open(source, 'wb') as handle:
-            handle.write(fetch(HF + path))
+            handle.write(fetch(sketchfab_glb(uid) if direct else HF + path))
         output_dir = os.path.join(TARGET, name)
         os.makedirs(output_dir, exist_ok=True)
         output = os.path.join(output_dir, name + '.glb')
@@ -88,7 +108,7 @@ def main():
             'page': 'https://sketchfab.com/3d-models/' + uid,
             'author': (info.get('user') or {}).get('displayName') or (info.get('user') or {}).get('username', ''),
             'license': 'CC0-1.0' if licence == 'cc0' else 'CC-BY-4.0', 'licenseUrl': ACCEPTED[licence],
-            'sourceUrl': HF + path, 'sourceSha256': sha256(source), 'sourceTriangles': stats['source_triangles'],
+            'sourceUrl': source_url, 'sourceSha256': sha256(source), 'sourceTriangles': stats['source_triangles'],
             'file': name + '/' + name + '.glb', 'sha256': sha256(output), 'triangles': stats['triangles'],
             'size': stats['size'], 'processing': 'ground-centred, decimated to %s triangles, textures capped at 1024 px' % (budget or '30000')})
         known.add(name)

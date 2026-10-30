@@ -6908,6 +6908,90 @@
         3.048
       ],
       "processing": "ground-centred, decimated to 9000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "elven_chair",
+      "title": "Elven Chair (Free)",
+      "uid": "8395dd2ddd9d4ad2a7f1e2edd186d4d1",
+      "page": "https://sketchfab.com/3d-models/8395dd2ddd9d4ad2a7f1e2edd186d4d1",
+      "author": "wolfgar74",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-065/8395dd2ddd9d4ad2a7f1e2edd186d4d1.glb",
+      "sourceSha256": "5e16b8821d8bf0331d4aff6a7d8ed2aae6d6da7a6610790c05a3695cbd88e099",
+      "sourceTriangles": 1209,
+      "file": "elven_chair/elven_chair.glb",
+      "sha256": "09011bf50230b5766331b7970db40606d4d1ca23649115a9cebf5c5c32410d2f",
+      "triangles": 1209,
+      "size": [
+        60.032,
+        171.776,
+        49.527
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "icicles",
+      "title": "Icicle 01 (baked)",
+      "uid": "8b90cf14a57148aead04adb5a85eb339",
+      "page": "https://sketchfab.com/3d-models/8b90cf14a57148aead04adb5a85eb339",
+      "author": "Elin",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-035/8b90cf14a57148aead04adb5a85eb339.glb",
+      "sourceSha256": "26088ef49e299d65a59eb547219fcbee08cbecf72910808be6e36ba11ea38e67",
+      "sourceTriangles": 778,
+      "file": "icicles/icicles.glb",
+      "sha256": "1ca7d44b40eb16be72ec1bfc26a50d481e841c2b825f6c61aba91a1c0490b9f2",
+      "triangles": 778,
+      "size": [
+        2.139,
+        1.769,
+        0.608
+      ],
+      "processing": "ground-centred, decimated to 1500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "amphora_terracotta",
+      "title": "\u00c1nfora Cer\u00e1mica",
+      "uid": "5a365ccaa6de42ecaef60a570d13a287",
+      "page": "https://sketchfab.com/3d-models/5a365ccaa6de42ecaef60a570d13a287",
+      "author": "Juan Mart\u00ednez Royo",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-151/5a365ccaa6de42ecaef60a570d13a287.glb",
+      "sourceSha256": "304647850c0536f4698e148b2fefeb420f94ab0e51fffbe43204724394815571",
+      "sourceTriangles": 25362,
+      "file": "amphora_terracotta/amphora_terracotta.glb",
+      "sha256": "db53894096b10b0e1e3a61c73232a3d883c7c1cfe57e1be173aaf4c80e44565c",
+      "triangles": 5999,
+      "size": [
+        0.587,
+        1.076,
+        0.581
+      ],
+      "processing": "ground-centred, decimated to 6000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "vase_glazed",
+      "title": "Vietnamese Bottle Vase (Yu-hu chun), 15th C CE",
+      "uid": "49dc9488d3cd465ebc92f6b2d1bc1dc7",
+      "page": "https://sketchfab.com/3d-models/49dc9488d3cd465ebc92f6b2d1bc1dc7",
+      "author": "Minneapolis Institute of Art",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-146/49dc9488d3cd465ebc92f6b2d1bc1dc7.glb",
+      "sourceSha256": "75d7ecde9f7ac3252bece0e0ca8e398a70d56e37efe9a440161a95474f8e923d",
+      "sourceTriangles": 64000,
+      "file": "vase_glazed/vase_glazed.glb",
+      "sha256": "746cfa618570c61a3604d95130a73b42964642e7227cd948f07ecb92b70cf74c",
+      "triangles": 6000,
+      "size": [
+        0.143,
+        0.267,
+        0.143
+      ],
+      "processing": "ground-centred, decimated to 6000 triangles, textures capped at 1024 px"
     }
   ]
 }

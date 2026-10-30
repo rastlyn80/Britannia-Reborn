@@ -1,13 +1,15 @@
 # Objaverse / Sketchfab models
 
 Realistic models from Sketchfab, fetched from the public Objaverse 1.0 mirror
-(https://huggingface.co/datasets/allenai/objaverse) and reduced for the game by
+(https://huggingface.co/datasets/allenai/objaverse) or, when missing there, from
+Sketchfab's download API, and reduced for the game by
 scripts/add-objaverse.py. Only CC0-1.0 and CC-BY-4.0 models are pinned; the manifest
 records each source page, author, licence, source and output SHA-256.
 
 ## Attribution
 
 - "Stone Altar" by TheoClarke (https://sketchfab.com/3d-models/3d4f2edb18e4424cabb41b60aa160cb5), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
+- "Ánfora Cerámica" by Juan Martínez Royo (https://sketchfab.com/3d-models/5a365ccaa6de42ecaef60a570d13a287), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Medieval Anchor (Free)" by wolfgar74 (https://sketchfab.com/3d-models/5896ac54d63e4b84bd32e0b232619dfd), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Ankh Asset" by scrampunk (https://sketchfab.com/3d-models/fbeb7776320b47ff81060097d17d2669), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Anvil Nature Morte" by crazyshroomz (https://sketchfab.com/3d-models/970427a0aff3465689ac509f4fde9d94), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
@@ -120,6 +122,7 @@ records each source page, author, licence, source and output SHA-256.
 - "Eagle Sculpture" by jerryfisher (https://sketchfab.com/3d-models/811daf3a66fe4777a2d26b2fca951528), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Eagle antique statue Lowpoly" by Semo.Rachidy (https://sketchfab.com/3d-models/5aa84b23d6954833be0fc500dc2a3b97), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Easel Low Poly" by Marcin.Kwiatkowski (https://sketchfab.com/3d-models/6a7b6a34cd2d4822bea3aebca4746b78), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
+- "Elven Chair (Free)" by wolfgar74 (https://sketchfab.com/3d-models/8395dd2ddd9d4ad2a7f1e2edd186d4d1), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Medieval Firepalce - Galway City" by Galway3D_DH_AGe (https://sketchfab.com/3d-models/3edbe61c816b4acca6913fb404639cf5), CC0-1.0, https://creativecommons.org/publicdomain/zero/1.0/. Reduced (decimated, textures resized) for this project.
 - "Rustic Fireplace" by Loïc Norgeot (https://sketchfab.com/3d-models/555ad0c9171e4e4191ad7aea96ab44dd), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Small wood stack" by matousekfoto (https://sketchfab.com/3d-models/003b7bc7b771476dafcf24b8b2a2ddaa), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
@@ -155,6 +158,7 @@ records each source page, author, licence, source and output SHA-256.
 - "Goblin Slayer helmet with horns" by Diyarov Alen (https://sketchfab.com/3d-models/5d4fb33fa7cb46c39ff0c2066a96e35a), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Viking "Tea" Party - Animal Hide" by Nicholas Olsen (https://sketchfab.com/3d-models/210d7548d63649dcbb0f3739bf28f370), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Bit (horse)" by Virtual Museums of Małopolska (https://sketchfab.com/3d-models/f2df9cdd4973408d926281e677b41369), CC0-1.0, https://creativecommons.org/publicdomain/zero/1.0/. Reduced (decimated, textures resized) for this project.
+- "Icicle 01 (baked)" by Elin (https://sketchfab.com/3d-models/8b90cf14a57148aead04adb5a85eb339), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Lowpoly Gold Bar" by qb (https://sketchfab.com/3d-models/03a614bbd25a41cba8306c36089901e4), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Metal Ingot" by Kigha (https://sketchfab.com/3d-models/499a74a828dc42af9c2ceaa23069f6e0), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Inkwell" by The Hunt Museum (https://sketchfab.com/3d-models/7313a70bf25d4db2911f81c9f561cc64), CC0-1.0, https://creativecommons.org/publicdomain/zero/1.0/. Reduced (decimated, textures resized) for this project.
@@ -294,6 +298,7 @@ records each source page, author, licence, source and output SHA-256.
 - "Tricorn hat lowpoly" by Aartee (https://sketchfab.com/3d-models/ac0ecde570ba49c9adecd0b6820a84c0), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Laughing Deer Trophy" by ZeKa Arts (https://sketchfab.com/3d-models/f4e2f8ce26c3422b8f36b562511fc443), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Wooden Tub" by doxyz (https://sketchfab.com/3d-models/3d25ffa39ef24c48b2138a776e5cc931), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
+- "Vietnamese Bottle Vase (Yu-hu chun), 15th C CE" by Minneapolis Institute of Art (https://sketchfab.com/3d-models/49dc9488d3cd465ebc92f6b2d1bc1dc7), CC0-1.0, https://creativecommons.org/publicdomain/zero/1.0/. Reduced (decimated, textures resized) for this project.
 - "Holzbottich - wooden vat" by Mario_Wallner (https://sketchfab.com/3d-models/98a5ce99c6574f7b9f33c031696e1bad), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Bunker Door" by Skotchet (https://sketchfab.com/3d-models/153c7436da9b47e59f7539c1c54104f1), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.
 - "Medieval-Fantasy Multipurpose War Axe. lowpoly" by sethsaemann (https://sketchfab.com/3d-models/69cd66f552864bad89da8f2ce8223eb7), CC-BY-4.0, https://creativecommons.org/licenses/by/4.0/. Reduced (decimated, textures resized) for this project.

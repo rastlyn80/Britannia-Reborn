@@ -28,6 +28,7 @@ const NAMES := {
 	"raw cotton":"cotton","bridle":"bridle","prow":"prow","dart trap":"darttrap","serpent crest":"crest","void essence":"essence","covered chair":"coveredchair","iron maiden":"ironmaiden",
 	"century plant":"agave","backpack":"backpack","pampas grass":"pampas","memorial to gwenno":"memorial","horse barding":"barding",
 	"gravestone":"grave",
+	"tapestry":"tapestry","small elven tapestr":"tapestry","elven tapestry":"tapestry","colorful tapestry":"tapestry","sosaria tapestry":"tapestry",
 	"glass":"glassmug","dice and cup":"dice","eggs":"eggs","egg case":"eggcase","lockpick":"picks:1","lockpicks":"picks:3","spike trap":"spikes","hatch":"hatch","rope ladder":"ropeladder","brush":"brush","coconut":"coconut","full apron":"garment:apron:9a968a","half apron":"garment:apron:9a968a",
 }
 static var materials := {}
@@ -40,6 +41,22 @@ const GRAVES := {
 	4461:"block",4462:"block",4463:"block",4464:"block",4465:"post:sand",4466:"post:sand",4467:"post",4468:"post:mossy",
 	4471:"double:sand",4472:"double",3799:"tablet:sand",3800:"tablet:sand",4453:"tablet:sand",4454:"tablet:sand",
 	4457:"tablet:rose",4458:"tablet:rose",4470:"double:rose",4474:"tablet:dark",4479:"tablet:dark",4481:"tablet:mossy",
+}
+# Tapestries by graphic: [photograph (Art/Tapestries, CC0 public-domain
+# weavings), wall axis from the original art ("x": hung on a north wall,
+# "y": on a west wall), width and height (m), hanging: "rod" from a pole,
+# "posts" on a free-standing frame, "gilt" in a gilded frame, optional dye
+# multiplier when the weaving's colours must lean towards the original's].
+const TAPESTRIES := {
+	3754:["bluehunt","x",1.0,1.7,"rod"],3755:["bluehunt","y",1.0,1.7,"rod"],
+	3756:["falconer","x",0.55,1.5,"rod"],3757:["falconer","x",0.55,1.5,"rod"],3758:["falconer","y",0.55,1.5,"rod"],3759:["falconer","y",0.55,1.5,"rod"],
+	4053:["elephant","x",0.95,1.4,"rod"],4054:["elephant","x",0.95,1.4,"rod"],4055:["elephant","y",0.95,1.4,"rod"],4056:["elephant","y",0.95,1.4,"rod"],
+	4057:["verdure","x",0.95,1.5,"rod"],4058:["verdure","y",0.95,1.5,"rod"],4059:["verdure","x",0.95,1.5,"rod"],4060:["verdure","y",0.95,1.5,"rod"],
+	4061:["woodland","x",0.95,1.5,"rod"],4062:["woodland","y",0.95,1.5,"rod"],4063:["woodland","x",0.95,1.5,"rod"],4064:["woodland","y",0.95,1.5,"rod"],
+	4065:["phaeton","x",1.4,1.75,"rod"],4066:["phaeton","x",1.4,1.75,"rod"],4067:["phaeton","y",1.4,1.75,"rod"],4068:["phaeton","y",1.4,1.75,"rod"],
+	11631:["pheasants","y",0.55,1.45,"rod","8a7f5a"],11632:["pheasants","x",0.55,1.45,"rod","8a7f5a"],11633:["nymphs","y",0.8,1.45,"rod"],11634:["nymphs","x",0.8,1.45,"rod"],
+	12274:["emperor","x",1.8,1.4,"posts"],12275:["emperor","y",1.8,1.4,"posts"],17092:["cleopatra","x",1.8,1.4,"posts","ff8a6a"],
+	9038:["apollo","y",1.0,1.35,"gilt"],9039:["apollo","x",1.0,1.35,"gilt"],
 }
 const STONES := {"grey":"9a9a98","sand":"c8b294","rose":"b07a6c","dark":"55565a","mossy":"7f8a74"}
 
@@ -135,6 +152,62 @@ static func _grave(root: Node3D, shape: String, id: int) -> void:
 			_tablet(root,stone,0.5,0.62,Vector3(0,0.1,0))
 	# Graphics drawn the other way round face east.
 	if id % 2 == 0 and not form in ["obelisk","spire","needle","column"]: root.rotation.y = PI/2
+
+# A woven hanging: the photograph on a gently folded cloth, front -Z with its
+# back on the wall plane (z = 0); Reconstruction hangs it on the adjacent wall.
+# Without one, "art_yaw"/"art_offset" put it on the wall side its art shows.
+static func _tapestry(root: Node3D, spec: Array) -> void:
+	var width := float(spec[2])
+	var height := float(spec[3])
+	var hanging := str(spec[4])
+	var top := 2.35 if hanging != "posts" else 1.75
+	var cloth := StandardMaterial3D.new()
+	cloth.albedo_texture = load("res://Art/Tapestries/%s.jpg" % spec[0])
+	if spec.size() > 5: cloth.albedo_color = Color(str(spec[5]))
+	cloth.roughness = 0.95
+	cloth.cull_mode = BaseMaterial3D.CULL_DISABLED
+	# Folds: a shallow wave across the width, deeper towards the free hem.
+	var folds := SurfaceTool.new()
+	folds.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var columns := 16
+	var rows := 6
+	var depth := 0.0 if hanging == "gilt" else 0.025
+	for row in rows:
+		for column in columns:
+			var quad: Array = []
+			for corner in [Vector2i(0,0),Vector2i(1,0),Vector2i(1,1),Vector2i(0,0),Vector2i(1,1),Vector2i(0,1)]:
+				var u := float(column+corner.x)/columns
+				var v := float(row+corner.y)/rows
+				var z := -0.03-depth*(0.4+0.6*v)*(0.5+0.5*sin(u*TAU*float(int(width*3.0)+1)))
+				folds.set_uv(Vector2(u,v))
+				quad.append(Vector3((u-0.5)*width,top-0.06-v*height,z))
+				folds.add_vertex(quad.back())
+	folds.generate_normals()
+	var panel := MeshInstance3D.new()
+	panel.mesh = folds.commit()
+	panel.material_override = cloth
+	root.add_child(panel)
+	match hanging:
+		"rod":
+			_cyl(root,0.018,width+0.16,Vector3(0,top,-0.05),_wood(),Vector3(0,0,PI/2),-1,8)
+			for x in [-1.0,1.0]: _sphere(root,0.035,Vector3(x*(width/2+0.09),top,-0.05),_mat("rusty_metal_02",Color("c8a050"),1.0,0.35,6.0))
+			for x in [-0.4,0.4]: _cyl(root,0.004,0.12,Vector3(x*width,top+0.05,-0.035),_cloth("8a6a3a"),Vector3.ZERO,-1,4)
+		"posts":
+			for x in [-1.0,1.0]:
+				_cyl(root,0.035,top+0.1,Vector3(x*(width/2+0.06),(top+0.1)/2,-0.05),_wood(),Vector3.ZERO,-1,8)
+				_box(root,Vector3(0.1,0.04,0.35),Vector3(x*(width/2+0.06),0.02,-0.05),_wood())
+			_cyl(root,0.02,width+0.12,Vector3(0,top,-0.05),_wood(),Vector3(0,0,PI/2),-1,8)
+		"gilt":
+			var gold := _mat("rusty_metal_02",Color("e8c060"),0.3,0.4,6.0)
+			var middle := top-0.06-height/2
+			for y in [top-0.03,top-0.09-height]: _box(root,Vector3(width+0.1,0.06,0.05),Vector3(0,y,-0.03),gold)
+			for x in [-1.0,1.0]: _box(root,Vector3(0.06,height+0.12,0.05),Vector3(x*(width/2+0.02),middle,-0.03),gold)
+	if hanging != "posts":
+		root.set_meta("art_yaw",PI if spec[1] == "x" else -PI/2)
+		root.set_meta("art_offset",Vector3(0,0,-0.45) if spec[1] == "x" else Vector3(-0.45,0,0))
+	else:
+		root.set_meta("art_yaw",PI if spec[1] == "x" else -PI/2)
+		root.set_meta("art_offset",Vector3.ZERO)
 
 # A round-topped stone tablet with a sunken inscription panel, front +Z.
 static func _tablet(root: Node3D, stone: Material, width: float, height: float, at: Vector3) -> void:
@@ -607,5 +680,6 @@ static func build(name: String, seed := 0, id := -1) -> Node3D:
 		"bar":
 			_box(root,Vector3(0.3,0.03,0.05),Vector3(0,0.015,0),_iron())
 		"grave": _grave(root,str(GRAVES.get(id,"tablet")),id)
+		"tapestry": _tapestry(root,TAPESTRIES.get(id,["verdure","x",0.95,1.5,"rod"]))
 	for mi in root.find_children("*","MeshInstance3D",true,false): (mi as MeshInstance3D).cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	return root

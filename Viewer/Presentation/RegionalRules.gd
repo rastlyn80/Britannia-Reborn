@@ -184,7 +184,7 @@ static func _resolve(id: int,info: Dictionary) -> Dictionary:
  if n.begins_with("wall ") and n!="wall map": return base.merged({"kind":"prop","model":"wall_light" if "torch" in n or "sconce" in n else "painting","mount":"wall"})
  if "wall map" in n: return base.merged({"kind":"prop","model":"painting","mount":"wall"})
  # Banners hang flat on the wall beside them (a free-standing one keeps its cell).
- if n in ["banner","tattered banner","tapestry"]: return base.merged({"kind":"prop","model":"fabric","mount":"wall"})
+ if n in ["banner","tattered banner"] or "tapestr" in n: return base.merged({"kind":"prop","model":"fabric","mount":"wall"})
  if n in ["decorative shield","decorative shields","trophy","painting","portrait","painting_virtue_scal","elven wall map","curtain sash","wall sconce","lever","clock","dartboard","dartboard w/knives","switch","tribal mask"]: return base.merged({"kind":"prop","model":"replacement","mount":"wall"})
  if "wall" in n or n in ["window","arrow loop","battlement"]:
   return base.merged({"kind":"window" if n in ["window","arrow loop"] else ("trim" if height<15 else "wall"),"asset":"Village/Wall_UnevenBrick_Straight.gltf" if "stone" in n or "brick" in n else "Village/Wall_Plaster_Straight.gltf"})

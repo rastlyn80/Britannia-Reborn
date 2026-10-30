@@ -656,12 +656,6 @@
    "model": "wooden_crate_01",
    "height": 0.75
   },
-  "tapestry": {
-   "model": "Objaverse/banner_worn",
-   "height": 1.8,
-   "rotation": 90,
-   "anchor": "back"
-  },
   "sarcophagus": {
    "model": "Objaverse/sarcophagus_stone",
    "assembly": "footprint",
@@ -2495,6 +2489,15 @@
      "model": "Objaverse/curtains_red",
      "height": 2.2,
      "anchor": "back"
+    },
+    "13040": {
+     "model": "Objaverse/rock_gray",
+     "length": 0.7,
+     "size": [
+      0.6,
+      1.5,
+      0.6
+     ]
     }
    }
   },
@@ -4258,6 +4261,124 @@
   "arcanist statue": {
    "model": "Objaverse/statue_angel",
    "height": 1.2
+  },
+  "big elven chair": {
+   "model": "Objaverse/elven_chair",
+   "height": 1.6,
+   "palette": {
+    "ChairCloth": "8a1a1e"
+   },
+   "ids": {
+    "11755": {
+     "rotation": 180
+    },
+    "11756": {
+     "rotation": 90
+    },
+    "11757": {
+     "rotation": 0
+    },
+    "11758": {
+     "rotation": 270
+    }
+   }
+  },
+  "icicle large south": {
+   "model": "Objaverse/icicles",
+   "length": 1.0,
+   "rotation": 0,
+   "anchor": "back"
+  },
+  "icicle large east": {
+   "model": "Objaverse/icicles",
+   "length": 1.0,
+   "rotation": 90,
+   "anchor": "back"
+  },
+  "icicle med south": {
+   "model": "Objaverse/icicles",
+   "length": 0.7,
+   "rotation": 0,
+   "anchor": "back"
+  },
+  "icicle med east": {
+   "model": "Objaverse/icicles",
+   "length": 0.7,
+   "rotation": 90,
+   "anchor": "back"
+  },
+  "icicle small south": {
+   "model": "Objaverse/icicles",
+   "length": 0.45,
+   "rotation": 0,
+   "anchor": "back"
+  },
+  "icicle small east": {
+   "model": "Objaverse/icicles",
+   "length": 0.45,
+   "rotation": 90,
+   "anchor": "back"
+  },
+  "large vase": {
+   "model": "Objaverse/amphora_terracotta",
+   "height": 0.85,
+   "ids": {
+    "17074": {
+     "model": "Objaverse/vase_glazed",
+     "height": 0.8
+    },
+    "17075": {
+     "model": "Objaverse/vase_glazed",
+     "height": 0.65
+    }
+   }
+  },
+  "muck": {
+   "models": [
+    "Reduced/nettle_plant/nettle_plant_2",
+    "Reduced/nettle_plant/nettle_plant_4"
+   ],
+   "height": 0.45,
+   "cluster": 4,
+   "recolor": {
+    "from": "5a7a2a",
+    "to": "3a5426",
+    "reach": 0.4
+   }
+  },
+  "wheat shea": {
+   "model": "Objaverse/wheat_stalk",
+   "height": 1.0,
+   "cluster": 14
+  },
+  "boulder": {
+   "model": "Objaverse/rock_gray",
+   "size": [
+    1.15,
+    0.75,
+    0.95
+   ],
+   "only_ids": true,
+   "ids": {
+    "4949": {
+     "rotation": 0
+    },
+    "4950": {
+     "rotation": 90
+    }
+   },
+   "height": 0.75
+  },
+  "rocks": {
+   "model": "Objaverse/rock_gray",
+   "height": 0.5,
+   "cluster": 3,
+   "only_ids": true,
+   "ids": {
+    "4967": {
+     "height": 0.5
+    }
+   }
   }
  }
 }

@@ -1737,6 +1737,10 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 				if not is_nan(rooted):
 					visual.position.y += rooted-float(s.z)*float(world.elevationScale)
 					node.set_meta("ground_offset",rooted-float(s.z)*float(world.elevationScale))
+			# Wall hangings with no adjacent source wall keep the side their art shows.
+			if visual.has_meta("art_yaw") and not presentation_adjustments.get(ordinal,{}).has("yaw"):
+				visual.rotation.y += float(visual.get_meta("art_yaw"))
+				visual.position += visual.get_meta("art_offset")
 			if not show_boundary_fragments:
 				visual.position += presentation_adjustments.get(ordinal,{}).get("offset",Vector3.ZERO)
 				visual.rotation.y += float(presentation_adjustments.get(ordinal,{}).get("yaw",0.0))

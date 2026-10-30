@@ -1,3 +1,25 @@
+# Item catalogue wave 15 — 30 October 2026
+
+Owner request: search deeper for free models (elven chair, harpsichord) and use real textures for the tapestries.
+
+**Tapestries:** all 31 tapestry graphics are now woven hangings textured with photographs of real public-domain tapestries from the Art Institute of Chicago (CC0).
+- The photos are pinned by a new script, `scripts/add-artic-textures.py`, into `Art/Tapestries`, with a manifest (artwork page, IIIF source, crop, SHA-256) and a NOTICE.
+- Eleven weavings were chosen to match the originals' colours: hunt and falconry scenes, Berain grotesques, leaf verdure, woodland, Phaeton, the Vatican pheasants, Diana's nymphs, the Emperor of China, Caesar and Cleopatra, and Apollo.
+- The builder is `CraftedProps._tapestry`: gently folded cloth on a rod with finials, a free-standing post frame or a gilt frame.
+- All tapestries now hang on the adjacent wall (`mount: wall`). Without a wall, or for server items, a tapestry hangs on the side its original art shows.
+- The worn-banner stand-in for "tapestry" is retired.
+
+**New scans:**
+- **Big elven chair:** CC-BY Sketchfab "Elven Chair (Free)" by wolfgar74, red cushion, four facings.
+- **Icicles:** CC-BY "Icicle 01 (baked)" by Elin, six graphics, facings from the art.
+- **Large vases:** a CC-BY terracotta amphora and a CC0 glazed vase (Minneapolis Institute of Art).
+
+**Other looks, from scans already in the repo:** muck (nettle, recoloured), wheat sheaves (wheat-stalk bundles), rocks, boulders and the unnamed standing stone (the grey rock scan the other rock graphics use).
+
+**Harpsichord:** the CC-BY "Clavecin" by Favier on Sketchfab is a real harpsichord, but it is not in the Objaverse mirror. `add-objaverse.py` now accepts `NAME=sketchfab:UID`, which downloads through Sketchfab's API with the same licence checks. This needs a personal API token in `SKETCHFAB_TOKEN` or `.tools/sketchfab-token.txt` (ignored).
+
+**Counts:** world 92.9% → 93.2% (761 → 733 graphics open); Britain 98.4% → 99.1% (51 → 30 open). Sheets are local only (`tap15`, `tap15b`, `chair15`, `ice15`, `misc15`, `misc15b`, `rocks15b`).
+
 # Human body sash and native cloth cutouts — 30 October 2026
 
 Added the previously missing body sash (0x1541/0x1542, native MiddleTorso 17) to male/female humans and NPCs, with civilian and rigid plate-fit meshes. Catalogue regenerated: **248/1,126 graphics (22.02%), 73 categories**, 39,410 item/action rows and 332 UOP mode/action rows. Existing 35 classic / 28 on-foot / seven ordinary-horse action groups are unchanged.

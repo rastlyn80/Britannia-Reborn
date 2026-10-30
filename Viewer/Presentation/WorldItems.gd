@@ -215,6 +215,9 @@ func upsert(serial: int, item: Dictionary) -> void:
  if not str(rule.family) in FIXED_FAMILIES and not preload("res://Presentation/PropReplacements.gd").has(crafted_name,int(item.id)) and preload("res://Presentation/CraftedProps.gd").handles(crafted_name):
   var crafted: Node3D = preload("res://Presentation/CraftedProps.gd").build(crafted_name,serial,int(item.id))
   crafted.name = "CraftedVisual"
+  if crafted.has_meta("art_yaw"):
+   crafted.rotation.y = float(crafted.get_meta("art_yaw"))
+   crafted.position = crafted.get_meta("art_offset")
   root.add_child(crafted)
   _body(root,Vector3(0.6,0.5,0.6),Vector3(0,0.25,0),serial,(int(rule.get("flags",0))&64)!=0)
   request_contact_refresh()

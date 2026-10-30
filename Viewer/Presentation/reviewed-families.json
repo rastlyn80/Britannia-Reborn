@@ -4774,6 +4774,81 @@
    ],
    "note": "boots (scanned boots, darkened), limes, squash (pumpkin scan recoloured yellow), arcanist statue (angel statue scan)",
    "sheet": "food14"
+  },
+  {
+   "ids": [
+    3754,
+    3755,
+    3756,
+    3757,
+    3758,
+    3759,
+    4053,
+    4054,
+    4055,
+    4056,
+    4057,
+    4058,
+    4059,
+    4060,
+    4061,
+    4062,
+    4063,
+    4064,
+    4065,
+    4066,
+    4067,
+    4068,
+    9038,
+    9039,
+    11631,
+    11632,
+    11633,
+    11634,
+    12274,
+    12275,
+    17092
+   ],
+   "note": "tapestries: CC0 public-domain AIC tapestry photographs on folded cloth hangings (rod, posts or gilt frame), wall side from the original art",
+   "sheet": "tap15"
+  },
+  {
+   "ids": [
+    11755,
+    11756,
+    11757,
+    11758
+   ],
+   "note": "big elven chair: CC-BY Sketchfab Elven Chair (wolfgar74) with red cushion, facings checked",
+   "sheet": "chair15"
+  },
+  {
+   "ids": [
+    17778,
+    17779,
+    17780,
+    17781,
+    17782,
+    17783
+   ],
+   "note": "icicles: CC-BY Sketchfab Icicle 01 (baked, Elin), facings from the art",
+   "sheet": "ice15"
+  },
+  {
+   "ids": [
+    2885,
+    3267,
+    7869
+   ],
+   "note": "large vases (CC-BY terracotta amphora, CC0 glazed vase), muck (nettle scan recoloured), wheat sheaves (wheat stalk scan bundles)",
+   "sheet": "misc15"
+  },
+  {
+   "ids": [
+    13040
+   ],
+   "note": "rocks, boulders and the unnamed standing stone on the grey rock scan used by the other rock graphics",
+   "sheet": "rocks15b"
   }
  ]
 }
