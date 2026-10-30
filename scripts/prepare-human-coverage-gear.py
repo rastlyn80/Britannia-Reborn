@@ -179,6 +179,8 @@ evidence.update(female=FEMALE,recipe_sha256=hashlib.sha256(Path(__file__).read_b
 tailor=None
 for row in RECIPES:
  kind=row['kind']
+ # Built after the foundation exports by prepare-human-workwear.py.
+ if kind=='workwear':continue
  if kind=='tailoring':
   if tailor is None:
    spec=importlib.util.spec_from_file_location('tailoring',ROOT/'scripts/human-tailoring.py');tailoring=importlib.util.module_from_spec(spec);spec.loader.exec_module(tailoring);tailor=tailoring.Tailor(rig,body,ART,M,idle_pose)

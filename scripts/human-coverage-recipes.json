@@ -611,10 +611,19 @@
         2597
       ],
       "kind": "tailoring"
+    },
+    {
+      "key": "body_sash",
+      "slot": "middle",
+      "graphics": [
+        5441,
+        5442
+      ],
+      "kind": "workwear"
     }
   ],
   "deferred_experiments": [
-    "Sleeveless dress, apron and surcoat experiments rejected at visual review; no native IDs mapped or counted.",
-    "Full/half apron and body sash prototypes failed real-rider occlusion/visual review; no native IDs mapped or counted. Rejected pose-fit evidence retained only in ignored outputs/human-tailoring."
+    "Sleeveless dress, apron and surcoat experiments rejected at visual review; those native IDs remain unmapped.",
+    "Earlier sampled full/half apron and sash pose-fit prototypes were rejected. The matched-topology body sash is accepted separately; apron waist/lap defects remain uncounted. Diagnostic evidence stays in ignored outputs/human-workwear and work/human-workwear."
   ]
 }

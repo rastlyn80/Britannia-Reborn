@@ -74,10 +74,13 @@ static func resolve(worn: Array) -> Dictionary:
 			pieces[str(extra[0])] = {"asset":str(extra[1]),"hue":int(item.get("hue",0)),"id":id}
 		if mask == 0 and extra(id).is_empty() and layer not in [0,11,16,18,21,25,26,27]:
 			unsupported.append(id)
+	# MiddleTorso replaces tunic/doublet on that native layer, retaining shirt/armour.
+	if pieces.has("middle"):
+		bits &= ~1;pieces.erase("doublet")
 	# Outer robe obscures the shirt, while trousers/boots can show at its opening.
 	if bits & 8: bits &= ~1
 	if bits & 8:
-		pieces.erase("outer_legs");pieces.erase("shirt");pieces.erase("doublet")
+		pieces.erase("outer_legs");pieces.erase("shirt");pieces.erase("doublet");pieces.erase("middle")
 	if bits & 8:
 		for slot in ["torso","arms"]:pieces.erase(slot)
 	if pieces.has("torso"):

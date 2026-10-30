@@ -164,7 +164,7 @@ func set_equipment(worn: Array) -> void:
 	var hair_style := str(resolved.hair_style)
 	var long_hair := hair_style in ["long","ponytail"]
 	var hair_asset := "hair_"+hair_style
-	if long_hair and ((outfit_bits&25)!=0 or extra_parts.has("head") or extra_parts.has("shirt") or extra_parts.has("doublet") or extra_parts.has("cloak") or extra_parts.has("torso")):
+	if long_hair and ((outfit_bits&25)!=0 or extra_parts.has("head") or extra_parts.has("shirt") or extra_parts.has("doublet") or extra_parts.has("cloak") or extra_parts.has("torso") or extra_parts.has("middle")):
 		var variant := "hood" if (outfit_bits&16)!=0 else ("covered" if extra_parts.has("head") else "layered")
 		if extra_parts.has("cloak"):variant += "_cloak"
 		if str(extra_parts.get("head",{}).get("asset",""))=="coverage/chain_coif":variant+="_coif"
@@ -210,6 +210,7 @@ func set_equipment(worn: Array) -> void:
 		if slot=="legs" and riding() and (outfit_bits&8):_attach(folder+"/runtime/part-pants.glb","Free_")
 		else:
 			var asset:=str(item.asset)
+			if asset=="coverage/body_sash" and extra_parts.has("torso"):asset+="_armour"
 			if asset=="coverage/lantern" and int(item.id) in [0x0a15,0x0a17,0x0a22]:asset+="_lit"
 			_attach(_part_path(asset),"Extra_")
 		_shade(parts[-1],int(item.hue))

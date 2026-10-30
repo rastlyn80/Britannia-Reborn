@@ -8,6 +8,7 @@ uniform bool has_texture = true;
 uniform bool use_hue = false;
 uniform bool partial_hue = false;
 uniform bool cutout = false;
+uniform float cutout_threshold = .35;
 uniform bool cosmetic = false;
 uniform bool has_normal = false;
 uniform float pigmentation_gain = 1.8;
@@ -18,7 +19,7 @@ uniform vec4 emission_colour : source_color = vec4(0.0);
 void fragment() {
  vec4 source = base_colour;
  if (has_texture) { source *= texture(source_texture,UV); }
- if (cutout && source.a < .35) { discard; }
+ if (cutout && source.a < cutout_threshold) { discard; }
  vec3 colour = source.rgb;
  bool grey = max(max(colour.r,colour.g),colour.b)-min(min(colour.r,colour.g),colour.b)<.025;
  if (use_hue && (!partial_hue || grey)) {

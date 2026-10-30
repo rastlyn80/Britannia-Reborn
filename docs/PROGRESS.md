@@ -1,3 +1,15 @@
+# Human body sash and native cloth cutouts — 30 October 2026
+
+Added the previously missing body sash (0x1541/0x1542, native MiddleTorso 17) to male/female humans and NPCs, with civilian and rigid plate-fit meshes. Catalogue regenerated: **248/1,126 graphics (22.02%), 73 categories**, 39,410 item/action rows and 332 UOP mode/action rows. Existing 35 classic / 28 on-foot / seven ordinary-horse action groups are unchanged.
+
+The accepted sash retains the fitted shirt/plate topology and weights, 61 named inverse binds, independent native hair/item dyes and existing body masks. Plate fit closes above articulated faulds. Full and partial native dyes now preserve non-cosmetic alpha-scissor outlines and thresholds; cosmetic cutout behaviour remains unchanged. Middle-layer tunic/doublet and outer-robe concealment follow the native layer, while separate shirt/armour and long hair remain supported.
+
+Evidence: **304 runtime/GPU checks, 128 views, zero failures**; **64 long-hair/ponytail views, zero failures**, including cape layering; four export hashes / 32 actual final-modifier poses / 7,104 sampled visible triangles with exact source weights and bounded offsets; eight completed Godot review frames and two sheets. Complete body and legitimate far-side/sleeve occluders are retained in the GPU references. These are finite art/pose checks, not universal garment collision or exact original ornament approval. Source licences, reproduction and limits: [HUMAN_WORKWEAR_BATCH.md](HUMAN_WORKWEAR_BATCH.md). Local evidence is ignored under outputs/human-workwear and work/workwear-*.log.
+
+Verification: coverage source validator **110 accepted exports**, runtime coverage **791/791**, horse regression **2,468/2,468 / 768 contact poses**. Full scripts/verify.ps1 recheck exited **0** and completed all its assertions. It still logged the two existing StreetTests fixture errors at TimberBridge.gd:41 (missing id), plus existing teardown/RID diagnostics; the suite is not diagnostic-clean. The first verification attempt stopped on invalid local gump-art request JSON; the unchanged parser's standalone **12,040-packet fuzz recheck** and complete suite rerun then passed. No parser or bridge changes were mixed into this character batch. No live login change was made and no new server world-entry/multiplayer claim is made.
+
+Held back: full/half apron experiments still show waist/lap defects and failed stricter pose/plate review. They remain **unmapped and uncounted**; rejected code/poses/renders are preserved only in ignored work/output folders. Next: a clean apron seam, then surcoat/dresses and remaining armour/weapon families. The sash and other torso/outer-leg combinations still need owner/combination-specific art review. Shared terrain/item work is preserved.
+
 # Item catalogue wave 14 — 30 October 2026
 
 Owner request: carry on with the item catalogue, choosing free art without asking.

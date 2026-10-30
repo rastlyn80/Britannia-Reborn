@@ -1,0 +1,60 @@
+{
+  "scope": "Body sash on both bodies, walking/running and riding; apron drafts are excluded",
+  "source_manifests": [
+    "scripts/character-expansion-inputs.json",
+    "scripts/human-coverage-inputs.json",
+    "scripts/human-tailoring-inputs.json"
+  ],
+  "foundation": "https://github.com/kblood/CharacterCreator/tree/852e48f316b90a0937234886630e4fb4cdfd1f78",
+  "licence": "Selected CC0 MakeHuman/Toigo clothing and CC0 linen/normal inputs; original stencil, fitting and plate topology GPL-3.0-or-later. See docs/HUMAN_CIVILIAN_BATCH.md and Viewer/Art/MedievalKit/NOTICE.md.",
+  "files": {
+    "Viewer/local-art/free-equipment/equipment-base.glb": "b5134f97fd6a4179cd0d692e748f9b917c49656d05fe31dc0969f42846ae20a9",
+    "Viewer/local-art/free-equipment/expansion/shirt.glb": "e01c11855961d30e398d3ff33a7935001578b2cbfa2c3bbb5f88ac66857f02e4",
+    "Viewer/local-art/free-equipment/coverage/plate_torso.glb": "e1e8f09cf06274408df0367f348046532364167fbe9b34dd6bf702479bac2b5b",
+    "Viewer/local-art/free-equipment-female/equipment-base.glb": "951b8c1424714707b3178ca66a5b1f9e57f8c3e41f301c3a082cd312b861fc8c",
+    "Viewer/local-art/free-equipment-female/expansion/shirt.glb": "18d75d7983a9d75973254a96eeece74244d933fee72649e55b7b3e3377c3de16",
+    "Viewer/local-art/free-equipment-female/coverage/plate_torso.glb": "a8ee078c3f37f2fec4bf4bf9f997527aa0a8790b5bc10d4475c242f8630e0c9c",
+    "Viewer/Art/MedievalKit/textures/Linen_Color.jpg": "3221cb1d07531f13238b2443be5843d1b788c462c8576e7ada755e496f93b149",
+    "Viewer/Art/MedievalKit/textures/Fabric045_2K-JPG_NormalGL.jpg": "bd977a2099dbe3f39037f35e52245f7b0f1d04d817e009da5ec172eb9b695c9d"
+  },
+  "native_reference": {
+    "repository": "https://github.com/modernuo/ModernUO",
+    "revision": "ab59efea86fd9e399d261bed9d188ab4d95ad4c2",
+    "files": [
+      "Projects/UOContent/Items/Clothing/MiddleTorso.cs"
+    ]
+  },
+  "source_archives": {
+    "shirts01": {
+      "url": "https://files.makehumancommunity.org/asset_packs/shirts01/shirts01_cc0.zip",
+      "sha256": "a5a723b0e84a109bb190fcfeac7f1de4138d875da3e30fe5b3340eac9f38bcd3",
+      "local": "work/human-wardrobe-batch/shirts01_cc0.zip"
+    }
+  },
+  "authored_outputs": "Original binary sash outline/stitch masks; fixed 20 mm civilian / 28 mm plate offsets on the exact existing shirt/rigid plate vertices and weights. Plate sash closes above articulated faulds. Blender uniform rig scale retained. No game art or body triangle copies.",
+  "selected_cloth": {
+    "pack": "shirts01",
+    "folder": "clothes/toigo_fisherman_sweater",
+    "author": "MargaretToigo",
+    "license": "CC0",
+    "source": "http://www.makehumancommunity.org/node/1187",
+    "files": {
+      "clothes/toigo_fisherman_sweater/sweater_fisherman.obj": "2844465f4e798666a90f631ea4a89ae30d3e526ef045a978d338908750d21d09",
+      "clothes/toigo_fisherman_sweater/shirt-knit-NORM.png": "c3458d9b5174d7c34beed74618828c26f479200512d691a6bada34e7ea5d9a62",
+      "clothes/toigo_fisherman_sweater/toigo_fisherman_sweater.mhclo": "b454960bdd61985f246e88e547a127a75d590dc87d6c1a4062fb7c7c281d8999",
+      "clothes/toigo_fisherman_sweater/toigo_fisherman_sweater.thumb": "a64cdf427b565eb72d69c4e3b93cd6021df66fe4a7e30c14c55fbced8c3df391",
+      "clothes/toigo_fisherman_sweater/shirt-knit.png": "a7d526797da4cdc1a79603a35abebf41e577277267f36db6641cdb6cebe6ffb1",
+      "clothes/toigo_fisherman_sweater/sweater_fisherman.mhmat": "254c011b3edae8cbab7adb2d082de670dd41b26324bf5772318b7557a127fd64"
+    }
+  },
+  "source_materials": {
+    "Viewer/Art/MedievalKit/textures/Linen_Color.jpg": {
+      "sha256": "3221cb1d07531f13238b2443be5843d1b788c462c8576e7ada755e496f93b149",
+      "licence": "CC0-1.0; Viewer/Art/MedievalKit/NOTICE.md and CREDITS.md"
+    },
+    "Viewer/Art/MedievalKit/textures/Fabric045_2K-JPG_NormalGL.jpg": {
+      "sha256": "bd977a2099dbe3f39037f35e52245f7b0f1d04d817e009da5ec172eb9b695c9d",
+      "licence": "CC0-1.0; Viewer/Art/MedievalKit/NOTICE.md and CREDITS.md"
+    }
+  }
+}

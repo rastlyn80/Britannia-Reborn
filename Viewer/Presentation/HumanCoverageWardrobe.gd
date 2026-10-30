@@ -163,6 +163,8 @@ const ITEMS := {
 	0x0a18:["shield","coverage/lantern"],
 	0x0a22:["shield","coverage/lantern"],
 	0x0a25:["shield","coverage/lantern"],
+	0x1541:["middle","coverage/body_sash"],
+	0x1542:["middle","coverage/body_sash"],
 }
 const STANCES := {
 	"coverage/crossbow":"crossbow",
