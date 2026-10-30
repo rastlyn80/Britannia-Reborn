@@ -210,6 +210,9 @@ func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -
 		"invisible": return {"status":"hidden","detail":"not drawn (editor marker)"}
 		"sign": return {"status":"hidden","detail":"signpost drawn by its server sign"}
 		"canopy":
+			# A crown is drawn by its trunk's whole tree; scanned species count as the scan.
+			var whole: Dictionary = preload("res://Presentation/PropReplacements.gd").entry("cypress tree") if "cypress" in name.to_lower() else {}
+			if whole.get("only_ids",false): return {"status":"scan","detail":"crown drawn by the scanned whole tree: "+str(whole.model).get_file()}
 			if LocalTrees.available(): return {"status":"owner","detail":"your tree packs (local): crown of a whole tree"}
 			return pack(asset)
 		"tree":

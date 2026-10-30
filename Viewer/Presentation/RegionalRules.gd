@@ -56,7 +56,6 @@ static func roof_material(n: String) -> String:
 const SLOTS := [
  ["^small palm$","palm",[1.0,1.8,1.0]],
  ["^(palm|palm tree|date palm|coconut palm)$","palm",[3.0,5.5,3.0]],
- ["cypress tree","cypress",[2.0,7.0,2.0]],
  ["pile of skulls","skull",[0.9,0.35,0.9],7],
  ["^(skull|demon skull|skull with candle)$","skull",[0.3,0.22,0.3]],
  ["^bone$","bone",[0.5,0.1,0.5]],

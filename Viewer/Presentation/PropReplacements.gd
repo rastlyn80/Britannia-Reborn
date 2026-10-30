@@ -92,6 +92,24 @@ static func _repaint(node: Node3D, spec: Dictionary) -> void:
 		repaints[key] = material
 	for mesh in node.find_children("*","MeshInstance3D",true,false): (mesh as MeshInstance3D).material_override = repaints[key]
 
+# Colours by source material name for scans that carry none ({"Leaves":
+# "2f5a24", "Petal": "6a2a8c"}: a surface whose material name contains a key).
+static func _palette(node: Node3D, palette: Dictionary) -> void:
+	for mesh in node.find_children("*","MeshInstance3D",true,false):
+		var instance := mesh as MeshInstance3D
+		for surface in instance.mesh.get_surface_count():
+			var source := instance.mesh.surface_get_material(surface)
+			var label := source.resource_name if source else ""
+			for part in palette:
+				if part.to_lower() in label.to_lower():
+					var key := "palette/"+str(palette[part])
+					if not repaints.has(key):
+						var material := StandardMaterial3D.new()
+						material.albedo_color = Color(str(palette[part]))
+						material.roughness = 0.75
+						repaints[key] = material
+					instance.set_surface_override_material(surface,repaints[key])
+
 static func _one(reconstruction: RefCounted, model: String, found: Dictionary, scale: float) -> Node3D:
 	# "Objaverse/name" entries are reduced museum/Sketchfab scans (Art/Objaverse);
 	# "Reduced/set/set_N" one variant split out of a Poly Haven nature set.
@@ -109,6 +127,7 @@ static func _one(reconstruction: RefCounted, model: String, found: Dictionary, s
 	# "size" [x, y, z] fits a block-like scan to exact proportions (a clipped hedge).
 	var placed: Node3D = reconstruction.fitted(path,Vector3(found.size[0],found.size[1],found.size[2])*scale if found.has("size") else box.size*factor)
 	if found.has("material"): _repaint(placed,found.material)
+	if found.has("palette"): _palette(placed,found.palette)
 	if lay:
 		# fitted() stands the model on y = 0, centred in x and z.
 		var size := box.size*factor

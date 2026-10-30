@@ -6719,6 +6719,195 @@
         22.831
       ],
       "processing": "ground-centred, decimated to 10000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "cypress_bald",
+      "title": "Bald Cypress",
+      "uid": "feb56a05db3546d390d0957e03cf48a3",
+      "page": "https://sketchfab.com/3d-models/feb56a05db3546d390d0957e03cf48a3",
+      "author": "BaptisteBerard",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-004/feb56a05db3546d390d0957e03cf48a3.glb",
+      "sourceSha256": "0c0a48864b94e8724c97740e52e6f4dc74584b1e5cf7ffef27d30cf18cead459",
+      "sourceTriangles": 3871,
+      "file": "cypress_bald/cypress_bald.glb",
+      "sha256": "f9b5b515e0d8f7193d048343774c763960d2e342114a3e530e753eb53248eb4a",
+      "triangles": 3871,
+      "size": [
+        11.767,
+        24.067,
+        13.055
+      ],
+      "processing": "ground-centred, decimated to 12000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "cypress_great",
+      "title": "Great Bald Cypress",
+      "uid": "dca97787b1b24fd8a0fb6bb536e383e3",
+      "page": "https://sketchfab.com/3d-models/dca97787b1b24fd8a0fb6bb536e383e3",
+      "author": "BaptisteBerard",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-001/dca97787b1b24fd8a0fb6bb536e383e3.glb",
+      "sourceSha256": "f616789945c767bc957ba85f03dc9b1cdb77fc4c5903fd4c6387f88e887d712f",
+      "sourceTriangles": 7745,
+      "file": "cypress_great/cypress_great.glb",
+      "sha256": "208a797050c0b83efa8209e27a428647155c6ff4cd40d7f54ec250d8fb4b604b",
+      "triangles": 7745,
+      "size": [
+        1224.806,
+        1152.036,
+        1082.895
+      ],
+      "processing": "ground-centred, decimated to 12000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "wheat_field",
+      "title": "Field of wheat from Poly by Google",
+      "uid": "a5f702ae479e44c7a43be0ded661d874",
+      "page": "https://sketchfab.com/3d-models/a5f702ae479e44c7a43be0ded661d874",
+      "author": "IronEqual",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-049/a5f702ae479e44c7a43be0ded661d874.glb",
+      "sourceSha256": "84e08857f214709b7b059dd805b0ada95ba684becda9c47b41dd1ba84d368ebd",
+      "sourceTriangles": 4385,
+      "file": "wheat_field/wheat_field.glb",
+      "sha256": "cf9730f88b9469d8b9ca47eb5c2ccfcee1610fa1897ce9b2ad9657cd78109d06",
+      "triangles": 4385,
+      "size": [
+        16.208,
+        13.446,
+        8.159
+      ],
+      "processing": "ground-centred, decimated to 8000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "banana_plant",
+      "title": "Banana Plant",
+      "uid": "85695b82c7ba4b3497a663616cc3bf25",
+      "page": "https://sketchfab.com/3d-models/85695b82c7ba4b3497a663616cc3bf25",
+      "author": "evolveduk",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-041/85695b82c7ba4b3497a663616cc3bf25.glb",
+      "sourceSha256": "d8af8c360d2f2b463d06a85301f419a9c1cedcf796f9f1735f86f0ea283227e0",
+      "sourceTriangles": 4702,
+      "file": "banana_plant/banana_plant.glb",
+      "sha256": "b141552591b26bafe0390de260ab91ea356c76bbf42640c4782f0ee0c4f6b727",
+      "triangles": 4702,
+      "size": [
+        1.493,
+        2.16,
+        1.642
+      ],
+      "processing": "ground-centred, decimated to 8000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "banana_tree",
+      "title": "Banana Tree",
+      "uid": "7186ebfc24fc42c599f81713cd28d55e",
+      "page": "https://sketchfab.com/3d-models/7186ebfc24fc42c599f81713cd28d55e",
+      "author": "DJMiddi",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-091/7186ebfc24fc42c599f81713cd28d55e.glb",
+      "sourceSha256": "166f505f628483df529ede1c03cf30695d4aaaa93131f420c9cda192348b61ee",
+      "sourceTriangles": 3332,
+      "file": "banana_tree/banana_tree.glb",
+      "sha256": "57e7508b91f1880d58ecfe908d4eda4544f73a32473ad6be8cf2677428919d3d",
+      "triangles": 3332,
+      "size": [
+        11.111,
+        10.096,
+        11.813
+      ],
+      "processing": "ground-centred, decimated to 8000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "skull_candle",
+      "title": "Skull Candle",
+      "uid": "05b7d3d9b9584858a425bc2716fb726b",
+      "page": "https://sketchfab.com/3d-models/05b7d3d9b9584858a425bc2716fb726b",
+      "author": "Rickerson",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-094/05b7d3d9b9584858a425bc2716fb726b.glb",
+      "sourceSha256": "72e44bffe91f335ae0758f87143706fca27ccd0409d52b636afa6eb4240f9a5b",
+      "sourceTriangles": 2206,
+      "file": "skull_candle/skull_candle.glb",
+      "sha256": "81bef79fa4226d35f86de00b52264481e2f8e902b520ad9caca7baedefe42f83",
+      "triangles": 2206,
+      "size": [
+        0.458,
+        1.555,
+        0.513
+      ],
+      "processing": "ground-centred, decimated to 9000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "lantern_hanging_metal",
+      "title": "Metal hanging lantern",
+      "uid": "1bdbe7ea2e5242948f6cd7cccfd7206e",
+      "page": "https://sketchfab.com/3d-models/1bdbe7ea2e5242948f6cd7cccfd7206e",
+      "author": "Qwert Models",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-091/1bdbe7ea2e5242948f6cd7cccfd7206e.glb",
+      "sourceSha256": "c1dd6f4debef90c195639b061c91f12e169096e7d503fb96492684667f4b41ab",
+      "sourceTriangles": 1460,
+      "file": "lantern_hanging_metal/lantern_hanging_metal.glb",
+      "sha256": "3616222d2a6a9f7d24045985e4c554f374e82bc0968a1b0234e6c571ab356478",
+      "triangles": 1460,
+      "size": [
+        0.849,
+        2.0,
+        0.836
+      ],
+      "processing": "ground-centred, decimated to 9000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "staff_bo",
+      "title": "Bo Staff",
+      "uid": "1d61e7120b3b47bc85077381f9d2dc55",
+      "page": "https://sketchfab.com/3d-models/1d61e7120b3b47bc85077381f9d2dc55",
+      "author": "Shadow Models 3D",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-058/1d61e7120b3b47bc85077381f9d2dc55.glb",
+      "sourceSha256": "7a8e46cee8476f2f0aef1c9207d1fa789cfcc1904448c9d6a72b585ba0b1d445",
+      "sourceTriangles": 464,
+      "file": "staff_bo/staff_bo.glb",
+      "sha256": "30839689094bd54bcf5f631b724341810351a686fef9a9d6375658bf08bf612c",
+      "triangles": 464,
+      "size": [
+        1.425,
+        0.035,
+        0.035
+      ],
+      "processing": "ground-centred, decimated to 9000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "rose_purple",
+      "title": "Rose",
+      "uid": "b5277921b85c43b2a6c1ee92bd63b3dc",
+      "page": "https://sketchfab.com/3d-models/b5277921b85c43b2a6c1ee92bd63b3dc",
+      "author": "victorberdugo1",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-141/b5277921b85c43b2a6c1ee92bd63b3dc.glb",
+      "sourceSha256": "a680f15cd2f736aea3c747b615c4f39b1512d305bdab2435c560a10d4fac6493",
+      "sourceTriangles": 7544,
+      "file": "rose_purple/rose_purple.glb",
+      "sha256": "13503e5eb8c065b6d806ca956f98ba553485c46da0a249ff6ceddcb9db5b07aa",
+      "triangles": 7544,
+      "size": [
+        3.424,
+        13.928,
+        3.048
+      ],
+      "processing": "ground-centred, decimated to 9000 triangles, textures capped at 1024 px"
     }
   ]
 }

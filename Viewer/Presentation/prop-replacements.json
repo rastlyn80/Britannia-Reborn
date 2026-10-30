@@ -4048,6 +4048,75 @@
     "metallic": 0.0,
     "roughness": 0.8
    }
+  },
+  "cypress tree": {
+   "model": "Objaverse/cypress_bald",
+   "height": 9.0,
+   "only_ids": true,
+   "ids": {
+    "3320": {
+     "height": 9.0
+    },
+    "3323": {
+     "model": "Objaverse/cypress_great"
+    },
+    "3326": {
+     "model": "Objaverse/cypress_great"
+    },
+    "3329": {
+     "height": 9.5
+    }
+   }
+  },
+  "small banana tree": {
+   "model": "Objaverse/banana_plant",
+   "height": 2.2
+  },
+  "banana tree": {
+   "model": "Objaverse/banana_tree",
+   "height": 4.6
+  },
+  "wheat": {
+   "model": "Objaverse/wheat_field",
+   "length": 1.05,
+   "material": {
+    "color": "c9a65e",
+    "roughness": 0.85
+   }
+  },
+  "skull with candle": {
+   "model": "Objaverse/skull_candle",
+   "height": 0.45
+  },
+  "hanging lantern": {
+   "model": "Objaverse/lantern_hanging_metal",
+   "height": 0.5,
+   "elevation": 1.9
+  },
+  "trainingdummyadv fra": {
+   "model": "Objaverse/dummy_combat",
+   "height": 1.8,
+   "assembly": "footprint"
+  },
+  "black staff": {
+   "model": "Objaverse/staff_bo",
+   "length": 1.8,
+   "lay": true,
+   "material": {
+    "color": "2b2522",
+    "metallic": 0.0,
+    "roughness": 0.7
+   }
+  },
+  "rose of trinsic": {
+   "model": "Objaverse/rose_purple",
+   "height": 0.5,
+   "palette": {
+    "Leaves": "2f5a26",
+    "Spikes": "35552a",
+    "Bottom": "3a5a2a",
+    "Pedals": "6b2c8f"
+   }
   }
  }
 }

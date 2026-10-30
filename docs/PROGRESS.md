@@ -1,3 +1,27 @@
+# Item catalogue wave 13 — 30 October 2026
+
+Owner request: carry on with the item catalogue.
+
+Comparison sheets showed most remaining "guess" looks were wrong:
+- swamp cypresses drawn as Italian cypresses;
+- banana trees as agaves;
+- wheat as grass.
+
+**New CC-BY Sketchfab scans, from the Objaverse mirror:**
+- **Cypress:** two bald cypress scans for all four trunks; their crowns now count as drawn by the scanned tree.
+- **Bananas:** a banana plant and a banana tree.
+- **Wheat:** a wheat field, coloured golden through the material repaint.
+- **Britain decorations:** skull with candle, metal hanging lantern, training-dummy frames (drawn once per footprint), bo staff, and a purple rose of Trinsic.
+
+**Code changes:**
+- `PropReplacements` gains a "palette" key, which colours a scan's surfaces by material name; the rose scan has no colours of its own.
+- Oak crown 3295 is approved, consistent with the approved oak crowns.
+- The cypress library slot is removed.
+
+**Counts:** world 92.0% → 92.3% (862 → 832 graphics open); Britain 97.7% → 98.0% (75 → 65 open). Britain's counted area grew to 3,247 graphics since the last 100% count. Sheets are local only (`w13trees`, `w13after`, `w13wheat`, `w13brit`, `w13rose`).
+
+**Next:** elven chairs, tapestries and harpsichord (crafted, since no free scans were found), gravestones, yucca, flax, cotton, white poppies, Ter Mur pieces.
+
 # Voice chat by speech-to-text — 30 October 2026
 
 Hold V (or the talk-line microphone) and speak. Local Whisper turns your speech into text, which is said in game as normal speech: it appears in the journal and over your head. Settings, per character: language, translate into English, review before sending, and microphone.
