@@ -4379,6 +4379,84 @@
      "height": 0.5
     }
    }
+  },
+  "harpsichord south": {
+   "model": "Objaverse/harpsichord",
+   "assembly": "footprint",
+   "length": 2.2
+  },
+  "harpsichord east": {
+   "model": "Objaverse/harpsichord",
+   "assembly": "footprint",
+   "length": 2.2
+  },
+  "harpsichord bench so": {
+   "model": "Objaverse/antique_bench",
+   "assembly": "footprint",
+   "length": 1.1
+  },
+  "harpsichord bench ea": {
+   "model": "Objaverse/antique_bench",
+   "assembly": "footprint",
+   "length": 1.1
+  },
+  "pitcher": {
+   "model": "Objaverse/pitcher_ceramic",
+   "height": 0.26,
+   "material": {
+    "color": "6a4826",
+    "metallic": 0.0,
+    "roughness": 0.35
+   }
+  },
+  "cooked bird": {
+   "model": "Objaverse/roast_chicken",
+   "length": 0.3
+  },
+  "arrow fletching": {
+   "model": "Objaverse/arrow_lowpoly",
+   "length": 0.7,
+   "lay": true,
+   "cluster": 4
+  },
+  "wig stand": {
+   "model": "Objaverse/wig_head",
+   "height": 0.32,
+   "pedestal": [
+    0.07,
+    0.4
+   ],
+   "material": {
+    "color": "c8a882",
+    "metallic": 0.0,
+    "roughness": 0.7
+   }
+  },
+  "ear of corn": {
+   "model": "Objaverse/corn_cob",
+   "length": 0.22,
+   "lay": true,
+   "material": {
+    "color": "d9b434",
+    "metallic": 0.0,
+    "roughness": 0.6
+   }
+  },
+  "jester hat": {
+   "model": "Objaverse/jester_hat",
+   "length": 0.4
+  },
+  "pitcher of milk": {
+   "model": "Objaverse/pitcher_porcelain",
+   "height": 0.22
+  },
+  "spam": {
+   "model": "Objaverse/canned_meat",
+   "length": 0.12
+  },
+  "contribution statue": {
+   "model": "Objaverse/stone_lantern",
+   "height": 1.3
   }
  }
 }

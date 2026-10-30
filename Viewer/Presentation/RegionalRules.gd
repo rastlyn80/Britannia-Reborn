@@ -205,6 +205,8 @@ static func _resolve(id: int,info: Dictionary) -> Dictionary:
  # Raised flower beds are stone planters that flowers and trees stand on.
  if n.replace(" ","").begins_with("flowerbed"): return base.merged({"kind":"planter"})
  if "rug" in n or "carpet" in n or n.ends_with(" mat") or n=="mat": return base.merged({"kind":"carpet"})
+ # A harpsichord bench is one upholstered seat, not a run of bench planks.
+ if n.begins_with("harpsichord bench"): return base.merged({"kind":"prop","model":"replacement"})
  if "bench" in n: return base.merged({"kind":"bench"})
  # Legacy "bar" art is a panelled serving counter, not a rail.
  if "table" in n or n in ["counter","bar"]: return base.merged({"kind":"counter" if n in ["counter","bar"] else "table"})

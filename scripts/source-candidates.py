@@ -3,7 +3,8 @@
 Reads outputs/item-catalog/open-work.json (written by scripts/build-item-catalog.ps1),
 searches Sketchfab for each open family name, keeps downloadable CC0 / CC-BY 4.0
 models that exist in the public Objaverse 1.0 mirror (so scripts/add-objaverse.py
-can pin them with verified provenance) and are light enough to reduce, and
+can pin them with verified provenance) or, when a Sketchfab token is set up for
+add-objaverse.py, any such model (path "sketchfab:UID"), light enough to reduce, and
 writes review sheets: the original art beside each candidate's thumbnail, with a
 letter per candidate. Nothing is downloaded except thumbnails; approved letters
 go to scripts/pin-picks.py.
@@ -51,6 +52,8 @@ def objaverse_index():
     return paths
 
 
+# A Sketchfab API token (see add-objaverse.py) widens the search beyond the mirror.
+TOKEN = os.environ.get('SKETCHFAB_TOKEN') or os.path.exists(os.path.join(ROOT, '.tools', 'sketchfab-token.txt'))
 QUERIES = json.load(open(os.path.join(ROOT, 'scripts', 'sourcing-queries.json'), encoding='utf-8'))['queries']
 
 
@@ -92,12 +95,12 @@ def candidates_for(query, index, per, max_mb, max_faces):
                 continue
             licence = LICENCES.get((result.get('license') or {}).get('label', ''))
             glb = (result.get('archives') or {}).get('glb') or {}
-            if not licence or uid not in index:
+            if not licence or (uid not in index and not TOKEN):
                 continue
             if (glb.get('size') or 0) > max_mb * 1e6 or (result.get('faceCount') or 0) > max_faces:
                 continue
             images = sorted(result['thumbnails']['images'], key=lambda i: abs(i['width'] - 256))
-            found.append({'uid': uid, 'path': index[uid].removeprefix('glbs/'), 'title': result['name'],
+            found.append({'uid': uid, 'path': index[uid].removeprefix('glbs/') if uid in index else 'sketchfab:' + uid, 'title': result['name'],
                           'author': (result.get('user') or {}).get('displayName', ''), 'licence': licence,
                           'faces': result.get('faceCount'), 'mb': round((glb.get('size') or 0) / 1e6, 1),
                           'likes': result.get('likeCount'), 'thumb': images[0]['url']})

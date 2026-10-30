@@ -1,3 +1,17 @@
+# Item catalogue wave 16 — 30 October 2026
+
+The owner provided a Sketchfab API token; it is stored only in the ignored `.tools/sketchfab-token.txt`. Sourcing and pinning now reach every downloadable CC0/CC-BY Sketchfab model, not only the Objaverse mirror. `source-candidates.py` lists such models as `sketchfab:UID`, and `add-objaverse.py` downloads them with the same licence checks and provenance records.
+
+**New CC-BY scans:**
+- **Harpsichords** (south and east sets): "Clavecin" by Favier, fitted to the 2×3 footprint with the keyboard toward the bench.
+- **Harpsichord benches:** "Antique Bench" (red upholstery). Harpsichord benches are now one seat, not a bench run (`RegionalRules`).
+- **Britain decorations:** pitcher, roast chicken, arrows (arrow fletching), dummy head on a stand (wig stand), corn cob, jester hat, porcelain milk jug and canned meat (spam). The pitcher and corn scans carried no usable texture, so they are recoloured.
+- **Contribution statue:** uses the stone lantern scan already in the repo.
+
+**Counts:** world 93.2% → 93.4% (733 → 713 graphics open); Britain 99.1% → 99.5% (30 → 16 open).
+
+**Still open in Britain, because no honest free match was found yet:** crossbow bolts, donuts, green onions, rabbit on a spit, gargoyle mirrors and sculpture, floor saw, inshave, flax bundle, elven wash basin, clock frame, crystalline blackrock, horse statue.
+
 # Item catalogue wave 15 — 30 October 2026
 
 Owner request: search deeper for free models (elven chair, harpsichord) and use real textures for the tapestries.

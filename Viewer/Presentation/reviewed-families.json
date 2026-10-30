@@ -4849,6 +4849,45 @@
    ],
    "note": "rocks, boulders and the unnamed standing stone on the grey rock scan used by the other rock graphics",
    "sheet": "rocks15b"
+  },
+  {
+   "ids": [
+    25532,
+    25533,
+    25534,
+    25535,
+    25536,
+    25537,
+    25538,
+    25539,
+    25540,
+    25541,
+    25542,
+    25543,
+    25544,
+    25545
+   ],
+   "note": "harpsichords: CC-BY Sketchfab Clavecin (Favier) fitted to the 2x3 footprint, keyboard toward the bench; CC-BY Antique Bench; both facings checked",
+   "sheet": "harp4"
+  },
+  {
+   "ids": [
+    2487,
+    3199,
+    3201,
+    3202,
+    3589,
+    3590,
+    3591,
+    3592,
+    4130,
+    4131,
+    4164,
+    5916,
+    12278
+   ],
+   "note": "Britain decorations from CC-BY Sketchfab scans (pitcher, roast chicken, arrows, dummy head on a stand, corn cob, jester hat, porcelain milk jug, canned meat) and the stone lantern scan",
+   "sheet": "brit16"
   }
  ]
 }

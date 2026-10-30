@@ -6992,6 +6992,216 @@
         0.143
       ],
       "processing": "ground-centred, decimated to 6000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "harpsichord",
+      "title": "Clavecin",
+      "uid": "edc95cad444f4b34b5c45221bce938cf",
+      "page": "https://sketchfab.com/3d-models/edc95cad444f4b34b5c45221bce938cf",
+      "author": "Favier",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/edc95cad444f4b34b5c45221bce938cf (download API)",
+      "sourceSha256": "a73aefb1bf4fff2a9e6786989dccc8d17020c4fe0e00bc2065ebbd412edb2452",
+      "sourceTriangles": 25138,
+      "file": "harpsichord/harpsichord.glb",
+      "sha256": "946677704b01ad7dec03968b4fd47aa5894f0da7721dfaaf7a5bae8ed55be903",
+      "triangles": 7994,
+      "size": [
+        1362.002,
+        810.818,
+        1836.0
+      ],
+      "processing": "ground-centred, decimated to 8000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "antique_bench",
+      "title": "Antique Bench",
+      "uid": "536f0ea58cce4b0e91c57bf637d267eb",
+      "page": "https://sketchfab.com/3d-models/536f0ea58cce4b0e91c57bf637d267eb",
+      "author": "Josh",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/536f0ea58cce4b0e91c57bf637d267eb (download API)",
+      "sourceSha256": "4ce7c9b9b7e6b4abbabd5a18bfe0aa2650f14b2718750a9310ef53ebf0beeeb1",
+      "sourceTriangles": 10390,
+      "file": "antique_bench/antique_bench.glb",
+      "sha256": "517a7cdaf4c5fca3e138b5a3b6a1583735971e63b3083627eac82d59adf96e1d",
+      "triangles": 5199,
+      "size": [
+        433.757,
+        180.439,
+        128.411
+      ],
+      "processing": "ground-centred, decimated to 5200 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "pitcher_ceramic",
+      "title": "Ceramic pitcher",
+      "uid": "63b8d7a9f6344b4ca9b02e9611c9a767",
+      "page": "https://sketchfab.com/3d-models/63b8d7a9f6344b4ca9b02e9611c9a767",
+      "author": "Center Additive Manufacturing",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-034/63b8d7a9f6344b4ca9b02e9611c9a767.glb",
+      "sourceSha256": "0b9193982562ad0fd7148458c3c3aad0a3de34b43ca5e60f596affe27cae99bd",
+      "sourceTriangles": 74394,
+      "file": "pitcher_ceramic/pitcher_ceramic.glb",
+      "sha256": "68e53f4995227c5ac7ddfef55fdc1a070ee50ea267d8f96fa8fd8c53aff5e846",
+      "triangles": 3999,
+      "size": [
+        99.714,
+        119.294,
+        98.549
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "roast_chicken",
+      "title": "Whole Roasted Chicken",
+      "uid": "45f6d12dc97d41a0a8f405171579d5b7",
+      "page": "https://sketchfab.com/3d-models/45f6d12dc97d41a0a8f405171579d5b7",
+      "author": "inciprocal",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/45f6d12dc97d41a0a8f405171579d5b7 (download API)",
+      "sourceSha256": "d435c52d6a2f9dbce24ad3195063ee81ecd23e2c055860c45a382122f45360d8",
+      "sourceTriangles": 14800,
+      "file": "roast_chicken/roast_chicken.glb",
+      "sha256": "f818488a71c1412e36c1581a064fb6a4725f1868697f01756a7d3e6d6248603a",
+      "triangles": 3999,
+      "size": [
+        0.175,
+        0.087,
+        0.145
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "arrow_lowpoly",
+      "title": "Low-Poly Arrow v2.0",
+      "uid": "7a8542971fd0460aaae5bdd24790881b",
+      "page": "https://sketchfab.com/3d-models/7a8542971fd0460aaae5bdd24790881b",
+      "author": "Teslov",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/7a8542971fd0460aaae5bdd24790881b (download API)",
+      "sourceSha256": "54ccdda62edabf7559acb37f05cf0de09a12d626aecf72fa6d3d04230b2faf62",
+      "sourceTriangles": 100,
+      "file": "arrow_lowpoly/arrow_lowpoly.glb",
+      "sha256": "07d160461f3708758f2d84553be7bf0f96c4e3ded128ed814bd035f46bb2e154",
+      "triangles": 100,
+      "size": [
+        0.039,
+        0.034,
+        0.801
+      ],
+      "processing": "ground-centred, decimated to 800 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "wig_head",
+      "title": "Papier-m\u00e2ch\u00e9 Dummy-Head (for Hat-Making)",
+      "uid": "4ea9f7ec1cfb48ddaa8c7e6844a6ae5c",
+      "page": "https://sketchfab.com/3d-models/4ea9f7ec1cfb48ddaa8c7e6844a6ae5c",
+      "author": "TowerDweller.com 3D-Scans",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/4ea9f7ec1cfb48ddaa8c7e6844a6ae5c (download API)",
+      "sourceSha256": "d37a53557335f64484e6557ba07586908f7cda6f5d63a569ea0a06f1c579624e",
+      "sourceTriangles": 141672,
+      "file": "wig_head/wig_head.glb",
+      "sha256": "ce6a223fb24d78860426bb708e37bd0d987d8cd592dfdd39d8ebf5dd72e18853",
+      "triangles": 3999,
+      "size": [
+        217.56,
+        297.986,
+        168.471
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "corn_cob",
+      "title": "Corn On The Cob",
+      "uid": "14cfa27a46674d37a9a3feb516f8628f",
+      "page": "https://sketchfab.com/3d-models/14cfa27a46674d37a9a3feb516f8628f",
+      "author": "kabage",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-026/14cfa27a46674d37a9a3feb516f8628f.glb",
+      "sourceSha256": "0e5c3ca8e638b7472b1639bfd2641ff0b6d5e71745b74803acebb2113d268d70",
+      "sourceTriangles": 114698,
+      "file": "corn_cob/corn_cob.glb",
+      "sha256": "a7553256fcf2a8d032009a60c97159f1c5c0ea82918c2c2223092f1807b1936d",
+      "triangles": 2998,
+      "size": [
+        1670.063,
+        833.006,
+        815.88
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "jester_hat",
+      "title": "Jester-Hat",
+      "uid": "e0df35e947014510807dd99b44f574f6",
+      "page": "https://sketchfab.com/3d-models/e0df35e947014510807dd99b44f574f6",
+      "author": "someone84368263",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/e0df35e947014510807dd99b44f574f6 (download API)",
+      "sourceSha256": "c20b9fa0d80ae701ed6dac94b57f923d03830cb76c8374c7493d87ff9c05625f",
+      "sourceTriangles": 13344,
+      "file": "jester_hat/jester_hat.glb",
+      "sha256": "52c2a69e5ae4d24a1680e08cb4bee9685f8cb3255b2e1f90d3c0cbbc8b3e5b07",
+      "triangles": 3989,
+      "size": [
+        11.144,
+        3.872,
+        9.747
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "pitcher_porcelain",
+      "title": "Vintage Porcelain Milk Jug",
+      "uid": "8f051966edaa4d35bdf9ea2d4e168262",
+      "page": "https://sketchfab.com/3d-models/8f051966edaa4d35bdf9ea2d4e168262",
+      "author": "Kuutti Siitonen",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-032/8f051966edaa4d35bdf9ea2d4e168262.glb",
+      "sourceSha256": "1f99219bb079aceaccdcfd5843004489a5b3cecec81ac583a117f1a4c72d2e24",
+      "sourceTriangles": 5770,
+      "file": "pitcher_porcelain/pitcher_porcelain.glb",
+      "sha256": "79bad637e7eb7ffeb83b714eef8bc132115220946a0c623541d9fbbe97ba3d72",
+      "triangles": 4000,
+      "size": [
+        0.168,
+        0.21,
+        0.275
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "canned_meat",
+      "title": "Canned Meat",
+      "uid": "2ea30821eb1644c2b4ef2c087665f7b7",
+      "page": "https://sketchfab.com/3d-models/2ea30821eb1644c2b4ef2c087665f7b7",
+      "author": "Duznot",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-131/2ea30821eb1644c2b4ef2c087665f7b7.glb",
+      "sourceSha256": "7243b1fd85e1d16ceb61a29ec4babcc7c7de61b00b006a7c3cefa241d8a86a14",
+      "sourceTriangles": 1208,
+      "file": "canned_meat/canned_meat.glb",
+      "sha256": "d25d247fb1a4fbee2423a75e60047b277527b2d1ac87861d8f1ebccea4300e77",
+      "triangles": 1208,
+      "size": [
+        231.4,
+        204.036,
+        205.955
+      ],
+      "processing": "ground-centred, decimated to 1500 triangles, textures capped at 1024 px"
     }
   ]
 }
