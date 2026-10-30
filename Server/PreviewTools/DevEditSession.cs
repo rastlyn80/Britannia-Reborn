@@ -432,6 +432,11 @@ public sealed class DevEditSession
 
     public static bool ValidPet(string kind) => Array.IndexOf(PetKinds, kind) >= 0;
 
+    // Test kits a developer may take ("kit <kind>"): skills and items for trying a system.
+    public static readonly string[] KitKinds = ["mage"];
+
+    public static bool ValidKit(string kind) => Array.IndexOf(KitKinds, kind) >= 0;
+
     public static bool AssistantMay(string verb) =>
         verb is "join" or "leave" or "ask" or "answer" or "propose" or "resolve" or "preview" or "status";
 

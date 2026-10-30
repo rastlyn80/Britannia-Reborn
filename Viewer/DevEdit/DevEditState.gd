@@ -230,6 +230,9 @@ func brush(x: int, y: int, radius: int, delta: int, surface: String, sender: Cal
 func pet(kind: String, sender: Callable) -> int:
 	return _request("pet","tame %s" % kind,"pet %%d %s" % kind,sender)
 
+func kit(kind: String, sender: Callable) -> int:
+	return _request("kit","test kit %s" % kind,"kit %%d %s" % kind,sender)
+
 func undo(sender: Callable) -> int:
 	var seq := undo_candidate()
 	return 0 if seq == 0 else _request("undo","undo revision %d" % seq,"undo %%d %d" % seq,sender)

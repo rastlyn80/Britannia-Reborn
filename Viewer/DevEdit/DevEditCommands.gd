@@ -12,6 +12,8 @@ const State = preload("res://DevEdit/DevEditState.gd")
 const Query = preload("res://DevEdit/DevEditQuery.gd")
 # Tame creatures "pet <kind>" asks the server for (Server DevEditSession.PetKinds).
 const PETS := ["horse","packhorse","llama","packllama","desertostard","forestostard","dog","cat"]
+# Test kits "kit <kind>" (Server DevEditSession.KitKinds), described for the card.
+const KITS := {"mage":"Magery and Evaluating Intelligence 100, a spellbook with all spells, a bag of reagents"}
 var state: State
 var sender: Callable
 # Callable(area: Rect2i) -> Array of source records (see DevEditQuery).
@@ -63,6 +65,9 @@ func plan(line: String) -> Dictionary:
 	if verb == "pet":
 		if a.size() != 2 or not a[1].to_lower() in PETS: return fail(line,"pet takes one of: "+", ".join(PETS))
 		return {"ok":true,"line":line,"kind":"pet","pet":a[1].to_lower(),"targets":[],"description":"a tame %s at your feet (server only)" % a[1].to_lower()}
+	if verb == "kit":
+		if a.size() != 2 or not KITS.has(a[1].to_lower()): return fail(line,"kits: "+", ".join(KITS.keys()))
+		return {"ok":true,"line":line,"kind":"kit","kit":a[1].to_lower(),"targets":[],"description":"%s (server only)" % KITS[a[1].to_lower()]}
 	var all := a.size() > 2 and a[1] == "all"
 	if all:
 		var scope := resolve(a[2])
@@ -153,4 +158,5 @@ func send(p: Dictionary) -> int:
 		"save": return state.save(p.name,sender)
 		"load": return state.load_set(p.name,sender)
 		"pet": return state.pet(p.pet,sender)
+		"kit": return state.kit(p.kit,sender)
 	return 0

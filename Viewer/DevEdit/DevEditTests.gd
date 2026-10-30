@@ -124,6 +124,10 @@ func conversation() -> void:
 	sent.clear()
 	var pet_id: int = commands.send(pet)
 	check(pet.ok and pet.kind == "pet" and pet_id > 0 and sent == ["pet %d horse" % pet_id] and not commands.plan("pet dragon").ok and not commands.plan("pet").ok,"pet sends one listed tame kind")
+	var kit: Dictionary = commands.plan("kit mage")
+	sent.clear()
+	var kit_id: int = commands.send(kit)
+	check(kit.ok and kit.kind == "kit" and kit_id > 0 and sent == ["kit %d mage" % kit_id] and not commands.plan("kit gm").ok,"kit sends one listed test kit")
 	# The live loader reads previewed districts from the preview bake, then back.
 	var live: Node = preload("res://Presentation/LiveDistricts.gd").new()
 	var folder := OS.get_user_data_dir().path_join("preview-test")

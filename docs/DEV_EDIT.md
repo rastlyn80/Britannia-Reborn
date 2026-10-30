@@ -194,7 +194,7 @@ Code fixes are client presentation only; collision and gameplay stay as ModernUO
 
 ## Tame creatures: `pet <kind>` (29 October 2026)
 
-`pet horse` (also packhorse, llama, packllama, desertostard, forestostard, dog, cat) asks the server for a creature tamed to the developer, at their feet and coming to them. Claude proposes it on a card and the developer accepts it, like every other edit; the assistant account itself is refused. It is server-only: an ordinary ModernUO creature in the world save, nothing written to Git. Kinds are an allowlist shared by `DevEditSession.PetKinds` and `DevEditCommands.PETS`; the follower limit still applies. Evidence: server tests 67/67, client tests 77/77.
+`pet horse` (also packhorse, llama, packllama, desertostard, forestostard, dog, cat) asks the server for a creature tamed to the developer, at their feet and coming to them. Claude proposes it on a card and the developer accepts it, like every other edit; the assistant account itself is refused. It is server-only: an ordinary ModernUO creature in the world save, nothing written to Git. Kinds are an allowlist shared by `DevEditSession.PetKinds` and `DevEditCommands.PETS`; the follower limit still applies. `kit mage` works the same way (`KitKinds`/`KITS`): Magery and Evaluating Intelligence set to 100, a spellbook with all 64 spells and a bag of 100 of each reagent. Evidence: server tests 67/67, client tests 77/77.
 
 ## Responsive assistant (29 October 2026)
 
