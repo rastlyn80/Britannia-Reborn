@@ -86,6 +86,8 @@ Live checks need the local server and an existing development character. Some re
 
 The optional [equine expansion](docs/EQUINE_EXPANSION.md) reuses the separately prepared Warhorse Lite rig for ordinary and magical steeds. **Review-Equines.cmd** opens the local gallery after horse/human setup. Source/licence pins, supported native identities, deferred creatures and reproducible offline/GPU/isolated-server tests are documented there; these optional horse assets are not bundled in a Git clone.
 
+**Review-Ostard.cmd** opens the separate [Third Dawn desert ostard trial](docs/OSTARD_TRIAL.md): original, refined geometry and upgraded texture/shader, with seven source animations. Prepared local art is required; this comparison does not yet change live creatures or mount routes.
+
 ## Roadmap and contributions
 
 Bounded server-owned doors/containers/signs are now integrated in the current slice. The next priorities are systematic placement/behavior comparison against ClassicUO and a larger converted region with chunk boundaries validated. Longer-term goals include streaming, broader source-ID coverage, equipment and inventory UI, combat, skills, crafting, NPCs and additional facets. None is implied complete by the preview.

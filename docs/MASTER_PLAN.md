@@ -108,7 +108,8 @@ is to try and modernise the original Third Dawn models first: preserve their
 identity, improve geometry where useful, textures and shaders, and review an
 animated original/upgraded comparison before deciding to replace them. Reuse
 existing modern assets where suitable for ordinary creatures. See
-docs/CREATURE_ART_PIPELINE.md for the source order, review gates and local audit.
+docs/CREATURE_ART_PIPELINE.md for the source order, review gates and local audit;
+docs/OSTARD_TRIAL.md records the first animated original/upgraded art trial.
 
 Develop automated tools for asset importing, classification, material assignment, collision generation, optimisation and cataloguing.
 

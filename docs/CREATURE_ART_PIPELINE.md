@@ -50,12 +50,14 @@ Local evidence: `outputs/third-dawn/creature-source-audit.json`.
 
 | Source candidate | Parsed source mesh | Animation evidence | Current status |
 |---|---|---|---|
-| Desert ostard | 98 vertices, 185 triangles, 24 bones | Seven clips; 23 named tracks per clip match the body | First upgrade trial candidate |
+| Desert ostard | 98 vertices, 185 triangles, 24 bones | Seven clips; 23 named tracks per clip match the body | Local original/upgraded trial; owner review and rider/live integration pending |
 | Forest, frenzied, ethereal ostards | Each 98 vertices, 185 triangles, 24 bones | Desert clips have named-track correspondence; reuse needs deformation testing | Candidate variants, not runtime coverage |
 | Ki-rin | `Kirin_LOD2.grn` exists | Idle, walk, run, attack, hit, death and fidget files exist | Current parser rejects a non-finite numeric value; identify format/data cause before export |
 
 The ostard clips are idle, walk, run, attack1, gethit, die1 and fidget. This audit
 does not prove smooth motion, rider compatibility, complete native action
 coverage or modernised artwork. No creature coverage percentages change here.
-Next implementation trial: desert ostard baseline and upgraded version, followed
-by the other ostard forms; investigate the ki-rin parser independently.
+The [desert ostard trial](OSTARD_TRIAL.md) now provides the baseline, geometry-only
+and upgraded-material comparison, with seven imported clips and sampled skinning
+checks. It awaits owner art review and rider/live integration; the other ostard
+forms and ki-rin parser investigation remain pending.

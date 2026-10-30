@@ -1,3 +1,9 @@
+# Desert ostard trial ready for art review - 30 October 2026
+
+Original Third Dawn desert ostard now has an animated original / geometry-only / upgraded-material comparison, seven source clips, 2,960 refined triangles and a generated 1,254-square atlas. See [OSTARD_TRIAL.md](OSTARD_TRIAL.md) and Review-Ostard.cmd. Evidence: 252 skinned poses / 6,933 checks, actual Forward+ and Compatibility shader response checks, 31 stills / 96 sequence frames, full verification exit 0 with existing unrelated diagnostics. Source root motion is adjusted for the flat review floor; no terrain, rider or live creature coverage is added.
+
+Next: owner keep/refine/replace decision; improve remaining anatomy/UV/material issues as needed, then fit both human riders and outfits, test transitions/support, and add audited native routes. Independently test forest/frenzied/ethereal source forms. Investigate the original ki-rin non-finite parse blocker. Preserve accepted humans/horses and all current coverage counts; ignored local derived art is not a distributable client asset package.
+
 # Distinctive creature source priority - 30 October 2026
 
 Owner direction: original Third Dawn models are the first upgrade trial for distinctive UO creatures, with an animated original/upgraded comparison before deciding to replace them. See [CREATURE_ART_PIPELINE.md](CREATURE_ART_PIPELINE.md). Desert/forest/frenzied/ethereal ostard meshes are parsed source candidates; seven original desert clips have matching track names, with deformation and rider validation still pending. Original ki-rin files exist but hit a parser non-finite-value blocker. Start the desert ostard comparison and investigate the ki-rin reader; free alternatives remain comparison/fallback sources. Existing equine/wearable counts are unchanged.

@@ -4,6 +4,8 @@ $root = Split-Path $PSScriptRoot -Parent
 if ($LASTEXITCODE) { throw 'Human sequence parser bounds/format checks failed' }
 & python -B "$root/scripts/test-mhclo.py"
 if ($LASTEXITCODE) { throw 'Static clothing importer checks failed' }
+& python -B "$root/scripts/test-third-dawn.py"
+if ($LASTEXITCODE) { throw 'Bounded Third Dawn parser / refinement checks failed' }
 & "$root/scripts/prepare-surfaces.ps1" -VerifyOnly
 & "$root/scripts/import-reviewed-art.ps1" -VerifyOnly
 & "$root/scripts/prepare-polyhaven.ps1" -VerifyOnly
@@ -14,6 +16,10 @@ $env:APPDATA = Join-Path $root '.godot-user'
 $env:LOCALAPPDATA = $env:APPDATA
 & $godot --headless --path "$root\Viewer" --editor --import
 if ($LASTEXITCODE) { throw 'Asset import failed' }
+if (Test-Path "$root/Viewer/local-art/ostards/desert-modern.gltf") {
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/OstardTests.gd
+  if ($LASTEXITCODE) { throw 'Original/refined ostard deformation checks failed' }
+}
 & $godot --headless --path "$root\Viewer" --script res://Network/LoginTests.gd
 if ($LASTEXITCODE) { throw 'Protocol tests failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/ArtFidelityTests.gd
