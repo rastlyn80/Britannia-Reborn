@@ -127,7 +127,8 @@ func worn() -> Dictionary:
 func refresh() -> void:
 	if session == null or avatar == null: return
 	var entity: Dictionary = session.player if serial == int(session.player.serial) else session.entities.get(serial,{"serial":serial})
-	avatar.apply_server_appearance(entity,worn().values(),session.appearance_for(serial))
+	# The portrait shows the character on foot: the mount (layer 25) is left out.
+	avatar.apply_server_appearance(entity,worn().values().filter(func(item: Dictionary): return int(item.get("layer",0)) != 25),session.appearance_for(serial))
 	var info: Dictionary = session.module("player").paperdolls.get(serial,{})
 	title_label.text = str(session.entity_names.get(serial,"Paperdoll"))
 	heading.text = str(info.get("title",""))

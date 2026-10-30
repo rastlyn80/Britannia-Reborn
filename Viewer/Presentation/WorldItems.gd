@@ -746,7 +746,14 @@ func click(at: Vector2, double: bool = false) -> void:
    preload("res://Network/ActionRunner.gd").target_entity(session,mobile)
    return
   preload("res://Network/ActionRunner.gd").selected = mobile
-  if double:session.use_mobile(mobile)
+  # In war mode a double-click on another creature attacks it (as in the
+  # native client); otherwise it is used (paperdoll, mount, ...).
+  if double and session.in_war_mode() and mobile != int(session.player.get("serial",0)):
+   if session.attack(mobile): preload("res://Network/ActionRunner.gd").last_target = mobile
+  elif double:
+   session.use_mobile(mobile)
+   # Peace mode: attackable creatures (notoriety 3-6) need war mode first.
+   if int(session.entities.get(mobile,{}).get("notoriety",0)) in [3,4,5,6] and not preload("res://Presentation/HorseVisual.gd").BODIES.has(int(session.entities.get(mobile,{}).get("body",0))): hint.text = "Switch to war mode (the War button) to attack."
   elif preload("res://Presentation/HorseVisual.gd").BODIES.has(int(session.entities.get(mobile,{}).get("body",0))):hint.text="Double-click the horse to ride."
   elif mobile==int(session.player.get("serial",0)) and not preload("res://Presentation/HorseVisual.gd").mount_item(session.equipment.values()).is_empty():hint.text="Double-click yourself to dismount."
   else:session.request_context(mobile)

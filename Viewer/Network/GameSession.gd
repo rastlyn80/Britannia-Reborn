@@ -909,6 +909,16 @@ func request_label(serial: int) -> bool:
 	send(click)
 	return true
 
+# Attack request (0x05), as the native client sends for a double-click on a
+# creature while in war mode; ModernUO decides whether the fight starts.
+func attack(serial: int) -> bool:
+	if phase != "world" or serial == int(player.get("serial",0)) or not entities.has(serial): return false
+	send(preload("res://Network/ActionProtocol.gd").attack(serial))
+	return true
+
+func in_war_mode() -> bool:
+	return (int(player.get("flags",0)) & 0x40) != 0
+
 func use_mobile(serial: int) -> bool:
 	if phase!="world" or not pending_transfer.is_empty():return false
 	if serial!=int(player.get("serial",0)) and not entities.has(serial):return false
@@ -920,6 +930,10 @@ func use_mobile(serial: int) -> bool:
 func use_item(serial: int) -> bool:
 	if not pending_transfer.is_empty(): return false
 	if phase != "world" or not (world_items.has(serial) or known_items.has(serial)): return false
+	# Clothing, armour and jewellery are put on by double-clicking them, as by
+	# dropping them on the paperdoll; the server decides. Hand-held items
+	# (layers 1 and 2: weapons, tools, spellbooks, torches) keep their use.
+	if wear_on_use(serial): return move_item(serial,int(player.get("serial",0)),true)
 	next_item_action = Time.get_ticks_msec()+1100
 	var click := PackedByteArray([9])
 	click.append_array(Login.uint_be(serial,4))
@@ -928,6 +942,14 @@ func use_item(serial: int) -> bool:
 	use.append_array(Login.uint_be(serial,4))
 	send(use)
 	return true
+
+func wear_on_use(serial: int) -> bool:
+	var item: Dictionary = known_items.get(serial,{})
+	if item.is_empty() or int(item.get("container",0)) == 0: return false
+	# Already worn (its container is a mobile) or not in your reach of packs.
+	if int(item.get("container",0)) == int(player.get("serial",0)) or entities.has(int(item.get("container",0))): return false
+	var layer := preload("res://Network/PaperdollWindow.gd").layer_of(int(item.get("id",0)))
+	return layer != 0 and not layer in [1,2,11,16,21,25]
 
 static func little_unicode_text(bytes: PackedByteArray, start: int) -> String:
 	var end := start

@@ -29,6 +29,10 @@ class FakeSession extends Node:
 	var combat := FakeCombat.new()
 	func module(key: String) -> RefCounted: return buffs if key == "buffs" else combat
 
+class Recorder extends "res://Network/GameSession.gd":
+	var sent: Array = []
+	func send(bytes: PackedByteArray) -> void: sent.append(bytes)
+
 class FakeRunner extends Node:
 	signal cast_started(spell: Dictionary)
 	var session: Node
@@ -116,6 +120,22 @@ func run() -> void:
 	runner.cast_started.emit(Catalog.spell("Heal"))
 	session.message_received.emit(session.labels.resolve(502625,"11"))
 	check("not enough mana" in cast.title.text,"too little mana is named")
+	# War mode: double-clicking a creature attacks it (0x05), as natively.
+	var war := Recorder.new()
+	war.phase = "world"
+	war.player = {"serial":0x100,"flags":0x40}
+	war.entities = {0x300:{"x":101,"y":100}}
+	check(war.in_war_mode() and war.attack(0x300) and war.sent.size() == 1 and war.sent[0] == PackedByteArray([0x05,0,0,3,0]),"war mode sends an attack request for the creature")
+	check(not war.attack(0x100) and not war.attack(0x999) and war.sent.size() == 1,"you never attack yourself or a creature you cannot see")
+	war.player.flags = 0
+	check(not war.in_war_mode(),"peace mode is read from the player's flags")
+	# Double-clicking clothing in a pack wears it; a weapon keeps its use.
+	var Paperdoll2 := preload("res://Network/PaperdollWindow.gd")
+	Paperdoll2.wearables = {str(0x1517):5,str(0x13ff):1}
+	war.known_items = {0x41:{"serial":0x41,"id":0x1517,"container":0x40000001},0x42:{"serial":0x42,"id":0x13ff,"container":0x40000001},0x43:{"serial":0x43,"id":0x1517,"container":0x100}}
+	check(war.wear_on_use(0x41) and not war.wear_on_use(0x42) and not war.wear_on_use(0x43),"a shirt in the pack is worn on double-click; a katana keeps its use; a worn shirt is left alone")
+	Paperdoll2.wearables = {}
+	war.free()
 	# Voice chat: long speech goes out as several lines, split between words.
 	var Chat := preload("res://Network/VoiceChat.gd")
 	var long_lines: PackedStringArray = Chat.lines(" ".join(PackedStringArray(range(60).map(func(i): return "word%d" % i))))
