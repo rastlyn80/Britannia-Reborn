@@ -514,14 +514,20 @@ func apply_pending() -> void:
 		start_bake([] if p.kind == "commit" else [{"rule":p.rule.rule,"action":p.rule.action,"author":state.me,"text":p.text}])
 		return
 	var sent := 0
+	var selected_any := false
 	for p in pending:
 		var id: int = commands.send(p)
 		if id == -1:
+			selected_any = true
 			overlay.highlight(commands.selection)
 			note("Selected %d object(s)" % commands.selection.size())
 		elif id > 0: sent += 1
 		else: note("Not sent: "+str(p.line))
-	if pending_ask > 0: state.resolve(pending_ask,"applied",sender())
+	# Nothing ran (e.g. this client does not know the command): never report "applied".
+	if pending_ask > 0:
+		var ran := sent > 0 or selected_any
+		state.resolve(pending_ask,"applied" if ran else "declined",sender())
+		if not ran: plan_label.text = "Nothing could run here, so the proposal was not applied. Restart the game if it was updated."
 	pending.clear()
 	pending_ask = 0
 	plan_label.text = "Applied %d command(s); see Activity." % sent if sent > 0 else plan_label.text
