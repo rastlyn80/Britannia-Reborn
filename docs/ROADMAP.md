@@ -1,3 +1,7 @@
+# Distinctive creature source priority - 30 October 2026
+
+Owner direction: original Third Dawn models are the first upgrade trial for distinctive UO creatures, with an animated original/upgraded comparison before deciding to replace them. See [CREATURE_ART_PIPELINE.md](CREATURE_ART_PIPELINE.md). Desert/forest/frenzied/ethereal ostard meshes are parsed source candidates; seven original desert clips have matching track names, with deformation and rider validation still pending. Original ki-rin files exist but hit a parser non-finite-value blocker. Start the desert ostard comparison and investigate the ki-rin reader; free alternatives remain comparison/fallback sources. Existing equine/wearable counts are unchanged.
+
 # Equine family expansion - 30 October 2026
 
 Implemented **15/26 equine body routes** (four previously supported), plus ethereal horse/unicorn item-only mounts, by reusing the licensed horse rig with new coats, fitted accessories, effects and bounded proportion changes. Evidence: 4,537 runtime checks / 1,152 rider poses, 15 scaled terrain-support samples, 158 GPU checks, 581 actual isolated-server/two-client checks and 34 review frames; full verification exits 0. Human wearable denominator/coverage and existing action-category counts are unchanged. See [EQUINE_EXPANSION.md](EQUINE_EXPANSION.md).

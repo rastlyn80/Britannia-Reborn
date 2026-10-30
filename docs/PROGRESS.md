@@ -1,3 +1,9 @@
+# Creature source policy - 30 October 2026
+
+Owner directs us to **try and modernise original Third Dawn models first for distinctive UO creatures**, including ostards, then judge original/upgraded animated comparisons before replacing them. Improve useful topology, proportions, textures and shaders while preserving identity; reuse suitable modern assets for ordinary animals. Recorded in MASTER_PLAN, DECISIONS and [CREATURE_ART_PIPELINE.md](CREATURE_ART_PIPELINE.md).
+
+Read-only audit of the pinned local preservation archive: desert/forest/frenzied/ethereal ostards each parse as 98 vertices / 185 triangles / 24 bones. Seven desert animation clips have 23 named tracks matching these rigs; deformation/rider reuse is not yet validated. The original ki-rin mesh and seven clip files are also present, but model parsing rejects a non-finite value; no export is claimed. Exact source/member hashes and correspondence are in ignored outputs/third-dawn/creature-source-audit.json. No game executable was run, no gameplay/art route changed, and no coverage added. Next trial: desert ostard baseline and modernised comparison. Documentation-only tracked change; full runtime verification was not repeated.
+
 # Small house rebuilt as a whole house from its own layout — 30 October 2026
 
 Owner direction: try the small house first, built with our own materials by copying the existing multi layout, and baked; then do the others progressively.

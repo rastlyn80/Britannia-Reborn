@@ -103,6 +103,13 @@ Investigate resources including Quaternius, Kenney, Poly Haven, suitable Fab ass
 
 Record licenses and provenance for every imported asset.
 
+For distinctive Ultima Online creatures such as ostards, the owner's direction
+is to try and modernise the original Third Dawn models first: preserve their
+identity, improve geometry where useful, textures and shaders, and review an
+animated original/upgraded comparison before deciding to replace them. Reuse
+existing modern assets where suitable for ordinary creatures. See
+docs/CREATURE_ART_PIPELINE.md for the source order, review gates and local audit.
+
 Develop automated tools for asset importing, classification, material assignment, collision generation, optimisation and cataloguing.
 
 AI-generated assets may be used where technically appropriate, subject to quality control and usage rights.

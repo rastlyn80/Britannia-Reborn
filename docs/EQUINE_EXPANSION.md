@@ -46,6 +46,13 @@ Ethereal dismount returns its item; no loose horse is fabricated.
 
 ## Deferred catalogue and free alternatives
 
+Later owner direction: try original Third Dawn models first for distinctive UO
+creatures before choosing replacements; see [CREATURE_ART_PIPELINE.md](CREATURE_ART_PIPELINE.md).
+The original ki-rin mesh and seven clip files are present locally, but the
+current parser rejects a non-finite numeric value in the model. Investigate that
+format/data issue before exporting it. Meshy remains a candidate comparison or
+fallback. These source-audit findings do not change the 15/26 coverage count.
+
 | Bodies/items | Reason / next action |
 |---|---|
 | 0x84 / 0x3EAD; ethereal item 0x3E9C | Ki-rin needs a distinct silhouette, mane/tail and fitted geometry. A horn alone is insufficient. |
