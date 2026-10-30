@@ -4997,6 +4997,34 @@
    ],
    "note": "crops: carrot, onion and potato (turnip) patches and young shoots split from CC-BY Farm plants models",
    "sheet": "crops18"
+  },
+  {
+   "ids": [
+    3181,
+    3182,
+    4326,
+    4533,
+    6813,
+    6867,
+    7164,
+    7165,
+    7185,
+    7828,
+    7829,
+    7831,
+    7832,
+    11531,
+    11532,
+    16442,
+    16447,
+    16448,
+    16454,
+    16573,
+    17625,
+    22322
+   ],
+   "note": "last Britain graphics: CC-BY scans (bronze horse statue, abstract sculpture, leeks, donuts, stone wall fountain, grandfather clock, folded cloth) and crafted bolts, inshave, floor saw, spit roasts, flax bundle, standing mirror",
+   "sheet": "britfin2"
   }
  ]
 }

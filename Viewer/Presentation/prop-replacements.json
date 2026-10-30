@@ -2498,6 +2498,15 @@
       1.5,
       0.6
      ]
+    },
+    "7185": {
+     "model": "Objaverse/towel_folded",
+     "length": 0.4,
+     "material": {
+      "color": "3a4a7a",
+      "metallic": 0.0,
+      "roughness": 0.9
+     }
     }
    }
   },
@@ -4618,6 +4627,64 @@
    "model": "Objaverse/farm_plants/split/plant_10",
    "height": 0.32,
    "cluster": 2
+  },
+  "gargoyle sculpture (": {
+   "model": "Objaverse/sculpture_twist",
+   "height": 1.4,
+   "material": {
+    "color": "e6e2da",
+    "metallic": 0.1,
+    "roughness": 0.35
+   },
+   "pedestal": [
+    0.32,
+    0.18
+   ]
+  },
+  "onion": {
+   "model": "Objaverse/leek",
+   "length": 0.35,
+   "lay": true,
+   "cluster": 3
+  },
+  "donuts": {
+   "model": "Objaverse/donuts",
+   "length": 0.2,
+   "cluster": 2,
+   "material": {
+    "color": "a8703c",
+    "metallic": 0.0,
+    "roughness": 0.7
+   }
+  },
+  "elvin wash basin": {
+   "model": "Objaverse/wall_fountain",
+   "height": 1.3,
+   "anchor": "back"
+  },
+  "clocknice frame01 ea": {
+   "model": "Objaverse/clock_grandfather",
+   "height": 2.0,
+   "face": "wall"
+  },
+  "crystalline blackroc": {
+   "model": "Objaverse/rock_gray",
+   "height": 0.45,
+   "material": {
+    "color": "2c2832",
+    "metallic": 0.35,
+    "roughness": 0.18
+   }
+  },
+  "horse": {
+   "model": "Objaverse/horse_statue_bronze",
+   "height": 1.5,
+   "only_ids": true,
+   "ids": {
+    "16573": {
+     "height": 1.5
+    }
+   }
   }
  }
 }

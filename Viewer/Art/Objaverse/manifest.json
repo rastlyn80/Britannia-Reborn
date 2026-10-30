@@ -7795,6 +7795,111 @@
         "plant_10": "Onion_Plants",
         "plant_21": "Potato_Plants"
       }
+    },
+    {
+      "id": "horse_statue_bronze",
+      "title": "Bronze Horse Statue",
+      "uid": "fac6d499918b42d081d445d6d087a73f",
+      "page": "https://sketchfab.com/3d-models/fac6d499918b42d081d445d6d087a73f",
+      "author": "neverfollow81",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/fac6d499918b42d081d445d6d087a73f (download API)",
+      "sourceSha256": "1746de394b5f0079d83206130da77b2c47f22ab24a1e0910596c1234e0a22b6b",
+      "sourceTriangles": 3832,
+      "file": "horse_statue_bronze/horse_statue_bronze.glb",
+      "sha256": "e5924a939ddc2fb6ce1786ff12654f65d6022eea7665e0f7ca62be7e671f9a2f",
+      "triangles": 3832,
+      "size": [
+        1.758,
+        2.0,
+        1.283
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "sculpture_twist",
+      "title": "Abstract marble black and white statue",
+      "uid": "b809b2ae2b9a4c99b2e1bfa871f1c64f",
+      "page": "https://sketchfab.com/3d-models/b809b2ae2b9a4c99b2e1bfa871f1c64f",
+      "author": "AbelFA",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/b809b2ae2b9a4c99b2e1bfa871f1c64f (download API)",
+      "sourceSha256": "a8d31c7b373114dd67d12cec3b17c75fa3097d44bbb4b119d8e4750978eb00ba",
+      "sourceTriangles": 15408,
+      "file": "sculpture_twist/sculpture_twist.glb",
+      "sha256": "13c2d8876eb1dd2265da14ede95f27b746ce17a7576b9cf53a6dc555629c3437",
+      "triangles": 4997,
+      "size": [
+        0.832,
+        1.927,
+        0.832
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "leek",
+      "title": "Leek",
+      "uid": "f04ab1e3e07f42c799c9415a4767fec9",
+      "page": "https://sketchfab.com/3d-models/f04ab1e3e07f42c799c9415a4767fec9",
+      "author": "sharkbitestudios",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-084/f04ab1e3e07f42c799c9415a4767fec9.glb",
+      "sourceSha256": "1e095be0547a22858c257e1c5f3b08db2afe41efd7afc594891911d490d5384a",
+      "sourceTriangles": 346,
+      "file": "leek/leek.glb",
+      "sha256": "4664da79bddd52c1d653fa2df73cde58266ee9c88f9bcb4900c9ed0fb512fa83",
+      "triangles": 346,
+      "size": [
+        10.091,
+        88.9,
+        10.781
+      ],
+      "processing": "ground-centred, decimated to 800 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "donuts",
+      "title": "Donuts",
+      "uid": "ab860c6724a446e4ab8596e629faf60c",
+      "page": "https://sketchfab.com/3d-models/ab860c6724a446e4ab8596e629faf60c",
+      "author": "Kenetics",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-052/ab860c6724a446e4ab8596e629faf60c.glb",
+      "sourceSha256": "916ebcf394b314898d918a4eca808dd2d635ad7ae1e8f0969d88d11e2e3777f5",
+      "sourceTriangles": 90236,
+      "file": "donuts/donuts.glb",
+      "sha256": "ec555e0020a2ccb2d862cd39f0c1c6f9f67b3e6b0660c9505ab537eafd2b1e4f",
+      "triangles": 4660,
+      "size": [
+        0.14,
+        0.05,
+        0.305
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "wall_fountain",
+      "title": "Assisi - Fountain Vicolo S'Andrea (Scaniverse)",
+      "uid": "cb09335287a24abb8ddeec7ac280ce5a",
+      "page": "https://sketchfab.com/3d-models/cb09335287a24abb8ddeec7ac280ce5a",
+      "author": "JFN",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/cb09335287a24abb8ddeec7ac280ce5a (download API)",
+      "sourceSha256": "d580b0a05fb0f880904d09e318914c0e036bc5862ba4d7f66fcf8710558c0a75",
+      "sourceTriangles": 213518,
+      "file": "wall_fountain/wall_fountain.glb",
+      "sha256": "da4bc328dde304f6f67de6b5dc019a45c586fdd7a5dcd238d0c681810c0f7a40",
+      "triangles": 5997,
+      "size": [
+        2.819,
+        3.729,
+        1.273
+      ],
+      "processing": "ground-centred, decimated to 6000 triangles, textures capped at 1024 px"
     }
   ]
 }

@@ -28,6 +28,8 @@ const NAMES := {
 	"raw cotton":"cotton","bridle":"bridle","prow":"prow","dart trap":"darttrap","serpent crest":"crest","void essence":"essence","covered chair":"coveredchair","iron maiden":"ironmaiden",
 	"century plant":"agave","backpack":"backpack","pampas grass":"pampas","memorial to gwenno":"memorial","horse barding":"barding",
 	"gravestone":"grave",
+	"crossbow bolts":"bolts","inshave":"inshave","floor saw":"floorsaw","rabbit on a spit":"spit:rabbit","chicken on a spit":"spit:chicken",
+	"flax bundle":"flaxbundle","gargoyle floormirror":"mirror","gargoyle floor mirro":"mirror",
 	"tapestry":"tapestry","small elven tapestr":"tapestry","elven tapestry":"tapestry","colorful tapestry":"tapestry","sosaria tapestry":"tapestry",
 	"glass":"glassmug","dice and cup":"dice","eggs":"eggs","egg case":"eggcase","lockpick":"picks:1","lockpicks":"picks:3","spike trap":"spikes","hatch":"hatch","rope ladder":"ropeladder","brush":"brush","coconut":"coconut","full apron":"garment:apron:9a968a","half apron":"garment:apron:9a968a",
 }
@@ -361,6 +363,49 @@ static func build(name: String, seed := 0, id := -1) -> Node3D:
 				_cyl(a,0.004,0.75,Vector3(0,0,0),_wood(),flat,-1,6)
 				_cyl(a,0.008,0.05,Vector3(0.38,0,0),_iron(),Vector3(0,0,-PI/2),0.0,6)
 				_box(a,Vector3(0.1,0.002,0.025),Vector3(-0.33,0,0),_cloth("e8e0d0"))
+		"bolts":
+			# A sheaf of short crossbow quarrels: thick shafts, square heads, leather vanes.
+			for i in 9:
+				var b := Node3D.new(); b.position = Vector3(rnd.randf_range(-0.02,0.02),0.012+(i/3)*0.013,(i%3)*0.026-0.026); b.rotation.y = rnd.randf_range(-0.06,0.06); root.add_child(b)
+				_cyl(b,0.006,0.36,Vector3.ZERO,_wood(),flat,-1,6)
+				_cyl(b,0.011,0.035,Vector3(0.195,0,0),_iron(),Vector3(0,0,-PI/2),0.0,4)
+				for v in [-1.0,1.0]: _box(b,Vector3(0.06,0.002,0.016),Vector3(-0.15,0,v*0.006),_mat("brown_mud_dry",Color("3a5a8a"),0.0,0.7,8.0),Vector3(v*0.6,0,0))
+		"inshave":
+			# Cooper's inshave: a curved blade between two turned handles.
+			var arc := _torus(root,0.075,0.085,Vector3(0,0.012,0),_iron(),Vector3.ZERO)
+			arc.scale = Vector3(1,1,0.55)
+			for x in [-1.0,1.0]: _cyl(root,0.014,0.11,Vector3(x*0.13,0.014,-0.02),_wood(),Vector3(0,0,PI/2),0.011,8)
+		"floorsaw":
+			# A pit-saw blade laid down: a long half-moon of steel with a turned grip.
+			var blade := _cyl(root,0.32,0.006,Vector3(0,0.004,0),_steel("9aa0a6"),Vector3.ZERO,-1,32)
+			blade.scale = Vector3(1,1,0.45)
+			_cyl(root,0.016,0.14,Vector3(0.38,0.016,0),_wood(),Vector3(0,0,PI/2),-1,8)
+		"spit":
+			# Forked green-wood uprights, the spit rod and a roasted carcass.
+			for x in [-0.4,0.4]:
+				_cyl(root,0.02,0.6,Vector3(x,0.3,0),_wood(),Vector3.ZERO,0.025,6)
+				for side in [-1.0,1.0]: _cyl(root,0.012,0.12,Vector3(x+side*0.03,0.62,0),_wood(),Vector3(0,0,side*0.5),-1,5)
+			_cyl(root,0.009,0.95,Vector3(0,0.6,0),_iron(),flat,-1,6)
+			var meat := _model(root,"res://Art/Objaverse/roast_chicken/roast_chicken.glb",0.32 if kind.ends_with("rabbit") else 0.36,Vector3(0,0.5,0))
+			if meat and kind.ends_with("rabbit"): meat.scale = Vector3(1.25,0.75,0.75)
+		"flaxbundle":
+			# Retted flax tied in a bundle, seed heads still blue at the top.
+			for i in 14:
+				var stem := _cyl(root,0.004,0.75,Vector3(rnd.randf_range(-0.03,0.03),0.02,rnd.randf_range(-0.03,0.03)),_mat("hessian_230",Color("b8a46a"),0.0,0.9,6.0),Vector3(0,0,PI/2+rnd.randf_range(-0.05,0.05)),-1,4)
+				stem.position.x += 0.0
+				_sphere(root,0.012,Vector3(0.38+rnd.randf_range(0,0.04),0.02+rnd.randf_range(-0.02,0.02),rnd.randf_range(-0.04,0.04)),_mat("hessian_230",Color("5a7ad0"),0.0,0.6,8.0))
+			_cyl(root,0.04,0.03,Vector3(-0.1,0.02,0),_cloth("8a6a3a"),flat,-1,10)
+		"mirror":
+			# Tall free-standing glass in a dark carved frame on splayed feet.
+			var frame := _mat("medieval_wood",Color("4a3426"),0.0,0.6,2.5)
+			var glass := StandardMaterial3D.new()
+			# Silvered glass reads pale even where the room behind it is dark.
+			glass.albedo_color = Color("c8d4dc"); glass.metallic = 0.35; glass.roughness = 0.06
+			for x in [-1.0,1.0]: _box(root,Vector3(0.04,1.75,0.05),Vector3(x*0.27,0.875,0),frame)
+			for y in [0.18,1.72]: _box(root,Vector3(0.58,0.05,0.05),Vector3(0,y,0),frame)
+			_box(root,Vector3(0.5,1.5,0.01),Vector3(0,0.95,0.006),glass)
+			_sphere(root,0.035,Vector3(0,1.78,0),frame)
+			for x in [-1.0,1.0]: _box(root,Vector3(0.05,0.04,0.42),Vector3(x*0.27,0.02,0),frame)
 		"pegboard":
 			_box(root,Vector3(0.6,0.4,0.02),Vector3(0,0.2,0),_wood())
 		"spool":

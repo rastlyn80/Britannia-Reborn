@@ -1,3 +1,26 @@
+# Britain graphics complete — 30 October 2026
+
+Owner request: finish Britain's graphics. **Britain is at 100.0% of 3,247 placed graphics (0 open).** The world is at 94.4% (625 → 603 open).
+
+The last 16 Britain graphics:
+- **New CC-BY Sketchfab scans:**
+  - a bronze horse statue;
+  - an abstract twisted sculpture, as white marble on a plinth (gargoyle sculpture);
+  - leeks bundled as green onions;
+  - plain-glazed donuts;
+  - a stone wall fountain (Assisi scan) for the elven wash basin.
+- **Scans already in the repo:**
+  - the grandfather clock, for the clock frame;
+  - folded cloth in blue, for unnamed 7185;
+  - the grey rock in glossy black, for crystalline blackrock.
+- **Crafted in `CraftedProps` from photoscanned materials:**
+  - a sheaf of crossbow quarrels;
+  - a cooper's inshave;
+  - a pit-saw blade (floor saw);
+  - spit roasts on forked uprights with the roast scan (rabbit and chicken);
+  - a tied flax bundle;
+  - a tall standing mirror for the gargoyle floor mirrors.
+
 # Item catalogue waves 17–18 — 30 October 2026
 
 **Bulk sourcing over the open backlog** with the Sketchfab API. About 120 candidate families were reviewed on sheets. Only honest matches were pinned; rejects were unpinned and their entries removed. 40 CC-BY/CC0 scans were added:
