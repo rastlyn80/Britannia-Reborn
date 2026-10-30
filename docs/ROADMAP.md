@@ -1,3 +1,13 @@
+# Human wearable 50% checkpoint — 30 October 2026
+
+**572/1,126 indexed graphics (50.80%), 258 equipment categories**: +172 graphics / +106 categories from the 35% checkpoint, with the same denominator. The new set has 280 local exports, including 34 independent riding variants per body. Class/property/counterpart evidence covers 92 graphics; 80 are curated client EQUIPMENT variants without an active pinned-server eligibility claim. See [HUMAN_WARDROBE_50.md](HUMAN_WARDROBE_50.md).
+
+Accepted evidence: **21,310 checks / 6,784 pose views**, **3,200 armour/garment opacity views**, **2,144 hair views** (12,128 new finite views total), **480 total base coverage exports**, **26 native layer/resource checks** and **424 actual review frames**. Previous 35% batch: 19,472 checks / 5,056 regression views, no failures. Full `scripts/verify.ps1` exited 0 with 1,439 human coverage and 2,468 horse checks / 768 contact poses; existing TimberBridge fixture, teardown and nullable warnings remain.
+
+Rejected/unmapped: 17 mask/veil graphics failed visual review, eight middle-garment graphics failed strict over-plate retention even after a larger-offset trial, and four shorts/shoe graphics had inaccurate cuts. Earlier aprons remain uncounted. Accepted garments retain shared fitted silhouettes; exact cuts/ornament, final materials, arbitrary combinations and individual action fidelity remain separate. No monsters, new action groups, live login/world-entry or multiplayer evidence. Generated art/screenshots and drafts remain ignored; unrelated work was preserved.
+
+Next: review `outputs/human-wardrobe50/index.html`, then repair apron/middle-layer construction and source accurate masks, shorts/shoes and remaining natural hair. Keep category coverage distinct from final native art and server eligibility.
+
 # Human wearable 35% checkpoint — 30 October 2026
 
 **400/1,126 native wearable graphics (35.52%), 152 categories**: +152 graphics / +79 categories. The denominator is unchanged. Added armour, Tokuno headwear, blades/polearms/martial weapons, two bows and six school books on both bodies. Generated art remains local/ignored; source/class/hash evidence and construction are recorded in [HUMAN_FRONTIER_BATCH.md](HUMAN_FRONTIER_BATCH.md).

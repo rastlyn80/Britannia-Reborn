@@ -1506,10 +1506,1215 @@
       "design": "bow_composite",
       "kind": "expansion35",
       "stance": "bow"
+    },
+    {
+      "key": "fur_cape",
+      "slot": "cloak",
+      "graphics": [
+        8969,
+        8970
+      ],
+      "kind": "expansion50",
+      "base": "expansion/cloak",
+      "design": "fur"
+    },
+    {
+      "key": "arcane_cloak",
+      "slot": "cloak",
+      "graphics": [
+        9901
+      ],
+      "kind": "expansion50",
+      "base": "expansion/cloak",
+      "design": "arcane"
+    },
+    {
+      "key": "quarter_cloak",
+      "slot": "cloak",
+      "graphics": [
+        42003
+      ],
+      "kind": "expansion50",
+      "base": "expansion/cloak",
+      "design": "brocade"
+    },
+    {
+      "key": "arcane_gloves",
+      "slot": "hands",
+      "graphics": [
+        9904
+      ],
+      "kind": "expansion50",
+      "base": "expansion/gloves",
+      "design": "arcane"
+    },
+    {
+      "key": "valor_gauntlets",
+      "slot": "hands",
+      "graphics": [
+        11020,
+        11021
+      ],
+      "kind": "expansion50",
+      "base": "expansion/gloves",
+      "design": "steel"
+    },
+    {
+      "key": "elven_female_plate",
+      "slot": "torso",
+      "graphics": [
+        11117,
+        12644
+      ],
+      "kind": "expansion50",
+      "base": "coverage/plate_torso",
+      "design": "brocade_metal"
+    },
+    {
+      "key": "leaf_female_chest",
+      "slot": "torso",
+      "graphics": [
+        12673,
+        12235
+      ],
+      "kind": "expansion50",
+      "base": "coverage/leather_torso",
+      "design": "leaf"
+    },
+    {
+      "key": "dark_shirt",
+      "slot": "shirt",
+      "graphics": [
+        12662
+      ],
+      "kind": "expansion50",
+      "base": "expansion/shirt",
+      "design": "dark_linen"
+    },
+    {
+      "key": "fur_sarong",
+      "slot": "outer_legs",
+      "graphics": [
+        8971,
+        8972
+      ],
+      "kind": "expansion50",
+      "base": "expansion/skirt",
+      "design": "fur",
+      "riding_base": "riding/skirt"
+    },
+    {
+      "key": "hakama",
+      "slot": "outer_legs",
+      "graphics": [
+        10138,
+        10213
+      ],
+      "kind": "expansion50",
+      "base": "expansion/skirt",
+      "design": "pleated",
+      "riding_base": "riding/skirt"
+    },
+    {
+      "key": "knee_skirt",
+      "slot": "outer_legs",
+      "graphics": [
+        9714,
+        9715
+      ],
+      "kind": "expansion50",
+      "base": "expansion/skirt",
+      "design": "linen",
+      "riding_base": "riding/skirt"
+    },
+    {
+      "key": "leather_skirt",
+      "slot": "outer_legs",
+      "graphics": [
+        7176,
+        7177
+      ],
+      "kind": "expansion50",
+      "base": "expansion/skirt",
+      "design": "leather",
+      "riding_base": "riding/skirt"
+    },
+    {
+      "key": "tattsuke_hakama",
+      "slot": "legs",
+      "graphics": [
+        10139,
+        10214
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-pants",
+      "design": "pleated"
+    },
+    {
+      "key": "fancy_dress",
+      "slot": "outer",
+      "graphics": [
+        7935,
+        7936,
+        9851,
+        9852,
+        9853,
+        9854
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "brocade",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "plain_dress",
+      "slot": "outer",
+      "graphics": [
+        7937,
+        7938
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "linen",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "gilded_dress",
+      "slot": "outer",
+      "graphics": [
+        8973,
+        8974
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "gilded",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "hakama_shita",
+      "slot": "outer",
+      "graphics": [
+        10140,
+        10215
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "brocade",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "male_kimono",
+      "slot": "outer",
+      "graphics": [
+        10114,
+        10189
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "kimono",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "female_kimono",
+      "slot": "outer",
+      "graphics": [
+        10115,
+        10190
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "floral",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "kamishimo",
+      "slot": "outer",
+      "graphics": [
+        10137,
+        10212
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "heraldic",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "male_elven_robe",
+      "slot": "outer",
+      "graphics": [
+        12217,
+        12659
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "leaf",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "arcane_robe",
+      "slot": "outer",
+      "graphics": [
+        9902
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "arcane",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "veteran_robe",
+      "slot": "outer",
+      "graphics": [
+        9708,
+        9709
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "brocade",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "gm_robe",
+      "slot": "outer",
+      "graphics": [
+        8271
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "velvet",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "british_suit",
+      "slot": "outer",
+      "graphics": [
+        8258
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "heraldic",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "blackthorne_suit",
+      "slot": "outer",
+      "graphics": [
+        8259
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "velvet",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "dupre_suit",
+      "slot": "outer",
+      "graphics": [
+        8272
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "brocade",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "fur_boots",
+      "slot": "feet",
+      "graphics": [
+        8967,
+        8968
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-boots",
+      "design": "fur",
+      "foot_mask": 4
+    },
+    {
+      "key": "arcane_boots",
+      "slot": "feet",
+      "graphics": [
+        9903
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-boots",
+      "design": "arcane",
+      "foot_mask": 4
+    },
+    {
+      "key": "samurai_tabi",
+      "slot": "feet",
+      "graphics": [
+        10134,
+        10209
+      ],
+      "kind": "expansion50",
+      "base": "expansion/shoes",
+      "design": "linen"
+    },
+    {
+      "key": "ninja_tabi",
+      "slot": "feet",
+      "graphics": [
+        10135,
+        10210
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-boots",
+      "design": "dark_linen",
+      "foot_mask": 4
+    },
+    {
+      "key": "samurai_helm",
+      "slot": "head",
+      "graphics": [
+        9068,
+        9069,
+        9869,
+        9870
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "kabuto",
+      "hair_fit": "coif"
+    },
+    {
+      "key": "leather_cap_legacy",
+      "slot": "head",
+      "graphics": [
+        9873,
+        9874
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "leather_cap"
+    },
+    {
+      "key": "spirituality_helm",
+      "slot": "head",
+      "graphics": [
+        11024,
+        11025
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "winged"
+    },
+    {
+      "key": "elven_spectacles",
+      "slot": "head",
+      "graphics": [
+        12216
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "spectacles",
+      "hair_fit": "keep"
+    },
+    {
+      "key": "plate_mempo",
+      "slot": "gorget",
+      "graphics": [
+        10105,
+        10180
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "mempo_steel"
+    },
+    {
+      "key": "leather_mempo",
+      "slot": "gorget",
+      "graphics": [
+        10106,
+        10181
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "mempo_leather"
+    },
+    {
+      "key": "studded_mempo",
+      "slot": "gorget",
+      "graphics": [
+        10141,
+        10216
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "mempo_studded"
+    },
+    {
+      "key": "ninja_belt",
+      "slot": "waist",
+      "graphics": [
+        10128,
+        10203,
+        44805
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "belt_leather"
+    },
+    {
+      "key": "obi",
+      "slot": "waist",
+      "graphics": [
+        10144,
+        10219
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "belt_brocade"
+    },
+    {
+      "key": "hip_quiver",
+      "slot": "cloak",
+      "graphics": [
+        12215,
+        12657,
+        11010,
+        11011
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "quiver"
+    },
+    {
+      "key": "totem_charm",
+      "slot": "talisman",
+      "graphics": [
+        12120,
+        12121,
+        12122,
+        12123
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "talisman"
+    },
+    {
+      "key": "bone_machete",
+      "slot": "weapon",
+      "graphics": [
+        526
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "cleaver"
+    },
+    {
+      "key": "hatchet",
+      "slot": "weapon",
+      "graphics": [
+        3907,
+        3908
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "hatchet"
+    },
+    {
+      "key": "crescent_blade",
+      "slot": "weapon",
+      "graphics": [
+        9921,
+        9931
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "crescent"
+    },
+    {
+      "key": "dupre_shield",
+      "slot": "shield",
+      "graphics": [
+        11009
+      ],
+      "kind": "expansion50",
+      "base": "coverage/heater_shield",
+      "design": "heraldic"
+    },
+    {
+      "key": "candle_holder",
+      "slot": "shield",
+      "graphics": [
+        2600
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "candle"
+    },
+    {
+      "key": "candle_holder_lit",
+      "slot": "shield",
+      "graphics": [
+        2575,
+        2576,
+        2577
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "candle",
+      "lit": true
+    },
+    {
+      "key": "torch_unlit",
+      "slot": "shield",
+      "graphics": [
+        3947,
+        3940
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "torch"
+    },
+    {
+      "key": "torch_burning",
+      "slot": "shield",
+      "graphics": [
+        2578,
+        2579,
+        2580
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "torch",
+      "lit": true
+    },
+    {
+      "key": "lantern_variants",
+      "slot": "shield",
+      "graphics": [
+        2582,
+        2595,
+        2596
+      ],
+      "kind": "expansion50",
+      "base": "coverage/lantern",
+      "design": "brass",
+      "held_family": "lantern"
+    },
+    {
+      "key": "chef_hat",
+      "slot": "head",
+      "graphics": [
+        30746
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "chef"
+    },
+    {
+      "key": "wedding_tophat",
+      "slot": "head",
+      "graphics": [
+        40697,
+        40698
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "tophat"
+    },
+    {
+      "key": "haunted_tophat",
+      "slot": "head",
+      "graphics": [
+        40775,
+        40776
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "haunted_hat"
+    },
+    {
+      "key": "holiday_hat",
+      "slot": "head",
+      "graphics": [
+        41615,
+        41616
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "holiday"
+    },
+    {
+      "key": "pumpkin_helm",
+      "slot": "head",
+      "graphics": [
+        41962
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "pumpkin",
+      "full_face": true
+    },
+    {
+      "key": "assassin_hood",
+      "slot": "head",
+      "graphics": [
+        42000
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "hood",
+      "hair_fit": "coif"
+    },
+    {
+      "key": "mage_hood",
+      "slot": "head",
+      "graphics": [
+        42001
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "hood_mage",
+      "hair_fit": "coif"
+    },
+    {
+      "key": "turtle_helm",
+      "slot": "head",
+      "graphics": [
+        30765
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "turtle_helm"
+    },
+    {
+      "key": "anniversary_robe",
+      "slot": "outer",
+      "graphics": [
+        19357,
+        19358
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "gilded",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "battleground_robe",
+      "slot": "outer",
+      "graphics": [
+        30742
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "heraldic",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "red_dress",
+      "slot": "outer",
+      "graphics": [
+        30750
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "velvet",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "ceremony_dress",
+      "slot": "outer",
+      "graphics": [
+        30753
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "gilded",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "wedding_dress",
+      "slot": "outer",
+      "graphics": [
+        40687,
+        40688
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "wedding",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "store_robe_1",
+      "slot": "outer",
+      "graphics": [
+        41131
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "floral",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "store_robe_2",
+      "slot": "outer",
+      "graphics": [
+        41132
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "gilded",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "store_robe_3",
+      "slot": "outer",
+      "graphics": [
+        41133
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "velvet",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "store_robe_4",
+      "slot": "outer",
+      "graphics": [
+        41134
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "brocade",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "store_robe_5",
+      "slot": "outer",
+      "graphics": [
+        41135
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "arcane",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "tabard",
+      "slot": "outer",
+      "graphics": [
+        42002
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-robe",
+      "design": "heraldic",
+      "body_flags": 8,
+      "riding_base": "riding/robe"
+    },
+    {
+      "key": "wedding_pants",
+      "slot": "legs",
+      "graphics": [
+        40695,
+        40696
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-pants",
+      "design": "formal"
+    },
+    {
+      "key": "tiger_long_pants",
+      "slot": "legs",
+      "graphics": [
+        30756
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-pants",
+      "design": "tiger"
+    },
+    {
+      "key": "turtle_pants",
+      "slot": "legs",
+      "graphics": [
+        30764
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-pants",
+      "design": "scale"
+    },
+    {
+      "key": "tiger_long_skirt",
+      "slot": "outer_legs",
+      "graphics": [
+        30758
+      ],
+      "kind": "expansion50",
+      "base": "expansion/skirt",
+      "design": "tiger",
+      "riding_base": "riding/skirt"
+    },
+    {
+      "key": "tiger_short_skirt",
+      "slot": "outer_legs",
+      "graphics": [
+        30759
+      ],
+      "kind": "expansion50",
+      "base": "expansion/kilt",
+      "design": "tiger",
+      "riding_base": "riding/kilt"
+    },
+    {
+      "key": "pattern_kilt_1",
+      "slot": "outer_legs",
+      "graphics": [
+        30747
+      ],
+      "kind": "expansion50",
+      "base": "expansion/kilt",
+      "design": "tartan",
+      "riding_base": "riding/kilt"
+    },
+    {
+      "key": "pattern_kilt_2",
+      "slot": "outer_legs",
+      "graphics": [
+        30748
+      ],
+      "kind": "expansion50",
+      "base": "expansion/kilt",
+      "design": "heraldic",
+      "riding_base": "riding/kilt"
+    },
+    {
+      "key": "pattern_kilt_3",
+      "slot": "outer_legs",
+      "graphics": [
+        30749
+      ],
+      "kind": "expansion50",
+      "base": "expansion/kilt",
+      "design": "brocade",
+      "riding_base": "riding/kilt"
+    },
+    {
+      "key": "tiger_cuirass",
+      "slot": "torso",
+      "graphics": [
+        30754,
+        30755
+      ],
+      "kind": "expansion50",
+      "base": "coverage/plate_torso",
+      "design": "tiger"
+    },
+    {
+      "key": "turtle_cuirass",
+      "slot": "torso",
+      "graphics": [
+        30762,
+        30763
+      ],
+      "kind": "expansion50",
+      "base": "coverage/plate_torso",
+      "design": "scale"
+    },
+    {
+      "key": "turtle_bracers",
+      "slot": "arms",
+      "graphics": [
+        30766
+      ],
+      "kind": "expansion50",
+      "base": "coverage/plate_arms",
+      "design": "scale"
+    },
+    {
+      "key": "tiger_collar",
+      "slot": "gorget",
+      "graphics": [
+        30761
+      ],
+      "kind": "expansion50",
+      "base": "coverage/plate_gorget",
+      "design": "tiger"
+    },
+    {
+      "key": "holiday_boots",
+      "slot": "feet",
+      "graphics": [
+        41613,
+        41614
+      ],
+      "kind": "expansion50",
+      "base": "runtime/part-boots",
+      "design": "holiday",
+      "foot_mask": 4
+    },
+    {
+      "key": "first_aid_belt",
+      "slot": "waist",
+      "graphics": [
+        41462
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "belt_aid"
+    },
+    {
+      "key": "mace_belt",
+      "slot": "waist",
+      "graphics": [
+        41996
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "belt_mace"
+    },
+    {
+      "key": "sword_belt",
+      "slot": "waist",
+      "graphics": [
+        41997
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "belt_sword"
+    },
+    {
+      "key": "dagger_belt",
+      "slot": "waist",
+      "graphics": [
+        41998
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "belt_dagger"
+    },
+    {
+      "key": "demon_belt",
+      "slot": "waist",
+      "graphics": [
+        42978
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "belt_demon"
+    },
+    {
+      "key": "ornate_mempo",
+      "slot": "gorget",
+      "graphics": [
+        41999
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "mempo_steel"
+    },
+    {
+      "key": "vice_shield",
+      "slot": "shield",
+      "graphics": [
+        30743
+      ],
+      "kind": "expansion50",
+      "base": "coverage/heater_shield",
+      "design": "vice"
+    },
+    {
+      "key": "virtue_shield",
+      "slot": "shield",
+      "graphics": [
+        30744
+      ],
+      "kind": "expansion50",
+      "base": "coverage/heater_shield",
+      "design": "virtue"
+    },
+    {
+      "key": "pirate_shield",
+      "slot": "shield",
+      "graphics": [
+        42569,
+        42570
+      ],
+      "kind": "expansion50",
+      "base": "coverage/round_shield",
+      "design": "pirate"
+    },
+    {
+      "key": "hildebrandt_shield",
+      "slot": "shield",
+      "graphics": [
+        43057,
+        43058
+      ],
+      "kind": "expansion50",
+      "base": "coverage/heater_shield",
+      "design": "heraldic"
+    },
+    {
+      "key": "skull_sword",
+      "slot": "weapon",
+      "graphics": [
+        41793,
+        41794
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "skull_sword"
+    },
+    {
+      "key": "skull_staff",
+      "slot": "weapon",
+      "graphics": [
+        41795,
+        41796
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "skull_staff"
+    },
+    {
+      "key": "bottle_weapon",
+      "slot": "weapon",
+      "graphics": [
+        41995,
+        44845
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "bottle"
+    },
+    {
+      "key": "modern_wand",
+      "slot": "weapon",
+      "graphics": [
+        42855,
+        42856
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "wand"
+    },
+    {
+      "key": "held_orb",
+      "slot": "weapon",
+      "graphics": [
+        42866
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "orb"
+    },
+    {
+      "key": "candy_staff_red",
+      "slot": "weapon",
+      "graphics": [
+        42947
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "candy_staff"
+    },
+    {
+      "key": "candy_staff_green",
+      "slot": "weapon",
+      "graphics": [
+        42948
+      ],
+      "kind": "expansion50",
+      "base": null,
+      "design": "candy_staff"
+    },
+    {
+      "key": "red_lantern",
+      "slot": "shield",
+      "graphics": [
+        16638
+      ],
+      "kind": "expansion50",
+      "base": "coverage/lantern_lit",
+      "design": "red",
+      "held_family": "lantern"
+    },
+    {
+      "key": "blue_lantern",
+      "slot": "shield",
+      "graphics": [
+        16639
+      ],
+      "kind": "expansion50",
+      "base": "coverage/lantern_lit",
+      "design": "blue",
+      "held_family": "lantern"
+    },
+    {
+      "key": "green_lantern",
+      "slot": "shield",
+      "graphics": [
+        16640
+      ],
+      "kind": "expansion50",
+      "base": "coverage/lantern_lit",
+      "design": "green",
+      "held_family": "lantern"
+    },
+    {
+      "key": "purple_lantern",
+      "slot": "shield",
+      "graphics": [
+        16641
+      ],
+      "kind": "expansion50",
+      "base": "coverage/lantern_lit",
+      "design": "purple",
+      "held_family": "lantern"
+    },
+    {
+      "key": "modern_lantern_lit",
+      "slot": "shield",
+      "graphics": [
+        42857
+      ],
+      "kind": "expansion50",
+      "base": "coverage/lantern_lit",
+      "design": "brass",
+      "held_family": "lantern"
+    },
+    {
+      "key": "modern_lantern_off",
+      "slot": "shield",
+      "graphics": [
+        42858
+      ],
+      "kind": "expansion50",
+      "base": "coverage/lantern",
+      "design": "brass",
+      "held_family": "lantern"
     }
   ],
   "deferred_experiments": [
     "Sleeveless dress, apron and surcoat experiments rejected at visual review; those native IDs remain unmapped.",
-    "Earlier sampled full/half apron and sash pose-fit prototypes were rejected. The matched-topology body sash is accepted separately; apron waist/lap defects remain uncounted. Diagnostic evidence stays in ignored outputs/human-workwear and work/human-workwear."
+    "Earlier sampled full/half apron and sash pose-fit prototypes were rejected. The matched-topology body sash is accepted separately; apron waist/lap defects remain uncounted. Diagnostic evidence stays in ignored outputs/human-workwear and work/human-workwear.",
+    "50-percent batch: tribal/horned/orc/bear/deer/kitsune/Ankur/tiger masks and haunted veil rejected at actual render review. Their native IDs remain unmapped; coarse rectangular face geometry was not accepted. Diagnostics stay local.",
+    "50-percent batch: formal shirt, jester suit, surcoat and jin-baori passed civilian views but failed strict over-plate cloth-retention checks (512 initial views/52 failures; 128-view larger-offset trial still had 5 failures). All eight IDs remain unmapped. Leather shorts, tiger short pants and modern jester shoes also remain unmapped because their available prototype silhouettes were inaccurate. Diagnostics and draft code remain ignored."
   ]
 }

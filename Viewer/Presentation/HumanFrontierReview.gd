@@ -1,6 +1,8 @@
 extends SceneTree
 ## Completed engine frames of this batch, using the real human/horse renderers.
 var actors: Array=[]
+var batch_kind:="expansion35"
+var output_folder:="human-frontier"
 func _initialize() -> void:call_deferred("run")
 func run() -> void:
 	root.size=Vector2i(1600,1000)
@@ -16,9 +18,11 @@ func run() -> void:
 	for female in [false,true]:
 		var actor:=preload("res://Presentation/HumanAvatar.gd").new();actor.initial_body=401 if female else 400;stage.add_child(actor);actor.set_physics_process(false);actor.set_process(false);actor.foot_contact.active=false;actor.human_visual.set_process(false);actors.append(actor)
 	var data: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../scripts/human-coverage-recipes.json"))
-	var jobs: Array=data.assets.filter(func(row: Dictionary):return row.kind=="expansion35")
+	var jobs: Array=data.assets.filter(func(row: Dictionary):return row.kind==batch_kind)
 	if OS.get_cmdline_user_args().has("--weapons-only"):jobs=jobs.filter(func(row: Dictionary):return row.slot=="weapon")
-	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://../outputs/human-frontier"))
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--item="):jobs=jobs.filter(func(row: Dictionary):return row.key==arg.substr(7))
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://../outputs/"+output_folder))
 	for job: Dictionary in jobs:
 		job.armoured=false
 		var definition: Array=[int(job.graphics[0]),0]
@@ -29,6 +33,7 @@ func run() -> void:
 				var tall_weapon: bool=job.slot=="weapon" and job.design!="book"
 				camera.size=(4.5 if mounted else 3.6) if tall_weapon else (3.8 if mounted else 2.2)
 				var centre:=Vector3(0,(1.95 if mounted else 1.35) if tall_weapon else (1.4 if mounted else .97),0);camera.position=centre+Vector3(0,.12,7);camera.look_at(centre)
+				if job.slot=="head" and not mounted:camera.size=2.6;centre.y=1.05;camera.position=centre+Vector3(0,.12,7);camera.look_at(centre)
 				for i in actors.size():
 					var actor: Node3D=actors[i]
 					if not mounted and actor.horse_visual!=null:actor._finish_dismount()
@@ -36,12 +41,12 @@ func run() -> void:
 					var worn: Array=[{"id":0x1539,"layer":4},{"id":0x170b,"layer":3},{"id":0x203d,"layer":11,"hue":1147},{"id":int(definition[0]),"hue":0}]
 					worn.append({"id":0x1415,"layer":13} if job.armoured else {"id":0x1517,"layer":5})
 					if mounted:worn.append({"id":0x3ea0,"layer":25})
-					actor.apply_server_appearance({"body":actor.initial_body,"hue":1002},worn);actor.human_visual.cancel_action();actor.human_visual.play("Rider_Walk" if mounted else "Walk",0.);actor.human_visual.animator.seek(actor.human_visual.animator.current_animation_length*.23,true);actor.human_visual.animator.pause()
+					actor.apply_server_appearance({"body":actor.initial_body,"hue":1002},worn);actor.human_visual.cancel_action();actor.human_visual.play("Rider_Walk" if mounted else actor.human_visual.stance_clip("Walk"),0.);actor.human_visual.animator.seek(actor.human_visual.animator.current_animation_length*.23,true);actor.human_visual.animator.pause()
 					assert(actor.human_visual.missing_art.is_empty())
 					if mounted:
 						actor.rider_contact.mode="seated";actor.rider_contact.seated_weight=1.;actor.horse_visual.animator.play("walk",0.);actor.horse_visual.animator.seek(.3,true);actor.horse_visual.animator.pause()
 				for frame in 3:await process_frame
 				await RenderingServer.frame_post_draw
-				assert(root.get_texture().get_image().save_png("res://../outputs/human-frontier/"+key+".png")==OK)
+				assert(root.get_texture().get_image().save_png("res://../outputs/"+output_folder+"/"+key+".png")==OK)
 				print("FRONTIER REVIEW ",key)
 	print("FRONTIER REVIEW COMPLETE ",jobs.size()*4," frames");quit()

@@ -117,6 +117,7 @@ func _attach(path: String, prefix: String, body_part: bool = false) -> void:
 	source.free()
 
 func _part_path(asset: String) -> String:
+	if riding() and bool(Wardrobe.Coverage.RIDING_VARIANTS.get(asset,false)) and ResourceLoader.exists(folder+"/"+asset+"_riding.glb"):return folder+"/"+asset+"_riding.glb"
 	if riding() and asset in ["skirt","kilt"] and ResourceLoader.exists(folder+"/riding/"+asset+".glb"):return folder+"/riding/"+asset+".glb"
 	return folder+"/"+asset+".glb" if asset.begins_with("coverage/") else folder+"/expansion/"+asset+".glb"
 
@@ -148,6 +149,7 @@ func set_equipment(worn: Array) -> void:
 	# The new leg models include complete tailored trousers beneath the plates.
 	# Reuse the proven trouser body mask without drawing the old trousers twice.
 	var mask_bits: int=outfit_bits|(2 if extra_parts.has("legs") else 0)
+	mask_bits |= int(Wardrobe.Coverage.FOOT_MASKS.get(str(extra_parts.get("feet",{}).get("asset","")),0))
 	var gloves: bool = extra_parts.has("hands") and ResourceLoader.exists(folder+"/expansion/body-mask-%02d-gloves.glb" % mask_bits)
 	var masked := mask_bits!=0 or gloves
 	var needs_undercoat: bool=(extra_parts.has("torso") or extra_parts.has("arms") or extra_parts.has("gorget")) and not (outfit_bits&9) and not extra_parts.has("shirt") and not extra_parts.has("doublet")
@@ -155,17 +157,21 @@ func set_equipment(worn: Array) -> void:
 	# matching the existing armour backing, prevents exposed torso seams.
 	needs_undercoat=needs_undercoat or (riding() and (outfit_bits&8)!=0)
 	var hide_hair := (outfit_bits&16)!=0 or extra_parts.has("head")
-	var hide_beard: bool = extra_parts.has("head") and str(extra_parts.head.asset)=="closed_helmet"
+	var head_asset: String=str(extra_parts.get("head",{}).get("asset",""))
+	var head_hair_fit: String=str(Wardrobe.Coverage.HAIR_FITS.get(head_asset,""))
+	if head_hair_fit=="keep":hide_hair=false
+	var hide_beard: bool = head_asset=="closed_helmet" or bool(Wardrobe.Coverage.FULL_FACE.get(head_asset,false))
 	grip.holding = extra_parts.has("weapon")
 	grip.left_holding = extra_parts.has("shield") or (extra_parts.has("weapon") and str(Wardrobe.Coverage.STANCES.get(str(extra_parts.weapon.asset),"")) in ["bow","crossbow"])
 	grip.active = true
 	held_accessories.book=Wardrobe.Coverage.HELD_FAMILIES.get(str(extra_parts.get("weapon",{}).get("asset","")),"")=="book"
-	held_accessories.lantern=str(extra_parts.get("shield",{}).get("asset",""))=="coverage/lantern"
+	held_accessories.lantern=Wardrobe.Coverage.HELD_FAMILIES.get(str(extra_parts.get("shield",{}).get("asset","")),"")=="lantern"
 	var hair_style := str(resolved.hair_style)
 	var long_hair := hair_style in ["long","ponytail"]
 	var hair_asset := "hair_"+hair_style
 	if long_hair and ((outfit_bits&25)!=0 or extra_parts.has("head") or extra_parts.has("shirt") or extra_parts.has("doublet") or extra_parts.has("cloak") or extra_parts.has("torso") or extra_parts.has("middle")):
 		var variant := "hood" if (outfit_bits&16)!=0 else ("covered" if extra_parts.has("head") else "layered")
+		if head_hair_fit=="keep":variant="layered"
 		if extra_parts.has("cloak"):variant += "_cloak"
 		if Wardrobe.Coverage.HAIR_FITS.get(str(extra_parts.get("head",{}).get("asset","")),"")=="coif":variant+="_coif"
 		if ResourceLoader.exists(folder+"/expansion/"+hair_asset+"_"+variant+".glb"):
@@ -188,6 +194,7 @@ func set_equipment(worn: Array) -> void:
 	for i in Wardrobe.SLOTS.size():
 		if outfit_bits&(1<<i):
 			var slot: String = Wardrobe.SLOTS[i]
+			if slot=="robe" and extra_parts.has("outer"):continue
 			if slot=="boots" and Wardrobe.Coverage.BOOT_FITS.get(str(extra_parts.get("legs",{}).get("asset","")),"")=="armour":
 				_attach(_part_path("coverage/armour_boots"),"Extra_")
 			elif slot=="robe" and riding() and ResourceLoader.exists(folder+"/riding/robe.glb"):_attach(folder+"/riding/robe.glb","Free_")

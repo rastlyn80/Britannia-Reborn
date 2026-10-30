@@ -1,5 +1,7 @@
 extends "res://Presentation/HorseClothingTests.gd"
 ## Every new torso/arm/leg/glove derivative in a complete outfit, real frames.
+var batch_kind:="expansion35"
+var output_folder:="human-frontier"
 func capture() -> Image:
 	await process_frame
 	await RenderingServer.frame_post_draw
@@ -10,7 +12,7 @@ func run() -> void:
 	var camera:=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.size=2.3;viewport.add_child(camera)
 	var white:=solid("vec3(1.)");var pink:=solid("COLOR.rgb")
 	var data: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../scripts/human-coverage-recipes.json"))
-	var definitions: Array=data.assets.filter(func(row: Dictionary):return row.kind=="expansion35" and row.slot in ["torso","arms","legs","hands"])
+	var definitions: Array=data.assets.filter(func(row: Dictionary):return row.kind==batch_kind and row.slot in ["torso","arms","legs","hands","outer","middle","outer_legs","feet"])
 	var defaults:={"torso":0x1415,"arms":0x1410,"legs":0x1411,"hands":0x1414,"gorget":0x1413,"boots":0x170b}
 	for female in [false,true]:
 		for mounted in [false,true]:
@@ -19,6 +21,7 @@ func run() -> void:
 			for row: Dictionary in definitions:
 				var worn: Array=[]
 				for slot: String in defaults:worn.append({"id":int(row.graphics[0]) if slot==row.slot else int(defaults[slot]),"hue":53})
+				if not defaults.has(row.slot):worn.append({"id":int(row.graphics[0]),"hue":53})
 				if mounted:worn.append({"id":0x3e9f,"layer":25})
 				actor.appearance_seen=false;actor.apply_server_appearance({"body":actor.initial_body,"hue":1002},worn)
 				if mounted:actor.rider_contact.mode="seated";actor.rider_contact.seated_weight=1.
@@ -54,10 +57,10 @@ func run() -> void:
 							rows.append({"female":female,"item":row.key,"mounted":mounted,"motion":motion,"phase":phase,"angle":angle,"skin_pixels":exposed,"body_occupancy":body_fraction,"seat_occupancy":seat_fraction,"passed":passed})
 							if not passed:
 								failures+=1
-								if failures<=8:push_error(str(rows[-1]));skin.save_png("res://../outputs/human-frontier/armour-failure-%d.png"%failures)
+								if failures<=8:push_error(str(rows[-1]));skin.save_png("res://../outputs/"+output_folder+"/armour-failure-%d.png"%failures)
 				for mesh: MeshInstance3D in meshes:mesh.visible=states[mesh].visible;mesh.material_override=states[mesh].material;mesh.mesh=states[mesh].mesh
 				print("FRONTIER ARMOUR ",female," mounted=",mounted," ",row.key)
 			actor.free()
-	var file:=FileAccess.open("res://../outputs/human-frontier/armour-validation.json",FileAccess.WRITE)
+	var file:=FileAccess.open("res://../outputs/"+output_folder+"/armour-validation.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"samples":rows,"failures":failures,"scope":"Every new torso/arm/leg/glove model in a complete outfit. Both bodies, Walk/Run, two phases/four angles, foot and actual seated horse. Completed rendered frames, no force_draw. Visible masked skin marked magenta; independent complete unmasked body provides opacity/seat reference. Head/neck excluded by original bone weights; <=4 skin pixels, >=98% total and >=99.5% seat opacity. Finite visual samples, not universal collision or art-direction approval."},"\t"));file.close()
 	print("HUMAN FRONTIER ARMOUR: ",rows.size()," views / ",failures," failures");quit(1 if failures else 0)

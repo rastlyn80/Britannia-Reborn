@@ -72,6 +72,7 @@ static func resolve(worn: Array) -> Dictionary:
 		if not extra(id).is_empty():
 			var extra: Array = extra(id)
 			pieces[str(extra[0])] = {"asset":str(extra[1]),"hue":int(item.get("hue",0)),"id":id}
+			bits |= int(Coverage.BODY_FLAGS.get(str(extra[1]),0))
 		if mask == 0 and extra(id).is_empty() and layer not in [0,11,16,18,21,25,26,27]:
 			unsupported.append(id)
 	# MiddleTorso replaces tunic/doublet on that native layer, retaining shirt/armour.

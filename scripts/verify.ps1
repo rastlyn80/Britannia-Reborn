@@ -84,6 +84,10 @@ if (Test-Path "$root/Viewer/local-art/free-equipment-female/coverage/crossbow.gl
   & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanCoverageTests.gd
   if ($LASTEXITCODE) { throw 'Human category coverage checks failed' }
 }
+if (Test-Path "$root/Viewer/local-art/free-equipment-female/coverage/gilded_dress_riding.glb") {
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanWardrobe50LayerTests.gd
+  if ($LASTEXITCODE) { throw 'Native wardrobe layer/variant checks failed' }
+}
 if (Test-Path "$root/Viewer/local-art/horses/warhorse.glb") {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/HorseTests.gd
   if ($LASTEXITCODE) { throw 'Horse identity, mounted actions and rider contact checks failed' }

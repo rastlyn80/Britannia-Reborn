@@ -259,16 +259,17 @@ def weapon(row):
  t.vertices=[transform@(anchor+p) for p in t.vertices]
  return object_from_tailor(key,True)
 
-evidence=json.loads((OUT/'provenance.json').read_text())
-for row in ROWS:
- ob=derivative(row) if row['base'] else (hat(row) if row['slot']=='head' else weapon(row))
- ob.name='Extra_'+row['key'];ob.parent=rig;ob.matrix_parent_inverse=Matrix.Identity(4);ob.matrix_basis=Matrix.Identity(4)
- for mod in list(ob.modifiers):
-  if mod.type=='ARMATURE':ob.modifiers.remove(mod)
- mod=ob.modifiers.new('Shared named human skeleton','ARMATURE');mod.object=rig
- bpy.ops.object.select_all(action='DESELECT');rig.select_set(True);ob.select_set(True);bpy.context.view_layer.objects.active=rig
- path=OUT/(row['key']+'.glb');bpy.ops.export_scene.gltf(filepath=str(path),export_format='GLB',use_selection=True,export_animations=False,export_morph=False,export_tangents=True)
- evidence['parts'][row['key']]={'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'kind':'expansion35','base':row['base'],'design':row['design'],'vertices':len(ob.data.vertices),'polygons':len(ob.data.polygons),'source':'Original parametric topology or material variant of exact pinned fitted CC0 input','licence':PINS['licence'],'recipe_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'inputs_sha256':hashlib.sha256((ROOT/'scripts/human-frontier-inputs.json').read_bytes()).hexdigest(),'fidelity':'Category replacement; exact item ornament, silhouette and per-weapon combat choreography remain separately reviewable.'}
- bpy.data.objects.remove(ob,do_unlink=True);print('FRONTIER READY',FEMALE,row['key'],flush=True)
-(OUT/'provenance.json').write_text(json.dumps(evidence,indent=2))
-print('FRONTIER COMPLETE',FEMALE,len(ROWS),flush=True)
+if __name__=='__main__':
+ evidence=json.loads((OUT/'provenance.json').read_text())
+ for row in ROWS:
+  ob=derivative(row) if row['base'] else (hat(row) if row['slot']=='head' else weapon(row))
+  ob.name='Extra_'+row['key'];ob.parent=rig;ob.matrix_parent_inverse=Matrix.Identity(4);ob.matrix_basis=Matrix.Identity(4)
+  for mod in list(ob.modifiers):
+   if mod.type=='ARMATURE':ob.modifiers.remove(mod)
+  mod=ob.modifiers.new('Shared named human skeleton','ARMATURE');mod.object=rig
+  bpy.ops.object.select_all(action='DESELECT');rig.select_set(True);ob.select_set(True);bpy.context.view_layer.objects.active=rig
+  path=OUT/(row['key']+'.glb');bpy.ops.export_scene.gltf(filepath=str(path),export_format='GLB',use_selection=True,export_animations=False,export_morph=False,export_tangents=True)
+  evidence['parts'][row['key']]={'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'kind':'expansion35','base':row['base'],'design':row['design'],'vertices':len(ob.data.vertices),'polygons':len(ob.data.polygons),'source':'Original parametric topology or material variant of exact pinned fitted CC0 input','licence':PINS['licence'],'recipe_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'inputs_sha256':hashlib.sha256((ROOT/'scripts/human-frontier-inputs.json').read_bytes()).hexdigest(),'fidelity':'Category replacement; exact item ornament, silhouette and per-weapon combat choreography remain separately reviewable.'}
+  bpy.data.objects.remove(ob,do_unlink=True);print('FRONTIER READY',FEMALE,row['key'],flush=True)
+ (OUT/'provenance.json').write_text(json.dumps(evidence,indent=2))
+ print('FRONTIER COMPLETE',FEMALE,len(ROWS),flush=True)

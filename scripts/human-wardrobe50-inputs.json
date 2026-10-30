@@ -1,0 +1,1977 @@
+{
+  "scope": "Additional fitted human wearable categories; active native classes and curated client equipment are recorded separately. Exact native designs and eligibility remain separate.",
+  "native_reference": {
+    "repository": "https://github.com/modernuo/ModernUO",
+    "revision": "ab59efea86fd9e399d261bed9d188ab4d95ad4c2"
+  },
+  "source_manifests": [
+    "scripts/character-expansion-inputs.json",
+    "scripts/human-coverage-inputs.json",
+    "scripts/human-tailoring-inputs.json",
+    "scripts/horse-riding-inputs.json"
+  ],
+  "licence": "Selected CC0 MakeHuman clothing/rig and ambientCG linen/normal inputs; fitted heater/round shield geometry retains CC-BY-4.0 attribution from scripts/human-coverage-inputs.json. Original plate/riding geometry, new parametric meshes and material generator GPL-3.0-or-later. Existing notices retained.",
+  "files": {
+    "Viewer/local-art/free-equipment/runtime/part-pants.glb": "f435c3298e2e95f66f33ca3bd94a6be1310a3306f8e01113c41d99c7e894c3b5",
+    "Viewer/local-art/free-equipment/expansion/skirt.glb": "92566a8bd44215d8a662d1799e95d19e9d444f5a703312b4574f7f0f7800aace",
+    "Viewer/local-art/free-equipment/runtime/part-robe.glb": "071c660ef992be9eed2e89ac00cd07b8ce27da92e37bb675af1ccbbc58633c69",
+    "Viewer/local-art/free-equipment/coverage/plate_arms.glb": "a0d84c7f97b950d5de37b3d81bb14182452dd32859e8ec0f746e0183dc8a7ff1",
+    "Viewer/local-art/free-equipment/coverage/lantern_lit.glb": "6be051ab77b7de8a67b6fb9286162b6cc486c691e4f64ba7b4e13a9be3cd8b03",
+    "Viewer/local-art/free-equipment/equipment-base.glb": "b5134f97fd6a4179cd0d692e748f9b917c49656d05fe31dc0969f42846ae20a9",
+    "Viewer/local-art/free-equipment/riding/kilt.glb": "1f193e4cdabe987b6e7d150fa36aab03b0a442ea5e86ce15f7705a3284c75dea",
+    "Viewer/local-art/free-equipment/coverage/round_shield.glb": "89abde966d0f5a70bd6729263df54974c0cd8e7b951cb7876712e00eea95f530",
+    "Viewer/local-art/free-equipment/runtime/part-boots.glb": "491f925477be2e9014b44615330bb0615953abfd1c04f15754c3b91a2ee01f35",
+    "Viewer/local-art/free-equipment/motion/human-motion.glb": "91b606bea1fd0a3b1e57d08e308c33c6989b7d4cad1ef78abef69d829ebe0f69",
+    "Viewer/local-art/free-equipment/expansion/shirt.glb": "e01c11855961d30e398d3ff33a7935001578b2cbfa2c3bbb5f88ac66857f02e4",
+    "Viewer/local-art/free-equipment/expansion/cloak.glb": "83b50d6af322149ed5bab98b3131fcd8e54127c1d4c98ebd6234c65791e2e750",
+    "Viewer/local-art/free-equipment/expansion/gloves.glb": "70d7ac457bdd48d226be90f2f17b16e8aa1682b909d8ecdcb69737fd095a0749",
+    "Viewer/local-art/free-equipment/coverage/heater_shield.glb": "ced7ba249e54e57d81b559dbb18ebc39dbd6ca402adda157121c011ce234c649",
+    "Viewer/local-art/free-equipment/riding/skirt.glb": "2dd965e46ac13ba690e8f24e83bf9913a8ab1d7ab7d2f09c18be519d14233d6e",
+    "Viewer/local-art/free-equipment/expansion/shoes.glb": "b41142e5940f2571e2c9645cf22f4e45b593c2cc3c235ccdfcb26a937e5d8968",
+    "Viewer/local-art/free-equipment/riding/robe.glb": "4c9a8148dfe94f2d2ce9e141ad199460c74db9ad375c4afeb43af6e8f42800df",
+    "Viewer/local-art/free-equipment/coverage/leather_torso.glb": "36f17b7f201996e2ce5960a9264657803dcb73cb2166f8489dae62a30baabb64",
+    "Viewer/local-art/free-equipment/expansion/kilt.glb": "cfe942c0bfe90af168d038c515610069a5439365b7a0a9b9718a2714423f8b9f",
+    "Viewer/local-art/free-equipment/coverage/plate_gorget.glb": "46909b0b04993e68d45ed5666718e75463f4285d48cada92094cdf3015717739",
+    "Viewer/local-art/free-equipment/coverage/plate_torso.glb": "e1e8f09cf06274408df0367f348046532364167fbe9b34dd6bf702479bac2b5b",
+    "Viewer/local-art/free-equipment/coverage/lantern.glb": "806ead7e87e3382ba336b88a0aeb119081bf9849858750de6f2a4da863116556",
+    "Viewer/local-art/free-equipment-female/runtime/part-pants.glb": "b1bee60aa0dac272de53205048966b150fd41b544f1d1dd605088ebfe37dcc65",
+    "Viewer/local-art/free-equipment-female/expansion/skirt.glb": "a78454d539657a38aeef9b33550df339d818c0cf55bef828258f674f54b3c32b",
+    "Viewer/local-art/free-equipment-female/runtime/part-robe.glb": "679def9db1905969a80af287d5f46d5042a91b72ae9fec4b043d1c0aab73cbaf",
+    "Viewer/local-art/free-equipment-female/coverage/plate_arms.glb": "a1417199a0207be0fff3e389e44a778a8b627fcd93c3e71b5c98496e99d99ccd",
+    "Viewer/local-art/free-equipment-female/coverage/lantern_lit.glb": "2181d3cfc6bc6962e59069188b8c27862d47dbcf98faaa4d0ca090acdb805ffd",
+    "Viewer/local-art/free-equipment-female/equipment-base.glb": "951b8c1424714707b3178ca66a5b1f9e57f8c3e41f301c3a082cd312b861fc8c",
+    "Viewer/local-art/free-equipment-female/riding/kilt.glb": "4f08180e3d091a2be00915c322a0848a96c4cbcf470eac2bcfa10eec4ee75166",
+    "Viewer/local-art/free-equipment-female/coverage/round_shield.glb": "4c44d0e0e6ed4d6a650d12ef16ed1baf362f4f50b6b9ecff116fcdbc70f9d242",
+    "Viewer/local-art/free-equipment-female/runtime/part-boots.glb": "0ed8a06a12ed8a15c0e2f9a695073426e9386dc5c290eb7c961502e91e71224d",
+    "Viewer/local-art/free-equipment-female/motion/human-motion.glb": "7f20ee73ce686237880cf7abcf74dfa5509d52b433dc98d2ca75dccd7d68f7a0",
+    "Viewer/local-art/free-equipment-female/expansion/shirt.glb": "18d75d7983a9d75973254a96eeece74244d933fee72649e55b7b3e3377c3de16",
+    "Viewer/local-art/free-equipment-female/expansion/cloak.glb": "01dd2cf147574caaca6adc9551dfb0101ea758d5e02fe04c00f2aeb80f11f1d5",
+    "Viewer/local-art/free-equipment-female/expansion/gloves.glb": "952a386b2d1a2e3021efe145cb1f8ba0b227139e9b886f9f5fa503c779008bb6",
+    "Viewer/local-art/free-equipment-female/coverage/heater_shield.glb": "b173d3f55c6a8d2abbe40e2d544948831af9a1b6338368e51855a49a2065141d",
+    "Viewer/local-art/free-equipment-female/riding/skirt.glb": "f119bc0afca404b12fc74f4d687452b29d276680db73706b65c3dbc7c4bae2b0",
+    "Viewer/local-art/free-equipment-female/expansion/shoes.glb": "4f37553a5c23e18a8fdf59f4a897d247635ae931f013c42e3de3576865976106",
+    "Viewer/local-art/free-equipment-female/riding/robe.glb": "8187b3d68833aa077b1477154885f62cf0a34ff70a4fbc6ff99bfb6a40e28c9c",
+    "Viewer/local-art/free-equipment-female/coverage/leather_torso.glb": "3ab967f237e8028c7320e13b693a9a8c704ee12c22e64f72b1445b2dca014b3c",
+    "Viewer/local-art/free-equipment-female/expansion/kilt.glb": "9ec67258986f638abd7b30b8a518b536d79c3243aba19257984eea1415bd3d47",
+    "Viewer/local-art/free-equipment-female/coverage/plate_gorget.glb": "7cc56a0551da2ed12793361446a59891e5c999d295896ff85d634594e50f33db",
+    "Viewer/local-art/free-equipment-female/coverage/plate_torso.glb": "a8ee078c3f37f2fec4bf4bf9f997527aa0a8790b5bc10d4475c242f8630e0c9c",
+    "Viewer/local-art/free-equipment-female/coverage/lantern.glb": "98dcbc7702e58eba23268e98c43d5ac56e5d66bb535ddc3372fdc9cf736b3eff",
+    "Viewer/Art/MedievalKit/textures/Linen_Color.jpg": "3221cb1d07531f13238b2443be5843d1b788c462c8576e7ada755e496f93b149",
+    "Viewer/Art/MedievalKit/textures/Fabric045_2K-JPG_NormalGL.jpg": "bd977a2099dbe3f39037f35e52245f7b0f1d04d817e009da5ec172eb9b695c9d"
+  },
+  "client_files": {
+    "mobtypes.txt": "a4f1c98057c5bcf10ccdb575a9154260651e49b852bfe548059ff55fcbbf29d8",
+    "tiledata.mul": "382388dc5b4f78e9aad923bf5bf20387d15e22716b3199974a36891ba2da9624",
+    "Equipconv.def": "ee650d81d88205745958cc6b6adf0c1f656f294dd0e97d58716e95142a2243ff"
+  },
+  "native_graphics": {
+    "8969": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "FurCape",
+          "parent": "BaseCloak",
+          "file": "Projects/UOContent/Items/Clothing/Cloaks.cs",
+          "sha256": "135a8a4df01f8cca3d00a1337d8312d540cfd1be54710ea5f53cc72f41b4b7f0",
+          "race_restricted": false,
+          "ids": [
+            8969,
+            8970
+          ]
+        }
+      ]
+    },
+    "8970": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "FurCape",
+          "parent": "BaseCloak",
+          "file": "Projects/UOContent/Items/Clothing/Cloaks.cs",
+          "sha256": "135a8a4df01f8cca3d00a1337d8312d540cfd1be54710ea5f53cc72f41b4b7f0",
+          "race_restricted": false,
+          "ids": [
+            8969,
+            8970
+          ]
+        }
+      ]
+    },
+    "9901": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "Cloak",
+          "parent": "BaseCloak",
+          "file": "Projects/UOContent/Items/Clothing/Cloaks.cs",
+          "sha256": "135a8a4df01f8cca3d00a1337d8312d540cfd1be54710ea5f53cc72f41b4b7f0",
+          "race_restricted": false,
+          "ids": [
+            5397,
+            9901
+          ]
+        }
+      ]
+    },
+    "42003": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1523
+    },
+    "9904": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "LeatherGloves",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Armor/Leather/LeatherGloves.cs",
+          "sha256": "1d693fe675d7a523de7a0920a0325c636fe44b523d98487127f361a9807997c5",
+          "race_restricted": false,
+          "ids": [
+            5062,
+            9904
+          ]
+        }
+      ]
+    },
+    "11020": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "ValorGauntlets",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Armor/Sets/ValorGauntlets.cs",
+          "sha256": "0cc09b525f5d7303f76600b4f86548964bf6c54bf4a99fe99b6078f9b221095a",
+          "race_restricted": false,
+          "ids": [
+            11020,
+            11021
+          ]
+        }
+      ]
+    },
+    "11021": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "ValorGauntlets",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Armor/Sets/ValorGauntlets.cs",
+          "sha256": "0cc09b525f5d7303f76600b4f86548964bf6c54bf4a99fe99b6078f9b221095a",
+          "race_restricted": false,
+          "ids": [
+            11020,
+            11021
+          ]
+        }
+      ]
+    },
+    "11117": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "FemaleElvenPlateChest",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Armor/Plate/FemaleWoodlandChest.cs",
+          "sha256": "499fb0e25dc7bdd84b0af55fc5869d1bf1218ceff5db81bfd5432d92c1b0d934",
+          "race_restricted": false,
+          "ids": [
+            11117,
+            12644
+          ]
+        }
+      ]
+    },
+    "12644": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "FemaleElvenPlateChest",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Armor/Plate/FemaleWoodlandChest.cs",
+          "sha256": "499fb0e25dc7bdd84b0af55fc5869d1bf1218ceff5db81bfd5432d92c1b0d934",
+          "race_restricted": false,
+          "ids": [
+            11117,
+            12644
+          ]
+        }
+      ]
+    },
+    "12673": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "FemaleLeafChest",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Armor/Leather/FemaleLeafChest.cs",
+          "sha256": "7d5a1b739945039a31635f5b63bbbdabc090c0c57437a78b24218e5d36cf5757",
+          "race_restricted": false,
+          "ids": [
+            12235,
+            12673
+          ]
+        }
+      ]
+    },
+    "12235": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "FemaleLeafChest",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Armor/Leather/FemaleLeafChest.cs",
+          "sha256": "7d5a1b739945039a31635f5b63bbbdabc090c0c57437a78b24218e5d36cf5757",
+          "race_restricted": false,
+          "ids": [
+            12235,
+            12673
+          ]
+        }
+      ]
+    },
+    "12662": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "ElvenDarkShirt",
+          "parent": "BaseShirt",
+          "file": "Projects/UOContent/Items/Clothing/Shirts.cs",
+          "sha256": "c38a7a682e1a64363da58012880de2b5b8751eb86dc6c48260cbde0371642a58",
+          "race_restricted": false,
+          "ids": [
+            12662
+          ]
+        }
+      ]
+    },
+    "8971": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "FurSarong",
+          "parent": "BaseOuterLegs",
+          "file": "Projects/UOContent/Items/Clothing/OuterLegs.cs",
+          "sha256": "8379fa4cf3959e7aa1afab5bcc8623ebe21ce1c8dbfaf9a6d2c46c94c3e03963",
+          "race_restricted": false,
+          "ids": [
+            8971,
+            8972
+          ]
+        }
+      ]
+    },
+    "8972": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "FurSarong",
+          "parent": "BaseOuterLegs",
+          "file": "Projects/UOContent/Items/Clothing/OuterLegs.cs",
+          "sha256": "8379fa4cf3959e7aa1afab5bcc8623ebe21ce1c8dbfaf9a6d2c46c94c3e03963",
+          "race_restricted": false,
+          "ids": [
+            8971,
+            8972
+          ]
+        }
+      ]
+    },
+    "10138": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "Hakama",
+          "parent": "BaseOuterLegs",
+          "file": "Projects/UOContent/Items/Clothing/OuterLegs.cs",
+          "sha256": "8379fa4cf3959e7aa1afab5bcc8623ebe21ce1c8dbfaf9a6d2c46c94c3e03963",
+          "race_restricted": false,
+          "ids": [
+            10138,
+            10213
+          ]
+        }
+      ]
+    },
+    "10213": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "Hakama",
+          "parent": "BaseOuterLegs",
+          "file": "Projects/UOContent/Items/Clothing/OuterLegs.cs",
+          "sha256": "8379fa4cf3959e7aa1afab5bcc8623ebe21ce1c8dbfaf9a6d2c46c94c3e03963",
+          "race_restricted": false,
+          "ids": [
+            10138,
+            10213
+          ]
+        }
+      ]
+    },
+    "9714": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 971
+    },
+    "9715": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 971
+    },
+    "7176": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "LeatherSkirt",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Armor/Leather/LeatherSkirt.cs",
+          "sha256": "a0b8898f16c202d3b04b777edcb015058b80973511596bc93a9fde85ba10b717",
+          "race_restricted": false,
+          "ids": [
+            7176,
+            7177
+          ]
+        }
+      ]
+    },
+    "7177": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "LeatherSkirt",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Armor/Leather/LeatherSkirt.cs",
+          "sha256": "a0b8898f16c202d3b04b777edcb015058b80973511596bc93a9fde85ba10b717",
+          "race_restricted": false,
+          "ids": [
+            7176,
+            7177
+          ]
+        }
+      ]
+    },
+    "10139": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "TattsukeHakama",
+          "parent": "BasePants",
+          "file": "Projects/UOContent/Items/Clothing/Pants.cs",
+          "sha256": "f072a1d4d009ff27153eeed8ef4688f858d4072c5bdd19911253700218b298a7",
+          "race_restricted": false,
+          "ids": [
+            10139,
+            10214
+          ]
+        }
+      ]
+    },
+    "10214": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "TattsukeHakama",
+          "parent": "BasePants",
+          "file": "Projects/UOContent/Items/Clothing/Pants.cs",
+          "sha256": "f072a1d4d009ff27153eeed8ef4688f858d4072c5bdd19911253700218b298a7",
+          "race_restricted": false,
+          "ids": [
+            10139,
+            10214
+          ]
+        }
+      ]
+    },
+    "7935": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "FancyDress",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            7935,
+            7936
+          ]
+        }
+      ]
+    },
+    "7936": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "FancyDress",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            7935,
+            7936
+          ]
+        }
+      ]
+    },
+    "9851": {
+      "basis": "counterpart of 0x1f00",
+      "classes": [
+        {
+          "class": "FancyDress",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            7935,
+            7936
+          ]
+        }
+      ]
+    },
+    "9852": {
+      "basis": "counterpart of 0x1f00",
+      "classes": [
+        {
+          "class": "FancyDress",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            7935,
+            7936
+          ]
+        }
+      ]
+    },
+    "9853": {
+      "basis": "counterpart of 0x1f00",
+      "classes": [
+        {
+          "class": "FancyDress",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            7935,
+            7936
+          ]
+        }
+      ]
+    },
+    "9854": {
+      "basis": "counterpart of 0x1f00",
+      "classes": [
+        {
+          "class": "FancyDress",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            7935,
+            7936
+          ]
+        }
+      ]
+    },
+    "7937": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "RewardDress",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            7937
+          ]
+        },
+        {
+          "class": "PlainDress",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            7937,
+            7938
+          ]
+        }
+      ]
+    },
+    "7938": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "PlainDress",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            7937,
+            7938
+          ]
+        }
+      ]
+    },
+    "8973": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "GildedDress",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            8973,
+            8974
+          ]
+        }
+      ]
+    },
+    "8974": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "GildedDress",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            8973,
+            8974
+          ]
+        }
+      ]
+    },
+    "10140": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "HakamaShita",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            10140,
+            10215
+          ]
+        }
+      ]
+    },
+    "10215": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "HakamaShita",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            10140,
+            10215
+          ]
+        }
+      ]
+    },
+    "10114": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "MaleKimono",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            10114,
+            10189
+          ]
+        }
+      ]
+    },
+    "10189": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "MaleKimono",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            10114,
+            10189
+          ]
+        }
+      ]
+    },
+    "10115": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "FemaleKimono",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            10115,
+            10190
+          ]
+        }
+      ]
+    },
+    "10190": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "FemaleKimono",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            10115,
+            10190
+          ]
+        }
+      ]
+    },
+    "10137": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "Kamishimo",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            10137,
+            10212
+          ]
+        }
+      ]
+    },
+    "10212": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "Kamishimo",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            10137,
+            10212
+          ]
+        }
+      ]
+    },
+    "12217": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "MaleElvenRobe",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            12217,
+            12659
+          ]
+        }
+      ]
+    },
+    "12659": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "MaleElvenRobe",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            12217,
+            12659
+          ]
+        }
+      ]
+    },
+    "9902": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "Robe",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            7939,
+            7940,
+            9902
+          ]
+        }
+      ]
+    },
+    "9708": {
+      "basis": "counterpart of 0x1f03",
+      "classes": [
+        {
+          "class": "RewardRobe",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            7939
+          ]
+        },
+        {
+          "class": "Robe",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            7939,
+            7940,
+            9902
+          ]
+        },
+        {
+          "class": "RobeOfTheEclipse",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Minor Artifacts/ML/RobeOfTheEclipse.cs",
+          "sha256": "4133c88e6e9be566f0914c19c1ad6e3d01e130051b6a59f69c311d4fa6c7ad38",
+          "race_restricted": false,
+          "ids": [
+            1158,
+            7939,
+            7940
+          ]
+        },
+        {
+          "class": "RobeOfTheEquinox",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Minor Artifacts/ML/RobeOfTheEquinox.cs",
+          "sha256": "73bbbc450bb79c7da36469d053074b66b35e24f72cf5a74ac9a3f8ab8defd591",
+          "race_restricted": false,
+          "ids": [
+            214,
+            7939,
+            7940
+          ]
+        }
+      ]
+    },
+    "9709": {
+      "basis": "counterpart of 0x1f03",
+      "classes": [
+        {
+          "class": "RewardRobe",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            7939
+          ]
+        },
+        {
+          "class": "Robe",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Clothing/OuterTorso.cs",
+          "sha256": "64d319c82c44ba4b06a32fca716abfeb78cb2b1cef501753261ce16de0394045",
+          "race_restricted": false,
+          "ids": [
+            7939,
+            7940,
+            9902
+          ]
+        },
+        {
+          "class": "RobeOfTheEclipse",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Minor Artifacts/ML/RobeOfTheEclipse.cs",
+          "sha256": "4133c88e6e9be566f0914c19c1ad6e3d01e130051b6a59f69c311d4fa6c7ad38",
+          "race_restricted": false,
+          "ids": [
+            1158,
+            7939,
+            7940
+          ]
+        },
+        {
+          "class": "RobeOfTheEquinox",
+          "parent": "BaseOuterTorso",
+          "file": "Projects/UOContent/Items/Minor Artifacts/ML/RobeOfTheEquinox.cs",
+          "sha256": "73bbbc450bb79c7da36469d053074b66b35e24f72cf5a74ac9a3f8ab8defd591",
+          "race_restricted": false,
+          "ids": [
+            214,
+            7939,
+            7940
+          ]
+        }
+      ]
+    },
+    "8271": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "AdminRobe",
+          "parent": "BaseSuit",
+          "file": "Projects/UOContent/Items/Suits/AdminRobe.cs",
+          "sha256": "040454154d3c22613d89b7aa92a0ce09ecf1b25e5de655e4854edd5d2567f709",
+          "race_restricted": false,
+          "ids": [
+            0,
+            8271
+          ]
+        },
+        {
+          "class": "CounselorRobe",
+          "parent": "BaseSuit",
+          "file": "Projects/UOContent/Items/Suits/CounselorRobe.cs",
+          "sha256": "ae7d1215a80848bc6b20421c2ae56970a9e1d935765d94f103a09a3796429db8",
+          "race_restricted": false,
+          "ids": [
+            3,
+            8271
+          ]
+        },
+        {
+          "class": "GMRobe",
+          "parent": "BaseSuit",
+          "file": "Projects/UOContent/Items/Suits/GMRobe.cs",
+          "sha256": "02bfbbacebe71a56b4bb25cd4d626ca3b4114c627f1914967348ea825ca75ad1",
+          "race_restricted": false,
+          "ids": [
+            38,
+            8271
+          ]
+        },
+        {
+          "class": "SeerRobe",
+          "parent": "BaseSuit",
+          "file": "Projects/UOContent/Items/Suits/SeerRobe.cs",
+          "sha256": "822f9035bdce34d11207468aea11f1ed21bcbf593d7494a17c8f30b3df6e2851",
+          "race_restricted": false,
+          "ids": [
+            467,
+            8271
+          ]
+        }
+      ]
+    },
+    "8258": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "LordBritishSuit",
+          "parent": "BaseSuit",
+          "file": "Projects/UOContent/Items/Suits/LordBritishSuit.cs",
+          "sha256": "764d1adfc05551c60fcede0bf3e746a44d3d4cd3fca62a94a6233a40ae7b85e3",
+          "race_restricted": false,
+          "ids": [
+            0,
+            8258
+          ]
+        }
+      ]
+    },
+    "8259": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "LordBlackthorneSuit",
+          "parent": "BaseSuit",
+          "file": "Projects/UOContent/Items/Suits/LordBlackthorneSuit.cs",
+          "sha256": "5c4118fd2ccf0ed693ff376654c39a47e24c8047503c324c2470532428478052",
+          "race_restricted": false,
+          "ids": [
+            0,
+            8259
+          ]
+        }
+      ]
+    },
+    "8272": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "DupreSuit",
+          "parent": "BaseSuit",
+          "file": "Projects/UOContent/Items/Suits/DupreSuit.cs",
+          "sha256": "f8e8dbec6283808cfe74d570fd3fd55e61a8b6d7f73338c12942471f73104d53",
+          "race_restricted": false,
+          "ids": [
+            0,
+            8272
+          ]
+        }
+      ]
+    },
+    "8967": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "FurBoots",
+          "parent": "BaseShoes",
+          "file": "Projects/UOContent/Items/Clothing/Shoes.cs",
+          "sha256": "608490f5d940b94bcdf2c67a8daa9c5ccf5eac2f6bd013ecd8e19957f5c997fa",
+          "race_restricted": false,
+          "ids": [
+            8967,
+            8968
+          ]
+        }
+      ]
+    },
+    "8968": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "FurBoots",
+          "parent": "BaseShoes",
+          "file": "Projects/UOContent/Items/Clothing/Shoes.cs",
+          "sha256": "608490f5d940b94bcdf2c67a8daa9c5ccf5eac2f6bd013ecd8e19957f5c997fa",
+          "race_restricted": false,
+          "ids": [
+            8967,
+            8968
+          ]
+        }
+      ]
+    },
+    "9903": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "ThighBoots",
+          "parent": "BaseShoes",
+          "file": "Projects/UOContent/Items/Clothing/Shoes.cs",
+          "sha256": "608490f5d940b94bcdf2c67a8daa9c5ccf5eac2f6bd013ecd8e19957f5c997fa",
+          "race_restricted": false,
+          "ids": [
+            5905,
+            9903
+          ]
+        }
+      ]
+    },
+    "10134": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "SamuraiTabi",
+          "parent": "BaseShoes",
+          "file": "Projects/UOContent/Items/Clothing/Shoes.cs",
+          "sha256": "608490f5d940b94bcdf2c67a8daa9c5ccf5eac2f6bd013ecd8e19957f5c997fa",
+          "race_restricted": false,
+          "ids": [
+            10134,
+            10209
+          ]
+        },
+        {
+          "class": "Waraji",
+          "parent": "BaseShoes",
+          "file": "Projects/UOContent/Items/Clothing/Shoes.cs",
+          "sha256": "608490f5d940b94bcdf2c67a8daa9c5ccf5eac2f6bd013ecd8e19957f5c997fa",
+          "race_restricted": false,
+          "ids": [
+            10134,
+            10209
+          ]
+        }
+      ]
+    },
+    "10209": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "SamuraiTabi",
+          "parent": "BaseShoes",
+          "file": "Projects/UOContent/Items/Clothing/Shoes.cs",
+          "sha256": "608490f5d940b94bcdf2c67a8daa9c5ccf5eac2f6bd013ecd8e19957f5c997fa",
+          "race_restricted": false,
+          "ids": [
+            10134,
+            10209
+          ]
+        },
+        {
+          "class": "Waraji",
+          "parent": "BaseShoes",
+          "file": "Projects/UOContent/Items/Clothing/Shoes.cs",
+          "sha256": "608490f5d940b94bcdf2c67a8daa9c5ccf5eac2f6bd013ecd8e19957f5c997fa",
+          "race_restricted": false,
+          "ids": [
+            10134,
+            10209
+          ]
+        }
+      ]
+    },
+    "10135": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "NinjaTabi",
+          "parent": "BaseShoes",
+          "file": "Projects/UOContent/Items/Clothing/Shoes.cs",
+          "sha256": "608490f5d940b94bcdf2c67a8daa9c5ccf5eac2f6bd013ecd8e19957f5c997fa",
+          "race_restricted": false,
+          "ids": [
+            10135,
+            10210
+          ]
+        }
+      ]
+    },
+    "10210": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "NinjaTabi",
+          "parent": "BaseShoes",
+          "file": "Projects/UOContent/Items/Clothing/Shoes.cs",
+          "sha256": "608490f5d940b94bcdf2c67a8daa9c5ccf5eac2f6bd013ecd8e19957f5c997fa",
+          "race_restricted": false,
+          "ids": [
+            10135,
+            10210
+          ]
+        }
+      ]
+    },
+    "9068": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "SamuraiHelm",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Special/Gifts/SamuraiHelm.cs",
+          "sha256": "ec0ef0d682f0a9e10464db6d35c7f201a5820f793aad22ff636e21b42f5cc344",
+          "race_restricted": false,
+          "ids": [
+            9068,
+            9069
+          ]
+        }
+      ]
+    },
+    "9069": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "SamuraiHelm",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Special/Gifts/SamuraiHelm.cs",
+          "sha256": "ec0ef0d682f0a9e10464db6d35c7f201a5820f793aad22ff636e21b42f5cc344",
+          "race_restricted": false,
+          "ids": [
+            9068,
+            9069
+          ]
+        }
+      ]
+    },
+    "9869": {
+      "basis": "counterpart of 0x236d",
+      "classes": [
+        {
+          "class": "SamuraiHelm",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Special/Gifts/SamuraiHelm.cs",
+          "sha256": "ec0ef0d682f0a9e10464db6d35c7f201a5820f793aad22ff636e21b42f5cc344",
+          "race_restricted": false,
+          "ids": [
+            9068,
+            9069
+          ]
+        }
+      ]
+    },
+    "9870": {
+      "basis": "counterpart of 0x236d",
+      "classes": [
+        {
+          "class": "SamuraiHelm",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Special/Gifts/SamuraiHelm.cs",
+          "sha256": "ec0ef0d682f0a9e10464db6d35c7f201a5820f793aad22ff636e21b42f5cc344",
+          "race_restricted": false,
+          "ids": [
+            9068,
+            9069
+          ]
+        }
+      ]
+    },
+    "9873": {
+      "basis": "counterpart of 0x1dba",
+      "classes": [
+        {
+          "class": "LeatherCap",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Armor/Helmets/LeatherCap.cs",
+          "sha256": "aaad135d455d75462c6efcae5240f27864ebc4ad19bb94e080b4acbcf0e911ac",
+          "race_restricted": false,
+          "ids": [
+            7609,
+            7610
+          ]
+        }
+      ]
+    },
+    "9874": {
+      "basis": "counterpart of 0x1dba",
+      "classes": [
+        {
+          "class": "LeatherCap",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Armor/Helmets/LeatherCap.cs",
+          "sha256": "aaad135d455d75462c6efcae5240f27864ebc4ad19bb94e080b4acbcf0e911ac",
+          "race_restricted": false,
+          "ids": [
+            7609,
+            7610
+          ]
+        }
+      ]
+    },
+    "11024": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "SpiritualityHelm",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Armor/Sets/SpiritualityHelm.cs",
+          "sha256": "cf3a4bdecbc59c41642241067863b7dfb92e935e1ba0c06b7f21c352eb597fca",
+          "race_restricted": false,
+          "ids": [
+            11024,
+            11025
+          ]
+        }
+      ]
+    },
+    "11025": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "SpiritualityHelm",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Armor/Sets/SpiritualityHelm.cs",
+          "sha256": "cf3a4bdecbc59c41642241067863b7dfb92e935e1ba0c06b7f21c352eb597fca",
+          "race_restricted": false,
+          "ids": [
+            11024,
+            11025
+          ]
+        }
+      ]
+    },
+    "12216": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "ElvenGlasses",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Armor/Glasses/ElvenGlasses.cs",
+          "sha256": "63ab3d28ad5b893afeff9520cfec4654fa4dd5965e37e4d9f9827474cfaf0454",
+          "race_restricted": false,
+          "ids": [
+            12216
+          ]
+        }
+      ]
+    },
+    "10105": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "PlateMempo",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Armor/Plate/PlateMempo.cs",
+          "sha256": "a8a574b0ad26e65e84ab34cd9ecab6f7e1494746d7739a87b425935005afbbdd",
+          "race_restricted": false,
+          "ids": [
+            10105
+          ]
+        }
+      ]
+    },
+    "10180": {
+      "basis": "counterpart of 0x2779",
+      "classes": [
+        {
+          "class": "PlateMempo",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Armor/Plate/PlateMempo.cs",
+          "sha256": "a8a574b0ad26e65e84ab34cd9ecab6f7e1494746d7739a87b425935005afbbdd",
+          "race_restricted": false,
+          "ids": [
+            10105
+          ]
+        }
+      ]
+    },
+    "10106": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "LeatherMempo",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Armor/Leather/LeatherMempo.cs",
+          "sha256": "6a78324ae32f80e69a2535de690d11ba2034bb6c1b1b49a7f669daad3f9ca4fb",
+          "race_restricted": false,
+          "ids": [
+            10106
+          ]
+        }
+      ]
+    },
+    "10181": {
+      "basis": "counterpart of 0x277a",
+      "classes": [
+        {
+          "class": "LeatherMempo",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Armor/Leather/LeatherMempo.cs",
+          "sha256": "6a78324ae32f80e69a2535de690d11ba2034bb6c1b1b49a7f669daad3f9ca4fb",
+          "race_restricted": false,
+          "ids": [
+            10106
+          ]
+        }
+      ]
+    },
+    "10141": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "StuddedMempo",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Armor/Studded/StuddedMempo.cs",
+          "sha256": "ffd54e13448f1d14a47a6dab03430a4f84b230886f848296f35c5c46949fb53f",
+          "race_restricted": false,
+          "ids": [
+            10141
+          ]
+        }
+      ]
+    },
+    "10216": {
+      "basis": "counterpart of 0x279d",
+      "classes": [
+        {
+          "class": "StuddedMempo",
+          "parent": "BaseArmor",
+          "file": "Projects/UOContent/Items/Armor/Studded/StuddedMempo.cs",
+          "sha256": "ffd54e13448f1d14a47a6dab03430a4f84b230886f848296f35c5c46949fb53f",
+          "race_restricted": false,
+          "ids": [
+            10141
+          ]
+        }
+      ]
+    },
+    "10128": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "LeatherNinjaBelt",
+          "parent": "BaseWaist",
+          "file": "Projects/UOContent/Items/Skill Items/Ninjitsu/LeatherNinjaBelt.cs",
+          "sha256": "3ed84dc70e30ba6d90e90bf32248001df3721df089d26dea0f6f2806f5f8f3d9",
+          "race_restricted": false,
+          "ids": [
+            10128,
+            10203
+          ]
+        }
+      ]
+    },
+    "10203": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "LeatherNinjaBelt",
+          "parent": "BaseWaist",
+          "file": "Projects/UOContent/Items/Skill Items/Ninjitsu/LeatherNinjaBelt.cs",
+          "sha256": "3ed84dc70e30ba6d90e90bf32248001df3721df089d26dea0f6f2806f5f8f3d9",
+          "race_restricted": false,
+          "ids": [
+            10128,
+            10203
+          ]
+        }
+      ]
+    },
+    "44805": {
+      "basis": "counterpart of 0x2790",
+      "classes": [
+        {
+          "class": "LeatherNinjaBelt",
+          "parent": "BaseWaist",
+          "file": "Projects/UOContent/Items/Skill Items/Ninjitsu/LeatherNinjaBelt.cs",
+          "sha256": "3ed84dc70e30ba6d90e90bf32248001df3721df089d26dea0f6f2806f5f8f3d9",
+          "race_restricted": false,
+          "ids": [
+            10128,
+            10203
+          ]
+        }
+      ]
+    },
+    "10144": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "Obi",
+          "parent": "BaseWaist",
+          "file": "Projects/UOContent/Items/Clothing/Waist.cs",
+          "sha256": "056bcabd474c1597edbd594e8aee70668f3d046fa3c7977782e79443d26aa479",
+          "race_restricted": false,
+          "ids": [
+            10144,
+            10219
+          ]
+        }
+      ]
+    },
+    "10219": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "Obi",
+          "parent": "BaseWaist",
+          "file": "Projects/UOContent/Items/Clothing/Waist.cs",
+          "sha256": "056bcabd474c1597edbd594e8aee70668f3d046fa3c7977782e79443d26aa479",
+          "race_restricted": false,
+          "ids": [
+            10144,
+            10219
+          ]
+        }
+      ]
+    },
+    "12215": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "ElvenQuiver",
+          "parent": "BaseQuiver",
+          "file": "Projects/UOContent/Items/Quivers/ElvenQuiver.cs",
+          "sha256": "a7960e2863a05c4efb5297d7a4c363684c76b7396bb51027f34f77a23cd7825f",
+          "race_restricted": false,
+          "ids": [
+            12215,
+            12657
+          ]
+        }
+      ]
+    },
+    "12657": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "ElvenQuiver",
+          "parent": "BaseQuiver",
+          "file": "Projects/UOContent/Items/Quivers/ElvenQuiver.cs",
+          "sha256": "a7960e2863a05c4efb5297d7a4c363684c76b7396bb51027f34f77a23cd7825f",
+          "race_restricted": false,
+          "ids": [
+            12215,
+            12657
+          ]
+        }
+      ]
+    },
+    "11010": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "QuiverOfInfinity",
+          "parent": "BaseQuiver",
+          "file": "Projects/UOContent/Items/Special/8th Anniversary Items/QuiverOfInfinity.cs",
+          "sha256": "a2d30799056e6062a0384124f72ded45ac07ce727c0eda26e86048e155dd72f8",
+          "race_restricted": false,
+          "ids": [
+            11010
+          ]
+        }
+      ]
+    },
+    "11011": {
+      "basis": "counterpart of 0x2b02",
+      "classes": [
+        {
+          "class": "QuiverOfInfinity",
+          "parent": "BaseQuiver",
+          "file": "Projects/UOContent/Items/Special/8th Anniversary Items/QuiverOfInfinity.cs",
+          "sha256": "a2d30799056e6062a0384124f72ded45ac07ce727c0eda26e86048e155dd72f8",
+          "race_restricted": false,
+          "ids": [
+            11010
+          ]
+        }
+      ]
+    },
+    "12120": {
+      "basis": "native property/table literal",
+      "classes": [
+        {
+          "class": "BaseTalisman",
+          "file": "Projects/UOContent/Items/Talismans/BaseTalisman.cs",
+          "sha256": "24757c0eddfd1f8653defd40bb38b96162eb3c348d18a66fdc4e2faccecf7117",
+          "ids": [
+            12120
+          ],
+          "expression": "_itemIDs",
+          "race_restricted": false
+        }
+      ]
+    },
+    "12121": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "BaseFormTalisman",
+          "parent": "Item",
+          "file": "Projects/UOContent/Items/Special/8th Anniversary Items/Talismans.cs",
+          "sha256": "5d9c4d4f8a692e0782a4ce0795f2c689402a44b95d3095fc616c5d7e61998621",
+          "race_restricted": false,
+          "ids": [
+            12121
+          ]
+        }
+      ]
+    },
+    "12122": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "BloodwoodSpirit",
+          "parent": "BaseTalisman",
+          "file": "Projects/UOContent/Items/Minor Artifacts/ML/BloodwoodSpirit.cs",
+          "sha256": "016a1c93e1b80a53919d1cf83e5e7dbb05ff2eac700197a0a7faf65782f5ab1d",
+          "race_restricted": false,
+          "ids": [
+            12122
+          ]
+        }
+      ]
+    },
+    "12123": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "TotemOfVoid",
+          "parent": "BaseTalisman",
+          "file": "Projects/UOContent/Items/Minor Artifacts/ML/TotemOfVoid.cs",
+          "sha256": "b4da9cd6d444462804a90b058779c20a311df8a61e4a7b29f1e5aee2986dee85",
+          "race_restricted": false,
+          "ids": [
+            12123
+          ]
+        }
+      ]
+    },
+    "526": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "BoneMachete",
+          "parent": "ElvenMachete",
+          "file": "Projects/UOContent/Items/Weapons/Swords/BoneMachete.cs",
+          "sha256": "e25ddf7a5386a4e433a0baa9231abbefcc65ae947ce70f7e19c898fa6dfe0a1a",
+          "race_restricted": false,
+          "ids": [
+            526
+          ]
+        }
+      ]
+    },
+    "3907": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "Hatchet",
+          "parent": "BaseAxe",
+          "file": "Projects/UOContent/Items/Weapons/Axes/Hatchet.cs",
+          "sha256": "7648ed225950f02c7436a4ceba40d14b56f592545b68da82aae98a8bb0ebd1f5",
+          "race_restricted": false,
+          "ids": [
+            3907,
+            3908
+          ]
+        }
+      ]
+    },
+    "3908": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "Hatchet",
+          "parent": "BaseAxe",
+          "file": "Projects/UOContent/Items/Weapons/Axes/Hatchet.cs",
+          "sha256": "7648ed225950f02c7436a4ceba40d14b56f592545b68da82aae98a8bb0ebd1f5",
+          "race_restricted": false,
+          "ids": [
+            3907,
+            3908
+          ]
+        }
+      ]
+    },
+    "9921": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "CrescentBlade",
+          "parent": "BaseSword",
+          "file": "Projects/UOContent/Items/Weapons/Swords/CrescentBlade.cs",
+          "sha256": "d8202a7e1710462d522b2d2de94379cae98918e8fd9a46f8d52b0e84fbbfb27b",
+          "race_restricted": false,
+          "ids": [
+            9921,
+            9931
+          ]
+        }
+      ]
+    },
+    "9931": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "CrescentBlade",
+          "parent": "BaseSword",
+          "file": "Projects/UOContent/Items/Weapons/Swords/CrescentBlade.cs",
+          "sha256": "d8202a7e1710462d522b2d2de94379cae98918e8fd9a46f8d52b0e84fbbfb27b",
+          "race_restricted": false,
+          "ids": [
+            9921,
+            9931
+          ]
+        }
+      ]
+    },
+    "11009": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "DupresShield",
+          "parent": "BaseShield",
+          "file": "Projects/UOContent/Items/Special/8th Anniversary Items/DupresShield.cs",
+          "sha256": "0b4d2ede3f56a2f2f222fcb1b44bbed3b3cb649c7193d58b8fb24f66667b512d",
+          "race_restricted": false,
+          "ids": [
+            11009
+          ]
+        }
+      ]
+    },
+    "2600": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "Candle",
+          "parent": "BaseEquipableLight",
+          "file": "Projects/UOContent/Items/Lights/Candle.cs",
+          "sha256": "51a76eac4a9661f73d92dad72429ac75e76206914cf62cdca9676c9cf007936f",
+          "race_restricted": false,
+          "ids": [
+            2600
+          ]
+        }
+      ]
+    },
+    "2575": {
+      "basis": "native property/table literal",
+      "classes": [
+        {
+          "class": "Candle",
+          "file": "Projects/UOContent/Items/Lights/Candle.cs",
+          "sha256": "51a76eac4a9661f73d92dad72429ac75e76206914cf62cdca9676c9cf007936f",
+          "ids": [
+            2575
+          ],
+          "expression": "LitItemID",
+          "race_restricted": false
+        }
+      ]
+    },
+    "2576": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 502
+    },
+    "2577": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 502
+    },
+    "3947": {
+      "basis": "literal",
+      "classes": [
+        {
+          "class": "Torch",
+          "parent": "BaseEquipableLight",
+          "file": "Projects/UOContent/Items/Lights/Torch.cs",
+          "sha256": "dfcdbd1e432391c294ee19e758a89f59f029fd89f5d9a649734bb1ceae4db736",
+          "race_restricted": false,
+          "ids": [
+            3947
+          ]
+        }
+      ]
+    },
+    "3940": {
+      "basis": "counterpart of 0xf6b",
+      "classes": [
+        {
+          "class": "Torch",
+          "parent": "BaseEquipableLight",
+          "file": "Projects/UOContent/Items/Lights/Torch.cs",
+          "sha256": "dfcdbd1e432391c294ee19e758a89f59f029fd89f5d9a649734bb1ceae4db736",
+          "race_restricted": false,
+          "ids": [
+            3947
+          ]
+        }
+      ]
+    },
+    "2578": {
+      "basis": "native property/table literal",
+      "classes": [
+        {
+          "class": "Torch",
+          "file": "Projects/UOContent/Items/Lights/Torch.cs",
+          "sha256": "dfcdbd1e432391c294ee19e758a89f59f029fd89f5d9a649734bb1ceae4db736",
+          "ids": [
+            2578
+          ],
+          "expression": "LitItemID",
+          "race_restricted": false
+        }
+      ]
+    },
+    "2579": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 501
+    },
+    "2580": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 501
+    },
+    "2582": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 500
+    },
+    "2595": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 500
+    },
+    "2596": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 500
+    },
+    "30746": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1269
+    },
+    "40697": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1412
+    },
+    "40698": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1412
+    },
+    "40775": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1430
+    },
+    "40776": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1430
+    },
+    "41615": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1500
+    },
+    "41616": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1500
+    },
+    "41962": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1513
+    },
+    "42000": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1518
+    },
+    "42001": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1520
+    },
+    "30765": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1306
+    },
+    "19357": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1249
+    },
+    "19358": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1249
+    },
+    "30742": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1261
+    },
+    "30750": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1278
+    },
+    "30753": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1284
+    },
+    "40687": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1411
+    },
+    "40688": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1411
+    },
+    "41131": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1435
+    },
+    "41132": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1437
+    },
+    "41133": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1439
+    },
+    "41134": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1443
+    },
+    "41135": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1445
+    },
+    "42002": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1522
+    },
+    "40695": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1414
+    },
+    "40696": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1414
+    },
+    "30756": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1297
+    },
+    "30764": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1305
+    },
+    "30758": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1299
+    },
+    "30759": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1300
+    },
+    "30747": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1271
+    },
+    "30748": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1273
+    },
+    "30749": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1275
+    },
+    "30754": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1295
+    },
+    "30755": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1296
+    },
+    "30762": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1303
+    },
+    "30763": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1304
+    },
+    "30766": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1307
+    },
+    "30761": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1302
+    },
+    "41613": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1498
+    },
+    "41614": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1498
+    },
+    "41462": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 514
+    },
+    "41996": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1517
+    },
+    "41997": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1519
+    },
+    "41998": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1521
+    },
+    "42978": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1565
+    },
+    "41999": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1516
+    },
+    "30743": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1263
+    },
+    "30744": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1265
+    },
+    "42569": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1529
+    },
+    "42570": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1529
+    },
+    "43057": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1571
+    },
+    "43058": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1571
+    },
+    "41793": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 618
+    },
+    "41794": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 618
+    },
+    "41795": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 628
+    },
+    "41796": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 628
+    },
+    "41995": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1515
+    },
+    "44845": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1515
+    },
+    "42855": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1543
+    },
+    "42856": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1543
+    },
+    "42866": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1550
+    },
+    "42947": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1554
+    },
+    "42948": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1555
+    },
+    "16638": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 503
+    },
+    "16639": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 503
+    },
+    "16640": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 503
+    },
+    "16641": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 503
+    },
+    "42857": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1544
+    },
+    "42858": {
+      "basis": "curated client human equipment; no active class/eligibility claim",
+      "animation_reference": 1545
+    }
+  },
+  "construction": "Fitted clothing/armour derivatives retain topology and named weights; separate existing split riding sources for long garments. Original headwear, masks, belts, charms, quiver and rigid props. Category coverage is not exact design or individual combat choreography."
+}

@@ -24,6 +24,8 @@ func _initialize() -> void:
 				var asset: String=str(extra[1])
 				var path: String="res://local-art/free-equipment"+suffix+"/"+(asset if asset.begins_with("coverage/") else "expansion/"+asset)+".glb"
 				covered=covered and ResourceLoader.exists(path)
+				if bool(Wardrobe.Coverage.RIDING_VARIANTS.get(asset,false)):
+					covered=covered and ResourceLoader.exists("res://local-art/free-equipment"+suffix+"/"+asset+"_riding.glb")
 				if str(extra[0]) in ["torso","arms","gorget"]:
 					covered=covered and ResourceLoader.exists("res://local-art/free-equipment"+suffix+"/coverage/armour_undercoat.glb")
 		if covered: mapped+=1

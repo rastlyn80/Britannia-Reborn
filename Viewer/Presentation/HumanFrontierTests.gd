@@ -1,10 +1,15 @@
 extends "res://Presentation/HumanTailoringTests.gd"
 ## Finite native appearance and actual completed GPU frames for every new model.
+var batch_kind:="expansion35"
+var output_folder:="human-frontier"
 func definitions() -> Array:
 	var data: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../scripts/human-coverage-recipes.json"))
-	return data.assets.filter(func(row: Dictionary):return row.kind=="expansion35")
+	var selected:=""
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--item="):selected=arg.substr(7)
+	return data.assets.filter(func(row: Dictionary):return row.kind==batch_kind and (selected.is_empty() or row.key==selected))
 func run() -> void:
-	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://../outputs/human-frontier"))
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://../outputs/"+output_folder))
 	viewport=SubViewport.new();viewport.size=Vector2i(256,256);viewport.own_world_3d=true;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;root.add_child(viewport)
 	var environment:=WorldEnvironment.new();environment.environment=Environment.new();environment.environment.background_mode=Environment.BG_COLOR;environment.environment.background_color=Color.BLACK;viewport.add_child(environment)
 	camera=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;viewport.add_child(camera)
@@ -50,7 +55,7 @@ func run() -> void:
 				for mesh: MeshInstance3D in meshes:states[mesh]={"visible":mesh.visible,"material":mesh.material_override}
 				for motion in ["Walk","Run"]:
 					for phase in [.23,.62]:
-						human.cancel_action();human.play("Rider_"+motion if mounted else motion,0.);human.animator.seek(human.animator.current_animation_length*phase,true);human.animator.pause()
+						human.cancel_action();human.play("Rider_"+motion if mounted else human.stance_clip(motion),0.);human.animator.seek(human.animator.current_animation_length*phase,true);human.animator.pause()
 						if mounted:actor.horse_visual.animator.play("walk" if motion=="Walk" else "canter",0.);actor.horse_visual.animator.seek(actor.horse_visual.animator.current_animation_length*phase,true);actor.horse_visual.animator.pause()
 						for angle in [0,90,180,270]:
 							actor.rotation_degrees.y=angle;camera.size=3.4 if row.slot=="weapon" else 2.25
@@ -68,19 +73,19 @@ func run() -> void:
 								var i:=pixel*4
 								if green(a,i):expected+=1;missing+=0 if green(b,i) else 1
 							var fraction:=1.-float(missing)/maxi(1,expected);var passed:=expected<12 or missing<=4 or fraction>=.98
-							samples.append({"female":female,"item":row.key,"mounted":mounted,"motion":motion,"phase":phase,"angle":angle,"reference_pixels":expected,"occluded_pixels":missing,"visible_fraction":fraction,"passed":passed})
+							samples.append({"female":female,"item":row.key,"mounted":mounted,"motion":motion,"clip":human.animator.current_animation,"phase":phase,"angle":angle,"reference_pixels":expected,"occluded_pixels":missing,"visible_fraction":fraction,"passed":passed})
 							check(passed,"Headwear retention "+str(samples[-1]))
-							if not passed and failures<12:clothed.save_png("res://../outputs/human-frontier/failure-%d.png"%failures)
+							if not passed and failures<12:clothed.save_png("res://../outputs/"+output_folder+"/failure-%d.png"%failures)
 							if mounted:check(actor.rider_contact.seat_error<=.002 and actor.rider_contact.stirrup_errors.all(func(error: float):return error<=.025),"Saddle/stirrups "+row.key)
 							if angle==0:
 								prop_poses.append({"female":female,"item":row.key,"mounted":mounted,"motion":motion,"phase":phase,"bones":posed.duplicate(true)})
-								if row.slot=="weapon":
-									var side: String="l" if row.get("stance","")=="bow" else "r"
+								if row.slot in ["weapon","shield"]:
+									var side: String="l" if row.slot=="shield" or row.get("stance","")=="bow" else "r"
 									check(folded.has(side) and folded[side].all(func(ratio: float):return ratio<.83),"Actual closed holding fingers "+row.key)
 				for mesh: MeshInstance3D in meshes:mesh.visible=states[mesh].visible;mesh.material_override=states[mesh].material
 				if mounted:actor.rider_contact.modification_processed.disconnect(watcher)
 				print("FRONTIER GPU ",female," mounted=",mounted," ",row.key)
 			actor.free()
-	var file:=FileAccess.open("res://../outputs/human-frontier/gpu-validation.json",FileAccess.WRITE);file.store_string(JSON.stringify({"checks":checks,"failures":failures,"samples":samples,"scope":"Every new model on both bodies, Walk/Run and actual seated horse poses, two phases/four angles. Every new indexed ID tested with default/full/partial native hues in each body/mount state. Headwear >=98% retention (or <=4 raster pixels) against full-body reference. Props retain legitimate body/sleeve/horse occluders in both images; images establish rendered presence, not a collision proof. Exact preserved armour backing is checked independently. Actual grips and saddle/stirrup contacts. Finite samples; no live world-entry claim."},"\t"));file.close()
-	file=FileAccess.open("res://../outputs/human-frontier/poses.json",FileAccess.WRITE);file.store_string(JSON.stringify({"poses":prop_poses}));file.close()
+	var file:=FileAccess.open("res://../outputs/"+output_folder+"/gpu-validation.json",FileAccess.WRITE);file.store_string(JSON.stringify({"checks":checks,"failures":failures,"samples":samples,"scope":"Every new model on both bodies, Walk/Run and actual seated horse poses, two phases/four angles. Every new indexed ID tested with default/full/partial native hues in each body/mount state. Headwear >=98% retention (or <=4 raster pixels) against full-body reference. Props retain legitimate body/sleeve/horse occluders in both images; images establish rendered presence, not a collision proof. Exact preserved armour backing is checked independently. Actual grips and saddle/stirrup contacts. Finite samples; no live world-entry claim."},"\t"));file.close()
+	file=FileAccess.open("res://../outputs/"+output_folder+"/poses.json",FileAccess.WRITE);file.store_string(JSON.stringify({"poses":prop_poses}));file.close()
 	print("HUMAN FRONTIER: ",checks," checks, ",samples.size()," views, ",failures," failures");quit(1 if failures else 0)

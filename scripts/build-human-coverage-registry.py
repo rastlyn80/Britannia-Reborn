@@ -15,13 +15,25 @@ def build():
  lines+=['}','const HELD_FAMILIES := {']
  for row in rows:
   if 'held_family' in row:lines.append('\t"coverage/%s":"%s",'%(row['key'],row['held_family']))
- lines+=['\t"coverage/spellbook":"book",','}','const HAIR_FITS := {']
+ lines+=['\t"coverage/spellbook":"book",','\t"coverage/lantern":"lantern",','}','const HAIR_FITS := {']
  for row in rows:
   if 'hair_fit' in row:lines.append('\t"coverage/%s":"%s",'%(row['key'],row['hair_fit']))
  lines+=['\t"coverage/chain_coif":"coif",','}','const BOOT_FITS := {']
  for row in rows:
   if 'boot_fit' in row:lines.append('\t"coverage/%s":"%s",'%(row['key'],row['boot_fit']))
- lines+=['\t"coverage/plate_legs":"armour",','}','']
+ lines+=['\t"coverage/plate_legs":"armour",','}','const BODY_FLAGS := {']
+ for row in rows:
+  if 'body_flags' in row:lines.append('\t"coverage/%s":%d,'%(row['key'],row['body_flags']))
+ lines+=['}','const FULL_FACE := {']
+ for row in rows:
+  if row.get('full_face'):lines.append('\t"coverage/%s":true,'%row['key'])
+ lines+=['}','const FOOT_MASKS := {']
+ for row in rows:
+  if row.get('foot_mask'):lines.append('\t"coverage/%s":%d,'%(row['key'],row['foot_mask']))
+ lines+=['}','const RIDING_VARIANTS := {']
+ for row in rows:
+  if row.get('riding_base'):lines.append('\t"coverage/%s":true,'%row['key'])
+ lines+=['}','']
  (ROOT/'Viewer/Presentation/HumanCoverageWardrobe.gd').write_text('\n'.join(lines))
  print('HUMAN CATEGORY REGISTRY:',len(rows),'assets,',len(seen),'native graphics')
 if __name__=='__main__':build()

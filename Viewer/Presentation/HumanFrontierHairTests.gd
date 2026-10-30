@@ -1,5 +1,7 @@
 extends SceneTree
 ## Tail visibility with depth testing on the actual two human/rider rigs.
+var batch_kind:="expansion35"
+var output_folder:="human-frontier"
 var viewport: SubViewport
 var failures:=0
 var samples: Array=[]
@@ -20,14 +22,16 @@ func run() -> void:
 	var black:=ShaderMaterial.new();black.shader=black_shader
 	var shader:=Shader.new();shader.code="shader_type spatial;render_mode unshaded,cull_disabled;uniform sampler2D source_texture;uniform bool has_texture;void fragment(){if(COLOR.r<.5 || (has_texture && texture(source_texture,UV).a<.35)){discard;} ALBEDO=vec3(1.,0.,0.);}"
 	var items: Dictionary={}
+	var item_slots: Dictionary={}
 	var selected:=""
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--item="):selected=arg.substr(7)
 	var data: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../scripts/human-coverage-recipes.json"))
 	for row: Dictionary in data.assets:
-		if row.kind!="expansion35":continue
+		if row.kind!=batch_kind:continue
 		if not selected.is_empty() and row.key!=selected:continue
-		if row.slot in ["head","torso","arms"]:items[row.key]=[int(row.graphics[0]),0]
+		if row.slot in ["head","torso","arms","outer","middle","outer_legs","cloak","waist","gorget"]:
+			items[row.key]=[int(row.graphics[0]),0];item_slots[row.key]=row.slot
 	for female in [false,true]:
 		for mounted in [false,true]:
 			var actor:=preload("res://Presentation/HumanAvatar.gd").new();actor.initial_body=401 if female else 400;viewport.add_child(actor);actor.set_process(false);actor.set_physics_process(false);actor.foot_contact.active=false
@@ -36,7 +40,7 @@ func run() -> void:
 				for key: String in items:
 					var item: Array=items[key]
 					var worn: Array=[{"id":0x1517,"layer":5},{"id":0x1539,"layer":4},{"id":hair,"layer":11,"hue":1147},{"id":int(item[0]),"hue":53}]
-					worn.append({"id":0x1515,"layer":20})
+					if item_slots[key]!="cloak":worn.append({"id":0x1515,"layer":20})
 					if mounted:worn.append({"id":0x3e9f,"layer":25})
 					actor.apply_server_appearance({"body":actor.initial_body,"hue":1002},worn)
 					if mounted:actor.rider_contact.mode="seated";actor.rider_contact.seated_weight=1.
@@ -75,5 +79,5 @@ func run() -> void:
 							samples.append({"female":female,"hair":hair,"item":key,"mounted":mounted,"motion":motion,"phase":phase,"reference":reference,"clothed":clothed,"visible_fraction":fraction,"passed":passed})
 							if not passed:failures+=1;push_error("Tail occluded "+str(samples[-1]))
 			actor.free()
-	var file:=FileAccess.open("res://../outputs/human-frontier/hair-validation.json",FileAccess.WRITE);file.store_string(JSON.stringify({"samples":samples,"failures":failures,"scope":"Both bodies, long hair and ponytail, every new headwear, torso and arm family with a cape, walking/running and actual horse rider poses at two independent phases. Rear depth-tested tails: draped vertices below neck+25 mm or posterior shaft behind z=-105 mm below head+95 mm in the fixed bind. >=98% retained compared with only the new garment hidden, complete body retained in both images. Scalp wisps intentionally covered by headwear; finite views, no strand simulation."},"\t"));file.close()
+	var file:=FileAccess.open("res://../outputs/"+output_folder+"/hair-validation.json",FileAccess.WRITE);file.store_string(JSON.stringify({"samples":samples,"failures":failures,"scope":"Both bodies, long hair and ponytail, every new headwear, torso and arm family with a cape, walking/running and actual horse rider poses at two independent phases. Rear depth-tested tails: draped vertices below neck+25 mm or posterior shaft behind z=-105 mm below head+95 mm in the fixed bind. >=98% retained compared with only the new garment hidden, complete body retained in both images. Scalp wisps intentionally covered by headwear; finite views, no strand simulation."},"\t"));file.close()
 	print("FRONTIER HAIR: ",samples.size()," views, ",failures," failures");quit(1 if failures else 0)
