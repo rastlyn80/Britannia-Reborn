@@ -116,5 +116,10 @@ func run() -> void:
 	runner.cast_started.emit(Catalog.spell("Heal"))
 	session.message_received.emit(session.labels.resolve(502625,"11"))
 	check("not enough mana" in cast.title.text,"too little mana is named")
+	# Voice chat: long speech goes out as several lines, split between words.
+	var Chat := preload("res://Network/VoiceChat.gd")
+	var long_lines: PackedStringArray = Chat.lines(" ".join(PackedStringArray(range(60).map(func(i): return "word%d" % i))))
+	check(long_lines.size() == 4 and Array(long_lines).all(func(line): return line.length() <= Chat.LINE and not line.begins_with(" ")),"long voice speech is split into talk-sized lines between words")
+	check(Chat.lines("Hail, friend!") == PackedStringArray(["Hail, friend!"]),"short voice speech is one line")
 	print("POLISH TESTS: %d checks / %d failures" % [checks,failures])
 	quit(1 if failures else 0)

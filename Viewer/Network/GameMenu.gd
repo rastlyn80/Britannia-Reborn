@@ -3,7 +3,7 @@ extends Control
 # and help, Developer, Log out and Quit. It replaces the old right-hand panel's
 # buttons; everything that panel did lives here or in the HUD.
 const Look = preload("res://Network/ModernSkin.gd")
-const KEYS := [["W A S D","Walk; hold Shift to run"],["Space","Hop"],["Right mouse","Look around"],["Wheel","Zoom"],["E","Use the nearest object"],["Click","Use or pick up what you click"],["1 – 0, - , =","Quickbar; hold Shift, Ctrl or Alt for other sets"],["C · B · K · P · J · M","Character, backpack, skills, spellbook, journal, map"],["Enter","Talk; /e emote, /w whisper, /y yell, /p party"],["`","Developer console"],["F6","Return to Britain (developer)"],["F7","Cycle the sky (view only)"],["F9","World editor (developer)"],["Esc","This menu"]]
+const KEYS := [["W A S D","Walk; hold Shift to run"],["Space","Hop"],["Right mouse","Look around"],["Wheel","Zoom"],["E","Use the nearest object"],["Click","Use or pick up what you click"],["1 – 0, - , =","Quickbar; hold Shift, Ctrl or Alt for other sets"],["C · B · K · P · J · M","Character, backpack, skills, spellbook, journal, map"],["Enter","Talk; /e emote, /w whisper, /y yell, /p party"],["V (hold)","Voice chat: speak, release to say it"],["`","Developer console"],["F6","Return to Britain (developer)"],["F7","Cycle the sky (view only)"],["F9","World editor (developer)"],["Esc","This menu"]]
 var scene: Node3D
 var card: PanelContainer
 var body: VBoxContainer
@@ -79,6 +79,7 @@ func _main() -> void:
 	_reset("Game menu")
 	_row("Resume","",close,true)
 	_row("Settings","graphics, controls, sky",_settings)
+	_row("Voice chat","hold V and speak · language, translation, microphone",_voice)
 	_row("Keys and help","",_keys)
 	_row("Developer","console, travel, world editor",_developer)
 	var pair := HBoxContainer.new()
@@ -169,6 +170,41 @@ func _settings() -> void:
 		scene.controller_enabled = enabled
 		preload("res://Network/Profile.gd").store("input","gamepad",enabled))
 	body.add_child(pad)
+	_back()
+
+# Voice chat settings (Network/VoiceChat.gd), saved per character.
+func _voice() -> void:
+	_reset("Voice chat")
+	var chat: Control = scene.voice_chat
+	if chat == null:
+		_back()
+		return
+	var Voice := preload("res://DevEdit/DevEditVoice.gd")
+	var engine: Dictionary = Voice.engine()
+	body.add_child(Look.label("Hold V (or click the microphone by the talk line) and speak; release to say it. Recognized on this computer: %s." % ("Whisper, %s" % str(engine.get("modelName","")) if not engine.is_empty() else "Windows speech recognition (run scripts/setup-speech.ps1 for offline Whisper in 99 languages)"),13,Look.ASH,500))
+	var options := [["Language you speak",Voice.LANGUAGES.map(func(entry): return entry[1]),Voice.LANGUAGES.map(func(entry): return entry[0]).find(chat.voice.language),func(index: int): chat.store("language",Voice.LANGUAGES[index][0])]]
+	var mics: Array = Array(chat.voice.devices())
+	options.append(["Microphone",mics,mics.find(chat.voice.device),func(index: int): chat.store("device",mics[index])])
+	for option in options:
+		var row := HBoxContainer.new()
+		row.add_theme_constant_override("separation",12)
+		var name := Look.label(option[0],14,Look.IVORY,500)
+		name.custom_minimum_size = Vector2(180,0)
+		row.add_child(name)
+		var pick := OptionButton.new()
+		for entry in option[1]: pick.add_item(str(entry))
+		pick.selected = maxi(0,int(option[2]))
+		pick.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		pick.item_selected.connect(option[3])
+		row.add_child(pick)
+		body.add_child(row)
+	for toggle in [["Speak English to others (Whisper translates)","translate",chat.voice.translate],["Review before sending (text goes to the talk line)","review",chat.review]]:
+		var check := CheckButton.new()
+		check.text = toggle[0]
+		check.button_pressed = toggle[2]
+		check.custom_minimum_size = Vector2(0,40)
+		check.toggled.connect(func(on: bool): chat.store(toggle[1],on))
+		body.add_child(check)
 	_back()
 
 func _keys() -> void:

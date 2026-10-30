@@ -259,6 +259,15 @@ The owner approved the plan on the design canvas: a front end with no map distri
     - Live against the local server, the shirt was taken off and worn again by dragging it from the backpack onto the model with real mouse input. The slot lit "Drop to wear · shirt" during the drag, and the server confirmed the equip.
     - Gain cards, the target ring, overhead bar, damage flash and cast states were captured live by driving the client's own signals.
     - A real cast against the server waits for the test kit's new `magic` option (spellbook and reagents), which loads at the next server restart.
+- **Voice chat by speech-to-text (2026-10-30, owner request; `Network/VoiceChat.gd`):**
+  - **How it works:** hold V, or click the microphone at the end of the talk line, and speak. On release your words are recognized on this computer and said in game as ordinary speech, so they show in the journal and over your head like typed lines.
+  - **Recognition:** local Whisper (whisper.cpp via `scripts/setup-speech.ps1`), falling back to Windows speech recognition. Recording reuses `DevEdit/DevEditVoice.gd`, which now takes its own settings file and clip name.
+  - **Long speech:** sent as several lines of up to 120 characters, split between words.
+  - **Settings:** Game menu › Voice chat, saved per character. The language you speak (auto or 17 listed), "Speak English to others" (Whisper translates), "Review before sending" (the text goes to the talk line), and the microphone.
+  - **Not included:** real voice relay (ModernUO carries no audio) and translation into languages other than English.
+  - **Evidence:**
+    - A 6.3 s spoken clip (Windows text-to-speech) went through the chat recognizer and came back from the live server as your own speech in 1.45 s: "Good evening, traveler. Would you join me at the inn for a drink?", over the head and in the journal.
+    - Unit checks for line splitting are in `PolishTests.gd` (24/0). `DevEditVoiceTests.gd` passes 5/0.
 - **Original idea:** any item (in the backpack, a container, the paperdoll, a vendor or trade window, or the world) can be opened in an inspect view, as in modern games. It shows the item's 3D model, lit, with drag to rotate and wheel to zoom, and its server tooltip lines (name, properties) beside it. It uses the same model as the world and the 3D icon renderer.
 - **Front end still to do:** deleting characters, profession and skill choice at creation, a server-status probe before sign-in, and remembered looks updating while you play (they are saved on entering and on logging out).
 - **Windows still to modernise:** a chat-channel window. Speaker names in the journal need the session to pass them on (0x1C/0xAE carry them; GameSession emits text only).

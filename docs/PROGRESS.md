@@ -1,3 +1,11 @@
+# Voice chat by speech-to-text — 30 October 2026
+
+Hold V (or the talk-line microphone) and speak. Local Whisper turns your speech into text, which is said in game as normal speech: it appears in the journal and over your head. Settings, per character: language, translate into English, review before sending, and microphone.
+
+Live evidence: a spoken clip went through the chat recognizer and came back from the server as your speech in 1.45 s. PolishTests passes 24/0.
+
+Gaps: no real voice relay, because ModernUO carries no audio. Translation is into English only, Whisper's built-in mode. See MODERN_UI.md.
+
 # Gameplay polish: paperdoll, gains, combat target, casting — 29 October 2026
 
 Owner request. Details are in [MODERN_UI.md](MODERN_UI.md) under "Gameplay polish".

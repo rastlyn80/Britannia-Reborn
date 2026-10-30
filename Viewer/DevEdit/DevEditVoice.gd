@@ -16,6 +16,9 @@ const SILENCE_SECONDS := 3.5
 # Whisper language codes offered in the panel ("auto" detects).
 const LANGUAGES := [["auto","Auto-detect"],["en","English"],["it","Italiano"],["es","Español"],["fr","Français"],["de","Deutsch"],["pt","Português"],["nl","Nederlands"],["pl","Polski"],["sv","Svenska"],["ru","Русский"],["uk","Українська"],["tr","Türkçe"],["ar","العربية"],["hi","हिन्दी"],["ja","日本語"],["ko","한국어"],["zh","中文"]]
 
+# Voice chat (Network/VoiceChat.gd) uses its own settings and files.
+var settings_path := SETTINGS
+var file_base := "dev-edit-voice"
 var state := "idle" # idle, recording, recognizing
 var language := "auto"
 var translate := true
@@ -34,7 +37,7 @@ var job := {}
 
 func _ready() -> void:
 	var config := ConfigFile.new()
-	if config.load(SETTINGS) == OK:
+	if config.load(settings_path) == OK:
 		language = str(config.get_value("voice","language",language))
 		translate = bool(config.get_value("voice","translate",translate))
 		device = str(config.get_value("voice","device",device))
@@ -44,7 +47,7 @@ func save_settings() -> void:
 	config.set_value("voice","language",language)
 	config.set_value("voice","translate",translate)
 	config.set_value("voice","device",device)
-	config.save(SETTINGS)
+	config.save(settings_path)
 
 static func engine() -> Dictionary:
 	var path := ProjectSettings.globalize_path("res://../.tools/whisper/speech.json")
@@ -97,7 +100,7 @@ func toggle() -> void:
 func start() -> void:
 	if engine().is_empty():
 		# Windows recognition listens to the microphone itself.
-		var base := OS.get_user_data_dir().path_join("dev-edit-voice")
+		var base := OS.get_user_data_dir().path_join(file_base)
 		if FileAccess.file_exists(base+".json"): DirAccess.remove_absolute(base+".json")
 		job = {"started":Time.get_ticks_msec(),"seconds":0.0,"base":base,"whisper":false}
 		pid = OS.create_process("powershell.exe",["-NoProfile","-ExecutionPolicy","Bypass","-WindowStyle","Hidden","-File",ProjectSettings.globalize_path("res://../scripts/listen.ps1"),"-Out",base+".json"])
@@ -190,7 +193,7 @@ static func wav(data: PackedFloat32Array, from_rate: float) -> PackedByteArray:
 
 func _recognize() -> void:
 	_set_state("recognizing")
-	var base := OS.get_user_data_dir().path_join("dev-edit-voice")
+	var base := OS.get_user_data_dir().path_join(file_base)
 	var clip := base+".wav"
 	var file := FileAccess.open(clip,FileAccess.WRITE)
 	file.store_buffer(wav(samples,rate))

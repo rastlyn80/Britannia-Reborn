@@ -58,6 +58,7 @@ var movement_surface := preload("res://Presentation/MovementSurface.gd").new()
 var front_end := false
 var front: Control
 var game_menu: Control
+var voice_chat: Control
 var console: Control
 var toasts: Control
 var audio: Node3D
@@ -442,6 +443,10 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	var journal := preload("res://Network/Journal.gd").new()
 	canvas.add_child(journal)
 	journal.configure(game)
+	# Voice chat: hold V and speak (local Whisper speech-to-text).
+	voice_chat = preload("res://Network/VoiceChat.gd").new()
+	canvas.add_child(voice_chat)
+	voice_chat.configure(game,journal)
 	var target := preload("res://Network/TargetFrame.gd").new()
 	canvas.add_child(target)
 	target.configure(game)
