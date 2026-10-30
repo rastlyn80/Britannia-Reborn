@@ -1,3 +1,21 @@
+# Item catalogue wave 19 — 30 October 2026
+
+Owner request: continue finding models. The sourcing run reviewed curated queries for about 55 unsearched object families on compact sheets (art beside six candidates).
+
+**18 CC-BY scans are now pinned and in use:**
+- **Ship and dock:** banner post, two ship wheels (tiller and mounted), mounted lobster, temple bell (monastery bell).
+- **Statues:** a tiger statue.
+- **Household:** Japanese cups, beeswax candles, wooden ladle, tankards, glass jar, golden key.
+- **Materials:** copper bar, silver ingot (recoloured silver), pumice.
+- **Other:** ginseng root, kabuto helmet.
+- The boulder trap now uses the grey rock scan.
+
+**Rejected after rendering:** crab (broken bounds), bonsai (leafless), mossy boulder (shows as wire). Those families stay open.
+
+**Count:** world 94.5% → 94.8% (596 → 565 open); Britain and Trinsic stay at 100%.
+
+**Tooling fix:** bash `/tmp` and Python's `C:/tmp` are different folders on this machine, so a match-regex file passed between them was empty. As a result the wave-19 search covered every open family; its `candidates.json` is a full-backlog index for later picks.
+
 # Trinsic graphics complete — 30 October 2026
 
 Owner request: finish Trinsic. Trinsic was measured with the same extraction as Britain, using the server's Trinsic town region (1796,2636 + 321×291), into a local `outputs/item-catalog-trinsic`. Before this pass: 758 of 765 placed graphics final, 99.85% of 64,500 placements.

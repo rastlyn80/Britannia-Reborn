@@ -5036,6 +5036,37 @@
    ],
    "note": "Trinsic's last graphics: sandstone wall section (512), grey rocks, two-handed axe, leather cap, executioner's hood, crafted bacon and gown",
    "sheet": "trin2"
+  },
+  {
+   "ids": [
+    3979,
+    4103,
+    4111,
+    4329,
+    4535,
+    4536,
+    4538,
+    5154,
+    5157,
+    5158,
+    5159,
+    5670,
+    6379,
+    6380,
+    6467,
+    7142,
+    7157,
+    9441,
+    10192,
+    16067,
+    16070,
+    18108,
+    18174,
+    19550,
+    38980
+   ],
+   "note": "wave 19 CC-BY scans: banner post, cups, beeswax candles, ladle, ship wheels (tiller, mounted), lobster, tiger statue, golden key, copper and silver bars, ginseng, temple bell, pumice, tankards, kabuto, glass jar; boulder trap on the grey rock",
+   "sheet": "b19"
   }
  ]
 }

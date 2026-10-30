@@ -7900,6 +7900,342 @@
         1.273
       ],
       "processing": "ground-centred, decimated to 6000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "banner_post",
+      "title": "Wooden Post Banner (game ready asset)",
+      "uid": "2fd4ab61e5224563a686d8b98ecd02d0",
+      "page": "https://sketchfab.com/3d-models/2fd4ab61e5224563a686d8b98ecd02d0",
+      "author": "Aparicio Silva 3D",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/2fd4ab61e5224563a686d8b98ecd02d0 (download API)",
+      "sourceSha256": "f639d6dbd6de3cd9b775b332821a548e59d32d9e8006bc0973d791835a742562",
+      "sourceTriangles": 6052,
+      "file": "banner_post/banner_post.glb",
+      "sha256": "3fd8fc06050de71c418d8e859102004d521983b50f479178049ab60d866565b2",
+      "triangles": 5999,
+      "size": [
+        192.162,
+        358.54,
+        30.172
+      ],
+      "processing": "ground-centred, decimated to 6000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "cup_japanese",
+      "title": "Komoga-nari Japanese Tea Cup",
+      "uid": "ec73e4ece55042cfa251db566da2014b",
+      "page": "https://sketchfab.com/3d-models/ec73e4ece55042cfa251db566da2014b",
+      "author": "Melina.Thadea",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-044/ec73e4ece55042cfa251db566da2014b.glb",
+      "sourceSha256": "b0feea4b3a19d75939e3495257205ffd639e7ae4edf79413cb9c73eab04a9bc7",
+      "sourceTriangles": 5760,
+      "file": "cup_japanese/cup_japanese.glb",
+      "sha256": "5b6009b4674fadb0ada41cf21ab09042c94354303ed03cf8b007a55c32b06289",
+      "triangles": 2999,
+      "size": [
+        0.029,
+        0.02,
+        0.029
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "beeswax_candle",
+      "title": "Beeswax Candle",
+      "uid": "4cb7b110ffb645d79d40154dc709cdea",
+      "page": "https://sketchfab.com/3d-models/4cb7b110ffb645d79d40154dc709cdea",
+      "author": "CrabbyLizardo",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/4cb7b110ffb645d79d40154dc709cdea (download API)",
+      "sourceSha256": "4f798da6c5bd8aee2682c01d37ba307b1a96a32c75dc1f1523e01fd8ce9864ad",
+      "sourceTriangles": 1044,
+      "file": "beeswax_candle/beeswax_candle.glb",
+      "sha256": "1c6ea1fe91bb540ee39d2f29138bd77df4b883a10b34dbddba5f6dde06d657be",
+      "triangles": 998,
+      "size": [
+        11.01,
+        84.998,
+        36.177
+      ],
+      "processing": "ground-centred, decimated to 1000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "ladle_wood",
+      "title": "Wooden Ladle",
+      "uid": "a234707b21b340e0a544276e215e2bae",
+      "page": "https://sketchfab.com/3d-models/a234707b21b340e0a544276e215e2bae",
+      "author": "Dr_Kryzel",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/a234707b21b340e0a544276e215e2bae (download API)",
+      "sourceSha256": "600a67a23e7b66f05cee8d171d2f1d6a3ea29bde3e575ec34dd476254b3dcf64",
+      "sourceTriangles": 1792,
+      "file": "ladle_wood/ladle_wood.glb",
+      "sha256": "809132bbfbaf7533817a6bc06804eb286c78442e1bd304ed7a43804f6aa81f8f",
+      "triangles": 1792,
+      "size": [
+        0.014,
+        0.012,
+        0.039
+      ],
+      "processing": "ground-centred, decimated to 1800 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "ship_wheel_small",
+      "title": "Tiller",
+      "uid": "09273dfa925643b4b44cb8a1d3a1b6f9",
+      "page": "https://sketchfab.com/3d-models/09273dfa925643b4b44cb8a1d3a1b6f9",
+      "author": "davibernardino",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-129/09273dfa925643b4b44cb8a1d3a1b6f9.glb",
+      "sourceSha256": "5588b866144a712ce3caf242c02763abaa1777213c8e58988372dcddcf00603e",
+      "sourceTriangles": 4384,
+      "file": "ship_wheel_small/ship_wheel_small.glb",
+      "sha256": "6d5e821e9a0fbcc65ba512e24ea71e32980ebdb7baa1723215d7a700927af609",
+      "triangles": 3999,
+      "size": [
+        0.311,
+        3.581,
+        3.581
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "lobster",
+      "title": "Lobster",
+      "uid": "3ab14e5ce84141cda62c3405d8086157",
+      "page": "https://sketchfab.com/3d-models/3ab14e5ce84141cda62c3405d8086157",
+      "author": "Ant Gregory",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-134/3ab14e5ce84141cda62c3405d8086157.glb",
+      "sourceSha256": "dfad44e1c0c50fd4928336962c9a4a1ff5b26fc2cb67295c1f946cf7899c073a",
+      "sourceTriangles": 5183,
+      "file": "lobster/lobster.glb",
+      "sha256": "88b5ad4d3deff6d9cd0a98f9625fa68a1747d75ff840bf498d4994ee1c04ba85",
+      "triangles": 4993,
+      "size": [
+        13.187,
+        7.209,
+        35.848
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "ship_wheel",
+      "title": "Ship's Wheel",
+      "uid": "118d0fa6d01947b7823878769834bfd8",
+      "page": "https://sketchfab.com/3d-models/118d0fa6d01947b7823878769834bfd8",
+      "author": "Stefan Andolf",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-097/118d0fa6d01947b7823878769834bfd8.glb",
+      "sourceSha256": "3f450acbe63fe5af6be0e951bcc4df5c40bc48bdd724cf3c520d027280f44a3d",
+      "sourceTriangles": 132998,
+      "file": "ship_wheel/ship_wheel.glb",
+      "sha256": "ed724cf7e244b5b84f8eb286f2e980a358b8266241dbf6e74670b2ce4c321dc4",
+      "triangles": 4995,
+      "size": [
+        148.093,
+        161.783,
+        38.507
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "tiger_statue",
+      "title": "Tiger Sculpture - Bronze",
+      "uid": "3bf94f6d85394385ad6b38050952fb1d",
+      "page": "https://sketchfab.com/3d-models/3bf94f6d85394385ad6b38050952fb1d",
+      "author": "Aron Mimietz",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/3bf94f6d85394385ad6b38050952fb1d (download API)",
+      "sourceSha256": "68f78ba372e4443f4b8b228e87c0fb5953b314445033f64f0c177aeb1429d0a0",
+      "sourceTriangles": 34102,
+      "file": "tiger_statue/tiger_statue.glb",
+      "sha256": "367a1f4328fd9cb3a68a89646275f75e809f9a70ed79394aaa2b18d4a2a709f8",
+      "triangles": 5000,
+      "size": [
+        1302.836,
+        884.989,
+        345.811
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "golden_key",
+      "title": "Golden Key",
+      "uid": "1646dced57074decb0afbb4c6ee9a721",
+      "page": "https://sketchfab.com/3d-models/1646dced57074decb0afbb4c6ee9a721",
+      "author": "PigeonMage",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-089/1646dced57074decb0afbb4c6ee9a721.glb",
+      "sourceSha256": "02d96f371de6371ca6189a64546d320d501b07509f4f3e0a35ea1fb0e8ac6603",
+      "sourceTriangles": 3012,
+      "file": "golden_key/golden_key.glb",
+      "sha256": "c24226cb84ce75a543a35e7b62a6fc9804982cc0b5da1f58a08631c56f26f1c0",
+      "triangles": 2999,
+      "size": [
+        600.298,
+        69.992,
+        200.0
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "copper_bar",
+      "title": "Low Poly Copper  Bar",
+      "uid": "14ee8193dab143d9add29e6fc3e71f74",
+      "page": "https://sketchfab.com/3d-models/14ee8193dab143d9add29e6fc3e71f74",
+      "author": "Nullified",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/14ee8193dab143d9add29e6fc3e71f74 (download API)",
+      "sourceSha256": "79f528c30519b91d852666bb5b2c24ea84791546d6fec3d29b82f7f8f3227c7e",
+      "sourceTriangles": 11112,
+      "file": "copper_bar/copper_bar.glb",
+      "sha256": "7c96625771d214477910542e2c32e5c61127b4ff3db8c95e514333f65ca491ca",
+      "triangles": 3000,
+      "size": [
+        2.01,
+        0.614,
+        1.119
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "ginseng",
+      "title": "c\u1ee7 s\u00e2m 3D - Ginseng 3D Model",
+      "uid": "df8b7b6cffd64de98aeb7791acea1781",
+      "page": "https://sketchfab.com/3d-models/df8b7b6cffd64de98aeb7791acea1781",
+      "author": "hangmin",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/df8b7b6cffd64de98aeb7791acea1781 (download API)",
+      "sourceSha256": "479d48343a824bc7e79f8a28344de2949d377f8c0f225af3ab546d86a2240cd7",
+      "sourceTriangles": 70112,
+      "file": "ginseng/ginseng.glb",
+      "sha256": "5662e2e1e5e560f3bf0dfd4ba4f05302f2cbe2fb5367ce7fd599240adda3724d",
+      "triangles": 4999,
+      "size": [
+        7.81,
+        14.982,
+        7.065
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "temple_bell",
+      "title": "\u68b5\u9418\u3000Buddhist Temple Bell",
+      "uid": "130ed4579af049a9a7142d7cd1900200",
+      "page": "https://sketchfab.com/3d-models/130ed4579af049a9a7142d7cd1900200",
+      "author": "Honma",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/130ed4579af049a9a7142d7cd1900200 (download API)",
+      "sourceSha256": "50a619cdf4daf448898be5693d2afe9ae7092b159d10473eba5f5cff1ccbe7c2",
+      "sourceTriangles": 76410,
+      "file": "temple_bell/temple_bell.glb",
+      "sha256": "e4e20cc1107f7bedd64ecb8ac34c9679a5999c6c6f862b8cfc7af171547975d1",
+      "triangles": 4999,
+      "size": [
+        3.15,
+        5.438,
+        3.151
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "pumice",
+      "title": "Dry Pumice Stone",
+      "uid": "94c9a195dda7468b9086c34e110de75b",
+      "page": "https://sketchfab.com/3d-models/94c9a195dda7468b9086c34e110de75b",
+      "author": "inciprocal",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-081/94c9a195dda7468b9086c34e110de75b.glb",
+      "sourceSha256": "515c23f5d43171340f72d4bf20cfee77ec7b60501e1abe4a11d19d2a5a64e7e8",
+      "sourceTriangles": 99984,
+      "file": "pumice/pumice.glb",
+      "sha256": "9304053d69a6a07240c8ea691f22b5b028936d25d131d946bbf26109e5ac0f42",
+      "triangles": 3000,
+      "size": [
+        0.087,
+        0.051,
+        0.028
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "tankard_medieval",
+      "title": "Medieval Tankard",
+      "uid": "d95203038a9841d1b6f87b28c2e347aa",
+      "page": "https://sketchfab.com/3d-models/d95203038a9841d1b6f87b28c2e347aa",
+      "author": "Kigha",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-153/d95203038a9841d1b6f87b28c2e347aa.glb",
+      "sourceSha256": "3f0e889247783ba35d837442b430630c87894c9cff1e3376c05c53f3b4ec27fe",
+      "sourceTriangles": 2108,
+      "file": "tankard_medieval/tankard_medieval.glb",
+      "sha256": "0b55de59dac1563b8a63959dab451a8618f801887fc08c4d6601c312560e5451",
+      "triangles": 2000,
+      "size": [
+        0.322,
+        0.275,
+        0.232
+      ],
+      "processing": "ground-centred, decimated to 2000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "silver_ingot",
+      "title": "Silver Ingot",
+      "uid": "1b56680fb71845e3b69d82074801e3e9",
+      "page": "https://sketchfab.com/3d-models/1b56680fb71845e3b69d82074801e3e9",
+      "author": "3DKoraX",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/1b56680fb71845e3b69d82074801e3e9 (download API)",
+      "sourceSha256": "2f2cc5da7a76ad07da06898ca3bcb2e5ec6c1bdeb7a053005f6c813e0dc58b5d",
+      "sourceTriangles": 432,
+      "file": "silver_ingot/silver_ingot.glb",
+      "sha256": "dd29a4d6380a5b257cc0fedf0584d26f5a7071467ee65e719c432f305219ecda",
+      "triangles": 432,
+      "size": [
+        0.193,
+        0.134,
+        0.477
+      ],
+      "processing": "ground-centred, decimated to 500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "glass_jar2",
+      "title": "Glass jar",
+      "uid": "14fd74b0b4b34128816c30657fc8da09",
+      "page": "https://sketchfab.com/3d-models/14fd74b0b4b34128816c30657fc8da09",
+      "author": "pranavchavan0937",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/14fd74b0b4b34128816c30657fc8da09 (download API)",
+      "sourceSha256": "d341f5b5b7b5f31b71a4db0b3d9e7b2341f1330a8d7624d0d6c839cde148a88e",
+      "sourceTriangles": 2480,
+      "file": "glass_jar2/glass_jar2.glb",
+      "sha256": "d2cca1f1e8bd83c6755464dcedd8afe4f4af14ddbd1a5fde9252ff287ab4e3db",
+      "triangles": 2480,
+      "size": [
+        0.155,
+        0.195,
+        0.155
+      ],
+      "processing": "ground-centred, decimated to 2500 triangles, textures capped at 1024 px"
     }
   ]
 }

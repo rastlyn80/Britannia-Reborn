@@ -4717,6 +4717,94 @@
     "metallic": 0.0,
     "roughness": 0.9
    }
+  },
+  "banner hanger": {
+   "model": "Objaverse/banner_post",
+   "height": 2.0
+  },
+  "cups": {
+   "model": "Objaverse/cup_japanese",
+   "length": 0.12,
+   "cluster": 3
+  },
+  "boulder trap": {
+   "model": "Objaverse/rock_gray",
+   "length": 1.3
+  },
+  "beeswax": {
+   "model": "Objaverse/beeswax_candle",
+   "height": 0.22,
+   "cluster": 3
+  },
+  "large wooden spoon": {
+   "model": "Objaverse/ladle_wood",
+   "length": 0.45,
+   "lay": true
+  },
+  "tiller": {
+   "model": "Objaverse/ship_wheel_small",
+   "height": 1.0
+  },
+  "mounted lobster sout": {
+   "model": "Objaverse/lobster",
+   "length": 0.6,
+   "anchor": "back",
+   "elevation": 1.3,
+   "pitch": 90
+  },
+  "shipswheel mounted s": {
+   "model": "Objaverse/ship_wheel",
+   "height": 1.1,
+   "anchor": "back",
+   "elevation": 0.8
+  },
+  "tiger statue": {
+   "model": "Objaverse/tiger_statue",
+   "length": 1.4
+  },
+  "gold key": {
+   "model": "Objaverse/golden_key",
+   "length": 0.15,
+   "lay": true
+  },
+  "copper ingot": {
+   "model": "Objaverse/copper_bar",
+   "length": 0.22
+  },
+  "silver ingot": {
+   "model": "Objaverse/silver_ingot",
+   "length": 0.22,
+   "material": {
+    "color": "c8ccd2",
+    "metallic": 0.9,
+    "roughness": 0.3
+   }
+  },
+  "ginseng root": {
+   "model": "Objaverse/ginseng",
+   "length": 0.2,
+   "lay": true
+  },
+  "monastery bell l sou": {
+   "model": "Objaverse/temple_bell",
+   "height": 1.4
+  },
+  "pumice": {
+   "model": "Objaverse/pumice",
+   "length": 0.12
+  },
+  "tankards": {
+   "model": "Objaverse/tankard_medieval",
+   "height": 0.18,
+   "cluster": 4
+  },
+  "plate kabuto": {
+   "model": "Objaverse/kabuto",
+   "length": 0.35
+  },
+  "half empty jar": {
+   "model": "Objaverse/glass_jar2",
+   "height": 0.2
   }
  }
 }
