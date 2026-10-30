@@ -13,7 +13,10 @@ const Query = preload("res://DevEdit/DevEditQuery.gd")
 # Tame creatures "pet <kind>" asks the server for (Server DevEditSession.PetKinds).
 const PETS := ["horse","packhorse","llama","packllama","desertostard","forestostard","dog","cat"]
 # Test kits "kit <kind>" (Server DevEditSession.KitKinds), described for the card.
-const KITS := {"mage":"Magery and Evaluating Intelligence 100, a spellbook with all spells, a bag of reagents"}
+const KITS := {"mage":"Magery and Evaluating Intelligence 100, a spellbook with all spells, a bag of reagents",
+	"lumberjack":"a hatchet","miner":"a pickaxe and a shovel","fisher":"a fishing pole",
+	"smith":"a smith's hammer and 100 iron ingots","tailor":"a sewing kit and 100 cloth",
+	"carpenter":"a saw and 100 boards","tinker":"tinker's tools and 100 iron ingots"}
 var state: State
 var sender: Callable
 # Callable(area: Rect2i) -> Array of source records (see DevEditQuery).
@@ -66,8 +69,10 @@ func plan(line: String) -> Dictionary:
 		if a.size() != 2 or not a[1].to_lower() in PETS: return fail(line,"pet takes one of: "+", ".join(PETS))
 		return {"ok":true,"line":line,"kind":"pet","pet":a[1].to_lower(),"targets":[],"description":"a tame %s at your feet (server only)" % a[1].to_lower()}
 	if verb == "kit":
-		if a.size() != 2 or not KITS.has(a[1].to_lower()): return fail(line,"kits: "+", ".join(KITS.keys()))
-		return {"ok":true,"line":line,"kind":"kit","kit":a[1].to_lower(),"targets":[],"description":"%s (server only)" % KITS[a[1].to_lower()]}
+		# The server owns the list, so a kit added there needs no client update.
+		if a.size() != 2 or RegEx.create_from_string("^[a-z]{2,20}$").search(a[1].to_lower()) == null: return fail(line,"kits: "+", ".join(KITS.keys()))
+		var kind := a[1].to_lower()
+		return {"ok":true,"line":line,"kind":"kit","kit":kind,"targets":[],"description":"%s (server only)" % KITS.get(kind,"test kit "+kind)}
 	var all := a.size() > 2 and a[1] == "all"
 	if all:
 		var scope := resolve(a[2])

@@ -42,16 +42,29 @@ public static class DevEditPets
         {
             return Result.Fail("state", "no backpack");
         }
-        // "mage": every spell to cast, the skills to cast them well, reagents.
-        mobile.Skills[SkillName.Magery].Base = 100.0;
-        mobile.Skills[SkillName.EvalInt].Base = 100.0;
-        pack.DropItem(new Spellbook(ulong.MaxValue));
-        var bag = new Bag { Name = "reagents" };
-        foreach (var reagent in new Item[] { new BlackPearl(100), new Bloodmoss(100), new Garlic(100), new Ginseng(100), new MandrakeRoot(100), new Nightshade(100), new SulfurousAsh(100), new SpidersSilk(100) })
+        switch (kind)
         {
-            bag.DropItem(reagent);
+            case "mage":
+                // Every spell to cast, the skills to cast them well, reagents.
+                mobile.Skills[SkillName.Magery].Base = 100.0;
+                mobile.Skills[SkillName.EvalInt].Base = 100.0;
+                pack.DropItem(new Spellbook(ulong.MaxValue));
+                var bag = new Bag { Name = "reagents" };
+                foreach (var reagent in new Item[] { new BlackPearl(100), new Bloodmoss(100), new Garlic(100), new Ginseng(100), new MandrakeRoot(100), new Nightshade(100), new SulfurousAsh(100), new SpidersSilk(100) })
+                {
+                    bag.DropItem(reagent);
+                }
+                pack.DropItem(bag);
+                break;
+            // Tools to try a trade; skills are left as they are, so gains show.
+            case "lumberjack": pack.DropItem(new Hatchet()); break;
+            case "miner": pack.DropItem(new Pickaxe()); pack.DropItem(new Shovel()); break;
+            case "fisher": pack.DropItem(new FishingPole()); break;
+            case "smith": pack.DropItem(new SmithHammer()); pack.DropItem(new IronIngot(100)); break;
+            case "tailor": pack.DropItem(new SewingKit()); pack.DropItem(new Cloth(100)); break;
+            case "carpenter": pack.DropItem(new Saw()); pack.DropItem(new Board(100)); break;
+            case "tinker": pack.DropItem(new TinkerTools()); pack.DropItem(new IronIngot(100)); break;
         }
-        pack.DropItem(bag);
         return new Result { Ok = true, Code = kind };
     }
 }

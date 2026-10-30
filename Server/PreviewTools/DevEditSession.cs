@@ -433,7 +433,7 @@ public sealed class DevEditSession
     public static bool ValidPet(string kind) => Array.IndexOf(PetKinds, kind) >= 0;
 
     // Test kits a developer may take ("kit <kind>"): skills and items for trying a system.
-    public static readonly string[] KitKinds = ["mage"];
+    public static readonly string[] KitKinds = ["mage", "lumberjack", "miner", "fisher", "smith", "tailor", "carpenter", "tinker"];
 
     public static bool ValidKit(string kind) => Array.IndexOf(KitKinds, kind) >= 0;
 
