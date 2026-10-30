@@ -1,3 +1,22 @@
+# Item catalogue waves 17–18 — 30 October 2026
+
+**Bulk sourcing over the open backlog** with the Sketchfab API. About 120 candidate families were reviewed on sheets. Only honest matches were pinned; rejects were unpinned and their entries removed. 40 CC-BY/CC0 scans were added:
+- **Furniture and fittings:** hammock, futon, bookstand, barrel lid, shackles, pulley, vise, tea set.
+- **Structures and statues:** stepped stone pyramid (pylon), Haida totem pole (slimmed), stone gargoyle, scarecrow.
+- **Plants and nature:** sea coral, brambles, morning glory, topiary, potted cacti, wall fern, corn stalk.
+- **Food and small goods:** miso pot, wasabi, lettuce, lead weight, origami, feathers, hand fan, froe.
+
+**Crops:** the CC-BY "Farm plants models" set is pinned once and split into single plants (`scripts/blender-split-variants.py`). The carrot, onion and potato patches and young shoots now draw carrots, onions, turnips and sprouts. A new model form, `Objaverse/<set>/split/plant_N`, serves split variants of a pinned scan set, with correct provenance in `ArtProvenance` (not labelled Poly Haven).
+
+**Rejected after rendering:** scaffolding (fell apart), shell necklace, molehill (grass disc), skull totem, minotaur (carries a cube), windchime (broken bounds), ant nest (77k triangles after reduction), animated mandrake (Blender reduce failed).
+
+**Counts:** world 93.4% → 94.2% (713 → 625 graphics open); Britain stays at 99.5% (16 open).
+
+**Next:**
+- Ter Mur architecture, which needs builders rather than models: floor tile 39807, angle walls, staitcube, canals, gargoyle spouts and windows.
+- Exodus nexus pieces, horde statues and dragon heads.
+- The remaining long tail of single-placement items.
+
 # Item catalogue wave 16 — 30 October 2026
 
 The owner provided a Sketchfab API token; it is stored only in the ignored `.tools/sketchfab-token.txt`. Sourcing and pinning now reach every downloadable CC0/CC-BY Sketchfab model, not only the Objaverse mirror. `source-candidates.py` lists such models as `sketchfab:UID`, and `add-objaverse.py` downloads them with the same licence checks and provenance records.

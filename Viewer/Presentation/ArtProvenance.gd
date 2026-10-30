@@ -171,7 +171,7 @@ func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -
 		var model := str(found.get("model",found.get("models",[""])[0]))
 		if found.get("hide",false): return {"status":"scan","detail":"part drawn by the scanned model of its whole object"}
 		if model.begins_with("Reduced/"): return pack(model)
-		return pack(("Objaverse/%s/%s.glb" % [model.trim_prefix("Objaverse/"),model.trim_prefix("Objaverse/")]) if model.begins_with("Objaverse/") else "PolyHaven/%s/%s" % [model,model])
+		return pack((("Objaverse/%s.gltf" % model.trim_prefix("Objaverse/")) if "/" in model.trim_prefix("Objaverse/") else "Objaverse/%s/%s.glb" % [model.trim_prefix("Objaverse/"),model.trim_prefix("Objaverse/")]) if model.begins_with("Objaverse/") else "PolyHaven/%s/%s" % [model,model])
 	var review: Dictionary = Reviewed.entry(id)
 	# Counters are built cell by cell in photoscanned timber whatever their review says.
 	if str(review.get("kind",audited.get("kind",""))) == "counter": return {"status":"crafted","detail":"panelled counter in photoscanned timber"}

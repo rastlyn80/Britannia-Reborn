@@ -7202,6 +7202,599 @@
         205.955
       ],
       "processing": "ground-centred, decimated to 1500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "pyramid_stepped",
+      "title": "Aztec Pyramid",
+      "uid": "69b83dbcff70435485e449f47a87cb5d",
+      "page": "https://sketchfab.com/3d-models/69b83dbcff70435485e449f47a87cb5d",
+      "author": "rhcreations",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-109/69b83dbcff70435485e449f47a87cb5d.glb",
+      "sourceSha256": "da5587ae24ef24307a3dfe1436c319901e95847640c19d010fc4e409a59bc657",
+      "sourceTriangles": 3328,
+      "file": "pyramid_stepped/pyramid_stepped.glb",
+      "sha256": "9bdfe8261cd818969bcd1371166c0c96066812aa930087d06c3cfbe3527fbff8",
+      "triangles": 3328,
+      "size": [
+        62.038,
+        26.877,
+        62.038
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "hammock_stand",
+      "title": "Hammock (low poly)",
+      "uid": "c5fd4cef873f44f5a31db1fc6a04c572",
+      "page": "https://sketchfab.com/3d-models/c5fd4cef873f44f5a31db1fc6a04c572",
+      "author": "AndreyUEDev",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/c5fd4cef873f44f5a31db1fc6a04c572 (download API)",
+      "sourceSha256": "a30bdf13e9bdb4c8d97843576ec23dc43d3b7bdd5621cd0718ffed1e952a5631",
+      "sourceTriangles": 4180,
+      "file": "hammock_stand/hammock_stand.glb",
+      "sha256": "bb0a615fe8d7be96b570655334e8e708ae5ac1648280786a15974e8984cf76e8",
+      "triangles": 4000,
+      "size": [
+        1.362,
+        1.067,
+        3.15
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "coral_pocillopora",
+      "title": "Pocillopora damicornis caespitosa",
+      "uid": "662c5b9144334e678b871f1960c03392",
+      "page": "https://sketchfab.com/3d-models/662c5b9144334e678b871f1960c03392",
+      "author": "The Smithsonian Institution",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-051/662c5b9144334e678b871f1960c03392.glb",
+      "sourceSha256": "4478183ca83451b0e631878a69b5edf9b13241cfe66ee0e3d5b3d7e25246cdd6",
+      "sourceTriangles": 100000,
+      "file": "coral_pocillopora/coral_pocillopora.glb",
+      "sha256": "1f95decc6022b7d3b4a3bff50328b0fef54455c895a6ee7492c41585742727fc",
+      "triangles": 4999,
+      "size": [
+        0.236,
+        0.143,
+        0.201
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "bramble_twigs",
+      "title": "Rose Bush Scan",
+      "uid": "a92d6bdc2a364f50b838f62a528fbf40",
+      "page": "https://sketchfab.com/3d-models/a92d6bdc2a364f50b838f62a528fbf40",
+      "author": "giantbooley",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/a92d6bdc2a364f50b838f62a528fbf40 (download API)",
+      "sourceSha256": "af2893b1c622cf503a7be73081ae3ba88f8625796b5b3de0a5a271a6a5b24966",
+      "sourceTriangles": 31143,
+      "file": "bramble_twigs/bramble_twigs.glb",
+      "sha256": "869d33a69cc8e44b72edcc8bab017fc607318c63d428f304860cb6a5fd89351c",
+      "triangles": 5000,
+      "size": [
+        1.107,
+        2.038,
+        1.191
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "tajine_pot",
+      "title": "Tajine",
+      "uid": "8c4380620eba45cba03d952ed0069081",
+      "page": "https://sketchfab.com/3d-models/8c4380620eba45cba03d952ed0069081",
+      "author": "Alexandre Orlans",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/8c4380620eba45cba03d952ed0069081 (download API)",
+      "sourceSha256": "3f998055a4fec3a1e3f41dacec7f85ca778e1dbb16a11fd7b66e8424c50103c4",
+      "sourceTriangles": 22400,
+      "file": "tajine_pot/tajine_pot.glb",
+      "sha256": "5f16f70b8dbf7a13bbb7eafd36dddc60233932cb7eec0883bc37ae055db2ec21",
+      "triangles": 3999,
+      "size": [
+        15.964,
+        7.566,
+        9.848
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "futon",
+      "title": "Japanese futon/bed",
+      "uid": "0d5590d1d2184aa98797c3d6382afd7e",
+      "page": "https://sketchfab.com/3d-models/0d5590d1d2184aa98797c3d6382afd7e",
+      "author": "nicolas_solo",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-105/0d5590d1d2184aa98797c3d6382afd7e.glb",
+      "sourceSha256": "f50cbee189ef81b287f7fa35f4a441944bb69519b9ffd3681eadc2b5c6ba544d",
+      "sourceTriangles": 17916,
+      "file": "futon/futon.glb",
+      "sha256": "098edf9903633f75ebcef0a4f2e1e4e5d279e302ccbefad2ab7e2c1f0c909f85",
+      "triangles": 4999,
+      "size": [
+        733.794,
+        120.474,
+        1104.895
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "hand_fan",
+      "title": "Hand Fan (low poly)",
+      "uid": "e07a010602a942d4921e87959e0f5fc9",
+      "page": "https://sketchfab.com/3d-models/e07a010602a942d4921e87959e0f5fc9",
+      "author": "Akimkhan",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/e07a010602a942d4921e87959e0f5fc9 (download API)",
+      "sourceSha256": "3a7f6fb4addc993b5a7c7c71d7c2279553a7a9ea426ad20189f647bafc7806b7",
+      "sourceTriangles": 8230,
+      "file": "hand_fan/hand_fan.glb",
+      "sha256": "e77d2b0bba088110f979f05e23d9b94d49330a27b80774ac239c971e27bcfcbd",
+      "triangles": 1999,
+      "size": [
+        0.257,
+        0.144,
+        0.01
+      ],
+      "processing": "ground-centred, decimated to 2000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "corn_plant",
+      "title": "Maize Corn Plant",
+      "uid": "5fd3b104d8104519b061469c365d4974",
+      "page": "https://sketchfab.com/3d-models/5fd3b104d8104519b061469c365d4974",
+      "author": "gilles.schaeck",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-137/5fd3b104d8104519b061469c365d4974.glb",
+      "sourceSha256": "d7862635fc0cdb0db72d9e7912bc5dc6d8f6514c1c81bb429233b8129630cbdc",
+      "sourceTriangles": 3108,
+      "file": "corn_plant/corn_plant.glb",
+      "sha256": "1f7dbc28ff484beba2c6fbac4c7681aa978847ad79148a31f67dc28facf2a502",
+      "triangles": 2963,
+      "size": [
+        0.975,
+        2.649,
+        1.113
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "totem_pole",
+      "title": "Haida Totem Pole, circa1860-70 [section]",
+      "uid": "66217f6571b448159dedb790bf5c42c1",
+      "page": "https://sketchfab.com/3d-models/66217f6571b448159dedb790bf5c42c1",
+      "author": "Thomas Flynn",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-118/66217f6571b448159dedb790bf5c42c1.glb",
+      "sourceSha256": "575404c86343a56fc922cbddb329f510be3e61faaaf8f15c3e909c5981501376",
+      "sourceTriangles": 117302,
+      "file": "totem_pole/totem_pole.glb",
+      "sha256": "1168e293e2cfa9b4f79060db8bb1c52338b001c917bc559de71519221f582fbf",
+      "triangles": 5998,
+      "size": [
+        1.55,
+        2.419,
+        0.747
+      ],
+      "processing": "ground-centred, decimated to 6000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "barrel_lid",
+      "title": "Barrel Lid - Low Poly",
+      "uid": "e505d980d29b429b8db99356d7ddf561",
+      "page": "https://sketchfab.com/3d-models/e505d980d29b429b8db99356d7ddf561",
+      "author": "Badders",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-026/e505d980d29b429b8db99356d7ddf561.glb",
+      "sourceSha256": "5bd7a14141db64fcd627872e941f7472edf159815f037e7f087eb826e367fffa",
+      "sourceTriangles": 100,
+      "file": "barrel_lid/barrel_lid.glb",
+      "sha256": "727de20aabe48d96b72da39a5f63d1b17bb21cbc8da1fba3fc06ad3e78400a65",
+      "triangles": 100,
+      "size": [
+        0.216,
+        0.016,
+        0.216
+      ],
+      "processing": "ground-centred, decimated to 1500 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "lead_weight",
+      "title": "ESS-825B6A Medieval Weight",
+      "uid": "7e97e9bd89374e95a61801bbd38fda6e",
+      "page": "https://sketchfab.com/3d-models/7e97e9bd89374e95a61801bbd38fda6e",
+      "author": "Mark.Jeffcock",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/7e97e9bd89374e95a61801bbd38fda6e (download API)",
+      "sourceSha256": "abb349fa96cd59e95b0d13bfab6606113fe631faec5a71f49184e53be8f4a1b6",
+      "sourceTriangles": 41310,
+      "file": "lead_weight/lead_weight.glb",
+      "sha256": "411b6d9d21373001c5037e29cb256a5b4a23e82a9d7cdfd89ee878f0fc4e8cbe",
+      "triangles": 2999,
+      "size": [
+        0.69,
+        0.18,
+        0.17
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "morning_glory",
+      "title": "Morning Glory Bush",
+      "uid": "a029e3c7ebdc4368aa56e352178eee99",
+      "page": "https://sketchfab.com/3d-models/a029e3c7ebdc4368aa56e352178eee99",
+      "author": "Skyler Young",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/a029e3c7ebdc4368aa56e352178eee99 (download API)",
+      "sourceSha256": "1641c1890c169b5297b657ced8dc5f41631bd0dc1b8e5d5e44371214416eca18",
+      "sourceTriangles": 249997,
+      "file": "morning_glory/morning_glory.glb",
+      "sha256": "005da9c3a49cb1354632242a41f1ed5bea291d04e2a6bc22999c0367748ac7ca",
+      "triangles": 4997,
+      "size": [
+        1.028,
+        1.288,
+        0.747
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "shackles_iron2",
+      "title": "Iron Shackles",
+      "uid": "bd481fe4f5eb44ad9f9f64786ae7f56f",
+      "page": "https://sketchfab.com/3d-models/bd481fe4f5eb44ad9f9f64786ae7f56f",
+      "author": "George Sims",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-149/bd481fe4f5eb44ad9f9f64786ae7f56f.glb",
+      "sourceSha256": "db56337fba7a97bd61a477c8a2df43c2f0c7ede645f8ded611f1dec40296c6b9",
+      "sourceTriangles": 11676,
+      "file": "shackles_iron2/shackles_iron2.glb",
+      "sha256": "794c35d25f238c152388253160966e6a53bf5e01327529377c6b6da7043190e3",
+      "triangles": 3991,
+      "size": [
+        51.183,
+        105.023,
+        13.248
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "bookstand_wood",
+      "title": "Wooden medieval bookstand",
+      "uid": "a857bdcd113840da8d60423da2305031",
+      "page": "https://sketchfab.com/3d-models/a857bdcd113840da8d60423da2305031",
+      "author": "chaschinkaa",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/a857bdcd113840da8d60423da2305031 (download API)",
+      "sourceSha256": "742175f914516ada656ea029278cb223c89f6dc2f89a525cd3a1e9afe7793e4f",
+      "sourceTriangles": 69609,
+      "file": "bookstand_wood/bookstand_wood.glb",
+      "sha256": "55e49353440ef3127f49f88e16bfc73148b584cd27ad03b78cbb7dbb8e53acca",
+      "triangles": 4999,
+      "size": [
+        49.997,
+        120.046,
+        50.098
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "pulley_nautical",
+      "title": "Nautical Pulley System 02 - rusty (Proops)",
+      "uid": "10ad7f40dd43401b90ea1af1fcce1b5e",
+      "page": "https://sketchfab.com/3d-models/10ad7f40dd43401b90ea1af1fcce1b5e",
+      "author": "ALTEREGO (v.a.c.u.u.m.)",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/10ad7f40dd43401b90ea1af1fcce1b5e (download API)",
+      "sourceSha256": "1cdabe6d79feef5b64f6e85324700c745203bc044800e0bb12795b65ed68b6e1",
+      "sourceTriangles": 10000,
+      "file": "pulley_nautical/pulley_nautical.glb",
+      "sha256": "d106fc53b3d8f85a42aab8d7f30a7e5e7b591391289e2173228ee3b3ba7ccb9f",
+      "triangles": 3999,
+      "size": [
+        0.77,
+        1.998,
+        0.546
+      ],
+      "processing": "ground-centred, decimated to 4000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "gargoyle_stone",
+      "title": "Stone Gargoyle",
+      "uid": "43b36f75c57d43e0ac14010e0f84e7b3",
+      "page": "https://sketchfab.com/3d-models/43b36f75c57d43e0ac14010e0f84e7b3",
+      "author": "WakeKnight",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/43b36f75c57d43e0ac14010e0f84e7b3 (download API)",
+      "sourceSha256": "ae037778549880b2856e0964276747d777c6b01dd8b778734ea06965fe84a5de",
+      "sourceTriangles": 25212,
+      "file": "gargoyle_stone/gargoyle_stone.glb",
+      "sha256": "88e3170369f12a98e3a05ca72793a8872b3f11ac7248460ba65aaa6b5b0b138f",
+      "triangles": 5999,
+      "size": [
+        24.169,
+        36.503,
+        21.028
+      ],
+      "processing": "ground-centred, decimated to 6000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "scarecrow",
+      "title": "Scarecrow",
+      "uid": "dd66376c24f246f28b10a67f047b8d6a",
+      "page": "https://sketchfab.com/3d-models/dd66376c24f246f28b10a67f047b8d6a",
+      "author": "Baardus",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/dd66376c24f246f28b10a67f047b8d6a (download API)",
+      "sourceSha256": "800e1fa057799d195b602ef96d0620a82a51045b23b20ea990e266cc3ac5c112",
+      "sourceTriangles": 1680,
+      "file": "scarecrow/scarecrow.glb",
+      "sha256": "af4e2e4d58221965939e483b8c01cb68ead747db5dae43b532fcffee0acfb309",
+      "triangles": 1680,
+      "size": [
+        78.863,
+        104.559,
+        18.184
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "topiary_pot",
+      "title": "Plant Model",
+      "uid": "72f4a9ae709144e6bb5dd93080d48bfc",
+      "page": "https://sketchfab.com/3d-models/72f4a9ae709144e6bb5dd93080d48bfc",
+      "author": "Meet_Savani",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/72f4a9ae709144e6bb5dd93080d48bfc (download API)",
+      "sourceSha256": "58eddd24bae5a9ab68671c05a03a6d40f42f655d715f5401e2349ba730575c90",
+      "sourceTriangles": 1388,
+      "file": "topiary_pot/topiary_pot.glb",
+      "sha256": "1f96c83b89a92deecf7d5c2d4882cb445d85a4802fca8aef2d684c34043c5f22",
+      "triangles": 1388,
+      "size": [
+        4.304,
+        7.994,
+        4.526
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "cactus_pot",
+      "title": "Another cactus",
+      "uid": "044cd2cde7e84eaa8786631184783d41",
+      "page": "https://sketchfab.com/3d-models/044cd2cde7e84eaa8786631184783d41",
+      "author": "siapap",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-038/044cd2cde7e84eaa8786631184783d41.glb",
+      "sourceSha256": "e004a018b7536522155d09c05cceed84f5e7b52cfa08f6287e6f660b6e3ecc7e",
+      "sourceTriangles": 1438,
+      "file": "cactus_pot/cactus_pot.glb",
+      "sha256": "25d87634a7739dccff078940235b0b7c46a36f890c0b93f7ff3862f3d141e542",
+      "triangles": 1438,
+      "size": [
+        222.565,
+        293.88,
+        222.565
+      ],
+      "processing": "ground-centred, decimated to 2000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "succulent_pot",
+      "title": "Adromischus succulent young",
+      "uid": "de99d6d321f441a2b595a2d7b37a5b4e",
+      "page": "https://sketchfab.com/3d-models/de99d6d321f441a2b595a2d7b37a5b4e",
+      "author": "matousekfoto",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-068/de99d6d321f441a2b595a2d7b37a5b4e.glb",
+      "sourceSha256": "766e589618fa4c683cde504c84676a2e21e06942401c207d31fabd2a60236922",
+      "sourceTriangles": 75400,
+      "file": "succulent_pot/succulent_pot.glb",
+      "sha256": "4b27a98245a7777429ffaaaf2ee5396d0820eea71bb8614ada65623dac8788af",
+      "triangles": 4996,
+      "size": [
+        0.125,
+        0.164,
+        0.14
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "origami_crane",
+      "title": "3D Origami crane",
+      "uid": "38fe6bfec0664af3b7660b2d18cfaf94",
+      "page": "https://sketchfab.com/3d-models/38fe6bfec0664af3b7660b2d18cfaf94",
+      "author": "JuanG3D",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-114/38fe6bfec0664af3b7660b2d18cfaf94.glb",
+      "sourceSha256": "a53759d559bf2611aba5c4a7b4ccd1af44bc2bed19386412c2ee94fefdd2904c",
+      "sourceTriangles": 219,
+      "file": "origami_crane/origami_crane.glb",
+      "sha256": "27baf433ba0f2c1e6191873a135f9a706833b6555a3453821f1778aa61fe3e25",
+      "triangles": 219,
+      "size": [
+        4.514,
+        1.526,
+        4.514
+      ],
+      "processing": "ground-centred, decimated to 1000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "tea_set",
+      "title": "Japanese Tea Set",
+      "uid": "99c0bcbb59fa4efebbb918df747e86a5",
+      "page": "https://sketchfab.com/3d-models/99c0bcbb59fa4efebbb918df747e86a5",
+      "author": "Geraldo Pratama Wahyu Teddy",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-103/99c0bcbb59fa4efebbb918df747e86a5.glb",
+      "sourceSha256": "6307c1bd223f332773b796c018fe89af2fa2422b5e7939a1c32635a732f11ab0",
+      "sourceTriangles": 9038,
+      "file": "tea_set/tea_set.glb",
+      "sha256": "28869439f393a7a2a500d08b71ce4b6ecb63f60b83f115ad5fab827b614ac258",
+      "triangles": 4991,
+      "size": [
+        17.525,
+        3.643,
+        11.454
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "wasabi",
+      "title": "Wasabi",
+      "uid": "0dbd9ff6e2224d3aa5bcd64c822e6c5d",
+      "page": "https://sketchfab.com/3d-models/0dbd9ff6e2224d3aa5bcd64c822e6c5d",
+      "author": "Just8",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-150/0dbd9ff6e2224d3aa5bcd64c822e6c5d.glb",
+      "sourceSha256": "1707f0e3910a83873b064c7e34bc1bea819b78c7bec854fbd03376743691773b",
+      "sourceTriangles": 23988,
+      "file": "wasabi/wasabi.glb",
+      "sha256": "35d9944fcef17d7659cd37979ee6bdfa748d2aca73d8006f419d8a46d97e90fc",
+      "triangles": 2999,
+      "size": [
+        18.223,
+        8.397,
+        18.241
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "feathers",
+      "title": "3 Great Feathers Pack",
+      "uid": "ee6a816aa4bf46e399a0169ed826c276",
+      "page": "https://sketchfab.com/3d-models/ee6a816aa4bf46e399a0169ed826c276",
+      "author": "Incg5764",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/ee6a816aa4bf46e399a0169ed826c276 (download API)",
+      "sourceSha256": "b297f827acddfc0067ea7960c9fdb8d2c263e427cbb50504012cfb210407bc3f",
+      "sourceTriangles": 230,
+      "file": "feathers/feathers.glb",
+      "sha256": "a5b0ee7b2a560589f16cce870c89100e964b2270b163cebfecfd08cbb50efde4",
+      "triangles": 230,
+      "size": [
+        1.484,
+        1.0,
+        0.101
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "froe",
+      "title": "Old Axe Froe Lowpoly Gameready",
+      "uid": "5181f87808504ed7a405d8f7b9e098a4",
+      "page": "https://sketchfab.com/3d-models/5181f87808504ed7a405d8f7b9e098a4",
+      "author": "valterjherson1",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/5181f87808504ed7a405d8f7b9e098a4 (download API)",
+      "sourceSha256": "603b1334cef601ef8ed5db9b3377fbbc42a6de4ea4e699523242620252ad92e9",
+      "sourceTriangles": 920,
+      "file": "froe/froe.glb",
+      "sha256": "40fdc5edf04ba35dad0916495cd25bfd21421701caad1973c0c9615530201f08",
+      "triangles": 920,
+      "size": [
+        0.032,
+        0.275,
+        0.696
+      ],
+      "processing": "ground-centred, decimated to 2000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "vise",
+      "title": "vise",
+      "uid": "73561953482e4527a37f678d5fcad010",
+      "page": "https://sketchfab.com/3d-models/73561953482e4527a37f678d5fcad010",
+      "author": "John_Constantine",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-152/73561953482e4527a37f678d5fcad010.glb",
+      "sourceSha256": "e460a07d46d0d50f93d26237fab3d7ee0639f09c3e3266e281714c4b194088ab",
+      "sourceTriangles": 2977,
+      "file": "vise/vise.glb",
+      "sha256": "2ed502dcebcf9ee48fb67b2419ad161084d2287e8895d71805b8038e5ac64b7d",
+      "triangles": 2977,
+      "size": [
+        26.908,
+        25.355,
+        54.93
+      ],
+      "processing": "ground-centred, decimated to 3000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "fern_wall",
+      "title": "Realistic HD Common polypody fern (23/55)",
+      "uid": "b99bb3d69eb84965ad70a6b2b6a1f2dd",
+      "page": "https://sketchfab.com/3d-models/b99bb3d69eb84965ad70a6b2b6a1f2dd",
+      "author": "PlantCatalog",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/b99bb3d69eb84965ad70a6b2b6a1f2dd (download API)",
+      "sourceSha256": "f2ea486a8a2b4c462f9966e85930e33146c6f31df962617ee39fe855f9ce8450",
+      "sourceTriangles": 6694,
+      "file": "fern_wall/fern_wall.glb",
+      "sha256": "b3cdfc5ce8cec43bbfb4d9a6d1459890094cc58673ceee0d07f68a383d3b9259",
+      "triangles": 4996,
+      "size": [
+        1.048,
+        0.434,
+        0.361
+      ],
+      "processing": "ground-centred, decimated to 5000 triangles, textures capped at 1024 px"
+    },
+    {
+      "id": "farm_plants",
+      "title": "Farm plants models (mobile game-ready, lowpoly)",
+      "uid": "9b59e7cf3bcd4feb80ff0cf5fb780055",
+      "page": "https://sketchfab.com/3d-models/9b59e7cf3bcd4feb80ff0cf5fb780055",
+      "author": "LOLIPOP",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceUrl": "https://sketchfab.com/3d-models/9b59e7cf3bcd4feb80ff0cf5fb780055 (download API)",
+      "sourceSha256": "a7f71ee810b41c66847421716b75d2c43a892c679c2b8d02674aa1d5a36db0df",
+      "sourceTriangles": 9265,
+      "file": "farm_plants/farm_plants.glb",
+      "sha256": "09ff8bee80ef8ffcc2958ca05a8fe721c026d292e9f2443e0d7247ea334525db",
+      "triangles": 9265,
+      "size": [
+        8.219,
+        5.152,
+        3.415
+      ],
+      "processing": "ground-centred, decimated to 12000 triangles, textures capped at 1024 px; single plants split out by scripts/blender-split-variants.py into split/plant_N.gltf (shared split/textures)",
+      "variants": {
+        "plant_1": "Carrot_Plants",
+        "plant_10": "Onion_Plants",
+        "plant_21": "Potato_Plants"
+      }
     }
   ]
 }

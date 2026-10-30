@@ -133,8 +133,9 @@ static func _recolor(node: Node3D, spec: Dictionary) -> void:
 
 static func _one(reconstruction: RefCounted, model: String, found: Dictionary, scale: float) -> Node3D:
 	# "Objaverse/name" entries are reduced museum/Sketchfab scans (Art/Objaverse);
-	# "Reduced/set/set_N" one variant split out of a Poly Haven nature set.
-	var path := "Objaverse/%s/%s.glb" % [model.trim_prefix("Objaverse/"),model.trim_prefix("Objaverse/")] if model.begins_with("Objaverse/") else (("%s.gltf" % model if ResourceLoader.exists("res://Art/%s.gltf" % model) else "%s.glb" % model) if model.begins_with("Reduced/") else "PolyHaven/%s/%s_1k.gltf" % [model,model])
+	# "Reduced/set/set_N" one variant split out of a Poly Haven nature set;
+	# "Objaverse/set/split/part_N" one variant split out of a pinned scan set.
+	var path := ("Objaverse/%s.gltf" % model.trim_prefix("Objaverse/") if "/" in model.trim_prefix("Objaverse/") else "Objaverse/%s/%s.glb" % [model.trim_prefix("Objaverse/"),model.trim_prefix("Objaverse/")]) if model.begins_with("Objaverse/") else (("%s.gltf" % model if ResourceLoader.exists("res://Art/%s.gltf" % model) else "%s.glb" % model) if model.begins_with("Reduced/") else "PolyHaven/%s/%s_1k.gltf" % [model,model])
 	if not ResourceLoader.exists("res://Art/"+path): return null
 	var probe: Node3D = reconstruction.fitted(path,Vector3.ONE)
 	probe.free()

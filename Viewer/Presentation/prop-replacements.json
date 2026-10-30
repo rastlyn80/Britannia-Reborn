@@ -4457,6 +4457,167 @@
   "contribution statue": {
    "model": "Objaverse/stone_lantern",
    "height": 1.3
+  },
+  "pylon": {
+   "model": "Objaverse/pyramid_stepped",
+   "assembly": "footprint",
+   "length": 2.0
+  },
+  "hammock": {
+   "model": "Objaverse/hammock_stand",
+   "assembly": "footprint",
+   "length": 2.6
+  },
+  "sea coral south": {
+   "model": "Objaverse/coral_pocillopora",
+   "length": 0.9,
+   "material": {
+    "color": "6a4c34",
+    "metallic": 0.0,
+    "roughness": 0.9
+   }
+  },
+  "brambles": {
+   "model": "Objaverse/bramble_twigs",
+   "height": 1.0,
+   "material": {
+    "color": "9a8a50",
+    "metallic": 0.0,
+    "roughness": 0.9
+   }
+  },
+  "miso": {
+   "model": "Objaverse/tajine_pot",
+   "length": 0.3
+  },
+  "futon": {
+   "model": "Objaverse/futon",
+   "assembly": "footprint",
+   "length": 2.0
+  },
+  "fan": {
+   "model": "Objaverse/hand_fan",
+   "length": 0.3,
+   "lay": true
+  },
+  "corn stalk": {
+   "model": "Objaverse/corn_plant",
+   "height": 2.0
+  },
+  "totem east": {
+   "model": "Objaverse/totem_pole",
+   "height": 2.6,
+   "size": [
+    0.55,
+    2.6,
+    0.5
+   ]
+  },
+  "totemsmall east": {
+   "model": "Objaverse/totem_pole",
+   "height": 1.7,
+   "size": [
+    0.45,
+    1.7,
+    0.42
+   ]
+  },
+  "barrel lid": {
+   "model": "Objaverse/barrel_lid",
+   "length": 0.55
+  },
+  "fishing weight": {
+   "model": "Objaverse/lead_weight",
+   "length": 0.12
+  },
+  "morning glory": {
+   "model": "Objaverse/morning_glory",
+   "height": 0.8
+  },
+  "shackle": {
+   "model": "Objaverse/shackles_iron2",
+   "height": 0.9,
+   "anchor": "back"
+  },
+  "bookstand": {
+   "model": "Objaverse/bookstand_wood",
+   "height": 1.2
+  },
+  "pulley": {
+   "model": "Objaverse/pulley_nautical",
+   "height": 0.6,
+   "elevation": 1.4
+  },
+  "stone gargoyle": {
+   "model": "Objaverse/gargoyle_stone",
+   "height": 1.4
+  },
+  "scarecrow": {
+   "model": "Objaverse/scarecrow",
+   "height": 2.0
+  },
+  "decorative topiary": {
+   "model": "Objaverse/topiary_pot",
+   "height": 1.1
+  },
+  "potted cactus": {
+   "model": "Objaverse/cactus_pot",
+   "height": 0.5
+  },
+  "festive cactus": {
+   "model": "Objaverse/succulent_pot",
+   "height": 0.45
+  },
+  "origami": {
+   "model": "Objaverse/origami_crane",
+   "length": 0.2
+  },
+  "tea set": {
+   "model": "Objaverse/tea_set",
+   "length": 0.45
+  },
+  "wasabi": {
+   "model": "Objaverse/wasabi",
+   "length": 0.18
+  },
+  "feathers": {
+   "model": "Objaverse/feathers",
+   "length": 0.3,
+   "lay": true
+  },
+  "froe": {
+   "model": "Objaverse/froe",
+   "length": 0.4,
+   "lay": true
+  },
+  "vise": {
+   "model": "Objaverse/vise",
+   "length": 0.35
+  },
+  "wall fern east": {
+   "model": "Objaverse/fern_wall",
+   "height": 0.7
+  },
+  "head of lettuce": {
+   "model": "Objaverse/cabbage",
+   "length": 0.22
+  },
+  "carrots": {
+   "model": "Objaverse/farm_plants/split/plant_1",
+   "length": 0.95
+  },
+  "onions": {
+   "model": "Objaverse/farm_plants/split/plant_10",
+   "length": 0.95
+  },
+  "turnip": {
+   "model": "Objaverse/farm_plants/split/plant_21",
+   "length": 0.95
+  },
+  "sprouts": {
+   "model": "Objaverse/farm_plants/split/plant_10",
+   "height": 0.32,
+   "cluster": 2
   }
  }
 }
