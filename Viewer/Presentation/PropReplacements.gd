@@ -110,6 +110,27 @@ static func _palette(node: Node3D, palette: Dictionary) -> void:
 						repaints[key] = material
 					instance.set_surface_override_material(surface,repaints[key])
 
+# One hue of an atlas texture repainted ({"from": hex, "to": hex, "reach":
+# chroma distance}): the petals of a flower scan in another colour.
+static func _recolor(node: Node3D, spec: Dictionary) -> void:
+	for mesh in node.find_children("*","MeshInstance3D",true,false):
+		var instance := mesh as MeshInstance3D
+		for surface in instance.mesh.get_surface_count():
+			var source := instance.mesh.surface_get_material(surface) as BaseMaterial3D
+			if source == null or source.albedo_texture == null: continue
+			var key := "recolor/%s/%s" % [JSON.stringify(spec),source.get_instance_id()]
+			if not repaints.has(key):
+				var material := ShaderMaterial.new()
+				material.shader = preload("res://Presentation/Recolor.gdshader")
+				material.set_shader_parameter("albedo_tex",source.albedo_texture)
+				material.set_shader_parameter("has_normal",source.normal_enabled and source.normal_texture != null)
+				material.set_shader_parameter("normal_tex",source.normal_texture)
+				material.set_shader_parameter("from_color",Color(str(spec.get("from","f0d020"))))
+				material.set_shader_parameter("to_color",Color(str(spec.get("to","f4f1e8"))))
+				material.set_shader_parameter("reach",float(spec.get("reach",0.2)))
+				repaints[key] = material
+			instance.set_surface_override_material(surface,repaints[key])
+
 static func _one(reconstruction: RefCounted, model: String, found: Dictionary, scale: float) -> Node3D:
 	# "Objaverse/name" entries are reduced museum/Sketchfab scans (Art/Objaverse);
 	# "Reduced/set/set_N" one variant split out of a Poly Haven nature set.
@@ -128,6 +149,7 @@ static func _one(reconstruction: RefCounted, model: String, found: Dictionary, s
 	var placed: Node3D = reconstruction.fitted(path,Vector3(found.size[0],found.size[1],found.size[2])*scale if found.has("size") else box.size*factor)
 	if found.has("material"): _repaint(placed,found.material)
 	if found.has("palette"): _palette(placed,found.palette)
+	if found.has("recolor"): _recolor(placed,found.recolor)
 	if lay:
 		# fitted() stands the model on y = 0, centred in x and z.
 		var size := box.size*factor

@@ -19,10 +19,22 @@ const SPECIES := {
 	"tuscany pine":["ponderosa_1","ponderosa_2"],
 	"cypress tree":["spruce_2","spruce_3"],
 	"spider tree":["dead_tree_01","dead_tree_06","dead_oak_01"],
+	# Seasonal looks (seasonal()): autumn, bare and snow-white trees.
+	"fall leaves":["woa_01","a_beech_01","a_tree_01"],
+	"red maple":["woa_01","a_beech_01"],
+	"yellow willow":["dead_tree_06","wtree_02_01"],
+	"bare oak":["wtree_02_01","dead_tree_01","wtreeb_01_01"],
+	"bare plum":["wtree_01_01","wtreeb_01_01"],
+	"white tree":["wtreebf_01_01","wtreesnow_01_01"],
+	"silversapling leaves":["wtreesnow_01_01","wtreebf_01_01"],
 }
+# Graphics UO draws leafless, autumn-red or white whatever crown they carry.
+const SEASONAL_IDS := {8779:"yellow willow",8780:"bare oak",8781:"bare oak",9334:"white tree",9335:"white tree",9336:"red maple",9337:"red maple",9338:"red maple",9339:"red maple",9340:"red maple",9341:"red maple",9342:"red maple",9965:"bare plum",9966:"bare plum"}
 # Presented heights in metres; proportions are kept (uniform scale).
-const HEIGHTS := {"sapling":2.6,"apple tree":4.6,"peach tree":4.4,"spider tree":5.5,"cedar tree":8.5,"tuscany pine":9.0,"cypress tree":8.0}
+const HEIGHTS := {"fall leaves":4.6,"bare plum":4.4,"white tree":5.2,"silversapling leaves":4.0,"sapling":2.6,"apple tree":4.6,"peach tree":4.4,"spider tree":5.5,"cedar tree":8.5,"tuscany pine":9.0,"cypress tree":8.0}
 const DEFAULT_HEIGHT := 7.2
+# Leaf colour multipliers per species (the pack has no crimson autumn tree).
+const TINTS := {"red maple":Color(1.0,0.42,0.38)}
 static var catalog: Dictionary = {}
 static var loaded := false
 static var meshes: Dictionary = {}
@@ -35,6 +47,13 @@ static func available() -> bool:
 			var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(CATALOG))
 			if parsed is Dictionary: catalog = parsed.get("items",parsed.get("trees",{}))
 	return not catalog.is_empty()
+
+# The seasonal species for a tree graphic or the crowns in its cell, or "".
+static func seasonal(id: int, crowns: String) -> String:
+	if SEASONAL_IDS.has(id): return SEASONAL_IDS[id]
+	for crown in ["fall leaves","silversapling leaves"]:
+		if crown in crowns: return crown
+	return ""
 
 static func variants(tree_name: String) -> Array:
 	var names: Array = []
@@ -92,11 +111,13 @@ static func pick(tree_name: String, x: int, y: int) -> String:
 	var names := variants(tree_name)
 	return "" if names.is_empty() else str(names[absi(x*73856093^y*19349663)%names.size()])
 
-static func material(name: String, leaves: bool, group := "trees") -> StandardMaterial3D:
-	var key := group+"/"+name+("/leaves" if leaves else "/bark")
+static func material(name: String, leaves: bool, group := "trees", tint := Color.WHITE) -> StandardMaterial3D:
+	if not leaves: tint = Color.WHITE
+	var key := group+"/"+name+("/leaves" if leaves else "/bark")+("" if tint == Color.WHITE else "/"+tint.to_html())
 	if not materials.has(key):
 		var surface := StandardMaterial3D.new()
 		surface.albedo_texture = load(BASE+"/"+group+"/"+name+"/diffuse.png")
+		surface.albedo_color = tint
 		surface.roughness = 0.85 if leaves else 0.95
 		surface.specular_mode = BaseMaterial3D.SPECULAR_SCHLICK_GGX
 		if leaves:
@@ -115,7 +136,7 @@ static func build(tree_name: String, x: int, y: int) -> Node3D:
 	var instance := MeshInstance3D.new()
 	instance.mesh = source
 	for surface in source.get_surface_count():
-		instance.set_surface_override_material(surface,material(name,"leav" in source.surface_get_name(surface)))
+		instance.set_surface_override_material(surface,material(name,"leav" in source.surface_get_name(surface),"trees",TINTS.get(tree_name,Color.WHITE)))
 	instance.transform = placement(tree_name,name,x,y)
 	instance.set_meta("lod_cell",true)
 	var node := Node3D.new()

@@ -77,6 +77,9 @@ var fence_cells := {}
 var footprints := {}
 # Slices of large multi-tile trees (ordinal -> {anchor, offset, span}).
 var tree_slices := {}
+# Crown names over each trunk (ordinal -> "leaves, fall leaves"): autumn and
+# snow crowns pick seasonal species.
+var tree_crowns := {}
 var presentation_adjustments := {}
 var contextual_suppressed := 0
 var floors := preload("res://Presentation/FloorPlan.gd").new()
@@ -84,6 +87,12 @@ var supports := preload("res://Presentation/SupportPlan.gd").new()
 var bridges := preload("res://Presentation/BridgePlan.gd").new()
 var timber_bridges := preload("res://Presentation/TimberBridge.gd").new()
 var windows := preload("res://Presentation/WindowDressing.gd").new()
+
+# Furniture whose tiledata name omits its material (Ter Mur's dark stone
+# benches are just "bench"): the name its builders and catalogue read.
+const STONE_FURNITURE := [15871,15872]
+static func furniture_name(name: String, id: int) -> String:
+	return "dark stone "+name if id in STONE_FURNITURE and not "stone" in name.to_lower() else name
 
 static func info(world: Dictionary, id: int, statics: bool) -> Dictionary:
 	var data = world.get("staticData" if statics else "landData")
@@ -130,6 +139,7 @@ func index(world: Dictionary) -> void:
 	fence_cells.clear()
 	_plan_footprints(world)
 	var trees := {}
+	tree_crowns.clear()
 	var beds := {}
 	var arches := {}
 	for i in world.statics.size():
@@ -145,7 +155,9 @@ func index(world: Dictionary) -> void:
 		var s: Dictionary = world.statics[i]
 		if rule_for(s.id).get("kind") != "canopy": continue
 		var cell := Vector3i(s.x,s.y,s.z)
-		if trees.has(cell): _group([trees[cell],i],world,"tree")
+		if trees.has(cell):
+			_group([trees[cell],i],world,"tree")
+			tree_crowns[trees[cell]] = str(tree_crowns.get(trees[cell],""))+", "+str(info(world,int(s.id),true).get("name",""))
 	var visited := {}
 	for cell in beds:
 		if visited.has(cell): continue
@@ -900,7 +912,7 @@ func masonry_furniture_material(stone: String) -> StandardMaterial3D:
 		material.uv1_triplanar = true
 		material.uv1_world_triplanar = true
 		material.uv1_scale = Vector3.ONE*0.9
-		material.albedo_color = Color({"marble":"f4f1ea"}.get(stone,"ffffff"))
+		material.albedo_color = Color({"marble":"f4f1ea","dark":"5c5d63"}.get(stone,"ffffff"))
 		masonry_furniture_materials[stone] = material
 	return masonry_furniture_materials[stone]
 
@@ -1349,7 +1361,8 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 			if not found.is_empty(): rule = rule.merged({"slot":found[0],"slotSize":found[1]}.merged({"slotCount":found[2]} if int(found[2]) > 1 else {}))
 		# Modern Britain: table and bench runs become library pieces along the run.
 		# Stone, marble and sandstone furniture keeps its masonry, never library timber.
-		var masonry_furniture := "stone" in str(detail.get("name","")).to_lower() or "marble" in str(detail.get("name","")).to_lower()
+		var furniture := furniture_name(str(detail.get("name","")),int(s.id)).to_lower()
+		var masonry_furniture := "stone" in furniture or "marble" in furniture
 		var furniture_slot: String = {"table":"table","bench":"bench"}.get(kind,"") if preload("res://Presentation/GraphicsMode.gd").modern() and tint.is_empty() and not masonry_furniture else ""
 		if furniture_slot != "" and preload("res://Presentation/LocalLibrary.gd").has(furniture_slot):
 			var span: Vector2 = groups[ordinal].size if groups.has(ordinal) else Vector2.ONE
@@ -1359,7 +1372,7 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 		# Photoscanned CC0 replacements by item name (prop-replacements.json).
 		if visual == null and preload("res://Presentation/PropReplacements.gd").applies(kind) and not groups.has(ordinal): visual = preload("res://Presentation/PropReplacements.gd").build(self,str(detail.get("name","")),int(s.x)*7919+int(s.y)*104729,int(s.id))
 		# Simple objects built from photoscanned materials (CraftedProps.gd).
-		if visual == null and preload("res://Presentation/PropReplacements.gd").applies(kind) and not groups.has(ordinal) and preload("res://Presentation/CraftedProps.gd").handles(str(detail.get("name","")).to_lower()): visual = preload("res://Presentation/CraftedProps.gd").build(str(detail.get("name","")),int(s.x)*7919+int(s.y))
+		if visual == null and preload("res://Presentation/PropReplacements.gd").applies(kind) and not groups.has(ordinal) and preload("res://Presentation/CraftedProps.gd").handles(str(detail.get("name","")).to_lower()): visual = preload("res://Presentation/CraftedProps.gd").build(str(detail.get("name","")),int(s.x)*7919+int(s.y),int(s.id))
 		if kind in ["prop","asset"] and footprints.has(ordinal) and not groups.has(ordinal): visual = _footprint_visual(ordinal,str(detail.get("name","")),int(s.id),visual)
 		# Furniture that stands against a wall ("face": "wall") turns its back to it.
 		elif visual != null and kind in ["prop","asset"] and str(preload("res://Presentation/PropReplacements.gd").entry_for(str(detail.get("name","")),int(s.id)).get("face","")) == "wall":
@@ -1372,12 +1385,12 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 		# Counters follow their real footprint (L and U shapes) cell by cell.
 		if visual == null and kind == "counter" and tint.is_empty(): visual = counter_run(s,groups.get(ordinal,{"indices":[ordinal],"min_z":float(s.z)}),world)
 		# Wooden benches are runs of the scanned bench whatever their review says.
-		var scanned_bench := kind == "bench" and tint.is_empty() and not ("stone" in str(detail.get("name","")).to_lower() or "marble" in str(detail.get("name","")).to_lower()) and ResourceLoader.exists("res://Art/Objaverse/bench_scan/bench_scan.glb")
+		var scanned_bench := kind == "bench" and tint.is_empty() and not masonry_furniture and ResourceLoader.exists("res://Art/Objaverse/bench_scan/bench_scan.glb")
 		if visual == null and not scanned_bench and (preload("res://Presentation/ReviewedCatalog.gd").scanned(int(s.id)) or not (modern and rule.has("slot") and preload("res://Presentation/LocalLibrary.gd").has(str(rule.slot)))):
 			visual = preload("res://Presentation/ReviewedCatalog.gd").build(self,int(s.id),groups.get(ordinal,{}))
 		# Owner-library model for graphics outside the reviewed city (local only),
 		# and in Britain when modern graphics are selected.
-		if visual == null and rule.has("slot") and (not tint.is_empty() or modern):
+		if visual == null and rule.has("slot") and (not tint.is_empty() or modern) and not (masonry_furniture and kind in ["bench","table"]):
 			var fit: Array = rule.get("slotSize",[0.8,0.8,0.8])
 			var library := preload("res://Presentation/LocalLibrary.gd")
 			visual = library.pile(str(rule.slot),int(s.x),int(s.y),Vector3(fit[0],fit[1],fit[2]),int(rule.slotCount)) if rule.has("slotCount") else library.build(str(rule.slot),int(s.x),int(s.y),Vector3(fit[0],fit[1],fit[2]))
@@ -1571,8 +1584,8 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					if kind == "bench":
 						if size.y > size.x: size.x = 0.5
 						else: size.y = 0.5
-					var bench_name := str(detail.get("name","")).to_lower()
-					var table_name := str(detail.get("name","")).to_lower()
+					var bench_name := furniture_name(str(detail.get("name","")),int(s.id)).to_lower()
+					var table_name := bench_name
 					if kind == "table" and not ("stone" in table_name or "marble" in table_name or "sandstone" in table_name) and ResourceLoader.exists("res://Art/Objaverse/table_wood_b/table_wood_b.glb"):
 						visual = trestle_run(size)
 					elif kind == "bench" and not ("stone" in bench_name or "marble" in bench_name) and ResourceLoader.exists("res://Art/Objaverse/bench_scan/bench_scan.glb"):
@@ -1591,8 +1604,8 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 							geometry.crafted_box(visual,Vector3(0.24,top-slab,depth*0.8) if long_x else Vector3(depth*0.8,top-slab,0.24),Vector3(at,(top-slab)/2,0) if long_x else Vector3(0,(top-slab)/2,at),"ffffff")
 					else: visual = geometry.furniture(size,kind)
 					# Stone and marble tables keep their material, not timber.
-					var table_surface := preload("res://Presentation/Facade.gd").surface_for(str(detail.get("name","")))
-					if table_surface != "wood" and ("stone" in str(detail.get("name","")).to_lower() or "marble" in str(detail.get("name","")).to_lower() or "sandstone" in str(detail.get("name","")).to_lower()):
+					var table_surface := "dark" if "dark stone" in bench_name else preload("res://Presentation/Facade.gd").surface_for(bench_name)
+					if table_surface != "wood" and ("stone" in bench_name or "marble" in bench_name or "sandstone" in bench_name):
 						for mesh in visual.find_children("*","MeshInstance3D",true,false): mesh.material_override = masonry_furniture_material(table_surface)
 				# Signposts are drawn by the server sign they carry (board, arm and
 				# wall bracket); the source stub alone read as bent iron remnants.
@@ -1607,6 +1620,8 @@ func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
 					# Owner-licensed converted trees when present locally; CC0 library otherwise.
 					# A crown without a trunk in its cell is a whole tree of its species.
 					var species := name if kind == "tree" else ("oak tree" if "oak" in name else ("walnut tree" if "walnut" in name else ("cedar tree" if "cedar" in name or "needles" in name else ("willow tree" if "willow" in name else "tree"))))
+					var season := preload("res://Presentation/LocalTrees.gd").seasonal(int(s.id),str(tree_crowns.get(ordinal,"")) if kind == "tree" else name)
+					if season != "": species = season
 					# Graphics listed in a scan entry's "only_ids" (bare dead trees) draw that scan.
 					var scan_tree: Dictionary = preload("res://Presentation/PropReplacements.gd").entry_for(name,int(s.id)) if kind == "tree" else {}
 					if not scan_tree.get("only_ids",false): scan_tree = {}

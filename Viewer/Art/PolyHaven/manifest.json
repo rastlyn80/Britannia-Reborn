@@ -1917,6 +1917,146 @@
           "bytes": 151771
         }
       ]
+    },
+    {
+      "id": "quiver_tree_02",
+      "name": "Quiver Tree 02",
+      "source": "https://polyhaven.com/a/quiver_tree_02",
+      "authors": [
+        "Dario Barresi",
+        "Rico Cilliers"
+      ],
+      "polycount": 153887,
+      "files": [
+        {
+          "path": "quiver_tree_02/quiver_tree_02_1k.gltf",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/quiver_tree_02/quiver_tree_02_1k.gltf",
+          "sourceMd5": "1002e67d6921204df06b9a97f4f30cff",
+          "sha256": "c92ea2f60defaa9c134f43ac606bb7564ade348f92b546ba91c87bc6365d1a56",
+          "bytes": 2809
+        },
+        {
+          "path": "quiver_tree_02/quiver_tree_02.bin",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/quiver_tree_02/quiver_tree_02.bin",
+          "sourceMd5": "63635d61c58151eb4fb0b2caaf6b373c",
+          "sha256": "fd3598b4aea34bc6864452d2dbb37a04e4bfa7ad1ab6062a3b97c485fae258f3",
+          "bytes": 2060604
+        },
+        {
+          "path": "quiver_tree_02/textures/quiver_tree_02_arm_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/quiver_tree_02/quiver_tree_02_arm_1k.jpg",
+          "sourceMd5": "36d19d0ef3d38ed92c557d9eb2203302",
+          "sha256": "5d12b154c534503b68766dca96f6486fa0faeb22734b300c58ede695deb2915e",
+          "bytes": 759729
+        },
+        {
+          "path": "quiver_tree_02/textures/quiver_tree_02_nor_gl_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/quiver_tree_02/quiver_tree_02_nor_gl_1k.jpg",
+          "sourceMd5": "5ddb37eb256e324a0929e465d429f5a7",
+          "sha256": "5073a1d9563331d8a7bc57a36cae9f1d1d69470395be0c460a12c57026b5f1f0",
+          "bytes": 988408
+        },
+        {
+          "path": "quiver_tree_02/textures/quiver_tree_02_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/quiver_tree_02/quiver_tree_02_diff_1k.jpg",
+          "sourceMd5": "7f14325c48fc30112476b851d7e05232",
+          "sha256": "546a745ad765529d3c310178321e145909f4817b06679788ad24d29ec7eae7b7",
+          "bytes": 736321
+        }
+      ]
+    },
+    {
+      "id": "celandine_01",
+      "name": "Celandine 01",
+      "source": "https://polyhaven.com/a/celandine_01",
+      "authors": [
+        "Rob Tuytel",
+        "Rico Cilliers"
+      ],
+      "polycount": 1746764,
+      "files": [
+        {
+          "path": "celandine_01/celandine_01_1k.gltf",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/celandine_01/celandine_01_1k.gltf",
+          "sourceMd5": "b043292dd6b94b83129f49ad7e775cd4",
+          "sha256": "ae54536f79b426e69c33449b75a89b86fb127f91342445c26cc4142c5f4220d5",
+          "bytes": 8770
+        },
+        {
+          "path": "celandine_01/textures/celandine_01_nor_gl_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/celandine_01/celandine_01_nor_gl_1k.jpg",
+          "sourceMd5": "ebc32eefb50c3da0159e5fa62248f561",
+          "sha256": "060fc4533ce82b9f9c9e86362920ba1a1934ba5a670bdd77aa803622ceec34ff",
+          "bytes": 410515
+        },
+        {
+          "path": "celandine_01/textures/celandine_01_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/celandine_01/celandine_01_diff_1k.jpg",
+          "sourceMd5": "d064076be42627d3e41e25af39131ae9",
+          "sha256": "d21558d8d101fd6601d620018f9efd2878b559666099aac3ab05df17da833b5f",
+          "bytes": 398468
+        },
+        {
+          "path": "celandine_01/textures/celandine_01_arm_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/celandine_01/celandine_01_arm_1k.jpg",
+          "sourceMd5": "f56d64e9d0e313d118ab4103afb5a1ef",
+          "sha256": "c04ac3ed56abfbb5193d59016c5b680ca3e53130518084e69c805f2edc1ad6e7",
+          "bytes": 382047
+        },
+        {
+          "path": "celandine_01/celandine_01.bin",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/celandine_01/celandine_01.bin",
+          "sourceMd5": "ee7bd43b52b65b9e2aaa0ae8cf6e8042",
+          "sha256": "7d2c6d2cc44da3a0c08e0fea725af42becdcbb06635d968f42892a1a3dfae7d6",
+          "bytes": 325768
+        }
+      ]
+    },
+    {
+      "id": "flower_heliophila",
+      "name": "Flower Heliophila",
+      "source": "https://polyhaven.com/a/flower_heliophila",
+      "authors": [
+        "Jenelle van Heerden"
+      ],
+      "polycount": 324914,
+      "files": [
+        {
+          "path": "flower_heliophila/flower_heliophila_1k.gltf",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/flower_heliophila/flower_heliophila_1k.gltf",
+          "sourceMd5": "0f0838e09b55edfe74ab34ef7d6980ea",
+          "sha256": "629274399d44a1a9c8666d7a341bf7c5b2083c3ec292166cb23419ff9eb192b1",
+          "bytes": 5983
+        },
+        {
+          "path": "flower_heliophila/textures/flower_heliophila_nor_gl_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/flower_heliophila/flower_heliophila_nor_gl_1k.jpg",
+          "sourceMd5": "7dee360a2a64500056b1ce0f3cfefba9",
+          "sha256": "ab22e05c1f350a2f95914049f832bb52817e951142b259aec751e16a4a75d54a",
+          "bytes": 501286
+        },
+        {
+          "path": "flower_heliophila/textures/flower_heliophila_arm_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/flower_heliophila/flower_heliophila_arm_1k.jpg",
+          "sourceMd5": "769a32a15f4d73465a12f1f3fa05c948",
+          "sha256": "61c7a47fdf8ff0f5251c0f569588efefad7856b3b069d07c1c025d18a1420e22",
+          "bytes": 444561
+        },
+        {
+          "path": "flower_heliophila/textures/flower_heliophila_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/flower_heliophila/flower_heliophila_diff_1k.jpg",
+          "sourceMd5": "5bc66662e45e47c957bcc893dcc79161",
+          "sha256": "50a3eb8afd206eff0ea95ff73db7dc3ca9188d3e120d93a708d2a72790fa0240",
+          "bytes": 377527
+        },
+        {
+          "path": "flower_heliophila/flower_heliophila.bin",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/flower_heliophila/flower_heliophila.bin",
+          "sourceMd5": "68a757b5563acc23b3d92959f6c07c2d",
+          "sha256": "dd5cba0ea1890ed9dc2e13e109551cefd069fe47bb34f8deb2b302af76b2bab1",
+          "bytes": 2519780
+        }
+      ]
     }
   ]
 }

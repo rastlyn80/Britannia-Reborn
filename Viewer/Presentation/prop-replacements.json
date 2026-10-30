@@ -4117,6 +4117,147 @@
     "Bottom": "3a5a2a",
     "Pedals": "6b2c8f"
    }
+  },
+  "white poppies": {
+   "models": [
+    "Reduced/celandine_01/celandine_01_2",
+    "Reduced/celandine_01/celandine_01_3",
+    "Reduced/celandine_01/celandine_01_0"
+   ],
+   "cluster": 6,
+   "height": 0.55,
+   "recolor": {
+    "from": "f2d020",
+    "to": "f4f1ea"
+   }
+  },
+  "yucca": {
+   "model": "Reduced/quiver_tree_02/quiver_tree_02",
+   "height": 2.6,
+   "recolor": {
+    "from": "56522e",
+    "to": "3f6e26",
+    "reach": 0.3
+   },
+   "size": [
+    1.3,
+    2.7,
+    1.3
+   ]
+  },
+  "flax": {
+   "models": [
+    "Reduced/periwinkle_plant/periwinkle_plant_3",
+    "Reduced/periwinkle_plant/periwinkle_plant_4",
+    "Reduced/periwinkle_plant/periwinkle_plant_5"
+   ],
+   "cluster": 3,
+   "height": 0.8,
+   "recolor": {
+    "from": "b84a9a",
+    "to": "5a86d8",
+    "reach": 0.3
+   }
+  },
+  "cotton": {
+   "models": [
+    "Reduced/flower_heliophila/flower_heliophila_0",
+    "Reduced/flower_heliophila/flower_heliophila_1",
+    "Reduced/flower_heliophila/flower_heliophila_2"
+   ],
+   "cluster": 2,
+   "height": 0.8
+  },
+  "gargoyle bed (south)": {
+   "model": "GothicBed_01",
+   "assembly": "footprint",
+   "length": 1.0
+  },
+  "gargoyle bed (east)": {
+   "model": "GothicBed_01",
+   "assembly": "footprint",
+   "length": 1.0
+  },
+  "gargoyle couch (sout": {
+   "model": "Objaverse/chair_zakopane",
+   "height": 1.5,
+   "rotation": 270
+  },
+  "gargoyle couch (east": {
+   "model": "Objaverse/chair_zakopane",
+   "height": 1.5,
+   "rotation": 0
+  },
+  "gargoyle chair (sout": {
+   "model": "Objaverse/chair_old",
+   "height": 1.4,
+   "rotation": 225
+  },
+  "gargoyle chair (east": {
+   "model": "Objaverse/chair_old",
+   "height": 1.4,
+   "rotation": 315
+  },
+  "gargoyle chest (sout": {
+   "model": "Objaverse/chest_medieval",
+   "length": 0.9,
+   "rotation": 0
+  },
+  "gargoyle chest (east": {
+   "model": "Objaverse/chest_medieval",
+   "length": 0.9,
+   "rotation": 90
+  },
+  "gargoyle dresser (ea": {
+   "model": "Objaverse/cabinet_old",
+   "height": 1.8,
+   "face": "wall"
+  },
+  "gargoyle dresser (so": {
+   "model": "Objaverse/cabinet_old",
+   "height": 1.8,
+   "face": "wall"
+  },
+  "gargoyle banner (sou": {
+   "model": "Objaverse/banner_worn",
+   "height": 2.2,
+   "rotation": 90,
+   "anchor": "back",
+   "elevation": 0.6
+  },
+  "gargoyle banner (eas": {
+   "model": "Objaverse/banner_worn",
+   "height": 2.2,
+   "rotation": 0,
+   "anchor": "back",
+   "elevation": 0.6
+  },
+  "boots": {
+   "model": "Objaverse/boots_old",
+   "length": 0.32,
+   "recolor": {
+    "from": "4a3020",
+    "to": "262628",
+    "reach": 0.4
+   }
+  },
+  "limes": {
+   "model": "Objaverse/lime",
+   "length": 0.12,
+   "cluster": 3
+  },
+  "squash": {
+   "model": "Objaverse/pumpkin",
+   "length": 0.32,
+   "recolor": {
+    "from": "c8601e",
+    "to": "d8b52e",
+    "reach": 0.3
+   }
+  },
+  "arcanist statue": {
+   "model": "Objaverse/statue_angel",
+   "height": 1.2
   }
  }
 }

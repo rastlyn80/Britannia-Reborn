@@ -213,7 +213,7 @@ func upsert(serial: int, item: Dictionary) -> void:
  # Simple objects built from photoscanned materials (CraftedProps.gd).
  var crafted_name := str(rule.get("display_name",scene.world.get("staticData",{}).get(str(int(item.id)),{}).get("name","")))
  if not str(rule.family) in FIXED_FAMILIES and not preload("res://Presentation/PropReplacements.gd").has(crafted_name,int(item.id)) and preload("res://Presentation/CraftedProps.gd").handles(crafted_name):
-  var crafted: Node3D = preload("res://Presentation/CraftedProps.gd").build(crafted_name,serial)
+  var crafted: Node3D = preload("res://Presentation/CraftedProps.gd").build(crafted_name,serial,int(item.id))
   crafted.name = "CraftedVisual"
   root.add_child(crafted)
   _body(root,Vector3(0.6,0.5,0.6),Vector3(0,0.25,0),serial,(int(rule.get("flags",0))&64)!=0)

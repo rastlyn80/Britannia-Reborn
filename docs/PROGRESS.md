@@ -1,3 +1,36 @@
+# Item catalogue wave 14 — 30 October 2026
+
+Owner request: carry on with the item catalogue, choosing free art without asking.
+
+**Seasonal trees** (owner tree pack, local): bare, autumn and white trees all drew the same green tree. `LocalTrees.seasonal()` now picks by graphic or by the crowns over a trunk (`Reconstruction.tree_crowns`):
+- bare oak, plum and willow → leafless species;
+- maple → autumn tree with crimson-tinted leaves (`TINTS`, also used by the baked far trees);
+- fruit trees with "fall leaves" crowns → autumn species;
+- cherry and silver sapling → snow-white species.
+
+**New CC0 Poly Haven models:**
+- **Yucca:** quiver tree, slimmed, leaves recoloured green.
+- **White poppies:** celandine, petals recoloured white.
+- **Flax:** periwinkle (already pinned), petals recoloured blue.
+- **Cotton:** heliophila.
+
+**Code changes:**
+- New `Recolor.gdshader` behind a `recolor` key in prop-replacements, which repaints one hue of an atlas texture.
+- **Gravestones** are crafted per graphic (`CraftedProps._grave`, which now receives the graphic id) in tinted stone: obelisks, carved columns, rose spires, needles, round-top single and double tablets, blocks, posts and fallen stones (43 graphics).
+- **Ter Mur stone benches** (15871/15872) are dark masonry instead of timber (`Reconstruction.furniture_name`).
+- **Gargoyle furniture** now uses existing scans: beds (Gothic bed), couches and chairs (carved chairs, facings checked), chests, dressers and banners.
+- **Other existing scans now in use:** boots, limes, squash (pumpkin recoloured), arcanist statue.
+
+**Counts:** world 92.3% → 92.9% (832 → 761 graphics open); Britain 98.0% → 98.4% (65 → 51 open). Sheets are local only (`trees14b`, `plants14`, `plants14b`, `garg14c`, `garg14d`, `graves14`, `food14`).
+
+**Next:**
+- big elven chair, small elven tapestry and harpsichord (crafted);
+- large vases, icicles, muck, wheat sheaves, rocks/boulders kit look;
+- Ter Mur architecture (floor tile 39807, angle walls, staitcube, exodus nexus);
+- donuts, cooked bird, onions crop, mandrake, grapevines.
+
+The Britain bake rebuilds once on next launch (Reconstruction changed).
+
 # Item catalogue wave 13 — 30 October 2026
 
 Owner request: carry on with the item catalogue.

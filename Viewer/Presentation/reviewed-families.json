@@ -4689,6 +4689,91 @@
    ],
    "note": "oak crown: drawn by its trunk's whole oak from the owner tree packs, as for the approved crowns 3291/3294",
    "sheet": "w13trees"
+  },
+  {
+   "ids": [
+    3479,
+    3483,
+    3487,
+    3491,
+    3495,
+    3499,
+    3511,
+    8778,
+    8779,
+    8780,
+    8781,
+    9334,
+    9335,
+    9336,
+    9337,
+    9338,
+    9339,
+    9340,
+    9341,
+    9342,
+    9965,
+    9966
+   ],
+   "note": "seasonal trees from the owner tree pack: bare oak/plum/willow, crimson-tinted autumn maple, autumn fruit-tree crowns, snow-white cherry and silver sapling (LocalTrees.seasonal), checked against the original art",
+   "sheet": "trees14b"
+  },
+  {
+   "ids": [
+    3151,
+    3152,
+    3153,
+    3154,
+    3155,
+    3156,
+    3213,
+    3383,
+    3384,
+    6809,
+    6810,
+    6811
+   ],
+   "note": "white poppies (Poly Haven celandine, petals recoloured white), yucca (Poly Haven quiver tree, slimmed, leaves recoloured green), flax (periwinkle, petals recoloured blue), cotton (heliophila); checked against the original art",
+   "sheet": "plants14"
+  },
+  {
+   "ids": [
+    15871,
+    15872,
+    16396,
+    16397,
+    16398,
+    16399,
+    16419,
+    16420,
+    16421,
+    16422,
+    16423,
+    16424,
+    16425,
+    16426,
+    16427,
+    16428,
+    16429,
+    16430,
+    16439,
+    16440
+   ],
+   "note": "Ter Mur furniture: dark stone benches (masonry), gargoyle beds (Gothic bed), couches and chairs (carved chair scans, facings checked), chests, dressers (cabinet), banners; checked against the original art",
+   "sheet": "garg14c"
+  },
+  {
+   "ids": [
+    3186,
+    3187,
+    5899,
+    5900,
+    5931,
+    11534,
+    11535
+   ],
+   "note": "boots (scanned boots, darkened), limes, squash (pumpkin scan recoloured yellow), arcanist statue (angel statue scan)",
+   "sheet": "food14"
   }
  ]
 }

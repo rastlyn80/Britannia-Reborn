@@ -27,9 +27,21 @@ const NAMES := {
 	"leather gorget":"gorget:leather:6a4628","studded gorget":"gorget:studded:5a3a20","platemail gorget":"gorget:plate:b8bcc2","bone armor":"bones:armor","bone gloves":"bones:gloves","bone legs":"bones:legs",
 	"raw cotton":"cotton","bridle":"bridle","prow":"prow","dart trap":"darttrap","serpent crest":"crest","void essence":"essence","covered chair":"coveredchair","iron maiden":"ironmaiden",
 	"century plant":"agave","backpack":"backpack","pampas grass":"pampas","memorial to gwenno":"memorial","horse barding":"barding",
+	"gravestone":"grave",
 	"glass":"glassmug","dice and cup":"dice","eggs":"eggs","egg case":"eggcase","lockpick":"picks:1","lockpicks":"picks:3","spike trap":"spikes","hatch":"hatch","rope ladder":"ropeladder","brush":"brush","coconut":"coconut","full apron":"garment:apron:9a968a","half apron":"garment:apron:9a968a",
 }
 static var materials := {}
+# Gravestone shapes and stone by graphic (the original art): obelisks, carved
+# columns, rose-marble spires, tall needles, round-topped tablets (single and
+# double), low inscribed blocks, posts and fallen half-buried stones.
+const GRAVES := {
+	3796:"obelisk",3797:"obelisk",3798:"obelisk:mossy",3803:"column",3804:"column",3805:"spire:rose",3806:"spire:rose",
+	4483:"needle",4484:"needle:sand",3801:"fallen:sand",3802:"fallen:sand",
+	4461:"block",4462:"block",4463:"block",4464:"block",4465:"post:sand",4466:"post:sand",4467:"post",4468:"post:mossy",
+	4471:"double:sand",4472:"double",3799:"tablet:sand",3800:"tablet:sand",4453:"tablet:sand",4454:"tablet:sand",
+	4457:"tablet:rose",4458:"tablet:rose",4470:"double:rose",4474:"tablet:dark",4479:"tablet:dark",4481:"tablet:mossy",
+}
+const STONES := {"grey":"9a9a98","sand":"c8b294","rose":"b07a6c","dark":"55565a","mossy":"7f8a74"}
 
 static func handles(name: String) -> bool:
 	return NAMES.has(_key(name))
@@ -86,6 +98,51 @@ static func _torus(p: Node3D, inner: float, outer: float, at: Vector3, m: Materi
 static func _sphere(p: Node3D, r: float, at: Vector3, m: Material) -> MeshInstance3D:
 	var mi := MeshInstance3D.new(); var s := SphereMesh.new(); s.radius = r; s.height = r*2; mi.mesh = s; mi.material_override = m; mi.position = at; p.add_child(mi); return mi
 
+static func _grave(root: Node3D, shape: String, id: int) -> void:
+	var stone := _mat("mk_limewash",Color(STONES.get(shape.get_slice(":",1),STONES.grey)),0.0,0.9,3.0)
+	var form := shape.get_slice(":",0)
+	match form:
+		"obelisk","spire","needle":
+			var tall: float = {"obelisk":1.15,"spire":1.3,"needle":2.3}[form]
+			var width: float = {"obelisk":0.34,"spire":0.28,"needle":0.24}[form]
+			_box(root,Vector3(width+0.3,0.14,width+0.3),Vector3(0,0.07,0),stone)
+			_box(root,Vector3(width+0.14,0.12,width+0.14),Vector3(0,0.2,0),stone)
+			_cyl(root,width*0.5,tall,Vector3(0,0.26+tall/2,0),stone,Vector3(0,PI/4,0),width*0.68,4)
+			_cyl(root,0.0,width*0.55,Vector3(0,0.26+tall+width*0.27,0),stone,Vector3(0,PI/4,0),width*0.36,4)
+			if form == "spire": _sphere(root,0.06,Vector3(0,0.26+tall+width*0.6,0),stone)
+		"column":
+			_box(root,Vector3(0.55,0.16,0.55),Vector3(0,0.08,0),stone)
+			_cyl(root,0.17,1.0,Vector3(0,0.66,0),stone,Vector3.ZERO,0.19,14)
+			for y in [0.4,0.66,0.92]: _torus(root,0.16,0.21,Vector3(0,y,0),stone)
+			_box(root,Vector3(0.42,0.1,0.42),Vector3(0,1.2,0),stone)
+			_sphere(root,0.14,Vector3(0,1.36,0),stone)
+		"post":
+			_box(root,Vector3(0.34,0.1,0.3),Vector3(0,0.05,0),stone)
+			_box(root,Vector3(0.22,0.85,0.18),Vector3(0,0.52,0),stone)
+			_cyl(root,0.0,0.16,Vector3(0,1.02,0),stone,Vector3(0,PI/4,0),0.16,4)
+		"block":
+			_box(root,Vector3(0.75,0.4,0.42),Vector3(0,0.2,0),stone)
+			_box(root,Vector3(0.62,0.08,0.34),Vector3(0,0.44,0),stone)
+			_box(root,Vector3(0.5,0.22,0.02),Vector3(0,0.22,0.215),_mat("mk_limewash",Color("6a6a68"),0.0,0.9,6.0))
+		"fallen":
+			# A round-topped stone tipped over and half sunk in the turf.
+			_cyl(root,0.3,0.12,Vector3(0,0.03,0),stone,Vector3(0.25,0,0),-1,18)
+		"double":
+			_box(root,Vector3(0.8,0.12,0.3),Vector3(0,0.06,0),stone)
+			for x in [-0.19,0.19]: _tablet(root,stone,0.34,0.62,Vector3(x,0.12,0))
+		_:
+			_box(root,Vector3(0.6,0.1,0.28),Vector3(0,0.05,0),stone)
+			_tablet(root,stone,0.5,0.62,Vector3(0,0.1,0))
+	# Graphics drawn the other way round face east.
+	if id % 2 == 0 and not form in ["obelisk","spire","needle","column"]: root.rotation.y = PI/2
+
+# A round-topped stone tablet with a sunken inscription panel, front +Z.
+static func _tablet(root: Node3D, stone: Material, width: float, height: float, at: Vector3) -> void:
+	var body := height-width/2
+	_box(root,Vector3(width,body,0.12),at+Vector3(0,body/2,0),stone)
+	_cyl(root,width/2,0.12,at+Vector3(0,body,0),stone,Vector3(PI/2,0,0),-1,20)
+	_box(root,Vector3(width*0.62,body*0.5,0.01),at+Vector3(0,body*0.55,0.062),_mat("mk_limewash",Color("5e5e5c"),0.0,0.9,6.0))
+
 static func _model(p: Node3D, path: String, size: float, at := Vector3.ZERO, rot := Vector3.ZERO, tint: Variant = null) -> Node3D:
 	if not ResourceLoader.exists(path): return null
 	var n: Node3D = (load(path) as PackedScene).instantiate()
@@ -111,7 +168,8 @@ static func _model(p: Node3D, path: String, size: float, at := Vector3.ZERO, rot
 	p.add_child(holder)
 	return holder
 
-static func build(name: String, seed := 0) -> Node3D:
+# id: the graphic, for pieces whose shape varies by graphic (gravestones).
+static func build(name: String, seed := 0, id := -1) -> Node3D:
 	var kind: String = NAMES.get(_key(name),"")
 	if kind == "": return null
 	var root := Node3D.new()
@@ -548,5 +606,6 @@ static func build(name: String, seed := 0) -> Node3D:
 			for sx in [-1.0,1.0]: _box(root,Vector3(0.04,0.34,0.012),Vector3(sx*0.09,0.2,-0.085),_mat("brown_mud_dry",Color("5a3a1e"),0.0,0.6,6.0))
 		"bar":
 			_box(root,Vector3(0.3,0.03,0.05),Vector3(0,0.015,0),_iron())
+		"grave": _grave(root,str(GRAVES.get(id,"tablet")),id)
 	for mi in root.find_children("*","MeshInstance3D",true,false): (mi as MeshInstance3D).cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	return root

@@ -100,23 +100,28 @@ func make_far(near: Node3D, sources: Array, frame: Vector2, catalog: Dictionary)
   var local_trees:=preload("res://Presentation/LocalTrees.gd")
   if local_trees.available():
    # Owner-licensed trees: per-variant coarse surfaces, same placement as near.
+   # Keyed "variant|species" so tinted seasonal leaves batch apart.
    var by_variant: Dictionary={}
    for record in trees:
     var tile: Dictionary=record.tile
     var tree_name:=str(catalog_names.get(str(int(tile.id)),"tree"))
+    var season:=local_trees.seasonal(int(tile.id),"")
+    if season!="":tree_name=season
     var variant:=local_trees.pick(tree_name,int(tile.x),int(tile.y))
     if variant.is_empty():continue
-    if not by_variant.has(variant):by_variant[variant]=[]
-    by_variant[variant].append(Transform3D(Basis.IDENTITY,Vector3(tile.x-frame.x+0.5,float(tile.z)*0.2,tile.y-frame.y+0.5))*local_trees.placement(tree_name,variant,int(tile.x),int(tile.y)))
-   for variant in by_variant:
+    var key:=variant+"|"+(tree_name if local_trees.TINTS.has(tree_name) else "")
+    if not by_variant.has(key):by_variant[key]=[]
+    by_variant[key].append(Transform3D(Basis.IDENTITY,Vector3(tile.x-frame.x+0.5,float(tile.z)*0.2,tile.y-frame.y+0.5))*local_trees.placement(tree_name,variant,int(tile.x),int(tile.y)))
+   for key in by_variant:
+    var variant:=str(key).get_slice("|",0)
     for part in local_trees.far_surfaces(variant):
      var far_tree:=preload("res://Presentation/InstancedPatch.gd").new()
      far_tree.source_mesh=part.mesh
-     far_tree.material_override=local_trees.material(variant,part.leaves)
+     far_tree.material_override=local_trees.material(variant,part.leaves,"trees",local_trees.TINTS.get(str(key).get_slice("|",1),Color.WHITE))
      far_tree.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-     far_tree.instance_data=preload("res://Presentation/InstancedPatch.gd").encode(by_variant[variant])
-     var bounds: AABB=by_variant[variant][0]*part.mesh.get_aabb()
-     for transform in by_variant[variant]:bounds=bounds.merge(transform*part.mesh.get_aabb())
+     far_tree.instance_data=preload("res://Presentation/InstancedPatch.gd").encode(by_variant[key])
+     var bounds: AABB=by_variant[key][0]*part.mesh.get_aabb()
+     for transform in by_variant[key]:bounds=bounds.merge(transform*part.mesh.get_aabb())
      far_tree.baked_bounds=bounds.grow(0.25)
      result.add_child(far_tree)
    return result

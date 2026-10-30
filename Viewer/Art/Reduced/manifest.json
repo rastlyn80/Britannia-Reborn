@@ -747,6 +747,133 @@
       "sha256": "bee1178d2d94a1e464b75ef30d20a4de159e94a57b2db78f9161d2a41dcacf84",
       "sourceTriangles": 46868,
       "triangles": 2996
+    },
+    {
+      "id": "quiver_tree_02",
+      "source": "Art/PolyHaven/quiver_tree_02/quiver_tree_02_1k.gltf",
+      "sourceSha256": "c92ea2f60defaa9c134f43ac606bb7564ade348f92b546ba91c87bc6365d1a56",
+      "license": "CC0-1.0",
+      "page": "https://polyhaven.com/a/quiver_tree_02",
+      "file": "quiver_tree_02/quiver_tree_02.glb",
+      "sha256": "a734c907c5330dbaff39886abc8a18d420347b0b8efc6f2ffc945295848fd3d4",
+      "sourceTriangles": 82074,
+      "triangles": 6000
+    },
+    {
+      "id": "celandine_01",
+      "source": "Art/PolyHaven/celandine_01/celandine_01_1k.gltf",
+      "sourceSha256": "ae54536f79b426e69c33449b75a89b86fb127f91342445c26cc4142c5f4220d5",
+      "license": "CC0-1.0",
+      "page": "https://polyhaven.com/a/celandine_01",
+      "split": true,
+      "variants": [
+        {
+          "file": "celandine_01/celandine_01_0.gltf",
+          "object": "celandine_01_a_LOD0",
+          "sha256": "f2899ae30ba988ede52a0ff40c9e84a306cfd3adadc1af84cb3bbf142b5c72de",
+          "sourceTriangles": 622,
+          "triangles": 622,
+          "size": [
+            0.276,
+            0.186,
+            0.228
+          ]
+        },
+        {
+          "file": "celandine_01/celandine_01_1.gltf",
+          "object": "celandine_01_b_LOD0",
+          "sha256": "381a019a81596e5efd81d40934834a616d0ab55a747b20e18bc1189cc1fb008a",
+          "sourceTriangles": 599,
+          "triangles": 599,
+          "size": [
+            0.252,
+            0.145,
+            0.307
+          ]
+        },
+        {
+          "file": "celandine_01/celandine_01_2.gltf",
+          "object": "celandine_01_c_LOD0",
+          "sha256": "36ce693a5c461f06e1c1f47feffad1b96e3bd60612cd2bf42f303aafb2a0f91d",
+          "sourceTriangles": 4301,
+          "triangles": 1800,
+          "size": [
+            0.257,
+            0.176,
+            0.186
+          ]
+        },
+        {
+          "file": "celandine_01/celandine_01_3.gltf",
+          "object": "celandine_01_d_LOD0",
+          "sha256": "95ccf0f990f908cffef89c53e1eb45c326049b9236f6e866a1a4cf950a80ba08",
+          "sourceTriangles": 3002,
+          "triangles": 1800,
+          "size": [
+            0.187,
+            0.15,
+            0.223
+          ]
+        },
+        {
+          "file": "celandine_01/celandine_01_4.gltf",
+          "object": "celandine_01_e_LOD0",
+          "sha256": "20b7199b27fd2b346c54393b7008369782f3a3dbbd5b301201dc93ade64ff837",
+          "sourceTriangles": 442,
+          "triangles": 442,
+          "size": [
+            0.188,
+            0.124,
+            0.216
+          ]
+        }
+      ]
+    },
+    {
+      "id": "flower_heliophila",
+      "source": "Art/PolyHaven/flower_heliophila/flower_heliophila_1k.gltf",
+      "sourceSha256": "629274399d44a1a9c8666d7a341bf7c5b2083c3ec292166cb23419ff9eb192b1",
+      "license": "CC0-1.0",
+      "page": "https://polyhaven.com/a/flower_heliophila",
+      "split": true,
+      "variants": [
+        {
+          "file": "flower_heliophila/flower_heliophila_0.gltf",
+          "object": "flower_heliophila_large",
+          "sha256": "005573799ffe4e9ab83080c3b2fa3697c9bdeb3d558b92c32d414efe53caadff",
+          "sourceTriangles": 51517,
+          "triangles": 1375,
+          "size": [
+            1.648,
+            0.387,
+            1.39
+          ]
+        },
+        {
+          "file": "flower_heliophila/flower_heliophila_1.gltf",
+          "object": "flower_heliophila_medium",
+          "sha256": "ce89410dc19ab69bd27ff8f21ae6fcd5f94bc202347a91d5a70ffcaf390decdc",
+          "sourceTriangles": 32511,
+          "triangles": 1449,
+          "size": [
+            0.652,
+            0.374,
+            0.563
+          ]
+        },
+        {
+          "file": "flower_heliophila/flower_heliophila_2.gltf",
+          "object": "flower_heliophila_small",
+          "sha256": "07803c77987a26df1111b70bd7461d29d9d58a51f725f447f8d745375c793bb5",
+          "sourceTriangles": 17593,
+          "triangles": 1492,
+          "size": [
+            0.341,
+            0.267,
+            0.272
+          ]
+        }
+      ]
     }
   ]
 }

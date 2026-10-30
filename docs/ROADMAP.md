@@ -1,3 +1,9 @@
+# Human sash checkpoint — 30 October 2026
+
+Body sash (0x1541/0x1542) is connected on male/female humans with civilian and rigid plate fits. Catalogue: **248/1,126 (22.02%), 73 categories**. Native dyes preserve cloth cutouts, middle/robe layering and long hair remain independent, and no additional body masks are used. Evidence: **304 checks / 128 GPU views**, **64 hair views**, four exports / 32 actual modifier poses, eight review frames. See [HUMAN_WORKWEAR_BATCH.md](HUMAN_WORKWEAR_BATCH.md).
+
+Full/half apron waist/lap experiments still failed review and remain unmapped/uncounted. Next: a clean waist/lap seam, then surcoat/dresses and missing armour/weapon families. Exact ornament, arbitrary outfit combinations and owner art approval remain separate. Existing action counts are unchanged; no new live world-entry or multiplayer evidence.
+
 # Human wearable catalogue checkpoint — 29 October 2026
 
 Seven headwear/held-accessory gaps are connected and tested on both bodies walking/running and riding: bonnet, feathered hat, tricorne, jester hat, coif, spellbook and lantern. Catalogue: **246/1,126 (21.85%), 72 categories**. Native hues/on-off state, actual grips, coif hair/cape depth and saddle contact have finite GPU/geometry evidence. [HUMAN_TAILORING_BATCH.md](HUMAN_TAILORING_BATCH.md) records sources, reproduction and limits.
@@ -53,7 +59,7 @@ Streamed, baked (modern), populated and measured: runtime memory stays bounded (
 
 # TODO (owner requirement): complete every item at final quality — 28 October 2026
 
-Must finish: every placed graphic in every facet at final art quality, rare ones included, not just Britain. Status after Britain push 6 (8aaf22a): Britain 100.0% of 2,993 placed graphics; world 92.1% of 10,762 placed graphics, 849 still open (outputs/item-catalog/open-work.json lists them by family, most placed first; mostly Malas, Ilshenar, Tokuno and Ter Mur). Work order: (1) the 849 open world graphics, via deeper multi-query sourcing (scan first), crafted recipes in photoscanned materials only where no honest scan exists, every look checked beside its original in compare sheets; (2) replace the weaker crafted stand-ins with scans when found (gorgets, bone armour pieces, pampas grass, century plant); (3) graphics never placed on the maps but used by the server or players (wearables/equipment overlap with the character pipeline: coordinate, do not duplicate). Not done until open-work.json is empty.
+Must finish: every placed graphic in every facet at final art quality, rare ones included, not just Britain. Status after item catalogue wave 14 (30 October 2026): Britain 98.4% of 3,247 placed graphics (51 open; the counted area grew after it reached 100% of 2,993 in 8aaf22a); world 92.9% of 10,762 placed graphics, 761 still open (outputs/item-catalog/open-work.json lists them by family, most placed first; mostly Malas, Ilshenar, Tokuno and Ter Mur). Work order: (1) the open world graphics, via deeper multi-query sourcing (scan first), crafted recipes in photoscanned materials only where no honest scan exists, every look checked beside its original in compare sheets; (2) replace the weaker crafted stand-ins with scans when found (gorgets, bone armour pieces, pampas grass, century plant); (3) graphics never placed on the maps but used by the server or players (wearables/equipment overlap with the character pipeline: coordinate, do not duplicate). Not done until open-work.json is empty.
 
 # World art coverage and graphics memory checkpoint — 28 October 2026
 

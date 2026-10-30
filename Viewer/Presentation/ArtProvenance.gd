@@ -175,7 +175,8 @@ func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -
 	var review: Dictionary = Reviewed.entry(id)
 	# Counters are built cell by cell in photoscanned timber whatever their review says.
 	if str(review.get("kind",audited.get("kind",""))) == "counter": return {"status":"crafted","detail":"panelled counter in photoscanned timber"}
-	if str(review.get("kind","")) == "bench" and not ("stone" in name.to_lower() or "marble" in name.to_lower()): return pack("Objaverse/bench_scan/bench_scan.glb")
+	var furniture := preload("res://Presentation/Reconstruction.gd").furniture_name(name,id).to_lower()
+	if str(review.get("kind","")) == "bench" and not ("stone" in furniture or "marble" in furniture): return pack("Objaverse/bench_scan/bench_scan.glb")
 	if review.has("asset"):
 		var reviewed := pack(str(review.asset))
 		reviewed.detail += " (reviewed)"
@@ -202,7 +203,7 @@ func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -
 		return {"status":"built","detail":"built in code: "+Appearance.variant(id,server)}
 	var rule: Dictionary = audited if not audited.is_empty() else Rules.resolve(id,{"name":name,"height":item.height,"flags":flag_bits(item.flags)})
 	if rule.is_empty(): return {"status":"original","detail":"no 3D look yet"}
-	if rule.has("slot") and not preload("res://Presentation/Reconstruction.gd").art_tint(id).is_empty() and preload("res://Presentation/LocalLibrary.gd").has(str(rule.slot)):
+	if rule.has("slot") and not ("stone" in furniture and str(rule.get("kind","")) in ["bench","table"]) and not preload("res://Presentation/Reconstruction.gd").art_tint(id).is_empty() and preload("res://Presentation/LocalLibrary.gd").has(str(rule.slot)):
 		return {"status":"owner","detail":"your packs: %s (local library)" % rule.slot}
 	var kind := str(rule.get("kind",""))
 	var asset := str(rule.get("asset",""))
@@ -233,7 +234,7 @@ func look_for(id: int,item: Dictionary,audited: Dictionary,server: Dictionary) -
 	if kind == "arch": return {"status":"crafted","detail":"arch pier/archway built in photoscanned masonry"}
 	if kind == "post": return {"status":"crafted","detail":"post in photoscanned timber or masonry"}
 	if kind in FITTED: return pack(asset)
-	var named := name.to_lower()
+	var named := furniture
 	if kind == "counter": return {"status":"crafted","detail":"panelled counter in photoscanned timber"}
 	if kind == "carpet": return {"status":"crafted","detail":"woven rug from photoscanned fabric"}
 	if kind == "door": return {"status":"crafted","detail":"door leaf in photoscanned timber and iron"}
