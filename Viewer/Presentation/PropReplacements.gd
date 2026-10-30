@@ -20,6 +20,8 @@ static func entry(name: String) -> Dictionary:
 # pedestal height, "hide" for the extra tiles of a multi-tile piece, "skip"
 # where the name's model does not fit that graphic).
 static func entry_for(name: String, id := -1) -> Dictionary:
+	# Spell scrolls of every school share the scroll scans (spell_scroll()).
+	if id >= 0 and not spell_scroll(id).is_empty(): return spell_scroll(id)
 	var found := entry(name)
 	if found.is_empty() or id < 0: return found
 	var override: Dictionary = found.get("ids",{}).get(str(id),{})
@@ -27,6 +29,21 @@ static func entry_for(name: String, id := -1) -> Dictionary:
 	# An entry that only lists graphics ("only_ids": unnamed records) needs one of them.
 	if found.get("only_ids",false) and override.is_empty(): return {}
 	return found.merged(override,true)
+
+# Spell scrolls by graphic range: Magery, Necromancy, Spellweaving and
+# Mysticism. One of three scroll scans, tinted by school with a small hue
+# shift and size step per spell, so a shelf of scrolls is not identical.
+const SCROLL_SCHOOLS := [[0x1F2D,0x1F6C,"f0c8a8"],[0x2260,0x2270,"78b098"],[0x2D51,0x2D60,"e8d0b0"],[0x2D9E,0x2DAD,"b0a078"]]
+const SCROLL_MODELS := ["Objaverse/scroll_old","Objaverse/scroll_ancient","Objaverse/parchment_rolled"]
+static func spell_scroll(id: int) -> Dictionary:
+	for school in SCROLL_SCHOOLS:
+		if id < int(school[0]) or id > int(school[1]): continue
+		var tone := Color(str(school[2]))
+		tone.h = fposmod(tone.h+float(id%7-3)*0.025,1.0)
+		tone.v = clampf(tone.v*(0.92+float(id%5)*0.03),0.0,1.0)
+		# A small tied bundle like the original art: two or three rolls.
+		return {"models":[SCROLL_MODELS[id%SCROLL_MODELS.size()],SCROLL_MODELS[(id+1)%SCROLL_MODELS.size()]],"cluster":2+id%2,"spread":[0.03,0.05],"aligned":true,"length":0.26+float(id%4)*0.025,"lay":true,"tint":tone.to_html(false)}
+	return {}
 
 # Rule kinds built as architecture or by their own builders never take a
 # name replacement (a wall-flagged "fireplace" is masonry, a "table" a trestle
@@ -68,9 +85,23 @@ static func build(reconstruction: RefCounted, name: String, seed := 0, id := -1,
 		var placed := _one(reconstruction,model,found,random.randf_range(0.65,1.15))
 		if placed == null: continue
 		var angle := TAU*float(i)/count+random.randf_range(-0.5,0.5)
-		var radius := 0.0 if i == 0 else random.randf_range(0.12,0.3)
+		# "spread" [min, max] metres between copies (a tight bundle of scrolls).
+		var spread: Array = found.get("spread",[0.12,0.3])
+		var radius := 0.0 if i == 0 else random.randf_range(float(spread[0]),float(spread[1]))
 		placed.position = Vector3(cos(angle)*radius,0,sin(angle)*radius)
 		placed.rotation.y = random.randf_range(0,TAU)
+		# "aligned": copies lie parallel side by side (a tied bundle), stacked a little.
+		if found.get("aligned",false):
+			var boxes: Array = []
+			reconstruction._collect_bounds(placed,Transform3D.IDENTITY,boxes)
+			var long_x := true
+			if not boxes.is_empty():
+				var box: AABB = boxes[0]
+				for other in boxes: box = box.merge(other)
+				long_x = box.size.x >= box.size.z
+			var step := (float(i)-float(count-1)/2.0)*float(spread[1])
+			placed.position = Vector3(random.randf_range(-0.02,0.02) if long_x else step,0.02*float(i%2),step if long_x else random.randf_range(-0.02,0.02))
+			placed.rotation.y = random.randf_range(-0.12,0.12)
 		root.add_child(placed)
 	if root.get_child_count() == 0:
 		root.free()
@@ -131,7 +162,23 @@ static func _recolor(node: Node3D, spec: Dictionary) -> void:
 				repaints[key] = material
 			instance.set_surface_override_material(surface,repaints[key])
 
+# Multiplies a scan's own colours by a tint, keeping its texture (a dyed
+# variant of one model).
+static func _tint(node: Node3D, tone: Color) -> void:
+	for mesh in node.find_children("*","MeshInstance3D",true,false):
+		var instance := mesh as MeshInstance3D
+		for surface in instance.mesh.get_surface_count():
+			var source := instance.mesh.surface_get_material(surface) as BaseMaterial3D
+			if source == null: continue
+			var key := "tint/%s/%s" % [tone.to_html(false),source.get_instance_id()]
+			if not repaints.has(key):
+				var dyed := source.duplicate() as BaseMaterial3D
+				dyed.albedo_color = source.albedo_color*tone
+				repaints[key] = dyed
+			instance.set_surface_override_material(surface,repaints[key])
+
 static func _one(reconstruction: RefCounted, model: String, found: Dictionary, scale: float) -> Node3D:
+	if found.get("aligned",false): scale = lerpf(1.0,scale,0.3)
 	# "Objaverse/name" entries are reduced museum/Sketchfab scans (Art/Objaverse);
 	# "Reduced/set/set_N" one variant split out of a Poly Haven nature set;
 	# "Objaverse/set/split/part_N" one variant split out of a pinned scan set.
@@ -151,6 +198,7 @@ static func _one(reconstruction: RefCounted, model: String, found: Dictionary, s
 	if found.has("material"): _repaint(placed,found.material)
 	if found.has("palette"): _palette(placed,found.palette)
 	if found.has("recolor"): _recolor(placed,found.recolor)
+	if found.has("tint"): _tint(placed,Color(str(found.tint)))
 	if lay:
 		# fitted() stands the model on y = 0, centred in x and z.
 		var size := box.size*factor

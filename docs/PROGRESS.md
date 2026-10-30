@@ -1,3 +1,19 @@
+# Spell scrolls share one look — 30 October 2026
+
+Owner direction: spell scrolls reuse the same models with small variations of hue and size.
+
+`PropReplacements.spell_scroll(id)` covers all 113 scroll graphics by range: Magery 0x1F2D–0x1F6C, Necromancy 0x2260–0x2270, Spellweaving 0x2D51–0x2D60 and Mysticism 0x2D9E–0x2DAD.
+- **Look:** a tied bundle of two or three rolls made from the three scroll scans already pinned (old scroll, ancient scroll, rolled parchment), laid flat side by side.
+- **School tint:** each school has a base tint, matched to the original art: warm tan for Magery, green for Necromancy, pale tan for Spellweaving and olive for Mysticism.
+- **Per-spell variation:** each spell shifts that tint's hue and brightness slightly and gets a length step of 0.26–0.34 m.
+
+**New replacement keys:**
+- `tint` multiplies a scan's own colours while keeping its texture.
+- `spread` sets the cluster distance.
+- `aligned` lays cluster copies parallel along each model's long axis.
+
+The 113 graphics are approved. Most scrolls appear only in packs and on vendors, so the placed-graphics count moves by 6. The world stands at 559 open; Britain and Trinsic stay at 100%.
+
 # Item catalogue wave 19 — 30 October 2026
 
 Owner request: continue finding models. The sourcing run reviewed curated queries for about 55 unsearched object families on compact sheets (art beside six candidates).
