@@ -1193,6 +1193,12 @@ Saved graceful restart loaded 297 items and 3 mobiles. Population remains idempo
 
 # Progress — 25 October 2026
 
+## 31 October 2026 - Workspace tidy-up
+
+- Repository: removed Launch-Trinsic.cmd (its Britain-to-Trinsic cache is superseded by the whole-Trammel bake) and two unreferenced one-off scripts (Viewer/Presentation/ArtAudit.gd, LibraryCapture.gd). No tracked logs, captures or caches were found.
+- Local (ignored): removed about 600 old test logs and probe scripts in work/, finished throwaway server copies under work/creature-session and work/ethics-session, old review captures (work/art-review, outputs/art-review, outputs/showcase, outputs/history), the stale outputs/britain-trinsic dataset, the Trammel bake logs and old root screenshots; about 2 GB freed. Files touched in the last six hours, downloaded model sources (work/assets, free-human, free-equipment, character-expansion, third-dawn, wardrobe archives, reference) and server saves/backups were kept.
+- Remaining gap: 31 tracked art folders (about 55 MB: 27 Objaverse scans, PolyHaven/Reduced boulder_01 and fern_02) are referenced by no rule or code. Their manifests feed the bake fingerprint, so removing them would mark every Trammel district out of date; remove them together with the next facet bake.
+
 ## 31 October 2026 - Developer travel across Trammel
 
 - Esc > Developer > Travel lists ModernUO's own Trammel locations (Data/Locations/trammel.json, sent by the new loopback-only `Server/PreviewTools/PreviewTravel.cs`): 88 town places, 60 dungeon levels and 9 shrines, grouped by town or dungeon. One click moves the character there with the server's own MoveToWorld (`[PreviewGo x y z`).
