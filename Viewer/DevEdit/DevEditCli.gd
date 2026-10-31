@@ -96,7 +96,8 @@ func serve(inbox: String) -> void:
 		if ask.status == "open" and ask.answers.is_empty() and ask.author != state.me and not acknowledged.has(id):
 			acknowledged[id] = true
 			state.answer(id,ACKNOWLEDGE,send())
-		emit({"event":"conversation","id":id,"author":ask.author,"text":ask.text,"status":ask.status,"answers":ask.answers,"proposal":ask.proposal,"near":position_hint(ask.author)}))
+		var shot := State.shot_path(id)
+		emit({"event":"conversation","id":id,"author":ask.author,"text":ask.text,"status":ask.status,"answers":ask.answers,"proposal":ask.proposal,"near":position_hint(ask.author),"at":ask.get("at",{}),"shot":shot if FileAccess.file_exists(shot) else ""}))
 	state.targets_changed.connect(func(targets: Array, seq: int, author: String, action: String):
 		if action != "sync": emit({"event":"edit","revision":seq,"author":author,"action":action,"targets":targets.size()}))
 	for id in state.asks: state.conversation_changed.emit(id)

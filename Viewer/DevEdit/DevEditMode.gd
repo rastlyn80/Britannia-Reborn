@@ -54,6 +54,8 @@ var pending_ask := 0
 var ask_box: LineEdit
 var plan_label: Label
 var talk_label: Label
+var shot_taken := {}
+var shots_wanted := 0
 var claude_button: Button
 var review_button: Button
 var speak_box: CheckBox
@@ -304,7 +306,9 @@ func _voice_failed(reason: String) -> void:
 
 func ask_claude() -> void:
 	var text := ask_box.text.strip_edges()
-	if text.is_empty() or not state.ask(text,sender()): return
+	if text.is_empty(): return
+	if not state.ask(text,sender()): return
+	shots_wanted += 1
 	note("Asked Claude: "+text if claude_online() else "Asked Claude: %s (Claude is offline right now; the ask is saved)" % text)
 	ask_box.text = ""
 
@@ -549,10 +553,27 @@ func _show_talk() -> void:
 	latest.append("Claude is online." if claude_online() else "Claude is offline: asks are saved and answered when it reconnects.")
 	talk_label.text = "\n".join(latest)
 
+# What the asker saw: the world without this panel, saved for the assistant.
+func _shoot(id: int) -> void:
+	var path := State.shot_path(id)
+	DirAccess.make_dir_recursive_absolute(path.get_base_dir())
+	var was := visible
+	visible = false
+	await RenderingServer.frame_post_draw
+	var image := get_viewport().get_texture().get_image()
+	visible = was
+	if image.get_width() > 1600: image.resize(1600,int(image.get_height()*1600.0/image.get_width()))
+	image.save_png(path)
+
 func claude_online() -> bool: return state.editors.has("Claude")
 
 func _conversation_changed(id: int) -> void:
 	var ask: Dictionary = state.asks[id]
+	# Only asks sent from here now (not ones replayed when joining).
+	if ask.author == state.me and ask.status == "open" and shots_wanted > 0 and not shot_taken.has(id):
+		shots_wanted -= 1
+		shot_taken[id] = true
+		_shoot(id)
 	if ask.status == "proposed" and ask.author == state.me:
 		note("%s proposed %d command(s) for: %s" % [ask.proposed_by,ask.proposal.size(),ask.text])
 		review(ask.proposal,id)

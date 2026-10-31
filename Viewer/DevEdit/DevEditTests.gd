@@ -150,6 +150,8 @@ func conversation() -> void:
 		sent.append(t)
 		return t.length() <= 128) and sent[-1].begins_with("ask 3/3 "),"long requests split into numbered parts")
 	s.feed("ask|7|Ann Lee|make it festive")
+	s.feed("at|7|1602|1591|20|Trammel|4")
+	check(s.asks[7].at.x == 1602 and s.asks[7].at.y == 1591 and s.asks[7].at.map == "Trammel" and s.asks[7].at.facing == 4 and not s.feed("at|99|1|2|3|Trammel|0"),"the server's position of the asker is kept with the ask")
 	s.feed("prop|7|Claude|1|2|place 3206 1600 1590 20 0");s.feed("prop|7|Claude|2|2|place 3204 1601 1590 20 0")
 	check(s.asks[7].status == "proposed" and s.asks[7].proposal.size() == 2 and s.asks[7].proposed_by == "Claude","proposal assembled from parts")
 

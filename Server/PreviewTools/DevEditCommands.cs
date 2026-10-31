@@ -319,7 +319,10 @@ public static class DevEditCommands
                 if (ask != null)
                 {
                     Broadcast($"ask|{ask.Id}|{ask.Author}|{ask.Text}");
-                    Log($"ask {ask.Id} {ask.Author}: {ask.Text}");
+                    // Where the asker stands, from the server, so "here" needs no coordinates.
+                    Broadcast($"at|{ask.Id}|{mobile.X}|{mobile.Y}|{mobile.Z}|{mobile.Map}|{(int)(mobile.Direction & Direction.Mask)}");
+                    // Where the asker stands, so "here" needs no coordinates from them.
+                    Log($"ask {ask.Id} {ask.Author} at {mobile.X},{mobile.Y},{mobile.Z} {mobile.Map} facing {mobile.Direction & Direction.Mask}: {ask.Text}");
                 }
                 break;
             case "answer" when words.Length >= 3 && Parse(words[1], out var answerId):

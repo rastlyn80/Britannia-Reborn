@@ -132,6 +132,11 @@ func feed(line: String) -> bool:
 			if f.size() < 4 or not is_int(f[1]): return _bad()
 			asks[int(f[1])] = {"author":f[2],"text":"|".join(f.slice(3)),"status":"open","answers":[],"proposal":[],"proposed_by":""}
 			conversation_changed.emit(int(f[1]))
+		"at":
+			# Where the asker stood, from the server: x, y, z, map, facing.
+			if f.size() != 7 or not is_int(f[1]) or not asks.has(int(f[1])) or not is_int(f[2]) or not is_int(f[3]) or not is_int(f[4]) or not is_int(f[6]): return _bad()
+			asks[int(f[1])].at = {"x":int(f[2]),"y":int(f[3]),"z":int(f[4]),"map":f[5],"facing":int(f[6])}
+			conversation_changed.emit(int(f[1]))
 		"answer":
 			if f.size() < 4 or not is_int(f[1]) or not asks.has(int(f[1])): return _bad()
 			asks[int(f[1])].answers.append("%s: %s" % [f[2],"|".join(f.slice(3))])
@@ -158,6 +163,11 @@ func feed(line: String) -> bool:
 		_:
 			return _bad()
 	return true
+
+# The asker's client saves what it saw with each ask here (local, ignored), so
+# the assistant knows what "this" and "here" mean.
+static func shot_path(ask_id: int) -> String:
+	return ProjectSettings.globalize_path("res://../work/dev-edit-bridge/shots").path_join("ask-%d.png" % ask_id)
 
 func _bad() -> bool:
 	malformed += 1

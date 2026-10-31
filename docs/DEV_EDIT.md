@@ -199,3 +199,7 @@ Code fixes are client presentation only; collision and gameplay stay as ModernUO
 ## Responsive assistant (29 October 2026)
 
 The bridge answers every new ask at once ("Got it, I'm on it…") before Claude's real reply, and the panel's conversation list ends with "Claude is online" or "Claude is offline: asks are saved and answered when it reconnects"; asking while it is offline says so in Activity. `scripts/dev-edit-bridge.ps1` now reconnects by itself after a server restart (retry every 10 s until "quit" is written to the inbox after launch), and `-Detached` runs it in its own hidden process so it outlives the shell that started it. Client tests 77/77.
+
+## Every ask carries where and what (31 October 2026)
+
+The server follows each ask with `at|id|x|y|z|map|facing`, the asker's own position (also written to DevEdit/conversation.log), and the asker's client saves what it sees (the world without the editor panel, at most 1600 px wide) to `work/dev-edit-bridge/shots/ask-<id>.png`; the bridge's conversation events include `at` and `shot`, so "this gate here" needs no coordinates or back-and-forth. The bridge reads the whole prepared facet (Trammel once baked). Evidence: a bridge ask came back with `"at":{"x":1602,"y":1591,"z":20,"map":"Trammel","facing":2}`; client tests 79/79. The screenshot only works on the machine running the bridge (a remote collaborator's would need uploading).
