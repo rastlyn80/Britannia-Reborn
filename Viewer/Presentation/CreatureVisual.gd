@@ -13,6 +13,22 @@ var source_model_basis:=Basis.IDENTITY
 var action_profile:="monster"
 var default_model_scale:=Vector3.ONE
 func _init() -> void:asset_folder="creatures"
+func set_hue(value: int) -> void:
+	super.set_hue(value)
+	if model==null or treatment!="modern" or str(entry.get("source_alpha_texture","")).is_empty():return
+	var opacity:=load("res://local-art/creatures/"+str(entry.source_alpha_texture)) as Texture2D
+	for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
+		for surface in mesh.mesh.get_surface_count():
+			var previous:=mesh.get_surface_override_material(surface) as ShaderMaterial
+			if previous==null:continue
+			var source:=mesh.mesh.surface_get_material(surface) as StandardMaterial3D
+			var dust:=kind=="spirits_blade_spirit" and source!=null and source.resource_name.contains("dust")
+			var material:=ShaderMaterial.new();material.shader=preload("res://Presentation/CreatureDustSurface.gdshader") if dust else preload("res://Presentation/CreatureCutoutSurface.gdshader")
+			for parameter in ["albedo_texture","hue_palette","use_hue","partial_hue","detail_strength"]:
+				material.set_shader_parameter(parameter,previous.get_shader_parameter(parameter))
+			material.set_shader_parameter("source_alpha_texture",opacity)
+			material.set_shader_parameter("metallic_strength",source.metallic if source!=null else 0.)
+			mesh.set_surface_override_material(surface,material)
 func _ready() -> void:
 	kind=str(entry.kind)
 	action_profile=str(entry.get("profile","monster"))

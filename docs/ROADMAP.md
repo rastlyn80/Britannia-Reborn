@@ -1,3 +1,13 @@
+# Creature milestone: 84 native body targets / dragon and Blade Spirit renders - 31 October 2026
+
+58 generic source models/variants across 24 groups now have pose/render acceptance and 69 body routes. With the earlier mount/bovine pipelines, 84 of 275 bounded native literal targets have actual native evidence (30.5%). This is tested integration, not final art or complete-action coverage. Human wearables remain 732/1,126 (65.01%).
+
+Latest additions: giant spiders/scorpion/terathans, Blade Spirit and ghost. Common-runtime regression: 37,136 checks / 11,298 deformed samples; 726 GPU checks / 348 views, all passing. New arthropod native checks: 682; spirit native checks: 152, zero failures on the fresh isolated run. Spirit comparisons add 32 fresh frames. The source-driven rigid Blade Spirit importer, separate steel/dust materials and all-surface skin bounds preserve the actor; its recovered death flash still needs effect integration.
+
+The actual local render sheet is outputs/creatures/dragons-blade-spirit-render-sheet.png. Eight dragon forms pass 145 GPU checks and, after explicit source-unit conversion, motion/bounds checks; five stance cases still fail. Five daemon trials still fail 15 fast hit-clearance samples. Neither family is accepted or included in native coverage. Source metadata, exact saved prompts and gaps: [CREATURE_MONSTERS.md](CREATURE_MONSTERS.md). Continue those repairs and remaining families. Generated art, source inputs, IR and screenshots remain excluded from Git; preserve concurrent compact-streaming work and production saves.
+
+Full scripts/verify.ps1 exits 0, including 18 synthetic creature cases and 11 Third Dawn cases; existing unrelated diagnostics remain.
+
 # Next streaming compression steps recorded - 31 October 2026
 
 Owner decision: the first full Trammel bake (about 6 GB projected) stays as is for testing. The next bakes must add four steps: shared ocean districts, packed live-edit data, mesh vertex compression and tighter model deduplication, targeting about 3 GB for Trammel. See [COMPACT_STREAMING.md](COMPACT_STREAMING.md#next-compression-steps-owner-decision-31-october-2026-apply-on-the-next-bakes).

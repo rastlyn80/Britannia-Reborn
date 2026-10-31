@@ -6,12 +6,75 @@ from unittest.mock import patch
 spec=importlib.util.spec_from_file_location('creature_pipeline',Path(__file__).with_name('prepare-creatures.py'))
 p=importlib.util.module_from_spec(spec);spec.loader.exec_module(p)
 a=p.affine
+rigid=p.module('creature_rigid_parts_tests','creature-rigid-parts.py')
 
 def bone_payload(parent,scales):
     return struct.pack('<I16f',parent,0.,0.,0.,0.,0.,0.,1.,*scales)
 def matrix(x=1.,y=1.,z=1.):return [x,0.,0.,0.,y,0.,0.,0.,z]
 
 class CreaturePipelineTests(unittest.TestCase):
+    def test_large_unit_conversion_preserves_timing_rotation_and_source(self):
+        body={'bones':[{'name':str(i),'translation':[float(i+1),0.,0.]} for i in range(24)]}
+        animation={'bones':[{'name':str(i),'translation':[float(i+1)*100.,0.,0.]} for i in range(24)],
+                   'tracks':[{'name':'1','translation':{'times':[0.,1.],'values':[[200.,0.,0.],[250.,0.,0.]]},
+                              'rotation':{'times':[0.,1.],'values':[[0.,0.,0.,1.]]*2}}]}
+        original=copy.deepcopy(animation)
+        converted,report=p.reuse.rescale_translation_units(animation,body)
+        self.assertAlmostEqual(report['translation_factor'],.01)
+        self.assertEqual(converted['tracks'][0]['translation']['values'],[[2.,0.,0.],[2.5,0.,0.]])
+        self.assertEqual(converted['tracks'][0]['rotation'],animation['tracks'][0]['rotation'])
+        self.assertEqual(animation,original)
+        for bone in animation['bones'][:12]:bone['translation'][0]*=3.
+        with self.assertRaisesRegex(ValueError,'consistent'):p.reuse.rescale_translation_units(animation,body)
+
+    def test_rigid_parts_follow_declared_ties_not_storage_order(self):
+        rig={'bones':[{'name':'blade_a'},{'name':'blade_b'}],'ties':[1,0],'textures':['atlas.tga']}
+        part={'object_id':1,'points':[(0,0,0),(1,0,0),(0,1,0)],'normals':[(0,0,1)],
+              'uv_sets':[[(0,0,0),(1,0,0),(0,1,0)]],'polygons':[(0,1,2,0,0,0)]}
+        first=dict(copy.deepcopy(part),name='blade_a');second=dict(copy.deepcopy(part),name='blade_b',object_id=2)
+        result,report=rigid.join_parts(rig,[first,second],{0:[(2,1,0)],1:[(0,1,2)]},p.td)
+        self.assertEqual([r['bone_tie'] for r in report],[1,0])
+        self.assertEqual(result['weights'],[[(1,1.)]]*3+[[(0,1.)]]*3)
+        self.assertEqual(result['texture_polygons'],[(0,1,2),(5,4,3)])
+        with self.assertRaisesRegex(ValueError,'cover the linked mesh'):rigid.join_parts(rig,[first,second],{0:[(0,1,2)]},p.td)
+        with self.assertRaisesRegex(ValueError,'UV index'):rigid.join_parts(rig,[first],{1:[(0,1,99)]},p.td)
+        excluded,report=rigid.join_parts(rig,[first,second],{0:[(2,1,0)],1:[(0,1,2)]},p.td,excluded_names=['blade_b'])
+        self.assertEqual(len(excluded['points']),3);self.assertFalse(report[1]['body_included'])
+
+    def test_rigid_materials_share_geometry_and_partition_faces(self):
+        gltf={'meshes':[{'primitives':[{'attributes':{'POSITION':0},'mode':4,'material':0}]}],
+              'accessors':[{'count':6}],'bufferViews':[],'buffers':[{'byteLength':0,'uri':'data:application/octet-stream;base64,'}],
+              'materials':[{'pbrMetallicRoughness':{'metallicFactor':0.,'roughnessFactor':.9}}]}
+        parts=[{'name':'weapon','body_included':True,'body_face_start':0,'triangles':1},
+               {'name':'blade_spirit_gas_1','body_included':True,'body_face_start':1,'triangles':1}]
+        split=rigid.separate_materials(gltf,parts,0)
+        self.assertEqual([a['count'] for a in split['accessors'][1:]],[3,3])
+        self.assertEqual([m['pbrMetallicRoughness']['metallicFactor'] for m in split['materials']],[.85,0.])
+        self.assertEqual(len(split['meshes'][0]['primitives']),2)
+        self.assertEqual(len(gltf['materials']),1)
+        parts[1]['body_face_start']=0
+        with self.assertRaisesRegex(ValueError,'cover the exported'):rigid.separate_materials(gltf,parts,0)
+
+    def test_source_reuse_rejects_different_uvs_weights_or_rig(self):
+        model={key:[] for key in p.reuse.CONTRACT_FIELDS}
+        self.assertEqual(p.reuse.assert_exact_contract(model,copy.deepcopy(model))['fields'],p.reuse.CONTRACT_FIELDS)
+        for field in ['uv_sets','weights','bones']:
+            other=copy.deepcopy(model);other[field]=[1]
+            with self.assertRaisesRegex(ValueError,field):p.reuse.assert_exact_contract(model,other)
+
+    def test_authored_dragon_coats_keep_native_drake_scales_separate(self):
+        rows=[{'body':12,'stem':'dragons_dragon_retro_grey','scale':[1.2]*3},
+              {'body':60,'stem':'dragons_dragon_retro_grey','scale':[.6]*3},
+              {'body':59,'stem':'dragons_dragon_retro_red','scale':[1.2]*3},
+              {'body':61,'stem':'dragons_dragon_retro_red','scale':[.6]*3}]
+        original=copy.deepcopy(rows)
+        grey=p.reuse.identities('dragons_dragon_blasted',rows)
+        red=p.reuse.identities('dragons_dragon_blasted_red',rows)
+        self.assertEqual([r['body'] for r in grey],[12,60]);self.assertEqual([r['body'] for r in red],[59,61])
+        self.assertEqual(grey[1]['scale'][2]/grey[0]['scale'][2],.5)
+        grey[0]['scale'][0]=100.
+        self.assertEqual(rows,original)
+
     def test_flight_retains_source_vertical_motion_and_sampling_is_bounded(self):
         bone={'name':'root','parent':0,'translation':[0.,0.,0.],'rotation':[0.,0.,0.,1.]}
         model={'bones':[bone],'points':[(0.,0.,0.),(1.,0.,0.),(0.,0.,1.)],

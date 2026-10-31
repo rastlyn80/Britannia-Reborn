@@ -15,6 +15,8 @@ if ($LASTEXITCODE -eq 3) {
  & $godot --headless --path "$root/Viewer" --editor --import *> "$logs/import-precision.log"
  if ($LASTEXITCODE) {throw 'Creature precision-preserving resource import failed'}
 } elseif ($LASTEXITCODE -ne 0) {throw 'Creature animation import configuration failed'}
+& $godot --headless --path "$root/Viewer" --script res://Presentation/CreatureReview.gd --check-only *> "$logs/review-parse.log"
+if ($LASTEXITCODE) {throw 'Creature review script validation failed'}
 $pending=[Collections.Generic.Queue[string]]::new()
 foreach ($family in $Families) {
  & python -B "$root/scripts/check-creature-evidence.py" $family
@@ -63,11 +65,14 @@ foreach ($family in $Families) {
   $preparation=Get-Content "$root/Viewer/local-art/creatures/$family/preparation.json" -Raw|ConvertFrom-Json
   foreach ($model in $preparation.models) {
    if ($model.status -ne 'prepared') {continue}
+   $captureStarted=[DateTime]::UtcNow
    $arguments='--path "'+$root+'/Viewer" --script res://Presentation/CreatureReview.gd -- --capture --family='+$family+' --kind='+$model.kind
    $process=Start-Process $godot -ArgumentList $arguments -WorkingDirectory $root -WindowStyle Hidden -PassThru -RedirectStandardOutput "$logs/$($model.kind)-capture.log" -RedirectStandardError "$logs/$($model.kind)-capture-errors.log"
    $null=$process.Handle
    $process.WaitForExit()
    if ($process.ExitCode -ne 0) {throw "Creature review capture failed: $($model.kind)"}
+   $fresh=@(Get-ChildItem "$root/outputs/creatures/$family/$($model.kind)" -File -Filter '*.png' | Where-Object {$_.LastWriteTimeUtc -ge $captureStarted.AddSeconds(-1)})
+   if ($fresh.Count -ne 16) {throw "Creature review did not produce 16 fresh core frames: $($model.kind)"}
   }
  }
  if ($Live) {

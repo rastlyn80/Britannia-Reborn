@@ -43,7 +43,9 @@ func build() -> void:
 	for name in names:button(row,name,func():play(name))
 	button(row,"Hue 53",func():tint(53));button(row,"Default coat",func():tint(0))
 	play(clip)
-	if capture_mode:call_deferred("captures")
+	if capture_mode:
+		create_timer(90.).timeout.connect(func():push_error("Creature capture did not finish within 90 seconds");quit(1))
+		call_deferred("captures")
 func tint(hue: int) -> void:
 	for actor in actors:actor.apply_identity(0,hue)
 func play(name: String) -> void:
@@ -51,7 +53,9 @@ func play(name: String) -> void:
 	for actor in actors:actor.play(name,.1)
 func captures() -> void:
 	DirAccess.make_dir_recursive_absolute(output)
-	var names: Array[String]=capture_clips if not capture_clips.is_empty() else ["Idle","Walk","Run","Eat","Attack","Hit","Death","Fidget"]
+	var names: Array[String]=[]
+	if not capture_clips.is_empty():names.assign(capture_clips)
+	else:names.assign(["Idle","Walk","Run","Eat","Attack","Hit","Death","Fidget"])
 	for name in names:
 		if not actors[0].animator.has_animation(name):push_error("Unavailable source/replacement clip: "+name);quit(1);return
 		for angle in [["three-quarter",-.8],["side",PI/2.]]:

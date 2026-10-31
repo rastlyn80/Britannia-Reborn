@@ -4,6 +4,7 @@ const Geometry=preload("res://Presentation/SkinGeometry.gd")
 var family:="bruins"
 var checks:=0
 var failures:=0
+var failure_reasons: Dictionary={}
 var samples: Array=[]
 var terrain: Array=[]
 var models: Array=[]
@@ -13,7 +14,9 @@ func _initialize() -> void:
 	call_deferred("run")
 func check(ok: bool,label: String) -> void:
 	checks+=1
-	if not ok:failures+=1;if failures<15:push_error(label)
+	if not ok:
+		failures+=1;failure_reasons[label]=int(failure_reasons.get(label,0))+1
+		if failures<15:push_error(label)
 func run() -> void:
 	var path:="res://local-art/creatures/"+family+"/preparation.json"
 	var preparation: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(path))
@@ -79,5 +82,5 @@ func run() -> void:
 	ground.free()
 	check(not models.is_empty(),"At least one source model exercised")
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://../outputs/creatures/"+family))
-	var file:=FileAccess.open("res://../outputs/creatures/"+family+"/validation.json",FileAccess.WRITE);file.store_string(JSON.stringify({"family":family,"checks":checks,"failures":failures,"models":models,"skin_samples":samples,"terrain_samples":terrain,"scope":"Finite actual source/refined skin samples, timing, raw identities and configured collision support. No native server or universal terrain/choreography evidence."},"\t"));file.close()
+	var file:=FileAccess.open("res://../outputs/creatures/"+family+"/validation.json",FileAccess.WRITE);file.store_string(JSON.stringify({"family":family,"checks":checks,"failures":failures,"failure_reasons":failure_reasons,"models":models,"skin_samples":samples,"terrain_samples":terrain,"scope":"Finite actual source/refined skin samples, timing, raw identities and configured collision support. No native server or universal terrain/choreography evidence."},"\t"));file.close()
 	print("CREATURE POSES / ",family,": ",checks-failures," / ",checks,"; ",samples.size()," deformed samples");quit(1 if failures else 0)

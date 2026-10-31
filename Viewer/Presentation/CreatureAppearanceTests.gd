@@ -38,9 +38,28 @@ func run() -> void:
 						if Vector3(a.r-b.r,a.g-b.g,a.b-b.b).length()>.025:changed+=1
 				check(occupied>150,"Actual creature surface visible: "+str(record.kind))
 				check(float(changed)/maxi(1,occupied)>.35,"Native full hue visibly recolours actual creature: "+str(record.kind))
-				rows.append({"kind":record.kind,"clip":clip,"angle":angle,"occupied_pixels":occupied,"dyed_fraction":float(changed)/maxi(1,occupied),"asset_sha256":FileAccess.get_sha256("res://local-art/creatures/"+str(record.kind)+"-modern.gltf"),"import_sha256":FileAccess.get_sha256("res://local-art/creatures/"+str(record.kind)+"-modern.gltf.import")})
+				var dependencies: Dictionary={}
+				for name: String in record.get("art_dependency_sha256",{}):dependencies[name]=FileAccess.get_sha256("res://local-art/creatures/"+name)
+				if not str(record.get("source_alpha_texture","")).is_empty():
+					actor.apply_identity(0,0)
+					set_mask_probe(actor,true,true);var masked:=await capture()
+					set_mask_probe(actor,true,false);var solid:=await capture();var gaps:=0;var solid_pixels:=0
+					for y in range(0,420,2):
+						for x in range(0,480,2):
+							var a:=masked.get_pixel(x,y);var b:=solid.get_pixel(x,y)
+							if maxf(b.r,maxf(b.g,b.b))>.04:
+								solid_pixels+=1
+								if maxf(a.r,maxf(a.g,a.b))<.04:gaps+=1
+					check(gaps>10 and float(gaps)/maxi(1,solid_pixels)>.03,"Source opacity creates actual visible geometry gaps: "+str(record.kind))
+					set_mask_probe(actor,false,true)
+				rows.append({"kind":record.kind,"clip":clip,"angle":angle,"occupied_pixels":occupied,"dyed_fraction":float(changed)/maxi(1,occupied),"asset_sha256":FileAccess.get_sha256("res://local-art/creatures/"+str(record.kind)+"-modern.gltf"),"import_sha256":FileAccess.get_sha256("res://local-art/creatures/"+str(record.kind)+"-modern.gltf.import"),"art_dependency_sha256":dependencies})
 		actor.free()
 	check(not rows.is_empty(),"At least one model rendered")
 	var folder:="res://../outputs/creatures/"+family;DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(folder))
 	var file:=FileAccess.open(folder+"/appearance.json",FileAccess.WRITE);file.store_string(JSON.stringify({"family":family,"checks":checks,"failures":failures,"renderer":RenderingServer.get_current_rendering_method(),"samples":rows,"scope":"Actual GPU visibility and full native dye response; precise UV/anatomy review and partial dyes remain separate."},"\t"));file.close()
 	print("CREATURE GPU / ",family,": ",checks-failures," / ",checks);quit(1 if failures else 0)
+func set_mask_probe(actor: Node3D,probe: bool,mask_enabled: bool) -> void:
+	for mesh: MeshInstance3D in actor.model.find_children("*","MeshInstance3D",true,false):
+		for surface in mesh.mesh.get_surface_count():
+			var material:=mesh.get_surface_override_material(surface) as ShaderMaterial
+			material.set_shader_parameter("alpha_probe",probe);material.set_shader_parameter("use_source_alpha",mask_enabled)

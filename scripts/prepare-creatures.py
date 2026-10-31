@@ -17,6 +17,8 @@ helper = module('creature_helpers', 'prepare-distinct-mounts.py')
 td, smooth = helper.td, helper.smooth
 affine=module('creature_affine','creature-affine.py')
 repairs=module('creature_source_repairs','creature-source-repairs.py')
+reuse=module('creature_source_reuse','creature-source-reuse.py')
+rigid=module('creature_rigid_parts','creature-rigid-parts.py')
 OUTPUT = ROOT/'Viewer/local-art/creatures'
 LABELS = {'idle':'Idle','walk':'Walk','run':'Run','attack1':'Attack','attack2':'Attack2',
           'attack3':'Attack3','gethit':'Hit','die1':'Death','die2':'Death2','fidget':'Fidget',
@@ -155,12 +157,17 @@ def native_bodies():
 
 def prepare(family, z, names, rows, native):
     family_output = OUTPUT/family; family_output.mkdir(parents=True,exist_ok=True)
-    meshes = sorted(n for n in names if n.endswith('_lod2.grn') and '/models/' in n
+    members = sorted(n for n in names if n.endswith('_lod2.grn') and '/models/' in n
                     and any('/'+folder+'/' in n for folder in ['animals','monsters','seacreatures'])
                     and Path(n).name.split('_')[0]==family)
+    meshes=[(n,Path(n).name.removesuffix('_lod2.grn')) for n in members]
+    for kind,recipe in reuse.RECIPES.items():
+        if kind.split('_')[0]!=family or 'source_stem' not in recipe:continue
+        member=next(n for n in members if n.endswith('/'+recipe['source_stem']+'_lod2.grn'))
+        meshes.append((member,kind))
     by_body = {r['body']:r for r in rows}; result = []; templates = {};profiles=body_profiles()
-    for member in meshes:
-        stem = Path(member).name.removesuffix('_lod2.grn')
+    for member,stem in meshes:
+        source_stem=Path(member).name.removesuffix('_lod2.grn');recipe=reuse.RECIPES.get(stem,{})
         row = {'kind':stem,'family':family,'status':'blocked','inputs':[]}
         inputs = row['inputs']
         def read(name):
@@ -169,12 +176,21 @@ def prepare(family, z, names, rows, native):
             if record not in inputs: inputs.append(record)
             return raw
         try:
-            records = [r for r in rows if r['stem']==stem]
+            records = reuse.identities(stem,rows)
+            if recipe:row['authored_source_reuse']=dict(recipe,method='Authored reuse of preserved source geometry/material/clip inputs; not a recovered intended model-table assignment.')
             if stem=='bruins_bear_brown': records = [{'body':167,'type':2,'animation_body':211,'scale':[1.2]*3,'stem':stem}]
             row['bodies'] = [dict(r,native_sources=native.get(r['body'],[]),native_profile=profiles.get(r['body'],'')) for r in records]
             assert records, 'No explicit model-table identity; needs an authored mapping'
             raw = read(member)
-            try: body = td.parse(raw,scene_root_names=True); row['normal_repair'] = None
+            try:
+                if stem=='spirits_blade_spirit':
+                    body,parts,row['rigid_import']=rigid.read_rigid_parts(raw,td)
+                    part_path=family_output/(stem+'-rigid-parts.json')
+                    part_path.write_text(json.dumps({'source_sha256':digest(raw),'parts':parts,'report':row['rigid_import']},indent=2,allow_nan=False))
+                    row['recovered_rigid_parts']=str(part_path.relative_to(ROOT))
+                    row['separate_source_effect']='Flash-plane death effect recovered separately; not integrated into the body presentation'
+                else:body = td.parse(raw,scene_root_names=True)
+                row['normal_repair'] = None
             except ValueError as error:
                 if stem=='ettins_ettin' and str(error)=='Unnormalised skin weights':
                     body,row['skin_weight_repair']=repairs.repair_one_unweighted_vertex(raw,td)
@@ -188,25 +204,45 @@ def prepare(family, z, names, rows, native):
             # Unreferenced exporter vertices are invisible but can sit below the
             # paws; they must not dictate the visible mesh's floor correction.
             body,row['omitted_unreferenced_vertices']=visible_vertices(body)
+            donor=None
+            if 'contract_stem' in recipe:
+                reference=next(n for n in names if n.endswith('/'+recipe['contract_stem']+'_lod2.grn'))
+                donor_raw=read(reference);donor=td.parse(donor_raw,scene_root_names=True)
+                donor,_=normalise_bind(donor_raw,donor);donor,_=visible_vertices(donor)
+                row['source_reuse_contract']=reuse.assert_exact_contract(body,donor)
             assert len(set(body['textures']))==1, 'Multiple source materials need a dedicated importer'
             texture = next((n for n in names if n.endswith('/'+body['textures'][0].lower())),None)
             if texture:
                 original = td.png_from_tga(read(texture))
                 (OUTPUT/(stem+'-original-albedo.png')).write_bytes(original)
                 row['source_atlas_status']='Recovered original atlas'
+                if family in ['dragons','daemons'] or stem=='spirits_blade_spirit':
+                    row['source_alpha_texture']=stem+'-original-albedo.png'
+                    row['art_dependency_sha256']={row['source_alpha_texture']:digest(original)}
             else:
-                replacement=OUTPUT/(stem+'-albedo-v1.png')
-                assert replacement.exists(), 'Missing source atlas: '+body['textures'][0]
-                original=replacement.read_bytes()
-                assert original[:8]==b'\x89PNG\r\n\x1a\n','Expected authored replacement PNG'
-                row['source_atlas_status']='Source atlas absent; authored replacement used in all geometry comparisons, not a recovered original map'
                 row['missing_source_atlas']=body['textures'][0]
+                replacement=OUTPUT/(stem+'-albedo-v1.png')
+                if 'atlas_stem' in recipe:
+                    assert donor is not None and len(set(donor['textures']))==1
+                    reference_atlas=next(n for n in names if n.endswith('/'+donor['textures'][0].lower()))
+                    original=td.png_from_tga(read(reference_atlas))
+                    row['atlas_reference']={'member':names[reference_atlas],'contract_stem':recipe['contract_stem']}
+                    row['source_atlas_status']='Source map absent; exact-UV donor atlas used as a diagnostic baseline, not a recovered original map'
+                    (OUTPUT/(stem+'-reference-albedo.png')).write_bytes(original)
+                    if family=='daemons':
+                        row['source_alpha_texture']=stem+'-reference-albedo.png'
+                        row['art_dependency_sha256']={row['source_alpha_texture']:digest(original)}
+                else:
+                    assert replacement.exists(), 'Missing source atlas: '+body['textures'][0]
+                    original=replacement.read_bytes()
+                    assert original[:8]==b'\x89PNG\r\n\x1a\n','Expected authored replacement PNG'
+                    row['source_atlas_status']='Source atlas absent; authored replacement used in all geometry comparisons, not a recovered original map'
             animation_stem = by_body.get(records[0]['animation_body'],records[0])['stem']
             clips, clip_sources, omitted, static_poses, rejected = {}, {}, {}, [], {}
             row['rejected_source_clips']=rejected
             row['clip_sources']=clip_sources
             for suffix,label in LABELS.items():
-                stems=[stem,animation_stem]
+                stems=list(dict.fromkeys([stem,source_stem,recipe.get('clip_stem',animation_stem),animation_stem]))
                 for seed in [stem,animation_stem]:
                     parts=seed.split('_')
                     for end in range(len(parts)-1,1,-1):
@@ -237,6 +273,9 @@ def prepare(family, z, names, rows, native):
                         for b in animation['bones']]
                     static_poses.append(label)
                 clips[label],omitted[label] = helper.match_animation(animation,body)
+                if family=='dragons' and label in ['Death','Death2'] and stem not in ['dragons_dragon_asian','dragons_wyvern']:
+                    clips[label],conversion=reuse.rescale_translation_units(clips[label],body)
+                    row.setdefault('clip_unit_conversions',{})[label]=conversion
                 assert clips[label]['tracks'], 'No matched animation tracks: '+match
                 clip_sources[label] = names[match]
             aliases = {}
@@ -253,13 +292,34 @@ def prepare(family, z, names, rows, native):
                     authored[label]='Authored bounded source-rig recoil/lunge/side-fall category from the source idle pose; not recovered original choreography'
             for target,source in [('Run','Walk'),('Fidget','Idle')]:
                 if target not in clips: clips[target] = copy.deepcopy(clips[source]); aliases[target] = source
+            if family=='dragons' and 'Eat' not in clips:
+                feeding=copy.deepcopy(clips['Idle']);by_name={b['name']:i for i,b in enumerate(feeding['bones'])};orientations={}
+                def global_orientation(i):
+                    if i not in orientations:
+                        bone=feeding['bones'][i];q=td.unit(bone['rotation'])
+                        orientations[i]=td.qmul(global_orientation(bone['parent']),q) if bone['parent']!=i else q
+                    return orientations[i]
+                necks=max(1,sum('neck' in b['name'] for b in feeding['bones']))
+                for track in feeding['tracks']:
+                    name=track['name'];q=global_orientation(by_name[name]);axis=td.rotate([-q[0],-q[1],-q[2],q[3]],[1.,0.,0.])
+                    for key in ['translation','rotation']:
+                        stream=track[key]
+                        if not stream['values']:continue
+                        value=stream['values'][0];times=[2.4*j/48 for j in range(49)];values=[]
+                        for j in range(49):
+                            u=j/48;amount=math.sin(math.pi*u)**2;angle=amount*(.3/necks if 'neck' in name else .05 if 'head' in name else 0.)
+                            half=angle/2;delta=[v*math.sin(half) for v in axis]+[math.cos(half)]
+                            values.append(list(td.qmul(value,delta)) if key=='rotation' else list(value))
+                        track[key]={'times':times,'values':values}
+                clips['Eat']=feeding;authored['Eat']='Authored source-rig neck/head feeding bend with deformed-mesh floor correction; not original choreography'
             height = HEIGHTS.get(family,(max(p[2] for p in body['points'])-min(p[2] for p in body['points']))*records[0]['scale'][2])
             if stem in ['bruins_bear_grizzly','bruins_bear_polar']: height = 1.45
             scale = height/(max(p[2] for p in body['points'])-min(p[2] for p in body['points']))
             strengths = []
             for pairs in body['weights']:
                 labels = [body['bones'][body['ties'][tie]]['name'].lower() for tie,w in pairs if w>.2]
-                strengths.append(.05 if any(' foot' in n or ' hand' in n or 'finger' in n for n in labels)
+                strengths.append(0. if stem=='spirits_blade_spirit' and any(n.startswith('weapon_') for n in labels)
+                                 else .05 if any(' foot' in n or ' hand' in n or 'finger' in n for n in labels)
                                  else .3 if any('head' in n or 'ponytail' in n for n in labels) else .8)
             levels = 2 if len(body['polygons'])<600 else 1
             refined, refinement = smooth.refine(body,levels=levels,maximum=min(.04,.035/scale),strengths=strengths,weight_smoothing=.12)
@@ -269,8 +329,8 @@ def prepare(family, z, names, rows, native):
                 prompt_path=modern_path.with_suffix('.prompt.txt')
                 assert prompt_path.exists(),'Authored atlas requires its exact saved prompt'
                 row['exact_prompt']=prompt_path.read_text(encoding='utf-8-sig')
-                row['generation_mode']='built-in imagegen technical UV guide replacement' if not texture else 'built-in imagegen source atlas edit'
-                if not texture:
+                row['generation_mode']='built-in imagegen exact-UV donor atlas edit' if row.get('atlas_reference') else 'built-in imagegen technical UV guide replacement' if not texture else 'built-in imagegen source atlas edit'
+                if not texture and not row.get('atlas_reference'):
                     guide=OUTPUT/(stem+'-uv-template.png')
                     assert guide.exists(),'Missing source map replacement needs its saved technical guide'
                     row['technical_guide']={'path':str(guide.relative_to(ROOT)),'sha256':digest(guide.read_bytes())}
@@ -287,18 +347,23 @@ def prepare(family, z, names, rows, native):
                     output.write_text(json.dumps(gltf,separators=(',',':')))
                 else:
                     stats[treatment] = td.export_gltf(mesh,clips,original,output,height,
-                        floor_sample_rate=120 if stem in ['flails_swamp_tentacles','centaurs_centaur','mongbats_mongbat'] else 30,
+                        floor_sample_rate=120 if family=='dragons' or stem in ['flails_swamp_tentacles','centaurs_centaur','mongbats_mongbat','spirits_blade_spirit'] else 30,
                         preserve_vertical_clips=['Fly','TakeOff','Land','HitInAir'])
                     templates[cache_key] = (json.loads(output.read_text()),stats[treatment])
+                if row.get('source_alpha_texture') or row.get('rigid_import'):
+                    masked=json.loads(output.read_text())
+                    if row.get('rigid_import'):masked=rigid.separate_materials(masked,row['rigid_import']['parts'],0 if treatment=='original' else levels)
+                    for material in masked['materials']:material.update(alphaMode='MASK',alphaCutoff=.12)
+                    output.write_text(json.dumps(masked,separators=(',',':')))
             gltf = json.loads((OUTPUT/(stem+'-rounded.gltf')).read_text())
             gltf['images'][0]['uri'] = 'data:image/png;base64,'+base64.b64encode(modern).decode()
             (OUTPUT/(stem+'-modern.gltf')).write_text(json.dumps(gltf,separators=(',',':')))
-            row.update(status='prepared',stats=stats,refinement=refinement,clip_sources=clip_sources,
+            row.update(status='recovered_trial' if row.get('pending_render_feature') else 'prepared',stats=stats,refinement=refinement,clip_sources=clip_sources,
                        category_aliases=aliases,authored_replacements=authored,rejected_source_clips=rejected,static_source_poses=static_poses,omitted_animation_bones=omitted,
                        modern_atlas=str(modern_path.relative_to(ROOT)) if modern_path.exists() else None,
                        atlas_sha256=digest(modern),profile=profiles.get(records[0]['body']) or ('animal' if records[0]['type']==2 else 'sea' if records[0]['type']==1 else 'monster'),
                        surface='generated atlas' if modern_path.exists() else 'source atlas; new surface shader only')
-            print(stem,'PREPARED',stats['rounded']['triangles'],'triangles',flush=True)
+            print(stem,'RECOVERED TRIAL / pending material/effects' if row.get('pending_render_feature') else 'PREPARED',stats['rounded']['triangles'],'triangles',flush=True)
         except (ValueError,AssertionError,KeyError,IndexError,StopIteration) as error:
             row['blocker'] = str(error); print(stem,'BLOCKED:',error,flush=True)
         result.append(row)
@@ -331,7 +396,8 @@ def main():
                 gltf['images'][0]['uri']='data:image/png;base64,'+base64.b64encode(raw).decode()
                 (OUTPUT/(row['kind']+'-modern.gltf')).write_text(json.dumps(gltf,separators=(',',':')))
                 row.update(modern_atlas=str(atlas.relative_to(ROOT)),atlas_sha256=digest(raw),surface='generated atlas',
-                           exact_prompt=atlas.with_suffix('.prompt.txt').read_text(encoding='utf-8'),generation_mode='built-in imagegen source atlas edit')
+                           exact_prompt=atlas.with_suffix('.prompt.txt').read_text(encoding='utf-8-sig'),
+                           generation_mode='built-in imagegen exact-UV donor atlas edit' if row.get('atlas_reference') else 'built-in imagegen technical UV guide replacement' if row.get('missing_source_atlas') else 'built-in imagegen source atlas edit')
             path.write_text(json.dumps(report,indent=2),encoding='utf-8')
         return
     archive = ROOT/'work/third-dawn/uotdb.zip'

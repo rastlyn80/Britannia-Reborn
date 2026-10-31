@@ -51,8 +51,9 @@ def main():
         for row in models:
             kind=row['kind'];path=OUT/family/kind/'walk-side.png';image=''
             if path.exists():image=f'<a href="{family}/{kind}/walk-side.png"><img loading="lazy" src="{family}/{kind}/walk-side.png" alt="{html.escape(kind)} comparison"></a>'
-            status='Motion and rendering checked' if any(v['kind']==kind for v in validated) else 'Prepared trial' if row['status']=='prepared' else 'Needs repair'
-            snippets.append(f'<h3>{html.escape(kind.replace("_"," "))} — {status}</h3>'+image+(f'<p>{html.escape(row["blocker"])}</p>' if row.get('blocker') else ''))
+            status='Motion and rendering checked' if any(v['kind']==kind for v in validated) else 'Prepared trial' if row['status']=='prepared' else 'Needs material/effect work' if row.get('pending_render_feature') else 'Needs repair'
+            blocker=row.get('blocker') or row.get('pending_render_feature')
+            snippets.append(f'<h3>{html.escape(kind.replace("_"," "))} — {status}</h3>'+image+(f'<p>{html.escape(blocker)}</p>' if blocker else ''))
             atlas=ART/(kind+'-albedo-v1.png');prompt=atlas.with_suffix('.prompt.txt')
             if atlas.exists() and prompt.exists():atlases.append({'kind':kind,'image':str(atlas),'sha256':hashlib.sha256(atlas.read_bytes()).hexdigest(),'exact_prompt_file':str(prompt),'prompt':prompt.read_text(encoding='utf-8-sig'),'mode':row.get('generation_mode','built-in imagegen source atlas edit'),'source_atlas_status':row.get('source_atlas_status','See source preparation inputs'),'technical_guide':row.get('technical_guide')})
         cards.append('<section><h2>'+html.escape(family)+' / '+str(len(validated))+' validated source forms</h2><details><summary>Models, comparisons and repairs</summary>'+''.join(snippets)+'</details></section>')

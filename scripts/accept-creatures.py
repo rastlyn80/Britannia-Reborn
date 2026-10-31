@@ -14,18 +14,22 @@ def main():
         tests=json.loads((ROOT/f'outputs/creatures/{family}/validation.json').read_text())
         gpu=json.loads((ROOT/f'outputs/creatures/{family}/appearance.json').read_text())
         gpu_path=ROOT/f'outputs/creatures/{family}/appearance.json'
-        gpu_inputs=[ROOT/'Viewer/Presentation'/name for name in ['CreatureAppearanceTests.gd','CreatureVisual.gd','OstardVisual.gd','OstardSurface.gdshader','HumanHue.gd']]
+        gpu_inputs=[ROOT/'Viewer/Presentation'/name for name in ['CreatureAppearanceTests.gd','CreatureVisual.gd','OstardVisual.gd','OstardSurface.gdshader','CreatureCutoutSurface.gdshader','CreatureDustSurface.gdshader','HumanHue.gd']]
         assert all(path.stat().st_mtime<=gpu_path.stat().st_mtime for path in gpu_inputs),'Runtime/shader changed after GPU validation'
         assert tests['failures']==0 and gpu['failures']==0 and gpu['renderer']!='gl_compatibility'
         tested={row['kind']:row for row in tests['models']}
         rows=[]
         for row in preparation['models']:
             if row['status']!='prepared':continue
+            assert not row.get('pending_render_feature'),row.get('pending_render_feature')
             assert row['kind'] in tested and tested[row['kind']]['passed']
             for treatment,sha in tested[row['kind']]['asset_sha256'].items():
                 assert digest(ART/(row['kind']+'-'+treatment+'.gltf'))==sha,'Asset changed after pose validation'
                 assert digest(ART/(row['kind']+'-'+treatment+'.gltf.import'))==tested[row['kind']]['import_sha256'][treatment],'Import settings changed after pose validation'
             samples=[sample for sample in gpu['samples'] if sample['kind']==row['kind']]
+            dependencies=row.get('art_dependency_sha256',{})
+            assert all((ART/name).resolve().is_relative_to(ART.resolve()) and digest(ART/name)==sha for name,sha in dependencies.items()),'Auxiliary art changed after preparation'
+            assert all(sample.get('art_dependency_sha256',{})==dependencies for sample in samples),'Auxiliary art changed after rendering'
             assert len(samples)==6
             assert all(sample['asset_sha256']==tested[row['kind']]['asset_sha256']['modern'] for sample in samples),'Atlas changed after GPU validation'
             assert all(sample['import_sha256']==tested[row['kind']]['import_sha256']['modern'] for sample in samples),'GPU and pose samples used different import settings'
