@@ -54,6 +54,14 @@ var pending_ask := 0
 var ask_box: LineEdit
 var plan_label: Label
 var talk_label: Label
+# The chat window.
+var status_label: Label
+var tools_button: Button
+var tools_drawer: ScrollContainer
+var chat_scroll: ScrollContainer
+var chat_list: VBoxContainer
+var card: PanelContainer
+var card_accept: Button
 var shot_taken := {}
 var shots_wanted := 0
 var claude_button: Button
@@ -336,12 +344,13 @@ func review(lines: Array, ask_id: int, summary := "") -> void:
 	overlay.highlight(targets,Color("ffd34d"))
 	# The result itself, drawn as a draft exactly like the manual tools.
 	overlay.set_plan_draft(pending)
-	var head := summary if summary != "" else ("Proposal from %s" % state.asks.get(ask_id,{}).get("proposed_by","") if ask_id > 0 else "Group action")
-	var text := "%s\nScope (%d target(s) highlighted):\n%s" % [head,targets.size(),"\n".join(described)]
+	var by := str(state.asks.get(ask_id,{}).get("proposed_by","")) if ask_id > 0 else ""
+	var head := summary if summary != "" else (("%s suggests:" % (by if by != "" else "Claude")) if ask_id > 0 else "Group action:")
+	var text := "%s\n%s" % [head,"\n".join(described)]
+	if not targets.is_empty(): text += "\n%d object(s) highlighted in the world." % targets.size()
 	if not problems.is_empty(): text += "\nCannot run:\n"+"\n".join(problems)
 	if pending.any(func(p: Dictionary): return p.kind == "brush" or (p.kind in ["set","batch"] and p.get("targets",[]).any(func(t: String): return overlay.record_for(t).size() > 0 and overlay.info_for(overlay.record_for(t)).blocking))):
 		text += "\nVISUAL PREVIEW ONLY: ModernUO movement/collision stay as they are."
-	text += "\nPress Accept to apply, Cancel to discard."
 	plan_label.text = text
 	refresh()
 
@@ -541,6 +550,7 @@ func apply_pending() -> void:
 
 # The latest asks, with Claude's presence so a silent wait is never a mystery.
 func _show_talk() -> void:
+	_render_chat()
 	if not talk_label: return
 	var latest: Array[String] = []
 	var ids := state.asks.keys()
@@ -564,6 +574,97 @@ func _shoot(id: int) -> void:
 	visible = was
 	if image.get_width() > 1600: image.resize(1600,int(image.get_height()*1600.0/image.get_width()))
 	image.save_png(path)
+
+# ---- chat ----
+
+const ACKNOWLEDGED := "Got it, I'm on it"
+
+func _render_chat() -> void:
+	if chat_list == null: return
+	status_label.text = "online · your requests go to Claude Code" if claude_online() else "offline · your messages are kept and answered when Claude is back"
+	status_label.add_theme_color_override("font_color",Modern.HERB if claude_online() else Modern.ASH)
+	for child in chat_list.get_children(): child.free()
+	var ids := state.asks.keys()
+	ids.sort()
+	if ids.is_empty():
+		_bubble("Hi! Tell me what to change or ask me anything about the world: type below, or hold F8 and talk. Changes appear right away as a preview in the world, and nothing is kept until you press Accept.",false)
+	var working := false
+	for id in ids:
+		var ask: Dictionary = state.asks[id]
+		_bubble(str(ask.text),ask.author == state.me,"" if ask.author == state.me else str(ask.author))
+		var replies := _replies(ask.answers)
+		working = false
+		for reply in replies:
+			if reply.begins_with(ACKNOWLEDGED): working = true
+			else: _bubble(reply,false)
+		if not ask.proposal.is_empty():
+			var done: String = {"applied":"✓ Applied","declined":"Cancelled"}.get(str(ask.status),"Preview in the world: Accept or Cancel below")
+			_note_line("Proposed: %s · %s" % ["; ".join(ask.proposal),done],Modern.GOLD)
+		working = working and replies.size() == 1 and ask.status in ["open","answered"]
+	if working: _note_line("Claude is working on it…",Modern.ASH)
+	_scroll_to_end()
+
+# Answer lines arrive in parts of up to 110 characters ("Claude: …"); a part
+# cut at the limit continues in the next one.
+static func _replies(answers: Array) -> Array[String]:
+	var out: Array[String] = []
+	var continued := false
+	for line in answers:
+		var text := str(line).split(": ",true,1)[-1].trim_prefix("[Claude Code] ")
+		if continued and not out.is_empty(): out[-1] += " "+text
+		else: out.append(text)
+		continued = text.length() >= 100
+	return out
+
+func _bubble(text: String, mine: bool, who := "") -> void:
+	var row := HBoxContainer.new()
+	chat_list.add_child(row)
+	var spacer := Control.new()
+	spacer.custom_minimum_size.x = 36
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	if mine: row.add_child(spacer)
+	var bubble := PanelContainer.new()
+	bubble.add_theme_stylebox_override("panel",Modern.box(Color("3b2f1b") if mine else Modern.SLATE,Modern.EDGE if mine else Color(1,1,1,0.07),14,1,10))
+	row.add_child(bubble)
+	var column := VBoxContainer.new()
+	column.add_theme_constant_override("separation",2)
+	bubble.add_child(column)
+	if who != "": column.add_child(Modern.label(who,11,Modern.GOLD,600))
+	var label := Modern.label(text,14,Modern.IVORY)
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.custom_minimum_size.x = clampf(text.length()*7.4,40.0,300.0)
+	column.add_child(label)
+	if not mine: row.add_child(spacer)
+
+func _note_line(text: String, color: Color) -> void:
+	var label := Modern.label(text,12,color)
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.custom_minimum_size.x = 340
+	chat_list.add_child(label)
+
+func _scroll_to_end() -> void:
+	await get_tree().process_frame
+	if chat_scroll: chat_scroll.scroll_vertical = int(chat_scroll.get_v_scroll_bar().max_value)
+
+func _show_tools(on: bool) -> void:
+	tools_drawer.visible = on
+	chat_scroll.visible = not on
+	tools_button.button_pressed = on
+
+# Docked to the right edge, above the minimap, at every window size.
+func _place_panel() -> void:
+	if panel == null: return
+	panel.set_anchors_preset(Control.PRESET_RIGHT_WIDE)
+	panel.offset_left = -456
+	panel.offset_right = -16
+	panel.offset_top = 16
+	panel.offset_bottom = -372
+
+func _margin(parent: Node, left: int, top: int, right: int, bottom: int) -> MarginContainer:
+	var m := MarginContainer.new()
+	for side in [["left",left],["top",top],["right",right],["bottom",bottom]]: m.add_theme_constant_override("margin_"+side[0],side[1])
+	parent.add_child(m)
+	return m
 
 func claude_online() -> bool: return state.editors.has("Claude")
 
@@ -728,6 +829,10 @@ func refresh() -> void:
 	terrain_box.visible = tool == "terrain"
 	var locked_by_other: bool = state.locks.get(selected,"") not in ["",state.me]
 	accept_button.disabled = (draft_target.is_empty() and pending.is_empty()) or not state.synced or (draft_target == selected and locked_by_other)
+	if card:
+		card_accept.visible = not (draft_target.is_empty() and pending.is_empty())
+		card_accept.disabled = accept_button.disabled
+		card.visible = plan_label.text != "" or card_accept.visible
 	if group(): inspector.text = "%d objects selected (Shift+click to add/remove). Buttons act on all of them." % commands.selection.size()
 	undo_button.disabled = state.undo_candidate() == 0 or not state.synced
 	redo_button.disabled = state.redo_candidate() == 0 or not state.synced
@@ -796,42 +901,103 @@ func _text(parent: Container, size := 13, color := Modern.IVORY) -> Label:
 	return l
 
 func _build() -> void:
+	# A chat with Claude on the right of the screen: messages, the live
+	# proposal card (Accept / Cancel), and one line to type or talk. The
+	# hands-on tools (select, place, terrain, sets, commit) sit behind "Tools".
 	panel = PanelContainer.new()
 	panel.theme = Modern.theme()
-	panel.add_theme_stylebox_override("panel",Modern.panel())
-	panel.position = Vector2(12,64)
-	panel.custom_minimum_size = Vector2(372,0)
+	panel.add_theme_stylebox_override("panel",Modern.box(Modern.NIGHT,Modern.EDGE,16,1,0))
 	add_child(panel)
-	var scroll := ScrollContainer.new()
-	scroll.custom_minimum_size = Vector2(368,640)
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	panel.add_child(scroll)
+	_place_panel()
+	var chat := VBoxContainer.new()
+	chat.add_theme_constant_override("separation",0)
+	panel.add_child(chat)
+	var head := _margin(chat,16,12,12,8)
+	var title := HBoxContainer.new()
+	title.add_theme_constant_override("separation",8)
+	head.add_child(title)
+	var avatar := TextureRect.new()
+	avatar.texture = Modern.icon("rune",Modern.GOLD,26)
+	avatar.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+	title.add_child(avatar)
+	var names := VBoxContainer.new()
+	names.add_theme_constant_override("separation",0)
+	names.add_child(Modern.label("Claude",17,Modern.IVORY,700))
+	status_label = Modern.label("",11,Modern.ASH)
+	names.add_child(status_label)
+	title.add_child(names)
+	var gap := Control.new()
+	gap.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	title.add_child(gap)
+	tools_button = _button("Tools","The hands-on editor: select, place, terrain, edit sets, commit, voice settings",func(): _show_tools(not tools_drawer.visible),title)
+	tools_button.toggle_mode = true
+	_button("✕","Close (F9)",toggle,title)
+	chat.add_child(HSeparator.new())
+	chat_scroll = ScrollContainer.new()
+	chat_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	chat_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	chat.add_child(chat_scroll)
+	var inner := _margin(chat_scroll,14,12,14,12)
+	inner.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	chat_list = VBoxContainer.new()
+	chat_list.add_theme_constant_override("separation",10)
+	chat_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	inner.add_child(chat_list)
+	tools_drawer = ScrollContainer.new()
+	tools_drawer.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	tools_drawer.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	tools_drawer.visible = false
+	chat.add_child(tools_drawer)
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation",6)
-	scroll.add_child(column)
-	column.add_child(Modern.label("Developer edit  (F9)",17,Modern.IVORY,700))
-	session_label = _text(column,12)
-	column.add_child(Modern.label("Ask",14,Modern.IVORY,700))
+	_margin(tools_drawer,14,10,14,10).add_child(column)
+	# The proposal or plan in front of you, with its buttons.
+	card = PanelContainer.new()
+	card.add_theme_stylebox_override("panel",Modern.box(Modern.SLATE,Modern.GOLD,12,1,12))
+	card.visible = false
+	_margin(chat,12,6,12,0).add_child(card)
+	var card_column := VBoxContainer.new()
+	card_column.add_theme_constant_override("separation",8)
+	card.add_child(card_column)
+	plan_label = Modern.label("",13,Color("ffe28a"))
+	plan_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	plan_label.custom_minimum_size.x = 340
+	card_column.add_child(plan_label)
+	code_row = _row(card_column)
+	code_toggle = _button("Showing: AFTER (fix)","Switch the previewed districts between the fix and the current world",func(): show_code(not code_after),code_row)
+	_button("Next example","Go to the next place the fix changes",next_example,code_row)
+	code_row.visible = false
+	var choices := _row(card_column)
+	card_accept = _button("Accept","Keep this change",accept,choices)
+	card_accept.add_theme_stylebox_override("normal",Modern.box(Color("4a3a1a"),Modern.GOLD,8,1,6))
+	_button("Cancel","Discard this preview",func():
+		cancel()
+		plan_label.text = ""
+		refresh(),choices)
+	# One line to type or talk.
+	var bottom := _margin(chat,12,10,12,12)
+	var asking := HBoxContainer.new()
+	asking.add_theme_constant_override("separation",6)
+	bottom.add_child(asking)
 	ask_box = LineEdit.new()
-	ask_box.placeholder_text = "e.g. hide the flowers near me — or press Talk"
-	ask_box.tooltip_text = "Type a request (or press Talk and say it). Enter shows the plan and its scope; requests the game does not know go to Claude. Nothing changes until Accept."
-	ask_box.custom_minimum_size.x = 340
+	ask_box.placeholder_text = "Message Claude… (or hold F8 to talk)"
+	ask_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	ask_box.custom_minimum_size.y = 40
 	ask_box.text_submitted.connect(submit_request)
-	column.add_child(ask_box)
-	var asking := _row(column)
-	talk_button = _button("Talk","Say your request in any language (or hold F8 while speaking): recorded in the game and recognized locally by Whisper, then the plan is shown (nothing changes until Accept). Stops after 3.5 s of silence or when pressed again.",talk,asking)
-	_button("Plan","Interpret the request and show its scope",func(): submit_request(ask_box.text),asking)
-	claude_button = _button("Ask Claude","Send the request to Claude Code (connected through scripts/dev-edit-bridge.ps1); its proposal comes back for review",ask_claude,asking)
+	asking.add_child(ask_box)
+	talk_button = _button("Talk","Say it in any language (or hold F8): recognized locally, then sent. Stops after 3.5 s of silence or when pressed again.",talk,asking)
+	talk_button.icon = Modern.icon("mic",Modern.IVORY,18)
+	var send := _button("","Send",func(): submit_request(ask_box.text),asking)
+	send.icon = Modern.icon("send",Modern.GOLD,18)
+	# The hands-on editor (Tools).
+	session_label = _text(column,12)
+	var asking_tools := _row(column)
+	claude_button = _button("Ask Claude directly","Send the line above straight to Claude, without the game trying to understand it first",ask_claude,asking_tools)
 	speak_box = CheckBox.new()
 	speak_box.text = "Speak replies"
 	speak_box.tooltip_text = "Read answers aloud with the system voice"
-	asking.add_child(speak_box)
+	asking_tools.add_child(speak_box)
 	_voice_controls(column)
-	code_row = _row(column)
-	code_toggle = _button("Showing: AFTER (fix)","Switch the previewed districts between the fix and the current world",func(): show_code(not code_after),code_row)
-	_button("Next example","Highlight the next building the fix changes and say where it is",next_example,code_row)
-	code_row.visible = false
-	plan_label = _text(column,12,Color("ffe28a"))
 	var tools := _row(column)
 	for entry in [["select","Select","Select a static or placed object (click)"],["place","Place","Place an approved decorative asset (click the ground)"],["terrain","Terrain","Bounded terrain brush (click the ground)"]]:
 		var b := _button(entry[1],entry[2],func():
