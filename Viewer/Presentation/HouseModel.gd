@@ -32,9 +32,9 @@ const WINDOW_W := 0.82
 # Every classic house multi ModernUO builds (Houses.cs), reviewed as renders.
 const SUPPORTED := [0x64,0x66,0x68,0x6A,0x6C,0x74,0x76,0x78,0x7A,0x7C,0x7E,0x8C,0x96,0x98,0x9A,0x9C,0x9E,0xA0,0xA2,
 	# Contest keeps and castles (ContestHouses.cs) that read well as whole
-	# models. 0x1482, 0x1483 and 0x148B lean on arch and column tile art the
-	# builder does not model, so they keep their tiles.
-	0x147E,0x147F,0x1480,0x1481,0x1484,0x1485,0x1486,0x1487,0x1488,0x1489,0x148A,0x148C,0x148D,0x148E,0x148F]
+	# models. 0x1482 (a brick castle of broken arch fragments) and 0x1483
+	# (porch roofs only a cell or two wide) keep their tiles.
+	0x147E,0x147F,0x1480,0x1481,0x1484,0x1485,0x1486,0x1487,0x1488,0x1489,0x148A,0x148B,0x148C,0x148D,0x148E,0x148F]
 static var surfaces := {}
 
 static func supported(id: int) -> bool:
@@ -138,7 +138,7 @@ static func build(parts: Array, tiles: Dictionary, seed := 0) -> Node3D:
 			"wall","corner","window","trim","pillar","arch":
 				# Foundation courses: short pieces that end at ground-floor level.
 				if h <= 6 and z+h <= 8: foundation[cell] = maxi(int(foundation.get(cell,0)),z+h)
-				elif h >= 10: pieces.append([cell,z,z+h,family,kind == "window"])
+				elif h >= 10: pieces.append([cell,z,z+h,family,kind == "window",kind,name])
 				elif h >= 2: low_pieces.append([cell,z,z+h,family])
 			"floor","landing":
 				flat.append([cell,z])
@@ -175,7 +175,28 @@ static func build(parts: Array, tiles: Dictionary, seed := 0) -> Node3D:
 		# A tile stacked on a taller one in the same cell does not lower it.
 		if storey.walls.has(piece[0]) and int(storey.walls[piece[0]].get("top",0)) >= int(piece[2]): continue
 		var known: Dictionary = storey.walls.get(piece[0],{})
-		storey.walls[piece[0]] = {"family":piece[3] if piece[3] != "" else str(known.get("family","plaster")),"window":bool(piece[4]) or bool(known.get("window",false)),"top":maxi(int(known.get("top",0)),int(piece[2]))}
+		var piece_kind: String = str(piece[5]) if piece.size() > 5 else "wall"
+		storey.walls[piece[0]] = {"family":piece[3] if piece[3] != "" else str(known.get("family","plaster")),"window":bool(piece[4]) or bool(known.get("window",false)),"top":maxi(int(known.get("top",0)),int(piece[2])),
+			"pillar":piece_kind == "pillar" and (known.is_empty() or bool(known.get("pillar",false))),
+			"arch":piece_kind == "arch" or bool(known.get("arch",false)),
+			"name":str(piece[6]) if piece.size() > 6 else str(known.get("name",""))}
+	# Free-standing pillars (no wall beside them) are columns, not wall
+	# stubs: they get a shaft, base and capital, and no doorway is ever
+	# found between two of them (a portico or colonnade).
+	var columns: Array = []
+	for storey in storeys:
+		var free: Array = []
+		for cell in storey.walls:
+			if not bool(storey.walls[cell].get("pillar",false)): continue
+			var lone := true
+			for d in [Vector2i(1,0),Vector2i(-1,0),Vector2i(0,1),Vector2i(0,-1)]:
+				if storey.walls.has(cell+d) and not bool(storey.walls[cell+d].get("pillar",false)) and not bool(storey.walls[cell+d].get("arch",false)): lone = false
+			if lone: free.append(cell)
+		for cell in free:
+			columns.append([cell,int(storey.z),int(storey.walls[cell].top),str(storey.walls[cell].get("name","")),str(storey.walls[cell].family)])
+			storey.walls.erase(cell)
+	storeys = storeys.filter(func(st): return not st.walls.is_empty())
+	if storeys.is_empty(): return root
 	# A storey of short walls only, above the ground, is a parapet round a
 	# flat roof or terrace: no openings, no quoins.
 	for i in range(1,storeys.size()):
@@ -268,6 +289,7 @@ static func build(parts: Array, tiles: Dictionary, seed := 0) -> Node3D:
 		if within or int(st[1]) > int(ground.z)+2 or (flight_high and _touches(stairs,c,int(ground.z)+2)): inside.append([c,int(st[1]),int(st[2]),not within])
 		else: outside.append(st)
 	var masonry: Material = wall_material(family) if family in ["stone","ashlar","sandstone","marble","brick"] else stone()
+	_columns(root,columns,family)
 	_stairs(root,inside,storeys,stone_steps,masonry)
 	var all_walls := {}
 	for storey in storeys:
@@ -355,6 +377,39 @@ static func _ribs(root: Node3D, ribs: Dictionary, masonry: Material, walls: Dict
 		# A projecting cap course at the bottom of each step.
 		_box(brackets,size*Vector3(1.0,0.0,1.0)+Vector3(0.0,0.12,0.0)+(Vector3(0,0,0.12) if along_x else Vector3(0.12,0,0)),Vector3(c.x,y0+0.06,c.y),stone())
 
+# Columns: a round shaft on a square base with a capital, in stone or
+# marble; wooden posts are square oak posts with a chamfered cap.
+static func _columns(root: Node3D, columns: Array, family: String) -> void:
+	if columns.is_empty(): return
+	var colonnade := Node3D.new()
+	colonnade.name = "Columns"
+	root.add_child(colonnade)
+	for col in columns:
+		var c: Vector2i = col[0]
+		var y0 := float(col[1])*SCALE
+		var y1 := float(col[2])*SCALE
+		var name: String = col[3]
+		if "wood" in name or "post" in name and not _stony(name):
+			_box(colonnade,Vector3(0.26,y1-y0,0.26),Vector3(c.x,(y0+y1)/2,c.y),oak())
+			_box(colonnade,Vector3(0.38,0.12,0.38),Vector3(c.x,y1-0.06,c.y),oak())
+			continue
+		var mat: Material = wall_material("marble") if "marble" in name or family == "marble" else (wall_material(family) if family in ["stone","ashlar","sandstone","brick"] else quoin())
+		var plinth := 0.28
+		var cap := 0.26
+		_box(colonnade,Vector3(0.62,plinth,0.62),Vector3(c.x,y0+plinth/2,c.y),mat)
+		var shaft := MeshInstance3D.new()
+		var cyl := CylinderMesh.new()
+		cyl.top_radius = 0.2
+		cyl.bottom_radius = 0.24
+		cyl.height = y1-y0-plinth-cap
+		cyl.radial_segments = 16
+		shaft.mesh = cyl
+		shaft.material_override = mat
+		shaft.position = Vector3(c.x,y0+plinth+cyl.height/2,c.y)
+		colonnade.add_child(shaft)
+		_box(colonnade,Vector3(0.5,0.1,0.5),Vector3(c.x,y1-cap+0.05,c.y),mat)
+		_box(colonnade,Vector3(0.66,cap-0.1,0.66),Vector3(c.x,y1-(cap-0.1)/2,c.y),mat)
+
 static func _stony(name: String) -> bool:
 	return "stone" in name or "marble" in name or "brick" in name
 
@@ -428,7 +483,9 @@ static func _walls(root: Node3D, walls: Dictionary, floors: Dictionary, family: 
 	var doors := {}
 	# Doorways are gaps between full-height walls (not between the low walls
 	# of a flower bed or a balustrade).
-	var tall := func(c: Vector2i) -> bool: return walls.has(c) and (not walls[c].has("top") or float(walls[c].top)*SCALE-floor_y >= DOOR_H+0.3)
+	# Pillars and buttresses never bound a doorway (a colonnade is not a row
+	# of doors).
+	var tall := func(c: Vector2i) -> bool: return walls.has(c) and not bool(walls[c].get("pillar",false)) and (not walls[c].has("top") or float(walls[c].top)*SCALE-floor_y >= DOOR_H+0.3)
 	for cell in walls:
 		if not tall.call(cell): continue
 		for d in [Vector2i(1,0),Vector2i(0,1)]:
@@ -446,11 +503,25 @@ static func _walls(root: Node3D, walls: Dictionary, floors: Dictionary, family: 
 		var h := cell_top-floor_y
 		if h < 0.1: continue
 		var arms: Array = []
+		var pier: bool = bool(w.get("pillar",false))
 		for d in dirs:
+			# A pier (buttress) joins only real walls, never the next pier.
+			if pier and walls.has(cell+d) and bool(walls[cell+d].get("pillar",false)): continue
 			if walls.has(cell+d) or doors.has(cell+d): arms.append(d)
-		if arms.is_empty(): arms = [Vector2i(1,0),Vector2i(-1,0)]
+		if arms.is_empty() and not pier: arms = [Vector2i(1,0),Vector2i(-1,0)]
+		if pier:
+			# A square pier, a little stouter than the wall.
+			_wall_box(shell,Vector3(T+0.16,h,T+0.16),Vector3(cell.x,floor_y+h/2,cell.y),mat,family,true)
 		var glazed: bool = openings and bool(w.window) and _straight(walls,cell) and h >= HEAD+0.3
-		_wall_box(shell,Vector3(T,h,T),Vector3(cell.x,floor_y+h/2,cell.y),mat,family,(arms[0] as Vector2i).x != 0)
+		# An arch tile is an opening: only the arch head above it is built,
+		# with a dressed stone band at its spring.
+		if openings and bool(w.get("arch",false)) and h >= DOOR_H+0.3:
+			var head := h-(DOOR_H+0.15)
+			var along := walls.has(cell+Vector2i(1,0)) or walls.has(cell+Vector2i(-1,0)) or not (walls.has(cell+Vector2i(0,1)) or walls.has(cell+Vector2i(0,-1)))
+			_wall_box(shell,Vector3(1.0 if along else T,head,T if along else 1.0),Vector3(cell.x,cell_top-head/2,cell.y),mat,family,along)
+			_box(shell,Vector3(1.0 if along else T+0.08,0.14,T+0.08 if along else 1.0),Vector3(cell.x,cell_top-head-0.07,cell.y),quoin())
+			continue
+		if not arms.is_empty(): _wall_box(shell,Vector3(T,h,T),Vector3(cell.x,floor_y+h/2,cell.y),mat,family,(arms[0] as Vector2i).x != 0)
 		for d in arms:
 			var along_x: bool = d.x != 0
 			var mid := Vector3(cell.x+d.x*0.25,floor_y+h/2,cell.y+d.y*0.25)

@@ -1,3 +1,18 @@
+# Houses: bracket gap closed, columns and arcades — 31 October 2026
+
+- **Tower brackets bonded:** the owner saw a gap between the gallery brackets and the tower. Walls stand on their cell's centre line, so a bracket cell next to a wall now runs back half a cell into it.
+- **Columns:** free-standing pillar tiles (no wall beside them) are real columns, no longer wall stubs:
+  - stone or marble shafts on a square base with a capital (marble when the tile or house is marble);
+  - square oak posts with a cap for wooden posts.
+  - Pillars against a wall (buttresses) stand as stout piers that join only real walls.
+  - Neither ever bounds a doorway, so a colonnade is no longer a row of doors.
+- **Arches:** an arch tile is an opening; only its head is built, above the door height, with a dressed stone spring band.
+- **Effect:** the marble shop's open front stands on columns, the stone shop gets an arch head, and the sandstone patio's terrace rests on columns. The contest pavilion 0x148B now reads well and is supported.
+- **Kept on tiles:** 0x1482 (a brick castle of broken arch fragments) and 0x1483 (porch roofs only a cell or two wide, which split into small gables).
+- **Baking:** 35 houses.
+
+**Tests:** WorldItemTests 86/86. A regression render of all classic houses matches the previous review apart from the new columns. The full verify passes.
+
 # Houses: tower corbels and 15 contest keeps and castles — 31 October 2026
 
 - **Tower (0x7A) side walls fixed.** The owner found the walls sticking out under the roof gallery detached and senseless.
