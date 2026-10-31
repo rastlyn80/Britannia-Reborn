@@ -34,6 +34,11 @@ try {
     & "$PSScriptRoot/scripts/prepare-minimap.ps1" -Dataset $dataset
     & $Godot @renderArgs --path "$PSScriptRoot/Viewer" -- --city --modern-britain "--region=$Region" --front-end
   }
+  elseif (!$ReferencePatch -and (Test-Path "$PSScriptRoot/outputs/trammel/prepared-modern/index.json")) {
+    # All of Trammel, baked once in windows (scripts/bake-facet.ps1, docs/COMPACT_STREAMING.md);
+    # a facet bake takes hours, so the launcher never re-prepares it.
+    & $Godot @renderArgs --path "$PSScriptRoot/Viewer" -- --city --modern-britain --region=trammel --front-end
+  }
   elseif (!$ReferencePatch) {
     if (!(Test-Path "$PSScriptRoot/outputs/britain/atlas.json")) { & "$PSScriptRoot/scripts/prepare-britain.ps1" }
     & "$PSScriptRoot/scripts/prepare-streaming.ps1"

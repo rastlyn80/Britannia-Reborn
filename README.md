@@ -6,7 +6,7 @@ Britannia Reborn is an independent, open-source project exploring how Britannia'
 
 This is an early playable proof of concept under active development. It is not a complete game, an official Ultima Online client or a production-ready shard. The live client now streams the converted city of Britain in Trammel. Native population and the verified shopping/inventory loop remain concentrated in the original district; full facets and most gameplay interfaces remain future work.
 
-Double-click **Launch.cmd** for live Britain. The first preparation builds local streaming resources and takes several minutes; later prepared startup is roughly three to four seconds on the development machine. The lower-right minimap uses original UO radar colours; wheel over it or use +/− to zoom. Use **Explore-Britain.cmd** for the separate offline explorer. See [live Britain scope and checks](docs/LIVE_BRITAIN.md).
+Double-click **Launch.cmd** for live Trammel once its facet bake exists (`outputs/trammel/prepared-modern`, see [compact streaming](docs/COMPACT_STREAMING.md)); otherwise it prepares and opens live Britain. The first preparation builds local streaming resources and takes several minutes; later prepared startup is roughly three to four seconds on the development machine. The lower-right minimap uses original UO radar colours; wheel over it or use +/− to zoom. Use **Explore-Britain.cmd** for the separate offline explorer. See [live Britain scope and checks](docs/LIVE_BRITAIN.md).
 
 ## What works today
 
