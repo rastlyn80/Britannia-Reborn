@@ -35,6 +35,50 @@ On 26 October the same 88 Britain districts took about 299 MB with instancing (s
 
 These are estimates until the first compact bake is measured; the measured figures replace them here.
 
+## Implementation (31 October 2026)
+
+- **No merged copies of placed models.** `DistrictBatch` merges architecture (walls, roofs, floors, stairs, fences and the like) and tiny procedural pieces only. Placed models (rocks, furniture, plants, scanned props; "asset" kinds) above 600 vertices stay placements, and `CompactDistrict` instances them.
+- **Shared model library.** `BakeStreaming.shared()` writes every mesh of 300 vertices or more once, to `<prepared>/models/<content hash>.res`, and districts reference it.
+  - The hash covers the geometry and the materials by content (materials are rebuilt per district, so their object identity would duplicate models).
+  - Every later copy receives the same library object, loaded from disk if needed; taking over a path would strip it from the earlier holder, which then embedded a copy.
+  - Writes are atomic (temporary name, then rename) for parallel bakes.
+- **Compact collision** (`CollisionBuilder`):
+  - solids above 300 triangles collide as an oriented box (client collision only serves the camera and mouse picking);
+  - the terrain is a `HeightMapShape3D` of the heights at each tile corner (65 × 65 per district) instead of its subdivided render triangles.
+- **Out-of-core facet bake.** `scripts/bake-facet.ps1 -Dataset outputs/<facet> -Modern [-Parallel 4] [-WindowTiles 512]` splits the facet into windows (8 × 8 districts by default) and bakes each in its own process with a one-district ring of context, so joined walls and roofs meet across windows.
+  - The planner works in the window's bounds (a 4 × 4 window plans in 0.36 GB instead of 28 GB with full-facet bounds); its geometry is shifted into the dataset frame when saved.
+  - Stamps make the bake resumable.
+  - `--finalize` merges the windows' rule catalogs and writes the regional horizon and the index without planning anything.
+- **Size report.** `BakeStreaming.gd -- ... --size-report` prints an estimated breakdown per saved district.
+- **Tests.** `CompactStreamingTests` (in `scripts/verify.ps1`) checks:
+  - architecture merges but placed models do not;
+  - detailed solids get boxes and the terrain a 65 × 65 heightmap;
+  - identical meshes become one library file;
+  - tiny meshes stay inline.
+
+**Measured on the densest test window** (16 districts of forest and Trinsic's outskirts, the area that held the 204 MB district):
+
+| | Before | Compact |
+|---|---:|---:|
+| Median district | about 28 MB | 2.5 MB |
+| Largest district | 204 MB | 6.3 MB |
+| Bake time | | 3 s per district |
+
+The model library for this window is 68 MB (671 models); it grows slowly, since models repeat across the facet. The remaining per-district bulk is the live-editing source data (about 1–1.5 MB) and exact collision for small architecture.
+
+**Tools follow the active cache.** Developer editing and the audits read the cache through `LiveDistricts.prepared_folder()` (Trammel once baked, else Britain), never a fixed path.
+
+## Next compression steps (owner decision 31 October 2026: apply on the next bakes)
+
+The first full Trammel bake keeps the format above, so the map can be tested. It projects to about 6 GB (3,004 land districts at about 1.27 MB, 4,164 empty or ocean districts at about 0.29 MB, and a shared model library of 1–1.5 GB). The next bakes of any facet must add these steps, which together target about 3 GB for Trammel:
+
+1. **Ocean and empty districts: about 1.2 GB down to about 50 MB.** Flat water is one shared piece, with a heightmap only where the seabed matters, instead of full terrain and collision per district.
+2. **Live-editing source data: about 1.5 GB less.** The per-static vertex positions used to hide or move objects in game are packed tightly (quantised, delta-coded), or read from the converted source data on demand when editing is enabled, instead of plain vertex lists in every district.
+3. **Mesh vertex compression: 30–40% off geometry.** Library models, terrain and architecture are saved with Godot's vertex compression (16-bit positions, compact normals and tangents) where it is visually lossless at game distances.
+4. **Tighter model deduplication.** Models that differ only in material variants share geometry, with the variant applied as a material, so the library grows less.
+
+The stamp-based bake rebakes only what each step changes. A step is done when its measured saving is recorded here.
+
 ## Status
 
 - Trammel is converted (`outputs/trammel`) and its server world is populated (`scripts/populate-trammel.ps1`).

@@ -1,3 +1,7 @@
+# Next streaming compression steps recorded - 31 October 2026
+
+Owner decision: the first full Trammel bake (about 6 GB projected) stays as is for testing. The next bakes must add four steps: shared ocean districts, packed live-edit data, mesh vertex compression and tighter model deduplication, targeting about 3 GB for Trammel. See [COMPACT_STREAMING.md](COMPACT_STREAMING.md#next-compression-steps-owner-decision-31-october-2026-apply-on-the-next-bakes).
+
 # Creature milestone: 73 native body targets with server evidence - 31 October 2026
 
 47 generic source models/variants across 20 groups now have pose/render acceptance and 57 body routes. Combined with the earlier mount/bovine pipelines, 73 of 275 bounded native literal body targets have routes and actual native evidence (26.5%); this is not an exhaustive all-client denominator or finished-art percentage. Current generic checks: 30,144 / 9,156 deformed samples; 584 GPU checks; 752 core frames plus selected cast/flight views. Full verify exits 0. [Changes, exact evidence, art gaps and reproduction](CREATURE_MONSTERS.md).

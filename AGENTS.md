@@ -4,7 +4,7 @@ Read docs/MASTER_PLAN.md, docs/PROGRESS.md and docs/ROADMAP.md before continuing
 
 ModernUO is authoritative and pinned in Server/dependencies.json. Its source checkout and runtime are separate and ignored by the root repository. Follow its local instructions when working inside it; prefer isolated extension modules and avoid core/gameplay edits. ClassicUO in work/reference is a reference, not a linked client dependency.
 
-World bakes follow docs/COMPACT_STREAMING.md: models stored once and placed by reference, compressed, within the size budget; never merged per-district geometry.
+World bakes follow docs/COMPACT_STREAMING.md: models stored once and placed by reference, compressed, within the size budget; never merged per-district geometry. Apply its "Next compression steps" on the next bakes.
 
 Run scripts/verify.ps1 after relevant changes and scripts/test-login.ps1 for live login changes. Server setup/build/start commands are documented in README.md. Never call a game relay world entry, or fixture/offline movement multiplayer. Update progress/roadmap with actual evidence and remaining gaps.
 
