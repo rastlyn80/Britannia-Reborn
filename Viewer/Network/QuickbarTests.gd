@@ -198,6 +198,32 @@ func run() -> void:
 	runner.cooldowns.timers.clear()
 	game.message_received.emit(game.labels.resolve(500118))
 	check(runner.cooldowns.remaining("skill") > 1.5,"The server's 'you must wait' message restarts the skill timer")
+	# The server's own timers (ActionTimers extension) replace the estimates.
+	var waits := Timers.new()
+	waits.server("skill",30000)
+	check(waits.remaining("skill") > 29.5 and waits.fraction("skill") > 0.98,"the server's 30 s skill wait shows 30 s on the dial")
+	waits.server("skill",10000)
+	check(waits.remaining("skill") > 9.5 and waits.remaining("skill") <= 10.0,"the server shortening the wait moves the dial to its real end")
+	waits.server("skill",0)
+	check(waits.remaining("skill") == 0.0,"the server saying ready clears the wait")
+	waits.server("heal_potion",-1)
+	waits.timers.heal_potion.end = Time.get_ticks_msec()-10
+	check(waits.remaining("heal_potion") > 0.0,"a held heal potion lock never reads ready early")
+	waits.server("heal_potion",0)
+	check(waits.remaining("heal_potion") == 0.0,"the lock lifting clears it")
+	var real := preload("res://Network/GameSession.gd").new()
+	var heard: Array = []
+	real.action_wait.connect(func(kind: String, ms: int): heard.append([kind,ms]))
+	real._server_text("UCWAIT1|spell|3000",true)
+	real._server_text("UCWAIT1|nonsense|3000",true)
+	check(heard == [["spell",3000]],"the client reads the server's UCWAIT1 timer lines (and ignores unknown kinds)")
+	# A hatchet in hand counts as carried, so its slot uses it.
+	real.equipment = {2:{"serial":0x40000077,"id":0x0F43,"layer":2,"container":0x100,"hue":0},21:{"serial":0x40000001,"id":0x0E75,"layer":21,"container":0x100,"hue":0}}
+	var hands := preload("res://Network/ActionRunner.gd").new()
+	hands.session = real
+	check(int(hands.find_item(0x0F43).get("serial",0)) == 0x40000077,"a worn hatchet is found for a use-item slot")
+	hands.free()
+	real.free()
 	DirAccess.remove_absolute(bar.profile_path)
 	print("QUICKBAR TESTS: %d checks / %d failures" % [checks,failures])
 	quit(0 if failures == 0 else 1)

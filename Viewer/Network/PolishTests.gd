@@ -227,5 +227,22 @@ func run() -> void:
 	var long_lines: PackedStringArray = Chat.lines(" ".join(PackedStringArray(range(60).map(func(i): return "word%d" % i))))
 	check(long_lines.size() == 4 and Array(long_lines).all(func(line): return line.length() <= Chat.LINE and not line.begins_with(" ")),"long voice speech is split into talk-sized lines between words")
 	check(Chat.lines("Hail, friend!") == PackedStringArray(["Hail, friend!"]),"short voice speech is one line")
+	# A pet's server menu shows its orders as plain verbs, then the rest.
+	var owner := Recorder.new()
+	root.add_child(owner)
+	owner.phase = "world"
+	owner.context_menu = {"serial":0x500,"options":[{"index":0,"label":3006111,"flags":0},{"index":1,"label":3006108,"flags":0},{"index":2,"label":3006114,"flags":0},{"index":3,"label":3006098,"flags":0},{"index":4,"label":3006118,"flags":0}]}
+	var pet_menu := preload("res://Network/ContextMenu.gd").new()
+	root.add_child(pet_menu)
+	pet_menu.session = owner
+	pet_menu.open(owner.context_menu)
+	var texts: Array = pet_menu.rows.get_children().map(func(n): return n.text)
+	if owner.labels.strings.has("3006111"): check(texts.slice(0,4) == ["ORDERS","Kill","Follow","Stay"] and "Rename" in texts and "Release" in texts,"a pet's menu lists its orders as verbs, then rename and release: %s" % [texts])
+	else: check(texts.size() == 6,"a pet's menu lists every entry the server sends")
+	owner.sent.clear()
+	pet_menu.rows.get_child(1).pressed.emit()
+	check(owner.sent.size() == 1 and owner.sent[0][0] == 0xBF and not pet_menu.visible,"choosing an order answers the server's menu")
+	pet_menu.free()
+	owner.free()
 	print("POLISH TESTS: %d checks / %d failures" % [checks,failures])
 	quit(1 if failures else 0)

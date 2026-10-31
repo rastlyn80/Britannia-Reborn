@@ -153,7 +153,9 @@ func _slots() -> void:
 			var name: String = session.module("tooltips").name_of(int(item.serial))
 			if name == "": session.module("tooltips").request(int(item.serial))
 			tile.tooltip_text = "%s\n%s" % [name.capitalize() if name != "" else str(session.labels.item_name(int(item.id))).capitalize(),"\n".join(session.module("tooltips").lines_of(int(item.serial)).slice(1))]
-			if serial == int(session.player.serial): tile.payload = {"item_serial":int(item.serial)}
+			# Your own worn items drag back to the pack or onto the quickbar
+			# (as a use-this-item slot: a hatchet, a spellbook, a weapon).
+			if serial == int(session.player.serial): tile.payload = {"item_serial":int(item.serial),"quickbar_slot":{"steps":[{"action":"Use Item Type","graphic":int(item.id),"hue":int(item.get("hue",0)),"name":name.capitalize() if name != "" else str(session.labels.item_name(int(item.id))).capitalize()}],"aim":"cursor"}}
 		else: tile.tooltip_text = "%s · empty" % tile.title
 		tile.queue_redraw()
 

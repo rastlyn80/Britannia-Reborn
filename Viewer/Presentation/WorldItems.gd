@@ -1,4 +1,5 @@
 extends Node3D
+const MovementSurface = preload("res://Presentation/MovementSurface.gd")
 const Geometry = preload("res://Presentation/GeometryLibrary.gd")
 var geometry := Geometry.new()
 const Appearance = preload("res://Presentation/ItemAppearance.gd")
@@ -538,21 +539,23 @@ func engrave(root: Node3D, text: String) -> void:
 # gait or ground-contact sway. Other creatures keep the generic corpse look
 # until their models exist.
 func _equine_corpse(root: Node3D,item: Dictionary,serial: int) -> bool:
- var Horse := preload("res://Presentation/HorseVisual.gd")
+ var Horse := preload("res://Presentation/MountVisual.gd")
  var body := int(item.get("amount",0))
- if not Horse.available() or not Horse.BODIES.has(body): return false
- var horse: Node3D = Horse.new()
+ if not Horse.supports_body(body): return false
+ var horse: Node3D = Horse.create(body)
  horse.name = "CorpseVisual"
  horse.native_body = body
  horse.native_hue = int(item.get("hue",0))
  root.add_child(horse)
  horse.apply_identity(body,int(item.get("hue",0)))
  horse.dead = true
- horse.current_clip = "death"
- horse.contact.enabled = false
+ var source_rig: bool = Horse.BODIES.has(body)
+ var death_clip: String = "Death" if source_rig else "death"
+ horse.current_clip = death_clip
+ if not source_rig:horse.contact.enabled = false
  horse.reins.visible = false
- horse.animator.play("death")
- horse.animator.seek(horse.animator.get_animation("death").length,true)
+ horse.animator.play(death_clip)
+ horse.animator.seek(horse.animator.get_animation(death_clip).length,true)
  horse.animator.pause()
  horse.set_process(false)
  horse.set_physics_process(false)
@@ -742,6 +745,11 @@ func click(at: Vector2, double: bool = false) -> void:
    return
   if session.move_item(session.placement_serial,0,false,cell): session.placement_serial = 0
   return
+ # A target cursor over no server object picks the map static under the
+ # mouse (a tree, a rock, water) or else the ground there.
+ if not session.target_request.is_empty() and (hit.is_empty() or not (hit.collider.has_meta("server_mobile") or hit.collider.has_meta("server_serial"))):
+  target_place(from,direction,from.distance_to(hit.position) if not hit.is_empty() else 30.0)
+  return
  if not hit.is_empty() and hit.collider.has_meta("server_mobile"):
   var mobile := int(hit.collider.get_meta("server_mobile"))
   # An open target cursor takes the creature; otherwise it is selected (for
@@ -762,10 +770,52 @@ func click(at: Vector2, double: bool = false) -> void:
    session.use_mobile(mobile)
    # Peace mode: attackable creatures (notoriety 3-6) need war mode first.
    if int(session.entities.get(mobile,{}).get("notoriety",0)) in [3,4,5,6] and not preload("res://Presentation/HorseVisual.gd").BODIES.has(int(session.entities.get(mobile,{}).get("body",0))): hint.text = "Switch to war mode (the War button) to attack."
-  elif preload("res://Presentation/HorseVisual.gd").BODIES.has(int(session.entities.get(mobile,{}).get("body",0))):hint.text="Double-click the horse to ride."
-  elif mobile==int(session.player.get("serial",0)) and not preload("res://Presentation/HorseVisual.gd").mount_item(session.equipment.values()).is_empty():hint.text="Double-click yourself to dismount."
-  else:session.request_context(mobile)
+  else:
+   # A single click always asks the server for the creature's menu: a pet
+   # you own lists its commands (Kill, Follow, Guard, Stop, Stay, ...).
+   session.request_context(mobile)
+   if preload("res://Presentation/HorseVisual.gd").BODIES.has(int(session.entities.get(mobile,{}).get("body",0))):hint.text="Double-click the horse to ride."
+   elif mobile==int(session.player.get("serial",0)) and not preload("res://Presentation/HorseVisual.gd").mount_item(session.equipment.values()).is_empty():hint.text="Double-click yourself to dismount."
  elif not hit.is_empty() and hit.collider.has_meta("server_serial"): activate(int(hit.collider.get_meta("server_serial")))
+
+# Walks the mouse ray in small steps and answers the target cursor with the
+# first map static whose body the ray passes through (its cell and tiledata
+# height), stopping at the first solid thing the physics ray hit; with no
+# static it targets the ground where the ray landed. Our 3D crowns reach past
+# the trunk's cell, so a tall static (a tree) one cell beside the ray counts
+# when nothing else was passed through.
+func target_place(from: Vector3, direction: Vector3, limit: float) -> bool:
+ var surface = session.get("surface")
+ var scale := float(scene.world.elevationScale)
+ var origin := Vector2(float(scene.world.originX),float(scene.world.originY))
+ var step := 0.12
+ var at := 0.0
+ var beside := {}
+ while at <= limit+0.6 and surface != null:
+  var point := from+direction*at
+  var cell := Vector2i(floori(point.x+origin.x),floori(point.z+origin.y))
+  var native := point.y/scale
+  for tile in surface.statics.get(cell,[]):
+   var data: Dictionary = surface.static_data.get(str(int(tile.id)),{})
+   var height := maxi(int(data.get("height",0)),2)
+   if native >= float(tile.z)-1.0 and native <= float(int(tile.z)+height)+1.0:
+    var z := int(tile.z)+(int(data.get("height",0)) if int(data.get("flags",0)) & 0x200 else 0)
+    hint.text = session.labels.item_name(int(tile.id))
+    return session.target_location(cell.x,cell.y,z,int(tile.id))
+  if beside.is_empty():
+   for offset in MovementSurface.OFFSETS:
+    for tile in surface.statics.get(cell+offset,[]):
+     var tall := int(surface.static_data.get(str(int(tile.id)),{}).get("height",0))
+     if tall >= 10 and native >= float(tile.z) and native <= float(int(tile.z)+tall)+6.0: beside = {"x":cell.x+offset.x,"y":cell.y+offset.y,"z":int(tile.z),"id":int(tile.id)}
+  at += step
+ if not beside.is_empty():
+  hint.text = session.labels.item_name(int(beside.id))
+  return session.target_location(beside.x,beside.y,beside.z,beside.id)
+ if limit >= 30.0: return false
+ var ground := from+direction*limit
+ var spot := Vector2i(floori(ground.x+origin.x),floori(ground.z+origin.y))
+ var land: Dictionary = surface.terrain.get(spot,{}) if surface != null else {}
+ return session.target_location(spot.x,spot.y,int(land.get("z",roundi(ground.y/scale))),0)
 
 # The server object or creature under the mouse (quickbar "under the mouse").
 func hovered_serial() -> int:

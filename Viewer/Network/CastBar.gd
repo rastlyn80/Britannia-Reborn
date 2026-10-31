@@ -86,6 +86,13 @@ func _process(_delta: float) -> void:
 	if age > delay+1.6: finish("",true)
 
 func _target(active: bool) -> void:
+	# Every target cursor (spells, tools like a hatchet or pickaxe, bandages,
+	# skills) shows the reticle until it is answered or cancelled.
+	if active:
+		var aim := int(session.target_request[6]) if session.target_request.size() > 6 else 0
+		Input.set_custom_mouse_cursor(reticle(aim),Input.CURSOR_ARROW,Vector2(16,16))
+	else:
+		Input.set_custom_mouse_cursor(null)
 	if active and not spell.is_empty() and (Time.get_ticks_msec()-started)/1000.0 < delay+6.0:
 		targeting = true
 		bar.value = 1.0

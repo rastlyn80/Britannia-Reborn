@@ -78,6 +78,9 @@ var container_serial := 0
 var container_items := {}
 var labels := preload("res://Network/ItemLabels.gd").new()
 signal environment_changed(state: Dictionary)
+# ModernUO's real wait for a kind of action (our ActionTimers extension):
+# milliseconds left, 0 ready, -1 held until further notice.
+signal action_wait(kind: String, milliseconds: int)
 # Developer edit session records (system messages prefixed UCEDIT1|).
 signal dev_edit_received(line: String)
 
@@ -500,6 +503,13 @@ func _handle(p: PackedByteArray) -> void:
 			if serial == player.serial:
 				equipment = snapshot.worn.duplicate(true)
 				player.body = entity.body
+				# Worn at login: known like any other item, so it can be used
+				# (a hatchet in hand, a spellbook) and dragged.
+				for layer in equipment:
+					var worn: Dictionary = equipment[layer]
+					if not worn.has("container"): worn.container = serial
+					if not worn.has("layer"): worn.layer = int(layer)
+					remember_item(worn)
 				player.hue = entity.hue
 				player.flags = entity.flags
 				player.notoriety = entity.notoriety
@@ -847,6 +857,10 @@ func _server_text(message: String, system: bool = false) -> void:
 		if hour < 0 or hour > 23 or minute < 0 or minute > 59 or seconds < 1 or seconds > 3600: return
 		_environment_update({"minute_of_day":hour*60+minute,"seconds_per_minute":seconds,"sample_msec":Time.get_ticks_msec()})
 		return
+	if system and message.begins_with("UCWAIT1|"):
+		var parts := message.split("|")
+		if parts.size() == 3 and parts[1] in ["skill","spell","bandage","heal_potion"] and parts[2].is_valid_int(): action_wait.emit(parts[1],int(parts[2]))
+		return
 	if system and message.begins_with("UCEDIT1|"):
 		dev_edit_received.emit(message.substr(8))
 		return
@@ -976,6 +990,20 @@ static func target_packet(request: PackedByteArray, item: Dictionary = {}) -> Pa
 	packet.append_array(PackedByteArray([0,int(item.get("z",0))&255]))
 	packet.append_array(Login.uint_be(int(item.get("id",0)),2))
 	return packet
+
+# Answer the open target cursor with a place (0x6C type 1): a map static
+# (a tree for a hatchet, ore for a pickaxe, water for a fishing pole) by its
+# graphic and exact cell, or bare ground with graphic 0. ModernUO checks the
+# static against its own map. High Seas clients send a surface at its top,
+# so its height is added back, as the native client does.
+func target_location(x: int, y: int, z: int, graphic: int = 0) -> bool:
+	if phase != "world" or target_request.is_empty(): return false
+	var packet := target_packet(target_request,{"serial":0,"x":x,"y":y,"z":z,"id":graphic})
+	packet[1] = 1
+	send(packet)
+	target_request.clear()
+	target_changed.emit(false)
+	return true
 
 func target_item(serial: int = 0) -> bool:
 	if phase != "world" or target_request.is_empty(): return false

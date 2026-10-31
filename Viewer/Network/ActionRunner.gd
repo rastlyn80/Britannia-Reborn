@@ -35,6 +35,7 @@ func configure(game: Node) -> void:
 	session.target_changed.connect(_target_changed)
 	if "labels" in session: cooldowns.labels = session.labels
 	if session.has_signal("message_received"): session.message_received.connect(cooldowns.hear)
+	if session.has_signal("action_wait"): session.action_wait.connect(cooldowns.server)
 	session.item_label_received.connect(func(serial: int, label: String): labels[serial] = label)
 
 func player_serial() -> int:
@@ -49,9 +50,16 @@ func send(packet: PackedByteArray) -> bool:
 	return true
 
 # Items carried in the backpack, nested containers included.
+# What you have: what you wear and hold first (a hatchet in hand is the one
+# a lumberjacking slot uses), then everything in the backpack, nested.
 func carried() -> Array:
-	if session == null or int(session.backpack) == 0: return []
+	if session == null: return []
 	var result := []
+	if "equipment" in session:
+		for layer in session.equipment:
+			if int(layer) in [11,16,21,25]: continue
+			result.append(session.equipment[layer])
+	if int(session.backpack) == 0: return result
 	var open := [int(session.backpack)]
 	while not open.is_empty():
 		var parent: int = open.pop_back()
@@ -217,7 +225,7 @@ func _step(step: Dictionary, slot_aim: String) -> float:
 		"Use Item Type":
 			var item := find_item(int(step.get("graphic",0)),int(step.get("hue",-1)))
 			if item.is_empty():
-				feedback.emit("No %s left in your pack." % str(step.get("name","such item")).to_lower())
+				feedback.emit("No %s with you." % str(step.get("name","such item")).to_lower())
 				aim = {}
 				return -1
 			_use(int(item.serial))

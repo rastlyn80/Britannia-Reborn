@@ -26,6 +26,9 @@ func container_entry(serial: int,parent: int) -> PackedByteArray:
  p.append_array(Login.uint_be(parent,4))
  p.append_array(PackedByteArray([0,0]))
  return p
+class Rec extends "res://Network/GameSession.gd":
+ var sent: Array = []
+ func send(bytes: PackedByteArray) -> void: sent.append(bytes)
 class Fixture extends Node3D:
  var world := {"originX":1000,"originY":2000,"width":32,"height":32,"elevationScale":0.2,"terrain":[],"statics":[{"x":1004,"y":2005,"z":20,"id":101},{"x":1006,"y":2005,"z":20,"id":101}],"staticData":{"101":{"height":20}}}
  var movement_surface := preload("res://Presentation/MovementSurface.gd").new()
@@ -180,6 +183,28 @@ func run() -> void:
   check(built != null and built.get_node_or_null("HouseDressing") != null and built.find_children("Chimney","",true,false).size() == 1,"the house keeps its dressing and has exactly one chimney")
   check(fixture.movement_surface.statics.has(Vector2i(1015-3,2015)) and fixture.movement_surface.statics.has(Vector2i(1015,2015+3)),"the house's wall cells still feed movement")
   multis.remove(0x40000020)
+ # A target cursor (a hatchet) answered by clicking a tree static: a location
+ # target with the tree's cell, elevation and graphic; elsewhere, the ground.
+ var rec := Rec.new()
+ rec.phase = "world"
+ rec.surface = preload("res://Presentation/MovementSurface.gd").new()
+ rec.surface.statics[Vector2i(1004,2005)] = [{"x":1004,"y":2005,"z":20,"id":0x0CD3}]
+ rec.surface.static_data = {str(0x0CD3):{"height":20}}
+ rec.surface.terrain[Vector2i(1010,2010)] = {"x":1010,"y":2010,"z":5,"id":3}
+ rec.target_request = PackedByteArray([0x6c,1,0,0,0,7,0]); rec.target_request.resize(19)
+ var real_session = view.session
+ view.session = rec
+ var eye := Vector3(4.5,6.0,8.5)
+ view.target_place(eye,(Vector3(4.5,5.0,5.5)-eye).normalized(),30.0)
+ var answer: PackedByteArray = rec.sent[0] if rec.sent.size() == 1 else PackedByteArray()
+ check(answer.size() == 19 and answer[1] == 1 and Login.read_be(answer,7,4) == 0 and Login.read_be(answer,11,2) == 1004 and Login.read_be(answer,13,2) == 2005 and answer[16] == 20 and Login.read_be(answer,17,2) == 0x0CD3 and rec.target_request.is_empty(),"a target cursor over a tree answers with that tree static (type 1, cell, z, graphic)")
+ rec.target_request = PackedByteArray([0x6c,1,0,0,0,8,0]); rec.target_request.resize(19)
+ var ground := Vector3(10.5,1.0,10.5)
+ view.target_place(ground+Vector3(0,3,0),Vector3.DOWN,3.0)
+ answer = rec.sent[1] if rec.sent.size() == 2 else PackedByteArray()
+ check(answer.size() == 19 and answer[1] == 1 and Login.read_be(answer,11,2) == 1010 and Login.read_be(answer,13,2) == 2010 and answer[16] == 5 and Login.read_be(answer,17,2) == 0,"a target cursor over bare ground answers with the land there")
+ view.session = real_session
+ rec.free()
  game._remove_world_item(0x40000003)
  check(not view.nodes.has(0x40000003),"server visibility removal also removes sign visuals")
  game.close()
