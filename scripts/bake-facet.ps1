@@ -20,6 +20,12 @@ $env:LOCALAPPDATA = $env:APPDATA
 $godot = (Get-ChildItem "$root/.tools/godot/*console.exe" | Select-Object -First 1).FullName
 $data = (Resolve-Path (Join-Path $root $Dataset)).Path
 $atlas = Get-Content (Join-Path $data 'atlas.json') -Raw | ConvertFrom-Json
+# Mountain relief (docs/MOUNTAINS.md), recomputed when the conversion is newer.
+$relief = Join-Path $data 'relief.u8'
+if (!(Test-Path $relief) -or (Get-Item $relief).LastWriteTime -lt (Get-Item (Join-Path $data 'atlas.json')).LastWriteTime) {
+  & "$root/.tools/dotnet/dotnet.exe" "$root/Converter/bin/Release/net8.0/Converter.dll" relief $data
+  if ($LASTEXITCODE) { throw 'Mountain relief failed' }
+}
 $mode = @()
 if ($Modern) { $mode = @('--modern-britain') } elseif ($Classic) { $mode = @('--classic-britain') }
 $logs = Join-Path $data 'bake-logs'

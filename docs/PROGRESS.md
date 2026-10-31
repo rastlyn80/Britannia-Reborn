@@ -1201,6 +1201,13 @@ Saved graceful restart loaded 297 items and 3 mobiles. Population remains idempo
 
 # Progress — 25 October 2026
 
+## 31 October 2026 - Taller mountains (docs/MOUNTAINS.md)
+
+- Converter relief (Converter/Relief.cs) lifts terrain corners deep inside impassable dry land (mountain rock, cave walls, the dungeon void) by 1.2x their height above the nearest walkable corner, eased in over 7 tiles, up to 32 m; walkable corners never move. TerrainSurface, the collision heightmap and the regional horizon use it (Viewer/Presentation/Relief.gd); relief.u8 is part of the bake fingerprint and scripts/bake-facet.ps1 recomputes it.
+- Trammel: 1,757,705 corners lifted. Preview bakes of six Covetous districts show jagged peaks well above the forest instead of mounds; a 3-tile ramp rose like a curtain wall and was rejected.
+- Evidence: ReliefTests 6/0 (in verify); scripts/verify.ps1 passed.
+- Gap: the published Trammel cache shows it only after the next facet bake (with the compression steps and the entrance blockers).
+
 ## 31 October 2026 - Open-microphone voice chat and live translation (docs/VOICE_AND_TRANSLATION.md)
 
 - Tap V or click the microphone: the microphone stays open and every sentence is recognized (local Whisper) and said; tap again to close. Holding V is still push-to-talk. A sentence ends after 1.8 s of quiet (owner: 0.9 s cut sentences short), adjustable in the menu (1.2-3.5 s).

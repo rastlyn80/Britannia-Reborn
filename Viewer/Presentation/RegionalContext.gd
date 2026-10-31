@@ -75,6 +75,7 @@ func prepare(data: RefCounted) -> void:
  var start:=Time.get_ticks_msec()
  var m:Dictionary=data.manifest
  world={"schema":1,"facet":"Trammel","originX":int(m.originX),"originY":int(m.originY),"width":int(m.width),"height":int(m.height),"elevationScale":0.2,"terrain":[],"statics":[],"terrainHalo":[],"staticHalo":[],"landData":m.landData,"staticData":m.staticData,"render_cells":true}
+ world.relief=preload("res://Presentation/Relief.gd").open(data.folder)
  var bounds:=Rect2i(world.originX,world.originY,world.width,world.height)
  for entry in m.chunks:
   var source:Dictionary=data.chunk(Vector2i(int(entry.x),int(entry.y)))

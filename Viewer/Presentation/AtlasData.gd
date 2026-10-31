@@ -2,6 +2,7 @@ extends RefCounted
 var manifest: Dictionary
 var folder: String
 var cache := {}
+var relief: RefCounted
 func open(path: String) -> bool:
  folder = path.get_base_dir()
  if FileAccess.file_exists(folder.path_join("converting.lock")): return false
@@ -43,6 +44,8 @@ func world(at: Vector2i) -> Dictionary:
  var source := chunk(at)
  if source.is_empty(): return {}
  var result := {"schema":1,"facet":"Trammel","provenance":"LOCAL TRAMMEL — full Britannia chunk; native coordinates","originX":at.x,"originY":at.y,"width":64,"height":64,"elevationScale":0.2,"terrain":source.terrain,"statics":source.statics,"landData":manifest.landData,"staticData":manifest.staticData,"terrainHalo":[],"staticHalo":[]}
+ if relief == null: relief = preload("res://Presentation/Relief.gd").open(folder)
+ result.relief = relief
  for dy in range(-1,2):
   for dx in range(-1,2):
    if dx==0 and dy==0: continue

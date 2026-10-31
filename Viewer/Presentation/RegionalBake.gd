@@ -6,6 +6,8 @@ var directory:="res://../outputs/britain"
 func _initialize()->void:call_deferred("run")
 static func fingerprint(folder:String)->String:
  var text:=FileAccess.get_sha256(folder.path_join("atlas.json"))+str(Engine.get_version_info().string)
+ # Mountain relief (Relief.gd) shapes the terrain: a new relief rebakes.
+ if FileAccess.file_exists(folder.path_join("relief.u8")):text+=FileAccess.get_sha256(folder.path_join("relief.u8"))
  for asset in ["Quaternius","Kenney","Surfaces","PolyHaven","Objaverse","Reduced"]:text+=FileAccess.get_sha256("res://Art/"+asset+"/manifest.json")
  for name in FILES:text+=FileAccess.get_sha256("res://Presentation/"+name)
  return text.sha256_text()

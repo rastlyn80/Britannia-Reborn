@@ -28,6 +28,9 @@ var source_ordinals := {}
 var manual_heights := {}
 var manual_paint := {}
 var manual_enabled := true
+# Mountain relief (Relief.gd, docs/MOUNTAINS.md): metres added to corners deep
+# inside impassable land; walkable corners never carry any.
+var relief := {}
 func index(input: Dictionary, shore = null) -> void:
  world = input
  land_data = input.landData if input.get("landData") is Dictionary else {}
@@ -42,6 +45,7 @@ func index(input: Dictionary, shore = null) -> void:
  static_water.clear()
  covered.clear()
  wall_caps.clear()
+ relief.clear()
  for i in world.terrain.size():
   var tile: Dictionary = world.terrain[i]
   samples[Vector2i(tile.x,tile.y)] = tile
@@ -49,6 +53,14 @@ func index(input: Dictionary, shore = null) -> void:
  for tile in world.get("terrainHalo",[]):
   var cell := Vector2i(tile.x,tile.y)
   if not samples.has(cell): samples[cell] = tile
+ var source_relief = world.get("relief")
+ if source_relief != null and not samples.is_empty():
+  var low := Vector2i(1 << 30,1 << 30)
+  var high := -low
+  for cell in samples:
+   low = Vector2i(mini(low.x,cell.x),mini(low.y,cell.y))
+   high = Vector2i(maxi(high.x,cell.x),maxi(high.y,cell.y))
+  relief = source_relief.area(Rect2i(low,high-low+Vector2i.ONE))
  for cell in samples:
   if str(land_data.get(str(int(samples[cell].id)),{}).get("name","")).to_lower() == "water": water_cells[cell] = SEABED_DEPTH
  # The bed shelves away from the shore (0.45 m per tile, to 6 m) so open sea
@@ -152,7 +164,7 @@ func z(cell: Vector2i) -> float:
  var key := cell if samples.has(cell) else bounded
  var native := minf(float(peak_repairs.get(key,samples[key].z)),float(wall_caps.get(key,INF)))
  if manual_enabled: native += float(manual_heights.get(key,0))
- return native*float(world.elevationScale)-float(water_cells.get(key,0.0))-(COVERED_DROP if covered.has(key) else 0.0)
+ return native*float(world.elevationScale)+float(relief.get(key,0.0))-float(water_cells.get(key,0.0))-(COVERED_DROP if covered.has(key) else 0.0)
 static func curve(a: float,b: float,c: float,d: float,t: float) -> float:
  if absf(c-b) <= 0.8: return lerpf(b,c,t)
  var left := b-a

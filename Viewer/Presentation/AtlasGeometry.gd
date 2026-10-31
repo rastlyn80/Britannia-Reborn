@@ -5,10 +5,11 @@ static func build(data: RefCounted) -> ArrayMesh:
  var vertices := PackedVector3Array()
  var colors := PackedColorArray()
  var indices := PackedInt32Array()
+ var relief = preload("res://Presentation/Relief.gd").open(data.folder)
  for tile in data.manifest.overview:
   var cell := Vector2i(tile[0],tile[1])
   points[cell] = vertices.size()
-  vertices.append(Vector3(cell.x,float(tile[2])*0.2,cell.y))
+  vertices.append(Vector3(cell.x,float(tile[2])*0.2+(relief.at(cell) if relief else 0.0),cell.y))
   colors.append(Reconstruction.terrain_color(str(data.manifest.landData.get(str(int(tile[3])),{}).get("name",""))).srgb_to_linear())
  for cell in points:
   var next := Vector2i(mini(cell.x+8,int(data.manifest.originX+data.manifest.width)-1),mini(cell.y+8,int(data.manifest.originY+data.manifest.height)-1))
