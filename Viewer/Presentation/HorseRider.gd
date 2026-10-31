@@ -47,6 +47,27 @@ func solve(rig: Skeleton3D,a: String,b: String,c: String,target: Vector3,pole: V
 	var along:=(first*first-second*second+distance*distance)/(2.*distance)
 	var knee:=pa+axis*along+bend*sqrt(maxf(0.,first*first-along*along))
 	aim(rig,ia,ib,knee);aim(rig,ib,ic,pa+axis*distance)
+func fit_rein_wrist(rig: Skeleton3D,side: String,weight: float) -> void:
+	var arm:=rig.find_bone("lowerarm_"+side);var hand:=rig.find_bone("hand_"+side)
+	var forearm:=rig.get_bone_global_pose(arm);var wrist:=rig.get_bone_global_pose(hand)
+	# Calibrate neutral from this gender's actual rig, not a fixed wrist Euler.
+	var neutral:=forearm.basis*rig.get_bone_global_rest(arm).basis.inverse()*rig.get_bone_global_rest(hand).basis
+	wrist.basis=wrist.basis.slerp(neutral,weight);rig.set_bone_global_pose(hand,wrist)
+	var axis: Vector3=(wrist.origin-forearm.origin).normalized()
+	var index:=rig.get_bone_global_pose(rig.find_bone("index_01_"+side)).origin
+	var pinky:=rig.get_bone_global_pose(rig.find_bone("pinky_01_"+side)).origin
+	var thumb: Vector3=(index-pinky).slide(axis).normalized()
+	var up: Vector3=(rig.global_basis.inverse()*Vector3.UP).slide(axis).normalized()
+	if thumb.length_squared()<.5 or up.length_squared()<.5:return
+	# Pronation belongs in the forearm. Keep the wrist straight while the
+	# thumb edge comes upward; do not fold the hand back to reach the reins.
+	var twist:=clampf(atan2(axis.dot(thumb.cross(up)),thumb.dot(up)),-PI/2.,PI/2.)*weight
+	forearm.basis=Basis(axis,twist)*forearm.basis;rig.set_bone_global_pose(arm,forearm)
+func rein_socket(rig: Skeleton3D,side: String) -> Vector3:
+	var wrist:=rig.get_bone_global_pose(rig.find_bone("hand_"+side)).origin
+	var middle:=rig.get_bone_global_pose(rig.find_bone("middle_01_"+side)).origin
+	var ring:=rig.get_bone_global_pose(rig.find_bone("ring_01_"+side)).origin
+	return rig.global_transform*wrist.lerp((middle+ring)*.5,.72)
 func _process_modification_with_delta(delta: float) -> void:
 	if not is_instance_valid(horse) or not is_instance_valid(rider):return
 	if mode!="seated":
@@ -73,10 +94,11 @@ func _process_modification_with_delta(delta: float) -> void:
 	var spine_now:=rig.get_bone_global_pose(spine)
 	var lean: float=sin(PI*t)*.24 if transition else turn_balance
 	spine_now.basis=Basis(Vector3.RIGHT if transition else Vector3.FORWARD,lean)*spine_now.basis;rig.set_bone_global_pose(spine,spine_now)
-	var inverse:=rig.global_transform.affine_inverse();var hip:=rig.get_bone_global_pose(pelvis).origin
+	var inverse:=rig.global_transform.affine_inverse()
 	var worn: Dictionary=preload("res://Presentation/HumanWardrobe.gd").resolve(rider.server_equipment)
 	stirrup_errors.clear()
 	transition_foot_errors.clear()
+	rider.grip.reins_holding=false;rider.grip.left_reins_holding=false
 	for left in [true,false]:
 		var side:="l" if left else "r";var sign:=1. if left else -1.
 		var ankle: Vector3=inverse*(foot_path(left,t,saddle) if transition else horse.stirrup(left))
@@ -96,9 +118,13 @@ func _process_modification_with_delta(delta: float) -> void:
 			var grip:=Vector3(sign*.14,.30,.46)
 			if transition:grip=Vector3(.24,.18,.31 if left else -.25).lerp(grip,smoothstep(.70,1.,t))
 			var hand_target: Vector3=inverse*(saddle*grip)
-			solve(rig,"upperarm_"+side,"lowerarm_"+side,"hand_"+side,hand_target,hip+Vector3(sign*.5,.1,.25))
-	var left_hand:=rig.global_transform*rig.get_bone_global_pose(rig.find_bone("hand_l")).origin
-	var right_hand:=rig.global_transform*rig.get_bone_global_pose(rig.find_bone("hand_r")).origin
+			var elbow_pole: Vector3=inverse*(saddle*Vector3(sign*.34,.34,0.))
+			solve(rig,"upperarm_"+side,"lowerarm_"+side,"hand_"+side,hand_target,elbow_pole)
+			fit_rein_wrist(rig,side,smoothstep(.7,1.,t) if transition else 1.)
+			if left:rider.grip.left_reins_holding=true
+			else:rider.grip.reins_holding=true
+	var left_hand:=rein_socket(rig,"l")
+	var right_hand:=rein_socket(rig,"r")
 	var outfit: Dictionary=preload("res://Presentation/HumanWardrobe.gd").resolve(rider.server_equipment)
 	var weapon: String=str(outfit.pieces.get("weapon",{}).get("asset",""))
 	if rider.action_clip in ["Rider_Bow","Rider_Crossbow"] or (outfit.pieces.has("weapon") and outfit.pieces.has("shield")) or weapon in ["coverage/crossbow","coverage/heavy_crossbow"]:

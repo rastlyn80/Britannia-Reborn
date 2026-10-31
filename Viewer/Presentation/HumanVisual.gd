@@ -165,6 +165,7 @@ func set_equipment(worn: Array) -> void:
 	var hide_beard: bool = head_asset=="closed_helmet" or bool(Wardrobe.Coverage.FULL_FACE.get(head_asset,false))
 	grip.holding = extra_parts.has("weapon")
 	grip.left_holding = extra_parts.has("shield") or (extra_parts.has("weapon") and str(Wardrobe.Coverage.STANCES.get(str(extra_parts.weapon.asset),"")) in ["bow","crossbow"])
+	if not riding():grip.reins_holding=false;grip.left_reins_holding=false
 	grip.active = true
 	held_accessories.book=Wardrobe.Coverage.HELD_FAMILIES.get(str(extra_parts.get("weapon",{}).get("asset","")),"")=="book"
 	held_accessories.lantern=Wardrobe.Coverage.HELD_FAMILIES.get(str(extra_parts.get("shield",{}).get("asset","")),"")=="lantern"

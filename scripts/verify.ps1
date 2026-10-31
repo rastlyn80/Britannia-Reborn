@@ -123,6 +123,8 @@ if (Test-Path "$root/Viewer/local-art/free-equipment-female/coverage/legacy_long
 if (Test-Path "$root/Viewer/local-art/horses/warhorse.glb") {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/HorseTests.gd
   if ($LASTEXITCODE) { throw 'Horse identity, mounted actions and rider contact checks failed' }
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/RiderHandsTests.gd
+  if ($LASTEXITCODE) { throw 'Rider wrist, rein grip and held-equipment checks failed' }
   & $godot --headless --path "$root/Viewer" --script res://Presentation/HorsePolishTests.gd
   if ($LASTEXITCODE) { throw 'Horse appearance, transitions and slope support checks failed' }
   if (Test-Path "$root/Server/ModernUO/Projects/UOContent/Mobiles/Animals/Mounts/Horse.cs") {
@@ -164,5 +166,8 @@ if ($LASTEXITCODE) { throw 'Developer edit overlay tests failed' }
 $argsForWorld = @()
 if (Test-Path "$root\Viewer\play-world.json") { $argsForWorld = @("--world=$root\Viewer\play-world.json") }
 elseif (Test-Path "$root\Viewer\local-world.json") { $argsForWorld = @("--world=$root\Viewer\local-world.json") }
-& $godot --headless --path "$root\Viewer" --quit-after 3 -- @argsForWorld
-if ($LASTEXITCODE) { throw 'World smoke test failed' }
+$worldSmoke = & $godot --headless --path "$root\Viewer" --quit-after 3 -- @argsForWorld 2>&1
+$worldExit = $LASTEXITCODE
+$worldSmoke | ForEach-Object { Write-Output $_ }
+# Godot can exit zero after a startup script fails to compile.
+if ($worldExit -or ($worldSmoke | Select-String 'SCRIPT ERROR:|ERROR: Failed to load script')) { throw 'World smoke test failed' }

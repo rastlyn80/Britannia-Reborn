@@ -11,6 +11,8 @@ try {
  if (!$SkipContact) {
   & $godot --headless --path Viewer --script res://Presentation/HorseTests.gd
   if ($LASTEXITCODE) { throw 'Horse contact/playback checks failed' }
+  & $godot --headless --path Viewer --script res://Presentation/RiderHandsTests.gd
+  if ($LASTEXITCODE) { throw 'Rider wrist/rein grip checks failed' }
   & $godot --headless --path Viewer --script res://Presentation/HorsePolishTests.gd
   if ($LASTEXITCODE) { throw 'Horse colour/transition/slope checks failed' }
  }
