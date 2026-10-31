@@ -66,16 +66,18 @@ func _say(serial: int, text: String, type: int, hue: int) -> void:
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.add_theme_font_override("font",Look.ui_font(600))
+	var emote := type == 2
+	var font: Font = Look.italic_font(500) if emote else Look.ui_font(500)
+	label.add_theme_font_override("font",font)
 	label.add_theme_font_size_override("font_size",16 if type == 9 else 15)
-	var colour := voice(serial,hue,serial == int(game.player.get("serial",0)))
+	var colour: Color = Look.EMOTE_TEXT if emote else voice(serial,hue,serial == int(game.player.get("serial",0)))
 	# Whispers are a little quieter.
 	if type == 8: colour.a = 0.8
 	label.add_theme_color_override("font_color",colour)
 	label.add_theme_color_override("font_outline_color",Color(0.02,0.025,0.035,0.9))
 	label.add_theme_constant_override("outline_size",4)
 	# Short lines hug their text; long ones wrap at WIDTH.
-	var natural := Look.ui_font(600).get_string_size(shown,HORIZONTAL_ALIGNMENT_LEFT,-1,label.get_theme_font_size("font_size")).x
+	var natural := font.get_string_size(shown,HORIZONTAL_ALIGNMENT_LEFT,-1,label.get_theme_font_size("font_size")).x
 	label.custom_minimum_size = Vector2(minf(natural+4.0,WIDTH),0)
 	bubble.add_child(label)
 	bubble.hide()

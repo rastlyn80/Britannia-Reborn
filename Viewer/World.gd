@@ -443,6 +443,7 @@ func _physics_process(delta: float) -> void:
 func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	var captions := preload("res://Network/ScreenLabels.gd").new()
 	captions.camera = camera
+	captions.game = game
 	canvas.add_child(captions)
 	canvas.move_child(captions,0)
 	var damage := preload("res://Network/DamageNumbers.gd").new()
@@ -855,6 +856,7 @@ func _entity_changed(serial: int,position: Dictionary) -> void:
 		avatar.initial_body = int(position.get("body",0))
 		var label := Label3D.new()
 		label.name = "Nameplate"
+		label.set_meta("serial",serial)
 		# Never a placeholder: the real name arrives with the status reply (MobileNames).
 		label.text = "You" if serial == game.player.serial else str(game.entity_names.get(serial,""))
 		label.position.y = 2.2

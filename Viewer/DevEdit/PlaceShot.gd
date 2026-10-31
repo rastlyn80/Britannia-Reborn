@@ -38,6 +38,12 @@ func run() -> void:
 	await create_timer(3.0).timeout
 	if not await until(func(): return scene.city_stream.settled(),120): return finish("settle")
 	await create_timer(4.0).timeout
+	# --say=text|*emote*;...: lines the character speaks before the pictures.
+	for line in str(args.get("say","")).split(";",false):
+		var emote := line.begins_with("*")
+		var Speech = preload("res://Network/Journal.gd").Protocol
+		scene.game.send(Speech.speech(line.trim_prefix("*").trim_suffix("*"),int(Speech.SPEECH.get("Emote" if emote else "Say",0))))
+		await create_timer(0.6).timeout
 	var views: PackedStringArray = str(args.get("views","0:-0.4:8")).split(";",false)
 	for i in views.size():
 		var v: PackedStringArray = views[i].split(":")

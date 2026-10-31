@@ -44,6 +44,8 @@ func _ready() -> void:
 	log.add_theme_font_override("bold_font",Look.ui_font(700))
 	log.add_theme_font_size_override("normal_font_size",13)
 	log.add_theme_font_size_override("bold_font_size",13)
+	log.add_theme_font_override("italics_font",Look.italic_font(500))
+	log.add_theme_font_size_override("italics_font_size",13)
 	log.add_theme_color_override("default_color",Color("dcd5c5"))
 	column.add_child(log)
 	var talk := HBoxContainer.new()
@@ -104,9 +106,12 @@ func _render() -> void:
 	var lines := []
 	for entry in entries:
 		if tab != "All" and entry[1] != tab: continue
-		var color: String = {"Server":"eee7d7","Quickbar":"8fc1ff"}.get(entry[1],"dcd5c5")
+		var color: String = {"Server":Look.SYSTEM_TEXT.to_html(false),"Quickbar":Look.ACTION_TEXT.to_html(false),"Party":Look.HERB.to_html(false)}.get(entry[1],"dcd5c5")
 		if entry.size() > 3 and entry[3].a > 0.0: color = entry[3].to_html(false)
-		lines.append("[color=#7d776b]%s[/color] [color=#%s]%s[/color]" % [entry[0],color,str(entry[2]).replace("[","[lb]")])
+		var text := str(entry[2]).replace("[","[lb]")
+		# Emotes read *like this*: italic in the emote colour.
+		if text.ends_with("*") and ": *" in text or text.begins_with("*"): text = "[i][color=#%s]%s[/color][/i]" % [Look.EMOTE_TEXT.to_html(false),text]
+		lines.append("[color=#7d776b]%s[/color] [color=#%s]%s[/color]" % [entry[0],color,text])
 	log.text = "\n".join(lines)
 
 static func _mode(text: String) -> Array:

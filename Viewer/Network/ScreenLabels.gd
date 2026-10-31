@@ -8,6 +8,8 @@ const Look = preload("res://Network/ModernSkin.gd")
 const GROUP := "screen_label"
 const RANGE := 32.0
 var camera: Camera3D
+# Nameplates (labels with meta "serial") take the mobile's notoriety colour.
+var game: Node
 var drawn: Dictionary = {}
 
 static func track(label: Label3D) -> void:
@@ -21,7 +23,7 @@ func _ready() -> void:
 func _caption() -> Label:
 	var caption := Label.new()
 	caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	caption.add_theme_font_override("font",Look.ui_font(600))
+	caption.add_theme_font_override("font",Look.ui_font(700))
 	caption.add_theme_color_override("font_outline_color",Color(0.03,0.035,0.045,0.92))
 	caption.add_theme_constant_override("outline_size",5)
 	caption.add_theme_color_override("font_shadow_color",Color(0,0,0,0.45))
@@ -29,6 +31,13 @@ func _caption() -> Label:
 	caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	add_child(caption)
 	return caption
+
+func _colour(label: Label3D) -> Color:
+	if game == null or not label.has_meta("serial"): return label.modulate
+	var serial := int(label.get_meta("serial"))
+	var mobile: Dictionary = game.player if serial == int(game.player.get("serial",0)) else game.entities.get(serial,{})
+	var notoriety := int(mobile.get("notoriety",0))
+	return Color(preload("res://Network/TargetFrame.gd").NOTORIETY[notoriety][0]) if preload("res://Network/TargetFrame.gd").NOTORIETY.has(notoriety) else Look.IVORY
 
 func _process(_delta: float) -> void:
 	var seen: Dictionary = {}
@@ -52,7 +61,7 @@ func _process(_delta: float) -> void:
 				caption = _caption()
 				drawn[key] = caption
 			caption.text = label.text
-			caption.add_theme_color_override("font_color",label.modulate)
+			caption.add_theme_color_override("font_color",_colour(label))
 			# Slightly smaller with distance, in whole pixels to keep glyphs cached.
 			var size := clampi(roundi(17.0-distance*0.2),11,17)
 			if caption.get_theme_font_size("font_size") != size: caption.add_theme_font_size_override("font_size",size)

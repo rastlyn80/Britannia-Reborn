@@ -14,6 +14,12 @@ const BLOOD := Color("d9584a")
 const AMBER := Color("e3a93b")
 const SKY := Color("4c8df0")
 const HERB := Color("9bd88a")
+# On-screen text by kind, one family: names bold in their notoriety colour,
+# speech regular in the speaker's tone, emotes italic and warm, system
+# messages muted blue-grey, your own actions lavender.
+const EMOTE_TEXT := Color("f0c08a")
+const SYSTEM_TEXT := Color("93a8bd")
+const ACTION_TEXT := Color("c4b5ec")
 const ICONS := {
 	"sword":"M20 4 L9 15 M20 4 L20 8 M20 4 L16 4 M6 13 L11 18 M8.5 15.5 L4 20",
 	"shield":"M12 3 L19 6 V11 C19 16 15.5 19.5 12 21 C8.5 19.5 5 16 5 11 V6 Z",
@@ -77,6 +83,13 @@ static func _font(file: String, weight: int) -> Font:
 			variation.variation_opentype = {TextServerManager.get_primary_interface().name_to_tag("wght"):weight}
 			fonts[key] = variation
 	return fonts[key]
+
+# Inter slanted (the bundled UI font has no italic face).
+static func italic_font(weight := 500) -> Font:
+	var slanted := FontVariation.new()
+	slanted.base_font = ui_font(weight)
+	slanted.variation_transform = Transform2D(Vector2(1,0),Vector2(0.2,1),Vector2.ZERO)
+	return slanted
 
 static func title_font() -> Font: return _font("Cinzel.ttf",700)
 static func ui_font(weight := 500) -> Font: return _font("Inter.ttf",weight)
