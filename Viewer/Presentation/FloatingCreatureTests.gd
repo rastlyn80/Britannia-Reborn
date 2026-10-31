@@ -5,12 +5,17 @@ const Avatar=preload("res://Presentation/HumanAvatar.gd")
 const Geometry=preload("res://Presentation/SkinGeometry.gd")
 var checks:=0
 var failures:=0
-func _initialize() -> void:call_deferred("run")
+var family:="gazers"
+func _initialize() -> void:
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--family="):family=arg.trim_prefix("--family=")
+	assert(family in ["gazers","genies"])
+	call_deferred("run")
 func check(ok: bool,label: String) -> void:
 	checks+=1
 	if not ok:failures+=1;push_error(label)
 func run() -> void:
-	var preparation: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://local-art/creatures/gazers/preparation.json"))
+	var preparation: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://local-art/creatures/"+family+"/preparation.json"))
 	Registry.load_index()
 	var ground:=StaticBody3D.new();var collider:=CollisionShape3D.new();var shape:=BoxShape3D.new();shape.size=Vector3(30.,.1,30.);collider.shape=shape;collider.position.y=-.05;ground.add_child(collider);root.add_child(ground)
 	var records: Array=[];var assets: Dictionary={};var expected_cases:=0
@@ -48,10 +53,10 @@ func run() -> void:
 		var path:="res://local-art/creatures/"+str(row.kind)+"-modern.gltf"
 		assets[row.kind]={"asset_sha256":FileAccess.get_sha256(path),"import_sha256":FileAccess.get_sha256(path+".import")}
 	ground.free()
-	check(records.size()==expected_cases and expected_cases>0,"Every gazer body covers raised/lowered flat and sloped support")
+	check(records.size()==expected_cases and expected_cases>0,"Every floating body covers raised/lowered flat and sloped support")
 	var runtime: Dictionary={}
 	for name in ["FloatingCreatureTests.gd","HumanAvatar.gd","LegacyAvatar.gd","CreatureVisual.gd","SourceMountContact.gd","SkinGeometry.gd","FootContact.gd","MountVisual.gd","CreatureRegistry.gd"]:runtime[name]=FileAccess.get_sha256("res://Presentation/"+name)
-	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://../outputs/creatures/gazers"))
-	var output:=FileAccess.open("res://../outputs/creatures/gazers/hover-contact.json",FileAccess.WRITE)
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://../outputs/creatures/"+family))
+	var output:=FileAccess.open("res://../outputs/creatures/"+family+"/hover-contact.json",FileAccess.WRITE)
 	output.store_string(JSON.stringify({"checks":checks,"failures":failures,"records":records,"assets":assets,"runtime_sha256":runtime,"scope":"Actual avatar physics support, preserved source hover and conservative skinned clearance on six finite collision planes per body. Offline presentation; not arbitrary obstacles, full volume sweep or native AI gameplay."},"\t"));output.close()
 	print("FLOATING CREATURE SUPPORT: ",checks-failures," / ",checks,"; ",records.size()," measured cases");quit(1 if failures else 0)

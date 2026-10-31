@@ -243,9 +243,10 @@ def prepare(family, z, names, rows, native):
                 original = td.png_from_tga(read(texture))
                 (OUTPUT/(stem+'-original-albedo.png')).write_bytes(original)
                 row['source_atlas_status']='Recovered original atlas'
-                if family in ['dragons','daemons','gargoyles','harpies'] or stem=='spirits_blade_spirit':
+                if family in ['dragons','daemons','gargoyles','harpies','rat','lizard'] or stem=='spirits_blade_spirit':
                     row['source_alpha_texture']=stem+'-original-albedo.png'
                     row['art_dependency_sha256']={row['source_alpha_texture']:digest(original)}
+                    if family=='rat':row['source_alpha_scope']='fine_edges'
             else:
                 row['missing_source_atlas']=body['textures'][0]
                 replacement=OUTPUT/(stem+'-albedo-v1.png')
@@ -364,7 +365,7 @@ def prepare(family, z, names, rows, native):
             # Colour variants with exactly equal geometry, UVs, rigs and clips can
             # share computed deformation streams; atlas pixels remain independent.
             key = digest(json.dumps({'body':{k:v for k,v in body.items() if k!='textures'},'clips':clips,'height':height},sort_keys=True).encode())
-            if family=='gazers':
+            if family in ['gazers','genies']:
                 row['movement_mode']='source_hover'
                 row['hover_reference_m']=min(p[2] for p in body['points'])*scale
                 row['hover_policy']='Source positive Z clearance retained; only ground penetration lifted. Death ends at its original negative underside and settles on the floor. Not arbitrary-terrain volume clearance.'
@@ -378,9 +379,9 @@ def prepare(family, z, names, rows, native):
                     output.write_text(json.dumps(gltf,separators=(',',':')))
                 else:
                     stats[treatment] = td.export_gltf(mesh,clips,original,output,height,
-                        floor_sample_rate=120 if family in ['dragons','daemons','lizards','gargoyles','gazers','harpies'] or stem in ['flails_swamp_tentacles','centaurs_centaur','mongbats_mongbat','spirits_blade_spirit'] else 30,
+                        floor_sample_rate=120 if family in ['dragons','daemons','lizards','gargoyles','gazers','genies','harpies'] or stem in ['flails_swamp_tentacles','centaurs_centaur','mongbats_mongbat','spirits_blade_spirit'] else 30,
                         preserve_vertical_clips=['Fly','TakeOff','Land','HitInAir'],
-                        preserve_hover_clips=list(clips) if family=='gazers' else ())
+                        preserve_hover_clips=list(clips) if family in ['gazers','genies'] else ())
                     templates[cache_key] = (json.loads(output.read_text()),stats[treatment])
                 stats[treatment]['bind_diagonal_m']=math.sqrt(sum(((max(p[i] for p in mesh['points'])-min(p[i] for p in mesh['points']))*scale)**2 for i in range(3)))
                 if row.get('source_alpha_texture') or row.get('rigid_import'):

@@ -42,7 +42,7 @@ def main():
                 assert asset['asset_sha256']==tested[kind]['asset_sha256']['modern'],'Mineral response used different art'
                 assert asset['import_sha256']==tested[kind]['import_sha256']['modern'],'Mineral response used different import settings'
                 assert asset['surface_parameters']==next(row['mineral_surface'] for row in preparation['models'] if row['kind']==kind),'Mineral surface parameters changed after response checks'
-        if family=='gazers':
+        if family in ['gazers','genies']:
             hover_path=ROOT/f'outputs/creatures/{family}/hover-contact.json'
             hover=json.loads(hover_path.read_text())
             hover_bodies={int(identity['body']) for row in preparation['models'] if row['status']=='prepared' for identity in row['bodies']}

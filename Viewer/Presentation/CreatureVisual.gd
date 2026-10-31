@@ -56,7 +56,9 @@ func _ready() -> void:
 	if kind in ["dragons_dragon_asian","dragons_wyvern"]:
 		contact.align_skinned_soles=true;contact.iterations=5
 	var quadruped:=str(entry.get("profile",""))=="animal" and str(entry.get("family",""))!="walrus" or str(entry.get("family","")) in ["rodents","lizards","dragons","centaurs"]
-	contact.configure(model.find_children("*","MeshInstance3D",true,false)[0],quadruped)
+	# A floating actor can have real leg bones (efreet's crossed legs). They
+	# remain animated limbs, not stance feet to drag down onto the terrain.
+	if str(entry.get("movement_mode",""))!="source_hover":contact.configure(model.find_children("*","MeshInstance3D",true,false)[0],quadruped)
 	source_model_basis=model.basis.orthonormalized()
 	default_model_scale=model.scale
 	set_meta("source_creature",entry.duplicate(true))

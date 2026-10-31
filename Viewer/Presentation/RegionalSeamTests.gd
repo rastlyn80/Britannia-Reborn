@@ -6,6 +6,7 @@ func check(ok:bool,text:String)->void:
  if ok:print("PASS ",text)
  else:failures+=1;push_error(text)
 class Fixture extends RefCounted:
+ var folder: String = "res://../work/fixtures/no-relief"
  var manifest:Dictionary
  var sources:Dictionary={}
  func _init()->void:

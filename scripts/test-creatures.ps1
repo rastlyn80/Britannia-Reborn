@@ -57,8 +57,8 @@ foreach ($family in $Families) {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/CreatureContactTests.gd -- "--family=$family" *> "$logs/$family-contact.log"
   if ($LASTEXITCODE) {throw 'Animated dragon sole/contact checks failed'}
  }
- if ($family -eq 'gazers') {
-  & $godot --headless --path "$root/Viewer" --script res://Presentation/FloatingCreatureTests.gd *> "$logs/$family-hover.log"
+ if ($family -in @('gazers','genies')) {
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/FloatingCreatureTests.gd -- "--family=$family" *> "$logs/$family-hover.log"
   if ($LASTEXITCODE) {throw 'Floating creature avatar/support checks failed'}
  }
  if ($family -eq 'elementals') {
