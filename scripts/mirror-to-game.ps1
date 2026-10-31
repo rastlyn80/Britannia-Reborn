@@ -24,10 +24,15 @@ if (!$text.Trim()) { exit 0 }
 
 # The newest in-game ask the bridge reported.
 $id = 0
+$status = ''
 foreach ($line in [IO.File]::ReadAllLines($outbox)) {
-  if ($line -match '"event":"conversation".*"id":(\d+)') { $id = [int]$Matches[1] }
+  if ($line -match '"event":"conversation".*"id":(\d+)') {
+    $id = [int]$Matches[1]
+    $status = if ($line -match '"status":"([a-z]+)"') { $Matches[1] } else { '' }
+  }
 }
-if ($id -le 0) { exit 0 }
+# A closed ask (accepted or cancelled) gets no more mirrored replies.
+if ($id -le 0 -or $status -in 'applied','declined') { exit 0 }
 
 # Plain one-line text: no markdown, tables, code ticks or line breaks.
 $plain = $text -replace '```[\s\S]*?```', ' ' -replace '[*`#|]', '' -replace '\[([^\]]+)\]\([^)]+\)', '$1' -replace '\s+', ' '
