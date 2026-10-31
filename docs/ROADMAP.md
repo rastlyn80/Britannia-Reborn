@@ -1,3 +1,7 @@
+# Compact streaming cache adopted; all of Trammel next - 31 October 2026
+
+Owner decision: world bakes store each model once and place it by reference, compressed, within a size budget (all of Trammel at most 5 GB). Merged per-district geometry is retired; it had grown Britain to 2.3 GB per graphics mode and Britain-to-Trinsic to 16 GB, which put whole-Trammel at 60-120 GB. Next: rework BakeStreaming to the compact format, measure it on sample districts, rebake Britain, then bake all of Trammel (converted: outputs/trammel; server world populated). Rule, measurements and estimate: [COMPACT_STREAMING.md](COMPACT_STREAMING.md).
+
 # Wildlife pipeline validated; creature programme continues - 31 October 2026
 
 The generic source-first pipeline now accepts 26 wildlife forms / 30 body routes (27 bounded native identities): bears, dogs/wolves, deer, cats, pigs, goats/sheep, giant rat and walrus. Evidence: 16,178 pose/identity/support checks over 4,914 deformed samples; 320 GPU checks / 156 views; 416 comparison frames; 2,366 real disposable-server/two-client checks across 54 cases, zero failures. Terrain adjustment preserves per-body proportions. Full scripts/verify.ps1 exits 0; existing unrelated diagnostics remain. [Scope, sources, commands and limits](CREATURE_WILDLIFE.md).

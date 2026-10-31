@@ -1,3 +1,5 @@
+> **Storage rule, 31 October 2026:** the prepared cache must store models once and place them by reference, compressed, within a size budget. See [COMPACT_STREAMING.md](COMPACT_STREAMING.md). The measurements below describe the earlier cache.
+
 # Streaming stall reduction — 26 October 2026
 
 `Presentation/StreamingProfile.gd` drives a fixed continuous run route (1602,1591 → 1780,1591 → 1780,1700 → 1480,1700 → 1480,1480 → 1602,1480 → home; 8 tiles/s; fixed per-frame advance; movement waits for destination districts as native movement does). It records wall-clock frames, GPU/render time, engine process/physics time, per-phase main-thread timings (`LiveDistricts.phases`) and a load/decode/install/retire event timeline for the worst frames. `--laps=2` repeats it. Before and after runs used the same route and renderer, one at a time, with no other graphical test running.
