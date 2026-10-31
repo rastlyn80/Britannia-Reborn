@@ -293,10 +293,33 @@ func bake_preview(folder: String, districts: Array) -> void:
  if not data.open(directory.path_join("atlas.json")): push_error("Missing owned atlas data");quit(1);return
  var known:={}
  for entry in data.manifest.chunks:known[Vector2i(entry.x,entry.y)]=true
+ # A facet is too large to plan whole: plan the previewed districts with a
+ # one-district ring of context, in the dataset's frame (as facet windows do).
+ if data.manifest.chunks.size()>512 and not districts.is_empty():
+  var box:=Rect2i(districts[0],Vector2i(64,64))
+  for at in districts: box=box.merge(Rect2i(at,Vector2i(64,64)))
+  var ring:=box.grow(64)
+  var inside: Array=[]
+  var context: Array=[]
+  for entry in data.manifest.chunks:
+   var at:=Vector2i(entry.x,entry.y)
+   if box.has_point(at): inside.append(entry)
+   elif ring.has_point(at): context.append(entry)
+  data.manifest=data.manifest.duplicate()
+  data.manifest.chunks=inside
+  data.manifest.contextChunks=context
+  dataset_origin=Vector2(int(data.manifest.originX),int(data.manifest.originY))
+  data.manifest.originX=box.position.x
+  data.manifest.originY=box.position.y
+  data.manifest.width=box.size.x
+  data.manifest.height=box.size.y
  var plan:=preload("res://Presentation/RegionalContext.gd").new()
  plan.overrides=manual
  plan.prepare(data)
  var frame:=Vector2(plan.world.originX,plan.world.originY)
+ if dataset_origin.x >= 0:
+  window_offset=Vector3(plan.world.originX-dataset_origin.x,0,plan.world.originY-dataset_origin.y)
+  frame=dataset_origin
  for key in data.manifest.staticData:catalog_names[key]=str(data.manifest.staticData[key].get("name","tree"))
  plan.reconstruction.source_origin=frame
  preload("res://Presentation/SurfaceLibrary.gd").source_origin=frame

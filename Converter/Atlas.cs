@@ -38,7 +38,7 @@ static partial class Program {
    if((chunks.Count+contextChunks.Count)%64==0)Console.WriteLine($"ATLAS: {chunks.Count} visible / {contextChunks.Count} context chunks");
   }
   var inputs=Directory.EnumerateFiles(args[1]).Where(p=>new[]{source,"tiledata.mul","mapdifl1.mul","mapdif1.mul","stadifl1.mul","stadif1.mul","stadifi1.mul","staidx1.mul","statics1.mul"}.Contains(Path.GetFileName(p))).ToDictionary(p=>Path.GetFileName(p)!,p=>{using var f=Read(p);return System.Convert.ToHexString(SHA256.HashData(f.BaseStream));});
-  var result=new {provenance=File.Exists(Path.Combine(args[1],"SYNTHETIC.txt"))?"SYNTHETIC fixture — not Britannia":"LOCAL TRAMMEL — base + local diffs",inputs,schema=1,format="BRW1",facet="Trammel",originX=x,originY=y,width,height,chunkSize=size,elevationScale=0.2,overviewStep=8,terrainCount=(long)width*height,staticCount,mapSha256=sha,source,landData=land,staticData=objects,chunks,contextChunks,overview};
+  var result=new {provenance=File.Exists(Path.Combine(args[1],"SYNTHETIC.txt"))?"SYNTHETIC fixture — not Britannia":(Patch.Enabled?"LOCAL TRAMMEL — base + local diffs":"LOCAL TRAMMEL — base map, as ModernUO serves it"),inputs,schema=1,format="BRW1",facet="Trammel",originX=x,originY=y,width,height,chunkSize=size,elevationScale=0.2,overviewStep=8,terrainCount=(long)width*height,staticCount,mapSha256=sha,source,landData=land,staticData=objects,chunks,contextChunks,overview};
   File.WriteAllText(Path.Combine(output,"atlas.json.tmp"),JsonSerializer.Serialize(result));
   File.Move(Path.Combine(output,"atlas.json.tmp"),Path.Combine(output,"atlas.json"),true);
   File.Delete(Path.Combine(output,"converting.lock"));

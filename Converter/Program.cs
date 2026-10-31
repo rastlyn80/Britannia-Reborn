@@ -14,6 +14,7 @@ static partial class Program {
   try {
    if(args.Length==0) throw new ArgumentException("Commands: fixture DIR | test DIR | convert DIR OUT [x y width height mapHeight]");
    if(args[0]=="atlas") { ExportAtlas(args); return; }
+   if(args[0]=="relief") { ExportRelief(args); return; }
    if(args[0]=="fixture") { Fixture(args[1]); return; }
    if(args[0]=="test") { Tests(args[1]); return; }
    if(args[0]=="reference") { ArtReference.Export(args[1],args[2],args[3]); return; }
@@ -64,7 +65,7 @@ static partial class Program {
    objects=statics.Select(t=>t.id).Distinct().ToDictionary(id=>id,id=>ReadTileInfo(td,id,true));
    td.BaseStream.Position=0;tileSha=fingerprint?System.Convert.ToHexString(SHA256.HashData(td.BaseStream)):null;
   }
-  return new(1,"Trammel (map1)",File.Exists(Path.Combine(dir,"SYNTHETIC.txt"))?"SYNTHETIC — invented terrain; NOT Britain geography":$"LOCAL TRAMMEL — base + local diffs ({landPatch.blocks.Count}/{staticPatch.blocks.Count})",ox,oy,width,height,0.2,tiles.ToArray(),statics.ToArray(),sha,land,objects,tileSha);
+  return new(1,"Trammel (map1)",File.Exists(Path.Combine(dir,"SYNTHETIC.txt"))?"SYNTHETIC — invented terrain; NOT Britain geography":(Patch.Enabled?$"LOCAL TRAMMEL — base + local diffs ({landPatch.blocks.Count}/{staticPatch.blocks.Count})":"LOCAL TRAMMEL — base map, as ModernUO serves it (diffs not applied)"),ox,oy,width,height,0.2,tiles.ToArray(),statics.ToArray(),sha,land,objects,tileSha);
  }
  static TileInfo ReadTileInfo(BinaryReader reader,int id,bool statics) {
   long length=reader.BaseStream.Length;
@@ -83,7 +84,13 @@ static partial class Program {
  }
  sealed class Patch : IDisposable {
   public readonly Dictionary<int,int> blocks=new(); public readonly BinaryReader? data,index;
+  // Map diff files (mapdif/stadif) are what pre-7.0.9 clients overlaid on the
+  // base map. ModernUO applies them only for such clients and ours is newer,
+  // so the server walks the base map; the converter matches it unless
+  // UC_MAP_DIFFS=1 asks for the old overlay (and the self-tests below).
+  public static bool Enabled => Environment.GetEnvironmentVariable("UC_MAP_DIFFS")=="1";
   public Patch(string dir,bool statics) {
+   if(!Enabled)return;
    string[] names=statics?new[]{"stadifl1.mul","stadif1.mul","stadifi1.mul"}:new[]{"mapdifl1.mul","mapdif1.mul"};
    int present=names.Count(n=>File.Exists(Path.Combine(dir,n)));if(present==0)return;if(present!=names.Length)throw new NotSupportedException("Incomplete patch set: "+string.Join(", ",names));
    using var list=Read(Path.Combine(dir,names[0]));if(list.BaseStream.Length%4!=0)throw new InvalidDataException("Bad diff list length");
@@ -149,6 +156,7 @@ static partial class Program {
    using var br=Read(file);var u=new Uop(br);Check(u.Chunk(22).SequenceEqual(raw.Skip(22*4096*196).Take(4096*196)),"UOP chunk "+compressed);
   }
   File.Move(Path.Combine(dir,"map1.mul"),Path.Combine(dir,"saved.mul"),true);var packedWorld=Convert(dir,1408,1664,48,48,4096);Check(packedWorld.terrain.SequenceEqual(w.terrain)&&packedWorld.statics.SequenceEqual(w.statics),"MUL/UOP IR equivalence");File.Move(Path.Combine(dir,"saved.mul"),Path.Combine(dir,"map1.mul"),true);
+  Environment.SetEnvironmentVariable("UC_MAP_DIFFS","1");
   File.WriteAllText(Path.Combine(dir,"mapdifl1.mul"),"");bool refused=false;try{Convert(dir,1408,1664,48,48,4096);}catch(NotSupportedException){refused=true;}File.Delete(Path.Combine(dir,"mapdifl1.mul"));Check(refused,"refuse ignored patches");
   using(var list=new BinaryWriter(File.Create(Path.Combine(dir,"mapdifl1.mul"))))list.Write(176*512+208);
   using(var patch=new BinaryWriter(File.Create(Path.Combine(dir,"mapdif1.mul")))){patch.Write(0u);for(int i=0;i<64;i++){patch.Write((ushort)999);patch.Write((sbyte)-11);}}
@@ -157,6 +165,7 @@ static partial class Program {
   using(var index=new BinaryWriter(File.Create(Path.Combine(dir,"stadifi1.mul")))){index.Write(-1);index.Write(0);index.Write(0);index.Write(0);index.Write(7);index.Write(0);}
   var overlay=Convert(dir,1408,1664,48,48,4096);Check(overlay.terrain.Single(t=>t.x==1408&&t.y==1664).z==-11&&overlay.terrain.First().id==999,"terrain diff precedence");Check(overlay.statics.Length==71&&overlay.statics.Any(s=>s.id==500&&s.x==1409&&s.y==1666&&s.z==-12&&s.hue==42),"static diff replacement, last duplicate wins");
   foreach(var name in new[]{"mapdifl1.mul","mapdif1.mul","stadifl1.mul","stadif1.mul","stadifi1.mul"})File.Delete(Path.Combine(dir,name));
+  Environment.SetEnvironmentVariable("UC_MAP_DIFFS",null);
   foreach(bool modern in new[]{false,true}) {
    string path=Path.Combine(dir,"tiledata.mul");int flagBytes=modern?8:4;long landSize=512L*(4+32*(flagBytes+22));
    using(var bw=new BinaryWriter(File.Create(path))){bw.BaseStream.SetLength(modern?3188736:2861056);bw.BaseStream.Position=4;if(modern)bw.Write(0x100000002UL);else bw.Write(2u);bw.Write((ushort)7);bw.Write(Encoding.ASCII.GetBytes("test grass"));}
