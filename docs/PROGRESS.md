@@ -1,3 +1,20 @@
+# Houses: tower corbels and 15 contest keeps and castles — 31 October 2026
+
+- **Tower (0x7A) side walls fixed.** The owner found the walls sticking out under the roof gallery detached and senseless.
+  - Cause: the gallery's stepped stone landings were tested against the whole house's extent (which includes the gallery parapet), so they were built as solid 3 m blocks from the floor below.
+  - Fix: landings are now tested against the walls of the storey they stand by. Those outside become corbel ribs, half a cell thick in the house's masonry, each from its own lowest landing to its top, with a cap course. The ribs step outward as they rise, as the tiles lay them out.
+- **Contest houses (ContestHouses.cs, multis 0x147E to 0x148F):**
+  - 15 of the 18 competition keeps and castles are whole models: fortified keeps, the marble castle, half-timbered manors with cross-gabled roofs, courtyards.
+  - Their grass, water, lava, carpets, decals and props keep their own tile models.
+  - Kept on tiles: 0x1482 (brick castle), 0x1483 (white manor whose colonnade became a row of doorways) and 0x148B (open-sided slabs). All three lean on arch and column tile art the builder does not model.
+- **Baking:** `BakeHouses.gd` bakes 34 houses.
+
+**Tests:** WorldItemTests 85/85; every supported house builds with a doorway and a roof or parapet. The full verify passes.
+
+**Not yet:**
+- player-designed custom houses still draw tile by tile;
+- columns and arcades as real columns, and stone door hoods for castles.
+
 # Ethical steed blocker closed / bovine integration - 31 October 2026
 
 Authorised holy/unholy riders now pass normal native oaths, mounting and save/restart restoration in the reviewed server build. Evidence: 403 ethical-matrix checks, 24 restart checks, and 1,242 full equine checks, zero failures. The original pinned checkout is unchanged; two hash-guarded build overlays fix the native registry/bootstrap/player links. The running production server is untouched and loads the update on its next normal start; its feature settings and saves are unchanged. [Implementation, evidence and reproduction](ETHICS_AND_BOVINES.md).

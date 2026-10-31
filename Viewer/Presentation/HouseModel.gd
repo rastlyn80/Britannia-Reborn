@@ -30,7 +30,11 @@ const SILL := 0.95        # window sill above the floor
 const HEAD := 2.15        # window head above the floor
 const WINDOW_W := 0.82
 # Every classic house multi ModernUO builds (Houses.cs), reviewed as renders.
-const SUPPORTED := [0x64,0x66,0x68,0x6A,0x6C,0x74,0x76,0x78,0x7A,0x7C,0x7E,0x8C,0x96,0x98,0x9A,0x9C,0x9E,0xA0,0xA2]
+const SUPPORTED := [0x64,0x66,0x68,0x6A,0x6C,0x74,0x76,0x78,0x7A,0x7C,0x7E,0x8C,0x96,0x98,0x9A,0x9C,0x9E,0xA0,0xA2,
+	# Contest keeps and castles (ContestHouses.cs) that read well as whole
+	# models. 0x1482, 0x1483 and 0x148B lean on arch and column tile art the
+	# builder does not model, so they keep their tiles.
+	0x147E,0x147F,0x1480,0x1481,0x1484,0x1485,0x1486,0x1487,0x1488,0x1489,0x148A,0x148C,0x148D,0x148E,0x148F]
 static var surfaces := {}
 
 static func supported(id: int) -> bool:
@@ -205,6 +209,7 @@ static func build(parts: Array, tiles: Dictionary, seed := 0) -> Node3D:
 	for storey in storeys: floors_at.append({})
 	var deck := {}
 	var landings: Array = []
+	var ribs := {}   # cell -> [lowest z, highest z] of landings outside the walls
 	for f in flat:
 		var placed := false
 		for i in storeys.size():
@@ -216,11 +221,14 @@ static func build(parts: Array, tiles: Dictionary, seed := 0) -> Node3D:
 		if placed: continue
 		if absi(int(f[1])-int(storeys.back().top)) <= 2: deck[f[0]] = int(f[1])
 		else:
-			# A landing outside the walls (a tower's stepped side ledges) is a
-			# thin ledge at its own height, not a block from the floor below.
+			# Landings outside the walls of the storey they stand by (a tower's
+			# stepped side brackets under its roof gallery) become corbel ribs;
+			# the rest are stair landings inside.
 			var c: Vector2i = f[0]
-			var outside_walls: bool = c.x < all_low.x or c.x > all_high.x or c.y < all_low.y or c.y > all_high.y
-			landings.append([c,int(f[1]),0,false,outside_walls])
+			if _outside_storey(storeys,c,int(f[1])):
+				var span: Array = ribs.get(c,[int(f[1]),int(f[1])])
+				ribs[c] = [mini(int(span[0]),int(f[1])),maxi(int(span[1]),int(f[1]))]
+			else: landings.append([c,int(f[1]),0])
 	var roofed := {}
 	for r in roofs: roofed[r[0]] = true
 	var covered := roofed.duplicate()
@@ -259,7 +267,9 @@ static func build(parts: Array, tiles: Dictionary, seed := 0) -> Node3D:
 		# outside flight to an upper floor, which is built tile by tile.
 		if within or int(st[1]) > int(ground.z)+2 or (flight_high and _touches(stairs,c,int(ground.z)+2)): inside.append([c,int(st[1]),int(st[2]),not within])
 		else: outside.append(st)
-	_stairs(root,inside,storeys,stone_steps,wall_material(family) if family in ["stone","ashlar","sandstone","marble","brick"] else stone())
+	var masonry: Material = wall_material(family) if family in ["stone","ashlar","sandstone","marble","brick"] else stone()
+	_stairs(root,inside,storeys,stone_steps,masonry)
+	_ribs(root,ribs,masonry)
 	_steps(root,outside,floor_y,centre)
 	if not roofs.is_empty():
 		# An L- or T-shaped house is roofed as overlapping rectangles, each a
@@ -297,6 +307,39 @@ static func _touches(stairs: Array, start: Vector2i, above: int) -> bool:
 				open.append(c+d)
 	return false
 
+# Whether a cell lies beyond the walls of the (non-parapet) storey at or
+# below height z.
+static func _outside_storey(storeys: Array, c: Vector2i, z: int) -> bool:
+	var under: Dictionary = {}
+	for storey in storeys:
+		if not storey.has("parapet") and int(storey.z) <= z: under = storey
+	if under.is_empty(): return false
+	var lo := Vector2i(100000,100000)
+	var hi := Vector2i(-100000,-100000)
+	for cell in under.walls:
+		lo = lo.min(cell)
+		hi = hi.max(cell)
+	return c.x < lo.x or c.x > hi.x or c.y < lo.y or c.y > hi.y
+
+# Corbel ribs under a projecting gallery: each cell solid masonry from its
+# lowest landing to the top of its highest, so a row of cells steps out
+# wider as it rises (an inverted stair, as the tiles lay it out). Thin
+# across the row, with a moulded cap, so it reads as a bracket, not a wall.
+static func _ribs(root: Node3D, ribs: Dictionary, masonry: Material) -> void:
+	if ribs.is_empty(): return
+	var brackets := Node3D.new()
+	brackets.name = "Brackets"
+	root.add_child(brackets)
+	for c in ribs:
+		var span: Array = ribs[c]
+		var y0 := float(span[0])*SCALE
+		var y1 := float(int(span[1])+5)*SCALE
+		var along_x: bool = ribs.has(c+Vector2i(1,0)) or ribs.has(c+Vector2i(-1,0))
+		var size := Vector3(1.0,y1-y0,0.55) if along_x else Vector3(0.55,y1-y0,1.0)
+		_box(brackets,size,Vector3(c.x,(y0+y1)/2,c.y),masonry)
+		# A projecting cap course at the bottom of each step.
+		_box(brackets,size*Vector3(1.0,0.0,1.0)+Vector3(0.0,0.12,0.0)+(Vector3(0,0,0.12) if along_x else Vector3(0.12,0,0)),Vector3(c.x,y0+0.06,c.y),stone())
+
 static func _stony(name: String) -> bool:
 	return "stone" in name or "marble" in name or "brick" in name
 
@@ -326,16 +369,6 @@ static func _stairs(root: Node3D, steps: Array, storeys: Array, stone_steps := f
 		# An outside flight stands on the ground.
 		if st.size() > 3 and bool(st[3]): under = 0.0
 		var y0 := under*SCALE
-		if st.size() > 4 and bool(st[4]):
-			y0 = float(top_z)*SCALE-0.3
-			# The lowest ledge of a projection rests on stepped stone corbels.
-			var lowest := true
-			for other in steps:
-				if other.size() > 4 and bool(other[4]) and other[0] == c and int(other[1]) < int(st[1]): lowest = false
-			if lowest:
-				_box(flight,Vector3(0.8,0.35,0.8),Vector3(c.x,y0-0.18,c.y),masonry)
-				_box(flight,Vector3(0.55,0.35,0.55),Vector3(c.x,y0-0.52,c.y),masonry)
-				_box(flight,Vector3(0.3,0.3,0.3),Vector3(c.x,y0-0.84,c.y),masonry)
 		var y1 := float(top_z)*SCALE
 		if y1-y0 < 0.05: continue
 		_box(flight,Vector3(1.0,y1-y0,1.0),Vector3(c.x,(y0+y1)/2,c.y),body)
