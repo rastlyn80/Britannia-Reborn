@@ -269,7 +269,10 @@ static func build(parts: Array, tiles: Dictionary, seed := 0) -> Node3D:
 		else: outside.append(st)
 	var masonry: Material = wall_material(family) if family in ["stone","ashlar","sandstone","marble","brick"] else stone()
 	_stairs(root,inside,storeys,stone_steps,masonry)
-	_ribs(root,ribs,masonry)
+	var all_walls := {}
+	for storey in storeys:
+		for cell in storey.walls: all_walls[cell] = true
+	_ribs(root,ribs,masonry,all_walls)
 	_steps(root,outside,floor_y,centre)
 	if not roofs.is_empty():
 		# An L- or T-shaped house is roofed as overlapping rectangles, each a
@@ -325,7 +328,7 @@ static func _outside_storey(storeys: Array, c: Vector2i, z: int) -> bool:
 # lowest landing to the top of its highest, so a row of cells steps out
 # wider as it rises (an inverted stair, as the tiles lay it out). Thin
 # across the row, with a moulded cap, so it reads as a bracket, not a wall.
-static func _ribs(root: Node3D, ribs: Dictionary, masonry: Material) -> void:
+static func _ribs(root: Node3D, ribs: Dictionary, masonry: Material, walls: Dictionary = {}) -> void:
 	if ribs.is_empty(): return
 	var brackets := Node3D.new()
 	brackets.name = "Brackets"
@@ -336,7 +339,19 @@ static func _ribs(root: Node3D, ribs: Dictionary, masonry: Material) -> void:
 		var y1 := float(int(span[1])+5)*SCALE
 		var along_x: bool = ribs.has(c+Vector2i(1,0)) or ribs.has(c+Vector2i(-1,0))
 		var size := Vector3(1.0,y1-y0,0.55) if along_x else Vector3(0.55,y1-y0,1.0)
-		_box(brackets,size,Vector3(c.x,(y0+y1)/2,c.y),masonry)
+		var at := Vector3(c.x,(y0+y1)/2,c.y)
+		# The cell next to the building runs back into the wall (which stands
+		# on its own cell's centre line), so the bracket is bonded to it.
+		var step := Vector2i(1,0) if along_x else Vector2i(0,1)
+		for side in [-1,1]:
+			if walls.has(c+step*side) and not ribs.has(c+step*side):
+				if along_x:
+					size.x += 0.5
+					at.x += side*0.25
+				else:
+					size.z += 0.5
+					at.z += side*0.25
+		_box(brackets,size,at,masonry)
 		# A projecting cap course at the bottom of each step.
 		_box(brackets,size*Vector3(1.0,0.0,1.0)+Vector3(0.0,0.12,0.0)+(Vector3(0,0,0.12) if along_x else Vector3(0.12,0,0)),Vector3(c.x,y0+0.06,c.y),stone())
 
