@@ -180,7 +180,7 @@ func run() -> void:
 	var bench: Node3D = assembly.geometry.furniture(Vector2(3,0.5),"bench")
 	check(bench.get_child_count() == 7,"long bench uses one seat and spaced supports instead of overlapping whole models")
 	bench.free()
-	var context := {"originX":0,"originY":0,"elevationScale":0.2,"terrain":[{"x":4,"y":0,"z":0}],"staticData":{"300":{"height":20},"1207":{"height":0,"flags":512}},"statics":[{"id":330,"x":0,"y":0,"z":20},{"id":330,"x":1,"y":0,"z":20},{"id":300,"x":0,"y":4,"z":0},{"id":300,"x":1,"y":4,"z":0},{"id":2911,"x":4,"y":0,"z":0},{"id":2911,"x":4,"y":0,"z":20}]}
+	var context := {"originX":0,"originY":0,"elevationScale":0.2,"terrain":[{"x":4,"y":0,"z":0,"id":0}],"staticData":{"300":{"height":20},"1207":{"height":0,"flags":512}},"statics":[{"id":330,"x":0,"y":0,"z":20},{"id":330,"x":1,"y":0,"z":20},{"id":300,"x":0,"y":4,"z":0},{"id":300,"x":1,"y":4,"z":0},{"id":2911,"x":4,"y":0,"z":0},{"id":2911,"x":4,"y":0,"z":20}]}
 	assembly.index(context)
 	check(assembly.presentation_adjustments[0].get("suppress",false),"unsupported interior gable is omitted rather than relocated to a different wall")
 	check(assembly.presentation_adjustments[5].get("suppress",false),"unsupported elevated furniture duplicate is suppressed")

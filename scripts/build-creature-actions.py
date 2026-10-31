@@ -40,6 +40,8 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--data-dir',type=Path);args=parser.parse_args()
     catalogue=json.loads((OUT/'catalogue.json').read_text())
     models=json.loads((ART/'accepted-index.json').read_text())['entries']
+    public=ROOT/'Viewer/Art/Creatures/index.json'
+    if public.exists():models=[row for row in json.loads(public.read_text())['entries'] if row.get('status')=='validated']+models
     maps,renderer_sha=renderer_maps();rows=[];native={}
     for model in models:
         for identity in model['bodies']:

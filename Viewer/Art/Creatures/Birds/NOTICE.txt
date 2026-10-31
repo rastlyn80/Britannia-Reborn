@@ -1,0 +1,7 @@
+Yellow-billed shrike mesh, rig and original texture maps: pistachio / Al Stachio.
+Source: https://opengameart.org/content/bird-yellow-billed-shrike
+Source license: CC0-1.0, https://creativecommons.org/publicdomain/zero/1.0/
+Exact source archive/member hashes: preparation.json and scripts/bird-inputs.json.
+Britannia Reborn conversion and authored motions: GPL-3.0-or-later; see root LICENSE.
+Feather tint mask is the licensed translucency map, reused without pixel changes.
+No original Ultima Online mesh, texture or animation is included in this asset.

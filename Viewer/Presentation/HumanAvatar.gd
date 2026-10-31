@@ -68,7 +68,7 @@ func _switch_horse(body: int,hue: int) -> void:
 	horse_visual=Horse.create(body);visual_root.add_child(horse_visual);horse_visual.apply_identity(body,hue)
 	foot_contact.active=false;horse_visual.skeleton.add_child(foot_contact)
 	animator=horse_visual.animator;native_body=body
-	set_meta("human_batch",false);set_meta("camera_height",1.4);set_meta("art_status","animal category replacement" if Horse.Animals.supports_body(body) else "horse category replacement")
+	set_meta("human_batch",false);set_meta("camera_height",float(horse_visual.get_meta("camera_height",1.4)));set_meta("art_status","animal category replacement" if Horse.Animals.supports_body(body) else "horse category replacement")
 
 func _sync_mount(worn: Array) -> void:
 	var previous: bool=human_visual.mounted_live_enabled
@@ -111,7 +111,9 @@ func _update_pick_volume(large: bool) -> void:
 			shape.position.x=0.;shape.position.z=0.
 			# Your own rider: the camera looks past you, so a mount-sized box
 			# would catch clicks meant for what is beyond; pick only the rider.
-			if large and get_meta("own",false):
+			if human_visual==null and horse_visual!=null and horse_visual.has_meta("pick_bounds"):
+				var bounds: AABB=horse_visual.get_meta("pick_bounds");var box:=BoxShape3D.new();box.size=bounds.size;shape.shape=box;shape.position=bounds.get_center()
+			elif large and get_meta("own",false):
 				var rider:=CapsuleShape3D.new();rider.radius=.3;rider.height=1.3;shape.shape=rider;shape.position.y=1.75
 			elif large:
 				var box:=BoxShape3D.new();box.size=Vector3(1.,2.7 if human_visual!=null else 2.1,2.6);shape.shape=box;shape.position.y=box.size.y/2.
@@ -127,9 +129,13 @@ func _process(delta: float) -> void:
 	set_meta("camera_visual_offset",global_basis*offset)
 	var plate:=get_node_or_null("Nameplate")
 	if plate!=null:plate.position.x=offset.x;plate.position.z=offset.z
+	if plate!=null and human_visual==null and horse_visual!=null and horse_visual.has_meta("nameplate_height"):plate.position.y=float(horse_visual.get_meta("nameplate_height"))+visual_root.position.y
+	var pick_origin:=Vector3.ZERO
+	if human_visual==null and horse_visual!=null and horse_visual.has_meta("pick_bounds"):pick_origin=(horse_visual.get_meta("pick_bounds") as AABB).get_center()
 	for child in get_children():
 		if child is StaticBody3D and child.has_meta("server_mobile"):
-			var shape: CollisionShape3D=child.get_child(0);shape.position.x=offset.x;shape.position.z=offset.z
+			var shape: CollisionShape3D=child.get_child(0);shape.position.x=offset.x+pick_origin.x;shape.position.z=offset.z+pick_origin.z
+			if human_visual==null and horse_visual!=null and horse_visual.has_meta("pick_bounds"):shape.position.y=pick_origin.y+visual_root.position.y
 
 func _finish_dismount() -> void:
 	ground_visual_offset=Vector3(human_visual.position.x,0.,human_visual.position.z)

@@ -1,0 +1,35 @@
+{
+  "kind": "birds_small",
+  "family": "birds",
+  "status": "prepared",
+  "profile": "animal",
+  "movement_mode": "ground_plane",
+  "surface_kind": "feather_pbr",
+  "assets": {
+    "modern": "res://local-art/birds/small-bird.glb"
+  },
+  "bodies": [
+    {
+      "body": 6,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "native_sources": [
+        {
+          "path": "Projects\\UOContent\\Mobiles\\Animals\\Town Critters\\Bird.cs",
+          "sha256": "65de6f0e375c07f9947991920ae7107972258ff7da8b96bd983f8cb95c01a62d"
+        }
+      ],
+      "native_profile": "animal",
+      "name": "Small bird"
+    }
+  ],
+  "license": "CC0-1.0",
+  "source": "https://opengameart.org/content/bird-yellow-billed-shrike",
+  "source_interpretation": "Licensed replacement mesh and rig with authored categories; not a recovered Third Dawn bird or original UO choreography.",
+  "camera_height": 0.25,
+  "partial_hue_mask": "res://local-art/birds/feather-tint-mask.png",
+  "partial_hue_interpretation": "Authored feather-zone tint control using the licensed feather translucency map; not a recovered UO sprite grey mask."
+}

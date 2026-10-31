@@ -115,6 +115,8 @@ def main():
     art = ROOT / 'Viewer/local-art/creatures'
     index = read(art / 'source-index.json')
     accepted = read(art / 'accepted-index.json')['entries']
+    public = ROOT / 'Viewer/Art/Creatures/index.json'
+    if public.exists():accepted = [row for row in read(public)['entries'] if row.get('status')=='validated'] + accepted
     routed = {int(b['body']): row['kind'] for row in accepted for b in row['bodies']}
     for file, constants in [('EquineRegistry.gd', ['BODIES', 'COMPATIBILITY', 'DISTINCT']), ('MountVisual.gd', ['BODIES']), ('AnimalVisual.gd', ['BODIES'])]:
         for constant in constants:
@@ -179,6 +181,7 @@ def main():
         if index['native_profiles'].get(body) in ['animal', 'monster', 'sea'] and int(body) not in measured_bodies]
     result['source_index_sha256'] = sha(art / 'source-index.json')
     result['accepted_index_sha256'] = sha(art / 'accepted-index.json')
+    if public.exists():result['public_index_sha256'] = sha(public)
     result['recipe_sha256'] = sha(Path(__file__))
     result['unresolved_occurrences'] = [{**raw[n.casefold()], 'files': sorted(raw[n.casefold()]['files'])} for n in sorted(unresolved)]
     args.output.parent.mkdir(parents=True, exist_ok=True)

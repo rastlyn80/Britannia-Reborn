@@ -13,11 +13,12 @@ def main():
     if (ROOT/'Server/runtime/Data/Spawns').exists():
         subprocess.run([sys.executable,'-B',str(ROOT/'scripts/build-creature-priority.py')],check=True)
     source=read(ART/'source-index.json');accepted=read(ART/'accepted-index.json',{'entries':[]})['entries']
+    public=[row for row in read(ROOT/'Viewer/Art/Creatures/index.json',{'entries':[]})['entries'] if row.get('status')=='validated']
     prepared={};families={}
     for path in ART.glob('*/preparation.json'):
         report=read(path);families[report['family']]=report
         for model in report['models']:prepared[model['kind']]=model
-    routed={int(identity['body']):row for row in accepted for identity in row['bodies']}
+    routed={int(identity['body']):row for row in public+accepted for identity in row['bodies']}
     existing=set()
     registry=ROOT/'Viewer/Presentation/EquineRegistry.gd'
     for name in ['BODIES','COMPATIBILITY','DISTINCT']:existing|=keys(registry,name)
@@ -43,10 +44,12 @@ def main():
     targets.sort(key=lambda row:(row['native_group'],row['body']))
     counts={'bounded_native_literal_bodies':len(targets),'routed_native_literals':sum(bool(row['presentation']) for row in targets),
             'with_native_evidence':sum(bool(row['live_reports']) for row in targets),'new_validated_source_forms':len(accepted),
-            'new_body_routes':len(routed),'prepared_source_forms':sum(row['status']=='prepared' for row in prepared.values()),'blocked_source_forms':sum(row['status']!='prepared' for row in prepared.values())}
+            'new_body_routes':len(routed),'licensed_public_source_forms':len(public),'prepared_source_forms':sum(row['status']=='prepared' for row in prepared.values()),'blocked_source_forms':sum(row['status']!='prepared' for row in prepared.values())}
     scope='Bounded pinned-server literal Body assignments, RandomList, simple conditional literal branches and base-mount calls; not every dynamic constructor result or the full modern-client body catalogue. Source forms, body routes and live evidence are separate. Proprietary-derived art stays local; no redistribution grant.'
     (OUT/'catalogue.json').write_text(json.dumps({'counts':counts,'server_pin':source['server_pin'],'native_targets':targets,'preparation':prepared,'scope':scope},indent=2),encoding='utf-8')
     cards=[];atlases=[];materials=[]
+    if public:
+        cards.append('<section><h2>Distributable licensed replacements</h2>'+''.join('<p>'+html.escape(row['kind'])+' — '+html.escape(row['license'])+'; <a href="'+html.escape(row['source'],quote=True)+'">exact source</a>. Authored category motions, native evidence listed below.</p>' for row in public)+'</section>')
     for family in sorted(families):
         models=families[family]['models'];validated=[row for row in accepted if row['family']==family]
         snippets=[]

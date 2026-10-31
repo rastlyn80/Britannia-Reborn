@@ -1,0 +1,40 @@
+{
+  "author": "pistachio / Al Stachio",
+  "source": "https://opengameart.org/content/bird-yellow-billed-shrike",
+  "download_url": "https://opengameart.org/sites/default/files/bird_yellow_billed_shrike.zip",
+  "license": "CC0-1.0",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "archive_sha256": "a41a4f10ce7795d508b8eded4eb45e80ddf85bc4dba1f2bea4708e7705faac64",
+  "files": [
+    {
+      "member": "bird_yellow_billed_shrike/bird_shrike1.blend",
+      "bytes": 1482740,
+      "sha256": "968bb9cc5aeb99c6da55b8dc752c4d1b6f8010e1939d4b23dcde23b1dee253cf"
+    },
+    {
+      "member": "bird_yellow_billed_shrike/textures/bird_shrike1_ao.png",
+      "bytes": 808525,
+      "sha256": "fd1cc8db74882233e2f1f9f8970c741d543e14f89e53b0ab4f0e7ff96973f475"
+    },
+    {
+      "member": "bird_yellow_billed_shrike/textures/bird_shrike1_diff.png",
+      "bytes": 5007972,
+      "sha256": "f1bee86abc6090962be507aa6644388f52c1a0af23157bd06a64253d8e96677e"
+    },
+    {
+      "member": "bird_yellow_billed_shrike/textures/bird_shrike1_norm.png",
+      "bytes": 5164429,
+      "sha256": "4cfd94e621c60d21f8f27aab84cc71b976a1c65de8b342242849f6d02344750f"
+    },
+    {
+      "member": "bird_yellow_billed_shrike/textures/bird_shrike1_rgh.png",
+      "bytes": 7937,
+      "sha256": "7ec6427ae508e644ddefe83cdc0712950279dedf4056d5e6f2e2dfba5fd8b85b"
+    },
+    {
+      "member": "bird_yellow_billed_shrike/textures/bird_shrike1_sss.png",
+      "bytes": 19728,
+      "sha256": "6783b4ea49813124b8c9f0eb64a26cf3921c2a138439415ac150aebb9a8329ab"
+    }
+  ]
+}

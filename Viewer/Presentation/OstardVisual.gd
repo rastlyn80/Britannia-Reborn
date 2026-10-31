@@ -17,13 +17,15 @@ func _ready() -> void:
 	if kind.begins_with("bovine_"):folder="animals"
 	if not asset_folder.is_empty():folder=asset_folder
 	var asset_kind:="kirin" if kind=="kirin_ethereal" else kind
-	model=load("res://local-art/"+folder+"/"+asset_kind+"-"+treatment+".gltf").instantiate();add_child(model)
+	model=load(model_resource_path(folder,asset_kind)).instantiate();add_child(model)
 	skeleton=model.find_children("*","Skeleton3D",true,false)[0]
 	animator=model.find_children("*","AnimationPlayer",true,false)[0]
 	var library:=animator.get_animation_library("").duplicate(true);animator.remove_animation_library("");animator.add_animation_library("",library)
 	for clip in CLIPS:animator.get_animation(clip).loop_mode=Animation.LOOP_LINEAR if clip in ["Idle","Walk","Run","Fidget"] else Animation.LOOP_NONE
 	preload("res://Presentation/AnimalPoseLibrary.gd").install(animator,skeleton,"Idle","Death","Eat","LieDown",feeding_neck_angle,feeding_head_angle)
 	set_hue(hue);play("Idle")
+func model_resource_path(folder: String,asset_kind: String) -> String:
+	return "res://local-art/"+folder+"/"+asset_kind+"-"+treatment+".gltf"
 func set_hue(value: int) -> void:
 	hue=value
 	if model==null:return

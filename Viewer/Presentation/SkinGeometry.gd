@@ -13,9 +13,10 @@ static func deformed_bounds(mesh: MeshInstance3D,rig: Skeleton3D) -> AABB:
 		var vertices: PackedVector3Array=arrays[Mesh.ARRAY_VERTEX]
 		var indices: PackedInt32Array=arrays[Mesh.ARRAY_BONES]
 		var weights: PackedFloat32Array=arrays[Mesh.ARRAY_WEIGHTS]
+		var stride:=indices.size()/vertices.size()
 		for i in vertices.size():
 			var point:=Vector3.ZERO
-			for j in 4:point+=(matrices[indices[i*4+j]]*vertices[i])*weights[i*4+j]
+			for j in stride:point+=(matrices[indices[i*stride+j]]*vertices[i])*weights[i*stride+j]
 			point=rig.to_global(point)
 			if not point.is_finite():return AABB(Vector3(INF,INF,INF),Vector3.ZERO)
 			box=AABB(point,Vector3.ZERO) if first else box.expand(point)

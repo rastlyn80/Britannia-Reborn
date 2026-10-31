@@ -24,6 +24,12 @@ $env:APPDATA = Join-Path $root '.godot-user'
 $env:LOCALAPPDATA = $env:APPDATA
 & $godot --headless --path "$root\Viewer" --editor --import
 if ($LASTEXITCODE) { throw 'Asset import failed' }
+if (Test-Path "$root/Viewer/Art/Creatures/Birds/small-bird.glb") {
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/BirdMotionTests.gd -- --asset=res://Art/Creatures/Birds/small-bird.glb
+  if ($LASTEXITCODE) {throw 'Licensed bird skin, action continuity and static corpse checks failed'}
+  & python -B "$root/scripts/test-bird-distribution.py"
+  if ($LASTEXITCODE) {throw 'Public bird distribution requires private art or has a startup error'}
+}
 foreach ($kind in @('desert','forest','frenzied','ethereal')) {
  if (Test-Path "$root/Viewer/local-art/ostards/$kind-modern.gltf") {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/OstardTests.gd -- "--kind=$kind"
@@ -154,8 +160,10 @@ if ($LASTEXITCODE) { throw 'Presentation tests failed' }
 if ($LASTEXITCODE) { throw 'Graphics/camera/traversal tests failed' }
 & $godot --headless --path "$root\Viewer" --script res://Network/InputMemoryTests.gd
 if ($LASTEXITCODE) { throw 'Mouse input/login memory tests failed' }
-& $godot --headless --path "$root\Viewer" --script res://Presentation/StreetTests.gd
-if ($LASTEXITCODE) { throw 'Street reconstruction/retargeted movement tests failed' }
+$streetChecks = & $godot --headless --path "$root\Viewer" --script res://Presentation/StreetTests.gd 2>&1
+$streetExit = $LASTEXITCODE
+$streetChecks | ForEach-Object { Write-Output $_ }
+if ($streetExit -or ($streetChecks | Select-String 'SCRIPT ERROR:|ERROR: Failed to load script')) { throw 'Street reconstruction/retargeted movement tests failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/VisualPassTests.gd
 if ($LASTEXITCODE) { throw 'Shared architectural/nature presentation tests failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/SurfacePolishTests.gd

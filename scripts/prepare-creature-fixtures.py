@@ -6,7 +6,10 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('family');parser.add_argument('--runtime',type=Path,required=True);args=parser.parse_args()
     runtime=args.runtime.resolve();assert runtime.is_relative_to(ROOT/'work'),'Disposable runtime must stay under work/'
     index=json.loads((ROOT/'Viewer/local-art/creatures/accepted-index.json').read_text());rows=[]
+    public=ROOT/'Viewer/Art/Creatures/index.json'
+    if public.exists():index['entries']=json.loads(public.read_text())['entries']+index['entries']
     for entry in index['entries']:
+        if entry.get('status')!='validated':continue
         if args.family!='all' and entry['family']!=args.family:continue
         for body in entry['bodies']:
             classes=set()

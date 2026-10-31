@@ -14,9 +14,17 @@ var action_profile:="monster"
 var default_model_scale:=Vector3.ONE
 var death_flashes: Array[MeshInstance3D]=[]
 func _init() -> void:asset_folder="creatures"
+func model_resource_path(folder: String,asset_kind: String) -> String:
+	return str(entry.get("assets",{}).get(treatment,super.model_resource_path(folder,asset_kind)))
 func set_hue(value: int) -> void:
 	super.set_hue(value)
 	if model==null:return
+	if treatment=="modern" and entry.get("surface_kind","")=="feather_pbr":
+		var partial_mask: Texture2D=load(str(entry.partial_hue_mask)) if entry.has("partial_hue_mask") else null
+		for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
+			for surface in mesh.mesh.get_surface_count():
+				var source:=mesh.mesh.surface_get_material(surface) as StandardMaterial3D
+				if source!=null:mesh.set_surface_override_material(surface,preload("res://Presentation/CreatureFeatherMaterial.gd").build(source,value,detail,partial_mask))
 	if treatment=="modern" and not entry.get("mineral_surface",{}).is_empty():
 		for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
 			for surface in mesh.mesh.get_surface_count():mesh.set_surface_override_material(surface,preload("res://Presentation/CreatureMineralMaterial.gd").build(entry.mineral_surface,value,detail))
@@ -50,7 +58,7 @@ func _ready() -> void:
 	action_profile=str(entry.get("profile","monster"))
 	if str(entry.get("family","")) in ["rodents","walrus"]:feeding_neck_angle=.1;feeding_head_angle=.04
 	super._ready()
-	contact=preload("res://Presentation/SourceMountContact.gd").new();skeleton.add_child(contact)
+	contact=preload("res://Presentation/BirdGroundSupport.gd").new() if entry.get("movement_mode","")=="ground_plane" else preload("res://Presentation/SourceMountContact.gd").new();skeleton.add_child(contact)
 	contact.include_toe_descendants=true
 	contact.iterations=1 if str(entry.get("family","")) in ["bruins","walrus"] else 3
 	if kind in ["dragons_dragon_asian","dragons_wyvern"]:
@@ -62,6 +70,10 @@ func _ready() -> void:
 	source_model_basis=model.basis.orthonormalized()
 	default_model_scale=model.scale
 	set_meta("source_creature",entry.duplicate(true))
+	if entry.has("camera_height"):set_meta("camera_height",float(entry.camera_height))
+	if entry.has("pick_bounds"):
+		var record: Dictionary=entry.pick_bounds;var p: Array=record.position;var s: Array=record.size
+		set_meta("pick_bounds",AABB(Vector3(float(p[0]),float(p[1]),float(p[2])),Vector3(float(s[0]),float(s[1]),float(s[2]))))
 func apply_identity(body: int,value: int,item: int=0) -> void:
 	native_body=body;native_hue=value;native_mount_item=item;set_hue(value)
 	for identity: Dictionary in entry.get("bodies",[]):
@@ -82,6 +94,9 @@ func play_gait(moving: bool,speed: float) -> void:
 	animator.speed_scale=clampf(speed/(5.5 if clip=="Run" else 1.8),.65,1.65) if moving else 1.
 func _process(delta: float) -> void:
 	update_death_effect()
+	if entry.get("surface_kind","")=="feather_pbr":
+		var head:=skeleton.find_bone("head")
+		if head>=0:set_meta("nameplate_height",to_local(skeleton.to_global(skeleton.get_bone_global_pose(head).origin)).y+.08)
 	if action_remaining>0.:
 		action_remaining=maxf(0.,action_remaining-delta)
 		if action_remaining==0. and (dead or current_clip=="LieDown"):animator.seek(animator.current_animation_length,true);animator.pause()

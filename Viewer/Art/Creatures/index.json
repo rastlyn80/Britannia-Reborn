@@ -1,0 +1,173 @@
+{
+  "entries": [
+    {
+      "kind": "birds_small",
+      "family": "birds",
+      "status": "validated",
+      "profile": "animal",
+      "movement_mode": "ground_plane",
+      "surface_kind": "feather_pbr",
+      "assets": {
+        "modern": "res://Art/Creatures/Birds/small-bird.glb"
+      },
+      "bodies": [
+        {
+          "body": 6,
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "native_sources": [
+            {
+              "path": "Projects\\UOContent\\Mobiles\\Animals\\Town Critters\\Bird.cs",
+              "sha256": "65de6f0e375c07f9947991920ae7107972258ff7da8b96bd983f8cb95c01a62d"
+            }
+          ],
+          "native_profile": "animal",
+          "name": "Small bird"
+        }
+      ],
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/bird-yellow-billed-shrike",
+      "source_interpretation": "Licensed replacement mesh and rig with authored categories; not a recovered Third Dawn bird or original UO choreography.",
+      "camera_height": 0.25,
+      "partial_hue_mask": "res://Art/Creatures/Birds/feather-tint-mask.png",
+      "partial_hue_interpretation": "Authored feather-zone tint control using the licensed feather translucency map; not a recovered UO sprite grey mask.",
+      "stats": {
+        "original": {
+          "bones": 65,
+          "height_m": 0.25,
+          "clips": {
+            "Idle": {
+              "duration": 2.0,
+              "loop": true,
+              "support_policy": "grounded",
+              "origin": "Authored category on the licensed rig; no original UO choreography recovered."
+            },
+            "Walk": {
+              "duration": 0.6333333333333333,
+              "loop": true,
+              "support_policy": "hop",
+              "origin": "Authored category on the licensed rig; no original UO choreography recovered."
+            },
+            "Run": {
+              "duration": 0.6,
+              "loop": true,
+              "support_policy": "airborne",
+              "origin": "Authored category on the licensed rig; no original UO choreography recovered."
+            },
+            "Fly": {
+              "duration": 0.8,
+              "loop": true,
+              "support_policy": "airborne",
+              "origin": "Authored category on the licensed rig; no original UO choreography recovered."
+            },
+            "TakeOff": {
+              "duration": 0.5,
+              "loop": false,
+              "support_policy": "airborne",
+              "origin": "Authored category on the licensed rig; no original UO choreography recovered."
+            },
+            "Land": {
+              "duration": 0.5,
+              "loop": false,
+              "support_policy": "airborne",
+              "origin": "Authored category on the licensed rig; no original UO choreography recovered."
+            },
+            "Eat": {
+              "duration": 1.8,
+              "loop": false,
+              "support_policy": "grounded",
+              "origin": "Authored category on the licensed rig; no original UO choreography recovered."
+            },
+            "Attack": {
+              "duration": 0.4666666666666667,
+              "loop": false,
+              "support_policy": "grounded",
+              "origin": "Authored category on the licensed rig; no original UO choreography recovered."
+            },
+            "Attack2": {
+              "duration": 0.6,
+              "loop": false,
+              "support_policy": "grounded",
+              "origin": "Authored category on the licensed rig; no original UO choreography recovered."
+            },
+            "Attack3": {
+              "duration": 0.7333333333333333,
+              "loop": false,
+              "support_policy": "grounded",
+              "origin": "Authored category on the licensed rig; no original UO choreography recovered."
+            },
+            "Hit": {
+              "duration": 0.5,
+              "loop": false,
+              "support_policy": "grounded",
+              "origin": "Authored category on the licensed rig; no original UO choreography recovered."
+            },
+            "Death": {
+              "duration": 0.8666666666666667,
+              "loop": false,
+              "support_policy": "grounded",
+              "origin": "Authored category on the licensed rig; no original UO choreography recovered."
+            },
+            "Death2": {
+              "duration": 0.8666666666666667,
+              "loop": false,
+              "support_policy": "grounded",
+              "origin": "Authored category on the licensed rig; no original UO choreography recovered."
+            },
+            "Fidget": {
+              "duration": 2.0,
+              "loop": true,
+              "support_policy": "grounded",
+              "origin": "Authored category on the licensed rig; no original UO choreography recovered."
+            },
+            "Alert": {
+              "duration": 1.0,
+              "loop": false,
+              "support_policy": "grounded",
+              "origin": "Authored category on the licensed rig; no original UO choreography recovered."
+            },
+            "Cast": {
+              "duration": 1.1,
+              "loop": false,
+              "support_policy": "grounded",
+              "origin": "Authored category on the licensed rig; no original UO choreography recovered."
+            }
+          }
+        }
+      },
+      "authored_replacements": {
+        "Idle": "Authored category on the licensed rig; no original UO choreography recovered.",
+        "Walk": "Authored category on the licensed rig; no original UO choreography recovered.",
+        "Run": "Authored category on the licensed rig; no original UO choreography recovered.",
+        "Fly": "Authored category on the licensed rig; no original UO choreography recovered.",
+        "TakeOff": "Authored category on the licensed rig; no original UO choreography recovered.",
+        "Land": "Authored category on the licensed rig; no original UO choreography recovered.",
+        "Eat": "Authored category on the licensed rig; no original UO choreography recovered.",
+        "Attack": "Authored category on the licensed rig; no original UO choreography recovered.",
+        "Attack2": "Authored category on the licensed rig; no original UO choreography recovered.",
+        "Attack3": "Authored category on the licensed rig; no original UO choreography recovered.",
+        "Hit": "Authored category on the licensed rig; no original UO choreography recovered.",
+        "Death": "Authored category on the licensed rig; no original UO choreography recovered.",
+        "Death2": "Authored category on the licensed rig; no original UO choreography recovered.",
+        "Fidget": "Authored category on the licensed rig; no original UO choreography recovered.",
+        "Alert": "Authored category on the licensed rig; no original UO choreography recovered.",
+        "Cast": "Authored category on the licensed rig; no original UO choreography recovered."
+      },
+      "pick_bounds": {
+        "position": [
+          -0.224222296476364,
+          -0.025174775283085184,
+          -0.19813002049922898
+        ],
+        "size": [
+          0.448444592952728,
+          0.411693650484085,
+          0.371237325668335
+        ]
+      }
+    }
+  ]
+}
