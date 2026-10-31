@@ -171,6 +171,12 @@ def main():
               'inputs': {str(p.relative_to(ROOT)): sha(p) for p in [expansion_path, *files]},
               'rows': rows, 'next_unrouted_creatures': queue, 'excluded_items': sorted(excluded), 'unresolved_types': sorted(unresolved)}
     result['creature_work_order'] = [r['name'] for r in creatures]
+    measured_bodies = {body for row in creatures for body in row['body_candidates']}
+    result['unmeasured_native_bodies'] = [
+        {'body': int(body), 'graphics': routed.get(int(body)), 'sources': sources,
+         'occurrence': 'Not resolved to a directly configured spawn type; frequency unknown, not zero.'}
+        for body, sources in sorted(index['native_literal_bodies'].items(), key=lambda pair: int(pair[0]))
+        if index['native_profiles'].get(body) in ['animal', 'monster', 'sea'] and int(body) not in measured_bodies]
     result['source_index_sha256'] = sha(art / 'source-index.json')
     result['accepted_index_sha256'] = sha(art / 'accepted-index.json')
     result['recipe_sha256'] = sha(Path(__file__))
