@@ -1,3 +1,19 @@
+# Houses: cross-gable wings and tower galleries fixed — 31 October 2026
+
+Owner review of the house sheet:
+- **"Double roof" on the two-storey houses (0x76/0x78):** the front wing took its ridge direction and height from the main roof's ridge tiles running through it, which made a second tall gable parallel to the main one.
+  - Each roof block now has its ridge along its longer side; squarish blocks still follow their topmost tiles.
+  - Wings take the main block's pitch over their own span, so their ridge sits below the main one: a proper cross gable meeting in a valley.
+  - The patio house's L also became a true cross gable.
+- **Dark brown blocks on the tower (0x7A):** the tower's roof deck projects as a gallery on each side, carried by stepped stone landings (z51 to 61) outside the walls. The stair code built those landings as solid oak blocks from the floor below.
+  - Landings outside the walls are now thin ledges at their own height, with stepped corbels under the lowest.
+  - Stone stairs and landings (by tile name) are built in the house's own masonry, wooden ones in oak.
+  - The galleries now read as part of the tower.
+
+**Review renders:** no longer draw placeholder boxes for the tiles that keep their own models in game (those caused some of the brown in the earlier sheets).
+
+**Tests:** WorldItemTests 70/70; all 19 houses rebaked; the full verify passes.
+
 # Houses, batch 3: every classic house is a whole model — 31 October 2026
 
 `HouseModel` now covers all 19 classic house multis ModernUO builds (Houses.cs):

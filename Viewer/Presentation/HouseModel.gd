@@ -115,6 +115,7 @@ static func build(parts: Array, tiles: Dictionary, seed := 0) -> Node3D:
 	var roofs: Array = []     # [cell (anchor-shifted), z]
 	var stairs: Array = []    # [cell, z, height]
 	var gable_family := ""
+	var stone_steps := false
 	var roof_kind := "tile"
 	var corners := "quoin"
 	for part in parts:
@@ -135,11 +136,15 @@ static func build(parts: Array, tiles: Dictionary, seed := 0) -> Node3D:
 				if h <= 6 and z+h <= 8: foundation[cell] = maxi(int(foundation.get(cell,0)),z+h)
 				elif h >= 10: pieces.append([cell,z,z+h,family,kind == "window"])
 				elif h >= 2: low_pieces.append([cell,z,z+h,family])
-			"floor","landing": flat.append([cell,z])
+			"floor","landing":
+				flat.append([cell,z])
+				if kind == "landing" and _stony(name): stone_steps = true
 			"roof":
 				var anchor: Array = rule.get("anchorOffset",[-1,-1])
 				roofs.append([cell+Vector2i(int(anchor[0]),int(anchor[1])),z])
-			"stairs": stairs.append([cell,z,h])
+			"stairs":
+				stairs.append([cell,z,h])
+				if _stony(name): stone_steps = true
 	var root := Node3D.new()
 	root.name = "HouseModel"
 	if pieces.is_empty(): return root
@@ -210,7 +215,12 @@ static func build(parts: Array, tiles: Dictionary, seed := 0) -> Node3D:
 				break
 		if placed: continue
 		if absi(int(f[1])-int(storeys.back().top)) <= 2: deck[f[0]] = int(f[1])
-		else: landings.append([f[0],int(f[1]),0])
+		else:
+			# A landing outside the walls (a tower's stepped side ledges) is a
+			# thin ledge at its own height, not a block from the floor below.
+			var c: Vector2i = f[0]
+			var outside_walls: bool = c.x < all_low.x or c.x > all_high.x or c.y < all_low.y or c.y > all_high.y
+			landings.append([c,int(f[1]),0,false,outside_walls])
 	var roofed := {}
 	for r in roofs: roofed[r[0]] = true
 	var covered := roofed.duplicate()
@@ -249,14 +259,23 @@ static func build(parts: Array, tiles: Dictionary, seed := 0) -> Node3D:
 		# outside flight to an upper floor, which is built tile by tile.
 		if within or int(st[1]) > int(ground.z)+2 or (flight_high and _touches(stairs,c,int(ground.z)+2)): inside.append([c,int(st[1]),int(st[2]),not within])
 		else: outside.append(st)
-	_stairs(root,inside,storeys)
+	_stairs(root,inside,storeys,stone_steps,wall_material(family) if family in ["stone","ashlar","sandstone","marble","brick"] else stone())
 	_steps(root,outside,floor_y,centre)
 	if not roofs.is_empty():
 		# An L- or T-shaped house is roofed as overlapping rectangles, each a
 		# gable of its own from its lowest to its highest tiles (cross gables).
 		var blocks := _roof_blocks(roofs)
-		for block in blocks:
-			_roof(root,block,low,high,_eave_of(block),_ridge_of(block),gable_family if gable_family != "" else family,covering)
+		# The main block's own tiles give the pitch; a wing takes the same
+		# pitch over its own span, so its ridge sits below the main one (a
+		# cross gable), and every block's ridge runs along its longer side.
+		var main_axis := _ridge_axis(blocks[0])
+		var main_ridge := _ridge_of(blocks[0])
+		var pitch := (main_ridge-_eave_of(blocks[0]))/maxf(0.5,_half_span(blocks[0],main_axis))
+		for i in blocks.size():
+			var block: Array = blocks[i]
+			var axis := main_axis if i == 0 else _ridge_axis(block)
+			var ridge := main_ridge if i == 0 else minf(main_ridge,_eave_of(block)+_half_span(block,axis)*pitch)
+			_roof(root,block,low,high,_eave_of(block),ridge,gable_family if gable_family != "" else family,covering,axis)
 		_chimney(root,blocks[0],_eave_of(blocks[0]),_ridge_of(blocks[0]),rnd)
 	for mesh in root.find_children("*","MeshInstance3D",true,false):
 		(mesh as MeshInstance3D).cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
@@ -278,6 +297,9 @@ static func _touches(stairs: Array, start: Vector2i, above: int) -> bool:
 				open.append(c+d)
 	return false
 
+static func _stony(name: String) -> bool:
+	return "stone" in name or "marble" in name or "brick" in name
+
 static func _eave_of(roofs: Array) -> float:
 	var bottom := 100000.0
 	for r in roofs: bottom = minf(bottom,float(r[1])*SCALE)
@@ -286,13 +308,15 @@ static func _eave_of(roofs: Array) -> float:
 # Interior stairs and landings: each tile a block of stone or oak from the
 # storey floor beneath it up to its own top, with a lighter tread, so the
 # flight climbs exactly as the tiles do.
-static func _stairs(root: Node3D, steps: Array, storeys: Array) -> void:
+static func _stairs(root: Node3D, steps: Array, storeys: Array, stone_steps := false, masonry: Material = null) -> void:
 	if steps.is_empty(): return
 	var flight := Node3D.new()
 	flight.name = "Stairs"
 	root.add_child(flight)
-	var body := oak()
-	var tread := surface("brown_planks_03",Color("c4a985"),1.2,0.8)
+	# Stone stairs in stone, wooden stairs in oak, as their tiles are named.
+	if masonry == null: masonry = stone()
+	var body: Material = masonry if stone_steps else oak()
+	var tread := surface("castle_wall_varriation",Color("d2cdc4"),1.6) if stone_steps else surface("brown_planks_03",Color("c4a985"),1.2,0.8)
 	for st in steps:
 		var c: Vector2i = st[0]
 		var top_z := int(st[1])+maxi(int(st[2]),1)
@@ -302,6 +326,16 @@ static func _stairs(root: Node3D, steps: Array, storeys: Array) -> void:
 		# An outside flight stands on the ground.
 		if st.size() > 3 and bool(st[3]): under = 0.0
 		var y0 := under*SCALE
+		if st.size() > 4 and bool(st[4]):
+			y0 = float(top_z)*SCALE-0.3
+			# The lowest ledge of a projection rests on stepped stone corbels.
+			var lowest := true
+			for other in steps:
+				if other.size() > 4 and bool(other[4]) and other[0] == c and int(other[1]) < int(st[1]): lowest = false
+			if lowest:
+				_box(flight,Vector3(0.8,0.35,0.8),Vector3(c.x,y0-0.18,c.y),masonry)
+				_box(flight,Vector3(0.55,0.35,0.55),Vector3(c.x,y0-0.52,c.y),masonry)
+				_box(flight,Vector3(0.3,0.3,0.3),Vector3(c.x,y0-0.84,c.y),masonry)
 		var y1 := float(top_z)*SCALE
 		if y1-y0 < 0.05: continue
 		_box(flight,Vector3(1.0,y1-y0,1.0),Vector3(c.x,(y0+y1)/2,c.y),body)
@@ -602,20 +636,38 @@ static func _roof_blocks(roofs: Array) -> Array:
 
 # Gable roof over the roof tiles' footprint: the ridge runs along the axis on
 # which the topmost tiles line up; eaves at the lowest tiles.
-static func _roof(root: Node3D, roofs: Array, low: Vector2i, high: Vector2i, eave_y: float, ridge_y: float, gable_family: String, covering: StandardMaterial3D) -> void:
+# Whether a roof block's ridge runs along z: along its longer side, or for
+# a squarish block along the line its topmost tiles make.
+static func _ridge_axis(roofs: Array) -> bool:
 	var rlow := Vector2i(100000,100000)
 	var rhigh := Vector2i(-100000,-100000)
-	var top_cells: Array = []
 	for r in roofs:
 		rlow = rlow.min(r[0])
 		rhigh = rhigh.max(r[0])
+	var w := float(rhigh.x-rlow.x+1)
+	var d := float(rhigh.y-rlow.y+1)
+	if d > w*1.15: return true
+	if w > d*1.15: return false
+	var top := _ridge_of(roofs)
+	var xs := {}
 	for r in roofs:
-		if float(r[1]+3)*SCALE >= ridge_y-0.01: top_cells.append(r[0])
-	var ridge_along_z := true
-	if not top_cells.is_empty():
-		var xs := {}
-		for c in top_cells: xs[c.x] = true
-		ridge_along_z = xs.size() == 1
+		if float(r[1]+3)*SCALE >= top-0.01: xs[r[0].x] = true
+	return xs.size() <= 1
+
+static func _half_span(roofs: Array, along_z: bool) -> float:
+	var rlow := Vector2i(100000,100000)
+	var rhigh := Vector2i(-100000,-100000)
+	for r in roofs:
+		rlow = rlow.min(r[0])
+		rhigh = rhigh.max(r[0])
+	return float((rhigh.x-rlow.x+1) if along_z else (rhigh.y-rlow.y+1))/2.0
+
+static func _roof(root: Node3D, roofs: Array, low: Vector2i, high: Vector2i, eave_y: float, ridge_y: float, gable_family: String, covering: StandardMaterial3D, ridge_along_z := true) -> void:
+	var rlow := Vector2i(100000,100000)
+	var rhigh := Vector2i(-100000,-100000)
+	for r in roofs:
+		rlow = rlow.min(r[0])
+		rhigh = rhigh.max(r[0])
 	var roof := Node3D.new()
 	roof.name = "Roof"
 	root.add_child(roof,true)
