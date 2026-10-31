@@ -1,5 +1,5 @@
 """Activate only exact local assets with passing skin and actual GPU evidence."""
-import argparse,hashlib,json,subprocess,sys
+import argparse,hashlib,json,os,shutil,subprocess,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 ART=ROOT/'Viewer/local-art/creatures'
@@ -14,7 +14,7 @@ def main():
         tests=json.loads((ROOT/f'outputs/creatures/{family}/validation.json').read_text())
         gpu=json.loads((ROOT/f'outputs/creatures/{family}/appearance.json').read_text())
         gpu_path=ROOT/f'outputs/creatures/{family}/appearance.json'
-        gpu_inputs=[ROOT/'Viewer/Presentation'/name for name in ['CreatureAppearanceTests.gd','CreatureVisual.gd','OstardVisual.gd','OstardSurface.gdshader','CreatureCutoutSurface.gdshader','CreatureDustSurface.gdshader','HumanHue.gd']]
+        gpu_inputs=[ROOT/'Viewer/Presentation'/name for name in ['CreatureAppearanceTests.gd','CreatureVisual.gd','OstardVisual.gd','OstardSurface.gdshader','CreatureCutoutSurface.gdshader','CreatureDustSurface.gdshader','CreatureFlashSurface.gdshader','HumanHue.gd']]
         assert all(path.stat().st_mtime<=gpu_path.stat().st_mtime for path in gpu_inputs),'Runtime/shader changed after GPU validation'
         assert tests['failures']==0 and gpu['failures']==0 and gpu['renderer']!='gl_compatibility'
         tested={row['kind']:row for row in tests['models']}
@@ -43,12 +43,26 @@ def main():
             assert all((ART/name).resolve().is_relative_to(ART.resolve()) and digest(ART/name)==sha for name,sha in dependencies.items()),'Auxiliary art changed after preparation'
             assert all(sample.get('art_dependency_sha256',{})==dependencies for sample in samples),'Auxiliary art changed after rendering'
             assert len(samples)==6
+            if row.get('death_effect'):
+                effect_path=ROOT/f'outputs/creatures/{family}/death-effect.json'
+                effect=json.loads(effect_path.read_text())
+                assert effect['failures']==0 and effect['checks']>0 and effect['renderer']=='forward_plus','Death effect needs actual passing GPU evidence'
+                assert effect['asset_sha256']==tested[row['kind']]['asset_sha256']['modern'],'Death effect used different geometry'
+                assert effect['import_sha256']==tested[row['kind']]['import_sha256']['modern'],'Death effect used different animation import'
+                assert set(effect['runtime_sha256'])=={'CreatureFlashTests.gd','CreatureVisual.gd','CreatureFlashSurface.gdshader'},'Incomplete death effect runtime evidence'
+                assert all(digest(ROOT/'Viewer/Presentation'/name)==sha for name,sha in effect['runtime_sha256'].items()),'Death effect runtime changed after validation'
             assert all(sample['asset_sha256']==tested[row['kind']]['asset_sha256']['modern'] for sample in samples),'Atlas changed after GPU validation'
             assert all(sample['import_sha256']==tested[row['kind']]['import_sha256']['modern'] for sample in samples),'GPU and pose samples used different import settings'
             row=dict(row,status='validated',validation_sha256=digest(ROOT/f'outputs/creatures/{family}/validation.json'),
                      gpu_sha256=digest(gpu_path),gpu_runtime_sha256={path.name:digest(path) for path in gpu_inputs},asset_sha256=tested[row['kind']]['asset_sha256'],import_sha256=tested[row['kind']]['import_sha256'])
             if row['kind'] in contact_kinds:row['contact_sha256']=digest(contact_path)
             rows.append(row)
+        # Test actual frozen cadavers before publishing any new runtime route.
+        # This Godot process injects prepared candidates only in its own memory.
+        godot=os.environ.get('GODOT_BIN') or next((ROOT/'.tools/godot').glob('*console.exe'),None) or shutil.which('godot') or shutil.which('godot4')
+        if not godot:raise RuntimeError('Set GODOT_BIN to validate candidate cadavers before acceptance')
+        subprocess.run([str(godot),'--headless','--path',str(ROOT/'Viewer'),'--script',
+                        'res://Presentation/CorpseCatalogue.gd','--','--candidate='+family],check=True)
         report['entries']=[row for row in report['entries'] if row['family']!=family]+rows
         print('ACCEPTED LOCAL PRESENTATION:',family,len(rows),'source forms;',sum(len(row['bodies']) for row in rows),'body routes; native live evidence separate')
     report['scope']='Exact prepared art with passing finite pose/skin and GPU dye checks. Not universal animation fidelity, native gameplay certification or redistributable assets.'

@@ -20,13 +20,18 @@ var dead := false
 var bonded := {}
 var paperdolls := {}
 var profiles := {}
+var corpse_directions := {}
 const DELETE_REASONS := ["That character password is invalid.","That character does not exist.","That character is being played right now.","That character is not old enough to delete.","That character is queued for backup.","The request could not be carried out."]
 
 func routes() -> void:
 	session.route(0x2c,func(p: PackedByteArray):
 		dead = u8(p,1) != 1
 		died.emit(dead))
-	session.route(0xaf,func(p: PackedByteArray): death_animation.emit(u32(p,1),u32(p,5)))
+	session.route(0xaf,func(p: PackedByteArray):
+		var killed:=u32(p,1);var corpse:=u32(p,5)
+		if corpse!=0 and session.entities.has(killed):corpse_directions[corpse]=int(session.entities[killed].get("direction",0))&7
+		death_animation.emit(killed,corpse))
+	session.world_item_removed.connect(func(serial: int):corpse_directions.erase(serial))
 	session.route(0x88,func(p: PackedByteArray):
 		var info := {"serial":u32(p,1),"title":ascii(p,5,60),"war":u8(p,65)&1 != 0,"can_lift":u8(p,65)&2 != 0}
 		paperdolls[info.serial] = info
@@ -53,6 +58,7 @@ func reset() -> void:
 	bonded.clear()
 	paperdolls.clear()
 	profiles.clear()
+	corpse_directions.clear()
 
 func _profile(p: PackedByteArray) -> void:
 	var serial := u32(p,3)

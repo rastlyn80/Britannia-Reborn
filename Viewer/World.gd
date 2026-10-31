@@ -23,6 +23,7 @@ var status := Label.new()
 var coordinates := Label.new()
 var static_root := Node3D.new()
 var world_items := preload("res://Presentation/WorldItems.gd").new()
+var creature_deaths := preload("res://Presentation/CreatureDeaths.gd").new()
 var multis: Node3D
 var autowalk: Node
 var game := preload("res://Network/GameSession.gd").new()
@@ -251,6 +252,8 @@ func _ready() -> void:
 	add_child(game)
 	add_child(world_items)
 	world_items.configure(self,game)
+	add_child(creature_deaths)
+	creature_deaths.configure(self,game,world_items)
 	multis = preload("res://Presentation/MultiPresenter.gd").new()
 	add_child(multis)
 	multis.configure(self)

@@ -13,6 +13,28 @@ def bone_payload(parent,scales):
 def matrix(x=1.,y=1.,z=1.):return [x,0.,0.,0.,y,0.,0.,0.,z]
 
 class CreaturePipelineTests(unittest.TestCase):
+    def test_metadata_refresh_preserves_authored_identity_and_native_aliases(self):
+        row={'kind':'bruins_bear_brown','bodies':[{'body':167,'scale':[1.]*3,'note':'authored mapping'}]}
+        result=p.refreshed_identities(row,[],{167:[{'path':'Bear.cs'}]},{167:'animal'})
+        self.assertEqual(result[0]['body'],167);self.assertEqual(result[0]['note'],'authored mapping')
+        self.assertEqual(result[0]['native_sources'],[{'path':'Bear.cs'}]);self.assertNotIn('native_sources',row['bodies'][0])
+        white=p.refreshed_identities({'kind':'dragons_dragon_ice','bodies':[]},[{'body':49,'stem':'dragons_wyrm_retro_white'}],{}, {49:'monster',180:'monster'})
+        self.assertEqual([r['body'] for r in white],[49,180])
+
+    def test_recovered_flash_is_separate_and_does_not_use_invalid_normals(self):
+        import base64
+        gltf={'nodes':[{}, {'children':[2]}, {'name':'flash_plane'}],'skins':[{'joints':[2]}],
+              'meshes':[{'name':'Body','primitives':[]}],'materials':[],'bufferViews':[],'accessors':[],
+              'buffers':[{'uri':'data:application/octet-stream;base64,','byteLength':0}]}
+        part={'name':'flash_plane','points':[(0,0,0),(1,0,0),(0,1,0)],'normals':[None],
+              'polygons':[(0,1,2,0,0,0)],'texture_polygons':[(0,1,2)],'uv_sets':[[(0,0,0),(1,0,0),(0,1,0)]]}
+        result,info=rigid.append_death_flash(gltf,[part],[{'name':'flash_plane','bone':0}])
+        self.assertEqual(len(result['meshes']),2);self.assertEqual(result['meshes'][0],gltf['meshes'][0])
+        self.assertNotIn('NORMAL',result['meshes'][1]['primitives'][0]['attributes'])
+        self.assertEqual(result['nodes'][-1]['skin'],0);self.assertEqual(info['source_joint'],'flash_plane')
+        self.assertEqual(result['buffers'][0]['byteLength'],len(base64.b64decode(result['buffers'][0]['uri'].split(',')[1])))
+        self.assertEqual(len(gltf['meshes']),1)
+
     def test_native_literal_census_includes_conditional_branches_only(self):
         text='''
             Body = flag ? 180 : 0x31;

@@ -1311,6 +1311,17 @@ func roof_material(key: String) -> ShaderMaterial:
 	return roof_materials[key]
 
 func build(s: Dictionary, world: Dictionary, ordinal: int = -1) -> Node3D:
+	# Corpse props share the native graphic; a body/amount parameter selects
+	# the variant. Original statics without a body retain their normal fallback.
+	if int(s.id)==0x2006 and (s.has("body") or s.has("amount")):
+		var cadaver: Node3D=preload("res://Presentation/CorpseModels.gd").build(int(s.get("body",s.get("amount",0))),int(s.get("hue",0)),s.get("worn",[]))
+		if cadaver:
+			cadaver.set_meta("source_id",s.id);cadaver.set_meta("source_xyz",Vector3i(s.x,s.y,s.z));cadaver.set_meta("source_ordinal",ordinal)
+			cadaver.set_meta("kind","corpse");cadaver.set_meta("solid",false);cadaver.set_meta("source_state","replacement")
+			cadaver.rotation.y=PI-float(int(s.get("direction",0))&7)*PI/4.
+			cadaver.position=Vector3(s.x-int(world.originX)+.5,s.z*float(world.elevationScale),s.y-int(world.originY)+.5)
+			mapped+=1
+			return cadaver
 	var rule := rule_for(s.id)
 	if rule.is_empty() and info(world,s.id,true).get("name") == "wooden boards": rule = {"kind":"floor","asset":"Village/Floor_WoodDark.gltf","axis":"x","confidence":"fixture"}
 	var kind := str(rule.get("kind","unknown"))

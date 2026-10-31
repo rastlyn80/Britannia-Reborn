@@ -63,6 +63,10 @@ foreach ($family in $Families) {
  $null=$process.Handle
  $process.WaitForExit();$path="$root/outputs/creatures/$family/appearance.json"
  if ($process.ExitCode -ne 0 -or !(Test-Path $path) -or (Get-Item $path).LastWriteTimeUtc -lt $started.AddSeconds(-1)) {throw "Creature GPU test failed or did not produce fresh evidence: $family"}
+ if ($family -eq 'spirits') {
+  & $godot --path "$root/Viewer" --script res://Presentation/CreatureFlashTests.gd *> "$logs/$family-death-effect.log"
+  if ($LASTEXITCODE) {throw 'Recovered spirit death effect checks failed'}
+ }
  & python -B "$root/scripts/accept-creatures.py" $family
  if ($LASTEXITCODE) {throw "Creature asset hash/acceptance check failed: $family"}
  if ($Capture) {
@@ -89,3 +93,7 @@ foreach ($family in $Families) {
  }
 }
 if ($failed.Count) {throw ('Creature families still failing: '+($failed -join ', '))}
+# Every accepted body, including future additions, must also have a static
+# corpse and an entry in the graphic-ID/body variant browser.
+& "$PSScriptRoot/build-corpse-catalogue.ps1" -Render *> "$logs/corpses.log"
+if ($LASTEXITCODE) {throw 'Static corpse coverage failed'}

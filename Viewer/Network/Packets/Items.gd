@@ -17,6 +17,7 @@ func routes() -> void:
 		if p.size() >= 26: dragged.emit({"graphic":u16(p,1),"hue":u16(p,4),"amount":u16(p,6),"source":u32(p,8),"from":Vector3i(u16(p,12),u16(p,14),i8(p,16)),"target":u32(p,17),"to":Vector3i(u16(p,21),u16(p,23),i8(p,25))}))
 	session.route(0x29,func(_p: PackedByteArray): drop_accepted.emit())
 	session.route(0x89,_corpse)
+	session.world_item_removed.connect(func(serial: int):corpses.erase(serial))
 	session.route_extended(0x1b,_spellbook)
 	session.route(0xf7,_packet_list)
 
@@ -25,11 +26,13 @@ func reset() -> void:
 	corpses.clear()
 
 func _corpse(p: PackedByteArray) -> void:
+	if p.size()<8:return
 	var corpse := u32(p,3)
 	var worn := {}
 	var at := 7
 	while at+5 <= p.size() and p[at] != 0:
-		worn[u8(p,at)] = u32(p,at+1)
+		# Native CorpsePackets writes Layer + 1; zero terminates the list.
+		worn[u8(p,at)-1] = u32(p,at+1)
 		at += 5
 	corpses[corpse] = worn
 	corpse_equipment.emit(corpse,worn)

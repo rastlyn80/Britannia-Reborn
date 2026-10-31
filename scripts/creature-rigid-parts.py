@@ -23,6 +23,7 @@ def join_parts(rig,parts,texture_tables,reader,excluded_names=()):
         reader.require(len(faces)==len(textures),'Rigid texture group does not cover the linked mesh')
         reader.require(all(max(face[:3])<len(part['points']) and max(face[3:])<len(part['normals']) for face in faces),'Rigid triangle outside its mesh')
         reader.require(all(max(face)<len(uv) for face in textures),'Rigid UV index outside its table')
+        part['texture_polygons']=[list(face) for face in textures]
         report.append({'object_id':part['object_id'],'name':name,'bone':bone,'bone_tie':tie,
                        'points':len(part['points']),'triangles':len(faces),'body_included':name not in excluded_names,
                        'body_face_start':len(result['polygons']) if name not in excluded_names else None})
@@ -34,6 +35,40 @@ def join_parts(rig,parts,texture_tables,reader,excluded_names=()):
         result['weights'].extend([[(tie,1.)] for _ in part['points']])
     reader.require(result['points'] and result['polygons'],'No visible rigid actor geometry')
     return result,report
+
+def append_death_flash(gltf,parts,report):
+    """Attach the recovered unlit effect to its original joint, outside body bounds."""
+    flash=next(part for part in parts if part['name']=='flash_plane')
+    binding=next(part for part in report if part['name']=='flash_plane')
+    bone=binding['bone'];result=copy.deepcopy(gltf)
+    if result['nodes'][result['skins'][0]['joints'][bone]]['name']!='flash_plane':raise ValueError('Flash joint changed during export')
+    positions=[];uv=[]
+    for face,tex in zip(flash['polygons'],flash['texture_polygons'],strict=True):
+        for corner in range(3):
+            positions.append(flash['points'][face[corner]])
+            uv.append(flash['uv_sets'][-1][tex[corner]][:2])
+    if not positions or not all(math.isfinite(x) for v in positions+uv for x in v):raise ValueError('Invalid recovered flash geometry')
+    body=bytearray(base64.b64decode(result['buffers'][0]['uri'].split(',',1)[1]))
+    def accessor(values,width,kind,component=5126):
+        while len(body)%4:body.append(0)
+        start=len(body);fmt='f' if component==5126 else 'H'
+        body.extend(struct.pack('<'+fmt*(len(values)*width),*(x for v in values for x in v)))
+        view=len(result['bufferViews']);result['bufferViews'].append({'buffer':0,'byteOffset':start,'byteLength':len(body)-start,'target':34962})
+        index=len(result['accessors']);result['accessors'].append({'bufferView':view,'componentType':component,'count':len(values),'type':kind,
+            'min':[min(v[i] for v in values) for i in range(width)],'max':[max(v[i] for v in values) for i in range(width)]})
+        return index
+    attrs={'POSITION':accessor(positions,3,'VEC3'),'TEXCOORD_0':accessor(uv,2,'VEC2'),
+           'JOINTS_0':accessor([[bone,0,0,0]]*len(positions),4,'VEC4',5123),'WEIGHTS_0':accessor([[1.,0.,0.,0.]]*len(positions),4,'VEC4')}
+    material=len(result['materials']);result['materials'].append({'name':'Recovered death flash','doubleSided':True,'alphaMode':'BLEND',
+        'extensions':{'KHR_materials_unlit':{}},'pbrMetallicRoughness':{'baseColorTexture':{'index':0},'baseColorFactor':[1.,1.,1.,.15],'metallicFactor':0.,'roughnessFactor':1.}})
+    result.setdefault('extensionsUsed',[])
+    if 'KHR_materials_unlit' not in result['extensionsUsed']:result['extensionsUsed'].append('KHR_materials_unlit')
+    mesh=len(result['meshes']);result['meshes'].append({'name':'RecoveredFlash','primitives':[{'attributes':attrs,'material':material,'mode':4}]})
+    node=len(result['nodes']);result['nodes'].append({'name':'RecoveredFlash','mesh':mesh,'skin':0});result['nodes'][1]['children'].append(node)
+    result['buffers'][0].update(byteLength=len(body),uri='data:application/octet-stream;base64,'+base64.b64encode(body).decode())
+    return result,{'triangles':len(positions)//3,'source_joint':'flash_plane','bone':bone,'separate_mesh':True,
+                   'uv_rect':[min(v[0] for v in uv),min(v[1] for v in uv),max(v[0] for v in uv),max(v[1] for v in uv)],
+                   'normals':'Unlit surface omits normals; original invalid normal bits remain in recovered IR.','surface':'Authored additive flash interpretation on recovered geometry and original joint motion.'}
 
 def separate_materials(gltf,parts,levels):
     """Share vertex buffers; draw rigid steel and source dust with separate materials."""

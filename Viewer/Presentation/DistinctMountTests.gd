@@ -36,7 +36,7 @@ func run() -> void:
 		var corpse_root:=Node3D.new();root.add_child(corpse_root)
 		check(view._equine_corpse(corpse_root,{"amount":body,"hue":53},0x40012345),"Native corpse amount routes to actual creature body")
 		var corpse: Node3D=corpse_root.get_node("CorpseVisual")
-		check(corpse.dead and not corpse.animator.is_playing() and not corpse.reins.visible,"Corpse retains final death pose, hue and no reins")
+		check(corpse.get_meta("static_cadaver",false) and int(corpse.get_meta("native_hue"))==53 and corpse.find_children("*","AnimationPlayer",true,false).is_empty() and corpse.find_child("RiderReins",true,false)==null,"Corpse retains final death pose, hue and no reins")
 		corpse_root.free()
 	view.hint.free();view.free()
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://../outputs/ostard-riding"))

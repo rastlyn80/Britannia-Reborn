@@ -12,12 +12,25 @@ var contact: SkeletonModifier3D
 var source_model_basis:=Basis.IDENTITY
 var action_profile:="monster"
 var default_model_scale:=Vector3.ONE
+var death_flashes: Array[MeshInstance3D]=[]
 func _init() -> void:asset_folder="creatures"
 func set_hue(value: int) -> void:
 	super.set_hue(value)
-	if model==null or treatment!="modern" or str(entry.get("source_alpha_texture","")).is_empty():return
+	if model==null:return
+	death_flashes.clear()
+	for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
+		if mesh.name!="RecoveredFlash":continue
+		var flash:=ShaderMaterial.new();flash.shader=preload("res://Presentation/CreatureFlashSurface.gdshader")
+		flash.set_shader_parameter("albedo_texture",load("res://local-art/creatures/"+str(entry.source_alpha_texture)))
+		var rect: Array=entry.get("death_effect",{}).get("uv_rect",[0.,0.,1.,1.])
+		flash.set_shader_parameter("uv_rect",Vector4(float(rect[0]),float(rect[1]),float(rect[2]),float(rect[3])))
+		var palette:=preload("res://Presentation/HumanHue.gd").palette(value)
+		flash.set_shader_parameter("hue_palette",palette);flash.set_shader_parameter("use_hue",palette!=null)
+		mesh.material_override=flash;mesh.visible=false;mesh.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;mesh.set_meta("source_death_flash",true);death_flashes.append(mesh)
+	if treatment!="modern" or str(entry.get("source_alpha_texture","")).is_empty():return
 	var opacity:=load("res://local-art/creatures/"+str(entry.source_alpha_texture)) as Texture2D
 	for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
+		if mesh.has_meta("source_death_flash"):continue
 		for surface in mesh.mesh.get_surface_count():
 			var previous:=mesh.get_surface_override_material(surface) as ShaderMaterial
 			if previous==null:continue
@@ -63,9 +76,17 @@ func play_gait(moving: bool,speed: float) -> void:
 	if current_clip!=clip:current_clip=clip;play(clip,.18)
 	animator.speed_scale=clampf(speed/(5.5 if clip=="Run" else 1.8),.65,1.65) if moving else 1.
 func _process(delta: float) -> void:
+	update_death_effect()
 	if action_remaining>0.:
 		action_remaining=maxf(0.,action_remaining-delta)
 		if action_remaining==0. and (dead or current_clip=="LieDown"):animator.seek(animator.current_animation_length,true);animator.pause()
+func update_death_effect() -> void:
+	if death_flashes.is_empty():return
+	var showing:=animator.assigned_animation in ["Death","Death2"]
+	var phase:=clampf(animator.current_animation_position/maxf(.001,animator.current_animation_length),0.,1.) if showing else 0.
+	for mesh in death_flashes:
+		mesh.visible=showing and phase>0. and phase<1.
+		mesh.material_override.set_shader_parameter("gain",sin(PI*phase)*sin(PI*phase))
 func _physics_process(delta: float) -> void:
 	if contact==null:return
 	contact.sample(get_world_3d().direct_space_state,global_position)

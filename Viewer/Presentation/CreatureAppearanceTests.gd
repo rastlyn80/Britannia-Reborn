@@ -69,6 +69,7 @@ func run() -> void:
 	print("CREATURE GPU / ",family,": ",checks-failures," / ",checks);quit(1 if failures else 0)
 func set_mask_probe(actor: Node3D,probe: bool,mask_enabled: bool) -> void:
 	for mesh: MeshInstance3D in actor.model.find_children("*","MeshInstance3D",true,false):
+		if mesh.has_meta("source_death_flash"):continue
 		for surface in mesh.mesh.get_surface_count():
 			var material:=mesh.get_surface_override_material(surface) as ShaderMaterial
 			material.set_shader_parameter("alpha_probe",probe);material.set_shader_parameter("use_source_alpha",mask_enabled)

@@ -17,6 +17,7 @@ var hint := Label.new()
 # street and shop names are painted on the boards without clicking.
 var label_queue: Array[int] = []
 var sign_labels := {}
+var corpse_refresh_pending:=false
 var label_clock := 0.0
 const LABEL_INTERVAL := 0.25
 # Street-board arrow directions by graphic (x east, z south) from the source
@@ -33,6 +34,10 @@ func configure(owner_scene: Node3D, connection: Node) -> void:
  session.world_item_changed.connect(upsert)
  session.world_item_removed.connect(remove)
  session.ended.connect(clear)
+ session.module("items").corpse_equipment.connect(func(corpse: int,_worn: Dictionary):refresh_corpse_equipment(corpse))
+ session.items_changed.connect(queue_corpse_refresh)
+ session.module("player").death_animation.connect(func(_killed: int,corpse: int):
+  if nodes.has(corpse) and nodes[corpse].has_node("CorpseVisual") and session.world_items.has(corpse):upsert(corpse,session.world_items[corpse]))
  session.item_label_received.connect(func(serial: int, label: String):
   if serial == selected: hint.text = label
   if nodes.has(serial) and nodes[serial].get_meta("family","") == "sign":
@@ -162,12 +167,14 @@ func upsert(serial: int, item: Dictionary) -> void:
  if nodes.has(serial) and rule.family == "door" and nodes[serial].get_meta("family","") == "door":
   _door_state(nodes[serial],item,rule,false)
   return
+ var held_corpse: bool=int(item.id)==0x2006 and nodes.has(serial) and not nodes[serial].visible
  remove_visual(serial)
  # Native decoration floor patches replace source gaps, while the shared floor
  # pass already owns those surfaces. Avoid another coplanar floor layer.
  if rule.get("type","") == "Static" and int(rule.get("height",0)) == 0 and (int(rule.get("flags",0)) & 0x200) != 0: return
  request_contact_refresh()
  var root := Node3D.new()
+ root.visible=not held_corpse
  root.name = "ServerItem_%08X" % serial
  root.set_meta("serial",serial)
  root.set_meta("family",rule.family)
@@ -534,36 +541,52 @@ func engrave(root: Node3D, text: String) -> void:
  var floating: Label3D = root.get_node_or_null("BuildingName")
  if floating: floating.hide()
 
-# Horse corpses use the living horse's model, coat and hue (HorseVisual),
-# posed at the last frame of its authored death clip and left still: no reins,
-# gait or ground-contact sway. Other creatures keep the generic corpse look
-# until their models exist.
+# Native 0x2006 selects a frozen cadaver by body (amount), with server hue/facing.
+# Historical method name retained for existing mount callers.
 func _equine_corpse(root: Node3D,item: Dictionary,serial: int) -> bool:
- var Horse := preload("res://Presentation/MountVisual.gd")
  var body := int(item.get("amount",0))
- if not Horse.supports_body(body): return false
- var horse: Node3D = Horse.create(body)
- horse.name = "CorpseVisual"
- horse.native_body = body
- horse.native_hue = int(item.get("hue",0))
- root.add_child(horse)
- horse.apply_identity(body,int(item.get("hue",0)))
- horse.dead = true
- var source_rig: bool = Horse.BODIES.has(body) or Horse.Animals.supports_body(body)
- var death_clip: String = "Death" if source_rig else "death"
- horse.current_clip = death_clip
- horse.contact.enabled = false
- if not Horse.Animals.Creatures.supports_body(body):horse.reins.visible = false
- horse.animator.play(death_clip)
- horse.animator.seek(horse.animator.get_animation(death_clip).length,true)
- horse.animator.pause()
- if not source_rig:horse.fit_action_floor()
- horse.set_process(false)
- horse.set_physics_process(false)
- horse.rotation.y = fposmod(float(serial)*0.618034,1.0)*TAU
+ var worn: Array=item.get("worn",corpse_worn(serial))
+ var corpse: Node3D = preload("res://Presentation/CorpseModels.gd").build(body,int(item.get("hue",0)),worn)
+ if corpse == null: return false
+ root.add_child(corpse)
+ var directions: Dictionary=session.module("player").corpse_directions if is_instance_valid(session) else {}
+ if directions.has(serial) or item.has("direction"):
+  corpse.rotation.y=PI-float(int(directions.get(serial,item.get("direction",0)))&7)*PI/4.
+ else:corpse.rotation.y=fposmod(float(serial)*0.618034,1.0)*TAU
  root.set_meta("corpse_body",body)
- _body(root,Vector3(2.2,0.7,1.2),Vector3(0,0.35,0),serial,false)
+ root.set_meta("corpse_worn",worn.duplicate(true))
+ root.set_meta("corpse_look_key",JSON.stringify(worn))
+ var box: AABB=corpse.transform*corpse.get_meta("corpse_bounds")
+ _body(root,box.size.max(Vector3(.15,.15,.15)),box.get_center(),serial,false)
  return true
+
+func corpse_worn(serial: int) -> Array:
+ var result: Array=[]
+ if not is_instance_valid(session):return result
+ var layers: Dictionary=session.module("items").corpses.get(serial,{})
+ var sorted: Array=layers.keys();sorted.sort()
+ for layer in sorted:
+  var item: Dictionary=session.known_items.get(int(layers[layer]),{})
+  if not item.is_empty() and int(item.get("container",0))==serial:
+   result.append(item.merged({"layer":int(layer)}))
+ return result
+
+func queue_corpse_refresh() -> void:
+ if corpse_refresh_pending:return
+ corpse_refresh_pending=true
+ call_deferred("refresh_corpses")
+
+func refresh_corpses() -> void:
+ corpse_refresh_pending=false
+ if not is_instance_valid(session):return
+ for serial in nodes.keys():
+  if int(nodes[serial].get_meta("corpse_body",0)) in [400,401]:refresh_corpse_equipment(int(serial))
+
+func refresh_corpse_equipment(serial: int) -> void:
+ if not nodes.has(serial) or not session.world_items.has(serial):return
+ var item: Dictionary=session.world_items[serial]
+ if int(item.get("id",0))!=0x2006 or not int(item.get("amount",0)) in [400,401]:return
+ if str(nodes[serial].get_meta("corpse_look_key",""))!=JSON.stringify(corpse_worn(serial)):upsert(serial,item)
 
 # Iron-bound chest (or an all-iron strongbox) in photoscanned oak and rusted
 # iron: carcass, barrel lid, corner straps, bands and a hasp plate.

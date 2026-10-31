@@ -6,6 +6,14 @@ var replies: Array=[[],[]]
 var errors: Array=[]
 var checks:=0
 var records: Array=[]
+var death_arenas: Array=[]
+var death_items: Array=[]
+var death_presenters: Array=[]
+var death_events: Array=[{},{}]
+class DeathArena extends Node3D:
+	var avatars: Dictionary={}
+class DeathItems extends Node:
+	var nodes: Dictionary={}
 func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--family="):family=arg.trim_prefix("--family=")
@@ -29,6 +37,10 @@ func run() -> void:
 	var candidates: Array=JSON.parse_string(FileAccess.get_file_as_string("res://../work/creatures/live-candidates.json"))
 	for sex in 2:
 		var session:=Game.new();root.add_child(session);sessions.append(session)
+		var arena:=DeathArena.new();root.add_child(arena);death_arenas.append(arena)
+		var item_map:=DeathItems.new();arena.add_child(item_map);death_items.append(item_map)
+		var deaths:=preload("res://Presentation/CreatureDeaths.gd").new();arena.add_child(deaths);deaths.configure(arena,session,item_map);death_presenters.append(deaths)
+		deaths.transition_started.connect(func(killed: int,corpse: int,visual: Node3D):death_events[sex][killed]={"corpse":corpse,"body":visual.native_body,"clip":visual.current_clip,"hue":visual.native_hue})
 		session.failed.connect(func(reason: String):errors.append(reason))
 		session.message_received.connect(func(text: String):
 			if text.begins_with("UCCREATURE|"):replies[sex].append(text))
@@ -54,6 +66,8 @@ func run() -> void:
 			if not check(int(fields[3])==body,"actual native constructor retains exact body"):return
 			if not check(await until(func():return session.entities.has(serial) and observer.entities.has(serial)),"both clients receive native loose creature"):return
 			var actor:=preload("res://Presentation/HumanAvatar.gd").new();actor.initial_body=body;root.add_child(actor);actor.set_physics_process(false);actor.apply_server_appearance(session.entities[serial],[])
+			death_arenas[sex].avatars[serial]=actor
+			var peer_actor:=preload("res://Presentation/HumanAvatar.gd").new();peer_actor.initial_body=body;root.add_child(peer_actor);peer_actor.set_physics_process(false);peer_actor.apply_server_appearance(observer.entities[serial],[]);death_arenas[1-sex].avatars[serial]=peer_actor
 			if not check(actor.horse_visual!=null and actor.horse_visual.native_body==body and actor.human_visual==null,"received body selects the actual validated creature avatar"):return
 			for hue in [53,0x8000|53]:
 				await reply(sex,"colour "+str(hue),"UCCREATURE|colour|")
@@ -90,26 +104,38 @@ func run() -> void:
 				var expected:=str({5:"Attack",9:"Fidget",3:"Eat",11:"LieDown",-1:"Hit"}.get(action,"")) if animal else str({4:"Attack",5:"Attack2",6:"Attack3",12:"Cast",-2:"Cast",17:"Fidget",-1:"Hit",19:"Fly",20:"Land"}.get(action,""))
 				if not check(actor.horse_visual.current_clip==expected,"native action selects the intended category"):return
 				if expected=="Fly" and not check(not actor.horse_visual.contact.enabled,"airborne source clip releases foot contact"):return
+			var death_direction:=int(session.entities[serial].direction)
 			response=await reply(sex,"kill","UCCREATURE|corpse|")
 			if response.is_empty():return
 			var corpse:=int(response.split("|")[2])
 			var death_refused:=response.ends_with("|refused")
 			if death_refused:
+				if not check(not death_events[sex].has(serial) and not death_events[1-sex].has(serial),"native death refusal does not start a renderer death transition"):return
 				if not check(corpse==0 and session.entities.has(serial) and observer.entities.has(serial),"native death refusal retains the living creature on both clients"):return
 				if not check(not actor.horse_visual.dead,"native death refusal does not invent a client death pose"):return
 				if native_class=="ServantOfSemidar" and not check(response.contains("|damageable=0|"),"native quest servant remains immune to damage"):return
-			elif corpse==0:
-				if not check(response.ends_with("|suppressed") and await until(func():return not session.entities.has(serial) and not observer.entities.has(serial)),"native death removes the creature without inventing a suppressed corpse"):return
 			else:
+				if not check(await until(func():return death_events[sex].has(serial) and death_events[1-sex].has(serial)),"native death packet starts the actual renderer transition on both clients"):return
+				for client in [sex,1-sex]:
+					var observed: Dictionary=death_events[client][serial]
+					# Native summoned actors can announce a transient corpse in
+					# 0xAF, then delete it before Kill() returns to the fixture.
+					var corpse_matches: bool=int(observed.corpse)==corpse or response.ends_with("|suppressed") and not sessions[client].world_items.has(int(observed.corpse))
+					if not check(int(observed.body)==body and corpse_matches and observed.clip=="Death","native renderer snapshot preserves body, corpse lifecycle and source death clip: "+str(observed)):return
+			if not death_refused and corpse==0:
+				if not check(response.ends_with("|suppressed") and await until(func():return not session.entities.has(serial) and not observer.entities.has(serial)),"native death removes the creature without inventing a suppressed corpse"):return
+			elif not death_refused:
 				if not check(await until(func():return session.world_items.has(corpse) and observer.world_items.has(corpse)),"actual native corpse replicates to both clients"):return
 				if not check(int(session.world_items[corpse].get("amount",0))==body,"native corpse preserves original body"):return
-				var presenter:=preload("res://Presentation/WorldItems.gd").new();root.add_child(presenter);var holder:=Node3D.new();root.add_child(holder)
+				var presenter:=preload("res://Presentation/WorldItems.gd").new();presenter.session=session;root.add_child(presenter);var holder:=Node3D.new();root.add_child(holder)
 				if not check(presenter._equine_corpse(holder,session.world_items[corpse],corpse),"native corpse selects the matching source death model"):return
 				for frame in 2:await process_frame
 				var dead_visual:=holder.get_node("CorpseVisual")
-				if not check(dead_visual.dead and dead_visual.current_clip=="Death" and not dead_visual.animator.is_playing(),"native corpse holds the final source death pose"):return
+				if not check(is_equal_approx(dead_visual.rotation.y,PI-float(death_direction&7)*PI/4.),"native corpse keeps the victim's facing from the death packet"):return
+				if not check(dead_visual.get_meta("static_cadaver",false) and dead_visual.get_meta("death_clip")=="Death" and dead_visual.find_children("*","AnimationPlayer",true,false).is_empty(),"native corpse holds the final source death pose as a static mesh"):return
 				holder.queue_free();presenter.hint.queue_free();presenter.queue_free()
-			actor.queue_free()
+			for client in [sex,1-sex]:death_presenters[client].finish(serial);death_arenas[client].avatars.erase(serial);death_events[client].erase(serial)
+			actor.queue_free();peer_actor.queue_free()
 			await process_frame
 			records.append({"female":sex==1,"body":body,"native_class":native_class,"native_state":native_state,"kind":candidate.kind,"corpse_suppressed":corpse==0 and not death_refused,"native_death_refused":death_refused,"movement":"Native AI refuses movement" if rooted else "Native Mobile.Move walk/run"})
 			await reply(sex,"cleanup","UCCREATURE|cleaned")

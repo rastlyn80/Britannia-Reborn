@@ -905,7 +905,10 @@ static func legacy_item(p: PackedByteArray) -> Dictionary:
 	var x := Login.read_be(p,cursor,2)
 	var y := Login.read_be(p,cursor+2,2)
 	cursor += 4
-	if x & 0x8000: cursor += 1
+	var direction:=0
+	if x & 0x8000:
+		if cursor>=p.size():return {}
+		direction=int(p[cursor])&7;cursor+=1
 	if cursor >= p.size(): return {}
 	var z := signed(p[cursor])
 	cursor += 1
@@ -918,7 +921,7 @@ static func legacy_item(p: PackedByteArray) -> Dictionary:
 	if y & 0x4000:
 		if cursor >= p.size(): return {}
 		flags = int(p[cursor])
-	return {"serial":serial&0x7fffffff,"id":graphic,"amount":amount,"x":x&0x7fff,"y":y&0x3fff,"z":z,"hue":hue,"flags":flags}
+	return {"serial":serial&0x7fffffff,"id":graphic,"amount":amount,"x":x&0x7fff,"y":y&0x3fff,"z":z,"hue":hue,"flags":flags,"direction":direction}
 
 # Ask the server for an item's label without echoing it to the message log
 # (street signs and plaques show their names on the boards themselves).

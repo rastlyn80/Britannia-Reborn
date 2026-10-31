@@ -66,7 +66,7 @@ func run() -> void:
 	for body: int in Registry.BODIES:
 		var holder:=Node3D.new();root.add_child(holder)
 		check(presenter._equine_corpse(holder,{"amount":body,"hue":53},0x40012345),"Native bovine corpse amount selects its source death art")
-		check(holder.get_node("CorpseVisual").dead,"Corpse remains dead, independent of the live cow tip signature")
+		check(holder.get_node("CorpseVisual").get_meta("static_cadaver",false),"Corpse remains static, independent of the live cow tip signature")
 		holder.free()
 	presenter.hint.free();presenter.free()
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://../outputs/bovines"))

@@ -1,3 +1,11 @@
+# Static cadaver catalogue and native death playback - 31 October 2026
+
+All 135 currently available human/mount/animal/creature body variants now have frozen static cadavers, listed under native graphic 0x2006 with the original body in amount. The item catalogue has a Corpses tab; Reviews/Review-Corpses.cmd opens the ignored local gallery. World/inspect and parameterised static graphics share the builder. Actual corpse equipment, dyes and server-confirmed looting are presented; future creature candidates must pass cadaver checks before acceptance. [Implementation, reproduction and limits](CORPSE_GRAPHICS.md).
+
+Evidence: 1,266 rendered cadaver checks; 95 world-item checks; 68 packet-driven death-transition checks; 2,218 fresh real disposable-server/two-client checks across spirits, bears, dragons and daemons, all passing. Refused deaths and transient/deleted summoned corpses remain native. Blade Spirit's recovered death flash now has 30 actual GPU checks, with authored unlit/radial treatment on its original geometry/joint; resting cadavers omit it. Current common regression remains 55,972 checks / 17,073 skin samples and 1,144 GPU checks / 498 views; full scripts/verify.ps1 exits 0, including 22 creature and 11 Third Dawn synthetic tests. Existing unrelated diagnostics remain.
+
+Creature native-evidence coverage stays 109/279 (39.1%): static corpse coverage of available bodies is a separate measure. Human wearables stay 732/1,126 (65.01%). Art, source inputs, IR, previews and exact prompts remain local/ignored. A clean clone still needs separate asset setup. Continue skeletons, gazers/harpies and remaining creature families/action/identity/effect gaps; preserve concurrent terrain/compact streaming and production saves.
+
 # Creature milestone: 109 of 279 audited native bodies / ophidians and gargoyles - 31 October 2026
 
 83 accepted generic source forms across 29 groups now provide 98 body routes. With earlier mounts/bovines, native-evidence coverage is 109/279 (39.1%). The audit grew from 275 by recognising conditional White Wyrm (49/180), summoned daemon (10) and shorn sheep (223) body choices. It remains bounded, not an exhaustive modern-client census or final-art/action percentage. Human wearables remain 732/1,126 (65.01%).

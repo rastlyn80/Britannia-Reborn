@@ -163,6 +163,16 @@ def native_bodies():
             bodies.setdefault(body,[]).append({'path':str(path.relative_to(server)), 'sha256':digest(raw)})
     return pin,bodies
 
+def refreshed_identities(row,table,native,profiles):
+    # Preserve explicit authored identities (for example the brown bear) when
+    # refreshing a census; only declared native-alias recipes rebuild the list.
+    identities=reuse.identities(row['kind'],table) if reuse.RECIPES.get(row['kind'],{}).get('native_aliases') else copy.deepcopy(row['bodies'])
+    assert identities,'Metadata refresh lost an explicit source identity'
+    for identity in identities:
+        identity['native_sources']=native.get(identity['body'],[])
+        identity['native_profile']=profiles.get(identity['body'],'')
+    return identities
+
 def prepare(family, z, names, rows, native):
     family_output = OUTPUT/family; family_output.mkdir(parents=True,exist_ok=True)
     members = sorted(n for n in names if n.endswith('_lod2.grn') and '/models/' in n
@@ -192,11 +202,11 @@ def prepare(family, z, names, rows, native):
             raw = read(member)
             try:
                 if stem=='spirits_blade_spirit':
-                    body,parts,row['rigid_import']=rigid.read_rigid_parts(raw,td)
+                    body,rigid_parts,row['rigid_import']=rigid.read_rigid_parts(raw,td)
                     part_path=family_output/(stem+'-rigid-parts.json')
-                    part_path.write_text(json.dumps({'source_sha256':digest(raw),'parts':parts,'report':row['rigid_import']},indent=2,allow_nan=False))
+                    part_path.write_text(json.dumps({'source_sha256':digest(raw),'parts':rigid_parts,'report':row['rigid_import']},indent=2,allow_nan=False))
                     row['recovered_rigid_parts']=str(part_path.relative_to(ROOT))
-                    row['separate_source_effect']='Flash-plane death effect recovered separately; not integrated into the body presentation'
+                    row['separate_source_effect']='Recovered flash-plane geometry/joint attached as a separate unlit death effect; actor floor/bounds exclude the effect'
                 else:body = td.parse(raw,scene_root_names=True)
                 row['normal_repair'] = None
             except ValueError as error:
@@ -363,6 +373,8 @@ def prepare(family, z, names, rows, native):
                     masked=json.loads(output.read_text())
                     if row.get('rigid_import'):masked=rigid.separate_materials(masked,row['rigid_import']['parts'],0 if treatment=='original' else levels)
                     for material in masked['materials']:material.update(alphaMode='MASK',alphaCutoff=.12)
+                    if row.get('rigid_import'):
+                        masked,row['death_effect']=rigid.append_death_flash(masked,rigid_parts,row['rigid_import']['parts'])
                     output.write_text(json.dumps(masked,separators=(',',':')))
             gltf = json.loads((OUTPUT/(stem+'-rounded.gltf')).read_text())
             gltf['images'][0]['uri'] = 'data:image/png;base64,'+base64.b64encode(modern).decode()
@@ -390,12 +402,7 @@ def main():
             path=OUTPUT/family/'preparation.json';report=json.loads(path.read_text());before=copy.deepcopy(report)
             for row in report['models']:
                 if 'bodies' not in row:continue
-                identities=reuse.identities(row['kind'],table)
-                assert identities,'Metadata refresh lost an explicit source identity'
-                for identity in identities:
-                    identity['native_sources']=native.get(identity['body'],[])
-                    identity['native_profile']=profiles.get(identity['body'],'')
-                row['bodies']=identities
+                row['bodies']=refreshed_identities(row,table,native,profiles)
                 if row['status']=='prepared':row['profile']=profiles.get(row['bodies'][0]['body']) or row['profile']
             report['body_table_sha256']=digest((ROOT/'Server/ModernUO/Distribution/Data/bodyTable.cfg').read_bytes())
             if report!=before:path.write_text(json.dumps(report,indent=2),encoding='utf-8')
