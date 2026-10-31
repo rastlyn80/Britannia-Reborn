@@ -30,6 +30,14 @@ func configure(owner_scene: Node3D, connection: Node) -> void:
  if FileAccess.file_exists("res://item-definitions.local.json"):
   var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://item-definitions.local.json"))
   if parsed is Dictionary: definitions = parsed
+ # The local server's own list covers every graphic it placed on Trammel
+ # (PreviewWorld writes it at start), e.g. gates outside the Britain crop.
+ var facet_wide := ProjectSettings.globalize_path("res://../Server/runtime/Data/UltimaClonePreview/definitions.local.json")
+ if FileAccess.file_exists(facet_wide):
+  var more: Variant = JSON.parse_string(FileAccess.get_file_as_string(facet_wide))
+  if more is Dictionary:
+   for id in more:
+    if not definitions.has(id): definitions[id] = more[id]
  refresh_source_records()
  session.world_item_changed.connect(upsert)
  session.world_item_removed.connect(remove)
@@ -267,7 +275,8 @@ func upsert(serial: int, item: Dictionary) -> void:
   if rule.get("is_open",false):
    var offset: Array = rule.get("offset",[0,0,0])
    root.position = scene.entity_point(int(item.x)-int(offset[0]),int(item.y)-int(offset[1]),int(item.z)-int(offset[2]))
-  _door(root,rule)
+  if _gate(rule): _fence_gate(root,rule,item)
+  else: _door(root,rule)
   _door_state(root,item,rule,true)
   return
  var size := Vector3(0.48,0.38,0.48)
@@ -685,6 +694,45 @@ func _door(root: Node3D,rule: Dictionary) -> void:
  leaf.set_meta("door_style",style)
  pivot.add_child(leaf)
  _body(pivot,Vector3(0.94,height,0.13),Vector3(center,height/2+0.025,0),int(root.get_meta("serial")),true)
+
+# Gates in fences and railings (iron, light or dark wood) are leaves of the
+# fence itself: fence height, standing on the ground, hinged at the cell edge
+# where the run meets them; no doorway frame or lintel.
+static func _gate(rule: Dictionary) -> bool:
+ return "Gate" in str(rule.get("type",""))
+
+func _fence_gate(root: Node3D,rule: Dictionary,item: Dictionary) -> void:
+ var pivot := Node3D.new()
+ pivot.name = "Hinge"
+ root.add_child(pivot)
+ var right := int(rule.get("facing",0))%2 == 1
+ pivot.position.x = 0.5 if right else -0.5
+ var center := -0.5 if right else 0.5
+ var fence := preload("res://Presentation/FenceBuilder.gd")
+ var leaf := Node3D.new()
+ leaf.name = "GateLeaf"
+ leaf.position.x = center
+ pivot.add_child(leaf)
+ if "Iron" in str(rule.get("type","")): fence._iron_run(leaf,Transform3D.IDENTITY)
+ else: leaf.add_child(fence.build("wooden fence",2146,geometry,scene.reconstruction.facade))
+ _body(pivot,Vector3(1.0,1.4,0.12),Vector3(center,0.7,0),int(root.get_meta("serial")),true)
+ # A map fence piece beside the gate only reaches toward other map fence
+ # pieces, which leaves its half toward the gate empty: fill it from here
+ # (fixed, not on the hinge). Local +X is east, or north for y-axis gates.
+ if not "Iron" in str(rule.get("type","")) or scene.reconstruction == null: return
+ var along := Vector2i(0,-1) if int(rule.get("facing",0)) >= 4 else Vector2i(1,0)
+ for side in [-1,1]:
+  var cell: Vector2i = Vector2i(int(item.x),int(item.y))+along*int(side)
+  var joins := false
+  for tile in scene.reconstruction.supports.tiles_at(cell):
+   if absi(int(tile.z)-int(item.z)) <= 3 and str(scene.world.get("staticData",{}).get(str(int(tile.id)),{}).get("name","")).to_lower() == "iron fence": joins = true
+  if not joins: continue
+  var half := Node3D.new()
+  half.name = "FenceJoin"
+  half.position.x = side
+  half.rotation.y = 0.0 if side < 0 else PI
+  root.add_child(half)
+  fence._iron_half(half)
 
 func _door_state(root: Node3D,item: Dictionary,rule: Dictionary,instant: bool) -> void:
  var offset: Array = rule.get("offset",[0,0,0])

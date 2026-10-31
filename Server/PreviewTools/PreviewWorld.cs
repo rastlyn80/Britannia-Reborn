@@ -238,35 +238,54 @@ public static class PreviewWorld
             _ => "decoration"
         };
     }
+    // Every graphic the server has placed anywhere on Trammel, so the client
+    // knows doors and gates outside the first Britain crop (written at start).
+    public static void Initialize()
+    {
+        if (!ServerConfiguration.GetOrUpdateSetting("ultimaClone.previewTools", false))
+        {
+            return;
+        }
+        var definitions = new Dictionary<string, object>();
+        foreach (var item in World.Items.Values)
+        {
+            if (item.Map == Map.Trammel && item.Parent == null)
+            {
+                Define(item, definitions);
+            }
+        }
+        Directory.CreateDirectory(Folder);
+        File.WriteAllText(Path.Combine(Folder, "definitions.local.json"), JsonSerializer.Serialize(definitions, _json));
+    }
+    private static void Define(Item item, Dictionary<string, object> definitions)
+    {
+        var family = Family(item);
+        object Describe(bool open) => new { family, type = item.GetType().Name, display_name = item.ItemData.Name, label = item.LabelNumber, container = item is Container, height = item.ItemData.Height, flags = (ulong)item.ItemData.Flags, is_open = open, closed_id = item is BaseDoor d ? d.ClosedId : 0, opened_id = item is BaseDoor e ? e.OpenedId : 0, facing = item is BaseDoor f ? (f.ClosedId - 0x6A5) / 2 : 0, offset = item is BaseDoor g ? new[] { g.Offset.X, g.Offset.Y, g.Offset.Z } : new[] { 0, 0, 0 } };
+        definitions[item.ItemID.ToString()] = Describe(item is BaseDoor { Open: true });
+        if (item is BaseDoor door)
+        {
+            definitions[door.ClosedId.ToString()] = Describe(false);
+            definitions[door.OpenedId.ToString()] = Describe(true);
+        }
+        if (item is Container container)
+        {
+            foreach (var child in container.Items)
+            {
+                Define(child, definitions);
+            }
+        }
+    }
     private static void Export(Plan plan, string file)
     {
         var items = new List<object>();
         var definitions = new Dictionary<string, object>();
-        void Definition(Item item)
-        {
-            var family = Family(item);
-            object Describe(bool open) => new { family, type = item.GetType().Name, display_name = item.ItemData.Name, label = item.LabelNumber, container = item is Container, height = item.ItemData.Height, flags = (ulong)item.ItemData.Flags, is_open = open, closed_id = item is BaseDoor d ? d.ClosedId : 0, opened_id = item is BaseDoor e ? e.OpenedId : 0, facing = item is BaseDoor f ? (f.ClosedId - 0x6A5) / 2 : 0, offset = item is BaseDoor g ? new[] { g.Offset.X, g.Offset.Y, g.Offset.Z } : new[] { 0, 0, 0 } };
-            definitions[item.ItemID.ToString()] = Describe(item is BaseDoor { Open: true });
-            if (item is BaseDoor door)
-            {
-                definitions[door.ClosedId.ToString()] = Describe(false);
-                definitions[door.OpenedId.ToString()] = Describe(true);
-            }
-            if (item is Container container)
-            {
-                foreach (var child in container.Items)
-                {
-                    Definition(child);
-                }
-            }
-        }
         foreach (var item in Map.Trammel.GetItemsInBounds<Item>(plan.Bounds.Rectangle))
         {
             if (item.Parent != null)
             {
                 continue;
             }
-            Definition(item);
+            Define(item, definitions);
             items.Add(new { serial = item.Serial.Value, id = item.ItemID, type = item.GetType().Name, family = Family(item), x = item.X, y = item.Y, z = item.Z, name = item.Name, label = item.LabelNumber, contents = item is Container c ? c.Items.Count : -1, open = item is BaseDoor { Open: true }, linked = item is BaseDoor d ? d.Link?.Serial.Value : null });
         }
         Directory.CreateDirectory(Folder);
