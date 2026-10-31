@@ -3,6 +3,11 @@ extends RefCounted
 ## collapse as a lying category; it is not a new captured/faithful native clip.
 static func install(player: AnimationPlayer,rig: Skeleton3D,source_idle: String,source_death: String,eat_name: String,rest_name: String) -> void:
 	var library:=player.get_animation_library("")
+	if player.has_animation(eat_name):
+		player.get_animation(eat_name).loop_mode=Animation.LOOP_NONE
+		var rest: Animation=player.get_animation(source_death).duplicate(true);rest.loop_mode=Animation.LOOP_NONE
+		library.add_animation(rest_name,rest)
+		return
 	var idle:=player.get_animation(source_idle)
 	var neck_count:=0
 	for i in rig.get_bone_count():

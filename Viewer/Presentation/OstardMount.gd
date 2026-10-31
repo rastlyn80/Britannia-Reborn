@@ -32,7 +32,7 @@ func _ready() -> void:
 	var leather:=StandardMaterial3D.new();leather.albedo_color=Color("30251d");leather.roughness=.9;reins.material_override=leather
 	if kind.begins_with("kirin") or kind.begins_with("llama"):build_eyes()
 	contact=preload("res://Presentation/SourceMountContact.gd").new();skeleton.add_child(contact)
-	contact.configure(model.find_children("*","MeshInstance3D",true,false)[0],kind.begins_with("kirin") or kind.begins_with("llama"))
+	contact.configure(model.find_children("*","MeshInstance3D",true,false)[0],kind.begins_with("kirin") or kind.begins_with("llama") or kind.begins_with("bovine_"))
 	source_model_basis=model.basis
 func _physics_process(_delta: float) -> void:
 	if contact!=null:

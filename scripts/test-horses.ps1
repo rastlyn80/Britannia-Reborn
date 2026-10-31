@@ -1,4 +1,4 @@
-param([switch]$Live,[switch]$SkipContact,[switch]$Gpu,[switch]$Equines,[switch]$Ostards,[switch]$EquineCompletion,[switch]$LlamaCompletion)
+param([switch]$Live,[switch]$SkipContact,[switch]$Gpu,[switch]$Equines,[switch]$Ostards,[switch]$EquineCompletion,[switch]$LlamaCompletion,[switch]$Ethics,[switch]$Bovines)
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent
 $godot=(Get-ChildItem "$root/.tools/godot/*console.exe"|Select-Object -First 1).FullName
@@ -22,6 +22,7 @@ try {
  }
  if (!$Live) { return }
  $runtime=Join-Path $root 'work/horse-session/server'
+ if ($Ethics) {$runtime=Join-Path $root ('work/ethics-session/'+[Guid]::NewGuid().ToString('N')+'/server')}
  $probe=[Net.Sockets.TcpClient]::new()
  try {
   $connection=$probe.ConnectAsync('127.0.0.1',2594)
@@ -34,6 +35,15 @@ try {
  Get-ChildItem "$root/Server/runtime/Assemblies" -File -Filter '*.dll' | Where-Object { $_.Name -ne 'UltimaClone.PreviewTools.dll' } | Copy-Item -Destination "$runtime/Assemblies" -Force
  Copy-Item "$root/Server/runtime/Data" -Destination $runtime -Recurse -Force
  Copy-Item "$root/Server/runtime/Configuration/expansion.json" "$runtime/Configuration/expansion.json" -Force
+ if ($Ethics -or $EquineCompletion -or $Bovines) {
+  & python -B "$root/scripts/prepare-server-fixes.py" --verify-only
+  if ($LASTEXITCODE) {throw 'Server overlay input audit failed'}
+  $receipt=Get-Content "$root/work/server-fixes/build-manifest.json" -Raw|ConvertFrom-Json
+  $fixedContent=Join-Path $root 'Server/ModernUO/Distribution/Assemblies/UOContent.dll'
+  if ((Get-FileHash "$root/Server/fixes/ethics-registry.json" -Algorithm SHA256).Hash.ToLowerInvariant() -ne $receipt.recipe_sha256) {throw 'Rebuild the reviewed content after changing its fix recipe'}
+  if ((Get-FileHash $fixedContent -Algorithm SHA256).Hash.ToLowerInvariant() -ne $receipt.assembly_sha256) {throw 'Build scripts/build-server.ps1 before the ethics tests'}
+  Copy-Item -LiteralPath $fixedContent -Destination "$runtime/Assemblies/UOContent.dll" -Force
+ }
  $dotnet="$root/.tools/dotnet-server/dotnet.exe"
  $env:DOTNET_CLI_HOME=Join-Path $root '.dotnet-home'
  Push-Location "$root/Server/HorseIntegrationFixtures"
@@ -43,7 +53,7 @@ try {
  ConvertTo-Json -InputObject @('UOContent.dll','BritanniaReborn.HorseIntegrationFixtures.dll')|Set-Content "$runtime/Data/assemblies.json"
  $existing=Get-Content "$root/Server/runtime/Configuration/modernuo.json" -Raw|ConvertFrom-Json
  @{assemblyDirectories=@('Assemblies');dataDirectories=@($existing.dataDirectories);listeners=@('127.0.0.1:2594');settings=@{
-  'serverListing.serverName'='Britannia Reborn isolated horse tests';'serverListing.address'='127.0.0.1';'serverListing.autoDetect'='False';'network.encryptionMode'='Unencrypted';'accountHandler.enableAutoAccountCreation'='True';'accountHandler.maxAccountsPerIP'='6';'pathfinding.prebakeMaps'='False';'autosave.enabled'='False';'world.savePath'=(Join-Path $runtime 'Saves');'britanniaReborn.isolatedHorseTests'='True'
+  'serverListing.serverName'='Britannia Reborn isolated horse tests';'serverListing.address'='127.0.0.1';'serverListing.autoDetect'='False';'network.encryptionMode'='Unencrypted';'accountHandler.enableAutoAccountCreation'='True';'accountHandler.maxAccountsPerIP'='6';'pathfinding.prebakeMaps'='False';'autosave.enabled'='False';'world.savePath'=(Join-Path $runtime 'Saves');'britanniaReborn.isolatedHorseTests'='True';'ethics.enable'=$(if ($Ethics -or $EquineCompletion) {'True'} else {'False'});'factions.enabled'=$(if ($Ethics -or $EquineCompletion) {'True'} else {'False'});'pingServer.enabled'='False'
  }}|ConvertTo-Json -Depth 8|Set-Content "$runtime/Configuration/modernuo.json"
  $accounts=@(@{username='brhorse-test-m';password=[Guid]::NewGuid().ToString('N').Substring(0,24)},@{username='brhorse-test-f';password=[Guid]::NewGuid().ToString('N').Substring(0,24)})
  $credentials=Join-Path $root 'work/horse-session/accounts.local.json'
@@ -68,14 +78,36 @@ try {
   $liveArgs=@()
   if ($EquineCompletion) {$liveArgs+='--equine-completion'}
   if ($LlamaCompletion) {$liveArgs+='--llama-completion'}
+  if ($Ethics) {$liveArgs+='--ethics-only'}
+  if ($Bovines) {$liveArgs+='--bovines'}
   $started=[DateTime]::UtcNow
-  & $godot --headless --path Viewer --script $(if ($Ostards -or $EquineCompletion -or $LlamaCompletion) {'res://Network/OstardLive.gd'} elseif ($Equines) {'res://Network/EquineLive.gd'} else {'res://Network/HorseLive.gd'}) -- @liveArgs
+  & $godot --headless --path Viewer --script $(if ($Ostards -or $EquineCompletion -or $LlamaCompletion -or $Ethics -or $Bovines) {'res://Network/OstardLive.gd'} elseif ($Equines) {'res://Network/EquineLive.gd'} else {'res://Network/HorseLive.gd'}) -- @liveArgs
   if ($LASTEXITCODE) { throw 'Native isolated horse integration test failed' }
-  if ($EquineCompletion -or $LlamaCompletion -or $Ostards) {
-   $reportName=if ($EquineCompletion) {'equine-completion-live.json'} elseif ($LlamaCompletion) {'llama-completion-live.json'} else {'live-validation.json'}
+  if ($EquineCompletion -or $LlamaCompletion -or $Ostards -or $Ethics -or $Bovines) {
+   $reportName=if ($Bovines) {'bovine-live.json'} elseif ($Ethics) {'ethics-live.json'} elseif ($EquineCompletion) {'equine-completion-live.json'} elseif ($LlamaCompletion) {'llama-completion-live.json'} else {'live-validation.json'}
    $report=Join-Path $root "outputs/ostard-riding/$reportName"
    if (!(Test-Path $report) -or (Get-Item $report).LastWriteTimeUtc -lt $started.AddSeconds(-1)) {throw 'Live test did not write fresh evidence; inspect the Godot log.'}
    if ((Get-Content $report -Raw|ConvertFrom-Json).failures -ne 0) {throw 'Live integration reported failures'}
+  }
+  if ($Ethics) {
+   Stop-Process -Id $server.Id
+   $server.WaitForExit()
+   $server=Start-Process $dotnet -ArgumentList 'ModernUO.dll' -WorkingDirectory $runtime -WindowStyle Hidden -PassThru -RedirectStandardInput "$root/work/horse-session/decline-owner-prompt.txt" -RedirectStandardOutput "$root/work/horse-session/ethics-restart-server.log" -RedirectStandardError "$root/work/horse-session/ethics-restart-server-errors.log"
+   $deadline=[DateTime]::UtcNow.AddSeconds(90)
+   do {
+    if ($server.HasExited) {throw 'Saved isolated ethics server exited on restart'}
+    $ready=$false;$listener=[Net.Sockets.TcpClient]::new()
+    try {$attempt=$listener.ConnectAsync('127.0.0.1',2594);$ready=$attempt.Wait(100) -and $listener.Connected} catch {} finally {$listener.Dispose()}
+    if (!$ready) {Start-Sleep -Milliseconds 200}
+   } while (!$ready -and [DateTime]::UtcNow -lt $deadline)
+   if (!$ready) {throw 'Saved isolated ethics server readiness timeout'}
+   $started=[DateTime]::UtcNow
+   & $godot --headless --path Viewer --script res://Network/OstardLive.gd -- --ethics-resume
+   if ($LASTEXITCODE) {throw 'Native ethics save/restart validation failed'}
+   $report=Join-Path $root 'outputs/ostard-riding/ethics-restart.json'
+   if (!(Test-Path $report) -or (Get-Item $report).LastWriteTimeUtc -lt $started.AddSeconds(-1)) {throw 'Restart validation did not write fresh evidence'}
+   if ((Get-Content $report -Raw|ConvertFrom-Json).failures -ne 0) {throw 'Restart validation reported failures'}
+   @{runtime=$runtime;content_sha256=$receipt.assembly_sha256;scope='Disposable native world save/restart; production untouched'}|ConvertTo-Json|Set-Content "$root/outputs/ostard-riding/ethics-runtime.json"
   }
  } finally {
   # This exact process was created above for the disposable runtime. The

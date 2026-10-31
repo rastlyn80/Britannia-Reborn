@@ -11,6 +11,7 @@ var hue:=0
 var detail:=.32
 func _ready() -> void:
 	var folder:="mounts" if kind in ["kirin","kirin_ethereal","llama","llama_ethereal"] else "ostards"
+	if kind.begins_with("bovine_"):folder="animals"
 	var asset_kind:="kirin" if kind=="kirin_ethereal" else kind
 	model=load("res://local-art/"+folder+"/"+asset_kind+"-"+treatment+".gltf").instantiate();add_child(model)
 	skeleton=model.find_children("*","Skeleton3D",true,false)[0]

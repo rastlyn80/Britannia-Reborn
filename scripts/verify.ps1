@@ -6,6 +6,10 @@ if ($LASTEXITCODE) { throw 'Human sequence parser bounds/format checks failed' }
 if ($LASTEXITCODE) { throw 'Static clothing importer checks failed' }
 & python -B "$root/scripts/test-third-dawn.py"
 if ($LASTEXITCODE) { throw 'Bounded Third Dawn parser / refinement checks failed' }
+if (Test-Path "$root/Server/ModernUO/Projects/UOContent/Engines/Ethics/Core/Ethic.cs") {
+ & python -B "$root/scripts/prepare-server-fixes.py" --verify-only
+ if ($LASTEXITCODE) {throw 'Reviewed server overlay source/anchor audit failed'}
+}
 & "$root/scripts/prepare-surfaces.ps1" -VerifyOnly
 & "$root/scripts/import-reviewed-art.ps1" -VerifyOnly
 & "$root/scripts/prepare-polyhaven.ps1" -VerifyOnly
@@ -27,6 +31,12 @@ if ((Test-Path "$root/Viewer/local-art/mounts/kirin-modern.gltf") -and (Test-Pat
   & $godot --headless --path "$root/Viewer" --script "res://Presentation/$script.gd"
   if ($LASTEXITCODE) {throw "Distinct mount validation failed: $script"}
  }
+}
+if (Test-Path "$root/Viewer/local-art/animals/bovine_bull_spotted-modern.gltf") {
+ & python -B "$root/scripts/audit-bovines.py"
+ if ($LASTEXITCODE) {throw 'Native bovine identity/interaction audit failed'}
+ & $godot --headless --path "$root/Viewer" --script res://Presentation/BovineTests.gd
+ if ($LASTEXITCODE) {throw 'Bovine native identity/source skin/contact checks failed'}
 }
 & $godot --headless --path "$root\Viewer" --script res://Network/LoginTests.gd
 if ($LASTEXITCODE) { throw 'Protocol tests failed' }

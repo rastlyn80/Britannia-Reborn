@@ -68,7 +68,7 @@ func _switch_horse(body: int,hue: int) -> void:
 	horse_visual=Horse.create(body);visual_root.add_child(horse_visual);horse_visual.apply_identity(body,hue)
 	foot_contact.active=false;horse_visual.skeleton.add_child(foot_contact)
 	animator=horse_visual.animator;native_body=body
-	set_meta("human_batch",false);set_meta("camera_height",1.4);set_meta("art_status","horse category replacement")
+	set_meta("human_batch",false);set_meta("camera_height",1.4);set_meta("art_status","animal category replacement" if Horse.Animals.supports_body(body) else "horse category replacement")
 
 func _sync_mount(worn: Array) -> void:
 	var previous: bool=human_visual.mounted_live_enabled

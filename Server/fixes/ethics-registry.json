@@ -1,0 +1,41 @@
+{
+  "license": "GPL-3.0-or-later; small authored fix applied to separately acquired ModernUO source",
+  "path": "Projects/UOContent/Engines/Ethics/Core/Ethic.cs",
+  "source_sha256": "bfdc4709acb0e45da0e5022fc2af7adae4a4c9f79d28a19bd7901a1b11170bda",
+  "replacements": [
+    {
+      "before": "private static Ethic[] Ethics => [null, null];",
+      "after": "private static Ethic[] Ethics { get; } = [null, null];"
+    },
+    {
+      "before": "        if (Enabled)\n        {\n            EventSink.Speech += EventSink_Speech;",
+      "after": "        if (Enabled)\n        {\n            _ = Hero ?? new HeroEthic();\n            _ = Evil ?? new EvilEthic();\n            EventSink.Speech += EventSink_Speech;"
+    },
+    {
+      "before": "public Ethic() => Players = [];",
+      "after": "public Ethic() { }"
+    },
+    {
+      "before": "public List<Player> Players { get; protected set; }",
+      "after": "public List<Player> Players { get; protected set; } = [];"
+    }
+  ],
+  "additional_files": [
+    {
+      "path": "Projects/UOContent/Engines/Ethics/Core/Player.cs",
+      "source_sha256": "75c243f40aa4496f223657f2c93db1eb12d8ff6add69a76ccb88e44dae26c189",
+      "replacements": [
+        {
+          "before": "    public void CheckAttach()",
+          "after": "    [AfterDeserialization]\n    private void AfterDeserialization()\n    {\n        Timer.StartTimer(CheckAttach);\n    }\n\n    public void CheckAttach()"
+        },
+        {
+          "before": "        Ethic.Players.Add(this);",
+          "after": "        if (!Ethic.Players.Contains(this))\n        {\n            Ethic.Players.Add(this);\n        }"
+        }
+      ],
+      "canonical_source_sha256": "75c243f40aa4496f223657f2c93db1eb12d8ff6add69a76ccb88e44dae26c189"
+    }
+  ],
+  "canonical_source_sha256": "bfdc4709acb0e45da0e5022fc2af7adae4a4c9f79d28a19bd7901a1b11170bda"
+}

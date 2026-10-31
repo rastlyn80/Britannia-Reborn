@@ -1,3 +1,11 @@
+# Ethical steed blocker closed / bovine integration - 31 October 2026
+
+Authorised holy/unholy riders now pass normal native oaths, mounting and save/restart restoration in the reviewed server build. Evidence: 403 ethical-matrix checks, 24 restart checks, and 1,242 full equine checks, zero failures. The original pinned checkout is unchanged; two hash-guarded build overlays fix the native registry/bootstrap/player links. The running production server is untouched and loads the update on its next normal start; its feature settings and saves are unchanged. [Implementation, evidence and reproduction](ETHICS_AND_BOVINES.md).
+
+Four cow/bull bodies (0xD8/0xE7/0xE8/0xE9) now route with original rigs/clips, bounded refined geometry, authored coat atlases, native hues, living cow-tip recovery and matching corpses. Evidence: 3,206 checks / 972 skin poses, 48 GPU checks, 358 real disposable-server/two-client checks and 128 actual review frames. Owning-player milking API servings/exhaustion is sampled, not complete gameplay eligibility or beverage-item interaction. Full verify exits 0 with existing unrelated diagnostics. Review: Reviews/Review-Bovines.cmd and ignored outputs/bovines/index.html. Art, full prompts and source/recipe hashes stay local and ignored; a Git clone still needs separate asset setup.
+
+Next: owner art review and precise anatomy/UV polish; continue ordinary animals with bears, then canines/deer/felines. Preserve 732/1,126 human wearable coverage, the separate 26-body equine catalogue, native server authority and concurrent terrain/building work. Keep asset distribution/rights and arbitrary outfit/terrain coverage explicit.
+
 # Houses: cross-gable wings and tower galleries fixed — 31 October 2026
 
 Owner review of the house sheet:

@@ -8,7 +8,7 @@
   },
   "modernuo": {
     "url": "https://github.com/modernuo/ModernUO",
-    "role": "unmodified authoritative server source",
+    "role": "authoritative pinned source; reviewed build-only overlays in Server/fixes leave the checkout unchanged",
     "license": "GPL-3.0-or-later",
     "path": "Server/ModernUO",
     "revision": "ab59efea86fd9e399d261bed9d188ab4d95ad4c2"

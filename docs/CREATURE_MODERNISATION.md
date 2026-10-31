@@ -1,4 +1,4 @@
-Latest 31 October checkpoint: [equine catalogue closure and llama verification](EQUINE_COMPLETION.md). All 26 indexed equine presentations are routed (17 native / nine client compatibility), ethereal ki-rin is added, and all four llama forms are live-tested. Positive holy/unholy rides remain a separate server eligibility blocker. The dated checkpoints below are retained as history.
+Latest 31 October checkpoint: [ethical steed repair and four bovine bodies](ETHICS_AND_BOVINES.md). Positive holy/unholy riding and saved-player restoration now pass native disposable-server tests. The production server loads the reviewed fix on its next normal start; existing settings are preserved. Four bovine appearances have modernised source rigs, native actions/hues/corpses and real two-client evidence. Earlier dated checkpoints remain below as history.
 
 # All-creature modernisation programme
 
@@ -59,7 +59,7 @@ No human/horse replacement, wearable count, remembered-login location, server ru
 | Source group | Mesh variants | Upgrade status |
 |---|---:|---|
 | arachnids | 4 | Queued; source preflight only |
-| bovines | 4 | Queued; source preflight only |
+| bovines | 4 | Refined source rigs/coats, native actions and live bodies; see ETHICS_AND_BOVINES.md |
 | bruins | 4 | Queued; source preflight only |
 | canines | 8 | Queued; source preflight only |
 | centaurs | 1 | Queued; source preflight only |

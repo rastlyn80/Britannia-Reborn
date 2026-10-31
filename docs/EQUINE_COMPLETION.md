@@ -38,13 +38,16 @@ appearance routes. Disposable tests now cover non-member refusals and successful
 rides for ranked members of all four factions. Membership/rank is test setup;
 ordinary upstream double-click validation remains active. No gameplay code changed.
 
-**Remaining server blocker:** authorised HolySteed/UnholySteed rides cannot yet
-be certified with the pinned server's ethics eligibility. Their shared artwork
-and neutral-rider refusals are verified; positive ethical-rider coverage remains
-open. The isolated runtime reported neither ethics identity available for both
-test characters. Detailed investigation stays local, separate from this client
-change; no server source modification or upstream submission was made. Thus
-this is not a claim of 100% end-to-end completion of every equine gameplay case.
+**Server blocker resolved (31 October):** authorised Hero/HolySteed and
+Evil/UnholySteed riding now pass the native oath and double-click checks for
+both sexes. Neutral/wrong-allegiance refusals remain active. A reviewed build
+recipe fixes registry/bootstrap and saved-player restoration without editing
+the pinned checkout or changing save schemas. Evidence: 403 ethical checks,
+24 real save/restart checks and the expanded 1,242-check equine matrix, all
+passing. The running production world is untouched; its next normal start
+loads the fixed content assembly. Feature settings are preserved.
+[Fix, activation details and subsequent bovine work](ETHICS_AND_BOVINES.md).
+This remains finite gameplay evidence, not universal scenario certification.
 
 ## Historical compatibility entries
 

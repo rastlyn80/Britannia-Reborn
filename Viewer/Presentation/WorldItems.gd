@@ -549,7 +549,7 @@ func _equine_corpse(root: Node3D,item: Dictionary,serial: int) -> bool:
  root.add_child(horse)
  horse.apply_identity(body,int(item.get("hue",0)))
  horse.dead = true
- var source_rig: bool = Horse.BODIES.has(body)
+ var source_rig: bool = Horse.BODIES.has(body) or Horse.Animals.supports_body(body)
  var death_clip: String = "Death" if source_rig else "death"
  horse.current_clip = death_clip
  horse.contact.enabled = false

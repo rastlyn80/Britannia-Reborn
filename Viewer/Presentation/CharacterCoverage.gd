@@ -47,6 +47,11 @@ func _initialize() -> void:
 	report.horse_mounts={"available":preload("res://Presentation/HorseVisual.gd").available(),"body_to_mount":preload("res://Presentation/HorseVisual.gd").BODIES,"source_clips":["idle","walk","canter","rear"],"authored_additions":["gallop","hit","death"],"catalogue":"horse-catalogue.json","scope":"four ordinary base coats with native full/partial hues; authored procedural mount/dismount, gait and contact improvements; expanded equine identities recorded separately"}
 	var equines=preload("res://Presentation/EquineRegistry.gd")
 	var mount_dispatch=preload("res://Presentation/MountVisual.gd")
+	var animals=preload("res://Presentation/AnimalVisual.gd")
+	var available_animals: Array=[]
+	for body: int in animals.BODIES:
+		if animals.supports_body(body):available_animals.append(body)
+	report.animal_families={"bovines":{"indexed_bodies":animals.BODIES.keys(),"installed_bodies":available_animals,"native_classes":["Cow","Bull"],"mount_items":[],"scope":"Four loose-body category presentations; native tipping, milking, actions and corpses tested separately; no wearable/equine denominator change."}}
 	var indexed: Array=equines.BODIES.keys()+equines.COMPATIBILITY.keys()+equines.DISTINCT.keys()
 	var installed: Array=[]
 	for body: int in indexed:

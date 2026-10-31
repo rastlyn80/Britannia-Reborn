@@ -1,0 +1,14 @@
+<Project>
+  <Target Name="BritanniaRebornEthicsRegistry" BeforeTargets="CoreCompile" Condition="'$(MSBuildProjectName)' == 'UOContent'">
+    <PropertyGroup>
+      <BritanniaEthicsOverlay>$(MSBuildThisFileDirectory)..\..\work\server-fixes\Ethic.cs</BritanniaEthicsOverlay>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(BritanniaEthicsOverlay)')" Text="Run scripts/prepare-server-fixes.py before building the reviewed server overlay." />
+    <ItemGroup>
+      <Compile Remove="Engines\Ethics\Core\Ethic.cs" />
+      <Compile Remove="Engines\Ethics\Core\Player.cs" />
+      <Compile Include="$(BritanniaEthicsOverlay)" Link="Engines\Ethics\Core\Ethic.cs" />
+      <Compile Include="$(MSBuildThisFileDirectory)..\..\work\server-fixes\Player.cs" Link="Engines\Ethics\Core\Player.cs" />
+    </ItemGroup>
+  </Target>
+</Project>

@@ -11,6 +11,7 @@ try {
   if ($_.Exception.InnerException -is [System.Net.Sockets.SocketException] -and $_.Exception.InnerException.SocketErrorCode -eq 'AccessDenied') { throw 'Network sandbox blocked the listener check. Run this server with approved local network access.' }
 } finally { $probe.Dispose() }
 & "$PSScriptRoot\configure-server.ps1"
+& "$PSScriptRoot/install-server-fixes.ps1" -BuildIfNeeded
 $lock = $null
 try { $lock = [System.IO.File]::Open("$root\Server\runtime\.server.lock",[System.IO.FileMode]::OpenOrCreate,[System.IO.FileAccess]::ReadWrite,[System.IO.FileShare]::None) }
 catch { throw 'This runtime is already in use by another server process.' }
