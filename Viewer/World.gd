@@ -854,6 +854,7 @@ func _entity_changed(serial: int,position: Dictionary) -> void:
 	if not avatars.has(serial):
 		var avatar := Avatar.new()
 		avatar.initial_body = int(position.get("body",0))
+		if serial == game.player.serial: avatar.set_meta("own",true)
 		var label := Label3D.new()
 		label.name = "Nameplate"
 		label.set_meta("serial",serial)

@@ -109,7 +109,11 @@ func _update_pick_volume(large: bool) -> void:
 		if child is StaticBody3D and child.has_meta("server_mobile"):
 			var shape: CollisionShape3D=child.get_child(0)
 			shape.position.x=0.;shape.position.z=0.
-			if large:
+			# Your own rider: the camera looks past you, so a mount-sized box
+			# would catch clicks meant for what is beyond; pick only the rider.
+			if large and get_meta("own",false):
+				var rider:=CapsuleShape3D.new();rider.radius=.3;rider.height=1.3;shape.shape=rider;shape.position.y=1.75
+			elif large:
 				var box:=BoxShape3D.new();box.size=Vector3(1.,2.7 if human_visual!=null else 2.1,2.6);shape.shape=box;shape.position.y=box.size.y/2.
 			else:
 				var capsule:=CapsuleShape3D.new();capsule.radius=.35;capsule.height=1.9;shape.shape=capsule;shape.position.y=.95
