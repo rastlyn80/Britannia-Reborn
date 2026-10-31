@@ -62,6 +62,8 @@ func _ready() -> void:
 	hide()
 
 var speech := {}
+# Live translation (Translator.gd): lines are shown in the player's language.
+var translator: Node
 
 func configure(game: Node) -> void:
 	session = game
@@ -73,9 +75,12 @@ func configure(game: Node) -> void:
 			var serial := int(speech.serial)
 			var own := serial == int(session.player.get("serial",0))
 			var name := str(session.entity_names.get(serial,""))
-			var shown := ("*%s*" % text) if int(speech.type) == 2 and not text.begins_with("*") else text
-			add("%s: %s" % [name,shown] if name != "" else shown,"Chat",preload("res://Network/OverheadText.gd").voice(serial,int(speech.hue),own))
-		else: add(text,"Server")
+			var emote := int(speech.type) == 2 and not text.begins_with("*")
+			var colour: Color = preload("res://Network/OverheadText.gd").voice(serial,int(speech.hue),own)
+			_shown(text,func(said: String):
+				var shown := ("*%s*" % said) if emote else said
+				add("%s: %s" % [name,shown] if name != "" else shown,"Chat",colour))
+		else: _shown(text,func(said: String): add(said,"Server"))
 		speech = {})
 	if session.has_method("module"):
 		var social: RefCounted = session.module("social")
@@ -85,6 +90,10 @@ func configure(game: Node) -> void:
 	session.ended.connect(func():
 		input.release_focus()
 		hide())
+
+func _shown(text: String, show_line: Callable) -> void:
+	if translator: translator.deliver(text,show_line)
+	else: show_line.call(text)
 
 func add(text: String, kind: String, colour := Color(0,0,0,0)) -> void:
 	entries.append([Time.get_time_string_from_system().left(5),kind,text,colour])

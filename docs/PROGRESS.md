@@ -1201,6 +1201,13 @@ Saved graceful restart loaded 297 items and 3 mobiles. Population remains idempo
 
 # Progress — 25 October 2026
 
+## 31 October 2026 - Open-microphone voice chat and live translation (docs/VOICE_AND_TRANSLATION.md)
+
+- Tap V or click the microphone: the microphone stays open and every sentence is recognized (local Whisper) and said; tap again to close. Holding V is still push-to-talk. A sentence ends after 1.8 s of quiet (owner: 0.9 s cut sentences short), adjustable in the menu (1.2-3.5 s).
+- Game menu > Voice and translation > Show everything in: the journal and overhead speech appear in the chosen language, per character and per player. Offline Argos Translate (MIT; CTranslate2 models, langid detection) via scripts/translate-server.py on 127.0.0.1, started on demand by Viewer/Network/Translator.gd; scripts/setup-translation.ps1 installs it (English <-> it, es, fr, de installed here; other languages download when chosen). Presentation only: game logic still reads the server's text.
+- Evidence: TranslatorTests 10/0 (in verify); end-to-end through Translator.gd: English and Spanish lines into Italian in 62-860 ms (35-80 ms once warm), service start about 33 s; scripts/verify.ps1 passed.
+- Gaps: gumps, item names and the interface are not translated yet; the open microphone was not exercised live with a microphone in this pass.
+
 ## 31 October 2026 - Dungeons, cave entrances and death (docs/DUNGEONS.md)
 
 - Underground (Viewer/Presentation/Underground.gd): near UO's void (0x244) or cave land the client goes underground over 1.5 s: no sky or sun, dim cool ambient, black fog closing at 46 m and a warm carried light. Districts with void/cave land draw a cave terrain (CaveGround.gdshader) whose walls fade to black above the head. Runtime only; the baked cache is unchanged.

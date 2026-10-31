@@ -3,7 +3,7 @@ extends Control
 # and help, Developer, Log out and Quit. It replaces the old right-hand panel's
 # buttons; everything that panel did lives here or in the HUD.
 const Look = preload("res://Network/ModernSkin.gd")
-const KEYS := [["W A S D","Walk; hold Shift to run"],["Space","Hop"],["Tab","War / peace"],["T","Take all from the loot window; click an item to loot it"],["Right mouse","Look around"],["Wheel","Zoom"],["E","Use the nearest object"],["Click","Use or pick up what you click"],["1 – 0, - , =","Quickbar; hold Shift, Ctrl or Alt for other sets"],["C · B · K · P · J · M","Character, backpack, skills, spellbook, journal, map"],["Enter","Talk; /e emote, /w whisper, /y yell, /p party"],["V (hold)","Voice chat: speak, release to say it"],["`","Developer console"],["F6","Return to Britain (developer)"],["F7","Cycle the sky (view only)"],["F9","World editor (developer)"],["Esc","This menu"]]
+const KEYS := [["W A S D","Walk; hold Shift to run"],["Space","Hop"],["Tab","War / peace"],["T","Take all from the loot window; click an item to loot it"],["Right mouse","Look around"],["Wheel","Zoom"],["E","Use the nearest object"],["Click","Use or pick up what you click"],["1 – 0, - , =","Quickbar; hold Shift, Ctrl or Alt for other sets"],["C · B · K · P · J · M","Character, backpack, skills, spellbook, journal, map"],["Enter","Talk; /e emote, /w whisper, /y yell, /p party"],["V","Voice chat: tap to open the microphone (tap again to close), or hold to talk"],["`","Developer console"],["F6","Return to Britain (developer)"],["F7","Cycle the sky (view only)"],["F9","World editor (developer)"],["Esc","This menu"]]
 var scene: Node3D
 var card: PanelContainer
 var body: VBoxContainer
@@ -79,7 +79,7 @@ func _main() -> void:
 	_reset("Game menu")
 	_row("Resume","",close,true)
 	_row("Settings","graphics, controls, sky",_settings)
-	_row("Voice chat","hold V and speak · language, translation, microphone",_voice)
+	_row("Voice and translation","tap V for an open microphone · everything in your language",_voice)
 	_row("Keys and help","",_keys)
 	_row("Developer","console, travel, world editor",_developer)
 	var pair := HBoxContainer.new()
@@ -174,15 +174,17 @@ func _settings() -> void:
 
 # Voice chat settings (Network/VoiceChat.gd), saved per character.
 func _voice() -> void:
-	_reset("Voice chat")
+	_reset("Voice and translation")
 	var chat: Control = scene.voice_chat
 	if chat == null:
 		_back()
 		return
 	var Voice := preload("res://DevEdit/DevEditVoice.gd")
 	var engine: Dictionary = Voice.engine()
-	body.add_child(Look.label("Hold V (or click the microphone by the talk line) and speak; release to say it. Recognized on this computer: %s." % ("Whisper, %s" % str(engine.get("modelName","")) if not engine.is_empty() else "Windows speech recognition (run scripts/setup-speech.ps1 for offline Whisper in 99 languages)"),13,Look.ASH,500))
-	var options := [["Language you speak",Voice.LANGUAGES.map(func(entry): return entry[1]),Voice.LANGUAGES.map(func(entry): return entry[0]).find(chat.voice.language),func(index: int): chat.store("language",Voice.LANGUAGES[index][0])]]
+	body.add_child(Look.label("Tap V (or click the microphone by the talk line) to open the microphone: every sentence you say is sent, until you tap V again. Hold V instead to talk only while it is held. Recognized on this computer: %s." % ("Whisper, %s" % str(engine.get("modelName","")) if not engine.is_empty() else "Windows speech recognition (run scripts/setup-speech.ps1 for offline Whisper in 99 languages)"),13,Look.ASH,500))
+	var Translator := preload("res://Network/Translator.gd")
+	var options := [["Show everything in",Translator.LANGUAGES.map(func(entry): return entry[1]),Translator.LANGUAGES.map(func(entry): return entry[0]).find(chat.translator.language),func(index: int): chat.store("show_in",Translator.LANGUAGES[index][0])],["Language you speak",Voice.LANGUAGES.map(func(entry): return entry[1]),Voice.LANGUAGES.map(func(entry): return entry[0]).find(chat.voice.language),func(index: int): chat.store("language",Voice.LANGUAGES[index][0])]]
+	options.append(["Pause before sending",chat.PAUSES.map(func(seconds: float): return "%.1f s of quiet" % seconds),chat.PAUSES.find(chat.pause),func(index: int): chat.store("pause",chat.PAUSES[index])])
 	var mics: Array = Array(chat.voice.devices())
 	options.append(["Microphone",mics,mics.find(chat.voice.device),func(index: int): chat.store("device",mics[index])])
 	for option in options:
@@ -198,6 +200,7 @@ func _voice() -> void:
 		pick.item_selected.connect(option[3])
 		row.add_child(pick)
 		body.add_child(row)
+	body.add_child(Look.label("What others say and the server's messages are translated on this computer (Argos Translate%s); each player picks their own language." % ("" if Translator.available() else " — not installed: run scripts/setup-translation.ps1"),13,Look.ASH,500))
 	for toggle in [["Speak English to others (Whisper translates)","translate",chat.voice.translate],["Review before sending (text goes to the talk line)","review",chat.review]]:
 		var check := CheckButton.new()
 		check.text = toggle[0]

@@ -34,6 +34,10 @@ var quiet_since := 0
 var level := 0.0
 var pid := 0
 var job := {}
+# Open microphone (voice chat): each utterance ends after a short pause, and
+# the silence before speech is not kept (only a short lead-in).
+var silence_seconds := SILENCE_SECONDS
+var open_mic := false
 
 func _ready() -> void:
 	var config := ConfigFile.new()
@@ -124,6 +128,13 @@ func start() -> void:
 	quiet_since = started
 	_set_state("recording")
 
+# Ends a recording without recognizing it.
+func cancel() -> void:
+	if state != "recording": return
+	player.stop()
+	samples.clear()
+	_set_state("idle")
+
 func stop() -> void:
 	if state != "recording": return
 	_drain()
@@ -139,7 +150,8 @@ func _process(_delta: float) -> void:
 	if state == "recording":
 		_drain()
 		var now := Time.get_ticks_msec()
-		if (now-started)/1000.0 > MAX_SECONDS*(3 if held else 1) or (not held and spoke and (now-quiet_since)/1000.0 > SILENCE_SECONDS): stop()
+		if open_mic and not spoke: started = now
+		if (now-started)/1000.0 > MAX_SECONDS*(3 if held else 1) or (not held and spoke and (now-quiet_since)/1000.0 > silence_seconds): stop()
 	elif state == "recognizing" and pid > 0 and not OS.is_process_running(pid): _finished()
 
 func _drain() -> void:
@@ -152,6 +164,7 @@ func _drain() -> void:
 		samples.append(mono)
 		peak = maxf(peak,absf(mono))
 	level = lerpf(level,peak,0.5)
+	if open_mic and not spoke and samples.size() > int(rate*0.8): samples = samples.slice(samples.size()-int(rate*0.4))
 	# Speech starts above the noise floor; silence after it ends the request.
 	if peak > 0.06:
 		spoke = true

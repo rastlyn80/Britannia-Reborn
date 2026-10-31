@@ -473,6 +473,7 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	voice_chat = preload("res://Network/VoiceChat.gd").new()
 	canvas.add_child(voice_chat)
 	voice_chat.configure(game,journal)
+	journal.translator = voice_chat.translator
 	var target := preload("res://Network/TargetFrame.gd").new()
 	canvas.add_child(target)
 	bar_layer = canvas
@@ -573,6 +574,7 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	canvas.add_child(overhead)
 	canvas.move_child(overhead,1)
 	overhead.configure(self)
+	if voice_chat: overhead.translator = voice_chat.translator
 	var arrow := preload("res://Network/QuestArrow.gd").new()
 	canvas.add_child(arrow)
 	canvas.move_child(arrow,1)

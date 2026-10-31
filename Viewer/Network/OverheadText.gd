@@ -45,9 +45,16 @@ static func voice(serial: int, hue: int, own := false) -> Color:
 static func lifetime(text: String) -> float:
 	return clampf(3.5+text.length()*0.06,3.5,10.0)
 
+# Live translation (Translator.gd): the line floats in the player's language.
+var translator: Node
+
 func say(serial: int, text: String, type: int, hue: int) -> void:
 	# 1 system, 6 single-click label, 7 focus: journal only.
 	if type in [1,6,7] or serial == 0 or serial == 0xffffffff or text.strip_edges().is_empty(): return
+	if translator: translator.deliver(text,func(said: String): _say(serial,said,type,hue))
+	else: _say(serial,text,type,hue)
+
+func _say(serial: int, text: String, type: int, hue: int) -> void:
 	if not (game.entities.has(serial) or serial == int(game.player.get("serial",0))): return
 	var shown := "*%s*" % text if type == 2 and not text.begins_with("*") else text
 	# A faint backing keeps lines readable over busy scenes.
