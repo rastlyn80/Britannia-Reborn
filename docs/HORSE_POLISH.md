@@ -42,7 +42,7 @@ The source licence, exact hashes and commercial-game/standalone-redistribution d
 ./scripts/review-horses.ps1 -MountCycle
 ```
 
-`Review-Horses.cmd` opens the interactive local stage, now with coat and hue preview buttons. Those controls are fixtures, not controls that override a live server. Optional source-reference decoding needs Pillow. All downloaded/prepared assets and private evidence stay under ignored `work`, `outputs` and `Viewer/local-art` paths. Production port 2593, remembered login, ModernUO source, original UO installation and concurrent terrain/building work are preserved.
+`Reviews/Review-Horses.cmd` opens the interactive local stage, now with coat and hue preview buttons. Those controls are fixtures, not controls that override a live server. Optional source-reference decoding needs Pillow. All downloaded/prepared assets and private evidence stay under ignored `work`, `outputs` and `Viewer/local-art` paths. Production port 2593, remembered login, ModernUO source, original UO installation and concurrent terrain/building work are preserved.
 
 ## Evidence
 

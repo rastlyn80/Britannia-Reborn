@@ -99,7 +99,7 @@ and expansion batches; -VerifyOnly checks prepared assets and animated skirts.
 The isolated expansion build is Blender with scripts/prepare-character-expansion.py,
 optionally followed by -- --female. Use --python-exit-code 1 for shell automation.
 
-Review-Human-Batch.cmd opens the exact renderer with outfits and hair/beard
+Reviews/Review-Human-Batch.cmd opens the exact renderer with outfits and hair/beard
 controls. Direct review arguments also accept --hair-id=203d --hair-hue=1147
 --beard-id=204d --beard-hue=1102, --head and --varied. The preview's female is
 clean-shaven; the shared runtime still honours facial hair if a server supplies it.

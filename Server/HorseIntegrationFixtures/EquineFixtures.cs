@@ -3,6 +3,8 @@ using System.Net;
 using Server;
 using Server.Commands;
 using Server.Mobiles;
+using Server.Items;
+using Server.Network;
 
 namespace BritanniaReborn.HorseIntegrationFixtures;
 
@@ -12,6 +14,7 @@ public static class EquineFixtures
 {
     private static readonly Dictionary<Mobile, BaseCreature> Animals = [];
     private static readonly Dictionary<Mobile, EtherealMount> Ethereals = [];
+    private static readonly Dictionary<Mobile, Container> Corpses = [];
 
     [CallPriority(int.MaxValue)]
     public static void Configure()
@@ -24,6 +27,7 @@ public static class EquineFixtures
 
     private static void Cleanup(Mobile owner)
     {
+        if (Corpses.Remove(owner, out var corpse)) corpse.Delete();
         if (Animals.Remove(owner, out var animal))
         {
             if (animal is BaseMount mount) mount.Rider = null;
@@ -49,6 +53,13 @@ public static class EquineFixtures
         8 => new MinaxWarHorse(),
         9 => new SLWarHorse(),
         10 => new PackHorse(),
+        13 => new DesertOstard(),
+        14 => new ForestOstard(),
+        15 => new FrenziedOstard(),
+        17 => new Kirin(),
+        18 => new SkeletalMount(),
+        19 => new RidableLlama(),
+        20 => new PackLlama(),
         _ => throw new ArgumentOutOfRangeException(nameof(index))
     };
 
@@ -66,11 +77,11 @@ public static class EquineFixtures
         else if (command == "prepare" && args.Length > 1)
         {
             var index = args.GetInt32(1);
-            if (index < 0 || index > 12) return;
+            if (index < 0 || index > 21) return;
             Cleanup(owner);
-            if (index >= 11)
+            if (index is 11 or 12 or 16 or 21)
             {
-                EtherealMount ethereal = index == 11 ? new EtherealHorse() : new EtherealUnicorn();
+                EtherealMount ethereal = index == 11 ? new EtherealHorse() : index == 12 ? new EtherealUnicorn() : index == 21 ? new EtherealLlama() : new EtherealOstard();
                 owner.AddToBackpack(ethereal);
                 Ethereals[owner] = ethereal;
                 owner.SendMessage($"UCEQUINE|prepared|{ethereal.Serial.Value}|0|{ethereal.MountedID}|{ethereal.GetType().Name}");
@@ -89,6 +100,26 @@ public static class EquineFixtures
                 return;
             }
             owner.SendMessage("UCEQUINE|blocked");
+        }
+        else if (command == "action" && args.Length > 1 && Animals.TryGetValue(owner, out var subject))
+        {
+            var action = args.GetInt32(1);
+            if (action == 5) subject.Animate(5, 6, 1, true, false, 0);
+            else if (action == 4)
+            {
+                foreach (var client in subject.Map.GetClientsInRange(subject.Location))
+                    if (client.Mobile.CanSee(subject)) client.SendNewMobileAnimation(subject.Serial, 4, 0, 0);
+            }
+            owner.SendMessage($"UCEQUINE|action|{subject.Serial.Value}|{action}");
+        }
+        else if (command == "kill" && Animals.TryGetValue(owner, out var doomed))
+        {
+            doomed.Kill();
+            if (doomed.Corpse is { } corpse)
+            {
+                Corpses[owner] = corpse;
+                owner.SendMessage($"UCEQUINE|corpse|{corpse.Serial.Value}|{doomed.Body.BodyID}");
+            }
         }
         else if (command == "colour" && args.Length > 1)
         {

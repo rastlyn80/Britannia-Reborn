@@ -2,7 +2,15 @@
 
 Owner direction, 30 October 2026: apply the approved desert-ostard treatment to **all creature families, equines first**. Preserve recognisable UO identities; reuse suitable accepted modern assets for generic species. Keep native server appearance, stats, actions and permissions authoritative. This is an ongoing programme, not a completed creature port.
 
-## Current batch: the complete preserved ostard family
+**31 October checkpoint:** ostards, ki-rin, skeletal mount and ordinary/pack/
+ethereal llamas now have live avatar routes and rider fitting. The missing
+ki-rin/llama maps were authored against their UVs, and the skeletal horse uses
+separately licensed scanned geometry. [Integration, native identities, evidence
+and remaining limits](MOUNT_INTEGRATION.md). The source audit below remains an
+inventory of the old archive; its missing-texture/strict-reader flags are not
+the current implementation status. Review launchers are consolidated in `Reviews/`.
+
+## Earlier checkpoint: the complete preserved ostard family
 
 Desert was approved by the owner. Forest, frenzied and ethereal now have their own high-detail atlas and original/refined/material comparison. All four retain 24 bones and seven imported desert-source clips, with independent deformation tests on each body. Each refined mesh has 1,490 geometric vertices and 2,960 triangles. Three new textures are 1,254-square, edited with built-in imagegen from their own original atlases; UV registration still requires visual review.
 
@@ -12,7 +20,7 @@ Evidence: **27,741 checks / 1,008 sampled skinned poses** across four forms, inc
 
 The full `scripts/verify.ps1` completed with exit 0. The existing unrelated bridge missing-id, malformed-Unicode and teardown diagnostics remain. The final extra spectral-marker assertions were also rerun directly on all four forms. This is not a diagnostic-free whole-project run.
 
-Review `outputs/ostard-trial/family.html`, or use Review-Forest-Ostard.cmd, Review-Frenzied-Ostard.cmd and Review-Ethereal-Ostard.cmd. All generated textures, exact final prompts and per-form input/output/recipe hashes are saved under `Viewer/local-art/ostards/<kind>-modern-albedo-v1.png`, `<kind>-modern-albedo-v1.prompt.txt` and `<kind>-provenance.json`. These and all captures remain ignored/local. Source and recipe changes alone go to Git.
+Review `outputs/ostard-trial/family.html`, or use Reviews/Review-Forest-Ostard.cmd, Reviews/Review-Frenzied-Ostard.cmd and Reviews/Review-Ethereal-Ostard.cmd. All generated textures, exact final prompts and per-form input/output/recipe hashes are saved under `Viewer/local-art/ostards/<kind>-modern-albedo-v1.png`, `<kind>-modern-albedo-v1.prompt.txt` and `<kind>-provenance.json`. These and all captures remain ignored/local. Source and recipe changes alone go to Git.
 
 ## Whole-source queue and limitations
 
@@ -72,16 +80,16 @@ No human/horse replacement, wearable count, remembered-login location, server ru
 | harpies | 2 | Queued; source preflight only |
 | headless | 1 | Queued; source preflight only |
 | imps | 2 | Queued; source preflight only |
-| kirin | 1 | Diagnostic topology repair; referenced texture missing |
+| kirin | 1 | Repaired source, authored map, native male riding; see integration evidence |
 | lizard | 1 | Queued; source preflight only |
 | lizards | 4 | Queued; source preflight only |
-| llamas | 3 | Queued; source preflight only |
+| llamas | 3 | Ordinary/pack/ethereal live routes; authored fleece and panniers |
 | mages | 2 | Queued; source preflight only |
 | mongbats | 1 | Queued; source preflight only |
 | ogres | 3 | Queued; source preflight only |
 | ophidians | 5 | Queued; source preflight only |
 | orcs | 4 | Queued; source preflight only |
-| ostards | 4 | Four local upgraded comparisons; no rider/live route |
+| ostards | 4 | Four fitted forms; ordinary bodies and ethereal item live-tested |
 | paladins | 1 | Queued; source preflight only |
 | porcines | 2 | Queued; source preflight only |
 | rat | 2 | Queued; source preflight only |

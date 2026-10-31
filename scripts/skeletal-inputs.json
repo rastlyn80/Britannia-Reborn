@@ -1,0 +1,11 @@
+{
+  "name": "Horse Skeleton",
+  "creator": "Diego Luján García",
+  "source": "https://sketchfab.com/3d-models/horse-skeleton-eaca504567604e879b8ab2cf2763025e",
+  "metadata": "https://api.sketchfab.com/v3/models/eaca504567604e879b8ab2cf2763025e",
+  "download": "https://renderlyst.site/library/models/horse-skeleton.glb",
+  "sha256": "08d6dc96f600318d34f42e1f718a61f897aa09a31fb963bbd59ab23d21091c88",
+  "license": "CC-BY-4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "rig": "Warhorse Lite, separately licensed; see horse-inputs.json"
+}

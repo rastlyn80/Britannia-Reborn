@@ -1,5 +1,6 @@
 extends Node3D
-## Private original-rig trial. No body/mount route or server authority changes.
+## Prepared source-rig visual shared by reviews and runtime mount adapters.
+## Server appearance and riding authority remain outside the renderer.
 const CLIPS := ["Idle","Walk","Run","Attack","Hit","Death","Fidget"]
 var treatment:="modern"
 var kind:="desert"
@@ -9,7 +10,8 @@ var animator: AnimationPlayer
 var hue:=0
 var detail:=.32
 func _ready() -> void:
-	model=load("res://local-art/ostards/"+kind+"-"+treatment+".gltf").instantiate();add_child(model)
+	var folder:="mounts" if kind in ["kirin","llama","llama_ethereal"] else "ostards"
+	model=load("res://local-art/"+folder+"/"+kind+"-"+treatment+".gltf").instantiate();add_child(model)
 	skeleton=model.find_children("*","Skeleton3D",true,false)[0]
 	animator=model.find_children("*","AnimationPlayer",true,false)[0]
 	var library:=animator.get_animation_library("").duplicate(true);animator.remove_animation_library("");animator.add_animation_library("",library)
@@ -21,9 +23,12 @@ func set_hue(value: int) -> void:
 	for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
 		for surface in mesh.mesh.get_surface_count():
 			var source:=mesh.mesh.surface_get_material(surface) as StandardMaterial3D
+			if source==null:continue # Authored eyes, reins and panniers keep their own materials.
 			if treatment=="modern":
-				var mat:=ShaderMaterial.new();mat.shader=preload("res://Presentation/OstardEthereal.gdshader") if kind=="ethereal" else preload("res://Presentation/OstardSurface.gdshader");mat.set_shader_parameter("albedo_texture",source.albedo_texture)
-				var palette: Texture2D=null if kind=="ethereal" and hue==0x4001 else preload("res://Presentation/HumanHue.gd").palette(hue);mat.set_shader_parameter("hue_palette",palette);mat.set_shader_parameter("use_hue",palette!=null);mat.set_shader_parameter("partial_hue",(hue&0x8000)!=0);mat.set_shader_parameter("detail_strength",detail);mesh.set_surface_override_material(surface,mat)
+				var spectral:=kind in ["ethereal","llama_ethereal"]
+				var mat:=ShaderMaterial.new();mat.shader=preload("res://Presentation/OstardEthereal.gdshader") if spectral else preload("res://Presentation/OstardSurface.gdshader");mat.set_shader_parameter("albedo_texture",source.albedo_texture)
+				if kind=="llama_ethereal":mat.set_shader_parameter("spectral_tint",Color("99cdef"))
+				var palette: Texture2D=null if spectral and hue==0x4001 else preload("res://Presentation/HumanHue.gd").palette(hue);mat.set_shader_parameter("hue_palette",palette);mat.set_shader_parameter("use_hue",palette!=null);mat.set_shader_parameter("partial_hue",(hue&0x8000)!=0);mat.set_shader_parameter("detail_strength",detail);mesh.set_surface_override_material(surface,mat)
 			else:
 				# Neutral, identical baseline lighting/material settings for the two
 				# source-textured cages; material interpretation is isolated at right.

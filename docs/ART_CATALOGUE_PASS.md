@@ -30,7 +30,7 @@ The local full-city support scan inspected 1,409 relevant placements: 1,282 alre
 
 ## Reproduce and inspect
 
-Double-click `Review-Art.cmd`. It verifies pinned art, prepares the shared city cache, audits all 88 source chunks, extracts local original-art references, renders 39 model candidate views and ten scene views, and opens a searchable comparison page. It uses the existing owned client-data path, or `scripts/review-art.ps1 -DataDir <your installation>`. Use `-Compatibility` for OpenGL or `-SkipCapture` to refresh the inventory without new captures.
+Double-click `Reviews/Review-Art.cmd`. It verifies pinned art, prepares the shared city cache, audits all 88 source chunks, extracts local original-art references, renders 39 model candidate views and ten scene views, and opens a searchable comparison page. It uses the existing owned client-data path, or `scripts/review-art.ps1 -DataDir <your installation>`. Use `-Compatibility` for OpenGL or `-SkipCapture` to refresh the inventory without new captures.
 
 `outputs/art-review/review.html`, its original-art images, source inventory, support findings and before/after images remain ignored local outputs. The report has every used ID, source counts, actual rendering method and choice details. Reference extraction is intentionally limited to reviewed/native IDs; remaining rows explicitly say reference pending. Before images are retained only when generated locally from the older checkout. Do not publish this report or game-derived screenshots.
 

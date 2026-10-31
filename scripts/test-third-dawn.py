@@ -4,6 +4,7 @@ from pathlib import Path
 import struct
 import unittest
 import zlib
+from unittest.mock import patch
 
 spec = importlib.util.spec_from_file_location('third_dawn', Path(__file__).with_name('import-third-dawn.py'))
 module = importlib.util.module_from_spec(spec)
@@ -17,6 +18,23 @@ anatomy_spec.loader.exec_module(anatomy)
 
 
 class ImportBoundaries(unittest.TestCase):
+    def test_animation_only_is_explicit_and_does_not_accept_invalid_track_times(self):
+        strings=struct.pack('<II',0,0)+b'\0'
+        vectors=struct.pack('<3f',1.,2.,3.)
+        entries=[(0xCA5E0200,strings,[]),(0xCA5E0200,strings,[]),
+                 (0xCA5E0801,vectors,[]),(0xCA5E0801,vectors,[])]
+        with patch.object(module,'chunks',return_value=iter(entries)):
+            with self.assertRaisesRegex(ValueError,'single-mesh'):module.parse(b'')
+        with patch.object(module,'chunks',return_value=iter(entries)):
+            result=module.parse(b'',animations_only=True)
+            self.assertEqual(result['points'],[])
+        # Geometry skipping must not skip the finite/key-time validation of
+        # the animation that is actually being extracted.
+        header=[0]*13;header[6]=1
+        bad_track=struct.pack('<13If3f',*header,float('nan'),0.,0.,0.)
+        with patch.object(module,'chunks',return_value=iter(entries+[(0xCA5E1204,bad_track,[])])):
+            with self.assertRaisesRegex(ValueError,'Non-finite'):module.parse(b'',animations_only=True)
+
     def test_anatomy_correction_is_local_symmetric_and_keeps_rig_uvs(self):
         model = dict(points=[(-.109,-.128,1.255),(.109,-.128,1.255),
                              (-.05,-.06,1.60),(.05,-.06,1.60),(0.,0.,.2)],

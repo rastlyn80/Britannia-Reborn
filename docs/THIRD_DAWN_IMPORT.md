@@ -16,7 +16,7 @@ compare them with the current avatar in the actual Viewer project; verify skin
 deformation, ground contact, materials and root isolation before considering live
 entity-body mappings. No ModernUO changes or logins are required for this stage.
 
-`Review-Third-Dawn.cmd` opens the local comparison: current CC0 avatar, Third Dawn
+`Reviews/Review-Third-Dawn.cmd` opens the local comparison: current CC0 avatar, Third Dawn
 human and Third Dawn ogre. Choose Idle/Walk/Run, pause/resume, hold RMB to orbit,
 scroll to zoom and press Escape to close. There is no network connection.
 

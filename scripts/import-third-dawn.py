@@ -55,12 +55,17 @@ def finite(values):
     require(all(math.isfinite(x) for x in values), 'Non-finite GRN numeric value')
 
 
-def parse(data):
+def parse(data, animations_only=False):
     result = dict(points=[], normals=[], uv_sets=[], polygons=[], texture_polygons=[],
                   bones=[], weights=[], ties=[], tracks=[])
     texts, objects, tie_objects, bone_objects, texture_ids = [], [], [], [], []
     key = None
     for kind, payload, ancestors in chunks(data):
+        # Animation files may embed multiple reference meshes. Explicit track
+        # extraction ignores their geometry while retaining bounded chunk,
+        # object-name and finite/timed animation validation. Model parsing
+        # remains strict and single-mesh by default.
+        if animations_only and kind in (0xCA5E0801,0xCA5E0802,0xCA5E0803,0xCA5E0901,0xCA5E0E06,0xCA5E0702):continue
         root = ancestors[0] if ancestors else None
         if kind == 0xCA5E0200:
             n, _ = struct.unpack_from('<II', payload)
@@ -340,7 +345,7 @@ def export_gltf(model, animations, texture, output, height):
                     for k in range(1, len(values)):
                         if sum(a * b for a, b in zip(values[k - 1], values[k])) < 0:
                             values[k] = [-v for v in values[k]]
-                if path == 'translation' and track['name'] == 'bip01':
+                if path == 'translation' and track['name'].replace('_','') == 'bip01':
                     target_parent_q = global_bone(bones[bi]['parent'])[0] if bones[bi]['parent'] != bi else [0, 0, 0, 1]
                     source_parent_q = animation_global_q(sb['parent']) if sb['parent'] != si else [0, 0, 0, 1]
                     iq = [-source_parent_q[0], -source_parent_q[1], -source_parent_q[2], source_parent_q[3]]

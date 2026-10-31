@@ -91,7 +91,7 @@ From the project root:
    `--base-only` avoids any UO-derived inputs. Run `-VerifyOnly` to check an
    existing prepared batch without rebuilding it.
 2. Let Godot import the prepared local assets. Launch normally to use them in
-   game. `Review-Human-Batch.cmd` opens the same renderer in a neutral studio.
+   game. `Reviews/Review-Human-Batch.cmd` opens the same renderer in a neutral studio.
 3. `scripts/test-human-batch.ps1` checks appearance packets, mapping, all 32
    equipment combinations on both rigs, animation continuity and jump paths.
    `-Live -Visual` additionally uses dedicated local test accounts, reconnects

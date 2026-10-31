@@ -9,7 +9,7 @@ No default Avatar, live login, server simulation or saved-account changes.
 
 ## Review
 
-Open `Review-Third-Dawn-Human.cmd`. Five variants are available: original base,
+Open `Reviews/Review-Third-Dawn-Human.cmd`. Five variants are available: original base,
 AI texture + skin shader, subdivided base with the same new material, chain shirt
 and cowl-down robe. Base/clothing close-up buttons isolate three relevant
 variants; All restores five. Idle/Walk/Run, pause, RMB orbit and wheel zoom work.

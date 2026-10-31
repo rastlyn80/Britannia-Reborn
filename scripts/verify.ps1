@@ -22,6 +22,12 @@ foreach ($kind in @('desert','forest','frenzied','ethereal')) {
   if ($LASTEXITCODE) { throw 'Original/refined ostard deformation checks failed' }
  }
 }
+if ((Test-Path "$root/Viewer/local-art/mounts/kirin-modern.gltf") -and (Test-Path "$root/Viewer/local-art/mounts/llama_ethereal-modern.gltf") -and (Test-Path "$root/Viewer/local-art/mounts/skeletal-horse.glb")) {
+ foreach ($script in @('DistinctMountTests','OstardRidingTests','MountTerrainTests')) {
+  & $godot --headless --path "$root/Viewer" --script "res://Presentation/$script.gd"
+  if ($LASTEXITCODE) {throw "Distinct mount validation failed: $script"}
+ }
+}
 & $godot --headless --path "$root\Viewer" --script res://Network/LoginTests.gd
 if ($LASTEXITCODE) { throw 'Protocol tests failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/ArtFidelityTests.gd

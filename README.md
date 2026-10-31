@@ -18,12 +18,12 @@ Double-click **Launch.cmd** for live Britain. The first preparation builds local
 - **Zoomable original-data minimap:** native land/statics and radar colours, character position/facing, coordinates and bounded tile textures. Game-derived imagery stays local.
 - **Real ModernUO sessions:** account login, character creation/selection, server-confirmed movement, two-client movement replication and backpack contents. Native ClassicUO can connect to the same local server for comparison.
 - **Smoother traversal:** continuous presentation between server coordinates, gradual 360-degree facing, running/walking animation, stair foot contact and a ceiling-aware cosmetic jump. The server remains authoritative; jumping is not a replicated gameplay ability.
-- **Prepared human motion:** both fitted human bodies use free CC0 locomotion, armed/unarmed guards and a native action subset, with garment-safe strides/attacks and independent server hair/beard properties. **Review-Human-Motion.cmd** opens the animated before/after. Preparation and unfinished action families: [human motion pass](docs/HUMAN_MOTION_PASS.md).
+- **Prepared human motion:** both fitted human bodies use free CC0 locomotion, armed/unarmed guards and a native action subset, with garment-safe strides/attacks and independent server hair/beard properties. **Reviews/Review-Human-Motion.cmd** opens the animated before/after. Preparation and unfinished action families: [human motion pass](docs/HUMAN_MOTION_PASS.md).
 - **Server-driven environment:** native light and rain/snow packets drive lighting and precipitation. An isolated local server extension supplies ModernUO's regional clock and initial/region-exit weather snapshots. Soft moving clouds, horizon haze and day/night presentation follow those inputs.
 
 The original reference crop (still available with `./launch.ps1 -ReferencePatch`) spans Trammel X=1576–1639, Y=1568–1631: 4,096 terrain samples and 2,689 static placements across 187 mapped IDs. These figures describe local validation; the map and converted data are not included. Passing that crop does not establish fidelity for every building, source ID or facet.
 
-The first reviewed art pass adds explicit per-graphic replacements, richer furniture, detailed doors/windows, masonry surfaces and source-backed support placement. Double-click **Review-Art.cmd** to build a local original-art/model comparison gallery and automatic scene captures. The catalogue has 108 choices (88 reviewed, 20 provisional); most Britain IDs still need detailed artistic review. See [art checkpoint, evidence and remaining gaps](docs/ART_CATALOGUE_PASS.md).
+The first reviewed art pass adds explicit per-graphic replacements, richer furniture, detailed doors/windows, masonry surfaces and source-backed support placement. Double-click **Reviews/Review-Art.cmd** to build a local original-art/model comparison gallery and automatic scene captures. The catalogue has 108 choices (88 reviewed, 20 provisional); most Britain IDs still need detailed artistic review. See [art checkpoint, evidence and remaining gaps](docs/ART_CATALOGUE_PASS.md).
 
 ## Architecture
 
@@ -84,10 +84,12 @@ Controls: **WASD** move, **Shift** run, **Space** cosmetic jump, **right mouse d
 
 Live checks need the local server and an existing development character. Some reconstruction tests need a locally prepared crop; fixture tests alone do not establish live gameplay. GPU captures and map-derived outputs remain ignored and are not distributed here. See [testing](docs/TESTING.md), [world objects](docs/WORLD_OBJECTS.md) and [server environment](docs/SERVER_ENVIRONMENT.md).
 
-The optional [equine expansion](docs/EQUINE_EXPANSION.md) reuses the separately prepared Warhorse Lite rig for ordinary and magical steeds. **Review-Equines.cmd** opens the local gallery after horse/human setup. Source/licence pins, supported native identities, deferred creatures and reproducible offline/GPU/isolated-server tests are documented there; these optional horse assets are not bundled in a Git clone.
+The optional [equine expansion](docs/EQUINE_EXPANSION.md) reuses the separately prepared Warhorse Lite rig for ordinary and magical steeds. **Reviews/Review-Equines.cmd** opens the local gallery after horse/human setup. Source/licence pins, supported native identities, deferred creatures and reproducible offline/GPU/isolated-server tests are documented there; these optional horse assets are not bundled in a Git clone.
 
-**Review-Ostard.cmd** opens the separate [Third Dawn desert ostard trial](docs/OSTARD_TRIAL.md): original, refined geometry and upgraded texture/shader, with seven source animations. Prepared local art is required; this comparison does not yet change live creatures or mount routes.
+**Reviews/Review-Ostard.cmd** opens the separate [Third Dawn desert ostard trial](docs/OSTARD_TRIAL.md): original, refined geometry and upgraded texture/shader, with seven source animations. Prepared local art is required; this comparison does not yet change live creatures or mount routes.
 Forest, frenzied and ethereal launchers now provide the other source forms.
+All visual-review shortcuts are in **Reviews/**, including
+**Reviews/Review-Mount-Riding.cmd** for the [integrated distinct mounts](docs/MOUNT_INTEGRATION.md).
 The [all-creature programme and source queue](docs/CREATURE_MODERNISATION.md) tracks
 the remaining families, starting with equines.
 

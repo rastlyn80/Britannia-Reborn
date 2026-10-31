@@ -4,6 +4,7 @@ uniform sampler2D albedo_texture : source_color, filter_linear_mipmap_anisotropi
 uniform sampler2D hue_palette : source_color, filter_nearest;
 uniform bool use_hue=false;
 uniform bool partial_hue=false;
+uniform vec4 spectral_tint : source_color=vec4(1.);
 uniform float detail_strength : hint_range(0.,1.)=.32;
 uniform float skin_roughness : hint_range(.35,1.)=.78;
 void fragment(){
@@ -23,5 +24,6 @@ void fragment(){
  }
  ALBEDO=colour;ROUGHNESS=clamp(skin_roughness+(lightness-.5)*.10,.62,.9);
  METALLIC=0.;SPECULAR=.28;
- ALPHA=.44;EMISSION=colour*vec3(.12,.25,.32);
+ ALBEDO*=spectral_tint.rgb;
+ ALPHA=.44;EMISSION=colour*spectral_tint.rgb*vec3(.12,.25,.32);
 }

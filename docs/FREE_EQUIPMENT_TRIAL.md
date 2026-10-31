@@ -59,7 +59,7 @@ Detailed source/license records are local work/free-equipment/licence-evidence.j
 3. python scripts/download-free-equipment.py (or --verify-only).
 4. Blender -b --factory-startup --python scripts/prepare-free-equipment.py.
 5. python scripts/validate-free-equipment.py; python scripts/test-mhclo.py.
-6. Review-Free-Equipment.cmd. The UI switches among complete outfits, all five pieces, skin comparison and head close-up, with Idle/Walk/Run and front/three-quarter/profile controls.
+6. Reviews/Review-Free-Equipment.cmd. The UI switches among complete outfits, all five pieces, skin comparison and head close-up, with Idle/Walk/Run and front/three-quarter/profile controls.
 
 Blender is the existing .tools/blender/blender-5.2.1-windows-x64/blender.exe. Equivalent direct review: ./scripts/review-third-dawn.ps1 -Equipment -Human -View clothing; add -View parts, -View bust, -Compatibility, -Validate or -MaterialTest PATH as needed. Each display variant contains a self-contained rig; production dynamic layer swapping, current-server item mapping, all body sliders, full wardrobe coverage, cloth physics, NPC performance/LODs and mobile hardware validation remain future work.
 # Follow-up: robe motion and natural skin

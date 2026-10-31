@@ -552,11 +552,12 @@ func _equine_corpse(root: Node3D,item: Dictionary,serial: int) -> bool:
  var source_rig: bool = Horse.BODIES.has(body)
  var death_clip: String = "Death" if source_rig else "death"
  horse.current_clip = death_clip
- if not source_rig:horse.contact.enabled = false
+ horse.contact.enabled = false
  horse.reins.visible = false
  horse.animator.play(death_clip)
  horse.animator.seek(horse.animator.get_animation(death_clip).length,true)
  horse.animator.pause()
+ if not source_rig:horse.fit_action_floor()
  horse.set_process(false)
  horse.set_physics_process(false)
  horse.rotation.y = fposmod(float(serial)*0.618034,1.0)*TAU

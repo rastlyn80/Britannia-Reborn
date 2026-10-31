@@ -1,5 +1,10 @@
 # Horses and magical equines — first expansion
 
+31 October follow-up: the separate [distinct-mount integration](MOUNT_INTEGRATION.md)
+now adds ki-rin and skeletal geometry, fitted ostards and the llama family,
+including native permissions, colours, actions and corpse replication. The
+15 horse-backed routes and evidence below are the earlier checkpoint.
+
 This batch reuses the existing **Warhorse Lite 1.0.0** geometry, 39-joint rig,
 four publisher clips and the existing authored gallop/hit/death and rider contact
 work. It adds category replacements for eleven more loose-body identities and
@@ -98,7 +103,7 @@ python -B scripts/audit-equines.py
 ./scripts/verify.ps1
 ```
 
-`Review-Equines.cmd` opens the interactive 17-panel review. The finite capture
+`Reviews/Review-Equines.cmd` opens the interactive 17-panel review. The finite capture
 mode writes **34 real rendered frames**, walking and running/side, to ignored
 `outputs/equines/index.html`. Ethereal panels intentionally have only riders.
 The native audit compares actual constructors, variant assignments, pack-horse

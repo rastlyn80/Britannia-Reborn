@@ -146,8 +146,8 @@ and a native bow request; these do not grant privileges or bypass game rules.
   renderer selects the fitted alternatives.
 - Animated before/after captures use the same bodies/materials, actual old/new
   cadence and both sexes. Forward+ and Compatibility views are reviewed.
-  Before/after: Review-Human-Motion.cmd. Native single-body wardrobe preview:
-  Review-Human-Batch.cmd. Captures/reports are local, not committed.
+  Before/after: Reviews/Review-Human-Motion.cmd. Native single-body wardrobe preview:
+  Reviews/Review-Human-Batch.cmd. Captures/reports are local, not committed.
 - Live tests request war/peace and bow through the real protocol, check native
   confirmation, both human bodies, the actual world avatar, reconnect and a
   second client's received action. These do not certify real combat balance,

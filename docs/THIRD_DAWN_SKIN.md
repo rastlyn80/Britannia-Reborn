@@ -29,7 +29,7 @@ retained locally as research, not deleted or used as the new default.
 
 ## Try it
 
-Review-Third-Dawn-Human.cmd opens the review. Material close-up isolates prior
+Reviews/Review-Third-Dawn-Human.cmd opens the review. Material close-up isolates prior
 material and PBR v2. Skin detail and Skin sheen sliders affect only the new
 material. Base/clothing/All views, pose buttons, pause and camera controls remain.
 

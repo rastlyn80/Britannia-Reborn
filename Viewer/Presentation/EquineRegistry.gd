@@ -21,10 +21,10 @@ const BODIES := {
 const ETHEREALS := {0x3eaa:[0xc8,"Ethereal horse","ethereal"],0x3e9b:[0x7a,"Ethereal unicorn","ethereal_unicorn"]}
 const DEFERRED := {
 	0x72:"Unresolved historical horse alias",0x73:"Unresolved historical horse alias",
-	0x84:"Ki-rin: distinct geometry required",0xb1:"Unresolved horse fallback",
+	0x84:"Ki-rin: separate source rig routed by MountVisual",0xb1:"Unresolved horse fallback",
 	0xbf:"Unresolved horse fallback",0xc0:"Unresolved horse fallback",
 	0x11c:"Mondain's steed: client-only identity needs audit",
-	0x312:"Unresolved horse fallback",0x319:"Skeletal mount / HellSteed: separate skeletal mesh needed",
+	0x312:"Unresolved horse fallback",0x319:"Skeletal mount: separate scanned mesh routed by MountVisual",
 	0x57f:"Horse_Unicorn_RB: client-only identity needs audit",0x580:"Horse_Palomino: client-only identity needs audit"
 }
 const PROFILES := {

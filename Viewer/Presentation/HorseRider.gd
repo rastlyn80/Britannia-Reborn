@@ -21,14 +21,17 @@ func climb_phase() -> float:return 1.-progress if mode=="dismount" else progress
 func hip_path(t: float) -> Vector3:
 	var keys: Array=[Vector3(.76,-.85,0),Vector3(.62,-.43,.02),Vector3(.43,.16,.02),Vector3(.04,.16,0),Vector3(0,.105,0)]
 	var segment:=mini(3,int(t*4.));var u:=smoothstep(0.,1.,t*4.-float(segment))
-	return keys[segment].lerp(keys[segment+1],u)
+	var result: Vector3=keys[segment].lerp(keys[segment+1],u)
+	result.y+=(1.58-float(horse.get_meta("rider_ground_drop",1.58)))*(1.-smoothstep(0.,.7,t))
+	return result
 func foot_path(left: bool,t: float,saddle: Transform3D) -> Vector3:
 	var stirrup: Vector3=horse.stirrup(left)
-	if left:return (saddle*Vector3(.63,-1.58,.08)).lerp(stirrup,smoothstep(.04,.32,t))
-	if t<.18:return saddle*Vector3(.84,maxf(-1.58,hip_path(t).y-.66),-.08)
+	var drop: float=float(horse.get_meta("rider_ground_drop",1.58))
+	if left:return (saddle*Vector3(.63,-drop,.08)).lerp(stirrup,smoothstep(.04,.32,t))
+	if t<.18:return saddle*Vector3(.84,maxf(-drop,hip_path(t).y-.66),-.08)
 	var u:=smoothstep(.18,.93,t)
 	# A leg-over arc above and behind the saddle, not through the horse barrel.
-	var a:=saddle*Vector3(.84,maxf(-1.58,hip_path(.18).y-.66),-.08);var b:=saddle*Vector3(.92,.62,-.45);var c:=saddle*Vector3(-.65,.62,-.45)
+	var a:=saddle*Vector3(.84,maxf(-drop,hip_path(.18).y-.66),-.08);var b:=saddle*Vector3(.92,.62,-.45);var c:=saddle*Vector3(-.65,.62,-.45)
 	return a.bezier_interpolate(b,c,stirrup,u)
 func aim(rig: Skeleton3D,bone: int,child: int,target: Vector3) -> void:
 	var pose:=rig.get_bone_global_pose(bone)

@@ -10,7 +10,7 @@ remain the original desert checkpoint.
 
 ## Result and review
 
-Open `Review-Ostard.cmd` for the interactive comparison, or the local
+Open `Reviews/Review-Ostard.cmd` for the interactive comparison, or the local
 `outputs/ostard-trial/index.html` for animated walk/run comparisons, head
 close-ups and 31 actual Godot stills. Left is the source geometry/atlas; centre
 isolates geometry refinement; right adds the new atlas and surface shader.

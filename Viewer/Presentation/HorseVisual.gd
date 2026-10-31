@@ -8,6 +8,7 @@ const BODIES := {0xc8:0x3e9f,0xe2:0x3ea0,0xe4:0x3ea1,0xcc:0x3ea2}
 # Matched to private original stand frames, not inferred from array order.
 const COATS := {0xc8:["golden tan",Color("b6a07b")],0xe2:["dapple grey",Color("9c9f9f")],0xe4:["dun",Color("96846a")],0xcc:["dark brown",Color("5e4130")]}
 var model: Node3D
+var visual_path:=""
 var skeleton: Skeleton3D
 var animator: AnimationPlayer
 var current_clip := "idle"
@@ -36,7 +37,7 @@ static func horse_body(item: int) -> int:
 static func step_seconds(worn: Array, running: bool) -> float:
 	return (.10 if running else .20) if not mount_item(worn).is_empty() else (.20 if running else .40)
 func _ready() -> void:
-	model=load(REGIONS_PATH if ResourceLoader.exists(REGIONS_PATH) else PATH).instantiate();add_child(model)
+	model=load(visual_path if not visual_path.is_empty() else REGIONS_PATH if ResourceLoader.exists(REGIONS_PATH) else PATH).instantiate();add_child(model)
 	skeleton=model.find_children("*","Skeleton3D",true,false)[0]
 	animator=model.find_children("*","AnimationPlayer",true,false)[0]
 	var library:=animator.get_animation_library("").duplicate(true)
@@ -48,12 +49,14 @@ func _ready() -> void:
 	reins=MeshInstance3D.new();reins.name="RiderReins";reins.mesh=rein_mesh;add_child(reins)
 	var leather:=StandardMaterial3D.new();leather.albedo_color=Color("30251d");leather.roughness=.85;reins.material_override=leather
 	apply_identity(native_body,native_hue,native_mount_item)
+	if not visual_path.is_empty():set_meta("rider_ground_drop",(skeleton.global_transform*skeleton.get_bone_global_rest(skeleton.find_bone("saddle_socket"))).origin.y-global_position.y-.09)
 func apply_identity(body: int,hue: int,mount_id: int=0) -> void:
 	var key:=str(body)+"|"+str(hue)+"|"+str(mount_id)
 	if key==identity_key and model!=null:return
 	native_body=body;native_hue=hue;native_mount_item=mount_id
 	set_meta("native_body",body);set_meta("native_hue",hue)
 	var profile:=Equines.profile(body,mount_id)
+	if body==0x319 and not visual_path.is_empty():profile={"name":"Skeletal mount / HellSteed","style":"skeleton","colour":Color.WHITE,"change":0.}
 	set_meta("coat_name",COATS[body][0] if COATS.has(body) and not bool(profile.get("ethereal",false)) else str(profile.get("name","Unsupported equine")))
 	set_meta("equine_profile",profile)
 	set_meta("native_mount_item",mount_id)
@@ -78,7 +81,7 @@ func apply_identity(body: int,hue: int,mount_id: int=0) -> void:
 			material.set_shader_parameter("grey_coat",bool(profile.get("grey",false)))
 			material.set_shader_parameter("magic_glow",float(profile.get("glow",0.)))
 			material.set_shader_parameter("magic_colour",profile.get("magic",Color.BLACK))
-			material.set_shader_parameter("use_vertex_regions",ResourceLoader.exists(REGIONS_PATH))
+			material.set_shader_parameter("use_vertex_regions",visual_path.is_empty() and ResourceLoader.exists(REGIONS_PATH))
 			mesh.set_surface_override_material(surface,material)
 	if accessory_style!=str(profile.get("style","")):
 		preload("res://Presentation/EquineAccessories.gd").rebuild(self,profile)
@@ -114,6 +117,15 @@ func _process(delta: float) -> void:
 	if contact!=null:
 		model.rotation.x=lerp_angle(model.rotation.x,-contact.support_tilt.x+acceleration,1.-exp(-7.*delta))
 		model.rotation.z=lerp_angle(model.rotation.z,contact.support_tilt.y+lean,1.-exp(-7.*delta))
+	if not visual_path.is_empty() and current_clip in ["rear","hit","death"]:fit_action_floor()
+	elif not visual_path.is_empty():model.position.y=lerpf(model.position.y,0.,1.-exp(-12.*delta))
+func fit_action_floor() -> void:
+	if visual_path.is_empty():return
+	var mesh: MeshInstance3D=model.find_children("*","MeshInstance3D",true,false)[0]
+	var bounds:=preload("res://Presentation/SkinGeometry.gd").deformed_bounds(mesh,skeleton)
+	# Preserve airborne gallop clearance. Reactions and the held corpse must
+	# rest on the actor's actual support level instead of cutting into it.
+	if bounds.position.is_finite():model.position.y+=global_position.y-bounds.position.y
 func _physics_process(_delta: float) -> void:
 	if contact!=null:contact.sample(get_world_3d().direct_space_state,global_position)
 func rear() -> void:

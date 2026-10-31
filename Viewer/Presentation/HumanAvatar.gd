@@ -2,7 +2,7 @@ extends "res://Presentation/LegacyAvatar.gd"
 ## Preserve controller/contact/jump behavior while presenting native humans.
 const Human = preload("res://Presentation/HumanVisual.gd")
 const Wardrobe = preload("res://Presentation/HumanWardrobe.gd")
-const Horse = preload("res://Presentation/HorseVisual.gd")
+const Horse = preload("res://Presentation/MountVisual.gd")
 var initial_body := 0
 var human_visual: Node3D
 var native_body := 0
@@ -65,7 +65,7 @@ func _switch_horse(body: int,hue: int) -> void:
 		if foot_contact.get_parent():foot_contact.get_parent().remove_child(foot_contact)
 		human_visual=null;rider_contact=null
 	for child in visual_root.get_children():child.free()
-	horse_visual=Horse.new();visual_root.add_child(horse_visual);horse_visual.apply_identity(body,hue)
+	horse_visual=Horse.create(body);visual_root.add_child(horse_visual);horse_visual.apply_identity(body,hue)
 	foot_contact.active=false;horse_visual.skeleton.add_child(foot_contact)
 	animator=horse_visual.animator;native_body=body
 	set_meta("human_batch",false);set_meta("camera_height",1.4);set_meta("art_status","horse category replacement")
@@ -73,15 +73,18 @@ func _switch_horse(body: int,hue: int) -> void:
 func _sync_mount(worn: Array) -> void:
 	var previous: bool=human_visual.mounted_live_enabled
 	var item:=Horse.mount_item(worn);var body:=Horse.horse_body(int(item.get("id",0)))
-	var supported:=body!=0 and Horse.available()
+	var supported:=body!=0 and Horse.mount_available(body,int(item.get("id",0)))
 	human_visual.mounted_live_enabled=supported
 	if previous!=supported:
 		human_visual.appearance_key="";human_visual.set_equipment(worn)
 	set_meta("native_mount",item);set_meta("camera_height",2.05 if supported else 1.4)
 	if supported:
 		if has_meta("deferred_mount"):remove_meta("deferred_mount")
+		if horse_visual!=null and not Horse.matches(horse_visual,body,int(item.get("id",0))):
+			if rider_contact!=null:rider_contact.free();rider_contact=null
+			horse_visual.free();horse_visual=null
 		if horse_visual==null:
-			horse_visual=Horse.new();visual_root.add_child(horse_visual)
+			horse_visual=Horse.create(body,int(item.get("id",0)));visual_root.add_child(horse_visual)
 			rider_contact=preload("res://Presentation/HorseRider.gd").new();rider_contact.rider=human_visual;rider_contact.horse=horse_visual;human_visual.skeleton.add_child(rider_contact)
 			rider_contact.begin_mount(appearance_seen)
 			human_visual.cancel_action()
@@ -148,7 +151,7 @@ func apply_server_appearance(entity: Dictionary, worn: Array, details: Dictionar
 	var body := int(entity.get("body",0))
 	native_body = body
 	if Horse.supports_body(body) and Horse.available():
-		if horse_visual==null or human_visual!=null:_switch_horse(body,int(entity.get("hue",0)))
+		if horse_visual==null or human_visual!=null or not Horse.matches(horse_visual,body):_switch_horse(body,int(entity.get("hue",0)))
 		horse_visual.apply_identity(body,int(entity.get("hue",0)));_update_pick_volume(true);return
 	if not Wardrobe.human(body):
 		set_meta("art_status","missing native body art" if body>0 else "offline fallback")

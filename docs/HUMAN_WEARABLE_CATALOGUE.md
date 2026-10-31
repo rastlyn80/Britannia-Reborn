@@ -14,7 +14,7 @@ equipment layers, item serials, graphic IDs, hues, hair/beard fields and stats.
 
 ## Review and tracking
 
-Run `Review-Human-Catalogue.cmd` to rebuild/open the local searchable worklist.
+Run `Reviews/Review-Human-Catalogue.cmd` to rebuild/open the local searchable worklist.
 Its source data stays in ignored `outputs/human-catalogue/`:
 
 - `index.html`: classic actions, extended sequence rows and wearable graphics.
