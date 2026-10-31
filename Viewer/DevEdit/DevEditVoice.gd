@@ -38,6 +38,12 @@ var job := {}
 # the silence before speech is not kept (only a short lead-in).
 var silence_seconds := SILENCE_SECONDS
 var open_mic := false
+# Names Whisper cannot know (characters, creatures and NPCs around you): the
+# game that owns this recorder supplies them; they bias recognition through
+# Whisper's prompt and a sound-alike correction afterwards.
+var game: Node
+const NAME_RANGE := 18
+const PROMPT_NAMES := 40
 
 func _ready() -> void:
 	var config := ConfigFile.new()
@@ -226,7 +232,78 @@ func _recognize() -> void:
 func args(whisper: Dictionary, clip: String, base: String, seconds: float) -> PackedStringArray:
 	var list := PackedStringArray(["-m",str(whisper.model),"-f",clip,"-l",language,"-nt","-np","-oj","-of",base,"-t",str(clampi(OS.get_processor_count()-2,2,12)),"-ac",str(clampi(int(ceil(seconds*50.0))+128,384,1500))])
 	if translate: list.append("-tr")
+	var names := nearby_names(game)
+	if not names.is_empty(): list.append_array(["--prompt",", ".join(names.slice(0,PROMPT_NAMES))+"."])
 	return list
+
+# Proper names of mobiles within NAME_RANGE tiles, nearest first, and your
+# own; "a hawk"-style generic names are left out (Whisper knows those words).
+static func nearby_names(session: Node) -> PackedStringArray:
+	var out := PackedStringArray()
+	if session == null or not "entities" in session: return out
+	var me := Vector2i(int(session.player.get("x",0)),int(session.player.get("y",0)))
+	var found: Array = []
+	for serial in session.entities:
+		var mobile: Dictionary = session.entities[serial]
+		var name := str(session.entity_names.get(serial,"")).strip_edges()
+		var distance := maxi(absi(int(mobile.get("x",0))-me.x),absi(int(mobile.get("y",0))-me.y))
+		if name.is_empty() or distance > NAME_RANGE or name.to_lower().begins_with("a ") or name.to_lower().begins_with("an "): continue
+		found.append([distance,name])
+	found.sort_custom(func(a: Array, b: Array): return a[0] < b[0])
+	var own := str(session.entity_names.get(int(session.player.get("serial",0)),session.player.get("name","")))
+	if own != "": out.append(own)
+	for entry in found:
+		if not out.has(entry[1]): out.append(entry[1])
+	return out
+
+# A word (or two run together) that sounds like a nearby name becomes that
+# name: "rusty lin" -> "Rastlyn". Conservative: at least four letters and
+# close in spelling, or the same consonant skeleton.
+static func correct_names(text: String, names: PackedStringArray) -> String:
+	var words := text.split(" ",false)
+	for name in names:
+		var target := _letters(name)
+		if target.length() < 4: continue
+		var span := name.split(" ",false).size()
+		for size in [span,span+1]:
+			var i := 0
+			while i+size <= words.size():
+				var piece := _letters(" ".join(words.slice(i,i+size)))
+				if piece != target and piece.length() >= 3 and (_similar(piece,target) or _skeleton(piece) == _skeleton(target) and _skeleton(target).length() >= 3):
+					# Keep the punctuation that followed: "rusty lin," -> "Rastlyn,".
+					var trailing := RegEx.create_from_string("[^A-Za-z0-9]+$").search(words[i+size-1])
+					var tail := trailing.get_string() if trailing else ""
+					var replaced := words.slice(0,i)
+					replaced.append(name+tail)
+					replaced.append_array(words.slice(i+size))
+					words = PackedStringArray(replaced)
+				i += 1
+	return " ".join(words)
+
+static func _letters(text: String) -> String:
+	var out := ""
+	for c in text.to_lower():
+		if c >= "a" and c <= "z": out += c
+	return out
+
+static func _skeleton(word: String) -> String:
+	var out := word.left(1)
+	for c in word.substr(1):
+		if c in "aeiouyhw" or out.ends_with(c): continue
+		out += c
+	return out
+
+static func _similar(a: String, b: String) -> bool:
+	return 1.0-float(_distance(a,b))/float(maxi(a.length(),b.length())) >= 0.75
+
+static func _distance(a: String, b: String) -> int:
+	var row: Array = range(b.length()+1)
+	for i in a.length():
+		var next: Array = [i+1]
+		for j in b.length():
+			next.append(mini(mini(row[j+1]+1,next[j]+1),row[j]+(0 if a[i] == b[j] else 1)))
+		row = next
+	return row[b.length()]
 
 func _finished() -> void:
 	pid = 0
@@ -245,6 +322,7 @@ func _finished() -> void:
 		if text.is_empty() or (text.begins_with("[") and text.ends_with("]")) or (text.begins_with("(") and text.ends_with(")")):
 			failed.emit("Heard nothing — press Talk and speak.")
 			return
+		text = correct_names(text,nearby_names(game))
 		heard.emit(text,{"engine":"whisper","language":str(data.get("result",{}).get("language","")),"translated":translate,"ms":ms,"seconds":job.seconds})
 	else:
 		var text := str(data.get("text","")).strip_edges()

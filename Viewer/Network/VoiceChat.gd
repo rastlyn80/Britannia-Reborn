@@ -65,6 +65,7 @@ func configure(game: Node, talk_journal: Control) -> void:
 	session = game
 	journal = talk_journal
 	voice = Voice.new()
+	voice.game = game
 	voice.settings_path = "user://voice-chat.cfg"
 	voice.file_base = "voice-chat"
 	# Chat defaults: your own language as spoken, sent at once.

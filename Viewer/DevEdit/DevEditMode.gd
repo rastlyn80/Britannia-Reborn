@@ -848,6 +848,7 @@ func refresh() -> void:
 
 func _voice_controls(column: Container) -> void:
 	voice = Voice.new()
+	voice.game = game
 	add_child(voice)
 	voice.state_changed.connect(_voice_state)
 	voice.heard.connect(_voice_heard)

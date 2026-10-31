@@ -38,6 +38,25 @@ func run() -> void:
 	voice.translate = false
 	a = voice.args({"model":"m.bin"},"c.wav","out",40.0)
 	check(not a.has("-tr") and a[a.find("-ac")+1] == "1500","long clip: full window; no translation when off")
+	# Names around you: proper names only, nearest first, yours first; they go
+	# to Whisper's prompt and close misses are corrected afterwards.
+	var fake_script := GDScript.new()
+	fake_script.source_code = "\n".join(["extends Node",
+		"var player := {\"serial\":1,\"x\":100,\"y\":100,\"name\":\"Rastlyn\"}",
+		"var entities := {2:{\"x\":104,\"y\":100},3:{\"x\":101,\"y\":100},4:{\"x\":102,\"y\":102},5:{\"x\":160,\"y\":100}}",
+		"var entity_names := {1:\"Rastlyn\",2:\"Nevin\",3:\"Shirley\",4:\"a hawk\",5:\"Faraway\"}"])
+	fake_script.reload()
+	var fake := Node.new()
+	fake.set_script(fake_script)
+	var names: PackedStringArray = Voice.nearby_names(fake)
+	check(names == PackedStringArray(["Rastlyn","Shirley","Nevin"]),"nearby proper names, own first, nearest next, no generic or distant ones (%s)" % ", ".join(names))
+	voice.game = fake
+	var prompted: PackedStringArray = voice.args({"model":"m.bin"},"c.wav","b",2.0)
+	check(prompted.has("--prompt") and prompted[prompted.find("--prompt")+1] == "Rastlyn, Shirley, Nevin.","the names go to Whisper's prompt")
+	check(Voice.correct_names("follow rusty lin, please",names) == "follow Rastlyn, please","two misheard words become the nearby name, punctuation kept")
+	check(Voice.correct_names("hey shirly come here",names) == "hey Shirley come here","a near spelling becomes the name")
+	check(Voice.correct_names("I will never go there",names) == "I will never go there" and Voice.correct_names("open the gate",names) == "open the gate","ordinary words stay as they are")
+	fake.free()
 	voice.free()
 	# The panel builds the language, translation and microphone controls.
 	var mode: CanvasLayer = load("res://DevEdit/DevEditMode.gd").new()
