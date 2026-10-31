@@ -55,12 +55,34 @@ def finite(values):
     require(all(math.isfinite(x) for x in values), 'Non-finite GRN numeric value')
 
 
-def parse(data, animations_only=False):
+def parse(data, animations_only=False, scene_root_names=False, skip_unskinned_helpers=False, scale_shear_tracks=False):
     result = dict(points=[], normals=[], uv_sets=[], polygons=[], texture_polygons=[],
                   bones=[], weights=[], ties=[], tracks=[])
     texts, objects, tie_objects, bone_objects, texture_ids = [], [], [], [], []
     key = None
-    for kind, payload, ancestors in chunks(data):
+    entries=list(chunks(data))
+    if skip_unskinned_helpers:
+        groups=[];active=None
+        for index,(kind,payload,ancestors) in enumerate(entries):
+            if kind==0xCA5E0601:
+                active=[];groups.append(active)
+            if 0xCA5E0601 in ancestors and active is not None:active.append(index)
+        skinned=[];drop=set()
+        for group in groups:
+            weight=[entries[i][1] for i in group if entries[i][0]==0xCA5E0702]
+            require(len(weight)==1 and len(weight[0])>=12,'One bounded skin header per mesh required')
+            count=struct.unpack_from('<I',weight[0])[0]
+            if count:skinned.append(group);continue
+            points=[entries[i][1] for i in group if entries[i][0]==0xCA5E0801]
+            require(len(points)==1 and len(points[0])==8*12 and not any(entries[i][0]==0xCA5E0803 for i in group),'Only untextured eight-vertex helper boxes may be omitted')
+            drop.update(group)
+        require(len(skinned)==1,'Exactly one skinned body is required; rigid/multipart artwork needs a dedicated importer')
+        helper_indices=[i for i,(kind,payload,_) in enumerate(entries)
+                        if kind==0xCA5E0E06 and len(payload)==52 and struct.unpack_from('<I',payload)[0]==12]
+        require(len(helper_indices)==len(groups)-1,'Helper boxes need matching untextured face-index tables')
+        drop.update(helper_indices)
+        entries=[entry for i,entry in enumerate(entries) if i not in drop]
+    for kind, payload, ancestors in entries:
         # Animation files may embed multiple reference meshes. Explicit track
         # extraction ignores their geometry while retaining bounded chunk,
         # object-name and finite/timed animation validation. Model parsing
@@ -132,7 +154,8 @@ def parse(data, animations_only=False):
         elif kind == 0xCA5E1204:
             header = struct.unpack_from('<13I', payload)
             counts = header[6:9]
-            require(52 + sum(counts) * 4 + counts[0] * 12 + counts[1] * 16 + counts[2] * 12 <= len(payload), 'Truncated animation track')
+            scale_width=9 if scale_shear_tracks else 3
+            require(52 + sum(counts) * 4 + counts[0] * 12 + counts[1] * 16 + counts[2] * scale_width * 4 <= len(payload), 'Truncated animation track')
             pos, times = 52, []
             for count in counts:
                 t = list(struct.unpack_from('<' + 'f' * count, payload, pos))
@@ -141,7 +164,7 @@ def parse(data, animations_only=False):
                 pos += count * 4
                 times.append(t)
             track = dict(id=header[0])
-            for slot, width, count, ts in zip(['translation', 'rotation', 'scale'], [3, 4, 3], counts, times):
+            for slot, width, count, ts in zip(['translation', 'rotation', 'scale_shear' if scale_shear_tracks else 'scale'], [3, 4, scale_width], counts, times):
                 values = [list(struct.unpack_from('<' + 'f' * width, payload, pos + k * width * 4)) for k in range(count)]
                 for value in values:
                     finite(value)
@@ -156,7 +179,8 @@ def parse(data, animations_only=False):
     def object_name(index):
         name = params[tie_objects[index] - 1]['__objectname']
         # Granny exporters used several labels for the same scene root.
-        return 'granny_master' if 'master' in name else re.sub(r'[^a-z0-9_ -]', '_', name)
+        is_master = (name.startswith('master_') or name in ['master', 'granny_master']) if scene_root_names else 'master' in name
+        return 'granny_master' if is_master else re.sub(r'[^a-z0-9_ -]', '_', name)
 
     for i, bone in enumerate(result['bones']):
         require(bone['parent'] < len(result['bones']), 'Bone parent outside skeleton')

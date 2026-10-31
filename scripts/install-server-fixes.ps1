@@ -11,7 +11,8 @@ if ($LASTEXITCODE) {throw 'Server overlay source audit failed'}
 $valid=$false
 if ((Test-Path $receiptPath) -and (Test-Path $built)) {
  $receipt=Get-Content $receiptPath -Raw|ConvertFrom-Json
- $valid=$receipt.recipe_sha256 -eq (Get-FileHash $recipe -Algorithm SHA256).Hash.ToLowerInvariant() -and $receipt.assembly_sha256 -eq (Get-FileHash $built -Algorithm SHA256).Hash.ToLowerInvariant()
+ & python -B "$PSScriptRoot/prepare-server-fixes.py" --check-build
+ $valid=$LASTEXITCODE -eq 0
 }
 if (!$valid) {
  if (!$BuildIfNeeded) {throw 'Run scripts/build-server.ps1 to prepare the reviewed server fix'}
@@ -37,7 +38,9 @@ try {
    if ((Get-FileHash $installed -Algorithm SHA256).Hash.ToLowerInvariant() -ne $receipt.assembly_sha256) {
     $temporary=$installed+'.pending'
     Copy-Item -LiteralPath $built -Destination $temporary -Force
-    [IO.File]::Move($temporary,$installed,$true)
+    # File.Replace is atomic on this volume and available in Windows PowerShell
+    # 5.1 as well as PowerShell 7; the three-argument Move overload is not.
+    [IO.File]::Replace($temporary,$installed,[NullString]::Value)
    }
    $status.installed=$true
   }

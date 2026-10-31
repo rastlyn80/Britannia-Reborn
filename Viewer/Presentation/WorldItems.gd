@@ -553,7 +553,7 @@ func _equine_corpse(root: Node3D,item: Dictionary,serial: int) -> bool:
  var death_clip: String = "Death" if source_rig else "death"
  horse.current_clip = death_clip
  horse.contact.enabled = false
- horse.reins.visible = false
+ if not Horse.Animals.Creatures.supports_body(body):horse.reins.visible = false
  horse.animator.play(death_clip)
  horse.animator.seek(horse.animator.get_animation(death_clip).length,true)
  horse.animator.pause()

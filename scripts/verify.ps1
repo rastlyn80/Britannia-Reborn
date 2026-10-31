@@ -6,6 +6,8 @@ if ($LASTEXITCODE) { throw 'Human sequence parser bounds/format checks failed' }
 if ($LASTEXITCODE) { throw 'Static clothing importer checks failed' }
 & python -B "$root/scripts/test-third-dawn.py"
 if ($LASTEXITCODE) { throw 'Bounded Third Dawn parser / refinement checks failed' }
+& python -B "$root/scripts/test-creature-pipeline.py"
+if ($LASTEXITCODE) {throw 'Creature rig/visible-geometry/reader regression checks failed'}
 if (Test-Path "$root/Server/ModernUO/Projects/UOContent/Engines/Ethics/Core/Ethic.cs") {
  & python -B "$root/scripts/prepare-server-fixes.py" --verify-only
  if ($LASTEXITCODE) {throw 'Reviewed server overlay source/anchor audit failed'}

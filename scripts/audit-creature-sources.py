@@ -1,4 +1,4 @@
-"""Read-only source queue for the complete preserved Animals/Monsters folders.
+"""Read-only source queue for preserved Animals/Monsters/SeaCreatures folders.
 
 Outputs are local evidence, not a catalogue of implemented server body IDs.
 The strict importer remains unchanged. Normal repair is an explicit diagnostic
@@ -68,7 +68,7 @@ def main():
     with zipfile.ZipFile(archive) as z:
         names={name.lower():name for name in z.namelist()}
         for lower,name in sorted(names.items()):
-            if not lower.endswith('_lod2.grn') or not any('/models/'+folder+'/' in lower for folder in ['animals','monsters']):continue
+            if not lower.endswith('_lod2.grn') or not any('/models/'+folder+'/' in lower for folder in ['animals','monsters','seacreatures']):continue
             stem=Path(lower).name.removesuffix('_lod2.grn');family=stem.split('_')[0]
             raw=z.read(name);row={'member':name,'stem':stem,'family':family,'sha256':hashlib.sha256(raw).hexdigest(),'status':'source only'}
             try:
@@ -82,9 +82,7 @@ def main():
                     row['textures'].append({'reference':reference,'members':[names[n] for n in matching]})
                 row['missing_textures']=[entry['reference'] for entry in row['textures'] if not entry['members']]
                 row['candidate_clips']=[names[n] for n in names if n.startswith(lower.rsplit('/',1)[0]+'/'+family+'_') and n.endswith('.grn') and '_lod' not in n]
-                if family=='ostards':row['review_status']='local upgraded comparison available; rider/live pending'
-                elif family=='equines':row['review_status']='accepted modern horse replacement retained; historical aliases separately deferred'
-                else:row['review_status']='not modernised'
+                row['review_status']='Source audit only; current validation/native evidence is tracked by build-creature-catalogue.py'
             except (ValueError,IndexError,KeyError,struct.error) as error:row['blocker']=str(error)
             rows.append(row)
     families=collections.Counter(row['family'] for row in rows)

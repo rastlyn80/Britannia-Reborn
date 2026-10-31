@@ -1,7 +1,7 @@
 extends RefCounted
 ## Authored feeding on existing licensed/source rigs. Rest reuses the source
 ## collapse as a lying category; it is not a new captured/faithful native clip.
-static func install(player: AnimationPlayer,rig: Skeleton3D,source_idle: String,source_death: String,eat_name: String,rest_name: String) -> void:
+static func install(player: AnimationPlayer,rig: Skeleton3D,source_idle: String,source_death: String,eat_name: String,rest_name: String,neck_angle: float=.95,head_angle: float=.18) -> void:
 	var library:=player.get_animation_library("")
 	if player.has_animation(eat_name):
 		player.get_animation(eat_name).loop_mode=Animation.LOOP_NONE
@@ -24,8 +24,8 @@ static func install(player: AnimationPlayer,rig: Skeleton3D,source_idle: String,
 			if type==Animation.TYPE_ROTATION_3D:
 				var rotation:=idle.rotation_track_interpolate(track,0.)
 				var angle:=0.
-				if "neck" in name.to_lower():angle=down*.95/maxi(1,neck_count)
-				elif "head" in name.to_lower():angle=down*(.18+.035*sin(TAU*u*8.))
+				if "neck" in name.to_lower():angle=down*neck_angle/maxi(1,neck_count)
+				elif "head" in name.to_lower():angle=down*(head_angle+.035*sin(TAU*u*8.))
 				if angle!=0. and index>=0:
 					var axis:=((rig.global_basis*rig.get_bone_global_rest(index).basis).inverse()*Vector3.RIGHT).normalized()
 					rotation=rotation*Quaternion(axis,angle)

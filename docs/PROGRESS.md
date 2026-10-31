@@ -1,3 +1,11 @@
+# Wildlife pipeline validated; creature programme continues - 31 October 2026
+
+The generic source-first pipeline now accepts 26 wildlife forms / 30 body routes (27 bounded native identities): bears, dogs/wolves, deer, cats, pigs, goats/sheep, giant rat and walrus. Evidence: 16,178 pose/identity/support checks over 4,914 deformed samples; 320 GPU checks / 156 views; 416 comparison frames; 2,366 real disposable-server/two-client checks across 54 cases, zero failures. Terrain adjustment preserves per-body proportions. Full scripts/verify.ps1 exits 0; existing unrelated diagnostics remain. [Scope, sources, commands and limits](CREATURE_WILDLIFE.md).
+
+The local work board is outputs/creatures/index.html; review launcher is Reviews/Review-Creatures.cmd. The bounded audit currently finds 275 nonhuman literal server bodies, with 50 routed and supported by native evidence; this is not an exhaustive all-client percentage. The original archive inventory now includes SeaCreatures: 150 meshes / 54 filename groups. Prepared monster exports remain trials until independently accepted and tested. Source/art/prompt/capture data stay ignored; a Git clone still needs separate asset setup.
+
+Continue autonomously through ogres/orcs/trolls, other monsters, remaining source repairs, sea creatures and missing modern native identities. Keep other rideable bodies separate until rider fitting/native mount tests pass. Preserve 732/1,126 human wearable coverage, equines/llamas/bovines, production saves and concurrent house/terrain work. The generic server-overlay installer now validates full build-input receipts and uses a replacement operation supported by Windows PowerShell 5.1.
+
 # Houses: hipped roofs, narrow roof strips, per-cell gables; server restarted — 31 October 2026
 
 - **Server restarted:** the ActionTimers extension is installed and loaded (quickbar dials now follow ModernUO's real waits).

@@ -1,0 +1,187 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+using System.Net;
+using System.Text.Json;
+using Server;
+using Server.Commands;
+using Server.Items;
+using Server.Mobiles;
+using Server.Network;
+
+namespace BritanniaReborn.HorseIntegrationFixtures;
+
+// Only the disposable loopback harness supplies this constructor allow-list.
+public static class CreatureFixtures
+{
+    private sealed record Candidate(int body, string[] classes);
+    private static Candidate[] _allowed = [];
+    private static readonly Dictionary<Mobile, BaseCreature> _creatures = [];
+    private static readonly Dictionary<Mobile, Container> _corpses = [];
+
+    [CallPriority(int.MaxValue)]
+    public static void Configure()
+    {
+        if (!ServerConfiguration.GetOrUpdateSetting("britanniaReborn.isolatedHorseTests", false))
+        {
+            return;
+        }
+        var path = Path.Combine(AppContext.BaseDirectory, "Data", "creature-fixtures.local.json");
+        if (!File.Exists(path))
+        {
+            return;
+        }
+        _allowed = JsonSerializer.Deserialize<Candidate[]>(File.ReadAllText(path)) ?? [];
+        CommandSystem.Register("CreatureFixture", AccessLevel.Player, Execute);
+    }
+
+    private static void Cleanup(Mobile owner)
+    {
+        if (_creatures.Remove(owner, out var creature))
+        {
+            creature.Delete();
+        }
+        if (_corpses.Remove(owner, out var corpse))
+        {
+            corpse.Delete();
+        }
+    }
+
+    private static void Execute(CommandEventArgs args)
+    {
+        var owner = args.Mobile;
+        if (owner.NetState is not { } state || !IPAddress.IsLoopback(state.Address)
+            || owner.Account?.Username?.StartsWith("brhorse-test-", StringComparison.Ordinal) != true)
+        {
+            return;
+        }
+        var command = args.Length > 0 ? args.GetString(0) : "audit";
+        if (command == "cleanup")
+        {
+            Cleanup(owner);
+            owner.SendMessage("UCCREATURE|cleaned");
+            return;
+        }
+        if (command == "prepare" && args.Length > 1)
+        {
+            Cleanup(owner);
+            var body = args.GetInt32(1);
+            var candidate = Array.Find(_allowed, row => row.body == body);
+            if (candidate == null || !EquineFixtures.PrepareBovineArena(owner))
+            {
+                owner.SendMessage("UCCREATURE|blocked|identity-or-arena");
+                return;
+            }
+            foreach (var client in owner.Map.GetClientsInRange(owner.Location))
+            {
+                if (client.Mobile?.Account?.Username?.StartsWith("brhorse-test-", StringComparison.Ordinal) == true)
+                {
+                    client.Mobile.Blessed = true;
+                }
+            }
+            foreach (var name in candidate.classes)
+            {
+                var type = typeof(BaseCreature).Assembly.GetType("Server.Mobiles." + name);
+                if (type == null || type.IsAbstract || !type.IsSubclassOf(typeof(BaseCreature))
+                    || type.IsSubclassOf(typeof(BaseMount)) || type.GetConstructor(Type.EmptyTypes) == null)
+                {
+                    continue;
+                }
+                for (var attempt = 0; attempt < 16; attempt++)
+                {
+                    var creature = (BaseCreature)Activator.CreateInstance(type)!;
+                    // Random native constructor variants are sampled; body IDs
+                    // are never overwritten to manufacture matching evidence.
+                    if (creature.Body.BodyID != body)
+                    {
+                        creature.Delete();
+                        continue;
+                    }
+                    if (creature is BaseFamiliar && !creature.SetControlMaster(owner))
+                    {
+                        creature.Delete();
+                        continue;
+                    }
+                    creature.Frozen = true;
+                    creature.MoveToWorld(new Point3D(owner.X + 1, owner.Y, owner.Z), owner.Map);
+                    _creatures[owner] = creature;
+                    owner.SendMessage($"UCCREATURE|prepared|{creature.Serial.Value}|{creature.Body.BodyID}|{type.Name}|{creature.Str}|{creature.Dex}|{creature.Int}");
+                    return;
+                }
+            }
+            owner.SendMessage("UCCREATURE|blocked|native-constructor");
+            return;
+        }
+        if (!_creatures.TryGetValue(owner, out var subject))
+        {
+            return;
+        }
+        if (command == "colour" && args.Length > 1)
+        {
+            subject.Hue = args.GetInt32(1) & 0xFFFF;
+            owner.SendMessage($"UCCREATURE|colour|{subject.Hue}");
+        }
+        else if (command == "step")
+        {
+            subject.Frozen = false;
+            try
+            {
+                for (var direction = 0; direction < 8; direction++)
+                {
+                    var before = subject.Location;
+                    var facing = (Direction)direction | (args.Length > 1 && args.GetInt32(1) != 0 ? Direction.Running : Direction.North);
+                    var target = before;
+                    Server.Movement.Movement.Offset(facing, ref target);
+                    if (!owner.InRange(target, 2))
+                    {
+                        continue;
+                    }
+                    for (var turn = 0; turn < 2; turn++)
+                    {
+                        if (subject.Move(facing) && subject.Location != before)
+                        {
+                            owner.SendMessage($"UCCREATURE|step|{subject.X}|{subject.Y}|{subject.Z}");
+                            return;
+                        }
+                    }
+                }
+                owner.SendMessage("UCCREATURE|blocked|movement");
+            }
+            finally
+            {
+                subject.Frozen = true;
+            }
+        }
+        else if (command == "action" && args.Length > 1)
+        {
+            var action = args.GetInt32(1);
+            if (action == -1)
+            {
+                foreach (var client in subject.Map.GetClientsInRange(subject.Location))
+                {
+                    if (client.Mobile.CanSee(subject))
+                    {
+                        client.SendNewMobileAnimation(subject.Serial, 4, 0, 0);
+                    }
+                }
+            }
+            else if (action is >= 0 and <= 21)
+            {
+                subject.Animate(action, 5, 1, true, false, 0);
+            }
+            owner.SendMessage($"UCCREATURE|action|{subject.Serial.Value}|{action}");
+        }
+        else if (command == "kill")
+        {
+            subject.Frozen = false;
+            subject.Kill();
+            if (subject.Corpse is { Deleted: false } corpse)
+            {
+                _corpses[owner] = corpse;
+                owner.SendMessage($"UCCREATURE|corpse|{corpse.Serial.Value}|{subject.Body.BodyID}");
+            }
+            else
+            {
+                owner.SendMessage($"UCCREATURE|corpse|0|{subject.Body.BodyID}|suppressed");
+            }
+        }
+    }
+}

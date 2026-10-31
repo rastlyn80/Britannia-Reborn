@@ -30,6 +30,7 @@ static func horse_body(item: int) -> int:
 		if item!=0 and BODIES[body][1]==item:return body
 	return Horse.horse_body(item)
 static func matches(visual: Node3D,body: int,item: int=0) -> bool:
+	if Animals.Creatures.supports_body(body):return Animals.Creatures.matches(visual,body)
 	if Animals.supports_body(body):return visual is Ostard and visual.kind==Animals.kind(body)
 	if body==0x319:return visual is Horse and not visual.visual_path.is_empty()
 	if visual is Horse and not visual.visual_path.is_empty():return false

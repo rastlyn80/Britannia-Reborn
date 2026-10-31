@@ -19,7 +19,7 @@ public static class EquineFixtures
     private static readonly Dictionary<Mobile, Item> Ankhs = [];
     private static Point3D? BovineArena;
 
-    private static bool PrepareBovineArena(Mobile owner)
+    internal static bool PrepareBovineArena(Mobile owner)
     {
         if (BovineArena != null) return true;
         var map = owner.Map;

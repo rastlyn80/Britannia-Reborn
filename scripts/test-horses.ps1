@@ -1,4 +1,4 @@
-param([switch]$Live,[switch]$SkipContact,[switch]$Gpu,[switch]$Equines,[switch]$Ostards,[switch]$EquineCompletion,[switch]$LlamaCompletion,[switch]$Ethics,[switch]$Bovines)
+param([switch]$Live,[switch]$SkipContact,[switch]$Gpu,[switch]$Equines,[switch]$Ostards,[switch]$EquineCompletion,[switch]$LlamaCompletion,[switch]$Ethics,[switch]$Bovines,[string]$CreatureFamily='')
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent
 $godot=(Get-ChildItem "$root/.tools/godot/*console.exe"|Select-Object -First 1).FullName
@@ -23,6 +23,7 @@ try {
  if (!$Live) { return }
  $runtime=Join-Path $root 'work/horse-session/server'
  if ($Ethics) {$runtime=Join-Path $root ('work/ethics-session/'+[Guid]::NewGuid().ToString('N')+'/server')}
+ if ($CreatureFamily) {$runtime=Join-Path $root ('work/creature-session/'+[Guid]::NewGuid().ToString('N')+'/server')}
  $probe=[Net.Sockets.TcpClient]::new()
  try {
   $connection=$probe.ConnectAsync('127.0.0.1',2594)
@@ -35,14 +36,18 @@ try {
  Get-ChildItem "$root/Server/runtime/Assemblies" -File -Filter '*.dll' | Where-Object { $_.Name -ne 'UltimaClone.PreviewTools.dll' } | Copy-Item -Destination "$runtime/Assemblies" -Force
  Copy-Item "$root/Server/runtime/Data" -Destination $runtime -Recurse -Force
  Copy-Item "$root/Server/runtime/Configuration/expansion.json" "$runtime/Configuration/expansion.json" -Force
- if ($Ethics -or $EquineCompletion -or $Bovines) {
+ if ($Ethics -or $EquineCompletion -or $Bovines -or $CreatureFamily) {
   & python -B "$root/scripts/prepare-server-fixes.py" --verify-only
   if ($LASTEXITCODE) {throw 'Server overlay input audit failed'}
   $receipt=Get-Content "$root/work/server-fixes/build-manifest.json" -Raw|ConvertFrom-Json
   $fixedContent=Join-Path $root 'Server/ModernUO/Distribution/Assemblies/UOContent.dll'
-  if ((Get-FileHash "$root/Server/fixes/ethics-registry.json" -Algorithm SHA256).Hash.ToLowerInvariant() -ne $receipt.recipe_sha256) {throw 'Rebuild the reviewed content after changing its fix recipe'}
-  if ((Get-FileHash $fixedContent -Algorithm SHA256).Hash.ToLowerInvariant() -ne $receipt.assembly_sha256) {throw 'Build scripts/build-server.ps1 before the ethics tests'}
+  & python -B "$root/scripts/prepare-server-fixes.py" --check-build
+  if ($LASTEXITCODE) {throw 'Rebuild the reviewed content after changing any baseline or approved local recipe'}
   Copy-Item -LiteralPath $fixedContent -Destination "$runtime/Assemblies/UOContent.dll" -Force
+ }
+ if ($CreatureFamily) {
+  & python -B "$root/scripts/prepare-creature-fixtures.py" $CreatureFamily --runtime $runtime
+  if ($LASTEXITCODE) {throw 'Creature native constructor allow-list preparation failed'}
  }
  $dotnet="$root/.tools/dotnet-server/dotnet.exe"
  $env:DOTNET_CLI_HOME=Join-Path $root '.dotnet-home'
@@ -80,9 +85,15 @@ try {
   if ($LlamaCompletion) {$liveArgs+='--llama-completion'}
   if ($Ethics) {$liveArgs+='--ethics-only'}
   if ($Bovines) {$liveArgs+='--bovines'}
+  if ($CreatureFamily) {$liveArgs+="--family=$CreatureFamily"}
   $started=[DateTime]::UtcNow
-  & $godot --headless --path Viewer --script $(if ($Ostards -or $EquineCompletion -or $LlamaCompletion -or $Ethics -or $Bovines) {'res://Network/OstardLive.gd'} elseif ($Equines) {'res://Network/EquineLive.gd'} else {'res://Network/HorseLive.gd'}) -- @liveArgs
+  & $godot --headless --path Viewer --script $(if ($CreatureFamily) {'res://Network/CreatureLive.gd'} elseif ($Ostards -or $EquineCompletion -or $LlamaCompletion -or $Ethics -or $Bovines) {'res://Network/OstardLive.gd'} elseif ($Equines) {'res://Network/EquineLive.gd'} else {'res://Network/HorseLive.gd'}) -- @liveArgs
   if ($LASTEXITCODE) { throw 'Native isolated horse integration test failed' }
+  if ($CreatureFamily) {
+   $report=Join-Path $root "outputs/creatures/$CreatureFamily/live.json"
+   if (!(Test-Path $report) -or (Get-Item $report).LastWriteTimeUtc -lt $started.AddSeconds(-1)) {throw 'Creature native test did not write fresh evidence'}
+   if ((Get-Content $report -Raw|ConvertFrom-Json).failures -ne 0) {throw 'Creature native integration reported failures'}
+  }
   if ($EquineCompletion -or $LlamaCompletion -or $Ostards -or $Ethics -or $Bovines) {
    $reportName=if ($Bovines) {'bovine-live.json'} elseif ($Ethics) {'ethics-live.json'} elseif ($EquineCompletion) {'equine-completion-live.json'} elseif ($LlamaCompletion) {'llama-completion-live.json'} else {'live-validation.json'}
    $report=Join-Path $root "outputs/ostard-riding/$reportName"

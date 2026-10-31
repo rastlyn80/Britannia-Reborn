@@ -1,3 +1,5 @@
+Latest 31 October wildlife checkpoint: [26 forms and the generic creature pipeline](CREATURE_WILDLIFE.md). The source inventory now includes SeaCreatures (150 meshes / 54 filename groups); older dated counts below remain historical. Work continues across all families without routine review gates.
+
 Latest 31 October checkpoint: [ethical steed repair and four bovine bodies](ETHICS_AND_BOVINES.md). Positive holy/unholy riding and saved-player restoration now pass native disposable-server tests. The production server loads the reviewed fix on its next normal start; existing settings are preserved. Four bovine appearances have modernised source rigs, native actions/hues/corpses and real two-client evidence. Earlier dated checkpoints remain below as history.
 
 # All-creature modernisation programme

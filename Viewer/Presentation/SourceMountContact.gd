@@ -3,8 +3,10 @@ extends SkeletonModifier3D
 var feet: Array=[]
 var contacts: Dictionary={}
 var errors: Array=[]
+var stance_gaps: Array[float]=[]
 var origin_y:=0.
 var enabled:=true
+var iterations:=1
 var surface: MeshInstance3D
 var arrays: Array
 func bone(suffix: String) -> int:
@@ -17,6 +19,7 @@ func configure(mesh: MeshInstance3D,quadruped: bool) -> void:
 	var rig:=get_skeleton()
 	for side in ["l","r"]:
 		var chains: Array=[[side+" thigh",side+" calf",side+" horselink",side+" foot"]]
+		if bone(side+" horselink")<0:chains=[[side+" thigh",side+" calf",side+" foot",side+" foot"]]
 		if quadruped:chains.append([side+" upperarm",side+" forearm",side+" hand",side+" hand"])
 		for chain in chains:
 			var record:={"a":bone(chain[0]),"b":bone(chain[1]),"c":bone(chain[2]),"end":bone(chain[3]),"vertices":[]}
@@ -58,15 +61,20 @@ func aim(a: int,b: int,target: Vector3) -> void:
 	if direction.length_squared()>.000001 and goal.length_squared()>.000001:pose.basis=Basis(Quaternion(direction.normalized(),goal.normalized()))*pose.basis;rig.set_bone_global_pose(a,pose)
 func _process_modification_with_delta(_delta: float) -> void:
 	errors.clear()
+	stance_gaps.clear()
 	if not enabled or surface==null:return
 	var rig:=get_skeleton();var inverse:=rig.global_transform.affine_inverse()
 	for i in feet.size():
 		if not contacts.has(i):continue
 		var record: Dictionary=feet[i];var p:=sole(record);var hit: Dictionary=contacts[i]
 		var strength:=1.-smoothstep(.025,.16,maxf(0.,p.y-origin_y))
-		var shift:=clampf(hit.position.y-p.y,-.24,.24)*strength
-		var a:=rig.get_bone_global_pose(record.a).origin;var b:=rig.get_bone_global_pose(record.b).origin;var c:=rig.get_bone_global_pose(record.c).origin
-		var target: Vector3=inverse*(rig.to_global(c)+Vector3.UP*shift)
-		var knee:=preload("res://Presentation/FootContact.gd").knee_target(a,b,c,target)
-		aim(record.a,record.b,knee);aim(record.b,record.c,target)
-		if strength>.95:errors.append(absf(sole(record).y-hit.position.y))
+		for iteration in maxi(1,iterations):
+			p=sole(record)
+			var shift:=clampf(hit.position.y-p.y,-.24,.24)*strength
+			var a:=rig.get_bone_global_pose(record.a).origin;var b:=rig.get_bone_global_pose(record.b).origin;var c:=rig.get_bone_global_pose(record.c).origin
+			var target: Vector3=inverse*(rig.to_global(c)+Vector3.UP*shift)
+			var knee:=preload("res://Presentation/FootContact.gd").knee_target(a,b,c,target)
+			aim(record.a,record.b,knee);aim(record.b,record.c,target)
+		if strength>.95:
+			var gap: float=sole(record).y-hit.position.y
+			errors.append(absf(gap));stance_gaps.append(gap)

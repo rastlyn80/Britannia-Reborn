@@ -11,4 +11,5 @@
       <Compile Include="$(MSBuildThisFileDirectory)..\..\work\server-fixes\Player.cs" Link="Engines\Ethics\Core\Player.cs" />
     </ItemGroup>
   </Target>
+  <Import Project="$(MSBuildThisFileDirectory)..\..\work\server-fixes\LocalFixes.targets" Condition="Exists('$(MSBuildThisFileDirectory)..\..\work\server-fixes\LocalFixes.targets')" />
 </Project>

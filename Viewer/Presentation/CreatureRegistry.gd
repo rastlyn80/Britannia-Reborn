@@ -1,0 +1,23 @@
+extends RefCounted
+## The accepted index is generated locally only after skin and GPU validation.
+const Visual=preload("res://Presentation/CreatureVisual.gd")
+static var entries: Dictionary={}
+static var loaded:=false
+static func load_index() -> void:
+	if loaded:return
+	loaded=true
+	var path:="res://local-art/creatures/accepted-index.json"
+	if not FileAccess.file_exists(path):return
+	var value: Variant=JSON.parse_string(FileAccess.get_file_as_string(path))
+	if not value is Dictionary:return
+	for record: Dictionary in value.get("entries",[]):
+		if record.get("status","")!="validated":continue
+		for identity: Dictionary in record.get("bodies",[]):entries[int(identity.body)]=record
+static func entry(body: int) -> Dictionary:
+	load_index();return entries.get(body,{})
+static func supports_body(body: int) -> bool:
+	var record:=entry(body)
+	return not record.is_empty() and ResourceLoader.exists("res://local-art/creatures/"+str(record.kind)+"-modern.gltf")
+static func create(body: int) -> Node3D:
+	var result:=Visual.new();result.entry=entry(body);return result
+static func matches(visual: Node3D,body: int) -> bool:return visual is Visual and visual.kind==str(entry(body).get("kind",""))
