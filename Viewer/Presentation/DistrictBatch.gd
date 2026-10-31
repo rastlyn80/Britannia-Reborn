@@ -46,7 +46,10 @@ func collect(node: Node3D, parent: Transform3D, far: bool = false, source: Strin
  if node.has_meta("kind"): far = node.get_meta("kind") in ["wall","window","corner","gable","trim","beam","arch","pillar","post","floor","landing","stairs","roof","door","fence","asset"]
  if node.get_meta("kind","") in ["tree","sign","water"]: return
  var transform := parent*node.transform
- var placed_model: bool = node is MeshInstance3D and node.mesh and not str(node.get_meta("kind","")) in ARCHITECTURE and vertex_count(node.mesh) > MERGE_VERTEX_LIMIT
+ # A model loaded from the art library is the same model wherever it stands:
+ # always instanced, however small (merged copies of small scans were 2.6 GB
+ # of Trammel). Generated pieces merge below MERGE_VERTEX_LIMIT.
+ var placed_model: bool = node is MeshInstance3D and node.mesh and not str(node.get_meta("kind","")) in ARCHITECTURE and (vertex_count(node.mesh) > MERGE_VERTEX_LIMIT or node.mesh.resource_path.begins_with("res://Art/"))
  if node is MeshInstance3D and node.mesh and not placed_model:
   for i in node.mesh.get_surface_count():
    var material: Material = node.get_active_material(i)

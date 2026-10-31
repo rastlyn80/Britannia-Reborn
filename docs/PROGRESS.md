@@ -1211,6 +1211,13 @@ Saved graceful restart loaded 297 items and 3 mobiles. Population remains idempo
 
 # Progress — 25 October 2026
 
+## 31 October 2026 - Distance haze and the compression pass (docs/COMPACT_STREAMING.md)
+
+- Haze (owner: the horizon was too bright and showed low-detail distant geometry): LightingRig depth fog now starts at 35 m and closes by 420 m (was 70-700 m), takes more of the sky's colour (aerial perspective 0.8, sky affect 0.45), uses a darker blue-grey with a soft sun glow, and the horizon sky is less bright. Same depth fog, no extra cost. Before/after renders over Britain: distant flat patches now dissolve into air while the city stays crisp.
+- Compression, measured first: the 14 GB library was not duplicating models; 93% of its bytes were per-district meshes. Changes: art-library models are always instanced (small scans had been merged into every district: about 2.6 GB); terrain and sea are indexed (about 6x fewer vertices; Godot's position compression was rejected because it broke exact district seams); sea rows merge into quads; flat sea bed is not subdivided; detailed solids collide as boxes (arches, doors, stairs, landings, bridges and fences stay exact); FinalizeFacet --prune-models removes unreferenced library models. Live-edit positions stay exact (no GPU readback, exact undo).
+- Samples (district plus referenced models): open sea 470 to 145 KB; coast 4.5 to 4.1 MB; Britain 5.0 to 4.0 MB; Covetous mountains 6.2 to about 3.8 MB.
+- Evidence: ArtFidelityTests and SurfacePolishTests updated for merged/indexed meshes; RegionalSeamTests 20/20; DevEditTests 79/0; scripts/verify.ps1 passed.
+
 ## 31 October 2026 - Splitting stacks
 
 - Dropping a stack (into the backpack, a container, a trade or onto the world) asks how many to move, as in the original client: Viewer/Network/AmountPrompt.gd offers the whole stack with a slider, Half/All, Enter to move and Escape to cancel; holding Shift moves the whole stack without asking. Part of a stack can be dropped back into its own container to split it there. GameSession.move_item lifts the chosen amount (0x07) and keeps it for ground retries.

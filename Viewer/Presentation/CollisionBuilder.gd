@@ -9,6 +9,11 @@ var trunks: Array[Vector3] = []
 # collision of every model was most of a district's size
 # (docs/COMPACT_STREAMING.md).
 const EXACT_TRIANGLE_LIMIT := 300
+# Everything more detailed than a box collides as its box (walls with carved
+# frames, roofs, furniture); only pieces the camera passes through or climbs
+# keep their triangles, up to EXACT_TRIANGLE_LIMIT.
+const BOX_TRIANGLE_LIMIT := 12
+const EXACT_KINDS := ["arch","door","stairs","landing","bridge","fence"]
 var boxes: Array = []   # [Transform3D, Vector3 size]
 
 func add_visual(node: Node3D) -> void:
@@ -17,7 +22,7 @@ func add_visual(node: Node3D) -> void:
 	var key := Vector2i(int(floor(node.position.x/16)),int(floor(node.position.z/16)))
 	var faces := PackedVector3Array()
 	_collect(node,Transform3D.IDENTITY,faces)
-	if faces.size()/3 > EXACT_TRIANGLE_LIMIT:
+	if faces.size()/3 > (EXACT_TRIANGLE_LIMIT if str(node.get_meta("kind","")) in EXACT_KINDS else BOX_TRIANGLE_LIMIT):
 		# Bounds in the node's own frame, so the box turns with it.
 		var inverse := node.transform.affine_inverse()
 		var box := AABB(inverse*faces[0],Vector3.ZERO)

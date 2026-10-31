@@ -5,7 +5,7 @@ extends "res://Presentation/BakeStreaming.gd"
 # district limit. Kept apart from BakeStreaming.gd on purpose: that script is
 # part of every district's stamp, so editing it would mark the whole facet out
 # of date; this one reuses its signature and helpers unchanged.
-#   godot --headless --path Viewer --script res://Presentation/FinalizeFacet.gd -- --dataset=<dir> --modern-britain
+#   godot --headless --path Viewer --script res://Presentation/FinalizeFacet.gd -- --dataset=<dir> --modern-britain [--prune-models]
 # --accept-unchanged re-stamps districts whose baked files exist but whose
 # stamp predates a code change. Only for a change verified not to alter map
 # geometry (e.g. 31 October 2026: Reconstruction.gd gained a corpse branch for
@@ -68,4 +68,30 @@ func run() -> void:
 	var file := FileAccess.open(index_path+".pending",FileAccess.WRITE);file.store_string(JSON.stringify(index));file.close()
 	assert(DirAccess.rename_absolute(index_path+".pending",index_path) == OK)
 	print("FACET FINALIZED: %d districts, %d horizon tiles, %d catalog rules; %d re-stamped as unchanged" % [entries.size(),macro_entries.size(),catalog.size(),accepted])
+	if "--prune-models" in OS.get_cmdline_user_args(): prune_models()
 	quit()
+
+# A rebake in place writes new library models beside the old ones; remove the
+# models no district, middle-distance or horizon file references any more.
+func prune_models() -> void:
+	var folder := output.path_join("models")
+	if not DirAccess.dir_exists_absolute(folder): return
+	var used := {}
+	var scenes := 0
+	for name in DirAccess.get_files_at(output):
+		if not name.ends_with(".res") or not (name.begins_with("near_") or name.begins_with("far_") or name.begins_with("macro_")): continue
+		scenes += 1
+		for dependency in ResourceLoader.get_dependencies(output.path_join(name)):
+			var path: String = dependency.get_slice("::",2) if "::" in dependency else dependency
+			if path.begins_with("uid://"): path = ResourceUID.get_id_path(ResourceUID.text_to_id(path))
+			if "/models/" in path: used[path.get_file()] = true
+	if scenes == 0 or used.is_empty():
+		push_warning("Model prune skipped: no references found")
+		return
+	var removed := 0
+	var freed := 0
+	for name in DirAccess.get_files_at(folder):
+		if used.has(name) or not name.ends_with(".res"): continue
+		freed += FileAccess.get_size(folder.path_join(name))
+		if DirAccess.remove_absolute(folder.path_join(name)) == OK: removed += 1
+	print("MODELS PRUNED: %d unreferenced removed (%.2f GB), %d kept" % [removed,freed/1073741824.0,used.size()])

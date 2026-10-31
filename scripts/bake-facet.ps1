@@ -68,6 +68,6 @@ while ($next -lt $windows.Count -or $running.Count -gt 0) {
 }
 if ($failed.Count) { throw "$($failed.Count) window(s) failed: $($failed -join ', '). Rerun to resume." }
 # Publishing plans nothing, so it has no district limit (FinalizeFacet.gd).
-Get-Content -LiteralPath $noInput | & $godot --headless --path "$root/Viewer" --script res://Presentation/FinalizeFacet.gd -- "--dataset=$data" @mode
+Get-Content -LiteralPath $noInput | & $godot --headless --path "$root/Viewer" --script res://Presentation/FinalizeFacet.gd -- "--dataset=$data" --prune-models @mode
 if ($LASTEXITCODE) { throw 'Finalize (index and horizon) failed' }
 Write-Output ("Facet bake complete in {0:N0} min." -f ((Get-Date) - $started).TotalMinutes)

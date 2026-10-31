@@ -120,12 +120,14 @@ func configure(scene: Node3D,world: Dictionary,reconstruction,map_view: bool, de
  # thickening toward the horizon and taking the sky's colour (aerial
  # perspective), so far roofs and hills soften instead of showing low detail.
  environment.fog_mode = Environment.FOG_MODE_DEPTH
- environment.fog_depth_begin = 70.0
- environment.fog_depth_end = 700.0
- environment.fog_depth_curve = 1.6
- environment.fog_density = 0.55
- environment.fog_aerial_perspective = 0.6
- environment.fog_sky_affect = 0.2
+ environment.fog_depth_begin = 35.0
+ environment.fog_depth_end = 420.0
+ environment.fog_depth_curve = 1.25
+ environment.fog_density = 0.85
+ environment.fog_aerial_perspective = 0.8
+ environment.fog_sky_affect = 0.45
+ # A soft glow toward the sun, so the haze reads as air, not grey paint.
+ environment.fog_sun_scatter = 0.18
  # No depth-of-field: the far blur read as a blurry screen and cost frame time.
  # SDFGI/volumetric fog were measured on the StreamingProfile route and made
  # this streamed city GPU-bound (median ~30 ms on an RTX 2070 SUPER); disabled.
@@ -260,10 +262,10 @@ func _apply_atmosphere(minute: float, wet: float, level: float, personal: float)
  environment.ambient_light_energy = lerpf(0.24,0.58,day)*visibility
  # Personal light improves local readability; it never changes astronomical time.
  environment.tonemap_exposure = 1.05+clampf(personal/31.0,0.0,1.0)*0.25
- environment.fog_light_color = Color("172238").lerp(Color("b4c9d5"),day).lerp(Color("758593"),wet*0.6)
- environment.fog_density = 0.55+wet*0.35
+ environment.fog_light_color = Color("172238").lerp(Color("9fb1bd"),day).lerp(Color("758593"),wet*0.6)
+ environment.fog_density = 0.85+wet*0.15
  sky_material.set_shader_parameter("zenith",Color("071124").lerp(Color("3475a9"),day).lerp(Color("556a7e"),wet*0.75))
- sky_material.set_shader_parameter("horizon",Color("27334d").lerp(Color("d1dfe2"),day).lerp(Color("8b9ba5"),wet*0.7))
+ sky_material.set_shader_parameter("horizon",Color("27334d").lerp(Color("b9c7ce"),day).lerp(Color("8b9ba5"),wet*0.7))
  sky_material.set_shader_parameter("sunlight",sun.light_color)
  sky_material.set_shader_parameter("sun_direction",direction)
  sky_material.set_shader_parameter("daylight",day)
@@ -286,11 +288,12 @@ func _blend() -> void:
  environment.ambient_light_color = Color("c6d4dc").lerp(Color("6a7488"),u)
  environment.fog_light_color = (outdoor.fog as Color).lerp(Color.BLACK,u)
  environment.fog_density = lerpf(float(outdoor.density),1.0,u)
- environment.fog_depth_begin = lerpf(70.0,9.0,u)
- environment.fog_depth_end = lerpf(700.0,46.0,u)
- environment.fog_depth_curve = lerpf(1.6,1.1,u)
- environment.fog_aerial_perspective = lerpf(0.6,0.0,u)
- environment.fog_sky_affect = lerpf(0.2,1.0,u)
+ environment.fog_depth_begin = lerpf(35.0,9.0,u)
+ environment.fog_depth_end = lerpf(420.0,46.0,u)
+ environment.fog_depth_curve = lerpf(1.25,1.1,u)
+ environment.fog_aerial_perspective = lerpf(0.8,0.0,u)
+ environment.fog_sky_affect = lerpf(0.45,1.0,u)
+ environment.fog_sun_scatter = lerpf(0.18,0.0,u)
  environment.tonemap_exposure = float(outdoor.exposure)+0.2*u
  environment.background_mode = Environment.BG_COLOR if u > 0.97 else Environment.BG_SKY
  environment.background_color = Color.BLACK

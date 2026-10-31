@@ -225,7 +225,8 @@ func build(region: Rect2i = Rect2i()) -> ArrayMesh:
    if floor_overrides.has(source_cell): continue
    if land_data.get(str(int(tile.id)),{}).get("name") == "NODRAW": continue
    var corners := [z(source_cell),z(source_cell+Vector2i.RIGHT),z(source_cell+Vector2i.DOWN),z(source_cell+Vector2i.ONE)]
-   var subdivisions := 4 if float(corners.max())-float(corners.min())>0.800001 else 2
+   # Flat sea bed needs no subdivision; banks and slopes keep theirs.
+   var subdivisions := 4 if float(corners.max())-float(corners.min())>0.800001 else (1 if water_cells.has(source_cell) and float(corners.max())-float(corners.min())<0.05 else 2)
    var step: int = SUBDIVISIONS/subdivisions
    for y in subdivisions:
     for x in subdivisions:
@@ -244,20 +245,40 @@ func build(region: Rect2i = Rect2i()) -> ArrayMesh:
       surface.set_uv(at)
       surface.set_uv2(data.mask)
       surface.add_vertex(Vector3(at.x-origin.x,cached(grid),at.y-origin.y))
+ # Compact cache (docs/COMPACT_STREAMING.md): shared grid points become one
+ # indexed vertex. Not vertex-compressed: compressed positions are quantized to
+ # each district's own bounds, so neighbouring districts' edges would no
+ # longer meet exactly.
+ surface.index()
  surface.generate_tangents()
  return surface.commit()
 
-# Flat sea surface over water land at its source elevation, one quad per cell.
+# Flat sea surface over water land at its source elevation: runs of water
+# cells at one level along each row become one quad (an open-sea district is
+# 64 quads, not 4,096), indexed.
 func sea_mesh(region: Rect2i) -> ArrayMesh:
  var surface := SurfaceTool.new()
  surface.begin(Mesh.PRIMITIVE_TRIANGLES)
  var origin := Vector2i(int(world.originX),int(world.originY))
  var count := 0
- for cell in water_cells:
-  if not region.has_point(cell) or not source_ordinals.has(cell) or static_water.has(cell): continue
-  var level := float(samples[cell].z)*float(world.elevationScale)
-  for offset in [Vector2i.ZERO,Vector2i.RIGHT,Vector2i.ONE,Vector2i.ZERO,Vector2i.ONE,Vector2i.DOWN]:
-   surface.set_normal(Vector3.UP)
-   surface.add_vertex(Vector3(cell.x+offset.x-origin.x,level,cell.y+offset.y-origin.y))
-  count += 1
- return surface.commit() if count > 0 else null
+ for y in range(region.position.y,region.end.y):
+  var x := region.position.x
+  while x < region.end.x:
+   var cell := Vector2i(x,y)
+   if not water_cells.has(cell) or not source_ordinals.has(cell) or static_water.has(cell):
+    x += 1
+    continue
+   var level := float(samples[cell].z)*float(world.elevationScale)
+   var end := x+1
+   while end < region.end.x:
+    var next := Vector2i(end,y)
+    if not water_cells.has(next) or not source_ordinals.has(next) or static_water.has(next) or float(samples[next].z)*float(world.elevationScale) != level: break
+    end += 1
+   for corner in [Vector2(x,y),Vector2(end,y),Vector2(end,y+1),Vector2(x,y),Vector2(end,y+1),Vector2(x,y+1)]:
+    surface.set_normal(Vector3.UP)
+    surface.add_vertex(Vector3(corner.x-origin.x,level,corner.y-origin.y))
+   count += 1
+   x = end
+ if count == 0: return null
+ surface.index()
+ return surface.commit()

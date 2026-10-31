@@ -174,7 +174,15 @@ func _initialize() -> void:
  var sea:=Terrain.new();sea.index(sea_world)
  check(is_equal_approx(sea.z(Vector2i(801,800)),-1.0-Terrain.SEABED_DEPTH) and is_equal_approx(sea.z(Vector2i(800,800)),-1.0-Terrain.SEABED_DEPTH-0.45) and is_equal_approx(sea.raw_z(Vector2i(800,800)),-1.0),"Sea land is presented as a bed below its canonical source surface, shelving away from shore")
  var water_mesh: ArrayMesh=sea.sea_mesh(Rect2i(800,800,4,2))
- check(water_mesh!=null and water_mesh.surface_get_array_len(0)==18,"One sea quad per open-water cell, none where a river water object already exists")
+ # Open water at one level along a row is one quad (docs/COMPACT_STREAMING.md):
+ # row 800 stops before the river water object at x=801; row 801 runs 800-801.
+ var sea_arrays: Array=water_mesh.surface_get_arrays(0) if water_mesh else []
+ var row_ends:={}
+ if not sea_arrays.is_empty():
+  for v in sea_arrays[Mesh.ARRAY_VERTEX]:
+   if v.z < 0.5: row_ends[0]=maxf(float(row_ends.get(0,0.0)),v.x)
+   elif v.z < 1.5 and v.z > 0.5: row_ends[1]=maxf(float(row_ends.get(1,0.0)),v.x)
+ check(water_mesh!=null and (sea_arrays[Mesh.ARRAY_INDEX] as PackedInt32Array).size()==12 and is_equal_approx(float(row_ends.get(0,-1)),1.0) and is_equal_approx(float(row_ends.get(1,-1)),2.0),"Open-water rows are merged quads, none where a river water object already exists (%s)" % [row_ends])
  check(sea.z(Vector2i(803,801))<0.0 and is_equal_approx(sea.raw_z(Vector2i(803,801)),0.0),"Terrain under a ground-level plank floor drops below the deck")
  # Stone wall tops are masonry, never the plaster/timber kit model.
  var merlon_world:={"elevationScale":.2,"originX":900,"originY":900,"terrain":[],"statics":[{"x":900,"y":900,"z":40,"id":99}],"staticData":{"99":{"name":"stone wall","height":5,"flags":0x50}},"landData":{}}

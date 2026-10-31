@@ -42,14 +42,16 @@ func run() -> void:
  var normalized := true
  for normal in normals: normalized=normalized and absf(normal.length()-1.0)<0.001 and normal.y>0
  check(normalized,"smooth terrain normals stay finite, normalized and upward")
+ # Terrain is indexed (docs/COMPACT_STREAMING.md): walk its triangles.
  var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+ var indices: PackedInt32Array = arrays[Mesh.ARRAY_INDEX]
  var area := 0.0
- for i in range(0,vertices.size(),3):
-  var a := Vector2(vertices[i].x,vertices[i].z)
-  var b := Vector2(vertices[i+1].x,vertices[i+1].z)
-  var c := Vector2(vertices[i+2].x,vertices[i+2].z)
+ for i in range(0,indices.size(),3):
+  var a := Vector2(vertices[indices[i]].x,vertices[indices[i]].z)
+  var b := Vector2(vertices[indices[i+1]].x,vertices[indices[i+1]].z)
+  var c := Vector2(vertices[indices[i+2]].x,vertices[indices[i+2]].z)
   area+=absf((b-a).cross(c-a))*0.5
- check(is_equal_approx(area,36.0) and vertices.size()>6*6*4*6,"adaptive bank subdivisions retain complete source-cell coverage")
+ check(is_equal_approx(area,36.0) and indices.size()>6*6*4*6 and vertices.size()<indices.size(),"adaptive bank subdivisions retain complete source-cell coverage, with shared vertices")
  check(shore.field[Vector2i(103,202)].distance<0 and shore.field[Vector2i(104,202)].distance>0,"shore field distinguishes dry bank and water interior")
  check(is_equal_approx(shore.field[Vector2i(105,203)].depth,2.0) and is_equal_approx(shore.field[Vector2i(103,203)].level,-1.0),"shore depth and nearby wet-edge elevation use source water levels")
  check(shore.image.get_pixel(5,3).r>0 and shore.image.get_pixel(3,3).r<0,"linear floating-point shore texture preserves signed distances")

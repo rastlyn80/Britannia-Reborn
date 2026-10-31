@@ -83,6 +83,38 @@ The first full Trammel bake keeps the format above, so the map can be tested. It
 
 The stamp-based bake rebakes only what each step changes. A step is done when its measured saving is recorded here.
 
+## Compression pass for the second bake (31 October 2026)
+
+**Measured first:** what the 14 GB actually is. A sample of 80 districts plus 2,500 library models showed the library was not duplicating models: 93% of its bytes were meshes unique to one district. Projected over Trammel:
+
+| Part | Size |
+|---|---:|
+| District files | 5.4 GB (in a city district, mostly exact collision triangles) |
+| Terrain | 3.9 GB (unindexed triangle lists) |
+| Small scanned models merged vertex by vertex into each district | 2.6 GB |
+| Instanced and foliage sources | 2.3 GB |
+| Sea | 0.1 GB |
+
+**Changes, step by step:**
+- **Step 4, deduplication (the real cause):** a model loaded from the art library is always instanced (`DistrictBatch`), however small. Only generated pieces and architecture merge.
+- **Step 1, ocean:** sea runs along each row become one quad (an open-sea district goes from 4,096 cells to 64 quads). Flat sea bed is not subdivided.
+- **Step 3, vertex compression, applied as indexing:** terrain and sea are indexed, so each grid point is one vertex: about 6× fewer vertices and half the bytes.
+  - Godot's attribute compression saved only 12% more. It quantizes positions to each mesh's own bounds, so district edges no longer met exactly (`RegionalSeamTests`), so it is not used.
+- **Collision:** solids more detailed than a box (over 12 triangles) collide as their oriented box. Arches, doors, stairs, landings, bridges and fences keep exact triangles up to 300.
+- **Step 2, live-edit data: kept exact.** Hiding a static must not read back from the GPU, and undo must restore the exact baked vertices (`DevEditTests`), so the stored positions are not quantized. They shrink anyway, because instanced models no longer need them.
+- **Clean-up:** `FinalizeFacet --prune-models` removes library models nothing references after a rebake in place (`scripts/bake-facet.ps1` passes it).
+
+**Measured on sample districts** (district file plus the library models it references):
+
+| District | Before | After |
+|---|---:|---:|
+| Open sea (1472,1792) | 470 KB | 145 KB |
+| Coast (1536,1984) | 4.5 MB | 4.1 MB |
+| Britain (1472,1600) | 5.0 MB | 4.0 MB |
+| Covetous mountains (2432,896) | 6.2 MB | about 3.8 MB |
+
+The measured facet total replaces these estimates after the bake.
+
 ## First full Trammel bake (31 October 2026)
 
 All 7,168 districts, the dungeons in the east included, baked with `scripts/bake-facet.ps1` (112 windows, two at a time) and published by `FinalizeFacet.gd`.
