@@ -38,7 +38,7 @@ func run() -> void:
 						if Vector3(a.r-b.r,a.g-b.g,a.b-b.b).length()>.025:changed+=1
 				check(occupied>150,"Actual creature surface visible: "+str(record.kind))
 				check(float(changed)/maxi(1,occupied)>.35,"Native full hue visibly recolours actual creature: "+str(record.kind))
-				rows.append({"kind":record.kind,"clip":clip,"angle":angle,"occupied_pixels":occupied,"dyed_fraction":float(changed)/maxi(1,occupied),"asset_sha256":FileAccess.get_sha256("res://local-art/creatures/"+str(record.kind)+"-modern.gltf")})
+				rows.append({"kind":record.kind,"clip":clip,"angle":angle,"occupied_pixels":occupied,"dyed_fraction":float(changed)/maxi(1,occupied),"asset_sha256":FileAccess.get_sha256("res://local-art/creatures/"+str(record.kind)+"-modern.gltf"),"import_sha256":FileAccess.get_sha256("res://local-art/creatures/"+str(record.kind)+"-modern.gltf.import")})
 		actor.free()
 	check(not rows.is_empty(),"At least one model rendered")
 	var folder:="res://../outputs/creatures/"+family;DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(folder))

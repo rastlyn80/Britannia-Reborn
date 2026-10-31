@@ -58,6 +58,7 @@ func run() -> void:
 				if not check(await until(func():return int(session.entities[serial].hue)==hue and int(observer.entities[serial].hue)==hue),"native full/partial hues reach both clients"):return
 				actor.apply_server_appearance(session.entities[serial],[])
 				if not check(actor.horse_visual.native_hue==hue,"actual creature retains exact raw hue bits"):return
+			var rooted:=false
 			for running in [false,true]:
 				var start:=Time.get_ticks_msec()
 				while Time.get_ticks_msec()-start<800:await process_frame
@@ -65,18 +66,28 @@ func run() -> void:
 				response=await reply(sex,"step "+("1" if running else "0"),"UCCREATURE|step|")
 				if response.is_empty():return
 				fields=response.split("|");var target:=Vector2i(int(fields[2]),int(fields[3]))
+				if response.ends_with("|immobile"):
+					rooted=true
+					if not check(target==origin and Vector2i(observer.entities[serial].x,observer.entities[serial].y)==origin,"native rooted creature refuses movement on both clients"):return
+					if not check(actor.horse_visual.current_clip=="Idle","rooted creature stays in its resting presentation"):return
+					continue
 				if not check(target!=origin and await until(func():return Vector2i(session.entities[serial].x,session.entities[serial].y)==target and Vector2i(observer.entities[serial].x,observer.entities[serial].y)==target),"actual native Move changes coordinates on both clients"):return
 				if not check(bool(session.entities[serial].running)==running and bool(observer.entities[serial].running)==running,"native walk/run flags replicate"):return
 				actor.animate(true,0.,.1,6.8 if session.entities[serial].running else 1.8)
 				if not check(actor.horse_visual.current_clip==("Run" if running else "Walk"),"received gait drives matching source replacement"):return
 			var animal:=str(candidate.profile) in ["animal","sea"]
-			for action in ([5,9,3,11,-1] if animal else [4,17,-1]):
+			var actions: Array=[5,9,3,11,-1] if animal else [4,17,-1]
+			if not animal:
+				for extra in [[5,"Attack2"],[6,"Attack3"],[12,"Cast"],[-2,"Cast"],[19,"Fly"],[20,"Land"]]:
+					if actor.horse_visual.animator.has_animation(extra[1]):actions.append(extra[0])
+			for action in actions:
 				session.last_mobile_actions.erase(serial);observer.last_mobile_actions.erase(serial)
 				await reply(sex,"action "+str(action),"UCCREATURE|action|")
 				if not check(await until(func():return session.last_mobile_actions.has(serial) and observer.last_mobile_actions.has(serial)),"native action reaches both clients"):return
 				if not check(actor.receive_native_action(session.last_mobile_actions[serial]),"actual creature consumes native action"):return
-				var expected:=str({5:"Attack",9:"Fidget",3:"Eat",11:"LieDown",-1:"Hit"}.get(action,"")) if animal else str({4:"Attack",17:"Fidget",-1:"Hit"}.get(action,""))
+				var expected:=str({5:"Attack",9:"Fidget",3:"Eat",11:"LieDown",-1:"Hit"}.get(action,"")) if animal else str({4:"Attack",5:"Attack2",6:"Attack3",12:"Cast",-2:"Cast",17:"Fidget",-1:"Hit",19:"Fly",20:"Land"}.get(action,""))
 				if not check(actor.horse_visual.current_clip==expected,"native action selects the intended category"):return
+				if expected=="Fly" and not check(not actor.horse_visual.contact.enabled,"airborne source clip releases foot contact"):return
 			response=await reply(sex,"kill","UCCREATURE|corpse|")
 			if response.is_empty():return
 			var corpse:=int(response.split("|")[2])
@@ -93,7 +104,7 @@ func run() -> void:
 				holder.queue_free();presenter.hint.queue_free();presenter.queue_free()
 			actor.queue_free()
 			await process_frame
-			records.append({"female":sex==1,"body":body,"native_class":native_class,"kind":candidate.kind,"corpse_suppressed":corpse==0})
+			records.append({"female":sex==1,"body":body,"native_class":native_class,"kind":candidate.kind,"corpse_suppressed":corpse==0,"movement":"Native AI refuses movement" if rooted else "Native Mobile.Move walk/run"})
 			await reply(sex,"cleanup","UCCREATURE|cleaned")
 	for session in sessions:session.close()
 	var folder:="res://../outputs/creatures/"+family;DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(folder))

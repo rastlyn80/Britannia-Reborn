@@ -20,7 +20,21 @@ td=importlib.util.module_from_spec(spec);spec.loader.exec_module(td)
 ARCHIVE_HASH='d872d59a4d3f92c82672bbadb98ae44772e42b44dacb4a28a1fdf39cf121dc0e'
 
 
-def repair_invalid_normals(raw):
+def coincident_surface_vector(model, normal_index):
+    """Approximate a collapsed bind seam's normal without removing its faces."""
+    anchors={tuple(model['points'][face[corner]]) for face in model['polygons']
+             for corner in range(3) if face[corner+3]==normal_index}
+    total=[0.,0.,0.]
+    for face in model['polygons']:
+        vertices=[model['points'][index] for index in face[:3]]
+        if not any(tuple(point) in anchors for point in vertices):continue
+        a,b,c=vertices;u=[b[i]-a[i] for i in range(3)];v=[c[i]-a[i] for i in range(3)]
+        cross=(u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0])
+        total=[x+y for x,y in zip(total,cross)]
+    return total
+
+
+def repair_invalid_normals(raw, allow_coincident_seams=False):
     patched=bytearray(raw);invalid=[];normal_offset=None
     for tag,payload,_ in td.chunks(raw):
         if tag!=0xca5e0802:continue
@@ -43,13 +57,16 @@ def repair_invalid_normals(raw):
             if index in sums:sums[index]=[x+y for x,y in zip(sums[index],cross)]
             else:score+=sum(x*y for x,y in zip(model['normals'][index],cross))
     td.require(abs(score)>1e-12,'Cannot establish winding from finite source normals')
-    unused=[]
+    unused=[];coincident=[]
     referenced={index for pi,polygon in enumerate(model['polygons']) if pi not in dropped for index in polygon[3:6]}
     for index,value in sums.items():
         length=math.sqrt(sum(x*x for x in value))
         if index not in referenced:
             unused.append(index);value=[0.,0.,1.]
         else:
+            if length<=1e-12 and allow_coincident_seams:
+                value=coincident_surface_vector(model,index);length=math.sqrt(sum(x*x for x in value))
+                if length>1e-12:coincident.append(index)
             td.require(length>1e-12,'Referenced invalid normal has no usable incident surface')
             value=[x/length*(1 if score>0 else -1) for x in value]
         struct.pack_into('<3f',patched,normal_offset+index*12,*value)
@@ -58,7 +75,7 @@ def repair_invalid_normals(raw):
         if key!='normals':td.require(before[key]==repaired[key],'Normal repair altered '+key)
     repaired['polygons']=[p for i,p in enumerate(repaired['polygons']) if i not in dropped]
     repaired['texture_polygons']=[p for i,p in enumerate(repaired['texture_polygons']) if i not in dropped]
-    return repaired,{'normal_indices':invalid,'unused_indices_after_pruning':unused,'dropped_repeated_vertex_faces':dropped,'count':len(invalid),'method':'Drop only faces with repeated vertex indices (zero area under every pose). Incident-face normals retain source winding. Unreferenced invalid normals get finite placeholders; not used by exported triangles. Positions, UV coordinates, bones, weights and all other parsed fields unchanged','patched_sha256':hashlib.sha256(patched).hexdigest()}
+    return repaired,{'normal_indices':invalid,'unused_indices_after_pruning':unused,'coincident_seam_approximations':coincident,'dropped_repeated_vertex_faces':dropped,'count':len(invalid),'method':'Drop only faces with repeated vertex indices (zero area under every pose). Incident-face normals retain source winding. Opt-in coincident bind seams use adjacent incident normals as an authored approximation; their faces and weights remain intact. Unreferenced invalid normals get unused finite placeholders. Positions, UV coordinates, bones, weights and all other parsed fields unchanged','patched_sha256':hashlib.sha256(patched).hexdigest()}
 
 
 def main():

@@ -55,7 +55,7 @@ def finite(values):
     require(all(math.isfinite(x) for x in values), 'Non-finite GRN numeric value')
 
 
-def parse(data, animations_only=False, scene_root_names=False, skip_unskinned_helpers=False, scale_shear_tracks=False):
+def parse(data, animations_only=False, scene_root_names=False, skip_unskinned_helpers=False, scale_shear_tracks=False, retained_bone_names=None):
     result = dict(points=[], normals=[], uv_sets=[], polygons=[], texture_polygons=[],
                   bones=[], weights=[], ties=[], tracks=[])
     texts, objects, tie_objects, bone_objects, texture_ids = [], [], [], [], []
@@ -185,9 +185,25 @@ def parse(data, animations_only=False, scene_root_names=False, skip_unskinned_he
     for i, bone in enumerate(result['bones']):
         require(bone['parent'] < len(result['bones']), 'Bone parent outside skeleton')
         bone['name'] = object_name(bone_objects[i] - 1)
+    names=[b['name'] for b in result['bones']]
+    duplicates={name for name in names if names.count(name)>1}
+    if duplicates and animations_only and retained_bone_names is not None:
+        normal=lambda name:name.replace('_','')
+        retained={normal(name) for name in retained_bone_names}
+        require(not any(normal(name) in retained for name in duplicates),'Duplicate bone names')
+        # This opt-in applies only to exporter subtrees that the target mesh
+        # does not use. Never omit an ancestor of a retained source joint.
+        require(all(normal(result['bones'][b['parent']]['name']) in retained
+                    for b in result['bones'] if normal(b['name']) in retained),
+                'Duplicate auxiliary repair cannot omit an intermediary')
+        result['omitted_duplicate_auxiliary_names']=sorted(duplicates)
+        for i,bone in enumerate(result['bones']):
+            if bone['name'] in duplicates:bone['name']+='__unretained_'+str(i)
     require(len(set(b['name'] for b in result['bones'])) == len(result['bones']), 'Duplicate bone names')
     for track in result['tracks']:
         track['name'] = object_name(track['id'] - 1)
+    if result.get('omitted_duplicate_auxiliary_names'):
+        result['tracks']=[track for track in result['tracks'] if track['name'] not in duplicates]
     result['textures'] = [params[i - 1]['__filename'].replace('\\', '/').rsplit('/', 1)[-1] for i in texture_ids]
     return result
 
@@ -241,7 +257,8 @@ def unit(q):
     return [v / length for v in q]
 
 
-def export_gltf(model, animations, texture, output, height):
+def export_gltf(model, animations, texture, output, height, floor_sample_rate=30, preserve_vertical_clips=()):
+    require(30<=floor_sample_rate<=240,'Floor sampling must stay within 30..240 Hz')
     bones, globals_ = model['bones'], {}
 
     def global_bone(i, visiting=None):
@@ -418,7 +435,11 @@ def export_gltf(model, animations, texture, output, height):
                 return unit([(1 - alpha) * x + alpha * y for x, y in zip(a, b)])
             return [(1 - alpha) * x + alpha * y for x, y in zip(a, b)]
 
-        times = [min(duration, i / 30) for i in range(math.ceil(duration * 30) + 1)]
+        times = [min(duration, i / floor_sample_rate) for i in range(math.ceil(duration * floor_sample_rate) + 1)]
+        if floor_sample_rate!=30:
+            # Fast source falls can cross a narrow extremum between uniform
+            # samples. Retain their original joint key times as well.
+            times=sorted(set(times)|{time for ts,_ in streams.values() for time in ts})
         offsets = []
         for time in times:
             posed = {}
@@ -445,11 +466,19 @@ def export_gltf(model, animations, texture, output, height):
                     height_sum += (rotate(pq, local)[2] + pt[2]) * weight
                 lowest = min(lowest, height_sum)
             offsets.append([0, 0, -lowest])
+        if name in preserve_vertical_clips:
+            # Flying motion must retain the source rise/fall, rather than pin
+            # its lowest vertex to the floor on every frame. Land ends at the
+            # surface; takeoff starts there. Sustained flight has clearance.
+            anchor=offsets[-1 if name=='Land' else 0][2]
+            if name in ['Fly','HitInAir']:anchor=max(value[2] for value in offsets)
+            if name in ['Fly','HitInAir']:anchor+=height*.15/scale
+            offsets=[[0,0,max(anchor,value[2]) if name in ['TakeOff','Land'] else anchor] for value in offsets]
         clip['channels'].append(dict(sampler=len(clip['samplers']), target=dict(node=1, path='translation')))
         clip['samplers'].append(dict(input=accessor(times, 'SCALAR'), output=accessor(offsets, 'VEC3'), interpolation='LINEAR'))
         gltf['animations'].append(clip)
         clip_report[name] = dict(matched_tracks=len(matched), missing=missing, floor_samples=len(times),
-                                 floor_offset_range=[min(v[2] for v in offsets), max(v[2] for v in offsets)])
+                                 floor_sample_rate=floor_sample_rate,floor_policy='source_vertical' if name in preserve_vertical_clips else 'grounded',floor_offset_range=[min(v[2] for v in offsets), max(v[2] for v in offsets)])
     gltf['buffers'] = [dict(byteLength=len(data), uri='data:application/octet-stream;base64,' + base64.b64encode(data).decode())]
     output.write_text(json.dumps(gltf, separators=(',', ':')))
     return dict(source_points=len(model['points']), triangles=len(model['polygons']), bones=len(bones),

@@ -1,5 +1,5 @@
 """Synthetic rig/reader regression tests; no proprietary input required."""
-import copy,importlib.util,math,struct,unittest
+import copy,importlib.util,math,struct,tempfile,unittest
 from pathlib import Path
 from unittest.mock import patch
 
@@ -12,6 +12,72 @@ def bone_payload(parent,scales):
 def matrix(x=1.,y=1.,z=1.):return [x,0.,0.,0.,y,0.,0.,0.,z]
 
 class CreaturePipelineTests(unittest.TestCase):
+    def test_flight_retains_source_vertical_motion_and_sampling_is_bounded(self):
+        bone={'name':'root','parent':0,'translation':[0.,0.,0.],'rotation':[0.,0.,0.,1.]}
+        model={'bones':[bone],'points':[(0.,0.,0.),(1.,0.,0.),(0.,0.,1.)],
+               'normals':[(0.,1.,0.)],'polygons':[(0,1,2,0,0,0)],
+               'uv_sets':[[(0.,0.,0.),(1.,0.,0.),(0.,1.,0.)]],'texture_polygons':[(0,1,2)],
+               'weights':[[(0,1.)]]*3,'ties':[0]}
+        track={'name':'root','translation':{'times':[0.,1.],'values':[[0.,0.,0.],[0.,0.,1.]]},
+               'rotation':{'times':[0.],'values':[[0.,0.,0.,1.]]}}
+        animation={'bones':[bone],'tracks':[track]}
+        test_work=Path(__file__).resolve().parents[1]/'work';test_work.mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(prefix='synthetic-creature-',dir=test_work) as directory:
+            self.assertTrue(Path(directory).resolve().is_relative_to(test_work.resolve()))
+            output=Path(directory)/'synthetic.gltf'
+            ground=p.td.export_gltf(model,{'Fly':animation},b'png',output,1.)
+            flying=p.td.export_gltf(model,{'Fly':animation},b'png',output,1.,preserve_vertical_clips=['Fly'])
+            self.assertNotEqual(*ground['clips']['Fly']['floor_offset_range'])
+            self.assertEqual(*flying['clips']['Fly']['floor_offset_range'])
+            self.assertEqual(flying['clips']['Fly']['floor_policy'],'source_vertical')
+            with self.assertRaisesRegex(ValueError,'30..240'):p.td.export_gltf({}, {},b'',output,1.,floor_sample_rate=10000)
+
+    def test_duplicate_auxiliary_names_require_explicit_unused_subtrees(self):
+        empty=struct.pack('<II',0,0)+b'\0'
+        names=[b'__objectname',b'root',b'aux']
+        table=struct.pack('<II',3,0)+b'\0'.join(names)+b'\0'
+        entries=[(0xca5e0200,empty,[]),(0xca5e0200,table,[])]
+        for object_id,value in enumerate([1,2,2],1):
+            entries += [(0xca5e0f00,b'',[0xca5e0f03]),(0xca5e0f01,struct.pack('<I',0),[0xca5e0f03]),
+                        (0xca5e0f02,struct.pack('<II',0,value),[0xca5e0f03]),
+                        (0xca5e0f04,struct.pack('<I',object_id),[0xca5e0b01]),
+                        (0xca5e0506,bone_payload(0,matrix()),[])]
+        entries.append((0xca5e0c02,struct.pack('<3I',1,2,3),[]))
+        for retained in [None,['aux']]:
+            with patch.object(p.td,'chunks',return_value=iter(entries)):
+                with self.assertRaisesRegex(ValueError,'Duplicate bone'):
+                    p.td.parse(b'',animations_only=True,retained_bone_names=retained)
+        with patch.object(p.td,'chunks',return_value=iter(entries)):
+            result=p.td.parse(b'',animations_only=True,retained_bone_names=['root'])
+        self.assertEqual(result['omitted_duplicate_auxiliary_names'],['aux'])
+        self.assertEqual(len({bone['name'] for bone in result['bones']}),3)
+        # A retained joint parented beneath an auxiliary node must stay blocked.
+        changed=list(entries);index=next(i for i,(kind,_,_) in enumerate(changed) if kind==0xca5e0506)
+        changed[index]=(0xca5e0506,bone_payload(1,matrix()),[])
+        with patch.object(p.td,'chunks',return_value=iter(changed)):
+            with self.assertRaisesRegex(ValueError,'intermediary'):
+                p.td.parse(b'',animations_only=True,retained_bone_names=['root'])
+
+    def test_collapsed_bind_seam_normal_keeps_potentially_moving_faces(self):
+        model={'points':[(0.,0.,0.),(1.,0.,0.),(0.,1.,0.),(0.,0.,0.)],
+               'polygons':[(0,1,2,0,1,2),(3,0,1,3,0,1)]}
+        original=copy.deepcopy(model)
+        self.assertEqual(p.helper.audit.coincident_surface_vector(model,3),[0.,0.,1.])
+        self.assertEqual(model,original)
+
+    def test_unweighted_vertex_interpolation_is_local_and_normalised(self):
+        model={'points':[(0.,0.,0.),(1.,0.,0.),(0.,2.,0.),(99.,99.,99.)],
+               'polygons':[(0,1,2,0,1,2)],
+               'weights':[[(0,0.)],[(1,1.)],[(2,1.)],[(3,1.)]]}
+        original=copy.deepcopy(model)
+        weights,adjacent=p.repairs.neighbour_weights(model,0)
+        self.assertEqual(adjacent,[1,2]);self.assertEqual([bone for bone,_ in weights],[1,2])
+        self.assertAlmostEqual(weights[0][1],2./3.)
+        self.assertAlmostEqual(sum(w for _,w in weights),1.)
+        self.assertEqual(model,original)
+        model['weights'][1]=[(1,0.)]
+        with self.assertRaisesRegex(ValueError,'unweighted neighbours'):p.repairs.neighbour_weights(model,0)
+
     def test_only_bounded_untextured_helper_boxes_may_be_omitted(self):
         empty=struct.pack('<II',0,0)+b'\0'
         header=(0xca5e0601,b'',[])

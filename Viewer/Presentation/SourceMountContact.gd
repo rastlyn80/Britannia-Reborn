@@ -7,6 +7,7 @@ var stance_gaps: Array[float]=[]
 var origin_y:=0.
 var enabled:=true
 var iterations:=1
+var include_toe_descendants:=false
 var surface: MeshInstance3D
 var arrays: Array
 func bone(suffix: String) -> int:
@@ -24,6 +25,13 @@ func configure(mesh: MeshInstance3D,quadruped: bool) -> void:
 		for chain in chains:
 			var record:={"a":bone(chain[0]),"b":bone(chain[1]),"c":bone(chain[2]),"end":bone(chain[3]),"vertices":[]}
 			if mini(record.a,mini(record.b,record.c))<0:continue
+			var sole_bones: Dictionary={record.end:true}
+			if include_toe_descendants:
+				for index in rig.get_bone_count():
+					var parent:=index
+					while parent>=0:
+						if parent==int(record.end):sole_bones[index]=true;break
+						parent=rig.get_bone_parent(parent)
 			var vertices: PackedVector3Array=arrays[Mesh.ARRAY_VERTEX];var indices: PackedInt32Array=arrays[Mesh.ARRAY_BONES];var weights: PackedFloat32Array=arrays[Mesh.ARRAY_WEIGHTS]
 			var seen: Dictionary={}
 			for i in vertices.size():
@@ -31,9 +39,9 @@ func configure(mesh: MeshInstance3D,quadruped: bool) -> void:
 				for j in 4:
 					var bind:=indices[i*4+j];var index:=surface.skin.get_bind_bone(bind)
 					if index<0:index=rig.find_bone(surface.skin.get_bind_name(bind))
-					if index==record.end:score+=weights[i*4+j]
+					if sole_bones.has(index):score+=weights[i*4+j]
 				if score>.6 and not seen.has(vertices[i]):record.vertices.append(i);seen[vertices[i]]=true
-			feet.append(record)
+			if not include_toe_descendants or not record.vertices.is_empty():feet.append(record)
 func sole(record: Dictionary) -> Vector3:
 	var rig:=get_skeleton();var lowest:=Vector3(0,INF,0)
 	var matrices: Array[Transform3D]=[]

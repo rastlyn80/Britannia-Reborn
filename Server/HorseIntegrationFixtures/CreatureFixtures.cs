@@ -45,6 +45,30 @@ public static class CreatureFixtures
         }
     }
 
+    private static BaseCreature? Construct(Type type)
+    {
+        foreach (var constructor in type.GetConstructors())
+        {
+            var parameters = constructor.GetParameters();
+            var values = new object?[parameters.Length];
+            var supported = true;
+            for (var i = 0; i < parameters.Length; i++)
+            {
+                if (!parameters[i].HasDefaultValue)
+                {
+                    supported = false;
+                    break;
+                }
+                values[i] = parameters[i].DefaultValue;
+            }
+            if (supported)
+            {
+                return constructor.Invoke(values) as BaseCreature;
+            }
+        }
+        return null;
+    }
+
     private static void Execute(CommandEventArgs args)
     {
         var owner = args.Mobile;
@@ -81,13 +105,17 @@ public static class CreatureFixtures
             {
                 var type = typeof(BaseCreature).Assembly.GetType("Server.Mobiles." + name);
                 if (type == null || type.IsAbstract || !type.IsSubclassOf(typeof(BaseCreature))
-                    || type.IsSubclassOf(typeof(BaseMount)) || type.GetConstructor(Type.EmptyTypes) == null)
+                    || type.IsSubclassOf(typeof(BaseMount)) || type.ContainsGenericParameters)
                 {
                     continue;
                 }
                 for (var attempt = 0; attempt < 16; attempt++)
                 {
-                    var creature = (BaseCreature)Activator.CreateInstance(type)!;
+                    var creature = Construct(type);
+                    if (creature == null)
+                    {
+                        break;
+                    }
                     // Random native constructor variants are sampled; body IDs
                     // are never overwritten to manufacture matching evidence.
                     if (creature.Body.BodyID != body)
@@ -124,6 +152,17 @@ public static class CreatureFixtures
             subject.Frozen = false;
             try
             {
+                if (subject.DisallowAllMoves)
+                {
+                    var before = subject.Location;
+                    var ai = subject.AIObject;
+                    var allowed = ai?.CheckMove() ?? true;
+                    var progressed = ai?.MoveToPoint(new Point3D(before.X + 1, before.Y, before.Z), 0) ?? true;
+                    owner.SendMessage(!allowed && !progressed && subject.Location == before
+                        ? $"UCCREATURE|step|{subject.X}|{subject.Y}|{subject.Z}|immobile"
+                        : "UCCREATURE|blocked|immobile-creature-moved");
+                    return;
+                }
                 for (var direction = 0; direction < 8; direction++)
                 {
                     var before = subject.Location;
@@ -153,13 +192,13 @@ public static class CreatureFixtures
         else if (command == "action" && args.Length > 1)
         {
             var action = args.GetInt32(1);
-            if (action == -1)
+            if (action is -1 or -2)
             {
                 foreach (var client in subject.Map.GetClientsInRange(subject.Location))
                 {
                     if (client.Mobile.CanSee(subject))
                     {
-                        client.SendNewMobileAnimation(subject.Serial, 4, 0, 0);
+                        client.SendNewMobileAnimation(subject.Serial, action == -2 ? 11 : 4, 0, 0);
                     }
                 }
             }

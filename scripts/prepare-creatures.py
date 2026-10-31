@@ -16,13 +16,15 @@ def module(name, filename):
 helper = module('creature_helpers', 'prepare-distinct-mounts.py')
 td, smooth = helper.td, helper.smooth
 affine=module('creature_affine','creature-affine.py')
+repairs=module('creature_source_repairs','creature-source-repairs.py')
 OUTPUT = ROOT/'Viewer/local-art/creatures'
 LABELS = {'idle':'Idle','walk':'Walk','run':'Run','attack1':'Attack','attack2':'Attack2',
           'attack3':'Attack3','gethit':'Hit','die1':'Death','die2':'Death2','fidget':'Fidget',
           'eat':'Eat','alert':'Alert','liedown':'LieDown','cast':'Cast','cast2':'Cast2',
           'cast3':'Cast3','fly':'Fly','takeoff':'TakeOff','land':'Land','gethitinair':'HitInAir',
           'attackbow':'AttackBow','attackxbow':'AttackXBow','attackthrow':'AttackThrow',
-          'pillage':'Pillage','stomp':'Stomp','blockright':'BlockRight','blockleft':'BlockLeft'}
+          'pillage':'Pillage','stomp':'Stomp','blockright':'BlockRight','blockleft':'BlockLeft',
+          'attack':'Attack','die':'Death','spell':'Cast'}
 HEIGHTS = {'bruins':1.25,'canines':.88,'deer':1.5,'felines':.9,'porcines':.72,
            'ruminants':.9,'rodents':.55,'walrus':1.05,'lizards':.75}
 
@@ -174,20 +176,31 @@ def prepare(family, z, names, rows, native):
             raw = read(member)
             try: body = td.parse(raw,scene_root_names=True); row['normal_repair'] = None
             except ValueError as error:
-                if 'single-mesh' in str(error):
+                if stem=='ettins_ettin' and str(error)=='Unnormalised skin weights':
+                    body,row['skin_weight_repair']=repairs.repair_one_unweighted_vertex(raw,td)
+                    row['normal_repair']=None
+                elif 'single-mesh' in str(error):
                     body=td.parse(raw,scene_root_names=True,skip_unskinned_helpers=True)
                     row['omitted_untextured_helper_boxes']=sum(tag==0xca5e0601 for tag,_,_ in td.chunks(raw))-1
                     row['normal_repair']=None
-                else:body,row['normal_repair'] = helper.audit.repair_invalid_normals(raw)
+                else:body,row['normal_repair'] = helper.audit.repair_invalid_normals(raw,allow_coincident_seams=stem=='flails_swamp_tentacles')
             body,row['bind_scale_normalisation']=normalise_bind(raw,body)
             # Unreferenced exporter vertices are invisible but can sit below the
             # paws; they must not dictate the visible mesh's floor correction.
             body,row['omitted_unreferenced_vertices']=visible_vertices(body)
             assert len(set(body['textures']))==1, 'Multiple source materials need a dedicated importer'
             texture = next((n for n in names if n.endswith('/'+body['textures'][0].lower())),None)
-            assert texture, 'Missing source atlas: '+body['textures'][0]
-            original = td.png_from_tga(read(texture))
-            (OUTPUT/(stem+'-original-albedo.png')).write_bytes(original)
+            if texture:
+                original = td.png_from_tga(read(texture))
+                (OUTPUT/(stem+'-original-albedo.png')).write_bytes(original)
+                row['source_atlas_status']='Recovered original atlas'
+            else:
+                replacement=OUTPUT/(stem+'-albedo-v1.png')
+                assert replacement.exists(), 'Missing source atlas: '+body['textures'][0]
+                original=replacement.read_bytes()
+                assert original[:8]==b'\x89PNG\r\n\x1a\n','Expected authored replacement PNG'
+                row['source_atlas_status']='Source atlas absent; authored replacement used in all geometry comparisons, not a recovered original map'
+                row['missing_source_atlas']=body['textures'][0]
             animation_stem = by_body.get(records[0]['animation_body'],records[0])['stem']
             clips, clip_sources, omitted, static_poses, rejected = {}, {}, {}, [], {}
             row['rejected_source_clips']=rejected
@@ -202,11 +215,15 @@ def prepare(family, z, names, rows, native):
                 candidates = [member.rsplit('/',1)[0]+'/'+s+'_'+suffix+'.grn' for s in stems]
                 shared={'bruins':'bruins_bear_black','felines':'felines_panther'}
                 if family in shared:candidates.append(member.rsplit('/',1)[0]+'/'+shared[family]+'_'+suffix+'.grn')
+                if stem=='imps_shadow_fiend':
+                    candidates.append(member.rsplit('/',1)[0]+'/imps_imp_'+suffix+'.grn')
+                    row['authored_animation_reuse']='Explicit imp-clip reuse; rig-name/parent matching required, not an original model-table link'
                 match = next((n for n in candidates if n in names),None)
                 if match is None: continue
                 animation_raw=read(match)
                 try:
-                    animation = td.parse(animation_raw,animations_only=True,scene_root_names=True,scale_shear_tracks=True)
+                    animation = td.parse(animation_raw,animations_only=True,scene_root_names=True,scale_shear_tracks=True,
+                                         retained_bone_names=[b['name'] for b in body['bones']] if stem=='flails_reaper' else None)
                     animation,scale_repairs=normalise_bind(animation_raw,animation)
                 except (ValueError,AssertionError,KeyError) as error:
                     rejected[label]={'member':names[match],'error':str(error)}
@@ -248,6 +265,15 @@ def prepare(family, z, names, rows, native):
             refined, refinement = smooth.refine(body,levels=levels,maximum=min(.04,.035/scale),strengths=strengths,weight_smoothing=.12)
             modern_path = OUTPUT/(stem+'-albedo-v1.png')
             modern = modern_path.read_bytes() if modern_path.exists() else original
+            if modern_path.exists():
+                prompt_path=modern_path.with_suffix('.prompt.txt')
+                assert prompt_path.exists(),'Authored atlas requires its exact saved prompt'
+                row['exact_prompt']=prompt_path.read_text(encoding='utf-8-sig')
+                row['generation_mode']='built-in imagegen technical UV guide replacement' if not texture else 'built-in imagegen source atlas edit'
+                if not texture:
+                    guide=OUTPUT/(stem+'-uv-template.png')
+                    assert guide.exists(),'Missing source map replacement needs its saved technical guide'
+                    row['technical_guide']={'path':str(guide.relative_to(ROOT)),'sha256':digest(guide.read_bytes())}
             # Colour variants with exactly equal geometry, UVs, rigs and clips can
             # share computed deformation streams; atlas pixels remain independent.
             key = digest(json.dumps({'body':{k:v for k,v in body.items() if k!='textures'},'clips':clips,'height':height},sort_keys=True).encode())
@@ -260,7 +286,9 @@ def prepare(family, z, names, rows, native):
                     gltf['images'][0]['uri'] = 'data:image/png;base64,'+base64.b64encode(original).decode()
                     output.write_text(json.dumps(gltf,separators=(',',':')))
                 else:
-                    stats[treatment] = td.export_gltf(mesh,clips,original,output,height)
+                    stats[treatment] = td.export_gltf(mesh,clips,original,output,height,
+                        floor_sample_rate=120 if stem in ['flails_swamp_tentacles','centaurs_centaur','mongbats_mongbat'] else 30,
+                        preserve_vertical_clips=['Fly','TakeOff','Land','HitInAir'])
                     templates[cache_key] = (json.loads(output.read_text()),stats[treatment])
             gltf = json.loads((OUTPUT/(stem+'-rounded.gltf')).read_text())
             gltf['images'][0]['uri'] = 'data:image/png;base64,'+base64.b64encode(modern).decode()

@@ -6,8 +6,15 @@ $godot=(Get-ChildItem "$root/.tools/godot/*console.exe"|Select-Object -First 1).
 if ($Jobs -lt 1 -or $Jobs -gt 4) {throw 'Use one to four independent pose workers'}
 foreach ($family in $Families) {if ($family -notmatch '^[a-z][a-z0-9_]*$') {throw 'Invalid creature family name'}}
 $logs=Join-Path $root 'work/creature-checks';New-Item -ItemType Directory -Force $logs|Out-Null
+& python -B "$root/scripts/configure-creature-imports.py" @Families
+if ($LASTEXITCODE -notin @(0,3)) {throw 'Creature animation import configuration failed'}
 & $godot --headless --path "$root/Viewer" --editor --import *> "$logs/import.log"
 if ($LASTEXITCODE) {throw 'Creature resource import failed'}
+& python -B "$root/scripts/configure-creature-imports.py" @Families
+if ($LASTEXITCODE -eq 3) {
+ & $godot --headless --path "$root/Viewer" --editor --import *> "$logs/import-precision.log"
+ if ($LASTEXITCODE) {throw 'Creature precision-preserving resource import failed'}
+} elseif ($LASTEXITCODE -ne 0) {throw 'Creature animation import configuration failed'}
 $pending=[Collections.Generic.Queue[string]]::new()
 foreach ($family in $Families) {
  & python -B "$root/scripts/check-creature-evidence.py" $family

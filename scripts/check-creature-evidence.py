@@ -6,7 +6,7 @@ def digest(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def main():
     family=sys.argv[1];folder=ROOT/f'outputs/creatures/{family}'
     report=folder/'validation.json';preparation=ROOT/f'Viewer/local-art/creatures/{family}/preparation.json'
-    runtime=[ROOT/'Viewer/Presentation'/name for name in ['CreatureTests.gd','CreatureVisual.gd','OstardVisual.gd','AnimalPoseLibrary.gd','SourceMountContact.gd','SkinGeometry.gd']]
+    runtime=[ROOT/'Viewer/Presentation'/name for name in ['CreatureTests.gd','CreatureVisual.gd','OstardVisual.gd','AnimalPoseLibrary.gd','SourceMountContact.gd','FootContact.gd','SkinGeometry.gd']]
     try:
         tests=json.loads(report.read_text());prepared=json.loads(preparation.read_text())
         assert tests['failures']==0 and tests['models']
@@ -16,7 +16,9 @@ def main():
         assert expected=={row['kind'] for row in tests['models'] if row['passed']}
         for row in tests['models']:
             for treatment,sha in row['asset_sha256'].items():
-                assert digest(ROOT/f"Viewer/local-art/creatures/{row['kind']}-{treatment}.gltf")==sha
+                asset=ROOT/f"Viewer/local-art/creatures/{row['kind']}-{treatment}.gltf"
+                assert digest(asset)==sha
+                assert digest(Path(str(asset)+'.import'))==row['import_sha256'][treatment]
         receipt={'validation_sha256':digest(report),'preparation_sha256':digest(preparation),
                  'runtime_sha256':{p.name:digest(p) for p in runtime}}
         path=folder/'pose-inputs.json'

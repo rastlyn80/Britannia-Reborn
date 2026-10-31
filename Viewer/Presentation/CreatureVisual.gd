@@ -19,8 +19,10 @@ func _ready() -> void:
 	if str(entry.get("family","")) in ["rodents","walrus"]:feeding_neck_angle=.1;feeding_head_angle=.04
 	super._ready()
 	contact=preload("res://Presentation/SourceMountContact.gd").new();skeleton.add_child(contact)
-	contact.iterations=1 if str(entry.get("family",""))=="bruins" else 3
-	contact.configure(model.find_children("*","MeshInstance3D",true,false)[0],str(entry.get("profile",""))=="animal" or str(entry.get("family","")) in ["rodents","lizards","dragons"])
+	contact.include_toe_descendants=true
+	contact.iterations=1 if str(entry.get("family","")) in ["bruins","walrus"] else 3
+	var quadruped:=str(entry.get("profile",""))=="animal" and str(entry.get("family",""))!="walrus" or str(entry.get("family","")) in ["rodents","lizards","dragons","centaurs"]
+	contact.configure(model.find_children("*","MeshInstance3D",true,false)[0],quadruped)
 	source_model_basis=model.basis.orthonormalized()
 	default_model_scale=model.scale
 	set_meta("source_creature",entry.duplicate(true))
@@ -76,7 +78,7 @@ func receive_action(request: Dictionary) -> bool:
 	if clip.is_empty() or not animator.has_animation(clip) or dead and clip not in ["Death","Death2"]:
 		set_meta("unsupported_action",request.duplicate(true));return false
 	current_clip=clip;dead=clip in ["Death","Death2"]
-	contact.enabled=not dead and clip!="LieDown"
+	contact.enabled=not dead and clip not in ["LieDown","Fly","HitInAir","TakeOff"]
 	var duration:=preload("res://Presentation/HumanActions.gd").duration(request,animator.get_animation(clip).length)
 	action_remaining=duration;animator.play(clip,.12,animator.get_animation(clip).length/duration)
 	set_meta("native_action",request.duplicate(true));return true

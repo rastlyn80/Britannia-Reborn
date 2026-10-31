@@ -40,7 +40,9 @@ func run() -> void:
 					for frame in 2:await process_frame
 					var bounds:=Geometry.deformed_bounds(mesh,rig)
 					check(bounds.position.is_finite() and bounds.size.is_finite() and bounds.size.length()>.05 and bounds.size.length()<float(record.stats.original.height_m)*8.,"Finite bounded deformed mesh: "+str(record.kind)+" / "+str(clip))
-					check(absf(bounds.position.y)<.06,"Sampled flat-floor clearance remains within 60 mm")
+					var policy: String=str(record.stats.original.clips.get(str(clip),{}).get("floor_policy","grounded"))
+					if policy=="source_vertical":check(bounds.position.y>=-.06 and bounds.position.y<float(record.stats.original.height_m)*2.,"Source flight remains bounded above the ground")
+					else:check(absf(bounds.position.y)<.06,"Sampled flat-floor clearance remains within 60 mm")
 					check(actor.transform.is_equal_approx(Transform3D.IDENTITY),"Visual clips never move native world coordinates")
 					samples.append({"kind":record.kind,"treatment":treatment,"clip":str(clip),"phase":phase,"lowest_vertex_m":bounds.position.y})
 			for identity: Dictionary in record.bodies:
@@ -49,9 +51,11 @@ func run() -> void:
 					check(actor.native_body==int(identity.body) and actor.native_hue==hue,"Exact native body and raw dye flags retained")
 					check(actor.action_profile==str(identity.get("native_profile",record.profile)),"Native server body class selects the correct animation group")
 			actor.free()
-		var hashes: Dictionary={}
-		for treatment in ["original","rounded","modern"]:hashes[treatment]=FileAccess.get_sha256("res://local-art/creatures/"+str(record.kind)+"-"+treatment+".gltf")
-		models.append({"kind":record.kind,"passed":before==failures,"asset_sha256":hashes})
+		var hashes: Dictionary={};var imports: Dictionary={}
+		for treatment in ["original","rounded","modern"]:
+			var asset: String="res://local-art/creatures/"+str(record.kind)+"-"+treatment+".gltf"
+			hashes[treatment]=FileAccess.get_sha256(asset);imports[treatment]=FileAccess.get_sha256(asset+".import")
+		models.append({"kind":record.kind,"passed":before==failures,"asset_sha256":hashes,"import_sha256":imports})
 	var ground:=StaticBody3D.new();root.add_child(ground);var collision:=CollisionShape3D.new();var box:=BoxShape3D.new();box.size=Vector3(30,.1,30);collision.shape=box;collision.position.y=-.05;ground.add_child(collision)
 	for record: Dictionary in preparation.models:
 		if record.status!="prepared":continue
@@ -63,8 +67,9 @@ func run() -> void:
 			for frame in 25:await physics_frame;await process_frame
 			var valid:=true
 			for error: float in actor.contact.errors:valid=valid and error<.05
-			check(valid,"Configured stance soles remain supported within 50 mm")
-			terrain.append({"kind":record.kind,"slope":str(slope),"configured_feet":actor.contact.feet.size(),"measured_errors_m":actor.contact.errors.duplicate()})
+			var measured: bool=not actor.contact.errors.is_empty()
+			if measured:check(valid,"Measured stance soles remain supported within 50 mm")
+			terrain.append({"kind":record.kind,"slope":str(slope),"configured_feet":actor.contact.feet.size(),"measured_errors_m":actor.contact.errors.duplicate(),"support":"Measured stance samples only" if measured else "No stance sole measured in this pose; not terrain-certified"})
 		for identity: Dictionary in record.bodies:
 			actor.apply_identity(int(identity.body),0)
 			var expected_scale:=actor.model.scale

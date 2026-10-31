@@ -6,11 +6,14 @@ var actors: Array=[]
 var capture_mode:=false
 var output:=""
 var clip:="Walk"
+var capture_clips: Array[String]=[]
 func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--family="):family=arg.trim_prefix("--family=")
 		if arg.begins_with("--kind="):kind=arg.trim_prefix("--kind=")
 		if arg=="--capture":capture_mode=true
+		if arg.begins_with("--clips="):
+			for name in arg.trim_prefix("--clips=").split(","):capture_clips.append(name)
 	call_deferred("build")
 func button(parent: Node,text: String,action: Callable) -> void:
 	var b:=Button.new();b.text=text;b.pressed.connect(action);parent.add_child(b)
@@ -28,12 +31,16 @@ func build() -> void:
 	var camera:=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.size=height*5.;stage.add_child(camera);camera.position=Vector3(height*.45,height*2.,height*7.);camera.look_at(Vector3(height*.45,height*.7,0))
 	for i in 3:
 		var actor:=Visual.new();actor.entry=record;actor.treatment=["original","rounded","modern"][i];stage.add_child(actor);actor.set_physics_process(false);actor.contact.enabled=false;actor.position.x=(i-1)*height*2.1;actor.rotation.y=-.8;actors.append(actor)
-		var label:=Label3D.new();label.text=["Original source","Rounded geometry","Modern surface"][i];label.position=Vector3(actor.position.x,height*1.8,0);label.font_size=27;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;stage.add_child(label)
+		var baseline:="Source geometry / replacement atlas" if record.has("missing_source_atlas") else "Original source"
+		var label:=Label3D.new();label.text=[baseline,"Rounded geometry","Modern surface"][i];label.position=Vector3(actor.position.x,height*1.8,0);label.font_size=27;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;stage.add_child(label)
 	var canvas:=CanvasLayer.new();root.add_child(canvas);var ui:=VBoxContainer.new();ui.position=Vector2(18,14);canvas.add_child(ui)
 	var title:=Label.new();title.text="BRITANNIA REBORN / "+kind.replace("_"," ").to_upper();title.add_theme_font_size_override("font_size",24);ui.add_child(title)
 	var note:=Label.new();note.text="Original rig and source clips / bounded geometry / "+str(record.surface)+" / local review";ui.add_child(note)
-	var row:=HBoxContainer.new();ui.add_child(row)
-	for name in ["Idle","Walk","Run","Eat","Attack","Hit","Death","Fidget"]:button(row,name,func():play(name))
+	var row:=HFlowContainer.new();row.custom_minimum_size=Vector2(1360,0);ui.add_child(row)
+	var names: Array[String]=["Idle","Walk","Run","Eat","Attack","Hit","Death","Fidget"]
+	for name in actors[0].animator.get_animation_list():
+		if str(name)!="RESET" and not names.has(str(name)):names.append(str(name))
+	for name in names:button(row,name,func():play(name))
 	button(row,"Hue 53",func():tint(53));button(row,"Default coat",func():tint(0))
 	play(clip)
 	if capture_mode:call_deferred("captures")
@@ -44,10 +51,12 @@ func play(name: String) -> void:
 	for actor in actors:actor.play(name,.1)
 func captures() -> void:
 	DirAccess.make_dir_recursive_absolute(output)
-	for name in ["Idle","Walk","Run","Eat","Attack","Hit","Death","Fidget"]:
+	var names: Array[String]=capture_clips if not capture_clips.is_empty() else ["Idle","Walk","Run","Eat","Attack","Hit","Death","Fidget"]
+	for name in names:
+		if not actors[0].animator.has_animation(name):push_error("Unavailable source/replacement clip: "+name);quit(1);return
 		for angle in [["three-quarter",-.8],["side",PI/2.]]:
 			for actor in actors:actor.rotation.y=angle[1];actor.play(name,0.);actor.animator.seek(actor.animator.get_animation(name).length*.35,true);actor.animator.pause()
 			for frame in 4:await process_frame
 			await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(output.path_join("%s-%s.png"%[name.to_lower(),angle[0]]))
-	print("CREATURE REVIEW: 16 actual frames / ",kind);quit()
+	print("CREATURE REVIEW: ",names.size()*2," actual frames / ",kind);quit()

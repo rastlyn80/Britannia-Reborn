@@ -1,3 +1,11 @@
+# Creature milestone: 73 native body targets with server evidence - 31 October 2026
+
+47 generic source models/variants across 20 groups now have pose/render acceptance and 57 body routes. Combined with the earlier mount/bovine pipelines, 73 of 275 bounded native literal body targets have routes and actual native evidence (26.5%); this is not an exhaustive all-client denominator or finished-art percentage. Current generic checks: 30,144 / 9,156 deformed samples; 584 GPU checks; 752 core frames plus selected cast/flight views. Full verify exits 0. [Changes, exact evidence, art gaps and reproduction](CREATURE_MONSTERS.md).
+
+The added original-source monster groups include ogres/orcs/trolls, giants, plant creatures, centaur, pixie/succubus and imp/shadow fiend/mongbat. Source repairs are bounded and explicit; missing maps use authored UV-guide replacements. Fast animation import precision, toe contact, rooted native refusals, optional constructor defaults and flight clearance are checked. Centaur anatomy/stance and pixie wings still need art refinement; finite-motion acceptance does not close them.
+
+The action ledger (outputs/creatures/actions.html) also contains 211 original AnimationSequence metadata records, zero parse blockers. Its protocol-slot counts distinguish source, aliases, authored motion and missing routes; they are not original-action completion percentages. Continue autonomously through remaining monsters, source blockers, sea creatures, modern native identities and other mount fitting. Preserve 732/1,126 human wearable coverage and concurrent terrain/cache work. Generated art, exact prompts, IR, captures and private local server corrections remain excluded from Git.
+
 # Paperdoll replaces the early character sheet; all of Trammel populated on the server — 31 October 2026
 
 Owner decisions: remove the early character sheet, and extend the world to all of Trammel, client and server.
