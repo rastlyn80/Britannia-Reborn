@@ -29,8 +29,8 @@ const DOOR_H := 2.52      # door opening height (the server door's DoorwayPlan o
 const SILL := 0.95        # window sill above the floor
 const HEAD := 2.15        # window head above the floor
 const WINDOW_W := 0.82
-# House multis this builder has been reviewed for (classic small houses first).
-const SUPPORTED := [0x64,0x66,0x68,0x6A,0x6C,0x74,0x8C]
+# Every classic house multi ModernUO builds (Houses.cs), reviewed as renders.
+const SUPPORTED := [0x64,0x66,0x68,0x6A,0x6C,0x74,0x76,0x78,0x7A,0x7C,0x7E,0x8C,0x96,0x98,0x9A,0x9C,0x9E,0xA0,0xA2]
 static var surfaces := {}
 
 static func supported(id: int) -> bool:
@@ -89,9 +89,10 @@ static func _box(parent: Node3D, size: Vector3, at: Vector3, m: Material, rot :=
 static func wall_material(family: String) -> StandardMaterial3D:
 	match family:
 		"stone": return surface("stone_wall",Color("d6cfc2"),0.42)
+		"ashlar": return surface("castle_brick_01",Color("d4d0c8"),0.45)
 		"sandstone": return surface("medieval_blocks_03",Color("e2cfa8"),0.5)
 		"brick": return surface("medieval_red_brick",Color("c09078"),0.6)
-		"marble": return surface("medieval_blocks_02",Color("eeeae2"),0.5)
+		"marble": return surface("marble_01",Color("f4f1ea"),0.3,0.45)
 		"wood","log": return surface("weathered_plank_siding",Color("b39a7e"),0.55)
 	return surface("mk_limewash",Color("f1eadb"),0.35,0.95)
 
@@ -107,11 +108,12 @@ static func build(parts: Array, tiles: Dictionary, seed := 0) -> Node3D:
 	var Facade := preload("res://Presentation/Facade.gd")
 	var rnd := RandomNumberGenerator.new()
 	rnd.seed = seed
-	var walls := {}        # Vector2i -> {z, top, family, window}
-	var foundation := {}   # Vector2i -> top z
-	var floors := {}       # Vector2i -> z
-	var roofs: Array = []  # [cell (anchor-shifted), z]
-	var stairs: Array = []
+	var pieces: Array = []    # tall wall tiles: [cell, z, top, family, window]
+	var low_pieces: Array = [] # short wall tiles above the ground: [cell, z, top, family]
+	var foundation := {}      # Vector2i -> top z
+	var flat: Array = []      # floor and landing tiles: [cell, z]
+	var roofs: Array = []     # [cell (anchor-shifted), z]
+	var stairs: Array = []    # [cell, z, height]
 	var gable_family := ""
 	var roof_kind := "tile"
 	var corners := "quoin"
@@ -128,61 +130,182 @@ static func build(parts: Array, tiles: Dictionary, seed := 0) -> Node3D:
 		if "shingle" in name: roof_kind = "shingle"
 		if "wooden post" in name: corners = "post"
 		match kind:
-			"wall","corner","window","trim","pillar":
-				if h <= 6 and z <= 2: foundation[cell] = maxi(int(foundation.get(cell,0)),z+h)
-				elif h >= 10:
-					var known: Dictionary = walls.get(cell,{})
-					walls[cell] = {"z":z,"top":z+h,"family":family if family != "" else str(known.get("family","plaster")),"window":kind == "window" or bool(known.get("window",false))}
-				elif z > 10: gable_family = family
-			"floor","landing": floors[cell] = z
+			"wall","corner","window","trim","pillar","arch":
+				# Foundation courses: short pieces that end at ground-floor level.
+				if h <= 6 and z+h <= 8: foundation[cell] = maxi(int(foundation.get(cell,0)),z+h)
+				elif h >= 10: pieces.append([cell,z,z+h,family,kind == "window"])
+				elif h >= 2: low_pieces.append([cell,z,z+h,family])
+			"floor","landing": flat.append([cell,z])
 			"roof":
 				var anchor: Array = rule.get("anchorOffset",[-1,-1])
 				roofs.append([cell+Vector2i(int(anchor[0]),int(anchor[1])),z])
 			"stairs": stairs.append([cell,z,h])
 	var root := Node3D.new()
 	root.name = "HouseModel"
-	if walls.is_empty(): return root
-	# Storey: floor height and the walls' family (the most common).
-	var floor_z := 1000
-	for cell in walls: floor_z = mini(floor_z,int(walls[cell].z))
+	if pieces.is_empty(): return root
+	# Short wall tiles: under a pitched roof, those at the eaves and above
+	# fill the gables; everywhere else they are walls of their own height
+	# (a shop's counter-high front, a loft railing, a roof terrace parapet).
+	var eave_z := 100000
+	for r in roofs: eave_z = mini(eave_z,int(r[1]))
+	for piece in low_pieces:
+		if not roofs.is_empty() and int(piece[1]) >= eave_z-1:
+			if piece[3] != "": gable_family = piece[3]
+		else: pieces.append([piece[0],piece[1],piece[2],piece[3],false])
+	# Storeys: wall tiles grouped by the height they stand on (a few z apart
+	# still count as one storey). Each storey runs from its floor to the top
+	# its own wall tiles reach.
+	var storeys: Array = []   # {z, top, walls: {cell: {family, window}}}
+	pieces.sort_custom(func(a, b): return int(a[1]) < int(b[1]))
+	for piece in pieces:
+		var storey: Dictionary = storeys.back() if not storeys.is_empty() and int(piece[1])-int(storeys.back().z) <= 4 else {}
+		if storey.is_empty():
+			storey = {"z":int(piece[1]),"top":int(piece[2]),"walls":{}}
+			storeys.append(storey)
+		storey.top = maxi(int(storey.top),int(piece[2]))
+		# A tile stacked on a taller one in the same cell does not lower it.
+		if storey.walls.has(piece[0]) and int(storey.walls[piece[0]].get("top",0)) >= int(piece[2]): continue
+		var known: Dictionary = storey.walls.get(piece[0],{})
+		storey.walls[piece[0]] = {"family":piece[3] if piece[3] != "" else str(known.get("family","plaster")),"window":bool(piece[4]) or bool(known.get("window",false)),"top":maxi(int(known.get("top",0)),int(piece[2]))}
+	# A storey of short walls only, above the ground, is a parapet round a
+	# flat roof or terrace: no openings, no quoins.
+	for i in range(1,storeys.size()):
+		if int(storeys[i].top)-int(storeys[i].z) < 10: storeys[i].parapet = true
+	# The walls' family, the most common over the house.
 	var counts := {}
-	for cell in walls: counts[walls[cell].family] = int(counts.get(walls[cell].family,0))+1
+	for storey in storeys:
+		for cell in storey.walls: counts[storey.walls[cell].family] = int(counts.get(storey.walls[cell].family,0))+1
 	var family: String = counts.keys()[0]
 	for f in counts: if int(counts[f]) > int(counts[family]): family = f
-	var floor_y := float(floor_z)*SCALE
+	# A fortification (tower, keep, castle) is built of large dressed blocks;
+	# fieldstone stays for cottages.
+	if family == "stone" and int(counts[family]) >= 120: family = "ashlar"
+	var ground: Dictionary = storeys[0]
+	var floor_y := float(ground.z)*SCALE
 	var low := Vector2i(100000,100000)
 	var high := Vector2i(-100000,-100000)
-	for cell in walls:
+	for cell in ground.walls:
 		low = low.min(cell)
 		high = high.max(cell)
-	var eave_y := 1000.0
-	var ridge_y := 0.0
-	for r in roofs:
-		eave_y = minf(eave_y,float(r[1])*SCALE)
-		ridge_y = maxf(ridge_y,float(r[1]+3)*SCALE)
-	var wall_top := eave_y if not roofs.is_empty() else float(walls.values()[0].top)*SCALE
+	var all_low := low
+	var all_high := high
+	for storey in storeys:
+		for cell in storey.walls:
+			all_low = all_low.min(cell)
+			all_high = all_high.max(cell)
 	var centre := Vector2(low+high)/2.0
+	# Floors: each floor tile belongs to the storey whose floor it is level
+	# with (or the flat roof on top of the last); the rest are stair landings.
+	var floors_at: Array = []
+	for storey in storeys: floors_at.append({})
+	var deck := {}
+	var landings: Array = []
+	for f in flat:
+		var placed := false
+		for i in storeys.size():
+			if absi(int(f[1])-int(storeys[i].z)) <= 2:
+				if storeys[i].has("parapet"): deck[f[0]] = int(f[1])
+				else: floors_at[i][f[0]] = int(f[1])
+				placed = true
+				break
+		if placed: continue
+		if absi(int(f[1])-int(storeys.back().top)) <= 2: deck[f[0]] = int(f[1])
+		else: landings.append([f[0],int(f[1]),0])
+	var roofed := {}
+	for r in roofs: roofed[r[0]] = true
+	var covered := roofed.duplicate()
+	for i in range(1,storeys.size()):
+		for cell in floors_at[i]: covered[cell] = true
 	_plinth(root,foundation,low,high,floor_y)
-	var covered := {}
-	for r in roofs: covered[r[0]] = true
-	_floor(root,floors,walls,floor_y,covered)
 	var paint: Color = [Color("6e2a26"),Color("2f4a3a"),Color("2c3e5a"),Color("6a5428")][rnd.randi()%4]
 	if family in ["wood","log"]: corners = "post"
-	_walls(root,walls,floors,family,floor_y,wall_top,centre,paint,roofing(roof_kind))
-	if family == "plaster": _framing(root,walls,floor_y,wall_top,centre)
-	var outer := _outer_corners(walls)
-	if corners == "post": _corner_posts(root,outer,floor_y,wall_top)
-	else: _quoins(root,outer,floor_y,wall_top,family,walls)
+	var covering := roofing(roof_kind)
+	for i in storeys.size():
+		var storey: Dictionary = storeys[i]
+		var base := float(storey.z)*SCALE
+		var top := float(storey.top)*SCALE
+		var floors: Dictionary = floors_at[i]
+		_floor(root,floors,storey.walls,base,covered if i == 0 else roofed,i > 0)
+		var parapet := bool(storey.get("parapet",false))
+		_walls(root,storey.walls,floors if not parapet else {},family,base,top,centre,paint,covering,not parapet)
+		if family == "plaster" and not parapet: _framing(root,storey.walls,base,top,centre)
+		var outer := _outer_corners(storey.walls)
+		if corners == "post": _corner_posts(root,outer,base,storey.walls)
+		elif not parapet: _quoins(root,outer,base,top,family,storey.walls)
+	if not deck.is_empty(): _floor(root,deck,{},float(deck.values()[0])*SCALE,{},true,true)
+	# Stairs inside the walls climb between storeys, tile by tile; stairs
+	# outside are the front steps up to the ground floor.
+	var inside: Array = landings.duplicate()
+	var outside: Array = []
+	var flight_high := false
+	for st in stairs:
+		var c: Vector2i = st[0]
+		var within: bool = c.x > all_low.x and c.x < all_high.x and c.y > all_low.y and c.y < all_high.y
+		if not within and int(st[1]) > int(ground.z)+2: flight_high = true
+	for st in stairs:
+		var c: Vector2i = st[0]
+		var within: bool = c.x > all_low.x and c.x < all_high.x and c.y > all_low.y and c.y < all_high.y
+		# Front steps up to the ground floor, unless they are the foot of an
+		# outside flight to an upper floor, which is built tile by tile.
+		if within or int(st[1]) > int(ground.z)+2 or (flight_high and _touches(stairs,c,int(ground.z)+2)): inside.append([c,int(st[1]),int(st[2]),not within])
+		else: outside.append(st)
+	_stairs(root,inside,storeys)
+	_steps(root,outside,floor_y,centre)
 	if not roofs.is_empty():
 		# An L- or T-shaped house is roofed as overlapping rectangles, each a
-		# gable of its own at the height its tiles reach (cross gables).
-		for block in _roof_blocks(roofs):
-			_roof(root,block,low,high,eave_y,_ridge_of(block),gable_family if gable_family != "" else family,roofing(roof_kind))
-	_steps(root,stairs,floor_y,centre)
-	if not roofs.is_empty(): _chimney(root,low,high,eave_y,ridge_y,rnd)
+		# gable of its own from its lowest to its highest tiles (cross gables).
+		var blocks := _roof_blocks(roofs)
+		for block in blocks:
+			_roof(root,block,low,high,_eave_of(block),_ridge_of(block),gable_family if gable_family != "" else family,covering)
+		_chimney(root,blocks[0],_eave_of(blocks[0]),_ridge_of(blocks[0]),rnd)
 	for mesh in root.find_children("*","MeshInstance3D",true,false):
 		(mesh as MeshInstance3D).cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	return root
+
+# Whether a stair cell joins (through other stair cells) one that climbs
+# above the ground floor: the foot of an outside flight.
+static func _touches(stairs: Array, start: Vector2i, above: int) -> bool:
+	var at := {}
+	for st in stairs: at[st[0]] = maxi(int(at.get(st[0],-1000)),int(st[1]))
+	var seen := {start:true}
+	var open: Array = [start]
+	while not open.is_empty():
+		var c: Vector2i = open.pop_back()
+		if int(at[c]) > above: return true
+		for d in [Vector2i(1,0),Vector2i(-1,0),Vector2i(0,1),Vector2i(0,-1)]:
+			if at.has(c+d) and not seen.has(c+d):
+				seen[c+d] = true
+				open.append(c+d)
+	return false
+
+static func _eave_of(roofs: Array) -> float:
+	var bottom := 100000.0
+	for r in roofs: bottom = minf(bottom,float(r[1])*SCALE)
+	return bottom
+
+# Interior stairs and landings: each tile a block of stone or oak from the
+# storey floor beneath it up to its own top, with a lighter tread, so the
+# flight climbs exactly as the tiles do.
+static func _stairs(root: Node3D, steps: Array, storeys: Array) -> void:
+	if steps.is_empty(): return
+	var flight := Node3D.new()
+	flight.name = "Stairs"
+	root.add_child(flight)
+	var body := oak()
+	var tread := surface("brown_planks_03",Color("c4a985"),1.2,0.8)
+	for st in steps:
+		var c: Vector2i = st[0]
+		var top_z := int(st[1])+maxi(int(st[2]),1)
+		var under := float(storeys[0].z)
+		for storey in storeys:
+			if float(storey.z) <= float(st[1])+0.5: under = float(storey.z)
+		# An outside flight stands on the ground.
+		if st.size() > 3 and bool(st[3]): under = 0.0
+		var y0 := under*SCALE
+		var y1 := float(top_z)*SCALE
+		if y1-y0 < 0.05: continue
+		_box(flight,Vector3(1.0,y1-y0,1.0),Vector3(c.x,(y0+y1)/2,c.y),body)
+		_box(flight,Vector3(1.02,0.05,1.02),Vector3(c.x,y1-0.02,c.y),tread)
 
 static func _plinth(root: Node3D, foundation: Dictionary, low: Vector2i, high: Vector2i, floor_y: float) -> void:
 	var base := Node3D.new()
@@ -196,68 +319,114 @@ static func _plinth(root: Node3D, foundation: Dictionary, low: Vector2i, high: V
 	# Cap course: a dressed stone band just proud of the plinth.
 	_box(base,Vector3(size.x+0.12,0.14,size.z+0.12),Vector3(mid.x,floor_y-0.07,mid.z),surface("castle_wall_varriation",Color("c4beb4"),0.9))
 
-# Plank floors under the roof; stone flags on an open patio.
-static func _floor(root: Node3D, floors: Dictionary, walls: Dictionary, floor_y: float, covered: Dictionary) -> void:
+# Plank floors under cover; stone flags on an open patio or a flat roof.
+# Upper floors are thick slabs (their underside is the ceiling below, and
+# the soffit of a balcony).
+static func _floor(root: Node3D, floors: Dictionary, walls: Dictionary, floor_y: float, covered: Dictionary, upper := false, open_air := false) -> void:
 	var boards := surface("brown_planks_03",Color("b49a7a"),0.55,0.8)
 	var flags := surface("cobblestone_floor_01",Color("cfc7ba"),0.5,0.9)
+	var depth := 0.22 if upper else 0.06
 	for cell in floors:
-		var open: bool = not covered.is_empty() and not covered.has(cell) and not walls.has(cell)
-		_box(root,Vector3(1.0,0.06,1.0),Vector3(cell.x,floor_y+0.03,cell.y),flags if open else boards)
+		var open: bool = open_air or (not covered.is_empty() and not covered.has(cell) and not walls.has(cell))
+		# A deck in the open (a log cabin's loft) is planked, not flagged.
+		if open and upper and not open_air:
+			_box(root,Vector3(1.0,depth,1.0),Vector3(cell.x,floor_y-depth/2+0.06,cell.y),boards)
+			continue
+		_box(root,Vector3(1.0,depth,1.0),Vector3(cell.x,floor_y-depth/2+0.06,cell.y),flags if open else boards)
 
 # Wall arms from each wall cell's centre towards its wall neighbours, with
 # window and door openings; doors are gaps between two wall cells in a line.
-static func _walls(root: Node3D, walls: Dictionary, floors: Dictionary, family: String, floor_y: float, top: float, centre: Vector2, paint: Color, covering: Material) -> void:
+static func _walls(root: Node3D, walls: Dictionary, floors: Dictionary, family: String, floor_y: float, top: float, centre: Vector2, paint: Color, covering: Material, openings := true) -> void:
 	var shell := Node3D.new()
 	shell.name = "Walls"
-	root.add_child(shell)
+	root.add_child(shell,true)
 	var mat := wall_material(family)
 	var height := top-floor_y
 	var dirs := [Vector2i(1,0),Vector2i(-1,0),Vector2i(0,1),Vector2i(0,-1)]
 	var doors := {}
+	# Doorways are gaps between full-height walls (not between the low walls
+	# of a flower bed or a balustrade).
+	var tall := func(c: Vector2i) -> bool: return walls.has(c) and (not walls[c].has("top") or float(walls[c].top)*SCALE-floor_y >= DOOR_H+0.3)
 	for cell in walls:
+		if not tall.call(cell): continue
 		for d in [Vector2i(1,0),Vector2i(0,1)]:
 			var gap: Vector2i = cell+d
-			if not walls.has(gap) and walls.has(gap+d) and floors.has(gap): doors[gap] = d
+			if not walls.has(gap) and tall.call(gap+d) and floors.has(gap): doors[gap] = d
 			# A double door: two open cells between walls in a line.
-			elif not walls.has(gap) and not walls.has(gap+d) and walls.has(gap+d*2) and floors.has(gap) and floors.has(gap+d):
+			elif not walls.has(gap) and not walls.has(gap+d) and tall.call(gap+d*2) and floors.has(gap) and floors.has(gap+d):
 				doors[gap] = d
 				doors[gap+d] = d
 	for cell in walls:
 		var w: Dictionary = walls[cell]
+		# Each cell rises to its own tiles' top (a half-height log railing
+		# round a loft stays half height).
+		var cell_top := minf(top,float(w.get("top",9999))*SCALE) if w.has("top") else top
+		var h := cell_top-floor_y
+		if h < 0.1: continue
 		var arms: Array = []
 		for d in dirs:
 			if walls.has(cell+d) or doors.has(cell+d): arms.append(d)
 		if arms.is_empty(): arms = [Vector2i(1,0),Vector2i(-1,0)]
-		_box(shell,Vector3(T,height,T),Vector3(cell.x,floor_y+height/2,cell.y),mat)
+		var glazed: bool = openings and bool(w.window) and _straight(walls,cell) and h >= HEAD+0.3
+		_wall_box(shell,Vector3(T,h,T),Vector3(cell.x,floor_y+h/2,cell.y),mat,family,(arms[0] as Vector2i).x != 0)
 		for d in arms:
 			var along_x: bool = d.x != 0
-			var mid := Vector3(cell.x+d.x*0.25+(0.0 if along_x else 0.0),floor_y+height/2,cell.y+d.y*0.25)
-			if bool(w.window) and _straight(walls,cell):
-				_window_arm(shell,cell,d,floor_y,top,mat)
-			else:
-				_box(shell,Vector3(0.5 if along_x else T,height,T if along_x else 0.5),mid,mat)
-		if bool(w.window) and _straight(walls,cell): _window(shell,cell,walls,floor_y,centre,paint)
+			var mid := Vector3(cell.x+d.x*0.25,floor_y+h/2,cell.y+d.y*0.25)
+			if glazed: _window_arm(shell,cell,d,floor_y,cell_top,mat,family)
+			else: _wall_box(shell,Vector3(0.5 if along_x else T,h,T if along_x else 0.5),mid,mat,family,along_x)
+		if glazed: _window(shell,cell,walls,floor_y,centre,paint)
 	for gap in doors:
 		var d: Vector2i = doors[gap]
 		# One frame per doorway: a double door's second cell is drawn with the first.
 		if doors.has(gap-d): continue
 		_doorway(shell,gap,d,floor_y,top,mat,centre,covering,2 if doors.has(gap+d) else 1)
 
+# A piece of wall: a plain box, or for a log house a stack of round logs
+# along the wall (one merged mesh per piece), slightly proud of the wall line.
+static func _wall_box(parent: Node3D, size: Vector3, at: Vector3, mat: Material, family: String, along_x: bool) -> void:
+	if family != "log":
+		_box(parent,size,at,mat)
+		return
+	var length := size.x if along_x else size.z
+	var count := maxi(1,roundi(size.y/0.3))
+	var r := size.y/count/2.0
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var log := CylinderMesh.new()
+	log.top_radius = 1.0
+	log.bottom_radius = 1.0
+	log.height = 1.0
+	log.radial_segments = 10
+	log.rings = 1
+	for i in count:
+		var y := -size.y/2+r*(2*i+1)
+		var radius := r*1.12 if (i%2 == 0) else r*1.06
+		# The cylinder's own axis (y) is laid along the wall, scaled locally.
+		var basis := (Basis(Vector3(0,0,1),PI/2) if along_x else Basis(Vector3(1,0,0),PI/2))*Basis.from_scale(Vector3(radius,length,radius))
+		st.append_from(log,0,Transform3D(basis,Vector3(0,y,0)))
+	var mi := MeshInstance3D.new()
+	mi.mesh = st.commit()
+	mi.material_override = logs()
+	mi.position = at
+	parent.add_child(mi)
+
+static func logs() -> StandardMaterial3D: return surface("rough_wood",Color("9a7656"),1.6,0.9)
+
 static func _straight(walls: Dictionary, cell: Vector2i) -> bool:
 	return (walls.has(cell+Vector2i(1,0)) or walls.has(cell+Vector2i(-1,0))) != (walls.has(cell+Vector2i(0,1)) or walls.has(cell+Vector2i(0,-1)))
 
 # Half an arm of a window cell: solid below the sill and above the head, the
 # opening (WINDOW_W wide, centred on the cell) left clear.
-static func _window_arm(shell: Node3D, cell: Vector2i, d: Vector2i, floor_y: float, top: float, mat: Material) -> void:
+static func _window_arm(shell: Node3D, cell: Vector2i, d: Vector2i, floor_y: float, top: float, mat: Material, family := "") -> void:
 	var along_x: bool = d.x != 0
 	var half := WINDOW_W/2
 	var edge := 0.5-half
 	var mid_off := half+edge/2
 	var side := Vector3(cell.x+d.x*mid_off,floor_y+(top-floor_y)/2,cell.y+d.y*mid_off)
-	_box(shell,Vector3(edge if along_x else T,top-floor_y,T if along_x else edge),side,mat)
+	_wall_box(shell,Vector3(edge if along_x else T,top-floor_y,T if along_x else edge),side,mat,family,along_x)
 	var inner := Vector3(cell.x+d.x*half/2,0,cell.y+d.y*half/2)
-	_box(shell,Vector3(half if along_x else T,SILL,T if along_x else half),inner+Vector3(0,floor_y+SILL/2,0),mat)
-	_box(shell,Vector3(half if along_x else T,top-floor_y-HEAD,T if along_x else half),inner+Vector3(0,floor_y+HEAD+(top-floor_y-HEAD)/2,0),mat)
+	_wall_box(shell,Vector3(half if along_x else T,SILL,T if along_x else half),inner+Vector3(0,floor_y+SILL/2,0),mat,family,along_x)
+	_wall_box(shell,Vector3(half if along_x else T,top-floor_y-HEAD,T if along_x else half),inner+Vector3(0,floor_y+HEAD+(top-floor_y-HEAD)/2,0),mat,family,along_x)
 
 # Oak frame, cross mullion, leaded glass, stone sill and open painted shutters
 # on the outside face.
@@ -359,14 +528,17 @@ static func _outer_corners(walls: Dictionary) -> Array:
 		if x == 1 and y == 1: result.append(cell)
 	return result
 
-# Square oak posts at the corners (wood and timber-framed houses).
-static func _corner_posts(root: Node3D, outer: Array, floor_y: float, top: float) -> void:
+# Square oak posts at the corners (wood and timber-framed houses), each as
+# tall as its corner's wall.
+static func _corner_posts(root: Node3D, outer: Array, floor_y: float, walls: Dictionary) -> void:
 	for corner in outer:
+		var top := float(walls[corner].get("top",0))*SCALE
+		if top-floor_y < 0.1: continue
 		_box(root,Vector3(T+0.1,top-floor_y+0.05,T+0.1),Vector3(corner.x,floor_y+(top-floor_y)/2,corner.y),oak())
 
 # Long-and-short dressed blocks at the outer corners.
 static func _quoins(root: Node3D, outer: Array, floor_y: float, top: float, family: String, walls: Dictionary) -> void:
-	if family in ["wood","log"]: return
+	if family in ["wood","log","marble","ashlar"]: return
 	var mat := quoin()
 	var y := floor_y
 	var i := 0
@@ -374,6 +546,9 @@ static func _quoins(root: Node3D, outer: Array, floor_y: float, top: float, fami
 		var tall := minf(0.34,top-y)
 		var long := i%2 == 0
 		for corner in outer:
+			# Only as high as this corner's own wall, and only on full walls.
+			var corner_top := float(walls[corner].get("top",9999))*SCALE
+			if corner_top-floor_y < DOOR_H or y >= corner_top-0.05: continue
 			# Each block runs back along the wall that leaves the corner.
 			var sx := -1.0 if walls.has(corner+Vector2i(1,0)) else 1.0
 			var sz := -1.0 if walls.has(corner+Vector2i(0,1)) else 1.0
@@ -547,11 +722,17 @@ static func _steps(root: Node3D, stairs: Array, floor_y: float, centre: Vector2)
 		_box(root,Vector3(0.2 if along_x else 0.95,floor_y,0.95 if along_x else 0.2),Vector3(mid.x,floor_y/2,mid.y)+side,stone())
 
 # Stone chimney stack through the roof near one gable, with pots and smoke.
-static func _chimney(root: Node3D, low: Vector2i, high: Vector2i, eave_y: float, ridge_y: float, rnd: RandomNumberGenerator) -> void:
+static func _chimney(root: Node3D, block: Array, eave_y: float, ridge_y: float, rnd: RandomNumberGenerator) -> void:
 	var stack := Node3D.new()
 	stack.name = "Chimney"
-	var x := float(high.x)-1.6
-	var z := float(low.y)+1.0
+	var lo := Vector2i(100000,100000)
+	var hi := Vector2i(-100000,-100000)
+	for r in block:
+		lo = lo.min(r[0])
+		hi = hi.max(r[0])
+	# Near one end of the main roof, just off the ridge.
+	var x := float(hi.x)-1.1 if hi.x-lo.x >= hi.y-lo.y else (lo.x+hi.x)/2.0+0.9
+	var z := (lo.y+hi.y)/2.0+0.9 if hi.x-lo.x >= hi.y-lo.y else float(lo.y)+1.1
 	var base := eave_y-0.3
 	var top := ridge_y+0.9
 	stack.position = Vector3(x,0,z)

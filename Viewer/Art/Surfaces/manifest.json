@@ -2039,6 +2039,126 @@
      "bytes": 381425
     }
    ]
+  },
+  {
+   "id": "castle_brick_02_white",
+   "name": "Castle Brick 02 White",
+   "source": "https://polyhaven.com/a/castle_brick_02_white",
+   "license": "CC0-1.0",
+   "licenseUrl": "https://polyhaven.com/license",
+   "authors": [
+    "Rob Tuytel"
+   ],
+   "sizeMeters": [
+    2.5,
+    2.5
+   ],
+   "maps": [
+    {
+     "role": "albedo",
+     "file": "castle_brick_02_white_diff_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/castle_brick_02_white/castle_brick_02_white_diff_1k.jpg",
+     "sha256": "e7d91c459ad18fcf3fc15f8157707300af4ca0cd399157f8d202cca756457c9f",
+     "sourceMd5": "e58153f13a4f1e0b256625105fbcd050",
+     "bytes": 703877
+    },
+    {
+     "role": "normal",
+     "file": "castle_brick_02_white_nor_gl_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/castle_brick_02_white/castle_brick_02_white_nor_gl_1k.jpg",
+     "sha256": "fcac21e315979201ecaa9df6d5f82ca0c6a237d814e2dd7a84b429a7f1ce8700",
+     "sourceMd5": "a38c7154b0a9a28b698c9bcf22dda9ac",
+     "bytes": 1024055
+    },
+    {
+     "role": "roughness",
+     "file": "castle_brick_02_white_rough_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/castle_brick_02_white/castle_brick_02_white_rough_1k.jpg",
+     "sha256": "b45aa47a2a9717e383732c3499e59d2570ec9197ce498ec3a863f9b1239a0b40",
+     "sourceMd5": "272ca92730f74ce451b5c6e9457bec02",
+     "bytes": 434938
+    }
+   ]
+  },
+  {
+   "id": "marble_01",
+   "name": "Marble 01",
+   "source": "https://polyhaven.com/a/marble_01",
+   "license": "CC0-1.0",
+   "licenseUrl": "https://polyhaven.com/license",
+   "authors": [
+    "Rob Tuytel"
+   ],
+   "sizeMeters": [
+    1.5,
+    1.5
+   ],
+   "maps": [
+    {
+     "role": "albedo",
+     "file": "marble_01_diff_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/marble_01/marble_01_diff_1k.jpg",
+     "sha256": "b10dabea976d68baa976a0d4e8dac58789df8d26a1b50697f320106f1b00a229",
+     "sourceMd5": "04325ced5018eb8a2e598a4ef69cb176",
+     "bytes": 305029
+    },
+    {
+     "role": "normal",
+     "file": "marble_01_nor_gl_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/marble_01/marble_01_nor_gl_1k.jpg",
+     "sha256": "77c2a9b549a6a408659f8197be91945aeb0abc33e697f1dd2ce24ee8dc7c2bc0",
+     "sourceMd5": "fa073d722cde733c1bd6cc6e8897c8e3",
+     "bytes": 110230
+    },
+    {
+     "role": "roughness",
+     "file": "marble_01_rough_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/marble_01/marble_01_rough_1k.jpg",
+     "sha256": "a3e9f373d22aebc449af73f6a18c9817e2146f17e567a083609ba8fbb62a72f5",
+     "sourceMd5": "59cef1be1b7376c9d0dcc7a64adf7882",
+     "bytes": 91848
+    }
+   ]
+  },
+  {
+   "id": "castle_brick_01",
+   "name": "Castle Brick 01",
+   "source": "https://polyhaven.com/a/castle_brick_01",
+   "license": "CC0-1.0",
+   "licenseUrl": "https://polyhaven.com/license",
+   "authors": [
+    "Rob Tuytel"
+   ],
+   "sizeMeters": [
+    1.5,
+    1.5
+   ],
+   "maps": [
+    {
+     "role": "albedo",
+     "file": "castle_brick_01_diff_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/castle_brick_01/castle_brick_01_diff_1k.jpg",
+     "sha256": "3823fdc4bcb37cc7b26fd7e3b2a80e82f5a23354d22d84eb0ca277909f923b2c",
+     "sourceMd5": "d3d6194b814cbda8a17dc5ebe407a41e",
+     "bytes": 693571
+    },
+    {
+     "role": "normal",
+     "file": "castle_brick_01_nor_gl_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/castle_brick_01/castle_brick_01_nor_gl_1k.jpg",
+     "sha256": "f3c4c0538fd5c3f9e1aabcb0169fbbc3ac2883ed5544f05d9008d2736a2899de",
+     "sourceMd5": "6e187b440caae18cd2edf5925edf6b7b",
+     "bytes": 1069379
+    },
+    {
+     "role": "roughness",
+     "file": "castle_brick_01_rough_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/castle_brick_01/castle_brick_01_rough_1k.jpg",
+     "sha256": "0958bde6010e2b7e4098b2737e94cff53c0c41c865e09a69b1a1e39ba7973985",
+     "sourceMd5": "5707e3fd1088d9602dd57b19175bc4a1",
+     "bytes": 263291
+    }
+   ]
   }
  ]
 }

@@ -1,3 +1,40 @@
+# Houses, batch 3: every classic house is a whole model — 31 October 2026
+
+`HouseModel` now covers all 19 classic house multis ModernUO builds (Houses.cs):
+- the five small houses;
+- the small shops 0xA0/0xA2;
+- the guild house 0x74 and the two-storey houses 0x76/0x78;
+- the large patio house 0x8C and the sandstone patio house 0x9C;
+- the marble house 0x96, the small tower 0x98, the log cabin 0x9A and the villa 0x9E;
+- the tower 0x7A, the keep 0x7C and the castle 0x7E.
+
+**Storey model, all from the tiles:**
+- **Storeys:** wall tiles are grouped by the height they stand on. Each wall cell rises to its own tiles' top, so a loft railing stays half height. Doors, windows, timber framing and corners are worked out per storey. Upper floors are thick slabs, and a balcony shows its soffit.
+- **Short wall tiles:**
+  - under a pitched roof, those at the eaves fill the gables;
+  - elsewhere they are walls of their own height: a shop's arcade piers, courtyard flower beds, balustrades;
+  - a storey made only of them is a parapet round a flat roof (towers, keep, castle, terraces) with a flagged deck.
+  - Foundation courses (short pieces ending at ground-floor level) stay in the plinth, so doorways stay open.
+- **Stairs:**
+  - stairs and landings inside climb tile by tile, each a block to its own top with a tread;
+  - an outside flight up to a terrace stands on the ground;
+  - front steps stay as before.
+- **Doorways** only between full-height walls, never in a flower bed.
+
+**Materials:**
+- log walls are stacked round logs (one merged mesh per wall piece, CC0 `rough_wood`);
+- marble is large cream marble blocks (CC0 `marble_01`), without quoins;
+- fortifications (stone houses of 120 or more wall cells) are coursed castle masonry (CC0 `castle_brick_01`); cottages keep fieldstone;
+- the chimney sits on the main roof block.
+- Also pinned but unused: `castle_brick_02_white`, tried for marble and rejected.
+
+**Tests:** WorldItemTests 70/70. All 19 build with a doorway and a roof or parapet storey; the two-storey house has both storeys and a staircase; the log cabin has log walls; the castle has several storeys. `BakeHouses.gd` bakes all 19, and the full verify passes.
+
+**Not yet:**
+- seen live in-game on placed houses;
+- custom (designed) houses still draw tile by tile;
+- castle doorways carry the cottage door canopy, a candidate for a stone hood later.
+
 # Houses, batch 2: all small houses, the guild house and the patio house — 31 October 2026
 
 The owner approved the whole-house approach on the small house; it now covers seven of ModernUO's classic houses.

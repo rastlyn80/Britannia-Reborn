@@ -191,8 +191,28 @@ func run() -> void:
    if parts.is_empty(): continue
    var house: Node3D = Houses.build(parts,Multis._tiles_of(parts),id)
    var roofs: Array = house.find_children("Roof*","",true,false)
-   check(house.get_node_or_null("Walls/Doorway") != null and not roofs.is_empty(),"house 0x%X builds with a doorway and a roof" % id)
+   var shells: Array = house.find_children("Walls*","",false,false)
+   var doorways: Array = house.find_children("Doorway*","",true,false)
+   # Pitched houses have a roof; towers, keeps, castles and terraces end in
+   # a parapet storey of walls instead.
+   check(not doorways.is_empty() and (not roofs.is_empty() or shells.size() >= 2),"house 0x%X builds with a doorway and a roof or parapet (%d storeys of walls)" % [id,shells.size()])
    house.free()
+  # Two-storey houses get both storeys and an inner staircase; the log
+  # cabin is built of logs; the castle's walls are coursed masonry.
+  for probe in [[0x76,"two storeys and a staircase"],[0x9A,"log walls"],[0x7E,"several storeys"]]:
+   var probe_parts: Array = Multis.components(int(probe[0]))
+   if probe_parts.is_empty(): continue
+   var built_house: Node3D = Houses.build(probe_parts,Multis._tiles_of(probe_parts),int(probe[0]))
+   var storeys: int = built_house.find_children("Walls*","",false,false).size()
+   var ok := storeys >= 2
+   if int(probe[0]) == 0x76: ok = ok and built_house.get_node_or_null("Stairs") != null
+   if int(probe[0]) == 0x9A:
+    var logged := false
+    for m in built_house.find_children("*","MeshInstance3D",true,false):
+     if m.material_override == Houses.logs(): logged = true
+    ok = ok and logged
+   check(ok,"house 0x%X: %s (%d storeys)" % [int(probe[0]),probe[1],storeys])
+   built_house.free()
   # The patio house: an L-shaped roof (two blocks), no post in the open
   # patio, and its fences and counters left to their own tile models.
   if not Multis.components(0x8C).is_empty():
