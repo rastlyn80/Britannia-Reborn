@@ -1,4 +1,4 @@
-"""Private native-constructor allow-list from validated creature identities."""
+"""Private native-constructor/state allow-list from validated identities."""
 import argparse,json,re
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
@@ -20,5 +20,5 @@ def main():
     target=ROOT/'work/creatures';target.mkdir(parents=True,exist_ok=True)
     (target/'live-candidates.json').write_text(json.dumps(rows,indent=2),encoding='utf-8')
     (runtime/'Data/creature-fixtures.local.json').write_text(json.dumps([{'body':row['body'],'classes':row['classes']} for row in rows],indent=2),encoding='utf-8')
-    print('CREATURE NATIVE FIXTURES:',len(rows),'body identities; original constructors only')
+    print('CREATURE NATIVE FIXTURES:',len(rows),'body identities; native constructors and explicit native state APIs')
 if __name__=='__main__':main()

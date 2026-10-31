@@ -13,6 +13,29 @@ def bone_payload(parent,scales):
 def matrix(x=1.,y=1.,z=1.):return [x,0.,0.,0.,y,0.,0.,0.,z]
 
 class CreaturePipelineTests(unittest.TestCase):
+    def test_native_literal_census_includes_conditional_branches_only(self):
+        text='''
+            Body = flag ? 180 : 0x31;
+            public int Body => time >= ready ? 0xCF : 0xDF;
+            Body = Utility.RandomList(9, 0xA);
+            Body = Utility.RandomList(Variant12, Variant34);
+            Body = flag ? chosenBody : otherBody;
+            public int Wool => Body == 0xCF ? 3 : 0;
+            // Body = 888;
+            string example = "Body = 999;";
+            string verbatim = @"Body = 777;";
+            Thing() : base(0xC8, 0x3EAA) {}
+        '''
+        self.assertEqual(p.native_body_literals(text),{180,49,207,223,9,10,200})
+
+    def test_white_wyrm_native_alias_is_declared_not_an_original_table_row(self):
+        rows=[{'body':49,'stem':'dragons_wyrm_retro_white','scale':[1.2]*3}]
+        result=p.reuse.identities('dragons_dragon_ice',rows)
+        self.assertEqual([r['body'] for r in result],[49,180])
+        self.assertIn('Authored reuse',result[1]['identity_note'])
+        self.assertEqual(rows,[{'body':49,'stem':'dragons_wyrm_retro_white','scale':[1.2]*3}])
+        with self.assertRaisesRegex(ValueError,'missing-table'):p.reuse.identities('dragons_dragon_ice',rows+[{'body':180,'stem':'other'}])
+
     def test_large_unit_conversion_preserves_timing_rotation_and_source(self):
         body={'bones':[{'name':str(i),'translation':[float(i+1),0.,0.]} for i in range(24)]}
         animation={'bones':[{'name':str(i),'translation':[float(i+1)*100.,0.,0.]} for i in range(24)],

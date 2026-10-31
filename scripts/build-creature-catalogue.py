@@ -42,7 +42,7 @@ def main():
     counts={'bounded_native_literal_bodies':len(targets),'routed_native_literals':sum(bool(row['presentation']) for row in targets),
             'with_native_evidence':sum(bool(row['live_reports']) for row in targets),'new_validated_source_forms':len(accepted),
             'new_body_routes':len(routed),'prepared_source_forms':sum(row['status']=='prepared' for row in prepared.values()),'blocked_source_forms':sum(row['status']!='prepared' for row in prepared.values())}
-    scope='Bounded pinned-server literal Body assignments/RandomList/base-mount calls, not every dynamic constructor result or the full modern-client body catalogue. Source forms, body routes and live evidence are separate. Proprietary-derived art stays local; no redistribution grant.'
+    scope='Bounded pinned-server literal Body assignments, RandomList, simple conditional literal branches and base-mount calls; not every dynamic constructor result or the full modern-client body catalogue. Source forms, body routes and live evidence are separate. Proprietary-derived art stays local; no redistribution grant.'
     (OUT/'catalogue.json').write_text(json.dumps({'counts':counts,'server_pin':source['server_pin'],'native_targets':targets,'preparation':prepared,'scope':scope},indent=2),encoding='utf-8')
     cards=[];atlases=[]
     for family in sorted(families):

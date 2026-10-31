@@ -49,6 +49,8 @@ func run() -> void:
 			var response:=await reply(sex,"prepare "+str(body),"UCCREATURE|prepared|")
 			if response.is_empty():return
 			var fields:=response.split("|");var serial:=int(fields[2]);var native_class:=str(fields[4])
+			var native_state:=str(fields[8])
+			if body==0xDF and not check(native_state=="shorn" and int(fields[9])==0,"native sheep carving reaches the shorn body and consumes available wool"):return
 			if not check(int(fields[3])==body,"actual native constructor retains exact body"):return
 			if not check(await until(func():return session.entities.has(serial) and observer.entities.has(serial)),"both clients receive native loose creature"):return
 			var actor:=preload("res://Presentation/HumanAvatar.gd").new();actor.initial_body=body;root.add_child(actor);actor.set_physics_process(false);actor.apply_server_appearance(session.entities[serial],[])
@@ -109,7 +111,7 @@ func run() -> void:
 				holder.queue_free();presenter.hint.queue_free();presenter.queue_free()
 			actor.queue_free()
 			await process_frame
-			records.append({"female":sex==1,"body":body,"native_class":native_class,"kind":candidate.kind,"corpse_suppressed":corpse==0 and not death_refused,"native_death_refused":death_refused,"movement":"Native AI refuses movement" if rooted else "Native Mobile.Move walk/run"})
+			records.append({"female":sex==1,"body":body,"native_class":native_class,"native_state":native_state,"kind":candidate.kind,"corpse_suppressed":corpse==0 and not death_refused,"native_death_refused":death_refused,"movement":"Native AI refuses movement" if rooted else "Native Mobile.Move walk/run"})
 			await reply(sex,"cleanup","UCCREATURE|cleaned")
 	for session in sessions:session.close()
 	var folder:="res://../outputs/creatures/"+family;DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(folder))

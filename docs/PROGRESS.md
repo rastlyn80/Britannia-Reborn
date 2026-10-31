@@ -1,3 +1,11 @@
+# Creature milestone: 109 of 279 audited native bodies / ophidians and gargoyles - 31 October 2026
+
+83 accepted generic source forms across 29 groups now provide 98 body routes. With earlier mounts/bovines, native-evidence coverage is 109/279 (39.1%). The audit grew from 275 by recognising conditional White Wyrm (49/180), summoned daemon (10) and shorn sheep (223) body choices. It remains bounded, not an exhaustive modern-client census or final-art/action percentage. Human wearables remain 732/1,126 (65.01%).
+
+Current regression: 55,972 checks / 17,073 deformed samples; 1,144 GPU checks / 498 views, all passing. Long-toe support adds 146 checks / 72 animated samples. Native expanded runs pass 1,050 dragon, 490 daemon, 360 ruminant, 230 ophidian and 276 gargoyle checks. Shorn sheep uses the native wool API; White Wyrm 180 uses an explicit authored visual alias. Full scripts/verify.ps1 exits 0 with 20 synthetic creature and 11 Third Dawn tests; existing unrelated diagnostics remain. [Details and limits](CREATURE_MONSTERS.md).
+
+Eight new ophidian/gargoyle forms add 128 fresh comparisons (1,328 core frames total). Continue remaining families, dynamic native identities/states, actions and source/effect blockers. Air elemental is a death-mote quad; 68 particle files now have a local structural audit, not verified actor bindings. Blade Spirit death flash and specter identity remain open. All original inputs, art, exact prompts, IR and captures stay local/ignored. Preserve production, humans/mounts and concurrent compact-streaming work.
+
 # Creature milestone: 99 native body targets / dragons, reptiles and daemons - 31 October 2026
 
 75 generic source forms across 27 groups now have accepted pose/render evidence and 89 body routes. With earlier mount/bovine work, 99 of 275 bounded native literal targets have routes and actual native evidence (36.0%). This is tested integration, not exhaustive modern-client, final-art or original-action completion. Human wearables remain 732/1,126 (65.01%).

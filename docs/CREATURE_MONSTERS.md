@@ -1,6 +1,57 @@
 # Monster expansion and original-action ledger
 
-## Dragon, reptile and daemon integration — 31 October 2026
+## Expanded census, ophidians and gargoyles — 31 October 2026
+
+The current audit has **109 native-evidence bodies out of 279 targets (39.1%)**,
+with **83 accepted generic source forms / 29 groups / 98 body routes**. The
+denominator grew from 275 because simple conditional literal body expressions
+are now included: both White Wyrm bodies (49/180), summoned daemon body 10 and
+shorn sheep body 223. Comments, strings, comparisons and nonliteral RandomList
+arguments do not become body identities. This remains a bounded static census;
+named constants, ranges, indirect assignments and other native states remain
+separate audit work. It is not final-art or complete-action coverage.
+
+White Wyrm 180 explicitly reuses the authored white-wyrm presentation because
+the old archive has no corresponding model-table row. Its native constructor
+and body property are verified, not replaced with a forced fixture identity.
+Shorn sheep is reached through the native Carve/wool API, with body 223 and
+zero remaining wool confirmed; this does not certify the full tool/target
+eligibility flow. Expanded native runs pass **1,050 dragon, 490 daemon and
+360 ruminant checks**. Ophidians and gargoyles add **230 and 276 native checks**.
+The first gargoyle preflight ran before acceptance and correctly refused to
+create candidates; the fresh accepted-model run passed.
+
+The common regression now passes **55,972 pose/identity/support checks /
+17,073 deformed samples**, plus **1,144 Forward+ checks / 498 views**. The
+long-toe motion gate still passes 146 checks / 72 samples. Five ophidian and
+three gargoyle source forms have upgraded atlases and 128 fresh comparison
+frames, taking the generic core-frame inventory to 1,328. Gargoyle fast-run
+clearance needed 120 Hz baking/import. Original wing cutouts are retained.
+The render test records actual cutout pixels/fractions: every sampled view
+must expose gaps and the view set must contain a substantial cutout; side-view
+foreshortening is not mistaken for a broken opacity shader.
+
+The full project verifier exits 0, including **20 synthetic creature tests**
+and 11 Third Dawn tests; existing unrelated diagnostics remain. Reproduction:
+`work/creatures-expanded-census-all-regression.log`,
+`work/creatures-conditional-census-full-verify.log`, per-family
+`expanded-native.log` files, and `work/creatures-gargoyles-native-accepted.log`.
+The action ledger now indexes 213 original metadata records with no parse
+blockers in this expanded audit; its slot counts still are not an original
+animation completion percentage.
+
+Air elemental and specter remain source blockers. The air mesh is only a
+four-vertex death-mote quad, not a full actor. A separate static investigation
+structurally decodes **68 IFF FORM/PSYS particle files**, with no parse failures,
+retaining source hashes, chunk payloads and archive texture references in
+ignored `work/creatures/particle-source-audit.json`. Numeric effect filenames
+are not evidence of creature bindings or understood emitter semantics. Continue
+that investigation, the Blade Spirit death flash, remaining families, native
+identity/state gaps, effects and action replacements. Generated art, prompts,
+source inputs, local IR and captures remain excluded from Git; production and
+concurrent streaming work are preserved.
+
+## Earlier dragon, reptile and daemon checkpoint — 31 October 2026
 
 The current checkpoint has **75 validated generic source forms across 27
 groups and 89 body routes**. Combined with earlier mount/bovine work,

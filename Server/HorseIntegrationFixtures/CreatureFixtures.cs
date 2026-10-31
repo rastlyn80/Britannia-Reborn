@@ -116,6 +116,23 @@ public static class CreatureFixtures
                     {
                         break;
                     }
+                    var nativeState = "constructor";
+                    if (creature is Sheep sheep && body == 0xDF)
+                    {
+                        // Reach the shorn form through the native wool API;
+                        // assigning a body ID would not prove the transition.
+                        sheep.MoveToWorld(new Point3D(owner.X + 1, owner.Y, owner.Z), owner.Map);
+                        var tool = new Dagger();
+                        try
+                        {
+                            sheep.Carve(owner, tool);
+                        }
+                        finally
+                        {
+                            tool.Delete();
+                        }
+                        nativeState = "shorn";
+                    }
                     // Random native constructor variants are sampled; body IDs
                     // are never overwritten to manufacture matching evidence.
                     if (creature.Body.BodyID != body)
@@ -131,7 +148,7 @@ public static class CreatureFixtures
                     creature.Frozen = true;
                     creature.MoveToWorld(new Point3D(owner.X + 1, owner.Y, owner.Z), owner.Map);
                     _creatures[owner] = creature;
-                    owner.SendMessage($"UCCREATURE|prepared|{creature.Serial.Value}|{creature.Body.BodyID}|{type.Name}|{creature.Str}|{creature.Dex}|{creature.Int}");
+                    owner.SendMessage($"UCCREATURE|prepared|{creature.Serial.Value}|{creature.Body.BodyID}|{type.Name}|{creature.Str}|{creature.Dex}|{creature.Int}|{nativeState}|{creature.Wool}");
                     return;
                 }
             }

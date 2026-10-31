@@ -26,6 +26,7 @@ func run() -> void:
 		if record.status!="prepared":continue
 		var actor:=Visual.new();actor.entry=record;viewport.add_child(actor);actor.set_process(false);actor.set_physics_process(false);actor.contact.enabled=false
 		var height:=float(record.stats.original.height_m);camera.size=height*3.;camera.position=Vector3(0,height*1.4,height*5.);camera.look_at(Vector3(0,height*.5,0))
+		var largest_cutout_fraction:=0.
 		for clip in ["Walk","Run","Attack"]:
 			for angle in [-.8,PI/2.]:
 				actor.rotation.y=angle;actor.apply_identity(0,0);actor.play(clip,0.);actor.animator.seek(actor.animator.current_animation_length*.35,true);actor.animator.pause()
@@ -39,6 +40,7 @@ func run() -> void:
 				check(occupied>150,"Actual creature surface visible: "+str(record.kind))
 				check(float(changed)/maxi(1,occupied)>.35,"Native full hue visibly recolours actual creature: "+str(record.kind))
 				var dependencies: Dictionary={}
+				var cutout: Dictionary={}
 				for name: String in record.get("art_dependency_sha256",{}):dependencies[name]=FileAccess.get_sha256("res://local-art/creatures/"+name)
 				if not str(record.get("source_alpha_texture","")).is_empty():
 					actor.apply_identity(0,0)
@@ -50,9 +52,16 @@ func run() -> void:
 							if maxf(b.r,maxf(b.g,b.b))>.04:
 								solid_pixels+=1
 								if maxf(a.r,maxf(a.g,a.b))<.04:gaps+=1
-					check(gaps>10 and float(gaps)/maxi(1,solid_pixels)>.03,"Source opacity creates actual visible geometry gaps: "+str(record.kind))
+					var fraction:=float(gaps)/maxi(1,solid_pixels)
+					largest_cutout_fraction=maxf(largest_cutout_fraction,fraction)
+					cutout={"pixels":gaps,"solid_pixels":solid_pixels,"fraction":fraction}
+					check(gaps>10,"Source opacity creates measured visible gaps in each sampled view: "+str(record.kind))
 					set_mask_probe(actor,false,true)
-				rows.append({"kind":record.kind,"clip":clip,"angle":angle,"occupied_pixels":occupied,"dyed_fraction":float(changed)/maxi(1,occupied),"asset_sha256":FileAccess.get_sha256("res://local-art/creatures/"+str(record.kind)+"-modern.gltf"),"import_sha256":FileAccess.get_sha256("res://local-art/creatures/"+str(record.kind)+"-modern.gltf.import"),"art_dependency_sha256":dependencies})
+				rows.append({"kind":record.kind,"clip":clip,"angle":angle,"occupied_pixels":occupied,"dyed_fraction":float(changed)/maxi(1,occupied),"source_cutout":cutout,"asset_sha256":FileAccess.get_sha256("res://local-art/creatures/"+str(record.kind)+"-modern.gltf"),"import_sha256":FileAccess.get_sha256("res://local-art/creatures/"+str(record.kind)+"-modern.gltf.import"),"art_dependency_sha256":dependencies})
+		if not str(record.get("source_alpha_texture","")).is_empty():
+			# Foreshortening changes the fraction of visible wing area. Require
+			# real gaps in every view and a substantial cutout in the view set.
+			check(largest_cutout_fraction>.03,"View set exposes substantial source alpha cutouts: "+str(record.kind))
 		actor.free()
 	check(not rows.is_empty(),"At least one model rendered")
 	var folder:="res://../outputs/creatures/"+family;DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(folder))

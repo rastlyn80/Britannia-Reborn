@@ -4,14 +4,18 @@ import copy,math,statistics
 RECIPES={
     'dragons_dragon_blasted':{'identity_stem':'dragons_dragon_retro_grey','clip_stem':'dragons_wyrm_ancient','contract_stem':'dragons_wyrm_ancient'},
     'dragons_dragon_blasted_red':{'source_stem':'dragons_dragon_blasted','identity_stem':'dragons_dragon_retro_red','clip_stem':'dragons_wyrm_ancient','contract_stem':'dragons_wyrm_ancient'},
-    'dragons_dragon_ice':{'identity_stem':'dragons_wyrm_retro_white','clip_stem':'dragons_wyrm_ancient','contract_stem':'dragons_wyrm_ancient'},
+    'dragons_dragon_ice':{'identity_stem':'dragons_wyrm_retro_white','clip_stem':'dragons_wyrm_ancient','contract_stem':'dragons_wyrm_ancient','native_aliases':[180]},
     'daemons_daemon_exodus':{'atlas_stem':'daemons_daemon','contract_stem':'daemons_daemon'}
 }
 CONTRACT_FIELDS=['points','normals','polygons','texture_polygons','uv_sets','weights','ties','bones']
 
 def identities(kind,table):
     stem=RECIPES.get(kind,{}).get('identity_stem',kind)
-    return copy.deepcopy([row for row in table if row['stem']==stem])
+    result=copy.deepcopy([row for row in table if row['stem']==stem])
+    for body in RECIPES.get(kind,{}).get('native_aliases',[]):
+        if not result or any(row['body']==body for row in table):raise ValueError('Native alias needs an explicit missing-table identity')
+        result.append(dict(copy.deepcopy(result[0]),body=body,identity_note='Authored reuse for the alternate native WhiteWyrm constructor body; not an original archive model-table row.'))
+    return result
 
 def assert_exact_contract(model,reference):
     for field in CONTRACT_FIELDS:

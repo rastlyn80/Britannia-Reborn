@@ -138,6 +138,20 @@ def table_rows(raw):
             if row not in rows: rows.append(row)
     return rows
 
+def native_body_literals(text):
+    """Bounded literal expressions only; never evaluate arbitrary game code."""
+    text=re.sub(r'@"(?:""|[^"])*"|"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'|/\*.*?\*/|//[^\n]*','',text,flags=re.S)
+    number=r'(?:0x[\dA-Fa-f]+|\d+)'
+    assignment=r'\bBody\s*(?:=>|=(?![=>]))\s*'
+    literals=re.findall(assignment+r'('+number+r')\s*;',text)
+    for group in re.findall(r'\bBody\s*=\s*Utility.RandomList\(([^)]*)\)',text):
+        if re.fullmatch(r'\s*'+number+r'(?:\s*,\s*'+number+r')*\s*',group):
+            literals+=re.findall(number,group)
+    for pair in re.findall(assignment+r'[^;?]+\?\s*('+number+r')\s*:\s*('+number+r')\s*;',text):
+        literals.extend(pair)
+    literals+=re.findall(r':\s*base\(\s*('+number+r')\s*,\s*0x3[Ee][\dA-Fa-f]{2}\b',text)
+    return {int(value,16) if value.lower().startswith('0x') else int(value) for value in literals}
+
 def native_bodies():
     server = ROOT/'Server/ModernUO'
     pin = json.loads((ROOT/'Server/dependencies.json').read_text())['modernuo']['revision']
@@ -145,13 +159,7 @@ def native_bodies():
     bodies = {}
     for path in (server/'Projects/UOContent/Mobiles').rglob('*.cs'):
         raw = path.read_bytes(); text = raw.decode('utf-8-sig',errors='replace')
-        text = re.sub(r'/\*.*?\*/|//[^\n]*','',text,flags=re.S)
-        literals = re.findall(r'\bBody\s*(?:=|=>)\s*(0x[\dA-Fa-f]+|\d+)\s*;',text)
-        for group in re.findall(r'\bBody\s*=\s*Utility.RandomList\(([^)]*)\)',text):
-            literals += re.findall(r'0x[\dA-Fa-f]+|\d+',group)
-        literals += re.findall(r':\s*base\(\s*(0x[\dA-Fa-f]+|\d+)\s*,\s*0x3[Ee][\dA-Fa-f]{2}\b',text)
-        for value in literals:
-            body = int(value,0)
+        for body in sorted(native_body_literals(text)):
             bodies.setdefault(body,[]).append({'path':str(path.relative_to(server)), 'sha256':digest(raw)})
     return pin,bodies
 
@@ -216,7 +224,7 @@ def prepare(family, z, names, rows, native):
                 original = td.png_from_tga(read(texture))
                 (OUTPUT/(stem+'-original-albedo.png')).write_bytes(original)
                 row['source_atlas_status']='Recovered original atlas'
-                if family in ['dragons','daemons'] or stem=='spirits_blade_spirit':
+                if family in ['dragons','daemons','gargoyles'] or stem=='spirits_blade_spirit':
                     row['source_alpha_texture']=stem+'-original-albedo.png'
                     row['art_dependency_sha256']={row['source_alpha_texture']:digest(original)}
             else:
@@ -347,7 +355,7 @@ def prepare(family, z, names, rows, native):
                     output.write_text(json.dumps(gltf,separators=(',',':')))
                 else:
                     stats[treatment] = td.export_gltf(mesh,clips,original,output,height,
-                        floor_sample_rate=120 if family in ['dragons','daemons','lizards'] or stem in ['flails_swamp_tentacles','centaurs_centaur','mongbats_mongbat','spirits_blade_spirit'] else 30,
+                        floor_sample_rate=120 if family in ['dragons','daemons','lizards','gargoyles'] or stem in ['flails_swamp_tentacles','centaurs_centaur','mongbats_mongbat','spirits_blade_spirit'] else 30,
                         preserve_vertical_clips=['Fly','TakeOff','Land','HitInAir'])
                     templates[cache_key] = (json.loads(output.read_text()),stats[treatment])
                 stats[treatment]['bind_diagonal_m']=math.sqrt(sum(((max(p[i] for p in mesh['points'])-min(p[i] for p in mesh['points']))*scale)**2 for i in range(3)))
@@ -376,14 +384,21 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__); parser.add_argument('--families',nargs='+',default=['bruins']); parser.add_argument('--refresh-atlases',action='store_true'); parser.add_argument('--refresh-metadata',action='store_true'); parser.add_argument('--skip-index',action='store_true'); parser.add_argument('--index-only',action='store_true'); args = parser.parse_args()
     OUTPUT.mkdir(parents=True,exist_ok=True)
     if args.refresh_metadata:
-        profiles=body_profiles()
+        profiles=body_profiles();pin,native=native_bodies()
+        table=json.loads((OUTPUT/'source-index.json').read_text())['rows']
         for family in args.families:
-            path=OUTPUT/family/'preparation.json';report=json.loads(path.read_text())
+            path=OUTPUT/family/'preparation.json';report=json.loads(path.read_text());before=copy.deepcopy(report)
             for row in report['models']:
-                for identity in row.get('bodies',[]):identity['native_profile']=profiles.get(identity['body'],'')
+                if 'bodies' not in row:continue
+                identities=reuse.identities(row['kind'],table)
+                assert identities,'Metadata refresh lost an explicit source identity'
+                for identity in identities:
+                    identity['native_sources']=native.get(identity['body'],[])
+                    identity['native_profile']=profiles.get(identity['body'],'')
+                row['bodies']=identities
                 if row['status']=='prepared':row['profile']=profiles.get(row['bodies'][0]['body']) or row['profile']
             report['body_table_sha256']=digest((ROOT/'Server/ModernUO/Distribution/Data/bodyTable.cfg').read_bytes())
-            path.write_text(json.dumps(report,indent=2),encoding='utf-8')
+            if report!=before:path.write_text(json.dumps(report,indent=2),encoding='utf-8')
         return
     if args.refresh_atlases:
         for family in args.families:
@@ -409,7 +424,7 @@ def main():
         table = z.read(names['uotdb/uotd/models/models.txt']); rows = table_rows(table)
         if not args.skip_index:
             (OUTPUT/'source-index.json').write_text(json.dumps({'archive_sha256':helper.audit.ARCHIVE_HASH,'table_sha256':digest(table),'server_pin':pin,'native_profiles':body_profiles(),
-                'rows':rows,'native_literal_bodies':native,'native_scope':'Literal Body assignments and RandomList calls in Mobiles source, not exhaustive constructor/dynamic behavior.'},indent=2),encoding='utf-8')
+                'rows':rows,'native_literal_bodies':native,'native_scope':'Literal Body assignments, RandomList calls, simple conditional literal branches and base-mount constructors in Mobiles source; not exhaustive dynamic behavior.'},indent=2),encoding='utf-8')
         if args.index_only:return
         for family in args.families: prepare(family,z,names,rows,native)
 
