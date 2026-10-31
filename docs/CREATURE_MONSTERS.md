@@ -1,3 +1,11 @@
+# Skeleton family and automatic cadavers - 31 October 2026
+
+Three original skeleton forms (plain, knight and mage) now have bounded refined geometry, saved generated UV-compatible bone/steel/cloth atlases, source actions, native body/hue routes and static cadavers. Five additional bounded native bodies pass 406 real disposable-server/two-client checks, zero failures. Creature native-evidence coverage is now 114/279 (40.9%), with 86 accepted generic forms / 30 groups / 103 body routes. Human wearable coverage remains unchanged.
+
+New skeleton evidence: 2,094 pose checks / 630 skinned samples; 37 GPU checks; 48 actual comparison frames; 38 pre-acceptance cadaver checks. The complete static corpse catalogue now contains 140 available body variants and passes 1,311 rendered checks, zero failures. Common creature evidence totals 58,066 checks / 17,703 skin samples and 1,181 GPU checks / 516 views. These are bounded integration/finite-motion checks, not final anatomy, every original action or arbitrary-terrain certification. Full scripts/verify.ps1 passed at the immediately preceding corpse source checkpoint; common runtime is unchanged. [Corpse implementation and reproduction](CORPSE_GRAPHICS.md), [creature programme](CREATURE_MONSTERS.md).
+
+All original inputs, derived art/IR, comparison images and exact prompts stay ignored. Continue gazers/harpies, remaining undead, elemental and sea families, later native identities and open art/action/terrain gaps. Preserve Claude's concurrent streaming work and production state.
+
 # Static cadaver catalogue and native death playback - 31 October 2026
 
 All 135 currently available human/mount/animal/creature body variants now have frozen static cadavers, listed under native graphic 0x2006 with the original body in amount. The item catalogue has a Corpses tab; Reviews/Review-Corpses.cmd opens the ignored local gallery. World/inspect and parameterised static graphics share the builder. Actual corpse equipment, dyes and server-confirmed looting are presented; future creature candidates must pass cadaver checks before acceptance. [Implementation, reproduction and limits](CORPSE_GRAPHICS.md).
