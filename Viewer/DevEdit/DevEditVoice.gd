@@ -268,8 +268,15 @@ static func correct_names(text: String, names: PackedStringArray) -> String:
 		for size in [span,span+1]:
 			var i := 0
 			while i+size <= words.size():
-				var piece := _letters(" ".join(words.slice(i,i+size)))
-				if piece != target and piece.length() >= 3 and (_similar(piece,target) or _skeleton(piece) == _skeleton(target) and _skeleton(target).length() >= 3):
+				var window := words.slice(i,i+size)
+				var piece := _letters(" ".join(window))
+				# A window that already holds the name, or that would swallow a
+				# small word ("is", "my"), is left alone.
+				var keep := false
+				for word in window:
+					var bare := _letters(word)
+					if bare == target or (size > span and (bare.length() <= 2 or bare in COMMON)): keep = true
+				if not keep and piece != target and piece.length() >= 3 and (_similar(piece,target) or _skeleton(piece) == _skeleton(target) and _skeleton(target).length() >= 3):
 					# Keep the punctuation that followed: "rusty lin," -> "Rastlyn,".
 					var trailing := RegEx.create_from_string("[^A-Za-z0-9]+$").search(words[i+size-1])
 					var tail := trailing.get_string() if trailing else ""
@@ -278,7 +285,19 @@ static func correct_names(text: String, names: PackedStringArray) -> String:
 					replaced.append_array(words.slice(i+size))
 					words = PackedStringArray(replaced)
 				i += 1
-	return " ".join(words)
+	# "Rastlyn Rastlyn" (a word corrected next to the name itself) reads once.
+	var out := PackedStringArray()
+	for word in words:
+		if out.is_empty() or _letters(word) != _letters(out[-1]) or not _letters(word) in Array(names).map(func(n: String): return _letters(n)): out.append(word)
+		else: out[-1] = word
+	return " ".join(out)
+
+const COMMON := ["the","and","you","are","was","his","her","its","name","this","that","with","for","not","but","have","has","here","there","what","who"]
+
+# With nothing said, Whisper may echo its prompt (the list of names).
+static func echoed_prompt(text: String, names: PackedStringArray) -> bool:
+	var said := _letters(text)
+	return not names.is_empty() and (said == _letters(", ".join(names.slice(0,PROMPT_NAMES))) or said == _letters(names[0]))
 
 static func _letters(text: String) -> String:
 	var out := ""
@@ -322,7 +341,11 @@ func _finished() -> void:
 		if text.is_empty() or (text.begins_with("[") and text.ends_with("]")) or (text.begins_with("(") and text.ends_with(")")):
 			failed.emit("Heard nothing — press Talk and speak.")
 			return
-		text = correct_names(text,nearby_names(game))
+		var names := nearby_names(game)
+		if echoed_prompt(text,names):
+			failed.emit("Heard nothing — press Talk and speak.")
+			return
+		text = correct_names(text,names)
 		heard.emit(text,{"engine":"whisper","language":str(data.get("result",{}).get("language","")),"translated":translate,"ms":ms,"seconds":job.seconds})
 	else:
 		var text := str(data.get("text","")).strip_edges()

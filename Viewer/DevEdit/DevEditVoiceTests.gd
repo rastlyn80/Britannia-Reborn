@@ -56,6 +56,9 @@ func run() -> void:
 	check(Voice.correct_names("follow rusty lin, please",names) == "follow Rastlyn, please","two misheard words become the nearby name, punctuation kept")
 	check(Voice.correct_names("hey shirly come here",names) == "hey Shirley come here","a near spelling becomes the name")
 	check(Voice.correct_names("I will never go there",names) == "I will never go there" and Voice.correct_names("open the gate",names) == "open the gate","ordinary words stay as they are")
+	check(Voice.correct_names("my name is Rastlin",names) == "my name is Rastlyn","\"is\" stays: only the name itself is corrected")
+	check(Voice.correct_names("Rastlin Rastlyn hello",names) == "Rastlyn hello","a doubled name reads once")
+	check(Voice.echoed_prompt("Rastlyn, Shirley, Nevin.",names) and not Voice.echoed_prompt("Rastlyn, follow me",names),"an echo of the prompt counts as silence")
 	fake.free()
 	voice.free()
 	# The panel builds the language, translation and microphone controls.
