@@ -799,8 +799,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		game.message_received.emit("Item placement cancelled.")
 		get_viewport().set_input_as_handled()
 		return
+	# A click in the world leaves any text box (the chat, the say line), so
+	# walking and the game's keys work again at once.
+	if event is InputEventMouseButton and event.pressed: get_viewport().gui_release_focus()
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and not mouse_looking:
-		if dev_edit and dev_edit.active: dev_edit.click(event.position)
+		if dev_edit and dev_edit.editing(): dev_edit.click(event.position)
 		else: world_items.click(event.position,event.double_click)
 		var pressed_on: int = world_items.hovered_serial() if game.phase == "world" else 0
 		bar_drag = pressed_on if game.entities.has(pressed_on) or pressed_on == int(game.player.get("serial",-1)) else 0

@@ -165,7 +165,7 @@ func click(screen: Vector2) -> void:
 func _process(_delta: float) -> void:
 	if bake_pid > 0: _poll_bake()
 	if publish_pid > 0: _poll_publish()
-	if not active or tool != "place" or not follow_cursor or Input.mouse_mode != Input.MOUSE_MODE_VISIBLE: return
+	if not editing() or tool != "place" or not follow_cursor or Input.mouse_mode != Input.MOUSE_MODE_VISIBLE: return
 	if Time.get_ticks_msec() < next_cursor or panel.get_global_rect().has_point(panel.get_viewport().get_mouse_position()): return
 	next_cursor = Time.get_ticks_msec()+100
 	var hit: Dictionary = overlay.pick(world.camera,panel.get_viewport().get_mouse_position())
@@ -665,6 +665,10 @@ func _margin(parent: Node, left: int, top: int, right: int, bottom: int) -> Marg
 	for side in [["left",left],["top",top],["right",right],["bottom",bottom]]: m.add_theme_constant_override("margin_"+side[0],side[1])
 	parent.add_child(m)
 	return m
+
+# World clicks pick and place only while the hands-on Tools are open; with
+# the chat alone the world plays as usual.
+func editing() -> bool: return active and tools_drawer != null and tools_drawer.visible
 
 func claude_online() -> bool: return state.editors.has("Claude")
 
