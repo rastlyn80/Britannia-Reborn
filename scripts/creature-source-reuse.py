@@ -5,7 +5,8 @@ RECIPES={
     'dragons_dragon_blasted':{'identity_stem':'dragons_dragon_retro_grey','clip_stem':'dragons_wyrm_ancient','contract_stem':'dragons_wyrm_ancient'},
     'dragons_dragon_blasted_red':{'source_stem':'dragons_dragon_blasted','identity_stem':'dragons_dragon_retro_red','clip_stem':'dragons_wyrm_ancient','contract_stem':'dragons_wyrm_ancient'},
     'dragons_dragon_ice':{'identity_stem':'dragons_wyrm_retro_white','clip_stem':'dragons_wyrm_ancient','contract_stem':'dragons_wyrm_ancient','native_aliases':[180]},
-    'daemons_daemon_exodus':{'atlas_stem':'daemons_daemon','contract_stem':'daemons_daemon'}
+    'daemons_daemon_exodus':{'atlas_stem':'daemons_daemon','contract_stem':'daemons_daemon'},
+    'harpies_harpy':{'modern_atlas_stem':'harpies_harpy_stone','contract_stem':'harpies_harpy_stone'}
 }
 CONTRACT_FIELDS=['points','normals','polygons','texture_polygons','uv_sets','weights','ties','bones']
 

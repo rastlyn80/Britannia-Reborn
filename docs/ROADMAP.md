@@ -1,3 +1,11 @@
+# Gazer hover, harpy surfaces and 145 cadavers - 31 October 2026
+
+Four additional original source forms now have upgraded local surfaces, source/category action routes, raw hues and static cadavers: gazer, historical elder-gazer, harpy and stone harpy. Actual source hover is retained instead of pinning tentacles; harpy flight/landing and original feather cutouts are preserved. The living harpy uses an explicitly authored fully feather-covered surface from an exact matching stone-harpy mesh/UV/rig donor. Source gazers already contain four separate eye components; their unusual early-source anatomy remains an art-review gap. [Evidence, reproduction and limits](GAZERS_AND_HARPIES.md).
+
+Current native-evidence coverage: 117/279 bounded bodies (41.9%), with 90 accepted generic forms / 32 groups / 108 routes. New native checks: 94 gazer and 202 harpy, zero failures; only body22 has gazer constructor evidence, while historical68/69 are presentation-only in this audit. Native GazerLarva778 remains open. Current common regression: 61,124 checks / 18,585 skin samples, 1,245 GPU checks / 540 views. New floating-avatar support passes96 checks /18 finite-plane cases. The full corpse catalogue passes1,356 rendered checks over145 variants. All original/derived art, exact prompts, IR and captures remain ignored.
+
+Full scripts/verify.ps1 was run: creature/importer/parser and other checks pass, but it stops in the concurrently edited developer-edit fixtures. A standalone recheck reaches78 checks with two terrain-edit failures; the separate final world smoke passes. This full verification is not green. Creature work did not modify the streaming/editor files. Continue unaffected creature families, identity/action gaps, large/floating selection/label bounds, art and terrain polish; preserve production and concurrent work.
+
 # Skeleton family and automatic cadavers - 31 October 2026
 
 Three original skeleton forms (plain, knight and mage) now have bounded refined geometry, saved generated UV-compatible bone/steel/cloth atlases, source actions, native body/hue routes and static cadavers. Five additional bounded native bodies pass 406 real disposable-server/two-client checks, zero failures. Creature native-evidence coverage is now 114/279 (40.9%), with 86 accepted generic forms / 30 groups / 103 body routes. Human wearable coverage remains unchanged.

@@ -13,6 +13,37 @@ def bone_payload(parent,scales):
 def matrix(x=1.,y=1.,z=1.):return [x,0.,0.,0.,y,0.,0.,0.,z]
 
 class CreaturePipelineTests(unittest.TestCase):
+    def test_hover_preserves_source_rise_and_still_grounds_death(self):
+        import base64,json
+        model={'points':[(0.,0.,.5),(1.,0.,.5),(0.,0.,1.5)],'normals':[(0.,1.,0.)],
+               'polygons':[(0,1,2,0,0,0)],'texture_polygons':[(0,1,2)],'uv_sets':[[(0.,0.,0.),(1.,0.,0.),(0.,1.,0.)]],
+               'bones':[{'name':'root','parent':0,'translation':[0.,0.,0.],'rotation':[0.,0.,0.,1.]}],
+               'weights':[[(0,1.)]]*3,'ties':[0]}
+        def animation(end):
+            return {'bones':copy.deepcopy(model['bones']),'tracks':[{'name':'root',
+                'translation':{'times':[0.,1.],'values':[[0.,0.,0.],[0.,0.,end]]},
+                'rotation':{'times':[0.,1.],'values':[[0.,0.,0.,1.]]*2}}]}
+        work=Path(__file__).resolve().parents[1]/'work';work.mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(prefix='creature-test-',dir=work) as folder:
+            output=Path(folder)/'float.gltf'
+            report=p.td.export_gltf(model,{'Idle':animation(.3),'Death':animation(-1.)},b'png',output,1.,
+                                    preserve_hover_clips=['Idle','Death'])
+            gltf=json.loads(output.read_text(encoding='utf-8'));data=base64.b64decode(gltf['buffers'][0]['uri'].split(',')[1])
+            p.td.export_gltf(model,{'Idle':animation(.3)},b'png',output,1.)
+            grounded=json.loads(output.read_text(encoding='utf-8'));grounded_data=base64.b64decode(grounded['buffers'][0]['uri'].split(',')[1])
+        def offsets(name,document=gltf,payload=data):
+            clip=next(c for c in document['animations'] if c['name']==name)
+            channel=next(c for c in clip['channels'] if c['target']['node']==1)
+            accessor=document['accessors'][clip['samplers'][channel['sampler']]['output']]
+            view=document['bufferViews'][accessor['bufferView']];start=view.get('byteOffset',0)
+            return list(struct.iter_unpack('<3f',payload[start:start+view['byteLength']]))
+        self.assertTrue(all(value==(0.,0.,0.) for value in offsets('Idle')))
+        self.assertEqual(report['clips']['Idle']['floor_policy'],'source_hover')
+        self.assertAlmostEqual(.5-1.+offsets('Death')[-1][2],0.)
+        self.assertAlmostEqual(offsets('Idle',grounded,grounded_data)[0][2],-.5)
+        self.assertAlmostEqual(offsets('Idle',grounded,grounded_data)[-1][2],-.8)
+        self.assertEqual(model['points'][0][2],.5)
+
     def test_metadata_refresh_preserves_authored_identity_and_native_aliases(self):
         row={'kind':'bruins_bear_brown','bodies':[{'body':167,'scale':[1.]*3,'note':'authored mapping'}]}
         result=p.refreshed_identities(row,[],{167:[{'path':'Bear.cs'}]},{167:'animal'})

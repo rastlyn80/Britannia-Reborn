@@ -257,8 +257,9 @@ def unit(q):
     return [v / length for v in q]
 
 
-def export_gltf(model, animations, texture, output, height, floor_sample_rate=30, preserve_vertical_clips=()):
+def export_gltf(model, animations, texture, output, height, floor_sample_rate=30, preserve_vertical_clips=(), preserve_hover_clips=()):
     require(30<=floor_sample_rate<=240,'Floor sampling must stay within 30..240 Hz')
+    require(not set(preserve_vertical_clips)&set(preserve_hover_clips),'Clip cannot use both flight and source-hover policies')
     bones, globals_ = model['bones'], {}
 
     def global_bone(i, visiting=None):
@@ -466,7 +467,12 @@ def export_gltf(model, animations, texture, output, height, floor_sample_rate=30
                     height_sum += (rotate(pq, local)[2] + pt[2]) * weight
                 lowest = min(lowest, height_sum)
             offsets.append([0, 0, -lowest])
-        if name in preserve_vertical_clips:
+        if name in preserve_hover_clips:
+            # An explicitly selected floating source keeps its positive
+            # authoring-space clearance and vertical motion. Lift only when
+            # the deformed underside crosses the ground; do not pin tentacles.
+            offsets=[[0,0,max(0.,value[2])] for value in offsets]
+        elif name in preserve_vertical_clips:
             # Flying motion must retain the source rise/fall, rather than pin
             # its lowest vertex to the floor on every frame. Land ends at the
             # surface; takeoff starts there. Sustained flight has clearance.
@@ -478,7 +484,7 @@ def export_gltf(model, animations, texture, output, height, floor_sample_rate=30
         clip['samplers'].append(dict(input=accessor(times, 'SCALAR'), output=accessor(offsets, 'VEC3'), interpolation='LINEAR'))
         gltf['animations'].append(clip)
         clip_report[name] = dict(matched_tracks=len(matched), missing=missing, floor_samples=len(times),
-                                 floor_sample_rate=floor_sample_rate,floor_policy='source_vertical' if name in preserve_vertical_clips else 'grounded',floor_offset_range=[min(v[2] for v in offsets), max(v[2] for v in offsets)])
+                                 floor_sample_rate=floor_sample_rate,floor_policy='source_hover' if name in preserve_hover_clips else 'source_vertical' if name in preserve_vertical_clips else 'grounded',floor_offset_range=[min(v[2] for v in offsets), max(v[2] for v in offsets)])
     gltf['buffers'] = [dict(byteLength=len(data), uri='data:application/octet-stream;base64,' + base64.b64encode(data).decode())]
     output.write_text(json.dumps(gltf, separators=(',', ':')))
     return dict(source_points=len(model['points']), triangles=len(model['polygons']), bones=len(bones),

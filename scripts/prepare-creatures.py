@@ -229,12 +229,20 @@ def prepare(family, z, names, rows, native):
                 donor,_=normalise_bind(donor_raw,donor);donor,_=visible_vertices(donor)
                 row['source_reuse_contract']=reuse.assert_exact_contract(body,donor)
             assert len(set(body['textures']))==1, 'Multiple source materials need a dedicated importer'
+            if recipe.get('modern_atlas_stem'):
+                assert donor is not None and len(set(donor['textures']))==1
+                reference_atlas=next(n for n in names if n.endswith('/'+donor['textures'][0].lower()))
+                reference_png=td.png_from_tga(read(reference_atlas))
+                reference_path=OUTPUT/(stem+'-modern-reference-albedo.png');reference_path.write_bytes(reference_png)
+                row['modern_atlas_reference']={'member':names[reference_atlas],'path':str(reference_path.relative_to(ROOT)),
+                    'sha256':digest(reference_png),'contract_stem':recipe['modern_atlas_stem'],
+                    'interpretation':'Authored fully feather-covered surface using an exact matching stone-harpy mesh/UV/rig donor; not a recovered living-harpy material. Original source atlas remains the comparison baseline.'}
             texture = next((n for n in names if n.endswith('/'+body['textures'][0].lower())),None)
             if texture:
                 original = td.png_from_tga(read(texture))
                 (OUTPUT/(stem+'-original-albedo.png')).write_bytes(original)
                 row['source_atlas_status']='Recovered original atlas'
-                if family in ['dragons','daemons','gargoyles'] or stem=='spirits_blade_spirit':
+                if family in ['dragons','daemons','gargoyles','harpies'] or stem=='spirits_blade_spirit':
                     row['source_alpha_texture']=stem+'-original-albedo.png'
                     row['art_dependency_sha256']={row['source_alpha_texture']:digest(original)}
             else:
@@ -347,7 +355,7 @@ def prepare(family, z, names, rows, native):
                 prompt_path=modern_path.with_suffix('.prompt.txt')
                 assert prompt_path.exists(),'Authored atlas requires its exact saved prompt'
                 row['exact_prompt']=prompt_path.read_text(encoding='utf-8-sig')
-                row['generation_mode']='built-in imagegen exact-UV donor atlas edit' if row.get('atlas_reference') else 'built-in imagegen technical UV guide replacement' if not texture else 'built-in imagegen source atlas edit'
+                row['generation_mode']='built-in imagegen exact-UV donor atlas edit' if row.get('atlas_reference') or row.get('modern_atlas_reference') else 'built-in imagegen technical UV guide replacement' if not texture else 'built-in imagegen source atlas edit'
                 if not texture and not row.get('atlas_reference'):
                     guide=OUTPUT/(stem+'-uv-template.png')
                     assert guide.exists(),'Missing source map replacement needs its saved technical guide'
@@ -355,6 +363,10 @@ def prepare(family, z, names, rows, native):
             # Colour variants with exactly equal geometry, UVs, rigs and clips can
             # share computed deformation streams; atlas pixels remain independent.
             key = digest(json.dumps({'body':{k:v for k,v in body.items() if k!='textures'},'clips':clips,'height':height},sort_keys=True).encode())
+            if family=='gazers':
+                row['movement_mode']='source_hover'
+                row['hover_reference_m']=min(p[2] for p in body['points'])*scale
+                row['hover_policy']='Source positive Z clearance retained; only ground penetration lifted. Death ends at its original negative underside and settles on the floor. Not arbitrary-terrain volume clearance.'
             stats = {}
             for treatment, mesh in [('original',body),('rounded',refined)]:
                 output = OUTPUT/(stem+'-'+treatment+'.gltf')
@@ -365,8 +377,9 @@ def prepare(family, z, names, rows, native):
                     output.write_text(json.dumps(gltf,separators=(',',':')))
                 else:
                     stats[treatment] = td.export_gltf(mesh,clips,original,output,height,
-                        floor_sample_rate=120 if family in ['dragons','daemons','lizards','gargoyles'] or stem in ['flails_swamp_tentacles','centaurs_centaur','mongbats_mongbat','spirits_blade_spirit'] else 30,
-                        preserve_vertical_clips=['Fly','TakeOff','Land','HitInAir'])
+                        floor_sample_rate=120 if family in ['dragons','daemons','lizards','gargoyles','gazers','harpies'] or stem in ['flails_swamp_tentacles','centaurs_centaur','mongbats_mongbat','spirits_blade_spirit'] else 30,
+                        preserve_vertical_clips=['Fly','TakeOff','Land','HitInAir'],
+                        preserve_hover_clips=list(clips) if family=='gazers' else ())
                     templates[cache_key] = (json.loads(output.read_text()),stats[treatment])
                 stats[treatment]['bind_diagonal_m']=math.sqrt(sum(((max(p[i] for p in mesh['points'])-min(p[i] for p in mesh['points']))*scale)**2 for i in range(3)))
                 if row.get('source_alpha_texture') or row.get('rigid_import'):
@@ -420,7 +433,7 @@ def main():
                 (OUTPUT/(row['kind']+'-modern.gltf')).write_text(json.dumps(gltf,separators=(',',':')))
                 row.update(modern_atlas=str(atlas.relative_to(ROOT)),atlas_sha256=digest(raw),surface='generated atlas',
                            exact_prompt=atlas.with_suffix('.prompt.txt').read_text(encoding='utf-8-sig'),
-                           generation_mode='built-in imagegen exact-UV donor atlas edit' if row.get('atlas_reference') else 'built-in imagegen technical UV guide replacement' if row.get('missing_source_atlas') else 'built-in imagegen source atlas edit')
+                           generation_mode='built-in imagegen exact-UV donor atlas edit' if row.get('atlas_reference') or row.get('modern_atlas_reference') else 'built-in imagegen technical UV guide replacement' if row.get('missing_source_atlas') else 'built-in imagegen source atlas edit')
             path.write_text(json.dumps(report,indent=2),encoding='utf-8')
         return
     archive = ROOT/'work/third-dawn/uotdb.zip'

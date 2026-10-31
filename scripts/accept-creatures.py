@@ -31,6 +31,18 @@ def main():
                 assert model['asset_sha256']==tested[model['kind']]['asset_sha256']['modern'],'Animated contact used different geometry'
                 assert model['import_sha256']==tested[model['kind']]['import_sha256']['modern'],'Animated contact used different import precision'
         rows=[]
+        if family=='gazers':
+            hover_path=ROOT/f'outputs/creatures/{family}/hover-contact.json'
+            hover=json.loads(hover_path.read_text())
+            hover_bodies={int(identity['body']) for row in preparation['models'] if row['status']=='prepared' for identity in row['bodies']}
+            assert hover['checks']>0 and hover['failures']==0 and len(hover['records'])==len(hover_bodies)*6,'Missing measured gazer hover support'
+            assert {int(row['body']) for row in hover['records']}==hover_bodies,'Missing gazer body hover support'
+            assert set(hover['runtime_sha256'])=={'FloatingCreatureTests.gd','HumanAvatar.gd','LegacyAvatar.gd','CreatureVisual.gd','SourceMountContact.gd','SkinGeometry.gd','FootContact.gd','MountVisual.gd','CreatureRegistry.gd'},'Incomplete floating avatar inputs'
+            assert all(digest(ROOT/'Viewer/Presentation'/name)==sha for name,sha in hover['runtime_sha256'].items()),'Floating avatar support runtime changed'
+            for kind,asset in hover['assets'].items():
+                assert asset['asset_sha256']==tested[kind]['asset_sha256']['modern'],'Hover support used different geometry'
+                assert asset['import_sha256']==tested[kind]['import_sha256']['modern'],'Hover support used a different import'
+            assert set(hover['assets'])==set(tested),'Missing floating model support case'
         for row in preparation['models']:
             if row['status']!='prepared':continue
             assert not row.get('pending_render_feature'),row.get('pending_render_feature')
@@ -66,5 +78,9 @@ def main():
         report['entries']=[row for row in report['entries'] if row['family']!=family]+rows
         print('ACCEPTED LOCAL PRESENTATION:',family,len(rows),'source forms;',sum(len(row['bodies']) for row in rows),'body routes; native live evidence separate')
     report['scope']='Exact prepared art with passing finite pose/skin and GPU dye checks. Not universal animation fidelity, native gameplay certification or redistributable assets.'
-    accepted.write_text(json.dumps(report,indent=2),encoding='utf-8')
+    # A running client may load this index while a batch is being published.
+    # Replace the completed document rather than exposing a partially written one.
+    pending=accepted.with_suffix('.json.pending')
+    pending.write_text(json.dumps(report,indent=2),encoding='utf-8')
+    pending.replace(accepted)
 if __name__=='__main__':main()
