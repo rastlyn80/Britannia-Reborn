@@ -507,6 +507,8 @@ Then support Felucca, Ilshenar and the remaining facets.
 
 Introduce efficient world streaming and region-based generation.
 
+Storage rule (owner decision, 31 October 2026): the prepared streaming cache stores each model once and places it by reference, compressed; merged per-district geometry is not an accepted bake output, and every bake meets a size budget (all of Trammel at most 5 GB). See [COMPACT_STREAMING.md](COMPACT_STREAMING.md).
+
 ## Milestone 7: Cross-platform clients
 
 Implement and validate Windows, macOS, Linux, Android and iOS/iPadOS builds.
