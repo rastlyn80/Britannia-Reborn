@@ -403,6 +403,12 @@ func run() -> void:
  signature+="modern-britain" if preload("res://Presentation/GraphicsMode.gd").modern() else "classic-britain"
  signature=signature.sha256_text()
  output=preload("res://Presentation/GraphicsMode.gd").prepared(directory)
+ # --print-signature: what this code and dataset would stamp, and what the
+ # published index was baked with (nothing is baked).
+ if "--print-signature" in OS.get_cmdline_user_args():
+  var published: Variant=JSON.parse_string(FileAccess.get_file_as_string(output.path_join("index.json"))) if FileAccess.file_exists(output.path_join("index.json")) else {}
+  print("STREAM SIGNATURE: current %s published %s" % [signature,str(published.get("signature","none")) if published is Dictionary else "none"])
+  quit();return
  if not preview_output.is_empty():
   await bake_preview(preview_output,preview_list)
   return
