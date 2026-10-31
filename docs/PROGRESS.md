@@ -1,3 +1,23 @@
+# Houses: hipped roofs, narrow roof strips, per-cell gables; server restarted — 31 October 2026
+
+- **Server restarted:** the ActionTimers extension is installed and loaded (quickbar dials now follow ModernUO's real waits).
+  - `Start-Server.cmd` launched from PowerShell 7 failed in Windows PowerShell 5.1: the inherited PSModulePath hid `Get-FileHash`.
+  - `scripts/install-server-fixes.ps1` (Codex's uncommitted overlay work) also calls the .NET Core-only `[IO.File]::Move(a,b,$true)`, which 5.1 lacks. That script was left untouched for Codex.
+  - The verified fix assembly (`UOContent.dll`, matching its build receipt `c74141…`) was installed by hand, and the server was started with a clean module path. It listens on 127.0.0.1:2593.
+- **Hipped roofs:** a block whose end rows never reach its ridge (and whose ends carry no gable wall tiles) gets hip ends at the same pitch, with no gable walls.
+- **Roof coverage:** up to 40 roof blocks, including one-cell strips (walkways, lean-tos); slivers of under three cells join the roof beside them.
+- **Gable infill judged per cell:** a short wall piece is gable infill only within two cells of a roof tile and at or above it, so houses with awnings at every storey keep their parapets and trims.
+- **Arches and columns:**
+  - arch tiles open only on the ground storey (arcades); higher up they are facade decoration and stay wall;
+  - pillars bonded to a wall or an arch are piers.
+- **Contest houses kept on tiles:**
+  - 0x1482: a brick castle of arch fragments;
+  - 0x1483: an open timber-framed villa the owner found glitchy;
+  - 0x148C: a facade of 138 pillars and 118 arches.
+  - The other 15 are whole models; 34 houses are baked.
+
+**Tests:** WorldItemTests 85/85. Regression renders of every supported house: the two-storey and patio houses have clean cross gables. The full verify passes.
+
 # Houses: bracket gap closed, columns and arcades — 31 October 2026
 
 - **Tower brackets bonded:** the owner saw a gap between the gallery brackets and the tower. Walls stand on their cell's centre line, so a bracket cell next to a wall now runs back half a cell into it.

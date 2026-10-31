@@ -32,9 +32,11 @@ const WINDOW_W := 0.82
 # Every classic house multi ModernUO builds (Houses.cs), reviewed as renders.
 const SUPPORTED := [0x64,0x66,0x68,0x6A,0x6C,0x74,0x76,0x78,0x7A,0x7C,0x7E,0x8C,0x96,0x98,0x9A,0x9C,0x9E,0xA0,0xA2,
 	# Contest keeps and castles (ContestHouses.cs) that read well as whole
-	# models. 0x1482 (a brick castle of broken arch fragments) and 0x1483
-	# (porch roofs only a cell or two wide) keep their tiles.
-	0x147E,0x147F,0x1480,0x1481,0x1484,0x1485,0x1486,0x1487,0x1488,0x1489,0x148A,0x148B,0x148C,0x148D,0x148E,0x148F]
+	# models. 0x1482 (a brick castle of arch fragments with awnings at
+	# every storey), 0x1483 (an open timber-framed villa that came out
+	# glitchy, owner review) and 0x148C (a facade of 138 pillars and 118
+	# arches) keep their tiles.
+	0x147E,0x147F,0x1480,0x1481,0x1484,0x1485,0x1486,0x1487,0x1488,0x1489,0x148A,0x148B,0x148D,0x148E,0x148F]
 static var surfaces := {}
 
 static func supported(id: int) -> bool:
@@ -155,11 +157,20 @@ static func build(parts: Array, tiles: Dictionary, seed := 0) -> Node3D:
 	# Short wall tiles: under a pitched roof, those at the eaves and above
 	# fill the gables; everywhere else they are walls of their own height
 	# (a shop's counter-high front, a loft railing, a roof terrace parapet).
-	var eave_z := 100000
-	for r in roofs: eave_z = mini(eave_z,int(r[1]))
+	# Gable infill is judged cell by cell: under a roof tile at or within a
+	# cell of it, at or above that roof's lowest tile (a house whose
+	# awnings sit at every storey keeps its parapets and trims).
+	var roof_low := {}
+	for r in roofs:
+		for dy in range(-2,3):
+			for dx in range(-2,3):
+				var c: Vector2i = r[0]+Vector2i(dx,dy)
+				roof_low[c] = mini(int(roof_low.get(c,100000)),int(r[1]))
+	var gable_cells := {}
 	for piece in low_pieces:
-		if not roofs.is_empty() and int(piece[1]) >= eave_z-1:
+		if roof_low.has(piece[0]) and int(piece[1]) >= int(roof_low[piece[0]])-1 and int(piece[1]) <= int(roof_low[piece[0]])+20:
 			if piece[3] != "": gable_family = piece[3]
+			gable_cells[piece[0]] = true
 		else: pieces.append([piece[0],piece[1],piece[2],piece[3],false])
 	# Storeys: wall tiles grouped by the height they stand on (a few z apart
 	# still count as one storey). Each storey runs from its floor to the top
@@ -190,7 +201,8 @@ static func build(parts: Array, tiles: Dictionary, seed := 0) -> Node3D:
 			if not bool(storey.walls[cell].get("pillar",false)): continue
 			var lone := true
 			for d in [Vector2i(1,0),Vector2i(-1,0),Vector2i(0,1),Vector2i(0,-1)]:
-				if storey.walls.has(cell+d) and not bool(storey.walls[cell+d].get("pillar",false)) and not bool(storey.walls[cell+d].get("arch",false)): lone = false
+				# A pillar bonded to a wall or an arch is a pier of that wall.
+				if storey.walls.has(cell+d) and not bool(storey.walls[cell+d].get("pillar",false)): lone = false
 			if lone: free.append(cell)
 		for cell in free:
 			columns.append([cell,int(storey.z),int(storey.walls[cell].top),str(storey.walls[cell].get("name","")),str(storey.walls[cell].family)])
@@ -266,7 +278,7 @@ static func build(parts: Array, tiles: Dictionary, seed := 0) -> Node3D:
 		var floors: Dictionary = floors_at[i]
 		_floor(root,floors,storey.walls,base,covered if i == 0 else roofed,i > 0)
 		var parapet := bool(storey.get("parapet",false))
-		_walls(root,storey.walls,floors if not parapet else {},family,base,top,centre,paint,covering,not parapet)
+		_walls(root,storey.walls,floors if not parapet else {},family,base,top,centre,paint,covering,not parapet,i == 0)
 		if family == "plaster" and not parapet: _framing(root,storey.walls,base,top,centre)
 		var outer := _outer_corners(storey.walls)
 		if corners == "post": _corner_posts(root,outer,base,storey.walls)
@@ -310,7 +322,7 @@ static func build(parts: Array, tiles: Dictionary, seed := 0) -> Node3D:
 			var block: Array = blocks[i]
 			var axis := main_axis if i == 0 else _ridge_axis(block)
 			var ridge := main_ridge if i == 0 else minf(main_ridge,_eave_of(block)+_half_span(block,axis)*pitch)
-			_roof(root,block,low,high,_eave_of(block),ridge,gable_family if gable_family != "" else family,covering,axis)
+			_roof(root,block,low,high,_eave_of(block),ridge,gable_family if gable_family != "" else family,covering,axis,_hipped(block,axis,gable_cells))
 		_chimney(root,blocks[0],_eave_of(blocks[0]),_ridge_of(blocks[0]),rnd)
 	for mesh in root.find_children("*","MeshInstance3D",true,false):
 		(mesh as MeshInstance3D).cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
@@ -473,7 +485,7 @@ static func _floor(root: Node3D, floors: Dictionary, walls: Dictionary, floor_y:
 
 # Wall arms from each wall cell's centre towards its wall neighbours, with
 # window and door openings; doors are gaps between two wall cells in a line.
-static func _walls(root: Node3D, walls: Dictionary, floors: Dictionary, family: String, floor_y: float, top: float, centre: Vector2, paint: Color, covering: Material, openings := true) -> void:
+static func _walls(root: Node3D, walls: Dictionary, floors: Dictionary, family: String, floor_y: float, top: float, centre: Vector2, paint: Color, covering: Material, openings := true, arcades := true) -> void:
 	var shell := Node3D.new()
 	shell.name = "Walls"
 	root.add_child(shell,true)
@@ -515,7 +527,9 @@ static func _walls(root: Node3D, walls: Dictionary, floors: Dictionary, family: 
 		var glazed: bool = openings and bool(w.window) and _straight(walls,cell) and h >= HEAD+0.3
 		# An arch tile is an opening: only the arch head above it is built,
 		# with a dressed stone band at its spring.
-		if openings and bool(w.get("arch",false)) and h >= DOOR_H+0.3:
+		# Arcades open on the ground storey; arch tiles higher up are the
+		# facade's decoration and stay wall.
+		if openings and arcades and bool(w.get("arch",false)) and h >= DOOR_H+0.3:
 			var head := h-(DOOR_H+0.15)
 			var along := walls.has(cell+Vector2i(1,0)) or walls.has(cell+Vector2i(-1,0)) or not (walls.has(cell+Vector2i(0,1)) or walls.has(cell+Vector2i(0,-1)))
 			_wall_box(shell,Vector3(1.0 if along else T,head,T if along else 1.0),Vector3(cell.x,cell_top-head/2,cell.y),mat,family,along)
@@ -722,17 +736,17 @@ static func _roof_blocks(roofs: Array) -> Array:
 	for r in roofs: cells[r[0]] = maxi(int(cells.get(r[0],-1000)),int(r[1]))
 	var left := cells.duplicate()
 	var blocks: Array = []
-	while not left.is_empty() and blocks.size() < 6:
+	while not left.is_empty() and blocks.size() < 40:
 		var best := Rect2i()
 		var best_new := 0
 		for start in cells:
 			var width := 0
 			while cells.has(start+Vector2i(width,0)): width += 1
 			var rows := 0
-			while width >= 2:
+			while width >= 1:
 				var row_w := 0
 				while row_w < width and cells.has(start+Vector2i(row_w,rows)): row_w += 1
-				if row_w < 2: break
+				if row_w < 1: break
 				width = row_w
 				rows += 1
 				var rect := Rect2i(start,Vector2i(width,rows))
@@ -744,6 +758,12 @@ static func _roof_blocks(roofs: Array) -> Array:
 					best_new = fresh
 					best = rect
 		if best_new == 0: break
+		# A leftover sliver (a cell or two at a roof's edge) is part of the
+		# roof beside it, not a little gable of its own.
+		if best.get_area() < 3:
+			for y in best.size.y:
+				for x in best.size.x: left.erase(best.position+Vector2i(x,y))
+			continue
 		var block: Array = []
 		for y in best.size.y:
 			for x in best.size.x:
@@ -773,6 +793,35 @@ static func _ridge_axis(roofs: Array) -> bool:
 		if float(r[1]+3)*SCALE >= top-0.01: xs[r[0].x] = true
 	return xs.size() <= 1
 
+# A hipped roof: the rows at both ends of the ridge never reach the ridge
+# height (the tiles slope down at the ends too), as opposed to a gable,
+# whose end rows carry the full profile up to the ridge.
+static func _hipped(roofs: Array, along_z: bool, gable_cells: Dictionary = {}) -> bool:
+	var rlow := Vector2i(100000,100000)
+	var rhigh := Vector2i(-100000,-100000)
+	var top := -100000
+	for r in roofs:
+		rlow = rlow.min(r[0])
+		rhigh = rhigh.max(r[0])
+		top = maxi(top,int(r[1]))
+	if (rhigh.y-rlow.y if along_z else rhigh.x-rlow.x) < 2: return false
+	var end_top := -100000
+	for r in roofs:
+		var c: Vector2i = r[0]
+		var along: int = c.y if along_z else c.x
+		if along == (rlow.y if along_z else rlow.x) or along == (rhigh.y if along_z else rhigh.x): end_top = maxi(end_top,int(r[1]))
+	if end_top >= top-1: return false
+	# Gable wall tiles at either end mean the tiles build a gable there.
+	for c in gable_cells:
+		var along: int = c.y if along_z else c.x
+		var across: int = c.x if along_z else c.y
+		var lo_across: int = rlow.x if along_z else rlow.y
+		var hi_across: int = rhigh.x if along_z else rhigh.y
+		var lo_along: int = rlow.y if along_z else rlow.x
+		var hi_along: int = rhigh.y if along_z else rhigh.x
+		if across >= lo_across-1 and across <= hi_across+1 and (absi(along-lo_along) <= 2 or absi(along-hi_along) <= 2): return false
+	return true
+
 static func _half_span(roofs: Array, along_z: bool) -> float:
 	var rlow := Vector2i(100000,100000)
 	var rhigh := Vector2i(-100000,-100000)
@@ -781,7 +830,7 @@ static func _half_span(roofs: Array, along_z: bool) -> float:
 		rhigh = rhigh.max(r[0])
 	return float((rhigh.x-rlow.x+1) if along_z else (rhigh.y-rlow.y+1))/2.0
 
-static func _roof(root: Node3D, roofs: Array, low: Vector2i, high: Vector2i, eave_y: float, ridge_y: float, gable_family: String, covering: StandardMaterial3D, ridge_along_z := true) -> void:
+static func _roof(root: Node3D, roofs: Array, low: Vector2i, high: Vector2i, eave_y: float, ridge_y: float, gable_family: String, covering: StandardMaterial3D, ridge_along_z := true, hip := false) -> void:
 	var rlow := Vector2i(100000,100000)
 	var rhigh := Vector2i(-100000,-100000)
 	for r in roofs:
@@ -803,14 +852,18 @@ static func _roof(root: Node3D, roofs: Array, low: Vector2i, high: Vector2i, eav
 	var slope := atan2(rise,half_span)
 	var run := (half_span+overhang)/cos(slope)
 	var tiles := covering
+	# A hipped roof's ridge stops short of the ends by the span, and the
+	# ends slope too (same pitch), with no gable walls.
+	var ridge_half := maxf(0.0,length/2-half_span) if hip else length/2+0.35
+	var foot := length/2+(overhang if hip else 0.35)
+	var eave_low := eave_y-overhang*tan(slope)+0.05
 	for side in [-1.0,1.0]:
 		var plane := MeshInstance3D.new()
 		var st := SurfaceTool.new()
 		st.begin(Mesh.PRIMITIVE_TRIANGLES)
 		var top_pt := Vector3(0,ridge_y+0.05,0)
-		var low_pt := Vector3(side*(half_span+overhang),eave_y-overhang*tan(slope)+0.05,0)
-		var zs := [-length/2-0.35,length/2+0.35]
-		var quad := [top_pt+Vector3(0,0,zs[0]),top_pt+Vector3(0,0,zs[1]),low_pt+Vector3(0,0,zs[1]),low_pt+Vector3(0,0,zs[0])]
+		var low_pt := Vector3(side*(half_span+overhang),eave_low,0)
+		var quad := [top_pt+Vector3(0,0,-ridge_half),top_pt+Vector3(0,0,ridge_half),low_pt+Vector3(0,0,foot),low_pt+Vector3(0,0,-foot)]
 		var uvs := [Vector2(0,0),Vector2(length+0.7,0),Vector2(length+0.7,run),Vector2(0,run)]
 		var order := [0,1,2,0,2,3] if side > 0 else [0,2,1,0,3,2]
 		for k in order:
@@ -828,13 +881,32 @@ static func _roof(root: Node3D, roofs: Array, low: Vector2i, high: Vector2i, eav
 		slab.cull_mode = BaseMaterial3D.CULL_DISABLED
 		plane.material_override = slab
 		roof.add_child(plane)
+		if hip:
+			# The hip end on this side's half: a triangle from the ridge end
+			# down to the two eave corners.
+			var end_plane := MeshInstance3D.new()
+			var et := SurfaceTool.new()
+			et.begin(Mesh.PRIMITIVE_TRIANGLES)
+			var tip := Vector3(0,ridge_y+0.05,side*ridge_half)
+			var c1 := Vector3(-(half_span+overhang),eave_low,side*foot)
+			var c2 := Vector3(half_span+overhang,eave_low,side*foot)
+			var tri_order := [tip,c2,c1] if side > 0 else [tip,c1,c2]
+			var tri_uv := [Vector2(half_span,0),Vector2(0,run),Vector2(2*half_span,run)]
+			for k in 3:
+				et.set_uv(tri_uv[k]/1.6)
+				et.add_vertex(tri_order[k])
+			et.generate_normals()
+			et.generate_tangents()
+			end_plane.mesh = et.commit()
+			end_plane.material_override = slab
+			roof.add_child(end_plane)
 		# Fascia board along the eave and rafter tails under it.
 		var eave := low_pt+Vector3(0,-0.06,0)
-		_box(roof,Vector3(0.06,0.18,length+0.7),eave+Vector3(side*0.03,-0.04,0),oak())
+		_box(roof,Vector3(0.06,0.18,foot*2),eave+Vector3(side*0.03,-0.04,0),oak())
 	# Ridge cap: half-round clay tiles along the top.
 	var cap := MeshInstance3D.new()
 	var cyl := CylinderMesh.new()
-	cyl.top_radius = 0.11; cyl.bottom_radius = 0.11; cyl.height = length+0.75; cyl.radial_segments = 10
+	cyl.top_radius = 0.11; cyl.bottom_radius = 0.11; cyl.height = maxf(0.05,ridge_half*2+0.05); cyl.radial_segments = 10
 	cap.mesh = cyl
 	cap.rotation.x = PI/2
 	cap.position = Vector3(0,ridge_y+0.08,0)
@@ -842,7 +914,8 @@ static func _roof(root: Node3D, roofs: Array, low: Vector2i, high: Vector2i, eav
 	cap.material_override = surface("grey_roof_tiles_02",Color("a85a3c"),1.4,0.8) if covering == roof_tiles() else oak()
 	roof.add_child(cap)
 	# Gable ends: plaster triangles under the roof with an oak king post,
-	# collar and bargeboards following the slopes.
+	# collar and bargeboards following the slopes (none on a hipped roof).
+	if hip: return
 	for end in [-1.0,1.0]:
 		var z: float = end*length/2
 		var tri := MeshInstance3D.new()
