@@ -222,11 +222,92 @@ func _keys() -> void:
 		close())
 	_back()
 
+# Developer travel: ModernUO's own Trammel locations (from our server), by
+# category, then by town or dungeon, then by place; one click goes there.
+func _travel() -> void:
+	_reset("Travel")
+	var game: Node = scene.game
+	if game.travel_locations.is_empty():
+		body.add_child(Look.label("Asking the server for Trammel's locations…",14,Look.ASH,500))
+		if not game.travel_ready.is_connected(_travel_loaded): game.travel_ready.connect(_travel_loaded)
+		game.request_travel_locations()
+		_back_to(_developer)
+		return
+	var counts := {}
+	for entry in game.travel_locations: counts[entry.category] = int(counts.get(entry.category,0))+1
+	for category in ["Towns","Dungeons","Shrines"]+counts.keys():
+		if not counts.has(category) or body.has_node(category): continue
+		var button := _row(category,"%d places" % counts[category],_travel_category.bind(category))
+		button.name = category
+	_back_to(_developer)
+
+func _travel_loaded() -> void:
+	if visible and body.get_child_count() > 0 and body.get_child(0) is HBoxContainer and (body.get_child(0).get_child(0) as Label).text == "Travel": _travel()
+
+func _travel_category(category: String) -> void:
+	_reset(category)
+	var groups: Array = []
+	var places := {}
+	for entry in scene.game.travel_locations:
+		if entry.category != category: continue
+		if not places.has(entry.group):
+			places[entry.group] = []
+			groups.append(entry.group)
+		places[entry.group].append(entry)
+	var items: Array = []
+	for group in groups:
+		var list: Array = places[group]
+		# A group of one place (or a category's own places) goes there directly.
+		if list.size() == 1 or group == category:
+			for entry in list: items.append([entry.place if group == category else group,_go.bind(entry)])
+		else: items.append([group+"  ›",_travel_group.bind(category,group)])
+	_grid(items)
+	_back_to(_travel)
+
+func _travel_group(category: String, group: String) -> void:
+	_reset(group)
+	var items: Array = []
+	for entry in scene.game.travel_locations:
+		if entry.category == category and entry.group == group: items.append([entry.place,_go.bind(entry)])
+	_grid(items)
+	_back_to(_travel_category.bind(category))
+
+func _go(entry: Dictionary) -> void:
+	close()
+	if scene.game.travel_to(int(entry.x),int(entry.y),int(entry.z)):
+		scene.game.message_received.emit("Travelling to %s, %s (%d, %d)." % [entry.group,entry.place,int(entry.x),int(entry.y)])
+
+# A scrolling two-column grid of destinations.
+func _grid(items: Array) -> void:
+	var scroll := ScrollContainer.new()
+	scroll.custom_minimum_size = Vector2(520,mini(420,ceili(items.size()/2.0)*48+8))
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	var grid := GridContainer.new()
+	grid.columns = 2
+	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	grid.add_theme_constant_override("h_separation",8)
+	grid.add_theme_constant_override("v_separation",6)
+	scroll.add_child(grid)
+	for item in items:
+		var button := Button.new()
+		button.text = str(item[0])
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		button.custom_minimum_size = Vector2(250,42)
+		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		button.clip_text = true
+		button.pressed.connect(item[1])
+		grid.add_child(button)
+	body.add_child(scroll)
+
+func _back_to(page: Callable) -> void:
+	_row("Back","",page)
+
 func _developer() -> void:
 	_reset("Developer")
 	_row("Console","`",func():
 		close()
 		scene.open_console())
+	_row("Travel","towns, dungeons and shrines of Trammel",_travel)
 	_row("Return to Britain","F6",func():
 		scene.game.return_to_britain()
 		close())

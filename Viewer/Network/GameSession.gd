@@ -84,6 +84,11 @@ signal environment_changed(state: Dictionary)
 # ModernUO's real wait for a kind of action (our ActionTimers extension):
 # milliseconds left, 0 ready, -1 held until further notice.
 signal action_wait(kind: String, milliseconds: int)
+# Developer travel (PreviewTravel on our server): ModernUO's Trammel locations,
+# [{category, group, place, x, y, z}], complete when travel_ready is emitted.
+signal travel_ready
+var travel_locations: Array = []
+var travel_loading := false
 # Developer edit session records (system messages prefixed UCEDIT1|).
 signal dev_edit_received(line: String)
 
@@ -843,6 +848,17 @@ func send_dev_edit(command: String) -> bool:
 	dev_edit_queue.append(line)
 	return true
 
+# Asks our server for its Trammel location list (developer travel).
+func request_travel_locations() -> void:
+	if phase != "world" or travel_loading: return
+	travel_locations.clear()
+	travel_loading = true
+	send(speech_packet("[PreviewLocations"))
+
+# Developer travel: the server moves you (loopback preview tools only).
+func travel_to(x: int, y: int, z: int) -> bool:
+	return send_command("[PreviewGo %d %d %d" % [x,y,z])
+
 func return_to_britain() -> void:
 	if phase != "world": return
 	returning_home = true
@@ -864,6 +880,15 @@ func _server_text(message: String, system: bool = false) -> void:
 		if hour < 0 or hour > 23 or minute < 0 or minute > 59 or seconds < 1 or seconds > 3600: return
 		_environment_update({"minute_of_day":hour*60+minute,"seconds_per_minute":seconds,"sample_msec":Time.get_ticks_msec()})
 		return
+	if system and message.begins_with("UCLOC1|"):
+		var f := message.split("|")
+		if f.size() >= 2 and (f[1] == "end" or f[1] == "none"):
+			travel_loading = false
+			travel_ready.emit()
+		elif f.size() == 7 and f[4].is_valid_int() and f[5].is_valid_int() and f[6].is_valid_int():
+			travel_locations.append({"category":f[1],"group":f[2],"place":f[3],"x":int(f[4]),"y":int(f[5]),"z":int(f[6])})
+		return
+	if system and message.begins_with("UCGO1|"): return
 	if system and message.begins_with("UCWAIT1|"):
 		var parts := message.split("|")
 		if parts.size() == 3 and parts[1] in ["skill","spell","bandage","heal_potion"] and parts[2].is_valid_int(): action_wait.emit(parts[1],int(parts[2]))

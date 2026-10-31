@@ -1193,6 +1193,12 @@ Saved graceful restart loaded 297 items and 3 mobiles. Population remains idempo
 
 # Progress — 25 October 2026
 
+## 31 October 2026 - Developer travel across Trammel
+
+- Esc > Developer > Travel lists ModernUO's own Trammel locations (Data/Locations/trammel.json, sent by the new loopback-only `Server/PreviewTools/PreviewTravel.cs`): 88 town places, 60 dungeon levels and 9 shrines, grouped by town or dungeon. One click moves the character there with the server's own MoveToWorld (`[PreviewGo x y z`).
+- Evidence: PolishTests 51/0 (5 new travel checks); `Viewer/Network/TravelLive.gd` on the live server received 157 locations, arrived at Covetous level 1 (5456,1863,0) and returned; scripts/verify.ps1 passed.
+- Population status: the server world was populated on 31 October with ModernUO's Trammel decorations, doors, signs, teleporters, public moongates and spawners (`scripts/populate-trammel.ps1`). Remaining gaps: quest UI coverage on the client is unverified; creature visuals depend on the native creature model work.
+
 ## Current checkpoint: native world objects and usable signs
 
 The current Trammel crop is populated with 131 upstream decorations, 12 native door leaves (8 singles plus 2 linked double pairs) and 5 native signs: 148 root world placements, including 65 native containers. Population is bounded to the prepared crop. Repeat population creates zero items, preserves serials and leaves open doors open. Native item types own contents, locks, permissions and saves; no synthetic loot or global spawn/decorate commands were used.

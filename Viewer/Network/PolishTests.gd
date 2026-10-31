@@ -33,6 +33,9 @@ class Recorder extends "res://Network/GameSession.gd":
 	var sent: Array = []
 	func send(bytes: PackedByteArray) -> void: sent.append(bytes)
 
+class TravelScene extends Node3D:
+	var game: Node
+
 class FakeRunner extends Node:
 	signal cast_started(spell: Dictionary)
 	var session: Node
@@ -270,5 +273,35 @@ func run() -> void:
 	check(not doll.stats_row.visible,"another character's paperdoll shows no stat locks")
 	doll.free()
 	doll_session.free()
+	# Developer travel: the server's Trammel locations become menu pages, and a
+	# click sends the move command.
+	var traveller := Recorder.new()
+	root.add_child(traveller)
+	traveller.phase = "world"
+	traveller.request_travel_locations()
+	check(traveller.sent.size() == 1 and traveller.travel_loading,"the travel menu asks the server for its locations")
+	for line in ["UCLOC1|Towns|Britain|West Bank|1434|1699|2","UCLOC1|Towns|Britain|Castle|1475|1645|20","UCLOC1|Towns|Cove|Cove|2275|1210|0","UCLOC1|Dungeons|Covetous|Entrance|2499|919|0","UCLOC1|Dungeons|Covetous|Level 1|5456|1863|0","UCLOC1|end|5"]:
+		traveller._server_text(line,true)
+	check(traveller.travel_locations.size() == 5 and not traveller.travel_loading and traveller.travel_locations[3].group == "Covetous" and traveller.travel_locations[4].x == 5456,"location lines are read into towns and dungeons by group")
+	var menu_scene := TravelScene.new()
+	menu_scene.game = traveller
+	root.add_child(menu_scene)
+	var menu := preload("res://Network/GameMenu.gd").new()
+	root.add_child(menu)
+	menu.configure(menu_scene)
+	menu._travel()
+	var labels: Array = menu.body.get_children().filter(func(n): return n is Button).map(func(n): return n.text.get_slice("   ",0))
+	check("Towns" in labels and "Dungeons" in labels and "Back" in labels,"the travel page lists towns and dungeons (%s)" % [labels])
+	menu._travel_category("Dungeons")
+	var grid: GridContainer = menu.body.find_children("*","GridContainer",true,false)[0]
+	check(grid.get_child_count() == 1 and grid.get_child(0).text.begins_with("Covetous"),"a dungeon with several levels opens its own page")
+	menu._travel_group("Dungeons","Covetous")
+	grid = menu.body.find_children("*","GridContainer",true,false)[0]
+	traveller.sent.clear()
+	grid.get_child(1).pressed.emit()
+	check(traveller.sent.size() >= 1 and not menu.visible,"choosing Level 1 sends the move and closes the menu")
+	menu.free()
+	menu_scene.free()
+	traveller.free()
 	print("POLISH TESTS: %d checks / %d failures" % [checks,failures])
 	quit(1 if failures else 0)
