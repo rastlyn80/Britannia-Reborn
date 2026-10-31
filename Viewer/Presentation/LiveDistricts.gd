@@ -41,6 +41,8 @@ var events: Array=[]
 # Developer editing (DevEdit/): per-district static render ownership from the
 # bake, and lifecycle signals so overlays re-apply after unload/reload.
 signal district_installed(at: Vector2i, node: Node3D)
+# Called with (kind, at, node) for every district shown, near or far.
+var dresser: Callable
 signal district_retired(at: Vector2i)
 var source_maps: Dictionary = {}
 # Live reload after a rebake (developer Commit): per-district stamps from the
@@ -409,6 +411,8 @@ func install(record: Dictionary, node: Node3D, decoded: Dictionary) -> void:
  else:
   if record.kind=="far":far_nodes[record.at]=node
   else:macro_nodes[record.at]=node
+ # Client presentation on top of the baked district (Underground.gd: caves).
+ if dresser.is_valid():dresser.call(str(record.kind),record.at,node)
  update_horizon()
  max_install_us=maxi(max_install_us,Time.get_ticks_usec()-start)
  measure("install-"+str(record.kind),start)

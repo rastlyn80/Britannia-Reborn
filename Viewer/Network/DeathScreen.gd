@@ -12,6 +12,8 @@ var hint: Label
 var dead := false
 var since := 0
 var died_at := -100000
+# The world drains to black and white while dead (LightingRig.set_dead).
+signal dead_changed(is_dead: bool)
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -60,6 +62,7 @@ func configure(game: Node) -> void:
 func _set_dead(is_dead: bool) -> void:
 	if is_dead == dead: return
 	dead = is_dead
+	dead_changed.emit(dead)
 	if dead:
 		since = Time.get_ticks_msec()
 		show()

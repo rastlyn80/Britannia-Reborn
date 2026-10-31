@@ -179,6 +179,31 @@ func apply_server_appearance(entity: Dictionary, worn: Array, details: Dictionar
 	if not walking and human_visual.action_clip.is_empty():human_visual.play(human_visual.stance_clip("Idle"))
 	set_meta("native_body",body)
 	set_meta("art_status","human category replacement")
+	set_ghostly(Wardrobe.ghost(body))
+
+# A ghost (bodies 0x192/0x193) is the same character, translucent with a pale
+# ethereal glow and no shadow. Equipment rebuilt later is covered on the next
+# appearance update; resurrection restores what each mesh had.
+static var ghost_glow: ShaderMaterial
+var ghostly := false
+func set_ghostly(ghost: bool) -> void:
+	if ghost and ghost_glow == null:
+		ghost_glow = ShaderMaterial.new()
+		ghost_glow.shader = preload("res://Presentation/Ghost.gdshader")
+	ghostly = ghost
+	set_meta("ghost",ghost)
+	for mesh: GeometryInstance3D in visual_root.find_children("*","GeometryInstance3D",true,false):
+		if ghost:
+			if not mesh.has_meta("ghost_restore"): mesh.set_meta("ghost_restore",[mesh.transparency,mesh.material_overlay,mesh.cast_shadow])
+			mesh.transparency = 0.62
+			mesh.material_overlay = ghost_glow
+			mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		elif mesh.has_meta("ghost_restore"):
+			var restore: Array = mesh.get_meta("ghost_restore")
+			mesh.transparency = restore[0]
+			mesh.material_overlay = restore[1]
+			mesh.cast_shadow = restore[2]
+			mesh.remove_meta("ghost_restore")
 
 func receive_native_action(request: Dictionary) -> bool:
 	if human_visual==null:return horse_visual.receive_action(request) if horse_visual!=null else false

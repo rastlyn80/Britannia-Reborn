@@ -2,7 +2,7 @@ extends RefCounted
 ## Human-only native action families. Unsupported requests remain explicit.
 const CLASSIC := {0:"Walk",1:"Sword_Walk",2:"Run",3:"Sword_Run",4:"Idle",5:"Fidget_Talk",6:"Fidget_Look",7:"Sword_Idle",8:"Sword_Idle",9:"Sword_A",10:"Punch_Jab",11:"Punch_Cross",12:"Heavy_Attack",13:"Sword_B",14:"Sword_C",15:"Sword_Walk",16:"Cast",17:"Cast",18:"Bow_Attack",19:"Crossbow_Attack",20:"Hit",21:"Death",22:"Death",23:"Rider_Walk",24:"Rider_Run",25:"Rider_Idle",26:"Rider_Attack",27:"Rider_Bow",28:"Rider_Crossbow",29:"Rider_Slap",30:"Turn",33:"Salute",34:"Fidget3",31:"Punch_Jab",32:"Bow"}
 static func resolve(request: Dictionary, mounted: bool = false) -> String:
-	if int(request.get("body",0)) not in [400,401]: return ""
+	if int(request.get("body",0)) not in [400,401,402,403]: return ""
 	if str(request.get("protocol",""))=="classic":
 		var group:=int(request.get("action",-1))
 		if mounted and group not in [23,24,25,26,27,28,29]:

@@ -30,6 +30,7 @@ var game := preload("res://Network/GameSession.gd").new()
 var avatars := {}
 var targets := {}
 var player_serial := 0
+var underground: Node
 const Motion = preload("res://Presentation/MotionTrack.gd")
 const Avatar = preload("res://Presentation/Avatar.gd")
 const Reconstruction = preload("res://Presentation/Reconstruction.gd")
@@ -119,6 +120,13 @@ func _ready() -> void:
 		add_child(static_root)
 		add_child(diagnostics)
 		static_root.add_child(city_stream)
+		# Dungeons and caves (docs/DUNGEONS.md): set up from the stream's own
+		# dataset on its first district, before anything is shown.
+		underground = preload("res://Presentation/Underground.gd").new()
+		add_child(underground)
+		city_stream.dresser = func(kind: String, at: Vector2i, node: Node3D) -> void:
+			if underground.folder.is_empty(): underground.setup(city_stream.dataset(),city_stream.world)
+			underground.dress(kind,at,node)
 		if not await city_stream.prepare(self,front_end):
 			get_tree().quit(1)
 			return
@@ -348,6 +356,9 @@ func _process(delta: float) -> void:
 	if not world_ready: return
 	if city_stream and game.phase == "world":
 		city_stream.follow(Vector2i(game.player.x,game.player.y))
+		if underground and not underground.folder.is_empty() and avatars.has(player_serial) and lighting_rig:
+			var carrier: Node3D = avatars[player_serial]
+			lighting_rig.set_underground(underground.update(Vector2i(game.player.x,game.player.y),carrier.global_position.y,delta),carrier.global_position)
 	# The status panel's first line carries the player's tile, so screenshots
 	# of defects identify their place.
 	if game.phase == "world":
@@ -470,6 +481,7 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	canvas.add_child(death)
 	canvas.move_child(death,2)
 	death.configure(game)
+	death.dead_changed.connect(func(is_dead: bool): if lighting_rig: lighting_rig.set_dead(is_dead))
 	var buff_bar := preload("res://Network/BuffBar.gd").new()
 	canvas.add_child(buff_bar)
 	buff_bar.configure(game)

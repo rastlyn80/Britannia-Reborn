@@ -153,6 +153,9 @@ static func _resolve(id: int,info: Dictionary) -> Dictionary:
  if id == 1045: return base.merged({"kind":"floor","surface":"cave"})
  if n in ["forest","ree"]: return base.merged({"kind":"floor","surface":"grass"})
  if id in [6345,3674]: return base.merged({"kind":"invisible","reason":"placeholder UNUSED art"})
+ # Dungeon entrance blockers: blank art laid before each mountain entrance
+ # (Underground.gd builds the opening there).
+ if id>=0x3B60 and id<=0x3B83: return base.merged({"kind":"invisible","reason":"blank dungeon entrance blocker"})
  if n == "light source": return base.merged({"kind":"effect","effect":"glow"})
  if n == "dark source": return base.merged({"kind":"effect","effect":"death vortex"})
  if n in ["explosion","explosion ball","fire snake","fire trap"]: return base.merged({"kind":"effect","effect":"fire"})

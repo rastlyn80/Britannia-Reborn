@@ -41,8 +41,10 @@ const HAIR := {0x203b:"short",0x203c:"long",0x203d:"ponytail",0x2045:"bob",0x204
 const BEARDS := {0x203e:["long"],0x203f:["short"],0x2040:["goatee"],0x2041:["moustache"],0x204b:["short","moustache"],0x204c:["long","moustache"],0x204d:["goatee","moustache"]}
 static func mapped(id: int) -> bool: return GRAPHICS.has(id) or EXTRA.has(id) or HAIR.has(id) or BEARDS.has(id) or Coverage.ITEMS.has(id)
 static func extra(id: int) -> Array: return EXTRA.get(id,Coverage.ITEMS.get(id,[]))
-static func human(body: int) -> bool: return body in [0x190,0x191]
-static func female(body: int) -> bool: return body == 0x191
+# 0x192/0x193 are the male/female ghosts: the same human, drawn ethereal.
+static func human(body: int) -> bool: return body in [0x190,0x191,0x192,0x193]
+static func female(body: int) -> bool: return body in [0x191,0x193]
+static func ghost(body: int) -> bool: return body in [0x192,0x193]
 static func resolve(worn: Array) -> Dictionary:
 	var bits := 0
 	var unsupported: Array[int] = []

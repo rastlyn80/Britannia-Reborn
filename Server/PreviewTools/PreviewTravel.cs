@@ -13,6 +13,8 @@ namespace UltimaClone.PreviewTools;
 // server's own MoveToWorld, so the client is resynchronised as usual.
 //   [PreviewLocations  -> one "UCLOC1|category|group|place|x|y|z" line each
 //   [PreviewGo x y z   -> moves the caller on Trammel, answers "UCGO1|x|y|z"
+//   [PreviewDie / [PreviewResurrect -> the server's own Kill()/Resurrect(), to
+//   check death presentation (ghost, black and white) without a fight.
 public static class PreviewTravel
 {
     private static readonly string[] _skipped = ["Internal"];
@@ -22,6 +24,8 @@ public static class PreviewTravel
         if (!ServerConfiguration.GetOrUpdateSetting("ultimaClone.previewTools", false)) return;
         CommandSystem.Register("PreviewLocations", AccessLevel.Player, Locations);
         CommandSystem.Register("PreviewGo", AccessLevel.Player, Go);
+        CommandSystem.Register("PreviewDie", AccessLevel.Player, Die);
+        CommandSystem.Register("PreviewResurrect", AccessLevel.Player, Resurrect);
     }
 
     private static bool Allowed(CommandEventArgs args)
@@ -85,5 +89,17 @@ public static class PreviewTravel
         from.Warmode = false;
         from.MoveToWorld(new Point3D(x, y, z), map);
         from.SendMessage($"UCGO1|{x}|{y}|{z}");
+    }
+
+    private static void Die(CommandEventArgs args)
+    {
+        if (!Allowed(args) || !args.Mobile.Alive) return;
+        args.Mobile.Kill();
+    }
+
+    private static void Resurrect(CommandEventArgs args)
+    {
+        if (!Allowed(args) || args.Mobile.Alive) return;
+        args.Mobile.Resurrect();
     }
 }

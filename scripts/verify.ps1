@@ -52,6 +52,8 @@ if ($LASTEXITCODE) { throw 'Prepared resource/source/instancing checks failed' }
 if ($LASTEXITCODE) { throw 'Live district readiness checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/CompactStreamingTests.gd
 if ($LASTEXITCODE) { throw 'Compact streaming cache rule checks failed' }
+& $godot --headless --path "$root/Viewer" --script res://Presentation/UndergroundTests.gd
+if ($LASTEXITCODE) { throw 'Dungeon, cave entrance and death presentation checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/RegionalSeamTests.gd
 if ($LASTEXITCODE) { throw 'Regional architecture/terrain seam checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/AtlasTests.gd

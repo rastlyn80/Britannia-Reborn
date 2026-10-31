@@ -311,6 +311,11 @@ func _developer() -> void:
 	_row("Return to Britain","F6",func():
 		scene.game.return_to_britain()
 		close())
+	# Death presentation check (PreviewTravel on our server): die or come back.
+	var ghost := int(scene.game.player.get("body",0)) in preload("res://Network/DeathScreen.gd").GHOSTS
+	_row("Resurrect" if ghost else "Die","test the ghost and the black-and-white world",func():
+		close()
+		scene.game.send_command("[PreviewResurrect" if ghost else "[PreviewDie"))
 	if scene.dev_edit:
 		_row("World editor","F9",func():
 			close()

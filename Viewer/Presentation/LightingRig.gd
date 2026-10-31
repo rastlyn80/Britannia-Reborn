@@ -19,6 +19,14 @@ var sky_tick := 0.0
 const VIEW_SETTINGS := "user://view.cfg"
 const SKY_MODES := ["","day","night"]
 var sky_mode := ""
+# Underground (Underground.gd): 0 outdoors .. 1 inside a dungeon or cave.
+var underground := 0.0
+var torch: OmniLight3D
+var torch_clock := 0.0
+# Death (DeathScreen): the world drains to black and white while a ghost.
+var dead := false
+var colour := 1.0
+var outdoor := {}
 
 func _ready() -> void:
  load_sky()
@@ -232,6 +240,11 @@ func _process(delta: float) -> void:
  if sky_tick <= 0.0:
   sky_tick = 0.5
   _apply_atmosphere(visual_minute,visual_weather,visual_light,float(server_environment.get("personal_light",0)))
+ colour = move_toward(colour,0.0 if dead else 1.0,delta/(1.6 if dead else 1.0))
+ if torch and torch.visible:
+  torch_clock += delta
+  torch.light_energy = underground*(2.6+0.12*sin(torch_clock*9.3)+0.08*sin(torch_clock*23.1+1.7))
+ _blend()
  _animate_precipitation(delta)
 
 func _apply_atmosphere(minute: float, wet: float, level: float, personal: float) -> void:
@@ -258,6 +271,51 @@ func _apply_atmosphere(minute: float, wet: float, level: float, personal: float)
  sky_material.set_shader_parameter("storm",wet)
  # Update at 2Hz, avoiding continual reflection-cubemap regeneration.
  sky_material.set_shader_parameter("cloud_clock",floorf(cloud_clock*2.0)/2.0)
+ outdoor = {"sun":sun.light_energy,"ambient":environment.ambient_light_energy,"fog":environment.fog_light_color,"density":environment.fog_density,"exposure":environment.tonemap_exposure}
+ _blend()
+
+# Underground and death presentation over the outdoor values: no sun or sky,
+# a dim cool ambient, black fog closing in at ~30 m and the carried light;
+# when dead, no colour.
+func _blend() -> void:
+ if outdoor.is_empty(): return
+ var u := underground
+ sun.light_energy = float(outdoor.sun)*(1.0-u)
+ environment.ambient_light_energy = lerpf(float(outdoor.ambient),0.62,u)
+ environment.ambient_light_sky_contribution = lerpf(0.65,0.0,u)
+ environment.ambient_light_color = Color("c6d4dc").lerp(Color("6a7488"),u)
+ environment.fog_light_color = (outdoor.fog as Color).lerp(Color.BLACK,u)
+ environment.fog_density = lerpf(float(outdoor.density),1.0,u)
+ environment.fog_depth_begin = lerpf(70.0,9.0,u)
+ environment.fog_depth_end = lerpf(700.0,46.0,u)
+ environment.fog_depth_curve = lerpf(1.6,1.1,u)
+ environment.fog_aerial_perspective = lerpf(0.6,0.0,u)
+ environment.fog_sky_affect = lerpf(0.2,1.0,u)
+ environment.tonemap_exposure = float(outdoor.exposure)+0.2*u
+ environment.background_mode = Environment.BG_COLOR if u > 0.97 else Environment.BG_SKY
+ environment.background_color = Color.BLACK
+ environment.adjustment_saturation = 0.96*colour
+ environment.adjustment_contrast = lerpf(1.18,1.08,colour)
+
+func set_underground(amount: float, carrier: Vector3) -> void:
+ if frozen: return
+ underground = amount
+ if torch == null:
+  torch = OmniLight3D.new()
+  torch.name = "CarriedLight"
+  torch.light_color = Color("ffb870")
+  torch.omni_range = 17.0
+  torch.omni_attenuation = 1.15
+  torch.shadow_enabled = true
+  torch.shadow_blur = 1.4
+  add_child(torch)
+ torch.visible = amount > 0.01
+ # Above and behind the shoulder, so the character's own shadow falls ahead.
+ torch.global_position = carrier+Vector3(0.0,2.4,0.0)
+ _blend()
+
+func set_dead(is_dead: bool) -> void:
+ dead = is_dead
 
 func _create_precipitation() -> void:
  precipitation = MultiMeshInstance3D.new()
@@ -285,7 +343,7 @@ func _animate_precipitation(delta: float) -> void:
   shelter_check = 0.25
   var query := PhysicsRayQueryParameters3D.create(camera.global_position+Vector3.UP*0.15,camera.global_position+Vector3.UP*60.0,1)
   sheltered = not get_world_3d().direct_space_state.intersect_ray(query).is_empty()
- precipitation.visible = visual_weather > 0.02 and not sheltered
+ precipitation.visible = visual_weather > 0.02 and not sheltered and underground < 0.5
  if not precipitation.visible: return
  var snow := int(server_environment.get("weather_type",255)) == 2
  var amount := ceili(visual_weather*256.0)

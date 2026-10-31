@@ -1201,6 +1201,14 @@ Saved graceful restart loaded 297 items and 3 mobiles. Population remains idempo
 
 # Progress — 25 October 2026
 
+## 31 October 2026 - Dungeons, cave entrances and death (docs/DUNGEONS.md)
+
+- Underground (Viewer/Presentation/Underground.gd): near UO's void (0x244) or cave land the client goes underground over 1.5 s: no sky or sun, dim cool ambient, black fog closing at 46 m and a warm carried light. Districts with void/cave land draw a cave terrain (CaveGround.gdshader) whose walls fade to black above the head. Runtime only; the baked cache is unchanged.
+- Cave entrances: each of the 29 surface entrances (blank blocker tiles 0x3B60-0x3B83) gets an arched rock frame and a dark tunnel (CaveMouth.gdshader, depth-tested on the mouth plane so the slope never hides it and a mountain still does). The blockers become invisible on their next bake.
+- Death: ghost bodies 0x192/0x193 keep the human body, translucent with an ethereal overlay (Ghost.gdshader); the world drains to black and white while dead. Esc > Developer > Die/Resurrect uses loopback-only [PreviewDie/[PreviewResurrect (ModernUO Kill/Resurrect); installed on the next server restart.
+- Evidence: UndergroundTests 19/0 (in verify); GPU renders of Covetous level 1, the Covetous entrance from front, side and behind, and a living character beside a ghost in colour and dead; scripts/verify.ps1 passed.
+- Gaps: no live in-game capture yet; cave walls are about 3 m in the source map (taller relief follows with the mountain work); RegionalRules changed, so all Trammel stamps need the next bake.
+
 ## 31 October 2026 - Workspace tidy-up
 
 - Repository: removed Launch-Trinsic.cmd (its Britain-to-Trinsic cache is superseded by the whole-Trammel bake) and two unreferenced one-off scripts (Viewer/Presentation/ArtAudit.gd, LibraryCapture.gd). No tracked logs, captures or caches were found.
