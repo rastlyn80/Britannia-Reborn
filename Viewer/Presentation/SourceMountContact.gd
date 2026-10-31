@@ -8,6 +8,7 @@ var origin_y:=0.
 var enabled:=true
 var iterations:=1
 var include_toe_descendants:=false
+var align_skinned_soles:=false
 var surface: MeshInstance3D
 var arrays: Array
 func bone(suffix: String) -> int:
@@ -67,6 +68,21 @@ func aim(a: int,b: int,target: Vector3) -> void:
 	var rig:=get_skeleton();var pose:=rig.get_bone_global_pose(a)
 	var direction:=rig.get_bone_global_pose(b).origin-pose.origin;var goal:=target-pose.origin
 	if direction.length_squared()>.000001 and goal.length_squared()>.000001:pose.basis=Basis(Quaternion(direction.normalized(),goal.normalized()))*pose.basis;rig.set_bone_global_pose(a,pose)
+func align_sole(record: Dictionary,height: float,strength: float) -> void:
+	# Long feet can extend far beyond the ankle. Solve against the actual skin
+	# point; an ankle-only target can drive those toes through the floor.
+	var rig:=get_skeleton()
+	for iteration in maxi(1,iterations):
+		if absf(height-sole(record).y)<.002:break
+		for joint: int in [record.c,record.b,record.a]:
+			var point:=sole(record);var pose:=rig.get_bone_global_pose(joint)
+			var pivot:=rig.to_global(pose.origin);var arm:=point-pivot
+			var axis:=arm.cross(Vector3.UP);var lever:=axis.length()
+			if lever<.0001:continue
+			var angle:=clampf((height-point.y)*strength/lever,-.045,.045)
+			var local_axis: Vector3=(rig.global_basis.inverse()*axis.normalized()).normalized()
+			pose.basis=Basis(Quaternion(local_axis,angle))*pose.basis
+			rig.set_bone_global_pose(joint,pose)
 func _process_modification_with_delta(_delta: float) -> void:
 	errors.clear()
 	stance_gaps.clear()
@@ -76,13 +92,15 @@ func _process_modification_with_delta(_delta: float) -> void:
 		if not contacts.has(i):continue
 		var record: Dictionary=feet[i];var p:=sole(record);var hit: Dictionary=contacts[i]
 		var strength:=1.-smoothstep(.025,.16,maxf(0.,p.y-origin_y))
-		for iteration in maxi(1,iterations):
-			p=sole(record)
-			var shift:=clampf(hit.position.y-p.y,-.24,.24)*strength
-			var a:=rig.get_bone_global_pose(record.a).origin;var b:=rig.get_bone_global_pose(record.b).origin;var c:=rig.get_bone_global_pose(record.c).origin
-			var target: Vector3=inverse*(rig.to_global(c)+Vector3.UP*shift)
-			var knee:=preload("res://Presentation/FootContact.gd").knee_target(a,b,c,target)
-			aim(record.a,record.b,knee);aim(record.b,record.c,target)
+		if align_skinned_soles:align_sole(record,hit.position.y,strength)
+		else:
+			for iteration in maxi(1,iterations):
+				p=sole(record)
+				var shift:=clampf(hit.position.y-p.y,-.24,.24)*strength
+				var a:=rig.get_bone_global_pose(record.a).origin;var b:=rig.get_bone_global_pose(record.b).origin;var c:=rig.get_bone_global_pose(record.c).origin
+				var target: Vector3=inverse*(rig.to_global(c)+Vector3.UP*shift)
+				var knee:=preload("res://Presentation/FootContact.gd").knee_target(a,b,c,target)
+				aim(record.a,record.b,knee);aim(record.b,record.c,target)
 		if strength>.95:
 			var gap: float=sole(record).y-hit.position.y
 			errors.append(absf(gap));stance_gaps.append(gap)

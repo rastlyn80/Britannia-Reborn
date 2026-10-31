@@ -37,6 +37,8 @@ func _ready() -> void:
 	contact=preload("res://Presentation/SourceMountContact.gd").new();skeleton.add_child(contact)
 	contact.include_toe_descendants=true
 	contact.iterations=1 if str(entry.get("family","")) in ["bruins","walrus"] else 3
+	if kind in ["dragons_dragon_asian","dragons_wyvern"]:
+		contact.align_skinned_soles=true;contact.iterations=5
 	var quadruped:=str(entry.get("profile",""))=="animal" and str(entry.get("family",""))!="walrus" or str(entry.get("family","")) in ["rodents","lizards","dragons","centaurs"]
 	contact.configure(model.find_children("*","MeshInstance3D",true,false)[0],quadruped)
 	source_model_basis=model.basis.orthonormalized()

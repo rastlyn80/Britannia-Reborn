@@ -42,12 +42,13 @@ func run() -> void:
 					actor.play(clip,0.);actor.animator.seek(length*phase,true);actor.animator.pause()
 					for frame in 2:await process_frame
 					var bounds:=Geometry.deformed_bounds(mesh,rig)
-					check(bounds.position.is_finite() and bounds.size.is_finite() and bounds.size.length()>.05 and bounds.size.length()<float(record.stats.original.height_m)*8.,"Finite bounded deformed mesh: "+str(record.kind)+" / "+str(clip))
+					var bound_limit:=maxf(float(record.stats.original.height_m)*8.,float(record.stats.original.get("bind_diagonal_m",0.))*1.5)
+					check(bounds.position.is_finite() and bounds.size.is_finite() and bounds.size.length()>.05 and bounds.size.length()<bound_limit,"Finite bounded deformed mesh: "+str(record.kind)+" / "+str(clip))
 					var policy: String=str(record.stats.original.clips.get(str(clip),{}).get("floor_policy","grounded"))
 					if policy=="source_vertical":check(bounds.position.y>=-.06 and bounds.position.y<float(record.stats.original.height_m)*2.,"Source flight remains bounded above the ground")
 					else:check(absf(bounds.position.y)<.06,"Sampled flat-floor clearance remains within 60 mm")
 					check(actor.transform.is_equal_approx(Transform3D.IDENTITY),"Visual clips never move native world coordinates")
-					samples.append({"kind":record.kind,"treatment":treatment,"clip":str(clip),"phase":phase,"lowest_vertex_m":bounds.position.y})
+					samples.append({"kind":record.kind,"treatment":treatment,"clip":str(clip),"phase":phase,"lowest_vertex_m":bounds.position.y,"deformed_diagonal_m":bounds.size.length(),"bound_limit_m":bound_limit})
 			for identity: Dictionary in record.bodies:
 				for hue in [0,53,0x8000|53]:
 					actor.apply_identity(int(identity.body),hue)

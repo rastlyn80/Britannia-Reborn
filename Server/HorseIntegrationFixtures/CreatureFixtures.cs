@@ -211,8 +211,16 @@ public static class CreatureFixtures
         else if (command == "kill")
         {
             subject.Frozen = false;
+            var damageable = subject.CanBeDamaged();
             subject.Kill();
-            if (subject.Corpse is { Deleted: false } corpse)
+            if (!subject.Deleted && subject.Alive)
+            {
+                // Quest actors can veto native death. No corpse does not
+                // establish deletion, and this harness must not force either.
+                subject.Frozen = true;
+                owner.SendMessage($"UCCREATURE|corpse|0|{subject.Body.BodyID}|damageable={(damageable ? 1 : 0)}|refused");
+            }
+            else if (subject.Corpse is { Deleted: false } corpse)
             {
                 _corpses[owner] = corpse;
                 owner.SendMessage($"UCCREATURE|corpse|{corpse.Serial.Value}|{subject.Body.BodyID}");

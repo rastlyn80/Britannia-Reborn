@@ -1,6 +1,64 @@
 # Monster expansion and original-action ledger
 
-## Arthropods, spirit recovery and dragon trials — 31 October 2026
+## Dragon, reptile and daemon integration — 31 October 2026
+
+The current checkpoint has **75 validated generic source forms across 27
+groups and 89 body routes**. Combined with earlier mount/bovine work,
+**99 of 275 bounded native literal targets have routes and native evidence
+(36.0%)**. This is tested integration coverage, not an exhaustive modern-client
+census, final art percentage or complete original-action coverage.
+
+Eight dragon forms, four reptile forms and five daemon forms now pass the
+acceptance gates. Aggregate current evidence: **50,359 pose/identity/support
+checks / 15,351 deformed samples**, **1,011 Forward+ checks / 450 views**,
+zero failures. Their native runs pass **854 dragon, 166 reptile and 392 daemon
+checks**. Two reptile forms and the Exodus/alternate daemon presentations lack
+literal native constructors in this bounded audit; compatibility routes are
+not native evidence. The scan currently misses conditional WhiteWyrm and
+summoned-daemon body branches; those are known census gaps being repaired,
+not evidence that those bodies lack native constructors. The full project
+verifier exits 0 with existing unrelated
+diagnostics. Human wearables remain 732/1,126 (65.01%).
+
+The serpentine dragon and wyvern use an opt-in solver against actual skinned
+sole points. Their long toes extend far beyond their ankle joints; targeting
+the ankle alone drove the visible soles through the floor. Bounded joint
+rotations preserve entity coordinates. An additional **146 checks / 72 animated
+samples** exercise walk/run/attack phases on flat ground and two slopes.
+Acceptance binds this report to exact assets, import settings and runtime hashes.
+Other source actors retain their existing solver. This is bounded support
+evidence, not arbitrary-terrain certification.
+
+Reptile feeding bends receive mesh-derived floor correction. The long
+alligator's finite-size limit accounts for the measured bind diagonal as well
+as height; actual source dimensions exceed the earlier height-only limit.
+The existing 60 mm clearance bound remains. Reptile/daemon floor baking and
+import now retain 120 Hz precision, closing fast hit-curve clearance failures.
+
+The daemon harness now distinguishes native death refusal from suppressed
+corpses. Servant of Semidar is natively rooted and immune to damage: its normal
+Kill call is refused, it remains visible to both clients, and the client does
+not invent a death pose. Balron, ice fiend and daemon corpse behavior is tested
+separately. No native gameplay code, production runtime or saves were changed.
+Native AI remains frozen between controlled samples; these tests do not certify
+full combat, quest encounters or taming.
+
+All 17 additions have **272 fresh fitted comparison frames**. The review now
+spaces all three treatments using deformed widths and fits its camera to their
+combined extent; long reptiles no longer overlap or crop, and labels remain
+readable at different body sizes. Core frames across 75 generic forms total
+1,200, with older art refinements and extended actions still open.
+
+Evidence logs: `work/creatures-dragons-reptiles-daemons-validation.log`,
+`work/creatures-sole-solver-regression.log`,
+`work/creatures-dragons-animated-contact.log`,
+`work/creatures-daemons-native-death-rules.log` and
+`work/creatures-dragons-reptiles-daemons-full-verify.log`. Family reports and
+exact texture prompts remain in ignored local outputs. Continue through
+ophidians, gargoyles, undead, elementals, sea creatures, missing modern
+identities and action/effect gaps. The Blade Spirit death flash remains open.
+
+## Earlier arthropod/spirit checkpoint and dragon trials — 31 October 2026
 
 The newer checkpoint has **58 validated generic source models/variants across
 24 groups and 69 body routes**. Together with earlier mount/bovine work,

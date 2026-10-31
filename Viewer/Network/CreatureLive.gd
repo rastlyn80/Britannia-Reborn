@@ -91,7 +91,12 @@ func run() -> void:
 			response=await reply(sex,"kill","UCCREATURE|corpse|")
 			if response.is_empty():return
 			var corpse:=int(response.split("|")[2])
-			if corpse==0:
+			var death_refused:=response.ends_with("|refused")
+			if death_refused:
+				if not check(corpse==0 and session.entities.has(serial) and observer.entities.has(serial),"native death refusal retains the living creature on both clients"):return
+				if not check(not actor.horse_visual.dead,"native death refusal does not invent a client death pose"):return
+				if native_class=="ServantOfSemidar" and not check(response.contains("|damageable=0|"),"native quest servant remains immune to damage"):return
+			elif corpse==0:
 				if not check(response.ends_with("|suppressed") and await until(func():return not session.entities.has(serial) and not observer.entities.has(serial)),"native death removes the creature without inventing a suppressed corpse"):return
 			else:
 				if not check(await until(func():return session.world_items.has(corpse) and observer.world_items.has(corpse)),"actual native corpse replicates to both clients"):return
@@ -104,7 +109,7 @@ func run() -> void:
 				holder.queue_free();presenter.hint.queue_free();presenter.queue_free()
 			actor.queue_free()
 			await process_frame
-			records.append({"female":sex==1,"body":body,"native_class":native_class,"kind":candidate.kind,"corpse_suppressed":corpse==0,"movement":"Native AI refuses movement" if rooted else "Native Mobile.Move walk/run"})
+			records.append({"female":sex==1,"body":body,"native_class":native_class,"kind":candidate.kind,"corpse_suppressed":corpse==0 and not death_refused,"native_death_refused":death_refused,"movement":"Native AI refuses movement" if rooted else "Native Mobile.Move walk/run"})
 			await reply(sex,"cleanup","UCCREATURE|cleaned")
 	for session in sessions:session.close()
 	var folder:="res://../outputs/creatures/"+family;DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(folder))

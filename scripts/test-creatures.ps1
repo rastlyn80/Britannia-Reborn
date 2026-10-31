@@ -53,6 +53,10 @@ while ($pending.Count -or $running.Count) {
 foreach ($family in $Families) {
  if ($failed.Contains($family)) {continue}
  try {
+ if ($family -eq 'dragons') {
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/CreatureContactTests.gd -- "--family=$family" *> "$logs/$family-contact.log"
+  if ($LASTEXITCODE) {throw 'Animated dragon sole/contact checks failed'}
+ }
  $started=[DateTime]::UtcNow
  $arguments='--path "'+$root+'/Viewer" --script res://Presentation/CreatureAppearanceTests.gd -- --family='+$family
  $process=Start-Process $godot -ArgumentList $arguments -WorkingDirectory $root -WindowStyle Hidden -PassThru -RedirectStandardOutput "$logs/$family-gpu.log" -RedirectStandardError "$logs/$family-gpu-errors.log"

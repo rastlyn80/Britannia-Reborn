@@ -292,7 +292,7 @@ def prepare(family, z, names, rows, native):
                     authored[label]='Authored bounded source-rig recoil/lunge/side-fall category from the source idle pose; not recovered original choreography'
             for target,source in [('Run','Walk'),('Fidget','Idle')]:
                 if target not in clips: clips[target] = copy.deepcopy(clips[source]); aliases[target] = source
-            if family=='dragons' and 'Eat' not in clips:
+            if family in ['dragons','lizards'] and 'Eat' not in clips:
                 feeding=copy.deepcopy(clips['Idle']);by_name={b['name']:i for i,b in enumerate(feeding['bones'])};orientations={}
                 def global_orientation(i):
                     if i not in orientations:
@@ -347,9 +347,10 @@ def prepare(family, z, names, rows, native):
                     output.write_text(json.dumps(gltf,separators=(',',':')))
                 else:
                     stats[treatment] = td.export_gltf(mesh,clips,original,output,height,
-                        floor_sample_rate=120 if family=='dragons' or stem in ['flails_swamp_tentacles','centaurs_centaur','mongbats_mongbat','spirits_blade_spirit'] else 30,
+                        floor_sample_rate=120 if family in ['dragons','daemons','lizards'] or stem in ['flails_swamp_tentacles','centaurs_centaur','mongbats_mongbat','spirits_blade_spirit'] else 30,
                         preserve_vertical_clips=['Fly','TakeOff','Land','HitInAir'])
                     templates[cache_key] = (json.loads(output.read_text()),stats[treatment])
+                stats[treatment]['bind_diagonal_m']=math.sqrt(sum(((max(p[i] for p in mesh['points'])-min(p[i] for p in mesh['points']))*scale)**2 for i in range(3)))
                 if row.get('source_alpha_texture') or row.get('rigid_import'):
                     masked=json.loads(output.read_text())
                     if row.get('rigid_import'):masked=rigid.separate_materials(masked,row['rigid_import']['parts'],0 if treatment=='original' else levels)

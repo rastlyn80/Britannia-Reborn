@@ -1,3 +1,11 @@
+# Creature milestone: 99 native body targets / dragons, reptiles and daemons - 31 October 2026
+
+75 generic source forms across 27 groups now have accepted pose/render evidence and 89 body routes. With earlier mount/bovine work, 99 of 275 bounded native literal targets have routes and actual native evidence (36.0%). This is tested integration, not exhaustive modern-client, final-art or original-action completion. Human wearables remain 732/1,126 (65.01%).
+
+Dragons, reptiles and daemons add 17 forms and 1,412 native checks. Current common-runtime regression: 50,359 checks / 15,351 deformed samples; 1,011 GPU checks / 450 views, all passing. Long-toe dragon support adds 146 checks / 72 animated walk/run/attack samples on three planes, with hashed acceptance evidence. Native quest-servant death refusal is preserved and verified separately from suppressed corpses. Full scripts/verify.ps1 exits 0; existing unrelated diagnostics remain. [Details, evidence, reproduction and limits](CREATURE_MONSTERS.md).
+
+The review now fits deformed widths and readable labels; all 17 new forms have 272 fresh complete comparisons. Continue ophidians/gargoyles, remaining undead/elementals/sea creatures, modern identity gaps and original action/effect work. Blade Spirit's recovered death flash is still separate. Art, original inputs, exact prompts, IR and captures remain local/ignored. Preserve production, existing humans/mounts and concurrent compact-streaming work.
+
 # Creature milestone: 84 native body targets / dragon and Blade Spirit renders - 31 October 2026
 
 58 generic source models/variants across 24 groups now have pose/render acceptance and 69 body routes. With the earlier mount/bovine pipelines, 84 of 275 bounded native literal targets have actual native evidence (30.5%). This is tested integration, not final art or complete-action coverage. Human wearables remain 732/1,126 (65.01%).

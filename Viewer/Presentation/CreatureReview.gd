@@ -7,6 +7,8 @@ var capture_mode:=false
 var output:=""
 var clip:="Walk"
 var capture_clips: Array[String]=[]
+var review_camera: Camera3D
+var labels: Array[Label3D]=[]
 func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--family="):family=arg.trim_prefix("--family=")
@@ -29,10 +31,12 @@ func build() -> void:
 	var sun:=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-45,-35,0);sun.light_energy=1.35;sun.shadow_enabled=true;stage.add_child(sun)
 	var floor_mesh:=MeshInstance3D.new();var box:=BoxMesh.new();box.size=Vector3(100,.1,100);floor_mesh.mesh=box;floor_mesh.position.y=-.05;var mat:=StandardMaterial3D.new();mat.albedo_color=Color("61726a");mat.roughness=.95;floor_mesh.material_override=mat;stage.add_child(floor_mesh)
 	var camera:=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.size=height*5.;stage.add_child(camera);camera.position=Vector3(height*.45,height*2.,height*7.);camera.look_at(Vector3(height*.45,height*.7,0))
+	review_camera=camera
 	for i in 3:
 		var actor:=Visual.new();actor.entry=record;actor.treatment=["original","rounded","modern"][i];stage.add_child(actor);actor.set_physics_process(false);actor.contact.enabled=false;actor.position.x=(i-1)*height*2.1;actor.rotation.y=-.8;actors.append(actor)
 		var baseline:="Source geometry / replacement atlas" if record.has("missing_source_atlas") else "Original source"
 		var label:=Label3D.new();label.text=[baseline,"Rounded geometry","Modern surface"][i];label.position=Vector3(actor.position.x,height*1.8,0);label.font_size=27;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;stage.add_child(label)
+		labels.append(label)
 	var canvas:=CanvasLayer.new();root.add_child(canvas);var ui:=VBoxContainer.new();ui.position=Vector2(18,14);canvas.add_child(ui)
 	var title:=Label.new();title.text="BRITANNIA REBORN / "+kind.replace("_"," ").to_upper();title.add_theme_font_size_override("font_size",24);ui.add_child(title)
 	var note:=Label.new();note.text="Original rig and source clips / bounded geometry / "+str(record.surface)+" / local review";ui.add_child(note)
@@ -51,6 +55,27 @@ func tint(hue: int) -> void:
 func play(name: String) -> void:
 	clip=name
 	for actor in actors:actor.play(name,.1)
+	fit_comparison()
+func fit_comparison() -> void:
+	for frame in 2:await process_frame
+	var boxes: Array[AABB]=[];var width:=.1
+	for actor in actors:
+		var mesh: MeshInstance3D=actor.model.find_children("*","MeshInstance3D",true,false)[0]
+		var box:=preload("res://Presentation/SkinGeometry.gd").deformed_bounds(mesh,actor.skeleton)
+		boxes.append(box);width=maxf(width,box.size.x)
+	var spacing:=width*1.15;var whole:=AABB()
+	for i in actors.size():
+		var offset: float=(i-1)*spacing-boxes[i].get_center().x
+		actors[i].position.x+=offset;boxes[i].position.x+=offset
+		whole=boxes[i] if i==0 else whole.merge(boxes[i])
+	var aspect:=float(root.size.x)/float(root.size.y)
+	var view_size:=maxf((whole.size.y+whole.size.z*.3)*1.5,whole.size.x/aspect*1.15)
+	review_camera.size=view_size
+	var target:=whole.get_center()+Vector3(0.,view_size*.11,0.)
+	review_camera.position=target+Vector3(0.,view_size*.4,view_size*2.);review_camera.look_at(target)
+	for i in labels.size():
+		labels[i].position=Vector3((i-1)*spacing,whole.end.y+view_size*.08,whole.get_center().z)
+		labels[i].pixel_size=view_size/float(root.size.y)
 func captures() -> void:
 	DirAccess.make_dir_recursive_absolute(output)
 	var names: Array[String]=[]
@@ -60,6 +85,7 @@ func captures() -> void:
 		if not actors[0].animator.has_animation(name):push_error("Unavailable source/replacement clip: "+name);quit(1);return
 		for angle in [["three-quarter",-.8],["side",PI/2.]]:
 			for actor in actors:actor.rotation.y=angle[1];actor.play(name,0.);actor.animator.seek(actor.animator.get_animation(name).length*.35,true);actor.animator.pause()
+			await fit_comparison()
 			for frame in 4:await process_frame
 			await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(output.path_join("%s-%s.png"%[name.to_lower(),angle[0]]))

@@ -18,6 +18,18 @@ def main():
         assert all(path.stat().st_mtime<=gpu_path.stat().st_mtime for path in gpu_inputs),'Runtime/shader changed after GPU validation'
         assert tests['failures']==0 and gpu['failures']==0 and gpu['renderer']!='gl_compatibility'
         tested={row['kind']:row for row in tests['models']}
+        contact_kinds={row['kind'] for row in preparation['models'] if row['status']=='prepared' and row['kind'] in ['dragons_dragon_asian','dragons_wyvern']}
+        contact=None
+        if contact_kinds:
+            contact_path=ROOT/f'outputs/creatures/{family}/contact-motion.json'
+            contact=json.loads(contact_path.read_text())
+            assert contact['checks']>0 and contact['failures']==0,'Animated contact solver checks failed'
+            assert {row['kind'] for row in contact['models']}==contact_kinds,'Missing animated contact model'
+            assert all(digest(ROOT/'Viewer/Presentation'/name)==sha for name,sha in contact['runtime_sha256'].items()),'Contact runtime changed after its motion checks'
+            assert set(contact['runtime_sha256'])=={'CreatureContactTests.gd','CreatureVisual.gd','SourceMountContact.gd','FootContact.gd'},'Incomplete contact test inputs'
+            for model in contact['models']:
+                assert model['asset_sha256']==tested[model['kind']]['asset_sha256']['modern'],'Animated contact used different geometry'
+                assert model['import_sha256']==tested[model['kind']]['import_sha256']['modern'],'Animated contact used different import precision'
         rows=[]
         for row in preparation['models']:
             if row['status']!='prepared':continue
@@ -35,6 +47,7 @@ def main():
             assert all(sample['import_sha256']==tested[row['kind']]['import_sha256']['modern'] for sample in samples),'GPU and pose samples used different import settings'
             row=dict(row,status='validated',validation_sha256=digest(ROOT/f'outputs/creatures/{family}/validation.json'),
                      gpu_sha256=digest(gpu_path),gpu_runtime_sha256={path.name:digest(path) for path in gpu_inputs},asset_sha256=tested[row['kind']]['asset_sha256'],import_sha256=tested[row['kind']]['import_sha256'])
+            if row['kind'] in contact_kinds:row['contact_sha256']=digest(contact_path)
             rows.append(row)
         report['entries']=[row for row in report['entries'] if row['family']!=family]+rows
         print('ACCEPTED LOCAL PRESENTATION:',family,len(rows),'source forms;',sum(len(row['bodies']) for row in rows),'body routes; native live evidence separate')
