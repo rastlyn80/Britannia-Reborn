@@ -222,6 +222,14 @@ func run() -> void:
 	var hands := preload("res://Network/ActionRunner.gd").new()
 	hands.session = real
 	check(int(hands.find_item(0x0F43).get("serial",0)) == 0x40000077,"a worn hatchet is found for a use-item slot")
+	# A closed reagent bag: zero seen reagents is not "missing" until its
+	# contents are known; then it is.
+	real.backpack = 0x40000001
+	real.known_items = {0x40000050:{"serial":0x40000050,"id":0x0E76,"container":0x40000001}}
+	real.seen_containers = {0x40000001:true}
+	check(hands.unseen_bags() == 1 and hands.availability([{"action":"Cast Spell","option":"Fireball"}]).ok,"a spell is not refused for reagents while a carried bag is unopened")
+	real.seen_containers[0x40000050] = true
+	check(hands.unseen_bags() == 0 and not hands.availability([{"action":"Cast Spell","option":"Fireball"}]).ok,"once the bag's contents are known, truly missing reagents are named")
 	hands.free()
 	real.free()
 	DirAccess.remove_absolute(bar.profile_path)

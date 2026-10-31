@@ -210,6 +210,16 @@ func _detail(item: Dictionary) -> void:
 	use.add_theme_color_override("font_color",Color("14110b"))
 	use.pressed.connect(func(): session.use_item(int(item.serial)))
 	detail.add_child(use)
+	# Anything with a paperdoll layer (clothing, armour, jewellery, weapons,
+	# shields, tools) can be put on; the server decides.
+	var layer := preload("res://Network/PaperdollWindow.gd").layer_of(int(item.id))
+	if layer != 0 and not layer in [11,16,21,25]:
+		var equip := Button.new()
+		equip.text = "Equip"
+		equip.custom_minimum_size = Vector2(0,40)
+		equip.add_theme_stylebox_override("normal",Look.box(Color(0.84,0.7,0.43,0.12),Look.BRASS,8,1,8))
+		equip.pressed.connect(func(): session.move_item(int(item.serial),int(session.player.get("serial",0)),true))
+		detail.add_child(equip)
 	var inspect := Button.new()
 	inspect.text = "Inspect in 3D"
 	inspect.custom_minimum_size = Vector2(0,38)

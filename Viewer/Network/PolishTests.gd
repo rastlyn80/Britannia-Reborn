@@ -169,6 +169,11 @@ func run() -> void:
 	check(pulled.size() == 1 and pulled[0].serial == 0x300,"dragging the target bar out leaves a bar for that creature")
 	check(preload("res://Network/MobileBar.gd").pull(root,war,0x300,Vector2(400,300)) == pulled[0],"pulling the same creature again moves its bar instead of adding one")
 	war.sent.clear()
+	press.double_click = false
+	pulled[0]._gui_input(press)
+	check(war.sent.size() >= 1 and war.sent[0][0] == 0xBF and war.sent[0][4] == 0x13,"a single click on a creature bar opens its server menu, as in the world")
+	pulled[0]._gui_input(release)
+	war.sent.clear()
 	press.double_click = true
 	pulled[0]._gui_input(press)
 	check(war.sent.size() == 1 and war.sent[0][0] == 0x05,"double-clicking a pulled bar in war mode attacks")

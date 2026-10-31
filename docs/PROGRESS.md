@@ -1,3 +1,19 @@
+# Closed bags, status-bar menus, Equip, server-opened backpack — 31 October 2026
+
+Owner reports from live play:
+- **Closed reagent bag:**
+  - The client only knows a bag's contents once the server has sent them (0x3C). The session now records those containers (`seen_containers`).
+  - While you carry a bag never seen inside, a zero count means "not seen", not "missing". Spells are not refused for reagents (the server checks every bag), and the spellbook shows "?" or "in a closed bag?" instead of "missing".
+  - Item, potion and bandage slots that need the exact item open the unseen bags first (up to four, 0.6 s apart for ModernUO's action delay), then use the item.
+- **Status bars act like the creature in the world:** a single click on the target frame, a pulled-out bar or a party card selects the creature and opens its server menu (pet orders, vendor Buy/Sell). Hovering shows its server tooltip (name and property lines, requested once) above the bar's hint.
+- **Backpack Equip:** the item card's actions add Equip for anything with a paperdoll layer (clothing, armour, jewellery, weapons, shields, tools).
+- **Open Backpack from the self menu:** the server opening your pack now shows the modern backpack window. It was ignored before; only B opened it. B is the menu bar's toggle alone now, so closing the pack no longer reopens it.
+
+**Tests:**
+- QuickbarTests 58/0: unopened bag, then known-missing reagents.
+- PolishTests 43/0: a bar's single click asks for the server menu.
+- The full verify passes. One earlier verify run failed once in FuzzTests; the suite passed alone (12,040 packets) and on the next full run.
+
 # Pet orders, tool targeting, real action timers, worn tools — 31 October 2026
 
 Owner requests from live play:

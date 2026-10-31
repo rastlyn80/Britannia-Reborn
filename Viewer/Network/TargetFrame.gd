@@ -115,7 +115,8 @@ func _process_hint() -> void:
 	if pressed: return
 	var waiting: bool = session != null and not session.target_request.is_empty()
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if waiting else Control.CURSOR_ARROW
-	tooltip_text = "Click to target" if waiting else "Click: select · Double-click: attack (war mode) · Drag out: keep a bar"
+	if session == null: return
+	tooltip_text = "Click to target" if waiting else preload("res://Network/MobileBar.gd").describe(session,shown,"Click: select and menu · Double-click: attack (war mode) · Drag out: keep a bar")
 
 func current() -> int:
 	return preload("res://Network/OverheadBars.gd").target_of(session)

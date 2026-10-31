@@ -32,12 +32,17 @@ static func pull(parent: Node, game: Node, mobile: int, at: Vector2) -> Control:
 	bar.position = at-Vector2(WIDTH*0.5,12)
 	return bar
 
-# What a click on any creature bar does (also the target frame and party cards).
+# What a click on any creature bar does (also the target frame and party
+# cards), the same as clicking the creature in the world: a single click
+# answers a target cursor, or selects it and opens its server menu (a pet's
+# orders, a vendor's Buy/Sell).
 static func act(game: Node, mobile: int, double: bool) -> void:
 	if mobile == 0 or game == null: return
 	if not double:
 		if not game.target_request.is_empty(): Runner.target_entity(game,mobile)
-		else: Runner.selected = mobile
+		else:
+			Runner.selected = mobile
+			if game.has_method("request_context"): game.request_context(mobile)
 		return
 	var me := int(game.player.get("serial",0))
 	if game.in_war_mode() and mobile != me:
@@ -46,6 +51,21 @@ static func act(game: Node, mobile: int, double: bool) -> void:
 		game.send(preload("res://Network/Packets/Player.gd").open_paperdoll(mobile))
 	else:
 		game.use_mobile(mobile)
+
+# The creature's server tooltip (name and property lines, as when hovering it
+# in the world) over the bar's own hint; asks for it when not yet known.
+static func describe(game: Node, mobile: int, hint: String) -> String:
+	if game == null or mobile == 0 or not game.has_method("module"): return hint
+	var tips = game.module("tooltips")
+	if tips == null: return hint
+	var lines: Array = tips.lines_of(mobile)
+	if lines.is_empty():
+		if not tips.asked.has(mobile): tips.request(mobile,true)
+		return hint
+	return "
+".join(lines)+"
+
+"+hint
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
@@ -95,6 +115,7 @@ func _process(delta: float) -> void:
 	var entity: Dictionary = session.entities.get(serial,{})
 	var here := not entity.is_empty() or serial == int(session.player.get("serial",0))
 	modulate.a = 1.0 if here else 0.45
+	tooltip_text = describe(session,serial,"Click: select / target · Double-click: attack (war) · Drag: move · Right-click: close")
 	if here and not seen: session.send(preload("res://Network/MobileNames.gd").query(serial))
 	seen = here
 	var stats: Dictionary = session.mobile_statistics.get(serial,{})

@@ -583,7 +583,15 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 					if graphic in preload("res://Network/SpellbookWindow.gd").BOOKS or game.module("items").spellbooks.has(serial):
 						spellbook.open_book(serial,graphic)
 						return
-					if serial == int(game.backpack): return
+					# The server opening your pack (the self menu's Open Backpack, a
+					# script) shows the modern backpack window.
+					if serial == int(game.backpack):
+						if not backpack.visible:
+							backpack.show()
+							backpack._keep_on_screen()
+							backpack.refresh()
+						backpack.move_to_front()
+						return
 					if containers.has(serial) and is_instance_valid(containers[serial]):
 						containers[serial].move_to_front()
 						return
@@ -781,7 +789,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.keycode == KEY_F6: game.return_to_britain()
 		if event.keycode == KEY_F7: cycle_sky()
 		if event.keycode == KEY_F9 and dev_edit: dev_edit.toggle()
-		if event.keycode == KEY_B: game.open_backpack()
 		if event.keycode == KEY_E: world_items.nearest()
 		if event.keycode == KEY_C and game.phase == "world" and not get_viewport().gui_get_focus_owner() is LineEdit:
 			if paperdoll_window: paperdoll_window.toggle()

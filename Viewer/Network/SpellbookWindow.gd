@@ -107,8 +107,11 @@ func _owned(spell: Dictionary) -> bool:
 func _spells() -> Array:
 	return Catalog.spells().filter(func(s): return s.school == school and (school != "Magery" or int(s.circle) == circle))
 
+# Reagents in a bag the client has not seen inside are not counted, so with
+# unseen bags nothing is called missing and the server decides.
 func _missing(spell: Dictionary) -> Array:
 	var result := []
+	if runner and runner.unseen_bags() > 0: return result
 	for code in spell.get("reagents",[]):
 		if runner.count_of(int(Catalog.REAGENTS[code][0])) == 0: result.append(Catalog.REAGENTS[code][1])
 	return result
@@ -125,8 +128,8 @@ func refresh() -> void:
 			var n: int = runner.count_of(int(Catalog.REAGENTS[code][0])) if runner else 0
 			var tag := PanelContainer.new()
 			tag.add_theme_stylebox_override("panel",Look.box(Color(0.85,0.35,0.29,0.16) if n == 0 else Color(1,1,1,0.04),Look.BLOOD if n == 0 else Color(0.84,0.7,0.43,0.2),6,1,5))
-			tag.tooltip_text = Catalog.REAGENTS[code][1]
-			tag.add_child(Look.label("%s %d" % [code,n],12,Color("f6c9c3") if n == 0 else Color("dcd5c5"),600))
+			tag.tooltip_text = Catalog.REAGENTS[code][1]+(" (more may be in a bag you have not opened)" if runner and runner.unseen_bags() > 0 else "")
+			tag.add_child(Look.label("%s %s" % [code,str(n) if n > 0 or not runner or runner.unseen_bags() == 0 else "?"],12,Color("f6c9c3") if n == 0 else Color("dcd5c5"),600))
 			reagent_row.add_child(tag)
 		for c in 8:
 			var b := chip(["I","II","III","IV","V","VI","VII","VIII"][c],circle == c+1)
@@ -218,7 +221,7 @@ func _detail(spell: Dictionary) -> void:
 			var name := Look.label(Catalog.REAGENTS[code][1],14,Look.IVORY,500)
 			name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			line.add_child(name)
-			line.add_child(Look.label("%d in pack" % n,14,Look.HERB if n > 0 else Color("f0a39a"),600))
+			line.add_child(Look.label(("%d in pack" % n) if n > 0 or runner.unseen_bags() == 0 else "in a closed bag?",14,Look.HERB if n > 0 else Color("f0a39a"),600))
 			detail.add_child(line)
 	if not missing.is_empty():
 		var warn := Look.label("Missing %s. Reagent shops sell it." % ", ".join(missing),13,Color("f6c9c3"),500)

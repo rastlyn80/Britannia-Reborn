@@ -90,12 +90,12 @@ func _rebuild() -> void:
 		card.add_theme_stylebox_override("panel",Look.box(Look.NIGHT,Look.EDGE,10,1,8))
 		card.set_meta("serial",int(member))
 		# Clicking a party member's card answers a waiting target cursor (heal,
-		# cure, buff) with them, and otherwise selects them.
+		# cure, buff) with them, and otherwise selects them and opens their
+		# menu, as clicking them in the world does; a double-click uses them.
 		card.mouse_filter = Control.MOUSE_FILTER_STOP
 		card.gui_input.connect(func(event: InputEvent):
 			if not (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT): return
-			if not session.target_request.is_empty(): preload("res://Network/ActionRunner.gd").target_entity(session,int(member))
-			else: preload("res://Network/ActionRunner.gd").selected = int(member)
+			preload("res://Network/MobileBar.gd").act(session,int(member),event.double_click)
 			card.accept_event())
 		var column := VBoxContainer.new()
 		column.add_theme_constant_override("separation",4)
@@ -113,6 +113,7 @@ func _refresh() -> void:
 		var stats: Dictionary = session.mobile_statistics.get(serial,{})
 		var column: VBoxContainer = card.get_child(0)
 		(column.get_child(0) as Label).text = str(session.entity_names.get(serial,stats.get("name","Member")))
+		card.tooltip_text = preload("res://Network/MobileBar.gd").describe(session,serial,"Click: select and menu · Double-click: use")
 		var bar: ProgressBar = column.get_child(1)
 		bar.max_value = maxi(1,int(stats.get("hits_max",1)))
 		bar.value = int(stats.get("hits",stats.get("hits_max",1)))

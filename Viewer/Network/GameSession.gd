@@ -35,6 +35,9 @@ var player_status := {}
 var skills := {}
 var known_items := {}
 var equipment := {}
+# Containers whose contents the server has sent (0x3C), so the client knows
+# what is inside; a closed bag never opened is not in here.
+var seen_containers := {}
 var mobile_equipment := {}
 var mobile_statistics := {}
 var last_mobile_actions := {}
@@ -377,7 +380,10 @@ func _handle(p: PackedByteArray) -> void:
 			var requested_art := preload("res://Network/GumpProtocol.gd").art_ids(gump)
 			var request_path := "res://gump-art-requests.local.json"
 			if FileAccess.file_exists(request_path):
-				var prior: Variant = JSON.parse_string(FileAccess.get_file_as_string(request_path))
+				# Another local review/client can be refreshing this optional cache.
+				# A partial write is a cache miss, not a malformed server packet.
+				var decoder:=JSON.new()
+				var prior: Variant = decoder.data if decoder.parse(FileAccess.get_file_as_string(request_path))==OK else null
 				if prior is Array:
 					for value in prior:
 						if not requested_art.has(int(value)): requested_art.append(int(value))
@@ -673,6 +679,7 @@ func _handle(p: PackedByteArray) -> void:
 			var parents := {}
 			for item in items: parents[int(item.container)] = true
 			if items.is_empty(): parents[container_serial] = true
+			seen_containers.merge(parents,true)
 			for serial in known_items.keys():
 				if parents.has(int(known_items[serial].get("container",0))): known_items.erase(serial)
 			container_items.clear()

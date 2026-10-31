@@ -68,6 +68,55 @@ func carried() -> Array:
 			open.append(int(item.serial))
 	return result
 
+# Bags, pouches and boxes (tiledata container graphics; the local item
+# definitions add any others the client has seen).
+const BAGS := [0x0E75,0x0E76,0x0E79,0x0E7A,0x0E7C,0x0E7D,0x0E7E,0x0E7F,0x0E80,0x0E3C,0x0E3D,0x0E3E,0x0E3F,0x0E40,0x0E41,0x0E42,0x0E43,0x09A8,0x09A9,0x09AA,0x09AB,0x09B0,0x09B2,0x0990,0x0A97,0x2256,0x2257]
+static var container_ids := {}
+
+# Containers you carry whose contents the client has not been sent yet (a
+# reagent bag never opened). While there are any, a zero count only means
+# "not seen", so the server, which sees inside every bag, decides.
+func unseen_bags() -> int:
+	if session == null or not "seen_containers" in session: return 0
+	if container_ids.is_empty():
+		for id in BAGS: container_ids[id] = true
+		if FileAccess.file_exists("res://item-definitions.local.json"):
+			var defs: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://item-definitions.local.json"))
+			if defs is Dictionary:
+				for key in defs:
+					if defs[key] is Dictionary and defs[key].get("container",false): container_ids[int(key)] = true
+	var unseen := 0
+	if int(session.backpack) != 0 and not session.seen_containers.has(int(session.backpack)): unseen += 1
+	for item in carried():
+		if container_ids.has(int(item.id)) and not session.seen_containers.has(int(item.serial)): unseen += 1
+	return unseen
+
+# Opens the bags you carry that the client has not seen inside (as you would
+# by double-clicking them), up to four, waiting for each one's contents.
+# True when something new was learnt.
+func look_in_bags() -> bool:
+	if unseen_bags() == 0 or not in_world(): return false
+	feedback.emit("Looking in your bags...")
+	var learnt := false
+	for round in 4:
+		var bag := 0
+		if int(session.backpack) != 0 and not session.seen_containers.has(int(session.backpack)): bag = int(session.backpack)
+		else:
+			for item in carried():
+				if container_ids.has(int(item.id)) and not session.seen_containers.has(int(item.serial)):
+					bag = int(item.serial)
+					break
+		if bag == 0: break
+		send(Protocol.double_click(bag))
+		var until := Time.get_ticks_msec()+1500
+		while not session.seen_containers.has(bag) and Time.get_ticks_msec() < until and in_world():
+			await get_tree().process_frame
+		if not session.seen_containers.has(bag): break
+		learnt = true
+		# ModernUO spaces item uses (Mobile.ActionDelay); the next one waits.
+		await get_tree().create_timer(0.6).timeout
+	return learnt
+
 func count_of(graphic: int, hue := -1) -> int:
 	var total := 0
 	for item in carried():
@@ -106,22 +155,25 @@ func _availability(steps: Array) -> Dictionary:
 		"Always Run": return {"ok":true,"count":-1,"reason":"","active":always_run}
 		"Use Item Type":
 			var n := count_of(int(step.get("graphic",0)),int(step.get("hue",-1)))
+			if n == 0 and unseen_bags() > 0: return {"ok":true,"count":-1,"reason":""}
 			return {"ok":n > 0,"count":n,"reason":"None left in your pack" if n == 0 else ""}
 		"Use Item":
 			var held: bool = session != null and session.known_items.has(int(step.get("serial",0)))
 			return {"ok":held,"count":-1,"reason":"" if held else "That item is no longer with you"}
 		"Bandage Self", "Bandage Target":
 			var b := count_of(Catalog.BANDAGE)
+			if b == 0 and unseen_bags() > 0: return {"ok":true,"count":-1,"reason":""}
 			return {"ok":b > 0,"count":b,"reason":"No bandages in your pack" if b == 0 else ""}
 		"Use Potion":
 			var p := count_of(int(Catalog.POTIONS.get(str(step.get("option","")),0)))
+			if p == 0 and unseen_bags() > 0: return {"ok":true,"count":-1,"reason":""}
 			return {"ok":p > 0,"count":p,"reason":"No such potion in your pack" if p == 0 else ""}
 		"Cast Spell":
 			var spell := Catalog.spell(str(step.get("option","")))
 			var missing := []
 			for code in spell.get("reagents",[]):
 				if count_of(int(Catalog.REAGENTS[code][0])) == 0: missing.append(Catalog.REAGENTS[code][1])
-			if not missing.is_empty(): return {"ok":false,"count":-1,"reason":"Missing "+", ".join(missing)}
+			if not missing.is_empty() and unseen_bags() == 0: return {"ok":false,"count":-1,"reason":"Missing "+", ".join(missing)}
 			var mana := int(session.player_status.get("mana",-1)) if session else -1
 			if mana >= 0 and int(spell.get("mana",-1)) > mana: return {"ok":false,"count":-1,"reason":"Not enough mana (%d needed)" % int(spell.mana)}
 	return {"ok":true,"count":-1,"reason":""}
@@ -181,6 +233,7 @@ func _step(step: Dictionary, slot_aim: String) -> float:
 		"Arm/Disarm": _arm_disarm(option == "Left Hand")
 		"Bandage Self", "Bandage Target":
 			var bandage := find_item(Catalog.BANDAGE)
+			if bandage.is_empty() and await look_in_bags(): bandage = find_item(Catalog.BANDAGE)
 			if bandage.is_empty():
 				feedback.emit("No bandages in your pack.")
 				return -1
@@ -224,6 +277,7 @@ func _step(step: Dictionary, slot_aim: String) -> float:
 			if virtue >= 0: send(Protocol.invoke_virtue(virtue+1))
 		"Use Item Type":
 			var item := find_item(int(step.get("graphic",0)),int(step.get("hue",-1)))
+			if item.is_empty() and await look_in_bags(): item = find_item(int(step.get("graphic",0)),int(step.get("hue",-1)))
 			if item.is_empty():
 				feedback.emit("No %s with you." % str(step.get("name","such item")).to_lower())
 				aim = {}
@@ -235,6 +289,7 @@ func _step(step: Dictionary, slot_aim: String) -> float:
 				return -1
 		"Use Potion":
 			var potion := find_item(int(Catalog.POTIONS.get(option,0)))
+			if potion.is_empty() and await look_in_bags(): potion = find_item(int(Catalog.POTIONS.get(option,0)))
 			if potion.is_empty():
 				feedback.emit("No %s potion in your pack." % option.to_lower())
 				return -1
