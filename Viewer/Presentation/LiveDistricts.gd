@@ -85,11 +85,14 @@ class DecodeJob extends RefCounted:
 static func owner(cell: Vector2i, size: int = 64) -> Vector2i:
  return Vector2i(floori(float(cell.x)/size)*size,floori(float(cell.y)/size)*size)
 
-# The streamed region: outputs/britain unless --region=<name> picks another
-# prepared dataset (scripts/prepare-region.ps1), e.g. britain-trinsic.
+# The streamed region: all of Trammel (outputs/trammel) once it has been
+# baked, else outputs/britain; --region=<name> picks another prepared dataset
+# (scripts/prepare-region.ps1), e.g. britain-trinsic.
 static func region() -> String:
  for arg in OS.get_cmdline_user_args():
   if arg.begins_with("--region=") and arg.substr(9).is_valid_filename():return arg.substr(9)
+ var trammel:=ProjectSettings.globalize_path("res://../outputs/trammel")
+ if FileAccess.file_exists(trammel.path_join("prepared-modern/index.json")) or FileAccess.file_exists(trammel.path_join("prepared/index.json")):return "trammel"
  return "britain"
 
 # deferred: index only; districts load when follow() names a position (the

@@ -109,7 +109,15 @@ public static class PreviewSpawns
         {
             return;
         }
-        var bounds = Bounds();
+        var (files, created, kept, failed, retired) = Build(Bounds(), args.Mobile);
+        args.Mobile.SendMessage($"UCSPAWN1|{files}|{created}|{kept}|{failed}|{retired}");
+    }
+
+    // The upstream Trammel spawners inside the bounds (PreviewSpawn uses the
+    // preview region, PreviewTrammel the whole facet); spawners already in
+    // place are kept, so repeats create nothing.
+    internal static (int files, int created, int kept, int failed, int retired) Build(Rectangle2D bounds, Mobile from)
+    {
         int files = 0, created = 0, kept = 0, failed = 0, retired = 0;
         foreach (var file in Sources())
         {
@@ -120,7 +128,7 @@ public static class PreviewSpawns
             }
             catch (JsonException)
             {
-                args.Mobile.SendMessage($"Skipped unreadable spawn file {file.Name}.");
+                from.SendMessage($"Skipped unreadable spawn file {file.Name}.");
                 failed++;
                 continue;
             }
@@ -160,7 +168,7 @@ public static class PreviewSpawns
                 }
             }
         }
-        args.Mobile.SendMessage($"UCSPAWN1|{files}|{created}|{kept}|{failed}|{retired}");
+        return (files, created, kept, failed, retired);
     }
 
     // Spawners and what they currently hold inside the bounds, by spawned type.

@@ -67,6 +67,8 @@ var console: Control
 var toasts: Control
 var audio: Node3D
 var paperdoll_window: Control
+var skills_window: Control
+var vitals_card: Control
 
 func point(x: int, y: int, z: int) -> Vector3:
 	return Vector3(x - int(world.originX), z * float(world.elevationScale), y - int(world.originY))
@@ -262,14 +264,20 @@ func _ready() -> void:
 			minimap.free()
 			minimap = null
 	var vitals := preload("res://Network/VitalsCard.gd").new()
+	vitals_card = vitals
+	vitals.opened.connect(_open_own_paperdoll)
 	canvas.add_child(vitals)
 	vitals.configure(game)
+	# The early character sheet stays only for the live capture scripts; no
+	# key, button or card opens it (the paperdoll and skills window do).
 	character_sheet = preload("res://Network/CharacterSheet.gd").new()
 	canvas.add_child(character_sheet)
 	character_sheet.configure(game)
-	vitals.opened.connect(func(): character_sheet.toggle("character"))
-	login_panel.button(login_panel.world_controls,"Character (C)",func(): character_sheet.toggle("character"))
-	login_panel.button(login_panel.world_controls,"Skills (K)",func(): character_sheet.toggle("skills"))
+	# The modern paperdoll and skills windows replace the early character
+	# sheet; the vitals card, C, Status and K open those (wired below, once
+	# the windows exist).
+	login_panel.button(login_panel.world_controls,"Character (C)",func(): if paperdoll_window: paperdoll_window.toggle())
+	login_panel.button(login_panel.world_controls,"Skills (K)",func(): if skills_window: skills_window.toggle())
 	_add_modern_hud(canvas,login_panel)
 	# Classic/modern Britain: restart loads the matching prepared city cache.
 	var graphics_mode := preload("res://Presentation/GraphicsMode.gd")
@@ -482,6 +490,7 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	var skills := preload("res://Network/SkillsWindow.gd").new()
 	canvas.add_child(skills)
 	skills.configure(game)
+	skills_window = skills
 	var spellbook := preload("res://Network/SpellbookWindow.gd").new()
 	canvas.add_child(spellbook)
 	spellbook.configure(runner)
@@ -502,6 +511,8 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	canvas.add_child(paperdoll)
 	paperdoll.configure(game)
 	paperdoll_window = paperdoll
+	# Clicking your vitals card (top left) opens your paperdoll.
+	# Clicking your vitals card (top left) opens your paperdoll (_open_own_paperdoll).
 	# Context menus and shops in the modern style; the old panel stops answering.
 	var vendor := preload("res://Network/VendorWindow.gd").new()
 	canvas.add_child(vendor)
@@ -618,7 +629,7 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	var open := func(window: String) -> bool:
 		match window:
 			"character", "Paperdoll": paperdoll.toggle()
-			"Status": character_sheet.toggle("character")
+			"Status": paperdoll.toggle()
 			"backpack", "Backpack": backpack.toggle()
 			"skills", "Skills": skills.toggle()
 			"spellbook": spellbook.toggle()
@@ -761,6 +772,12 @@ func _input(event: InputEvent) -> void:
 		pitch = clampf(pitch-event.relative.y*0.003,-1.35,0.65)
 		get_viewport().set_input_as_handled()
 
+# Your own paperdoll: opened, or brought to the front if already showing.
+func _open_own_paperdoll() -> void:
+	if paperdoll_window == null: return
+	if paperdoll_window.visible and int(paperdoll_window.serial) == int(game.player.get("serial",0)): paperdoll_window.move_to_front()
+	else: paperdoll_window.toggle()
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel") and game.placement_serial:
 		game.placement_serial = 0
@@ -792,8 +809,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.keycode == KEY_E: world_items.nearest()
 		if event.keycode == KEY_C and game.phase == "world" and not get_viewport().gui_get_focus_owner() is LineEdit:
 			if paperdoll_window: paperdoll_window.toggle()
-			else: character_sheet.toggle("character")
-		if event.keycode == KEY_K and game.phase == "world": character_sheet.toggle("skills")
+		if event.keycode == KEY_K and game.phase == "world" and skills_window: skills_window.toggle()
 		if event.keycode == KEY_ESCAPE:
 			if not front_end: get_tree().quit()
 			elif front.visible: pass

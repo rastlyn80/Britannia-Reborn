@@ -1,3 +1,28 @@
+# Paperdoll replaces the early character sheet; all of Trammel populated on the server — 31 October 2026
+
+Owner decisions: remove the early character sheet, and extend the world to all of Trammel, client and server.
+
+**Character sheet retired:**
+- The vitals card (top left), Character (C), the Status action and K no longer open the early character sheet, whose 3D portrait showed the mount. The card, C and Status open your paperdoll; K opens the Skills window.
+- The paperdoll gained the sheet's one unique feature: Str/Dex/Int with the server's gain lock per stat (raise, lower, locked; a click cycles it and sends the lock), plus the stat total over the cap.
+- The sheet's code stays only for two live capture scripts.
+- Tests: PolishTests 46/0 (stats with their locks, a click cycles and sends, no locks on another character).
+
+**Server, all of Trammel (`Server/PreviewTools/PreviewTrammel.cs`, `[PreviewTrammel`, `scripts/populate-trammel.ps1`):**
+- Uses ModernUO's own content, Trammel only: decorations (Britannia and Trammel lists, with the upstream duplicate check), doors over the whole facet (the bounded door pass, never replacing a door), signs (signs.cfg), teleporters (teleporters.json), the public moongates on ModernUO's Trammel list, and the standard spawners.
+- Existing items are kept, so a repeat adds nothing. `[PreviewSave` saves on demand.
+- Run live: decorations, doors, signs, teleporters and moongates over the whole facet in about a minute. The item index grew 5.4 times and the mobile index 8.4 times. The pre-population save is in `Server/runtime/Backups/BeforeTrammel-20261031-133612`.
+- **Known issue:** the scripted client is dropped while the server is busy, so the result line is lost. `TrammelLive.gd` now waits patiently for it, but the reply still needs to be logged on the server.
+
+**Client, all of Trammel:**
+- The facet is converted: `outputs/trammel`, 7,168 districts of which 4,164 are empty, 2.95 million statics, 138 MB.
+- LiveDistricts streams `outputs/trammel` by default once it has been baked.
+- **Baking is on hold:** the prepared streaming format bakes each district as one merged, uncompressed mesh. A forest district near Trinsic is 204 MB, and Britain to Trinsic (494 districts) is 16 GB, so all of Trammel would need roughly 60 to 120 GB. The cache has to be made compact first: shared models placed by reference (instances) and compressed resources.
+
+**Server start, two environment problems:**
+- `Start-Server.cmd` launched from PowerShell 7 hides `Get-FileHash` from Windows PowerShell 5.1; clear PSModulePath first.
+- Codex's in-progress `scripts/install-server-fixes.ps1` uses `[IO.File]::Move(a,b,$true)` and then `[IO.File]::Replace(a,b,$null)`, both unavailable in Windows PowerShell 5.1. The verified, receipted UOContent.dll was installed by hand instead.
+
 # Wildlife pipeline validated; creature programme continues - 31 October 2026
 
 The generic source-first pipeline now accepts 26 wildlife forms / 30 body routes (27 bounded native identities): bears, dogs/wolves, deer, cats, pigs, goats/sheep, giant rat and walrus. Evidence: 16,178 pose/identity/support checks over 4,914 deformed samples; 320 GPU checks / 156 views; 416 comparison frames; 2,366 real disposable-server/two-client checks across 54 cases, zero failures. Terrain adjustment preserves per-body proportions. Full scripts/verify.ps1 exits 0; existing unrelated diagnostics remain. [Scope, sources, commands and limits](CREATURE_WILDLIFE.md).

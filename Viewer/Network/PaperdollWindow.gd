@@ -23,6 +23,14 @@ var turning := false
 var slots := {}
 var heading: Label
 var details: Label
+# Your own Str/Dex/Int with the server's gain lock for each (raise, lower,
+# locked), which the old character sheet used to carry.
+var stats_row: HBoxContainer
+var stat_values := {}
+var stat_buttons := {}
+const LOCK_GLYPHS := ["▲","▼","■"]
+const LOCK_NAMES := ["raise","lower","locked"]
+const LOCK_COLORS := [Color("6dbe5a"),Color("f0716a"),Color("a9a293")]
 var frame: PanelContainer
 var catcher: Control
 var hint: Label
@@ -71,6 +79,32 @@ func _ready() -> void:
 	camera.transform = Transform3D(Basis.looking_at(Vector3(0,0.92,0)-Vector3(0,1.05,4.3)),Vector3(0,1.05,4.3))
 	camera.current = true
 	row.add_child(_column(RIGHT))
+	stats_row = HBoxContainer.new()
+	stats_row.add_theme_constant_override("separation",14)
+	stats_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	body.add_child(stats_row)
+	for entry in [["Str","str",0],["Dex","dex",1],["Int","int",2]]:
+		var cell := HBoxContainer.new()
+		cell.add_theme_constant_override("separation",4)
+		cell.add_child(Look.label(entry[0],13,Look.ASH,600))
+		var value := Look.label("",15,Look.IVORY,700)
+		cell.add_child(value)
+		stat_values[entry[1]] = value
+		var lock := Button.new()
+		lock.flat = true
+		lock.focus_mode = Control.FOCUS_NONE
+		lock.custom_minimum_size = Vector2(24,0)
+		lock.pressed.connect(func():
+			var locks: Dictionary = session.player_status.get("locks",{})
+			var next := (int(locks.get(entry[1],0))+1)%3
+			if session.set_stat_lock(int(entry[2]),next):
+				locks[entry[1]] = next
+				session.player_status.locks = locks
+				_paint_lock(lock,next))
+		cell.add_child(lock)
+		stat_buttons[entry[1]] = lock
+		_paint_lock(lock,0)
+		stats_row.add_child(cell)
 	details = Look.label("",13,Look.IVORY,500)
 	details.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	body.add_child(details)
@@ -159,15 +193,24 @@ func _slots() -> void:
 		else: tile.tooltip_text = "%s · empty" % tile.title
 		tile.queue_redraw()
 
+func _paint_lock(button: Button, lock: int) -> void:
+	button.text = LOCK_GLYPHS[lock]
+	button.tooltip_text = "Gain: %s (click to change)" % LOCK_NAMES[lock]
+	for state in ["font_color","font_hover_color","font_pressed_color","font_focus_color"]:
+		button.add_theme_color_override(state,LOCK_COLORS[lock])
+
 func _details() -> void:
-	if serial != int(session.player.serial):
-		details.text = ""
-		return
+	var own: bool = serial == int(session.player.serial)
 	var s: Dictionary = session.player_status
-	if not s.has("str"):
+	stats_row.visible = own and s.has("str")
+	if not own or not s.has("str"):
 		details.text = ""
 		return
-	details.text = "Str %d · Dex %d · Int %d   ·   Armour %d   ·   Fire %d · Cold %d · Poison %d · Energy %d   ·   Luck %d" % [int(s.get("str",0)),int(s.get("dex",0)),int(s.get("int",0)),int(s.get("armor",s.get("physical",0))),int(s.get("fire",0)),int(s.get("cold",0)),int(s.get("poison",0)),int(s.get("energy",0)),int(s.get("luck",0))]
+	var locks: Dictionary = s.get("locks",{})
+	for key in ["str","dex","int"]:
+		stat_values[key].text = str(int(s.get(key,0)))
+		_paint_lock(stat_buttons[key],int(locks.get(key,0)))
+	details.text = "Total %d / %d   ·   Armour %d   ·   Fire %d · Cold %d · Poison %d · Energy %d   ·   Luck %d" % [int(s.get("str",0))+int(s.get("dex",0))+int(s.get("int",0)),int(s.get("stat_cap",225)),int(s.get("armor",s.get("physical",0))),int(s.get("fire",0)),int(s.get("cold",0)),int(s.get("poison",0)),int(s.get("energy",0)),int(s.get("luck",0))]
 
 # Wearable layer of a graphic from the install's tiledata, 0 if unknown.
 static func layer_of(graphic: int) -> int:

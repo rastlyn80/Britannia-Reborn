@@ -117,6 +117,8 @@ public static class PreviewWorld
             args.Mobile.SendMessage($"Population stopped: {error.GetType().Name}: {error.Message}. Existing items were not removed. Audit before retrying.");
         }
     }
+    // Doors in any Trammel rectangle (PreviewTrammel passes the whole facet).
+    internal static int DoorsIn(int x, int y, int width, int height) => Doors(new Bounds(x, y, width, height));
     private static int Doors(Bounds bounds)
     {
         // The pinned generator exposes frame matching/AddDoor, but its facet selector is private.

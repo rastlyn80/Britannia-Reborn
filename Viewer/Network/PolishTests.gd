@@ -249,5 +249,26 @@ func run() -> void:
 	check(owner.sent.size() == 1 and owner.sent[0][0] == 0xBF and not pet_menu.visible,"choosing an order answers the server's menu")
 	pet_menu.free()
 	owner.free()
+	# Your paperdoll carries Str/Dex/Int with the server's gain locks (the
+	# early character sheet's job); a click cycles the lock and tells the server.
+	var doll_session := Recorder.new()
+	root.add_child(doll_session)
+	doll_session.phase = "world"
+	doll_session.player = {"serial":0x100}
+	doll_session.player_status = {"str":61,"dex":42,"int":25,"locks":{"str":0,"dex":2,"int":1}}
+	var doll := preload("res://Network/PaperdollWindow.gd").new()
+	root.add_child(doll)
+	doll.session = doll_session
+	doll.serial = 0x100
+	doll._details()
+	check(doll.stats_row.visible and doll.stat_values.str.text == "61" and doll.stat_buttons.dex.text == "■" and doll.stat_buttons.int.text == "▼","the paperdoll shows Str/Dex/Int with their gain locks")
+	doll_session.sent.clear()
+	doll.stat_buttons.str.pressed.emit()
+	check(doll_session.sent.size() == 1 and doll.stat_buttons.str.text == "▼" and int(doll_session.player_status.locks.str) == 1,"clicking a stat lock cycles it and tells the server")
+	doll.serial = 0x200
+	doll._details()
+	check(not doll.stats_row.visible,"another character's paperdoll shows no stat locks")
+	doll.free()
+	doll_session.free()
 	print("POLISH TESTS: %d checks / %d failures" % [checks,failures])
 	quit(1 if failures else 0)
