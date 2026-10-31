@@ -1918,6 +1918,127 @@
      "bytes": 195056
     }
    ]
+  },
+  {
+   "id": "roof_09",
+   "name": "Roof 09",
+   "source": "https://polyhaven.com/a/roof_09",
+   "license": "CC0-1.0",
+   "licenseUrl": "https://polyhaven.com/license",
+   "authors": [
+    "Rob Tuytel"
+   ],
+   "sizeMeters": [
+    4.0,
+    4.0
+   ],
+   "maps": [
+    {
+     "role": "albedo",
+     "file": "roof_09_diff_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/roof_09/roof_09_diff_1k.jpg",
+     "sha256": "6baaf5dca30d14566791ad6603e3b3dbd69b76990fd8d1314efc35dd2655e818",
+     "sourceMd5": "b9ab9e6b8ae7c83e19efaea6442511e7",
+     "bytes": 553309
+    },
+    {
+     "role": "normal",
+     "file": "roof_09_nor_gl_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/roof_09/roof_09_nor_gl_1k.jpg",
+     "sha256": "60fc61343316bbe73399cdddfb3da8b47d41c2d147e2b3384f244f8be9ed1668",
+     "sourceMd5": "a97decabde63b9ab0671563231c6850f",
+     "bytes": 325412
+    },
+    {
+     "role": "roughness",
+     "file": "roof_09_rough_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/roof_09/roof_09_rough_1k.jpg",
+     "sha256": "82ebb728f9e128202b9f03f2be4589331c02517a86b6921002af203b20fef124",
+     "sourceMd5": "714cce88275374d9fa3b9823ad486e1d",
+     "bytes": 503295
+    }
+   ]
+  },
+  {
+   "id": "stone_wall",
+   "name": "Stone Wall",
+   "source": "https://polyhaven.com/a/stone_wall",
+   "license": "CC0-1.0",
+   "licenseUrl": "https://polyhaven.com/license",
+   "authors": [
+    "Dario Barresi",
+    "Charlotte Baglioni"
+   ],
+   "sizeMeters": [
+    2.0,
+    2.0
+   ],
+   "maps": [
+    {
+     "role": "albedo",
+     "file": "stone_wall_diff_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/stone_wall/stone_wall_diff_1k.jpg",
+     "sha256": "390969aead48d9a10ac731a5e0af8761cc4ed89faa02ba775b913930b4398d87",
+     "sourceMd5": "451e4c5e2309af341fcdc1f1d637b1d6",
+     "bytes": 836975
+    },
+    {
+     "role": "normal",
+     "file": "stone_wall_nor_gl_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/stone_wall/stone_wall_nor_gl_1k.jpg",
+     "sha256": "801d7ff8bc472e5ad95872546c19a4c63cc776060b4ced629fece2d08591964e",
+     "sourceMd5": "5c686c6c907ae2a1bb5c438ad96da055",
+     "bytes": 1172420
+    },
+    {
+     "role": "roughness",
+     "file": "stone_wall_rough_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/stone_wall/stone_wall_rough_1k.jpg",
+     "sha256": "8c06e7c67d0d9701966732cc90c4e356b5bd5656aa35bf82650576e78322cbdd",
+     "sourceMd5": "ddc708ee3b0730ec9c5e79c52990aff1",
+     "bytes": 301003
+    }
+   ]
+  },
+  {
+   "id": "weathered_plank_siding",
+   "name": "Weathered Plank Siding",
+   "source": "https://polyhaven.com/a/weathered_plank_siding",
+   "license": "CC0-1.0",
+   "licenseUrl": "https://polyhaven.com/license",
+   "authors": [
+    "Dimitrios Savva"
+   ],
+   "sizeMeters": [
+    1.57,
+    1.57
+   ],
+   "maps": [
+    {
+     "role": "albedo",
+     "file": "weathered_plank_siding_diff_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/weathered_plank_siding/weathered_plank_siding_diff_1k.jpg",
+     "sha256": "dad0442114f1efd9a25195f2e2ac480693c2a6199f3987f4cfac4002b2820fbd",
+     "sourceMd5": "90f818fd61602ac7268ee89857e77396",
+     "bytes": 567956
+    },
+    {
+     "role": "normal",
+     "file": "weathered_plank_siding_nor_gl_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/weathered_plank_siding/weathered_plank_siding_nor_gl_1k.jpg",
+     "sha256": "229440bb21992d7f97bbbe03f6488e21cc061119ab3774ad0c30e352c9690a74",
+     "sourceMd5": "e2db9c3a055a85707eb453ee09624cfb",
+     "bytes": 609905
+    },
+    {
+     "role": "roughness",
+     "file": "weathered_plank_siding_rough_1k.jpg",
+     "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/weathered_plank_siding/weathered_plank_siding_rough_1k.jpg",
+     "sha256": "1f4707c748102d1faf275d35dea798e2e51dcc0d425ddd2121643b08d2b3af3e",
+     "sourceMd5": "1473bc74c994faf339fc69009d90bb94",
+     "bytes": 381425
+    }
+   ]
   }
  ]
 }

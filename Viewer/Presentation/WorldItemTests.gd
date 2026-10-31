@@ -183,6 +183,37 @@ func run() -> void:
   check(built != null and built.get_node_or_null("HouseDressing") != null and built.find_children("Chimney","",true,false).size() == 1,"the house keeps its dressing and has exactly one chimney")
   check(fixture.movement_surface.statics.has(Vector2i(1015-3,2015)) and fixture.movement_surface.statics.has(Vector2i(1015,2015+3)),"the house's wall cells still feed movement")
   multis.remove(0x40000020)
+  # Every supported house builds whole: walls, a doorway, a roof, and the
+  # right covering and corners from its own tile names.
+  var Houses := preload("res://Presentation/HouseModel.gd")
+  for id in Houses.SUPPORTED:
+   var parts: Array = Multis.components(id)
+   if parts.is_empty(): continue
+   var house: Node3D = Houses.build(parts,Multis._tiles_of(parts),id)
+   var roofs: Array = house.find_children("Roof*","",true,false)
+   check(house.get_node_or_null("Walls/Doorway") != null and not roofs.is_empty(),"house 0x%X builds with a doorway and a roof" % id)
+   house.free()
+  # The patio house: an L-shaped roof (two blocks), no post in the open
+  # patio, and its fences and counters left to their own tile models.
+  if not Multis.components(0x8C).is_empty():
+   var patio_parts: Array = Multis.components(0x8C)
+   var patio: Node3D = Houses.build(patio_parts,Multis._tiles_of(patio_parts),0x8C)
+   check(patio.find_children("Roof*","",true,false).size() == 2,"the L-shaped patio house is roofed as two gables")
+   patio.free()
+   var kept := 0
+   for part in patio_parts:
+    if not Houses.consumes(int(part[0]),Multis.tile(int(part[0]))): kept += 1
+   check(kept >= 20,"the patio house's fences and counters keep their own models (%d parts)" % kept)
+  # The guild house's front double door gets one wide doorway.
+  if not Multis.components(0x74).is_empty():
+   var guild_parts: Array = Multis.components(0x74)
+   var guild: Node3D = Houses.build(guild_parts,Multis._tiles_of(guild_parts),0x74)
+   var wide := false
+   for doorway in guild.find_children("Doorway*","",true,false):
+    for jamb in doorway.get_children():
+     if jamb is MeshInstance3D and (jamb.mesh as BoxMesh).size.x > 2.0: wide = true
+   check(wide,"the guild house's double door has one wide doorway")
+   guild.free()
  # A target cursor (a hatchet) answered by clicking a tree static: a location
  # target with the tree's cell, elevation and graphic; elsewhere, the ground.
  var rec := Rec.new()

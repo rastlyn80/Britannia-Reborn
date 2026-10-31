@@ -174,7 +174,10 @@ func _build(serial: int, multi: Dictionary) -> void:
 		var record := {"x":anchor.x+int(part[1]),"y":anchor.y+int(part[2]),"z":anchor.z+int(part[3]),"id":int(part[0]),"hue":int(multi.get("hue",0)),"multi":serial}
 		_know(int(part[0]))
 		_add_cell(entry,record)
-		if not model.is_empty() and not entry.design: continue
+		# A whole-house model draws the shell; fences, counters, benches,
+		# flowers and posts in its layout keep their own tile models.
+		if model.has("house") and not entry.design and Houses.consumes(int(part[0]),tile(int(part[0]))): continue
+		if not model.is_empty() and not model.has("house") and not entry.design: continue
 		var node: Node3D = scene.reconstruction.build(record,scene.world,-1)
 		if node == null:
 			entry.unmapped += 1

@@ -16,6 +16,10 @@ extends RefCounted
 #     fascia, bargeboards, a ridge cap and timber-framed gable ends;
 #   - a stone chimney stack with pots and smoke;
 #   - stone front steps from the ground to the door.
+# The tiles' own names choose the materials: the walls' family (plaster,
+# fieldstone, brick, wood siding), the roof covering (clay tiles or wooden
+# shingles) and the corners (sandstone quoins, or oak corner posts where the
+# layout has wooden posts).
 # BakeHouses.gd saves the result per multi id into the ignored
 # local-multis/houses folder; MultiPresenter uses the baked scene, or builds
 # it on the fly for a supported id.
@@ -26,11 +30,17 @@ const SILL := 0.95        # window sill above the floor
 const HEAD := 2.15        # window head above the floor
 const WINDOW_W := 0.82
 # House multis this builder has been reviewed for (classic small houses first).
-const SUPPORTED := [0x64]
+const SUPPORTED := [0x64,0x66,0x68,0x6A,0x6C,0x74,0x8C]
 static var surfaces := {}
 
 static func supported(id: int) -> bool:
 	return id in SUPPORTED
+
+# Layout kinds the model draws itself; anything else (fences, counters,
+# benches, flowers, posts, signs) keeps its own tile model beside it.
+const CONSUMED := ["wall","corner","window","trim","pillar","arch","floor","landing","roof","stairs"]
+static func consumes(graphic: int, info: Dictionary) -> bool:
+	return str(preload("res://Presentation/RegionalRules.gd").resolve(graphic,info).get("kind","")) in CONSUMED
 
 # World-aligned triplanar photoscan (Art/Surfaces), so neighbouring pieces
 # continue the same masonry or plaster without seams.
@@ -78,11 +88,11 @@ static func _box(parent: Node3D, size: Vector3, at: Vector3, m: Material, rot :=
 # Wall family materials (Facade family names).
 static func wall_material(family: String) -> StandardMaterial3D:
 	match family:
-		"stone": return surface("castle_wall_varriation",Color("cfc8bb"),0.45)
+		"stone": return surface("stone_wall",Color("d6cfc2"),0.42)
 		"sandstone": return surface("medieval_blocks_03",Color("e2cfa8"),0.5)
 		"brick": return surface("medieval_red_brick",Color("c09078"),0.6)
 		"marble": return surface("medieval_blocks_02",Color("eeeae2"),0.5)
-		"wood","log": return surface("brown_planks_03",Color("a88a6a"),0.7)
+		"wood","log": return surface("weathered_plank_siding",Color("b39a7e"),0.55)
 	return surface("mk_limewash",Color("f1eadb"),0.35,0.95)
 
 static func oak() -> StandardMaterial3D: return surface("mk_oak_dark",Color("8a7462"),1.2)
@@ -103,6 +113,8 @@ static func build(parts: Array, tiles: Dictionary, seed := 0) -> Node3D:
 	var roofs: Array = []  # [cell (anchor-shifted), z]
 	var stairs: Array = []
 	var gable_family := ""
+	var roof_kind := "tile"
+	var corners := "quoin"
 	for part in parts:
 		var g := int(part[0])
 		var info: Dictionary = tiles.get(str(g),{})
@@ -112,6 +124,9 @@ static func build(parts: Array, tiles: Dictionary, seed := 0) -> Node3D:
 		var z := int(part[3])
 		var h := int(info.get("height",0))
 		var family := Facade.family_for(str(info.get("name","")))
+		var name := str(info.get("name","")).to_lower()
+		if "shingle" in name: roof_kind = "shingle"
+		if "wooden post" in name: corners = "post"
 		match kind:
 			"wall","corner","window","trim","pillar":
 				if h <= 6 and z <= 2: foundation[cell] = maxi(int(foundation.get(cell,0)),z+h)
@@ -148,12 +163,21 @@ static func build(parts: Array, tiles: Dictionary, seed := 0) -> Node3D:
 	var wall_top := eave_y if not roofs.is_empty() else float(walls.values()[0].top)*SCALE
 	var centre := Vector2(low+high)/2.0
 	_plinth(root,foundation,low,high,floor_y)
-	_floor(root,floors,walls,floor_y)
+	var covered := {}
+	for r in roofs: covered[r[0]] = true
+	_floor(root,floors,walls,floor_y,covered)
 	var paint: Color = [Color("6e2a26"),Color("2f4a3a"),Color("2c3e5a"),Color("6a5428")][rnd.randi()%4]
-	_walls(root,walls,floors,family,floor_y,wall_top,centre,paint)
+	if family in ["wood","log"]: corners = "post"
+	_walls(root,walls,floors,family,floor_y,wall_top,centre,paint,roofing(roof_kind))
 	if family == "plaster": _framing(root,walls,floor_y,wall_top,centre)
-	_quoins(root,low,high,floor_y,wall_top,family)
-	if not roofs.is_empty(): _roof(root,roofs,low,high,eave_y,ridge_y,gable_family if gable_family != "" else family)
+	var outer := _outer_corners(walls)
+	if corners == "post": _corner_posts(root,outer,floor_y,wall_top)
+	else: _quoins(root,outer,floor_y,wall_top,family,walls)
+	if not roofs.is_empty():
+		# An L- or T-shaped house is roofed as overlapping rectangles, each a
+		# gable of its own at the height its tiles reach (cross gables).
+		for block in _roof_blocks(roofs):
+			_roof(root,block,low,high,eave_y,_ridge_of(block),gable_family if gable_family != "" else family,roofing(roof_kind))
 	_steps(root,stairs,floor_y,centre)
 	if not roofs.is_empty(): _chimney(root,low,high,eave_y,ridge_y,rnd)
 	for mesh in root.find_children("*","MeshInstance3D",true,false):
@@ -172,14 +196,17 @@ static func _plinth(root: Node3D, foundation: Dictionary, low: Vector2i, high: V
 	# Cap course: a dressed stone band just proud of the plinth.
 	_box(base,Vector3(size.x+0.12,0.14,size.z+0.12),Vector3(mid.x,floor_y-0.07,mid.z),surface("castle_wall_varriation",Color("c4beb4"),0.9))
 
-static func _floor(root: Node3D, floors: Dictionary, walls: Dictionary, floor_y: float) -> void:
+# Plank floors under the roof; stone flags on an open patio.
+static func _floor(root: Node3D, floors: Dictionary, walls: Dictionary, floor_y: float, covered: Dictionary) -> void:
 	var boards := surface("brown_planks_03",Color("b49a7a"),0.55,0.8)
+	var flags := surface("cobblestone_floor_01",Color("cfc7ba"),0.5,0.9)
 	for cell in floors:
-		_box(root,Vector3(1.0,0.06,1.0),Vector3(cell.x,floor_y+0.03,cell.y),boards)
+		var open: bool = not covered.is_empty() and not covered.has(cell) and not walls.has(cell)
+		_box(root,Vector3(1.0,0.06,1.0),Vector3(cell.x,floor_y+0.03,cell.y),flags if open else boards)
 
 # Wall arms from each wall cell's centre towards its wall neighbours, with
 # window and door openings; doors are gaps between two wall cells in a line.
-static func _walls(root: Node3D, walls: Dictionary, floors: Dictionary, family: String, floor_y: float, top: float, centre: Vector2, paint: Color) -> void:
+static func _walls(root: Node3D, walls: Dictionary, floors: Dictionary, family: String, floor_y: float, top: float, centre: Vector2, paint: Color, covering: Material) -> void:
 	var shell := Node3D.new()
 	shell.name = "Walls"
 	root.add_child(shell)
@@ -191,6 +218,10 @@ static func _walls(root: Node3D, walls: Dictionary, floors: Dictionary, family: 
 		for d in [Vector2i(1,0),Vector2i(0,1)]:
 			var gap: Vector2i = cell+d
 			if not walls.has(gap) and walls.has(gap+d) and floors.has(gap): doors[gap] = d
+			# A double door: two open cells between walls in a line.
+			elif not walls.has(gap) and not walls.has(gap+d) and walls.has(gap+d*2) and floors.has(gap) and floors.has(gap+d):
+				doors[gap] = d
+				doors[gap+d] = d
 	for cell in walls:
 		var w: Dictionary = walls[cell]
 		var arms: Array = []
@@ -206,7 +237,11 @@ static func _walls(root: Node3D, walls: Dictionary, floors: Dictionary, family: 
 			else:
 				_box(shell,Vector3(0.5 if along_x else T,height,T if along_x else 0.5),mid,mat)
 		if bool(w.window) and _straight(walls,cell): _window(shell,cell,walls,floor_y,centre,paint)
-	for gap in doors: _doorway(shell,gap,doors[gap],floor_y,top,mat,centre)
+	for gap in doors:
+		var d: Vector2i = doors[gap]
+		# One frame per doorway: a double door's second cell is drawn with the first.
+		if doors.has(gap-d): continue
+		_doorway(shell,gap,d,floor_y,top,mat,centre,covering,2 if doors.has(gap+d) else 1)
 
 static func _straight(walls: Dictionary, cell: Vector2i) -> bool:
 	return (walls.has(cell+Vector2i(1,0)) or walls.has(cell+Vector2i(-1,0))) != (walls.has(cell+Vector2i(0,1)) or walls.has(cell+Vector2i(0,-1)))
@@ -234,7 +269,7 @@ static func _window(shell: Node3D, cell: Vector2i, walls: Dictionary, floor_y: f
 	win.name = "Window"
 	win.position = Vector3(cell.x,floor_y,cell.y)
 	win.rotation.y = atan2(out.x,out.y)
-	shell.add_child(win)
+	shell.add_child(win,true)
 	# In this frame +z points out of the house and x runs along the wall.
 	var h := HEAD-SILL
 	var mid := SILL+h/2
@@ -259,26 +294,32 @@ static func _window(shell: Node3D, cell: Vector2i, walls: Dictionary, floor_y: f
 
 # A doorway gap: lintel wall over the opening, oak jambs and head, a threshold
 # stone and a small pent canopy on brackets over the outside.
-static func _doorway(shell: Node3D, gap: Vector2i, d: Vector2i, floor_y: float, top: float, mat: Material, centre: Vector2) -> void:
+static func _doorway(shell: Node3D, gap: Vector2i, d: Vector2i, floor_y: float, top: float, mat: Material, centre: Vector2, covering: Material, cells := 1) -> void:
 	var along_x: bool = d.x != 0
 	var over := top-floor_y-DOOR_H
-	_box(shell,Vector3(1.0 if along_x else T,over,T if along_x else 1.0),Vector3(gap.x,floor_y+DOOR_H+over/2,gap.y),mat)
-	var out := Vector2(0,signf(float(gap.y)-centre.y)) if along_x else Vector2(signf(float(gap.x)-centre.x),0)
+	var mid := Vector2(gap)+Vector2(d)*(cells-1)*0.5
+	var span := float(cells)
+	_box(shell,Vector3(span if along_x else T,over,T if along_x else span),Vector3(mid.x,floor_y+DOOR_H+over/2,mid.y),mat)
+	var out := Vector2(0,signf(mid.y-centre.y)) if along_x else Vector2(signf(mid.x-centre.x),0)
+	if out == Vector2.ZERO: out = Vector2(0,1) if along_x else Vector2(1,0)
 	var door := Node3D.new()
 	door.name = "Doorway"
-	door.position = Vector3(gap.x,floor_y,gap.y)
+	door.position = Vector3(mid.x,floor_y,mid.y)
 	door.rotation.y = atan2(out.x,out.y)
-	shell.add_child(door)
+	shell.add_child(door,true)
 	var frame := oak()
-	for x in [-0.52,0.52]: _box(door,Vector3(0.1,DOOR_H,T+0.08),Vector3(x,DOOR_H/2,0),frame)
-	_box(door,Vector3(1.24,0.14,T+0.08),Vector3(0,DOOR_H+0.07,0),frame)
-	_box(door,Vector3(1.2,0.06,T+0.3),Vector3(0,0.03,0.1),stone())
+	var half := span/2+0.02
+	for x in [-half,half]: _box(door,Vector3(0.1,DOOR_H,T+0.08),Vector3(x,DOOR_H/2,0),frame)
+	_box(door,Vector3(span+0.24,0.14,T+0.08),Vector3(0,DOOR_H+0.07,0),frame)
+	_box(door,Vector3(span+0.2,0.06,T+0.3),Vector3(0,0.03,0.1),stone())
 	# Pent canopy: two brackets and a short tiled slope over the door.
 	var canopy_y := DOOR_H+0.45
-	for x in [-0.62,0.62]: _box(door,Vector3(0.08,0.08,0.7),Vector3(x,canopy_y-0.2,T/2+0.3),frame,Vector3(-0.55,0,0))
-	_box(door,Vector3(1.6,0.07,0.85),Vector3(0,canopy_y,T/2+0.38),roof_tiles(),Vector3(0.38,0,0))
+	for x in [-half-0.1,half+0.1]: _box(door,Vector3(0.08,0.08,0.7),Vector3(x,canopy_y-0.2,T/2+0.3),frame,Vector3(-0.55,0,0))
+	_box(door,Vector3(span+0.6,0.07,0.85),Vector3(0,canopy_y,T/2+0.38),covering,Vector3(0.38,0,0))
 
 static func roof_tiles() -> StandardMaterial3D: return surface("grey_roof_tiles_02",Color("c0714c"),0.9,0.8)
+static func shingles() -> StandardMaterial3D: return surface("roof_09",Color("b8a28a"),0.4,0.85)
+static func roofing(kind: String) -> StandardMaterial3D: return shingles() if kind == "shingle" else roof_tiles()
 
 # Oak frame over plaster: sole plate, mid rail, wall plate, posts at corners
 # and trimmers either side of each opening, on both faces.
@@ -307,8 +348,24 @@ static func _framing(root: Node3D, walls: Dictionary, floor_y: float, top: float
 			_box(frame,Vector3(0.12 if along_x else depth,top-floor_y,depth if along_x else 0.12),Vector3(cell.x,floor_y+(top-floor_y)/2,cell.y),timber)
 			_box(frame,Vector3(0.1 if along_x else depth,1.3,depth if along_x else 0.1),Vector3(cell.x,floor_y+3.4,cell.y),timber,Vector3(0,0,0.55) if along_x else Vector3(0.55,0,0))
 
+# The building's corners: wall cells where exactly one wall runs along x and
+# one along y (an L, not a T junction), so an L-shaped house gets its inner
+# corner and never a post standing in its open patio.
+static func _outer_corners(walls: Dictionary) -> Array:
+	var result: Array = []
+	for cell in walls:
+		var x: int = int(walls.has(cell+Vector2i(1,0)))+int(walls.has(cell+Vector2i(-1,0)))
+		var y: int = int(walls.has(cell+Vector2i(0,1)))+int(walls.has(cell+Vector2i(0,-1)))
+		if x == 1 and y == 1: result.append(cell)
+	return result
+
+# Square oak posts at the corners (wood and timber-framed houses).
+static func _corner_posts(root: Node3D, outer: Array, floor_y: float, top: float) -> void:
+	for corner in outer:
+		_box(root,Vector3(T+0.1,top-floor_y+0.05,T+0.1),Vector3(corner.x,floor_y+(top-floor_y)/2,corner.y),oak())
+
 # Long-and-short dressed blocks at the outer corners.
-static func _quoins(root: Node3D, low: Vector2i, high: Vector2i, floor_y: float, top: float, family: String) -> void:
+static func _quoins(root: Node3D, outer: Array, floor_y: float, top: float, family: String, walls: Dictionary) -> void:
 	if family in ["wood","log"]: return
 	var mat := quoin()
 	var y := floor_y
@@ -316,16 +373,61 @@ static func _quoins(root: Node3D, low: Vector2i, high: Vector2i, floor_y: float,
 	while y < top-0.05:
 		var tall := minf(0.34,top-y)
 		var long := i%2 == 0
-		for corner in [Vector2(low.x,low.y),Vector2(high.x,low.y),Vector2(low.x,high.y),Vector2(high.x,high.y)]:
-			var sx := signf(corner.x-(low.x+high.x)/2.0)
-			var sz := signf(corner.y-(low.y+high.y)/2.0)
+		for corner in outer:
+			# Each block runs back along the wall that leaves the corner.
+			var sx := -1.0 if walls.has(corner+Vector2i(1,0)) else 1.0
+			var sz := -1.0 if walls.has(corner+Vector2i(0,1)) else 1.0
 			_box(root,Vector3(T+0.06+(0.32 if long else 0.0),tall-0.02,T+0.06+(0.0 if long else 0.32)),Vector3(corner.x-sx*(0.16 if long else 0.0),y+tall/2,corner.y-sz*(0.0 if long else 0.16)),mat)
 		y += tall
 		i += 1
 
+static func _ridge_of(roofs: Array) -> float:
+	var top := 0.0
+	for r in roofs: top = maxf(top,float(r[1]+3)*SCALE)
+	return top
+
+# Splits the roof cells into rectangles: the one covering the most cells not
+# yet roofed first, then the next over what is left (it may overlap the
+# first, as a cross gable does), until every roof cell is covered.
+static func _roof_blocks(roofs: Array) -> Array:
+	var cells := {}
+	for r in roofs: cells[r[0]] = maxi(int(cells.get(r[0],-1000)),int(r[1]))
+	var left := cells.duplicate()
+	var blocks: Array = []
+	while not left.is_empty() and blocks.size() < 6:
+		var best := Rect2i()
+		var best_new := 0
+		for start in cells:
+			var width := 0
+			while cells.has(start+Vector2i(width,0)): width += 1
+			var rows := 0
+			while width >= 2:
+				var row_w := 0
+				while row_w < width and cells.has(start+Vector2i(row_w,rows)): row_w += 1
+				if row_w < 2: break
+				width = row_w
+				rows += 1
+				var rect := Rect2i(start,Vector2i(width,rows))
+				var fresh := 0
+				for y in rows:
+					for x in width:
+						if left.has(start+Vector2i(x,y)): fresh += 1
+				if fresh > best_new or (fresh == best_new and rect.get_area() > best.get_area()):
+					best_new = fresh
+					best = rect
+		if best_new == 0: break
+		var block: Array = []
+		for y in best.size.y:
+			for x in best.size.x:
+				var c := best.position+Vector2i(x,y)
+				block.append([c,cells[c]])
+				left.erase(c)
+		blocks.append(block)
+	return blocks
+
 # Gable roof over the roof tiles' footprint: the ridge runs along the axis on
 # which the topmost tiles line up; eaves at the lowest tiles.
-static func _roof(root: Node3D, roofs: Array, low: Vector2i, high: Vector2i, eave_y: float, ridge_y: float, gable_family: String) -> void:
+static func _roof(root: Node3D, roofs: Array, low: Vector2i, high: Vector2i, eave_y: float, ridge_y: float, gable_family: String, covering: StandardMaterial3D) -> void:
 	var rlow := Vector2i(100000,100000)
 	var rhigh := Vector2i(-100000,-100000)
 	var top_cells: Array = []
@@ -341,7 +443,7 @@ static func _roof(root: Node3D, roofs: Array, low: Vector2i, high: Vector2i, eav
 		ridge_along_z = xs.size() == 1
 	var roof := Node3D.new()
 	roof.name = "Roof"
-	root.add_child(roof)
+	root.add_child(roof,true)
 	# Work in a frame where the ridge runs along local z.
 	var a := Vector2(rlow)-Vector2(0.5,0.5)
 	var b := Vector2(rhigh)+Vector2(0.5,0.5)
@@ -354,7 +456,7 @@ static func _roof(root: Node3D, roofs: Array, low: Vector2i, high: Vector2i, eav
 	var rise := ridge_y-eave_y
 	var slope := atan2(rise,half_span)
 	var run := (half_span+overhang)/cos(slope)
-	var tiles := roof_tiles()
+	var tiles := covering
 	for side in [-1.0,1.0]:
 		var plane := MeshInstance3D.new()
 		var st := SurfaceTool.new()
@@ -390,7 +492,8 @@ static func _roof(root: Node3D, roofs: Array, low: Vector2i, high: Vector2i, eav
 	cap.mesh = cyl
 	cap.rotation.x = PI/2
 	cap.position = Vector3(0,ridge_y+0.08,0)
-	cap.material_override = surface("grey_roof_tiles_02",Color("a85a3c"),1.4,0.8)
+	# Clay ridge tiles on a tiled roof; a wooden ridge board on shingles.
+	cap.material_override = surface("grey_roof_tiles_02",Color("a85a3c"),1.4,0.8) if covering == roof_tiles() else oak()
 	roof.add_child(cap)
 	# Gable ends: plaster triangles under the roof with an oak king post,
 	# collar and bargeboards following the slopes.

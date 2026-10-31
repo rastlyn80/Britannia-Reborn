@@ -1,3 +1,32 @@
+# Houses, batch 2: all small houses, the guild house and the patio house — 31 October 2026
+
+The owner approved the whole-house approach on the small house; it now covers seven of ModernUO's classic houses.
+- **Supported:**
+  - the five small houses: stone-and-plaster 0x64, fieldstone 0x66, brick 0x68, wood 0x6A, wood-and-plaster 0x6C;
+  - the large brick guild house 0x74;
+  - the large patio house 0x8C.
+- **Materials from the tiles' own names:**
+  - roof covering: clay tiles, or wooden shingles (new CC0 `roof_09`);
+  - corners: sandstone quoins, or oak corner posts where the layout has wooden posts or wood walls;
+  - walls: fieldstone (new CC0 `stone_wall`), brick, plaster with an oak frame, or wood siding (new CC0 `weathered_plank_siding`);
+  - gables follow their own tiles (a wooden gable on the fieldstone house).
+- **Builder generalised for larger layouts:**
+  - roofs are split into rectangles over the roof cells, each a gable at the height its tiles reach, so the L-shaped patio house gets two gables meeting in a valley;
+  - a two-cell gap between walls is one wide double doorway, frame and canopy included (the guild house front);
+  - floors outside the roof (the patio) are stone flags;
+  - corner posts and quoins sit on real L corners of the walls, never in an open patio.
+- **Unmodelled parts keep their tile models:** fences, counters, benches, flowers and posts in a house layout (`HouseModel.consumes`). The patio house keeps its 22 such parts.
+- **Baking:** `BakeHouses.gd` bakes all seven to the ignored `local-multis/houses`.
+
+**Tests:** WorldItemTests 55/55. Every supported house builds with a doorway and a roof; the patio house is two gables and keeps 22 fence and counter parts; the guild house has one wide double doorway. The full verify passes.
+
+**Review:** renders from two sides on a scratch sheet, not committed (derived from the install layout).
+
+**Next:**
+- the two-storey houses (0x76/0x78) and the villa (0x9E), which need a storey model;
+- the log cabin 0x9A, the small shops 0xA0/0xA2 and the marble house 0x96;
+- the flat-roofed towers, keep and castle.
+
 # Distinct mounts integrated / review shortcuts consolidated - 31 October 2026
 
 Implemented live presentation for desert/forest/frenzied/ethereal ostards, repaired and textured ki-rin, a separately licensed scanned skeletal mount, and ordinary/pack/ethereal llamas. MountVisual dispatches through the actual HumanAvatar server-appearance path while retaining accepted horses/humans. Source rigs/clips, raw native IDs and hues survive; riders follow animated seat/foot anchors and facing, stance soles sample real terrain, panniers follow the spine, and corpse amounts select matching held death art. Ki-rin female-rider rejection and the pack llama's unrideable status remain server-owned. [Sources, exact identities, reproduction, evidence and limits](MOUNT_INTEGRATION.md).
