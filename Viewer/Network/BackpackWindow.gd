@@ -104,10 +104,15 @@ func name_of(item: Dictionary) -> String:
 	return text.capitalize() if text != "" else "Item"
 
 # Items dragged from a container window come into the pack.
+# A stack may also be split inside the pack itself.
 func accepts_item(value: Variant) -> bool:
-	return value is Dictionary and value.has("item_serial") and int(session.known_items.get(int(value.item_serial),{}).get("container",0)) != int(session.backpack)
+	if not (value is Dictionary and value.has("item_serial")): return false
+	var item: Dictionary = session.known_items.get(int(value.item_serial),{})
+	return int(item.get("container",0)) != int(session.backpack) or int(item.get("amount",1)) > 1
 func take_item(value: Variant) -> void:
-	session.move_item(int(value.item_serial),int(session.backpack))
+	var item: Dictionary = session.known_items.get(int(value.item_serial),{})
+	preload("res://Network/AmountPrompt.gd").ask(self,item,name_of(item),func(amount: int):
+		session.move_item(int(value.item_serial),int(session.backpack),false,Vector3i(-999,-999,-999),[],amount))
 func _can_drop_data(_at: Vector2, value: Variant) -> bool: return accepts_item(value)
 func _drop_data(_at: Vector2, value: Variant) -> void: take_item(value)
 

@@ -1201,6 +1201,12 @@ Saved graceful restart loaded 297 items and 3 mobiles. Population remains idempo
 
 # Progress — 25 October 2026
 
+## 31 October 2026 - Splitting stacks
+
+- Dropping a stack (into the backpack, a container, a trade or onto the world) asks how many to move, as in the original client: Viewer/Network/AmountPrompt.gd offers the whole stack with a slider, Half/All, Enter to move and Escape to cancel; holding Shift moves the whole stack without asking. Part of a stack can be dropped back into its own container to split it there. GameSession.move_item lifts the chosen amount (0x07) and keeps it for ground retries.
+- Evidence: StackSplitTests 10/0 (in verify): partial lift amount, split in the same container, whole stack never moved onto itself, single items never split, prompt default, typed amount and limit.
+- Gap: not yet exercised against the live server (the owner was signed in on the development account).
+
 ## 31 October 2026 - Taller mountains (docs/MOUNTAINS.md)
 
 - Converter relief (Converter/Relief.cs) lifts terrain corners deep inside impassable dry land (mountain rock, cave walls, the dungeon void) by 1.2x their height above the nearest walkable corner, eased in over 7 tiles, up to 32 m; walkable corners never move. TerrainSurface, the collision heightmap and the regional horizon use it (Viewer/Presentation/Relief.gd); relief.u8 is part of the bake fingerprint and scripts/bake-facet.ps1 recomputes it.

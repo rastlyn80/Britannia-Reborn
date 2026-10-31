@@ -98,9 +98,13 @@ func refresh() -> void:
 
 # Drops onto the window (or its tiles) move the dragged item into this container.
 func accepts_item(value: Variant) -> bool:
-	return value is Dictionary and value.has("item_serial") and int(value.item_serial) != serial and int(session.known_items.get(int(value.item_serial),{}).get("container",0)) != serial
+	if not (value is Dictionary and value.has("item_serial")) or int(value.item_serial) == serial: return false
+	var item: Dictionary = session.known_items.get(int(value.item_serial),{})
+	return int(item.get("container",0)) != serial or int(item.get("amount",1)) > 1
 func take_item(value: Variant) -> void:
-	session.move_item(int(value.item_serial),serial)
+	var item: Dictionary = session.known_items.get(int(value.item_serial),{})
+	preload("res://Network/AmountPrompt.gd").ask(self,item,str(session.labels.item_name(int(item.get("id",0)))),func(amount: int):
+		session.move_item(int(value.item_serial),serial,false,Vector3i(-999,-999,-999),[],amount))
 func _can_drop_data(_at: Vector2, value: Variant) -> bool: return accepts_item(value)
 func _drop_data(_at: Vector2, value: Variant) -> void: take_item(value)
 

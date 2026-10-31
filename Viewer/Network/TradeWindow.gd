@@ -114,6 +114,8 @@ func _fill(grid: GridContainer, container: int) -> void:
 func accepts_item(value: Variant) -> bool:
 	return not trade.is_empty() and value is Dictionary and value.has("item_serial") and int(session.known_items.get(int(value.item_serial),{}).get("container",0)) != int(trade.mine)
 func take_item(value: Variant) -> void:
-	session.move_item(int(value.item_serial),int(trade.mine))
+	var item: Dictionary = session.known_items.get(int(value.item_serial),{})
+	preload("res://Network/AmountPrompt.gd").ask(self,item,str(session.labels.item_name(int(item.get("id",0)))),func(amount: int):
+		session.move_item(int(value.item_serial),int(trade.mine),false,Vector3i(-999,-999,-999),[],amount))
 func _can_drop_data(_at: Vector2, value: Variant) -> bool: return accepts_item(value)
 func _drop_data(_at: Vector2, value: Variant) -> void: take_item(value)

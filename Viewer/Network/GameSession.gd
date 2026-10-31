@@ -1100,7 +1100,7 @@ func remember_item(item: Dictionary) -> void:
 			if not spots.is_empty():
 				var next: Vector3i = spots.pop_front()
 				pending_transfer.clear()
-				move_item(serial,0,false,next,spots)
+				move_item(serial,0,false,next,spots,int(pending_transfer.get("amount",0)))
 			else: finish_transfer(false,"Server returned the item to its original location.")
 	items_changed.emit()
 func _forget_worn(serial: int) -> void:
@@ -1118,12 +1118,16 @@ func finish_transfer(success: bool, description: String) -> void:
 	pending_transfer.clear()
 	transfer_result.emit(success,description)
 	message_received.emit(description)
-func move_item(serial: int, destination: int, equip_item: bool = false, ground_point: Vector3i = Vector3i(-999,-999,-999), spots: Array = []) -> bool:
+# amount: how many of a stack to move (0 = all). Part of a stack may go back
+# into the same container: the server splits it there (AmountPrompt).
+func move_item(serial: int, destination: int, equip_item: bool = false, ground_point: Vector3i = Vector3i(-999,-999,-999), spots: Array = [], amount: int = 0) -> bool:
 	if phase != "world" or not pending_transfer.is_empty() or not known_items.has(serial) or serial == backpack: return false
 	var item: Dictionary = known_items[serial]
 	var source := int(item.get("container",0))
-	if source == destination: return false
-	pending_transfer = {"serial":serial,"source":source,"destination":destination,"lifted":false,"spots":spots}
+	var whole := int(item.get("amount",1))
+	var lifted := clampi(amount if amount > 0 else whole,1,mini(whole,65535)) if whole > 0 else 1
+	if source == destination and (lifted >= whole or destination == 0): return false
+	pending_transfer = {"serial":serial,"source":source,"destination":destination,"lifted":false,"spots":spots,"amount":lifted}
 	# At your feet: your own tile first, then the one you face, then the rest
 	# of the ring (the server refuses tiles the item cannot rest on).
 	if destination == 0 and ground_point.x == -999 and not equip_item:
@@ -1136,7 +1140,7 @@ func move_item(serial: int, destination: int, equip_item: bool = false, ground_p
 	var delay := maxf(0.0,float(next_item_action-Time.get_ticks_msec())/1000.0)
 	transfer_deadline = Time.get_ticks_msec()+int(delay*1000)+8000
 	next_item_action = Time.get_ticks_msec()+int(delay*1000)+1100
-	var packet := Commerce.lift(serial,int(item.get("amount",1)))
+	var packet := Commerce.lift(serial,lifted)
 	if equip_item: packet.append_array(Commerce.equip(serial,int(player.serial)))
 	else: packet.append_array(Commerce.drop(serial,destination,(ground_point if ground_point.x!=-999 else Vector3i(int(player.x),int(player.y),int(player.z))) if destination == 0 else Vector3i(-1,-1,0)))
 	if delay > 0:
