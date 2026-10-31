@@ -13,6 +13,35 @@ def bone_payload(parent,scales):
 def matrix(x=1.,y=1.,z=1.):return [x,0.,0.,0.,y,0.,0.,0.,z]
 
 class CreaturePipelineTests(unittest.TestCase):
+    def test_mineral_maps_require_pinned_cc0_and_keep_geometry(self):
+        import hashlib,json
+        minerals=p.module('mineral_tests','creature-minerals.py')
+        work=Path(__file__).resolve().parents[1]/'work';work.mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(prefix='mineral-test-',dir=work) as folder:
+            root=Path(folder);source=root/'Viewer/Art/Surfaces';source.mkdir(parents=True)
+            maps=[]
+            for role in ['albedo','normal','roughness']:
+                raw=('synthetic-'+role).encode();name=role+'.jpg';(source/name).write_bytes(raw)
+                maps.append({'role':role,'file':name,'sha256':hashlib.sha256(raw).hexdigest(),'url':'https://example.invalid/'+name})
+            entry={'id':'rock_face_03','license':'CC0-1.0','licenseUrl':'https://polyhaven.com/license',
+                   'source':'https://polyhaven.com/a/rock_face_03','authors':['Synthetic test fixture'],'maps':maps}
+            manifest=source/'manifest.json';manifest.write_text(json.dumps({'sets':[entry]}),encoding='utf-8')
+            original={'images':[{'uri':'data:original'}],'textures':[{'source':0,'sampler':0}],
+                      'materials':[{'pbrMetallicRoughness':{}}],'meshes':[{'primitives':[{'attributes':{'POSITION':7}}]}],
+                      'skins':[{'joints':[1,2]}]}
+            saved=copy.deepcopy(original);row={};art=root/'Viewer/local-art/creatures'
+            result=minerals.apply('elementals_earth_elemental',original,row,root,art)
+            self.assertEqual(original,saved);self.assertEqual(result['meshes'],original['meshes']);self.assertEqual(result['skins'],original['skins'])
+            self.assertEqual(len(row['art_dependency_sha256']),3)
+            self.assertEqual(row['mineral_surface']['license'],'CC0-1.0')
+            self.assertEqual(result['materials'][0]['normalTexture']['index'],1)
+            self.assertEqual(result['materials'][0]['pbrMetallicRoughness']['metallicFactor'],0.)
+            (source/'normal.jpg').write_bytes(b'changed')
+            with self.assertRaisesRegex(AssertionError,'pinned'):minerals.apply('elementals_earth_elemental',original,{},root,art)
+            entry['license']='restricted';manifest.write_text(json.dumps({'sets':[entry]}),encoding='utf-8')
+            with self.assertRaises(AssertionError):minerals.apply('elementals_earth_elemental',original,{},root,art)
+            self.assertIs(minerals.apply('unrelated',original,{},root,art),original)
+
     def test_hover_preserves_source_rise_and_still_grounds_death(self):
         import base64,json
         model={'points':[(0.,0.,.5),(1.,0.,.5),(0.,0.,1.5)],'normals':[(0.,1.,0.)],

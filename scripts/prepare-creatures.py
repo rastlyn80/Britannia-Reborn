@@ -19,6 +19,7 @@ affine=module('creature_affine','creature-affine.py')
 repairs=module('creature_source_repairs','creature-source-repairs.py')
 reuse=module('creature_source_reuse','creature-source-reuse.py')
 rigid=module('creature_rigid_parts','creature-rigid-parts.py')
+minerals=module('creature_minerals','creature-minerals.py')
 OUTPUT = ROOT/'Viewer/local-art/creatures'
 LABELS = {'idle':'Idle','walk':'Walk','run':'Run','attack1':'Attack','attack2':'Attack2',
           'attack3':'Attack3','gethit':'Hit','die1':'Death','die2':'Death2','fidget':'Fidget',
@@ -397,6 +398,9 @@ def prepare(family, z, names, rows, native):
                        modern_atlas=str(modern_path.relative_to(ROOT)) if modern_path.exists() else None,
                        atlas_sha256=digest(modern),profile=profiles.get(records[0]['body']) or ('animal' if records[0]['type']==2 else 'sea' if records[0]['type']==1 else 'monster'),
                        surface='generated atlas' if modern_path.exists() else 'source atlas; new surface shader only')
+            modern_gltf=OUTPUT/(stem+'-modern.gltf')
+            modern_material=minerals.apply(stem,json.loads(modern_gltf.read_text(encoding='utf-8')),row,ROOT,OUTPUT)
+            if row.get('mineral_surface'):modern_gltf.write_text(json.dumps(modern_material,separators=(',',':')),encoding='utf-8')
             print(stem,'RECOVERED TRIAL / pending material/effects' if row.get('pending_render_feature') else 'PREPARED',stats['rounded']['triangles'],'triangles',flush=True)
         except (ValueError,AssertionError,KeyError,IndexError,StopIteration) as error:
             row['blocker'] = str(error); print(stem,'BLOCKED:',error,flush=True)

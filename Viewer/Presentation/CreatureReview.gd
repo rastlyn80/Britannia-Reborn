@@ -29,6 +29,7 @@ func build() -> void:
 	root.size=Vector2i(1440,900);var stage:=Node3D.new();root.add_child(stage)
 	var environment:=WorldEnvironment.new();environment.environment=Environment.new();var env:=environment.environment;env.background_mode=Environment.BG_COLOR;env.background_color=Color("24343f");env.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;env.ambient_light_color=Color("d6dce4");env.ambient_light_energy=.65;env.tonemap_mode=Environment.TONE_MAPPER_AGX;stage.add_child(environment)
 	var sun:=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-45,-35,0);sun.light_energy=1.35;sun.shadow_enabled=true;stage.add_child(sun)
+	if not record.get("mineral_surface",{}).is_empty():preload("res://Presentation/CreatureMineralMaterial.gd").studio_reflections(env)
 	var floor_mesh:=MeshInstance3D.new();var box:=BoxMesh.new();box.size=Vector3(100,.1,100);floor_mesh.mesh=box;floor_mesh.position.y=-.05;var mat:=StandardMaterial3D.new();mat.albedo_color=Color("61726a");mat.roughness=.95;floor_mesh.material_override=mat;stage.add_child(floor_mesh)
 	var camera:=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.size=height*5.;stage.add_child(camera);camera.position=Vector3(height*.45,height*2.,height*7.);camera.look_at(Vector3(height*.45,height*.7,0))
 	review_camera=camera

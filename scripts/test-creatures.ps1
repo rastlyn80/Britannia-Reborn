@@ -61,6 +61,10 @@ foreach ($family in $Families) {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/FloatingCreatureTests.gd *> "$logs/$family-hover.log"
   if ($LASTEXITCODE) {throw 'Floating creature avatar/support checks failed'}
  }
+ if ($family -eq 'elementals') {
+  & $godot --path "$root/Viewer" --script res://Presentation/MineralAppearanceTests.gd *> "$logs/$family-minerals.log"
+  if ($LASTEXITCODE) {throw 'Mineral PBR map/tangent/material response checks failed'}
+ }
  $started=[DateTime]::UtcNow
  $arguments='--path "'+$root+'/Viewer" --script res://Presentation/CreatureAppearanceTests.gd -- --family='+$family
  $process=Start-Process $godot -ArgumentList $arguments -WorkingDirectory $root -WindowStyle Hidden -PassThru -RedirectStandardOutput "$logs/$family-gpu.log" -RedirectStandardError "$logs/$family-gpu-errors.log"

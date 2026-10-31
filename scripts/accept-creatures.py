@@ -14,7 +14,7 @@ def main():
         tests=json.loads((ROOT/f'outputs/creatures/{family}/validation.json').read_text())
         gpu=json.loads((ROOT/f'outputs/creatures/{family}/appearance.json').read_text())
         gpu_path=ROOT/f'outputs/creatures/{family}/appearance.json'
-        gpu_inputs=[ROOT/'Viewer/Presentation'/name for name in ['CreatureAppearanceTests.gd','CreatureVisual.gd','OstardVisual.gd','OstardSurface.gdshader','CreatureCutoutSurface.gdshader','CreatureDustSurface.gdshader','CreatureFlashSurface.gdshader','HumanHue.gd']]
+        gpu_inputs=[ROOT/'Viewer/Presentation'/name for name in ['CreatureAppearanceTests.gd','CreatureVisual.gd','OstardVisual.gd','OstardSurface.gdshader','CreatureCutoutSurface.gdshader','CreatureDustSurface.gdshader','CreatureFlashSurface.gdshader','CreatureMineralMaterial.gd','CreatureMineralSurface.gdshader','HumanHue.gd']]
         assert all(path.stat().st_mtime<=gpu_path.stat().st_mtime for path in gpu_inputs),'Runtime/shader changed after GPU validation'
         assert tests['failures']==0 and gpu['failures']==0 and gpu['renderer']!='gl_compatibility'
         tested={row['kind']:row for row in tests['models']}
@@ -31,6 +31,17 @@ def main():
                 assert model['asset_sha256']==tested[model['kind']]['asset_sha256']['modern'],'Animated contact used different geometry'
                 assert model['import_sha256']==tested[model['kind']]['import_sha256']['modern'],'Animated contact used different import precision'
         rows=[]
+        if family=='elementals':
+            mineral_path=ROOT/f'outputs/creatures/{family}/mineral-response.json'
+            mineral=json.loads(mineral_path.read_text())
+            assert mineral['checks']>0 and mineral['failures']==0 and mineral['renderer']=='forward_plus','Mineral PBR response needs actual passing GPU evidence'
+            assert set(mineral['assets'])==set(tested),'Missing mineral material response model'
+            assert set(mineral['runtime_sha256'])=={'MineralAppearanceTests.gd','CreatureVisual.gd','CreatureMineralMaterial.gd','CreatureMineralSurface.gdshader','HumanHue.gd'},'Incomplete mineral runtime inputs'
+            assert all(digest(ROOT/'Viewer/Presentation'/name)==sha for name,sha in mineral['runtime_sha256'].items()),'Mineral material changed after response checks'
+            for kind,asset in mineral['assets'].items():
+                assert asset['asset_sha256']==tested[kind]['asset_sha256']['modern'],'Mineral response used different art'
+                assert asset['import_sha256']==tested[kind]['import_sha256']['modern'],'Mineral response used different import settings'
+                assert asset['surface_parameters']==next(row['mineral_surface'] for row in preparation['models'] if row['kind']==kind),'Mineral surface parameters changed after response checks'
         if family=='gazers':
             hover_path=ROOT/f'outputs/creatures/{family}/hover-contact.json'
             hover=json.loads(hover_path.read_text())

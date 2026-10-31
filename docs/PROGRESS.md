@@ -1,3 +1,11 @@
+# Rider rein correction and mineral elementals - 31 October 2026
+
+The riding hands now use straight wrists, forearm rotation, saddle-space elbow fitting, relaxed fingers and an opposed thumb. Rein ends meet the palms. Available hands are fitted independently of carried weapons/shields and dismount restores ordinary grips. Both human bodies, four mount rigs and four speeds pass2,418 dedicated checks over576 hand samples; actual Forward+ close-ups were reviewed. Mounted/transition clothing passes512 poses with zero failures. [Rider evidence and reproduction](RIDER_HANDS.md).
+
+Eight earth/ore elemental forms have pinned CC0 photographic albedo, normal and roughness maps with authored ore palettes and metallic response. Exact source/license/hash recipes are retained and checked. New evidence:4,953 pose checks/1,512 skin samples,97 GPU checks,73 actual material response checks,128 comparison frames and646 real disposable-server/two-client checks, all zero failures. The shared creature regression passes66,077 pose and1,342 GPU checks. Cadavers cover153 variants/1,428 rendered checks. [Mineral evidence and remaining limits](MINERAL_ELEMENTALS.md).
+
+Bounded native-evidence coverage is125/279 bodies (44.8%):98 generic forms/33 groups/116 routes. Human wearable coverage remains732/1,126. Air's death-mote source, original action gaps, anatomy/terrain polish and later native identities remain open. Derived art, prompts, captures and source inputs stay ignored. Full scripts/verify.ps1 exits0 with the focused rider test included. Its final startup exposed a concurrent fence type-inference error despite Godot exiting0; one explicit Vector2i declaration closes that error, and fresh WorldItemTests passes95 checks plus a clean final world startup. The smoke harness now rejects startup script errors even on exit0. A fresh full run will cover the next creature checkpoint and concurrent ghost/editor changes. Continue all remaining families, starting efreet, while preserving concurrent terrain/editor work and production.
+
 # All of Trammel baked in the compact streaming format — 31 October 2026
 
 Owner request: rebake the whole Trammel map (dungeons included) in the compact format, then clean up the old caches.

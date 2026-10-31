@@ -21,6 +21,7 @@ func run() -> void:
 	viewport=SubViewport.new();viewport.size=Vector2i(480,420);viewport.own_world_3d=true;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;root.add_child(viewport)
 	var environment:=WorldEnvironment.new();environment.environment=Environment.new();var env:=environment.environment;env.background_mode=Environment.BG_COLOR;env.background_color=Color.BLACK;env.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;env.ambient_light_color=Color.WHITE;env.ambient_light_energy=.8;viewport.add_child(environment)
 	var sun:=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-40,-35,0);sun.light_energy=1.2;viewport.add_child(sun)
+	if preparation.models.any(func(row: Dictionary):return not row.get("mineral_surface",{}).is_empty()):preload("res://Presentation/CreatureMineralMaterial.gd").studio_reflections(env)
 	var camera:=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;viewport.add_child(camera)
 	for record: Dictionary in preparation.models:
 		if record.status!="prepared":continue

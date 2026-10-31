@@ -44,7 +44,7 @@ def main():
             'new_body_routes':len(routed),'prepared_source_forms':sum(row['status']=='prepared' for row in prepared.values()),'blocked_source_forms':sum(row['status']!='prepared' for row in prepared.values())}
     scope='Bounded pinned-server literal Body assignments, RandomList, simple conditional literal branches and base-mount calls; not every dynamic constructor result or the full modern-client body catalogue. Source forms, body routes and live evidence are separate. Proprietary-derived art stays local; no redistribution grant.'
     (OUT/'catalogue.json').write_text(json.dumps({'counts':counts,'server_pin':source['server_pin'],'native_targets':targets,'preparation':prepared,'scope':scope},indent=2),encoding='utf-8')
-    cards=[];atlases=[]
+    cards=[];atlases=[];materials=[]
     for family in sorted(families):
         models=families[family]['models'];validated=[row for row in accepted if row['family']==family]
         snippets=[]
@@ -56,9 +56,13 @@ def main():
             snippets.append(f'<h3>{html.escape(kind.replace("_"," "))} — {status}</h3>'+image+(f'<p>{html.escape(blocker)}</p>' if blocker else ''))
             atlas=ART/(kind+'-albedo-v1.png');prompt=atlas.with_suffix('.prompt.txt')
             if atlas.exists() and prompt.exists():atlases.append({'kind':kind,'image':str(atlas),'sha256':hashlib.sha256(atlas.read_bytes()).hexdigest(),'exact_prompt_file':str(prompt),'prompt':prompt.read_text(encoding='utf-8-sig'),'mode':row.get('generation_mode','built-in imagegen source atlas edit'),'source_atlas_status':row.get('source_atlas_status','See source preparation inputs'),'technical_guide':row.get('technical_guide')})
+            if row.get('mineral_surface'):
+                materials.append({'kind':kind,'family':family,'surface':row['mineral_surface'],'art_dependency_sha256':row['art_dependency_sha256']})
+                snippets.append('<p>Photographic mineral maps: <a href="'+html.escape(row['mineral_surface']['source'],quote=True)+'">'+html.escape(row['mineral_surface']['source_set'])+'</a> (CC0); authored colour and reflectance. Exact map hashes and recipes: <a href="material-provenance.json">material provenance</a>.</p>')
         cards.append('<section><h2>'+html.escape(family)+' / '+str(len(validated))+' validated source forms</h2><details><summary>Models, comparisons and repairs</summary>'+''.join(snippets)+'</details></section>')
     rows=''.join('<tr><td>0x%X</td><td>%s</td><td>%s</td><td>%s</td></tr>'%(row['body'],html.escape(row['native_group']),html.escape(row['presentation'] or 'Needs replacement'),'Native evidence' if row['live_reports'] else 'Not live-certified') for row in targets)
     (OUT/'index.html').write_text('''<!doctype html><html lang="en"><meta charset="utf-8"><title>Britannia Reborn / creature work board</title><style>body{background:#20303a;color:#e9edef;font:17px system-ui;max-width:1440px;margin:24px auto;padding:15px}img{max-width:100%;height:auto}summary{cursor:pointer}section{margin:30px 0}table{border-collapse:collapse;width:100%}td,th{text-align:left;border-bottom:1px solid #52616b;padding:9px}a{color:#dfce95}p{line-height:1.5}</style><h1>Britannia Reborn / creature work board</h1><p>Prepared trials, validated art and real server checks remain separate. The creature programme continues through every family; gaps stay visible.</p><p>'''+html.escape(str(counts))+'''</p><p>'''+html.escape(scope)+'''</p>'''+''.join(cards)+'''<details><summary>Bounded native body checklist</summary><table><tr><th>Body</th><th>Native source group</th><th>Presentation</th><th>Server checks</th></tr>'''+rows+'''</table></details><p><a href="catalogue.json">Detailed catalogue</a> · <a href="actions.html">Action ledger</a> · <a href="../corpses/index.html">Corpse graphic variants</a> · <a href="atlas-provenance.json">Saved texture paths and exact prompts</a></p></html>''',encoding='utf-8')
     (OUT/'atlas-provenance.json').write_text(json.dumps({'atlases':atlases,'scope':'Generated edits of proprietary-derived local inputs, not redistributable assets. Exact prompts and workspace output paths retained.'},indent=2),encoding='utf-8')
+    (OUT/'material-provenance.json').write_text(json.dumps({'materials':materials,'scope':'Exact photographic sources, CC0 licenses, authors, map URLs/hashes and authored settings. Source creature geometry/UVs remain proprietary-derived local inputs.'},indent=2),encoding='utf-8')
     print('CREATURE WORK BOARD:',counts)
 if __name__=='__main__':main()

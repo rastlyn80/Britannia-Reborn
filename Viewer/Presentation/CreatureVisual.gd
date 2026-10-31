@@ -17,6 +17,9 @@ func _init() -> void:asset_folder="creatures"
 func set_hue(value: int) -> void:
 	super.set_hue(value)
 	if model==null:return
+	if treatment=="modern" and not entry.get("mineral_surface",{}).is_empty():
+		for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
+			for surface in mesh.mesh.get_surface_count():mesh.set_surface_override_material(surface,preload("res://Presentation/CreatureMineralMaterial.gd").build(entry.mineral_surface,value,detail))
 	death_flashes.clear()
 	for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
 		if mesh.name!="RecoveredFlash":continue
