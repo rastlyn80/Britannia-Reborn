@@ -22,6 +22,7 @@ func run() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--capture-dir="):capture_dir=arg.trim_prefix("--capture-dir=")
 	for body: int in Registry.BODIES:entries.append({"body":body,"item":int(Registry.BODIES[body][2]),"name":str(Registry.BODIES[body][0])})
+	for body: int in Registry.COMPATIBILITY:entries.append({"body":body,"item":0,"name":str(Registry.COMPATIBILITY[body][0])})
 	for item: int in Registry.ETHEREALS:entries.append({"body":int(Registry.ETHEREALS[item][0]),"item":item,"name":str(Registry.ETHEREALS[item][1])})
 	stage=Node3D.new();root.add_child(stage)
 	var environment:=WorldEnvironment.new();environment.environment=Environment.new();var env:=environment.environment
@@ -63,7 +64,7 @@ func select(index: int) -> void:
 		if rider:clothes.append({"id":int(entry.item),"layer":25,"hue":0x4001 if ethereal else 0});actor.apply_server_appearance({"body":actor.initial_body,"hue":1002},clothes);actor.rider_contact.begin_mount(false)
 		else:actor.apply_server_appearance({"body":int(entry.body),"hue":0},[])
 		actors.append(actor)
-		var label:=Label3D.new();label.text=("Female / robe" if female else "Male / plate") if rider else "Loose animal / unrideable" if int(entry.item)==0 else "Loose animal";label.position.y=-.22;label.font_size=25;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;stage.add_child(label);label.position.x=actor.position.x
+		var label:=Label3D.new();label.text=("Female / robe" if female else "Male / plate") if rider else "Compatibility preview / no invented mount item" if Registry.COMPATIBILITY.has(int(entry.body)) else "Loose animal / unrideable" if int(entry.item)==0 else "Loose animal";label.position.y=-.22;label.font_size=25;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;stage.add_child(label);label.position.x=actor.position.x
 	elapsed=0.
 func tint(hue: int) -> void:
 	for actor in actors:actor.horse_visual.apply_identity(int(entries[selected].body),hue,int(entries[selected].item) if actor.human_visual!=null else 0)

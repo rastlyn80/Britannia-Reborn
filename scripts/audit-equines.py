@@ -59,10 +59,11 @@ def main():
         ethereals.append({'class':cls,'statuette_item':statue,'mount_item':mount,'renderer_body_proxy':proxy,'loose_mobile_body':None})
     assert 'public virtual int EtherealHue => 0x4001;' in ethereal
     assert 'public override bool AllowMaleRider => false;' in source('Unicorn.cs')
-    # Distinct rigs must stay deferred, even when classic clients offer horse fallbacks.
+    # This audit covers only the original horse-rig subset. Distinct rigs and
+    # compatibility identities have separate completion audits and runtime routes.
     for cls in ['Kirin.cs','SkeletalMount.cs','HellSteed.cs']:source(cls)
     output = ROOT/'outputs/equines';output.mkdir(parents=True,exist_ok=True)
-    report = {'server_revision':revision,'source_sha256':sources,'registry_sha256':hashlib.sha256(REGISTRY.read_bytes()).hexdigest(),'mobile_routes':rows,'ethereal_item_routes':ethereals,'scope':'15 audited loose body identities and two additional item-only mount routes. Shared category artwork; no claim of exact native cuts/manes, complete animal actions or completed 26-ID family.'}
+    report = {'server_revision':revision,'source_sha256':sources,'registry_sha256':hashlib.sha256(REGISTRY.read_bytes()).hexdigest(),'mobile_routes':rows,'ethereal_item_routes':ethereals,'scope':'Original subset: 15 native horse-rig body identities and two item-only mount routes. completion-audit.json covers the full 26-ID presentation catalogue and third ethereal. Shared category artwork; exact native cuts/manes and choreography are separate.'}
     (output/'native-identities.json').write_text(json.dumps(report,indent=2))
     print('EQUINE NATIVE AUDIT: 15 body routes / 2 ethereal item routes, pinned source matches')
 

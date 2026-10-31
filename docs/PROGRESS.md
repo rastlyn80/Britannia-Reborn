@@ -27,6 +27,16 @@ The owner approved the whole-house approach on the small house; it now covers se
 - the log cabin 0x9A, the small shops 0xA0/0xA2 and the marble house 0x96;
 - the flat-roofed towers, keep and castle.
 
+# Equine catalogue closed; llama family verified - 31 October 2026
+
+Client presentation now covers all 26 indexed terrestrial equine bodies: 17 native identities plus nine explicitly labelled client-only compatibility categories. No alias gained an invented mount item. Ethereal ki-rin adds the third item-only equine route and correctly allows both sexes independently of living Kirin. Ordinary/rideable/pack/ethereal llamas are integrated and live-tested; their shared body IDs never invent permissions. [Catalogue, reproducible evidence and limits](EQUINE_COMPLETION.md).
+
+Evidence: 964 real isolated-server/two-client equine checks over 30 class/gender/setup cases, including both refused and eligible ranked faction riders; 232 llama checks/eight cases; 1,869 compatibility checks/864 skin samples; 2,883 action checks/1,116 poses; 3,252 mounted fitting checks/1,440 poses; 1,323 distinct skin checks/621 poses; 63 support checks/21 terrain samples; 2,176 GPU clothing regression views plus 512 expanded ethereal ki-rin views; 40 GPU dye/transmission checks, all passed. Full scripts/verify.ps1 exits 0 with existing unrelated bridge missing-id, Unicode, nullable and teardown diagnostics. Ordinary horse checks remain 2,468/768 contact poses plus 267 polish checks. Human wearables remain 732/1,126.
+
+Added authored feeding and held lying categories, preserving unknown action slot 4, native roots and category-fidelity limits. Female ki-rin fitting exposed sleeve gaps: closed overlapping cloth geometry fixes them without altering body masks or acceptance limits. Reviews remain under Reviews/; refreshed galleries contain 52 equine and 109 integrated-mount render frames. Only project source, recipes, reference hashes and notes go to Git; all game-derived inputs, art, captures and server data remain local. Concurrent building/item/terrain work is untouched.
+
+Remaining: positive HolySteed/UnholySteed permission flows are blocked by pinned-server ethics eligibility and are not certified; shared artwork and neutral-rider refusals pass. Detailed investigation stays local, with no upstream submission or server source change. Thus 26/26 is presentation coverage, not every gameplay case or final bespoke creature/action art. Arbitrary outfits/terrain and distributable clean-install assets remain separate. Continue other animal families after owner review of equines/llamas.
+
 # Distinct mounts integrated / review shortcuts consolidated - 31 October 2026
 
 Implemented live presentation for desert/forest/frenzied/ethereal ostards, repaired and textured ki-rin, a separately licensed scanned skeletal mount, and ordinary/pack/ethereal llamas. MountVisual dispatches through the actual HumanAvatar server-appearance path while retaining accepted horses/humans. Source rigs/clips, raw native IDs and hues survive; riders follow animated seat/foot anchors and facing, stance soles sample real terrain, panniers follow the spine, and corpse amounts select matching held death art. Ki-rin female-rider rejection and the pack llama's unrideable status remain server-owned. [Sources, exact identities, reproduction, evidence and limits](MOUNT_INTEGRATION.md).

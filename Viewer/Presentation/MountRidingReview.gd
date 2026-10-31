@@ -32,7 +32,7 @@ func build() -> void:
 	title=Label.new();title.add_theme_font_size_override("font_size",22);ui.add_child(title)
 	var note:=Label.new();note.text="Male robe / female plate / actual animated rigs / local review; live permissions remain server-owned";ui.add_child(note)
 	var forms:=HBoxContainer.new();ui.add_child(forms)
-	for entry in [["Desert",0x3ea3],["Forest",0x3ea5],["Frenzied",0x3ea4],["Ethereal ostard",0x3eac],["Ki-rin",0x3ead],["Llama",0x3ea6],["Ethereal llama",0x3eab],["Skeletal",0x3ebb]]:button(forms,entry[0],func():item=int(entry[1]);apply())
+	for entry in [["Desert",0x3ea3],["Forest",0x3ea5],["Frenzied",0x3ea4],["Ethereal ostard",0x3eac],["Ki-rin",0x3ead],["Ethereal ki-rin",0x3e9c],["Llama",0x3ea6],["Ethereal llama",0x3eab],["Skeletal",0x3ebb]]:button(forms,entry[0],func():item=int(entry[1]);apply())
 	var controls:=HBoxContainer.new();ui.add_child(controls)
 	for entry in [["Idle",0.],["Walk",1.8],["Run",6.8]]:button(controls,entry[0],func():speed=float(entry[1]))
 	for entry in [["Front",0.],["Three-quarter",-.85],["Side",PI/2.],["Back",PI]]:button(controls,entry[0],func():angle=float(entry[1]))
@@ -52,7 +52,7 @@ func pack_capture(stage: Node3D) -> void:
 	root.get_texture().get_image().save_png(capture_dir.path_join("stand.png"));print("PACK LLAMA CAPTURE");quit()
 func apply() -> void:
 	for i in actors.size():
-		var worn: Array=outfits[i].duplicate(true);worn.append({"id":item,"layer":25,"hue":0x4001 if item in [0x3eac,0x3eab] else 0})
+		var worn: Array=outfits[i].duplicate(true);worn.append({"id":item,"layer":25,"hue":0x4001 if item in [0x3eac,0x3eab,0x3e9c] else 0})
 		actors[i].apply_server_appearance({"body":400+i,"hue":1002},worn);actors[i].rider_contact.begin_mount(false)
 	title.text="BRITANNIA REBORN / "+("SKELETAL MOUNT" if item==0x3ebb else str(actors[0].horse_visual.kind).to_upper())+" / RIDING AND CLOTHING"
 func _process(delta: float) -> bool:

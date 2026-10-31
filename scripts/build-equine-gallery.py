@@ -7,7 +7,7 @@ OUT=ROOT/'outputs/equines'
 
 def main():
     captures=json.loads((OUT/'captures.json').read_text())
-    assert len(captures['frames'])==34
+    assert len(captures['frames'])==52
     cards=[]
     for row in captures['frames']:
         name=row['file'];path=OUT/name
@@ -17,16 +17,16 @@ def main():
         caption=f"{entry['name']} — {row['mode']} — {identity}"
         cards.append(f'<figure><a href="{name}"><img loading="lazy" src="{name}" alt="{html.escape(caption)}"></a><figcaption>{html.escape(caption)}</figcaption></figure>')
     tests=[]
-    for name in ['validation.json','appearance-validation.json','live-validation.json']:
+    for name in ['validation.json','appearance-validation.json','live-validation.json','completion-validation.json','completion-appearance.json','animal-actions.json']:
         path=OUT/name
         if path.exists():
             report=json.loads(path.read_text());tests.append(f'<li><a href="{name}">{name}</a>: {report["checks"]} checks / {report["failures"]} failures</li>')
     (OUT/'index.html').write_text('''<!doctype html><meta charset="utf-8"><title>Britannia Reborn — equines</title>
 <style>body{background:#15232c;color:#e3e9ed;font:16px system-ui;margin:24px}h1{font-size:28px}main{display:grid;grid-template-columns:repeat(auto-fit,minmax(480px,1fr));gap:20px}figure{margin:0;background:#24343f;padding:10px;border-radius:8px}img{width:100%;height:auto}figcaption{padding:8px}a{color:#a9d9f8}p{max-width:1000px}</style>
 <h1>Britannia Reborn — horses and magical equines</h1>
-<p>15 of 26 indexed body identities have shared category replacements, including the four existing horses. Two additional ethereal item-only mount routes. 11 unresolved or distinct-geometry bodies remain deferred. These are real Godot Forward+ captures of local visual fixtures; riding eligibility belongs to ModernUO. The male unicorn view demonstrates art fitting only; the server refuses that rider.</p>
-<p>Reused Warhorse Lite 1.0.0 under its custom free game-use licence; original procedural horn, panniers and magic effects. No skeletal/ki-rin placeholder, new animal actions, production spawn changes or downloadable-client asset-pack claim.</p>
+<p>All 26 indexed body presentations are routed: 17 native identities and 9 explicitly separate client-only compatibility categories. This gallery shows the 24 horse-rig bodies plus two item-only ethereals. Distinct living/ethereal ki-rin and skeletal geometry are in <a href="../mount-integration/index.html">the mount gallery</a>. Compatibility bodies have no invented ridden-item mapping or gameplay permission. These are real Godot Forward+ captures of local visual fixtures. The male unicorn view is fitting only; the server refuses that rider.</p>
+<p>Reused Warhorse Lite 1.0.0 under its custom free game-use licence; original procedural horn, panniers and magic effects. Feeding is authored and lying reuses existing collapse art. Exact bespoke anatomy/choreography and redistributable asset packaging remain separate work.</p>
 <ul>'''+''.join(tests)+'</ul><main>'+''.join(cards)+'</main>',encoding='utf-8')
-    print('EQUINE GALLERY: 34 actual frames / 17 identity panels')
+    print('EQUINE GALLERY: 52 actual frames / 26 identity panels')
 
 if __name__=='__main__':main()

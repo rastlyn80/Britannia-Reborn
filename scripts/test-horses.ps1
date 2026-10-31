@@ -1,4 +1,4 @@
-param([switch]$Live,[switch]$SkipContact,[switch]$Gpu,[switch]$Equines,[switch]$Ostards)
+param([switch]$Live,[switch]$SkipContact,[switch]$Gpu,[switch]$Equines,[switch]$Ostards,[switch]$EquineCompletion,[switch]$LlamaCompletion)
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent
 $godot=(Get-ChildItem "$root/.tools/godot/*console.exe"|Select-Object -First 1).FullName
@@ -65,8 +65,18 @@ try {
    if (!$ready) { Start-Sleep -Milliseconds 200 }
   } while (!$ready -and [DateTime]::UtcNow -lt $deadline)
   if (!$ready) { throw 'Isolated server readiness timeout' }
-  & $godot --headless --path Viewer --script $(if ($Ostards) {'res://Network/OstardLive.gd'} elseif ($Equines) {'res://Network/EquineLive.gd'} else {'res://Network/HorseLive.gd'})
+  $liveArgs=@()
+  if ($EquineCompletion) {$liveArgs+='--equine-completion'}
+  if ($LlamaCompletion) {$liveArgs+='--llama-completion'}
+  $started=[DateTime]::UtcNow
+  & $godot --headless --path Viewer --script $(if ($Ostards -or $EquineCompletion -or $LlamaCompletion) {'res://Network/OstardLive.gd'} elseif ($Equines) {'res://Network/EquineLive.gd'} else {'res://Network/HorseLive.gd'}) -- @liveArgs
   if ($LASTEXITCODE) { throw 'Native isolated horse integration test failed' }
+  if ($EquineCompletion -or $LlamaCompletion -or $Ostards) {
+   $reportName=if ($EquineCompletion) {'equine-completion-live.json'} elseif ($LlamaCompletion) {'llama-completion-live.json'} else {'live-validation.json'}
+   $report=Join-Path $root "outputs/ostard-riding/$reportName"
+   if (!(Test-Path $report) -or (Get-Item $report).LastWriteTimeUtc -lt $started.AddSeconds(-1)) {throw 'Live test did not write fresh evidence; inspect the Godot log.'}
+   if ((Get-Content $report -Raw|ConvertFrom-Json).failures -ne 0) {throw 'Live integration reported failures'}
+  }
  } finally {
   # This exact process was created above for the disposable runtime. The
   # existing port-2593 world and its saves are never stopped or modified.

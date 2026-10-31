@@ -107,6 +107,7 @@ func _attach(path: String, prefix: String, body_part: bool = false) -> void:
 			bindings.set_bind_bone(i,-1)
 			bindings.set_bind_name(i,bone)
 		mesh.skin = bindings
+		mesh.set_meta("source_path",path)
 		if body_part: mesh.material_override = skin
 		mesh.owner = null
 		mesh.get_parent().remove_child(mesh)
@@ -208,6 +209,10 @@ func set_equipment(worn: Array) -> void:
 		if ResourceLoader.exists(lining_path):
 			_attach(lining_path,"Extra_")
 			if riding() and (outfit_bits&8)!=0:_shade(parts[-1],int(resolved.hues.get("robe",0)))
+			if riding() and extra_parts.has("arms"):
+				var body: MeshInstance3D=model.find_children("Body*","MeshInstance3D",true,false)[0]
+				var cuffs:=preload("res://Presentation/HumanSleeveCuffs.gd").create(skeleton,body,parts[-1].mesh.surface_get_material(0))
+				parts.append(cuffs)
 		else:
 			for slot in ["torso","arms","gorget"]:
 				if extra_parts.has(slot):missing_art.append(int(extra_parts[slot].id))

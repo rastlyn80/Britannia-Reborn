@@ -1,3 +1,5 @@
+Latest 31 October checkpoint: [equine catalogue closure and llama verification](EQUINE_COMPLETION.md). All 26 indexed equine presentations are routed (17 native / nine client compatibility), ethereal ki-rin is added, and all four llama forms are live-tested. Positive holy/unholy rides remain a separate server eligibility blocker. The dated checkpoints below are retained as history.
+
 # Distinct mounts: live integration and rider fitting
 
 31 October 2026. The requested ostard, ki-rin, skeletal-mount and llama batch is

@@ -1,3 +1,5 @@
+Latest 31 October checkpoint: [equine catalogue closure and llama verification](EQUINE_COMPLETION.md). All 26 indexed equine presentations are routed (17 native / nine client compatibility), ethereal ki-rin is added, and all four llama forms are live-tested. Positive holy/unholy rides remain a separate server eligibility blocker. The dated checkpoints below are retained as history.
+
 # All-creature modernisation programme
 
 Owner direction, 30 October 2026: apply the approved desert-ostard treatment to **all creature families, equines first**. Preserve recognisable UO identities; reuse suitable accepted modern assets for generic species. Keep native server appearance, stats, actions and permissions authoritative. This is an ongoing programme, not a completed creature port.

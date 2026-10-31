@@ -9,11 +9,11 @@ static func available() -> bool:
 		if ResourceLoader.exists(asset_path(body)):return true
 	return false
 static func mount_available(body: int,item: int) -> bool:
-	return supports_body(body) and (item not in [0x3eac,0x3eab] or ResourceLoader.exists(asset_path(body,item)))
+	return supports_body(body) and (item not in [0x3eac,0x3eab,0x3e9c] or ResourceLoader.exists(asset_path(body,item)))
 static func kind(body: int,item: int=0) -> String:
-	return "ethereal" if item==0x3eac else "llama_ethereal" if item==0x3eab else str(BODIES[body][0]) if BODIES.has(body) else ""
+	return "ethereal" if item==0x3eac else "llama_ethereal" if item==0x3eab else "kirin_ethereal" if item==0x3e9c else str(BODIES[body][0]) if BODIES.has(body) else ""
 static func asset_path(body: int,item: int=0) -> String:
-	var label:=kind(body,item);return "res://local-art/"+("mounts" if label in ["kirin","llama","llama_ethereal"] else "ostards")+"/"+label+"-modern.gltf"
+	var label:=kind(body,item);return "res://local-art/"+("mounts" if label in ["kirin","kirin_ethereal","llama","llama_ethereal"] else "ostards")+"/"+("kirin" if label=="kirin_ethereal" else label)+"-modern.gltf"
 static func supports_body(body: int) -> bool:
 	if body==0x319:return ResourceLoader.exists("res://local-art/mounts/skeletal-horse.glb")
 	return ResourceLoader.exists(asset_path(body)) if BODIES.has(body) else Horse.supports_body(body) and Horse.available()
@@ -22,6 +22,7 @@ static func horse_body(item: int) -> int:
 	if item==0x3eac:return 0xd2
 	if item==0x3eab:return 0xdc
 	if item==0x3ebb:return 0x319
+	if item==0x3e9c:return 0x84
 	for body: int in BODIES:
 		if item!=0 and BODIES[body][1]==item:return body
 	return Horse.horse_body(item)

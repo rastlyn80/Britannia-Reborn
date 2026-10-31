@@ -1,6 +1,6 @@
 extends RefCounted
-## Audited native identities. Unknown aliases are deliberately not render routes.
-## Body.def substitutions do not establish either species or mount item IDs.
+## Native identities and explicitly separate client compatibility artwork.
+## Compatibility routes never establish server species or ridden-item pairs.
 const BODIES := {
 	0xc8:["Horse / golden tan","tan",0x3e9f],
 	0xe2:["Horse / dapple grey","grey",0x3ea0],
@@ -19,14 +19,22 @@ const BODIES := {
 	0x123:["Pack horse","pack",0]
 }
 const ETHEREALS := {0x3eaa:[0xc8,"Ethereal horse","ethereal"],0x3e9b:[0x7a,"Ethereal unicorn","ethereal_unicorn"]}
-const DEFERRED := {
-	0x72:"Unresolved historical horse alias",0x73:"Unresolved historical horse alias",
-	0x84:"Ki-rin: separate source rig routed by MountVisual",0xb1:"Unresolved horse fallback",
-	0xbf:"Unresolved horse fallback",0xc0:"Unresolved horse fallback",
-	0x11c:"Mondain's steed: client-only identity needs audit",
-	0x312:"Unresolved horse fallback",0x319:"Skeletal mount: separate scanned mesh routed by MountVisual",
-	0x57f:"Horse_Unicorn_RB: client-only identity needs audit",0x580:"Horse_Palomino: client-only identity needs audit"
+# label, modern style, NO invented mount item, fallback body, fallback hue.
+# Body.def groups with >=3 entries select their THIRD entry (ClassicUO
+# AnimationsLoader.ProcessBodyDef). These are presentation defaults only.
+const COMPATIBILITY := {
+	0x72:["Client horse fallback / 0x72","dun",0,0xe4,1109],
+	0x73:["Client horse fallback / 0x73","spectral_grey",0,0xe2,0x4001],
+	0xb1:["Client horse fallback / 0xB1","grey",0,0xe2,1109],
+	0xbf:["Client horse fallback / 0xBF","spectral_dun",0,0xe4,0x4001],
+	0xc0:["Client horse fallback / 0xC0","spectral_dun",0,0xe4,0x4001],
+	0x312:["Client horse fallback / 0x312","tan",0,0xc8,2101],
+	0x11c:["Mondain's steed / client-only category","brown",0,0,0],
+	0x57f:["Horse_Unicorn_RB / client-only category","unicorn",0,0,0],
+	0x580:["Horse_Palomino / client-only category","palomino",0,0,0]
 }
+const DISTINCT := {0x84:"Ki-rin",0x319:"Skeletal mount / HellSteed"}
+const DEFERRED := {}
 const PROFILES := {
 	"tan":{"colour":Color("b6a07b")},"grey":{"colour":Color("9c9f9f"),"grey":true},
 	"dun":{"colour":Color("96846a")},"brown":{"colour":Color("5e4130"),"change":0.},
@@ -37,9 +45,12 @@ const PROFILES := {
 	"unicorn":{"colour":Color("c9c7bc"),"horn":true,"scale":Vector3(.98,1.025,1.015)},
 	"pack":{"colour":Color("96846a"),"bags":true,"scale":Vector3(1.09,.97,1.)},
 	"ethereal":{"colour":Color("6799b6"),"ethereal":true},
+	"spectral_grey":{"colour":Color("9c9f9f"),"grey":true,"ethereal":true},
+	"spectral_dun":{"colour":Color("96846a"),"ethereal":true},
+	"palomino":{"colour":Color("c5a06d")},
 	"ethereal_unicorn":{"colour":Color("94b8c3"),"ethereal":true,"horn":true,"scale":Vector3(.98,1.025,1.015)}
 }
-static func supports_body(body: int) -> bool:return BODIES.has(body)
+static func supports_body(body: int) -> bool:return BODIES.has(body) or COMPATIBILITY.has(body)
 static func body_for_mount(item: int) -> int:
 	if ETHEREALS.has(item):return int(ETHEREALS[item][0])
 	for body: int in BODIES:
@@ -47,7 +58,7 @@ static func body_for_mount(item: int) -> int:
 	return 0
 static func profile(body: int,mount_item: int=0) -> Dictionary:
 	if not supports_body(body):return {}
-	var entry: Array=BODIES[body]
+	var entry: Array=BODIES[body] if BODIES.has(body) else COMPATIBILITY[body]
 	var style:=str(entry[1]);var label:=str(entry[0])
 	if ETHEREALS.has(mount_item):
 		# Ethereals have no loose mobile body. body is the renderer's rig proxy.
@@ -55,4 +66,6 @@ static func profile(body: int,mount_item: int=0) -> Dictionary:
 		style=str(ETHEREALS[mount_item][2]);label=str(ETHEREALS[mount_item][1])
 	var result: Dictionary=PROFILES[style].duplicate(true)
 	result["style"]=style;result["name"]=label
+	if COMPATIBILITY.has(body):
+		result["compatibility"]=true;result["default_hue"]=int(entry[4])
 	return result

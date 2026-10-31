@@ -46,7 +46,13 @@ func _initialize() -> void:
 	report.animation_transport=["0x6e classic action/frame/repeat/reverse/delay","0xe2 type/subaction/variation; historical aliases retained"]
 	report.horse_mounts={"available":preload("res://Presentation/HorseVisual.gd").available(),"body_to_mount":preload("res://Presentation/HorseVisual.gd").BODIES,"source_clips":["idle","walk","canter","rear"],"authored_additions":["gallop","hit","death"],"catalogue":"horse-catalogue.json","scope":"four ordinary base coats with native full/partial hues; authored procedural mount/dismount, gait and contact improvements; expanded equine identities recorded separately"}
 	var equines=preload("res://Presentation/EquineRegistry.gd")
-	report.equine_family={"indexed_body_ids":26,"routed_body_ids":equines.BODIES.keys(),"body_profiles":equines.BODIES,"deferred":equines.DEFERRED,"ethereal_items":equines.ETHEREALS,"catalogue":"EquineRegistry.gd","scope":"15 category body replacements including the four ordinary horses; 11 unresolved/distinct-mesh bodies deferred. Two additional ethereal item-only routes use rig proxies, not loose animal bodies. No change to the human wearable denominator."}
+	var mount_dispatch=preload("res://Presentation/MountVisual.gd")
+	var indexed: Array=equines.BODIES.keys()+equines.COMPATIBILITY.keys()+equines.DISTINCT.keys()
+	var installed: Array=[]
+	for body: int in indexed:
+		if mount_dispatch.supports_body(body):installed.append(body)
+	var ethereals: Dictionary=equines.ETHEREALS.duplicate(true);ethereals[0x3e9c]=[0x84,"Ethereal ki-rin","kirin_ethereal"]
+	report.equine_family={"indexed_body_ids":26,"routed_body_ids":installed,"native_body_ids":equines.BODIES.keys()+equines.DISTINCT.keys(),"compatibility_body_ids":equines.COMPATIBILITY.keys(),"body_profiles":equines.BODIES,"compatibility_profiles":equines.COMPATIBILITY,"distinct_rigs":equines.DISTINCT,"deferred":equines.DEFERRED,"ethereal_items":ethereals,"catalogue":"EquineRegistry.gd","scope":"26 indexed presentations: 17 native body identities and 9 explicit client-only compatibility categories; three additional item-only ethereal equines. Installed availability is checked. Compatibility does not invent server classes or mount items. No change to the human wearable denominator."}
 	report.server_action_playback={"bodies":[400,401],"classic_groups":preload("res://Presentation/HumanActions.gd").CLASSIC.keys(),"new_types":[0,3,4,11],"new_attack_subactions":[0,1,2,3,4,5,6,7,8],"status":"human on-foot categories and native ordinary-horse rider playback; other mount families and extended fidelity remain separate"}
 	report.server_action_playback.classic_replacements=preload("res://Presentation/HumanActions.gd").CLASSIC.duplicate()
 	# Audit actual prepared libraries on both bodies, rather than counting only
@@ -73,7 +79,7 @@ func _initialize() -> void:
 		if not categories.has(entry[1]):categories.append(entry[1])
 	report.equipment_categories=categories
 	report.prepared_locomotion=["Walk","Jog","Run","Sprint"]
-	report.scope+=" 35 classic human categories; seven rider categories connect to supported equine profiles when the licensed horse art is installed. Non-equine and unresolved/distinct-mesh mounts remain deferred. See EQUINE_EXPANSION.md."
+	report.scope+=" 35 classic human categories; seven rider categories connect to installed mount profiles. Equine native and compatibility identities are reported separately; other creature families remain separate. See EQUINE_EXPANSION.md."
 	report.source_catalog = {"path":catalog_path,"sha256":FileAccess.get_sha256(catalog_path),"item_count":catalog.items.size()}
 	file.store_string(JSON.stringify(report,"\t"))
 	print("CHARACTER COVERAGE: ",mapped," / ",records.size()," indexed wearable graphics have category replacements; 2 body arts; classic human action replacements installed")

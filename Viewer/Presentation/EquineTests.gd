@@ -14,8 +14,8 @@ func fittings(horse: Node3D) -> Array:
 	return horse.skeleton.get_children().filter(func(node: Node):return node.has_meta("equine_fitting"))
 func run() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://../outputs/equines"))
-	check(Registry.BODIES.size()==15 and Registry.DEFERRED.size()==11,"The 26 indexed identities retain explicit implemented/deferred status")
-	for body: int in Registry.DEFERRED:check(not Horse.supports_body(body),"Unverified alias or distinct geometry never silently becomes an ordinary horse")
+	check(Registry.BODIES.size()==15 and Registry.COMPATIBILITY.size()==9 and Registry.DISTINCT.size()==2 and Registry.DEFERRED.is_empty(),"The 26 indexed identities distinguish native, compatibility and distinct-rig routes")
+	for body: int in Registry.DISTINCT:check(not Horse.supports_body(body),"Distinct geometry stays outside the ordinary horse renderer")
 	for item in [0,0x3e90,0x3eab,0x3eac,0x3e9c,0x3ead,0x3ebb]:check(Horse.horse_body(item)==0,"Unknown, non-equine, ki-rin and skeletal mount items remain deferred")
 	var mount_items: Array=[]
 	for body: int in Registry.BODIES:

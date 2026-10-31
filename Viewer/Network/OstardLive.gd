@@ -2,12 +2,16 @@ extends SceneTree
 ## Only scripts/test-horses.ps1 -Live -Ostards supplies this disposable server.
 const Game=preload("res://Network/GameSession.gd")
 const Horse=preload("res://Presentation/MountVisual.gd")
+const HorseRig=preload("res://Presentation/HorseVisual.gd")
 var sessions: Array=[]
 var avatars: Array=[]
 var errors: Array=[]
 var replies: Array=[]
 var checks:=0
 var records: Array=[]
+var equine_completion:=false
+var llama_completion:=false
+var ethics_status: Array=[]
 func _initialize() -> void:call_deferred("run")
 func until(condition: Callable,seconds: float=15.) -> bool:
 	var start:=Time.get_ticks_msec()
@@ -35,6 +39,8 @@ func native_step(session: Node,running: bool,desired: int=-1) -> int:
 			if Vector2i(session.player.x,session.player.y)!=origin:return direction
 	return -1
 func run() -> void:
+	equine_completion="--equine-completion" in OS.get_cmdline_user_args()
+	llama_completion="--llama-completion" in OS.get_cmdline_user_args()
 	var accounts: Array=JSON.parse_string(FileAccess.get_file_as_string("res://../work/horse-session/accounts.local.json"))
 	for sex in 2:
 		var session:=Game.new();root.add_child(session);sessions.append(session);replies.append([])
@@ -54,25 +60,31 @@ func run() -> void:
 		var actor:=preload("res://Presentation/HumanAvatar.gd").new();actor.initial_body=401 if sex else 400;root.add_child(actor);actor.set_physics_process(false);avatars.append(actor)
 	for sex in 2:
 		var session: Node=sessions[sex];var observer: Node=sessions[1-sex];var actor: Node3D=avatars[sex];var me:=int(session.player.serial)
-		for variant in [13,14,15,16,17,18,19,20,21]:
+		for variant in (range(22,33)+range(34,38) if equine_completion else [19,20,21,33] if llama_completion else [13,14,15,16,17,18,19,20,21]):
 			replies[sex].clear();session.send_command("[EquineFixture prepare "+str(variant))
 			if not check(await until(func():return not replies[sex].is_empty()),"real upstream equine fixture prepared"):return
 			var fields: PackedStringArray=replies[sex][-1].split("|")
 			if not check(fields.size()==6 and fields[1]=="prepared","fixture identifies actual native class/body/mount"):return
-			var serial:=int(fields[2]);var body:=int(fields[3]);var item:=int(fields[4]);var ethereal: bool=variant in [16,21]
+			var serial:=int(fields[2]);var body:=int(fields[3]);var item:=int(fields[4]);var ethereal: bool=variant in [16,21,22]
 			print("EQUINE LIVE VARIANT: ",fields[5]," body=",body," item=",item," female=",sex==1)
 			if not ethereal:
 				if not check(await until(func():return session.entities.has(serial) and observer.entities.has(serial)),"both clients receive the real loose animal"):return
 				var loose:=preload("res://Presentation/HumanAvatar.gd").new();loose.initial_body=body;root.add_child(loose);loose.set_physics_process(false);loose.apply_server_appearance(session.entities[serial],[])
 				if not check(loose.horse_visual!=null and loose.horse_visual.native_body==body,"received mobile selects the new equine art"):return
 				loose.free()
+			elif not session.known_items.has(serial):
+				# A closed backpack does not expose newly added contents. Open it
+				# normally and wait for the native container packet before using.
+				if not check(await object_ready(session),"native backpack delay respected"):return
+				session.open_backpack()
+				if not check(await until(func():return session.known_items.has(serial)),"native backpack contents reveal the ethereal item"):return
 			if not check(await object_ready(session),"native item delay respected"):return
 			if not check(session.use_mobile(serial) if not ethereal else session.use_item(serial),"normal double-click request sent"):return
-			var denied: bool=variant==20 or variant==17 and sex==1
+			var denied: bool=variant in [20,23,24,25,26,27,28,29,33] or variant==17 and sex==1
 			if denied:
 				replies[sex].clear();session.send_command("[EquineFixture audit")
 				if not check(await until(func():return not replies[sex].is_empty()),"server audits the restricted ride attempt"):return
-				if not check(replies[sex][-1].begins_with("UCEQUINE|audit|0|") and not session.equipment.has(25),"native ki-rin gender restriction and unrideable pack llama preserved"):return
+				if not check(replies[sex][-1].begins_with("UCEQUINE|audit|0|") and not session.equipment.has(25),"native gender / ethics / faction / unrideable restrictions preserved"):return
 			else:
 				if not check(await until(func():return int(session.equipment.get(25,{}).get("id",0))==item,20.),"server equips exact native mount item (including ethereal casting)"):return
 				if not check(await until(func():return int(observer.mobile_equipment.get(me,{}).get(25,{}).get("id",0))==item),"observer receives the same mount item"):return
@@ -105,12 +117,13 @@ func run() -> void:
 				if not check(await until(func():return actor.horse_visual==null),"visual rider returns to foot after authoritative dismount"):return
 			if not ethereal:
 				var loose:=preload("res://Presentation/HumanAvatar.gd").new();loose.initial_body=body;root.add_child(loose);loose.set_physics_process(false);loose.apply_server_appearance(session.entities[serial],[])
-				for action_code in [5,4]:
+				for action_code in [5,4,3,11]:
 					session.last_mobile_actions.erase(serial);observer.last_mobile_actions.erase(serial)
 					session.send_command("[EquineFixture action "+str(action_code))
 					if not check(await until(func():return session.last_mobile_actions.has(serial) and observer.last_mobile_actions.has(serial)),"native attack/reaction packet arrives on both clients"):return
 					if not check(loose.receive_native_action(session.last_mobile_actions[serial]),"actual creature consumes server attack/reaction"):return
-					if not check(loose.horse_visual.current_clip in (["rear","hit"] if body==0x319 else ["Attack","Hit"]),"native action selects the species clip"):return
+					var expected: String={5:"rear",4:"hit",3:"eat",11:"lie_down"}[action_code] if loose.horse_visual is HorseRig else {5:"Attack",4:"Hit",3:"Eat",11:"LieDown"}[action_code]
+					if not check(loose.horse_visual.current_clip==expected,"native action selects the species clip"):return
 				replies[sex].clear();session.send_command("[EquineFixture kill")
 				if not check(await until(func():return replies[sex].any(func(text: String):return text.begins_with("UCEQUINE|corpse|"))),"real upstream death creates a corpse"):return
 				var response: String=replies[sex].filter(func(text: String):return text.begins_with("UCEQUINE|corpse|"))[-1]
@@ -121,10 +134,15 @@ func run() -> void:
 				var visual_root:=Node3D.new();root.add_child(visual_root)
 				if not check(presenter._equine_corpse(visual_root,session.world_items[corpse_serial],corpse_serial),"received native corpse selects matching death model"):return
 				visual_root.free();presenter.hint.free();presenter.free();loose.free()
-			records.append({"female":sex==1,"class":fields[5],"body":body,"mount_item":item,"ethereal":ethereal,"ride_permitted":not denied})
+			records.append({"female":sex==1,"class":fields[5],"body":body,"mount_item":item,"ethereal":ethereal,"ride_permitted":not denied,"fixture_variant":variant,"ranked_faction_member":variant>=34})
 			replies[sex].clear();session.send_command("[EquineFixture cleanup")
 			if not check(await until(func():return replies[sex].has("UCEQUINE|cleaned")),"owned disposable fixture cleaned"):return
+		if equine_completion:
+			replies[sex].clear();session.send_command("[EquineFixture ethics-status")
+			if not check(await until(func():return replies[sex].any(func(text: String):return text.begins_with("UCEQUINE|ethics|"))),"native ethics availability reported"):return
+			ethics_status.append({"female":sex==1,"reply":replies[sex][-1]})
 	for actor in avatars:actor.free()
 	for session in sessions:session.close()
-	var file:=FileAccess.open("res://../outputs/ostard-riding/live-validation.json",FileAccess.WRITE);file.store_string(JSON.stringify({"checks":checks,"failures":0,"records":records,"scope":"Actual world entry, native classes/permissions, layer 25, hues, mounted movement, observer replication and dismount on isolated pinned ModernUO. No production world or saves touched."},"\t"));file.close()
+	var report:="equine-completion-live.json" if equine_completion else "llama-completion-live.json" if llama_completion else "live-validation.json"
+	var file:=FileAccess.open("res://../outputs/ostard-riding/"+report,FileAccess.WRITE);file.store_string(JSON.stringify({"checks":checks,"failures":0,"records":records,"ethics_status":ethics_status,"scope":"Actual world entry, native classes/permissions, layer 25, hues, mounted movement, observer replication and dismount on isolated pinned ModernUO. Ranked faction membership is disposable test setup; normal mount permission checks remain active. Ethics availability is reported separately. No production world or saves touched."},"\t"));file.close()
 	print("OSTARD NATIVE INTEGRATION: ",checks," checks / 0 failures");quit()

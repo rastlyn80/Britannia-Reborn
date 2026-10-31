@@ -17,7 +17,7 @@ func run() -> void:
 		loose.free()
 	for female in [false,true]:
 		var actor:=Avatar.new();actor.initial_body=401 if female else 400;root.add_child(actor);actor.set_physics_process(false)
-		for item in [0x3ea3,0x3ea4,0x3ea5,0x3eac,0x3ead,0x3ea6,0x3eab,0x3ebb,0x3e9f]:
+		for item in [0x3ea3,0x3ea4,0x3ea5,0x3eac,0x3ead,0x3e9c,0x3ea6,0x3eab,0x3ebb,0x3e9f]:
 			for outfit in [[],[{"id":0x1f03},{"id":0x1539},{"id":0x170b}],[{"id":0x1415},{"id":0x1410},{"id":0x1411},{"id":0x1414},{"id":0x170b}]]:
 				var worn: Array=outfit.duplicate(true);worn.append({"id":item,"layer":25,"hue":0x4001 if item==0x3eac else 53})
 				actor.apply_server_appearance({"body":actor.initial_body,"hue":1002},worn)

@@ -10,12 +10,14 @@ var animator: AnimationPlayer
 var hue:=0
 var detail:=.32
 func _ready() -> void:
-	var folder:="mounts" if kind in ["kirin","llama","llama_ethereal"] else "ostards"
-	model=load("res://local-art/"+folder+"/"+kind+"-"+treatment+".gltf").instantiate();add_child(model)
+	var folder:="mounts" if kind in ["kirin","kirin_ethereal","llama","llama_ethereal"] else "ostards"
+	var asset_kind:="kirin" if kind=="kirin_ethereal" else kind
+	model=load("res://local-art/"+folder+"/"+asset_kind+"-"+treatment+".gltf").instantiate();add_child(model)
 	skeleton=model.find_children("*","Skeleton3D",true,false)[0]
 	animator=model.find_children("*","AnimationPlayer",true,false)[0]
 	var library:=animator.get_animation_library("").duplicate(true);animator.remove_animation_library("");animator.add_animation_library("",library)
 	for clip in CLIPS:animator.get_animation(clip).loop_mode=Animation.LOOP_LINEAR if clip in ["Idle","Walk","Run","Fidget"] else Animation.LOOP_NONE
+	preload("res://Presentation/AnimalPoseLibrary.gd").install(animator,skeleton,"Idle","Death","Eat","LieDown")
 	set_hue(hue);play("Idle")
 func set_hue(value: int) -> void:
 	hue=value
@@ -25,9 +27,10 @@ func set_hue(value: int) -> void:
 			var source:=mesh.mesh.surface_get_material(surface) as StandardMaterial3D
 			if source==null:continue # Authored eyes, reins and panniers keep their own materials.
 			if treatment=="modern":
-				var spectral:=kind in ["ethereal","llama_ethereal"]
+				var spectral:=kind in ["ethereal","llama_ethereal","kirin_ethereal"]
 				var mat:=ShaderMaterial.new();mat.shader=preload("res://Presentation/OstardEthereal.gdshader") if spectral else preload("res://Presentation/OstardSurface.gdshader");mat.set_shader_parameter("albedo_texture",source.albedo_texture)
 				if kind=="llama_ethereal":mat.set_shader_parameter("spectral_tint",Color("99cdef"))
+				elif kind=="kirin_ethereal":mat.set_shader_parameter("spectral_tint",Color("c2d2ee"))
 				var palette: Texture2D=null if spectral and hue==0x4001 else preload("res://Presentation/HumanHue.gd").palette(hue);mat.set_shader_parameter("hue_palette",palette);mat.set_shader_parameter("use_hue",palette!=null);mat.set_shader_parameter("partial_hue",(hue&0x8000)!=0);mat.set_shader_parameter("detail_strength",detail);mesh.set_surface_override_material(surface,mat)
 			else:
 				# Neutral, identical baseline lighting/material settings for the two

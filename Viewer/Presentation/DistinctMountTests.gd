@@ -9,9 +9,9 @@ func check(ok: bool,label: String) -> void:
 	checks+=1
 	if not ok:failures+=1;if failures<12:push_error(label)
 func run() -> void:
-	for entry in [[0xd2,0x3ea3],[0xda,0x3ea4],[0xdb,0x3ea5],[0xd2,0x3eac],[0x84,0x3ead],[0xdc,0x3ea6],[0xdc,0x3eab],[0x124,0],[0x319,0x3ebb]]:
+	for entry in [[0xd2,0x3ea3],[0xda,0x3ea4],[0xdb,0x3ea5],[0xd2,0x3eac],[0x84,0x3ead],[0x84,0x3e9c],[0xdc,0x3ea6],[0xdc,0x3eab],[0x124,0],[0x319,0x3ebb]]:
 		var body: int=entry[0];var item: int=entry[1]
-		var actor: Node3D=Mounts.create(body,item);root.add_child(actor);actor.apply_identity(body,0x4001 if item in [0x3eac,0x3eab] else 53,item)
+		var actor: Node3D=Mounts.create(body,item);root.add_child(actor);actor.apply_identity(body,0x4001 if item in [0x3eac,0x3eab,0x3e9c] else 53,item)
 		var skeleton: Skeleton3D=actor.skeleton
 		var source_root:=actor.transform
 		var mesh: MeshInstance3D=actor.model.find_children("*","MeshInstance3D",true,false)[0]

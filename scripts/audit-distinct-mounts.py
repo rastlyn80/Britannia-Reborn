@@ -18,9 +18,11 @@ def main():
         rows.append({'class':name[:-3],'body':body,'mount_item':item})
         if name=='Kirin.cs':assert 'public override bool AllowFemaleRider => false;' in text
     pack=source('../Misc/PackLlama.cs');assert 'Body = 292;' in pack and 'class PackLlama : BaseCreature' in pack
+    ordinary=source('../Misc/Llama.cs');assert 'Body = 0xDC;' in ordinary and 'class Llama : BaseCreature' in ordinary
+    rows.append({'class':'Llama','body':0xdc,'mount_item':None,'rideable':False})
     assert re.search(r'0x124:\["llama",0\]',registry)
     ethereal=source('Ethereals.cs')
-    for cls,statue,item,proxy in [('EtherealOstard',0x2135,0x3eac,0xd2),('EtherealLlama',0x20f6,0x3eab,0xdc)]:
+    for cls,statue,item,proxy in [('EtherealOstard',0x2135,0x3eac,0xd2),('EtherealLlama',0x20f6,0x3eab,0xdc),('EtherealKirin',0x25a0,0x3e9c,0x84)]:
         match=re.search(r'class '+cls+r'\b.*?:\s*base\((0x[\da-fA-F]+),\s*(0x[\da-fA-F]+)\)',ethereal,re.S)
         assert match and tuple(int(x,0) for x in match.groups())==(statue,item)
         assert re.search(r'if item==0x%x:return 0x%x'%(item,proxy),registry)

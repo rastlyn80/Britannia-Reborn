@@ -23,7 +23,7 @@ foreach ($kind in @('desert','forest','frenzied','ethereal')) {
  }
 }
 if ((Test-Path "$root/Viewer/local-art/mounts/kirin-modern.gltf") -and (Test-Path "$root/Viewer/local-art/mounts/llama_ethereal-modern.gltf") -and (Test-Path "$root/Viewer/local-art/mounts/skeletal-horse.glb")) {
- foreach ($script in @('DistinctMountTests','OstardRidingTests','MountTerrainTests')) {
+ foreach ($script in @('DistinctMountTests','OstardRidingTests','MountTerrainTests','EquineCompletionTests','AnimalActionTests')) {
   & $godot --headless --path "$root/Viewer" --script "res://Presentation/$script.gd"
   if ($LASTEXITCODE) {throw "Distinct mount validation failed: $script"}
  }
@@ -114,6 +114,10 @@ if (Test-Path "$root/Viewer/local-art/horses/warhorse.glb") {
   if (Test-Path "$root/Server/ModernUO/Projects/UOContent/Mobiles/Animals/Mounts/Horse.cs") {
     & python -B "$root/scripts/audit-equines.py"
     if ($LASTEXITCODE) { throw 'Equine native identity audit failed' }
+    & python -B "$root/scripts/audit-distinct-mounts.py"
+    if ($LASTEXITCODE) { throw 'Distinct mount identity audit failed' }
+    & python -B "$root/scripts/audit-equine-completion.py"
+    if ($LASTEXITCODE) { throw 'Equine compatibility/native census audit failed' }
   }
   & $godot --headless --path "$root/Viewer" --script res://Presentation/EquineTests.gd
   if ($LASTEXITCODE) { throw 'Equine body, accessory, hue and rider checks failed' }

@@ -1,0 +1,8 @@
+{
+  "scope": "Read-only installed client reference. Body IDs and fallback artwork are not server species or permissions. No game artwork is included.",
+  "sha256": {
+    "body.def": "2fbd408fcc96d1c0b382c4fd5c4efc798e2e5093e59a14ed6be9146b4a81cdab",
+    "bodyconv.def": "62debf90a6c5f59a885da6b0a8db1094d90c8d9e0a2c4c02b3acc234d818b665",
+    "mobtypes.txt": "a4f1c98057c5bcf10ccdb575a9154260651e49b852bfe548059ff55fcbbf29d8"
+  }
+}

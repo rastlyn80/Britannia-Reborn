@@ -28,10 +28,11 @@ func run() -> void:
 	var environment:=WorldEnvironment.new();environment.environment=Environment.new();environment.environment.background_mode=Environment.BG_COLOR;environment.environment.background_color=Color.BLACK;viewport.add_child(environment)
 	var camera:=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.size=3.6;camera.position=Vector3(0,1.6,5);viewport.add_child(camera);camera.look_at(Vector3(0,1.6,0))
 	var white:=solid("vec3(1.)");var pink:=solid("COLOR.rgb")
-	for entry in [[0x3ea3,"desert"],[0x3ea4,"frenzied"],[0x3ea5,"forest"],[0x3eac,"ethereal"],[0x3ead,"kirin"],[0x3ea6,"llama"],[0x3eab,"llama_ethereal"],[0x3ebb,"skeletal"]]:
+	for entry in [[0x3ea3,"desert"],[0x3ea4,"frenzied"],[0x3ea5,"forest"],[0x3eac,"ethereal"],[0x3ead,"kirin"],[0x3e9c,"kirin_ethereal"],[0x3ea6,"llama"],[0x3eab,"llama_ethereal"],[0x3ebb,"skeletal"]]:
 		if filter_item!=0 and entry[0]!=filter_item:continue
 		await test_mount(entry,white,pink,camera)
-	var file:=FileAccess.open("res://../outputs/ostard-riding/"+("clothing-rear-validation.json" if rear_only else "clothing-validation.json"),FileAccess.WRITE)
+	var suffix:="-item-%x"%filter_item if filter_item!=0 else ""
+	var file:=FileAccess.open("res://../outputs/ostard-riding/"+("clothing-rear" if rear_only else "clothing")+suffix+"-validation.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"samples":rows,"failures":failures,"renderer":RenderingServer.get_current_rendering_method(),"scope":"Actual masked-skin and complete body/seat occupancy renders; supported native gender combinations, plate/robe/skirt/kilt, eight seated/transition pairs. <=4 exposed skin pixels, >=98% body and >=99.5% seat occupancy. Finite samples, not universal collision certification."},"\t"));file.close()
 	print("DISTINCT MOUNT GPU CLOTHING: ",rows.size()," poses / ",failures," failures");quit(1 if failures else 0)
 func test_mount(entry: Array,white: ShaderMaterial,pink: ShaderMaterial,camera: Camera3D) -> void:

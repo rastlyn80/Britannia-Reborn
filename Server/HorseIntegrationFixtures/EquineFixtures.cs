@@ -15,6 +15,7 @@ public static class EquineFixtures
     private static readonly Dictionary<Mobile, BaseCreature> Animals = [];
     private static readonly Dictionary<Mobile, EtherealMount> Ethereals = [];
     private static readonly Dictionary<Mobile, Container> Corpses = [];
+    private static readonly Dictionary<Mobile, Server.Factions.Faction> Memberships = [];
 
     [CallPriority(int.MaxValue)]
     public static void Configure()
@@ -38,6 +39,7 @@ public static class EquineFixtures
             ethereal.Rider = null;
             ethereal.Delete();
         }
+        if (Memberships.Remove(owner, out var faction)) faction.RemoveMember(owner);
     }
 
     private static BaseCreature Create(int index) => index switch
@@ -60,6 +62,21 @@ public static class EquineFixtures
         18 => new SkeletalMount(),
         19 => new RidableLlama(),
         20 => new PackLlama(),
+        23 => new HolySteed(),
+        24 => new UnholySteed(),
+        25 => new Server.Factions.FactionWarHorse(),
+        26 => new Server.Factions.FactionWarHorse(Server.Factions.TrueBritannians.Instance),
+        27 => new Server.Factions.FactionWarHorse(Server.Factions.CouncilOfMages.Instance),
+        28 => new Server.Factions.FactionWarHorse(Server.Factions.Minax.Instance),
+        29 => new Server.Factions.FactionWarHorse(Server.Factions.Shadowlords.Instance),
+        30 => new HellSteed(),
+        31 => new GrizzledMare(),
+        32 => new RedDeath(),
+        33 => new Llama(),
+        34 => new Server.Factions.FactionWarHorse(Server.Factions.TrueBritannians.Instance),
+        35 => new Server.Factions.FactionWarHorse(Server.Factions.CouncilOfMages.Instance),
+        36 => new Server.Factions.FactionWarHorse(Server.Factions.Minax.Instance),
+        37 => new Server.Factions.FactionWarHorse(Server.Factions.Shadowlords.Instance),
         _ => throw new ArgumentOutOfRangeException(nameof(index))
     };
 
@@ -77,11 +94,11 @@ public static class EquineFixtures
         else if (command == "prepare" && args.Length > 1)
         {
             var index = args.GetInt32(1);
-            if (index < 0 || index > 21) return;
+            if (index < 0 || index > 37) return;
             Cleanup(owner);
-            if (index is 11 or 12 or 16 or 21)
+            if (index is 11 or 12 or 16 or 21 or 22)
             {
-                EtherealMount ethereal = index == 11 ? new EtherealHorse() : index == 12 ? new EtherealUnicorn() : index == 21 ? new EtherealLlama() : new EtherealOstard();
+                EtherealMount ethereal = index == 11 ? new EtherealHorse() : index == 12 ? new EtherealUnicorn() : index == 21 ? new EtherealLlama() : index == 22 ? new EtherealKirin() : new EtherealOstard();
                 owner.AddToBackpack(ethereal);
                 Ethereals[owner] = ethereal;
                 owner.SendMessage($"UCEQUINE|prepared|{ethereal.Serial.Value}|0|{ethereal.MountedID}|{ethereal.GetType().Name}");
@@ -92,6 +109,15 @@ public static class EquineFixtures
             {
                 if ((dx == 0 && dy == 0) || !owner.Map.CanSpawnMobile(owner.X + dx, owner.Y + dy, owner.Z)) continue;
                 var animal = Create(index);
+                if (index >= 34 && animal is Server.Factions.FactionWarHorse factionHorse)
+                {
+                    // Disposable-account setup only. The normal OnDoubleClick
+                    // still enforces actual faction membership and native rank.
+                    var faction = factionHorse.Faction;
+                    faction.AddMember(owner);
+                    Memberships[owner] = faction;
+                    Server.Factions.PlayerState.Find(owner).KillPoints = 100;
+                }
                 animal.SetControlMaster(owner);
                 animal.ControlOrder = OrderType.Stay;
                 animal.MoveToWorld(new Point3D(owner.X + dx, owner.Y + dy, owner.Z), owner.Map);
@@ -104,7 +130,7 @@ public static class EquineFixtures
         else if (command == "action" && args.Length > 1 && Animals.TryGetValue(owner, out var subject))
         {
             var action = args.GetInt32(1);
-            if (action == 5) subject.Animate(5, 6, 1, true, false, 0);
+            if (action is 3 or 5 or 11) subject.Animate(action, 6, 1, true, false, 0);
             else if (action == 4)
             {
                 foreach (var client in subject.Map.GetClientsInRange(subject.Location))
@@ -131,6 +157,10 @@ public static class EquineFixtures
         else if (command == "audit")
         {
             owner.SendMessage($"UCEQUINE|audit|{(owner.Mounted ? 1 : 0)}|{owner.Followers}");
+        }
+        else if (command == "ethics-status")
+        {
+            owner.SendMessage($"UCEQUINE|ethics|{(Server.Ethics.Ethic.Hero == null ? 0 : 1)}|{(Server.Ethics.Ethic.Evil == null ? 0 : 1)}");
         }
     }
 }

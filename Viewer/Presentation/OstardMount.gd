@@ -23,16 +23,16 @@ func _ready() -> void:
 	# moving idle frame. World-facing seat basis is independent of source Z-up.
 	var saddle:=Vector3(0,1.24,-.05)
 	var mouth:=Vector3(0,1.85,.70)
-	if kind=="kirin":saddle=Vector3(0,1.30,-.03);mouth=Vector3(.04,1.46,1.55)
+	if kind.begins_with("kirin"):saddle=Vector3(0,1.30,-.03);mouth=Vector3(.04,1.46,1.55)
 	elif kind.begins_with("llama"):saddle=Vector3(0,1.22,.35);mouth=Vector3(0,1.51,1.54)
 	set_meta("rider_ground_drop",saddle.y-.09)
 	seat_offset=skeleton.get_bone_global_rest(seat_bone).affine_inverse()*(skeleton.global_transform.affine_inverse()*(global_transform*saddle))
 	mouth_offset=skeleton.get_bone_global_rest(mouth_bone).affine_inverse()*(skeleton.global_transform.affine_inverse()*(global_transform*mouth))
 	reins=MeshInstance3D.new();reins.mesh=rein_mesh;reins.name="OstardReins";add_child(reins)
 	var leather:=StandardMaterial3D.new();leather.albedo_color=Color("30251d");leather.roughness=.9;reins.material_override=leather
-	if kind=="kirin" or kind.begins_with("llama"):build_eyes()
+	if kind.begins_with("kirin") or kind.begins_with("llama"):build_eyes()
 	contact=preload("res://Presentation/SourceMountContact.gd").new();skeleton.add_child(contact)
-	contact.configure(model.find_children("*","MeshInstance3D",true,false)[0],kind=="kirin" or kind.begins_with("llama"))
+	contact.configure(model.find_children("*","MeshInstance3D",true,false)[0],kind.begins_with("kirin") or kind.begins_with("llama"))
 	source_model_basis=model.basis
 func _physics_process(_delta: float) -> void:
 	if contact!=null:
@@ -48,9 +48,9 @@ func build_eyes() -> void:
 	var rest:=skeleton.global_transform*skeleton.get_bone_global_rest(mouth_bone)
 	for side in [-1.,1.]:
 		var point:=Vector3(side*.105,1.63,1.26)
-		if kind=="kirin":point=Vector3(.038+side*.096,1.72,1.28)
+		if kind.begins_with("kirin"):point=Vector3(.038+side*.096,1.72,1.28)
 		var mesh:=MeshInstance3D.new();mesh.name="AuthoredEye";var sphere:=SphereMesh.new();sphere.radius=.023;sphere.height=.046;sphere.radial_segments=16;sphere.rings=8;mesh.mesh=sphere
-		var material:=StandardMaterial3D.new();material.albedo_color=Color("24180c") if kind=="kirin" else Color("140f0b");material.roughness=.21;material.metallic_specular=.65;mesh.material_override=material
+		var material:=StandardMaterial3D.new();material.albedo_color=Color("24180c") if kind.begins_with("kirin") else Color("140f0b");material.roughness=.21;material.metallic_specular=.65;mesh.material_override=material
 		attachment.add_child(mesh);mesh.transform=rest.affine_inverse()*Transform3D(global_basis.scaled(Vector3(.45,1.,1.)),global_transform*point)
 func find_source_bone(suffix: String) -> int:
 	for i in skeleton.get_bone_count():
@@ -59,7 +59,7 @@ func find_source_bone(suffix: String) -> int:
 func apply_identity(body: int,value: int,item: int=0) -> void:
 	native_body=body;native_hue=value;native_mount_item=item;set_hue(value)
 	set_meta("native_body",body);set_meta("native_hue",value);set_meta("native_mount_item",item)
-	set_meta("equine_profile",{"style":kind,"ethereal":kind in ["ethereal","llama_ethereal"]})
+	set_meta("equine_profile",{"style":kind,"ethereal":kind in ["ethereal","llama_ethereal","kirin_ethereal"]})
 	if body==0x124 and pack_fitting==null:build_pack()
 	elif body!=0x124 and pack_fitting!=null:pack_fitting.free();pack_fitting=null
 func build_pack() -> void:
@@ -82,22 +82,25 @@ func socket(_name: String,_rotation_delta: bool=false) -> Transform3D:return anc
 func motion(speed: float,turn_rate: float,delta: float) -> void:
 	lean=lerpf(lean,clampf(turn_rate*minf(speed,6.)*.009,-.065,.065),1.-exp(-6.*delta))
 func play_gait(moving: bool,speed: float) -> void:
+	if current_clip=="LieDown" and moving:action_remaining=0.
 	if dead or action_remaining>0.:return
 	var clip:="Idle" if not moving else "Run" if speed>3.6 else "Walk"
+	if current_clip=="LieDown" and not moving:return
+	contact.enabled=true
 	if current_clip!=clip:current_clip=clip;play(clip,.18)
 	animator.speed_scale=clampf(speed/(5.5 if clip=="Run" else 1.8),.65,1.65) if moving else 1.
 func _process(delta: float) -> void:
 	if action_remaining>0.:
 		action_remaining=maxf(0.,action_remaining-delta)
-		if action_remaining==0. and dead:animator.seek(animator.current_animation_length,true);animator.pause()
+		if action_remaining==0. and (dead or current_clip=="LieDown"):animator.seek(animator.current_animation_length,true);animator.pause()
 func receive_action(request: Dictionary) -> bool:
 	var clip:=""
 	# ClassicUO LowAnimationGroup: 9/10 are fidgets, never hit reactions.
-	if str(request.get("protocol",""))=="classic":clip=str({0:"Walk",1:"Run",2:"Idle",5:"Attack",6:"Attack",7:"Attack",8:"Death",9:"Fidget",10:"Fidget",12:"Death"}.get(int(request.get("action",-1)),""))
+	if str(request.get("protocol",""))=="classic":clip=str({0:"Walk",1:"Run",2:"Idle",3:"Eat",5:"Attack",6:"Attack",7:"Attack",8:"Death",9:"Fidget",10:"Fidget",11:"LieDown",12:"Death"}.get(int(request.get("action",-1)),""))
 	elif str(request.get("protocol",""))=="new":clip=str({0:"Attack",3:"Death",4:"Hit"}.get(int(request.get("type",-1)),""))
 	if clip.is_empty() or dead and clip!="Death":set_meta("unsupported_action",request.duplicate(true));return false
 	current_clip=clip;dead=clip=="Death"
-	contact.enabled=not dead
+	contact.enabled=not dead and clip!="LieDown"
 	var duration:=preload("res://Presentation/HumanActions.gd").duration(request,animator.get_animation(clip).length)
 	action_remaining=duration;animator.play(clip,.12,animator.get_animation(clip).length/duration)
 	set_meta("native_action",request.duplicate(true));return true
