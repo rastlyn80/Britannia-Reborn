@@ -1,3 +1,31 @@
+# All of Trammel baked in the compact streaming format — 31 October 2026
+
+Owner request: rebake the whole Trammel map (dungeons included) in the compact format, then clean up the old caches.
+
+**Bake format** (rule and details: [COMPACT_STREAMING.md](COMPACT_STREAMING.md)):
+- placed models are instanced from a shared model library, not merged;
+- detailed solids collide as boxes, and terrain as a heightmap;
+- facets bake out of core in windows (`scripts/bake-facet.ps1`) and are published by `FinalizeFacet.gd`.
+
+**Result:**
+- all 7,168 districts, 14 GB: districts 7.08 GB, library 7.3 GB, far 0.05 GB;
+- the old format would have needed over 200 GB;
+- the library deduplication is the next fix, with about 7 GB to gain.
+
+**Checks:**
+- `scripts/test-streaming.ps1 -Route trinsic` passes on Trammel: 54 stops, a memory plateau of about 840 MB, p95 frame 30 ms;
+- renders of Moonglow and the Covetous area;
+- new `CompactStreamingTests` (6/0) in verify;
+- DevEditTests 78/0.
+
+**Fixes found along the way:**
+- **Developer terrain editing:** it now maps local terrain vertices to tiles through the district node's offset. Edits would otherwise have landed on the wrong tiles in the new cache.
+- **Tool paths:** developer-editing tools and audits read the active cache through `LiveDistricts.prepared_folder()`.
+
+The full verify passes.
+
+**Not yet:** a live walk through the new map in the game client.
+
 # Skeleton family and automatic cadavers - 31 October 2026
 
 Three original skeleton forms (plain, knight and mage) now have bounded refined geometry, saved generated UV-compatible bone/steel/cloth atlases, source actions, native body/hue routes and static cadavers. Five additional bounded native bodies pass 406 real disposable-server/two-client checks, zero failures. Creature native-evidence coverage is now 114/279 (40.9%), with 86 accepted generic forms / 30 groups / 103 body routes. Human wearable coverage remains unchanged.

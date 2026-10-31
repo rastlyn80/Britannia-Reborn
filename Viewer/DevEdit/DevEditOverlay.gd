@@ -607,7 +607,10 @@ func _start_terrain(at: Vector2i) -> void:
 		for oy in range(-1,1):
 			for ox in range(-1,1): dirty[sample+Vector2i(ox,oy)] = true
 	var job := TerrainJob.new()
-	job.at = at;job.generation = int(terrain_generation.get(at,0));job.origin = origin();job.base = entry.base;job.previous = entry.current
+	# The terrain node may sit at an offset (windowed bakes, docs/COMPACT_STREAMING.md):
+	# its local vertices map to tiles through the scene origin plus that offset.
+	var local_origin := origin()+Vector2i(roundi(mesh_node.position.x),roundi(mesh_node.position.z))
+	job.at = at;job.generation = int(terrain_generation.get(at,0));job.origin = local_origin;job.base = entry.base;job.previous = entry.current
 	job.buckets = entry.buckets;job.field = field;job.colors = colors;job.dirty = dirty
 	terrain_jobs[at] = {"job":job,"task":WorkerThreadPool.add_task(job.run)}
 

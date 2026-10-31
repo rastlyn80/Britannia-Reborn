@@ -10,7 +10,7 @@ func _initialize() -> void:
 		push_error("Prepare Britain first (scripts/prepare-britain.ps1)")
 		quit(1)
 		return
-	var catalog: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(ProjectSettings.globalize_path("res://../outputs/britain/prepared/index.json"))).catalog
+	var catalog: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(preload("res://Presentation/LiveDistricts.gd").prepared_folder().path_join("index.json"))).catalog
 	var x0 := int(args[0])
 	var y0 := int(args[1])
 	var x1 := int(args[2])

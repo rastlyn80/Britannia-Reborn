@@ -147,7 +147,7 @@ func role_a(mode: CanvasLayer, stream: Node3D, reloads_before: int) -> void:
 	var committed: Dictionary = preload("res://Presentation/ManualOverrides.gd").read(preload("res://Presentation/ManualOverrides.gd").committed_path(stream.dataset()))
 	result.committed_file = {"statics":committed.get("statics",{}).size(),"placed":committed.get("placed",{}).size(),"terrain":committed.get("terrain",{}).size()}
 	result.undo_offers_commit = state.undo_candidate() > 0 and state.history[state.undo_candidate()].action == "commit"
-	var log_path := ProjectSettings.globalize_path("res://../outputs/britain/prepared/index.json")
+	var log_path := preload("res://Presentation/LiveDistricts.gd").prepared_folder().path_join("index.json")
 	result.index_files = JSON.parse_string(FileAccess.get_file_as_string(log_path)).get("files",{})
 	await create_timer(2.0).timeout
 	await capture("after-commit")

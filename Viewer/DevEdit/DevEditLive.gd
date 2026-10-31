@@ -258,7 +258,7 @@ func verify_marker() -> void:
 
 # A decorative baked static from the local prepared bake (none when absent).
 func real_static() -> String:
-	var path := ProjectSettings.globalize_path("res://../outputs/britain/prepared/near_1600_1536.res")
+	var path := preload("res://Presentation/LiveDistricts.gd").prepared_folder().path_join("near_1600_1536.res")
 	if not FileAccess.file_exists(path): return ""
 	var resource: Resource = load(path)
 	for key in resource.source_info:

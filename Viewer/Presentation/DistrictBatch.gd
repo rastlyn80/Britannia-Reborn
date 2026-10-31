@@ -26,12 +26,28 @@ func source_keys(root: Node3D) -> void:
   occurrences[base]=int(occurrences.get(base,0))+1
   child.set_meta("source_key",key)
   info[key]="%s|%s|%d" % [child.get_meta("kind",""),child.get_meta("source_state",""),1 if child.get_meta("solid",false) else 0]
+# Architecture: joined per place, so merged. "asset" (a placed replacement
+# model) is not architecture and is instanced instead.
+const ARCHITECTURE := ["wall","window","corner","gable","trim","beam","arch","pillar","post","floor","landing","stairs","roof","door","fence"]
+# Placed models (rocks, furniture, plants, scanned props) are not merged: a
+# merged copy per placement is what made districts hundreds of MB. They stay
+# placements and CompactDistrict instances them over one shared model
+# (docs/COMPACT_STREAMING.md). Architecture and small procedural pieces still
+# merge, since they differ per place.
+const MERGE_VERTEX_LIMIT := 600
+static func vertex_count(mesh: Mesh) -> int:
+ var total := 0
+ for i in mesh.get_surface_count():
+  if mesh is ArrayMesh: total += mesh.surface_get_array_len(i)
+  else: total += (mesh.surface_get_arrays(i)[Mesh.ARRAY_VERTEX] as PackedVector3Array).size()
+ return total
 func collect(node: Node3D, parent: Transform3D, far: bool = false, source: String = "") -> void:
  if node.has_meta("source_key"): source = node.get_meta("source_key")
  if node.has_meta("kind"): far = node.get_meta("kind") in ["wall","window","corner","gable","trim","beam","arch","pillar","post","floor","landing","stairs","roof","door","fence","asset"]
  if node.get_meta("kind","") in ["tree","sign","water"]: return
  var transform := parent*node.transform
- if node is MeshInstance3D and node.mesh:
+ var placed_model: bool = node is MeshInstance3D and node.mesh and not str(node.get_meta("kind","")) in ARCHITECTURE and vertex_count(node.mesh) > MERGE_VERTEX_LIMIT
+ if node is MeshInstance3D and node.mesh and not placed_model:
   for i in node.mesh.get_surface_count():
    var material: Material = node.get_active_material(i)
    if material is StandardMaterial3D and material.transparency != BaseMaterial3D.TRANSPARENCY_DISABLED: return

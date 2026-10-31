@@ -24,7 +24,103 @@ static func dependency_signature(path: String, visited: Dictionary) -> String:
  return signature
 
 func _initialize() -> void: call_deferred("run")
+# Shared model library (docs/COMPACT_STREAMING.md): every sizeable mesh is
+# saved once per prepared cache under models/<content hash>.res and districts
+# reference it, instead of each district embedding its own copy.
+const LIBRARY_MIN_VERTICES := 300
+var library_paths: Dictionary = {}
+var window := Rect2i()
+var dataset_origin := Vector2(-1,-1)
+var window_offset := Vector3.ZERO
+var finalize := false
+func share_meshes(node: Node) -> void:
+ var all: Array = [node]
+ all.append_array(node.find_children("*","",true,false))
+ for n in all:
+  if n is MeshInstance3D and n.mesh: n.mesh = shared(n.mesh)
+  elif n is MultiMeshInstance3D and n.multimesh and n.multimesh.mesh: n.multimesh.mesh = shared(n.multimesh.mesh)
+  if n.get("source_mesh") is Mesh: n.source_mesh = shared(n.source_mesh)
+# A material by content (materials are rebuilt per district, so their object
+# identity would give every district its own copy of the same model).
+static func material_key(material: Material) -> String:
+ if material == null: return "none"
+ if not material.resource_path.is_empty() and not "::" in material.resource_path: return material.resource_path
+ var parts: Array = [material.get_class()]
+ for property in material.get_property_list():
+  if not (int(property.usage) & PROPERTY_USAGE_STORAGE): continue
+  var value: Variant = material.get(property.name)
+  if value is Resource: value = value.resource_path if not value.resource_path.is_empty() else value.get_class()
+  parts.append(str(property.name)+"="+str(value))
+ if material is ShaderMaterial and material.shader:
+  for uniform in material.shader.get_shader_uniform_list():
+   var value: Variant = material.get_shader_parameter(uniform.name)
+   if value is Resource: value = value.resource_path if not value.resource_path.is_empty() else value.get_class()
+   parts.append(str(uniform.name)+"="+str(value))
+ return "|".join(parts).sha256_text()
+func shared(mesh: Mesh) -> Mesh:
+ if not mesh is ArrayMesh: return mesh
+ var path: String = mesh.resource_path
+ if not path.is_empty() and not "::" in path: return mesh
+ if preload("res://Presentation/DistrictBatch.gd").vertex_count(mesh) < LIBRARY_MIN_VERTICES: return mesh
+ var digest := HashingContext.new()
+ digest.start(HashingContext.HASH_SHA256)
+ for i in mesh.get_surface_count():
+  digest.update(var_to_bytes(mesh.surface_get_arrays(i)))
+  digest.update(material_key(mesh.surface_get_material(i)).to_utf8_buffer())
+ var folder := output.path_join("models")
+ DirAccess.make_dir_recursive_absolute(folder)
+ var target := folder.path_join(digest.finish().hex_encode().left(24)+".res")
+ # One object per library model: later copies get that object (taking over a
+ # path would strip it from the earlier holder, which then embeds a copy).
+ if library_paths.has(target): return library_paths[target]
+ if FileAccess.file_exists(target):
+  var stored: Mesh = ResourceLoader.load(target,"",ResourceLoader.CACHE_MODE_REUSE)
+  if stored:
+   library_paths[target] = stored
+   return stored
+ # Written under a temporary name and renamed, so parallel window bakes
+ # never read a half-written model.
+ var temporary := "%s.%d.tmp.res" % [target.get_basename(),OS.get_process_id()]
+ var saved := ResourceSaver.save(mesh,temporary,ResourceSaver.FLAG_COMPRESS)
+ if saved != OK:
+  push_warning("Model library save failed (%s) for a %d-surface mesh" % [error_string(saved),mesh.get_surface_count()])
+  return mesh
+ if DirAccess.rename_absolute(temporary,target) != OK: DirAccess.remove_absolute(temporary)
+ mesh.take_over_path(target)
+ library_paths[target] = mesh
+ return mesh
+# Size report for one saved scene (--size-report): estimated bytes by what
+# they are, so the cache can be kept within its budget.
+func size_report(node: Node, data: Resource, path: String) -> void:
+ var bytes := {}
+ var all: Array = [node]
+ all.append_array(node.find_children("*","",true,false))
+ for n in all:
+  var meshes: Array = []
+  if n is MeshInstance3D and n.mesh: meshes.append(n.mesh)
+  if n.get("source_mesh") is Mesh: meshes.append(n.source_mesh)
+  for mesh in meshes:
+   var shared_mesh: bool = not mesh.resource_path.is_empty() and not "::" in mesh.resource_path
+   var amount := 0
+   if mesh is ArrayMesh:
+    for i in mesh.get_surface_count(): amount += var_to_bytes(mesh.surface_get_arrays(i)).size()
+   var key := ("shared mesh ref " if shared_mesh else "embedded mesh ")+str(n.get_meta("kind",n.get_class()))+(" "+str(n.name).left(12) if str(n.name).begins_with("Batched") or str(n.name).begins_with("Terrain") else "")
+   bytes[key] = int(bytes.get(key,0))+(0 if shared_mesh else amount)
+   if not shared_mesh and amount > 200000: print("SIZE-BIG ",n.get_class()," ",n.name," mesh ",mesh.get_class()," path '",mesh.resource_path,"' surfaces ",mesh.get_surface_count()," bytes ",amount," kind ",n.get_meta("kind",""))
+  if n.has_meta("deferred_faces"): bytes["collision faces"] = int(bytes.get("collision faces",0))+(n.get_meta("deferred_faces") as PackedVector3Array).size()*12
+  if n.get("instance_data") is PackedByteArray: bytes["instance data"] = int(bytes.get("instance data",0))+n.instance_data.size()
+ if data:
+  for field in ["source_map","source_info","source_positions"]:
+   var value: Variant = data.get(field)
+   if value != null: bytes["meta "+field] = var_to_bytes(value).size()
+ var keys: Array = bytes.keys()
+ keys.sort_custom(func(a, b): return int(bytes[a]) > int(bytes[b]))
+ var text := path.get_file()+":"
+ for key in keys.slice(0,8): text += " | %s %.2f MB" % [key,int(bytes[key])/1e6]
+ print("SIZE ",text)
 func save_scene(node: Node3D, path: String, data: Resource = null) -> bool:
+ share_meshes(node)
+ if "--size-report" in OS.get_cmdline_user_args(): size_report(node,data,path)
  Compact.own(node,node)
  var packed := PackedScene.new()
  assert(packed.pack(node)==OK)
@@ -223,6 +319,12 @@ func bake_district(plan, data, frame: Vector2, at: Vector2i, folder: String) -> 
  near.position=Vector3.ZERO
  var source: Dictionary=data.chunk(at)
  var far:=make_far(near,source.statics,frame,plan.reconstruction.catalog)
+ # A window plans in its own bounds, so its geometry is relative to the
+ # window corner; shift both scenes into the dataset's frame.
+ if window_offset != Vector3.ZERO:
+  for scene_root in [near,far]:
+   for child in scene_root.get_children():
+    if child is Node3D: child.position += window_offset
  var far_saved:=save_scene(far,folder.path_join("far_"+tag+".res"))
  far.free()
  if not far_saved:near.free();return false
@@ -251,6 +353,14 @@ func run() -> void:
    for pair in arg.substr(12).split(";",false):
     var xy:=pair.split(",")
     if xy.size()==2:preview_list.append(Vector2i(int(xy[0]),int(xy[1])))
+  # Out-of-core facet bake (scripts/bake-facet.ps1): --window=x,y,w,h in
+  # tiles bakes only the districts inside it, planning them with a one
+  # district ring of context, and publishes nothing; --finalize then writes
+  # the horizon and the index once every district is current.
+  if arg.begins_with("--window="):
+   var v:=arg.substr(9).split(",")
+   if v.size()==4: window=Rect2i(int(v[0]),int(v[1]),int(v[2]),int(v[3]))
+  if arg=="--finalize": finalize=true
  directory=ProjectSettings.globalize_path(directory)
  # A bake with a missing (e.g. not yet imported) surface would be stamped as
  # current and silently keep blank materials; refuse it instead.
@@ -290,22 +400,57 @@ func run() -> void:
     if not FileAccess.file_exists(output.path_join("macro_%d_%d.res" % [at[0],at[1]])):complete=false
    if complete: print("STREAM BAKE: current");quit();return
  # A published index is the commit marker; never mix resources from two bakes.
- if FileAccess.file_exists(index_path): DirAccess.rename_absolute(index_path,index_path+".previous")
+ if FileAccess.file_exists(index_path) and window.size == Vector2i.ZERO: DirAccess.rename_absolute(index_path,index_path+".previous")
  var data:=preload("res://Presentation/AtlasData.gd").new()
  if not data.open(directory.path_join("atlas.json")): push_error("Missing owned atlas data");quit(1);return
- # Joined-topology planning holds the whole region in memory (about 4-5 GB at
- # 400 districts); a region past 512 districts needs the out-of-core bake.
+ var all_chunks: Array = data.manifest.chunks
+ # Which districts need baking (stamp out of date); in a window, only its own.
+ var pending: Array = []
+ for entry in all_chunks:
+  var at:=Vector2i(entry.x,entry.y)
+  if window.size != Vector2i.ZERO and not window.has_point(at): continue
+  var tag:="%d_%d" % [at.x,at.y]
+  var expected:=signature+":"+manual.chunk_digest(at)
+  var stamp:=output.path_join(tag+".stamp")
+  if not FileAccess.file_exists(stamp) or FileAccess.get_file_as_string(stamp).trim_suffix(":")!=expected.trim_suffix(":"): pending.append(entry)
+ # A window plans only its districts and a one-district ring of context, in
+ # the dataset's own frame, so joined walls and roofs meet across windows.
+ if window.size != Vector2i.ZERO:
+  var ring:=window.grow(64)
+  var inside: Array = []
+  var context: Array = []
+  for entry in all_chunks:
+   var at:=Vector2i(entry.x,entry.y)
+   if window.has_point(at): inside.append(entry)
+   elif ring.has_point(at): context.append(entry)
+  data.manifest = data.manifest.duplicate()
+  data.manifest.chunks = inside
+  data.manifest.contextChunks = context
+  dataset_origin = Vector2(int(data.manifest.originX),int(data.manifest.originY))
+  data.manifest.originX = window.position.x
+  data.manifest.originY = window.position.y
+  data.manifest.width = window.size.x
+  data.manifest.height = window.size.y
+ # Joined-topology planning holds the planned region in memory (about 4-5 GB
+ # at 400 districts); larger regions are baked in windows.
  if data.manifest.chunks.size()>512:
-  push_error("Offline joined-topology planning is limited to 512 districts. Prepare a smaller region; full-facet out-of-core baking remains pending.");quit(1);return
+  push_error("Offline joined-topology planning is limited to 512 districts; bake a facet in windows (scripts/bake-facet.ps1).");quit(1);return
  var plan:=preload("res://Presentation/RegionalContext.gd").new()
  plan.overrides=manual
- plan.prepare(data)
+ # Nothing out of date (a finalize run, or a repeat): no planning at all.
+ if not pending.is_empty(): plan.prepare(data)
+ else: plan.world={"originX":int(data.manifest.originX),"originY":int(data.manifest.originY)}
  print("STREAM BAKE MEMORY: planning peak %.2f GB" % (OS.get_static_memory_peak_usage()/1073741824.0))
  var frame:=Vector2(plan.world.originX,plan.world.originY)
+ # Windows plan in their own bounds but place everything in the dataset frame.
+ if dataset_origin.x >= 0:
+  window_offset = Vector3(plan.world.originX-dataset_origin.x,0,plan.world.originY-dataset_origin.y)
+  frame = dataset_origin
  for key in data.manifest.staticData:catalog_names[key]=str(data.manifest.staticData[key].get("name","tree"))
  plan.reconstruction.source_origin=frame
  preload("res://Presentation/SurfaceLibrary.gd").source_origin=frame
- plan.terrain_material.set_shader_parameter("source_origin",frame)
+ # (No terrain material when nothing needed planning.)
+ if plan.terrain_material: plan.terrain_material.set_shader_parameter("source_origin",frame)
  var entries: Array=[]
  var stamps: Dictionary={}
  var rebuilt:=0
@@ -316,11 +461,29 @@ func run() -> void:
   var expected:=signature+":"+manual.chunk_digest(at)
   stamps[tag]=expected.sha256_text().left(16)
   if not FileAccess.file_exists(stamp) or FileAccess.get_file_as_string(stamp).trim_suffix(":")!=expected.trim_suffix(":"):
+   if pending.is_empty(): push_error("District %s is out of date; bake its window first." % tag);quit(1);return
    rebuilt+=1
    if not await bake_district(plan,data,frame,at,output):quit(1);return
    var marker:=FileAccess.open(stamp,FileAccess.WRITE);marker.store_string(expected);marker.close()
   entries.append([at.x,at.y])
   await process_frame
+ # A window run stops here; --finalize publishes once all windows are done.
+ if window.size != Vector2i.ZERO:
+  # Each window's rule catalog is kept for the index (finalize merges them).
+  if not pending.is_empty():
+   DirAccess.make_dir_recursive_absolute(output.path_join("catalogs"))
+   var part:=FileAccess.open(output.path_join("catalogs/%d_%d.json" % [window.position.x,window.position.y]),FileAccess.WRITE)
+   part.store_string(JSON.stringify(plan.reconstruction.catalog));part.close()
+  print("STREAM BAKE WINDOW: %s rebuilt %d / %d districts; memory peak %.2f GB" % [window,rebuilt,entries.size(),OS.get_static_memory_peak_usage()/1073741824.0])
+  quit();return
+ if finalize:
+  data.manifest.chunks = all_chunks
+  var catalogs:=output.path_join("catalogs")
+  for name in DirAccess.get_files_at(catalogs):
+   var part: Variant=JSON.parse_string(FileAccess.get_file_as_string(catalogs.path_join(name)))
+   if part is Dictionary:
+    for key in part:
+     if not plan.reconstruction.catalog.has(key): plan.reconstruction.catalog[key]=part[key]
  var manifest: Dictionary=data.manifest
  var macro_entries:=macros(data,frame)
  if macro_entries.is_empty():push_error("Regional horizon bake failed; prepared index not published");quit(1);return

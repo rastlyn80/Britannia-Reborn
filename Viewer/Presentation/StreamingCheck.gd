@@ -30,7 +30,7 @@ func run() -> void:
  var stream: Node3D=scene.city_stream
  var route:=[Vector2i(1602,1591),Vector2i(1665,1591),Vector2i(1729,1591),Vector2i(1665,1591),Vector2i(1602,1591),Vector2i(1535,1591),Vector2i(1602,1591)]
  # --route=trinsic: the road from Britain's east gate to Trinsic and back
- # (needs --region=britain-trinsic), one stop about every 100 tiles.
+ # (needs a dataset reaching Trinsic: all of Trammel, or --region=britain-trinsic), one stop about every 100 tiles.
  var label:="britain"
  if "--route=trinsic" in OS.get_cmdline_user_args():
   label="trinsic"

@@ -13,7 +13,7 @@ func _initialize() -> void:
 		push_error("Prepare Britain first")
 		quit(1)
 		return
-	var catalog: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(ProjectSettings.globalize_path("res://../outputs/britain/prepared/index.json"))).catalog
+	var catalog: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(preload("res://Presentation/LiveDistricts.gd").prepared_folder().path_join("index.json"))).catalog
 	var names: Dictionary = data.manifest.staticData
 	var ground := {}
 	var cells := {}

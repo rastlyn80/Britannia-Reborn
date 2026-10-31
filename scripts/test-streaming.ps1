@@ -1,4 +1,5 @@
-# -Region britain-trinsic -Route trinsic walks the road from Britain to Trinsic and back.
+# -Route trinsic walks the road from Britain to Trinsic and back (all of Trammel
+# streams by default once baked; -Region picks another prepared dataset).
 param([switch]$Compatibility,[string]$Region,[string]$Route)
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent

@@ -233,7 +233,7 @@ func positions(part: MeshInstance3D, from: int, count: int) -> PackedByteArray:
 	return data.slice(from*12,(from+count)*12)
 
 func real_districts() -> void:
-	folder = ProjectSettings.globalize_path("res://../outputs/britain/prepared")
+	folder = preload("res://Presentation/LiveDistricts.gd").prepared_folder()
 	if not FileAccess.file_exists(folder.path_join("index.json")):
 		print("DEV EDIT TESTS: prepared Britain data not present; real-district checks skipped")
 		return
@@ -260,14 +260,27 @@ func real_districts() -> void:
 	overlay.configure(stream,state)
 	check(overlay.districts.size() == 3,"overlay tracks installed districts")
 	# Find editable statics owning a batched vertex range and a whole node or instance.
+	# Placed models are instanced in the compact cache (docs/COMPACT_STREAMING.md),
+	# so a batched example is looked for in all three districts, and district a
+	# becomes the one that has it.
 	var batched := {}
 	var other := {}
-	for record in overlay.districts[a].records:
-		var info: Dictionary = overlay.info_for(record)
-		if not info.editable: continue
-		for entry in overlay.districts[a].map[record.key]:
-			if int(entry[1]) == 0 and batched.is_empty() and overlay.districts[a].map[record.key].size() == 1: batched = {"record":record,"entry":entry}
-			if int(entry[1]) == 2 and other.is_empty(): other = {"record":record,"entry":entry}
+	var original_districts: Array = [a,b,c]
+	for owner in [a,b,c]:
+		if not batched.is_empty() and not other.is_empty(): break
+		batched = {}
+		other = {}
+		for record in overlay.districts[owner].records:
+			var info: Dictionary = overlay.info_for(record)
+			if not info.editable: continue
+			for entry in overlay.districts[owner].map[record.key]:
+				if int(entry[1]) == 0 and batched.is_empty() and overlay.districts[owner].map[record.key].size() == 1: batched = {"record":record,"entry":entry}
+				if int(entry[1]) == 2 and other.is_empty(): other = {"record":record,"entry":entry}
+		if not batched.is_empty() and not other.is_empty() and owner != a:
+			var swap: Vector2i = a
+			a = owner
+			if owner == b: b = swap
+			else: c = swap
 	check(not batched.is_empty() and not other.is_empty(),"editable batched and standalone statics exist")
 	var architecture := 0
 	for record in overlay.districts[a].records:
@@ -308,21 +321,25 @@ func real_districts() -> void:
 	check(not standalone.visible and overlay.live.has(other.record.target),"move survives unload/reload")
 	state.feed("op|3|Ann|undo|1|0|1");state.feed("chg|3|%s|" % target);state.feed("end|3")
 	check(positions(part,int(batched.entry[2]),int(batched.entry[3])) == original,"undo restores the exact baked vertices")
+	# The terrain checks use the original districts either side of x = 1664.
+	a = original_districts[0]
+	b = original_districts[1]
+	c = original_districts[2]
 	# Terrain brush across the a|b border at x = 1664; c must not rebuild.
 	var cells := State.brush_cells(1664,1560,2,10)
 	state.feed("op|4|Ann|brush|%d|0|0" % cells.size())
 	for cell in cells: state.feed("chg|4|t:%d:%d|h:%d:dirt" % [cell.x,cell.y,cells[cell]])
 	var started := Time.get_ticks_msec()
 	state.feed("end|4")
-	var before_a: PackedVector3Array = overlay.terrain_mesh(a).mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+	var before_a: PackedVector3Array = placed_vertices(overlay.terrain_mesh(a))
 	while not overlay.idle() and Time.get_ticks_msec()-started < 20000: await process_frame
 	var rebuilt: Array = overlay.stats.terrain_rebuilt.map(func(entry: Dictionary): return entry.district)
 	check(rebuilt.size() == 2 and a in rebuilt and b in rebuilt and not c in rebuilt,"only the two touched districts rebuilt (%s)" % str(rebuilt))
-	var va: PackedVector3Array = overlay.terrain_mesh(a).mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
-	var vb: PackedVector3Array = overlay.terrain_mesh(b).mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+	var va: PackedVector3Array = placed_vertices(overlay.terrain_mesh(a))
+	var vb: PackedVector3Array = placed_vertices(overlay.terrain_mesh(b))
 	var edge := {}
 	for v in va:
-		if is_equal_approx(v.x,576.0) and v.z > 146 and v.z < 158: edge[Vector2(v.x,v.z)] = v.y
+		if is_equal_approx(v.x,float(1664-int(index.originX))) and v.z > 1554-int(index.originY) and v.z < 1566-int(index.originY): edge[Vector2(v.x,v.z)] = v.y
 	var shared := 0
 	var cracks := 0
 	for v in vb:
@@ -339,7 +356,7 @@ func real_districts() -> void:
 	district(b,true)
 	started = Time.get_ticks_msec()
 	while not overlay.idle() and Time.get_ticks_msec()-started < 20000: await process_frame
-	var vb2: PackedVector3Array = overlay.terrain_mesh(b).mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+	var vb2: PackedVector3Array = placed_vertices(overlay.terrain_mesh(b))
 	check(vb2 == vb,"terrain edit survives unload/reload")
 	# A newer generation supersedes an in-flight job; stale results never install.
 	state.feed("op|5|Ann|brush|1|0|0");state.feed("chg|5|t:1664:1560|h:20:dirt");state.feed("end|5")
@@ -347,9 +364,18 @@ func real_districts() -> void:
 	state.feed("op|6|Ann|brush|1|0|0");state.feed("chg|6|t:1664:1560|h:-4:dirt");state.feed("end|6")
 	started = Time.get_ticks_msec()
 	while not overlay.idle() and Time.get_ticks_msec()-started < 20000: await process_frame
-	var final: PackedVector3Array = overlay.terrain_mesh(a).mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+	var final: PackedVector3Array = placed_vertices(overlay.terrain_mesh(a))
 	var expected_low := true
 	for i in final.size():
-		if absf(final[i].x-576.0) < 0.01 and absf(final[i].z-152.0) < 0.01: expected_low = expected_low and final[i].y < before_a[i].y
+		if absf(final[i].x-float(1664-int(index.originX))) < 0.01 and absf(final[i].z-float(1560-int(index.originY))) < 0.01: expected_low = expected_low and final[i].y < before_a[i].y
 	check(expected_low and overlay.stats.stale_discarded >= 1,"stale terrain result discarded; newest edit visible")
 	stream.queue_free()
+
+# A terrain mesh's vertices where they stand: the compact cache places each
+# district's terrain node with an offset, so local vertices go through it.
+func placed_vertices(node: MeshInstance3D) -> PackedVector3Array:
+	var local: PackedVector3Array = node.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+	var result := PackedVector3Array()
+	result.resize(local.size())
+	for i in local.size(): result[i] = node.transform*local[i]
+	return result

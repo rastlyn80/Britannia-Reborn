@@ -95,6 +95,15 @@ static func region() -> String:
  if FileAccess.file_exists(trammel.path_join("prepared-modern/index.json")) or FileAccess.file_exists(trammel.path_join("prepared/index.json")):return "trammel"
  return "britain"
 
+# The active dataset's prepared cache folder (Trammel once baked, else
+# Britain), in the current graphics mode, falling back to classic. Tools
+# (developer editing, audits) read the cache through this, never a fixed path.
+static func prepared_folder() -> String:
+ var dataset:=ProjectSettings.globalize_path("res://../outputs/"+region())
+ var folder:=preload("res://Presentation/GraphicsMode.gd").prepared(dataset)
+ if not FileAccess.file_exists(folder.path_join("index.json")):folder=dataset.path_join("prepared")
+ return folder
+
 # deferred: index only; districts load when follow() names a position (the
 # front end, which signs in before anything of the map is loaded).
 func prepare(owner_scene: Node3D, deferred := false) -> bool:

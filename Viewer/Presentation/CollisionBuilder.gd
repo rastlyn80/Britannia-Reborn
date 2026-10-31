@@ -3,6 +3,13 @@ extends RefCounted
 var chunks := {}
 var triangles := 0
 var trunks: Array[Vector3] = []
+# Detailed solids (scanned props, carved architecture) collide as an oriented
+# box around their shape: client collision only serves the camera and mouse
+# picking (movement is the server's and the tile data's), and per-triangle
+# collision of every model was most of a district's size
+# (docs/COMPACT_STREAMING.md).
+const EXACT_TRIANGLE_LIMIT := 300
+var boxes: Array = []   # [Transform3D, Vector3 size]
 
 func add_visual(node: Node3D) -> void:
 	if node.get_meta("kind","") == "tree" and node.get_child_count() > 0: trunks.append(node.position)
@@ -10,6 +17,14 @@ func add_visual(node: Node3D) -> void:
 	var key := Vector2i(int(floor(node.position.x/16)),int(floor(node.position.z/16)))
 	var faces := PackedVector3Array()
 	_collect(node,Transform3D.IDENTITY,faces)
+	if faces.size()/3 > EXACT_TRIANGLE_LIMIT:
+		# Bounds in the node's own frame, so the box turns with it.
+		var inverse := node.transform.affine_inverse()
+		var box := AABB(inverse*faces[0],Vector3.ZERO)
+		for vertex in faces: box = box.expand(inverse*vertex)
+		if box.size.length() > 0.01:
+			boxes.append([node.transform*Transform3D(Basis.IDENTITY,box.get_center()),box.size.max(Vector3.ONE*0.05)])
+			return
 	if not chunks.has(key): chunks[key] = PackedVector3Array()
 	var combined: PackedVector3Array = chunks[key]
 	combined.append_array(faces)
@@ -37,9 +52,19 @@ func finish(parent: Node3D, terrain: MeshInstance3D) -> void:
 		collider.shape = trunk
 		body.add_child(collider)
 		parent.add_child(body)
-	var terrain_faces := PackedVector3Array()
-	for vertex in terrain.mesh.get_faces(): terrain_faces.append(terrain.transform*vertex)
-	chunks[Vector2i(-1,-1)] = terrain_faces
+	for entry in boxes:
+		var body := StaticBody3D.new()
+		body.collision_layer = 1
+		body.collision_mask = 0
+		body.transform = entry[0]
+		var collider := CollisionShape3D.new()
+		var shape := BoxShape3D.new()
+		shape.size = entry[1]
+		collider.shape = shape
+		body.add_child(collider)
+		parent.add_child(body)
+		triangles += 12
+	_terrain_heightmap(parent,terrain)
 	for key in chunks:
 		var faces: PackedVector3Array = chunks[key]
 		if faces.is_empty(): continue
@@ -55,3 +80,44 @@ func finish(parent: Node3D, terrain: MeshInstance3D) -> void:
 		body.add_child(collider)
 		parent.add_child(body)
 		triangles += faces.size()/3
+
+# Ground collision as a heightmap of the terrain's heights at each whole-tile
+# corner (65 x 65 per district, about 17 KB) rather than the subdivided
+# render triangles stored again as collision (tens of thousands per district).
+func _terrain_heightmap(parent: Node3D, terrain: MeshInstance3D) -> void:
+	var heights := {}
+	var low := Vector2i(1 << 30,1 << 30)
+	var high := Vector2i(-(1 << 30),-(1 << 30))
+	for vertex in terrain.mesh.get_faces():
+		var at: Vector3 = terrain.transform*vertex
+		var corner := Vector2i(roundi(at.x),roundi(at.z))
+		if absf(at.x-corner.x) > 0.01 or absf(at.z-corner.y) > 0.01: continue
+		heights[corner] = maxf(float(heights.get(corner,-1e9)),at.y)
+		low = low.min(corner)
+		high = high.max(corner)
+	if heights.is_empty(): return
+	var width := high.x-low.x+1
+	var depth := high.y-low.y+1
+	var data := PackedFloat32Array()
+	data.resize(width*depth)
+	var last := 0.0
+	for z in depth:
+		for x in width:
+			var key := Vector2i(low.x+x,low.y+z)
+			if heights.has(key): last = heights[key]
+			data[z*width+x] = last
+	var shape := HeightMapShape3D.new()
+	shape.map_width = width
+	shape.map_depth = depth
+	shape.map_data = data
+	var body := StaticBody3D.new()
+	body.collision_layer = 1
+	body.collision_mask = 0
+	body.name = "TerrainHeights"
+	# A heightmap is centred on its node.
+	body.position = Vector3(low.x+(width-1)/2.0,0,low.y+(depth-1)/2.0)
+	var collider := CollisionShape3D.new()
+	collider.shape = shape
+	body.add_child(collider)
+	parent.add_child(body)
+	triangles += (width-1)*(depth-1)*2

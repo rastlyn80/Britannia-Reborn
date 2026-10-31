@@ -8,7 +8,7 @@ func run()->void:
  var nodes:=0
  for entry in data.manifest.chunks:
   var at:=Vector2i(entry.x,entry.y)
-  var path:="res://../outputs/britain/prepared/near_%d_%d.res" % [at.x,at.y]
+  var path:=preload("res://Presentation/LiveDistricts.gd").prepared_folder().path_join("near_%d_%d.res" % [at.x,at.y])
   var prepared: Resource=load(path)
   if prepared==null:push_error("Missing prepared district "+path);quit(1);return
   var decoded: Dictionary=prepared.decode()

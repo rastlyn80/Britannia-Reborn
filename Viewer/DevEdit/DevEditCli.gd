@@ -218,7 +218,7 @@ func _bad(text: String) -> bool:
 
 # Source records with live-edit eligibility from the local prepared bake.
 func records_in(area: Rect2i) -> Array:
-	var folder := ProjectSettings.globalize_path("res://../outputs/britain/prepared")
+	var folder := preload("res://Presentation/LiveDistricts.gd").prepared_folder()
 	if index.is_empty() and FileAccess.file_exists(folder.path_join("index.json")): index = JSON.parse_string(FileAccess.get_file_as_string(folder.path_join("index.json")))
 	var found: Array = []
 	for oy in range(floori(float(area.position.y)/64.0)*64,area.end.y,64):

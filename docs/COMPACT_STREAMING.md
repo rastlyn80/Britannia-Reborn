@@ -48,7 +48,7 @@ These are estimates until the first compact bake is measured; the measured figur
 - **Out-of-core facet bake.** `scripts/bake-facet.ps1 -Dataset outputs/<facet> -Modern [-Parallel 4] [-WindowTiles 512]` splits the facet into windows (8 × 8 districts by default) and bakes each in its own process with a one-district ring of context, so joined walls and roofs meet across windows.
   - The planner works in the window's bounds (a 4 × 4 window plans in 0.36 GB instead of 28 GB with full-facet bounds); its geometry is shifted into the dataset frame when saved.
   - Stamps make the bake resumable.
-  - `--finalize` merges the windows' rule catalogs and writes the regional horizon and the index without planning anything.
+  - `FinalizeFacet.gd` then merges the windows' rule catalogs and writes the regional horizon and the index without planning anything.
 - **Size report.** `BakeStreaming.gd -- ... --size-report` prints an estimated breakdown per saved district.
 - **Tests.** `CompactStreamingTests` (in `scripts/verify.ps1`) checks:
   - architecture merges but placed models do not;
@@ -75,12 +75,39 @@ The first full Trammel bake keeps the format above, so the map can be tested. It
 1. **Ocean and empty districts: about 1.2 GB down to about 50 MB.** Flat water is one shared piece, with a heightmap only where the seabed matters, instead of full terrain and collision per district.
 2. **Live-editing source data: about 1.5 GB less.** The per-static vertex positions used to hide or move objects in game are packed tightly (quantised, delta-coded), or read from the converted source data on demand when editing is enabled, instead of plain vertex lists in every district.
 3. **Mesh vertex compression: 30–40% off geometry.** Library models, terrain and architecture are saved with Godot's vertex compression (16-bit positions, compact normals and tangents) where it is visually lossless at game distances.
-4. **Tighter model deduplication.** Models that differ only in material variants share geometry, with the variant applied as a material, so the library grows less.
+4. **Tighter model deduplication: the biggest saving, do it first.** Models that differ only in material variants share geometry, with the variant applied as a material, so the library grows less.
+   - Measured on the first full Trammel bake: the library reached 6.0 GB with 35,378 entries at 6,027 of 7,168 districts, against 5.6 GB for all the district files. Trammel has nowhere near that many distinct models.
+   - Likely cause, to be confirmed: pieces reshaped or recoloured per spot (terrain-fitted, per-placement vertex colour, trimmed to a neighbour) each hash as a new model.
+   - The fix: hash the source model and keep per-spot changes as transforms or material parameters. One-off pieces used in a single district stay inline instead of in the library.
+   - Target: library well under 1 GB.
 
 The stamp-based bake rebakes only what each step changes. A step is done when its measured saving is recorded here.
 
+## First full Trammel bake (31 October 2026)
+
+All 7,168 districts, the dungeons in the east included, baked with `scripts/bake-facet.ps1` (112 windows, two at a time) and published by `FinalizeFacet.gd`.
+
+| Part | Size |
+|---|---:|
+| District files (near) | 7.08 GB |
+| Middle distance (far) | 0.05 GB |
+| Shared model library | 7.3 GB (41,911 entries) |
+| **Total** | **14 GB** |
+
+- Old format at the same density: well over 200 GB.
+- The library is the remaining problem: see next step 4. Fixing it should bring the total to about 7 GB; with steps 1–3, about 3–5 GB.
+
+**Bake time:** about 3 hours of baking at 35–45 districts a minute. Claude Code stopped the driver twice under memory pressure, so the last run was started as its own process.
+
+**Finalize:** `FinalizeFacet.gd` publishes without planning, so a facet has no district limit. Its `--accept-unchanged` re-stamps districts whose files exist after a code change verified not to touch map geometry. It was used once: Reconstruction.gd gained a corpse branch for dynamic items mid-bake, and 5,632 districts were re-stamped.
+
+**Checks:**
+- `scripts/test-streaming.ps1 -Route trinsic` passes on the Trammel cache: 54 district stops with collision and scenery, a memory plateau of about 840 MB, p95 frame 30 ms.
+- Renders of Moonglow and the Covetous area are in place.
+
+**Lesson:** a facet bake takes hours, and every district's stamp covers the bake code. Concurrent edits to that code (Reconstruction.gd, BakeStreaming.gd and their dependencies) mark finished districts out of date, so avoid them during a bake.
+
 ## Status
 
-- Trammel is converted (`outputs/trammel`) and its server world is populated (`scripts/populate-trammel.ps1`).
-- The full Trammel bake waits for the compact format.
-- Existing Britain caches stay usable until they are rebaked compact.
+- Trammel is converted (`outputs/trammel`), baked (`outputs/trammel/prepared-modern`, 14 GB) and its server world is populated (`scripts/populate-trammel.ps1`). The client streams it by default.
+- The earlier Britain and Britain-to-Trinsic caches (old format) are superseded.

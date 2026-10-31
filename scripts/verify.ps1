@@ -50,6 +50,8 @@ if ($LASTEXITCODE) { throw 'Native radar/minimap tests failed' }
 if ($LASTEXITCODE) { throw 'Prepared resource/source/instancing checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/LiveDistrictTests.gd
 if ($LASTEXITCODE) { throw 'Live district readiness checks failed' }
+& $godot --headless --path "$root/Viewer" --script res://Presentation/CompactStreamingTests.gd
+if ($LASTEXITCODE) { throw 'Compact streaming cache rule checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/RegionalSeamTests.gd
 if ($LASTEXITCODE) { throw 'Regional architecture/terrain seam checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/AtlasTests.gd
