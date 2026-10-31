@@ -1093,7 +1093,15 @@ func remember_item(item: Dictionary) -> void:
 	else: container_items.erase(serial)
 	if not pending_transfer.is_empty() and serial == int(pending_transfer.serial):
 		if int(item.get("container",0)) == int(pending_transfer.destination): finish_transfer(true,"Item move confirmed by server.")
-		elif pending_transfer.get("lifted",false) and int(item.get("container",0)) == int(pending_transfer.source): finish_transfer(false,"Server returned the item to its original location.")
+		elif pending_transfer.get("lifted",false) and int(item.get("container",0)) == int(pending_transfer.source):
+			# "Drop at your feet": a tile the item cannot rest on (a step, a
+			# wall foot) bounces it; try the next tile around you instead.
+			var spots: Array = pending_transfer.get("spots",[])
+			if not spots.is_empty():
+				var next: Vector3i = spots.pop_front()
+				pending_transfer.clear()
+				move_item(serial,0,false,next,spots)
+			else: finish_transfer(false,"Server returned the item to its original location.")
 	items_changed.emit()
 func _forget_worn(serial: int) -> void:
 	for owner in mobile_equipment.keys():
@@ -1110,12 +1118,21 @@ func finish_transfer(success: bool, description: String) -> void:
 	pending_transfer.clear()
 	transfer_result.emit(success,description)
 	message_received.emit(description)
-func move_item(serial: int, destination: int, equip_item: bool = false, ground_point: Vector3i = Vector3i(-999,-999,-999)) -> bool:
+func move_item(serial: int, destination: int, equip_item: bool = false, ground_point: Vector3i = Vector3i(-999,-999,-999), spots: Array = []) -> bool:
 	if phase != "world" or not pending_transfer.is_empty() or not known_items.has(serial) or serial == backpack: return false
 	var item: Dictionary = known_items[serial]
 	var source := int(item.get("container",0))
 	if source == destination: return false
-	pending_transfer = {"serial":serial,"source":source,"destination":destination,"lifted":false}
+	pending_transfer = {"serial":serial,"source":source,"destination":destination,"lifted":false,"spots":spots}
+	# At your feet: your own tile first, then the one you face, then the rest
+	# of the ring (the server refuses tiles the item cannot rest on).
+	if destination == 0 and ground_point.x == -999 and not equip_item:
+		var facing := int(player.get("direction",0)) & 7
+		var ring := [Vector2i(0,-1),Vector2i(1,-1),Vector2i(1,0),Vector2i(1,1),Vector2i(0,1),Vector2i(-1,1),Vector2i(-1,0),Vector2i(-1,-1)]
+		var here := Vector3i(int(player.x),int(player.y),int(player.z))
+		for i in 8:
+			var step: Vector2i = ring[(facing+i)%8]
+			pending_transfer.spots.append(here+Vector3i(step.x,step.y,0))
 	var delay := maxf(0.0,float(next_item_action-Time.get_ticks_msec())/1000.0)
 	transfer_deadline = Time.get_ticks_msec()+int(delay*1000)+8000
 	next_item_action = Time.get_ticks_msec()+int(delay*1000)+1100

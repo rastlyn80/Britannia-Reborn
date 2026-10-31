@@ -446,6 +446,11 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	captions.game = game
 	canvas.add_child(captions)
 	canvas.move_child(captions,0)
+	# Items dragged out of a window onto the world (behind every window).
+	var world_drop := preload("res://Network/WorldDrop.gd").new()
+	canvas.add_child(world_drop)
+	canvas.move_child(world_drop,0)
+	world_drop.configure(self)
 	var damage := preload("res://Network/DamageNumbers.gd").new()
 	canvas.add_child(damage)
 	canvas.move_child(damage,1)
