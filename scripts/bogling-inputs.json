@@ -1,0 +1,27 @@
+{
+  "source": "https://tennessippistudios.itch.io/treant-pack",
+  "author": "Tennessippi",
+  "license": "CC0-1.0",
+  "archive_name": "Treant-Package.7z",
+  "archive_bytes": 46456071,
+  "archive_sha256": "1fcddcbd1fbbc8ec84f6001b2192d22794a927c9be2a929457a537e908862cd8",
+  "selected_model": "Treant 2 / Tree02",
+  "inputs": [
+    {
+      "path": "work/creatures/bogling/source/extracted/Treant Package/Treant 2/Tree02_FBX.fbx",
+      "bytes": 2104764,
+      "sha256": "f7f5b4b015ee4df4088b438df80abdc923f1b9a5e430a12d5f069bc87e952293"
+    },
+    {
+      "path": "work/creatures/bogling/source/extracted/Treant Package/Treant 2/Treant_2 Textures/Tree02 Albedo Dark.png",
+      "bytes": 4695545,
+      "sha256": "0378a877e4bfb0179e8b528753517820c98ee6ebd002bbccbe70b6e6ad389d35"
+    },
+    {
+      "path": "work/creatures/bogling/source/extracted/Treant Package/Treant 2/Treant_2 Textures/Tree02 Normal.png",
+      "bytes": 4333716,
+      "sha256": "22460f23a71144bfd11bd4b8089e4759b289ac58e8fa145f69c962d5e9c260f5"
+    }
+  ],
+  "acquisition": "Official zero-price author download, upload4907296. Anonymous session/CSRF/expiring URLs remain private; not reproducible permanent URLs. Extract only static FBX/PNG inputs with built-in tar. No downloaded executable or archive script is run."
+}

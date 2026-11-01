@@ -30,3 +30,8 @@ Viewer/Art/MedievalKit holds selected static modules of MedievalKit 5.1.1, dedic
 ## Local speech-to-text (29 October 2026)
 
 `scripts/setup-speech.ps1` downloads, into the ignored `.tools/whisper` folder, whisper.cpp release b5454 (v1.9.5, MIT, github.com/ggml-org/whisper.cpp; the Windows BLAS build bundles OpenBLAS, BSD-3-Clause) and a Whisper model converted to ggml (OpenAI Whisper weights, MIT; huggingface.co/ggerganov/whisper.cpp at revision 5359861c739e955e79d9a303bcbc70fb988958b1). Every file is pinned by SHA-256 in the script. Nothing is committed or redistributed. Test audio downloaded from Wikimedia Commons (CC0 / CC BY-SA 3.0 de) stayed in a scratch folder and is not part of the repository.
+
+
+## Tennessippi Treant Pack (1 November 2026)
+
+The independent Bogling substitute uses Tree02 mesh, rig, 2048-square albedo/normal maps and ten motions from Tennessippi Studios Free Treant Pack, explicitly CC0 on https://tennessippistudios.itch.io/treant-pack. Exact archive/file pins: scripts/bogling-inputs.json; conversion and modifications: docs/BOGLINGS.md and Viewer/Art/Creatures/Bogling/provenance.json. Artist inputs retain the CC0 exception; original project conversion, new gaits/gestures and shaders are GPL-3.0-or-later. No Ultima Online artwork is included. Anonymous acquisition session tokens, source archive/FBX and local test captures remain excluded.

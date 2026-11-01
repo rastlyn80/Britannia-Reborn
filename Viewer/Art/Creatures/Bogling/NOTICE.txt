@@ -1,0 +1,6 @@
+Bogling independent substitute: Tennessippi Studios Treant Pack, Tree02, CC0-1.0.
+https://tennessippistudios.itch.io/treant-pack
+Source mesh, rig, albedo, normal map and ten source motions are CC0.
+Authored Britannia Reborn conversion, physical Walk/Run, Cast/Pillage/Hit and shaders: GPL-3.0-or-later; root LICENSE.
+No Ultima Online mesh, texture, rig or animation is included.
+Exact archive/input hashes, recipe and motion origins: provenance.json and scripts/bogling-inputs.json.

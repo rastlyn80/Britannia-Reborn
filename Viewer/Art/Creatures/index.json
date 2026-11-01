@@ -2151,6 +2151,448 @@
       "recipe_sha256": "171b79206300f3bdfc14ceefe71693fb4098c26046fd07e303283f770e9d1797",
       "asset_sha256": "97e035049306954884bda58055433a6f11a48c708b06a548d488633ea265559c",
       "native_validation": "Actual three native constructors on two clients; repeat on installed public route"
+    },
+    {
+      "kind": "bogling",
+      "family": "boglings",
+      "status": "validated",
+      "profile": "monster",
+      "contact_kind": "measured_limbs",
+      "limb_support": "tree_biped",
+      "surface_kind": "bark_pbr",
+      "assets": {
+        "modern": "res://Art/Creatures/Bogling/bogling.glb"
+      },
+      "bodies": [
+        {
+          "body": 779,
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "name": "Bogling",
+          "native_profile": "monster",
+          "native_sources": [
+            {
+              "path": "Projects/UOContent/Mobiles/Monsters/Plant/Melee/Bogling.cs",
+              "sha256": "ed3222cecf43e12de2515941173e11b7365cf759040db4c72a7b7c12e05475f6"
+            }
+          ]
+        }
+      ],
+      "stats": {
+        "original": {
+          "bones": 33,
+          "height_m": 1.15,
+          "clips": {
+            "Attack2": {
+              "duration": 1.0416666666666667,
+              "samples": 251,
+              "origin": "Retained Tennessippi source action Tree02|Tree02|Attack2; common ancestor only corrects negative complete-skin penetration",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  4.751799664859391e-08
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Attack3": {
+              "duration": 1.25,
+              "samples": 301,
+              "origin": "Retained Tennessippi source action Tree02|Tree02|Attack3; common ancestor only corrects negative complete-skin penetration",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.009530210867524147
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Attack": {
+              "duration": 1.6666666666666667,
+              "samples": 401,
+              "origin": "Retained Tennessippi source action Tree02|Tree02|Attack_1; common ancestor only corrects negative complete-skin penetration",
+              "floor": {
+                "range_m": [
+                  0.008666619658470154,
+                  0.047456447035074234
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Death": {
+              "duration": 1.25,
+              "samples": 301,
+              "origin": "Retained Tennessippi source action Tree02|Tree02|Death1; common ancestor only corrects negative complete-skin penetration",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.04835231229662895
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Death2": {
+              "duration": 1.1666666666666667,
+              "samples": 281,
+              "origin": "Retained Tennessippi source action Tree02|Tree02|Death2; common ancestor only corrects negative complete-skin penetration",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.1347064971923828
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Death3": {
+              "duration": 1.1666666666666667,
+              "samples": 281,
+              "origin": "Retained Tennessippi source action Tree02|Tree02|Death3; common ancestor only corrects negative complete-skin penetration",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.025064922869205475
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Idle": {
+              "duration": 1.6666666666666667,
+              "samples": 401,
+              "origin": "Retained Tennessippi source action Tree02|Tree02|Idle; common ancestor only corrects negative complete-skin penetration",
+              "floor": {
+                "range_m": [
+                  4.751799664859391e-08,
+                  4.751799664859391e-08
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Dance": {
+              "duration": 1.6666666666666667,
+              "samples": 401,
+              "origin": "Retained Tennessippi source action Tree02|Tree02|River Dance; common ancestor only corrects negative complete-skin penetration",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.020898830145597458
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "SourceRun": {
+              "duration": 1.6666666666666667,
+              "samples": 401,
+              "origin": "Retained Tennessippi source action Tree02|Tree02|Run; common ancestor only corrects negative complete-skin penetration",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.013609684072434902
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Fidget": {
+              "duration": 2.0833333333333335,
+              "samples": 501,
+              "origin": "Retained Tennessippi source action Tree02|Tree02|Taunt; common ancestor only corrects negative complete-skin penetration",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.001589746680110693
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Walk": {
+              "duration": 0.5333333333333333,
+              "samples": 129,
+              "origin": "Authored measured-limb gait with retained source upper-body motion, fixed-length leg IK, explicit stance speed and raised swing; original SourceRun retained separately",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.00034347790642641485
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Run": {
+              "duration": 0.4,
+              "samples": 97,
+              "origin": "Authored measured-limb gait with retained source upper-body motion, fixed-length leg IK, explicit stance speed and raised swing; original SourceRun retained separately",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.0003317513328511268
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Cast": {
+              "duration": 1.4,
+              "samples": 85,
+              "origin": "Authored source-rig reach/cast using explicit role aliases, fixed limb lengths and source stance anchors; not original UO choreography",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.0
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Pillage": {
+              "duration": 1.8,
+              "samples": 109,
+              "origin": "Authored source-rig reach/cast using explicit role aliases, fixed limb lengths and source stance anchors; not original UO choreography",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.0
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Hit": {
+              "duration": 0.6,
+              "samples": 37,
+              "origin": "Authored distributed trunk recoil on source idle; source feet and bone lengths retained",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.0
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            }
+          }
+        },
+        "modern": {
+          "bones": 33,
+          "height_m": 1.15,
+          "clips": {
+            "Attack2": {
+              "duration": 1.0416666666666667,
+              "samples": 251,
+              "origin": "Retained Tennessippi source action Tree02|Tree02|Attack2; common ancestor only corrects negative complete-skin penetration",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  4.751799664859391e-08
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Attack3": {
+              "duration": 1.25,
+              "samples": 301,
+              "origin": "Retained Tennessippi source action Tree02|Tree02|Attack3; common ancestor only corrects negative complete-skin penetration",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.009530210867524147
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Attack": {
+              "duration": 1.6666666666666667,
+              "samples": 401,
+              "origin": "Retained Tennessippi source action Tree02|Tree02|Attack_1; common ancestor only corrects negative complete-skin penetration",
+              "floor": {
+                "range_m": [
+                  0.008666619658470154,
+                  0.047456447035074234
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Death": {
+              "duration": 1.25,
+              "samples": 301,
+              "origin": "Retained Tennessippi source action Tree02|Tree02|Death1; common ancestor only corrects negative complete-skin penetration",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.04835231229662895
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Death2": {
+              "duration": 1.1666666666666667,
+              "samples": 281,
+              "origin": "Retained Tennessippi source action Tree02|Tree02|Death2; common ancestor only corrects negative complete-skin penetration",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.1347064971923828
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Death3": {
+              "duration": 1.1666666666666667,
+              "samples": 281,
+              "origin": "Retained Tennessippi source action Tree02|Tree02|Death3; common ancestor only corrects negative complete-skin penetration",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.025064922869205475
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Idle": {
+              "duration": 1.6666666666666667,
+              "samples": 401,
+              "origin": "Retained Tennessippi source action Tree02|Tree02|Idle; common ancestor only corrects negative complete-skin penetration",
+              "floor": {
+                "range_m": [
+                  4.751799664859391e-08,
+                  4.751799664859391e-08
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Dance": {
+              "duration": 1.6666666666666667,
+              "samples": 401,
+              "origin": "Retained Tennessippi source action Tree02|Tree02|River Dance; common ancestor only corrects negative complete-skin penetration",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.020898830145597458
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "SourceRun": {
+              "duration": 1.6666666666666667,
+              "samples": 401,
+              "origin": "Retained Tennessippi source action Tree02|Tree02|Run; common ancestor only corrects negative complete-skin penetration",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.013609684072434902
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Fidget": {
+              "duration": 2.0833333333333335,
+              "samples": 501,
+              "origin": "Retained Tennessippi source action Tree02|Tree02|Taunt; common ancestor only corrects negative complete-skin penetration",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.001589746680110693
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Walk": {
+              "duration": 0.5333333333333333,
+              "samples": 129,
+              "origin": "Authored measured-limb gait with retained source upper-body motion, fixed-length leg IK, explicit stance speed and raised swing; original SourceRun retained separately",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.00034347790642641485
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Run": {
+              "duration": 0.4,
+              "samples": 97,
+              "origin": "Authored measured-limb gait with retained source upper-body motion, fixed-length leg IK, explicit stance speed and raised swing; original SourceRun retained separately",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.0003317513328511268
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Cast": {
+              "duration": 1.4,
+              "samples": 85,
+              "origin": "Authored source-rig reach/cast using explicit role aliases, fixed limb lengths and source stance anchors; not original UO choreography",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.0
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Pillage": {
+              "duration": 1.8,
+              "samples": 109,
+              "origin": "Authored source-rig reach/cast using explicit role aliases, fixed limb lengths and source stance anchors; not original UO choreography",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.0
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            },
+            "Hit": {
+              "duration": 0.6,
+              "samples": 37,
+              "origin": "Authored distributed trunk recoil on source idle; source feet and bone lengths retained",
+              "floor": {
+                "range_m": [
+                  0.0,
+                  0.0
+                ],
+                "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
+              }
+            }
+          }
+        }
+      },
+      "source": "https://tennessippistudios.itch.io/treant-pack",
+      "license": "CC0-1.0 Tennessippi Tree02 mesh/rig/albedo/normal/ten source actions; GPL-3.0-or-later project conversion, gaits, gestures and shaders",
+      "source_interpretation": "Independent CC0 tree-creature substitute, not recovered UO art. Original means independent donor source, not Ultima Online. Every donor action retained; separate physical Walk/Run and authored Cast/Pillage/Hit.",
+      "partial_hue_interpretation": "Authored brown-bark colour selection, protecting green ivy; not recovered original UO partial-hue regions.",
+      "loop_categories": [
+        "Idle",
+        "Walk",
+        "Run",
+        "SourceRun"
+      ],
+      "camera_height": 0.9,
+      "pick_bounds": {
+        "position": [
+          -1,
+          -0.1,
+          -1
+        ],
+        "size": [
+          2,
+          2,
+          2
+        ]
+      },
+      "locomotion": {
+        "walk_reference_mps": 1.8,
+        "run_reference_mps": 5.5,
+        "run_threshold_mps": 3.6,
+        "rate_min": 0.25,
+        "rate_max": 2.0
+      },
+      "new_action_categories": {
+        "2": "Hit",
+        "5": "Fidget",
+        "14": "Pillage"
+      },
+      "recipe_sha256": "ddac39908e410be81e97bc4abfbcf6f583b2a7bd6799877c3566536dc22875d5",
+      "asset_sha256": "8a9c88b8ca649bf43bfcf9bc697682356739a14fdef32f8fc14d0fddb0468c68",
+      "native_validation": "Real Bogling constructor on both owners; repeat native/avatar checks on installed public route"
     }
   ]
 }
