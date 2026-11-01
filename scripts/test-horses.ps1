@@ -1,4 +1,4 @@
-param([switch]$Live,[switch]$SkipContact,[switch]$Gpu,[switch]$Equines,[switch]$Ostards,[switch]$EquineCompletion,[switch]$LlamaCompletion,[switch]$Ethics,[switch]$Bovines,[string]$CreatureFamily='')
+param([switch]$Live,[switch]$SkipContact,[switch]$Gpu,[switch]$Equines,[switch]$Ostards,[switch]$EquineCompletion,[switch]$LlamaCompletion,[switch]$Ethics,[switch]$Bovines,[switch]$SeaHorse,[string]$CreatureFamily='')
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent
 $godot=(Get-ChildItem "$root/.tools/godot/*console.exe"|Select-Object -First 1).FullName
@@ -26,6 +26,7 @@ try {
  $runtime=Join-Path $root 'work/horse-session/server'
  if ($Ethics) {$runtime=Join-Path $root ('work/ethics-session/'+[Guid]::NewGuid().ToString('N')+'/server')}
  if ($CreatureFamily) {$runtime=Join-Path $root ('work/creature-session/'+[Guid]::NewGuid().ToString('N')+'/server')}
+ if ($SeaHorse) {$runtime=Join-Path $root ('work/sea-horse-session/'+[Guid]::NewGuid().ToString('N')+'/server')}
  $probe=[Net.Sockets.TcpClient]::new()
  try {
   $connection=$probe.ConnectAsync('127.0.0.1',2594)
@@ -87,17 +88,18 @@ try {
   if ($LlamaCompletion) {$liveArgs+='--llama-completion'}
   if ($Ethics) {$liveArgs+='--ethics-only'}
   if ($Bovines) {$liveArgs+='--bovines'}
+  if ($SeaHorse) {$liveArgs+='--sea-horse'}
   if ($CreatureFamily) {$liveArgs+="--family=$CreatureFamily"}
   $started=[DateTime]::UtcNow
-  & $godot --headless --path Viewer --script $(if ($CreatureFamily) {'res://Network/CreatureLive.gd'} elseif ($Ostards -or $EquineCompletion -or $LlamaCompletion -or $Ethics -or $Bovines) {'res://Network/OstardLive.gd'} elseif ($Equines) {'res://Network/EquineLive.gd'} else {'res://Network/HorseLive.gd'}) -- @liveArgs
+  & $godot --headless --path Viewer --script $(if ($CreatureFamily) {'res://Network/CreatureLive.gd'} elseif ($Ostards -or $EquineCompletion -or $LlamaCompletion -or $Ethics -or $Bovines -or $SeaHorse) {'res://Network/OstardLive.gd'} elseif ($Equines) {'res://Network/EquineLive.gd'} else {'res://Network/HorseLive.gd'}) -- @liveArgs
   if ($LASTEXITCODE) { throw 'Native isolated horse integration test failed' }
   if ($CreatureFamily) {
    $report=Join-Path $root "outputs/creatures/$CreatureFamily/live.json"
    if (!(Test-Path $report) -or (Get-Item $report).LastWriteTimeUtc -lt $started.AddSeconds(-1)) {throw 'Creature native test did not write fresh evidence'}
    if ((Get-Content $report -Raw|ConvertFrom-Json).failures -ne 0) {throw 'Creature native integration reported failures'}
   }
-  if ($EquineCompletion -or $LlamaCompletion -or $Ostards -or $Ethics -or $Bovines) {
-   $reportName=if ($Bovines) {'bovine-live.json'} elseif ($Ethics) {'ethics-live.json'} elseif ($EquineCompletion) {'equine-completion-live.json'} elseif ($LlamaCompletion) {'llama-completion-live.json'} else {'live-validation.json'}
+  if ($EquineCompletion -or $LlamaCompletion -or $Ostards -or $Ethics -or $Bovines -or $SeaHorse) {
+   $reportName=if ($SeaHorse) {'sea-horse-live.json'} elseif ($Bovines) {'bovine-live.json'} elseif ($Ethics) {'ethics-live.json'} elseif ($EquineCompletion) {'equine-completion-live.json'} elseif ($LlamaCompletion) {'llama-completion-live.json'} else {'live-validation.json'}
    $report=Join-Path $root "outputs/ostard-riding/$reportName"
    if (!(Test-Path $report) -or (Get-Item $report).LastWriteTimeUtc -lt $started.AddSeconds(-1)) {throw 'Live test did not write fresh evidence; inspect the Godot log.'}
    if ((Get-Content $report -Raw|ConvertFrom-Json).failures -ne 0) {throw 'Live integration reported failures'}

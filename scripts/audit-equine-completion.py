@@ -33,6 +33,7 @@ def main():
     for body,group,hue in re.findall(r'^\s*(\d+)\s+\{([^}]+)\}\s+(\d+)',texts['body.def'],re.M):
         candidates = [int(n.strip()) for n in group.split(',')]
         definitions[int(body)] = (candidates[2] if len(candidates)>=3 else candidates[0],int(hue))
+    assert definitions[144] == (200,1348), 'SeaHorse client fallback changed; re-audit before use'
     sources = {}; rows = []
     # Structural body assignments/constructor pairs, not arbitrary matching
     # numbers (sound IDs, damage, colours and clilocs use the same integers).
@@ -83,12 +84,12 @@ def main():
     assert 'AllowFemaleRider' not in block
     report={'server_revision':revision,'client_reference_sha256':inputs['sha256'],
             'compatibility_routes':rows,'extra_native_source_sha256':sources,
-            'indexed_body_routes':26,'native_body_routes':17,'compatibility_body_routes':9,
+            'indexed_body_routes':27,'native_body_routes':18,'compatibility_body_routes':9,
             'ethereal_equine_items':[0x3eaa,0x3e9b,0x3e9c],
-            'scope':'26 indexed body presentations = 17 native identities + 9 explicit compatibility categories. Three additional item-only ethereal equines. No invented mount items or claim that fallback bodies are active server species. SeaHorse (0x90/0x3EB3) is an aquatic creature outside the terrestrial equine catalogue; other mount families remain separate.'}
+            'scope':'27 indexed body presentations = 18 native identities + 9 explicit compatibility categories. Three additional item-only ethereal equines. SeaHorse144/item0x3EB3 uses its documented horse200/default1348 client-art fallback. No recovered unique geometry, invented mount items or water-riding capability is claimed; other mount families remain separate.'}
     output=ROOT/'outputs/equines';output.mkdir(parents=True,exist_ok=True)
     (output/'completion-audit.json').write_text(json.dumps(report,indent=2))
-    print('EQUINE COMPLETION AUDIT: 17 native + 9 compatibility body identities / 3 item-only ethereals')
+    print('EQUINE COMPLETION AUDIT: 18 native + 9 compatibility body identities / 3 item-only ethereals')
 
 
 if __name__ == '__main__':main()

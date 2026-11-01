@@ -7,7 +7,7 @@ OUT=ROOT/'outputs/equines'
 
 def main():
     captures=json.loads((OUT/'captures.json').read_text())
-    assert len(captures['frames'])==52
+    assert len(captures['frames'])==54
     cards=[]
     for row in captures['frames']:
         name=row['file'];path=OUT/name
@@ -24,9 +24,9 @@ def main():
     (OUT/'index.html').write_text('''<!doctype html><meta charset="utf-8"><title>Britannia Reborn — equines</title>
 <style>body{background:#15232c;color:#e3e9ed;font:16px system-ui;margin:24px}h1{font-size:28px}main{display:grid;grid-template-columns:repeat(auto-fit,minmax(480px,1fr));gap:20px}figure{margin:0;background:#24343f;padding:10px;border-radius:8px}img{width:100%;height:auto}figcaption{padding:8px}a{color:#a9d9f8}p{max-width:1000px}</style>
 <h1>Britannia Reborn — horses and magical equines</h1>
-<p>All 26 indexed body presentations are routed: 17 native identities and 9 explicitly separate client-only compatibility categories. This gallery shows the 24 horse-rig bodies plus two item-only ethereals. Distinct living/ethereal ki-rin and skeletal geometry are in <a href="../mount-integration/index.html">the mount gallery</a>. Compatibility bodies have no invented ridden-item mapping or gameplay permission. These are real Godot Forward+ captures of local visual fixtures. The male unicorn view is fitting only; the server refuses that rider.</p>
+<p>All 27 indexed body presentations are routed: 18 native identities and 9 explicitly separate client-only compatibility categories. This gallery shows the 25 horse-rig bodies plus two item-only ethereals. Distinct living/ethereal ki-rin and skeletal geometry are in <a href="../mount-integration/index.html">the mount gallery</a>. Compatibility bodies have no invented ridden-item mapping or gameplay permission. These are real Godot Forward+ captures of local visual fixtures. The male unicorn view is fitting only; the server refuses that rider.</p>
 <p>Reused Warhorse Lite 1.0.0 under its custom free game-use licence; original procedural horn, panniers and magic effects. Feeding is authored and lying reuses existing collapse art. Exact bespoke anatomy/choreography and redistributable asset packaging remain separate work.</p>
 <ul>'''+''.join(tests)+'</ul><main>'+''.join(cards)+'</main>',encoding='utf-8')
-    print('EQUINE GALLERY: 52 actual frames / 26 identity panels')
+    print('EQUINE GALLERY: 54 actual frames / 27 identity panels')
 
 if __name__=='__main__':main()

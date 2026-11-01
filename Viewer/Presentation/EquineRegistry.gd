@@ -6,6 +6,7 @@ const BODIES := {
 	0xe2:["Horse / dapple grey","grey",0x3ea0],
 	0xe4:["Horse / dun","dun",0x3ea1],
 	0xcc:["Horse / dark brown","brown",0x3ea2],
+	0x90:["Sea horse / documented horse fallback","sea_horse",0x3eb3],
 	0x74:["Nightmare","nightmare",0x3ea7],
 	0xb2:["Nightmare / body 0xB2","nightmare",0x3ea9],
 	0xb3:["Nightmare / body 0xB3","nightmare",0x3eb7],
@@ -37,6 +38,9 @@ const DISTINCT := {0x84:"Ki-rin",0x319:"Skeletal mount / HellSteed"}
 const DEFERRED := {}
 const PROFILES := {
 	"tan":{"colour":Color("b6a07b")},"grey":{"colour":Color("9c9f9f"),"grey":true},
+	# Native SeaHorse has its own body/item; this is its Body.def horse200 art
+	# fallback. A default tint never replaces a nonzero authoritative raw hue.
+	"sea_horse":{"colour":Color("b6a07b"),"default_hue":1348,"artwork_body":200,"artwork_status":"Documented client fallback; no recovered unique mesh or water-riding implementation"},
 	"dun":{"colour":Color("96846a")},"brown":{"colour":Color("5e4130"),"change":0.},
 	"nightmare":{"colour":Color("24232b"),"eyes":Color("d93413"),"scale":Vector3(1.035,1.025,1.03)},
 	"black":{"colour":Color("24232b")},

@@ -14,7 +14,8 @@ func fittings(horse: Node3D) -> Array:
 	return horse.skeleton.get_children().filter(func(node: Node):return node.has_meta("equine_fitting"))
 func run() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://../outputs/equines"))
-	check(Registry.BODIES.size()==15 and Registry.COMPATIBILITY.size()==9 and Registry.DISTINCT.size()==2 and Registry.DEFERRED.is_empty(),"The 26 indexed identities distinguish native, compatibility and distinct-rig routes")
+	check(Registry.BODIES.size()==16 and Registry.COMPATIBILITY.size()==9 and Registry.DISTINCT.size()==2 and Registry.DEFERRED.is_empty(),"The 27 indexed identities distinguish native, compatibility and distinct-rig routes")
+	check(Registry.body_for_mount(0x3eb3)==144 and Registry.profile(144).get("artwork_body")==200 and Registry.profile(144).get("default_hue")==1348,"Native SeaHorse identity stays distinct from its documented client horse fallback")
 	for body: int in Registry.DISTINCT:check(not Horse.supports_body(body),"Distinct geometry stays outside the ordinary horse renderer")
 	for item in [0,0x3e90,0x3eab,0x3eac,0x3e9c,0x3ead,0x3ebb]:check(Horse.horse_body(item)==0,"Unknown, non-equine, ki-rin and skeletal mount items remain deferred")
 	var mount_items: Array=[]
@@ -23,6 +24,12 @@ func run() -> void:
 		loose.apply_server_appearance({"body":body,"hue":53},[])
 		check(loose.horse_visual!=null and loose.human_visual==null and loose.horse_visual.native_body==body and loose.horse_visual.native_hue==53,"Actual loose avatar routing preserves native identity and hue")
 		var horse: Node3D=loose.horse_visual
+		if body==144:
+			var skin: MeshInstance3D=horse.model.find_children("*","MeshInstance3D",true,false)[0]
+			check(horse.native_hue==53 and skin.get_active_material(0).get_shader_parameter("hue_palette")==preload("res://Presentation/HumanHue.gd").palette(53),"Authoritative nonzero SeaHorse hue wins over the fallback default")
+			horse.apply_identity(body,0)
+			check(horse.native_hue==0 and skin.get_active_material(0).get_shader_parameter("hue_palette")==preload("res://Presentation/HumanHue.gd").palette(1348),"Zero raw SeaHorse hue remains zero while artwork uses its documented default tint")
+			horse.apply_identity(body,53)
 		check(horse.model.scale.is_equal_approx(Registry.profile(body).get("scale",Vector3.ONE)),"Profile proportions apply to the visual model")
 		check(is_equal_approx(horse.contact.hoof_height,.17*horse.model.scale.y),"Hoof support uses the scaled visual hoof height")
 		for clip in ["walk","gallop","rear"]:

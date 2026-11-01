@@ -15,6 +15,7 @@ var ethics_status: Array=[]
 var ethics_only:=false
 var ethics_resume:=false
 var bovines:=false
+var sea_horse:=false
 func fixture_reply(session: Node,sex: int,command: String,prefix: String) -> String:
 	replies[sex].clear();session.send_command("[EquineFixture "+command)
 	if not check(await until(func():return replies[sex].any(func(t: String):return t.begins_with(prefix))),"native ethics reply: "+command):return ""
@@ -57,6 +58,7 @@ func run() -> void:
 	ethics_only="--ethics-only" in OS.get_cmdline_user_args()
 	ethics_resume="--ethics-resume" in OS.get_cmdline_user_args()
 	bovines="--bovines" in OS.get_cmdline_user_args()
+	sea_horse="--sea-horse" in OS.get_cmdline_user_args()
 	var accounts: Array=JSON.parse_string(FileAccess.get_file_as_string("res://../work/horse-session/accounts.local.json"))
 	for sex in 2:
 		var session:=Game.new();root.add_child(session);sessions.append(session);replies.append([])
@@ -81,18 +83,23 @@ func run() -> void:
 		await resume_ethics();return
 	for sex in 2:
 		var session: Node=sessions[sex];var observer: Node=sessions[1-sex];var actor: Node3D=avatars[sex];var me:=int(session.player.serial)
-		for variant in (range(42,46) if bovines else [23,24,38,39,40,41] if ethics_only else range(22,33)+range(34,42) if equine_completion else [19,20,21,33] if llama_completion else [13,14,15,16,17,18,19,20,21]):
+		for variant in ([46] if sea_horse else range(42,46) if bovines else [23,24,38,39,40,41] if ethics_only else range(22,33)+range(34,42) if equine_completion else [19,20,21,33] if llama_completion else [13,14,15,16,17,18,19,20,21]):
 			replies[sex].clear();session.send_command("[EquineFixture prepare "+str(variant))
 			if not check(await until(func():return not replies[sex].is_empty()),"real upstream equine fixture prepared"):return
 			var fields: PackedStringArray=replies[sex][-1].split("|")
 			if not check(fields.size()==6 and fields[1]=="prepared","fixture identifies actual native class/body/mount"):return
 			var serial:=int(fields[2]);var body:=int(fields[3]);var item:=int(fields[4]);var ethereal: bool=variant in [16,21,22]
+			if sea_horse:
+				if not check(body==144 and item==0x3eb3 and fields[5]=="SeaHorse","real native SeaHorse identity is distinct from its horse-art fallback"):return
+				var native_state:=await fixture_reply(session,sex,"sea-state","UCEQUINE|sea-state|")
+				if not check(native_state=="UCEQUINE|sea-state|144|16051|0|0|0","native SeaHorse is walking, non-swimming and not tamable; fixture control is setup only"):return
 			print("EQUINE LIVE VARIANT: ",fields[5]," body=",body," item=",item," female=",sex==1)
 			if variant>=38 and variant<=41 and not await join_ethics(session,sex,variant):return
 			if not ethereal:
 				if not check(await until(func():return session.entities.has(serial) and observer.entities.has(serial)),"both clients receive the real loose animal"):return
 				var loose:=preload("res://Presentation/HumanAvatar.gd").new();loose.initial_body=body;root.add_child(loose);loose.set_physics_process(false);loose.apply_server_appearance(session.entities[serial],[])
 				if not check(loose.horse_visual!=null and loose.horse_visual.native_body==body,"received mobile selects the new equine art"):return
+				if sea_horse and not check(loose.horse_visual.native_hue==0 and loose.horse_visual.get_meta("equine_profile").get("default_hue")==1348,"fallback tint stays a presentation default; native zero hue is retained"):return
 				loose.free()
 			elif not session.known_items.has(serial):
 				# A closed backpack does not expose newly added contents. Open it
@@ -140,6 +147,7 @@ func run() -> void:
 			if not ethereal:
 				var loose:=preload("res://Presentation/HumanAvatar.gd").new();loose.initial_body=body;root.add_child(loose);loose.set_physics_process(false);loose.apply_server_appearance(session.entities[serial],[])
 				if bovines and not await bovine_interactions(session,observer,sex,serial,body,loose):return
+				if sea_horse and not await sea_horse_interactions(session,observer,sex,serial,loose):return
 				for action_code in [5,4,3,11]:
 					session.last_mobile_actions.erase(serial);observer.last_mobile_actions.erase(serial)
 					session.send_command("[EquineFixture action "+str(action_code))
@@ -157,7 +165,7 @@ func run() -> void:
 				var visual_root:=Node3D.new();root.add_child(visual_root)
 				if not check(presenter._equine_corpse(visual_root,session.world_items[corpse_serial],corpse_serial),"received native corpse selects matching death model"):return
 				visual_root.free();presenter.hint.free();presenter.free();loose.free()
-			records.append({"female":sex==1,"class":fields[5],"body":body,"mount_item":item,"ethereal":ethereal,"ride_permitted":not denied,"fixture_variant":variant,"ranked_faction_member":variant>=34 and variant<=37,"native_ethics_oath":variant>=38 and variant<=41})
+			records.append({"female":sex==1,"class":fields[5],"native_class":fields[5],"body":body,"mount_item":item,"ethereal":ethereal,"ride_permitted":not denied,"fixture_variant":variant,"ranked_faction_member":variant>=34 and variant<=37,"native_ethics_oath":variant>=38 and variant<=41})
 			replies[sex].clear();session.send_command("[EquineFixture cleanup")
 			if not check(await until(func():return replies[sex].has("UCEQUINE|cleaned")),"owned disposable fixture cleaned"):return
 		if equine_completion or ethics_only:
@@ -168,11 +176,29 @@ func run() -> void:
 	if ethics_only and not await save_ethics():return
 	for actor in avatars:actor.free()
 	for session in sessions:session.close()
-	var report:="bovine-live.json" if bovines else "ethics-live.json" if ethics_only else "equine-completion-live.json" if equine_completion else "llama-completion-live.json" if llama_completion else "live-validation.json"
+	var report:="sea-horse-live.json" if sea_horse else "bovine-live.json" if bovines else "ethics-live.json" if ethics_only else "equine-completion-live.json" if equine_completion else "llama-completion-live.json" if llama_completion else "live-validation.json"
 	var scope:="Actual world entry, native classes/permissions, layer 25, hues, mounted movement, observer replication and dismount on isolated pinned ModernUO. Ranked faction membership and native ethical oaths are disposable test setup; normal mount checks remain active. No production world or saves touched."
 	if bovines:scope="Actual two-client world entry, four native bovine bodies/hues, native Move walk/run replication, real Cow.Tip packets/recovery, owning-player milking API servings/exhaustion, real death and corpse art. Flat arena relocation is fixture setup, not movement evidence. No autonomous AI/pathfinding or complete gameplay/eligibility audit; milking uses the server API, not a client beverage-item interaction."
+	if sea_horse:scope="Real two-client native SeaHorse constructor144/item0x3EB3; both controlled owners use normal mount/movement/dismount, loose Move walk/run, full/partial hues/actions/death/corpse replication. Native flags are non-swimming, walking and not tamable: fixture control does not establish taming eligibility. Uses the documented client horse-art fallback, not recovered SeaHorse geometry or water-riding gameplay. Controlled sampling is not autonomous AI/choreography certification."
 	var file:=FileAccess.open("res://../outputs/ostard-riding/"+report,FileAccess.WRITE);file.store_string(JSON.stringify({"checks":checks,"failures":0,"records":records,"ethics_status":ethics_status,"scope":scope},"\t"));file.close()
 	print("OSTARD NATIVE INTEGRATION: ",checks," checks / 0 failures");quit()
+func sea_horse_interactions(session: Node,observer: Node,sex: int,serial: int,loose: Node3D) -> bool:
+	for hue in [53,0x8000|53]:
+		await fixture_reply(session,sex,"colour "+str(hue),"UCEQUINE|colour|")
+		if not check(await until(func():return int(session.entities[serial].get("hue",0))==hue and int(observer.entities[serial].get("hue",0))==hue),"native loose SeaHorse full/partial hues reach both clients"):return false
+		loose.apply_server_appearance(session.entities[serial],[])
+		if not check(loose.horse_visual.native_hue==hue,"SeaHorse retains actual raw hue flags over its fallback tint"):return false
+	for running in [false,true]:
+		var start:=Time.get_ticks_msec()
+		while Time.get_ticks_msec()-start<800:await process_frame
+		var response:=await fixture_reply(session,sex,"animal-step "+("1" if running else "0"),"UCEQUINE|step|")
+		if response.is_empty():return false
+		var fields:=response.split("|");var target:=Vector2i(int(fields[2]),int(fields[3]))
+		if not check(await until(func():return Vector2i(session.entities[serial].x,session.entities[serial].y)==target and Vector2i(observer.entities[serial].x,observer.entities[serial].y)==target),"actual loose SeaHorse Move walk/run reaches both clients"):return false
+		if not check(bool(session.entities[serial].get("running",false))==running and bool(observer.entities[serial].get("running",false))==running,"native loose SeaHorse running flag is retained"):return false
+		loose.animate(true,0.,.1,6.8 if running else 1.8)
+		if not check(loose.horse_visual.current_clip==("canter" if running else "walk"),"actual loose SeaHorse avatar selects the matching shared gait"):return false
+	return true
 func save_ethics() -> bool:
 	for sex in 2:
 		var session: Node=sessions[sex];var variant:=38+sex

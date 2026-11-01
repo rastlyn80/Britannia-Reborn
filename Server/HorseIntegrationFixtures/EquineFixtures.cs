@@ -118,6 +118,7 @@ public static class EquineFixtures
         43 => new Cow { Body = 0xE7 },
         44 => new Bull { Body = 0xE8 },
         45 => new Bull { Body = 0xE9 },
+        46 => new SeaHorse(),
         _ => throw new ArgumentOutOfRangeException(nameof(index))
     };
 
@@ -135,9 +136,9 @@ public static class EquineFixtures
         else if (command == "prepare" && args.Length > 1)
         {
             var index = args.GetInt32(1);
-            if (index < 0 || index > 45) return;
+            if (index < 0 || index > 46) return;
             Cleanup(owner);
-            if (index >= 42 && !PrepareBovineArena(owner))
+            if (index is >= 42 and <= 45 && !PrepareBovineArena(owner))
             {
                 owner.SendMessage("UCEQUINE|arena-blocked");
                 return;
@@ -248,7 +249,11 @@ public static class EquineFixtures
                 && ReferenceEquals(evil, Server.Ethics.Ethic.Evil) && duplicateHero.Deleted && duplicateEvil.Deleted;
             owner.SendMessage($"UCEQUINE|duplicates|{(preserved ? 1 : 0)}");
         }
-        else if (command == "bovine-step" && Animals.TryGetValue(owner, out var walker))
+        else if (command == "sea-state" && Animals.TryGetValue(owner, out var sea) && sea is SeaHorse)
+        {
+            owner.SendMessage($"UCEQUINE|sea-state|{sea.Body.BodyID}|{((BaseMount)sea).ItemID}|{(sea.CanSwim ? 1 : 0)}|{(sea.CantWalk ? 1 : 0)}|{(sea.Tamable ? 1 : 0)}");
+        }
+        else if ((command is "bovine-step" or "animal-step") && Animals.TryGetValue(owner, out var walker))
         {
             for (var direction = 0; direction < 8; direction++)
             {

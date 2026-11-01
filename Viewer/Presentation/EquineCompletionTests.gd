@@ -12,7 +12,7 @@ func check(ok: bool,label: String) -> void:
 	if not ok:failures+=1;if failures<12:push_error(label)
 func run() -> void:
 	var indexed: Array=Registry.BODIES.keys()+Registry.COMPATIBILITY.keys()+Registry.DISTINCT.keys()
-	check(indexed.size()==26,"Original indexed denominator stays 26")
+	check(indexed.size()==27,"The extended catalogue includes native SeaHorse separately from the 26 historical identities")
 	for body: int in indexed:check(Mounts.supports_body(body),"Every indexed body has installed presentation")
 	var view:=preload("res://Presentation/WorldItems.gd").new();root.add_child(view)
 	for body: int in Registry.COMPATIBILITY:

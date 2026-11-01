@@ -79,5 +79,5 @@ func run() -> void:
 		check(float(opaque_changed)/maxi(1,occupied)<.02,"Returning from ethereal to ordinary profile restores opacity")
 		rows.append({"ethereal_item":item,"occupied":occupied,"transmissive_pixels":transmissive,"ordinary_background_leak":opaque_changed})
 	stage.free();viewport.queue_free();await process_frame
-	var file:=FileAccess.open("res://../outputs/equines/appearance-validation.json",FileAccess.WRITE);file.store_string(JSON.stringify({"checks":checks,"failures":failures,"samples":rows,"scope":"Real Forward+ differential captures: all 15 opaque profiles, dyes/tack, horn and pannier visibility; two ethereal transmissions and opaque restoration. Finite views, not final art approval."},"\t"));file.close()
+	var file:=FileAccess.open("res://../outputs/equines/appearance-validation.json",FileAccess.WRITE);file.store_string(JSON.stringify({"checks":checks,"failures":failures,"samples":rows,"scope":"Real Forward+ differential captures: all 16 opaque profiles, dyes/tack, horn and pannier visibility; two ethereal transmissions and opaque restoration. Finite views, not final art approval."},"\t"));file.close()
 	print("EQUINE APPEARANCE GPU: ",checks," checks / ",failures," failures");quit(1 if failures else 0)
