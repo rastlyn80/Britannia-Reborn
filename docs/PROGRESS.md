@@ -1393,6 +1393,12 @@ Saved graceful restart loaded 297 items and 3 mobiles. Population remains idempo
 
 # Progress — 25 October 2026
 
+## 1 November 2026 - Loot you can see, splits that stay split
+
+- Ground items (owner: dropped gold looked minuscule or vanished): every item you can take gets a soft breathing gold halo just above it (GroundGlow.gdshader, a camera-facing glow pulled 0.6 m toward the camera so the ground under a half-sunk item never hides it, while walls still do); loose items under 0.5 m are drawn 1.35x larger, at least ~28 cm across. Render: bare coin nearly invisible, enlarged and sunk coins clearly marked.
+- Splitting inside a container (owner: the stack stayed the same): a drop into a container at (-1,-1) lets ModernUO merge it straight back into the matching stack; a split inside its own container now drops at a spot beside the original (+12,+8), as the original client does. Live: 1000 gold in the backpack became 900 and 100.
+- Evidence: StackSplitTests 10/0, WorldItemTests 99/0, CommerceTests 22/0, GameTests 19/0.
+
 ## 1 November 2026 - Real skill waits while targeting, your pets in their own colour, lighter dungeons
 
 - Skill timers (owner: taming that angered the beast still showed the full delay): ModernUO parks a placeholder (Animal Taming 30 s) while a skill's target cursor is open and resets it to 0 the moment the target ends (anger, failure) or keeps it for a taming in progress. The quickbar now shows "target" with a soft pulse while you aim, no countdown, then the server's real wait. Live: taming then targeting reported 29.9 s then 0, the bar showed aiming then 0.0 s. Cooldowns.aim, ActionRunner, QuickbarSlot.

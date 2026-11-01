@@ -1160,7 +1160,12 @@ func move_item(serial: int, destination: int, equip_item: bool = false, ground_p
 	next_item_action = Time.get_ticks_msec()+int(delay*1000)+1100
 	var packet := Commerce.lift(serial,lifted)
 	if equip_item: packet.append_array(Commerce.equip(serial,int(player.serial)))
-	else: packet.append_array(Commerce.drop(serial,destination,(ground_point if ground_point.x!=-999 else Vector3i(int(player.x),int(player.y),int(player.z))) if destination == 0 else Vector3i(-1,-1,0)))
+	# Into a container: anywhere (-1,-1), which ModernUO merges with a matching
+	# stack, except a split inside its own container, which goes to a spot
+	# beside the original so it stays a separate pile (as the original client).
+	var inside := Vector3i(-1,-1,0)
+	if destination != 0 and source == destination: inside = Vector3i(clampi(int(item.get("x",60))+12,10,160),clampi(int(item.get("y",60))+8,10,140),0)
+	if not equip_item: packet.append_array(Commerce.drop(serial,destination,(ground_point if ground_point.x!=-999 else Vector3i(int(player.x),int(player.y),int(player.z))) if destination == 0 else inside))
 	if delay > 0:
 		get_tree().create_timer(delay).timeout.connect(func():
 			if phase == "world" and not pending_transfer.is_empty() and int(pending_transfer.serial)==serial: send(packet))

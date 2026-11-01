@@ -894,9 +894,51 @@ func _mark(serial: int, strong: bool) -> void:
   grab_soft.shader = preload("res://Presentation/Grabbable.gdshader")
   grab_strong = grab_soft.duplicate()
   grab_strong.set_shader_parameter("strength",1.8)
- for mesh: GeometryInstance3D in nodes[serial].find_children("*","GeometryInstance3D",true,false):
-  mesh.material_overlay = grab_strong if strong else grab_soft
- nodes[serial].set_meta("grab_marked",true)
+ if halo_soft == null:
+  halo_soft = ShaderMaterial.new()
+  halo_soft.shader = preload("res://Presentation/GroundGlow.gdshader")
+  halo_strong = halo_soft.duplicate()
+  halo_strong.set_shader_parameter("strength",1.1)
+ var root: Node3D = nodes[serial]
+ if not root.has_node("GroundGlow"): _add_halo(root)
+ for mesh: GeometryInstance3D in root.find_children("*","GeometryInstance3D",true,false):
+  if mesh.name == "GroundGlow": mesh.material_override = halo_strong if strong else halo_soft
+  else: mesh.material_overlay = grab_strong if strong else grab_soft
+ root.set_meta("grab_marked",true)
+
+# Loot is easy to miss: a gold pile is a few centimetres across and may sit
+# half in the ground. Small models are drawn larger (at least ~28 cm), and every
+# item you can take gets a soft halo just above it (GroundGlow.gdshader).
+static var halo_soft: ShaderMaterial
+static var halo_strong: ShaderMaterial
+const MIN_EXTENT := 0.28
+const SMALL_ITEM := 0.5
+func _add_halo(root: Node3D) -> void:
+ var box := AABB()
+ var first := true
+ for mesh: GeometryInstance3D in root.find_children("*","GeometryInstance3D",true,false):
+  var local: AABB = root.global_transform.affine_inverse()*mesh.global_transform*mesh.get_aabb() if root.is_inside_tree() else mesh.transform*mesh.get_aabb()
+  box = local if first else box.merge(local)
+  first = false
+ if first: box = AABB(Vector3(-0.1,0,-0.1),Vector3(0.2,0.1,0.2))
+ var extent := maxf(box.size.x,maxf(box.size.y,box.size.z))
+ if extent > 0.001 and extent < SMALL_ITEM:
+  # Loose items read a little larger than life (owner: gold piles and the
+  # like were too small to see): at least MIN_EXTENT across, others 1.35x.
+  var grow := minf(3.5,maxf(1.35,MIN_EXTENT/extent))
+  root.scale *= grow
+  box = AABB(box.position*grow,box.size*grow)
+ var halo := MeshInstance3D.new()
+ halo.name = "GroundGlow"
+ var quad := QuadMesh.new()
+ # The halo is a camera-facing quad in metres (the billboard ignores scale).
+ quad.size = Vector2.ONE*clampf(maxf(box.size.x,box.size.z)+0.5,0.6,1.4)
+ halo.mesh = quad
+ halo.material_override = halo_soft
+ halo.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+ halo.extra_cull_margin = 1.0
+ halo.position = (box.get_center()+Vector3.UP*(box.size.y*0.5+0.08))/root.scale
+ root.add_child(halo)
 
 func _grab_update(delta: float) -> void:
  if session == null or session.phase != "world" or scene == null or scene.camera == null: return
