@@ -282,8 +282,8 @@ public static class DevEditCommands
                     : DevEditPets.Give(mobile, a[2], a.Length == 4 ? int.Parse(a[3]) : 1);
                 break;
             case "stat" when a.Length == 4:
-                result = !DevEditSession.ValidStat(a[2], a[3]) ? Result.Fail("invalid", "stat str|dex|int|hits|stam|mana <1-250|full>")
-                    : DevEditPets.Stat(mobile, a[2], a[3]);
+                result = !DevEditSession.ValidStat(a[2].ToLowerInvariant(), a[3].ToLowerInvariant()) ? Result.Fail("invalid", "stat str|dex|int|hits|stam|mana <1-250|full> | followers <1-30> | access player|counselor|gamemaster|seer|administrator")
+                    : DevEditPets.Stat(mobile, a[2].ToLowerInvariant(), a[3].ToLowerInvariant());
                 break;
             case "skill" when a.Length == 4:
                 result = !DevEditSession.ValidTypeName(a[2]) || !DevEditSession.ValidSkillValue(a[3]) ? Result.Fail("invalid", "skill <skill name> <0-120>")

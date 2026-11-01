@@ -442,10 +442,17 @@ public sealed class DevEditSession
     public static bool ValidTypeName(string name) =>
         name.Length is > 1 and <= 40 && char.IsLetter(name[0]) && name.All(char.IsLetterOrDigit);
 
-    public static readonly string[] Stats = ["str", "dex", "int", "hits", "stam", "mana"];
+    public static readonly string[] Stats = ["str", "dex", "int", "hits", "stam", "mana", "followers", "access"];
 
-    public static bool ValidStat(string name, string value) =>
-        Array.IndexOf(Stats, name) >= 0 && (value == "full" || int.TryParse(value, out var v) && v is >= 1 and <= 250);
+    // Staff levels a developer may give their own account (never Owner).
+    public static readonly string[] AccessLevels = ["player", "counselor", "gamemaster", "seer", "administrator"];
+
+    public static bool ValidStat(string name, string value) => name switch
+    {
+        "access" => Array.IndexOf(AccessLevels, value) >= 0,
+        "followers" => int.TryParse(value, out var f) && f is >= 1 and <= 30,
+        _ => Array.IndexOf(Stats, name) >= 0 && (value == "full" || int.TryParse(value, out var v) && v is >= 1 and <= 250)
+    };
 
     public static bool ValidSkillValue(string value) =>
         double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out var v) && v is >= 0 and <= 120;

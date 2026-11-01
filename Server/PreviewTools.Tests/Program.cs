@@ -146,6 +146,7 @@ Check(DevEditSession.AssistantMay("propose") && DevEditSession.AssistantMay("pre
 Check(DevEditSession.ValidPet("horse") && DevEditSession.ValidPet("cat") && !DevEditSession.ValidPet("dragon") && !DevEditSession.ValidPet("Horse"), "pet takes only the listed tame kinds");
 Check(DevEditSession.ValidTypeName("Hatchet") && DevEditSession.ValidTypeName("BlackPearl") && !DevEditSession.ValidTypeName("../x") && !DevEditSession.ValidTypeName("Server.Items.Gold") && !DevEditSession.ValidTypeName("x"), "give/pet/skill names are plain identifiers");
 Check(DevEditSession.ValidStat("str", "100") && DevEditSession.ValidStat("stam", "full") && !DevEditSession.ValidStat("str", "999") && !DevEditSession.ValidStat("luck", "10") && DevEditSession.ValidSkillValue("100") && !DevEditSession.ValidSkillValue("121"), "stat and skill values are bounded");
+Check(DevEditSession.ValidStat("followers", "10") && !DevEditSession.ValidStat("followers", "99") && DevEditSession.ValidStat("access", "administrator") && !DevEditSession.ValidStat("access", "owner"), "followers bounded; access up to Administrator, never Owner");
 Check(DevEditSession.ValidKit("mage") && !DevEditSession.ValidKit("gm") && !DevEditSession.ValidKit(""), "kit takes only the listed test kits");
 
 Console.WriteLine($"DEV EDIT SESSION TESTS: {passes} passed, {failures} failed");

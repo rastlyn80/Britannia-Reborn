@@ -141,10 +141,29 @@ public static class DevEditPets
 
     public static Result Stat(Mobile mobile, string name, string value)
     {
+        if (name == "access")
+        {
+            // The developer's own account and character (local dev accounts only).
+            var level = value switch
+            {
+                "counselor" => AccessLevel.Counselor,
+                "gamemaster" => AccessLevel.GameMaster,
+                "seer" => AccessLevel.Seer,
+                "administrator" => AccessLevel.Administrator,
+                _ => AccessLevel.Player
+            };
+            if (mobile.Account is { } account)
+            {
+                account.AccessLevel = level;
+            }
+            mobile.AccessLevel = level;
+            return new Result { Ok = true, Code = "access" };
+        }
         var full = value == "full";
         var number = full ? 0 : int.Parse(value);
         switch (name)
         {
+            case "followers": mobile.FollowersMax = number; break;
             case "str": mobile.RawStr = number; mobile.Hits = mobile.HitsMax; break;
             case "dex": mobile.RawDex = number; mobile.Stam = mobile.StamMax; break;
             case "int": mobile.RawInt = number; mobile.Mana = mobile.ManaMax; break;
