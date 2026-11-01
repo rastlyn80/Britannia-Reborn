@@ -1,0 +1,452 @@
+{
+  "source": {
+    "author": "Quaternius",
+    "source": "https://opengameart.org/node/78596",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "download": "https://opengameart.org/sites/default/files/Animal%20Pack%20Vol.2%20by%20%40Quaternius.zip",
+    "archive_bytes": 2069972,
+    "archive_sha256": "6d8f6789d65dbdb352ebad98a4209f26b41b384e87d81bc05e9ca76139db1248",
+    "member": "Animal Pack Vol.2 by @Quaternius/Blends/Eagle.blend",
+    "member_bytes": 804128,
+    "member_sha256": "ca9d09c805d51d0df063bd25ebe3f85bc67b4e2ecc2fef174aa72f29b85e9e93",
+    "scope": "Independent eagle mesh, 24-bone rig and Idle/Flying donor clips. Donor Idle is airborne, not perched. Authored grounded poses, wing packing, eyes and additional actions must be identified separately. No original UO art or choreography."
+  },
+  "asset_sha256": "34faf6c6e2a63624a43811717cb77f522893a26c4e56f4684120f6b248ea6ef1",
+  "preparation": {
+    "source": {
+      "author": "Quaternius",
+      "source": "https://opengameart.org/node/78596",
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "download": "https://opengameart.org/sites/default/files/Animal%20Pack%20Vol.2%20by%20%40Quaternius.zip",
+      "archive_bytes": 2069972,
+      "archive_sha256": "6d8f6789d65dbdb352ebad98a4209f26b41b384e87d81bc05e9ca76139db1248",
+      "member": "Animal Pack Vol.2 by @Quaternius/Blends/Eagle.blend",
+      "member_bytes": 804128,
+      "member_sha256": "ca9d09c805d51d0df063bd25ebe3f85bc67b4e2ecc2fef174aa72f29b85e9e93",
+      "scope": "Independent eagle mesh, 24-bone rig and Idle/Flying donor clips. Donor Idle is airborne, not perched. Authored grounded poses, wing packing, eyes and additional actions must be identified separately. No original UO art or choreography."
+    },
+    "recipe_sha256": "1540616b76eaae28f82d9c7ae6d528193417174657de574449d02b223fe52c58",
+    "source_triangles": 1532,
+    "bones": 24,
+    "source_fps": 24.0,
+    "sample_rate": 120,
+    "scale": 0.15,
+    "donor_modifiers": [
+      {
+        "name": "Subsurf",
+        "type": "SUBSURF",
+        "viewport_enabled": true,
+        "render_enabled": true,
+        "levels": 0
+      },
+      {
+        "name": "Armature",
+        "type": "ARMATURE",
+        "viewport_enabled": true,
+        "render_enabled": true,
+        "levels": null
+      }
+    ],
+    "subdivision_policy": "Raw 1532-triangle cage for source comparison; donor subdivision modifier removed before measuring/exporting either skin. Modern cage receives one explicitly applied subdivision before linear skinning.",
+    "source_object_anchor_removed": [
+      -0.0062964195385575294,
+      -1.4774972200393677,
+      -0.01795285940170288
+    ],
+    "mesh_to_rig_bind_transform": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        0.0062964195385575294
+      ],
+      [
+        0.0,
+        1.0,
+        0.0,
+        1.4774972200393677
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.01795285940170288
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "source_loop_gap_m": {
+      "AirIdle": 0.0,
+      "Fly": 0.021451834216470605
+    },
+    "flight_constant_lift_m": 0.856231825351715,
+    "flight_clearance_m": 0.08,
+    "clips": {
+      "AirIdle": {
+        "duration": 1.6666666666666667,
+        "loop": false,
+        "source_action": "Idle",
+        "support_policy": "airborne",
+        "origin": "Evaluated Quaternius donor Idle; source timing preserved, not recovered UO motion"
+      },
+      "Fly": {
+        "duration": 1.2083333333333333,
+        "loop": false,
+        "source_action": "Flying",
+        "support_policy": "airborne",
+        "origin": "Evaluated Quaternius donor Flying; source timing preserved, not recovered UO motion"
+      },
+      "Run": {
+        "duration": 1.325,
+        "loop": true,
+        "support_policy": "airborne",
+        "origin": "Donor Flying plus declared 0.12-second local-TRS closing interval; constant full-cycle measured clearance"
+      },
+      "Idle": {
+        "duration": 2.0,
+        "loop": true,
+        "support_policy": "grounded",
+        "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+      },
+      "Walk": {
+        "duration": 0.7166666666666667,
+        "loop": true,
+        "support_policy": "hop",
+        "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+      },
+      "Attack": {
+        "duration": 0.65,
+        "loop": false,
+        "support_policy": "grounded",
+        "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+      },
+      "Attack2": {
+        "duration": 0.75,
+        "loop": false,
+        "support_policy": "grounded",
+        "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+      },
+      "Hit": {
+        "duration": 0.45,
+        "loop": false,
+        "support_policy": "grounded",
+        "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+      },
+      "Eat": {
+        "duration": 2.2,
+        "loop": false,
+        "support_policy": "grounded",
+        "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+      },
+      "Fidget": {
+        "duration": 2.4,
+        "loop": true,
+        "support_policy": "grounded",
+        "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+      },
+      "Alert": {
+        "duration": 1.1,
+        "loop": false,
+        "support_policy": "grounded",
+        "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+      },
+      "TakeOff": {
+        "duration": 0.7,
+        "loop": false,
+        "support_policy": "transition",
+        "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+      },
+      "Land": {
+        "duration": 0.8,
+        "loop": false,
+        "support_policy": "transition",
+        "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+      },
+      "Death": {
+        "duration": 1.2,
+        "loop": false,
+        "support_policy": "grounded",
+        "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+      },
+      "Death2": {
+        "duration": 1.2,
+        "loop": false,
+        "support_policy": "grounded",
+        "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+      },
+      "AirHit": {
+        "duration": 0.45,
+        "loop": false,
+        "support_policy": "airborne",
+        "origin": "Authored airborne Hit variation; donor first flight pose preserved at start, death ends at identical grounded cadaver pose"
+      },
+      "AirAttack": {
+        "duration": 0.65,
+        "loop": false,
+        "support_policy": "airborne",
+        "origin": "Authored airborne Attack variation; donor first flight pose preserved at start, death ends at identical grounded cadaver pose"
+      },
+      "AirAttack2": {
+        "duration": 0.75,
+        "loop": false,
+        "support_policy": "airborne",
+        "origin": "Authored airborne Attack2 variation; donor first flight pose preserved at start, death ends at identical grounded cadaver pose"
+      },
+      "AirDeath": {
+        "duration": 1.2,
+        "loop": false,
+        "support_policy": "transition",
+        "origin": "Authored airborne Death variation; donor first flight pose preserved at start, death ends at identical grounded cadaver pose"
+      },
+      "AirDeath2": {
+        "duration": 1.2,
+        "loop": false,
+        "support_policy": "transition",
+        "origin": "Authored airborne Death2 variation; donor first flight pose preserved at start, death ends at identical grounded cadaver pose"
+      }
+    },
+    "wing_packing": {
+      "method": "Common local-bone affine fan, no alternating folded LBS elbows",
+      "local_scale": [
+        1.0,
+        0.55,
+        0.3
+      ],
+      "death_tail_local_scale": [
+        1.0,
+        1.0,
+        0.4
+      ],
+      "scope": "Authored landed compression, source flight full span retained; extra wing/tail closing for cadavers"
+    },
+    "treatments": {
+      "source": {
+        "asset_sha256": "09765d1303f1752b2e195812ab9307a990dcd7226e92e2c0bfdc702e5ff32045",
+        "triangles": 1532,
+        "bake_position_error_max_m": 6.113763212184462e-07,
+        "bake_basis_error_max": 1.475214958190918e-06,
+        "floor": {
+          "AirIdle": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Fly": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Run": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Idle": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Walk": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Attack": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Attack2": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Hit": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Eat": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Fidget": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Alert": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "TakeOff": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Land": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Death": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Death2": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "AirHit": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "AirAttack": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "AirAttack2": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "AirDeath": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "AirDeath2": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          }
+        }
+      },
+      "modern": {
+        "asset_sha256": "34faf6c6e2a63624a43811717cb77f522893a26c4e56f4684120f6b248ea6ef1",
+        "triangles": 7544,
+        "bake_position_error_max_m": 6.113763212184462e-07,
+        "bake_basis_error_max": 1.475214958190918e-06,
+        "floor": {
+          "AirIdle": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Fly": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Run": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Idle": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Walk": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Attack": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Attack2": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Hit": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Eat": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Fidget": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Alert": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "TakeOff": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Land": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "Death": {
+            "floor_correction_min_m": -0.057788800448179245,
+            "floor_correction_max_m": 0.01116759143769741
+          },
+          "Death2": {
+            "floor_correction_min_m": -0.02438298985362053,
+            "floor_correction_max_m": 0.010228085331618786
+          },
+          "AirHit": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "AirAttack": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "AirAttack2": {
+            "floor_correction_min_m": 0.0,
+            "floor_correction_max_m": 0.0
+          },
+          "AirDeath": {
+            "floor_correction_min_m": -0.05778869614005089,
+            "floor_correction_max_m": 0.0
+          },
+          "AirDeath2": {
+            "floor_correction_min_m": -0.03395670937849985,
+            "floor_correction_max_m": 0.0
+          }
+        }
+      }
+    },
+    "comparison_scope": "Source cage with raw donor AirIdle/Fly and explicitly authored remaining categories; only the former two are original donor motion.",
+    "eye_surface_attachments": [
+      {
+        "head_surface_point_mesh_bind": [
+          -0.2695275545120239,
+          0.6156286001205444,
+          0.15958885848522186
+        ],
+        "eye_centre_mesh_bind": [
+          -0.2266249805688858,
+          0.6020804047584534,
+          0.15868563950061798
+        ],
+        "outward": [
+          -0.9533905386924744,
+          0.3010707199573517,
+          0.020071379840373993
+        ]
+      },
+      {
+        "head_surface_point_mesh_bind": [
+          0.2690746784210205,
+          0.619462251663208,
+          0.15984442830085754
+        ],
+        "eye_centre_mesh_bind": [
+          0.22617210447788239,
+          0.6059140563011169,
+          0.15894120931625366
+        ],
+        "outward": [
+          0.9533905386924744,
+          0.3010707199573517,
+          0.020071379840373993
+        ]
+      }
+    ],
+    "maximum_skin_influences": 7
+  },
+  "validation": {
+    "motion_checks": 3865,
+    "skin_samples": 1000,
+    "presentation_checks": 129,
+    "native_checks": 112
+  },
+  "scope": "Independent Quaternius CC0 donor cage/rig/two clips; GPL authored refinement/eyes/actions/conversion. No UO geometry, rig, texture or animation data."
+}

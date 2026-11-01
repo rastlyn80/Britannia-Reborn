@@ -10,10 +10,14 @@ def main():
     index=json.loads((ROOT/'Viewer/local-art/creatures/accepted-index.json').read_text(encoding='utf-8'));rows=[]
     public=ROOT/'Viewer/Art/Creatures/index.json'
     if public.exists():index['entries']=json.loads(public.read_text(encoding='utf-8'))['entries']+index['entries']
+    # Match CreatureRegistry's validated, last-record-wins precedence. A local
+    # revision of a public body must produce one native fixture, not twins.
+    owners={int(body['body']):entry for entry in index['entries'] if entry.get('status')=='validated' for body in entry['bodies']}
     for entry in index['entries']:
         if entry.get('status')!='validated':continue
         if args.family!='all' and entry['family']!=args.family:continue
         for body in entry['bodies']:
+            if owners[int(body['body'])] is not entry:continue
             classes=set()
             for source in body['native_sources']:
                 path=ROOT/'Server/ModernUO'/source['path'].replace('\\','/')

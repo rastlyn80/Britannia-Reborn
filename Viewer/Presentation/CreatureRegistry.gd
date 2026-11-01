@@ -21,5 +21,7 @@ static func supports_body(body: int) -> bool:
 static func asset_path(record: Dictionary,treatment: String="modern") -> String:
 	return str(record.get("assets",{}).get(treatment,"res://local-art/creatures/"+str(record.get("kind",""))+"-"+treatment+".gltf"))
 static func create(body: int) -> Node3D:
-	var result:=Visual.new();result.entry=entry(body);return result
+	var record:=entry(body)
+	var result: Node3D=preload("res://Presentation/EagleVisual.gd").new() if record.get("kind","")=="eagle" else Visual.new()
+	result.entry=record;return result
 static func matches(visual: Node3D,body: int) -> bool:return visual is Visual and visual.kind==str(entry(body).get("kind",""))

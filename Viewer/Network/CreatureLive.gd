@@ -1,4 +1,5 @@
 extends SceneTree
+const EagleVisual=preload("res://Presentation/EagleVisual.gd")
 const Game=preload("res://Network/GameSession.gd")
 var family:="bruins"
 var sessions: Array=[]
@@ -95,6 +96,8 @@ func run() -> void:
 				if not check(bool(session.entities[serial].running)==running and bool(observer.entities[serial].running)==running,"native walk/run flags replicate"):return
 				actor.animate(true,0.,.1,6.8 if session.entities[serial].running else 1.8)
 				var expected_gait: String=str(candidate.get("native_gait_expectations",{}).get("run" if running else "walk","Run" if running else "Walk"))
+				if actor.horse_visual is EagleVisual and actor.horse_visual.current_clip=="TakeOff":
+					if not check(actor.horse_visual.animator.assigned_animation=="TakeOff" and await until(func():return actor.horse_visual.current_clip==expected_gait),"Native eagle movement finishes real take-off into the declared gait"):return
 				if not check(actor.horse_visual.current_clip==expected_gait,"received native gait drives its declared physical-speed replacement: expected "+expected_gait+", actual "+str(actor.horse_visual.current_clip)):return
 			session.last_mobile_actions.erase(serial);observer.last_mobile_actions.erase(serial)
 			await reply(sex,"hurt","UCCREATURE|hurt|")

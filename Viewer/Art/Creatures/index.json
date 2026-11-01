@@ -1060,6 +1060,351 @@
         "Gallop"
       ],
       "native_validation": "Actual isolated two-client Cat constructor, physical-speed gaits, hues, hurt/actions/death and static corpse"
+    },
+    {
+      "kind": "eagle",
+      "family": "eagles",
+      "profile": "animal",
+      "status": "validated",
+      "movement_mode": "ground_plane",
+      "head_bone": "Bone.003",
+      "assets": {
+        "modern": "res://Art/Creatures/Eagle/eagle.glb"
+      },
+      "bodies": [
+        {
+          "body": 5,
+          "name": "Eagle",
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "native_profile": "animal",
+          "native_sources": [
+            {
+              "path": "Projects/UOContent/Mobiles/Animals/Birds/Eagle.cs",
+              "sha256": "2926fbe97497067bc6254bca7b24318f8d2deccdfbb80fbc93a33e737413d56b"
+            }
+          ]
+        }
+      ],
+      "source": "https://opengameart.org/node/78596",
+      "license": "CC0-1.0 independent donor; authored conversion/actions/shader GPL-3.0-or-later",
+      "source_interpretation": "Quaternius independent eagle. Two evaluated donor airborne clips, explicitly authored perched/action/landing/airborne variations; not recovered UO geometry or choreography.",
+      "partial_hue_interpretation": "Authored brown-feather region; white head/tail, yellow beak/feet and fixed eyes protected from partial dye. Not original UO mask recovery.",
+      "stats": {
+        "original": {
+          "bones": 24,
+          "height_m": 0.4,
+          "clips": {
+            "AirIdle": {
+              "duration": 1.6666666666666667,
+              "loop": false,
+              "source_action": "Idle",
+              "support_policy": "airborne",
+              "origin": "Evaluated Quaternius donor Idle; source timing preserved, not recovered UO motion"
+            },
+            "Fly": {
+              "duration": 1.2083333333333333,
+              "loop": false,
+              "source_action": "Flying",
+              "support_policy": "airborne",
+              "origin": "Evaluated Quaternius donor Flying; source timing preserved, not recovered UO motion"
+            },
+            "Run": {
+              "duration": 1.325,
+              "loop": true,
+              "support_policy": "airborne",
+              "origin": "Donor Flying plus declared 0.12-second local-TRS closing interval; constant full-cycle measured clearance"
+            },
+            "Idle": {
+              "duration": 2.0,
+              "loop": true,
+              "support_policy": "grounded",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "Walk": {
+              "duration": 0.7166666666666667,
+              "loop": true,
+              "support_policy": "hop",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "Attack": {
+              "duration": 0.65,
+              "loop": false,
+              "support_policy": "grounded",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "Attack2": {
+              "duration": 0.75,
+              "loop": false,
+              "support_policy": "grounded",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "Hit": {
+              "duration": 0.45,
+              "loop": false,
+              "support_policy": "grounded",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "Eat": {
+              "duration": 2.2,
+              "loop": false,
+              "support_policy": "grounded",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "Fidget": {
+              "duration": 2.4,
+              "loop": true,
+              "support_policy": "grounded",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "Alert": {
+              "duration": 1.1,
+              "loop": false,
+              "support_policy": "grounded",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "TakeOff": {
+              "duration": 0.7,
+              "loop": false,
+              "support_policy": "transition",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "Land": {
+              "duration": 0.8,
+              "loop": false,
+              "support_policy": "transition",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "Death": {
+              "duration": 1.2,
+              "loop": false,
+              "support_policy": "grounded",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "Death2": {
+              "duration": 1.2,
+              "loop": false,
+              "support_policy": "grounded",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "AirHit": {
+              "duration": 0.45,
+              "loop": false,
+              "support_policy": "airborne",
+              "origin": "Authored airborne Hit variation; donor first flight pose preserved at start, death ends at identical grounded cadaver pose"
+            },
+            "AirAttack": {
+              "duration": 0.65,
+              "loop": false,
+              "support_policy": "airborne",
+              "origin": "Authored airborne Attack variation; donor first flight pose preserved at start, death ends at identical grounded cadaver pose"
+            },
+            "AirAttack2": {
+              "duration": 0.75,
+              "loop": false,
+              "support_policy": "airborne",
+              "origin": "Authored airborne Attack2 variation; donor first flight pose preserved at start, death ends at identical grounded cadaver pose"
+            },
+            "AirDeath": {
+              "duration": 1.2,
+              "loop": false,
+              "support_policy": "transition",
+              "origin": "Authored airborne Death variation; donor first flight pose preserved at start, death ends at identical grounded cadaver pose"
+            },
+            "AirDeath2": {
+              "duration": 1.2,
+              "loop": false,
+              "support_policy": "transition",
+              "origin": "Authored airborne Death2 variation; donor first flight pose preserved at start, death ends at identical grounded cadaver pose"
+            }
+          }
+        },
+        "modern": {
+          "bones": 24,
+          "height_m": 0.4,
+          "clips": {
+            "AirIdle": {
+              "duration": 1.6666666666666667,
+              "loop": false,
+              "source_action": "Idle",
+              "support_policy": "airborne",
+              "origin": "Evaluated Quaternius donor Idle; source timing preserved, not recovered UO motion"
+            },
+            "Fly": {
+              "duration": 1.2083333333333333,
+              "loop": false,
+              "source_action": "Flying",
+              "support_policy": "airborne",
+              "origin": "Evaluated Quaternius donor Flying; source timing preserved, not recovered UO motion"
+            },
+            "Run": {
+              "duration": 1.325,
+              "loop": true,
+              "support_policy": "airborne",
+              "origin": "Donor Flying plus declared 0.12-second local-TRS closing interval; constant full-cycle measured clearance"
+            },
+            "Idle": {
+              "duration": 2.0,
+              "loop": true,
+              "support_policy": "grounded",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "Walk": {
+              "duration": 0.7166666666666667,
+              "loop": true,
+              "support_policy": "hop",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "Attack": {
+              "duration": 0.65,
+              "loop": false,
+              "support_policy": "grounded",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "Attack2": {
+              "duration": 0.75,
+              "loop": false,
+              "support_policy": "grounded",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "Hit": {
+              "duration": 0.45,
+              "loop": false,
+              "support_policy": "grounded",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "Eat": {
+              "duration": 2.2,
+              "loop": false,
+              "support_policy": "grounded",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "Fidget": {
+              "duration": 2.4,
+              "loop": true,
+              "support_policy": "grounded",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "Alert": {
+              "duration": 1.1,
+              "loop": false,
+              "support_policy": "grounded",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "TakeOff": {
+              "duration": 0.7,
+              "loop": false,
+              "support_policy": "transition",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "Land": {
+              "duration": 0.8,
+              "loop": false,
+              "support_policy": "transition",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "Death": {
+              "duration": 1.2,
+              "loop": false,
+              "support_policy": "grounded",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "Death2": {
+              "duration": 1.2,
+              "loop": false,
+              "support_policy": "grounded",
+              "origin": "Authored category on preserved independent rig; not donor motion or original UO choreography"
+            },
+            "AirHit": {
+              "duration": 0.45,
+              "loop": false,
+              "support_policy": "airborne",
+              "origin": "Authored airborne Hit variation; donor first flight pose preserved at start, death ends at identical grounded cadaver pose"
+            },
+            "AirAttack": {
+              "duration": 0.65,
+              "loop": false,
+              "support_policy": "airborne",
+              "origin": "Authored airborne Attack variation; donor first flight pose preserved at start, death ends at identical grounded cadaver pose"
+            },
+            "AirAttack2": {
+              "duration": 0.75,
+              "loop": false,
+              "support_policy": "airborne",
+              "origin": "Authored airborne Attack2 variation; donor first flight pose preserved at start, death ends at identical grounded cadaver pose"
+            },
+            "AirDeath": {
+              "duration": 1.2,
+              "loop": false,
+              "support_policy": "transition",
+              "origin": "Authored airborne Death variation; donor first flight pose preserved at start, death ends at identical grounded cadaver pose"
+            },
+            "AirDeath2": {
+              "duration": 1.2,
+              "loop": false,
+              "support_policy": "transition",
+              "origin": "Authored airborne Death2 variation; donor first flight pose preserved at start, death ends at identical grounded cadaver pose"
+            }
+          }
+        }
+      },
+      "authored_replacements": {
+        "AirIdle": "Evaluated Quaternius donor Idle; source timing preserved, not recovered UO motion",
+        "Fly": "Evaluated Quaternius donor Flying; source timing preserved, not recovered UO motion",
+        "Run": "Donor Flying plus declared 0.12-second local-TRS closing interval; constant full-cycle measured clearance",
+        "Idle": "Authored category on preserved independent rig; not donor motion or original UO choreography",
+        "Walk": "Authored category on preserved independent rig; not donor motion or original UO choreography",
+        "Attack": "Authored category on preserved independent rig; not donor motion or original UO choreography",
+        "Attack2": "Authored category on preserved independent rig; not donor motion or original UO choreography",
+        "Hit": "Authored category on preserved independent rig; not donor motion or original UO choreography",
+        "Eat": "Authored category on preserved independent rig; not donor motion or original UO choreography",
+        "Fidget": "Authored category on preserved independent rig; not donor motion or original UO choreography",
+        "Alert": "Authored category on preserved independent rig; not donor motion or original UO choreography",
+        "TakeOff": "Authored category on preserved independent rig; not donor motion or original UO choreography",
+        "Land": "Authored category on preserved independent rig; not donor motion or original UO choreography",
+        "Death": "Authored category on preserved independent rig; not donor motion or original UO choreography",
+        "Death2": "Authored category on preserved independent rig; not donor motion or original UO choreography",
+        "AirHit": "Authored airborne Hit variation; donor first flight pose preserved at start, death ends at identical grounded cadaver pose",
+        "AirAttack": "Authored airborne Attack variation; donor first flight pose preserved at start, death ends at identical grounded cadaver pose",
+        "AirAttack2": "Authored airborne Attack2 variation; donor first flight pose preserved at start, death ends at identical grounded cadaver pose",
+        "AirDeath": "Authored airborne Death variation; donor first flight pose preserved at start, death ends at identical grounded cadaver pose",
+        "AirDeath2": "Authored airborne Death2 variation; donor first flight pose preserved at start, death ends at identical grounded cadaver pose"
+      },
+      "camera_height": 0.5,
+      "pick_bounds": {
+        "position": [
+          -0.943987140655518,
+          -0.010000050012022968,
+          -0.453125337362289
+        ],
+        "size": [
+          1.8861835193634,
+          1.48842324733734,
+          0.905195672512054
+        ]
+      },
+      "loop_categories": [
+        "Run"
+      ],
+      "locomotion": {
+        "run_threshold_mps": 0.4,
+        "run_reference_mps": 1.8,
+        "walk_reference_mps": 0.3,
+        "rate_min": 0.65,
+        "rate_max": 1.8
+      },
+      "native_gait_expectations": {
+        "walk": "Run",
+        "run": "Run"
+      },
+      "presentation_transition": "TakeOff then Run; Land then Idle. Visual low flight inferred from movement; does not set native Flying.",
+      "body_table_sha256": "1a290e2cb22cdde06d3a21a47b61c25cbcc5fffe660b6e6fb985e9c1810cf5bc",
+      "recipe_sha256": "1540616b76eaae28f82d9c7ae6d528193417174657de574449d02b223fe52c58",
+      "source_pin_sha256": "275c8f80b9f295647088851f802dc585bd019fa089e99711bd78da251b00fee8",
+      "native_validation": "Passed actual disposable-server/two-client Eagle body5 checks; repeat installed public asset"
     }
   ]
 }

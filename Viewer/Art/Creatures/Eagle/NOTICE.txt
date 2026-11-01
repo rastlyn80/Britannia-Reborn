@@ -1,0 +1,6 @@
+Quaternius Animated Animals Vol.2 Eagle
+Source: https://opengameart.org/node/78596
+License: CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Exact archive/member SHA256 pins: provenance.json and scripts/eagle-inputs.json.
+Authored eyes, refinement, wing/tail packing, additional actions and conversion: Britannia Reborn, GPL-3.0-or-later.
+Only donor Idle/Flying are source animation; the former is an airborne idle. All other actions are declared authored adaptations. No original Ultima Online art is included.
