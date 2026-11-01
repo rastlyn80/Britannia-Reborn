@@ -1,0 +1,162 @@
+{
+  "license": "GPL-3.0-or-later original cloud/vortex/dust geometry/shader with CC0 Quaternius rig/UAL motion exceptions",
+  "carrier_sha256": "6b0856ae574b5571cbd79cb2682a0904ce1cb59a54da24f51b9e4d29b7e49bd8",
+  "geometry_origin": "Cloud body and tapered vortex authored in AirCloudGeometry.gd. Dry dust reuses the project-authored radial Puddle footprint from the independent Water carrier; its body mesh is replaced completely. Preparation clip metadata saying no water geometry refers to the removed body, not this retained footprint.",
+  "preparation": {
+    "asset_sha256": "97e035049306954884bda58055433a6f11a48c708b06a548d488633ea265559c",
+    "bones": 65,
+    "carrier_sha256": "6b0856ae574b5571cbd79cb2682a0904ce1cb59a54da24f51b9e4d29b7e49bd8",
+    "clips": {
+      "Attack": {
+        "duration": 0.866666674613953,
+        "loop": false,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+      },
+      "Attack2": {
+        "duration": 1.0,
+        "loop": false,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+      },
+      "Attack3": {
+        "duration": 1.53333330154419,
+        "loop": false,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+      },
+      "Cast": {
+        "duration": 0.5,
+        "loop": false,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+      },
+      "Cast2": {
+        "duration": 0.533333361148834,
+        "loop": false,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+      },
+      "Cast3": {
+        "duration": 0.433333337306976,
+        "loop": false,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+      },
+      "Death": {
+        "duration": 1.4,
+        "loop": false,
+        "origin": "Authored wind dissipation and settling dust"
+      },
+      "Death2": {
+        "duration": 1.4,
+        "loop": false,
+        "origin": "Authored wind dissipation and settling dust"
+      },
+      "Fidget": {
+        "duration": 2.93333339691162,
+        "loop": true,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+      },
+      "Hit": {
+        "duration": 0.333333343267441,
+        "loop": false,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+      },
+      "Hit2": {
+        "duration": 0.433333337306976,
+        "loop": false,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+      },
+      "Idle": {
+        "duration": 2.5,
+        "loop": true,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+      },
+      "Pillage": {
+        "duration": 0.833333313465118,
+        "loop": false,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+      },
+      "Run": {
+        "duration": 0.933333337306976,
+        "loop": true,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+      },
+      "Walk": {
+        "duration": 1.33333337306976,
+        "loop": true,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+      }
+    },
+    "geometry_sha256": "efb6dc8103636b7a0fe82a3bba2023876dff5ffec25c5b97577080b47382c86c",
+    "recipe_sha256": "171b79206300f3bdfc14ceefe71693fb4098c26046fd07e303283f770e9d1797",
+    "scope": "Independent GPL analytic cloud/vortex/dust geometry; retained CC0 rig/UAL actions from existing public carrier. No source game marker/texture in this scene. No installed route or native coverage yet.",
+    "shader_displacement_margin": 0.05,
+    "shader_sha256": "426044c52bb9c19129f83fc1b4fd4d8224d12be732d1251e076b83b97cebfb6b",
+    "triangles": 14016,
+    "vertices": 7825
+  },
+  "asset_sha256": "97e035049306954884bda58055433a6f11a48c708b06a548d488633ea265559c",
+  "candidate_runtime_sha256": {
+    "res://Presentation/AirCloudGeometry.gd": "efb6dc8103636b7a0fe82a3bba2023876dff5ffec25c5b97577080b47382c86c",
+    "res://Presentation/AirElementalMaterial.gd": "6f0c7d0c21d39904c3e3083247418d8fead99a1cdb02ed7f515d313b49954bb7",
+    "res://Presentation/AirElementalPresentationTests.gd": "620e0b6deaa5d7351429b37257d46c45bfdd6961ddb868bf5330c027eecda0dd",
+    "res://Presentation/AirElementalSurface.gdshader": "426044c52bb9c19129f83fc1b4fd4d8224d12be732d1251e076b83b97cebfb6b",
+    "res://Presentation/AirElementalVisual.gd": "22b1acece2643547e1f5597e127c9e94a4d6ba9e79b019ff597809475675a611",
+    "res://Presentation/CorpseModels.gd": "6db8a5c36d5d00461c9761c922858113d0ff99033847372d35cf3145b27924aa",
+    "res://Presentation/CreatureRegistry.gd": "db959db1e5cf4958a46687a84ebd8f229c222cb113be7d5d483bbaaa2e6dd2ab",
+    "res://Presentation/CreatureVisual.gd": "33ccb6389365a05697b22d98e308294200cc92fc5b81b01e89b04d8ebe230944",
+    "res://Presentation/HumanAvatar.gd": "b322bfb7ba0c8b73c199eaf7d812e5aeaa6db16e7abbbd863d630acde2961438",
+    "res://Presentation/PrepareAirElemental.gd": "171b79206300f3bdfc14ceefe71693fb4098c26046fd07e303283f770e9d1797",
+    "res://Presentation/SkinGeometry.gd": "6690454dae7e23f9d4a705afa90f1b6d510dd1263a19930e4f597ee5f36c19aa"
+  },
+  "optional_original_marker": "Private proprietary source mesh/atlas, not in this scene or public package; native particle-to-actor binding and timing not claimed",
+  "independent_carrier_sources": {
+    "inputs": {
+      "Viewer/Art/Quaternius/Character/Superhero_Male_FullBody.gltf": "96edb76572b387b38cdcbab746034d2534da74c1ba86bcef8d049fff1a40aec2",
+      "Viewer/Art/Quaternius/Character/Superhero_Male_FullBody.bin": "459003f9745853ae562a85506a2b94dd56515c1f37728f9fa3d2ce1a3e4cd92f",
+      "Viewer/Art/Quaternius/Animation/UAL1_Standard.glb": "69591853d817488edaa8fd9bf8fc1d821eaeaf789f8627b3cd23b41c4ed67997"
+    },
+    "recipe_sha256": "04914e4b8dcb68a81701d5c8387daba581918a957be2eadb5217b7bd6cd0e1c1",
+    "rig_and_motion_license": "Quaternius CC0-1.0",
+    "urls": [
+      "https://quaternius.itch.io/universal-base-characters",
+      "https://quaternius.itch.io/universal-animation-library"
+    ]
+  },
+  "runtime_sha256": {
+    "res://Presentation/AirCloudGeometry.gd": "efb6dc8103636b7a0fe82a3bba2023876dff5ffec25c5b97577080b47382c86c",
+    "res://Presentation/AirElementalMaterial.gd": "6f0c7d0c21d39904c3e3083247418d8fead99a1cdb02ed7f515d313b49954bb7",
+    "res://Presentation/AirElementalPresentationTests.gd": "620e0b6deaa5d7351429b37257d46c45bfdd6961ddb868bf5330c027eecda0dd",
+    "res://Presentation/AirElementalSurface.gdshader": "426044c52bb9c19129f83fc1b4fd4d8224d12be732d1251e076b83b97cebfb6b",
+    "res://Presentation/AirElementalVisual.gd": "22b1acece2643547e1f5597e127c9e94a4d6ba9e79b019ff597809475675a611",
+    "res://Presentation/CorpseModels.gd": "6db8a5c36d5d00461c9761c922858113d0ff99033847372d35cf3145b27924aa",
+    "res://Presentation/CreatureRegistry.gd": "db959db1e5cf4958a46687a84ebd8f229c222cb113be7d5d483bbaaa2e6dd2ab",
+    "res://Presentation/CreatureVisual.gd": "33ccb6389365a05697b22d98e308294200cc92fc5b81b01e89b04d8ebe230944",
+    "res://Presentation/HumanAvatar.gd": "b322bfb7ba0c8b73c199eaf7d812e5aeaa6db16e7abbbd863d630acde2961438",
+    "res://Presentation/PrepareAirElemental.gd": "171b79206300f3bdfc14ceefe71693fb4098c26046fd07e303283f770e9d1797",
+    "res://Presentation/SkinGeometry.gd": "6690454dae7e23f9d4a705afa90f1b6d510dd1263a19930e4f597ee5f36c19aa"
+  },
+  "public_presentation_sha256": "a39b9deba0462d961cacf701c7a8c75508f66604647a3503d1f3d9424da2badc",
+  "public_native_receipt_sha256": "a4a4bd033ffb3760fa9971a60f6d2fe661ea093f7afafcedbec5f650f181f76d",
+  "inherited_project_base_revision": "689fa18d1b527421e282083169b54ddb5fc31877",
+  "public_native_scope": {
+    "checks": 462,
+    "failures": 0,
+    "constructors": [
+      "AirElemental",
+      "CrystalVortex",
+      "SummonedAirElemental"
+    ],
+    "body": 13,
+    "owners": [
+      "male",
+      "female"
+    ],
+    "summon_policy": "ModernUO BaseCreature.Summon; native corpse suppression proved on both owners",
+    "limits": "Actual two-client world entry, native constructor bodies/hues, Mobile.Move walk/run, packets and corpse replication. Native AI is frozen for controlled sampling; flat-arena relocation is fixture setup. Not autonomous AI, taming or full gameplay certification. Production world and saves untouched."
+  },
+  "clean_distribution": {
+    "checks": 293,
+    "failures": 0,
+    "complete_geometry_samples": 136,
+    "test_sha256": "b8183b407d03f831e4679c30156eaf256ad18d5063a1399646c182ff2725226f",
+    "runner_sha256": "1af96bdf845ae232988abf8deef936a3b3953c17f58bbef72cc6fdf01696bb39",
+    "scope": "Actual standalone public avatar and static dust corpse without Water/Quaternius inputs, private marker, game data or server"
+  }
+}

@@ -68,6 +68,10 @@ if (Test-Path "$root/Viewer/Art/Creatures/Wisp/wisp.scn") {
   & python -B "$root/scripts/test-wisp-distribution.py"
   if ($LASTEXITCODE) {throw 'Public Wisp rig/actions, deterministic energy phase and static corpse distribution failed'}
 }
+if (Test-Path "$root/Viewer/Art/Creatures/Air/air-elemental.scn") {
+  & python -B "$root/scripts/test-air-distribution.py"
+  if ($LASTEXITCODE) {throw 'Public AirElemental rig/actions, spectral hue and static dust distribution failed'}
+}
 foreach ($kind in @('desert','forest','frenzied','ethereal')) {
  if (Test-Path "$root/Viewer/local-art/ostards/$kind-modern.gltf") {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/OstardTests.gd -- "--kind=$kind"

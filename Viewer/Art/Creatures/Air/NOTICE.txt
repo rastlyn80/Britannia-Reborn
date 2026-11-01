@@ -1,0 +1,5 @@
+AirElemental analytic cloud/vortex/dust geometry, conversion and shader: original Britannia Reborn project work, GPL-3.0-or-later; root LICENSE.
+Retained rig and UAL1 motions: Quaternius, CC0-1.0, through the pinned public Water carrier. No original Quaternius human or Water body mesh is used. See Art/Creatures/Water/NOTICE.txt and provenance.json for exact source history/pins.
+https://quaternius.itch.io/universal-base-characters
+https://quaternius.itch.io/universal-animation-library
+No Ultima Online mesh, texture, rig or animation is included. The original rigid death marker is optional separate local input.

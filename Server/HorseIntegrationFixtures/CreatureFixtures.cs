@@ -168,7 +168,22 @@ public static class CreatureFixtures
                         return;
                     }
                     creature.Frozen = true;
-                    creature.MoveToWorld(new Point3D(owner.X + 1, owner.Y, owner.Z), owner.Map);
+                    var location = new Point3D(owner.X + 1, owner.Y, owner.Z);
+                    if (creature is SummonedAirElemental)
+                    {
+                        // The real summon API establishes master, duration,
+                        // follower limits and native corpse suppression.
+                        if (!BaseCreature.Summon(creature, owner, location, -1, TimeSpan.FromMinutes(5)))
+                        {
+                            owner.SendMessage("UCCREATURE|blocked|native-summon");
+                            return;
+                        }
+                        nativeState = "summoned";
+                    }
+                    else
+                    {
+                        creature.MoveToWorld(location, owner.Map);
+                    }
                     _creatures[owner] = creature;
                     owner.SendMessage($"UCCREATURE|prepared|{creature.Serial.Value}|{creature.Body.BodyID}|{type.Name}|{creature.Str}|{creature.Dex}|{creature.Int}|{nativeState}|{creature.Wool}|aquatic={(creature.CanSwim && creature.CantWalk ? 1 : 0)}|wet={(AquaticFixtures.IsWetSurface(creature.Map, creature.X, creature.Y, creature.Z) ? 1 : 0)}");
                     return;

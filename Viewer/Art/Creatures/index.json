@@ -1902,6 +1902,255 @@
       "recipe_sha256": "bf09202560c6c511ff0305dcc3ccb419c46f0dc4197f9a2bfc8157057fa9f401",
       "asset_sha256": "4b47a14ad1eef6c642701d11fad21787b54e685f6b6d33019503ef4e5fbaa595",
       "native_validation": "Actual isolated Wisp and CrystalWisp constructors, two clients, native actions/hues/movement/death/corpse; repeat on installed public route"
+    },
+    {
+      "kind": "air_elemental",
+      "family": "air",
+      "status": "validated",
+      "profile": "monster",
+      "movement_mode": "source_hover",
+      "surface_kind": "wind_pbr",
+      "assets": {
+        "modern": "res://Art/Creatures/Air/air-elemental.scn"
+      },
+      "bodies": [
+        {
+          "body": 13,
+          "name": "AirElemental / SummonedAirElemental / CrystalVortex",
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "native_profile": "monster",
+          "native_sources": [
+            {
+              "path": "Projects/UOContent/Mobiles/Monsters/Elemental/Magic/AirElemental.cs",
+              "sha256": "59d8cd2bf424f21ca667815d8062d824bfbcb04522b7667f2f35fd1f477d5269"
+            },
+            {
+              "path": "Projects/UOContent/Mobiles/Monsters/Summons/SummonedAirElemental.cs",
+              "sha256": "95d3e300d28a6d8aa15fe1138993fd2a00e5afca613b90cebfafd62609bfbaff"
+            },
+            {
+              "path": "Projects/UOContent/Mobiles/Monsters/ML/Prism of Light/CrystalVortex.cs",
+              "sha256": "6565a9f530b70cef99a1f142fb23e342ea3e53c251656e6ec13541bb5f25fa33"
+            }
+          ]
+        }
+      ],
+      "source": "https://github.com/rastlyn80/Britannia-Reborn",
+      "license": "Original GPL-3.0-or-later cloud/vortex/dust geometry and shaders; retained Quaternius CC0 rig/UAL actions through the independently licensed Water carrier. Proprietary optional marker is separate local input, excluded from this scene.",
+      "source_interpretation": "Authored analytic cloud actor with retained CC0 rig/motions; no recovered Third Dawn full actor or particle simulation. Original two-bone rigid death_mote/atlas preserved separately; explicit authored cue timing.",
+      "partial_hue_interpretation": "Authored dense-cloud regions, not a recovered UO partial mask. Raw spectral/full/partial values preserved.",
+      "stats": {
+        "original": {
+          "bones": 65,
+          "height_m": 1.9,
+          "clips": {
+            "Attack": {
+              "duration": 0.866666674613953,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Attack2": {
+              "duration": 1.0,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Attack3": {
+              "duration": 1.53333330154419,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Cast": {
+              "duration": 0.5,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Cast2": {
+              "duration": 0.533333361148834,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Cast3": {
+              "duration": 0.433333337306976,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Death": {
+              "duration": 1.4,
+              "loop": false,
+              "origin": "Authored wind dissipation and settling dust"
+            },
+            "Death2": {
+              "duration": 1.4,
+              "loop": false,
+              "origin": "Authored wind dissipation and settling dust"
+            },
+            "Fidget": {
+              "duration": 2.93333339691162,
+              "loop": true,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Hit": {
+              "duration": 0.333333343267441,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Hit2": {
+              "duration": 0.433333337306976,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Idle": {
+              "duration": 2.5,
+              "loop": true,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Pillage": {
+              "duration": 0.833333313465118,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Run": {
+              "duration": 0.933333337306976,
+              "loop": true,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Walk": {
+              "duration": 1.33333337306976,
+              "loop": true,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            }
+          }
+        },
+        "modern": {
+          "bones": 65,
+          "height_m": 1.9,
+          "clips": {
+            "Attack": {
+              "duration": 0.866666674613953,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Attack2": {
+              "duration": 1.0,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Attack3": {
+              "duration": 1.53333330154419,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Cast": {
+              "duration": 0.5,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Cast2": {
+              "duration": 0.533333361148834,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Cast3": {
+              "duration": 0.433333337306976,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Death": {
+              "duration": 1.4,
+              "loop": false,
+              "origin": "Authored wind dissipation and settling dust"
+            },
+            "Death2": {
+              "duration": 1.4,
+              "loop": false,
+              "origin": "Authored wind dissipation and settling dust"
+            },
+            "Fidget": {
+              "duration": 2.93333339691162,
+              "loop": true,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Hit": {
+              "duration": 0.333333343267441,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Hit2": {
+              "duration": 0.433333337306976,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Idle": {
+              "duration": 2.5,
+              "loop": true,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Pillage": {
+              "duration": 0.833333313465118,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Run": {
+              "duration": 0.933333337306976,
+              "loop": true,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "Walk": {
+              "duration": 1.33333337306976,
+              "loop": true,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            }
+          }
+        }
+      },
+      "authored_replacements": {
+        "Attack": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained",
+        "Attack2": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained",
+        "Attack3": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained",
+        "Cast": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained",
+        "Cast2": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained",
+        "Cast3": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained",
+        "Death": "Authored wind dissipation and settling dust",
+        "Death2": "Authored wind dissipation and settling dust",
+        "Fidget": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained",
+        "Hit": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained",
+        "Hit2": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained",
+        "Idle": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained",
+        "Pillage": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained",
+        "Run": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained",
+        "Walk": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+      },
+      "loop_categories": [
+        "Fidget",
+        "Idle",
+        "Run",
+        "Walk"
+      ],
+      "camera_height": 1.5,
+      "pick_bounds": {
+        "position": [
+          -0.9281852817535401,
+          -0.05107499979436398,
+          -1.022201416492462
+        ],
+        "size": [
+          1.7780864191055301,
+          2.0035300151258757,
+          2.0227932882308988
+        ]
+      },
+      "new_action_categories": {
+        "2": "Hit",
+        "5": "Fidget",
+        "14": "Pillage"
+      },
+      "recipe_sha256": "171b79206300f3bdfc14ceefe71693fb4098c26046fd07e303283f770e9d1797",
+      "asset_sha256": "97e035049306954884bda58055433a6f11a48c708b06a548d488633ea265559c",
+      "native_validation": "Actual three native constructors on two clients; repeat on installed public route"
     }
   ]
 }
