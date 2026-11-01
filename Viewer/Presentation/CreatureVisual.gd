@@ -56,6 +56,7 @@ func set_hue(value: int) -> void:
 				material.set_shader_parameter(parameter,previous.get_shader_parameter(parameter))
 			material.set_shader_parameter("source_alpha_texture",opacity)
 			material.set_shader_parameter("metallic_strength",source.metallic if source!=null else 0.)
+			if entry.get("movement_mode","")=="native_waterline":material.set_shader_parameter("wetness",.7)
 			mesh.set_surface_override_material(surface,material)
 func _ready() -> void:
 	kind=str(entry.kind)
@@ -70,7 +71,7 @@ func _ready() -> void:
 	var quadruped:=str(entry.get("profile",""))=="animal" and str(entry.get("family",""))!="walrus" or str(entry.get("family","")) in ["rodents","lizards","dragons","centaurs"]
 	# A floating actor can have real leg bones (efreet's crossed legs). They
 	# remain animated limbs, not stance feet to drag down onto the terrain.
-	if str(entry.get("movement_mode",""))!="source_hover":contact.configure(model.find_children("*","MeshInstance3D",true,false)[0],quadruped)
+	if str(entry.get("movement_mode","")) not in ["source_hover","native_waterline"]:contact.configure(model.find_children("*","MeshInstance3D",true,false)[0],quadruped)
 	source_model_basis=model.basis.orthonormalized()
 	default_model_scale=model.scale
 	set_meta("source_creature",entry.duplicate(true))
@@ -117,6 +118,7 @@ func update_death_effect() -> void:
 		mesh.material_override.set_shader_parameter("gain",sin(PI*phase)*sin(PI*phase))
 func _physics_process(delta: float) -> void:
 	if contact==null:return
+	if entry.get("movement_mode","")=="native_waterline":return
 	contact.sample(get_world_3d().direct_space_state,global_position)
 	if contact.enabled and not contact.contacts.is_empty():
 		if not contact.stance_gaps.is_empty():

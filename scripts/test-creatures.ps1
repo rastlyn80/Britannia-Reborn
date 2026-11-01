@@ -61,6 +61,14 @@ foreach ($family in $Families) {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/FloatingCreatureTests.gd -- "--family=$family" *> "$logs/$family-hover.log"
   if ($LASTEXITCODE) {throw 'Floating creature avatar/support checks failed'}
  }
+ if ($family -in @('krakens','sea','dolphins')) {
+  & $godot --path "$root/Viewer" --script res://Presentation/AquaticPresentationTests.gd -- "--family=$family" *> "$logs/$family-aquatic.log"
+  if ($LASTEXITCODE -or (Select-String -Path "$logs/$family-aquatic.log" -Pattern 'SCRIPT ERROR:' -Quiet)) {throw 'Aquatic waterline/material/corpse checks failed'}
+ }
+ if ($family -eq 'krakens') {
+  & $godot --path "$root/Viewer" --script res://Presentation/CephalopodGestureTests.gd *> "$logs/krakens-gestures.log"
+  if ($LASTEXITCODE -or (Select-String -Path "$logs/krakens-gestures.log" -Pattern 'SCRIPT ERROR:' -Quiet)) {throw 'Measured cephalopod strike/casting checks failed'}
+ }
  if ($family -eq 'elementals') {
   & $godot --path "$root/Viewer" --script res://Presentation/MineralAppearanceTests.gd *> "$logs/$family-minerals.log"
   if ($LASTEXITCODE) {throw 'Mineral PBR map/tangent/material response checks failed'}

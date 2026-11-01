@@ -257,9 +257,12 @@ def unit(q):
     return [v / length for v in q]
 
 
-def export_gltf(model, animations, texture, output, height, floor_sample_rate=30, preserve_vertical_clips=(), preserve_hover_clips=()):
+def export_gltf(model, animations, texture, output, height, floor_sample_rate=30, preserve_vertical_clips=(), preserve_hover_clips=(), preserve_waterline_clips=()):
     require(30<=floor_sample_rate<=240,'Floor sampling must stay within 30..240 Hz')
     require(not set(preserve_vertical_clips)&set(preserve_hover_clips),'Clip cannot use both flight and source-hover policies')
+    require(not set(preserve_waterline_clips)&(set(preserve_vertical_clips)|set(preserve_hover_clips)),'Waterline clips cannot use land/air support policies')
+    if preserve_waterline_clips:
+        require(set(preserve_waterline_clips)==set(animations),'Aquatic actors must declare a waterline policy for every clip')
     bones, globals_ = model['bones'], {}
 
     def global_bone(i, visiting=None):
@@ -333,7 +336,7 @@ def export_gltf(model, animations, texture, output, height, floor_sample_rate=30
     # neither skeleton animation nor source root motion can move a game entity.
     gltf['nodes'] = [dict(name='VisualRoot', rotation=[-math.sqrt(.5), 0, 0, math.sqrt(.5)],
                           scale=[scale] * 3, children=[1]),
-                     dict(name='SourceSpace', translation=[0, 0, -zmin], children=[])]
+                     dict(name='SourceSpace', translation=[0, 0, 0 if preserve_waterline_clips else -zmin], children=[])]
     for i, b in enumerate(bones):
         gltf['nodes'].append(dict(name=b['name'], translation=b['translation'], rotation=unit(b['rotation'])))
         parent = 1 if b['parent'] == i else b['parent'] + 2
@@ -467,7 +470,12 @@ def export_gltf(model, animations, texture, output, height, floor_sample_rate=30
                     height_sum += (rotate(pq, local)[2] + pt[2]) * weight
                 lowest = min(lowest, height_sum)
             offsets.append([0, 0, -lowest])
-        if name in preserve_hover_clips:
+        if name in preserve_waterline_clips:
+            # Native sea mobiles are anchored at the water surface. Their
+            # source tentacles/fins may extend below it; never lift the entire
+            # actor every frame to make its lowest point walk on the water.
+            offsets=[[0,0,0] for _ in offsets]
+        elif name in preserve_hover_clips:
             # An explicitly selected floating source keeps its positive
             # authoring-space clearance and vertical motion. Lift only when
             # the deformed underside crosses the ground; do not pin tentacles.
@@ -484,7 +492,7 @@ def export_gltf(model, animations, texture, output, height, floor_sample_rate=30
         clip['samplers'].append(dict(input=accessor(times, 'SCALAR'), output=accessor(offsets, 'VEC3'), interpolation='LINEAR'))
         gltf['animations'].append(clip)
         clip_report[name] = dict(matched_tracks=len(matched), missing=missing, floor_samples=len(times),
-                                 floor_sample_rate=floor_sample_rate,floor_policy='source_hover' if name in preserve_hover_clips else 'source_vertical' if name in preserve_vertical_clips else 'grounded',floor_offset_range=[min(v[2] for v in offsets), max(v[2] for v in offsets)])
+                                 floor_sample_rate=floor_sample_rate,floor_policy='native_waterline' if name in preserve_waterline_clips else 'source_hover' if name in preserve_hover_clips else 'source_vertical' if name in preserve_vertical_clips else 'grounded',floor_offset_range=[min(v[2] for v in offsets), max(v[2] for v in offsets)])
     gltf['buffers'] = [dict(byteLength=len(data), uri='data:application/octet-stream;base64,' + base64.b64encode(data).decode())]
     output.write_text(json.dumps(gltf, separators=(',', ':')))
     return dict(source_points=len(model['points']), triangles=len(model['polygons']), bones=len(bones),

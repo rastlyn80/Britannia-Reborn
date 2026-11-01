@@ -51,7 +51,10 @@ func run() -> void:
 						if policy_clip=="LieDown":policy_clip="Death"
 						elif policy_clip=="Eat":policy_clip="Idle"
 					var policy: String=str(record.stats.original.clips.get(policy_clip,{}).get("floor_policy","grounded"))
-					if policy in ["source_vertical","source_hover"]:
+					if policy=="native_waterline":
+						check(bounds.position.y>-float(record.stats.original.height_m)*4. and bounds.end.y<float(record.stats.original.height_m)*4.,"Aquatic source retains bounded submerged geometry")
+						check(actor.model.to_local(rig.global_position).is_zero_approx(),"Aquatic clip never adds lowest-vertex floor translation")
+					elif policy in ["source_vertical","source_hover"]:
 						check(bounds.position.y>=-.06 and bounds.position.y<float(record.stats.original.height_m)*2.,"Source flight/hover remains bounded above the ground")
 						if policy=="source_hover" and clip in ["Idle","Walk","Run","Fidget"]:check(bounds.position.y>.12,"Floating source retains clearance instead of pinning tentacles to the floor")
 						if policy=="source_hover" and clip in ["Death","Death2"] and phase==.99:check(bounds.position.y<.06,"Floating source death settles before static corpse handoff")

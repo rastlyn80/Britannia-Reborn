@@ -1,3 +1,11 @@
+# Kraken and aquatic runtime checkpoint - 1 November 2026
+
+Body 77 now has a preserved/refined Third Dawn source, original alpha, upgraded local colour, wet PBR, distinct authored strikes/cast, native water-surface anchoring and a static corpse. Both Kraken and Leviathan constructors pass 246 two-client checks on actual water, including every native walk/run destination. Focused skin/GPU/gesture checks, 37-group shared regression, 164 corpse variants and full verification pass. [Evidence and limits](KRAKENS.md).
+
+Current bounded integration: 133/279 native bodies (47.7%); 102 local source forms plus two independently licensed public forms; 127 generic routes; 2,224/3,026 protocol slots connected (73.5%, with substitutes). Human categories/wearables remain unchanged. None of these metrics proves complete original choreography or final art.
+
+Next: sea serpent and deep sea serpent (native body 150, separate constructor cases; historical 145 unproven), then dolphin 151. Existing source trials use native_waterline and measured dolphin dimensions but still need their real source alpha, wet surfaces, original-source shape review, GPU/skin gates and actual native aquatic tests. Use family sea, not sea_serpents. Then review existing Ettin/Hind and continue ordinary rat/cat/eagle and the complete measured/unmeasured queue. Retain exact waterline-placement/shoreline and submerged-death-to-static-cadaver continuity gaps, water elemental flow-phase handoff, original metadata modes/subactions and coarse anatomy. Preserve all source/licence exclusions, concurrent work and production; continue the full goal.
+
 # Occurrence-first water elemental checkpoint - 1 November 2026
 
 Body 16 has an independently distributable fluid replacement, raw hues, 15 declared categories (two death routes share one collapse), measured support/interaction bounds and a static puddle. Focused 547 GPU / 150 native two-client / 13 clean-distribution checks pass; shared 36-group regression, 163 corpses / 1,518 checks and fresh full verification also pass. [Evidence and limits](WATER_ELEMENTAL.md).

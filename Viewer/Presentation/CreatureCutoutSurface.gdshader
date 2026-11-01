@@ -9,6 +9,7 @@ uniform bool use_source_alpha=true;
 uniform bool alpha_probe=false;
 uniform float metallic_strength : hint_range(0.,1.)=0.;
 uniform float detail_strength : hint_range(0.,1.)=.32;
+uniform float wetness : hint_range(0.,1.)=0.;
 void fragment(){
  vec3 colour=texture(albedo_texture,UV).rgb;
  float lightness=dot(colour,vec3(.2126,.7152,.0722));
@@ -26,8 +27,9 @@ void fragment(){
  ALBEDO=alpha_probe ? vec3(.25,.8,.4) : colour;
  // Rigid weapon surfaces opt in; saturated wood/leather handles stay matte.
  float metal=metallic_strength*(1.-smoothstep(.08,.35,saturation));
- ROUGHNESS=mix(clamp(.78+(lightness-.5)*.10,.62,.9),.4,metal);
- METALLIC=metal;SPECULAR=.28;
+ float skin_roughness=mix(clamp(.78+(lightness-.5)*.10,.62,.9),.35,wetness);
+ ROUGHNESS=mix(skin_roughness,.4,metal);
+ METALLIC=metal;SPECULAR=mix(.28,.5,wetness);
  ALPHA=use_source_alpha ? texture(source_alpha_texture,UV).a : 1.;
  ALPHA_SCISSOR_THRESHOLD=.12;
 }

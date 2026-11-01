@@ -88,8 +88,10 @@ public static class CreatureFixtures
         {
             Cleanup(owner);
             var body = args.GetInt32(1);
-            var candidate = Array.Find(_allowed, row => row.body == body);
-            if (candidate == null || !EquineFixtures.PrepareBovineArena(owner))
+            var requested = args.Length > 2 ? args.GetString(2) : null;
+            var candidate = Array.Find(_allowed, row => row.body == body &&
+                (requested == null || Array.Exists(row.classes, name => name == requested)));
+            if (candidate == null)
             {
                 owner.SendMessage("UCCREATURE|blocked|identity-or-arena");
                 return;
@@ -103,6 +105,10 @@ public static class CreatureFixtures
             }
             foreach (var name in candidate.classes)
             {
+                if (requested != null && name != requested)
+                {
+                    continue;
+                }
                 var type = typeof(BaseCreature).Assembly.GetType("Server.Mobiles." + name);
                 if (type == null || type.IsAbstract || !type.IsSubclassOf(typeof(BaseCreature))
                     || type.IsSubclassOf(typeof(BaseMount)) || type.ContainsGenericParameters)
@@ -145,10 +151,16 @@ public static class CreatureFixtures
                         creature.Delete();
                         continue;
                     }
+                    if (!AquaticFixtures.Prepare(owner, creature.CanSwim && creature.CantWalk))
+                    {
+                        creature.Delete();
+                        owner.SendMessage("UCCREATURE|blocked|native-surface-arena");
+                        return;
+                    }
                     creature.Frozen = true;
                     creature.MoveToWorld(new Point3D(owner.X + 1, owner.Y, owner.Z), owner.Map);
                     _creatures[owner] = creature;
-                    owner.SendMessage($"UCCREATURE|prepared|{creature.Serial.Value}|{creature.Body.BodyID}|{type.Name}|{creature.Str}|{creature.Dex}|{creature.Int}|{nativeState}|{creature.Wool}");
+                    owner.SendMessage($"UCCREATURE|prepared|{creature.Serial.Value}|{creature.Body.BodyID}|{type.Name}|{creature.Str}|{creature.Dex}|{creature.Int}|{nativeState}|{creature.Wool}|aquatic={(creature.CanSwim && creature.CantWalk ? 1 : 0)}|wet={(AquaticFixtures.IsWetSurface(creature.Map, creature.X, creature.Y, creature.Z) ? 1 : 0)}");
                     return;
                 }
             }
@@ -194,7 +206,7 @@ public static class CreatureFixtures
                     {
                         if (subject.Move(facing) && subject.Location != before)
                         {
-                            owner.SendMessage($"UCCREATURE|step|{subject.X}|{subject.Y}|{subject.Z}");
+                            owner.SendMessage($"UCCREATURE|step|{subject.X}|{subject.Y}|{subject.Z}|wet={(AquaticFixtures.IsWetSurface(subject.Map, subject.X, subject.Y, subject.Z) ? 1 : 0)}");
                             return;
                         }
                     }

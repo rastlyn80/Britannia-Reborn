@@ -21,6 +21,7 @@ reuse=module('creature_source_reuse','creature-source-reuse.py')
 rigid=module('creature_rigid_parts','creature-rigid-parts.py')
 minerals=module('creature_minerals','creature-minerals.py')
 humanoid_actions=module('creature_humanoid_actions','creature-humanoid-actions.py')
+cephalopod=module('creature_cephalopod','creature-cephalopod.py')
 OUTPUT = ROOT/'Viewer/local-art/creatures'
 LABELS = {'idle':'Idle','walk':'Walk','run':'Run','attack1':'Attack','attack2':'Attack2',
           'attack3':'Attack3','gethit':'Hit','die1':'Death','die2':'Death2','fidget':'Fidget',
@@ -30,7 +31,8 @@ LABELS = {'idle':'Idle','walk':'Walk','run':'Run','attack1':'Attack','attack2':'
           'pillage':'Pillage','stomp':'Stomp','blockright':'BlockRight','blockleft':'BlockLeft',
           'attack':'Attack','die':'Death','spell':'Cast'}
 HEIGHTS = {'bruins':1.25,'canines':.88,'deer':1.5,'felines':.9,'porcines':.72,
-           'ruminants':.9,'rodents':.55,'walrus':1.05,'lizards':.75}
+           'ruminants':.9,'rodents':.55,'walrus':1.05,'lizards':.75,'dolphins':.8}
+AQUATIC_FAMILIES={'krakens','sea','dolphins'}
 
 def digest(raw): return hashlib.sha256(raw).hexdigest()
 
@@ -244,10 +246,10 @@ def prepare(family, z, names, rows, native):
                 original = td.png_from_tga(read(texture))
                 (OUTPUT/(stem+'-original-albedo.png')).write_bytes(original)
                 row['source_atlas_status']='Recovered original atlas'
-                if family in ['dragons','daemons','gargoyles','harpies','rat','lizard'] or stem=='spirits_blade_spirit':
+                if family in ['dragons','daemons','gargoyles','harpies','rat','lizard','krakens'] or stem=='spirits_blade_spirit':
                     row['source_alpha_texture']=stem+'-original-albedo.png'
                     row['art_dependency_sha256']={row['source_alpha_texture']:digest(original)}
-                    if family=='rat':row['source_alpha_scope']='fine_edges'
+                    if family in ['rat','krakens']:row['source_alpha_scope']='fine_edges'
             else:
                 row['missing_source_atlas']=body['textures'][0]
                 replacement=OUTPUT/(stem+'-albedo-v1.png')
@@ -324,6 +326,11 @@ def prepare(family, z, names, rows, native):
             if humanoid_actions.install(body,clips,authored,aliases,stem):
                 row['authored_action_recipe']={'path':'scripts/creature-humanoid-actions.py','sha256':digest((ROOT/'scripts/creature-humanoid-actions.py').read_bytes())}
                 row['new_action_categories']={'2':'Hit','5':'Fidget','14':'Pillage'}
+            if stem=='krakens_kraken':
+                for label in ['Attack2','Attack3','Cast']:
+                    clips[label]=cephalopod.gesture(clips['Idle'],td,label)
+                    authored[label]='Authored '+('symmetric tentacle charge/release for the native Leviathan mage' if label=='Cast' else 'asymmetric '+('left' if label=='Attack2' else 'right')+' feeding-tentacle lash')+' on the preserved source rig; not recovered UO choreography'
+                row['authored_cephalopod_actions']={'path':'scripts/creature-cephalopod.py','sha256':digest((ROOT/'scripts/creature-cephalopod.py').read_bytes())}
             if family in ['dragons','lizards'] and 'Eat' not in clips:
                 feeding=copy.deepcopy(clips['Idle']);by_name={b['name']:i for i,b in enumerate(feeding['bones'])};orientations={}
                 def global_orientation(i):
@@ -355,6 +362,9 @@ def prepare(family, z, names, rows, native):
                                  else .3 if any('head' in n or 'ponytail' in n for n in labels) else .8)
             levels = 2 if len(body['polygons'])<600 else 1
             refined, refinement = smooth.refine(body,levels=levels,maximum=min(.04,.035/scale),strengths=strengths,weight_smoothing=.12)
+            if stem=='krakens_kraken':
+                refined,shape=cephalopod.round_tentacles(refined,scale)
+                row['authored_mesh_recipe']={'path':'scripts/creature-cephalopod.py','sha256':digest((ROOT/'scripts/creature-cephalopod.py').read_bytes()),'report':shape}
             modern_path = OUTPUT/(stem+'-albedo-v1.png')
             modern = modern_path.read_bytes() if modern_path.exists() else original
             if modern_path.exists():
@@ -385,7 +395,8 @@ def prepare(family, z, names, rows, native):
                     stats[treatment] = td.export_gltf(mesh,clips,original,output,height,
                         floor_sample_rate=120 if family in ['dragons','daemons','lizards','gargoyles','gazers','genies','harpies'] or stem in ['flails_swamp_tentacles','centaurs_centaur','mongbats_mongbat','spirits_blade_spirit'] else 30,
                         preserve_vertical_clips=['Fly','TakeOff','Land','HitInAir'],
-                        preserve_hover_clips=list(clips) if family in ['gazers','genies'] else ())
+                        preserve_hover_clips=list(clips) if family in ['gazers','genies'] else (),
+                        preserve_waterline_clips=list(clips) if family in AQUATIC_FAMILIES else ())
                     templates[cache_key] = (json.loads(output.read_text()),stats[treatment])
                 stats[treatment]['bind_diagonal_m']=math.sqrt(sum(((max(p[i] for p in mesh['points'])-min(p[i] for p in mesh['points']))*scale)**2 for i in range(3)))
                 if row.get('source_alpha_texture') or row.get('rigid_import'):
@@ -403,6 +414,9 @@ def prepare(family, z, names, rows, native):
                        modern_atlas=str(modern_path.relative_to(ROOT)) if modern_path.exists() else None,
                        atlas_sha256=digest(modern),profile=profiles.get(records[0]['body']) or ('animal' if records[0]['type']==2 else 'sea' if records[0]['type']==1 else 'monster'),
                        surface='generated atlas' if modern_path.exists() else 'source atlas; new surface shader only')
+            if family in AQUATIC_FAMILIES:
+                row['movement_mode']='native_waterline'
+                row['waterline_interpretation']='Authored native-water-surface anchoring of preserved source-space Z=0; submerged geometry and skeletal vertical motion are retained. Not a recovered original-client actor offset.'
             modern_gltf=OUTPUT/(stem+'-modern.gltf')
             modern_material=minerals.apply(stem,json.loads(modern_gltf.read_text(encoding='utf-8')),row,ROOT,OUTPUT)
             if row.get('mineral_surface'):modern_gltf.write_text(json.dumps(modern_material,separators=(',',':')),encoding='utf-8')

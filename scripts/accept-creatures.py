@@ -18,6 +18,25 @@ def main():
         assert all(path.stat().st_mtime<=gpu_path.stat().st_mtime for path in gpu_inputs),'Runtime/shader changed after GPU validation'
         assert tests['failures']==0 and gpu['failures']==0 and gpu['renderer']!='gl_compatibility'
         tested={row['kind']:row for row in tests['models']}
+        aquatic=[row for row in preparation['models'] if row.get('movement_mode')=='native_waterline' and row['status']=='prepared']
+        if aquatic:
+            result=json.loads((ROOT/f'outputs/creatures/{family}/aquatic/validation.json').read_text(encoding='utf-8'))
+            assert result['checks']>=40*len(aquatic) and result['failures']==0 and result['renderer']=='forward_plus','Aquatic actors require actual water-anchor/material/corpse evidence'
+            assert set(result['assets'])=={row['kind'] for row in aquatic},'Missing aquatic form'
+            assert all(digest(ROOT/'Viewer/Presentation'/name)==sha for name,sha in result['runtime_sha256'].items()),'Aquatic runtime changed after validation'
+            assert result['preparation_sha256']==digest(ART/family/'preparation.json'),'Aquatic preparation changed'
+            for row in aquatic:
+                assert result['assets'][row['kind']]['asset_sha256']==tested[row['kind']]['asset_sha256']['modern']
+                assert result['assets'][row['kind']]['import_sha256']==tested[row['kind']]['import_sha256']['modern']
+                if row.get('authored_mesh_recipe'):
+                    assert digest(ROOT/row['authored_mesh_recipe']['path'])==row['authored_mesh_recipe']['sha256'],'Authored tentacle recipe changed'
+        if family=='krakens':
+            gesture=json.loads((ROOT/'outputs/creatures/krakens/gestures/validation.json').read_text(encoding='utf-8'))
+            assert gesture['checks']>=150 and gesture['failures']==0 and gesture['renderer']=='forward_plus','Kraken attacks/casting require measured actual tentacle paths'
+            assert gesture['recipe_sha256']==digest(ROOT/'scripts/creature-cephalopod.py')
+            assert all(digest(ROOT/'Viewer/Presentation'/name)==sha for name,sha in gesture['runtime_sha256'].items()),'Tentacle action runtime changed'
+            assert gesture['asset_sha256']==tested['krakens_kraken']['asset_sha256']['modern'] and gesture['import_sha256']==tested['krakens_kraken']['import_sha256']['modern']
+            assert all(len([s for s in gesture['samples'] if s['clip']==clip])==17 for clip in ['Attack','Attack2','Attack3','Cast'])
         contact_kinds={row['kind'] for row in preparation['models'] if row['status']=='prepared' and row['kind'] in ['dragons_dragon_asian','dragons_wyvern']}
         contact=None
         if contact_kinds:

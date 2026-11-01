@@ -17,7 +17,7 @@ public static class EquineFixtures
     private static readonly Dictionary<Mobile, Container> Corpses = [];
     private static readonly Dictionary<Mobile, Server.Factions.Faction> Memberships = [];
     private static readonly Dictionary<Mobile, Item> Ankhs = [];
-    private static Point3D? BovineArena;
+    internal static Point3D? BovineArena;
 
     internal static bool PrepareBovineArena(Mobile owner)
     {

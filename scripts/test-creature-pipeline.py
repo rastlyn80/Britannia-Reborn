@@ -13,6 +13,79 @@ def bone_payload(parent,scales):
 def matrix(x=1.,y=1.,z=1.):return [x,0.,0.,0.,y,0.,0.,0.,z]
 
 class CreaturePipelineTests(unittest.TestCase):
+    def test_cephalopod_gestures_are_distinct_closed_and_preserve_rig(self):
+        names=['root','bip01 l calf','bip01 r calf','bip01 l foot','bip01 r foot']
+        bones=[{'name':name,'parent':0,'translation':[float(i),0.,0.],'rotation':[0.,0.,0.,1.]} for i,name in enumerate(names)]
+        bones[0]['parent']=0
+        idle={'bones':bones,'tracks':[{'name':b['name'],'translation':{'times':[0.,1.],'values':[b['translation'][:],b['translation'][:]]},
+                                     'rotation':{'times':[0.,1.],'values':[b['rotation'][:],b['rotation'][:]]}} for b in bones]}
+        saved=copy.deepcopy(idle);clips={name:p.cephalopod.gesture(idle,p.td,name) for name in ['Attack2','Attack3','Cast']}
+        self.assertEqual(idle,saved)
+        def amount(clip,bone):
+            q=next(t for t in clip['tracks'] if t['name']==bone)['rotation']['values'][16]
+            return 2*math.acos(min(1.,max(-1.,q[3])))
+        self.assertGreater(amount(clips['Attack2'],'bip01 l calf'),amount(clips['Attack2'],'bip01 r calf')*3.)
+        self.assertGreater(amount(clips['Attack3'],'bip01 r calf'),amount(clips['Attack3'],'bip01 l calf')*3.)
+        self.assertAlmostEqual(amount(clips['Cast'],'bip01 l calf'),amount(clips['Cast'],'bip01 r calf'))
+        for clip in clips.values():
+            self.assertEqual(clip['bones'],bones)
+            for track in clip['tracks']:
+                self.assertEqual(track['rotation']['values'][0],track['rotation']['values'][-1])
+                self.assertTrue(all(abs(sum(v*v for v in q)-1.)<1e-12 for q in track['rotation']['values']))
+                original=next(t for t in idle['tracks'] if t['name']==track['name'])
+                self.assertTrue(all(v==original['translation']['values'][0] for v in track['translation']['values']))
+
+    def test_tentacle_recipe_preserves_unselected_body_and_uv_rig(self):
+        points=[(-1.,-1.,-1.),(1.,-1.,-1.),(1.,1.,-1.),(-1.,1.,-1.),(-1.,-1.,1.),(1.,-1.,1.),(1.,1.,1.),(-1.,1.,1.)]
+        faces=[(0,2,1),(0,3,2),(4,5,6),(4,6,7),(0,1,5),(0,5,4),(3,7,6),(3,6,2),(0,4,7),(0,7,3),(1,2,6),(1,6,5)]
+        source={'points':points,'normals':[(0.,0.,1.)]*8,'polygons':[f+f for f in faces],
+                'weights':[[(1 if i<4 else 0,1.)] for i in range(8)],'ties':[0,1],
+                'bones':[{'name':'body'},{'name':'bip01 l calf'}],'uv_sets':[[(0.,0.,0.)]*8],
+                'texture_polygons':faces,'sentinel':'original source recipe'}
+        saved=copy.deepcopy(source);result,report=p.cephalopod.round_tentacles(source,2.)
+        self.assertEqual(source,saved)
+        for key in ['weights','ties','bones','uv_sets','texture_polygons','polygons','sentinel']:self.assertEqual(result[key],source[key])
+        self.assertGreater(report['measured_displacement_m'],0.)
+        self.assertLessEqual(report['measured_displacement_m'],.16+1e-12)
+        self.assertEqual((report['selected_vertices'],report['fixed_vertices']),(4,4))
+        self.assertEqual(result['points'][4:],source['points'][4:]);self.assertEqual(result['normals'][4:],source['normals'][4:])
+        self.assertTrue(all(math.isfinite(v) for n in result['normals'] for v in n))
+        for scale in [0.,-1.,1000.]:
+            with self.assertRaises(ValueError):p.cephalopod.round_tentacles(source,scale)
+
+    def test_waterline_retains_submerged_vertices_and_source_bob(self):
+        import base64,json
+        model={'points':[(0.,0.,-.7),(1.,0.,-.7),(0.,0.,.6)],'normals':[(0.,1.,0.)],
+               'polygons':[(0,1,2,0,0,0)],'texture_polygons':[(0,1,2)],'uv_sets':[[(0.,0.,0.),(1.,0.,0.),(0.,1.,0.)]],
+               'bones':[{'name':'root','parent':0,'translation':[0.,0.,0.],'rotation':[0.,0.,0.,1.]}],
+               'weights':[[(0,1.)]]*3,'ties':[0]}
+        animation={'bones':copy.deepcopy(model['bones']),'tracks':[{'name':'root',
+                   'translation':{'times':[0.,.5,1.],'values':[[0.,0.,0.],[0.,0.,.4],[0.,0.,-.2]]},
+                   'rotation':{'times':[0.,1.],'values':[[0.,0.,0.,1.]]*2}}]}
+        source=copy.deepcopy(model)
+        with tempfile.TemporaryDirectory(prefix='waterline-test-',dir=Path(__file__).resolve().parents[1]/'work') as folder:
+            output=Path(folder)/'water.gltf'
+            report=p.td.export_gltf(model,{'Idle':animation},b'png',output,1.3,preserve_waterline_clips=['Idle'])
+            doc=json.loads(output.read_text(encoding='utf-8'));payload=base64.b64decode(doc['buffers'][0]['uri'].split(',')[1])
+            def values(accessor_id):
+                acc=doc['accessors'][accessor_id];view=doc['bufferViews'][acc['bufferView']]
+                start=view.get('byteOffset',0)+acc.get('byteOffset',0)
+                return list(struct.iter_unpack('<3f',payload[start:start+acc['count']*12]))
+            self.assertEqual(doc['nodes'][1]['translation'],[0,0,0])
+            channels=doc['animations'][0]['channels'];samplers=doc['animations'][0]['samplers']
+            floor=next(c for c in channels if c['target']=={'node':1,'path':'translation'})
+            self.assertTrue(all(v==(0.,0.,0.) for v in values(samplers[floor['sampler']]['output'])))
+            bob=next(c for c in channels if c['target']=={'node':2,'path':'translation'})
+            self.assertAlmostEqual(values(samplers[bob['sampler']]['output'])[1][2],.4)
+            positions=values(doc['meshes'][0]['primitives'][0]['attributes']['POSITION'])
+            self.assertAlmostEqual(min(v[2] for v in positions),-.7)
+            self.assertEqual(report['clips']['Idle']['floor_policy'],'native_waterline')
+            with self.assertRaisesRegex(ValueError,'every clip'):
+                p.td.export_gltf(model,{'Idle':animation,'Death':animation},b'png',output,1.3,preserve_waterline_clips=['Idle'])
+            with self.assertRaisesRegex(ValueError,'land/air'):
+                p.td.export_gltf(model,{'Idle':animation},b'png',output,1.3,preserve_waterline_clips=['Idle'],preserve_hover_clips=['Idle'])
+        self.assertEqual(model,source)
+
     def test_mineral_maps_require_pinned_cc0_and_keep_geometry(self):
         import hashlib,json
         minerals=p.module('mineral_tests','creature-minerals.py')

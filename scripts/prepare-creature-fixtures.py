@@ -5,9 +5,9 @@ ROOT=Path(__file__).resolve().parents[1]
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('family');parser.add_argument('--runtime',type=Path,required=True);args=parser.parse_args()
     runtime=args.runtime.resolve();assert runtime.is_relative_to(ROOT/'work'),'Disposable runtime must stay under work/'
-    index=json.loads((ROOT/'Viewer/local-art/creatures/accepted-index.json').read_text());rows=[]
+    index=json.loads((ROOT/'Viewer/local-art/creatures/accepted-index.json').read_text(encoding='utf-8'));rows=[]
     public=ROOT/'Viewer/Art/Creatures/index.json'
-    if public.exists():index['entries']=json.loads(public.read_text())['entries']+index['entries']
+    if public.exists():index['entries']=json.loads(public.read_text(encoding='utf-8'))['entries']+index['entries']
     for entry in index['entries']:
         if entry.get('status')!='validated':continue
         if args.family!='all' and entry['family']!=args.family:continue
@@ -18,7 +18,10 @@ def main():
                 text=path.read_text(encoding='utf-8-sig')
                 classes.update(re.findall(r'\bpublic\s+(?:(?:abstract|sealed|partial)\s+)*class\s+(\w+)',text))
             classes=sorted(classes)
-            if classes:rows.append({'body':body['body'],'classes':classes,'kind':entry['kind'],'profile':body.get('native_profile') or entry['profile']})
+            common={'body':body['body'],'classes':classes,'kind':entry['kind'],'profile':body.get('native_profile') or entry['profile'],'movement_mode':entry.get('movement_mode','')}
+            if classes and entry.get('movement_mode')=='native_waterline':
+                for name in classes:rows.append(dict(common,classes=[name],native_class=name))
+            elif classes:rows.append(common)
     assert rows,'No validated native literal bodies in this family'
     target=ROOT/'work/creatures';target.mkdir(parents=True,exist_ok=True)
     (target/'live-candidates.json').write_text(json.dumps(rows,indent=2),encoding='utf-8')

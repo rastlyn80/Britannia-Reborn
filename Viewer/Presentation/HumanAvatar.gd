@@ -146,6 +146,10 @@ func _finish_dismount() -> void:
 	human_visual.cancel_action();human_visual.play(human_visual.stance_clip("Idle"));foot_contact.grounded=true
 
 func _physics_process(delta: float) -> void:
+	if human_visual==null and horse_visual!=null and horse_visual.get_meta("source_creature",{}).get("movement_mode","")=="native_waterline":
+		# The packet's Z is the sea mobile's water-surface anchor. Nearby land,
+		# boat decks and the seabed must not pull a swimming actor onto them.
+		ground_offset=0.;visual_root.position.y=0.;return
 	super._physics_process(delta)
 	if rider_contact==null or rider_contact.mode!="mount" or rider_contact.progress>.15:return
 	var space:=get_world_3d().direct_space_state

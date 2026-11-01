@@ -58,10 +58,13 @@ func run() -> void:
 		var session: Node=sessions[sex];var observer: Node=sessions[1-sex]
 		for candidate: Dictionary in candidates:
 			var body:=int(candidate.body)
-			var response:=await reply(sex,"prepare "+str(body),"UCCREATURE|prepared|")
+			var response:=await reply(sex,"prepare "+str(body)+(" "+str(candidate.native_class) if candidate.has("native_class") else ""),"UCCREATURE|prepared|")
 			if response.is_empty():return
 			var fields:=response.split("|");var serial:=int(fields[2]);var native_class:=str(fields[4])
+			print("CREATURE NATIVE PREPARED ",response)
 			var native_state:=str(fields[8])
+			if candidate.has("native_class") and not check(native_class==str(candidate.native_class),"Requested native class is exercised even when several classes share a body"):return
+			if candidate.get("movement_mode","")=="native_waterline" and not check("aquatic=1" in fields and "wet=1" in fields,"Native water-only actor starts on genuine swimmer-only water surface"):return
 			if body==0xDF and not check(native_state=="shorn" and int(fields[9])==0,"native sheep carving reaches the shorn body and consumes available wool"):return
 			if not check(int(fields[3])==body,"actual native constructor retains exact body"):return
 			if not check(await until(func():return session.entities.has(serial) and observer.entities.has(serial)),"both clients receive native loose creature"):return
@@ -88,6 +91,7 @@ func run() -> void:
 					if not check(actor.horse_visual.current_clip=="Idle","rooted creature stays in its resting presentation"):return
 					continue
 				if not check(target!=origin and await until(func():return Vector2i(session.entities[serial].x,session.entities[serial].y)==target and Vector2i(observer.entities[serial].x,observer.entities[serial].y)==target),"actual native Move changes coordinates on both clients"):return
+				if candidate.get("movement_mode","")=="native_waterline" and not check(response.ends_with("|wet=1"),"Native walk/run remains on genuine water after actual Mobile.Move"):return
 				if not check(bool(session.entities[serial].running)==running and bool(observer.entities[serial].running)==running,"native walk/run flags replicate"):return
 				actor.animate(true,0.,.1,6.8 if session.entities[serial].running else 1.8)
 				if not check(actor.horse_visual.current_clip==("Run" if running else "Walk"),"received gait drives matching source replacement"):return
@@ -139,7 +143,7 @@ func run() -> void:
 			for client in [sex,1-sex]:death_presenters[client].finish(serial);death_arenas[client].avatars.erase(serial);death_events[client].erase(serial)
 			actor.queue_free();peer_actor.queue_free()
 			await process_frame
-			records.append({"female":sex==1,"body":body,"native_class":native_class,"native_state":native_state,"kind":candidate.kind,"corpse_suppressed":corpse==0 and not death_refused,"native_death_refused":death_refused,"movement":"Native AI refuses movement" if rooted else "Native Mobile.Move walk/run"})
+			records.append({"female":sex==1,"body":body,"native_class":native_class,"native_state":native_state,"kind":candidate.kind,"native_water":candidate.get("movement_mode","")=="native_waterline","corpse_suppressed":corpse==0 and not death_refused,"native_death_refused":death_refused,"movement":"Native AI refuses movement" if rooted else "Native Mobile.Move walk/run"})
 			await reply(sex,"cleanup","UCCREATURE|cleaned")
 	for session in sessions:session.close()
 	var folder:="res://../outputs/creatures/"+family;DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(folder))
