@@ -12,6 +12,8 @@ if ($LASTEXITCODE) {throw 'Creature rig/visible-geometry/reader regression check
 if ($LASTEXITCODE) {throw 'Creature occurrence ordering checks failed'}
 & python -B "$root/scripts/test-creature-humanoid-actions.py"
 if ($LASTEXITCODE) {throw 'Creature gesture limb-length, stance and source-grip checks failed'}
+& python -B "$root/scripts/test-creature-cervid-actions.py"
+if ($LASTEXITCODE) {throw 'Cervid four-hoof, cervical motion and source-identity checks failed'}
 if (Test-Path "$root/Server/ModernUO/Projects/UOContent/Engines/Ethics/Core/Ethic.cs") {
  & python -B "$root/scripts/prepare-server-fixes.py" --verify-only
  if ($LASTEXITCODE) {throw 'Reviewed server overlay source/anchor audit failed'}

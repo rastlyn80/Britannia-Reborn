@@ -2,6 +2,8 @@
 import argparse,json,re
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
+# Reviewed shared-file declarations, each also verified by its real constructor.
+EXPLICIT_CLASSES={237:['Hind','EnragedHind'],234:['GreatHart','EnragedHart']}
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('family');parser.add_argument('--runtime',type=Path,required=True);args=parser.parse_args()
     runtime=args.runtime.resolve();assert runtime.is_relative_to(ROOT/'work'),'Disposable runtime must stay under work/'
@@ -18,8 +20,12 @@ def main():
                 text=path.read_text(encoding='utf-8-sig')
                 classes.update(re.findall(r'\bpublic\s+(?:(?:abstract|sealed|partial)\s+)*class\s+(\w+)',text))
             classes=sorted(classes)
+            reviewed=EXPLICIT_CLASSES.get(body['body']) if entry['family']=='deer' else None
+            if reviewed:
+                assert set(reviewed)<=set(classes),'Reviewed native class declaration changed'
+                classes=reviewed
             common={'body':body['body'],'classes':classes,'kind':entry['kind'],'profile':body.get('native_profile') or entry['profile'],'movement_mode':entry.get('movement_mode','')}
-            if classes and entry.get('movement_mode')=='native_waterline':
+            if classes and (entry.get('movement_mode')=='native_waterline' or reviewed):
                 for name in classes:rows.append(dict(common,classes=[name],native_class=name))
             elif classes:rows.append(common)
     assert rows,'No validated native literal bodies in this family'

@@ -19,6 +19,31 @@ def fixture():
     return body,idle
 
 class HumanoidActionsTests(unittest.TestCase):
+    def test_three_spines_and_two_heads_preserve_stance_grips_and_source(self):
+        body,idle=fixture();old=body['bones'];removed={i for i,b in enumerate(old) if b['name'] in ['bip_01 spine3','bip_01 head']}
+        remap={i:j for j,i in enumerate(i for i in range(len(old)) if i not in removed)}
+        spine2=next(i for i,b in enumerate(old) if b['name']=='bip_01 spine2')
+        bones=[]
+        for i,b in enumerate(old):
+            if i in removed:continue
+            parent=b['parent'];bones.append(dict(copy.deepcopy(b),parent=remap[spine2 if parent in removed else parent]))
+        for name,x in [('geosphere01',-.12),('geosphere02',.12)]:bones.append({'name':name,'parent':remap[spine2],'translation':[x,-.08,.18],'rotation':[0.,0.,0.,1.]})
+        body['bones']=bones;idle['bones']=copy.deepcopy(bones);idle['tracks']=[{'name':b['name'],'translation':{'times':[0.,1.],'values':[b['translation']]*2},'rotation':{'times':[0.,1.],'values':[b['rotation']]*2}} for b in bones]
+        original=copy.deepcopy((body,idle));baseline=h.Pose(body,idle)
+        separation=h.length(h.sub(baseline.world('geosphere01')[1],baseline.world('geosphere02')[1]))
+        for label in ['Attack2','Attack3','Cast','Pillage']:
+            clip=h.gesture(body,idle,label)
+            for frame in [0,len(clip['tracks'][0]['rotation']['times'])//2,-1]:
+                sample=copy.deepcopy(clip)
+                for track in sample['tracks']:
+                    for channel in ['translation','rotation']:track[channel]={'times':[0.],'values':[track[channel]['values'][frame]]}
+                pose=h.Pose(body,sample)
+                self.assertAlmostEqual(h.length(h.sub(pose.world('geosphere01')[1],pose.world('geosphere02')[1])),separation,places=8)
+                for side in ['l','r']:
+                    foot='bip01 '+side+' foot';self.assertLess(h.length(h.sub(pose.world(foot)[1],baseline.world(foot)[1])),1e-7)
+                    hand='bip01 '+side+' hand';i=pose.names[hand];self.assertAlmostEqual(abs(h.dot(pose.rotations[i],baseline.rotations[i])),1.,places=8)
+        self.assertEqual((body,idle),original)
+
     def test_rotated_ancestor_ik_reaches_target_without_stretch(self):
         body,idle=fixture();pose=h.Pose(body,idle);pose.turn('granny_master',[0.,0.,1.],.7)
         upper,lower,end=['bip01 l '+name for name in ['upperarm','forearm','hand']]

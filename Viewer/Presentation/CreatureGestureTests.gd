@@ -1,5 +1,5 @@
 extends SceneTree
-## Render and measure the added orc gestures on their actual source rigs.
+## Render and measure authored humanoid gestures on their actual source rigs.
 const Visual=preload("res://Presentation/CreatureVisual.gd")
 const Geometry=preload("res://Presentation/SkinGeometry.gd")
 const INPUTS=["CreatureGestureTests.gd","CreatureVisual.gd","OstardVisual.gd","SkinGeometry.gd","HumanActions.gd","SourceMountContact.gd","AnimalPoseLibrary.gd","HumanHue.gd","OstardSurface.gdshader","FootContact.gd"]
@@ -7,7 +7,11 @@ var checks:=0
 var failures:=0
 var samples: Array=[]
 var terrain: Array=[]
-func _initialize() -> void:call_deferred("run")
+var family:="orcs"
+func _initialize() -> void:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--family="):family=argument.trim_prefix("--family=")
+	call_deferred("run")
 func check(ok: bool,label: String) -> void:
 	checks+=1
 	if not ok:failures+=1;if failures<16:push_error(label)
@@ -40,8 +44,8 @@ func run() -> void:
 	var hashes: Dictionary={}
 	for file in INPUTS:hashes[file]=FileAccess.get_sha256("res://Presentation/"+file)
 	var recipe_sha:=FileAccess.get_sha256("res://../scripts/creature-humanoid-actions.py")
-	var preparation: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://local-art/creatures/orcs/preparation.json"))
-	var folder:="res://../outputs/creatures/orcs/gestures";DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(folder))
+	var preparation: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://local-art/creatures/"+family+"/preparation.json"))
+	var folder:="res://../outputs/creatures/"+family+"/gestures";DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(folder))
 	var viewport:=SubViewport.new();viewport.size=Vector2i(800,800);viewport.own_world_3d=true;viewport.transparent_bg=true;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;root.add_child(viewport)
 	preload("res://Presentation/ItemStudio.gd").studio_lights(viewport)
 	var camera:=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;viewport.add_child(camera)
@@ -55,7 +59,17 @@ func run() -> void:
 		actor.play("Idle",0.);actor.animator.seek(0.,true);actor.animator.pause()
 		for frame in 2:await process_frame
 		var baseline: Dictionary={}
-		for name in ["bip01 l foot","bip01 r foot","bip01 l hand","bip01 r hand","bip01 head"]:baseline[name]=point(rig,name)
+		var heads: Array=["geosphere01","geosphere02"] if str(record.kind)=="ettins_ettin" else ["bip01 head"]
+		if heads.size()==2:
+			var arrays:=mesh.mesh.surface_get_arrays(0);var joints: PackedInt32Array=arrays[Mesh.ARRAY_BONES];var weights: PackedFloat32Array=arrays[Mesh.ARRAY_WEIGHTS]
+			for head in heads:
+				var weighted:=0
+				for influence in joints.size():
+					var bind:=joints[influence];var bone:=mesh.skin.get_bind_bone(bind)
+					if bone<0:bone=rig.find_bone(mesh.skin.get_bind_name(bind))
+					if bone==find(rig,head) and weights[influence]>.2:weighted+=1
+				check(weighted>10,"Both head controls actually deform their own source skin")
+		for name in ["bip01 l foot","bip01 r foot","bip01 l hand","bip01 r hand"]+heads:baseline[name]=point(rig,name)
 		var grip_poses: Dictionary={}
 		var wrist_poses: Dictionary={}
 		for side: String in ["l","r"]:grip_poses[side]=rig.get_bone_pose(find(rig,"cp_grasp_"+side+"hand"))
@@ -68,7 +82,7 @@ func run() -> void:
 			check(actor.current_clip==str(record.new_action_categories[str(category)]),"Additional native action uses its declared replacement")
 		actor.contact.enabled=false
 		var height:=float(record.stats.original.height_m)
-		camera.size=height*1.4;camera.position=Vector3(height*.8,height*.9,height*2.);camera.look_at(Vector3(0.,height*.5,0.))
+		camera.size=height*(1.7 if heads.size()==2 else 1.4);camera.position=Vector3(height*.8,height*.9,height*2.);camera.look_at(Vector3(0.,height*(.62 if heads.size()==2 else .5),0.))
 		for clip: String in ["Cast","Pillage","Attack2","Attack3"]:
 			check(actor.animator.has_animation(clip),"Prepared gesture exists: "+str(record.kind)+" / "+clip)
 			for protocol: String in ["classic","new"]:
@@ -98,7 +112,10 @@ func run() -> void:
 					check(grasp_index>=0 and rig.get_bone_parent(grasp_index)==hand_index,"Original item-grip attachment stays on its hand")
 					check(rig.get_bone_pose(grasp_index).is_equal_approx(grip_poses[side]),"Original prop grip keeps its local hand offset and orientation")
 					if clip!="Pillage" or record.get("authored_replacements",{}).has("Pillage"):check(rig.get_bone_pose(hand_index).is_equal_approx(wrist_poses[side]),"Authored gesture retains the source wrist pose relative to the forearm")
-				var drop: float=(baseline["bip01 head"] as Vector3).y-point(rig,"bip01 head").y;head_drop=maxf(head_drop,drop)
+				var drop:=0.
+				for name in heads:drop+=((baseline[name] as Vector3).y-point(rig,name).y)/heads.size()
+				if heads.size()==2:check(absf(point(rig,heads[0]).distance_to(point(rig,heads[1]))-(baseline[heads[0]] as Vector3).distance_to(baseline[heads[1]]))<.001,"Both original weighted head controls keep their measured separation")
+				head_drop=maxf(head_drop,drop)
 				if clip.begins_with("Attack") and frame in [5,10]:striking_hand.append(point(rig,"bip01 r hand"))
 				if frame in [0,5,10,15,20]:
 					await RenderingServer.frame_post_draw
@@ -143,5 +160,5 @@ func run() -> void:
 		actor.free()
 	for file in INPUTS:check(hashes[file]==FileAccess.get_sha256("res://Presentation/"+file),"Gesture runtime stayed unchanged throughout the sweep")
 	check(recipe_sha==FileAccess.get_sha256("res://../scripts/creature-humanoid-actions.py"),"Gesture authoring recipe stayed unchanged throughout the sweep")
-	var output:=FileAccess.open(folder+"/validation.json",FileAccess.WRITE);output.store_string(JSON.stringify({"checks":checks,"failures":failures,"renderer":RenderingServer.get_current_rendering_method(),"assets":assets,"samples":samples,"terrain_samples":terrain,"runtime_sha256":hashes,"recipe_sha256":recipe_sha,"scope":"Actual imported orc casts/ground-slap/overhead/sweeping categories, rendered gesture change, stance stability, source grip hierarchy and finite collision-plane fitting. Authored approximations; source Stomp reuse remains explicit. Native action packets and arbitrary terrain are separate."},"\t"));output.close()
-	print("ORC GESTURES: ",checks-failures," / ",checks,"; ",samples.size()," skinned samples");quit(1 if failures else 0)
+	var output:=FileAccess.open(folder+"/validation.json",FileAccess.WRITE);output.store_string(JSON.stringify({"checks":checks,"failures":failures,"renderer":RenderingServer.get_current_rendering_method(),"assets":assets,"samples":samples,"terrain_samples":terrain,"runtime_sha256":hashes,"recipe_sha256":recipe_sha,"scope":"Actual imported humanoid casts/ground-slap/overhead/sweeping categories, rendered gesture change, stance stability, source grip/head hierarchy and finite collision-plane fitting. Authored approximations; source Stomp reuse remains explicit. Native action packets and arbitrary terrain are separate."},"\t"));output.close()
+	print("HUMANOID GESTURES / ",family,": ",checks-failures," / ",checks,"; ",samples.size()," skinned samples");quit(1 if failures else 0)

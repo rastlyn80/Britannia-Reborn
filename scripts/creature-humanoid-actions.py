@@ -85,10 +85,14 @@ class Pose:
 def gesture(body,idle,label):
     assert label in ['Cast','Pillage','Attack2','Attack3']
     baseline=Pose(body,idle);up=[0.,0.,1.]
+    spines=[name for name in ['bip01 spine','bip01 spine1','bip01 spine2','bip01 spine3'] if name in baseline.names]
+    heads=['bip01 head'] if 'bip01 head' in baseline.names else ['geosphere01','geosphere02']
+    assert len(spines)>=3 and all(name in baseline.names for name in heads),'Undeclared source torso/head layout'
     left=unit(sub(baseline.world('bip01 l upperarm')[1],baseline.world('bip01 r upperarm')[1]))
     left=unit([left[0],left[1],0.]);forward=unit(cross(left,up))
     height=max(p[2] for p in body['points'])-min(p[2] for p in body['points'])
     duration={'Cast':1.4,'Pillage':1.8,'Attack2':.85,'Attack3':.95}[label];frames=round(duration*60)+1
+    if len(heads)==2:duration*=1.2;frames=round(duration*60)+1
     result=copy.deepcopy(idle)
     # Source animation files omit unanimated grasp/attachment leaves. Retain
     # their body bind transforms while keeping the original animation scene
@@ -104,13 +108,16 @@ def gesture(body,idle,label):
         if amount>1e-8:
             # A short, distributed torso bend avoids a single sharp waist
             # hinge. Feet retain their measured starting anchors in a crouch.
-            lean=(.55 if label=='Pillage' else (-.1+.28*stroke) if attack else -.08)*amount
-            if label=='Pillage':pose.translate('bip01',mul(up,-height*.18*amount))
+            lean=((.9 if len(heads)==2 else .55) if label=='Pillage' else (-.1+.28*stroke) if attack else -.08)*amount
+            # The ettin's broad calf-weighted boots cannot fold through the
+            # ground. Distribute its reach through the torso and a shallower
+            # knee bend rather than lifting both planted feet with the mesh.
+            if label=='Pillage':pose.translate('bip01',mul(up,-height*(.08 if len(heads)==2 else .18)*amount))
             elif attack:pose.translate('bip01',mul(up,-height*.018*amount*stroke))
-            for name in ['bip01 spine','bip01 spine1','bip01 spine2','bip01 spine3']:
-                pose.turn(name,left,lean/4.)
-                if label=='Attack3':pose.turn(name,up,(-.23+.5*stroke)*amount/4.)
-            pose.turn('bip01 head',left,-lean*.25)
+            for name in spines:
+                pose.turn(name,left,lean/len(spines))
+                if label=='Attack3':pose.turn(name,up,(-.23+.5*stroke)*amount/len(spines))
+            for name in heads:pose.turn(name,left,-lean*.25)
             # These source thighs branch from the spine rather than the
             # pelvis. Even a small standing torso lean needs leg compensation.
             for side in ['l','r']:
@@ -153,7 +160,7 @@ def gesture(body,idle,label):
     return result
 
 def install(body,clips,authored,aliases,stem):
-    if stem not in ['orcs_orc','orcs_orc_captain','orcs_orc_lord','orcs_orc_shaman']:return
+    if stem not in ['orcs_orc','orcs_orc_captain','orcs_orc_lord','orcs_orc_shaman','ettins_ettin']:return
     if 'Cast' not in clips:
         clips['Cast']=gesture(body,clips['Idle'],'Cast')
         authored['Cast']='Authored two-bone arm reach and distributed torso gesture on the measured source rig; original grip retained; not recovered UO choreography'

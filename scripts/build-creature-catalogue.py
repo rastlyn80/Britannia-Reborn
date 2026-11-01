@@ -23,7 +23,7 @@ def main():
     registry=ROOT/'Viewer/Presentation/EquineRegistry.gd'
     for name in ['BODIES','COMPATIBILITY','DISTINCT']:existing|=keys(registry,name)
     existing|=keys(ROOT/'Viewer/Presentation/MountVisual.gd','BODIES')|keys(ROOT/'Viewer/Presentation/AnimalVisual.gd','BODIES')
-    live={};reports=[]
+    live={};live_classes={};reports=[]
     for path in [OUT/'all/live.json',*OUT.glob('*/live.json'),*(ROOT/'outputs/ostard-riding').glob('*live.json'),
                  ROOT/'outputs/ostard-riding/live-validation.json',ROOT/'outputs/equines/live-validation.json',
                  ROOT/'outputs/horse-session/live-validation.json',ROOT/'outputs/ostard-riding/llama-completion-live.json']:
@@ -32,7 +32,9 @@ def main():
         if report.get('failures')!=0:continue
         reports.append(str(path))
         for record in report.get('records',[]):
-            if not record.get('ethereal',False):live.setdefault(int(record['body']),[]).append(str(path.relative_to(ROOT)))
+            if not record.get('ethereal',False):
+                body=int(record['body']);live.setdefault(body,[]).append(str(path.relative_to(ROOT)))
+                if record.get('native_class'):live_classes.setdefault(body,set()).add(record['native_class'])
     targets=[]
     for value,sources in source['native_literal_bodies'].items():
         body=int(value);profile=source['native_profiles'].get(value,'')
@@ -40,12 +42,13 @@ def main():
         native_group='/'.join(sources[0]['path'].replace('\\','/').split('/')[3:-1])
         targets.append({'body':body,'profile':profile,'native_group':native_group,'sources':sources,
                         'presentation':routed[body]['kind'] if body in routed else 'previously integrated horse/ostard/ki-rin/llama/bovine' if body in existing else None,
-                        'live_reports':live.get(body,[])})
+                        'live_reports':live.get(body,[]),'tested_native_constructors':sorted(live_classes.get(body,set()))})
     targets.sort(key=lambda row:(row['native_group'],row['body']))
     counts={'bounded_native_literal_bodies':len(targets),'routed_native_literals':sum(bool(row['presentation']) for row in targets),
             'with_native_evidence':sum(bool(row['live_reports']) for row in targets),'new_validated_source_forms':len(accepted),
-            'new_body_routes':len(routed),'licensed_public_source_forms':len(public),'prepared_source_forms':sum(row['status']=='prepared' for row in prepared.values()),'blocked_source_forms':sum(row['status']!='prepared' for row in prepared.values())}
-    scope='Bounded pinned-server literal Body assignments, RandomList, simple conditional literal branches and base-mount calls; not every dynamic constructor result or the full modern-client body catalogue. Source forms, body routes and live evidence are separate. Proprietary-derived art stays local; no redistribution grant.'
+            'new_body_routes':len(routed),'licensed_public_source_forms':len(public),'prepared_source_forms':sum(row['status']=='prepared' for row in prepared.values()),'blocked_source_forms':sum(row['status']!='prepared' for row in prepared.values()),
+            'named_native_constructor_pairs_with_evidence':sum(len(row['tested_native_constructors']) for row in targets)}
+    scope='Bounded pinned-server literal Body assignments, RandomList, simple conditional literal branches and base-mount calls; not every dynamic constructor result or the full modern-client body catalogue. Source forms, body routes and live evidence are separate. Named constructors list positive evidence in passing reports only: a tested body is not proof of every class sharing it, and older receipts may lack class names. Proprietary-derived art stays local; no redistribution grant.'
     (OUT/'catalogue.json').write_text(json.dumps({'counts':counts,'server_pin':source['server_pin'],'native_targets':targets,'preparation':prepared,'scope':scope},indent=2),encoding='utf-8')
     cards=[];atlases=[];materials=[]
     if public:
@@ -65,8 +68,8 @@ def main():
                 materials.append({'kind':kind,'family':family,'surface':row['mineral_surface'],'art_dependency_sha256':row['art_dependency_sha256']})
                 snippets.append('<p>Photographic mineral maps: <a href="'+html.escape(row['mineral_surface']['source'],quote=True)+'">'+html.escape(row['mineral_surface']['source_set'])+'</a> (CC0); authored colour and reflectance. Exact map hashes and recipes: <a href="material-provenance.json">material provenance</a>.</p>')
         cards.append('<section><h2>'+html.escape(family)+' / '+str(len(validated))+' validated source forms</h2><details><summary>Models, comparisons and repairs</summary>'+''.join(snippets)+'</details></section>')
-    rows=''.join('<tr><td>0x%X</td><td>%s</td><td>%s</td><td>%s</td></tr>'%(row['body'],html.escape(row['native_group']),html.escape(row['presentation'] or 'Needs replacement'),'Native evidence' if row['live_reports'] else 'Not live-certified') for row in targets)
-    (OUT/'index.html').write_text('''<!doctype html><html lang="en"><meta charset="utf-8"><title>Britannia Reborn / creature work board</title><style>body{background:#20303a;color:#e9edef;font:17px system-ui;max-width:1440px;margin:24px auto;padding:15px}img{max-width:100%;height:auto}summary{cursor:pointer}section{margin:30px 0}table{border-collapse:collapse;width:100%}td,th{text-align:left;border-bottom:1px solid #52616b;padding:9px}a{color:#dfce95}p{line-height:1.5}</style><h1>Britannia Reborn / creature work board</h1><p>Prepared trials, validated art and real server checks remain separate. The creature programme continues through every family; gaps stay visible.</p><p>'''+html.escape(str(counts))+'''</p><p>'''+html.escape(scope)+'''</p>'''+''.join(cards)+'''<details><summary>Bounded native body checklist</summary><table><tr><th>Body</th><th>Native source group</th><th>Presentation</th><th>Server checks</th></tr>'''+rows+'''</table></details><p><a href="catalogue.json">Detailed catalogue</a> · <a href="actions.html">Action ledger</a> · <a href="frequency.html">Occurrence work order</a> · <a href="../corpses/index.html">Corpse graphic variants</a> · <a href="atlas-provenance.json">Saved texture paths and exact prompts</a></p></html>''',encoding='utf-8')
+    rows=''.join('<tr><td>0x%X</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>'%(row['body'],html.escape(row['native_group']),html.escape(row['presentation'] or 'Needs replacement'),'Native evidence' if row['live_reports'] else 'Not live-certified',html.escape(', '.join(row['tested_native_constructors']) or 'No named constructor in these receipts')) for row in targets)
+    (OUT/'index.html').write_text('''<!doctype html><html lang="en"><meta charset="utf-8"><title>Britannia Reborn / creature work board</title><style>body{background:#20303a;color:#e9edef;font:17px system-ui;max-width:1440px;margin:24px auto;padding:15px}img{max-width:100%;height:auto}summary{cursor:pointer}section{margin:30px 0}table{border-collapse:collapse;width:100%}td,th{text-align:left;border-bottom:1px solid #52616b;padding:9px}a{color:#dfce95}p{line-height:1.5}</style><h1>Britannia Reborn / creature work board</h1><p>Prepared trials, validated art and real server checks remain separate. The creature programme continues through every family; gaps stay visible.</p><p>'''+html.escape(str(counts))+'''</p><p>'''+html.escape(scope)+'''</p>'''+''.join(cards)+'''<details><summary>Bounded native body checklist</summary><table><tr><th>Body</th><th>Native source group</th><th>Presentation</th><th>Server checks</th><th>Named constructors exercised</th></tr>'''+rows+'''</table></details><p><a href="catalogue.json">Detailed catalogue</a> · <a href="actions.html">Action ledger</a> · <a href="frequency.html">Occurrence work order</a> · <a href="../corpses/index.html">Corpse graphic variants</a> · <a href="atlas-provenance.json">Saved texture paths and exact prompts</a></p></html>''',encoding='utf-8')
     (OUT/'atlas-provenance.json').write_text(json.dumps({'atlases':atlases,'scope':'Generated edits of proprietary-derived local inputs, not redistributable assets. Exact prompts and workspace output paths retained.'},indent=2),encoding='utf-8')
     (OUT/'material-provenance.json').write_text(json.dumps({'materials':materials,'scope':'Exact photographic sources, CC0 licenses, authors, map URLs/hashes and authored settings. Source creature geometry/UVs remain proprietary-derived local inputs.'},indent=2),encoding='utf-8')
     print('CREATURE WORK BOARD:',counts)

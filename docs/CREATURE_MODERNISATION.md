@@ -1,4 +1,6 @@
-Latest 1 November milestone: [independently licensed dolphin](DOLPHINS.md), with native breach/swimming/hue/corpse tests and an actual public bundle that loads without private art. The catalogue has 135/279 bounded native bodies tested (48.4%); 2,266/3,068 generic action slots connected (73.9%, including reused clips). Exact original choreography and final art remain separate from coverage. See PROGRESS.md for the current evidence; older dated checkpoints below are history.
+Latest 1 November milestone: [Ettin and deer action review](ETTIN_AND_CERVID_ACTIONS.md), with distinct source-rig strikes, grazing, retained head/grip controls, planted weighted hoof soles and four native cervid constructor tests. Tested bodies remain 135/279 (48.4%); connected generic action slots reach 2,278/3,074 (74.1%, including reuse). Named constructor evidence is tracked separately. Original choreography and final art remain unfinished; see PROGRESS.md for current evidence.
+
+Earlier 1 November milestone: [independently licensed dolphin](DOLPHINS.md), with native breach/swimming/hue/corpse tests and an actual public bundle that loads without private art. Older dated checkpoints below are history.
 
 Earlier 1 November milestone: [sea serpent and deep sea serpent](SEA_SERPENTS.md), including corrected native animal/sea hurt actions and the initial independent dolphin trial.
 

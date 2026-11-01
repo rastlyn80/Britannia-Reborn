@@ -37,6 +37,19 @@ def main():
             assert all(digest(ROOT/'Viewer/Presentation'/name)==sha for name,sha in gesture['runtime_sha256'].items()),'Tentacle action runtime changed'
             assert gesture['asset_sha256']==tested['krakens_kraken']['asset_sha256']['modern'] and gesture['import_sha256']==tested['krakens_kraken']['import_sha256']['modern']
             assert all(len([s for s in gesture['samples'] if s['clip']==clip])==17 for clip in ['Attack','Attack2','Attack3','Cast'])
+        if family=='deer' and any(row.get('authored_cervid_recipe') for row in preparation['models']):
+            gesture=json.loads((ROOT/'outputs/creatures/deer/gestures/validation.json').read_text(encoding='utf-8'))
+            assert gesture['checks']>400 and gesture['failures']==0 and gesture['renderer']=='forward_plus','Cervid actions need actual rendered muzzle/hoof/terrain proof'
+            assert gesture['preparation_sha256']==digest(ART/family/'preparation.json')
+            assert set(gesture['assets'])==set(tested) and len(gesture['terrain_samples'])==len(tested)*18
+            assert all(digest(ROOT/'Viewer/Presentation'/name)==sha for name,sha in gesture['runtime_sha256'].items())
+            assert all(digest(ROOT/'scripts'/name)==sha for name,sha in gesture['recipe_sha256'].items())
+            for row in preparation['models']:
+                if row['status']!='prepared':continue
+                kind=row['kind'];asset=gesture['assets'][kind];recipe=row['authored_cervid_recipe']
+                assert digest(ROOT/recipe['path'])==recipe['sha256'] and digest(ROOT/recipe['support_path'])==recipe['support_sha256']
+                assert asset['asset_sha256']==tested[kind]['asset_sha256']['modern'] and asset['import_sha256']==tested[kind]['import_sha256']['modern']
+                for clip in ['Attack2','Eat']:assert len([s for s in gesture['samples'] if s['kind']==kind and s['clip']==clip])==13
         contact_kinds={row['kind'] for row in preparation['models'] if row['status']=='prepared' and row['kind'] in ['dragons_dragon_asian','dragons_wyvern']}
         contact=None
         if contact_kinds:
@@ -50,8 +63,8 @@ def main():
                 assert model['asset_sha256']==tested[model['kind']]['asset_sha256']['modern'],'Animated contact used different geometry'
                 assert model['import_sha256']==tested[model['kind']]['import_sha256']['modern'],'Animated contact used different import precision'
         rows=[]
-        if family=='orcs' and any(row.get('authored_action_recipe') for row in preparation['models']):
-            gesture_path=ROOT/'outputs/creatures/orcs/gestures/validation.json'
+        if family in ['orcs','ettins'] and any(row.get('authored_action_recipe') for row in preparation['models']):
+            gesture_path=ROOT/f'outputs/creatures/{family}/gestures/validation.json'
             gesture=json.loads(gesture_path.read_text())
             assert gesture['checks']>100 and gesture['failures']==0 and gesture['renderer']=='forward_plus','Orc gestures require passing actual GPU/stance checks'
             assert set(gesture['assets'])==set(tested),'Missing measured orc gesture model'

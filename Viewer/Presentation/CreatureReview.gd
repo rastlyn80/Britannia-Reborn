@@ -40,7 +40,7 @@ func build() -> void:
 		labels.append(label)
 	var canvas:=CanvasLayer.new();root.add_child(canvas);var ui:=VBoxContainer.new();ui.position=Vector2(18,14);canvas.add_child(ui)
 	var title:=Label.new();title.text="BRITANNIA REBORN / "+kind.replace("_"," ").to_upper();title.add_theme_font_size_override("font_size",24);ui.add_child(title)
-	var note:=Label.new();note.text="Original rig and source clips / bounded geometry / "+str(record.surface)+" / local review";ui.add_child(note)
+	var note:=Label.new();note.text="Original rig / recovered + authored category motions / bounded geometry / "+str(record.surface)+" / local review";ui.add_child(note)
 	var row:=HFlowContainer.new();row.custom_minimum_size=Vector2(1360,0);ui.add_child(row)
 	var names: Array[String]=["Idle","Walk","Run","Eat","Attack","Hit","Death","Fidget"]
 	for name in actors[0].animator.get_animation_list():

@@ -1,5 +1,6 @@
 param([string[]]$Families=@('bruins'),[int]$Jobs=3,[switch]$Capture,[switch]$Live)
 $ErrorActionPreference='Stop'
+if ($args.Count) {throw "Unexpected arguments: $args. Pass multiple families as -Families @('ettins','deer','orcs')."}
 $root=Split-Path $PSScriptRoot -Parent
 $env:APPDATA=Join-Path $root '.godot-user';$env:LOCALAPPDATA=$env:APPDATA
 $godot=(Get-ChildItem "$root/.tools/godot/*console.exe"|Select-Object -First 1).FullName
@@ -73,9 +74,13 @@ foreach ($family in $Families) {
   & $godot --path "$root/Viewer" --script res://Presentation/MineralAppearanceTests.gd *> "$logs/$family-minerals.log"
   if ($LASTEXITCODE) {throw 'Mineral PBR map/tangent/material response checks failed'}
  }
- if ($family -eq 'orcs') {
-  & $godot --path "$root/Viewer" --script res://Presentation/CreatureGestureTests.gd *> "$logs/$family-gestures.log"
+ if ($family -in @('orcs','ettins')) {
+  & $godot --path "$root/Viewer" --script res://Presentation/CreatureGestureTests.gd -- "--family=$family" *> "$logs/$family-gestures.log"
   if ($LASTEXITCODE) {throw 'Authored orc gesture, stance, grip and GPU response checks failed'}
+ }
+ if ($family -eq 'deer') {
+  & $godot --path "$root/Viewer" --script res://Presentation/CervidActionTests.gd *> "$logs/deer-gestures.log"
+  if ($LASTEXITCODE -or (Select-String -Path "$logs/deer-gestures.log" -Pattern 'SCRIPT ERROR:' -Quiet)) {throw 'Cervid muzzle, hoof, skin and finite terrain checks failed'}
  }
  $started=[DateTime]::UtcNow
  $arguments='--path "'+$root+'/Viewer" --script res://Presentation/CreatureAppearanceTests.gd -- --family='+$family

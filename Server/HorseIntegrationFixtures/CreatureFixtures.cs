@@ -45,7 +45,7 @@ public static class CreatureFixtures
         }
     }
 
-    private static BaseCreature? Construct(Type type)
+    private static BaseCreature? Construct(Type type, Mobile summoner, bool explicitlyRequested)
     {
         foreach (var constructor in type.GetConstructors())
         {
@@ -54,12 +54,22 @@ public static class CreatureFixtures
             var supported = true;
             for (var i = 0; i < parameters.Length; i++)
             {
-                if (!parameters[i].HasDefaultValue)
+                if (parameters[i].HasDefaultValue)
+                {
+                    values[i] = parameters[i].DefaultValue;
+                }
+                else if (explicitlyRequested && typeof(BaseEnraged).IsAssignableFrom(type)
+                    && parameters[i].ParameterType == typeof(Mobile) && parameters[i].Name == "summoner")
+                {
+                    // Native meer summons require a living master. The guarded
+                    // fixture owner supplies it; no native body/stats are set.
+                    values[i] = summoner;
+                }
+                else
                 {
                     supported = false;
                     break;
                 }
-                values[i] = parameters[i].DefaultValue;
             }
             if (supported)
             {
@@ -117,7 +127,7 @@ public static class CreatureFixtures
                 }
                 for (var attempt = 0; attempt < 16; attempt++)
                 {
-                    var creature = Construct(type);
+                    var creature = Construct(type, owner, requested != null);
                     if (creature == null)
                     {
                         break;

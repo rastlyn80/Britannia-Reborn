@@ -21,6 +21,7 @@ reuse=module('creature_source_reuse','creature-source-reuse.py')
 rigid=module('creature_rigid_parts','creature-rigid-parts.py')
 minerals=module('creature_minerals','creature-minerals.py')
 humanoid_actions=module('creature_humanoid_actions','creature-humanoid-actions.py')
+cervid_actions=module('creature_cervid_actions','creature-cervid-actions.py')
 cephalopod=module('creature_cephalopod','creature-cephalopod.py')
 OUTPUT = ROOT/'Viewer/local-art/creatures'
 LABELS = {'idle':'Idle','walk':'Walk','run':'Run','attack1':'Attack','attack2':'Attack2',
@@ -330,6 +331,9 @@ def prepare(family, z, names, rows, native):
             if humanoid_actions.install(body,clips,authored,aliases,stem):
                 row['authored_action_recipe']={'path':'scripts/creature-humanoid-actions.py','sha256':digest((ROOT/'scripts/creature-humanoid-actions.py').read_bytes())}
                 row['new_action_categories']={'2':'Hit','5':'Fidget','14':'Pillage'}
+            if cervid_actions.install(body,clips,authored,aliases,stem):
+                row['authored_cervid_recipe']={'path':'scripts/creature-cervid-actions.py','sha256':digest((ROOT/'scripts/creature-cervid-actions.py').read_bytes()),
+                    'support_path':'scripts/creature-humanoid-actions.py','support_sha256':digest((ROOT/'scripts/creature-humanoid-actions.py').read_bytes())}
             if stem=='krakens_kraken':
                 for label in ['Attack2','Attack3','Cast']:
                     clips[label]=cephalopod.gesture(clips['Idle'],td,label)
@@ -357,6 +361,9 @@ def prepare(family, z, names, rows, native):
                 clips['Eat']=feeding;authored['Eat']='Authored source-rig neck/head feeding bend with deformed-mesh floor correction; not original choreography'
             height = HEIGHTS.get(family,(max(p[2] for p in body['points'])-min(p[2] for p in body['points']))*records[0]['scale'][2])
             if stem in ['bruins_bear_grizzly','bruins_bear_polar']: height = 1.45
+            if stem=='deer_stag':
+                height=2.0
+                row['authored_proportion_interpretation']='Two-metre total antler height retains approximately the doe\'s source-space body scale; equal total heights incorrectly shrink the stag\'s torso and legs.'
             scale = height/(max(p[2] for p in body['points'])-min(p[2] for p in body['points']))
             strengths = []
             for pairs in body['weights']:
