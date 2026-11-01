@@ -434,6 +434,235 @@
       "category_aliases": {
         "Death2": "Death; same authored liquid collapse"
       }
+    },
+    {
+      "kind": "dolphin_bottlenose",
+      "family": "dolphins",
+      "status": "validated",
+      "profile": "sea",
+      "movement_mode": "native_waterline",
+      "surface_kind": "marine_pbr",
+      "head_bone": "head",
+      "assets": {
+        "modern": "res://Art/Creatures/Dolphin/dolphin.glb"
+      },
+      "bodies": [
+        {
+          "body": 151,
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "name": "Dolphin",
+          "native_profile": "sea",
+          "native_sources": [
+            {
+              "path": "Projects/UOContent/Mobiles/Animals/Misc/Dolphin.cs",
+              "sha256": "60219386241f8da60ab91dd3bf8fd6ca9b9e2db12164e831978e88856ae22968"
+            }
+          ]
+        }
+      ],
+      "license": "GPL-3.0-or-later authored conversion/rig/actions; underlying Innerscene mesh and embedded maps CC0-1.0",
+      "source": "https://www.innerscene.com/tools/library/3d-parts/common-bottlenose-dolphin-a7f74d0e",
+      "source_interpretation": "Independent licensed bottlenose study mesh/maps with authored rig and 14 action categories. No recovered Third Dawn rig or original choreography.",
+      "partial_hue_interpretation": "Authored neutral-colour test on the licensed body; dark eyes/nose/mouth protected. Original UO partial dye mask not recovered.",
+      "classic_action_categories": {
+        "3": "Jump",
+        "4": "Roll"
+      },
+      "new_action_categories": {
+        "11": "Attack"
+      },
+      "stats": {
+        "original": {
+          "bones": 9,
+          "height_m": 0.83,
+          "bind_diagonal_m": 3.3,
+          "clips": {
+            "Idle": {
+              "duration": 2.4,
+              "loop": true,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Walk": {
+              "duration": 1.0,
+              "loop": true,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Run": {
+              "duration": 0.6666666666666666,
+              "loop": true,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Attack": {
+              "duration": 0.7333333333333333,
+              "loop": false,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Attack2": {
+              "duration": 0.8,
+              "loop": false,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Attack3": {
+              "duration": 0.8666666666666667,
+              "loop": false,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Hit": {
+              "duration": 0.5333333333333333,
+              "loop": false,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Death": {
+              "duration": 1.4,
+              "loop": false,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Death2": {
+              "duration": 1.4,
+              "loop": false,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Fidget": {
+              "duration": 2.4,
+              "loop": true,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Fidget2": {
+              "duration": 2.6,
+              "loop": true,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Jump": {
+              "duration": 1.6,
+              "loop": false,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Roll": {
+              "duration": 2.0,
+              "loop": false,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Cast": {
+              "duration": 1.2,
+              "loop": false,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            }
+          }
+        },
+        "modern": {
+          "bones": 9,
+          "height_m": 0.83,
+          "bind_diagonal_m": 3.3,
+          "clips": {
+            "Idle": {
+              "duration": 2.4,
+              "loop": true,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Walk": {
+              "duration": 1.0,
+              "loop": true,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Run": {
+              "duration": 0.6666666666666666,
+              "loop": true,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Attack": {
+              "duration": 0.7333333333333333,
+              "loop": false,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Attack2": {
+              "duration": 0.8,
+              "loop": false,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Attack3": {
+              "duration": 0.8666666666666667,
+              "loop": false,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Hit": {
+              "duration": 0.5333333333333333,
+              "loop": false,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Death": {
+              "duration": 1.4,
+              "loop": false,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Death2": {
+              "duration": 1.4,
+              "loop": false,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Fidget": {
+              "duration": 2.4,
+              "loop": true,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Fidget2": {
+              "duration": 2.6,
+              "loop": true,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Jump": {
+              "duration": 1.6,
+              "loop": false,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Roll": {
+              "duration": 2.0,
+              "loop": false,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            },
+            "Cast": {
+              "duration": 1.2,
+              "loop": false,
+              "origin": "Authored independent rig/category; not recovered UO choreography"
+            }
+          }
+        }
+      },
+      "authored_replacements": {
+        "Idle": "Authored independent rig/category; not recovered UO choreography",
+        "Walk": "Authored independent rig/category; not recovered UO choreography",
+        "Run": "Authored independent rig/category; not recovered UO choreography",
+        "Attack": "Authored independent rig/category; not recovered UO choreography",
+        "Attack2": "Authored independent rig/category; not recovered UO choreography",
+        "Attack3": "Authored independent rig/category; not recovered UO choreography",
+        "Hit": "Authored independent rig/category; not recovered UO choreography",
+        "Death": "Authored independent rig/category; not recovered UO choreography",
+        "Death2": "Authored independent rig/category; not recovered UO choreography",
+        "Fidget": "Authored independent rig/category; not recovered UO choreography",
+        "Fidget2": "Authored independent rig/category; not recovered UO choreography",
+        "Jump": "Authored independent rig/category; not recovered UO choreography",
+        "Roll": "Authored independent rig/category; not recovered UO choreography",
+        "Cast": "Authored independent rig/category; not recovered UO choreography"
+      },
+      "camera_height": 0.7,
+      "pick_bounds": {
+        "position": [
+          -0.795539736747742,
+          -0.569331049919128,
+          -1.53130328655243
+        ],
+        "size": [
+          1.5922906398773229,
+          2.4328976273536673,
+          3.29208076000214
+        ]
+      },
+      "source_pin_sha256": "ae4bb6beab1a203aabfb8bb29c5db86c113354154d7b0592ad80fd4814f39df9",
+      "recipe_sha256": "e330e9c865f9bcb4b9e58ca4e5390a040cfbebbcd35e41c3a02d94e539ec4a56",
+      "native_validation": "Actual isolated two-client Dolphin constructor, native Jump variants, wet movement, hurt, hues and corpse"
     }
   ]
 }

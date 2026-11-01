@@ -1,0 +1,7 @@
+Bottlenose dolphin study mesh and embedded maps: Innerscene Corp, CC0-1.0.
+Source: https://www.innerscene.com/tools/library/3d-parts/common-bottlenose-dolphin-a7f74d0e
+License: https://creativecommons.org/publicdomain/zero/1.0/
+Exact original GLB SHA-256 and source URL are in provenance.json and scripts/dolphin-inputs.json.
+Britannia Reborn authored rig, skin weights, conversion, motions and shaders: GPL-3.0-or-later; see root LICENSE.
+Fourteen action categories are authored replacements, not recovered Ultima Online choreography.
+No original Ultima Online mesh, texture, rig or animation is included.

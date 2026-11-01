@@ -94,6 +94,9 @@ All visual-review shortcuts are in **Reviews/**, including
 **Reviews/Review-Mount-Riding.cmd** for the [integrated distinct mounts](docs/MOUNT_INTEGRATION.md).
 The [all-creature programme and source queue](docs/CREATURE_MODERNISATION.md) tracks
 the remaining families, starting with equines.
+The independently licensed [dolphin replacement](docs/DOLPHINS.md) is included in
+the repository with its maps, rig, authored motions and notices; its isolated
+distribution test needs no private artwork or game inputs.
 
 ## Roadmap and contributions
 

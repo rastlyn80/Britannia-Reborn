@@ -3,14 +3,16 @@ extends SceneTree
 const Registry=preload("res://Presentation/CreatureRegistry.gd")
 const Avatar=preload("res://Presentation/HumanAvatar.gd")
 const Corpses=preload("res://Presentation/CorpseModels.gd")
-const FILES=["AquaticPresentationTests.gd","CreatureVisual.gd","HumanAvatar.gd","LegacyAvatar.gd","SourceMountContact.gd","CreatureCutoutSurface.gdshader","SkinGeometry.gd","CorpseModels.gd"]
+const FILES=["AquaticPresentationTests.gd","CreatureVisual.gd","HumanAvatar.gd","LegacyAvatar.gd","SourceMountContact.gd","CreatureCutoutSurface.gdshader","CreatureMarineMaterial.gd","CreatureMarineSurface.gdshader","SkinGeometry.gd","CorpseModels.gd"]
 var family:="krakens"
+var candidate_path:=""
 var checks:=0
 var failures:=0
 var viewport: SubViewport
 func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--family="):family=arg.trim_prefix("--family=")
+		if arg.begins_with("--candidate="):candidate_path=arg.trim_prefix("--candidate=")
 	call_deferred("run")
 func check(ok: bool,label: String) -> void:
 	checks+=1
@@ -31,9 +33,12 @@ func difference(a: Image,b: Image) -> int:
 func run() -> void:
 	var runtime: Dictionary={}
 	for name in FILES:runtime[name]=FileAccess.get_sha256("res://Presentation/"+name)
-	var path:="res://local-art/creatures/"+family+"/preparation.json";var preparation_sha:=FileAccess.get_sha256(path)
+	var path:="res://local-art/creatures/"+family+"/preparation.json" if candidate_path.is_empty() else candidate_path
+	var preparation_sha:=FileAccess.get_sha256(path)
 	var preparation: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(path))
-	var output:=ProjectSettings.globalize_path("res://../outputs/creatures/"+family+"/aquatic")
+	if not candidate_path.is_empty():
+		preparation.status="prepared";preparation={"models":[preparation]}
+	var output:=ProjectSettings.globalize_path("res://../outputs/creatures/"+(family if candidate_path.is_empty() else "dolphin-trial")+"/aquatic")
 	DirAccess.make_dir_recursive_absolute(output)
 	Registry.load_index()
 	viewport=SubViewport.new();viewport.size=Vector2i(768,640);viewport.own_world_3d=true;viewport.transparent_bg=true;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;root.add_child(viewport)
@@ -44,7 +49,7 @@ func run() -> void:
 	for record: Dictionary in preparation.models:
 		if record.status!="prepared":continue
 		check(record.movement_mode=="native_waterline","Explicit aquatic support policy")
-		var asset: String="res://local-art/creatures/"+str(record.kind)+"-modern.gltf"
+		var asset:=Registry.asset_path(record)
 		assets[record.kind]={"asset_sha256":FileAccess.get_sha256(asset),"import_sha256":FileAccess.get_sha256(asset+".import")}
 		for identity: Dictionary in record.bodies:Registry.entries[int(identity.body)]=record
 		var body:=int(record.bodies[0].body)
@@ -57,17 +62,23 @@ func run() -> void:
 		var span:=float(record.stats.original.bind_diagonal_m);camera.size=span*1.05;camera.position=Vector3(span*.65,span*.45,span*.85);camera.look_at(Vector3.ZERO)
 		player.play("Idle",0.);player.seek(.3,true);player.pause()
 		var material:=mesh.get_active_material(0) as ShaderMaterial
-		check(material!=null and material.shader==preload("res://Presentation/CreatureCutoutSurface.gdshader"),"Source alpha and wet surface remain on the actual mesh")
-		if material!=null and record.has("source_alpha_texture"):
+		var marine: bool=record.get("surface_kind","")=="marine_pbr"
+		check(material!=null and material.shader==(preload("res://Presentation/CreatureMarineSurface.gdshader") if marine else preload("res://Presentation/CreatureCutoutSurface.gdshader")),"Actual mesh retains its explicit wet PBR/opacity policy")
+		if material!=null and (record.has("source_alpha_texture") or marine):
 			check(is_equal_approx(float(material.get_shader_parameter("wetness")),.7),"Living sea surface opts into wet PBR")
 			var wet:=await picture(output+"/"+str(record.kind)+"-wet.png")
 			material.set_shader_parameter("wetness",0.);var dry:=await picture()
 			var pixels:=difference(wet,dry);check(pixels>20,"Wet response measurably changes actual pixels")
 			material.set_shader_parameter("wetness",.7);samples.append({"kind":record.kind,"wet_pixels":pixels})
-		for clip in ["Idle","Walk","Run","Attack","Attack2","Attack3","Cast","Death"]:
+		for clip in ["Idle","Walk","Run","Attack","Attack2","Attack3","Cast","Jump","Roll","Death"]:
 			if not player.has_animation(clip):continue
 			player.play(clip,0.);player.seek(player.get_animation(clip).length*.5,true);player.pause()
 			await picture(output+"/"+str(record.kind)+"-"+clip+".png")
+		if not candidate_path.is_empty():
+			for group in [3,4,7]:
+				visual.dead=false
+				check(avatar.receive_native_action({"protocol":"classic","action":group,"frame_count":16 if group==3 else 20 if group==4 else 5,"repeat_count":1,"delay":0}),"Avatar consumes the native dolphin category packet")
+				check(visual.current_clip==({3:"Jump",4:"Roll",7:"Hit"}[group]) and not visual.dead,"Breach and hurt remain living actions through the actual presenter")
 		var ground:=StaticBody3D.new();var collider:=CollisionShape3D.new();var shape:=BoxShape3D.new();shape.size=Vector3(40.,.1,40.);collider.shape=shape;ground.add_child(collider);viewport.add_child(ground)
 		avatar.set_physics_process(true);visual.set_physics_process(true);visual.dead=false;visual.action_remaining=0.;visual.current_clip="";var original_basis: Basis=visual.model.basis
 		for level in [-5.,-.18,.21,.4]:

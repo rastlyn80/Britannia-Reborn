@@ -38,6 +38,12 @@ if (Test-Path "$root/Viewer/Art/Creatures/Water/water-elemental.scn") {
   & python -B "$root/scripts/test-water-distribution.py"
   if ($LASTEXITCODE) {throw 'Public water elemental distribution, actions or static puddle failed'}
 }
+if (Test-Path "$root/Viewer/Art/Creatures/Dolphin/dolphin.glb") {
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/DolphinMotionTests.gd -- --asset=res://Art/Creatures/Dolphin/dolphin.glb
+  if ($LASTEXITCODE) {throw 'Distributed dolphin skin and cetacean motion checks failed'}
+  & python -B "$root/scripts/test-dolphin-distribution.py"
+  if ($LASTEXITCODE) {throw 'Public dolphin distribution requires private inputs or has a startup error'}
+}
 foreach ($kind in @('desert','forest','frenzied','ethereal')) {
  if (Test-Path "$root/Viewer/local-art/ostards/$kind-modern.gltf") {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/OstardTests.gd -- "--kind=$kind"

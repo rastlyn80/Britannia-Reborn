@@ -1,0 +1,132 @@
+{
+  "sources": {
+    "source": "https://www.innerscene.com/tools/library/3d-parts/common-bottlenose-dolphin-a7f74d0e",
+    "download": "https://files.innerscene.com/library/common-bottlenose-dolphin-a7f74d0e/e15431873a9906d877fd/common-bottlenose-dolphin.glb",
+    "terms": "https://www.innerscene.com/tools/library/terms",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "author": "Innerscene Corp",
+    "file": "common-bottlenose-dolphin.glb",
+    "bytes": 3475348,
+    "sha256": "3028e97a3b576c78891083c7963b6f4a039f31cee3e710c26c2e40f7ed6bb263",
+    "source_rig": false,
+    "source_animations": false,
+    "interpretation": "Original generalized adult study mesh and embedded maps; all project rigging and actions must be authored separately. Not a recovered Third Dawn rig or choreography."
+  },
+  "export": {
+    "sources": {
+      "source": "https://www.innerscene.com/tools/library/3d-parts/common-bottlenose-dolphin-a7f74d0e",
+      "download": "https://files.innerscene.com/library/common-bottlenose-dolphin-a7f74d0e/e15431873a9906d877fd/common-bottlenose-dolphin.glb",
+      "terms": "https://www.innerscene.com/tools/library/terms",
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "author": "Innerscene Corp",
+      "file": "common-bottlenose-dolphin.glb",
+      "bytes": 3475348,
+      "sha256": "3028e97a3b576c78891083c7963b6f4a039f31cee3e710c26c2e40f7ed6bb263",
+      "source_rig": false,
+      "source_animations": false,
+      "interpretation": "Original generalized adult study mesh and embedded maps; all project rigging and actions must be authored separately. Not a recovered Third Dawn rig or choreography."
+    },
+    "recipe_sha256": "e330e9c865f9bcb4b9e58ca4e5390a040cfbebbcd35e41c3a02d94e539ec4a56",
+    "asset_sha256": "314b7085c2145f3beeeb6ec1cdc66efd89ac9ae31e64e8e40e2c0e12c20e8eb1",
+    "bones": 9,
+    "source_triangles": 57656,
+    "triangles": 20216,
+    "clips": {
+      "Idle": {
+        "duration": 2.4,
+        "loop": true,
+        "origin": "Authored independent rig/category; not recovered UO choreography"
+      },
+      "Walk": {
+        "duration": 1.0,
+        "loop": true,
+        "origin": "Authored independent rig/category; not recovered UO choreography"
+      },
+      "Run": {
+        "duration": 0.6666666666666666,
+        "loop": true,
+        "origin": "Authored independent rig/category; not recovered UO choreography"
+      },
+      "Attack": {
+        "duration": 0.7333333333333333,
+        "loop": false,
+        "origin": "Authored independent rig/category; not recovered UO choreography"
+      },
+      "Attack2": {
+        "duration": 0.8,
+        "loop": false,
+        "origin": "Authored independent rig/category; not recovered UO choreography"
+      },
+      "Attack3": {
+        "duration": 0.8666666666666667,
+        "loop": false,
+        "origin": "Authored independent rig/category; not recovered UO choreography"
+      },
+      "Hit": {
+        "duration": 0.5333333333333333,
+        "loop": false,
+        "origin": "Authored independent rig/category; not recovered UO choreography"
+      },
+      "Death": {
+        "duration": 1.4,
+        "loop": false,
+        "origin": "Authored independent rig/category; not recovered UO choreography"
+      },
+      "Death2": {
+        "duration": 1.4,
+        "loop": false,
+        "origin": "Authored independent rig/category; not recovered UO choreography"
+      },
+      "Fidget": {
+        "duration": 2.4,
+        "loop": true,
+        "origin": "Authored independent rig/category; not recovered UO choreography"
+      },
+      "Fidget2": {
+        "duration": 2.6,
+        "loop": true,
+        "origin": "Authored independent rig/category; not recovered UO choreography"
+      },
+      "Jump": {
+        "duration": 1.6,
+        "loop": false,
+        "origin": "Authored independent rig/category; not recovered UO choreography"
+      },
+      "Roll": {
+        "duration": 2.0,
+        "loop": false,
+        "origin": "Authored independent rig/category; not recovered UO choreography"
+      },
+      "Cast": {
+        "duration": 1.2,
+        "loop": false,
+        "origin": "Authored independent rig/category; not recovered UO choreography"
+      }
+    },
+    "scope": "Independent licensed candidate, authored rig/weights/motions. Actual GPU skin, hues, native water/actions and corpse acceptance required before install."
+  },
+  "asset_sha256": "314b7085c2145f3beeeb6ec1cdc66efd89ac9ae31e64e8e40e2c0e12c20e8eb1",
+  "embedded_map_sha256": {
+    "dolphin_903_dolphin_normal.png": "6768694874fb8db013465ad4f91ed20a2d50818d2419a7791fa0de216ebe38a5",
+    "dolphin_903_dolphin_basecolor.png": "6e71f41c4caaf7ad981c524699ae58d21c4ddce9abacaffb82b78f8281b89f49",
+    "dolphin_2af43b07f3331c17.png": "36dd7340594b8c16f0d79c0eaa6916a100fe19744d9c2ed446ee65bbcf91dbf8",
+    "dolphin_7e31186d4f12d604.png": "e3e79eab1c98b324f2ac1d553fe5095d269a2d3303ccb22bfaa63b98b009491c",
+    "dolphin_7811304d45b9829f.png": "481dc038bd8b2946931e4dfe79bc43609d19bb10652f8fe9ebe9a5a9ac4aa8b7"
+  },
+  "map_policy": "Lossless byte copies of the five PNG members already embedded in the CC0-derived GLB; matches Godot extract mode.",
+  "presentation_runtime": {
+    "AquaticPresentationTests.gd": "6d6a0f8b25a5fd1040455a73703d3e8f604768e2a26baba04758feb1d5eac5b0",
+    "CorpseModels.gd": "5b1bf3c050cdc54664ae53a99554ad072dae4f9a8a63aa12b5b1d8acd1ccd321",
+    "CreatureCutoutSurface.gdshader": "02b8730d91d3af8bc9cd4721becab111a6f6e24768ba0bebcef621e6a6883c26",
+    "CreatureMarineMaterial.gd": "2842cae894ed5e74e8bdb6c18115d3442d16d527e0432f75422846cbaa0beb40",
+    "CreatureMarineSurface.gdshader": "adc15390ffd7e486cf6f6d5accb14b6f7b352f198350b89055ed93ed462fa1eb",
+    "CreatureVisual.gd": "684f878471eb62c59d84f2c2b06477e56ef7baafe69e58531a170788bc1e340e",
+    "HumanAvatar.gd": "b322bfb7ba0c8b73c199eaf7d812e5aeaa6db16e7abbbd863d630acde2961438",
+    "LegacyAvatar.gd": "75c02a4a3ab0d2e763896405ff6b8270c8f129adb5ccd66a569d95f4e8899f3f",
+    "SkinGeometry.gd": "6690454dae7e23f9d4a705afa90f1b6d510dd1263a19930e4f597ee5f36c19aa",
+    "SourceMountContact.gd": "623317c4621447faee99c9659ac4723696f342fda3576e82a9139d77fa6129e3"
+  },
+  "interpretation": "Independent licensed bottlenose study mesh/maps with authored rig and 14 action categories. No recovered Third Dawn rig or original choreography."
+}

@@ -1,15 +1,18 @@
 extends SceneTree
 ## Measure exported independent skin and cetacean paths before native install.
 const Geometry=preload("res://Presentation/SkinGeometry.gd")
-const ASSET="res://local-art/dolphin/dolphin.glb"
+var asset_path:="res://local-art/dolphin/dolphin.glb"
 var checks:=0
 var failures:=0
-func _initialize() -> void:call_deferred("run")
+func _initialize() -> void:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--asset="):asset_path=argument.trim_prefix("--asset=")
+	call_deferred("run")
 func check(ok: bool,label: String) -> void:
 	checks+=1
 	if not ok:failures+=1;push_error(label)
 func run() -> void:
-	var model: Node3D=load(ASSET).instantiate();root.add_child(model)
+	var model: Node3D=load(asset_path).instantiate();root.add_child(model)
 	var rig: Skeleton3D=model.find_children("*","Skeleton3D",true,false)[0]
 	var player: AnimationPlayer=model.find_children("*","AnimationPlayer",true,false)[0]
 	var meshes:=model.find_children("*","MeshInstance3D",true,false)
@@ -47,6 +50,7 @@ func run() -> void:
 		if clip=="Idle":check(head.front().z>body.front().z+.1,"The bottlenose faces the project's +Z heading")
 	model.free()
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://../outputs/creatures/dolphin-trial"))
-	var result:={"checks":checks,"failures":failures,"asset_sha256":FileAccess.get_sha256(ASSET),"import_sha256":FileAccess.get_sha256(ASSET+".import"),"recipe_sha256":FileAccess.get_sha256("res://../scripts/blender-prepare-dolphin.py"),"test_sha256":FileAccess.get_sha256("res://Presentation/DolphinMotionTests.gd"),"samples":rows,"scope":"Independent exported skin and measured motion only; not native, material, water-support or corpse acceptance."}
-	var file:=FileAccess.open("res://../outputs/creatures/dolphin-trial/motion.json",FileAccess.WRITE);file.store_string(JSON.stringify(result,"  "));file.close()
+	var result:={"checks":checks,"failures":failures,"asset_sha256":FileAccess.get_sha256(asset_path),"import_sha256":FileAccess.get_sha256(asset_path+".import"),"recipe_sha256":FileAccess.get_sha256("res://../scripts/blender-prepare-dolphin.py"),"test_sha256":FileAccess.get_sha256("res://Presentation/DolphinMotionTests.gd"),"samples":rows,"scope":"Independent exported skin and measured motion only; not native, material, water-support or corpse acceptance."}
+	var output:="public-motion.json" if asset_path.begins_with("res://Art/") else "motion.json"
+	var file:=FileAccess.open("res://../outputs/creatures/dolphin-trial/"+output,FileAccess.WRITE);file.store_string(JSON.stringify(result,"  "));file.close()
 	print("DOLPHIN MOTION: ",checks," checks / ",failures," failures");quit(1 if failures else 0)

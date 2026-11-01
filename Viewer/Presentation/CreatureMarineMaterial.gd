@@ -8,6 +8,7 @@ static func build(source: StandardMaterial3D,hue: int,detail: float) -> ShaderMa
 	material.set_shader_parameter("albedo_colour",source.albedo_color)
 	material.set_shader_parameter("normal_strength",source.normal_scale*detail/.32)
 	material.set_shader_parameter("roughness_value",source.roughness)
+	material.set_shader_parameter("wetness",.7)
 	var channel:=Vector4.ZERO
 	match source.roughness_texture_channel:
 		BaseMaterial3D.TEXTURE_CHANNEL_GREEN:channel.y=1.

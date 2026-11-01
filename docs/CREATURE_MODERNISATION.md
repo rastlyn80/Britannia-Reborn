@@ -1,4 +1,6 @@
-Latest 1 November milestone: [sea serpent and deep sea serpent](SEA_SERPENTS.md), including correct native animal/sea hurt actions and an independently licensed dolphin motion trial. The catalogue has 134/279 bounded native bodies tested (48.0%); 2,252/3,054 generic action slots connected (73.7%, including reused clips). Exact original choreography and final art remain separate from coverage. See PROGRESS.md for the current evidence; older dated checkpoints below are history.
+Latest 1 November milestone: [independently licensed dolphin](DOLPHINS.md), with native breach/swimming/hue/corpse tests and an actual public bundle that loads without private art. The catalogue has 135/279 bounded native bodies tested (48.4%); 2,266/3,068 generic action slots connected (73.9%, including reused clips). Exact original choreography and final art remain separate from coverage. See PROGRESS.md for the current evidence; older dated checkpoints below are history.
+
+Earlier 1 November milestone: [sea serpent and deep sea serpent](SEA_SERPENTS.md), including corrected native animal/sea hurt actions and the initial independent dolphin trial.
 
 Earlier creature milestone: [73 native targets and the original-action ledger](CREATURE_MONSTERS.md). Source/rig/render/native evidence and remaining art work remain separate.
 

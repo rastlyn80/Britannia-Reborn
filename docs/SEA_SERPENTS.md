@@ -46,18 +46,6 @@ python -B scripts/build-creature-actions.py
 
 The native command uses an isolated loopback 2594 server and disposable accounts/saves; production is untouched. Exact final logs: `work/creatures/sea-current-checks.log`, `sea-native-final.log`, `sea-animal-action-control.log` and `sea-routing.log`; reports/captures are under ignored `outputs/creatures/sea/`. Tests cover bounded routing and presentation, not autonomous combat-AI, taming/fishing/rewards, complete original choreography or arbitrary shoreline behaviour.
 
-## Dolphin next
+## Subsequent dolphin integration
 
-The original dolphin source trial is retained for comparison but remains unaccepted: its 51-vertex body is visibly too angular. An independent free [Innerscene CC0 bottlenose study mesh](https://www.innerscene.com/tools/library/3d-parts/common-bottlenose-dolphin-a7f74d0e) has been downloaded and inspected with exact source/license/hash pins in `scripts/dolphin-inputs.json`. It contains six meshes and embedded maps, no rig or actions. `scripts/blender-prepare-dolphin.py` supplies an authored nine-bone rig and 14 action categories in a 20,216-triangle export. The candidate passes 1,038 actual Godot checks over 126 complete six-part skin samples: finite bounds, closed trajectories, vertical cetacean tail strokes, +Z heading and measured metre-high breaches. Five Forward+ views have been reviewed. A separate marine PBR material passes 90 actual Forward+ source-map, raw full/partial dye, protected-eye, wetness and normal-response checks. That material is used by the trial test only; it is not yet connected to the shared creature presenter. `scripts/prepare-dolphin.py --verify-only --candidate` verifies exact input pins and makes a measured 126-pose envelope with native body 151 and explicit breach routes 3/4. This remains a trial: native breach, avatar waterline support, runtime material and corpse acceptance are required before installation. No original game rig or actions are copied into the independent candidate.
-
-Reproduce the independent trial after downloading the pinned GLB with `python -B scripts/prepare-dolphin.py`:
-
-```powershell
-./.tools/blender/blender-5.2.1-windows-x64/blender.exe --background --factory-startup --disable-autoexec --python-exit-code 1 --python scripts/blender-prepare-dolphin.py
-./.tools/godot/Godot_v4.7.2-stable_win64_console.exe --headless --path Viewer --editor --import
-./.tools/godot/Godot_v4.7.2-stable_win64_console.exe --headless --path Viewer --script res://Presentation/DolphinMotionTests.gd
-python -B scripts/prepare-dolphin.py --verify-only --candidate
-./.tools/godot/Godot_v4.7.2-stable_win64_console.exe --path Viewer --script res://Presentation/DolphinMaterialTests.gd
-```
-
-This trial supplies no public installation command. Its asset and reports stay in ignored `Viewer/local-art/dolphin/` and `outputs/creatures/dolphin-trial/` until the remaining gates pass.
+The original 51-vertex dolphin source trial remains unaccepted and retained for comparison. The independent Innerscene CC0 bottlenose candidate has now passed its native and public-distribution gates and is installed. Its authored nine-bone rig / 14 clips, marine PBR, native breach variants, wet movement, hues and static corpse are documented in [DOLPHINS.md](DOLPHINS.md), with exact source, licence, receipts and reproduction steps. It contains no original UO mesh, rig, animation or map. The sea-serpent checkpoint counts above are historical; current programme totals are in PROGRESS.md.

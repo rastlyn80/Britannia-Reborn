@@ -32,6 +32,11 @@ func set_hue(value: int) -> void:
 	if treatment=="modern" and not entry.get("mineral_surface",{}).is_empty():
 		for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
 			for surface in mesh.mesh.get_surface_count():mesh.set_surface_override_material(surface,preload("res://Presentation/CreatureMineralMaterial.gd").build(entry.mineral_surface,value,detail))
+	if treatment=="modern" and entry.get("surface_kind","")=="marine_pbr":
+		for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
+			for surface in mesh.mesh.get_surface_count():
+				var source:=mesh.mesh.surface_get_material(surface) as StandardMaterial3D
+				if source!=null:mesh.set_surface_override_material(surface,preload("res://Presentation/CreatureMarineMaterial.gd").build(source,value,detail))
 	death_flashes.clear()
 	for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
 		if mesh.name!="RecoveredFlash":continue
