@@ -11,3 +11,5 @@ Run scripts/verify.ps1 after relevant changes and scripts/test-login.ps1 for liv
 Do not commit game source files, game-derived local IR/screenshots, credentials, configurations, saves, tools or caches. Keep new assets traceable to exact sources/licenses. No publication, purchases or upstream submissions without user authorization.
 
 Project name: Britannia Reborn. Canonical repository: https://github.com/rastlyn80/Britannia-Reborn. The owner authorizes pushing completed, verified work there. Keep secrets, proprietary inputs, derived real-map outputs and server saves out of every commit. Exception authorized by the owner (2026-10-29): committed world-edit change files in Viewer/DevEdit/overrides/ (coordinates, graphic ids, rules; no game data) go to Git via scripts/publish-world-edit.ps1; server-only dev-edit state stays on the server. Preserve the existing workspace and remembered-login location. Original project code is GPL-3.0-or-later; retain third-party exceptions/notices.
+
+In-game requests the automatic responder could not do (code or converter fixes) are listed in work/dev-edit-bridge/handover.md (local); check it when starting work.

@@ -4,6 +4,8 @@
 # "answer <id> <text>" line to the dev edit bridge inbox. Does nothing when
 # the bridge has no ask yet. Answers hold at most 8 x 110 characters.
 $ErrorActionPreference = 'Stop'
+# The automatic responder posts its own answers.
+if ($env:UC_RESPONDER -eq '1') { exit 0 }
 $root = Split-Path $PSScriptRoot -Parent
 $folder = Join-Path $root 'work/dev-edit-bridge'
 $inbox = Join-Path $folder 'inbox.txt'
