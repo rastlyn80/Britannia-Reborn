@@ -663,6 +663,194 @@
       "source_pin_sha256": "ae4bb6beab1a203aabfb8bb29c5db86c113354154d7b0592ad80fd4814f39df9",
       "recipe_sha256": "e330e9c865f9bcb4b9e58ca4e5390a040cfbebbcd35e41c3a02d94e539ec4a56",
       "native_validation": "Actual isolated two-client Dolphin constructor, native Jump variants, wet movement, hurt, hues and corpse"
+    },
+    {
+      "kind": "rat_ordinary",
+      "family": "ordinary_rats",
+      "status": "validated",
+      "profile": "animal",
+      "contact_kind": "rat_legs",
+      "surface_kind": "fur_pbr",
+      "head_bone": "head",
+      "assets": {
+        "modern": "res://Art/Creatures/Rat/rat.glb"
+      },
+      "bodies": [
+        {
+          "body": 238,
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "name": "Rat",
+          "native_profile": "animal",
+          "native_sources": [
+            {
+              "path": "Projects/UOContent/Mobiles/Animals/Town Critters/Rat.cs",
+              "sha256": "a093b29e6a4333dc86b87de8cb7ceddd99fb832f4e3ea6228854d7f231cfdd50"
+            }
+          ]
+        }
+      ],
+      "source": "https://opengameart.org/content/rat-0",
+      "license": "CC0-1.0 source mesh/rig/map/five clips; GPL-3.0-or-later authored conversion, refinement and additional actions",
+      "source_interpretation": "Independent br-n518 rat, 21-bone evaluated constraint bake; five licensed source categories plus five declared authored categories. Refined silhouette, explicit gait closure and actual-skin floor correction. No recovered UO choreography.",
+      "partial_hue_interpretation": "Authored fur-only partial tint; pink ears/nose/tail and dark eyes protected. Not a recovered UO partial mask.",
+      "stats": {
+        "original": {
+          "bones": 21,
+          "height_m": 0.15,
+          "bind_diagonal_m": 0.55,
+          "clips": {
+            "Idle": {
+              "duration": 0.6666666666666666,
+              "loop": true,
+              "origin": "Baked evaluated CC0 author clip idle-loop; not recovered UO choreography",
+              "source_action": "idle-loop"
+            },
+            "Walk": {
+              "duration": 0.6666666666666666,
+              "loop": true,
+              "origin": "Baked evaluated CC0 author clip walk-loop; not recovered UO choreography",
+              "source_action": "walk-loop"
+            },
+            "Run": {
+              "duration": 0.6666666666666666,
+              "loop": true,
+              "origin": "Baked evaluated CC0 author clip run-loop; not recovered UO choreography",
+              "source_action": "run-loop"
+            },
+            "Attack": {
+              "duration": 0.6666666666666666,
+              "loop": false,
+              "origin": "Baked evaluated CC0 author clip attack; not recovered UO choreography",
+              "source_action": "attack"
+            },
+            "Death": {
+              "duration": 0.6666666666666666,
+              "loop": false,
+              "origin": "Baked evaluated CC0 author clip death; not recovered UO choreography",
+              "source_action": "death"
+            },
+            "Hit": {
+              "duration": 0.45,
+              "loop": false,
+              "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+            },
+            "Fidget": {
+              "duration": 2.0,
+              "loop": true,
+              "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+            },
+            "Eat": {
+              "duration": 2.4,
+              "loop": false,
+              "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+            },
+            "Attack2": {
+              "duration": 0.8,
+              "loop": false,
+              "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+            },
+            "Alert": {
+              "duration": 1.2,
+              "loop": false,
+              "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+            }
+          }
+        },
+        "modern": {
+          "bones": 21,
+          "height_m": 0.15,
+          "bind_diagonal_m": 0.55,
+          "clips": {
+            "Idle": {
+              "duration": 0.6666666666666666,
+              "loop": true,
+              "origin": "Baked evaluated CC0 author clip idle-loop; not recovered UO choreography",
+              "source_action": "idle-loop"
+            },
+            "Walk": {
+              "duration": 0.6666666666666666,
+              "loop": true,
+              "origin": "Baked evaluated CC0 author clip walk-loop; not recovered UO choreography",
+              "source_action": "walk-loop"
+            },
+            "Run": {
+              "duration": 0.6666666666666666,
+              "loop": true,
+              "origin": "Baked evaluated CC0 author clip run-loop; not recovered UO choreography",
+              "source_action": "run-loop"
+            },
+            "Attack": {
+              "duration": 0.6666666666666666,
+              "loop": false,
+              "origin": "Baked evaluated CC0 author clip attack; not recovered UO choreography",
+              "source_action": "attack"
+            },
+            "Death": {
+              "duration": 0.6666666666666666,
+              "loop": false,
+              "origin": "Baked evaluated CC0 author clip death; not recovered UO choreography",
+              "source_action": "death"
+            },
+            "Hit": {
+              "duration": 0.45,
+              "loop": false,
+              "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+            },
+            "Fidget": {
+              "duration": 2.0,
+              "loop": true,
+              "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+            },
+            "Eat": {
+              "duration": 2.4,
+              "loop": false,
+              "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+            },
+            "Attack2": {
+              "duration": 0.8,
+              "loop": false,
+              "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+            },
+            "Alert": {
+              "duration": 1.2,
+              "loop": false,
+              "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+            }
+          }
+        }
+      },
+      "authored_replacements": {
+        "Idle": "Baked evaluated CC0 author clip idle-loop; not recovered UO choreography",
+        "Walk": "Baked evaluated CC0 author clip walk-loop; not recovered UO choreography",
+        "Run": "Baked evaluated CC0 author clip run-loop; not recovered UO choreography",
+        "Attack": "Baked evaluated CC0 author clip attack; not recovered UO choreography",
+        "Death": "Baked evaluated CC0 author clip death; not recovered UO choreography",
+        "Hit": "Authored rat category on the CC0 rig; not source or UO choreography",
+        "Fidget": "Authored rat category on the CC0 rig; not source or UO choreography",
+        "Eat": "Authored rat category on the CC0 rig; not source or UO choreography",
+        "Attack2": "Authored rat category on the CC0 rig; not source or UO choreography",
+        "Alert": "Authored rat category on the CC0 rig; not source or UO choreography"
+      },
+      "camera_height": 0.15,
+      "pick_bounds": {
+        "position": [
+          -0.257762739658356,
+          -0.01141001492738724,
+          -0.276525268554688
+        ],
+        "size": [
+          0.36723120927810704,
+          0.24285416722297698,
+          0.535054106712341
+        ]
+      },
+      "recipe_sha256": "07c78b7afa5abe2c4112c816fccfcb04b0e4bde757d3a7d4bc1e411d90386a8e",
+      "source_pin_sha256": "20392cc33a03c7f5d50400dab5d704a25540efa4dc540a7cd61d2a4e96eae137",
+      "native_validation": "Actual isolated two-client native Rat constructor, movement, hues, actions, hurt and corpse"
     }
   ]
 }

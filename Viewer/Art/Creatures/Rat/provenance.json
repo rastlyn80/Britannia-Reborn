@@ -1,0 +1,284 @@
+{
+  "sources": {
+    "author": "br-n518",
+    "source": "https://opengameart.org/content/rat-0",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "download": "https://opengameart.org/sites/default/files/rat_source.7z",
+    "archive_bytes": 1167383,
+    "archive_sha256": "3c8ec130b6a3ec3c93e0290107bcebdd5b34e23fd9205fab373feffea27cc883",
+    "files": [
+      {
+        "member": "rat.blend",
+        "bytes": 990624,
+        "sha256": "fb6af70d6d9121e6f694c3e58fb8842b7bf3319e331d14332738af57af4046e0"
+      },
+      {
+        "member": "rat.png",
+        "bytes": 439120,
+        "sha256": "b5ef72933348583c79f789dc3f3316163c600911fc38d5398aaa7d04bf4450bf"
+      }
+    ],
+    "scope": "Independent CC0 ordinary rat candidate. No Ultima Online mesh, rig, map or animation. Author supplies five action clips; additional categories are declared separately."
+  },
+  "preparation": {
+    "source": {
+      "author": "br-n518",
+      "source": "https://opengameart.org/content/rat-0",
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "download": "https://opengameart.org/sites/default/files/rat_source.7z",
+      "archive_bytes": 1167383,
+      "archive_sha256": "3c8ec130b6a3ec3c93e0290107bcebdd5b34e23fd9205fab373feffea27cc883",
+      "files": [
+        {
+          "member": "rat.blend",
+          "bytes": 990624,
+          "sha256": "fb6af70d6d9121e6f694c3e58fb8842b7bf3319e331d14332738af57af4046e0"
+        },
+        {
+          "member": "rat.png",
+          "bytes": 439120,
+          "sha256": "b5ef72933348583c79f789dc3f3316163c600911fc38d5398aaa7d04bf4450bf"
+        }
+      ],
+      "scope": "Independent CC0 ordinary rat candidate. No Ultima Online mesh, rig, map or animation. Author supplies five action clips; additional categories are declared separately."
+    },
+    "source_fps": 24.0,
+    "source_triangles": 270,
+    "bones": 21,
+    "clips": {
+      "Idle": {
+        "duration": 0.6666666666666666,
+        "loop": true,
+        "origin": "Baked evaluated CC0 author clip idle-loop; not recovered UO choreography",
+        "source_action": "idle-loop"
+      },
+      "Walk": {
+        "duration": 0.625,
+        "loop": true,
+        "origin": "Baked evaluated CC0 author clip walk-loop; not recovered UO choreography",
+        "source_action": "walk-loop"
+      },
+      "Run": {
+        "duration": 0.625,
+        "loop": true,
+        "origin": "Baked evaluated CC0 author clip run-loop; not recovered UO choreography",
+        "source_action": "run-loop"
+      },
+      "Attack": {
+        "duration": 0.6666666666666666,
+        "loop": false,
+        "origin": "Baked evaluated CC0 author clip attack; not recovered UO choreography",
+        "source_action": "attack"
+      },
+      "Death": {
+        "duration": 0.6666666666666666,
+        "loop": false,
+        "origin": "Baked evaluated CC0 author clip death; not recovered UO choreography",
+        "source_action": "death"
+      },
+      "Hit": {
+        "duration": 0.45,
+        "loop": false,
+        "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+      },
+      "Fidget": {
+        "duration": 2.0,
+        "loop": true,
+        "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+      },
+      "Eat": {
+        "duration": 2.4,
+        "loop": false,
+        "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+      },
+      "Attack2": {
+        "duration": 0.8,
+        "loop": false,
+        "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+      },
+      "Alert": {
+        "duration": 1.2,
+        "loop": false,
+        "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+      }
+    },
+    "recipe_sha256": "07c78b7afa5abe2c4112c816fccfcb04b0e4bde757d3a7d4bc1e411d90386a8e",
+    "scale": 0.15,
+    "treatments": {
+      "source": {
+        "asset_sha256": "8360453b2917ec1a90d9f8521d1e98c18ab4efd266f03afabf98187bd4e1548d",
+        "triangles": 270,
+        "clips": {
+          "Idle": {
+            "duration": 0.6666666666666666,
+            "loop": true,
+            "origin": "Baked evaluated CC0 author clip idle-loop; not recovered UO choreography",
+            "source_action": "idle-loop"
+          },
+          "Walk": {
+            "duration": 0.625,
+            "loop": true,
+            "origin": "Baked evaluated CC0 author clip walk-loop; not recovered UO choreography",
+            "source_action": "walk-loop"
+          },
+          "Run": {
+            "duration": 0.625,
+            "loop": true,
+            "origin": "Baked evaluated CC0 author clip run-loop; not recovered UO choreography",
+            "source_action": "run-loop"
+          },
+          "Attack": {
+            "duration": 0.6666666666666666,
+            "loop": false,
+            "origin": "Baked evaluated CC0 author clip attack; not recovered UO choreography",
+            "source_action": "attack"
+          },
+          "Death": {
+            "duration": 0.6666666666666666,
+            "loop": false,
+            "origin": "Baked evaluated CC0 author clip death; not recovered UO choreography",
+            "source_action": "death"
+          },
+          "Hit": {
+            "duration": 0.45,
+            "loop": false,
+            "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+          },
+          "Fidget": {
+            "duration": 2.0,
+            "loop": true,
+            "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+          },
+          "Eat": {
+            "duration": 2.4,
+            "loop": false,
+            "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+          },
+          "Attack2": {
+            "duration": 0.8,
+            "loop": false,
+            "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+          },
+          "Alert": {
+            "duration": 1.2,
+            "loop": false,
+            "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+          }
+        },
+        "bake_position_error_max_m": 1.254886583770954e-07,
+        "subdivision_levels": 0,
+        "floor_correction_max_m": {
+          "Idle": 0.0,
+          "Walk": 0.0,
+          "Run": 0.0,
+          "Attack": 0.0,
+          "Death": 0.0,
+          "Hit": 0.0,
+          "Fidget": 0.0,
+          "Eat": 0.0,
+          "Attack2": 0.0,
+          "Alert": 0.0
+        }
+      },
+      "modern": {
+        "asset_sha256": "1ffe91f0e193ba188906c7124b4d4ea642f0d17df9b1728db5a4cab4d51d04b6",
+        "triangles": 4816,
+        "clips": {
+          "Idle": {
+            "duration": 0.6666666666666666,
+            "loop": true,
+            "origin": "Baked evaluated CC0 author clip idle-loop; not recovered UO choreography",
+            "source_action": "idle-loop"
+          },
+          "Walk": {
+            "duration": 0.6666666666666666,
+            "loop": true,
+            "origin": "Baked evaluated CC0 author clip walk-loop; not recovered UO choreography",
+            "source_action": "walk-loop"
+          },
+          "Run": {
+            "duration": 0.6666666666666666,
+            "loop": true,
+            "origin": "Baked evaluated CC0 author clip run-loop; not recovered UO choreography",
+            "source_action": "run-loop"
+          },
+          "Attack": {
+            "duration": 0.6666666666666666,
+            "loop": false,
+            "origin": "Baked evaluated CC0 author clip attack; not recovered UO choreography",
+            "source_action": "attack"
+          },
+          "Death": {
+            "duration": 0.6666666666666666,
+            "loop": false,
+            "origin": "Baked evaluated CC0 author clip death; not recovered UO choreography",
+            "source_action": "death"
+          },
+          "Hit": {
+            "duration": 0.45,
+            "loop": false,
+            "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+          },
+          "Fidget": {
+            "duration": 2.0,
+            "loop": true,
+            "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+          },
+          "Eat": {
+            "duration": 2.4,
+            "loop": false,
+            "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+          },
+          "Attack2": {
+            "duration": 0.8,
+            "loop": false,
+            "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+          },
+          "Alert": {
+            "duration": 1.2,
+            "loop": false,
+            "origin": "Authored rat category on the CC0 rig; not source or UO choreography"
+          }
+        },
+        "bake_position_error_max_m": 1.254886583770954e-07,
+        "subdivision_levels": 2,
+        "floor_correction_max_m": {
+          "Idle": 0.0,
+          "Walk": 0.0016795087605714798,
+          "Run": 0.0006244674324989318,
+          "Attack": 0.004255336336791515,
+          "Death": 0.026709526777267456,
+          "Hit": 0.0,
+          "Fidget": 0.0,
+          "Eat": 0.0,
+          "Attack2": 0.0,
+          "Alert": 0.0
+        }
+      }
+    }
+  },
+  "asset_sha256": "1ffe91f0e193ba188906c7124b4d4ea642f0d17df9b1728db5a4cab4d51d04b6",
+  "runtime_sha256": {
+    "res://Presentation/AnimalPoseLibrary.gd": "5ad64870d2461e5be2a810111883b5bec719f1ad0027438f0c87406872fe23b1",
+    "res://Presentation/CorpseModels.gd": "5b1bf3c050cdc54664ae53a99554ad072dae4f9a8a63aa12b5b1d8acd1ccd321",
+    "res://Presentation/CreatureFurMaterial.gd": "06e4950c9b140eb626b9b5c7257aaf128a9f5d0ad7b56b3ad87746591f53302b",
+    "res://Presentation/CreatureFurSurface.gdshader": "9c2fb4789503e372d058706ea4ec55e05815780d390629ce944529472eb49c59",
+    "res://Presentation/CreatureRegistry.gd": "d73c93ccc3eef650c251a5bd2292e8765878a5d10b87f646a729bd1b2a38663d",
+    "res://Presentation/CreatureVisual.gd": "bba2db03c6738b5597ff31591ca867ec186e83d5c81a2e030273233db53a254e",
+    "res://Presentation/HumanActions.gd": "2587400355c47692133286a2ef63b0a382980e3bed220ce0390c78c34d0556ab",
+    "res://Presentation/HumanAvatar.gd": "b322bfb7ba0c8b73c199eaf7d812e5aeaa6db16e7abbbd863d630acde2961438",
+    "res://Presentation/HumanHue.gd": "297682980166ac5a26f8573db25da3899031ccb35e631b23632d40050c77eff8",
+    "res://Presentation/LegacyAvatar.gd": "75c02a4a3ab0d2e763896405ff6b8270c8f129adb5ccd66a569d95f4e8899f3f",
+    "res://Presentation/MountVisual.gd": "2c7865b3a38930825dcda3ca9155d7c449b6125d6c6b97c9224655db635a7047",
+    "res://Presentation/OstardVisual.gd": "b8a05572f425c0943a9e9c40b2a6a178e51ed4a88215f60fc8c1087011f1eb1f",
+    "res://Presentation/RatGroundSupport.gd": "256cc5a0b49d925164b16039458322251116205e76b7af37ab8e09888c294bb0",
+    "res://Presentation/RatPresentationTests.gd": "2a21bbcbdbdf367df3f62e6c1f3a029e8bb46d1ed56fdfd3fa11d8be4fc03afc",
+    "res://Presentation/SkinGeometry.gd": "6690454dae7e23f9d4a705afa90f1b6d510dd1263a19930e4f597ee5f36c19aa",
+    "res://Presentation/SourceMountContact.gd": "623317c4621447faee99c9659ac4723696f342fda3576e82a9139d77fa6129e3"
+  },
+  "embedded_map_sha256": {
+    "rat_rat.png": "b5ef72933348583c79f789dc3f3316163c600911fc38d5398aaa7d04bf4450bf"
+  }
+}

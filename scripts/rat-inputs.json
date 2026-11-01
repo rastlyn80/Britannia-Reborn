@@ -1,0 +1,14 @@
+{
+  "author": "br-n518",
+  "source": "https://opengameart.org/content/rat-0",
+  "license": "CC0-1.0",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "download": "https://opengameart.org/sites/default/files/rat_source.7z",
+  "archive_bytes": 1167383,
+  "archive_sha256": "3c8ec130b6a3ec3c93e0290107bcebdd5b34e23fd9205fab373feffea27cc883",
+  "files": [
+    {"member": "rat.blend", "bytes": 990624, "sha256": "fb6af70d6d9121e6f694c3e58fb8842b7bf3319e331d14332738af57af4046e0"},
+    {"member": "rat.png", "bytes": 439120, "sha256": "b5ef72933348583c79f789dc3f3316163c600911fc38d5398aaa7d04bf4450bf"}
+  ],
+  "scope": "Independent CC0 ordinary rat candidate. No Ultima Online mesh, rig, map or animation. Author supplies five action clips; additional categories are declared separately."
+}

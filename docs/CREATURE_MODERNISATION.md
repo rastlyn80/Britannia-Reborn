@@ -1,5 +1,7 @@
 Latest 1 November milestone: [Ettin and deer action review](ETTIN_AND_CERVID_ACTIONS.md), with distinct source-rig strikes, grazing, retained head/grip controls, planted weighted hoof soles and four native cervid constructor tests. Tested bodies remain 135/279 (48.4%); connected generic action slots reach 2,278/3,074 (74.1%, including reuse). Named constructor evidence is tracked separately. Original choreography and final art remain unfinished; see PROGRESS.md for current evidence.
 
+Ordinary rat body 238 now has an independently licensed public replacement with source plus authored motion, four-paw terrain support, natural fur/hues and native static corpse. Bounded bodies reach 136/279 (48.7%); generic slots 2,294/3,091 (74.2%, including reuse). [Exact rat evidence and remaining limits](RATS.md).
+
 Earlier 1 November milestone: [independently licensed dolphin](DOLPHINS.md), with native breach/swimming/hue/corpse tests and an actual public bundle that loads without private art. Older dated checkpoints below are history.
 
 Earlier 1 November milestone: [sea serpent and deep sea serpent](SEA_SERPENTS.md), including corrected native animal/sea hurt actions and the initial independent dolphin trial.

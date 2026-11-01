@@ -37,6 +37,11 @@ func set_hue(value: int) -> void:
 			for surface in mesh.mesh.get_surface_count():
 				var source:=mesh.mesh.surface_get_material(surface) as StandardMaterial3D
 				if source!=null:mesh.set_surface_override_material(surface,preload("res://Presentation/CreatureMarineMaterial.gd").build(source,value,detail))
+	if treatment=="modern" and entry.get("surface_kind","")=="fur_pbr":
+		for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
+			for surface in mesh.mesh.get_surface_count():
+				var source:=mesh.mesh.surface_get_material(surface) as StandardMaterial3D
+				if source!=null:mesh.set_surface_override_material(surface,preload("res://Presentation/CreatureFurMaterial.gd").build(source,value,detail))
 	death_flashes.clear()
 	for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
 		if mesh.name!="RecoveredFlash":continue
@@ -69,6 +74,8 @@ func _ready() -> void:
 	if str(entry.get("family","")) in ["rodents","walrus"]:feeding_neck_angle=.1;feeding_head_angle=.04
 	super._ready()
 	contact=preload("res://Presentation/BirdGroundSupport.gd").new() if entry.get("movement_mode","")=="ground_plane" else preload("res://Presentation/SourceMountContact.gd").new();skeleton.add_child(contact)
+	if entry.get("contact_kind","")=="rat_legs":
+		contact.free();contact=preload("res://Presentation/RatGroundSupport.gd").new();skeleton.add_child(contact)
 	contact.include_toe_descendants=true
 	contact.iterations=1 if str(entry.get("family","")) in ["bruins","walrus"] else 3
 	if kind in ["dragons_dragon_asian","dragons_wyvern"]:

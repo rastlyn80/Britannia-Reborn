@@ -1,0 +1,6 @@
+Ordinary rat mesh, rig, atlas and original five clips: br-n518, CC0-1.0.
+Source: https://opengameart.org/content/rat-0
+License: https://creativecommons.org/publicdomain/zero/1.0/
+Exact input hashes: scripts/rat-inputs.json and provenance.json.
+Britannia Reborn conversion, refinement, additional categories and shaders: GPL-3.0-or-later; root LICENSE.
+Five additional motions and gait/floor corrections are authored. No original UO geometry, map, rig or motion is included.
