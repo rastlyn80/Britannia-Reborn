@@ -42,7 +42,7 @@ func run() -> void:
 					actor.play(clip,0.);actor.animator.seek(length*phase,true);actor.animator.pause()
 					for frame in 2:await process_frame
 					var bounds:=Geometry.deformed_bounds(mesh,rig)
-					var bound_limit:=maxf(float(record.stats.original.height_m)*8.,float(record.stats.original.get("bind_diagonal_m",0.))*1.5)
+					var bound_limit:=float(record.get("motion_bound_diagonal_m",maxf(float(record.stats.original.height_m)*8.,float(record.stats.original.get("bind_diagonal_m",0.))*1.5)))
 					check(bounds.position.is_finite() and bounds.size.is_finite() and bounds.size.length()>.05 and bounds.size.length()<bound_limit,"Finite bounded deformed mesh: "+str(record.kind)+" / "+str(clip))
 					# Runtime fallbacks hold/copy a known clip; inherit its actual
 					# support policy rather than labelling a floating pose grounded.

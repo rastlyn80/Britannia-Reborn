@@ -86,6 +86,10 @@ foreach ($family in $Families) {
   & $godot --path "$root/Viewer" --script res://Presentation/ZombiePresentationTests.gd *> "$logs/walking-zombie-avatar.log"
   if ($LASTEXITCODE -or (Select-String -Path "$logs/walking-zombie-avatar.log" -Pattern 'SCRIPT ERROR:' -Quiet)) {throw 'Actual zombie avatar, short-step support, hues or native corpse checks failed'}
  }
+ if ($family -eq 'serpents' -and (Test-Path "$root/Viewer/local-art/creatures/serpents_snake_giant-modern.gltf")) {
+  & $godot --path "$root/Viewer" --script res://Presentation/SerpentPresentationTests.gd *> "$logs/serpents-avatar.log"
+  if ($LASTEXITCODE -or (Select-String -Path "$logs/serpents-avatar.log" -Pattern 'SCRIPT ERROR:' -Quiet)) {throw 'Actual serpent weighted-skin support, native hues, selection or final death/corpse checks failed'}
+ }
  $started=[DateTime]::UtcNow
  $arguments='--path "'+$root+'/Viewer" --script res://Presentation/CreatureAppearanceTests.gd -- --family='+$family
  $process=Start-Process $godot -ArgumentList $arguments -WorkingDirectory $root -WindowStyle Hidden -PassThru -RedirectStandardOutput "$logs/$family-gpu.log" -RedirectStandardError "$logs/$family-gpu-errors.log"

@@ -257,7 +257,7 @@ def unit(q):
     return [v / length for v in q]
 
 
-def export_gltf(model, animations, texture, output, height, floor_sample_rate=30, preserve_vertical_clips=(), preserve_hover_clips=(), preserve_waterline_clips=()):
+def export_gltf(model, animations, texture, output, height, floor_sample_rate=30, preserve_vertical_clips=(), preserve_hover_clips=(), preserve_waterline_clips=(), measure_motion_bounds=False):
     require(30<=floor_sample_rate<=240,'Floor sampling must stay within 30..240 Hz')
     require(not set(preserve_vertical_clips)&set(preserve_hover_clips),'Clip cannot use both flight and source-hover policies')
     require(not set(preserve_waterline_clips)&(set(preserve_vertical_clips)|set(preserve_hover_clips)),'Waterline clips cannot use land/air support policies')
@@ -445,6 +445,7 @@ def export_gltf(model, animations, texture, output, height, floor_sample_rate=30
             # samples. Retain their original joint key times as well.
             times=sorted(set(times)|{time for ts,_ in streams.values() for time in ts})
         offsets = []
+        maximum_diagonal=0.
         for time in times:
             posed = {}
 
@@ -460,15 +461,23 @@ def export_gltf(model, animations, texture, output, height, floor_sample_rate=30
                 return posed[i]
 
             lowest = math.inf
+            lower=[math.inf]*3;upper=[-math.inf]*3
             for vi, point in enumerate(model['points']):
                 height_sum = 0.0
+                point_sum=[0.,0.,0.]
                 for tie, weight in model['weights'][vi]:
                     bi = model['ties'][tie]
                     rq, rt = globals_[bi]
                     local = rotate([-rq[0], -rq[1], -rq[2], rq[3]], [x - y for x, y in zip(point, rt)])
                     pq, pt = pose(bi)
-                    height_sum += (rotate(pq, local)[2] + pt[2]) * weight
+                    transformed=rotate(pq, local)
+                    height_sum += (transformed[2] + pt[2]) * weight
+                    if measure_motion_bounds:
+                        for axis in range(3):point_sum[axis]+=(transformed[axis]+pt[axis])*weight
                 lowest = min(lowest, height_sum)
+                if measure_motion_bounds:
+                    for axis in range(3):lower[axis]=min(lower[axis],point_sum[axis]);upper[axis]=max(upper[axis],point_sum[axis])
+            if measure_motion_bounds:maximum_diagonal=max(maximum_diagonal,math.sqrt(sum((hi-lo)**2 for lo,hi in zip(lower,upper)))*scale)
             offsets.append([0, 0, -lowest])
         if name in preserve_waterline_clips:
             # Native sea mobiles are anchored at the water surface. Their
@@ -493,6 +502,7 @@ def export_gltf(model, animations, texture, output, height, floor_sample_rate=30
         gltf['animations'].append(clip)
         clip_report[name] = dict(matched_tracks=len(matched), missing=missing, floor_samples=len(times),
                                  floor_sample_rate=floor_sample_rate,floor_policy='native_waterline' if name in preserve_waterline_clips else 'source_hover' if name in preserve_hover_clips else 'source_vertical' if name in preserve_vertical_clips else 'grounded',floor_offset_range=[min(v[2] for v in offsets), max(v[2] for v in offsets)])
+        if measure_motion_bounds:clip_report[name]['measured_max_pose_diagonal_m']=maximum_diagonal
     gltf['buffers'] = [dict(byteLength=len(data), uri='data:application/octet-stream;base64,' + base64.b64encode(data).decode())]
     output.write_text(json.dumps(gltf, separators=(',', ':')))
     return dict(source_points=len(model['points']), triangles=len(model['polygons']), bones=len(bones),

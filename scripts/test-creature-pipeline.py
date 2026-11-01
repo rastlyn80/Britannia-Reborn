@@ -13,6 +13,38 @@ def bone_payload(parent,scales):
 def matrix(x=1.,y=1.,z=1.):return [x,0.,0.,0.,y,0.,0.,0.,z]
 
 class CreaturePipelineTests(unittest.TestCase):
+    def motion_contract_pair(self):
+        bones=[{'name':'root','parent':0,'translation':[0.,0.,0.],'rotation':[0.,0.,0.,1.]},
+               {'name':'joint','parent':0,'translation':[0.,0.,1.],'rotation':[0.,0.,0.,1.]},
+               {'name':'source_mesh','parent':1,'translation':[0.,0.,0.],'rotation':[0.,0.,0.,1.]}]
+        model={'points':[(0.,0.,0.),(1.,0.,0.),(0.,0.,1.)],'normals':[(0.,1.,0.)],
+               'polygons':[(0,1,2,0,0,0)],'texture_polygons':[(0,1,2)],'uv_sets':[[(0.,0.,0.)]*3],
+               'weights':[[(0,1.)]]*3,'ties':[1],'bones':bones}
+        reference=copy.deepcopy(model);reference['bones'][2]['name']='reference_mesh';reference['uv_sets']=[[(.5,.5,0.)]*3]
+        return model,reference
+
+    def test_motion_donor_keeps_own_uvs_and_only_declared_unbound_labels(self):
+        model,reference=self.motion_contract_pair();saved=copy.deepcopy((model,reference))
+        contract=p.reuse.assert_motion_contract(model,reference,[['source_mesh','reference_mesh']])
+        self.assertEqual((model,reference),saved)
+        self.assertEqual(contract['weighted_ancestor_count'],2)
+        self.assertEqual(contract['unbound_label_aliases'],[{'index':2,'source':'source_mesh','reference':'reference_mesh'}])
+        with self.assertRaises(ValueError):p.reuse.assert_motion_contract(model,reference,[])
+
+    def test_motion_donor_cannot_rename_a_weighted_joint_or_its_unweighted_ancestor(self):
+        for index in [0,1]:
+            model,reference=self.motion_contract_pair();old=reference['bones'][index]['name'];reference['bones'][index]['name']='other'
+            with self.assertRaises(ValueError):p.reuse.assert_motion_contract(model,reference,[['source_mesh','reference_mesh'],[old,'other']])
+
+    def test_motion_donor_requires_identical_rest_skin_and_hierarchy(self):
+        model,reference=self.motion_contract_pair()
+        for key in ['points','normals','polygons','texture_polygons','weights','ties']:
+            changed=copy.deepcopy(reference);changed[key]=[]
+            with self.assertRaises(ValueError):p.reuse.assert_motion_contract(model,changed,[['source_mesh','reference_mesh']])
+        for key,value in [('translation',[0.,0.,1.01]),('parent',1),('rotation',[0.,0.,1.,0.])]:
+            changed=copy.deepcopy(reference);changed['bones'][1][key]=value
+            with self.assertRaises(ValueError):p.reuse.assert_motion_contract(model,changed,[['source_mesh','reference_mesh']])
+
     def test_cephalopod_gestures_are_distinct_closed_and_preserve_rig(self):
         names=['root','bip01 l calf','bip01 r calf','bip01 l foot','bip01 r foot']
         bones=[{'name':name,'parent':0,'translation':[float(i),0.,0.],'rotation':[0.,0.,0.,1.]} for i,name in enumerate(names)]
@@ -271,6 +303,9 @@ class CreaturePipelineTests(unittest.TestCase):
             self.assertNotEqual(*ground['clips']['Fly']['floor_offset_range'])
             self.assertEqual(*flying['clips']['Fly']['floor_offset_range'])
             self.assertEqual(flying['clips']['Fly']['floor_policy'],'source_vertical')
+            measured=p.td.export_gltf(model,{'Fly':animation},b'png',output,1.,measure_motion_bounds=True)
+            self.assertAlmostEqual(measured['clips']['Fly']['measured_max_pose_diagonal_m'],math.sqrt(2.))
+            self.assertNotIn('measured_max_pose_diagonal_m',ground['clips']['Fly'])
             with self.assertRaisesRegex(ValueError,'30..240'):p.td.export_gltf({}, {},b'',output,1.,floor_sample_rate=10000)
 
     def test_duplicate_auxiliary_names_require_explicit_unused_subtrees(self):

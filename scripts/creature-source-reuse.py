@@ -6,7 +6,9 @@ RECIPES={
     'dragons_dragon_blasted_red':{'source_stem':'dragons_dragon_blasted','identity_stem':'dragons_dragon_retro_red','clip_stem':'dragons_wyrm_ancient','contract_stem':'dragons_wyrm_ancient'},
     'dragons_dragon_ice':{'identity_stem':'dragons_wyrm_retro_white','clip_stem':'dragons_wyrm_ancient','contract_stem':'dragons_wyrm_ancient','native_aliases':[180]},
     'daemons_daemon_exodus':{'atlas_stem':'daemons_daemon','contract_stem':'daemons_daemon'},
-    'harpies_harpy':{'modern_atlas_stem':'harpies_harpy_stone','contract_stem':'harpies_harpy_stone'}
+    'harpies_harpy':{'modern_atlas_stem':'harpies_harpy_stone','contract_stem':'harpies_harpy_stone'},
+    'serpents_snake_giant':{'clip_stem':'serpents_snake_giant_silver','motion_contract_stem':'serpents_snake_giant_silver',
+        'unbound_label_aliases':[['serpents_snake_giant','serpents_snake_giant_silver']]}
 }
 CONTRACT_FIELDS=['points','normals','polygons','texture_polygons','uv_sets','weights','ties','bones']
 
@@ -23,6 +25,37 @@ def assert_exact_contract(model,reference):
         if model[field]!=reference[field]:
             raise ValueError('Source reuse requires an exact mesh/rig/UV contract: '+field)
     return {'fields':CONTRACT_FIELDS.copy(),'method':'Exact equality after declared bind normalisation and removal of unreferenced mesh points; material filename alone may differ.'}
+
+def assert_motion_contract(model,reference,unbound_label_aliases):
+    """Validate source motion reuse without replacing a variant's UV atlas.
+
+    A named, unweighted scene label may differ only when it is not an ancestor
+    of any weighted joint. All skin geometry and skeletal transforms stay exact.
+    """
+    fields=['points','normals','polygons','texture_polygons','weights','ties']
+    for field in fields:
+        if model[field]!=reference[field]:raise ValueError('Motion reuse needs exact source skin geometry: '+field)
+    if len(model['bones'])!=len(reference['bones']):raise ValueError('Motion reuse needs matching source bone counts')
+    active=set()
+    for vertex in model['weights']:
+        for slot,weight in vertex:
+            if weight<=0.:continue
+            index=model['ties'][slot];seen=set()
+            while index not in seen:
+                seen.add(index);active.add(index);parent=model['bones'][index]['parent']
+                if parent==index:break
+                index=parent
+    allowed={tuple(pair) for pair in unbound_label_aliases};renamed=[]
+    for index,(bone,other) in enumerate(zip(model['bones'],reference['bones'])):
+        if {k:v for k,v in bone.items() if k!='name'}!={k:v for k,v in other.items() if k!='name'}:
+            raise ValueError('Motion reuse needs exact source rest hierarchy/transforms: '+bone['name'])
+        if bone['name']==other['name']:continue
+        if index in active or (bone['name'],other['name']) not in allowed:
+            raise ValueError('Motion reuse cannot rename a weighted/ancestor or undeclared source joint: '+bone['name'])
+        renamed.append({'index':index,'source':bone['name'],'reference':other['name']})
+    return {'fields':fields,'bone_count':len(model['bones']),'weighted_ancestor_count':len(active),'unbound_label_aliases':renamed,
+        'uv_policy':'Own UV coordinates and atlas retained; no UV equality or replacement claimed.',
+        'method':'Exact skin geometry, weights/ties, rest hierarchy/transforms and all weighted/ancestor joint names. Only explicit unbound scene labels may differ; source motion reuse is an authored decision.'}
 
 def rescale_translation_units(animation,body):
     """Explicit large-unit clip conversion; rotations/timing stay unchanged.

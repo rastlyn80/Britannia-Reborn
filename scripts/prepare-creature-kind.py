@@ -28,15 +28,18 @@ def main():
         names={n.lower():n for n in z.namelist()};table=z.read(names['uotdb/uotd/models/models.txt']);rows=pipeline.table_rows(table)
         assert all(any(r['stem']==kind for r in rows) for kind in args.kinds),'Selected kind lacks an explicit source model-table identity'
         selected=set(args.kinds)
-        # Filter only other base meshes in this family. Keep every texture,
-        # clip and model-table row for the normal source-link checks.
-        view={lower:name for lower,name in names.items() if not (lower.endswith('_lod2.grn') and Path(lower).name.startswith(family+'_') and Path(lower).name.removesuffix('_lod2.grn') not in selected)}
-        _,native=pipeline.native_bodies();result=pipeline.prepare(family,z,view,rows,native)
+        # Select exported targets while retaining donor meshes, textures and
+        # clips for the unchanged source-link and explicit reuse contracts.
+        _,native=pipeline.native_bodies();result=pipeline.prepare(family,z,names,rows,native,selected_kinds=selected)
     assert {r['kind'] for r in result}==selected,'Preparation must contain exactly the requested source forms'
     path=pipeline.OUTPUT/family/'preparation.json';report=json.loads(path.read_text(encoding='utf-8'))
     for record in report['models']:
         if record['kind']=='walking_dead_zombie':
             record.update(contact_kind='source_biped',head_bone='bip01 head',camera_height=1.35)
+        if record['kind']=='serpents_snake_giant':
+            record.update(movement_mode='ground_plane',head_bone='bip01 head',camera_height=.45,
+                          pick_bounds={'position':[-2.1,-.02,-4.25],'size':[4.1,1.,7.1]},
+                          pick_bounds_scope='Conservative union of measured Idle/Walk/Run source skins; not precise per-triangle picking or attack/death sweep.')
     report.update(selected_kinds=args.kinds,selection_recipe_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),selection_scope='Only the explicit requested source meshes; unmodified strict source importer/table/native mappings. Not accepted presentation or native evidence.')
     path.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     assert all(r['status']=='prepared' for r in result),'Unprepared selected source form; inspect its recorded blocker'

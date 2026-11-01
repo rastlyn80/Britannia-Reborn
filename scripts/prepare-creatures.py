@@ -178,7 +178,7 @@ def refreshed_identities(row,table,native,profiles):
         identity['native_profile']=profiles.get(identity['body'],'')
     return identities
 
-def prepare(family, z, names, rows, native):
+def prepare(family, z, names, rows, native, selected_kinds=None):
     family_output = OUTPUT/family; family_output.mkdir(parents=True,exist_ok=True)
     members = sorted(n for n in names if n.endswith('_lod2.grn') and '/models/' in n
                     and any('/'+folder+'/' in n for folder in ['animals','monsters','seacreatures'])
@@ -188,6 +188,7 @@ def prepare(family, z, names, rows, native):
         if kind.split('_')[0]!=family or 'source_stem' not in recipe:continue
         member=next(n for n in members if n.endswith('/'+recipe['source_stem']+'_lod2.grn'))
         meshes.append((member,kind))
+    if selected_kinds is not None:meshes=[pair for pair in meshes if pair[1] in selected_kinds]
     by_body = {r['body']:r for r in rows}; result = []; templates = {};profiles=body_profiles()
     for member,stem in meshes:
         source_stem=Path(member).name.removesuffix('_lod2.grn');recipe=reuse.RECIPES.get(stem,{})
@@ -233,6 +234,11 @@ def prepare(family, z, names, rows, native):
                 donor_raw=read(reference);donor=td.parse(donor_raw,scene_root_names=True)
                 donor,_=normalise_bind(donor_raw,donor);donor,_=visible_vertices(donor)
                 row['source_reuse_contract']=reuse.assert_exact_contract(body,donor)
+            if 'motion_contract_stem' in recipe:
+                reference=next(n for n in names if n.endswith('/'+recipe['motion_contract_stem']+'_lod2.grn'))
+                donor_raw=read(reference);motion_reference=td.parse(donor_raw,scene_root_names=True)
+                motion_reference,_=normalise_bind(donor_raw,motion_reference);motion_reference,_=visible_vertices(motion_reference)
+                row['source_motion_contract']=reuse.assert_motion_contract(body,motion_reference,recipe.get('unbound_label_aliases',[]))
             assert len(set(body['textures']))==1, 'Multiple source materials need a dedicated importer'
             if recipe.get('modern_atlas_stem'):
                 assert donor is not None and len(set(donor['textures']))==1
@@ -339,7 +345,7 @@ def prepare(family, z, names, rows, native):
                     clips[label]=cephalopod.gesture(clips['Idle'],td,label)
                     authored[label]='Authored '+('symmetric tentacle charge/release for the native Leviathan mage' if label=='Cast' else 'asymmetric '+('left' if label=='Attack2' else 'right')+' feeding-tentacle lash')+' on the preserved source rig; not recovered UO choreography'
                 row['authored_cephalopod_actions']={'path':'scripts/creature-cephalopod.py','sha256':digest((ROOT/'scripts/creature-cephalopod.py').read_bytes())}
-            if family in ['dragons','lizards'] and 'Eat' not in clips:
+            if (family in ['dragons','lizards'] or stem=='serpents_snake_giant') and 'Eat' not in clips:
                 feeding=copy.deepcopy(clips['Idle']);by_name={b['name']:i for i,b in enumerate(feeding['bones'])};orientations={}
                 def global_orientation(i):
                     if i not in orientations:
@@ -348,7 +354,7 @@ def prepare(family, z, names, rows, native):
                     return orientations[i]
                 necks=max(1,sum('neck' in b['name'] for b in feeding['bones']))
                 for track in feeding['tracks']:
-                    name=track['name'];q=global_orientation(by_name[name]);axis=td.rotate([-q[0],-q[1],-q[2],q[3]],[1.,0.,0.])
+                    name=track['name'];q=global_orientation(by_name[name]);axis=td.rotate([-q[0],-q[1],-q[2],q[3]],[0.,-1.,0.] if stem=='serpents_snake_giant' else [1.,0.,0.])
                     for key in ['translation','rotation']:
                         stream=track[key]
                         if not stream['values']:continue
@@ -404,10 +410,11 @@ def prepare(family, z, names, rows, native):
                     output.write_text(json.dumps(gltf,separators=(',',':')))
                 else:
                     stats[treatment] = td.export_gltf(mesh,clips,original,output,height,
-                        floor_sample_rate=120 if family in ['dragons','daemons','lizards','gargoyles','gazers','genies','harpies'] or stem in ['flails_swamp_tentacles','centaurs_centaur','mongbats_mongbat','spirits_blade_spirit'] else 30,
+                        floor_sample_rate=120 if family in ['dragons','daemons','lizards','gargoyles','gazers','genies','harpies'] or stem in ['flails_swamp_tentacles','centaurs_centaur','mongbats_mongbat','spirits_blade_spirit','serpents_snake_giant'] else 30,
                         preserve_vertical_clips=['Fly','TakeOff','Land','HitInAir'],
                         preserve_hover_clips=list(clips) if family in ['gazers','genies'] else (),
-                        preserve_waterline_clips=list(clips) if family in AQUATIC_FAMILIES else ())
+                        preserve_waterline_clips=list(clips) if family in AQUATIC_FAMILIES else (),
+                        measure_motion_bounds=stem=='serpents_snake_giant')
                     templates[cache_key] = (json.loads(output.read_text()),stats[treatment])
                 stats[treatment]['bind_diagonal_m']=math.sqrt(sum(((max(p[i] for p in mesh['points'])-min(p[i] for p in mesh['points']))*scale)**2 for i in range(3)))
                 if row.get('source_alpha_texture') or row.get('rigid_import'):
@@ -425,6 +432,9 @@ def prepare(family, z, names, rows, native):
                        modern_atlas=str(modern_path.relative_to(ROOT)) if modern_path.exists() else None,
                        atlas_sha256=digest(modern),profile=profiles.get(records[0]['body']) or ('animal' if records[0]['type']==2 else 'sea' if records[0]['type']==1 else 'monster'),
                        surface='generated atlas' if modern_path.exists() else 'source atlas; new surface shader only')
+            if stem=='serpents_snake_giant':
+                row['motion_bound_diagonal_m']=max(clip['measured_max_pose_diagonal_m'] for stat in stats.values() for clip in stat['clips'].values())*1.1
+                row['motion_bounds_scope']='Actual CPU-skinned source/refined poses at floor sample/key times plus10% interpolation margin; coiled rest bounds do not bound an uncoiled snake.'
             if family in AQUATIC_FAMILIES:
                 row['movement_mode']='native_waterline'
                 if row['profile']=='sea':row['new_action_categories']={'11':'Attack'}

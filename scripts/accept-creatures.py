@@ -114,6 +114,16 @@ def main():
             assert zombie['preparation_sha256']==digest(ART/family/'preparation.json'),'Zombie preparation changed after measured avatar proof'
             assert all(digest(ROOT/'Viewer'/path.removeprefix('res://'))==sha for path,sha in zombie['runtime_sha256'].items()),'Zombie support/avatar runtime changed after proof'
             assert zombie['asset_sha256']==tested['walking_dead_zombie']['asset_sha256']['modern'] and zombie['import_sha256']==tested['walking_dead_zombie']['import_sha256']['modern'],'Zombie avatar used a different source skin/import'
+        if any(row.get('kind')=='serpents_snake_giant' and row.get('status')=='prepared' for row in preparation['models']):
+            serpent=json.loads((ROOT/'outputs/creatures/serpents/presentation/validation.json').read_text(encoding='utf-8'))
+            assert serpent['failures']==0 and serpent['checks']>=2600 and serpent['renderer']=='forward_plus','Serpent requires actual weighted-skin support, hue, selection and final corpse proof'
+            assert len(serpent['terrain'])==432 and {s['clip'] for s in serpent['terrain']}=={'Idle','Walk','Run','Attack','Hit','Death','Fidget','Eat'},'Incomplete source action/terrain sweep'
+            assert all(abs(s['lowest_plane_gap'])<.008 for s in serpent['terrain']),'Legless source skin must remain grounded across the measured action phases'
+            required={'SerpentPresentationTests.gd','CreatureRegistry.gd','CreatureVisual.gd','BirdGroundSupport.gd','SourceMountContact.gd','SkinGeometry.gd','HumanAvatar.gd','CorpseModels.gd'}
+            assert {'res://Presentation/'+name for name in required}<=set(serpent['runtime_sha256']),'Incomplete source serpent avatar inputs'
+            assert serpent['preparation_sha256']==digest(ART/family/'preparation.json'),'Serpent preparation changed after actual avatar proof'
+            assert all(digest(ROOT/'Viewer'/path.removeprefix('res://'))==sha for path,sha in serpent['runtime_sha256'].items()),'Serpent avatar runtime changed after proof'
+            assert serpent['asset_sha256']==tested['serpents_snake_giant']['asset_sha256']['modern'] and serpent['import_sha256']==tested['serpents_snake_giant']['import_sha256']['modern'],'Serpent avatar used a different source skin/import'
         for row in preparation['models']:
             if row['status']!='prepared':continue
             assert not row.get('pending_render_feature'),row.get('pending_render_feature')

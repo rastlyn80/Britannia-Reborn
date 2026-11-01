@@ -17,9 +17,17 @@ def main():
                 if not path.exists():continue # First import creates the sidecar.
                 text=path.read_text(encoding='utf-8');match=re.search(r'^animation/fps=(\d+)\s*$',text,re.M)
                 assert match,'Cannot identify the local Godot animation sample rate'
-                if int(match[1])>=rate:continue
-                text=re.sub(r'^animation/fps=\d+\s*$',f'animation/fps={rate}',text,flags=re.M)
-                path.write_text(text,encoding='utf-8');changed+=1
+                previous=text
+                if int(match[1])<rate:text=re.sub(r'^animation/fps=\d+\s*$',f'animation/fps={rate}',text,flags=re.M)
+                if model['kind']=='serpents_snake_giant':
+                    # The fast strike's floor correction must stay coupled to
+                    # its joint poses. Default key reduction visibly lifts it.
+                    text=re.sub(r'^meshes/force_disable_compression=\w+', 'meshes/force_disable_compression=true',text,flags=re.M)
+                    options='_subresources={\n"nodes": {\n"PATH:AnimationPlayer": {\n"compression/enabled": false,\n"optimizer/enabled": false\n}\n}\n}'
+                    if '_subresources={}' in text:text=text.replace('_subresources={}',options)
+                    else:
+                        assert '"optimizer/enabled": false' in text and '"compression/enabled": false' in text,'Unexpected existing serpent import subresources; preserve them for review'
+                if text!=previous:path.write_text(text,encoding='utf-8');changed+=1
     print('CREATURE IMPORT SETTINGS:',changed,'local sidecars updated')
     return 3 if changed else 0
 if __name__=='__main__':raise SystemExit(main())
