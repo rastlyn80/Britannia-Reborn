@@ -117,9 +117,14 @@ func run() -> void:
 				session.last_mobile_actions.erase(serial);observer.last_mobile_actions.erase(serial)
 				await reply(sex,"action "+str(action),"UCCREATURE|action|")
 				if not check(await until(func():return session.last_mobile_actions.has(serial) and observer.last_mobile_actions.has(serial)),"native action reaches both clients"):return
-				if not check(actor.receive_native_action(session.last_mobile_actions[serial]),"actual creature consumes native action"):return
+				var received: Dictionary=session.last_mobile_actions[serial]
+				if not check(actor.receive_native_action(received),"actual creature consumes native action"):return
 				var expected:=str({5:"Attack",9:"Fidget",3:"Eat",11:"LieDown",-1:"Hit"}.get(action,"")) if animal else str({5:"Attack",6:"Attack2",7:"Hit",3:"Fidget",4:"Fidget2",12:"Attack",-1:"Hit",-2:"Attack"}.get(action,"")) if sea else str({4:"Attack",5:"Attack2",6:"Attack3",11:"Pillage",12:"Cast",-2:"Cast",-3:"Hit",-4:"Fidget",-5:"Pillage",17:"Fidget",-1:"Hit",19:"Fly",20:"Land"}.get(action,""))
-				if sea and action>=0:expected=str(actor.horse_visual.entry.get("classic_action_categories",{}).get(str(action),expected))
+				if action>=0:expected=str(actor.horse_visual.entry.get("classic_action_categories",{}).get(str(action),expected))
+				if action in [-3,-4,-5]:
+					var native_type: int={-3:2,-4:5,-5:14}[action]
+					if not check(str(received.get("protocol",""))=="new" and int(received.get("type",-1))==native_type,"Requested native action type survives actual packet decoding"):return
+				if str(received.get("protocol",""))=="new":expected=str(actor.horse_visual.entry.get("new_action_categories",{}).get(str(int(received.get("type",-1))),expected))
 				if expected=="Attack2" and not actor.horse_visual.animator.has_animation("Attack2"):expected="Attack"
 				if expected=="Fidget2" and not actor.horse_visual.animator.has_animation("Fidget2"):expected="Fidget"
 				if not check(actor.horse_visual.current_clip==expected,"native action selects the intended category"):return

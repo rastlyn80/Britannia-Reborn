@@ -345,7 +345,7 @@ def prepare(family, z, names, rows, native, selected_kinds=None):
                     clips[label]=cephalopod.gesture(clips['Idle'],td,label)
                     authored[label]='Authored '+('symmetric tentacle charge/release for the native Leviathan mage' if label=='Cast' else 'asymmetric '+('left' if label=='Attack2' else 'right')+' feeding-tentacle lash')+' on the preserved source rig; not recovered UO choreography'
                 row['authored_cephalopod_actions']={'path':'scripts/creature-cephalopod.py','sha256':digest((ROOT/'scripts/creature-cephalopod.py').read_bytes())}
-            if (family in ['dragons','lizards'] or stem=='serpents_snake_giant') and 'Eat' not in clips:
+            if (family in ['dragons','lizards'] or stem=='serpents_snake_giant' or recipe.get('serpentine_feeding')) and 'Eat' not in clips:
                 feeding=copy.deepcopy(clips['Idle']);by_name={b['name']:i for i,b in enumerate(feeding['bones'])};orientations={}
                 def global_orientation(i):
                     if i not in orientations:
@@ -354,7 +354,7 @@ def prepare(family, z, names, rows, native, selected_kinds=None):
                     return orientations[i]
                 necks=max(1,sum('neck' in b['name'] for b in feeding['bones']))
                 for track in feeding['tracks']:
-                    name=track['name'];q=global_orientation(by_name[name]);axis=td.rotate([-q[0],-q[1],-q[2],q[3]],[0.,-1.,0.] if stem=='serpents_snake_giant' else [1.,0.,0.])
+                    name=track['name'];q=global_orientation(by_name[name]);axis=td.rotate([-q[0],-q[1],-q[2],q[3]],[0.,-1.,0.] if stem=='serpents_snake_giant' or recipe.get('serpentine_feeding') else [1.,0.,0.])
                     for key in ['translation','rotation']:
                         stream=track[key]
                         if not stream['values']:continue
@@ -410,11 +410,11 @@ def prepare(family, z, names, rows, native, selected_kinds=None):
                     output.write_text(json.dumps(gltf,separators=(',',':')))
                 else:
                     stats[treatment] = td.export_gltf(mesh,clips,original,output,height,
-                        floor_sample_rate=120 if family in ['dragons','daemons','lizards','gargoyles','gazers','genies','harpies'] or stem in ['flails_swamp_tentacles','centaurs_centaur','mongbats_mongbat','spirits_blade_spirit','serpents_snake_giant'] else 30,
+                        floor_sample_rate=recipe.get('floor_sample_rate',120 if family in ['dragons','daemons','lizards','gargoyles','gazers','genies','harpies'] or stem in ['flails_swamp_tentacles','centaurs_centaur','mongbats_mongbat','spirits_blade_spirit','serpents_snake_giant'] else 30),
                         preserve_vertical_clips=['Fly','TakeOff','Land','HitInAir'],
                         preserve_hover_clips=list(clips) if family in ['gazers','genies'] else (),
                         preserve_waterline_clips=list(clips) if family in AQUATIC_FAMILIES else (),
-                        measure_motion_bounds=stem=='serpents_snake_giant')
+                        measure_motion_bounds=stem=='serpents_snake_giant' or recipe.get('measure_motion_bounds',False))
                     templates[cache_key] = (json.loads(output.read_text()),stats[treatment])
                 stats[treatment]['bind_diagonal_m']=math.sqrt(sum(((max(p[i] for p in mesh['points'])-min(p[i] for p in mesh['points']))*scale)**2 for i in range(3)))
                 if row.get('source_alpha_texture') or row.get('rigid_import'):

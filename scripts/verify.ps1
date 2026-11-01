@@ -84,6 +84,16 @@ if (Test-Path "$root/Viewer/Art/Creatures/Chicken/chicken.glb") {
   & python -B "$root/scripts/test-chicken-distribution.py"
   if ($LASTEXITCODE) {throw 'Public Chicken source motions, authored gaits, PBR maps, skin bounds and cadaver distribution failed'}
 }
+if (Test-Path "$root/Viewer/local-art/creatures/serpents_snake_giant_ice-ground.json") {
+  $iceTransitions = & $godot --headless --path "$root/Viewer" --script res://Presentation/IceSerpentTransitionTests.gd 2>&1
+  $iceTransitionExit = $LASTEXITCODE
+  $iceTransitions | ForEach-Object {Write-Output $_}
+  if ($iceTransitionExit -or ($iceTransitions | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Ice serpent mixed poses, terrain transitions or native action duration failed'}
+  $iceChecks = & $godot --headless --path "$root/Viewer" --script res://Presentation/IceSerpentActionTests.gd 2>&1
+  $iceExit = $LASTEXITCODE
+  $iceChecks | ForEach-Object {Write-Output $_}
+  if ($iceExit -or ($iceChecks | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Ice serpent retained-source skins, sampled floor corrections, bounds and action routing failed'}
+}
 foreach ($kind in @('desert','forest','frenzied','ethereal')) {
  if (Test-Path "$root/Viewer/local-art/ostards/$kind-modern.gltf") {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/OstardTests.gd -- "--kind=$kind"

@@ -143,6 +143,36 @@ def main():
             assert serpent['preparation_sha256']==digest(ART/family/'preparation.json'),'Serpent preparation changed after actual avatar proof'
             assert all(digest(ROOT/'Viewer'/path.removeprefix('res://'))==sha for path,sha in serpent['runtime_sha256'].items()),'Serpent avatar runtime changed after proof'
             assert serpent['asset_sha256']==tested['serpents_snake_giant']['asset_sha256']['modern'] and serpent['import_sha256']==tested['serpents_snake_giant']['import_sha256']['modern'],'Serpent avatar used a different source skin/import'
+        if family=='ice_serpents':
+            actions=json.loads((ROOT/'outputs/creatures/ice_serpents/actions.json').read_text())
+            appearance=json.loads((ROOT/'outputs/creatures/ice_serpents/presentation/validation.json').read_text())
+            transitions=json.loads((ROOT/'outputs/creatures/ice_serpents/transitions.json').read_text())
+            assert transitions['failures']==0 and transitions['checks']>=24500 and len(transitions['flat_samples'])==7600 and len(transitions['terrain_samples'])==864,'Ice serpent requires actual mixed skins at slow/native/fast playback and measured finite planes'
+            assert all(abs(s['floor_m'])<.008 for s in transitions['flat_samples']) and all(abs(s['gap_m'])<.008 for s in transitions['terrain_samples'])
+            assert {s['fps'] for s in transitions['flat_samples']}=={30,60} and len({s['rate'] for s in transitions['flat_samples']})==5
+            assert {(s['source'],s['target']) for s in transitions['flat_samples']}=={('Idle','Walk'),('Walk','Run'),('Run','Walk'),('Run','Attack'),('Attack','Idle'),('Hit','Walk'),('Fidget','Walk'),('Eat','Walk')}
+            assert {s['preceding_rate'] for s in transitions['native_timing']}=={.25,1.,3.2} and all(s['requested_seconds']==.8 and abs(s['midpoint_position']-s['authored_length']*.5)<.001 for s in transitions['native_timing'])
+            assert {'IceSerpentTransitionTests.gd','IceSerpentVisual.gd','SourceGroundLookup.gd','SmallSnakeVisual.gd','CreatureVisual.gd','SkinGeometry.gd','HumanActions.gd'}==set(transitions['runtime_sha256'])
+            assert actions['failures']==0 and actions['checks']>=1300 and len(actions['samples'])==230,'Ice serpent requires paired imported source/modern skins and actual action routing'
+            assert actions['maximum_retained_relative_skin_error_m']<.00001 and 20<actions['maximum_active_jaw_degrees']<32.01 and actions['maximum_source_jaw_degrees']>45,'Preserve source motions beside the explicitly shorter active jaw gape'
+            assert appearance['failures']==0 and appearance['checks']>3900 and appearance['renderer']=='forward_plus','Ice serpent requires actual source avatar/PBR/hue/terrain/picking/corpse evidence'
+            assert appearance['partial_full_difference_pixels']>100 and appearance['source_cutout_pixels']>0 and appearance['registered_head_pixels']>100,'Actual partial/full colour separation, original alpha and authored eye registration must remain visible'
+            expected={'Idle','Walk','Run','Attack','SourceAttack','Hit','Death','Fidget','Eat','LieDown'}
+            assert len(appearance['terrain'])==660 and {s['clip'] for s in appearance['terrain']}==expected and all(abs(s['lowest_plane_gap'])<.008 for s in appearance['terrain']),'Missing complete finite-plane/off-grid grounded action sweep'
+            assert {s['clip'] for s in actions['samples']}==expected
+            required={'IceSerpentVisual.gd','IceSerpentMaterial.gd','IceSerpentSurface.gdshader','SourceGroundLookup.gd','SmallSnakeVisual.gd','CreatureRegistry.gd','HumanAvatar.gd','SkinGeometry.gd','CorpseModels.gd'}
+            assert {'res://Presentation/'+name for name in required}<=set(appearance['runtime_sha256'])
+            for proof in [actions,appearance,transitions]:
+                assert proof['preparation_sha256']==digest(ART/family/'preparation.json')
+                for path,sha in proof['runtime_sha256'].items():assert digest(ROOT/'Viewer'/path[6:] if path.startswith('res://') else ROOT/'Viewer/Presentation'/path)==sha,'Ice serpent runtime changed after proof'
+                assert proof['asset_sha256']==tested['serpents_snake_giant_ice']['asset_sha256']['modern'] and proof['import_sha256']==tested['serpents_snake_giant_ice']['import_sha256']['modern']
+            row=preparation['models'][0];recipe=row['preparation_recipe'];assert digest(ROOT/recipe['path'])==recipe['sha256']==preparation['recipe_sha256']
+            assert preparation['source_pipeline_sha256']==digest(ROOT/'scripts/prepare-creatures.py')
+            ground=ART/'serpents_snake_giant_ice-ground.json';assert digest(ground)==row['ground_lookup_sha256']==actions['ground_lookup_sha256']==appearance['ground_lookup_sha256']==transitions['ground_lookup_sha256']
+            baked=json.loads(ground.read_text());assert baked['sample_rate']==960 and baked['recipe_sha256']==digest(ROOT/'Viewer/Presentation/BakeIceSerpentGround.gd') and baked['geometry_sha256']==digest(ROOT/'Viewer/Presentation/SkinGeometry.gd')
+            for treatment,proof in baked['treatments'].items():
+                assert proof['asset_sha256']==tested[row['kind']]['asset_sha256'][treatment] and proof['import_sha256']==tested[row['kind']]['import_sha256'][treatment]
+            assert actions['reference_sha256']==tested[row['kind']]['asset_sha256']['rounded'] and actions['reference_import_sha256']==tested[row['kind']]['import_sha256']['rounded']
         if family=='small_snakes':
             actions=json.loads((ROOT/'outputs/creatures/small_snakes/actions.json').read_text())
             assert actions['failures']==0 and actions['checks']>=516 and len(actions['samples'])==170

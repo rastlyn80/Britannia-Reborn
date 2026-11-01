@@ -178,5 +178,7 @@ func receive_action(request: Dictionary) -> bool:
 	current_clip=clip;dead=clip in ["Death","Death2"]
 	contact.enabled=not dead and clip not in ["LieDown","Fly","HitInAir","TakeOff"]
 	var duration:=preload("res://Presentation/HumanActions.gd").duration(request,animator.get_animation(clip).length)
+	# The packet duration is independent of the preceding locomotion cadence.
+	animator.speed_scale=1.
 	action_remaining=duration;animator.play(clip,.12,animator.get_animation(clip).length/duration)
 	set_meta("native_action",request.duplicate(true));return true

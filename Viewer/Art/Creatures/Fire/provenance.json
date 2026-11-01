@@ -93,8 +93,8 @@
   "asset_sha256": "b7118078ff6a3f2a1b7ff399341c838aae25d561d0322a0c17c16ad2d71d253b",
   "candidate_runtime_sha256": {
     "res://Presentation/CorpseModels.gd": "6db8a5c36d5d00461c9761c922858113d0ff99033847372d35cf3145b27924aa",
-    "res://Presentation/CreatureRegistry.gd": "d64319111942194eddfb794dc4cdf08db3c5be8fda04fa58ded1ef014d02b515",
-    "res://Presentation/CreatureVisual.gd": "33ccb6389365a05697b22d98e308294200cc92fc5b81b01e89b04d8ebe230944",
+    "res://Presentation/CreatureRegistry.gd": "f1189bc13e091f028e4adfa0fcb17bde461cdb328335fd3f4d9f47f63e9982f8",
+    "res://Presentation/CreatureVisual.gd": "2390827c85a7a3eea18714eb4f681ca15f1b7f309f4a5713224fad950856e33c",
     "res://Presentation/FireElementalMaterial.gd": "1583c0b89a251e0e49e9fa08f9f85bb4d44bfe16e44152533685887bfa095744",
     "res://Presentation/FireElementalPresentationTests.gd": "6b20535f527db3fd0e5f1b7d1fdc94ed69683aae006a6085d39e66236f2c61c7",
     "res://Presentation/FireElementalSurface.gdshader": "b227574a042afe4b392cdf988e7f3bd7a4ae80b306393493fc07056e43bde693",

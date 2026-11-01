@@ -1,5 +1,6 @@
 extends SceneTree
 const Visual=preload("res://Presentation/CreatureVisual.gd")
+const Geometry=preload("res://Presentation/SkinGeometry.gd")
 var family:="bruins"
 var viewport: SubViewport
 var checks:=0
@@ -31,6 +32,10 @@ func run() -> void:
 		for clip in ["Walk","Run","Attack"]:
 			for angle in [-.8,PI/2.]:
 				actor.rotation.y=angle;actor.apply_identity(0,0);actor.play(clip,0.);actor.animator.seek(actor.animator.current_animation_length*.35,true);actor.animator.pause()
+				if record.get("appearance_pose_fit",false):
+					actor.skeleton.force_update_all_bone_transforms()
+					var mesh: MeshInstance3D=actor.model.find_children("*","MeshInstance3D",true,false)[0];var box:=Geometry.deformed_bounds(mesh,actor.skeleton)
+					camera.size=box.size.length()*1.15;camera.position=box.get_center()+Vector3(0.,2.,6.)*maxf(1.,box.size.length());camera.look_at(box.get_center())
 				var base:=await capture();actor.apply_identity(0,53);var dyed:=await capture();var occupied:=0;var changed:=0
 				for y in range(0,420,2):
 					for x in range(0,480,2):
@@ -58,7 +63,9 @@ func run() -> void:
 					cutout={"pixels":gaps,"solid_pixels":solid_pixels,"fraction":fraction}
 					# Tiny tooth/ornament edge cutouts do not cover wing-sized areas.
 					# Both policies still fail when the actual source mask is lost.
-					check(gaps>(0 if record.get("source_alpha_scope","")=="fine_edges" else 10),"Source opacity creates measured visible gaps in each sampled view: "+str(record.kind))
+					# Fine tooth/ornament edges may be occluded in a body view.
+					# Their view-set test below still requires actual missing pixels.
+					if record.get("source_alpha_scope","")!="fine_edges":check(gaps>10,"Source opacity creates measured visible gaps in each sampled view: "+str(record.kind))
 					set_mask_probe(actor,false,true)
 				rows.append({"kind":record.kind,"clip":clip,"angle":angle,"occupied_pixels":occupied,"dyed_fraction":float(changed)/maxi(1,occupied),"source_cutout":cutout,"asset_sha256":FileAccess.get_sha256("res://local-art/creatures/"+str(record.kind)+"-modern.gltf"),"import_sha256":FileAccess.get_sha256("res://local-art/creatures/"+str(record.kind)+"-modern.gltf.import"),"art_dependency_sha256":dependencies})
 		if not str(record.get("source_alpha_texture","")).is_empty():

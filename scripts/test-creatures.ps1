@@ -91,6 +91,14 @@ foreach ($family in $Families) {
   & $godot --path "$root/Viewer" --script res://Presentation/MeasuredCreaturePresentationTests.gd -- "--kind=$($model.kind)" *> "$logs/$($model.kind)-avatar.log"
   if ($LASTEXITCODE -or (Select-String -Path "$logs/$($model.kind)-avatar.log" -Pattern 'SCRIPT ERROR:' -Quiet)) {throw "Measured source limb/skin/terrain/corpse proof failed: $($model.kind)"}
  }
+ if ($family -eq 'ice_serpents') {
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/IceSerpentTransitionTests.gd *> "$logs/ice-serpents-transitions.log"
+  if ($LASTEXITCODE -or (Select-String -Path "$logs/ice-serpents-transitions.log" -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet)) {throw 'Ice serpent mixed poses, finite-plane transitions or native action duration failed'}
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/IceSerpentActionTests.gd *> "$logs/ice-serpents-actions.log"
+  if ($LASTEXITCODE -or (Select-String -Path "$logs/ice-serpents-actions.log" -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet)) {throw 'Ice serpent retained-source skins, jaw amendment, shared floor curves or action routing failed'}
+  & $godot --path "$root/Viewer" --script res://Presentation/IceSerpentPresentationTests.gd *> "$logs/ice-serpents-avatar.log"
+  if ($LASTEXITCODE -or (Select-String -Path "$logs/ice-serpents-avatar.log" -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet)) {throw 'Ice serpent actual avatar, PBR/hues, off-grid terrain, weighted bounds or corpse failed'}
+ }
  if ($family -eq 'small_snakes') {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/SmallSnakeActionTests.gd *> "$logs/small-snakes-actions.log"
   if ($LASTEXITCODE) {throw 'Small-snake dynamic skin envelope and gait selection failed'}
