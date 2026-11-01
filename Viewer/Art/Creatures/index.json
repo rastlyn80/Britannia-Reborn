@@ -1647,6 +1647,261 @@
       "gait_recipe_sha256": "4ea3baebc6541b32d502b7de504af46a0c18b5ea926ba642837b83ba53dc99dd",
       "source_pin_sha256": "7fe3a7df72d7085418d76f00f6dc46d7b9b6a5b02a5093b7ba8ec4596eb503c3",
       "native_validation": "Actual isolated two-client JackRabbit and Rabbit constructors, hues/movement/actions/hurt/death and static corpse; repeat on installed public route"
+    },
+    {
+      "kind": "wisp",
+      "family": "wisps",
+      "status": "validated",
+      "profile": "monster",
+      "movement_mode": "source_hover",
+      "surface_kind": "authored_energy",
+      "assets": {
+        "modern": "res://Art/Creatures/Wisp/wisp.scn"
+      },
+      "bodies": [
+        {
+          "body": 58,
+          "name": "Wisp / CrystalWisp",
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "native_profile": "monster",
+          "native_sources": [
+            {
+              "path": "Projects/UOContent/Mobiles/Monsters/Misc/Magic/Wisp.cs",
+              "sha256": "fd0b390db385dd67f7b678ac5731c2be49091114f8264c735fe3905532d0b387"
+            },
+            {
+              "path": "Projects/UOContent/Mobiles/Monsters/ML/Prism of Light/CrystalWisp.cs",
+              "sha256": "6e80682ef055a54566cb7f03e7812e69f5683207d671eb08cf34b1284173c25b"
+            }
+          ]
+        }
+      ],
+      "source": "https://github.com/rastlyn80/Britannia-Reborn",
+      "license": "GPL-3.0-or-later original analytic geometry, seven-bone rig, sixteen authored action categories and shader. No game-derived art or external asset.",
+      "source_interpretation": "Authored three-dimensional radiant star-core with six distinct skinned rays. Named Third Dawn Wisp model absent from this inspected archive; no recovered source mesh/rig/choreography claimed.",
+      "partial_hue_interpretation": "Authored white-core protection with tinted energy rays, not a recovered native partial mask.",
+      "stats": {
+        "original": {
+          "bones": 7,
+          "height_m": 0.9,
+          "clips": {
+            "Alert": {
+              "duration": 1.0,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Attack": {
+              "duration": 0.7,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Attack2": {
+              "duration": 0.85,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Attack3": {
+              "duration": 1.0,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Cast": {
+              "duration": 1.5,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Death": {
+              "duration": 1.5,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Death2": {
+              "duration": 1.8,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Eat": {
+              "duration": 1.8,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Fidget": {
+              "duration": 1.6,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Fidget2": {
+              "duration": 1.8,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Hit": {
+              "duration": 0.5,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Idle": {
+              "duration": 2.0,
+              "loop": true,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "LieDown": {
+              "duration": 1.4,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Pillage": {
+              "duration": 1.4,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Run": {
+              "duration": 0.8,
+              "loop": true,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Walk": {
+              "duration": 1.2,
+              "loop": true,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            }
+          }
+        },
+        "modern": {
+          "bones": 7,
+          "height_m": 0.9,
+          "clips": {
+            "Alert": {
+              "duration": 1.0,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Attack": {
+              "duration": 0.7,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Attack2": {
+              "duration": 0.85,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Attack3": {
+              "duration": 1.0,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Cast": {
+              "duration": 1.5,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Death": {
+              "duration": 1.5,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Death2": {
+              "duration": 1.8,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Eat": {
+              "duration": 1.8,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Fidget": {
+              "duration": 1.6,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Fidget2": {
+              "duration": 1.8,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Hit": {
+              "duration": 0.5,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Idle": {
+              "duration": 2.0,
+              "loop": true,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "LieDown": {
+              "duration": 1.4,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Pillage": {
+              "duration": 1.4,
+              "loop": false,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Run": {
+              "duration": 0.8,
+              "loop": true,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "Walk": {
+              "duration": 1.2,
+              "loop": true,
+              "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            }
+          }
+        }
+      },
+      "authored_replacements": {
+        "Alert": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography",
+        "Attack": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography",
+        "Attack2": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography",
+        "Attack3": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography",
+        "Cast": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography",
+        "Death": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography",
+        "Death2": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography",
+        "Eat": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography",
+        "Fidget": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography",
+        "Fidget2": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography",
+        "Hit": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography",
+        "Idle": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography",
+        "LieDown": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography",
+        "Pillage": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography",
+        "Run": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography",
+        "Walk": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+      },
+      "loop_categories": [
+        "Idle",
+        "Run",
+        "Walk"
+      ],
+      "camera_height": 1.0,
+      "pick_bounds": {
+        "position": [
+          -0.372653542757034,
+          -0.011900244951248199,
+          -0.38741227865219097
+        ],
+        "size": [
+          0.763168302774429,
+          1.6353215849399572,
+          0.765125093460083
+        ]
+      },
+      "new_action_categories": {
+        "2": "Hit",
+        "5": "Fidget",
+        "14": "Pillage"
+      },
+      "recipe_sha256": "bf09202560c6c511ff0305dcc3ccb419c46f0dc4197f9a2bfc8157057fa9f401",
+      "asset_sha256": "4b47a14ad1eef6c642701d11fad21787b54e685f6b6d33019503ef4e5fbaa595",
+      "native_validation": "Actual isolated Wisp and CrystalWisp constructors, two clients, native actions/hues/movement/death/corpse; repeat on installed public route"
     }
   ]
 }

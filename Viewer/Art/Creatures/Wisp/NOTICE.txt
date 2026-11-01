@@ -1,0 +1,3 @@
+Independently authored Britannia Reborn Wisp analytic mesh, seven-bone rig, sixteen action categories and energy shader. GPL-3.0-or-later; see root LICENSE.
+No Ultima Online mesh, rig, texture or motion and no external donor asset is included.
+Reproduce with Viewer/Presentation/PrepareWisp.gd. Exact source/art hashes: provenance.json. Original UO choreography and exact partial masks are not claimed.

@@ -1,0 +1,143 @@
+{
+  "license": "GPL-3.0-or-later original project art/code; no third-party or game-derived mesh, rig, texture or animation",
+  "preparation": {
+    "bones": 7,
+    "clips": {
+      "Alert": {
+        "duration": 1.0,
+        "loop": false,
+        "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+      },
+      "Attack": {
+        "duration": 0.7,
+        "loop": false,
+        "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+      },
+      "Attack2": {
+        "duration": 0.85,
+        "loop": false,
+        "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+      },
+      "Attack3": {
+        "duration": 1.0,
+        "loop": false,
+        "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+      },
+      "Cast": {
+        "duration": 1.5,
+        "loop": false,
+        "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+      },
+      "Death": {
+        "duration": 1.5,
+        "loop": false,
+        "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+      },
+      "Death2": {
+        "duration": 1.8,
+        "loop": false,
+        "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+      },
+      "Eat": {
+        "duration": 1.8,
+        "loop": false,
+        "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+      },
+      "Fidget": {
+        "duration": 1.6,
+        "loop": false,
+        "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+      },
+      "Fidget2": {
+        "duration": 1.8,
+        "loop": false,
+        "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+      },
+      "Hit": {
+        "duration": 0.5,
+        "loop": false,
+        "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+      },
+      "Idle": {
+        "duration": 2.0,
+        "loop": true,
+        "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+      },
+      "LieDown": {
+        "duration": 1.4,
+        "loop": false,
+        "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+      },
+      "Pillage": {
+        "duration": 1.4,
+        "loop": false,
+        "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+      },
+      "Run": {
+        "duration": 0.8,
+        "loop": true,
+        "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+      },
+      "Walk": {
+        "duration": 1.2,
+        "loop": true,
+        "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+      }
+    },
+    "license": "GPL-3.0-or-later original analytic geometry/rig/motions/shader; no third-party or UO art",
+    "missing": [
+      "Actual complete-skin/key interpolation and loop checks",
+      "Runtime hue bindings and deterministic shader freeze",
+      "Terrain-relative hover/picking/camera/nameplate",
+      "Native constructor/actions/hues/death/corpse",
+      "Clean public distribution and full regression"
+    ],
+    "status": "Unaccepted trial, no installed route or added coverage",
+    "triangles": 4480,
+    "vertices": 8100
+  },
+  "asset_sha256": "4b47a14ad1eef6c642701d11fad21787b54e685f6b6d33019503ef4e5fbaa595",
+  "recipe_sha256": "bf09202560c6c511ff0305dcc3ccb419c46f0dc4197f9a2bfc8157057fa9f401",
+  "shader_sha256": "d71be644263dfa383fa6445a5fdf5e7ddc8308da72c25701e8513c87ca407f47",
+  "runtime_sha256": {
+    "res://Presentation/CorpseModels.gd": "6db8a5c36d5d00461c9761c922858113d0ff99033847372d35cf3145b27924aa",
+    "res://Presentation/CreatureRegistry.gd": "4fbe0bcae0dd99c1e7a604941f3ddff9b75a93c9fb1bdd0a6d3c29689c3493c9",
+    "res://Presentation/CreatureVisual.gd": "33ccb6389365a05697b22d98e308294200cc92fc5b81b01e89b04d8ebe230944",
+    "res://Presentation/HumanAvatar.gd": "b322bfb7ba0c8b73c199eaf7d812e5aeaa6db16e7abbbd863d630acde2961438",
+    "res://Presentation/PrepareWisp.gd": "bf09202560c6c511ff0305dcc3ccb419c46f0dc4197f9a2bfc8157057fa9f401",
+    "res://Presentation/SkinGeometry.gd": "6690454dae7e23f9d4a705afa90f1b6d510dd1263a19930e4f597ee5f36c19aa",
+    "res://Presentation/WispMaterial.gd": "9ecea33fc0ae63f5b38a50a6db1979b8e896050cebac39272f9fcde649c09537",
+    "res://Presentation/WispPresentationTests.gd": "bcfe0f332a1907dbb246ea36a96857d6a39a36b66e0e273ee109715bf43af4ac",
+    "res://Presentation/WispSurface.gdshader": "d71be644263dfa383fa6445a5fdf5e7ddc8308da72c25701e8513c87ca407f47",
+    "res://Presentation/WispVisual.gd": "7c99d528afbdc445cc36570a777c98c8c11124011c51e96ba76d564b106048b6"
+  },
+  "candidate_runtime_sha256": {
+    "res://Presentation/CorpseModels.gd": "6db8a5c36d5d00461c9761c922858113d0ff99033847372d35cf3145b27924aa",
+    "res://Presentation/CreatureRegistry.gd": "4fbe0bcae0dd99c1e7a604941f3ddff9b75a93c9fb1bdd0a6d3c29689c3493c9",
+    "res://Presentation/CreatureVisual.gd": "33ccb6389365a05697b22d98e308294200cc92fc5b81b01e89b04d8ebe230944",
+    "res://Presentation/HumanAvatar.gd": "b322bfb7ba0c8b73c199eaf7d812e5aeaa6db16e7abbbd863d630acde2961438",
+    "res://Presentation/PrepareWisp.gd": "bf09202560c6c511ff0305dcc3ccb419c46f0dc4197f9a2bfc8157057fa9f401",
+    "res://Presentation/SkinGeometry.gd": "6690454dae7e23f9d4a705afa90f1b6d510dd1263a19930e4f597ee5f36c19aa",
+    "res://Presentation/WispMaterial.gd": "9ecea33fc0ae63f5b38a50a6db1979b8e896050cebac39272f9fcde649c09537",
+    "res://Presentation/WispPresentationTests.gd": "5ad422da47260a8aacf618769c89686690c8efa88d7e6b6dadfb83a0b721ca98",
+    "res://Presentation/WispSurface.gdshader": "d71be644263dfa383fa6445a5fdf5e7ddc8308da72c25701e8513c87ca407f47",
+    "res://Presentation/WispVisual.gd": "7c99d528afbdc445cc36570a777c98c8c11124011c51e96ba76d564b106048b6"
+  },
+  "public_presentation_sha256": "ed42cf014b9a79b3d558e617695d2e8112e09d0874d23f7583b0fd381b5d861d",
+  "public_native_receipt_sha256": "c7b2654873ab7b3671faaadf8b9c0d14e38a1d5f8b07bbe1bee3c6eaf02e92e6",
+  "public_native_scope": {
+    "checks": 314,
+    "failures": 0,
+    "constructors": [
+      "Wisp",
+      "CrystalWisp"
+    ],
+    "body": 58,
+    "owners": [
+      "male",
+      "female"
+    ],
+    "limits": "Controlled isolated native sampling, not autonomous AI/choreography or other Wisp bodies"
+  },
+  "inherited_project_base_revision": "25ca3c1f5647c1575edd435221b7414d0067ecff"
+}
