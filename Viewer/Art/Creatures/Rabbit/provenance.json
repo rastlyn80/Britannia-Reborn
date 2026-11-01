@@ -1,0 +1,784 @@
+{
+  "sources": {
+    "source": "https://opengameart.org/content/rabbit-0",
+    "download": "https://opengameart.org/sites/default/files/rabbit.blend",
+    "author": "\u010cestm\u00edr Dammer (CDmir)",
+    "project": "Kelgar",
+    "collaborator": "TinyWorlds",
+    "ideas": [
+      "Rick Hoppmann",
+      "Keppu"
+    ],
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "bytes": 5996916,
+    "sha256": "bb6deef1ee91b21380355138374cae87946451ce864502b1af68eb60f4750843",
+    "embedded_license": "Model: Rabbit\nAuthor: \u010cestm\u00edr Dammer\nProject: www.kelgar.org\nIdea by Rick Hoppmann & Keppu\nLicense: CC0 - Public Domain",
+    "packed_images": [
+      {
+        "name": "Fur-skin",
+        "sha256": "81bbbddae95938a74bd873491588475a469895f1045e78a0da83ca85b3985c25"
+      },
+      {
+        "name": "rabbit-NORM",
+        "sha256": "000bbb47c2bfc17d8f0839d0bd3c57485389309a971c914ec7177bb0347b428c"
+      },
+      {
+        "name": "rabbot-skinn",
+        "sha256": "96f367bce29f79d1e0ae037440d85c3fd87b7bd003e711964581fe65a04229b0"
+      }
+    ],
+    "scope": "Independent source geometry, rig, textures and original animations. Authored conversion/refinement/additional actions are separately declared; no original UO choreography recovered."
+  },
+  "preparation": {
+    "status": "Prepared candidate only; no accepted route, native gameplay or coverage",
+    "source": {
+      "source": "https://opengameart.org/content/rabbit-0",
+      "download": "https://opengameart.org/sites/default/files/rabbit.blend",
+      "author": "\u010cestm\u00edr Dammer (CDmir)",
+      "project": "Kelgar",
+      "collaborator": "TinyWorlds",
+      "ideas": [
+        "Rick Hoppmann",
+        "Keppu"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "bytes": 5996916,
+      "sha256": "bb6deef1ee91b21380355138374cae87946451ce864502b1af68eb60f4750843",
+      "embedded_license": "Model: Rabbit\nAuthor: \u010cestm\u00edr Dammer\nProject: www.kelgar.org\nIdea by Rick Hoppmann & Keppu\nLicense: CC0 - Public Domain",
+      "packed_images": [
+        {
+          "name": "Fur-skin",
+          "sha256": "81bbbddae95938a74bd873491588475a469895f1045e78a0da83ca85b3985c25"
+        },
+        {
+          "name": "rabbit-NORM",
+          "sha256": "000bbb47c2bfc17d8f0839d0bd3c57485389309a971c914ec7177bb0347b428c"
+        },
+        {
+          "name": "rabbot-skinn",
+          "sha256": "96f367bce29f79d1e0ae037440d85c3fd87b7bd003e711964581fe65a04229b0"
+        }
+      ],
+      "scope": "Independent source geometry, rig, textures and original animations. Authored conversion/refinement/additional actions are separately declared; no original UO choreography recovered."
+    },
+    "source_weight_normalisation": {
+      "Rabbit": {
+        "maximum_input_influences": 9,
+        "input_weight_sum_range": [
+          0.9241479635238647,
+          1.682747066021996
+        ],
+        "maximum_discarded_weight_fraction": 2.287992672318885e-14,
+        "maximum_allowed_loss_fraction": 1e-12,
+        "method": "Ratio normalization; at most eight positive joint influences. Original numerical tails only; refined interpolation has an explicit0.2-percent budget. Points, polygons, UVs and rig remain unchanged."
+      },
+      "Fur": {
+        "maximum_input_influences": 9,
+        "input_weight_sum_range": [
+          0.934536088258028,
+          1.6533179881543807
+        ],
+        "maximum_discarded_weight_fraction": 6.27032370982697e-13,
+        "maximum_allowed_loss_fraction": 1e-12,
+        "method": "Ratio normalization; at most eight positive joint influences. Original numerical tails only; refined interpolation has an explicit0.2-percent budget. Points, polygons, UVs and rig remain unchanged."
+      }
+    },
+    "recipe_sha256": "06980a0aaf87d681c2e3aeeada2ae03408708768722d5876287a3c4501dfe49e",
+    "gait_recipe_sha256": "4ea3baebc6541b32d502b7de504af46a0c18b5ea926ba642837b83ba53dc99dd",
+    "source_pin_sha256": "7fe3a7df72d7085418d76f00f6dc46d7b9b6a5b02a5093b7ba8ec4596eb503c3",
+    "source_fps": 24.0,
+    "source_bake_rate": 120,
+    "sample_rate": 240,
+    "scale": 0.028,
+    "bones": 37,
+    "nameplate_tips": [
+      {
+        "bone": "Ear_L.001",
+        "local_tip": [
+          0.0,
+          0.7569462060928345,
+          0.0
+        ]
+      },
+      {
+        "bone": "Ear_R.001",
+        "local_tip": [
+          0.0,
+          0.7569462060928345,
+          0.0
+        ]
+      }
+    ],
+    "clips": {
+      "Idle": {
+        "source_action": "Sitting.000",
+        "duration": 22.916666666666668,
+        "loop": true,
+        "origin": "Baked evaluated CC0 source constraints; no UO choreography recovered"
+      },
+      "Run": {
+        "source_action": "Running",
+        "duration": 0.6666666666666666,
+        "loop": true,
+        "origin": "Baked evaluated CC0 source constraints; no UO choreography recovered"
+      },
+      "Death": {
+        "source_action": "Dying.000",
+        "duration": 0.8333333333333334,
+        "loop": false,
+        "origin": "Baked evaluated CC0 source constraints; no UO choreography recovered"
+      },
+      "Guarding": {
+        "source_action": "Guarding",
+        "duration": 16.666666666666668,
+        "loop": true,
+        "origin": "Baked evaluated CC0 source constraints; no UO choreography recovered"
+      },
+      "Jump": {
+        "source_action": "Jump",
+        "duration": 1.0,
+        "loop": false,
+        "origin": "Baked evaluated CC0 source constraints; no UO choreography recovered"
+      },
+      "Walk": {
+        "duration": 1.0,
+        "loop": true,
+        "source_action": "Running",
+        "origin": "Authored slower-hop timing of the complete licensed Running cycle"
+      },
+      "Attack": {
+        "duration": 0.6,
+        "loop": false,
+        "origin": "Authored Attack category on the original CC0 rig; no captured or original UO choreography claim"
+      },
+      "Hit": {
+        "duration": 0.45,
+        "loop": false,
+        "origin": "Authored Hit category on the original CC0 rig; no captured or original UO choreography claim"
+      },
+      "Eat": {
+        "duration": 2.4,
+        "loop": false,
+        "origin": "Authored Eat category on the original CC0 rig; no captured or original UO choreography claim"
+      },
+      "Fidget": {
+        "duration": 2.0,
+        "loop": true,
+        "origin": "Authored Fidget category on the original CC0 rig; no captured or original UO choreography claim"
+      },
+      "Alert": {
+        "duration": 1.2,
+        "loop": false,
+        "origin": "Authored Alert category on the original CC0 rig; no captured or original UO choreography claim"
+      }
+    },
+    "refinement": "One declared rest-space Catmull-Clark pass on body; original source alpha fur cards, UVs, packed albedo and normal images retained",
+    "limits": "Requires actual imported eight-influence skins, genuine source hop and floor/support proof, distinct action review, both native Rabbit/JackRabbit constructors, hues, selection/camera, matching cadaver and clean public distribution before acceptance",
+    "treatments": {
+      "source": {
+        "asset_sha256": "248f42ee2213444b2cb6e7bcb1796321ef042a431b1b506ca137c20c9935beee",
+        "maximum_evaluated_bake_position_error_m": 4.1178967892852e-07,
+        "weight_policy": {
+          "Rabbit": {
+            "maximum_input_influences": 8,
+            "input_weight_sum_range": [
+              0.999999962747097,
+              1.0000000447034836
+            ],
+            "maximum_discarded_weight_fraction": 0.0,
+            "maximum_allowed_loss_fraction": 1e-12,
+            "method": "Ratio normalization; at most eight positive joint influences. Original numerical tails only; refined interpolation has an explicit0.2-percent budget. Points, polygons, UVs and rig remain unchanged."
+          },
+          "Fur": {
+            "maximum_input_influences": 8,
+            "input_weight_sum_range": [
+              0.9999999573774403,
+              1.000000038864009
+            ],
+            "maximum_discarded_weight_fraction": 0.0,
+            "maximum_allowed_loss_fraction": 1e-12,
+            "method": "Ratio normalization; at most eight positive joint influences. Original numerical tails only; refined interpolation has an explicit0.2-percent budget. Points, polygons, UVs and rig remain unchanged."
+          }
+        },
+        "floor_corrections": {
+          "Idle": {
+            "range_m": [
+              0.0,
+              0.0
+            ],
+            "policy": "Unmodified source/declared category pose; negative source clearance retained for comparison"
+          },
+          "Run": {
+            "range_m": [
+              0.0,
+              0.0
+            ],
+            "policy": "Unmodified source/declared category pose; negative source clearance retained for comparison"
+          },
+          "Death": {
+            "range_m": [
+              0.0,
+              0.0
+            ],
+            "policy": "Unmodified source/declared category pose; negative source clearance retained for comparison"
+          },
+          "Guarding": {
+            "range_m": [
+              0.0,
+              0.0
+            ],
+            "policy": "Unmodified source/declared category pose; negative source clearance retained for comparison"
+          },
+          "Jump": {
+            "range_m": [
+              0.0,
+              0.0
+            ],
+            "policy": "Unmodified source/declared category pose; negative source clearance retained for comparison"
+          },
+          "Walk": {
+            "range_m": [
+              0.0,
+              0.0
+            ],
+            "policy": "Unmodified source/declared category pose; negative source clearance retained for comparison"
+          },
+          "Attack": {
+            "range_m": [
+              0.0,
+              0.0
+            ],
+            "policy": "Unmodified source/declared category pose; negative source clearance retained for comparison"
+          },
+          "Hit": {
+            "range_m": [
+              0.0,
+              0.0
+            ],
+            "policy": "Unmodified source/declared category pose; negative source clearance retained for comparison"
+          },
+          "Eat": {
+            "range_m": [
+              0.0,
+              0.0
+            ],
+            "policy": "Unmodified source/declared category pose; negative source clearance retained for comparison"
+          },
+          "Fidget": {
+            "range_m": [
+              0.0,
+              0.0
+            ],
+            "policy": "Unmodified source/declared category pose; negative source clearance retained for comparison"
+          },
+          "Alert": {
+            "range_m": [
+              0.0,
+              0.0
+            ],
+            "policy": "Unmodified source/declared category pose; negative source clearance retained for comparison"
+          }
+        },
+        "gait_reconciliation": {},
+        "triangles": {
+          "Rabbit": 1700,
+          "Fur": 940
+        },
+        "clips": {
+          "Idle": {
+            "source_action": "Sitting.000",
+            "duration": 22.916666666666668,
+            "loop": true,
+            "origin": "Baked evaluated CC0 source constraints; no UO choreography recovered"
+          },
+          "Run": {
+            "source_action": "Running",
+            "duration": 0.6666666666666666,
+            "loop": true,
+            "origin": "Baked evaluated CC0 source constraints; no UO choreography recovered"
+          },
+          "Death": {
+            "source_action": "Dying.000",
+            "duration": 0.8333333333333334,
+            "loop": false,
+            "origin": "Baked evaluated CC0 source constraints; no UO choreography recovered"
+          },
+          "Guarding": {
+            "source_action": "Guarding",
+            "duration": 16.666666666666668,
+            "loop": true,
+            "origin": "Baked evaluated CC0 source constraints; no UO choreography recovered"
+          },
+          "Jump": {
+            "source_action": "Jump",
+            "duration": 1.0,
+            "loop": false,
+            "origin": "Baked evaluated CC0 source constraints; no UO choreography recovered"
+          },
+          "Walk": {
+            "duration": 1.0,
+            "loop": true,
+            "source_action": "Running",
+            "origin": "Authored slower-hop timing of the complete licensed Running cycle"
+          },
+          "Attack": {
+            "duration": 0.6,
+            "loop": false,
+            "origin": "Authored Attack category on the original CC0 rig; no captured or original UO choreography claim"
+          },
+          "Hit": {
+            "duration": 0.45,
+            "loop": false,
+            "origin": "Authored Hit category on the original CC0 rig; no captured or original UO choreography claim"
+          },
+          "Eat": {
+            "duration": 2.4,
+            "loop": false,
+            "origin": "Authored Eat category on the original CC0 rig; no captured or original UO choreography claim"
+          },
+          "Fidget": {
+            "duration": 2.0,
+            "loop": true,
+            "origin": "Authored Fidget category on the original CC0 rig; no captured or original UO choreography claim"
+          },
+          "Alert": {
+            "duration": 1.2,
+            "loop": false,
+            "origin": "Authored Alert category on the original CC0 rig; no captured or original UO choreography claim"
+          }
+        }
+      },
+      "modern": {
+        "asset_sha256": "ad5bf072996028713b2ad092bd04ff42d90f536bd7dc5bb0ab701c83d59866a4",
+        "maximum_evaluated_bake_position_error_m": 4.1178967892852e-07,
+        "weight_policy": {
+          "Rabbit": {
+            "maximum_input_influences": 9,
+            "input_weight_sum_range": [
+              0.9999999105930328,
+              1.0000001087028068
+            ],
+            "maximum_discarded_weight_fraction": 0.0016350839332726335,
+            "maximum_allowed_loss_fraction": 0.002,
+            "method": "Ratio normalization; at most eight positive joint influences. Original numerical tails only; refined interpolation has an explicit0.2-percent budget. Points, polygons, UVs and rig remain unchanged."
+          },
+          "Fur": {
+            "maximum_input_influences": 8,
+            "input_weight_sum_range": [
+              0.9999999573783498,
+              1.000000038864009
+            ],
+            "maximum_discarded_weight_fraction": 0.0,
+            "maximum_allowed_loss_fraction": 0.002,
+            "method": "Ratio normalization; at most eight positive joint influences. Original numerical tails only; refined interpolation has an explicit0.2-percent budget. Points, polygons, UVs and rig remain unchanged."
+          }
+        },
+        "floor_corrections": {
+          "Idle": {
+            "range_m": [
+              0.0033580015897750853,
+              0.0033580015897750853
+            ],
+            "policy": "Negative complete-skin penetration only; genuine positive source hop retained"
+          },
+          "Run": {
+            "range_m": [
+              0.0,
+              0.012180212020874024
+            ],
+            "policy": "Negative complete-skin penetration only; genuine positive source hop retained"
+          },
+          "Death": {
+            "range_m": [
+              0.002025723934173584,
+              0.07408882522583007
+            ],
+            "policy": "Negative complete-skin penetration only; genuine positive source hop retained"
+          },
+          "Guarding": {
+            "range_m": [
+              0.0033580015897750853,
+              0.008663175582885742
+            ],
+            "policy": "Negative complete-skin penetration only; genuine positive source hop retained"
+          },
+          "Jump": {
+            "range_m": [
+              0.0,
+              0.019251084804534913
+            ],
+            "policy": "Negative complete-skin penetration only; genuine positive source hop retained"
+          },
+          "Walk": {
+            "range_m": [
+              0.0,
+              0.012180212020874024
+            ],
+            "policy": "Negative complete-skin penetration only; genuine positive source hop retained"
+          },
+          "Attack": {
+            "range_m": [
+              0.0033580015897750853,
+              0.0033580015897750853
+            ],
+            "policy": "Negative complete-skin penetration only; genuine positive source hop retained"
+          },
+          "Hit": {
+            "range_m": [
+              0.0033580015897750853,
+              0.0033580015897750853
+            ],
+            "policy": "Negative complete-skin penetration only; genuine positive source hop retained"
+          },
+          "Eat": {
+            "range_m": [
+              0.0033580015897750853,
+              0.0033580015897750853
+            ],
+            "policy": "Negative complete-skin penetration only; genuine positive source hop retained"
+          },
+          "Fidget": {
+            "range_m": [
+              0.0033580015897750853,
+              0.0033580015897750853
+            ],
+            "policy": "Negative complete-skin penetration only; genuine positive source hop retained"
+          },
+          "Alert": {
+            "range_m": [
+              0.0033580015897750853,
+              0.0033580015897750853
+            ],
+            "policy": "Negative complete-skin penetration only; genuine positive source hop retained"
+          }
+        },
+        "gait_reconciliation": {
+          "Walk": {
+            "target_stance_speed_mps": 1.8,
+            "duration": 0.6666666666666666,
+            "segments": [
+              {
+                "group": "fore",
+                "start_phase": 0.5875,
+                "end_phase": 0.8625,
+                "samples": 23
+              },
+              {
+                "group": "hind",
+                "start_phase": 0.875,
+                "end_phase": 1.1875,
+                "samples": 26
+              }
+            ],
+            "offset_range_m": [
+              -0.07552634990308436,
+              0.013196394681930533
+            ],
+            "offsets_m": [
+              0.013196394681930533,
+              0.007917802095413207,
+              0.0026392595767974897,
+              -0.0026392595767975036,
+              -0.007917895555496227,
+              -0.013196478128433234,
+              -0.01847502064704895,
+              -0.023753576517105107,
+              -0.029032145738601717,
+              -0.03431074166297915,
+              -0.0395892641544342,
+              -0.044867853403091434,
+              -0.05014648270606997,
+              -0.05542503190040593,
+              -0.060703734636306766,
+              -0.06598259091377259,
+              -0.07048264341587493,
+              -0.07349918789102232,
+              -0.07514337362487278,
+              -0.07552634990308436,
+              -0.07475926601131506,
+              -0.07295327123522294,
+              -0.070219514860466,
+              -0.0666691461727023,
+              -0.06241331445758987,
+              -0.057563169000786715,
+              -0.052229859087950865,
+              -0.04652453400474038,
+              -0.04055834303681327,
+              -0.03444243546982755,
+              -0.02828796058944129,
+              -0.02220606768131249,
+              -0.016307906031099183,
+              -0.010704624924459415,
+              -0.005507373647051179,
+              -0.0008273014845325555,
+              0.003224442277438462,
+              0.0065367083532038295,
+              0.00899834745710551,
+              0.010498210303485495,
+              0.01092514760668574,
+              0.010168010081048215,
+              0.008115648440914891,
+              0.004656913400627741,
+              -0.00031934432547126024,
+              -0.006924274023040158,
+              -0.015269024977736972,
+              -0.025464746475219735,
+              -0.03662300300598148,
+              -0.03853001976013187,
+              -0.04965754127502445,
+              -0.04372280311584473,
+              -0.03778803157806396,
+              -0.030929907798767114,
+              -0.024025661468505877,
+              -0.018034667015075667,
+              -0.012031823158264163,
+              -0.006019696712493902,
+              0.0,
+              0.006026455879211426,
+              0.01206306886672974,
+              -0.010398418664932255,
+              -0.026331706047058104,
+              -0.034325020313262934,
+              -0.0400943684577942,
+              -0.04484951782226562,
+              -0.04969167101383209,
+              -0.05570027446746824,
+              -0.06591117729991673,
+              -0.07547996670007706,
+              -0.026537240266799933,
+              -0.02256419587135318,
+              -0.018590804338455183,
+              -0.014617376089096065,
+              -0.010644029617309578,
+              -0.006670631408691414,
+              -0.002697181880474098,
+              0.0012761211991310058,
+              0.005249592423439007,
+              0.00922298479080199,
+              0.013196394681930533
+            ],
+            "roots": [
+              "Main",
+              "Hips"
+            ],
+            "applied_to": "RabbitMotion presentation parent",
+            "method": "Authored common longitudinal parent correction from actual weighted paw stances; circular airborne Hermite reset. Source rig channels, relative joint poses, orientations and positive vertical hop retained; entity coordinates untouched.",
+            "exported_duration": 1.0,
+            "reference_stance_speed_mps": 1.2,
+            "runtime_reference_rate": 1.5
+          },
+          "Run": {
+            "target_stance_speed_mps": 6.8,
+            "duration": 0.2,
+            "segments": [
+              {
+                "group": "fore",
+                "start_phase": 0.5875,
+                "end_phase": 0.8625,
+                "samples": 23
+              },
+              {
+                "group": "hind",
+                "start_phase": 0.875,
+                "end_phase": 1.1875,
+                "samples": 26
+              }
+            ],
+            "offset_range_m": [
+              -0.10375681865308438,
+              0.03392435773729824
+            ],
+            "offsets_m": [
+              0.018196394681930537,
+              0.010917802095413195,
+              0.0036392595767974906,
+              -0.0036392595767975044,
+              -0.010917895555496215,
+              -0.01819647812843324,
+              -0.025475020647048957,
+              -0.032753576517105115,
+              -0.0400321457386017,
+              -0.04731074166297913,
+              -0.054589264154434214,
+              -0.06186785340309142,
+              -0.06914648270606993,
+              -0.0764250319004059,
+              -0.08370373463630679,
+              -0.09098259091377262,
+              -0.09716422300571871,
+              -0.10125260585977235,
+              -0.10339953817565406,
+              -0.10375681865308438,
+              -0.10247624599178384,
+              -0.09970961889147296,
+              -0.09560873605187228,
+              -0.09032539617270233,
+              -0.08401139795368365,
+              -0.07681854009453673,
+              -0.06889862129498214,
+              -0.0604034402547404,
+              -0.051484795673532036,
+              -0.04229448625107757,
+              -0.03298431068709755,
+              -0.02370606768131249,
+              -0.014611555933442918,
+              -0.005852574143209402,
+              0.0024190789896675682,
+              0.010051604765467452,
+              0.016893204484469723,
+              0.022792079446953842,
+              0.027596430953199275,
+              0.031154460303485516,
+              0.03331436879809201,
+              0.03392435773729824,
+              0.03283262842138367,
+              0.029887382150627764,
+              0.024936820225310012,
+              0.017829143945709863,
+              0.008412554612106798,
+              -0.0034647464752197155,
+              -0.016623003005981463,
+              -0.020530019760131857,
+              -0.03365754127502443,
+              -0.029722803115844715,
+              -0.025788031578063947,
+              -0.020929907798767106,
+              -0.01602566146850587,
+              -0.01203466701507569,
+              -0.00803182315826416,
+              -0.0040196967124939,
+              0.0,
+              0.004026455879211424,
+              0.008063068866729736,
+              -0.016398418664932246,
+              -0.03433170604705811,
+              -0.04432502031326294,
+              -0.05209436845779418,
+              -0.058849517822265635,
+              -0.0656916710138321,
+              -0.07370027446746825,
+              -0.08591117729991675,
+              -0.09747996670007705,
+              -0.0015372402667999385,
+              0.00043580412864684115,
+              0.00240919566154478,
+              0.004382623910903896,
+              0.00635597038269041,
+              0.008329368591308586,
+              0.010302818119525886,
+              0.012276121199131,
+              0.014249592423439015,
+              0.016222984790801996,
+              0.018196394681930537
+            ],
+            "roots": [
+              "Main",
+              "Hips"
+            ],
+            "applied_to": "RabbitMotion presentation parent",
+            "method": "Authored common longitudinal parent correction from actual weighted paw stances; circular airborne Hermite reset. Source rig channels, relative joint poses, orientations and positive vertical hop retained; entity coordinates untouched.",
+            "exported_duration": 0.6666666666666666,
+            "reference_stance_speed_mps": 2.0400000000000005,
+            "runtime_reference_rate": 3.333333333333333
+          }
+        },
+        "triangles": {
+          "Rabbit": 6944,
+          "Fur": 940
+        },
+        "clips": {
+          "Idle": {
+            "source_action": "Sitting.000",
+            "duration": 22.916666666666668,
+            "loop": true,
+            "origin": "Baked evaluated CC0 source constraints; no UO choreography recovered"
+          },
+          "Run": {
+            "source_action": "Running",
+            "duration": 0.6666666666666666,
+            "loop": true,
+            "origin": "Authored common-root stance adaptation of the retained licensed Running pose cycle. Original key density/duration retained; physical cycle speed comes from declared runtime playback rate, not destructive export retiming. No relative joint retargeting or recovered UO choreography"
+          },
+          "Death": {
+            "source_action": "Dying.000",
+            "duration": 0.8333333333333334,
+            "loop": false,
+            "origin": "Baked evaluated CC0 source constraints; no UO choreography recovered"
+          },
+          "Guarding": {
+            "source_action": "Guarding",
+            "duration": 16.666666666666668,
+            "loop": true,
+            "origin": "Baked evaluated CC0 source constraints; no UO choreography recovered"
+          },
+          "Jump": {
+            "source_action": "Jump",
+            "duration": 1.0,
+            "loop": false,
+            "origin": "Baked evaluated CC0 source constraints; no UO choreography recovered"
+          },
+          "Walk": {
+            "duration": 1.0,
+            "loop": true,
+            "source_action": "Running",
+            "origin": "Authored common-root stance adaptation of the retained licensed Running pose cycle. Original key density/duration retained; physical cycle speed comes from declared runtime playback rate, not destructive export retiming. No relative joint retargeting or recovered UO choreography"
+          },
+          "Attack": {
+            "duration": 0.6,
+            "loop": false,
+            "origin": "Authored Attack category on the original CC0 rig; no captured or original UO choreography claim"
+          },
+          "Hit": {
+            "duration": 0.45,
+            "loop": false,
+            "origin": "Authored Hit category on the original CC0 rig; no captured or original UO choreography claim"
+          },
+          "Eat": {
+            "duration": 2.4,
+            "loop": false,
+            "origin": "Authored Eat category on the original CC0 rig; no captured or original UO choreography claim"
+          },
+          "Fidget": {
+            "duration": 2.0,
+            "loop": true,
+            "origin": "Authored Fidget category on the original CC0 rig; no captured or original UO choreography claim"
+          },
+          "Alert": {
+            "duration": 1.2,
+            "loop": false,
+            "origin": "Authored Alert category on the original CC0 rig; no captured or original UO choreography claim"
+          }
+        }
+      }
+    }
+  },
+  "asset_sha256": "ad5bf072996028713b2ad092bd04ff42d90f536bd7dc5bb0ab701c83d59866a4",
+  "runtime_sha256": {
+    "res://Presentation/AnimalPoseLibrary.gd": "5ad64870d2461e5be2a810111883b5bec719f1ad0027438f0c87406872fe23b1",
+    "res://Presentation/CatGroundSupport.gd": "c5524099d6eba4e06d6a5f95767a4985e0e373b86715836f68ce24e574711f5b",
+    "res://Presentation/CorpseModels.gd": "6db8a5c36d5d00461c9761c922858113d0ff99033847372d35cf3145b27924aa",
+    "res://Presentation/CreatureRegistry.gd": "fe7f0289eb38b9cbff3d57279815e1374f66acd128e2ccc7ee5f3e2980b07eee",
+    "res://Presentation/CreatureVisual.gd": "33ccb6389365a05697b22d98e308294200cc92fc5b81b01e89b04d8ebe230944",
+    "res://Presentation/FootContact.gd": "9cf690a6dfe1a6114ef449f91e8b8529d120244102ca85c7d142b445c0586ffe",
+    "res://Presentation/HumanActions.gd": "2587400355c47692133286a2ef63b0a382980e3bed220ce0390c78c34d0556ab",
+    "res://Presentation/HumanAvatar.gd": "b322bfb7ba0c8b73c199eaf7d812e5aeaa6db16e7abbbd863d630acde2961438",
+    "res://Presentation/HumanHue.gd": "297682980166ac5a26f8573db25da3899031ccb35e631b23632d40050c77eff8",
+    "res://Presentation/LegacyAvatar.gd": "75c02a4a3ab0d2e763896405ff6b8270c8f129adb5ccd66a569d95f4e8899f3f",
+    "res://Presentation/MountVisual.gd": "2c7865b3a38930825dcda3ca9155d7c449b6125d6c6b97c9224655db635a7047",
+    "res://Presentation/OstardVisual.gd": "b8a05572f425c0943a9e9c40b2a6a178e51ed4a88215f60fc8c1087011f1eb1f",
+    "res://Presentation/RabbitGroundSupport.gd": "a1e57c2838317b5832bebf3ba3ae79de41490dca5bef7c2644a54d1b9363e65e",
+    "res://Presentation/RabbitMaterial.gd": "f6820f60a171eaddd284468ba268a9d3c88abd0461227cca6b51f2e02ecf3de4",
+    "res://Presentation/RabbitPresentationTests.gd": "278d1e35c18fbbfa0fcd50d6a7e189910cdfe6bce535d22ff74f1b20e5f959d5",
+    "res://Presentation/RabbitSurface.gdshader": "a2c03f515abd694aeba4944f1fb125780bb4b2e81687834339ac953c57eeb146",
+    "res://Presentation/RabbitVisual.gd": "dbdddeb2ae58c7e709fa487bff991f9fa65ba40725e32214686446c485646c84",
+    "res://Presentation/SkinGeometry.gd": "6690454dae7e23f9d4a705afa90f1b6d510dd1263a19930e4f597ee5f36c19aa",
+    "res://Presentation/SourceMountContact.gd": "623317c4621447faee99c9659ac4723696f342fda3576e82a9139d77fa6129e3"
+  },
+  "extracted_map_sha256": {
+    "rabbit_Fur-skin.png": "81bbbddae95938a74bd873491588475a469895f1045e78a0da83ca85b3985c25",
+    "rabbit_rabbit-NORM.png": "000bbb47c2bfc17d8f0839d0bd3c57485389309a971c914ec7177bb0347b428c",
+    "rabbit_rabbot-skinn.png": "96f367bce29f79d1e0ae037440d85c3fd87b7bd003e711964581fe65a04229b0"
+  }
+}

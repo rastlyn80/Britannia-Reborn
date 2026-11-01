@@ -1,0 +1,6 @@
+Rabbit mesh, rig, UVs, albedo/alpha fur, normal map and five original motions: Cestmir Dammer (CDmir), Kelgar, CC0-1.0. Listing collaborator TinyWorlds; ideas Rick Hoppmann and Keppu.
+Source: https://opengameart.org/content/rabbit-0
+License: https://creativecommons.org/publicdomain/zero/1.0/
+Exact download/image hashes and embedded licence: scripts/rabbit-inputs.json and provenance.json.
+Britannia Reborn conversion, refinement, skin normalization, authored categories/common-root gait reconciliation and shaders: GPL-3.0-or-later; root LICENSE.
+No Ultima Online mesh, map, rig or motion is included. Fur is the artist's texture/cards and normal map, not simulated hair.

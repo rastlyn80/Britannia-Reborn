@@ -30,6 +30,8 @@ $env:LOCALAPPDATA = $env:APPDATA
 if ($LASTEXITCODE) { throw 'Asset import failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/CreatureActionRoutingTests.gd
 if ($LASTEXITCODE) {throw 'Native animal/sea/monster action semantics failed'}
+& $godot --headless --path "$root/Viewer" --script res://Presentation/CorpseAttributeTests.gd
+if ($LASTEXITCODE) {throw 'Static corpse custom UV/attribute format preservation failed'}
 if (Test-Path "$root/Viewer/Art/Creatures/Birds/small-bird.glb") {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/BirdMotionTests.gd -- --asset=res://Art/Creatures/Birds/small-bird.glb
   if ($LASTEXITCODE) {throw 'Licensed bird skin, action continuity and static corpse checks failed'}
@@ -57,6 +59,10 @@ if (Test-Path "$root/Viewer/Art/Creatures/Cat/cat.glb") {
 if (Test-Path "$root/Viewer/Art/Creatures/Eagle/eagle.glb") {
   & python -B "$root/scripts/test-eagle-distribution.py"
   if ($LASTEXITCODE) {throw 'Public eagle skin, flight transitions and static corpse distribution failed'}
+}
+if (Test-Path "$root/Viewer/Art/Creatures/Rabbit/rabbit.glb") {
+  & python -B "$root/scripts/test-rabbit-distribution.py"
+  if ($LASTEXITCODE) {throw 'Public rabbit skins, source hop, alpha/normal maps and static corpse distribution failed'}
 }
 foreach ($kind in @('desert','forest','frenzied','ethereal')) {
  if (Test-Path "$root/Viewer/local-art/ostards/$kind-modern.gltf") {

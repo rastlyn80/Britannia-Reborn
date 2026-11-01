@@ -1405,6 +1405,248 @@
       "recipe_sha256": "1540616b76eaae28f82d9c7ae6d528193417174657de574449d02b223fe52c58",
       "source_pin_sha256": "275c8f80b9f295647088851f802dc585bd019fa089e99711bd78da251b00fee8",
       "native_validation": "Passed actual disposable-server/two-client Eagle body5 checks; repeat installed public asset"
+    },
+    {
+      "kind": "rabbit",
+      "family": "rabbits",
+      "profile": "animal",
+      "status": "validated",
+      "surface_kind": "rabbit_pbr",
+      "contact_kind": "rabbit_paws",
+      "head_bone": "Head",
+      "assets": {
+        "modern": "res://Art/Creatures/Rabbit/rabbit.glb"
+      },
+      "bodies": [
+        {
+          "body": 205,
+          "name": "Rabbit / JackRabbit",
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "native_profile": "animal",
+          "native_sources": [
+            {
+              "path": "Projects/UOContent/Mobiles/Animals/Rodents/JackRabbit.cs",
+              "sha256": "e2c07ac0a46636bbc3c0a60ee566903015f0f87c2c09b13eea627b90518119f8"
+            },
+            {
+              "path": "Projects/UOContent/Mobiles/Animals/Rodents/Rabbit.cs",
+              "sha256": "85daf6470d2c10746ba280196f93ac30bbf76d076c8583eabc2120e9817400c0"
+            }
+          ]
+        }
+      ],
+      "source": "https://opengameart.org/content/rabbit-0",
+      "license": "CC0-1.0 donor geometry/rig/maps/five evaluated motions; GPL-3.0-or-later authored conversion, refinement, additional categories, common-root gait adaptation and shaders",
+      "source_interpretation": "Original CDmir rabbit pose/rig and two source skins with actual alpha fur/normal map. Explicit source timing/root adaptations and authored Attack/Hit/Eat/Fidget; no recovered UO choreography.",
+      "partial_hue_interpretation": "Authored fur tint with dark-eye/pink-feature protection; original source alpha and normal maps retained. No recovered UO partial mask.",
+      "stats": {
+        "original": {
+          "bones": 37,
+          "height_m": 0.45,
+          "bind_diagonal_m": 0.95,
+          "clips": {
+            "Idle": {
+              "source_action": "Sitting.000",
+              "duration": 22.916666666666668,
+              "loop": true,
+              "origin": "Baked evaluated CC0 source constraints; no UO choreography recovered"
+            },
+            "Run": {
+              "source_action": "Running",
+              "duration": 0.6666666666666666,
+              "loop": true,
+              "origin": "Authored common-root stance adaptation of the retained licensed Running pose cycle. Original key density/duration retained; physical cycle speed comes from declared runtime playback rate, not destructive export retiming. No relative joint retargeting or recovered UO choreography"
+            },
+            "Death": {
+              "source_action": "Dying.000",
+              "duration": 0.8333333333333334,
+              "loop": false,
+              "origin": "Baked evaluated CC0 source constraints; no UO choreography recovered"
+            },
+            "Guarding": {
+              "source_action": "Guarding",
+              "duration": 16.666666666666668,
+              "loop": true,
+              "origin": "Baked evaluated CC0 source constraints; no UO choreography recovered"
+            },
+            "Jump": {
+              "source_action": "Jump",
+              "duration": 1.0,
+              "loop": false,
+              "origin": "Baked evaluated CC0 source constraints; no UO choreography recovered"
+            },
+            "Walk": {
+              "duration": 1.0,
+              "loop": true,
+              "source_action": "Running",
+              "origin": "Authored common-root stance adaptation of the retained licensed Running pose cycle. Original key density/duration retained; physical cycle speed comes from declared runtime playback rate, not destructive export retiming. No relative joint retargeting or recovered UO choreography"
+            },
+            "Attack": {
+              "duration": 0.6,
+              "loop": false,
+              "origin": "Authored Attack category on the original CC0 rig; no captured or original UO choreography claim"
+            },
+            "Hit": {
+              "duration": 0.45,
+              "loop": false,
+              "origin": "Authored Hit category on the original CC0 rig; no captured or original UO choreography claim"
+            },
+            "Eat": {
+              "duration": 2.4,
+              "loop": false,
+              "origin": "Authored Eat category on the original CC0 rig; no captured or original UO choreography claim"
+            },
+            "Fidget": {
+              "duration": 2.0,
+              "loop": true,
+              "origin": "Authored Fidget category on the original CC0 rig; no captured or original UO choreography claim"
+            },
+            "Alert": {
+              "duration": 1.2,
+              "loop": false,
+              "origin": "Authored Alert category on the original CC0 rig; no captured or original UO choreography claim"
+            }
+          }
+        },
+        "modern": {
+          "bones": 37,
+          "height_m": 0.45,
+          "bind_diagonal_m": 0.95,
+          "clips": {
+            "Idle": {
+              "source_action": "Sitting.000",
+              "duration": 22.916666666666668,
+              "loop": true,
+              "origin": "Baked evaluated CC0 source constraints; no UO choreography recovered"
+            },
+            "Run": {
+              "source_action": "Running",
+              "duration": 0.6666666666666666,
+              "loop": true,
+              "origin": "Authored common-root stance adaptation of the retained licensed Running pose cycle. Original key density/duration retained; physical cycle speed comes from declared runtime playback rate, not destructive export retiming. No relative joint retargeting or recovered UO choreography"
+            },
+            "Death": {
+              "source_action": "Dying.000",
+              "duration": 0.8333333333333334,
+              "loop": false,
+              "origin": "Baked evaluated CC0 source constraints; no UO choreography recovered"
+            },
+            "Guarding": {
+              "source_action": "Guarding",
+              "duration": 16.666666666666668,
+              "loop": true,
+              "origin": "Baked evaluated CC0 source constraints; no UO choreography recovered"
+            },
+            "Jump": {
+              "source_action": "Jump",
+              "duration": 1.0,
+              "loop": false,
+              "origin": "Baked evaluated CC0 source constraints; no UO choreography recovered"
+            },
+            "Walk": {
+              "duration": 1.0,
+              "loop": true,
+              "source_action": "Running",
+              "origin": "Authored common-root stance adaptation of the retained licensed Running pose cycle. Original key density/duration retained; physical cycle speed comes from declared runtime playback rate, not destructive export retiming. No relative joint retargeting or recovered UO choreography"
+            },
+            "Attack": {
+              "duration": 0.6,
+              "loop": false,
+              "origin": "Authored Attack category on the original CC0 rig; no captured or original UO choreography claim"
+            },
+            "Hit": {
+              "duration": 0.45,
+              "loop": false,
+              "origin": "Authored Hit category on the original CC0 rig; no captured or original UO choreography claim"
+            },
+            "Eat": {
+              "duration": 2.4,
+              "loop": false,
+              "origin": "Authored Eat category on the original CC0 rig; no captured or original UO choreography claim"
+            },
+            "Fidget": {
+              "duration": 2.0,
+              "loop": true,
+              "origin": "Authored Fidget category on the original CC0 rig; no captured or original UO choreography claim"
+            },
+            "Alert": {
+              "duration": 1.2,
+              "loop": false,
+              "origin": "Authored Alert category on the original CC0 rig; no captured or original UO choreography claim"
+            }
+          }
+        }
+      },
+      "authored_replacements": {
+        "Idle": "Baked evaluated CC0 source constraints; no UO choreography recovered",
+        "Run": "Authored common-root stance adaptation of the retained licensed Running pose cycle. Original key density/duration retained; physical cycle speed comes from declared runtime playback rate, not destructive export retiming. No relative joint retargeting or recovered UO choreography",
+        "Death": "Baked evaluated CC0 source constraints; no UO choreography recovered",
+        "Guarding": "Baked evaluated CC0 source constraints; no UO choreography recovered",
+        "Jump": "Baked evaluated CC0 source constraints; no UO choreography recovered",
+        "Walk": "Authored common-root stance adaptation of the retained licensed Running pose cycle. Original key density/duration retained; physical cycle speed comes from declared runtime playback rate, not destructive export retiming. No relative joint retargeting or recovered UO choreography",
+        "Attack": "Authored Attack category on the original CC0 rig; no captured or original UO choreography claim",
+        "Hit": "Authored Hit category on the original CC0 rig; no captured or original UO choreography claim",
+        "Eat": "Authored Eat category on the original CC0 rig; no captured or original UO choreography claim",
+        "Fidget": "Authored Fidget category on the original CC0 rig; no captured or original UO choreography claim",
+        "Alert": "Authored Alert category on the original CC0 rig; no captured or original UO choreography claim"
+      },
+      "loop_categories": [
+        "Idle",
+        "Run",
+        "Guarding",
+        "Walk",
+        "Fidget"
+      ],
+      "camera_height": 0.4,
+      "pick_bounds": {
+        "position": [
+          -0.17255998611450202,
+          -0.01023873895406723,
+          -0.411947349309921
+        ],
+        "size": [
+          0.555356879234314,
+          0.566311140060425,
+          0.832599360942841
+        ]
+      },
+      "nameplate_tips": [
+        {
+          "bone": "Ear_L.001",
+          "local_tip": [
+            0.0,
+            0.7569462060928345,
+            0.0
+          ]
+        },
+        {
+          "bone": "Ear_R.001",
+          "local_tip": [
+            0.0,
+            0.7569462060928345,
+            0.0
+          ]
+        }
+      ],
+      "locomotion": {
+        "run_threshold_mps": 3.6,
+        "walk_reference_mps": 1.2,
+        "run_reference_mps": 2.0400000000000005,
+        "rate_min": 0.15,
+        "rate_max": 4.0
+      },
+      "native_gait_expectations": {
+        "walk": "Walk",
+        "run": "Run"
+      },
+      "recipe_sha256": "06980a0aaf87d681c2e3aeeada2ae03408708768722d5876287a3c4501dfe49e",
+      "gait_recipe_sha256": "4ea3baebc6541b32d502b7de504af46a0c18b5ea926ba642837b83ba53dc99dd",
+      "source_pin_sha256": "7fe3a7df72d7085418d76f00f6dc46d7b9b6a5b02a5093b7ba8ec4596eb503c3",
+      "native_validation": "Actual isolated two-client JackRabbit and Rabbit constructors, hues/movement/actions/hurt/death and static corpse; repeat on installed public route"
     }
   ]
 }

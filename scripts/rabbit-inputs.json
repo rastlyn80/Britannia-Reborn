@@ -1,0 +1,31 @@
+{
+  "source": "https://opengameart.org/content/rabbit-0",
+  "download": "https://opengameart.org/sites/default/files/rabbit.blend",
+  "author": "Čestmír Dammer (CDmir)",
+  "project": "Kelgar",
+  "collaborator": "TinyWorlds",
+  "ideas": [
+    "Rick Hoppmann",
+    "Keppu"
+  ],
+  "license": "CC0-1.0",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "bytes": 5996916,
+  "sha256": "bb6deef1ee91b21380355138374cae87946451ce864502b1af68eb60f4750843",
+  "embedded_license": "Model: Rabbit\nAuthor: Čestmír Dammer\nProject: www.kelgar.org\nIdea by Rick Hoppmann & Keppu\nLicense: CC0 - Public Domain",
+  "packed_images": [
+    {
+      "name": "Fur-skin",
+      "sha256": "81bbbddae95938a74bd873491588475a469895f1045e78a0da83ca85b3985c25"
+    },
+    {
+      "name": "rabbit-NORM",
+      "sha256": "000bbb47c2bfc17d8f0839d0bd3c57485389309a971c914ec7177bb0347b428c"
+    },
+    {
+      "name": "rabbot-skinn",
+      "sha256": "96f367bce29f79d1e0ae037440d85c3fd87b7bd003e711964581fe65a04229b0"
+    }
+  ],
+  "scope": "Independent source geometry, rig, textures and original animations. Authored conversion/refinement/additional actions are separately declared; no original UO choreography recovered."
+}

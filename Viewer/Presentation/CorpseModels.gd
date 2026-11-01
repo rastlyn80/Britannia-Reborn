@@ -98,7 +98,14 @@ static func freeze(actor: Node3D) -> Node3D:
 				if not position.is_finite():push_error("Non-finite corpse geometry");result.free();return null
 				bounds=AABB(position,Vector3.ZERO) if first else bounds.expand(position);first=false
 			vertices_count+=points.size()
-			mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES if source.mesh is PrimitiveMesh else source.mesh.surface_get_primitive_type(surface),arrays)
+			# Extra UV/color channels may contain floats, not default RGBA8 bytes.
+			# Keep their source formats when removing only the rig/skin arrays.
+			var custom_flags:=0
+			if source.mesh is ArrayMesh:
+				var format: int=source.mesh.surface_get_format(surface)
+				for shift in [Mesh.ARRAY_FORMAT_CUSTOM0_SHIFT,Mesh.ARRAY_FORMAT_CUSTOM1_SHIFT,Mesh.ARRAY_FORMAT_CUSTOM2_SHIFT,Mesh.ARRAY_FORMAT_CUSTOM3_SHIFT]:custom_flags|=format&(Mesh.ARRAY_FORMAT_CUSTOM_MASK<<shift)
+			mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES if source.mesh is PrimitiveMesh else source.mesh.surface_get_primitive_type(surface),arrays,[],{},custom_flags)
+			if mesh.get_surface_count()!=surface+1:push_error("Failed to freeze corpse surface with its source attribute formats");result.free();return null
 			var material:=source.get_active_material(surface)
 			# Explicitly animated procedural surfaces retain this exact phase even
 			# if their living actor continues or subsequently changes appearance.
