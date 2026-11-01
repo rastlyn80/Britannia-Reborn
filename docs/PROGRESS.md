@@ -1239,6 +1239,13 @@ Saved graceful restart loaded 297 items and 3 mobiles. Population remains idempo
 
 # Progress — 25 October 2026
 
+## 1 November 2026 - Real skill waits while targeting, your pets in their own colour, lighter dungeons
+
+- Skill timers (owner: taming that angered the beast still showed the full delay): ModernUO parks a placeholder (Animal Taming 30 s) while a skill's target cursor is open and resets it to 0 the moment the target ends (anger, failure) or keeps it for a taming in progress. The quickbar now shows "target" with a soft pulse while you aim, no countdown, then the server's real wait. Live: taming then targeting reported 29.9 s then 0, the bar showed aiming then 0.0 s. Cooldowns.aim, ActionRunner, QuickbarSlot.
+- Your pets (owner request): a creature's status (0x11) says whether you may rename it, which ModernUO allows only its owner (BaseCreature.CanBeRenamedBy). GameSession.owned_pets / pets_changed; your pets get a teal outline and a teal nameplate with "your pet"; nearby creatures are re-asked every 15 s and after "It seems to accept you as master" so a fresh tame shows at once.
+- Dungeons (owner: too dark): without a light the ambient is 0.6 and a soft 11 m glow surrounds you (was 0.28 / 6 m), black fog closes at 50 m; a lit torch (17 m, warm, shadows) and Night Sight (ambient 1.1) still clearly add.
+- Evidence: QuickbarTests 61/0 (3 new), GameTests 19/0 (2 new), UndergroundTests 22/0; dungeon renders without light and with a torch; scripts/verify.ps1 passed. Gap: pet colouring not seen live yet (the test character owns no pet).
+
 ## 1 November 2026 - Torches and Night Sight light your way
 
 - Owner: in a dungeon a torch made no difference. Underground the client no longer lights you by default: without a light source only a faint cool glow (6 m) and a dim ambient remain; a lit torch, lantern or candle in hand (tiledata light-source flag 0x800000, which unlit ones lack) gives the warm 17 m flickering light with shadows, also outside as night deepens; Night Sight (the server's personal light, 26 x Magery/100) brightens the whole cave in an even cool light. LightingRig.set_underground(amount, carrier, carried), World.carrying_light().

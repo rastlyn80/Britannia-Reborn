@@ -11,6 +11,7 @@ var camera: Camera3D
 # Nameplates (labels with meta "serial") take the mobile's notoriety colour.
 var game: Node
 var drawn: Dictionary = {}
+const PET_COLOUR := Color("5fe3c8")
 
 static func track(label: Label3D) -> void:
 	label.add_to_group(GROUP)
@@ -35,6 +36,8 @@ func _caption() -> Label:
 func _colour(label: Label3D) -> Color:
 	if game == null or not label.has_meta("serial"): return label.modulate
 	var serial := int(label.get_meta("serial"))
+	# Your own pets in their own colour (the original client's way to tell them apart).
+	if game.get("owned_pets") != null and game.owned_pets.has(serial): return PET_COLOUR
 	var mobile: Dictionary = game.player if serial == int(game.player.get("serial",0)) else game.entities.get(serial,{})
 	var notoriety := int(mobile.get("notoriety",0))
 	return Color(preload("res://Network/TargetFrame.gd").NOTORIETY[notoriety][0]) if preload("res://Network/TargetFrame.gd").NOTORIETY.has(notoriety) else Look.IVORY

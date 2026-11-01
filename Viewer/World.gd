@@ -313,7 +313,9 @@ func _ready() -> void:
 	game.vendor_received.connect(func(serial: int,_stock: Array):
 		if avatars.has(serial): avatars[serial].get_node("Nameplate").text = game.entity_names.get(serial,"Vendor")+" · shopkeeper")
 	game.entity_name_received.connect(func(serial: int, name_text: String):
-		if avatars.has(serial): avatars[serial].get_node("Nameplate").text = name_text)
+		if avatars.has(serial): avatars[serial].get_node("Nameplate").text = name_text+("  ·  your pet" if game.owned_pets.has(serial) else ""))
+	game.pets_changed.connect(func(serial: int):
+		if avatars.has(serial): avatars[serial].get_node("Nameplate").text = str(game.entity_names.get(serial,""))+("  ·  your pet" if game.owned_pets.has(serial) else ""))
 	game.position_reset.connect(func(position: Dictionary):
 		var at := entity_point(position.x,position.y,position.z)
 		if tracks.has(position.serial): tracks[position.serial].reset(at)
@@ -364,8 +366,33 @@ func carrying_light() -> bool:
 		if not item.is_empty() and int(data.get(str(int(item.get("id",0))),{}).get("flags",0)) & 0x800000: return true
 	return false
 
+# Your pets carry a soft teal outline (their nameplates take the same colour),
+# reapplied when their model is rebuilt.
+static var pet_outline: ShaderMaterial
+var pet_clock := 0.0
+func _mark_pets(delta: float) -> void:
+	pet_clock -= delta
+	if pet_clock > 0.0: return
+	pet_clock = 0.5
+	if pet_outline == null:
+		pet_outline = ShaderMaterial.new()
+		pet_outline.shader = preload("res://Presentation/Grabbable.gdshader")
+		pet_outline.set_shader_parameter("glow",Color("5fe3c8"))
+		pet_outline.set_shader_parameter("strength",0.9)
+	for serial in avatars:
+		var mine: bool = game.owned_pets.has(serial)
+		var meshes: Array = avatars[serial].visual_root.find_children("*","GeometryInstance3D",true,false)
+		if mine and int(avatars[serial].get_meta("pet_meshes",-1)) == meshes.size(): continue
+		if not mine and not avatars[serial].has_meta("pet_meshes"): continue
+		for mesh: GeometryInstance3D in meshes:
+			if mine and mesh.material_overlay == null: mesh.material_overlay = pet_outline
+			elif not mine and mesh.material_overlay == pet_outline: mesh.material_overlay = null
+		if mine: avatars[serial].set_meta("pet_meshes",meshes.size())
+		else: avatars[serial].remove_meta("pet_meshes")
+
 func _process(delta: float) -> void:
 	if not world_ready: return
+	if game.phase == "world": _mark_pets(delta)
 	if city_stream and game.phase == "world":
 		city_stream.follow(Vector2i(game.player.x,game.player.y))
 		if underground and not underground.folder.is_empty() and avatars.has(player_serial) and lighting_rig:

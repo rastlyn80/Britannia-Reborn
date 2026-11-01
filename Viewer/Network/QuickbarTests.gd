@@ -233,5 +233,18 @@ func run() -> void:
 	hands.free()
 	real.free()
 	DirAccess.remove_absolute(bar.profile_path)
+	# A skill waiting on its target cursor shows no countdown; the server's
+	# real wait for the outcome replaces ModernUO's placeholder (taming 30 s).
+	var aiming_waits = preload("res://Network/Cooldowns.gd").new()
+	aiming_waits.start("skill",30.0)
+	aiming_waits.server("skill",29900)
+	aiming_waits.aim("skill",true)
+	check(aiming_waits.aiming.has("skill"),"a skill waiting for its target is marked as aiming, not counting down")
+	aiming_waits.aim("skill",false)
+	aiming_waits.server("skill",0)
+	check(not aiming_waits.aiming.has("skill") and aiming_waits.remaining("skill") == 0.0,"an angered beast ends the attempt: the skill is ready at once")
+	aiming_waits.start("skill",30.0)
+	aiming_waits.server("skill",4000)
+	check(aiming_waits.remaining("skill") <= 4.0 and aiming_waits.remaining("skill") > 3.0,"a taming in progress shows the server's real remaining time")
 	print("QUICKBAR TESTS: %d checks / %d failures" % [checks,failures])
 	quit(0 if failures == 0 else 1)

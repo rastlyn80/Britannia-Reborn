@@ -252,7 +252,7 @@ func _process(delta: float) -> void:
  if torch and torch.visible:
   torch_clock += delta
   if carrying_light: torch.light_energy = light_need()*(2.6+0.12*sin(torch_clock*9.3)+0.08*sin(torch_clock*23.1+1.7))
-  else: torch.light_energy = underground*0.7
+  else: torch.light_energy = underground*1.6
  _blend()
  _animate_precipitation(delta)
 
@@ -292,13 +292,13 @@ func _blend() -> void:
  var sight := night_sight()
  sun.light_energy = float(outdoor.sun)*(1.0-u)
  # Underground: dark without help, much clearer with Night Sight.
- environment.ambient_light_energy = lerpf(float(outdoor.ambient),lerpf(0.28,0.85,sight),u)
+ environment.ambient_light_energy = lerpf(float(outdoor.ambient),lerpf(0.6,1.1,sight),u)
  environment.ambient_light_sky_contribution = lerpf(0.65,0.0,u)
  environment.ambient_light_color = Color("c6d4dc").lerp(Color("5c6679").lerp(Color("8fa0bc"),sight),u)
  environment.fog_light_color = (outdoor.fog as Color).lerp(Color.BLACK,u)
  environment.fog_density = lerpf(float(outdoor.density),1.0,u)
  environment.fog_depth_begin = lerpf(35.0,9.0,u)
- environment.fog_depth_end = lerpf(420.0,lerpf(40.0,64.0,maxf(sight,0.5 if carrying_light else 0.0)),u)
+ environment.fog_depth_end = lerpf(420.0,lerpf(50.0,64.0,maxf(sight,0.5 if carrying_light else 0.0)),u)
  environment.fog_depth_curve = lerpf(1.25,1.1,u)
  environment.fog_aerial_perspective = lerpf(0.8,0.0,u)
  environment.fog_sky_affect = lerpf(0.45,1.0,u)
@@ -336,7 +336,7 @@ func set_underground(amount: float, carrier: Vector3, carried := false) -> void:
  # A lit torch: warm, far-reaching, casting shadows. Otherwise underground,
  # only a faint cool glow so you are not blind.
  torch.light_color = Color("ffb870") if carrying_light else Color("9fb0c8")
- torch.omni_range = 17.0 if carrying_light else 6.0
+ torch.omni_range = 17.0 if carrying_light else 11.0
  torch.shadow_enabled = carrying_light
  # Above and behind the shoulder, so the character's own shadow falls ahead.
  torch.global_position = carrier+Vector3(0.0,2.4,0.0)

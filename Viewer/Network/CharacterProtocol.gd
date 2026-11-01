@@ -26,7 +26,9 @@ const LOCKS := ["up","down","locked"]
 static func status(p: PackedByteArray) -> Dictionary:
 	if p.size() < 43: return {}
 	var version := int(p[42])
-	var result := {"serial":Login.read_be(p,3,4),"name":_latin(p,7,30),"hits":Login.read_be(p,37,2),"hits_max":Login.read_be(p,39,2),"version":version}
+	# Byte 41: the beholder may rename it, which ModernUO allows only a
+	# creature's owner (BaseCreature.CanBeRenamedBy: ControlMaster).
+	var result := {"serial":Login.read_be(p,3,4),"name":_latin(p,7,30),"hits":Login.read_be(p,37,2),"hits_max":Login.read_be(p,39,2),"version":version,"renamable":p[41] != 0}
 	if version == 0 or p.size() < 66: return result
 	result.merge({"female":p[43] != 0,"str":Login.read_be(p,44,2),"dex":Login.read_be(p,46,2),"int":Login.read_be(p,48,2),
 		"stam":Login.read_be(p,50,2),"stam_max":Login.read_be(p,52,2),"mana":Login.read_be(p,54,2),"mana_max":Login.read_be(p,56,2),

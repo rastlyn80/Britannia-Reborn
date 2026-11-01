@@ -56,6 +56,22 @@ func _initialize() -> void:
 	check(game.entities[9].x == 1604 and game.entities[9].y == 1593,"remote movement replication")
 	game.feed(PackedByteArray([0x1d,0,0,0,9]))
 	check(not game.entities.has(9),"remote entity removal")
+	# Your own pets: the compact status (0x11) says the beholder may rename it,
+	# which ModernUO allows only the owner.
+	var pet_status := func(serial: int, renamable: bool) -> PackedByteArray:
+		var packet := PackedByteArray([0x11,0,43])
+		packet.append_array(Login.uint_be(serial,4))
+		var name := "a horse".to_ascii_buffer()
+		name.resize(30)
+		packet.append_array(name)
+		packet.append_array(PackedByteArray([0,100,0,100,1 if renamable else 0,0]))
+		return packet
+	var changes := []
+	game.pets_changed.connect(func(serial: int): changes.append(serial))
+	game.feed(pet_status.call(0x2001,true))
+	check(game.owned_pets.has(0x2001) and changes == [0x2001],"a creature you own is recognised from its status")
+	game.feed(pet_status.call(0x2001,false))
+	check(not game.owned_pets.has(0x2001) and changes.size() == 2,"released or transferred, it is no longer shown as yours")
 	game.feed(PackedByteArray([0xa9,0,2]))
 	check(failures_seen.size() == 1,"malformed variable framing rejection")
 	game.queue_free()

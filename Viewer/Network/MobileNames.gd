@@ -13,9 +13,16 @@ var session: Node
 var asked := {}
 var waiting: Array = []
 var next_scan := 0
+# Creatures nearby are asked again every so often: ownership changes (taming,
+# releasing, transfers) carry no packet of their own.
+const PET_RECHECK_MS := 15000
+var next_pets := 0
+var rechecks := {}
 
 func configure(game: Node) -> void:
 	session = game
+	# A creature tamed while already in view: ask again, so it shows as yours.
+	session.message_received.connect(func(text: String): if "accept you as master" in text.to_lower(): next_pets = 0)
 	session.entity_changed.connect(func(serial: int, _position: Dictionary):
 		if serial != int(session.player.get("serial",0)) and not asked.has(serial) and not session.entity_names.has(serial):
 			asked[serial] = {"tries":0,"next":0}
@@ -34,6 +41,18 @@ func _process(_delta: float) -> void:
 	if session == null or session.phase != "world": return
 	var sent := 0
 	var now := Time.get_ticks_msec()
+	if now >= next_pets:
+		next_pets = now+PET_RECHECK_MS
+		for serial in session.entities:
+			var mobile: Dictionary = session.entities[serial]
+			if int(mobile.get("body",0)) in [0x190,0x191,0x192,0x193]: continue
+			if maxi(absi(int(mobile.x)-int(session.player.x)),absi(int(mobile.y)-int(session.player.y))) <= 12: rechecks[serial] = true
+	while not rechecks.is_empty() and sent < PER_FRAME:
+		var serial: int = rechecks.keys()[0]
+		rechecks.erase(serial)
+		if session.entities.has(serial):
+			session.send(query(serial))
+			sent += 1
 	while not waiting.is_empty() and sent < PER_FRAME:
 		var serial: int = waiting.pop_front()
 		if session.entities.has(serial) and not session.entity_names.has(serial) and asked.has(serial):

@@ -125,12 +125,19 @@ func _draw() -> void:
 # While the slot's kind is waiting, redraw every frame; flash when ready.
 func _process(_delta: float) -> void:
 	if cool_kind == "" or bar == null or bar.runner == null: return
-	var cooling: bool = bar.runner.cooldowns.remaining(cool_kind) > 0.0
+	var cooling: bool = bar.runner.cooldowns.remaining(cool_kind) > 0.0 or bar.runner.cooldowns.aiming.has(cool_kind)
 	if cooling or was_cooling: queue_redraw()
 	if was_cooling and not cooling: bar.used_until["%d/%s/%d" % [row,layer,index]] = Time.get_ticks_msec()+300
 	was_cooling = cooling
 
 func _draw_cooldown() -> void:
+	# Waiting for you to choose a target: a soft pulse, no countdown.
+	if bar.runner.cooldowns.aiming.has(cool_kind):
+		var pulse := 0.5+0.5*sin(Time.get_ticks_msec()/180.0)
+		draw_rect(Rect2(Vector2(1,1),size-Vector2(2,2)),Color(0.02,0.03,0.05,0.35))
+		draw_rect(Rect2(Vector2(2,2),size-Vector2(4,4)),Color(0.56,0.76,1.0,0.35+0.4*pulse),false,2.0)
+		draw_string(Look.ui_font(700),Vector2(0,size.y/2+5),"target",HORIZONTAL_ALIGNMENT_CENTER,size.x,12,Look.IVORY)
+		return
 	var share: float = bar.runner.cooldowns.fraction(cool_kind)
 	if share <= 0.0: return
 	# A dark sweep over the part of the wait still to go, clockwise from the top.

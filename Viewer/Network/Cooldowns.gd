@@ -19,6 +19,16 @@ const LABELS := {"skill":"Skills","spell":"Spells","bandage":"Bandages","heal_po
 const TOO_SOON := {500118:["skill",2.0],502644:["spell",1.0],500119:["skill",2.0],500235:["heal_potion",2.0]}
 var timers := {}
 var labels: RefCounted
+# Kinds waiting on a target cursor (owner: the bar showed a skill's full delay
+# while ModernUO only parks a placeholder, e.g. Animal Taming's 30 s, until the
+# target is chosen). No countdown is shown meanwhile; the server's real wait
+# for the outcome follows (0 when the beast is angered, the taming time while
+# it tames).
+var aiming := {}
+
+func aim(kind: String, waiting: bool) -> void:
+	if waiting and kind != "": aiming[kind] = true
+	else: aiming.erase(kind)
 
 static func kind_of(step: Dictionary) -> String:
 	match str(step.get("action","")):

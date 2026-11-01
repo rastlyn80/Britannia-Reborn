@@ -251,9 +251,12 @@ func _step(step: Dictionary, slot_aim: String) -> float:
 			last_skill = skill
 			last_skill_name = option
 			cooldowns.start("skill",Cooldowns.skill_delay(option))
+			skill_used_at = Time.get_ticks_msec()
 		"Last Skill":
 			if last_skill < 0 or not session.use_skill(last_skill): feedback.emit("No skill used yet.")
-			else: cooldowns.start("skill",Cooldowns.skill_delay(last_skill_name))
+			else:
+				cooldowns.start("skill",Cooldowns.skill_delay(last_skill_name))
+				skill_used_at = Time.get_ticks_msec()
 		"Cast Spell":
 			var spell := Catalog.spell(option)
 			var ready := availability([step])
@@ -389,7 +392,11 @@ static func target_entity(game: Node, serial: int) -> bool:
 	if serial != int(game.player.get("serial",0)): last_target = serial
 	return true
 
+var skill_used_at := -100000
 func _target_changed(active: bool) -> void:
+	# A skill that asks for a target has no real wait until one is chosen.
+	if active and Time.get_ticks_msec()-skill_used_at < 2000: cooldowns.aim("skill",true)
+	elif not active: cooldowns.aim("skill",false)
 	if not active or aim.is_empty(): return
 	var wanted: Dictionary = aim
 	aim = {}

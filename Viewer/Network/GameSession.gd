@@ -84,6 +84,9 @@ signal environment_changed(state: Dictionary)
 # ModernUO's real wait for a kind of action (our ActionTimers extension):
 # milliseconds left, 0 ready, -1 held until further notice.
 signal action_wait(kind: String, milliseconds: int)
+# Creatures you own (tamed, bought, summoned), from their status packets.
+signal pets_changed(serial: int)
+var owned_pets := {}
 # Developer travel (PreviewTravel on our server): ModernUO's Trammel locations,
 # [{category, group, place, x, y, z}], complete when travel_ready is emitted.
 signal travel_ready
@@ -270,6 +273,7 @@ func close() -> void:
 	next_walk = 0
 	unhandled.clear()
 	unhandled_extended.clear()
+	owned_pets.clear()
 	for key in modules: modules[key].reset()
 	ended.emit()
 
@@ -585,6 +589,12 @@ func _handle(p: PackedByteArray) -> void:
 				if not mobile_statistics.has(serial): mobile_statistics[serial] = {}
 				mobile_statistics[serial].merge(Character.status(p),true)
 				if serial == int(player.serial) and int(p[42]) > 0 and p.size() >= 62: gold = Login.read_be(p,58,4)
+				# Your own pets: the server lets only their owner rename them.
+				if serial != int(player.serial):
+					var was := owned_pets.has(serial)
+					if p[41] != 0: owned_pets[serial] = true
+					else: owned_pets.erase(serial)
+					if was != owned_pets.has(serial): pets_changed.emit(serial)
 				if serial == int(player.serial):
 					player_status.merge(Character.status(p),true)
 					status_changed.emit(player_status)
