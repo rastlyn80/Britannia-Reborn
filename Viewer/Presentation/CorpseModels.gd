@@ -99,7 +99,14 @@ static func freeze(actor: Node3D) -> Node3D:
 				bounds=AABB(position,Vector3.ZERO) if first else bounds.expand(position);first=false
 			vertices_count+=points.size()
 			mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES if source.mesh is PrimitiveMesh else source.mesh.surface_get_primitive_type(surface),arrays)
-			mesh.surface_set_material(surface,source.get_active_material(surface))
+			var material:=source.get_active_material(surface)
+			# Explicitly animated procedural surfaces retain this exact phase even
+			# if their living actor continues or subsequently changes appearance.
+			if material is ShaderMaterial and material.get_meta("snapshot_uniform_time",false):
+				var snapshot:=ShaderMaterial.new();snapshot.shader=material.shader
+				for uniform: Dictionary in material.shader.get_shader_uniform_list():snapshot.set_shader_parameter(uniform.name,material.get_shader_parameter(uniform.name))
+				material=snapshot
+			mesh.surface_set_material(surface,material)
 		var frozen:=MeshInstance3D.new();frozen.name=source.name;frozen.mesh=mesh;frozen.transform=local;frozen.cast_shadow=source.cast_shadow;result.add_child(frozen)
 	if first:result.free();return null
 	# Static cadavers sit on their actual deformed lower surface.
@@ -113,4 +120,12 @@ static func freeze(actor: Node3D) -> Node3D:
 static func build(body: int,hue: int=0,worn: Array=[]) -> Node3D:
 	var actor:=posed(body,hue,worn)
 	if actor==null:return null
-	var result:=freeze(actor);actor.free();return result
+	var result:=freeze(actor)
+	actor.get_parent().remove_child(actor)
+	# Release overrides while their MeshInstance still exists. This also avoids
+	# headless-renderer material callbacks during immediate actor destruction.
+	for mesh: MeshInstance3D in actor.find_children("*","MeshInstance3D",true,false):
+		if mesh.mesh==null:continue
+		for surface in mesh.mesh.get_surface_count():mesh.set_surface_override_material(surface,null)
+	actor.free()
+	return result

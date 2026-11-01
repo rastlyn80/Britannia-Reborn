@@ -168,6 +168,272 @@
           0.371237325668335
         ]
       }
+    },
+    {
+      "kind": "water_elemental",
+      "family": "water",
+      "status": "validated",
+      "profile": "monster",
+      "movement_mode": "ground_plane",
+      "surface_kind": "water_pbr",
+      "head_bone": "Head",
+      "assets": {
+        "modern": "res://Art/Creatures/Water/water-elemental.scn"
+      },
+      "bodies": [
+        {
+          "body": 16,
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "name": "Water elemental",
+          "native_profile": "monster",
+          "native_sources": [
+            {
+              "path": "Projects/UOContent/Mobiles/Monsters/Elemental/Magic/WaterElemental.cs",
+              "sha256": "1b8ddef2c255f493bd68a6ac6abe1397913fdd654d3089a50b46e3cf943603b0"
+            }
+          ]
+        }
+      ],
+      "license": "GPL-3.0-or-later; underlying Quaternius base mesh, rig and UAL1 actions CC0-1.0",
+      "source": "https://quaternius.itch.io/universal-base-characters",
+      "source_interpretation": "Authored fluid-vortex replacement using the CC0 Quaternius male upper body/rig and retargeted CC0 UAL1 Standard actions. Not a recovered Third Dawn water elemental or original UO choreography.",
+      "partial_hue_interpretation": "Authored moving foam zones; not a recovered original grey-pixel mask.",
+      "new_action_categories": {
+        "2": "Hit",
+        "5": "Fidget",
+        "14": "Pillage"
+      },
+      "camera_height": 1.7,
+      "pick_bounds": {
+        "position": [
+          -0.823237538337708,
+          -0.0350000001490116,
+          -0.785330653190613
+        ],
+        "size": [
+          1.61103856563568,
+          1.86727702617645,
+          1.67673528194427
+        ]
+      },
+      "stats": {
+        "modern": {
+          "bones": 65,
+          "height_m": 1.82,
+          "clips": {
+            "Attack": {
+              "duration": 0.866666674613953,
+              "loop": false,
+              "origin": "Retargeted Quaternius UAL1 Standard: Punch_Jab",
+              "support_policy": "fluid_base"
+            },
+            "Attack2": {
+              "duration": 1.0,
+              "loop": false,
+              "origin": "Retargeted Quaternius UAL1 Standard: Punch_Cross",
+              "support_policy": "fluid_base"
+            },
+            "Attack3": {
+              "duration": 1.53333330154419,
+              "loop": false,
+              "origin": "Retargeted Quaternius UAL1 Standard: Sword_Attack",
+              "support_policy": "fluid_base"
+            },
+            "Cast": {
+              "duration": 0.5,
+              "loop": false,
+              "origin": "Retargeted Quaternius UAL1 Standard: Spell_Simple_Shoot",
+              "support_policy": "fluid_base"
+            },
+            "Cast2": {
+              "duration": 0.533333361148834,
+              "loop": false,
+              "origin": "Retargeted Quaternius UAL1 Standard: Spell_Simple_Enter",
+              "support_policy": "fluid_base"
+            },
+            "Cast3": {
+              "duration": 0.433333337306976,
+              "loop": false,
+              "origin": "Retargeted Quaternius UAL1 Standard: Spell_Simple_Exit",
+              "support_policy": "fluid_base"
+            },
+            "Death": {
+              "duration": 1.25,
+              "loop": false,
+              "origin": "Authored liquid collapse",
+              "support_policy": "fluid_base"
+            },
+            "Death2": {
+              "duration": 1.25,
+              "loop": false,
+              "origin": "Authored liquid collapse",
+              "support_policy": "fluid_base"
+            },
+            "Fidget": {
+              "duration": 2.93333339691162,
+              "loop": true,
+              "origin": "Retargeted Quaternius UAL1 Standard: Idle_Talking",
+              "support_policy": "fluid_base"
+            },
+            "Hit": {
+              "duration": 0.333333343267441,
+              "loop": false,
+              "origin": "Retargeted Quaternius UAL1 Standard: Hit_Chest",
+              "support_policy": "fluid_base"
+            },
+            "Hit2": {
+              "duration": 0.433333337306976,
+              "loop": false,
+              "origin": "Retargeted Quaternius UAL1 Standard: Hit_Head",
+              "support_policy": "fluid_base"
+            },
+            "Idle": {
+              "duration": 2.5,
+              "loop": true,
+              "origin": "Retargeted Quaternius UAL1 Standard: Idle",
+              "support_policy": "fluid_base"
+            },
+            "Pillage": {
+              "duration": 0.833333313465118,
+              "loop": false,
+              "origin": "Retargeted Quaternius UAL1 Standard: PickUp_Table",
+              "support_policy": "fluid_base"
+            },
+            "Run": {
+              "duration": 0.933333337306976,
+              "loop": true,
+              "origin": "Retargeted Quaternius UAL1 Standard: Jog_Fwd",
+              "support_policy": "fluid_base"
+            },
+            "Walk": {
+              "duration": 1.33333337306976,
+              "loop": true,
+              "origin": "Retargeted Quaternius UAL1 Standard: Walk",
+              "support_policy": "fluid_base"
+            }
+          }
+        },
+        "original": {
+          "bones": 65,
+          "height_m": 1.82,
+          "clips": {
+            "Attack": {
+              "duration": 0.866666674613953,
+              "loop": false,
+              "origin": "Retargeted Quaternius UAL1 Standard: Punch_Jab",
+              "support_policy": "fluid_base"
+            },
+            "Attack2": {
+              "duration": 1.0,
+              "loop": false,
+              "origin": "Retargeted Quaternius UAL1 Standard: Punch_Cross",
+              "support_policy": "fluid_base"
+            },
+            "Attack3": {
+              "duration": 1.53333330154419,
+              "loop": false,
+              "origin": "Retargeted Quaternius UAL1 Standard: Sword_Attack",
+              "support_policy": "fluid_base"
+            },
+            "Cast": {
+              "duration": 0.5,
+              "loop": false,
+              "origin": "Retargeted Quaternius UAL1 Standard: Spell_Simple_Shoot",
+              "support_policy": "fluid_base"
+            },
+            "Cast2": {
+              "duration": 0.533333361148834,
+              "loop": false,
+              "origin": "Retargeted Quaternius UAL1 Standard: Spell_Simple_Enter",
+              "support_policy": "fluid_base"
+            },
+            "Cast3": {
+              "duration": 0.433333337306976,
+              "loop": false,
+              "origin": "Retargeted Quaternius UAL1 Standard: Spell_Simple_Exit",
+              "support_policy": "fluid_base"
+            },
+            "Death": {
+              "duration": 1.25,
+              "loop": false,
+              "origin": "Authored liquid collapse",
+              "support_policy": "fluid_base"
+            },
+            "Death2": {
+              "duration": 1.25,
+              "loop": false,
+              "origin": "Authored liquid collapse",
+              "support_policy": "fluid_base"
+            },
+            "Fidget": {
+              "duration": 2.93333339691162,
+              "loop": true,
+              "origin": "Retargeted Quaternius UAL1 Standard: Idle_Talking",
+              "support_policy": "fluid_base"
+            },
+            "Hit": {
+              "duration": 0.333333343267441,
+              "loop": false,
+              "origin": "Retargeted Quaternius UAL1 Standard: Hit_Chest",
+              "support_policy": "fluid_base"
+            },
+            "Hit2": {
+              "duration": 0.433333337306976,
+              "loop": false,
+              "origin": "Retargeted Quaternius UAL1 Standard: Hit_Head",
+              "support_policy": "fluid_base"
+            },
+            "Idle": {
+              "duration": 2.5,
+              "loop": true,
+              "origin": "Retargeted Quaternius UAL1 Standard: Idle",
+              "support_policy": "fluid_base"
+            },
+            "Pillage": {
+              "duration": 0.833333313465118,
+              "loop": false,
+              "origin": "Retargeted Quaternius UAL1 Standard: PickUp_Table",
+              "support_policy": "fluid_base"
+            },
+            "Run": {
+              "duration": 0.933333337306976,
+              "loop": true,
+              "origin": "Retargeted Quaternius UAL1 Standard: Jog_Fwd",
+              "support_policy": "fluid_base"
+            },
+            "Walk": {
+              "duration": 1.33333337306976,
+              "loop": true,
+              "origin": "Retargeted Quaternius UAL1 Standard: Walk",
+              "support_policy": "fluid_base"
+            }
+          }
+        }
+      },
+      "authored_replacements": {
+        "Attack": "Retargeted Quaternius UAL1 Standard: Punch_Jab",
+        "Attack2": "Retargeted Quaternius UAL1 Standard: Punch_Cross",
+        "Attack3": "Retargeted Quaternius UAL1 Standard: Sword_Attack",
+        "Cast": "Retargeted Quaternius UAL1 Standard: Spell_Simple_Shoot",
+        "Cast2": "Retargeted Quaternius UAL1 Standard: Spell_Simple_Enter",
+        "Cast3": "Retargeted Quaternius UAL1 Standard: Spell_Simple_Exit",
+        "Death": "Authored liquid collapse",
+        "Death2": "Authored liquid collapse",
+        "Fidget": "Retargeted Quaternius UAL1 Standard: Idle_Talking",
+        "Hit": "Retargeted Quaternius UAL1 Standard: Hit_Chest",
+        "Hit2": "Retargeted Quaternius UAL1 Standard: Hit_Head",
+        "Idle": "Retargeted Quaternius UAL1 Standard: Idle",
+        "Pillage": "Retargeted Quaternius UAL1 Standard: PickUp_Table",
+        "Run": "Retargeted Quaternius UAL1 Standard: Jog_Fwd",
+        "Walk": "Retargeted Quaternius UAL1 Standard: Walk"
+      },
+      "category_aliases": {
+        "Death2": "Death; same authored liquid collapse"
+      }
     }
   ]
 }

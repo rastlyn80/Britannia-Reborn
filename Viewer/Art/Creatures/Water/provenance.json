@@ -1,0 +1,165 @@
+{
+  "sources": {
+    "inputs": {
+      "Viewer/Art/Quaternius/Character/Superhero_Male_FullBody.gltf": "96edb76572b387b38cdcbab746034d2534da74c1ba86bcef8d049fff1a40aec2",
+      "Viewer/Art/Quaternius/Character/Superhero_Male_FullBody.bin": "459003f9745853ae562a85506a2b94dd56515c1f37728f9fa3d2ce1a3e4cd92f",
+      "Viewer/Art/Quaternius/Animation/UAL1_Standard.glb": "69591853d817488edaa8fd9bf8fc1d821eaeaf789f8627b3cd23b41c4ed67997"
+    },
+    "recipe": "04914e4b8dcb68a81701d5c8387daba581918a957be2eadb5217b7bd6cd0e1c1",
+    "asset_sha256": "6b0856ae574b5571cbd79cb2682a0904ce1cb59a54da24f51b9e4d29b7e49bd8",
+    "preparation": {
+      "bones": 65,
+      "clips": {
+        "Attack": {
+          "duration": 0.866666674613953,
+          "loop": false,
+          "origin": "Retargeted Quaternius UAL1 Standard: Punch_Jab",
+          "support_policy": "fluid_base"
+        },
+        "Attack2": {
+          "duration": 1.0,
+          "loop": false,
+          "origin": "Retargeted Quaternius UAL1 Standard: Punch_Cross",
+          "support_policy": "fluid_base"
+        },
+        "Attack3": {
+          "duration": 1.53333330154419,
+          "loop": false,
+          "origin": "Retargeted Quaternius UAL1 Standard: Sword_Attack",
+          "support_policy": "fluid_base"
+        },
+        "Cast": {
+          "duration": 0.5,
+          "loop": false,
+          "origin": "Retargeted Quaternius UAL1 Standard: Spell_Simple_Shoot",
+          "support_policy": "fluid_base"
+        },
+        "Cast2": {
+          "duration": 0.533333361148834,
+          "loop": false,
+          "origin": "Retargeted Quaternius UAL1 Standard: Spell_Simple_Enter",
+          "support_policy": "fluid_base"
+        },
+        "Cast3": {
+          "duration": 0.433333337306976,
+          "loop": false,
+          "origin": "Retargeted Quaternius UAL1 Standard: Spell_Simple_Exit",
+          "support_policy": "fluid_base"
+        },
+        "Death": {
+          "duration": 1.25,
+          "loop": false,
+          "origin": "Authored liquid collapse",
+          "support_policy": "fluid_base"
+        },
+        "Death2": {
+          "duration": 1.25,
+          "loop": false,
+          "origin": "Authored liquid collapse",
+          "support_policy": "fluid_base"
+        },
+        "Fidget": {
+          "duration": 2.93333339691162,
+          "loop": true,
+          "origin": "Retargeted Quaternius UAL1 Standard: Idle_Talking",
+          "support_policy": "fluid_base"
+        },
+        "Hit": {
+          "duration": 0.333333343267441,
+          "loop": false,
+          "origin": "Retargeted Quaternius UAL1 Standard: Hit_Chest",
+          "support_policy": "fluid_base"
+        },
+        "Hit2": {
+          "duration": 0.433333337306976,
+          "loop": false,
+          "origin": "Retargeted Quaternius UAL1 Standard: Hit_Head",
+          "support_policy": "fluid_base"
+        },
+        "Idle": {
+          "duration": 2.5,
+          "loop": true,
+          "origin": "Retargeted Quaternius UAL1 Standard: Idle",
+          "support_policy": "fluid_base"
+        },
+        "Pillage": {
+          "duration": 0.833333313465118,
+          "loop": false,
+          "origin": "Retargeted Quaternius UAL1 Standard: PickUp_Table",
+          "support_policy": "fluid_base"
+        },
+        "Run": {
+          "duration": 0.933333337306976,
+          "loop": true,
+          "origin": "Retargeted Quaternius UAL1 Standard: Jog_Fwd",
+          "support_policy": "fluid_base"
+        },
+        "Walk": {
+          "duration": 1.33333337306976,
+          "loop": true,
+          "origin": "Retargeted Quaternius UAL1 Standard: Walk",
+          "support_policy": "fluid_base"
+        }
+      },
+      "discarded_weight": 0.0,
+      "envelope": {
+        "position": [
+          -0.823237538337708,
+          -0.0350000001490116,
+          -0.785330653190613
+        ],
+        "size": [
+          1.61103856563568,
+          1.86727702617645,
+          1.67673528194427
+        ]
+      },
+      "seam_vertices": 80,
+      "triangles": 12428
+    }
+  },
+  "source_packs": [
+    {
+      "pack": "universal-base-characters",
+      "author": "Quaternius",
+      "edition": "Standard",
+      "license": "CC0-1.0",
+      "source": "https://quaternius.itch.io/universal-base-characters",
+      "archiveSha256": "FDBF1804C90DFC1EA03E992BFF7DA2DFD1A79318E13270A660180F9308455F40"
+    },
+    {
+      "pack": "universal-animation-library",
+      "author": "Quaternius",
+      "edition": "Standard",
+      "license": "CC0-1.0",
+      "source": "https://quaternius.itch.io/universal-animation-library",
+      "archiveSha256": "CC73FC4E495B82958207316596317A3F40B9FA38065BDE1027937452DA537724"
+    }
+  ],
+  "license_grants": {
+    "Viewer/Art/Quaternius/universal-animation-library-LICENSE.txt": "6d01f55c6e4c49a2c9963e147e561945ae2c83958c8ca667d90a6bffdbfac061",
+    "Viewer/Art/Quaternius/universal-base-characters-LICENSE.txt": "0f4beaf0fe360a7732e58bbe3dbf60a2422367fbea60cb9ea4add968f383268e"
+  },
+  "presentation_files": {
+    "Viewer/Presentation/AnimalPoseLibrary.gd": "5ad64870d2461e5be2a810111883b5bec719f1ad0027438f0c87406872fe23b1",
+    "Viewer/Presentation/BirdGroundSupport.gd": "8ee4d4723df502a1330178ff1358ae395d7d897b743951cb3bd04987a766d1a9",
+    "Viewer/Presentation/CorpseModels.gd": "5b1bf3c050cdc54664ae53a99554ad072dae4f9a8a63aa12b5b1d8acd1ccd321",
+    "Viewer/Presentation/CreatureRegistry.gd": "d73c93ccc3eef650c251a5bd2292e8765878a5d10b87f646a729bd1b2a38663d",
+    "Viewer/Presentation/CreatureVisual.gd": "874c55b97085b86f502089af60bd630c8c402797914c881788b986e1165dcb39",
+    "Viewer/Presentation/HumanActions.gd": "2587400355c47692133286a2ef63b0a382980e3bed220ce0390c78c34d0556ab",
+    "Viewer/Presentation/HumanAvatar.gd": "b30c94740e828a2d26e96acbf2ae4ea3a78723f0e3f1c71fd56c7a7ff16ddc4c",
+    "Viewer/Presentation/HumanHue.gd": "297682980166ac5a26f8573db25da3899031ccb35e631b23632d40050c77eff8",
+    "Viewer/Presentation/ItemStudio.gd": "dd9430bb5a7197074d903d5ce9bd72bbd4431066f189328e67ecace57d1435be",
+    "Viewer/Presentation/LegacyAvatar.gd": "75c02a4a3ab0d2e763896405ff6b8270c8f129adb5ccd66a569d95f4e8899f3f",
+    "Viewer/Presentation/MountVisual.gd": "2c7865b3a38930825dcda3ca9155d7c449b6125d6c6b97c9224655db635a7047",
+    "Viewer/Presentation/OstardVisual.gd": "b8a05572f425c0943a9e9c40b2a6a178e51ed4a88215f60fc8c1087011f1eb1f",
+    "Viewer/Presentation/PrepareWaterElemental.gd": "04914e4b8dcb68a81701d5c8387daba581918a957be2eadb5217b7bd6cd0e1c1",
+    "Viewer/Presentation/SkinGeometry.gd": "6690454dae7e23f9d4a705afa90f1b6d510dd1263a19930e4f597ee5f36c19aa",
+    "Viewer/Presentation/SourceMountContact.gd": "623317c4621447faee99c9659ac4723696f342fda3576e82a9139d77fa6129e3",
+    "Viewer/Presentation/WaterElementalMaterial.gd": "dd4a3c80187fbf80cb19a32c49caee7d5b0adef2b5db276005c2101f11fd4b95",
+    "Viewer/Presentation/WaterElementalSurface.gdshader": "0112f5fa8945564bd550dd7080974ed54b9accffa11e1fdaf2032b0b27c6fb62",
+    "Viewer/Presentation/WaterElementalTrial.gd": "7a524c1fa4f26131d16753c6917f986db7886f90152a3d6e79102887a4dc9430"
+  },
+  "asset_sha256": "6b0856ae574b5571cbd79cb2682a0904ce1cb59a54da24f51b9e4d29b7e49bd8",
+  "interpretation": "Authored fluid-vortex replacement using the CC0 Quaternius male upper body/rig and retargeted CC0 UAL1 Standard actions. Not a recovered Third Dawn water elemental or original UO choreography."
+}

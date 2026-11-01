@@ -13,12 +13,16 @@ var source_model_basis:=Basis.IDENTITY
 var action_profile:="monster"
 var default_model_scale:=Vector3.ONE
 var death_flashes: Array[MeshInstance3D]=[]
+var water_phase:=0.
 func _init() -> void:asset_folder="creatures"
 func model_resource_path(folder: String,asset_kind: String) -> String:
 	return str(entry.get("assets",{}).get(treatment,super.model_resource_path(folder,asset_kind)))
 func set_hue(value: int) -> void:
 	super.set_hue(value)
 	if model==null:return
+	if treatment=="modern" and entry.get("surface_kind","")=="water_pbr":
+		for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
+			for surface in mesh.mesh.get_surface_count():mesh.set_surface_override_material(surface,preload("res://Presentation/WaterElementalMaterial.gd").build(value,water_phase))
 	if treatment=="modern" and entry.get("surface_kind","")=="feather_pbr":
 		var partial_mask: Texture2D=load(str(entry.partial_hue_mask)) if entry.has("partial_hue_mask") else null
 		for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
@@ -94,8 +98,12 @@ func play_gait(moving: bool,speed: float) -> void:
 	animator.speed_scale=clampf(speed/(5.5 if clip=="Run" else 1.8),.65,1.65) if moving else 1.
 func _process(delta: float) -> void:
 	update_death_effect()
-	if entry.get("surface_kind","")=="feather_pbr":
-		var head:=skeleton.find_bone("head")
+	if entry.get("surface_kind","")=="water_pbr" and (not dead or action_remaining>0.):
+		water_phase+=delta
+		for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
+			for surface in mesh.mesh.get_surface_count():mesh.get_active_material(surface).set_shader_parameter("water_time",water_phase)
+	if entry.get("surface_kind","")=="feather_pbr" or entry.has("head_bone"):
+		var head:=skeleton.find_bone(str(entry.get("head_bone","head")))
 		if head>=0:set_meta("nameplate_height",to_local(skeleton.to_global(skeleton.get_bone_global_pose(head).origin)).y+.08)
 	if action_remaining>0.:
 		action_remaining=maxf(0.,action_remaining-delta)

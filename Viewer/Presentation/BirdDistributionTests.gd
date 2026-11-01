@@ -11,7 +11,7 @@ func run() -> void:
 	registry.load_index()
 	if "--require-isolated" in OS.get_cmdline_user_args():
 		check(not DirAccess.dir_exists_absolute("res://local-art"),"No private/local art is installed")
-		check(registry.entries.size()==1,"Only the distributable bird registry is present")
+		check(registry.entries.values().all(func(record: Dictionary) -> bool:return str(record.assets.modern).begins_with("res://Art/Creatures/")),"Every installed registry entry resolves distributable public artwork")
 	check(registry.supports_body(6),"Public manifest resolves the ordinary bird")
 	var actor:=preload("res://Presentation/HumanAvatar.gd").new();actor.initial_body=6;root.add_child(actor);actor.set_physics_process(false)
 	check(actor.human_visual==null and actor.horse_visual!=null,"Actual avatar initializes directly as the public bird")

@@ -1,3 +1,11 @@
+# Occurrence-first water elemental checkpoint - 1 November 2026
+
+Body 16 has an independently distributable fluid replacement, raw hues, 15 declared categories (two death routes share one collapse), measured support/interaction bounds and a static puddle. Focused 547 GPU / 150 native two-client / 13 clean-distribution checks pass; shared 36-group regression, 163 corpses / 1,518 checks and fresh full verification also pass. [Evidence and limits](WATER_ELEMENTAL.md).
+
+Track separately: 132/279 bounded native bodies tested (47.3%); 2,205/3,000 generic protocol slots connected (73.5%, including substitutes); human 35/35 classic, 28/28 on-foot and 7/7 ordinary-horse groups; wearables 732/1,126. These are coverage measures, not original-choreography or final-art completion.
+
+Next in configured occurrence order: finish Kraken, SeaSerpent/DeepSeaSerpent and Dolphin, including preserved submerged source geometry, correct dimensions, water-safe visual anchoring, genuine native aquatic movement and static corpses. Kraken source/waterline prototypes are saved but unaccepted. Test both native serpent classes even though they share body 150; audit table 145 separately. Then review existing Ettin/Hind action/fidelity gaps and continue ordinary rat/cat/eagle and the full measured/unmeasured queue. Keep water elemental shoreline/water-surface behaviour and native flow-phase handoff as explicit presentation gaps. Preserve concurrent work, production and all source exclusions. Continue through every family; do not mark the overall goal complete.
+
 # Occurrence-first orc action expansion - 1 November 2026
 
 The common orc action review now preserves the original source strike and adds distinct overhead/sweeping strikes, casting and ground-slap/pillaging across four Third Dawn forms. Fifteen clips are authored replacements; the shaman explicitly reuses its recovered Stomp for the ground-slap category. Original meshes, rigs, source clips and local atlases remain intact. The source thighs branch from the spine, so gestures compensate the legs to retain stance; wrists/fingers stay forearm-relative and grip attachments stay in hand space. Optional per-model modern action categories add Hit/Fidget/Pillage without changing other records' existing routes. [Implementation, evidence and fidelity limits](ORC_ACTIONS.md).

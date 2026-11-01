@@ -32,6 +32,10 @@ if (Test-Path "$root/Viewer/Art/Creatures/Birds/small-bird.glb") {
   & python -B "$root/scripts/test-bird-distribution.py"
   if ($LASTEXITCODE) {throw 'Public bird distribution requires private art or has a startup error'}
 }
+if (Test-Path "$root/Viewer/Art/Creatures/Water/water-elemental.scn") {
+  & python -B "$root/scripts/test-water-distribution.py"
+  if ($LASTEXITCODE) {throw 'Public water elemental distribution, actions or static puddle failed'}
+}
 foreach ($kind in @('desert','forest','frenzied','ethereal')) {
  if (Test-Path "$root/Viewer/local-art/ostards/$kind-modern.gltf") {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/OstardTests.gd -- "--kind=$kind"
