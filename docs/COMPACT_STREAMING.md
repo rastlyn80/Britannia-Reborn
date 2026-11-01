@@ -113,7 +113,16 @@ The stamp-based bake rebakes only what each step changes. A step is done when it
 | Britain (1472,1600) | 5.0 MB | 4.0 MB |
 | Covetous mountains (2432,896) | 6.2 MB | about 3.8 MB |
 
-The measured facet total replaces these estimates after the bake.
+**Second full Trammel bake (31 October 22:05 to 1 November 00:33):** with the taller mountains (docs/MOUNTAINS.md) and the invisible entrance blockers. 7,168 districts in 112 windows, two at a time; `FinalizeFacet --prune-models` removed 25,610 unreferenced old models (6.74 GB).
+
+| Part | First bake | Second bake |
+|---|---:|---:|
+| District files and horizon | 7.13 GB | 3.2 GB |
+| Shared model library | 7.3 GB (41,911 entries) | 2.1 GB (24,025 entries) |
+| **Total `prepared-modern`** | **14 GB** | **5.3 GB** |
+
+- **Re-stamping:** Codex edited creature, bird, corpse and water-elemental presentation mid-bake, so 7,104 districts were re-stamped with `--accept-unchanged`. None of those files build terrain, statics or architecture.
+- **Exit codes:** the driver read Windows PowerShell 5.1's empty exit codes as failures. It now takes each process handle and also accepts a window whose log has its completion line.
 
 ## First full Trammel bake (31 October 2026)
 
@@ -141,5 +150,5 @@ All 7,168 districts, the dungeons in the east included, baked with `scripts/bake
 
 ## Status
 
-- Trammel is converted (`outputs/trammel`), baked (`outputs/trammel/prepared-modern`, 14 GB) and its server world is populated (`scripts/populate-trammel.ps1`). The client streams it by default.
+- Trammel is converted (`outputs/trammel`), baked (`outputs/trammel/prepared-modern`, 5.3 GB since 1 November) and its server world is populated (`scripts/populate-trammel.ps1`). The client streams it by default.
 - The earlier Britain and Britain-to-Trinsic caches (old format) are superseded.

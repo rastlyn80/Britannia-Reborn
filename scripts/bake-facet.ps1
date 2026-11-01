@@ -53,6 +53,9 @@ while ($next -lt $windows.Count -or $running.Count -gt 0) {
     # project path contains a space.
     $arguments = "--headless --path `"$root/Viewer`" --script res://Presentation/BakeStreaming.gd -- `"--dataset=$data`" --window=$($w[0]),$($w[1]),$($w[2]),$($w[3]) $($mode -join ' ')"
     $process = Start-Process -FilePath $godot -ArgumentList $arguments -NoNewWindow -PassThru -RedirectStandardInput $noInput -RedirectStandardOutput (Join-Path $logs "$tag.log") -RedirectStandardError (Join-Path $logs "$tag.err")
+    # Windows PowerShell 5.1 reports an empty ExitCode unless the handle is
+    # taken while the process runs.
+    $null = $process.Handle
     $running += ,@($process, $tag)
   }
   Start-Sleep -Seconds 2
@@ -60,7 +63,9 @@ while ($next -lt $windows.Count -or $running.Count -gt 0) {
   foreach ($entry in $running) {
     if ($entry[0].HasExited) {
       $entry[0].WaitForExit()
-      if ($entry[0].ExitCode -ne 0) { $failed += $entry[1]; Write-Output "Window $($entry[1]) FAILED (exit $($entry[0].ExitCode)); see $logs" }
+      # A window that reports no code but logged its completion line succeeded.
+      $completed = Select-String -LiteralPath (Join-Path $logs "$($entry[1]).log") -Pattern 'STREAM BAKE WINDOW:' -Quiet
+      if (($entry[0].ExitCode -ne $null -and $entry[0].ExitCode -ne 0) -or ($entry[0].ExitCode -eq $null -and -not $completed)) { $failed += $entry[1]; Write-Output "Window $($entry[1]) FAILED (exit $($entry[0].ExitCode)); see $logs" }
       else { Write-Output ("Window {0} done ({1}/{2}, {3:N0} min)" -f $entry[1], ($next - $running.Count + 1), $windows.Count, ((Get-Date) - $started).TotalMinutes) }
     } else { $still += ,$entry }
   }

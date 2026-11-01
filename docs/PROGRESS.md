@@ -1229,6 +1229,15 @@ Saved graceful restart loaded 297 items and 3 mobiles. Population remains idempo
 
 # Progress — 25 October 2026
 
+## 1 November 2026 - Second full Trammel bake: 14 GB to 5.3 GB, taller mountains
+
+- Rebaked all 7,168 districts (31 October 22:05 to 1 November 00:33, 112 windows, two at a time) with the compression pass, mountain relief and invisible dungeon-entrance blockers. FinalizeFacet published 448 horizon tiles and pruned 25,610 unreferenced old models (6.74 GB).
+- Size: prepared-modern 5.3 GB (district files and horizon 3.2 GB, library 2.1 GB / 24,025 models), down from 14 GB.
+- 7,104 districts re-stamped with --accept-unchanged: Codex edited creature, bird, corpse and water-elemental presentation mid-bake (none of it builds terrain, statics or architecture).
+- bake-facet.ps1: Windows PowerShell 5.1 returned empty exit codes, so every window was reported FAILED although all logged completion; the driver now takes the process handle and accepts a window whose log has its completion line.
+- Evidence: renders from the published cache of the Covetous range (tall peaks), the Covetous entrance (opening, no placeholder cubes) and Covetous level 1 (walls rising into darkness).
+- Gap: the Trinsic streaming route test was stopped by Claude Code's memory guard before finishing; to be rerun.
+
 ## 31 October 2026 - Distance haze and the compression pass (docs/COMPACT_STREAMING.md)
 
 - Haze (owner: the horizon was too bright and showed low-detail distant geometry): LightingRig depth fog now starts at 35 m and closes by 420 m (was 70-700 m), takes more of the sky's colour (aerial perspective 0.8, sky affect 0.45), uses a darker blue-grey with a soft sun glow, and the horizon sky is less bright. Same depth fog, no extra cost. Before/after renders over Britain: distant flat patches now dissolve into air while the city stays crisp.
