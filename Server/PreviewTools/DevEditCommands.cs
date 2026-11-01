@@ -165,8 +165,14 @@ public static class DevEditCommands
         }
         var now = Core.Now;
         Result result;
+        // Server-only changes can be undone with "revert" (DevEditUndo).
+        var undoable = verb is "pet" or "give" or "stat" or "skill" or "kit";
+        var before = undoable ? DevEditUndo.Before(mobile, request) : null;
         switch (verb)
         {
+            case "revert" when a.Length == 3 && Parse(a[2], out var reverted):
+                result = DevEditUndo.Revert(mobile, reverted);
+                break;
             case "set" when a.Length == 4 || a.Length == 5:
                 {
                     var state = a.Length == 5 ? a[4] : "";
@@ -304,6 +310,10 @@ public static class DevEditCommands
         {
             Reply(mobile, $"reject|{request}|{result.Code}|{result.Detail}");
             return;
+        }
+        if (before != null)
+        {
+            DevEditUndo.After(mobile, before);
         }
         if (result.Operation is not { } operation)
         {

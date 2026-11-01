@@ -241,6 +241,13 @@ func brush(x: int, y: int, radius: int, delta: int, surface: String, sender: Cal
 func server(verb: String, words: Array, description: String, sender: Callable) -> int:
 	return _request(verb,description,"%s %%d %s" % [verb," ".join(words)],sender)
 
+func undo_revision(seq: int, sender: Callable) -> int:
+	return _request("undo","undo revision %d" % seq,"undo %%d %d" % seq,sender)
+
+# Undo a server-only change (item, pet, stat, skill, kit) by its request id.
+func revert(request_id: int, sender: Callable) -> int:
+	return _request("revert","undo change %d" % request_id,"revert %%d %d" % request_id,sender)
+
 func undo(sender: Callable) -> int:
 	var seq := undo_candidate()
 	return 0 if seq == 0 else _request("undo","undo revision %d" % seq,"undo %%d %d" % seq,sender)

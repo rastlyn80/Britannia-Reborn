@@ -63,6 +63,10 @@ var chat_list: VBoxContainer
 var card: PanelContainer
 var card_accept: Button
 var shot_taken := {}
+# Claude's changes apply automatically; each ask's request ids, for Undo.
+var auto_apply := true
+var applied_by_ask := {}
+var undone := {}
 var shots_wanted := 0
 var claude_button: Button
 var review_button: Button
@@ -534,7 +538,9 @@ func apply_pending() -> void:
 			selected_any = true
 			overlay.highlight(commands.selection)
 			note("Selected %d object(s)" % commands.selection.size())
-		elif id > 0: sent += 1
+		elif id > 0:
+			sent += 1
+			if pending_ask > 0: applied_by_ask[pending_ask] = applied_by_ask.get(pending_ask,[])+[id]
 		else: note("Not sent: "+str(p.line))
 	# Nothing ran (e.g. this client does not know the command): never report "applied".
 	if pending_ask > 0:
@@ -599,7 +605,8 @@ func _render_chat() -> void:
 			else: _bubble(reply,false)
 		if not ask.proposal.is_empty():
 			var done: String = {"applied":"✓ Applied","declined":"Cancelled"}.get(str(ask.status),"Preview in the world: Accept or Cancel below")
-			_note_line("Proposed: %s · %s" % ["; ".join(ask.proposal),done],Modern.GOLD)
+			if undone.has(id): done = "Undone"
+			_change_line("%s · %s" % ["; ".join(ask.proposal),done],id if str(ask.status) == "applied" and applied_by_ask.has(id) and not undone.has(id) else 0)
 		working = working and replies.size() == 1 and ask.status in ["open","answered"]
 	if working: _note_line("Claude is working on it…",Modern.ASH)
 	_scroll_to_end()
@@ -636,6 +643,29 @@ func _bubble(text: String, mine: bool, who := "") -> void:
 	column.add_child(label)
 	if not mine: row.add_child(spacer)
 
+# A change in the chat, with Undo while it can still be undone.
+func _change_line(text: String, ask_id: int) -> void:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation",8)
+	chat_list.add_child(row)
+	var label := Modern.label(text,12,Modern.GOLD)
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.custom_minimum_size.x = 240
+	row.add_child(label)
+	if ask_id > 0: _button("Undo","Undo this change",undo_ask.bind(ask_id),row)
+
+# Undo everything an ask applied: world edits by their revision, server
+# changes (items, pets, stats, skills) by the server's own record.
+func undo_ask(ask_id: int) -> void:
+	for id in applied_by_ask.get(ask_id,[]):
+		var r: Dictionary = state.requests.get(id,{})
+		if int(r.get("seq",0)) > 0: state.undo_revision(int(r.seq),sender())
+		elif str(r.get("kind","")) in ["pet","give","stat","skill","kit"]: state.revert(int(id),sender())
+	undone[ask_id] = true
+	note("Undid the changes for: %s" % str(state.asks.get(ask_id,{}).get("text","")))
+	_render_chat()
+
 func _note_line(text: String, color: Color) -> void:
 	var label := Modern.label(text,12,color)
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -651,7 +681,9 @@ func _show_tools(on: bool) -> void:
 	chat_scroll.visible = not on
 	tools_button.button_pressed = on
 
-# Docked to the right edge, above the minimap, at every window size.
+# Docked to the right edge, above the minimap, at every window size, unless
+# you have dragged it somewhere (kept in user://dev-edit-chat.cfg).
+const PLACE := "user://dev-edit-chat.cfg"
 func _place_panel() -> void:
 	if panel == null: return
 	panel.set_anchors_preset(Control.PRESET_RIGHT_WIDE)
@@ -659,6 +691,33 @@ func _place_panel() -> void:
 	panel.offset_right = -16
 	panel.offset_top = 16
 	panel.offset_bottom = -372
+	var saved := ConfigFile.new()
+	if saved.load(PLACE) == OK and saved.has_section_key("chat","shift"):
+		_shift_panel(saved.get_value("chat","shift"))
+
+var dragging := false
+func _drag_header(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		dragging = event.pressed
+		if not dragging:
+			var saved := ConfigFile.new()
+			saved.set_value("chat","shift",Vector2(panel.offset_left+456,panel.offset_top-16))
+			saved.save(PLACE)
+	elif event is InputEventMouseMotion and dragging:
+		_shift_panel(event.relative)
+
+# Moves the window by delta, kept fully on screen.
+func _shift_panel(delta: Vector2) -> void:
+	var view := get_viewport().get_visible_rect().size
+	var left := view.x+panel.offset_left
+	var right := view.x+panel.offset_right
+	var top := panel.offset_top
+	var bottom := view.y+panel.offset_bottom
+	var moved := Vector2(clampf(delta.x,-left,view.x-right),clampf(delta.y,-top,view.y-bottom))
+	panel.offset_left += moved.x
+	panel.offset_right += moved.x
+	panel.offset_top += moved.y
+	panel.offset_bottom += moved.y
 
 func _margin(parent: Node, left: int, top: int, right: int, bottom: int) -> MarginContainer:
 	var m := MarginContainer.new()
@@ -682,6 +741,14 @@ func _conversation_changed(id: int) -> void:
 	if ask.status == "proposed" and ask.author == state.me:
 		note("%s proposed %d command(s) for: %s" % [ask.proposed_by,ask.proposal.size(),ask.text])
 		review(ask.proposal,id)
+		# Applied at once (undo from the chat), except code fixes, which
+		# rebake the world and so keep their before/after card.
+		if auto_apply and not pending.is_empty() and not pending.any(func(p: Dictionary): return p.kind in ["codepreview","commit","rule"]):
+			apply_pending()
+			state.clear_preview(sender())
+			overlay.clear_draft()
+			plan_label.text = ""
+			refresh()
 	_show_talk()
 	if speak_box and speak_box.button_pressed and ask.author == state.me:
 		var said: int = int(spoken.get(id,0))
@@ -920,6 +987,11 @@ func _build() -> void:
 	var head := _margin(chat,16,12,12,8)
 	var title := HBoxContainer.new()
 	title.add_theme_constant_override("separation",8)
+	# Drag the window by its header; where you leave it is remembered.
+	title.mouse_filter = Control.MOUSE_FILTER_STOP
+	title.mouse_default_cursor_shape = Control.CURSOR_MOVE
+	title.tooltip_text = "Drag to move"
+	title.gui_input.connect(_drag_header)
 	head.add_child(title)
 	var avatar := TextureRect.new()
 	avatar.texture = Modern.icon("rune",Modern.GOLD,26)
@@ -998,6 +1070,12 @@ func _build() -> void:
 	session_label = _text(column,12)
 	var asking_tools := _row(column)
 	claude_button = _button("Ask Claude directly","Send the line above straight to Claude, without the game trying to understand it first",ask_claude,asking_tools)
+	var auto := CheckBox.new()
+	auto.text = "Apply Claude's changes at once"
+	auto.tooltip_text = "On: Claude's changes happen straight away and each has Undo in the chat. Off: each one waits on a card for Accept."
+	auto.button_pressed = auto_apply
+	auto.toggled.connect(func(on: bool): auto_apply = on)
+	asking_tools.add_child(auto)
 	speak_box = CheckBox.new()
 	speak_box.text = "Speak replies"
 	speak_box.tooltip_text = "Read answers aloud with the system voice"
