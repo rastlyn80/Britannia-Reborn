@@ -467,7 +467,14 @@ func _handle(p: PackedByteArray) -> void:
 				player.y = Login.read_be(p,13,2)
 				player.z = signed(p[18])
 				player.direction = int(p[17]) & 7
-				if awaiting_position: sequence = 0 # classic resync resets the server movement sequence
+				# The server placed the player itself (login, resync, teleport, death
+				# and the young ghost's move to a healer): it resets its movement
+				# sequence and answers no step still in flight, so the walker resets
+				# as ClassicUO's does (Walker.Reset) instead of timing out into a
+				# disconnect.
+				sequence = 0
+				outstanding = -1
+				requested_position.clear()
 				awaiting_position = false
 				needs_sync = false
 				accepted_since_sync = 0
@@ -1126,7 +1133,8 @@ func move_item(serial: int, destination: int, equip_item: bool = false, ground_p
 	var source := int(item.get("container",0))
 	var whole := int(item.get("amount",1))
 	var lifted := clampi(amount if amount > 0 else whole,1,mini(whole,65535)) if whole > 0 else 1
-	if source == destination and (lifted >= whole or destination == 0): return false
+	# The whole stack onto itself is no move; on the ground it goes to a new spot.
+	if source == destination and destination != 0 and lifted >= whole: return false
 	pending_transfer = {"serial":serial,"source":source,"destination":destination,"lifted":false,"spots":spots,"amount":lifted}
 	# At your feet: your own tile first, then the one you face, then the rest
 	# of the ring (the server refuses tiles the item cannot rest on).

@@ -280,6 +280,24 @@ func run() -> void:
  check(answer.size() == 19 and answer[1] == 1 and Login.read_be(answer,11,2) == 1010 and Login.read_be(answer,13,2) == 2010 and answer[16] == 5 and Login.read_be(answer,17,2) == 0,"a target cursor over bare ground answers with the land there")
  view.session = real_session
  rec.free()
+ # Picking up from the ground: the server's movable flag (0x20) decides.
+ game.phase = "world"
+ game.player.x = 1010;game.player.y = 2010;game.player.z = 0
+ game._world_item({"serial":0x40000050,"id":0x0eed,"amount":12,"x":1011,"y":2010,"z":0,"hue":0,"flags":0x20})
+ game._world_item({"serial":0x40000051,"id":0x0eed,"amount":1,"x":1011,"y":2011,"z":0,"hue":0,"flags":0})
+ check(view.grabbable(0x40000050) and not view.grabbable(0x40000051),"only items the server marks movable can be picked up")
+ check(view.in_reach(game.world_items[0x40000050]) and view.item_title(game.world_items[0x40000050]).begins_with("12 "),"a stack in reach is offered with its amount")
+ view._mark(0x40000050,false)
+ var glowing := false
+ for mesh: GeometryInstance3D in view.nodes[0x40000050].find_children("*","GeometryInstance3D",true,false): glowing = glowing or mesh.material_overlay != null
+ check(glowing,"a movable item on the ground carries the pick-up glow")
+ view.pending_take = 0x40000050
+ view.pending_from = Vector2(100,100)
+ view.drag(Vector2(103,102),null)
+ check(view.pending_take == 0x40000050,"a few pixels of mouse movement is still a click, not a drag")
+ game._remove_world_item(0x40000050)
+ game._remove_world_item(0x40000051)
+ view.pending_take = 0
  game._remove_world_item(0x40000003)
  check(not view.nodes.has(0x40000003),"server visibility removal also removes sign visuals")
  game.close()

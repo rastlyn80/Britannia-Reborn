@@ -74,6 +74,8 @@ if ($LASTEXITCODE) { throw 'Live translation presentation checks failed' }
 if ($LASTEXITCODE) { throw 'Mountain relief checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Network/StackSplitTests.gd
 if ($LASTEXITCODE) { throw 'Stack splitting checks failed' }
+& $godot --headless --path "$root/Viewer" --script res://Presentation/PersonalSpaceTests.gd
+if ($LASTEXITCODE) { throw 'Personal space checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/RegionalSeamTests.gd
 if ($LASTEXITCODE) { throw 'Regional architecture/terrain seam checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/AtlasTests.gd

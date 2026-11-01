@@ -129,6 +129,7 @@ func _label_sign(serial: int) -> void:
  elif not serial in label_queue: label_queue.append(serial)
 
 func _process(delta: float) -> void:
+ _grab_update(delta)
  label_clock -= delta
  if label_clock > 0.0 or label_queue.is_empty() or session == null: return
  label_clock = LABEL_INTERVAL
@@ -848,7 +849,111 @@ func click(at: Vector2, double: bool = false) -> void:
    session.request_context(mobile)
    if preload("res://Presentation/HorseVisual.gd").BODIES.has(int(session.entities.get(mobile,{}).get("body",0))):hint.text="Double-click the horse to ride."
    elif mobile==int(session.player.get("serial",0)) and not preload("res://Presentation/HorseVisual.gd").mount_item(session.equipment.values()).is_empty():hint.text="Double-click yourself to dismount."
- elif not hit.is_empty() and hit.collider.has_meta("server_serial"): activate(int(hit.collider.get_meta("server_serial")))
+ elif not hit.is_empty() and hit.collider.has_meta("server_serial"):
+  var serial := int(hit.collider.get_meta("server_serial"))
+  # A loose item you can pick up: a click takes it (on release, so a drag can
+  # carry it instead); a double-click is the same click. Containers open.
+  if grabbable(serial) and not container_item(serial) and session.target_request.is_empty():
+   if not double:
+    pending_take = serial
+    pending_from = at
+    selected = serial
+   return
+  activate(serial)
+
+# ---- Picking items up from the ground ----
+# Items the server lets you move (flag 0x20) breathe a soft gold rim nearby,
+# glow while hovered and show GrabCard: Take, Open/Use. Click takes a loose
+# item; dragging carries it to the backpack, a container or another spot.
+var grab_card: Control
+var grab_hover := 0
+var grab_clock := 0.0
+var pending_take := 0
+var pending_from := Vector2.ZERO
+const GRAB_MARK_RANGE := 14
+const NOT_GRABBED := ["door","sign","noticeboard","street_sign","plaque"]
+static var grab_soft: ShaderMaterial
+static var grab_strong: ShaderMaterial
+
+func grabbable(serial: int) -> bool:
+ var item: Dictionary = session.world_items.get(serial,{})
+ if item.is_empty() or not nodes.has(serial): return false
+ if (int(item.get("flags",0)) & 0x20) == 0: return false
+ return not str(nodes[serial].get_meta("family","")) in NOT_GRABBED
+
+func container_item(serial: int) -> bool:
+ return bool(definition(session.world_items.get(serial,{})).get("container",false))
+
+func in_reach(item: Dictionary) -> bool:
+ return maxi(absi(int(item.x)-int(session.player.x)),absi(int(item.y)-int(session.player.y))) <= 2 and absi(int(item.z)-int(session.player.z)) <= 16
+
+func _mark(serial: int, strong: bool) -> void:
+ if not nodes.has(serial): return
+ if grab_soft == null:
+  grab_soft = ShaderMaterial.new()
+  grab_soft.shader = preload("res://Presentation/Grabbable.gdshader")
+  grab_strong = grab_soft.duplicate()
+  grab_strong.set_shader_parameter("strength",1.8)
+ for mesh: GeometryInstance3D in nodes[serial].find_children("*","GeometryInstance3D",true,false):
+  mesh.material_overlay = grab_strong if strong else grab_soft
+ nodes[serial].set_meta("grab_marked",true)
+
+func _grab_update(delta: float) -> void:
+ if session == null or session.phase != "world" or scene == null or scene.camera == null: return
+ grab_clock -= delta
+ if grab_clock > 0.0: return
+ grab_clock = 0.1
+ for serial in nodes:
+  if nodes[serial].has_meta("grab_marked") or not grabbable(serial): continue
+  var item: Dictionary = session.world_items[serial]
+  if maxi(absi(int(item.x)-int(session.player.x)),absi(int(item.y)-int(session.player.y))) <= GRAB_MARK_RANGE: _mark(serial,false)
+ var hovered := hovered_serial() if get_viewport().gui_get_hovered_control() == null else grab_hover
+ if hovered == grab_hover: return
+ if grab_hover and nodes.has(grab_hover) and nodes[grab_hover].has_meta("grab_marked"): _mark(grab_hover,false)
+ grab_hover = hovered if grabbable(hovered) else 0
+ if grab_hover == 0 or grab_card == null: return
+ _mark(grab_hover,true)
+ var item: Dictionary = session.world_items[grab_hover]
+ var top: Vector3 = (nodes[grab_hover] as Node3D).global_position+Vector3.UP*0.6
+ grab_card.present(grab_hover,item_title(item),preload("res://Network/BackpackWindow.gd").picture_for(item),container_item(grab_hover),top,scene.camera,in_reach(item))
+
+func item_title(item: Dictionary) -> String:
+ var name := str(session.labels.item_name(int(item.id))).capitalize()
+ var amount := int(item.get("amount",1))
+ return ("%d %s" % [amount,name]) if amount > 1 else name
+
+# Into the backpack, asking how many of a stack (AmountPrompt).
+func take(serial: int) -> bool:
+ var item: Dictionary = session.world_items.get(serial,{})
+ if item.is_empty(): return false
+ if not in_reach(item):
+  hint.text = "Move closer to take this."
+  return false
+ var owner_control: Node = grab_card if grab_card else self
+ preload("res://Network/AmountPrompt.gd").ask(owner_control,item,item_title(item),func(amount: int):
+  if session.move_item(serial,int(session.backpack),false,Vector3i(-999,-999,-999),[],amount): hint.text = "Taking %s." % item_title(item))
+ return true
+
+# Mouse released without dragging: take the item clicked.
+func release(at: Vector2) -> void:
+ if pending_take and at.distance_to(pending_from) < 8.0: take(pending_take)
+ pending_take = 0
+
+# Mouse moved with the button held: past a few pixels the item is dragged.
+func drag(at: Vector2, carrier: Control) -> void:
+ if pending_take == 0 or at.distance_to(pending_from) < 8.0 or carrier == null: return
+ var item: Dictionary = session.world_items.get(pending_take,{})
+ var serial := pending_take
+ pending_take = 0
+ if item.is_empty() or not in_reach(item):
+  hint.text = "Move closer to pick this up."
+  return
+ var preview := TextureRect.new()
+ preview.texture = preload("res://Network/BackpackWindow.gd").picture_for(item)
+ preview.custom_minimum_size = Vector2(44,44)
+ preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+ preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+ carrier.force_drag({"item_serial":serial},preview)
 
 # Walks the mouse ray in small steps and answers the target cursor with the
 # first map static whose body the ray passes through (its cell and tiledata

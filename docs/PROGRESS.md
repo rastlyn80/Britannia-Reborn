@@ -1239,6 +1239,14 @@ Saved graceful restart loaded 297 items and 3 mobiles. Population remains idempo
 
 # Progress — 25 October 2026
 
+## 1 November 2026 - Picking up ground items, personal space, movement reset
+
+- Ground items (owner request): items the server marks movable (flag 0x20) carry a soft breathing gold rim within 14 tiles and glow brighter on hover, where Viewer/Network/GrabCard.gd shows picture, name, amount, Take and Open/Use. A click (or double-click) takes a loose item into the backpack (on release); containers open on click and offer Take on the card; dragging carries the item like a backpack item (backpack, containers, another ground spot; stacks ask how many). Doors and signs are never offered. GameSession.move_item now allows moving a ground item to another ground spot.
+- Personal space (owner request): Viewer/Presentation/PersonalSpace.gd eases characters sharing a spot apart on screen (people 0.4 m radius, riders and large creatures 0.75 m); your own character yields only 20% so the camera stays steady; server positions, walking speed and targeting are unchanged; adjacent tiles and other floors are untouched.
+- Movement: a server player update (0x20: login, teleport, death, a young ghost's move to a healer) now resets the walker (sequence, step in flight) as ModernUO does on its side and ClassicUO's Walker.Reset does, so an unanswered step cannot time out into a disconnect. Live: a test character walked through five server teleports without disconnecting.
+- Death disconnects (owner report): not reproduced. During this session the main server was restarted twice (00:52 and 00:57) by a separate pwsh start-server.ps1 (Codex), which drops every client; a young character's death moving its ghost to the nearest healer is ModernUO's intended young-player behaviour. A live death test needs [PreviewDie, installed on the next server restart.
+- Evidence: WorldItemTests 99/0 (4 new), PersonalSpaceTests 7/0, GameTests 17/0; a GPU render of the pick-up glow; scripts/verify.ps1 passed.
+
 ## 1 November 2026 - Second full Trammel bake: 14 GB to 5.3 GB, taller mountains
 
 - Rebaked all 7,168 districts (31 October 22:05 to 1 November 00:33, 112 windows, two at a time) with the compression pass, mountain relief and invisible dungeon-entrance blockers. FinalizeFacet published 448 horizon tiles and pruned 25,610 unreferenced old models (6.74 GB).

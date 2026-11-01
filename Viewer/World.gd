@@ -31,6 +31,9 @@ var avatars := {}
 var targets := {}
 var player_serial := 0
 var underground: Node
+var world_drop: Control
+const PersonalSpace = preload("res://Presentation/PersonalSpace.gd")
+var personal_space := PersonalSpace.new()
 const Motion = preload("res://Presentation/MotionTrack.gd")
 const Avatar = preload("res://Presentation/Avatar.gd")
 const Reconstruction = preload("res://Presentation/Reconstruction.gd")
@@ -398,10 +401,19 @@ func _process(delta: float) -> void:
 			var direction := int(round(atan2(desired.x,-desired.z)*4.0/PI)) & 7
 			game.walk(direction,Input.is_physical_key_pressed(KEY_SHIFT) or (not joypads.is_empty() and Input.is_joy_button_pressed(joypads[0],JOY_BUTTON_LEFT_STICK)))
 	else: pivot.position += movement * delta * 20
+	# Track positions, then a small on-screen offset so characters sharing a
+	# spot stand side by side (PersonalSpace); walking speed ignores the offset.
+	var bases := {}
+	var radii := {}
 	for serial in avatars:
-		var before: Vector3 = avatars[serial].position
-		avatars[serial].position = tracks[serial].advance(delta)
-		var travelled := before.distance_to(avatars[serial].position)
+		bases[serial] = tracks[serial].advance(delta)
+		radii[serial] = PersonalSpace.radius(avatars[serial])
+	var spacing: Dictionary = personal_space.update(bases,radii,player_serial,delta)
+	for serial in avatars:
+		var before: Vector3 = avatars[serial].get_meta("track_position",bases[serial])
+		var travelled := before.distance_to(bases[serial])
+		avatars[serial].set_meta("track_position",bases[serial])
+		avatars[serial].position = bases[serial]+spacing.get(serial,Vector3.ZERO)
 		avatars[serial].animate(travelled > 0.00001,intent_facing if serial == player_serial else directions[serial],delta,travelled/maxf(delta,0.00001))
 	if game.phase == "world" and avatars.has(player_serial):
 		var avatar: Node3D = avatars[player_serial]
@@ -447,10 +459,16 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	canvas.add_child(captions)
 	canvas.move_child(captions,0)
 	# Items dragged out of a window onto the world (behind every window).
-	var world_drop := preload("res://Network/WorldDrop.gd").new()
+	world_drop = preload("res://Network/WorldDrop.gd").new()
 	canvas.add_child(world_drop)
 	canvas.move_child(world_drop,0)
 	world_drop.configure(self)
+	# The card over items you can pick up (Take, Open/Use).
+	var grab_card := preload("res://Network/GrabCard.gd").new()
+	canvas.add_child(grab_card)
+	world_items.grab_card = grab_card
+	grab_card.take.connect(func(serial: int): world_items.take(serial))
+	grab_card.use.connect(func(serial: int): world_items.activate(serial))
 	var damage := preload("res://Network/DamageNumbers.gd").new()
 	canvas.add_child(damage)
 	canvas.move_child(damage,1)
@@ -816,6 +834,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		var pressed_on: int = world_items.hovered_serial() if game.phase == "world" else 0
 		bar_drag = pressed_on if game.entities.has(pressed_on) or pressed_on == int(game.player.get("serial",-1)) else 0
 		bar_drag_from = event.position
+	# Ground items: a click takes on release, a drag carries (WorldItems).
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed and world_items: world_items.release(event.position)
+	if event is InputEventMouseMotion and (event.button_mask & MOUSE_BUTTON_MASK_LEFT) and world_items and world_drop: world_items.drag(event.position,world_drop)
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed and bar_drag != 0:
 		if bar_layer and event.position.distance_to(bar_drag_from) > 14.0: preload("res://Network/MobileBar.gd").pull(bar_layer,game,bar_drag,event.position)
 		bar_drag = 0

@@ -42,6 +42,14 @@ func _initialize() -> void:
 	var update := PackedByteArray([0x20,0,0,0,7,1,0x90,0,0,0,0,6,0x43,6,0x38,0,0,3,0xfb])
 	game.feed(update)
 	check(game.player.x == 1603 and game.player.z == -5 and not game.awaiting_position and game.sequence == 0,"authoritative resync and sequence reset")
+	# Death, a teleport or the young ghost's move to a healer: the server resets
+	# its movement and never answers a step still in flight. That step must not
+	# time out into a disconnect.
+	game.outstanding = 11
+	game.sequence = 12
+	game.movement_deadline = Time.get_ticks_msec()-1
+	game.feed(PackedByteArray([0x20,0,0,0,7,1,0x92,0,0,0,0,6,0x43,6,0x38,0,0,3,0xfb]))
+	check(game.outstanding == -1 and not game.awaiting_position and game.sequence == 0 and game.player.body == 0x192,"a server player update (death, teleport) resets the walker: no step is left waiting to time out into a disconnect")
 	game.feed(PackedByteArray([0x21,0,6,0x42,6,0x37,2,0xff]))
 	check(game.player.x == 1602 and game.player.z == -1 and game.outstanding == -1,"rejected movement correction")
 	game.feed(PackedByteArray([0x77,0,0,0,9,1,0x90,6,0x44,6,0x39,20,4,0,0,0,1]))
