@@ -851,6 +851,215 @@
       "recipe_sha256": "07c78b7afa5abe2c4112c816fccfcb04b0e4bde757d3a7d4bc1e411d90386a8e",
       "source_pin_sha256": "20392cc33a03c7f5d50400dab5d704a25540efa4dc540a7cd61d2a4e96eae137",
       "native_validation": "Actual isolated two-client native Rat constructor, movement, hues, actions, hurt and corpse"
+    },
+    {
+      "kind": "cat_domestic",
+      "family": "cats",
+      "profile": "animal",
+      "status": "validated",
+      "surface_kind": "cat_fur_pbr",
+      "contact_kind": "cat_paws",
+      "head_bone": "bip01 head",
+      "assets": {
+        "modern": "res://Art/Creatures/Cat/cat.glb"
+      },
+      "bodies": [
+        {
+          "body": 201,
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "name": "Cat",
+          "native_profile": "animal",
+          "native_sources": [
+            {
+              "path": "Projects/UOContent/Mobiles/Animals/Town Critters/Cat.cs",
+              "sha256": "b727ac7610002304eb76cc44ff71c329679176b7d2dd93c14eeb6f88efd646c9"
+            }
+          ]
+        }
+      ],
+      "source": "https://opengameart.org/node/78596",
+      "license": "Quaternius CC0-1.0 source mesh/rig/two clips; GPL-3.0-or-later authored conversion, details, motions and shaders",
+      "source_interpretation": "Independent domestic cat with baked source Idle/Walking and nine declared authored categories, including distinct1.8/6.8m/s bounds. Original UO choreography not recovered.",
+      "partial_hue_interpretation": "Authored material-region mask: partial dyes preserve white paws/chest and pink features; eyes fixed for full/partial hues. Not original UO dye-mask recovery.",
+      "stats": {
+        "original": {
+          "bones": 24,
+          "height_m": 0.45,
+          "bind_diagonal_m": 0.75,
+          "clips": {
+            "Idle": {
+              "duration": 1.6666666666666667,
+              "loop": true,
+              "source_action": "Idle",
+              "origin": "Baked evaluated Quaternius CC0 Idle clip; not recovered UO choreography"
+            },
+            "Walk": {
+              "duration": 1.6666666666666667,
+              "loop": true,
+              "source_action": "Walking",
+              "origin": "Baked evaluated Quaternius CC0 Walking clip; not recovered UO choreography"
+            },
+            "Run": {
+              "duration": 0.3333333333333333,
+              "loop": true,
+              "origin": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography"
+            },
+            "Gallop": {
+              "duration": 0.3333333333333333,
+              "loop": true,
+              "origin": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography"
+            },
+            "Attack": {
+              "duration": 0.65,
+              "loop": false,
+              "origin": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography"
+            },
+            "Attack2": {
+              "duration": 0.7,
+              "loop": false,
+              "origin": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography"
+            },
+            "Hit": {
+              "duration": 0.45,
+              "loop": false,
+              "origin": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography"
+            },
+            "Eat": {
+              "duration": 2.4,
+              "loop": false,
+              "origin": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography"
+            },
+            "Fidget": {
+              "duration": 2.4,
+              "loop": true,
+              "origin": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography"
+            },
+            "Alert": {
+              "duration": 1.2,
+              "loop": false,
+              "origin": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography"
+            },
+            "Death": {
+              "duration": 1.1,
+              "loop": false,
+              "origin": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography"
+            }
+          }
+        },
+        "modern": {
+          "bones": 24,
+          "height_m": 0.45,
+          "bind_diagonal_m": 0.75,
+          "clips": {
+            "Idle": {
+              "duration": 1.6666666666666667,
+              "loop": true,
+              "source_action": "Idle",
+              "origin": "Baked evaluated Quaternius CC0 Idle clip; not recovered UO choreography"
+            },
+            "Walk": {
+              "duration": 1.6666666666666667,
+              "loop": true,
+              "source_action": "Walking",
+              "origin": "Baked evaluated Quaternius CC0 Walking clip; not recovered UO choreography"
+            },
+            "Run": {
+              "duration": 0.3333333333333333,
+              "loop": true,
+              "origin": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography"
+            },
+            "Gallop": {
+              "duration": 0.3333333333333333,
+              "loop": true,
+              "origin": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography"
+            },
+            "Attack": {
+              "duration": 0.65,
+              "loop": false,
+              "origin": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography"
+            },
+            "Attack2": {
+              "duration": 0.7,
+              "loop": false,
+              "origin": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography"
+            },
+            "Hit": {
+              "duration": 0.45,
+              "loop": false,
+              "origin": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography"
+            },
+            "Eat": {
+              "duration": 2.4,
+              "loop": false,
+              "origin": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography"
+            },
+            "Fidget": {
+              "duration": 2.4,
+              "loop": true,
+              "origin": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography"
+            },
+            "Alert": {
+              "duration": 1.2,
+              "loop": false,
+              "origin": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography"
+            },
+            "Death": {
+              "duration": 1.1,
+              "loop": false,
+              "origin": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography"
+            }
+          }
+        }
+      },
+      "authored_replacements": {
+        "Idle": "Baked evaluated Quaternius CC0 Idle clip; not recovered UO choreography",
+        "Walk": "Baked evaluated Quaternius CC0 Walking clip; not recovered UO choreography",
+        "Run": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography",
+        "Gallop": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography",
+        "Attack": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography",
+        "Attack2": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography",
+        "Hit": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography",
+        "Eat": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography",
+        "Fidget": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography",
+        "Alert": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography",
+        "Death": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography"
+      },
+      "camera_height": 0.3,
+      "pick_bounds": {
+        "position": [
+          -0.229721361994743,
+          -0.01000231266017181,
+          -0.284777233600616
+        ],
+        "size": [
+          0.46834995269775404,
+          0.472793776988983,
+          0.63468768119812
+        ]
+      },
+      "locomotion": {
+        "run_threshold_mps": 0.4,
+        "gallop_threshold_mps": 3.6,
+        "walk_reference_mps": 0.192,
+        "run_reference_mps": 1.8,
+        "gallop_reference_mps": 6.8,
+        "rate_min": 0.15,
+        "rate_max": 2.0
+      },
+      "native_gait_expectations": {
+        "walk": "Run",
+        "run": "Gallop"
+      },
+      "recipe_sha256": "9b7562c2dab3bfa85e16617567643cbc71930c050f41fd5521f2c11730faa110",
+      "source_pin_sha256": "3a221f1f4d2ef6afd4c8d0bed8ddc958b9275583fd6587c419b47d802d97fa38",
+      "loop_categories": [
+        "Gallop"
+      ],
+      "native_validation": "Actual isolated two-client Cat constructor, physical-speed gaits, hues, hurt/actions/death and static corpse"
     }
   ]
 }

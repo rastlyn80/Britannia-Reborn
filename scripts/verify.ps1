@@ -50,6 +50,10 @@ if (Test-Path "$root/Viewer/Art/Creatures/Rat/rat.glb") {
   & python -B "$root/scripts/test-rat-distribution.py"
   if ($LASTEXITCODE) {throw 'Public rat skin, action, four-leg and static corpse distribution failed'}
 }
+if (Test-Path "$root/Viewer/Art/Creatures/Cat/cat.glb") {
+  & python -B "$root/scripts/test-cat-distribution.py"
+  if ($LASTEXITCODE) {throw 'Public cat skin, physical-speed gaits, four-paw support and corpse distribution failed'}
+}
 foreach ($kind in @('desert','forest','frenzied','ethereal')) {
  if (Test-Path "$root/Viewer/local-art/ostards/$kind-modern.gltf") {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/OstardTests.gd -- "--kind=$kind"

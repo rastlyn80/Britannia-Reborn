@@ -42,6 +42,11 @@ func set_hue(value: int) -> void:
 			for surface in mesh.mesh.get_surface_count():
 				var source:=mesh.mesh.surface_get_material(surface) as StandardMaterial3D
 				if source!=null:mesh.set_surface_override_material(surface,preload("res://Presentation/CreatureFurMaterial.gd").build(source,value,detail))
+	if treatment=="modern" and entry.get("surface_kind","")=="cat_fur_pbr":
+		for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
+			for surface in mesh.mesh.get_surface_count():
+				var source:=mesh.mesh.surface_get_material(surface) as StandardMaterial3D
+				if source!=null:mesh.set_surface_override_material(surface,preload("res://Presentation/CreatureCatMaterial.gd").build(source,value))
 	death_flashes.clear()
 	for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
 		if mesh.name!="RecoveredFlash":continue
@@ -73,9 +78,13 @@ func _ready() -> void:
 	action_profile=str(entry.get("profile","monster"))
 	if str(entry.get("family","")) in ["rodents","walrus"]:feeding_neck_angle=.1;feeding_head_angle=.04
 	super._ready()
+	for category: String in entry.get("loop_categories",[]):
+		if animator.has_animation(category):animator.get_animation(category).loop_mode=Animation.LOOP_LINEAR
 	contact=preload("res://Presentation/BirdGroundSupport.gd").new() if entry.get("movement_mode","")=="ground_plane" else preload("res://Presentation/SourceMountContact.gd").new();skeleton.add_child(contact)
 	if entry.get("contact_kind","")=="rat_legs":
 		contact.free();contact=preload("res://Presentation/RatGroundSupport.gd").new();skeleton.add_child(contact)
+	if entry.get("contact_kind","")=="cat_paws":
+		contact.free();contact=preload("res://Presentation/CatGroundSupport.gd").new();skeleton.add_child(contact)
 	contact.include_toe_descendants=true
 	contact.iterations=1 if str(entry.get("family","")) in ["bruins","walrus"] else 3
 	if kind in ["dragons_dragon_asian","dragons_wyvern"]:
@@ -104,11 +113,14 @@ func motion(_speed: float,_turn_rate: float,_delta: float) -> void:pass
 func play_gait(moving: bool,speed: float) -> void:
 	if current_clip=="LieDown" and moving:action_remaining=0.
 	if dead or action_remaining>0.:return
-	var clip:="Idle" if not moving else "Run" if speed>3.6 else "Walk"
+	var locomotion: Dictionary=entry.get("locomotion",{})
+	var clip:="Idle" if not moving else "Run" if speed>float(locomotion.get("run_threshold_mps",3.6)) else "Walk"
+	if moving and speed>float(locomotion.get("gallop_threshold_mps",INF)) and animator.has_animation("Gallop"):clip="Gallop"
 	if current_clip=="LieDown" and not moving:return
 	contact.enabled=true
 	if current_clip!=clip:current_clip=clip;play(clip,.18)
-	animator.speed_scale=clampf(speed/(5.5 if clip=="Run" else 1.8),.65,1.65) if moving else 1.
+	var reference:=float(locomotion.get("gallop_reference_mps",6.8)) if clip=="Gallop" else float(locomotion.get("run_reference_mps",5.5)) if clip=="Run" else float(locomotion.get("walk_reference_mps",1.8))
+	animator.speed_scale=clampf(speed/maxf(.01,reference),float(locomotion.get("rate_min",.65)),float(locomotion.get("rate_max",1.65))) if moving else 1.
 func _process(delta: float) -> void:
 	update_death_effect()
 	if entry.get("surface_kind","")=="water_pbr" and (not dead or action_remaining>0.):

@@ -94,7 +94,8 @@ func run() -> void:
 				if candidate.get("movement_mode","")=="native_waterline" and not check(response.ends_with("|wet=1"),"Native walk/run remains on genuine water after actual Mobile.Move"):return
 				if not check(bool(session.entities[serial].running)==running and bool(observer.entities[serial].running)==running,"native walk/run flags replicate"):return
 				actor.animate(true,0.,.1,6.8 if session.entities[serial].running else 1.8)
-				if not check(actor.horse_visual.current_clip==("Run" if running else "Walk"),"received gait drives matching source replacement"):return
+				var expected_gait: String=str(candidate.get("native_gait_expectations",{}).get("run" if running else "walk","Run" if running else "Walk"))
+				if not check(actor.horse_visual.current_clip==expected_gait,"received native gait drives its declared physical-speed replacement: expected "+expected_gait+", actual "+str(actor.horse_visual.current_clip)):return
 			session.last_mobile_actions.erase(serial);observer.last_mobile_actions.erase(serial)
 			await reply(sex,"hurt","UCCREATURE|hurt|")
 			if not check(await until(func():return session.last_mobile_actions.has(serial) and observer.last_mobile_actions.has(serial)),"Native weapon hit-reaction method reaches both clients"):return

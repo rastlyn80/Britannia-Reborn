@@ -1,0 +1,6 @@
+Domestic cat source mesh, rig, colours and Idle/Walking motions: Quaternius, CC0-1.0.
+Source: https://opengameart.org/node/78596
+License: https://creativecommons.org/publicdomain/zero/1.0/
+Exact archive/member hashes: scripts/cat-inputs.json and provenance.json.
+Britannia Reborn conversion, eye/paw details, nine additional motions and procedural coat: GPL-3.0-or-later; root LICENSE.
+No Ultima Online mesh, map, rig or motion is included; no photographic fur texture or hair simulation is claimed.

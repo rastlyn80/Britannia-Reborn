@@ -29,11 +29,12 @@ def resolve(model,label,fallback):
     if resolved!=label:status='Runtime category substitute'
     elif label in model.get('authored_replacements',{}):status='Authored category motion'
     elif label in model.get('category_aliases',{}):status='Prepared clip alias'
+    elif label=='LieDown':status='Runtime copy of Death clip'
     elif label in model.get('clip_sources',{}):status='Recovered source clip'
     else:status='Runtime authored pose/category'
     return {'requested':label,'resolved':resolved,'status':status,
             'source_member':model.get('clip_sources',{}).get(resolved),
-            'declared_alias':model.get('category_aliases',{}).get(resolved),
+            'declared_alias':model.get('category_aliases',{}).get(resolved) or ('Death' if label=='LieDown' else None),
             'authored_method':model.get('authored_replacements',{}).get(resolved)}
 
 def main():
@@ -91,10 +92,17 @@ def main():
             'missing_protocol_slots':sum(r['resolved'] is None for r in rows),
             'original_sequence_records':len(sequence),'original_sequence_parse_blockers':sum(bool(r.get('parse_blocker')) or r['unparsed_bytes']!=0 for r in sequence),
             'original_new_protocol_entries':len(new_actions),
+            'original_new_entries_without_generic_model':sum(not r['generic_model'] for r in new_actions),
+            'original_new_entries_with_generic_route':sum(bool(r['replacement'] and r['replacement']['resolved']) for r in new_actions),
+            'original_new_entries_total_without_generic_route':sum(not (r['replacement'] and r['replacement']['resolved']) for r in new_actions),
             'original_new_entries_without_generic_route':sum(bool(r['generic_model']) and not (r['replacement'] and r['replacement']['resolved']) for r in new_actions)}
+    assert counts['original_new_entries_with_generic_route']+counts['original_new_entries_total_without_generic_route']==len(new_actions)
+    assert counts['original_new_entries_without_generic_model']+counts['original_new_entries_without_generic_route']==counts['original_new_entries_total_without_generic_route']
     scope=('Generic creature renderer protocol slots only; distinct from original per-body required actions and choreography quality. '
            'Source clips, aliases, authored motions and missing routes remain explicit. Original UOP sequence metadata is recorded separately; '
-           'frame pixels and final MUL/DEF/UOP availability/precedence are not decoded here. Humans and earlier mount/bovine action ledgers are separate.')
+           'frame pixels and final MUL/DEF/UOP availability/precedence are not decoded here. Humans and earlier mount/bovine action ledgers are separate. '
+           'The historical original_new_entries_without_generic_route counter covers already routed bodies only; the explicit total counter also includes entries on bodies without any generic model. '
+           'Those bodies can include specialized human/mount presenters; this is not a global missing-animation total or choreography completion percentage.')
     report={'counts':counts,'scope':scope,'renderer_sha256':renderer_sha,'archives':archives,'routes':rows,
             'original_sequence_metadata':sequence,'original_group_links':original,'original_new_protocol_actions':new_actions}
     OUT.mkdir(parents=True,exist_ok=True);(OUT/'actions.json').write_text(json.dumps(report,indent=2),encoding='utf-8')

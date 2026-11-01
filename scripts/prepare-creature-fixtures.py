@@ -24,7 +24,8 @@ def main():
             if reviewed:
                 assert set(reviewed)<=set(classes),'Reviewed native class declaration changed'
                 classes=reviewed
-            common={'body':body['body'],'classes':classes,'kind':entry['kind'],'profile':body.get('native_profile') or entry['profile'],'movement_mode':entry.get('movement_mode','')}
+            common={'body':body['body'],'classes':classes,'kind':entry['kind'],'profile':body.get('native_profile') or entry['profile'],'movement_mode':entry.get('movement_mode',''),
+                'native_gait_expectations':entry.get('native_gait_expectations',{})}
             if classes and (entry.get('movement_mode')=='native_waterline' or reviewed):
                 for name in classes:rows.append(dict(common,classes=[name],native_class=name))
             elif classes:rows.append(common)
