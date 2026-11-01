@@ -1,0 +1,5 @@
+Original hen mesh, rig, two maps and eleven source motions: CDmir / Cestmir Dammer, CC0-1.0. Created for Kelgar; UV texture derived from Rick Hoppmann photos, per the included original CC0 notice.
+https://lpc.opengameart.org/content/chicken-animated
+https://lpc.opengameart.org/sites/default/files/chicken_0.zip
+Exact original notice and archive/member pins: provenance.json and scripts/chicken-inputs.json.
+Project B-Bone conversion, authored Run/Attack/Hit/category timings, common-root motion, shaders and code: GPL-3.0-or-later. No Ultima Online artwork included.

@@ -80,6 +80,10 @@ if (Test-Path "$root/Viewer/Art/Creatures/Fire/fire-elemental.scn") {
   & python -B "$root/scripts/test-fire-distribution.py"
   if ($LASTEXITCODE) {throw 'Public FireElemental rig/actions, static ash and transient death cleanup distribution failed'}
 }
+if (Test-Path "$root/Viewer/Art/Creatures/Chicken/chicken.glb") {
+  & python -B "$root/scripts/test-chicken-distribution.py"
+  if ($LASTEXITCODE) {throw 'Public Chicken source motions, authored gaits, PBR maps, skin bounds and cadaver distribution failed'}
+}
 foreach ($kind in @('desert','forest','frenzied','ethereal')) {
  if (Test-Path "$root/Viewer/local-art/ostards/$kind-modern.gltf") {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/OstardTests.gd -- "--kind=$kind"

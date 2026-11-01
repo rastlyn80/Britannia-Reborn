@@ -2838,6 +2838,308 @@
       "recipe_sha256": "c7b611972e87e47f073ed848ca07cd097632a097b2e4cf7fbdaf3a04aebcd6dd",
       "asset_sha256": "b7118078ff6a3f2a1b7ff399341c838aae25d561d0322a0c17c16ad2d71d253b",
       "native_validation": "Actual native FireElemental constructor and SummonedFireElemental via real Summon API on both owners; repeat on public route"
+    },
+    {
+      "kind": "chicken",
+      "family": "chickens",
+      "profile": "animal",
+      "status": "validated",
+      "movement_mode": "ground_plane",
+      "head_bone": "Head",
+      "assets": {
+        "modern": "res://Art/Creatures/Chicken/chicken.glb"
+      },
+      "bodies": [
+        {
+          "body": 208,
+          "name": "Chicken",
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "native_profile": "animal",
+          "native_sources": [
+            {
+              "path": "Projects/UOContent/Mobiles/Animals/Birds/Chicken.cs",
+              "sha256": "a2c499983ec1277d9b3fefd1d828a13af6bb350b6687c548408465be3ff21d91"
+            }
+          ]
+        }
+      ],
+      "source": "https://lpc.opengameart.org/content/chicken-animated",
+      "license": "CC0-1.0 original CDmir hen mesh/rig/maps/eleven motions; GPL-3.0-or-later project conversion, seven segment joints, authored categories/root motion and shaders",
+      "source_interpretation": "Independent natural hen substitute; no recovered UO body208 geometry/choreography. All eleven source motions retained; active Run/Attack/Hit and timing changes explicitly authored.",
+      "partial_hue_interpretation": "Authored textured-body region; comb differs under full/partial dyes and dark source eyes remain protected. Not a recovered native partial mask.",
+      "stats": {
+        "original": {
+          "bones": 47,
+          "height_m": 0.45,
+          "clips": {
+            "SourceBeginPecking": {
+              "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+              "duration": 0.25,
+              "loop": false
+            },
+            "SourceDying": {
+              "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+              "duration": 1.0,
+              "loop": false
+            },
+            "SourceEating": {
+              "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+              "duration": 2.2083332538604736,
+              "loop": true
+            },
+            "SourceEndPecking": {
+              "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+              "duration": 0.2916666567325592,
+              "loop": false
+            },
+            "SourceIdle": {
+              "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+              "duration": 49.375,
+              "loop": true
+            },
+            "SourceIdle1": {
+              "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+              "duration": 3.0833332538604736,
+              "loop": true
+            },
+            "SourcePecking3": {
+              "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+              "duration": 0.4166666567325592,
+              "loop": true
+            },
+            "SourceWalk": {
+              "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+              "duration": 2.2083332538604736,
+              "loop": true
+            },
+            "SourceIdle2": {
+              "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+              "duration": 1.5,
+              "loop": true
+            },
+            "SourcePecking1": {
+              "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+              "duration": 0.4166666567325592,
+              "loop": true
+            },
+            "SourcePecking2": {
+              "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+              "duration": 0.4166666567325592,
+              "loop": true
+            },
+            "Idle": {
+              "origin": "Retained Idle2 with declared category/timing adaptation",
+              "duration": 1.5,
+              "loop": true
+            },
+            "Walk": {
+              "origin": "Retained Walk with declared category/timing adaptation",
+              "duration": 0.4,
+              "loop": true
+            },
+            "Run": {
+              "origin": "Authored common-root running bound using retained Walk poses, 2.5cm positive lift and measured short stance/airborne reset; relative source joints unchanged",
+              "duration": 0.8,
+              "loop": true
+            },
+            "Death": {
+              "origin": "Retained Dying with declared category/timing adaptation",
+              "duration": 1.0,
+              "loop": false
+            },
+            "Fidget": {
+              "origin": "Retained Idle1 with declared category/timing adaptation",
+              "duration": 3.0833332538604736,
+              "loop": true
+            },
+            "Eat": {
+              "origin": "Retained Eating with declared category/timing adaptation",
+              "duration": 2.2083332538604736,
+              "loop": true
+            },
+            "Hit": {
+              "origin": "Authored 3.5cm backward/6mm upward common-root recoil over retained Idle2; relative source joints unchanged",
+              "duration": 0.6,
+              "loop": false
+            },
+            "Attack": {
+              "origin": "Authored .64s beak strike assembled from retained BeginPecking/Pecking3/EndPecking; not original UO choreography",
+              "duration": 0.64,
+              "loop": false
+            }
+          }
+        },
+        "modern": {
+          "bones": 47,
+          "height_m": 0.45,
+          "clips": {
+            "SourceBeginPecking": {
+              "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+              "duration": 0.25,
+              "loop": false
+            },
+            "SourceDying": {
+              "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+              "duration": 1.0,
+              "loop": false
+            },
+            "SourceEating": {
+              "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+              "duration": 2.2083332538604736,
+              "loop": true
+            },
+            "SourceEndPecking": {
+              "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+              "duration": 0.2916666567325592,
+              "loop": false
+            },
+            "SourceIdle": {
+              "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+              "duration": 49.375,
+              "loop": true
+            },
+            "SourceIdle1": {
+              "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+              "duration": 3.0833332538604736,
+              "loop": true
+            },
+            "SourcePecking3": {
+              "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+              "duration": 0.4166666567325592,
+              "loop": true
+            },
+            "SourceWalk": {
+              "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+              "duration": 2.2083332538604736,
+              "loop": true
+            },
+            "SourceIdle2": {
+              "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+              "duration": 1.5,
+              "loop": true
+            },
+            "SourcePecking1": {
+              "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+              "duration": 0.4166666567325592,
+              "loop": true
+            },
+            "SourcePecking2": {
+              "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+              "duration": 0.4166666567325592,
+              "loop": true
+            },
+            "Idle": {
+              "origin": "Retained Idle2 with declared category/timing adaptation",
+              "duration": 1.5,
+              "loop": true
+            },
+            "Walk": {
+              "origin": "Retained Walk with declared category/timing adaptation",
+              "duration": 0.4,
+              "loop": true
+            },
+            "Run": {
+              "origin": "Authored common-root running bound using retained Walk poses, 2.5cm positive lift and measured short stance/airborne reset; relative source joints unchanged",
+              "duration": 0.8,
+              "loop": true
+            },
+            "Death": {
+              "origin": "Retained Dying with declared category/timing adaptation",
+              "duration": 1.0,
+              "loop": false
+            },
+            "Fidget": {
+              "origin": "Retained Idle1 with declared category/timing adaptation",
+              "duration": 3.0833332538604736,
+              "loop": true
+            },
+            "Eat": {
+              "origin": "Retained Eating with declared category/timing adaptation",
+              "duration": 2.2083332538604736,
+              "loop": true
+            },
+            "Hit": {
+              "origin": "Authored 3.5cm backward/6mm upward common-root recoil over retained Idle2; relative source joints unchanged",
+              "duration": 0.6,
+              "loop": false
+            },
+            "Attack": {
+              "origin": "Authored .64s beak strike assembled from retained BeginPecking/Pecking3/EndPecking; not original UO choreography",
+              "duration": 0.64,
+              "loop": false
+            }
+          }
+        }
+      },
+      "authored_replacements": {
+        "SourceBeginPecking": "Retained CC0 source motion, evaluated curved-bone conversion",
+        "SourceDying": "Retained CC0 source motion, evaluated curved-bone conversion",
+        "SourceEating": "Retained CC0 source motion, evaluated curved-bone conversion",
+        "SourceEndPecking": "Retained CC0 source motion, evaluated curved-bone conversion",
+        "SourceIdle": "Retained CC0 source motion, evaluated curved-bone conversion",
+        "SourceIdle1": "Retained CC0 source motion, evaluated curved-bone conversion",
+        "SourcePecking3": "Retained CC0 source motion, evaluated curved-bone conversion",
+        "SourceWalk": "Retained CC0 source motion, evaluated curved-bone conversion",
+        "SourceIdle2": "Retained CC0 source motion, evaluated curved-bone conversion",
+        "SourcePecking1": "Retained CC0 source motion, evaluated curved-bone conversion",
+        "SourcePecking2": "Retained CC0 source motion, evaluated curved-bone conversion",
+        "Idle": "Retained Idle2 with declared category/timing adaptation",
+        "Walk": "Retained Walk with declared category/timing adaptation",
+        "Run": "Authored common-root running bound using retained Walk poses, 2.5cm positive lift and measured short stance/airborne reset; relative source joints unchanged",
+        "Death": "Retained Dying with declared category/timing adaptation",
+        "Fidget": "Retained Idle1 with declared category/timing adaptation",
+        "Eat": "Retained Eating with declared category/timing adaptation",
+        "Hit": "Authored 3.5cm backward/6mm upward common-root recoil over retained Idle2; relative source joints unchanged",
+        "Attack": "Authored .64s beak strike assembled from retained BeginPecking/Pecking3/EndPecking; not original UO choreography"
+      },
+      "loop_categories": [
+        "SourceEating",
+        "SourceIdle",
+        "SourceIdle1",
+        "SourcePecking3",
+        "SourceWalk",
+        "SourceIdle2",
+        "SourcePecking1",
+        "SourcePecking2",
+        "Idle",
+        "Walk",
+        "Run",
+        "Fidget",
+        "Eat"
+      ],
+      "locomotion": {
+        "walk_reference_mps": 0.5585914663970464,
+        "run_reference_mps": 2.7,
+        "run_threshold_mps": 3.6,
+        "rate_min": 0.15,
+        "rate_max": 4.0
+      },
+      "camera_height": 0.32,
+      "pick_bounds": {
+        "position": [
+          -0.5,
+          -0.02,
+          -0.6
+        ],
+        "size": [
+          1,
+          0.8,
+          1.2
+        ]
+      },
+      "new_action_categories": {
+        "2": "Hit",
+        "5": "Fidget",
+        "14": "Eat"
+      },
+      "recipe_sha256": "99e24105f925f5a0b177de32a2c006e389773513906877650872b15a2eddd8d5",
+      "action_recipe_sha256": "3df1e02c5e832a481fa8cc8b89a4860d935814ca5bb7e305f3e15676a38ffed0",
+      "source_pin_sha256": "305c6a4a67f7544186f34a5424c5181896274c855bcea050851302f81f173157",
+      "native_validation": "Actual native Chicken208 constructor on both owners; repeat installed public route"
     }
   ]
 }

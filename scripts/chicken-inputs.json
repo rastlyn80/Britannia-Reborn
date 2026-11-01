@@ -1,0 +1,31 @@
+{
+  "source": "https://lpc.opengameart.org/content/chicken-animated",
+  "download": "https://lpc.opengameart.org/sites/default/files/chicken_0.zip",
+  "author": "CDmir; collaborator TinyWorlds",
+  "license": "CC0-1.0",
+  "bytes": 6214921,
+  "sha256": "0e958040fdb855c192903657d8a9da2d95cf17ea23165676bae2ae1454baa284",
+  "members": [
+    {
+      "path": "chickenV2.blend",
+      "bytes": 11252724,
+      "sha256": "4b651e4edbfde8f1ee6480e7567530cf3bd034a8938e9b9f738139fcf17f91a1"
+    },
+    {
+      "path": "license.txt",
+      "bytes": 160,
+      "sha256": "74ebda8888af62c1ba221291f2c98a3b58045f90af9198367305681dfb14713e"
+    },
+    {
+      "path": "textures/ChickenNorm.png",
+      "bytes": 1213667,
+      "sha256": "4d44ebad6e57adb3e0fd0b908babaf30d24d3cd8859be805fdf4bd476f38b4d0"
+    },
+    {
+      "path": "textures/UV-Texture.png",
+      "bytes": 1221426,
+      "sha256": "d30db6e3fe0f3d9c644bf3f694b689f11022e785e9a812dc21ac926cb093a689"
+    }
+  ],
+  "included_notice": "License: CC0\nAuthor: \u010cestm\u00edr Dammer\n\nNote: Model was created for Kelgar project (http://www.kelgar.org/). UV-Texture was derived from photos by Rick Hoppmann."
+}

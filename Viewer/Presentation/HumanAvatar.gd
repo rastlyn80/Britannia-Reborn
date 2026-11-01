@@ -135,7 +135,10 @@ func _process(delta: float) -> void:
 	for child in get_children():
 		if child is StaticBody3D and child.has_meta("server_mobile"):
 			var shape: CollisionShape3D=child.get_child(0);shape.position.x=offset.x+pick_origin.x;shape.position.z=offset.z+pick_origin.z
-			if human_visual==null and horse_visual!=null and horse_visual.has_meta("pick_bounds"):shape.position.y=pick_origin.y+visual_root.position.y
+			if human_visual==null and horse_visual!=null and horse_visual.has_meta("pick_bounds"):
+				shape.position.y=pick_origin.y+visual_root.position.y
+				var bounds: AABB=horse_visual.get_meta("pick_bounds")
+				if shape.shape is BoxShape3D and not shape.shape.size.is_equal_approx(bounds.size):shape.shape.size=bounds.size
 
 func _finish_dismount() -> void:
 	ground_visual_offset=Vector3(human_visual.position.x,0.,human_visual.position.z)

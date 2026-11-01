@@ -38,3 +38,7 @@ Viewer/item-art-requests.local.json
 Viewer/item-colors.local.json
 Viewer/Art/Surfaces/variants/
 .claude/settings.local.json
+
+# Godot extracts these cached maps from the public chicken GLB on import.
+Viewer/Art/Creatures/Chicken/chicken_*.png
+Viewer/Art/Creatures/Chicken/chicken_*.png.import

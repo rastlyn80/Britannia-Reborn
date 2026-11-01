@@ -1,0 +1,602 @@
+{
+  "source": {
+    "source": "https://lpc.opengameart.org/content/chicken-animated",
+    "download": "https://lpc.opengameart.org/sites/default/files/chicken_0.zip",
+    "author": "CDmir; collaborator TinyWorlds",
+    "license": "CC0-1.0",
+    "bytes": 6214921,
+    "sha256": "0e958040fdb855c192903657d8a9da2d95cf17ea23165676bae2ae1454baa284",
+    "members": [
+      {
+        "path": "chickenV2.blend",
+        "bytes": 11252724,
+        "sha256": "4b651e4edbfde8f1ee6480e7567530cf3bd034a8938e9b9f738139fcf17f91a1"
+      },
+      {
+        "path": "license.txt",
+        "bytes": 160,
+        "sha256": "74ebda8888af62c1ba221291f2c98a3b58045f90af9198367305681dfb14713e"
+      },
+      {
+        "path": "textures/ChickenNorm.png",
+        "bytes": 1213667,
+        "sha256": "4d44ebad6e57adb3e0fd0b908babaf30d24d3cd8859be805fdf4bd476f38b4d0"
+      },
+      {
+        "path": "textures/UV-Texture.png",
+        "bytes": 1221426,
+        "sha256": "d30db6e3fe0f3d9c644bf3f694b689f11022e785e9a812dc21ac926cb093a689"
+      }
+    ],
+    "included_notice": "License: CC0\nAuthor: \u010cestm\u00edr Dammer\n\nNote: Model was created for Kelgar project (http://www.kelgar.org/). UV-Texture was derived from photos by Rick Hoppmann."
+  },
+  "preparation": {
+    "recipe_sha256": "99e24105f925f5a0b177de32a2c006e389773513906877650872b15a2eddd8d5",
+    "bbone_recipe_sha256": "8d82b1d0f5b1ce9325ef2ddf674c212954de792c463db70929a8cee5e1ca9153",
+    "source_pin_sha256": "305c6a4a67f7544186f34a5424c5181896274c855bcea050851302f81f173157",
+    "source": {
+      "source": "https://lpc.opengameart.org/content/chicken-animated",
+      "download": "https://lpc.opengameart.org/sites/default/files/chicken_0.zip",
+      "author": "CDmir; collaborator TinyWorlds",
+      "license": "CC0-1.0",
+      "bytes": 6214921,
+      "sha256": "0e958040fdb855c192903657d8a9da2d95cf17ea23165676bae2ae1454baa284",
+      "members": [
+        {
+          "path": "chickenV2.blend",
+          "bytes": 11252724,
+          "sha256": "4b651e4edbfde8f1ee6480e7567530cf3bd034a8938e9b9f738139fcf17f91a1"
+        },
+        {
+          "path": "license.txt",
+          "bytes": 160,
+          "sha256": "74ebda8888af62c1ba221291f2c98a3b58045f90af9198367305681dfb14713e"
+        },
+        {
+          "path": "textures/ChickenNorm.png",
+          "bytes": 1213667,
+          "sha256": "4d44ebad6e57adb3e0fd0b908babaf30d24d3cd8859be805fdf4bd476f38b4d0"
+        },
+        {
+          "path": "textures/UV-Texture.png",
+          "bytes": 1221426,
+          "sha256": "d30db6e3fe0f3d9c644bf3f694b689f11022e785e9a812dc21ac926cb093a689"
+        }
+      ],
+      "included_notice": "License: CC0\nAuthor: \u010cestm\u00edr Dammer\n\nNote: Model was created for Kelgar project (http://www.kelgar.org/). UV-Texture was derived from photos by Rick Hoppmann."
+    },
+    "fps": 120,
+    "bones": 47,
+    "source_fps": 24,
+    "weight_policy": {
+      "Chicken": {
+        "source_sum_range": [
+          0.00017916306029919227,
+          2.012188627384603
+        ],
+        "max_influences": 6,
+        "discarded_by_recipe": 0,
+        "policy": "Normalize positive source ratios before exporter clamp/rounding; actual imported full-skin comparison bounds numerical tail loss. Original mesh points/UVs and source bone hierarchy retained; seven explicit B-Bone segment joints added."
+      },
+      "Eyes": {
+        "source_sum_range": [
+          0.9999938607215881,
+          0.999995768070221
+        ],
+        "max_influences": 1,
+        "discarded_by_recipe": 0,
+        "policy": "Normalize positive source ratios before exporter clamp/rounding; actual imported full-skin comparison bounds numerical tail loss. Original mesh points/UVs and source bone hierarchy retained; seven explicit B-Bone segment joints added."
+      }
+    },
+    "bbone_segments": [
+      {
+        "source": "Backbone",
+        "index": 0,
+        "name": "SourceBB_Backbone_0",
+        "segments": 3,
+        "length": 1.0739432175954182,
+        "rest_correction": [
+          [
+            1.0,
+            3.4640811463759746e-07,
+            1.0421535989735276e-07,
+            3.410605131648481e-13
+          ],
+          [
+            -3.464083135895635e-07,
+            0.8340082764625549,
+            0.5517523288726807,
+            4.172325134277344e-07
+          ],
+          [
+            1.0421490515000187e-07,
+            -0.5517522096633911,
+            0.8340081572532654,
+            5.960464477539063e-08
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "source": "Backbone",
+        "index": 1,
+        "name": "SourceBB_Backbone_1",
+        "segments": 3,
+        "length": 1.0739432175954182,
+        "rest_correction": [
+          [
+            1.0,
+            5.651908168147202e-07,
+            1.517279429208429e-06,
+            -1.078248601515952e-12
+          ],
+          [
+            -1.566579271639057e-06,
+            0.10093656182289124,
+            0.9948931336402893,
+            -2.2351740014414645e-08
+          ],
+          [
+            4.091555751983833e-07,
+            -0.9948930144309998,
+            0.10093635320663452,
+            1.573935435317253e-07
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "source": "Backbone",
+        "index": 2,
+        "name": "SourceBB_Backbone_2",
+        "segments": 3,
+        "length": 1.0739432175954182,
+        "rest_correction": [
+          [
+            1.0,
+            5.365770334719855e-07,
+            1.4339599374579848e-06,
+            2.1316282072803006e-14
+          ],
+          [
+            -1.4853694665362127e-06,
+            0.11289495974779129,
+            0.9936070442199707,
+            -5.960463766996327e-08
+          ],
+          [
+            3.7126000052012387e-07,
+            -0.9936071038246155,
+            0.11289478093385696,
+            1.4901166878189542e-07
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "source": "Backbone",
+        "index": 3,
+        "name": "SourceBB_Backbone_3",
+        "segments": 3,
+        "length": 1.0739432175954182,
+        "rest_correction": [
+          [
+            1.0,
+            1.6641347144741303e-07,
+            2.1260859739413718e-08,
+            -1.1368683772161603e-13
+          ],
+          [
+            -1.6525730472949363e-07,
+            0.9552685022354126,
+            0.29574090242385864,
+            -4.172325134277344e-07
+          ],
+          [
+            2.89052763946529e-08,
+            -0.2957407832145691,
+            0.955268383026123,
+            4.470356529395758e-08
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "source": "Bone.004",
+        "index": 0,
+        "name": "SourceBB_Bone_004_0",
+        "segments": 2,
+        "length": 1.4154008626937866,
+        "rest_correction": [
+          [
+            1.0000001192092896,
+            -1.601996331146438e-07,
+            3.839116402559739e-07,
+            -2.5579538487363607e-13
+          ],
+          [
+            3.949571691919118e-08,
+            0.955268919467926,
+            0.2957392930984497,
+            1.788140480130096e-07
+          ],
+          [
+            -4.1411624351894716e-07,
+            -0.29573914408683777,
+            0.9552688598632812,
+            2.8312223321336205e-07
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "source": "Bone.004",
+        "index": 1,
+        "name": "SourceBB_Bone_004_1",
+        "segments": 2,
+        "length": 1.4154008626937866,
+        "rest_correction": [
+          [
+            1.0000001192092896,
+            -2.4174519808184414e-07,
+            2.3018873207547585e-07,
+            0.0
+          ],
+          [
+            2.648525025961135e-07,
+            0.9943302273750305,
+            -0.10633918642997742,
+            -4.470346652851731e-07
+          ],
+          [
+            -2.0317662574598216e-07,
+            0.10633936524391174,
+            0.9943301677703857,
+            -1.1920918296937089e-07
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "source": "Bone.004",
+        "index": 2,
+        "name": "SourceBB_Bone_004_2",
+        "segments": 2,
+        "length": 1.4154008626937866,
+        "rest_correction": [
+          [
+            1.0000001192092896,
+            8.652499872141561e-08,
+            -2.747025007465709e-07,
+            0.0
+          ],
+          [
+            1.1576304359550704e-08,
+            0.9409590363502502,
+            0.338521271944046,
+            8.344648563252122e-07
+          ],
+          [
+            2.8777432703464e-07,
+            -0.3385211229324341,
+            0.9409589171409607,
+            1.1920896980655016e-07
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      }
+    ],
+    "max_source_world_matrix_element_error": 1.2889504432678223e-06,
+    "corrections": {
+      "BeginPecking": [
+        0.0,
+        0.0014956295490264893
+      ],
+      "Dying": [
+        0.0,
+        0.013969123363494873
+      ],
+      "Eating": [
+        0.0,
+        0.003293067216873169
+      ],
+      "EndPecking": [
+        0.0,
+        0.0014956295490264893
+      ],
+      "Idle": [
+        0.0,
+        0.04028885066509247
+      ],
+      "Idle1": [
+        0.0,
+        0.04049201309680939
+      ],
+      "Idle2": [
+        0.0,
+        0.0
+      ],
+      "Pecking1": [
+        0.0014956295490264893,
+        0.0014956295490264893
+      ],
+      "Pecking2": [
+        0.0014956295490264893,
+        0.0014956295490264893
+      ],
+      "Pecking3": [
+        0.0014956295490264893,
+        0.003293067216873169
+      ],
+      "Walk": [
+        0.0,
+        0.020225152373313904
+      ]
+    },
+    "clips": {
+      "BeginPecking": {
+        "duration": 0.25,
+        "samples": 31
+      },
+      "Dying": {
+        "duration": 1.0,
+        "samples": 121
+      },
+      "Eating": {
+        "duration": 2.2083333333333335,
+        "samples": 266
+      },
+      "EndPecking": {
+        "duration": 0.2916666666666667,
+        "samples": 36
+      },
+      "Idle": {
+        "duration": 49.375,
+        "samples": 5926
+      },
+      "Idle1": {
+        "duration": 3.0833333333333335,
+        "samples": 371
+      },
+      "Idle2": {
+        "duration": 1.5,
+        "samples": 181
+      },
+      "Pecking1": {
+        "duration": 0.4166666666666667,
+        "samples": 51
+      },
+      "Pecking2": {
+        "duration": 0.4166666666666667,
+        "samples": 51
+      },
+      "Pecking3": {
+        "duration": 0.4166666666666667,
+        "samples": 51
+      },
+      "Walk": {
+        "duration": 2.2083333333333335,
+        "samples": 266
+      }
+    },
+    "asset_sha256": "59c583d087a77a725b7214bfc7fba3100f0ca97fb4d2b0d33b6426bff648fce2",
+    "status": "Private full evaluated source/floor bake; imported full-skin fidelity/gaits/native/corpse/distribution pending.",
+    "metadata_revisions": [
+      {
+        "kind": "UTF8 notice-preview decoding correction",
+        "old_manifest_sha256": "1ca1e5a3ca6e0975f3cf0ae01a2faaabe8da3fb38d9e5f665290a8d878a8380d",
+        "new_manifest_sha256": "305c6a4a67f7544186f34a5424c5181896274c855bcea050851302f81f173157",
+        "changed_source_field": "included_notice",
+        "original_archive_and_member_bytes_changed": false,
+        "model_binary_sha256": {
+          "Viewer\\local-art\\chicken\\chicken-source.glb": "59c583d087a77a725b7214bfc7fba3100f0ca97fb4d2b0d33b6426bff648fce2",
+          "Viewer\\local-art\\chicken\\chicken-modern.glb": "bd8d4c657eff1afefb78e3815cf051930439a8c3572bc422b9e93f239c4a045a",
+          "Viewer\\Art\\Creatures\\Chicken\\chicken.glb": "bd8d4c657eff1afefb78e3815cf051930439a8c3572bc422b9e93f239c4a045a"
+        },
+        "explanation": "Only the duplicated human-readable author string and manifest/provenance hashes are corrected; validated source archive, member bytes, conversion code and all model binaries remain unchanged."
+      }
+    ]
+  },
+  "actions": {
+    "source_asset_sha256": "59c583d087a77a725b7214bfc7fba3100f0ca97fb4d2b0d33b6426bff648fce2",
+    "source_preparation_sha256": "640bd36f2c88f22ee2389bb19bf3af45e5f0d579c988ad61a86c385e2a22829d",
+    "gait_sha256": "b8deb9487e79508d4ed4fcf3784e980bda01686a76fc4d17a3899e583a6b786c",
+    "recipe_sha256": "3df1e02c5e832a481fa8cc8b89a4860d935814ca5bb7e305f3e15676a38ffed0",
+    "asset_sha256": "bd8d4c657eff1afefb78e3815cf051930439a8c3572bc422b9e93f239c4a045a",
+    "clips": {
+      "SourceBeginPecking": {
+        "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+        "duration": 0.25,
+        "loop": false
+      },
+      "SourceDying": {
+        "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+        "duration": 1.0,
+        "loop": false
+      },
+      "SourceEating": {
+        "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+        "duration": 2.2083332538604736,
+        "loop": true
+      },
+      "SourceEndPecking": {
+        "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+        "duration": 0.2916666567325592,
+        "loop": false
+      },
+      "SourceIdle": {
+        "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+        "duration": 49.375,
+        "loop": true
+      },
+      "SourceIdle1": {
+        "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+        "duration": 3.0833332538604736,
+        "loop": true
+      },
+      "SourcePecking3": {
+        "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+        "duration": 0.4166666567325592,
+        "loop": true
+      },
+      "SourceWalk": {
+        "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+        "duration": 2.2083332538604736,
+        "loop": true
+      },
+      "SourceIdle2": {
+        "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+        "duration": 1.5,
+        "loop": true
+      },
+      "SourcePecking1": {
+        "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+        "duration": 0.4166666567325592,
+        "loop": true
+      },
+      "SourcePecking2": {
+        "origin": "Retained CC0 source motion, evaluated curved-bone conversion",
+        "duration": 0.4166666567325592,
+        "loop": true
+      },
+      "Idle": {
+        "origin": "Retained Idle2 with declared category/timing adaptation",
+        "duration": 1.5,
+        "loop": true
+      },
+      "Walk": {
+        "origin": "Retained Walk with declared category/timing adaptation",
+        "duration": 0.4,
+        "loop": true
+      },
+      "Run": {
+        "origin": "Authored common-root running bound using retained Walk poses, 2.5cm positive lift and measured short stance/airborne reset; relative source joints unchanged",
+        "duration": 0.8,
+        "loop": true
+      },
+      "Death": {
+        "origin": "Retained Dying with declared category/timing adaptation",
+        "duration": 1.0,
+        "loop": false
+      },
+      "Fidget": {
+        "origin": "Retained Idle1 with declared category/timing adaptation",
+        "duration": 3.0833332538604736,
+        "loop": true
+      },
+      "Eat": {
+        "origin": "Retained Eating with declared category/timing adaptation",
+        "duration": 2.2083332538604736,
+        "loop": true
+      },
+      "Hit": {
+        "origin": "Authored 3.5cm backward/6mm upward common-root recoil over retained Idle2; relative source joints unchanged",
+        "duration": 0.6,
+        "loop": false
+      },
+      "Attack": {
+        "origin": "Authored .64s beak strike assembled from retained BeginPecking/Pecking3/EndPecking; not original UO choreography",
+        "duration": 0.64,
+        "loop": false
+      }
+    },
+    "source_stance_landmarks": {
+      "L": {
+        "median_backward_mps": 0.10194352129967021,
+        "samples": 100,
+        "landmark_min_y": 0.00647591799497604
+      },
+      "R": {
+        "median_backward_mps": 0.10041414928127197,
+        "samples": 98,
+        "landmark_min_y": 0.00633781822398305
+      }
+    },
+    "run_root_range_m": [
+      -0.10203846496014897,
+      0.11275306584571969
+    ],
+    "run_contact_half_phase": 0.03,
+    "floor_policy": "Restore constant Grounding tracks omitted by export, using measured source floor metadata; every clip explicitly resets new shared motion. Relative original joint curves are unchanged.",
+    "locomotion": {
+      "walk_reference_mps": 0.5585914663970464,
+      "run_reference_mps": 2.7,
+      "run_threshold_mps": 3.6,
+      "rate_min": 0.15,
+      "rate_max": 4.0
+    },
+    "status": "Prepared authored category candidate only; actual saved skins/gaits/avatar/native/corpse/distribution pending"
+  },
+  "asset_sha256": "bd8d4c657eff1afefb78e3815cf051930439a8c3572bc422b9e93f239c4a045a",
+  "candidate_runtime_sha256": {
+    "res://Presentation/AnimalPoseLibrary.gd": "5ad64870d2461e5be2a810111883b5bec719f1ad0027438f0c87406872fe23b1",
+    "res://Presentation/BirdGroundSupport.gd": "8ee4d4723df502a1330178ff1358ae395d7d897b743951cb3bd04987a766d1a9",
+    "res://Presentation/ChickenMaterial.gd": "19ab5661c793b7d15911ba5d8ab652a0ad5adb5249ed1492f877b0a3f9aab34d",
+    "res://Presentation/ChickenPresentationTests.gd": "565e512d306147835f7c90ccd84a48c5439aea660c69a3e10151a800603d7860",
+    "res://Presentation/ChickenSurface.gdshader": "f40f45f17c8fb5d4ee3530347dd39cd4d1d4bee6db8d10c24643bafa948032ef",
+    "res://Presentation/ChickenVisual.gd": "7fc2a51833e2bf3290fd0f8a984ad38eae23b977bc44395457564d9cffe248f4",
+    "res://Presentation/CorpseModels.gd": "6db8a5c36d5d00461c9761c922858113d0ff99033847372d35cf3145b27924aa",
+    "res://Presentation/CreatureRegistry.gd": "d64319111942194eddfb794dc4cdf08db3c5be8fda04fa58ded1ef014d02b515",
+    "res://Presentation/CreatureVisual.gd": "33ccb6389365a05697b22d98e308294200cc92fc5b81b01e89b04d8ebe230944",
+    "res://Presentation/FootContact.gd": "9cf690a6dfe1a6114ef449f91e8b8529d120244102ca85c7d142b445c0586ffe",
+    "res://Presentation/HumanActions.gd": "2587400355c47692133286a2ef63b0a382980e3bed220ce0390c78c34d0556ab",
+    "res://Presentation/HumanAvatar.gd": "74b1bf1ce4a842fb87fddbf9f448c51181ee1aca762b21605688bfbee2148a25",
+    "res://Presentation/HumanHue.gd": "297682980166ac5a26f8573db25da3899031ccb35e631b23632d40050c77eff8",
+    "res://Presentation/LegacyAvatar.gd": "75c02a4a3ab0d2e763896405ff6b8270c8f129adb5ccd66a569d95f4e8899f3f",
+    "res://Presentation/MountVisual.gd": "2c7865b3a38930825dcda3ca9155d7c449b6125d6c6b97c9224655db635a7047",
+    "res://Presentation/OstardVisual.gd": "b8a05572f425c0943a9e9c40b2a6a178e51ed4a88215f60fc8c1087011f1eb1f",
+    "res://Presentation/SkinGeometry.gd": "6690454dae7e23f9d4a705afa90f1b6d510dd1263a19930e4f597ee5f36c19aa",
+    "res://Presentation/SourceMountContact.gd": "623317c4621447faee99c9659ac4723696f342fda3576e82a9139d77fa6129e3"
+  },
+  "native_checks": 112,
+  "independence": "No Ultima Online mesh, texture, skeleton, animation or palette. Body208/native behaviour stays authoritative on ModernUO.",
+  "source_notice_file": "SOURCE-LICENSE.txt",
+  "metadata_revision": {
+    "kind": "UTF8 notice-preview decoding correction",
+    "old_manifest_sha256": "1ca1e5a3ca6e0975f3cf0ae01a2faaabe8da3fb38d9e5f665290a8d878a8380d",
+    "new_manifest_sha256": "305c6a4a67f7544186f34a5424c5181896274c855bcea050851302f81f173157",
+    "changed_source_field": "included_notice",
+    "original_archive_and_member_bytes_changed": false,
+    "model_binary_sha256": {
+      "Viewer\\local-art\\chicken\\chicken-source.glb": "59c583d087a77a725b7214bfc7fba3100f0ca97fb4d2b0d33b6426bff648fce2",
+      "Viewer\\local-art\\chicken\\chicken-modern.glb": "bd8d4c657eff1afefb78e3815cf051930439a8c3572bc422b9e93f239c4a045a",
+      "Viewer\\Art\\Creatures\\Chicken\\chicken.glb": "bd8d4c657eff1afefb78e3815cf051930439a8c3572bc422b9e93f239c4a045a"
+    },
+    "explanation": "Only the duplicated human-readable author string and manifest/provenance hashes are corrected; validated source archive, member bytes, conversion code and all model binaries remain unchanged."
+  }
+}
