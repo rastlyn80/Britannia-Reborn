@@ -120,14 +120,13 @@ func conversation() -> void:
 	check(not commands.plan("replace all kind=flower;near=1602,1591,8 999").ok,"group replace refuses unapproved assets")
 	var preview: Dictionary = commands.plan("codepreview gable-under-roof")
 	check(preview.ok and preview.kind == "codepreview" and preview.id == "gable-under-roof" and not commands.plan("codepreview ../etc").ok and not commands.plan("codepreview").ok,"codepreview names one safe preview id; nothing is sent")
-	var pet: Dictionary = commands.plan("pet Horse")
-	sent.clear()
-	var pet_id: int = commands.send(pet)
-	check(pet.ok and pet.kind == "pet" and pet_id > 0 and sent == ["pet %d horse" % pet_id] and not commands.plan("pet dragon").ok and not commands.plan("pet").ok,"pet sends one listed tame kind")
-	var kit: Dictionary = commands.plan("kit mage")
-	sent.clear()
-	var kit_id: int = commands.send(kit)
-	check(kit.ok and kit.kind == "kit" and kit_id > 0 and sent == ["kit %d mage" % kit_id] and not commands.plan("kit ../x").ok and not commands.plan("kit").ok and commands.plan("kit lumberjack").ok,"kit sends one safe kit name; the server owns the list")
+	# Server-only verbs go through as plain words; the server resolves them.
+	for case in [["pet Horse","pet %d Horse"],["kit mage","kit %d mage"],["give Hatchet","give %d Hatchet"],["give Bandage 50","give %d Bandage 50"],["stat str 100","stat %d str 100"],["skill Magery 100","skill %d Magery 100"]]:
+		var p: Dictionary = commands.plan(case[0])
+		sent.clear()
+		var sent_id: int = commands.send(p)
+		check(p.ok and p.kind == "server" and sent_id > 0 and sent == [case[1] % sent_id],"%s is sent as typed (%s)" % [case[0],str(sent)])
+	check(not commands.plan("give ../etc").ok and not commands.plan("give").ok and not commands.plan("stat str 1 2 3").ok,"server verbs refuse anything but up to three plain words")
 	# The live loader reads previewed districts from the preview bake, then back.
 	var live: Node = preload("res://Presentation/LiveDistricts.gd").new()
 	var folder := OS.get_user_data_dir().path_join("preview-test")

@@ -142,8 +142,10 @@ committedSession.Set("Ann", Barrel, 0, "hide", now);
 var commitBatch = committedSession.Batch("Ann", new List<(string, int, string)> { (Barrel, 1, "") }, now, "commit");
 Check(commitBatch.Ok && !committedSession.Undo("Ann", commitBatch.Operation!.Seq, now).Ok && committedSession.Current(Barrel).State == "", "a commit batch cannot be undone (would double-apply)");
 
-Check(DevEditSession.AssistantMay("propose") && DevEditSession.AssistantMay("preview") && new[] { "set", "place", "brush", "batch", "undo", "redo", "lock", "save", "load", "pet", "kit" }.All(v => !DevEditSession.AssistantMay(v)), "assistant may propose and preview, never apply, undo, lock or load");
+Check(DevEditSession.AssistantMay("propose") && DevEditSession.AssistantMay("preview") && new[] { "set", "place", "brush", "batch", "undo", "redo", "lock", "save", "load", "pet", "kit", "give", "stat", "skill" }.All(v => !DevEditSession.AssistantMay(v)), "assistant may propose and preview, never apply, undo, lock or load");
 Check(DevEditSession.ValidPet("horse") && DevEditSession.ValidPet("cat") && !DevEditSession.ValidPet("dragon") && !DevEditSession.ValidPet("Horse"), "pet takes only the listed tame kinds");
+Check(DevEditSession.ValidTypeName("Hatchet") && DevEditSession.ValidTypeName("BlackPearl") && !DevEditSession.ValidTypeName("../x") && !DevEditSession.ValidTypeName("Server.Items.Gold") && !DevEditSession.ValidTypeName("x"), "give/pet/skill names are plain identifiers");
+Check(DevEditSession.ValidStat("str", "100") && DevEditSession.ValidStat("stam", "full") && !DevEditSession.ValidStat("str", "999") && !DevEditSession.ValidStat("luck", "10") && DevEditSession.ValidSkillValue("100") && !DevEditSession.ValidSkillValue("121"), "stat and skill values are bounded");
 Check(DevEditSession.ValidKit("mage") && !DevEditSession.ValidKit("gm") && !DevEditSession.ValidKit(""), "kit takes only the listed test kits");
 
 Console.WriteLine($"DEV EDIT SESSION TESTS: {passes} passed, {failures} failed");

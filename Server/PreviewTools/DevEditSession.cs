@@ -433,9 +433,22 @@ public sealed class DevEditSession
     public static bool ValidPet(string kind) => Array.IndexOf(PetKinds, kind) >= 0;
 
     // Test kits a developer may take ("kit <kind>"): skills and items for trying a system.
-    public static readonly string[] KitKinds = ["mage", "lumberjack", "miner", "fisher", "smith", "tailor", "carpenter", "tinker"];
+    public static readonly string[] KitKinds = ["mage", "lumberjack", "miner", "fisher", "smith", "tailor", "carpenter", "tinker", "stats"];
 
     public static bool ValidKit(string kind) => Array.IndexOf(KitKinds, kind) >= 0;
+
+    // "give <Type> [amount]", "pet <Type>", "stat <name> <value>", "skill <Name> <value>":
+    // names are plain identifiers; the server resolves them to its own types.
+    public static bool ValidTypeName(string name) =>
+        name.Length is > 1 and <= 40 && char.IsLetter(name[0]) && name.All(char.IsLetterOrDigit);
+
+    public static readonly string[] Stats = ["str", "dex", "int", "hits", "stam", "mana"];
+
+    public static bool ValidStat(string name, string value) =>
+        Array.IndexOf(Stats, name) >= 0 && (value == "full" || int.TryParse(value, out var v) && v is >= 1 and <= 250);
+
+    public static bool ValidSkillValue(string value) =>
+        double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out var v) && v is >= 0 and <= 120;
 
     public static bool AssistantMay(string verb) =>
         verb is "join" or "leave" or "ask" or "answer" or "propose" or "resolve" or "preview" or "status";

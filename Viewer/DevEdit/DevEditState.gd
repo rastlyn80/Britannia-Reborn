@@ -237,11 +237,9 @@ func place(asset: int, x: float, y: float, z: int, yaw: int, sender: Callable) -
 func brush(x: int, y: int, radius: int, delta: int, surface: String, sender: Callable) -> int:
 	return _request("brush","terrain brush r%d %+d %s at %d,%d" % [radius,delta,surface,x,y],"brush %%d %d %d %d %d %s" % [x,y,radius,delta,surface],sender)
 
-func pet(kind: String, sender: Callable) -> int:
-	return _request("pet","tame %s" % kind,"pet %%d %s" % kind,sender)
-
-func kit(kind: String, sender: Callable) -> int:
-	return _request("kit","test kit %s" % kind,"kit %%d %s" % kind,sender)
+# Server-only player changes: "<verb> <request> <words…>".
+func server(verb: String, words: Array, description: String, sender: Callable) -> int:
+	return _request(verb,description,"%s %%d %s" % [verb," ".join(words)],sender)
 
 func undo(sender: Callable) -> int:
 	var seq := undo_candidate()

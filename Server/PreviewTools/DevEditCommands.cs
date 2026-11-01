@@ -273,12 +273,25 @@ public static class DevEditCommands
                     break;
                 }
             case "pet" when a.Length == 3:
-                result = !DevEditSession.ValidPet(a[2]) ? Result.Fail("invalid", "pet kinds: " + string.Join(", ", DevEditSession.PetKinds))
+                result = !DevEditSession.ValidTypeName(a[2]) ? Result.Fail("invalid", "pet <creature type>")
                     : DevEditPets.Conjure(mobile, a[2]);
                 break;
+            case "give" when a.Length is 3 or 4:
+                result = !DevEditSession.ValidTypeName(a[2]) || a.Length == 4 && !(int.TryParse(a[3], out var giveAmount) && giveAmount is >= 1 and <= 1000)
+                    ? Result.Fail("invalid", "give <item type> [1-1000]")
+                    : DevEditPets.Give(mobile, a[2], a.Length == 4 ? int.Parse(a[3]) : 1);
+                break;
+            case "stat" when a.Length == 4:
+                result = !DevEditSession.ValidStat(a[2], a[3]) ? Result.Fail("invalid", "stat str|dex|int|hits|stam|mana <1-250|full>")
+                    : DevEditPets.Stat(mobile, a[2], a[3]);
+                break;
+            case "skill" when a.Length == 4:
+                result = !DevEditSession.ValidTypeName(a[2]) || !DevEditSession.ValidSkillValue(a[3]) ? Result.Fail("invalid", "skill <skill name> <0-120>")
+                    : DevEditPets.Skill(mobile, a[2], double.Parse(a[3], CultureInfo.InvariantCulture));
+                break;
             case "kit" when a.Length == 3:
-                result = !DevEditSession.ValidKit(a[2]) ? Result.Fail("invalid", "kits: " + string.Join(", ", DevEditSession.KitKinds))
-                    : DevEditPets.Kit(mobile, a[2]);
+                result = !DevEditSession.ValidKit(a[2].ToLowerInvariant()) ? Result.Fail("invalid", "kits: " + string.Join(", ", DevEditSession.KitKinds))
+                    : DevEditPets.Kit(mobile, a[2].ToLowerInvariant());
                 break;
             case "status":
                 Reply(mobile, $"status|{session.Name}|{session.Revision}|{session.Targets.Count(t => t.Value.State.Length > 0)}|{string.Join(',', Joined.Values.Distinct())}");

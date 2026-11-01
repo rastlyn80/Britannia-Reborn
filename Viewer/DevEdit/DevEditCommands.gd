@@ -10,13 +10,14 @@ extends RefCounted
 # T is a target (s:…, p:…); RULE is a DevEditQuery rule or "selection".
 const State = preload("res://DevEdit/DevEditState.gd")
 const Query = preload("res://DevEdit/DevEditQuery.gd")
-# Tame creatures "pet <kind>" asks the server for (Server DevEditSession.PetKinds).
-const PETS := ["horse","packhorse","llama","packllama","desertostard","forestostard","dog","cat"]
+# Server-only verbs and an example of each (Server DevEditCommands).
+const SERVER_VERBS := {"pet":"pet horse","kit":"kit mage","give":"give Hatchet","stat":"stat str 100","skill":"skill Magery 100"}
 # Test kits "kit <kind>" (Server DevEditSession.KitKinds), described for the card.
 const KITS := {"mage":"Magery and Evaluating Intelligence 100, a spellbook with all spells, a bag of reagents",
 	"lumberjack":"a hatchet","miner":"a pickaxe and a shovel","fisher":"a fishing pole",
 	"smith":"a smith's hammer and 100 iron ingots","tailor":"a sewing kit and 100 cloth",
-	"carpenter":"a saw and 100 boards","tinker":"tinker's tools and 100 iron ingots"}
+	"carpenter":"a saw and 100 boards","tinker":"tinker's tools and 100 iron ingots",
+	"stats":"Strength, Dexterity and Intelligence 100; hits, stamina and mana full"}
 var state: State
 var sender: Callable
 # Callable(area: Rect2i) -> Array of source records (see DevEditQuery).
@@ -65,14 +66,16 @@ func plan(line: String) -> Dictionary:
 		if a.size() != 2 or RegEx.create_from_string("^[a-z][a-z0-9-]{2,40}$").search(a[1]) == null: return fail(line,"codepreview takes one preview id")
 		return {"ok":true,"line":line,"kind":"codepreview","id":a[1],"targets":[],"description":"code fix preview "+a[1]}
 	# A tame creature at the developer's feet: server-only, nothing goes to Git.
-	if verb == "pet":
-		if a.size() != 2 or not a[1].to_lower() in PETS: return fail(line,"pet takes one of: "+", ".join(PETS))
-		return {"ok":true,"line":line,"kind":"pet","pet":a[1].to_lower(),"targets":[],"description":"a tame %s at your feet (server only)" % a[1].to_lower()}
-	if verb == "kit":
-		# The server owns the list, so a kit added there needs no client update.
-		if a.size() != 2 or RegEx.create_from_string("^[a-z]{2,20}$").search(a[1].to_lower()) == null: return fail(line,"kits: "+", ".join(KITS.keys()))
-		var kind := a[1].to_lower()
-		return {"ok":true,"line":line,"kind":"kit","kit":kind,"targets":[],"description":"%s (server only)" % KITS.get(kind,"test kit "+kind)}
+	# Server-only player changes (pet, kit, give, stat, skill): plain words,
+	# checked and resolved by the server, so new item or creature names need
+	# no client update. Nothing goes to Git.
+	if verb in SERVER_VERBS:
+		var words: Array = Array(a.slice(1))
+		var safe := RegEx.create_from_string("^[A-Za-z0-9.]{1,40}$")
+		if words.is_empty() or words.size() > 3 or words.any(func(w: String): return safe.search(w) == null): return fail(line,"%s takes plain words, e.g. %s" % [verb,SERVER_VERBS[verb]])
+		var said := " ".join(words)
+		var description: String = KITS.get(said.to_lower(),"test kit "+said) if verb == "kit" else {"pet":"a tame %s at your feet","give":"give you %s","stat":"set your %s","skill":"set your skill %s"}[verb] % said
+		return {"ok":true,"line":line,"kind":"server","verb":verb,"words":words,"targets":[],"description":description+" (server only)"}
 	var all := a.size() > 2 and a[1] == "all"
 	if all:
 		var scope := resolve(a[2])
@@ -162,6 +165,5 @@ func send(p: Dictionary) -> int:
 		"redo": return state.redo(sender)
 		"save": return state.save(p.name,sender)
 		"load": return state.load_set(p.name,sender)
-		"pet": return state.pet(p.pet,sender)
-		"kit": return state.kit(p.kit,sender)
+		"server": return state.server(str(p.verb),p.words,str(p.description),sender)
 	return 0
