@@ -22,6 +22,9 @@ static func asset_path(record: Dictionary,treatment: String="modern") -> String:
 	return str(record.get("assets",{}).get(treatment,"res://local-art/creatures/"+str(record.get("kind",""))+"-"+treatment+".gltf"))
 static func create(body: int) -> Node3D:
 	var record:=entry(body)
-	var result: Node3D=preload("res://Presentation/EagleVisual.gd").new() if record.get("kind","")=="eagle" else Visual.new()
+	var result: Node3D
+	if record.get("kind","")=="eagle":result=preload("res://Presentation/EagleVisual.gd").new()
+	elif record.get("contact_kind","")=="source_biped":result=preload("res://Presentation/SourceBipedVisual.gd").new()
+	else:result=Visual.new()
 	result.entry=record;return result
 static func matches(visual: Node3D,body: int) -> bool:return visual is Visual and visual.kind==str(entry(body).get("kind",""))

@@ -101,6 +101,19 @@ def main():
                 assert asset['asset_sha256']==tested[kind]['asset_sha256']['modern'],'Hover support used different geometry'
                 assert asset['import_sha256']==tested[kind]['import_sha256']['modern'],'Hover support used a different import'
             assert set(hover['assets'])==set(tested),'Missing floating model support case'
+        if preparation.get('selection_recipe_sha256'):
+            assert preparation['selection_recipe_sha256']==digest(ROOT/'scripts/prepare-creature-kind.py'),'Selected-kind recipe changed after preparation'
+            assert set(preparation['selected_kinds'])=={row['kind'] for row in preparation['models']},'Selected-kind preparation contains unrelated forms'
+        if any(row.get('kind')=='walking_dead_zombie' and row.get('status')=='prepared' for row in preparation['models']):
+            zombie_path=ROOT/'outputs/creatures/walking/zombie-presentation/validation.json'
+            zombie=json.loads(zombie_path.read_text(encoding='utf-8'))
+            assert zombie['failures']==0 and zombie['checks']>=830 and zombie['renderer']=='forward_plus','Zombie needs actual registered-avatar/render-stage support proof'
+            assert len(zombie['terrain'])==102 and zombie['lifted_foot_cases']>=40 and zombie['planted_foot_cases']>=100,'Zombie support must include complete lifted and planted foot cases'
+            required={'ZombiePresentationTests.gd','SourceBipedVisual.gd','SourceBipedSupport.gd','CreatureRegistry.gd','SourceMountContact.gd','SkinGeometry.gd','HumanAvatar.gd'}
+            assert {'res://Presentation/'+name for name in required}<=set(zombie['runtime_sha256']),'Incomplete render-stage zombie support inputs'
+            assert zombie['preparation_sha256']==digest(ART/family/'preparation.json'),'Zombie preparation changed after measured avatar proof'
+            assert all(digest(ROOT/'Viewer'/path.removeprefix('res://'))==sha for path,sha in zombie['runtime_sha256'].items()),'Zombie support/avatar runtime changed after proof'
+            assert zombie['asset_sha256']==tested['walking_dead_zombie']['asset_sha256']['modern'] and zombie['import_sha256']==tested['walking_dead_zombie']['import_sha256']['modern'],'Zombie avatar used a different source skin/import'
         for row in preparation['models']:
             if row['status']!='prepared':continue
             assert not row.get('pending_render_feature'),row.get('pending_render_feature')
