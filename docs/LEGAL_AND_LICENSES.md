@@ -35,3 +35,8 @@ Viewer/Art/MedievalKit holds selected static modules of MedievalKit 5.1.1, dedic
 ## Tennessippi Treant Pack (1 November 2026)
 
 The independent Bogling substitute uses Tree02 mesh, rig, 2048-square albedo/normal maps and ten motions from Tennessippi Studios Free Treant Pack, explicitly CC0 on https://tennessippistudios.itch.io/treant-pack. Exact archive/file pins: scripts/bogling-inputs.json; conversion and modifications: docs/BOGLINGS.md and Viewer/Art/Creatures/Bogling/provenance.json. Artist inputs retain the CC0 exception; original project conversion, new gaits/gestures and shaders are GPL-3.0-or-later. No Ultima Online artwork is included. Anonymous acquisition session tokens, source archive/FBX and local test captures remain excluded.
+
+
+## Independent FireElemental actor (1 November 2026)
+
+Viewer/Art/Creatures/Fire contains original project GPL-3.0-or-later crossed flame ribbons, procedural shader, ash footprint and death conversion. The retained 65-bone rig and selected UAL1 motions originate with Quaternius Universal Base Characters Standard and Universal Animation Library Standard, CC0-1.0, through the pinned existing Water carrier. Exact sources/hashes/modifications: docs/FIRE_ELEMENTALS.md and the Fire/Water provenance and NOTICE files. The Water/human body mesh is replaced entirely. No Ultima Online mesh, atlas, rig, animation or original particle definition is included; private inputs and local captures stay excluded.

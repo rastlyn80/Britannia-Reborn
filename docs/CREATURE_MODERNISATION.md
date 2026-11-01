@@ -1,3 +1,9 @@
+# Public fire actor, source-preserving small-snake trial - 1 November 2026
+
+FireElemental15 is an independent GPL flame-ribbon/ash actor on the retained CC0 rig/UAL carrier:15 saved categories, explicitly authored death and17 runtime categories. Actual public source/avatar/native/clean-distribution gates pass, including genuine SummonedFireElemental API/corpse suppression and four transient-death regressions after the component-material fix. All42 local groups,181 corpse variants/1,704 rendered checks and full root verification/current Air/Bogling controls pass. [Exact sources, recipe, evidence and gaps](FIRE_ELEMENTALS.md).
+
+Bounded tested bodies149/279(53.4%);generic slots2,532/3,385(74.8%,including reuse),853 missing. Specialized human/mount groups stay separate; no final-art/original-choreography completion is claimed. Next IceSnake/Snake/LavaSnake share native52. Their unaccepted18% source wrapper and native-colour previews retain the giant-serpent18-bone source; private dynamic weighted bounds cover171 holdout poses. Finish native profile/hues/actions/contact/corpse/current gates, then Chicken/Lich/full occurrence queue. Preserve source exclusions and production/concurrent work; no routine approval stop.
+
 # Bogling public substitute and next flame actor - 1 November 2026
 
 Bogling779 is integrated with traceable CC0 Tree02 art, its complete ten-action donor set, five authored categories, retained maps, calibrated gaits and eight-weight support/native static corpse. Actual public source/motion/render/native/distribution gates and all42 prior local groups/180 corpse variants/full root verification pass. [Exact evidence, sources, reproduction and limits](BOGLINGS.md). Bounded native bodies148/279(53.0%);generic slots2,508/3,356(74.7%,including reuse),848 missing. Specialized human/mount categories remain separate. This is not full original choreography or final-art completion.

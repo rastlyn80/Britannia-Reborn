@@ -1,0 +1,225 @@
+{
+  "license": "Original GPL-3.0-or-later flame ribbons/procedural shader/ash and conversion; retained Quaternius CC0 rig/UAL1 motions from pinned independent Water carrier.",
+  "carrier_sha256": "6b0856ae574b5571cbd79cb2682a0904ce1cb59a54da24f51b9e4d29b7e49bd8",
+  "preparation": {
+    "asset_sha256": "b7118078ff6a3f2a1b7ff399341c838aae25d561d0322a0c17c16ad2d71d253b",
+    "bones": 65,
+    "carrier_sha256": "6b0856ae574b5571cbd79cb2682a0904ce1cb59a54da24f51b9e4d29b7e49bd8",
+    "clips": {
+      "Attack": {
+        "duration": 0.866666674613953,
+        "loop": false,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+      },
+      "Attack2": {
+        "duration": 1.0,
+        "loop": false,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+      },
+      "Attack3": {
+        "duration": 1.53333330154419,
+        "loop": false,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+      },
+      "Cast": {
+        "duration": 0.5,
+        "loop": false,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+      },
+      "Cast2": {
+        "duration": 0.533333361148834,
+        "loop": false,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+      },
+      "Cast3": {
+        "duration": 0.433333337306976,
+        "loop": false,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+      },
+      "Death": {
+        "duration": 1.4,
+        "loop": false,
+        "origin": "Private authored flame dissipation and settling ash trial"
+      },
+      "Death2": {
+        "duration": 1.4,
+        "loop": false,
+        "origin": "Private authored flame dissipation and settling ash trial"
+      },
+      "Fidget": {
+        "duration": 2.93333339691162,
+        "loop": true,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+      },
+      "Hit": {
+        "duration": 0.333333343267441,
+        "loop": false,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+      },
+      "Hit2": {
+        "duration": 0.433333337306976,
+        "loop": false,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+      },
+      "Idle": {
+        "duration": 2.5,
+        "loop": true,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+      },
+      "Pillage": {
+        "duration": 0.833333313465118,
+        "loop": false,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+      },
+      "Run": {
+        "duration": 0.933333337306976,
+        "loop": true,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+      },
+      "Walk": {
+        "duration": 1.33333337306976,
+        "loop": true,
+        "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+      }
+    },
+    "geometry_sha256": "094964dad9df9ec5f33e78241411128900161975019ebc3f8e8a20aa06a68335",
+    "recipe_sha256": "c7b611972e87e47f073ed848ca07cd097632a097b2e4cf7fbdaf3a04aebcd6dd",
+    "scope": "Independent GPL crossed flame ribbons, procedural fire shader and retained project-authored radial footprint used as ash; retained CC0 rig/UAL actions from existing public Water carrier with its body replaced. No source game marker/texture in this scene. No installed route or native coverage yet.",
+    "shader_displacement_margin": 0.08,
+    "shader_sha256": "b227574a042afe4b392cdf988e7f3bd7a4ae80b306393493fc07056e43bde693",
+    "triangles": 1632,
+    "vertices": 1836
+  },
+  "asset_sha256": "b7118078ff6a3f2a1b7ff399341c838aae25d561d0322a0c17c16ad2d71d253b",
+  "candidate_runtime_sha256": {
+    "res://Presentation/CorpseModels.gd": "6db8a5c36d5d00461c9761c922858113d0ff99033847372d35cf3145b27924aa",
+    "res://Presentation/CreatureRegistry.gd": "1918933eb2bca3c3bf8b515837446d9cd5a58ecb58642466eac27069baebbbd2",
+    "res://Presentation/CreatureVisual.gd": "33ccb6389365a05697b22d98e308294200cc92fc5b81b01e89b04d8ebe230944",
+    "res://Presentation/FireElementalMaterial.gd": "1583c0b89a251e0e49e9fa08f9f85bb4d44bfe16e44152533685887bfa095744",
+    "res://Presentation/FireElementalPresentationTests.gd": "6b20535f527db3fd0e5f1b7d1fdc94ed69683aae006a6085d39e66236f2c61c7",
+    "res://Presentation/FireElementalSurface.gdshader": "b227574a042afe4b392cdf988e7f3bd7a4ae80b306393493fc07056e43bde693",
+    "res://Presentation/FireElementalVisual.gd": "fcf625fb5ff57239c35386def5f9ba79cdb7e4b15f30251283546f1451a1a543",
+    "res://Presentation/HumanAvatar.gd": "b322bfb7ba0c8b73c199eaf7d812e5aeaa6db16e7abbbd863d630acde2961438",
+    "res://Presentation/SkinGeometry.gd": "6690454dae7e23f9d4a705afa90f1b6d510dd1263a19930e4f597ee5f36c19aa"
+  },
+  "independent_carrier_sources": {
+    "inputs": {
+      "Viewer/Art/Quaternius/Character/Superhero_Male_FullBody.gltf": "96edb76572b387b38cdcbab746034d2534da74c1ba86bcef8d049fff1a40aec2",
+      "Viewer/Art/Quaternius/Character/Superhero_Male_FullBody.bin": "459003f9745853ae562a85506a2b94dd56515c1f37728f9fa3d2ce1a3e4cd92f",
+      "Viewer/Art/Quaternius/Animation/UAL1_Standard.glb": "69591853d817488edaa8fd9bf8fc1d821eaeaf789f8627b3cd23b41c4ed67997"
+    },
+    "recipe": "04914e4b8dcb68a81701d5c8387daba581918a957be2eadb5217b7bd6cd0e1c1",
+    "asset_sha256": "6b0856ae574b5571cbd79cb2682a0904ce1cb59a54da24f51b9e4d29b7e49bd8",
+    "preparation": {
+      "bones": 65,
+      "clips": {
+        "Attack": {
+          "duration": 0.866666674613953,
+          "loop": false,
+          "origin": "Retargeted Quaternius UAL1 Standard: Punch_Jab",
+          "support_policy": "fluid_base"
+        },
+        "Attack2": {
+          "duration": 1.0,
+          "loop": false,
+          "origin": "Retargeted Quaternius UAL1 Standard: Punch_Cross",
+          "support_policy": "fluid_base"
+        },
+        "Attack3": {
+          "duration": 1.53333330154419,
+          "loop": false,
+          "origin": "Retargeted Quaternius UAL1 Standard: Sword_Attack",
+          "support_policy": "fluid_base"
+        },
+        "Cast": {
+          "duration": 0.5,
+          "loop": false,
+          "origin": "Retargeted Quaternius UAL1 Standard: Spell_Simple_Shoot",
+          "support_policy": "fluid_base"
+        },
+        "Cast2": {
+          "duration": 0.533333361148834,
+          "loop": false,
+          "origin": "Retargeted Quaternius UAL1 Standard: Spell_Simple_Enter",
+          "support_policy": "fluid_base"
+        },
+        "Cast3": {
+          "duration": 0.433333337306976,
+          "loop": false,
+          "origin": "Retargeted Quaternius UAL1 Standard: Spell_Simple_Exit",
+          "support_policy": "fluid_base"
+        },
+        "Death": {
+          "duration": 1.25,
+          "loop": false,
+          "origin": "Authored liquid collapse",
+          "support_policy": "fluid_base"
+        },
+        "Death2": {
+          "duration": 1.25,
+          "loop": false,
+          "origin": "Authored liquid collapse",
+          "support_policy": "fluid_base"
+        },
+        "Fidget": {
+          "duration": 2.93333339691162,
+          "loop": true,
+          "origin": "Retargeted Quaternius UAL1 Standard: Idle_Talking",
+          "support_policy": "fluid_base"
+        },
+        "Hit": {
+          "duration": 0.333333343267441,
+          "loop": false,
+          "origin": "Retargeted Quaternius UAL1 Standard: Hit_Chest",
+          "support_policy": "fluid_base"
+        },
+        "Hit2": {
+          "duration": 0.433333337306976,
+          "loop": false,
+          "origin": "Retargeted Quaternius UAL1 Standard: Hit_Head",
+          "support_policy": "fluid_base"
+        },
+        "Idle": {
+          "duration": 2.5,
+          "loop": true,
+          "origin": "Retargeted Quaternius UAL1 Standard: Idle",
+          "support_policy": "fluid_base"
+        },
+        "Pillage": {
+          "duration": 0.833333313465118,
+          "loop": false,
+          "origin": "Retargeted Quaternius UAL1 Standard: PickUp_Table",
+          "support_policy": "fluid_base"
+        },
+        "Run": {
+          "duration": 0.933333337306976,
+          "loop": true,
+          "origin": "Retargeted Quaternius UAL1 Standard: Jog_Fwd",
+          "support_policy": "fluid_base"
+        },
+        "Walk": {
+          "duration": 1.33333337306976,
+          "loop": true,
+          "origin": "Retargeted Quaternius UAL1 Standard: Walk",
+          "support_policy": "fluid_base"
+        }
+      },
+      "discarded_weight": 0.0,
+      "envelope": {
+        "position": [
+          -0.823237538337708,
+          -0.0350000001490116,
+          -0.785330653190613
+        ],
+        "size": [
+          1.61103856563568,
+          1.86727702617645,
+          1.67673528194427
+        ]
+      },
+      "seam_vertices": 80,
+      "triangles": 12428
+    }
+  },
+  "independence": "Own flame ribbons and shader replace the carrier body entirely; only the project-authored radial footprint, CC0 rig and selected UAL1 motion remain. No game mesh, atlas, rig, animation or recovered particle definition."
+}

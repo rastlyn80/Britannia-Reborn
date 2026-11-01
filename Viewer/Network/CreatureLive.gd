@@ -62,7 +62,7 @@ func run() -> void:
 			var response:=await reply(sex,"prepare "+str(body)+(" "+str(candidate.native_class) if candidate.has("native_class") else ""),"UCCREATURE|prepared|")
 			if response.is_empty():return
 			var fields:=response.split("|");var serial:=int(fields[2]);var native_class:=str(fields[4])
-			if native_class=="SummonedAirElemental" and not check(fields[8]=="summoned","Air summon is created through the native summoning API, not merely its class constructor"):return
+			if native_class in ["SummonedAirElemental","SummonedFireElemental"] and not check(fields[8]=="summoned","Elemental summon is created through the native summoning API, not merely its class constructor"):return
 			print("CREATURE NATIVE PREPARED ",response)
 			var native_state:=str(fields[8])
 			if candidate.has("native_class") and not check(native_class==str(candidate.native_class),"Requested native class is exercised even when several classes share a body"):return

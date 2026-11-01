@@ -76,6 +76,10 @@ if (Test-Path "$root/Viewer/Art/Creatures/Bogling/bogling.glb") {
   & python -B "$root/scripts/test-bogling-distribution.py"
   if ($LASTEXITCODE) {throw 'Public Bogling rig, normal maps, action skins and static corpse distribution failed'}
 }
+if (Test-Path "$root/Viewer/Art/Creatures/Fire/fire-elemental.scn") {
+  & python -B "$root/scripts/test-fire-distribution.py"
+  if ($LASTEXITCODE) {throw 'Public FireElemental rig/actions, static ash and transient death cleanup distribution failed'}
+}
 foreach ($kind in @('desert','forest','frenzied','ethereal')) {
  if (Test-Path "$root/Viewer/local-art/ostards/$kind-modern.gltf") {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/OstardTests.gd -- "--kind=$kind"

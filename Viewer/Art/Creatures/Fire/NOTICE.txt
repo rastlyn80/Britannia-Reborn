@@ -1,0 +1,5 @@
+FireElemental flame ribbons, shader, ash footprint, conversion and authored death: original Britannia Reborn project work, GPL-3.0-or-later; root LICENSE.
+Retained rig and selected UAL1 actions: Quaternius, CC0-1.0, through the pinned public Water carrier. No original human or Water body mesh is retained.
+https://quaternius.itch.io/universal-base-characters
+https://quaternius.itch.io/universal-animation-library
+Exact input hashes/source history: provenance.json and Art/Creatures/Water/NOTICE.txt. No Ultima Online mesh, texture, rig, clip or particle definition is included.

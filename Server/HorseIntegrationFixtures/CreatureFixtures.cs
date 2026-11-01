@@ -169,7 +169,7 @@ public static class CreatureFixtures
                     }
                     creature.Frozen = true;
                     var location = new Point3D(owner.X + 1, owner.Y, owner.Z);
-                    if (creature is SummonedAirElemental)
+                    if (creature is SummonedAirElemental or SummonedFireElemental)
                     {
                         // The real summon API establishes master, duration,
                         // follower limits and native corpse suppression.

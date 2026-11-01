@@ -2593,6 +2593,251 @@
       "recipe_sha256": "ddac39908e410be81e97bc4abfbcf6f583b2a7bd6799877c3566536dc22875d5",
       "asset_sha256": "8a9c88b8ca649bf43bfcf9bc697682356739a14fdef32f8fc14d0fddb0468c68",
       "native_validation": "Real Bogling constructor on both owners; repeat native/avatar checks on installed public route"
+    },
+    {
+      "kind": "fire_elemental",
+      "family": "fire",
+      "status": "validated",
+      "profile": "monster",
+      "movement_mode": "source_hover",
+      "surface_kind": "flame_pbr",
+      "assets": {
+        "modern": "res://Art/Creatures/Fire/fire-elemental.scn"
+      },
+      "bodies": [
+        {
+          "body": 15,
+          "name": "FireElemental / SummonedFireElemental",
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "native_profile": "monster",
+          "native_sources": [
+            {
+              "path": "Projects/UOContent/Mobiles/Monsters/Elemental/Magic/FireElemental.cs",
+              "sha256": "ea727b28bfa266d2674ebab61c5b933d18cf3704ed448b67a96e9a5e2093f0a5"
+            },
+            {
+              "path": "Projects/UOContent/Mobiles/Monsters/Summons/SummonedFireElemental.cs",
+              "sha256": "e84f72bae888d88d5fb691b26ff8237bb2075f90ac5c311e5107a59547087e4c"
+            }
+          ]
+        }
+      ],
+      "source": "https://github.com/rastlyn80/Britannia-Reborn",
+      "license": "Original GPL-3.0-or-later flame ribbons/procedural shader/ash and conversion; retained Quaternius CC0 rig/UAL1 motions from pinned independent Water carrier.",
+      "source_interpretation": "Independent authored flame actor; no recovered Third Dawn Fire actor/particle binding or original UO choreography. Original stats describe retained independent donor rig plus new geometry, not game art.",
+      "partial_hue_interpretation": "Authored smooth hot-core and inner-ash colour regions; no recovered original UO partial mask.",
+      "stats": {
+        "original": {
+          "bones": 65,
+          "height_m": 2.2,
+          "clips": {
+            "Attack": {
+              "duration": 0.866666674613953,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Attack2": {
+              "duration": 1.0,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Attack3": {
+              "duration": 1.53333330154419,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Cast": {
+              "duration": 0.5,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Cast2": {
+              "duration": 0.533333361148834,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Cast3": {
+              "duration": 0.433333337306976,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Death": {
+              "duration": 1.4,
+              "loop": false,
+              "origin": "Private authored flame dissipation and settling ash trial"
+            },
+            "Death2": {
+              "duration": 1.4,
+              "loop": false,
+              "origin": "Private authored flame dissipation and settling ash trial"
+            },
+            "Fidget": {
+              "duration": 2.93333339691162,
+              "loop": true,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Hit": {
+              "duration": 0.333333343267441,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Hit2": {
+              "duration": 0.433333337306976,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Idle": {
+              "duration": 2.5,
+              "loop": true,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Pillage": {
+              "duration": 0.833333313465118,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Run": {
+              "duration": 0.933333337306976,
+              "loop": true,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Walk": {
+              "duration": 1.33333337306976,
+              "loop": true,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            }
+          }
+        },
+        "modern": {
+          "bones": 65,
+          "height_m": 2.2,
+          "clips": {
+            "Attack": {
+              "duration": 0.866666674613953,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Attack2": {
+              "duration": 1.0,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Attack3": {
+              "duration": 1.53333330154419,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Cast": {
+              "duration": 0.5,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Cast2": {
+              "duration": 0.533333361148834,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Cast3": {
+              "duration": 0.433333337306976,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Death": {
+              "duration": 1.4,
+              "loop": false,
+              "origin": "Private authored flame dissipation and settling ash trial"
+            },
+            "Death2": {
+              "duration": 1.4,
+              "loop": false,
+              "origin": "Private authored flame dissipation and settling ash trial"
+            },
+            "Fidget": {
+              "duration": 2.93333339691162,
+              "loop": true,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Hit": {
+              "duration": 0.333333343267441,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Hit2": {
+              "duration": 0.433333337306976,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Idle": {
+              "duration": 2.5,
+              "loop": true,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Pillage": {
+              "duration": 0.833333313465118,
+              "loop": false,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Run": {
+              "duration": 0.933333337306976,
+              "loop": true,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "Walk": {
+              "duration": 1.33333337306976,
+              "loop": true,
+              "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            }
+          }
+        }
+      },
+      "authored_replacements": {
+        "Attack": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash",
+        "Attack2": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash",
+        "Attack3": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash",
+        "Cast": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash",
+        "Cast2": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash",
+        "Cast3": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash",
+        "Death": "Private authored flame dissipation and settling ash trial",
+        "Death2": "Private authored flame dissipation and settling ash trial",
+        "Fidget": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash",
+        "Hit": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash",
+        "Hit2": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash",
+        "Idle": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash",
+        "Pillage": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash",
+        "Run": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash",
+        "Walk": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+      },
+      "loop_categories": [
+        "Fidget",
+        "Idle",
+        "Run",
+        "Walk"
+      ],
+      "camera_height": 1.7,
+      "pick_bounds": {
+        "position": [
+          -0.9315520095825199,
+          -0.07680000077933073,
+          -1.060372965335846
+        ],
+        "size": [
+          1.8967259263992338,
+          2.2496273581311113,
+          2.137051317691801
+        ]
+      },
+      "new_action_categories": {
+        "2": "Hit",
+        "5": "Fidget",
+        "14": "Pillage"
+      },
+      "recipe_sha256": "c7b611972e87e47f073ed848ca07cd097632a097b2e4cf7fbdaf3a04aebcd6dd",
+      "asset_sha256": "b7118078ff6a3f2a1b7ff399341c838aae25d561d0322a0c17c16ad2d71d253b",
+      "native_validation": "Actual native FireElemental constructor and SummonedFireElemental via real Summon API on both owners; repeat on public route"
     }
   ]
 }
