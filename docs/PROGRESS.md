@@ -1239,6 +1239,11 @@ Saved graceful restart loaded 297 items and 3 mobiles. Population remains idempo
 
 # Progress — 25 October 2026
 
+## 1 November 2026 - Torches and Night Sight light your way
+
+- Owner: in a dungeon a torch made no difference. Underground the client no longer lights you by default: without a light source only a faint cool glow (6 m) and a dim ambient remain; a lit torch, lantern or candle in hand (tiledata light-source flag 0x800000, which unlit ones lack) gives the warm 17 m flickering light with shadows, also outside as night deepens; Night Sight (the server's personal light, 26 x Magery/100) brightens the whole cave in an even cool light. LightingRig.set_underground(amount, carrier, carried), World.carrying_light().
+- Evidence: UndergroundTests 22/0 (3 new); renders of Covetous level 1 without light, with a torch and with Night Sight; scripts/verify.ps1 passed.
+
 ## 1 November 2026 - Picking up ground items, personal space, movement reset
 
 - Ground items (owner request): items the server marks movable (flag 0x20) carry a soft breathing gold rim within 14 tiles and glow brighter on hover, where Viewer/Network/GrabCard.gd shows picture, name, amount, Take and Open/Use. A click (or double-click) takes a loose item into the backpack (on release); containers open on click and offer Take on the card; dragging carries the item like a backpack item (backpack, containers, another ground spot; stacks ask how many). Doors and signs are never offered. GameSession.move_item now allows moving a ground item to another ground spot.

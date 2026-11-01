@@ -355,13 +355,22 @@ func _ready() -> void:
 	world_ready = true
 	print("VIEWER PASS: schema, coordinate transform, %d terrain samples, %d statics" % [world.terrain.size(),world.statics.size()])
 
+# A lit light source in your hands (tiledata light-source flag 0x800000: a
+# lit torch, lantern or candle; unlit ones lack it).
+func carrying_light() -> bool:
+	var data: Dictionary = world.get("staticData",{})
+	for layer in [1,2]:
+		var item: Dictionary = game.equipment.get(layer,{})
+		if not item.is_empty() and int(data.get(str(int(item.get("id",0))),{}).get("flags",0)) & 0x800000: return true
+	return false
+
 func _process(delta: float) -> void:
 	if not world_ready: return
 	if city_stream and game.phase == "world":
 		city_stream.follow(Vector2i(game.player.x,game.player.y))
 		if underground and not underground.folder.is_empty() and avatars.has(player_serial) and lighting_rig:
 			var carrier: Node3D = avatars[player_serial]
-			lighting_rig.set_underground(underground.update(Vector2i(game.player.x,game.player.y),carrier.global_position.y,delta),carrier.global_position)
+			lighting_rig.set_underground(underground.update(Vector2i(game.player.x,game.player.y),carrier.global_position.y,delta),carrier.global_position,carrying_light())
 	# The status panel's first line carries the player's tile, so screenshots
 	# of defects identify their place.
 	if game.phase == "world":

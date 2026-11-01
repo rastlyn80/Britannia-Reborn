@@ -23,6 +23,12 @@ var sky_mode := ""
 var underground := 0.0
 var torch: OmniLight3D
 var torch_clock := 0.0
+# What lights your way (owner: a torch or Night Sight must make a difference):
+# a lit light source in hand (tiledata light-source flag) gives a warm torch
+# glow underground and at night; the server's personal light (Night Sight and
+# the like, 0x4E) brightens everything around you; with neither, a dungeon
+# keeps only a faint glow at your feet.
+var carrying_light := false
 # Death (DeathScreen): the world drains to black and white while a ghost.
 var dead := false
 var colour := 1.0
@@ -245,7 +251,8 @@ func _process(delta: float) -> void:
  colour = move_toward(colour,0.0 if dead else 1.0,delta/(1.6 if dead else 1.0))
  if torch and torch.visible:
   torch_clock += delta
-  torch.light_energy = underground*(2.6+0.12*sin(torch_clock*9.3)+0.08*sin(torch_clock*23.1+1.7))
+  if carrying_light: torch.light_energy = light_need()*(2.6+0.12*sin(torch_clock*9.3)+0.08*sin(torch_clock*23.1+1.7))
+  else: torch.light_energy = underground*0.7
  _blend()
  _animate_precipitation(delta)
 
@@ -273,7 +280,7 @@ func _apply_atmosphere(minute: float, wet: float, level: float, personal: float)
  sky_material.set_shader_parameter("storm",wet)
  # Update at 2Hz, avoiding continual reflection-cubemap regeneration.
  sky_material.set_shader_parameter("cloud_clock",floorf(cloud_clock*2.0)/2.0)
- outdoor = {"sun":sun.light_energy,"ambient":environment.ambient_light_energy,"fog":environment.fog_light_color,"density":environment.fog_density,"exposure":environment.tonemap_exposure}
+ outdoor = {"sun":sun.light_energy,"ambient":environment.ambient_light_energy,"fog":environment.fog_light_color,"density":environment.fog_density,"exposure":environment.tonemap_exposure,"day":day}
  _blend()
 
 # Underground and death presentation over the outdoor values: no sun or sky,
@@ -282,14 +289,16 @@ func _apply_atmosphere(minute: float, wet: float, level: float, personal: float)
 func _blend() -> void:
  if outdoor.is_empty(): return
  var u := underground
+ var sight := night_sight()
  sun.light_energy = float(outdoor.sun)*(1.0-u)
- environment.ambient_light_energy = lerpf(float(outdoor.ambient),0.62,u)
+ # Underground: dark without help, much clearer with Night Sight.
+ environment.ambient_light_energy = lerpf(float(outdoor.ambient),lerpf(0.28,0.85,sight),u)
  environment.ambient_light_sky_contribution = lerpf(0.65,0.0,u)
- environment.ambient_light_color = Color("c6d4dc").lerp(Color("6a7488"),u)
+ environment.ambient_light_color = Color("c6d4dc").lerp(Color("5c6679").lerp(Color("8fa0bc"),sight),u)
  environment.fog_light_color = (outdoor.fog as Color).lerp(Color.BLACK,u)
  environment.fog_density = lerpf(float(outdoor.density),1.0,u)
  environment.fog_depth_begin = lerpf(35.0,9.0,u)
- environment.fog_depth_end = lerpf(420.0,46.0,u)
+ environment.fog_depth_end = lerpf(420.0,lerpf(40.0,64.0,maxf(sight,0.5 if carrying_light else 0.0)),u)
  environment.fog_depth_curve = lerpf(1.25,1.1,u)
  environment.fog_aerial_perspective = lerpf(0.8,0.0,u)
  environment.fog_sky_affect = lerpf(0.45,1.0,u)
@@ -300,9 +309,20 @@ func _blend() -> void:
  environment.adjustment_saturation = 0.96*colour
  environment.adjustment_contrast = lerpf(1.18,1.08,colour)
 
-func set_underground(amount: float, carrier: Vector3) -> void:
+# The personal light the server grants (0x4E: Night Sight, potions), 0..1.
+func night_sight() -> float:
+ # Night Sight grants up to 26 (26 x Magery/100); modest skill still shows.
+ return pow(clampf(float(server_environment.get("personal_light",0))/26.0,0.0,1.0),0.6)
+
+# How strongly a carried light shows: fully underground, and as the night
+# deepens outside.
+func light_need() -> float:
+ return maxf(underground,(1.0-float(outdoor.get("day",1.0)))*0.85)
+
+func set_underground(amount: float, carrier: Vector3, carried := false) -> void:
  if frozen: return
  underground = amount
+ carrying_light = carried
  if torch == null:
   torch = OmniLight3D.new()
   torch.name = "CarriedLight"
@@ -312,7 +332,12 @@ func set_underground(amount: float, carrier: Vector3) -> void:
   torch.shadow_enabled = true
   torch.shadow_blur = 1.4
   add_child(torch)
- torch.visible = amount > 0.01
+ torch.visible = light_need() > 0.01
+ # A lit torch: warm, far-reaching, casting shadows. Otherwise underground,
+ # only a faint cool glow so you are not blind.
+ torch.light_color = Color("ffb870") if carrying_light else Color("9fb0c8")
+ torch.omni_range = 17.0 if carrying_light else 6.0
+ torch.shadow_enabled = carrying_light
  # Above and behind the shoulder, so the character's own shadow falls ahead.
  torch.global_position = carrier+Vector3(0.0,2.4,0.0)
  _blend()
