@@ -94,14 +94,16 @@ func run() -> void:
 			var animal:=str(candidate.profile) in ["animal","sea"]
 			var actions: Array=[5,9,3,11,-1] if animal else [4,17,-1]
 			if not animal:
-				for extra in [[5,"Attack2"],[6,"Attack3"],[12,"Cast"],[-2,"Cast"],[19,"Fly"],[20,"Land"]]:
+				for extra in [[5,"Attack2"],[6,"Attack3"],[11,"Pillage"],[12,"Cast"],[-2,"Cast"],[19,"Fly"],[20,"Land"]]:
 					if actor.horse_visual.animator.has_animation(extra[1]):actions.append(extra[0])
+				for extra in [[-3,2],[-4,5],[-5,14]]:
+					if actor.horse_visual.entry.get("new_action_categories",{}).has(str(extra[1])):actions.append(extra[0])
 			for action in actions:
 				session.last_mobile_actions.erase(serial);observer.last_mobile_actions.erase(serial)
 				await reply(sex,"action "+str(action),"UCCREATURE|action|")
 				if not check(await until(func():return session.last_mobile_actions.has(serial) and observer.last_mobile_actions.has(serial)),"native action reaches both clients"):return
 				if not check(actor.receive_native_action(session.last_mobile_actions[serial]),"actual creature consumes native action"):return
-				var expected:=str({5:"Attack",9:"Fidget",3:"Eat",11:"LieDown",-1:"Hit"}.get(action,"")) if animal else str({4:"Attack",5:"Attack2",6:"Attack3",12:"Cast",-2:"Cast",17:"Fidget",-1:"Hit",19:"Fly",20:"Land"}.get(action,""))
+				var expected:=str({5:"Attack",9:"Fidget",3:"Eat",11:"LieDown",-1:"Hit"}.get(action,"")) if animal else str({4:"Attack",5:"Attack2",6:"Attack3",11:"Pillage",12:"Cast",-2:"Cast",-3:"Hit",-4:"Fidget",-5:"Pillage",17:"Fidget",-1:"Hit",19:"Fly",20:"Land"}.get(action,""))
 				if not check(actor.horse_visual.current_clip==expected,"native action selects the intended category"):return
 				if expected=="Fly" and not check(not actor.horse_visual.contact.enabled,"airborne source clip releases foot contact"):return
 			var death_direction:=int(session.entities[serial].direction)

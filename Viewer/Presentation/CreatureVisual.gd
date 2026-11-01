@@ -132,6 +132,7 @@ func receive_action(request: Dictionary) -> bool:
 		else:
 			clip=str({0:"Walk",1:"Idle",2:"Death",3:"Death2",4:"Attack",5:"Attack2",6:"Attack3",7:"AttackBow",8:"AttackXBow",9:"AttackThrow",10:"Hit",11:"Pillage",12:"Cast",13:"Hit",14:"Cast3",15:"Hit",16:"Hit",17:"Fidget",18:"Fidget",19:"Fly",20:"Land",21:"Death"}.get(action,""))
 	elif str(request.get("protocol",""))=="new":clip=str({0:"Attack",3:"Death",4:"Hit",11:"Cast"}.get(int(request.get("type",-1)),""))
+	if str(request.get("protocol",""))=="new":clip=str(entry.get("new_action_categories",{}).get(str(int(request.get("type",-1))),clip))
 	var replacement:={"Attack2":"Attack","Attack3":"Attack","Death2":"Death","Alert":"Fidget"}
 	if not animator.has_animation(clip) and replacement.has(clip):clip=replacement[clip]
 	if clip.is_empty() or not animator.has_animation(clip) or dead and clip not in ["Death","Death2"]:

@@ -65,6 +65,10 @@ foreach ($family in $Families) {
   & $godot --path "$root/Viewer" --script res://Presentation/MineralAppearanceTests.gd *> "$logs/$family-minerals.log"
   if ($LASTEXITCODE) {throw 'Mineral PBR map/tangent/material response checks failed'}
  }
+ if ($family -eq 'orcs') {
+  & $godot --path "$root/Viewer" --script res://Presentation/CreatureGestureTests.gd *> "$logs/$family-gestures.log"
+  if ($LASTEXITCODE) {throw 'Authored orc gesture, stance, grip and GPU response checks failed'}
+ }
  $started=[DateTime]::UtcNow
  $arguments='--path "'+$root+'/Viewer" --script res://Presentation/CreatureAppearanceTests.gd -- --family='+$family
  $process=Start-Process $godot -ArgumentList $arguments -WorkingDirectory $root -WindowStyle Hidden -PassThru -RedirectStandardOutput "$logs/$family-gpu.log" -RedirectStandardError "$logs/$family-gpu-errors.log"

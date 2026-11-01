@@ -48,6 +48,7 @@ def main():
             body=identity['body'];native[body]=model
             profile=identity.get('native_profile') or model['profile']
             for protocol,groups in [('classic',maps['small' if profile in ['animal','sea'] else 'large']),('new',maps['new'])]:
+                if protocol=='new':groups={**groups,**{int(key):value for key,value in model.get('new_action_categories',{}).items()}}
                 for group,label in groups.items():
                     rows.append({'body':body,'family':model['family'],'kind':model['kind'],'native_profile':profile,
                                  'protocol':protocol,'group_or_type':group,**resolve(model,label,maps['fallback'])})
@@ -74,7 +75,7 @@ def main():
                              'generic_replacement':resolve(model,label,maps['fallback']) if model and label else None})
         for mode in record['modes']:
             for action in mode['new_protocol_actions']:
-                label=maps['new'].get(action['type'])
+                label=(model.get('new_action_categories',{}).get(str(action['type'])) if model else None) or maps['new'].get(action['type'])
                 new_actions.append({'body':body,'mode':mode['mode'],**action,
                     'generic_model':model['kind'] if model else None,
                     'replacement':resolve(model,label,maps['fallback']) if model and label else None,

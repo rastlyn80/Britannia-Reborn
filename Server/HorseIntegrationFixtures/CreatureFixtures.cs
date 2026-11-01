@@ -209,13 +209,14 @@ public static class CreatureFixtures
         else if (command == "action" && args.Length > 1)
         {
             var action = args.GetInt32(1);
-            if (action is -1 or -2)
+            if (action is -1 or -2 or -3 or -4 or -5)
             {
+                var animationType = action switch { -1 => 4, -2 => 11, -3 => 2, -4 => 5, _ => 14 };
                 foreach (var client in subject.Map.GetClientsInRange(subject.Location))
                 {
                     if (client.Mobile.CanSee(subject))
                     {
-                        client.SendNewMobileAnimation(subject.Serial, action == -2 ? 11 : 4, 0, 0);
+                        client.SendNewMobileAnimation(subject.Serial, animationType, 0, 0);
                     }
                 }
             }

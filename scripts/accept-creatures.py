@@ -31,6 +31,21 @@ def main():
                 assert model['asset_sha256']==tested[model['kind']]['asset_sha256']['modern'],'Animated contact used different geometry'
                 assert model['import_sha256']==tested[model['kind']]['import_sha256']['modern'],'Animated contact used different import precision'
         rows=[]
+        if family=='orcs' and any(row.get('authored_action_recipe') for row in preparation['models']):
+            gesture_path=ROOT/'outputs/creatures/orcs/gestures/validation.json'
+            gesture=json.loads(gesture_path.read_text())
+            assert gesture['checks']>100 and gesture['failures']==0 and gesture['renderer']=='forward_plus','Orc gestures require passing actual GPU/stance checks'
+            assert set(gesture['assets'])==set(tested),'Missing measured orc gesture model'
+            assert len(gesture['terrain_samples'])==len(tested)*36,'Missing actual gesture collision-plane samples'
+            assert gesture['recipe_sha256']==digest(ROOT/'scripts/creature-humanoid-actions.py'),'Gesture recipe changed after measured stance checks'
+            assert set(gesture['runtime_sha256'])=={'CreatureGestureTests.gd','CreatureVisual.gd','OstardVisual.gd','SkinGeometry.gd','HumanActions.gd','SourceMountContact.gd','AnimalPoseLibrary.gd','HumanHue.gd','OstardSurface.gdshader','FootContact.gd'},'Incomplete gesture runtime evidence'
+            assert all(digest(ROOT/'Viewer/Presentation'/name)==sha for name,sha in gesture['runtime_sha256'].items()),'Gesture runtime changed after checks'
+            for kind,asset in gesture['assets'].items():
+                assert asset['asset_sha256']==tested[kind]['asset_sha256']['modern'] and asset['import_sha256']==tested[kind]['import_sha256']['modern'],'Gesture checks used different geometry/import'
+                for clip in ['Cast','Pillage','Attack2','Attack3']:
+                    assert len([s for s in gesture['samples'] if s['kind']==kind and s['clip']==clip])==21,'Missing gesture phase sweep'
+            for row in preparation['models']:
+                assert row['authored_action_recipe']['sha256']==gesture['recipe_sha256'],'Prepared orc uses a different gesture recipe'
         if family=='elementals':
             mineral_path=ROOT/f'outputs/creatures/{family}/mineral-response.json'
             mineral=json.loads(mineral_path.read_text())

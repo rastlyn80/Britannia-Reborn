@@ -10,6 +10,8 @@ if ($LASTEXITCODE) { throw 'Bounded Third Dawn parser / refinement checks failed
 if ($LASTEXITCODE) {throw 'Creature rig/visible-geometry/reader regression checks failed'}
 & python -B "$root/scripts/test-creature-priority.py"
 if ($LASTEXITCODE) {throw 'Creature occurrence ordering checks failed'}
+& python -B "$root/scripts/test-creature-humanoid-actions.py"
+if ($LASTEXITCODE) {throw 'Creature gesture limb-length, stance and source-grip checks failed'}
 if (Test-Path "$root/Server/ModernUO/Projects/UOContent/Engines/Ethics/Core/Ethic.cs") {
  & python -B "$root/scripts/prepare-server-fixes.py" --verify-only
  if ($LASTEXITCODE) {throw 'Reviewed server overlay source/anchor audit failed'}

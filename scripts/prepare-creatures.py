@@ -20,6 +20,7 @@ repairs=module('creature_source_repairs','creature-source-repairs.py')
 reuse=module('creature_source_reuse','creature-source-reuse.py')
 rigid=module('creature_rigid_parts','creature-rigid-parts.py')
 minerals=module('creature_minerals','creature-minerals.py')
+humanoid_actions=module('creature_humanoid_actions','creature-humanoid-actions.py')
 OUTPUT = ROOT/'Viewer/local-art/creatures'
 LABELS = {'idle':'Idle','walk':'Walk','run':'Run','attack1':'Attack','attack2':'Attack2',
           'attack3':'Attack3','gethit':'Hit','die1':'Death','die2':'Death2','fidget':'Fidget',
@@ -320,6 +321,9 @@ def prepare(family, z, names, rows, native):
                     authored[label]='Authored bounded source-rig recoil/lunge/side-fall category from the source idle pose; not recovered original choreography'
             for target,source in [('Run','Walk'),('Fidget','Idle')]:
                 if target not in clips: clips[target] = copy.deepcopy(clips[source]); aliases[target] = source
+            if humanoid_actions.install(body,clips,authored,aliases,stem):
+                row['authored_action_recipe']={'path':'scripts/creature-humanoid-actions.py','sha256':digest((ROOT/'scripts/creature-humanoid-actions.py').read_bytes())}
+                row['new_action_categories']={'2':'Hit','5':'Fidget','14':'Pillage'}
             if family in ['dragons','lizards'] and 'Eat' not in clips:
                 feeding=copy.deepcopy(clips['Idle']);by_name={b['name']:i for i,b in enumerate(feeding['bones'])};orientations={}
                 def global_orientation(i):
