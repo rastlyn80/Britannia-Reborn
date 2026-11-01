@@ -13,5 +13,8 @@ void fragment(){
   vec4 r=detail_rects[i];
   if(map_at.x>=r.x && map_at.y>=r.y && map_at.x<r.z && map_at.y<r.w)discard;
  }
+ // Sea tiles (the blue water colour) are left to the open-sea ring
+ // (OceanRing.gd): drawn here at the same level they flickered against it.
+ if (COLOR.b > COLOR.r+0.08 && COLOR.b > COLOR.g+0.03) discard;
  ALBEDO=COLOR.rgb; ROUGHNESS=0.94;
 }

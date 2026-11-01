@@ -84,7 +84,7 @@ signal environment_changed(state: Dictionary)
 # ModernUO's real wait for a kind of action (our ActionTimers extension):
 # milliseconds left, 0 ready, -1 held until further notice.
 signal action_wait(kind: String, milliseconds: int)
-# Creatures you own (tamed, bought, summoned), from their status packets.
+# Creatures you own (tamed, bought, summoned), as our server reports them.
 signal pets_changed(serial: int)
 var owned_pets := {}
 # Developer travel (PreviewTravel on our server): ModernUO's Trammel locations,
@@ -589,12 +589,6 @@ func _handle(p: PackedByteArray) -> void:
 				if not mobile_statistics.has(serial): mobile_statistics[serial] = {}
 				mobile_statistics[serial].merge(Character.status(p),true)
 				if serial == int(player.serial) and int(p[42]) > 0 and p.size() >= 62: gold = Login.read_be(p,58,4)
-				# Your own pets: the server lets only their owner rename them.
-				if serial != int(player.serial):
-					var was := owned_pets.has(serial)
-					if p[41] != 0: owned_pets[serial] = true
-					else: owned_pets.erase(serial)
-					if was != owned_pets.has(serial): pets_changed.emit(serial)
 				if serial == int(player.serial):
 					player_status.merge(Character.status(p),true)
 					status_changed.emit(player_status)
@@ -906,6 +900,20 @@ func _server_text(message: String, system: bool = false) -> void:
 			travel_locations.append({"category":f[1],"group":f[2],"place":f[3],"x":int(f[4]),"y":int(f[5]),"z":int(f[6])})
 		return
 	if system and message.begins_with("UCGO1|"): return
+	# Your own pets (Server/PreviewTools/PetReport.cs: ModernUO's ControlMaster).
+	# Not the status packet's rename flag: staff may rename every creature.
+	if system and message.begins_with("UCPET1|"):
+		var mine := {}
+		for part in message.substr(7).split(",",false):
+			if part.is_valid_int(): mine[int(part)] = true
+		var changed: Array = []
+		for serial in owned_pets:
+			if not mine.has(serial): changed.append(serial)
+		for serial in mine:
+			if not owned_pets.has(serial): changed.append(serial)
+		owned_pets = mine
+		for serial in changed: pets_changed.emit(serial)
+		return
 	if system and message.begins_with("UCWAIT1|"):
 		var parts := message.split("|")
 		if parts.size() == 3 and parts[1] in ["skill","spell","bandage","heal_potion"] and parts[2].is_valid_int(): action_wait.emit(parts[1],int(parts[2]))

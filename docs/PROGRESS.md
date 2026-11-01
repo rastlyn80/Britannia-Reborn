@@ -1393,6 +1393,13 @@ Saved graceful restart loaded 297 items and 3 mobiles. Population remains idempo
 
 # Progress — 25 October 2026
 
+## 1 November 2026 - Code changes from the in-game chat; real pet ownership; the open sea
+
+- Bridge agent (owner: it should be able to change code): owner CODE requests are made by a second headless Claude run in a sandbox copy of the client, parse-checked, and offered in the chat; "apply N" copies them into Viewer/ (with "undo N"), "discard N" drops them. Live: a test request was turned into a sandbox change and offered in about 2 minutes, then discarded. docs/DEV_EDIT.md. A parsing slip (an empty assignment that wiped the CODE line) was found and fixed during the test.
+- Pets (owner, via the bridge: wild monsters showed as "your pet"): the status rename flag is true for every creature when the viewer is staff. Ownership now comes from Server/PreviewTools/PetReport.cs (ModernUO ControlMaster, "UCPET1|serials" when the set changes). scripts/start-server.ps1 now installs the preview tools before every start, so any restart loads them (with [PreviewDie/[PreviewResurrect).
+- Sea (owner: hard boundary in the distance): Viewer/Presentation/OceanRing.gd draws the open sea beyond the near districts as one ring at sea level reaching 3 km, as deep water (Water.gdshader min_depth); the horizon's own sea tiles, which flickered against it in white stripes, are skipped (AtlasGround.gdshader). Renders: the coast view now runs smoothly to the horizon; inland views unchanged.
+- Evidence: GameTests 20/0 (pet report), scripts/verify.ps1 passed. Gap: PetReport loads on the next server start.
+
 ## 1 November 2026 - Loot you can see, splits that stay split
 
 - Ground items (owner: dropped gold looked minuscule or vanished): every item you can take gets a soft breathing gold halo just above it (GroundGlow.gdshader, a camera-facing glow pulled 0.6 m toward the camera so the ground under a half-sunk item never hides it, while walls still do); loose items under 0.5 m are drawn 1.35x larger, at least ~28 cm across. Render: bare coin nearly invisible, enlarged and sunk coins clearly marked.

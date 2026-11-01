@@ -12,6 +12,9 @@ try {
 } finally { $probe.Dispose() }
 & "$PSScriptRoot\configure-server.ps1"
 & "$PSScriptRoot/install-server-fixes.ps1" -BuildIfNeeded
+# Our loopback-only extension (Server/PreviewTools): installed only while no
+# server runs, so every (re)start loads the current one.
+& "$PSScriptRoot/build-preview-tools.ps1" | Out-Null
 $lock = $null
 try { $lock = [System.IO.File]::Open("$root\Server\runtime\.server.lock",[System.IO.FileMode]::OpenOrCreate,[System.IO.FileAccess]::ReadWrite,[System.IO.FileShare]::None) }
 catch { throw 'This runtime is already in use by another server process.' }

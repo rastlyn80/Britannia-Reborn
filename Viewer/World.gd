@@ -32,6 +32,7 @@ var targets := {}
 var player_serial := 0
 var underground: Node
 var world_drop: Control
+var ocean: MeshInstance3D
 const PersonalSpace = preload("res://Presentation/PersonalSpace.gd")
 var personal_space := PersonalSpace.new()
 const Motion = preload("res://Presentation/MotionTrack.gd")
@@ -395,6 +396,14 @@ func _process(delta: float) -> void:
 	if game.phase == "world": _mark_pets(delta)
 	if city_stream and game.phase == "world":
 		city_stream.follow(Vector2i(game.player.x,game.player.y))
+		# The open sea beyond the near districts (OceanRing).
+		if ocean == null and reconstruction:
+			ocean = preload("res://Presentation/OceanRing.gd").new()
+			ocean.configure(reconstruction.water_surface())
+			static_root.add_child(ocean)
+		if ocean:
+			var near_origin := Vector2(city_stream.center-Vector2i(64,64)-Vector2i(int(world.originX),int(world.originY)))
+			ocean.follow(Rect2(near_origin,Vector2(192,192)),underground.depth if underground else 0.0)
 		if underground and not underground.folder.is_empty() and avatars.has(player_serial) and lighting_rig:
 			var carrier: Node3D = avatars[player_serial]
 			lighting_rig.set_underground(underground.update(Vector2i(game.player.x,game.player.y),carrier.global_position.y,delta),carrier.global_position,carrying_light())

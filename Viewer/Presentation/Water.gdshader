@@ -20,6 +20,9 @@ uniform bool has_detail=false;
 // Per-metre absorption (red goes first) and the distance light still reaches.
 uniform vec3 absorption=vec3(0.85,0.30,0.24);
 uniform float refraction_strength=0.035;
+// The open sea beyond the near districts (OceanRing): its distant seabed is
+// not lowered, so the water reads as at least this deep instead of as foam.
+uniform float min_depth=0.0;
 uniform sampler2D screen_texture : hint_screen_texture, filter_linear_mipmap, repeat_disable;
 uniform sampler2D depth_texture : hint_depth_texture, filter_nearest, repeat_disable;
 varying vec2 world_uv;
@@ -81,6 +84,8 @@ void fragment(){
  vec2 refract_uv=SCREEN_UV+offset;
  float refracted=scene_distance(refract_uv,INV_PROJECTION_MATRIX)-surface;
  if(refracted<0.0){refract_uv=SCREEN_UV;refracted=thickness;}
+ thickness=max(thickness,min_depth);
+ refracted=max(refracted,min_depth);
  vec3 behind=textureLod(screen_texture,refract_uv,0.0).rgb;
  vec3 transmit=exp(-absorption*max(refracted,0.0));
 

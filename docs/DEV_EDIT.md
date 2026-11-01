@@ -227,3 +227,17 @@ Owner: no Accept, a history with undo instead. Claude's proposal for your own as
 ## Automatic responder: Claude answers without an open session (1 November 2026)
 
 `Start-Server.cmd` runs `scripts/start-assistant.ps1`, which starts (hidden, if not already running) the bridge and `scripts/claude-responder.ps1`. For every new ask from a developer, the responder runs Claude Code headless (`claude -p`, the owner's account) with `scripts/claude-responder.md`, the last six asks, where the asker stands and their screenshot; Claude may only Read/Grep/Glob and query the world read-only through `scripts/bridge-query.ps1` (inspect, status, list, asks, interpret). Its `ANSWER:` lines are posted as the reply and one `PROPOSE:` line as a proposal (applied by the asker's client, with Undo). Work it cannot do here (converter or code fixes, features, restarts) it hands over: `HANDOVER:` lines go to `work/dev-edit-bridge/handover.md` for the next full session. An interactive session that is watching the bridge touches `work/dev-edit-bridge/interactive.heartbeat`; while that is newer than 3 minutes the responder stays out of the way. Its runs set `UC_RESPONDER=1` so the mirror hook does not echo them. Log: `work/dev-edit-bridge/responder.log`; stop it with `work/dev-edit-bridge/responder.stop`. Evidence: a test ask for a hatchet was answered and proposed `give Hatchet` within 4 s; a walls-through-roof request was answered honestly and handed over.
+
+## Code changes from the chat (1 November 2026)
+
+Owner request: the in-game agent should be able to change code.
+- **Who:** the owner's characters (`work/dev-edit-bridge/owners.txt`, default Rastlyn).
+- **How it starts:** the chat agent answers with a `CODE:` line, a precise, self-contained job. It may Read and Grep `Viewer/` first.
+- **Where the change is made:** `scripts/claude-responder.ps1` makes a sandbox copy of the client (`scripts/code-preview.ps1 -New`: text files copied, art hard-linked). It then runs a second headless Claude with Read/Edit/Write/Grep/Glob inside that copy (`scripts/claude-responder-code.md`), allowed one command, `scripts/bridge-check.ps1`, which parses every GDScript file it changed.
+- **What you get back:** a SUMMARY and the changed files, posted as "Ready: ... Say apply N ... or discard N".
+- **Owner commands in the chat:**
+  - `apply N`: copies the files into `Viewer/` (refused if a file changed meanwhile), keeps the previous ones under `work/dev-edit-bridge/undo/N`, and notes in `handover.md` that the change still needs `scripts/verify.ps1` and a commit. Restart the client to use it.
+  - `undo N`: restores the previous files (except any edited since).
+  - `discard N`: drops the job.
+- **Still for a full session:** server code, rebakes, restarts and large features.
+- **Evidence:** a test ask ("make the gold glow 20 percent bigger") became a precise job naming `WorldItems._add_halo`; the sandbox edit passed its check and was offered as change 901 in about 2 minutes; `discard 901` dropped it and left the project untouched.
