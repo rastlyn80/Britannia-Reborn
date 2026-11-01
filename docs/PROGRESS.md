@@ -1479,6 +1479,13 @@ Saved graceful restart loaded 297 items and 3 mobiles. Population remains idempo
 
 # Progress — 25 October 2026
 
+## 1 November 2026 - Private friends' test package
+
+- Owner decision: a private test package for the owner's friends, including the baked Trammel and the UO data files (never published). scripts/package-friends.ps1 builds work/release/BritanniaReborn (24.3 GB): the client with its import cache and Godot, outputs/trammel, a clean copy of the server (no saves, accounts, logs or dev-edit state) with its .NET runtime and the current extension, the UO data, and scripts/release-kit (Play.cmd starts the package's own server on 127.0.0.1:2593 if needed and the game, Stop Server.cmd, README.txt with the sign-in).
+- The world is prepared on port 2594, away from the running server: Server/PreviewTools/OwnerBootstrap.cs creates the Owner account from a one-time file (a hidden ModernUO cannot answer its console prompt), TrammelLive.gd creates the character "Tester" and populates Trammel, signing in again if the busy server drops the connection.
+- Evidence: the package's own client signed in with its generated account, found "Tester" and entered Britain (1602,1591) with 8 mobiles and 109 items in view, on the package's own server.
+- Gaps: not yet run on a second computer; about 24 GB to share.
+
 ## 1 November 2026 - Code changes from the in-game chat; real pet ownership; the open sea
 
 - Bridge agent (owner: it should be able to change code): owner CODE requests are made by a second headless Claude run in a sandbox copy of the client, parse-checked, and offered in the chat; "apply N" copies them into Viewer/ (with "undo N"), "discard N" drops them. Live: a test request was turned into a sandbox change and offered in about 2 minutes, then discarded. docs/DEV_EDIT.md. A parsing slip (an empty assignment that wiped the CODE line) was found and fixed during the test.
