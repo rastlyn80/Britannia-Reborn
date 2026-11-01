@@ -36,6 +36,13 @@ def main():
     for record in report['models']:
         if record['kind']=='walking_dead_zombie':
             record.update(contact_kind='source_biped',head_bone='bip01 head',camera_height=1.35)
+        if record['kind'] in ['walking_dead_ghoul','gorillas_silverback','headless_headless']:
+            head='bip01 neck' if record['kind']=='headless_headless' else 'bip01 head'
+            record.update(contact_kind='measured_limbs',limb_support='quadruped' if record['kind']=='gorillas_silverback' else 'biped',
+                          head_bone=head,camera_height=1.1 if record['kind']=='gorillas_silverback' else 1.,
+                          nameplate_landmarks=[head,'bip01 spine3','bip01 l hand','bip01 r hand','bip01 l foot','bip01 r foot'],nameplate_clearance=.3,
+                          pick_bounds={'position':[-2.,-.3,-2.],'size':[4.,4.,4.]},
+                          pick_bounds_scope='Initial conservative source-pose envelope; require actual full-skin/action/terrain proof before acceptance.')
         if record['kind']=='serpents_snake_giant':
             record.update(movement_mode='ground_plane',head_bone='bip01 head',camera_height=.45,
                           pick_bounds={'position':[-2.1,-.02,-4.25],'size':[4.1,1.,7.1]},

@@ -86,6 +86,11 @@ foreach ($family in $Families) {
   & $godot --path "$root/Viewer" --script res://Presentation/ZombiePresentationTests.gd *> "$logs/walking-zombie-avatar.log"
   if ($LASTEXITCODE -or (Select-String -Path "$logs/walking-zombie-avatar.log" -Pattern 'SCRIPT ERROR:' -Quiet)) {throw 'Actual zombie avatar, short-step support, hues or native corpse checks failed'}
  }
+ $measuredPreparation=Get-Content "$root/Viewer/local-art/creatures/$family/preparation.json" -Raw|ConvertFrom-Json
+ foreach ($model in @($measuredPreparation.models|Where-Object {$_.status -eq 'prepared' -and $_.contact_kind -eq 'measured_limbs'})) {
+  & $godot --path "$root/Viewer" --script res://Presentation/MeasuredCreaturePresentationTests.gd -- "--kind=$($model.kind)" *> "$logs/$($model.kind)-avatar.log"
+  if ($LASTEXITCODE -or (Select-String -Path "$logs/$($model.kind)-avatar.log" -Pattern 'SCRIPT ERROR:' -Quiet)) {throw "Measured source limb/skin/terrain/corpse proof failed: $($model.kind)"}
+ }
  if ($family -eq 'serpents' -and (Test-Path "$root/Viewer/local-art/creatures/serpents_snake_giant-modern.gltf")) {
   & $godot --path "$root/Viewer" --script res://Presentation/SerpentPresentationTests.gd *> "$logs/serpents-avatar.log"
   if ($LASTEXITCODE -or (Select-String -Path "$logs/serpents-avatar.log" -Pattern 'SCRIPT ERROR:' -Quiet)) {throw 'Actual serpent weighted-skin support, native hues, selection or final death/corpse checks failed'}

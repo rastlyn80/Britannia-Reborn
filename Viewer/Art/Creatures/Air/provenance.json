@@ -126,13 +126,13 @@
     "res://Presentation/AirElementalSurface.gdshader": "426044c52bb9c19129f83fc1b4fd4d8224d12be732d1251e076b83b97cebfb6b",
     "res://Presentation/AirElementalVisual.gd": "22b1acece2643547e1f5597e127c9e94a4d6ba9e79b019ff597809475675a611",
     "res://Presentation/CorpseModels.gd": "6db8a5c36d5d00461c9761c922858113d0ff99033847372d35cf3145b27924aa",
-    "res://Presentation/CreatureRegistry.gd": "db959db1e5cf4958a46687a84ebd8f229c222cb113be7d5d483bbaaa2e6dd2ab",
+    "res://Presentation/CreatureRegistry.gd": "90aa475c1c63b7405c1a27e4b31cdd9bcfbaa61ce42c17b27a680790fa2626fe",
     "res://Presentation/CreatureVisual.gd": "33ccb6389365a05697b22d98e308294200cc92fc5b81b01e89b04d8ebe230944",
     "res://Presentation/HumanAvatar.gd": "b322bfb7ba0c8b73c199eaf7d812e5aeaa6db16e7abbbd863d630acde2961438",
     "res://Presentation/PrepareAirElemental.gd": "171b79206300f3bdfc14ceefe71693fb4098c26046fd07e303283f770e9d1797",
     "res://Presentation/SkinGeometry.gd": "6690454dae7e23f9d4a705afa90f1b6d510dd1263a19930e4f597ee5f36c19aa"
   },
-  "public_presentation_sha256": "a39b9deba0462d961cacf701c7a8c75508f66604647a3503d1f3d9424da2badc",
+  "public_presentation_sha256": "7f9c7d19f601241e109014e2f3ec07dbf3c2d75af25f322b7642a49572d4e096",
   "public_native_receipt_sha256": "a4a4bd033ffb3760fa9971a60f6d2fe661ea093f7afafcedbec5f650f181f76d",
   "inherited_project_base_revision": "689fa18d1b527421e282083169b54ddb5fc31877",
   "public_native_scope": {
@@ -158,5 +158,6 @@
     "test_sha256": "b8183b407d03f831e4679c30156eaf256ad18d5063a1399646c182ff2725226f",
     "runner_sha256": "1af96bdf845ae232988abf8deef936a3b3953c17f58bbef72cc6fdf01696bb39",
     "scope": "Actual standalone public avatar and static dust corpse without Water/Quaternius inputs, private marker, game data or server"
-  }
+  },
+  "revalidated_with_project_base_revision": "7837ace8d3466c47fa0cc6eab65a4418312478db"
 }

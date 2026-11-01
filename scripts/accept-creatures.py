@@ -62,6 +62,25 @@ def main():
             for model in contact['models']:
                 assert model['asset_sha256']==tested[model['kind']]['asset_sha256']['modern'],'Animated contact used different geometry'
                 assert model['import_sha256']==tested[model['kind']]['import_sha256']['modern'],'Animated contact used different import precision'
+        for row in preparation['models']:
+            if row.get('status')!='prepared' or row.get('contact_kind')!='measured_limbs':continue
+            path=ROOT/'outputs/creatures'/family/(row['kind']+'-presentation/validation.json')
+            measured=json.loads(path.read_text(encoding='utf-8'))
+            assert measured['failures']==0 and measured['checks']>=1000 and measured['renderer']=='forward_plus','Measured source limbs require actual avatar/skin/terrain evidence'
+            assert measured['kind']==row['kind'] and measured['body']==int(row['bodies'][0]['body'])
+            categories=set(row['stats']['original']['clips'])|{'Eat','LieDown'}
+            assert {s['clip'] for s in measured['action_skins']}==categories and len(measured['action_skins'])==17*len(categories),'Every saved and compatibility category needs complete skin sampling'
+            supported={'Idle','Walk','Run'}|({'Attack','Cast','Pillage','Stomp'}&categories)
+            assert len(measured['terrain'])==6*(17+3*(len(supported)-3)) and {s['clip'] for s in measured['terrain']}==supported,'Missing actual gait/combat terrain cases'
+            limbs=4 if row.get('limb_support')=='quadruped' else 2
+            assert all(len(s['feet'])==limbs for s in measured['terrain']) and measured['lifted_foot_cases']>=20 and measured['planted_foot_cases']>=20,'Missing measured stance/swing limbs'
+            required={'MeasuredCreaturePresentationTests.gd','MeasuredCreatureVisual.gd','MeasuredCreatureSupport.gd','CreatureRegistry.gd','SkinGeometry.gd','HumanAvatar.gd','CorpseModels.gd'}
+            assert {'res://Presentation/'+name for name in required}<=set(measured['runtime_sha256'])
+            assert all(digest(ROOT/'Viewer'/name.removeprefix('res://'))==sha for name,sha in measured['runtime_sha256'].items()),'Measured source runtime changed after validation'
+            assert measured['preparation_sha256']==digest(ART/family/'preparation.json')
+            assert measured['asset_sha256']==tested[row['kind']]['asset_sha256']['modern'] and measured['import_sha256']==tested[row['kind']]['import_sha256']['modern'],'Measured source skin/import changed'
+            if row.get('authored_action_recipe'):
+                recipe=row['authored_action_recipe'];assert digest(ROOT/recipe['path'])==recipe['sha256'],'Authored measured-source gesture recipe changed'
         rows=[]
         if family in ['orcs','ettins'] and any(row.get('authored_action_recipe') for row in preparation['models']):
             gesture_path=ROOT/f'outputs/creatures/{family}/gestures/validation.json'

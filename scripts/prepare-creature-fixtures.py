@@ -3,7 +3,7 @@ import argparse,json,re
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 # Reviewed native declarations, each verified by its real constructor.
-EXPLICIT_CLASSES={237:['Hind','EnragedHind'],234:['GreatHart','EnragedHart'],21:['GiantSerpent'],205:['JackRabbit','Rabbit'],58:['Wisp','CrystalWisp'],13:['AirElemental','SummonedAirElemental','CrystalVortex']}
+EXPLICIT_CLASSES={237:['Hind','EnragedHind'],234:['GreatHart','EnragedHart'],21:['GiantSerpent'],205:['JackRabbit','Rabbit'],58:['Wisp','CrystalWisp'],13:['AirElemental','SummonedAirElemental','CrystalVortex'],153:['Ghoul','Bogle'],29:['Gorilla'],31:['HeadlessOne']}
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('family');parser.add_argument('--runtime',type=Path,required=True);args=parser.parse_args()
     runtime=args.runtime.resolve();assert runtime.is_relative_to(ROOT/'work'),'Disposable runtime must stay under work/'
@@ -24,7 +24,7 @@ def main():
                 text=path.read_text(encoding='utf-8-sig')
                 classes.update(re.findall(r'\bpublic\s+(?:(?:abstract|sealed|partial)\s+)*class\s+(\w+)',text))
             classes=sorted(classes)
-            reviewed=EXPLICIT_CLASSES.get(body['body']) if entry['family'] in ['deer','serpents','rabbits','wisps','air'] else None
+            reviewed=EXPLICIT_CLASSES.get(body['body']) if entry['family'] in ['deer','serpents','rabbits','wisps','air','walking','gorillas','headless'] else None
             if reviewed:
                 assert set(reviewed)<=set(classes),'Reviewed native class declaration changed'
                 classes=reviewed

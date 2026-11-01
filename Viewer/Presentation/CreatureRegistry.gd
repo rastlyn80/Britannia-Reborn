@@ -27,6 +27,7 @@ static func create(body: int) -> Node3D:
 	elif record.get("kind","")=="rabbit":result=preload("res://Presentation/RabbitVisual.gd").new()
 	elif record.get("kind","")=="wisp":result=preload("res://Presentation/WispVisual.gd").new()
 	elif record.get("kind","")=="air_elemental":result=preload("res://Presentation/AirElementalVisual.gd").new()
+	elif record.get("contact_kind","")=="measured_limbs":result=preload("res://Presentation/MeasuredCreatureVisual.gd").new()
 	elif record.get("contact_kind","")=="source_biped":result=preload("res://Presentation/SourceBipedVisual.gd").new()
 	else:result=Visual.new()
 	result.entry=record;return result

@@ -82,11 +82,11 @@ class Pose:
         self.world_rotation(lower,qmul(between(sub(tip,actual),sub(target,actual)),lq))
         return target
 
-def gesture(body,idle,label):
+def gesture(body,idle,label,head_landmarks=None):
     assert label in ['Cast','Pillage','Attack2','Attack3']
     baseline=Pose(body,idle);up=[0.,0.,1.]
     spines=[name for name in ['bip01 spine','bip01 spine1','bip01 spine2','bip01 spine3'] if name in baseline.names]
-    heads=['bip01 head'] if 'bip01 head' in baseline.names else ['geosphere01','geosphere02']
+    heads=head_landmarks if head_landmarks is not None else ['bip01 head'] if 'bip01 head' in baseline.names else ['geosphere01','geosphere02']
     assert len(spines)>=3 and all(name in baseline.names for name in heads),'Undeclared source torso/head layout'
     left=unit(sub(baseline.world('bip01 l upperarm')[1],baseline.world('bip01 r upperarm')[1]))
     left=unit([left[0],left[1],0.]);forward=unit(cross(left,up))
@@ -160,19 +160,20 @@ def gesture(body,idle,label):
     return result
 
 def install(body,clips,authored,aliases,stem):
-    if stem not in ['orcs_orc','orcs_orc_captain','orcs_orc_lord','orcs_orc_shaman','ettins_ettin']:return
+    if stem not in ['orcs_orc','orcs_orc_captain','orcs_orc_lord','orcs_orc_shaman','ettins_ettin','walking_dead_ghoul','headless_headless']:return
+    landmarks=['bip01 neck'] if stem=='headless_headless' else None
     if 'Cast' not in clips:
-        clips['Cast']=gesture(body,clips['Idle'],'Cast')
+        clips['Cast']=gesture(body,clips['Idle'],'Cast',landmarks)
         authored['Cast']='Authored two-bone arm reach and distributed torso gesture on the measured source rig; original grip retained; not recovered UO choreography'
     for label in ['Attack2','Attack3']:
         if label not in clips:
-            clips[label]=gesture(body,clips['Idle'],label)
+            clips[label]=gesture(body,clips['Idle'],label,landmarks)
             authored[label]='Authored measured-limb overhead strike' if label=='Attack2' else 'Authored measured-limb sweeping strike'
             authored[label]+=' with windup, impact, recovery, planted feet and source grip hierarchy; not recovered UO choreography'
     if 'Pillage' not in clips:
         if 'Stomp' in clips:
             clips['Pillage']=copy.deepcopy(clips['Stomp']);aliases['Pillage']='Stomp: explicit source ground-slap category reuse, not a recovered pillaging clip'
         else:
-            clips['Pillage']=gesture(body,clips['Idle'],'Pillage')
+            clips['Pillage']=gesture(body,clips['Idle'],'Pillage',landmarks)
             authored['Pillage']='Authored crouch/reach with measured leg IK and fixed source stance anchors; ground-slap/pillage category approximation, not recovered UO choreography'
     return True
