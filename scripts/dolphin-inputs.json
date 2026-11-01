@@ -1,0 +1,14 @@
+{
+  "source": "https://www.innerscene.com/tools/library/3d-parts/common-bottlenose-dolphin-a7f74d0e",
+  "download": "https://files.innerscene.com/library/common-bottlenose-dolphin-a7f74d0e/e15431873a9906d877fd/common-bottlenose-dolphin.glb",
+  "terms": "https://www.innerscene.com/tools/library/terms",
+  "license": "CC0-1.0",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "author": "Innerscene Corp",
+  "file": "common-bottlenose-dolphin.glb",
+  "bytes": 3475348,
+  "sha256": "3028e97a3b576c78891083c7963b6f4a039f31cee3e710c26c2e40f7ed6bb263",
+  "source_rig": false,
+  "source_animations": false,
+  "interpretation": "Original generalized adult study mesh and embedded maps; all project rigging and actions must be authored separately. Not a recovered Third Dawn rig or choreography."
+}

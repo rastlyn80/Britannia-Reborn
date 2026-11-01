@@ -137,13 +137,17 @@ func receive_action(request: Dictionary) -> bool:
 	var clip:=""
 	if str(request.get("protocol",""))=="classic":
 		var action:=int(request.get("action",-1))
-		if action_profile in ["animal","sea"]:
-			clip=str({0:"Walk",1:"Run",2:"Idle",3:"Eat",4:"Alert",5:"Attack",6:"Attack2",7:"Attack3",8:"Death",9:"Fidget",10:"Fidget",11:"LieDown",12:"Death2"}.get(action,""))
+		if action_profile=="animal":
+			clip=str({0:"Walk",1:"Run",2:"Idle",3:"Eat",4:"Alert",5:"Attack",6:"Attack2",7:"Hit",8:"Death",9:"Fidget",10:"Fidget",11:"LieDown",12:"Death2"}.get(action,""))
+		elif action_profile=="sea":
+			clip=str({0:"Walk",1:"Run",2:"Idle",3:"Fidget",4:"Fidget2",5:"Attack",6:"Attack2",7:"Hit",8:"Death",12:"Attack"}.get(action,""))
 		else:
 			clip=str({0:"Walk",1:"Idle",2:"Death",3:"Death2",4:"Attack",5:"Attack2",6:"Attack3",7:"AttackBow",8:"AttackXBow",9:"AttackThrow",10:"Hit",11:"Pillage",12:"Cast",13:"Hit",14:"Cast3",15:"Hit",16:"Hit",17:"Fidget",18:"Fidget",19:"Fly",20:"Land",21:"Death"}.get(action,""))
+		clip=str(entry.get("classic_action_categories",{}).get(str(action),clip))
 	elif str(request.get("protocol",""))=="new":clip=str({0:"Attack",3:"Death",4:"Hit",11:"Cast"}.get(int(request.get("type",-1)),""))
 	if str(request.get("protocol",""))=="new":clip=str(entry.get("new_action_categories",{}).get(str(int(request.get("type",-1))),clip))
-	var replacement:={"Attack2":"Attack","Attack3":"Attack","Death2":"Death","Alert":"Fidget"}
+	if action_profile=="sea" and str(request.get("protocol",""))=="new" and int(request.get("type",-1))==0 and (int(request.get("mode",0))&1)!=0:clip="Attack2"
+	var replacement:={"Attack2":"Attack","Attack3":"Attack","Death2":"Death","Alert":"Fidget","Fidget2":"Fidget"}
 	if not animator.has_animation(clip) and replacement.has(clip):clip=replacement[clip]
 	if clip.is_empty() or not animator.has_animation(clip) or dead and clip not in ["Death","Death2"]:
 		set_meta("unsupported_action",request.duplicate(true));return false

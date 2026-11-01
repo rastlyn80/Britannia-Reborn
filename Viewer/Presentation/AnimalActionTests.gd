@@ -24,6 +24,7 @@ func run() -> void:
 			actor.dead=false;actor.action_remaining=0.
 			check(actor.receive_action({"protocol":"classic","action":action,"frame_count":6,"repeat_count":1,"forward":true,"repeat":false,"delay":0}),"Named animal group has an explicit replacement: "+str([body,action]))
 			var clip: String=actor.current_clip
+			if action==7:check(clip==("hit" if horse else "Hit") and not actor.dead,"Native BaseWeapon hit group 7 plays a live reaction rather than an attack")
 			actor.animator.play(clip,0.) # Sample the target clip, not its entry blend.
 			for phase in [0.,.5,.99]:
 				actor.animator.seek(actor.animator.current_animation_length*phase,true);actor.animator.pause()

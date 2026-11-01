@@ -16,8 +16,8 @@ def renderer_maps():
     classic=re.findall(r'clip=str\((\{[^\n]+?\})\.get\(action,',text)
     modern=re.search(r'clip=str\((\{[^\n]+?\})\.get\(int\(request.get\("type"',text)
     fallback=re.search(r'var replacement:=(\{[^\n]+?\})',text)
-    assert len(classic)==2 and modern and fallback,'Renderer action maps changed; review the ledger reader'
-    return {'small':ast.literal_eval(classic[0]),'large':ast.literal_eval(classic[1]),
+    assert len(classic)==3 and modern and fallback,'Renderer action maps changed; review the ledger reader'
+    return {'small':ast.literal_eval(classic[0]),'sea':ast.literal_eval(classic[1]),'large':ast.literal_eval(classic[2]),
             'new':ast.literal_eval(modern[1]),'fallback':ast.literal_eval(fallback[1])},sha(path)
 
 def resolve(model,label,fallback):
@@ -47,7 +47,8 @@ def main():
         for identity in model['bodies']:
             body=identity['body'];native[body]=model
             profile=identity.get('native_profile') or model['profile']
-            for protocol,groups in [('classic',maps['small' if profile in ['animal','sea'] else 'large']),('new',maps['new'])]:
+            for protocol,groups in [('classic',maps['small' if profile=='animal' else 'sea' if profile=='sea' else 'large']),('new',maps['new'])]:
+                if protocol=='classic':groups={**groups,**{int(key):value for key,value in model.get('classic_action_categories',{}).items()}}
                 if protocol=='new':groups={**groups,**{int(key):value for key,value in model.get('new_action_categories',{}).items()}}
                 for group,label in groups.items():
                     rows.append({'body':body,'family':model['family'],'kind':model['kind'],'native_profile':profile,
@@ -68,14 +69,19 @@ def main():
     original=[];new_actions=[]
     for record in sequence:
         body=record['animation_ref'];model=native.get(body)
-        groups=maps['small' if (model and model['profile'] in ['animal','sea']) else 'large']
+        # AnimationSequence UOP group IDs are not the classic low/sea wire
+        # slots (dolphin metadata includes canonical swimming groups 22..28).
+        # Keep that evidence unresolved rather than labelling a breach death.
+        groups=maps['large'] if model and model['profile']=='monster' else {}
         for source in record['replacements']:
             group=source['old_group'];label=groups.get(group)
             original.append({'body':body,**source,
-                             'generic_replacement':resolve(model,label,maps['fallback']) if model and label else None})
+                             'generic_replacement':resolve(model,label,maps['fallback']) if model and label else None,
+                             'interpretation':'High-group category inference only; frame availability/precedence not decoded' if groups else 'Canonical UOP-to-native wire group interpretation unresolved'})
         for mode in record['modes']:
             for action in mode['new_protocol_actions']:
                 label=(model.get('new_action_categories',{}).get(str(action['type'])) if model else None) or maps['new'].get(action['type'])
+                if model and model['profile']=='sea' and action['type']==0 and mode['mode']%2:label='Attack2'
                 new_actions.append({'body':body,'mode':mode['mode'],**action,
                     'generic_model':model['kind'] if model else None,
                     'replacement':resolve(model,label,maps['fallback']) if model and label else None,

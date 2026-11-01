@@ -218,6 +218,21 @@ public static class CreatureFixtures
                 subject.Frozen = true;
             }
         }
+        else if (command == "hurt")
+        {
+            // Use the pinned native method, rather than inventing a group
+            // number from a client enum whose historic labels can mislead.
+            if (subject.Weapon is BaseWeapon weapon)
+            {
+                weapon.PlayHurtAnimation(subject);
+            }
+            owner.SendMessage($"UCCREATURE|hurt|{subject.Serial.Value}");
+        }
+        else if (command == "breach" && subject is Dolphin dolphin)
+        {
+            dolphin.Jump();
+            owner.SendMessage($"UCCREATURE|breach|{subject.Serial.Value}");
+        }
         else if (command == "action" && args.Length > 1)
         {
             var action = args.GetInt32(1);

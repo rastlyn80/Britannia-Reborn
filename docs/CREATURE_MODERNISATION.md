@@ -1,4 +1,6 @@
-Latest creature milestone: [73 native targets and the original-action ledger](CREATURE_MONSTERS.md). Source/rig/render/native evidence and remaining art work remain separate; older dated checkpoints below are history.
+Latest 1 November milestone: [sea serpent and deep sea serpent](SEA_SERPENTS.md), including correct native animal/sea hurt actions and an independently licensed dolphin motion trial. The catalogue has 134/279 bounded native bodies tested (48.0%); 2,252/3,054 generic action slots connected (73.7%, including reused clips). Exact original choreography and final art remain separate from coverage. See PROGRESS.md for the current evidence; older dated checkpoints below are history.
+
+Earlier creature milestone: [73 native targets and the original-action ledger](CREATURE_MONSTERS.md). Source/rig/render/native evidence and remaining art work remain separate.
 
 Latest 31 October wildlife checkpoint: [26 forms and the generic creature pipeline](CREATURE_WILDLIFE.md). The source inventory now includes SeaCreatures (150 meshes / 54 filename groups); older dated counts below remain historical. Work continues across all families without routine review gates.
 

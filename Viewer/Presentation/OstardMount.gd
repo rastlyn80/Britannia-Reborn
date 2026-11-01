@@ -96,7 +96,7 @@ func _process(delta: float) -> void:
 func receive_action(request: Dictionary) -> bool:
 	var clip:=""
 	# ClassicUO LowAnimationGroup: 9/10 are fidgets, never hit reactions.
-	if str(request.get("protocol",""))=="classic":clip=str({0:"Walk",1:"Run",2:"Idle",3:"Eat",5:"Attack",6:"Attack",7:"Attack",8:"Death",9:"Fidget",10:"Fidget",11:"LieDown",12:"Death"}.get(int(request.get("action",-1)),""))
+	if str(request.get("protocol",""))=="classic":clip=str({0:"Walk",1:"Run",2:"Idle",3:"Eat",5:"Attack",6:"Attack",7:"Hit",8:"Death",9:"Fidget",10:"Fidget",11:"LieDown",12:"Death"}.get(int(request.get("action",-1)),""))
 	elif str(request.get("protocol",""))=="new":clip=str({0:"Attack",3:"Death",4:"Hit"}.get(int(request.get("type",-1)),""))
 	if clip.is_empty() or dead and clip!="Death":set_meta("unsupported_action",request.duplicate(true));return false
 	current_clip=clip;dead=clip=="Death"

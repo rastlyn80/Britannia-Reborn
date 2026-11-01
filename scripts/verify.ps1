@@ -26,6 +26,8 @@ $env:APPDATA = Join-Path $root '.godot-user'
 $env:LOCALAPPDATA = $env:APPDATA
 & $godot --headless --path "$root\Viewer" --editor --import
 if ($LASTEXITCODE) { throw 'Asset import failed' }
+& $godot --headless --path "$root/Viewer" --script res://Presentation/CreatureActionRoutingTests.gd
+if ($LASTEXITCODE) {throw 'Native animal/sea/monster action semantics failed'}
 if (Test-Path "$root/Viewer/Art/Creatures/Birds/small-bird.glb") {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/BirdMotionTests.gd -- --asset=res://Art/Creatures/Birds/small-bird.glb
   if ($LASTEXITCODE) {throw 'Licensed bird skin, action continuity and static corpse checks failed'}

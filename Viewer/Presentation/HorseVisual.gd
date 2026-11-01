@@ -140,7 +140,7 @@ func rear() -> void:
 	current_clip="rear";animator.speed_scale=1.;animator.play("rear",.15)
 func receive_action(request: Dictionary) -> bool:
 	var clip:=""
-	if str(request.get("protocol",""))=="classic":clip=str({0:"walk",1:"gallop",2:"idle",3:"eat",5:"rear",6:"rear",7:"rear",8:"death",9:"idle",10:"idle",11:"lie_down",12:"death"}.get(int(request.get("action",-1)),""))
+	if str(request.get("protocol",""))=="classic":clip=str({0:"walk",1:"gallop",2:"idle",3:"eat",5:"rear",6:"rear",7:"hit",8:"death",9:"idle",10:"idle",11:"lie_down",12:"death"}.get(int(request.get("action",-1)),""))
 	elif str(request.get("protocol",""))=="new":clip=str({0:"rear",3:"death",4:"hit"}.get(int(request.get("type",-1)),""))
 	if clip.is_empty():set_meta("unsupported_action",request.duplicate(true));return false
 	if dead and clip!="death":return false

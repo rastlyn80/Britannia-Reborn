@@ -95,9 +95,15 @@ func run() -> void:
 				if not check(bool(session.entities[serial].running)==running and bool(observer.entities[serial].running)==running,"native walk/run flags replicate"):return
 				actor.animate(true,0.,.1,6.8 if session.entities[serial].running else 1.8)
 				if not check(actor.horse_visual.current_clip==("Run" if running else "Walk"),"received gait drives matching source replacement"):return
-			var animal:=str(candidate.profile) in ["animal","sea"]
-			var actions: Array=[5,9,3,11,-1] if animal else [4,17,-1]
-			if not animal:
+			session.last_mobile_actions.erase(serial);observer.last_mobile_actions.erase(serial)
+			await reply(sex,"hurt","UCCREATURE|hurt|")
+			if not check(await until(func():return session.last_mobile_actions.has(serial) and observer.last_mobile_actions.has(serial)),"Native weapon hit-reaction method reaches both clients"):return
+			var hurt: Dictionary=session.last_mobile_actions[serial]
+			if not check(int(hurt.get("action",-1))==(7 if str(candidate.profile) in ["animal","sea"] else 10),"Pinned native hit group agrees with the body's server type"):return
+			if not check(actor.receive_native_action(hurt) and actor.horse_visual.current_clip=="Hit" and not actor.horse_visual.dead,"Actual native classic hit packet plays a live reaction"):return
+			var animal:=str(candidate.profile)=="animal";var sea:=str(candidate.profile)=="sea"
+			var actions: Array=[5,9,3,11,-1] if animal else [5,6,7,3,4,12,-1,-2] if sea else [4,17,-1]
+			if not animal and not sea:
 				for extra in [[5,"Attack2"],[6,"Attack3"],[11,"Pillage"],[12,"Cast"],[-2,"Cast"],[19,"Fly"],[20,"Land"]]:
 					if actor.horse_visual.animator.has_animation(extra[1]):actions.append(extra[0])
 				for extra in [[-3,2],[-4,5],[-5,14]]:
@@ -107,9 +113,22 @@ func run() -> void:
 				await reply(sex,"action "+str(action),"UCCREATURE|action|")
 				if not check(await until(func():return session.last_mobile_actions.has(serial) and observer.last_mobile_actions.has(serial)),"native action reaches both clients"):return
 				if not check(actor.receive_native_action(session.last_mobile_actions[serial]),"actual creature consumes native action"):return
-				var expected:=str({5:"Attack",9:"Fidget",3:"Eat",11:"LieDown",-1:"Hit"}.get(action,"")) if animal else str({4:"Attack",5:"Attack2",6:"Attack3",11:"Pillage",12:"Cast",-2:"Cast",-3:"Hit",-4:"Fidget",-5:"Pillage",17:"Fidget",-1:"Hit",19:"Fly",20:"Land"}.get(action,""))
+				var expected:=str({5:"Attack",9:"Fidget",3:"Eat",11:"LieDown",-1:"Hit"}.get(action,"")) if animal else str({5:"Attack",6:"Attack2",7:"Hit",3:"Fidget",4:"Fidget2",12:"Attack",-1:"Hit",-2:"Attack"}.get(action,"")) if sea else str({4:"Attack",5:"Attack2",6:"Attack3",11:"Pillage",12:"Cast",-2:"Cast",-3:"Hit",-4:"Fidget",-5:"Pillage",17:"Fidget",-1:"Hit",19:"Fly",20:"Land"}.get(action,""))
+				if sea and action>=0:expected=str(actor.horse_visual.entry.get("classic_action_categories",{}).get(str(action),expected))
+				if expected=="Attack2" and not actor.horse_visual.animator.has_animation("Attack2"):expected="Attack"
+				if expected=="Fidget2" and not actor.horse_visual.animator.has_animation("Fidget2"):expected="Fidget"
 				if not check(actor.horse_visual.current_clip==expected,"native action selects the intended category"):return
 				if expected=="Fly" and not check(not actor.horse_visual.contact.enabled,"airborne source clip releases foot contact"):return
+			if native_class=="Dolphin":
+				var seen: Dictionary={}
+				for attempt in 24:
+					session.last_mobile_actions.erase(serial);observer.last_mobile_actions.erase(serial)
+					await reply(sex,"breach","UCCREATURE|breach|")
+					if not check(await until(func():return session.last_mobile_actions.has(serial) and observer.last_mobile_actions.has(serial)),"Native Dolphin.Jump reaches both clients"):return
+					var request: Dictionary=session.last_mobile_actions[serial];var group:=int(request.action);seen[group]=true
+					if not check(group in [3,4] and actor.receive_native_action(request) and actor.horse_visual.current_clip==("Jump" if group==3 else "Roll") and not actor.horse_visual.dead,"Native dolphin breach never becomes feeding, alert or death"):return
+					if seen.size()==2:break
+				if not check(seen.size()==2,"Both random native dolphin breach variants are exercised"):return
 			var death_direction:=int(session.entities[serial].direction)
 			response=await reply(sex,"kill","UCCREATURE|corpse|")
 			if response.is_empty():return

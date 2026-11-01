@@ -29,7 +29,7 @@ LABELS = {'idle':'Idle','walk':'Walk','run':'Run','attack1':'Attack','attack2':'
           'cast3':'Cast3','fly':'Fly','takeoff':'TakeOff','land':'Land','gethitinair':'HitInAir',
           'attackbow':'AttackBow','attackxbow':'AttackXBow','attackthrow':'AttackThrow',
           'pillage':'Pillage','stomp':'Stomp','blockright':'BlockRight','blockleft':'BlockLeft',
-          'attack':'Attack','die':'Death','spell':'Cast'}
+          'attack':'Attack','die':'Death','spell':'Cast','roll':'Roll'}
 HEIGHTS = {'bruins':1.25,'canines':.88,'deer':1.5,'felines':.9,'porcines':.72,
            'ruminants':.9,'rodents':.55,'walrus':1.05,'lizards':.75,'dolphins':.8}
 AQUATIC_FAMILIES={'krakens','sea','dolphins'}
@@ -246,10 +246,10 @@ def prepare(family, z, names, rows, native):
                 original = td.png_from_tga(read(texture))
                 (OUTPUT/(stem+'-original-albedo.png')).write_bytes(original)
                 row['source_atlas_status']='Recovered original atlas'
-                if family in ['dragons','daemons','gargoyles','harpies','rat','lizard','krakens'] or stem=='spirits_blade_spirit':
+                if family in ['dragons','daemons','gargoyles','harpies','rat','lizard'] or family in AQUATIC_FAMILIES or stem=='spirits_blade_spirit':
                     row['source_alpha_texture']=stem+'-original-albedo.png'
                     row['art_dependency_sha256']={row['source_alpha_texture']:digest(original)}
-                    if family in ['rat','krakens']:row['source_alpha_scope']='fine_edges'
+                    if family=='rat' or family in AQUATIC_FAMILIES:row['source_alpha_scope']='fine_edges'
             else:
                 row['missing_source_atlas']=body['textures'][0]
                 replacement=OUTPUT/(stem+'-albedo-v1.png')
@@ -323,6 +323,10 @@ def prepare(family, z, names, rows, native):
                     authored[label]='Authored bounded source-rig recoil/lunge/side-fall category from the source idle pose; not recovered original choreography'
             for target,source in [('Run','Walk'),('Fidget','Idle')]:
                 if target not in clips: clips[target] = copy.deepcopy(clips[source]); aliases[target] = source
+            if stem=='dolphins_dolphin':
+                assert 'Roll' in clips,'Native dolphin breach needs its recovered roll clip'
+                clips['Jump']=copy.deepcopy(clips['Fidget']);aliases['Jump']='Fidget: authored interpretation of source breach for native Dolphin.Jump action 3'
+                row['classic_action_categories']={'3':'Jump','4':'Roll'}
             if humanoid_actions.install(body,clips,authored,aliases,stem):
                 row['authored_action_recipe']={'path':'scripts/creature-humanoid-actions.py','sha256':digest((ROOT/'scripts/creature-humanoid-actions.py').read_bytes())}
                 row['new_action_categories']={'2':'Hit','5':'Fidget','14':'Pillage'}
@@ -416,6 +420,7 @@ def prepare(family, z, names, rows, native):
                        surface='generated atlas' if modern_path.exists() else 'source atlas; new surface shader only')
             if family in AQUATIC_FAMILIES:
                 row['movement_mode']='native_waterline'
+                if row['profile']=='sea':row['new_action_categories']={'11':'Attack'}
                 row['waterline_interpretation']='Authored native-water-surface anchoring of preserved source-space Z=0; submerged geometry and skeletal vertical motion are retained. Not a recovered original-client actor offset.'
             modern_gltf=OUTPUT/(stem+'-modern.gltf')
             modern_material=minerals.apply(stem,json.loads(modern_gltf.read_text(encoding='utf-8')),row,ROOT,OUTPUT)
