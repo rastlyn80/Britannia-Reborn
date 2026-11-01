@@ -40,3 +40,8 @@ The independent Bogling substitute uses Tree02 mesh, rig, 2048-square albedo/nor
 ## Independent FireElemental actor (1 November 2026)
 
 Viewer/Art/Creatures/Fire contains original project GPL-3.0-or-later crossed flame ribbons, procedural shader, ash footprint and death conversion. The retained 65-bone rig and selected UAL1 motions originate with Quaternius Universal Base Characters Standard and Universal Animation Library Standard, CC0-1.0, through the pinned existing Water carrier. Exact sources/hashes/modifications: docs/FIRE_ELEMENTALS.md and the Fire/Water provenance and NOTICE files. The Water/human body mesh is replaced entirely. No Ultima Online mesh, atlas, rig, animation or original particle definition is included; private inputs and local captures stay excluded.
+
+
+## Private small-snake source reuse (1 November 2026)
+
+Native body52 uses locally derived Third Dawn giant-serpent geometry, rig, UVs, atlas and motions at18% scale. The assignment and faster Walk reuse are explicit project-authored adaptations, not recovered intended small-snake mappings or a redistribution grant. Only original project conversion/runtime/tests/documentation are published; original game archives, source-derived models/maps and rendered captures remain ignored. Exact recipe and evidence: docs/SMALL_SNAKES.md and scripts/prepare-small-snakes.py. The independent CC0 Chicken trial remains separate and unaccepted.

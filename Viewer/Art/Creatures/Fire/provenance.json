@@ -93,7 +93,7 @@
   "asset_sha256": "b7118078ff6a3f2a1b7ff399341c838aae25d561d0322a0c17c16ad2d71d253b",
   "candidate_runtime_sha256": {
     "res://Presentation/CorpseModels.gd": "6db8a5c36d5d00461c9761c922858113d0ff99033847372d35cf3145b27924aa",
-    "res://Presentation/CreatureRegistry.gd": "1918933eb2bca3c3bf8b515837446d9cd5a58ecb58642466eac27069baebbbd2",
+    "res://Presentation/CreatureRegistry.gd": "6e38f5a19010d991b9a4c30908b0d9518fe8abaa374641a89ef39e9e7d84bde2",
     "res://Presentation/CreatureVisual.gd": "33ccb6389365a05697b22d98e308294200cc92fc5b81b01e89b04d8ebe230944",
     "res://Presentation/FireElementalMaterial.gd": "1583c0b89a251e0e49e9fa08f9f85bb4d44bfe16e44152533685887bfa095744",
     "res://Presentation/FireElementalPresentationTests.gd": "6b20535f527db3fd0e5f1b7d1fdc94ed69683aae006a6085d39e66236f2c61c7",

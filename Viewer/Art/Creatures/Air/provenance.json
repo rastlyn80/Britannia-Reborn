@@ -99,7 +99,7 @@
     "res://Presentation/AirElementalSurface.gdshader": "426044c52bb9c19129f83fc1b4fd4d8224d12be732d1251e076b83b97cebfb6b",
     "res://Presentation/AirElementalVisual.gd": "22b1acece2643547e1f5597e127c9e94a4d6ba9e79b019ff597809475675a611",
     "res://Presentation/CorpseModels.gd": "6db8a5c36d5d00461c9761c922858113d0ff99033847372d35cf3145b27924aa",
-    "res://Presentation/CreatureRegistry.gd": "1918933eb2bca3c3bf8b515837446d9cd5a58ecb58642466eac27069baebbbd2",
+    "res://Presentation/CreatureRegistry.gd": "6e38f5a19010d991b9a4c30908b0d9518fe8abaa374641a89ef39e9e7d84bde2",
     "res://Presentation/CreatureVisual.gd": "33ccb6389365a05697b22d98e308294200cc92fc5b81b01e89b04d8ebe230944",
     "res://Presentation/HumanAvatar.gd": "b322bfb7ba0c8b73c199eaf7d812e5aeaa6db16e7abbbd863d630acde2961438",
     "res://Presentation/PrepareAirElemental.gd": "171b79206300f3bdfc14ceefe71693fb4098c26046fd07e303283f770e9d1797",

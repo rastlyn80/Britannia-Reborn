@@ -1,3 +1,9 @@
+# Small snakes integrated with source-preserving reuse - 1 November 2026
+
+Native Snake/IceSnake/LavaSnake body52 now use the retained giant-serpent design at18% scale, its original18-bone rig/UV/maps/motions, dynamic weighted bounds and native static corpses. The source archive has no matching small-snake/table52 assignment:reuse is explicitly authored. Walk remains intact; active Run reuses it at60% duration, with the old coiled Run retained as SourceRun. Focused actual-avatar/native gates, all43 local groups,182 corpse variants and full root/current public controls pass. [Sources, measurements, reproduction and fidelity limits](SMALL_SNAKES.md).
+
+Bounded native bodies150/279(53.8%);generic slots2,548/3,402(74.9%,including reuse),854 missing. No final-art/full-original-choreography completion is claimed. Chicken208 is next:an independent CC0 natural hen has its original maps/eleven clips and a private curved-bone conversion trial. Source40 joints plus seven segment joints preserve relative skin in the focused four-clip comparison within0.40mm; full-source/gait/contact/native/corpse/public gates remain pending and add no coverage. Then Lich/IceSerpent/SnowElemental and the complete occurrence queue. Preserve source exclusions, production and concurrent work; continue without routine review stops.
+
 # Public fire actor, source-preserving small-snake trial - 1 November 2026
 
 FireElemental15 is an independent GPL flame-ribbon/ash actor on the retained CC0 rig/UAL carrier:15 saved categories, explicitly authored death and17 runtime categories. Actual public source/avatar/native/clean-distribution gates pass, including genuine SummonedFireElemental API/corpse suppression and four transient-death regressions after the component-material fix. All42 local groups,181 corpse variants/1,704 rendered checks and full root verification/current Air/Bogling controls pass. [Exact sources, recipe, evidence and gaps](FIRE_ELEMENTALS.md).

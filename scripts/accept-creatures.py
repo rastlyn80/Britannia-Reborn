@@ -143,6 +143,22 @@ def main():
             assert serpent['preparation_sha256']==digest(ART/family/'preparation.json'),'Serpent preparation changed after actual avatar proof'
             assert all(digest(ROOT/'Viewer'/path.removeprefix('res://'))==sha for path,sha in serpent['runtime_sha256'].items()),'Serpent avatar runtime changed after proof'
             assert serpent['asset_sha256']==tested['serpents_snake_giant']['asset_sha256']['modern'] and serpent['import_sha256']==tested['serpents_snake_giant']['import_sha256']['modern'],'Serpent avatar used a different source skin/import'
+        if family=='small_snakes':
+            actions=json.loads((ROOT/'outputs/creatures/small_snakes/actions.json').read_text())
+            assert actions['failures']==0 and actions['checks']>=516 and len(actions['samples'])==170
+            assert actions['test_sha256']==digest(ROOT/'Viewer/Presentation/SmallSnakeActionTests.gd') and actions['preparation_sha256']==digest(ART/family/'preparation.json')
+            assert all(digest(ROOT/'Viewer/Presentation'/path)==sha for path,sha in actions['runtime_sha256'].items()),'Small snake action runtime changed'
+            assert actions['asset_sha256']==tested['small_snakes']['asset_sha256']['modern'] and actions['import_sha256']==tested['small_snakes']['import_sha256']['modern']
+            small=json.loads((ROOT/'outputs/creatures/small_snakes/presentation/validation.json').read_text())
+            assert small['failures']==0 and small['checks']>=2600 and small['renderer']=='forward_plus'
+            assert len(small['terrain'])==432 and all(abs(s['lowest_plane_gap'])<.008 for s in small['terrain']),'Small snakes need complete action/terrain support'
+            assert small['preparation_sha256']==digest(ART/family/'preparation.json')
+            assert all(digest(ROOT/'Viewer'/path.removeprefix('res://'))==sha for path,sha in small['runtime_sha256'].items()),'Small snake runtime changed'
+            assert small['asset_sha256']==tested['small_snakes']['asset_sha256']['modern'] and small['import_sha256']==tested['small_snakes']['import_sha256']['modern']
+            for row in preparation['models']:
+                if row['status']!='prepared':continue
+                recipe=row['scale_recipe'];assert recipe['uniform_scale']==.18 and digest(ROOT/recipe['path'])==recipe['sha256']
+                for treatment,sha in recipe['source_assets'].items():assert digest(ART/('serpents_snake_giant-'+treatment+'.gltf'))==sha,'Shared source donor changed'
         for row in preparation['models']:
             if row['status']!='prepared':continue
             assert not row.get('pending_render_feature'),row.get('pending_render_feature')

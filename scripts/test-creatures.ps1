@@ -91,6 +91,12 @@ foreach ($family in $Families) {
   & $godot --path "$root/Viewer" --script res://Presentation/MeasuredCreaturePresentationTests.gd -- "--kind=$($model.kind)" *> "$logs/$($model.kind)-avatar.log"
   if ($LASTEXITCODE -or (Select-String -Path "$logs/$($model.kind)-avatar.log" -Pattern 'SCRIPT ERROR:' -Quiet)) {throw "Measured source limb/skin/terrain/corpse proof failed: $($model.kind)"}
  }
+ if ($family -eq 'small_snakes') {
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/SmallSnakeActionTests.gd *> "$logs/small-snakes-actions.log"
+  if ($LASTEXITCODE) {throw 'Small-snake dynamic skin envelope and gait selection failed'}
+  & $godot --path "$root/Viewer" --script res://Presentation/SmallSnakePresentationTests.gd *> "$logs/small-snakes-avatar.log"
+  if ($LASTEXITCODE -or (Select-String -Path "$logs/small-snakes-avatar.log" -Pattern 'SCRIPT ERROR:' -Quiet)) {throw 'Actual small-snake scaled skin, terrain, hues, bounds or corpse checks failed'}
+ }
  if ($family -eq 'serpents' -and (Test-Path "$root/Viewer/local-art/creatures/serpents_snake_giant-modern.gltf")) {
   & $godot --path "$root/Viewer" --script res://Presentation/SerpentPresentationTests.gd *> "$logs/serpents-avatar.log"
   if ($LASTEXITCODE -or (Select-String -Path "$logs/serpents-avatar.log" -Pattern 'SCRIPT ERROR:' -Quiet)) {throw 'Actual serpent weighted-skin support, native hues, selection or final death/corpse checks failed'}
