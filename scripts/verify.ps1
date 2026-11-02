@@ -47,6 +47,18 @@ if (Test-Path "$root/Viewer/local-art/creatures/solen_warriors/preparation.json"
  & $godot --headless --path "$root/Viewer" --script res://Presentation/SolenWarriorImportTests.gd
  if ($LASTEXITCODE) {throw 'Saved warrior rig/weighted skin/UV/topology/atlas fidelity failed'}
 }
+if (Test-Path "$root/Viewer/local-art/creatures/ice_elementals/candidate.json") {
+ & $godot --headless --path "$root/Viewer" --script res://Presentation/ConfigureIceElementalImport.gd
+ if ($LASTEXITCODE) {throw 'Bounded original Ice motion/atlas import configuration failed'}
+ if ((Get-Content "$root/work/creatures/ice-elemental/import-settings.json" -Raw | ConvertFrom-Json).changed -gt 0) {
+  & $godot --headless --path "$root/Viewer" --editor --import
+  if ($LASTEXITCODE) {throw 'Precise original Ice motion/atlas reimport failed'}
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/ConfigureIceElementalImport.gd
+  if ($LASTEXITCODE -or (Get-Content "$root/work/creatures/ice-elemental/import-settings.json" -Raw | ConvertFrom-Json).changed -ne 0) {throw 'Ice import settings did not settle after actual reimport'}
+ }
+ & $godot --headless --path "$root/Viewer" --script res://Presentation/IceElementalImportTests.gd
+ if ($LASTEXITCODE) {throw 'Original Ice saved-import source motion/skin/atlas fidelity failed'}
+}
 & $godot --headless --path "$root/Viewer" --script res://Presentation/EightInfluenceImportTests.gd
 if ($LASTEXITCODE) {throw 'Actual eight-slot GLTF import, fifth-joint deformation or static corpse failed'}
 & $godot --headless --path "$root/Viewer" --script res://Presentation/CreatureActionRoutingTests.gd
@@ -90,6 +102,20 @@ if (Test-Path "$root/Viewer/local-art/creatures/black_ant_warrior-ground.json") 
  }
  & python -B "$root/scripts/check-solen-warrior-sources.py" --fidelity
  if ($LASTEXITCODE) {throw 'Exact original Solen warrior source/import/action/corpse proof failed'}
+}
+if (Test-Path "$root/work/creatures/ice-elemental/prepared/elementals_ice_elemental-ground.json") {
+ & $godot --headless --path "$root/Viewer" --script res://Presentation/IceElementalSourceTests.gd
+ if ($LASTEXITCODE) {throw 'Original Ice source/refined skin or measured model support failed'}
+ & python -B "$root/scripts/check-source-ice-elemental.py"
+ if ($LASTEXITCODE) {throw 'Exact original Ice source/recipe/asset pins failed'}
+ if (Test-Path "$root/Viewer/local-art/creatures/ice_elementals/candidate.json") {
+  foreach ($trial in @('IceElementalRuntimeTests','IceElementalTerrainTests','IceElementalDeathTests')) {
+   & $godot --headless --path "$root/Viewer" --script "res://Presentation/$trial.gd"
+   if ($LASTEXITCODE) {throw "Original Ice candidate stage failed: $trial"}
+  }
+  & python -B "$root/scripts/check-source-ice-elemental.py" --candidate
+  if ($LASTEXITCODE) {throw 'Exact original Ice candidate imports/avatar/terrain/death proof failed'}
+ }
 }
 if (Test-Path "$root/Viewer/Art/Creatures/Birds/small-bird.glb") {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/BirdMotionTests.gd -- --asset=res://Art/Creatures/Birds/small-bird.glb
