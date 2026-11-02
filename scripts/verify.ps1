@@ -36,6 +36,10 @@ if ($LASTEXITCODE) {throw 'Native animal/sea/monster action semantics failed'}
 if ($LASTEXITCODE) {throw 'Static corpse custom UV/attribute format preservation failed'}
 & $godot --headless --path "$root/Viewer" --script res://Presentation/SavagePaintAttributeTests.gd
 if ($LASTEXITCODE) {throw 'Human NPC paint/source attributes, 16/32-bit LOD or static snapshot preservation failed'}
+if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
+ & $godot --headless --path "$root/Viewer" --script res://Presentation/CreatureDeathTests.gd
+ if ($LASTEXITCODE) {throw 'Existing generic decoded creature-death transitions or lifecycle regressed'}
+}
 if (Test-Path "$root/Viewer/local-art/human-npcs/savages/dance/preparation.json") {
  & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanNPCMotionTests.gd
  if ($LASTEXITCODE) {throw 'Exact NPC motion isolation, gait/pause restoration or gender/hash guards failed'}
@@ -53,7 +57,11 @@ if (Test-Path "$root/Viewer/local-art/human-npcs/shared/death-preparation.json")
 if (Test-Path "$root/Viewer/local-art/creatures/walking_dead_mummy-ground.json") {
  & $godot --headless --path "$root/Viewer" --script res://Presentation/MummySourcePoseTests.gd
  if ($LASTEXITCODE) {throw 'Prepared Mummy source/refined rig or complete-skin residual lookup failed'}
- & python -B "$root/scripts/check-prepared-mummy.py"
+ foreach ($trial in @('MummyRuntimeTests','MummyTerrainTests','MummyDeathTests')) {
+  & $godot --headless --path "$root/Viewer" --script "res://Presentation/$trial.gd"
+  if ($LASTEXITCODE) {throw "Prepared Mummy avatar/terrain/death test failed: $trial"}
+ }
+ & python -B "$root/scripts/check-prepared-mummy.py" --runtime
  if ($LASTEXITCODE) {throw 'Exact prepared Mummy source/curve/asset evidence failed'}
 }
 if (Test-Path "$root/Viewer/Art/Creatures/Birds/small-bird.glb") {

@@ -23,6 +23,10 @@ def sha(path):
 
 def inputs(cabinet_members=False):
     pins = json.loads(MANIFEST.read_text(encoding='utf-8'))
+    reference = (ROOT/pins['new_protocol_reference']['path']).resolve()
+    assert reference.is_relative_to((ROOT/'work/reference').resolve())
+    if reference.exists():
+        assert sha(reference) == pins['new_protocol_reference']['sha256']
     cabs = SOURCE.parent/'uoaos-cabinets'
     for row in pins['cabinets']:
         path = cabs/Path(row['zip_member']).name
@@ -59,6 +63,8 @@ def prepare(cabinet_members=False):
                             pipeline.table_rows((SOURCE/'Models/models.txt').read_bytes()), native, selected_kinds={KIND})
     assert len(rows) == 1
     row = rows[0]
+    row['source_family'] = row['family']
+    row['family'] = 'mummies'
     assert row['status'] == 'prepared' and not row['rejected_source_clips']
     assert {r['body'] for r in row['bodies']} == {154}
     assert row['stats']['original']['source_points'] == 104 and row['stats']['original']['triangles'] == 200
@@ -66,6 +72,11 @@ def prepare(cabinet_members=False):
     assert set(row['clip_sources']) == {'Idle','Walk','Run','Attack','Hit','Death','Fidget'}
     row['bodies'][0]['native_sources'] = pins['native_sources']
     row['pending_render_feature'] = 'Source pose/terrain/material/mask/corpse and separate native Mummy/PestilentBandage acceptance remain; no route enabled.'
+    row.update(presentation_script='res://Presentation/SourceMummyVisual.gd',
+               presentation_script_sha256=sha(ROOT/'Viewer/Presentation/SourceMummyVisual.gd'),
+               ground_lookup='res://local-art/creatures/'+KIND+'-ground.json',
+               new_action_categories={'1':'Hit','2':'Hit','5':'Fidget'},
+               contact_kind='measured_limbs', camera_height=row['stats']['original']['height_m']*.85)
     assets = {}
     for treatment in ['original','rounded','modern']:
         name = KIND+'-'+treatment+'.gltf'
@@ -75,6 +86,7 @@ def prepare(cabinet_members=False):
                   source_cabinets=pins['cabinets'], input_manifest_sha256=sha(MANIFEST),
                   source_tools_sha256=tools,
                   assets_sha256=assets, cabinet_members_verified=cabinet_members,
+                  runtime_sha256={name:sha(ROOT/'Viewer/Presentation'/name) for name in ['SourceMummyVisual.gd','SourceMummySupport.gd','SourceMageVisual.gd','SourceMageSupport.gd','MeasuredCreatureVisual.gd','MeasuredCreatureSupport.gd','SourceBipedVisual.gd','SourceBipedSupport.gd','CreatureVisual.gd','SourceMountContact.gd','SourceGroundLookup.gd']},
                   scope=pins['scope'], rights=pins['rights'])
     folder=ART/'mummies'; folder.mkdir(parents=True, exist_ok=True)
     assert tools == {name:sha(ROOT/'scripts'/name) for name in TOOLS}
@@ -94,7 +106,7 @@ def check_prepared():
         assert Path(name).name == name and sha(ART/name) == digest, name
     assert len(report['models']) == 1
     row=report['models'][0]
-    assert row['kind'] == KIND and row['pending_render_feature']
+    assert row['kind'] == KIND and row['family'] == 'mummies' and row['source_family'] == 'walking' and row['pending_render_feature']
     assert set(row['clip_sources']) == {'Idle','Walk','Run','Attack','Hit','Death','Fidget'}
     assert not row['rejected_source_clips'] and {r['body'] for r in row['bodies']} == {154}
     assert row['stats']['original']['bones'] == 33 and row['stats']['rounded']['triangles'] == 3200

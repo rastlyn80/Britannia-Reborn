@@ -32,7 +32,9 @@ func begin_death(killed: int,corpse: int) -> void:
 	visual.model.transform=source.model.transform
 	visual.set_physics_process(false);visual.contact.enabled=false
 	var duration: float=visual.animator.get_animation("Death").length
-	visual.current_clip="Death";visual.dead=true;visual.action_remaining=duration;visual.play("Death",.08)
+	visual.current_clip="Death";visual.dead=true;visual.action_remaining=duration
+	if visual.has_method("begin_death_from"):duration=float(visual.call("begin_death_from",source))
+	else:visual.play("Death",.08)
 	track_transition(killed,corpse,body,avatar,visual,duration)
 func begin_human(killed: int,corpse: int,entity: Dictionary,avatar: Node3D) -> void:
 	var source: Node3D=avatar.get("human_visual")

@@ -91,5 +91,12 @@
     }
   ],
   "scope": "Original later Third Dawn Mummy154 mesh/own atlas/seven original motions. Mummy and PestilentBandage share154; constructor/hue/behaviour must be verified independently. Mask atlas is retained as an unresolved source material input, not silently claimed rendered. Preparation only; no accepted routing or coverage.",
-  "rights": "Preservation archive location is not a redistribution grant or independent official authenticity proof. No executables run. Original inputs and derived meshes/maps stay private."
+  "rights": "Preservation archive location is not a redistribution grant or independent official authenticity proof. No executables run. Original inputs and derived meshes/maps stay private.",
+  "new_protocol_reference": {
+    "path": "work/reference/ClassicUO/src/ClassicUO.Client/Game/GameObjects/MobileAnimation.cs",
+    "sha256": "e429251f775e33a17da98a024408691e0bbbf2b08ff35af847ecca245018b1c7",
+    "commit": "ee79d7ebc1cc0e53ff84fe6cae17d389e2737f93",
+    "url": "https://github.com/ClassicUO/ClassicUO/blob/ee79d7ebc1cc0e53ff84fe6cae17d389e2737f93/src/ClassicUO.Client/Game/GameObjects/MobileAnimation.cs",
+    "scope": "Reference only, never a linked client dependency. Monster new types1/2 select classic15/16(Hit); type5 selects17/18(Fidget). One original Hit/Fidget is explicit reuse for the respective alternatives. Native pinned Mobile.Animate currently sends classic0x6E; new formats are client compatibility, not observed native packets."
+  }
 }
