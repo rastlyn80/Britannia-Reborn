@@ -9,7 +9,7 @@ ROOT=Path(__file__).resolve().parents[1]
 ART=ROOT/'Viewer/local-art/creatures'
 def read(path):return json.loads(path.read_text(encoding='utf-8'))
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
-def main(runtime=False):
+def main(runtime=False,terrain=False):
     spec=importlib.util.spec_from_file_location('warrior_preparation',ROOT/'scripts/prepare-source-solen-warriors.py');preparer=importlib.util.module_from_spec(spec);spec.loader.exec_module(preparer);pins=preparer.inputs()
     path=ART/'solen_warriors/preparation.json';prep=read(path);proof=read(ROOT/'work/creatures/solen-warriors/source-poses.json')
     assert prep['input_manifest_sha256']==sha(ROOT/'scripts/source-solen-warrior-inputs.json')
@@ -57,6 +57,18 @@ def main(runtime=False):
         assert len(p['unsupported_classic_groups'])==16 and {r['group'] for r in p['unsupported_classic_groups']}=={7,8,9,11,12,14,19,20}
         assert all(r['gap_m']>-.008 and (r['clip'] in ['Walk','Run'] or abs(r['gap_m'])<.008) for r in p['samples'])
         print('SOLEN WARRIOR RUNTIME:actual candidate avatar,120 timing requests/600 poses/eight raw-hue static corpses; exact source and import pins. No terrain/native/render acceptance.')
+    if terrain:
+        p=read(ROOT/'work/creatures/solen-warriors/terrain-tests.json')
+        assert p['checks']==232685 and p['failures']==0 and p['poses']==2880 and len(p['cases'])==96 and not p['misses']
+        assert p['maximum_skin_error_m']<.008 and p['maximum_foot_error_m']<.008
+        assert p['preparation_sha256']==sha(ART/'solen_warriors/preparation.json')
+        for name,digest in p['runtime_sha256'].items():assert sha(ROOT/'Viewer/Presentation'/name)==digest,name
+        for name,digest in p['ground_measurement_sha256'].items():assert sha(ROOT/'Viewer'/name.removeprefix('res://'))==digest,name
+        assert {r['kind'] for r in p['cases']}=={'fire_ant_warrior','black_ant_warrior'}
+        assert {r['plane'] for r in p['cases']}=={'flat','forward','cross'}
+        assert {(r['fps'],r['rate'],r['phase']) for r in p['cases']}=={(30,.65,.31),(90,1.65,.74)}
+        assert {tuple(r['pair']) for r in p['cases']}=={('Idle','Walk'),('Walk','Run'),('Run','Walk'),('Run','Attack'),('Run','Attack2'),('Run','Attack3'),('Run','Fidget2'),('Run','Death')}
+        print('SOLEN WARRIOR TERRAIN:232685checks/2880skins/96finite-plane cases; independent six-foot source flight/stance and complete skin clearance. Two declared rate/fps/phase combinations; no universal terrain/native/render acceptance.')
     print('SOLEN WARRIOR SOURCE:765275checks/1380eight-slot skins; exact44-joint originals, authored six-normal repair, retained five-influence vertices, source gait bounce and measured action residuals. No native/render/terrain/runtime acceptance.')
 if __name__=='__main__':
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--runtime',action='store_true');main(parser.parse_args().runtime)
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--runtime',action='store_true');parser.add_argument('--terrain',action='store_true');args=parser.parse_args();main(args.runtime or args.terrain,args.terrain)
