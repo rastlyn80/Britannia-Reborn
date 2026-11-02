@@ -1,0 +1,97 @@
+{
+  "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+  "source_page": "https://zuluarchive.com/pages/files.html",
+  "cabinets": [
+    {
+      "zip_member": "uoaos/UOTD/models/client7.cab",
+      "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859",
+      "bytes": 20805
+    },
+    {
+      "zip_member": "uoaos/UOTD/models/monsters/client11.cab",
+      "sha256": "307a6b91c4d5459080d1fe8a74ae4fe0b91dea8a21a2866ca91e7dc7ba92f1a8",
+      "bytes": 35160963
+    },
+    {
+      "zip_member": "uoaos/UOTD/models/maps/client10.cab",
+      "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9",
+      "bytes": 33956665
+    }
+  ],
+  "files": [
+    {
+      "path": "Models/models.txt",
+      "bytes": 55735,
+      "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a"
+    },
+    {
+      "path": "Models/Monsters/serpents_snake_giant_lod2.grn",
+      "bytes": 24664,
+      "sha256": "2062d9180e57ac32eac9a910f204065dc9da71e59b587e1ae7fff80015aaeadb"
+    },
+    {
+      "path": "Models/Monsters/serpents_snake_giant_silver_lod2.grn",
+      "bytes": 24720,
+      "sha256": "cfd08755e27656b93105b84bf21ecb14d040a2812ef0d80803dc551a68db83d7"
+    },
+    {
+      "path": "Models/Maps/serpents_snake_giant_v03.tga",
+      "bytes": 16428,
+      "sha256": "90ff2fbbb0fade01deb5ff7f94db6422f947115d29c7ec0e3f645a33199d1983"
+    },
+    {
+      "path": "Models/Maps/serpents_snake_giant_silver_v02.tga",
+      "bytes": 16428,
+      "sha256": "0f4e1f5b03581cab92bd4c55134d7803fba5db2e8268156c7c8c7e2df1e2fc73"
+    },
+    {
+      "path": "Models/Monsters/serpents_snake_giant_attack1.grn",
+      "bytes": 14252,
+      "sha256": "c1305092877edd08eb2e444847ed5a56f84dc94c86914ce418ac0cb4f343e21c"
+    },
+    {
+      "path": "Models/Monsters/serpents_snake_giant_die1.grn",
+      "bytes": 23824,
+      "sha256": "5aa3735ed777954551739dca4086edbaf75c2ddbf0b5db95b8c8336a687a1192"
+    },
+    {
+      "path": "Models/Monsters/serpents_snake_giant_fidget.grn",
+      "bytes": 16992,
+      "sha256": "7a72c79bf006d3b36345da8cb8e340a9f92ff9909d0ee6db13e2eb93d17d2be7"
+    },
+    {
+      "path": "Models/Monsters/serpents_snake_giant_gethit.grn",
+      "bytes": 13904,
+      "sha256": "bd7fa0e1cdbfcdec0f9df4938682c7afaa359f88027691cfc43cdbcc750a90bd"
+    },
+    {
+      "path": "Models/Monsters/serpents_snake_giant_idle.grn",
+      "bytes": 13728,
+      "sha256": "c5ba94bd9a1b1552e54cc88a17edacc3cf28d4f290883b8b82665a23c8e4ac85"
+    },
+    {
+      "path": "Models/Monsters/serpents_snake_giant_pillage.grn",
+      "bytes": 14252,
+      "sha256": "c1305092877edd08eb2e444847ed5a56f84dc94c86914ce418ac0cb4f343e21c"
+    },
+    {
+      "path": "Models/Monsters/serpents_snake_giant_run.grn",
+      "bytes": 14488,
+      "sha256": "6632ed2c5f77e1c55d1666311a98999869d87d9bdd54dd19d99725c3584c4511"
+    },
+    {
+      "path": "Models/Monsters/serpents_snake_giant_walk.grn",
+      "bytes": 17700,
+      "sha256": "463bdcfa90330648337fcb7392c5f382e83f4437987f441afbd4dc25075eb9f6"
+    }
+  ],
+  "generated_atlas": {
+    "path": "work/creatures/silver-serpent/silver-serpent-albedo-v1.png",
+    "sha256": "2a39fb4ee47e7cfeadcfca33f4e86d4661978e5451537675838fa991de64a086",
+    "prompt_path": "work/creatures/silver-serpent/texture-v1-prompt.txt",
+    "prompt_sha256": "31ebc5955fe2a24a5ca0724fd4fb27012aad18951a82d8e8e981cf8dda88d021",
+    "mode": "built-in image_gen edit",
+    "scope": "Private derivative of original Silver atlas; not independent/publicly licensed art. Original UV/alpha preserved; head colour amendment and albedo-based relief authored. Exact generated eye/mouth registration not claimed."
+  },
+  "scope": "Thirteen original later-source member pins/three cabinets, generated private atlas/prompt pins. No original bytes/wholeZIP authenticity/publisher signature/redistribution grant."
+}

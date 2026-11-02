@@ -91,6 +91,12 @@ foreach ($family in $Families) {
   & $godot --path "$root/Viewer" --script res://Presentation/MeasuredCreaturePresentationTests.gd -- "--kind=$($model.kind)" *> "$logs/$($model.kind)-avatar.log"
   if ($LASTEXITCODE -or (Select-String -Path "$logs/$($model.kind)-avatar.log" -Pattern 'SCRIPT ERROR:' -Quiet)) {throw "Measured source limb/skin/terrain/corpse proof failed: $($model.kind)"}
  }
+ if ($family -eq 'silver_serpents') {
+  foreach ($test in @('SourceSilverSerpentActionTests','SourceSilverSerpentTransitionTests','SourceSilverSerpentPresentationTests')) {
+   & $godot --path "$root/Viewer" --script "res://Presentation/$test.gd" *> "$logs/$test.log"
+   if ($LASTEXITCODE -or (Select-String -Path "$logs/$test.log" -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet)) {throw "Original Silver source/rig/whole-skin/terrain/colour/corpse proof failed: $test"}
+  }
+ }
  if ($family -eq 'fluid_elementals') {
   foreach ($kind in @('elementals_acid_elemental','elementals_poison_elemental')) {
    foreach ($test in @('SourceFluidElementalActionTests','SourceFluidElementalPresentationTests','SourceFluidElementalTransitionTests')) {
