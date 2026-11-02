@@ -1,0 +1,149 @@
+{
+  "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+  "source_page": "https://zuluarchive.com/pages/files.html",
+  "scope": "Private later original PlagueBeast775/Slime51 input pins. No archive executable run, whole-container hash, official authenticity or redistribution grant claimed.",
+  "cabinets": [
+    {
+      "zip_member": "uoaos/UOTD/models/client7.cab",
+      "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859",
+      "bytes": 20805
+    },
+    {
+      "zip_member": "uoaos/UOTD/models/monsters/client11.cab",
+      "sha256": "307a6b91c4d5459080d1fe8a74ae4fe0b91dea8a21a2866ca91e7dc7ba92f1a8",
+      "bytes": 35160963
+    },
+    {
+      "zip_member": "uoaos/UOTD/models/maps/client10.cab",
+      "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9",
+      "bytes": 33956665
+    }
+  ],
+  "files": [
+    {
+      "path": "Models/models.txt",
+      "bytes": 55735,
+      "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a"
+    },
+    {
+      "path": "Models/Maps/plague_beast_256.tga",
+      "bytes": 262188,
+      "sha256": "1318e41d9cf2e355b0c07b31cdc824c448d70eed391091c52d214c53b340819e"
+    },
+    {
+      "path": "Models/Maps/slimes_slime_v02.tga",
+      "bytes": 16428,
+      "sha256": "14dfbb02aaab50c387260ab6d7b765a86ecae91dc8366a68a4f28829887e74f8"
+    },
+    {
+      "path": "Models/Monsters/plague_beast_attack1.grn",
+      "bytes": 166664,
+      "sha256": "f53013c3f336742c6831e7b57f41155d3afd376a817f7a7491e223ae1dd5d498"
+    },
+    {
+      "path": "Models/Monsters/plague_beast_attack2.grn",
+      "bytes": 160568,
+      "sha256": "12a8432e5af04e17d2ddfdc02c0a9bbd40d9624d154cdcb4bc0d89a6b3e6f41e"
+    },
+    {
+      "path": "Models/Monsters/plague_beast_attack3.grn",
+      "bytes": 186472,
+      "sha256": "098e173444c4de31e0e1f3926d15ffb05712fbcbcd4cec5718f1bca284c9a1f7"
+    },
+    {
+      "path": "Models/Monsters/plague_beast_die1.grn",
+      "bytes": 153164,
+      "sha256": "bd66f5fcb0ffef4874d202351e9a0251f99f14be234e2bb29902d6d027dd80f3"
+    },
+    {
+      "path": "Models/Monsters/plague_beast_fidget.grn",
+      "bytes": 136312,
+      "sha256": "365cbea578208711c96ce03cfd9f0dc9f5cd6e21cc8e1be04d97e65bb64bad8b"
+    },
+    {
+      "path": "Models/Monsters/plague_beast_gethit.grn",
+      "bytes": 115456,
+      "sha256": "a867c873cd0d39d4bdba1dbfad167fa9d976a5b63b7f95fb64f13ca2cf35aa78"
+    },
+    {
+      "path": "Models/Monsters/plague_beast_idle.grn",
+      "bytes": 231736,
+      "sha256": "de5e896778bb1ea168619dd0e7ddbeb223cf8a6a848e06705df9f690f790e5a4"
+    },
+    {
+      "path": "Models/Monsters/plague_beast_lod2.grn",
+      "bytes": 132088,
+      "sha256": "cbd2f1e102817151850ab57bc43a69e96eebc7e466babe8e25bd7af2a76ca940"
+    },
+    {
+      "path": "Models/Monsters/plague_beast_run.grn",
+      "bytes": 141452,
+      "sha256": "926dab6ebbb5d3cf24ba99ec13342ea04e415b9e41e8aac964f9d8e58f62d5a9"
+    },
+    {
+      "path": "Models/Monsters/plague_beast_walk.grn",
+      "bytes": 187484,
+      "sha256": "ca2679f6b127400e61418bba090e1ac44695554bd9c6f35d62ed56123395fc3a"
+    },
+    {
+      "path": "Models/Monsters/slimes_slime_attack1.grn",
+      "bytes": 30224,
+      "sha256": "69745d3d4e375d463240ed4ab1ffb2848b252650ace26e8a8b39b5fe41690f1e"
+    },
+    {
+      "path": "Models/Monsters/slimes_slime_die1.grn",
+      "bytes": 39060,
+      "sha256": "c29985279272c3a363ea5d8f431227166b5d7471a4d7edc77bdce68d4fe30e6b"
+    },
+    {
+      "path": "Models/Monsters/slimes_slime_fidget.grn",
+      "bytes": 27828,
+      "sha256": "b479f5e1c52aa1c762cbb16aedcb6fdfb1093fe021ceb785ea719973a2d7d080"
+    },
+    {
+      "path": "Models/Monsters/slimes_slime_gethit.grn",
+      "bytes": 23052,
+      "sha256": "a9179e14786e24aacb6ec794fc1958e250dae96ad9775b661c2ea00f0faa68db"
+    },
+    {
+      "path": "Models/Monsters/slimes_slime_idle.grn",
+      "bytes": 25212,
+      "sha256": "d05aa32a2b23b82fa97db0538315ca30d19e2321d5345d940de79bdb837bd606"
+    },
+    {
+      "path": "Models/Monsters/slimes_slime_lod2.grn",
+      "bytes": 15200,
+      "sha256": "58238c33ac6901a07ddb8fc3af66a3c4ee9128d7fcc31236c46ebfb0f471ccd5"
+    },
+    {
+      "path": "Models/Monsters/slimes_slime_run.grn",
+      "bytes": 21716,
+      "sha256": "3669dfe0ea50215caac10c068e749c563f09584f9ca83b5984d1dd96ee2aaa07"
+    },
+    {
+      "path": "Models/Monsters/slimes_slime_walk.grn",
+      "bytes": 22084,
+      "sha256": "b22e83050bc42f6661af41072a480fc05b0f4d7a8113e1c79b97dd3e1916065d"
+    }
+  ],
+  "generated_plague_layer": {
+    "default_path": "work/creatures/plague-spawn/plague-albedo-v2.png",
+    "sha256": "6ce52ceb1cdd79af95b671172793210925ee9f49a1b40cc3a0e2e2f2ebac16ac",
+    "actual_dimensions": [
+      1254,
+      1254
+    ],
+    "prompts": [
+      {
+        "path": "work/creatures/plague-spawn/plague-albedo-v1-prompt.txt",
+        "sha256": "62c3db720f48ef7dfa0a69939c958ae2eb9f6165a390b79dcfed932c035a376f"
+      },
+      {
+        "path": "work/creatures/plague-spawn/plague-albedo-v2-prompt.txt",
+        "sha256": "47e712a3d83525db76baa23c1e535a64d4d17ce566c83041e66c89e1cf4c6daa"
+      }
+    ],
+    "provenance_path": "work/creatures/plague-spawn/plague-albedo-v2-provenance.json",
+    "scope": "Private built-in imagegen source-derived RGBA layer; composite over original RGB and retain original alpha. No independently licensed artwork or exact generated UV landmark fidelity claim."
+  }
+}

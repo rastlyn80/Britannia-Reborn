@@ -143,6 +143,8 @@ def main():
             assert serpent['preparation_sha256']==digest(ART/family/'preparation.json'),'Serpent preparation changed after actual avatar proof'
             assert all(digest(ROOT/'Viewer'/path.removeprefix('res://'))==sha for path,sha in serpent['runtime_sha256'].items()),'Serpent avatar runtime changed after proof'
             assert serpent['asset_sha256']==tested['serpents_snake_giant']['asset_sha256']['modern'] and serpent['import_sha256']==tested['serpents_snake_giant']['import_sha256']['modern'],'Serpent avatar used a different source skin/import'
+        if family=='amorphous':
+            subprocess.run([sys.executable,'-B',str(ROOT/'scripts/check-source-amorphous.py')],check=True)
         if family=='frogs':
             subprocess.run([sys.executable,'-B',str(ROOT/'scripts/prepare-source-frogs.py'),'--check-inputs'],check=True)
             actions=json.loads((ROOT/'outputs/creatures/frogs/actions.json').read_text())

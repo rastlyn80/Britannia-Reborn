@@ -7,6 +7,14 @@ priority = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(priority)
 
 class FrequencyTests(unittest.TestCase):
+    def test_mixed_constructor_needs_its_own_specialized_human_witnesses(self):
+        bodies={14,51,400,401};routed={14:'earth',51:'slime'}
+        self.assertEqual(priority.missing_routes(bodies,routed,set()),{400,401})
+        self.assertEqual(priority.missing_routes(bodies,routed,{400}),{401})
+        self.assertEqual(priority.missing_routes(bodies,routed,bodies),set())
+        # A positive native nonhuman witness cannot manufacture a model route.
+        self.assertEqual(priority.missing_routes(bodies,{14:'earth'},bodies),{51})
+
     def test_shared_capacity_is_not_multiplied_per_species(self):
         self.assertEqual(priority.allocate(8, [{'name': n, 'maxCount': 8} for n in ['bird', 'rat', 'cat', 'orc']]), [2., 2., 2., 2.])
 

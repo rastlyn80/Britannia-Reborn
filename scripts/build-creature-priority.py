@@ -95,6 +95,12 @@ def literal_registry(path, constant):
     match = re.search(r'const ' + constant + r'\s*:?=\s*\{(.*?)\}', path.read_text(encoding='utf-8'), re.S)
     return {int(v, 16) for v in re.findall(r'(0x[\da-fA-F]+)\s*:', match[1])} if match else set()
 
+def missing_routes(bodies, routed, witnessed):
+    # Mixed creature constructors can select the specialized human presenter.
+    # Only this named constructor's actual human witnesses close those gaps;
+    # generic creature routes and another class's human evidence cannot do so.
+    return bodies - routed.keys() - (witnessed & {400, 401, 402, 403})
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--maps', nargs='+', default=['trammel'])
@@ -154,11 +160,12 @@ def main():
                 mapping = 'literal source file' if c == key else 'inherited literal candidates'
                 break
         human |= bool(bodies) and bodies <= {400, 401, 402, 403}
-        missing = bodies - routed.keys()
+        missing = missing_routes(bodies, routed, witnessed[key])
         state = 'shared human graphics; race/cosmetics audit separate' if human else 'unrouted' if bodies and missing == bodies else 'partial route' if missing else 'body route present; fidelity/action work remains' if bodies else 'identity needs audit'
         row.update(estimated_slots=round(row['estimated_slots'], 6), files=sorted(row['files']),
                    body_candidates=sorted(bodies), body_mapping=mapping, missing_body_routes=sorted(missing),
                    graphics=state, human=human, witnessed_constructor_bodies=sorted(witnessed[key]),
+                   specialized_human_bodies_with_native_evidence=sorted(bodies & witnessed[key] & {400,401,402,403}),
                    bodies_with_native_evidence=sorted(bodies & body_evidence), source_paths=info['paths'])
         rows.append(row)
     rows.sort(key=lambda r: (-r['estimated_slots'], -r['spawn_locations'], r['name'].casefold()))
