@@ -91,6 +91,16 @@ foreach ($family in $Families) {
   & $godot --path "$root/Viewer" --script res://Presentation/MeasuredCreaturePresentationTests.gd -- "--kind=$($model.kind)" *> "$logs/$($model.kind)-avatar.log"
   if ($LASTEXITCODE -or (Select-String -Path "$logs/$($model.kind)-avatar.log" -Pattern 'SCRIPT ERROR:' -Quiet)) {throw "Measured source limb/skin/terrain/corpse proof failed: $($model.kind)"}
  }
+ if ($family -eq 'solen_workers') {
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/SourceSolenActionTests.gd *> "$logs/source-solen-actions.log"
+  if ($LASTEXITCODE -or (Select-String -Path "$logs/source-solen-actions.log" -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet)) {throw 'Original Solen source/action/Attack2 holdouts or second fidget failed'}
+  foreach ($kind in @('fire_ant_worker','black_ant_worker')) {
+   & $godot --path "$root/Viewer" --script res://Presentation/SourceSolenPresentationTests.gd -- "--kind=$kind" *> "$logs/$kind-avatar.log"
+   if ($LASTEXITCODE -or (Select-String -Path "$logs/$kind-avatar.log" -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet)) {throw "Original Solen six-leg/whole-skin/UV/hue/picking/corpse proof failed: $kind"}
+   & $godot --path "$root/Viewer" --script res://Presentation/SourceSolenTransitionTests.gd -- "--kind=$kind" *> "$logs/$kind-transitions.log"
+   if ($LASTEXITCODE -or (Select-String -Path "$logs/$kind-transitions.log" -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet)) {throw "Original Solen mixed gait/action/protected torso/ground support failed: $kind"}
+  }
+ }
  if ($family -eq 'amorphous') {
   foreach ($test in @('SourcePoseSubdivisionTests','SourceAmorphousActionTests','SourcePoseSubdivisionGpuTests')) {
    & $godot --path "$root/Viewer" --script "res://Presentation/$test.gd" *> "$logs/$test.log"

@@ -1,0 +1,117 @@
+{
+  "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+  "preservation_listing": "https://zuluarchive.com/pages/files.html",
+  "source_scope": "Third-party preserved later Third Dawn/Age of Shadows data, bounded ZIP member CRC/size and exact cabinet/member pins. No full ZIP hash, official authenticity or redistribution permission claimed; no downloaded executable run.",
+  "cabinets": [
+    {
+      "zip_member": "uoaos/UOTD/models/client7.cab",
+      "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859",
+      "bytes": 20805
+    },
+    {
+      "zip_member": "uoaos/UOTD/models/monsters/client11.cab",
+      "sha256": "307a6b91c4d5459080d1fe8a74ae4fe0b91dea8a21a2866ca91e7dc7ba92f1a8",
+      "bytes": 35160963
+    },
+    {
+      "zip_member": "uoaos/UOTD/models/maps/client10.cab",
+      "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9",
+      "bytes": 33956665
+    }
+  ],
+  "files": [
+    {
+      "path": "Models/Maps/black_ant_worker_256.tga",
+      "bytes": 262188,
+      "sha256": "1defc88c96ccd3e02754368e22902b6e0a59697b771ef8dbf446cb666ddf5012"
+    },
+    {
+      "path": "Models/Maps/fire_ant_worker_256.tga",
+      "bytes": 262188,
+      "sha256": "10c726c788912ae6042f76c0389a82ce971c66ef0224369f037a6c6d787d6b34"
+    },
+    {
+      "path": "Models/models.txt",
+      "bytes": 55735,
+      "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a"
+    },
+    {
+      "path": "Models/Monsters/black_ant_worker_lod2.grn",
+      "bytes": 118124,
+      "sha256": "e4e9bbbb8c1444ee7c1e2815b283a42bea5e6d11972f3da8725be15fe2577ed0"
+    },
+    {
+      "path": "Models/Monsters/fire_ant_worker_attack1.grn",
+      "bytes": 84768,
+      "sha256": "85a493d8dab9fddec1d51f987ee569122889538bfc4f8cd45f8de034b7063137"
+    },
+    {
+      "path": "Models/Monsters/fire_ant_worker_attack2.grn",
+      "bytes": 93372,
+      "sha256": "7cc187f1b8ba23cd605da698c2ba1a844cfb8c70a7cd76cc31ccb16f8c3f3918"
+    },
+    {
+      "path": "Models/Monsters/fire_ant_worker_attack3.grn",
+      "bytes": 91160,
+      "sha256": "879054c37c1835ae200b79edd79f99867ce4e9e15764cf8a6357fd2f723fcb57"
+    },
+    {
+      "path": "Models/Monsters/fire_ant_worker_die1.grn",
+      "bytes": 103388,
+      "sha256": "dbc47c9877873d0c8a8d4020c6b3850b7d084460c3248a59cd3bde5bd94f8097"
+    },
+    {
+      "path": "Models/Monsters/fire_ant_worker_fidget.grn",
+      "bytes": 84944,
+      "sha256": "f3c7cb2ad5ec8d65bd1eed9b07f55a7bb3287ab0ace2af9fa4a71785c4e97524"
+    },
+    {
+      "path": "Models/Monsters/fire_ant_worker_fidget2.grn",
+      "bytes": 83200,
+      "sha256": "b6b8b4ce517ca124199b9ca8b629dfdd70ba5fe22d9c734841541a3f7ed07e32"
+    },
+    {
+      "path": "Models/Monsters/fire_ant_worker_gethit.grn",
+      "bytes": 83096,
+      "sha256": "e49cff7bd628a43084983efbbbd49f7159d8066ee3bd28fed170b4e2da6a7b7a"
+    },
+    {
+      "path": "Models/Monsters/fire_ant_worker_idle.grn",
+      "bytes": 92960,
+      "sha256": "438b16626e81bc0d3fd3b088002e5893b740196d3a1d62870c0ab2899fbba9ac"
+    },
+    {
+      "path": "Models/Monsters/fire_ant_worker_lod2.grn",
+      "bytes": 118120,
+      "sha256": "1446cc87bad0e5e969be94868847f3990dd2d83c2118e18087f5f46701cc826d"
+    },
+    {
+      "path": "Models/Monsters/fire_ant_worker_run.grn",
+      "bytes": 83288,
+      "sha256": "07d8135459569dfa830803285109c5035bb996cc50311b3bd68708cbc8210a1e"
+    },
+    {
+      "path": "Models/Monsters/fire_ant_worker_walk.grn",
+      "bytes": 89344,
+      "sha256": "d1f56ff90cadc3835c97dcb8735f31aae8cb0ad1a812a1346646e7e4282e9f91"
+    }
+  ],
+  "generated_albedos": [
+    {
+      "kind": "fire_ant_worker",
+      "default_path": "work/creatures/solen/red-worker-albedo-v1.png",
+      "sha256": "270d0661998052533a2aa6667581461bedfe520f2214f2438ddc55cd35171b14",
+      "prompt_path": "work/creatures/solen/red-worker-albedo-v1.prompt.txt",
+      "prompt_sha256": "fa2352c09749f6dc6e30ec31b26ed2657f1d588565b9a60e629f00e07e8fc9e8",
+      "provenance_path": "work/creatures/solen/red-worker-albedo-v1.provenance.json"
+    },
+    {
+      "kind": "black_ant_worker",
+      "default_path": "work/creatures/solen/black-worker-albedo-v1.png",
+      "sha256": "dff27dc91182d99becb929f5cd3c17257a75958e455008db0764cdedaa451397",
+      "prompt_path": "work/creatures/solen/black-worker-albedo-v1.prompt.txt",
+      "prompt_sha256": "f3b5eaa19af884ac80130c9777238f8f86aed149fbac2f2ea1072459a92b7147",
+      "provenance_path": "work/creatures/solen/black-worker-albedo-v1.provenance.json"
+    }
+  ]
+}

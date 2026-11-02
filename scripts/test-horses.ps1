@@ -61,7 +61,7 @@ try {
  ConvertTo-Json -InputObject @('UOContent.dll','BritanniaReborn.HorseIntegrationFixtures.dll')|Set-Content "$runtime/Data/assemblies.json"
  $existing=Get-Content "$root/Server/runtime/Configuration/modernuo.json" -Raw|ConvertFrom-Json
  @{assemblyDirectories=@('Assemblies');dataDirectories=@($existing.dataDirectories);listeners=@('127.0.0.1:2594');settings=@{
-  'serverListing.serverName'='Britannia Reborn isolated horse tests';'serverListing.address'='127.0.0.1';'serverListing.autoDetect'='False';'network.encryptionMode'='Unencrypted';'accountHandler.enableAutoAccountCreation'='True';'accountHandler.maxAccountsPerIP'='6';'pathfinding.prebakeMaps'='False';'autosave.enabled'='False';'world.savePath'=(Join-Path $runtime 'Saves');'britanniaReborn.isolatedHorseTests'='True';'britanniaReborn.isolatedPlagueTests'=$(if ($CreatureFamily -eq 'amorphous') {'True'} else {'False'});'ethics.enable'=$(if ($Ethics -or $EquineCompletion) {'True'} else {'False'});'factions.enabled'=$(if ($Ethics -or $EquineCompletion) {'True'} else {'False'});'pingServer.enabled'='False'
+  'serverListing.serverName'='Britannia Reborn isolated horse tests';'serverListing.address'='127.0.0.1';'serverListing.autoDetect'='False';'network.encryptionMode'='Unencrypted';'accountHandler.enableAutoAccountCreation'='True';'accountHandler.maxAccountsPerIP'='6';'pathfinding.prebakeMaps'='False';'autosave.enabled'='False';'world.savePath'=(Join-Path $runtime 'Saves');'britanniaReborn.isolatedHorseTests'='True';'britanniaReborn.isolatedPlagueTests'=$(if ($CreatureFamily -eq 'amorphous') {'True'} else {'False'});'britanniaReborn.isolatedSolenTests'=$(if ($CreatureFamily -eq 'solen_workers') {'True'} else {'False'});'ethics.enable'=$(if ($Ethics -or $EquineCompletion) {'True'} else {'False'});'factions.enabled'=$(if ($Ethics -or $EquineCompletion) {'True'} else {'False'});'pingServer.enabled'='False'
  }}|ConvertTo-Json -Depth 8|Set-Content "$runtime/Configuration/modernuo.json"
  $accounts=@(@{username='brhorse-test-m';password=[Guid]::NewGuid().ToString('N').Substring(0,24)},@{username='brhorse-test-f';password=[Guid]::NewGuid().ToString('N').Substring(0,24)})
  $credentials=Join-Path $root 'work/horse-session/accounts.local.json'
@@ -97,6 +97,16 @@ try {
    $report=Join-Path $root "outputs/creatures/$CreatureFamily/live.json"
    if (!(Test-Path $report) -or (Get-Item $report).LastWriteTimeUtc -lt $started.AddSeconds(-1)) {throw 'Creature native test did not write fresh evidence'}
    if ((Get-Content $report -Raw|ConvertFrom-Json).failures -ne 0) {throw 'Creature native integration reported failures'}
+   if ($CreatureFamily -eq 'solen_workers') {
+    $behaviourStarted=[DateTime]::UtcNow
+    & $godot --headless --path Viewer --script res://Network/SolenBehaviourLive.gd
+    if ($LASTEXITCODE) {throw 'Native Solen friendship or direct/pet damage failed'}
+    $behaviourReport=Join-Path $root 'outputs/creatures/solen_workers/friendship.json'
+    if (!(Test-Path $behaviourReport) -or (Get-Item $behaviourReport).LastWriteTimeUtc -lt $behaviourStarted.AddSeconds(-1)) {throw 'Native Solen behaviour did not produce fresh evidence'}
+    if ((Get-Content $behaviourReport -Raw|ConvertFrom-Json).failures -ne 0) {throw 'Native Solen behaviour reported failures'}
+    & python -B "$root/scripts/check-source-solen.py" --native
+    if ($LASTEXITCODE) {throw 'Native Solen class/friendship/damage evidence incomplete or stale'}
+   }
    if ($CreatureFamily -eq 'amorphous') {
     $lifecycleStarted=[DateTime]::UtcNow
     & $godot --path Viewer --script res://Network/PlagueLifecycleLive.gd

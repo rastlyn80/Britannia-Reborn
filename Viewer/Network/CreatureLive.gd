@@ -113,6 +113,7 @@ func run() -> void:
 					if actor.horse_visual.animator.has_animation(extra[1]):actions.append(extra[0])
 				for extra in [[-3,2],[-4,5],[-5,14]]:
 					if actor.horse_visual.entry.get("new_action_categories",{}).has(str(extra[1])):actions.append(extra[0])
+			if actor.horse_visual.entry.get("classic_action_categories",{}).get("18","")=="Fidget2" and actor.horse_visual.animator.has_animation("Fidget2"):actions.append(18)
 			for action in actions:
 				session.last_mobile_actions.erase(serial);observer.last_mobile_actions.erase(serial)
 				await reply(sex,"action "+str(action),"UCCREATURE|action|")
