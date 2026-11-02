@@ -1,0 +1,120 @@
+{
+  "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+  "source_scope": "Third-party preserved later Third Dawn/Age of Shadows data, bounded ZIP member CRC/size and exact cabinet/member pins. No full ZIP hash, official authenticity or redistribution permission claimed; no downloaded executable run.",
+  "cabinets": [
+    {
+      "zip_member": "uoaos/UOTD/models/client7.cab",
+      "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859",
+      "bytes": 20805
+    },
+    {
+      "zip_member": "uoaos/UOTD/models/monsters/client11.cab",
+      "sha256": "307a6b91c4d5459080d1fe8a74ae4fe0b91dea8a21a2866ca91e7dc7ba92f1a8",
+      "bytes": 35160963
+    },
+    {
+      "zip_member": "uoaos/UOTD/models/maps/client10.cab",
+      "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9",
+      "bytes": 33956665
+    }
+  ],
+  "files": [
+    {
+      "path": "Maps/black_ant_warrior_256.tga",
+      "bytes": 262188,
+      "sha256": "e084761f329e1dae94b9e5b5907f8ba4966cfc7d30f8f5d4ce821c817f358d88"
+    },
+    {
+      "path": "Maps/fire_ant_warrior_256.tga",
+      "bytes": 262188,
+      "sha256": "5d0978e153ef622ba5e22357b86610871f93542a14e6504684e1d3f9e31161ff"
+    },
+    {
+      "path": "Monsters/black_ant_warrior_lod2.grn",
+      "bytes": 164144,
+      "sha256": "83c66261b1a7c78e1132797be510a64e593f82deb536f5fc1bb9448eea0603c0"
+    },
+    {
+      "path": "Monsters/fire_ant_warrior_attack1.grn",
+      "bytes": 122764,
+      "sha256": "21d1e33d7e55963b8fe33c8be32bda6a71b08aaa33befd97218ee96c32a9041d"
+    },
+    {
+      "path": "Monsters/fire_ant_warrior_attack2.grn",
+      "bytes": 101920,
+      "sha256": "347b9500104fc8c5961c23e7bddba7c64e78598bdced6269d3a279dd3e259d7d"
+    },
+    {
+      "path": "Monsters/fire_ant_warrior_attack3.grn",
+      "bytes": 103372,
+      "sha256": "41c7bfd35da312cd10a8e037739d291b310fd08fd7ed91f62a600478f736cdaa"
+    },
+    {
+      "path": "Monsters/fire_ant_warrior_die1.grn",
+      "bytes": 118212,
+      "sha256": "54b9126df74302e6b2d1ef5b6ce7f9361c7392f54790fafc14cc3c48b9165f43"
+    },
+    {
+      "path": "Monsters/fire_ant_warrior_fidget.grn",
+      "bytes": 100656,
+      "sha256": "415f0a6bd13e21aee73db9a0e7f652994ed1569bb01353b9ce305f37abdd5b05"
+    },
+    {
+      "path": "Monsters/fire_ant_warrior_fidget2.grn",
+      "bytes": 118392,
+      "sha256": "956e43c4f4221dd8312dc5bba46dccd5ca24dab9fa8426a0600e7709e9934758"
+    },
+    {
+      "path": "Monsters/fire_ant_warrior_gethit.grn",
+      "bytes": 91968,
+      "sha256": "cde370328afe6efa52026a6c7842fde773da1f5b92c4834e0aa1239c58ca4e5f"
+    },
+    {
+      "path": "Monsters/fire_ant_warrior_idle.grn",
+      "bytes": 97800,
+      "sha256": "3829a0cbb81160513b4fcf9e369462450e4bdb58f64c52779eae48a824c64ca9"
+    },
+    {
+      "path": "Monsters/fire_ant_warrior_lod2.grn",
+      "bytes": 164136,
+      "sha256": "f1b94b24cd79af34cc8c70499b44ee782d5780b41c5eb39714af021c39cc7553"
+    },
+    {
+      "path": "Monsters/fire_ant_warrior_run.grn",
+      "bytes": 92188,
+      "sha256": "e2cb37067b78c19a7560359ec1486f3fd1bf2ad4f5b74d827b652ad8d455d778"
+    },
+    {
+      "path": "Monsters/fire_ant_warrior_walk.grn",
+      "bytes": 94976,
+      "sha256": "a9e6c8b0b0fda19021da0c307c7e13b65456baa3403193d3df130f5c0bd0be72"
+    }
+  ],
+  "model_table": {
+    "path": "work/third-dawn/late-source-research/uoaos-source/Models/models.txt",
+    "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a"
+  },
+  "native_sources": [
+    {
+      "path": "Projects/UOContent/Mobiles/Monsters/Ants/RedSolenWarrior.cs",
+      "sha256": "1fe59097f7a108de65271266e9b5bedf06d42bb9ce1e8c57b5aef0a2f8b68566",
+      "native_class": "RedSolenWarrior",
+      "body": 782
+    },
+    {
+      "path": "Projects/UOContent/Mobiles/Monsters/Ants/BlackSolenWarrior.cs",
+      "sha256": "ab87c5bc3c6527e4f16dc6c06e419c03686bc2277e31709349dde1198c582576",
+      "native_class": "BlackSolenWarrior",
+      "body": 806
+    }
+  ],
+  "normal_repair_indices": [
+    110,
+    112,
+    129,
+    260,
+    261,
+    275
+  ],
+  "scope": "Original red782/black806 Solen warriors; black table explicitly links fire782 motion source, scale1.3.44-joint meshes retain all five influences on vertices22/27; authored six-normal repair only. No accepted runtime/render/native/terrain/corpse coverage. Original and derived artwork remain private."
+}

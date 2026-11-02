@@ -72,7 +72,8 @@ def indexed_scene_leaf_alias(bones, params, tie_objects, bone_objects, request):
     return {bone_objects[leaf] - 1: 'unretained_auxiliary_scene_' + str(leaf)}
 
 
-def parse(data, animations_only=False, scene_root_names=False, skip_unskinned_helpers=False, scale_shear_tracks=False, retained_bone_names=None, auxiliary_scene_leaf=None):
+def parse(data, animations_only=False, scene_root_names=False, skip_unskinned_helpers=False, scale_shear_tracks=False, retained_bone_names=None, auxiliary_scene_leaf=None, max_influences=4):
+    require(max_influences in (4, 8), 'Skin layout must explicitly select four or eight influences')
     result = dict(points=[], normals=[], uv_sets=[], polygons=[], texture_polygons=[],
                   bones=[], weights=[], ties=[], tracks=[])
     texts, objects, tie_objects, bone_objects, texture_ids = [], [], [], [], []
@@ -161,7 +162,7 @@ def parse(data, animations_only=False, scene_root_names=False, skip_unskinned_he
             for _ in range(n):
                 count = struct.unpack_from('<I', payload, pos)[0]
                 pos += 4
-                require(0 < count <= 4 and pos + count * 8 <= len(payload), 'Unsupported GRN vertex influences')
+                require(0 < count <= max_influences and pos + count * 8 <= len(payload), 'Unsupported GRN vertex influences')
                 pairs = [struct.unpack_from('<If', payload, pos + k * 8) for k in range(count)]
                 pos += count * 8
                 require(all(math.isfinite(w) and w >= 0 for _, w in pairs), 'Invalid skin weight')
@@ -281,7 +282,8 @@ def unit(q):
     return [v / length for v in q]
 
 
-def export_gltf(model, animations, texture, output, height, floor_sample_rate=30, preserve_vertical_clips=(), preserve_hover_clips=(), preserve_waterline_clips=(), measure_motion_bounds=False):
+def export_gltf(model, animations, texture, output, height, floor_sample_rate=30, preserve_vertical_clips=(), preserve_hover_clips=(), preserve_waterline_clips=(), measure_motion_bounds=False, max_influences=4):
+    require(max_influences in (4, 8), 'Skin layout must explicitly select four or eight influences')
     require(30<=floor_sample_rate<=240,'Floor sampling must stay within 30..240 Hz')
     require(not set(preserve_vertical_clips)&set(preserve_hover_clips),'Clip cannot use both flight and source-hover policies')
     require(not set(preserve_waterline_clips)&(set(preserve_vertical_clips)|set(preserve_hover_clips)),'Waterline clips cannot use land/air support policies')
@@ -337,6 +339,7 @@ def export_gltf(model, animations, texture, output, height, floor_sample_rate=30
         return len(gltf['accessors']) - 1
 
     points, normals, uv, joints, weights = [], [], [], [], []
+    extra_joints, extra_weights = [], []
     require(len(model['weights']) == len(model['points']), 'Skin/point count mismatch')
     require(len(model['texture_polygons']) == len(model['polygons']), 'Texture/triangle count mismatch')
     require(1 <= len(model['uv_sets']) <= 2, 'Expected UV or colour/UV vector tables')
@@ -350,10 +353,16 @@ def export_gltf(model, animations, texture, output, height, floor_sample_rate=30
             u, v, _ = model['uv_sets'][-1][ti]
             uv.append((u, v))
             pairs = model['weights'][vi]
+            require(0 < len(pairs) <= max_influences, 'Source influences exceed the selected glTF skin layout')
             js = [model['ties'][index] for index, _ in pairs]
             require(all(j < len(bones) for j in js), 'Weight bone outside skeleton')
-            joints.append(js + [0] * (4 - len(js)))
-            weights.append([w for _, w in pairs] + [0] * (4 - len(pairs)))
+            padded_joints = js + [0] * (max_influences - len(js))
+            padded_weights = [w for _, w in pairs] + [0] * (max_influences - len(pairs))
+            joints.append(padded_joints[:4])
+            weights.append(padded_weights[:4])
+            if max_influences == 8:
+                extra_joints.append(padded_joints[4:])
+                extra_weights.append(padded_weights[4:])
     zmin, zmax = min(p[2] for p in points), max(p[2] for p in points)
     scale = height / (zmax - zmin)
     # Granny Z-up -> glTF/Godot Y-up. The visual root owns scale/grounding;
@@ -371,6 +380,8 @@ def export_gltf(model, animations, texture, output, height, floor_sample_rate=30
     gltf['skins'] = [dict(name='NativeRig', inverseBindMatrices=accessor(inverse, 'MAT4'), joints=list(range(2, 2 + len(bones))))]
     attributes = dict(POSITION=accessor(points, 'VEC3'), NORMAL=accessor(normals, 'VEC3'),
                       TEXCOORD_0=accessor(uv, 'VEC2'), JOINTS_0=accessor(joints, 'VEC4', 5123), WEIGHTS_0=accessor(weights, 'VEC4'))
+    if max_influences == 8:
+        attributes.update(JOINTS_1=accessor(extra_joints, 'VEC4', 5123), WEIGHTS_1=accessor(extra_weights, 'VEC4'))
     gltf['meshes'] = [dict(name='NativeBody', primitives=[dict(attributes=attributes, material=0, mode=4)])]
     gltf['images'] = [dict(uri='data:image/png;base64,' + base64.b64encode(texture).decode())]
     gltf['textures'] = [dict(source=0)]

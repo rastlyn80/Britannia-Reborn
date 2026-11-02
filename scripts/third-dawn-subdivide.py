@@ -26,19 +26,26 @@ def limit(point, reference, maximum):
     return add(reference, mul(d, min(1.0, maximum / max(distance, 1e-12))))
 
 
-def mix_weights(entries):
+def mix_weights(entries, max_influences=4):
+    if max_influences not in (4, 8):
+        raise ValueError('Skin layout must explicitly select four or eight influences')
     weights = {}
     for pairs, coefficient in entries:
         for bone, value in pairs:
             weights[bone] = weights.get(bone, 0.0) + coefficient * value
-    ordered = sorted(((b, w) for b, w in weights.items() if w > 0), key=lambda item: (-item[1], item[0]))[:4]
+    ordered = sorted(((b, w) for b, w in weights.items() if w > 0), key=lambda item: (-item[1], item[0]))
+    if max_influences == 8 and len(ordered) > 8:
+        raise ValueError('Lossless eight-influence refinement would exceed eight bones')
+    ordered = ordered[:max_influences]
     total = sum(w for _, w in ordered)
     if total <= 0:
         raise ValueError('Refined vertex has no skin weights')
     return [(bone, w / total) for bone, w in ordered]
 
 
-def refine(source, levels=2, maximum=0.018, strengths=None, weight_smoothing=0.):
+def refine(source, levels=2, maximum=0.018, strengths=None, weight_smoothing=0., max_influences=4):
+    if max_influences not in (4, 8) or any(not 0 < len(pairs) <= max_influences for pairs in source['weights']):
+        raise ValueError('Source influences exceed the selected four/eight skin layout')
     if not 0 <= levels <= 2 or not 0 <= maximum <= (.05 if strengths is not None else .03):
         raise ValueError('Subdivision requires at most two levels; displacement cap is 3 cm globally or 5 cm with a local mask')
     if strengths is not None and (len(strengths) != len(source['points']) or any(not 0 <= w <= 1 for w in strengths)):
@@ -83,7 +90,7 @@ def refine(source, levels=2, maximum=0.018, strengths=None, weight_smoothing=0.)
             amount = weight_smoothing * strengths[i]
             sides = sorted(neighbors[i])
             entries = [(pairs, 1-amount)] + [(model['weights'][j], amount/len(sides)) for j in sides] if sides else [(pairs, 1.)]
-            new_weights.append(mix_weights(entries))
+            new_weights.append(mix_weights(entries, max_influences))
         new_references = list(references)
         new_strengths = list(strengths)
         for (a, b), opposites in sorted(edges.items()):
@@ -96,9 +103,9 @@ def refine(source, levels=2, maximum=0.018, strengths=None, weight_smoothing=0.)
             refined.append(limit(blend([ref, candidate], [1-strength, strength]), ref, maximum * strength))
             new_strengths.append(strength)
             new_references.append(ref)
-            curved = mix_weights([(model['weights'][j], w) for j, w in zip(ids, coefficients)])
-            linear = mix_weights([(model['weights'][a], .5), (model['weights'][b], .5)])
-            new_weights.append(mix_weights([(linear, 1-strength), (curved, strength)]))
+            curved = mix_weights([(model['weights'][j], w) for j, w in zip(ids, coefficients)], max_influences)
+            linear = mix_weights([(model['weights'][a], .5), (model['weights'][b], .5)], max_influences)
+            new_weights.append(mix_weights([(linear, 1-strength), (curved, strength)], max_influences))
         polygons, tex_polys, uv = [], [], []
         old_uv = model['uv_sets'][-1]
         for pi, poly in enumerate(model['polygons']):

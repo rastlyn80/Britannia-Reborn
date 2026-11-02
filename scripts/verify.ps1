@@ -6,6 +6,10 @@ if ($LASTEXITCODE) { throw 'Human sequence parser bounds/format checks failed' }
 if ($LASTEXITCODE) { throw 'Static clothing importer checks failed' }
 & python -B "$root/scripts/test-third-dawn.py"
 if ($LASTEXITCODE) { throw 'Bounded Third Dawn parser / refinement checks failed' }
+& python -B "$root/scripts/test-eight-influence-skin.py"
+if ($LASTEXITCODE) {throw 'Explicit eight-slot skin export/refinement boundaries or legacy golden outputs failed'}
+& python -B "$root/scripts/test-eight-influence-skin.py" --fixture
+if ($LASTEXITCODE) {throw 'Source-free five-influence fixture generation failed'}
 & python -B "$root/scripts/test-creature-pipeline.py"
 if ($LASTEXITCODE) {throw 'Creature rig/visible-geometry/reader regression checks failed'}
 & python -B "$root/scripts/test-creature-mage-masks.py"
@@ -30,6 +34,8 @@ $env:APPDATA = Join-Path $root '.godot-user'
 $env:LOCALAPPDATA = $env:APPDATA
 & $godot --headless --path "$root\Viewer" --editor --import
 if ($LASTEXITCODE) { throw 'Asset import failed' }
+& $godot --headless --path "$root/Viewer" --script res://Presentation/EightInfluenceImportTests.gd
+if ($LASTEXITCODE) {throw 'Actual eight-slot GLTF import, fifth-joint deformation or static corpse failed'}
 & $godot --headless --path "$root/Viewer" --script res://Presentation/CreatureActionRoutingTests.gd
 if ($LASTEXITCODE) {throw 'Native animal/sea/monster action semantics failed'}
 & $godot --headless --path "$root/Viewer" --script res://Presentation/CorpseAttributeTests.gd
@@ -63,6 +69,14 @@ if (Test-Path "$root/Viewer/local-art/creatures/walking_dead_mummy-ground.json")
  }
  & python -B "$root/scripts/check-prepared-mummy.py" --runtime
  if ($LASTEXITCODE) {throw 'Exact prepared Mummy source/curve/asset evidence failed'}
+}
+if (Test-Path "$root/Viewer/local-art/creatures/black_ant_warrior-ground.json") {
+ foreach ($trial in @('SolenWarriorSourceTests','SolenWarriorRuntimeTests')) {
+  & $godot --headless --path "$root/Viewer" --script "res://Presentation/$trial.gd"
+  if ($LASTEXITCODE) {throw "Prepared eight-slot Solen warrior test failed: $trial"}
+ }
+ & python -B "$root/scripts/check-solen-warrior-sources.py" --runtime
+ if ($LASTEXITCODE) {throw 'Exact original Solen warrior source/import/action/corpse proof failed'}
 }
 if (Test-Path "$root/Viewer/Art/Creatures/Birds/small-bird.glb") {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/BirdMotionTests.gd -- --asset=res://Art/Creatures/Birds/small-bird.glb
