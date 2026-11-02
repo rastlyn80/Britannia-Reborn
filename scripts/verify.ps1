@@ -71,11 +71,11 @@ if (Test-Path "$root/Viewer/local-art/creatures/walking_dead_mummy-ground.json")
  if ($LASTEXITCODE) {throw 'Exact prepared Mummy source/curve/asset evidence failed'}
 }
 if (Test-Path "$root/Viewer/local-art/creatures/black_ant_warrior-ground.json") {
- foreach ($trial in @('SolenWarriorSourceTests','SolenWarriorRuntimeTests','SolenWarriorTerrainTests')) {
+ foreach ($trial in @('SolenWarriorSourceTests','SolenWarriorRuntimeTests','SolenWarriorTerrainTests','SolenWarriorDeathTests')) {
   & $godot --headless --path "$root/Viewer" --script "res://Presentation/$trial.gd"
   if ($LASTEXITCODE) {throw "Prepared eight-slot Solen warrior test failed: $trial"}
  }
- & python -B "$root/scripts/check-solen-warrior-sources.py" --terrain
+ & python -B "$root/scripts/check-solen-warrior-sources.py" --death
  if ($LASTEXITCODE) {throw 'Exact original Solen warrior source/import/action/corpse proof failed'}
 }
 if (Test-Path "$root/Viewer/Art/Creatures/Birds/small-bird.glb") {

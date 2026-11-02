@@ -47,7 +47,7 @@ func run() -> void:
 	var prep: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(prep_path))
 	for row: Dictionary in prep.models:ground_pins[str(row.ground_lookup)]=FileAccess.get_sha256(str(row.ground_lookup))
 	var runtime: Dictionary={}
-	for name in ["SolenWarriorTerrainTests.gd","SourceSolenWarriorVisual.gd","SourceSolenWarriorSupport.gd","SourceSolenVisual.gd","SourceSolenSupport.gd","SourceSolenMaterial.gd","SourceSolenSurface.gdshader","SmallSnakeVisual.gd","MeasuredCreatureSupport.gd","CreatureVisual.gd","SourceMountContact.gd","SourceGroundLookup.gd","SkinGeometry.gd","OstardVisual.gd"]:runtime[name]=FileAccess.get_sha256("res://Presentation/"+name)
+	for name in ["SolenWarriorTerrainTests.gd","SourceSolenWarriorVisual.gd","SourcePoseEntry.gd","SourceSolenWarriorSupport.gd","SourceSolenVisual.gd","SourceSolenSupport.gd","SourceSolenMaterial.gd","SourceSolenSurface.gdshader","SmallSnakeVisual.gd","MeasuredCreatureSupport.gd","CreatureVisual.gd","SourceMountContact.gd","SourceGroundLookup.gd","SkinGeometry.gd","OstardVisual.gd"]:runtime[name]=FileAccess.get_sha256("res://Presentation/"+name)
 	var records: Array=[];var misses: Array=[];var total_poses:=0;var max_skin:=0.;var max_foot:=0.
 	for entry: Dictionary in prep.models:
 		for plane: Dictionary in [{"name":"flat","height":0.,"tilt":Vector3.ZERO},{"name":"forward","height":.25,"tilt":Vector3(.16,0.,0.)},{"name":"cross","height":-.15,"tilt":Vector3(0.,0.,-.14)}]:

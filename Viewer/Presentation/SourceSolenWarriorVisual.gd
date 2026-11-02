@@ -2,6 +2,8 @@ extends "res://Presentation/SourceSolenVisual.gd"
 ## Original eight-slot warrior skins. Worker support/materials stay unchanged.
 signal landmarks_changed
 var model_anchor:=Vector3.ZERO
+var death_entry_seconds:=0.
+var death_entry_position:=Vector3.ZERO
 func update_landmarks() -> void:
 	super.update_landmarks()
 	if not influence_bounds.is_empty():landmarks_changed.emit()
@@ -23,8 +25,13 @@ func _ready() -> void:
 	apply_warrior_ground()
 func apply_warrior_ground() -> void:
 	if source_space==null or ground_curves.is_empty() or animator.assigned_animation.is_empty():return
-	model.position=model_anchor
-	model.position.y+=Ground.sample(ground_curves,animator.assigned_animation,animator.current_animation_position)
+	var time:=animator.current_animation_position
+	var entering:=death_entry_seconds>0. and animator.assigned_animation=="Death"
+	if entering and time<=0.:
+		model.position=death_entry_position;contact.residual_height=model.position.y-model_anchor.y;update_landmarks();return
+	var source_time:=maxf(0.,time-death_entry_seconds) if entering else time
+	var calibrated:=model_anchor+Vector3.UP*Ground.sample(ground_curves,animator.assigned_animation,source_time)
+	model.position=death_entry_position.lerp(calibrated,clampf(time/death_entry_seconds,0.,1.)) if entering else calibrated
 	# Support only negative mixed-pose clearance. Positive source flight
 	# survives instead of being flattened during a crossfade.
 	if blend_remaining>0. and not support_skin.is_empty():
@@ -36,3 +43,18 @@ func apply_warrior_ground() -> void:
 		if gap<0.:model.position.y+=(-gap+.00005)/maxf(.75,normal.y)
 	contact.residual_height=model.position.y-model_anchor.y
 	update_landmarks()
+func begin_death_from(source: Node3D) -> float:
+	# Sample the original target before building private entry tracks for all
+	# bones and the separate source placement node, including omitted channels.
+	var displayed_position: Vector3=source.model.position
+	var source_rig: Skeleton3D=source.skeleton
+	var displayed_space: Transform3D=source.source_space.transform
+	animator.stop();animator.speed_scale=1.;play("Death",0.);animator.seek(0.,true);animator.advance(0.);skeleton.force_update_all_bone_transforms()
+	var path:=animator.get_node(animator.root_node).get_path_to(source_space)
+	var animation:=preload("res://Presentation/SourcePoseEntry.gd").build(animator,skeleton,source_rig,{path:displayed_space})
+	var library:=animator.get_animation_library("").duplicate()
+	animator.stop(true);animator.remove_animation_library("");animator.add_animation_library("",library);library.remove_animation("Death");library.add_animation("Death",animation)
+	death_entry_seconds=.08;death_entry_position=displayed_position
+	current_clip="Death";dead=true;action_remaining=animation.length;contact.enabled=false;blend_remaining=death_entry_seconds+.04
+	animator.speed_scale=1.;animator.play("Death",0.);animator.seek(0.,true);animator.advance(0.)
+	return animation.length
