@@ -91,6 +91,14 @@ foreach ($family in $Families) {
   & $godot --path "$root/Viewer" --script res://Presentation/MeasuredCreaturePresentationTests.gd -- "--kind=$($model.kind)" *> "$logs/$($model.kind)-avatar.log"
   if ($LASTEXITCODE -or (Select-String -Path "$logs/$($model.kind)-avatar.log" -Pattern 'SCRIPT ERROR:' -Quiet)) {throw "Measured source limb/skin/terrain/corpse proof failed: $($model.kind)"}
  }
+ if ($family -eq 'fluid_elementals') {
+  foreach ($kind in @('elementals_acid_elemental','elementals_poison_elemental')) {
+   foreach ($test in @('SourceFluidElementalActionTests','SourceFluidElementalPresentationTests','SourceFluidElementalTransitionTests')) {
+    & $godot --path "$root/Viewer" --script "res://Presentation/$test.gd" -- "--kind=$kind" *> "$logs/$kind-$test.log"
+    if ($LASTEXITCODE -or (Select-String -Path "$logs/$kind-$test.log" -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet)) {throw "Original fluid elemental source/gel/terrain/clock/corpse/mixed skin proof failed: $kind/$test"}
+   }
+  }
+ }
  if ($family -eq 'solen_workers') {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/SourceSolenActionTests.gd *> "$logs/source-solen-actions.log"
   if ($LASTEXITCODE -or (Select-String -Path "$logs/source-solen-actions.log" -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet)) {throw 'Original Solen source/action/Attack2 holdouts or second fidget failed'}

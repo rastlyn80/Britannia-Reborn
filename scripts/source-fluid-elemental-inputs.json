@@ -1,0 +1,109 @@
+{
+  "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+  "source_page": "https://zuluarchive.com/pages/files.html",
+  "scope": "Original later Acid158/Poison162 meshes/maps and table-declared Acid motions. Exact cabinet/member pins only, no original bytes, whole ZIP hash, official authenticity or redistribution licence. No downloaded executable run. Modern surface is owned procedural shader code, not a generated bitmap.",
+  "cabinets": [
+    {
+      "zip_member": "uoaos/UOTD/models/client7.cab",
+      "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859",
+      "bytes": 20805
+    },
+    {
+      "zip_member": "uoaos/UOTD/models/monsters/client11.cab",
+      "sha256": "307a6b91c4d5459080d1fe8a74ae4fe0b91dea8a21a2866ca91e7dc7ba92f1a8",
+      "bytes": 35160963
+    },
+    {
+      "zip_member": "uoaos/UOTD/models/maps/client10.cab",
+      "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9",
+      "bytes": 33956665
+    }
+  ],
+  "files": [
+    {
+      "path": "Models/Maps/elementals_acid_elemental.tga",
+      "sha256": "5a814524952ca1779932c2e6fd62ce6f01026cdeed84324676d44ab8edd9afea",
+      "bytes": 65580
+    },
+    {
+      "path": "Models/Maps/elementals_poison_elemental.tga",
+      "sha256": "5a526e5f73ce271546cf81ce7ce94c2da35ad672a26af387e43e9c12eb14aae6",
+      "bytes": 65580
+    },
+    {
+      "path": "Models/Monsters/elementals_acid_elemental_attack1.grn",
+      "sha256": "de44fd962a798dfb4ca1745b42d12d3e85dfcd3abe613f19f04a0db37490c7cd",
+      "bytes": 32284
+    },
+    {
+      "path": "Models/Monsters/elementals_acid_elemental_attack2.grn",
+      "sha256": "4737df81687340c6daf7f70e2d03094145583d658a60608be43dfd7b15650f70",
+      "bytes": 35972
+    },
+    {
+      "path": "Models/Monsters/elementals_acid_elemental_attack3.grn",
+      "sha256": "2c08922fc93d737261a70275e5c76fdd1d5a92b11bf22d8d6eeae25eaadbb976",
+      "bytes": 26096
+    },
+    {
+      "path": "Models/Monsters/elementals_acid_elemental_cast2.grn",
+      "sha256": "a13a24ae5a903a29ae2425e84ec6dfe62f0e711e1035dccb7fb75fb7f397bb44",
+      "bytes": 32540
+    },
+    {
+      "path": "Models/Monsters/elementals_acid_elemental_die1.grn",
+      "sha256": "86817ec9c02b718a74155c44d309ff8d7d0ecb888d3b24fc2016afd624d99daa",
+      "bytes": 48188
+    },
+    {
+      "path": "Models/Monsters/elementals_acid_elemental_die2.grn",
+      "sha256": "86817ec9c02b718a74155c44d309ff8d7d0ecb888d3b24fc2016afd624d99daa",
+      "bytes": 48188
+    },
+    {
+      "path": "Models/Monsters/elementals_acid_elemental_fidget.grn",
+      "sha256": "56861777c1ad77fb86f04cc07473e2bada540bff6548cd82614f12a66513daa8",
+      "bytes": 26184
+    },
+    {
+      "path": "Models/Monsters/elementals_acid_elemental_gethit.grn",
+      "sha256": "aba8d435e0292356c1563365b67edc66185dd9ed0cab21e4ac8b1f5a5d242a86",
+      "bytes": 25028
+    },
+    {
+      "path": "Models/Monsters/elementals_acid_elemental_idle.grn",
+      "sha256": "6433c99c11aaed4a358e3e61d1ccee7fcca97dad206851b6919662fbdadabf69",
+      "bytes": 21872
+    },
+    {
+      "path": "Models/Monsters/elementals_acid_elemental_lod2.grn",
+      "sha256": "09b066cff693bad63b5ab369a9657abf6811de24d7e1c593cf27dfa7d8cfd4b1",
+      "bytes": 38968
+    },
+    {
+      "path": "Models/Monsters/elementals_acid_elemental_run.grn",
+      "sha256": "00a2af2e1bc702a908cb8882eb6414c8dedd6e7874593286904cac679819116c",
+      "bytes": 26108
+    },
+    {
+      "path": "Models/Monsters/elementals_acid_elemental_stomp.grn",
+      "sha256": "56861777c1ad77fb86f04cc07473e2bada540bff6548cd82614f12a66513daa8",
+      "bytes": 26184
+    },
+    {
+      "path": "Models/Monsters/elementals_acid_elemental_walk.grn",
+      "sha256": "eecc24c2a339ddc8d5304ca31ef989e70a8b735efa6fb07e3a3743bc24127802",
+      "bytes": 32228
+    },
+    {
+      "path": "Models/Monsters/elementals_poison_elemental_lod2.grn",
+      "sha256": "984f093f77404c550c87355e8180e655f88dd45d3efc49ddc4b0d55256679c7e",
+      "bytes": 38976
+    },
+    {
+      "path": "Models/models.txt",
+      "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a",
+      "bytes": 55735
+    }
+  ]
+}

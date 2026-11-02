@@ -113,7 +113,12 @@ func run() -> void:
 					if actor.horse_visual.animator.has_animation(extra[1]):actions.append(extra[0])
 				for extra in [[-3,2],[-4,5],[-5,14]]:
 					if actor.horse_visual.entry.get("new_action_categories",{}).has(str(extra[1])):actions.append(extra[0])
+			if actor.horse_visual.animator.has_animation("Cast2"):
+				for slot in [12,14]:
+					if actor.horse_visual.entry.get("classic_action_categories",{}).get(str(slot),"")=="Cast2" and not actions.has(slot):actions.append(slot)
+				if actor.horse_visual.entry.get("new_action_categories",{}).get("11","")=="Cast2" and not actions.has(-2):actions.append(-2)
 			if actor.horse_visual.entry.get("classic_action_categories",{}).get("18","")=="Fidget2" and actor.horse_visual.animator.has_animation("Fidget2"):actions.append(18)
+			var action_records: Array=[]
 			for action in actions:
 				session.last_mobile_actions.erase(serial);observer.last_mobile_actions.erase(serial)
 				await reply(sex,"action "+str(action),"UCCREATURE|action|")
@@ -129,6 +134,9 @@ func run() -> void:
 				if expected=="Attack2" and not actor.horse_visual.animator.has_animation("Attack2"):expected="Attack"
 				if expected=="Fidget2" and not actor.horse_visual.animator.has_animation("Fidget2"):expected="Fidget"
 				if not check(actor.horse_visual.current_clip==expected,"native action selects the intended category"):return
+				var peer_request: Dictionary=observer.last_mobile_actions[serial]
+				if not check(peer_actor.receive_native_action(peer_request) and peer_actor.horse_visual.current_clip==expected,"Observer actual avatar selects the same native category"):return
+				action_records.append({"requested":action,"owner_packet":received.duplicate(true),"observer_packet":peer_request.duplicate(true),"owner_clip":actor.horse_visual.current_clip,"observer_clip":peer_actor.horse_visual.current_clip})
 				if expected=="Fly" and not check(not actor.horse_visual.contact.enabled,"airborne source clip releases foot contact"):return
 			if native_class=="Dolphin":
 				var seen: Dictionary={}
@@ -173,9 +181,9 @@ func run() -> void:
 			for client in [sex,1-sex]:death_presenters[client].finish(serial);death_arenas[client].avatars.erase(serial);death_events[client].erase(serial)
 			actor.queue_free();peer_actor.queue_free()
 			await process_frame
-			records.append({"female":sex==1,"body":body,"native_class":native_class,"native_state":native_state,"kind":candidate.kind,"native_water":candidate.get("movement_mode","")=="native_waterline","corpse_suppressed":corpse==0 and not death_refused,"native_death_refused":death_refused,"movement":"Native AI refuses movement" if rooted else "Native Mobile.Move walk/run"})
+			records.append({"actions":action_records,"female":sex==1,"body":body,"native_class":native_class,"native_state":native_state,"kind":candidate.kind,"native_water":candidate.get("movement_mode","")=="native_waterline","corpse_suppressed":corpse==0 and not death_refused,"native_death_refused":death_refused,"movement":"Native AI refuses movement" if rooted else "Native Mobile.Move walk/run"})
 			await reply(sex,"cleanup","UCCREATURE|cleaned")
 	for session in sessions:session.close()
 	var folder:="res://../outputs/creatures/"+family;DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(folder))
-	var file:=FileAccess.open(folder+"/live.json",FileAccess.WRITE);file.store_string(JSON.stringify({"checks":checks,"failures":0,"records":records,"scope":"Actual two-client world entry, native constructor bodies/hues, Mobile.Move walk/run, packets and corpse replication. Native AI is frozen for controlled sampling; flat-arena relocation is fixture setup. Not autonomous AI, taming or full gameplay certification. Production world and saves untouched."},"\t"));file.close()
+	var file:=FileAccess.open(folder+"/live.json",FileAccess.WRITE);file.store_string(JSON.stringify({"test_sha256":FileAccess.get_sha256("res://Network/CreatureLive.gd"),"fixture_sha256":FileAccess.get_sha256("res://../Server/HorseIntegrationFixtures/CreatureFixtures.cs"),"preparation_sha256":FileAccess.get_sha256("res://local-art/creatures/"+family+"/preparation.json"),"checks":checks,"failures":0,"records":records,"scope":"Actual two-client world entry, native constructor bodies/hues, Mobile.Move walk/run, packets and corpse replication. Native AI is frozen for controlled sampling; flat-arena relocation is fixture setup. Not autonomous AI, taming or full gameplay certification. Production world and saves untouched."},"\t"));file.close()
 	print("CREATURE NATIVE / ",family,": ",checks," checks / 0 failures");quit()
