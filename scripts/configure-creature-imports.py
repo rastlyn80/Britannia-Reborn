@@ -19,7 +19,7 @@ def main():
                 assert match,'Cannot identify the local Godot animation sample rate'
                 previous=text
                 if int(match[1])<rate:text=re.sub(r'^animation/fps=\d+\s*$',f'animation/fps={rate}',text,flags=re.M)
-                if model['kind'] in ['serpents_snake_giant','serpents_snake_giant_ice','small_snakes','liche_liche_retro','liche_liche_lord_retro'] or model.get('presentation_script')=='res://Presentation/SourceElementalVisual.gd':
+                if model['kind'] in ['serpents_snake_giant','serpents_snake_giant_ice','small_snakes','liche_liche_retro','liche_liche_lord_retro'] or model.get('presentation_script') in ['res://Presentation/SourceElementalVisual.gd','res://Presentation/SourceFrogVisual.gd']:
                     # The fast strike's floor correction must stay coupled to
                     # its joint poses. Default key reduction visibly lifts it.
                     text=re.sub(r'^meshes/force_disable_compression=\w+', 'meshes/force_disable_compression=true',text,flags=re.M)

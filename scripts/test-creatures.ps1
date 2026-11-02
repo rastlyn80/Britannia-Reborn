@@ -91,6 +91,16 @@ foreach ($family in $Families) {
   & $godot --path "$root/Viewer" --script res://Presentation/MeasuredCreaturePresentationTests.gd -- "--kind=$($model.kind)" *> "$logs/$($model.kind)-avatar.log"
   if ($LASTEXITCODE -or (Select-String -Path "$logs/$($model.kind)-avatar.log" -Pattern 'SCRIPT ERROR:' -Quiet)) {throw "Measured source limb/skin/terrain/corpse proof failed: $($model.kind)"}
  }
+ if ($family -eq 'frogs') {
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/SourceFrogActionTests.gd *> "$logs/source-frogs-actions.log"
+  if ($LASTEXITCODE -or (Select-String -Path "$logs/source-frogs-actions.log" -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet)) {throw 'Original frog joint/hop/tongue/Hit holdouts or native action timing failed'}
+  foreach ($kind in @('frogs_bullfrog','frogs_frog_giant')) {
+   & $godot --path "$root/Viewer" --script res://Presentation/SourceFrogPresentationTests.gd -- "--kind=$kind" *> "$logs/$kind-avatar.log"
+   if ($LASTEXITCODE -or (Select-String -Path "$logs/$kind-avatar.log" -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet)) {throw "Original frog actual avatar/material/hues/terrain/corpse failed: $kind"}
+   & $godot --path "$root/Viewer" --script res://Presentation/SourceFrogTransitionTests.gd -- "--kind=$kind" *> "$logs/$kind-transitions.log"
+   if ($LASTEXITCODE -or (Select-String -Path "$logs/$kind-transitions.log" -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet)) {throw "Original frog mixed skins/feeding/death/hops/picking failed: $kind"}
+  }
+ }
  if ($family -eq 'snow_elementals') {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/SourceElementalActionTests.gd *> "$logs/source-snow-actions.log"
   if ($LASTEXITCODE -or (Select-String -Path "$logs/source-snow-actions.log" -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet)) {throw 'Original Snow skins, vertical run, source hierarchy or repeated native actions failed'}

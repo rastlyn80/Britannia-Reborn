@@ -143,6 +143,53 @@ def main():
             assert serpent['preparation_sha256']==digest(ART/family/'preparation.json'),'Serpent preparation changed after actual avatar proof'
             assert all(digest(ROOT/'Viewer'/path.removeprefix('res://'))==sha for path,sha in serpent['runtime_sha256'].items()),'Serpent avatar runtime changed after proof'
             assert serpent['asset_sha256']==tested['serpents_snake_giant']['asset_sha256']['modern'] and serpent['import_sha256']==tested['serpents_snake_giant']['import_sha256']['modern'],'Serpent avatar used a different source skin/import'
+        if family=='frogs':
+            subprocess.run([sys.executable,'-B',str(ROOT/'scripts/prepare-source-frogs.py'),'--check-inputs'],check=True)
+            actions=json.loads((ROOT/'outputs/creatures/frogs/actions.json').read_text())
+            kinds={'frogs_bullfrog':81,'frogs_frog_giant':80}
+            assert set(tested)==set(kinds) and actions['failures']==0 and actions['checks']>=19718 and len(actions['samples'])==2664 and len(actions['paired_poses'])==888
+            assert actions['maximum_relative_joint_error_m']<.00001 and actions['maximum_grounded_floor_error_m']<.008
+            assert len(actions['hit_holdouts'])==6 and sum(r['poses'] for r in actions['hit_holdouts'])>=7000 and all(r['maximum_floor_error_m']<.008 for r in actions['hit_holdouts'])
+            assert len(actions['native_timing'])==36 and {r['preceding_rate'] for r in actions['native_timing']}=={.25,1.,3.2} and all(r['seconds']==.8 and abs(r['position']-r['length']*.5)<.001 for r in actions['native_timing'])
+            assert preparation['recipe_sha256']==digest(ROOT/'scripts/prepare-source-frogs.py') and preparation['source_pipeline_sha256']==digest(ROOT/'scripts/prepare-creatures.py') and preparation['input_manifest_sha256']==digest(ROOT/'scripts/source-frog-inputs.json')
+            measurement=preparation['ground_measurement'];assert digest(ROOT/measurement['path'])==measurement['sha256'] and measurement['recipe_sha256']==digest(ROOT/'Viewer/Presentation/BakeSourceFrogGround.gd') and measurement['geometry_sha256']==digest(ROOT/'Viewer/Presentation/SourceGroundLookup.gd')
+            proofs=[actions];appearances=[];categories={'Idle','Walk','Run','Attack','Attack2','Hit','Death','Death2','Fidget','Eat','Alert','LieDown'}
+            assert {s['clip'] for s in actions['samples']}==categories
+            for row in preparation['models']:
+                kind=row['kind'];body=kinds[kind];detail=next(m for m in actions['models'] if m['kind']==kind)
+                appearance=json.loads((ROOT/f'outputs/creatures/frogs/{kind}-presentation/validation.json').read_text())
+                transition=json.loads((ROOT/f'outputs/creatures/frogs/{kind}-transitions.json').read_text())
+                assert appearance['kind']==kind and appearance['body']==body and appearance['checks']>=9101 and appearance['failures']==0 and appearance['renderer']=='forward_plus' and len(appearance['terrain'])==648
+                assert {r['clip'] for r in appearance['terrain']}==categories and appearance['maximum_planted_gap_m']<.008 and appearance['maximum_lift_error_m']<.009 and appearance['airborne_run_cases']>=12
+                hues={53,0x8035,0x901}|({0x5ac,0x5a3,0x59a,0x591,0x588,0x57f} if body==81 else set())
+                assert {h['hue'] for h in appearance['hues']}==hues and all(h['changed_pixels']>100 for h in appearance['hues'])
+                assert not appearance['original_atlas_opaque'] and appearance['source_cutout_pixels']>10 and appearance['tongue_material_pixels']>10 and appearance['partial_full_difference_pixels']>100 and appearance['modern_texture_pixels']>100 and appearance['relief_pixels']>10
+                assert {r['hue'] for r in appearance['cadavers']}=={0,53,0x8035}
+                assert transition['kind']==kind and transition['body']==body and transition['checks']>=1513 and transition['failures']==0 and transition['renderer']=='forward_plus' and len(transition['samples'])==252
+                pairs={('Idle','Walk'),('Walk','Run'),('Run','Walk'),('Run','Attack'),('Run','Hit'),('Run','Eat' if body==81 else 'Fidget'),('Run','Death')}
+                assert {(s['source'],s['target']) for s in transition['samples']}==pairs and {s['slope'] for s in transition['samples']}=={0.,.08} and {s['frame'] for s in transition['samples']}==set(range(18))
+                assert transition['minimum_plane_gap_m']>-.008 and transition['maximum_plane_gap_m']<row['stats']['original']['height_m']*2 and transition['positive_rise_cases']>=20
+                assert all(s['fresh_modified_skin'] and s['actual_picker_contains'] and s['gap_m']>-.008 for s in transition['samples'])
+                ground=ART/Path(row['ground_lookup']).name
+                assert digest(ground)==row['ground_lookup_sha256']==detail['ground_lookup_sha256']==appearance['ground_lookup_sha256']==transition['ground_lookup_sha256']
+                assert row['action_support_sha256']==digest(ROOT/'scripts/creature-humanoid-actions.py') and row['source_alpha_scope']=='fine_edges'
+                assert row['category_aliases']['Eat'].startswith('Fidget:') and row['category_aliases']['Attack2'].startswith('Attack:') and row['category_aliases']['Death2'].startswith('Death:') and 'Alert' in row['authored_replacements']
+                assert row['bodies'][0]['body']==body and row['bodies'][0]['scale']==([.8]*3 if body==81 else [1.3]*3) and row['bodies'][0]['native_profile']==('animal' if body==81 else 'monster')
+                for treatment,pin in detail['assets'].items():
+                    assert pin['asset_sha256']==tested[kind]['asset_sha256'][treatment] and pin['import_sha256']==tested[kind]['import_sha256'][treatment]
+                    for clip in ['Walk','Run']:
+                        anchor=detail['anchors'][treatment][clip];assert abs(anchor[1]-anchor[0])<.000001
+                    rise=detail['source_vertical_ranges'][treatment]['Run'];assert rise[1]-rise[0]>.5
+                for proof in [appearance,transition]:
+                    assert proof['asset_sha256']==tested[kind]['asset_sha256']['modern'] and proof['import_sha256']==tested[kind]['import_sha256']['modern']
+                required={'SourceFrogVisual.gd','SourceFrogMaterial.gd','SourceFrogSurface.gdshader','SourcePlaneSoleSupport.gd','SourceGroundLookup.gd','CreatureRegistry.gd','CreatureVisual.gd','HumanAvatar.gd','SkinGeometry.gd','CorpseModels.gd'}
+                assert {'res://Presentation/'+name for name in required}<=set(appearance['runtime_sha256'])
+                appearances.append(appearance);proofs.extend([appearance,transition])
+            for proof in proofs:
+                assert proof['preparation_sha256']==digest(ART/'frogs/preparation.json')
+                for path,sha in proof['runtime_sha256'].items():assert digest(ROOT/'Viewer'/path[6:] if path.startswith('res://') else ROOT/'Viewer/Presentation'/path)==sha,'Original frog runtime changed after its proof'
+            aggregate={'checks':sum(p['checks'] for p in appearances),'failures':0,'renderer':'forward_plus','preparation_sha256':digest(ART/'frogs/preparation.json'),'runtime_sha256':appearances[0]['runtime_sha256'],'models':appearances,'scope':'Aggregate of two exact current actual-avatar frog reports, validated separately above. Native server evidence is separate.'}
+            folder=ROOT/'outputs/creatures/frogs/presentation';folder.mkdir(parents=True,exist_ok=True);(folder/'validation.json').write_text(json.dumps(aggregate),encoding='utf-8')
         if family=='snow_elementals':
             subprocess.run([sys.executable,'-B',str(ROOT/'scripts/prepare-source-elementals.py'),'--check-inputs'],check=True)
             actions=json.loads((ROOT/'outputs/creatures/snow_elementals/actions.json').read_text())

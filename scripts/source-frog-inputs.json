@@ -1,0 +1,93 @@
+{
+  "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+  "preservation_listing": "https://zuluarchive.com/pages/files.html",
+  "source_scope": "Third-party preserved later Third Dawn/Age of Shadows data, bounded ZIP member size/CRC and cabinet pins. No full ZIP hash, official authenticity or redistribution permission claimed; no downloaded executable run.",
+  "cabinets": [
+    {
+      "zip_member": "uoaos/UOTD/models/client7.cab",
+      "bytes": 20805,
+      "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859"
+    },
+    {
+      "zip_member": "uoaos/UOTD/models/animals/client8.cab",
+      "bytes": 5793154,
+      "sha256": "155fe820d8c0e2a08650f81ec037829bed49aeca74efd2a07479a907287a1afc"
+    },
+    {
+      "zip_member": "uoaos/UOTD/models/maps/client10.cab",
+      "bytes": 33956665,
+      "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9"
+    },
+    {
+      "zip_member": "uoaos/UOTD/models/monsters/client11.cab",
+      "bytes": 35160963,
+      "sha256": "307a6b91c4d5459080d1fe8a74ae4fe0b91dea8a21a2866ca91e7dc7ba92f1a8"
+    }
+  ],
+  "files": [
+    {
+      "path": "Models/models.txt",
+      "bytes": 55735,
+      "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a"
+    },
+    {
+      "path": "Models/Monsters/frogs_frog_giant_lod2.grn",
+      "bytes": 32280,
+      "sha256": "390a6dafc269862188b25f94a7543448352dd2e860e7987b3a6220dbe6ca22cc"
+    },
+    {
+      "path": "Models/Animals/frogs_bullfrog_lod2.grn",
+      "bytes": 32288,
+      "sha256": "da8bfb565c026ad3eefac3cc0ef89bd52e9c0d6a2ca93aa7c7da3210a7d3823c"
+    },
+    {
+      "path": "Models/Maps/frogs_frog_giant_v01.tga",
+      "bytes": 16428,
+      "sha256": "4936da6fb258e8f56f6e39a55457ef4fb36ba8be406bf1099b0a16619743d0d6"
+    },
+    {
+      "path": "Models/Monsters/frogs_frog_giant_attack1.grn",
+      "bytes": 28552,
+      "sha256": "efa7503b02d929e6871a43909f37cd16d1fbfe50bcaf240acd8282d306e30fb2"
+    },
+    {
+      "path": "Models/Monsters/frogs_frog_giant_die1.grn",
+      "bytes": 33660,
+      "sha256": "68a41a3a53fe9d2824966498fabdbf7594c72270d768849d315007953c0503f2"
+    },
+    {
+      "path": "Models/Monsters/frogs_frog_giant_fidget.grn",
+      "bytes": 34908,
+      "sha256": "0f61075c95036202c55702871f1d98058e1f636bc9b4d575fb82b43f586e80c5"
+    },
+    {
+      "path": "Models/Monsters/frogs_frog_giant_gethit.grn",
+      "bytes": 33900,
+      "sha256": "b0699912ffa409877cae9625855e2edd455c1138cdc3085ff73cd3baab4f3440"
+    },
+    {
+      "path": "Models/Monsters/frogs_frog_giant_idle.grn",
+      "bytes": 28092,
+      "sha256": "83c516f0b1695953fb701615f536336d855012a5aa0154d687a814353b702993"
+    },
+    {
+      "path": "Models/Monsters/frogs_frog_giant_run.grn",
+      "bytes": 33256,
+      "sha256": "31ce4d1325e4ea0ada2d48c92263a1c1c7284d6e05b5fdea5acc7d56078c9f5f"
+    },
+    {
+      "path": "Models/Monsters/frogs_frog_giant_walk.grn",
+      "bytes": 32596,
+      "sha256": "4b40654fab46716ed7189a42007ecf4b06abcbb9fa9b1e9762c38e411d0cd637"
+    }
+  ],
+  "generated_albedo": {
+    "default_path": "work/creatures/frogs/frog-albedo-v2.png",
+    "sha256": "309bd4a7ffab04235ea3557ea452357ee451db7340cb5dc873207b60164dfa67",
+    "provenance_path": "work/creatures/frogs/texture-v2-provenance.json",
+    "prompt_path": "work/creatures/frogs/texture-v2-prompt.txt",
+    "prompt_sha256": "59de557d1d2ad6ed89e4ef421b201cb368f917b77b1e0040aa930758d8b13821",
+    "source_atlas_rgba_png_sha256": "8ca9cb0cc726c76e2f0f135274f33ffa2afd1d7d1bc9b81cc5374cb3b0e92ee8",
+    "scope": "Private generated natural skin derived from original atlas. Same UVs/source atlas across both original meshes, distinct bind rigs retained; exact generated landmark registration unproved. Not redistributable as independently licensed art."
+  }
+}
