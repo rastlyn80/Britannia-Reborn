@@ -8,6 +8,9 @@ const Creatures=preload("res://Presentation/CreatureRegistry.gd")
 static func supports(body: int) -> bool:
 	return Humans.available(body==0x191) if body in [0x190,0x191] else Mounts.supports_body(body)
 
+static func supports_equipment(body: int) -> bool:
+	return body in [0x190,0x191] or not Creatures.entry(body).get("native_equipment_layers",[]).is_empty()
+
 static func catalogue() -> Array[Dictionary]:
 	# Derived from the actual runtime registries: future accepted bodies acquire
 	# a corpse automatically, including explicit compatibility artwork.
@@ -40,6 +43,7 @@ static func posed(body: int,hue: int=0,worn: Array=[]) -> Node3D:
 	if actor is Humans:actor.set_skin(hue);actor.set_equipment(worn)
 	else:
 		actor.apply_identity(body,hue);actor.dead=true;actor.contact.enabled=false
+		if actor.has_method("set_equipment"):actor.set_equipment(worn)
 		if actor is Mounts.Horse:actor.reins.visible=false
 	var clip:="Death" if actor.animator.has_animation("Death") else "death"
 	if not actor.animator.has_animation(clip):

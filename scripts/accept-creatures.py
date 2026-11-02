@@ -9,6 +9,8 @@ def main():
     accepted=ART/'accepted-index.json'
     report=json.loads(accepted.read_text()) if accepted.exists() else {'entries':[]}
     for family in args.families:
+        if family=='mages':
+            subprocess.run([sys.executable,'-B',str(ROOT/'scripts/check-source-mages.py'),'--native'],check=True)
         subprocess.run([sys.executable,'-B',str(ROOT/'scripts/check-creature-evidence.py'),family],check=True)
         preparation=json.loads((ART/family/'preparation.json').read_text())
         tests=json.loads((ROOT/f'outputs/creatures/{family}/validation.json').read_text())
@@ -64,6 +66,7 @@ def main():
                 assert model['import_sha256']==tested[model['kind']]['import_sha256']['modern'],'Animated contact used different import precision'
         for row in preparation['models']:
             if row.get('status')!='prepared' or row.get('contact_kind')!='measured_limbs':continue
+            if family=='mages':continue # Stricter per-form/equipment/mixed/native gate above.
             path=ROOT/'outputs/creatures'/family/(row['kind']+'-presentation/validation.json')
             measured=json.loads(path.read_text(encoding='utf-8'))
             assert measured['failures']==0 and measured['checks']>=1000 and measured['renderer']=='forward_plus','Measured source limbs require actual avatar/skin/terrain evidence'
@@ -318,7 +321,7 @@ def main():
                 resource=row['presentation_script'];name=resource.rsplit('/',1)[-1]
                 assert resource=='res://Presentation/'+name and name.endswith('.gd'),'Renderer must be an owned direct presentation script'
                 assert digest(ROOT/'Viewer/Presentation'/name)==row['presentation_script_sha256'],'Owned renderer changed after preparation'
-                focused=json.loads((ROOT/'outputs/creatures'/family/'presentation/validation.json').read_text())
+                focused=json.loads((ROOT/'outputs/creatures'/family/(row['kind']+'-presentation/validation.json' if family=='mages' else 'presentation/validation.json')).read_text())
                 assert focused['failures']==0 and focused['renderer']=='forward_plus' and focused['preparation_sha256']==digest(ART/family/'preparation.json')
                 assert focused['runtime_sha256'][resource]==row['presentation_script_sha256'],'Owned renderer lacks actual current avatar evidence'
             assert not row.get('pending_render_feature'),row.get('pending_render_feature')

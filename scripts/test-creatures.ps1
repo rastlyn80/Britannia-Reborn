@@ -88,8 +88,15 @@ foreach ($family in $Families) {
  }
  $measuredPreparation=Get-Content "$root/Viewer/local-art/creatures/$family/preparation.json" -Raw|ConvertFrom-Json
  foreach ($model in @($measuredPreparation.models|Where-Object {$_.status -eq 'prepared' -and $_.contact_kind -eq 'measured_limbs'})) {
-  & $godot --path "$root/Viewer" --script res://Presentation/MeasuredCreaturePresentationTests.gd -- "--kind=$($model.kind)" *> "$logs/$($model.kind)-avatar.log"
+  $limbTest=if ($family -eq 'mages') {'SourceMagePresentationTests'} else {'MeasuredCreaturePresentationTests'}
+  & $godot --path "$root/Viewer" --script "res://Presentation/$limbTest.gd" -- "--kind=$($model.kind)" *> "$logs/$($model.kind)-avatar.log"
   if ($LASTEXITCODE -or (Select-String -Path "$logs/$($model.kind)-avatar.log" -Pattern 'SCRIPT ERROR:' -Quiet)) {throw "Measured source limb/skin/terrain/corpse proof failed: $($model.kind)"}
+ }
+ if ($family -eq 'mages') {
+  foreach ($mageTest in @('SourceMageActionTests','SourceMageTransitionTests','SourceMageMixedTerrainTests','SourceMageEquipmentTests')) {
+   & $godot --path "$root/Viewer" --script "res://Presentation/$mageTest.gd" -- --output=res://../outputs/creatures/mages/equipment *> "$logs/$mageTest.log"
+   if ($LASTEXITCODE -or (Select-String -Path "$logs/$mageTest.log" -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet)) {throw "Source mage graphics/equipment/transition proof failed: $mageTest"}
+  }
  }
  if ($family -eq 'silver_serpents') {
   foreach ($test in @('SourceSilverSerpentActionTests','SourceSilverSerpentTransitionTests','SourceSilverSerpentPresentationTests')) {
@@ -179,6 +186,10 @@ foreach ($family in $Families) {
   & $godot --path "$root/Viewer" --script res://Presentation/CreatureFlashTests.gd *> "$logs/$family-death-effect.log"
   if ($LASTEXITCODE) {throw 'Recovered spirit death effect checks failed'}
  }
+ if ($Live -and $family -eq 'mages') {
+  & "$PSScriptRoot/test-horses.ps1" -Live -SkipContact -CreatureFamily $family *> "$logs/$family-native.log"
+  if ($LASTEXITCODE) {throw 'Prepared native mage source/appearance/behaviour integration failed'}
+ }
  & python -B "$root/scripts/accept-creatures.py" $family
  if ($LASTEXITCODE) {throw "Creature asset hash/acceptance check failed: $family"}
  if ($Capture) {
@@ -195,7 +206,7 @@ foreach ($family in $Families) {
    if ($fresh.Count -ne 16) {throw "Creature review did not produce 16 fresh core frames: $($model.kind)"}
   }
  }
- if ($Live) {
+ if ($Live -and $family -ne 'mages') {
   & "$PSScriptRoot/test-horses.ps1" -Live -SkipContact -CreatureFamily $family *> "$logs/$family-native.log"
   if ($LASTEXITCODE) {throw "Creature native integration failed: $family"}
  }

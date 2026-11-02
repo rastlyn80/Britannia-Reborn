@@ -101,6 +101,28 @@ def missing_routes(bodies, routed, witnessed):
     # generic creature routes and another class's human evidence cannot do so.
     return bodies - routed.keys() - (witnessed & {400, 401, 402, 403})
 
+def identity_candidates(literal, witnessed):
+    """Positive constructor witnesses add identities, never erase other branches."""
+    bodies = literal | witnessed
+    return bodies, bool(bodies) and bodies <= {400, 401, 402, 403}
+
+def configured_mage_identities(source, expansion):
+    """Explicit reviewed branch, not an inference from a few random witnesses."""
+    core = source / 'Projects/Server/Main.cs'
+    enums = source / 'Projects/Server/ExpansionInfo.cs'
+    assert re.search(r'bool UOR\s*=>\s*Expansion\s*>=\s*Expansion\.UOR\s*;', core.read_text(encoding='utf-8-sig'))
+    match = re.search(r'enum Expansion\s*\{([^}]+)\}', enums.read_text(encoding='utf-8-sig'))
+    names = [value.strip() for value in match[1].split(',') if value.strip()]
+    assert names[:3] == ['None', 'T2A', 'UOR'] and 0 <= expansion['Id'] < len(names)
+    pins = read(ROOT / 'scripts/source-mage-inputs.json')
+    current = {}; inputs = {str(p.relative_to(source)): sha(p) for p in [core, enums]}
+    for row in pins['native_sources']:
+        path = source / row['path']
+        assert sha(path) == row['sha256'], 'Reviewed mage constructor changed'
+        inputs[row['path']] = row['sha256']
+        current[row['class'].casefold()] = set(row['bodies']) if expansion['Id'] >= names.index('UOR') else {400}
+    return current, inputs
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--maps', nargs='+', default=['trammel'])
@@ -112,6 +134,7 @@ def main():
     source = ROOT / 'Server/ModernUO'
     expansion_path = ROOT / 'Server/runtime/Configuration/expansion.json'
     expansion = read(expansion_path)
+    configured_mages, mage_identity_inputs = configured_mage_identities(source, expansion)
     era = 'post-uoml' if expansion['SupportedFeatures'].get('SA', False) else 'uoml'
     files = source_files(ROOT / 'Server/runtime/Data/Spawns', era, maps)
     if not files:
@@ -159,11 +182,22 @@ def main():
             if bodies:
                 mapping = 'literal source file' if c == key else 'inherited literal candidates'
                 break
-        human |= bool(bodies) and bodies <= {400, 401, 402, 403}
+        literal_bodies = bodies.copy()
+        bodies, only_human = identity_candidates(literal_bodies, witnessed[key])
+        if bodies != literal_bodies:
+            mapping += '; positive named constructor witnesses (not exhaustive)'
+        inactive_bodies = set()
+        if key in configured_mages:
+            inactive_bodies = bodies - configured_mages[key]
+            bodies, only_human = identity_candidates(configured_mages[key], set())
+            mapping = 'Reviewed exact native mage source and configured Core.UOR branch; other-era candidates retained separately'
+        human |= only_human
         missing = missing_routes(bodies, routed, witnessed[key])
         state = 'shared human graphics; race/cosmetics audit separate' if human else 'unrouted' if bodies and missing == bodies else 'partial route' if missing else 'body route present; fidelity/action work remains' if bodies else 'identity needs audit'
         row.update(estimated_slots=round(row['estimated_slots'], 6), files=sorted(row['files']),
                    body_candidates=sorted(bodies), body_mapping=mapping, missing_body_routes=sorted(missing),
+                   literal_body_candidates=sorted(literal_bodies),
+                   inactive_era_body_candidates=sorted(inactive_bodies),
                    graphics=state, human=human, witnessed_constructor_bodies=sorted(witnessed[key]),
                    specialized_human_bodies_with_native_evidence=sorted(bodies & witnessed[key] & {400,401,402,403}),
                    bodies_with_native_evidence=sorted(bodies & body_evidence), source_paths=info['paths'])
@@ -187,6 +221,7 @@ def main():
         for body, sources in sorted(index['native_literal_bodies'].items(), key=lambda pair: int(pair[0]))
         if index['native_profiles'].get(body) in ['animal', 'monster', 'sea'] and int(body) not in measured_bodies]
     result['source_index_sha256'] = sha(art / 'source-index.json')
+    result['reviewed_mage_identity_inputs'] = mage_identity_inputs
     result['accepted_index_sha256'] = sha(art / 'accepted-index.json')
     if public.exists():result['public_index_sha256'] = sha(public)
     result['recipe_sha256'] = sha(Path(__file__))

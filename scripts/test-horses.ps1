@@ -49,7 +49,8 @@ try {
   Copy-Item -LiteralPath $fixedContent -Destination "$runtime/Assemblies/UOContent.dll" -Force
  }
  if ($CreatureFamily) {
-  & python -B "$root/scripts/prepare-creature-fixtures.py" $CreatureFamily --runtime $runtime
+  if ($CreatureFamily -eq 'mages') {& python -B "$root/scripts/prepare-creature-fixtures.py" $CreatureFamily --prepared --runtime $runtime}
+  else {& python -B "$root/scripts/prepare-creature-fixtures.py" $CreatureFamily --runtime $runtime}
   if ($LASTEXITCODE) {throw 'Creature native constructor allow-list preparation failed'}
  }
  $dotnet="$root/.tools/dotnet-server/dotnet.exe"
@@ -61,7 +62,7 @@ try {
  ConvertTo-Json -InputObject @('UOContent.dll','BritanniaReborn.HorseIntegrationFixtures.dll')|Set-Content "$runtime/Data/assemblies.json"
  $existing=Get-Content "$root/Server/runtime/Configuration/modernuo.json" -Raw|ConvertFrom-Json
  @{assemblyDirectories=@('Assemblies');dataDirectories=@($existing.dataDirectories);listeners=@('127.0.0.1:2594');settings=@{
-  'serverListing.serverName'='Britannia Reborn isolated horse tests';'serverListing.address'='127.0.0.1';'serverListing.autoDetect'='False';'network.encryptionMode'='Unencrypted';'accountHandler.enableAutoAccountCreation'='True';'accountHandler.maxAccountsPerIP'='6';'pathfinding.prebakeMaps'='False';'autosave.enabled'='False';'world.savePath'=(Join-Path $runtime 'Saves');'britanniaReborn.isolatedHorseTests'='True';'britanniaReborn.isolatedPlagueTests'=$(if ($CreatureFamily -eq 'amorphous') {'True'} else {'False'});'britanniaReborn.isolatedSolenTests'=$(if ($CreatureFamily -eq 'solen_workers') {'True'} else {'False'});'britanniaReborn.isolatedFluidElementalTests'=$(if ($CreatureFamily -eq 'fluid_elementals') {'True'} else {'False'});'britanniaReborn.isolatedSilverSerpentTests'=$(if ($CreatureFamily -eq 'silver_serpents') {'True'} else {'False'});'ethics.enable'=$(if ($Ethics -or $EquineCompletion) {'True'} else {'False'});'factions.enabled'=$(if ($Ethics -or $EquineCompletion) {'True'} else {'False'});'pingServer.enabled'='False'
+  'serverListing.serverName'='Britannia Reborn isolated horse tests';'serverListing.address'='127.0.0.1';'serverListing.autoDetect'='False';'network.encryptionMode'='Unencrypted';'accountHandler.enableAutoAccountCreation'='True';'accountHandler.maxAccountsPerIP'='6';'pathfinding.prebakeMaps'='False';'autosave.enabled'='False';'world.savePath'=(Join-Path $runtime 'Saves');'britanniaReborn.isolatedHorseTests'='True';'britanniaReborn.isolatedPlagueTests'=$(if ($CreatureFamily -eq 'amorphous') {'True'} else {'False'});'britanniaReborn.isolatedSolenTests'=$(if ($CreatureFamily -eq 'solen_workers') {'True'} else {'False'});'britanniaReborn.isolatedFluidElementalTests'=$(if ($CreatureFamily -eq 'fluid_elementals') {'True'} else {'False'});'britanniaReborn.isolatedMageTests'=$(if ($CreatureFamily -eq 'mages') {'True'} else {'False'});'britanniaReborn.isolatedSilverSerpentTests'=$(if ($CreatureFamily -eq 'silver_serpents') {'True'} else {'False'});'ethics.enable'=$(if ($Ethics -or $EquineCompletion) {'True'} else {'False'});'factions.enabled'=$(if ($Ethics -or $EquineCompletion) {'True'} else {'False'});'pingServer.enabled'='False'
  }}|ConvertTo-Json -Depth 8|Set-Content "$runtime/Configuration/modernuo.json"
  $accounts=@(@{username='brhorse-test-m';password=[Guid]::NewGuid().ToString('N').Substring(0,24)},@{username='brhorse-test-f';password=[Guid]::NewGuid().ToString('N').Substring(0,24)})
  $credentials=Join-Path $root 'work/horse-session/accounts.local.json'
@@ -91,8 +92,14 @@ try {
   if ($SeaHorse) {$liveArgs+='--sea-horse'}
   if ($CreatureFamily) {$liveArgs+="--family=$CreatureFamily"}
   $started=[DateTime]::UtcNow
-  & $godot --headless --path Viewer --script $(if ($CreatureFamily) {'res://Network/CreatureLive.gd'} elseif ($Ostards -or $EquineCompletion -or $LlamaCompletion -or $Ethics -or $Bovines -or $SeaHorse) {'res://Network/OstardLive.gd'} elseif ($Equines) {'res://Network/EquineLive.gd'} else {'res://Network/HorseLive.gd'}) -- @liveArgs
+  & $godot --headless --path Viewer --script $(if ($CreatureFamily -eq 'mages') {'res://Network/SourceMageLive.gd'} elseif ($CreatureFamily) {'res://Network/CreatureLive.gd'} elseif ($Ostards -or $EquineCompletion -or $LlamaCompletion -or $Ethics -or $Bovines -or $SeaHorse) {'res://Network/OstardLive.gd'} elseif ($Equines) {'res://Network/EquineLive.gd'} else {'res://Network/HorseLive.gd'}) -- @liveArgs
   if ($LASTEXITCODE) { throw 'Native isolated horse integration test failed' }
+  if ($CreatureFamily -eq 'mages') {
+   & $godot --headless --path Viewer --script res://Network/MageBehaviourLive.gd
+   if ($LASTEXITCODE) {throw 'Native mage spell/rummage behaviour failed'}
+   & python -B "$root/scripts/check-source-mages.py" --native
+   if ($LASTEXITCODE) {throw 'Exact native mage source/appearance/behaviour gate failed'}
+  }
   if ($CreatureFamily) {
    $report=Join-Path $root "outputs/creatures/$CreatureFamily/live.json"
    if (!(Test-Path $report) -or (Get-Item $report).LastWriteTimeUtc -lt $started.AddSeconds(-1)) {throw 'Creature native test did not write fresh evidence'}

@@ -8,6 +8,8 @@ if ($LASTEXITCODE) { throw 'Static clothing importer checks failed' }
 if ($LASTEXITCODE) { throw 'Bounded Third Dawn parser / refinement checks failed' }
 & python -B "$root/scripts/test-creature-pipeline.py"
 if ($LASTEXITCODE) {throw 'Creature rig/visible-geometry/reader regression checks failed'}
+& python -B "$root/scripts/test-creature-mage-masks.py"
+if ($LASTEXITCODE) {throw 'Creature garment dye isolation or source-buffer preservation failed'}
 & python -B "$root/scripts/test-creature-priority.py"
 if ($LASTEXITCODE) {throw 'Creature occurrence ordering checks failed'}
 & python -B "$root/scripts/test-creature-humanoid-actions.py"

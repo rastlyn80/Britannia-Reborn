@@ -1,0 +1,116 @@
+{
+  "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+  "source_page": "https://zuluarchive.com/pages/files.html",
+  "cabinets": [
+    {
+      "zip_member": "uoaos/UOTD/models/client7.cab",
+      "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859",
+      "bytes": 20805
+    },
+    {
+      "zip_member": "uoaos/UOTD/models/monsters/client11.cab",
+      "sha256": "307a6b91c4d5459080d1fe8a74ae4fe0b91dea8a21a2866ca91e7dc7ba92f1a8",
+      "bytes": 35160963
+    },
+    {
+      "zip_member": "uoaos/UOTD/models/maps/client10.cab",
+      "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9",
+      "bytes": 33956665
+    }
+  ],
+  "files": [
+    {
+      "path": "Models/models.txt",
+      "bytes": 55735,
+      "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a"
+    },
+    {
+      "path": "Models/Monsters/mages_evil_mage_lod2.grn",
+      "bytes": 47172,
+      "sha256": "d25e5d7202cf61e0bc83bdefaeba793ce930bcb9d28e9244923f14e304937f06"
+    },
+    {
+      "path": "Models/Monsters/mages_evil_mage_master_lod2.grn",
+      "bytes": 47208,
+      "sha256": "1f23c32ed6f7f9d8af39dcf28dfa171b6c8ec0f45472936fbfba55e0e9bd16b5"
+    },
+    {
+      "path": "Models/Maps/mages_evil_mage.tga",
+      "bytes": 65580,
+      "sha256": "114c4da22f8bc40f71b8c2f1c5e1975c3f53c2afd69b446dd0a9d662baf0f6c8"
+    },
+    {
+      "path": "Models/Maps/mages_evil_mage_master.tga",
+      "bytes": 65580,
+      "sha256": "ee2cd2b39c35878d9c0e2240cca266d83d3bb03aa3a68af37301d1bfebe03f85"
+    },
+    {
+      "path": "Models/Monsters/mages_evil_mage_attack1.grn",
+      "bytes": 40104,
+      "sha256": "d0849e5fc31513cde2d95ab3ebdccbf74e078933b5bae1ad8a0323e8f1b0d40e"
+    },
+    {
+      "path": "Models/Monsters/mages_evil_mage_attack2.grn",
+      "bytes": 39604,
+      "sha256": "2989321acfea60df1bdeb7c7a4a45515c5d4e83095f2aed07fe6d8cba2729b60"
+    },
+    {
+      "path": "Models/Monsters/mages_evil_mage_cast2.grn",
+      "bytes": 35996,
+      "sha256": "e40159bc30411e298ab6a49c43d877c18a1360159ddf03ddf8da985588b4aa34"
+    },
+    {
+      "path": "Models/Monsters/mages_evil_mage_die1.grn",
+      "bytes": 63784,
+      "sha256": "c840b3b9d94a31146ae2112be9314eab04cf26b03332200c993a580f1dde9795"
+    },
+    {
+      "path": "Models/Monsters/mages_evil_mage_fidget.grn",
+      "bytes": 40552,
+      "sha256": "0e35f676746c51f24bd49a7722d398f8abbc78a0c5a8046045884490917c50a7"
+    },
+    {
+      "path": "Models/Monsters/mages_evil_mage_gethit.grn",
+      "bytes": 25232,
+      "sha256": "3d3c26237fc1d3a2f80be2412b3f2055e858e0a4d8a56e43a83ff6dcbc4a1d1c"
+    },
+    {
+      "path": "Models/Monsters/mages_evil_mage_idle.grn",
+      "bytes": 22736,
+      "sha256": "cc175f3c376e1c6aaec60fa732f808a9e91a056bc4c087c0183136466efc14af"
+    },
+    {
+      "path": "Models/Monsters/mages_evil_mage_run.grn",
+      "bytes": 23072,
+      "sha256": "11a3b7871c2e06ac235cb49505acd641dd052cdd878b682518ffe395861eda17"
+    },
+    {
+      "path": "Models/Monsters/mages_evil_mage_walk.grn",
+      "bytes": 31036,
+      "sha256": "152146da5c0ae9b79c32fc05dff3a6d3f0ec3a63715d577c7fd93b58b51adc5b"
+    }
+  ],
+  "server_pin": "ab59efea86fd9e399d261bed9d188ab4d95ad4c2",
+  "native_sources": [
+    {
+      "class": "EvilMage",
+      "bodies": [
+        124
+      ],
+      "path": "Projects/UOContent/Mobiles/Monsters/Humanoid/Magic/EvilMage.cs",
+      "sha256": "2a5e7839bb6afc13b3f51a54461c15227c9f01368af60ff38785af3a3a629650",
+      "identity_scope": "Current configured Core.UOR branch; actual native constructors witnessed on both disposable owners. Older-era body400 branch remains separate."
+    },
+    {
+      "class": "EvilMageLord",
+      "bodies": [
+        125,
+        126
+      ],
+      "path": "Projects/UOContent/Mobiles/Monsters/Humanoid/Magic/EvilMageLord.cs",
+      "sha256": "0f9daf29f3fce8bf816262019723e0c8c67e6f7240e8699e3a12ae8673161012",
+      "identity_scope": "Current configured Core.UOR branch; actual native constructors witnessed on both disposable owners. Older-era body400 branch remains separate."
+    }
+  ],
+  "rights": "Preservation archive location is not a redistribution grant or independent official authenticity proof. No executables run. Original inputs and derived meshes/maps stay private."
+}

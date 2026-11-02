@@ -20,6 +20,9 @@ func begin_death(killed: int,corpse: int) -> void:
 	var avatar: Node3D=avatars[killed];var source: Node3D=avatar.get("horse_visual")
 	if not is_instance_valid(source):return
 	var visual:=Creatures.create(body);add_child(visual);visual.apply_identity(body,int(entity.get("hue",0)))
+	# Snapshot equipment before later corpse/loot packets change the mobile.
+	if visual.has_method("set_equipment"):
+		visual.set_equipment(avatar.get_meta("server_appearance",{}).get("equipment",[]))
 	visual.global_transform=source.global_transform
 	visual.rotation.y=PI-float(int(entity.get("direction",0))&7)*PI/4.
 	visual.model.transform=source.model.transform

@@ -183,7 +183,9 @@ func apply_server_appearance(entity: Dictionary, worn: Array, details: Dictionar
 	native_body = body
 	if Horse.supports_body(body) and Horse.available():
 		if horse_visual==null or human_visual!=null or not Horse.matches(horse_visual,body):_switch_horse(body,int(entity.get("hue",0)))
-		horse_visual.apply_identity(body,int(entity.get("hue",0)));_update_pick_volume(true);return
+		horse_visual.apply_identity(body,int(entity.get("hue",0)))
+		if horse_visual.has_method("set_equipment"):horse_visual.set_equipment(worn)
+		_update_pick_volume(true);return
 	if not Wardrobe.human(body):
 		set_meta("art_status","missing native body art" if body>0 else "offline fallback")
 		if body>0 and (human_visual != null or horse_visual!=null):

@@ -590,12 +590,12 @@ func refresh_corpses() -> void:
  corpse_refresh_pending=false
  if not is_instance_valid(session):return
  for serial in nodes.keys():
-  if int(nodes[serial].get_meta("corpse_body",0)) in [400,401]:refresh_corpse_equipment(int(serial))
+  if preload("res://Presentation/CorpseModels.gd").supports_equipment(int(nodes[serial].get_meta("corpse_body",0))):refresh_corpse_equipment(int(serial))
 
 func refresh_corpse_equipment(serial: int) -> void:
  if not nodes.has(serial) or not session.world_items.has(serial):return
  var item: Dictionary=session.world_items[serial]
- if int(item.get("id",0))!=0x2006 or not int(item.get("amount",0)) in [400,401]:return
+ if int(item.get("id",0))!=0x2006 or not preload("res://Presentation/CorpseModels.gd").supports_equipment(int(item.get("amount",0))):return
  if str(nodes[serial].get_meta("corpse_look_key",""))!=JSON.stringify(corpse_worn(serial)):upsert(serial,item)
 
 # Iron-bound chest (or an all-iron strongbox) in photoscanned oak and rusted
