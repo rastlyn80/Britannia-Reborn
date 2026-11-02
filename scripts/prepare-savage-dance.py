@@ -61,9 +61,19 @@ def main():
                                         preserve_vertical_clips=['TribalDance'], measure_motion_bounds=True)
         floor = stats['clips']['TribalDance']
         assert floor['floor_policy'] == 'source_vertical' and floor['floor_offset_range'][0] == floor['floor_offset_range'][1]
+        actual_mesh=SOURCE/'Models/Humans'/('h_savage_'+gender+'_lod2.grn')
+        actual=pipeline.td.parse(actual_mesh.read_bytes(),scene_root_names=True,skip_unskinned_helpers=True,scale_shear_tracks=True)
+        actual,actual_bind=pipeline.normalise_bind(actual_mesh.read_bytes(),actual)
+        assert len(actual['points'])==(183 if gender=='male' else 190)
+        actual_motion,actual_omitted=pipeline.helper.match_animation(clip,actual)
+        actual_atlas=SOURCE/'Models/Maps'/actual['textures'][0]
+        assert actual_mesh.relative_to(SOURCE).as_posix() in allowed and actual_atlas.relative_to(SOURCE).as_posix() in allowed
+        actual_output=OUTPUT/(gender+'-source-full-body.gltf')
+        actual_stats=pipeline.td.export_gltf(actual,{'TribalDance':actual_motion},pipeline.td.png_from_tga(actual_atlas.read_bytes()),actual_output,height,floor_sample_rate=240,preserve_vertical_clips=['TribalDance'],measure_motion_bounds=True)
+        full_body=dict(output=actual_output.name,sha256=sha(actual_output),source_mesh=actual_mesh.relative_to(SOURCE).as_posix(),source_mesh_sha256=sha(actual_mesh),stats=actual_stats,mesh_bind_normalisation=actual_bind,omitted_animation_bones=actual_omitted,scope='Full preserved original Savage skin for clearance; unmatched unweighted exporter leaves are explicitly declared. The43joint hue-chip helper remains a separate choreography rig.')
         rows.append(dict(gender=gender, output=output.name, sha256=sha(output), stats=stats,
                          mesh_bind_normalisation=bind, motion_bind_normalisation=fold,
-                         omitted_animation_bones=omitted))
+                         omitted_animation_bones=omitted,floor_reference=full_body))
     scripts = ['prepare-savage-dance.py', 'prepare-creatures.py', 'prepare-distinct-mounts.py',
                'import-third-dawn.py', 'creature-affine.py']
     report = dict(models=rows, input_manifest_sha256=sha(manifest),

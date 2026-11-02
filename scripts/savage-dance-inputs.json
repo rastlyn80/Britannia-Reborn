@@ -36,6 +36,26 @@
     {
       "path": "Models/Humans/h_female_dance_tribal_01.grn",
       "sha256": "2091e733755d2672c9e5a92d95fcae290be81d31bb140b2cce5747366ba54b64"
+    },
+    {
+      "path": "Models/Humans/h_savage_female_lod2.grn",
+      "bytes": 40900,
+      "sha256": "143742170d82a967284313439e0df0762b1bd0f01bf86d1073698632ad7d3e0e"
+    },
+    {
+      "path": "Models/Humans/h_savage_male_lod2.grn",
+      "bytes": 39108,
+      "sha256": "1906cae9422da91b28442688df6a3cd45bd090c548ada92ba2d80f4856777e9c"
+    },
+    {
+      "path": "Models/Maps/ut256_h_savage_female.tga",
+      "bytes": 262188,
+      "sha256": "7e5e4c7fb51f44a9ec9a4152b919b14782a6f4d929eb25c44132a74eb4b7be0b"
+    },
+    {
+      "path": "Models/Maps/ut256_h_savage_male.tga",
+      "bytes": 262188,
+      "sha256": "cdbe3c9022c904610cdd032c9af8be0490d2bcafbd4f44151103b35c02e9643a"
     }
   ],
   "native_sources": [
@@ -62,5 +82,5 @@
     "path": "scripts/savage-profile-inputs.json",
     "sha256": "d7b4de76c469b391635f2a79344882243ec9588063127fadd3e2dd6787c72e88"
   },
-  "required_preservation": "Source global rotation changes, unchanged modern limb offsets and measured original complete-skin rise; no flattened hops or discarded target fingers."
+  "required_preservation": "Full43-joint source rig for rotation/finger choreography, full183/190point original Savage bodies for clearance; unchanged modern limb offsets. Clamp negative source floor penetration only, preserving every positive measured rise. The19point hue-chip rig helper is not an original full-body floor reference."
 }

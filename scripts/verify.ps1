@@ -36,6 +36,26 @@ if ($LASTEXITCODE) {throw 'Native animal/sea/monster action semantics failed'}
 if ($LASTEXITCODE) {throw 'Static corpse custom UV/attribute format preservation failed'}
 & $godot --headless --path "$root/Viewer" --script res://Presentation/SavagePaintAttributeTests.gd
 if ($LASTEXITCODE) {throw 'Human NPC paint/source attributes, 16/32-bit LOD or static snapshot preservation failed'}
+if (Test-Path "$root/Viewer/local-art/human-npcs/savages/dance/preparation.json") {
+ & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanNPCMotionTests.gd
+ if ($LASTEXITCODE) {throw 'Exact NPC motion isolation, gait/pause restoration or gender/hash guards failed'}
+ & $godot --headless --path "$root/Viewer" --script res://Presentation/SavageActionIntegrationTests.gd
+ if ($LASTEXITCODE) {throw 'Prepared Savage111 controller, timing, source lift or profile restoration failed'}
+ & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanNPCGroundTests.gd
+ if ($LASTEXITCODE) {throw 'Prepared NPC finite-ground transitions, complete skin, source rotations or fixed leg lengths failed'}
+}
+if (Test-Path "$root/Viewer/local-art/human-npcs/shared/death-preparation.json") {
+ & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanDeathFloorTests.gd
+ if ($LASTEXITCODE) {throw 'Exact human death-floor dense/off-grid skin or source signature checks failed'}
+ & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanNPCDeathTests.gd
+ if ($LASTEXITCODE) {throw 'Decoded human death/corpse snapshot or lifecycle checks failed'}
+}
+if (Test-Path "$root/Viewer/local-art/creatures/walking_dead_mummy-ground.json") {
+ & $godot --headless --path "$root/Viewer" --script res://Presentation/MummySourcePoseTests.gd
+ if ($LASTEXITCODE) {throw 'Prepared Mummy source/refined rig or complete-skin residual lookup failed'}
+ & python -B "$root/scripts/check-prepared-mummy.py"
+ if ($LASTEXITCODE) {throw 'Exact prepared Mummy source/curve/asset evidence failed'}
+}
 if (Test-Path "$root/Viewer/Art/Creatures/Birds/small-bird.glb") {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/BirdMotionTests.gd -- --asset=res://Art/Creatures/Birds/small-bird.glb
   if ($LASTEXITCODE) {throw 'Licensed bird skin, action continuity and static corpse checks failed'}

@@ -2,7 +2,7 @@ extends SceneTree
 ## Offline candidate generation, deliberately separate from runtime acceptance.
 const Human=preload("res://Presentation/HumanVisual.gd")
 const Retarget=preload("res://Presentation/SavageDanceRetarget.gd")
-const INPUTS=["PrepareSavageDance.gd","SavageDanceRetarget.gd","HumanVisual.gd","HumanMotion.gd","HumanWardrobe.gd","HumanActions.gd","SkinGeometry.gd"]
+const INPUTS=["PrepareSavageDance.gd","SavageDanceRetarget.gd","HumanVisual.gd","HumanNPCMotion.gd","HumanMotion.gd","HumanWardrobe.gd","HumanActions.gd","SkinGeometry.gd"]
 func _initialize() -> void:
 	create_timer(180.).timeout.connect(func():push_error("Savage dance preparation deadline");quit(1))
 	call_deferred("run")
@@ -24,13 +24,20 @@ func run() -> void:
 		var document:=GLTFDocument.new();var state:=GLTFState.new()
 		assert(document.append_from_file(ProjectSettings.globalize_path(source_path),state)==OK,"Original dance reference did not load")
 		var source:=document.generate_scene(state);root.add_child(source)
-		var value:=Retarget.build(source,human)
+		var floor_path:=reference+str(row.floor_reference.output)
+		assert(FileAccess.get_sha256(floor_path)==str(row.floor_reference.sha256),"Full original body reference changed")
+		var floor_document:=GLTFDocument.new();var floor_state:=GLTFState.new()
+		assert(floor_document.append_from_file(ProjectSettings.globalize_path(floor_path),floor_state)==OK)
+		var floor_source:=floor_document.generate_scene(floor_state);root.add_child(floor_source)
+		var value:=Retarget.build(source,human,floor_source)
 		var asset:=output+str(row.gender)+"-tribal-dance.res"
 		assert(ResourceSaver.save(value.animation,asset)==OK,"Could not save prepared modern dance")
 		var record: Dictionary=value.report
 		record.gender=row.gender;record.asset=asset;record.asset_sha256=FileAccess.get_sha256(asset)
 		record.source_reference_sha256=row.sha256;record.status="prepared"
-		models.append(record);source.free();human.free()
+		record.floor_reference_sha256=row.floor_reference.sha256
+		record.grounding_policy="Positive clearance of full original Savage skin; source penetration clamped to ground"
+		models.append(record);source.free();floor_source.free();human.free()
 	for name in INPUTS:assert(runtime[name]==FileAccess.get_sha256("res://Presentation/"+name),"Retarget runtime changed during generation")
 	assert(preparation_sha==FileAccess.get_sha256(reference+"preparation.json"),"Reference preparation changed during generation")
 	var report:={"models":models,"runtime_sha256":runtime,"reference_preparation_sha256":preparation_sha,"scope":"Prepared original tribal dance on modern humans; root/garment controls at rest. No accepted body/action/native111/terrain or clothing proof."}

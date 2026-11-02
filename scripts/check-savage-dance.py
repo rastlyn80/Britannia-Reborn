@@ -52,12 +52,17 @@ def main():
         assert prepared['maximum_nonpelvis_local_position_error_m'] < .000001
         assert prepared['maximum_floor_reference_error_m'] < .00001
         assert prepared['source_reference_sha256'] == original['sha256']
+        body=original['floor_reference']
+        assert body['stats']['source_points']==(190 if original['gender']=='female' else 183)
+        assert sha(reference/body['output'])==body['sha256']==prepared['floor_reference_sha256']
+        assert all(abs(s['source_lift_m']-max(0,s['raw_source_body_clearance_m']))<.000001 for s in prepared['samples'])
         asset = (ROOT / 'Viewer' / prepared['asset'].removeprefix('res://')).resolve()
         assert asset.is_relative_to(output.resolve())
         assert sha(asset) == prepared['asset_sha256'] == tested['asset_sha256']
         assert len(tested['complete_skin_holdouts']) == 193
         assert tested['maximum_floor_error_m'] < .004 and tested['maximum_global_basis_error'] < .0001
-        assert tested['maximum_local_offset_error_m'] < .000001 and tested['preserved_lift_m'] > .12
+        assert tested['maximum_local_offset_error_m'] < .000001
+        assert prepared['source_lift_m']>.02 and abs(tested['preserved_lift_m']-prepared['source_lift_m'])<.004
     print('SAVAGE PREPARED DANCE: exact source/retarget/386 off-grid skins/eight actual GPU views pass; no native111 or runtime acceptance')
 
 

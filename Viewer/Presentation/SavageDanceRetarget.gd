@@ -23,14 +23,18 @@ static func targets(name: String) -> Array[String]:
 static func body(human: Node3D) -> MeshInstance3D:
 	return human.model.find_children("Body*","MeshInstance3D",true,false)[0]
 
-static func build(source: Node3D,human: Node3D,fps: int=60) -> Dictionary:
+static func build(source: Node3D,human: Node3D,floor_source: Node3D,fps: int=60) -> Dictionary:
 	assert(fps in [30,60,120],"Bounded dance sample rate required")
 	var source_rig: Skeleton3D=source.find_children("*","Skeleton3D",true,false)[0]
 	var player: AnimationPlayer=source.find_children("*","AnimationPlayer",true,false)[0]
-	var source_mesh: MeshInstance3D=source.find_children("Body*","MeshInstance3D",true,false)[0]
+	var source_mesh: MeshInstance3D=floor_source.find_children("Body*","MeshInstance3D",true,false)[0]
+	var floor_rig: Skeleton3D=floor_source.find_children("*","Skeleton3D",true,false)[0]
+	var floor_player: AnimationPlayer=floor_source.find_children("*","AnimationPlayer",true,false)[0]
+	assert(source_mesh.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX].size()>100,"A full original Savage skin is required; the hue-chip rig helper is not a body")
 	var rig: Skeleton3D=human.skeleton
 	assert(player.has_animation("TribalDance"),"Original source dance required")
 	var duration:=player.get_animation("TribalDance").length
+	assert(is_equal_approx(duration,floor_player.get_animation("TribalDance").length),"Choreography and full-body clearance must share original timing")
 	var steps:=ceili(duration*fps);var pairs: Dictionary={};var mapping: Array=[];var omitted: Array[String]=[]
 	for bone in source_rig.get_bone_count():
 		var name:=source_rig.get_bone_name(bone);var names:=targets(name)
@@ -51,11 +55,14 @@ static func build(source: Node3D,human: Node3D,fps: int=60) -> Dictionary:
 	var source_basis:=source_rig.global_basis.orthonormalized();var target_basis:=rig.global_basis.orthonormalized()
 	var maximum_basis_error:=0.;var maximum_offset_error:=0.;var maximum_floor_error:=0.;var maximum_source_lift:=0.
 	var samples: Array=[];var pelvis:=rig.find_bone("pelvis");var source_pelvis: int=pairs[pelvis]
-	human.animator.stop();player.play("TribalDance")
+	human.animator.stop();player.play("TribalDance");floor_player.play("TribalDance")
 	for frame in steps+1:
 		var time:=minf(duration,float(frame)/fps)
 		player.seek(time,true);source_rig.force_update_all_bone_transforms();rig.reset_bone_poses()
-		var source_min:=Geometry.deformed_bounds(source_mesh,source_rig).position.y
+		floor_player.seek(time,true);floor_rig.force_update_all_bone_transforms()
+		var raw_source_min:=Geometry.deformed_bounds(source_mesh,floor_rig).position.y
+		# Correct source foot penetration, retaining every positive rise.
+		var source_min:=maxf(0.,raw_source_min)
 		maximum_source_lift=maxf(maximum_source_lift,source_min)
 		var expected: Dictionary={}
 		for bone in rig.get_bone_count():
@@ -93,6 +100,9 @@ static func build(source: Node3D,human: Node3D,fps: int=60) -> Dictionary:
 			var observed:=target_basis*rig.get_bone_global_pose(bone).basis*rig.get_bone_global_rest(bone).basis.inverse()*target_basis.inverse()
 			var wanted: Basis=expected[bone]
 			maximum_basis_error=maxf(maximum_basis_error,maxf(observed.x.distance_to(wanted.x),maxf(observed.y.distance_to(wanted.y),observed.z.distance_to(wanted.z))))
-		samples.append({"time":time,"source_lift_m":source_min,"retargeted_lift_m":actual_min})
+		samples.append({"time":time,"raw_source_body_clearance_m":raw_source_min,"source_lift_m":source_min,"retargeted_lift_m":actual_min})
 	assert(maximum_basis_error<.00001 and maximum_offset_error<.000001 and maximum_floor_error<.00001,"Dance retarget changed source rotation deltas, limb offsets or measured clearance")
+	var floor_curve:=PackedVector2Array()
+	for sample: Dictionary in samples:floor_curve.append(Vector2(float(sample.time),float(sample.source_lift_m)))
+	animation.set_meta("npc_full_body_clearance",floor_curve)
 	return {"animation":animation,"report":{"fps":fps,"source_bones":source_rig.get_bone_count(),"target_bones":rig.get_bone_count(),"mapped_bones":pairs.size(),"mapping":mapping,"unmapped_source_helpers":omitted,"samples":samples,"maximum_global_rotation_basis_error":maximum_basis_error,"maximum_nonpelvis_local_position_error_m":maximum_offset_error,"maximum_floor_reference_error_m":maximum_floor_error,"source_lift_m":maximum_source_lift,"scope":"Authored modern retarget of original tribal choreography. Source global rotation changes and measured complete-skin lift retained, fixed limb offsets. Root/eight garment controls held at rest. Native111, clothing dynamics, slopes, transitions and acceptance remain separate."}}

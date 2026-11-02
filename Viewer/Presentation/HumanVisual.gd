@@ -18,6 +18,7 @@ var native_body_profile: Dictionary={}
 var grip: SkeletonModifier3D
 var held_accessories: SkeletonModifier3D
 var use_modern_motion := true
+var use_grounded_death:=true
 var motion_profile := {}
 var war_mode := false
 var mounted := false
@@ -82,6 +83,7 @@ func _ready() -> void:
 					mat.metallic_specular = 0.
 				mesh.set_surface_override_material(surface,mat)
 	if use_modern_motion: motion_profile=preload("res://Presentation/HumanMotion.gd").install(self)
+	if use_grounded_death and not motion_profile.is_empty():preload("res://Presentation/HumanDeathFloor.gd").install(self)
 	if not motion_profile.is_empty():grip.use_prepared_clip(animator.get_animation("Sword_Idle"))
 	for clip in ["Idle","Walk","Run"]: animator.get_animation(clip).loop_mode = Animation.LOOP_LINEAR
 	animator.play("Idle")
@@ -99,6 +101,7 @@ func set_skin(hue: int) -> void:
 func set_native_profile(profile: Dictionary,hue: int) -> void:
 	native_body_profile=profile.duplicate(true)
 	skin_hue=hue
+	preload("res://Presentation/HumanNPCMotion.gd").configure(self,native_body_profile)
 	_apply_native_skin()
 
 func _apply_native_skin() -> void:

@@ -209,6 +209,7 @@ func apply_server_appearance(entity: Dictionary, worn: Array, details: Dictionar
 	human_visual.set_equipment(worn)
 	_sync_mount(worn)
 	human_visual.set_native_profile(Wardrobe.NPCs.entry(body),int(entity.get("hue",1002)))
+	preload("res://Presentation/HumanNPCFootContact.gd").sync_avatar(self,Wardrobe.NPCs.entry(body))
 	appearance_seen=true
 	if not walking and human_visual.action_clip.is_empty():human_visual.play(human_visual.stance_clip("Idle"))
 	set_meta("native_body",body)
@@ -247,7 +248,11 @@ func receive_native_action(request: Dictionary) -> bool:
 	for item: Dictionary in server_appearance.get("equipment",[]):
 		if int(item.get("layer",0))==25:
 			if not (human_visual.mounted_live_enabled or human_visual.rider_preview_enabled) or not preload("res://Presentation/HumanActions.gd").resolve(request,true).begins_with("Rider_"):return false
-	return human_visual.request_action(request)
+	var played: bool=human_visual.request_action(request)
+	# The authored tribal dance includes airborne feet and clapping poses.
+	# Disable ordinary standing IK immediately, before a render-stage modifier.
+	if played and human_visual.action_clip=="Savage_Dance":foot_contact.active=bool(foot_contact.get_meta("native_complete_skin_support",false))
+	return played
 
 func animate(moving: bool, direction: float, delta: float, speed: float = 2.44) -> void:
 	if human_visual == null:
@@ -290,6 +295,7 @@ func animate(moving: bool, direction: float, delta: float, speed: float = 2.44) 
 		animator.speed_scale=horse_visual.animator.speed_scale if human_visual.action_clip.is_empty() else 1.
 	visual_root.position.y = (0. if human_visual.riding() else jump.height)+ground_offset
 	foot_contact.grounded = not jump.airborne and not human_visual.riding() and not (human_visual.rider_preview_enabled and human_visual.action_clip.begins_with("Rider_"))
+	foot_contact.active=human_visual.action_clip!="Savage_Dance" or bool(foot_contact.get_meta("native_complete_skin_support",false))
 	if human_visual.action_clip=="Death":foot_contact.grounded=false
 	foot_contact.body_offset = ground_offset
 	var plate := get_node_or_null("Nameplate")

@@ -2,7 +2,7 @@ extends SceneTree
 ## Off-grid baked-animation checks plus actual GPU poses; no native route edits.
 const Human=preload("res://Presentation/HumanVisual.gd")
 const Geometry=preload("res://Presentation/SkinGeometry.gd")
-const INPUTS=["SavageDanceTests.gd","SavageDanceRetarget.gd","PrepareSavageDance.gd","HumanVisual.gd","HumanMotion.gd","SkinGeometry.gd","SavageBodyPaint.gd","SavageSkin.gdshader"]
+const INPUTS=["SavageDanceTests.gd","SavageDanceRetarget.gd","PrepareSavageDance.gd","HumanVisual.gd","HumanNPCMotion.gd","HumanMotion.gd","SkinGeometry.gd","SavageBodyPaint.gd","SavageSkin.gdshader"]
 var checks:=0
 var failures:=0
 var rendered:=0
@@ -51,9 +51,17 @@ func run() -> void:
 		var source:=document.generate_scene(state);root.add_child(source)
 		var source_rig: Skeleton3D=source.find_children("*","Skeleton3D",true,false)[0]
 		var player: AnimationPlayer=source.find_children("*","AnimationPlayer",true,false)[0]
-		var source_mesh: MeshInstance3D=source.find_children("Body*","MeshInstance3D",true,false)[0]
+		var floor_path:=reference+str(source_row.floor_reference.output)
+		check(FileAccess.get_sha256(floor_path)==str(row.floor_reference_sha256),"Actual full original Savage body matches its separate floor-reference pin")
+		var floor_document:=GLTFDocument.new();var floor_state:=GLTFState.new()
+		check(floor_document.append_from_file(ProjectSettings.globalize_path(floor_path),floor_state)==OK,"Full original Savage floor-reference skin loads")
+		var floor_source:=floor_document.generate_scene(floor_state);root.add_child(floor_source)
+		var floor_rig: Skeleton3D=floor_source.find_children("*","Skeleton3D",true,false)[0]
+		var floor_player: AnimationPlayer=floor_source.find_children("*","AnimationPlayer",true,false)[0]
+		var source_mesh: MeshInstance3D=floor_source.find_children("Body*","MeshInstance3D",true,false)[0]
 		var target_mesh: MeshInstance3D=human.model.find_children("Body*","MeshInstance3D",true,false)[0]
 		player.play("TribalDance");player.pause()
+		floor_player.play("TribalDance");floor_player.pause()
 		var worst_floor:=0.;var worst_basis:=0.;var worst_offset:=0.;var lift:=0.;var samples: Array=[]
 		var mappings: Array=row.mapping
 		check(mappings.size()==52,"Complete explicit original-to-modern joint mapping is recorded")
@@ -61,7 +69,8 @@ func run() -> void:
 			# Different fractional phases from the 60 Hz generation grid.
 			var time:=clip.length*(float(index)+.371)/193.
 			player.seek(time,true);human.animator.seek(time,true);source_rig.force_update_all_bone_transforms();human.skeleton.force_update_all_bone_transforms()
-			var expected:=Geometry.deformed_bounds(source_mesh,source_rig).position.y
+			floor_player.seek(time,true);floor_rig.force_update_all_bone_transforms()
+			var expected:=maxf(0.,Geometry.deformed_bounds(source_mesh,floor_rig).position.y)
 			var bounds:=Geometry.deformed_bounds(target_mesh,human.skeleton)
 			var observed:=bounds.position.y;var error:=absf(observed-expected);worst_floor=maxf(worst_floor,error);lift=maxf(lift,observed)
 			check(bounds.position.is_finite() and bounds.size.is_finite() and error<.004,"Off-grid complete skin retains original clearance within four millimetres")
@@ -79,7 +88,7 @@ func run() -> void:
 				var difference:=maxf(wanted.x.distance_to(actual.x),maxf(wanted.y.distance_to(actual.y),wanted.z.distance_to(actual.z)))
 				worst_basis=maxf(worst_basis,difference);check(difference<.0001,"Off-grid original global rotation change survives retargeting")
 			samples.append({"time":time,"source_clearance_m":expected,"target_clearance_m":observed})
-		check(lift>.12,"Original airborne dance phase is preserved instead of flattened")
+		check(float(row.source_lift_m)>.02 and absf(lift-float(row.source_lift_m))<.004,"Actual full-body source rise is retained instead of copying the rig-helper hull")
 		var first_picture: Image
 		for phase in [0.,.25,.5,.75]:
 			human.animator.seek(clip.length*phase,true)
@@ -101,7 +110,7 @@ func run() -> void:
 			picture.save_png(picture_path);captures.append({"path":picture_path,"sha256":FileAccess.get_sha256(picture_path),"occupied_samples":occupied,"changed_samples":changed})
 			rendered+=1
 		rows.append({"gender":gender,"complete_skin_holdouts":samples,"mapped_bones":52,"maximum_floor_error_m":worst_floor,"maximum_global_basis_error":worst_basis,"maximum_local_offset_error_m":worst_offset,"preserved_lift_m":lift,"asset_sha256":row.asset_sha256})
-		human.free();source.free()
+		human.free();source.free();floor_source.free()
 	for name in INPUTS:check(runtime[name]==FileAccess.get_sha256("res://Presentation/"+name),"Runtime/test unchanged during sampling")
 	check(preparation_sha==FileAccess.get_sha256(folder+"preparation.json") and source_sha==FileAccess.get_sha256(reference+"preparation.json"),"Prepared/reference inputs unchanged during sampling")
 	check(sha_optional(accepted_path)==accepted_start,"Dance trials leave accepted body/action index unchanged")

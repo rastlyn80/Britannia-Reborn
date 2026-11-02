@@ -1,4 +1,4 @@
-param([switch]$Live,[switch]$SkipContact,[switch]$Gpu,[switch]$Equines,[switch]$Ostards,[switch]$EquineCompletion,[switch]$LlamaCompletion,[switch]$Ethics,[switch]$Bovines,[switch]$SeaHorse,[string]$CreatureFamily='')
+param([switch]$Live,[switch]$SkipContact,[switch]$Gpu,[switch]$Equines,[switch]$Ostards,[switch]$EquineCompletion,[switch]$LlamaCompletion,[switch]$Ethics,[switch]$Bovines,[switch]$SeaHorse,[switch]$Savages,[string]$CreatureFamily='')
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent
 $godot=(Get-ChildItem "$root/.tools/godot/*console.exe"|Select-Object -First 1).FullName
@@ -25,7 +25,7 @@ try {
  if (!$Live) { return }
  $runtime=Join-Path $root 'work/horse-session/server'
  if ($Ethics) {$runtime=Join-Path $root ('work/ethics-session/'+[Guid]::NewGuid().ToString('N')+'/server')}
- if ($CreatureFamily) {$runtime=Join-Path $root ('work/creature-session/'+[Guid]::NewGuid().ToString('N')+'/server')}
+ if ($CreatureFamily -or $Savages) {$runtime=Join-Path $root ('work/creature-session/'+[Guid]::NewGuid().ToString('N')+'/server')}
  if ($SeaHorse) {$runtime=Join-Path $root ('work/sea-horse-session/'+[Guid]::NewGuid().ToString('N')+'/server')}
  $probe=[Net.Sockets.TcpClient]::new()
  try {
@@ -39,7 +39,7 @@ try {
  Get-ChildItem "$root/Server/runtime/Assemblies" -File -Filter '*.dll' | Where-Object { $_.Name -ne 'UltimaClone.PreviewTools.dll' } | Copy-Item -Destination "$runtime/Assemblies" -Force
  Copy-Item "$root/Server/runtime/Data" -Destination $runtime -Recurse -Force
  Copy-Item "$root/Server/runtime/Configuration/expansion.json" "$runtime/Configuration/expansion.json" -Force
- if ($Ethics -or $EquineCompletion -or $Bovines -or $CreatureFamily) {
+ if ($Ethics -or $EquineCompletion -or $Bovines -or $CreatureFamily -or $Savages) {
   & python -B "$root/scripts/prepare-server-fixes.py" --verify-only
   if ($LASTEXITCODE) {throw 'Server overlay input audit failed'}
   $receipt=Get-Content "$root/work/server-fixes/build-manifest.json" -Raw|ConvertFrom-Json
@@ -55,14 +55,27 @@ try {
  }
  $dotnet="$root/.tools/dotnet-server/dotnet.exe"
  $env:DOTNET_CLI_HOME=Join-Path $root '.dotnet-home'
+ $savageBuildInputs=@{}
+ if ($Savages) {
+  Get-ChildItem "$root/Server/HorseIntegrationFixtures" -File | Where-Object {$_.Extension -in @('.cs','.csproj')} | ForEach-Object {
+   $savageBuildInputs[('Server/HorseIntegrationFixtures/'+$_.Name)]=(Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+  }
+ }
  Push-Location "$root/Server/HorseIntegrationFixtures"
  try { & $dotnet build -c Release --ignore-failed-sources } finally { Pop-Location }
  if ($LASTEXITCODE) { throw 'Isolated fixture extension build failed' }
  Copy-Item "$root/Server/HorseIntegrationFixtures/bin/Release/net10.0/BritanniaReborn.HorseIntegrationFixtures.dll" "$runtime/Assemblies/" -Force
+ $savageAssemblies=@{}
+ if ($Savages) {
+  foreach ($relative in @('ModernUO.dll','Server.dll','Assemblies/UOContent.dll','Assemblies/BritanniaReborn.HorseIntegrationFixtures.dll')) {
+   $savageAssemblies[$relative]=(Get-FileHash -LiteralPath (Join-Path $runtime $relative) -Algorithm SHA256).Hash.ToLowerInvariant()
+  }
+ }
  ConvertTo-Json -InputObject @('UOContent.dll','BritanniaReborn.HorseIntegrationFixtures.dll')|Set-Content "$runtime/Data/assemblies.json"
  $existing=Get-Content "$root/Server/runtime/Configuration/modernuo.json" -Raw|ConvertFrom-Json
  @{assemblyDirectories=@('Assemblies');dataDirectories=@($existing.dataDirectories);listeners=@('127.0.0.1:2594');settings=@{
   'serverListing.serverName'='Britannia Reborn isolated horse tests';'serverListing.address'='127.0.0.1';'serverListing.autoDetect'='False';'network.encryptionMode'='Unencrypted';'accountHandler.enableAutoAccountCreation'='True';'accountHandler.maxAccountsPerIP'='6';'pathfinding.prebakeMaps'='False';'autosave.enabled'='False';'world.savePath'=(Join-Path $runtime 'Saves');'britanniaReborn.isolatedHorseTests'='True';'britanniaReborn.isolatedPlagueTests'=$(if ($CreatureFamily -eq 'amorphous') {'True'} else {'False'});'britanniaReborn.isolatedSolenTests'=$(if ($CreatureFamily -eq 'solen_workers') {'True'} else {'False'});'britanniaReborn.isolatedFluidElementalTests'=$(if ($CreatureFamily -eq 'fluid_elementals') {'True'} else {'False'});'britanniaReborn.isolatedJukaTests'=$(if ($CreatureFamily -eq 'juka') {'True'} else {'False'});'britanniaReborn.isolatedMageTests'=$(if ($CreatureFamily -eq 'mages') {'True'} else {'False'});'britanniaReborn.isolatedSilverSerpentTests'=$(if ($CreatureFamily -eq 'silver_serpents') {'True'} else {'False'});'ethics.enable'=$(if ($Ethics -or $EquineCompletion) {'True'} else {'False'});'factions.enabled'=$(if ($Ethics -or $EquineCompletion) {'True'} else {'False'});'pingServer.enabled'='False'
+  'britanniaReborn.isolatedSavageTests'=$(if ($Savages) {'True'} else {'False'})
  }}|ConvertTo-Json -Depth 8|Set-Content "$runtime/Configuration/modernuo.json"
  $accounts=@(@{username='brhorse-test-m';password=[Guid]::NewGuid().ToString('N').Substring(0,24)},@{username='brhorse-test-f';password=[Guid]::NewGuid().ToString('N').Substring(0,24)})
  $credentials=Join-Path $root 'work/horse-session/accounts.local.json'
@@ -92,7 +105,21 @@ try {
   if ($SeaHorse) {$liveArgs+='--sea-horse'}
   if ($CreatureFamily) {$liveArgs+="--family=$CreatureFamily"}
   $started=[DateTime]::UtcNow
-  & $godot --headless --path Viewer --script $(if ($CreatureFamily -eq 'mages') {'res://Network/SourceMageLive.gd'} elseif ($CreatureFamily -eq 'juka') {'res://Network/SourceJukaLive.gd'} elseif ($CreatureFamily) {'res://Network/CreatureLive.gd'} elseif ($Ostards -or $EquineCompletion -or $LlamaCompletion -or $Ethics -or $Bovines -or $SeaHorse) {'res://Network/OstardLive.gd'} elseif ($Equines) {'res://Network/EquineLive.gd'} else {'res://Network/HorseLive.gd'}) -- @liveArgs
+  & $godot --headless --path Viewer --script $(if ($Savages) {'res://Network/SavageLive.gd'} elseif ($CreatureFamily -eq 'mages') {'res://Network/SourceMageLive.gd'} elseif ($CreatureFamily -eq 'juka') {'res://Network/SourceJukaLive.gd'} elseif ($CreatureFamily) {'res://Network/CreatureLive.gd'} elseif ($Ostards -or $EquineCompletion -or $LlamaCompletion -or $Ethics -or $Bovines -or $SeaHorse) {'res://Network/OstardLive.gd'} elseif ($Equines) {'res://Network/EquineLive.gd'} else {'res://Network/HorseLive.gd'}) -- @liveArgs
+  if ($LASTEXITCODE) { throw 'Native isolated integration test failed' }
+  if ($Savages) {
+   $report=Get-Item "$root/work/creatures/savages/native-tests.json"
+   if ($report.LastWriteTimeUtc -lt $started.AddSeconds(-1) -or (Get-Content $report.FullName -Raw|ConvertFrom-Json).failures -ne 0) {throw 'Savage native tests failed or did not write fresh evidence'}
+   foreach ($relative in $savageBuildInputs.Keys) {
+    if ((Get-FileHash -LiteralPath (Join-Path $root $relative) -Algorithm SHA256).Hash.ToLowerInvariant() -ne $savageBuildInputs[$relative]) {throw 'Savage fixture source changed during build/run'}
+   }
+   foreach ($relative in $savageAssemblies.Keys) {
+    if ((Get-FileHash -LiteralPath (Join-Path $runtime $relative) -Algorithm SHA256).Hash.ToLowerInvariant() -ne $savageAssemblies[$relative]) {throw 'Savage runtime assembly changed during run'}
+   }
+   @{runtime=$runtime;started_utc=$started.ToString('o');report_sha256=(Get-FileHash -LiteralPath $report.FullName -Algorithm SHA256).Hash.ToLowerInvariant();build_inputs_sha256=$savageBuildInputs;assemblies_sha256=$savageAssemblies;reviewed_content_sha256=$receipt.assembly_sha256;scope='Fresh isolated loopback2594 two-client world, built fixture sources and copied native assemblies unchanged through run; no production saves/accounts'}|ConvertTo-Json -Depth 5|Set-Content "$root/work/creatures/savages/native-runtime.json"
+   & python -B "$root/scripts/check-savage-native.py"
+   if ($LASTEXITCODE) {throw 'Savage exact native receipt or behaviour evidence failed'}
+  }
   if ($LASTEXITCODE) { throw 'Native isolated horse integration test failed' }
   if ($CreatureFamily -eq 'mages') {
    & $godot --headless --path Viewer --script res://Network/MageBehaviourLive.gd

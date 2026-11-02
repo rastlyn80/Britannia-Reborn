@@ -7,6 +7,9 @@ static func resolve(request: Dictionary, mounted: bool = false) -> String:
 		var group:=int(request.get("action",-1))
 		if mounted and group not in [23,24,25,26,27,28,29]:
 			return str({0:"Rider_Walk",1:"Rider_Walk",2:"Rider_Run",3:"Rider_Run",4:"Rider_Idle",7:"Rider_Idle",8:"Rider_Idle",9:"Rider_Attack",10:"Rider_Attack",11:"Rider_Attack",12:"Rider_Attack",13:"Rider_Attack",14:"Rider_Attack",15:"Rider_Walk",18:"Rider_Bow",19:"Rider_Crossbow"}.get(group,""))
+		if group==111 and not mounted:
+			var dance: Variant=preload("res://Presentation/HumanNPCProfiles.gd").entry(int(request.get("body",0))).get("tribal_dance",{})
+			if dance is Dictionary and not dance.is_empty():return "Savage_Dance"
 		return str(CLASSIC.get(group,""))
 	if str(request.get("protocol",""))!="new": return ""
 	# 0xe2 contains type/subaction/variation, not classic frame timing. The

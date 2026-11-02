@@ -1,0 +1,95 @@
+{
+  "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+  "source_page": "https://zuluarchive.com/pages/files.html",
+  "server_pin": "ab59efea86fd9e399d261bed9d188ab4d95ad4c2",
+  "cabinets": [
+    {
+      "zip_member": "uoaos/UOTD/models/client7.cab",
+      "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859",
+      "bytes": 20805
+    },
+    {
+      "zip_member": "uoaos/UOTD/models/monsters/client11.cab",
+      "sha256": "307a6b91c4d5459080d1fe8a74ae4fe0b91dea8a21a2866ca91e7dc7ba92f1a8",
+      "bytes": 35160963
+    },
+    {
+      "zip_member": "uoaos/UOTD/models/maps/client10.cab",
+      "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9",
+      "bytes": 33956665
+    }
+  ],
+  "files": [
+    {
+      "path": "Models/Maps/walking_dead_mummy_v04.tga",
+      "bytes": 65580,
+      "sha256": "e5e59beacc6123992eafcf463a5818969cce011549629a30a6d1c764e4f27e74"
+    },
+    {
+      "path": "Models/Maps/walking_dead_mummy_v04_m.tga",
+      "bytes": 65580,
+      "sha256": "0cf07733226adb6405d4a660d9727c6535effe15e9eb26dd745cd0ca8f1562bb"
+    },
+    {
+      "path": "Models/Monsters/walking_dead_mummy_attack1.grn",
+      "bytes": 31116,
+      "sha256": "40f4da0fcee6260a3cfeefccc763206e21263b827237d948668f9c3e995dfff4"
+    },
+    {
+      "path": "Models/Monsters/walking_dead_mummy_die1.grn",
+      "bytes": 41904,
+      "sha256": "b7bde6f9f12138dba02f8c8ebc186cd6ef23566268c7a1c678246529c27175f8"
+    },
+    {
+      "path": "Models/Monsters/walking_dead_mummy_fidget.grn",
+      "bytes": 34072,
+      "sha256": "97115793c6252607309d2b288bef6ea46b2d9ae5305b36bc0070d1bc189658ae"
+    },
+    {
+      "path": "Models/Monsters/walking_dead_mummy_gethit.grn",
+      "bytes": 25856,
+      "sha256": "a7a109f5991ec6e8c9b0237bb0336e6c6031c3fabe84629b6cccdc926747c392"
+    },
+    {
+      "path": "Models/Monsters/walking_dead_mummy_idle.grn",
+      "bytes": 22696,
+      "sha256": "abf93ae41c6050c8cbdb401fe73e8533f69d6f9e4392ed94cb41ce5aca79c7aa"
+    },
+    {
+      "path": "Models/Monsters/walking_dead_mummy_lod2.grn",
+      "bytes": 28492,
+      "sha256": "c28127005651d5ae37fc75000f2bc3975e49f704cd48c96786cdf042e476b7db"
+    },
+    {
+      "path": "Models/Monsters/walking_dead_mummy_run.grn",
+      "bytes": 26392,
+      "sha256": "f1efb2f020eda9fc337e59f5ab0251dcd449b66e2569c1a2dc0c3c4308957fd8"
+    },
+    {
+      "path": "Models/Monsters/walking_dead_mummy_walk.grn",
+      "bytes": 30048,
+      "sha256": "c9e9a636d206d094408f2ef85094861ce8376f4f297312f2cd1c9bff90aa10f9"
+    },
+    {
+      "path": "Models/models.txt",
+      "bytes": 55735,
+      "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a"
+    }
+  ],
+  "native_sources": [
+    {
+      "path": "Projects/UOContent/Mobiles/Monsters/Humanoid/Melee/Mummy.cs",
+      "sha256": "d78157d804284d81142bcd2a8570143a173944bfe44de7c017d88b9500fac06c",
+      "body": 154,
+      "native_class": "Mummy"
+    },
+    {
+      "path": "Projects/UOContent/Mobiles/Monsters/ML/Humanoid/Melee/PestilentBandage.cs",
+      "sha256": "0b2b457603c8df18e20465685a156c286b8960f1eb4a3dbc5ce035acebe28d73",
+      "body": 154,
+      "native_class": "PestilentBandage"
+    }
+  ],
+  "scope": "Original later Third Dawn Mummy154 mesh/own atlas/seven original motions. Mummy and PestilentBandage share154; constructor/hue/behaviour must be verified independently. Mask atlas is retained as an unresolved source material input, not silently claimed rendered. Preparation only; no accepted routing or coverage.",
+  "rights": "Preservation archive location is not a redistribution grant or independent official authenticity proof. No executables run. Original inputs and derived meshes/maps stay private."
+}
