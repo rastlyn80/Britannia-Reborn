@@ -3,17 +3,17 @@ import argparse,json,re
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 # Reviewed native declarations, each verified by its real constructor.
-EXPLICIT_CLASSES={124:['EvilMage'],125:['EvilMageLord'],126:['EvilMageLord'],92:['SilverSerpent'],158:['AcidElemental'],162:['PoisonElemental'],237:['Hind','EnragedHind'],234:['GreatHart','EnragedHart'],21:['GiantSerpent'],89:['IceSerpent'],52:['Snake','IceSnake','LavaSnake'],208:['Chicken'],205:['JackRabbit','Rabbit'],58:['Wisp','CrystalWisp'],13:['AirElemental','SummonedAirElemental','CrystalVortex'],15:['FireElemental','SummonedFireElemental'],153:['Ghoul','Bogle'],29:['Gorilla'],31:['HeadlessOne'],779:['Bogling'],24:['Lich'],78:['AncientLich','DarkGuardian'],79:['LichLord'],163:['SnowElemental'],80:['GiantToad'],81:['BullFrog'],51:['Slime','CorrosiveSlime','Jwilson'],775:['PlagueBeast','PlagueBeastLord'],781:['RedSolenWorker'],805:['BlackSolenWorker']}
+EXPLICIT_CLASSES={764:['JukaWarrior'],765:['JukaMage'],124:['EvilMage'],125:['EvilMageLord'],126:['EvilMageLord'],92:['SilverSerpent'],158:['AcidElemental'],162:['PoisonElemental'],237:['Hind','EnragedHind'],234:['GreatHart','EnragedHart'],21:['GiantSerpent'],89:['IceSerpent'],52:['Snake','IceSnake','LavaSnake'],208:['Chicken'],205:['JackRabbit','Rabbit'],58:['Wisp','CrystalWisp'],13:['AirElemental','SummonedAirElemental','CrystalVortex'],15:['FireElemental','SummonedFireElemental'],153:['Ghoul','Bogle'],29:['Gorilla'],31:['HeadlessOne'],779:['Bogling'],24:['Lich'],78:['AncientLich','DarkGuardian'],79:['LichLord'],163:['SnowElemental'],80:['GiantToad'],81:['BullFrog'],51:['Slime','CorrosiveSlime','Jwilson'],775:['PlagueBeast','PlagueBeastLord'],781:['RedSolenWorker'],805:['BlackSolenWorker']}
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('family');parser.add_argument('--prepared',action='store_true');parser.add_argument('--runtime',type=Path,required=True);args=parser.parse_args()
     runtime=args.runtime.resolve();assert runtime.is_relative_to(ROOT/'work'),'Disposable runtime must stay under work/'
     index=json.loads((ROOT/'Viewer/local-art/creatures/accepted-index.json').read_text(encoding='utf-8'));rows=[]
     states={'validated'}
     if args.prepared:
-        assert args.family=='mages','Prepared native trial is explicitly bounded to the independently checked mage forms'
+        assert args.family in ['mages','juka'],'Prepared native trial is bounded to independently checked source forms'
         import subprocess,sys
-        subprocess.run([sys.executable,'-B',str(ROOT/'scripts/check-source-mages.py')],check=True)
-        index={'entries':json.loads((ROOT/'Viewer/local-art/creatures/mages/preparation.json').read_text(encoding='utf-8'))['models']}
+        subprocess.run([sys.executable,'-B',str(ROOT/'scripts'/('check-source-mages.py' if args.family=='mages' else 'check-prepared-juka.py'))]+([] if args.family=='mages' else ['--graphics']),check=True)
+        index={'entries':json.loads((ROOT/f'Viewer/local-art/creatures/{args.family}/preparation.json').read_text(encoding='utf-8'))['models']}
         states={'prepared'}
     public=ROOT/'Viewer/Art/Creatures/index.json'
     if public.exists() and not args.prepared:index['entries']=json.loads(public.read_text(encoding='utf-8'))['entries']+index['entries']
@@ -31,7 +31,7 @@ def main():
                 text=path.read_text(encoding='utf-8-sig')
                 classes.update(re.findall(r'\bpublic\s+(?:(?:abstract|sealed|partial)\s+)*class\s+(\w+)',text))
             classes=sorted(classes)
-            reviewed=EXPLICIT_CLASSES.get(body['body']) if entry['family'] in ['deer','serpents','ice_serpents','small_snakes','rabbits','wisps','air','fire','walking','gorillas','headless','boglings','chickens','liches','snow_elementals','frogs','amorphous','solen_workers','fluid_elementals','silver_serpents','mages'] else None
+            reviewed=EXPLICIT_CLASSES.get(body['body']) if entry['family'] in ['deer','serpents','ice_serpents','small_snakes','rabbits','wisps','air','fire','walking','gorillas','headless','boglings','chickens','liches','snow_elementals','frogs','amorphous','solen_workers','fluid_elementals','silver_serpents','mages','juka'] else None
             if reviewed:
                 assert set(reviewed)<=set(classes),'Reviewed native class declaration changed'
                 classes=reviewed

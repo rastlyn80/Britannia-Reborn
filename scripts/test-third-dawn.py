@@ -18,6 +18,42 @@ anatomy_spec.loader.exec_module(anatomy)
 
 
 class ImportBoundaries(unittest.TestCase):
+    def test_indexed_scene_leaf_keeps_primary_and_both_tracks(self):
+        strings = ['__objectname', '__root', 'master_h_female', 'hip']
+        table = struct.pack('<II', len(strings), 0) + b'\0'.join(t.encode() for t in strings) + b'\0'
+        entries = [(0xCA5E0200, struct.pack('<II', 0, 0) + b'\0', []), (0xCA5E0200, table, [])]
+        for name_index in [1, 2, 3, 2]:
+            entries += [(0xCA5E0F00, b'', [0xCA5E0F03]),
+                        (0xCA5E0F01, struct.pack('<I', 0), [0xCA5E0F03]),
+                        (0xCA5E0F02, struct.pack('<II', 0, name_index), [0xCA5E0F03])]
+        for index in range(1, 5):
+            entries.append((0xCA5E0F04, struct.pack('<I', index), [0xCA5E0B01]))
+        entries.append((0xCA5E0C02, struct.pack('<4I', 1, 2, 3, 4), []))
+        for parent in [0, 0, 1, 0]:
+            entries.append((0xCA5E0506, struct.pack('<I16f', parent, 0., 0., 0., 0., 0., 0., 1., *([0.] * 9)), []))
+        for index, rotation in [(2, [0., 0., 0., 1.]), (4, [0., .6, 0., .8])]:
+            header = [0] * 13; header[0] = index; header[7] = 1
+            entries.append((0xCA5E1204, struct.pack('<13I5f', *header, 0., *rotation), []))
+        request = dict(leaf_index=3, primary_index=1, parent_index=0, bone_count=4, source_label='master_h_female')
+        options = dict(animations_only=True, scene_root_names=True)
+        with patch.object(module, 'chunks', return_value=iter(entries)):
+            with self.assertRaisesRegex(ValueError, 'Duplicate bone names'):
+                module.parse(b'', **options)
+        with patch.object(module, 'chunks', return_value=iter(entries)):
+            result = module.parse(b'', auxiliary_scene_leaf=request, **options)
+        self.assertEqual([b['parent'] for b in result['bones']], [0, 0, 1, 0])
+        self.assertEqual([b['name'] for b in result['bones']], ['__root', 'granny_master', 'hip', 'unretained_auxiliary_scene_3'])
+        self.assertEqual([t['id'] for t in result['tracks']], [2, 4])
+        self.assertEqual([t['name'] for t in result['tracks']], ['granny_master', 'unretained_auxiliary_scene_3'])
+        self.assertEqual(result['tracks'][1]['rotation'], dict(times=[0.], values=[[0., .6000000238418579, 0., .800000011920929]]))
+        # A similarly named real intermediary must stay rejected.
+        bones = result['bones']; bones[2]['parent'] = 3
+        with self.assertRaisesRegex(ValueError, 'rig ancestor'):
+            module.indexed_scene_leaf_alias(bones, [{'__objectname': s} for s in ['__root', 'master_h_female', 'hip', 'master_h_female']], [1, 2, 3, 4], [1, 2, 3, 4], request)
+        with patch.object(module, 'chunks', return_value=iter(entries)):
+            with self.assertRaisesRegex(ValueError, 'label changed'):
+                module.parse(b'', auxiliary_scene_leaf=dict(request, source_label='another_export'), **options)
+
     def test_animation_only_is_explicit_and_does_not_accept_invalid_track_times(self):
         strings=struct.pack('<II',0,0)+b'\0'
         vectors=struct.pack('<3f',1.,2.,3.)

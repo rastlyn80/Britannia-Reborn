@@ -99,6 +99,7 @@ def main():
 
 def native():
     live = read(OUT / 'live.json')
+    assert live['ai_timer_stop_verified'] and live['ai_control_sha256'] == sha(ROOT / 'Server/HorseIntegrationFixtures/FixtureAIControls.cs')
     assert live['failures'] == 0 and live['checks'] >= 577 and len(live['records']) == 6
     assert live['test_sha256'] == sha(ROOT / 'Viewer/Network/SourceMageLive.gd') and live['base_test_sha256'] == sha(ROOT / 'Viewer/Network/CreatureLive.gd')
     assert live['fixture_sha256'] == sha(ROOT / 'Server/HorseIntegrationFixtures/CreatureFixtures.cs') and live['preparation_sha256'] == sha(ART / 'mages/preparation.json')
@@ -120,6 +121,7 @@ def native():
             if action['requested'] in [11, -5]:
                 assert action['owner_clip'] == 'Pillage'
     behaviour = read(OUT / 'behaviour.json')
+    assert behaviour['ai_timer_stop_verified'] and behaviour['ai_control_sha256'] == sha(ROOT / 'Server/HorseIntegrationFixtures/FixtureAIControls.cs')
     assert behaviour['failures'] == 0 and {(r['client'], r['body']) for r in behaviour['records']} == {(c, b) for c in [0, 1] for b in classes}
     assert all(r['actual_spell_damage'] > 0 and r['native_rummage'] and r['native_backpack_acquired'] and r['corpse_after'] < r['corpse_before'] for r in behaviour['records'])
     assert behaviour['test_sha256'] == sha(ROOT / 'Viewer/Network/MageBehaviourLive.gd') and behaviour['fixture_sha256'] == sha(ROOT / 'Server/HorseIntegrationFixtures/MageBehaviourFixtures.cs')

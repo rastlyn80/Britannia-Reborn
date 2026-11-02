@@ -20,6 +20,7 @@ if ($LASTEXITCODE -eq 3) {
 if ($LASTEXITCODE) {throw 'Creature review script validation failed'}
 $pending=[Collections.Generic.Queue[string]]::new()
 foreach ($family in $Families) {
+ if ($family -eq 'juka') {continue} # Its dedicated batch owns all exact source/terrain stages.
  & python -B "$root/scripts/check-creature-evidence.py" $family
  if ($LASTEXITCODE) {$pending.Enqueue($family)}
 }
@@ -54,6 +55,25 @@ while ($pending.Count -or $running.Count) {
 foreach ($family in $Families) {
  if ($failed.Contains($family)) {continue}
  try {
+ if ($family -eq 'juka') {
+  & python -B "$root/scripts/check-prepared-juka.py" --graphics *> "$logs/juka-current-graphics.log"
+  if ($LASTEXITCODE) {
+   & "$PSScriptRoot/test-prepared-juka.ps1" -Capture:$Capture
+   if ($LASTEXITCODE) {throw 'Prepared Juka source/skin/terrain graphics failed'}
+  } elseif ($Capture) {
+   foreach ($kind in @('juka_warrior','juka_mage')) {
+    & $godot --path "$root/Viewer" --script res://Presentation/CreatureReview.gd -- --family=juka "--kind=$kind" --capture *> "$logs/$kind-capture.log"
+    if ($LASTEXITCODE) {throw 'Juka comparison capture failed'}
+   }
+  }
+  if ($Live) {
+   & "$PSScriptRoot/test-horses.ps1" -Live -SkipContact -CreatureFamily juka *> "$logs/juka-native.log"
+   if ($LASTEXITCODE) {throw 'Prepared Juka native graphics/behaviour failed'}
+  }
+  & python -B "$root/scripts/accept-creatures.py" juka
+  if ($LASTEXITCODE) {throw 'Exact Juka source/graphics/native/corpse acceptance failed'}
+  continue
+ }
  if ($family -eq 'dragons') {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/CreatureContactTests.gd -- "--family=$family" *> "$logs/$family-contact.log"
   if ($LASTEXITCODE) {throw 'Animated dragon sole/contact checks failed'}

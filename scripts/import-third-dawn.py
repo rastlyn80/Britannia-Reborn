@@ -55,7 +55,24 @@ def finite(values):
     require(all(math.isfinite(x) for x in values), 'Non-finite GRN numeric value')
 
 
-def parse(data, animations_only=False, scene_root_names=False, skip_unskinned_helpers=False, scale_shear_tracks=False, retained_bone_names=None):
+def indexed_scene_leaf_alias(bones, params, tie_objects, bone_objects, request):
+    """Disambiguate one explicit exporter leaf without dropping joints/tracks."""
+    require(set(request) == {'leaf_index', 'primary_index', 'parent_index', 'bone_count', 'source_label'}, 'Explicit indexed scene-leaf contract required')
+    leaf, primary, parent = (request[k] for k in ['leaf_index', 'primary_index', 'parent_index'])
+    require(all(type(i) is int and 0 <= i < len(bones) for i in [leaf, primary, parent]) and len({leaf, primary, parent}) == 3, 'Invalid scene-leaf indices')
+    require(len(bones) == len(bone_objects) == request['bone_count'], 'Scene-leaf skeleton count changed')
+    require(bones[leaf]['parent'] == bones[primary]['parent'] == parent and bones[parent]['parent'] == parent, 'Scene-leaf must share the primary scene parent')
+    require(not any(b['parent'] == leaf for b in bones) and any(b['parent'] == primary for b in bones), 'Scene-leaf cannot replace a rig ancestor')
+    for index in [leaf, primary]:
+        require(bones[index]['translation'] == [0., 0., 0.] and bones[index]['rotation'] == [0., 0., 0., 1.], 'Scene-leaf rest transform changed')
+        require(0 < bone_objects[index] <= len(tie_objects), 'Scene-leaf binding outside object ties')
+        require(0 < tie_objects[bone_objects[index] - 1] <= len(params), 'Scene-leaf object outside property table')
+        require(params[tie_objects[bone_objects[index] - 1] - 1]['__objectname'] == request['source_label'], 'Scene-leaf original label changed')
+    require(bone_objects[leaf] != bone_objects[primary], 'Scene-leaf requires distinct original object identities')
+    return {bone_objects[leaf] - 1: 'unretained_auxiliary_scene_' + str(leaf)}
+
+
+def parse(data, animations_only=False, scene_root_names=False, skip_unskinned_helpers=False, scale_shear_tracks=False, retained_bone_names=None, auxiliary_scene_leaf=None):
     result = dict(points=[], normals=[], uv_sets=[], polygons=[], texture_polygons=[],
                   bones=[], weights=[], ties=[], tracks=[])
     texts, objects, tie_objects, bone_objects, texture_ids = [], [], [], [], []
@@ -175,8 +192,15 @@ def parse(data, animations_only=False, scene_root_names=False, skip_unskinned_he
     strings = texts[1]
     require(all(k < len(strings) and v < len(strings) for obj in objects for k, v in obj.items()), 'GRN string index out of range')
     params = [{strings[k]: strings[v] for k, v in obj.items()} for obj in objects]
+    aliases = {}
+    if auxiliary_scene_leaf is not None:
+        require(animations_only, 'Indexed scene-leaf repair is animation-only')
+        aliases = indexed_scene_leaf_alias(result['bones'], params, tie_objects, bone_objects, auxiliary_scene_leaf)
+        result['indexed_auxiliary_scene_aliases'] = aliases
 
     def object_name(index):
+        if index in aliases:
+            return aliases[index]
         name = params[tie_objects[index] - 1]['__objectname']
         # Granny exporters used several labels for the same scene root.
         is_master = (name.startswith('master_') or name in ['master', 'granny_master']) if scene_root_names else 'master' in name

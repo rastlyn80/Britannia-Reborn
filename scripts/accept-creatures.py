@@ -11,6 +11,8 @@ def main():
     for family in args.families:
         if family=='mages':
             subprocess.run([sys.executable,'-B',str(ROOT/'scripts/check-source-mages.py'),'--native'],check=True)
+        if family=='juka':
+            subprocess.run([sys.executable,'-B',str(ROOT/'scripts/check-prepared-juka.py'),'--native'],check=True)
         subprocess.run([sys.executable,'-B',str(ROOT/'scripts/check-creature-evidence.py'),family],check=True)
         preparation=json.loads((ART/family/'preparation.json').read_text())
         tests=json.loads((ROOT/f'outputs/creatures/{family}/validation.json').read_text())
@@ -66,7 +68,7 @@ def main():
                 assert model['import_sha256']==tested[model['kind']]['import_sha256']['modern'],'Animated contact used different import precision'
         for row in preparation['models']:
             if row.get('status')!='prepared' or row.get('contact_kind')!='measured_limbs':continue
-            if family=='mages':continue # Stricter per-form/equipment/mixed/native gate above.
+            if family in ['mages','juka']:continue # Stricter per-form/mixed/native gates above.
             path=ROOT/'outputs/creatures'/family/(row['kind']+'-presentation/validation.json')
             measured=json.loads(path.read_text(encoding='utf-8'))
             assert measured['failures']==0 and measured['checks']>=1000 and measured['renderer']=='forward_plus','Measured source limbs require actual avatar/skin/terrain evidence'
@@ -321,10 +323,13 @@ def main():
                 resource=row['presentation_script'];name=resource.rsplit('/',1)[-1]
                 assert resource=='res://Presentation/'+name and name.endswith('.gd'),'Renderer must be an owned direct presentation script'
                 assert digest(ROOT/'Viewer/Presentation'/name)==row['presentation_script_sha256'],'Owned renderer changed after preparation'
-                focused=json.loads((ROOT/'outputs/creatures'/family/(row['kind']+'-presentation/validation.json' if family=='mages' else 'presentation/validation.json')).read_text())
+                focused=json.loads((ROOT/'outputs/creatures'/family/(row['kind']+'-presentation/validation.json' if family in ['mages','juka'] else 'presentation/validation.json')).read_text())
                 assert focused['failures']==0 and focused['renderer']=='forward_plus' and focused['preparation_sha256']==digest(ART/family/'preparation.json')
                 assert focused['runtime_sha256'][resource]==row['presentation_script_sha256'],'Owned renderer lacks actual current avatar evidence'
-            assert not row.get('pending_render_feature'),row.get('pending_render_feature')
+            if family=='juka':
+                assert row.get('pending_render_feature')=='Original Juka source-pose, actual terrain/material/corpse and native action/behaviour acceptance pending.'
+            else:
+                assert not row.get('pending_render_feature'),row.get('pending_render_feature')
             assert row['kind'] in tested and tested[row['kind']]['passed']
             for treatment,sha in tested[row['kind']]['asset_sha256'].items():
                 assert digest(ART/(row['kind']+'-'+treatment+'.gltf'))==sha,'Asset changed after pose validation'
@@ -346,6 +351,11 @@ def main():
             assert all(sample['import_sha256']==tested[row['kind']]['import_sha256']['modern'] for sample in samples),'GPU and pose samples used different import settings'
             row=dict(row,status='validated',validation_sha256=digest(ROOT/f'outputs/creatures/{family}/validation.json'),
                      gpu_sha256=digest(gpu_path),gpu_runtime_sha256={path.name:digest(path) for path in gpu_inputs},asset_sha256=tested[row['kind']]['asset_sha256'],import_sha256=tested[row['kind']]['import_sha256'])
+            if family=='juka':
+                # This exact integration marker is discharged by the strict
+                # source/skin/terrain/native gates; preparation/proofs stay intact.
+                row.pop('pending_render_feature')
+                row['remaining_fidelity']='Original256-square atlas/procedural surface; exact original per-category choreography, final art and autonomous gameplay remain unproved. Native Lord766 graphics/bow adaptation is a separate missing route.'
             if row['kind'] in contact_kinds:row['contact_sha256']=digest(contact_path)
             rows.append(row)
         # Test actual frozen cadavers before publishing any new runtime route.

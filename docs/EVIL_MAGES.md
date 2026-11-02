@@ -4,7 +4,7 @@
 Native EvilMage uses body 124 in the currently configured Core.UOR branch.
 EvilMageLord randomly chooses 125/126. The older-era human-body branch remains
 separate. Six actual constructor cases cover both disposable owners. The final native
-graphics run passes577 checks and the separate native behaviour run174 checks. The literal-only body
+graphics run passes595 checks and the separate native behaviour run181 checks. The literal-only body
 census misses 125/126; these must not be counted inside its 279-body denominator.
 
 ## Preserved sources
@@ -104,10 +104,17 @@ The bounded common correction is at most2cm; steps/separate ledges still need
 specific volume proof. All ordinary/action/equipment evidence was rerun on the
 final inputs, with start/end stability guards.
 
+A later Juka reproduction exposed a control mistake: native BaseAI.Deactivate
+leaves timers running in active sectors. The owned isolated fixtures now use
+explicit AITimer.Stop, wire acknowledgements after actor preparation/movement,
+and before-callback state checks. Caster map changes stop the timer again. Both
+mage native suites were rerun successfully on those corrected controls; earlier
+native receipts/logs remain historical. No native core/gameplay code changed.
+
 Both native owners exercise unmodified EvilMage124 and EvilMageLord125/126:
-577 checks prove constructors, native clothes, raw hues, Mobile.Move walk/run,
+595 checks prove constructors, native clothes, raw hues, Mobile.Move walk/run,
 eleven classic/new action requests, both actual avatars, death snapshots and
-matching static corpses. Another174 checks prove real Lightning.Cast, its timer,
+matching static corpses. Another181 checks prove real Lightning.Cast, its timer,
 Target.Invoke and actual damage, without assigning skills, mana or deadlines.
 Native Ogre.Kill supplies each corpse and actual native Rummage uses Lift/Drop.
 Trammel refuses the loot because the mage has no native corpse loot rights;
@@ -128,7 +135,9 @@ remain a fixed source costume, and texture registration/final art can improve.
 Earlier Windows Application Control failures are historical. The later full
 root verification passed without changing security policy. Final
 `scripts/verify.ps1` exits0, including71 server-extension/84 client-overlay
-checks and clean world startup; the private log is `root-publish-verify.log`. Production2593/accounts/saves remain
+checks and clean world startup. The initial private log is `root-publish-verify.log`;
+the corrected AI-control revision also passes the full root suite in
+`work/creatures/juka/ai-stopped-root-verify.log`. Production2593/accounts/saves remain
 untouched. All51 previously accepted groups passed current regressions. Final
 corpse rendering passes203 variants/1,908 checks, including all three mage bodies.
 

@@ -95,8 +95,8 @@ public static class MageBehaviourFixtures
             var target = new Ogre { Frozen = true };
             caster.MoveToWorld(new Point3D(player.X + 1, player.Y + 1, player.Z), player.Map);
             target.MoveToWorld(new Point3D(player.X + 3, player.Y + 1, player.Z), player.Map);
-            caster.AIObject?.Deactivate();
-            target.AIObject?.Deactivate();
+            FixtureAIControls.Stop(caster);
+            FixtureAIControls.Stop(target);
             _pairs[player.Serial] = new Pair(caster, target);
             player.SendMessage($"UCMAGE|prepared|{caster.Serial.Value}|{target.Serial.Value}|{caster.Body.BodyID}|{Flag(caster.CanRummageCorpses)}|{Flag(caster.AlwaysMurderer)}|{caster.Meat}|{caster.GetType().Name}");
             return;
@@ -107,6 +107,9 @@ public static class MageBehaviourFixtures
         }
         switch (operation)
         {
+            case "ai":
+                player.SendMessage($"UCMAGE|ai|{Flag(FixtureAIControls.Stopped(current.Caster))}|{Flag(FixtureAIControls.Stopped(current.Target))}");
+                break;
             case "cast" when !current.Target.Deleted:
                 player.SendMessage($"UCMAGE|cast|{Flag(new LightningSpell(current.Caster).Cast())}");
                 break;
@@ -149,6 +152,7 @@ public static class MageBehaviourFixtures
                     }
                     current.Caster.MoveToWorld(current.Caster.Location, Map.Felucca);
                     current.Remains.MoveToWorld(current.Remains.Location, Map.Felucca);
+                    FixtureAIControls.Stop(current.Caster);
                 }
                 var previous = new HashSet<Serial>();
                 var amountBefore = 0;

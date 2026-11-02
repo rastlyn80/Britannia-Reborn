@@ -5,8 +5,12 @@ func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--family="):family=arg.trim_prefix("--family=")
 	create_timer(240.).timeout.connect(func():push_error("Native mage test deadline");quit(1));call_deferred("run")
+func pause_ai(client: int,serial: int) -> bool:
+	replies[client].clear();sessions[client].send_command("[CreaturePauseAI "+str(serial))
+	var expected:="UCCREATURE|paused|"+str(serial)+"|1"
+	return check(await until(func():return replies[client].has(expected)),"Actual native AI timer explicitly stopped in active sector")
 func run() -> void:
-	var runtime_start: Dictionary={}
+	var runtime_start: Dictionary={};var ai_pin:=FileAccess.get_sha256("res://../Server/HorseIntegrationFixtures/FixtureAIControls.cs")
 	for path in APPEARANCE_INPUTS:runtime_start[path]=FileAccess.get_sha256("res://"+path)
 	var accounts: Array=JSON.parse_string(FileAccess.get_file_as_string("res://../work/horse-session/accounts.local.json"))
 	var prep: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://local-art/creatures/mages/preparation.json"));var candidates: Array=[];var registry=preload("res://Presentation/CreatureRegistry.gd");registry.load_index()
@@ -40,6 +44,7 @@ func run() -> void:
 			var response:=await reply(sex,"prepare "+str(body)+(" "+str(candidate.native_class) if candidate.has("native_class") else ""),"UCCREATURE|prepared|")
 			if response.is_empty():return
 			var fields:=response.split("|");var serial:=int(fields[2]);var native_class:=str(fields[4])
+			if not await pause_ai(sex,serial):return
 			if native_class in ["SummonedAirElemental","SummonedFireElemental"] and not check(fields[8]=="summoned","Elemental summon is created through the native summoning API, not merely its class constructor"):return
 			print("CREATURE NATIVE PREPARED ",response)
 			var native_state:=str(fields[8])
@@ -66,6 +71,7 @@ func run() -> void:
 				var origin:=Vector2i(session.entities[serial].x,session.entities[serial].y)
 				response=await reply(sex,"step "+("1" if running else "0"),"UCCREATURE|step|")
 				if response.is_empty():return
+				if not await pause_ai(sex,serial):return
 				fields=response.split("|");var target:=Vector2i(int(fields[2]),int(fields[3]))
 				if response.ends_with("|immobile"):
 					rooted=true
@@ -170,7 +176,7 @@ func run() -> void:
 	for session in sessions:session.close()
 	var runtime: Dictionary={}
 	for path in APPEARANCE_INPUTS:runtime[path]=FileAccess.get_sha256("res://"+path)
-	if not check(runtime==runtime_start and preparation_start==FileAccess.get_sha256("res://local-art/creatures/mages/preparation.json"),"Exact renderer/protocol/preparation inputs stayed unchanged throughout native test"):return
+	if not check(ai_pin==FileAccess.get_sha256("res://../Server/HorseIntegrationFixtures/FixtureAIControls.cs") and runtime==runtime_start and preparation_start==FileAccess.get_sha256("res://local-art/creatures/mages/preparation.json"),"Exact renderer/protocol/preparation inputs stayed unchanged throughout native test"):return
 	var folder:="res://../outputs/creatures/"+family;DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(folder))
-	var file:=FileAccess.open(folder+"/live.json",FileAccess.WRITE);file.store_string(JSON.stringify({"test_sha256":FileAccess.get_sha256("res://Network/SourceMageLive.gd"),"base_test_sha256":FileAccess.get_sha256("res://Network/CreatureLive.gd"),"runtime_sha256":runtime,"fixture_sha256":FileAccess.get_sha256("res://../Server/HorseIntegrationFixtures/CreatureFixtures.cs"),"preparation_sha256":preparation_start,"checks":checks,"failures":0,"records":records,"scope":"Prepared mage routes injected in memory only, not acceptance. Actual two-client equipment-aware avatars and death snapshots, world entry, native constructor bodies/hues, Mobile.Move walk/run, packets and corpse replication. Native AI is frozen for controlled sampling; flat-arena relocation is fixture setup. Not autonomous AI, taming or full gameplay certification. Production world and saves untouched."},"\t"));file.close()
+	var file:=FileAccess.open(folder+"/live.json",FileAccess.WRITE);file.store_string(JSON.stringify({"ai_control_sha256":ai_pin,"ai_timer_stop_verified":true,"test_sha256":FileAccess.get_sha256("res://Network/SourceMageLive.gd"),"base_test_sha256":FileAccess.get_sha256("res://Network/CreatureLive.gd"),"runtime_sha256":runtime,"fixture_sha256":FileAccess.get_sha256("res://../Server/HorseIntegrationFixtures/CreatureFixtures.cs"),"preparation_sha256":preparation_start,"checks":checks,"failures":0,"records":records,"scope":"Prepared mage routes injected in memory only, not acceptance. Actual two-client equipment-aware avatars and death snapshots, world entry, native constructor bodies/hues, Mobile.Move walk/run, packets and corpse replication. Native AI timers are explicitly stopped after preparation/movement and acknowledged on the wire; flat-arena relocation is fixture setup. Not autonomous AI, taming or full gameplay certification. Production world and saves untouched."},"\t"));file.close()
 	print("CREATURE NATIVE / ",family,": ",checks," checks / 0 failures");quit()

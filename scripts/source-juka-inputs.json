@@ -1,0 +1,250 @@
+{
+  "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+  "source_page": "https://zuluarchive.com/pages/files.html",
+  "server_pin": "ab59efea86fd9e399d261bed9d188ab4d95ad4c2",
+  "cabinets": [
+    {
+      "zip_member": "uoaos/UOTD/models/client7.cab",
+      "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859",
+      "bytes": 20805
+    },
+    {
+      "zip_member": "uoaos/UOTD/models/monsters/client11.cab",
+      "sha256": "307a6b91c4d5459080d1fe8a74ae4fe0b91dea8a21a2866ca91e7dc7ba92f1a8",
+      "bytes": 35160963
+    },
+    {
+      "zip_member": "uoaos/UOTD/models/maps/client10.cab",
+      "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9",
+      "bytes": 33956665
+    },
+    {
+      "zip_member": "uoaos/UOTD/models/humans/client9.cab",
+      "bytes": 8758386,
+      "sha256": "a5e12b77fd933c97b2a8cf266d1864b3fbe222624055ceae7ebc95ccce3fd8b7"
+    }
+  ],
+  "files": [
+    {
+      "path": "Models/Humans/h_female_attackbash2h_01.grn",
+      "bytes": 37252,
+      "sha256": "dede801321db4decd2cf535b8286006fe947c72cdc8381e25558b261886d2496"
+    },
+    {
+      "path": "Models/Humans/h_female_attackbow_01.grn",
+      "bytes": 34684,
+      "sha256": "e04ad7357063aca9ca1d589cbab304a5917b99906b309b280a98c4cf22f67129"
+    },
+    {
+      "path": "Models/Humans/h_female_attackslash1h_01.grn",
+      "bytes": 37492,
+      "sha256": "2a7d62d2200c2aa58f47be3a909731ed94fd306f67285463e90678482ed17f6c"
+    },
+    {
+      "path": "Models/Humans/h_female_die_hard_back_01.grn",
+      "bytes": 47172,
+      "sha256": "b10141452e50f7324ac40a8d60fe34483081db69788ffd3c3e4fe348d03d857d"
+    },
+    {
+      "path": "Models/Humans/h_female_die_hard_fwd_01.grn",
+      "bytes": 50072,
+      "sha256": "b125e8bd199316e4268ef7760baa7331aead5b262808b3e7249980f34c1770c4"
+    },
+    {
+      "path": "Models/Humans/h_female_fidget_yawn_stretch_01.grn",
+      "bytes": 43228,
+      "sha256": "9575cf0aced578e49a8b777492544cae762863f452c4c80aa67e9b5a6619df5d"
+    },
+    {
+      "path": "Models/Humans/h_female_gethit_fr_mid_01.grn",
+      "bytes": 27108,
+      "sha256": "aab4572646ee032131d629d73ef8bb8274397c97a7e626415c3e8ca52e13d779"
+    },
+    {
+      "path": "Models/Humans/h_female_idle_01.grn",
+      "bytes": 27264,
+      "sha256": "6338aabbd38f5e1e75540593be75d0e1ef8b2571fcec936565e6d0daedad04f4"
+    },
+    {
+      "path": "Models/Humans/h_female_pickup_01.grn",
+      "bytes": 43344,
+      "sha256": "11be66671e0d4f5f7ae36bcaf8cea102ead0aff35458ef3478fe3b868503010d"
+    },
+    {
+      "path": "Models/Humans/h_female_run_01.grn",
+      "bytes": 36544,
+      "sha256": "0dab097e408ee01d37bf70730dfaf1fb42b33ff41e8af786e7cf2b640b496adc"
+    },
+    {
+      "path": "Models/Humans/h_female_spell1.grn",
+      "bytes": 36584,
+      "sha256": "f7ff1acaed58dcc3add68a3fee49177563eb68e1b49b3228e9925f4b1c223d78"
+    },
+    {
+      "path": "Models/Humans/h_female_spell2.grn",
+      "bytes": 54812,
+      "sha256": "5f569f2aa21d9a712edff7002d70eb65e0c7836ad2e5e29d23dcdc4f77cf655f"
+    },
+    {
+      "path": "Models/Humans/h_female_walk_01.grn",
+      "bytes": 36048,
+      "sha256": "57577268e2806a87186c71ab49a481428ea154e7015be5f107f5d199b5233e83"
+    },
+    {
+      "path": "Models/Humans/h_male_attackbash2h_01.grn",
+      "bytes": 37788,
+      "sha256": "ae626be1ddfa8a14f08674da438d4326a5c32768e773d708b47094665a96e0ce"
+    },
+    {
+      "path": "Models/Humans/h_male_attackbow_01.grn",
+      "bytes": 35136,
+      "sha256": "a6935e99c1c869e93db23b9d98a55731784f2b2b4f057fd30d1ef09d24cd6e9b"
+    },
+    {
+      "path": "Models/Humans/h_male_attackslash1h_01.grn",
+      "bytes": 38092,
+      "sha256": "4e804d480228e022b0610d5b06c30893d2aea673aeeabc98190b664b4e24b510"
+    },
+    {
+      "path": "Models/Humans/h_male_die_hard_back_01.grn",
+      "bytes": 47184,
+      "sha256": "e600dbeffb4da6a684c3476d10bd01d883d00384fec4311e6b76d6686d844034"
+    },
+    {
+      "path": "Models/Humans/h_male_die_hard_fwd_01.grn",
+      "bytes": 49820,
+      "sha256": "b4a6a465f18092e4cdcc8182c26553ce4ca3086c152b67cb630e2164b174f22d"
+    },
+    {
+      "path": "Models/Humans/h_male_fidget_yawn_stretch_01.grn",
+      "bytes": 43228,
+      "sha256": "d02555b83655aa35d0737d5f4b4655d0344a5205b82beff3cc84bb4d4e12b07e"
+    },
+    {
+      "path": "Models/Humans/h_male_gethit_fr_mid_01.grn",
+      "bytes": 25920,
+      "sha256": "aac993da07abc48ab796f9e024f3ced2b8f7f11d830609086ee23508ed5dc188"
+    },
+    {
+      "path": "Models/Humans/h_male_idle_01.grn",
+      "bytes": 27240,
+      "sha256": "f1c689dc54a5bda0e7b1b1d7682e830c413adece4a1815629d17068c2a84d6a5"
+    },
+    {
+      "path": "Models/Humans/h_male_pickup_01.grn",
+      "bytes": 38960,
+      "sha256": "8cd6cf75f73ac1f0cbd5eac04bf283801831929a82d22ce18d0cc894715e88f0"
+    },
+    {
+      "path": "Models/Humans/h_male_run_01.grn",
+      "bytes": 37740,
+      "sha256": "ca6ba351891e9444f2b5276190002545d6d2e108cd75e3577e34255c3f9b2730"
+    },
+    {
+      "path": "Models/Humans/h_male_spell1.grn",
+      "bytes": 41284,
+      "sha256": "d54e65660730a38eeacf4a3922a850ebfc085844b892647c29e699734fbdc483"
+    },
+    {
+      "path": "Models/Humans/h_male_spell2.grn",
+      "bytes": 54720,
+      "sha256": "ffe2c662f90100357c68f9ace2353e72617d11a6dc97f016ef0dab539a918fb1"
+    },
+    {
+      "path": "Models/Humans/h_male_walk_01.grn",
+      "bytes": 35504,
+      "sha256": "eda76e425a4520640cbebf5ddb367ac6c4aaa51a06056dbd92109966a4657111"
+    },
+    {
+      "path": "Models/Maps/juka_mage_256.tga",
+      "bytes": 196652,
+      "sha256": "b12dd6247327fe731ca4a81f8b171b759790162a4bdd02a946668a8a33aa4600"
+    },
+    {
+      "path": "Models/Maps/juka_warrior_256.tga",
+      "bytes": 196652,
+      "sha256": "865f1b61b570ead0d244db12e1e6e26d0798c36e7d4a87d1c4d5f09794f0b002"
+    },
+    {
+      "path": "Models/models.txt",
+      "bytes": 55735,
+      "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a"
+    },
+    {
+      "path": "Models/Monsters/juka_mage_lod2.grn",
+      "bytes": 55320,
+      "sha256": "024982ebca118cf480393c798a62b7751777334d80ab0ed52e8a32cf7807ca5a"
+    },
+    {
+      "path": "Models/Monsters/juka_warrior_lod2.grn",
+      "bytes": 47120,
+      "sha256": "efea7766785a2c08c4584fed90289d57011ea40960de41c48220cf9a52a3b350"
+    }
+  ],
+  "native_sources": [
+    {
+      "class": "JukaWarrior",
+      "body": 764,
+      "path": "Projects/UOContent/Mobiles/Monsters/LBR/Jukas/JukaWarrior.cs",
+      "sha256": "3157a5c844e82e46efd345c65fec6e177f9286e897d559a91d06ea7ad0315e83"
+    },
+    {
+      "class": "JukaMage",
+      "body": 765,
+      "path": "Projects/UOContent/Mobiles/Monsters/LBR/Jukas/JukaMage.cs",
+      "sha256": "892989d9a64b49de7a6fac6c166a8f9f8dc6e139c4b8ece215d6834cff1caa74"
+    },
+    {
+      "class": "JukaLord",
+      "body": 766,
+      "path": "Projects/UOContent/Mobiles/Monsters/LBR/Jukas/JukaLord.cs",
+      "sha256": "4b7970b4f08ffe639edc86ce2b78132dbecd50ed101298e312dc28d7c80176d9"
+    }
+  ],
+  "source_motion_category_bindings": {
+    "uoaos/uotd/models/monsters/juka_warrior_idle.grn": "uoaos/UOTD/Models/Humans/h_male_idle_01.grn",
+    "uoaos/uotd/models/monsters/juka_warrior_walk.grn": "uoaos/UOTD/Models/Humans/h_male_walk_01.grn",
+    "uoaos/uotd/models/monsters/juka_warrior_run.grn": "uoaos/UOTD/Models/Humans/h_male_run_01.grn",
+    "uoaos/uotd/models/monsters/juka_warrior_attack1.grn": "uoaos/UOTD/Models/Humans/h_male_attackslash1h_01.grn",
+    "uoaos/uotd/models/monsters/juka_warrior_attack2.grn": "uoaos/UOTD/Models/Humans/h_male_attackbash2h_01.grn",
+    "uoaos/uotd/models/monsters/juka_warrior_attackbow.grn": "uoaos/UOTD/Models/Humans/h_male_attackbow_01.grn",
+    "uoaos/uotd/models/monsters/juka_warrior_gethit.grn": "uoaos/UOTD/Models/Humans/h_male_gethit_fr_mid_01.grn",
+    "uoaos/uotd/models/monsters/juka_warrior_die1.grn": "uoaos/UOTD/Models/Humans/h_male_die_hard_back_01.grn",
+    "uoaos/uotd/models/monsters/juka_warrior_die2.grn": "uoaos/UOTD/Models/Humans/h_male_die_hard_fwd_01.grn",
+    "uoaos/uotd/models/monsters/juka_warrior_fidget.grn": "uoaos/UOTD/Models/Humans/h_male_fidget_yawn_stretch_01.grn",
+    "uoaos/uotd/models/monsters/juka_warrior_pillage.grn": "uoaos/UOTD/Models/Humans/h_male_pickup_01.grn",
+    "uoaos/uotd/models/monsters/juka_warrior_cast.grn": "uoaos/UOTD/Models/Humans/h_male_spell1.grn",
+    "uoaos/uotd/models/monsters/juka_warrior_cast2.grn": "uoaos/UOTD/Models/Humans/h_male_spell2.grn",
+    "uoaos/uotd/models/monsters/juka_mage_idle.grn": "uoaos/UOTD/Models/Humans/h_female_idle_01.grn",
+    "uoaos/uotd/models/monsters/juka_mage_walk.grn": "uoaos/UOTD/Models/Humans/h_female_walk_01.grn",
+    "uoaos/uotd/models/monsters/juka_mage_run.grn": "uoaos/UOTD/Models/Humans/h_female_run_01.grn",
+    "uoaos/uotd/models/monsters/juka_mage_attack1.grn": "uoaos/UOTD/Models/Humans/h_female_attackslash1h_01.grn",
+    "uoaos/uotd/models/monsters/juka_mage_attack2.grn": "uoaos/UOTD/Models/Humans/h_female_attackbash2h_01.grn",
+    "uoaos/uotd/models/monsters/juka_mage_attackbow.grn": "uoaos/UOTD/Models/Humans/h_female_attackbow_01.grn",
+    "uoaos/uotd/models/monsters/juka_mage_gethit.grn": "uoaos/UOTD/Models/Humans/h_female_gethit_fr_mid_01.grn",
+    "uoaos/uotd/models/monsters/juka_mage_die1.grn": "uoaos/UOTD/Models/Humans/h_female_die_hard_back_01.grn",
+    "uoaos/uotd/models/monsters/juka_mage_die2.grn": "uoaos/UOTD/Models/Humans/h_female_die_hard_fwd_01.grn",
+    "uoaos/uotd/models/monsters/juka_mage_fidget.grn": "uoaos/UOTD/Models/Humans/h_female_fidget_yawn_stretch_01.grn",
+    "uoaos/uotd/models/monsters/juka_mage_pillage.grn": "uoaos/UOTD/Models/Humans/h_female_pickup_01.grn",
+    "uoaos/uotd/models/monsters/juka_mage_cast.grn": "uoaos/UOTD/Models/Humans/h_female_spell1.grn",
+    "uoaos/uotd/models/monsters/juka_mage_cast2.grn": "uoaos/UOTD/Models/Humans/h_female_spell2.grn"
+  },
+  "indexed_auxiliary_source_sha256": [
+    "4e804d480228e022b0610d5b06c30893d2aea673aeeabc98190b664b4e24b510",
+    "a6935e99c1c869e93db23b9d98a55731784f2b2b4f057fd30d1ef09d24cd6e9b",
+    "ae626be1ddfa8a14f08674da438d4326a5c32768e773d708b47094665a96e0ce",
+    "b4a6a465f18092e4cdcc8182c26553ce4ca3086c152b67cb630e2164b174f22d",
+    "d54e65660730a38eeacf4a3922a850ebfc085844b892647c29e699734fbdc483",
+    "e600dbeffb4da6a684c3476d10bd01d883d00384fec4311e6b76d6686d844034",
+    "ffe2c662f90100357c68f9ace2353e72617d11a6dc97f016ef0dab539a918fb1"
+  ],
+  "indexed_auxiliary_contract": {
+    "leaf_index": 43,
+    "primary_index": 1,
+    "parent_index": 0,
+    "bone_count": 44,
+    "source_label": "master_h_female"
+  },
+  "scope": "Two original Juka meshes with table-declared human400/401 motion sources. Selected named original human motions are explicit replacement assignments, not recovered exact client per-category lookup. Lord766 has a native constructor but no mesh row in this preserved model table; unresolved, not counted as Warrior. Strict reader remains default; indexed auxiliary leaf aliases require exact motion hashes and structural checks, retaining all joints/transforms/tracks.",
+  "rights": "Preservation archive location is not a redistribution grant or independent official authenticity proof. No executables run. Original inputs and derived meshes/maps stay private."
+}
