@@ -143,6 +143,40 @@ def main():
             assert serpent['preparation_sha256']==digest(ART/family/'preparation.json'),'Serpent preparation changed after actual avatar proof'
             assert all(digest(ROOT/'Viewer'/path.removeprefix('res://'))==sha for path,sha in serpent['runtime_sha256'].items()),'Serpent avatar runtime changed after proof'
             assert serpent['asset_sha256']==tested['serpents_snake_giant']['asset_sha256']['modern'] and serpent['import_sha256']==tested['serpents_snake_giant']['import_sha256']['modern'],'Serpent avatar used a different source skin/import'
+        if family=='liches':
+            subprocess.run([sys.executable,'-B',str(ROOT/'scripts/prepare-liches.py'),'--check-inputs'],check=True)
+            actions=json.loads((ROOT/'outputs/creatures/liches/actions.json').read_text())
+            appearance=json.loads((ROOT/'outputs/creatures/liches/presentation/validation.json').read_text())
+            kinds={'liche_liche_retro','liche_liche_lord_retro'}
+            categories={'Idle','Walk','Run','Attack','Attack2','Attack3','Hit','Death','Fidget','Cast','Pillage','LieDown'}
+            assert set(tested)==kinds and {r['kind'] for r in actions['models']}==kinds and {r['kind'] for r in appearance['models']}==kinds
+            assert actions['checks']>=20000 and actions['failures']==0 and len(actions['samples'])==1512 and len(actions['pairs'])==504,'Liches require all source/refined/modern skins and unamended-joint comparisons'
+            assert actions['maximum_body_floor_error_m']<.008 and actions['maximum_unamended_joint_error_m']<.00001
+            assert actions['maximum_wrist_support_rotation_degrees']<1. and actions['maximum_hand_support_source_m']<.001,'Flat source actions must retain the measured held arm'
+            assert appearance['checks']>=8400 and appearance['failures']==0 and appearance['renderer']=='forward_plus','Liches require actual rendered avatar/material/terrain/picking/corpse evidence'
+            assert len(appearance['terrain'])==720 and appearance['maximum_planted_gap_m']<.008 and appearance['lifted_foot_cases']>20 and appearance['planted_foot_cases']>20
+            for kind in kinds:
+                assert {s['clip'] for s in actions['samples'] if s['kind']==kind}==categories
+                assert len([s for s in appearance['terrain'] if s['kind']==kind])==360 and {s['clip'] for s in appearance['terrain'] if s['kind']==kind}==categories
+                measured=next(r for r in appearance['models'] if r['kind']==kind)
+                assert measured['staff_visible_pixels']>25 and measured['source_cutout_pixels']>25 and measured['modern_texture_pixels']>100 and measured['partial_full_difference_pixels']>100,'Original pole/cutouts and authored RGB/dyes must be visible'
+                assert {r['hue'] for r in measured['hues']}=={53,0x8035,0x901} and all(r['changed_pixels']>100 for r in measured['hues'])
+                if kind=='liche_liche_lord_retro':assert measured['lord_accent_pixels']>25
+                assert measured['asset_sha256']==tested[kind]['asset_sha256']['modern'] and measured['import_sha256']==tested[kind]['import_sha256']['modern']
+            assert {(int(c['body']),c['hue']) for c in appearance['cadavers']}=={(body,hue) for body in [24,78,79,82] for hue in [0,53,0x8035]},'Every Lich source/compatibility route needs all three static corpse hues'
+            required={'LichVisual.gd','LichGrip.gd','LichMaterial.gd','LichSurface.gdshader','MeasuredCreatureSupport.gd','CreatureRegistry.gd','HumanAvatar.gd','SkinGeometry.gd','CorpseModels.gd'}
+            assert {'res://Presentation/'+name for name in required}<=set(appearance['runtime_sha256'])
+            for proof in [actions,appearance]:
+                assert proof['preparation_sha256']==digest(ART/family/'preparation.json')
+                for path,sha in proof['runtime_sha256'].items():assert digest(ROOT/'Viewer'/path[6:] if path.startswith('res://') else ROOT/'Viewer/Presentation'/path)==sha,'Lich runtime changed after proof'
+            assert preparation['recipe_sha256']==digest(ROOT/'scripts/prepare-liches.py') and preparation['source_pipeline_sha256']==digest(ROOT/'scripts/prepare-creatures.py') and preparation['input_manifest_sha256']==digest(ROOT/'scripts/lich-inputs.json')
+            for row in preparation['models']:
+                assert row['preparation_recipe']['sha256']==preparation['recipe_sha256'] and row['authored_lich_action_recipe']['sha256']==digest(ROOT/'scripts/creature-lich-actions.py')
+                proof=next(r for r in actions['models'] if r['kind']==row['kind'])
+                for treatment,pin in proof['assets'].items():assert pin['sha256']==tested[row['kind']]['asset_sha256'][treatment] and pin['import_sha256']==tested[row['kind']]['import_sha256'][treatment]
+                staff=ROOT/'Viewer'/row['staff_asset'].removeprefix('res://')
+                assert digest(staff)==row['staff']['asset_sha256']==proof['staff_asset_sha256'] and digest(Path(str(staff)+'.import'))==proof['staff_import_sha256']
+                assert row['staff']['relative_scale']==.8
         if family=='ice_serpents':
             actions=json.loads((ROOT/'outputs/creatures/ice_serpents/actions.json').read_text())
             appearance=json.loads((ROOT/'outputs/creatures/ice_serpents/presentation/validation.json').read_text())

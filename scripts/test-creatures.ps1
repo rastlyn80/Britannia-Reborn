@@ -91,6 +91,12 @@ foreach ($family in $Families) {
   & $godot --path "$root/Viewer" --script res://Presentation/MeasuredCreaturePresentationTests.gd -- "--kind=$($model.kind)" *> "$logs/$($model.kind)-avatar.log"
   if ($LASTEXITCODE -or (Select-String -Path "$logs/$($model.kind)-avatar.log" -Pattern 'SCRIPT ERROR:' -Quiet)) {throw "Measured source limb/skin/terrain/corpse proof failed: $($model.kind)"}
  }
+ if ($family -eq 'liches') {
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/LichActionTests.gd *> "$logs/liches-actions.log"
+  if ($LASTEXITCODE -or (Select-String -Path "$logs/liches-actions.log" -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet)) {throw 'Original Lich source/grip/limb/corpse checks failed'}
+  & $godot --path "$root/Viewer" --script res://Presentation/LichPresentationTests.gd *> "$logs/liches-avatar.log"
+  if ($LASTEXITCODE -or (Select-String -Path "$logs/liches-avatar.log" -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet)) {throw 'Actual Lich avatar/material/render-stage support/picking/corpse checks failed'}
+ }
  if ($family -eq 'ice_serpents') {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/IceSerpentTransitionTests.gd *> "$logs/ice-serpents-transitions.log"
   if ($LASTEXITCODE -or (Select-String -Path "$logs/ice-serpents-transitions.log" -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet)) {throw 'Ice serpent mixed poses, finite-plane transitions or native action duration failed'}

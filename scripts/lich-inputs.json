@@ -1,0 +1,91 @@
+{
+  "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+  "source_page": "https://zuluarchive.com/pages/files.html",
+  "scope": "Original later Third Dawn/AoS game art inputs, private and nonredistributable. This owned manifest records exact source paths/hashes only, not original file contents, a full remote ZIP hash, an authenticity guarantee or a redistribution licence.",
+  "cabinets": [
+    {
+      "zip_member": "uoaos/UOTD/models/client7.cab",
+      "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859",
+      "bytes": 20805
+    },
+    {
+      "zip_member": "uoaos/UOTD/models/monsters/client11.cab",
+      "sha256": "307a6b91c4d5459080d1fe8a74ae4fe0b91dea8a21a2866ca91e7dc7ba92f1a8",
+      "bytes": 35160963
+    },
+    {
+      "zip_member": "uoaos/UOTD/models/maps/client10.cab",
+      "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9",
+      "bytes": 33956665
+    },
+    {
+      "zip_member": "uoaos/UOTD/models/others/client12.cab",
+      "sha256": "e8eb9d3a04306a553c10f0570f3ca7dbb46354ede26763a99ffb98bdc175c15f",
+      "bytes": 4015628
+    }
+  ],
+  "files": [
+    {
+      "path": "Models/models.txt",
+      "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a"
+    },
+    {
+      "path": "Models/Others/weapon_liche_staff_lod2.grn",
+      "sha256": "230f8e061074ffa5dbb7ddb28033ab7580fe6f502ab7be51790609612140e5f5"
+    },
+    {
+      "path": "Models/Maps/weapons_512b.tga",
+      "sha256": "6b6db69ff83ce1950113b4c10965a42e730eb4887fab16e11ccfb064f661f720"
+    },
+    {
+      "path": "Models/Monsters/liche_liche_retro_lod2.grn",
+      "sha256": "a3651593333cc0c18f4298d8f8f40f9e21f958600c63dbf164e5ec7e22f13ed2"
+    },
+    {
+      "path": "Models/Monsters/liche_liche_lord_retro_lod2.grn",
+      "sha256": "63d67e28b9d8936f6de5b873113731100ea093fee2ba2129ec2ae8fc2ba339f1"
+    },
+    {
+      "path": "Models/Monsters/liche_liche_retro_idle.grn",
+      "sha256": "0a8dee60a6800bcac843b2165a32ffe84a5d6990d8a125d7a89c2eb821e8b560"
+    },
+    {
+      "path": "Models/Monsters/liche_liche_retro_walk.grn",
+      "sha256": "ba30e6861d9499e305169c528b1f7f79f24bd28a5ea3c3cce44e380bd7e01d49"
+    },
+    {
+      "path": "Models/Monsters/liche_liche_retro_run.grn",
+      "sha256": "0e0d55030bc717689cbeaf0fe05cb9ef80a504320775417f5d97c4f8fc611457"
+    },
+    {
+      "path": "Models/Monsters/liche_liche_retro_attack1.grn",
+      "sha256": "c53b02e406716136571d8fe3904f413344b24f3276c3a6f3878e83fd9993ad20"
+    },
+    {
+      "path": "Models/Monsters/liche_liche_retro_gethit.grn",
+      "sha256": "4e15c14be0aa36fbcefff9cee73d157236bc7ec5085a84487d455ad0d1dff4da"
+    },
+    {
+      "path": "Models/Monsters/liche_liche_retro_die1.grn",
+      "sha256": "3a06ee06cbdad606964597d40179e4c68510a7a882e8517e9a858d4d62155554"
+    },
+    {
+      "path": "Models/Monsters/liche_liche_retro_fidget.grn",
+      "sha256": "d3d59de8840a69b8788f7f2532bf6f8fafa5704be89bfaa0f2acd7bf5479b9e7"
+    },
+    {
+      "path": "Models/Maps/liche_liche_retro.tga",
+      "sha256": "8e7fb505b6f2b26e8ffb5cb662aa5ca2bb8932312ed19fadb4abc456becb7a89"
+    },
+    {
+      "path": "Models/Maps/liche_liche_lord_retro.tga",
+      "sha256": "a162aa8682c822b79c68cd0f6f41833e2ed256703e0f11c5623aed0eee41b413"
+    }
+  ],
+  "generated_albedo": {
+    "default_path": "work/creatures/lich/textures/lich-albedo-v1.png",
+    "sha256": "a9d3350b7ea6300f9d461453b7d0b224ea8cb8b8e3342c81f4d08be02a9e1dcf",
+    "provenance": "work/creatures/lich/textures/lich-v1-provenance.json",
+    "license_scope": "Private original-game-derived generated edit; no original or derived raster is committed."
+  }
+}

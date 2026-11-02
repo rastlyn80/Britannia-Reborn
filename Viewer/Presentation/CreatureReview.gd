@@ -1,6 +1,7 @@
 extends SceneTree
 const Visual=preload("res://Presentation/CreatureVisual.gd")
 const IceVisual=preload("res://Presentation/IceSerpentVisual.gd")
+const LichVisual=preload("res://Presentation/LichVisual.gd")
 var family:="bruins"
 var kind:=""
 var actors: Array=[]
@@ -35,9 +36,9 @@ func build() -> void:
 	var camera:=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.size=height*5.;stage.add_child(camera);camera.position=Vector3(height*.45,height*2.,height*7.);camera.look_at(Vector3(height*.45,height*.7,0))
 	review_camera=camera
 	for i in 3:
-		var actor: Node3D=IceVisual.new() if kind=="serpents_snake_giant_ice" else Visual.new();actor.entry=record;actor.treatment=["original","rounded","modern"][i];stage.add_child(actor);actor.set_physics_process(false);actor.contact.enabled=false;actor.position.x=(i-1)*height*2.1;actor.rotation.y=-.8;actors.append(actor)
+		var actor: Node3D=IceVisual.new() if kind=="serpents_snake_giant_ice" else LichVisual.new() if family=="liches" else Visual.new();actor.entry=record;actor.treatment=["original","rounded","modern"][i];stage.add_child(actor);actor.set_physics_process(false);actor.contact.enabled=false;actor.position.x=(i-1)*height*2.1;actor.rotation.y=-.8;actors.append(actor)
 		var baseline:="Source geometry / replacement atlas" if record.has("missing_source_atlas") else "Original source"
-		var label:=Label3D.new();label.text=[baseline,"Rounded geometry","Modern surface"][i];label.position=Vector3(actor.position.x,height*1.8,0);label.font_size=27;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;stage.add_child(label)
+		var label:=Label3D.new();label.text=(["Original","Refined","Modern"] if family=="liches" else [baseline,"Rounded geometry","Modern surface"])[i];label.position=Vector3(actor.position.x,height*1.8,0);label.font_size=27;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;stage.add_child(label)
 		labels.append(label)
 	var canvas:=CanvasLayer.new();root.add_child(canvas);var ui:=VBoxContainer.new();ui.position=Vector2(18,14);canvas.add_child(ui)
 	var title:=Label.new();title.text="BRITANNIA REBORN / "+kind.replace("_"," ").to_upper();title.add_theme_font_size_override("font_size",24);ui.add_child(title)
@@ -62,7 +63,7 @@ func fit_comparison() -> void:
 	for frame in 2:await process_frame
 	var boxes: Array[AABB]=[];var width:=.1
 	for actor in actors:
-		var mesh: MeshInstance3D=actor.model.find_children("*","MeshInstance3D",true,false)[0]
+		var mesh: MeshInstance3D=actor.body_mesh if actor is LichVisual else actor.model.find_children("*","MeshInstance3D",true,false)[0]
 		var box:=preload("res://Presentation/SkinGeometry.gd").deformed_bounds(mesh,actor.skeleton)
 		boxes.append(box);width=maxf(width,box.size.x)
 	var spacing:=width*1.15;var whole:=AABB()

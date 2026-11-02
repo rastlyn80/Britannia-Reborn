@@ -222,6 +222,10 @@ if (Test-Path "$root/Viewer/local-art/horses/warhorse.glb") {
 }
 & $godot --headless --path "$root\Viewer" --script res://Presentation/PresentationTests.gd
 if ($LASTEXITCODE) { throw 'Presentation tests failed' }
+if (Test-Path "$root/Viewer/local-art/creatures/liches/preparation.json") {
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/LichActionTests.gd
+  if ($LASTEXITCODE) { throw 'Original Lich source, grip, action and static corpse checks failed' }
+}
 & $godot --headless --path "$root\Viewer" --script res://Presentation/GraphicsTests.gd
 if ($LASTEXITCODE) { throw 'Graphics/camera/traversal tests failed' }
 & $godot --headless --path "$root\Viewer" --script res://Network/InputMemoryTests.gd

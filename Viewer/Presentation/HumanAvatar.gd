@@ -66,6 +66,7 @@ func _switch_horse(body: int,hue: int) -> void:
 		human_visual=null;rider_contact=null
 	for child in visual_root.get_children():child.free()
 	horse_visual=Horse.create(body);visual_root.add_child(horse_visual);horse_visual.apply_identity(body,hue)
+	if horse_visual.has_signal("landmarks_changed"):horse_visual.connect("landmarks_changed",_sync_creature_landmarks)
 	foot_contact.active=false;horse_visual.skeleton.add_child(foot_contact)
 	animator=horse_visual.animator;native_body=body
 	set_meta("human_batch",false);set_meta("camera_height",float(horse_visual.get_meta("camera_height",1.4)));set_meta("art_status","animal category replacement" if Horse.Animals.supports_body(body) else "horse category replacement")
@@ -139,6 +140,19 @@ func _process(delta: float) -> void:
 				shape.position.y=pick_origin.y+visual_root.position.y
 				var bounds: AABB=horse_visual.get_meta("pick_bounds")
 				if shape.shape is BoxShape3D and not shape.shape.size.is_equal_approx(bounds.size):shape.shape.size=bounds.size
+
+func _sync_creature_landmarks() -> void:
+	# A render-stage skeleton modifier can change an attached prop after this
+	# avatar's process callback. Keep the actual picker/label on that final pose.
+	if human_visual!=null or horse_visual==null or not horse_visual.has_meta("pick_bounds"):return
+	var bounds: AABB=horse_visual.get_meta("pick_bounds")
+	var plate:=get_node_or_null("Nameplate")
+	if plate!=null:plate.position.y=float(horse_visual.get_meta("nameplate_height"))+visual_root.position.y
+	for child in get_children():
+		if child is StaticBody3D and child.has_meta("server_mobile"):
+			var shape: CollisionShape3D=child.get_child(0)
+			shape.position=bounds.get_center()+Vector3.UP*visual_root.position.y
+			if shape.shape is BoxShape3D:shape.shape.size=bounds.size
 
 func _finish_dismount() -> void:
 	ground_visual_offset=Vector3(human_visual.position.x,0.,human_visual.position.z)
