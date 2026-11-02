@@ -34,6 +34,19 @@ $env:APPDATA = Join-Path $root '.godot-user'
 $env:LOCALAPPDATA = $env:APPDATA
 & $godot --headless --path "$root\Viewer" --editor --import
 if ($LASTEXITCODE) { throw 'Asset import failed' }
+if (Test-Path "$root/Viewer/local-art/creatures/solen_warriors/preparation.json") {
+ & $godot --headless --path "$root/Viewer" --script res://Presentation/ConfigureSolenWarriorImport.gd
+ if ($LASTEXITCODE) {throw 'Bounded original warrior motion/atlas import configuration failed'}
+ $warriorImport=Get-Content "$root/work/creatures/solen-warriors/import-settings.json" -Raw | ConvertFrom-Json
+ if ($warriorImport.changed -gt 0) {
+  & $godot --headless --path "$root/Viewer" --editor --import
+  if ($LASTEXITCODE) {throw 'Precise original warrior motion/atlas reimport failed'}
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/ConfigureSolenWarriorImport.gd
+  if ($LASTEXITCODE -or (Get-Content "$root/work/creatures/solen-warriors/import-settings.json" -Raw | ConvertFrom-Json).changed -ne 0) {throw 'Warrior import settings did not settle after actual reimport'}
+ }
+ & $godot --headless --path "$root/Viewer" --script res://Presentation/SolenWarriorImportTests.gd
+ if ($LASTEXITCODE) {throw 'Saved warrior rig/weighted skin/UV/topology/atlas fidelity failed'}
+}
 & $godot --headless --path "$root/Viewer" --script res://Presentation/EightInfluenceImportTests.gd
 if ($LASTEXITCODE) {throw 'Actual eight-slot GLTF import, fifth-joint deformation or static corpse failed'}
 & $godot --headless --path "$root/Viewer" --script res://Presentation/CreatureActionRoutingTests.gd
@@ -75,7 +88,7 @@ if (Test-Path "$root/Viewer/local-art/creatures/black_ant_warrior-ground.json") 
   & $godot --headless --path "$root/Viewer" --script "res://Presentation/$trial.gd"
   if ($LASTEXITCODE) {throw "Prepared eight-slot Solen warrior test failed: $trial"}
  }
- & python -B "$root/scripts/check-solen-warrior-sources.py" --death
+ & python -B "$root/scripts/check-solen-warrior-sources.py" --fidelity
  if ($LASTEXITCODE) {throw 'Exact original Solen warrior source/import/action/corpse proof failed'}
 }
 if (Test-Path "$root/Viewer/Art/Creatures/Birds/small-bird.glb") {

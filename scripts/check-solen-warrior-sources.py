@@ -9,7 +9,7 @@ ROOT=Path(__file__).resolve().parents[1]
 ART=ROOT/'Viewer/local-art/creatures'
 def read(path):return json.loads(path.read_text(encoding='utf-8'))
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
-def main(runtime=False,terrain=False,death=False):
+def main(runtime=False,terrain=False,death=False,fidelity=False):
     spec=importlib.util.spec_from_file_location('warrior_preparation',ROOT/'scripts/prepare-source-solen-warriors.py');preparer=importlib.util.module_from_spec(spec);spec.loader.exec_module(preparer);pins=preparer.inputs()
     path=ART/'solen_warriors/preparation.json';prep=read(path);proof=read(ROOT/'work/creatures/solen-warriors/source-poses.json')
     assert prep['input_manifest_sha256']==sha(ROOT/'scripts/source-solen-warrior-inputs.json')
@@ -79,6 +79,22 @@ def main(runtime=False,terrain=False,death=False):
         assert all(r['entry_s']==.08 and r['source_duration_s']>0. and r['first_skin_vertices']>100 and r['first_skin_error_m']<.00001 and r['minimum_body_gap_m']>-.008 and r['maximum_collapse_error_m']<.008 for r in p['cases'])
         assert sum(r['altered_source'] for r in p['cases'])==2
         print('SOLEN WARRIOR DEATH:8520checks/72client-decoded death/removal cases; complete first skin/all44bones/placement/scale,80ms entry, original collapse and final native static corpse handoff. No actual native server/render/death-slope acceptance.')
+    if fidelity:
+        p=read(ROOT/'work/creatures/solen-warriors/import-fidelity.json');c=read(ROOT/'work/creatures/solen-warriors/import-settings.json')
+        assert p['checks']==1244 and p['failures']==0 and len(p['records'])==780 and len(p['meshes'])==6
+        assert p['preparation_sha256']==c['preparation_sha256']==sha(ART/'solen_warriors/preparation.json')
+        assert c['recipe_sha256']==sha(ROOT/'Viewer/Presentation/ConfigureSolenWarriorImport.gd') and c['changed']==0
+        assert len(c['records'])==6 and len(c['textures'])==8 and len(p['assets_sha256'])==42
+        for name,digest in p['runtime_sha256'].items():assert sha(ROOT/'Viewer/Presentation'/name)==digest,name
+        for name,digest in p['assets_sha256'].items():assert sha(ROOT/'Viewer'/name.removeprefix('res://'))==digest,name
+        for r in [*c['records'],*c['textures']]:
+            path=ROOT/'Viewer'/r['asset'].removeprefix('res://')
+            assert sha(path)==r['asset_sha256'] and sha(Path(str(path)+'.import'))==r['import_settings_sha256']
+        assert p['maximum_position_error_m']<.001 and p['maximum_basis_error']<.001 and p['maximum_scale_error']<.00001 and p['maximum_skin_error_bound_m']<.001
+        assert all(r['maximum_world_joint_error_m']<.001 and r['maximum_basis_axis_error']<.001 and r['maximum_scale_error']<.00001 and r['conservative_skin_error_bound_m']<.001 for r in p['records'])
+        assert {(r['kind'],r['treatment'],r['clip']) for r in p['records']}=={(kind,treatment,clip) for kind in ['fire_ant_warrior','black_ant_warrior'] for treatment in ['original','rounded','modern'] for clip in clips}
+        assert all(r['missing_exact_corners']==0 and r['same_winding_topology'] and r['atlas']['width']==r['atlas']['height']==256 and len(r['atlas']['rgba_sha256'])==64 and r['maximum_weight_sum']<=1.0001 for r in p['meshes'])
+        print('SOLEN WARRIOR SAVED IMPORT:1244checks/780source-cache poses; exact semantic corners/weights/UV/winding/binds/base RGBA, bounded complete-skin motion and actual saved-scene/config/texture inputs. No tangent/LOD/GPU/native acceptance.')
     print('SOLEN WARRIOR SOURCE:765275checks/1380eight-slot skins; exact44-joint originals, authored six-normal repair, retained five-influence vertices, source gait bounce and measured action residuals. No native/render/terrain/runtime acceptance.')
 if __name__=='__main__':
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--runtime',action='store_true');parser.add_argument('--terrain',action='store_true');parser.add_argument('--death',action='store_true');args=parser.parse_args();main(args.runtime or args.terrain or args.death,args.terrain or args.death,args.death)
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--runtime',action='store_true');parser.add_argument('--terrain',action='store_true');parser.add_argument('--death',action='store_true');parser.add_argument('--fidelity',action='store_true');args=parser.parse_args();main(args.runtime or args.terrain or args.death or args.fidelity,args.terrain or args.death or args.fidelity,args.death or args.fidelity,args.fidelity)
