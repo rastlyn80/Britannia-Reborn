@@ -1,6 +1,7 @@
 extends RefCounted
 ## First licensed human wardrobe. IDs are pinned ModernUO item graphics.
 const Coverage = preload("res://Presentation/HumanCoverageWardrobe.gd")
+const NPCs = preload("res://Presentation/HumanNPCProfiles.gd")
 const SLOTS := ["tunic","pants","boots","robe","hood"]
 const GRAPHICS := {
 	0x1fa1:1,0x1fa2:1,0x13bf:1,
@@ -42,8 +43,8 @@ const BEARDS := {0x203e:["long"],0x203f:["short"],0x2040:["goatee"],0x2041:["mou
 static func mapped(id: int) -> bool: return GRAPHICS.has(id) or EXTRA.has(id) or HAIR.has(id) or BEARDS.has(id) or Coverage.ITEMS.has(id)
 static func extra(id: int) -> Array: return EXTRA.get(id,Coverage.ITEMS.get(id,[]))
 # 0x192/0x193 are the male/female ghosts: the same human, drawn ethereal.
-static func human(body: int) -> bool: return body in [0x190,0x191,0x192,0x193]
-static func female(body: int) -> bool: return body in [0x191,0x193]
+static func human(body: int) -> bool: return body in [0x190,0x191,0x192,0x193] or NPCs.supports_body(body)
+static func female(body: int) -> bool: return body in [0x191,0x193] or NPCs.female(body)
 static func ghost(body: int) -> bool: return body in [0x192,0x193]
 static func resolve(worn: Array) -> Dictionary:
 	var bits := 0

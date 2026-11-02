@@ -14,6 +14,7 @@ var skin_hue := 1002
 var current_clip := "Idle"
 var missing_art: Array[int] = []
 var native_cosmetics := {}
+var native_body_profile: Dictionary={}
 var grip: SkeletonModifier3D
 var held_accessories: SkeletonModifier3D
 var use_modern_motion := true
@@ -93,6 +94,18 @@ func set_skin(hue: int) -> void:
 	var shade := clampi(((hue&0x3fff)-1002)/19,0,2)
 	var names := ["young_lightskinned_female_diffuse.png","young_lightskinned_female_diffuse3.png","young_darkskinned_female_diffuse.png"] if female else ["young_lightskinned_male_diffuse2.png","young_lightskinned_male_diffuse3.png","young_darkskinned_male_diffuse.png"]
 	skin.set_shader_parameter("albedo_texture",load("res://local-art/free-equipment/"+names[shade]))
+	_apply_native_skin()
+
+func set_native_profile(profile: Dictionary,hue: int) -> void:
+	native_body_profile=profile.duplicate(true)
+	skin_hue=hue
+	_apply_native_skin()
+
+func _apply_native_skin() -> void:
+	if skin==null:return
+	var paint=preload("res://Presentation/SavageBodyPaint.gd")
+	if native_body_profile.get("skin","")=="savage":paint.apply(self,skin_hue)
+	else:paint.restore(self)
 
 func _attach(path: String, prefix: String, body_part: bool = false) -> void:
 	var source: Node3D = load(path).instantiate()
@@ -243,6 +256,7 @@ func set_equipment(worn: Array) -> void:
 	set_meta("unsupported_wearables",unsupported_items)
 	set_meta("missing_art",missing_art)
 	set_meta("native_cosmetics",native_cosmetics)
+	_apply_native_skin()
 	if not action_clip.is_empty():
 		var replacement:=clothing_clip(action_clip)
 		if replacement!=action_clip:

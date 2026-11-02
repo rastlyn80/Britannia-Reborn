@@ -34,6 +34,8 @@ if ($LASTEXITCODE) { throw 'Asset import failed' }
 if ($LASTEXITCODE) {throw 'Native animal/sea/monster action semantics failed'}
 & $godot --headless --path "$root/Viewer" --script res://Presentation/CorpseAttributeTests.gd
 if ($LASTEXITCODE) {throw 'Static corpse custom UV/attribute format preservation failed'}
+& $godot --headless --path "$root/Viewer" --script res://Presentation/SavagePaintAttributeTests.gd
+if ($LASTEXITCODE) {throw 'Human NPC paint/source attributes, 16/32-bit LOD or static snapshot preservation failed'}
 if (Test-Path "$root/Viewer/Art/Creatures/Birds/small-bird.glb") {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/BirdMotionTests.gd -- --asset=res://Art/Creatures/Birds/small-bird.glb
   if ($LASTEXITCODE) {throw 'Licensed bird skin, action continuity and static corpse checks failed'}

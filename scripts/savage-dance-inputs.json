@@ -1,0 +1,66 @@
+{
+  "scope": "Original tribal dance references for authored modern52body/finger joint retarget; not native111 acceptance, no original art distribution grant.",
+  "source": {
+    "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+    "source_page": "https://zuluarchive.com/pages/files.html",
+    "cabinets": [
+      {
+        "zip_member": "uoaos/UOTD/models/maps/client10.cab",
+        "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9",
+        "bytes": 33956665
+      },
+      {
+        "zip_member": "uoaos/UOTD/models/humans/client9.cab",
+        "bytes": 8758386,
+        "sha256": "a5e12b77fd933c97b2a8cf266d1864b3fbe222624055ceae7ebc95ccce3fd8b7"
+      }
+    ]
+  },
+  "files": [
+    {
+      "path": "Models/Humans/h_male_lod2.grn",
+      "sha256": "5fc72a2a35bf773a23dd3c9cf4a76bf1ed7879167094d17f5112e8a709f1ce1d"
+    },
+    {
+      "path": "Models/Humans/h_male_dance_tribal_01.grn",
+      "sha256": "a7f29b96b068fe210f84513341d76dc2bf03781a4b0bbd1aa23740923ef698d0"
+    },
+    {
+      "path": "Models/Maps/hue_chip.tga",
+      "sha256": "7feb877b151cd616b2d710cd9b2255b6d904bfbbdde24f899b4baf53c7126534"
+    },
+    {
+      "path": "Models/Humans/h_female_lod2.grn",
+      "sha256": "0cce8dc2c291b3d4029106587cc5d6d07f7e4e44cd507ffddd380bb6f813740a"
+    },
+    {
+      "path": "Models/Humans/h_female_dance_tribal_01.grn",
+      "sha256": "2091e733755d2672c9e5a92d95fcae290be81d31bb140b2cce5747366ba54b64"
+    }
+  ],
+  "native_sources": [
+    {
+      "path": "Projects/UOContent/Mobiles/Monsters/Humanoid/Magic/SavageShaman.cs",
+      "sha256": "8946274d588d55592aa1995213a48aad34a4e14b184595c2efd1badd38c177da",
+      "literal_bodies": [
+        183,
+        184
+      ],
+      "native_equipment_expressions": [
+        "BoneArms())",
+        "BoneLegs())",
+        "DeerMask())"
+      ],
+      "mount_expressions": []
+    },
+    {
+      "path": "Projects/Server/Mobiles/Body.cs",
+      "sha256": "85f518d9514843e1ba578cb130f967a00460e96231ff87fc7e37ab3f5662ee37"
+    }
+  ],
+  "human_inputs": {
+    "path": "scripts/savage-profile-inputs.json",
+    "sha256": "d7b4de76c469b391635f2a79344882243ec9588063127fadd3e2dd6787c72e88"
+  },
+  "required_preservation": "Source global rotation changes, unchanged modern limb offsets and measured original complete-skin rise; no flattened hops or discarded target fingers."
+}

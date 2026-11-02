@@ -4,18 +4,24 @@ const GRAPHIC:=0x2006
 const Humans=preload("res://Presentation/HumanVisual.gd")
 const Mounts=preload("res://Presentation/MountVisual.gd")
 const Creatures=preload("res://Presentation/CreatureRegistry.gd")
+const HumanNPCs=preload("res://Presentation/HumanNPCProfiles.gd")
+
+static func human_body(body: int) -> bool:return body in [0x190,0x191] or HumanNPCs.supports_body(body)
+static func female_body(body: int) -> bool:return body==0x191 or HumanNPCs.female(body)
 
 static func supports(body: int) -> bool:
-	return Humans.available(body==0x191) if body in [0x190,0x191] else Mounts.supports_body(body)
+	return Humans.available(female_body(body)) if human_body(body) else Mounts.supports_body(body)
 
 static func supports_equipment(body: int) -> bool:
-	return body in [0x190,0x191] or not Creatures.entry(body).get("native_equipment_layers",[]).is_empty()
+	return human_body(body) or not Creatures.entry(body).get("native_equipment_layers",[]).is_empty()
 
 static func catalogue() -> Array[Dictionary]:
 	# Derived from the actual runtime registries: future accepted bodies acquire
 	# a corpse automatically, including explicit compatibility artwork.
 	Creatures.load_index()
 	var candidates: Dictionary={0x190:"Human / male",0x191:"Human / female",0x319:"Skeletal mount"}
+	HumanNPCs.load_index()
+	for body: int in HumanNPCs.entries:candidates[body]=str(HumanNPCs.entries[body].get("name","Human NPC"))
 	for body: int in Mounts.Horse.Equines.BODIES:candidates[body]=Mounts.Horse.Equines.BODIES[body][0]
 	for body: int in Mounts.Horse.Equines.COMPATIBILITY:candidates[body]=Mounts.Horse.Equines.COMPATIBILITY[body][0]
 	for body: int in Mounts.BODIES:candidates[body]=str(Mounts.BODIES[body][0]).capitalize()
@@ -28,7 +34,7 @@ static func catalogue() -> Array[Dictionary]:
 	var result: Array[Dictionary]=[];var bodies: Array=candidates.keys();bodies.sort()
 	for body: int in bodies:
 		if not supports(body):continue
-		result.append({"key":"corpse-%04x"%body,"graphic":GRAPHIC,"hex":"0x2006","body":body,"body_hex":"0x%04X"%body,"amount":body,"name":str(candidates[body])+" corpse","category":"Corpses","compatibility":Mounts.Horse.Equines.COMPATIBILITY.has(body),"provider":"human" if body in [0x190,0x191] else "creature" if Creatures.supports_body(body) else "mount/animal"})
+		result.append({"key":"corpse-%04x"%body,"graphic":GRAPHIC,"hex":"0x2006","body":body,"body_hex":"0x%04X"%body,"amount":body,"name":str(candidates[body])+" corpse","category":"Corpses","compatibility":Mounts.Horse.Equines.COMPATIBILITY.has(body),"provider":"human" if human_body(body) else "creature" if Creatures.supports_body(body) else "mount/animal"})
 	return result
 
 static func posed(body: int,hue: int=0,worn: Array=[]) -> Node3D:
@@ -36,11 +42,12 @@ static func posed(body: int,hue: int=0,worn: Array=[]) -> Node3D:
 	var tree:=Engine.get_main_loop() as SceneTree
 	if tree==null:return null
 	var actor: Node3D
-	if body in [0x190,0x191]:
-		actor=Humans.new();actor.female=body==0x191
+	if human_body(body):
+		actor=Humans.new();actor.female=female_body(body)
 	else:actor=Mounts.create(body)
 	tree.root.add_child(actor)
-	if actor is Humans:actor.set_skin(hue);actor.set_equipment(worn)
+	if actor is Humans:
+		actor.set_skin(hue);actor.set_equipment(worn);actor.set_native_profile(HumanNPCs.entry(body),hue)
 	else:
 		actor.apply_identity(body,hue);actor.dead=true;actor.contact.enabled=false
 		if actor.has_method("set_equipment"):actor.set_equipment(worn)
@@ -113,7 +120,7 @@ static func freeze(actor: Node3D) -> Node3D:
 			var material:=source.get_active_material(surface)
 			# Explicitly animated procedural surfaces retain this exact phase even
 			# if their living actor continues or subsequently changes appearance.
-			if material is ShaderMaterial and material.get_meta("snapshot_uniform_time",false):
+			if material is ShaderMaterial and (material.get_meta("snapshot_uniform_time",false) or material.get_meta("snapshot_uniforms",false)):
 				var snapshot:=ShaderMaterial.new();snapshot.shader=material.shader
 				for uniform: Dictionary in material.shader.get_shader_uniform_list():snapshot.set_shader_parameter(uniform.name,material.get_shader_parameter(uniform.name))
 				material=snapshot

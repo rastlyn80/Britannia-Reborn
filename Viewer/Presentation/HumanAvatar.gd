@@ -208,6 +208,7 @@ func apply_server_appearance(entity: Dictionary, worn: Array, details: Dictionar
 	if horse_visual!=null and human_visual.mounted_live_enabled and Horse.mount_item(worn).is_empty():human_visual.mount_transition_active=true
 	human_visual.set_equipment(worn)
 	_sync_mount(worn)
+	human_visual.set_native_profile(Wardrobe.NPCs.entry(body),int(entity.get("hue",1002)))
 	appearance_seen=true
 	if not walking and human_visual.action_clip.is_empty():human_visual.play(human_visual.stance_clip("Idle"))
 	set_meta("native_body",body)
