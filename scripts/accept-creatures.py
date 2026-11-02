@@ -143,6 +143,40 @@ def main():
             assert serpent['preparation_sha256']==digest(ART/family/'preparation.json'),'Serpent preparation changed after actual avatar proof'
             assert all(digest(ROOT/'Viewer'/path.removeprefix('res://'))==sha for path,sha in serpent['runtime_sha256'].items()),'Serpent avatar runtime changed after proof'
             assert serpent['asset_sha256']==tested['serpents_snake_giant']['asset_sha256']['modern'] and serpent['import_sha256']==tested['serpents_snake_giant']['import_sha256']['modern'],'Serpent avatar used a different source skin/import'
+        if family=='snow_elementals':
+            subprocess.run([sys.executable,'-B',str(ROOT/'scripts/prepare-source-elementals.py'),'--check-inputs'],check=True)
+            actions=json.loads((ROOT/'outputs/creatures/snow_elementals/actions.json').read_text())
+            appearance=json.loads((ROOT/'outputs/creatures/snow_elementals/presentation/validation.json').read_text())
+            transitions=json.loads((ROOT/'outputs/creatures/snow_elementals/transitions.json').read_text())
+            kind='elementals_snow_elemental';categories={'Idle','Walk','Run','Attack','Attack2','Attack3','Hit','Death','Death2','Fidget','Cast2','Stomp','Pillage','LieDown'}
+            assert set(tested)=={kind} and actions['checks']>=59000 and actions['failures']==0 and len(actions['samples'])==1554 and len(actions['paired_poses'])==518
+            assert {s['clip'] for s in actions['samples']}==categories and actions['maximum_relative_joint_error_m']<.00001 and actions['maximum_grounded_floor_error_m']<.008
+            assert .15<actions['maximum_run_rise_m']<.3 and all(abs(r[1]-r[0])<.000001 for r in actions['run_anchor_ranges']),'Preserve actual imported Run vertical motion with one constant floor anchor'
+            assert len(actions['native_timing'])==12 and {r['preceding_rate'] for r in actions['native_timing']}=={.25,1.,3.2} and all(abs(r['position']-r['length']*.5)<.001 for r in actions['native_timing']),'Real action timing and repeated native casts must restart'
+            assert appearance['checks']>=8000 and appearance['failures']==0 and appearance['renderer']=='forward_plus' and len(appearance['terrain'])==756
+            assert {r['clip'] for r in appearance['terrain']}==categories and appearance['maximum_planted_gap_m']<.008 and appearance['maximum_lift_error_m']<.009 and appearance['airborne_run_cases']>=12
+            assert appearance['lifted_foot_cases']>20 and appearance['planted_foot_cases']>20 and {r['hue'] for r in appearance['hues']}=={53,0x8035,0x901}
+            assert all(r['changed_pixels']>100 for r in appearance['hues']) and appearance['partial_full_difference_pixels']>100 and appearance['modern_texture_pixels']>100 and appearance['relief_pixels']>10 and appearance['original_atlas_opaque']
+            assert {r['hue'] for r in appearance['cadavers']}=={0,53,0x8035}
+            assert transitions['failures']==0 and transitions['checks']>=1297 and transitions['renderer']=='forward_plus' and len(transitions['samples'])==216,'Require actual mixed render-stage skins and picking'
+            assert {(s['source'],s['target']) for s in transitions['samples']}=={('Idle','Walk'),('Walk','Run'),('Run','Walk'),('Run','Attack'),('Run','Cast2'),('Run','Death')}
+            assert {s['slope'] for s in transitions['samples']}=={0.,.08} and {s['frame'] for s in transitions['samples']}==set(range(18))
+            assert transitions['minimum_plane_gap_m']>-.008 and transitions['maximum_plane_gap_m']<.35 and transitions['positive_rise_cases']>=20
+            assert all(s['fresh_modified_skin'] and s['actual_picker_contains'] and -.008<s['gap_m']<.35 for s in transitions['samples'])
+            required={'SourceElementalVisual.gd','SourceElementalMaterial.gd','SourceElementalSurface.gdshader','SourcePlaneSoleSupport.gd','SourceGroundLookup.gd','CreatureRegistry.gd','CreatureVisual.gd','MeasuredCreatureSupport.gd','HumanAvatar.gd','SkinGeometry.gd','CorpseModels.gd'}
+            assert {'res://Presentation/'+n for n in required}<=set(appearance['runtime_sha256'])
+            assert {'SourceElementalTransitionTests.gd','SourcePlaneSoleSupport.gd','SourceGroundLookup.gd','SourceElementalVisual.gd'}<=set(transitions['runtime_sha256'])
+            for proof in [actions,appearance,transitions]:
+                assert proof['preparation_sha256']==digest(ART/family/'preparation.json')
+                for path,sha in proof['runtime_sha256'].items():assert digest(ROOT/'Viewer'/path[6:] if path.startswith('res://') else ROOT/'Viewer/Presentation'/path)==sha,'Source elemental runtime changed after proof'
+            for treatment,pin in actions['assets'].items():assert pin['asset_sha256']==tested[kind]['asset_sha256'][treatment] and pin['import_sha256']==tested[kind]['import_sha256'][treatment]
+            assert appearance['asset_sha256']==tested[kind]['asset_sha256']['modern'] and appearance['import_sha256']==tested[kind]['import_sha256']['modern']
+            assert transitions['asset_sha256']==tested[kind]['asset_sha256']['modern'] and transitions['import_sha256']==tested[kind]['import_sha256']['modern']
+            assert preparation['recipe_sha256']==digest(ROOT/'scripts/prepare-source-elementals.py') and preparation['source_pipeline_sha256']==digest(ROOT/'scripts/prepare-creatures.py') and preparation['input_manifest_sha256']==digest(ROOT/'scripts/source-elemental-inputs.json')
+            row=preparation['models'][0];assert row['preparation_recipe']['sha256']==preparation['recipe_sha256'] and int(row['bodies'][0]['body'])==163 and int(row['bodies'][0]['animation_body'])==158
+            assert len(row['clip_sources'])==12 and row['category_aliases']['Pillage'].startswith('Stomp:')
+            assert row['classic_action_categories']=={'12':'Cast2','14':'Cast2'} and row['new_action_categories']['11']=='Cast2' and row['new_action_categories']['14']=='Pillage'
+            for treatment in ['original','rounded']:assert row['stats'][treatment]['clips']['Run']['floor_policy']=='source_vertical' and row['stats'][treatment]['clips']['Run']['floor_offset_range'][0]==row['stats'][treatment]['clips']['Run']['floor_offset_range'][1]
         if family=='liches':
             subprocess.run([sys.executable,'-B',str(ROOT/'scripts/prepare-liches.py'),'--check-inputs'],check=True)
             actions=json.loads((ROOT/'outputs/creatures/liches/actions.json').read_text())
@@ -225,6 +259,13 @@ def main():
                 for treatment,sha in recipe['source_assets'].items():assert digest(ART/('serpents_snake_giant-'+treatment+'.gltf'))==sha,'Shared source donor changed'
         for row in preparation['models']:
             if row['status']!='prepared':continue
+            if row.get('presentation_script'):
+                resource=row['presentation_script'];name=resource.rsplit('/',1)[-1]
+                assert resource=='res://Presentation/'+name and name.endswith('.gd'),'Renderer must be an owned direct presentation script'
+                assert digest(ROOT/'Viewer/Presentation'/name)==row['presentation_script_sha256'],'Owned renderer changed after preparation'
+                focused=json.loads((ROOT/'outputs/creatures'/family/'presentation/validation.json').read_text())
+                assert focused['failures']==0 and focused['renderer']=='forward_plus' and focused['preparation_sha256']==digest(ART/family/'preparation.json')
+                assert focused['runtime_sha256'][resource]==row['presentation_script_sha256'],'Owned renderer lacks actual current avatar evidence'
             assert not row.get('pending_render_feature'),row.get('pending_render_feature')
             assert row['kind'] in tested and tested[row['kind']]['passed']
             for treatment,sha in tested[row['kind']]['asset_sha256'].items():

@@ -91,6 +91,14 @@ foreach ($family in $Families) {
   & $godot --path "$root/Viewer" --script res://Presentation/MeasuredCreaturePresentationTests.gd -- "--kind=$($model.kind)" *> "$logs/$($model.kind)-avatar.log"
   if ($LASTEXITCODE -or (Select-String -Path "$logs/$($model.kind)-avatar.log" -Pattern 'SCRIPT ERROR:' -Quiet)) {throw "Measured source limb/skin/terrain/corpse proof failed: $($model.kind)"}
  }
+ if ($family -eq 'snow_elementals') {
+  & $godot --headless --path "$root/Viewer" --script res://Presentation/SourceElementalActionTests.gd *> "$logs/source-snow-actions.log"
+  if ($LASTEXITCODE -or (Select-String -Path "$logs/source-snow-actions.log" -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet)) {throw 'Original Snow skins, vertical run, source hierarchy or repeated native actions failed'}
+  & $godot --path "$root/Viewer" --script res://Presentation/SourceElementalPresentationTests.gd *> "$logs/source-snow-avatar.log"
+  if ($LASTEXITCODE -or (Select-String -Path "$logs/source-snow-avatar.log" -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet)) {throw 'Original Snow actual avatar/material, source lift, finite terrain or corpse failed'}
+  & $godot --path "$root/Viewer" --script res://Presentation/SourceElementalTransitionTests.gd *> "$logs/source-snow-transitions.log"
+  if ($LASTEXITCODE -or (Select-String -Path "$logs/source-snow-transitions.log" -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet)) {throw 'Original Snow mixed skins, death blend, slope soles or actual picking failed'}
+ }
  if ($family -eq 'liches') {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/LichActionTests.gd *> "$logs/liches-actions.log"
   if ($LASTEXITCODE -or (Select-String -Path "$logs/liches-actions.log" -Pattern 'SCRIPT ERROR:|ERROR:' -Quiet)) {throw 'Original Lich source/grip/limb/corpse checks failed'}

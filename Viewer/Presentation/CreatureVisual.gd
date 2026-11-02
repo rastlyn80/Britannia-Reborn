@@ -181,4 +181,8 @@ func receive_action(request: Dictionary) -> bool:
 	# The packet duration is independent of the preceding locomotion cadence.
 	animator.speed_scale=1.
 	action_remaining=duration;animator.play(clip,.12,animator.get_animation(clip).length/duration)
+	# play() resumes a repeated/paused animation. A new native action packet
+	# starts a new action even when it resolves to the same source category.
+	# Defer pose evaluation so the ordinary crossfade still runs on the mixer.
+	animator.seek(0.,false)
 	set_meta("native_action",request.duplicate(true));return true

@@ -31,4 +31,16 @@ func run() -> void:
 		actor.dead=false;check(actor.receive_action({"protocol":"classic","action":group}) and actor.current_clip==("Jump" if group==3 else "Roll") and not actor.dead,"Native dolphin breach is a live explicit category")
 	check(not actor.receive_action({"protocol":"classic","action":11}),"Sea creatures do not acquire an animal lying pose from slot11")
 	actor.dead=false;check(actor.receive_action({"protocol":"classic","action":8}) and actor.dead and actor.current_clip=="Death","Native sea death8 still reaches death")
+	actor.entry={};actor.animator.callback_mode_process=AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
+	for profile in ["animal","sea","monster"]:
+		actor.action_profile=profile
+		for rate in [.25,1.,3.2]:
+			for protocol in ["classic","new"]:
+				var request: Dictionary={"protocol":"classic","action":4 if profile=="monster" else 5,"frames":5,"delay":0} if protocol=="classic" else {"protocol":"new","type":0}
+				for repetition in 2:
+					actor.dead=false;actor.animator.speed_scale=rate
+					check(actor.receive_action(request),"Repeated actual attack packet remains a supported native category")
+					var seconds:=.8 if protocol=="classic" else 1.
+					actor.animator.advance(seconds*.5)
+					check(absf(actor.animator.current_animation_position-.5)<.001,"Each new native action restarts its timeline independently of the previous phase/rate: %s/%s/%s/%s"%[profile,protocol,rate,repetition])
 	actor.contact.free();actor.free();print("CREATURE ACTION ROUTING: ",checks-failures," / ",checks);quit(1 if failures else 0)

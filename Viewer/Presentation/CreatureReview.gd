@@ -2,6 +2,7 @@ extends SceneTree
 const Visual=preload("res://Presentation/CreatureVisual.gd")
 const IceVisual=preload("res://Presentation/IceSerpentVisual.gd")
 const LichVisual=preload("res://Presentation/LichVisual.gd")
+const Registry=preload("res://Presentation/CreatureRegistry.gd")
 var family:="bruins"
 var kind:=""
 var actors: Array=[]
@@ -36,9 +37,13 @@ func build() -> void:
 	var camera:=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.size=height*5.;stage.add_child(camera);camera.position=Vector3(height*.45,height*2.,height*7.);camera.look_at(Vector3(height*.45,height*.7,0))
 	review_camera=camera
 	for i in 3:
-		var actor: Node3D=IceVisual.new() if kind=="serpents_snake_giant_ice" else LichVisual.new() if family=="liches" else Visual.new();actor.entry=record;actor.treatment=["original","rounded","modern"][i];stage.add_child(actor);actor.set_physics_process(false);actor.contact.enabled=false;actor.position.x=(i-1)*height*2.1;actor.rotation.y=-.8;actors.append(actor)
+		var actor: Node3D
+		if not str(record.get("presentation_script","")).is_empty():
+			Registry.load_index();Registry.entries[int(record.bodies[0].body)]=record;actor=Registry.create(int(record.bodies[0].body))
+		else:actor=IceVisual.new() if kind=="serpents_snake_giant_ice" else LichVisual.new() if family=="liches" else Visual.new()
+		actor.entry=record;actor.treatment=["original","rounded","modern"][i];stage.add_child(actor);actor.set_physics_process(false);actor.contact.enabled=false;actor.position.x=(i-1)*height*2.1;actor.rotation.y=-.8;actors.append(actor)
 		var baseline:="Source geometry / replacement atlas" if record.has("missing_source_atlas") else "Original source"
-		var label:=Label3D.new();label.text=(["Original","Refined","Modern"] if family=="liches" else [baseline,"Rounded geometry","Modern surface"])[i];label.position=Vector3(actor.position.x,height*1.8,0);label.font_size=27;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;stage.add_child(label)
+		var label:=Label3D.new();label.text=(["Original","Refined","Modern"] if family=="liches" or record.has("presentation_script") else [baseline,"Rounded geometry","Modern surface"])[i];label.position=Vector3(actor.position.x,height*1.8,0);label.font_size=27;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;stage.add_child(label)
 		labels.append(label)
 	var canvas:=CanvasLayer.new();root.add_child(canvas);var ui:=VBoxContainer.new();ui.position=Vector2(18,14);canvas.add_child(ui)
 	var title:=Label.new();title.text="BRITANNIA REBORN / "+kind.replace("_"," ").to_upper();title.add_theme_font_size_override("font_size",24);ui.add_child(title)

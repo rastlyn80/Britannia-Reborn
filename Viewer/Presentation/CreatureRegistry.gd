@@ -23,7 +23,14 @@ static func asset_path(record: Dictionary,treatment: String="modern") -> String:
 static func create(body: int) -> Node3D:
 	var record:=entry(body)
 	var result: Node3D
-	if record.get("kind","")=="eagle":result=preload("res://Presentation/EagleVisual.gd").new()
+	var presentation_script:=str(record.get("presentation_script",""))
+	if not presentation_script.is_empty():
+		# Generated owned manifests may select a project renderer, never code
+		# from an input archive, external path or nested/relative location.
+		assert(presentation_script=="res://Presentation/"+presentation_script.get_file() and presentation_script.ends_with(".gd"),"Creature renderer must be an owned presentation script")
+		result=load(presentation_script).new()
+		assert(result is Visual,"Creature renderer must retain the source visual contract")
+	elif record.get("kind","")=="eagle":result=preload("res://Presentation/EagleVisual.gd").new()
 	elif record.get("kind","")=="rabbit":result=preload("res://Presentation/RabbitVisual.gd").new()
 	elif record.get("kind","")=="wisp":result=preload("res://Presentation/WispVisual.gd").new()
 	elif record.get("kind","")=="air_elemental":result=preload("res://Presentation/AirElementalVisual.gd").new()
