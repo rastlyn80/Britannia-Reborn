@@ -51,7 +51,14 @@ func begin_human(killed: int,corpse: int,entity: Dictionary,avatar: Node3D) -> v
 	visual.global_transform=source.global_transform;visual.rotation.y=PI-float(int(entity.get("direction",0))&7)*PI/4.
 	visual.model.transform=source.model.transform
 	for modifier: SkeletonModifier3D in visual.skeleton.find_children("*","SkeletonModifier3D",true,false):modifier.active=false
-	var duration: float=visual.begin_from(source)
+	var displayed: Dictionary={};var landing:=visual.global_transform
+	var rider: Node=avatar.get("rider_contact")
+	if is_instance_valid(rider) and rider.has_method("displayed_state"):
+		displayed=rider.displayed_state()
+		if displayed.is_empty():displayed={"rig":source.skeleton,"global_transform":source.global_transform,"model_transform":source.model.transform}
+		landing.origin=avatar.visual_root.global_position
+		landing.basis=Basis(Vector3.UP,visual.global_rotation.y)
+	var duration: float=visual.begin_from(source,displayed,landing)
 	# 0xAF is the trigger; no synthetic 0x6E request is recorded as server data.
 	track_transition(killed,corpse,body,avatar,visual,duration)
 func track_transition(killed: int,corpse: int,body: int,avatar: Node3D,visual: Node3D,duration: float) -> void:

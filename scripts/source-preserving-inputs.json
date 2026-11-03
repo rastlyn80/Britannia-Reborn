@@ -890,6 +890,570 @@
           "scope": "One-byte noncanonical metadata tag correction, independently identical raw input in AOS and ML; all payload/keyframe bytes unchanged, no original file edited."
         }
       ]
+    },
+    {
+      "kind": "ridgeback_ridgeback",
+      "expected_bodies": [
+        187,
+        839
+      ],
+      "routed_bodies": [
+        187
+      ],
+      "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+      "containers": [
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client8.cab",
+          "bytes": 5793154,
+          "sha256": "155fe820d8c0e2a08650f81ec037829bed49aeca74efd2a07479a907287a1afc"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client10.cab",
+          "bytes": 33956665,
+          "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client7.cab",
+          "bytes": 20805,
+          "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859"
+        }
+      ],
+      "model_table": {
+        "path": "work/third-dawn/late-source-research/uoaos-source/Models/models.txt",
+        "bytes": 55735,
+        "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a"
+      },
+      "files": [
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_attack1.grn",
+          "bytes": 29732,
+          "sha256": "2e351188bfa75b3709adf92076ce9173cc3e4df6e106aa7244134396a9dbde89",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_attack1.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_die1.grn",
+          "bytes": 46792,
+          "sha256": "bd917df6f1168e41d8a46cd870cc4415d74ed8ab1720f0ce6c08247f749c79f8",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_die1.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_eat.grn",
+          "bytes": 27988,
+          "sha256": "94b0aee5a0944980d8d02f80043e1775ee4a7bc5b8dae518ef40b8ce56549151",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_eat.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_ethereal_lod2.grn",
+          "bytes": 28080,
+          "sha256": "62665287436f804b0bd699397a7e379ca02466980504b8a7734222d6dbd9bff9",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_ethereal_lod2.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_fidget.grn",
+          "bytes": 34484,
+          "sha256": "70089b8b6d99fc405a6a4190ca994e7f6ec01eb307f0f6dc4e27c03859a8d6d8",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_fidget.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_gethit.grn",
+          "bytes": 21644,
+          "sha256": "8ab1af746f33735067e5fe6e69de43f673869014f8108f262b2d8eddac4fac52",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_gethit.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_idle.grn",
+          "bytes": 19156,
+          "sha256": "837ac2f6cb159c1285e3aba488fd29f64e3d300fb37f7248b79359c909c10fab",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_idle.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_lod2.grn",
+          "bytes": 27992,
+          "sha256": "b123984019af9a8892ef7f8e111ea2f39842029874d11019755859dab46bf8a2",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_lod2.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_run.grn",
+          "bytes": 24864,
+          "sha256": "209042107472069f80c1a21e7b1e7d252672b3626e9534f147d751ef6faab8ed",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_run.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_walk.grn",
+          "bytes": 30768,
+          "sha256": "b34e9f6db524a1924bd314c5215113c49e1ce13e70f2691e222a6ad150d20d39",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_walk.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_savage_lod2.grn",
+          "bytes": 27992,
+          "sha256": "d1e5ef9601baa59fa66e925d79318d5752b462b3ca4505d2e4c077312f7723f1",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_savage_lod2.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Maps/ridgeback_ridgeback_ethereal.tga",
+          "bytes": 65580,
+          "sha256": "a965a230219a80ecb2c7dbaa0c2ad8016351ec9674a659079f3eaf32384b1cd7",
+          "member": "uoaos/UOTD/Models/Maps/ridgeback_ridgeback_ethereal.tga"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Maps/rid_ridge.tga",
+          "bytes": 65580,
+          "sha256": "dde48da5afe556e8f4eb086c21c46a0f1253924bbe1ec0c1494984520833b5c2",
+          "member": "uoaos/UOTD/Models/Maps/rid_ridge.tga"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Maps/rid_ridge_m.tga",
+          "bytes": 262188,
+          "sha256": "6c132a2acf827727d01be949a00b3c763db942a5a2ac4c69d2475f812a5d4842",
+          "member": "uoaos/UOTD/Models/Maps/rid_ridge_m.tga"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Maps/rid_savage.tga",
+          "bytes": 65580,
+          "sha256": "eae5909012d487b5af3b0c1cc578db9bca1c207ec931412324f3e9ee0bd4792e",
+          "member": "uoaos/UOTD/Models/Maps/rid_savage.tga"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Maps/rid_savage_m.tga",
+          "bytes": 262188,
+          "sha256": "6c132a2acf827727d01be949a00b3c763db942a5a2ac4c69d2475f812a5d4842",
+          "member": "uoaos/UOTD/Models/Maps/rid_savage_m.tga"
+        }
+      ],
+      "bones": 30,
+      "triangles": 226,
+      "source_clips": 8,
+      "levels": 2,
+      "normal_offset_m": 0.0015,
+      "opacity": "opaque",
+      "limb_support": "biped",
+      "presentation_script": "res://Presentation/SourceRidgebackVisual.gd",
+      "mount_item": 16058,
+      "mount_scope": "Native Ridgeback mount;839 is retained table equipment metadata, not a routed mobile"
+    },
+    {
+      "kind": "ridgeback_savage",
+      "expected_bodies": [
+        188
+      ],
+      "routed_bodies": [
+        188
+      ],
+      "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+      "containers": [
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client8.cab",
+          "bytes": 5793154,
+          "sha256": "155fe820d8c0e2a08650f81ec037829bed49aeca74efd2a07479a907287a1afc"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client10.cab",
+          "bytes": 33956665,
+          "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client7.cab",
+          "bytes": 20805,
+          "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859"
+        }
+      ],
+      "model_table": {
+        "path": "work/third-dawn/late-source-research/uoaos-source/Models/models.txt",
+        "bytes": 55735,
+        "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a"
+      },
+      "files": [
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_attack1.grn",
+          "bytes": 29732,
+          "sha256": "2e351188bfa75b3709adf92076ce9173cc3e4df6e106aa7244134396a9dbde89",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_attack1.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_die1.grn",
+          "bytes": 46792,
+          "sha256": "bd917df6f1168e41d8a46cd870cc4415d74ed8ab1720f0ce6c08247f749c79f8",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_die1.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_eat.grn",
+          "bytes": 27988,
+          "sha256": "94b0aee5a0944980d8d02f80043e1775ee4a7bc5b8dae518ef40b8ce56549151",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_eat.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_ethereal_lod2.grn",
+          "bytes": 28080,
+          "sha256": "62665287436f804b0bd699397a7e379ca02466980504b8a7734222d6dbd9bff9",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_ethereal_lod2.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_fidget.grn",
+          "bytes": 34484,
+          "sha256": "70089b8b6d99fc405a6a4190ca994e7f6ec01eb307f0f6dc4e27c03859a8d6d8",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_fidget.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_gethit.grn",
+          "bytes": 21644,
+          "sha256": "8ab1af746f33735067e5fe6e69de43f673869014f8108f262b2d8eddac4fac52",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_gethit.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_idle.grn",
+          "bytes": 19156,
+          "sha256": "837ac2f6cb159c1285e3aba488fd29f64e3d300fb37f7248b79359c909c10fab",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_idle.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_lod2.grn",
+          "bytes": 27992,
+          "sha256": "b123984019af9a8892ef7f8e111ea2f39842029874d11019755859dab46bf8a2",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_lod2.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_run.grn",
+          "bytes": 24864,
+          "sha256": "209042107472069f80c1a21e7b1e7d252672b3626e9534f147d751ef6faab8ed",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_run.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_walk.grn",
+          "bytes": 30768,
+          "sha256": "b34e9f6db524a1924bd314c5215113c49e1ce13e70f2691e222a6ad150d20d39",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_walk.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_savage_lod2.grn",
+          "bytes": 27992,
+          "sha256": "d1e5ef9601baa59fa66e925d79318d5752b462b3ca4505d2e4c077312f7723f1",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_savage_lod2.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Maps/ridgeback_ridgeback_ethereal.tga",
+          "bytes": 65580,
+          "sha256": "a965a230219a80ecb2c7dbaa0c2ad8016351ec9674a659079f3eaf32384b1cd7",
+          "member": "uoaos/UOTD/Models/Maps/ridgeback_ridgeback_ethereal.tga"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Maps/rid_ridge.tga",
+          "bytes": 65580,
+          "sha256": "dde48da5afe556e8f4eb086c21c46a0f1253924bbe1ec0c1494984520833b5c2",
+          "member": "uoaos/UOTD/Models/Maps/rid_ridge.tga"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Maps/rid_ridge_m.tga",
+          "bytes": 262188,
+          "sha256": "6c132a2acf827727d01be949a00b3c763db942a5a2ac4c69d2475f812a5d4842",
+          "member": "uoaos/UOTD/Models/Maps/rid_ridge_m.tga"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Maps/rid_savage.tga",
+          "bytes": 65580,
+          "sha256": "eae5909012d487b5af3b0c1cc578db9bca1c207ec931412324f3e9ee0bd4792e",
+          "member": "uoaos/UOTD/Models/Maps/rid_savage.tga"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Maps/rid_savage_m.tga",
+          "bytes": 262188,
+          "sha256": "6c132a2acf827727d01be949a00b3c763db942a5a2ac4c69d2475f812a5d4842",
+          "member": "uoaos/UOTD/Models/Maps/rid_savage_m.tga"
+        }
+      ],
+      "bones": 30,
+      "triangles": 226,
+      "source_clips": 8,
+      "levels": 2,
+      "normal_offset_m": 0.0015,
+      "opacity": "opaque",
+      "limb_support": "biped",
+      "presentation_script": "res://Presentation/SourceRidgebackVisual.gd",
+      "mount_item": 16056,
+      "mount_scope": "Native Ridgeback mount;839 is retained table equipment metadata, not a routed mobile"
+    },
+    {
+      "kind": "ridgeback_ridgeback_ethereal",
+      "expected_bodies": [
+        193
+      ],
+      "routed_bodies": [
+        193
+      ],
+      "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+      "containers": [
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client8.cab",
+          "bytes": 5793154,
+          "sha256": "155fe820d8c0e2a08650f81ec037829bed49aeca74efd2a07479a907287a1afc"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client10.cab",
+          "bytes": 33956665,
+          "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client7.cab",
+          "bytes": 20805,
+          "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859"
+        }
+      ],
+      "model_table": {
+        "path": "work/third-dawn/late-source-research/uoaos-source/Models/models.txt",
+        "bytes": 55735,
+        "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a"
+      },
+      "files": [
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_attack1.grn",
+          "bytes": 29732,
+          "sha256": "2e351188bfa75b3709adf92076ce9173cc3e4df6e106aa7244134396a9dbde89",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_attack1.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_die1.grn",
+          "bytes": 46792,
+          "sha256": "bd917df6f1168e41d8a46cd870cc4415d74ed8ab1720f0ce6c08247f749c79f8",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_die1.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_eat.grn",
+          "bytes": 27988,
+          "sha256": "94b0aee5a0944980d8d02f80043e1775ee4a7bc5b8dae518ef40b8ce56549151",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_eat.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_ethereal_lod2.grn",
+          "bytes": 28080,
+          "sha256": "62665287436f804b0bd699397a7e379ca02466980504b8a7734222d6dbd9bff9",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_ethereal_lod2.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_fidget.grn",
+          "bytes": 34484,
+          "sha256": "70089b8b6d99fc405a6a4190ca994e7f6ec01eb307f0f6dc4e27c03859a8d6d8",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_fidget.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_gethit.grn",
+          "bytes": 21644,
+          "sha256": "8ab1af746f33735067e5fe6e69de43f673869014f8108f262b2d8eddac4fac52",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_gethit.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_idle.grn",
+          "bytes": 19156,
+          "sha256": "837ac2f6cb159c1285e3aba488fd29f64e3d300fb37f7248b79359c909c10fab",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_idle.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_lod2.grn",
+          "bytes": 27992,
+          "sha256": "b123984019af9a8892ef7f8e111ea2f39842029874d11019755859dab46bf8a2",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_lod2.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_run.grn",
+          "bytes": 24864,
+          "sha256": "209042107472069f80c1a21e7b1e7d252672b3626e9534f147d751ef6faab8ed",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_run.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_ridgeback_walk.grn",
+          "bytes": 30768,
+          "sha256": "b34e9f6db524a1924bd314c5215113c49e1ce13e70f2691e222a6ad150d20d39",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_ridgeback_walk.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/ridgeback_savage_lod2.grn",
+          "bytes": 27992,
+          "sha256": "d1e5ef9601baa59fa66e925d79318d5752b462b3ca4505d2e4c077312f7723f1",
+          "member": "uoaos/UOTD/Models/Animals/ridgeback_savage_lod2.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Maps/ridgeback_ridgeback_ethereal.tga",
+          "bytes": 65580,
+          "sha256": "a965a230219a80ecb2c7dbaa0c2ad8016351ec9674a659079f3eaf32384b1cd7",
+          "member": "uoaos/UOTD/Models/Maps/ridgeback_ridgeback_ethereal.tga"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Maps/rid_ridge.tga",
+          "bytes": 65580,
+          "sha256": "dde48da5afe556e8f4eb086c21c46a0f1253924bbe1ec0c1494984520833b5c2",
+          "member": "uoaos/UOTD/Models/Maps/rid_ridge.tga"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Maps/rid_ridge_m.tga",
+          "bytes": 262188,
+          "sha256": "6c132a2acf827727d01be949a00b3c763db942a5a2ac4c69d2475f812a5d4842",
+          "member": "uoaos/UOTD/Models/Maps/rid_ridge_m.tga"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Maps/rid_savage.tga",
+          "bytes": 65580,
+          "sha256": "eae5909012d487b5af3b0c1cc578db9bca1c207ec931412324f3e9ee0bd4792e",
+          "member": "uoaos/UOTD/Models/Maps/rid_savage.tga"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Maps/rid_savage_m.tga",
+          "bytes": 262188,
+          "sha256": "6c132a2acf827727d01be949a00b3c763db942a5a2ac4c69d2475f812a5d4842",
+          "member": "uoaos/UOTD/Models/Maps/rid_savage_m.tga"
+        }
+      ],
+      "bones": 30,
+      "triangles": 226,
+      "source_clips": 8,
+      "levels": 2,
+      "normal_offset_m": 0.0015,
+      "opacity": "opaque",
+      "limb_support": "biped",
+      "presentation_script": "res://Presentation/SourceRidgebackVisual.gd",
+      "mount_item": 16026,
+      "mount_scope": "Native item-only ethereal;193 is original table presentation key, not a witnessed loose constructor"
+    },
+    {
+      "kind": "monstrousinterredgrizzle",
+      "expected_bodies": [
+        259,
+        272
+      ],
+      "routed_bodies": [
+        259,
+        272
+      ],
+      "source_url": "https://zuluarchive.com/static/files/uoml_setup.exe",
+      "containers": [
+        {
+          "path": "work/creatures/late-client-inputs/uoml_setup.exe",
+          "bytes": 798463305,
+          "sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data1.cab",
+          "bytes": 664374,
+          "sha256": "78110fcad7a3bf0d459c6f58f30764064fa2868dd2eea92ffc3983390846ce42"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data1.hdr",
+          "bytes": 624745,
+          "sha256": "bc7c394bab19ece161bdd482bd21d16f946d4f04eb64aca67d6c8c45ffa79587"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data2.cab",
+          "bytes": 794818869,
+          "sha256": "247b9305c2f6d3af18c2c5bc7018d0d8ae27b5ae394187b6ffccbc9d174db95d"
+        }
+      ],
+      "model_table": {
+        "path": "work/creatures/late-client-inputs/model-table/Client/Models.txt",
+        "bytes": 81498,
+        "sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099"
+      },
+      "files": [
+        {
+          "path": "work/creatures/ml-next/source/Client/MonstrousInterredGrizzle.tga",
+          "bytes": 262188,
+          "sha256": "b27c7fbea09ae2a6edee609b00d8bf2509660aa2964647bf04f392cb896be2d6",
+          "member": "Client/Models/Maps/MonstrousInterredGrizzle.tga"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/MonstrousInterredGrizzle_attack1.grn",
+          "bytes": 177428,
+          "sha256": "b2e2b66a49ff25e1009aed619ea374a850a1d1aaaff2be307945f1463b084c20",
+          "member": "Client/Models/Monsters/MonstrousInterredGrizzle_attack1.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/MonstrousInterredGrizzle_attack2.grn",
+          "bytes": 188632,
+          "sha256": "d276007e6d58dfe786a1ec7f05b67b8220dc37e7c1d2b9dc61732f428345b83f",
+          "member": "Client/Models/Monsters/MonstrousInterredGrizzle_attack2.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/MonstrousInterredGrizzle_attack3.grn",
+          "bytes": 283368,
+          "sha256": "3fda4c02faa8df0c518889ab94a600e76a736f68d46088c0606f7ccb1e0716c6",
+          "member": "Client/Models/Monsters/MonstrousInterredGrizzle_attack3.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/MonstrousInterredGrizzle_blockleft.grn",
+          "bytes": 132996,
+          "sha256": "6eaf9e7faadf1c88579d2a8580edf23f33b0a8b007fa7dd49e4572b6ec55f9fc",
+          "member": "Client/Models/Monsters/MonstrousInterredGrizzle_blockleft.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/MonstrousInterredGrizzle_blockright.grn",
+          "bytes": 121820,
+          "sha256": "5fbb30214050c0d44b24c0ab1218fb1b692f5088932f6ce49ed2dbd5f4eb605f",
+          "member": "Client/Models/Monsters/MonstrousInterredGrizzle_blockright.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/MonstrousInterredGrizzle_die1.grn",
+          "bytes": 164684,
+          "sha256": "21cc1b039ec5a4f3e1e935257a506b51e477cbe35412dbab0a39185334887f14",
+          "member": "Client/Models/Monsters/MonstrousInterredGrizzle_die1.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/MonstrousInterredGrizzle_die2.grn",
+          "bytes": 211560,
+          "sha256": "3854c658c4ae85f9af994f47bbe5c36cb38de260bc4e57c6a1451938358cf248",
+          "member": "Client/Models/Monsters/MonstrousInterredGrizzle_die2.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/MonstrousInterredGrizzle_fidget.grn",
+          "bytes": 130420,
+          "sha256": "7ca12c39d5790357fbd0d87b89ab0a6c787fe3031c4c7ba3ca4ddd137ee35185",
+          "member": "Client/Models/Monsters/MonstrousInterredGrizzle_fidget.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/MonstrousInterredGrizzle_Idle.grn",
+          "bytes": 31588,
+          "sha256": "2dcf4b394281390190d46a0d8a48c4e5f031f78cded3586b683ff8ac64c641da",
+          "member": "Client/Models/Monsters/MonstrousInterredGrizzle_Idle.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/MonstrousInterredGrizzle_idle2.grn",
+          "bytes": 171452,
+          "sha256": "33478edc2ff666e9699184ecbac9c741ec7695522c9b474c5ab2ff8646362d70",
+          "member": "Client/Models/Monsters/MonstrousInterredGrizzle_idle2.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/MonstrousInterredGrizzle_LOD2.grn",
+          "bytes": 128040,
+          "sha256": "5022a6f402233ec229136aad80b9bf0f1d69a4d4b5213af0c33fa6f93ede0c89",
+          "member": "Client/Models/Monsters/MonstrousInterredGrizzle_LOD2.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/MonstrousInterredGrizzle_misc.grn",
+          "bytes": 171452,
+          "sha256": "dcecd13f48f146d32e39797936037a097a6a93ee4239113dc9b70526714ad432",
+          "member": "Client/Models/Monsters/MonstrousInterredGrizzle_misc.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/MonstrousInterredGrizzle_takedamage.grn",
+          "bytes": 150532,
+          "sha256": "787e47dd5d32d5246a412bb04be76cb619d6dd664824b4cbaac9d79e6af058a3",
+          "member": "Client/Models/Monsters/MonstrousInterredGrizzle_takedamage.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/MonstrousInterredGrizzle_walk.grn",
+          "bytes": 138572,
+          "sha256": "80a1ae084f5128384f6fc5ced5ebb80be7fdfbff6e153e0bc2a4d412366f7149",
+          "member": "Client/Models/Monsters/MonstrousInterredGrizzle_walk.grn"
+        }
+      ],
+      "bones": 39,
+      "triangles": 594,
+      "source_clips": 13,
+      "levels": 1,
+      "normal_offset_m": 0.0015,
+      "opacity": "opaque",
+      "limb_support": "biped",
+      "clip_labels": {
+        "takedamage": "Hit",
+        "idle2": "Idle2",
+        "misc": "Misc"
+      }
     }
   ]
 }

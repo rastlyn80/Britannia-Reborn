@@ -12,6 +12,26 @@ var progress:=1.
 var transition_duration:=1.45
 var finished:=false
 var turn_balance:=0.
+var rendered_pose:=preload("res://Presentation/SourceRenderedPose.gd").new()
+var displayed_global:=Transform3D.IDENTITY
+var displayed_model:=Transform3D.IDENTITY
+var displayed_frame:=-10
+func _ready() -> void:
+	modification_processed.connect(_capture_submitted_pose)
+	RenderingServer.frame_post_draw.connect(_capture_displayed_frame)
+func _capture_submitted_pose() -> void:
+	if not is_instance_valid(rider):return
+	rendered_pose.capture(rider.skeleton)
+	if DisplayServer.get_name()=="headless":
+		displayed_global=rider.global_transform;displayed_model=rider.model.transform
+func _capture_displayed_frame() -> void:
+	if not is_instance_valid(rider) or not rider.is_visible_in_tree():return
+	displayed_frame=Engine.get_process_frames();displayed_global=rider.global_transform;displayed_model=rider.model.transform
+func displayed_state() -> Dictionary:
+	if not is_instance_valid(rider) or rendered_pose.rig_id!=rider.skeleton.get_instance_id():return {}
+	if DisplayServer.get_name()!="headless" and Engine.get_process_frames()-displayed_frame>1:return {}
+	var held:=preload("res://Presentation/SourceVariantPoseEntry.gd").new();held.rendered_pose=rendered_pose
+	return {"rig":held.displayed_rig(rider.skeleton),"global_transform":displayed_global,"model_transform":displayed_model}
 func begin_mount(animated: bool=true) -> void:
 	mode="mount" if animated else "seated";progress=0. if animated else 1.;seated_weight=progress;finished=false
 func begin_dismount() -> void:

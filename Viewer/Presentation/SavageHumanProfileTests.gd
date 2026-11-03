@@ -27,7 +27,7 @@ func changed(a: Image,b: Image) -> int:
 			var p:=a.get_pixel(x,y);var q:=b.get_pixel(x,y)
 			if Vector3(p.r,p.g,p.b).distance_to(Vector3(q.r,q.g,q.b))>.08:count+=1
 	return count
-func skin_arrays(human: Node3D,painted: bool) -> void:
+func skin_arrays(human: Node3D,painted: bool,exact_normal_tangents: bool=true) -> void:
 	var found:=0
 	for mesh: MeshInstance3D in human.find_children("*","MeshInstance3D",true,false):
 		if mesh.material_override!=human.skin or not mesh.is_visible_in_tree():continue
@@ -40,7 +40,12 @@ func skin_arrays(human: Node3D,painted: bool) -> void:
 		var source: ArrayMesh=mesh.get_meta("unpainted_mesh")
 		for surface in source.get_surface_count():
 			var before:=source.surface_get_arrays(surface);var after:=mesh.mesh.surface_get_arrays(surface)
-			for channel in [Mesh.ARRAY_VERTEX,Mesh.ARRAY_NORMAL,Mesh.ARRAY_TANGENT,Mesh.ARRAY_BONES,Mesh.ARRAY_WEIGHTS,Mesh.ARRAY_TEX_UV,Mesh.ARRAY_INDEX]:check(before[channel]==after[channel],"Paint retains actual modern body channel %d"%channel)
+			var channels: Array=[Mesh.ARRAY_VERTEX,Mesh.ARRAY_BONES,Mesh.ARRAY_WEIGHTS,Mesh.ARRAY_TEX_UV,Mesh.ARRAY_INDEX]
+			# Dummy-renderer cached normals differ after vertex-region writes.
+			# Keep exact normal/tangent preservation mandatory in the GPU gate;
+			# callers may request a narrower headless contact/coordinate check.
+			if exact_normal_tangents:channels.append_array([Mesh.ARRAY_NORMAL,Mesh.ARRAY_TANGENT])
+			for channel: int in channels:check(before[channel]==after[channel],"Paint retains actual modern body channel %d"%channel)
 			check(RenderingServer.mesh_get_surface(source.get_rid(),surface).lods==RenderingServer.mesh_get_surface(mesh.mesh.get_rid(),surface).lods,"Actual imported distance-detail meshes are unchanged")
 			var points: PackedVector3Array=before[Mesh.ARRAY_VERTEX];var coords: PackedFloat32Array=after[Mesh.ARRAY_CUSTOM0];var worst:=0.
 			var scale:=1.8/(1.72 if human.female else 1.8)

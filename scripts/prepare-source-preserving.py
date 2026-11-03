@@ -16,7 +16,8 @@ MANIFEST = ROOT/'scripts/source-preserving-inputs.json'
 WORK = ROOT/'work/creatures/source-preserving'
 ART = ROOT/'Viewer/local-art/creatures'
 RECIPE = ROOT/'Viewer/Presentation/SourcePoseSubdivision.gd'
-RUNTIME = ['SourcePreservingCreatureVisual.gd','SourceSwampDragonVisual.gd','MountVisual.gd','HorseRider.gd','SourceVariantPoseEntry.gd',
+RUNTIME = ['SourcePreservingCreatureVisual.gd','SourceRigMountVisual.gd','SourceSwampDragonVisual.gd',
+           'SourceRidgebackVisual.gd','OstardEthereal.gdshader','MountVisual.gd','HorseRider.gd','SourceVariantPoseEntry.gd',
            'SourceRenderedPose.gd','SourcePoseEntry.gd','SmallSnakeVisual.gd',
            'SourcePlaneSoleSupport.gd','MeasuredCreatureSupport.gd',
            'SourceMountContact.gd','SourceGroundLookup.gd','CreatureVisual.gd',
@@ -93,6 +94,23 @@ def converter_pins(pipeline):
     return result
 
 
+def cached_candidate(source, tools):
+    path = WORK/source['kind']/'candidate-cache.json'
+    if not path.is_file():return None
+    try:
+        cache = json.loads(path.read_text())
+    except (OSError, ValueError):return None
+    if cache.get('preparer_sha256') != sha(Path(__file__)):return None
+    row = cache['model']
+    if row['source_provenance'] != source or row['converter_sha256'] != tools:return None
+    if row['pose_subdivision']['recipe_sha256'] != sha(RECIPE):return None
+    artifacts = [(ROOT/record['path'],record['sha256']) for record in row['bake_inputs'].values()]
+    artifacts += [(ART/name,digest) for name,digest in row['art_dependency_sha256'].items()]
+    if any(not asset.is_file() or sha(asset) != digest for asset,digest in artifacts):return None
+    row['presentation_script_sha256'] = sha(ROOT/'Viewer'/row['presentation_script'].removeprefix('res://'))
+    return row
+
+
 def prepare():
     pins = inputs()
     WORK.mkdir(parents=True, exist_ok=True)
@@ -101,7 +119,13 @@ def prepare():
     for source in pins['models']:
         kind = source['kind']
         pipeline = pipeline_for(kind)
+        pipeline.LABELS.update(source.get('clip_labels', {}))
         tools = converter_pins(pipeline)
+        cached = cached_candidate(source, tools)
+        if cached is not None:
+            models.append(cached)
+            print(kind, 'CACHED exact source/converters/staging artifacts')
+            continue
         pipeline.OUTPUT = WORK/kind
         pipeline.OUTPUT.mkdir(exist_ok=True)
         paths = {row['member']: ROOT/row['path'] for row in source['files']}
@@ -132,6 +156,11 @@ def prepare():
         row = rows[0]
         assert not row['rejected_source_clips'] and len(row['clip_sources']) == source['source_clips']
         assert {identity['body'] for identity in row['bodies']} == set(source['expected_bodies'])
+        if 'routed_bodies' in source:
+            assert set(source['routed_bodies']) <= set(source['expected_bodies'])
+            row['source_table_bodies'] = row['bodies']
+            row['bodies'] = [identity for identity in row['bodies'] if identity['body'] in source['routed_bodies']]
+            assert row['bodies']
         stats = row['stats']['original']
         assert stats['bones'] == source['bones'] and stats['triangles'] == source['triangles']
         # Dense geometry is baked once below, never rebuilt for every avatar.
@@ -170,6 +199,10 @@ def prepare():
                 material.update(alphaMode='MASK', alphaCutoff=.12, doubleSided=True)
             path.write_text(json.dumps(gltf, separators=(',', ':')), encoding='utf-8')
             row['bake_inputs'][treatment] = {'path': str(path.relative_to(ROOT)), 'sha256': sha(path)}
+        cache_path = WORK/kind/'candidate-cache.json'
+        temporary_cache = cache_path.with_suffix('.tmp')
+        temporary_cache.write_text(json.dumps({'preparer_sha256':sha(Path(__file__)), 'model':row}, indent=2)+'\n', encoding='utf-8')
+        temporary_cache.replace(cache_path)
         models.append(row)
     # The old generic converter assumes one older archive. Replace that staging
     # receipt, including nested records, with the actual per-model provenance.
@@ -186,19 +219,22 @@ def prepare():
     print('SOURCE PRESERVING: prepared', len(models), 'source forms; next run BakeSourcePreserving.gd')
 
 
-def check_prepared():
+def check_prepared(verify_presentation=True):
     pins = inputs()
     report = json.loads((ART/'source_preserving/preparation.json').read_text())
     assert report['manifest_sha256'] == sha(MANIFEST) and report['preparer_sha256'] == sha(Path(__file__))
     assert report['baker_sha256'] == sha(ROOT/'Viewer/Presentation/BakeSourcePreserving.gd')
     assert report['subdivision_sha256'] == sha(RECIPE) and report['server_pin'] == pins['server_pin']
-    assert report['runtime_sha256'] == {name:sha(ROOT/'Viewer/Presentation'/name) for name in RUNTIME}
+    if verify_presentation:
+        assert report['runtime_sha256'] == {name:sha(ROOT/'Viewer/Presentation'/name) for name in RUNTIME}
     assert len(report['models']) == len(pins['models'])
     for row, source in zip(report['models'], pins['models']):
         assert row['source_provenance'] == source and row['kind'] == source['kind']
-        assert row['presentation_script_sha256'] == sha(ROOT/'Viewer'/row['presentation_script'].removeprefix('res://'))
+        if verify_presentation:
+            assert row['presentation_script_sha256'] == sha(ROOT/'Viewer'/row['presentation_script'].removeprefix('res://'))
         assert row['converter_sha256'] == converter_pins(pipeline_for(row['kind']))
-        assert {body['body'] for body in row['bodies']} == set(source['expected_bodies'])
+        assert {body['body'] for body in row['bodies']} == set(source.get('routed_bodies', source['expected_bodies']))
+        assert {body['body'] for body in row.get('source_table_bodies', row['bodies'])} == set(source['expected_bodies'])
         assert len(row['clip_sources']) == source['source_clips'] and not row['rejected_source_clips']
         assert row['stats']['original']['bones'] == source['bones']
         assert row['refinement']['triangles_after'] == source['triangles']*4**source['levels']
@@ -207,15 +243,32 @@ def check_prepared():
             assert path.parent == ART.resolve() and sha(path) == row['saved_scenes'][treatment]['scene_sha256']
         for name, digest in row['art_dependency_sha256'].items():
             assert Path(name).name == name and sha(ART/name) == digest
-    print('SOURCE PRESERVING PREPARATION:', len(report['models']), 'exact inputs/converters/saved scenes verified; no accepted route')
+    print('SOURCE PRESERVING PREPARATION:', len(report['models']), 'exact inputs/converters/saved scenes verified;', 'current presentation pins;' if verify_presentation else 'geometry-only audit;', 'no accepted route')
+    return report
+
+
+def refresh_presentation():
+    # Fittings/material/runtime edits do not require re-exporting unchanged
+    # geometry. Every original input, converter, recipe, baker and saved scene
+    # must still pass its original exact pin before this receipt can refresh.
+    report = check_prepared(verify_presentation=False)
+    report['runtime_sha256'] = {name:sha(ROOT/'Viewer/Presentation'/name) for name in RUNTIME}
+    for row in report['models']:
+        row['presentation_script_sha256'] = sha(ROOT/'Viewer'/row['presentation_script'].removeprefix('res://'))
+    report['presentation_refresh_scope'] = 'Only presentation pins refreshed after exact geometry/input/converter/baker checks. Rerun runtime/render/rider gates; this is not validation or acceptance.'
+    (ART/'source_preserving/preparation.json').write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
+    check_prepared()
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check-inputs', action='store_true')
     parser.add_argument('--check-prepared', action='store_true')
+    parser.add_argument('--refresh-presentation', action='store_true')
     args = parser.parse_args()
-    if args.check_prepared:
+    if args.refresh_presentation:
+        refresh_presentation()
+    elif args.check_prepared:
         check_prepared()
     elif args.check_inputs:
         print('SOURCE PRESERVING INPUTS:', len(inputs()['models']), 'exact source forms verified')

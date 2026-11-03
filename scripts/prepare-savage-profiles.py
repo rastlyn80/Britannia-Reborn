@@ -35,17 +35,26 @@ def main():
     profiles = [dict(body=body, female=body == 184, skin='savage', name='Savage / ' + gender,
                      status='prepared', native_classes=['Savage', 'SavageShaman'],
                      missing=['native two-client evidence', 'tribal/deer/orc masks', 'bone armour visual fidelity',
-                              'bare painted torso with native bone arms', 'Shaman action 111 dance',
+                              'Shaman action 111 dance',
                               'terrain and death transition evidence'])
                 for body, gender in [(183, 'male'), (184, 'female')]]
     result = dict(profiles=profiles, input_manifest_sha256=sha(manifest), recipe_sha256=sha(Path(__file__)),
-                  deferred_rider_bodies=[185, 186],
+                  prepared_rider_bodies=[185, 186],
                   rider_requirement='Real native SavageRidgeback source, mount packet and riding integration; no horse substitute',
                   scope='Prepared shared modern human profiles only. No accepted-index update, native behaviour or added coverage.')
     output = ROOT / 'Viewer/local-art/human-npcs/savages/preparation.json'
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_bytes((json.dumps(result, indent=2) + '\n').encode())
-    print('SAVAGE PREPARED: two foot profiles, riders deferred; accepted routes unchanged')
+    riders = [dict(body=body, female=body == 186, skin='savage', name='Savage Rider / '+gender,
+                   status='prepared', native_classes=['SavageRider'],
+                   required_mount=dict(body=188, item=0x3EB8),
+                   scope='Modern human profile and native source contract; runtime/riding/native evidence tracked separately.')
+              for body, gender in [(185, 'male'), (186, 'female')]]
+    rider_result = dict(profiles=riders, input_manifest_sha256=sha(manifest), recipe_sha256=sha(Path(__file__)),
+                        source_foot_profiles_sha256=sha(output), server_pin=pins['server_pin'],
+                        scope='Prepared male/female Savage Rider profiles. Real Ridgeback artwork is required; no horse fallback, accepted route or native-behaviour certificate.')
+    (output.parent/'riders.json').write_text(json.dumps(rider_result, indent=2)+'\n', encoding='utf-8')
+    print('SAVAGE PREPARED: two foot and two rider profiles; accepted routes unchanged')
 
 
 if __name__ == '__main__':

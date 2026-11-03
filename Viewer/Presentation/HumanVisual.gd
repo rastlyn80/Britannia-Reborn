@@ -99,9 +99,12 @@ func set_skin(hue: int) -> void:
 	_apply_native_skin()
 
 func set_native_profile(profile: Dictionary,hue: int) -> void:
+	var wardrobe_changed:=str(native_body_profile.get("skin",""))!=str(profile.get("skin",""))
 	native_body_profile=profile.duplicate(true)
 	skin_hue=hue
 	preload("res://Presentation/HumanNPCMotion.gd").configure(self,native_body_profile)
+	if wardrobe_changed:
+		appearance_key="";set_equipment(server_equipment)
 	_apply_native_skin()
 
 func _apply_native_skin() -> void:
@@ -173,7 +176,12 @@ func set_equipment(worn: Array) -> void:
 	# The riding robe opens/flexes at the waist. A continuous cloth lining,
 	# matching the existing armour backing, prevents exposed torso seams.
 	needs_undercoat=needs_undercoat or (riding() and (outfit_bits&8)!=0)
+	# Native Savages wear bone limb pieces over painted skin. Preserve the
+	# ordinary armour/robe backing while exposing this specific bare torso.
+	if native_body_profile.get("skin","")=="savage" and str(extra_parts.get("arms",{}).get("asset",""))=="coverage/bone_arms" and not extra_parts.has("torso") and not extra_parts.has("gorget") and not (outfit_bits&9) and not extra_parts.has("outer"):
+		needs_undercoat=false
 	if bool(Wardrobe.Coverage.INTEGRATED_LININGS.get(str(extra_parts.get("outer",{}).get("asset","")),false)):needs_undercoat=false
+	set_meta("armour_undercoat",needs_undercoat)
 	var hide_hair := (outfit_bits&16)!=0 or extra_parts.has("head")
 	var head_asset: String=str(extra_parts.get("head",{}).get("asset",""))
 	var head_hair_fit: String=str(Wardrobe.Coverage.HAIR_FITS.get(head_asset,""))

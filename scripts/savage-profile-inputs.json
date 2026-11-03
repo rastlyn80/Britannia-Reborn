@@ -136,6 +136,21 @@
     {
       "path": "Projects/Server/Mobiles/Body.cs",
       "sha256": "85f518d9514843e1ba578cb130f967a00460e96231ff87fc7e37ab3f5662ee37"
+    },
+    {
+      "path": "Projects/UOContent/Items/Weapons/SpearsAndForks/TribalSpear.cs",
+      "sha256": "e6ad13554e64dac4a7616b1af52a701b8aea18683758aa1c69857810c833c884",
+      "scope": "Read-only native SavageRider worn-item graphic/hue contract; no gameplay edit."
+    },
+    {
+      "path": "Projects/UOContent/Items/Armor/Bone/BoneArms.cs",
+      "sha256": "90c7f9de4083ccf1fb21bf4c1110c0bab6eec7630d057e5321b3ac19ea45e401",
+      "scope": "Read-only native SavageRider worn-item graphic/hue contract; no gameplay edit."
+    },
+    {
+      "path": "Projects/UOContent/Items/Armor/Bone/BoneLegs.cs",
+      "sha256": "c7b56b0098e525f886366c3b1738c1efa6bf7a0c21517afddfe07af84c162cc9",
+      "scope": "Read-only native SavageRider worn-item graphic/hue contract; no gameplay edit."
     }
   ],
   "art_sources": [

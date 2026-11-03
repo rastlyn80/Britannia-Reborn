@@ -56,6 +56,18 @@ if (Test-Path "$root/Viewer/local-art/creatures/source_preserving/preparation.js
   $swampRiding | ForEach-Object {Write-Output $_}
   if ($swampExit -or ($swampRiding | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Prepared Swamp Dragon native-item/rider/barding-form presentation failed'}
  }
+ if (($sourceForms | Where-Object {$_.kind -like 'ridgeback_*'}).Count -eq 3 -and (Test-Path "$root/Viewer/local-art/human-npcs/savages/riders.json")) {
+  & python -B "$root/scripts/prepare-savage-profiles.py" --check-inputs
+  if ($LASTEXITCODE) {throw 'Savage Rider exact reference/native/human input pins failed'}
+  $ridgebackRiding = & $godot --headless --path "$root/Viewer" --script res://Presentation/RidgebackRidingTests.gd 2>&1
+  $ridgebackExit = $LASTEXITCODE
+  $ridgebackRiding | ForEach-Object {Write-Output $_}
+  if ($ridgebackExit -or ($ridgebackRiding | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Original Ridgeback/Savage Rider presentation failed'}
+  $mountedDeath = & $godot --headless --path "$root/Viewer" --script res://Presentation/MountedHumanDeathTests.gd 2>&1
+  $mountedDeathExit = $LASTEXITCODE
+  $mountedDeath | ForEach-Object {Write-Output $_}
+  if ($mountedDeathExit -or ($mountedDeath | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Mounted human/Savage Rider death handoff failed'}
+ }
 }
 if (Test-Path "$root/Viewer/local-art/creatures/solen_warriors/preparation.json") {
  & $godot --headless --path "$root/Viewer" --script res://Presentation/ConfigureSolenWarriorImport.gd
