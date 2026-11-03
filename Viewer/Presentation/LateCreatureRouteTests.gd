@@ -7,6 +7,8 @@ const Wire = preload("res://Network/LoginProtocol.gd")
 const Corpses = preload("res://Presentation/CorpseModels.gd")
 const MONSTER := {4:"Attack", 5:"Attack2", 6:"Attack3", 10:"Hit", 17:"Fidget", 2:"Death"}
 const ANIMAL := {3:"Eat", 4:"Alert", 5:"Attack", 6:"Attack2", 7:"Hit", 11:"LieDown", 8:"Death"}
+const RECOVERED_FAMILIES := ["aos_creatures", "aos_aliases", "aos_mound", "recovered_late",
+	"tormented_minotaur", "late_donors", "gargoyle_vendor"]
 
 func _initialize() -> void:
 	create_timer(30.0).timeout.connect(func(): quit(2))
@@ -15,16 +17,10 @@ func _initialize() -> void:
 func run() -> void:
 	Registry.load_index()
 	var package_family := "hydra" if "--family=hydra" in OS.get_cmdline_user_args() else "late_source"
-	if "--family=aos_creatures" in OS.get_cmdline_user_args():
-		package_family = "aos_creatures"
-	if "--family=aos_aliases" in OS.get_cmdline_user_args():
-		package_family = "aos_aliases"
-	if "--family=aos_mound" in OS.get_cmdline_user_args():
-		package_family = "aos_mound"
-	if "--family=recovered_late" in OS.get_cmdline_user_args():
-		package_family = "recovered_late"
-	if "--family=tormented_minotaur" in OS.get_cmdline_user_args():
-		package_family = "tormented_minotaur"
+	for candidate: String in RECOVERED_FAMILIES:
+		if "--family=" + candidate in OS.get_cmdline_user_args():
+			package_family = candidate
+			break
 	var prepared := "--prepared" in OS.get_cmdline_user_args()
 	var package_path := "res://local-art/creatures/%s/preparation.json" % package_family
 	var package: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(package_path))
@@ -51,7 +47,7 @@ func run() -> void:
 		root.add_child(game)
 		game.set_process(false)
 		game.entities[serial] = entity
-		var actions := (ANIMAL if family == "ferret" or body == 276 else MONSTER).duplicate()
+		var actions := (ANIMAL if family == "ferret" or record.bodies[0].native_profile == "animal" else MONSTER).duplicate()
 		if family == "dryad":
 			actions.erase(2)
 			actions[11] = "Pillage"
@@ -67,7 +63,7 @@ func run() -> void:
 		elif family == "hydra":
 			actions.erase(2)
 			actions.merge({11: "Pillage", 12: "Attack2", 18: "Fidget2", 2: "Death"})
-		elif family in ["aos_creatures", "aos_aliases", "aos_mound", "recovered_late", "tormented_minotaur"]:
+		elif family in RECOVERED_FAMILIES:
 			for group: int in actions.keys():
 				if not actor.animator.has_animation(actions[group]):
 					actions.erase(group)
@@ -91,5 +87,5 @@ func run() -> void:
 			cadaver.free()
 		avatar.free()
 		game.free()
-		print(str(record.kind) if family in ["aos_creatures", "aos_aliases", "aos_mound", "recovered_late", "tormented_minotaur"] else family, " passed ", actions.size(), " decoded action routes and three static corpse hues")
+		print(str(record.kind) if family in RECOVERED_FAMILIES else family, " passed ", actions.size(), " decoded action routes and three static corpse hues")
 	quit()

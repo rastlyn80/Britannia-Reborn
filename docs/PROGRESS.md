@@ -1,3 +1,7 @@
+# Parrot and Betrayer active
+
+Parrot 831 and Betrayer 767 retain their own original meshes and use the original model-table animation links to bodies 6 and 769 respectively. Their packages recover eight and seven source clips. ModernUO sends monster action groups for Parrot despite the archive animal model classification. Both normal client routes passed nine decoded actions and six static corpse hue checks in total. The isolated server passed 262 prepared and 259 normal-registry checks. Vulkan captured 16 frames. Sampled stance gaps remained below 1.61 mm. The Gargoyle Shopkeeper retains its own mesh and the original model-table motion link to body 4. The candidate passed four decoded action routes, three static corpse hues and 20 Vulkan checks after staging its original cutout atlas. Its native vendor morph remains open.
+
 # Harrower first form active
 
 Body 146 uses the archived Shadowlord mesh and original 37-joint rig, with seven recovered motions. Whole-mesh ground support retained 3.59 mm minimum clearance over 36 sampled poses. The final isolated trial passed 147 prepared and 145 normal-registry checks. The first lethal hit transformed the same serial into body 780 and hue 0x497 on both clients and spawned a native tentacle. The second lethal hit produced the native true-form corpse, with the matching static mesh and hue. This trial constructed the boss in a disposable arena. Altar and portal spawning, autonomous combat, and rewards remain separate.
