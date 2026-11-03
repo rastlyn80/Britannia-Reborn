@@ -21,6 +21,8 @@ func run() -> void:
 		package_family = "aos_aliases"
 	if "--family=aos_mound" in OS.get_cmdline_user_args():
 		package_family = "aos_mound"
+	if "--family=recovered_late" in OS.get_cmdline_user_args():
+		package_family = "recovered_late"
 	var prepared := "--prepared" in OS.get_cmdline_user_args()
 	var package_path := "res://local-art/creatures/%s/preparation.json" % package_family
 	var package: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(package_path))
@@ -47,7 +49,7 @@ func run() -> void:
 		root.add_child(game)
 		game.set_process(false)
 		game.entities[serial] = entity
-		var actions := (ANIMAL if family == "ferret" else MONSTER).duplicate()
+		var actions := (ANIMAL if family == "ferret" or body == 276 else MONSTER).duplicate()
 		if family == "dryad":
 			actions.erase(2)
 			actions[11] = "Pillage"
@@ -63,18 +65,18 @@ func run() -> void:
 		elif family == "hydra":
 			actions.erase(2)
 			actions.merge({11: "Pillage", 12: "Attack2", 18: "Fidget2", 2: "Death"})
-		elif family in ["aos_creatures", "aos_aliases", "aos_mound"]:
+		elif family in ["aos_creatures", "aos_aliases", "aos_mound", "recovered_late"]:
 			for group: int in actions.keys():
 				if not actor.animator.has_animation(actions[group]):
 					actions.erase(group)
-			assert(actions.has(4) and actions.has(10) and actions.has(2))
+			assert("Attack" in actions.values() and "Hit" in actions.values() and "Death" in actions.values())
 		for group: int in actions:
 			var packet := PackedByteArray([0x6e])
 			packet.append_array(Wire.uint_be(serial, 4))
 			packet.append_array(PackedByteArray([0, group, 0, 5, 0, 1, 1, 0, 0]))
 			game._handle(packet)
 			assert(avatar.receive_native_action(game.last_mobile_actions[serial]), family + " group " + str(group))
-			assert(actor.current_clip == actions[group])
+			assert(actor.current_clip == actions[group], "%s group %d expected %s, got %s" % [record.kind, group, actions[group], actor.current_clip])
 		for hue in [0, 0x8fd if family == "hydra" else 53, 0x8035]:
 			entity.hue = hue
 			avatar.apply_server_appearance(entity, [])
@@ -87,5 +89,5 @@ func run() -> void:
 			cadaver.free()
 		avatar.free()
 		game.free()
-		print(str(record.kind) if family in ["aos_creatures", "aos_aliases", "aos_mound"] else family, " passed ", actions.size(), " decoded action routes and three static corpse hues")
+		print(str(record.kind) if family in ["aos_creatures", "aos_aliases", "aos_mound", "recovered_late"] else family, " passed ", actions.size(), " decoded action routes and three static corpse hues")
 	quit()
