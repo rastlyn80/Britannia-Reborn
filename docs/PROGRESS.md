@@ -1,3 +1,15 @@
+# Shadow Wisp shared-asset integration - 3 November 2026
+
+Required scripts/verify.ps1 completed with exit0 (work/creatures/shadow-wisp/root-verify.log), including the actual public Shadow distribution676checks,71server-extension/84overlay checks and successful world startup. Existing baseline diagnostics/two nullable warnings remain. No live login path changed.
+
+ShadowWisp165 now has a normal public client route, sharing the project's GPL-owned Wisp scene, seven-bone rig, eight surfaces and sixteen authored action categories. A scoped renderer applies 0.85 proportions and a dark-core/violet-rim shader. Wild hue0, familiar0x901 and full/partial server tinting remain distinct. The original Wisp58 record and scene are unchanged. No proprietary art was added to Git; exact native source hashes and the donor scene/recipe remain traceable. The native LightSource0x1647 is not represented as a weapon.
+
+Actual normal-registry GPU checks pass323checks,512complete-skin samples,36finite-hover cases with selection/nameplates and three visibly frozen static corpses. Clean-package tests reuse the existing Wisp assertions and run without private art, game inputs or a server. Preparation/publication checks pin the native checkout, semantic donor record, scene, runtime and current evidence. Inherited Wisp live-test wording was replaced with Shadow-specific constructor-only limits; no new live witness is claimed. Evidence: work/creatures/shadow-wisp/.
+
+Model routing is192/279bounded native bodies(68.8%); live body witnesses remain168/279(60.2%). The corpse index has229body keys, including earlier explicitly client-only keys. The generic action ledger has3496/4634routable protocol slots; this is route density, not original choreography completion. Familiar AI/ownership/mana restoration, continuous terrain/cadence, final art/LOD/crowds and broader native tests remain separate work.
+
+Throughput: group compatible models and shared-rig variants, reuse unchanged shared evidence, use focused visual checks for changed appearance/scale, quarantine exceptional source files and run the required broad regression once per integration batch. Do not hold compatible families behind one malformed source or repeat unchanged full regressions. Preserve occurrence ordering, production/concurrent work and all exclusions. The full creature goal remains active.
+
 # Six reviewed creature forms enter normal client use - 3 November 2026
 
 LavaSerpent90, BloodElemental159, Mummy154, RedSolenWarrior782, BlackSolenWarrior806 and IceElemental161 now use their checked presentations through the normal client registry. All143previous local source records remain unchanged. Client model routing is191/279bounded native bodies(68.5%); positive live body witnesses remain168/279(60.2%). These metrics do not certify every constructor/action/family complete. The default corpse catalogue now passes1677checks for228body keys, including earlier explicitly client-only keys.

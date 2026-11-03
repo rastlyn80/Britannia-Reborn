@@ -204,6 +204,10 @@ if (Test-Path "$root/Viewer/Art/Creatures/Wisp/wisp.scn") {
   & python -B "$root/scripts/test-wisp-distribution.py"
   if ($LASTEXITCODE) {throw 'Public Wisp rig/actions, deterministic energy phase and static corpse distribution failed'}
 }
+if ((Get-Content "$root/Viewer/Art/Creatures/index.json" -Raw | ConvertFrom-Json).entries.kind -contains 'shadow_wisp') {
+  & python -B "$root/scripts/test-shadow-wisp-distribution.py"
+  if ($LASTEXITCODE) {throw 'Public Shadow Wisp shared rig/actions, native hue flags and static corpse distribution failed'}
+}
 if (Test-Path "$root/Viewer/Art/Creatures/Air/air-elemental.scn") {
   & python -B "$root/scripts/test-air-distribution.py"
   if ($LASTEXITCODE) {throw 'Public AirElemental rig/actions, spectral hue and static dust distribution failed'}
