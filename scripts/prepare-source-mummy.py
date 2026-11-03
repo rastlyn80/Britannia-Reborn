@@ -86,7 +86,7 @@ def prepare(cabinet_members=False):
                   source_cabinets=pins['cabinets'], input_manifest_sha256=sha(MANIFEST),
                   source_tools_sha256=tools,
                   assets_sha256=assets, cabinet_members_verified=cabinet_members,
-                  runtime_sha256={name:sha(ROOT/'Viewer/Presentation'/name) for name in ['SourceMummyVisual.gd','SourceMummySupport.gd','SourceMageVisual.gd','SourceMageSupport.gd','MeasuredCreatureVisual.gd','MeasuredCreatureSupport.gd','SourceBipedVisual.gd','SourceBipedSupport.gd','CreatureVisual.gd','SourceMountContact.gd','SourceGroundLookup.gd']},
+                  runtime_sha256={name:sha(ROOT/'Viewer/Presentation'/name) for name in ['SourceMummyVisual.gd','SourceRenderedPose.gd','SourcePoseEntry.gd','SourceMummySupport.gd','SourceMageVisual.gd','SourceMageSupport.gd','MeasuredCreatureVisual.gd','MeasuredCreatureSupport.gd','SourceBipedVisual.gd','SourceBipedSupport.gd','CreatureVisual.gd','SourceMountContact.gd','SourceGroundLookup.gd']},
                   scope=pins['scope'], rights=pins['rights'])
     folder=ART/'mummies'; folder.mkdir(parents=True, exist_ok=True)
     assert tools == {name:sha(ROOT/'scripts'/name) for name in TOOLS}

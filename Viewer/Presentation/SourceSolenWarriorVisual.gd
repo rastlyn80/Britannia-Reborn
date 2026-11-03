@@ -4,6 +4,7 @@ signal landmarks_changed
 var model_anchor:=Vector3.ZERO
 var death_entry_seconds:=0.
 var death_entry_position:=Vector3.ZERO
+var rendered_pose:=preload("res://Presentation/SourceRenderedPose.gd").new()
 func update_landmarks() -> void:
 	super.update_landmarks()
 	if not influence_bounds.is_empty():landmarks_changed.emit()
@@ -20,6 +21,7 @@ func _ready() -> void:
 	contact.free();contact=preload("res://Presentation/SourceSolenWarriorSupport.gd").new();skeleton.add_child(contact)
 	contact.model_root=model;contact.flat_basis=source_model_basis.scaled_local(default_model_scale);contact.animator=animator
 	contact.configure(model.find_children("*","MeshInstance3D",true,false)[0],false);contact.modification_processed.connect(update_landmarks)
+	contact.modification_processed.connect(func():rendered_pose.capture(skeleton))
 	model_anchor=model.position
 	animator.mixer_applied.connect(apply_warrior_ground)
 	apply_warrior_ground()
@@ -47,11 +49,12 @@ func begin_death_from(source: Node3D) -> float:
 	# Sample the original target before building private entry tracks for all
 	# bones and the separate source placement node, including omitted channels.
 	var displayed_position: Vector3=source.model.position
-	var source_rig: Skeleton3D=source.skeleton
+	var source_rig: Skeleton3D=source.rendered_pose.source(source.skeleton)
 	var displayed_space: Transform3D=source.source_space.transform
 	animator.stop();animator.speed_scale=1.;play("Death",0.);animator.seek(0.,true);animator.advance(0.);skeleton.force_update_all_bone_transforms()
 	var path:=animator.get_node(animator.root_node).get_path_to(source_space)
 	var animation:=preload("res://Presentation/SourcePoseEntry.gd").build(animator,skeleton,source_rig,{path:displayed_space})
+	if source_rig!=source.skeleton:source_rig.free()
 	var library:=animator.get_animation_library("").duplicate()
 	animator.stop(true);animator.remove_animation_library("");animator.add_animation_library("",library);library.remove_animation("Death");library.add_animation("Death",animation)
 	death_entry_seconds=.08;death_entry_position=displayed_position

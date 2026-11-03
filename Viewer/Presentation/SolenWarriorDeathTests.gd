@@ -31,7 +31,7 @@ func run() -> void:
 	var prep: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(prep_path));var ground_pins: Dictionary={}
 	for row: Dictionary in prep.models:ground_pins[str(row.ground_lookup)]=FileAccess.get_sha256(str(row.ground_lookup))
 	var runtime: Dictionary={}
-	for name in ["SolenWarriorDeathTests.gd","CreatureDeathTests.gd","CreatureDeaths.gd","SourceSolenWarriorVisual.gd","SourceSolenWarriorSupport.gd","SourcePoseEntry.gd","SourceSolenVisual.gd","SourceSolenSupport.gd","SourceSolenMaterial.gd","SourceSolenSurface.gdshader","SmallSnakeVisual.gd","MeasuredCreatureSupport.gd","CreatureVisual.gd","SourceMountContact.gd","SourceGroundLookup.gd","SkinGeometry.gd","HumanAvatar.gd","CorpseModels.gd","WorldItems.gd","CreatureRegistry.gd"]:runtime[name]=FileAccess.get_sha256("res://Presentation/"+name)
+	for name in ["SolenWarriorDeathTests.gd","CreatureDeathTests.gd","CreatureDeaths.gd","SourceSolenWarriorVisual.gd","SourceRenderedPose.gd","SourceSolenWarriorSupport.gd","SourcePoseEntry.gd","SourceSolenVisual.gd","SourceSolenSupport.gd","SourceSolenMaterial.gd","SourceSolenSurface.gdshader","SmallSnakeVisual.gd","MeasuredCreatureSupport.gd","CreatureVisual.gd","SourceMountContact.gd","SourceGroundLookup.gd","SkinGeometry.gd","HumanAvatar.gd","CorpseModels.gd","WorldItems.gd","CreatureRegistry.gd"]:runtime[name]=FileAccess.get_sha256("res://Presentation/"+name)
 	var game:=Game.new();root.add_child(game);game.set_process(false);var arena:=Arena.new();root.add_child(arena);var items:=Items.new();arena.add_child(items);var deaths:=Deaths.new();arena.add_child(deaths);deaths.configure(arena,game,items)
 	var records: Array=[];var origin:=Vector3(3.,.25,-4.)
 	for row: Dictionary in prep.models:

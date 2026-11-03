@@ -3,6 +3,7 @@ extends "res://Presentation/SourceMageVisual.gd"
 var floor_curves: Dictionary={}
 var death_entry_seconds:=0.
 var death_entry_position:=Vector3.ZERO
+var rendered_pose:=preload("res://Presentation/SourceRenderedPose.gd").new()
 func _ready() -> void:
 	floor_curves=preload("res://Presentation/SourceGroundLookup.gd").load_curves(str(entry.ground_lookup),treatment)
 	super._ready()
@@ -10,6 +11,7 @@ func _ready() -> void:
 	contact.include_toe_descendants=true;contact.model_root=model;contact.flat_basis=source_model_basis.scaled_local(default_model_scale)
 	contact.configure(model.find_children("*","MeshInstance3D",true,false)[0],false)
 	contact.modification_processed.connect(update_landmarks);support_skin=contact.full_skin
+	contact.modification_processed.connect(func():rendered_pose.capture(skeleton))
 	apply_blend_ground()
 func apply_equipment_surface() -> void:
 	# Mummy bandages belong to its original body, not the mage dye slots.
@@ -41,21 +43,14 @@ func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
 	apply_blend_ground()
 func begin_death_from(source: Node3D) -> float:
-	# A private clip enters from the displayed source pose, including terrain IK.
-	# Source keys retain their timing after the short entry; shared art is intact.
 	death_entry_seconds=.08;death_entry_position=source.model.position
-	var original: Animation=animator.get_animation("Death");var animation:=original.duplicate(true) as Animation
-	animation.length=original.length+death_entry_seconds
-	var source_rig: Skeleton3D=source.skeleton
-	for track in animation.get_track_count():
-		for key in range(animation.track_get_key_count(track)-1,-1,-1):animation.track_set_key_time(track,key,animation.track_get_key_time(track,key)+death_entry_seconds)
-		var path:=animation.track_get_path(track)
-		if path.get_subname_count()==0:continue
-		var bone:=source_rig.find_bone(str(path.get_subname(0)))
-		if bone<0:continue
-		if animation.track_get_type(track)==Animation.TYPE_POSITION_3D:animation.position_track_insert_key(track,0.,source_rig.get_bone_pose_position(bone))
-		elif animation.track_get_type(track)==Animation.TYPE_ROTATION_3D:animation.rotation_track_insert_key(track,0.,source_rig.get_bone_pose_rotation(bone))
-		elif animation.track_get_type(track)==Animation.TYPE_SCALE_3D:animation.scale_track_insert_key(track,0.,source_rig.get_bone_pose_scale(bone))
+	var source_rig: Skeleton3D=source.rendered_pose.source(source.skeleton)
+	var source_space:=model.find_child("SourceSpace",true,false) as Node3D
+	var displayed_space: Transform3D=source.model.find_child("SourceSpace",true,false).transform
+	animator.stop();animator.speed_scale=1.;play("Death",0.);animator.seek(0.,true);animator.advance(0.);skeleton.force_update_all_bone_transforms()
+	var path:=animator.get_node(animator.root_node).get_path_to(source_space)
+	var animation:=preload("res://Presentation/SourcePoseEntry.gd").build(animator,skeleton,source_rig,{path:displayed_space})
+	if source_rig!=source.skeleton:source_rig.free()
 	var library: AnimationLibrary=animator.get_animation_library("").duplicate()
 	animator.stop(true);animator.remove_animation_library("");animator.add_animation_library("",library);library.remove_animation("Death");library.add_animation("Death",animation)
 	current_clip="Death";dead=true;action_remaining=animation.length;contact.enabled=false;blend_remaining=death_entry_seconds+.04

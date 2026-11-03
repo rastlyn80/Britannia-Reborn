@@ -21,7 +21,7 @@ func run() -> void:
 	var ground_path:="res://local-art/creatures/walking_dead_mummy-ground.json";var ground_pin:=FileAccess.get_sha256(ground_path)
 	var prep: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(prep_path));Registry.entries[154]=prep.models[0]
 	var runtime: Dictionary={}
-	for name in ["MummyRuntimeTests.gd","SourceMummyVisual.gd","SourceMummySupport.gd","SourceMageVisual.gd","SourceMageSupport.gd","MeasuredCreatureVisual.gd","MeasuredCreatureSupport.gd","SourceBipedVisual.gd","SourceBipedSupport.gd","CreatureVisual.gd","SourceMountContact.gd","SourceGroundLookup.gd","SkinGeometry.gd","HumanAvatar.gd","HumanActions.gd","CorpseModels.gd","MountVisual.gd","CreatureRegistry.gd","LegacyAvatar.gd","OstardVisual.gd","OstardSurface.gdshader","HumanHue.gd"]:runtime[name]=FileAccess.get_sha256("res://Presentation/"+name)
+	for name in ["MummyRuntimeTests.gd","SourceMummyVisual.gd","SourceRenderedPose.gd","SourcePoseEntry.gd","SourceMummySupport.gd","SourceMageVisual.gd","SourceMageSupport.gd","MeasuredCreatureVisual.gd","MeasuredCreatureSupport.gd","SourceBipedVisual.gd","SourceBipedSupport.gd","CreatureVisual.gd","SourceMountContact.gd","SourceGroundLookup.gd","SkinGeometry.gd","HumanAvatar.gd","HumanActions.gd","CorpseModels.gd","MountVisual.gd","CreatureRegistry.gd","LegacyAvatar.gd","OstardVisual.gd","OstardSurface.gdshader","HumanHue.gd"]:runtime[name]=FileAccess.get_sha256("res://Presentation/"+name)
 	var hues_pin:=FileAccess.get_sha256("res://hues.local.json");var artwork_pin:=FileAccess.get_sha256("res://Network/Artwork.gd")
 	var origin:=Vector3(3.25,.17,-4.5);var actor:=Avatar.new();actor.initial_body=154
 	var plate:=Label3D.new();plate.name="Nameplate";plate.text="Mummy";actor.add_child(plate)

@@ -45,7 +45,7 @@ func run() -> void:
 	var prep_path:="res://local-art/creatures/mummies/preparation.json";var prep_pin:=FileAccess.get_sha256(prep_path)
 	var ground_path:="res://local-art/creatures/walking_dead_mummy-ground.json";var ground_pin:=FileAccess.get_sha256(ground_path)
 	var prep: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(prep_path));var entry: Dictionary=prep.models[0];var runtime: Dictionary={}
-	for name in ["MummyTerrainTests.gd","SourceMummyVisual.gd","SourceMummySupport.gd","SourceMageVisual.gd","SourceMageSupport.gd","MeasuredCreatureVisual.gd","MeasuredCreatureSupport.gd","SourceBipedVisual.gd","SourceBipedSupport.gd","CreatureVisual.gd","SourceMountContact.gd","SourceGroundLookup.gd","SkinGeometry.gd","OstardVisual.gd"]:runtime[name]=FileAccess.get_sha256("res://Presentation/"+name)
+	for name in ["MummyTerrainTests.gd","SourceMummyVisual.gd","SourceRenderedPose.gd","SourcePoseEntry.gd","SourceMummySupport.gd","SourceMageVisual.gd","SourceMageSupport.gd","MeasuredCreatureVisual.gd","MeasuredCreatureSupport.gd","SourceBipedVisual.gd","SourceBipedSupport.gd","CreatureVisual.gd","SourceMountContact.gd","SourceGroundLookup.gd","SkinGeometry.gd","OstardVisual.gd"]:runtime[name]=FileAccess.get_sha256("res://Presentation/"+name)
 	var records: Array=[];var misses: Array=[];var total_poses:=0;var max_skin:=0.;var max_foot:=0.
 	for plane: Dictionary in [{"name":"flat","height":0.,"tilt":Vector3.ZERO},{"name":"forward","height":.25,"tilt":Vector3(.16,0.,0.)},{"name":"cross","height":-.15,"tilt":Vector3(0.,0.,-.14)}]:
 		var basis:=Basis.from_euler(plane.tilt);var normal:=basis.y;var origin:=Vector3(11.,plane.height,-7.)

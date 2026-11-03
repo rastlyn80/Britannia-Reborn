@@ -59,7 +59,7 @@ def main(runtime=False,terrain=False,death=False,fidelity=False):
         print('SOLEN WARRIOR RUNTIME:actual candidate avatar,120 timing requests/600 poses/eight raw-hue static corpses; exact source and import pins. No terrain/native/render acceptance.')
     if terrain:
         p=read(ROOT/'work/creatures/solen-warriors/terrain-tests.json')
-        assert p['checks']==232686 and p['failures']==0 and p['poses']==2880 and len(p['cases'])==96 and not p['misses']
+        assert p['checks']==232687 and p['failures']==0 and p['poses']==2880 and len(p['cases'])==96 and not p['misses']
         assert p['maximum_skin_error_m']<.008 and p['maximum_foot_error_m']<.008
         assert p['preparation_sha256']==sha(ART/'solen_warriors/preparation.json')
         for name,digest in p['runtime_sha256'].items():assert sha(ROOT/'Viewer/Presentation'/name)==digest,name
@@ -68,17 +68,17 @@ def main(runtime=False,terrain=False,death=False,fidelity=False):
         assert {r['plane'] for r in p['cases']}=={'flat','forward','cross'}
         assert {(r['fps'],r['rate'],r['phase']) for r in p['cases']}=={(30,.65,.31),(90,1.65,.74)}
         assert {tuple(r['pair']) for r in p['cases']}=={('Idle','Walk'),('Walk','Run'),('Run','Walk'),('Run','Attack'),('Run','Attack2'),('Run','Attack3'),('Run','Fidget2'),('Run','Death')}
-        print('SOLEN WARRIOR TERRAIN:232686checks/2880skins/96finite-plane cases; independent six-foot source flight/stance and complete skin clearance. Two declared rate/fps/phase combinations; no universal terrain/native/render acceptance.')
+        print('SOLEN WARRIOR TERRAIN:232687checks/2880skins/96finite-plane cases; independent six-foot source flight/stance and complete skin clearance. Two declared rate/fps/phase combinations; no universal terrain/native/render acceptance.')
     if death:
         p=read(ROOT/'work/creatures/solen-warriors/death-tests.json')
-        assert p['checks']==8520 and p['failures']==0 and len(p['cases'])==72
+        assert p['checks']==8521 and p['failures']==0 and len(p['cases'])==72
         assert p['preparation_sha256']==sha(ART/'solen_warriors/preparation.json')
         for name,digest in p['runtime_sha256'].items():assert sha(ROOT/'Viewer/Presentation'/name)==digest,name
         for name,digest in p['ground_measurement_sha256'].items():assert sha(ROOT/'Viewer'/name.removeprefix('res://'))==digest,name
         assert {(r['body'],r['from'],r['hue'],r['direction'],r['with_corpse']) for r in p['cases']}=={(b,c,h,d,corpse) for b in [782,806] for c in ['Walk','Run','Attack3'] for h in [53,0x8035,0x453] for d in [0,5] for corpse in [False,True]}
         assert all(r['entry_s']==.08 and r['source_duration_s']>0. and r['first_skin_vertices']>100 and r['first_skin_error_m']<.00001 and r['minimum_body_gap_m']>-.008 and r['maximum_collapse_error_m']<.008 for r in p['cases'])
         assert sum(r['altered_source'] for r in p['cases'])==2
-        print('SOLEN WARRIOR DEATH:8520checks/72client-decoded death/removal cases; complete first skin/all44bones/placement/scale,80ms entry, original collapse and final native static corpse handoff. No actual native server/render/death-slope acceptance.')
+        print('SOLEN WARRIOR DEATH:8521checks/72client-decoded death/removal cases; complete first skin/all44bones/placement/scale,80ms entry, original collapse and final native static corpse handoff. No actual native server/render/death-slope acceptance.')
     if fidelity:
         p=read(ROOT/'work/creatures/solen-warriors/import-fidelity.json');c=read(ROOT/'work/creatures/solen-warriors/import-settings.json')
         assert p['checks']==1244 and p['failures']==0 and len(p['records'])==780 and len(p['meshes'])==6
