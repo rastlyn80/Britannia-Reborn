@@ -120,6 +120,7 @@ public static class EquineFixtures
         45 => new Bull { Body = 0xE9 },
         46 => new SeaHorse(),
         47 => new Beetle(),
+        48 => new FireBeetle(),
         _ => throw new ArgumentOutOfRangeException(nameof(index))
     };
 
@@ -137,7 +138,7 @@ public static class EquineFixtures
         else if (command == "prepare" && args.Length > 1)
         {
             var index = args.GetInt32(1);
-            if (index < 0 || index > 47) return;
+            if (index < 0 || index > 48) return;
             Cleanup(owner);
             if (index is >= 42 and <= 45 && !PrepareBovineArena(owner))
             {
@@ -192,7 +193,7 @@ public static class EquineFixtures
         else if (command == "action" && args.Length > 1 && Animals.TryGetValue(owner, out var subject))
         {
             var action = args.GetInt32(1);
-            if (subject is Beetle ? action is 5 or 6 or 7 or 9 or 10 : action is 3 or 5 or 11)
+            if (subject is Beetle or FireBeetle ? action is 5 or 6 or 7 or 9 or 10 : action is 3 or 5 or 11)
             {
                 subject.Animate(action, 6, 1, true, false, 0);
             }

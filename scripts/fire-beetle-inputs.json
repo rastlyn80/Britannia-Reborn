@@ -1,0 +1,157 @@
+{
+  "schema": 1,
+  "server_pin": "ab59efea86fd9e399d261bed9d188ab4d95ad4c2",
+  "scope": "Fire Beetle body 169, native mount item 0x3E95. ML model and atlas, linked body 791 AOS motions.",
+  "models": [
+    {
+      "kind": "giant_beetle_fire",
+      "expected_bodies": [
+        169
+      ],
+      "source_url": "https://zuluarchive.com/static/files/uoml_setup.exe",
+      "containers": [
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client8.cab",
+          "bytes": 5793154,
+          "sha256": "155fe820d8c0e2a08650f81ec037829bed49aeca74efd2a07479a907287a1afc"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client10.cab",
+          "bytes": 33956665,
+          "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client7.cab",
+          "bytes": 20805,
+          "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data1.hdr",
+          "sha256": "bc7c394bab19ece161bdd482bd21d16f946d4f04eb64aca67d6c8c45ffa79587",
+          "bytes": 624745
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data1.cab",
+          "sha256": "78110fcad7a3bf0d459c6f58f30764064fa2868dd2eea92ffc3983390846ce42",
+          "bytes": 664374
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data2.cab",
+          "sha256": "247b9305c2f6d3af18c2c5bc7018d0d8ae27b5ae394187b6ffccbc9d174db95d",
+          "bytes": 794818869
+        }
+      ],
+      "model_table": {
+        "path": "work/creatures/late-client-inputs/model-table/Client/Models.txt",
+        "sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099",
+        "bytes": 81498
+      },
+      "files": [
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/giant_beetle_attack1.grn",
+          "member": "uoaos/UOTD/Models/Animals/giant_beetle_attack1.grn",
+          "sha256": "2644b8f25b491ab8fae0f02b3de82164d803d03206a9c75fc29578dd4644678b",
+          "bytes": 108900,
+          "cabinet": "client8.cab"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/giant_beetle_attack2.grn",
+          "member": "uoaos/UOTD/Models/Animals/giant_beetle_attack2.grn",
+          "sha256": "6d93df89692e6a29c8856e5b19f0dafc797a30852af0139e436bb1af155e7b87",
+          "bytes": 114148,
+          "cabinet": "client8.cab"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/giant_beetle_attack3.grn",
+          "member": "uoaos/UOTD/Models/Animals/giant_beetle_attack3.grn",
+          "sha256": "fd142663aab40de0c0686636fd918501aa9f4b3d0cf6123007dbf5350b266ce5",
+          "bytes": 90496,
+          "cabinet": "client8.cab"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/giant_beetle_die1.grn",
+          "member": "uoaos/UOTD/Models/Animals/giant_beetle_die1.grn",
+          "sha256": "2883f8e9aecbbcd86c024e4f7a27dfb691f60d53c4f18ff8ef29c5388c5dd524",
+          "bytes": 149080,
+          "cabinet": "client8.cab"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/giant_beetle_fidget.grn",
+          "member": "uoaos/UOTD/Models/Animals/giant_beetle_fidget.grn",
+          "sha256": "d379baacf4276a7817c4bedc83330c947518a051225b853a395d4a511a63b262",
+          "bytes": 99340,
+          "cabinet": "client8.cab"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/giant_beetle_fidget2.grn",
+          "member": "uoaos/UOTD/Models/Animals/giant_beetle_fidget2.grn",
+          "sha256": "ffe3df46a6dc4d5f130c353effeb2284b6a768276343607feadde9e679bbe96d",
+          "bytes": 88204,
+          "cabinet": "client8.cab"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/giant_beetle_gethit.grn",
+          "member": "uoaos/UOTD/Models/Animals/giant_beetle_gethit.grn",
+          "sha256": "0632cbf8d4c8c1308149d0167fdc7eb316cee13c0dc2a0020a0f4f04cad8377a",
+          "bytes": 83092,
+          "cabinet": "client8.cab"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/giant_beetle_idle.grn",
+          "member": "uoaos/UOTD/Models/Animals/giant_beetle_idle.grn",
+          "sha256": "44c90492f9b52b09efca875ddd16ff7d0fd355e9dc547c31d180dff07e25a2fa",
+          "bytes": 87620,
+          "cabinet": "client8.cab"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/giant_beetle_run.grn",
+          "member": "uoaos/UOTD/Models/Animals/giant_beetle_run.grn",
+          "sha256": "460950d94941a9e63970879eb96d3ff935a168978e28424d17ad1b8dc5856859",
+          "bytes": 70220,
+          "cabinet": "client8.cab"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/giant_beetle_walk.grn",
+          "member": "uoaos/UOTD/Models/Animals/giant_beetle_walk.grn",
+          "sha256": "37cddeb688ac393f00104312a1fcff68c727413762114c4fde4544692316a2aa",
+          "bytes": 92156,
+          "cabinet": "client8.cab"
+        },
+        {
+          "path": "work/creatures/giant-beetle/fire-source/Client/Models/Animals/Giant_Beetle_Fire_LOD2.grn",
+          "sha256": "51b03fec571d5c97ebbfc726fee24a2e517a9dff2f62be330430329b476d5678",
+          "bytes": 127528,
+          "member": "uoaos/UOTD/Models/Animals/giant_beetle_fire_lod2.grn",
+          "actual_member": "Client/Models/Animals/Giant_Beetle_Fire_LOD2.grn"
+        },
+        {
+          "path": "work/creatures/giant-beetle/fire-source/Client/Models/Maps/Giant_Beetle_Fire_256.tga",
+          "sha256": "3085b6ed6c80fa89e8dd3590764c5ba4f5df5421308edfbb9abf2e169e6d1f70",
+          "bytes": 196652,
+          "member": "uoaos/UOTD/Models/Maps/giant_beetle_fire_256.tga",
+          "actual_member": "Client/Models/Maps/Giant_Beetle_Fire_256.tga"
+        }
+      ],
+      "bones": 51,
+      "triangles": 1102,
+      "source_clips": 10,
+      "levels": 1,
+      "normal_offset_m": 0.0015,
+      "opacity": "opaque",
+      "limb_support": "plane",
+      "mount_item": 16021,
+      "classic_action_categories": {
+        "10": "Fidget2"
+      },
+      "presentation_script": "res://Presentation/SourceFireBeetleVisual.gd",
+      "original_animation_body": 791,
+      "original_scale": [
+        1,
+        1,
+        1
+      ],
+      "default_native_hue": 1161
+    }
+  ],
+  "rights": "Original and derived artwork stays local."
+}

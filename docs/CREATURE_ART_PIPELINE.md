@@ -1,3 +1,9 @@
+# Fire Beetle source and verification
+
+Body 169 uses its original Mondain's Legacy mesh and opaque RGB atlas with body 791's ten linked animations. The model table keeps scale 1.0 for body 169 and 1.42 for body 791. The Fire Beetle fitting scales the saddle and rein anchors by the same ratio and keeps the stirrups sized for a human. The manifest identifies the actual InstallShield members separately from the converter lookup names.
+
+Use `python scripts/prepare-fire-beetle.py`, then run it with `--check-skins` and `--check-actions`. Run `CandidatePresentationBatchTests.gd` with `--preparation=giant_beetle_fire/preparation.json` and `CreatureAppearanceTests.gd` with `--family=giant_beetle_fire`. Set their output folders under `work/creatures/giant-beetle/fire-final` to `presentation` and `appearance`, and capture the corresponding logs there. Run `python scripts/accept-fire-beetle.py --write-riding-test` and run the generated `FireBeetleRidingTests.gd` with Vulkan, saving the log as `riding.log` in the same folder. The publisher checks the local evidence before adding body 169. Native validation uses `scripts/test-horses.ps1 -Live -SkipContact -FireBeetle`.
+
 # Crystal Lattice source recovery
 
 Use scripts/prepare-crystal-lattice.py to verify pinned sources and bake local scenes, then run its --check-skins and --check-actions modes. Run CandidatePresentationBatchTests and CreatureAppearanceTests with crystal_lattice/preparation.json and write evidence under work/creatures/crystal-lattice/final. Use scripts/accept-crystal-lattice.py --publish and --check-active for local registration. The exact GetHit hash gates the empty-track rejection. The two authored replacement clips are Hit and Cast. Source metadata preserves both table identities and the published local route selects body 123.

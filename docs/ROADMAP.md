@@ -1,3 +1,7 @@
+# After Fire Beetle activation
+
+Fire Beetle body 169 is active locally and has positive native evidence. The refreshed full project regression passed, including world startup. Ethereal Beetle uses item 0x3E97 and a separate original mesh and translucent 128×128 atlas. Both members were freshly extracted and matched their cached source hashes. The Ethereal Beetle passed a private 134-check mounted trial with a blended spectral material that uses the original atlas alpha. Item-only production routing, spectral dye checks and a native cast/dismount test remain. Continue the occurrence queue and retain Giant Beetle pack and Fire Beetle forge interaction as separate cases.
+
 # After Giant Beetle activation
 
 Body 791 passed the final render and rider checks and the isolated 96-check native lifecycle. Continue Fire Beetle and the item-only Ethereal Beetle, preserving their separate atlases and identities. A private Fire Beetle conversion retained all ten motions on its own 51-joint, 1,102-triangle mesh at the source table's body 169 scale. Dense bake, material and mounted validation remain open. Add Giant Beetle pack interaction evidence separately. Continue the occurrence queue for remaining loose creatures.

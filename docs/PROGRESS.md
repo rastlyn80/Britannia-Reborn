@@ -1,3 +1,9 @@
+# Fire Beetle body 169
+
+Body 169 and mounted item 0x3E95 now use the separate original Fire Beetle mesh and atlas with ten linked body 791 clips. The 51-joint rig and 1,102 source triangles produced 4,408 refined triangles. The revised saddle and rein sockets follow the original smaller scale. Final checks covered 56 skin cases, nine action cases, 92 rendered presentation cases, 13 appearance cases and 128 riding cases.
+
+The isolated two-client native run passed 98 checks, including constructor hue 0x489 on the loose and mounted model, mounted walking and running, full and partial hues, dismount, classic actions and native corpse. Forge use and autonomous combat remain open. Current local coverage is 201 of 279 model routes and 182 of 279 with positive native evidence. The corpse catalogue has 242 keys. After refreshing the dependent mount and creature evidence, the full project regression passed, including world startup.
+
 # Giant Beetle body 791
 
 The normal local client now routes body 791 and mounted item 0x3EBC to the original 51-joint Giant Beetle rig and opaque atlas. All ten original clips are retained, with scoped joint-label repairs and restoration of the missing identity parent. The native animal action group 10 selects the second original fidget. The mounted visual uses measured saddle, stirrup and rein fittings. Mount initialization now assigns the limb-contact basis only to modifiers that support it.
