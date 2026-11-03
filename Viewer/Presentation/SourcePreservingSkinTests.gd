@@ -72,6 +72,8 @@ func run() -> void:
     if corpse!=null:
      check(corpse.find_children("*","Skeleton3D",true,false).is_empty() and corpse.find_children("*","AnimationPlayer",true,false).is_empty(),"Static candidate corpse has no live rig/player")
      check(not corpse.find_children("*","MeshInstance3D",true,false).is_empty(),"Static candidate corpse retains posed geometry")
+     check(corpse.get_meta("graphic_id")==0x2006 and corpse.get_meta("corpse_body")==body and corpse.get_meta("native_hue")==hue,"Native corpse graphic/body/raw hue are preserved")
+     check(int(corpse.get_meta("vertices"))==int(record.saved_scenes.modern.vertices),"Invisible source control surface is excluded from the cadaver")
      corpse.free()
    if old==null:registry.entries.erase(body)
    else:registry.entries[body]=old

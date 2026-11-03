@@ -34,6 +34,14 @@ $env:APPDATA = Join-Path $root '.godot-user'
 $env:LOCALAPPDATA = $env:APPDATA
 & $godot --headless --path "$root\Viewer" --editor --import
 if ($LASTEXITCODE) { throw 'Asset import failed' }
+if (Test-Path "$root/Viewer/local-art/creatures/source_variants/preparation.json") {
+ & python -B "$root/scripts/prepare-source-variants.py" --check-prepared
+ if ($LASTEXITCODE) {throw 'Source variant exact-source/donor/scene audit failed'}
+ $variantSkin = & $godot --headless --path "$root/Viewer" --script res://Presentation/SourceVariantSkinTests.gd 2>&1
+ $variantExit = $LASTEXITCODE
+ $variantSkin | ForEach-Object {Write-Output $_}
+ if ($variantExit -or ($variantSkin | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Exact saved source variants/static corpses failed'}
+}
 if (Test-Path "$root/Viewer/local-art/creatures/source_preserving/preparation.json") {
  & python -B "$root/scripts/prepare-source-preserving.py" --check-prepared
  if ($LASTEXITCODE) {throw 'Source-preserving candidate input/scene audit failed'}

@@ -16,6 +16,11 @@ MANIFEST = ROOT/'scripts/source-preserving-inputs.json'
 WORK = ROOT/'work/creatures/source-preserving'
 ART = ROOT/'Viewer/local-art/creatures'
 RECIPE = ROOT/'Viewer/Presentation/SourcePoseSubdivision.gd'
+RUNTIME = ['SourcePreservingCreatureVisual.gd','SourceVariantPoseEntry.gd',
+           'SourceRenderedPose.gd','SourcePoseEntry.gd','SmallSnakeVisual.gd',
+           'SourcePlaneSoleSupport.gd','MeasuredCreatureSupport.gd',
+           'SourceMountContact.gd','SourceGroundLookup.gd','CreatureVisual.gd',
+           'HumanAvatar.gd','CreatureRegistry.gd','CorpseModels.gd','SkinGeometry.gd']
 
 
 def sha(path):
@@ -122,6 +127,9 @@ def prepare():
         # Dense geometry is baked once below, never rebuilt for every avatar.
         row['pose_subdivision'] = {'levels': source['levels'], 'normal_offset_source_units': source['normal_offset_m']/stats['scale'], 'normal_offset_m': source['normal_offset_m'], 'recipe_sha256': sha(RECIPE)}
         row['family'] = 'source_preserving'
+        row['presentation_script'] = 'res://Presentation/SourcePreservingCreatureVisual.gd'
+        row['presentation_script_sha256'] = sha(ROOT/'Viewer/Presentation/SourcePreservingCreatureVisual.gd')
+        row['limb_support'] = 'quadruped' if kind == 'wild_guar' else 'biped'
         row['source_provenance'] = source
         row['converter_sha256'] = tools
         row['source_opacity'] = source['opacity']
@@ -155,7 +163,7 @@ def prepare():
         data.pop('archive_sha256', None)
         data['source_provenance'] = model['source_provenance']
         path.write_text(json.dumps(data, indent=2)+'\n')
-    report = {'models': models, 'server_pin': pins['server_pin'], 'manifest_sha256': sha(MANIFEST), 'preparer_sha256': sha(Path(__file__)), 'scope': 'Private coarse source inputs for BakeSourcePreserving. Dense triangles are not present until the baker succeeds. No accepted route, source-interpolation, terrain, riding or native-gameplay certificate.'}
+    report = {'models': models, 'server_pin': pins['server_pin'], 'manifest_sha256': sha(MANIFEST), 'preparer_sha256': sha(Path(__file__)), 'runtime_sha256':{name:sha(ROOT/'Viewer/Presentation'/name) for name in RUNTIME}, 'scope': 'Private coarse source inputs for BakeSourcePreserving. Dense triangles are not present until the baker succeeds. No accepted route, source-interpolation, terrain, riding or native-gameplay certificate.'}
     path = WORK/'preparation.json'
     path.write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
     print('SOURCE PRESERVING: prepared', len(models), 'source forms; next run BakeSourcePreserving.gd')
@@ -167,9 +175,11 @@ def check_prepared():
     assert report['manifest_sha256'] == sha(MANIFEST) and report['preparer_sha256'] == sha(Path(__file__))
     assert report['baker_sha256'] == sha(ROOT/'Viewer/Presentation/BakeSourcePreserving.gd')
     assert report['subdivision_sha256'] == sha(RECIPE) and report['server_pin'] == pins['server_pin']
+    assert report['runtime_sha256'] == {name:sha(ROOT/'Viewer/Presentation'/name) for name in RUNTIME}
     assert len(report['models']) == len(pins['models'])
     for row, source in zip(report['models'], pins['models']):
         assert row['source_provenance'] == source and row['kind'] == source['kind']
+        assert row['presentation_script_sha256'] == sha(ROOT/'Viewer/Presentation/SourcePreservingCreatureVisual.gd')
         assert row['converter_sha256'] == converter_pins(pipeline_for(row['kind']))
         assert {body['body'] for body in row['bodies']} == set(source['expected_bodies'])
         assert len(row['clip_sources']) == source['source_clips'] and not row['rejected_source_clips']

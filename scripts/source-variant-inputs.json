@@ -1,0 +1,268 @@
+{
+  "schema": 1,
+  "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+  "rights": "Original/derived artwork is proprietary and stays local; this manifest contains source fingerprints/identifiers, not game data or a redistribution grant.",
+  "source_root": "work/creatures/next-simple/source",
+  "model_table": {
+    "path": "work/creatures/next-simple/source/models.txt",
+    "bytes": 55735,
+    "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a"
+  },
+  "cabinets": [
+    {
+      "path": "work/third-dawn/late-source-research/uoaos-cabinets/client11.cab",
+      "bytes": 35160963,
+      "sha256": "307a6b91c4d5459080d1fe8a74ae4fe0b91dea8a21a2866ca91e7dc7ba92f1a8"
+    },
+    {
+      "path": "work/third-dawn/late-source-research/uoaos-cabinets/client10.cab",
+      "bytes": 33956665,
+      "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9"
+    },
+    {
+      "path": "work/third-dawn/late-source-research/uoaos-cabinets/client7.cab",
+      "bytes": 20805,
+      "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859"
+    }
+  ],
+  "server_pin": "ab59efea86fd9e399d261bed9d188ab4d95ad4c2",
+  "models": [
+    {
+      "kind": "serpents_snake_giant_lava",
+      "body": 90,
+      "family": "lava_serpents",
+      "donor_kind": "serpents_snake_giant_silver",
+      "source_mesh": "Monsters/serpents_snake_giant_lava_lod2.grn",
+      "donor_mesh": "Monsters/serpents_snake_giant_silver_lod2.grn",
+      "source_atlas": "Maps/serpents_snake_giant_lava_v02.tga",
+      "files": [
+        {
+          "path": "work/creatures/next-simple/source/Maps/serpents_snake_giant_lava_v02.tga",
+          "bytes": 16428,
+          "sha256": "47a841650c3f95f5a531e0034d82b6b313883fea8df7d61a1d2b8792fd638c9f"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/serpents_snake_giant_attack1.grn",
+          "bytes": 14252,
+          "sha256": "c1305092877edd08eb2e444847ed5a56f84dc94c86914ce418ac0cb4f343e21c"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/serpents_snake_giant_die1.grn",
+          "bytes": 23824,
+          "sha256": "5aa3735ed777954551739dca4086edbaf75c2ddbf0b5db95b8c8336a687a1192"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/serpents_snake_giant_fidget.grn",
+          "bytes": 16992,
+          "sha256": "7a72c79bf006d3b36345da8cb8e340a9f92ff9909d0ee6db13e2eb93d17d2be7"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/serpents_snake_giant_gethit.grn",
+          "bytes": 13904,
+          "sha256": "bd7fa0e1cdbfcdec0f9df4938682c7afaa359f88027691cfc43cdbcc750a90bd"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/serpents_snake_giant_idle.grn",
+          "bytes": 13728,
+          "sha256": "c5ba94bd9a1b1552e54cc88a17edacc3cf28d4f290883b8b82665a23c8e4ac85"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/serpents_snake_giant_lava_lod2.grn",
+          "bytes": 24708,
+          "sha256": "0d9eb06f1b6e54a268137cdc5ead2b3b941806e370be51e97eaeca946698826e"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/serpents_snake_giant_pillage.grn",
+          "bytes": 14252,
+          "sha256": "c1305092877edd08eb2e444847ed5a56f84dc94c86914ce418ac0cb4f343e21c"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/serpents_snake_giant_run.grn",
+          "bytes": 14488,
+          "sha256": "6632ed2c5f77e1c55d1666311a98999869d87d9bdd54dd19d99725c3584c4511"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/serpents_snake_giant_silver_lod2.grn",
+          "bytes": 24720,
+          "sha256": "cfd08755e27656b93105b84bf21ecb14d040a2812ef0d80803dc551a68db83d7"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/serpents_snake_giant_walk.grn",
+          "bytes": 17700,
+          "sha256": "463bdcfa90330648337fcb7392c5f382e83f4437987f441afbd4dc25075eb9f6"
+        }
+      ],
+      "donor_preparation": {
+        "path": "Viewer/local-art/creatures/silver_serpents/preparation.json",
+        "bytes": 19966,
+        "sha256": "64bce1383b8b7c870d1cbb0280e4149f7009c1fe5b61eb7e67f0d4f0aab8a48a"
+      },
+      "donor_assets": {
+        "original": {
+          "path": "Viewer/local-art/creatures/serpents_snake_giant_silver-original.gltf",
+          "bytes": 389428,
+          "sha256": "80f83cb6585bb84fb72813fe94a027d540e6c7e4ff54769dd68fcb384cba8e25"
+        },
+        "rounded": {
+          "path": "Viewer/local-art/creatures/serpents_snake_giant_silver-rounded.gltf",
+          "bytes": 1186214,
+          "sha256": "94ce80e998c9ea8da385ce11d7945010d07e216d30e14182a89be2e2049364f0"
+        },
+        "modern": {
+          "path": "Viewer/local-art/creatures/serpents_snake_giant_silver-modern.gltf",
+          "bytes": 6248142,
+          "sha256": "02512ae29793c55df227a4bb0addaf30fa9272b552b751c60d5aedc2af387250"
+        }
+      },
+      "presentation_script": "res://Presentation/SourceLavaSerpentVisual.gd",
+      "ground_lookup": {
+        "path": "Viewer/local-art/creatures/serpents_snake_giant_silver-ground.json",
+        "bytes": 1458115,
+        "sha256": "78d7bb57e642a488fc4d3d912ebf4c2e229a53bd527de9049ad98a4666583722"
+      },
+      "donor_imports": {
+        "original": {
+          "path": "Viewer/local-art/creatures/serpents_snake_giant_silver-original.gltf.import",
+          "bytes": 1345,
+          "sha256": "17a2f157fbb3da6652558096d6bfebe91432932d63975bc0cc1cf14262bfb484"
+        },
+        "rounded": {
+          "path": "Viewer/local-art/creatures/serpents_snake_giant_silver-rounded.gltf.import",
+          "bytes": 1341,
+          "sha256": "4666209a16d0071fcad4fac593ccc69cba1f484cebb06599ab21e0a3406bbdd1"
+        },
+        "modern": {
+          "path": "Viewer/local-art/creatures/serpents_snake_giant_silver-modern.gltf.import",
+          "bytes": 1339,
+          "sha256": "31067609dee355637efa53e20cc4a1641fa27441d811c87cc4835de0c7b5766c"
+        }
+      }
+    },
+    {
+      "kind": "elementals_blood_elemental",
+      "body": 159,
+      "family": "blood_elementals",
+      "donor_kind": "elementals_acid_elemental",
+      "source_mesh": "Monsters/elementals_blood_elemental_lod2.grn",
+      "donor_mesh": "Monsters/elementals_acid_elemental_lod2.grn",
+      "source_atlas": "Maps/elementals_blood_elemental.tga",
+      "files": [
+        {
+          "path": "work/creatures/next-simple/source/Maps/elementals_blood_elemental.tga",
+          "bytes": 65580,
+          "sha256": "2de619cef332eb6724ffa2d1cf85c284cb16f446650b193ec8a0a3bdb3c35fb7"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/elementals_acid_elemental_attack1.grn",
+          "bytes": 32284,
+          "sha256": "de44fd962a798dfb4ca1745b42d12d3e85dfcd3abe613f19f04a0db37490c7cd"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/elementals_acid_elemental_attack2.grn",
+          "bytes": 35972,
+          "sha256": "4737df81687340c6daf7f70e2d03094145583d658a60608be43dfd7b15650f70"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/elementals_acid_elemental_attack3.grn",
+          "bytes": 26096,
+          "sha256": "2c08922fc93d737261a70275e5c76fdd1d5a92b11bf22d8d6eeae25eaadbb976"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/elementals_acid_elemental_cast2.grn",
+          "bytes": 32540,
+          "sha256": "a13a24ae5a903a29ae2425e84ec6dfe62f0e711e1035dccb7fb75fb7f397bb44"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/elementals_acid_elemental_die1.grn",
+          "bytes": 48188,
+          "sha256": "86817ec9c02b718a74155c44d309ff8d7d0ecb888d3b24fc2016afd624d99daa"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/elementals_acid_elemental_die2.grn",
+          "bytes": 48188,
+          "sha256": "86817ec9c02b718a74155c44d309ff8d7d0ecb888d3b24fc2016afd624d99daa"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/elementals_acid_elemental_fidget.grn",
+          "bytes": 26184,
+          "sha256": "56861777c1ad77fb86f04cc07473e2bada540bff6548cd82614f12a66513daa8"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/elementals_acid_elemental_gethit.grn",
+          "bytes": 25028,
+          "sha256": "aba8d435e0292356c1563365b67edc66185dd9ed0cab21e4ac8b1f5a5d242a86"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/elementals_acid_elemental_idle.grn",
+          "bytes": 21872,
+          "sha256": "6433c99c11aaed4a358e3e61d1ccee7fcca97dad206851b6919662fbdadabf69"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/elementals_acid_elemental_lod2.grn",
+          "bytes": 38968,
+          "sha256": "09b066cff693bad63b5ab369a9657abf6811de24d7e1c593cf27dfa7d8cfd4b1"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/elementals_acid_elemental_run.grn",
+          "bytes": 26108,
+          "sha256": "00a2af2e1bc702a908cb8882eb6414c8dedd6e7874593286904cac679819116c"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/elementals_acid_elemental_stomp.grn",
+          "bytes": 26184,
+          "sha256": "56861777c1ad77fb86f04cc07473e2bada540bff6548cd82614f12a66513daa8"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/elementals_acid_elemental_walk.grn",
+          "bytes": 32228,
+          "sha256": "eecc24c2a339ddc8d5304ca31ef989e70a8b735efa6fb07e3a3743bc24127802"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/elementals_blood_elemental_lod2.grn",
+          "bytes": 38972,
+          "sha256": "8a95fffc1b7325cb3e21e2ca2564a2fb4d05905891c0bcef4997ed2218771e5a"
+        }
+      ],
+      "donor_preparation": {
+        "path": "Viewer/local-art/creatures/fluid_elementals/preparation.json",
+        "bytes": 45976,
+        "sha256": "1cb38d47610ad7ced38fc2eb51abd73500ee106538e0b13287887d7c74120892"
+      },
+      "donor_assets": {
+        "original": {
+          "path": "Viewer/local-art/creatures/elementals_acid_elemental-original.gltf",
+          "bytes": 840147,
+          "sha256": "be4bacd124b9a599bc4dac68c2cbbf9bbf049957e29952b76a72061b3fba0a8a"
+        },
+        "rounded": {
+          "path": "Viewer/local-art/creatures/elementals_acid_elemental-rounded.gltf",
+          "bytes": 2058254,
+          "sha256": "fbad358eb3395caf6ae3d8324048799a15be01dac10c289f50bea1c390487529"
+        },
+        "modern": {
+          "path": "Viewer/local-art/creatures/elementals_acid_elemental-modern.gltf",
+          "bytes": 2058254,
+          "sha256": "fbad358eb3395caf6ae3d8324048799a15be01dac10c289f50bea1c390487529"
+        }
+      },
+      "presentation_script": "res://Presentation/SourceBloodElementalVisual.gd",
+      "donor_imports": {
+        "original": {
+          "path": "Viewer/local-art/creatures/elementals_acid_elemental-original.gltf.import",
+          "bytes": 1339,
+          "sha256": "fd23095ca45c35ad44f8b5b021f4bba1f7c7d152a494d02f6b01d95fb76db3ca"
+        },
+        "rounded": {
+          "path": "Viewer/local-art/creatures/elementals_acid_elemental-rounded.gltf.import",
+          "bytes": 1336,
+          "sha256": "7ed350e68f4fb689196ed8f5ddedc95a2855a4cf4e22da8da35f2a43482e4bf7"
+        },
+        "modern": {
+          "path": "Viewer/local-art/creatures/elementals_acid_elemental-modern.gltf.import",
+          "bytes": 1332,
+          "sha256": "488177930d7b474d1d05ca60521a399cf13e9cb0f98697a8e9f3eac1bcbb290e"
+        }
+      }
+    }
+  ]
+}

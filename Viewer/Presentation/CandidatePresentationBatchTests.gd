@@ -4,15 +4,21 @@ const Ground=preload("res://Presentation/SourceGroundLookup.gd")
 var viewport: SubViewport
 var camera: Camera3D
 var output:="res://../work/creatures/batch-presentation"
+var preparations:=PackedStringArray(["mummies/preparation.json","solen_warriors/preparation.json","ice_elementals/candidate.json"])
 func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--output="):output=arg.trim_prefix("--output=")
+		if arg.begins_with("--preparation="):preparations=arg.trim_prefix("--preparation=").split(",",false)
 	create_timer(240.).timeout.connect(func():push_error("Candidate presentation batch deadline");quit(1))
 	call_deferred("run")
 func capture() -> Image:
 	for frame in 3:await process_frame
 	await RenderingServer.frame_post_draw
 	return viewport.get_texture().get_image()
+func displayed_skin(visual: Node3D,state: Dictionary) -> PackedVector3Array:
+	var result:=PackedVector3Array()
+	for point: Vector3 in state.skin_local:result.append(visual.skeleton.global_transform*point)
+	return result
 func settle(actor: Node3D,visual: Node3D,clip: String,phase: float) -> void:
 	visual.dead=false;visual.action_remaining=1000.;visual.play(clip,0.)
 	visual.contact.enabled=not clip.begins_with("Death")
@@ -26,12 +32,17 @@ func run() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
 	Registry.load_index();var accepted_path:="res://local-art/creatures/accepted-index.json";var accepted_pin:=FileAccess.get_sha256(accepted_path)
 	var entries: Array=[];var inputs: Dictionary={}
-	for name in ["mummies/preparation.json","solen_warriors/preparation.json","ice_elementals/candidate.json"]:
+	for name in preparations:
 		var path: String="res://local-art/creatures/"+name;inputs[path]=FileAccess.get_sha256(path)
 		var prep: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(path))
 		for entry: Dictionary in prep.models:
 			entries.append(entry);Registry.entries[int(entry.bodies[0].body)]=entry
-			var asset:=Registry.asset_path(entry);inputs[asset]=FileAccess.get_sha256(asset);inputs[asset+".import"]=FileAccess.get_sha256(asset+".import");inputs[str(entry.ground_lookup)]=FileAccess.get_sha256(str(entry.ground_lookup))
+			for treatment: String in ["original","rounded","modern"]:
+				var asset:=Registry.asset_path(entry,treatment);inputs[asset]=FileAccess.get_sha256(asset)
+				if FileAccess.file_exists(asset+".import"):inputs[asset+".import"]=FileAccess.get_sha256(asset+".import")
+			for dependency: String in entry.get("art_dependency_sha256",{}):
+				var dependency_path:="res://local-art/creatures/"+dependency;inputs[dependency_path]=FileAccess.get_sha256(dependency_path)
+			if entry.has("ground_lookup"):inputs[str(entry.ground_lookup)]=FileAccess.get_sha256(str(entry.ground_lookup))
 	viewport=SubViewport.new();viewport.size=Vector2i(960,720);viewport.own_world_3d=true;viewport.transparent_bg=true;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;root.add_child(viewport)
 	preload("res://Presentation/ItemStudio.gd").studio_lights(viewport)
 	camera=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;viewport.add_child(camera)
@@ -56,7 +67,10 @@ func run() -> void:
 			visual.contact.modification_processed.connect(func():
 				modified.serial=int(modified.serial)+1
 				if not bool(modified.capture):return
-				modified.capture=false;modified["box"]=Geometry.deformed_bounds(mesh,rig);modified["skin"]=skin(visual)
+				modified["box"]=Geometry.deformed_bounds(mesh,rig)
+				var local_skin:=PackedVector3Array();var inverse:=rig.global_transform.affine_inverse()
+				for point in skin(visual):local_skin.append(inverse*point)
+				modified["skin_local"]=local_skin
 				modified["minimum_gap"]=Ground.minimum_plane_gap(whole,rig,rig.global_transform,platform.position,platform.basis.y)
 				modified["pick"]=visual.global_transform*(visual.get_meta("pick_bounds") as AABB)
 				modified["collider"]=pick_shape.global_transform*AABB(-pick_shape.shape.size*.5,pick_shape.shape.size)
@@ -70,17 +84,18 @@ func run() -> void:
 				visual.animator.seek(visual.animator.get_animation(clip).length*phase,true)
 				for frame in 3:await process_frame
 				await RenderingServer.frame_post_draw
-				check(int(modified.serial)>previous and not bool(modified.capture) and modified.has("box"),"Fresh final modifier pose reaches the actual render stage")
+				check(int(modified.serial)>previous and modified.has("box"),"Fresh final modifier pose reaches the actual render stage")
 				if not modified.has("box"):continue
 				var bounds: AABB=modified.box
 				check(bounds.position.is_finite() and bounds.size.is_finite() and float(modified.minimum_gap)>-.008,"Complete rendered skin is finite and stays above the real plane within8mm")
 				check((modified.pick as AABB).grow(.001).encloses(bounds) and (modified.collider as AABB).grow(.001).encloses(bounds),"Final render pose is enclosed by actual picking bounds/collider")
 				check(float(modified.plate_y)>bounds.end.y+.015 and actor.position.is_zero_approx(),"Final-pose nameplate clears body and native root is unchanged")
 				camera.size=bounds.size.length()*1.15;camera.position=bounds.get_center()+Vector3(0.,.5,2.)*camera.size;camera.look_at(bounds.get_center())
-				var image:=await capture();image.save_png(folder+"/"+str(plane.name)+"-"+clip.to_lower()+".png")
+				var image:=await capture();modified.capture=false;image.save_png(folder+"/"+str(plane.name)+"-"+clip.to_lower()+".png")
 				rows.append({"kind":entry.kind,"body":body,"plane":plane.name,"clip":clip,"phase":phase,"minimum_gap_m":modified.minimum_gap})
 			await settle(actor,visual,"Run",.37);modified.capture=true;visual.animator.seek(visual.animator.get_animation("Run").length*.37,true);await capture()
-			var displayed: PackedVector3Array=modified.skin
+			modified.capture=false
+			var displayed:=displayed_skin(visual,modified)
 			actor.set_physics_process(false);visual.set_physics_process(false);visual.set_process(false);visual.contact.active=false
 			game.entities[serial]=entity.duplicate(true);arena.avatars[serial]=actor
 			game._handle(packet(serial,corpse_serial))
@@ -100,7 +115,7 @@ func run() -> void:
 	check(accepted_pin==FileAccess.get_sha256(accepted_path),"Rendered candidate batch leaves accepted catalogue unchanged")
 	for path: String in inputs:check(inputs[path]==FileAccess.get_sha256(path),"Prepared input unchanged throughout rendered batch")
 	var runtime: Dictionary={}
-	for file in ["CandidatePresentationBatchTests.gd","IceElementalDeathTests.gd","CreatureDeathTests.gd","CreatureDeaths.gd","ItemStudio.gd","SourceMummyVisual.gd","SourceRenderedPose.gd","SourceMummySupport.gd","SourceSolenWarriorVisual.gd","SourceSolenWarriorSupport.gd","SourceIceElementalVisual.gd","SourceIceElementalSupport.gd","SourceIceElementalMaterial.gd","SourceIceElementalSurface.gdshader","SourcePoseEntry.gd","HumanAvatar.gd","CreatureRegistry.gd","CorpseModels.gd","SourceGroundLookup.gd","SkinGeometry.gd"]:runtime[file]=FileAccess.get_sha256("res://Presentation/"+file)
+	for file in ["SourcePreservingCreatureVisual.gd","SourceVariantPoseEntry.gd","SourceBloodElementalVisual.gd","SourceLavaSerpentVisual.gd","SourceLavaSerpentSurface.gdshader","SourceSilverSerpentVisual.gd","SourceSilverSerpentMaterial.gd","SourceSilverSerpentSurface.gdshader","SourceFluidElementalVisual.gd","SourceFluidElementalMaterial.gd","SourceFluidElementalSurface.gdshader","SourceElementalVisual.gd","SourceElementalMaterial.gd","SourceElementalSurface.gdshader","SourcePlaneSoleSupport.gd","SmallSnakeVisual.gd","MeasuredCreatureVisual.gd","MeasuredCreatureSupport.gd","SourceBipedVisual.gd","SourceBipedSupport.gd","CreatureVisual.gd","SourceMountContact.gd","BirdGroundSupport.gd","FootContact.gd","OstardVisual.gd","HumanHue.gd","HumanActions.gd","CandidatePresentationBatchTests.gd","IceElementalDeathTests.gd","CreatureDeathTests.gd","CreatureDeaths.gd","ItemStudio.gd","SourceMummyVisual.gd","SourceRenderedPose.gd","SourceMummySupport.gd","SourceSolenWarriorVisual.gd","SourceSolenWarriorSupport.gd","SourceIceElementalVisual.gd","SourceIceElementalSupport.gd","SourceIceElementalMaterial.gd","SourceIceElementalSurface.gdshader","SourcePoseEntry.gd","HumanAvatar.gd","CreatureRegistry.gd","CorpseModels.gd","SourceGroundLookup.gd","SkinGeometry.gd"]:runtime[file]=FileAccess.get_sha256("res://Presentation/"+file)
 	var report:={"checks":checks,"failures":failures,"renderer":RenderingServer.get_current_rendering_method(),"samples":rows,"death_entries":death_rows,"inputs_sha256":inputs,"runtime_sha256":runtime,"scope":"Actual registered avatars and post-modifier complete skins/picking/nameplates over two finite planes and one declared source phase per plane/clip, with actual GPU images; decoded fixture0xAF entry from the displayed Run pose. No native-server, exhaustive transitions, ledge/spawn or partial-dye pixel certification."}
 	FileAccess.open(output+"/validation.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"))
 	print("CANDIDATE PRESENTATION BATCH: ",checks," checks / ",failures," failures / ",rows.size()," rendered poses / ",death_rows.size()," death entries")
