@@ -46,8 +46,8 @@ func run() -> void:
 	candidate_pin=FileAccess.get_sha256("res://../work/creatures/live-candidates.json")
 	accepted_pin=FileAccess.get_sha256("res://local-art/creatures/accepted-index.json")
 	if prepared:
-		if not check(family in ["candidate_batch","mummies","solen_warriors","ice_elementals","solen_queens","late_source","hydra"],"Prepared trial uses an explicitly checked family"):return
-		var permitted_bodies: Array={"solen_queens":[783,807],"late_source":[266,267,279],"hydra":[265]}.get(family,[154,782,806,161])
+		if not check(family in ["candidate_batch","mummies","solen_warriors","ice_elementals","solen_queens","late_source","hydra","energy_vortex","champions","fey_champions","crane","deathwatch","tsuki_wolf"],"Prepared trial uses an explicitly checked family"):return
+		var permitted_bodies: Array={"solen_queens":[783,807],"late_source":[266,267,279],"hydra":[265],"energy_vortex":[164],"champions":[172,173],"fey_champions":[174,175,176],"crane":[254],"deathwatch":[242],"tsuki_wolf":[250]}.get(family,[154,782,806,161])
 		Registry.load_index()
 		for candidate: Dictionary in candidates:
 			var record: Dictionary=candidate.get("presentation",{})
@@ -79,7 +79,7 @@ func run() -> void:
 			var response:=await reply(sex,"prepare "+str(body)+(" "+str(candidate.native_class) if candidate.has("native_class") else ""),"UCCREATURE|prepared|")
 			if response.is_empty():return
 			var fields:=response.split("|");var serial:=int(fields[2]);var native_class:=str(fields[4])
-			if native_class in ["SummonedAirElemental","SummonedFireElemental"] and not check(fields[8]=="summoned","Elemental summon is created through the native summoning API, not merely its class constructor"):return
+			if native_class in ["SummonedAirElemental","SummonedFireElemental","EnergyVortex"] and not check(fields[8]=="summoned","Creature is created through the native summoning API"):return
 			print("CREATURE NATIVE PREPARED ",response)
 			var native_state:=str(fields[8])
 			if candidate.has("native_class") and not check(native_class==str(candidate.native_class),"Requested native class is exercised even when several classes share a body"):return
@@ -90,6 +90,11 @@ func run() -> void:
 			if candidate.has("constructor_hues"):
 				var expected_hue:=int(candidate.constructor_hues[native_class])
 				if not check(int(session.entities[serial].hue)==expected_hue and int(observer.entities[serial].hue)==expected_hue,"Both clients receive the native constructor's original hue before any dye"):return
+			var constructor_hue := int(session.entities[serial].hue)
+			if candidate.has("constructor_hue_ranges"):
+				var ranges: Array = candidate.constructor_hue_ranges[native_class]
+				var permitted := ranges.any(func(bounds: Array):return constructor_hue >= int(bounds[0]) and constructor_hue <= int(bounds[1]))
+				if not check(permitted and int(observer.entities[serial].hue) == constructor_hue,"Both clients receive the same allowed randomized constructor hue: "+str(constructor_hue)):return
 			var actor:=preload("res://Presentation/HumanAvatar.gd").new();actor.initial_body=body;root.add_child(actor);actor.set_physics_process(false);actor.apply_server_appearance(session.entities[serial],[])
 			death_arenas[sex].avatars[serial]=actor
 			var peer_actor:=preload("res://Presentation/HumanAvatar.gd").new();peer_actor.initial_body=body;root.add_child(peer_actor);peer_actor.set_physics_process(false);peer_actor.apply_server_appearance(observer.entities[serial],[]);death_arenas[1-sex].avatars[serial]=peer_actor
@@ -138,6 +143,7 @@ func run() -> void:
 					if actor.horse_visual.entry.get("classic_action_categories",{}).get(str(slot),"")=="Cast2" and not actions.has(slot):actions.append(slot)
 				if actor.horse_visual.entry.get("new_action_categories",{}).get("11","")=="Cast2" and not actions.has(-2):actions.append(-2)
 			if actor.horse_visual.entry.get("classic_action_categories",{}).get("18","")=="Fidget2" and actor.horse_visual.animator.has_animation("Fidget2"):actions.append(18)
+			if body == 254 and actor.horse_visual.entry.get("classic_action_categories",{}).get("10","") == "Fidget2": actions.append(10)
 			if body == 265 and actor.horse_visual.entry.get("classic_action_categories",{}).get("12","") == "Attack2": actions.append(12)
 			var action_records: Array=[]
 			for action in actions:
@@ -173,6 +179,7 @@ func run() -> void:
 			response=await reply(sex,"kill","UCCREATURE|corpse|")
 			if response.is_empty():return
 			var corpse:=int(response.split("|")[2])
+			if native_class == "EnergyVortex" and not check(corpse == 0 and response.ends_with("|suppressed"),"Summoned Energy Vortex leaves no persistent corpse"):return
 			var death_refused:=response.ends_with("|refused")
 			if death_refused:
 				if not check(not death_events[sex].has(serial) and not death_events[1-sex].has(serial),"native death refusal does not start a renderer death transition"):return
@@ -202,7 +209,7 @@ func run() -> void:
 			for client in [sex,1-sex]:death_presenters[client].finish(serial);death_arenas[client].avatars.erase(serial);death_events[client].erase(serial)
 			actor.queue_free();peer_actor.queue_free()
 			await process_frame
-			records.append({"actions":action_records,"female":sex==1,"body":body,"native_class":native_class,"native_state":native_state,"kind":candidate.kind,"constructor_hue":candidate.get("constructor_hues",{}).get(native_class,-1),"native_water":candidate.get("movement_mode","")=="native_waterline","corpse_suppressed":corpse==0 and not death_refused,"native_death_refused":death_refused,"movement":"Native AI refuses movement" if rooted else "Native Mobile.Move walk/run"})
+			records.append({"actions":action_records,"female":sex==1,"body":body,"native_class":native_class,"native_state":native_state,"kind":candidate.kind,"constructor_hue":constructor_hue,"native_water":candidate.get("movement_mode","")=="native_waterline","corpse_suppressed":corpse==0 and not death_refused,"native_death_refused":death_refused,"movement":"Native AI refuses movement" if rooted else "Native Mobile.Move walk/run"})
 			await reply(sex,"cleanup","UCCREATURE|cleaned")
 	for session in sessions:session.close()
 	if not check(accepted_pin==FileAccess.get_sha256("res://local-art/creatures/accepted-index.json") and candidate_pin==FileAccess.get_sha256("res://../work/creatures/live-candidates.json"),"Native trial leaves accepted routes and checked input list unchanged"):return

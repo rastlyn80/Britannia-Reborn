@@ -1,3 +1,7 @@
+# Six-facet occurrence work and new creature routes
+
+Energy Vortex, Rikktor, Mephitis, Semidar, Lord Oaks, Silvani, Crane and Deathwatch are active locally and passed normal-registry ModernUO tests. The tests exercise controlled native construction, movement, actions, server hues and death. Energy Vortex uses the native uncontrolled summon API and leaves no persistent corpse. Crane and Mephitis use measured skinned-sole support. The six-facet audit ranks 293 known creature types across 5,532 configured spawners after counting identical cross-file records once. It retains 105 unresolved names. Tsuki Wolf passed 153 prepared native checks and the normal client route checks. Its normal-registry server rerun passed 149 checks across two clients. These checks leave autonomous champion abilities, the rare vortex llama and Lord Oaks casting open.
+
 # Juka Lord, Hydra and Abscess
 
 Juka Lord 766 is active locally with its original Kabur rig, 13 assigned motions and server-equipped bow. The Vulkan route verified both bow graphics. The normal-registry ModernUO trial passed 217 checks across two clients. The pinned source rebuild reproduces the intermediate glTF files and bow byte for byte. The rebuilt packed scenes have different file hashes, so the existing active scenes were retained.

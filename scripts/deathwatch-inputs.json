@@ -1,0 +1,19 @@
+{
+  "installer_sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393",
+  "model_table_sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099",
+  "files": {
+    "Client/Models/Maps/Bimbobushi-256.tga": "fbc2dba2a9c5496ba282a0f30d323b865df53f5161ca1daab2c073ecfef3a7a4",
+    "Client/Models/Monsters/Bimbobushi_Attack1.grn": "dff1edffd9a0dfb27188e429046a271a19232769b060024968e62f983b227579",
+    "Client/Models/Monsters/Bimbobushi_Attack2.grn": "c1127662d3bcb53c7cd3f89f99d1dc152f236fdcbbd135f62703537df02ed2d8",
+    "Client/Models/Monsters/Bimbobushi_Attack3.grn": "e03138ad9180186291bf5e66431d3945075d4c1e9390747df8df66c9ee6753bd",
+    "Client/Models/Monsters/Bimbobushi_BlockLeft.grn": "07fe816710462261f7edb7ab825068e6f1d0462f7625f6472f9ff7281a2305da",
+    "Client/Models/Monsters/Bimbobushi_BlockRight.grn": "c08a722aa6a047d6ce32f2be185f335f094432f74fd3cb716750499e9873fe71",
+    "Client/Models/Monsters/Bimbobushi_Die1.grn": "67f62252b3eb74503a2738a3f3fdd4d90861285cc43be5c86490aa486c56384a",
+    "Client/Models/Monsters/Bimbobushi_Die2.grn": "e90ce01f606e53af8663d91437c223f85f0a293d5fbc8adc020bf800b4825949",
+    "Client/Models/Monsters/Bimbobushi_Fidget.grn": "f2fd3801ad073f38446ee7e0f9ab7d565c3de910d83c70c3820b58e84e6b658f",
+    "Client/Models/Monsters/Bimbobushi_GetHit.grn": "3ab6d6e45e9bdaee5edff3a9fac3c4751e3c66066dd725f16956f7704344aa60",
+    "Client/Models/Monsters/Bimbobushi_Idle.grn": "bac0fcbb45a8488e3c3accc3d73a0762cfc749dd9f4610fcfc08af500a9d7605",
+    "Client/Models/Monsters/Bimbobushi_Lod2.grn": "3c3deb2f99b136469fb95cc389b420a8850331d469fd5b736e6acc34d1b0485f",
+    "Client/Models/Monsters/Bimbobushi_Walk.grn": "b7d0e21300c33ca293c40c86aad40c8d77c0ad23498a4b8b7090eac1cf06caf2"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "installer_sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393",
+  "model_table_sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099",
+  "files": {
+    "Client/Models/Animals/Crane_Alert.grn": "611f5df91445cdd1f5c582c1b19d05eda3e4488e28c5f24b14b1e0f57e190f50",
+    "Client/Models/Animals/Crane_Attack1.grn": "f4069f47c20ec810c356c0fc1f8c6905f41b28a38c8f0d614669799181da4192",
+    "Client/Models/Animals/Crane_Attack2.grn": "02716f4624ecdaddb7f01c1da9f57d39670b178be225a1b970c6aa9aa2da6065",
+    "Client/Models/Animals/Crane_Die1.grn": "080f32b773f2b384538b769c0fe3108a639cc2dfbcb926280c627807afcafeb7",
+    "Client/Models/Animals/Crane_Die2.grn": "af8e2d7e72937c176d66509c7548cc85f99b3c4970c030b709daf62e48eb2ce5",
+    "Client/Models/Animals/Crane_Eat.grn": "dfe22beb77a1558ab758c0769ab76aaa25b99ccc5ab15ae5a8813d987c524383",
+    "Client/Models/Animals/Crane_Fidget1.grn": "d9f5b3520041532b8b7ff46cd62902b13fb9292e76a269f70cd21a1afa1b028a",
+    "Client/Models/Animals/Crane_Fidget2.grn": "394bd4cb0b9db0752e1e35ee2d6de1d8372e4cdc393d8f4e74657d915081e13d",
+    "Client/Models/Animals/Crane_GetHit.grn": "9671f1b13efca2bde725f3ac69a41ffbd74d80eb9246b3cf055a84920c5d17bd",
+    "Client/Models/Animals/Crane_Idle.grn": "d39bcee351f4e464cca8704d2aac5ecce7f9d7e7a2d011fbfcdb2c12d9399942",
+    "Client/Models/Animals/Crane_LieDown.grn": "fee08d7e66680919890be64a6650a10ba2ea2f04fffcd1d91b59adf4127cc44f",
+    "Client/Models/Animals/Crane_Lod2.grn": "19a4151180db0dfb1fe365c2d9865b8ae21be008bc2aa86d365f7f38196513d9",
+    "Client/Models/Animals/Crane_Run.grn": "3b8b5558dff5b68bbdd74f810b3f1c6e08ef8665b6484054b30fd0543a5e782d",
+    "Client/Models/Animals/Crane_Walk.grn": "92c574b986754f9714c608f53c7a00e639b7096765f012d239a99059cd9c5e63",
+    "Client/Models/Maps/Willy_Millone_256.tga": "be7f356a6484e82e3af0c7569d3d24bbf9d5b9194d3592c898e634fcc9573daf",
+    "Client/Models/Maps/Willy_Millone_256_BMP.tga": "05f85300aeeb8daf3a54b99d023cb2205273018866c7df65a65114f7fda397cd"
+  }
+}

@@ -80,15 +80,18 @@ def source_files(folder, era, maps):
                   for p in (folder / group / facet).glob('*.json'))
 
 def occurrences(files, maps):
-    rows = {}; seen = set(); spawners = 0
+    rows = {}; seen = {}; spawners = 0
     for path in files:
         for spawn in read(path):
             if str(spawn.get('map', '')).casefold() not in maps:
                 continue
             key = (str(spawn['map']).casefold(), spawn['guid'])
             if key in seen:
+                first_path, first_spawn = seen[key]
+                if path != first_path and spawn == first_spawn:
+                    continue
                 raise ValueError('Duplicate active spawner GUID; refuse double-counting')
-            seen.add(key)
+            seen[key] = path, spawn
             spawners += 1
             entries = spawn.get('entries', [])
             shares = allocate(spawn.get('count', 0), entries)
@@ -246,7 +249,7 @@ def main():
         row['creature_rank'] = rank
     queue = [r['name'] for r in creatures if r['graphics'] in ['unrouted', 'partial route', 'identity needs audit']]
     result = {'maps': sorted(maps), 'era': era, 'server_pin': index['server_pin'], 'active_spawners': count,
-              'scope': 'Configured spawn frequency, not a live full-world census. Rank by capped probability-weighted shared capacity; spawn-location counts are exact. Capacity is an exposure proxy, not an exact random draw expectation or equilibrium population. Items compete for slots before being excluded. Indirect camp/quest/summon spawns, death rates, terrain failures and manual placements are not counted. Existing routes are not final fidelity/action completion.',
+              'scope': 'Configured spawn frequency, not a live full-world census. Rank by capped probability-weighted shared capacity; spawn-location counts are exact after identical cross-file definitions are counted once. Capacity is an exposure proxy, not an exact random draw expectation or equilibrium population. Items compete for slots before being excluded. Indirect camp/quest/summon spawns, death rates, terrain failures and manual placements are not counted. Existing routes are not final fidelity/action completion.',
               'inputs': {str(p.relative_to(ROOT)): sha(p) for p in [expansion_path, heartwood_path, *files]},
               'rows': rows, 'next_unrouted_creatures': queue, 'excluded_items': sorted(excluded), 'unresolved_types': sorted(unresolved)}
     result['creature_work_order'] = [r['name'] for r in creatures]

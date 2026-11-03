@@ -174,9 +174,11 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
  & $godot --headless --path "$root/Viewer" --script res://Presentation/CreatureDeathTests.gd
  if ($LASTEXITCODE) {throw 'Existing generic decoded creature-death transitions or lifecycle regressed'}
  $lateIndex = Get-Content "$root/Viewer/local-art/creatures/accepted-index.json" -Raw | ConvertFrom-Json
- foreach ($family in @('late_source','hydra')) {
+ foreach ($family in @('late_source','hydra','energy_vortex','champions','fey_champions','crane','deathwatch','tsuki_wolf')) {
   if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.assets.modern -like "res://local-art/creatures/$family/*" }) {
-   $lateRoutes = & $godot --headless --path "$root/Viewer" --script res://Presentation/LateCreatureRouteTests.gd -- "--family=$family" 2>&1
+   $routeTest = @{energy_vortex='EnergyVortexRouteTests.gd';champions='ChampionCreatureRouteTests.gd';fey_champions='FeyChampionRouteTests.gd';crane='CraneRouteTests.gd';deathwatch='DeathwatchRouteTests.gd';tsuki_wolf='TsukiWolfRouteTests.gd'}[$family]
+   if (!$routeTest) {$routeTest = 'LateCreatureRouteTests.gd'}
+   $lateRoutes = & $godot --headless --path "$root/Viewer" --script "res://Presentation/$routeTest" -- "--family=$family" 2>&1
    $lateExit = $LASTEXITCODE
    $lateRoutes | ForEach-Object { Write-Output $_ }
    if ($lateExit -or ($lateRoutes | Select-String 'SCRIPT ERROR:|ERROR:')) {throw "Recovered creature route failed: $family"}

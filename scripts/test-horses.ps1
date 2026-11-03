@@ -5,7 +5,7 @@ $godot=(Get-ChildItem "$root/.tools/godot/*console.exe"|Select-Object -First 1).
 $env:APPDATA=Join-Path $root '.godot-user';$env:LOCALAPPDATA=$env:APPDATA
 if ($ActiveJukaLord -and $CreatureFamily -ne 'juka_lord') {throw 'ActiveJukaLord requires juka_lord'}
 if ($PreparedQueen -and $CreatureFamily -ne 'solen_queens') {throw 'PreparedQueen requires the solen_queens family'}
-$preparedCreatureTrial=$PreparedQueen -or $CreatureFamily -in @('mummies','solen_warriors','ice_elementals','candidate_batch','late_source','hydra')
+$preparedCreatureTrial=$PreparedQueen -or $CreatureFamily -in @('mummies','solen_warriors','ice_elementals','candidate_batch','late_source','hydra','energy_vortex','champions','fey_champions','crane','deathwatch','tsuki_wolf')
 $recordCreatureTrial=$preparedCreatureTrial -or $CreatureFamily -eq 'recent_batch'
 $savageTrial=$Savages -or $SavageRiders
 if ($Savages -and $SavageRiders) {throw 'Choose one Savage native suite per fresh server'}

@@ -1,0 +1,21 @@
+{
+  "installer_sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393",
+  "model_table_sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099",
+  "files": {
+    "Client/Models/Maps/Tri_wolf_1024.tga": "81111eccbb51970be4dc7db639358f219bc2f8497f36e6de0f5802983bfa4c65",
+    "Client/Models/Maps/Tri_wolf_256.tga": "63a937bf7fc97b1087e33bed9162c1ffd6d110b4c94b9da0cb1b2732288f6fb4",
+    "Client/Models/Maps/Tri_wolf_256_BMP.tga": "9389365e8b9d3cba6060ddf32b072e185f32f85af7dd52ed3a3ce7b981ffb47c",
+    "Client/Models/Monsters/Tri_Wolf_Attack1.grn": "940ef352f04713ab93c960112df9f59941bf326ec075254c53e9840ca94a459d",
+    "Client/Models/Monsters/Tri_Wolf_Attack2.grn": "7850ea957bbfe4aadb04fb56dd996912a40ea3e022471ac1635282c88a9400fb",
+    "Client/Models/Monsters/Tri_Wolf_Attack3.grn": "b6563c2d8a0fa0c786632fa89995e7009098cdd27f2e08a7cad9433e15c18979",
+    "Client/Models/Monsters/Tri_Wolf_BlockLeft.grn": "7872bb1553013040c48859ffeadcbf633aa035ae5e38449f658a32abe28492be",
+    "Client/Models/Monsters/Tri_Wolf_BlockRight.grn": "573057858ce010fe4039699a887e74bc531fb2ad3c67960f803609a7c1fe9cc5",
+    "Client/Models/Monsters/Tri_Wolf_Die1.grn": "218987fdcbcb7fd183747191fb875771b30abd8573dafddaa6e6bd6b30db2e65",
+    "Client/Models/Monsters/Tri_Wolf_Die2.grn": "693473e90c3177c9a7811f615f45335642b621e2d0beb07b4bbecc9c06224d91",
+    "Client/Models/Monsters/Tri_Wolf_Fidget.grn": "44c90842af92a94277dd0c375249a8276937d17932fd68b9769394854abebb15",
+    "Client/Models/Monsters/Tri_Wolf_GetHit.grn": "366eec683da31f1601923f54032f3de9125a8b849299dd75922350576edc6067",
+    "Client/Models/Monsters/Tri_Wolf_Idle.grn": "a4d0164d20a10ed99309263f3f84ab6ebd2d4d6685ba31cc0ca36b215a25c095",
+    "Client/Models/Monsters/Tri_Wolf_Lod2.grn": "e6740c941c0f1d944ff73762843632f678ee4a45f995beffbc1d1dc9613625ca",
+    "Client/Models/Monsters/Tri_Wolf_Walk.grn": "cc90518d58ed87bcdbbc084f49fb6ea7bb5ba98e842aca2985b208a7932d078f"
+  }
+}

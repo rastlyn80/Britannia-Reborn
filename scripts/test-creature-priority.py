@@ -74,6 +74,14 @@ class FrequencyTests(unittest.TestCase):
             self.assertEqual(rows['gold']['estimated_slots'], 4.)
             with self.assertRaisesRegex(ValueError, 'Duplicate'):
                 priority.occurrences(files + files, {'trammel'})
+            copied = root / 'shared' / 'trammel' / 'copied.json'
+            copied.write_bytes(files[0].read_bytes())
+            self.assertEqual(priority.occurrences(files + [copied], {'trammel'})[1], 2)
+            conflicting = json.loads(copied.read_text())
+            conflicting[0]['count'] = 5
+            copied.write_text(json.dumps(conflicting))
+            with self.assertRaisesRegex(ValueError, 'Duplicate'):
+                priority.occurrences(files + [copied], {'trammel'})
             self.assertEqual(priority.occurrences(files, {'felucca'}), ({}, 0))
 
     def test_inheritance_and_source_graph(self):

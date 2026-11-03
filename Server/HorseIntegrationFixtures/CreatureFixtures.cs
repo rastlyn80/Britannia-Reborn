@@ -169,11 +169,14 @@ public static class CreatureFixtures
                     }
                     creature.Frozen = true;
                     var location = new Point3D(owner.X + 1, owner.Y, owner.Z);
-                    if (creature is SummonedAirElemental or SummonedFireElemental)
+                    if (creature is SummonedAirElemental or SummonedFireElemental or EnergyVortex)
                     {
                         // The real summon API establishes master, duration,
                         // follower limits and native corpse suppression.
-                        if (!BaseCreature.Summon(creature, owner, location, -1, TimeSpan.FromMinutes(5)))
+                        var summoned = creature is EnergyVortex
+                            ? BaseCreature.Summon(creature, false, owner, location, 0x212, TimeSpan.FromSeconds(90))
+                            : BaseCreature.Summon(creature, owner, location, -1, TimeSpan.FromMinutes(5));
+                        if (!summoned)
                         {
                             owner.SendMessage("UCCREATURE|blocked|native-summon");
                             return;
