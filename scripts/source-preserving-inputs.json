@@ -1454,6 +1454,355 @@
         "idle2": "Idle2",
         "misc": "Misc"
       }
+    },
+    {
+      "kind": "doppleganger",
+      "expected_bodies": [
+        777
+      ],
+      "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+      "containers": [
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client11.cab",
+          "bytes": 35160963,
+          "sha256": "307a6b91c4d5459080d1fe8a74ae4fe0b91dea8a21a2866ca91e7dc7ba92f1a8"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client10.cab",
+          "bytes": 33956665,
+          "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client7.cab",
+          "bytes": 20805,
+          "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859"
+        }
+      ],
+      "model_table": {
+        "path": "work/third-dawn/late-source-research/uoaos-source/Models/models.txt",
+        "bytes": 55735,
+        "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a"
+      },
+      "files": [
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Maps/doppleganger_256.tga",
+          "bytes": 262188,
+          "sha256": "933ddcecee3102e86e679c79a3ef726f18a133e65bc940c8dbbbc13c89d18d4c",
+          "member": "uoaos/UOTD/Models/Maps/doppleganger_256.tga"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/doppleganger_lod2.grn",
+          "bytes": 93260,
+          "sha256": "50714ec83da5044484391a8a9058fed4559a2ad360535b726d8e1bb719817c79",
+          "member": "uoaos/UOTD/Models/Monsters/doppleganger_lod2.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_attack1.grn",
+          "bytes": 34888,
+          "sha256": "b79ac20e717b228db6b739e6654b709269ee32c19deebd28c19b5bd13e37edf3",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_attack1.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_die1.grn",
+          "bytes": 59492,
+          "sha256": "ce1491910a05ea721df3454a17b0860f2d8202f7e836ab80fe67bc5a9127eeab",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_die1.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_die2.grn",
+          "bytes": 36504,
+          "sha256": "e48c75f3c9e8754e80b5b0cc36da348675b50e519b3bf4548f702bb7664dd6cc",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_die2.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_fidget.grn",
+          "bytes": 33928,
+          "sha256": "4350215b0f5b84c9b3b54c5cdce84f5b0d2df38079c7420e1ec511be50f2589e",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_fidget.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_gethit.grn",
+          "bytes": 24664,
+          "sha256": "335773f9e5bb1b2f6e8d43496b09235a14f081480f0dc7fb024bc4afa6387687",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_gethit.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_idle.grn",
+          "bytes": 23492,
+          "sha256": "96641bd0262165a042199779391d97c2a339d6cae609ebf35667b84cee64ac5c",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_idle.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_knight_attack1.grn",
+          "bytes": 33048,
+          "sha256": "536d6c9491fcdf269d823611c051eedce6edbbe93f21f2e8f7cfebd46967c037",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_knight_attack1.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_knight_die1.grn",
+          "bytes": 43236,
+          "sha256": "178f27dca626658b15f28c7c22e767d319b029cc8d197d6e91064beea195dd21",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_knight_die1.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_knight_fidget.grn",
+          "bytes": 26596,
+          "sha256": "6d138660702ecccae07ecc040fd80ef1b5260ea4e58ee54607fcab166523f02a",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_knight_fidget.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_knight_gethit.grn",
+          "bytes": 25476,
+          "sha256": "5ad048c290a83fa3ad08cf2cdd13901d3749fa63173503164f7d50a523afee30",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_knight_gethit.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_knight_idle.grn",
+          "bytes": 26604,
+          "sha256": "740ad191a131df24287794325a188a9e95fd623ae2ed90ce9541d957e5512f32",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_knight_idle.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_knight_lod2.grn",
+          "bytes": 45824,
+          "sha256": "c7e2ec877c30454a7106cbeb03ed4e94baca3d32b18fbec574925c1980c87cff",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_knight_lod2.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_knight_run.grn",
+          "bytes": 24324,
+          "sha256": "6413a0b0228526ca4b6f02c4d85f2a38e8ee3b7fc24b112a5126a5a7a6434bf7",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_knight_run.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_knight_walk.grn",
+          "bytes": 30676,
+          "sha256": "d0bbd472b9fd0e413b30abbf8e8bdcc0d9c40ce4245e2ea503ab931e44d40884",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_knight_walk.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_lod2.grn",
+          "bytes": 33408,
+          "sha256": "c7df15c84e3c084888c10a354bb3dc51b586d0f690f29ebc581f4b37ecdd2e26",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_lod2.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_mage_attack1.grn",
+          "bytes": 29308,
+          "sha256": "1996cd6c9958165991b0cf33928451dcec2ea8332a254dcbc286a0e70d719d35",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_mage_attack1.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_mage_die1.grn",
+          "bytes": 41252,
+          "sha256": "73a3977a92d3bb9d08debcad02342418cdf8ef32bd424c301d900faadae9dbab",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_mage_die1.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_mage_fidget.grn",
+          "bytes": 36780,
+          "sha256": "57a4297fa34e925c074e74cb6b291a63a8ee20f02c3816fba42c2a0e7346dd90",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_mage_fidget.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_mage_gethit.grn",
+          "bytes": 26488,
+          "sha256": "6686eda6f1f11ab782a36d68f251faca9d953d0f6b5ee8e0780bbc3cbaa035cd",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_mage_gethit.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_mage_idle.grn",
+          "bytes": 21472,
+          "sha256": "5c19bab96bc730f74de112260a0a1fd473681d8a074d507b0c4dcc44dafd775d",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_mage_idle.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_mage_lod2.grn",
+          "bytes": 48376,
+          "sha256": "c09ddfb6b5db53a8900399c2010a8181b98cdcb4cd2525277336de858e163579",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_mage_lod2.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_mage_run.grn",
+          "bytes": 25572,
+          "sha256": "78e68ac9c03d012c1afdff96868c4c34471005cbfc839c346fd359121508d1e5",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_mage_run.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_mage_walk.grn",
+          "bytes": 30612,
+          "sha256": "c37c41eb6c8ba2109130e1b683f4521c579b773a3f8cc5488601ad7adf501b37",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_mage_walk.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_run.grn",
+          "bytes": 27100,
+          "sha256": "caef1db6305b94545736196d27e98f74d3c2f1fe43fb5322acfaae42b49a2fdc",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_run.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/skeletons_skeleton_walk.grn",
+          "bytes": 29880,
+          "sha256": "5c0674549822bd19228b5a0c89dcfe4308cdd02eb61c6d872b2186405aaa9b36",
+          "member": "uoaos/UOTD/Models/Monsters/skeletons_skeleton_walk.grn"
+        }
+      ],
+      "bones": 31,
+      "triangles": 1144,
+      "source_clips": 8,
+      "levels": 1,
+      "normal_offset_m": 0.0015,
+      "opacity": "fine_edges",
+      "limb_support": "biped"
+    },
+    {
+      "kind": "changling",
+      "expected_bodies": [
+        264
+      ],
+      "source_url": "https://zuluarchive.com/static/files/uoml_setup.exe",
+      "containers": [
+        {
+          "path": "work/creatures/late-client-inputs/uoml_setup.exe",
+          "bytes": 798463305,
+          "sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data1.cab",
+          "bytes": 664374,
+          "sha256": "78110fcad7a3bf0d459c6f58f30764064fa2868dd2eea92ffc3983390846ce42"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data1.hdr",
+          "bytes": 624745,
+          "sha256": "bc7c394bab19ece161bdd482bd21d16f946d4f04eb64aca67d6c8c45ffa79587"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data2.cab",
+          "bytes": 794818869,
+          "sha256": "247b9305c2f6d3af18c2c5bc7018d0d8ae27b5ae394187b6ffccbc9d174db95d"
+        }
+      ],
+      "model_table": {
+        "path": "work/creatures/late-client-inputs/model-table/Client/Models.txt",
+        "bytes": 81498,
+        "sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099"
+      },
+      "files": [
+        {
+          "path": "work/creatures/ml-next/source/Client/Changling.tga",
+          "bytes": 262188,
+          "sha256": "da4fec9f4e1b3b569961f7641d0a84fe5582584badb16eeb90248ec8cbf4b6b0",
+          "member": "Client/Models/Maps/Changling.tga"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/Changling_Attack1.grn",
+          "bytes": 97204,
+          "sha256": "9ac9d055e2b25a9f33c458912bc3048fa87ff58a82ccaed985d57eb37d74a3a4",
+          "member": "Client/Models/Monsters/Changling_Attack1.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/Changling_Attack2.grn",
+          "bytes": 98572,
+          "sha256": "dc906553d3597aa1553efe05f22698c69f05e87f61679b18fcd96c22c5701c0c",
+          "member": "Client/Models/Monsters/Changling_Attack2.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/Changling_Attack3.grn",
+          "bytes": 96648,
+          "sha256": "3a80b3cc9ba1bfa64535a99136fb4064fa9116bd5805883f60f792f3d27800ce",
+          "member": "Client/Models/Monsters/Changling_Attack3.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/Changling_BlockLeft.grn",
+          "bytes": 90184,
+          "sha256": "02729dbfba534ab55548a0295ab467c53ca05a93506e2a71c34a53d0837f8a06",
+          "member": "Client/Models/Monsters/Changling_BlockLeft.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/Changling_BlockRight.grn",
+          "bytes": 90184,
+          "sha256": "4194515185d8d83598704d800d01ac673f51726357a435c77374d37d26fabe51",
+          "member": "Client/Models/Monsters/Changling_BlockRight.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/Changling_Die1.grn",
+          "bytes": 98808,
+          "sha256": "de215ef1de04254af2b0c146fee684c6da13566db915915993591f2fba826b44",
+          "member": "Client/Models/Monsters/Changling_Die1.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/Changling_Die2.grn",
+          "bytes": 100060,
+          "sha256": "1516afe89931bd2f9a5f54dcd42fe3e45ffe179fe661e0289fa6a055962fa0f6",
+          "member": "Client/Models/Monsters/Changling_Die2.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/Changling_Fidget.grn",
+          "bytes": 99596,
+          "sha256": "aa431b2f47c36267363fbaa86c4403b846773914da1f39e03ad6b63b24d989fe",
+          "member": "Client/Models/Monsters/Changling_Fidget.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/Changling_Fidget2.grn",
+          "bytes": 106896,
+          "sha256": "6e3cb4e4762a2023aec1bde2a6f854ad029dfa5cbfac6fde39a59111e4c910c3",
+          "member": "Client/Models/Monsters/Changling_Fidget2.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/Changling_idle.grn",
+          "bytes": 90452,
+          "sha256": "38051c0781175a53ca8bebefab97980582c9d2fb5471dbc3c4a353f707d66f69",
+          "member": "Client/Models/Monsters/Changling_idle.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/Changling_LOD2.grn",
+          "bytes": 85188,
+          "sha256": "7cb38a347a120164c276e7ae45930ba87bb5423e57190e4973ce4a45729a370e",
+          "member": "Client/Models/Monsters/Changling_LOD2.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/Changling_Pillage.grn",
+          "bytes": 92788,
+          "sha256": "721836ae6fa630a68ec644f050182ec751ae9a22332c7b19d3113d8ee92afe60",
+          "member": "Client/Models/Monsters/Changling_Pillage.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/Changling_TakeDamage.grn",
+          "bytes": 93204,
+          "sha256": "18fbe72d318dfe299d13fbad225fb5ac11c69f0ccc661792f4991b870b67a580",
+          "member": "Client/Models/Monsters/Changling_TakeDamage.grn"
+        },
+        {
+          "path": "work/creatures/ml-next/source/Client/Changling_Walk.grn",
+          "bytes": 90192,
+          "sha256": "9062fc02c94ed98afe80ccdc3d8954a1d9bb0d5bceb08826b31b256fbd965cbc",
+          "member": "Client/Models/Monsters/Changling_Walk.grn"
+        }
+      ],
+      "bones": 35,
+      "triangles": 480,
+      "source_clips": 12,
+      "levels": 1,
+      "normal_offset_m": 0.0015,
+      "opacity": "fine_edges",
+      "limb_support": "biped",
+      "clip_labels": {
+        "takedamage": "Hit",
+        "fidget2": "Fidget",
+        "idle2": "Idle2",
+        "misc": "Misc"
+      },
+      "expected_rejections": {
+        "Fidget": {
+          "member": "Client/Models/Monsters/Changling_Fidget.grn",
+          "sha256": "aa431b2f47c36267363fbaa86c4403b846773914da1f39e03ad6b63b24d989fe",
+          "error": "Non-finite GRN numeric value"
+        }
+      },
+      "category_aliases": {
+        "Fidget": "Valid original Changling_Fidget2; original Fidget rejected for non-finite numeric data, not repaired."
+      }
     }
   ]
 }

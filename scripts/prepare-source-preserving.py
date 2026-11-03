@@ -8,6 +8,7 @@ import base64
 import hashlib
 import importlib.util
 import json
+import subprocess
 from types import ModuleType
 from pathlib import Path
 
@@ -40,6 +41,7 @@ def inputs():
     pins = json.loads(MANIFEST.read_text(encoding='utf-8'))
     assert pins['schema'] == 1
     assert pins['server_pin'] == json.loads((ROOT/'Server/dependencies.json').read_text())['modernuo']['revision']
+    assert subprocess.check_output(['git','-C',str(ROOT/'Server/ModernUO'),'rev-parse','HEAD'],text=True).strip() == pins['server_pin']
     verified = set()
     for row in pins['models']:
         assert row['kind'].replace('_', '').isalnum()
@@ -94,13 +96,31 @@ def converter_pins(pipeline):
     return result
 
 
-def cached_candidate(source, tools):
+def native_metadata_stamp():
+    server = ROOT/'Server/ModernUO'
+    files = [server/'Distribution/Data/bodyTable.cfg', *sorted((server/'Projects/UOContent/Mobiles').rglob('*.cs'))]
+    digest = hashlib.sha256()
+    for path in files:
+        digest.update(path.relative_to(server).as_posix().encode()+b'\0'+bytes.fromhex(sha(path)))
+    return digest.hexdigest()
+
+
+def check_rejections(source, row):
+    expected = source.get('expected_rejections', {})
+    assert row['rejected_source_clips'] == {label:{'member':record['member'],'error':record['error']} for label,record in expected.items()}
+    for record in expected.values():
+        entry = next(item for item in source['files'] if item['member'] == record['member'])
+        assert entry['sha256'] == record['sha256']
+
+
+def cached_candidate(source, tools, native_stamp=None):
     path = WORK/source['kind']/'candidate-cache.json'
     if not path.is_file():return None
     try:
         cache = json.loads(path.read_text())
     except (OSError, ValueError):return None
     if cache.get('preparer_sha256') != sha(Path(__file__)):return None
+    if cache.get('native_metadata_sha256') != (native_stamp or native_metadata_stamp()):return None
     row = cache['model']
     if row['source_provenance'] != source or row['converter_sha256'] != tools:return None
     if row['pose_subdivision']['recipe_sha256'] != sha(RECIPE):return None
@@ -113,6 +133,7 @@ def cached_candidate(source, tools):
 
 def prepare():
     pins = inputs()
+    native_stamp = native_metadata_stamp()
     WORK.mkdir(parents=True, exist_ok=True)
     ART.mkdir(parents=True, exist_ok=True)
     models = []
@@ -121,7 +142,7 @@ def prepare():
         pipeline = pipeline_for(kind)
         pipeline.LABELS.update(source.get('clip_labels', {}))
         tools = converter_pins(pipeline)
-        cached = cached_candidate(source, tools)
+        cached = cached_candidate(source, tools, native_stamp)
         if cached is not None:
             models.append(cached)
             print(kind, 'CACHED exact source/converters/staging artifacts')
@@ -151,10 +172,13 @@ def prepare():
         server_pin, native = pipeline.native_bodies()
         assert server_pin == pins['server_pin']
         pipeline.reuse.RECIPES[kind] = {'floor_sample_rate': 120, 'measure_motion_bounds': True}
-        rows = pipeline.prepare(kind.split('_')[0], OriginalInputs(), {name.casefold(): name for name in paths}, table, native, selected_kinds={kind})
+        names = {name.casefold():name for name in paths}
+        rows = pipeline.prepare(kind.split('_')[0], OriginalInputs(), names, table, native, selected_kinds={kind})
         assert len(rows) == 1 and rows[0]['status'] == 'prepared', rows
         row = rows[0]
-        assert not row['rejected_source_clips'] and len(row['clip_sources']) == source['source_clips']
+        check_rejections(source, row)
+        assert len(row['clip_sources']) == source['source_clips']
+        row['category_aliases'].update(source.get('category_aliases', {}))
         assert {identity['body'] for identity in row['bodies']} == set(source['expected_bodies'])
         if 'routed_bodies' in source:
             assert set(source['routed_bodies']) <= set(source['expected_bodies'])
@@ -201,7 +225,7 @@ def prepare():
             row['bake_inputs'][treatment] = {'path': str(path.relative_to(ROOT)), 'sha256': sha(path)}
         cache_path = WORK/kind/'candidate-cache.json'
         temporary_cache = cache_path.with_suffix('.tmp')
-        temporary_cache.write_text(json.dumps({'preparer_sha256':sha(Path(__file__)), 'model':row}, indent=2)+'\n', encoding='utf-8')
+        temporary_cache.write_text(json.dumps({'preparer_sha256':sha(Path(__file__)), 'native_metadata_sha256':native_stamp, 'model':row}, indent=2)+'\n', encoding='utf-8')
         temporary_cache.replace(cache_path)
         models.append(row)
     # The old generic converter assumes one older archive. Replace that staging
@@ -213,7 +237,7 @@ def prepare():
         data.pop('archive_sha256', None)
         data['source_provenance'] = model['source_provenance']
         path.write_text(json.dumps(data, indent=2)+'\n')
-    report = {'models': models, 'server_pin': pins['server_pin'], 'manifest_sha256': sha(MANIFEST), 'preparer_sha256': sha(Path(__file__)), 'runtime_sha256':{name:sha(ROOT/'Viewer/Presentation'/name) for name in RUNTIME}, 'scope': 'Private coarse source inputs for BakeSourcePreserving. Dense triangles are not present until the baker succeeds. No accepted route, source-interpolation, terrain, riding or native-gameplay certificate.'}
+    report = {'models': models, 'server_pin': pins['server_pin'], 'native_metadata_sha256':native_stamp, 'manifest_sha256': sha(MANIFEST), 'preparer_sha256': sha(Path(__file__)), 'runtime_sha256':{name:sha(ROOT/'Viewer/Presentation'/name) for name in RUNTIME}, 'scope': 'Private coarse source inputs for BakeSourcePreserving. Dense triangles are not present until the baker succeeds. No accepted route, source-interpolation, terrain, riding or native-gameplay certificate.'}
     path = WORK/'preparation.json'
     path.write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
     print('SOURCE PRESERVING: prepared', len(models), 'source forms; next run BakeSourcePreserving.gd')
@@ -223,6 +247,7 @@ def check_prepared(verify_presentation=True):
     pins = inputs()
     report = json.loads((ART/'source_preserving/preparation.json').read_text())
     assert report['manifest_sha256'] == sha(MANIFEST) and report['preparer_sha256'] == sha(Path(__file__))
+    assert report['native_metadata_sha256'] == native_metadata_stamp()
     assert report['baker_sha256'] == sha(ROOT/'Viewer/Presentation/BakeSourcePreserving.gd')
     assert report['subdivision_sha256'] == sha(RECIPE) and report['server_pin'] == pins['server_pin']
     if verify_presentation:
@@ -235,7 +260,8 @@ def check_prepared(verify_presentation=True):
         assert row['converter_sha256'] == converter_pins(pipeline_for(row['kind']))
         assert {body['body'] for body in row['bodies']} == set(source.get('routed_bodies', source['expected_bodies']))
         assert {body['body'] for body in row.get('source_table_bodies', row['bodies'])} == set(source['expected_bodies'])
-        assert len(row['clip_sources']) == source['source_clips'] and not row['rejected_source_clips']
+        assert len(row['clip_sources']) == source['source_clips']
+        check_rejections(source, row)
         assert row['stats']['original']['bones'] == source['bones']
         assert row['refinement']['triangles_after'] == source['triangles']*4**source['levels']
         for treatment, asset in row['assets'].items():
