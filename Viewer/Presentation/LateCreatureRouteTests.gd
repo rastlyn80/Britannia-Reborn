@@ -8,7 +8,7 @@ const Corpses = preload("res://Presentation/CorpseModels.gd")
 const MONSTER := {4:"Attack", 5:"Attack2", 6:"Attack3", 10:"Hit", 17:"Fidget", 2:"Death"}
 const ANIMAL := {3:"Eat", 4:"Alert", 5:"Attack", 6:"Attack2", 7:"Hit", 11:"LieDown", 8:"Death"}
 const RECOVERED_FAMILIES := ["aos_creatures", "aos_aliases", "aos_mound", "recovered_late",
-	"tormented_minotaur", "late_donors", "gargoyle_vendor", "aos_armed", "aos_abysmal"]
+	"tormented_minotaur", "late_donors", "gargoyle_vendor", "aos_armed", "aos_abysmal", "animated_weapon"]
 
 func _initialize() -> void:
 	create_timer(30.0).timeout.connect(func(): quit(2))

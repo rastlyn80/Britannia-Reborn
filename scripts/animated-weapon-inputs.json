@@ -1,0 +1,11 @@
+{
+  "installer_sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393",
+  "files": {
+    "Client/Models/Others/Weapon_Halberd_Lod2.grn": "639aef4e2a70ec213e81590de5175fa5e9d5b1524f84c48659aff053a10ba208",
+    "Client/Models/Maps/Weapons_512.tga": "6b6db69ff83ce1950113b4c10965a42e730eb4887fab16e11ccfb064f661f720"
+  },
+  "native": {
+    "Projects/UOContent/Mobiles/Monsters/Misc/Melee/AnimatedWeapon.cs": "e1d8843a7ca13e64c45048daba02fa50f2164712b7c1eec6f4e3ddb4cee60a4c",
+    "Projects/UOContent/Spells/Mysticism/AnimatedWeaponSpell.cs": "d774319d5ad37cffed0cd7b01b6dce7e5cbb07ee9295bbddc5dc318034da346d"
+  }
+}

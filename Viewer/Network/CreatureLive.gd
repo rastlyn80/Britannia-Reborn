@@ -46,8 +46,8 @@ func run() -> void:
 	candidate_pin=FileAccess.get_sha256("res://../work/creatures/live-candidates.json")
 	accepted_pin=FileAccess.get_sha256("res://local-art/creatures/accepted-index.json")
 	if prepared:
-		if not check(family in ["candidate_batch","mummies","solen_warriors","ice_elementals","solen_queens","late_source","hydra","energy_vortex","champions","fey_champions","crane","deathwatch","tsuki_wolf","kappa","vampire_bat","yomotsu","occurrence_next","horde_rune","sand_vortex","bake_kitsune","devourer_lion_hiryu","elemental_minotaur","meer_donors","captain_cu","clockwork_tokuno","aos_creatures","aos_aliases","aos_mound","recovered_late","tormented_minotaur","harrower","late_donors","gargoyle_vendor","aos_armed","aos_abysmal"],"Prepared trial uses an explicitly checked family"):return
-		var permitted_bodies: Array={"solen_queens":[783,807],"late_source":[266,267,279],"hydra":[265],"energy_vortex":[164],"champions":[172,173],"fey_champions":[174,175,176],"crane":[254],"deathwatch":[242],"tsuki_wolf":[250],"kappa":[240],"vampire_bat":[317],"yomotsu":[245,253,255],"occurrence_next":[309,196,302,247],"horde_rune":[776,244],"sand_vortex":[790],"bake_kitsune":[246],"devourer_lion_hiryu":[303,251,243],"elemental_minotaur":[300,263,305,281,241,789,772],"meer_donors":[771,770,773],"captain_cu":[280,277],"clockwork_tokuno":[304,757,756,252,199,271,310,278],"aos_creatures":[306,307,308,313,318],"aos_aliases":[315,316],"aos_mound":[319],"recovered_late":[768,249,276],"tormented_minotaur":[262],"harrower":[146],"late_donors":[831,767],"gargoyle_vendor":[758],"aos_armed":[311,314],"aos_abysmal":[312]}.get(family,[154,782,806,161])
+		if not check(family in ["candidate_batch","mummies","solen_warriors","ice_elementals","solen_queens","late_source","hydra","energy_vortex","champions","fey_champions","crane","deathwatch","tsuki_wolf","kappa","vampire_bat","yomotsu","occurrence_next","horde_rune","sand_vortex","bake_kitsune","devourer_lion_hiryu","elemental_minotaur","meer_donors","captain_cu","clockwork_tokuno","aos_creatures","aos_aliases","aos_mound","recovered_late","tormented_minotaur","harrower","late_donors","gargoyle_vendor","aos_armed","aos_abysmal","animated_weapon"],"Prepared trial uses an explicitly checked family"):return
+		var permitted_bodies: Array={"solen_queens":[783,807],"late_source":[266,267,279],"hydra":[265],"energy_vortex":[164],"champions":[172,173],"fey_champions":[174,175,176],"crane":[254],"deathwatch":[242],"tsuki_wolf":[250],"kappa":[240],"vampire_bat":[317],"yomotsu":[245,253,255],"occurrence_next":[309,196,302,247],"horde_rune":[776,244],"sand_vortex":[790],"bake_kitsune":[246],"devourer_lion_hiryu":[303,251,243],"elemental_minotaur":[300,263,305,281,241,789,772],"meer_donors":[771,770,773],"captain_cu":[280,277],"clockwork_tokuno":[304,757,756,252,199,271,310,278],"aos_creatures":[306,307,308,313,318],"aos_aliases":[315,316],"aos_mound":[319],"recovered_late":[768,249,276],"tormented_minotaur":[262],"harrower":[146],"late_donors":[831,767],"gargoyle_vendor":[758],"aos_armed":[311,314],"aos_abysmal":[312],"animated_weapon":[692]}.get(family,[154,782,806,161])
 		Registry.load_index()
 		for candidate: Dictionary in candidates:
 			var record: Dictionary=candidate.get("presentation",{})
@@ -79,7 +79,7 @@ func run() -> void:
 			var response:=await reply(sex,"prepare "+str(body)+(" "+str(candidate.native_class) if candidate.has("native_class") else ""),"UCCREATURE|prepared|")
 			if response.is_empty():return
 			var fields:=response.split("|");var serial:=int(fields[2]);var native_class:=str(fields[4])
-			if native_class in ["SummonedAirElemental","SummonedFireElemental","EnergyVortex"] and not check(fields[8]=="summoned","Creature is created through the native summoning API"):return
+			if native_class in ["SummonedAirElemental","SummonedFireElemental","EnergyVortex","AnimatedWeapon"] and not check(fields[8]=="summoned","Creature is created through the native summoning API"):return
 			print("CREATURE NATIVE PREPARED ",response)
 			var native_state:=str(fields[8])
 			if candidate.has("native_class") and not check(native_class==str(candidate.native_class),"Requested native class is exercised even when several classes share a body"):return
@@ -224,7 +224,7 @@ func run() -> void:
 				if response.is_empty():return
 				if not check(not response.ends_with("|refused"),"Second lethal hit kills the true form"):return
 			var corpse:=int(response.split("|")[2])
-			if native_class == "EnergyVortex" and not check(corpse == 0 and response.ends_with("|suppressed"),"Summoned Energy Vortex leaves no persistent corpse"):return
+			if native_class in ["EnergyVortex", "AnimatedWeapon"] and not check(corpse == 0 and response.ends_with("|suppressed"),"Native summon leaves no persistent corpse"):return
 			var death_refused:=response.ends_with("|refused")
 			if body == 758 and not check(death_refused and response.contains("|damageable=0|"),"Gargoyle City vendor stays invulnerable"):return
 			if death_refused:

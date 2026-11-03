@@ -21,7 +21,7 @@ def replace_index(payload):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check-evidence', action='store_true')
-    parser.add_argument('--family', choices=('late_source', 'hydra', 'energy_vortex', 'champions', 'fey_champions', 'crane', 'deathwatch', 'tsuki_wolf', 'kappa', 'vampire_bat', 'yomotsu', 'occurrence_next', 'sand_vortex', 'bake_kitsune', 'horde_rune', 'devourer_lion_hiryu', 'elemental_minotaur', 'meer_donors', 'captain_cu', 'clockwork_tokuno', 'aos_creatures', 'aos_aliases', 'aos_mound', 'recovered_late', 'tormented_minotaur', 'harrower', 'late_donors', 'gargoyle_vendor', 'aos_armed', 'aos_abysmal'), default='late_source')
+    parser.add_argument('--family', choices=('late_source', 'hydra', 'energy_vortex', 'champions', 'fey_champions', 'crane', 'deathwatch', 'tsuki_wolf', 'kappa', 'vampire_bat', 'yomotsu', 'occurrence_next', 'sand_vortex', 'bake_kitsune', 'horde_rune', 'devourer_lion_hiryu', 'elemental_minotaur', 'meer_donors', 'captain_cu', 'clockwork_tokuno', 'aos_creatures', 'aos_aliases', 'aos_mound', 'recovered_late', 'tormented_minotaur', 'harrower', 'late_donors', 'gargoyle_vendor', 'aos_armed', 'aos_abysmal', 'animated_weapon'), default='late_source')
     args = parser.parse_args()
     rows, classes = FIXTURES['prepared_entries'](args.family)
     evidence = ROOT / 'work/creatures' / args.family
@@ -40,10 +40,10 @@ def main():
     if len(report['records']) != 2 * len(expected) or actual != {
             (body, name, female) for body, name in expected for female in (False, True)}:
         raise ValueError('Native evidence must include both clients for every constructor')
-    if args.family == 'energy_vortex' and any(
+    if args.family in ('energy_vortex', 'animated_weapon') and any(
             record['native_state'] != 'summoned' or not record['corpse_suppressed']
             for record in report['records']):
-        raise ValueError('Energy Vortex evidence must cover native summoning and corpse suppression')
+        raise ValueError('Evidence must cover native summoning and corpse suppression')
     if args.family == 'harrower' and any(
             record.get('transformed_body') != 780 or not record.get('true_form_corpse')
             for record in report['records']):
