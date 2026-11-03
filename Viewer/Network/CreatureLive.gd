@@ -1,7 +1,11 @@
 extends SceneTree
 const EagleVisual=preload("res://Presentation/EagleVisual.gd")
 const Game=preload("res://Network/GameSession.gd")
+const Registry=preload("res://Presentation/CreatureRegistry.gd")
 var family:="bruins"
+var prepared:=false
+var accepted_pin:=""
+var candidate_pin:=""
 var sessions: Array=[]
 var replies: Array=[[],[]]
 var errors: Array=[]
@@ -18,6 +22,7 @@ class DeathItems extends Node:
 func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--family="):family=arg.trim_prefix("--family=")
+		if arg=="--prepared":prepared=true
 	call_deferred("run")
 func until(condition: Callable,seconds: float=15.) -> bool:
 	var start:=Time.get_ticks_msec()
@@ -31,11 +36,22 @@ func check(ok: bool,label: String) -> bool:
 	return ok
 func reply(sex: int,command: String,prefix: String) -> String:
 	replies[sex].clear();sessions[sex].send_command("[CreatureFixture "+command)
-	if not check(await until(func():return replies[sex].any(func(t: String):return t.begins_with(prefix))),"native fixture reply: "+command):return ""
+	var responded:=await until(func():return replies[sex].any(func(t: String):return t.begins_with(prefix) or t.begins_with("UCCREATURE|blocked|")))
+	if not check(responded,"native fixture reply: "+command+"; received "+str(replies[sex])):return ""
+	if not check(not replies[sex].any(func(t: String):return t.begins_with("UCCREATURE|blocked|")),"Native command accepted: "+command+"; received "+str(replies[sex])):return ""
 	return replies[sex].filter(func(t: String):return t.begins_with(prefix))[-1]
 func run() -> void:
 	var accounts: Array=JSON.parse_string(FileAccess.get_file_as_string("res://../work/horse-session/accounts.local.json"))
 	var candidates: Array=JSON.parse_string(FileAccess.get_file_as_string("res://../work/creatures/live-candidates.json"))
+	candidate_pin=FileAccess.get_sha256("res://../work/creatures/live-candidates.json")
+	accepted_pin=FileAccess.get_sha256("res://local-art/creatures/accepted-index.json")
+	if prepared:
+		if not check(family in ["candidate_batch","mummies","solen_warriors","ice_elementals"],"Prepared trial uses an explicitly checked family"):return
+		Registry.load_index()
+		for candidate: Dictionary in candidates:
+			var record: Dictionary=candidate.get("presentation",{})
+			if not check(not record.is_empty() and record.status=="prepared" and str(record.kind)==str(candidate.kind) and int(candidate.body) in [154,782,806,161],"Exact checked candidate renderer is injected only into this process"):return
+			Registry.entries[int(candidate.body)]=record
 	for sex in 2:
 		var session:=Game.new();root.add_child(session);sessions.append(session)
 		var arena:=DeathArena.new();root.add_child(arena);death_arenas.append(arena)
@@ -70,6 +86,9 @@ func run() -> void:
 			if body==0xDF and not check(native_state=="shorn" and int(fields[9])==0,"native sheep carving reaches the shorn body and consumes available wool"):return
 			if not check(int(fields[3])==body,"actual native constructor retains exact body"):return
 			if not check(await until(func():return session.entities.has(serial) and observer.entities.has(serial)),"both clients receive native loose creature"):return
+			if candidate.has("constructor_hues"):
+				var expected_hue:=int(candidate.constructor_hues[native_class])
+				if not check(int(session.entities[serial].hue)==expected_hue and int(observer.entities[serial].hue)==expected_hue,"Both clients receive the native constructor's original hue before any dye"):return
 			var actor:=preload("res://Presentation/HumanAvatar.gd").new();actor.initial_body=body;root.add_child(actor);actor.set_physics_process(false);actor.apply_server_appearance(session.entities[serial],[])
 			death_arenas[sex].avatars[serial]=actor
 			var peer_actor:=preload("res://Presentation/HumanAvatar.gd").new();peer_actor.initial_body=body;root.add_child(peer_actor);peer_actor.set_physics_process(false);peer_actor.apply_server_appearance(observer.entities[serial],[]);death_arenas[1-sex].avatars[serial]=peer_actor
@@ -181,9 +200,12 @@ func run() -> void:
 			for client in [sex,1-sex]:death_presenters[client].finish(serial);death_arenas[client].avatars.erase(serial);death_events[client].erase(serial)
 			actor.queue_free();peer_actor.queue_free()
 			await process_frame
-			records.append({"actions":action_records,"female":sex==1,"body":body,"native_class":native_class,"native_state":native_state,"kind":candidate.kind,"native_water":candidate.get("movement_mode","")=="native_waterline","corpse_suppressed":corpse==0 and not death_refused,"native_death_refused":death_refused,"movement":"Native AI refuses movement" if rooted else "Native Mobile.Move walk/run"})
+			records.append({"actions":action_records,"female":sex==1,"body":body,"native_class":native_class,"native_state":native_state,"kind":candidate.kind,"constructor_hue":candidate.get("constructor_hues",{}).get(native_class,-1),"native_water":candidate.get("movement_mode","")=="native_waterline","corpse_suppressed":corpse==0 and not death_refused,"native_death_refused":death_refused,"movement":"Native AI refuses movement" if rooted else "Native Mobile.Move walk/run"})
 			await reply(sex,"cleanup","UCCREATURE|cleaned")
 	for session in sessions:session.close()
+	if not check(accepted_pin==FileAccess.get_sha256("res://local-art/creatures/accepted-index.json") and candidate_pin==FileAccess.get_sha256("res://../work/creatures/live-candidates.json"),"Native trial leaves accepted routes and checked input list unchanged"):return
 	var folder:="res://../outputs/creatures/"+family;DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(folder))
-	var file:=FileAccess.open(folder+"/live.json",FileAccess.WRITE);file.store_string(JSON.stringify({"test_sha256":FileAccess.get_sha256("res://Network/CreatureLive.gd"),"fixture_sha256":FileAccess.get_sha256("res://../Server/HorseIntegrationFixtures/CreatureFixtures.cs"),"preparation_sha256":FileAccess.get_sha256("res://local-art/creatures/"+family+"/preparation.json"),"checks":checks,"failures":0,"records":records,"scope":"Actual two-client world entry, native constructor bodies/hues, Mobile.Move walk/run, packets and corpse replication. Native AI is frozen for controlled sampling; flat-arena relocation is fixture setup. Not autonomous AI, taming or full gameplay certification. Production world and saves untouched."},"\t"));file.close()
+	var preparation_path:="res://local-art/creatures/"+family+"/preparation.json"
+	var preparation_sha:=FileAccess.get_sha256(preparation_path) if not prepared and FileAccess.file_exists(preparation_path) else ""
+	var file:=FileAccess.open(folder+"/live.json",FileAccess.WRITE);file.store_string(JSON.stringify({"test_sha256":FileAccess.get_sha256("res://Network/CreatureLive.gd"),"fixture_sha256":FileAccess.get_sha256("res://../Server/HorseIntegrationFixtures/CreatureFixtures.cs"),"preparation_sha256":preparation_sha,"candidate_sha256":candidate_pin,"accepted_index_sha256":accepted_pin,"prepared_trial":prepared,"checks":checks,"failures":0,"records":records,"scope":"Actual two-client world entry, native constructor bodies/hues, Mobile.Move walk/run, packets and corpse replication. Native AI is frozen for controlled sampling; flat-arena relocation is fixture setup. Not autonomous AI, taming or full gameplay certification. Production world and saves untouched."},"\t"));file.close()
 	print("CREATURE NATIVE / ",family,": ",checks," checks / 0 failures");quit()

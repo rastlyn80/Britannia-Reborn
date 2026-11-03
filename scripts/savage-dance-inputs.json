@@ -80,7 +80,9 @@
   ],
   "human_inputs": {
     "path": "scripts/savage-profile-inputs.json",
-    "sha256": "d7b4de76c469b391635f2a79344882243ec9588063127fadd3e2dd6787c72e88"
+    "sha256": "d7b4de76c469b391635f2a79344882243ec9588063127fadd3e2dd6787c72e88",
+    "art_contract_sha256": "00f7710a3daa03ed29a12b2f9369bbc882bb0c85e5a400a7a4e835cabe74cd4d",
+    "contract_scope": "Exact prepared_art and art_sources fields; native_sources additions do not change the target rig or wardrobe. Every prepared art file is still hashed. sha256 retains the original whole-manifest provenance."
   },
   "required_preservation": "Full43-joint source rig for rotation/finger choreography, full183/190point original Savage bodies for clearance; unchanged modern limb offsets. Clamp negative source floor penetration only, preserving every positive measured rise. The19point hue-chip rig helper is not an original full-body floor reference."
 }

@@ -16,6 +16,20 @@ def read(path):
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
+def human_npc_routes(root=ROOT):
+    """Mirror the active human-profile loader and require its actual body art."""
+    path = root/'Viewer/local-art/human-npcs/accepted-index.json'
+    if not path.exists():return {}
+    routes = {}
+    for profile in read(path).get('profiles',[]):
+        body = int(profile.get('body',0));female = bool(profile.get('female',False))
+        if profile.get('status') != 'validated' or profile.get('skin') != 'savage':continue
+        if body not in [183,184,185,186] or female != (body in [184,186]):continue
+        folder = root/('Viewer/local-art/free-equipment-female' if female else 'Viewer/local-art/free-equipment')
+        if not (folder/'runtime/body-mask-00.glb').exists() or not (folder/'equipment-base.glb').exists():continue
+        routes[body] = ('savage_rider' if body in [185,186] else 'savage_human')+('_female' if female else '_male')
+    return routes
+
 def allocate(count, entries):
     """Share the common capacity by weight, redistributing saturated caps."""
     active = {i for i, e in enumerate(entries) if e.get('probability', 100) > 0 and e.get('maxCount', 1) > 0}
@@ -147,6 +161,7 @@ def main():
     public = ROOT / 'Viewer/Art/Creatures/index.json'
     if public.exists():accepted = [row for row in read(public)['entries'] if row.get('status')=='validated'] + accepted
     routed = {int(b['body']): row['kind'] for row in accepted for b in row['bodies']}
+    routed.update(human_npc_routes())
     for file, constants in [('EquineRegistry.gd', ['BODIES', 'COMPATIBILITY', 'DISTINCT']), ('MountVisual.gd', ['BODIES']), ('AnimalVisual.gd', ['BODIES'])]:
         for constant in constants:
             for body in literal_registry(ROOT / 'Viewer/Presentation' / file, constant):

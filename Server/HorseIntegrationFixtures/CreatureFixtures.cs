@@ -236,7 +236,7 @@ public static class CreatureFixtures
                         }
                     }
                 }
-                owner.SendMessage("UCCREATURE|blocked|movement");
+                owner.SendMessage($"UCCREATURE|blocked|movement|body={subject.Body.BodyID}|at={subject.X},{subject.Y},{subject.Z}|owner={owner.X},{owner.Y},{owner.Z}|alive={subject.Alive}|frozen={subject.Frozen}|paralyzed={subject.Paralyzed}|stam={subject.Stam}");
             }
             finally
             {

@@ -29,8 +29,15 @@ def main():
     for row in pins['native_sources']:
         assert sha(ROOT / 'Server/ModernUO' / row['path']) == row['sha256'], row['path']
     human = pins['human_inputs']
-    assert sha(ROOT / human['path']) == human['sha256'], 'Modern human input manifest changed'
     human_pins = json.loads((ROOT / human['path']).read_text(encoding='utf-8'))
+    if 'art_contract_sha256' in human:
+        # New native profile declarations do not alter the shared target rig.
+        # Pin every relevant art/source record, then verify every art byte below.
+        contract = {key:human_pins[key] for key in ['prepared_art','art_sources']}
+        actual = hashlib.sha256(json.dumps(contract,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+        assert actual == human['art_contract_sha256'], 'Modern human art contract changed'
+    else:
+        assert sha(ROOT / human['path']) == human['sha256'], 'Modern human input manifest changed'
     for name, digest in human_pins['prepared_art'].items():
         assert sha(ROOT / name) == digest, name
     print('SAVAGE DANCE INPUTS: original members/cabinets, native Shaman and existing modern human art pass')

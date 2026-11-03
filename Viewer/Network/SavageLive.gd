@@ -164,7 +164,15 @@ func run() -> void:
 					var late: PackedStringArray=(await reply(client,"status")).split("|")
 					if not check(late.size()==9 and late[1]=="status","Native late status is complete: "+str(late)):return
 					if not check(late.size()==9 and int(late[2])>=1000 and late[8]=="1","Natural callback deadline elapses with actual AI timers still stopped"):return
+					# Native Lightning schedules damage250ms after the group callback.
+					# Observe that outcome before resetting the next trial's baselines.
+					var outcome_deadline:=Time.get_ticks_msec()+5000
+					while quorum==4 and int(late[4])-int(late[3])<25 and int(late[6])>=int(late[5]) and int(late[7])<0 and Time.get_ticks_msec()<outcome_deadline:
+						await create_timer(.05).timeout
+						late=(await reply(client,"status")).split("|")
+						if not check(late.size()==9 and late[1]=="status" and late[8]=="1","Delayed native outcome is sampled with AI still stopped"):return
 					var healed:=int(late[4])-int(late[3])>=25;var damaged:=int(late[6])<int(late[5]);var poisoned:=int(late[7])>=0
+					if quorum==4 and not check(healed or damaged or poisoned,"Each natural group callback finishes before the next trial"):return
 					if quorum==1:
 						check(not healed and not damaged and not poisoned,"A single Shaman animates but does not schedule the group effect")
 					else:

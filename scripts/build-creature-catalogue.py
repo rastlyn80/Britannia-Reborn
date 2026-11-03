@@ -1,5 +1,5 @@
 """Local creature work board: preparation, validated art and native evidence."""
-import collections,hashlib,html,json,re,subprocess,sys
+import collections,hashlib,html,importlib.util,json,re,subprocess,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 ART=ROOT/'Viewer/local-art/creatures'
@@ -24,6 +24,9 @@ def main():
     for kind,model in prepared.items():
         families.setdefault(model_families[kind],{'models':[]})['models'].append(model)
     routed={int(identity['body']):row for row in public+accepted for identity in row['bodies']}
+    spec=importlib.util.spec_from_file_location('catalogue_priority',ROOT/'scripts/build-creature-priority.py')
+    priority=importlib.util.module_from_spec(spec);spec.loader.exec_module(priority)
+    human_routes=priority.human_npc_routes(ROOT)
     existing=set()
     registry=ROOT/'Viewer/Presentation/EquineRegistry.gd'
     for name in ['BODIES','COMPATIBILITY','DISTINCT']:existing|=keys(registry,name)
@@ -46,12 +49,12 @@ def main():
         if profile not in ['animal','monster','sea']:continue
         native_group='/'.join(sources[0]['path'].replace('\\','/').split('/')[3:-1])
         targets.append({'body':body,'profile':profile,'native_group':native_group,'sources':sources,
-                        'presentation':routed[body]['kind'] if body in routed else 'previously integrated horse/ostard/ki-rin/llama/bovine' if body in existing else None,
+                        'presentation':routed[body]['kind'] if body in routed else human_routes.get(body,'previously integrated horse/ostard/ki-rin/llama/bovine' if body in existing else None),
                         'live_reports':live.get(body,[]),'tested_native_constructors':sorted(live_classes.get(body,set()))})
     targets.sort(key=lambda row:(row['native_group'],row['body']))
     counts={'bounded_native_literal_bodies':len(targets),'routed_native_literals':sum(bool(row['presentation']) for row in targets),
             'with_native_evidence':sum(bool(row['live_reports']) for row in targets),'new_validated_source_forms':len(accepted),
-            'new_body_routes':len(routed),'licensed_public_source_forms':len(public),'prepared_source_forms':sum(row['status']=='prepared' for row in prepared.values()),'blocked_source_forms':sum(row['status']!='prepared' for row in prepared.values()),
+            'new_body_routes':len(routed),'specialized_human_npc_routes':len(human_routes),'human_npc_with_native_evidence':sum(body in live for body in human_routes),'licensed_public_source_forms':len(public),'prepared_source_forms':sum(row['status']=='prepared' for row in prepared.values()),'blocked_source_forms':sum(row['status']!='prepared' for row in prepared.values()),
             'named_native_constructor_pairs_with_evidence':sum(len(row['tested_native_constructors']) for row in targets)}
     scope='Bounded pinned-server literal Body assignments, RandomList, simple conditional literal branches and base-mount calls; not every dynamic constructor result or the full modern-client body catalogue. Source forms, body routes and live evidence are separate. Named constructors list positive evidence in passing reports only: a tested body is not proof of every class sharing it, and older receipts may lack class names. Proprietary-derived art stays local; no redistribution grant.'
     (OUT/'catalogue.json').write_text(json.dumps({'counts':counts,'server_pin':source['server_pin'],'native_targets':targets,'preparation':prepared,'scope':scope},indent=2),encoding='utf-8')

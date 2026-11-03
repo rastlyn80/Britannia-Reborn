@@ -3,6 +3,8 @@ $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent
 $godot=(Get-ChildItem "$root/.tools/godot/*console.exe"|Select-Object -First 1).FullName
 $env:APPDATA=Join-Path $root '.godot-user';$env:LOCALAPPDATA=$env:APPDATA
+$preparedCreatureTrial=$CreatureFamily -in @('mummies','solen_warriors','ice_elementals','candidate_batch')
+$recordCreatureTrial=$preparedCreatureTrial -or $CreatureFamily -eq 'recent_batch'
 Push-Location $root
 try {
  & "$PSScriptRoot/prepare-horses.ps1" -VerifyOnly
@@ -23,6 +25,11 @@ try {
   if ($LASTEXITCODE) { throw 'Mounted and transition clothing coverage failed' }
  }
  if (!$Live) { return }
+ if ($CreatureFamily -or $Savages) {
+  $checkScript=if ($Savages) {'res://Network/SavageLive.gd'} elseif ($CreatureFamily -eq 'mages') {'res://Network/SourceMageLive.gd'} elseif ($CreatureFamily -eq 'juka') {'res://Network/SourceJukaLive.gd'} else {'res://Network/CreatureLive.gd'}
+  & $godot --headless --path Viewer --script $checkScript --check-only
+  if ($LASTEXITCODE) {throw 'Native client script parse failed before server startup'}
+ }
  $runtime=Join-Path $root 'work/horse-session/server'
  if ($Ethics) {$runtime=Join-Path $root ('work/ethics-session/'+[Guid]::NewGuid().ToString('N')+'/server')}
  if ($CreatureFamily -or $Savages) {$runtime=Join-Path $root ('work/creature-session/'+[Guid]::NewGuid().ToString('N')+'/server')}
@@ -49,14 +56,14 @@ try {
   Copy-Item -LiteralPath $fixedContent -Destination "$runtime/Assemblies/UOContent.dll" -Force
  }
  if ($CreatureFamily) {
-  if ($CreatureFamily -in @('mages','juka')) {& python -B "$root/scripts/prepare-creature-fixtures.py" $CreatureFamily --prepared --runtime $runtime}
+  if ($CreatureFamily -in @('mages','juka','mummies','solen_warriors','ice_elementals','candidate_batch')) {& python -B "$root/scripts/prepare-creature-fixtures.py" $CreatureFamily --prepared --runtime $runtime}
   else {& python -B "$root/scripts/prepare-creature-fixtures.py" $CreatureFamily --runtime $runtime}
   if ($LASTEXITCODE) {throw 'Creature native constructor allow-list preparation failed'}
  }
  $dotnet="$root/.tools/dotnet-server/dotnet.exe"
  $env:DOTNET_CLI_HOME=Join-Path $root '.dotnet-home'
  $savageBuildInputs=@{}
- if ($Savages) {
+ if ($Savages -or $recordCreatureTrial) {
   Get-ChildItem "$root/Server/HorseIntegrationFixtures" -File | Where-Object {$_.Extension -in @('.cs','.csproj')} | ForEach-Object {
    $savageBuildInputs[('Server/HorseIntegrationFixtures/'+$_.Name)]=(Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
   }
@@ -66,7 +73,7 @@ try {
  if ($LASTEXITCODE) { throw 'Isolated fixture extension build failed' }
  Copy-Item "$root/Server/HorseIntegrationFixtures/bin/Release/net10.0/BritanniaReborn.HorseIntegrationFixtures.dll" "$runtime/Assemblies/" -Force
  $savageAssemblies=@{}
- if ($Savages) {
+ if ($Savages -or $recordCreatureTrial) {
   foreach ($relative in @('ModernUO.dll','Server.dll','Assemblies/UOContent.dll','Assemblies/BritanniaReborn.HorseIntegrationFixtures.dll')) {
    $savageAssemblies[$relative]=(Get-FileHash -LiteralPath (Join-Path $runtime $relative) -Algorithm SHA256).Hash.ToLowerInvariant()
   }
@@ -104,6 +111,7 @@ try {
   if ($Bovines) {$liveArgs+='--bovines'}
   if ($SeaHorse) {$liveArgs+='--sea-horse'}
   if ($CreatureFamily) {$liveArgs+="--family=$CreatureFamily"}
+  if ($CreatureFamily -in @('mummies','solen_warriors','ice_elementals','candidate_batch')) {$liveArgs+='--prepared'}
   $started=[DateTime]::UtcNow
   & $godot --headless --path Viewer --script $(if ($Savages) {'res://Network/SavageLive.gd'} elseif ($CreatureFamily -eq 'mages') {'res://Network/SourceMageLive.gd'} elseif ($CreatureFamily -eq 'juka') {'res://Network/SourceJukaLive.gd'} elseif ($CreatureFamily) {'res://Network/CreatureLive.gd'} elseif ($Ostards -or $EquineCompletion -or $LlamaCompletion -or $Ethics -or $Bovines -or $SeaHorse) {'res://Network/OstardLive.gd'} elseif ($Equines) {'res://Network/EquineLive.gd'} else {'res://Network/HorseLive.gd'}) -- @liveArgs
   if ($LASTEXITCODE) { throw 'Native isolated integration test failed' }
@@ -119,6 +127,10 @@ try {
    @{runtime=$runtime;started_utc=$started.ToString('o');report_sha256=(Get-FileHash -LiteralPath $report.FullName -Algorithm SHA256).Hash.ToLowerInvariant();build_inputs_sha256=$savageBuildInputs;assemblies_sha256=$savageAssemblies;reviewed_content_sha256=$receipt.assembly_sha256;scope='Fresh isolated loopback2594 two-client world, built fixture sources and copied native assemblies unchanged through run; no production saves/accounts'}|ConvertTo-Json -Depth 5|Set-Content "$root/work/creatures/savages/native-runtime.json"
    & python -B "$root/scripts/check-savage-native.py"
    if ($LASTEXITCODE) {throw 'Savage exact native receipt or behaviour evidence failed'}
+   $nativeSavage=Get-Content -LiteralPath $report.FullName -Raw|ConvertFrom-Json
+   $savageOutput=Join-Path $root 'outputs/creatures/human_npcs'
+   New-Item -ItemType Directory -Force $savageOutput|Out-Null
+   @{checks=$nativeSavage.checks;failures=0;records=@($nativeSavage.records|Where-Object {$null -ne $_.native_class});source_report_sha256=(Get-FileHash -LiteralPath $report.FullName).Hash.ToLowerInvariant();source_report='work/creatures/savages/native-tests.json';scope='Positive human-NPC body/class witnesses from the fresh checked native Savage/Shaman two-client run. Controlled fixture, not autonomous AI or full-family certification.'}|ConvertTo-Json -Depth 18|Set-Content -LiteralPath "$savageOutput/live.json"
   }
   if ($LASTEXITCODE) { throw 'Native isolated horse integration test failed' }
   if ($CreatureFamily -eq 'mages') {
@@ -137,6 +149,22 @@ try {
    $report=Join-Path $root "outputs/creatures/$CreatureFamily/live.json"
    if (!(Test-Path $report) -or (Get-Item $report).LastWriteTimeUtc -lt $started.AddSeconds(-1)) {throw 'Creature native test did not write fresh evidence'}
    if ((Get-Content $report -Raw|ConvertFrom-Json).failures -ne 0) {throw 'Creature native integration reported failures'}
+   if ($recordCreatureTrial) {
+    $native=Get-Content -LiteralPath $report -Raw|ConvertFrom-Json
+    $candidates=Get-Content "$root/work/creatures/live-candidates.json" -Raw|ConvertFrom-Json
+    if ([bool]$native.prepared_trial -ne [bool]$preparedCreatureTrial -or $native.records.Count -ne 2*$candidates.Count) {throw 'Native batch did not exercise every class and intended registry mode for both clients'}
+    if ($native.candidate_sha256 -ne (Get-FileHash "$root/work/creatures/live-candidates.json").Hash.ToLowerInvariant()) {throw 'Prepared native input list changed'}
+    foreach ($relative in $savageBuildInputs.Keys) {
+     if ((Get-FileHash -LiteralPath (Join-Path $root $relative)).Hash.ToLowerInvariant() -ne $savageBuildInputs[$relative]) {throw 'Prepared native fixture source changed during build/run'}
+    }
+    foreach ($relative in $savageAssemblies.Keys) {
+     if ((Get-FileHash -LiteralPath (Join-Path $runtime $relative)).Hash.ToLowerInvariant() -ne $savageAssemblies[$relative]) {throw 'Prepared native assembly changed during run'}
+    }
+    $nativeFolder=Join-Path $root "work/creatures/$CreatureFamily"
+    New-Item -ItemType Directory -Force $nativeFolder|Out-Null
+    Copy-Item -LiteralPath "$root/work/creatures/live-candidates.json" -Destination "$nativeFolder/candidates.json" -Force
+    @{runtime=$runtime;started_utc=$started.ToString('o');report_sha256=(Get-FileHash -LiteralPath $report).Hash.ToLowerInvariant();candidate_sha256=$native.candidate_sha256;build_inputs_sha256=$savageBuildInputs;assemblies_sha256=$savageAssemblies;reviewed_content_sha256=$receipt.assembly_sha256;selector_sha256=(Get-FileHash "$root/scripts/prepare-creature-fixtures.py").Hash.ToLowerInvariant();runner_sha256=(Get-FileHash "$root/scripts/test-horses.ps1").Hash.ToLowerInvariant();scope='Fresh disposable loopback2594 native constructors, movement, actions and corpse packets observed by two real clients; prepared mode is recorded in the actual report; no production saves/accounts'}|ConvertTo-Json -Depth 6|Set-Content -LiteralPath "$nativeFolder/native-runtime.json"
+   }
    if ($CreatureFamily -eq 'silver_serpents') {
     $behaviourStarted=[DateTime]::UtcNow
     & $godot --headless --path Viewer --script res://Network/SilverSerpentBehaviourLive.gd

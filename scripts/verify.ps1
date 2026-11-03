@@ -34,6 +34,14 @@ $env:APPDATA = Join-Path $root '.godot-user'
 $env:LOCALAPPDATA = $env:APPDATA
 & $godot --headless --path "$root\Viewer" --editor --import
 if ($LASTEXITCODE) { throw 'Asset import failed' }
+if (Test-Path "$root/Viewer/local-art/human-npcs/savages/local-presentation.json") {
+ & python -B "$root/scripts/accept-savage-profiles.py" --check-active
+ if ($LASTEXITCODE) {throw 'Active Savage human profile evidence failed'}
+ $savageNormal = & $godot --headless --path "$root/Viewer" --script res://Presentation/SavageNormalRouteTests.gd 2>&1
+ $savageNormalExit = $LASTEXITCODE
+ $savageNormal | ForEach-Object {Write-Output $_}
+ if ($savageNormalExit -or ($savageNormal | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Normal Savage profile/dance/mount/corpse routes failed'}
+}
 if (Test-Path "$root/Viewer/local-art/creatures/reviewed_presentations/local-presentation.json") {
  & python -B "$root/scripts/accept-reviewed-creatures.py" --check-active
  if ($LASTEXITCODE) {throw 'Activated reviewed creature evidence failed'}
