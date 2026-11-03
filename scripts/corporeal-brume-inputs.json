@@ -1,0 +1,8 @@
+{
+  "reference_url": "https://www.uoguide.com/Corporeal_Brume",
+  "reference_sha256": "cb36344737db7ecb5187c202aec967a326cfd7e5c614ea9b817e1df00b5c2fb1",
+  "donor_scene_sha256": "b838296abe7cb0dbfe1392ef0ad53f5884a40316165e322ae663b9dc2637b8c7",
+  "donor_atlas_sha256": "d1e7633103f13c11d893fd6024e2c3a4d784794ab559fac058ccedd12087a2ca",
+  "native_path": "Projects/UOContent/Mobiles/Monsters/ML/Prism of Light/CorporealBrume.cs",
+  "native_sha256": "47da17bd8ce3248c41b395c7a9546087e4307d683fad9822a0ec249590c5e7bd"
+}

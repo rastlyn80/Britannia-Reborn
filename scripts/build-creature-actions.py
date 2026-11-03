@@ -21,13 +21,21 @@ def renderer_maps():
             'new':ast.literal_eval(modern[1]),'fallback':ast.literal_eval(fallback[1])},sha(path)
 
 def resolve(model,label,fallback):
-    available=set(model['stats']['original']['clips'])|{'Eat','LieDown'}
+    authored=model.get('authored_replacements',{}) | model.get('authored_clips',{})
+    if model['kind'] in ('energy_vortex', 'sand_vortex'):
+        # Both local scenes are built by the same GDScript baker.
+        baker=(ROOT/'Viewer/Presentation/BakeEnergyVortex.gd').read_text()
+        clip_table=re.search(r'const CLIPS := \{(.*?)\n\}',baker,re.S)
+        assert clip_table,'Vortex clip declaration changed'
+        authored |= dict.fromkeys(re.findall(r'"(\w+)": \[',clip_table[1]),'Shared vortex shell bake')
+    available=(set(model.get('stats',{}).get('original',{}).get('clips',{}))
+               | set(model.get('clip_sources',{})) | set(authored) | {'Eat','LieDown'})
     resolved=label;visited=set()
     while resolved not in available and resolved in fallback and resolved not in visited:
         visited.add(resolved);resolved=fallback[resolved]
     if resolved not in available:return {'requested':label,'resolved':None,'status':'Missing replacement'}
     if resolved!=label:status='Runtime category substitute'
-    elif label in model.get('authored_replacements',{}):status='Authored category motion'
+    elif label in authored:status='Authored category motion'
     elif label in model.get('category_aliases',{}):status='Prepared clip alias'
     elif label=='LieDown':status='Runtime copy of Death clip'
     elif label in model.get('clip_sources',{}):status='Recovered source clip'
@@ -35,7 +43,7 @@ def resolve(model,label,fallback):
     return {'requested':label,'resolved':resolved,'status':status,
             'source_member':model.get('clip_sources',{}).get(resolved),
             'declared_alias':model.get('category_aliases',{}).get(resolved) or ('Death' if label=='LieDown' else None),
-            'authored_method':model.get('authored_replacements',{}).get(resolved)}
+            'authored_method':authored.get(resolved)}
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--data-dir',type=Path);args=parser.parse_args()

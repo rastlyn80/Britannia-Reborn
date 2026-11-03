@@ -1,3 +1,11 @@
+# Corporeal Brume prepared
+
+The pinned ModernUO constructor sends provisional body 260. The installed Classic Client labels 260 Travesty and the archived 3D model table has no entry for it. A [historical in-game screenshot](https://www.uoguide.com/Corporeal_Brume) shows the Brume as a rounded green mass with a brighter centre. The replacement adapts the archived Slime donor with a taller, narrower silhouette, a green-to-cyan shader and plane clearance measured from the deformed mesh. The donor silhouette remains somewhat angular. No original Brume rig or action files were established.
+
+The exact prepared package passed 165 native checks across two clients, plus six decoded client actions, three static corpse hues and 36 Vulkan terrain poses with 2.00 mm minimum clearance. The normal registry will be updated after the full verification run passes its registry immutability checks. Rebuild with `python scripts/prepare-corporeal-brume.py` once the local Slime donor is available. The donor, screenshot reference and server source hashes are recorded in `scripts/corporeal-brume-inputs.json`.
+
+The regenerated action ledger now includes the authored vortex and Fetid motions and the licensed Raptor clips. It reports 5,054 routable generic protocol slots out of 6,812 at this snapshot. That count includes fallback categories and does not measure original per-creature action coverage.
+
 # Fetid Essence and Mantra Effervescence active
 
 Both pinned ModernUO constructors send body 273 and hue zero. The archived model table maps 273 to Fetid Essence. Its unskinned two-triangle card references a fully transparent atlas. The replacement uses the project-owned Wisp rig and broadened motions with a translucent green cloud shader. Its visual appearance and choreography are authored. The old card and atlas are reference only and are excluded from the bake.
