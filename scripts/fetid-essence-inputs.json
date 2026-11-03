@@ -1,0 +1,14 @@
+{
+  "donor": "Art/Creatures/Wisp/wisp.scn",
+  "donor_sha256": "4b47a14ad1eef6c642701d11fad21787b54e685f6b6d33019503ef4e5fbaa595",
+  "native": {
+    "Projects/UOContent/Mobiles/Monsters/ML/Humanoid/Magic/FetidEssence.cs": "1aea9d7b6bef68fa81ecff0936901bf0d4b3e16580bfed1ffb9aa619fa55fb06",
+    "Projects/UOContent/Mobiles/Monsters/ML/Prism of Light/MantraEffervescence.cs": "e464617891e1a51b2618ccc28b1ce8a70cedd8e2a1c5139bb027271046d3ba5e"
+  },
+  "archive_reference_only": {
+    "installer_sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393",
+    "model_table_sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099",
+    "Client/Models/Monsters/Fetid_Essence_Lod2.grn": "02eb10ddb57c9c0aedd48cf56a4514241e52fbd73198546c78c14e665b87ca5e",
+    "Client/Models/Maps/Ethereals_Wisp.tga": "4c37301881aa33176bb2a967875bb7dceb5c76791754b98e8eb6334de3d0a619"
+  }
+}

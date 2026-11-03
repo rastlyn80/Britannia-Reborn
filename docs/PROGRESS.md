@@ -1,3 +1,11 @@
+# Fetid Essence and Mantra Effervescence active
+
+Both pinned ModernUO constructors send body 273 and hue zero. The archived model table maps 273 to Fetid Essence. Its unskinned two-triangle card references a fully transparent atlas. The replacement uses the project-owned Wisp rig and broadened motions with a translucent green cloud shader. Its visual appearance and choreography are authored. The old card and atlas are reference only and are excluded from the bake.
+
+The prepared and normal routes passed 370 and 367 isolated native checks respectively, including both constructors, walking and running, melee and cast playback, dye updates and static corpses. Six decoded classic actions and three corpse hues passed in the client. Vulkan rendered five action samples and distinct neutral, full and partial hues. Twelve hover samples preserved the authoritative actor position on flat, raised and sloped terrain, and missing ground reset the visual offset.
+
+Rebuild with `python scripts/prepare-fetid-essence.py`. The pinned Wisp donor is already in the repository. Exercise the disposable server with `scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily fetid_essence`, activate with `python scripts/accept-late-creatures.py --family fetid_essence`, then repeat the server check with `fetid_essence_active`.
+
 # Raptor active
 
 Body 730 uses the CC0 Quaternius Velociraptor from [Animated Low Poly Dinosaurs](https://quaternius.itch.io/animated-lowpoly-dinosaurs). The local bake fits the 1,248-triangle, 37-joint donor to a 2.5 m envelope and supplies materials for the existing hue shader. It retains six stock motions, uses Jump for the leaping attack slot, adds an authored recoil and reuses Idle for Fidget. The low-poly donor silhouette is still visible. This is a substitute for the classic sprite.
