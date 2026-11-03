@@ -239,7 +239,9 @@ def main():
                    inactive_era_body_candidates=sorted(inactive_bodies),
                    graphics=state, human=human, witnessed_constructor_bodies=sorted(witnessed[key]),
                    specialized_human_bodies_with_native_evidence=sorted(bodies & witnessed[key] & {400,401,402,403}),
-                   bodies_with_native_evidence=sorted(bodies & body_evidence), source_paths=info['paths'])
+                   bodies_with_native_evidence=sorted(bodies & body_evidence),
+                   routed_bodies_missing_native_evidence=sorted((bodies & routed.keys()) - body_evidence),
+                   source_paths=info['paths'])
         rows.append(row)
     rows.sort(key=lambda r: (-r['estimated_slots'], -r['spawn_locations'], r['name'].casefold()))
     for rank, row in enumerate(rows, 1):
@@ -253,6 +255,11 @@ def main():
               'inputs': {str(p.relative_to(ROOT)): sha(p) for p in [expansion_path, heartwood_path, *files]},
               'rows': rows, 'next_unrouted_creatures': queue, 'excluded_items': sorted(excluded), 'unresolved_types': sorted(unresolved)}
     result['creature_work_order'] = [r['name'] for r in creatures]
+    result['next_native_evidence_gaps'] = [
+        {'creature_rank': row['creature_rank'], 'name': row['name'],
+         'bodies': row['routed_bodies_missing_native_evidence']}
+        for row in creatures if row['routed_bodies_missing_native_evidence']
+    ]
     measured_bodies = {body for row in creatures for body in row['body_candidates']}
     result['unmeasured_native_bodies'] = [
         {'body': int(body), 'graphics': routed.get(int(body)), 'sources': sources,
@@ -272,6 +279,7 @@ def main():
     args.output.with_suffix('.html').write_text('<!doctype html><meta charset="utf-8"><title>Creature occurrence order</title><style>body{background:#20303a;color:#e9edef;font:16px system-ui;margin:30px}td,th{text-align:left;padding:8px;border-bottom:1px solid #52616b}table{border-collapse:collapse}p{max-width:1000px;line-height:1.5}</style><h1>Creature work order: '+html.escape(', '.join(sorted(maps)))+'</h1><p>'+html.escape(result['scope'])+'</p><p>Next missing replacements: '+html.escape(', '.join(queue[:20]))+'</p><table><tr><th>Rank</th><th>Native type</th><th>Spawn locations</th><th>Estimated shared slots</th><th>Current graphics</th></tr>'+table+'</table>', encoding='utf-8')
     print('CREATURE OCCURRENCE ORDER:', count, 'active spawners;', len(creatures), 'non-human mobile types;', len(unresolved), 'unresolved types')
     print('NEXT MISSING REPLACEMENTS:', ', '.join(queue[:20]))
+    print('NEXT NATIVE EVIDENCE GAPS:', ', '.join(row['name'] for row in result['next_native_evidence_gaps'][:20]))
 
 if __name__ == '__main__':
     main()

@@ -174,7 +174,11 @@ public static class CreatureFixtures
                 // equipment and rider behaviour remain separate tests.
                 var looseMount = (body == 243 && (type == typeof(Hiryu) || type == typeof(LesserHiryu)))
                     || (body == 277 && type == typeof(CuSidhe))
-                    || (body == 276 && type == typeof(Reptalon));
+                    || (body == 276 && type == typeof(Reptalon))
+                    || (body == 794 && type == typeof(SwampDragon))
+                    || (body == 799 && type == typeof(ScaledSwampDragon))
+                    || (body == 187 && type == typeof(Ridgeback))
+                    || (body == 188 && type == typeof(SavageRidgeback));
                 if (type == null || type.IsAbstract || !type.IsSubclassOf(typeof(BaseCreature))
                     || (type.IsSubclassOf(typeof(BaseMount)) && !looseMount) || type.ContainsGenericParameters)
                 {

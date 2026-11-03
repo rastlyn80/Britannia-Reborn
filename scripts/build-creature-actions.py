@@ -3,7 +3,7 @@
 Routable protocol slots are not an original-action completion percentage.
 AnimationSequence records are metadata, not decoded animation frame pixels.
 """
-import argparse,ast,hashlib,html,importlib.util,json,re
+import argparse,ast,hashlib,html,importlib.util,json,re,runpy,struct
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 ART=ROOT/'Viewer/local-art/creatures';OUT=ROOT/'outputs/creatures'
@@ -19,6 +19,23 @@ def renderer_maps():
     assert len(classic)==3 and modern and fallback,'Renderer action maps changed; review the ledger reader'
     return {'small':ast.literal_eval(classic[0]),'sea':ast.literal_eval(classic[1]),'large':ast.literal_eval(classic[2]),
             'new':ast.literal_eval(modern[1]),'fallback':ast.literal_eval(fallback[1])},sha(path)
+
+def original_frame_groups(data, allowed, reader):
+    name_hash = runpy.run_path(str(ROOT/'scripts/audit-classic-parity.py'))['name_hash']
+    # The reference client's loader probes 80 action names per body.
+    names = {name_hash(f'build/animationlegacyframe/{body:06d}/{group:02d}.bin'): (body, group)
+             for body in allowed for group in range(80)}
+    records, archives = [], []
+    for path in sorted(data.glob('AnimationFrame*.uop')):
+        archives.append({'name': path.name, 'sha256': sha(path), 'bytes': path.stat().st_size})
+        for digest, raw in reader.payloads(path, names):
+            body, group = names[digest]
+            count, start = struct.unpack_from('<II', raw, 32) if len(raw) >= 40 else (0, 0)
+            valid = count > 0 and start >= 40 and start + count * 16 <= len(raw)
+            records.append({'body': body, 'group': group, 'archive': path.name,
+                            'payload_sha256': hashlib.sha256(raw).hexdigest(),
+                            'frame_headers': count if valid else None})
+    return sorted(records, key=lambda row: (row['body'], row['group'], row['archive'])), archives
 
 def resolve(model,label,fallback):
     authored=model.get('authored_replacements',{}) | model.get('authored_clips',{})
@@ -67,14 +84,18 @@ def main():
     if data is None and config.exists():
         directories=json.loads(config.read_text(encoding='utf-8-sig')).get('dataDirectories',[])
         if directories:data=Path(directories[0])
-    sequence=[];archives=[]
-    if data and (data/'AnimationSequence.uop').exists():
+    sequence=[];archives=[];frame_groups=[]
+    if data:
         spec=importlib.util.spec_from_file_location('creature_sequences',ROOT/'scripts/uo-human-sequences.py')
         reader=importlib.util.module_from_spec(spec);spec.loader.exec_module(reader)
         path=data/'AnimationSequence.uop'
         allowed={r['body'] for r in catalogue['native_targets']}
-        sequence=reader.inspect(path,allowed)
-        archives.append({'name':path.name,'sha256':sha(path),'bytes':path.stat().st_size})
+        if path.exists():
+            sequence=reader.inspect(path,allowed)
+            archives.append({'name':path.name,'sha256':sha(path),'bytes':path.stat().st_size})
+        frame_groups, frame_archives=original_frame_groups(data, allowed, reader)
+        archives.extend(frame_archives)
+    framed={(row['body'],row['group']) for row in frame_groups if row['frame_headers'] is not None}
     original=[];new_actions=[]
     for record in sequence:
         body=record['animation_ref'];model=native.get(body)
@@ -92,6 +113,7 @@ def main():
                 label=(model.get('new_action_categories',{}).get(str(action['type'])) if model else None) or maps['new'].get(action['type'])
                 if model and model['profile']=='sea' and action['type']==0 and mode['mode']%2:label='Attack2'
                 new_actions.append({'body':body,'mode':mode['mode'],**action,
+                    'groups_with_uop_frame_headers':[group for group in action['groups'] if (body,group) in framed],
                     'generic_model':model['kind'] if model else None,
                     'replacement':resolve(model,label,maps['fallback']) if model and label else None,
                     'scope':'Type route only; exact per-body mode/subaction/variation fidelity requires separate tests.'})
@@ -100,6 +122,9 @@ def main():
             'missing_protocol_slots':sum(r['resolved'] is None for r in rows),
             'original_sequence_records':len(sequence),'original_sequence_parse_blockers':sum(bool(r.get('parse_blocker')) or r['unparsed_bytes']!=0 for r in sequence),
             'original_new_protocol_entries':len(new_actions),
+            'original_uop_frame_groups':len(framed),
+            'original_uop_frame_bodies':len({body for body,group in framed}),
+            'original_uop_frame_header_blockers':sum(row['frame_headers'] is None for row in frame_groups),
             'original_new_entries_without_generic_model':sum(not r['generic_model'] for r in new_actions),
             'original_new_entries_with_generic_route':sum(bool(r['replacement'] and r['replacement']['resolved']) for r in new_actions),
             'original_new_entries_total_without_generic_route':sum(not (r['replacement'] and r['replacement']['resolved']) for r in new_actions),
@@ -108,11 +133,12 @@ def main():
     assert counts['original_new_entries_without_generic_model']+counts['original_new_entries_without_generic_route']==counts['original_new_entries_total_without_generic_route']
     scope=('Generic creature renderer protocol slots only; distinct from original per-body required actions and choreography quality. '
            'Source clips, aliases, authored motions and missing routes remain explicit. Original UOP sequence metadata is recorded separately; '
-           'frame pixels and final MUL/DEF/UOP availability/precedence are not decoded here. Humans and earlier mount/bovine action ledgers are separate. '
+           'UOP frame headers are inventoried by canonical group. Frame pixels and final MUL/DEF/UOP availability/precedence are not decoded here. Humans and earlier mount/bovine action ledgers are separate. '
            'The historical original_new_entries_without_generic_route counter covers already routed bodies only; the explicit total counter also includes entries on bodies without any generic model. '
            'Those bodies can include specialized human/mount presenters; this is not a global missing-animation total or choreography completion percentage.')
     report={'counts':counts,'scope':scope,'renderer_sha256':renderer_sha,'archives':archives,'routes':rows,
-            'original_sequence_metadata':sequence,'original_group_links':original,'original_new_protocol_actions':new_actions}
+            'original_sequence_metadata':sequence,'original_group_links':original,
+            'original_uop_frame_groups':frame_groups,'original_new_protocol_actions':new_actions}
     OUT.mkdir(parents=True,exist_ok=True);(OUT/'actions.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
     table=''.join('<tr><td>0x%X</td><td>%s</td><td>%s %s</td><td>%s</td><td>%s</td><td>%s</td></tr>'%
         (r['body'],html.escape(r['kind']),r['protocol'],r['group_or_type'],r['requested'],r['resolved'] or '—',r['status']) for r in rows)

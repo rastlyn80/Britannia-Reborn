@@ -1,3 +1,9 @@
+# Native coverage audit
+
+Three normal-registry runs added isolated server evidence for 13 body IDs and 15 native constructors. The first five constructors passed 669 checks, the next five 657, and the last five 817. Each run used two disposable clients and exercised movement, action packets, hues and death/corpse behaviour. Lava Serpent and Blood Elemental separately passed 177 and 237 checks. The loose Swamp Dragon, Scaled Swamp Dragon, Ridgeback and Savage Ridgeback passed 575 checks after the test fixture admitted those four exact body/class pairs. This verifies the loose forms. Mounted rider actions and the native barding transition need their own evidence. The occurrence report now lists routed bodies still missing native evidence in configured spawn order.
+
+The action ledger now checks actual AnimationFrame UOP payload headers alongside AnimationSequence metadata. It found 91 structurally readable canonical groups across seven bodies in the installed archives. This is a UOP inventory. MUL bodies, wire-slot precedence and visual choreography fidelity require separate evidence.
+
 # Corporeal Brume prepared
 
 The pinned ModernUO constructor sends provisional body 260. The installed Classic Client labels 260 Travesty and the archived 3D model table has no entry for it. A [historical in-game screenshot](https://www.uoguide.com/Corporeal_Brume) shows the Brume as a rounded green mass with a brighter centre. The replacement adapts the archived Slime donor with a taller, narrower silhouette, a green-to-cyan shader and plane clearance measured from the deformed mesh. The donor silhouette remains somewhat angular. No original Brume rig or action files were established.

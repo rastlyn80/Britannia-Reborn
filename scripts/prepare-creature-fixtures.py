@@ -15,6 +15,16 @@ RECENT_CLASSES={166:['GoldenElemental'],753:['EnslavedGargoyle'],301:['Treefello
                 155:['RottingCorpse','UnfrozenMummy'],189:['OrcBrute'],165:['ShadowWisp','ShadowWispFamiliar'],
                 154:['Mummy','PestilentBandage'],782:['RedSolenWarrior','RedSolenInfiltratorWarrior'],
                 806:['BlackSolenWarrior','BlackSolenInfiltratorWarrior'],161:['IceElemental']}
+SOURCE_COVERAGE_CLASSES = {
+    'source_coverage_common': {248: ['Gaman'], 143: ['RatmanMage'], 182: ['OrcBomber'],
+                               259: ['InterredGrizzle', 'Ilhenir']},
+    'source_coverage_uncommon': {777: ['Doppleganger'], 264: ['Changeling'], 752: ['Golem'],
+                                 94: ['FrostOoze'], 792: ['ChaosDaemon']},
+    'source_coverage_rare': {785: ['Moloch'], 784: ['ArcaneDaemon', 'CrystalDaemon'],
+                             755: ['GargoyleDestroyer'], 754: ['GargoyleEnforcer']},
+    'source_coverage_loose_mounts': {794: ['SwampDragon'], 799: ['ScaledSwampDragon'],
+                                     187: ['Ridgeback'], 188: ['SavageRidgeback']},
+}
 
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -135,6 +145,7 @@ def main():
     states={'validated'}
     prepared_classes={}
     selected_kinds=None
+    coverage_classes = SOURCE_COVERAGE_CLASSES.get(args.family, {})
     if args.family=='recent_batch':
         for script in ['prepare-source-family-batch.py','prepare-source-reused-variants.py','prepare-shadow-wisp.py']:
             subprocess.run([sys.executable,'-B',str(ROOT/'scripts'/script),'--check-prepared'],check=True)
@@ -174,7 +185,9 @@ def main():
     owners={int(body['body']):entry for entry in index['entries'] if entry.get('status') in states for body in entry['bodies']}
     for entry in index['entries']:
         if entry.get('status') not in states:continue
-        if selected_kinds is not None:
+        if coverage_classes:
+            if entry['family'] != 'source_preserving':continue
+        elif selected_kinds is not None:
             if entry['kind'] not in selected_kinds:continue
         elif args.family not in ['all','candidate_batch'] and entry['family']!=args.family:
             if not (args.prepared and args.family == 'late_source'):continue
@@ -182,6 +195,7 @@ def main():
             if owners[int(body['body'])] is not entry:continue
             native_body=int(body['body'])
             assert native_body==body['body'] and 0<=native_body<=0xffff,'Native body IDs must be exact unsigned integers'
+            if coverage_classes and native_body not in coverage_classes:continue
             classes=set()
             for source in body['native_sources']:
                 path=ROOT/'Server/ModernUO'/source['path'].replace('\\','/')
@@ -189,7 +203,8 @@ def main():
                 classes.update(re.findall(r'\bpublic\s+(?:(?:abstract|sealed|partial)\s+)*class\s+(\w+)',text))
             classes=sorted(classes)
             reviewed=EXPLICIT_CLASSES.get(body['body']) if entry['family'] in ['deer','serpents','ice_serpents','small_snakes','rabbits','wisps','air','fire','walking','gorillas','headless','boglings','chickens','liches','snow_elementals','frogs','amorphous','solen_workers','fluid_elementals','silver_serpents','mages','juka'] else None
-            if prepared_classes:reviewed=prepared_classes.get(native_body,reviewed)
+            if coverage_classes:reviewed=coverage_classes[native_body]
+            elif prepared_classes:reviewed=prepared_classes.get(native_body,reviewed)
             elif args.family=='recent_batch':reviewed=RECENT_CLASSES.get(int(body['body']))
             if reviewed:
                 assert set(reviewed)<=set(classes),'Reviewed native class declaration changed'
@@ -227,6 +242,9 @@ def main():
                 for name in classes:rows.append(dict(common,classes=[name],native_class=name))
             elif classes:rows.append(common)
     assert rows,'No checked native literal bodies in this family'
+    if coverage_classes:
+        expected = {(body, name) for body, names in coverage_classes.items() for name in names}
+        assert len(rows) == len(expected) and {(row['body'], row['native_class']) for row in rows} == expected
     target=ROOT/'work/creatures';target.mkdir(parents=True,exist_ok=True)
     (target/'live-candidates.json').write_text(json.dumps(rows,indent=2),encoding='utf-8')
     (runtime/'Data/creature-fixtures.local.json').write_text(json.dumps([{'body':row['body'],'classes':row['classes']} for row in rows],indent=2),encoding='utf-8')

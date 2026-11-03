@@ -8,7 +8,7 @@ $env:APPDATA=Join-Path $root '.godot-user';$env:LOCALAPPDATA=$env:APPDATA
 if ($ActiveJukaLord -and $CreatureFamily -ne 'juka_lord') {throw 'ActiveJukaLord requires juka_lord'}
 if ($PreparedQueen -and $CreatureFamily -ne 'solen_queens') {throw 'PreparedQueen requires the solen_queens family'}
 $preparedCreatureTrial=$PreparedQueen -or $CreatureFamily -in @('mummies','solen_warriors','ice_elementals','candidate_batch','late_source','hydra','energy_vortex','champions','fey_champions','crane','deathwatch','tsuki_wolf','kappa','vampire_bat','yomotsu','occurrence_next','horde_rune','sand_vortex','bake_kitsune','devourer_lion_hiryu','elemental_minotaur','meer_donors','captain_cu','clockwork_tokuno','aos_creatures','aos_aliases','aos_mound','recovered_late','tormented_minotaur','harrower','late_donors','gargoyle_vendor','aos_armed','aos_abysmal','animated_weapon', 'slith', 'raptor', 'fetid_essence', 'corporeal_brume')
-$recordCreatureTrial=$preparedCreatureTrial -or $CreatureFamily -eq 'recent_batch'
+$recordCreatureTrial=$preparedCreatureTrial -or $CreatureFamily -in @('recent_batch','source_coverage_common','source_coverage_uncommon','source_coverage_rare','source_coverage_loose_mounts')
 $savageTrial=$Savages -or $SavageRiders
 if ($Savages -and $SavageRiders) {throw 'Choose one Savage native suite per fresh server'}
 Push-Location $root

@@ -17,7 +17,7 @@ class Reader:
   n=self.read('I')
   if n>limit:raise ValueError('Unbounded sequence count')
   return n
-def payloads(path):
+def payloads(path, allowed_hashes=None):
  size=path.stat().st_size
  with path.open('rb') as f:
   header=f.read(28)
@@ -34,7 +34,7 @@ def payloads(path):
     raw=f.read(34)
     if len(raw)!=34:raise ValueError('Truncated UOP directory')
     offset,extra,packed,unpacked,digest,checksum,flag=struct.unpack('<QIIIQIH',raw)
-    if offset:rows.append((offset+extra,packed,unpacked,flag,digest))
+    if offset and (allowed_hashes is None or digest in allowed_hashes):rows.append((offset+extra,packed,unpacked,flag,digest))
    for offset,packed,unpacked,flag,digest in rows:
     if not 0<=offset<=size-packed or unpacked>64*1024*1024:raise ValueError('Invalid UOP payload')
     f.seek(offset);raw=f.read(packed)
