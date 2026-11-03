@@ -1,3 +1,9 @@
+# Continue after the five-body source batch - 3 November 2026
+
+Five additional normal routes bring model coverage to197/279(70.6%): original Golden166, EnslavedGargoyle753, Treefellow301 and Rotting/Unfrozen155, plus original table-declared OrcLord reuse for correctly scaled OrcBrute189. Current439GPU/197skin/131action/108normal-route checks pass; the corpse index has234keys. Native constructor-only cases are45; live body witnesses remain168/279(60.2%). Required scripts/verify.ps1 completed with exit0 in work/creatures/shared-batch/root-verify.log, including71server-extension/84overlay checks and successful world startup. Keep completion scopes separate; see PROGRESS.md for evidence.
+
+Next close the highest-occurrence prepared Savage/SavageShaman/SavageRider normal human profile routes using current actual537foot/1049riding GPU evidence and existing action/terrain/death gates, with native-live evidence still separate. Audit shared import problems for VampireBat317, GiantBeetle791 and AntLion787: preserve every weighted joint/ancestor and actual model hierarchy, verify naming aliases uniquely, and omit animation of truly unused scene helpers only with explicit proof. Continue the remaining occurrence queue and source exceptions; do not let one malformed source hold back compatible families. Retain all current humans/equines/llamas, native semantics, production/concurrent work and exclusions. Full goal remains active.
+
 # Continue with shared variants and compatible family batches - 3 November 2026
 
 Required scripts/verify.ps1 completed with exit0 (work/creatures/shadow-wisp/root-verify.log), including the actual public Shadow distribution676checks,71server-extension/84overlay checks and successful world startup. Existing baseline diagnostics/two nullable warnings remain. No live login path changed.

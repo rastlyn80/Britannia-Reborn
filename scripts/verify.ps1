@@ -42,6 +42,18 @@ if (Test-Path "$root/Viewer/local-art/creatures/reviewed_presentations/local-pre
  $reviewedRoutes | ForEach-Object {Write-Output $_}
  if ($reviewedRouteExit -or ($reviewedRoutes | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Default reviewed creature avatar/corpse routes failed'}
 }
+if (Test-Path "$root/Viewer/local-art/creatures/source_family_batch/local-presentation.json") {
+ & python -B "$root/scripts/prepare-source-family-batch.py" --check-skins
+ if ($LASTEXITCODE) {throw 'Source family complete skins and static corpses failed'}
+ & python -B "$root/scripts/prepare-source-family-batch.py" --check-actions
+ if ($LASTEXITCODE) {throw 'Source family native action timing and hue contracts failed'}
+ & python -B "$root/scripts/accept-source-family-batch.py" --check-active
+ if ($LASTEXITCODE) {throw 'Source family active evidence or asset proportions changed'}
+ $familyRoutes = & $godot --headless --path "$root/Viewer" --script res://Presentation/CreatureBatchRouteTests.gd 2>&1
+ $familyRouteExit = $LASTEXITCODE
+ $familyRoutes | ForEach-Object {Write-Output $_}
+ if ($familyRouteExit -or ($familyRoutes | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Normal source family avatar/static-corpse routes failed'}
+}
 if (Test-Path "$root/Viewer/local-art/creatures/source_variants/preparation.json") {
  & python -B "$root/scripts/prepare-source-variants.py" --check-prepared
  if ($LASTEXITCODE) {throw 'Source variant exact-source/donor/scene audit failed'}

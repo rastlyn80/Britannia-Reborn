@@ -1,0 +1,452 @@
+{
+  "schema": 1,
+  "server_pin": "ab59efea86fd9e399d261bed9d188ab4d95ad4c2",
+  "scope": "Original source family batch; exact source metadata only. Proprietary inputs/derived artwork remain local. No accepted route or native gameplay certification.",
+  "rights": "Proprietary original inputs and all derived artwork remain local and excluded from Git; archive mirror authenticity and redistribution are not asserted.",
+  "models": [
+    {
+      "kind": "elementals_gold_elemental",
+      "expected_bodies": [
+        166
+      ],
+      "source_url": "https://zuluarchive.com/static/files/uoml_setup.exe",
+      "containers": [
+        {
+          "path": "work/creatures/late-client-inputs/uoml_setup.exe",
+          "bytes": 798463305,
+          "sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data1.cab",
+          "bytes": 664374,
+          "sha256": "78110fcad7a3bf0d459c6f58f30764064fa2868dd2eea92ffc3983390846ce42"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data1.hdr",
+          "bytes": 624745,
+          "sha256": "bc7c394bab19ece161bdd482bd21d16f946d4f04eb64aca67d6c8c45ffa79587"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data2.cab",
+          "bytes": 794818869,
+          "sha256": "247b9305c2f6d3af18c2c5bc7018d0d8ae27b5ae394187b6ffccbc9d174db95d"
+        }
+      ],
+      "model_table": {
+        "path": "work/creatures/late-client-inputs/model-table/Client/Models.txt",
+        "bytes": 81498,
+        "sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099"
+      },
+      "files": [
+        {
+          "path": "work/creatures/shared-batch/source/Client/Elementals_Gold_Elemental_Lod2.grn",
+          "bytes": 48732,
+          "sha256": "8c7d84201f00d090a3e56749008827d605c75fd358ff1f203508a1251f48167b",
+          "member": "Client/Models/Monsters/Elementals_Gold_Elemental_Lod2.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Elementals_Gold_Elemental.tga",
+          "bytes": 65580,
+          "sha256": "0ce2c04362fb896a75a412ea3465133b3dd3ebed7a4c8f4c7216c9cf683b7091",
+          "member": "Client/Models/Maps/Elementals_Gold_Elemental.tga"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Elementals_Earth_Elemental_Idle.grn",
+          "bytes": 33032,
+          "sha256": "35762c0753f0ed982a0f219de562e59eed88a4658671f18f3b3db44c447ce34c",
+          "member": "Client/Models/Monsters/Elementals_Earth_Elemental_Idle.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Elementals_Earth_Elemental_Walk.grn",
+          "bytes": 41928,
+          "sha256": "e595d637a1b851eba91b5eb2ea34a0a7dc8b25ca838d2fa98dea9e92ca1750fd",
+          "member": "Client/Models/Monsters/Elementals_Earth_Elemental_Walk.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Elementals_Earth_Elemental_Run.grn",
+          "bytes": 43244,
+          "sha256": "7691717dc6fd507f177c71307828f777b489913d34b069effc03cb4a7506cfac",
+          "member": "Client/Models/Monsters/Elementals_Earth_Elemental_Run.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Elementals_Earth_Elemental_Attack1.grn",
+          "bytes": 42348,
+          "sha256": "fa4dd841663cfe74de1197022582ef73b17dc5bcd4d282448a7f200300c8d53b",
+          "member": "Client/Models/Monsters/Elementals_Earth_Elemental_Attack1.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Elementals_Earth_Elemental_Gethit.grn",
+          "bytes": 35288,
+          "sha256": "d439ad8e2e071c2e98aabcfebc808bebd1e099fe1f499ae1291130e109e95d05",
+          "member": "Client/Models/Monsters/Elementals_Earth_Elemental_Gethit.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Elementals_Earth_Elemental_Die1.grn",
+          "bytes": 53140,
+          "sha256": "2305fae7a8d6e01747e185be9f86bacdec1009028446b9fca109cde2c7eb76cf",
+          "member": "Client/Models/Monsters/Elementals_Earth_Elemental_Die1.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Elementals_Earth_Elemental_Fidget.grn",
+          "bytes": 41780,
+          "sha256": "0b57772cef437a9e048a682449f57b8082fc3386b5306db40bf3fc75326d9fc2",
+          "member": "Client/Models/Monsters/Elementals_Earth_Elemental_Fidget.grn"
+        }
+      ],
+      "bones": 21,
+      "triangles": 410,
+      "source_clips": 7,
+      "levels": 2,
+      "normal_offset_m": 0.0015,
+      "opacity": "opaque"
+    },
+    {
+      "kind": "gargoyles_gargoyle_slave",
+      "expected_bodies": [
+        753
+      ],
+      "source_url": "https://zuluarchive.com/static/files/uoml_setup.exe",
+      "containers": [
+        {
+          "path": "work/creatures/late-client-inputs/uoml_setup.exe",
+          "bytes": 798463305,
+          "sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data1.cab",
+          "bytes": 664374,
+          "sha256": "78110fcad7a3bf0d459c6f58f30764064fa2868dd2eea92ffc3983390846ce42"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data1.hdr",
+          "bytes": 624745,
+          "sha256": "bc7c394bab19ece161bdd482bd21d16f946d4f04eb64aca67d6c8c45ffa79587"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data2.cab",
+          "bytes": 794818869,
+          "sha256": "247b9305c2f6d3af18c2c5bc7018d0d8ae27b5ae394187b6ffccbc9d174db95d"
+        }
+      ],
+      "model_table": {
+        "path": "work/creatures/late-client-inputs/model-table/Client/Models.txt",
+        "bytes": 81498,
+        "sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099"
+      },
+      "files": [
+        {
+          "path": "work/creatures/shared-batch/source/Client/Gargoyles_Gargoyle_Slave_Lod2.grn",
+          "bytes": 54792,
+          "sha256": "d80c9d16a88792e390729db15ccf79c68d84a48323ab512a633e7275329d0e5b",
+          "member": "Client/Models/Monsters/Gargoyles_Gargoyle_Slave_Lod2.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Gargoyles_Gargoyle_Slave.tga",
+          "bytes": 65580,
+          "sha256": "57142fde0db41be60a69aa6bdebeb9a85f331d9ffdcf9991abeeb5c7acb2b0a4",
+          "member": "Client/Models/Maps/Gargoyles_Gargoyle_Slave.tga"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Gargoyles_Gargoyle_Idle.grn",
+          "bytes": 49988,
+          "sha256": "a7e853b67f789a53ea48163065c3ba0a8873e6abb145639d1b3c487bd2ddc91e",
+          "member": "Client/Models/Monsters/Gargoyles_Gargoyle_Idle.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Gargoyles_Gargoyle_Walk.grn",
+          "bytes": 63020,
+          "sha256": "a27daa2af0c808fa529d9fd142d7008f01afdbc93d8fa4481107e4ec91accdd4",
+          "member": "Client/Models/Monsters/Gargoyles_Gargoyle_Walk.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Gargoyles_Gargoyle_Run.grn",
+          "bytes": 55560,
+          "sha256": "4a19a726f76ce35fd5acd1b05623ddbf37f4b80f92068dd01c3093b747b2a518",
+          "member": "Client/Models/Monsters/Gargoyles_Gargoyle_Run.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Gargoyles_Gargoyle_Attack1.grn",
+          "bytes": 60948,
+          "sha256": "9790b23a94030325ea0f52ffb6cc57a4c3733d7c4b96bc09fc141f95346df5c2",
+          "member": "Client/Models/Monsters/Gargoyles_Gargoyle_Attack1.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Gargoyles_Gargoyle_Gethit.grn",
+          "bytes": 56896,
+          "sha256": "1390faf7c2cec5d2447bfb481687dc8600852a19702a337e660fafae0eb93dba",
+          "member": "Client/Models/Monsters/Gargoyles_Gargoyle_Gethit.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Gargoyles_Gargoyle_Die1.grn",
+          "bytes": 57196,
+          "sha256": "54951823d5006304266b1193387ca2533c323da4e82f10c939767a35d519c3df",
+          "member": "Client/Models/Monsters/Gargoyles_Gargoyle_Die1.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Gargoyles_Gargoyle_Fidget.grn",
+          "bytes": 55308,
+          "sha256": "69bae01c9a797301f4c223efe289333b3c562cc1493c1206be371a9202099fdc",
+          "member": "Client/Models/Monsters/Gargoyles_Gargoyle_Fidget.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Gargoyles_Gargoyle_Cast2.grn",
+          "bytes": 64216,
+          "sha256": "c768363d9cb1ffa97e7f7a4f856bbd914afb6b59993ff59183c38058eb65c591",
+          "member": "Client/Models/Monsters/Gargoyles_Gargoyle_Cast2.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Gargoyles_Gargoyle_Fly.grn",
+          "bytes": 52080,
+          "sha256": "b29ce956476d61c0ff3621ddafaedb8ea52b06bb5e7387cc8a9025986a4f2d40",
+          "member": "Client/Models/Monsters/Gargoyles_Gargoyle_Fly.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Gargoyles_Gargoyle_Takeoff.grn",
+          "bytes": 63424,
+          "sha256": "1f581c7142c5899422aa8e6a55ee5975be50084af5e385d172be2ff7b124e1cf",
+          "member": "Client/Models/Monsters/Gargoyles_Gargoyle_Takeoff.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Gargoyles_Gargoyle_Land.grn",
+          "bytes": 70968,
+          "sha256": "5cffd3433f675fc4e0f53c270b8b48b9d9f1cd07e26d8fd854c7fb3446ba5e93",
+          "member": "Client/Models/Monsters/Gargoyles_Gargoyle_Land.grn"
+        }
+      ],
+      "bones": 55,
+      "triangles": 464,
+      "source_clips": 11,
+      "levels": 2,
+      "normal_offset_m": 0.0015,
+      "opacity": "fine_edges",
+      "clip_labels": {
+        "cast2": "Cast"
+      },
+      "classic_action_categories": {
+        "12": "Cast",
+        "14": "Cast"
+      },
+      "new_action_categories": {
+        "11": "Cast"
+      }
+    },
+    {
+      "kind": "treefellow",
+      "expected_bodies": [
+        301
+      ],
+      "source_url": "https://zuluarchive.com/static/files/uoml_setup.exe",
+      "containers": [
+        {
+          "path": "work/creatures/late-client-inputs/uoml_setup.exe",
+          "bytes": 798463305,
+          "sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data1.cab",
+          "bytes": 664374,
+          "sha256": "78110fcad7a3bf0d459c6f58f30764064fa2868dd2eea92ffc3983390846ce42"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data1.hdr",
+          "bytes": 624745,
+          "sha256": "bc7c394bab19ece161bdd482bd21d16f946d4f04eb64aca67d6c8c45ffa79587"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data2.cab",
+          "bytes": 794818869,
+          "sha256": "247b9305c2f6d3af18c2c5bc7018d0d8ae27b5ae394187b6ffccbc9d174db95d"
+        }
+      ],
+      "model_table": {
+        "path": "work/creatures/late-client-inputs/model-table/Client/Models.txt",
+        "bytes": 81498,
+        "sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099"
+      },
+      "files": [
+        {
+          "path": "work/creatures/shared-batch/source/Client/Treefellow_LOD2.grn",
+          "bytes": 116748,
+          "sha256": "ce39631f1917432a81f7d45e928d30017ba3920b6e09478b6cd3dab20da098f0",
+          "member": "Client/Models/Monsters/Treefellow_LOD2.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Treefellow_256x256.tga",
+          "bytes": 196652,
+          "sha256": "dbcca63bf3d2ba4ffb666621a4dc98b440c492d34f694ffd9dff577805c001dc",
+          "member": "Client/Models/Maps/Treefellow_256x256.tga"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Treefellow_Idle.grn",
+          "bytes": 73980,
+          "sha256": "2e79c8b3298afbee34d2d19b7671edda496146cc5cc56f6d5a2ba33fbb1881c4",
+          "member": "Client/Models/Monsters/Treefellow_Idle.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Treefellow_Walk.grn",
+          "bytes": 87356,
+          "sha256": "3ffa2e6f3f20e7c22e813298acec34d0daf26b11168c8cf842e75c98cc93efdf",
+          "member": "Client/Models/Monsters/Treefellow_Walk.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Treefellow_Attack1.grn",
+          "bytes": 72668,
+          "sha256": "e30a1e4d09991771e8e32df20a991baa3ab74a7c00c7896c9299cad37d4a9291",
+          "member": "Client/Models/Monsters/Treefellow_Attack1.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Treefellow_Attack2.grn",
+          "bytes": 158964,
+          "sha256": "261e0aa3138aee7664141be42bc232cffbd7d46ece312af24063cd922e0856a9",
+          "member": "Client/Models/Monsters/Treefellow_Attack2.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Treefellow_GetHit.grn",
+          "bytes": 243096,
+          "sha256": "24486a6d54308c8b0504f9a270fa666766baf81a9c5be2f35f93a872d4f8a945",
+          "member": "Client/Models/Monsters/Treefellow_GetHit.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Treefellow_Die1.grn",
+          "bytes": 342820,
+          "sha256": "454b281890da225054e5c44dd425a71044cccbe560f0935498f3bc6e6c976e7c",
+          "member": "Client/Models/Monsters/Treefellow_Die1.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Treefellow_Fidget.grn",
+          "bytes": 81400,
+          "sha256": "9084e98ef9e1a90b5f097f8ca6321f92a30c71a3acec7d1cd9f8f0807fdc7dd2",
+          "member": "Client/Models/Monsters/Treefellow_Fidget.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Treefellow_Fly.grn",
+          "bytes": 91900,
+          "sha256": "e30a020b12b53af791d39dd4121a61e41edc0b0a988b92c2ec98ffc11629b56b",
+          "member": "Client/Models/Monsters/Treefellow_Fly.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Treefellow_Pillage.grn",
+          "bytes": 81692,
+          "sha256": "48cc81813e2fb73c4a8313824e9b5b38e6435ba86b793406fb3a902f5e10a49d",
+          "member": "Client/Models/Monsters/Treefellow_Pillage.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Treefellow_Stomp.grn",
+          "bytes": 76848,
+          "sha256": "e4c377f015ce1907b7f0fd86e91d58af1bd877c549e1f1687cb2e05f4512e014",
+          "member": "Client/Models/Monsters/Treefellow_Stomp.grn"
+        }
+      ],
+      "bones": 63,
+      "triangles": 1284,
+      "source_clips": 10,
+      "levels": 1,
+      "normal_offset_m": 0.0015,
+      "opacity": "opaque"
+    },
+    {
+      "kind": "walking_dead_rotting_corpse",
+      "expected_bodies": [
+        155
+      ],
+      "source_url": "https://zuluarchive.com/static/files/uoml_setup.exe",
+      "containers": [
+        {
+          "path": "work/creatures/late-client-inputs/uoml_setup.exe",
+          "bytes": 798463305,
+          "sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data1.cab",
+          "bytes": 664374,
+          "sha256": "78110fcad7a3bf0d459c6f58f30764064fa2868dd2eea92ffc3983390846ce42"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data1.hdr",
+          "bytes": 624745,
+          "sha256": "bc7c394bab19ece161bdd482bd21d16f946d4f04eb64aca67d6c8c45ffa79587"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data2.cab",
+          "bytes": 794818869,
+          "sha256": "247b9305c2f6d3af18c2c5bc7018d0d8ae27b5ae394187b6ffccbc9d174db95d"
+        }
+      ],
+      "model_table": {
+        "path": "work/creatures/late-client-inputs/model-table/Client/Models.txt",
+        "bytes": 81498,
+        "sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099"
+      },
+      "files": [
+        {
+          "path": "work/creatures/shared-batch/source/Client/Walking_Dead_Rotting_Corpse_Lod2.grn",
+          "bytes": 38216,
+          "sha256": "0c7ea9764109a34b068629dc2cde9ed564fe0794e89c846c6f99363fd556aa28",
+          "member": "Client/Models/Monsters/Walking_Dead_Rotting_Corpse_Lod2.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Walking_Dead_Rotting_Corpse_V02.tga",
+          "bytes": 65580,
+          "sha256": "36c93f99bb5202eb87640533bcb4bf1370601186fca4a9887edf708c65efbf4c",
+          "member": "Client/Models/Maps/Walking_Dead_Rotting_Corpse_V02.tga"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Walking_Dead_Rotting_Corpse_Idle.grn",
+          "bytes": 24852,
+          "sha256": "3acbc201ca321e260443c7fb6fb6068c1d3af1f3628651aec29ea0eedd79a037",
+          "member": "Client/Models/Monsters/Walking_Dead_Rotting_Corpse_Idle.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Walking_Dead_Rotting_Corpse_Walk.grn",
+          "bytes": 32776,
+          "sha256": "dc2d7f9f2b35932f8fc560f3c0f7d8f59ddea03823e5e0c44258f2d0b7ac04a1",
+          "member": "Client/Models/Monsters/Walking_Dead_Rotting_Corpse_Walk.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Walking_Dead_Rotting_Corpse_Run.grn",
+          "bytes": 27952,
+          "sha256": "27fb504785cb2d18d31da391aac129029a9f8a0eecf67fa74b8015ef18292c5c",
+          "member": "Client/Models/Monsters/Walking_Dead_Rotting_Corpse_Run.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Walking_Dead_Rotting_Corpse_Attack1.grn",
+          "bytes": 34244,
+          "sha256": "789d7c0bccb57cedc1df3ff2ab65f68d44f62d1376979f4578a1c88277a4cd29",
+          "member": "Client/Models/Monsters/Walking_Dead_Rotting_Corpse_Attack1.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Walking_Dead_Rotting_Corpse_Gethit.grn",
+          "bytes": 27592,
+          "sha256": "a28af33ada7a21ead29a62b13a28916a89a0817f16efb28c4cd94b7555d07b3c",
+          "member": "Client/Models/Monsters/Walking_Dead_Rotting_Corpse_Gethit.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Walking_Dead_Rotting_Corpse_Die1.grn",
+          "bytes": 47676,
+          "sha256": "c31af0cf0fb14565c1114b5698ea3640fa15c3f58075d3532ac69d49f165e4f2",
+          "member": "Client/Models/Monsters/Walking_Dead_Rotting_Corpse_Die1.grn"
+        },
+        {
+          "path": "work/creatures/shared-batch/source/Client/Walking_Dead_Rotting_Corpse_Fidget.grn",
+          "bytes": 42400,
+          "sha256": "28f8dd527508f31b3396b3490cd49612cd913acce19caa04997c51dd8c85a289",
+          "member": "Client/Models/Monsters/Walking_Dead_Rotting_Corpse_Fidget.grn"
+        }
+      ],
+      "bones": 34,
+      "triangles": 352,
+      "source_clips": 7,
+      "levels": 2,
+      "normal_offset_m": 0.0015,
+      "opacity": "opaque",
+      "authored_cast": true,
+      "classic_action_categories": {
+        "12": "Cast",
+        "14": "Cast"
+      },
+      "new_action_categories": {
+        "11": "Cast"
+      }
+    }
+  ]
+}
