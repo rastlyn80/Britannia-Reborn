@@ -1,0 +1,19 @@
+{
+  "installer_sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393",
+  "model_table_sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099",
+  "files": {
+    "Client/Models/Maps/kappa-256.tga": "479ba883670c83d02635280c815b78576a5ecfed3d19dc17c198e68737444d58",
+    "Client/Models/Monsters/Kappa_Attack1.grn": "6d8415da5b8dfd800a547ce7d6c8c3718dc8f29ea110dca37b3813edcff60611",
+    "Client/Models/Monsters/Kappa_Attack2.grn": "fd35512b7f7fc2b6e47890d79a15ec8cc26e6a8c9e4fab5e8717084b6215beee",
+    "Client/Models/Monsters/Kappa_Attack3.grn": "b0d244c9f92bc381dd504ffa09b4f92522199b4ca766b72cc6678ca6f928331d",
+    "Client/Models/Monsters/Kappa_BlockLeft.grn": "e0294e1c01ae073acd6c56d78e3e46e5319a95eb0b5b1ae4385045c8c170d8fc",
+    "Client/Models/Monsters/Kappa_BlockRight.grn": "04e261df3d2ed0eabd1f3b76f8d0ac68d9255c05a443bdaf2507718260b3e40a",
+    "Client/Models/Monsters/Kappa_Die1.grn": "7e0e34d67f8ff6592e590af107eeeeb3a05ac9e8529c85fb22e7763df3832ff5",
+    "Client/Models/Monsters/Kappa_Die2.grn": "4a218ce7b527d7df494c01d9da64d43d7d5fc01b28f7652798a99f096e242683",
+    "Client/Models/Monsters/Kappa_Fidget.grn": "4d812d939f8742a13b34a8f368746004c009c685d5135e046ec6ea915341744d",
+    "Client/Models/Monsters/Kappa_GetHit.grn": "4b431653672b9977479665dd8f1d0d049a1f23be86039fd1429a2d08d6e99d40",
+    "Client/Models/Monsters/Kappa_Idle.grn": "3b0e3972a1e71100c778961d76483f964bf4132a512f1d11c434046e4a167eb1",
+    "Client/Models/Monsters/Kappa_LOD2.grn": "fcf35b448ea5b2cc0367d6cfdce5c5f67b92699e562ec93c2e3bda1de6d9bdcc",
+    "Client/Models/Monsters/Kappa_Walk.grn": "77f0085911c27ecc34cacbc77d3d269b773e0b47c725f52090c73109586b643c"
+  }
+}

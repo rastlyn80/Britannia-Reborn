@@ -1,0 +1,17 @@
+{
+  "installer_sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393",
+  "model_table_sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099",
+  "files": {
+    "client/models/maps/vampire_bat_256x256.tga": "5e6493713fae4102c9064771a65703249eecef7956813e9827baf248cd6a5f66",
+    "client/models/monsters/vampire_bat_attack1.grn": "9b5da66562f4e49d8801bb12f1b03fbd37e325debaa45580ba163ffcaf00d264",
+    "client/models/monsters/vampire_bat_attack2.grn": "003de2de95ff5bd2a0baef7710222aafd15e934a04ded74091b0f72819dd3a78",
+    "client/models/monsters/vampire_bat_attack3.grn": "33ba2123d0815cf3592051d4b750646c00114edf0c7cffe644091aa9fb4fc22c",
+    "client/models/monsters/vampire_bat_die1.grn": "c53d4d7f85be33370fed4973931dbb9ef4545db9c8cc42ad71a5693e67da8f00",
+    "client/models/monsters/vampire_bat_fidget.grn": "f540d9686721019339eb549cb8e0818304be85ce73182dfd862d08cc80a4d511",
+    "client/models/monsters/vampire_bat_fly.grn": "9e2adb90c5a447cb3c1044b4beecc6680cd682a8390bd3a39673a90f8b394e0a",
+    "client/models/monsters/vampire_bat_gethit.grn": "869669f0bcd35d7630d588566cabf9a4202733d5458b5923f87172c8b42ee941",
+    "client/models/monsters/vampire_bat_idle.grn": "464175ee631e9611310d44a2a3a889ea5ccb41342bfcb97aa29b4f8b79f9cbf1",
+    "client/models/monsters/vampire_bat_lod2.grn": "75136c2492fac9a082af86bad4f188b658a74c495bdadb2ad047218739be5802",
+    "client/models/monsters/vampire_bat_walk.grn": "b088073d1d19777f23d8e8c85970e7b738f7cea2f3d96f2e3480543d5bafb58d"
+  }
+}

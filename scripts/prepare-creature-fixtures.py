@@ -19,12 +19,18 @@ RECENT_CLASSES={166:['GoldenElemental'],753:['EnslavedGargoyle'],301:['Treefello
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
 def prepared_entries(family):
-    assert family in ['mages','juka','juka_lord','hydra','energy_vortex','late_source','champions','fey_champions','crane','deathwatch','tsuki_wolf','candidate_batch','solen_queens',*PREPARED_FORMS],'Prepared native trial requires an explicit checked family'
-    if family in ('late_source', 'champions', 'fey_champions'):
+    assert family in ['mages','juka','juka_lord','hydra','energy_vortex','late_source','champions','fey_champions','crane','deathwatch','tsuki_wolf','kappa','vampire_bat','yomotsu','occurrence_next','horde_rune','sand_vortex','bake_kitsune','devourer_lion_hiryu','candidate_batch','solen_queens',*PREPARED_FORMS],'Prepared native trial requires an explicit checked family'
+    if family in ('late_source', 'champions', 'fey_champions', 'yomotsu', 'occurrence_next', 'horde_rune', 'sand_vortex', 'bake_kitsune', 'devourer_lion_hiryu'):
         classes, manifest = {
             'late_source': ({266: ['InsaneDryad', 'MLDryad'], 267: ['Lurg', 'Troglodyte'], 279: ['Ferret']}, 'late-creature-inputs.json'),
             'champions': ({172: ['Rikktor'], 173: ['Mephitis']}, 'champion-creature-inputs.json'),
             'fey_champions': ({174: ['Semidar'], 175: ['LordOaks'], 176: ['Silvani']}, 'fey-champion-inputs.json'),
+            'yomotsu': ({245: ['YomotsuWarrior'], 253: ['YomotsuPriest'], 255: ['YomotsuElder']}, 'yomotsu-inputs.json'),
+            'occurrence_next': ({309: ['PatchworkSkeleton'], 196: ['KazeKemono'], 302: ['SkitteringHopper'], 247: ['FanDancer']}, 'occurrence-creature-inputs.json'),
+            'horde_rune': ({776: ['HordeMinion', 'HordeMinionFamiliar'], 244: ['RuneBeetle']}, 'horde-rune-inputs.json'),
+            'sand_vortex': ({790: ['SandVortex']}, 'sand-vortex-inputs.json'),
+            'bake_kitsune': ({246: ['BakeKitsune']}, 'bake-kitsune-inputs.json'),
+            'devourer_lion_hiryu': ({303: ['Devourer'], 251: ['RevenantLion'], 243: ['Hiryu', 'LesserHiryu']}, 'devourer-lion-hiryu-inputs.json'),
         }[family]
         path = ROOT / 'Viewer/local-art/creatures' / family / 'preparation.json'
         report = json.loads(path.read_text(encoding='utf-8'))
@@ -47,7 +53,7 @@ def prepared_entries(family):
                 target = (ROOT / 'Viewer' / asset.removeprefix('res://')).resolve()
                 assert target.is_relative_to(ROOT / 'Viewer') and sha(target) == digest
         return rows, classes
-    if family in ('juka_lord', 'hydra', 'energy_vortex', 'crane', 'deathwatch', 'tsuki_wolf'):
+    if family in ('juka_lord', 'hydra', 'energy_vortex', 'crane', 'deathwatch', 'tsuki_wolf', 'kappa', 'vampire_bat'):
         expected_body, classes = {
             'juka_lord': (766, ['JukaLord']),
             'hydra': (265, ['Abscess', 'Hydra']),
@@ -55,6 +61,8 @@ def prepared_entries(family):
             'crane': (254, ['Crane']),
             'deathwatch': (242, ['DeathwatchBeetle', 'DeathwatchBeetleHatchling']),
             'tsuki_wolf': (250, ['TsukiWolf']),
+            'kappa': (240, ['Kappa']),
+            'vampire_bat': (317, ['VampireBat', 'VampireBatFamiliar']),
         }[family]
         path = ROOT / 'Viewer/local-art/creatures' / family / 'preparation.json'
         report = json.loads(path.read_text(encoding='utf-8'))
@@ -67,11 +75,11 @@ def prepared_entries(family):
             assert set(row['native_constructor_hues']) == set(classes)
         pins = {**row['art_dependency_sha256'],
                 **{asset: row['asset_sha256'][name] for name, asset in row['assets'].items()}}
-        if family in ('hydra', 'energy_vortex', 'crane', 'deathwatch', 'tsuki_wolf'):
+        if family in ('hydra', 'energy_vortex', 'crane', 'deathwatch', 'tsuki_wolf', 'kappa', 'vampire_bat'):
             for source in identity['native_sources']:
                 assert sha(ROOT / 'Server/ModernUO' / source['path']) == source['sha256']
-        if family in ('hydra', 'crane', 'deathwatch', 'tsuki_wolf'):
-            assert report['input_manifest_sha256'] == sha(ROOT / 'scripts' / f'{family}-inputs.json')
+        if family in ('hydra', 'crane', 'deathwatch', 'tsuki_wolf', 'kappa', 'vampire_bat'):
+            assert report['input_manifest_sha256'] == sha(ROOT / 'scripts' / (('vampire-bat' if family == 'vampire_bat' else family) + '-inputs.json'))
         else:
             pins[row['presentation_script']] = row['presentation_script_sha256']
         for asset, digest in pins.items():
@@ -120,7 +128,7 @@ def main():
         entries,prepared_classes=prepared_entries(args.family)
         index={'entries':entries}
         states={'prepared'}
-    elif args.family in ('late_source_active', 'hydra_active', 'energy_vortex_active', 'champions_active', 'fey_champions_active', 'crane_active', 'deathwatch_active', 'tsuki_wolf_active'):
+    elif args.family in ('late_source_active', 'hydra_active', 'energy_vortex_active', 'champions_active', 'fey_champions_active', 'crane_active', 'deathwatch_active', 'tsuki_wolf_active', 'kappa_active', 'vampire_bat_active', 'yomotsu_active', 'occurrence_next_active', 'sand_vortex_active', 'bake_kitsune_active', 'horde_rune_active', 'devourer_lion_hiryu_active'):
         package_rows, _ = prepared_entries(args.family.removesuffix('_active'))
         selected_bodies = {body['body'] for row in package_rows for body in row['bodies']}
         registered = [row for row in index['entries'] if row['status'] == 'validated'
@@ -170,7 +178,12 @@ def main():
                 common['constructor_hues'] = hues
             if 'native_constructor_hue_ranges' in entry:
                 ranges = entry['native_constructor_hue_ranges']
-                assert ranges == {'TsukiWolf': [[0, 0], [1801, 1908]]} and classes == ['TsukiWolf']
+                if native_body == 243:
+                    assert set(ranges) == set(classes) == {'Hiryu', 'LesserHiryu'}
+                    assert all(values and all(low == high and 0x8000 <= low <= 0xffff
+                                              for low, high in values) for values in ranges.values())
+                else:
+                    assert ranges == {'TsukiWolf': [[0, 0], [1801, 1908]]} and classes == ['TsukiWolf']
                 common.pop('constructor_hues', None)
                 common['constructor_hue_ranges'] = ranges
             if classes and (entry.get('movement_mode')=='native_waterline' or reviewed or 'native_constructor_hues' in entry):

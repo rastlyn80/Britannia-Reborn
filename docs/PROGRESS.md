@@ -2,6 +2,14 @@
 
 Energy Vortex, Rikktor, Mephitis, Semidar, Lord Oaks, Silvani, Crane and Deathwatch are active locally and passed normal-registry ModernUO tests. The tests exercise controlled native construction, movement, actions, server hues and death. Energy Vortex uses the native uncontrolled summon API and leaves no persistent corpse. Crane and Mephitis use measured skinned-sole support. The six-facet audit ranks 293 known creature types across 5,532 configured spawners after counting identical cross-file records once. It retains 105 unresolved names. Tsuki Wolf passed 153 prepared native checks and the normal client route checks. Its normal-registry server rerun passed 149 checks across two clients. These checks leave autonomous champion abilities, the rare vortex llama and Lord Oaks casting open.
 
+# Kappa, Vampire Bat and Yomotsu
+
+Kappa and Vampire Bat are active in the local registry. Kappa passed 151 normal-registry native checks and reached 1.81 mm worst stance penetration over 36 sampled poses. Vampire Bat and its familiar passed 323 normal-registry native checks. Yomotsu Warrior, Priest and Elder passed prepared client action and corpse checks on their original rigs. The Warrior required a three-vertex skin repair, and the Priest uses an authored cast. The prepared native run passed 467 checks across two clients. The raised-foot poses match the original skin and animation. All three Yomotsu routes are active locally and passed 463 normal-registry native checks. The refreshed catalogue records 224 of 279 routed creature bodies and 205 with some native evidence.
+
+# Sand Vortex, Bake Kitsune, Horde Minion and Rune Beetle
+
+These four body routes are active in the local client and passed the normal route tests for decoded actions and static corpse hues. Their exact prepared native packages passed 129, 153 and 467 checks for Sand Vortex, Bake Kitsune and the Horde Minion/Rune Beetle batch respectively. The normal-registry reruns passed 127 Sand Vortex, 151 Bake Kitsune and 463 Horde Minion/Rune Beetle checks. Patchwork Skeleton, Kaze Kemono, Skittering Hopper and Fan Dancer are also active and passed 621 normal-registry native checks. The updated board records 232 of 279 routed bodies and 213 with some native evidence. Sand Vortex uses an authored dust effect because the original atlas is fully transparent. Bake Kitsune keeps its original three-tail skin, and Rune Beetle uses its four original stance chains.
+
 # Juka Lord, Hydra and Abscess
 
 Juka Lord 766 is active locally with its original Kabur rig, 13 assigned motions and server-equipped bow. The Vulkan route verified both bow graphics. The normal-registry ModernUO trial passed 217 checks across two clients. The pinned source rebuild reproduces the intermediate glTF files and bow byte for byte. The rebuilt packed scenes have different file hashes, so the existing active scenes were retained.

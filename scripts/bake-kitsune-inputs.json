@@ -1,0 +1,21 @@
+{
+  "installer_sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393",
+  "model_table_sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099",
+  "files": {
+    "Client/Models/Animals/Kitsun_Tsuki_Alert.grn": "ebd69178f28ed4860830a9440f00f4c734c132a2be1596f25cfc623b1a79420a",
+    "Client/Models/Animals/Kitsun_Tsuki_Attack1.grn": "bf9103b14a7cee40e6dbc6de051f9b1acd079c1ee4bcfef249908dba6eddc998",
+    "Client/Models/Animals/Kitsun_Tsuki_Attack2.grn": "f15787c3031fb22521945a6535a9e49ad5f1d24108266735f949f7f5515e9d98",
+    "Client/Models/Animals/Kitsun_Tsuki_Die1.grn": "d9f5875e4d1aff3d0edd74949f5fe78ebea8d9400559e5c53773d4208acf2fa1",
+    "Client/Models/Animals/Kitsun_Tsuki_Die2.grn": "c574f13cb0d603eb0e89cfde104799f82d8f484c0025c38f45a9e4532b02252b",
+    "Client/Models/Animals/Kitsun_Tsuki_Eat.grn": "d108dff3ef13b4e4dfec0947f225b957e28226350a6807fedbbbbf0a7a912e33",
+    "Client/Models/Animals/Kitsun_Tsuki_Fidget1.grn": "17657291eb4bfdabe4b68de696f89148eb3b0608bbb5719855f36ba6123a0a29",
+    "Client/Models/Animals/Kitsun_Tsuki_Fidget2.grn": "fa913e4ea9b7f6ec6f8da5ac35470471b7887b2eccec1550ee4693d1c096b399",
+    "Client/Models/Animals/Kitsun_Tsuki_GetHit.grn": "726f7d95baf56325a768291434524a1edefb8583f7c04b99ace379317258e468",
+    "Client/Models/Animals/Kitsun_Tsuki_Idle.grn": "0b46b20f2928226f0f3b9bd51a7c760ab62de96762a13886eb3245b6c77e64ff",
+    "Client/Models/Animals/Kitsun_Tsuki_LieDown.grn": "d3270d6acc2fc3eeaa23fef6ce68739a626b78b38982ba9136ae9cdde4b3d231",
+    "Client/Models/Animals/Kitsun_Tsuki_Lod2.grn": "7bbc58be0a3ad23094bba28418f2fdcb8cb09e0aa8989454597fce7becc1ac75",
+    "Client/Models/Animals/Kitsun_Tsuki_Run.grn": "4c15d2fe6f947a05763a36052540e7a7b0b85377f9df14fee20f05cda805b281",
+    "Client/Models/Animals/Kitsun_Tsuki_Walk.grn": "38989fea9d5f3fefe6ce7daf37dfb2683502366c2861c08b4b32fc5743085c69",
+    "Client/Models/Maps/Kitsun-Tsuki_256.tga": "65e93c6bd1b676225e29982b0fb01e1d731e675aaca97aa842e022a50ddf01ff"
+  }
+}

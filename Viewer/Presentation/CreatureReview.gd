@@ -40,6 +40,7 @@ func build() -> void:
 	var floor_mesh:=MeshInstance3D.new();var box:=BoxMesh.new();box.size=Vector3(100,.1,100);floor_mesh.mesh=box;floor_mesh.position.y=-.05;var mat:=StandardMaterial3D.new();mat.albedo_color=Color("61726a");mat.roughness=.95;floor_mesh.material_override=mat;stage.add_child(floor_mesh)
 	var camera:=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.size=height*5.;stage.add_child(camera);camera.position=Vector3(height*.45,height*2.,height*7.);camera.look_at(Vector3(height*.45,height*.7,0))
 	review_camera=camera
+	var authored_effect: bool = record.get("authored_effect", false)
 	for i in 3:
 		var actor: Node3D
 		if not str(record.get("presentation_script","")).is_empty():
@@ -48,10 +49,11 @@ func build() -> void:
 		actor.entry=record;actor.treatment=["original","rounded","modern"][i];stage.add_child(actor);actor.set_physics_process(false);actor.contact.enabled=false;actor.position.x=(i-1)*height*2.1;actor.rotation.y=-.8;actors.append(actor)
 		var baseline:="Source geometry / replacement atlas" if record.has("missing_source_atlas") else "Original source"
 		var label:=Label3D.new();label.text=(["Original","Refined","Modern"] if family=="liches" or record.has("presentation_script") else [baseline,"Rounded geometry","Modern surface"])[i];label.position=Vector3(actor.position.x,height*1.8,0);label.font_size=27;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;stage.add_child(label)
+		if authored_effect:label.text="Authored effect"
 		labels.append(label)
 	var canvas:=CanvasLayer.new();root.add_child(canvas);var ui:=VBoxContainer.new();ui.position=Vector2(18,14);canvas.add_child(ui)
 	var title:=Label.new();title.text="BRITANNIA REBORN / "+kind.replace("_"," ").to_upper();title.add_theme_font_size_override("font_size",24);ui.add_child(title)
-	var note:=Label.new();note.text="Original rig / recovered + authored category motions / bounded geometry / "+str(record.surface)+" / local review";ui.add_child(note)
+	var note:=Label.new();note.text=("" if authored_effect else "Original rig / recovered + authored category motions / bounded geometry / ")+str(record.surface)+" / local review";ui.add_child(note)
 	var row:=HFlowContainer.new();row.custom_minimum_size=Vector2(1360,0);ui.add_child(row)
 	var names: Array[String]=["Idle","Walk","Run","Eat","Attack","Hit","Death","Fidget"]
 	for name in actors[0].animator.get_animation_list():
@@ -73,7 +75,7 @@ func fit_comparison() -> void:
 	var boxes: Array[AABB]=[];var width:=.1
 	for actor in actors:
 		var mesh: MeshInstance3D=actor.body_mesh if actor is LichVisual else actor.model.find_children("*","MeshInstance3D",true,false)[0]
-		var box:=preload("res://Presentation/SkinGeometry.gd").deformed_bounds(mesh,actor.skeleton)
+		var box := mesh.global_transform * mesh.get_aabb() if mesh.skin == null else preload("res://Presentation/SkinGeometry.gd").deformed_bounds(mesh, actor.skeleton)
 		boxes.append(box);width=maxf(width,box.size.x)
 	var spacing:=width*1.15;var whole:=AABB()
 	for i in actors.size():

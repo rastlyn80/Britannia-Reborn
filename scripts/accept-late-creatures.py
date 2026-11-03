@@ -21,7 +21,7 @@ def replace_index(payload):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check-evidence', action='store_true')
-    parser.add_argument('--family', choices=('late_source', 'hydra', 'energy_vortex', 'champions', 'fey_champions', 'crane', 'deathwatch', 'tsuki_wolf'), default='late_source')
+    parser.add_argument('--family', choices=('late_source', 'hydra', 'energy_vortex', 'champions', 'fey_champions', 'crane', 'deathwatch', 'tsuki_wolf', 'kappa', 'vampire_bat', 'yomotsu', 'occurrence_next', 'sand_vortex', 'bake_kitsune', 'horde_rune', 'devourer_lion_hiryu'), default='late_source')
     args = parser.parse_args()
     rows, classes = FIXTURES['prepared_entries'](args.family)
     evidence = ROOT / 'work/creatures' / args.family
@@ -72,7 +72,15 @@ def main():
                        'fey_champions': 'FeyChampionRouteTests.gd',
                        'crane': 'CraneRouteTests.gd',
                        'deathwatch': 'DeathwatchRouteTests.gd',
-                       'tsuki_wolf': 'TsukiWolfRouteTests.gd'}.get(args.family, 'LateCreatureRouteTests.gd')
+                       'tsuki_wolf': 'TsukiWolfRouteTests.gd',
+                       'kappa': 'KappaRouteTests.gd',
+                       'vampire_bat': 'VampireBatRouteTests.gd',
+                       'yomotsu': 'YomotsuRouteTests.gd',
+                       'occurrence_next': 'OccurrenceCreatureRouteTests.gd',
+                       'sand_vortex': 'SandVortexRouteTests.gd',
+                       'bake_kitsune': 'BakeKitsuneRouteTests.gd',
+                       'horde_rune': 'OccurrenceCreatureRouteTests.gd',
+                       'devourer_lion_hiryu': 'DevourerLionHiryuRouteTests.gd'}.get(args.family, 'LateCreatureRouteTests.gd')
         result = subprocess.run(
             [str(godot), '--headless', '--path', str(ROOT / 'Viewer'), '--script',
              f'res://Presentation/{test_script}', '--', f'--family={args.family}'],

@@ -120,8 +120,11 @@ public static class CreatureFixtures
                     continue;
                 }
                 var type = typeof(BaseCreature).Assembly.GetType("Server.Mobiles." + name);
+                // The Hiryu family also has a loose-body route. Mounted
+                // equipment and rider behaviour remain separate tests.
+                var looseHiryu = body == 243 && (type == typeof(Hiryu) || type == typeof(LesserHiryu));
                 if (type == null || type.IsAbstract || !type.IsSubclassOf(typeof(BaseCreature))
-                    || type.IsSubclassOf(typeof(BaseMount)) || type.ContainsGenericParameters)
+                    || (type.IsSubclassOf(typeof(BaseMount)) && !looseHiryu) || type.ContainsGenericParameters)
                 {
                     continue;
                 }

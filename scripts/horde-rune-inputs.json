@@ -1,0 +1,33 @@
+{
+  "installer_sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393",
+  "model_table_sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099",
+  "files": {
+    "Client/Models/Maps/Horde_Demon_256.tga": "f4ab03427219767e227b478893e245f7bd6e0aca9c041be3ec49b75604228767",
+    "Client/Models/Maps/Rune_Beetle_256.tga": "d6b794900bfe12b3380900f492c3570bdb5eea8c7552230b362f64801fde4866",
+    "Client/Models/Monsters/Horde_Demon_Attack1.grn": "f1263ddebf2add5a13c6d4e8b2545d41f92b661217f0560f16c0395bf2d968a1",
+    "Client/Models/Monsters/Horde_Demon_Attack2.grn": "4e03efdec70cf205f025c211f0ad6c9db4705559d2637e81e1e2af6420ee9b32",
+    "Client/Models/Monsters/Horde_Demon_Attack3.grn": "594232152b24d928bc360a910a99935503d905cd50dfe7025829fc38fa58968b",
+    "Client/Models/Monsters/Horde_Demon_Die1.grn": "089fe07de90925d45ccd13f0af84fb269e5b016eebaaa8d5bde09c8c5bc82bb9",
+    "Client/Models/Monsters/Horde_Demon_Fidget.grn": "97abd1634b1d0b53604c8387b3d102905cae1fb619d31b32c1d6a99fd1fe69c5",
+    "Client/Models/Monsters/Horde_Demon_Gethit.grn": "e1263e3315f4eb3f1cee0af3a64d22103d51d73564a5a1273ae390fd8d63fd8f",
+    "Client/Models/Monsters/Horde_Demon_Idle.grn": "47bacf7128099427d16df9c00a8eecb2e6d2d27fd839ba82534b198f8f2677be",
+    "Client/Models/Monsters/Horde_Demon_Idle2.grn": "fb92fbb52d5e83426369c6c073559fe044a40112949f8d196fa1116dbd74e124",
+    "Client/Models/Monsters/Horde_Demon_Lod2.grn": "2f3b3304fa589ee301c8e3b6f3bd61c4597d90ba88f2861e8f74402ce27fb987",
+    "Client/Models/Monsters/Horde_Demon_Run.grn": "a26ab8918be48b9c6c20280a4cc8f57d7d6e08967a00341d94c58cd1cdf54572",
+    "Client/Models/Monsters/Horde_Demon_Walk.grn": "d5c8644bcb0bccdef9a4e11383b008314fbb40576a247b333696c4f9ebafa649",
+    "Client/Models/Monsters/Rune_Beetle_Attack1.grn": "6d81a35dae1f9a1e971186bcfde08c6b3ce8f885002aeec4fc0a4ff3b06ac506",
+    "Client/Models/Monsters/Rune_Beetle_Attack2.grn": "aeb851357392e7fd5e48eb0dffde6d5c203a6855b6ff0230c70387a4d19779b1",
+    "Client/Models/Monsters/Rune_Beetle_Attack3.grn": "dcb0f6306414e618464113d99e3b26a8314a655085cd772d20300f46614efd92",
+    "Client/Models/Monsters/Rune_Beetle_BlockLeft.grn": "5f32896ba35d4dc9d7c6e94abe80e1c4a3cf4345295a9a253168ad2ab981dbaf",
+    "Client/Models/Monsters/Rune_Beetle_BlockRight.grn": "be40f4929dd25f0e4c6b085eee56e0ab7c5a1f05c529b78c1ba3f5351a096f0b",
+    "Client/Models/Monsters/Rune_Beetle_Cast.grn": "d5753ba8540281db5f45c7e51f188503b8cc074e8bb76858c90100d2437a2673",
+    "Client/Models/Monsters/Rune_Beetle_Cast2.grn": "9e19b591d09f8f86de12dc3961819ae076b3cb87aa96a29f10e1131db8e68304",
+    "Client/Models/Monsters/Rune_Beetle_Die1.grn": "c8df69310a54cad253c37e7ea652a44f593ee41b9d5206fdfa087d3b9f248a34",
+    "Client/Models/Monsters/Rune_Beetle_Die2.grn": "04134b702173023ed7c23201b7a182cbd9a93d99ac86c094b5db07e7b50615c6",
+    "Client/Models/Monsters/Rune_Beetle_Fidget.grn": "2921a4f8e12b85cbf679029f03d5cb2cd0466e69147692302ea77493cb3dfc8e",
+    "Client/Models/Monsters/Rune_Beetle_GetHit.grn": "eeabd0fb07fcef1dc46c56a718ea4bb9272f556a50aabf435602df6ef4c94119",
+    "Client/Models/Monsters/Rune_Beetle_Idle.grn": "e748b915b1bf5371d134b35c44bb48371aea40bd9dcef30b673bf6a060ae3acc",
+    "Client/Models/Monsters/Rune_Beetle_Lod2.grn": "9bdac522f36aef5db302b4ff0fdf968d309302ee378b777d78c31465061f6bd0",
+    "Client/Models/Monsters/Rune_Beetle_Walk.grn": "4b658df6653f2291e4466c749f7d14514744441f2785de61885536d96be60757"
+  }
+}

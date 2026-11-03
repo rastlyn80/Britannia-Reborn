@@ -1,0 +1,15 @@
+{
+  "installer_sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393",
+  "model_table_sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099",
+  "native": {
+    "path": "Projects/UOContent/Mobiles/Monsters/Misc/Melee/SandVortex.cs",
+    "sha256": "9ccb065ecc87f6bf46f8be9f1df0b1d4659390d3f30f4800e61d35127d3d3286"
+  },
+  "files": {
+    "Client/Models/Maps/Ethereals_Wisp.tga": "4c37301881aa33176bb2a967875bb7dceb5c76791754b98e8eb6334de3d0a619",
+    "Client/Models/Monsters/Sand_Vortex_Attack1.grn": "3896f4d526261cd5b97bfbcafc4a258dcb801a57a9fa28d412984f87d62a89e3",
+    "Client/Models/Monsters/Sand_Vortex_Gethit.grn": "928275712e8fd68e91e7d04ee51088f678a987c2a8f38e7e301ac6455644db3c",
+    "Client/Models/Monsters/Sand_Vortex_Lod2.grn": "b483ebfacd4a631755f4ddcf8f4750f1698bd3588286aa82c39cbf155434298d",
+    "Client/Models/Monsters/Sand_Vortex_Walk.grn": "3896f4d526261cd5b97bfbcafc4a258dcb801a57a9fa28d412984f87d62a89e3"
+  }
+}
