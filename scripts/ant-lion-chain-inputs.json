@@ -1,0 +1,162 @@
+{
+  "schema": 1,
+  "server_pin": "ab59efea86fd9e399d261bed9d188ab4d95ad4c2",
+  "scope": "AntLion source chain repair candidate. Proprietary inputs/derived artwork remain local; original body and numeric motions retained; no acceptance/native/gameplay claim.",
+  "rights": "Proprietary original inputs and all derived artwork remain local and excluded from Git; archive mirror authenticity and redistribution are not asserted.",
+  "models": [
+    {
+      "kind": "ant_lion",
+      "expected_bodies": [
+        787
+      ],
+      "source_url": "https://zuluarchive.com/static/files/uoml_setup.exe",
+      "containers": [
+        {
+          "path": "work/creatures/late-client-inputs/uoml_setup.exe",
+          "bytes": 798463305,
+          "sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data1.cab",
+          "bytes": 664374,
+          "sha256": "78110fcad7a3bf0d459c6f58f30764064fa2868dd2eea92ffc3983390846ce42"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data1.hdr",
+          "bytes": 624745,
+          "sha256": "bc7c394bab19ece161bdd482bd21d16f946d4f04eb64aca67d6c8c45ffa79587"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data2.cab",
+          "bytes": 794818869,
+          "sha256": "247b9305c2f6d3af18c2c5bc7018d0d8ae27b5ae394187b6ffccbc9d174db95d"
+        }
+      ],
+      "model_table": {
+        "path": "work/creatures/late-client-inputs/model-table/Client/Models.txt",
+        "bytes": 81498,
+        "sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099"
+      },
+      "files": [
+        {
+          "member": "Client/Models/Maps/Ant_Lion_256.tga",
+          "path": "work/creatures/ml-next/source/Client/Ant_Lion_256.tga",
+          "bytes": 196652,
+          "sha256": "cf3b1268ed11f37f9a3ef1af5d8a58f478391661b7740e6c869e028de1e9c405"
+        },
+        {
+          "member": "Client/Models/Maps/Ant_Lion_Dirt_256.tga",
+          "path": "work/creatures/ml-next/source/Client/Ant_Lion_Dirt_256.tga",
+          "bytes": 262188,
+          "sha256": "8ab0561e8fad3ed4088759534aba9adaf9b7ff5fa894518fddbc5b7bf542d02f"
+        },
+        {
+          "member": "Client/Models/Monsters/Ant_Lion_Attack1.grn",
+          "path": "work/creatures/ml-next/source/Client/Ant_Lion_Attack1.grn",
+          "bytes": 182128,
+          "sha256": "ce46eeaedb63ccf2fabde6dd0eb044f5e682c0d36490d622e9f29389b1d9b01c"
+        },
+        {
+          "member": "Client/Models/Monsters/Ant_Lion_Attack2.grn",
+          "path": "work/creatures/ml-next/source/Client/Ant_Lion_Attack2.grn",
+          "bytes": 172376,
+          "sha256": "0b4d8c23515b743fa790cb2297fb6a3f07c5cbfc0591d23a19832bfd6bf761b5"
+        },
+        {
+          "member": "Client/Models/Monsters/Ant_Lion_Attack3.grn",
+          "path": "work/creatures/ml-next/source/Client/Ant_Lion_Attack3.grn",
+          "bytes": 167200,
+          "sha256": "8ff37c8edda1c61b6e56459fb25fc341ae998d1404a7971371fd62401ddb8853"
+        },
+        {
+          "member": "Client/Models/Monsters/Ant_Lion_Die1.grn",
+          "path": "work/creatures/ml-next/source/Client/Ant_Lion_Die1.grn",
+          "bytes": 284240,
+          "sha256": "ca6c9083fa2e7d898df48d8aa9054f40f3054bb530362cddb17d076309b03c5f"
+        },
+        {
+          "member": "Client/Models/Monsters/Ant_Lion_Fidget.grn",
+          "path": "work/creatures/ml-next/source/Client/Ant_Lion_Fidget.grn",
+          "bytes": 122088,
+          "sha256": "fbf4c68edd50641196c12ccdb1d6ad846379e103ee2008eea294843c8646a046"
+        },
+        {
+          "member": "Client/Models/Monsters/Ant_Lion_Fidget2.grn",
+          "path": "work/creatures/ml-next/source/Client/Ant_Lion_Fidget2.grn",
+          "bytes": 165500,
+          "sha256": "3005da5c71ba5a061cb81eeaef00696961bca05ed1b4e00fb2e3bd02a28808ec"
+        },
+        {
+          "member": "Client/Models/Monsters/Ant_Lion_Gethit.grn",
+          "path": "work/creatures/ml-next/source/Client/Ant_Lion_Gethit.grn",
+          "bytes": 122512,
+          "sha256": "c38272cce2b31af412f5ae4aa868f78a84a7b0bdd7135eaa50150af03f21b708"
+        },
+        {
+          "member": "Client/Models/Monsters/Ant_Lion_Idle.grn",
+          "path": "work/creatures/ml-next/source/Client/Ant_Lion_Idle.grn",
+          "bytes": 112796,
+          "sha256": "7d1ed646b050537f5768ebc7a919420891600b49bed8f42fd25126370242fb57"
+        },
+        {
+          "member": "Client/Models/Monsters/Ant_Lion_Lod2.grn",
+          "path": "work/creatures/ml-next/source/Client/Ant_Lion_Lod2.grn",
+          "bytes": 115680,
+          "sha256": "aaf13a2bd7e4619a23292b6c7ed85f2eeaded99adc9cf2e9f0301a73d0aa5580"
+        },
+        {
+          "member": "Client/Models/Monsters/Ant_Lion_Stomp.grn",
+          "path": "work/creatures/ml-next/source/Client/Ant_Lion_Stomp.grn",
+          "bytes": 201152,
+          "sha256": "ba2a94a836ef69e94a29092a9538bec404659afaf5d0517e127167b54755b367"
+        },
+        {
+          "member": "Client/Models/Monsters/Ant_Lion_Walk.grn",
+          "path": "work/creatures/ml-next/source/Client/Ant_Lion_Walk.grn",
+          "bytes": 111704,
+          "sha256": "a7f4d6d091db440f6f0f93f2005b8d6679020c54c432954f48fd18e7ae7d5356"
+        }
+      ],
+      "bones": 53,
+      "triangles": 1086,
+      "source_clips": 10,
+      "levels": 1,
+      "normal_offset_m": 0.0015,
+      "opacity": "opaque",
+      "limb_support": "plane",
+      "clip_labels": {
+        "stomp": "Stomp"
+      },
+      "category_aliases": {
+        "Run": "Walk"
+      },
+      "presentation_script": "res://Presentation/SourcePreservingCreatureVisual.gd",
+      "chain_label_contract": {
+        "model_sha256": "aaf13a2bd7e4619a23292b6c7ed85f2eeaded99adc9cf2e9f0301a73d0aa5580",
+        "canonical_whitespace": true,
+        "right_pincer": [
+          {
+            "sha256": "ca6c9083fa2e7d898df48d8aa9054f40f3054bb530362cddb17d076309b03c5f",
+            "bone_count": 88,
+            "bone_index": 5,
+            "parent_index": 4,
+            "parent_label": "large pincher r 01",
+            "original_label": "large pincher l 02",
+            "replacement_label": "large pincher r 02",
+            "track_id": 11
+          },
+          {
+            "sha256": "ba2a94a836ef69e94a29092a9538bec404659afaf5d0517e127167b54755b367",
+            "bone_count": 88,
+            "bone_index": 5,
+            "parent_index": 4,
+            "parent_label": "large pincher r 01",
+            "original_label": "large pincher l 02",
+            "replacement_label": "large pincher r 02",
+            "track_id": 3
+          }
+        ]
+      }
+    }
+  ]
+}

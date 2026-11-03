@@ -1,3 +1,27 @@
+# Giant Beetle body 791
+
+The normal local client now routes body 791 and mounted item 0x3EBC to the original 51-joint Giant Beetle rig and opaque atlas. All ten original clips are retained, with scoped joint-label repairs and restoration of the missing identity parent. The native animal action group 10 selects the second original fidget. The mounted visual uses measured saddle, stirrup and rein fittings. Mount initialization now assigns the limb-contact basis only to modifiers that support it.
+
+Final client evidence includes 56 skin, nine action, 92 rendered presentation, 13 dye and 128 mounted checks. The riding run covered 36 poses for both rider bodies. The isolated ModernUO test passed 96 checks for two real clients, including normal mount and dismount, mounted walk and run, raw full and partial hues, classic actions and native death and corpse. Pack interaction, natural combat, and continuous terrain remain open. Body 791 adds one static corpse entry.
+
+The generated catalogue reports 200 of 279 model routes and 181 of 279 with positive native evidence. The corpse catalogue has 241 body keys. Four human NPC routes are tracked separately. Local source art remains private. The full project regression for Ant Lion and body 123 finished with exit 0, including world startup. The new Beetle path has its own client and isolated live runs.
+
+# Crystal Lattice Seeker and Ethereal Warrior
+
+Body 123 now uses the original 40-joint rig, RGBA atlas and seven timed clips. The original GetHit file has zero timed tracks. The route supplies an authored Hit reaction and an authored Cast on the original rig. Body 175 has a separate scale and remains a separate integration task.
+
+The final assets passed 53 skin checks across 27 poses, 54 action checks, 84 rendered checks across 18 poses and two death entries, and 14 appearance checks. The isolated native run passed 319 checks across both constructors and both clients. Crystal Lattice Seeker retained its original hue 0x47E and Ethereal Warrior retained hue 0. The run exercised native movement, attack, hit, fidget, classic and newer casting packets, death and static corpse. Native Drain, autonomous combat, loot and continuous terrain remain open.
+
+Coverage is 199 of 279 non-human body routes and 180 of 279 with positive native witnesses. Four specialized human NPC bodies are tracked separately. The corpse catalogue has 240 keys.
+
+# Ant Lion source rig and normal native route - 3 November 2026
+
+Ant Lion787 now uses its original model, opaque RGB atlas and all ten timed source clips through the normal local registry. The exact two malformed Die1/Stomp inputs duplicated the left pincer name on the right pincer. The scoped adapter uses the right parent and original object/track IDs (bone5, parent4, track11/3) to relabel only the correct joint/track, plus unique whitespace aliases. Numeric key/rest fields, source geometry, UVs and weights remain unchanged by the label adapter. All53 model joints remain, all38 weighted joints/ancestors are mapped, and52 joints match these two clips; one unanimated mesh helper stays in the model. Existing30Hz affine-to-rigid normalization is still an approximation. Refined skin4344triangles from1086source; Run explicitly reuses Walk. Separate original earth/rock animation effects are outside this body mesh; Stomp is retained without an invented native tunnel or packet mapping.
+
+Current final assets pass59 skin/corpse checks over33poses (maximum1.543mm at the existing2mm bound),100 actual GPU checks/22poses/two decoded death entries,13 visible dye checks/six views and11 normal-registry/rig/raw hue checks. Normal native two-client run passes159checks for the unmodified AntLion constructor, native Move walk/run, full/partial hues, hit reaction, Attack/Attack2/Attack3/Fidget/Fidget2 packets and native death/static0x2006 corpse. The original native class has no tunnel override. Prior local routes are preserved exactly. Coverage198/279(71.0%) models and179/279(64.2%) positive native body witnesses, plus four specialized human NPCs separately. Corpse index239body keys, including earlier explicitly client-only keys.
+
+The preceding Savage Rider, equipped human death fix and parallel GPU runner were fully verified and pushed as8cf9918. Ant Lion source integration is local and joins the next compatible-model batch before one required broad regression/publication. Controlled native tests do not certify autonomous combat, loot, continuous terrain or final art. Continue occurrence-first; unresolved Gazer/Bog/Juka source issues remain separate. No proprietary art or native source changes are published.
+
 # Savage Rider native lifecycle and equipped human deaths - 3 November 2026
 
 Both original Savage Rider bodies (185/186) now have fresh two-client native evidence: 435 checks across both disposable owners, original random-gender constructors and native stat ranges, TribalSpear/BoneArms/BoneLegs identities, original SavageRidgeback188 and layer25 item0x3EB8, independent full/partial rider/mount hues, all seven mounted action groups, native walking/running, dismount/remount and native mounted death. OnBeforeDeath deliberately deletes the Ridgeback; both clients receive unseating, mount removal and the rider's human0x2006 corpse. No production server, saves, remembered login or native gameplay source changed.

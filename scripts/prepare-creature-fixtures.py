@@ -92,7 +92,12 @@ def main():
                 common['constructor_hues']={name:(0x515 if name=='PestilentBandage' else 0x453 if name.startswith('BlackSolen') else 0) for name in classes}
             elif args.family=='recent_batch':
                 common['constructor_hues']={name:(0x480 if name=='UnfrozenMummy' else 0x901 if name=='ShadowWispFamiliar' else 0x515 if name=='PestilentBandage' else 0x453 if name.startswith('BlackSolen') else 0) for name in classes}
-            if classes and (entry.get('movement_mode')=='native_waterline' or reviewed):
+            if not args.prepared and 'native_constructor_hues' in entry:
+                hues = entry['native_constructor_hues']
+                assert set(hues) == set(classes), 'Constructor hue declarations must match the native classes'
+                assert all(type(hue) is int and 0 <= hue <= 0xffff for hue in hues.values())
+                common['constructor_hues'] = hues
+            if classes and (entry.get('movement_mode')=='native_waterline' or reviewed or 'native_constructor_hues' in entry):
                 for name in classes:rows.append(dict(common,classes=[name],native_class=name))
             elif classes:rows.append(common)
     assert rows,'No checked native literal bodies in this family'

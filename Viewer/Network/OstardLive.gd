@@ -16,6 +16,7 @@ var ethics_only:=false
 var ethics_resume:=false
 var bovines:=false
 var sea_horse:=false
+var giant_beetle:=false
 func fixture_reply(session: Node,sex: int,command: String,prefix: String) -> String:
 	replies[sex].clear();session.send_command("[EquineFixture "+command)
 	if not check(await until(func():return replies[sex].any(func(t: String):return t.begins_with(prefix))),"native ethics reply: "+command):return ""
@@ -59,6 +60,7 @@ func run() -> void:
 	ethics_resume="--ethics-resume" in OS.get_cmdline_user_args()
 	bovines="--bovines" in OS.get_cmdline_user_args()
 	sea_horse="--sea-horse" in OS.get_cmdline_user_args()
+	giant_beetle="--giant-beetle" in OS.get_cmdline_user_args()
 	var accounts: Array=JSON.parse_string(FileAccess.get_file_as_string("res://../work/horse-session/accounts.local.json"))
 	for sex in 2:
 		var session:=Game.new();root.add_child(session);sessions.append(session);replies.append([])
@@ -83,12 +85,13 @@ func run() -> void:
 		await resume_ethics();return
 	for sex in 2:
 		var session: Node=sessions[sex];var observer: Node=sessions[1-sex];var actor: Node3D=avatars[sex];var me:=int(session.player.serial)
-		for variant in ([46] if sea_horse else range(42,46) if bovines else [23,24,38,39,40,41] if ethics_only else range(22,33)+range(34,42) if equine_completion else [19,20,21,33] if llama_completion else [13,14,15,16,17,18,19,20,21]):
+		for variant in ([47] if giant_beetle else [46] if sea_horse else range(42,46) if bovines else [23,24,38,39,40,41] if ethics_only else range(22,33)+range(34,42) if equine_completion else [19,20,21,33] if llama_completion else [13,14,15,16,17,18,19,20,21]):
 			replies[sex].clear();session.send_command("[EquineFixture prepare "+str(variant))
 			if not check(await until(func():return not replies[sex].is_empty()),"real upstream equine fixture prepared"):return
 			var fields: PackedStringArray=replies[sex][-1].split("|")
 			if not check(fields.size()==6 and fields[1]=="prepared","fixture identifies actual native class/body/mount"):return
 			var serial:=int(fields[2]);var body:=int(fields[3]);var item:=int(fields[4]);var ethereal: bool=variant in [16,21,22]
+			if giant_beetle and not check(body==791 and item==0x3ebc and fields[5]=="Beetle","original native Giant Beetle identity"):return
 			if sea_horse:
 				if not check(body==144 and item==0x3eb3 and fields[5]=="SeaHorse","real native SeaHorse identity is distinct from its horse-art fallback"):return
 				var native_state:=await fixture_reply(session,sex,"sea-state","UCEQUINE|sea-state|")
@@ -100,6 +103,7 @@ func run() -> void:
 				var loose:=preload("res://Presentation/HumanAvatar.gd").new();loose.initial_body=body;root.add_child(loose);loose.set_physics_process(false);loose.apply_server_appearance(session.entities[serial],[])
 				if not check(loose.horse_visual!=null and loose.horse_visual.native_body==body,"received mobile selects the new equine art"):return
 				if sea_horse and not check(loose.horse_visual.native_hue==0 and loose.horse_visual.get_meta("equine_profile").get("default_hue")==1348,"fallback tint stays a presentation default; native zero hue is retained"):return
+				if giant_beetle and not check(loose.horse_visual.native_hue==0,"native Giant Beetle has its original default hue"):return
 				loose.free()
 			elif not session.known_items.has(serial):
 				# A closed backpack does not expose newly added contents. Open it
@@ -148,12 +152,13 @@ func run() -> void:
 				var loose:=preload("res://Presentation/HumanAvatar.gd").new();loose.initial_body=body;root.add_child(loose);loose.set_physics_process(false);loose.apply_server_appearance(session.entities[serial],[])
 				if bovines and not await bovine_interactions(session,observer,sex,serial,body,loose):return
 				if sea_horse and not await sea_horse_interactions(session,observer,sex,serial,loose):return
-				for action_code in [5,4,3,11]:
+				var action_clips: Dictionary={5:"Attack",6:"Attack2",7:"Hit",9:"Fidget",10:"Fidget2"} if giant_beetle else {5:"Attack",4:"Hit",3:"Eat",11:"LieDown"}
+				for action_code in action_clips:
 					session.last_mobile_actions.erase(serial);observer.last_mobile_actions.erase(serial)
 					session.send_command("[EquineFixture action "+str(action_code))
 					if not check(await until(func():return session.last_mobile_actions.has(serial) and observer.last_mobile_actions.has(serial)),"native attack/reaction packet arrives on both clients"):return
 					if not check(loose.receive_native_action(session.last_mobile_actions[serial]),"actual creature consumes server attack/reaction"):return
-					var expected: String={5:"rear",4:"hit",3:"eat",11:"lie_down"}[action_code] if loose.horse_visual is HorseRig else {5:"Attack",4:"Hit",3:"Eat",11:"LieDown"}[action_code]
+					var expected: String={5:"rear",4:"hit",3:"eat",11:"lie_down"}[action_code] if loose.horse_visual is HorseRig else action_clips[action_code]
 					if not check(loose.horse_visual.current_clip==expected,"native action selects the species clip"):return
 				replies[sex].clear();session.send_command("[EquineFixture kill")
 				if not check(await until(func():return replies[sex].any(func(text: String):return text.begins_with("UCEQUINE|corpse|"))),"real upstream death creates a corpse"):return
@@ -176,9 +181,10 @@ func run() -> void:
 	if ethics_only and not await save_ethics():return
 	for actor in avatars:actor.free()
 	for session in sessions:session.close()
-	var report:="sea-horse-live.json" if sea_horse else "bovine-live.json" if bovines else "ethics-live.json" if ethics_only else "equine-completion-live.json" if equine_completion else "llama-completion-live.json" if llama_completion else "live-validation.json"
+	var report:="giant-beetle-live.json" if giant_beetle else "sea-horse-live.json" if sea_horse else "bovine-live.json" if bovines else "ethics-live.json" if ethics_only else "equine-completion-live.json" if equine_completion else "llama-completion-live.json" if llama_completion else "live-validation.json"
 	var scope:="Actual world entry, native classes/permissions, layer 25, hues, mounted movement, observer replication and dismount on isolated pinned ModernUO. Ranked faction membership and native ethical oaths are disposable test setup; normal mount checks remain active. No production world or saves touched."
 	if bovines:scope="Actual two-client world entry, four native bovine bodies/hues, native Move walk/run replication, real Cow.Tip packets/recovery, owning-player milking API servings/exhaustion, real death and corpse art. Flat arena relocation is fixture setup, not movement evidence. No autonomous AI/pathfinding or complete gameplay/eligibility audit; milking uses the server API, not a client beverage-item interaction."
+	if giant_beetle:scope="Pinned native Beetle constructor and two loopback clients. Controlled owner setup, ordinary mounting and dismounting, native walk and run, full and partial hue packets, controlled classic animal action packets and native death/corpse. Pack access and autonomous combat are separate."
 	if sea_horse:scope="Real two-client native SeaHorse constructor144/item0x3EB3; both controlled owners use normal mount/movement/dismount, loose Move walk/run, full/partial hues/actions/death/corpse replication. Native flags are non-swimming, walking and not tamable: fixture control does not establish taming eligibility. Uses the documented client horse-art fallback, not recovered SeaHorse geometry or water-riding gameplay. Controlled sampling is not autonomous AI/choreography certification."
 	var file:=FileAccess.open("res://../outputs/ostard-riding/"+report,FileAccess.WRITE);file.store_string(JSON.stringify({"checks":checks,"failures":0,"records":records,"ethics_status":ethics_status,"scope":scope},"\t"));file.close()
 	print("OSTARD NATIVE INTEGRATION: ",checks," checks / 0 failures");quit()

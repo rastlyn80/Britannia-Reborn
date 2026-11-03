@@ -1,0 +1,125 @@
+{
+  "schema": 1,
+  "server_pin": "ab59efea86fd9e399d261bed9d188ab4d95ad4c2",
+  "scope": "Crystal Lattice Seeker source provenance and scoped animation recovery.",
+  "models": [
+    {
+      "kind": "ethereal_warriors_male",
+      "expected_bodies": [
+        123,
+        175
+      ],
+      "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+      "containers": [
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client11.cab",
+          "bytes": 35160963,
+          "sha256": "307a6b91c4d5459080d1fe8a74ae4fe0b91dea8a21a2866ca91e7dc7ba92f1a8"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client10.cab",
+          "bytes": 33956665,
+          "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client7.cab",
+          "bytes": 20805,
+          "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859"
+        }
+      ],
+      "model_table": {
+        "path": "work/creatures/next-simple/source/models.txt",
+        "bytes": 55735,
+        "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a"
+      },
+      "files": [
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Maps/ethereal_warriors_michael.tga",
+          "bytes": 65580,
+          "sha256": "ff93c0bfeceb1a8cfc58543f881cd320945802fe579f349c2e4935ff27ecd818",
+          "member": "uoaos/UOTD/Models/Maps/ethereal_warriors_michael.tga"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/ethereal_warriors_male_attack1.grn",
+          "bytes": 46248,
+          "sha256": "dd6326d4b7acbb4722552adf773466938b2300c09619a875d12eeed68b9030c7",
+          "member": "uoaos/UOTD/Models/Monsters/ethereal_warriors_male_attack1.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/ethereal_warriors_male_attack2.grn",
+          "bytes": 54348,
+          "sha256": "fb658d3d39a8e2b4985b00656c891b81e8aa7f61e1dbb16b64e77538e11278b9",
+          "member": "uoaos/UOTD/Models/Monsters/ethereal_warriors_male_attack2.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/ethereal_warriors_male_die1.grn",
+          "bytes": 80392,
+          "sha256": "a071a30b18ca0c555120ab773335f0dc64ef2996359cee512b6150314c9db12b",
+          "member": "uoaos/UOTD/Models/Monsters/ethereal_warriors_male_die1.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/ethereal_warriors_male_fidget.grn",
+          "bytes": 43640,
+          "sha256": "26a12a48b7b3bba3ce4210dbac6754126621e07ed2a21f3c7bf61bf988bfdbd4",
+          "member": "uoaos/UOTD/Models/Monsters/ethereal_warriors_male_fidget.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/ethereal_warriors_male_gethit.grn",
+          "bytes": 20644,
+          "sha256": "c54edb532be9eca0122c85617dad34c5d4bcccb9e9c3eb8063cceb8302f3ed4b",
+          "member": "uoaos/UOTD/Models/Monsters/ethereal_warriors_male_gethit.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/ethereal_warriors_male_idle.grn",
+          "bytes": 38228,
+          "sha256": "8c7c110cfbb98d1822a2d4dee89dc5091850b5b0e2a4851494ba1dccdbb25116",
+          "member": "uoaos/UOTD/Models/Monsters/ethereal_warriors_male_idle.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/ethereal_warriors_male_lod2.grn",
+          "bytes": 82456,
+          "sha256": "1ca84b2ee01321a49c5713a6ed37b2d7d69214a17418955a0047dc99c3268d27",
+          "member": "uoaos/UOTD/Models/Monsters/ethereal_warriors_male_lod2.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/ethereal_warriors_male_run.grn",
+          "bytes": 39824,
+          "sha256": "16e92d16a659bd6a55ac62b3354f49372afcc2f42ad7b987c0f7441596c0d450",
+          "member": "uoaos/UOTD/Models/Monsters/ethereal_warriors_male_run.grn"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Monsters/ethereal_warriors_male_walk.grn",
+          "bytes": 38828,
+          "sha256": "d5929d9bd45ae136b2d62637344f6af37ed3bf23c7de532d1d11f04a3d665870",
+          "member": "uoaos/UOTD/Models/Monsters/ethereal_warriors_male_walk.grn"
+        }
+      ],
+      "bones": 40,
+      "triangles": 514,
+      "source_clips": 7,
+      "levels": 1,
+      "normal_offset_m": 0.0015,
+      "opacity": "fine_edges",
+      "limb_support": "biped",
+      "routed_bodies": [
+        123
+      ],
+      "authored_cast": true,
+      "classic_action_categories": {
+        "12": "Cast",
+        "14": "Cast"
+      },
+      "new_action_categories": {
+        "11": "Cast"
+      },
+      "expected_rejections": {
+        "Hit": {
+          "member": "uoaos/UOTD/Models/Monsters/ethereal_warriors_male_gethit.grn",
+          "sha256": "c54edb532be9eca0122c85617dad34c5d4bcccb9e9c3eb8063cceb8302f3ed4b",
+          "error": "Exact source GetHit has zero timed tracks; measured source-rig replacement required"
+        }
+      }
+    }
+  ],
+  "rights": "Original artwork and derived assets remain local."
+}

@@ -66,6 +66,22 @@ if (Test-Path "$root/Viewer/local-art/creatures/source_family_batch/local-presen
  $familyRoutes | ForEach-Object {Write-Output $_}
  if ($familyRouteExit -or ($familyRoutes | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Normal source family avatar/static-corpse routes failed'}
 }
+if (Test-Path "$root/Viewer/local-art/creatures/ant_lion_chain/local-presentation.json") {
+ & python -B "$root/scripts/prepare-ant-lion.py" --check-skins
+ if ($LASTEXITCODE) {throw 'Ant Lion complete skin and static corpse checks failed'}
+ & python -B "$root/scripts/prepare-ant-lion.py" --check-actions
+ if ($LASTEXITCODE) {throw 'Normal Ant Lion registry, rig and hue checks failed'}
+ & python -B "$root/scripts/accept-ant-lion.py" --check-active
+ if ($LASTEXITCODE) {throw 'Active Ant Lion source/presentation receipt failed'}
+}
+if (Test-Path "$root/Viewer/local-art/creatures/crystal_lattice/local-presentation.json") {
+ & python -B "$root/scripts/prepare-crystal-lattice.py" --check-skins
+ if ($LASTEXITCODE) {throw 'Crystal Lattice Seeker complete skin and static corpse checks failed'}
+ & python -B "$root/scripts/prepare-crystal-lattice.py" --check-actions
+ if ($LASTEXITCODE) {throw 'Normal Crystal Lattice Seeker registry, rig and hue checks failed'}
+ & python -B "$root/scripts/accept-crystal-lattice.py" --check-active
+ if ($LASTEXITCODE) {throw 'Active Crystal Lattice Seeker source/presentation receipt failed'}
+}
 if (Test-Path "$root/Viewer/local-art/creatures/source_variants/preparation.json") {
  & python -B "$root/scripts/prepare-source-variants.py" --check-prepared
  if ($LASTEXITCODE) {throw 'Source variant exact-source/donor/scene audit failed'}

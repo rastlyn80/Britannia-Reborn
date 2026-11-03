@@ -1,3 +1,19 @@
+# After Giant Beetle activation
+
+Body 791 passed the final render and rider checks and the isolated 96-check native lifecycle. Continue Fire Beetle and the item-only Ethereal Beetle, preserving their separate atlases and identities. A private Fire Beetle conversion retained all ten motions on its own 51-joint, 1,102-triangle mesh at the source table's body 169 scale. Dense bake, material and mounted validation remain open. Add Giant Beetle pack interaction evidence separately. Continue the occurrence queue for remaining loose creatures.
+
+# After the body 123 integration
+
+Ant Lion 787 and the Crystal Lattice Seeker and Ethereal Warrior body 123 route have passed controlled native tests. Run the full regression for this batch and publish the verified source. Continue occurrence-first and investigate the remaining blockers separately.
+
+The Giant Beetle probe restores the model's identity parent across all ten original clips. Attack3's alternate leg, head and spine labels match the model's bind positions and weighted parent chains. A private Vulkan run and a mounted fitting trial passed. Normal activation, the final mounted regression and native verification remain open. The extracted Fire Beetle has its own geometry, weights and 256x256 RGB atlas. It has the same 51 joint names and parents as the Giant Beetle, and the original model table links it to body 791's clips. Retain the Fire Beetle's mesh and validate the shared motions on it. Use separate checks for the Ethereal Beetle's own atlas and mounted identity.
+
+# Batch the next compatible creatures after Ant Lion - 3 November 2026
+
+Ant Lion787 is active locally with53 model joints,10 original clips,4344 refined triangles,59skin/100GPU/13appearance/11normal-route checks and159 native two-client checks. Model coverage198/279(71.0%), positive native witnesses179/279(64.2%), plus four human NPC IDs separately and239 corpse keys. Source label-only fix keeps all physical joints and original numeric motion inputs; existing rigid30Hz approximation remains declared. Stomp source is available without guessing a native tunnel/packet. Original source earth/rock effects and final art/continuous terrain/native autonomy remain separate.
+
+Previous rider/death/parallel validation batch pushed8cf9918 after full regression. Finish the next larger compatible integration batch, starting with Crystal Lattice Seeker123 (zero-track original Hit, explicit authored Hit/Cast, native hue0x47E) and preserve175LordOaks' separate scale/identity. Quarantine remaining real weighted-hierarchy/nonfinite/multipart issues. Run one required scripts/verify.ps1 for this larger batch before publishing owned source/docs. Preserve production and concurrent terrain work; full goal active.
+
 # Close native Rider lifecycle, then return to the occurrence queue - 3 November 2026
 
 Native Savage Rider185/186 now passes435checks through both actual disposable owners: original body/gear/stats/mount, independent hues, seven mounted groups, native Move, dismount/remount and mount-deleting death/corpse replication. Foot/Shaman rerun passes3146checks. Four human NPC body IDs now have positive native witnesses outside the279non-human denominator; non-human models197/279(70.6%), native witnesses178/279(63.8%), corpse keys238.

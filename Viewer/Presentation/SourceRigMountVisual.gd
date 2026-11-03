@@ -17,7 +17,8 @@ func _ready() -> void:
 	super._ready();fittings=mount_fittings()
 	var proportions: Vector3=fittings.proportions if treatment=="modern" else Vector3.ONE
 	default_model_scale*=proportions;model.scale=default_model_scale
-	contact.flat_basis=source_model_basis.scaled_local(default_model_scale)
+	if "flat_basis" in contact:
+		contact.flat_basis=source_model_basis.scaled_local(default_model_scale)
 	set_meta("authored_proportions",proportions)
 	seat_bone=find_bone(str(fittings.seat_bone));mouth_bone=find_bone(str(fittings.mouth_bone))
 	assert(seat_bone>=0 and mouth_bone>=0,"Original mount socket bones missing")
