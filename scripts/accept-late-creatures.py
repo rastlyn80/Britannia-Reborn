@@ -21,7 +21,7 @@ def replace_index(payload):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check-evidence', action='store_true')
-    parser.add_argument('--family', choices=('late_source', 'hydra', 'energy_vortex', 'champions', 'fey_champions', 'crane', 'deathwatch', 'tsuki_wolf', 'kappa', 'vampire_bat', 'yomotsu', 'occurrence_next', 'sand_vortex', 'bake_kitsune', 'horde_rune', 'devourer_lion_hiryu', 'elemental_minotaur', 'meer_donors', 'captain_cu', 'clockwork_tokuno'), default='late_source')
+    parser.add_argument('--family', choices=('late_source', 'hydra', 'energy_vortex', 'champions', 'fey_champions', 'crane', 'deathwatch', 'tsuki_wolf', 'kappa', 'vampire_bat', 'yomotsu', 'occurrence_next', 'sand_vortex', 'bake_kitsune', 'horde_rune', 'devourer_lion_hiryu', 'elemental_minotaur', 'meer_donors', 'captain_cu', 'clockwork_tokuno', 'aos_creatures'), default='late_source')
     args = parser.parse_args()
     rows, classes = FIXTURES['prepared_entries'](args.family)
     evidence = ROOT / 'work/creatures' / args.family

@@ -1,0 +1,26 @@
+{
+  "installer_sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393",
+  "model_table_sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099",
+  "files": {
+    "Client/Models/Monsters/Flesh_Renderer_LOD2.grn": "25471679e9ca93656e8b898a62335032d096d41a01f29b897f13797173812495",
+    "Client/Models/Maps/Flesh_Renderer_256x256.tga": "ac14cbb8360f1f95b9188086adda1d7ebadaffa370e3a6c9fd1653ce530cca6e",
+    "Client/Models/Monsters/Flesh_Renderer_Idle.grn": "b93e5bcccaa18c1c5258fd61a3fbbb413039c6958d84f0cfd87f4ad9cf740178",
+    "Client/Models/Monsters/Flesh_Renderer_Walk.grn": "90c89045a1a9b4b0b10d40f52c9d962f8e4cf2af7d26043512a02cfc2e1c2170",
+    "Client/Models/Monsters/Flesh_Renderer_Attack1.grn": "8a0d37a779e19a44291863105bbe10ee28dbfcfbc41119953a713dd37ca96ad3",
+    "Client/Models/Monsters/Flesh_Renderer_Attack2.grn": "4a87455a4ad814f4268847252541626192fc6e402b1542446e355a25b3281c59",
+    "Client/Models/Monsters/Flesh_Renderer_Gethit.grn": "03c245c398cf79f4cdd626574bea313ac726b3cae72f3c08be8eb621b4aff185",
+    "Client/Models/Monsters/Flesh_Renderer_Die1.grn": "60f24a43ddbf53d554d4fffd83e4f257adab9f390917c11e46663e927f2e059d",
+    "Client/Models/Monsters/Flesh_Renderer_Fidget.grn": "d12a15d41903fbbc73f5a03b60a6b1bef60882d225fdc2d5c7527ce0c990bec0",
+    "Client/Models/Monsters/Flesh_Renderer_Fly.grn": "23e700b16d2abc137b22213f8da439ce1170c0f6a0a228972a2882ad5c37901c",
+    "Client/Models/Monsters/Wander_LOD2.grn": "08b8d3b6ac4075edf95212a12ea32a8b770ce0ef50d7435f7ea00b958a0fb4a1",
+    "Client/Models/Maps/Wander_256x256.tga": "cddebc11a04350fd1898dd4ef04c342c1139d995208b4a97731f9b694f8c1892",
+    "Client/Models/Monsters/Wander_Idle.grn": "83ad1df44427f6d64630a2f748fb04bbc391de3161f8d9ff89de2f99d641afd3",
+    "Client/Models/Monsters/Wander_Walk.grn": "331b65cd867f593e05cbe755b5435e067df520f48289546c312efb78aa9a160b",
+    "Client/Models/Monsters/Wander_Attack1.grn": "e067c0f4dfe1649afd96126e283670f53a2d88a1bed5a30198364986f033a92f",
+    "Client/Models/Monsters/Wander_Attack2.grn": "c2d3a00e9fd8ed63945949c13028a1f5874e0d3f91e12d3b8df1d9208feaeac5",
+    "Client/Models/Monsters/Wander_Gethit.grn": "3394f60fb2b45291b0605befb5747a08d64bf11fabb28ba11d6e0b8cf906197a",
+    "Client/Models/Monsters/Wander_Die1.grn": "d7943344092736c78f3ae6eefe449af2e198c794656edad2ca07dc840e0bd201",
+    "Client/Models/Monsters/Wander_Fidget.grn": "fa8a607bab741f8b4058df97f46a2a19943431f3111e8bbda1268f8d315e02e4",
+    "Client/Models/Monsters/Wander_Fly.grn": "603e064ba96e7320d62040cdf22f1ef4373f858faa45d9a881acddfde9ef3c72"
+  }
+}

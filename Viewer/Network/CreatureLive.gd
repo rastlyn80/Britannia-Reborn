@@ -46,8 +46,8 @@ func run() -> void:
 	candidate_pin=FileAccess.get_sha256("res://../work/creatures/live-candidates.json")
 	accepted_pin=FileAccess.get_sha256("res://local-art/creatures/accepted-index.json")
 	if prepared:
-		if not check(family in ["candidate_batch","mummies","solen_warriors","ice_elementals","solen_queens","late_source","hydra","energy_vortex","champions","fey_champions","crane","deathwatch","tsuki_wolf","kappa","vampire_bat","yomotsu","occurrence_next","horde_rune","sand_vortex","bake_kitsune","devourer_lion_hiryu","elemental_minotaur","meer_donors","captain_cu","clockwork_tokuno"],"Prepared trial uses an explicitly checked family"):return
-		var permitted_bodies: Array={"solen_queens":[783,807],"late_source":[266,267,279],"hydra":[265],"energy_vortex":[164],"champions":[172,173],"fey_champions":[174,175,176],"crane":[254],"deathwatch":[242],"tsuki_wolf":[250],"kappa":[240],"vampire_bat":[317],"yomotsu":[245,253,255],"occurrence_next":[309,196,302,247],"horde_rune":[776,244],"sand_vortex":[790],"bake_kitsune":[246],"devourer_lion_hiryu":[303,251,243],"elemental_minotaur":[300,263,305,281,241,789,772],"meer_donors":[771,770,773],"captain_cu":[280,277],"clockwork_tokuno":[304,757,756,252,199,271,310,278]}.get(family,[154,782,806,161])
+		if not check(family in ["candidate_batch","mummies","solen_warriors","ice_elementals","solen_queens","late_source","hydra","energy_vortex","champions","fey_champions","crane","deathwatch","tsuki_wolf","kappa","vampire_bat","yomotsu","occurrence_next","horde_rune","sand_vortex","bake_kitsune","devourer_lion_hiryu","elemental_minotaur","meer_donors","captain_cu","clockwork_tokuno","aos_creatures","aos_aliases"],"Prepared trial uses an explicitly checked family"):return
+		var permitted_bodies: Array={"solen_queens":[783,807],"late_source":[266,267,279],"hydra":[265],"energy_vortex":[164],"champions":[172,173],"fey_champions":[174,175,176],"crane":[254],"deathwatch":[242],"tsuki_wolf":[250],"kappa":[240],"vampire_bat":[317],"yomotsu":[245,253,255],"occurrence_next":[309,196,302,247],"horde_rune":[776,244],"sand_vortex":[790],"bake_kitsune":[246],"devourer_lion_hiryu":[303,251,243],"elemental_minotaur":[300,263,305,281,241,789,772],"meer_donors":[771,770,773],"captain_cu":[280,277],"clockwork_tokuno":[304,757,756,252,199,271,310,278],"aos_creatures":[306,307,308,313,318],"aos_aliases":[315,316]}.get(family,[154,782,806,161])
 		Registry.load_index()
 		for candidate: Dictionary in candidates:
 			var record: Dictionary=candidate.get("presentation",{})
@@ -154,10 +154,22 @@ func run() -> void:
 			if body == 265 and actor.horse_visual.entry.get("classic_action_categories",{}).get("12","") == "Attack2": actions.append(12)
 			var action_records: Array=[]
 			for action in actions:
-				session.last_mobile_actions.erase(serial);observer.last_mobile_actions.erase(serial)
+				var packets := {}
+				var expected_type: int = {-1:4,-2:11,-3:2,-4:5,-5:14}.get(action, action)
+				var protocol := "classic" if action >= 0 else "new"
+				var collect := func(packet: Dictionary, client: int):
+					if int(packet.serial) == serial and packet.protocol == protocol and int(packet.action) == expected_type:
+						packets[client] = packet
+				var owner_listener := collect.bind(0)
+				var observer_listener := collect.bind(1)
+				session.mobile_action_received.connect(owner_listener)
+				observer.mobile_action_received.connect(observer_listener)
 				await reply(sex,"action "+str(action),"UCCREATURE|action|")
-				if not check(await until(func():return session.last_mobile_actions.has(serial) and observer.last_mobile_actions.has(serial)),"native action reaches both clients"):return
-				var received: Dictionary=session.last_mobile_actions[serial]
+				var both_received := await until(func():return packets.size() == 2)
+				session.mobile_action_received.disconnect(owner_listener)
+				observer.mobile_action_received.disconnect(observer_listener)
+				if not check(both_received,"requested native action reaches both clients: "+str([body, action])):return
+				var received: Dictionary=packets[0]
 				if not check(actor.receive_native_action(received),"actual creature consumes native action"):return
 				var expected:=str({5:"Attack",9:"Fidget",3:"Eat",11:"LieDown",-1:"Hit"}.get(action,"")) if animal else str({5:"Attack",6:"Attack2",7:"Hit",3:"Fidget",4:"Fidget2",12:"Attack",-1:"Hit",-2:"Attack"}.get(action,"")) if sea else str({4:"Attack",5:"Attack2",6:"Attack3",8:"AttackXBow",11:"Pillage",12:"Cast",-2:"Cast",-3:"Hit",-4:"Fidget",-5:"Pillage",17:"Fidget",-1:"Hit",19:"Fly",20:"Land"}.get(action,""))
 				if action>=0:expected=str(actor.horse_visual.entry.get("classic_action_categories",{}).get(str(action),expected))
@@ -168,7 +180,7 @@ func run() -> void:
 				if expected=="Attack2" and not actor.horse_visual.animator.has_animation("Attack2"):expected="Attack"
 				if expected=="Fidget2" and not actor.horse_visual.animator.has_animation("Fidget2"):expected="Fidget"
 				if not check(actor.horse_visual.current_clip==expected,"native action selects the intended category"):return
-				var peer_request: Dictionary=observer.last_mobile_actions[serial]
+				var peer_request: Dictionary=packets[1]
 				if not check(peer_actor.receive_native_action(peer_request) and peer_actor.horse_visual.current_clip==expected,"Observer actual avatar selects the same native category"):return
 				action_records.append({"requested":action,"owner_packet":received.duplicate(true),"observer_packet":peer_request.duplicate(true),"owner_clip":actor.horse_visual.current_clip,"observer_clip":peer_actor.horse_visual.current_clip})
 				if expected=="Fly" and not check(not actor.horse_visual.contact.enabled,"airborne source clip releases foot contact"):return

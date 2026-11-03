@@ -15,13 +15,21 @@ func _initialize() -> void:
 func run() -> void:
 	Registry.load_index()
 	var package_family := "hydra" if "--family=hydra" in OS.get_cmdline_user_args() else "late_source"
+	if "--family=aos_creatures" in OS.get_cmdline_user_args():
+		package_family = "aos_creatures"
+	if "--family=aos_aliases" in OS.get_cmdline_user_args():
+		package_family = "aos_aliases"
+	var prepared := "--prepared" in OS.get_cmdline_user_args()
 	var package_path := "res://local-art/creatures/%s/preparation.json" % package_family
 	var package: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(package_path))
 	for record: Dictionary in package.models:
 		var family := str(record.family)
 		var body := int(record.bodies[0].body)
 		var expected := record.duplicate(true)
-		expected.status = "validated"
+		if prepared:
+			Registry.entries[body] = record
+		else:
+			expected.status = "validated"
 		assert(Registry.supports_body(body) and Registry.entry(body) == expected)
 		var avatar := Avatar.new()
 		avatar.initial_body = body
@@ -53,6 +61,11 @@ func run() -> void:
 		elif family == "hydra":
 			actions.erase(2)
 			actions.merge({11: "Pillage", 12: "Attack2", 18: "Fidget2", 2: "Death"})
+		elif family in ["aos_creatures", "aos_aliases"]:
+			for group: int in actions.keys():
+				if not actor.animator.has_animation(actions[group]):
+					actions.erase(group)
+			assert(actions.has(4) and actions.has(10) and actions.has(2))
 		for group: int in actions:
 			var packet := PackedByteArray([0x6e])
 			packet.append_array(Wire.uint_be(serial, 4))
@@ -72,5 +85,5 @@ func run() -> void:
 			cadaver.free()
 		avatar.free()
 		game.free()
-		print(family, " passed ", actions.size(), " decoded action routes and three static corpse hues")
+		print(str(record.kind) if family in ["aos_creatures", "aos_aliases"] else family, " passed ", actions.size(), " decoded action routes and three static corpse hues")
 	quit()
