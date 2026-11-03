@@ -28,6 +28,10 @@ func clear_actors() -> void:
 	for pair: Array in actors.values():
 		for actor: Node3D in pair:actor.free()
 	actors.clear()
+func equipment_identity(items: Array) -> Array:
+	var result: Array=items.map(func(item: Dictionary):return {"serial":item.serial,"id":item.id,"layer":item.layer,"hue":item.hue})
+	result.sort_custom(func(a: Dictionary,b: Dictionary):return int(a.serial)<int(b.serial))
+	return result
 func attach(serial: int) -> bool:
 	if actors.has(serial):return true
 	if not check(await until(func():return sessions[0].entities.has(serial) and sessions[1].entities.has(serial)),"Both clients receive the actual native participant"):return false
@@ -53,7 +57,7 @@ func native_death(owner: int,serial: int,body: int) -> Dictionary:
 	var witnesses: Array=[]
 	for client: int in 2:
 		var event: Dictionary=death_events[client][serial]
-		if not check(int(event.corpse)==corpse and int(event.body)==body and int(event.hue)==hue and event.equipment==worn and event.clip=="Death" and event.grounded,"Each native death snapshot retains body/hue/equipment and the measured death motion"):return {}
+		if not check(int(event.corpse)==corpse and int(event.body)==body and int(event.hue)==hue and equipment_identity(event.equipment)==equipment_identity(worn) and event.clip=="Death" and event.grounded,"Each native death snapshot retains body/hue/equipment identities and the measured death motion across the native corpse transfer"):return {}
 		if not check(await until(func():return sessions[client].world_items.has(corpse) and not sessions[client].entities.has(serial)),"Actual native corpse creation and mobile removal replicate to both observers"):return {}
 		var item: Dictionary=sessions[client].world_items[corpse]
 		if not check(int(item.id)==0x2006 and int(item.amount)==body and int(item.hue)==hue,"Native corpse retains graphic0x2006/body-amount/raw hue"):return {}

@@ -46,7 +46,7 @@ func begin_human(killed: int,corpse: int,entity: Dictionary,avatar: Node3D) -> v
 	if not visual.animator.has_animation("Death"):visual.free();return
 	visual.native_body=body;visual.native_hue=int(entity.get("hue",0))
 	visual.set_skin(visual.native_hue)
-	visual.set_equipment(avatar.get_meta("server_appearance",{}).get("equipment",[]))
+	visual.set_equipment(human_death_equipment(corpse,avatar))
 	visual.set_native_profile(HumanNPCs.entry(body),visual.native_hue)
 	visual.global_transform=source.global_transform;visual.rotation.y=PI-float(int(entity.get("direction",0))&7)*PI/4.
 	visual.model.transform=source.model.transform
@@ -61,6 +61,23 @@ func begin_human(killed: int,corpse: int,entity: Dictionary,avatar: Node3D) -> v
 	var duration: float=visual.begin_from(source,displayed,landing)
 	# 0xAF is the trigger; no synthetic 0x6E request is recorded as server data.
 	track_transition(killed,corpse,body,avatar,visual,duration)
+func human_death_equipment(corpse: int,avatar: Node3D) -> Array:
+	var original: Array=avatar.get_meta("server_appearance",{}).get("equipment",[])
+	var result: Array=original.filter(func(item: Dictionary):return int(item.get("layer",0))!=25).duplicate(true)
+	# Native Kill moves gear and sends corpse content/equipment before0xAF.
+	# Resolve those actual serials rather than reviving a deleted mount or
+	# caching items a player may have removed earlier while still alive.
+	for layer: int in session.module("items").corpses.get(corpse,{}):
+		if layer==25:continue
+		var serial:=int(session.module("items").corpses[corpse][layer])
+		var item: Dictionary=session.known_items.get(serial,{})
+		if not item.is_empty() and int(item.get("container",0))==corpse:
+			var replacement:=item.merged({"layer":layer},true);var found:=false
+			for index in result.size():
+				if int(result[index].get("serial",0))==serial or int(result[index].get("layer",0))==layer:
+					result[index]=replacement;found=true;break
+			if not found:result.append(replacement)
+	return result
 func track_transition(killed: int,corpse: int,body: int,avatar: Node3D,visual: Node3D,duration: float) -> void:
 	visual.set_meta("native_death",{"killed":killed,"corpse":corpse,"body":body})
 	active[killed]={"visual":visual,"avatar":weakref(avatar),"was_visible":avatar.visible,"remaining":duration+.04,"corpse":corpse}

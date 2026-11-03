@@ -47,7 +47,8 @@ def main():
         for witness in death['witnesses']:
             assert witness['corpse'] == death['corpse'] and witness['body'] == row['body']
             assert witness['hue'] == death['hue'] and witness['clip'] == 'Death' and witness['grounded']
-            assert witness['equipment'] == row['native_items']
+            identity = lambda items: sorted((item['serial'],item['id'],item['layer'],item['hue']) for item in items)
+            assert identity(witness['equipment']) == identity(row['native_items'])
     assert {(r['owner'], r['body'], r['quorum']) for r in groups} == {
         (owner, body, quorum) for owner in [0, 1] for body in [183, 184] for quorum in [1, 4]}
     for row in groups:

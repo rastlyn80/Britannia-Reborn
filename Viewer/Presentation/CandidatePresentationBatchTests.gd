@@ -5,10 +5,12 @@ var viewport: SubViewport
 var camera: Camera3D
 var output:="res://../work/creatures/batch-presentation"
 var preparations:=PackedStringArray(["mummies/preparation.json","solen_warriors/preparation.json","ice_elementals/candidate.json"])
+var selected_kinds:=PackedStringArray()
 func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--output="):output=arg.trim_prefix("--output=")
 		if arg.begins_with("--preparation="):preparations=arg.trim_prefix("--preparation=").split(",",false)
+		if arg.begins_with("--kinds="):selected_kinds=arg.trim_prefix("--kinds=").split(",",false)
 	call_deferred("run")
 func capture() -> Image:
 	for frame in 3:await process_frame
@@ -35,6 +37,7 @@ func run() -> void:
 		var path: String="res://local-art/creatures/"+name;inputs[path]=FileAccess.get_sha256(path)
 		var prep: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(path))
 		for entry: Dictionary in prep.models:
+			if not selected_kinds.is_empty() and not str(entry.kind) in selected_kinds:continue
 			entries.append(entry);Registry.entries[int(entry.bodies[0].body)]=entry
 			for treatment: String in ["original","rounded","modern"]:
 				var asset:=Registry.asset_path(entry,treatment);inputs[asset]=FileAccess.get_sha256(asset)
@@ -42,7 +45,10 @@ func run() -> void:
 			for dependency: String in entry.get("art_dependency_sha256",{}):
 				var dependency_path:="res://local-art/creatures/"+dependency;inputs[dependency_path]=FileAccess.get_sha256(dependency_path)
 			if entry.has("ground_lookup"):inputs[str(entry.ground_lookup)]=FileAccess.get_sha256(str(entry.ground_lookup))
-	create_timer(maxf(240.,30.+20.*entries.size())).timeout.connect(func():push_error("Candidate presentation batch deadline");quit(1))
+	if not selected_kinds.is_empty():
+		check(entries.size()==selected_kinds.size(),"Every requested kind resolves exactly once in the pinned preparation")
+		if entries.size()!=selected_kinds.size():quit(1);return
+	create_timer(maxf(240.,60.+60.*entries.size())).timeout.connect(func():push_error("Candidate presentation batch deadline");quit(1))
 	viewport=SubViewport.new();viewport.size=Vector2i(960,720);viewport.own_world_3d=true;viewport.transparent_bg=true;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;root.add_child(viewport)
 	preload("res://Presentation/ItemStudio.gd").studio_lights(viewport)
 	camera=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;viewport.add_child(camera)
