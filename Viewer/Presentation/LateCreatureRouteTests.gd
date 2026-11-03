@@ -23,6 +23,8 @@ func run() -> void:
 		package_family = "aos_mound"
 	if "--family=recovered_late" in OS.get_cmdline_user_args():
 		package_family = "recovered_late"
+	if "--family=tormented_minotaur" in OS.get_cmdline_user_args():
+		package_family = "tormented_minotaur"
 	var prepared := "--prepared" in OS.get_cmdline_user_args()
 	var package_path := "res://local-art/creatures/%s/preparation.json" % package_family
 	var package: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(package_path))
@@ -65,7 +67,7 @@ func run() -> void:
 		elif family == "hydra":
 			actions.erase(2)
 			actions.merge({11: "Pillage", 12: "Attack2", 18: "Fidget2", 2: "Death"})
-		elif family in ["aos_creatures", "aos_aliases", "aos_mound", "recovered_late"]:
+		elif family in ["aos_creatures", "aos_aliases", "aos_mound", "recovered_late", "tormented_minotaur"]:
 			for group: int in actions.keys():
 				if not actor.animator.has_animation(actions[group]):
 					actions.erase(group)
@@ -89,5 +91,5 @@ func run() -> void:
 			cadaver.free()
 		avatar.free()
 		game.free()
-		print(str(record.kind) if family in ["aos_creatures", "aos_aliases", "aos_mound", "recovered_late"] else family, " passed ", actions.size(), " decoded action routes and three static corpse hues")
+		print(str(record.kind) if family in ["aos_creatures", "aos_aliases", "aos_mound", "recovered_late", "tormented_minotaur"] else family, " passed ", actions.size(), " decoded action routes and three static corpse hues")
 	quit()

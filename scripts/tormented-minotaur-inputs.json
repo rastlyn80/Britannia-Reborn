@@ -1,0 +1,20 @@
+{
+  "installer_sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393",
+  "model_table_sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099",
+  "files": {
+    "Client/Models/Monsters/TormentedMinotaur_LOD2.grn": "4ecdff4fe802a6d7fcc419280f0d4c52086cbcf44fd8d7025d4e1b2c3b9812f2",
+    "Client/Models/Maps/TormentedMinotaur.tga": "d090d2a265e03f047a68d06bdcfbb999791c8c983eb05e2c7132dff473d4b405",
+    "Client/Models/Monsters/TormentedMinotaur_idle.grn": "60d8048e28ed84e28533cb9c5da45c77c892fab546a46aec392b9be9447f1084",
+    "Client/Models/Monsters/TormentedMinotaur_Walk.grn": "0a0541b8dee728c8007a0df56a5ca57b6bf06c144cb13c8ec8eefd367206a7db",
+    "Client/Models/Monsters/TormentedMinotaur_Attack1.grn": "457c096e7d09b2e3ebe8b253795cf2702f83bea143eaa7df81e6b1577a43709f",
+    "Client/Models/Monsters/TormentedMinotaur_Attack2.grn": "0286aabc80cc953529ece3d28a1b89895d02ecc5005554118828908d3546cd32",
+    "Client/Models/Monsters/TormentedMinotaur_Attack3.grn": "5fa2ee2528a8544083af0b6afb496831d3af686b45d388cc12397c8a9afe695c",
+    "Client/Models/Monsters/TormentedMinotaur_TakeDamage.grn": "b0a50e621dac627d2e4be48306ca8fbf205d5f5f1a8d4cf5356e696c8124d443",
+    "Client/Models/Monsters/TormentedMinotaur_Die1.grn": "f3cc22d338ed416f25d85933607ee4c9dae64dbed7482a97b7948ced1ddea819",
+    "Client/Models/Monsters/TormentedMinotaur_Die2.grn": "84b5d43c4fa4c0def226391a174280fc70721f234e189907fd96e289d74729a2",
+    "Client/Models/Monsters/TormentedMinotaur_Fidget.grn": "ad215f5e5d8f231d3338987585889129a6822fbd3734b9d5bdfe8549d567206c",
+    "Client/Models/Monsters/TormentedMinotaur_Pillage.grn": "3721ac8d398fe3cd75f4a2e91aa6cebd0b1e3ea1ab43e67e5f45fa5053a1c2b9",
+    "Client/Models/Monsters/TormentedMinotaur_BlockRight.grn": "237f647924dae8eef38a4794dec95a2f41b48fb7360d6c877537ebd42a64d480",
+    "Client/Models/Monsters/TormentedMinotaur_BlockLeft.grn": "c2230bd75e95c3dab760ab9c29235bdd6faf26f2d0f694e1ab6d8725e5daa710"
+  }
+}

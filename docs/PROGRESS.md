@@ -1,3 +1,7 @@
+# Tormented Minotaur active
+
+The original 40-joint rig and all weights are retained. The two unweighted toe-end channels are excluded from motion matching. Twelve recovered clips include the separately named TakeDamage motion. The normal client passed six decoded action routes and three static corpse hues. Vulkan captured eight poses and 36 terrain samples stayed within 1.97 mm of the plane in stance. The isolated server passed 165 prepared and 163 normal-registry checks.
+
 # Juggernaut, Yamandon, Serado and loose Reptalon active
 
 Three recovered body routes passed 18 decoded classic actions and nine static corpse hue checks. Four native constructors passed 576 prepared and 571 normal-registry checks. Serado shares body 249 with Yamandon and retains its native 0x96C hue. Reptalon uses the original 546 triangles with up to six weights per vertex in the eight-slot skin format. Its original TakeDamage clip is assigned to Hit. Sole probes produced incorrect ground alignment on this rig, so the package uses whole-mesh support. The 36 sampled Reptalon poses retained 2.00 mm minimum clearance. Its original rider marker informed an in-memory mount fitting. The mount remains inactive pending wing clearance, native flight, and riding checks.
