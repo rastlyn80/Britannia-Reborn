@@ -1,4 +1,5 @@
 """Rebuild Devourer, Revenant Lion and Hiryu from statically extracted archive members."""
+import argparse
 import copy
 import json
 from pathlib import Path
@@ -43,6 +44,10 @@ def checked(path, digest):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--mounted-hiryu', action='store_true')
+    args = parser.parse_args()
+    family = 'hiryu_mount' if args.mounted_hiryu else FAMILY
     manifest = json.loads(MANIFEST.read_text(encoding='utf-8'))
     table = checked(BASE / 'model-table/Client/Models.txt', manifest['model_table_sha256'])
     for path, digest in manifest['native_dependencies'].items():
@@ -56,11 +61,11 @@ def main():
 
     pipeline = LATE['TOOLS']['pipeline']()
     pipeline.helper.audit.ARCHIVE_HASH = manifest['installer_sha256']
-    pipeline.OUTPUT = BASE / 'devourer-lion-hiryu-preview'
+    pipeline.OUTPUT = BASE / ('hiryu-mount-preview' if args.mounted_hiryu else 'devourer-lion-hiryu-preview')
     rows = pipeline.table_rows(table.read_bytes())
     _, native = pipeline.native_bodies()
     names = {name: name for name in members}
-    destination = ROOT / 'Viewer/local-art/creatures' / FAMILY
+    destination = ROOT / 'Viewer/local-art/creatures' / family
     destination.mkdir(parents=True, exist_ok=True)
     match = pipeline.helper.match_animation
     actions = pipeline.humanoid_actions
@@ -78,6 +83,11 @@ def main():
     actions.install = install
     models = []
     for body, (kind, native_classes, joints, motions) in FORMS.items():
+        if args.mounted_hiryu:
+            if body != 243:
+                continue
+            pipeline.LABELS.update(fidget1='Fidget', fidget2='Fidget2')
+            motions += 2
         selected = [row for row in rows if row['stem'] != kind or row['body'] == body]
         if body == 303:
             pipeline.helper.match_animation = lambda anim, mesh: match_devourer(match, anim, mesh)
@@ -94,9 +104,15 @@ def main():
             raise ValueError(f'Unexpected rig or recovered motions for {kind}')
         for source in identity['native_sources']:
             checked(ROOT / 'Server/ModernUO' / source['path'].replace(chr(92), '/'), source['sha256'])
-        row.update(family=FAMILY, native_constructor_hues=dict.fromkeys(native_classes, 0),
+        row.update(family=family, native_constructor_hues=dict.fromkeys(native_classes, 0),
                    assets={}, asset_sha256={}, art_dependency_sha256={})
         renderer = 'Presentation/OccurrenceCreatureVisual.gd'
+        if args.mounted_hiryu:
+            renderer = 'Presentation/SourceHiryuMountVisual.gd'
+            row['mount_item'] = 0x3e94
+            row['classic_action_categories'] = {'10': 'Fidget2'}
+            dependency = 'Presentation/SourceRigMountVisual.gd'
+            row['art_dependency_sha256'][f'res://{dependency}'] = SHA(ROOT / 'Viewer' / dependency)
         row['presentation_script'] = f'res://{renderer}'
         row['presentation_script_sha256'] = SHA(ROOT / 'Viewer' / renderer)
         if body == 303:
@@ -112,7 +128,7 @@ def main():
         for treatment in ('original', 'rounded', 'modern'):
             filename = f'{kind}-{treatment}.gltf'
             copyfile(pipeline.OUTPUT / filename, destination / filename)
-            row['assets'][treatment] = f'res://local-art/creatures/{FAMILY}/{filename}'
+            row['assets'][treatment] = f'res://local-art/creatures/{family}/{filename}'
             row['asset_sha256'][treatment] = SHA(destination / filename)
         models.append(row)
     pending = destination / 'preparation.pending'

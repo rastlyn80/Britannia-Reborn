@@ -1,0 +1,28 @@
+{
+  "installer_sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393",
+  "model_table_sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099",
+  "files": {
+    "Client/Models/Humans/H_Female_Attackbash1h_01.grn": "02b5eb7d49ae0dc1f285c9d00458f6d5d9176d53e43a93efb6e698e4679815aa",
+    "Client/Models/Humans/H_Female_Attackcrossbow_01.grn": "70c2af15d6ed05e6cb51258c9d946bc0e48404073216a6a94faa6e25a1a33ec7",
+    "Client/Models/Humans/H_Female_Die_Hard_Fwd_01.grn": "b125e8bd199316e4268ef7760baa7331aead5b262808b3e7249980f34c1770c4",
+    "Client/Models/Humans/H_Female_Gethit_Fr_Mid_01.grn": "aab4572646ee032131d629d73ef8bb8274397c97a7e626415c3e8ca52e13d779",
+    "Client/Models/Humans/H_Female_Idle_01.grn": "6338aabbd38f5e1e75540593be75d0e1ef8b2571fcec936565e6d0daedad04f4",
+    "Client/Models/Humans/H_Female_Run_01.grn": "0dab097e408ee01d37bf70730dfaf1fb42b33ff41e8af786e7cf2b640b496adc",
+    "Client/Models/Humans/H_Female_Spell1.grn": "f7ff1acaed58dcc3add68a3fee49177563eb68e1b49b3228e9925f4b1c223d78",
+    "Client/Models/Humans/H_Female_Walk_01.grn": "57577268e2806a87186c71ab49a481428ea154e7015be5f107f5d199b5233e83",
+    "Client/Models/Humans/H_Male_Attackpierce2h_01.grn": "fc322676ba16920368bd20462154ee9dcbb0f4c08011b092263ccc82c014cafe",
+    "Client/Models/Humans/H_Male_Attackslash1h_01.grn": "1b6c6ba204222a57a4db0ce565874c5fcbf89b176a3ace941039f4fb5ea946b1",
+    "Client/Models/Humans/H_Male_Die_Hard_Twist_01.grn": "091e5db43583bc83b26e238a6974eba22ec9b51030283ad489ebd6d782b81003",
+    "Client/Models/Humans/H_Male_Die_Hard_Twist_02.grn": "d87f561e031cc5f8243e5c25636ef51ab490e55108dbfc9c9878292b16e1c753",
+    "Client/Models/Humans/H_Male_Gethit_Fr_Mid_01.grn": "aac993da07abc48ab796f9e024f3ced2b8f7f11d830609086ee23508ed5dc188",
+    "Client/Models/Humans/H_Male_Idle_01.grn": "f1c689dc54a5bda0e7b1b1d7682e830c413adece4a1815629d17068c2a84d6a5",
+    "Client/Models/Humans/H_Male_Run_01.grn": "ca6ba351891e9444f2b5276190002545d6d2e108cd75e3577e34255c3f9b2730",
+    "Client/Models/Humans/H_Male_Walk_01.grn": "eda76e425a4520640cbebf5ddb367ac6c4aaa51a06056dbd92109966a4657111",
+    "Client/Models/Maps/Dasha_256.tga": "d4ba8c880337057ca749f8e2bee116fb5698a1dfd78a7b0cdef59e9cc29c4882",
+    "Client/Models/Maps/Meer_Mage_256.tga": "58b8b7e9ef5a9ac57fe2b69b13fe732e1a9e2e0e05682606816381d6ccec37ad",
+    "Client/Models/Maps/Meer_Warrior_256.tga": "e857f924ab4ccd24fab64887ebc9d25639021f13b8fd3d9eb7208b88fd093eb7",
+    "Client/Models/Monsters/Meer_Mage_Lod2.grn": "bcce18fafb2c650d216d25bd2baa02d35964e0c57e677e3e4b01e07568c07b7f",
+    "Client/Models/Monsters/Meer_Warrior_Lod2.grn": "a74a3a6d117e5c1ffab46384867dcb3c0bb54ce1f79c3d33e499fbeca6230a0c",
+    "Client/Models/Monsters/Npc_Cpt_Dasha_Lod2.grn": "1235cac5424f9e2a8629a2e8408fdc5eefd5758e112e4b15bc2bcd3754d51a02"
+  }
+}

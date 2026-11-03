@@ -18,6 +18,10 @@ var bovines:=false
 var sea_horse:=false
 var giant_beetle:=false
 var fire_beetle:=false
+var hiryu:=false
+var hiryu_active:=false
+const HIRYU_PACKAGE := "res://local-art/creatures/hiryu_mount/preparation.json"
+var hiryu_pin := ""
 var ethereal_beetle:=false
 func fixture_reply(session: Node,sex: int,command: String,prefix: String) -> String:
 	replies[sex].clear();session.send_command("[EquineFixture "+command)
@@ -65,6 +69,21 @@ func run() -> void:
 	giant_beetle="--giant-beetle" in OS.get_cmdline_user_args()
 	fire_beetle="--fire-beetle" in OS.get_cmdline_user_args()
 	ethereal_beetle="--ethereal-beetle" in OS.get_cmdline_user_args()
+	hiryu="--hiryu" in OS.get_cmdline_user_args()
+	hiryu_active="--hiryu-active" in OS.get_cmdline_user_args()
+	if hiryu:
+		hiryu_pin = FileAccess.get_sha256(HIRYU_PACKAGE)
+		var registry = preload("res://Presentation/CreatureRegistry.gd")
+		var package: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(HIRYU_PACKAGE))
+		var entry: Dictionary = package.models[0]
+		if not check(entry.kind == "hai_riyo" and int(entry.mount_item) == 0x3e94,"Exact original Hiryu mount package"):return
+		if hiryu_active:
+			var active := registry.entry(243).duplicate(true)
+			active.status = "prepared"
+			if not check(active == entry,"Normal registry loads the exact prepared Hiryu mount"):return
+		else:
+			registry.load_index()
+			registry.entries[243] = entry
 	var accounts: Array=JSON.parse_string(FileAccess.get_file_as_string("res://../work/horse-session/accounts.local.json"))
 	for sex in 2:
 		var session:=Game.new();root.add_child(session);sessions.append(session);replies.append([])
@@ -89,12 +108,17 @@ func run() -> void:
 		await resume_ethics();return
 	for sex in 2:
 		var session: Node=sessions[sex];var observer: Node=sessions[1-sex];var actor: Node3D=avatars[sex];var me:=int(session.player.serial)
-		for variant in ([49] if ethereal_beetle else [48] if fire_beetle else [47] if giant_beetle else [46] if sea_horse else range(42,46) if bovines else [23,24,38,39,40,41] if ethics_only else range(22,33)+range(34,42) if equine_completion else [19,20,21,33] if llama_completion else [13,14,15,16,17,18,19,20,21]):
+		for variant in ([50,51] if hiryu else [49] if ethereal_beetle else [48] if fire_beetle else [47] if giant_beetle else [46] if sea_horse else range(42,46) if bovines else [23,24,38,39,40,41] if ethics_only else range(22,33)+range(34,42) if equine_completion else [19,20,21,33] if llama_completion else [13,14,15,16,17,18,19,20,21]):
 			replies[sex].clear();session.send_command("[EquineFixture prepare "+str(variant))
 			if not check(await until(func():return not replies[sex].is_empty()),"real upstream equine fixture prepared"):return
 			var fields: PackedStringArray=replies[sex][-1].split("|")
 			if not check(fields.size()==6 and fields[1]=="prepared","fixture identifies actual native class/body/mount"):return
 			var serial:=int(fields[2]);var body:=int(fields[3]);var item:=int(fields[4]);var ethereal: bool=variant in [16,21,22,49]
+			var constructor_hue := -1
+			if hiryu and not check(body==243 and item==0x3e94 and fields[5]==("Hiryu" if variant==50 else "LesserHiryu"),"original native Hiryu identity"):return
+			if hiryu:
+				var flight := await fixture_reply(session,sex,"hiryu-flight","UCEQUINE|hiryu-flight|")
+				if not check(flight == "UCEQUINE|hiryu-flight|0|0","Pinned native Hiryu reports grounded capability and state"):return
 			if giant_beetle and not check(body==791 and item==0x3ebc and fields[5]=="Beetle","original native Giant Beetle identity"):return
 			if fire_beetle and not check(body==169 and item==0x3e95 and fields[5]=="FireBeetle","original native Fire Beetle identity"):return
 			if ethereal_beetle and not check(body==0 and item==0x3e97 and fields[5]=="EtherealBeetle","original native Ethereal Beetle item identity"):return
@@ -108,6 +132,11 @@ func run() -> void:
 				if not check(await until(func():return session.entities.has(serial) and observer.entities.has(serial)),"both clients receive the real loose animal"):return
 				var loose:=preload("res://Presentation/HumanAvatar.gd").new();loose.initial_body=body;root.add_child(loose);loose.set_physics_process(false);loose.apply_server_appearance(session.entities[serial],[])
 				if not check(loose.horse_visual!=null and loose.horse_visual.native_body==body,"received mobile selects the new equine art"):return
+				if hiryu:
+					constructor_hue = int(session.entities[serial].hue)
+					var palettes: Dictionary = Horse.Animals.Creatures.entry(body).native_constructor_hue_ranges
+					var allowed: Array = palettes[fields[5]]
+					if not check(allowed.any(func(pair: Array):return constructor_hue == int(pair[0])) and int(observer.entities[serial].hue) == constructor_hue,"Both clients receive an original Hiryu constructor hue"):return
 				if sea_horse and not check(loose.horse_visual.native_hue==0 and loose.horse_visual.get_meta("equine_profile").get("default_hue")==1348,"fallback tint stays a presentation default; native zero hue is retained"):return
 				if giant_beetle and not check(loose.horse_visual.native_hue==0,"native Giant Beetle has its original default hue"):return
 				if fire_beetle and not check(loose.horse_visual.native_hue==0x489 and int(observer.entities[serial].hue)==0x489,"native Fire Beetle default hue on both clients"):return
@@ -133,6 +162,7 @@ func run() -> void:
 				if not check(actor.horse_visual!=null and actor.horse_visual.native_mount_item==item and actor.horse_visual.native_body==Horse.horse_body(item),"native packet selects exact equine profile"):return
 				if not check(await until(func():return actor.rider_contact.seated_weight>=1.),"rider completes animated seat transition"):return
 				if not check(actor.rider_contact.seat_error<.002,"live equine rider stays on saddle"):return
+				if hiryu and not check(actor.horse_visual.native_hue == constructor_hue and int(observer.mobile_equipment[me][25].hue) == constructor_hue,"Native Hiryu constructor hue survives mounting"):return
 				if fire_beetle and not check(actor.horse_visual.native_hue==0x489 and int(observer.mobile_equipment[me][25].hue)==0x489,"native mounted Fire Beetle keeps its constructor hue"):return
 				if ethereal:
 					if not check(int(session.equipment[25].hue)==0x4001 and bool(actor.horse_visual.get_meta("equine_profile").get("ethereal",false)),"real server spectral hue selects spectral rendering"):return
@@ -167,7 +197,7 @@ func run() -> void:
 				var loose:=preload("res://Presentation/HumanAvatar.gd").new();loose.initial_body=body;root.add_child(loose);loose.set_physics_process(false);loose.apply_server_appearance(session.entities[serial],[])
 				if bovines and not await bovine_interactions(session,observer,sex,serial,body,loose):return
 				if sea_horse and not await sea_horse_interactions(session,observer,sex,serial,loose):return
-				var action_clips: Dictionary={5:"Attack",6:"Attack2",7:"Hit",9:"Fidget",10:"Fidget2"} if giant_beetle or fire_beetle else {5:"Attack",4:"Hit",3:"Eat",11:"LieDown"}
+				var action_clips: Dictionary={5:"Attack",6:"Attack2",7:"Hit",9:"Fidget",10:"Fidget2"} if giant_beetle or fire_beetle or hiryu else {5:"Attack",4:"Hit",3:"Eat",11:"LieDown"}
 				for action_code in action_clips:
 					session.last_mobile_actions.erase(serial);observer.last_mobile_actions.erase(serial)
 					session.send_command("[EquineFixture action "+str(action_code))
@@ -196,14 +226,21 @@ func run() -> void:
 	if ethics_only and not await save_ethics():return
 	for actor in avatars:actor.free()
 	for session in sessions:session.close()
-	var report:="ethereal-beetle-live.json" if ethereal_beetle else "fire-beetle-live.json" if fire_beetle else "giant-beetle-live.json" if giant_beetle else "sea-horse-live.json" if sea_horse else "bovine-live.json" if bovines else "ethics-live.json" if ethics_only else "equine-completion-live.json" if equine_completion else "llama-completion-live.json" if llama_completion else "live-validation.json"
+	var report:="hiryu-active-live.json" if hiryu_active else "hiryu-live.json" if hiryu else "ethereal-beetle-live.json" if ethereal_beetle else "fire-beetle-live.json" if fire_beetle else "giant-beetle-live.json" if giant_beetle else "sea-horse-live.json" if sea_horse else "bovine-live.json" if bovines else "ethics-live.json" if ethics_only else "equine-completion-live.json" if equine_completion else "llama-completion-live.json" if llama_completion else "live-validation.json"
 	var scope:="Actual world entry, native classes/permissions, layer 25, hues, mounted movement, observer replication and dismount on isolated pinned ModernUO. Ranked faction membership and native ethical oaths are disposable test setup; normal mount checks remain active. No production world or saves touched."
 	if bovines:scope="Actual two-client world entry, four native bovine bodies/hues, native Move walk/run replication, real Cow.Tip packets/recovery, owning-player milking API servings/exhaustion, real death and corpse art. Flat arena relocation is fixture setup, not movement evidence. No autonomous AI/pathfinding or complete gameplay/eligibility audit; milking uses the server API, not a client beverage-item interaction."
 	if giant_beetle:scope="Pinned native Beetle constructor and two loopback clients. Controlled owner setup, ordinary mounting and dismounting, native walk and run, full and partial hues, classic actions, normal owner pack opening and native death/corpse. Pack permissions for friends and strangers, loot transfer and autonomous combat are separate."
 	if fire_beetle:scope="Pinned native FireBeetle constructor and two loopback clients. Native default hue, ordinary mount and dismount, mounted walk and run, full and partial hues, controlled classic actions and native corpse. Normal ore use targets the loose Fire Beetle and receives iron ingots. Smithing recipes and autonomous combat are separate."
 	if ethereal_beetle:scope="Pinned native EtherealBeetle statuette 0x260F, ordinary summon and dismount, equipped item 0x3E97, spectral and custom hue, movement, observer replication and dyed statuette return. No loose native creature or corpse."
+	if hiryu:scope="Both native Hiryu constructors on two loopback clients. Disposable control setup, ordinary mount and dismount, exact layer 25 item and raw hues, grounded capability and state, server walking and running, and native static corpses. Natural taming is separate."
 	if sea_horse:scope="Real two-client native SeaHorse constructor144/item0x3EB3; both controlled owners use normal mount/movement/dismount, loose Move walk/run, full/partial hues/actions/death/corpse replication. Native flags are non-swimming, walking and not tamable: fixture control does not establish taming eligibility. Uses the documented client horse-art fallback, not recovered SeaHorse geometry or water-riding gameplay. Controlled sampling is not autonomous AI/choreography certification."
-	var file:=FileAccess.open("res://../outputs/ostard-riding/"+report,FileAccess.WRITE);file.store_string(JSON.stringify({"checks":checks,"failures":0,"records":records,"ethics_status":ethics_status,"scope":scope},"\t"));file.close()
+	var evidence := {"checks":checks,"failures":0,"records":records,"ethics_status":ethics_status,"scope":scope}
+	if hiryu:
+		if not check(FileAccess.get_sha256(HIRYU_PACKAGE) == hiryu_pin,"Hiryu package stays fixed during native verification"):return
+		evidence["checks"] = checks
+		evidence["preparation_sha256"] = hiryu_pin
+		evidence["normal_registry"] = hiryu_active
+	var file:=FileAccess.open("res://../outputs/ostard-riding/"+report,FileAccess.WRITE);file.store_string(JSON.stringify(evidence,"\t"));file.close()
 	print("OSTARD NATIVE INTEGRATION: ",checks," checks / 0 failures");quit()
 func beetle_pack(session: Node,sex: int,serial: int) -> bool:
 	var response := await fixture_reply(session,sex,"beetle-pack","UCEQUINE|beetle-pack|")

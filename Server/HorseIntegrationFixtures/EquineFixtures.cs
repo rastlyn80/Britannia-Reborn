@@ -121,6 +121,8 @@ public static class EquineFixtures
         46 => new SeaHorse(),
         47 => new Beetle(),
         48 => new FireBeetle(),
+        50 => new Hiryu(),
+        51 => new LesserHiryu(),
         _ => throw new ArgumentOutOfRangeException(nameof(index))
     };
 
@@ -138,7 +140,7 @@ public static class EquineFixtures
         else if (command == "prepare" && args.Length > 1)
         {
             var index = args.GetInt32(1);
-            if (index < 0 || index > 49) return;
+            if (index < 0 || index > 51) return;
             Cleanup(owner);
             if (index is >= 42 and <= 45 && !PrepareBovineArena(owner))
             {
@@ -198,10 +200,17 @@ public static class EquineFixtures
             }
             owner.SendMessage("UCEQUINE|blocked");
         }
+        else if (command == "hiryu-flight" && Animals.TryGetValue(owner, out var flightSubject)
+            && flightSubject is Hiryu or LesserHiryu)
+        {
+            owner.SendMessage($"UCEQUINE|hiryu-flight|{(flightSubject.CanFly ? 1 : 0)}|{(flightSubject.Flying ? 1 : 0)}");
+        }
         else if (command == "action" && args.Length > 1 && Animals.TryGetValue(owner, out var subject))
         {
             var action = args.GetInt32(1);
-            if (subject is Beetle or FireBeetle ? action is 5 or 6 or 7 or 9 or 10 : action is 3 or 5 or 11)
+            if (subject is Beetle or FireBeetle or Hiryu or LesserHiryu
+                ? action is 5 or 6 or 7 or 9 or 10
+                : action is 3 or 5 or 11)
             {
                 subject.Animate(action, 6, 1, true, false, 0);
             }

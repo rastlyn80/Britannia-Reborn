@@ -19,8 +19,8 @@ RECENT_CLASSES={166:['GoldenElemental'],753:['EnslavedGargoyle'],301:['Treefello
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
 def prepared_entries(family):
-    assert family in ['mages','juka','juka_lord','hydra','energy_vortex','late_source','champions','fey_champions','crane','deathwatch','tsuki_wolf','kappa','vampire_bat','yomotsu','occurrence_next','horde_rune','sand_vortex','bake_kitsune','devourer_lion_hiryu','candidate_batch','solen_queens',*PREPARED_FORMS],'Prepared native trial requires an explicit checked family'
-    if family in ('late_source', 'champions', 'fey_champions', 'yomotsu', 'occurrence_next', 'horde_rune', 'sand_vortex', 'bake_kitsune', 'devourer_lion_hiryu'):
+    assert family in ['mages','juka','juka_lord','hydra','energy_vortex','late_source','champions','fey_champions','crane','deathwatch','tsuki_wolf','kappa','vampire_bat','yomotsu','occurrence_next','horde_rune','sand_vortex','bake_kitsune','devourer_lion_hiryu','hiryu_mount','elemental_minotaur','meer_donors','candidate_batch','solen_queens',*PREPARED_FORMS],'Prepared native trial requires an explicit checked family'
+    if family in ('late_source', 'champions', 'fey_champions', 'yomotsu', 'occurrence_next', 'horde_rune', 'sand_vortex', 'bake_kitsune', 'devourer_lion_hiryu', 'hiryu_mount', 'elemental_minotaur', 'meer_donors'):
         classes, manifest = {
             'late_source': ({266: ['InsaneDryad', 'MLDryad'], 267: ['Lurg', 'Troglodyte'], 279: ['Ferret']}, 'late-creature-inputs.json'),
             'champions': ({172: ['Rikktor'], 173: ['Mephitis']}, 'champion-creature-inputs.json'),
@@ -31,6 +31,9 @@ def prepared_entries(family):
             'sand_vortex': ({790: ['SandVortex']}, 'sand-vortex-inputs.json'),
             'bake_kitsune': ({246: ['BakeKitsune']}, 'bake-kitsune-inputs.json'),
             'devourer_lion_hiryu': ({303: ['Devourer'], 251: ['RevenantLion'], 243: ['Hiryu', 'LesserHiryu']}, 'devourer-lion-hiryu-inputs.json'),
+            'hiryu_mount': ({243: ['Hiryu', 'LesserHiryu']}, 'devourer-lion-hiryu-inputs.json'),
+            'elemental_minotaur': ({300: ['CrystalElemental'], 263: ['Minotaur'], 305: ['GoreFiend'], 281: ['MinotaurScout'], 241: ['Oni'], 789: ['Quagmire'], 772: ['MeerEternal']}, 'elemental-minotaur-inputs.json'),
+            'meer_donors': ({771: ['MeerWarrior'], 770: ['MeerMage'], 773: ['MeerCaptain']}, 'meer-donor-inputs.json'),
         }[family]
         path = ROOT / 'Viewer/local-art/creatures' / family / 'preparation.json'
         report = json.loads(path.read_text(encoding='utf-8'))
@@ -128,11 +131,16 @@ def main():
         entries,prepared_classes=prepared_entries(args.family)
         index={'entries':entries}
         states={'prepared'}
-    elif args.family in ('late_source_active', 'hydra_active', 'energy_vortex_active', 'champions_active', 'fey_champions_active', 'crane_active', 'deathwatch_active', 'tsuki_wolf_active', 'kappa_active', 'vampire_bat_active', 'yomotsu_active', 'occurrence_next_active', 'sand_vortex_active', 'bake_kitsune_active', 'horde_rune_active', 'devourer_lion_hiryu_active'):
-        package_rows, _ = prepared_entries(args.family.removesuffix('_active'))
+    elif args.family in ('late_source_active', 'hydra_active', 'energy_vortex_active', 'champions_active', 'fey_champions_active', 'crane_active', 'deathwatch_active', 'tsuki_wolf_active', 'kappa_active', 'vampire_bat_active', 'yomotsu_active', 'occurrence_next_active', 'sand_vortex_active', 'bake_kitsune_active', 'horde_rune_active', 'devourer_lion_hiryu_active', 'elemental_minotaur_active'):
+        package_rows, prepared_classes = prepared_entries(args.family.removesuffix('_active'))
         selected_bodies = {body['body'] for row in package_rows for body in row['bodies']}
         registered = [row for row in index['entries'] if row['status'] == 'validated'
                       and any(body['body'] in selected_bodies for body in row['bodies'])]
+        if args.family == 'devourer_lion_hiryu_active' and any(
+                row['family'] == 'hiryu_mount' for row in registered):
+            mounted, _ = prepared_entries('hiryu_mount')
+            package_rows = [mounted[0] if row['bodies'][0]['body'] == 243 else row
+                            for row in package_rows]
         if registered != [dict(row, status='validated') for row in package_rows]:
             raise ValueError('Normal registry does not match the checked recovered package')
         index['entries'] = registered
@@ -159,7 +167,7 @@ def main():
                 classes.update(re.findall(r'\bpublic\s+(?:(?:abstract|sealed|partial)\s+)*class\s+(\w+)',text))
             classes=sorted(classes)
             reviewed=EXPLICIT_CLASSES.get(body['body']) if entry['family'] in ['deer','serpents','ice_serpents','small_snakes','rabbits','wisps','air','fire','walking','gorillas','headless','boglings','chickens','liches','snow_elementals','frogs','amorphous','solen_workers','fluid_elementals','silver_serpents','mages','juka'] else None
-            if args.prepared:reviewed=prepared_classes.get(int(body['body']),reviewed)
+            if prepared_classes:reviewed=prepared_classes.get(native_body,reviewed)
             elif args.family=='recent_batch':reviewed=RECENT_CLASSES.get(int(body['body']))
             if reviewed:
                 assert set(reviewed)<=set(classes),'Reviewed native class declaration changed'
