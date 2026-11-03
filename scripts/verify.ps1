@@ -86,7 +86,9 @@ foreach ($route in @(
  @{Folder='giant_beetle'; Publisher='accept-giant-beetle.py'},
  @{Folder='giant_beetle_fire'; Publisher='accept-fire-beetle.py'},
  @{Folder='giant_beetle_ethereal'; Publisher='accept-ethereal-beetle.py'},
- @{Folder='solen_queens'; Publisher='accept-solen-queens.py'}
+ @{Folder='solen_queens'; Publisher='accept-solen-queens.py'},
+ @{Folder='gazer_larva'; Publisher='accept-gazer-larva.py'},
+ @{Folder='bog_thing'; Publisher='prepare-bog-thing.py'}
 )) {
  if (!(Test-Path "$root/Viewer/local-art/creatures/$($route.Folder)/local-presentation.json")) {continue}
  & python -B "$root/scripts/$($route.Publisher)" --check-active

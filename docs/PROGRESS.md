@@ -1,3 +1,11 @@
+# Bog Thing body 780
+
+The local client uses the original 58-joint Third Dawn body with all 13 rigid pieces and nine motions. The pinned decoder and shared exporter reproduce the validated asset. The Godot bake retains 2,088 tracks and 1,118,472 keys. The renderer passed 1,596 ramp, ledge, gap and step cases, and 48 corpse checks covered late item arrival, redraw and selection bounds. Vulkan confirmed full and partial dyes. The isolated two-client test passed 151 checks for body identity, movement, actions, hues, death and corpse replication. The catalogue records 205 of 279 implemented body routes and 186 with live evidence. The 1:1000 unit conversion is an authored fit, and the original client's texture-group interpretation remains unverified.
+
+# Gazer Larva body 778
+
+The local client uses the original Third Dawn swarm rig, atlas and nine source motions. The refined body has 3,128 triangles and preserves all 21 rigid source cards and their bindings. Saved assets passed 83 motion checks, 27 hover and death checks, 477 independent picking poses and four rendered alpha and dye poses. The isolated ModernUO test passed 151 checks across two clients, including the native constructor, movement, classic actions, hues and death with a static corpse. The updated catalogues report 204 of 279 creature body routes, 185 with native evidence, and 245 corpse keys. Autonomous AI and the remaining protocol action gaps are tracked separately.
+
 # Solen Queen bodies 783 and 807
 
 Both Queens are active in the local client. The original 44-joint rigs, separate atlases and ten linked clips are retained. Each source mesh needed six authored normals. The final assets passed 106 skin checks, 21 normal-route action checks, 232,687 six-leg terrain checks over 2,880 poses, 188 rendered checks over 40 poses and four death entries, and 25 dye and appearance checks. All four native constructors passed 636 checks in prepared mode. The normal-registry native run passed 631 checks across the same four constructors and two clients. The catalogue now reports 203 of 279 loose model routes, 184 with native evidence, 244 static corpse entries and one separate mounted-item route.

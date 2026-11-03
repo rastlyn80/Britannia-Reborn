@@ -1,0 +1,97 @@
+{
+  "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+  "rights": "Private source and derived artwork. No redistribution.",
+  "files": [
+    {
+      "path": "Models/models.txt",
+      "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a",
+      "bytes": 55735
+    },
+    {
+      "path": "Models/Monsters/bog_thing_lod2.grn",
+      "sha256": "f3c3e9d537041c43ec854bd1641a5ad6951df493071eea580b96255a2d570843",
+      "bytes": 141700
+    },
+    {
+      "path": "Models/Maps/bog_thing_256.tga",
+      "sha256": "3bb0a07275e254f475de0b62a87e645a4911d96a785331f46f80b3d20dcffdb6",
+      "bytes": 196652
+    },
+    {
+      "path": "Models/Monsters/bog_thing_idle.grn",
+      "sha256": "c8434aefe12133c11f11559d61b996c37cf245b3f5f9017e6606afb9a8728bd4",
+      "bytes": 179204
+    },
+    {
+      "path": "Models/Monsters/bog_thing_walk.grn",
+      "sha256": "f18e52d2001c012cdf46c4909589cbc514b93635e73cecc7032215d7b1d3f77a",
+      "bytes": 152140
+    },
+    {
+      "path": "Models/Monsters/bog_thing_run.grn",
+      "sha256": "bfd3ac76af85312404a499663a1928a28a192c2117c364a3e3d3dcf3c31f2e5d",
+      "bytes": 120996
+    },
+    {
+      "path": "Models/Monsters/bog_thing_attack1.grn",
+      "sha256": "3e42b2e3f7a7b609587532a356a79c3a6c4dee903f4ebe495f2fac22dc372135",
+      "bytes": 160944
+    },
+    {
+      "path": "Models/Monsters/bog_thing_attack2.grn",
+      "sha256": "641382cbb1aed43a6b779093d62ae602509893411dd1e0318c269be2eae4358c",
+      "bytes": 169224
+    },
+    {
+      "path": "Models/Monsters/bog_thing_attack3.grn",
+      "sha256": "14324156f661df86796aec742097450a1c103dc5cf881c6e67471031f8554f3b",
+      "bytes": 176716
+    },
+    {
+      "path": "Models/Monsters/bog_thing_gethit.grn",
+      "sha256": "348c6a2e3fdfb5315381c98eb595786456b7d2e238cf075d2d40b6fac8c33b9f",
+      "bytes": 122404
+    },
+    {
+      "path": "Models/Monsters/bog_thing_die1.grn",
+      "sha256": "7684991729891e8d51d62bbeec6b45a18ea40279a23e0e739d8043fe9e3457c7",
+      "bytes": 191248
+    },
+    {
+      "path": "Models/Monsters/bog_thing_fidget.grn",
+      "sha256": "c27c59d4d339c33f3a0bd788d5af06c727eb13a56d9e422987d7bab07f0eb89a",
+      "bytes": 176072
+    }
+  ],
+  "native_class_source": {
+    "path": "Projects/UOContent/Mobiles/Monsters/Plant/Melee/BogThing.cs",
+    "sha256": "f0eb86e622d1bc5be384b18f36b86b9f7bc1fce66448ac6e19f7fd695752afb2",
+    "bytes": 3339
+  },
+  "model_table_assignment": {
+    "body": 780,
+    "stem": "bog_thing",
+    "scale": [
+      1.3,
+      1.3,
+      1.3
+    ]
+  },
+  "authored_unit_factor": 0.001,
+  "parts": [
+    "bog thing",
+    "box16",
+    "box15",
+    "box13",
+    "box12",
+    "box11",
+    "box09",
+    "box10",
+    "box01",
+    "box04",
+    "box07",
+    "box05",
+    "box02",
+    "box06"
+  ]
+}

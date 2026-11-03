@@ -7,6 +7,7 @@ const LocalProps = preload("res://Presentation/LocalProps.gd")
 var session: Node
 var scene: Node3D
 var nodes := {}
+var corpse_snapshots := {}
 var definitions := {}
 var local_art := preload("res://Presentation/LocalItemArt.gd").new()
 var selected := 0
@@ -568,7 +569,14 @@ func _equine_corpse(root: Node3D,item: Dictionary,serial: int) -> bool:
  root.set_meta("corpse_look_key",JSON.stringify(worn))
  var box: AABB=corpse.transform*corpse.get_meta("corpse_bounds")
  _body(root,box.size.max(Vector3(.15,.15,.15)),box.get_center(),serial,false)
+ if corpse_snapshots.has(serial):
+  preload("res://Presentation/CreatureCorpseSnapshot.gd").apply(root,corpse_snapshots[serial])
  return true
+
+func retain_corpse_snapshot(serial: int,snapshot: Dictionary) -> void:
+ corpse_snapshots[serial]=snapshot
+ if nodes.has(serial):
+  preload("res://Presentation/CreatureCorpseSnapshot.gd").apply(nodes[serial],snapshot)
 
 func corpse_worn(serial: int) -> Array:
  var result: Array=[]
@@ -781,6 +789,7 @@ func remove_visual(serial: int) -> void:
   nodes[serial].free()
   nodes.erase(serial)
 func remove(serial: int) -> void:
+ corpse_snapshots.erase(serial)
  request_contact_refresh()
  remove_visual(serial)
  if scene and scene.movement_surface: scene.movement_surface.dynamic_items.erase(serial)
@@ -788,6 +797,7 @@ func remove(serial: int) -> void:
   selected = 0
   hint.text = ""
 func clear() -> void:
+ corpse_snapshots.clear()
  for serial in nodes.keys(): remove(serial)
  if scene and scene.movement_surface: scene.movement_surface.dynamic_items.clear()
  label_queue.clear()

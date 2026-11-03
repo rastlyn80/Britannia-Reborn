@@ -2,6 +2,7 @@ extends Node3D
 ## Native death packets start a temporary visual; server entities/items stay authoritative.
 const Creatures=preload("res://Presentation/CreatureRegistry.gd")
 const HumanNPCs=preload("res://Presentation/HumanNPCProfiles.gd")
+const CorpseSnapshot=preload("res://Presentation/CreatureCorpseSnapshot.gd")
 signal transition_started(killed: int,corpse: int,visual: Node3D)
 var scene: Node3D
 var session: Node
@@ -91,7 +92,13 @@ func _update_corpse(serial: int) -> void:
 func _process(delta: float) -> void:
 	for killed in active.keys():
 		active[killed].remaining-=delta
-		if active[killed].remaining<=0.:finish(int(killed))
+		if active[killed].remaining<=0.:
+			var state: Dictionary=active[killed]
+			var visual: Node3D=state.visual
+			if int(state.corpse)!=0 and is_instance_valid(visual) and items.has_method("retain_corpse_snapshot") and visual.has_method("corpse_snapshot_floor"):
+				var snapshot:=CorpseSnapshot.capture(visual,float(visual.corpse_snapshot_floor()))
+				if not snapshot.is_empty():items.retain_corpse_snapshot(int(state.corpse),snapshot)
+			finish(int(killed))
 func finish(killed: int) -> void:
 	if not active.has(killed):return
 	var state: Dictionary=active[killed];active.erase(killed)
