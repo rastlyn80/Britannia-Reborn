@@ -1,3 +1,11 @@
+# Raptor active
+
+Body 730 uses the CC0 Quaternius Velociraptor from [Animated Low Poly Dinosaurs](https://quaternius.itch.io/animated-lowpoly-dinosaurs). The local bake fits the 1,248-triangle, 37-joint donor to a 2.5 m envelope and supplies materials for the existing hue shader. It retains six stock motions, uses Jump for the leaping attack slot, adds an authored recoil and reuses Idle for Fidget. The low-poly donor silhouette is still visible. This is a substitute for the classic sprite.
+
+Six decoded actions and three corpse hues passed. The contact surface retained 2.00 mm minimum clearance over 36 sampled flat and sloped gait poses. Five prepared poses rendered with Vulkan. Two clients on the isolated server passed 153 prepared and 151 normal-registry checks for the actual constructor, movement, action packets, dye and the static corpse.
+
+Stage the pinned FBX and license in `Viewer/local-art/creatures/raptor-trial` and run `python scripts/prepare-raptor.py`. Use `scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily raptor`, `python scripts/accept-late-creatures.py --family raptor`, then repeat the isolated run with `raptor_active`. File and archive hashes are recorded in `scripts/raptor-inputs.json`.
+
 # Slith active
 
 Slith body 734 uses the archived Third Dawn Komodo Dragon as a donor. The prepared variant retains its original atlas, 28-joint rig and seven compatible source clips. Eat is authored. This is a donor appearance with the original gold palette. The classic Slith's purple underside and orange ridge remain an art gap. Native Slith, Stone Slith and Toxic Slith passed 371 checks across two clients, including constructor hues, server actions and a static corpse posed from Death. The normal client route passed four decoded actions and three corpse hues. The isolated normal-registry run passed 367 checks. In 36 terrain poses, the greatest sampled stance gap was 1.64 mm.

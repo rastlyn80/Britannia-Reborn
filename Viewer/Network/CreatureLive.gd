@@ -46,8 +46,8 @@ func run() -> void:
 	candidate_pin=FileAccess.get_sha256("res://../work/creatures/live-candidates.json")
 	accepted_pin=FileAccess.get_sha256("res://local-art/creatures/accepted-index.json")
 	if prepared:
-		if not check(family in ["candidate_batch","mummies","solen_warriors","ice_elementals","solen_queens","late_source","hydra","energy_vortex","champions","fey_champions","crane","deathwatch","tsuki_wolf","kappa","vampire_bat","yomotsu","occurrence_next","horde_rune","sand_vortex","bake_kitsune","devourer_lion_hiryu","elemental_minotaur","meer_donors","captain_cu","clockwork_tokuno","aos_creatures","aos_aliases","aos_mound","recovered_late","tormented_minotaur","harrower","late_donors","gargoyle_vendor","aos_armed","aos_abysmal","animated_weapon", "slith"],"Prepared trial uses an explicitly checked family"):return
-		var permitted_bodies: Array={"solen_queens":[783,807],"late_source":[266,267,279],"hydra":[265],"energy_vortex":[164],"champions":[172,173],"fey_champions":[174,175,176],"crane":[254],"deathwatch":[242],"tsuki_wolf":[250],"kappa":[240],"vampire_bat":[317],"yomotsu":[245,253,255],"occurrence_next":[309,196,302,247],"horde_rune":[776,244],"sand_vortex":[790],"bake_kitsune":[246],"devourer_lion_hiryu":[303,251,243],"elemental_minotaur":[300,263,305,281,241,789,772],"meer_donors":[771,770,773],"captain_cu":[280,277],"clockwork_tokuno":[304,757,756,252,199,271,310,278],"aos_creatures":[306,307,308,313,318],"aos_aliases":[315,316],"aos_mound":[319],"recovered_late":[768,249,276],"tormented_minotaur":[262],"harrower":[146],"late_donors":[831,767],"gargoyle_vendor":[758],"aos_armed":[311,314],"aos_abysmal":[312],"animated_weapon":[692],"slith":[734]}.get(family,[154,782,806,161])
+		if not check(family in ["candidate_batch","mummies","solen_warriors","ice_elementals","solen_queens","late_source","hydra","energy_vortex","champions","fey_champions","crane","deathwatch","tsuki_wolf","kappa","vampire_bat","yomotsu","occurrence_next","horde_rune","sand_vortex","bake_kitsune","devourer_lion_hiryu","elemental_minotaur","meer_donors","captain_cu","clockwork_tokuno","aos_creatures","aos_aliases","aos_mound","recovered_late","tormented_minotaur","harrower","late_donors","gargoyle_vendor","aos_armed","aos_abysmal","animated_weapon", "slith", "raptor"],"Prepared trial uses an explicitly checked family"):return
+		var permitted_bodies: Array={"solen_queens":[783,807],"late_source":[266,267,279],"hydra":[265],"energy_vortex":[164],"champions":[172,173],"fey_champions":[174,175,176],"crane":[254],"deathwatch":[242],"tsuki_wolf":[250],"kappa":[240],"vampire_bat":[317],"yomotsu":[245,253,255],"occurrence_next":[309,196,302,247],"horde_rune":[776,244],"sand_vortex":[790],"bake_kitsune":[246],"devourer_lion_hiryu":[303,251,243],"elemental_minotaur":[300,263,305,281,241,789,772],"meer_donors":[771,770,773],"captain_cu":[280,277],"clockwork_tokuno":[304,757,756,252,199,271,310,278],"aos_creatures":[306,307,308,313,318],"aos_aliases":[315,316],"aos_mound":[319],"recovered_late":[768,249,276],"tormented_minotaur":[262],"harrower":[146],"late_donors":[831,767],"gargoyle_vendor":[758],"aos_armed":[311,314],"aos_abysmal":[312],"animated_weapon":[692],"slith":[734],"raptor":[730]}.get(family,[154,782,806,161])
 		Registry.load_index()
 		for candidate: Dictionary in candidates:
 			var record: Dictionary=candidate.get("presentation",{})
@@ -144,7 +144,8 @@ func run() -> void:
 			var actions: Array=[5,9,3,11,-1] if animal else [5,6,7,3,4,12,-1,-2] if sea else [4,17,-1]
 			if not animal and not sea:
 				for extra in [[5,"Attack2"],[6,"Attack3"],[8,"AttackXBow"],[11,"Pillage"],[12,"Cast"],[-2,"Cast"],[19,"Fly"],[20,"Land"]]:
-					if actor.horse_visual.animator.has_animation(extra[1]):actions.append(extra[0])
+					var category: String = actor.horse_visual.entry.get("classic_action_categories", {}).get(str(extra[0]), extra[1])
+					if actor.horse_visual.animator.has_animation(category):actions.append(extra[0])
 				for extra in [[-3,2],[-4,5],[-5,14]]:
 					if actor.horse_visual.entry.get("new_action_categories",{}).has(str(extra[1])):actions.append(extra[0])
 			if actor.horse_visual.animator.has_animation("Cast2"):

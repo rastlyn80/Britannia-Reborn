@@ -1,0 +1,11 @@
+{
+  "source": "https://quaternius.itch.io/animated-lowpoly-dinosaurs",
+  "license": "CC0-1.0",
+  "archive_sha256": "d9ca7d3568bd98b323b0be9a82b546af66d77c2a18e355c1bee5c50061b8931c",
+  "files": {
+    "Velociraptor.fbx": "d66ef78fd0d9cb32ff5a1d15f0c06e837a4681be110988f280b69f50e175f11a",
+    "License.txt": "83d8959f9fc56353ed571fbe2dc52e4bcd64508e2399501cd45ac2ce3df0bf8c"
+  },
+  "native_path": "Projects/UOContent/Mobiles/Monsters/Reptile/Raptor.cs",
+  "native_sha256": "2511caf562175ff29efd78b6971785f33883e0cf1e18a980ce9d795d7d70db2a"
+}

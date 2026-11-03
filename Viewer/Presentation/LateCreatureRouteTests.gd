@@ -8,7 +8,7 @@ const Corpses = preload("res://Presentation/CorpseModels.gd")
 const MONSTER := {4:"Attack", 5:"Attack2", 6:"Attack3", 10:"Hit", 17:"Fidget", 2:"Death"}
 const ANIMAL := {3:"Eat", 4:"Alert", 5:"Attack", 6:"Attack2", 7:"Hit", 11:"LieDown", 8:"Death"}
 const RECOVERED_FAMILIES := ["aos_creatures", "aos_aliases", "aos_mound", "recovered_late",
-	"tormented_minotaur", "late_donors", "gargoyle_vendor", "aos_armed", "aos_abysmal", "animated_weapon", "slith"]
+	"tormented_minotaur", "late_donors", "gargoyle_vendor", "aos_armed", "aos_abysmal", "animated_weapon", "slith", "raptor"]
 
 func _initialize() -> void:
 	create_timer(30.0).timeout.connect(func(): quit(2))
@@ -107,6 +107,7 @@ func run() -> void:
 			actions.merge({11: "Pillage", 12: "Attack2", 18: "Fidget2", 2: "Death"})
 		elif family in RECOVERED_FAMILIES:
 			for group: int in actions.keys():
+				actions[group] = record.get("classic_action_categories", {}).get(str(group), actions[group])
 				if not actor.animator.has_animation(actions[group]):
 					actions.erase(group)
 			assert("Attack" in actions.values() and "Hit" in actions.values() and "Death" in actions.values())
