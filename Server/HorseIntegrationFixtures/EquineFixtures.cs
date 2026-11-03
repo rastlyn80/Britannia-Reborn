@@ -138,16 +138,24 @@ public static class EquineFixtures
         else if (command == "prepare" && args.Length > 1)
         {
             var index = args.GetInt32(1);
-            if (index < 0 || index > 48) return;
+            if (index < 0 || index > 49) return;
             Cleanup(owner);
             if (index is >= 42 and <= 45 && !PrepareBovineArena(owner))
             {
                 owner.SendMessage("UCEQUINE|arena-blocked");
                 return;
             }
-            if (index is 11 or 12 or 16 or 21 or 22)
+            if (index is 11 or 12 or 16 or 21 or 22 or 49)
             {
-                EtherealMount ethereal = index == 11 ? new EtherealHorse() : index == 12 ? new EtherealUnicorn() : index == 21 ? new EtherealLlama() : index == 22 ? new EtherealKirin() : new EtherealOstard();
+                EtherealMount ethereal = index switch
+                {
+                    11 => new EtherealHorse(),
+                    12 => new EtherealUnicorn(),
+                    21 => new EtherealLlama(),
+                    22 => new EtherealKirin(),
+                    49 => new EtherealBeetle(),
+                    _ => new EtherealOstard()
+                };
                 owner.AddToBackpack(ethereal);
                 Ethereals[owner] = ethereal;
                 owner.SendMessage($"UCEQUINE|prepared|{ethereal.Serial.Value}|0|{ethereal.MountedID}|{ethereal.GetType().Name}");
@@ -203,6 +211,22 @@ public static class EquineFixtures
                     if (client.Mobile.CanSee(subject)) client.SendNewMobileAnimation(subject.Serial, 4, 0, 0);
             }
             owner.SendMessage($"UCEQUINE|action|{subject.Serial.Value}|{action}");
+        }
+        else if (command == "beetle-pack" && Animals.TryGetValue(owner, out var packAnimal)
+            && packAnimal is Beetle { Backpack: StrongBackpack pack })
+        {
+            var marker = new Bandage(3);
+            pack.DropItem(marker);
+            owner.SendMessage($"UCEQUINE|beetle-pack|{pack.Serial.Value}|{marker.Serial.Value}");
+        }
+        else if (command == "fire-ore" && Animals.TryGetValue(owner, out var forgeAnimal)
+            && forgeAnimal is FireBeetle && owner.Backpack is { } smithPack)
+        {
+            // Give the disposable player deterministic Iron smelting inputs.
+            owner.Skills.Mining.Base = 100.0;
+            var ore = new IronOre(true) { Amount = 4 };
+            smithPack.DropItem(ore);
+            owner.SendMessage($"UCEQUINE|fire-ore|{smithPack.Serial.Value}|{ore.Serial.Value}");
         }
         else if (command == "kill" && Animals.TryGetValue(owner, out var doomed))
         {

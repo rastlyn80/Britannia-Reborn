@@ -18,6 +18,7 @@ var bovines:=false
 var sea_horse:=false
 var giant_beetle:=false
 var fire_beetle:=false
+var ethereal_beetle:=false
 func fixture_reply(session: Node,sex: int,command: String,prefix: String) -> String:
 	replies[sex].clear();session.send_command("[EquineFixture "+command)
 	if not check(await until(func():return replies[sex].any(func(t: String):return t.begins_with(prefix))),"native ethics reply: "+command):return ""
@@ -63,6 +64,7 @@ func run() -> void:
 	sea_horse="--sea-horse" in OS.get_cmdline_user_args()
 	giant_beetle="--giant-beetle" in OS.get_cmdline_user_args()
 	fire_beetle="--fire-beetle" in OS.get_cmdline_user_args()
+	ethereal_beetle="--ethereal-beetle" in OS.get_cmdline_user_args()
 	var accounts: Array=JSON.parse_string(FileAccess.get_file_as_string("res://../work/horse-session/accounts.local.json"))
 	for sex in 2:
 		var session:=Game.new();root.add_child(session);sessions.append(session);replies.append([])
@@ -87,14 +89,15 @@ func run() -> void:
 		await resume_ethics();return
 	for sex in 2:
 		var session: Node=sessions[sex];var observer: Node=sessions[1-sex];var actor: Node3D=avatars[sex];var me:=int(session.player.serial)
-		for variant in ([48] if fire_beetle else [47] if giant_beetle else [46] if sea_horse else range(42,46) if bovines else [23,24,38,39,40,41] if ethics_only else range(22,33)+range(34,42) if equine_completion else [19,20,21,33] if llama_completion else [13,14,15,16,17,18,19,20,21]):
+		for variant in ([49] if ethereal_beetle else [48] if fire_beetle else [47] if giant_beetle else [46] if sea_horse else range(42,46) if bovines else [23,24,38,39,40,41] if ethics_only else range(22,33)+range(34,42) if equine_completion else [19,20,21,33] if llama_completion else [13,14,15,16,17,18,19,20,21]):
 			replies[sex].clear();session.send_command("[EquineFixture prepare "+str(variant))
 			if not check(await until(func():return not replies[sex].is_empty()),"real upstream equine fixture prepared"):return
 			var fields: PackedStringArray=replies[sex][-1].split("|")
 			if not check(fields.size()==6 and fields[1]=="prepared","fixture identifies actual native class/body/mount"):return
-			var serial:=int(fields[2]);var body:=int(fields[3]);var item:=int(fields[4]);var ethereal: bool=variant in [16,21,22]
+			var serial:=int(fields[2]);var body:=int(fields[3]);var item:=int(fields[4]);var ethereal: bool=variant in [16,21,22,49]
 			if giant_beetle and not check(body==791 and item==0x3ebc and fields[5]=="Beetle","original native Giant Beetle identity"):return
 			if fire_beetle and not check(body==169 and item==0x3e95 and fields[5]=="FireBeetle","original native Fire Beetle identity"):return
+			if ethereal_beetle and not check(body==0 and item==0x3e97 and fields[5]=="EtherealBeetle","original native Ethereal Beetle item identity"):return
 			if sea_horse:
 				if not check(body==144 and item==0x3eb3 and fields[5]=="SeaHorse","real native SeaHorse identity is distinct from its horse-art fallback"):return
 				var native_state:=await fixture_reply(session,sex,"sea-state","UCEQUINE|sea-state|")
@@ -115,6 +118,7 @@ func run() -> void:
 				if not check(await object_ready(session),"native backpack delay respected"):return
 				session.open_backpack()
 				if not check(await until(func():return session.known_items.has(serial)),"native backpack contents reveal the ethereal item"):return
+			if ethereal_beetle and not check(int(session.known_items[serial].id)==0x260f and int(session.known_items[serial].hue)==0,"native unstained Ethereal Beetle statuette"):return
 			if not check(await object_ready(session),"native item delay respected"):return
 			if not check(session.use_mobile(serial) if not ethereal else session.use_item(serial),"normal double-click request sent"):return
 			var denied: bool=bovines or variant in [20,23,24,25,26,27,28,29,33,40,41] or variant==17 and sex==1
@@ -151,8 +155,14 @@ func run() -> void:
 					if not check(await until(func():return session.entities.has(serial) and observer.entities.has(serial)),"real animal returns to world on both clients"):return
 				else:
 					if not check(not session.entities.has(serial) and not observer.entities.has(serial),"ethereal item does not invent a loose animal"):return
+				if ethereal_beetle:
+					if not check(await object_ready(session),"native pack reopen delay respected"):return
+					session.open_backpack()
+					if not check(await until(func():return int(session.known_items.get(serial,{}).get("id",0))==0x260f and int(session.known_items[serial].hue)==(0x8000|53)),"same dyed statuette returns to backpack"):return
 				actor.apply_server_appearance(session.player,session.equipment.values())
 				if not check(await until(func():return actor.horse_visual==null),"visual rider returns to foot after authoritative dismount"):return
+			if giant_beetle and not await beetle_pack(session,sex,serial):return
+			if fire_beetle and not await fire_beetle_smelt(session,sex,serial):return
 			if not ethereal:
 				var loose:=preload("res://Presentation/HumanAvatar.gd").new();loose.initial_body=body;root.add_child(loose);loose.set_physics_process(false);loose.apply_server_appearance(session.entities[serial],[])
 				if bovines and not await bovine_interactions(session,observer,sex,serial,body,loose):return
@@ -186,14 +196,52 @@ func run() -> void:
 	if ethics_only and not await save_ethics():return
 	for actor in avatars:actor.free()
 	for session in sessions:session.close()
-	var report:="fire-beetle-live.json" if fire_beetle else "giant-beetle-live.json" if giant_beetle else "sea-horse-live.json" if sea_horse else "bovine-live.json" if bovines else "ethics-live.json" if ethics_only else "equine-completion-live.json" if equine_completion else "llama-completion-live.json" if llama_completion else "live-validation.json"
+	var report:="ethereal-beetle-live.json" if ethereal_beetle else "fire-beetle-live.json" if fire_beetle else "giant-beetle-live.json" if giant_beetle else "sea-horse-live.json" if sea_horse else "bovine-live.json" if bovines else "ethics-live.json" if ethics_only else "equine-completion-live.json" if equine_completion else "llama-completion-live.json" if llama_completion else "live-validation.json"
 	var scope:="Actual world entry, native classes/permissions, layer 25, hues, mounted movement, observer replication and dismount on isolated pinned ModernUO. Ranked faction membership and native ethical oaths are disposable test setup; normal mount checks remain active. No production world or saves touched."
 	if bovines:scope="Actual two-client world entry, four native bovine bodies/hues, native Move walk/run replication, real Cow.Tip packets/recovery, owning-player milking API servings/exhaustion, real death and corpse art. Flat arena relocation is fixture setup, not movement evidence. No autonomous AI/pathfinding or complete gameplay/eligibility audit; milking uses the server API, not a client beverage-item interaction."
-	if giant_beetle:scope="Pinned native Beetle constructor and two loopback clients. Controlled owner setup, ordinary mounting and dismounting, native walk and run, full and partial hue packets, controlled classic animal action packets and native death/corpse. Pack access and autonomous combat are separate."
-	if fire_beetle:scope="Pinned native FireBeetle constructor and two loopback clients. Native default hue, ordinary mount and dismount, mounted walk and run, full and partial hues, controlled classic actions and native corpse. Forge use and autonomous combat are separate."
+	if giant_beetle:scope="Pinned native Beetle constructor and two loopback clients. Controlled owner setup, ordinary mounting and dismounting, native walk and run, full and partial hues, classic actions, normal owner pack opening and native death/corpse. Pack permissions for friends and strangers, loot transfer and autonomous combat are separate."
+	if fire_beetle:scope="Pinned native FireBeetle constructor and two loopback clients. Native default hue, ordinary mount and dismount, mounted walk and run, full and partial hues, controlled classic actions and native corpse. Normal ore use targets the loose Fire Beetle and receives iron ingots. Smithing recipes and autonomous combat are separate."
+	if ethereal_beetle:scope="Pinned native EtherealBeetle statuette 0x260F, ordinary summon and dismount, equipped item 0x3E97, spectral and custom hue, movement, observer replication and dyed statuette return. No loose native creature or corpse."
 	if sea_horse:scope="Real two-client native SeaHorse constructor144/item0x3EB3; both controlled owners use normal mount/movement/dismount, loose Move walk/run, full/partial hues/actions/death/corpse replication. Native flags are non-swimming, walking and not tamable: fixture control does not establish taming eligibility. Uses the documented client horse-art fallback, not recovered SeaHorse geometry or water-riding gameplay. Controlled sampling is not autonomous AI/choreography certification."
 	var file:=FileAccess.open("res://../outputs/ostard-riding/"+report,FileAccess.WRITE);file.store_string(JSON.stringify({"checks":checks,"failures":0,"records":records,"ethics_status":ethics_status,"scope":scope},"\t"));file.close()
 	print("OSTARD NATIVE INTEGRATION: ",checks," checks / 0 failures");quit()
+func beetle_pack(session: Node,sex: int,serial: int) -> bool:
+	var response := await fixture_reply(session,sex,"beetle-pack","UCEQUINE|beetle-pack|")
+	var fields := response.split("|")
+	if not check(fields.size()==4,"Fixture seeded an item in the native strong backpack"):return false
+	var pack := int(fields[2])
+	var marker := int(fields[3])
+	session.context_menu.clear()
+	if not check(session.request_context(serial),"Owner requests the loose Beetle's native context menu"):return false
+	if not check(await until(func():return int(session.context_menu.get("serial",0))==serial),"Server sends context for the same Beetle"):return false
+	var options: Array = session.context_menu.options.filter(func(option: Dictionary):return int(option.label)==3006145)
+	if not check(options.size()==1 and session.choose_context(int(options[0].index)),"Owner selects the native Open Backpack entry"):return false
+	if not check(await until(func():return session.container_serial==pack),"Server opens the actual Beetle strong backpack"):return false
+	return check(await until(func():
+		var item: Dictionary = session.known_items.get(marker,{})
+		return int(item.get("container",0))==pack and int(item.get("id",0))==0xE21 and int(item.get("amount",0))==3),
+		"Native container contents expose the original seeded bandage stack")
+func fire_beetle_smelt(session: Node,sex: int,serial: int) -> bool:
+	var response := await fixture_reply(session,sex,"fire-ore","UCEQUINE|fire-ore|")
+	var fields := response.split("|")
+	if not check(fields.size()==4,"Fixture supplies fixed-size iron ore to the disposable owner"):return false
+	var pack := int(fields[2])
+	var ore := int(fields[3])
+	if not check(await object_ready(session),"Native backpack action delay respected"):return false
+	session.open_backpack()
+	if not check(await until(func():return int(session.known_items.get(ore,{}).get("container",0))==pack),
+		"Client receives the exact iron ore from the server"):return false
+	var ingots := func() -> int:
+		var count := 0
+		for item: Dictionary in session.contents_of(pack):
+			if int(item.get("id",0))==0x1bf2:count+=int(item.get("amount",0))
+		return count
+	var before: int = ingots.call()
+	if not check(await object_ready(session) and session.use_item(ore),"Normal double-click requests ore smelting"):return false
+	if not check(await until(func():return not session.target_request.is_empty()),"Native ore interaction sends a targeting cursor"):return false
+	if not check(preload("res://Network/ActionRunner.gd").target_entity(session,serial),"Player targets the actual loose Fire Beetle"):return false
+	return check(await until(func():return not session.known_items.has(ore) and int(ingots.call())==before+4),
+		"Native smelting consumes four ore and adds four iron ingots")
 func sea_horse_interactions(session: Node,observer: Node,sex: int,serial: int,loose: Node3D) -> bool:
 	for hue in [53,0x8000|53]:
 		await fixture_reply(session,sex,"colour "+str(hue),"UCEQUINE|colour|")

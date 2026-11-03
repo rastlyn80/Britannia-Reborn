@@ -23,7 +23,9 @@ def main():
             prepared[model['kind']]=model;model_families[model['kind']]=family
     for kind,model in prepared.items():
         families.setdefault(model_families[kind],{'models':[]})['models'].append(model)
-    routed={int(identity['body']):row for row in public+accepted for identity in row['bodies']}
+    routed={int(identity['body']):row for row in public+accepted if not row.get('mount_only') for identity in row['bodies']}
+    item_routes={int(row['mount_item']): {'kind':row['kind'], 'art_keys':[int(body['body']) for body in row['bodies']],
+                                        'live_reports':[]} for row in public+accepted if row.get('mount_only')}
     spec=importlib.util.spec_from_file_location('catalogue_priority',ROOT/'scripts/build-creature-priority.py')
     priority=importlib.util.module_from_spec(spec);spec.loader.exec_module(priority)
     human_routes=priority.human_npc_routes(ROOT)
@@ -43,6 +45,10 @@ def main():
             if not record.get('ethereal',False):
                 body=int(record['body']);live.setdefault(body,[]).append(str(path.relative_to(ROOT)))
                 if record.get('native_class'):live_classes.setdefault(body,set()).add(record['native_class'])
+            elif record.get('ride_permitted') and int(record.get('mount_item',0)) in item_routes:
+                evidence=item_routes[int(record['mount_item'])]['live_reports']
+                relative=str(path.relative_to(ROOT))
+                if relative not in evidence:evidence.append(relative)
     targets=[]
     for value,sources in source['native_literal_bodies'].items():
         body=int(value);profile=source['native_profiles'].get(value,'')
@@ -57,7 +63,9 @@ def main():
             'new_body_routes':len(routed),'specialized_human_npc_routes':len(human_routes),'human_npc_with_native_evidence':sum(body in live for body in human_routes),'licensed_public_source_forms':len(public),'prepared_source_forms':sum(row['status']=='prepared' for row in prepared.values()),'blocked_source_forms':sum(row['status']!='prepared' for row in prepared.values()),
             'named_native_constructor_pairs_with_evidence':sum(len(row['tested_native_constructors']) for row in targets)}
     scope='Bounded pinned-server literal Body assignments, RandomList, simple conditional literal branches and base-mount calls; not every dynamic constructor result or the full modern-client body catalogue. Source forms, body routes and live evidence are separate. Named constructors list positive evidence in passing reports only: a tested body is not proof of every class sharing it, and older receipts may lack class names. Proprietary-derived art stays local; no redistribution grant.'
-    (OUT/'catalogue.json').write_text(json.dumps({'counts':counts,'server_pin':source['server_pin'],'native_targets':targets,'preparation':prepared,'scope':scope},indent=2),encoding='utf-8')
+    counts['mounted_item_only_routes']=len(item_routes)
+    (OUT/'catalogue.json').write_text(json.dumps({'counts':counts,'server_pin':source['server_pin'],'native_targets':targets,
+                                                'mounted_item_only_routes':item_routes,'preparation':prepared,'scope':scope},indent=2),encoding='utf-8')
     cards=[];atlases=[];materials=[]
     if public:
         cards.append('<section><h2>Distributable licensed replacements</h2>'+''.join('<p>'+html.escape(row['kind'])+' — '+html.escape(row['license'])+'; <a href="'+html.escape(row['source'],quote=True)+'">exact source</a>. Authored category motions, native evidence listed below.</p>' for row in public)+'</section>')

@@ -1,0 +1,143 @@
+{
+  "schema": 1,
+  "server_pin": "ab59efea86fd9e399d261bed9d188ab4d95ad4c2",
+  "scope": "Original Ethereal Beetle art key 195 and item-only native mount 0x3E97",
+  "models": [
+    {
+      "kind": "giant_beetle_ethereal",
+      "expected_bodies": [
+        195
+      ],
+      "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+      "containers": [
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client8.cab",
+          "bytes": 5793154,
+          "sha256": "155fe820d8c0e2a08650f81ec037829bed49aeca74efd2a07479a907287a1afc"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client10.cab",
+          "bytes": 33956665,
+          "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client7.cab",
+          "bytes": 20805,
+          "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859"
+        }
+      ],
+      "model_table": {
+        "path": "work/creatures/next-simple/source/models.txt",
+        "bytes": 55735,
+        "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a"
+      },
+      "files": [
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/giant_beetle_attack1.grn",
+          "member": "uoaos/UOTD/Models/Animals/giant_beetle_attack1.grn",
+          "sha256": "2644b8f25b491ab8fae0f02b3de82164d803d03206a9c75fc29578dd4644678b",
+          "bytes": 108900,
+          "cabinet": "client8.cab"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/giant_beetle_attack2.grn",
+          "member": "uoaos/UOTD/Models/Animals/giant_beetle_attack2.grn",
+          "sha256": "6d93df89692e6a29c8856e5b19f0dafc797a30852af0139e436bb1af155e7b87",
+          "bytes": 114148,
+          "cabinet": "client8.cab"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/giant_beetle_attack3.grn",
+          "member": "uoaos/UOTD/Models/Animals/giant_beetle_attack3.grn",
+          "sha256": "fd142663aab40de0c0686636fd918501aa9f4b3d0cf6123007dbf5350b266ce5",
+          "bytes": 90496,
+          "cabinet": "client8.cab"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/giant_beetle_die1.grn",
+          "member": "uoaos/UOTD/Models/Animals/giant_beetle_die1.grn",
+          "sha256": "2883f8e9aecbbcd86c024e4f7a27dfb691f60d53c4f18ff8ef29c5388c5dd524",
+          "bytes": 149080,
+          "cabinet": "client8.cab"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/giant_beetle_fidget.grn",
+          "member": "uoaos/UOTD/Models/Animals/giant_beetle_fidget.grn",
+          "sha256": "d379baacf4276a7817c4bedc83330c947518a051225b853a395d4a511a63b262",
+          "bytes": 99340,
+          "cabinet": "client8.cab"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/giant_beetle_fidget2.grn",
+          "member": "uoaos/UOTD/Models/Animals/giant_beetle_fidget2.grn",
+          "sha256": "ffe3df46a6dc4d5f130c353effeb2284b6a768276343607feadde9e679bbe96d",
+          "bytes": 88204,
+          "cabinet": "client8.cab"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/giant_beetle_gethit.grn",
+          "member": "uoaos/UOTD/Models/Animals/giant_beetle_gethit.grn",
+          "sha256": "0632cbf8d4c8c1308149d0167fdc7eb316cee13c0dc2a0020a0f4f04cad8377a",
+          "bytes": 83092,
+          "cabinet": "client8.cab"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/giant_beetle_idle.grn",
+          "member": "uoaos/UOTD/Models/Animals/giant_beetle_idle.grn",
+          "sha256": "44c90492f9b52b09efca875ddd16ff7d0fd355e9dc547c31d180dff07e25a2fa",
+          "bytes": 87620,
+          "cabinet": "client8.cab"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/giant_beetle_run.grn",
+          "member": "uoaos/UOTD/Models/Animals/giant_beetle_run.grn",
+          "sha256": "460950d94941a9e63970879eb96d3ff935a168978e28424d17ad1b8dc5856859",
+          "bytes": 70220,
+          "cabinet": "client8.cab"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-source/Models/Animals/giant_beetle_walk.grn",
+          "member": "uoaos/UOTD/Models/Animals/giant_beetle_walk.grn",
+          "sha256": "37cddeb688ac393f00104312a1fcff68c727413762114c4fde4544692316a2aa",
+          "bytes": 92156,
+          "cabinet": "client8.cab"
+        },
+        {
+          "path": "work/creatures/giant-beetle/ethereal-source/giant_beetle_ethereal_lod2.grn",
+          "sha256": "e506238affc4c3201ad365fdc991240544651f13ccf34750269315366b5616a3",
+          "bytes": 110912,
+          "member": "uoaos/UOTD/Models/Animals/giant_beetle_ethereal_lod2.grn",
+          "cabinet": "client8.cab"
+        },
+        {
+          "path": "work/creatures/giant-beetle/ethereal-source/giant_beetle_ethereal_256.tga",
+          "sha256": "fc1486b4a9973ffab32f3e5bca3b4471fde640e9611b1ff3d26fd66714ef7c89",
+          "bytes": 65580,
+          "member": "uoaos/UOTD/Models/Maps/giant_beetle_ethereal_256.tga",
+          "cabinet": "client10.cab"
+        }
+      ],
+      "bones": 51,
+      "triangles": 1102,
+      "source_clips": 10,
+      "levels": 1,
+      "normal_offset_m": 0.0015,
+      "opacity": "opaque",
+      "limb_support": "plane",
+      "mount_item": 16023,
+      "classic_action_categories": {
+        "10": "Fidget2"
+      },
+      "presentation_script": "res://Presentation/SourceEtherealBeetleVisual.gd",
+      "source_atlas_alpha_range": [
+        180,
+        212
+      ],
+      "item_only": true,
+      "mount_only": true,
+      "default_native_hue": 16385,
+      "statuette_item": 9743
+    }
+  ],
+  "rights": "Original and derived artwork stays local."
+}

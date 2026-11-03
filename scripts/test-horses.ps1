@@ -1,9 +1,10 @@
-param([switch]$Live,[switch]$SkipContact,[switch]$Gpu,[switch]$Equines,[switch]$Ostards,[switch]$EquineCompletion,[switch]$LlamaCompletion,[switch]$Ethics,[switch]$Bovines,[switch]$SeaHorse,[switch]$GiantBeetle,[switch]$FireBeetle,[switch]$Savages,[switch]$SavageRiders,[string]$CreatureFamily='')
+param([switch]$Live,[switch]$SkipContact,[switch]$Gpu,[switch]$Equines,[switch]$Ostards,[switch]$EquineCompletion,[switch]$LlamaCompletion,[switch]$Ethics,[switch]$Bovines,[switch]$SeaHorse,[switch]$GiantBeetle,[switch]$FireBeetle,[switch]$EtherealBeetle,[switch]$Savages,[switch]$SavageRiders,[string]$CreatureFamily='', [switch]$PreparedQueen)
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent
 $godot=(Get-ChildItem "$root/.tools/godot/*console.exe"|Select-Object -First 1).FullName
 $env:APPDATA=Join-Path $root '.godot-user';$env:LOCALAPPDATA=$env:APPDATA
-$preparedCreatureTrial=$CreatureFamily -in @('mummies','solen_warriors','ice_elementals','candidate_batch')
+if ($PreparedQueen -and $CreatureFamily -ne 'solen_queens') {throw 'PreparedQueen requires the solen_queens family'}
+$preparedCreatureTrial=$PreparedQueen -or $CreatureFamily -in @('mummies','solen_warriors','ice_elementals','candidate_batch')
 $recordCreatureTrial=$preparedCreatureTrial -or $CreatureFamily -eq 'recent_batch'
 $savageTrial=$Savages -or $SavageRiders
 if ($Savages -and $SavageRiders) {throw 'Choose one Savage native suite per fresh server'}
@@ -35,6 +36,7 @@ try {
  $runtime=Join-Path $root 'work/horse-session/server'
  if ($Ethics) {$runtime=Join-Path $root ('work/ethics-session/'+[Guid]::NewGuid().ToString('N')+'/server')}
  if ($CreatureFamily -or $savageTrial) {$runtime=Join-Path $root ('work/creature-session/'+[Guid]::NewGuid().ToString('N')+'/server')}
+ if ($EtherealBeetle) {$runtime=Join-Path $root ('work/ethereal-beetle-session/'+[Guid]::NewGuid().ToString('N')+'/server')}
  if ($FireBeetle) {$runtime=Join-Path $root ('work/fire-beetle-session/'+[Guid]::NewGuid().ToString('N')+'/server')}
  if ($GiantBeetle) {$runtime=Join-Path $root ('work/giant-beetle-session/'+[Guid]::NewGuid().ToString('N')+'/server')}
  if ($SeaHorse) {$runtime=Join-Path $root ('work/sea-horse-session/'+[Guid]::NewGuid().ToString('N')+'/server')}
@@ -60,7 +62,7 @@ try {
   Copy-Item -LiteralPath $fixedContent -Destination "$runtime/Assemblies/UOContent.dll" -Force
  }
  if ($CreatureFamily) {
-  if ($CreatureFamily -in @('mages','juka','mummies','solen_warriors','ice_elementals','candidate_batch')) {& python -B "$root/scripts/prepare-creature-fixtures.py" $CreatureFamily --prepared --runtime $runtime}
+  if ($preparedCreatureTrial -or $CreatureFamily -in @('mages','juka')) {& python -B "$root/scripts/prepare-creature-fixtures.py" $CreatureFamily --prepared --runtime $runtime}
   else {& python -B "$root/scripts/prepare-creature-fixtures.py" $CreatureFamily --runtime $runtime}
   if ($LASTEXITCODE) {throw 'Creature native constructor allow-list preparation failed'}
  }
@@ -113,13 +115,14 @@ try {
   if ($LlamaCompletion) {$liveArgs+='--llama-completion'}
   if ($Ethics) {$liveArgs+='--ethics-only'}
   if ($Bovines) {$liveArgs+='--bovines'}
+  if ($EtherealBeetle) {$liveArgs+='--ethereal-beetle'}
   if ($FireBeetle) {$liveArgs+='--fire-beetle'}
   if ($GiantBeetle) {$liveArgs+='--giant-beetle'}
   if ($SeaHorse) {$liveArgs+='--sea-horse'}
   if ($CreatureFamily) {$liveArgs+="--family=$CreatureFamily"}
-  if ($CreatureFamily -in @('mummies','solen_warriors','ice_elementals','candidate_batch')) {$liveArgs+='--prepared'}
+  if ($preparedCreatureTrial) {$liveArgs+='--prepared'}
   $started=[DateTime]::UtcNow
-  & $godot --headless --path Viewer --script $(if ($SavageRiders) {'res://Network/SavageRiderLive.gd'} elseif ($Savages) {'res://Network/SavageLive.gd'} elseif ($CreatureFamily -eq 'mages') {'res://Network/SourceMageLive.gd'} elseif ($CreatureFamily -eq 'juka') {'res://Network/SourceJukaLive.gd'} elseif ($CreatureFamily) {'res://Network/CreatureLive.gd'} elseif ($Ostards -or $EquineCompletion -or $LlamaCompletion -or $Ethics -or $Bovines -or $SeaHorse -or $GiantBeetle -or $FireBeetle) {'res://Network/OstardLive.gd'} elseif ($Equines) {'res://Network/EquineLive.gd'} else {'res://Network/HorseLive.gd'}) -- @liveArgs
+  & $godot --headless --path Viewer --script $(if ($SavageRiders) {'res://Network/SavageRiderLive.gd'} elseif ($Savages) {'res://Network/SavageLive.gd'} elseif ($CreatureFamily -eq 'mages') {'res://Network/SourceMageLive.gd'} elseif ($CreatureFamily -eq 'juka') {'res://Network/SourceJukaLive.gd'} elseif ($CreatureFamily) {'res://Network/CreatureLive.gd'} elseif ($Ostards -or $EquineCompletion -or $LlamaCompletion -or $Ethics -or $Bovines -or $SeaHorse -or $GiantBeetle -or $FireBeetle -or $EtherealBeetle) {'res://Network/OstardLive.gd'} elseif ($Equines) {'res://Network/EquineLive.gd'} else {'res://Network/HorseLive.gd'}) -- @liveArgs
   if ($LASTEXITCODE) { throw 'Native isolated integration test failed' }
   if ($SavageRiders) {
    $riderFolder=Join-Path $root 'work/creatures/savage-riders'
@@ -229,8 +232,8 @@ try {
     if ($LASTEXITCODE) {throw 'Owned PlagueSpawn/native class evidence is incomplete or stale'}
    }
   }
-  if ($EquineCompletion -or $LlamaCompletion -or $Ostards -or $Ethics -or $Bovines -or $SeaHorse -or $GiantBeetle -or $FireBeetle) {
-   $reportName=if ($FireBeetle) {'fire-beetle-live.json'} elseif ($GiantBeetle) {'giant-beetle-live.json'} elseif ($SeaHorse) {'sea-horse-live.json'} elseif ($Bovines) {'bovine-live.json'} elseif ($Ethics) {'ethics-live.json'} elseif ($EquineCompletion) {'equine-completion-live.json'} elseif ($LlamaCompletion) {'llama-completion-live.json'} else {'live-validation.json'}
+  if ($EquineCompletion -or $LlamaCompletion -or $Ostards -or $Ethics -or $Bovines -or $SeaHorse -or $GiantBeetle -or $FireBeetle -or $EtherealBeetle) {
+   $reportName=if ($EtherealBeetle) {'ethereal-beetle-live.json'} elseif ($FireBeetle) {'fire-beetle-live.json'} elseif ($GiantBeetle) {'giant-beetle-live.json'} elseif ($SeaHorse) {'sea-horse-live.json'} elseif ($Bovines) {'bovine-live.json'} elseif ($Ethics) {'ethics-live.json'} elseif ($EquineCompletion) {'equine-completion-live.json'} elseif ($LlamaCompletion) {'llama-completion-live.json'} else {'live-validation.json'}
    $report=Join-Path $root "outputs/ostard-riding/$reportName"
    if (!(Test-Path $report) -or (Get-Item $report).LastWriteTimeUtc -lt $started.AddSeconds(-1)) {throw 'Live test did not write fresh evidence; inspect the Godot log.'}
    if ((Get-Content $report -Raw|ConvertFrom-Json).failures -ne 0) {throw 'Live integration reported failures'}

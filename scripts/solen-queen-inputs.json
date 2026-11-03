@@ -1,0 +1,344 @@
+{
+  "schema": 1,
+  "server_pin": "ab59efea86fd9e399d261bed9d188ab4d95ad4c2",
+  "models": [
+    {
+      "kind": "black_ant_queen",
+      "expected_bodies": [
+        807
+      ],
+      "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+      "containers": [
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client7.cab",
+          "bytes": 20805,
+          "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client10.cab",
+          "bytes": 33956665,
+          "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client11.cab",
+          "bytes": 35160963,
+          "sha256": "307a6b91c4d5459080d1fe8a74ae4fe0b91dea8a21a2866ca91e7dc7ba92f1a8"
+        }
+      ],
+      "model_table": {
+        "path": "work/creatures/solen-queen-source/cabinet-proof/models.txt",
+        "bytes": 55735,
+        "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a"
+      },
+      "files": [
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/black_ant_queen_lod2.grn",
+          "bytes": 763932,
+          "sha256": "76076ef6adde45e46a38d02faa2e6faf96f0117a94a861ff7be1c9e7612fce4e",
+          "member": "uoaos/UOTD/Models/Monsters/black_ant_queen_lod2.grn",
+          "cabinet": "client11.cab"
+        },
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/black_ant_queen_256.tga",
+          "bytes": 196652,
+          "sha256": "482d583c6ed28bd13a94eb39b373fc4b262e8345ef50a0306424d891974ef6fd",
+          "member": "uoaos/UOTD/Models/Maps/black_ant_queen_256.tga",
+          "cabinet": "client10.cab"
+        },
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/fire_ant_queen_attack1.grn",
+          "bytes": 109228,
+          "sha256": "249f41f296016622499257979ba073138567d6dfa9e11e7e4079503ff0b4f308",
+          "member": "uoaos/UOTD/Models/Monsters/fire_ant_queen_attack1.grn",
+          "cabinet": "client11.cab"
+        },
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/fire_ant_queen_attack2.grn",
+          "bytes": 89752,
+          "sha256": "8616517553087f2ff099f217dae6bf56d482e3df753e0972a624bbf176fa68e1",
+          "member": "uoaos/UOTD/Models/Monsters/fire_ant_queen_attack2.grn",
+          "cabinet": "client11.cab"
+        },
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/fire_ant_queen_attack3.grn",
+          "bytes": 90824,
+          "sha256": "3a6ebab4531de250f224492b186724afca635c14dd2e95aa5e6c8f582b019008",
+          "member": "uoaos/UOTD/Models/Monsters/fire_ant_queen_attack3.grn",
+          "cabinet": "client11.cab"
+        },
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/fire_ant_queen_die1.grn",
+          "bytes": 114488,
+          "sha256": "55f24d2f36d4a3560f75934bfe44cc7597cdd00240ca34fedc45e3852eab0de4",
+          "member": "uoaos/UOTD/Models/Monsters/fire_ant_queen_die1.grn",
+          "cabinet": "client11.cab"
+        },
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/fire_ant_queen_fidget.grn",
+          "bytes": 93512,
+          "sha256": "9b56a45da1b424d994ebc80144531e92d7ed06b6d9641fde0a8126e5ba7ac2b0",
+          "member": "uoaos/UOTD/Models/Monsters/fire_ant_queen_fidget.grn",
+          "cabinet": "client11.cab"
+        },
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/fire_ant_queen_fidget2.grn",
+          "bytes": 83800,
+          "sha256": "141935a72123403c45a10b3e1e0a9638afd1594a031e0328360b4d82ca47f59b",
+          "member": "uoaos/UOTD/Models/Monsters/fire_ant_queen_fidget2.grn",
+          "cabinet": "client11.cab"
+        },
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/fire_ant_queen_gethit.grn",
+          "bytes": 86544,
+          "sha256": "935b1c59bac9b45f19ea5b0f65985737faf0fd276f53949e36ab2f54841cc1ff",
+          "member": "uoaos/UOTD/Models/Monsters/fire_ant_queen_gethit.grn",
+          "cabinet": "client11.cab"
+        },
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/fire_ant_queen_idle.grn",
+          "bytes": 83588,
+          "sha256": "3c80a4ea1db1d74d3836586bcfefb6ac95510110c3c892bb50bc13836f859ec0",
+          "member": "uoaos/UOTD/Models/Monsters/fire_ant_queen_idle.grn",
+          "cabinet": "client11.cab"
+        },
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/fire_ant_queen_run.grn",
+          "bytes": 89032,
+          "sha256": "98e556c819b44bf94fd38fd2949b129b69af0187276defcdf7607ef408e8c138",
+          "member": "uoaos/UOTD/Models/Monsters/fire_ant_queen_run.grn",
+          "cabinet": "client11.cab"
+        },
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/fire_ant_queen_walk.grn",
+          "bytes": 89048,
+          "sha256": "0909cd9e7e48c95ea42e13787521f9917265683089812b75675292772d7d9727",
+          "member": "uoaos/UOTD/Models/Monsters/fire_ant_queen_walk.grn",
+          "cabinet": "client11.cab"
+        }
+      ],
+      "bones": 44,
+      "triangles": 1488,
+      "source_clips": 10,
+      "levels": 1,
+      "normal_offset_m": 0.0015,
+      "opacity": "opaque",
+      "limb_support": "six_original_legs",
+      "classic_action_categories": {
+        "18": "Fidget2"
+      },
+      "authored_normal_repair": {
+        "original_sha256": "76076ef6adde45e46a38d02faa2e6faf96f0117a94a861ff7be1c9e7612fce4e",
+        "repaired_sha256": "700a8d4b0a7fb6641274e696f568dd320d577afa35652dd099afdccc7ddf5570",
+        "replacements": [
+          {
+            "index": 100,
+            "normal_f32le": "71102f3f07ea39bfe61890bd",
+            "face_coherence_basis_points": 7993
+          },
+          {
+            "index": 101,
+            "normal_f32le": "b7badc3e903c5bbf627a913e",
+            "face_coherence_basis_points": 5106
+          },
+          {
+            "index": 118,
+            "normal_f32le": "69e6583f1aaf30beee9a00bf",
+            "face_coherence_basis_points": 7875
+          },
+          {
+            "index": 257,
+            "normal_f32le": "74102fbf04ea39bfd81890bd",
+            "face_coherence_basis_points": 7993
+          },
+          {
+            "index": 258,
+            "normal_f32le": "cebadcbe8e3c5bbf487a913e",
+            "face_coherence_basis_points": 5106
+          },
+          {
+            "index": 272,
+            "normal_f32le": "6de658bf28af30bee69a00bf",
+            "face_coherence_basis_points": 7875
+          }
+        ],
+        "method": "Authored area-weighted normals from original incident faces. Preserve each mesh and every other source byte."
+      },
+      "native_constructor_hues": {
+        "BlackSolenQueen": 1107,
+        "BlackSolenInfiltratorQueen": 1107
+      },
+      "source_animation_body": 783,
+      "presentation_script": "res://Presentation/SourceSolenWarriorVisual.gd"
+    },
+    {
+      "kind": "fire_ant_queen",
+      "expected_bodies": [
+        783
+      ],
+      "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+      "containers": [
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client7.cab",
+          "bytes": 20805,
+          "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client10.cab",
+          "bytes": 33956665,
+          "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client11.cab",
+          "bytes": 35160963,
+          "sha256": "307a6b91c4d5459080d1fe8a74ae4fe0b91dea8a21a2866ca91e7dc7ba92f1a8"
+        }
+      ],
+      "model_table": {
+        "path": "work/creatures/solen-queen-source/cabinet-proof/models.txt",
+        "bytes": 55735,
+        "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a"
+      },
+      "files": [
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/fire_ant_queen_lod2.grn",
+          "bytes": 134836,
+          "sha256": "95e3f307eda1f8336fb6f4eb3a9c798a6db9ae7b65c1ffb14528bc6e177c054e",
+          "member": "uoaos/UOTD/Models/Monsters/fire_ant_queen_lod2.grn",
+          "cabinet": "client11.cab"
+        },
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/fire_ant_queen_256.tga",
+          "bytes": 196652,
+          "sha256": "3f1cfb9c9cc4f96afb9dba001658abc1f99f59e63db48c70e2f2cd8019a7380a",
+          "member": "uoaos/UOTD/Models/Maps/fire_ant_queen_256.tga",
+          "cabinet": "client10.cab"
+        },
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/fire_ant_queen_attack1.grn",
+          "bytes": 109228,
+          "sha256": "249f41f296016622499257979ba073138567d6dfa9e11e7e4079503ff0b4f308",
+          "member": "uoaos/UOTD/Models/Monsters/fire_ant_queen_attack1.grn",
+          "cabinet": "client11.cab"
+        },
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/fire_ant_queen_attack2.grn",
+          "bytes": 89752,
+          "sha256": "8616517553087f2ff099f217dae6bf56d482e3df753e0972a624bbf176fa68e1",
+          "member": "uoaos/UOTD/Models/Monsters/fire_ant_queen_attack2.grn",
+          "cabinet": "client11.cab"
+        },
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/fire_ant_queen_attack3.grn",
+          "bytes": 90824,
+          "sha256": "3a6ebab4531de250f224492b186724afca635c14dd2e95aa5e6c8f582b019008",
+          "member": "uoaos/UOTD/Models/Monsters/fire_ant_queen_attack3.grn",
+          "cabinet": "client11.cab"
+        },
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/fire_ant_queen_die1.grn",
+          "bytes": 114488,
+          "sha256": "55f24d2f36d4a3560f75934bfe44cc7597cdd00240ca34fedc45e3852eab0de4",
+          "member": "uoaos/UOTD/Models/Monsters/fire_ant_queen_die1.grn",
+          "cabinet": "client11.cab"
+        },
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/fire_ant_queen_fidget.grn",
+          "bytes": 93512,
+          "sha256": "9b56a45da1b424d994ebc80144531e92d7ed06b6d9641fde0a8126e5ba7ac2b0",
+          "member": "uoaos/UOTD/Models/Monsters/fire_ant_queen_fidget.grn",
+          "cabinet": "client11.cab"
+        },
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/fire_ant_queen_fidget2.grn",
+          "bytes": 83800,
+          "sha256": "141935a72123403c45a10b3e1e0a9638afd1594a031e0328360b4d82ca47f59b",
+          "member": "uoaos/UOTD/Models/Monsters/fire_ant_queen_fidget2.grn",
+          "cabinet": "client11.cab"
+        },
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/fire_ant_queen_gethit.grn",
+          "bytes": 86544,
+          "sha256": "935b1c59bac9b45f19ea5b0f65985737faf0fd276f53949e36ab2f54841cc1ff",
+          "member": "uoaos/UOTD/Models/Monsters/fire_ant_queen_gethit.grn",
+          "cabinet": "client11.cab"
+        },
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/fire_ant_queen_idle.grn",
+          "bytes": 83588,
+          "sha256": "3c80a4ea1db1d74d3836586bcfefb6ac95510110c3c892bb50bc13836f859ec0",
+          "member": "uoaos/UOTD/Models/Monsters/fire_ant_queen_idle.grn",
+          "cabinet": "client11.cab"
+        },
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/fire_ant_queen_run.grn",
+          "bytes": 89032,
+          "sha256": "98e556c819b44bf94fd38fd2949b129b69af0187276defcdf7607ef408e8c138",
+          "member": "uoaos/UOTD/Models/Monsters/fire_ant_queen_run.grn",
+          "cabinet": "client11.cab"
+        },
+        {
+          "path": "work/creatures/solen-queen-source/cabinet-proof/fire_ant_queen_walk.grn",
+          "bytes": 89048,
+          "sha256": "0909cd9e7e48c95ea42e13787521f9917265683089812b75675292772d7d9727",
+          "member": "uoaos/UOTD/Models/Monsters/fire_ant_queen_walk.grn",
+          "cabinet": "client11.cab"
+        }
+      ],
+      "bones": 44,
+      "triangles": 1488,
+      "source_clips": 10,
+      "levels": 1,
+      "normal_offset_m": 0.0015,
+      "opacity": "opaque",
+      "limb_support": "six_original_legs",
+      "classic_action_categories": {
+        "18": "Fidget2"
+      },
+      "authored_normal_repair": {
+        "original_sha256": "95e3f307eda1f8336fb6f4eb3a9c798a6db9ae7b65c1ffb14528bc6e177c054e",
+        "repaired_sha256": "2d0a42cfecf0a14b65cdc3bcb60b8f32d6a69f52963793ae6db686e24053d941",
+        "replacements": [
+          {
+            "index": 100,
+            "normal_f32le": "71102f3f07ea39bfe61890bd",
+            "face_coherence_basis_points": 7993
+          },
+          {
+            "index": 101,
+            "normal_f32le": "b7badc3e903c5bbf627a913e",
+            "face_coherence_basis_points": 5106
+          },
+          {
+            "index": 118,
+            "normal_f32le": "69e6583f1aaf30beee9a00bf",
+            "face_coherence_basis_points": 7875
+          },
+          {
+            "index": 257,
+            "normal_f32le": "74102fbf04ea39bfd81890bd",
+            "face_coherence_basis_points": 7993
+          },
+          {
+            "index": 258,
+            "normal_f32le": "cebadcbe8e3c5bbf487a913e",
+            "face_coherence_basis_points": 5106
+          },
+          {
+            "index": 272,
+            "normal_f32le": "6de658bf28af30bee69a00bf",
+            "face_coherence_basis_points": 7875
+          }
+        ],
+        "method": "Authored area-weighted normals from original incident faces. Preserve each mesh and every other source byte."
+      },
+      "native_constructor_hues": {
+        "RedSolenQueen": 0,
+        "RedSolenInfiltratorQueen": 0
+      },
+      "source_animation_body": 0,
+      "presentation_script": "res://Presentation/SourceSolenWarriorVisual.gd"
+    }
+  ],
+  "scope": "Original Solen Queens 807 and 783. Each mesh retains its own RGB atlas, all 44 joints and linked body 783 motion.",
+  "rights": "Private source and derived artwork. No redistribution."
+}

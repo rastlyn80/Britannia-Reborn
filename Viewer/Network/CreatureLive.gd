@@ -46,11 +46,11 @@ func run() -> void:
 	candidate_pin=FileAccess.get_sha256("res://../work/creatures/live-candidates.json")
 	accepted_pin=FileAccess.get_sha256("res://local-art/creatures/accepted-index.json")
 	if prepared:
-		if not check(family in ["candidate_batch","mummies","solen_warriors","ice_elementals"],"Prepared trial uses an explicitly checked family"):return
+		if not check(family in ["candidate_batch","mummies","solen_warriors","ice_elementals","solen_queens"],"Prepared trial uses an explicitly checked family"):return
 		Registry.load_index()
 		for candidate: Dictionary in candidates:
 			var record: Dictionary=candidate.get("presentation",{})
-			if not check(not record.is_empty() and record.status=="prepared" and str(record.kind)==str(candidate.kind) and int(candidate.body) in [154,782,806,161],"Exact checked candidate renderer is injected only into this process"):return
+			if not check(not record.is_empty() and record.status=="prepared" and str(record.kind)==str(candidate.kind) and int(candidate.body) in ([783,807] if family=="solen_queens" else [154,782,806,161]),"Exact checked candidate renderer is injected only into this process"):return
 			Registry.entries[int(candidate.body)]=record
 	for sex in 2:
 		var session:=Game.new();root.add_child(session);sessions.append(session)

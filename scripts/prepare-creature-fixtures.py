@@ -9,6 +9,8 @@ PREPARED_FORMS={
     'solen_warriors':('preparation.json','check-solen-warrior-sources.py','--fidelity',{782:['RedSolenWarrior','RedSolenInfiltratorWarrior'],806:['BlackSolenWarrior','BlackSolenInfiltratorWarrior']}),
     'ice_elementals':('candidate.json','check-source-ice-elemental.py','--candidate',{161:['IceElemental']}),
 }
+QUEEN_FORM=('preparation.json','prepare-solen-queens.py','--check-prepared',
+            {783:['RedSolenQueen','RedSolenInfiltratorQueen'],807:['BlackSolenQueen','BlackSolenInfiltratorQueen']})
 RECENT_CLASSES={166:['GoldenElemental'],753:['EnslavedGargoyle'],301:['Treefellow','FeralTreefellow'],
                 155:['RottingCorpse','UnfrozenMummy'],189:['OrcBrute'],165:['ShadowWisp','ShadowWispFamiliar'],
                 154:['Mummy','PestilentBandage'],782:['RedSolenWarrior','RedSolenInfiltratorWarrior'],
@@ -17,7 +19,7 @@ RECENT_CLASSES={166:['GoldenElemental'],753:['EnslavedGargoyle'],301:['Treefello
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
 def prepared_entries(family):
-    assert family in ['mages','juka','candidate_batch',*PREPARED_FORMS],'Prepared native trial requires an explicit checked family'
+    assert family in ['mages','juka','candidate_batch','solen_queens',*PREPARED_FORMS],'Prepared native trial requires an explicit checked family'
     if family in ['mages','juka']:
         checker='check-source-mages.py' if family=='mages' else 'check-prepared-juka.py'
         subprocess.run([sys.executable,'-B',str(ROOT/'scripts'/checker)]+([] if family=='mages' else ['--graphics']),check=True)
@@ -25,7 +27,7 @@ def prepared_entries(family):
         return json.loads(path.read_text(encoding='utf-8'))['models'],{}
     entries=[];reviewed={}
     for name in PREPARED_FORMS if family=='candidate_batch' else [family]:
-        filename,checker,flag,classes=PREPARED_FORMS[name]
+        filename,checker,flag,classes=QUEEN_FORM if name=='solen_queens' else PREPARED_FORMS[name]
         subprocess.run([sys.executable,'-B',str(ROOT/'scripts'/checker),flag],check=True)
         path=ROOT/'Viewer/local-art/creatures'/name/filename
         report=json.loads(path.read_text(encoding='utf-8'))

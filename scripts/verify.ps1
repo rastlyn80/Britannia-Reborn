@@ -82,6 +82,16 @@ if (Test-Path "$root/Viewer/local-art/creatures/crystal_lattice/local-presentati
  & python -B "$root/scripts/accept-crystal-lattice.py" --check-active
  if ($LASTEXITCODE) {throw 'Active Crystal Lattice Seeker source/presentation receipt failed'}
 }
+foreach ($route in @(
+ @{Folder='giant_beetle'; Publisher='accept-giant-beetle.py'},
+ @{Folder='giant_beetle_fire'; Publisher='accept-fire-beetle.py'},
+ @{Folder='giant_beetle_ethereal'; Publisher='accept-ethereal-beetle.py'},
+ @{Folder='solen_queens'; Publisher='accept-solen-queens.py'}
+)) {
+ if (!(Test-Path "$root/Viewer/local-art/creatures/$($route.Folder)/local-presentation.json")) {continue}
+ & python -B "$root/scripts/$($route.Publisher)" --check-active
+ if ($LASTEXITCODE) {throw "Active creature presentation evidence failed: $($route.Folder)"}
+}
 if (Test-Path "$root/Viewer/local-art/creatures/source_variants/preparation.json") {
  & python -B "$root/scripts/prepare-source-variants.py" --check-prepared
  if ($LASTEXITCODE) {throw 'Source variant exact-source/donor/scene audit failed'}

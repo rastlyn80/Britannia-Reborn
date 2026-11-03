@@ -1,8 +1,18 @@
+# Solen Queen bodies 783 and 807
+
+Both Queens are active in the local client. The original 44-joint rigs, separate atlases and ten linked clips are retained. Each source mesh needed six authored normals. The final assets passed 106 skin checks, 21 normal-route action checks, 232,687 six-leg terrain checks over 2,880 poses, 188 rendered checks over 40 poses and four death entries, and 25 dye and appearance checks. All four native constructors passed 636 checks in prepared mode. The normal-registry native run passed 631 checks across the same four constructors and two clients. The catalogue now reports 203 of 279 loose model routes, 184 with native evidence, 244 static corpse entries and one separate mounted-item route.
+
+Giant Beetle body 791 passed 110 isolated checks in the new native run. Both owners opened the server's actual strong backpack from the native context menu and received the seeded contents. Pack friends, strangers and inventory transfer on death remain separate.
+
+# Ethereal Beetle mounted item 0x3E97
+
+The Ethereal Beetle is active locally as mounted-item art. Its original 51-joint mesh, ten linked clips and 128×128 RGBA atlas were rebuilt from pinned source members. A blended spectral material uses the original alpha. The client passed 134 riding checks over 36 poses and 25 normal-route checks, covering exact item identity, default spectral hue, full and partial dye parameters, and exclusion from loose mobiles and static corpses. The isolated two-client native run passed 60 checks, including native summon, mounted walking and running, default spectral and custom hues, observer replication, and return of the same dyed 0x260F statuette to the backpack. The mounted-item route is counted separately from the 279 loose creature bodies.
+
 # Fire Beetle body 169
 
 Body 169 and mounted item 0x3E95 now use the separate original Fire Beetle mesh and atlas with ten linked body 791 clips. The 51-joint rig and 1,102 source triangles produced 4,408 refined triangles. The revised saddle and rein sockets follow the original smaller scale. Final checks covered 56 skin cases, nine action cases, 92 rendered presentation cases, 13 appearance cases and 128 riding cases.
 
-The isolated two-client native run passed 98 checks, including constructor hue 0x489 on the loose and mounted model, mounted walking and running, full and partial hues, dismount, classic actions and native corpse. Forge use and autonomous combat remain open. Current local coverage is 201 of 279 model routes and 182 of 279 with positive native evidence. The corpse catalogue has 242 keys. After refreshing the dependent mount and creature evidence, the full project regression passed, including world startup.
+The isolated two-client native run passed 98 checks, including constructor hue 0x489 on the loose and mounted model, mounted walking and running, full and partial hues, dismount, classic actions and native corpse. A later isolated run passed 114 checks, including normal ore targeting and server-side smelting into iron ingots for both owners. Smithing recipes and autonomous combat remain open. Current local coverage is 201 of 279 model routes and 182 of 279 with positive native evidence. The corpse catalogue has 242 keys. After refreshing the dependent mount and creature evidence, the full project regression passed, including world startup.
 
 # Giant Beetle body 791
 

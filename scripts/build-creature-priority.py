@@ -160,7 +160,7 @@ def main():
     accepted = read(art / 'accepted-index.json')['entries']
     public = ROOT / 'Viewer/Art/Creatures/index.json'
     if public.exists():accepted = [row for row in read(public)['entries'] if row.get('status')=='validated'] + accepted
-    routed = {int(b['body']): row['kind'] for row in accepted for b in row['bodies']}
+    routed = {int(b['body']): row['kind'] for row in accepted if not row.get('mount_only') for b in row['bodies']}
     routed.update(human_npc_routes())
     for file, constants in [('EquineRegistry.gd', ['BODIES', 'COMPATIBILITY', 'DISTINCT']), ('MountVisual.gd', ['BODIES']), ('AnimalVisual.gd', ['BODIES'])]:
         for constant in constants:
