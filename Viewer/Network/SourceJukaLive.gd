@@ -1,10 +1,12 @@
 extends "res://Network/CreatureLive.gd"
 ## Native Juka constructors/actions on prepared routes, without accepted-index edits.
 const APPEARANCE_INPUTS=["Network/SourceJukaLive.gd","Network/CreatureLive.gd","Network/GameSession.gd","Network/MobileAppearance.gd","Presentation/SourceJukaVisual.gd","Presentation/SourceJukaSupport.gd","Presentation/SourceMageVisual.gd","Presentation/SourceMageSupport.gd","Presentation/SourceMageMaterial.gd","Presentation/SourceMageSurface.gdshader","Presentation/SourceGroundLookup.gd","Presentation/HumanAvatar.gd","Presentation/CreatureDeaths.gd","Presentation/CorpseModels.gd","Presentation/WorldItems.gd"]
+var active_route := false
 func _initialize() -> void:
 	family="juka"
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--family="):family=arg.trim_prefix("--family=")
+		if arg == "--active-route": active_route = true
 	create_timer(240.).timeout.connect(func():push_error("Native Juka test deadline");quit(1));call_deferred("run")
 func pause_ai(client: int,serial: int) -> bool:
 	replies[client].clear();sessions[client].send_command("[CreaturePauseAI "+str(serial))
@@ -12,13 +14,25 @@ func pause_ai(client: int,serial: int) -> bool:
 	return check(await until(func():return replies[client].has(expected)),"Actual native AI timer explicitly stopped in active sector")
 func run() -> void:
 	var runtime_start: Dictionary={};var ai_pin:=FileAccess.get_sha256("res://../Server/HorseIntegrationFixtures/FixtureAIControls.cs")
-	for path in APPEARANCE_INPUTS:runtime_start[path]=FileAccess.get_sha256("res://"+path)
+	var appearance_inputs: Array=APPEARANCE_INPUTS.duplicate()
+	if family=="juka_lord":appearance_inputs.append("Presentation/SourceJukaLordVisual.gd")
+	for path in appearance_inputs:runtime_start[path]=FileAccess.get_sha256("res://"+path)
 	var accounts: Array=JSON.parse_string(FileAccess.get_file_as_string("res://../work/horse-session/accounts.local.json"))
-	var prep: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://local-art/creatures/juka/preparation.json"));var candidates: Array=[];var registry=preload("res://Presentation/CreatureRegistry.gd");registry.load_index()
-	var preparation_start:=FileAccess.get_sha256("res://local-art/creatures/juka/preparation.json")
+	var path_to_prep:="res://local-art/creatures/"+family+"/preparation.json"
+	var prep: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(path_to_prep));var candidates: Array=[];var registry=preload("res://Presentation/CreatureRegistry.gd");registry.load_index()
+	var preparation_start:=FileAccess.get_sha256(path_to_prep)
+	var index_path := "res://local-art/creatures/accepted-index.json"
+	var index_start := FileAccess.get_sha256(index_path)
 	for record: Dictionary in prep.models:
 		for identity: Dictionary in record.bodies:
-			registry.entries[int(identity.body)]=record;candidates.append({"body":identity.body,"native_class":identity.native_class,"kind":record.kind,"profile":record.profile})
+			var body := int(identity.body)
+			if active_route:
+				var expected := record.duplicate(true)
+				expected.status = "validated"
+				if not check(family == "juka_lord" and registry.supports_body(body) and registry.entry(body) == expected,"Normal registry supplies exact Juka Lord package"):return
+			else:
+				registry.entries[body] = record
+			candidates.append({"body":identity.body,"native_class":identity.native_class,"kind":record.kind,"profile":record.profile})
 	for sex in 2:
 		var session:=Game.new();root.add_child(session);sessions.append(session)
 		var arena:=DeathArena.new();root.add_child(arena);death_arenas.append(arena)
@@ -56,10 +70,12 @@ func run() -> void:
 			if not check(await until(func():return session.entities.has(serial) and observer.entities.has(serial)),"both clients receive native loose creature"):return
 			if not check(await until(func():return session.mobile_equipment.has(serial) and observer.mobile_equipment.has(serial) and session.mobile_equipment[serial].size()==observer.mobile_equipment[serial].size()),"Both clients agree on native Juka equipment count"):return
 			var original_worn: Array=session.mobile_equipment.get(serial,{}).values().duplicate(true)
+			if native_class=="JukaLord" and not check(original_worn.any(func(item: Dictionary):return int(item.id) in [0x13b1,0x13b2] and int(item.layer)==2),"Native JukaLord starts with its actual two-handed bow"):return
 			var actor:=preload("res://Presentation/HumanAvatar.gd").new();actor.initial_body=body;root.add_child(actor);actor.set_physics_process(false);actor.apply_server_appearance(session.entities[serial],session.mobile_equipment.get(serial,{}).values())
 			death_arenas[sex].avatars[serial]=actor
 			var peer_actor:=preload("res://Presentation/HumanAvatar.gd").new();peer_actor.initial_body=body;root.add_child(peer_actor);peer_actor.set_physics_process(false);peer_actor.apply_server_appearance(observer.entities[serial],observer.mobile_equipment.get(serial,{}).values());death_arenas[1-sex].avatars[serial]=peer_actor
 			if not check(actor.horse_visual!=null and actor.horse_visual.native_body==body and actor.human_visual==null,"received body selects the actual validated creature avatar"):return
+			if native_class=="JukaLord" and not check(actor.horse_visual.bow_holder.visible and peer_actor.horse_visual.bow_holder.visible,"Both client avatars attach the native bow"):return
 			for hue in [53,0x8000|53]:
 				await reply(sex,"colour "+str(hue),"UCCREATURE|colour|")
 				if not check(await until(func():return int(session.entities[serial].hue)==hue and int(observer.entities[serial].hue)==hue),"native full/partial hues reach both clients"):return
@@ -177,8 +193,9 @@ func run() -> void:
 			await reply(sex,"cleanup","UCCREATURE|cleaned")
 	for session in sessions:session.close()
 	var runtime: Dictionary={}
-	for path in APPEARANCE_INPUTS:runtime[path]=FileAccess.get_sha256("res://"+path)
-	if not check(ai_pin==FileAccess.get_sha256("res://../Server/HorseIntegrationFixtures/FixtureAIControls.cs") and runtime==runtime_start and preparation_start==FileAccess.get_sha256("res://local-art/creatures/juka/preparation.json"),"Exact renderer/protocol/preparation inputs stayed unchanged throughout native test"):return
-	var folder:="res://../outputs/creatures/"+family;DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(folder))
-	var file:=FileAccess.open(folder+"/live.json",FileAccess.WRITE);file.store_string(JSON.stringify({"ai_control_sha256":ai_pin,"ai_timer_stop_verified":true,"test_sha256":FileAccess.get_sha256("res://Network/SourceJukaLive.gd"),"base_test_sha256":FileAccess.get_sha256("res://Network/CreatureLive.gd"),"runtime_sha256":runtime,"fixture_sha256":FileAccess.get_sha256("res://../Server/HorseIntegrationFixtures/CreatureFixtures.cs"),"preparation_sha256":preparation_start,"checks":checks,"failures":0,"records":records,"scope":"Prepared Juka routes injected in memory only, not acceptance. Actual two-client equipment-aware avatars and death snapshots, world entry, native constructor bodies/hues, Mobile.Move walk/run, packets and corpse replication. Native AI timers are explicitly stopped after preparation/movement and acknowledged on the wire; flat-arena relocation is fixture setup. Not autonomous AI, taming or full gameplay certification. Production world and saves untouched."},"\t"));file.close()
+	for path in appearance_inputs:runtime[path]=FileAccess.get_sha256("res://"+path)
+	if not check(ai_pin==FileAccess.get_sha256("res://../Server/HorseIntegrationFixtures/FixtureAIControls.cs") and runtime==runtime_start and preparation_start==FileAccess.get_sha256(path_to_prep),"Exact renderer/protocol/preparation inputs stayed unchanged throughout native test"):return
+	if not check(index_start == FileAccess.get_sha256(index_path),"Native trial leaves the normal registry unchanged"):return
+	var folder:="res://../outputs/creatures/"+family+("_active" if active_route else "");DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(folder))
+	var file:=FileAccess.open(folder+"/live.json",FileAccess.WRITE);file.store_string(JSON.stringify({"ai_control_sha256":ai_pin,"ai_timer_stop_verified":true,"test_sha256":FileAccess.get_sha256("res://Network/SourceJukaLive.gd"),"base_test_sha256":FileAccess.get_sha256("res://Network/CreatureLive.gd"),"runtime_sha256":runtime,"fixture_sha256":FileAccess.get_sha256("res://../Server/HorseIntegrationFixtures/CreatureFixtures.cs"),"preparation_sha256":preparation_start,"checks":checks,"failures":0,"records":records,"prepared_trial":not active_route,"accepted_index_sha256":index_start,"scope":"Actual two-client equipment-aware avatars and death snapshots, world entry, native constructor bodies/hues, Mobile.Move walk/run, packets and corpse replication. Native AI timers are explicitly stopped after preparation/movement and acknowledged on the wire; flat-arena relocation is fixture setup. Not autonomous AI, taming or full gameplay certification. Production world and saves untouched."},"\t"));file.close()
 	print("CREATURE NATIVE / ",family,": ",checks," checks / 0 failures");quit()

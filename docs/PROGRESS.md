@@ -1,3 +1,13 @@
+# Juka Lord, Hydra and Abscess
+
+Juka Lord 766 is active locally with its original Kabur rig, 13 assigned motions and server-equipped bow. The Vulkan route verified both bow graphics. The normal-registry ModernUO trial passed 217 checks across two clients. The pinned source rebuild reproduces the intermediate glTF files and bow byte for byte. The rebuilt packed scenes have different file hashes, so the existing active scenes were retained.
+
+Hydra and Abscess share active body 265, its original five-headed rig and 13 recovered motions. The normal-registry ModernUO trial passed 367 checks across both clients and constructors, including the authored fire-breath playback mapping and Abscess's hue. Autonomous fire-breath effects and mixed-surface belly clearance remain open. The catalogue records 210 of 279 routed bodies and 191 with some live evidence.
+
+# Recovered Dryad, Troglodyte and Ferret
+
+Bodies 266, 267 and 279 are active in the local registry. Each retains its original mesh, atlas, rig and 13 recovered clips. Dryad adds an authored cast and restores the atlas foliage transparency. Ferret's skinned-sole solver reduced worst sampled terrain penetration to 2.00 mm. The normal client passed 22 decoded actions and nine static corpse hue variants. The isolated normal-registry ModernUO run passed 883 checks across both clients and all five constructors, including Lurg's constructor hue. The catalogue records 208 of 279 routed bodies and 190 with some live evidence, including prepared trials. Autonomous abilities, further terrain cases and publication remain open. The occurrence queue now starts with Juka Lord.
+
 # Bog Thing body 780
 
 The local client uses the original 58-joint Third Dawn body with all 13 rigid pieces and nine motions. The pinned decoder and shared exporter reproduce the validated asset. The Godot bake retains 2,088 tracks and 1,118,472 keys. The renderer passed 1,596 ramp, ledge, gap and step cases, and 48 corpse checks covered late item arrival, redraw and selection bounds. Vulkan confirmed full and partial dyes. The isolated two-client test passed 151 checks for body identity, movement, actions, hues, death and corpse replication. The catalogue records 205 of 279 implemented body routes and 186 with live evidence. The 1:1000 unit conversion is an authored fit, and the original client's texture-group interpretation remains unverified.

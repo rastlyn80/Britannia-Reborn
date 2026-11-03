@@ -1,0 +1,25 @@
+{
+  "installer_sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393",
+  "model_table_sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099",
+  "native": {
+    "Projects/UOContent/Mobiles/Monsters/ML/Blighted Grove/Hydra.cs": "cd2b012541758137d5cb044d573959e5f0685e9418a15876e70a137176405647",
+    "Projects/UOContent/Mobiles/Monsters/ML/Blighted Grove/Abscess.cs": "4182a8a2d89d9bc3ecc55df0ac00074e36454cfca3b075a931367ca6c974409f"
+  },
+  "files": {
+    "Client/Models/Maps/Hydra.TGA": "aa4725b46ab34ea22bde785462525618c6b149bcfa45fbf2e6b29ea08b835ab1",
+    "Client/Models/Monsters/Hydra_Attack1.grn": "9681c7d39841e6c3559901d493e20341120555813c1639183c7288f252c9d8ac",
+    "Client/Models/Monsters/Hydra_Attack2.grn": "4f24bbbd6333c535d858ec9736d48f0348e0792618c42b622de6339182541acc",
+    "Client/Models/Monsters/Hydra_Attack3.grn": "d328161d9ca4834f9c0137f2b071f24e0a086ed2aa23ef38e664ddbbdb773a9d",
+    "Client/Models/Monsters/Hydra_BlockLeft.grn": "87def1602fc0b383aca98ea2f9d3ebc2742744cefa63192bdbb6d341f0e91b28",
+    "Client/Models/Monsters/Hydra_BlockRight.grn": "9835c1d9d5473697f2dc33563aea6a82aa532a5113428e6942ca9c6be2174e45",
+    "Client/Models/Monsters/Hydra_Die1.grn": "9beb19be6e61703196f498cf1132379f33989c774028417e9a3dff60981db235",
+    "Client/Models/Monsters/Hydra_Die2.grn": "8cd7c581b1dc73700e9ea788fe9702dfb0cf7f3949ef2cfe68c333246a8e3568",
+    "Client/Models/Monsters/Hydra_Fidget.grn": "6926ad9ec0d815b17ae8abc0bceee34af9a971321c8cf4a674412aabbf5fc589",
+    "Client/Models/Monsters/Hydra_Fidget2.grn": "5cfe40a842f88eee92339bd8715c11ab9286bbe67245edc81c6015ca7f2c2070",
+    "Client/Models/Monsters/Hydra_Idle.grn": "dc3169882b0547667b0c8bbe29332b9bbf91f35c4cef92e949d392a50592f4e6",
+    "Client/Models/Monsters/Hydra_LOD2.grn": "8f7b03342e69a100b7979ebaa9d14be0cd89639b79953b112899bc66951c587c",
+    "Client/Models/Monsters/Hydra_Pillage.grn": "3f54afecacbbcda3461485c0a0203bc9c522073e09f2ec53a0801229d1545420",
+    "Client/Models/Monsters/Hydra_TakeDamage.grn": "381ed7694418fbdadea7e80e991b3fc9e1cb18098dbdb60ed2a85c5d53115a54",
+    "Client/Models/Monsters/Hydra_Walk.grn": "82b1464fb585c99478968dbc72084b03eeb9af27212480f07dc07d9eddc3a2c2"
+  }
+}

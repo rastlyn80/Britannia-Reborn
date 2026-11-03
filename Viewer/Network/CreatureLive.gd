@@ -46,11 +46,12 @@ func run() -> void:
 	candidate_pin=FileAccess.get_sha256("res://../work/creatures/live-candidates.json")
 	accepted_pin=FileAccess.get_sha256("res://local-art/creatures/accepted-index.json")
 	if prepared:
-		if not check(family in ["candidate_batch","mummies","solen_warriors","ice_elementals","solen_queens"],"Prepared trial uses an explicitly checked family"):return
+		if not check(family in ["candidate_batch","mummies","solen_warriors","ice_elementals","solen_queens","late_source","hydra"],"Prepared trial uses an explicitly checked family"):return
+		var permitted_bodies: Array={"solen_queens":[783,807],"late_source":[266,267,279],"hydra":[265]}.get(family,[154,782,806,161])
 		Registry.load_index()
 		for candidate: Dictionary in candidates:
 			var record: Dictionary=candidate.get("presentation",{})
-			if not check(not record.is_empty() and record.status=="prepared" and str(record.kind)==str(candidate.kind) and int(candidate.body) in ([783,807] if family=="solen_queens" else [154,782,806,161]),"Exact checked candidate renderer is injected only into this process"):return
+			if not check(not record.is_empty() and record.status=="prepared" and str(record.kind)==str(candidate.kind) and int(candidate.body) in permitted_bodies,"Exact checked candidate renderer is injected only into this process"):return
 			Registry.entries[int(candidate.body)]=record
 	for sex in 2:
 		var session:=Game.new();root.add_child(session);sessions.append(session)
@@ -137,6 +138,7 @@ func run() -> void:
 					if actor.horse_visual.entry.get("classic_action_categories",{}).get(str(slot),"")=="Cast2" and not actions.has(slot):actions.append(slot)
 				if actor.horse_visual.entry.get("new_action_categories",{}).get("11","")=="Cast2" and not actions.has(-2):actions.append(-2)
 			if actor.horse_visual.entry.get("classic_action_categories",{}).get("18","")=="Fidget2" and actor.horse_visual.animator.has_animation("Fidget2"):actions.append(18)
+			if body == 265 and actor.horse_visual.entry.get("classic_action_categories",{}).get("12","") == "Attack2": actions.append(12)
 			var action_records: Array=[]
 			for action in actions:
 				session.last_mobile_actions.erase(serial);observer.last_mobile_actions.erase(serial)

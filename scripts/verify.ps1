@@ -173,6 +173,15 @@ if ($LASTEXITCODE) {throw 'Human NPC paint/source attributes, 16/32-bit LOD or s
 if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
  & $godot --headless --path "$root/Viewer" --script res://Presentation/CreatureDeathTests.gd
  if ($LASTEXITCODE) {throw 'Existing generic decoded creature-death transitions or lifecycle regressed'}
+ $lateIndex = Get-Content "$root/Viewer/local-art/creatures/accepted-index.json" -Raw | ConvertFrom-Json
+ foreach ($family in @('late_source','hydra')) {
+  if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.assets.modern -like "res://local-art/creatures/$family/*" }) {
+   $lateRoutes = & $godot --headless --path "$root/Viewer" --script res://Presentation/LateCreatureRouteTests.gd -- "--family=$family" 2>&1
+   $lateExit = $LASTEXITCODE
+   $lateRoutes | ForEach-Object { Write-Output $_ }
+   if ($lateExit -or ($lateRoutes | Select-String 'SCRIPT ERROR:|ERROR:')) {throw "Recovered creature route failed: $family"}
+  }
+ }
 }
 if (Test-Path "$root/Viewer/local-art/human-npcs/savages/dance/preparation.json") {
  & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanNPCMotionTests.gd

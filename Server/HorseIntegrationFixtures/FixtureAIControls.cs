@@ -34,7 +34,7 @@ public static class FixtureAIControls
         }
         var allowed = creature is EvilMage or EvilMageLord
             && ServerConfiguration.GetOrUpdateSetting("britanniaReborn.isolatedMageTests", false)
-            || creature is JukaMage or JukaWarrior
+            || creature is JukaMage or JukaWarrior or JukaLord
             && ServerConfiguration.GetOrUpdateSetting("britanniaReborn.isolatedJukaTests", false);
         if (!allowed || creature.Map != player.Map || !creature.InRange(player.Location, 18))
         {

@@ -1,0 +1,204 @@
+{
+  "installer_sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393",
+  "installer_mirror": "https://zuluarchive.com/static/files/uoml_setup.exe",
+  "cabinet_members": {
+    "data1.cab": {
+      "bytes": 664374,
+      "sha256": "78110fcad7a3bf0d459c6f58f30764064fa2868dd2eea92ffc3983390846ce42"
+    },
+    "data1.hdr": {
+      "bytes": 624745,
+      "sha256": "bc7c394bab19ece161bdd482bd21d16f946d4f04eb64aca67d6c8c45ffa79587"
+    },
+    "data2.cab": {
+      "bytes": 794818869,
+      "sha256": "247b9305c2f6d3af18c2c5bc7018d0d8ae27b5ae394187b6ffccbc9d174db95d"
+    }
+  },
+  "model_table": {
+    "bytes": 81498,
+    "sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099"
+  },
+  "files": {
+    "Client/Models/Animals/Ferret_Alert.grn": {
+      "bytes": 25056,
+      "sha256": "b0cb75379cb695c91e2c64ee20878211818a52f6496a7a3ffed94a80ad407c6d"
+    },
+    "Client/Models/Animals/Ferret_Attack1.grn": {
+      "bytes": 40652,
+      "sha256": "7f194a1563a4bd69bcaa6df02e6f4a5192c9f207015cde55676618a8a33cdbf5"
+    },
+    "Client/Models/Animals/Ferret_Attack2.grn": {
+      "bytes": 40268,
+      "sha256": "b19d3da49671c737886d4f202834e786bda8b5516807f1417eb240e9b1193ae9"
+    },
+    "Client/Models/Animals/Ferret_Die1.grn": {
+      "bytes": 38048,
+      "sha256": "861048070fd9e251ff9b2808725d44d14830dc70973f26666041d850a65f4c67"
+    },
+    "Client/Models/Animals/Ferret_Die2.grn": {
+      "bytes": 38780,
+      "sha256": "63f257b1ddcc4a0746488a66a6d7c094438fd5c44a537b99a06806e834788d75"
+    },
+    "Client/Models/Animals/Ferret_Fidget.grn": {
+      "bytes": 39704,
+      "sha256": "8cb782fd88476dc62d4adef002f2bec49941b57d71acf736311f35be74f9c6b9"
+    },
+    "Client/Models/Animals/Ferret_Grazing.grn": {
+      "bytes": 27388,
+      "sha256": "49bd882617c02705f2379c6297ffdfc376b77b2cd51b4114cff0c22c2dbc9f7c"
+    },
+    "Client/Models/Animals/Ferret_idle.grn": {
+      "bytes": 25096,
+      "sha256": "d0f4c63ae537592c0eec5c66eaca6c3edbee4fe3ee9e282c33775b462fd7c492"
+    },
+    "Client/Models/Animals/Ferret_Idle2.grn": {
+      "bytes": 24236,
+      "sha256": "0274727f9feaa7282769f5f83f486744748dc054833d71e9c244fa52b68ba7b2"
+    },
+    "Client/Models/Animals/Ferret_LOD2.grn": {
+      "bytes": 47780,
+      "sha256": "dc37ae02334d1d51b54f583feada7f2a3783a14b175ce25eecdaad1193e6f712"
+    },
+    "Client/Models/Animals/Ferret_Lying.grn": {
+      "bytes": 25076,
+      "sha256": "4f972913915556b76de12c6dc88ad853ee41c7a80add5c0c6423de2a319f2350"
+    },
+    "Client/Models/Animals/Ferret_Run.grn": {
+      "bytes": 31124,
+      "sha256": "d144642bb69b9c324f94c9f708749a5514c497a2e421c267ed0aaff333db80f0"
+    },
+    "Client/Models/Animals/Ferret_TakeDamage.grn": {
+      "bytes": 32276,
+      "sha256": "a3fa92a87c6569e219386f094d1ec0f91140779ff5e381896b399184015254ab"
+    },
+    "Client/Models/Animals/Ferret_Walk.grn": {
+      "bytes": 24060,
+      "sha256": "3ded4826ff56557f0bc7307903fb36128ca4c34e51cc45f7f8922bcf1ebdb87e"
+    },
+    "Client/Models/Maps/Dryad.tga": {
+      "bytes": 262188,
+      "sha256": "879cc1cee29cee228591b0a3299533d7e6e526be9192a2fe37354bb8ba7d05d2"
+    },
+    "Client/Models/Maps/Ferret.tga": {
+      "bytes": 262188,
+      "sha256": "75319b6435a27a4b01b32a82f8680660eb6cfe6d70ae979bd9d232a1787c2493"
+    },
+    "Client/Models/Maps/Troglodyte.tga": {
+      "bytes": 262188,
+      "sha256": "9e644b3ddf38e64b5d948483fe38c5c86227038fa5b4a77162de584366f88f46"
+    },
+    "Client/Models/Monsters/Dryad_Attack1.grn": {
+      "bytes": 99504,
+      "sha256": "1b993689aad055cece94cbd859f59c3a32517aa56d7b64c06760efe6fd102fc2"
+    },
+    "Client/Models/Monsters/Dryad_Attack2.grn": {
+      "bytes": 98768,
+      "sha256": "690b89bda58ebe88c2561c93fe3c6473a841e61b1cad2d17dad6501febe3a7e9"
+    },
+    "Client/Models/Monsters/Dryad_Attack3.grn": {
+      "bytes": 100012,
+      "sha256": "ae48b2831ca87cbfc7257a3aa34bc4c07f6f7dfa079bc19ace687860648f4960"
+    },
+    "Client/Models/Monsters/Dryad_BlockLeft.grn": {
+      "bytes": 94916,
+      "sha256": "42e048be06acac353f0bc52121f3dc709029c2ca789ca2bd12091c60d77fadca"
+    },
+    "Client/Models/Monsters/Dryad_BlockRight.grn": {
+      "bytes": 93512,
+      "sha256": "34357068c569b910d27d7f48aa16b919ca32d8d39695fbf90bc18db7f1293100"
+    },
+    "Client/Models/Monsters/Dryad_Die1.grn": {
+      "bytes": 104996,
+      "sha256": "f80b4eec26ed8b165f50df42c56bd629b14eff693da77733b60f19be32ed1c7b"
+    },
+    "Client/Models/Monsters/Dryad_Die2.grn": {
+      "bytes": 105992,
+      "sha256": "774c5ef1ecc8a78b04fbf1d0933dd0f59da2b4a547ee3071a1b8c4b7217ffaa2"
+    },
+    "Client/Models/Monsters/Dryad_Fidget.grn": {
+      "bytes": 96452,
+      "sha256": "84af1238a765bc51d572303f56ef26761614cf50e766e1e71e276988661148a3"
+    },
+    "Client/Models/Monsters/Dryad_Fidget2.grn": {
+      "bytes": 98292,
+      "sha256": "65b493537ebd737e55a9fb09caaa345b79958c6b6b4edc6f3186523864547907"
+    },
+    "Client/Models/Monsters/Dryad_idle.grn": {
+      "bytes": 91192,
+      "sha256": "b641df0673ea21c4fb9d4e40c1fba72bfc2b1cf78fb228dcc4b1b806cbf6f0f6"
+    },
+    "Client/Models/Monsters/Dryad_LOD2.grn": {
+      "bytes": 76408,
+      "sha256": "c25f1f782591e69ee5b006200e5a5d9bd73244c79a5a165a19ffb4b255d945fc"
+    },
+    "Client/Models/Monsters/Dryad_Pillage.grn": {
+      "bytes": 95476,
+      "sha256": "a76decad44959c55a89542e46ef7d805805f46813e4b1f0ae52ba7bf35f3b0b9"
+    },
+    "Client/Models/Monsters/Dryad_TakeDamage.grn": {
+      "bytes": 95136,
+      "sha256": "410e8ffce76bfd03830ab5ae6dfc29da66b9220aebedc34776cefb60321da0da"
+    },
+    "Client/Models/Monsters/Dryad_Walk.grn": {
+      "bytes": 98268,
+      "sha256": "3e17bb9343cfa3aa1536518ad56e0e593d8e2f9323d203c5ea3bfefea1006d3c"
+    },
+    "Client/Models/Monsters/Troglodyte_attack1.grn": {
+      "bytes": 386268,
+      "sha256": "9b3af5ab5be7ac5a3d235a2ce536a9309a3152e5158cf33a609b550b45e296b7"
+    },
+    "Client/Models/Monsters/Troglodyte_attack2.grn": {
+      "bytes": 351880,
+      "sha256": "bb0aa81977c58d06e039ec2790bafbd8a4a80a4a3ebe85d62b69556aecddd1b3"
+    },
+    "Client/Models/Monsters/Troglodyte_attack3.grn": {
+      "bytes": 424308,
+      "sha256": "74b45f72b33d0ed1f573123a9f92f75fa8a477039920c9d82e9605e236ea4c0e"
+    },
+    "Client/Models/Monsters/Troglodyte_blockleft.grn": {
+      "bytes": 340124,
+      "sha256": "35e136a1b1962d842e1c08c516eba037c5bf714d5879a2e0f1fb7d4e235607f9"
+    },
+    "Client/Models/Monsters/Troglodyte_blockright.grn": {
+      "bytes": 326340,
+      "sha256": "9f47dd5ef8d65504d80778b7d51c5e2cd68bf0058ab9f5696ddd223afc4a8247"
+    },
+    "Client/Models/Monsters/Troglodyte_die1.grn": {
+      "bytes": 363920,
+      "sha256": "8b1ebb1047c982d8a9e64c8fcfce9c821be0e04a37e946763b6b5c0265be16be"
+    },
+    "Client/Models/Monsters/Troglodyte_die2.grn": {
+      "bytes": 412476,
+      "sha256": "30718f25682126718321460e9b59073aeb99084de18665c503c7ba38225e8713"
+    },
+    "Client/Models/Monsters/Troglodyte_fidget.grn": {
+      "bytes": 339568,
+      "sha256": "128e027a681e6f8a0b9a7e0c82fbca330f9150ddfe10e6dfd5810ebf189072f1"
+    },
+    "Client/Models/Monsters/Troglodyte_idle.grn": {
+      "bytes": 51024,
+      "sha256": "87fc80e2398923cb7b57d5a6a0cc42cdd671fdb78d0a4b1de4e868819e116609"
+    },
+    "Client/Models/Monsters/Troglodyte_idle2.grn": {
+      "bytes": 413504,
+      "sha256": "1adfab3e2ec76a7e6c301b79982f9d2e43d284e9478e4ea51cf7d20c3af15fca"
+    },
+    "Client/Models/Monsters/Troglodyte_LOD2.grn": {
+      "bytes": 66340,
+      "sha256": "46eac822c32272cf49905b3d7b75b87ca2394b2b137f9194eabb16ddbad95b53"
+    },
+    "Client/Models/Monsters/Troglodyte_misc.grn": {
+      "bytes": 413504,
+      "sha256": "6f32a65f0599e19be655e5a926a31ff6407a169f12bd6c56ccb9d26d6cf230f9"
+    },
+    "Client/Models/Monsters/Troglodyte_takedamage.grn": {
+      "bytes": 350184,
+      "sha256": "cde57e678d4f31215cfe9f8f2ffe9729141ac0a18cc54ce53e98c784f1916255"
+    },
+    "Client/Models/Monsters/Troglodyte_walk.grn": {
+      "bytes": 344556,
+      "sha256": "be96cc90bb580d3d759e83d8c57c56701209a42b8533056d7b4514303b34fa0f"
+    }
+  }
+}

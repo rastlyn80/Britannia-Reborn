@@ -19,7 +19,53 @@ RECENT_CLASSES={166:['GoldenElemental'],753:['EnslavedGargoyle'],301:['Treefello
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
 def prepared_entries(family):
-    assert family in ['mages','juka','candidate_batch','solen_queens',*PREPARED_FORMS],'Prepared native trial requires an explicit checked family'
+    assert family in ['mages','juka','juka_lord','hydra','late_source','candidate_batch','solen_queens',*PREPARED_FORMS],'Prepared native trial requires an explicit checked family'
+    if family == 'late_source':
+        classes = {266: ['InsaneDryad', 'MLDryad'], 267: ['Lurg', 'Troglodyte'], 279: ['Ferret']}
+        path = ROOT / 'Viewer/local-art/creatures/late_source/preparation.json'
+        report = json.loads(path.read_text(encoding='utf-8'))
+        assert report['source_manifest_sha256'] == sha(ROOT / 'scripts/late-creature-inputs.json')
+        rows = report['models']
+        assert [row['bodies'][0]['body'] for row in rows] == list(classes)
+        for row in rows:
+            identity, = row['bodies']
+            assert row['status'] == 'prepared' and set(row['native_constructor_hues']) == set(classes[identity['body']])
+            for source in identity['native_sources']:
+                target = ROOT / 'Server/ModernUO' / source['path'].replace('\\', '/')
+                assert sha(target) == source['sha256']
+            pins = {**row['art_dependency_sha256'],
+                    **{asset: row['asset_sha256'][name] for name, asset in row['assets'].items()}}
+            if 'presentation_script' in row:
+                pins[row['presentation_script']] = row['presentation_script_sha256']
+            for asset, digest in pins.items():
+                assert asset.startswith('res://')
+                target = (ROOT / 'Viewer' / asset.removeprefix('res://')).resolve()
+                assert target.is_relative_to(ROOT / 'Viewer') and sha(target) == digest
+        return rows, classes
+    if family in ('juka_lord', 'hydra'):
+        expected_body, classes = {
+            'juka_lord': (766, ['JukaLord']),
+            'hydra': (265, ['Abscess', 'Hydra']),
+        }[family]
+        path = ROOT / 'Viewer/local-art/creatures' / family / 'preparation.json'
+        report = json.loads(path.read_text(encoding='utf-8'))
+        row, = report['models']
+        identity, = row['bodies']
+        assert row['status'] == 'prepared' and identity['body'] == expected_body
+        assert set(row['native_constructor_hues']) == set(classes)
+        pins = {**row['art_dependency_sha256'],
+                **{asset: row['asset_sha256'][name] for name, asset in row['assets'].items()}}
+        if family == 'hydra':
+            assert report['input_manifest_sha256'] == sha(ROOT / 'scripts/hydra-inputs.json')
+            for source in identity['native_sources']:
+                assert sha(ROOT / 'Server/ModernUO' / source['path']) == source['sha256']
+        else:
+            pins[row['presentation_script']] = row['presentation_script_sha256']
+        for asset, digest in pins.items():
+            assert asset.startswith('res://')
+            target = (ROOT / 'Viewer' / asset.removeprefix('res://')).resolve()
+            assert target.is_relative_to(ROOT / 'Viewer') and sha(target) == digest
+        return [row], {expected_body: classes}
     if family in ['mages','juka']:
         checker='check-source-mages.py' if family=='mages' else 'check-prepared-juka.py'
         subprocess.run([sys.executable,'-B',str(ROOT/'scripts'/checker)]+([] if family=='mages' else ['--graphics']),check=True)
@@ -61,6 +107,14 @@ def main():
         entries,prepared_classes=prepared_entries(args.family)
         index={'entries':entries}
         states={'prepared'}
+    elif args.family in ('late_source_active', 'hydra_active'):
+        package_rows, _ = prepared_entries(args.family.removesuffix('_active'))
+        selected_kinds = {row['kind'] for row in package_rows}
+        registered = [row for row in index['entries']
+                      if row['kind'] in selected_kinds and row['status'] == 'validated']
+        if {row['kind']: row for row in registered} != {
+                row['kind']: dict(row, status='validated') for row in package_rows}:
+            raise ValueError('Normal registry does not match the checked recovered package')
     public=ROOT/'Viewer/Art/Creatures/index.json'
     if public.exists() and not args.prepared:index['entries']=json.loads(public.read_text(encoding='utf-8'))['entries']+index['entries']
     # Match CreatureRegistry's validated, last-record-wins precedence. A local
@@ -70,7 +124,8 @@ def main():
         if entry.get('status') not in states:continue
         if selected_kinds is not None:
             if entry['kind'] not in selected_kinds:continue
-        elif args.family not in ['all','candidate_batch'] and entry['family']!=args.family:continue
+        elif args.family not in ['all','candidate_batch'] and entry['family']!=args.family:
+            if not (args.prepared and args.family == 'late_source'):continue
         for body in entry['bodies']:
             if owners[int(body['body'])] is not entry:continue
             native_body=int(body['body'])
@@ -94,7 +149,7 @@ def main():
                 common['constructor_hues']={name:(0x515 if name=='PestilentBandage' else 0x453 if name.startswith('BlackSolen') else 0) for name in classes}
             elif args.family=='recent_batch':
                 common['constructor_hues']={name:(0x480 if name=='UnfrozenMummy' else 0x901 if name=='ShadowWispFamiliar' else 0x515 if name=='PestilentBandage' else 0x453 if name.startswith('BlackSolen') else 0) for name in classes}
-            if not args.prepared and 'native_constructor_hues' in entry:
+            if 'native_constructor_hues' in entry:
                 hues = entry['native_constructor_hues']
                 assert set(hues) == set(classes), 'Constructor hue declarations must match the native classes'
                 assert all(type(hue) is int and 0 <= hue <= 0xffff for hue in hues.values())

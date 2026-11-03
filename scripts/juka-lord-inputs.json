@@ -1,0 +1,44 @@
+{
+  "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+  "server_pin": "ab59efea86fd9e399d261bed9d188ab4d95ad4c2",
+  "files": {
+    "Models/Monsters/npc_kabur_lod2.grn": {
+      "sha256": "b9d2aec1e3df8c9bab54a131c90458bb1710f8f5d4b59a10a5020fcbd332fede",
+      "bytes": 60348
+    },
+    "Models/Maps/kabur_256.tga": {
+      "sha256": "53624c426d6912c5c6c38640da0501313b767e5aeae5f4e485cf7bf24ff04348",
+      "bytes": 262188
+    },
+    "Models/Others/weapon_bow_lod2.grn": {
+      "sha256": "3cdb95a9c423a47c680613572e19499a2c10e86da7b86d2fcffd4cc690130650",
+      "bytes": 9384
+    },
+    "Models/Maps/weapons_512.tga": {
+      "sha256": "6b6db69ff83ce1950113b4c10965a42e730eb4887fab16e11ccfb064f661f720",
+      "bytes": 262188
+    },
+    "Models/models.txt": {
+      "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a",
+      "bytes": 55735
+    }
+  },
+  "native": {
+    "Projects/UOContent/Mobiles/Monsters/LBR/Jukas/JukaLord.cs": "4b7970b4f08ffe639edc86ce2b78132dbecd50ed101298e312dc28d7c80176d9",
+    "Projects/UOContent/Items/Weapons/Ranged/JukaBow.cs": "66e40ed6e6978e7e5f7d2a63393622869afaa46523700fb672a7c37b47af404b"
+  },
+  "body": 766,
+  "model_stem": "NPC_Kabur",
+  "motion_body": 400,
+  "scale": [
+    1.55,
+    1.45,
+    1.55
+  ],
+  "bow_body": 649,
+  "bow_graphics": [
+    5041,
+    5042
+  ],
+  "rights": "Private Third Dawn inputs and derived assets. No redistribution."
+}

@@ -118,7 +118,23 @@ def missing_routes(bodies, routed, witnessed):
 def identity_candidates(literal, witnessed):
     """Positive constructor witnesses add identities, never erase other branches."""
     bodies = literal | witnessed
-    return bodies, bool(bodies) and bodies <= {400, 401, 402, 403}
+    humanoid_npc_bodies = {400, 401, 402, 403, 0x25d, 0x25e}
+    return bodies, bool(bodies) and bodies <= humanoid_npc_bodies
+
+def heartwood_elf_bodies(path):
+    """Read named quest vendors whose constructors live outside Mobiles/."""
+    text = path.read_text(encoding='utf-8-sig')
+    classes = re.split(r'(?m)^public partial class (\w+)\s*:', text)
+    identities = {}
+    for name, declaration in zip(classes[1::2], classes[2::2]):
+        constructor = re.search(
+            rf'public {name}\(\)\s*:\s*base\(AIType\.AI_Vendor,[^\n]+\)\s*\{{([^}}]+)\}}',
+            declaration)
+        if constructor and re.search(r'\bRace\s*=\s*Race\.Elf\s*;', constructor[1]):
+            body = re.search(r'\bBody\s*=\s*(0x25[dDeE])\s*;', constructor[1])
+            if body:
+                identities[name.casefold()] = int(body[1], 16)
+    return identities
 
 def configured_mage_identities(source, expansion):
     """Explicit reviewed branch, not an inference from a few random witnesses."""
@@ -149,6 +165,8 @@ def main():
     expansion_path = ROOT / 'Server/runtime/Configuration/expansion.json'
     expansion = read(expansion_path)
     configured_mages, mage_identity_inputs = configured_mage_identities(source, expansion)
+    heartwood_path = source / 'Projects/UOContent/Engines/ML Quests/Definitions/Heartwood.cs'
+    heartwood = heartwood_elf_bodies(heartwood_path)
     era = 'post-uoml' if expansion['SupportedFeatures'].get('SA', False) else 'uoml'
     files = source_files(ROOT / 'Server/runtime/Data/Spawns', era, maps)
     if not files:
@@ -197,6 +215,9 @@ def main():
             if bodies:
                 mapping = 'literal source file' if c == key else 'inherited literal candidates'
                 break
+        if key in heartwood:
+            bodies = {heartwood[key]}
+            mapping = 'Named Heartwood elf vendor constructor'
         literal_bodies = bodies.copy()
         bodies, only_human = identity_candidates(literal_bodies, witnessed[key])
         if bodies != literal_bodies:
@@ -226,7 +247,7 @@ def main():
     queue = [r['name'] for r in creatures if r['graphics'] in ['unrouted', 'partial route', 'identity needs audit']]
     result = {'maps': sorted(maps), 'era': era, 'server_pin': index['server_pin'], 'active_spawners': count,
               'scope': 'Configured spawn frequency, not a live full-world census. Rank by capped probability-weighted shared capacity; spawn-location counts are exact. Capacity is an exposure proxy, not an exact random draw expectation or equilibrium population. Items compete for slots before being excluded. Indirect camp/quest/summon spawns, death rates, terrain failures and manual placements are not counted. Existing routes are not final fidelity/action completion.',
-              'inputs': {str(p.relative_to(ROOT)): sha(p) for p in [expansion_path, *files]},
+              'inputs': {str(p.relative_to(ROOT)): sha(p) for p in [expansion_path, heartwood_path, *files]},
               'rows': rows, 'next_unrouted_creatures': queue, 'excluded_items': sorted(excluded), 'unresolved_types': sorted(unresolved)}
     result['creature_work_order'] = [r['name'] for r in creatures]
     measured_bodies = {body for row in creatures for body in row['body_candidates']}

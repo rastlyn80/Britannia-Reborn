@@ -36,6 +36,8 @@ class FrequencyTests(unittest.TestCase):
         # Sampling just one variant is positive evidence, not a complete census.
         self.assertEqual(priority.identity_candidates({400}, {125}), ({125, 400}, False))
         self.assertEqual(priority.identity_candidates({400, 401}, {400}), ({400, 401}, True))
+        self.assertEqual(priority.identity_candidates({0x25d, 0x25e}, set()), ({0x25d, 0x25e}, True))
+        self.assertEqual(priority.identity_candidates({0x25d}, {125}), ({0x25d, 125}, False))
 
     def test_mixed_constructor_needs_its_own_specialized_human_witnesses(self):
         bodies={14,51,400,401};routed={14:'earth',51:'slime'}
