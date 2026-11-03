@@ -35,6 +35,20 @@ def checked(path, digest):
     return path
 
 
+def crossbow(pipeline, members, destination):
+    raw = members['client/models/others/weapon_crossbow_lod2.grn'].read_bytes()
+    model = pipeline.td.parse(raw, scene_root_names=True)
+    if (len(model['polygons']) != 110 or model['weights'] or model['ties'] != [1]
+            or model['bones'][1]['name'] != 'weapon_crossbow' or model['textures'] != ['weapons_512.tga']):
+        raise ValueError('Unexpected original Meer Captain crossbow')
+    model['weights'] = [[(0, 1.0)] for _ in model['points']]
+    model, _ = pipeline.normalise_bind(raw, model)
+    atlas = pipeline.td.png_from_tga(members['client/models/maps/weapons_512.tga'].read_bytes())
+    output = destination / 'weapon-crossbow.gltf'
+    pipeline.td.export_gltf(model, {}, atlas, output, 0.66)
+    return output
+
+
 def main():
     manifest = json.loads(MANIFEST.read_text(encoding='utf-8'))
     table = checked(BASE / 'model-table/Client/Models.txt', manifest['model_table_sha256'])
@@ -81,6 +95,16 @@ def main():
             checked(ROOT / 'Server/ModernUO' / source['path'].replace(chr(92), '/'), source['sha256'])
         row.update(family=FAMILY, native_constructor_hues=dict.fromkeys(native_classes, 0),
                    assets={}, asset_sha256={}, art_dependency_sha256={})
+        common = 'Presentation/OccurrenceCreatureVisual.gd'
+        renderer = common
+        if body == 773:
+            weapon = crossbow(pipeline, members, destination)
+            renderer = 'Presentation/SourceMeerCaptainVisual.gd'
+            row['crossbow_asset'] = f'res://local-art/creatures/{FAMILY}/{weapon.name}'
+            row['art_dependency_sha256'][row['crossbow_asset']] = SHA(weapon)
+            row['art_dependency_sha256'][f'res://{common}'] = SHA(ROOT / 'Viewer' / common)
+        row['presentation_script'] = f'res://{renderer}'
+        row['presentation_script_sha256'] = SHA(ROOT / 'Viewer' / renderer)
         if set(row['clip_sources'].values()) != {
                 f'client/models/humans/{donor}_{suffix}.grn' for suffix in clips.values()}:
             raise ValueError('Meer conversion did not use all pinned donor clips')

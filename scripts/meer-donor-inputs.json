@@ -21,8 +21,10 @@
     "Client/Models/Maps/Dasha_256.tga": "d4ba8c880337057ca749f8e2bee116fb5698a1dfd78a7b0cdef59e9cc29c4882",
     "Client/Models/Maps/Meer_Mage_256.tga": "58b8b7e9ef5a9ac57fe2b69b13fe732e1a9e2e0e05682606816381d6ccec37ad",
     "Client/Models/Maps/Meer_Warrior_256.tga": "e857f924ab4ccd24fab64887ebc9d25639021f13b8fd3d9eb7208b88fd093eb7",
+    "Client/Models/Maps/Weapons_512.tga": "6b6db69ff83ce1950113b4c10965a42e730eb4887fab16e11ccfb064f661f720",
     "Client/Models/Monsters/Meer_Mage_Lod2.grn": "bcce18fafb2c650d216d25bd2baa02d35964e0c57e677e3e4b01e07568c07b7f",
     "Client/Models/Monsters/Meer_Warrior_Lod2.grn": "a74a3a6d117e5c1ffab46384867dcb3c0bb54ce1f79c3d33e499fbeca6230a0c",
-    "Client/Models/Monsters/Npc_Cpt_Dasha_Lod2.grn": "1235cac5424f9e2a8629a2e8408fdc5eefd5758e112e4b15bc2bcd3754d51a02"
+    "Client/Models/Monsters/Npc_Cpt_Dasha_Lod2.grn": "1235cac5424f9e2a8629a2e8408fdc5eefd5758e112e4b15bc2bcd3754d51a02",
+    "Client/Models/Others/Weapon_Crossbow_Lod2.grn": "3d1f37e4feb1a7ae7a2113247eeec182eb62872e4495ce25707ef14d64b1656a"
   }
 }

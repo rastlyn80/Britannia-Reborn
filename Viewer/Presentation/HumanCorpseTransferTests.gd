@@ -4,7 +4,7 @@ func run() -> void:
 	var game:=Game.new();root.add_child(game);game.set_process(false)
 	var arena:=Arena.new();root.add_child(arena);var items:=Items.new();arena.add_child(items)
 	var deaths:=Deaths.new();arena.add_child(deaths);deaths.configure(arena,game,items)
-	for body: int in [185,186,400,401]:
+	for body: int in [185,186,400,401,605,606]:
 		var serial:=900000+body;var corpse:=0x40080000+body
 		var entity:={"serial":serial,"body":body,"hue":0x8035,"flags":0,"direction":3}
 		game.entities[serial]=entity

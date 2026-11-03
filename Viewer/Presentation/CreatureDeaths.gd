@@ -2,6 +2,7 @@ extends Node3D
 ## Native death packets start a temporary visual; server entities/items stay authoritative.
 const Creatures=preload("res://Presentation/CreatureRegistry.gd")
 const HumanNPCs=preload("res://Presentation/HumanNPCProfiles.gd")
+const Wardrobe=preload("res://Presentation/HumanWardrobe.gd")
 const CorpseSnapshot=preload("res://Presentation/CreatureCorpseSnapshot.gd")
 signal transition_started(killed: int,corpse: int,visual: Node3D)
 var scene: Node3D
@@ -19,7 +20,7 @@ func begin_death(killed: int,corpse: int) -> void:
 	var entity: Dictionary=session.entities[killed];var body:=int(entity.get("body",0))
 	var avatars: Dictionary=scene.get("avatars")
 	if not avatars.has(killed):return
-	if body in [400,401] or HumanNPCs.supports_body(body):
+	if Wardrobe.living_player(body) or HumanNPCs.supports_body(body):
 		begin_human(killed,corpse,entity,avatars[killed]);return
 	if not Creatures.supports_body(body):return
 	var avatar: Node3D=avatars[killed];var source: Node3D=avatar.get("horse_visual")
@@ -43,7 +44,7 @@ func begin_human(killed: int,corpse: int,entity: Dictionary,avatar: Node3D) -> v
 	# The base licensed body ships only Idle/Walk/Run without prepared motions.
 	if not source.animator.has_animation("Death"):return
 	var body:=int(entity.body);var visual:=preload("res://Presentation/HumanNPCDeathVisual.gd").new()
-	visual.female=body==401 or HumanNPCs.female(body);add_child(visual)
+	visual.female=Wardrobe.female(body);add_child(visual)
 	if not visual.animator.has_animation("Death"):visual.free();return
 	visual.native_body=body;visual.native_hue=int(entity.get("hue",0))
 	visual.set_skin(visual.native_hue)

@@ -2,12 +2,13 @@ extends RefCounted
 ## One native graphic, many body variants. No invented wire/static graphic IDs.
 const GRAPHIC:=0x2006
 const Humans=preload("res://Presentation/HumanVisual.gd")
+const Wardrobe=preload("res://Presentation/HumanWardrobe.gd")
 const Mounts=preload("res://Presentation/MountVisual.gd")
 const Creatures=preload("res://Presentation/CreatureRegistry.gd")
 const HumanNPCs=preload("res://Presentation/HumanNPCProfiles.gd")
 
-static func human_body(body: int) -> bool:return body in [0x190,0x191] or HumanNPCs.supports_body(body)
-static func female_body(body: int) -> bool:return body==0x191 or HumanNPCs.female(body)
+static func human_body(body: int) -> bool:return Wardrobe.living_player(body) or HumanNPCs.supports_body(body)
+static func female_body(body: int) -> bool:return Wardrobe.female(body)
 
 static func supports(body: int) -> bool:
 	return Humans.available(female_body(body)) if human_body(body) else Mounts.supports_body(body)
@@ -19,7 +20,7 @@ static func catalogue() -> Array[Dictionary]:
 	# Derived from the actual runtime registries: future accepted bodies acquire
 	# a corpse automatically, including explicit compatibility artwork.
 	Creatures.load_index()
-	var candidates: Dictionary={0x190:"Human / male",0x191:"Human / female",0x319:"Skeletal mount"}
+	var candidates: Dictionary={0x190:"Human / male",0x191:"Human / female",605:"Elf / male",606:"Elf / female",0x319:"Skeletal mount"}
 	HumanNPCs.load_index()
 	for body: int in HumanNPCs.entries:candidates[body]=str(HumanNPCs.entries[body].get("name","Human NPC"))
 	for body: int in Mounts.Horse.Equines.BODIES:candidates[body]=Mounts.Horse.Equines.BODIES[body][0]

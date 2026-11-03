@@ -17,6 +17,7 @@ public static class EquineFixtures
     private static readonly Dictionary<Mobile, Container> Corpses = [];
     private static readonly Dictionary<Mobile, Server.Factions.Faction> Memberships = [];
     private static readonly Dictionary<Mobile, Item> Ankhs = [];
+    private static readonly Dictionary<Mobile, (Race Race, Item Shoes, Item Pads)> CuRiders = [];
     internal static Point3D? BovineArena;
 
     internal static bool PrepareBovineArena(Mobile owner)
@@ -69,6 +70,12 @@ public static class EquineFixtures
             ethereal.Delete();
         }
         if (Ankhs.Remove(owner, out var ankh)) ankh.Delete();
+        if (CuRiders.Remove(owner, out var cuRider))
+        {
+            cuRider.Pads?.Delete();
+            owner.Race = cuRider.Race;
+            if (cuRider.Shoes is { Deleted: false }) owner.EquipItem(cuRider.Shoes);
+        }
         if (owner is PlayerMobile { EthicPlayer: { } ethicalPlayer })
         {
             ethicalPlayer.Detach();
@@ -123,6 +130,7 @@ public static class EquineFixtures
         48 => new FireBeetle(),
         50 => new Hiryu(),
         51 => new LesserHiryu(),
+        52 or 53 or 54 => new CuSidhe(),
         _ => throw new ArgumentOutOfRangeException(nameof(index))
     };
 
@@ -140,7 +148,7 @@ public static class EquineFixtures
         else if (command == "prepare" && args.Length > 1)
         {
             var index = args.GetInt32(1);
-            if (index < 0 || index > 51) return;
+            if (index < 0 || index > 54) return;
             Cleanup(owner);
             if (index is >= 42 and <= 45 && !PrepareBovineArena(owner))
             {
@@ -168,6 +176,24 @@ public static class EquineFixtures
             {
                 if ((dx == 0 && dy == 0) || !owner.Map.CanSpawnMobile(owner.X + dx, owner.Y + dy, owner.Z)) continue;
                 var animal = Create(index);
+                if (index is >= 52 and <= 54)
+                {
+                    var shoes = owner.FindItemOnLayer(Layer.Shoes);
+                    var pads = index == 53 ? new PadsOfTheCuSidhe() : null;
+                    CuRiders[owner] = (owner.Race, shoes, pads);
+                    owner.Race = index == 54 ? Race.Elf : Race.Human;
+                    if (pads != null)
+                    {
+                        if (shoes != null) owner.AddToBackpack(shoes);
+                        if (!owner.EquipItem(pads))
+                        {
+                            animal.Delete();
+                            Cleanup(owner);
+                            owner.SendMessage("UCEQUINE|pads-setup-failed");
+                            return;
+                        }
+                    }
+                }
                 if (index is >= 38 and <= 41)
                 {
                     var faction = index is 38 or 41 ? Server.Factions.TrueBritannians.Instance : Server.Factions.Minax.Instance;
@@ -189,6 +215,7 @@ public static class EquineFixtures
                 if (!animal.SetControlMaster(owner))
                 {
                     animal.Delete();
+                    if (index is >= 52 and <= 54) Cleanup(owner);
                     owner.SendMessage("UCEQUINE|control-denied");
                     return;
                 }
@@ -199,6 +226,10 @@ public static class EquineFixtures
                 return;
             }
             owner.SendMessage("UCEQUINE|blocked");
+        }
+        else if (command == "cu-state" && Animals.TryGetValue(owner, out var cuSubject) && cuSubject is CuSidhe)
+        {
+            owner.SendMessage($"UCEQUINE|cu-state|{(owner.Race == Race.Elf ? 1 : 0)}|{(owner.FindItemOnLayer(Layer.Shoes) is PadsOfTheCuSidhe ? 1 : 0)}");
         }
         else if (command == "hiryu-flight" && Animals.TryGetValue(owner, out var flightSubject)
             && flightSubject is Hiryu or LesserHiryu)

@@ -462,7 +462,7 @@ func _choose(entry: Dictionary) -> void:
 		shown_detail.text = "Its look appears here after you play it once on this computer."
 		if stage: stage.show_character({"body":400,"hue":1002},Looks.starter(false))
 	else:
-		var female := int(look.get("body",400)) in [401,403,605,607]
+		var female := int(look.get("body",400)) in [401,403,606,608]
 		shown_detail.text = "Human · %s · last seen: %s" % ["Female" if female else "Male",look.get("place","")]
 		if stage: stage.show_character({"body":int(look.body),"hue":int(look.hue)},look.get("worn",[]))
 

@@ -42,10 +42,12 @@ const HAIR := {0x203b:"short",0x203c:"long",0x203d:"ponytail",0x2045:"bob",0x204
 const BEARDS := {0x203e:["long"],0x203f:["short"],0x2040:["goatee"],0x2041:["moustache"],0x204b:["short","moustache"],0x204c:["long","moustache"],0x204d:["goatee","moustache"]}
 static func mapped(id: int) -> bool: return GRAPHICS.has(id) or EXTRA.has(id) or HAIR.has(id) or BEARDS.has(id) or Coverage.ITEMS.has(id)
 static func extra(id: int) -> Array: return EXTRA.get(id,Coverage.ITEMS.get(id,[]))
-# 0x192/0x193 are the male/female ghosts: the same human, drawn ethereal.
-static func human(body: int) -> bool: return body in [0x190,0x191,0x192,0x193] or NPCs.supports_body(body)
-static func female(body: int) -> bool: return body in [0x191,0x193] or NPCs.female(body)
-static func ghost(body: int) -> bool: return body in [0x192,0x193]
+# The archived 3D model table maps elf bodies 605/606 to h_male/h_female
+# and both elf ghost bodies to player_ghost.
+static func living_player(body: int) -> bool: return body in [0x190,0x191,605,606]
+static func human(body: int) -> bool: return living_player(body) or ghost(body) or NPCs.supports_body(body)
+static func female(body: int) -> bool: return body in [0x191,0x193,606,608] or NPCs.female(body)
+static func ghost(body: int) -> bool: return body in [0x192,0x193,607,608]
 static func resolve(worn: Array) -> Dictionary:
 	var bits := 0
 	var unsupported: Array[int] = []

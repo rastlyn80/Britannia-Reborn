@@ -46,8 +46,8 @@ func run() -> void:
 	candidate_pin=FileAccess.get_sha256("res://../work/creatures/live-candidates.json")
 	accepted_pin=FileAccess.get_sha256("res://local-art/creatures/accepted-index.json")
 	if prepared:
-		if not check(family in ["candidate_batch","mummies","solen_warriors","ice_elementals","solen_queens","late_source","hydra","energy_vortex","champions","fey_champions","crane","deathwatch","tsuki_wolf","kappa","vampire_bat","yomotsu","occurrence_next","horde_rune","sand_vortex","bake_kitsune","devourer_lion_hiryu","elemental_minotaur","meer_donors"],"Prepared trial uses an explicitly checked family"):return
-		var permitted_bodies: Array={"solen_queens":[783,807],"late_source":[266,267,279],"hydra":[265],"energy_vortex":[164],"champions":[172,173],"fey_champions":[174,175,176],"crane":[254],"deathwatch":[242],"tsuki_wolf":[250],"kappa":[240],"vampire_bat":[317],"yomotsu":[245,253,255],"occurrence_next":[309,196,302,247],"horde_rune":[776,244],"sand_vortex":[790],"bake_kitsune":[246],"devourer_lion_hiryu":[303,251,243],"elemental_minotaur":[300,263,305,281,241,789,772],"meer_donors":[771,770,773]}.get(family,[154,782,806,161])
+		if not check(family in ["candidate_batch","mummies","solen_warriors","ice_elementals","solen_queens","late_source","hydra","energy_vortex","champions","fey_champions","crane","deathwatch","tsuki_wolf","kappa","vampire_bat","yomotsu","occurrence_next","horde_rune","sand_vortex","bake_kitsune","devourer_lion_hiryu","elemental_minotaur","meer_donors","captain_cu","clockwork_tokuno"],"Prepared trial uses an explicitly checked family"):return
+		var permitted_bodies: Array={"solen_queens":[783,807],"late_source":[266,267,279],"hydra":[265],"energy_vortex":[164],"champions":[172,173],"fey_champions":[174,175,176],"crane":[254],"deathwatch":[242],"tsuki_wolf":[250],"kappa":[240],"vampire_bat":[317],"yomotsu":[245,253,255],"occurrence_next":[309,196,302,247],"horde_rune":[776,244],"sand_vortex":[790],"bake_kitsune":[246],"devourer_lion_hiryu":[303,251,243],"elemental_minotaur":[300,263,305,281,241,789,772],"meer_donors":[771,770,773],"captain_cu":[280,277],"clockwork_tokuno":[304,757,756,252,199,271,310,278]}.get(family,[154,782,806,161])
 		Registry.load_index()
 		for candidate: Dictionary in candidates:
 			var record: Dictionary=candidate.get("presentation",{})
@@ -95,14 +95,21 @@ func run() -> void:
 				var ranges: Array = candidate.constructor_hue_ranges[native_class]
 				var permitted := ranges.any(func(bounds: Array):return constructor_hue >= int(bounds[0]) and constructor_hue <= int(bounds[1]))
 				if not check(permitted and int(observer.entities[serial].hue) == constructor_hue,"Both clients receive the same allowed randomized constructor hue: "+str(constructor_hue)):return
-			var actor:=preload("res://Presentation/HumanAvatar.gd").new();actor.initial_body=body;root.add_child(actor);actor.set_physics_process(false);actor.apply_server_appearance(session.entities[serial],[])
+			var worn: Array = []
+			var peer_worn: Array = []
+			if body == 773:
+				if not check(await until(func():return int(session.mobile_equipment.get(serial,{}).get(2,{}).get("id",0)) == 0x0f50 and int(observer.mobile_equipment.get(serial,{}).get(2,{}).get("id",0)) == 0x0f50),"Both clients receive the Captain's original equipped crossbow"):return
+				worn = session.mobile_equipment[serial].values()
+				peer_worn = observer.mobile_equipment[serial].values()
+			var actor:=preload("res://Presentation/HumanAvatar.gd").new();actor.initial_body=body;root.add_child(actor);actor.set_physics_process(false);actor.apply_server_appearance(session.entities[serial],worn)
 			death_arenas[sex].avatars[serial]=actor
-			var peer_actor:=preload("res://Presentation/HumanAvatar.gd").new();peer_actor.initial_body=body;root.add_child(peer_actor);peer_actor.set_physics_process(false);peer_actor.apply_server_appearance(observer.entities[serial],[]);death_arenas[1-sex].avatars[serial]=peer_actor
+			var peer_actor:=preload("res://Presentation/HumanAvatar.gd").new();peer_actor.initial_body=body;root.add_child(peer_actor);peer_actor.set_physics_process(false);peer_actor.apply_server_appearance(observer.entities[serial],peer_worn);death_arenas[1-sex].avatars[serial]=peer_actor
 			if not check(actor.horse_visual!=null and actor.horse_visual.native_body==body and actor.human_visual==null,"received body selects the actual validated creature avatar"):return
+			if body == 773 and not check(is_instance_valid(actor.horse_visual.crossbow) and actor.horse_visual.crossbow.visible and is_instance_valid(peer_actor.horse_visual.crossbow) and peer_actor.horse_visual.crossbow.visible,"Both avatars attach the original crossbow from their equipment packets"):return
 			for hue in [53,0x8000|53]:
 				await reply(sex,"colour "+str(hue),"UCCREATURE|colour|")
 				if not check(await until(func():return int(session.entities[serial].hue)==hue and int(observer.entities[serial].hue)==hue),"native full/partial hues reach both clients"):return
-				actor.apply_server_appearance(session.entities[serial],[])
+				actor.apply_server_appearance(session.entities[serial],worn)
 				if not check(actor.horse_visual.native_hue==hue,"actual creature retains exact raw hue bits"):return
 			var rooted:=false
 			for running in [false,true]:
@@ -134,7 +141,7 @@ func run() -> void:
 			var animal:=str(candidate.profile)=="animal";var sea:=str(candidate.profile)=="sea"
 			var actions: Array=[5,9,3,11,-1] if animal else [5,6,7,3,4,12,-1,-2] if sea else [4,17,-1]
 			if not animal and not sea:
-				for extra in [[5,"Attack2"],[6,"Attack3"],[11,"Pillage"],[12,"Cast"],[-2,"Cast"],[19,"Fly"],[20,"Land"]]:
+				for extra in [[5,"Attack2"],[6,"Attack3"],[8,"AttackXBow"],[11,"Pillage"],[12,"Cast"],[-2,"Cast"],[19,"Fly"],[20,"Land"]]:
 					if actor.horse_visual.animator.has_animation(extra[1]):actions.append(extra[0])
 				for extra in [[-3,2],[-4,5],[-5,14]]:
 					if actor.horse_visual.entry.get("new_action_categories",{}).has(str(extra[1])):actions.append(extra[0])
@@ -143,7 +150,7 @@ func run() -> void:
 					if actor.horse_visual.entry.get("classic_action_categories",{}).get(str(slot),"")=="Cast2" and not actions.has(slot):actions.append(slot)
 				if actor.horse_visual.entry.get("new_action_categories",{}).get("11","")=="Cast2" and not actions.has(-2):actions.append(-2)
 			if actor.horse_visual.entry.get("classic_action_categories",{}).get("18","")=="Fidget2" and actor.horse_visual.animator.has_animation("Fidget2"):actions.append(18)
-			if body == 254 and actor.horse_visual.entry.get("classic_action_categories",{}).get("10","") == "Fidget2": actions.append(10)
+			if actor.horse_visual.entry.get("classic_action_categories",{}).get("10","") == "Fidget2": actions.append(10)
 			if body == 265 and actor.horse_visual.entry.get("classic_action_categories",{}).get("12","") == "Attack2": actions.append(12)
 			var action_records: Array=[]
 			for action in actions:
@@ -152,7 +159,7 @@ func run() -> void:
 				if not check(await until(func():return session.last_mobile_actions.has(serial) and observer.last_mobile_actions.has(serial)),"native action reaches both clients"):return
 				var received: Dictionary=session.last_mobile_actions[serial]
 				if not check(actor.receive_native_action(received),"actual creature consumes native action"):return
-				var expected:=str({5:"Attack",9:"Fidget",3:"Eat",11:"LieDown",-1:"Hit"}.get(action,"")) if animal else str({5:"Attack",6:"Attack2",7:"Hit",3:"Fidget",4:"Fidget2",12:"Attack",-1:"Hit",-2:"Attack"}.get(action,"")) if sea else str({4:"Attack",5:"Attack2",6:"Attack3",11:"Pillage",12:"Cast",-2:"Cast",-3:"Hit",-4:"Fidget",-5:"Pillage",17:"Fidget",-1:"Hit",19:"Fly",20:"Land"}.get(action,""))
+				var expected:=str({5:"Attack",9:"Fidget",3:"Eat",11:"LieDown",-1:"Hit"}.get(action,"")) if animal else str({5:"Attack",6:"Attack2",7:"Hit",3:"Fidget",4:"Fidget2",12:"Attack",-1:"Hit",-2:"Attack"}.get(action,"")) if sea else str({4:"Attack",5:"Attack2",6:"Attack3",8:"AttackXBow",11:"Pillage",12:"Cast",-2:"Cast",-3:"Hit",-4:"Fidget",-5:"Pillage",17:"Fidget",-1:"Hit",19:"Fly",20:"Land"}.get(action,""))
 				if action>=0:expected=str(actor.horse_visual.entry.get("classic_action_categories",{}).get(str(action),expected))
 				if action in [-3,-4,-5]:
 					var native_type: int={-3:2,-4:5,-5:14}[action]
