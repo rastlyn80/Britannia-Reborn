@@ -46,8 +46,8 @@ func run() -> void:
 	candidate_pin=FileAccess.get_sha256("res://../work/creatures/live-candidates.json")
 	accepted_pin=FileAccess.get_sha256("res://local-art/creatures/accepted-index.json")
 	if prepared:
-		if not check(family in ["candidate_batch","mummies","solen_warriors","ice_elementals","solen_queens","late_source","hydra","energy_vortex","champions","fey_champions","crane","deathwatch","tsuki_wolf","kappa","vampire_bat","yomotsu","occurrence_next","horde_rune","sand_vortex","bake_kitsune","devourer_lion_hiryu","elemental_minotaur","meer_donors","captain_cu","clockwork_tokuno","aos_creatures","aos_aliases","aos_mound","recovered_late","tormented_minotaur"],"Prepared trial uses an explicitly checked family"):return
-		var permitted_bodies: Array={"solen_queens":[783,807],"late_source":[266,267,279],"hydra":[265],"energy_vortex":[164],"champions":[172,173],"fey_champions":[174,175,176],"crane":[254],"deathwatch":[242],"tsuki_wolf":[250],"kappa":[240],"vampire_bat":[317],"yomotsu":[245,253,255],"occurrence_next":[309,196,302,247],"horde_rune":[776,244],"sand_vortex":[790],"bake_kitsune":[246],"devourer_lion_hiryu":[303,251,243],"elemental_minotaur":[300,263,305,281,241,789,772],"meer_donors":[771,770,773],"captain_cu":[280,277],"clockwork_tokuno":[304,757,756,252,199,271,310,278],"aos_creatures":[306,307,308,313,318],"aos_aliases":[315,316],"aos_mound":[319],"recovered_late":[768,249,276],"tormented_minotaur":[262]}.get(family,[154,782,806,161])
+		if not check(family in ["candidate_batch","mummies","solen_warriors","ice_elementals","solen_queens","late_source","hydra","energy_vortex","champions","fey_champions","crane","deathwatch","tsuki_wolf","kappa","vampire_bat","yomotsu","occurrence_next","horde_rune","sand_vortex","bake_kitsune","devourer_lion_hiryu","elemental_minotaur","meer_donors","captain_cu","clockwork_tokuno","aos_creatures","aos_aliases","aos_mound","recovered_late","tormented_minotaur","harrower"],"Prepared trial uses an explicitly checked family"):return
+		var permitted_bodies: Array={"solen_queens":[783,807],"late_source":[266,267,279],"hydra":[265],"energy_vortex":[164],"champions":[172,173],"fey_champions":[174,175,176],"crane":[254],"deathwatch":[242],"tsuki_wolf":[250],"kappa":[240],"vampire_bat":[317],"yomotsu":[245,253,255],"occurrence_next":[309,196,302,247],"horde_rune":[776,244],"sand_vortex":[790],"bake_kitsune":[246],"devourer_lion_hiryu":[303,251,243],"elemental_minotaur":[300,263,305,281,241,789,772],"meer_donors":[771,770,773],"captain_cu":[280,277],"clockwork_tokuno":[304,757,756,252,199,271,310,278],"aos_creatures":[306,307,308,313,318],"aos_aliases":[315,316],"aos_mound":[319],"recovered_late":[768,249,276],"tormented_minotaur":[262],"harrower":[146]}.get(family,[154,782,806,161])
 		Registry.load_index()
 		for candidate: Dictionary in candidates:
 			var record: Dictionary=candidate.get("presentation",{})
@@ -195,8 +195,32 @@ func run() -> void:
 					if seen.size()==2:break
 				if not check(seen.size()==2,"Both random native dolphin breach variants are exercised"):return
 			var death_direction:=int(session.entities[serial].direction)
+			var death_body := body
+			var entities_before_morph: Array = session.entities.keys() if native_class == "Harrower" else []
 			response=await reply(sex,"kill","UCCREATURE|corpse|")
 			if response.is_empty():return
+			if native_class == "Harrower":
+				if not check(response.begins_with("UCCREATURE|corpse|0|780|") and response.ends_with("|refused"),"First lethal hit triggers the native Harrower transformation"):return
+				if not check(await until(func():
+					for client in [session, observer]:
+						var entity: Dictionary = client.entities.get(serial, {})
+						if int(entity.get("body", 0)) != 780 or int(entity.get("hue", 0)) != 0x497:
+							return false
+					return true
+				),"Both clients receive the true form and hue on the original serial"):return
+				if not check(not death_events[sex].has(serial) and not death_events[1-sex].has(serial),"Transformation creates no client death transition"):return
+				if not check(await until(func():
+					return session.entities.keys().any(func(id: int):
+						return id not in entities_before_morph and int(session.entities[id].body) == 129 and int(observer.entities.get(id, {}).get("body", 0)) == 129)
+				),"Both clients receive a newly spawned native Harrower tentacle"):return
+				actor.apply_server_appearance(session.entities[serial], [])
+				peer_actor.apply_server_appearance(observer.entities[serial], [])
+				if not check(actor.horse_visual.native_body == 780 and peer_actor.horse_visual.native_body == 780,"Both avatars switch to the accepted true form"):return
+				death_body = 780
+				death_direction = int(session.entities[serial].direction)
+				response = await reply(sex,"kill","UCCREATURE|corpse|")
+				if response.is_empty():return
+				if not check(not response.ends_with("|refused"),"Second lethal hit kills the true form"):return
 			var corpse:=int(response.split("|")[2])
 			if native_class == "EnergyVortex" and not check(corpse == 0 and response.ends_with("|suppressed"),"Summoned Energy Vortex leaves no persistent corpse"):return
 			var death_refused:=response.ends_with("|refused")
@@ -212,16 +236,17 @@ func run() -> void:
 					# Native summoned actors can announce a transient corpse in
 					# 0xAF, then delete it before Kill() returns to the fixture.
 					var corpse_matches: bool=int(observed.corpse)==corpse or response.ends_with("|suppressed") and not sessions[client].world_items.has(int(observed.corpse))
-					if not check(int(observed.body)==body and corpse_matches and observed.clip=="Death","native renderer snapshot preserves body, corpse lifecycle and source death clip: "+str(observed)):return
+					if not check(int(observed.body)==death_body and corpse_matches and observed.clip=="Death","native renderer snapshot preserves body, corpse lifecycle and source death clip: "+str(observed)):return
 			if not death_refused and corpse==0:
 				if not check(response.ends_with("|suppressed") and await until(func():return not session.entities.has(serial) and not observer.entities.has(serial)),"native death removes the creature without inventing a suppressed corpse"):return
 			elif not death_refused:
 				if not check(await until(func():return session.world_items.has(corpse) and observer.world_items.has(corpse)),"actual native corpse replicates to both clients"):return
-				if not check(int(session.world_items[corpse].get("amount",0))==body,"native corpse preserves original body"):return
+				if not check(int(session.world_items[corpse].get("amount",0))==death_body,"native corpse preserves death body"):return
 				var presenter:=preload("res://Presentation/WorldItems.gd").new();presenter.session=session;root.add_child(presenter);var holder:=Node3D.new();root.add_child(holder)
 				if not check(presenter._equine_corpse(holder,session.world_items[corpse],corpse),"native corpse selects the matching source death model"):return
 				for frame in 2:await process_frame
 				var dead_visual:=holder.get_node("CorpseVisual")
+				if native_class == "Harrower" and not check(int(dead_visual.get_meta("native_hue", 0)) == 0x497,"True-form static corpse retains its native hue"):return
 				if not check(is_equal_approx(dead_visual.rotation.y,PI-float(death_direction&7)*PI/4.),"native corpse keeps the victim's facing from the death packet"):return
 				if not check(dead_visual.get_meta("static_cadaver",false) and dead_visual.get_meta("death_clip")=="Death" and dead_visual.find_children("*","AnimationPlayer",true,false).is_empty(),"native corpse holds the final source death pose as a static mesh"):return
 				holder.queue_free();presenter.hint.queue_free();presenter.queue_free()
@@ -229,6 +254,9 @@ func run() -> void:
 			actor.queue_free();peer_actor.queue_free()
 			await process_frame
 			records.append({"actions":action_records,"female":sex==1,"body":body,"native_class":native_class,"native_state":native_state,"kind":candidate.kind,"constructor_hue":constructor_hue,"native_water":candidate.get("movement_mode","")=="native_waterline","corpse_suppressed":corpse==0 and not death_refused,"native_death_refused":death_refused,"movement":"Native AI refuses movement" if rooted else "Native Mobile.Move walk/run"})
+			if native_class == "Harrower":
+				records[-1]["transformed_body"] = death_body
+				records[-1]["true_form_corpse"] = corpse
 			await reply(sex,"cleanup","UCCREATURE|cleaned")
 	for session in sessions:session.close()
 	if not check(accepted_pin==FileAccess.get_sha256("res://local-art/creatures/accepted-index.json") and candidate_pin==FileAccess.get_sha256("res://../work/creatures/live-candidates.json"),"Native trial leaves accepted routes and checked input list unchanged"):return

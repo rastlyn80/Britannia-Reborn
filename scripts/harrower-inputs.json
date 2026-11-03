@@ -1,0 +1,19 @@
+{
+  "installer_sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393",
+  "model_table_sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099",
+  "native": {
+    "Projects/UOContent/Mobiles/Special/Harrower.cs": "89142305a19670a44bdfb7caa9e3e3dfde2010af9b7d2dd1c8c8e0e6bb07b0e3"
+  },
+  "files": {
+    "Client/Models/Maps/Shadowlords_Shadowlord.tga": "d31e9a8528744f99e883f6322473dc47a043347fd295156f7a6b7fb308d7e91c",
+    "Client/Models/Maps/Shadowlords_Shadowlord_M.tga": "0cf07733226adb6405d4a660d9727c6535effe15e9eb26dd745cd0ca8f1562bb",
+    "Client/Models/Monsters/Shadowlords_Shadowlord_Attack1.grn": "849139bfb749a8eb8b2d9ba5b7289091db9a27d489b4c40eaedfdafd2c0747ad",
+    "Client/Models/Monsters/Shadowlords_Shadowlord_Die1.grn": "c8a41faf1a5548b1decda9b76e7f31bb2e7a12efdc783e943fd0c4c8bc911891",
+    "Client/Models/Monsters/Shadowlords_Shadowlord_Fidget.grn": "c71c5440a06747fb0ae87d9af4c956ed60e1d657f0569b015c9cd2c6d1c5f701",
+    "Client/Models/Monsters/Shadowlords_Shadowlord_Gethit.grn": "359d16f30a20ff5c98f3ca3d0f692b143ed9ed11e14e7c13232a4064285d5b71",
+    "Client/Models/Monsters/shadowlords_shadowlord_idle.grn": "a121fa2174ba86215ead884c72c43e0b6c98887b37134998287c65657aa0ac94",
+    "Client/Models/Monsters/Shadowlords_Shadowlord_Lod2.grn": "4c98c20d0736f777d281a3f30797b56d3e5af69317a3d4ea28f6fa3a0c14c65f",
+    "Client/Models/Monsters/Shadowlords_Shadowlord_Run.grn": "19f0d4df4eb7c75d68d446e7c0cce94f552e0277ada542d821cffea98afd21aa",
+    "Client/Models/Monsters/Shadowlords_Shadowlord_Walk.grn": "2394d61782666125c1f9d8c8aa522c3d1a4fd4451058e6985ae1b2f5b16d2071"
+  }
+}

@@ -21,7 +21,7 @@ def replace_index(payload):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check-evidence', action='store_true')
-    parser.add_argument('--family', choices=('late_source', 'hydra', 'energy_vortex', 'champions', 'fey_champions', 'crane', 'deathwatch', 'tsuki_wolf', 'kappa', 'vampire_bat', 'yomotsu', 'occurrence_next', 'sand_vortex', 'bake_kitsune', 'horde_rune', 'devourer_lion_hiryu', 'elemental_minotaur', 'meer_donors', 'captain_cu', 'clockwork_tokuno', 'aos_creatures', 'aos_aliases', 'aos_mound', 'recovered_late', 'tormented_minotaur'), default='late_source')
+    parser.add_argument('--family', choices=('late_source', 'hydra', 'energy_vortex', 'champions', 'fey_champions', 'crane', 'deathwatch', 'tsuki_wolf', 'kappa', 'vampire_bat', 'yomotsu', 'occurrence_next', 'sand_vortex', 'bake_kitsune', 'horde_rune', 'devourer_lion_hiryu', 'elemental_minotaur', 'meer_donors', 'captain_cu', 'clockwork_tokuno', 'aos_creatures', 'aos_aliases', 'aos_mound', 'recovered_late', 'tormented_minotaur', 'harrower'), default='late_source')
     args = parser.parse_args()
     rows, classes = FIXTURES['prepared_entries'](args.family)
     evidence = ROOT / 'work/creatures' / args.family
@@ -44,6 +44,10 @@ def main():
             record['native_state'] != 'summoned' or not record['corpse_suppressed']
             for record in report['records']):
         raise ValueError('Energy Vortex evidence must cover native summoning and corpse suppression')
+    if args.family == 'harrower' and any(
+            record.get('transformed_body') != 780 or not record.get('true_form_corpse')
+            for record in report['records']):
+        raise ValueError('Harrower evidence must include transformation and the true-form corpse')
     by_body = {row['bodies'][0]['body']: row for row in rows}
     if (len(candidates) != len(expected)
             or {(row['body'], row['native_class']) for row in candidates} != expected
@@ -84,7 +88,8 @@ def main():
                        'elemental_minotaur': 'ElementalMinotaurRouteTests.gd',
                        'meer_donors': 'MeerDonorRouteTests.gd',
                        'captain_cu': 'CaptainCuRouteTests.gd',
-                       'clockwork_tokuno': 'ClockworkTokunoRouteTests.gd'}.get(args.family, 'LateCreatureRouteTests.gd')
+                       'clockwork_tokuno': 'ClockworkTokunoRouteTests.gd',
+                       'harrower': 'HarrowerMorphTests.gd'}.get(args.family, 'LateCreatureRouteTests.gd')
         result = subprocess.run(
             [str(godot), '--headless', '--path', str(ROOT / 'Viewer'), '--script',
              f'res://Presentation/{test_script}', '--', f'--family={args.family}'],

@@ -1027,3 +1027,5 @@ Flesh Renderer, Wanderer of the Void and Mound of Maggots are now active. Their 
 Juggernaut, Yamandon/Serado and loose Reptalon are active and passed isolated two-client normal-registry checks. Reptalon native mount item 0x3E90 and CanFly are tracked separately. The original rider marker is near Z=-1.52 m in the converted rig. An in-memory saddle fit passed 254 headless seat, stirrup, rein-grip and root checks over 72 poses. The trial leaves wing and garment intersections and native riding/flight open.
 
 Tormented Minotaur is active using its original rig. The archived motion hierarchy adds parents above two unweighted toe ends. Only those channels are omitted during motion matching. The client, finite terrain, Vulkan and native checks passed.
+
+The Harrower first-form route is active. The isolated two-client lifecycle verified the native same-serial transformation, tentacle appearance and the true-form death and static corpse. This leaves native altar and portal spawning, autonomous combat and rewards open.

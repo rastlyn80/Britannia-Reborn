@@ -1,3 +1,7 @@
+# Harrower first form active
+
+Body 146 uses the archived Shadowlord mesh and original 37-joint rig, with seven recovered motions. Whole-mesh ground support retained 3.59 mm minimum clearance over 36 sampled poses. The final isolated trial passed 147 prepared and 145 normal-registry checks. The first lethal hit transformed the same serial into body 780 and hue 0x497 on both clients and spawned a native tentacle. The second lethal hit produced the native true-form corpse, with the matching static mesh and hue. This trial constructed the boss in a disposable arena. Altar and portal spawning, autonomous combat, and rewards remain separate.
+
 # Tormented Minotaur active
 
 The original 40-joint rig and all weights are retained. The two unweighted toe-end channels are excluded from motion matching. Twelve recovered clips include the separately named TakeDamage motion. The normal client passed six decoded action routes and three static corpse hues. Vulkan captured eight poses and 36 terrain samples stayed within 1.97 mm of the plane in stance. The isolated server passed 165 prepared and 163 normal-registry checks.
