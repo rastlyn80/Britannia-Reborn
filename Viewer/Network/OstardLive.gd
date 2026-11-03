@@ -20,6 +20,7 @@ var giant_beetle:=false
 var fire_beetle:=false
 var hiryu:=false
 var cu_sidhe:=false
+var cu_active:=false
 const CU_PACKAGE := "res://local-art/creatures/cu_sidhe_mount/preparation.json"
 var cu_pin := ""
 var hiryu_active:=false
@@ -75,6 +76,7 @@ func run() -> void:
 	hiryu="--hiryu" in OS.get_cmdline_user_args()
 	hiryu_active="--hiryu-active" in OS.get_cmdline_user_args()
 	cu_sidhe="--cu-sidhe" in OS.get_cmdline_user_args()
+	cu_active="--cu-sidhe-active" in OS.get_cmdline_user_args()
 	if cu_sidhe:
 		var registry = preload("res://Presentation/CreatureRegistry.gd")
 		cu_pin = FileAccess.get_sha256(CU_PACKAGE)
@@ -82,7 +84,12 @@ func run() -> void:
 		var entry: Dictionary = package.models[0]
 		if not check(entry.kind == "cushidhe" and int(entry.mount_item) == 0x3e91,"Exact original Cu Sidhe mount package"):return
 		registry.load_index()
-		registry.entries[277] = entry
+		if cu_active:
+			var active := registry.entry(277).duplicate(true)
+			active.status = "prepared"
+			if not check(active == entry,"Normal registry loads the exact prepared Cu Sidhe mount"):return
+		else:
+			registry.entries[277] = entry
 	if hiryu:
 		hiryu_pin = FileAccess.get_sha256(HIRYU_PACKAGE)
 		var registry = preload("res://Presentation/CreatureRegistry.gd")
@@ -245,7 +252,7 @@ func run() -> void:
 	if ethics_only and not await save_ethics():return
 	for actor in avatars:actor.free()
 	for session in sessions:session.close()
-	var report:="cu-sidhe-live.json" if cu_sidhe else "hiryu-active-live.json" if hiryu_active else "hiryu-live.json" if hiryu else "ethereal-beetle-live.json" if ethereal_beetle else "fire-beetle-live.json" if fire_beetle else "giant-beetle-live.json" if giant_beetle else "sea-horse-live.json" if sea_horse else "bovine-live.json" if bovines else "ethics-live.json" if ethics_only else "equine-completion-live.json" if equine_completion else "llama-completion-live.json" if llama_completion else "live-validation.json"
+	var report:="cu-sidhe-active-live.json" if cu_active else "cu-sidhe-live.json" if cu_sidhe else "hiryu-active-live.json" if hiryu_active else "hiryu-live.json" if hiryu else "ethereal-beetle-live.json" if ethereal_beetle else "fire-beetle-live.json" if fire_beetle else "giant-beetle-live.json" if giant_beetle else "sea-horse-live.json" if sea_horse else "bovine-live.json" if bovines else "ethics-live.json" if ethics_only else "equine-completion-live.json" if equine_completion else "llama-completion-live.json" if llama_completion else "live-validation.json"
 	var scope:="Actual world entry, native classes/permissions, layer 25, hues, mounted movement, observer replication and dismount on isolated pinned ModernUO. Ranked faction membership and native ethical oaths are disposable test setup; normal mount checks remain active. No production world or saves touched."
 	if bovines:scope="Actual two-client world entry, four native bovine bodies/hues, native Move walk/run replication, real Cow.Tip packets/recovery, owning-player milking API servings/exhaustion, real death and corpse art. Flat arena relocation is fixture setup, not movement evidence. No autonomous AI/pathfinding or complete gameplay/eligibility audit; milking uses the server API, not a client beverage-item interaction."
 	if giant_beetle:scope="Pinned native Beetle constructor and two loopback clients. Controlled owner setup, ordinary mounting and dismounting, native walk and run, full and partial hues, classic actions, normal owner pack opening and native death/corpse. Pack permissions for friends and strangers, loot transfer and autonomous combat are separate."
@@ -259,6 +266,7 @@ func run() -> void:
 		if not check(FileAccess.get_sha256(CU_PACKAGE) == cu_pin,"Cu Sidhe package stays fixed during native verification"):return
 		evidence["checks"] = checks
 		evidence["preparation_sha256"] = cu_pin
+		evidence["normal_registry"] = cu_active
 	if hiryu:
 		if not check(FileAccess.get_sha256(HIRYU_PACKAGE) == hiryu_pin,"Hiryu package stays fixed during native verification"):return
 		evidence["checks"] = checks

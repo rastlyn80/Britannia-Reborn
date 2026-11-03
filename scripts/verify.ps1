@@ -190,6 +190,12 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
   $hiryuRide | ForEach-Object { Write-Output $_ }
   if ($hiryuExit -or ($hiryuRide | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Active Hiryu riding route failed'}
  }
+ if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.family -eq 'cu_sidhe_mount' }) {
+  $cuRide = & $godot --headless --path "$root/Viewer" --script res://Presentation/CuSidheRidingTests.gd -- --active 2>&1
+  $cuExit = $LASTEXITCODE
+  $cuRide | ForEach-Object { Write-Output $_ }
+  if ($cuExit -or ($cuRide | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Active Cu Sidhe riding route failed'}
+ }
 }
 if (Test-Path "$root/Viewer/local-art/human-npcs/savages/dance/preparation.json") {
  & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanNPCMotionTests.gd

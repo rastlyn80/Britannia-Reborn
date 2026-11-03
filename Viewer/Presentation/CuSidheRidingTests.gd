@@ -19,9 +19,19 @@ func check(ok: bool,label: String) -> void:
 func run() -> void:
 	Registry.load_index();var accepted:="res://local-art/creatures/accepted-index.json";var accepted_pin:=FileAccess.get_sha256(accepted)
 	var path:="res://local-art/creatures/cu_sidhe_mount/preparation.json";var preparation: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(path));var entries: Dictionary={}
+	var active := "--active" in OS.get_cmdline_user_args()
+	if active:
+		output += "-active"
 	for entry: Dictionary in preparation.models:
 		if entry.kind != "cushidhe":continue
-		var body:=int(entry.bodies[0].body);Registry.entries[body]=entry;entries[body]=entry
+		var body:=int(entry.bodies[0].body)
+		if active:
+			var expected := entry.duplicate()
+			expected.status = "validated"
+			check(Registry.entry(body) == expected,"Normal registry uses the exact verified Cu Sidhe package")
+		else:
+			Registry.entries[body]=entry
+		entries[body]=entry
 	check(entries.size()==1,"Original Cu Sidhe source form prepared")
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
 	var viewport:=SubViewport.new();viewport.size=Vector2i(1200,900);viewport.own_world_3d=true;viewport.transparent_bg=true;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;root.add_child(viewport)

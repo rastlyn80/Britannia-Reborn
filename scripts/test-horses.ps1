@@ -1,5 +1,6 @@
-param([switch]$Live,[switch]$SkipContact,[switch]$Gpu,[switch]$Equines,[switch]$Ostards,[switch]$EquineCompletion,[switch]$LlamaCompletion,[switch]$Ethics,[switch]$Bovines,[switch]$SeaHorse,[switch]$GiantBeetle,[switch]$FireBeetle,[switch]$Hiryu,[switch]$CuSidhe,[switch]$ActiveHiryu,[switch]$EtherealBeetle,[switch]$Savages,[switch]$SavageRiders,[string]$CreatureFamily='', [switch]$PreparedQueen, [switch]$ActiveJukaLord)
+param([switch]$Live,[switch]$SkipContact,[switch]$Gpu,[switch]$Equines,[switch]$Ostards,[switch]$EquineCompletion,[switch]$LlamaCompletion,[switch]$Ethics,[switch]$Bovines,[switch]$SeaHorse,[switch]$GiantBeetle,[switch]$FireBeetle,[switch]$Hiryu,[switch]$CuSidhe,[switch]$ActiveCuSidhe,[switch]$ActiveHiryu,[switch]$EtherealBeetle,[switch]$Savages,[switch]$SavageRiders,[string]$CreatureFamily='', [switch]$PreparedQueen, [switch]$ActiveJukaLord)
 $ErrorActionPreference='Stop'
+if ($ActiveCuSidhe -and !$CuSidhe) {throw '-ActiveCuSidhe requires -CuSidhe'}
 if ($ActiveHiryu -and !$Hiryu) {throw '-ActiveHiryu requires -Hiryu'}
 $root=Split-Path $PSScriptRoot -Parent
 $godot=(Get-ChildItem "$root/.tools/godot/*console.exe"|Select-Object -First 1).FullName
@@ -120,7 +121,7 @@ try {
   if ($Ethics) {$liveArgs+='--ethics-only'}
   if ($Bovines) {$liveArgs+='--bovines'}
   if ($EtherealBeetle) {$liveArgs+='--ethereal-beetle'}
-  if ($CuSidhe) {$liveArgs+='--cu-sidhe'}
+  if ($CuSidhe) {$liveArgs+='--cu-sidhe'; if ($ActiveCuSidhe) {$liveArgs+='--cu-sidhe-active'}}
   if ($Hiryu) {$liveArgs+='--hiryu'; if ($ActiveHiryu) {$liveArgs+='--hiryu-active'}}
   if ($FireBeetle) {$liveArgs+='--fire-beetle'}
   if ($GiantBeetle) {$liveArgs+='--giant-beetle'}
@@ -241,7 +242,7 @@ try {
    }
   }
   if ($EquineCompletion -or $LlamaCompletion -or $Ostards -or $Ethics -or $Bovines -or $SeaHorse -or $GiantBeetle -or $FireBeetle -or $Hiryu -or $CuSidhe -or $EtherealBeetle) {
-   $reportName=if ($CuSidhe) {'cu-sidhe-live.json'} elseif ($ActiveHiryu) {'hiryu-active-live.json'} elseif ($Hiryu) {'hiryu-live.json'} elseif ($EtherealBeetle) {'ethereal-beetle-live.json'} elseif ($FireBeetle) {'fire-beetle-live.json'} elseif ($GiantBeetle) {'giant-beetle-live.json'} elseif ($SeaHorse) {'sea-horse-live.json'} elseif ($Bovines) {'bovine-live.json'} elseif ($Ethics) {'ethics-live.json'} elseif ($EquineCompletion) {'equine-completion-live.json'} elseif ($LlamaCompletion) {'llama-completion-live.json'} else {'live-validation.json'}
+   $reportName=if ($ActiveCuSidhe) {'cu-sidhe-active-live.json'} elseif ($CuSidhe) {'cu-sidhe-live.json'} elseif ($ActiveHiryu) {'hiryu-active-live.json'} elseif ($Hiryu) {'hiryu-live.json'} elseif ($EtherealBeetle) {'ethereal-beetle-live.json'} elseif ($FireBeetle) {'fire-beetle-live.json'} elseif ($GiantBeetle) {'giant-beetle-live.json'} elseif ($SeaHorse) {'sea-horse-live.json'} elseif ($Bovines) {'bovine-live.json'} elseif ($Ethics) {'ethics-live.json'} elseif ($EquineCompletion) {'equine-completion-live.json'} elseif ($LlamaCompletion) {'llama-completion-live.json'} else {'live-validation.json'}
    $report=Join-Path $root "outputs/ostard-riding/$reportName"
    if (!(Test-Path $report) -or (Get-Item $report).LastWriteTimeUtc -lt $started.AddSeconds(-1)) {throw 'Live test did not write fresh evidence; inspect the Godot log.'}
    if ((Get-Content $report -Raw|ConvertFrom-Json).failures -ne 0) {throw 'Live integration reported failures'}

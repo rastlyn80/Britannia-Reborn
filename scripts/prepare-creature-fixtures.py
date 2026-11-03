@@ -143,6 +143,10 @@ def main():
             mounted, _ = prepared_entries('hiryu_mount')
             package_rows = [mounted[0] if row['bodies'][0]['body'] == 243 else row
                             for row in package_rows]
+        if args.family == 'captain_cu_active' and any(row['family'] == 'cu_sidhe_mount' for row in registered):
+            mounted = json.loads((ROOT / 'Viewer/local-art/creatures/cu_sidhe_mount/preparation.json').read_text())
+            package_rows = [mounted['models'][0] if row['bodies'][0]['body'] == 277 else row
+                            for row in package_rows]
         if registered != [dict(row, status='validated') for row in package_rows]:
             raise ValueError('Normal registry does not match the checked recovered package')
         index['entries'] = registered
