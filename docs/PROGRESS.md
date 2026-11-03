@@ -1,3 +1,9 @@
+# Slith active
+
+Slith body 734 uses the archived Third Dawn Komodo Dragon as a donor. The prepared variant retains its original atlas, 28-joint rig and seven compatible source clips. Eat is authored. This is a donor appearance with the original gold palette. The classic Slith's purple underside and orange ridge remain an art gap. Native Slith, Stone Slith and Toxic Slith passed 371 checks across two clients, including constructor hues, server actions and a static corpse posed from Death. The normal client route passed four decoded actions and three corpse hues. The isolated normal-registry run passed 367 checks. In 36 terrain poses, the greatest sampled stance gap was 1.64 mm.
+
+Rebuild with `python scripts/prepare-recovered-late.py --slith` using the local files pinned by `scripts/slith-inputs.json`. Exercise the prepared and active client routes with `scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily slith` and the same command with `slith_active` on the disposable server. Activate the checked package with `python scripts/accept-late-creatures.py --family slith` after the prepared trial.
+
 # Animated Weapon active
 
 Body 692 uses a 70-triangle halberd from the archived 3D equipment and its original atlas, selected against the installed classic polearm sprite. The seven rigid motions are authored. The 36 sampled hover poses maintained 0.482 m minimum ground clearance. Vulkan passed 13 appearance checks. The isolated native summon API run passed 125 prepared and 123 normal-registry checks, including the transient death transition and absence of a persistent corpse. The fixture uses a disposable caster at a fixed skill level and does not certify spell targeting, reagents or follower limits.

@@ -45,6 +45,7 @@ def main():
     group.add_argument('--tormented', action='store_true')
     group.add_argument('--donors', action='store_true')
     group.add_argument('--vendor', action='store_true')
+    group.add_argument('--slith', action='store_true')
     args = parser.parse_args()
     family = 'tormented_minotaur' if args.tormented else FAMILY
     forms = {262: ('tormentedminotaur', {'TormentedMinotaur': 0}, 40, 12)} if args.tormented else FORMS
@@ -55,9 +56,14 @@ def main():
         family = 'gargoyle_vendor'
         forms = {758: ('gargoyles_gargoyle_shopkeeper', {}, 55, 11)}
         manifest_path = HERE / 'gargoyle-vendor-inputs.json'
+    if args.slith:
+        family = 'slith'
+        forms = {734: ('lizards_komodo_dragon', {'Slith': 0, 'StoneSlith': 0, 'ToxicSlith': 476}, 28, 7)}
+        manifest_path = HERE / 'slith-inputs.json'
     manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
     table = checked(BASE / 'model-table/Client/Models.txt', manifest['model_table_sha256'])
-    members = {name.lower(): checked(BASE / 'final-late-source' / name, digest)
+    source_folder = 'slith-donor-source' if args.slith else 'final-late-source'
+    members = {name.lower(): checked(BASE / source_folder / name, digest)
                for name, digest in manifest['files'].items()}
 
     class Inputs:
@@ -76,6 +82,9 @@ def main():
     for body, (stem, hues, joints, motions) in forms.items():
         names = {name: name for name in members}
         selected = [row for row in rows if row['stem'] != stem or row['body'] == body]
+        if body == 734:
+            donor, = [row for row in rows if row['body'] == 134 and row['stem'] == stem]
+            selected = [dict(donor, body=734)]
         parser, exporter, refine = pipeline.td.parse, pipeline.td.export_gltf, pipeline.smooth.refine
         if body == 276:
             names['client/models/animals/raptalon_gethit.grn'] = 'client/models/animals/raptalon_takedamage.grn'
@@ -129,6 +138,8 @@ def main():
             row['native_mount_graphic'] = 0x3e90
         if body == 262:
             row['motion_matching_omitted_unweighted_leaves'] = sorted(TOE_ENDS)
+        if body == 734:
+            row['source_interpretation'] = 'Original Komodo Dragon body 134 geometry, atlas and seven motions, evaluated as an authored Slith replacement.'
         row['presentation_script'] = f'res://{renderer}'
         row['presentation_script_sha256'] = SHA(ROOT / 'Viewer' / renderer)
         for variant in ('original', 'rounded', 'modern'):

@@ -1,0 +1,16 @@
+{
+  "installer_sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393",
+  "model_table_sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099",
+  "files": {
+    "Client/Models/Animals/Lizards_Komodo_Dragon_Attack1.grn": "6a6d30f12f515e8906d7da64bdc0260c1e0ee9f3e0fc04962aa8921768654340",
+    "Client/Models/Animals/Lizards_Komodo_Dragon_Die1.grn": "56b2870353202f8badeb218c3b607158c9fc0e7aeb58f161a9880da0b6c016ec",
+    "Client/Models/Animals/Lizards_Komodo_Dragon_Fidget.grn": "3d3afbbea7bf2435a64af8c166a5b6333d50ecd7dda9bdbf28d717265db83c32",
+    "Client/Models/Animals/Lizards_Komodo_Dragon_Gethit.grn": "1fa2b2a671aee0080651c34ef4bbd24aa3dc2aa378317580a61eb1c3da4a8586",
+    "Client/Models/Animals/Lizards_Komodo_Dragon_Idle.grn": "ac8bd20e5d5029495a3ef33c7381db5e510d4f46285459f1a6b0559d2e70fb18",
+    "Client/Models/Animals/Lizards_Komodo_Dragon_Lod2.grn": "1e0010c6780e85132c767b6ba4f4d0911fa154378a7c8d76ea7e0bc5259991be",
+    "Client/Models/Animals/Lizards_Komodo_Dragon_Run.grn": "053d8124bb500643ef11b2eef3bc1935b9625e1f2489ca6a2c66871b0fd20541",
+    "Client/Models/Animals/Lizards_Komodo_Dragon_Walk.grn": "df27937ab51f082919c4338e8ef6d0c1893b85fde2c2d67426f87073276867cc",
+    "Client/Models/Maps/Lizards_Komodo_Dragon_V04.tga": "5729717ea090357e17ccf1b2bcb7889647b2651daffa73f22e943b34240f779d",
+    "Client/Models/Maps/Lizards_Komodo_Dragon_V04_M.tga": "55e91947026eef4f17d5d0172638f1cddc9cdb1b7e4b2a806ecc4d1d8a65c178"
+  }
+}
