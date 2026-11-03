@@ -1,3 +1,7 @@
+# Flesh Renderer, Wanderer of the Void and Mound of Maggots active
+
+Flesh Renderer and Wanderer each retain eight recovered original clips after two scoped bone-name repairs. They passed 302 prepared and 299 normal-registry native checks, plus 16 Vulkan captures. The whole-mesh terrain trial kept the visible skin at least 26.93 mm and 29.40 mm above the sampled planes respectively. Mound of Maggots retains all 75 bind joints and eight recovered clips. Three unweighted leaf channels are excluded from motion matching. The package passed eight Vulkan captures, 36 terrain poses with 3.33 mm minimum clearance, 155 prepared native checks and 153 normal-registry native checks. The earlier full regression through the Cu Sidhe changes exited successfully. A new full regression includes the activated Age of Shadows batch.
+
 # Five active Age of Shadows bodies
 
 Impaler, Gibberling, Bone Demon, Darknight Creeper and Demon Knight are active locally. Their original rigs and textures produced 40 Vulkan frames. The final package passed 753 prepared and 747 normal-registry native checks across two clients, including actions, movement, full and partial hues, and static corpse replication. Local body coverage is 260 of 279, with 241 backed by some native evidence. Flesh Renderer and Wanderer of the Void have separate pinned candidates.

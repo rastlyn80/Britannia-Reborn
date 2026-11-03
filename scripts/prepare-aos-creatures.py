@@ -26,6 +26,8 @@ ALIASES = {
     315: ('bip01 bip01bone rb2', 'bip01 bone rb2', 'bip01 bone rb1'),
     316: ('head', 'bip01 head', 'neck2'),
 }
+MOUND_FORMS = {319: ('mound_of_maggots', ('MoundOfMaggots',), 75, 8)}
+MOUND_HELPERS = frozenset(('dummy87', 'dummy93', 'dummy105'))
 
 
 def checked(path, digest):
@@ -53,13 +55,27 @@ def match_alias(animation, body, match, alias):
     return match(animation, body)
 
 
+def match_mound(animation, body, match):
+    indices = {i for i, bone in enumerate(body['bones']) if bone['name'] in MOUND_HELPERS}
+    weighted = any(body['ties'][joint] in indices and weight > 0
+                   for point in body['weights'] for joint, weight in point)
+    if len(indices) != len(MOUND_HELPERS) or weighted or any(bone['parent'] in indices for bone in body['bones']):
+        raise ValueError('Mound motion helpers must remain unweighted leaf joints')
+    retained = [bone for i, bone in enumerate(body['bones']) if i not in indices]
+    return match(animation, dict(body, bones=retained))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--alias-batch', action='store_true')
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('--alias-batch', action='store_true')
+    group.add_argument('--mound', action='store_true')
     args = parser.parse_args()
     family = 'aos_aliases' if args.alias_batch else FAMILY
     forms = ALIAS_FORMS if args.alias_batch else FORMS
     manifest_path = HERE / 'aos-creature-alias-inputs.json' if args.alias_batch else MANIFEST
+    if args.mound:
+        family, forms, manifest_path = 'aos_mound', MOUND_FORMS, HERE / 'aos-mound-inputs.json'
     manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
     table = checked(BASE / 'model-table/Client/Models.txt', manifest['model_table_sha256'])
     members = {name.lower(): checked(BASE / 'aos-creature-source' / name, digest)
@@ -71,7 +87,7 @@ def main():
 
     pipeline = LATE['TOOLS']['pipeline']()
     pipeline.helper.audit.ARCHIVE_HASH = manifest['installer_sha256']
-    pipeline.OUTPUT = BASE / ('aos-alias-preview' if args.alias_batch else 'aos-creature-preview')
+    pipeline.OUTPUT = BASE / f'{family.replace("_", "-")}-preview'
     rows = pipeline.table_rows(table.read_bytes())
     _, native = pipeline.native_bodies()
     names = {name: name for name in members}
@@ -84,6 +100,8 @@ def main():
         if body in ALIASES:
             alias = ALIASES[body]
             pipeline.helper.match_animation = lambda animation, mesh: match_alias(animation, mesh, match, alias)
+        elif body == 319:
+            pipeline.helper.match_animation = lambda animation, mesh: match_mound(animation, mesh, match)
         try:
             row, = pipeline.prepare(kind.split('_')[0], Inputs(), names, selected, native,
                                     selected_kinds={kind})
@@ -101,8 +119,10 @@ def main():
                    assets={}, asset_sha256={}, art_dependency_sha256={})
         if body in ALIASES:
             row['animation_joint_alias'] = dict(zip(('source', 'bind', 'parent'), ALIASES[body]))
+        if body == 319:
+            row['motion_matching_omitted_unweighted_leaves'] = sorted(MOUND_HELPERS)
         renderer = 'Presentation/OccurrenceCreatureVisual.gd'
-        if body == 313:
+        if body in (313, 315, 316, 319):
             renderer = 'Presentation/SourcePreservingCreatureVisual.gd'
             row['limb_support'] = 'plane'
             dependency = 'Presentation/SourceGroundLookup.gd'

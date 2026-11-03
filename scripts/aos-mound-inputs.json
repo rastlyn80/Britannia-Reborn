@@ -1,0 +1,16 @@
+{
+  "installer_sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393",
+  "model_table_sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099",
+  "files": {
+    "Client/Models/Monsters/Mound_of_Maggots_LOD2.grn": "e8b5a63072fb138954e811940b949d434614f06f03b6c322e5a6fb27aadf6ad8",
+    "Client/Models/Maps/Mound_of_Maggots_256x256.tga": "c97162715ed43edb1f9a27245106ea9366825521145da4c19e08df80f2c0c301",
+    "Client/Models/Monsters/Mound_of_Maggots_Idle.grn": "8927d30cbe5e8fe4a8d8b7f99d5b1a5aa0cd33e998a8ac30c347334acfb423f4",
+    "Client/Models/Monsters/Mound_of_Maggots_walk.grn": "9eabee11164a21a3a6afecbe85fa295b20430de970c3a6fbd68ab72dd73e73ed",
+    "Client/Models/Monsters/Mound_of_Maggots_Attack1.grn": "1bc5546f41d0a2ff6efc998ba9533e5237f3d13f89e6d25cd3c3ee63279fad42",
+    "Client/Models/Monsters/Mound_of_Maggots_Attack2.grn": "3bfe7a61b2d57727afdbee1f6f956917073be0be4e4f7adcd363ff8db67cfb5e",
+    "Client/Models/Monsters/Mound_of_Maggots_GetHit.grn": "3fbaf801ac47c3c7d3372e41f1beac8b66127652b96ebbaf075c00789b7c696a",
+    "Client/Models/Monsters/Mound_of_Maggots_Die1.grn": "63d5871da1d10bb2d5a573f6137a4e559c42dc2cdeabd1a4576ec38c047de9d8",
+    "Client/Models/Monsters/Mound_of_Maggots_Fidget.grn": "562ec32df8756b5c4eeb53038313970758d3ba2f21c3f6f3b99da30160bbc917",
+    "Client/Models/Monsters/Mound_of_Maggots_Fly.grn": "54f0bdd32d4775ecfa95e8dee7fbc4e3463704c0b4c441bdc04c4c7f949e8fff"
+  }
+}

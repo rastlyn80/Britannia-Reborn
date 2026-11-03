@@ -19,8 +19,8 @@ RECENT_CLASSES={166:['GoldenElemental'],753:['EnslavedGargoyle'],301:['Treefello
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
 def prepared_entries(family):
-    assert family in ['mages','juka','juka_lord','hydra','energy_vortex','late_source','champions','fey_champions','crane','deathwatch','tsuki_wolf','kappa','vampire_bat','yomotsu','occurrence_next','horde_rune','sand_vortex','bake_kitsune','devourer_lion_hiryu','hiryu_mount','elemental_minotaur','meer_donors','captain_cu','clockwork_tokuno','aos_creatures','aos_aliases','candidate_batch','solen_queens',*PREPARED_FORMS],'Prepared native trial requires an explicit checked family'
-    if family in ('late_source', 'champions', 'fey_champions', 'yomotsu', 'occurrence_next', 'horde_rune', 'sand_vortex', 'bake_kitsune', 'devourer_lion_hiryu', 'hiryu_mount', 'elemental_minotaur', 'meer_donors', 'captain_cu', 'clockwork_tokuno', 'aos_creatures', 'aos_aliases'):
+    assert family in ['mages','juka','juka_lord','hydra','energy_vortex','late_source','champions','fey_champions','crane','deathwatch','tsuki_wolf','kappa','vampire_bat','yomotsu','occurrence_next','horde_rune','sand_vortex','bake_kitsune','devourer_lion_hiryu','hiryu_mount','elemental_minotaur','meer_donors','captain_cu','clockwork_tokuno','aos_creatures','aos_aliases','aos_mound','candidate_batch','solen_queens',*PREPARED_FORMS],'Prepared native trial requires an explicit checked family'
+    if family in ('late_source', 'champions', 'fey_champions', 'yomotsu', 'occurrence_next', 'horde_rune', 'sand_vortex', 'bake_kitsune', 'devourer_lion_hiryu', 'hiryu_mount', 'elemental_minotaur', 'meer_donors', 'captain_cu', 'clockwork_tokuno', 'aos_creatures', 'aos_aliases', 'aos_mound'):
         classes, manifest = {
             'late_source': ({266: ['InsaneDryad', 'MLDryad'], 267: ['Lurg', 'Troglodyte'], 279: ['Ferret']}, 'late-creature-inputs.json'),
             'champions': ({172: ['Rikktor'], 173: ['Mephitis']}, 'champion-creature-inputs.json'),
@@ -34,6 +34,7 @@ def prepared_entries(family):
             'hiryu_mount': ({243: ['Hiryu', 'LesserHiryu']}, 'devourer-lion-hiryu-inputs.json'),
             'elemental_minotaur': ({300: ['CrystalElemental'], 263: ['Minotaur'], 305: ['GoreFiend'], 281: ['MinotaurScout'], 241: ['Oni'], 789: ['Quagmire'], 772: ['MeerEternal']}, 'elemental-minotaur-inputs.json'),
             'meer_donors': ({771: ['MeerWarrior'], 770: ['MeerMage'], 773: ['MeerCaptain']}, 'meer-donor-inputs.json'),
+            'aos_mound': ({319: ['MoundOfMaggots']}, 'aos-mound-inputs.json'),
             'aos_aliases': ({315: ['FleshRenderer'], 316: ['WandererOfTheVoid']}, 'aos-creature-alias-inputs.json'),
             'aos_creatures': ({306: ['Impaler'], 307: ['Gibberling'], 308: ['BoneDemon'], 313: ['DarknightCreeper'], 318: ['DemonKnight']}, 'aos-creature-inputs.json'),
             'captain_cu': ({280: ['MinotaurCaptain'], 277: ['CuSidhe']}, 'captain-cu-inputs.json'),
@@ -135,7 +136,7 @@ def main():
         entries,prepared_classes=prepared_entries(args.family)
         index={'entries':entries}
         states={'prepared'}
-    elif args.family in ('late_source_active', 'hydra_active', 'energy_vortex_active', 'champions_active', 'fey_champions_active', 'crane_active', 'deathwatch_active', 'tsuki_wolf_active', 'kappa_active', 'vampire_bat_active', 'yomotsu_active', 'occurrence_next_active', 'sand_vortex_active', 'bake_kitsune_active', 'horde_rune_active', 'devourer_lion_hiryu_active', 'elemental_minotaur_active', 'meer_donors_active', 'captain_cu_active', 'clockwork_tokuno_active', 'aos_creatures_active'):
+    elif args.family in ('late_source_active', 'hydra_active', 'energy_vortex_active', 'champions_active', 'fey_champions_active', 'crane_active', 'deathwatch_active', 'tsuki_wolf_active', 'kappa_active', 'vampire_bat_active', 'yomotsu_active', 'occurrence_next_active', 'sand_vortex_active', 'bake_kitsune_active', 'horde_rune_active', 'devourer_lion_hiryu_active', 'elemental_minotaur_active', 'meer_donors_active', 'captain_cu_active', 'clockwork_tokuno_active', 'aos_creatures_active', 'aos_aliases_active', 'aos_mound_active'):
         package_rows, prepared_classes = prepared_entries(args.family.removesuffix('_active'))
         selected_bodies = {body['body'] for row in package_rows for body in row['bodies']}
         registered = [row for row in index['entries'] if row['status'] == 'validated'
