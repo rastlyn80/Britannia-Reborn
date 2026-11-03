@@ -5,6 +5,8 @@ import json
 from pathlib import Path
 import runpy
 from shutil import copyfile
+from struct import pack, unpack
+from types import SimpleNamespace
 
 HERE = Path(__file__).resolve().parent
 LATE = runpy.run_path(str(HERE / 'prepare-hydra.py'))
@@ -28,6 +30,16 @@ ALIASES = {
 }
 MOUND_FORMS = {319: ('mound_of_maggots', ('MoundOfMaggots',), 75, 8)}
 MOUND_HELPERS = frozenset(('dummy87', 'dummy93', 'dummy105'))
+ARMED_FORMS = {
+    311: ('shadow_knight', ('ShadowKnight',), 51, 8),
+    314: ('ravager', ('Ravager',), 78, 8),
+}
+ARMED_PARTS = {
+    311: (1, 1, 'shadow knight sword', 593, 1106, 50, 86),
+    314: (0, 2, 'club', 604, 1303, 41, 78),
+}
+ABYSMAL_FORMS = {312: ('abysmal_horror', ('AbysmalHorror',), 43, 7)}
+ABYSMAL_ALIASES = {'bip01 head': ('head', 0.0001), 'abysmal horror root': ('bip01', 0.02)}
 
 
 def checked(path, digest):
@@ -65,17 +77,93 @@ def match_mound(animation, body, match):
     return match(animation, dict(body, bones=retained))
 
 
+def match_abysmal(animation, body, match):
+    animation = deepcopy(animation)
+    rig = {bone['name']: bone for bone in body['bones']}
+    names = {bone['name'] for bone in animation['bones']}
+    for bone in animation['bones']:
+        old = bone['name']
+        if old not in ABYSMAL_ALIASES:
+            continue
+        target, translation_limit = ABYSMAL_ALIASES[old]
+        bind = rig[target]
+        if (target in names
+                or animation['bones'][bone['parent']]['name'] != body['bones'][bind['parent']]['name']
+                or any(abs(a - b) > translation_limit for a, b in zip(bone['translation'], bind['translation']))):
+            raise ValueError(f'Unexpected Abysmal Horror joint alias: {old}')
+        bone['name'] = target
+    for track in animation['tracks']:
+        if track['name'] in ABYSMAL_ALIASES:
+            track['name'] = ABYSMAL_ALIASES[track['name']][0]
+    return match(animation, body)
+
+
+def decode_armed(pipeline, raw, layout):
+    mesh_index, material_count, joint, body_points, body_faces, part_points, part_faces = layout
+    reader = pipeline.td
+    chunks = list(reader.chunks(raw))
+    rig = reader.parse(raw, animations_only=True, scene_root_names=True)
+    tie, = [i for i, bone in enumerate(rig['ties']) if rig['bones'][bone]['name'] == joint]
+
+    def select(skinned):
+        mesh, material = -1, None
+        for tag, payload, ancestors in chunks:
+            if tag == 0xca5e0601:
+                mesh += 1
+            if tag == 0xca5e0e02:
+                material, count = unpack('<II', payload)
+                if (material, count) not in ((0, 1), (1, material_count)):
+                    raise ValueError('Unexpected armed creature material group')
+            if (tag == 0xca5e0601 or 0xca5e0601 in ancestors) and (mesh == mesh_index) != skinned:
+                continue
+            if tag in (0xca5e0e02, 0xca5e0e06) and (material == 1) != skinned:
+                continue
+            if tag == 0xca5e0e02 and not skinned:
+                payload = pack('<II', tie, 1)
+            yield tag, payload, ancestors
+
+    original_chunks = reader.chunks
+    try:
+        reader.chunks = lambda _: select(True)
+        model = reader.parse(raw, scene_root_names=True)
+    finally:
+        reader.chunks = original_chunks
+    rigid_reader = SimpleNamespace(chunks=lambda _: select(False), parse=reader.parse,
+                                   require=reader.require, finite=reader.finite)
+    part, _, report = pipeline.rigid.read_rigid_parts(raw, rigid_reader, excluded_names=())
+    if ((len(model['points']), len(model['polygons']), len(part['points']), len(part['polygons']))
+            != (body_points, body_faces, part_points, part_faces)
+            or not all(model[key] == part[key] for key in ('bones', 'ties', 'textures'))
+            or len(model['uv_sets']) != 1 or len(part['uv_sets']) != 1):
+        raise ValueError('Armed creature mesh or bind contract changed')
+    point_offset, normal_offset, uv_offset = len(model['points']), len(model['normals']), len(model['uv_sets'][0])
+    model['points'].extend(part['points'])
+    model['normals'].extend(part['normals'])
+    model['uv_sets'][0].extend(part['uv_sets'][0])
+    model['polygons'].extend(tuple(i + point_offset for i in face[:3])
+                             + tuple(i + normal_offset for i in face[3:]) for face in part['polygons'])
+    model['texture_polygons'].extend(tuple(i + uv_offset for i in face) for face in part['texture_polygons'])
+    model['weights'].extend(part['weights'])
+    return model, report
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     group = parser.add_mutually_exclusive_group()
     group.add_argument('--alias-batch', action='store_true')
     group.add_argument('--mound', action='store_true')
+    group.add_argument('--armed', action='store_true')
+    group.add_argument('--abysmal', action='store_true')
     args = parser.parse_args()
     family = 'aos_aliases' if args.alias_batch else FAMILY
     forms = ALIAS_FORMS if args.alias_batch else FORMS
     manifest_path = HERE / 'aos-creature-alias-inputs.json' if args.alias_batch else MANIFEST
     if args.mound:
         family, forms, manifest_path = 'aos_mound', MOUND_FORMS, HERE / 'aos-mound-inputs.json'
+    if args.armed:
+        family, forms, manifest_path = 'aos_armed', ARMED_FORMS, HERE / 'aos-armed-inputs.json'
+    if args.abysmal:
+        family, forms, manifest_path = 'aos_abysmal', ABYSMAL_FORMS, HERE / 'aos-abysmal-inputs.json'
     manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
     table = checked(BASE / 'model-table/Client/Models.txt', manifest['model_table_sha256'])
     members = {name.lower(): checked(BASE / 'aos-creature-source' / name, digest)
@@ -97,16 +185,24 @@ def main():
     match = pipeline.helper.match_animation
     for body, (kind, native_classes, joints, motions) in forms.items():
         selected = [row for row in rows if row['stem'] != kind or row['body'] == body]
+        parse = pipeline.td.parse
+        if body in ARMED_PARTS:
+            raw = members[f'client/models/monsters/{kind}_lod2.grn'].read_bytes()
+            mesh, rigid_report = decode_armed(pipeline, raw, ARMED_PARTS[body])
+            pipeline.td.parse = lambda data, **opts: mesh if data == raw and not opts.get('animations_only') else parse(data, **opts)
         if body in ALIASES:
             alias = ALIASES[body]
             pipeline.helper.match_animation = lambda animation, mesh: match_alias(animation, mesh, match, alias)
         elif body == 319:
             pipeline.helper.match_animation = lambda animation, mesh: match_mound(animation, mesh, match)
+        elif body == 312:
+            pipeline.helper.match_animation = lambda animation, mesh: match_abysmal(animation, mesh, match)
         try:
             row, = pipeline.prepare(kind.split('_')[0], Inputs(), names, selected, native,
                                     selected_kinds={kind})
         finally:
             pipeline.helper.match_animation = match
+            pipeline.td.parse = parse
         if row['status'] != 'prepared':
             raise ValueError(f'{kind} conversion failed: {row.get("blocker")}')
         identity, = row['bodies']
@@ -121,8 +217,15 @@ def main():
             row['animation_joint_alias'] = dict(zip(('source', 'bind', 'parent'), ALIASES[body]))
         if body == 319:
             row['motion_matching_omitted_unweighted_leaves'] = sorted(MOUND_HELPERS)
+        if body in ARMED_PARTS:
+            row['rigid_import'] = rigid_report
+        if body == 312:
+            if row.get('rejected_source_clips') != {
+                    'Fly': {'member': 'client/models/monsters/abysmal_horror_fly.grn', 'error': 'Duplicate bone names'}}:
+                raise ValueError('Unexpected Abysmal Horror source motion rejection')
+            row['animation_joint_aliases'] = {name: target for name, (target, _) in ABYSMAL_ALIASES.items()}
         renderer = 'Presentation/OccurrenceCreatureVisual.gd'
-        if body in (313, 315, 316, 319):
+        if body in (311, 312, 313, 315, 316, 319):
             renderer = 'Presentation/SourcePreservingCreatureVisual.gd'
             row['limb_support'] = 'plane'
             dependency = 'Presentation/SourceGroundLookup.gd'

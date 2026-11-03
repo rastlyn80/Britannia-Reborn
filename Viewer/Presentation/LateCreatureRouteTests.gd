@@ -8,11 +8,40 @@ const Corpses = preload("res://Presentation/CorpseModels.gd")
 const MONSTER := {4:"Attack", 5:"Attack2", 6:"Attack3", 10:"Hit", 17:"Fidget", 2:"Death"}
 const ANIMAL := {3:"Eat", 4:"Alert", 5:"Attack", 6:"Attack2", 7:"Hit", 11:"LieDown", 8:"Death"}
 const RECOVERED_FAMILIES := ["aos_creatures", "aos_aliases", "aos_mound", "recovered_late",
-	"tormented_minotaur", "late_donors", "gargoyle_vendor"]
+	"tormented_minotaur", "late_donors", "gargoyle_vendor", "aos_armed", "aos_abysmal"]
 
 func _initialize() -> void:
 	create_timer(30.0).timeout.connect(func(): quit(2))
 	call_deferred("run")
+
+func rigid_weapon_faces(actor: Node3D, joint: String) -> int:
+	var count := 0
+	var bone: int = actor.skeleton.find_bone(joint)
+	assert(bone >= 0)
+	for mesh: MeshInstance3D in actor.model.find_children("*", "MeshInstance3D", true, false):
+		if mesh.skin == null or not mesh.is_visible_in_tree():
+			continue
+		for surface in mesh.mesh.get_surface_count():
+			var arrays := mesh.mesh.surface_get_arrays(surface)
+			var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+			var indices: PackedInt32Array = arrays[Mesh.ARRAY_INDEX]
+			var joints: PackedInt32Array = arrays[Mesh.ARRAY_BONES]
+			var weights: PackedFloat32Array = arrays[Mesh.ARRAY_WEIGHTS]
+			var stride := joints.size() / vertices.size()
+			var corners := vertices.size() if indices.is_empty() else indices.size()
+			for start in range(0, corners, 3):
+				var weapon := true
+				for corner in range(start, start + 3):
+					var vertex := corner if indices.is_empty() else indices[corner]
+					var index := vertex * stride
+					var binding := joints[index]
+					var attached := mesh.skin.get_bind_bone(binding)
+					if attached < 0:
+						attached = actor.skeleton.find_bone(mesh.skin.get_bind_name(binding))
+					weapon = weapon and attached == bone and is_equal_approx(weights[index], 1.0)
+				if weapon:
+					count += 1
+	return count
 
 func run() -> void:
 	Registry.load_index()
@@ -39,6 +68,19 @@ func run() -> void:
 		avatar.set_physics_process(false)
 		var actor: Node3D = avatar.horse_visual
 		assert(actor != null and avatar.human_visual == null)
+		if family == "aos_armed":
+			var part: Dictionary = record.rigid_import.parts[0]
+			var refinement := int(record.stats.rounded.triangles) / int(record.stats.original.triangles)
+			var bound_faces := rigid_weapon_faces(actor, part.name)
+			assert(bound_faces == int(part.triangles) * refinement, "%s rigid faces: %d expected %d" % [record.kind, bound_faces, int(part.triangles) * refinement])
+			var weapon_joint: int = actor.skeleton.find_bone(part.name)
+			actor.play("Attack", 0.0)
+			actor.animator.seek(0.0, true)
+			actor.skeleton.force_update_all_bone_transforms()
+			var start: Transform3D = actor.skeleton.get_bone_global_pose(weapon_joint)
+			actor.animator.seek(actor.animator.current_animation_length * 0.4, true)
+			actor.skeleton.force_update_all_bone_transforms()
+			assert(not start.is_equal_approx(actor.skeleton.get_bone_global_pose(weapon_joint)))
 		actor.set_process(false)
 		actor.set_physics_process(false)
 		var serial := 0x1234

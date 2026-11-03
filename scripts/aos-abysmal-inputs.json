@@ -1,0 +1,16 @@
+{
+  "installer_sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393",
+  "model_table_sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099",
+  "files": {
+    "Client/Models/Monsters/Abysmal_Horror_LOD2.grn": "dc503b05131fc4c80a0d83ab38b1c387bbc998549ee1af1161274f75a7a2450f",
+    "Client/Models/Maps/Abysmal_Horror_256x256.tga": "bfc528eb9dc292c9995700c80886f59b5156cea392f00b30d801fdecadfec76f",
+    "Client/Models/Monsters/Abysmal_Horror_Idle.grn": "7a57b740a8345aa376d8ec1b2b41d0e85c947ed18e07c13085a0d5ef5d8abb6f",
+    "Client/Models/Monsters/Abysmal_Horror_Walk.grn": "d1e6751f44207acb6a4cccaa8ba84c80053ea217e4ca4facc28e21eb19fcf061",
+    "Client/Models/Monsters/Abysmal_Horror_Attack1.grn": "ec4ad892d4e4516ee6c84776975df28e19055e44a0ba4d511c8c7cc9df8280f9",
+    "Client/Models/Monsters/Abysmal_Horror_Attack2.grn": "4486e1703b7ebc66e4a56577a196669b072a06a754b0445673a2d4a3c23a533d",
+    "Client/Models/Monsters/Abysmal_Horror_Gethit.grn": "e4b456d43cc9258d7cc54c1181a6761e699ab9848f1cb2a3f137398cd22b1613",
+    "Client/Models/Monsters/Abysmal_Horror_Die1.grn": "d90c3b63bbaeb6c98d4068a6fe3e36f0cbf9460641adcb44155bf4c57271551e",
+    "Client/Models/Monsters/Abysmal_Horror_Fidget.grn": "cb07ddfc87705dede2d0c67014f8e480bd03bc841c8cf39f6dc4695bf19621fe",
+    "Client/Models/Monsters/Abysmal_Horror_Fly.grn": "c93c8fd2eadf7e046e1da7de8dd1c8e9d542e79f9755ab0d5a6c860c3cf8a6ab"
+  }
+}

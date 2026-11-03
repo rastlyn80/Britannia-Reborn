@@ -1,0 +1,26 @@
+{
+  "installer_sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393",
+  "model_table_sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099",
+  "files": {
+    "Client/Models/Monsters/Shadow_Knight_LOD2.grn": "12dc4b7423d9aa302d46d047a10c1a504cd9e4548b5d1cb4d58155a3870eac96",
+    "Client/Models/Maps/Shadow_Knight_256x256.tga": "fd598ea3bbe1678efd5d76dfde3c3dfe9798615bcaf6b1176166c36ebbf4d7b3",
+    "Client/Models/Monsters/Shadow_Knight_Idle.grn": "a8c2c5519c6caa011f2566b35dffb19055a37abfc0b9cc5a913ed6b03f48d77b",
+    "Client/Models/Monsters/Shadow_Knight_Walk.grn": "54ab3c9bb668d40d929a91cec6ec4a6115d794f2f90caba95f78e2379548da95",
+    "Client/Models/Monsters/Shadow_Knight_Attack1.grn": "857e68fb4b1375a24796d8b5ed6666b1a25294fcfa11f7d0d219630a7e56aa92",
+    "Client/Models/Monsters/Shadow_Knight_Attack2.grn": "e5e4a7d4ffb1e5d3f4b9aefa85bed13f5b44f8ca4c765cb6a4028044b8a3846b",
+    "Client/Models/Monsters/Shadow_Knight_GetHit.grn": "2688e43cd7c03335120af4f8ffe61b76b48f8fca701922db5ffada761fe20589",
+    "Client/Models/Monsters/Shadow_Knight_Die1.grn": "89c50c392db0f2a16dee731bf2a285e24900f7ad7efaa62405c1085aee0d0182",
+    "Client/Models/Monsters/Shadow_Knight_Fidget.grn": "126b6876fbda19911b4e1a26b96e9413cda9c0d5414a3349460a2c749a963f61",
+    "Client/Models/Monsters/Shadow_Knight_Fly.grn": "6e36240c5b4094ea6ad2798d4c0b0efc4024364fbf45f2e271f6f71408c47122",
+    "Client/Models/Monsters/Ravager_LOD2.grn": "c4d8bf0699ce5346eb1dd004da83eb9e959cba34ab03cd91a0ef3af2d879c6d9",
+    "Client/Models/Maps/Ravager_256x256.tga": "99c89e95fa0105d0739cb0b95297d310c106c7fc24bcc1ee8e125ad0e26b8a0b",
+    "Client/Models/Monsters/Ravager_Idle.grn": "ab2332c2403405880402cc3c0d3ca371c3f665b6ee7f02826a0669918e4b0160",
+    "Client/Models/Monsters/Ravager_Walk.grn": "e2aa956f007463339f8ff8d14bae128f38b31d4250f1b088862a3310f5359f01",
+    "Client/Models/Monsters/Ravager_Attack1.grn": "7488c915c9de0bd8406b657fb8fe1e177928f3c4d0bdead9b45f9f89824538f0",
+    "Client/Models/Monsters/Ravager_Attack2.grn": "faebc5c8253df5a73fdc2f35dfe86676b6dcb8ff7f825659550742e2b288c016",
+    "Client/Models/Monsters/Ravager_Gethit.grn": "03898e21aba3463035ee49ebe9a739a8f0ebea344db30b9771ea96d710ddea7e",
+    "Client/Models/Monsters/Ravager_Die1.grn": "98b2b5f776ee5573ae9d452ef42cb4fb5b5c80f61aa75f9aadc62b2b45a36236",
+    "Client/Models/Monsters/Ravager_Fidget.grn": "4f8bf983ceb067506f626f65dd2b3238f63a8526461025738e73d3807eae6bed",
+    "Client/Models/Monsters/Ravager_Fly.grn": "d5983a7452759d76cad99fa865189241fce117f49068c406c2bb97bc98f33698"
+  }
+}
