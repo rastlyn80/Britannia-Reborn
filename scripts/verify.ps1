@@ -34,6 +34,14 @@ $env:APPDATA = Join-Path $root '.godot-user'
 $env:LOCALAPPDATA = $env:APPDATA
 & $godot --headless --path "$root\Viewer" --editor --import
 if ($LASTEXITCODE) { throw 'Asset import failed' }
+if (Test-Path "$root/Viewer/local-art/creatures/reviewed_presentations/local-presentation.json") {
+ & python -B "$root/scripts/accept-reviewed-creatures.py" --check-active
+ if ($LASTEXITCODE) {throw 'Activated reviewed creature evidence failed'}
+ $reviewedRoutes = & $godot --headless --path "$root/Viewer" --script res://Presentation/ReviewedCreatureRouteTests.gd 2>&1
+ $reviewedRouteExit = $LASTEXITCODE
+ $reviewedRoutes | ForEach-Object {Write-Output $_}
+ if ($reviewedRouteExit -or ($reviewedRoutes | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Default reviewed creature avatar/corpse routes failed'}
+}
 if (Test-Path "$root/Viewer/local-art/creatures/source_variants/preparation.json") {
  & python -B "$root/scripts/prepare-source-variants.py" --check-prepared
  if ($LASTEXITCODE) {throw 'Source variant exact-source/donor/scene audit failed'}
