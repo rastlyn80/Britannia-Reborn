@@ -16,7 +16,7 @@ MANIFEST = ROOT/'scripts/source-preserving-inputs.json'
 WORK = ROOT/'work/creatures/source-preserving'
 ART = ROOT/'Viewer/local-art/creatures'
 RECIPE = ROOT/'Viewer/Presentation/SourcePoseSubdivision.gd'
-RUNTIME = ['SourcePreservingCreatureVisual.gd','SourceVariantPoseEntry.gd',
+RUNTIME = ['SourcePreservingCreatureVisual.gd','SourceSwampDragonVisual.gd','MountVisual.gd','HorseRider.gd','SourceVariantPoseEntry.gd',
            'SourceRenderedPose.gd','SourcePoseEntry.gd','SmallSnakeVisual.gd',
            'SourcePlaneSoleSupport.gd','MeasuredCreatureSupport.gd',
            'SourceMountContact.gd','SourceGroundLookup.gd','CreatureVisual.gd',
@@ -108,7 +108,17 @@ def prepare():
 
         class OriginalInputs:
             def read(self, name):
-                return paths[name].read_bytes()
+                raw = paths[name].read_bytes()
+                for repair in source.get('byte_repairs', []):
+                    if repair['member'].casefold() != name.casefold():
+                        continue
+                    assert hashlib.sha256(raw).hexdigest() == repair['raw_sha256']
+                    start = repair['offset']
+                    before, after = bytes.fromhex(repair['original_hex']), bytes.fromhex(repair['replacement_hex'])
+                    assert len(before) == len(after) and raw[start:start+len(before)] == before
+                    raw = raw[:start]+after+raw[start+len(before):]
+                    assert hashlib.sha256(raw).hexdigest() == repair['derived_sha256']
+                return raw
 
         table = pipeline.table_rows((ROOT/source['model_table']['path']).read_bytes())
         for row in table:
@@ -127,9 +137,16 @@ def prepare():
         # Dense geometry is baked once below, never rebuilt for every avatar.
         row['pose_subdivision'] = {'levels': source['levels'], 'normal_offset_source_units': source['normal_offset_m']/stats['scale'], 'normal_offset_m': source['normal_offset_m'], 'recipe_sha256': sha(RECIPE)}
         row['family'] = 'source_preserving'
-        row['presentation_script'] = 'res://Presentation/SourcePreservingCreatureVisual.gd'
-        row['presentation_script_sha256'] = sha(ROOT/'Viewer/Presentation/SourcePreservingCreatureVisual.gd')
-        row['limb_support'] = 'quadruped' if kind == 'wild_guar' else 'biped'
+        row['presentation_script'] = source.get('presentation_script', 'res://Presentation/SourcePreservingCreatureVisual.gd')
+        row['presentation_script_sha256'] = sha(ROOT/'Viewer'/row['presentation_script'].removeprefix('res://'))
+        row['limb_support'] = source.get('limb_support', 'quadruped' if kind == 'wild_guar' else 'biped')
+        if 'mount_item' in source:row['mount_item'] = source['mount_item']
+        row['source_byte_repairs'] = source.get('byte_repairs', [])
+        for entry in row['inputs']:
+            for repair in row['source_byte_repairs']:
+                if entry['member'].casefold() == repair['member'].casefold():
+                    assert entry['sha256'] == repair['derived_sha256']
+                    entry.update(derived_sha256=entry['sha256'], sha256=repair['raw_sha256'], source_transform=repair)
         row['source_provenance'] = source
         row['converter_sha256'] = tools
         row['source_opacity'] = source['opacity']
@@ -179,7 +196,7 @@ def check_prepared():
     assert len(report['models']) == len(pins['models'])
     for row, source in zip(report['models'], pins['models']):
         assert row['source_provenance'] == source and row['kind'] == source['kind']
-        assert row['presentation_script_sha256'] == sha(ROOT/'Viewer/Presentation/SourcePreservingCreatureVisual.gd')
+        assert row['presentation_script_sha256'] == sha(ROOT/'Viewer'/row['presentation_script'].removeprefix('res://'))
         assert row['converter_sha256'] == converter_pins(pipeline_for(row['kind']))
         assert {body['body'] for body in row['bodies']} == set(source['expected_bodies'])
         assert len(row['clip_sources']) == source['source_clips'] and not row['rejected_source_clips']

@@ -87,7 +87,9 @@ func _sync_mount(worn: Array) -> void:
 		if horse_visual==null:
 			horse_visual=Horse.create(body,int(item.get("id",0)));visual_root.add_child(horse_visual)
 			rider_contact=preload("res://Presentation/HorseRider.gd").new();rider_contact.rider=human_visual;rider_contact.horse=horse_visual;human_visual.skeleton.add_child(rider_contact)
-			rider_contact.begin_mount(appearance_seen)
+			# A native barding/body replacement while seated changes the mount
+			# visual, not the rider's mounted state. Do not climb on a second time.
+			rider_contact.begin_mount(appearance_seen and not previous)
 			human_visual.cancel_action()
 		elif retiring_horse:rider_contact.begin_mount(true)
 		retiring_horse=false;horse_visual.visible=true;ground_visual_offset=Vector3.ZERO;human_visual.mount_transition_active=false

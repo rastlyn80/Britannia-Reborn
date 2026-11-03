@@ -252,6 +252,644 @@
       "levels": 2,
       "normal_offset_m": 0.0015,
       "opacity": "fine_edges"
+    },
+    {
+      "kind": "orcs_orc_bomber",
+      "expected_bodies": [
+        182
+      ],
+      "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+      "containers": [
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client11.cab",
+          "bytes": 35160963,
+          "sha256": "307a6b91c4d5459080d1fe8a74ae4fe0b91dea8a21a2866ca91e7dc7ba92f1a8"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client10.cab",
+          "bytes": 33956665,
+          "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client7.cab",
+          "bytes": 20805,
+          "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859"
+        }
+      ],
+      "model_table": {
+        "path": "work/creatures/next-simple/source/models.txt",
+        "bytes": 55735,
+        "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a"
+      },
+      "files": [
+        {
+          "path": "work/creatures/next-simple/source/Maps/orcs_orc_bomber_v01.tga",
+          "bytes": 65580,
+          "sha256": "b49a2500ab81b41743fd759b4f29acc421226012ac758a88a3daedff4c828f29",
+          "member": "uoaos/UOTD/Models/Maps/orcs_orc_bomber_v01.tga"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Maps/orcs_orc_bomber_v01_m.tga",
+          "bytes": 65580,
+          "sha256": "0cf07733226adb6405d4a660d9727c6535effe15e9eb26dd745cd0ca8f1562bb",
+          "member": "uoaos/UOTD/Models/Maps/orcs_orc_bomber_v01_m.tga"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Maps/orcs_orc_captain_v02.tga",
+          "bytes": 65580,
+          "sha256": "b37fb669451c3e5b24dd11f6d5d80dbad9b9e4034786f13e84c5ce9d6db7dc38",
+          "member": "uoaos/UOTD/Models/Maps/orcs_orc_captain_v02.tga"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Maps/orcs_orc_captain_v02_m.tga",
+          "bytes": 65580,
+          "sha256": "0cf07733226adb6405d4a660d9727c6535effe15e9eb26dd745cd0ca8f1562bb",
+          "member": "uoaos/UOTD/Models/Maps/orcs_orc_captain_v02_m.tga"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Maps/orcs_orc_lord_v03.tga",
+          "bytes": 65580,
+          "sha256": "237a0f2f6cc76c60c46e7dbe1195ad42abbde542c608ece48271300d7e4e7ecb",
+          "member": "uoaos/UOTD/Models/Maps/orcs_orc_lord_v03.tga"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Maps/orcs_orc_lord_v03_m.tga",
+          "bytes": 65580,
+          "sha256": "0cf07733226adb6405d4a660d9727c6535effe15e9eb26dd745cd0ca8f1562bb",
+          "member": "uoaos/UOTD/Models/Maps/orcs_orc_lord_v03_m.tga"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Maps/orcs_orc_scout_v01.tga",
+          "bytes": 65580,
+          "sha256": "4ff1c04eeef6d27ac480b653846d43fad60ce436c4631e384393861562c03edc",
+          "member": "uoaos/UOTD/Models/Maps/orcs_orc_scout_v01.tga"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Maps/orcs_orc_scout_v01_m.tga",
+          "bytes": 65580,
+          "sha256": "0cf07733226adb6405d4a660d9727c6535effe15e9eb26dd745cd0ca8f1562bb",
+          "member": "uoaos/UOTD/Models/Maps/orcs_orc_scout_v01_m.tga"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Maps/orcs_orc_shaman_v04.tga",
+          "bytes": 65580,
+          "sha256": "c50410d5cfa8851d68a265425dc3a1afd3e2202c8955d8707ceb37c0a5f98bc9",
+          "member": "uoaos/UOTD/Models/Maps/orcs_orc_shaman_v04.tga"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Maps/orcs_orc_shaman_v04_m.tga",
+          "bytes": 65580,
+          "sha256": "0cf07733226adb6405d4a660d9727c6535effe15e9eb26dd745cd0ca8f1562bb",
+          "member": "uoaos/UOTD/Models/Maps/orcs_orc_shaman_v04_m.tga"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Maps/orcs_orc_v03.tga",
+          "bytes": 65580,
+          "sha256": "bac5ce5534b115b3d01fcf6f190dc57e158357a8236e6255dee4ccd7f49ab2f5",
+          "member": "uoaos/UOTD/Models/Maps/orcs_orc_v03.tga"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Maps/orcs_orc_v03_m.tga",
+          "bytes": 65580,
+          "sha256": "0cf07733226adb6405d4a660d9727c6535effe15e9eb26dd745cd0ca8f1562bb",
+          "member": "uoaos/UOTD/Models/Maps/orcs_orc_v03_m.tga"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_attack1.grn",
+          "bytes": 31704,
+          "sha256": "c9ff9200094891c876207eb039444d976cbfe983620b0bf33560ae701deab1a9",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_attack1.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_bomber_lod2.grn",
+          "bytes": 51676,
+          "sha256": "23ad9755b4faeb7a255a97c20b9af6fbbcb1d75fb54098033797a9c6d3d1510c",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_bomber_lod2.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_captain_attack1.grn",
+          "bytes": 34508,
+          "sha256": "1e21c06e426302c9f2704a3c4f0278baee57f196e42045329d3297235f381cf7",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_captain_attack1.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_captain_die1.grn",
+          "bytes": 45984,
+          "sha256": "df85ece0c4d89c9710fefdb32b95ec853cbfaaaaebc775bebb07168821959a9b",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_captain_die1.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_captain_fidget.grn",
+          "bytes": 28232,
+          "sha256": "0a2159caf9bcc6c2a1f2733e7126a96054ba8dd90078659946f5a15b9747e82b",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_captain_fidget.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_captain_gethit.grn",
+          "bytes": 25792,
+          "sha256": "ecd5f8f1af7576c5a361746bceb1845a0465051b3d43be3c854d07208169d97d",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_captain_gethit.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_captain_idle.grn",
+          "bytes": 22996,
+          "sha256": "4a456fb7a5e6e495d15ca6d169b4ffbfaa163b53d49f286c667a3b144137e070",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_captain_idle.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_captain_lod2.grn",
+          "bytes": 58328,
+          "sha256": "272611b1d52c3baf8d7564132e436c591d00e687a1eb9da39a500c34bb34cd91",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_captain_lod2.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_captain_run.grn",
+          "bytes": 32664,
+          "sha256": "54f5606d817aecf542a68937b7ed83e44ae576767d4644ceb21a561f2291cde2",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_captain_run.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_captain_walk.grn",
+          "bytes": 32884,
+          "sha256": "493026647f65b3f1c4e21e49b4052fb07cb7de4fe8f6dbd42428f0a2f7b08a0e",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_captain_walk.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_die1.grn",
+          "bytes": 34876,
+          "sha256": "bbe17b47d311858ca74dad29c358a7349ea7d9062fe633e540b5bf825b800180",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_die1.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_fidget.grn",
+          "bytes": 40744,
+          "sha256": "2e0a3f4ca1b7f07235c52898782411af86c56ed5adf6c7cf66e465a2c6ac3201",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_fidget.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_idle.grn",
+          "bytes": 23044,
+          "sha256": "66edd30295c4ddecb810d0ace05ea229575b4cfc7b59260c9ce410f4be7b5fc6",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_idle.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_lod2.grn",
+          "bytes": 51660,
+          "sha256": "d159e06820da7b774e849d88a6a57f37e205e9cd7b898f67b10aa3bcd38669b6",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_lod2.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_lord_attack1.grn",
+          "bytes": 34604,
+          "sha256": "d544d78b8f27bf9829e535d4877e71ae6c2468e51505cd533c44c0ee88a4a809",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_lord_attack1.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_lord_die1.grn",
+          "bytes": 48188,
+          "sha256": "1d5e59354c0c5d65beccb4c343f906694d3c9cb8125e92ffd494102344f0c52d",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_lord_die1.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_lord_fidget.grn",
+          "bytes": 31188,
+          "sha256": "fc00e6fd19a62adaad285aace2c192ac3157e8b239c9479936dba5e202cfe649",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_lord_fidget.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_lord_gethit.grn",
+          "bytes": 27752,
+          "sha256": "ef3c9eac1fe0fbfd17bd78073cc6d475a8ea4963f715850ec0e80486f08b3125",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_lord_gethit.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_lord_idle.grn",
+          "bytes": 26948,
+          "sha256": "6a5833ec9968e267ec1a1374e6e051e32ea9528bc1dfc5ca4f9706379a872e99",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_lord_idle.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_lord_lod2.grn",
+          "bytes": 48936,
+          "sha256": "988c87c03f6f77db755948baaed8bb5cb977f5e18507eb0eef11de364bfc80cc",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_lord_lod2.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_lord_run.grn",
+          "bytes": 30972,
+          "sha256": "bd78dd5fd719c0dbb1eeecb970d752695c4c84abbe6c96dc8bde80b66d19f8ee",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_lord_run.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_lord_walk.grn",
+          "bytes": 30792,
+          "sha256": "dd9ee88f82d28df1ee3a7eff10d33ff1ebb7a1c39e5528c347e6cbcd52972886",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_lord_walk.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_run.grn",
+          "bytes": 30896,
+          "sha256": "bd9262d89f9e7d76cde81d6475987a5d6c2bcc4b82ffb69eeb49c2b5d7c7c2b7",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_run.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_scout_lod2.grn",
+          "bytes": 44564,
+          "sha256": "f17ebbf131d4a29597f58442ed69e687162cae7a7fa3bd26387540f73e5c34c0",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_scout_lod2.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_shaman_attack1.grn",
+          "bytes": 45464,
+          "sha256": "49c7bf09f14ccb0f749cc72d131327b582badb5985928c41bcf8bb60af1c424d",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_shaman_attack1.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_shaman_attackbow.grn",
+          "bytes": 29448,
+          "sha256": "62480977d522aadc19afc9b31fd31a1d17d308eca1c038e1bef497a8458ed47a",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_shaman_attackbow.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_shaman_die1.grn",
+          "bytes": 51932,
+          "sha256": "552e5b66f058c209bbebda34ca9399cc7ad1c3972f5ebfd1ea74411fab7c12bf",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_shaman_die1.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_shaman_fidget.grn",
+          "bytes": 78664,
+          "sha256": "58a4a91a477799ba6ac39517a4b932ea9e06fb9f0c9147b80aa36b80316a7232",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_shaman_fidget.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_shaman_gethit.grn",
+          "bytes": 26592,
+          "sha256": "308debdc12abe979e225d0c34eada52a4b1bdf4a48d5d65868c615c755100cc2",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_shaman_gethit.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_shaman_idle.grn",
+          "bytes": 29796,
+          "sha256": "7fb0e0bd2c2fb96d6af3d0e3892eaa26e8acd1302af55a2d6afbc7cd0ed79bd1",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_shaman_idle.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_shaman_lod2.grn",
+          "bytes": 48928,
+          "sha256": "c3a35bed7a0869a5423b8c12eb60ff0ae44f27a7bfb1d525130a212912987393",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_shaman_lod2.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_shaman_run.grn",
+          "bytes": 28088,
+          "sha256": "a2e4be94843badaf368b67345692e815e4ef252573c4d55d6458c86752a008ac",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_shaman_run.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_shaman_stomp.grn",
+          "bytes": 50076,
+          "sha256": "643e34e89bf7324781d22ab436df85418eb2827e500136c4e02b00897cb5e7f9",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_shaman_stomp.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_shaman_walk.grn",
+          "bytes": 33732,
+          "sha256": "1548179fa4a70f6c116a3c552ed43b6ba26f14d5eff2020510e06823fb89bdfb",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_shaman_walk.grn"
+        },
+        {
+          "path": "work/creatures/next-simple/source/Monsters/orcs_orc_walk.grn",
+          "bytes": 30720,
+          "sha256": "f96adc72ebd7bc144825b574fda3cd8f65bf7c091d168dfd50e48847d85322db",
+          "member": "uoaos/UOTD/Models/Monsters/orcs_orc_walk.grn"
+        }
+      ],
+      "bones": 37,
+      "triangles": 404,
+      "source_clips": 6,
+      "levels": 2,
+      "normal_offset_m": 0.0015,
+      "opacity": "fine_edges",
+      "limb_support": "biped"
+    },
+    {
+      "kind": "swamp_dragon",
+      "expected_bodies": [
+        794
+      ],
+      "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+      "containers": [
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client8.cab",
+          "bytes": 5793154,
+          "sha256": "155fe820d8c0e2a08650f81ec037829bed49aeca74efd2a07479a907287a1afc"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client10.cab",
+          "bytes": 33956665,
+          "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client7.cab",
+          "bytes": 20805,
+          "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859"
+        }
+      ],
+      "model_table": {
+        "path": "work/creatures/next-batch/source/models.txt",
+        "bytes": 55735,
+        "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a"
+      },
+      "files": [
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_armor_lod2.grn",
+          "bytes": 170384,
+          "sha256": "505df198dfb2218c59337143faaea9644815faf4218f64ea85cda7abb9fd67f2",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_armor_lod2.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_attack1.grn",
+          "bytes": 107396,
+          "sha256": "9f032bf0cf35f76b5edbcf3b7219e2fdf15b0eb2ddc4115b2eaf402e3d4b0e54",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_attack1.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_attack2.grn",
+          "bytes": 106532,
+          "sha256": "27d5769348905829dfdc4fb0921b977dcd15934f0de0658e60552d21e90d83b1",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_attack2.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_attack3.grn",
+          "bytes": 107580,
+          "sha256": "2245b17818e3239423ceca801b86fea289d3dc0dbecc9e8ec125fc6d5ce2354a",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_attack3.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_die1.grn",
+          "bytes": 131236,
+          "sha256": "9ee4648a671f325572c14e1f8ed977fc351a54c2dbd3eb79c566e4ec84cf5193",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_die1.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_ethereal_lod2.grn",
+          "bytes": 164196,
+          "sha256": "2b8a08581eeecf8ab1770277fc58d681add1da04946bb6f8fb4cdba637776cff",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_ethereal_lod2.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_fidget.grn",
+          "bytes": 118220,
+          "sha256": "cd3f4f3ec72517b776c3717c7f12116e324c5fe0e05a4cd1ccd5ec83a382fcfa",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_fidget.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_gethit.grn",
+          "bytes": 91600,
+          "sha256": "037fc3d7a130036e82859fc54fde104fb58741e9b0355769acdbd34660f1adf5",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_gethit.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_idle.grn",
+          "bytes": 93928,
+          "sha256": "7f5346a01b46960252edfd23d4566108de0204e1e93a861dcc45a57307f3b448",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_idle.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_lod2.grn",
+          "bytes": 164200,
+          "sha256": "b5bb5782fa011400f07b8c05c911d4f4852e8f2415821aa4a98ddedd3ff1510e",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_lod2.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_lod3.grn",
+          "bytes": 104008,
+          "sha256": "01889d7d41c1736c0af58f743f57ad2ca0537ef83faf19ce787a0f2c270bd0f0",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_lod3.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_run.grn",
+          "bytes": 86820,
+          "sha256": "3bc3f58ba64c214151481801aa323da9dce75ea9908a39b940810be63ec13fc9",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_run.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_walk.grn",
+          "bytes": 103804,
+          "sha256": "9961a7570101f570855321270e14b98f622fa28cf18c557553a01fef369b17f1",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_walk.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Maps/swamp_dragon_256.tga",
+          "bytes": 262188,
+          "sha256": "faa00493dad7e19e1c266373505c2cb1103198d1935bc778cb3e8f2eebe1600e",
+          "member": "uoaos/UOTD/Models/Maps/swamp_dragon_256.tga"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Maps/swamp_dragon_256_m.tga",
+          "bytes": 262188,
+          "sha256": "04e9a90c06393acb6ccc9fc075065f781c58faa15c5a0f390c48283c4c505bfd",
+          "member": "uoaos/UOTD/Models/Maps/swamp_dragon_256_m.tga"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Maps/swamp_dragon_armor_256.tga",
+          "bytes": 262188,
+          "sha256": "0470ea758e91e0359e6b56a374cce762268eb1ca603ee348820a88c5f147bfcb",
+          "member": "uoaos/UOTD/Models/Maps/swamp_dragon_armor_256.tga"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Maps/swamp_dragon_armor_256_m.tga",
+          "bytes": 262188,
+          "sha256": "bc3da455f44dabd7a1aaca6ca4a75bd6b5ae4ec91404baf169ae4e9f77f23ade",
+          "member": "uoaos/UOTD/Models/Maps/swamp_dragon_armor_256_m.tga"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Maps/swamp_dragon_ethereal_256.tga",
+          "bytes": 65580,
+          "sha256": "99290ae6e9113126402786babe4876a8fa1781981e2d49aa6b4ecb4ab9bbe6a5",
+          "member": "uoaos/UOTD/Models/Maps/swamp_dragon_ethereal_256.tga"
+        }
+      ],
+      "bones": 61,
+      "triangles": 1446,
+      "source_clips": 9,
+      "levels": 1,
+      "normal_offset_m": 0.0015,
+      "opacity": "fine_edges",
+      "limb_support": "quadruped",
+      "presentation_script": "res://Presentation/SourceSwampDragonVisual.gd",
+      "mount_item": 16061,
+      "byte_repairs": [
+        {
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_idle.grn",
+          "raw_sha256": "7f5346a01b46960252edfd23d4566108de0204e1e93a861dcc45a57307f3b448",
+          "offset": 21696,
+          "original_hex": "030e5aca",
+          "replacement_hex": "030e5eca",
+          "derived_sha256": "478b3bbf9c6d815c7452e16d0f9bdad2f77ca2724fe5e9e328f888b209c713ab",
+          "scope": "One-byte noncanonical metadata tag correction, independently identical raw input in AOS and ML; all payload/keyframe bytes unchanged, no original file edited."
+        }
+      ]
+    },
+    {
+      "kind": "swamp_dragon_armor",
+      "expected_bodies": [
+        799
+      ],
+      "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+      "containers": [
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client8.cab",
+          "bytes": 5793154,
+          "sha256": "155fe820d8c0e2a08650f81ec037829bed49aeca74efd2a07479a907287a1afc"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client10.cab",
+          "bytes": 33956665,
+          "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client7.cab",
+          "bytes": 20805,
+          "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859"
+        }
+      ],
+      "model_table": {
+        "path": "work/creatures/next-batch/source/models.txt",
+        "bytes": 55735,
+        "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a"
+      },
+      "files": [
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_armor_lod2.grn",
+          "bytes": 170384,
+          "sha256": "505df198dfb2218c59337143faaea9644815faf4218f64ea85cda7abb9fd67f2",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_armor_lod2.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_attack1.grn",
+          "bytes": 107396,
+          "sha256": "9f032bf0cf35f76b5edbcf3b7219e2fdf15b0eb2ddc4115b2eaf402e3d4b0e54",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_attack1.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_attack2.grn",
+          "bytes": 106532,
+          "sha256": "27d5769348905829dfdc4fb0921b977dcd15934f0de0658e60552d21e90d83b1",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_attack2.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_attack3.grn",
+          "bytes": 107580,
+          "sha256": "2245b17818e3239423ceca801b86fea289d3dc0dbecc9e8ec125fc6d5ce2354a",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_attack3.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_die1.grn",
+          "bytes": 131236,
+          "sha256": "9ee4648a671f325572c14e1f8ed977fc351a54c2dbd3eb79c566e4ec84cf5193",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_die1.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_ethereal_lod2.grn",
+          "bytes": 164196,
+          "sha256": "2b8a08581eeecf8ab1770277fc58d681add1da04946bb6f8fb4cdba637776cff",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_ethereal_lod2.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_fidget.grn",
+          "bytes": 118220,
+          "sha256": "cd3f4f3ec72517b776c3717c7f12116e324c5fe0e05a4cd1ccd5ec83a382fcfa",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_fidget.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_gethit.grn",
+          "bytes": 91600,
+          "sha256": "037fc3d7a130036e82859fc54fde104fb58741e9b0355769acdbd34660f1adf5",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_gethit.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_idle.grn",
+          "bytes": 93928,
+          "sha256": "7f5346a01b46960252edfd23d4566108de0204e1e93a861dcc45a57307f3b448",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_idle.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_lod2.grn",
+          "bytes": 164200,
+          "sha256": "b5bb5782fa011400f07b8c05c911d4f4852e8f2415821aa4a98ddedd3ff1510e",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_lod2.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_lod3.grn",
+          "bytes": 104008,
+          "sha256": "01889d7d41c1736c0af58f743f57ad2ca0537ef83faf19ce787a0f2c270bd0f0",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_lod3.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_run.grn",
+          "bytes": 86820,
+          "sha256": "3bc3f58ba64c214151481801aa323da9dce75ea9908a39b940810be63ec13fc9",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_run.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Animals/swamp_dragon_walk.grn",
+          "bytes": 103804,
+          "sha256": "9961a7570101f570855321270e14b98f622fa28cf18c557553a01fef369b17f1",
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_walk.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Maps/swamp_dragon_256.tga",
+          "bytes": 262188,
+          "sha256": "faa00493dad7e19e1c266373505c2cb1103198d1935bc778cb3e8f2eebe1600e",
+          "member": "uoaos/UOTD/Models/Maps/swamp_dragon_256.tga"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Maps/swamp_dragon_256_m.tga",
+          "bytes": 262188,
+          "sha256": "04e9a90c06393acb6ccc9fc075065f781c58faa15c5a0f390c48283c4c505bfd",
+          "member": "uoaos/UOTD/Models/Maps/swamp_dragon_256_m.tga"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Maps/swamp_dragon_armor_256.tga",
+          "bytes": 262188,
+          "sha256": "0470ea758e91e0359e6b56a374cce762268eb1ca603ee348820a88c5f147bfcb",
+          "member": "uoaos/UOTD/Models/Maps/swamp_dragon_armor_256.tga"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Maps/swamp_dragon_armor_256_m.tga",
+          "bytes": 262188,
+          "sha256": "bc3da455f44dabd7a1aaca6ca4a75bd6b5ae4ec91404baf169ae4e9f77f23ade",
+          "member": "uoaos/UOTD/Models/Maps/swamp_dragon_armor_256_m.tga"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Maps/swamp_dragon_ethereal_256.tga",
+          "bytes": 65580,
+          "sha256": "99290ae6e9113126402786babe4876a8fa1781981e2d49aa6b4ecb4ab9bbe6a5",
+          "member": "uoaos/UOTD/Models/Maps/swamp_dragon_ethereal_256.tga"
+        }
+      ],
+      "bones": 61,
+      "triangles": 1446,
+      "source_clips": 9,
+      "levels": 1,
+      "normal_offset_m": 0.0015,
+      "opacity": "fine_edges",
+      "limb_support": "quadruped",
+      "presentation_script": "res://Presentation/SourceSwampDragonVisual.gd",
+      "mount_item": 16062,
+      "byte_repairs": [
+        {
+          "member": "uoaos/UOTD/Models/Animals/swamp_dragon_idle.grn",
+          "raw_sha256": "7f5346a01b46960252edfd23d4566108de0204e1e93a861dcc45a57307f3b448",
+          "offset": 21696,
+          "original_hex": "030e5aca",
+          "replacement_hex": "030e5eca",
+          "derived_sha256": "478b3bbf9c6d815c7452e16d0f9bdad2f77ca2724fe5e9e328f888b209c713ab",
+          "scope": "One-byte noncanonical metadata tag correction, independently identical raw input in AOS and ML; all payload/keyframe bytes unchanged, no original file edited."
+        }
+      ]
     }
   ]
 }

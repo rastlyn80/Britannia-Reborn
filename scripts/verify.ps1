@@ -49,6 +49,13 @@ if (Test-Path "$root/Viewer/local-art/creatures/source_preserving/preparation.js
  $preservingExit = $LASTEXITCODE
  $preservingSkin | ForEach-Object {Write-Output $_}
  if ($preservingExit -or ($preservingSkin | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Saved source-preserving skins/static corpses failed'}
+ $sourceForms = (Get-Content "$root/Viewer/local-art/creatures/source_preserving/preparation.json" -Raw | ConvertFrom-Json).models
+ if (($sourceForms | Where-Object {$_.kind -in @('swamp_dragon','swamp_dragon_armor')}).Count -eq 2) {
+  $swampRiding = & $godot --headless --path "$root/Viewer" --script res://Presentation/SwampDragonRidingTests.gd 2>&1
+  $swampExit = $LASTEXITCODE
+  $swampRiding | ForEach-Object {Write-Output $_}
+  if ($swampExit -or ($swampRiding | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Prepared Swamp Dragon native-item/rider/barding-form presentation failed'}
+ }
 }
 if (Test-Path "$root/Viewer/local-art/creatures/solen_warriors/preparation.json") {
  & $godot --headless --path "$root/Viewer" --script res://Presentation/ConfigureSolenWarriorImport.gd

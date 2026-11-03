@@ -28,7 +28,15 @@ static func horse_body(item: int) -> int:
 	if item==0x3e9c:return 0x84
 	for body: int in BODIES:
 		if item!=0 and BODIES[body][1]==item:return body
-	return Horse.horse_body(item)
+	var known:=Horse.horse_body(item)
+	if known!=0:return known
+	# Only loaded, prepared registry entries may extend native mount-item
+	# routing. Candidate tests inject entries in memory; no index is enabled.
+	Animals.Creatures.load_index()
+	for body: int in Animals.Creatures.entries:
+		var entry: Dictionary=Animals.Creatures.entries[body]
+		if item!=0 and int(entry.get("mount_item",0))==item and Animals.Creatures.supports_body(body):return body
+	return 0
 static func matches(visual: Node3D,body: int,item: int=0) -> bool:
 	if Animals.Creatures.supports_body(body):return Animals.Creatures.matches(visual,body)
 	if Animals.supports_body(body):return visual is Ostard and visual.kind==Animals.kind(body)

@@ -46,7 +46,8 @@ func run() -> void:
   var coarse: Node3D=load(str(record.assets.original)).instantiate();var dense: Node3D=load(str(record.assets.rounded)).instantiate();root.add_child(coarse);root.add_child(dense)
   var rigs: Array=[coarse.find_children("*","Skeleton3D",true,false)[0],dense.find_children("*","Skeleton3D",true,false)[0]];var players: Array=[coarse.find_children("*","AnimationPlayer",true,false)[0],dense.find_children("*","AnimationPlayer",true,false)[0]];var meshes: Array=[coarse.find_children("*","MeshInstance3D",true,false)[0],dense.find_children("*","MeshInstance3D",true,false)[0]]
   var source: PackedInt32Array=meshes[0].mesh.surface_get_arrays(0)[Mesh.ARRAY_INDEX];var refined: PackedInt32Array=meshes[1].mesh.surface_get_arrays(0)[Mesh.ARRAY_INDEX]
-  check(refined.size()==source.size()*16,"Actual source triangles subdivided sixteen-fold")
+  var factor:=int(pow(4,int(record.pose_subdivision.levels)))
+  check(refined.size()==source.size()*factor,"Actual source triangles retain their declared subdivision factor")
   check(rigs[0].get_bone_count()==rigs[1].get_bone_count(),"Original source bone count retained")
   for player: AnimationPlayer in players:player.callback_mode_process=AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
   var poses:=0;var maximum:=0.;var clips: Array=[]
@@ -59,7 +60,7 @@ func run() -> void:
     var a:=skinned(meshes[0],rigs[0]);var b:=skinned(meshes[1],rigs[1]);var error:=0.
     for triangle in source.size()/3:
      var x: Vector3=a[source[triangle*3]];var y: Vector3=a[source[triangle*3+1]];var z: Vector3=a[source[triangle*3+2]]
-     for corner in 48:error=maxf(error,triangle_distance(b[refined[triangle*48+corner]],x,y,z))
+     for corner in 3*factor:error=maxf(error,triangle_distance(b[refined[triangle*3*factor+corner]],x,y,z))
     maximum=maxf(maximum,error);poses+=1;check(error<.002,"Complete refined source skin stays within2mm of its parent posed triangles: "+kind+"/"+name)
   # Temporary in-memory routing exercises the same creature/corpse factory
   # without accepting a new body or changing the persistent index.
