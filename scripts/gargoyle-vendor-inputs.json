@@ -1,0 +1,43 @@
+{
+  "installer_sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393",
+  "model_table_sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099",
+  "files": {
+    "Client/Models/Animals/Birds_Parrot_Lod2.grn": "a71c8c433bdf8a8714b70ee082ba59b997f916c77cff5c8b6042f49ac8143558",
+    "Client/Models/Maps/Birds_Parrot.tga": "ab2075b438162e6f514f802d72cd4da3de6de27363f3a69b3e37bd36b228dd63",
+    "Client/Models/Animals/Birds_Generic_Idle.grn": "bddf4ab483bb5ea927d88a601b8dbff5bcc7b03752ba49b8c07a411a764239f5",
+    "Client/Models/Animals/Birds_Generic_Walk.grn": "005995acbb3ab434498f6b35568d94aabd23f32c9eed6bb1f8bbe1b626580204",
+    "Client/Models/Animals/Birds_Generic_Run.grn": "a16d6e35322031757b60047482e37797bb9e9c962d8996a297628509d99be752",
+    "Client/Models/Animals/Birds_Generic_Attack1.grn": "b814d31ed59f28cd8e2239f1c240f942f88dafb35a63490c248262a56dd89b41",
+    "Client/Models/Animals/Birds_Generic_Gethit.grn": "af73b71511fda9afa377006b575f1b8fe7ef21e285460e0427ac19a37e02f9f5",
+    "Client/Models/Animals/Birds_Generic_Die1.grn": "a05bebc970ab92d55a923ad1adfeebfd3ffe4a9e53cb02debcf6c66cc2e27798",
+    "Client/Models/Animals/Birds_Generic_Fidget.grn": "a671f0e2565221997e0238467d6a880081d657a7d32a26da232290ed4516f245",
+    "Client/Models/Animals/Birds_Generic_Eat.grn": "c030a8eac8edf549ed0090ab6dc210fb14d13ac8953ec65e0402733924999d1e",
+    "Client/Models/Monsters/Npc_Blackthorn_Cohort_Lod2.grn": "76d27316296cfbecba53b8f325fb62deae7db713c7e3dfaf8a3b3732466b419c",
+    "Client/Models/Maps/Bblackthorn_256.tga": "449d4b3f7f006251cc81e5a3c86ddd8fb23e72403ff1d7fbf1f93d4326f4808c",
+    "Client/Models/Monsters/Npc_Blackthorn_Idle.grn": "9d4275c9a5f0c5523f0c57a0f27afe78af912f105bab48d2da3cc779ef6c8453",
+    "Client/Models/Monsters/Npc_Blackthorn_Walk.grn": "8804046b0345cd6770de5778cd0432baac3ec4f37bdf72f7895645c1ef9e108b",
+    "Client/Models/Monsters/Npc_Blackthorn_Attack1.grn": "882e798613e70a5b948bf8dab3313b9d58a8ef884be9d7e8eed36ef9e8f50915",
+    "Client/Models/Monsters/Npc_Blackthorn_Attack2.grn": "a08dde12911852e4ef5de47e1ee2fa0001f68a378db28a935e8c6f75f7e2f756",
+    "Client/Models/Monsters/Npc_Blackthorn_Gethit.grn": "7db181b1e3817a3f5aabdad06873e9c93f3da9bbb1b3af4a43cbca8a828b08dd",
+    "Client/Models/Monsters/Npc_Blackthorn_Die1.grn": "783b0f5dbbb3ede7b63510bc8540dc95cdf4ab9c1136a369f94ffafd6d7b9fd2",
+    "Client/Models/Monsters/Npc_Blackthorn_Fidget.grn": "0f28cc7676f5249fd4f5b779e83c59b06d45374a849e4489bf4abc3932648f6e",
+    "Client/Models/Monsters/Gargoyles_Gargoyle_Shopkeeper_Lod2.grn": "4f2343966a9b7e86576e040c79c2f7da759aa54325884386241610ff7c012ff0",
+    "Client/Models/Maps/Gargoyles_Gargoyle_Shopkeeper.tga": "9415afd563e852eaad0a9b876b7b6c106963c764d06f7b561f118684040ca023",
+    "Client/Models/Monsters/Gargoyles_Gargoyle_Idle.grn": "a7e853b67f789a53ea48163065c3ba0a8873e6abb145639d1b3c487bd2ddc91e",
+    "Client/Models/Monsters/Gargoyles_Gargoyle_Walk.grn": "a27daa2af0c808fa529d9fd142d7008f01afdbc93d8fa4481107e4ec91accdd4",
+    "Client/Models/Monsters/Gargoyles_Gargoyle_Run.grn": "4a19a726f76ce35fd5acd1b05623ddbf37f4b80f92068dd01c3093b747b2a518",
+    "Client/Models/Monsters/Gargoyles_Gargoyle_Attack1.grn": "9790b23a94030325ea0f52ffb6cc57a4c3733d7c4b96bc09fc141f95346df5c2",
+    "Client/Models/Monsters/Gargoyles_Gargoyle_Gethit.grn": "1390faf7c2cec5d2447bfb481687dc8600852a19702a337e660fafae0eb93dba",
+    "Client/Models/Monsters/Gargoyles_Gargoyle_Die1.grn": "54951823d5006304266b1193387ca2533c323da4e82f10c939767a35d519c3df",
+    "Client/Models/Monsters/Gargoyles_Gargoyle_Fidget.grn": "69bae01c9a797301f4c223efe289333b3c562cc1493c1206be371a9202099fdc",
+    "Client/Models/Monsters/Gargoyles_Gargoyle_Cast2.grn": "c768363d9cb1ffa97e7f7a4f856bbd914afb6b59993ff59183c38058eb65c591",
+    "Client/Models/Monsters/Gargoyles_Gargoyle_Fly.grn": "b29ce956476d61c0ff3621ddafaedb8ea52b06bb5e7387cc8a9025986a4f2d40",
+    "Client/Models/Monsters/Gargoyles_Gargoyle_Takeoff.grn": "1f581c7142c5899422aa8e6a55ee5975be50084af5e385d172be2ff7b124e1cf",
+    "Client/Models/Monsters/Gargoyles_Gargoyle_Land.grn": "5cffd3433f675fc4e0f53c270b8b48b9d9f1cd07e26d8fd854c7fb3446ba5e93"
+  },
+  "vendor_native": {
+    "Projects/UOContent/Mobiles/Vendors/NPC/Provisioner.cs": "d1a3f2626544e3fc6ae71898a4066683236a048434880e6dcf148c43d4b4ca27",
+    "Projects/Server/Utilities/Utility.cs": "1e8735802a73f1205e2c2b6a3beca0fe35fe1c51a78097850475d0051c3c7ce4",
+    "Distribution/Data/regions.json": "cbfe5df4097d16185ce3fd9b902b42f71029227c366247214ca16a401340687d"
+  }
+}

@@ -79,6 +79,52 @@ public static class CreatureFixtures
         return null;
     }
 
+    private static bool PlaceGargoyleVendor(Provisioner vendor, Mobile owner)
+    {
+        var map = Map.Ilshenar;
+        Point3D? location = null;
+        for (var x = 828; x <= 850 && location == null; x++)
+        {
+            for (var y = 558; y <= 586 && location == null; y++)
+            {
+                if (map.CanSpawnMobile(x, y, -40, 80, false, false, out var z)
+                    && map.CanSpawnMobile(x + 1, y, z))
+                {
+                    var candidate = new Point3D(x, y, z);
+                    if (Region.Find(candidate, map).IsPartOf("Gargoyle City"))
+                    {
+                        location = candidate;
+                    }
+                }
+            }
+        }
+        if (location is not { } point)
+        {
+            return false;
+        }
+
+        var participants = new List<Mobile>();
+        foreach (var client in owner.Map.GetClientsInRange(owner.Location))
+        {
+            if (IPAddress.IsLoopback(client.Address)
+                && client.Mobile?.Account?.Username?.StartsWith("brhorse-test-", StringComparison.Ordinal) == true)
+            {
+                participants.Add(client.Mobile);
+            }
+        }
+        vendor.MoveToWorld(point, map);
+        vendor.OnAfterSpawn();
+        if (vendor.Body.BodyID != 0x2F6 || (vendor.Hue & 0x8000) == 0)
+        {
+            return false;
+        }
+        foreach (var participant in participants)
+        {
+            participant.MoveToWorld(point, map);
+        }
+        return true;
+    }
+
     private static void Execute(CommandEventArgs args)
     {
         var owner = args.Mobile;
@@ -138,6 +184,16 @@ public static class CreatureFixtures
                         break;
                     }
                     var nativeState = "constructor";
+                    if (body == 758 && creature is Provisioner vendor)
+                    {
+                        if (vendor.Body.BodyID == body || !PlaceGargoyleVendor(vendor, owner))
+                        {
+                            vendor.Delete();
+                            owner.SendMessage("UCCREATURE|blocked|native-gargoyle-city-morph");
+                            return;
+                        }
+                        nativeState = "vendor-morph";
+                    }
                     if (creature is Sheep sheep && body == 0xDF)
                     {
                         // Reach the shorn form through the native wool API;
@@ -166,7 +222,7 @@ public static class CreatureFixtures
                         creature.Delete();
                         continue;
                     }
-                    if (!AquaticFixtures.Prepare(owner, creature.CanSwim && creature.CantWalk))
+                    if (nativeState != "vendor-morph" && !AquaticFixtures.Prepare(owner, creature.CanSwim && creature.CantWalk))
                     {
                         creature.Delete();
                         owner.SendMessage("UCCREATURE|blocked|native-surface-arena");
@@ -188,7 +244,7 @@ public static class CreatureFixtures
                         }
                         nativeState = "summoned";
                     }
-                    else
+                    else if (nativeState != "vendor-morph")
                     {
                         creature.MoveToWorld(location, owner.Map);
                     }

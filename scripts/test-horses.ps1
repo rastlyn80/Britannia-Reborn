@@ -1,4 +1,4 @@
-param([switch]$Live,[switch]$SkipContact,[switch]$Gpu,[switch]$Equines,[switch]$Ostards,[switch]$EquineCompletion,[switch]$LlamaCompletion,[switch]$Ethics,[switch]$Bovines,[switch]$SeaHorse,[switch]$GiantBeetle,[switch]$FireBeetle,[switch]$Hiryu,[switch]$CuSidhe,[switch]$ActiveCuSidhe,[switch]$ActiveHiryu,[switch]$EtherealBeetle,[switch]$Savages,[switch]$SavageRiders,[string]$CreatureFamily='', [switch]$PreparedQueen, [switch]$ActiveJukaLord)
+param([switch]$Live,[switch]$SkipContact,[switch]$Gpu,[switch]$LiveGpu,[switch]$Equines,[switch]$Ostards,[switch]$EquineCompletion,[switch]$LlamaCompletion,[switch]$Ethics,[switch]$Bovines,[switch]$SeaHorse,[switch]$GiantBeetle,[switch]$FireBeetle,[switch]$Hiryu,[switch]$CuSidhe,[switch]$ActiveCuSidhe,[switch]$ActiveHiryu,[switch]$EtherealBeetle,[switch]$Savages,[switch]$SavageRiders,[string]$CreatureFamily='', [switch]$PreparedQueen, [switch]$ActiveJukaLord)
 $ErrorActionPreference='Stop'
 if ($ActiveCuSidhe -and !$CuSidhe) {throw '-ActiveCuSidhe requires -CuSidhe'}
 if ($ActiveHiryu -and !$Hiryu) {throw '-ActiveHiryu requires -Hiryu'}
@@ -7,7 +7,7 @@ $godot=(Get-ChildItem "$root/.tools/godot/*console.exe"|Select-Object -First 1).
 $env:APPDATA=Join-Path $root '.godot-user';$env:LOCALAPPDATA=$env:APPDATA
 if ($ActiveJukaLord -and $CreatureFamily -ne 'juka_lord') {throw 'ActiveJukaLord requires juka_lord'}
 if ($PreparedQueen -and $CreatureFamily -ne 'solen_queens') {throw 'PreparedQueen requires the solen_queens family'}
-$preparedCreatureTrial=$PreparedQueen -or $CreatureFamily -in @('mummies','solen_warriors','ice_elementals','candidate_batch','late_source','hydra','energy_vortex','champions','fey_champions','crane','deathwatch','tsuki_wolf','kappa','vampire_bat','yomotsu','occurrence_next','horde_rune','sand_vortex','bake_kitsune','devourer_lion_hiryu','elemental_minotaur','meer_donors','captain_cu','clockwork_tokuno','aos_creatures','aos_aliases','aos_mound','recovered_late','tormented_minotaur','harrower','late_donors')
+$preparedCreatureTrial=$PreparedQueen -or $CreatureFamily -in @('mummies','solen_warriors','ice_elementals','candidate_batch','late_source','hydra','energy_vortex','champions','fey_champions','crane','deathwatch','tsuki_wolf','kappa','vampire_bat','yomotsu','occurrence_next','horde_rune','sand_vortex','bake_kitsune','devourer_lion_hiryu','elemental_minotaur','meer_donors','captain_cu','clockwork_tokuno','aos_creatures','aos_aliases','aos_mound','recovered_late','tormented_minotaur','harrower','late_donors','gargoyle_vendor')
 $recordCreatureTrial=$preparedCreatureTrial -or $CreatureFamily -eq 'recent_batch'
 $savageTrial=$Savages -or $SavageRiders
 if ($Savages -and $SavageRiders) {throw 'Choose one Savage native suite per fresh server'}
@@ -130,7 +130,8 @@ try {
   if ($preparedCreatureTrial) {$liveArgs+='--prepared'}
   if ($ActiveJukaLord) {$liveArgs+='--active-route'}
   $started=[DateTime]::UtcNow
-  & $godot --headless --path Viewer --script $(if ($SavageRiders) {'res://Network/SavageRiderLive.gd'} elseif ($Savages) {'res://Network/SavageLive.gd'} elseif ($CreatureFamily -eq 'mages') {'res://Network/SourceMageLive.gd'} elseif ($CreatureFamily -in @('juka','juka_lord')) {'res://Network/SourceJukaLive.gd'} elseif ($CreatureFamily) {'res://Network/CreatureLive.gd'} elseif ($Ostards -or $EquineCompletion -or $LlamaCompletion -or $Ethics -or $Bovines -or $SeaHorse -or $GiantBeetle -or $FireBeetle -or $Hiryu -or $CuSidhe -or $EtherealBeetle) {'res://Network/OstardLive.gd'} elseif ($Equines) {'res://Network/EquineLive.gd'} else {'res://Network/HorseLive.gd'}) -- @liveArgs
+  $liveDisplayArgs = if ($LiveGpu) {@('--position','30000,30000','--rendering-method','forward_plus')} else {@('--headless')}
+  & $godot @liveDisplayArgs --path Viewer --script $(if ($SavageRiders) {'res://Network/SavageRiderLive.gd'} elseif ($Savages) {'res://Network/SavageLive.gd'} elseif ($CreatureFamily -eq 'mages') {'res://Network/SourceMageLive.gd'} elseif ($CreatureFamily -in @('juka','juka_lord')) {'res://Network/SourceJukaLive.gd'} elseif ($CreatureFamily) {'res://Network/CreatureLive.gd'} elseif ($Ostards -or $EquineCompletion -or $LlamaCompletion -or $Ethics -or $Bovines -or $SeaHorse -or $GiantBeetle -or $FireBeetle -or $Hiryu -or $CuSidhe -or $EtherealBeetle) {'res://Network/OstardLive.gd'} elseif ($Equines) {'res://Network/EquineLive.gd'} else {'res://Network/HorseLive.gd'}) -- @liveArgs
   if ($LASTEXITCODE) { throw 'Native isolated integration test failed' }
   if ($SavageRiders) {
    $riderFolder=Join-Path $root 'work/creatures/savage-riders'

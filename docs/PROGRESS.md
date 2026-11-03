@@ -1,3 +1,7 @@
+# Gargoyle Shopkeeper active
+
+An isolated native Provisioner entered the actual Gargoyle City region in Ilshenar and the server assigned body 758 and its bright partial hue. Both clients selected the original Shopkeeper mesh with the model-table donor motions. The candidate passed four decoded actions, three static corpse hues, 20 Vulkan appearance checks and 36 terrain poses with under 1.83 mm sampled stance error. The clean Vulkan native runs passed 149 prepared and 147 normal-registry checks. The real vendor was invulnerable and produced no corpse. The static corpse checks cover the client asset.
+
 # Parrot and Betrayer active
 
 Parrot 831 and Betrayer 767 retain their own original meshes and use the original model-table animation links to bodies 6 and 769 respectively. Their packages recover eight and seven source clips. ModernUO sends monster action groups for Parrot despite the archive animal model classification. Both normal client routes passed nine decoded actions and six static corpse hue checks in total. The isolated server passed 262 prepared and 259 normal-registry checks. Vulkan captured 16 frames. Sampled stance gaps remained below 1.61 mm. The Gargoyle Shopkeeper retains its own mesh and the original model-table motion link to body 4. The candidate passed four decoded action routes, three static corpse hues and 20 Vulkan checks after staging its original cutout atlas. Its native vendor morph remains open.

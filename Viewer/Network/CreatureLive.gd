@@ -46,8 +46,8 @@ func run() -> void:
 	candidate_pin=FileAccess.get_sha256("res://../work/creatures/live-candidates.json")
 	accepted_pin=FileAccess.get_sha256("res://local-art/creatures/accepted-index.json")
 	if prepared:
-		if not check(family in ["candidate_batch","mummies","solen_warriors","ice_elementals","solen_queens","late_source","hydra","energy_vortex","champions","fey_champions","crane","deathwatch","tsuki_wolf","kappa","vampire_bat","yomotsu","occurrence_next","horde_rune","sand_vortex","bake_kitsune","devourer_lion_hiryu","elemental_minotaur","meer_donors","captain_cu","clockwork_tokuno","aos_creatures","aos_aliases","aos_mound","recovered_late","tormented_minotaur","harrower","late_donors"],"Prepared trial uses an explicitly checked family"):return
-		var permitted_bodies: Array={"solen_queens":[783,807],"late_source":[266,267,279],"hydra":[265],"energy_vortex":[164],"champions":[172,173],"fey_champions":[174,175,176],"crane":[254],"deathwatch":[242],"tsuki_wolf":[250],"kappa":[240],"vampire_bat":[317],"yomotsu":[245,253,255],"occurrence_next":[309,196,302,247],"horde_rune":[776,244],"sand_vortex":[790],"bake_kitsune":[246],"devourer_lion_hiryu":[303,251,243],"elemental_minotaur":[300,263,305,281,241,789,772],"meer_donors":[771,770,773],"captain_cu":[280,277],"clockwork_tokuno":[304,757,756,252,199,271,310,278],"aos_creatures":[306,307,308,313,318],"aos_aliases":[315,316],"aos_mound":[319],"recovered_late":[768,249,276],"tormented_minotaur":[262],"harrower":[146],"late_donors":[831,767]}.get(family,[154,782,806,161])
+		if not check(family in ["candidate_batch","mummies","solen_warriors","ice_elementals","solen_queens","late_source","hydra","energy_vortex","champions","fey_champions","crane","deathwatch","tsuki_wolf","kappa","vampire_bat","yomotsu","occurrence_next","horde_rune","sand_vortex","bake_kitsune","devourer_lion_hiryu","elemental_minotaur","meer_donors","captain_cu","clockwork_tokuno","aos_creatures","aos_aliases","aos_mound","recovered_late","tormented_minotaur","harrower","late_donors","gargoyle_vendor"],"Prepared trial uses an explicitly checked family"):return
+		var permitted_bodies: Array={"solen_queens":[783,807],"late_source":[266,267,279],"hydra":[265],"energy_vortex":[164],"champions":[172,173],"fey_champions":[174,175,176],"crane":[254],"deathwatch":[242],"tsuki_wolf":[250],"kappa":[240],"vampire_bat":[317],"yomotsu":[245,253,255],"occurrence_next":[309,196,302,247],"horde_rune":[776,244],"sand_vortex":[790],"bake_kitsune":[246],"devourer_lion_hiryu":[303,251,243],"elemental_minotaur":[300,263,305,281,241,789,772],"meer_donors":[771,770,773],"captain_cu":[280,277],"clockwork_tokuno":[304,757,756,252,199,271,310,278],"aos_creatures":[306,307,308,313,318],"aos_aliases":[315,316],"aos_mound":[319],"recovered_late":[768,249,276],"tormented_minotaur":[262],"harrower":[146],"late_donors":[831,767],"gargoyle_vendor":[758]}.get(family,[154,782,806,161])
 		Registry.load_index()
 		for candidate: Dictionary in candidates:
 			var record: Dictionary=candidate.get("presentation",{})
@@ -91,6 +91,8 @@ func run() -> void:
 				var expected_hue:=int(candidate.constructor_hues[native_class])
 				if not check(int(session.entities[serial].hue)==expected_hue and int(observer.entities[serial].hue)==expected_hue,"Both clients receive the native constructor's original hue before any dye"):return
 			var constructor_hue := int(session.entities[serial].hue)
+			if body == 758:
+				if not check(native_state == "vendor-morph" and int(session.player.facet) == 2 and int(observer.player.facet) == 2,"Both clients enter Ilshenar for the native vendor morph"):return
 			if candidate.has("constructor_hue_ranges"):
 				var ranges: Array = candidate.constructor_hue_ranges[native_class]
 				var permitted := ranges.any(func(bounds: Array):return constructor_hue >= int(bounds[0]) and constructor_hue <= int(bounds[1]))
@@ -224,6 +226,7 @@ func run() -> void:
 			var corpse:=int(response.split("|")[2])
 			if native_class == "EnergyVortex" and not check(corpse == 0 and response.ends_with("|suppressed"),"Summoned Energy Vortex leaves no persistent corpse"):return
 			var death_refused:=response.ends_with("|refused")
+			if body == 758 and not check(death_refused and response.contains("|damageable=0|"),"Gargoyle City vendor stays invulnerable"):return
 			if death_refused:
 				if not check(not death_events[sex].has(serial) and not death_events[1-sex].has(serial),"native death refusal does not start a renderer death transition"):return
 				if not check(corpse==0 and session.entities.has(serial) and observer.entities.has(serial),"native death refusal retains the living creature on both clients"):return

@@ -54,7 +54,7 @@ def main():
     if args.vendor:
         family = 'gargoyle_vendor'
         forms = {758: ('gargoyles_gargoyle_shopkeeper', {}, 55, 11)}
-        manifest_path = HERE / 'late-donor-inputs.json'
+        manifest_path = HERE / 'gargoyle-vendor-inputs.json'
     manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
     table = checked(BASE / 'model-table/Client/Models.txt', manifest['model_table_sha256'])
     members = {name.lower(): checked(BASE / 'final-late-source' / name, digest)
@@ -106,6 +106,12 @@ def main():
             row['native_constructor_hues'] = hues
         if body == 758:
             row['native_transition'] = 'BaseVendor.CheckGargoyle in Ilshenar Gargoyle City assigns body 758 and a bright partial hue.'
+            for path, digest in manifest['vendor_native'].items():
+                checked(ROOT / 'Server/ModernUO' / path, digest)
+                if path.endswith('/Provisioner.cs'):
+                    identity['native_sources'].append({'path': path, 'sha256': digest})
+            bright = (0x03, 0x0d, 0x13, 0x1c, 0x21, 0x30, 0x37, 0x3a, 0x44, 0x59, 0x62, 0x71)
+            row['native_constructor_hue_ranges'] = {'Provisioner': [[0x8000 | hue] * 2 for hue in bright]}
             alpha = row['source_alpha_texture']
             if alpha != f'{stem}-original-albedo.png':
                 raise ValueError('Unexpected Gargoyle Shopkeeper alpha texture')

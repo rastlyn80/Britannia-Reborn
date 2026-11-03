@@ -19,8 +19,8 @@ RECENT_CLASSES={166:['GoldenElemental'],753:['EnslavedGargoyle'],301:['Treefello
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
 def prepared_entries(family):
-    assert family in ['mages','juka','juka_lord','hydra','energy_vortex','late_source','champions','fey_champions','crane','deathwatch','tsuki_wolf','kappa','vampire_bat','yomotsu','occurrence_next','horde_rune','sand_vortex','bake_kitsune','devourer_lion_hiryu','hiryu_mount','elemental_minotaur','meer_donors','captain_cu','clockwork_tokuno','aos_creatures','aos_aliases','aos_mound','recovered_late','tormented_minotaur','harrower','late_donors','candidate_batch','solen_queens',*PREPARED_FORMS],'Prepared native trial requires an explicit checked family'
-    if family in ('late_source', 'champions', 'fey_champions', 'yomotsu', 'occurrence_next', 'horde_rune', 'sand_vortex', 'bake_kitsune', 'devourer_lion_hiryu', 'hiryu_mount', 'elemental_minotaur', 'meer_donors', 'captain_cu', 'clockwork_tokuno', 'aos_creatures', 'aos_aliases', 'aos_mound', 'recovered_late', 'tormented_minotaur', 'harrower', 'late_donors'):
+    assert family in ['mages','juka','juka_lord','hydra','energy_vortex','late_source','champions','fey_champions','crane','deathwatch','tsuki_wolf','kappa','vampire_bat','yomotsu','occurrence_next','horde_rune','sand_vortex','bake_kitsune','devourer_lion_hiryu','hiryu_mount','elemental_minotaur','meer_donors','captain_cu','clockwork_tokuno','aos_creatures','aos_aliases','aos_mound','recovered_late','tormented_minotaur','harrower','late_donors','gargoyle_vendor','candidate_batch','solen_queens',*PREPARED_FORMS],'Prepared native trial requires an explicit checked family'
+    if family in ('late_source', 'champions', 'fey_champions', 'yomotsu', 'occurrence_next', 'horde_rune', 'sand_vortex', 'bake_kitsune', 'devourer_lion_hiryu', 'hiryu_mount', 'elemental_minotaur', 'meer_donors', 'captain_cu', 'clockwork_tokuno', 'aos_creatures', 'aos_aliases', 'aos_mound', 'recovered_late', 'tormented_minotaur', 'harrower', 'late_donors', 'gargoyle_vendor'):
         classes, manifest = {
             'late_source': ({266: ['InsaneDryad', 'MLDryad'], 267: ['Lurg', 'Troglodyte'], 279: ['Ferret']}, 'late-creature-inputs.json'),
             'champions': ({172: ['Rikktor'], 173: ['Mephitis']}, 'champion-creature-inputs.json'),
@@ -34,6 +34,7 @@ def prepared_entries(family):
             'hiryu_mount': ({243: ['Hiryu', 'LesserHiryu']}, 'devourer-lion-hiryu-inputs.json'),
             'elemental_minotaur': ({300: ['CrystalElemental'], 263: ['Minotaur'], 305: ['GoreFiend'], 281: ['MinotaurScout'], 241: ['Oni'], 789: ['Quagmire'], 772: ['MeerEternal']}, 'elemental-minotaur-inputs.json'),
             'meer_donors': ({771: ['MeerWarrior'], 770: ['MeerMage'], 773: ['MeerCaptain']}, 'meer-donor-inputs.json'),
+            'gargoyle_vendor': ({758: ['Provisioner']}, 'gargoyle-vendor-inputs.json'),
             'late_donors': ({831: ['Parrot'], 767: ['Betrayer']}, 'late-donor-inputs.json'),
             'harrower': ({146: ['Harrower']}, 'harrower-inputs.json'),
             'tormented_minotaur': ({262: ['TormentedMinotaur']}, 'tormented-minotaur-inputs.json'),
@@ -52,7 +53,8 @@ def prepared_entries(family):
         assert [row['bodies'][0]['body'] for row in rows] == list(classes)
         for row in rows:
             identity, = row['bodies']
-            assert row['status'] == 'prepared' and set(row['native_constructor_hues']) == set(classes[identity['body']])
+            hues = row.get('native_constructor_hue_ranges', row.get('native_constructor_hues', {}))
+            assert row['status'] == 'prepared' and set(hues) == set(classes[identity['body']])
             for source in identity['native_sources']:
                 target = ROOT / 'Server/ModernUO' / source['path'].replace('\\', '/')
                 assert sha(target) == source['sha256']
@@ -140,7 +142,7 @@ def main():
         entries,prepared_classes=prepared_entries(args.family)
         index={'entries':entries}
         states={'prepared'}
-    elif args.family in ('late_source_active', 'hydra_active', 'energy_vortex_active', 'champions_active', 'fey_champions_active', 'crane_active', 'deathwatch_active', 'tsuki_wolf_active', 'kappa_active', 'vampire_bat_active', 'yomotsu_active', 'occurrence_next_active', 'sand_vortex_active', 'bake_kitsune_active', 'horde_rune_active', 'devourer_lion_hiryu_active', 'elemental_minotaur_active', 'meer_donors_active', 'captain_cu_active', 'clockwork_tokuno_active', 'aos_creatures_active', 'aos_aliases_active', 'aos_mound_active', 'recovered_late_active', 'tormented_minotaur_active', 'harrower_active', 'late_donors_active'):
+    elif args.family in ('late_source_active', 'hydra_active', 'energy_vortex_active', 'champions_active', 'fey_champions_active', 'crane_active', 'deathwatch_active', 'tsuki_wolf_active', 'kappa_active', 'vampire_bat_active', 'yomotsu_active', 'occurrence_next_active', 'sand_vortex_active', 'bake_kitsune_active', 'horde_rune_active', 'devourer_lion_hiryu_active', 'elemental_minotaur_active', 'meer_donors_active', 'captain_cu_active', 'clockwork_tokuno_active', 'aos_creatures_active', 'aos_aliases_active', 'aos_mound_active', 'recovered_late_active', 'tormented_minotaur_active', 'harrower_active', 'late_donors_active', 'gargoyle_vendor_active'):
         package_rows, prepared_classes = prepared_entries(args.family.removesuffix('_active'))
         selected_bodies = {body['body'] for row in package_rows for body in row['bodies']}
         registered = [row for row in index['entries'] if row['status'] == 'validated'
@@ -206,6 +208,10 @@ def main():
                 elif native_body == 277:
                     assert set(ranges) == set(classes) == {'CuSidhe'}
                     assert all(low == high and 0 <= low < 0x8000 for low, high in ranges['CuSidhe'])
+                elif native_body == 758:
+                    assert set(ranges) == set(classes) == {'Provisioner'}
+                    assert len(ranges['Provisioner']) == 12
+                    assert all(low == high and 0x8000 < low <= 0x8071 for low, high in ranges['Provisioner'])
                 else:
                     assert ranges == {'TsukiWolf': [[0, 0], [1801, 1908]]} and classes == ['TsukiWolf']
                 common.pop('constructor_hues', None)
