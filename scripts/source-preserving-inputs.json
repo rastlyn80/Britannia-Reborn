@@ -1,0 +1,257 @@
+{
+  "schema": 1,
+  "scope": "Original source candidate preparation only; exact hashes and logical names are provenance metadata, not game content or a redistribution grant. Does not enable accepted routes.",
+  "rights": "Proprietary original inputs and all derived artwork remain local and excluded from Git; archive mirror authenticity and redistribution are not asserted.",
+  "server_pin": "ab59efea86fd9e399d261bed9d188ab4d95ad4c2",
+  "models": [
+    {
+      "kind": "wild_guar",
+      "expected_bodies": [
+        248
+      ],
+      "source_url": "https://zuluarchive.com/static/files/uoml_setup.exe",
+      "containers": [
+        {
+          "path": "work/creatures/late-client-inputs/uoml_setup.exe",
+          "bytes": 798463305,
+          "sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data1.cab",
+          "bytes": 664374,
+          "sha256": "78110fcad7a3bf0d459c6f58f30764064fa2868dd2eea92ffc3983390846ce42"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data1.hdr",
+          "bytes": 624745,
+          "sha256": "bc7c394bab19ece161bdd482bd21d16f946d4f04eb64aca67d6c8c45ffa79587"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/container/data2.cab",
+          "bytes": 794818869,
+          "sha256": "247b9305c2f6d3af18c2c5bc7018d0d8ae27b5ae394187b6ffccbc9d174db95d"
+        }
+      ],
+      "model_table": {
+        "path": "work/creatures/late-client-inputs/model-table/Client/Models.txt",
+        "bytes": 81498,
+        "sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099"
+      },
+      "files": [
+        {
+          "path": "work/creatures/late-client-inputs/gaman-source/Client/Wild_Guar_Alert.grn",
+          "bytes": 21632,
+          "sha256": "564be0ee1980176ce734fd6fe43bedda5146b635d52cd5fa2642dca0db9c22c8",
+          "member": "Client/Models/Animals/Wild_Guar_Alert.grn"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/gaman-source/Client/Wild_Guar_Attack1.grn",
+          "bytes": 24428,
+          "sha256": "26a68427658ee7f15ad66c6c70ab60c3be40af2aae9931acafad0702c0487d7d",
+          "member": "Client/Models/Animals/Wild_Guar_Attack1.grn"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/gaman-source/Client/Wild_Guar_Attack2.grn",
+          "bytes": 28560,
+          "sha256": "b7b547b04b04749fea85eafc58fc0b4a3c9329a15a2e9a54d562b9df4148ccb5",
+          "member": "Client/Models/Animals/Wild_Guar_Attack2.grn"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/gaman-source/Client/Wild_Guar_Die1.grn",
+          "bytes": 30648,
+          "sha256": "a4ba75b90d6e934a7a7a7faa889bf1ce4781863f3709094b5cbaa5e4f2c6a506",
+          "member": "Client/Models/Animals/Wild_Guar_Die1.grn"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/gaman-source/Client/Wild_Guar_Die2.grn",
+          "bytes": 26528,
+          "sha256": "28650c5c6688b73cd01d697fb3769923a68777f4d11a10c0e3fb69252b1f37d0",
+          "member": "Client/Models/Animals/Wild_Guar_Die2.grn"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/gaman-source/Client/Wild_Guar_Eat.grn",
+          "bytes": 24288,
+          "sha256": "ab235cc44a38e32a98183580c673c36abfbc450acda2f95e2653a9095d720f46",
+          "member": "Client/Models/Animals/Wild_Guar_Eat.grn"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/gaman-source/Client/Wild_Guar_Fidget1.grn",
+          "bytes": 21252,
+          "sha256": "c11f15cfbd391d1b67fa6137402a95fafb035179f1471bafe4842fb31b51924f",
+          "member": "Client/Models/Animals/Wild_Guar_Fidget1.grn"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/gaman-source/Client/Wild_Guar_Fidget2.grn",
+          "bytes": 25476,
+          "sha256": "168d088beee1d30d68aa68f7014bb508a4dc1a4f4020efb3a9da7915244c5164",
+          "member": "Client/Models/Animals/Wild_Guar_Fidget2.grn"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/gaman-source/Client/Wild_Guar_GetHit.grn",
+          "bytes": 24816,
+          "sha256": "8371125c6c4752c45405f2f983a667476facb0559b2e17b31c494447d82634ec",
+          "member": "Client/Models/Animals/Wild_Guar_GetHit.grn"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/gaman-source/Client/Wild_Guar_Idle.grn",
+          "bytes": 21192,
+          "sha256": "89c064d5c52de16b489fc57a9d829a032e35698ad777593e5d2764682379a99e",
+          "member": "Client/Models/Animals/Wild_Guar_Idle.grn"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/gaman-source/Client/Wild_Guar_LieDown.grn",
+          "bytes": 20340,
+          "sha256": "167f2b32edf076cbc7e5edb9d291ff6f089e0239b70b017f0d37e12c15018414",
+          "member": "Client/Models/Animals/Wild_Guar_LieDown.grn"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/gaman-source/Client/Wild_Guar_Lod2.grn",
+          "bytes": 54948,
+          "sha256": "15a51818c9efa9f56741cdc6d6c077a98967c8430e2c54f63ee3ec9bfc16a027",
+          "member": "Client/Models/Animals/Wild_Guar_Lod2.grn"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/gaman-source/Client/Wild_Guar_Run.grn",
+          "bytes": 27960,
+          "sha256": "052de7e752d27ab8bb6b237508f8712adb460d79c6e0b24f71d39391dddf0d35",
+          "member": "Client/Models/Animals/Wild_Guar_Run.grn"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/gaman-source/Client/Wild_Guar_Walk.grn",
+          "bytes": 28012,
+          "sha256": "189fb86782f08c68e6e02f3f13050197524d36e65d79f667bfbcba7b59d4b2e7",
+          "member": "Client/Models/Animals/Wild_Guar_Walk.grn"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/gaman-source/Client/wild_Guar_1024.tga",
+          "bytes": 3145772,
+          "sha256": "ce5a4d72c4e7738d4c15147441ba7a00ac8a7e19e6f7ef59366da02c7f17ee56",
+          "member": "Client/Models/Maps/wild_Guar_1024.tga"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/gaman-source/Client/wild_Guar_256.tga",
+          "bytes": 196652,
+          "sha256": "d6ebc2aa99755b1fdd8edaac53b570955118536376287c099a7439949bccff0f",
+          "member": "Client/Models/Maps/wild_Guar_256.tga"
+        },
+        {
+          "path": "work/creatures/late-client-inputs/gaman-source/Client/wild_Guar_256_BMP.tga",
+          "bytes": 196652,
+          "sha256": "da16061ae33baedbc986e30ec2fe5afe3f4f8e8f50ac3e9bb40cd4fa19bbb05c",
+          "member": "Client/Models/Maps/wild_Guar_256_BMP.tga"
+        }
+      ],
+      "bones": 26,
+      "triangles": 410,
+      "source_clips": 13,
+      "levels": 2,
+      "normal_offset_m": 0.0015,
+      "modern_texture_member": "Client/Models/Maps/wild_Guar_1024.tga",
+      "modern_texture_scope": "Supplied 1024 RGB atlas with the same original UV layout. Original 256 atlas is fully opaque; no cutouts invented. Auxiliary BMP map uninterpreted and unused.",
+      "opacity": "opaque"
+    },
+    {
+      "kind": "rat_race_shaman",
+      "expected_bodies": [
+        143
+      ],
+      "source_url": "https://zuluarchive.com/static/files/uoaos.zip",
+      "containers": [
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client11.cab",
+          "bytes": 35160963,
+          "sha256": "307a6b91c4d5459080d1fe8a74ae4fe0b91dea8a21a2866ca91e7dc7ba92f1a8"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client10.cab",
+          "bytes": 33956665,
+          "sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9"
+        },
+        {
+          "path": "work/third-dawn/late-source-research/uoaos-cabinets/client7.cab",
+          "bytes": 20805,
+          "sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859"
+        }
+      ],
+      "model_table": {
+        "path": "work/creatures/next-batch/source/models.txt",
+        "bytes": 55735,
+        "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a"
+      },
+      "files": [
+        {
+          "path": "work/creatures/next-batch/source/Maps/rat_race_shaman.tga",
+          "bytes": 65580,
+          "sha256": "9d9e06e1d188d09b4bf1c3a386b9d0fba34cce36310b3a8436c8322124c21b52",
+          "member": "uoaos/UOTD/Models/Maps/rat_race_shaman.tga"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Maps/rat_race_shaman_m.tga",
+          "bytes": 65580,
+          "sha256": "0cf07733226adb6405d4a660d9727c6535effe15e9eb26dd745cd0ca8f1562bb",
+          "member": "uoaos/UOTD/Models/Maps/rat_race_shaman_m.tga"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Monsters/rat_race_ratman_attack1.grn",
+          "bytes": 47908,
+          "sha256": "f3f873ac8b0152dab4d4559c9d658eb005170ce8aabd55193bd53999d705a6fc",
+          "member": "uoaos/UOTD/Models/Monsters/rat_race_ratman_attack1.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Monsters/rat_race_ratman_die1.grn",
+          "bytes": 52224,
+          "sha256": "cbc39df0f9625b7cd0ef715ccb7b1b76ce7a9cf6f33f6d2486b81f788037a3c2",
+          "member": "uoaos/UOTD/Models/Monsters/rat_race_ratman_die1.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Monsters/rat_race_ratman_fidget.grn",
+          "bytes": 48800,
+          "sha256": "0082c9024ad2ce0d79434794863f00719cca9f7b98451407f563ccab24d14bb3",
+          "member": "uoaos/UOTD/Models/Monsters/rat_race_ratman_fidget.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Monsters/rat_race_ratman_gethit.grn",
+          "bytes": 33832,
+          "sha256": "277534e68d47cfb6e28fd1eec08413294f5a891e7bcdbd68967163cccf11d85a",
+          "member": "uoaos/UOTD/Models/Monsters/rat_race_ratman_gethit.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Monsters/rat_race_ratman_idle.grn",
+          "bytes": 31256,
+          "sha256": "3c46ecf09c69cc061b5dd0d7d17619e862a864d3eb3987f0fe073f964f28011f",
+          "member": "uoaos/UOTD/Models/Monsters/rat_race_ratman_idle.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Monsters/rat_race_ratman_lod2.grn",
+          "bytes": 53008,
+          "sha256": "c7c164d6ab3b13a670d7ad383e16f0ff1e11ef75425fa0ad9fa759644e22b906",
+          "member": "uoaos/UOTD/Models/Monsters/rat_race_ratman_lod2.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Monsters/rat_race_ratman_run.grn",
+          "bytes": 35200,
+          "sha256": "7ca3522222ec84eaa8584fbcb6d857a66f3d7413bb323113a260fe254532408b",
+          "member": "uoaos/UOTD/Models/Monsters/rat_race_ratman_run.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Monsters/rat_race_ratman_walk.grn",
+          "bytes": 34624,
+          "sha256": "80976a2bd18836eff29b55284f5ba37464d364fec3e06d77054dff992de73532",
+          "member": "uoaos/UOTD/Models/Monsters/rat_race_ratman_walk.grn"
+        },
+        {
+          "path": "work/creatures/next-batch/source/Monsters/rat_race_shaman_lod2.grn",
+          "bytes": 53016,
+          "sha256": "7297d51b8445894d3e395d94773c5a6e5dabeee317fd527769a20fe34a9300b1",
+          "member": "uoaos/UOTD/Models/Monsters/rat_race_shaman_lod2.grn"
+        }
+      ],
+      "bones": 45,
+      "triangles": 434,
+      "source_clips": 7,
+      "levels": 2,
+      "normal_offset_m": 0.0015,
+      "opacity": "fine_edges"
+    }
+  ]
+}

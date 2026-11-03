@@ -34,6 +34,14 @@ $env:APPDATA = Join-Path $root '.godot-user'
 $env:LOCALAPPDATA = $env:APPDATA
 & $godot --headless --path "$root\Viewer" --editor --import
 if ($LASTEXITCODE) { throw 'Asset import failed' }
+if (Test-Path "$root/Viewer/local-art/creatures/source_preserving/preparation.json") {
+ & python -B "$root/scripts/prepare-source-preserving.py" --check-prepared
+ if ($LASTEXITCODE) {throw 'Source-preserving candidate input/scene audit failed'}
+ $preservingSkin = & $godot --headless --path "$root/Viewer" --script res://Presentation/SourcePreservingSkinTests.gd 2>&1
+ $preservingExit = $LASTEXITCODE
+ $preservingSkin | ForEach-Object {Write-Output $_}
+ if ($preservingExit -or ($preservingSkin | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Saved source-preserving skins/static corpses failed'}
+}
 if (Test-Path "$root/Viewer/local-art/creatures/solen_warriors/preparation.json") {
  & $godot --headless --path "$root/Viewer" --script res://Presentation/ConfigureSolenWarriorImport.gd
  if ($LASTEXITCODE) {throw 'Bounded original warrior motion/atlas import configuration failed'}

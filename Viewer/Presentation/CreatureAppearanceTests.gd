@@ -76,7 +76,8 @@ func run() -> void:
 					# Their view-set test below still requires actual missing pixels.
 					if record.get("source_alpha_scope","")!="fine_edges":check(gaps>10,"Source opacity creates measured visible gaps in each sampled view: "+str(record.kind))
 					set_mask_probe(actor,false,true)
-				rows.append({"kind":record.kind,"clip":clip,"angle":angle,"occupied_pixels":occupied,"dyed_fraction":float(changed)/maxi(1,occupied),"source_cutout":cutout,"asset_sha256":FileAccess.get_sha256("res://local-art/creatures/"+str(record.kind)+"-modern.gltf"),"import_sha256":FileAccess.get_sha256("res://local-art/creatures/"+str(record.kind)+"-modern.gltf.import"),"art_dependency_sha256":dependencies})
+				var asset:=Registry.asset_path(record)
+				rows.append({"kind":record.kind,"clip":clip,"angle":angle,"occupied_pixels":occupied,"dyed_fraction":float(changed)/maxi(1,occupied),"source_cutout":cutout,"asset_path":asset,"asset_sha256":FileAccess.get_sha256(asset),"import_sha256":FileAccess.get_sha256(asset+".import") if FileAccess.file_exists(asset+".import") else "","art_dependency_sha256":dependencies})
 		if not str(record.get("source_alpha_texture","")).is_empty():
 			# Foreshortening changes the fraction of visible wing area. Require
 			# real gaps in every view and a substantial cutout in the view set.

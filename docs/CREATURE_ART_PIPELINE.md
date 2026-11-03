@@ -1,3 +1,22 @@
+# Source-preserving batch preparation - 3 November 2026
+
+An opt-in shared importer now prepares original Gaman248 (ML table Wild_Guar) and RatmanMage143 without dropping skin weights. Their ordinary Loop refinement overflow is retained as failed evidence; the existing SourcePoseSubdivision helper instead subdivides each posed source triangle using conditional inverse binds. Geometry is baked once into reusable private scenes, preserving the26/45-joint source rigs. Two levels give6560/6944triangles with a bounded1.5mm rest-normal offset. This adds editable resolution, not a claim of final silhouette/anatomy improvement.
+
+The dense candidates have5473/7138conditional skin-bind aliases. Crowd/LOD performance remains unproved; baking once removes repeated subdivision, not per-frame skin-palette work.
+
+These two exported bases use the existing declared affine-to-rigid approximation before subdivision. Preservation is measured against those normalized bases, not against raw GRN affine deformation.
+
+Exact inputs, mirror URLs, container hashes, logical member names and table pins are in scripts/source-preserving-inputs.json. prepare-source-preserving.py checks them before converting. No input is downloaded or executed by this preparer; all inputs and generated art remain private. Gaman's supplied1024RGB atlas uses the existing UV layout; its original256atlas is fully opaque. Ratman's original128atlas has real cutout texels, retained separately. Auxiliary BMP/_m maps remain uninterpreted and unused. Installer authenticity/redistribution and an actual game build version are not asserted.
+
+Reproduce from the repository root, with the pinned local inputs present:
+
+1. python -B scripts/prepare-source-preserving.py
+2. Run Godot --headless --path Viewer --script res://Presentation/BakeSourcePreserving.gd, then Godot --headless --path Viewer --editor --import (the pinned console executable is under .tools/godot).
+3. python -B scripts/prepare-source-preserving.py --check-prepared; then Godot --headless --path Viewer --script res://Presentation/SourcePreservingSkinTests.gd.
+4. Run scripts/review-creature-batch.ps1 -Preparation source_preserving/preparation.json -Output work/creatures/source-preserving/review-current; run scripts/verify.ps1 at the completed owned integration boundary.
+
+The skin witness checks each dense face corner against its corresponding original posed triangle, independently of the bind construction. Current evidence:94checks/60poses/six temporary candidate static-corpse cases, max distances1.530521/1.528739mm under2mm bounds. The shared actual GPU review passes27visibility/full-hue checks and produces20comparison frames. Appearance receipts now hash the registry-selected asset, including saved scenes. The initial erroneous Gaman-cutout declaration failed honestly and remains under review/; current corrected results are under review-current/. Neither runtime registry nor accepted index is changed. Original GRN interpolation/affine fidelity, terrain/contact, partial-hue pixel semantics, riding and native behaviours remain separate gates.
+
 # Creature art source policy
 
 Owner direction, 30 October 2026: for distinctive Ultima Online creatures such
