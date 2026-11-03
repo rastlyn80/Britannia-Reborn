@@ -10,6 +10,7 @@ var capture_mode:=false
 var output:=""
 var clip:="Walk"
 var capture_clips: Array[String]=[]
+var preparation_path:=""
 var review_camera: Camera3D
 var labels: Array[Label3D]=[]
 func _initialize() -> void:
@@ -17,17 +18,20 @@ func _initialize() -> void:
 		if arg.begins_with("--family="):family=arg.trim_prefix("--family=")
 		if arg.begins_with("--kind="):kind=arg.trim_prefix("--kind=")
 		if arg=="--capture":capture_mode=true
+		if arg.begins_with("--preparation="):preparation_path=arg.trim_prefix("--preparation=")
+		if arg.begins_with("--output="):output=arg.trim_prefix("--output=")
 		if arg.begins_with("--clips="):
 			for name in arg.trim_prefix("--clips=").split(","):capture_clips.append(name)
 	call_deferred("build")
 func button(parent: Node,text: String,action: Callable) -> void:
 	var b:=Button.new();b.text=text;b.pressed.connect(action);parent.add_child(b)
 func build() -> void:
-	var preparation: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://local-art/creatures/"+family+"/preparation.json"))
+	if preparation_path.is_empty():preparation_path="res://local-art/creatures/"+family+"/preparation.json"
+	var preparation: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(preparation_path))
 	var ready: Array=preparation.models.filter(func(row: Dictionary):return row.status=="prepared" and (kind.is_empty() or row.kind==kind))
 	if ready.is_empty():push_error("No prepared source trial for "+family+" / "+kind);quit(1);return
 	var record: Dictionary=ready[0];kind=record.kind
-	output=ProjectSettings.globalize_path("res://../outputs/creatures/"+family+"/"+kind)
+	if output.is_empty():output=ProjectSettings.globalize_path("res://../outputs/creatures/"+family+"/"+kind)
 	var height:=float(record.stats.original.height_m)
 	root.size=Vector2i(1440,900);var stage:=Node3D.new();root.add_child(stage)
 	var environment:=WorldEnvironment.new();environment.environment=Environment.new();var env:=environment.environment;env.background_mode=Environment.BG_COLOR;env.background_color=Color("24343f");env.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;env.ambient_light_color=Color("d6dce4");env.ambient_light_energy=.65;env.tonemap_mode=Environment.TONE_MAPPER_AGX;stage.add_child(environment)

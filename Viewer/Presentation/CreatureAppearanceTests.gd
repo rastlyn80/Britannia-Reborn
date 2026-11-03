@@ -1,7 +1,11 @@
 extends SceneTree
 const Visual=preload("res://Presentation/CreatureVisual.gd")
 const Geometry=preload("res://Presentation/SkinGeometry.gd")
+const Registry=preload("res://Presentation/CreatureRegistry.gd")
 var family:="bruins"
+var preparation_path:=""
+var kind:=""
+var output:=""
 var viewport: SubViewport
 var checks:=0
 var failures:=0
@@ -9,6 +13,9 @@ var rows: Array=[]
 func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--family="):family=arg.trim_prefix("--family=")
+		if arg.begins_with("--preparation="):preparation_path=arg.trim_prefix("--preparation=")
+		if arg.begins_with("--kind="):kind=arg.trim_prefix("--kind=")
+		if arg.begins_with("--output="):output=arg.trim_prefix("--output=")
 	call_deferred("run")
 func check(ok: bool,label: String) -> void:
 	checks+=1
@@ -18,21 +25,23 @@ func capture() -> Image:
 	await RenderingServer.frame_post_draw
 	var result:=viewport.get_texture().get_image();result.convert(Image.FORMAT_RGBA8);return result
 func run() -> void:
-	var preparation: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://local-art/creatures/"+family+"/preparation.json"))
+	if preparation_path.is_empty():preparation_path="res://local-art/creatures/"+family+"/preparation.json"
+	var preparation: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(preparation_path))
 	viewport=SubViewport.new();viewport.size=Vector2i(480,420);viewport.own_world_3d=true;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;root.add_child(viewport)
 	var environment:=WorldEnvironment.new();environment.environment=Environment.new();var env:=environment.environment;env.background_mode=Environment.BG_COLOR;env.background_color=Color.BLACK;env.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;env.ambient_light_color=Color.WHITE;env.ambient_light_energy=.8;viewport.add_child(environment)
 	var sun:=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-40,-35,0);sun.light_energy=1.2;viewport.add_child(sun)
 	if preparation.models.any(func(row: Dictionary):return not row.get("mineral_surface",{}).is_empty()):preload("res://Presentation/CreatureMineralMaterial.gd").studio_reflections(env)
 	var camera:=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;viewport.add_child(camera)
 	for record: Dictionary in preparation.models:
-		if record.status!="prepared":continue
-		var actor:=Visual.new();actor.entry=record;viewport.add_child(actor);actor.set_process(false);actor.set_physics_process(false);actor.contact.enabled=false
+		if record.status!="prepared" or (not kind.is_empty() and kind!=str(record.kind)):continue
+		Registry.load_index();Registry.entries[int(record.bodies[0].body)]=record
+		var actor:=Registry.create(int(record.bodies[0].body));viewport.add_child(actor);actor.set_process(false);actor.set_physics_process(false);actor.contact.enabled=false
 		var height:=float(record.stats.original.height_m);camera.size=height*3.;camera.position=Vector3(0,height*1.4,height*5.);camera.look_at(Vector3(0,height*.5,0))
 		var largest_cutout_fraction:=0.
 		for clip in ["Walk","Run","Attack"]:
 			for angle in [-.8,PI/2.]:
 				actor.rotation.y=angle;actor.apply_identity(0,0);actor.play(clip,0.);actor.animator.seek(actor.animator.current_animation_length*.35,true);actor.animator.pause()
-				if record.get("appearance_pose_fit",false):
+				if record.get("appearance_pose_fit",false) or record.has("presentation_script"):
 					actor.skeleton.force_update_all_bone_transforms()
 					var mesh: MeshInstance3D=actor.model.find_children("*","MeshInstance3D",true,false)[0];var box:=Geometry.deformed_bounds(mesh,actor.skeleton)
 					camera.size=box.size.length()*1.15;camera.position=box.get_center()+Vector3(0.,2.,6.)*maxf(1.,box.size.length());camera.look_at(box.get_center())
@@ -74,8 +83,8 @@ func run() -> void:
 			check(largest_cutout_fraction>(.0001 if record.get("source_alpha_scope","")=="fine_edges" else .03),"View set exposes declared source alpha cutouts: "+str(record.kind))
 		actor.free()
 	check(not rows.is_empty(),"At least one model rendered")
-	var folder:="res://../outputs/creatures/"+family;DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(folder))
-	var file:=FileAccess.open(folder+"/appearance.json",FileAccess.WRITE);file.store_string(JSON.stringify({"family":family,"checks":checks,"failures":failures,"renderer":RenderingServer.get_current_rendering_method(),"samples":rows,"scope":"Actual GPU visibility and full native dye response; precise UV/anatomy review and partial dyes remain separate."},"\t"));file.close()
+	var folder:=output if not output.is_empty() else "res://../outputs/creatures/"+family;DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(folder))
+	var file:=FileAccess.open(folder+"/appearance.json",FileAccess.WRITE);file.store_string(JSON.stringify({"family":family,"checks":checks,"failures":failures,"renderer":RenderingServer.get_current_rendering_method(),"preparation_sha256":FileAccess.get_sha256(preparation_path),"samples":rows,"scope":"Actual registered renderer visibility and full native dye response; precise UV/anatomy review and partial dyes remain separate."},"\t"));file.close()
 	print("CREATURE GPU / ",family,": ",checks-failures," / ",checks);quit(1 if failures else 0)
 func set_mask_probe(actor: Node3D,probe: bool,mask_enabled: bool) -> void:
 	for mesh: MeshInstance3D in actor.model.find_children("*","MeshInstance3D",true,false):
