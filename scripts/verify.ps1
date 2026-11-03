@@ -49,6 +49,14 @@ if (Test-Path "$root/Viewer/local-art/creatures/source_preserving/preparation.js
  $preservingExit = $LASTEXITCODE
  $preservingSkin | ForEach-Object {Write-Output $_}
  if ($preservingExit -or ($preservingSkin | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Saved source-preserving skins/static corpses failed'}
+ $preservingActions = & $godot --headless --path "$root/Viewer" --script res://Presentation/SourcePreservingActionTests.gd 2>&1
+ $preservingActionExit = $LASTEXITCODE
+ $preservingActions | ForEach-Object {Write-Output $_}
+ if ($preservingActionExit -or ($preservingActions | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Source-preserving action/material/skin reuse failed'}
+ if (Test-Path "$root/Viewer/local-art/creatures/source_preserving/local-presentation.json") {
+  & python -B "$root/scripts/accept-source-preserving.py" --check-active
+  if ($LASTEXITCODE) {throw 'Activated local source presentations lack current exact evidence'}
+ }
  $sourceForms = (Get-Content "$root/Viewer/local-art/creatures/source_preserving/preparation.json" -Raw | ConvertFrom-Json).models
  if (($sourceForms | Where-Object {$_.kind -in @('swamp_dragon','swamp_dragon_armor')}).Count -eq 2) {
   $swampRiding = & $godot --headless --path "$root/Viewer" --script res://Presentation/SwampDragonRidingTests.gd 2>&1

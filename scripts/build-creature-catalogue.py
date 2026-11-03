@@ -14,10 +14,15 @@ def main():
         subprocess.run([sys.executable,'-B',str(ROOT/'scripts/build-creature-priority.py')],check=True)
     source=read(ART/'source-index.json');accepted=read(ART/'accepted-index.json',{'entries':[]})['entries']
     public=[row for row in read(ROOT/'Viewer/Art/Creatures/index.json',{'entries':[]})['entries'] if row.get('status')=='validated']
-    prepared={};families={}
-    for path in ART.glob('*/preparation.json'):
-        report=read(path);families[report['family']]=report
-        for model in report['models']:prepared[model['kind']]=model
+    prepared={};families={};model_families={}
+    for path in sorted(ART.glob('*/preparation.json')):
+        report=read(path)
+        for model in report['models']:
+            family=model.get('family') or report.get('family')
+            assert family, f'Missing preparation family: {path}: {model["kind"]}'
+            prepared[model['kind']]=model;model_families[model['kind']]=family
+    for kind,model in prepared.items():
+        families.setdefault(model_families[kind],{'models':[]})['models'].append(model)
     routed={int(identity['body']):row for row in public+accepted for identity in row['bodies']}
     existing=set()
     registry=ROOT/'Viewer/Presentation/EquineRegistry.gd'

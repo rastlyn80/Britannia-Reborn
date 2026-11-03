@@ -9,7 +9,6 @@ func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--output="):output=arg.trim_prefix("--output=")
 		if arg.begins_with("--preparation="):preparations=arg.trim_prefix("--preparation=").split(",",false)
-	create_timer(240.).timeout.connect(func():push_error("Candidate presentation batch deadline");quit(1))
 	call_deferred("run")
 func capture() -> Image:
 	for frame in 3:await process_frame
@@ -43,6 +42,7 @@ func run() -> void:
 			for dependency: String in entry.get("art_dependency_sha256",{}):
 				var dependency_path:="res://local-art/creatures/"+dependency;inputs[dependency_path]=FileAccess.get_sha256(dependency_path)
 			if entry.has("ground_lookup"):inputs[str(entry.ground_lookup)]=FileAccess.get_sha256(str(entry.ground_lookup))
+	create_timer(maxf(240.,30.+20.*entries.size())).timeout.connect(func():push_error("Candidate presentation batch deadline");quit(1))
 	viewport=SubViewport.new();viewport.size=Vector2i(960,720);viewport.own_world_3d=true;viewport.transparent_bg=true;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;root.add_child(viewport)
 	preload("res://Presentation/ItemStudio.gd").studio_lights(viewport)
 	camera=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;viewport.add_child(camera)
@@ -117,6 +117,7 @@ func run() -> void:
 	var runtime: Dictionary={}
 	for file in ["SourcePreservingCreatureVisual.gd","SourceVariantPoseEntry.gd","SourceBloodElementalVisual.gd","SourceLavaSerpentVisual.gd","SourceLavaSerpentSurface.gdshader","SourceSilverSerpentVisual.gd","SourceSilverSerpentMaterial.gd","SourceSilverSerpentSurface.gdshader","SourceFluidElementalVisual.gd","SourceFluidElementalMaterial.gd","SourceFluidElementalSurface.gdshader","SourceElementalVisual.gd","SourceElementalMaterial.gd","SourceElementalSurface.gdshader","SourcePlaneSoleSupport.gd","SmallSnakeVisual.gd","MeasuredCreatureVisual.gd","MeasuredCreatureSupport.gd","SourceBipedVisual.gd","SourceBipedSupport.gd","CreatureVisual.gd","SourceMountContact.gd","BirdGroundSupport.gd","FootContact.gd","OstardVisual.gd","HumanHue.gd","HumanActions.gd","CandidatePresentationBatchTests.gd","IceElementalDeathTests.gd","CreatureDeathTests.gd","CreatureDeaths.gd","ItemStudio.gd","SourceMummyVisual.gd","SourceRenderedPose.gd","SourceMummySupport.gd","SourceSolenWarriorVisual.gd","SourceSolenWarriorSupport.gd","SourceIceElementalVisual.gd","SourceIceElementalSupport.gd","SourceIceElementalMaterial.gd","SourceIceElementalSurface.gdshader","SourcePoseEntry.gd","HumanAvatar.gd","CreatureRegistry.gd","CorpseModels.gd","SourceGroundLookup.gd","SkinGeometry.gd"]:runtime[file]=FileAccess.get_sha256("res://Presentation/"+file)
 	for file in ["SourceRigMountVisual.gd","SourceRidgebackVisual.gd","OstardEthereal.gdshader","SourceSwampDragonVisual.gd","MountVisual.gd","HorseRider.gd"]:runtime[file]=FileAccess.get_sha256("res://Presentation/"+file)
+	for file in ["SourceFrostOozeVisual.gd","SourceIronGolemVisual.gd","SourceAmorphousMaterial.gd","SourceAmorphousSurface.gdshader","CreatureCutoutSurface.gdshader","OstardSurface.gdshader","CreatureAppearanceTests.gd"]:runtime[file]=FileAccess.get_sha256("res://Presentation/"+file)
 	var report:={"checks":checks,"failures":failures,"renderer":RenderingServer.get_current_rendering_method(),"samples":rows,"death_entries":death_rows,"inputs_sha256":inputs,"runtime_sha256":runtime,"scope":"Actual registered avatars and post-modifier complete skins/picking/nameplates over two finite planes and one declared source phase per plane/clip, with actual GPU images; decoded fixture0xAF entry from the displayed Run pose. No native-server, exhaustive transitions, ledge/spawn or partial-dye pixel certification."}
 	FileAccess.open(output+"/validation.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"))
 	print("CANDIDATE PRESENTATION BATCH: ",checks," checks / ",failures," failures / ",rows.size()," rendered poses / ",death_rows.size()," death entries")

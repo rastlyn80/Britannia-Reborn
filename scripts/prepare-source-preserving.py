@@ -17,7 +17,9 @@ MANIFEST = ROOT/'scripts/source-preserving-inputs.json'
 WORK = ROOT/'work/creatures/source-preserving'
 ART = ROOT/'Viewer/local-art/creatures'
 RECIPE = ROOT/'Viewer/Presentation/SourcePoseSubdivision.gd'
-RUNTIME = ['SourcePreservingCreatureVisual.gd','SourceRigMountVisual.gd','SourceSwampDragonVisual.gd',
+RUNTIME = ['SourcePreservingCreatureVisual.gd','SourceFrostOozeVisual.gd','SourceIronGolemVisual.gd',
+           'SourceAmorphousMaterial.gd','SourceAmorphousSurface.gdshader','CreatureCutoutSurface.gdshader',
+           'BirdGroundSupport.gd','SourceRigMountVisual.gd','SourceSwampDragonVisual.gd',
            'SourceRidgebackVisual.gd','OstardEthereal.gdshader','MountVisual.gd','HorseRider.gd','SourceVariantPoseEntry.gd',
            'SourceRenderedPose.gd','SourcePoseEntry.gd','SmallSnakeVisual.gd',
            'SourcePlaneSoleSupport.gd','MeasuredCreatureSupport.gd',
@@ -141,6 +143,17 @@ def prepare():
         kind = source['kind']
         pipeline = pipeline_for(kind)
         pipeline.LABELS.update(source.get('clip_labels', {}))
+        install = pipeline.humanoid_actions.install
+
+        def source_actions(body, clips, authored, aliases, stem):
+            installed = install(body, clips, authored, aliases, stem)
+            if source.get('authored_cast'):
+                assert stem == kind and 'Cast' not in clips
+                clips['Cast'] = pipeline.humanoid_actions.gesture(body, clips['Idle'], 'Cast')
+                authored['Cast'] = 'Authored measured-limb cast on the preserved source rig, using creature-humanoid-actions.py; not recovered original choreography'
+            return installed
+
+        pipeline.humanoid_actions.install = source_actions
         tools = converter_pins(pipeline)
         cached = cached_candidate(source, tools, native_stamp)
         if cached is not None:
@@ -179,6 +192,10 @@ def prepare():
         check_rejections(source, row)
         assert len(row['clip_sources']) == source['source_clips']
         row['category_aliases'].update(source.get('category_aliases', {}))
+        for key in ['classic_action_categories', 'new_action_categories']:
+            if key in source:row.setdefault(key, {}).update(source[key])
+        if source.get('authored_cast'):
+            row['authored_cast_recipe'] = {'path':'scripts/creature-humanoid-actions.py', 'sha256':sha(ROOT/'scripts/creature-humanoid-actions.py')}
         assert {identity['body'] for identity in row['bodies']} == set(source['expected_bodies'])
         if 'routed_bodies' in source:
             assert set(source['routed_bodies']) <= set(source['expected_bodies'])

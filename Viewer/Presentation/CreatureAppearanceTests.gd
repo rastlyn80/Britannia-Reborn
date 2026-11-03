@@ -85,7 +85,7 @@ func run() -> void:
 		actor.free()
 	check(not rows.is_empty(),"At least one model rendered")
 	var folder:=output if not output.is_empty() else "res://../outputs/creatures/"+family;DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(folder))
-	var file:=FileAccess.open(folder+"/appearance.json",FileAccess.WRITE);file.store_string(JSON.stringify({"family":family,"checks":checks,"failures":failures,"renderer":RenderingServer.get_current_rendering_method(),"preparation_sha256":FileAccess.get_sha256(preparation_path),"samples":rows,"scope":"Actual registered renderer visibility and full native dye response; precise UV/anatomy review and partial dyes remain separate."},"\t"));file.close()
+	var file:=FileAccess.open(folder+"/appearance.json",FileAccess.WRITE);file.store_string(JSON.stringify({"family":family,"checks":checks,"failures":failures,"renderer":RenderingServer.get_current_rendering_method(),"preparation_sha256":FileAccess.get_sha256(preparation_path),"test_sha256":FileAccess.get_sha256("res://Presentation/CreatureAppearanceTests.gd"),"samples":rows,"scope":"Actual registered renderer visibility and full native dye response; precise UV/anatomy review and partial dyes remain separate."},"\t"));file.close()
 	print("CREATURE GPU / ",family,": ",checks-failures," / ",checks);quit(1 if failures else 0)
 func set_mask_probe(actor: Node3D,probe: bool,mask_enabled: bool) -> void:
 	for mesh: MeshInstance3D in actor.model.find_children("*","MeshInstance3D",true,false):

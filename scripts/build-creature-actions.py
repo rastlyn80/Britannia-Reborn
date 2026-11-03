@@ -46,7 +46,7 @@ def main():
     maps,renderer_sha=renderer_maps();rows=[];native={}
     for model in models:
         for identity in model['bodies']:
-            body=identity['body'];native[body]=model
+            body=int(identity['body']);native[body]=model
             profile=identity.get('native_profile') or model['profile']
             for protocol,groups in [('classic',maps['small' if profile=='animal' else 'sea' if profile=='sea' else 'large']),('new',maps['new'])]:
                 if protocol=='classic':groups={**groups,**{int(key):value for key,value in model.get('classic_action_categories',{}).items()}}

@@ -19,9 +19,13 @@ func _ready() -> void:
 		render_mesh.get_parent().add_child(control);source.free()
 	# Replace the inherited helper synchronously, before its first modifier tick.
 	# Neither eight-slot weights nor conditional inverse binds are truncated.
-	contact.free();contact=preload("res://Presentation/SourcePlaneSoleSupport.gd").new();skeleton.add_child(contact)
-	contact.include_toe_descendants=true;contact.model_root=model
-	contact.flat_basis=source_model_basis.scaled_local(default_model_scale)
+	contact.free()
+	if entry.get("limb_support","")=="plane":contact=preload("res://Presentation/BirdGroundSupport.gd").new()
+	else:
+		contact=preload("res://Presentation/SourcePlaneSoleSupport.gd").new()
+		contact.include_toe_descendants=true;contact.model_root=model
+		contact.flat_basis=source_model_basis.scaled_local(default_model_scale)
+	skeleton.add_child(contact)
 	contact.configure(control,entry.get("limb_support","")=="quadruped")
 	control_skin=preload("res://Presentation/SourceGroundLookup.gd").skin_points(control,skeleton)
 	contact.modification_processed.connect(support_control_plane)
