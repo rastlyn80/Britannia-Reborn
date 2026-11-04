@@ -19,7 +19,8 @@ func fit_weapon(rig: Skeleton3D, form: String, owner: Node) -> MeshInstance3D:
 	if form == "Spear":
 		rotation.x -= 0.80
 		rotation.z = -0.30
-		position.z = 0.22
+		# Shift along the shaft to keep its centerline inside the same grip.
+		position += Basis.from_euler(rotation).y * 0.25
 	var bind := Transform3D(Basis.from_euler(rotation), position)
 	rig.set_bone_rest(bone, bind)
 	rig.reset_bone_pose(bone)
@@ -99,6 +100,23 @@ func bake_death_grip(player: AnimationPlayer, rig: Skeleton3D, weapon: MeshInsta
 			clip.rotation_track_insert_key(rotations, time, correction.basis.orthonormalized().get_rotation_quaternion())
 			clip.position_track_insert_key(positions, time, correction.origin)
 
+func hold_grip(player: AnimationPlayer, rig: Skeleton3D) -> void:
+	var walk := player.get_animation("Walk")
+	var animation_root := player.get_node(player.root_node)
+	for bone in ["bip01 r finger0", "bip01 r finger01", "bip01 r finger1", "bip01 r finger11"]:
+		var path := NodePath("%s:%s" % [animation_root.get_path_to(rig), bone])
+		var source_track := walk.find_track(path, Animation.TYPE_ROTATION_3D)
+		assert(source_track >= 0)
+		var closed := walk.track_get_key_value(source_track, 0) as Quaternion
+		for name in player.get_animation_list():
+			if name == "Death":
+				continue
+			var clip := player.get_animation(name)
+			var track := clip.find_track(path, Animation.TYPE_ROTATION_3D)
+			assert(track >= 0)
+			for key in clip.track_get_key_count(track):
+				clip.track_set_key_value(track, key, closed)
+
 func run() -> void:
 	var model := (load(SOURCE) as PackedScene).instantiate() as Node3D
 	root.add_child(model)
@@ -134,6 +152,7 @@ func run() -> void:
 	library.add_animation("Pillage", motion)
 	player.stop()
 	var form := "Mace" if "mace" in OS.get_cmdline_user_args() else "Spear"
+	hold_grip(player, rig)
 	var weapon := fit_weapon(rig, form, model)
 	bake_death_grip(player, rig, weapon)
 	var packed := PackedScene.new()

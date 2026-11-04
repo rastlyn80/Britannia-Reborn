@@ -19,13 +19,22 @@ func _initialize() -> void:
 	call_deferred("run")
 
 func run() -> void:
+	var active := "--active" in OS.get_cmdline_user_args()
+	var historic := Registry.entry(33)
+	assert(historic.kind == "lizard_race_lizardman")
 	for body in [35, 36]:
 		var form := "Spear" if body == 35 else "Mace"
+		var path := "res://local-art/creatures/lizardman-pillage-trial-%s.scn" % form.to_lower()
 		var record := Registry.entry(body).duplicate(true)
 		assert(not record.is_empty())
-		record.assets = {"modern": "res://local-art/creatures/lizardman-pillage-trial-%s.scn" % form.to_lower()}
-		record.presentation_script = "res://Presentation/SourceArmedLizardmanVisual.gd"
-		Registry.entries[body] = record
+		if active:
+			assert(record.status == "validated" and record.kind == "lizardman_" + form.to_lower())
+			assert(record.assets.modern == path)
+		else:
+			record.assets = {"modern": path}
+			record.presentation_script = "res://Presentation/SourceArmedLizardmanVisual.gd"
+			Registry.entries[body] = record
+		check_grip(body)
 		for axis in [Vector3.RIGHT, Vector3.FORWARD]:
 			for slope in [-0.14, 0.14]:
 				await check_handoff(body, form, axis, slope)
@@ -58,8 +67,31 @@ func run() -> void:
 			print(body, " hue ", hue, " ", points.size(), " weapon vertices match the last skeletal pose; max error ", error)
 			corpse.free()
 			posed.queue_free()
+	assert(Registry.entry(33) == historic)
 	await process_frame
 	quit()
+
+func check_grip(body: int) -> void:
+	var actor := Registry.create(body)
+	root.add_child(actor)
+	actor.apply_identity(body, 0)
+	actor.set_physics_process(false)
+	var player: AnimationPlayer = actor.animator
+	var rig: Skeleton3D = actor.skeleton
+	var angles: Dictionary = {}
+	for clip in ["Walk", "Run", "Attack", "Pillage"]:
+		player.play(clip, 0.0)
+		player.advance(0.0)
+		for sample in 9:
+			player.seek(player.get_animation(clip).length * float(sample) / 8.0, true)
+			for name in ["bip01 r finger0", "bip01 r finger01", "bip01 r finger1", "bip01 r finger11"]:
+				var bone := rig.find_bone(name)
+				assert(bone >= 0)
+				var rotation := rig.get_bone_pose_rotation(bone)
+				if not angles.has(name):
+					angles[name] = rotation
+				assert(rotation.angle_to(angles[name]) < 0.002)
+	actor.free()
 
 func check_handoff(body: int, form: String, axis: Vector3, slope: float, step_edge := INF) -> void:
 	var game := Game.new()
