@@ -126,6 +126,40 @@ def original_mul_groups(data, allowed):
                                         'mobtype_prefers_uop': bool(flags & 0x10000)})
     return records, inputs, mobtypes
 
+def original_definition_redirects(data, routed, mul_groups, framed):
+    mul_bodies = {row['body'] for row in mul_groups}
+    uop_bodies = {body for body, _ in framed}
+    records, inputs = [], []
+    pattern = re.compile(r'(\d+)\s*\{\s*(\d+(?:\s*,\s*\d+)*)\s*\}\s*(\d+)')
+    for name, scope in (('Body.def', 'mobile'), ('Corpse.def', 'corpse')):
+        path = data / name
+        if not path.is_file():
+            continue
+        inputs.append({'name': name, 'sha256': sha(path), 'bytes': path.stat().st_size})
+        definitions = {}
+        lines = path.read_text(encoding='utf-8-sig', errors='replace').splitlines()
+        for line_number, line in enumerate(lines, 1):
+            match = pattern.fullmatch(line.split('#', 1)[0].strip())
+            if not match:
+                continue
+            source, values, hue = match.groups()
+            body = int(source)
+            if body not in routed or definitions.get(body, {}).get('graphic'):
+                continue
+            group = [int(value) for value in values.split(',')]
+            # ClassicUO selects the third entry of a three-or-more-entry group.
+            graphic = group[2] if len(group) >= 3 else group[0]
+            if max(graphic, int(hue)) > 0xffff:
+                continue
+            definitions[body] = {
+                'body': body, 'scope': scope, 'definition': name, 'line': line_number,
+                'graphic': graphic, 'legacy_hue': int(hue),
+                'source_indexed_frames': body in mul_bodies or body in uop_bodies,
+                'target_indexed_frames': graphic in mul_bodies or graphic in uop_bodies,
+            }
+        records.extend(definitions.values())
+    return records, inputs
+
 def original_uop_redirect_candidates(sequence, mobtypes, framed, classic_routes):
     candidates = []
     for record in sequence:
@@ -234,6 +268,9 @@ def main():
         archives.extend(mul_inputs)
     framed={(row['body'],row['group']) for row in frame_groups if row['frame_headers'] is not None}
     classic_routes = {(row['body'], row['group_or_type']): row for row in rows if row['protocol'] == 'classic'}
+    definition_redirects, definition_inputs = original_definition_redirects(
+        data, set(native), mul_groups, framed) if data else ([], [])
+    archives.extend(definition_inputs)
     redirect_candidates = original_uop_redirect_candidates(sequence, mobtypes, framed, classic_routes)
     native_layouts = {'monster': 'large', 'animal': 'small', 'sea': 'sea',
                       'equipment': 'people', 'empty': 'people'}
@@ -313,6 +350,9 @@ def main():
             'original_uop_frame_header_blockers':sum(row['frame_headers'] is None for row in frame_groups),
             'original_mul_group_candidates':len(mul_groups),
             'original_mul_candidate_bodies':len({row['body'] for row in mul_groups}),
+            'original_definition_redirect_candidates':len(definition_redirects),
+            'original_definition_redirects_to_indexed_frames':sum(
+                not row['source_indexed_frames'] and row['target_indexed_frames'] for row in definition_redirects),
             'original_mul_candidates_with_matching_classic_slots':sum('matching_classic_route' in row for row in mul_groups),
             'original_mul_candidates_with_identical_group_payloads':sum('same_payload_groups' in row for row in mul_groups),
             'original_new_entries_without_generic_model':sum(not r['generic_model'] for r in new_actions),
@@ -323,7 +363,7 @@ def main():
     assert counts['original_new_entries_without_generic_model']+counts['original_new_entries_without_generic_route']==counts['original_new_entries_total_without_generic_route']
     scope=('Generic creature renderer protocol slots only; distinct from original per-body required actions and choreography quality. '
            'Source clips, aliases, authored motions and missing routes remain explicit. Original UOP sequence metadata is recorded separately; '
-           'UOP frame headers are inventoried by canonical group. MUL candidates use direct and Bodyconv slots; they do not establish Body.def or UOP precedence. '
+           'UOP frame headers are inventoried by canonical group. MUL candidates use direct and Bodyconv slots. Body.def and Corpse.def redirects are inventoried separately. They do not establish runtime precedence or change native appearance. '
            'Shared replacement candidates compare ordered payload hashes across five stored directions. Different hashes prompt a visual comparison. Frame pixels are not decoded. Humans and earlier mount/bovine action ledgers are separate. '
            'The historical original_new_entries_without_generic_route counter covers already routed bodies only; the explicit total counter also includes entries on bodies without any generic model. '
            'Those bodies can include specialized human/mount presenters; this is not a global missing-animation total or choreography completion percentage.')
@@ -333,6 +373,7 @@ def main():
             'source_frame_gaps':source_frame_gaps,
             'original_mul_shared_replacement_candidates':shared_routes,
             'original_uop_redirect_candidates':redirect_candidates,
+            'original_definition_redirect_candidates':definition_redirects,
             'original_new_protocol_actions':new_actions}
     OUT.mkdir(parents=True,exist_ok=True);(OUT/'actions.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
     table=''.join('<tr><td>0x%X</td><td>%s</td><td>%s %s</td><td>%s</td><td>%s</td><td>%s</td></tr>'%

@@ -1,6 +1,8 @@
 extends SceneTree
 ## Public cat only: complete eight-influence skins, measured gaits and corpse.
 const Geometry=preload("res://Presentation/SkinGeometry.gd")
+const BaseAsset := "res://Art/Creatures/Cat/cat.glb"
+const ActionsAsset := "res://Art/Creatures/Cat/cat-actions.scn"
 var checks:=0
 var failures:=0
 func _initialize() -> void:call_deferred("run")
@@ -10,9 +12,10 @@ func check(ok: bool,label: String) -> void:
 func run() -> void:
 	var registry=preload("res://Presentation/CreatureRegistry.gd");registry.load_index()
 	check(not DirAccess.dir_exists_absolute("res://local-art"),"No original/private art is present")
-	check(registry.supports_body(201) and registry.entry(201).assets.modern=="res://Art/Creatures/Cat/cat.glb","Public native Cat201 route resolves")
+	var has_actions := FileAccess.file_exists(ActionsAsset)
+	check(registry.supports_body(201) and registry.entry(201).assets.modern==(ActionsAsset if has_actions else BaseAsset),"Public native Cat201 route resolves")
 	var provenance: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://Art/Creatures/Cat/provenance.json"))
-	check(FileAccess.get_sha256("res://Art/Creatures/Cat/cat.glb")==provenance.asset_sha256,"Public GLB matches its exact independent provenance")
+	check(FileAccess.get_sha256(BaseAsset)==provenance.asset_sha256,"Public GLB matches its exact independent provenance")
 	var actor:=preload("res://Presentation/HumanAvatar.gd").new();actor.initial_body=201;root.add_child(actor);actor.set_physics_process(false)
 	check(actor.human_visual==null and actor.horse_visual!=null,"Actual public cat avatar loads without source imports")
 	if actor.horse_visual==null:quit(1);return
@@ -42,6 +45,25 @@ func run() -> void:
 			check(bounds.position.y>-.005,"Public short-stance motion retains skin-floor precision")
 	for action in range(13):
 		visual.dead=false;visual.action_remaining=0.;check(visual.receive_action({"protocol":"classic","action":action}),"Public animal group resolves: "+str(action))
+	if has_actions:
+		var action_provenance: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://Art/Creatures/Cat/actions-provenance.json"))
+		check(action_provenance.scene_sha256 == FileAccess.get_sha256(ActionsAsset) and action_provenance.source_sha256 == provenance.asset_sha256,
+			"Public additional actions derive from the exact licensed source")
+		check(action_provenance.renderer_sha256 == FileAccess.get_sha256(registry.entry(201).presentation_script),
+			"Public collapse renderer matches the tested version")
+		for slot: int in [8, 9, 10, 12]:
+			var clip: String = {8: "Death2", 9: "CatStretch", 10: "Fidget2", 12: "Death"}[slot]
+			visual.dead = false
+			visual.action_remaining = 0.0
+			check(visual.receive_action({"protocol": "classic", "action": slot}) and visual.current_clip == clip,
+				"Public cat selects %s for Classic group %d" % [clip, slot])
+			visual.animator.pause()
+			for frame in 17:
+				visual.animator.seek(visual.animator.current_animation_length * frame / 16.0, true)
+				await process_frame
+				var bounds := Geometry.deformed_bounds(mesh, rig)
+				check(bounds.position.is_finite() and bounds.position.y >= -0.005 and bounds.size.length() > 0.30,
+					"Public %s stays bounded above the floor" % clip)
 	var corpses=preload("res://Presentation/CorpseModels.gd");var corpse: Node3D=corpses.build(201)
 	check(corpse!=null and corpse.get_meta("corpse_body")==201 and corpse.get_meta("graphic_id")==0x2006,"Public native corpse graphic/body resolves")
 	if corpse:

@@ -23,7 +23,8 @@ func run() -> void:
 		var row := trial_row(body)
 		game.entities[SERIAL] = {"serial": SERIAL, "body": body, "hue": 0x489}
 		Registry.entries[body] = row
-		for treatment: String in row.assets:
+		var treatments: Array = ["modern"] if body == 201 else row.assets.keys()
+		for treatment: String in treatments:
 			var visual := Registry.create(body)
 			visual.treatment = treatment
 			root.add_child(visual)
@@ -33,9 +34,11 @@ func run() -> void:
 			var player: AnimationPlayer = visual.animator
 			player.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
 			var source: String = base.classic_gesture_base_assets[treatment] if base.has("classic_gesture_base_assets") else Registry.asset_path(base, treatment)
+			if body == 201:
+				source = "res://Art/Creatures/Cat/cat.glb"
 			check_earlier_keys(player, source)
 			var rig: Skeleton3D = visual.skeleton
-			var pelvis := rig.find_bone("bip01 pelvis")
+			var pelvis := rig.find_bone("bip01" if body == 201 else "bip01 pelvis")
 			var head := rig.find_bone("bip01 head")
 			var skin := Ground.skin_points(visual.model.find_children("*", "MeshInstance3D", true, false)[0], rig)
 			var anchor := visual.global_transform
@@ -64,7 +67,9 @@ func run() -> void:
 					packet.append_array(Wire.uint_be(SERIAL, 4))
 					packet.append_array(PackedByteArray([0, slot, 0, FRAMES[slot], 0, 1, 1, 0, 0]))
 					game._handle(packet)
-					assert(visual.receive_action(game.last_mobile_actions[SERIAL]) and visual.current_clip == SLOTS[slot])
+					assert(visual.receive_action(game.last_mobile_actions[SERIAL]))
+					var expected: String = row.classic_action_categories.get(str(slot), SLOTS[slot])
+					assert(visual.current_clip == expected)
 					player.advance(0.0)
 					var curve := PackedVector3Array()
 					var least := INF
@@ -79,12 +84,19 @@ func run() -> void:
 							assert(gap > -0.001)
 							if frame == 48:
 								assert(absf(gap - 0.002) < 0.001)
+						if body in [217, 211] and slot in [5, 6]:
+							assert(gap > -0.001)
 						least = minf(least, gap)
 						samples += 1
 					if slope == Vector3.ZERO:
 						curves[slot] = curve
 						print(body, " ", treatment, " slot ", slot, " floor ", least, " apex ", curve[24], " end ", curve[48])
-			for pair: Array in ([[8, 12]] if body == 234 else [[5, 6], [8, 12], [9, 10]]):
+			var pairs := [[8, 12]]
+			if body != 234:
+				pairs.append([9, 10])
+			if body not in [234, 201]:
+				pairs.append([5, 6])
+			for pair: Array in pairs:
 				assert(curves[pair[0]] != curves[pair[1]])
 			surface.free()
 			visual.free()
@@ -98,10 +110,21 @@ func run() -> void:
 
 static func trial_row(body: int) -> Dictionary:
 	var row: Dictionary
-	var family := "hart_deaths" if body == 234 else "quadruped_actions"
+	var family := "quadruped_actions"
+	if body == 234:
+		family = "hart_deaths"
+	elif body == 201:
+		family = "cat_actions"
+	elif body in [217, 211]:
+		family = "dog_bear_actions"
 	if "--active" in OS.get_cmdline_user_args():
 		row = Registry.entry(body)
-		assert(row.classic_gesture_batch == family)
+		if body == 201:
+			var provenance: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://Art/Creatures/Cat/actions-provenance.json"))
+			row = row.duplicate(true)
+			row.authored_action_scene_sha256 = {"modern": provenance.scene_sha256}
+		else:
+			assert(row.classic_gesture_batch == family)
 	else:
 		var path := "res://../work/creatures/%s/candidates.json" % family
 		var candidates: Array = JSON.parse_string(FileAccess.get_file_as_string(path))
@@ -115,6 +138,10 @@ static func trial_row(body: int) -> Dictionary:
 	return row
 
 static func trial_bodies() -> Array[int]:
+	if "--dog-bear" in OS.get_cmdline_user_args():
+		return [217, 211]
+	if "--cat" in OS.get_cmdline_user_args():
+		return [201]
 	return [234] if "--hart" in OS.get_cmdline_user_args() else [225, 207, 223]
 
 static func check_earlier_keys(player: AnimationPlayer, source: String) -> void:
@@ -122,7 +149,8 @@ static func check_earlier_keys(player: AnimationPlayer, source: String) -> void:
 	var reference := prior.find_children("*", "AnimationPlayer", true, false)[0] as AnimationPlayer
 	for label: String in reference.get_animation_list():
 		var before := reference.get_animation(label)
-		var after := player.get_animation("RecoveredDeath" if label == "Death" else label)
+		var retained := "Recovered" + label
+		var after := player.get_animation(retained if player.has_animation(retained) else label)
 		assert(before.length == after.length and before.get_track_count() == after.get_track_count())
 		for track in before.get_track_count():
 			assert(before.track_get_path(track) == after.track_get_path(track))

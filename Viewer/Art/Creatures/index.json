@@ -1037,7 +1037,7 @@
       "contact_kind": "cat_paws",
       "head_bone": "bip01 head",
       "assets": {
-        "modern": "res://Art/Creatures/Cat/cat.glb"
+        "modern": "res://Art/Creatures/Cat/cat-actions.scn"
       },
       "bodies": [
         {
@@ -1202,7 +1202,10 @@
         "Eat": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography",
         "Fidget": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography",
         "Alert": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography",
-        "Death": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography"
+        "Death": "Authored cat category on the preserved CC0 rig; not licensed source motion or original UO choreography",
+        "Death2": "Authored rear-up and side roll on the licensed cat",
+        "CatStretch": "Authored low forward stretch with raised tail",
+        "Fidget2": "Authored short head lift and tail flick"
       },
       "camera_height": 0.3,
       "pick_bounds": {
@@ -1235,7 +1238,49 @@
       "loop_categories": [
         "Gallop"
       ],
-      "native_validation": "Actual isolated two-client Cat constructor, physical-speed gaits, hues, hurt/actions/death and static corpse"
+      "native_validation": "Actual isolated two-client Cat constructor, physical-speed gaits, hues, hurt/actions/death and static corpse",
+      "classic_action_categories": {
+        "8": "Death2",
+        "9": "CatStretch",
+        "10": "Fidget2",
+        "12": "Death"
+      },
+      "classic_motion_references": {
+        "8": {
+          "body": 201,
+          "group": 8,
+          "archive": "anim.mul",
+          "graphic": 201,
+          "frames": 6,
+          "directional_payload_sha256": "fdf1bb11b0128db996cd63c30e6dd8d24bbefd6674817ab22630a5e1f218c562"
+        },
+        "9": {
+          "body": 201,
+          "group": 9,
+          "archive": "anim.mul",
+          "graphic": 201,
+          "frames": 5,
+          "directional_payload_sha256": "a13c3cb14d082b7ab576cd17c0d428d3dd3f779b4607e770910f75a42b1ef43a"
+        },
+        "10": {
+          "body": 201,
+          "group": 10,
+          "archive": "anim.mul",
+          "graphic": 201,
+          "frames": 3,
+          "directional_payload_sha256": "2319edd14522e26f8905ea2a7ac9a8ed0d4bad4da3c4bca94b1379b1eb6a5091"
+        },
+        "12": {
+          "body": 201,
+          "group": 12,
+          "archive": "anim.mul",
+          "graphic": 201,
+          "frames": 6,
+          "directional_payload_sha256": "31d1a35e814bef49bf204c9c04f84d5d6f7d4471079c80bd24dc7ddc071331a7"
+        }
+      },
+      "presentation_script": "res://Presentation/SourceQuadrupedCollapseVisual.gd",
+      "presentation_script_sha256": "8d540a38336627353eda7df72f7bf816fbc04a9e691c941db3710d0846a44856"
     },
     {
       "kind": "eagle",

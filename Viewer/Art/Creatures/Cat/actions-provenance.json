@@ -1,0 +1,44 @@
+{
+  "license": "GPL-3.0-or-later; Quaternius source cat CC0-1.0",
+  "predecessor": "provenance.json",
+  "scene_sha256": "575ef1b8708520fac6d1ad887e9007cef272d57380733cfd91f2f5b4e3b3ffa0",
+  "source_sha256": "2bd553e48a337d36862c72f3abbd5033a43999cfe6cf10e9e59bfded430ca9ce",
+  "recipe_sha256": "d331938b35c8458a199710cf56de29d0dc11d9ea081350a37b84c56f950355b2",
+  "renderer_sha256": "8d540a38336627353eda7df72f7bf816fbc04a9e691c941db3710d0846a44856",
+  "native_receipt_sha256": "2e03dc0dd3e0a43ca4625c18ec2e915e80677216035c82785d402ba333a58312",
+  "classic_references": {
+    "8": {
+      "body": 201,
+      "group": 8,
+      "archive": "anim.mul",
+      "graphic": 201,
+      "frames": 6,
+      "directional_payload_sha256": "fdf1bb11b0128db996cd63c30e6dd8d24bbefd6674817ab22630a5e1f218c562"
+    },
+    "9": {
+      "body": 201,
+      "group": 9,
+      "archive": "anim.mul",
+      "graphic": 201,
+      "frames": 5,
+      "directional_payload_sha256": "a13c3cb14d082b7ab576cd17c0d428d3dd3f779b4607e770910f75a42b1ef43a"
+    },
+    "10": {
+      "body": 201,
+      "group": 10,
+      "archive": "anim.mul",
+      "graphic": 201,
+      "frames": 3,
+      "directional_payload_sha256": "2319edd14522e26f8905ea2a7ac9a8ed0d4bad4da3c4bca94b1379b1eb6a5091"
+    },
+    "12": {
+      "body": 201,
+      "group": 12,
+      "archive": "anim.mul",
+      "graphic": 201,
+      "frames": 6,
+      "directional_payload_sha256": "31d1a35e814bef49bf204c9c04f84d5d6f7d4471079c80bd24dc7ddc071331a7"
+    }
+  },
+  "interpretation": "Independent hand-authored motions on the licensed cat using visual reference only."
+}

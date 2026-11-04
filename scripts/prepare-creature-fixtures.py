@@ -83,6 +83,8 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'cat_actions':
+        return runpy.run_path(str(ROOT / 'scripts/prepare-cat-actions.py'))['prepared'](registry_entries)
     if family == 'skeleton_actions':
         rows = gesture_baseline(family, registry_entries, {50, 56}, layered=True)
         return runpy.run_path(str(ROOT / 'scripts/prepare-skeleton-actions.py'))['prepared'](rows)
@@ -98,7 +100,7 @@ def prepared_entries(family, registry_entries=None):
     if family == 'field_deaths':
         rows = gesture_baseline(family, registry_entries, {237}, layered=True)
         return runpy.run_path(str(ROOT / 'scripts/prepare-field-deaths.py'))['prepared'](rows)
-    if family in ('occurrence_deaths', 'kraken_reactions'):
+    if family in ('occurrence_deaths', 'kraken_reactions', 'dog_bear_actions', 'troll_actions'):
         recipe = runpy.run_path(str(ROOT / ('scripts/prepare-' + family.replace('_', '-') + '.py')))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
         return recipe['prepared'](rows)
@@ -999,6 +1001,12 @@ def main():
                     assert all(low == high and 0x8000 < low <= 0x8071 for low, high in ranges['Provisioner'])
                 elif native_body == 21:
                     assert ranges == {'GiantSerpent': [[2001, 2018]]} and classes == ['GiantSerpent']
+                elif native_body == 217:
+                    assert ranges == {'Dog': [[2301, 2318]]} and classes == ['Dog']
+                elif native_body == 211:
+                    assert ranges == {'BlackBear': [[0, 0]]} and classes == ['BlackBear']
+                elif native_body == 201:
+                    assert ranges == {'Cat': [[2301, 2318]]} and classes == ['Cat']
                 elif native_body == 150:
                     assert set(classes) == {'DeepSeaSerpent', 'SeaSerpent'}
                     assert ranges == {'DeepSeaSerpent': [[0x8A0, 0x8A4]], 'SeaSerpent': [[0x530, 0x538]]}

@@ -6,6 +6,8 @@ def main():
     target=(ROOT/'work/creatures/cat-distribution'/uuid.uuid4().hex).resolve()
     assert target.is_relative_to((ROOT/'work/creatures/cat-distribution').resolve());target.mkdir(parents=True)
     pending=['Presentation/CatDistributionTests.gd'];copied=set();pattern=re.compile(r'(?:preload\s*\(|extends\s+|#include\s+)["\']res://([^"\']+)')
+    if (ROOT/'Viewer/Art/Creatures/Cat/cat-actions.scn').is_file():
+        pending.append('Presentation/SourceQuadrupedCollapseVisual.gd')
     while pending:
         relative=pending.pop()
         if relative in copied:continue

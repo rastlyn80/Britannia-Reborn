@@ -4,6 +4,7 @@ const Registry := preload("res://Presentation/CreatureRegistry.gd")
 const Game := preload("res://Network/GameSession.gd")
 const Wire := preload("res://Network/LoginProtocol.gd")
 const Actions := preload("res://../scripts/test-lizard-actions.gd")
+const Trolls := preload("res://../scripts/test-troll-actions.gd")
 const SERIAL := 0x4937
 
 func _initialize() -> void:
@@ -16,8 +17,9 @@ func run() -> void:
 	root.add_child(game)
 	game.set_process(false)
 	var count := 0
-	for body: int in [35, 36]:
-		Registry.entries[body] = Actions.trial_row(body)
+	var troll := "--troll" in OS.get_cmdline_user_args()
+	for body: int in ([53, 54, 55] if troll else [35, 36]):
+		Registry.entries[body] = Trolls.trial_row(body) if troll else Actions.trial_row(body)
 		game.entities[SERIAL] = {"serial": SERIAL, "body": body, "hue": 0x8035}
 		for tilt: Vector3 in [Vector3.ZERO, Vector3(0.14, 0.0, -0.10), Vector3(-0.16, 0.0, 0.12)]:
 			var ground := StaticBody3D.new()
@@ -61,5 +63,6 @@ func run() -> void:
 				visual.free()
 			ground.free()
 	game.free()
-	print("LIZARD COLLAPSES: ", count, " decoded terrain poses, weapon clearance and authoritative root")
+	print("TROLL COLLAPSES: " if troll else "LIZARD COLLAPSES: ", count,
+		" decoded terrain poses, weapon clearance and authoritative root")
 	quit()

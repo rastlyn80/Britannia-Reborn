@@ -19,8 +19,11 @@ func run() -> void:
 			var suffix: String = "" if treatment == "modern" else "-" + treatment
 			var path := "res://local-art/creatures/troll-%d-armed-trial%s.scn" % [body, suffix]
 			if active:
-				assert(record.assets[treatment] == path)
-				assert(FileAccess.get_sha256(path) == record.authored_action_scene_sha256[treatment])
+				if record.get("classic_gesture_batch") == "troll_actions":
+					assert(record.classic_gesture_base_assets[treatment] == path)
+				else:
+					assert(record.assets[treatment] == path)
+				assert(FileAccess.get_sha256(record.assets[treatment]) == record.authored_action_scene_sha256[treatment])
 			else:
 				assets[treatment] = path
 		if not active:
