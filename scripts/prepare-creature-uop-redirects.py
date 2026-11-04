@@ -73,7 +73,7 @@ def merge_active(row, proof, receipt_hash):
 def without_active_redirect(row):
     if 'uop_redirect_native_sha256' not in row:
         return row
-    body, = (item['body'] for item in row['bodies'])
+    body, = (int(item['body']) for item in row['bodies'])
     baseline = read(SEALED / 'base-rows.json')
     base, = (item for item in baseline if [entry['body'] for entry in item['bodies']] == [body])
     proof = read(RECIPE)['bodies'][str(body)]
@@ -171,7 +171,10 @@ def main():
             raise RuntimeError('Accepted registry changed during the isolated preview')
         return
     by_body = {row['body']: row for row in preview}
-    baseline = [row for row in entries if row['bodies'][0]['body'] in by_body]
+    baseline = [row for row in entries if row['status'] == 'validated' and len(row['bodies']) == 1
+                and row['bodies'][0]['body'] in by_body]
+    if len(baseline) != len(by_body):
+        raise ValueError('Each redirect body must have one validated registry row')
     final = {row['bodies'][0]['body']: merge_active(row, by_body[row['bodies'][0]['body']]['targets'], receipt)
              for row in baseline}
     for row in preview:
@@ -189,7 +192,7 @@ def main():
     for source in (REPORT, PREVIEW.with_name('native-runtime.json'), PREVIEW.with_name('candidates.json')):
         shutil.copyfile(source, SEALED / source.name)
     (SEALED / 'base-rows.json').write_text(json.dumps(baseline, indent=2) + '\n', encoding='utf-8')
-    index['entries'] = [final.get(row['bodies'][0]['body'], row) for row in entries]
+    index['entries'] = [final[row['bodies'][0]['body']] if row in baseline else row for row in entries]
     pending = INDEX.with_suffix('.uop-redirects.pending')
     updated = (json.dumps(index, indent=2) + '\n').encode()
     pending.write_bytes(updated)
