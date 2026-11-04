@@ -15,12 +15,20 @@ func _initialize() -> void:
 func run() -> void:
 	var row := Registry.entry(BODY).duplicate(true)
 	assert(row.kind == "gargoyles_gargoyle_slave")
-	var originals: Dictionary = row.assets.duplicate(true)
+	var active := "--active" in OS.get_cmdline_user_args()
+	var originals: Dictionary = row.get("authored_action_base_assets", row.assets).duplicate(true)
 	for treatment in ["original", "rounded", "modern"]:
 		var suffix: String = "" if treatment == "modern" else "-" + treatment
-		row.assets[treatment] = "res://local-art/creatures/gargoyle-753-pillage-trial%s.scn" % suffix
-	row.classic_action_categories["11"] = "Pillage"
-	Registry.entries[BODY] = row
+		var path := "res://local-art/creatures/gargoyle-753-pillage-trial%s.scn" % suffix
+		if active:
+			assert(row.assets[treatment] == path and row.authored_action_scene_sha256[treatment] == FileAccess.get_sha256(path))
+		else:
+			row.assets[treatment] = path
+	if active:
+		assert(row.classic_action_categories["11"] == "Pillage")
+	else:
+		row.classic_action_categories["11"] = "Pillage"
+		Registry.entries[BODY] = row
 
 	var game := Game.new()
 	root.add_child(game)

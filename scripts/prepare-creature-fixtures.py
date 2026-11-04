@@ -34,6 +34,18 @@ def prepared_entries(family):
         index = json.loads((art / 'accepted-index.json').read_text(encoding='utf-8'))
         base, = (row for row in index['entries']
                  if row['status'] == 'validated' and row['kind'] == 'gargoyles_gargoyle_slave')
+        if 'authored_action_native_sha256' in base:
+            evidence = runpy.run_path(str(ROOT / 'scripts/gargoyle-pillage-evidence.py'))
+            active = base
+            base = dict(active, assets=active['authored_action_base_assets'],
+                        classic_action_categories={key: value for key, value in active['classic_action_categories'].items()
+                                                   if key != '11'},
+                        authored_replacements={key: value for key, value in active['authored_replacements'].items()
+                                               if key != 'Pillage'})
+            for key in ('authored_action_native_sha256', 'authored_action_base_assets',
+                        'authored_action_reference', 'authored_action_scene_sha256'):
+                base.pop(key)
+            assert evidence['compose'](base, True) == active
         ledger = json.loads((ROOT / 'outputs/creatures/actions.json').read_text(encoding='utf-8'))
         source, = (group for group in ledger['original_uop_frame_groups']
                    if (group['body'], group['group']) == (753, 11))

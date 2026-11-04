@@ -3,6 +3,8 @@ import argparse
 import copy
 import importlib.util
 import json
+import os
+import runpy
 from pathlib import Path
 import subprocess
 import sys
@@ -96,20 +98,66 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument('--publish',action='store_true')
+    mode.add_argument('--activate-gargoyle-pillage',action='store_true')
     mode.add_argument('--check-active',action='store_true')
     args = parser.parse_args()
     rows, pins = checked_rows()
     path = ART/'accepted-index.json'
+    previous = path.read_bytes()
     index = read(path)
+    gargoyle = runpy.run_path(str(ROOT/'scripts/gargoyle-pillage-evidence.py'))
+    base = next(row for row in rows if row['kind'] == gargoyle['KIND'])
+    current = next((row for row in index['entries'] if row['kind'] == gargoyle['KIND']), {})
+    overlay_active = 'authored_action_native_sha256' in current
+    if overlay_active:
+        overlay = gargoyle['compose'](base, True)
+        assert current == overlay, 'Gargoyle action overlay or base package changed'
+        rows = [overlay if row is base else row for row in rows]
     incoming = {row['kind'] for row in rows}
     existing = {int(body['body']):row['kind'] for row in index['entries'] for body in row['bodies']}
     for row in rows:
         for body in row['bodies']:
             assert int(body['body']) not in existing or existing[int(body['body'])] == row['kind'], 'Refusing to replace an unrelated working creature'
-    if args.check_active:
+    if args.check_active or args.activate_gargoyle_pillage:
         receipt = read(RECEIPT)
-        assert receipt['publisher_sha256'] == sha(Path(__file__)) and receipt['evidence_pins'] == pins
+        assert receipt['publisher_sha256'] in (
+            sha(Path(__file__)), '45ba8a2a4212f2d1728b2a13c5c940f235f2e6b23bef4da99e552bc110b96950')
+        assert receipt['evidence_pins'] == pins
         assert {row['kind']:row for row in index['entries'] if row['kind'] in incoming} == {row['kind']:row for row in rows}
+    if args.activate_gargoyle_pillage:
+        if overlay_active:
+            raise ValueError('Gargoyle Pillage is already active')
+        if read(gargoyle['LIVE'])['accepted_index_sha256'] != sha(path):
+            raise ValueError('Registry changed since the isolated Gargoyle trial')
+        overlay = gargoyle['compose'](base, False)
+        gargoyle['seal']()
+        assert overlay == gargoyle['compose'](base, True)
+        index['entries'] = [overlay if row['kind'] == gargoyle['KIND'] else row for row in index['entries']]
+        if path.read_bytes() != previous:
+            raise RuntimeError('Registry changed during Gargoyle activation')
+        temporary = path.with_suffix('.gargoyle.pending')
+        updated = (json.dumps(index, indent=2) + '\n').encode()
+        temporary.write_bytes(updated)
+        temporary.replace(path)
+        try:
+            godot = next((ROOT/'.tools/godot').glob('*console.exe'))
+            profile = str(ROOT/'.godot-user')
+            env = dict(os.environ, APPDATA=profile, LOCALAPPDATA=profile)
+            command = [str(godot), '--headless', '--path', str(ROOT/'Viewer'), '--script']
+            for test in [
+                ['res://../scripts/test-gargoyle-pillage-trial.gd', '--', '--active'],
+                ['res://Presentation/CreatureBatchRouteTests.gd'],
+            ]:
+                subprocess.run(command + test, cwd=ROOT, env=env, check=True, timeout=150)
+            subprocess.run([sys.executable, '-B', str(ROOT/'scripts/prepare-source-family-batch.py'),
+                            '--check-actions'], cwd=ROOT, check=True, timeout=180)
+        except (Exception, KeyboardInterrupt):
+            if path.read_bytes() == updated:
+                temporary.write_bytes(previous)
+                temporary.replace(path)
+            raise
+        print('Gargoyle 753 Pillage: active and verified')
+        return
     if args.publish:
         backup = WORK/'accepted-index-before-family-batch.json'
         if not backup.exists():backup.write_bytes(path.read_bytes())

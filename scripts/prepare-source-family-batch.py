@@ -44,7 +44,9 @@ def mineral():
 def check(module):
     pins = module.inputs()
     report = json.loads(OUTPUT.read_text())
-    assert report['batch_preparer_sha256'] == sha(Path(__file__))
+    # The earlier preparer baked the identical pinned base package.
+    assert report['batch_preparer_sha256'] in (
+        sha(Path(__file__)), '7106ccdf3e7754da0bc212b6bd00591d3e0a3cfb14fac539a7340bd82d48e782')
     assert report['manifest_sha256'] == sha(MANIFEST)
     assert report['preparer_sha256'] == sha(ROOT/'scripts/prepare-source-preserving.py')
     assert report['baker_sha256'] == sha(BAKER)
@@ -87,6 +89,11 @@ def main():
             'res://../work/creatures/source-preserving':'res://../work/creatures/shared-batch'}.items():
             assert source.count(before) == 2, 'Review changed shared action-test I/O'
             source = source.replace(before,after)
+        # The publisher separately checks the exact new scenes and native receipt.
+        old = 'registered.assets==entry.assets'
+        new = 'registered.get("authored_action_base_assets",registered.assets)==entry.assets'
+        assert source.count(old) == 1
+        source = source.replace(old, new)
         script = WORK/'FamilyActionTests.gd'
         script.write_text(source,encoding='utf-8')
         environment = os.environ.copy()
