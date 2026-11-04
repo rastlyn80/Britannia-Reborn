@@ -1,0 +1,80 @@
+{
+  "758": {
+    "family": "gargoyle_vendor",
+    "kind": "gargoyles_gargoyle_shopkeeper",
+    "sibling": 17,
+    "payload_signature": "f9c5ce4a3f366aaa20b768b885b31dac0777aa106828b789f8078ed104971b4f"
+  },
+  "767": {
+    "family": "late_donors",
+    "kind": "npc_blackthorn_cohort",
+    "sibling": 17,
+    "payload_signature": "fcd5d0445ed142780e0b0813d20bdd038ab0b5e58e517fa6bfa809e2d1ada816"
+  },
+  "768": {
+    "family": "recovered_late",
+    "kind": "juggernaut",
+    "sibling": 17,
+    "payload_signature": "e72c77ccc91d7bead09d464c1a08f5730c2c75ec1576cec5a942d1127ae2c748"
+  },
+  "306": {
+    "family": "aos_creatures",
+    "kind": "impaler",
+    "sibling": 17,
+    "payload_signature": "8b11b1ec93927c2ecf44010044e538e371b4730ebb4c60897d70b63462253879"
+  },
+  "307": {
+    "family": "aos_creatures",
+    "kind": "gibberling",
+    "sibling": 17,
+    "payload_signature": "9a85f3b02bce8e9658df65632a2df9029103db0bf7c80a5ff5a69017436bcc42"
+  },
+  "312": {
+    "family": "aos_abysmal",
+    "kind": "abysmal_horror",
+    "sibling": 17,
+    "payload_signature": "6b39a02dc99597c69a4ee4ee99b51ce80499d16a60e3027a0c0023b2ccd0fbc4"
+  },
+  "313": {
+    "family": "aos_creatures",
+    "kind": "darknight_creeper",
+    "sibling": 17,
+    "payload_signature": "0d9b68c933e0a894defa3a9a369222f4e32d468741e3fb3b0336b6b867aff80e"
+  },
+  "314": {
+    "family": "aos_armed",
+    "kind": "ravager",
+    "sibling": 17,
+    "payload_signature": "7ecfc19edcf3dce685ff054de00f39617223dfd0d118117666c8a96ac4b7ed4e"
+  },
+  "315": {
+    "family": "aos_aliases",
+    "kind": "flesh_renderer",
+    "sibling": 17,
+    "payload_signature": "0159d3a0db2eac359b3e6fa1154a9a0371e3b1d5499befe0484c88e3862823ec"
+  },
+  "316": {
+    "family": "aos_aliases",
+    "kind": "wander",
+    "sibling": 17,
+    "payload_signature": "65d2c5fb48f021439b9a757ba6fbb82800a87ebaafc5844a9200d29d2ec1167f"
+  },
+  "318": {
+    "family": "aos_creatures",
+    "kind": "demon_knight",
+    "sibling": 17,
+    "payload_signature": "2ae500ca0095773863cad4f096e8fe31e7beb35088cbf44fc8b505b9bc8e16a1"
+  },
+  "319": {
+    "family": "aos_mound",
+    "kind": "mound_of_maggots",
+    "sibling": 17,
+    "payload_signature": "0ca75e2de3a8142cc10fb7db1d2f6b3a569a12566f30c11d0b084f6df21e5536"
+  },
+  "249": {
+    "family": "recovered_late",
+    "kind": "yamandon",
+    "sibling": 18,
+    "payload_signature": "e96076b766d32fc5550d745d3c8798cc8633b3fc141f71044f2f1c0c433945a2"
+  }
+}

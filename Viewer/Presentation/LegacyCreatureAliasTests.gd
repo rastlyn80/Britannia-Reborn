@@ -14,7 +14,9 @@ func run() -> void:
 	game.set_process(false)
 	var file := "res://../work/creatures/legacy-aliases/"
 	var flags := OS.get_cmdline_user_args()
-	if "--preview-packages" in flags:
+	if "--late-packages" in flags:
+		file += "late-packages.json"
+	elif "--preview-packages" in flags:
 		file += "packages.json"
 	else:
 		file += "dread-spider.json" if "--dread-spider" in flags else "candidates.json"

@@ -61,6 +61,14 @@ func run() -> void:
 			Registry.entries[body] = record
 		else:
 			expected.status = "validated"
+			var active := Registry.entry(body)
+			if active.has("legacy_slot11_evidence"):
+				var aliases: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(
+					"res://Presentation/legacy-late-action-aliases.json"))
+				var proof: Dictionary = aliases.get(str(body), {})
+				assert(proof == active.legacy_slot11_evidence and proof.family == family and proof.kind == record.kind)
+				expected["legacy_slot11_evidence"] = proof
+				expected["classic_action_categories"] = record.get("classic_action_categories", {}).merged({"11": "Fidget"}, true)
 		assert(Registry.supports_body(body) and Registry.entry(body) == expected)
 		var avatar := Avatar.new()
 		avatar.initial_body = body
@@ -106,6 +114,12 @@ func run() -> void:
 			actions.erase(2)
 			actions.merge({11: "Pillage", 12: "Attack2", 18: "Fidget2", 2: "Death"})
 		elif family in RECOVERED_FAMILIES:
+			if expected.has("legacy_slot11_evidence"):
+				var death_slot := 8 if record.bodies[0].native_profile == "animal" else 2
+				var death: String = actions[death_slot]
+				actions.erase(death_slot)
+				actions[11] = "Fidget"
+				actions[death_slot] = death
 			for group: int in actions.keys():
 				actions[group] = record.get("classic_action_categories", {}).get(str(group), actions[group])
 				if not actor.animator.has_animation(actions[group]):

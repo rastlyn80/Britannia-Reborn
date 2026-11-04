@@ -11,6 +11,7 @@ INDEX = ROOT / 'Viewer/local-art/creatures/accepted-index.json'
 LEDGER = ROOT / 'outputs/creatures/actions.json'
 TRIAL = ROOT / 'work/creatures/legacy-aliases/candidates.json'
 DREAD_RENDERER = 'Presentation/LegacyDreadSpiderVisual.gd'
+LATE_ALIASES = ROOT / 'Viewer/Presentation/legacy-late-action-aliases.json'
 # Each record below has exactly one body and uses the generic classic action map.
 REVIEWED = {
     77: 'krakens_kraken',
@@ -63,7 +64,11 @@ def main():
                         help='Test or activate the body-specific Dread Spider alias only.')
     parser.add_argument('--preview-packages', action='store_true',
                         help='Preview eligible exact-package aliases without editing their accepted records.')
+    parser.add_argument('--late-packages', action='store_true',
+                        help='Use the release-reviewed recovered packages.')
     args = parser.parse_args()
+    if sum((args.preview_packages, args.dread_spider, args.late_packages)) > 1:
+        parser.error('Select only one alias batch')
     if args.preview_packages and (args.activate or args.check_active or args.dread_spider):
         parser.error('--preview-packages only runs the isolated client preview')
     previous = INDEX.read_bytes()
@@ -71,6 +76,9 @@ def main():
     actions = read(LEDGER)['original_mul_group_candidates']
     proofs = []
     selected = {11: 'arachnids_spider_dread'} if args.dread_spider else REVIEWED
+    late_aliases = read(LATE_ALIASES) if args.late_packages else {}
+    if late_aliases:
+        selected = {int(body): proof['kind'] for body, proof in late_aliases.items()}
     if args.preview_packages:
         active = {int(identity['body']): row for row in index['entries'] if row['status'] == 'validated'
                   for identity in row['bodies']}
@@ -91,7 +99,7 @@ def main():
         if not matches or matches[-1]['kind'] != kind:
             raise ValueError(f'Active registry does not select {kind} for {body}')
         row = matches[-1]
-        proof = alias_proof(body, actions, (17, 18) if args.preview_packages else (17,))
+        proof = alias_proof(body, actions, (17, 18) if args.preview_packages or late_aliases else (17,))
         proof['kind'] = kind
         if args.dread_spider:
             scoped_categories = {'11': {'11': 'Fidget'}}
@@ -117,17 +125,27 @@ def main():
         if args.check_active and categories.get('11') != 'Fidget':
             raise ValueError(f'{kind} has no active slot 11 alias')
         categories['11'] = 'Fidget'
+        if late_aliases:
+            sealed = late_aliases[str(body)]
+            signature = hashlib.sha256(''.join(
+                direction['payload_sha256'] for direction in proof['directions']).encode('ascii')).hexdigest()
+            if (sealed['family'] != row['family'] or sealed['sibling'] != proof['identical_slot']
+                    or sealed['payload_signature'] != signature
+                    or args.check_active and row.get('legacy_slot11_evidence') != sealed):
+                raise ValueError(f'Legacy package alias evidence changed for {kind}')
+            row['legacy_slot11_evidence'] = sealed
         proofs.append({'proof': proof, 'presentation': row})
 
-    trial = TRIAL.with_name('packages.json') if args.preview_packages else (
-        TRIAL.with_name('dread-spider.json') if args.dread_spider else TRIAL)
+    batch = ('late-packages' if late_aliases else 'preview-packages' if args.preview_packages
+             else 'dread-spider' if args.dread_spider else 'candidates')
+    trial = TRIAL.with_name(f'{batch}.json' if batch != 'preview-packages' else 'packages.json')
     trial.parent.mkdir(parents=True, exist_ok=True)
     trial.write_text(json.dumps(proofs, indent=2) + '\n', encoding='utf-8')
     godot = next((ROOT / '.tools/godot').glob('*console.exe'))
     user_dir = str(ROOT / '.godot-user')
     command = [str(godot), '--headless', '--path', str(ROOT / 'Viewer'), '--script',
                'res://Presentation/LegacyCreatureAliasTests.gd']
-    flags = ['--preview-packages'] if args.preview_packages else (['--dread-spider'] if args.dread_spider else [])
+    flags = [] if batch == 'candidates' else [f'--{batch}']
     env = dict(os.environ, APPDATA=user_dir, LOCALAPPDATA=user_dir)
     subprocess.run(command + ['--', *flags, *(['--active'] if args.check_active else [])],
                    env=env, check=True, timeout=90)
@@ -140,6 +158,10 @@ def main():
         pending.replace(INDEX)
         try:
             subprocess.run(command + ['--', *flags, '--active'], env=env, check=True, timeout=90)
+            for family in sorted({proof['family'] for proof in late_aliases.values()}):
+                subprocess.run(command[:-1] + ['res://Presentation/LateCreatureRouteTests.gd',
+                                              '--', f'--family={family}'],
+                               env=env, check=True, timeout=45)
         except (subprocess.SubprocessError, OSError):
             if INDEX.read_bytes() == updated:
                 pending.write_bytes(previous)

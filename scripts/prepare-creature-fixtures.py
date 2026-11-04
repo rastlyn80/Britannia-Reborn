@@ -174,7 +174,18 @@ def main():
             mounted = json.loads((ROOT / 'Viewer/local-art/creatures/cu_sidhe_mount/preparation.json').read_text())
             package_rows = [mounted['models'][0] if row['bodies'][0]['body'] == 277 else row
                             for row in package_rows]
-        if registered != [dict(row, status='validated') for row in package_rows]:
+        expected = [dict(row, status='validated') for row in package_rows]
+        active_by_body = {int(row['bodies'][0]['body']): row for row in registered}
+        for row in expected:
+            body = int(row['bodies'][0]['body'])
+            evidence = active_by_body.get(body, {}).get('legacy_slot11_evidence')
+            if evidence is not None:
+                aliases_path = ROOT / 'Viewer/Presentation/legacy-late-action-aliases.json'
+                proof = json.loads(aliases_path.read_text(encoding='utf-8'))[str(body)]
+                assert evidence == proof and proof['family'] == row['family'] and proof['kind'] == row['kind']
+                row['legacy_slot11_evidence'] = proof
+                row['classic_action_categories'] = row.get('classic_action_categories', {}) | {'11': 'Fidget'}
+        if registered != expected:
             raise ValueError('Normal registry does not match the checked recovered package')
         index['entries'] = registered
         selected_kinds = {row['kind'] for row in registered}
