@@ -37,7 +37,15 @@ func run() -> void:
 			check(box.position.y>-.004,"Complete shipped action skin stays above the floor")
 			check(float(visual.get_meta("nameplate_height"))>box.end.y+.015 and (visual.get_meta("pick_bounds") as AABB).grow(.01).encloses(box),"Standalone branch landmarks and selection contain the actual action skin")
 			samples+=1
-	check(samples==153,"All17 runtime categories sampled including retained source Run/Dance and compatibility poses")
+	var extra := record.has("additional_animation_library")
+	check(samples == (171 if extra else 153), "All runtime categories sampled including retained source Run/Dance")
+	if extra:
+		for slot: int in [15, 16, 18]:
+			var expected := "Uncurl" if slot == 18 else "RootGuard"
+			check(visual.receive_action({"protocol": "classic", "action": slot, "frames": 5})
+				and visual.current_clip == expected, "Independently shipped fitted gesture matches its Classic route")
+		check(visual.receive_action({"protocol": "new", "type": 14, "action": 14})
+			and visual.current_clip == "Pillage", "The original new-protocol gesture remains available")
 	for speed in [1.8,6.8]:
 		visual.dead=false;visual.action_remaining=0.;actor.animate(true,0.,1./60.,speed);var clip:="Walk" if speed<3.6 else "Run";var reference:=1.8 if clip=="Walk" else 5.5
 		check(visual.current_clip==clip and visual.animator.get_animation(clip).loop_mode==Animation.LOOP_LINEAR and absf(float(visual.animator.speed_scale)-speed/reference)<.0001,"Actual standalone gait scales its calibrated physical reference speed")

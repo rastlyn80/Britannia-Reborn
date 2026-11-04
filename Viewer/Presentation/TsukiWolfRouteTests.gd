@@ -18,8 +18,15 @@ func run() -> void:
 	for record: Dictionary in package.models:
 		var family := str(record.kind)
 		var body := int(record.bodies[0].body)
-		var expected_record := preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(record, Registry.entry(body))
-		assert(Registry.supports_body(body) and Registry.entry(body) == expected_record)
+		var active := Registry.entry(body)
+		var expected_record := preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(record, active)
+		var has_gestures: bool = active.get("classic_gesture_batch") == "occurrence_gestures"
+		assert(Registry.supports_body(body))
+		if has_gestures:
+			assert(active.classic_gesture_base_assets == expected_record.assets
+				and active.presentation_script == expected_record.presentation_script)
+		else:
+			assert(active == expected_record)
 		var avatar := Avatar.new()
 		avatar.initial_body = body
 		root.add_child(avatar)
@@ -35,7 +42,7 @@ func run() -> void:
 		root.add_child(game)
 		game.set_process(false)
 		game.entities[serial] = entity
-		var actions := {0:"Walk",1:"Idle",4:"Attack",5:"Attack2",6:"Attack3",10:"Hit",17:"Fidget",3:"Death2"}
+		var actions := {0:"Walk",1:"Idle",4:"Attack",5:"Attack2",6:"Attack3",10:"Hit",17:"ThreeHeadAlert" if has_gestures else "Fidget",3:"Death2"}
 		for group: int in actions:
 			var packet := PackedByteArray([0x6e])
 			packet.append_array(Wire.uint_be(serial, 4))

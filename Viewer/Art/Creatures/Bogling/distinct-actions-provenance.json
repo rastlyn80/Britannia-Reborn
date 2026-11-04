@@ -1,0 +1,8 @@
+{
+  "license": "GPL-3.0-or-later, independently authored motions on the CC0 Tennessippi rig",
+  "source": "bogling.glb",
+  "source_sha256": "8a9c88b8ca649bf43bfcf9bc697682356739a14fdef32f8fc14d0fddb0468c68",
+  "animation_library_sha256": "b54ce66e89690fe41124d638d2fd75bf378666594b5fc8b4112a7e018815ee82",
+  "recipe_sha256": "17cfb5143a2559ab572c9cf2d0f9a4e59f4dcf7c3b2ea1e7277e017d5ca0e73a",
+  "native_report_sha256": "734fb3c8cae12240390e87bbd0ba9a6963e6facfe33cecbff6106c02735cd619"
+}

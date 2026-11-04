@@ -89,6 +89,8 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'occurrence_gestures':
+        return runpy.run_path(str(ROOT / 'scripts/prepare-occurrence-gestures.py'))['prepared'](registry_entries)
     if family == 'cat_actions':
         return runpy.run_path(str(ROOT / 'scripts/prepare-cat-actions.py'))['prepared'](registry_entries)
     if family == 'rabbit_distinct_actions':

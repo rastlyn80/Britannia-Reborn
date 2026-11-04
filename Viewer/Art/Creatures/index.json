@@ -2889,6 +2889,12 @@
                 ],
                 "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
               }
+            },
+            "RootGuard": {
+              "authored": true
+            },
+            "Uncurl": {
+              "authored": true
             }
           }
         },
@@ -3075,6 +3081,12 @@
                 ],
                 "policy": "Separate common ancestor; negative complete-skin penetration only, positive source/swing clearance retained"
               }
+            },
+            "RootGuard": {
+              "authored": true
+            },
+            "Uncurl": {
+              "authored": true
             }
           }
         }
@@ -3116,7 +3128,72 @@
       },
       "recipe_sha256": "ddac39908e410be81e97bc4abfbcf6f583b2a7bd6799877c3566536dc22875d5",
       "asset_sha256": "8a9c88b8ca649bf43bfcf9bc697682356739a14fdef32f8fc14d0fddb0468c68",
-      "native_validation": "Real Bogling constructor on both owners; repeat native/avatar checks on installed public route"
+      "native_validation": "Real Bogling constructor on both owners; repeat native/avatar checks on installed public route",
+      "authored_replacements": {
+        "RootGuard": "Fitted rig motion from Classic group 15",
+        "Uncurl": "Fitted rig motion from Classic group 18"
+      },
+      "classic_action_categories": {
+        "15": "RootGuard",
+        "16": "RootGuard",
+        "18": "Uncurl"
+      },
+      "classic_motion_references": {
+        "15": {
+          "body": 779,
+          "group": 15,
+          "archive": "anim2.mul",
+          "graphic": 47,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 3,
+          "directional_payload_sha256": "95417a8696e2d07144561248a8cd88bc2c58565c91ab4caff46b317fc089ccbe"
+        },
+        "16": {
+          "body": 779,
+          "group": 16,
+          "archive": "anim2.mul",
+          "graphic": 47,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 3,
+          "directional_payload_sha256": "95417a8696e2d07144561248a8cd88bc2c58565c91ab4caff46b317fc089ccbe"
+        },
+        "18": {
+          "body": 779,
+          "group": 18,
+          "archive": "anim2.mul",
+          "graphic": 47,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 5,
+          "directional_payload_sha256": "53846920b79af60d940848100b4e5545bda88aae79f03f281fd55e7f58093732"
+        }
+      },
+      "presentation_script": "res://Presentation/BoglingActionsVisual.gd",
+      "presentation_script_sha256": "ca061bcd1b398fb495488eff922471fc2b5bd9d800cdb6354aad3d7ada4d0141",
+      "additional_animation_sha256": "b54ce66e89690fe41124d638d2fd75bf378666594b5fc8b4112a7e018815ee82",
+      "additional_animation_library": "res://Art/Creatures/Bogling/distinct-actions.res",
+      "classic_gesture_batch": "occurrence_gestures",
+      "classic_gesture_native_sha256": "734fb3c8cae12240390e87bbd0ba9a6963e6facfe33cecbff6106c02735cd619",
+      "classic_gesture_base_assets": {
+        "modern": "res://Art/Creatures/Bogling/bogling.glb"
+      }
     },
     {
       "kind": "fire_elemental",

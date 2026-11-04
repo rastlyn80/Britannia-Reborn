@@ -1,3 +1,9 @@
+# Bogling, Tsuki Wolf, Evil Mage and Kappa actions
+
+Bogling 779, Tsuki Wolf 250, Evil Mage 124 and Kappa 240 now use their verified action routes. The original five directional frames establish which groups can share a motion. The new gestures preserve each creature's established rig, earlier animation keys and server hue. Bogling ships its two authored gestures as a separate GPL-licensed library on the existing CC0 rig. The three recovered models remain local.
+
+The isolated ModernUO run passed 943 checks on the exact four constructors. Client tests passed 3,477 decoded poses, 1,683 complete weighted skins on flat ground and opposing slopes, and 12 static corpse hue cases. The clean distributable Bogling passed 531 checks and 171 skin samples with only project files. Tsuki Wolf and Kappa retained their earlier corpse and action routes in both predecessor checks. The active ledger remains at 5,340 of 6,930 slots (77.1%) and now records 609 Classic replacement pairs, down from 626.
+
 # Wraith, Drake and Walrus actions
 
 The four active body routes cover Shade, Spectre, Spellbinder and Wraith on body 26, both Drake colours on 60 and 61, and Walrus on 221. Wraith retains the black spectral shader and has separate forward and backward falls. Both Drakes retain the original muzzle-driven breath effect and gain independent ground and airborne falls. Walrus gains a flipper alert, tusk thrust, head hitch and alternate fall on its existing rig.

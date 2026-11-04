@@ -2,6 +2,7 @@
 """Activate the exact native-tested classic gesture batch by body ID."""
 
 import argparse
+from contextlib import nullcontext
 import hashlib
 import json
 import os
@@ -90,11 +91,14 @@ BATCHES = {
                                                              'test-daemon-distinct-landings.gd')),
     'wraith_drake_walrus_actions': ((26, 60, 61, 221), 'WraithDrakeWalrusLive.gd',
                                    ('test-wraith-drake-walrus-actions.gd', 'test-wraith-drake-walrus-landings.gd')),
+    'occurrence_gestures': ((124, 240, 250, 779), 'OccurrenceGesturesLive.gd',
+                            ('test-occurrence-gestures.gd', 'test-occurrence-gesture-slopes.gd')),
     'scorpion_headless_actions': ((48, 31), 'FieldFaunaLive.gd',
                                  ('test-scorpion-headless-actions.gd', 'test-scorpion-headless-landings.gd')),
     'skeleton_actions': ((50, 56), 'PreparedClassicActionsLive.gd', ('test-skeleton-actions.gd',)),
 }
 PREDECESSORS = {
+    'occurrence_gestures': (),
     'mongbat_fidgets': ('spider_mongbat',),
     'orc_ettin_reactions': ('orc_fidgets', 'ettin_fidgets'),
     'occurrence_deaths': ('orc_ettin_reactions',),
@@ -142,6 +146,9 @@ def compose(base, prepared, native_sha):
         return dict(base, classic_action_categories=prepared['classic_action_categories'],
                     classic_motion_references=prepared['classic_motion_references'],
                     classic_gesture_batch=prepared['family'], classic_gesture_native_sha256=native_sha)
+    if prepared['family'] == 'occurrence_gestures' and base['kind'] == 'bogling':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-occurrence-gestures.py'))
+        return recipe['public_bogling'](base, prepared, native_sha)
     assets = base.get('assets', {
         name: f"res://local-art/creatures/{base['kind']}-{name}.gltf"
         for name in prepared['assets']
@@ -253,7 +260,7 @@ def checked(index, active, batch, *, compare_registry=True):
     if wrapper in ('PreparedClassicActionsLive.gd', 'OccurrenceDeathsLive.gd', 'FieldDeathsLive.gd',
                    'LizardActionsLive.gd', 'QuadrupedActionsLive.gd', 'CatActionsLive.gd', 'TrollActionsLive.gd',
                    'FieldFaunaLive.gd', 'SpiderMongbatActionsLive.gd', 'PigReaperHarpyActionsLive.gd',
-                   'DaemonActionsLive.gd', 'WraithDrakeWalrusLive.gd') and (
+                   'DaemonActionsLive.gd', 'WraithDrakeWalrusLive.gd', 'OccurrenceGesturesLive.gd') and (
             report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
         raise ValueError('Supplementary action trial used a different prepared fixture loader')
     if batch == 'occurrence_deaths' and (
@@ -355,7 +362,7 @@ def checked(index, active, batch, *, compare_registry=True):
                           'wisp_distinct_actions', 'air_distinct_actions', 'scorpion_headless_actions',
                           'alligator_lich_actions', 'fire_distinct_actions', 'gaman_gestures',
                           'chicken_distinct_actions', 'deathwatch_gestures', 'daemon_wyvern_polar_actions',
-                          'wraith_drake_walrus_actions') or
+                          'wraith_drake_walrus_actions', 'occurrence_gestures') or
                     slot in package.get('native_extra_classic_actions', [])) and any(
                     actions[0][key]['protocol'] != 'classic' or actions[0][key]['action'] != slot
                     for key in ('owner_packet', 'observer_packet')):
@@ -415,6 +422,9 @@ def test_active(batch):
                   'field_fauna': ['--field-fauna']}.get(batch, [])
     for script in BATCHES[batch][2]:
         run_client_check(godot, env, f'res://../scripts/{script}', ['--active', *trial_args])
+    if batch == 'occurrence_gestures':
+        for test in ('TsukiWolfRouteTests', 'KappaRouteTests'):
+            run_client_check(godot, env, f'res://Presentation/{test}.gd', [])
     if batch == 'zombie_corpser_gargoyle_actions':
         run_client_check(godot, env, 'res://Presentation/CorpserEmergenceTests.gd', ['--active'])
     package = {'parrot_flight': 'late_donors', 'troglodyte_reach': 'late_source',
@@ -461,6 +471,10 @@ def main():
     live = ROOT / 'outputs/creatures' / batch / 'live.json'
     previous = INDEX.read_bytes()
     index = read(INDEX)
+    public_recipe = None
+    if batch == 'occurrence_gestures':
+        public_recipe = runpy.run_path(str(ROOT / 'scripts/prepare-occurrence-gestures.py'))
+        index = public_recipe['combined_index'](index)
     if batch in ('cat_actions', 'rabbit_distinct_actions', 'wisp_distinct_actions', 'air_distinct_actions',
                  'fire_distinct_actions', 'chicken_distinct_actions'):
         if args.activate or args.check_active:
@@ -485,6 +499,13 @@ def main():
                     retained.append(dict(row, bodies=siblings))
             else:
                 retained.append(row)
+        install_public = nullcontext()
+        if public_recipe is not None:
+            base_public, = (row for row in baseline if row['kind'] == 'bogling')
+            bogling, = (row for row in rows if row['kind'] == 'bogling')
+            install_public = public_recipe['install_bogling'](base_public, bogling)
+            rows = [row for row in rows if row['kind'] != 'bogling']
+            retained = [row for row in retained if row['kind'] != 'bogling']
         index['entries'] = retained + rows
         if INDEX.read_bytes() != previous:
             raise RuntimeError('Registry changed during classic gesture activation')
@@ -499,16 +520,23 @@ def main():
         pending.write_bytes(updated)
         pending.replace(INDEX)
         try:
-            checked(read(INDEX), True, batch)
-            for predecessor in PREDECESSORS.get(batch, ()):
-                test_active(predecessor)
-            test_active(batch)
+            with install_public:
+                active = read(INDEX)
+                if public_recipe is not None:
+                    public_recipe['check_public_bogling']()
+                    active = public_recipe['combined_index'](active)
+                checked(active, True, batch)
+                for predecessor in PREDECESSORS.get(batch, ()):
+                    test_active(predecessor)
+                test_active(batch)
         except (Exception, KeyboardInterrupt):
             if INDEX.read_bytes() == updated:
                 pending.write_bytes(previous)
                 pending.replace(INDEX)
             raise
     elif args.check_active:
+        if public_recipe is not None:
+            public_recipe['check_public_bogling']()
         test_active(batch)
     print(batch + ':', 'active and verified' if args.activate or args.check_active else 'verified for activation')
 
