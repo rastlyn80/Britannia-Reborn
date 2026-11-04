@@ -1,3 +1,11 @@
+# Dragon, Drake and Daemon Classic actions
+
+Fifteen source-backed Classic actions are active across nine body IDs. The Dragon and Drake routes share the recovered 54-joint rig and maintain the original 2:1 size difference. Their group 11 dips and group 12 breath poses follow the original Classic sequences. The breath uses the weighted jaw and tongue pose from the recovered Ancient Wyrm attack. The Daemon routes share a wing and arm recipe, with their original server facing and existing materials.
+
+The active client passed 2,745 complete-skin samples, 27 static corpse hue cases and 12 decoded fire projectiles across the three treatments. The isolated ModernUO run passed 1,997 checks across both clients and eleven constructor/body combinations. Servant of Semidar refused native death as expected. Its local static corpse route was checked separately. In six additional native breath cases, Dragon, Greater Dragon and Drake sent group 12 and the fire projectile to both clients, which placed it at the animated mouth 1,300–1,318 ms after the action. The server then reduced the Ogre Lord's health by 24–130. The fixture triggered the real ability with AI stopped. Autonomous ability selection and slope clearance remain open.
+
+Bake with Godot `--headless --path Viewer --script res://../scripts/bake-dragon-daemon-gestures.gd`. Run `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily dragon_daemon` and `python -B scripts/accept-classic-gestures.py --batch dragon_daemon --check-active`. The ledger now routes 5,225 of 6,840 slots (76.4%). Original frames have been identified for 27 of the 1,615 unresolved slots.
+
 # Ophidian warrior bardiche and Classic action
 
 Body 86 uses the exact named `Weapon_Ophidian_Warrior_Bardiche_LOD2.grn` and `weapons_512b.tga` from the original Third Dawn archive. The 54-triangle prop follows the original right grasp in the recovered body motions and the authored `BardicheDip`. Direct `anim.mul` group 11 supplies five reference frames in each of five directions. The new route preserves the recovered body animation keys and adds a visual weapon without changing server equipment.

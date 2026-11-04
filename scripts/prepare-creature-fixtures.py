@@ -81,6 +81,10 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'dragon_daemon':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-dragon-daemon-actions.py'))
+        rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']))
+        return recipe['prepared'](rows)
     if family == 'ophidian_bardiche':
         body = 86
         base, = (row for row in gesture_baseline(family, registry_entries, {body})

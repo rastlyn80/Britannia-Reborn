@@ -30,6 +30,8 @@ BATCHES = {
     'gargoyle_classic': ((4,), 'PreparedCreatureActionLive.gd', ('test-gargoyle-classic.gd',)),
     'scorpion_imp': ((48, 74), 'PreparedCreatureActionLive.gd', ('test-scorpion-imp-gestures.gd',)),
     'ophidian_bardiche': ((86,), 'PreparedCreatureActionLive.gd', ('test-ophidian-bardiche.gd',)),
+    'dragon_daemon': ((9, 10, 12, 38, 40, 43, 59, 60, 61), 'PreparedCreatureActionLive.gd',
+                      ('test-dragon-daemon-gestures.gd',)),
 }
 
 
@@ -109,6 +111,9 @@ def checked(index, active, batch):
         raise ValueError('Classic gesture native evidence does not match this batch')
 
     by_body = {row['bodies'][0]['body']: row for row in prepared}
+    if batch == 'dragon_daemon':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-dragon-daemon-actions.py'))
+        recipe['check_breath'](read((sealed if active else live.parent) / 'breath.json'), candidates, by_body)
     candidate_keys = set()
     for candidate in read(candidates):
         body = candidate['body']
@@ -126,8 +131,10 @@ def checked(index, active, batch):
         slots = [int(slot) for slot in package.get('classic_motion_references', {})]
         if not slots:
             slots = [source['group'] if isinstance(source, dict) else 11]
-        if witness['kind'] != package['kind'] or witness['corpse_suppressed'] or witness['native_death_refused']:
-            raise ValueError(f'Missing original body or corpse evidence for {body}')
+        refuses_death = batch == 'dragon_daemon' and body == 38 and witness['native_class'] == 'ServantOfSemidar'
+        if (witness['kind'] != package['kind'] or witness['corpse_suppressed']
+                or witness['native_death_refused'] != refuses_death):
+            raise ValueError(f'Missing original body or expected native death behaviour for {body}')
         for slot in slots:
             clip = package['classic_action_categories'][str(slot)]
             actions = [row for row in witness['actions'] if row['requested'] == slot]
@@ -222,6 +229,8 @@ def main():
         sealed.mkdir(exist_ok=True)
         for source in (live, work / 'native-runtime.json', work / 'candidates.json'):
             shutil.copyfile(source, sealed / source.name)
+        if batch == 'dragon_daemon':
+            shutil.copyfile(live.parent / 'breath.json', sealed / 'breath.json')
         (sealed / 'base-rows.json').write_text(json.dumps(baseline, indent=2) + '\n', encoding='utf-8')
         pending = INDEX.with_suffix('.classic-gestures.pending')
         updated = (json.dumps(index, indent=2) + '\n').encode()

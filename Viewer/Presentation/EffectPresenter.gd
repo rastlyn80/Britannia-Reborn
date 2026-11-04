@@ -5,6 +5,8 @@ extends Node3D
 # strikes from the sky. Colour comes from the server hue when given, else from
 # the effect art's family (fire, energy, poison, holy, smoke, magic).
 var scene: Node3D
+const Avatar := preload("res://Presentation/HumanAvatar.gd")
+const Dragon := preload("res://Presentation/SourceDragonBreathVisual.gd")
 const FAMILIES := [
 	[0x36b0,0x36bd,"fire"],[0x36cb,0x36fe,"fire"],[0x3709,0x3727,"fire"],[0x398c,0x39a0,"fire"],
 	[0x3728,0x3739,"smoke"],[0x373a,0x3749,"holy"],[0x374a,0x3759,"poison"],[0x375a,0x3769,"holy"],
@@ -114,8 +116,20 @@ func _light(at: Vector3, tint: Color, energy: float, reach: float) -> OmniLight3
 func _expire(node: Node, seconds: float) -> void:
 	get_tree().create_timer(seconds).timeout.connect(func(): if is_instance_valid(node): node.queue_free())
 
+func _bolt_origin(effect: Dictionary) -> Vector3:
+	var source := int(effect.source)
+	if int(effect.graphic) == 0x36d4 and scene.avatars.has(source):
+		var avatar: Node3D = scene.avatars[source]
+		if avatar is Avatar:
+			var creature: Node3D = avatar.horse_visual
+			if creature is Dragon:
+				var origin: Variant = creature.fire_breath_origin()
+				if origin is Vector3:
+					return origin
+	return _point(source, effect.from)
+
 func _bolt(effect: Dictionary, tint: Color) -> void:
-	var from := _point(int(effect.source),effect.from)
+	var from := _bolt_origin(effect)
 	var to := _point(int(effect.target),effect.to)
 	var core := MeshInstance3D.new()
 	core.mesh = SphereMesh.new()
