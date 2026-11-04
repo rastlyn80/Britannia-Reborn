@@ -40,7 +40,49 @@ def gesture_baseline(family, registry_entries, bodies):
     return rows
 
 
+def prepared_recovered_action(family, registry_entries):
+    ledger = json.loads((ROOT / 'outputs/creatures/actions.json').read_text(encoding='utf-8'))
+    if family == 'parrot_flight':
+        body, slot, package, stem, clip = 831, 19, 'late_donors', 'parrot-831-flight-trial', 'Fly'
+        source, = (group for group in ledger['original_uop_frame_groups']
+                   if (group['body'], group['group']) == (body, slot))
+        assert source['archive'] == 'AnimationFrame4.uop' and source['frame_headers'] == 40
+        assert source['payload_sha256'] == 'feea55575116337dba1cbaa3b4d6f705459b9084ac173c5dc8aeb18f51620c78'
+        description = 'Authored wingbeat from the eight-frame preferred UOP direction'
+    else:
+        assert family == 'troglodyte_reach'
+        body, slot, package, stem, clip = 267, 11, 'late_source', 'troglodyte-267-reach-trial', 'Pillage'
+        group, = (row for row in ledger['original_mul_group_candidates']
+                  if (row['body'], row['group']) == (body, slot))
+        assert group['archive'] == 'anim5.mul' and group['graphic'] == 26
+        assert group['layout'] == 'large' and not group['mobtype_prefers_uop']
+        assert [direction['direction'] for direction in group['directions']] == list(range(5))
+        assert all(direction['frames'] == 5 for direction in group['directions'])
+        hashes = ''.join(direction['payload_sha256'] for direction in group['directions']).encode('ascii')
+        digest = hashlib.sha256(hashes).hexdigest()
+        assert digest == 'b8cea81705fc094ede2b3bbeca4e790f29b7bdf1366c7df0606a8f46d385c78e'
+        source = {'body': body, 'group': slot, 'archive': group['archive'], 'graphic': group['graphic'],
+                  'directional_payload_sha256': digest}
+        description = 'Recovered Misc reach retimed to the five-frame Classic MUL sequence'
+    base, = (row for row in gesture_baseline(family, registry_entries, {body})
+             if row['status'] == 'validated' and [identity['body'] for identity in row['bodies']] == [body])
+    originals, classes = prepared_entries(package)
+    original, = (row for row in originals if row['bodies'][0]['body'] == body)
+    if base != dict(original, status='validated'):
+        raise ValueError(f'{family} requires the exact recovered base package')
+    assets = {name: f'res://local-art/creatures/{stem}-{name}.scn' for name in base['assets']}
+    row = dict(base, status='prepared', family=family, assets=assets,
+               authored_action_reference=source,
+               authored_action_scene_sha256={name: sha(ROOT / 'Viewer' / path.removeprefix('res://'))
+                                             for name, path in assets.items()},
+               classic_action_categories=base.get('classic_action_categories', {}) | {str(slot): clip},
+               authored_replacements=base.get('authored_replacements', {}) | {clip: description})
+    return [row], {body: classes[body]}
+
+
 def prepared_entries(family, registry_entries=None):
+    if family in ('parrot_flight', 'troglodyte_reach'):
+        return prepared_recovered_action(family, registry_entries)
     if family == 'blistering_pillage':
         body = 130
         base, = (row for row in gesture_baseline(family, registry_entries, {body})
@@ -343,7 +385,15 @@ def main():
                 assert evidence == proof and proof['family'] == row['family'] and proof['kind'] == row['kind']
                 row['legacy_slot11_evidence'] = proof
                 row['classic_action_categories'] = row.get('classic_action_categories', {}) | {'11': 'Fidget'}
-        if registered != expected:
+        action = {'late_donors_active': (831, 'parrot_flight'),
+                  'late_source_active': (267, 'troglodyte_reach')}.get(args.family)
+        if action and active_by_body.get(action[0], {}).get('classic_gesture_native_sha256'):
+            body, batch = action
+            gesture_gate = runpy.run_path(str(ROOT / 'scripts/accept-classic-gestures.py'))
+            _, updated = gesture_gate['checked'](index, True, batch)
+            expected = [updated[0] if row['bodies'][0]['body'] == body else row for row in expected]
+        if len(registered) != len(expected) or active_by_body != {
+                int(row['bodies'][0]['body']): row for row in expected}:
             raise ValueError('Normal registry does not match the checked recovered package')
         index['entries'] = registered
         selected_kinds = {row['kind'] for row in registered}

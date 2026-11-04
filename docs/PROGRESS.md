@@ -1,4 +1,12 @@
-# Troll gestures active and Blistering Gargoyle trial
+# Fire Gargoyle, Parrot and Troglodyte actions active
+
+The full root verifier passed before activation. The local registry now selects the new action for body 130 slot 11, body 831 slot 19, and body 267 slot 11. Activation rechecked the sealed evidence and all three mesh treatments. The recovered Parrot and Troglodyte family suites also passed with the active packages, including the other bodies in each family. The regenerated ledger has 5,156 of 6,838 tracked protocol slots routable, with 1,682 unresolved. Of those, 61 have identified original frame records. The 32 UOP redirect candidates remain a separate review queue.
+
+Parrot passed 141 prepared native checks across two clients. Troglodyte and Lurg passed 319 prepared native checks across both constructors and clients. The normal-registry family runs then passed 285 and 907 checks respectively, including both new actions. These controlled runs exercised server-sent actions, movement, hues and static corpse replication. The Parrot’s client flight-to-idle test restored foot contact, and the posed skin cleared four 14% test planes by at least 44 mm. The Troglodyte trial retimes one reach from the recovered 10.12-second Misc clip, sampling its 56 tracks into a 0.6-second action. Five Forward+ frames rendered. Across all three treatments the posed mesh stayed between 1.66 mm below and 11.32 mm above the flat plane during 73 samples each, preserving existing tracks and static corpse hues. The source crop is a visual fit to the five-frame Classic motion.
+
+Reproduce the prepared tests with `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily parrot_flight` or `troglodyte_reach`. For the Troglodyte bake and client check, run Godot with `--headless --path Viewer --script res://../scripts/bake-troglodyte-reach-trial.gd` and then `test-troglodyte-reach-trial.gd`. The active package checks are also part of `scripts/verify.ps1`.
+
+# Troll gestures and source action references
 
 Full root verification passed, and the exact prepared native packages for bodies 53, 54 and 55 are now active locally. Activation rechecked weapon grips, 492 sampled slope and step poses, and twelve corpse handoffs. The regenerated ledger has 5,153 routable slots out of 6,838, with 1,685 unresolved. Of those, 64 have identified original frame records. Run `python -B scripts/accept-classic-gestures.py --help` for the activation and check modes.
 

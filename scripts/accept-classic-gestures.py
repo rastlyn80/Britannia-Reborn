@@ -17,6 +17,8 @@ BATCHES = {
     'troll_gestures': ((53, 54, 55), 'TrollGestureLive.gd',
                       ('test-troll-overhead-trial.gd', 'test-troll-weapon-trial.gd')),
     'blistering_pillage': ((130,), 'BlisteringPillageLive.gd', ('test-gargoyle-pillage-trial.gd',)),
+    'parrot_flight': ((831,), 'PreparedCreatureActionLive.gd', ('test-parrot-flight-trial.gd',)),
+    'troglodyte_reach': ((267,), 'PreparedCreatureActionLive.gd', ('test-troglodyte-reach-trial.gd',)),
 }
 
 
@@ -85,8 +87,10 @@ def checked(index, active, batch):
     witnesses = set()
     for witness in report['records']:
         body = int(witness['body'])
-        clip = by_body[body]['classic_action_categories']['11']
-        actions = [row for row in witness['actions'] if row['requested'] == 11]
+        source = by_body[body]['authored_action_reference']
+        slot = source['group'] if isinstance(source, dict) else 11
+        clip = by_body[body]['classic_action_categories'][str(slot)]
+        actions = [row for row in witness['actions'] if row['requested'] == slot]
         if (witness['kind'] != by_body[body]['kind'] or witness['corpse_suppressed']
                 or witness['native_death_refused'] or len(actions) != 1
                 or any(actions[0][key] != clip for key in ('owner_clip', 'observer_clip'))):
@@ -117,9 +121,20 @@ def test_active(batch):
     env = dict(os.environ, APPDATA=profile, LOCALAPPDATA=profile)
     trial_args = ['--blistering'] if batch == 'blistering_pillage' else []
     for script in BATCHES[batch][2]:
-        subprocess.run([str(godot), '--headless', '--path', str(ROOT / 'Viewer'), '--script',
-                        f'res://../scripts/{script}', '--', '--active', *trial_args],
-                       cwd=ROOT, env=env, check=True, timeout=65)
+        run_client_check(godot, env, f'res://../scripts/{script}', ['--active', *trial_args])
+    package = {'parrot_flight': 'late_donors', 'troglodyte_reach': 'late_source'}.get(batch)
+    if package:
+        run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', [f'--family={package}'])
+
+
+def run_client_check(godot, env, script, args):
+    result = subprocess.run([str(godot), '--headless', '--path', str(ROOT / 'Viewer'), '--script',
+                             script, '--', *args], cwd=ROOT, env=env, timeout=65,
+                            capture_output=True, text=True, encoding='utf-8', errors='replace')
+    output = result.stdout + result.stderr
+    print(output.strip())
+    if result.returncode or 'SCRIPT ERROR:' in output or 'Parse Error:' in output:
+        raise RuntimeError(f'Creature action check failed: {script}')
 
 
 def main():

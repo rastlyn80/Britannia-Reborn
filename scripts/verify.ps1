@@ -174,6 +174,12 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
  & $godot --headless --path "$root/Viewer" --script res://Presentation/CreatureDeathTests.gd
  if ($LASTEXITCODE) {throw 'Existing generic decoded creature-death transitions or lifecycle regressed'}
  $lateIndex = Get-Content "$root/Viewer/local-art/creatures/accepted-index.json" -Raw | ConvertFrom-Json
+ foreach ($actionBatch in @{130='blistering_pillage';267='troglodyte_reach';831='parrot_flight'}.GetEnumerator()) {
+  if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.classic_gesture_native_sha256 -and $_.bodies.body -contains $actionBatch.Key }) {
+   & python -B "$root/scripts/accept-classic-gestures.py" --batch $actionBatch.Value --check-active
+   if ($LASTEXITCODE) {throw "Active creature action evidence failed: $($actionBatch.Value)"}
+  }
+ }
  foreach ($family in @('late_source','hydra','energy_vortex','champions','fey_champions','crane','deathwatch','tsuki_wolf','kappa','vampire_bat','yomotsu','occurrence_next','sand_vortex','bake_kitsune','horde_rune','devourer_lion_hiryu','elemental_minotaur','meer_donors','captain_cu','clockwork_tokuno','aos_creatures','aos_aliases','aos_mound','recovered_late','tormented_minotaur','harrower','late_donors','gargoyle_vendor','aos_armed','aos_abysmal','animated_weapon', 'slith', 'raptor', 'fetid_essence', 'corporeal_brume')) {
   if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.assets.modern -like "res://local-art/creatures/$family/*" }) {
    $routeTest = @{energy_vortex='EnergyVortexRouteTests.gd';champions='ChampionCreatureRouteTests.gd';fey_champions='FeyChampionRouteTests.gd';crane='CraneRouteTests.gd';deathwatch='DeathwatchRouteTests.gd';tsuki_wolf='TsukiWolfRouteTests.gd';kappa='KappaRouteTests.gd';vampire_bat='VampireBatRouteTests.gd';yomotsu='YomotsuRouteTests.gd';occurrence_next='OccurrenceCreatureRouteTests.gd';sand_vortex='SandVortexRouteTests.gd';bake_kitsune='BakeKitsuneRouteTests.gd';horde_rune='OccurrenceCreatureRouteTests.gd';devourer_lion_hiryu='DevourerLionHiryuRouteTests.gd';elemental_minotaur='ElementalMinotaurRouteTests.gd';meer_donors='MeerDonorRouteTests.gd';captain_cu='CaptainCuRouteTests.gd';clockwork_tokuno='ClockworkTokunoRouteTests.gd';harrower='HarrowerMorphTests.gd'}[$family]

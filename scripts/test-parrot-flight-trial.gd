@@ -15,10 +15,18 @@ func _initialize() -> void:
 func run() -> void:
 	var row := Registry.entry(BODY).duplicate(true)
 	assert(row.kind == "birds_parrot")
-	var original_assets: Dictionary = row.assets.duplicate(true)
+	var active := "--active" in OS.get_cmdline_user_args()
+	var original_assets: Dictionary = row.get("classic_gesture_base_assets", row.assets).duplicate(true)
 	for treatment in ["original", "rounded", "modern"]:
-		row.assets[treatment] = "res://local-art/creatures/parrot-831-flight-trial-%s.scn" % treatment
-	Registry.entries[BODY] = row
+		var path := "res://local-art/creatures/parrot-831-flight-trial-%s.scn" % treatment
+		if active:
+			assert(row.assets[treatment] == path and row.authored_action_scene_sha256[treatment] == FileAccess.get_sha256(path))
+		else:
+			row.assets[treatment] = path
+	if active:
+		assert(row.classic_action_categories["19"] == "Fly")
+	else:
+		Registry.entries[BODY] = row
 	var session := Game.new()
 	root.add_child(session)
 	session.set_process(false)
@@ -51,6 +59,9 @@ func run() -> void:
 			push_error("Parrot flight exceeds clearance or continuity tolerances")
 			quit(1)
 			return
+		actor._process(actor.action_remaining + 0.001)
+		actor.play_gait(false, 0.0)
+		assert(actor.current_clip == "Idle" and actor.contact.enabled and actor.animator.assigned_animation == "Idle")
 		actor.free()
 	for hue in [0, 53, 0x8035]:
 		var corpse := Corpses.build(BODY, hue)
@@ -60,7 +71,7 @@ func run() -> void:
 		assert(corpse.find_children("*", "Skeleton3D", true, false).is_empty())
 		corpse.free()
 	session.free()
-	print("Parrot 831: three decoded flight routes and three static corpse hues")
+	print("Parrot 831: three decoded flight-to-idle routes and three static corpse hues")
 	quit()
 
 func check_cycle(actor: Node3D, treatment: String) -> bool:
@@ -74,9 +85,12 @@ func check_cycle(actor: Node3D, treatment: String) -> bool:
 	var first_left := Vector3.ZERO
 	var first_right := Vector3.ZERO
 	var lowest := INF
+	var slope_gap := INF
 	var wing_span := INF
 	var wing_drop := 0.0
 	var root_pose := actor.global_transform
+	var slopes := [Vector3(-0.14, 1, 0).normalized(), Vector3(0.14, 1, 0).normalized(),
+		Vector3(0, 1, -0.14).normalized(), Vector3(0, 1, 0.14).normalized()]
 	player.play("Fly", 0.0, 1.0)
 	player.advance(0.0)
 	for sample in 97:
@@ -90,9 +104,12 @@ func check_cycle(actor: Node3D, treatment: String) -> bool:
 		wing_span = minf(wing_span, left_tip.distance_to(right_tip))
 		wing_drop = maxf(wing_drop, minf(first_left.y - left_tip.y, first_right.y - right_tip.y))
 		lowest = minf(lowest, Ground.minimum_plane_gap(data, rig, rig.global_transform, Vector3.ZERO, Vector3.UP))
+		for normal: Vector3 in slopes:
+			slope_gap = minf(slope_gap, Ground.minimum_plane_gap(data, rig, rig.global_transform, Vector3.ZERO, normal))
 		if not actor.global_transform.is_equal_approx(root_pose):
 			return false
 		if sample == 96 and (first_left.distance_to(left_tip) >= 0.001 or first_right.distance_to(right_tip) >= 0.001):
 			return false
-	print("Parrot 831 ", treatment, " 97 poses: floor, minimum tip span, wing drop ", [lowest, wing_span, wing_drop])
-	return lowest >= 0.075 and wing_span > 0.06 and wing_drop > 0.65
+	print("Parrot 831 ", treatment, " 97 poses: floor, slope, minimum tip span, wing drop ",
+		[lowest, slope_gap, wing_span, wing_drop])
+	return lowest >= 0.075 and slope_gap >= 0.04 and wing_span > 0.06 and wing_drop > 0.65
