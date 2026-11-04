@@ -81,6 +81,45 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'spider_mongbat':
+        recipes = {
+            28: ('arachnids_spider_giant', 'AbdomenShift',
+                 'c8c8752d1c88c0d050703bfa405af03e6044aa53a78d30bd8a78aea76a8943db'),
+            39: ('mongbats_mongbat', 'WingSettle',
+                 '97ad0db8b2e9ed02714dd1063f7b165c760319e49299628ebaee5b6c044bfa45'),
+        }
+        entries = gesture_baseline(family, registry_entries, set(recipes))
+        ledger = json.loads((ROOT / 'outputs/creatures/actions.json').read_text(encoding='utf-8'))
+        rows = []
+        for body, (kind, clip, digest) in recipes.items():
+            base, = (row for row in entries if row['status'] == 'validated' and row['kind'] == kind
+                     and [identity['body'] for identity in row['bodies']] == [body])
+            source, = (row for row in ledger['original_mul_group_candidates']
+                       if (row['body'], row['group']) == (body, 11) and 'matching_classic_route' in row)
+            assert source['archive'] == 'anim.mul' and source['graphic'] == body and not source['mobtype_prefers_uop']
+            directions = source['directions']
+            assert [entry['direction'] for entry in directions] == list(range(5))
+            assert all(entry['frames'] == 5 for entry in directions)
+            hashes = ''.join(entry['payload_sha256'] for entry in directions).encode('ascii')
+            assert hashlib.sha256(hashes).hexdigest() == digest
+            assets = {name: f'res://local-art/creatures/mul-gesture-{body}-{name}.scn'
+                      for name in ('original', 'rounded', 'modern')}
+            row = dict(base, status='prepared', family=family, assets=assets,
+                             authored_action_reference={'body': body, 'group': 11, 'archive': 'anim.mul',
+                                                        'directional_payload_sha256': digest},
+                             authored_action_scene_sha256={name: sha(ROOT / 'Viewer' / path.removeprefix('res://'))
+                                                           for name, path in assets.items()},
+                             classic_action_categories=base.get('classic_action_categories', {}) | {'11': clip},
+                             authored_replacements=base.get('authored_replacements', {}) | {
+                                 clip: 'Authored gesture from five-frame Classic MUL slot 11'})
+            if body == 39:
+                alpha = 'mongbats_mongbat-original-albedo.png'
+                alpha_sha = '0060dd037c56dd226a68c21160fefc2ebcf8b2527025783960a773a48cc15e6d'
+                assert sha(ROOT / 'Viewer/local-art/creatures' / alpha) == alpha_sha
+                row['source_alpha_texture'] = alpha
+                row['art_dependency_sha256'] = base.get('art_dependency_sha256', {}) | {alpha: alpha_sha}
+            rows.append(row)
+        return rows, {28: ['GiantSpider'], 39: ['GreaterMongbat', 'Mongbat', 'StrongMongbat']}
     if family == 'ratman_hunch':
         body = 42
         base, = (row for row in gesture_baseline(family, registry_entries, {body})

@@ -1,4 +1,14 @@
-# Skeleton Axe and Ratman hunch prepared
+# Giant Spider and Mongbat actions active
+
+The post-redirect root regression passed, including the ready stance checks. Giant Serpent 21, Skeleton 56 and Ratman 42 then passed their normal-registry activation checks. Giant Spider 28 and Mongbat 39 are also active after 613 isolated server checks across Giant Spider, Greater Mongbat, Mongbat and Strong Mongbat. Both clients received Classic slot 11, played the intended clip, and observed the matching static corpse. The active ledger has 5,195 routable slots out of 6,840, with 1,645 unresolved. Fifty-six have identified original frame records. A fresh full regression is running with all five actions active.
+
+The Giant Spider uses its original 30-joint rig for an abdomen shift and one front-leg lift. The recovered fidget has a different, symmetric leg motion. The Mongbat’s original idle render exposed stretched-looking opaque wing panels and an asymmetric pose. The new slot 11 gesture starts from the symmetric wing bind poses and folds them behind the body. The original `mongbats_mongbat_v04.tga` alpha is restored across all three treatments, including through the remastered surface shader. The old idle keys are still asymmetric and need a separate visual review. The checked original alpha conversion has SHA-256 `0060dd037c56dd226a68c21160fefc2ebcf8b2527025783960a773a48cc15e6d`.
+
+The package tests replayed six decoded action routes and six static corpse hue cases. Across 606 pose samples the Spider’s seven planted leg joints and the Mongbat’s toe joints had zero measured drift, and the complete skin cleared the flat plane. The moving joint traveled 445–453 mm on the Spider and 127–128 mm on the Mongbat. Ten Forward+ phases rendered across the final gestures. Reproduce with Godot `--headless --path Viewer --script res://../scripts/bake-spider-mongbat-gestures.gd` and then `test-spider-mongbat-gestures.gd`. Native reproduction uses `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily spider_mongbat`.
+
+The next source comparison rendered Reaper 47’s archived Fidget and Harpy 30’s archived Fly. The Reaper’s Classic slot 11 bends its trunk more visibly than Fidget. The Harpy’s recovered Fly has a similar wingbeat to slot 11, with a different start phase in the first side-by-side render. Check the exact phase and stance before assigning that clip.
+
+# Skeleton Axe and Ratman evidence
 
 Classic body 56 idle, attack, reach and collapse frames identify the long-handled weapon as an axe. Body 56 keeps its plain Skeleton mesh. The source table identifies the archived Skeleton Axe as model 595. Its `weapon_skeleton_axe_lod2.grn` has 41 vertices and 66 triangles (SHA-256 `8a4ffbda38101ea4d936e6590df8f0be2b748eb289e68c8b16288734a9d7dc24`). The Mage Staff is reserved for body 148. Body 56 uses its original right-hand grasp socket and a new reach animation following the five-frame Classic slot 11 reference. The collapse correction rolls the blade and keeps its center in the hand.
 

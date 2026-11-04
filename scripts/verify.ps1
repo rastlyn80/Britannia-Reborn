@@ -178,7 +178,7 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
   & python -B "$root/scripts/prepare-creature-uop-redirects.py" --check-active
   if ($LASTEXITCODE) {throw 'Active UOP creature redirect evidence failed'}
  }
- foreach ($actionBatch in @{21='giant_serpent_pillage';42='ratman_hunch';56='skeleton_axe';130='blistering_pillage';267='troglodyte_reach';730='ready_stances';831='parrot_flight'}.GetEnumerator()) {
+ foreach ($actionBatch in @{21='giant_serpent_pillage';28='spider_mongbat';42='ratman_hunch';56='skeleton_axe';130='blistering_pillage';267='troglodyte_reach';730='ready_stances';831='parrot_flight'}.GetEnumerator()) {
   if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.classic_gesture_native_sha256 -and $_.bodies.body -contains $actionBatch.Key }) {
    & python -B "$root/scripts/accept-classic-gestures.py" --batch $actionBatch.Value --check-active
    if ($LASTEXITCODE) {throw "Active creature action evidence failed: $($actionBatch.Value)"}

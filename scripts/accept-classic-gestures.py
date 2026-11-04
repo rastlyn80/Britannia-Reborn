@@ -23,6 +23,7 @@ BATCHES = {
     'giant_serpent_pillage': ((21,), 'PreparedCreatureActionLive.gd', ('test-giant-serpent-pillage.gd',)),
     'skeleton_axe': ((56,), 'PreparedCreatureActionLive.gd', ('test-skeleton-axe-trial.gd',)),
     'ratman_hunch': ((42,), 'PreparedCreatureActionLive.gd', ('test-classic-gesture-trials.gd',)),
+    'spider_mongbat': ((28, 39), 'PreparedCreatureActionLive.gd', ('test-spider-mongbat-gestures.gd',)),
 }
 
 
