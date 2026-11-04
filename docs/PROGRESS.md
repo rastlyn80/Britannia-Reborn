@@ -1,6 +1,6 @@
 # Expanded legacy action aliases
 
-Twenty-six additional exact aliases are active. The expanded receipt passed 78 decoded packet checks and 19 normal package suites while preserving their original asset and identity checks. Deathwatch Beetle and Deathwatch Beetle Hatchling passed 319 isolated native checks, with both clients selecting Fidget for slot 11. There are now 53 active exact aliases and 16 remaining in packages with separate publication receipts.
+Twenty-six additional exact aliases are active. The expanded receipt passed 78 decoded packet checks and 19 normal package suites while preserving their original asset and identity checks. Deathwatch Beetle and Deathwatch Beetle Hatchling passed 319 isolated native checks, with both clients selecting Fidget for slot 11. There are now 53 active exact aliases. Gazer Larva and Bog Thing passed the expanded 82-packet alias preview. Their separate publishers now verify the original package and the pinned additional action. Their activation and full publication checks are queued after the registry tests. Fourteen other candidates still need publication integration.
 
 # Recovered-package legacy aliases
 

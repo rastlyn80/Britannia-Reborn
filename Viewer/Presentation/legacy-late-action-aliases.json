@@ -232,5 +232,17 @@
     "kind": "yomotsu_elder",
     "sibling": 18,
     "payload_signature": "f5671d943bd1b6aca9b2be7128886c245d9ff5036d1cda29d3b4e8c69508d7e3"
+  },
+  "778": {
+    "family": "gazer_larva",
+    "kind": "gazer_larva",
+    "sibling": 17,
+    "payload_signature": "9a49bada426e45a7c693d231d351ce232e220ae932a55bfb5ea4ff366ae5999d"
+  },
+  "780": {
+    "family": "bog_thing",
+    "kind": "bog_thing",
+    "sibling": 17,
+    "payload_signature": "c9740397126da4fadfaa4dd0251beab27b217659abb6af351cc01ed6897183f6"
   }
 }

@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 INDEX = ROOT / 'Viewer/local-art/creatures/accepted-index.json'
@@ -24,6 +25,10 @@ PACKAGE_TESTS = {
     'elemental_minotaur': 'ElementalMinotaurRouteTests.gd',
     'meer_donors': 'MeerDonorRouteTests.gd',
     'clockwork_tokuno': 'ClockworkTokunoRouteTests.gd',
+}
+PUBLICATION_TESTS = {
+    'gazer_larva': 'accept-gazer-larva.py',
+    'bog_thing': 'prepare-bog-thing.py',
 }
 # Each record below has exactly one body and uses the generic classic action map.
 REVIEWED = {
@@ -172,6 +177,10 @@ def main():
         try:
             subprocess.run(command + ['--', *flags, '--active'], env=env, check=True, timeout=90)
             for family in sorted({proof['family'] for proof in late_aliases.values()}):
+                if family in PUBLICATION_TESTS:
+                    subprocess.run([sys.executable, '-B', str(ROOT / 'scripts' / PUBLICATION_TESTS[family]),
+                                    '--check-active'], env=env, check=True, timeout=180)
+                    continue
                 script = PACKAGE_TESTS.get(family, 'LateCreatureRouteTests.gd')
                 subprocess.run(command[:-1] + [f'res://Presentation/{script}',
                                               '--', f'--family={family}'],

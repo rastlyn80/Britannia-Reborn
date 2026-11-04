@@ -9,6 +9,7 @@ import sys
 
 SCRIPTS = Path(__file__).resolve().parent
 SOURCE = runpy.run_path(str(SCRIPTS / 'prepare-bog-thing-source.py'))
+WITH_ALIAS = runpy.run_path(str(SCRIPTS / 'legacy-action-evidence.py'))['expected_with_legacy_alias']
 ROOT = SOURCE['ROOT']
 WORK = SOURCE['WORK'] / 'owned-source'
 ART = ROOT / 'Viewer/local-art/creatures/bog_thing'
@@ -23,7 +24,7 @@ def check_active():
     index = json.loads((ART.parent / 'accepted-index.json').read_text(encoding='utf-8'))
     active, = [item for item in index['entries']
                if any(int(body['body']) == 780 for body in item['bodies'])]
-    expected = dict(row, status='validated')
+    expected = WITH_ALIAS(dict(row, status='validated'), active)
     assert {key: active[key] for key in expected} == expected
     pins = {**row['art_dependency_sha256'],
             **{path: row['asset_sha256'][name] for name, path in row['assets'].items()},
