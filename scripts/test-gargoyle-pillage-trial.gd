@@ -3,6 +3,7 @@ extends SceneTree
 const Ground := preload("res://Presentation/SourceGroundLookup.gd")
 const Registry := preload("res://Presentation/CreatureRegistry.gd")
 const Game := preload("res://Network/GameSession.gd")
+const Corpses := preload("res://Presentation/CorpseModels.gd")
 const Wire := preload("res://Network/LoginProtocol.gd")
 const BODY := 753
 const SERIAL := 0x4100
@@ -54,7 +55,15 @@ func run() -> void:
 		assert(actor.native_hue == 0x8035)
 		check_pose(actor, treatment)
 		actor.free()
+	for hue in [0, 53, 0x8035]:
+		var corpse := Corpses.build(BODY, hue)
+		assert(corpse != null and corpse.get_meta("static_cadaver"))
+		assert(corpse.get_meta("corpse_body") == BODY and corpse.get_meta("graphic_id") == 0x2006)
+		assert(corpse.get_meta("native_hue") == hue and corpse.get_meta("death_clip") == "Death")
+		assert(corpse.find_children("*", "Skeleton3D", true, false).is_empty())
+		corpse.free()
 	game.free()
+	print("Gargoyle 753: twelve decoded actions and three raw-hue static corpses")
 	quit()
 
 func check_pose(actor: Node3D, treatment: String) -> void:

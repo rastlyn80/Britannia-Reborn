@@ -29,6 +29,27 @@ SOURCE_COVERAGE_CLASSES = {
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
 def prepared_entries(family):
+    if family == 'gargoyle_pillage':
+        art = ROOT / 'Viewer/local-art/creatures'
+        index = json.loads((art / 'accepted-index.json').read_text(encoding='utf-8'))
+        base, = (row for row in index['entries']
+                 if row['status'] == 'validated' and row['kind'] == 'gargoyles_gargoyle_slave')
+        ledger = json.loads((ROOT / 'outputs/creatures/actions.json').read_text(encoding='utf-8'))
+        source, = (group for group in ledger['original_uop_frame_groups']
+                   if (group['body'], group['group']) == (753, 11))
+        assert source['archive'] == 'AnimationFrame4.uop' and source['frame_headers'] == 65
+        assert source['payload_sha256'] == '7645864d894aee1d394f8c38fb235392553b3ccf8b29b0cb34913ae3cd6bfaef'
+        assets = {name: 'res://local-art/creatures/gargoyle-753-pillage-trial'
+                  + ('' if name == 'modern' else f'-{name}') + '.scn'
+                  for name in ('original', 'rounded', 'modern')}
+        row = dict(base, status='prepared', family=family, assets=assets,
+                   authored_action_reference=source,
+                   authored_action_scene_sha256={name: sha(ROOT / 'Viewer' / path.removeprefix('res://'))
+                                                 for name, path in assets.items()},
+                   classic_action_categories=base['classic_action_categories'] | {'11': 'Pillage'},
+                   authored_replacements=base['authored_replacements'] | {
+                       'Pillage': 'Authored crouch and alternating reach from preferred UOP reference'})
+        return [row], {753: ['EnslavedGargoyle']}
     if family == 'lizard_armed':
         art = ROOT / 'Viewer/local-art/creatures'
         index = json.loads((art / 'accepted-index.json').read_text(encoding='utf-8'))
