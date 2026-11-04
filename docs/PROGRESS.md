@@ -1,6 +1,6 @@
 # Water Elemental legacy actions
 
-Body 16 classic slots 7 and 8 now play the authored overhead surge and held pose in the public client. The original frame samples show unarmed actions despite the generic ranged slot labels. Forward+ passed 611 checks, both the staged and installed native routes passed 249 checks each, and the standalone client passed 15 distribution checks. Both native clients selected the exact two clips. The earlier full regression completed with exit code zero and successful world startup. A fresh full run covers this update. [Frame provenance, recipe and limits](WATER_ELEMENTAL.md).
+Body 16 classic slots 7 and 8 now play the authored overhead surge and held pose in the public client. The original frame samples show unarmed actions despite the generic ranged slot labels. Forward+ passed 611 checks, both the staged and installed native routes passed 249 checks each, and the standalone client passed 15 distribution checks. Both native clients selected the exact two clips. The earlier full regression completed with exit code zero and successful world startup. A fresh full run covers this update. [Frame provenance, recipe and limits](WATER_ELEMENTAL.md). The legacy ledger now records directional payload hashes and found 69 unresolved candidate slots with a byte-identical routed sibling across all five directions. Kraken slots 11 and 17 are one confirmed pair. The ledger records the evidence independently of client route changes.
 
 # Swamp Dragon and Ridgeback mounted verification
 

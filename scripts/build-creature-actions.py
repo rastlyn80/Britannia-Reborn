@@ -85,6 +85,7 @@ def original_mul_groups(data, allowed):
             inputs.append({'name': idx.name, 'sha256': sha(idx), 'bytes': idx.stat().st_size})
             table, size = idx.read_bytes(), mul.stat().st_size
             stream = opened.enter_context(mul.open('rb'))
+            payload_hashes = {}
             for body in sorted(allowed):
                 converted = conversions.get(body, {})
                 if archive == 1 and any(file in available and graphic >= 0 for file, graphic in converted.items()):
@@ -111,8 +112,13 @@ def original_mul_groups(data, allowed):
                             continue
                         offsets = struct.unpack(f'<{frames}I', stream.read(frames * 4))
                         if all(4 + frames * 4 <= start <= length - 520 for start in offsets):
+                            span = (offset, length)
+                            if span not in payload_hashes:
+                                stream.seek(offset)
+                                payload_hashes[span] = hashlib.sha256(stream.read(length)).hexdigest()
                             directions.append({'direction': direction, 'frames': frames,
-                                               'offset': offset, 'bytes': length})
+                                               'offset': offset, 'bytes': length,
+                                               'payload_sha256': payload_hashes[span]})
                     if directions:
                         records.append({'body': body, 'graphic': graphic, 'archive': mul.name,
                                         'layout': layout, 'group': group, 'directions': directions,
@@ -182,11 +188,21 @@ def main():
     framed={(row['body'],row['group']) for row in frame_groups if row['frame_headers'] is not None}
     classic_routes = {(row['body'], row['group_or_type']): row for row in rows if row['protocol'] == 'classic'}
     native_layouts = {'monster': 'large', 'animal': 'small', 'sea': 'sea'}
+    mul_equivalents = {}
     for row in mul_groups:
         route = classic_routes.get((row['body'], row['group']))
         if (route and not row['mobtype_prefers_uop']
                 and native_layouts.get(route['native_profile']) == row['layout']):
             row['matching_classic_route'] = {field: route[field] for field in ('requested', 'resolved', 'status')}
+        if len(row['directions']) == 5:
+            signature = tuple(direction['payload_sha256'] for direction in row['directions'])
+            key = (row['body'], row['archive'], row['graphic'], row['layout'], signature)
+            mul_equivalents.setdefault(key, []).append(row)
+    for matches in mul_equivalents.values():
+        if len(matches) < 2:
+            continue
+        for row in matches:
+            row['same_payload_groups'] = [match['group'] for match in matches if match is not row]
     original=[];new_actions=[]
     for record in sequence:
         body=record['animation_ref'];model=native.get(body)
@@ -219,6 +235,7 @@ def main():
             'original_mul_group_candidates':len(mul_groups),
             'original_mul_candidate_bodies':len({row['body'] for row in mul_groups}),
             'original_mul_candidates_with_matching_classic_slots':sum('matching_classic_route' in row for row in mul_groups),
+            'original_mul_candidates_with_identical_group_payloads':sum('same_payload_groups' in row for row in mul_groups),
             'original_new_entries_without_generic_model':sum(not r['generic_model'] for r in new_actions),
             'original_new_entries_with_generic_route':sum(bool(r['replacement'] and r['replacement']['resolved']) for r in new_actions),
             'original_new_entries_total_without_generic_route':sum(not (r['replacement'] and r['replacement']['resolved']) for r in new_actions),
