@@ -45,8 +45,12 @@ func check_route(game: Node, body: int, treatment: String, active: bool) -> bool
 	var suffix := "" if treatment == "modern" else "-" + treatment
 	var path := "res://local-art/creatures/slot11-%d-trial%s.scn" % [body, suffix]
 	if active:
-		assert(original.status == "validated" and original.assets[treatment] == path)
-		assert(original.authored_action_scene_sha256[treatment] == FileAccess.get_sha256(path))
+		assert(original.status == "validated")
+		if body == 42 and original.get("classic_gesture_batch") == "field_fauna":
+			assert(base_assets[treatment] == path)
+		else:
+			assert(original.assets[treatment] == path)
+		assert(original.authored_action_scene_sha256[treatment] == FileAccess.get_sha256(original.assets[treatment]))
 	else:
 		var entry := original.duplicate(true)
 		entry.assets = {treatment: path}

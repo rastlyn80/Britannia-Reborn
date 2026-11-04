@@ -21,6 +21,7 @@ func run() -> void:
 	for body: int in trial_bodies():
 		var base := Registry.entry(body)
 		var row := trial_row(body)
+		var collapse_slots: Array = [2, 3] if body == 42 else [8, 12]
 		game.entities[SERIAL] = {"serial": SERIAL, "body": body, "hue": 0x489}
 		Registry.entries[body] = row
 		var treatments: Array = ["modern"] if body == 201 else row.assets.keys()
@@ -55,7 +56,7 @@ func run() -> void:
 				surface.rotation = slope
 				await physics_frame
 				await physics_frame
-				var groups: Array = [8, 12] if body == 234 or slope != Vector3.ZERO else row.classic_action_categories.keys().map(func(slot: String) -> int: return int(slot))
+				var groups: Array = collapse_slots if body == 234 or slope != Vector3.ZERO else row.classic_action_categories.keys().map(func(slot: String) -> int: return int(slot))
 				for slot: int in groups:
 					visual.dead = false
 					visual.contact.enabled = true
@@ -65,10 +66,12 @@ func run() -> void:
 					player.stop()
 					var packet := PackedByteArray([0x6e])
 					packet.append_array(Wire.uint_be(SERIAL, 4))
-					packet.append_array(PackedByteArray([0, slot, 0, FRAMES[slot], 0, 1, 1, 0, 0]))
+					var reference: Dictionary = row.get("classic_motion_references", {}).get(str(slot), {})
+					var frames := int(reference.get("frames", FRAMES.get(slot, 4)))
+					packet.append_array(PackedByteArray([0, slot, 0, frames, 0, 1, 1, 0, 0]))
 					game._handle(packet)
 					assert(visual.receive_action(game.last_mobile_actions[SERIAL]))
-					var expected: String = row.classic_action_categories.get(str(slot), SLOTS[slot])
+					var expected: String = row.classic_action_categories.get(str(slot), SLOTS.get(slot, ""))
 					assert(visual.current_clip == expected)
 					player.advance(0.0)
 					var curve := PackedVector3Array()
@@ -80,22 +83,33 @@ func run() -> void:
 						curve.append(rig.to_global(rig.get_bone_global_pose(head).origin) - centre)
 						var gap := Ground.minimum_plane_gap(skin, rig, rig.global_transform, hit.position, hit.normal)
 						assert(is_finite(gap) and visual.global_transform == anchor and visual.native_hue == 0x489)
-						if slot in [8, 12]:
+						if slot in collapse_slots:
 							assert(gap > -0.001)
 							if frame == 48:
 								assert(absf(gap - 0.002) < 0.001)
-						if body in [217, 211] and slot in [5, 6]:
+								if body == 42 and slot == 2 and slope == Vector3.ZERO:
+									assert(absf(curve[48].y) < 0.32 and centre.y - float(hit.position.y) < 0.40,
+										"Ratman ends lying back with its torso near the ground")
+						if (body in [217, 211, 167] and slot in [5, 6]) or (body in [214, 63] and slot in [6, 9, 10]):
 							assert(gap > -0.001)
 						least = minf(least, gap)
 						samples += 1
 					if slope == Vector3.ZERO:
 						curves[slot] = curve
 						print(body, " ", treatment, " slot ", slot, " floor ", least, " apex ", curve[24], " end ", curve[48])
-			var pairs := [[8, 12]]
-			if body != 234:
+			var pairs := [collapse_slots]
+			if body == 42:
+				pairs.append_array([[4, 5], [4, 6], [5, 6], [10, 15], [10, 16], [15, 16], [17, 18]])
+				var newer := PackedByteArray([0xe2])
+				newer.append_array(Wire.uint_be(SERIAL, 4))
+				newer.append_array(PackedByteArray([0, 14, 0, 0, 0]))
+				game._handle(newer)
+				visual.dead = false
+				assert(visual.receive_action(game.last_mobile_actions[SERIAL]) and visual.current_clip == "Hunch")
+			elif body != 234:
 				pairs.append([9, 10])
-			if body not in [234, 201]:
-				pairs.append([5, 6])
+				if body != 201:
+					pairs.append([5, 6])
 			for pair: Array in pairs:
 				assert(curves[pair[0]] != curves[pair[1]])
 			surface.free()
@@ -117,6 +131,8 @@ static func trial_row(body: int) -> Dictionary:
 		family = "cat_actions"
 	elif body in [217, 211]:
 		family = "dog_bear_actions"
+	elif body in [42, 167, 214, 63]:
+		family = "field_fauna"
 	if "--active" in OS.get_cmdline_user_args():
 		row = Registry.entry(body)
 		if body == 201:
@@ -142,6 +158,8 @@ static func trial_bodies() -> Array[int]:
 		return [217, 211]
 	if "--cat" in OS.get_cmdline_user_args():
 		return [201]
+	if "--field-fauna" in OS.get_cmdline_user_args():
+		return [42, 167, 214, 63]
 	return [234] if "--hart" in OS.get_cmdline_user_args() else [225, 207, 223]
 
 static func check_earlier_keys(player: AnimationPlayer, source: String) -> void:

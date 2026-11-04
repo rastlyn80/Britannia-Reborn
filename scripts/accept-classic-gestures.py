@@ -62,6 +62,8 @@ BATCHES = {
     'cat_actions': ((201,), 'CatActionsLive.gd', ()),
     'troll_actions': ((53, 54, 55), 'TrollActionsLive.gd',
                       ('test-troll-actions.gd', 'test-lizard-collapses.gd')),
+    'field_fauna': ((42, 167, 214, 63), 'FieldFaunaLive.gd',
+                    ('test-quadruped-actions.gd', 'test-quadruped-corpse.gd')),
     'skeleton_actions': ((50, 56), 'PreparedClassicActionsLive.gd', ('test-skeleton-actions.gd',)),
 }
 PREDECESSORS = {
@@ -75,6 +77,7 @@ PREDECESSORS = {
     'hart_deaths': ('deer_fidgets',),
     'dog_bear_actions': (),
     'troll_actions': ('troll_gestures',),
+    'field_fauna': ('ratman_hunch',),
     'skeleton_actions': ('skeleton_axe',),
 }
 
@@ -188,7 +191,8 @@ def checked(index, active, batch):
             or report['failures'] or not report['prepared_trial']):
         raise ValueError('Classic gesture native evidence does not match this batch')
     if wrapper in ('PreparedClassicActionsLive.gd', 'OccurrenceDeathsLive.gd', 'FieldDeathsLive.gd',
-                   'LizardActionsLive.gd', 'QuadrupedActionsLive.gd', 'CatActionsLive.gd', 'TrollActionsLive.gd') and (
+                   'LizardActionsLive.gd', 'QuadrupedActionsLive.gd', 'CatActionsLive.gd', 'TrollActionsLive.gd',
+                   'FieldFaunaLive.gd') and (
             report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
         raise ValueError('Supplementary action trial used a different prepared fixture loader')
     if batch == 'occurrence_deaths' and (
@@ -200,7 +204,7 @@ def checked(index, active, batch):
             or report['explicit_collapse_test_sha256'] != sha(ROOT / 'Viewer/Network/OccurrenceDeathsLive.gd')
             or report['supplemental_sha256'] != sha(ROOT / 'Viewer/Network/PreparedClassicActionsLive.gd')):
         raise ValueError('The field collapse renderer or explicit packet test changed')
-    if batch in ('lizard_actions', 'quadruped_actions', 'hart_deaths', 'dog_bear_actions', 'cat_actions', 'troll_actions'):
+    if batch in ('lizard_actions', 'quadruped_actions', 'hart_deaths', 'dog_bear_actions', 'cat_actions', 'troll_actions', 'field_fauna'):
         visual, base_key, base_visual = (
             ('SourceLizardActionsVisual', 'armed_renderer_sha256', 'SourceArmedLizardmanVisual')
             if batch in ('lizard_actions', 'troll_actions') else
@@ -245,7 +249,7 @@ def checked(index, active, batch):
             raise ValueError(f'Missing original body or expected native death behaviour for {body}')
         if batch == 'quadruped_actions' and witness['native_state'] != ('shorn' if body == 223 else 'constructor'):
             raise ValueError(f'Missing native coat or constructor state for body {body}')
-        if batch == 'troll_actions' or batch == 'skeleton_actions' and body == 50:
+        if batch == 'troll_actions' or (batch, body) in (('skeleton_actions', 50), ('field_fauna', 42)):
             expected_new_clip = package['new_action_categories']['14']
             reach, = (action for action in witness['actions'] if action['requested'] == -5)
             if any(reach[client + '_clip'] != expected_new_clip or reach[client + '_packet']['protocol'] != 'new'
@@ -262,7 +266,7 @@ def checked(index, active, batch):
             if len(actions) != 1 or any(actions[0][key] != clip for key in ('owner_clip', 'observer_clip')):
                 raise ValueError(f'Missing Classic gesture evidence for body {body}, slot {slot}')
             if (batch in ('lizard_actions', 'quadruped_actions', 'hart_deaths', 'dog_bear_actions', 'cat_actions',
-                          'skeleton_actions', 'troll_actions') or
+                          'skeleton_actions', 'troll_actions', 'field_fauna') or
                     slot in package.get('native_extra_classic_actions', [])) and any(
                     actions[0][key]['protocol'] != 'classic' or actions[0][key]['action'] != slot
                     for key in ('owner_packet', 'observer_packet')):
@@ -318,7 +322,8 @@ def test_active(batch):
     env = dict(os.environ, APPDATA=profile, LOCALAPPDATA=profile)
     trial_args = {'blistering_pillage': ['--blistering'], 'ratman_hunch': ['--ratman'],
                   'ettin_fidgets': ['--ettin'], 'hart_deaths': ['--hart'],
-                  'dog_bear_actions': ['--dog-bear'], 'troll_actions': ['--troll']}.get(batch, [])
+                  'dog_bear_actions': ['--dog-bear'], 'troll_actions': ['--troll'],
+                  'field_fauna': ['--field-fauna']}.get(batch, [])
     for script in BATCHES[batch][2]:
         run_client_check(godot, env, f'res://../scripts/{script}', ['--active', *trial_args])
     package = {'parrot_flight': 'late_donors', 'troglodyte_reach': 'late_source',
