@@ -37,7 +37,9 @@ def prepared_entries(family):
         renderer = 'Presentation/SourceArmedLizardmanVisual.gd'
         rows = []
         for body, form in ((35, 'spear'), (36, 'mace')):
-            identity, = (identity for identity in base['bodies'] if identity['body'] == body)
+            owners = [row for row in index['entries'] if row['status'] == 'validated'
+                      and row['kind'] in (base['kind'], f'lizardman_{form}')]
+            identity, = (identity for row in owners for identity in row['bodies'] if identity['body'] == body)
             asset = art / f'lizardman-pillage-trial-{form}.scn'
             row = dict(base, status='prepared', kind=f'lizardman_{form}', family=family, bodies=[identity],
                        assets={'modern': f'res://local-art/creatures/{asset.name}'},

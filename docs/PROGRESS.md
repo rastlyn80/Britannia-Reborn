@@ -2,6 +2,10 @@
 
 All 69 identified exact classic slot 11 aliases are active in the local registry. The 55-package activation passed 110 decoded routes in preview and again through the active registry, then reran the affected exact-package checks. The separate 13-body and Dread Spider batches passed 28 further active decoded checks. These aliases represent original groups whose directional payloads match their sibling byte for byte. This count covers the identified exact-alias set.
 
+# Enslaved Gargoyle slot 11 source
+
+Body 753 prefers UOP and has a real 65-frame slot 11 record in `AnimationFrame4.uop` (SHA-256 `7645864d894aee1d394f8c38fb235392553b3ccf8b29b0cb34913ae3cd6bfaef`). All 13 frames from one of its five directions were decoded locally. The gargoyle crouches, reaches forward repeatedly, then stands. The older `anim2.mul` records for 11 and 17 are byte-identical, but the preferred UOP slot 11 shows distinct choreography. No named compatible original 3D pillage clip was found in the checked Gargoyle motion set. The next candidate is an authored crouch and reach on the archived slave rig.
+
 # Recovered-package legacy aliases
 
 Thirteen additional classic slot 11 aliases are active across eight recovered creature packages. The tracked action receipt identifies each body, package and byte-identical source sibling. Activation verifies the five directional payload hashes, tests the candidate and active avatar paths, and reruns all eight normal package suites. The package and native-fixture checks compare the complete original package plus the approved action receipt and route. They reject other differences. Reproduce with `python -B scripts/apply-legacy-creature-aliases.py --late-packages --activate` after rebuilding the action ledger.
