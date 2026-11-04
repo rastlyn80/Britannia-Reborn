@@ -29,6 +29,25 @@ SOURCE_COVERAGE_CLASSES = {
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
 def prepared_entries(family):
+    if family == 'lizard_armed':
+        art = ROOT / 'Viewer/local-art/creatures'
+        index = json.loads((art / 'accepted-index.json').read_text(encoding='utf-8'))
+        base, = (row for row in index['entries']
+                 if row['status'] == 'validated' and row['kind'] == 'lizard_race_lizardman')
+        renderer = 'Presentation/SourceArmedLizardmanVisual.gd'
+        rows = []
+        for body, form in ((35, 'spear'), (36, 'mace')):
+            identity, = (identity for identity in base['bodies'] if identity['body'] == body)
+            asset = art / f'lizardman-pillage-trial-{form}.scn'
+            row = dict(base, status='prepared', kind=f'lizardman_{form}', family=family, bodies=[identity],
+                       assets={'modern': f'res://local-art/creatures/{asset.name}'},
+                       asset_sha256={'modern': sha(asset)}, import_sha256={},
+                       presentation_script=f'res://{renderer}',
+                       presentation_script_sha256=sha(ROOT / 'Viewer' / renderer),
+                       classic_action_categories={'11': 'Pillage'},
+                       authored_replacements={'Pillage': 'Authored stoop on the original idle rig'})
+            rows.append(row)
+        return rows, {35: ['Lizardman'], 36: ['Lizardman']}
     assert family in ['mages','juka','juka_lord','hydra','energy_vortex','late_source','champions','fey_champions','crane','deathwatch','tsuki_wolf','kappa','vampire_bat','yomotsu','occurrence_next','horde_rune','sand_vortex','bake_kitsune','devourer_lion_hiryu','hiryu_mount','elemental_minotaur','meer_donors','captain_cu','clockwork_tokuno','aos_creatures','aos_aliases','aos_mound','recovered_late','tormented_minotaur','harrower','late_donors','gargoyle_vendor','aos_armed','aos_abysmal','animated_weapon','slith','raptor','fetid_essence','corporeal_brume','candidate_batch','solen_queens',*PREPARED_FORMS],'Prepared native trial requires an explicit checked family'
     if family in ('late_source', 'champions', 'fey_champions', 'yomotsu', 'occurrence_next', 'horde_rune', 'sand_vortex', 'bake_kitsune', 'devourer_lion_hiryu', 'hiryu_mount', 'elemental_minotaur', 'meer_donors', 'captain_cu', 'clockwork_tokuno', 'aos_creatures', 'aos_aliases', 'aos_mound', 'recovered_late', 'tormented_minotaur', 'harrower', 'late_donors', 'gargoyle_vendor', 'aos_armed', 'aos_abysmal', 'animated_weapon', 'slith', 'raptor', 'fetid_essence', 'corporeal_brume'):
         classes, manifest = {
