@@ -1,10 +1,14 @@
+# Armed Lizardmen active
+
+Local bodies 35 and 36 now select the original spear and mace respectively, with separate action and corpse routes. The 271-check isolated run covered the prepared packages. Full root verification then exited successfully. Activation matched the exact native-tested assets and passed the client grip, 492 sampled slope and low-step poses, and twelve world-item handoffs through the normal registry. Historical body 33 retains its existing route. The regenerated ledger has 5,146 routable slots and 1,692 unresolved slots. Run `python -B scripts/accept-armed-lizardman.py --check-active` to repeat the local activation checks.
+
 # Expanded legacy action aliases
 
 All 69 identified exact classic slot 11 aliases are active in the local registry. The 55-package activation passed 110 decoded routes in preview and again through the active registry, then reran the affected exact-package checks. The separate 13-body and Dread Spider batches passed 28 further active decoded checks. These aliases represent original groups whose directional payloads match their sibling byte for byte. This count covers the identified exact-alias set.
 
 # Enslaved Gargoyle slot 11 source
 
-Body 753 prefers UOP and has a real 65-frame slot 11 record in `AnimationFrame4.uop` (SHA-256 `7645864d894aee1d394f8c38fb235392553b3ccf8b29b0cb34913ae3cd6bfaef`). All 13 frames from one of its five directions were decoded locally. The gargoyle crouches, reaches forward repeatedly, then stands. The older `anim2.mul` records for 11 and 17 are byte-identical, but the preferred UOP slot 11 shows distinct choreography. No named compatible original 3D pillage clip was found in the checked Gargoyle motion set. The next candidate is an authored crouch and reach on the archived slave rig.
+Body 753 prefers UOP and has a real 65-frame slot 11 record in `AnimationFrame4.uop` (SHA-256 `7645864d894aee1d394f8c38fb235392553b3ccf8b29b0cb34913ae3cd6bfaef`). All 13 frames from one of its five directions were decoded locally. The gargoyle crouches, reaches forward repeatedly, then stands. The older `anim2.mul` records for 11 and 17 are byte-identical, but the preferred UOP slot 11 shows distinct choreography. No named compatible original 3D pillage clip was found in the checked Gargoyle motion set. An authored 1.3-second crouch and alternating reach now bakes on the archived slave rig with 13 reference poses sampled at 120 Hz. Five Forward+ frames rendered through the slot 11 candidate. Across 97 skeletal samples, the hips lowered 510 mm, maximum forward hand travel was 479 mm, and ankle drift stayed below 0.93 mm. The complete posed skin reached 2.05 mm below the flat reference before runtime contact correction. The variant is still a local candidate. Reproduce the bake with Godot `--headless --path Viewer --script res://../scripts/bake-gargoyle-pillage-trial.gd`.
 
 # Recovered-package legacy aliases
 
