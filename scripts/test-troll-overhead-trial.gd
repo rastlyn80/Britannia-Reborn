@@ -13,11 +13,15 @@ func run() -> void:
 	var game := Game.new()
 	root.add_child(game)
 	game.set_process(false)
+	var active := "--active" in OS.get_cmdline_user_args()
 	for body in [53, 54, 55]:
 		var record := Registry.entry(body).duplicate(true)
-		record.assets = {"modern": "res://local-art/creatures/%s-slot11-trial.scn" % record.kind}
-		record.classic_action_categories = record.get("classic_action_categories", {}).merged({"11": "KneelingSwing"}, true)
-		Registry.entries[body] = record
+		if active:
+			assert(record.status == "validated" and record.classic_action_categories["11"] == "KneelingSwing")
+		else:
+			record.assets = {"modern": "res://local-art/creatures/%s-slot11-trial.scn" % record.kind}
+			record.classic_action_categories = record.get("classic_action_categories", {}).merged({"11": "KneelingSwing"}, true)
+			Registry.entries[body] = record
 		var actor := Registry.create(body)
 		root.add_child(actor)
 		actor.set_process(false)

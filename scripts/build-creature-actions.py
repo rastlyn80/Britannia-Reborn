@@ -226,9 +226,34 @@ def main():
                     'generic_model':model['kind'] if model else None,
                     'replacement':resolve(model,label,maps['fallback']) if model and label else None,
                     'scope':'Type route only; exact per-body mode/subaction/variation fidelity requires separate tests.'})
+    # Keep the broad protocol ledger separate from work backed by an installed
+    # frame record. A numeric UOP match still needs a wire-category review.
+    frame_gaps = {}
+    for row in mul_groups:
+        route = row.get('matching_classic_route')
+        if route is not None and route['resolved'] is None:
+            key = (row['body'], row['group'])
+            frame_gaps.setdefault(key, []).append({
+                'archive': row['archive'], 'evidence': 'Matching classic MUL layout',
+                'graphic': row['graphic'], 'directions': len(row['directions']),
+            })
+    for row in frame_groups:
+        key = (row['body'], row['group'])
+        route = classic_routes.get(key)
+        if row['frame_headers'] is not None and route is not None and route['resolved'] is None:
+            frame_gaps.setdefault(key, []).append({
+                'archive': row['archive'], 'evidence': 'Canonical UOP group with same numeric slot',
+                'frame_headers': row['frame_headers'],
+            })
+    source_frame_gaps = [
+        {'body': body, 'classic_slot': slot, 'kind': classic_routes[body, slot]['kind'],
+         'requested': classic_routes[body, slot]['requested'], 'sources': sources}
+        for (body, slot), sources in sorted(frame_gaps.items())
+    ]
     counts={'generic_models':len(models),'generic_body_routes':len(native),'protocol_slots':len(rows),
             'routable_slots':sum(r['resolved'] is not None for r in rows),
             'missing_protocol_slots':sum(r['resolved'] is None for r in rows),
+            'unresolved_slots_with_source_frame_evidence':len(source_frame_gaps),
             'original_sequence_records':len(sequence),'original_sequence_parse_blockers':sum(bool(r.get('parse_blocker')) or r['unparsed_bytes']!=0 for r in sequence),
             'original_new_protocol_entries':len(new_actions),
             'original_uop_frame_groups':len(framed),
@@ -252,6 +277,7 @@ def main():
     report={'counts':counts,'scope':scope,'renderer_sha256':renderer_sha,'archives':archives,'routes':rows,
             'original_sequence_metadata':sequence,'original_group_links':original,
             'original_uop_frame_groups':frame_groups,'original_mul_group_candidates':mul_groups,
+            'source_frame_gaps':source_frame_gaps,
             'original_new_protocol_actions':new_actions}
     OUT.mkdir(parents=True,exist_ok=True);(OUT/'actions.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
     table=''.join('<tr><td>0x%X</td><td>%s</td><td>%s %s</td><td>%s</td><td>%s</td><td>%s</td></tr>'%

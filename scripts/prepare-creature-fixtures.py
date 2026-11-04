@@ -28,19 +28,31 @@ SOURCE_COVERAGE_CLASSES = {
 
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
+def gesture_baseline(family, registry_entries, bodies):
+    if registry_entries is not None:
+        return registry_entries
+    path = ROOT / 'Viewer/local-art/creatures/accepted-index.json'
+    rows = json.loads(path.read_text(encoding='utf-8'))['entries']
+    if any(row.get('classic_gesture_native_sha256')
+           and any(identity['body'] in bodies for identity in row['bodies']) for row in rows):
+        baseline = ROOT / 'work/creatures' / family / 'accepted-native/base-rows.json'
+        return json.loads(baseline.read_text(encoding='utf-8'))
+    return rows
+
+
 def prepared_entries(family, registry_entries=None):
     if family == 'troll_gestures':
-        index = json.loads((ROOT / 'Viewer/local-art/creatures/accepted-index.json').read_text(encoding='utf-8'))
         ledger = json.loads((ROOT / 'outputs/creatures/actions.json').read_text(encoding='utf-8'))
         recipes = {
             53: ('Troll', 'troll-53-armed-trial', '801f216ae2248f69fec6ebe15b59d50d479a61d2903f67577e86e784870d975d'),
             54: ('Troll', 'trolls_troll-slot11-trial', 'ed953fa26f763e431bc68a8c3421a93ddf609f8207e93c83074f9014c548bb3c'),
             55: ('FrostTroll', 'troll-55-armed-trial', '38dfb903a8a9f0603d50c2be76621aebb2d5d24bda5daaf4524931780837312f'),
         }
+        registry_entries = gesture_baseline(family, registry_entries, recipes)
         renderer = 'Presentation/SourceArmedLizardmanVisual.gd'
         rows, classes = [], {}
         for body, (native_class, stem, digest) in recipes.items():
-            base, = (row for row in index['entries'] if row['status'] == 'validated'
+            base, = (row for row in registry_entries if row['status'] == 'validated'
                      and any(identity['body'] == body for identity in row['bodies']))
             identity, = (identity for identity in base['bodies'] if identity['body'] == body)
             source, = (row for row in ledger['original_mul_group_candidates']
@@ -66,12 +78,7 @@ def prepared_entries(family, registry_entries=None):
         return rows, classes
     if family == 'classic_gestures':
         manifest = json.loads((ROOT / 'scripts/classic-gesture-inputs.json').read_text(encoding='utf-8'))
-        if registry_entries is None:
-            index_path = ROOT / 'Viewer/local-art/creatures/accepted-index.json'
-            registry_entries = json.loads(index_path.read_text(encoding='utf-8'))['entries']
-            if any(row.get('classic_gesture_native_sha256') for row in registry_entries):
-                baseline = ROOT / 'work/creatures/classic_gestures/accepted-native/base-rows.json'
-                registry_entries = json.loads(baseline.read_text(encoding='utf-8'))
+        registry_entries = gesture_baseline(family, registry_entries, set(map(int, manifest)))
         ledger = json.loads((ROOT / 'outputs/creatures/actions.json').read_text(encoding='utf-8'))
         rows, classes = [], {}
         for key, recipe in manifest.items():

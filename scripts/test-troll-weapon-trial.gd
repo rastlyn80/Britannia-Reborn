@@ -8,20 +8,34 @@ func _initialize() -> void:
 	call_deferred("run")
 
 func run() -> void:
+	var active := "--active" in OS.get_cmdline_user_args()
 	var unarmed := Registry.entry(54).duplicate(true)
 	for body in FORMS:
 		var name: String = FORMS[body]
 		var record := Registry.entry(body).duplicate(true)
-		record.assets = {"modern": "res://local-art/creatures/troll-%d-armed-trial.scn" % body}
-		record.presentation_script = "res://Presentation/SourceArmedLizardmanVisual.gd"
-		Registry.entries[body] = record
-		var actor := Registry.create(body)
-		root.add_child(actor)
-		actor.set_process(false)
-		actor.set_physics_process(false)
-		actor.apply_identity(body, 0)
-		check_motion(actor, name)
-		actor.free()
+		var original := Registry.entry(body)
+		var assets := {}
+		for treatment in ["original", "rounded", "modern"]:
+			var suffix: String = "" if treatment == "modern" else "-" + treatment
+			var path := "res://local-art/creatures/troll-%d-armed-trial%s.scn" % [body, suffix]
+			if active:
+				assert(record.assets[treatment] == path)
+				assert(FileAccess.get_sha256(path) == record.authored_action_scene_sha256[treatment])
+			else:
+				assets[treatment] = path
+		if not active:
+			record.assets = assets
+			record.presentation_script = "res://Presentation/SourceArmedLizardmanVisual.gd"
+			Registry.entries[body] = record
+		for treatment in ["original", "rounded", "modern"]:
+			var actor := Registry.create(body)
+			actor.treatment = treatment
+			root.add_child(actor)
+			actor.set_process(false)
+			actor.set_physics_process(false)
+			actor.apply_identity(body, 0)
+			check_motion(actor, name)
+			actor.free()
 		for hue in [0, 53, 0x8035]:
 			check_corpse(body, hue, name)
 		for axis in [Vector3.RIGHT, Vector3.FORWARD]:
@@ -29,8 +43,28 @@ func run() -> void:
 				await check_handoff(body, name, axis, slope)
 		await check_handoff(body, name, Vector3.RIGHT, 0.0, 0.35)
 		await check_handoff(body, name, Vector3.RIGHT, 0.0, -0.35)
+		if not active:
+			Registry.entries[body] = original
 	assert(Registry.entry(54) == unarmed)
+	if active:
+		check_body_swap()
 	quit()
+
+func check_body_swap() -> void:
+	var avatar := preload("res://Presentation/HumanAvatar.gd").new()
+	avatar.initial_body = 53
+	root.add_child(avatar)
+	var previous: Node3D = avatar.horse_visual
+	assert(previous.find_child("Axe", true, false) != null)
+	avatar.apply_server_appearance({"body": 54, "hue": 0x8035}, [])
+	var empty: Node3D = avatar.horse_visual
+	assert(empty != previous and empty.native_body == 54)
+	assert(empty.find_child("Axe", true, false) == null and empty.find_child("FrostClub", true, false) == null)
+	avatar.apply_server_appearance({"body": 55, "hue": 0x8035}, [])
+	var frost: Node3D = avatar.horse_visual
+	assert(frost != empty and frost.native_body == 55 and frost.native_hue == 0x8035)
+	assert(frost.find_child("FrostClub", true, false) != null)
+	avatar.free()
 
 func check_motion(actor: Node3D, name: String) -> void:
 	var weapon := actor.find_child(name, true, false) as MeshInstance3D

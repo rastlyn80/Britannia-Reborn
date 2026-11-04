@@ -12,10 +12,11 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
 INDEX = ROOT / 'Viewer/local-art/creatures/accepted-index.json'
-WORK = ROOT / 'work/creatures/classic_gestures'
-SEALED = WORK / 'accepted-native'
-LIVE = ROOT / 'outputs/creatures/classic_gestures/live.json'
-MANIFEST = ROOT / 'scripts/classic-gesture-inputs.json'
+BATCHES = {
+    'classic_gestures': ((1, 3, 50), 'ClassicGestureLive.gd', ('test-classic-gesture-trials.gd',)),
+    'troll_gestures': ((53, 54, 55), 'TrollGestureLive.gd',
+                      ('test-troll-overhead-trial.gd', 'test-troll-weapon-trial.gd')),
+}
 
 
 def sha(path):
@@ -41,20 +42,23 @@ def compose(base, prepared, native_sha):
     return row
 
 
-def checked(index, active):
-    recipes = read(MANIFEST)
-    bodies = {int(body) for body in recipes}
+def checked(index, active, batch):
+    body_ids, wrapper, _ = BATCHES[batch]
+    bodies = set(body_ids)
+    work = ROOT / 'work/creatures' / batch
+    sealed = work / 'accepted-native'
+    live = ROOT / 'outputs/creatures' / batch / 'live.json'
     if active:
-        baseline = read(SEALED / 'base-rows.json')
+        baseline = read(sealed / 'base-rows.json')
     else:
         baseline = [row for row in index['entries'] if row['status'] == 'validated'
                     and any(identity['body'] in bodies for identity in row['bodies'])]
     owners = {int(identity['body']): row for row in baseline for identity in row['bodies']}
     prepare = runpy.run_path(str(ROOT / 'scripts/prepare-creature-fixtures.py'))['prepared_entries']
-    prepared, classes = prepare('classic_gestures', baseline)
+    prepared, classes = prepare(batch, baseline)
 
-    report_path = SEALED / 'live.json' if active else LIVE
-    folder = SEALED if active else WORK
+    report_path = sealed / 'live.json' if active else live
+    folder = sealed if active else work
     report = read(report_path)
     receipt = read(folder / 'native-runtime.json')
     candidates = folder / 'candidates.json'
@@ -62,7 +66,7 @@ def checked(index, active):
     if (receipt['report_sha256'] != native_sha or receipt['candidate_sha256'] != sha(candidates)
             or report['candidate_sha256'] != sha(candidates)
             or report['test_sha256'] != sha(ROOT / 'Viewer/Network/CreatureLive.gd')
-            or report['prepared_wrapper_sha256'] != sha(ROOT / 'Viewer/Network/ClassicGestureLive.gd')
+            or report['prepared_wrapper_sha256'] != sha(ROOT / 'Viewer/Network' / wrapper)
             or report['fixture_sha256'] != sha(ROOT / 'Server/HorseIntegrationFixtures/CreatureFixtures.cs')
             or report['failures'] or not report['prepared_trial']):
         raise ValueError('Classic gesture native evidence does not match this batch')
@@ -80,7 +84,7 @@ def checked(index, active):
     witnesses = set()
     for witness in report['records']:
         body = int(witness['body'])
-        clip = recipes[str(body)]['clip']
+        clip = by_body[body]['classic_action_categories']['11']
         actions = [row for row in witness['actions'] if row['requested'] == 11]
         if (witness['kind'] != by_body[body]['kind'] or witness['corpse_suppressed']
                 or witness['native_death_refused'] or len(actions) != 1
@@ -106,13 +110,14 @@ def checked(index, active):
     return baseline, rows
 
 
-def test_active():
+def test_active(batch):
     godot = next((ROOT / '.tools/godot').glob('*console.exe'))
     profile = str(ROOT / '.godot-user')
     env = dict(os.environ, APPDATA=profile, LOCALAPPDATA=profile)
-    subprocess.run([str(godot), '--headless', '--path', str(ROOT / 'Viewer'), '--script',
-                    'res://../scripts/test-classic-gesture-trials.gd', '--', '--active'],
-                   cwd=ROOT, env=env, check=True, timeout=65)
+    for script in BATCHES[batch][2]:
+        subprocess.run([str(godot), '--headless', '--path', str(ROOT / 'Viewer'), '--script',
+                        f'res://../scripts/{script}', '--', '--active'],
+                       cwd=ROOT, env=env, check=True, timeout=65)
 
 
 def main():
@@ -120,12 +125,19 @@ def main():
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument('--activate', action='store_true')
     mode.add_argument('--check-active', action='store_true')
+    parser.add_argument('--batch', choices=BATCHES, default='classic_gestures')
     args = parser.parse_args()
+    batch = args.batch
+    work = ROOT / 'work/creatures' / batch
+    sealed = work / 'accepted-native'
+    live = ROOT / 'outputs/creatures' / batch / 'live.json'
     previous = INDEX.read_bytes()
     index = read(INDEX)
-    baseline, rows = checked(index, args.check_active)
+    baseline, rows = checked(index, args.check_active, batch)
     if args.activate:
-        if any(row.get('classic_gesture_native_sha256') for row in index['entries']):
+        if any(row.get('classic_gesture_native_sha256') and
+               any(identity['body'] in BATCHES[batch][0] for identity in row['bodies'])
+               for row in index['entries']):
             raise ValueError('The classic gesture batch is already active')
         bodies = {row['bodies'][0]['body'] for row in rows}
         retained = []
@@ -139,25 +151,25 @@ def main():
         index['entries'] = retained + rows
         if INDEX.read_bytes() != previous:
             raise RuntimeError('Registry changed during classic gesture activation')
-        SEALED.mkdir(exist_ok=True)
-        for source in (LIVE, WORK / 'native-runtime.json', WORK / 'candidates.json'):
-            shutil.copyfile(source, SEALED / source.name)
-        (SEALED / 'base-rows.json').write_text(json.dumps(baseline, indent=2) + '\n', encoding='utf-8')
+        sealed.mkdir(exist_ok=True)
+        for source in (live, work / 'native-runtime.json', work / 'candidates.json'):
+            shutil.copyfile(source, sealed / source.name)
+        (sealed / 'base-rows.json').write_text(json.dumps(baseline, indent=2) + '\n', encoding='utf-8')
         pending = INDEX.with_suffix('.classic-gestures.pending')
         updated = (json.dumps(index, indent=2) + '\n').encode()
         pending.write_bytes(updated)
         pending.replace(INDEX)
         try:
-            checked(read(INDEX), True)
-            test_active()
+            checked(read(INDEX), True, batch)
+            test_active(batch)
         except (Exception, KeyboardInterrupt):
             if INDEX.read_bytes() == updated:
                 pending.write_bytes(previous)
                 pending.replace(INDEX)
             raise
     elif args.check_active:
-        test_active()
-    print('Classic gestures:', 'active and verified' if args.activate or args.check_active else 'verified for activation')
+        test_active(batch)
+    print(batch + ':', 'active and verified' if args.activate or args.check_active else 'verified for activation')
 
 
 if __name__ == '__main__':
