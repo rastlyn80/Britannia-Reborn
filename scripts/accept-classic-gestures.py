@@ -86,6 +86,8 @@ BATCHES = {
     'gaman_gestures': ((248,), 'PreparedClassicActionsLive.gd', ('test-gaman-gestures.gd',)),
     'chicken_distinct_actions': ((208,), 'FieldFaunaLive.gd', ()),
     'deathwatch_gestures': ((242,), 'PreparedClassicActionsLive.gd', ('test-deathwatch-terrain.gd',)),
+    'daemon_wyvern_polar_actions': ((9, 62, 213), 'DaemonActionsLive.gd', ('test-daemon-distinct-actions.gd',
+                                                             'test-daemon-distinct-landings.gd')),
     'scorpion_headless_actions': ((48, 31), 'FieldFaunaLive.gd',
                                  ('test-scorpion-headless-actions.gd', 'test-scorpion-headless-landings.gd')),
     'skeleton_actions': ((50, 56), 'PreparedClassicActionsLive.gd', ('test-skeleton-actions.gd',)),
@@ -112,6 +114,7 @@ PREDECESSORS = {
     'alligator_lich_actions': (),
     'gaman_gestures': (),
     'deathwatch_gestures': (),
+    'daemon_wyvern_polar_actions': ('dragon_daemon',),
     'skeleton_actions': ('skeleton_axe',),
 }
 
@@ -246,7 +249,8 @@ def checked(index, active, batch, *, compare_registry=True):
         raise ValueError('Classic gesture native evidence does not match this batch')
     if wrapper in ('PreparedClassicActionsLive.gd', 'OccurrenceDeathsLive.gd', 'FieldDeathsLive.gd',
                    'LizardActionsLive.gd', 'QuadrupedActionsLive.gd', 'CatActionsLive.gd', 'TrollActionsLive.gd',
-                   'FieldFaunaLive.gd', 'SpiderMongbatActionsLive.gd', 'PigReaperHarpyActionsLive.gd') and (
+                   'FieldFaunaLive.gd', 'SpiderMongbatActionsLive.gd', 'PigReaperHarpyActionsLive.gd',
+                   'DaemonActionsLive.gd') and (
             report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
         raise ValueError('Supplementary action trial used a different prepared fixture loader')
     if batch == 'occurrence_deaths' and (
@@ -347,7 +351,7 @@ def checked(index, active, batch, *, compare_registry=True):
                           'serpent_ogre_actions', 'zombie_corpser_gargoyle_actions', 'earth_gazer_imp_actions',
                           'wisp_distinct_actions', 'air_distinct_actions', 'scorpion_headless_actions',
                           'alligator_lich_actions', 'fire_distinct_actions', 'gaman_gestures',
-                          'chicken_distinct_actions', 'deathwatch_gestures') or
+                          'chicken_distinct_actions', 'deathwatch_gestures', 'daemon_wyvern_polar_actions') or
                     slot in package.get('native_extra_classic_actions', [])) and any(
                     actions[0][key]['protocol'] != 'classic' or actions[0][key]['action'] != slot
                     for key in ('owner_packet', 'observer_packet')):

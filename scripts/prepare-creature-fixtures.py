@@ -119,7 +119,8 @@ def prepared_entries(family, registry_entries=None):
     if family in ('occurrence_deaths', 'kraken_reactions', 'dog_bear_actions', 'troll_actions', 'field_fauna',
                   'spider_mongbat_actions', 'grazers_grizzly_actions', 'pig_reaper_harpy_actions',
                   'serpent_ogre_actions', 'zombie_corpser_gargoyle_actions', 'earth_gazer_imp_actions',
-                  'scorpion_headless_actions', 'alligator_lich_actions', 'gaman_gestures', 'deathwatch_gestures'):
+                  'scorpion_headless_actions', 'alligator_lich_actions', 'gaman_gestures', 'deathwatch_gestures',
+                  'daemon_wyvern_polar_actions'):
         recipe = runpy.run_path(str(ROOT / ('scripts/prepare-' + family.replace('_', '-') + '.py')))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
         return recipe['prepared'](rows)

@@ -63,7 +63,8 @@ func run() -> void:
 			game.entities[serial] = {"serial": serial, "body": body, "hue": 0x8035}
 			arena.avatars[serial] = avatar
 			arena.avatars[serial + 0x100] = avatar
-			for slot: String in entry.classic_motion_references:
+			var predecessor_slots: Array = ["11", "12"] if body == 9 and entry.get("classic_gesture_batch") == "daemon_wyvern_polar_actions" else entry.classic_motion_references.keys()
+			for slot: String in predecessor_slots:
 				var action := PackedByteArray([0x6e])
 				action.append_array(Wire.uint_be(serial, 4))
 				action.append_array(PackedByteArray([0, int(slot), 0, 5, 0, 1, 1, 0, 0]))

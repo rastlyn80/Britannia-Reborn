@@ -1,4 +1,16 @@
-# Whipping Vine, Gaman, Chicken and Sewer Rat
+# Daemon, Wyvern and Polar Bear actions
+
+Daemon 9 keeps the recovered Third Dawn rig, its original ground fall, WingCheck and Cast. Separate Classic routes now have fitted candidates for the alternate backward fall, low rake, shoulder stagger, chest guard, low forearm guard, tail pause and airborne fall. The rendered review caught wingtip support holding the torso too high. The alternate ground fall now uses the recovered fall as its base, and the airborne fold keeps the torso lower as the wings settle.
+
+Wyvern 62 keeps one motion for Classic groups 11 and 17, and another for groups 15 and 16, after exact comparisons across all five directions. Its airborne fall holds the posture seen in the seven archived frames and adds a descent to the grounded pose. Polar Bear 213 gains a muzzle lift, upright strike, hind-leg crouch and alternate sprawl. The recovered strike keys stay in the scene, with a separate floor correction for playback.
+
+The three bodies are active. The combined batch passed 769 checks on the isolated ModernUO server, 3,660 decoded poses with retained source keys, and 39 client death-to-corpse handoffs across 1,599 terrain samples. The server exercised explicit action packets and its ordinary kill path. Flight into the corpse handoff was verified in the decoded client test. The predecessor suite also repeated 2,745 skin poses, 27 static corpse hue cases, and 12 decoded fire projectiles.
+
+Action routing remains 5,340 of 6,930 slots (77.1%). Shared Classic replacement pairs fell from 676 to 653. The Gaman, Chicken and Deathwatch Beetle release passed the full regression and was pushed to GitHub main as `07099aad`.
+
+The next occurrence audit found 44 distinct and two identical registered pairs. Wraith, both Drakes and Walrus have private previews covering 4,941 decoded poses with their source keys retained. Native tests and terrain-to-corpse checks for those previews are still open.
+
+# Whipping Vine, Gaman, Chicken, Deathwatch Beetle and Sewer Rat
 
 The isolated ModernUO trial passed 319 checks for the exact Whipping Vine 8 and Sewer Rat 238 constructors. Whipping Vine walks and runs with the existing body 8 model and carries native hue `0x851`. Sewer Rat uses the existing body 238 model and constructor hue zero. Both clients saw the native hit action and the static corpse for each class. The first trial stopped at the hit check. A traced repeat confirmed Classic group 10 for Whipping Vine and group 7 for Sewer Rat on both clients.
 
