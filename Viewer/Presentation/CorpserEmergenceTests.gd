@@ -8,12 +8,15 @@ func _initialize() -> void:
 
 func run() -> void:
 	var registry = preload("res://Presentation/CreatureRegistry.gd")
-	var candidate: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://../work/creatures/corpser-emergence/candidate.json"))
-	if "--active" in OS.get_cmdline_user_args():
-		assert(registry.entry(8) == candidate)
-	else:
-		registry.load_index()
-		registry.entries[8] = candidate
+	var active := "--active" in OS.get_cmdline_user_args()
+	var layered: bool = active and registry.entry(8).get("classic_gesture_batch") == "zombie_corpser_gargoyle_actions"
+	if not layered:
+		var candidate: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://../work/creatures/corpser-emergence/candidate.json"))
+		if active:
+			assert(registry.entry(8) == candidate)
+		else:
+			registry.load_index()
+			registry.entries[8] = candidate
 	var floor_body := StaticBody3D.new()
 	var collider := CollisionShape3D.new()
 	var box := BoxShape3D.new()
@@ -43,7 +46,7 @@ func run() -> void:
 		assert(levels[0] < 0.02 and levels[-1] > 1.9)
 		actor.play("Emerge", 0.0)
 		actor.animator.seek(0.42,true)
-		assert(actor.receive_action({"protocol":"classic", "action":4}))
+		assert(actor.receive_action({"protocol":"classic", "action":5 if layered else 4}))
 		for step in 16:
 			actor.animator.advance(0.02)
 		var time: float = actor.animator.current_animation_position

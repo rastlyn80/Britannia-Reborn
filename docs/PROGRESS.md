@@ -1,3 +1,13 @@
+# Zombie, Corpser and Gargoyle actions
+
+Zombie 3 has separate Classic strikes, recoils, fidgets and forward and backward falls on its Third Dawn rig. ArmsRaise keeps its existing keys. Corpser 8 stays rooted, with two fitted tendril attacks and two falls that fold the tendrils around a planted flower. The earlier authored fall is retained for comparison. The original emergence keys now play in all three render variants. The active emergence test also verifies three interruptions into the existing attack.
+
+Gargoyle 4 retains KneelingLunge and the recovered Age of Shadows Cast. Its recovered Third Dawn airborne death matches all 55 joints in each treatment. The imported clip is 1.05 seconds long and has a sampled vertical correction for wing clearance. Classic group 21 plays this fall, and the checked type-14 packet selects KneelingLunge. Autonomous server flight into death remains open.
+
+The final isolated ModernUO run passed 759 checks across two clients, including Corpser's movement refusal, Gargoyle's controlled airborne fall and type-14 action, native deaths and corpse replication. The active client passed 8,019 decoded poses, nine static corpse hue cases and fifteen death/removal handoffs plus six explicit airborne collapses across 861 terrain samples. A 92-view Forward+ review caught the older Corpser pose lifting the flower onto a tendril. The revised falls keep the core low through the sampled poses. The static catalogue passed 2,431 checks across 324 bodies.
+
+Generic routing is 5,338 of 6,928 tracked slots (77.0%). There are 23 of 106 verified type-14 group-11 routes. The distinct Classic pairs sharing a replacement fell from 761 to 735.
+
 # Giant Serpent and Ogre actions
 
 Giant Serpent 21 and Ogre 1 now have separate Classic attacks, reactions, fidgets and collapses on their original Third Dawn rigs. The serpent uncoils into a long strike and has a separate snapping attack. The ogre has a downward hammer swing and an upward strike. The fitted motions approximate the Classic frames. The original Pillage and FaceWipe clips remain intact and now also play for the checked newer type-14 packet on their respective bodies.

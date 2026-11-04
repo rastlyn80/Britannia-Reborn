@@ -4,6 +4,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import runpy
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -46,6 +47,11 @@ def main():
     godot = next((ROOT / '.tools/godot').glob('*console.exe'))
     user_dir = str(ROOT / '.godot-user')
     env = dict(os.environ, APPDATA=user_dir, LOCALAPPDATA=user_dir)
+    if row.get('classic_gesture_batch') == 'zombie_corpser_gargoyle_actions':
+        checked = runpy.run_path(str(ROOT / 'scripts/accept-classic-gestures.py'))['checked']
+        checked(index, True, row['classic_gesture_batch'])
+        run(godot, env, 'CorpserEmergenceTests.gd', 'CORPSER EMERGENCE:', active=True)
+        return
     baker_sha = sha(VIEWER / 'Presentation/BakeCorpserEmergence.gd')
     if row.get('assets', {}).get('modern') == f'res://{FOLDER}/{ASSET.name}':
         if (row.get('corpser_emergence', {}).get('baker_sha256') != baker_sha

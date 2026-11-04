@@ -73,6 +73,9 @@ BATCHES = {
     'rabbit_distinct_actions': ((205,), 'QuadrupedActionsLive.gd', ()),
     'serpent_ogre_actions': ((21, 1), 'FieldFaunaLive.gd',
                              ('test-serpent-ogre-actions.gd', 'test-serpent-ogre-landings.gd')),
+    'zombie_corpser_gargoyle_actions': ((3, 8, 4), 'FieldFaunaLive.gd',
+                                       ('test-zombie-corpser-gargoyle-actions.gd',
+                                        'test-zombie-corpser-gargoyle-landings.gd')),
     'skeleton_actions': ((50, 56), 'PreparedClassicActionsLive.gd', ('test-skeleton-actions.gd',)),
 }
 PREDECESSORS = {
@@ -91,6 +94,7 @@ PREDECESSORS = {
     'grazers_grizzly_actions': (),
     'pig_reaper_harpy_actions': ('reaper_harpy',),
     'serpent_ogre_actions': ('giant_serpent_pillage',),
+    'zombie_corpser_gargoyle_actions': ('gargoyle_classic',),
     'skeleton_actions': ('skeleton_axe',),
 }
 
@@ -169,13 +173,14 @@ def checked(index, active, batch, *, compare_registry=True):
         baseline = [row for row in index['entries'] if row['status'] == 'validated'
                     and any(identity['body'] in bodies for identity in row['bodies'])]
     owners = {int(identity['body']): row for row in baseline for identity in row['bodies']}
-    if batch == 'serpent_ogre_actions':
+    retained_body = {'serpent_ogre_actions': 1, 'zombie_corpser_gargoyle_actions': 3}.get(batch)
+    if retained_body is not None:
         # The earlier multi-body batch also contains unrelated skeleton layers.
-        # Compare only the Ogre row, after rechecking the sealed native evidence.
+        # Compare only the retained body after rechecking the sealed native evidence.
         _, previous = checked(index, True, 'classic_gestures', compare_registry=False)
-        ogre, = (row for row in previous if row['bodies'][0]['body'] == 1)
-        if owners.get(1) != ogre:
-            raise ValueError('Ogre must retain its sealed FaceWipe base')
+        retained, = (row for row in previous if row['bodies'][0]['body'] == retained_body)
+        if owners.get(retained_body) != retained:
+            raise ValueError(f'Body {retained_body} must retain its sealed Classic gesture base')
     if batch == 'lizard_actions':
         armed = runpy.run_path(str(ROOT / 'scripts/accept-armed-lizardman.py'))['checked_rows']
         prior = [row for row in index['entries'] if row.get('classic_gesture_batch') != batch]
@@ -226,7 +231,7 @@ def checked(index, active, batch, *, compare_registry=True):
         raise ValueError('The field collapse renderer or explicit packet test changed')
     if batch in ('lizard_actions', 'quadruped_actions', 'hart_deaths', 'dog_bear_actions', 'cat_actions',
                  'troll_actions', 'field_fauna', 'grazers_grizzly_actions', 'rabbit_distinct_actions',
-                 'serpent_ogre_actions'):
+                 'serpent_ogre_actions', 'zombie_corpser_gargoyle_actions'):
         visual, base_key, base_visual = (
             ('SourceLizardActionsVisual', 'armed_renderer_sha256', 'SourceArmedLizardmanVisual')
             if batch in ('lizard_actions', 'troll_actions') else
@@ -282,9 +287,11 @@ def checked(index, active, batch, *, compare_registry=True):
             raise ValueError(f'Missing native coat or constructor state for body {body}')
         if batch == 'pig_reaper_harpy_actions' and body == 47 and witness['movement'] != 'Native AI refuses movement':
             raise ValueError('Reaper fixture did not verify the native rooted state')
+        if batch == 'zombie_corpser_gargoyle_actions' and body == 8 and witness['movement'] != 'Native AI refuses movement':
+            raise ValueError('Corpser fixture did not verify the native rooted state')
         if batch in ('troll_actions', 'serpent_ogre_actions') or (batch, body) in (
                 ('skeleton_actions', 50), ('field_fauna', 42), ('spider_mongbat_actions', 39),
-                ('pig_reaper_harpy_actions', 30)):
+                ('pig_reaper_harpy_actions', 30), ('zombie_corpser_gargoyle_actions', 4)):
             expected_new_clip = package['new_action_categories']['14']
             reach, = (action for action in witness['actions'] if action['requested'] == -5)
             if any(reach[client + '_clip'] != expected_new_clip or reach[client + '_packet']['protocol'] != 'new'
@@ -303,7 +310,7 @@ def checked(index, active, batch, *, compare_registry=True):
             if (batch in ('lizard_actions', 'quadruped_actions', 'hart_deaths', 'dog_bear_actions', 'cat_actions',
                           'skeleton_actions', 'troll_actions', 'field_fauna', 'spider_mongbat_actions',
                           'grazers_grizzly_actions', 'pig_reaper_harpy_actions', 'rabbit_distinct_actions',
-                          'serpent_ogre_actions') or
+                          'serpent_ogre_actions', 'zombie_corpser_gargoyle_actions') or
                     slot in package.get('native_extra_classic_actions', [])) and any(
                     actions[0][key]['protocol'] != 'classic' or actions[0][key]['action'] != slot
                     for key in ('owner_packet', 'observer_packet')):
@@ -363,6 +370,8 @@ def test_active(batch):
                   'field_fauna': ['--field-fauna']}.get(batch, [])
     for script in BATCHES[batch][2]:
         run_client_check(godot, env, f'res://../scripts/{script}', ['--active', *trial_args])
+    if batch == 'zombie_corpser_gargoyle_actions':
+        run_client_check(godot, env, 'res://Presentation/CorpserEmergenceTests.gd', ['--active'])
     package = {'parrot_flight': 'late_donors', 'troglodyte_reach': 'late_source',
                'late_classic_actions': 'aos_armed'}.get(batch)
     if package:
