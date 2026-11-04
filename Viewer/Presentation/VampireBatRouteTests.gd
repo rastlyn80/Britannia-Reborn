@@ -20,7 +20,14 @@ func run() -> void:
 		var body := int(record.bodies[0].body)
 		var expected_record := record.duplicate(true)
 		expected_record.status = "validated"
-		assert(Registry.supports_body(body) and Registry.entry(body) == expected_record)
+		var active := Registry.entry(body)
+		assert(Registry.supports_body(body))
+		if active.has("classic_gesture_native_sha256"):
+			var path := "res://../work/creatures/vampire_bat_actions/accepted-native/base-rows.json"
+			var base: Array = JSON.parse_string(FileAccess.get_file_as_string(path))
+			assert(base == [expected_record] and active.classic_gesture_base_assets == expected_record.assets)
+		else:
+			assert(active == expected_record)
 		var avatar := Avatar.new()
 		avatar.initial_body = body
 		root.add_child(avatar)

@@ -1,6 +1,6 @@
 # Source-backed creature action queue
 
-Bone Knight 57 and Cyclops 75 are active with fitted props and planted Classic group 11 dips. The ledger has 5,245 of 6,840 action slots routable, with original frames identified for seven remaining gaps. Vampire Bat 317 has two distinct private previews based on Classic groups 11 and 20. The next client and server checks cover both wing actions and the wild and familiar identities. The other source gaps are Rikktor, Skittering Hopper, Devourer, Darknight Creeper and Horde Demon. Keep autonomous spell selection and continuous terrain clearance separate from fixture-requested routes. Earth Elemental emergence on slopes and ledges, the native summon and the older Mongbat wing poses remain separate follow-ups.
+Vampire Bat 317 now uses two distinct actions for Classic groups 11 and 20. The ledger has 5,247 of 6,840 action slots routable, with original frames identified for five remaining gaps. Skittering Hopper is next by configured all-facet occurrence, followed by Horde Demon and Devourer. Rikktor and Darknight Creeper also have identified Classic frames. Keep autonomous spell selection and continuous terrain clearance separate from fixture-requested routes. Earth Elemental emergence on slopes and ledges, the native summon and the older Mongbat wing poses remain separate follow-ups.
 
 # Juka Lord active and Hydra source trial
 

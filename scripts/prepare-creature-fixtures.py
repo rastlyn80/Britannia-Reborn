@@ -82,6 +82,10 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'vampire_bat_actions':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-vampire-bat-actions.py'))
+        rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']))
+        return recipe['prepared'](rows)
     if family == 'grizzle_antler':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-grizzle-antler.py'))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']))
@@ -845,6 +849,7 @@ def main():
                 row['legacy_slot11_evidence'] = proof
                 row['classic_action_categories'] = row.get('classic_action_categories', {}) | {'11': 'Fidget'}
         action = {'late_donors_active': (831, 'parrot_flight'),
+                  'vampire_bat_active': (317, 'vampire_bat_actions'),
                   'late_source_active': (267, 'troglodyte_reach')}.get(args.family)
         if action and active_by_body.get(action[0], {}).get('classic_gesture_native_sha256'):
             body, batch = action

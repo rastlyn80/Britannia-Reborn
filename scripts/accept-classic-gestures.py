@@ -39,6 +39,7 @@ BATCHES = {
     'exact_creature_fidgets': ((146, 157, 173, 777), 'ExactCreatureFidgetLive.gd', ()),
     'skeletal_mage_staff': ((148,), 'PreparedCreatureActionLive.gd', ('test-skeletal-mage-staff.gd',)),
     'grizzle_antler': ((259,), 'PreparedCreatureActionLive.gd', ('test-grizzle-antler.gd',)),
+    'vampire_bat_actions': ((317,), 'PreparedCreatureActionLive.gd', ('test-vampire-bat-actions.gd',)),
 }
 
 
@@ -176,6 +177,12 @@ def checked(index, active, batch):
             if body in siblings:
                 expected_row = dict(expected_row, bodies=[identity for identity in expected_row['bodies']
                                                          if identity['body'] not in bodies])
+                if (batch == 'skeleton_axe' and body == 57 and len(matches) == 1
+                        and matches[0].get('classic_gesture_native_sha256')):
+                    bone_base, _ = checked(index, True, 'bone_cyclops')
+                    if expected_row not in bone_base:
+                        raise ValueError('Bone Knight overlay must retain the independently checked sibling base')
+                    continue
             compared = matches if batch == 'ready_stances' else [redirect(row) for row in matches]
             if compared != [expected_row]:
                 raise ValueError(f'Active body {body} differs from its checked package')
@@ -192,6 +199,8 @@ def test_active(batch):
     package = {'parrot_flight': 'late_donors', 'troglodyte_reach': 'late_source'}.get(batch)
     if package:
         run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', [f'--family={package}'])
+    if batch == 'vampire_bat_actions':
+        run_client_check(godot, env, 'res://Presentation/VampireBatRouteTests.gd', [])
     if batch == 'ready_stances':
         for family in ('raptor', 'slith'):
             run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', [f'--family={family}'])

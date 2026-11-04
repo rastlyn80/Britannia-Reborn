@@ -1,3 +1,11 @@
+# Vampire Bat wing check and airborne settle
+
+Body 317 now routes Classic groups 11 and 20 to separate wing actions based on the five stored directions in `anim3.mul` graphic 317. The longer motion uses selected recovered Fidget wing poses and the corresponding body lift. The shorter motion uses a held source idle altitude with a brief wing settle. The model, rig, materials and existing animation keys are retained.
+
+The original, rounded and modern treatments passed 18 decoded runs on flat ground and two tilted collision planes. Across 1,746 sampled poses the lowest full-skin gap was approximately 3.3 mm below the plane. The shorter motion showed up to 12.1 cm of visual height change during the idle blend and held its height after the first 140 ms. Both actions preserve the native root and return to idle. The active client check also passed three static corpse hues and the original nine action routes. The isolated ModernUO trial passed 371 checks for wild Vampire Bat and Vampire Bat Familiar on both clients, in each of the prepared and normal registry runs. This verifies explicit action packets, movement, hues and corpse replication. Autonomous flight and familiar behavior remain separate.
+
+Bake with Godot `--headless --path Viewer --script res://../scripts/bake-vampire-bat-actions.gd`. Run `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily vampire_bat_actions` for the isolated native trial and `python -B scripts/accept-classic-gestures.py --batch vampire_bat_actions --check-active` for the active check.
+
 # Bone Knight and Cyclops armed Classic gestures
 
 Bone Knight 57 uses the exact named Third Dawn scimitar and wooden shield with their original atlases. Cyclops 75 uses the recovered Troll maul haft, shortened below the grip, with a rebuilt wooden barrel head and brass bands based on the five Classic directions. Ten inspected Third Dawn weapon candidates contained no exact mallet match. Both bodies retain their existing motion keys and use a new planted dip for Classic group 11. The shield releases during Bone Knight's alternate fall. The mallet slips free late in the Cyclops collapse. These are client visuals. Server equipment and loot remain authoritative.
