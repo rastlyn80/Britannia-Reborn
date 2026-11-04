@@ -123,7 +123,31 @@ def original_mul_groups(data, allowed):
                         records.append({'body': body, 'graphic': graphic, 'archive': mul.name,
                                         'layout': layout, 'group': group, 'directions': directions,
                                         'mobtype_prefers_uop': bool(flags & 0x10000)})
-    return records, inputs
+    return records, inputs, mobtypes
+
+def original_uop_redirect_candidates(sequence, mobtypes, framed, classic_routes):
+    candidates = []
+    for record in sequence:
+        body = record['animation_ref']
+        kind, flags = mobtypes.get(body, ('UNKNOWN', 0))
+        replacements = record['replacements']
+        # The reference loader installs zero-frame redirects only for UOP
+        # bodies, and skips redirect tables of these two sizes.
+        if kind != 'MONSTER' or not flags & 0x10000 or len(replacements) in (48, 68) or record.get('parse_blocker'):
+            continue
+        for link in replacements:
+            old, target = link['old_group'], link['new_group']
+            route = classic_routes.get((body, old))
+            if (not route or route['resolved'] is not None or route['native_profile'] != 'monster'
+                    or link['frame_count'] != 0 or old == target or (body, target) not in framed):
+                continue
+            # A real destination record proves archive selection. A resolved
+            # client category is still only a candidate for exact reuse.
+            target_route = classic_routes.get((body, target), {})
+            candidates.append({'body': body, 'classic_slot': old, 'kind': route['kind'],
+                               'requested': route['requested'], 'uop_group': target,
+                               'destination_clip': target_route.get('resolved')})
+    return sorted(candidates, key=lambda row: (row['body'], row['classic_slot']))
 
 def resolve(model,label,fallback):
     authored=model.get('authored_replacements',{}) | model.get('authored_clips',{})
@@ -174,7 +198,7 @@ def main():
     if data is None and config.exists():
         directories=json.loads(config.read_text(encoding='utf-8-sig')).get('dataDirectories',[])
         if directories:data=Path(directories[0])
-    sequence=[];archives=[];frame_groups=[];mul_groups=[]
+    sequence=[];archives=[];frame_groups=[];mul_groups=[];mobtypes={}
     if data:
         spec=importlib.util.spec_from_file_location('creature_sequences',ROOT/'scripts/uo-human-sequences.py')
         reader=importlib.util.module_from_spec(spec);spec.loader.exec_module(reader)
@@ -185,10 +209,11 @@ def main():
             archives.append({'name':path.name,'sha256':sha(path),'bytes':path.stat().st_size})
         frame_groups, frame_archives=original_frame_groups(data, allowed, reader)
         archives.extend(frame_archives)
-        mul_groups, mul_inputs=original_mul_groups(data, allowed)
+        mul_groups, mul_inputs, mobtypes=original_mul_groups(data, allowed)
         archives.extend(mul_inputs)
     framed={(row['body'],row['group']) for row in frame_groups if row['frame_headers'] is not None}
     classic_routes = {(row['body'], row['group_or_type']): row for row in rows if row['protocol'] == 'classic'}
+    redirect_candidates = original_uop_redirect_candidates(sequence, mobtypes, framed, classic_routes)
     native_layouts = {'monster': 'large', 'animal': 'small', 'sea': 'sea'}
     mul_equivalents = {}
     for row in mul_groups:
@@ -254,6 +279,9 @@ def main():
             'routable_slots':sum(r['resolved'] is not None for r in rows),
             'missing_protocol_slots':sum(r['resolved'] is None for r in rows),
             'unresolved_slots_with_source_frame_evidence':len(source_frame_gaps),
+            'unresolved_classic_uop_redirect_candidates':len(redirect_candidates),
+            'unresolved_classic_uop_redirects_with_routable_destination':sum(
+                row['destination_clip'] is not None for row in redirect_candidates),
             'original_sequence_records':len(sequence),'original_sequence_parse_blockers':sum(bool(r.get('parse_blocker')) or r['unparsed_bytes']!=0 for r in sequence),
             'original_new_protocol_entries':len(new_actions),
             'original_uop_frame_groups':len(framed),
@@ -278,6 +306,7 @@ def main():
             'original_sequence_metadata':sequence,'original_group_links':original,
             'original_uop_frame_groups':frame_groups,'original_mul_group_candidates':mul_groups,
             'source_frame_gaps':source_frame_gaps,
+            'original_uop_redirect_candidates':redirect_candidates,
             'original_new_protocol_actions':new_actions}
     OUT.mkdir(parents=True,exist_ok=True);(OUT/'actions.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
     table=''.join('<tr><td>0x%X</td><td>%s</td><td>%s %s</td><td>%s</td><td>%s</td><td>%s</td></tr>'%

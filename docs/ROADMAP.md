@@ -1,6 +1,6 @@
 # Source-backed creature action queue
 
-Troll bodies 53, 54 and 55 are active with their body-specific slot 11 gesture and tested static corpse handoff. The ledger has 5,153 of 6,838 action slots routable. Use the 64 identified original frame records to prioritize motion work within the unresolved slots. The Blistering Gargoyle body 130 passed the isolated native harness and awaits the full verification run before activation. The Parrot body 831 wingbeat passed decoded client playback and flat-floor checks. It still needs native validation and integration with its existing package gate. Author the Troglodyte body 267 crouch from its nine reference frames.
+Troll bodies 53, 54 and 55 are active with their body-specific slot 11 gesture and tested static corpse handoff. The ledger has 5,153 of 6,838 action slots routable. Use the 64 identified original frame records to prioritize motion work and review the 32 UOP redirect candidates as a separate reuse queue. The Blistering Gargoyle body 130 passed the isolated native harness and awaits the full verification run before activation. The Parrot body 831 wingbeat passed decoded client playback and flat-floor checks. It still needs native validation and integration with its existing package gate. For Troglodyte body 267, use the five-frame Classic `anim5.mul` reach as the reference and check whether part of the recovered Misc clip matches.
 
 # Juka Lord active and Hydra source trial
 
