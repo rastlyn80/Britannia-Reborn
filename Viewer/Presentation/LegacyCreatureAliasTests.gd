@@ -13,7 +13,11 @@ func run() -> void:
 	root.add_child(game)
 	game.set_process(false)
 	var file := "res://../work/creatures/legacy-aliases/"
-	file += "dread-spider.json" if "--dread-spider" in OS.get_cmdline_user_args() else "candidates.json"
+	var flags := OS.get_cmdline_user_args()
+	if "--preview-packages" in flags:
+		file += "packages.json"
+	else:
+		file += "dread-spider.json" if "--dread-spider" in flags else "candidates.json"
 	var rows: Array = JSON.parse_string(FileAccess.get_file_as_string(file))
 	var active := "--active" in OS.get_cmdline_user_args()
 	Registry.load_index()

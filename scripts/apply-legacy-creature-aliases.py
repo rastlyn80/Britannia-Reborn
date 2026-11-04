@@ -33,21 +33,23 @@ def read(path):
     return json.loads(path.read_text(encoding='utf-8-sig'))
 
 
-def alias_proof(body, rows):
+def alias_proof(body, rows, sibling_slots=(17,)):
     sources = [row for row in rows if row['body'] == body and row['group'] == 11
                and row['layout'] == 'large' and 'matching_classic_route' in row]
     source, = sources
-    target = next(
-        row for row in rows if row['body'] == body and row['group'] == 17
+    target = next((
+        row for row in rows if row['body'] == body and row['group'] in sibling_slots
+        and row['group'] in source.get('same_payload_groups', [])
+        and row.get('matching_classic_route', {}).get('resolved') == 'Fidget'
         and all(row[name] == source[name] for name in ('archive', 'layout', 'graphic'))
-    )
-    if (17 not in source.get('same_payload_groups', []) or len(source['directions']) != 5
+    ), None)
+    if (target is None or len(source['directions']) != 5
             or [item['payload_sha256'] for item in source['directions']] !=
             [item['payload_sha256'] for item in target['directions']]
             or target['matching_classic_route']['resolved'] != 'Fidget'
             or source['matching_classic_route']['resolved'] not in (None, 'Fidget')):
         raise ValueError(f'Classic group 11 has no exact reviewed match for {body}')
-    return {'body': body, 'original_slot': 11, 'identical_slot': 17,
+    return {'body': body, 'original_slot': 11, 'identical_slot': target['group'],
             'clip': 'Fidget', 'archive': source['archive'], 'graphic': source['graphic'],
             'directions': source['directions']}
 
@@ -59,19 +61,37 @@ def main():
     mode.add_argument('--check-active', action='store_true')
     parser.add_argument('--dread-spider', action='store_true',
                         help='Test or activate the body-specific Dread Spider alias only.')
+    parser.add_argument('--preview-packages', action='store_true',
+                        help='Preview eligible exact-package aliases without editing their accepted records.')
     args = parser.parse_args()
+    if args.preview_packages and (args.activate or args.check_active or args.dread_spider):
+        parser.error('--preview-packages only runs the isolated client preview')
     previous = INDEX.read_bytes()
     index = json.loads(previous.decode('utf-8-sig'))
     actions = read(LEDGER)['original_mul_group_candidates']
     proofs = []
     selected = {11: 'arachnids_spider_dread'} if args.dread_spider else REVIEWED
+    if args.preview_packages:
+        active = {int(identity['body']): row for row in index['entries'] if row['status'] == 'validated'
+                  for identity in row['bodies']}
+        selected = {}
+        for action in actions:
+            body = action['body']
+            if (action['group'] != 11 or body in REVIEWED or body == 11
+                    or action.get('matching_classic_route', {}).get('resolved', '') is not None
+                    or not set(action.get('same_payload_groups', [])) & {17, 18}
+                    or body not in active or len(active[body]['bodies']) != 1):
+                continue
+            selected[body] = active[body]['kind']
+        if not selected:
+            raise ValueError('No exact-package aliases to preview')
     for body, kind in selected.items():
         matches = [row for row in index['entries'] if row['status'] == 'validated'
                    and any(int(identity['body']) == body for identity in row['bodies'])]
         if not matches or matches[-1]['kind'] != kind:
             raise ValueError(f'Active registry does not select {kind} for {body}')
         row = matches[-1]
-        proof = alias_proof(body, actions)
+        proof = alias_proof(body, actions, (17, 18) if args.preview_packages else (17,))
         proof['kind'] = kind
         if args.dread_spider:
             scoped_categories = {'11': {'11': 'Fidget'}}
@@ -99,14 +119,15 @@ def main():
         categories['11'] = 'Fidget'
         proofs.append({'proof': proof, 'presentation': row})
 
-    trial = TRIAL.with_name('dread-spider.json') if args.dread_spider else TRIAL
+    trial = TRIAL.with_name('packages.json') if args.preview_packages else (
+        TRIAL.with_name('dread-spider.json') if args.dread_spider else TRIAL)
     trial.parent.mkdir(parents=True, exist_ok=True)
     trial.write_text(json.dumps(proofs, indent=2) + '\n', encoding='utf-8')
     godot = next((ROOT / '.tools/godot').glob('*console.exe'))
     user_dir = str(ROOT / '.godot-user')
     command = [str(godot), '--headless', '--path', str(ROOT / 'Viewer'), '--script',
                'res://Presentation/LegacyCreatureAliasTests.gd']
-    flags = ['--dread-spider'] if args.dread_spider else []
+    flags = ['--preview-packages'] if args.preview_packages else (['--dread-spider'] if args.dread_spider else [])
     env = dict(os.environ, APPDATA=user_dir, LOCALAPPDATA=user_dir)
     subprocess.run(command + ['--', *flags, *(['--active'] if args.check_active else [])],
                    env=env, check=True, timeout=90)
