@@ -98,6 +98,10 @@ def prepared_entries(family, registry_entries=None):
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-fidget-aliases-toad.py'))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']))
         return recipe['prepared'](rows)
+    if family == 'bone_cyclops':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-bone-knight-cyclops-actions.py'))
+        rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']))
+        return recipe['prepared'](rows)
     if family == 'ophidian_staff':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-ophidian-classic.py'))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']))

@@ -1,6 +1,6 @@
 # Source-backed creature action queue
 
-Interred Grizzle and Ilhenir now use a retimed section of their recovered Misc motion for Classic group 11. The ledger has 5,243 of 6,840 action slots routable, with original frames identified for nine remaining gaps. Bone Knight 57 and Cyclops 75 pass a prepared native trial. The shield and mallet still show sampled crossings between fitted poses, so their routes remain in review. The other source gaps are Rikktor, Skittering Hopper, Devourer, Darknight Creeper, Vampire Bat and Horde Demon. Keep autonomous spell selection and continuous terrain clearance separate from fixture-requested routes. Earth Elemental emergence on slopes and ledges, the native summon and the older Mongbat wing poses remain separate follow-ups.
+Bone Knight 57 and Cyclops 75 are active with fitted props and planted Classic group 11 dips. The ledger has 5,245 of 6,840 action slots routable, with original frames identified for seven remaining gaps. Vampire Bat 317 has two distinct private previews based on Classic groups 11 and 20. The next client and server checks cover both wing actions and the wild and familiar identities. The other source gaps are Rikktor, Skittering Hopper, Devourer, Darknight Creeper and Horde Demon. Keep autonomous spell selection and continuous terrain clearance separate from fixture-requested routes. Earth Elemental emergence on slopes and ledges, the native summon and the older Mongbat wing poses remain separate follow-ups.
 
 # Juka Lord active and Hydra source trial
 

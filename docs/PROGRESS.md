@@ -1,3 +1,11 @@
+# Bone Knight and Cyclops armed Classic gestures
+
+Bone Knight 57 uses the exact named Third Dawn scimitar and wooden shield with their original atlases. Cyclops 75 uses the recovered Troll maul haft, shortened below the grip, with a rebuilt wooden barrel head and brass bands based on the five Classic directions. Ten inspected Third Dawn weapon candidates contained no exact mallet match. Both bodies retain their existing motion keys and use a new planted dip for Classic group 11. The shield releases during Bone Knight's alternate fall. The mallet slips free late in the Cyclops collapse. These are client visuals. Server equipment and loot remain authoritative.
+
+The three model treatments passed six decoded routes and zero sampled body crossings on the weapon probes. Nine static prop and hue cases and 15 flat, slope and step handoffs preserved the final prop geometry. The fitted Cyclops mallet reaches about 23 cm below the raw flat plane in the original collapse before runtime terrain correction. The sampled corrected poses cleared the floor and held the native root fixed. Continuous clearance on mixed terrain remains open. The isolated ModernUO trial passed 271 checks across both native constructors and both clients. The ledger now routes 5,245 of 6,840 slots, with original frames identified for seven unresolved slots.
+
+Run `python -B scripts/prepare-bone-knight-cyclops-props.py`, then Godot `--headless --path Viewer --script res://../scripts/bake-bone-knight-cyclops.gd`. The isolated native trial is `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily bone_cyclops`. The active gate is `python -B scripts/accept-classic-gestures.py --batch bone_cyclops --check-active`.
+
 # Interred Grizzle and Ilhenir antler motion
 
 Classic group 11 on body 259 uses the first 2.8 seconds of the recovered `MonstrousInterredGrizzle_misc.grn`, retimed to 0.95 seconds. The two head lifts follow the five stored reference directions in `anim5.mul` graphic 18. The original mesh, rig, materials and existing motion keys are retained. The source-preserving package still verifies against its original receipt and the separate action overlay.
