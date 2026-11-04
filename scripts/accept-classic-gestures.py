@@ -64,6 +64,8 @@ BATCHES = {
                       ('test-troll-actions.gd', 'test-lizard-collapses.gd')),
     'field_fauna': ((42, 167, 214, 63), 'FieldFaunaLive.gd',
                     ('test-quadruped-actions.gd', 'test-quadruped-corpse.gd')),
+    'spider_mongbat_actions': ((28, 39), 'SpiderMongbatActionsLive.gd',
+                              ('test-spider-mongbat-actions.gd', 'test-spider-mongbat-landings.gd')),
     'skeleton_actions': ((50, 56), 'PreparedClassicActionsLive.gd', ('test-skeleton-actions.gd',)),
 }
 PREDECESSORS = {
@@ -78,6 +80,7 @@ PREDECESSORS = {
     'dog_bear_actions': (),
     'troll_actions': ('troll_gestures',),
     'field_fauna': ('ratman_hunch',),
+    'spider_mongbat_actions': ('mongbat_fidgets', 'spider_mongbat'),
     'skeleton_actions': ('skeleton_axe',),
 }
 
@@ -192,7 +195,7 @@ def checked(index, active, batch):
         raise ValueError('Classic gesture native evidence does not match this batch')
     if wrapper in ('PreparedClassicActionsLive.gd', 'OccurrenceDeathsLive.gd', 'FieldDeathsLive.gd',
                    'LizardActionsLive.gd', 'QuadrupedActionsLive.gd', 'CatActionsLive.gd', 'TrollActionsLive.gd',
-                   'FieldFaunaLive.gd') and (
+                   'FieldFaunaLive.gd', 'SpiderMongbatActionsLive.gd') and (
             report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
         raise ValueError('Supplementary action trial used a different prepared fixture loader')
     if batch == 'occurrence_deaths' and (
@@ -219,6 +222,13 @@ def checked(index, active, batch):
             paths['explicit_collapse_test_sha256'] = 'Network/OccurrenceDeathsLive.gd'
         if any(report[key] != sha(ROOT / 'Viewer' / path) for key, path in paths.items()):
             raise ValueError('The action renderer or explicit packet test changed')
+    if batch == 'spider_mongbat_actions':
+        renderers = ('GiantSpiderActionsVisual', 'MongbatActionsVisual', 'SourceQuadrupedCollapseVisual',
+                     'FieldClassicCollapseVisual', 'SourceGroundedGestureVisual', 'SourceGroundLookup')
+        expected = {name: sha(ROOT / f'Viewer/Presentation/{name}.gd') for name in renderers}
+        if (report['collapse_renderers'] != expected
+                or report['supplemental_sha256'] != sha(ROOT / 'Viewer/Network/PreparedClassicActionsLive.gd')):
+            raise ValueError('Spider or Mongbat collapse evidence does not match its renderers')
 
     by_body = {row['bodies'][0]['body']: row for row in prepared}
     if batch == 'dragon_daemon':
@@ -249,7 +259,8 @@ def checked(index, active, batch):
             raise ValueError(f'Missing original body or expected native death behaviour for {body}')
         if batch == 'quadruped_actions' and witness['native_state'] != ('shorn' if body == 223 else 'constructor'):
             raise ValueError(f'Missing native coat or constructor state for body {body}')
-        if batch == 'troll_actions' or (batch, body) in (('skeleton_actions', 50), ('field_fauna', 42)):
+        if batch == 'troll_actions' or (batch, body) in (
+                ('skeleton_actions', 50), ('field_fauna', 42), ('spider_mongbat_actions', 39)):
             expected_new_clip = package['new_action_categories']['14']
             reach, = (action for action in witness['actions'] if action['requested'] == -5)
             if any(reach[client + '_clip'] != expected_new_clip or reach[client + '_packet']['protocol'] != 'new'
@@ -266,7 +277,7 @@ def checked(index, active, batch):
             if len(actions) != 1 or any(actions[0][key] != clip for key in ('owner_clip', 'observer_clip')):
                 raise ValueError(f'Missing Classic gesture evidence for body {body}, slot {slot}')
             if (batch in ('lizard_actions', 'quadruped_actions', 'hart_deaths', 'dog_bear_actions', 'cat_actions',
-                          'skeleton_actions', 'troll_actions', 'field_fauna') or
+                          'skeleton_actions', 'troll_actions', 'field_fauna', 'spider_mongbat_actions') or
                     slot in package.get('native_extra_classic_actions', [])) and any(
                     actions[0][key]['protocol'] != 'classic' or actions[0][key]['action'] != slot
                     for key in ('owner_packet', 'observer_packet')):

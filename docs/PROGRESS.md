@@ -1,3 +1,13 @@
+# Giant Spider and Mongbat actions
+
+Giant Spider 28 now has distinct strikes, recoils, a fidget and a second collapse on its retained Third Dawn rig. The alternate collapse uses the original fall with separately fitted front legs and abdomen. Its final visual displacement is about 0.54 m, down from 1.85 m in the recovered fall, with the native root held fixed. The new grounded actions approximate the Classic frames.
+
+Mongbat 39 now uses its original Third Dawn airborne death. The source matched 55 motion tracks on the retained 58-joint rig, and the imported clip carries 65 tracks. The bake adds vertical clearance. On the nominal flat test the skin starts 1.17 m above the floor. The client selects the airborne fall if the last action was flight, takeoff or landing, and continues from the current phase if the corpse packet arrives during the fall. The grounded collapses remain separate. Both creatures retain their default static corpses, with the displayed endpoint carried into the static item when a transition runs.
+
+The active gate passed 4,875 decoded poses across six body and mesh combinations, six static corpse hue checks and 738 terrain samples on flat ground and two slopes. The terrain check includes twelve decoded death, removal and static corpse handoffs plus six explicit airborne collapses. A private Forward+ review covered 44 views. The isolated ModernUO trial passed 1,117 checks with two clients across Giant Spider and the three Mongbat constructors. It exercised native grounded deaths and controlled requests for the explicit airborne collapse and newer WingSettle. The death packet arriving mid-flight was exercised with decoded client packets. Autonomous flight and a native mid-flight death remain unverified.
+
+The ledger now routes 5,334 of 6,924 tracked slots (77.0%). It has 818 distinct Classic action pairs sharing a replacement, down from 835. The static corpse catalogue covers 324 body keys.
+
 # Ratman, Brown Bear, Panther and Cougar actions
 
 Ratman 42 now has two distinct collapses, separate strikes, reactions and a head-and-tail fidget on its original rig. The backward collapse settles the torso near the ground. The retained forward collapse and the Classic group-11 Hunch preserve their original keys. Both clients also played Hunch for the newer type-14, subaction-0, variation-0 packet.
@@ -6,7 +16,7 @@ Brown Bear 167 keeps its own Third Dawn model. The installed mobile and corpse d
 
 All four active bodies passed 873 isolated ModernUO checks with two clients. The installed check passed 6,762 decoded poses across all 12 body and mesh treatments and 12 decoded death, removal and static corpse handoffs over 492 terrain samples. The fitted clips approximate the original frames. The recovered Ratman and feline collapses require terrain correction and the static corpses preserve the settled endpoint.
 
-The ledger now routes 5,333 of 6,923 tracked slots (77.0%). It has 835 pairs of distinct Classic groups sharing a replacement, down from 846. The separate static corpse catalogue still covers 324 body keys. The earlier full run stopped on a test array error introduced while adding these bodies. The affected active checks passed after the correction. A new full regression is running for the combined release. The native launcher now fails if Godot reports a script error even when its process exits successfully.
+That release routed 5,333 of 6,923 tracked slots (77.0%). It reduced distinct Classic groups sharing a replacement from 846 to 835. The earlier full run stopped on a test array error introduced while adding these bodies. The corrected full regression passed, including 71 server and 84 client development-edit checks, and the world check sampled 4,096 terrain points and 2,689 statics. The native launcher now fails if Godot reports a script error even when its process exits successfully.
 
 # Dog, Black Bear, Cat and Troll actions
 

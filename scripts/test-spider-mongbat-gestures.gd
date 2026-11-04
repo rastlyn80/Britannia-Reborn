@@ -49,7 +49,12 @@ func run() -> void:
 		for treatment in ["original", "rounded", "modern"]:
 			var path := "res://local-art/creatures/mul-gesture-%d-%s.scn" % [body, treatment]
 			if active:
-				if body == 39 and base.get("classic_gesture_batch", "") == "mongbat_fidgets":
+				var batch: String = base.get("classic_gesture_batch", "")
+				if body in [28, 39] and batch == "spider_mongbat_actions":
+					var retained := "res://local-art/creatures/mongbat-fidgets-%s.scn" % treatment if body == 39 else path
+					assert(base_assets[treatment] == retained)
+					path = base.assets[treatment]
+				elif body == 39 and batch == "mongbat_fidgets":
 					assert(base_assets[treatment] == path)
 					path = base.assets[treatment]
 				assert(base.assets[treatment] == path and base.authored_action_scene_sha256[treatment] == FileAccess.get_sha256(path))
