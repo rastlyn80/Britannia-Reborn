@@ -3,7 +3,10 @@ import argparse
 import copy
 import importlib.util
 import json
+import runpy
 from pathlib import Path
+
+ALIAS_EVIDENCE = runpy.run_path(str(Path(__file__).with_name('legacy-action-evidence.py')))
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('crystal_preparer',ROOT/'scripts/prepare-crystal-lattice.py')
@@ -96,8 +99,11 @@ def main():
     index = read(path)
     existing = [r for r in index['entries'] if any(int(b['body']) == 123 for b in r['bodies'])]
     assert all(r['kind']=='ethereal_warriors_male' and r['family']=='crystal_lattice' for r in existing), 'Refusing unrelated route replacement'
+    if existing:
+        row = ALIAS_EVIDENCE['expected_with_legacy_alias'](row, existing[0])
     if args.check_active:
-        assert existing == [row] and read(RECEIPT) == pins
+        assert existing == [row]
+        ALIAS_EVIDENCE['check_base_receipt'](Path(__file__).name, read(RECEIPT), pins)
     if args.publish:
         backup = WORK/'accepted-index-before-crystal-lattice.json'
         if not backup.exists():backup.write_bytes(path.read_bytes())

@@ -7,9 +7,12 @@ import argparse
 import copy
 import importlib.util
 import json
+import runpy
 import subprocess
 import sys
 from pathlib import Path
+
+ALIAS_EVIDENCE = runpy.run_path(str(Path(__file__).with_name('legacy-action-evidence.py')))
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('local_presentation_helpers', ROOT/'scripts/accept-source-preserving.py')
@@ -118,13 +121,14 @@ def main():
     assert not (args.publish and args.check_active)
     if args.check_active:
         receipt = read(RECEIPT)
-        assert receipt['publisher_sha256'] == sha(Path(__file__))
+        ALIAS_EVIDENCE['check_publisher'](Path(__file__).name, receipt['publisher_sha256'], sha(Path(__file__)))
         args.evidence = ROOT/receipt['evidence']
     assert args.evidence.resolve().is_relative_to(ROOT/'work'), 'Keep local evidence private under work/'
     rows, evidence = checked_rows(args.evidence)
     accepted = ART/'accepted-index.json'
     report = read(accepted)
     incoming = {row['kind'] for row in rows}
+    rows = ALIAS_EVIDENCE['expected_rows_with_legacy_aliases'](rows, report['entries'])
     existing = {int(identity['body']):row['kind'] for row in report['entries'] for identity in row['bodies']}
     for row in rows:
         for identity in row['bodies']:

@@ -244,5 +244,89 @@
     "kind": "bog_thing",
     "sibling": 17,
     "payload_signature": "c9740397126da4fadfaa4dd0251beab27b217659abb6af351cc01ed6897183f6"
+  },
+  "123": {
+    "family": "crystal_lattice",
+    "kind": "ethereal_warriors_male",
+    "sibling": 17,
+    "payload_signature": "6b4076765d8f6dbd4662c4d6d144696a16f7bd2b2329bbd70434dd0b94f88996"
+  },
+  "154": {
+    "family": "mummies",
+    "kind": "walking_dead_mummy",
+    "sibling": 17,
+    "payload_signature": "a79a2aa17a0c617e1af2e1c3c45ce712067b447619c5ea185483e71c2efb5263"
+  },
+  "182": {
+    "family": "source_preserving",
+    "kind": "orcs_orc_bomber",
+    "sibling": 17,
+    "payload_signature": "469c7cdc4a09e243d21d599e1ba46f16ad8246f961cbf3188380150e3f403151"
+  },
+  "752": {
+    "family": "source_preserving",
+    "kind": "golem_iron",
+    "sibling": 17,
+    "payload_signature": "c07fdeb4bc6480ed0b721859944e0db92a62899459634e8bff8e7a20b72138bc"
+  },
+  "754": {
+    "family": "source_preserving",
+    "kind": "gargoyles_gargoyle_enforcer",
+    "sibling": 17,
+    "payload_signature": "c4cfe3d9bf920babc48a423521a246c431c38974aca0113932801f738a95530b"
+  },
+  "755": {
+    "family": "source_preserving",
+    "kind": "gargoyles_gargoyle_guard",
+    "sibling": 17,
+    "payload_signature": "6c2b9d8b3620ac3beb0f2dde28ac6ce0de42ad8d78702302268171b91dc55107"
+  },
+  "782": {
+    "family": "solen_warriors",
+    "kind": "fire_ant_warrior",
+    "sibling": 17,
+    "payload_signature": "31f0b900d610c82088a4f4ca6a72f5e7e84d8338472eb17631eaead19a168e8e"
+  },
+  "783": {
+    "family": "solen_queens",
+    "kind": "fire_ant_queen",
+    "sibling": 17,
+    "payload_signature": "51f48a2448594e04527eb5faeebf19e20ac5fd6b1bda7b918082a624de0302ac"
+  },
+  "784": {
+    "family": "source_preserving",
+    "kind": "arcane_demon",
+    "sibling": 17,
+    "payload_signature": "1f53d73453e48b8a79aef565dc2e802485d90fed30f841986eef39f63abf0c59"
+  },
+  "785": {
+    "family": "source_preserving",
+    "kind": "four_armed_demon",
+    "sibling": 17,
+    "payload_signature": "720b4852b79df10f4a1e0f04f8b31725fad9adfe88159aeffdedf8371f477dfe"
+  },
+  "787": {
+    "family": "ant_lion_chain",
+    "kind": "ant_lion",
+    "sibling": 17,
+    "payload_signature": "697138ba20ddefe4a894fa86735c593cad84ac6cbd8bf356f2d007dedf126e6c"
+  },
+  "792": {
+    "family": "source_preserving",
+    "kind": "chaos_demon",
+    "sibling": 17,
+    "payload_signature": "bd16d3ede2c4385b8c70ef293573f41cd8dbe0ed1b76b5a50ba815279bc86d9e"
+  },
+  "806": {
+    "family": "solen_warriors",
+    "kind": "black_ant_warrior",
+    "sibling": 17,
+    "payload_signature": "31f0b900d610c82088a4f4ca6a72f5e7e84d8338472eb17631eaead19a168e8e"
+  },
+  "807": {
+    "family": "solen_queens",
+    "kind": "black_ant_queen",
+    "sibling": 17,
+    "payload_signature": "51f48a2448594e04527eb5faeebf19e20ac5fd6b1bda7b918082a624de0302ac"
   }
 }

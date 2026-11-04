@@ -8,7 +8,10 @@ import copy
 import hashlib
 import importlib.util
 import json
+import runpy
 from pathlib import Path
+
+ALIAS_EVIDENCE = runpy.run_path(str(Path(__file__).with_name('legacy-action-evidence.py')))
 
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT/'Viewer/local-art/creatures'
@@ -132,7 +135,7 @@ def main():
     assert not (args.publish and args.check_active)
     if args.check_active:
         receipt = read(RECEIPT)
-        assert receipt['publisher_sha256'] == sha(Path(__file__)), 'Local publisher changed'
+        ALIAS_EVIDENCE['check_publisher'](Path(__file__).name, receipt['publisher_sha256'], sha(Path(__file__)))
         args.presentation = ROOT/receipt['presentation']
         args.appearance = ROOT/receipt['appearance']
     for path in [args.presentation,args.appearance]:
@@ -141,6 +144,7 @@ def main():
     accepted = ART/'accepted-index.json'
     report = read(accepted)
     incoming = {row['kind'] for row in rows}
+    rows = ALIAS_EVIDENCE['expected_rows_with_legacy_aliases'](rows, report['entries'])
     bodies = {identity['body']:row['kind'] for row in report['entries'] for identity in row['bodies']}
     for row in rows:
         for identity in row['bodies']:

@@ -29,6 +29,12 @@ PACKAGE_TESTS = {
 PUBLICATION_TESTS = {
     'gazer_larva': 'accept-gazer-larva.py',
     'bog_thing': 'prepare-bog-thing.py',
+    'mummies': 'accept-reviewed-creatures.py',
+    'solen_warriors': 'accept-reviewed-creatures.py',
+    'ant_lion_chain': 'accept-ant-lion.py',
+    'crystal_lattice': 'accept-crystal-lattice.py',
+    'solen_queens': 'accept-solen-queens.py',
+    'source_preserving': 'accept-source-preserving.py',
 }
 # Each record below has exactly one body and uses the generic classic action map.
 REVIEWED = {
@@ -176,10 +182,14 @@ def main():
         pending.replace(INDEX)
         try:
             subprocess.run(command + ['--', *flags, '--active'], env=env, check=True, timeout=90)
+            checked_publishers = set()
             for family in sorted({proof['family'] for proof in late_aliases.values()}):
                 if family in PUBLICATION_TESTS:
-                    subprocess.run([sys.executable, '-B', str(ROOT / 'scripts' / PUBLICATION_TESTS[family]),
-                                    '--check-active'], env=env, check=True, timeout=180)
+                    publisher = PUBLICATION_TESTS[family]
+                    if publisher not in checked_publishers:
+                        subprocess.run([sys.executable, '-B', str(ROOT / 'scripts' / publisher), '--check-active'],
+                                       env=env, check=True, timeout=180)
+                        checked_publishers.add(publisher)
                     continue
                 script = PACKAGE_TESTS.get(family, 'LateCreatureRouteTests.gd')
                 subprocess.run(command[:-1] + [f'res://Presentation/{script}',

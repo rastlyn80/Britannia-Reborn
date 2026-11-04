@@ -3,7 +3,10 @@ import argparse
 import copy
 import hashlib
 import json
+import runpy
 from pathlib import Path
+
+ALIAS_EVIDENCE = runpy.run_path(str(Path(__file__).with_name('legacy-action-evidence.py')))
 import subprocess
 import sys
 
@@ -151,8 +154,10 @@ def main():
     index = read(path)
     existing = [row for row in index['entries'] if BODY_KEYS.intersection(int(body['body']) for body in row['bodies'])]
     assert all(row['family'] == 'solen_queens' for row in existing), 'Refusing to replace an unrelated body route'
+    rows = ALIAS_EVIDENCE['expected_rows_with_legacy_aliases'](rows, existing)
     if args.check_active:
-        assert existing == rows and read(RECEIPT) == receipt
+        assert existing == rows
+        ALIAS_EVIDENCE['check_base_receipt'](Path(__file__).name, read(RECEIPT), receipt)
     if args.publish:
         backup = WORK / 'accepted-index-before-queens.json'
         if not backup.exists():
