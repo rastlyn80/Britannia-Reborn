@@ -15,28 +15,50 @@ func run() -> void:
 	var game := Game.new()
 	root.add_child(game)
 	game.set_process(false)
+	var historical_skeleton := Registry.entry(56).duplicate(true)
 	for body in CLIPS:
-		var clip: String = CLIPS[body]
-		var entry := Registry.entry(body).duplicate(true)
-		entry.assets = {"modern": "res://local-art/creatures/slot11-%d-trial.scn" % body}
-		entry.classic_action_categories = entry.get("classic_action_categories", {}).merged({"11": clip}, true)
-		Registry.entries[body] = entry
-		var actor := Registry.create(body)
-		root.add_child(actor)
-		actor.set_process(false)
-		actor.set_physics_process(false)
-		actor.apply_identity(body, 0x8035)
-		game.entities[SERIAL] = {"serial": SERIAL, "body": body, "hue": 0x8035}
-		var packet := PackedByteArray([0x6e])
-		packet.append_array(Wire.uint_be(SERIAL, 4))
-		packet.append_array(PackedByteArray([0, 11, 0, 5, 0, 1, 1, 0, 0]))
-		game._handle(packet)
-		assert(actor.receive_action(game.last_mobile_actions[SERIAL]) and actor.current_clip == clip)
-		assert(actor.native_body == body and actor.native_hue == 0x8035)
-		check_pose(actor, clip)
-		actor.free()
+		for treatment in ["original", "rounded", "modern"]:
+			check_route(game, body, treatment)
+	assert(Registry.entry(56) == historical_skeleton)
 	game.free()
 	quit()
+
+func check_route(game: Node, body: int, treatment: String) -> void:
+	var clip: String = CLIPS[body]
+	var original := Registry.entry(body)
+	var base := (load(Registry.asset_path(original, treatment)) as PackedScene).instantiate()
+	var source := base.find_children("*", "AnimationPlayer", true, false)[0] as AnimationPlayer
+	var entry := original.duplicate(true)
+	var suffix := "" if treatment == "modern" else "-" + treatment
+	entry.assets = {treatment: "res://local-art/creatures/slot11-%d-trial%s.scn" % [body, suffix]}
+	entry.classic_action_categories = entry.get("classic_action_categories", {}).merged({"11": clip}, true)
+	Registry.entries[body] = entry
+	var actor := Registry.create(body)
+	actor.treatment = treatment
+	root.add_child(actor)
+	actor.set_process(false)
+	actor.set_physics_process(false)
+	actor.apply_identity(body, 0x8035)
+	var player: AnimationPlayer = actor.animator
+	for name in source.get_animation_list():
+		var before := source.get_animation(name)
+		var after := player.get_animation(name)
+		assert(before.length == after.length and before.get_track_count() == after.get_track_count())
+		for track in before.get_track_count():
+			assert(before.track_get_path(track) == after.track_get_path(track))
+			assert(before.get("tracks/%d/keys" % track) == after.get("tracks/%d/keys" % track))
+	base.free()
+
+	game.entities[SERIAL] = {"serial": SERIAL, "body": body, "hue": 0x8035}
+	var packet := PackedByteArray([0x6e])
+	packet.append_array(Wire.uint_be(SERIAL, 4))
+	packet.append_array(PackedByteArray([0, 11, 0, 5, 0, 1, 1, 0, 0]))
+	game._handle(packet)
+	assert(actor.receive_action(game.last_mobile_actions[SERIAL]) and actor.current_clip == clip)
+	assert(actor.native_body == body and actor.native_hue == 0x8035)
+	check_pose(actor, clip)
+	actor.free()
+	Registry.entries[body] = original
 
 func check_pose(actor: Node3D, clip: String) -> void:
 	var rig: Skeleton3D = actor.skeleton

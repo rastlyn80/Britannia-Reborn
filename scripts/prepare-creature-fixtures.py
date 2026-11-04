@@ -29,6 +29,36 @@ SOURCE_COVERAGE_CLASSES = {
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
 def prepared_entries(family):
+    if family == 'classic_gestures':
+        manifest = json.loads((ROOT / 'scripts/classic-gesture-inputs.json').read_text(encoding='utf-8'))
+        index = json.loads((ROOT / 'Viewer/local-art/creatures/accepted-index.json').read_text(encoding='utf-8'))
+        ledger = json.loads((ROOT / 'outputs/creatures/actions.json').read_text(encoding='utf-8'))
+        rows, classes = [], {}
+        for key, recipe in manifest.items():
+            body = int(key)
+            base, = (row for row in index['entries'] if row['status'] == 'validated'
+                     and any(identity['body'] == body for identity in row['bodies']))
+            identity, = (identity for identity in base['bodies'] if identity['body'] == body)
+            source, = (row for row in ledger['original_mul_group_candidates']
+                       if (row['body'], row['group']) == (body, 11))
+            directions = source['directions']
+            payload = ''.join(item['payload_sha256'] for item in directions).encode('ascii')
+            assert source['archive'] == 'anim.mul' and not source['mobtype_prefers_uop']
+            assert [item['direction'] for item in directions] == list(range(5))
+            assert hashlib.sha256(payload).hexdigest() == recipe['directional_payload_sha256']
+            assets = {name: f'res://local-art/creatures/slot11-{body}-trial'
+                      + ('' if name == 'modern' else f'-{name}') + '.scn'
+                      for name in ('original', 'rounded', 'modern')}
+            clip = recipe['clip']
+            rows.append(dict(base, status='prepared', family=family, bodies=[identity], assets=assets,
+                             authored_action_scene_sha256={name: sha(ROOT / 'Viewer' / path.removeprefix('res://'))
+                                                           for name, path in assets.items()},
+                             authored_action_reference=recipe['directional_payload_sha256'],
+                             classic_action_categories=base.get('classic_action_categories', {}) | {'11': clip},
+                             authored_replacements=base.get('authored_replacements', {}) | {
+                                 clip: 'Authored gesture from decoded Classic slot 11 frames'}))
+            classes[body] = recipe['classes']
+        return rows, classes
     if family == 'gargoyle_pillage':
         art = ROOT / 'Viewer/local-art/creatures'
         index = json.loads((art / 'accepted-index.json').read_text(encoding='utf-8'))

@@ -1,0 +1,17 @@
+{
+  "1": {
+    "clip": "FaceWipe",
+    "classes": ["Ogre"],
+    "directional_payload_sha256": "53385c279afa40e17041f087d7dcd96a05cde8de2f23f2e66db3f45c3e8dafff"
+  },
+  "3": {
+    "clip": "ArmsRaise",
+    "classes": ["Zombie"],
+    "directional_payload_sha256": "d645d520602f00a63aabeb033ecd9a0bbaeba6cc700caf4ccfd91cc74be24f13"
+  },
+  "50": {
+    "clip": "Reach",
+    "classes": ["Skeleton", "Spellbinder"],
+    "directional_payload_sha256": "2111aa5683ece8c0be55efea35e63dd3b191cab3c62ee8231cdc26dc19ce8d78"
+  }
+}

@@ -73,12 +73,13 @@ func animate(rig: Skeleton3D, body: int, phase: int, right: Vector3) -> void:
 
 func run() -> void:
 	for body in FORMS:
-		bake(body)
+		for treatment in ["original", "rounded", "modern"]:
+			bake(body, treatment)
 	quit()
 
-func bake(body: int) -> void:
+func bake(body: int, treatment: String) -> void:
 	var form: Array = FORMS[body]
-	var model := (load("res://local-art/creatures/%s-modern.gltf" % form[0]) as PackedScene).instantiate()
+	var model := (load("res://local-art/creatures/%s-%s.gltf" % [form[0], treatment]) as PackedScene).instantiate()
 	root.add_child(model)
 	var player := model.find_children("*", "AnimationPlayer", true, false)[0] as AnimationPlayer
 	var rig := model.find_children("*", "Skeleton3D", true, false)[0] as Skeleton3D
@@ -117,6 +118,8 @@ func bake(body: int) -> void:
 	player.get_animation_library("").add_animation(form[1], motion)
 	var scene := PackedScene.new()
 	assert(scene.pack(model) == OK)
-	assert(ResourceSaver.save(scene, "res://local-art/creatures/slot11-%d-trial.scn" % body, ResourceSaver.FLAG_COMPRESS) == OK)
+	var suffix := "" if treatment == "modern" else "-" + treatment
+	var output := "res://local-art/creatures/slot11-%d-trial%s.scn" % [body, suffix]
+	assert(ResourceSaver.save(scene, output, ResourceSaver.FLAG_COMPRESS) == OK)
 	print("Slot 11 body ", body, " baked ", form[1], " on ", rig.get_bone_count(), " original joints")
 	model.free()
