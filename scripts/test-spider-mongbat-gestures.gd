@@ -10,8 +10,11 @@ const FORMS := {
 	28: {"clip": "AbdomenShift", "support": ["bone06", "bone10", "bone14", "bone22", "bone26", "bone30", "bone34"],
 		"moving": "bone18", "minimum_travel": 0.15},
 	39: {"clip": "WingSettle", "support": ["bip01 l toe0", "bip01 r toe0"],
-		"moving": "mongbat l wingfinger1b", "minimum_travel": 0.06},
+		"moving": "mongbat l wingfinger1b", "minimum_travel": 0.06, "alpha": "mongbats_mongbat-original-albedo.png"},
 }
+
+func forms() -> Dictionary:
+	return FORMS
 
 func _initialize() -> void:
 	create_timer(30.0).timeout.connect(func(): quit(2))
@@ -22,16 +25,20 @@ func run() -> void:
 	root.add_child(game)
 	game.set_process(false)
 	var active := "--active" in OS.get_cmdline_user_args()
-	for body: int in FORMS:
+	for body: int in forms():
 		var base := Registry.entry(body)
 		var trial := base.duplicate(true)
 		var base_assets: Dictionary = base.get("classic_gesture_base_assets", {})
-		var clip: String = FORMS[body].clip
+		var recipe: Dictionary = forms()[body]
+		var clip: String = recipe.clip
+		var alpha: String = recipe.get("alpha", "")
 		if not active:
 			trial.assets = {}
 			trial.classic_action_categories = base.get("classic_action_categories", {}).merged({"11": clip}, true)
-			if body == 39:
-				trial.source_alpha_texture = "mongbats_mongbat-original-albedo.png"
+			if not alpha.is_empty():
+				trial.source_alpha_texture = alpha
+			if recipe.has("presentation_script"):
+				trial.presentation_script = recipe.presentation_script
 		else:
 			assert(base.classic_action_categories["11"] == clip)
 		for treatment in ["original", "rounded", "modern"]:
@@ -58,14 +65,15 @@ func run() -> void:
 			check_tracks(actor.animator, source_path)
 			assert(actor.receive_action(game.last_mobile_actions[SERIAL]))
 			assert(actor.current_clip == clip and actor.native_hue == 0x8035)
-			if body == 39:
-				check_wing_alpha(actor, treatment)
+			if not alpha.is_empty():
+				check_source_alpha(actor, treatment, alpha)
+			check_identity_material(actor, treatment)
 			if not check_motion(actor, body, treatment):
 				quit(1)
 				return
 			actor.queue_free()
 			await process_frame
-		for hue in [0, 53, 0x8035]:
+		for hue in [0, recipe.get("native_hue", 53), 0x8035]:
 			var corpse := Corpses.build(body, hue)
 			assert(corpse != null and corpse.get_meta("static_cadaver"))
 			assert(corpse.get_meta("corpse_body") == body and corpse.get_meta("native_hue") == hue)
@@ -73,8 +81,11 @@ func run() -> void:
 			corpse.free()
 		Registry.entries[body] = base
 	game.free()
-	print("SPIDER AND MONGBAT: six decoded routes and six static corpse hues")
+	print("CLASSIC GESTURES: ", 3 * forms().size(), " decoded routes and static corpse hue checks")
 	quit()
+
+func check_identity_material(_actor: Node3D, _treatment: String) -> void:
+	pass
 
 func check_tracks(player: AnimationPlayer, source_path: String) -> void:
 	var base := (load(source_path) as PackedScene).instantiate()
@@ -88,18 +99,18 @@ func check_tracks(player: AnimationPlayer, source_path: String) -> void:
 			assert(before.get("tracks/%d/keys" % track) == after.get("tracks/%d/keys" % track))
 	base.free()
 
-func check_wing_alpha(actor: Node3D, treatment: String) -> void:
+func check_source_alpha(actor: Node3D, treatment: String, texture: String) -> void:
 	var mesh := actor.model.find_children("*", "MeshInstance3D", true, false)[0] as MeshInstance3D
 	var material := mesh.get_surface_override_material(0)
 	if treatment == "modern":
 		assert(material is ShaderMaterial and material.shader.resource_path.ends_with("CreatureCutoutSurface.gdshader"))
 		var alpha: Texture2D = material.get_shader_parameter("source_alpha_texture")
-		assert(alpha.resource_path.ends_with("mongbats_mongbat-original-albedo.png"))
+		assert(alpha.resource_path.get_file() == texture)
 	else:
 		assert(material is StandardMaterial3D and material.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR)
 
 func check_motion(actor: Node3D, body: int, treatment: String) -> bool:
-	var recipe: Dictionary = FORMS[body]
+	var recipe: Dictionary = forms()[body]
 	var rig: Skeleton3D = actor.skeleton
 	var player: AnimationPlayer = actor.animator
 	var mesh := actor.model.find_children("*", "MeshInstance3D", true, false)[0] as MeshInstance3D
@@ -147,4 +158,5 @@ func check_motion(actor: Node3D, body: int, treatment: String) -> bool:
 			return false
 	print(body, " ", treatment, " idle, start, min, lowest sample, planted drift and moving-joint travel ",
 		[idle_floor, start_floor, minimum, lowest_sample, drift, travel])
-	return minimum > idle_floor - 0.003 and drift < 0.001 and travel >= recipe.minimum_travel
+	return (minimum > idle_floor - 0.003 and drift < 0.001
+		and travel >= recipe.minimum_travel and travel <= recipe.get("maximum_travel", INF))

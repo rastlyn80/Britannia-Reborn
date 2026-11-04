@@ -1,6 +1,6 @@
 # Source-backed creature action queue
 
-Giant Serpent 21, the armed Skeleton 56, Ratman 42, Giant Spider 28, Mongbat 39, Harpy 30 and Reaper 47 are active alongside the UOP redirects and ready stances. The ledger has 5,197 of 6,840 action slots routable. Continue the occurrence-ordered MUL queue with the Age of Shadows Earth Elemental model and the Wraith's small slot 11 gesture. Compare the Earth Elemental's recovered fidget with slot 11, and trial a separate assembly motion for slot 12. Review the older Mongbat wing poses separately. The Mage Staff recovered during the Skeleton comparison belongs in the body 148 investigation. Keep autonomous gameplay and protocol variants separate from fixture-requested action coverage.
+The Earth Elemental's Age of Shadows model and two Classic actions are active, as is the Wraith's slot 11 with spectral rendering. The ledger has 5,200 of 6,840 action slots routable. Continue the occurrence-ordered MUL queue with Gargoyle 4's kneeling lunge and two-handed cast, then compare Air Elemental 13 and Fire Elemental 15's similar overhead and held gestures for shared motion. Check Earth Elemental emergence on slopes and ledges and verify the actual native summon separately. Review the older Mongbat wing poses separately. The Mage Staff recovered during the Skeleton comparison belongs in the body 148 investigation. Keep autonomous gameplay and protocol variants separate from fixture-requested action coverage.
 
 # Juka Lord active and Hydra source trial
 

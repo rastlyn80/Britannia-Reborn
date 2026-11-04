@@ -1,5 +1,5 @@
 """Private native-constructor/state allow-list from checked identities."""
-import argparse,hashlib,json,re,runpy,subprocess,sys
+import argparse,hashlib,json,re,runpy,subprocess,sys,zipfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 # Reviewed native declarations, each verified by its real constructor.
@@ -81,7 +81,10 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
-    if family in ('spider_mongbat', 'reaper_harpy'):
+    if family == 'earth_elemental_aos':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-earth-elemental-aos.py'))
+        return [recipe['candidate']()], {14: recipe['CLASSES']}
+    if family in ('spider_mongbat', 'reaper_harpy', 'wraith_sway'):
         recipes = {
             28: ('arachnids_spider_giant', 'AbdomenShift',
                  'c8c8752d1c88c0d050703bfa405af03e6044aa53a78d30bd8a78aea76a8943db'),
@@ -92,6 +95,9 @@ def prepared_entries(family, registry_entries=None):
                  'e7ec1461b9527155ab2224b9241573f10dcc03341480b49e767e1c1f6b880c65'),
             47: ('flails_reaper', 'TrunkBend',
                  '989d27a1410372609e3cd79b0238fed8012d57ebb290caeab9cb026775567b0c'),
+        } if family == 'reaper_harpy' else {
+            26: ('spirits_ghost', 'GhostSway',
+                 '2463baded3114d8169a50cdcd5c64d36307c9a7e76d840a5c2458bf7dbbdf107'),
         }
         entries = gesture_baseline(family, registry_entries, set(recipes))
         ledger = json.loads((ROOT / 'outputs/creatures/actions.json').read_text(encoding='utf-8'))
@@ -118,6 +124,7 @@ def prepared_entries(family, registry_entries=None):
                              authored_replacements=base.get('authored_replacements', {}) | {
                                  clip: 'Authored gesture from five-frame Classic MUL slot 11'})
             alpha_hashes = {
+                26: 'c75858973762664a4c069bb0c61b25f65f4f786bd4e8b8a180543051ff39e96e',
                 39: '0060dd037c56dd226a68c21160fefc2ebcf8b2527025783960a773a48cc15e6d',
                 47: '844b97fad8b1ef92371fd45c041e84d268cf4bf41c639e412d09b460df6c8e00',
             }
@@ -139,9 +146,25 @@ def prepared_entries(family, registry_entries=None):
                 row['presentation_script_sha256'] = sha(ROOT / 'Viewer' / visual)
                 row['clip_sources'] = base['clip_sources'] | {clip: fly}
                 row['authored_replacements'][clip] = 'Rephased recovered Harpy flight cycle with a blended seam, following Classic MUL slot 11'
+            if body == 26:
+                idle = 'uotdb/uotd/Models/Monsters/spirits_ghost_idle.grn'
+                idle_sha = '960a959a792c389b768c4aa6d9050c715f8e8273391ea56b59aea8e1d897cf3b'
+                assert base['clip_sources']['Idle'] == idle
+                with zipfile.ZipFile(ROOT / 'work/third-dawn/uotdb.zip') as archive:
+                    assert hashlib.sha256(archive.read(idle)).hexdigest() == idle_sha
+                row['clip_sources'] = base['clip_sources'] | {clip: idle}
+                row['authored_replacements'][clip] = 'Attenuated one-shot source idle sway, following Classic MUL slot 11'
+                row['native_constructor_hues'] = {'Shade': 0x4001, 'Spectre': 0x4001, 'Spellbinder': 0, 'Wraith': 0x4001}
+                visual = 'Presentation/SourceWraithVisual.gd'
+                row['presentation_script'] = f'res://{visual}'
+                row['presentation_script_sha256'] = sha(ROOT / 'Viewer' / visual)
+                shader = 'Presentation/WraithSpectralSurface.gdshader'
+                row['spectral_shader_sha256'] = sha(ROOT / 'Viewer' / shader)
             rows.append(row)
         if family == 'reaper_harpy':
             return rows, {30: ['Harpy'], 47: ['Reaper']}
+        if family == 'wraith_sway':
+            return rows, {26: ['Shade', 'Spectre', 'Spellbinder', 'Wraith']}
         return rows, {28: ['GiantSpider'], 39: ['GreaterMongbat', 'Mongbat', 'StrongMongbat']}
     if family == 'ratman_hunch':
         body = 42
@@ -655,6 +678,9 @@ def main():
                     assert all(low == high and 0x8000 < low <= 0x8071 for low, high in ranges['Provisioner'])
                 elif native_body == 21:
                     assert ranges == {'GiantSerpent': [[2001, 2018]]} and classes == ['GiantSerpent']
+                elif native_body == 14:
+                    assert ranges == {'EarthElemental': [[0, 0]], 'SummonedEarthElemental': [[0, 0]],
+                                      'PlagueSpawn': [[0x11, 0x1f]]}
                 else:
                     assert ranges == {'TsukiWolf': [[0, 0], [1801, 1908]]} and classes == ['TsukiWolf']
                 common.pop('constructor_hues', None)

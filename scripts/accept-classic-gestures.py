@@ -25,6 +25,8 @@ BATCHES = {
     'ratman_hunch': ((42,), 'PreparedCreatureActionLive.gd', ('test-classic-gesture-trials.gd',)),
     'spider_mongbat': ((28, 39), 'PreparedCreatureActionLive.gd', ('test-spider-mongbat-gestures.gd',)),
     'reaper_harpy': ((30, 47), 'PreparedCreatureActionLive.gd', ('test-reaper-harpy-gestures.gd',)),
+    'earth_elemental_aos': ((14,), 'PreparedCreatureActionLive.gd', ('test-earth-elemental-aos.gd',)),
+    'wraith_sway': ((26,), 'PreparedCreatureActionLive.gd', ('test-wraith-gesture.gd',)),
 }
 
 
@@ -116,14 +118,18 @@ def checked(index, active, batch):
     witnesses = set()
     for witness in report['records']:
         body = int(witness['body'])
-        source = by_body[body]['authored_action_reference']
-        slot = source['group'] if isinstance(source, dict) else 11
-        clip = by_body[body]['classic_action_categories'][str(slot)]
-        actions = [row for row in witness['actions'] if row['requested'] == slot]
-        if (witness['kind'] != by_body[body]['kind'] or witness['corpse_suppressed']
-                or witness['native_death_refused'] or len(actions) != 1
-                or any(actions[0][key] != clip for key in ('owner_clip', 'observer_clip'))):
-            raise ValueError(f'Missing original body, gesture, or corpse evidence for {body}')
+        package = by_body[body]
+        source = package['authored_action_reference']
+        slots = [int(slot) for slot in package.get('classic_motion_references', {})]
+        if not slots:
+            slots = [source['group'] if isinstance(source, dict) else 11]
+        if witness['kind'] != package['kind'] or witness['corpse_suppressed'] or witness['native_death_refused']:
+            raise ValueError(f'Missing original body or corpse evidence for {body}')
+        for slot in slots:
+            clip = package['classic_action_categories'][str(slot)]
+            actions = [row for row in witness['actions'] if row['requested'] == slot]
+            if len(actions) != 1 or any(actions[0][key] != clip for key in ('owner_clip', 'observer_clip')):
+                raise ValueError(f'Missing Classic gesture evidence for body {body}, slot {slot}')
         if isinstance(source, dict) and 'new_type' in source:
             matches = [row for row in witness['actions'] if row['requested'] == -5]
             if (len(matches) != 1 or any(matches[0][key] != clip for key in ('owner_clip', 'observer_clip'))

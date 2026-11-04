@@ -1,3 +1,15 @@
+# Earth Elemental and Wraith Classic actions
+
+The Age of Shadows Earth Elemental is active on body 14 at the recovered model table's 1.3 scale. The original variant retains 410 triangles and 21 joints. The rounded and modern variants use 6,560 triangles. The modern variant uses the existing pinned CC0 rock surface. Classic slot 11 uses a one-shot version of the recovered fidget. Slot 12 assembles the rocks using reversed source collapse, authored timing and a below-grade start. All three treatments passed six decoded action routes and 486 complete-skin pose checks. The emergence starts 49–92 mm below the flat test plane and returns to the source idle floor. The fidget reaches about 1.12 m of wrist travel with up to 9 mm of flat-plane penetration.
+
+The final isolated ModernUO trial passed 439 checks across Earth Elemental, Summoned Earth Elemental and the body-14 Plague Spawn. Both clients observed the two action packets, the matching clips and the native static rock-pile corpse. Plague Spawn retained its randomized constructor hue. The Summoned Earth Elemental witness covers its constructor. Actual spell summoning and summoned corpse suppression still need separate tests. Emergence on slopes and ledges also remains open.
+
+Wraith body 26 now uses a restrained version of its original idle motion for Classic slot 11. The wrist travels 19 mm, with under 0.7 mm of sampled flat-plane penetration across all three treatments. The original atlas cutout is restored. The spectral hue bit `0x4000` now selects a separate translucent shader based on the source atlas. Ordinary and partial hues continue to use the standard material route. The final two-client trial passed 583 checks across Shade, Spectre, Spellbinder and Wraith. Forward+ rendered 27 poses for the Earth Elemental and nine for the Wraith, including the Wraith's spectral treatment.
+
+The ledger has 5,200 of 6,840 action slots routable (76.0%), with 1,640 unresolved and 51 of those backed by identified original frames. The full regression covering the Giant Spider and Mongbat completed successfully. Reaper, Harpy, Earth Elemental, Wraith, Spider and Mongbat also passed their current normal-registry action checks.
+
+Reproduce Earth Elemental with `python -B scripts/prepare-earth-elemental-aos.py`, Godot `--headless --path Viewer --script res://../scripts/bake-earth-elemental-aos.gd`, then the same Python command with `--candidate`. The Wraith bake is `scripts/bake-wraith-gesture.gd`. Isolated native verification uses `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily earth_elemental_aos` or `wraith_sway`. The normal-registry gate is `python -B scripts/accept-classic-gestures.py --batch FAMILY --check-active`.
+
 # Reaper and Harpy Classic actions
 
 Both actions are active in the local registry. The regenerated ledger has 5,197 of 6,840 routable slots (76.0%). Of the 1,643 unresolved slots, 54 have identified original frame records.
@@ -10,7 +22,7 @@ Reproduce with Godot `--headless --path Viewer --script res://../scripts/bake-re
 
 The next source comparison found five distinct Wraith slot 11 frames in each direction. None matched the registered pixels of slots 1, 17 or 18. Its outer bounds move by at most one pixel in each direction over the five frames.
 
-The Earth Elemental's current Third Dawn package uses the 202-triangle mesh with internal node `elementals_agapite_elemental`. The later Age of Shadows cabinet has a different member at the same relative path, `Models/Monsters/elementals_earth_elemental_lod2.grn`. Its 410 triangles, 235 points and 21 joints produce the expected humanoid rock silhouette. Mesh SHA-256 is `3a8c74365bbce5f8316400d20f7062ece52b7e95f103324241d14a4bf6e1452e`. The private trial matched 20 tracks in each of seven clips and rendered 25 Forward+ poses. Its death scatters the original rock parts. Classic slot 11 shows an arm gesture, and slot 12 has a ground emergence in two stored directions. These still need motion comparisons, material and terrain review, and native tests before the alternate model can replace the active route.
+The Earth Elemental's previous Third Dawn package used the 202-triangle mesh with internal node `elementals_agapite_elemental`. The later Age of Shadows cabinet has a different member at the same relative path, `Models/Monsters/elementals_earth_elemental_lod2.grn`. Its 410 triangles, 235 points and 21 joints produce the expected humanoid rock silhouette. Mesh SHA-256 is `3a8c74365bbce5f8316400d20f7062ece52b7e95f103324241d14a4bf6e1452e`. The first private trial matched 20 tracks in each of seven clips and rendered 25 Forward+ poses. Its death scatters the original rock parts. Classic slot 11 shows an arm gesture, and slot 12 has a ground emergence in two stored directions.
 
 # Giant Spider and Mongbat actions active
 
