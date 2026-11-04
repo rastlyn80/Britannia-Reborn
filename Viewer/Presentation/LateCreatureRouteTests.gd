@@ -60,15 +60,7 @@ func run() -> void:
 		if prepared:
 			Registry.entries[body] = record
 		else:
-			expected.status = "validated"
-			var active := Registry.entry(body)
-			if active.has("legacy_slot11_evidence"):
-				var aliases: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(
-					"res://Presentation/legacy-late-action-aliases.json"))
-				var proof: Dictionary = aliases.get(str(body), {})
-				assert(proof == active.legacy_slot11_evidence and proof.family == family and proof.kind == record.kind)
-				expected["legacy_slot11_evidence"] = proof
-				expected["classic_action_categories"] = record.get("classic_action_categories", {}).merged({"11": "Fidget"}, true)
+			expected = preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(record, Registry.entry(body))
 		assert(Registry.supports_body(body) and Registry.entry(body) == expected)
 		var avatar := Avatar.new()
 		avatar.initial_body = body

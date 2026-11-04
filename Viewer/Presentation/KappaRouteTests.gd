@@ -18,8 +18,7 @@ func run() -> void:
 	for record: Dictionary in package.models:
 		var family := str(record.kind)
 		var body := int(record.bodies[0].body)
-		var expected_record := record.duplicate(true)
-		expected_record.status = "validated"
+		var expected_record := preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(record, Registry.entry(body))
 		assert(Registry.supports_body(body) and Registry.entry(body) == expected_record)
 		var avatar := Avatar.new()
 		avatar.initial_body = body

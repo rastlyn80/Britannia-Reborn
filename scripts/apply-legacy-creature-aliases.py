@@ -12,6 +12,19 @@ LEDGER = ROOT / 'outputs/creatures/actions.json'
 TRIAL = ROOT / 'work/creatures/legacy-aliases/candidates.json'
 DREAD_RENDERER = 'Presentation/LegacyDreadSpiderVisual.gd'
 LATE_ALIASES = ROOT / 'Viewer/Presentation/legacy-late-action-aliases.json'
+PACKAGE_TESTS = {
+    'fey_champions': 'FeyChampionRouteTests.gd',
+    'deathwatch': 'DeathwatchRouteTests.gd',
+    'tsuki_wolf': 'TsukiWolfRouteTests.gd',
+    'kappa': 'KappaRouteTests.gd',
+    'yomotsu': 'YomotsuRouteTests.gd',
+    'horde_rune': 'OccurrenceCreatureRouteTests.gd',
+    'occurrence_next': 'OccurrenceCreatureRouteTests.gd',
+    'devourer_lion_hiryu': 'DevourerLionHiryuRouteTests.gd',
+    'elemental_minotaur': 'ElementalMinotaurRouteTests.gd',
+    'meer_donors': 'MeerDonorRouteTests.gd',
+    'clockwork_tokuno': 'ClockworkTokunoRouteTests.gd',
+}
 # Each record below has exactly one body and uses the generic classic action map.
 REVIEWED = {
     77: 'krakens_kraken',
@@ -159,7 +172,8 @@ def main():
         try:
             subprocess.run(command + ['--', *flags, '--active'], env=env, check=True, timeout=90)
             for family in sorted({proof['family'] for proof in late_aliases.values()}):
-                subprocess.run(command[:-1] + ['res://Presentation/LateCreatureRouteTests.gd',
+                script = PACKAGE_TESTS.get(family, 'LateCreatureRouteTests.gd')
+                subprocess.run(command[:-1] + [f'res://Presentation/{script}',
                                               '--', f'--family={family}'],
                                env=env, check=True, timeout=45)
         except (subprocess.SubprocessError, OSError):

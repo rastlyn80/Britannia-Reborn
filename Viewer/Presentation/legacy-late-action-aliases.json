@@ -76,5 +76,161 @@
     "kind": "yamandon",
     "sibling": 18,
     "payload_signature": "e96076b766d32fc5550d745d3c8798cc8633b3fc141f71044f2f1c0c433945a2"
+  },
+  "174": {
+    "family": "fey_champions",
+    "kind": "succubi_succubus",
+    "sibling": 17,
+    "payload_signature": "7581c53d93c39e2ab3b7d66826e2a4d5cc057245459d78dc48d49abe7fd6d076"
+  },
+  "175": {
+    "family": "fey_champions",
+    "kind": "ethereal_warriors_male",
+    "sibling": 17,
+    "payload_signature": "e7fd9be5c7af17f1c90fc03165b22b6423a92c13e6e0dff7b9f72f22775b9528"
+  },
+  "176": {
+    "family": "fey_champions",
+    "kind": "fey_race_pixie",
+    "sibling": 17,
+    "payload_signature": "e4abf04ca9ec4a40e650afed56cf2e96970db80b5fc03270546d4c87ca31f7dd"
+  },
+  "756": {
+    "family": "clockwork_tokuno",
+    "kind": "clockwork_overseer",
+    "sibling": 17,
+    "payload_signature": "77bab6b9ac3ecbf58400daeac4b975746078166d8ca993562fceef5450884387"
+  },
+  "757": {
+    "family": "clockwork_tokuno",
+    "kind": "clockwork_minion",
+    "sibling": 17,
+    "payload_signature": "a807769e856adca38ed004bee4b275f7e226ca0f1fdbe9cf17f17db51cb77785"
+  },
+  "770": {
+    "family": "meer_donors",
+    "kind": "meer_mage",
+    "sibling": 17,
+    "payload_signature": "35590b18175879372f5f246c6e702abb083255b8e5e6f400235e1bfc82a011fd"
+  },
+  "771": {
+    "family": "meer_donors",
+    "kind": "meer_warrior",
+    "sibling": 17,
+    "payload_signature": "52064c0a7e5077236db7e6829ea51beb08de2b85bd12a414bc53496a0c446303"
+  },
+  "772": {
+    "family": "elemental_minotaur",
+    "kind": "npc_adranath",
+    "sibling": 17,
+    "payload_signature": "2b99fdc4aef5317b38d7eed87a6d1a1c0a73a87b210bac99c94bc0860e8bf07d"
+  },
+  "773": {
+    "family": "meer_donors",
+    "kind": "npc_cpt_dasha",
+    "sibling": 17,
+    "payload_signature": "316ec73c31ce28f21a0b3c964f9c49a67fc187b22d2a22e2f8ccb5fb0f7ad993"
+  },
+  "789": {
+    "family": "elemental_minotaur",
+    "kind": "quagmire",
+    "sibling": 17,
+    "payload_signature": "f3c0ccae325a3fc48b7446a481db8c753a5a6de0cc0c0d55e27494619df4f411"
+  },
+  "300": {
+    "family": "elemental_minotaur",
+    "kind": "crystal_elemental",
+    "sibling": 17,
+    "payload_signature": "438ed498be4d68657cfda457df1ed8eced4699f0fecdf7f6a6f3c9fcccb6346d"
+  },
+  "304": {
+    "family": "clockwork_tokuno",
+    "kind": "flesh_golem",
+    "sibling": 17,
+    "payload_signature": "15cbff4f765aba5fe2182b72c4c5b7c87f83bdf377f05808dff8d6aa35832001"
+  },
+  "305": {
+    "family": "elemental_minotaur",
+    "kind": "gore_fiend",
+    "sibling": 17,
+    "payload_signature": "9504212761e5c6b253250fd06b5e796f8be88d3d3be7e89203285905ceb85faa"
+  },
+  "309": {
+    "family": "occurrence_next",
+    "kind": "patchskeleton",
+    "sibling": 17,
+    "payload_signature": "bc89aa78bc44d2a3a42a8749b96dcbef78113b3b303b107a3bf01f3f4f798ee5"
+  },
+  "310": {
+    "family": "clockwork_tokuno",
+    "kind": "wailingbanshee",
+    "sibling": 17,
+    "payload_signature": "dccb8a316039cab4bea7493c0d06c255e3852b740a6ee7c61710ab082301fb3f"
+  },
+  "240": {
+    "family": "kappa",
+    "kind": "kappa",
+    "sibling": 18,
+    "payload_signature": "e599389ae35fa18cd3d5b1c7a3e735c31e2558b6caea3ea99fc852032b0e6a13"
+  },
+  "241": {
+    "family": "elemental_minotaur",
+    "kind": "oni",
+    "sibling": 18,
+    "payload_signature": "f9bfa6ebbb3ad95004a9c7c5b35050b6f9b0c4c4fc7e1e45f6728e4f987b902f"
+  },
+  "242": {
+    "family": "deathwatch",
+    "kind": "bimbobushi",
+    "sibling": 18,
+    "payload_signature": "f819a97aab82ad1104604691ef0957c2d3ff662d9f9058597ad9479d38e55d97"
+  },
+  "244": {
+    "family": "horde_rune",
+    "kind": "rune_beetle",
+    "sibling": 18,
+    "payload_signature": "a0a61777e01678274784fb2cf8569edd2c76181b3bee92fc8cb91488eb5d6701"
+  },
+  "245": {
+    "family": "yomotsu",
+    "kind": "yomotsu_warrior",
+    "sibling": 18,
+    "payload_signature": "5490b968097fb4d6744fcac39ff4b4eafb3ee3b91e9af6b982916f0b2d71ef75"
+  },
+  "247": {
+    "family": "occurrence_next",
+    "kind": "fan_dancer",
+    "sibling": 18,
+    "payload_signature": "c3e3c327679dfe3c53d6598d2ded6605bfadd232b442ff4db3f0815ff86a692c"
+  },
+  "250": {
+    "family": "tsuki_wolf",
+    "kind": "tri_wolf",
+    "sibling": 18,
+    "payload_signature": "c4d364df3c1b0ccfe643df31f1f54e5095a4b0e176113a3a8500c641f0668999"
+  },
+  "251": {
+    "family": "devourer_lion_hiryu",
+    "kind": "vampyric_beast",
+    "sibling": 18,
+    "payload_signature": "2649f68642e9224932688cf27e0545ffb4b09e4b54791fca7347f80ceee38ac9"
+  },
+  "252": {
+    "family": "clockwork_tokuno",
+    "kind": "lady_of_the_snow",
+    "sibling": 18,
+    "payload_signature": "764509f1467781611db77023fc9ea26e5a3701e8a49638f327b28e0ba605f304"
+  },
+  "253": {
+    "family": "yomotsu",
+    "kind": "yomotsu_priest",
+    "sibling": 18,
+    "payload_signature": "0483244c32059f47902d37435a7f703bd8ff540662f0cdd4ca41fd19dcaf320b"
+  },
+  "255": {
+    "family": "yomotsu",
+    "kind": "yomotsu_elder",
+    "sibling": 18,
+    "payload_signature": "f5671d943bd1b6aca9b2be7128886c245d9ff5036d1cda29d3b4e8c69508d7e3"
   }
 }

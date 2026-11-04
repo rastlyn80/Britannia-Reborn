@@ -22,6 +22,9 @@ func run() -> void:
 		if prepared:
 			Registry.entries[body] = record
 		assert(Registry.supports_body(body) and Registry.entry(body).kind == family)
+		var active := Registry.entry(body)
+		if active.has("legacy_slot11_evidence"):
+			assert(active == preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(record, active))
 		var avatar := Avatar.new()
 		avatar.initial_body = body
 		root.add_child(avatar)

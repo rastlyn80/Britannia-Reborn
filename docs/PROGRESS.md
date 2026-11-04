@@ -1,3 +1,7 @@
+# Expanded legacy action aliases
+
+Twenty-six additional exact aliases are active. The expanded receipt passed 78 decoded packet checks and 19 normal package suites while preserving their original asset and identity checks. Deathwatch Beetle and Deathwatch Beetle Hatchling passed 319 isolated native checks, with both clients selecting Fidget for slot 11. There are now 53 active exact aliases and 16 remaining in packages with separate publication receipts.
+
 # Recovered-package legacy aliases
 
 Thirteen additional classic slot 11 aliases are active across eight recovered creature packages. The tracked action receipt identifies each body, package and byte-identical source sibling. Activation verifies the five directional payload hashes, tests the candidate and active avatar paths, and reruns all eight normal package suites. The package and native-fixture checks compare the complete original package plus the approved action receipt and route. They reject other differences. Reproduce with `python -B scripts/apply-legacy-creature-aliases.py --late-packages --activate` after rebuilding the action ledger.

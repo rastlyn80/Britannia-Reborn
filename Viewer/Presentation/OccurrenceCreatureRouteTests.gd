@@ -26,6 +26,9 @@ func run() -> void:
 			Registry.entries[body] = record
 		assert(Registry.supports_body(body), family + " missing normal body route")
 		assert(Registry.entry(body).get("kind") == family)
+		var active := Registry.entry(body)
+		if active.has("legacy_slot11_evidence"):
+			assert(active == preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(record, active))
 		var avatar := Avatar.new()
 		avatar.initial_body = body
 		root.add_child(avatar)
