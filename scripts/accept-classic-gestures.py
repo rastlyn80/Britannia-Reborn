@@ -34,6 +34,7 @@ BATCHES = {
                       ('test-dragon-daemon-gestures.gd',)),
     'terathan_classic': ((70, 71, 72), 'PreparedCreatureActionLive.gd', ('test-terathan-gestures.gd',)),
     'ophidian_staff': ((85, 87), 'PreparedCreatureActionLive.gd', ('test-ophidian-staff-gestures.gd',)),
+    'fidget_aliases_toad': ((67, 80, 149), 'PreparedCreatureActionLive.gd', ('test-fidget-aliases-toad.gd',)),
 }
 
 

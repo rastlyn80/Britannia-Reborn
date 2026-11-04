@@ -103,28 +103,64 @@ def registered_pixels(frames):
     return result
 
 
+def group_pixels(data, row):
+    return {entry['direction']: registered_pixels(read_direction(data, row, entry))
+            for entry in row['directions']}
+
+
 def compare_groups(data, ledger, body, groups):
     signatures = []
     for group in groups:
         row, = (row for row in ledger['original_mul_group_candidates']
                 if (row['body'], row['group']) == (body, group) and 'matching_classic_route' in row)
-        signatures.append({entry['direction']: registered_pixels(read_direction(data, row, entry))
-                           for entry in row['directions']})
+        signatures.append(group_pixels(data, row))
     if any(signature != signatures[0] for signature in signatures[1:]):
         raise ValueError(f'Body {body} groups {groups} differ in pixels, placement, direction, or frame order')
     print(f'Body {body}: groups {groups} have identical ordered pixels across {len(signatures[0])} directions')
 
 
+def scan_aliases(data, ledger, bodies):
+    by_body = {}
+    for row in ledger['original_mul_group_candidates']:
+        if 'matching_classic_route' in row:
+            by_body.setdefault(row['body'], {})[row['group']] = row
+    for gap in ledger['source_frame_gaps']:
+        body, slot = gap['body'], gap['classic_slot']
+        if bodies and body not in bodies:
+            continue
+        groups = by_body.get(body, {})
+        row = groups.get(slot)
+        if not row or row['mobtype_prefers_uop'] or len(row['directions']) != 5:
+            continue
+        original = group_pixels(data, row)
+        counts = {direction: len(frames) for direction, frames in original.items()}
+        for donor, candidate in groups.items():
+            clip = candidate['matching_classic_route']['resolved']
+            if (clip and not candidate['mobtype_prefers_uop']
+                    and {d['direction']: d['frames'] for d in candidate['directions']} == counts
+                    and group_pixels(data, candidate) == original):
+                print(f'Body {body}: group {slot} matches routed group {donor} ({clip}) in all five directions')
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('bodies', nargs='+', type=int)
+    parser.add_argument('bodies', nargs='*', type=int)
     parser.add_argument('--groups', nargs='+', type=int, help='Default: unresolved source-backed slots')
-    parser.add_argument('--compare', action='store_true', help='Compare registered frames in all stored directions')
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument('--compare', action='store_true', help='Compare registered frames in all stored directions')
+    mode.add_argument('--scan-aliases', action='store_true', help='Find exact matches for unresolved Classic MUL groups')
     parser.add_argument('--direction', type=int, choices=range(5), default=2)
     args = parser.parse_args()
     ledger = read(LEDGER)
     config = read(ROOT / 'Server/runtime/Configuration/modernuo.json')
     data = Path(config['dataDirectories'][0])
+    if args.scan_aliases:
+        if args.groups:
+            parser.error('--scan-aliases accepts optional bodies but no --groups')
+        scan_aliases(data, ledger, set(args.bodies))
+        return
+    if not args.bodies:
+        parser.error('provide at least one body or use --scan-aliases')
     if args.compare:
         if len(args.bodies) != 1 or not args.groups or len(set(args.groups)) < 2:
             parser.error('--compare requires one body and at least two distinct --groups')

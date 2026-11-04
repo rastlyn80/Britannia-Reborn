@@ -1,3 +1,11 @@
+# Stone Gargoyle, Giant Toad and Succubus Classic gestures
+
+Three Classic group 11 routes are active. Stone Gargoyle 67 and Succubus 149 use their existing recovered Fidget. Classic groups 11 and 17 in `anim2.mul` have identical ordered visible pixels and placement in all five directions for both bodies. Giant Toad 80 uses a new short throat and tongue movement on its recovered idle, based on the five-frame `anim.mul` reference. The recovered body, rig and existing animation keys are retained.
+
+The active client gate passed 15 decoded action routes and nine static corpse hue cases. Across 91 samples per treatment the toad head moved 14.2–14.7 mm, the tongue moved 7.6–7.9 mm and the skin reached up to 3.3 mm below the flat test plane. The isolated ModernUO run passed 621 checks across two clients and four native constructors, including Szavetra. These fixtures request actions explicitly. The ledger routes 5,237 of 6,840 protocol slots. Fifteen of the 1,603 unresolved slots have identified original frames.
+
+Use `.tools/pyenv/Scripts/python.exe scripts/inspect-creature-mul-frames.py --scan-aliases` to find exact matches for unresolved Classic MUL groups. To reproduce the two comparisons after activation, run the inspector for body 67 and then 149 with `--groups 11 17 --compare`. Bake with Godot `--headless --path Viewer --script res://../scripts/bake-fidget-aliases-toad.gd`, run `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily fidget_aliases_toad`, and check `python -B scripts/accept-classic-gestures.py --batch fidget_aliases_toad --check-active`.
+
 # Ophidian Mage and Matriarch Classic actions
 
 Four added routes are active. Ophidian Mage and Archmage body 85 use the exact 62-triangle Third Dawn staff on the original right grasp, with a dip, two-handed held cast and forward release. The casting effects follow the staff tip. Matriarch body 87 uses an unarmed torso and tail dip. Its measured head drop is approximately 14 cm. Existing body motion keys are retained.

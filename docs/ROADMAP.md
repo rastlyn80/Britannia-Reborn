@@ -1,6 +1,6 @@
 # Source-backed creature action queue
 
-Terathan and Ophidian Mage and Matriarch are active. The ledger has 5,234 of 6,840 action slots routable. Bone Knight 57 and Cyclops 75 lead the remaining source-backed Trammel occurrence queue. Bone Knight's five-frame dip shows a scimitar and wooden shield, matching its native loot types. The original prop meshes have been identified. Fit both grips without altering native loot. Continue with Succubus, Giant Toad, Stone Gargoyle and the skeletal casters. Keep autonomous spell selection and continuous terrain clearance separate from fixture-requested routes. Earth Elemental emergence on slopes and ledges, the native summon and the older Mongbat wing poses remain separate follow-ups.
+Stone Gargoyle, Giant Toad and Succubus are active. The ledger has 5,237 of 6,840 action slots routable, with original frames identified for 15 remaining gaps. Bone Knight 57 and Cyclops 75 lead the remaining source-backed Trammel occurrence queue. Both pass a prepared native trial. The shield and mallet still show sampled crossings between fitted poses, so their routes remain in review. Four further gaps have exact same-body fidget matches in all five stored directions (146, 157, 173 and 777). Reuse those source motions while the armed routes are refined. Keep autonomous spell selection and continuous terrain clearance separate from fixture-requested routes. Earth Elemental emergence on slopes and ledges, the native summon and the older Mongbat wing poses remain separate follow-ups.
 
 # Juka Lord active and Hydra source trial
 
