@@ -1,3 +1,13 @@
+# Whipping Vine, Gaman, Chicken and Sewer Rat
+
+The isolated ModernUO trial passed 319 checks for the exact Whipping Vine 8 and Sewer Rat 238 constructors. Whipping Vine walks and runs with the existing body 8 model and carries native hue `0x851`. Sewer Rat uses the existing body 238 model and constructor hue zero. Both clients saw the native hit action and the static corpse for each class. The first trial stopped at the hit check. A traced repeat confirmed Classic group 10 for Whipping Vine and group 7 for Sewer Rat on both clients.
+
+Gaman 248 maps groups 9 and 10 to the recovered Fidget and Alert tracks from the Mondain's Legacy 3D client. All three original scene treatments stay byte-identical. The active route passed 366 decoded pose samples and the original package verification after 163 isolated native checks. Chicken 208 uses distinct retained peck and idle gestures, plus an authored rear strike and seated fall on the existing independently licensed rig. It passed 219 isolated native checks. The installed package passed 817 clean-install checks with 189 complete skin samples and nine decoded corpse handoffs on flat terrain and two slopes. The alternate handoff preserves its displayed root position, pose and playback phase. Both action updates are active locally.
+
+Deathwatch Beetle 242 groups 11 and 18 match in all five stored directions and still share the recovered fidget. Groups 15 and 16 differ in their registered pixels and silhouettes, so they now have separate recoils. Group 17 has a rearing fidget. The adult and hatchling passed 403 isolated native checks. The active renderer passed 738 reaction samples and nine corpse handoffs across 369 falls sampled on flat ground and two slopes. The original package check passed eight decoded actions and three corpse hues with the overlay active.
+
+The rebuilt catalogue routes 5,340 of 6,930 protocol slots (77.1%). Shared Classic replacement pairs fell from 686 to 676, and the count of witnessed native body-and-constructor pairs rose from 319 to 321. The static catalogue passed 2,431 checks across 324 body IDs. The previous six-creature release passed the full regression and was pushed to GitHub main as `1b7cdad8`.
+
 # Alligator, Fire Elemental and Lich actions
 
 Alligator 202 keeps the recovered belly-down collapse for Classic group 12 and uses a fitted side roll for group 8. It also gains an alert, a jaw lunge and a slow look. Lich 24 keeps its recovered backward fall and gains a forward fall, staff stagger, hand guard, staff brace and staff shift. Its existing Cast and newer type-14 Pillage routes still resolve. The existing modern staff stays visible through death. The static handoff uses the lowest visible vertex of the body and staff together.

@@ -1,0 +1,9 @@
+{
+  "license": "GPL-3.0-or-later, independently authored motions on the CC0 CDmir hen rig",
+  "source": "chicken.glb",
+  "source_sha256": "bd8d4c657eff1afefb78e3815cf051930439a8c3572bc422b9e93f239c4a045a",
+  "animation_library_sha256": "f4dfcc28d60ed15c820ff1bc30bf91ccb1230a5ce0fadd6e7d7a82badf4d8158",
+  "recipe_sha256": "4ba4c2a564cd29266361d06dee22d2505c2d38cb04fe18e6c2cec24d918e8a7f",
+  "native_report_sha256": "d76b99556dcc9679a47c394b8c6a085864514f6f1bb778f0b59f775bc5f3b058",
+  "scope": "Two independently fitted animations. The existing mesh, rig, textures and source clips remain intact."
+}

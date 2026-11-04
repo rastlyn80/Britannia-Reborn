@@ -6,7 +6,6 @@ const Game = preload("res://Network/GameSession.gd")
 const Wire = preload("res://Network/LoginProtocol.gd")
 const Corpses = preload("res://Presentation/CorpseModels.gd")
 const PACKAGE := "res://local-art/creatures/deathwatch/preparation.json"
-const MONSTER := {4:"Attack", 10:"Hit", 17:"Fidget", 2:"Death"}
 
 func _initialize() -> void:
 	create_timer(30.0).timeout.connect(func(): quit(2))
@@ -18,8 +17,17 @@ func run() -> void:
 	for record: Dictionary in package.models:
 		var family := str(record.kind)
 		var body := int(record.bodies[0].body)
-		var expected_record := preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(record, Registry.entry(body))
-		assert(Registry.supports_body(body) and Registry.entry(body) == expected_record)
+		var active := Registry.entry(body)
+		var expected_record := preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(record, active)
+		var extended: bool = active.get("classic_gesture_batch") == "deathwatch_gestures"
+		assert(Registry.supports_body(body))
+		if extended:
+			assert(active.classic_gesture_base_assets == expected_record.assets)
+			assert(active.bodies == expected_record.bodies and active.legacy_slot11_evidence == expected_record.legacy_slot11_evidence)
+			for treatment: String in expected_record.assets:
+				assert(FileAccess.get_sha256(expected_record.assets[treatment]) == expected_record.asset_sha256[treatment])
+		else:
+			assert(active == expected_record)
 		var avatar := Avatar.new()
 		avatar.initial_body = body
 		root.add_child(avatar)
@@ -34,7 +42,8 @@ func run() -> void:
 		root.add_child(game)
 		game.set_process(false)
 		game.entities[serial] = entity
-		var actions := {0:"Walk",1:"Idle",4:"Attack",5:"Attack2",6:"Attack3",10:"Hit",17:"Fidget",3:"Death2"}
+		var actions := {0:"Walk",1:"Idle",4:"Attack",5:"Attack2",6:"Attack3",10:"Hit",
+			17:"RearingFidget" if extended else "Fidget",3:"Death2"}
 		for group: int in actions:
 			var packet := PackedByteArray([0x6e])
 			packet.append_array(Wire.uint_be(serial, 4))

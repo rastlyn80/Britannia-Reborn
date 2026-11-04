@@ -3,3 +3,4 @@ https://lpc.opengameart.org/content/chicken-animated
 https://lpc.opengameart.org/sites/default/files/chicken_0.zip
 Exact original notice and archive/member pins: provenance.json and scripts/chicken-inputs.json.
 Project B-Bone conversion, authored Run/Attack/Hit/category timings, common-root motion, shaders and code: GPL-3.0-or-later. No Ultima Online artwork included.
+The rear strike and seated fall in distinct-actions.res are independently authored project motions on the existing CC0 hen rig, GPL-3.0-or-later. Exact resource and recipe hashes are in distinct-actions-provenance.json.

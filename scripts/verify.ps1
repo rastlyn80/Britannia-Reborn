@@ -349,6 +349,10 @@ if (Test-Path "$root/Viewer/Art/Creatures/Fire/fire-elemental.scn") {
   if ($LASTEXITCODE) {throw 'Public FireElemental rig/actions, static ash and transient death cleanup distribution failed'}
 }
 if (Test-Path "$root/Viewer/Art/Creatures/Chicken/chicken.glb") {
+  if (Test-Path "$root/Viewer/Art/Creatures/Chicken/distinct-actions.res") {
+    & python -B "$root/scripts/prepare-chicken-distinct-actions.py" --check-public
+    if ($LASTEXITCODE) {throw 'Public Chicken distinct routes or terrain corpse transitions failed'}
+  }
   & python -B "$root/scripts/test-chicken-distribution.py"
   if ($LASTEXITCODE) {throw 'Public Chicken source motions, authored gaits, PBR maps, skin bounds and cadaver distribution failed'}
 }

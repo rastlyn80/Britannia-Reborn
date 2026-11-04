@@ -83,6 +83,9 @@ BATCHES = {
     'fire_distinct_actions': ((15,), 'PreparedClassicActionsLive.gd', ()),
     'alligator_lich_actions': ((202, 24), 'FieldFaunaLive.gd',
                               ('test-alligator-lich-actions.gd', 'test-alligator-lich-landings.gd')),
+    'gaman_gestures': ((248,), 'PreparedClassicActionsLive.gd', ('test-gaman-gestures.gd',)),
+    'chicken_distinct_actions': ((208,), 'FieldFaunaLive.gd', ()),
+    'deathwatch_gestures': ((242,), 'PreparedClassicActionsLive.gd', ('test-deathwatch-terrain.gd',)),
     'scorpion_headless_actions': ((48, 31), 'FieldFaunaLive.gd',
                                  ('test-scorpion-headless-actions.gd', 'test-scorpion-headless-landings.gd')),
     'skeleton_actions': ((50, 56), 'PreparedClassicActionsLive.gd', ('test-skeleton-actions.gd',)),
@@ -107,6 +110,8 @@ PREDECESSORS = {
     'earth_gazer_imp_actions': ('earth_elemental_aos', 'scorpion_imp'),
     'scorpion_headless_actions': ('scorpion_imp',),
     'alligator_lich_actions': (),
+    'gaman_gestures': (),
+    'deathwatch_gestures': (),
     'skeleton_actions': ('skeleton_axe',),
 }
 
@@ -127,6 +132,10 @@ def compose(base, prepared, native_sha):
     if prepared['family'] == 'exact_creature_fidgets':
         return dict(base, classic_action_categories=prepared['classic_action_categories'],
                     legacy_slot11_evidence=prepared['legacy_slot11_evidence'])
+    if prepared['family'] == 'gaman_gestures':
+        return dict(base, classic_action_categories=prepared['classic_action_categories'],
+                    classic_motion_references=prepared['classic_motion_references'],
+                    classic_gesture_batch=prepared['family'], classic_gesture_native_sha256=native_sha)
     assets = base.get('assets', {
         name: f"res://local-art/creatures/{base['kind']}-{name}.gltf"
         for name in prepared['assets']
@@ -337,7 +346,8 @@ def checked(index, active, batch, *, compare_registry=True):
                           'grazers_grizzly_actions', 'pig_reaper_harpy_actions', 'rabbit_distinct_actions',
                           'serpent_ogre_actions', 'zombie_corpser_gargoyle_actions', 'earth_gazer_imp_actions',
                           'wisp_distinct_actions', 'air_distinct_actions', 'scorpion_headless_actions',
-                          'alligator_lich_actions', 'fire_distinct_actions') or
+                          'alligator_lich_actions', 'fire_distinct_actions', 'gaman_gestures',
+                          'chicken_distinct_actions', 'deathwatch_gestures') or
                     slot in package.get('native_extra_classic_actions', [])) and any(
                     actions[0][key]['protocol'] != 'classic' or actions[0][key]['action'] != slot
                     for key in ('owner_packet', 'observer_packet')):
@@ -444,7 +454,7 @@ def main():
     previous = INDEX.read_bytes()
     index = read(INDEX)
     if batch in ('cat_actions', 'rabbit_distinct_actions', 'wisp_distinct_actions', 'air_distinct_actions',
-                 'fire_distinct_actions'):
+                 'fire_distinct_actions', 'chicken_distinct_actions'):
         if args.activate or args.check_active:
             parser.error('Use the public animal preparation recipe for installation and verification')
         index = read(ROOT / 'Viewer/Art/Creatures/index.json')

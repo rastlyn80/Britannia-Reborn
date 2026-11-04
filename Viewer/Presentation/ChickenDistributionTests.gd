@@ -43,7 +43,13 @@ func run() -> void:
 			check(actual_pick.grow(.001).encloses(box),"Actual public picking volume resizes and contains the animated source skin")
 			if clip=="Run" and box.position.y>.01:airborne+=1
 			samples+=1
-	check(samples==171 and airborne>=2,"All nineteen saved categories and positive running clearance measured")
+	var distinct: bool = record.has("additional_animation_library")
+	check(samples==(189 if distinct else 171) and airborne>=2,"All saved categories and positive running clearance measured")
+	if distinct:
+		for slot: int in [4, 5, 6, 8, 9, 10, 12]:
+			visual.dead = false
+			check(visual.receive_action({"protocol": "classic", "action": slot, "frames": 5}) and
+				visual.current_clip == record.classic_action_categories[str(slot)], "Distinct public Classic route %d" % slot)
 	for speed in [1.8,6.8]:
 		visual.dead=false;visual.action_remaining=0.;actor.animate(true,0.,1./60.,speed);var clip: String="Walk" if speed<3.6 else "Run";check(visual.current_clip==clip and visual.animator.get_animation(clip).loop_mode==Animation.LOOP_LINEAR and visual.animator.speed_scale<4.,"Actual public avatar selects unclamped calibrated looping gait")
 	actor.free()

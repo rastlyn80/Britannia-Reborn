@@ -29,14 +29,15 @@ def check_base_receipt(name, recorded, current):
 def expected_rows_with_legacy_aliases(rows, active):
     active_by_kind = {row['kind']: row for row in active}
     expected = [expected_with_legacy_alias(row, active_by_kind.get(row['kind'], {})) for row in rows]
-    grizzle = active_by_kind.get('monstrousinterredgrizzle', {})
-    if grizzle.get('classic_gesture_native_sha256') and any(row['kind'] == grizzle['kind'] for row in expected):
-        gate = runpy.run_path(str(Path(__file__).with_name('accept-classic-gestures.py')))
-        base, overlays = gate['checked']({'entries': active}, True, 'grizzle_antler')
-        original, = (row for row in expected if row['kind'] == grizzle['kind'])
-        if base != [original] or overlays != [grizzle]:
-            raise ValueError('Interred Grizzle action overlay no longer matches the verified base package')
-        expected = [grizzle if row == original else row for row in expected]
+    for kind, batch in (('monstrousinterredgrizzle', 'grizzle_antler'), ('wild_guar', 'gaman_gestures')):
+        overlay = active_by_kind.get(kind, {})
+        if overlay.get('classic_gesture_native_sha256') and any(row['kind'] == kind for row in expected):
+            gate = runpy.run_path(str(Path(__file__).with_name('accept-classic-gestures.py')))
+            base, overlays = gate['checked']({'entries': active}, True, batch)
+            original, = (row for row in expected if row['kind'] == kind)
+            if base != [original] or overlays != [overlay]:
+                raise ValueError(f'{kind} action overlay no longer matches the verified base package')
+            expected = [overlay if row == original else row for row in expected]
     return expected
 
 

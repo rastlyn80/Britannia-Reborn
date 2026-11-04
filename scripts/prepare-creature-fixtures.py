@@ -25,6 +25,12 @@ SOURCE_COVERAGE_CLASSES = {
     'source_coverage_loose_mounts': {794: ['SwampDragon'], 799: ['ScaledSwampDragon'],
                                      187: ['Ridgeback'], 188: ['SavageRidgeback']},
 }
+SHARED_BODY_CONSTRUCTORS = {
+    8: ('WhippingVine', 0x851, 'Projects/UOContent/Mobiles/Monsters/Plant/Melee/WhippingVine.cs',
+        '1d6c7169c44784877f20cab3868e1e1d6e74e6cb755929d5efc5f2bae3f0dd71'),
+    238: ('SewerRat', 0, 'Projects/UOContent/Mobiles/Animals/Rodents/SewerRat.cs',
+          '165e9721f447b4050e144dc787b8ab57ef0036adcb7a7ba1a3183e9fa6156ed0'),
+}
 
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -93,6 +99,8 @@ def prepared_entries(family, registry_entries=None):
         return runpy.run_path(str(ROOT / 'scripts/prepare-air-distinct-actions.py'))['prepared'](registry_entries)
     if family == 'fire_distinct_actions':
         return runpy.run_path(str(ROOT / 'scripts/prepare-fire-distinct-actions.py'))['prepared'](registry_entries)
+    if family == 'chicken_distinct_actions':
+        return runpy.run_path(str(ROOT / 'scripts/prepare-chicken-distinct-actions.py'))['prepared'](registry_entries)
     if family == 'skeleton_actions':
         rows = gesture_baseline(family, registry_entries, {50, 56}, layered=True)
         return runpy.run_path(str(ROOT / 'scripts/prepare-skeleton-actions.py'))['prepared'](rows)
@@ -111,7 +119,7 @@ def prepared_entries(family, registry_entries=None):
     if family in ('occurrence_deaths', 'kraken_reactions', 'dog_bear_actions', 'troll_actions', 'field_fauna',
                   'spider_mongbat_actions', 'grazers_grizzly_actions', 'pig_reaper_harpy_actions',
                   'serpent_ogre_actions', 'zombie_corpser_gargoyle_actions', 'earth_gazer_imp_actions',
-                  'scorpion_headless_actions', 'alligator_lich_actions'):
+                  'scorpion_headless_actions', 'alligator_lich_actions', 'gaman_gestures', 'deathwatch_gestures'):
         recipe = runpy.run_path(str(ROOT / ('scripts/prepare-' + family.replace('_', '-') + '.py')))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
         return recipe['prepared'](rows)
@@ -934,6 +942,7 @@ def main():
                 row['legacy_slot11_evidence'] = proof
                 row['classic_action_categories'] = row.get('classic_action_categories', {}) | {'11': 'Fidget'}
         action = {'late_donors_active': (831, 'parrot_flight'),
+                  'deathwatch_active': (242, 'deathwatch_gestures'),
                   'champions_active': (172, 'late_classic_actions'),
                   'devourer_lion_hiryu_active': (303, 'late_classic_actions'),
                   'aos_armed_active': (311, 'late_classic_actions'),
@@ -959,6 +968,15 @@ def main():
     # Match CreatureRegistry's validated, last-record-wins precedence. A local
     # revision of a public body must produce one native fixture, not twins.
     owners={int(body['body']):entry for entry in index['entries'] if entry.get('status') in states for body in entry['bodies']}
+    if args.family == 'shared_body_constructors':
+        assert not args.prepared
+        for body, (name, hue, source, digest) in SHARED_BODY_CONSTRUCTORS.items():
+            assert sha(ROOT / 'Server/ModernUO' / source) == digest
+            entry = owners[body]
+            identity, = (item for item in entry['bodies'] if item['body'] == body)
+            rows.append({'body': body, 'classes': [name], 'native_class': name, 'kind': entry['kind'],
+                         'profile': identity.get('native_profile') or entry['profile'],
+                         'constructor_hues': {name: hue}, 'source_art_status': entry['status']})
     for entry in index['entries']:
         if entry.get('status') not in states:continue
         if coverage_classes:

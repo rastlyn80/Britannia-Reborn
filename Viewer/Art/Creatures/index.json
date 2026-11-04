@@ -3616,6 +3616,12 @@
               "origin": "Authored .64s beak strike assembled from retained BeginPecking/Pecking3/EndPecking; not original UO choreography",
               "duration": 0.64,
               "loop": false
+            },
+            "RearStrike": {
+              "authored": true
+            },
+            "Death2": {
+              "authored": true
             }
           }
         },
@@ -3717,6 +3723,12 @@
               "origin": "Authored .64s beak strike assembled from retained BeginPecking/Pecking3/EndPecking; not original UO choreography",
               "duration": 0.64,
               "loop": false
+            },
+            "RearStrike": {
+              "authored": true
+            },
+            "Death2": {
+              "authored": true
             }
           }
         }
@@ -3740,7 +3752,9 @@
         "Fidget": "Retained Idle1 with declared category/timing adaptation",
         "Eat": "Retained Eating with declared category/timing adaptation",
         "Hit": "Authored 3.5cm backward/6mm upward common-root recoil over retained Idle2; relative source joints unchanged",
-        "Attack": "Authored .64s beak strike assembled from retained BeginPecking/Pecking3/EndPecking; not original UO choreography"
+        "Attack": "Authored .64s beak strike assembled from retained BeginPecking/Pecking3/EndPecking; not original UO choreography",
+        "RearStrike": "Authored rear and forward strike with a raised foot",
+        "Death2": "Authored seated collapse with separately folded legs"
       },
       "loop_categories": [
         "SourceEating",
@@ -3785,7 +3799,126 @@
       "recipe_sha256": "99e24105f925f5a0b177de32a2c006e389773513906877650872b15a2eddd8d5",
       "action_recipe_sha256": "3df1e02c5e832a481fa8cc8b89a4860d935814ca5bb7e305f3e15676a38ffed0",
       "source_pin_sha256": "305c6a4a67f7544186f34a5424c5181896274c855bcea050851302f81f173157",
-      "native_validation": "Actual native Chicken208 constructor on both owners; repeat installed public route"
+      "native_validation": "Actual native Chicken208 constructor on both owners; repeat installed public route",
+      "additional_animation_library": "res://Art/Creatures/Chicken/distinct-actions.res",
+      "classic_action_categories": {
+        "4": "SourcePecking2",
+        "5": "Attack",
+        "6": "RearStrike",
+        "8": "Death",
+        "9": "Fidget",
+        "10": "SourceIdle2",
+        "12": "Death2"
+      },
+      "classic_motion_references": {
+        "4": {
+          "body": 208,
+          "group": 4,
+          "archive": "anim.mul",
+          "graphic": 208,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 3,
+          "directional_payload_sha256": "58a2ade5b1db5b1e7b981b42c89e32347e5a028b60da0082381818e486f4bf6d"
+        },
+        "5": {
+          "body": 208,
+          "group": 5,
+          "archive": "anim.mul",
+          "graphic": 208,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 5,
+          "directional_payload_sha256": "b82f09c90e6b3fcaa2f1924dbbae997026702ddb0a93a968b4899e82cccc019a"
+        },
+        "6": {
+          "body": 208,
+          "group": 6,
+          "archive": "anim.mul",
+          "graphic": 208,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 5,
+          "directional_payload_sha256": "2daff9391c054927439a7fe653f8ad1156b38e21c88c065ca3a1b6a9c5700866"
+        },
+        "8": {
+          "body": 208,
+          "group": 8,
+          "archive": "anim.mul",
+          "graphic": 208,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 6,
+          "directional_payload_sha256": "0428b16e6884d7b0b9f805c0b4b0ec0da2429d6ebe934db71e2a196dde8e64be"
+        },
+        "9": {
+          "body": 208,
+          "group": 9,
+          "archive": "anim.mul",
+          "graphic": 208,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 5,
+          "directional_payload_sha256": "175691297bb89ba28284f6cc525be12619e0eee7174a4a237895f67f6903ea23"
+        },
+        "10": {
+          "body": 208,
+          "group": 10,
+          "archive": "anim.mul",
+          "graphic": 208,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 3,
+          "directional_payload_sha256": "840b4ceab68be7de0256909aa0b259337afa4fe0c470e03d8c4eea5ca149b292"
+        },
+        "12": {
+          "body": 208,
+          "group": 12,
+          "archive": "anim.mul",
+          "graphic": 208,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 6,
+          "directional_payload_sha256": "5f5696810640980519c59673113060f8148e75d0c754720530147452c9ec3f59"
+        }
+      },
+      "presentation_script": "res://Presentation/ChickenActionsVisual.gd",
+      "presentation_script_sha256": "e65d2a2065a31f8a4f3d24e8d40298d5dda5aedf3420f7e80b5057e3899d3de3"
     },
     {
       "kind": "shadow_wisp",
