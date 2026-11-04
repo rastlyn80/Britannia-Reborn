@@ -267,7 +267,7 @@ public static class EquineFixtures
             var action = args.GetInt32(1);
             if (subject is Beetle or FireBeetle or Hiryu or LesserHiryu
                 ? action is 5 or 6 or 7 or 9 or 10
-                : action is 3 or 5 or 11)
+                : action is 3 or 5 or 11 || (subject is Cow or Bull && action is 6 or 10 or 12))
             {
                 subject.Animate(action, 6, 1, true, false, 0);
             }

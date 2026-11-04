@@ -1,5 +1,6 @@
-param([switch]$Live,[switch]$SkipContact,[switch]$Gpu,[switch]$LiveGpu,[switch]$Equines,[switch]$Ostards,[switch]$EquineCompletion,[switch]$LlamaCompletion,[switch]$Ethics,[switch]$Bovines,[switch]$SeaHorse,[switch]$GiantBeetle,[switch]$FireBeetle,[switch]$Hiryu,[switch]$CuSidhe,[switch]$SourceMounts,[switch]$ActiveCuSidhe,[switch]$ActiveHiryu,[switch]$EtherealBeetle,[switch]$Savages,[switch]$SavageRiders,[string]$CreatureFamily='', [switch]$PreparedQueen, [switch]$ActiveJukaLord)
+param([switch]$Live,[switch]$SkipContact,[switch]$Gpu,[switch]$LiveGpu,[switch]$Equines,[switch]$Ostards,[switch]$EquineCompletion,[switch]$LlamaCompletion,[switch]$Ethics,[switch]$Bovines,[switch]$PreparedBovineActions,[switch]$SeaHorse,[switch]$GiantBeetle,[switch]$FireBeetle,[switch]$Hiryu,[switch]$CuSidhe,[switch]$SourceMounts,[switch]$ActiveCuSidhe,[switch]$ActiveHiryu,[switch]$EtherealBeetle,[switch]$Savages,[switch]$SavageRiders,[string]$CreatureFamily='', [switch]$PreparedQueen, [switch]$ActiveJukaLord)
 $ErrorActionPreference='Stop'
+if ($PreparedBovineActions -and !$Bovines) {throw '-PreparedBovineActions requires -Bovines'}
 if ($ActiveCuSidhe -and !$CuSidhe) {throw '-ActiveCuSidhe requires -CuSidhe'}
 if ($ActiveHiryu -and !$Hiryu) {throw '-ActiveHiryu requires -Hiryu'}
 $root=Split-Path $PSScriptRoot -Parent
@@ -120,6 +121,7 @@ try {
   if ($LlamaCompletion) {$liveArgs+='--llama-completion'}
   if ($Ethics) {$liveArgs+='--ethics-only'}
   if ($Bovines) {$liveArgs+='--bovines'}
+  if ($PreparedBovineActions) {$liveArgs+='--bovine-actions'}
   if ($EtherealBeetle) {$liveArgs+='--ethereal-beetle'}
   if ($SourceMounts) {$liveArgs+='--source-mounts'}
   if ($CuSidhe) {$liveArgs+='--cu-sidhe'; if ($ActiveCuSidhe) {$liveArgs+='--cu-sidhe-active'}}

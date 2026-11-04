@@ -1,3 +1,11 @@
+# Cow and Bull actions
+
+Both Cow bodies (216 and 231) and both Bull bodies (232 and 233) now have separate Classic strikes, fidgets and collapses on their own Third Dawn rigs. The Classic catalogue records 44 stored body and action combinations from `anim.mul`, with all five directions checked for each. The twelve formerly shared pairs now play distinct clips. The three fitted replacements per body approximate the Classic poses. The recovered Third Dawn animation keys are preserved. Both cow coats still use the exact living tip signature and return to standing.
+
+The isolated ModernUO trial passed 518 checks. Both clients received the requested Classic strike and fidget. Native death and removal packets took each body through its default collapse and through a second run that continued the alternate collapse already playing. The replicated static corpses retained body ID, partial hue and the settled pose. The trial also exercised normal movement packets, mount refusal and all four owner milk servings before exhaustion. It used the server's milking API and controlled action requests. Autonomous AI and client beverage-item interaction remain outside that evidence.
+
+The client passed 4,680 pose checks across 12 body and mesh combinations. Its separate decoded packet test passed 72 death, removal and static corpse handoffs across flat ground and two slopes, with 2,952 terrain poses. The static endpoint sat about 2 mm above the tested plane. The source Death dips by up to 29 mm on flat ground before correction. The bovine catalogue is counted separately from the generic 77.0% action ledger.
+
 # Giant Spider and Mongbat actions
 
 Giant Spider 28 now has distinct strikes, recoils, a fidget and a second collapse on its retained Third Dawn rig. The alternate collapse uses the original fall with separately fitted front legs and abdomen. Its final visual displacement is about 0.54 m, down from 1.85 m in the recovered fall, with the native root held fixed. The new grounded actions approximate the Classic frames.

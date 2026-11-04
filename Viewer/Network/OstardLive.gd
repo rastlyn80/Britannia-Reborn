@@ -3,6 +3,8 @@ extends SceneTree
 const Game=preload("res://Network/GameSession.gd")
 const Horse=preload("res://Presentation/MountVisual.gd")
 const HorseRig=preload("res://Presentation/HorseVisual.gd")
+const BovineActions := preload("res://Presentation/BovineActionsVisual.gd")
+const BovineTransition := preload("res://Network/BovineLiveTransition.gd")
 var sessions: Array=[]
 var avatars: Array=[]
 var errors: Array=[]
@@ -15,6 +17,7 @@ var ethics_status: Array=[]
 var ethics_only:=false
 var ethics_resume:=false
 var bovines:=false
+var bovine_actions: Array[Dictionary] = []
 var sea_horse:=false
 var giant_beetle:=false
 var fire_beetle:=false
@@ -70,6 +73,7 @@ func run() -> void:
 	ethics_only="--ethics-only" in OS.get_cmdline_user_args()
 	ethics_resume="--ethics-resume" in OS.get_cmdline_user_args()
 	bovines="--bovines" in OS.get_cmdline_user_args()
+	BovineActions.trial_enabled = "--bovine-actions" in OS.get_cmdline_user_args()
 	sea_horse="--sea-horse" in OS.get_cmdline_user_args()
 	giant_beetle="--giant-beetle" in OS.get_cmdline_user_args()
 	fire_beetle="--fire-beetle" in OS.get_cmdline_user_args()
@@ -248,12 +252,18 @@ func run() -> void:
 					if not check(loose.receive_native_action(session.last_mobile_actions[serial]),"actual creature consumes server attack/reaction"):return
 					var expected: String={5:"rear",4:"hit",3:"eat",11:"lie_down"}[action_code] if loose.horse_visual is HorseRig else action_clips[action_code]
 					if not check(loose.horse_visual.current_clip==expected,"native action selects the species clip"):return
+				var bovine_probes: Array[Node3D] = []
+				if bovines and BovineActions.trial_enabled and not check(loose.horse_visual is BovineActions,"Bovine trial uses the prepared renderer"):return
+				if bovines and loose.horse_visual is BovineActions:
+					bovine_probes = await begin_bovine_transition(session, observer, sex, serial, body, loose)
+					if bovine_probes.is_empty():return
 				replies[sex].clear();session.send_command("[EquineFixture kill")
 				if not check(await until(func():return replies[sex].any(func(text: String):return text.begins_with("UCEQUINE|corpse|"))),"real upstream death creates a corpse"):return
 				var response: String=replies[sex].filter(func(text: String):return text.begins_with("UCEQUINE|corpse|"))[-1]
 				var corpse_serial:=int(response.split("|")[2])
 				if not check(await until(func():return session.world_items.has(corpse_serial) and observer.world_items.has(corpse_serial)),"real corpse item replicates to both clients"):return
 				if not check(int(session.world_items[corpse_serial].get("amount",0))==body,"corpse packet retains original creature identity"):return
+				if not bovine_probes.is_empty() and not await finish_bovine_transition(bovine_probes, session, observer, serial, corpse_serial, body, sex):return
 				var presenter:=preload("res://Presentation/WorldItems.gd").new();root.add_child(presenter)
 				var visual_root:=Node3D.new();root.add_child(visual_root)
 				if not check(presenter._equine_corpse(visual_root,session.world_items[corpse_serial],corpse_serial),"received native corpse selects matching death model"):return
@@ -280,6 +290,14 @@ func run() -> void:
 	if cu_sidhe:scope="Native Cu Sidhe permissions for human owners with and without the pads and for elf owners. Both permitted cases exercise client rider presentation, native mounting, hues, movement, dismount and corpses."
 	if sea_horse:scope="Real two-client native SeaHorse constructor144/item0x3EB3; both controlled owners use normal mount/movement/dismount, loose Move walk/run, full/partial hues/actions/death/corpse replication. Native flags are non-swimming, walking and not tamable: fixture control does not establish taming eligibility. Uses the documented client horse-art fallback, not recovered SeaHorse geometry or water-riding gameplay. Controlled sampling is not autonomous AI/choreography certification."
 	var evidence := {"checks":checks,"failures":0,"records":records,"ethics_status":ethics_status,"scope":scope}
+	if not bovine_actions.is_empty():
+		evidence.bovine_actions = bovine_actions
+		evidence.bovine_inputs = {}
+		for path: String in ["Network/OstardLive.gd", "Network/BovineLiveTransition.gd", "Presentation/BovineActionsVisual.gd",
+				"Presentation/CreatureDeathsWithBovines.gd", "Presentation/CreatureDeaths.gd", "Presentation/AnimalVisual.gd",
+				"Presentation/BovineVisual.gd", "Presentation/CorpseModels.gd", "Presentation/WorldItems.gd",
+				"../Server/HorseIntegrationFixtures/EquineFixtures.cs", "local-art/animals/bovine-actions-bake.json"]:
+			evidence.bovine_inputs[path] = FileAccess.get_sha256("res://" + path)
 	if cu_sidhe:
 		if not check(FileAccess.get_sha256(CU_PACKAGE) == cu_pin,"Cu Sidhe package stays fixed during native verification"):return
 		evidence["checks"] = checks
@@ -454,4 +472,53 @@ func bovine_interactions(session: Node,observer: Node,sex: int,serial: int,body:
 		for attempt in 5:
 			var response:=await fixture_reply(session,sex,"bovine-milk","UCEQUINE|milk|")
 			if not check(response=="UCEQUINE|milk|"+("1|"+str(3-attempt) if attempt<4 else "0|0"),"native milking API retains four servings and exhaustion"):return false
+	return true
+
+func begin_bovine_transition(session: Node, observer: Node, sex: int, serial: int, body: int, loose: Node3D) -> Array[Node3D]:
+	var other := preload("res://Presentation/HumanAvatar.gd").new()
+	other.initial_body = body
+	root.add_child(other)
+	other.set_physics_process(false)
+	other.apply_server_appearance(observer.entities[serial], [])
+	var probes: Array[Node3D] = []
+	for entry: Array in [[session, loose], [observer, other]]:
+		var probe := BovineTransition.new()
+		root.add_child(probe)
+		probe.configure(entry[0], serial, entry[1])
+		probes.append(probe)
+	other.reparent(probes[1])
+	var actions := {6: "Attack2", 10: "Fidget2"}
+	if sex == 1:actions[12] = "Death2"
+	for group: int in actions:
+		session.last_mobile_actions.erase(serial)
+		observer.last_mobile_actions.erase(serial)
+		if (await fixture_reply(session, sex, "action %d" % group, "UCEQUINE|action|")).is_empty():return []
+		if not check(await until(func():return session.last_mobile_actions.has(serial) and observer.last_mobile_actions.has(serial)),
+				"Both clients receive cattle group %d" % group):return []
+		for entry: Array in [[session, loose], [observer, other]]:
+			var packet: Dictionary = entry[0].last_mobile_actions[serial]
+			if not check(packet.protocol == "classic" and packet.action == group and entry[1].receive_native_action(packet)
+					and entry[1].horse_visual.current_clip == actions[group], "Cattle group %d plays %s" % [group, actions[group]]):return []
+	return probes
+
+func finish_bovine_transition(probes: Array[Node3D], session: Node, observer: Node, serial: int, corpse: int, body: int, sex: int) -> bool:
+	var expected := "Death2" if sex == 1 else "Death"
+	var transitions: Array[Dictionary] = []
+	for index in probes.size():
+		var probe: Node3D = probes[index]
+		var connection: Node = session if index == 0 else observer
+		var item: Dictionary = connection.world_items[corpse]
+		var event: Dictionary = probe.events.get(serial, {})
+		if not check(not event.is_empty() and event.corpse == corpse and event.body == body and event.clip == expected
+				and event.hue == int(item.hue), "Native cattle death packet starts the matching collapse"):return false
+		if not check(probe.place_corpse(corpse, item), "Native cattle corpse builds from its network item"):return false
+		transitions.append(event)
+	if not check(await until(func():return not session.entities.has(serial) and not observer.entities.has(serial)),
+			"Native cattle mobile is removed on both clients"):return false
+	for probe: Node3D in probes:
+		if not check(await until(func():return probe.settled(corpse)), "The settled native cattle corpse is visible"):return false
+		if not check(probe.verify_corpse(corpse, body, int(session.world_items[corpse].hue), expected),
+				"The frozen cattle corpse retains body, raw hue and collapse pose"):return false
+		probe.free()
+	bovine_actions.append({"body": body, "female": sex == 1, "transitions": transitions})
 	return true

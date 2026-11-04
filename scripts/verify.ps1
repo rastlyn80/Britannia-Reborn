@@ -363,6 +363,10 @@ if (Test-Path "$root/Viewer/local-art/animals/bovine_bull_spotted-modern.gltf") 
  if ($LASTEXITCODE) {throw 'Native bovine identity/interaction audit failed'}
  & $godot --headless --path "$root/Viewer" --script res://Presentation/BovineTests.gd
  if ($LASTEXITCODE) {throw 'Bovine native identity/source skin/contact checks failed'}
+ if (Test-Path "$root/Viewer/local-art/animals/bovine-actions-active.json") {
+  & python -B "$root/scripts/accept-bovine-actions.py" --check-active
+  if ($LASTEXITCODE) {throw 'Active bovine animation and corpse evidence failed'}
+ }
 }
 & $godot --headless --path "$root\Viewer" --script res://Network/LoginTests.gd
 if ($LASTEXITCODE) { throw 'Protocol tests failed' }
