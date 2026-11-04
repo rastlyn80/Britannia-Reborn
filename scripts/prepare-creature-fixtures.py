@@ -82,6 +82,10 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'grizzle_antler':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-grizzle-antler.py'))
+        rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']))
+        return recipe['prepared'](rows)
     if family == 'skeletal_mage_staff':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-skeletal-mage-staff.py'))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']))

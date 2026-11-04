@@ -1,3 +1,11 @@
+# Interred Grizzle and Ilhenir antler motion
+
+Classic group 11 on body 259 uses the first 2.8 seconds of the recovered `MonstrousInterredGrizzle_misc.grn`, retimed to 0.95 seconds. The two head lifts follow the five stored reference directions in `anim5.mul` graphic 18. The original mesh, rig, materials and existing motion keys are retained. The source-preserving package still verifies against its original receipt and the separate action overlay.
+
+The three model treatments passed nine decoded action runs across flat ground and two tilted collision planes. The complete skin cleared the plane by approximately 2 mm at the lowest of 657 sampled poses, with the native root held fixed. Three static corpse hue cases passed. The isolated ModernUO trial passed 319 checks across both clients and both native constructors, including action playback, movement, hues and corpse replication. Fixtures request the action directly. Autonomous combat remains separate. The ledger now routes 5,243 of 6,840 slots, with original frames identified for nine unresolved slots.
+
+Bake with Godot `--headless --path Viewer --script res://../scripts/bake-grizzle-antler-check.gd`. Run `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily grizzle_antler` for the disposable native trial and `python -B scripts/accept-classic-gestures.py --batch grizzle_antler --check-active` for active evidence.
+
 # Bone Magi and Skeletal Mage staff
 
 Body 148 uses the exact 18-triangle Third Dawn `Weapon_Skeleton_Mage_Staff_LOD2.grn` and `weapons_512b.tga` atlas on the original right grasp. The staff has authored proportions, a closed right-hand grip and a release late in the primary collapse. Its landing remains beside the static corpse. ModernUO constructors and equipment stay authoritative. The Classic group 11 action uses a 0.72-second head check over the recovered idle, based on the five stored directions in `anim2.mul` graphic 23. Group 17 retains the recovered Fidget. The bake preserves existing body motion keys apart from the four right-finger rotation tracks that shape the grip during living clips.

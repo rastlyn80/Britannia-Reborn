@@ -1,6 +1,7 @@
 """Compose a reviewed local alias with a separately verified base package."""
 import json
 from pathlib import Path
+import runpy
 
 MANIFEST = Path(__file__).resolve().parents[1] / 'Viewer/Presentation/legacy-late-action-aliases.json'
 # Exact publishers that produced the base receipts before action overlays.
@@ -27,7 +28,16 @@ def check_base_receipt(name, recorded, current):
 
 def expected_rows_with_legacy_aliases(rows, active):
     active_by_kind = {row['kind']: row for row in active}
-    return [expected_with_legacy_alias(row, active_by_kind.get(row['kind'], {})) for row in rows]
+    expected = [expected_with_legacy_alias(row, active_by_kind.get(row['kind'], {})) for row in rows]
+    grizzle = active_by_kind.get('monstrousinterredgrizzle', {})
+    if grizzle.get('classic_gesture_native_sha256') and any(row['kind'] == grizzle['kind'] for row in expected):
+        gate = runpy.run_path(str(Path(__file__).with_name('accept-classic-gestures.py')))
+        base, overlays = gate['checked']({'entries': active}, True, 'grizzle_antler')
+        original, = (row for row in expected if row['kind'] == grizzle['kind'])
+        if base != [original] or overlays != [grizzle]:
+            raise ValueError('Interred Grizzle action overlay no longer matches the verified base package')
+        expected = [grizzle if row == original else row for row in expected]
+    return expected
 
 
 def expected_with_legacy_alias(base, active):
