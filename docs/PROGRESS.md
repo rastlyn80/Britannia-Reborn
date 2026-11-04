@@ -1,3 +1,13 @@
+# Air and Fire Elemental Classic actions
+
+Air 13 and Fire 15 now route Classic slots 7 and 8 to an authored overhead strike and an asymmetric held reach. The `anim.mul` references contain three and six frames per stored direction. Both public actors share the same independent 65-joint carrier, so one runtime animation recipe supplies both motions while retaining their existing rigs, materials and saved clips.
+
+Four decoded routes and 404 sampled poses passed. The raised wrist clears the head by 319 mm, the opposite hand extends laterally by 281 mm, and the reach holds its asymmetric extension for 76 of 101 samples. The actor and spine stay fixed. Forward+ rendered 20 gesture poses, and the public presentation checks passed 616 Air and 1,522 Fire checks with 72 finite terrain cases each. Each clean distribution sampled 152 deformed component skins and retained its static dust or ash corpse without private art, game files or a server.
+
+The final isolated installed-route runs passed 733 Air and 489 Fire checks. Both clients received slots 7 and 8 for Air Elemental, Crystal Vortex, Summoned Air Elemental, Fire Elemental and Summoned Fire Elemental. The actual summon API suppressed permanent corpses for the two summoned forms. Public verification now uses the carrier fingerprint recorded with each installed package. The current Water Elemental scene has evolved since those packages were built. Autonomous attacks and gameplay effects remain open.
+
+The ledger has 5,207 of 6,840 routable slots (76.1%). Of the 1,633 unresolved slots, 45 have identified original frames. Run Godot `--headless --path Viewer --script res://../scripts/test-elemental-classic-gestures.gd` for the decoded motion checks. The isolated native commands are `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily air` and the same command with `fire`. Public presentation checks use `AirElementalPresentationTests.gd` and `FireElementalPresentationTests.gd` with Forward+ and `-- --public`. The `prepare-air-elemental.py` and `prepare-fire-elemental.py` scripts verify those receipts with `--verify-public`.
+
 # Gargoyle Classic actions
 
 Gargoyle body 4 retains its Third Dawn mesh, atlas, rig and existing animation keys. Classic slot 11 uses a new kneeling lunge on that rig. The front foot steps 588–595 mm and the pelvis drops 564–571 mm while the wings open behind the body. Classic slot 12 uses the 54 matched joint tracks of Age of Shadows `gargoyles_gargoyle_cast2.grn`, with a floor adjustment measured separately for each mesh treatment. Both hands rise above the head during the cast. The existing new-protocol cast category can use the same clip.

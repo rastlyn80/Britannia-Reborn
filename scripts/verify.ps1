@@ -293,6 +293,13 @@ if ((Get-Content "$root/Viewer/Art/Creatures/index.json" -Raw | ConvertFrom-Json
   & python -B "$root/scripts/test-shadow-wisp-distribution.py"
   if ($LASTEXITCODE) {throw 'Public Shadow Wisp shared rig/actions, native hue flags and static corpse distribution failed'}
 }
+if ((Test-Path "$root/Viewer/Art/Creatures/Air/air-elemental.scn") -and
+    (Test-Path "$root/Viewer/Art/Creatures/Fire/fire-elemental.scn")) {
+ $elementalGestures = & $godot --headless --path "$root/Viewer" --script res://../scripts/test-elemental-classic-gestures.gd 2>&1
+ $elementalGesturesExit = $LASTEXITCODE
+ $elementalGestures | ForEach-Object {Write-Output $_}
+ if ($elementalGesturesExit -or ($elementalGestures | Select-String 'SCRIPT ERROR:|Parse Error:')) {throw 'Air and Fire Classic gesture checks failed'}
+}
 if (Test-Path "$root/Viewer/Art/Creatures/Air/air-elemental.scn") {
   & python -B "$root/scripts/test-air-distribution.py"
   if ($LASTEXITCODE) {throw 'Public AirElemental rig/actions, spectral hue and static dust distribution failed'}

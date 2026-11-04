@@ -13,6 +13,7 @@ func set_hue(value: int) -> void:
 			material.set_shader_parameter("hue_palette",palette);material.set_shader_parameter("use_hue",palette!=null)
 func _ready() -> void:
 	super._ready()
+	preload("res://Presentation/ElementalClassicGestures.gd").install(animator, skeleton, model.scene_file_path, entry)
 	animator.mixer_applied.connect(update_wind_pose)
 	# Proprietary marker remains optional local input, outside the public model.
 	if ResourceLoader.exists("res://local-art/air/source-marker.gltf"):
@@ -32,7 +33,10 @@ func update_wind_pose() -> void:
 	set_meta("nameplate_height",highest)
 	if entry.has("pick_bounds"):
 		var box: Dictionary=entry.pick_bounds;var p: Array=box.position;var s: Array=box.size
-		set_meta("pick_bounds",AABB(Vector3(p[0],p[1],p[2])+model.position,Vector3(s[0],s[1],s[2])))
+		var size := Vector3(s[0], s[1], s[2])
+		if animator.assigned_animation == "ElementalOverhead":
+			size.y = maxf(size.y, highest - model.position.y - float(p[1]))
+		set_meta("pick_bounds",AABB(Vector3(p[0],p[1],p[2])+model.position,size))
 	if original_marker!=null:
 		original_marker.visible=animator.assigned_animation in ["Death","Death2"] and fraction>0. and fraction<1.
 		for mesh: MeshInstance3D in original_marker.find_children("*","MeshInstance3D",true,false):mesh.material_override.set_shader_parameter("gain",pow(sin(PI*fraction),2.))

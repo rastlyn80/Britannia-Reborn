@@ -1978,6 +1978,16 @@
           "bones": 65,
           "height_m": 1.9,
           "clips": {
+            "ElementalOverhead": {
+              "duration": 0.54,
+              "loop": false,
+              "origin": "Original project-authored motion on the independent rig"
+            },
+            "ElementalHeldReach": {
+              "duration": 0.92,
+              "loop": false,
+              "origin": "Original project-authored motion on the independent rig"
+            },
             "Attack": {
               "duration": 0.866666674613953,
               "loop": false,
@@ -2137,7 +2147,13 @@
           }
         }
       },
+      "classic_action_categories": {
+        "7": "ElementalOverhead",
+        "8": "ElementalHeldReach"
+      },
       "authored_replacements": {
+        "ElementalOverhead": "Authored overhead snap on the independent rig from the Classic frame reference",
+        "ElementalHeldReach": "Authored asymmetric held reach on the independent rig from the Classic frame reference",
         "Attack": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained",
         "Attack2": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained",
         "Attack3": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained",
@@ -2665,6 +2681,16 @@
           "bones": 65,
           "height_m": 2.2,
           "clips": {
+            "ElementalOverhead": {
+              "duration": 0.54,
+              "loop": false,
+              "origin": "Original project-authored motion on the independent rig"
+            },
+            "ElementalHeldReach": {
+              "duration": 0.92,
+              "loop": false,
+              "origin": "Original project-authored motion on the independent rig"
+            },
             "Attack": {
               "duration": 0.866666674613953,
               "loop": false,
@@ -2824,7 +2850,13 @@
           }
         }
       },
+      "classic_action_categories": {
+        "7": "ElementalOverhead",
+        "8": "ElementalHeldReach"
+      },
       "authored_replacements": {
+        "ElementalOverhead": "Authored overhead snap on the independent rig from the Classic frame reference",
+        "ElementalHeldReach": "Authored asymmetric held reach on the independent rig from the Classic frame reference",
         "Attack": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash",
         "Attack2": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash",
         "Attack3": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash",

@@ -78,10 +78,23 @@ func run() -> void:
 		visual.dead=false;visual.action_remaining=1000.;visual.play("Death",0.);visual.animator.seek(visual.animator.current_animation_length*.3,true);visual.animator.pause();var with_marker:=await capture();visual.original_marker.visible=false;var without_marker:=await capture()
 		check(changed(with_marker,without_marker)>0,"Retained original marker produces visible source-atlas pixels during its explicitly authored cue")
 		visual.dead=false;visual.play("Idle",0.);visual.animator.seek(.6,true);visual.animator.pause()
-	for code in [4,5,6,10,11,12,17,18]:
+	var actions := {4:"Attack",5:"Attack2",6:"Attack3",10:"Hit",11:"Pillage",12:"Cast",17:"Fidget",18:"Fidget"}
+	if visual.animator.has_animation("ElementalOverhead"):
+		actions.merge({7: "ElementalOverhead", 8: "ElementalHeldReach"})
+		for category in ["ElementalOverhead", "ElementalHeldReach"]:
+			visual.play(category, 0.0)
+			for step in 17:
+				visual.animator.seek(visual.animator.current_animation_length * float(step) / 16.0, true)
+				visual.animator.pause()
+				rig.force_update_all_bone_transforms()
+				var box := bounds(visual)
+				var pick: AABB = visual.get_meta("pick_bounds")
+				check((visual.global_transform * pick).grow(0.01).encloses(box), "Selection contains the complete gesture skin")
+				check(float(visual.get_meta("nameplate_height")) > box.end.y + 0.045, "Nameplate clears the raised wind hand")
+	for code: int in actions:
 		visual.dead=false;visual.action_remaining=0.
 		check(visual.receive_action({"protocol":"classic","action":code,"frame_count":6,"repeat_count":1,"delay":0}),"Explicit AirElemental classic action consumed: "+str(code))
-		check(visual.current_clip=={4:"Attack",5:"Attack2",6:"Attack3",10:"Hit",11:"Pillage",12:"Cast",17:"Fidget",18:"Fidget"}[code],"Native category selects the authored AirElemental action")
+		check(visual.current_clip==actions[code],"Native category selects the authored AirElemental action")
 	var ground:=StaticBody3D.new();var collider:=CollisionShape3D.new();var shape:=BoxShape3D.new();shape.size=Vector3(8.,.1,8.);collider.shape=shape;collider.position.y=-.05;ground.add_child(collider);viewport.add_child(ground)
 	actor.set_physics_process(true);visual.set_physics_process(true);visual.dead=false;var terrain: Array=[]
 	for height in [-.2,.25]:
@@ -123,6 +136,6 @@ func run() -> void:
 		check(changed(frozen,await capture())==0,"Frozen corpse image stays static after further rendered frames")
 		frozen.save_png(ProjectSettings.globalize_path(output+"/corpse.png"));corpse.free()
 	var hashes: Dictionary={}
-	for name in ["AirElementalPresentationTests.gd","AirElementalVisual.gd","AirElementalMaterial.gd","AirElementalSurface.gdshader","PrepareAirElemental.gd","AirCloudGeometry.gd","CreatureRegistry.gd","CreatureVisual.gd","HumanAvatar.gd","CorpseModels.gd","SkinGeometry.gd"]:hashes["res://Presentation/"+name]=FileAccess.get_sha256("res://Presentation/"+name)
+	for name in ["AirElementalPresentationTests.gd","AirElementalVisual.gd","AirElementalMaterial.gd","AirElementalSurface.gdshader","ElementalClassicGestures.gd","PrepareAirElemental.gd","AirCloudGeometry.gd","CreatureRegistry.gd","CreatureVisual.gd","HumanAvatar.gd","CorpseModels.gd","SkinGeometry.gd"]:hashes["res://Presentation/"+name]=FileAccess.get_sha256("res://Presentation/"+name)
 	var report:={"checks":checks,"failures":failures,"renderer":RenderingServer.get_current_rendering_method(),"terrain":terrain,"hues":hues,"shader_envelope_pixels":occupied,"shader_envelope_outside_pixels":outside,"original_marker_present":visual_marker_present,"candidate_sha256":FileAccess.get_sha256(candidate),"asset_sha256":FileAccess.get_sha256(record.assets.modern),"runtime_sha256":hashes,"scope":"Actual candidate AirElemental avatar, explicit authored actions, full/partial native hues, normalized shader phase, finite hover planes, pick/nameplate and spent-dust static corpse. No native constructor or distribution acceptance yet."}
 	var file:=FileAccess.open(output+"/presentation.json",FileAccess.WRITE);file.store_string(JSON.stringify(report,"\t"));file.close();print("AIR PRESENTATION: ",checks," / ",failures," failures / ",terrain.size()," finite planes");quit(1 if failures else 0)

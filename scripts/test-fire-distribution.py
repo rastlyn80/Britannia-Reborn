@@ -18,7 +18,7 @@ def main():
         result=subprocess.run([str(godot),'--headless','--path',str(target),*args],env=env,capture_output=True,text=True,timeout=180);output=result.stdout+result.stderr
         (target/('import.log' if '--editor' in args else 'check.log')).write_text(output,encoding='utf-8');assert result.returncode==0 and 'ERROR:' not in output,output[-7000:]
         if '--script' in args:
-            match=re.search(r'FIRE DISTRIBUTION: (\d+) / (\d+) checks; (\d+) complete skins',output);assert match and match[1]==match[2] and int(match[1])>=280 and int(match[3])==136,output
+            match=re.search(r'FIRE DISTRIBUTION: (\d+) / (\d+) checks; (\d+) complete skins',output);assert match and match[1]==match[2] and int(match[1])>=280 and int(match[3])==152,output
     receipt={'checks':int(match[2]),'failures':0,'component_skin_samples':int(match[3]),'transient_death_trials':4,'asset_sha256':hashlib.sha256((art/'Fire/fire-elemental.scn').read_bytes()).hexdigest(),'index_sha256':hashlib.sha256((ROOT/'Viewer/Art/Creatures/index.json').read_bytes()).hexdigest(),'runtime_sha256':{relative:hashlib.sha256((target/relative).read_bytes()).hexdigest() for relative in sorted(copied)},'runner_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'project':str(target.relative_to(ROOT))}
     (ROOT/'outputs/creatures/fire-trial/distribution.json').write_text(json.dumps(receipt,indent=2)+'\n')
     print('FIRE DISTRIBUTION: actual standalone avatar, retained rig/actions, component skins, raw hues, static ash and four transient death cleanups; only independent FireElemental art, no private art/game input/server');print(target/'check.log')

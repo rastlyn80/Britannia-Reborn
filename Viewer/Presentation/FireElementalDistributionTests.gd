@@ -39,7 +39,7 @@ func run() -> void:
 	check(visual.entry.stats.modern.clips.size()==15,"Public index declares all fifteen saved action categories")
 	for category: String in visual.entry.stats.modern.clips:
 		check(visual.animator.has_animation(category),"Actual public animation library includes saved category: "+category)
-	check(visual.animator.get_animation_list().size()==17,"Runtime also provides its explicitly synthesized Eat/LieDown compatibility poses")
+	check(visual.animator.get_animation_list().size()==19,"Runtime adds the two authored gestures and the Eat/LieDown compatibility poses")
 	var samples:=0
 	for category: String in visual.animator.get_animation_list():
 		check((visual.animator.get_animation(category).loop_mode==Animation.LOOP_LINEAR)==(category in visual.entry.loop_categories),"Saved category loop state matches declared intent")
@@ -60,7 +60,7 @@ func run() -> void:
 			check(material!=null and material.shader==Surface,"Public flame shader is packaged and bound")
 			check(bool(material.get_shader_parameter("partial_hue"))==bool(hue&0x8000),"Partial hue flag remains exact")
 			check(bool(material.get_shader_parameter("dust"))==(mesh.name=="Ash"),"Dry footprint retains its distinct shader mode")
-	for code in [4,5,6,10,11,12,17,18]:
+	for code in [4,5,6,7,8,10,11,12,17,18]:
 		visual.dead=false;visual.action_remaining=0.
 		check(visual.receive_action({"protocol":"classic","action":code,"frame_count":6,"repeat_count":1,"delay":0}),"Actual source-free avatar consumes explicit native action")
 	actor.free()

@@ -81,10 +81,13 @@ func run() -> void:
 			occupied+=1
 			if not screen.grow(2.).has_point(Vector2(x,y)):outside+=1
 	check(occupied>1500 and outside<5,"Actual wind pixels stay inside the projected skin plus 80mm shader-displacement envelope")
-	for code in [4,5,6,10,11,12,17,18]:
+	var actions := {4:"Attack",5:"Attack2",6:"Attack3",10:"Hit",11:"Pillage",12:"Cast",17:"Fidget",18:"Fidget"}
+	if visual.animator.has_animation("ElementalOverhead"):
+		actions.merge({7: "ElementalOverhead", 8: "ElementalHeldReach"})
+	for code: int in actions:
 		visual.dead=false;visual.action_remaining=0.
 		check(visual.receive_action({"protocol":"classic","action":code,"frame_count":6,"repeat_count":1,"delay":0}),"Explicit FireElemental classic action consumed: "+str(code))
-		check(visual.current_clip=={4:"Attack",5:"Attack2",6:"Attack3",10:"Hit",11:"Pillage",12:"Cast",17:"Fidget",18:"Fidget"}[code],"Native category selects the authored FireElemental action")
+		check(visual.current_clip==actions[code],"Native category selects the authored FireElemental action")
 	var ground:=StaticBody3D.new();var collider:=CollisionShape3D.new();var shape:=BoxShape3D.new();shape.size=Vector3(8.,.1,8.);collider.shape=shape;collider.position.y=-.05;ground.add_child(collider);viewport.add_child(ground)
 	actor.set_physics_process(true);visual.set_physics_process(true);visual.dead=false;var terrain: Array=[]
 	for height in [-.2,.25]:
@@ -133,6 +136,6 @@ func run() -> void:
 		var image:=await capture();corpse_images.append(image);image.save_png(ProjectSettings.globalize_path(output+"/corpse-%04x.png"%hue));remains.free()
 	check(corpse_images.size()==3 and changed(corpse_images[0],corpse_images[1])>60 and changed(corpse_images[0],corpse_images[2])>60 and changed(corpse_images[1],corpse_images[2])>30,"Default/full/partial native colours remain visibly distinct on frozen ash")
 	var hashes: Dictionary={}
-	for name in ["FireElementalPresentationTests.gd","FireElementalVisual.gd","FireElementalMaterial.gd","FireElementalSurface.gdshader","CreatureRegistry.gd","CreatureVisual.gd","HumanAvatar.gd","CorpseModels.gd","SkinGeometry.gd"]:hashes["res://Presentation/"+name]=FileAccess.get_sha256("res://Presentation/"+name)
+	for name in ["FireElementalPresentationTests.gd","FireElementalVisual.gd","FireElementalMaterial.gd","FireElementalSurface.gdshader","ElementalClassicGestures.gd","CreatureRegistry.gd","CreatureVisual.gd","HumanAvatar.gd","CorpseModels.gd","SkinGeometry.gd"]:hashes["res://Presentation/"+name]=FileAccess.get_sha256("res://Presentation/"+name)
 	var report:={"complete_action_skins":skins,"checks":checks,"failures":failures,"renderer":RenderingServer.get_current_rendering_method(),"terrain":terrain,"hues":hues,"shader_envelope_pixels":occupied,"shader_envelope_outside_pixels":outside,"original_marker_present":visual_marker_present,"candidate_sha256":FileAccess.get_sha256(candidate),"asset_sha256":FileAccess.get_sha256(record.assets.modern),"runtime_sha256":hashes,"scope":"Actual candidate FireElemental avatar, explicit authored actions, full/partial native hues, normalized shader phase, finite hover planes, pick/nameplate and spent-dust static corpse. No native constructor or distribution acceptance yet."}
 	var file:=FileAccess.open(output+"/presentation.json",FileAccess.WRITE);file.store_string(JSON.stringify(report,"\t"));file.close();print("FIRE PRESENTATION: ",checks," / ",failures," failures / ",terrain.size()," finite planes");quit(1 if failures else 0)

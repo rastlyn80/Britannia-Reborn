@@ -1,6 +1,7 @@
 """Independent flame/ash actor, gated by saved skins, actual avatar and native state."""
 import argparse,hashlib,json,re,shutil,subprocess
 from pathlib import Path
+from elemental_classic_metadata import preserve_gestures
 ROOT=Path(__file__).resolve().parents[1];LOCAL=ROOT/'Viewer/local-art/fire';OUT=ROOT/'outputs/creatures/fire-trial';PUBLIC=ROOT/'Viewer/Art/Creatures/Fire'
 CARRIER_SHA='6b0856ae574b5571cbd79cb2682a0904ce1cb59a54da24f51b9e4d29b7e49bd8'
 NATIVE=['Projects/UOContent/Mobiles/Monsters/Elemental/Magic/FireElemental.cs','Projects/UOContent/Mobiles/Monsters/Summons/SummonedFireElemental.cs'];CLASSES=['FireElemental','SummonedFireElemental']
@@ -32,9 +33,16 @@ def candidate():
   'stats':{'original':stats,'modern':stats},'authored_replacements':{k:v['origin'] for k,v in prep['clips'].items()},'loop_categories':[k for k,v in prep['clips'].items() if v['loop']],'camera_height':1.7,'pick_bounds':{'position':lo,'size':[hi[i]-lo[i] for i in range(3)]},'new_action_categories':{'2':'Hit','5':'Fidget','14':'Pillage'},'recipe_sha256':prep['recipe_sha256'],'asset_sha256':prep['asset_sha256']}
  write(LOCAL/'candidate.json',record);print('FIRE CANDIDATE: no route installed')
 def gated(public=False):
- prep,_=motion();record=next(r for r in read(PUBLIC.parent/'index.json')['entries'] if r['kind']=='fire_elemental') if public else read(LOCAL/'candidate.json');proof=read(OUT/'presentation.json')
+ if public:
+  provenance=read(PUBLIC/'provenance.json');prep=provenance['preparation'];assert provenance['carrier_sha256']==prep['carrier_sha256']==CARRIER_SHA
+  record=next(r for r in read(PUBLIC.parent/'index.json')['entries'] if r['kind']=='fire_elemental')
+  assert record['status']=='validated' and record['assets']['modern']=='res://Art/Creatures/Fire/fire-elemental.scn'
+ else:
+  prep,_=motion();record=read(LOCAL/'candidate.json')
+ proof=read(OUT/'presentation.json')
  assert record['recipe_sha256']==prep['recipe_sha256'] and record['asset_sha256']==prep['asset_sha256']
- assert proof['failures']==0 and proof['checks']>=1416 and len(proof['complete_action_skins'])==289 and len(proof['terrain'])==72 and proof['renderer']=='forward_plus'
+ runtime_gestures=2 if record.get('classic_action_categories',{}).get('7')=='ElementalOverhead' else 0
+ assert proof['failures']==0 and proof['checks']>=1416 and len(proof['complete_action_skins'])==17*(17+runtime_gestures) and len(proof['terrain'])==72 and proof['renderer']=='forward_plus'
  assert proof['candidate_sha256']==sha(PUBLIC.parent/'index.json' if public else LOCAL/'candidate.json') and proof['asset_sha256']==sha(resource(record['assets']['modern']))
  assert proof['shader_envelope_pixels']>1500 and proof['shader_envelope_outside_pixels']<5
  for path,digest in proof['runtime_sha256'].items():assert sha(resource(path))==digest,'Stale runtime:'+path
@@ -51,13 +59,13 @@ def live():
  return proof
 def install():
  record,proof=gated();live();PUBLIC.mkdir(parents=True,exist_ok=True);shutil.copyfile(resource(record['assets']['modern']),PUBLIC/'fire-elemental.scn');record.update(status='validated',assets={'modern':'res://Art/Creatures/Fire/fire-elemental.scn'},native_validation='Actual native FireElemental constructor and SummonedFireElemental via real Summon API on both owners; repeat on public route')
- p=PUBLIC.parent/'index.json';data=read(p);data['entries']=[r for r in data['entries'] if r['kind']!='fire_elemental']+[record];write(p,data);p=ROOT/'Viewer/local-art/creatures/accepted-index.json';data=read(p);data['entries']=[r for r in data['entries'] if r['kind']!='fire_elemental'];write(p,data)
+ p=PUBLIC.parent/'index.json';data=read(p);preserve_gestures(record,data['entries']);data['entries']=[r for r in data['entries'] if r['kind']!='fire_elemental']+[record];write(p,data);p=ROOT/'Viewer/local-art/creatures/accepted-index.json';data=read(p);data['entries']=[r for r in data['entries'] if r['kind']!='fire_elemental'];write(p,data)
  write(PUBLIC/'provenance.json',{'license':record['license'],'carrier_sha256':CARRIER_SHA,'preparation':read(LOCAL/'preparation.json'),'asset_sha256':sha(PUBLIC/'fire-elemental.scn'),'candidate_runtime_sha256':proof['runtime_sha256'],'independent_carrier_sources':read(PUBLIC.parent/'Water/provenance.json')['sources'],'independence':'Own flame ribbons and shader replace the carrier body entirely; only the project-authored radial footprint, CC0 rig and selected UAL1 motion remain. No game mesh, atlas, rig, animation or recovered particle definition.'})
  (PUBLIC/'NOTICE.txt').write_text('FireElemental flame ribbons, shader, ash footprint, conversion and authored death: original Britannia Reborn project work, GPL-3.0-or-later; root LICENSE.\nRetained rig and selected UAL1 actions: Quaternius, CC0-1.0, through the pinned public Water carrier. No original human or Water body mesh is retained.\nhttps://quaternius.itch.io/universal-base-characters\nhttps://quaternius.itch.io/universal-animation-library\nExact input hashes/source history: provenance.json and Art/Creatures/Water/NOTICE.txt. No Ultima Online mesh, texture, rig, clip or particle definition is included.\n')
  print('FIRE PUBLIC INSTALLED: repeat actual public avatar/native and clean distribution before publication')
 def verify_public():
  gated(True);live();assert sha(PUBLIC/'fire-elemental.scn')==read(PUBLIC/'provenance.json')['asset_sha256']
- distribution=read(OUT/'distribution.json');assert distribution['failures']==0 and distribution['checks']>=291 and distribution['component_skin_samples']==136 and distribution['transient_death_trials']==4
+ distribution=read(OUT/'distribution.json');assert distribution['failures']==0 and distribution['checks']>=291 and distribution['component_skin_samples']==152 and distribution['transient_death_trials']==4
  assert distribution['asset_sha256']==sha(PUBLIC/'fire-elemental.scn') and distribution['index_sha256']==sha(PUBLIC.parent/'index.json') and distribution['runner_sha256']==sha(ROOT/'scripts/test-fire-distribution.py')
  for path,digest in distribution['runtime_sha256'].items():assert sha(ROOT/'Viewer'/path)==digest,'Stale clean-distribution runtime:'+path
  print('FIRE PUBLIC VERIFIED: current source/skins/avatar/native constructors, real summon and clean distribution with death cleanup')

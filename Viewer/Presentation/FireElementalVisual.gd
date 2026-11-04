@@ -12,6 +12,7 @@ func set_hue(value: int) -> void:
 		mesh.material_override=preload("res://Presentation/FireElementalMaterial.gd").build(value,fire_phase,mesh.name=="Ash")
 func _ready() -> void:
 	super._ready();contact.enabled=false;contact.active=false
+	preload("res://Presentation/ElementalClassicGestures.gd").install(animator, skeleton, model.scene_file_path, entry)
 	for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
 		meshes.append(mesh);mesh.extra_cull_margin=.08;var boxes: Dictionary={}
 		if mesh.skin==null:continue

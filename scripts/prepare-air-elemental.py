@@ -1,6 +1,7 @@
 """Pinned independent cloud actor and evidence-gated native/public installation."""
 import argparse,hashlib,json,re,shutil,subprocess
 from pathlib import Path
+from elemental_classic_metadata import preserve_gestures
 ROOT=Path(__file__).resolve().parents[1];LOCAL=ROOT/'Viewer/local-art/air';OUT=ROOT/'outputs/creatures/air-trial';PUBLIC=ROOT/'Viewer/Art/Creatures/Air'
 CARRIER_SHA='6b0856ae574b5571cbd79cb2682a0904ce1cb59a54da24f51b9e4d29b7e49bd8'
 NATIVE=['Projects/UOContent/Mobiles/Monsters/Elemental/Magic/AirElemental.cs','Projects/UOContent/Mobiles/Monsters/Summons/SummonedAirElemental.cs','Projects/UOContent/Mobiles/Monsters/ML/Prism of Light/CrystalVortex.cs']
@@ -62,7 +63,7 @@ def install():
     record,proof=gated();live();assert (ROOT/'outputs/creatures/air/live.json').stat().st_mtime>(OUT/'presentation.json').stat().st_mtime
     PUBLIC.mkdir(parents=True,exist_ok=True);shutil.copyfile(resource(record['assets']['modern']),PUBLIC/'air-elemental.scn')
     record.update(status='validated',assets={'modern':'res://Art/Creatures/Air/air-elemental.scn'},native_validation='Actual three native constructors on two clients; repeat on installed public route')
-    p=PUBLIC.parent/'index.json';data=read(p);data['entries']=[r for r in data['entries'] if r['kind']!='air_elemental']+[record];write(p,data)
+    p=PUBLIC.parent/'index.json';data=read(p);preserve_gestures(record,data['entries']);data['entries']=[r for r in data['entries'] if r['kind']!='air_elemental']+[record];write(p,data)
     p=ROOT/'Viewer/local-art/creatures/accepted-index.json';data=read(p);data['entries']=[r for r in data['entries'] if r['kind']!='air_elemental'];write(p,data)
     write(PUBLIC/'provenance.json',{'license':'GPL-3.0-or-later original cloud/vortex/dust geometry/shader with CC0 Quaternius rig/UAL motion exceptions','carrier_sha256':CARRIER_SHA,'geometry_origin':'Cloud body and tapered vortex authored in AirCloudGeometry.gd. Dry dust reuses the project-authored radial Puddle footprint from the independent Water carrier; its body mesh is replaced completely. Preparation clip metadata saying no water geometry refers to the removed body, not this retained footprint.','preparation':read(LOCAL/'preparation.json'),'asset_sha256':sha(PUBLIC/'air-elemental.scn'),'candidate_runtime_sha256':proof['runtime_sha256'],'optional_original_marker':'Private proprietary source mesh/atlas, not in this scene or public package; native particle-to-actor binding and timing not claimed'})
     provenance=read(PUBLIC/'provenance.json');carrier=read(PUBLIC.parent/'Water/provenance.json')['sources']
@@ -71,9 +72,11 @@ def install():
     (PUBLIC/'NOTICE.txt').write_text('AirElemental analytic cloud/vortex/dust geometry, conversion and shader: original Britannia Reborn project work, GPL-3.0-or-later; root LICENSE.\nRetained rig and UAL1 motions: Quaternius, CC0-1.0, through the pinned public Water carrier. No original Quaternius human or Water body mesh is used. See Art/Creatures/Water/NOTICE.txt and provenance.json for exact source history/pins.\nhttps://quaternius.itch.io/universal-base-characters\nhttps://quaternius.itch.io/universal-animation-library\nNo Ultima Online mesh, texture, rig or animation is included. The original rigid death marker is optional separate local input.\n')
     print('AIR PUBLIC INSTALLED: repeat installed avatar/native and clean distribution before publication')
 def verify_public():
-    prep,_=motion();record=next(r for r in read(PUBLIC.parent/'index.json')['entries'] if r['kind']=='air_elemental');proof=read(OUT/'presentation.json');live()
+    provenance=read(PUBLIC/'provenance.json');prep=provenance['preparation']
+    assert provenance['carrier_sha256']==prep['carrier_sha256']==CARRIER_SHA
+    record=next(r for r in read(PUBLIC.parent/'index.json')['entries'] if r['kind']=='air_elemental');proof=read(OUT/'presentation.json');live()
     assert record['assets']['modern']=='res://Art/Creatures/Air/air-elemental.scn' and record['status']=='validated'
-    assert sha(PUBLIC/'air-elemental.scn')==prep['asset_sha256']==proof['asset_sha256']
+    assert sha(PUBLIC/'air-elemental.scn')==record['asset_sha256']==provenance['asset_sha256']==prep['asset_sha256']==proof['asset_sha256']
     assert proof['candidate_sha256']==sha(PUBLIC.parent/'index.json') and proof['failures']==0 and proof['checks']>=544
     for path,digest in proof['runtime_sha256'].items():assert sha(resource(path))==digest,'Stale public cloud proof: '+path
     assert (ROOT/'outputs/creatures/air/live.json').stat().st_mtime>(OUT/'presentation.json').stat().st_mtime
