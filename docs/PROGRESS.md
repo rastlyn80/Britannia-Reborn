@@ -1,3 +1,11 @@
+# Exact fidgets for Harrower, Giant Black Widow, Mephitis and Doppleganger
+
+Classic group 11 now uses the recovered Fidget on Harrower 146, Giant Black Widow 157, Mephitis 173 and Doppleganger 777. Their `anim2.mul` graphics 22, 1, 2 and 45 have identical registered pixels in groups 11 and 17 in all five stored directions, including frame order and placement. The encoded payloads differ. The recipe pins both source signatures and reuses all twelve existing scene treatments and their materials.
+
+The isolated ModernUO run passed 553 checks across both clients and all four native constructors. Both action slots played the expected clip. Harrower's first lethal hit transformed it to body 780 on the same serial. The second produced its true-form static corpse with hue `0x497`. The active client gate passed eight decoded routes, the existing champion checks and the Harrower morph check. The ledger now routes 5,241 of 6,840 slots, with original frames identified for 11 unresolved slots.
+
+Reproduce the pixel check with `.tools/pyenv/Scripts/python.exe scripts/inspect-creature-mul-frames.py BODY --groups 11 17 --compare` for each body. Run `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily exact_creature_fidgets` for the disposable native trial and `python -B scripts/accept-classic-gestures.py --batch exact_creature_fidgets --check-active` for active evidence.
+
 # Stone Gargoyle, Giant Toad and Succubus Classic gestures
 
 Three Classic group 11 routes are active. Stone Gargoyle 67 and Succubus 149 use their existing recovered Fidget. Classic groups 11 and 17 in `anim2.mul` have identical ordered visible pixels and placement in all five directions for both bodies. Giant Toad 80 uses a new short throat and tongue movement on its recovered idle, based on the five-frame `anim.mul` reference. The recovered body, rig and existing animation keys are retained.

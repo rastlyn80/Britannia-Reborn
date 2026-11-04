@@ -35,6 +35,7 @@ BATCHES = {
     'terathan_classic': ((70, 71, 72), 'PreparedCreatureActionLive.gd', ('test-terathan-gestures.gd',)),
     'ophidian_staff': ((85, 87), 'PreparedCreatureActionLive.gd', ('test-ophidian-staff-gestures.gd',)),
     'fidget_aliases_toad': ((67, 80, 149), 'PreparedCreatureActionLive.gd', ('test-fidget-aliases-toad.gd',)),
+    'exact_creature_fidgets': ((146, 157, 173, 777), 'ExactCreatureFidgetLive.gd', ()),
 }
 
 
@@ -47,6 +48,9 @@ def read(path):
 
 
 def compose(base, prepared, native_sha):
+    if prepared['family'] == 'exact_creature_fidgets':
+        return dict(base, classic_action_categories=prepared['classic_action_categories'],
+                    legacy_slot11_evidence=prepared['legacy_slot11_evidence'])
     assets = base.get('assets', {
         name: f"res://local-art/creatures/{base['kind']}-{name}.gltf"
         for name in prepared['assets']
@@ -138,8 +142,12 @@ def checked(index, active, batch):
         if (witness['kind'] != package['kind'] or witness['corpse_suppressed']
                 or witness['native_death_refused'] != refuses_death):
             raise ValueError(f'Missing original body or expected native death behaviour for {body}')
+        if batch == 'exact_creature_fidgets' and body == 146 and (
+                witness.get('transformed_body') != 780 or not witness.get('true_form_corpse')):
+            raise ValueError('Harrower evidence must include the transformation and true-form corpse')
         for slot in slots:
-            clip = package['classic_action_categories'][str(slot)]
+            clip = ('Fidget' if batch == 'exact_creature_fidgets' and slot == 17
+                    else package['classic_action_categories'][str(slot)])
             actions = [row for row in witness['actions'] if row['requested'] == slot]
             if len(actions) != 1 or any(actions[0][key] != clip for key in ('owner_clip', 'observer_clip')):
                 raise ValueError(f'Missing Classic gesture evidence for body {body}, slot {slot}')
@@ -184,6 +192,10 @@ def test_active(batch):
     if batch == 'ready_stances':
         for family in ('raptor', 'slith'):
             run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', [f'--family={family}'])
+    if batch == 'exact_creature_fidgets':
+        run_client_check(godot, env, 'res://Presentation/LegacyCreatureAliasTests.gd', ['--exact-fidgets', '--active'])
+        for test in ('ChampionCreatureRouteTests', 'HarrowerMorphTests'):
+            run_client_check(godot, env, f'res://Presentation/{test}.gd', [])
 
 
 def run_client_check(godot, env, script, args):
@@ -213,7 +225,8 @@ def main():
     if args.activate:
         if batch == 'ready_stances' and any('uop_redirect_native_sha256' not in row for row in baseline):
             raise ValueError('Activate the already verified UOP redirect layer before the ready stances')
-        if any(row.get('classic_gesture_native_sha256') and
+        if any((row.get('classic_gesture_native_sha256') or
+                batch == 'exact_creature_fidgets' and row.get('legacy_slot11_evidence')) and
                any(identity['body'] in BATCHES[batch][0] for identity in row['bodies'])
                for row in index['entries']):
             raise ValueError('The classic gesture batch is already active')

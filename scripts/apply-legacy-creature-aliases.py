@@ -100,7 +100,9 @@ def main():
     actions = read(LEDGER)['original_mul_group_candidates']
     proofs = []
     selected = {11: 'arachnids_spider_dread'} if args.dread_spider else REVIEWED
-    late_aliases = read(LATE_ALIASES) if args.late_packages else {}
+    # Pixel-only matches use the native evidence gate in accept-classic-gestures.py.
+    late_aliases = {body: proof for body, proof in read(LATE_ALIASES).items()
+                    if 'matched_payload_signature' not in proof} if args.late_packages else {}
     if late_aliases:
         selected = {int(body): proof['kind'] for body, proof in late_aliases.items()}
     if args.preview_packages:

@@ -33,7 +33,8 @@ def gesture_baseline(family, registry_entries, bodies):
         return registry_entries
     path = ROOT / 'Viewer/local-art/creatures/accepted-index.json'
     rows = json.loads(path.read_text(encoding='utf-8'))['entries']
-    if any(row.get('classic_gesture_native_sha256')
+    if any((row.get('classic_gesture_native_sha256') or
+            family == 'exact_creature_fidgets' and row.get('legacy_slot11_evidence'))
            and any(identity['body'] in bodies for identity in row['bodies']) for row in rows):
         baseline = ROOT / 'work/creatures' / family / 'accepted-native/base-rows.json'
         return json.loads(baseline.read_text(encoding='utf-8'))
@@ -81,6 +82,10 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'exact_creature_fidgets':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-exact-creature-fidgets.py'))
+        rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']))
+        return recipe['prepared'](rows)
     if family == 'fidget_aliases_toad':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-fidget-aliases-toad.py'))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']))

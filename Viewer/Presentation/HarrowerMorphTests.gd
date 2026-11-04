@@ -27,8 +27,7 @@ func run() -> void:
 	if "--prepared" in OS.get_cmdline_user_args():
 		Registry.entries[146] = preparation.models[0]
 	else:
-		var expected: Dictionary = preparation.models[0].duplicate()
-		expected.status = "validated"
+		var expected := preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(preparation.models[0], Registry.entry(146))
 		assert(Registry.entry(146) == expected)
 	assert(Registry.supports_body(780))
 	var avatar := Avatar.new()

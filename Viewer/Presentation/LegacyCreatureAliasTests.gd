@@ -14,7 +14,10 @@ func run() -> void:
 	game.set_process(false)
 	var file := "res://../work/creatures/legacy-aliases/"
 	var flags := OS.get_cmdline_user_args()
-	if "--late-packages" in flags:
+	var exact := "--exact-fidgets" in flags
+	if exact:
+		file = "res://../work/creatures/exact_creature_fidgets/accepted-native/candidates.json"
+	elif "--late-packages" in flags:
 		file += "late-packages.json"
 	elif "--preview-packages" in flags:
 		file += "packages.json"
@@ -24,10 +27,16 @@ func run() -> void:
 	var active := "--active" in OS.get_cmdline_user_args()
 	Registry.load_index()
 	for row: Dictionary in rows:
-		var proof: Dictionary = row.proof
+		var proof: Dictionary = row.proof if not exact else row.presentation.authored_action_reference.merged({
+			"kind": row.presentation.kind, "original_slot": 11, "identical_slot": 17, "clip": "Fidget"})
 		var body := int(proof.body)
 		if active:
-			assert(Registry.entry(body) == row.presentation, str(proof.kind))
+			if exact:
+				var record := Registry.entry(body)
+				assert(record.legacy_slot11_evidence == row.presentation.legacy_slot11_evidence)
+				assert(record.asset_sha256 == row.presentation.asset_sha256 and record.kind == proof.kind)
+			else:
+				assert(Registry.entry(body) == row.presentation, str(proof.kind))
 		else:
 			Registry.entries[body] = row.presentation
 			if proof.has("unchanged_body"):

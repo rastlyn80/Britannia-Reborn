@@ -328,5 +328,37 @@
     "kind": "black_ant_queen",
     "sibling": 17,
     "payload_signature": "51f48a2448594e04527eb5faeebf19e20ac5fd6b1bda7b918082a624de0302ac"
+  },
+  "146": {
+    "family": "harrower",
+    "kind": "shadowlords_shadowlord",
+    "sibling": 17,
+    "graphic": 22,
+    "payload_signature": "b1abc054f13cf1051d2a4bf946eda353c6e50a775726cc827e3f813339868e48",
+    "matched_payload_signature": "73d117a4dc8472edd92cb36f3c9f5970469af11e24716ac859b411c566b76409"
+  },
+  "157": {
+    "family": "arachnids",
+    "kind": "arachnids_spider_black_widow",
+    "sibling": 17,
+    "graphic": 1,
+    "payload_signature": "c488dd7f7871e404063a3768ee172d1681a1ac5bc16824c842436ef5c16bf833",
+    "matched_payload_signature": "3aa631291557923c9302f008c27445d537892ca060ae09debf1cf1d3969c5f79"
+  },
+  "173": {
+    "family": "champions",
+    "kind": "arachnids_spider_black_widow",
+    "sibling": 17,
+    "graphic": 2,
+    "payload_signature": "121df2fbf5831148adb9a738007c11265fc9687ae8c7f2312a48d4c0731fb4f2",
+    "matched_payload_signature": "4459a1fed5711e9252ddb438e269fc732d59886996c6980979c6573a7764eb9b"
+  },
+  "777": {
+    "family": "source_preserving",
+    "kind": "doppleganger",
+    "sibling": 17,
+    "graphic": 45,
+    "payload_signature": "e776832cbcd05315b722d49f2395b9339b0042d1fdc5c7676aa737af67d298d8",
+    "matched_payload_signature": "849db3374aee9c090951a85096fd682f2b2b253939261c315888d61561fe0b92"
   }
 }
