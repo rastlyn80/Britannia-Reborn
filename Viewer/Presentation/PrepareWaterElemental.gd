@@ -125,6 +125,43 @@ func reset_tracks(animation: Animation,actor: Node3D,rig: Skeleton3D,body: MeshI
 		var track:=animation.add_track(Animation.TYPE_VALUE);animation.track_set_path(track,NodePath(str(actor.get_path_to(pair[0]))+":visible"));animation.value_track_set_update_mode(track,Animation.UPDATE_DISCRETE);animation.track_insert_key(track,0.,pair[1])
 func own(node: Node,scene: Node) -> void:
 	for child in node.get_children():child.owner=scene;own(child,scene)
+
+func add_legacy_water_actions(player: AnimationPlayer, rig: Skeleton3D, library: AnimationLibrary) -> void:
+	var upper := rig.find_bone("upperarm_r")
+	var elbow := rig.find_bone("lowerarm_r")
+	assert(upper >= 0 and elbow >= 0)
+	var keys := {
+		"OverheadSurge": [[0.0, Vector3.ZERO], [0.23, Vector3(-0.8, 0.2, -0.3)],
+			[0.48, Vector3(-0.25, 0.95, -0.08)], [0.72, Vector3(-0.25, -0.24, -0.95)], [1.0, Vector3.ZERO]],
+		"WaterHold": [[0.0, Vector3(-0.35, -0.75, -0.55)]],
+	}
+	for clip: String in keys:
+		var motion := library.get_animation("Idle").duplicate(true) as Animation
+		motion.length = 1.0
+		motion.loop_mode = Animation.LOOP_NONE
+		var arm_track := -1
+		for track in motion.get_track_count():
+			var value: Variant = motion.track_get_key_value(track, 0)
+			for key in range(motion.track_get_key_count(track) - 1, -1, -1):
+				motion.track_remove_key(track, key)
+			motion.track_insert_key(track, 0.0, value)
+			if motion.track_get_type(track) == Animation.TYPE_ROTATION_3D and str(motion.track_get_path(track)).ends_with(":upperarm_r"):
+				arm_track = track
+		assert(arm_track >= 0)
+		for key: Array in keys[clip]:
+			player.play("Idle")
+			player.seek(0.0, true)
+			rig.force_update_all_bone_transforms()
+			var target: Vector3 = key[1]
+			if not target.is_zero_approx():
+				var pose := rig.get_bone_global_pose(upper)
+				var current := (rig.get_bone_global_pose(elbow).origin - pose.origin).normalized()
+				pose.basis = Basis(Quaternion(current, target.normalized())) * pose.basis
+				rig.set_bone_global_pose(upper, pose)
+			motion.rotation_track_insert_key(arm_track, key[0], rig.get_bone_pose_rotation(upper))
+		library.add_animation(clip, motion)
+	player.stop()
+
 func run() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUTPUT.get_base_dir()))
 	var actor: Node3D=load(BASE).instantiate();actor.name="WaterElemental";root.add_child(actor)
@@ -174,12 +211,18 @@ func run() -> void:
 			elif path.ends_with("FluidBody:visible"):animation.track_insert_key(track,1.25,false)
 			elif path.ends_with("Puddle:visible"):animation.track_insert_key(track,.75,true)
 		library.add_animation(clip,animation)
+	add_legacy_water_actions(player, rig, library)
 	source.free();own(actor,actor)
 	var packed:=PackedScene.new();assert(packed.pack(actor)==OK);assert(ResourceSaver.save(packed,OUTPUT)==OK)
 	var clips: Dictionary={}
 	for clip in player.get_animation_list():
 		var animation:=player.get_animation(clip)
-		clips[clip]={"duration":animation.length,"loop":animation.loop_mode==Animation.LOOP_LINEAR,"origin":"Authored liquid collapse" if clip.begins_with("Death") else "Retargeted Quaternius UAL1 Standard: "+str(mapping[clip]),"support_policy":"fluid_base"}
+		var origin := "Retargeted Quaternius UAL1 Standard: " + str(mapping.get(clip, ""))
+		if clip.begins_with("Death"):
+			origin = "Authored liquid collapse"
+		elif clip in ["OverheadSurge", "WaterHold"]:
+			origin = "Authored pose from visual inspection of original Water Elemental slots 7 and 8"
+		clips[clip]={"duration":animation.length,"loop":animation.loop_mode==Animation.LOOP_LINEAR,"origin":origin,"support_policy":"fluid_base"}
 	var envelope:=AABB();var first:=true
 	for clip in player.get_animation_list():
 		for sample in 9:

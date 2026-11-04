@@ -1,3 +1,7 @@
+# Water Elemental legacy actions
+
+Body 16 classic slots 7 and 8 now play the authored overhead surge and held pose in the public client. The original frame samples show unarmed actions despite the generic ranged slot labels. Forward+ passed 611 checks, both the staged and installed native routes passed 249 checks each, and the standalone client passed 15 distribution checks. Both native clients selected the exact two clips. The earlier full regression completed with exit code zero and successful world startup. A fresh full run covers this update. [Frame provenance, recipe and limits](WATER_ELEMENTAL.md).
+
 # Swamp Dragon and Ridgeback mounted verification
 
 The native Swamp Dragon, Scaled Swamp Dragon, Ridgeback and Savage Ridgeback, plus a Swamp Dragon barded through the real Dull Copper deed, passed 594 checks with two disposable clients. Both rider rigs selected all seven classic mounted action replacements on actual server packets. The test also covered mount item and dye replication, walk and run, dismount and static corpses. Barding consumed the deed, changed the same Swamp Dragon from 794 to 799, and preserved the deed hue when both clients received mount item 0x3EBE. The test supplies the deed and emits controlled rider action packets. It does not cover crafting, barding removal or damage to the armor.

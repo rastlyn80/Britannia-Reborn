@@ -47,7 +47,7 @@ func run() -> void:
 	var player: AnimationPlayer=actor.find_children("*","AnimationPlayer",true,false)[0]
 	var material:=mesh.get_active_material(0) as ShaderMaterial
 	check(rig.get_bone_count()==65,"Retains licensed 65-bone rig")
-	check(player.get_animation_list().size()>=15,"Fifteen explicitly mapped/authored categories")
+	check(player.get_animation_list().size()>=17,"Seventeen explicitly mapped/authored categories")
 	check(mesh.mesh.surface_get_arrays(0)[Mesh.ARRAY_BONES].size()==mesh.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX].size()*8,"Eight-influence joined fluid skin")
 	var rows: Array=[];var still: Image
 	for clip in record.stats.modern.clips:
@@ -58,6 +58,11 @@ func run() -> void:
 			var time:=animation.length*float(frame)/8.
 			player.play(clip,0.);player.seek(time,true);player.pause();rig.force_update_all_bone_transforms()
 			var bounds:=Geometry.deformed_bounds(mesh,rig)
+			if frame == 4 and clip in ["OverheadSurge", "WaterHold"]:
+				var wrist := rig.get_bone_global_pose(rig.find_bone("hand_r")).origin.y
+				var shoulder := rig.get_bone_global_pose(rig.find_bone("upperarm_r")).origin.y
+				check(wrist - shoulder > 0.25 if clip == "OverheadSurge" else shoulder - wrist > 0.25,
+					clip + " preserves the distinct legacy wrist height")
 			check(bounds.position.is_finite() and bounds.size.is_finite(),clip+" finite actual skin")
 			check(bounds.position.y>-.025 and bounds.position.y<.025,clip+" anchored fluid base")
 			check(bounds.size.length()<4.,clip+" bounded skin, no retarget explosion")

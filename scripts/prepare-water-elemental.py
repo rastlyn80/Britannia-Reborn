@@ -27,12 +27,13 @@ def candidate():
  'source':'https://quaternius.itch.io/universal-base-characters',
  'source_interpretation':'Authored fluid-vortex replacement using the CC0 Quaternius male upper body/rig and retargeted CC0 UAL1 Standard actions. Not a recovered Third Dawn water elemental or original UO choreography.',
  'partial_hue_interpretation':'Authored moving foam zones; not a recovered original grey-pixel mask.',
+ 'classic_action_categories':{'7':'OverheadSurge','8':'WaterHold'},
  'new_action_categories':{'2':'Hit','5':'Fidget','14':'Pillage'},'camera_height':1.7,
  'pick_bounds':report['envelope'],'stats':{'modern':stats,'original':stats},
  'authored_replacements':{clip:info['origin'] for clip,info in clips.items()},'category_aliases':{'Death2':'Death; same authored liquid collapse'}}
  write(LOCAL/'candidate.json',record)
  write(LOCAL/'inputs.json',{'inputs':PINNED,'recipe':sha(ROOT/'Viewer/Presentation/PrepareWaterElemental.gd'),'asset_sha256':sha(LOCAL/'trial.scn'),'preparation':report})
- print('WATER CANDIDATE: public pinned inputs, authored fluid seam and 15 mapped categories')
+ print(f'WATER CANDIDATE: public pinned inputs, authored fluid seam and {len(clips)} mapped categories')
 def stage():
  record=read(LOCAL/'candidate.json');report=read(ROOT/'outputs/creatures/water-trial/validation.json')
  assert report['failures']==0 and report['checks']>450
@@ -54,13 +55,15 @@ def install():
  for relative,digest in report['runtime'].items():assert sha(ROOT/relative)==digest,relative+' changed after validation'
  PUBLIC.mkdir(parents=True,exist_ok=True);shutil.copyfile(LOCAL/'trial.scn',PUBLIC/'water-elemental.scn')
  record.update(status='validated',assets={'modern':'res://Art/Creatures/Water/water-elemental.scn'})
- index=ROOT/'Viewer/Art/Creatures/index.json';data=read(index);data['entries']=[r for r in data['entries'] if r['kind']!=record['kind']]+[record];write(index,data)
+ index=ROOT/'Viewer/Art/Creatures/index.json';data=read(index)
+ position=next((i for i,row in enumerate(data['entries']) if row['kind']==record['kind']),len(data['entries']))
+ data['entries'][position:position+1]=[record];write(index,data)
  private=ROOT/'Viewer/local-art/creatures/accepted-index.json';data=read(private);data['entries']=[r for r in data['entries'] if r['kind']!=record['kind']];write(private,data)
  pack_names={'universal-base-characters','universal-animation-library'}
  packs=[p for p in read(ROOT/'Viewer/Art/Quaternius/manifest.json')['packs'] if p['pack'] in pack_names]
  grants={f'Viewer/Art/Quaternius/{p}-LICENSE.txt':sha(ROOT/f'Viewer/Art/Quaternius/{p}-LICENSE.txt') for p in sorted(pack_names)}
  write(PUBLIC/'provenance.json',{'sources':read(LOCAL/'inputs.json'),'source_packs':packs,'license_grants':grants,'presentation_files':report['runtime'],'asset_sha256':sha(PUBLIC/'water-elemental.scn'),'interpretation':record['source_interpretation']})
- (PUBLIC/'NOTICE.txt').write_text('Water elemental: authored fluid-vortex replacement by Britannia Reborn contributors, GPL-3.0-or-later. See root LICENSE.\nUnderlying upper-body mesh/65-bone rig: Quaternius Universal Base Characters Standard, CC0-1.0.\nThirteen retargeted action categories: Quaternius Universal Animation Library Standard, CC0-1.0.\nTwo death categories share one authored liquid collapse/puddle. No original UO choreography is claimed.\nSources: https://quaternius.itch.io/universal-base-characters and https://quaternius.itch.io/universal-animation-library\nExact input hashes, source pack pins and CC0 grants: provenance.json, scripts/prepare-water-elemental.py and Viewer/Art/Quaternius/manifest.json and *-LICENSE.txt.\nNo original game mesh, rig, texture or particle is included.\n',encoding='utf-8')
+ (PUBLIC/'NOTICE.txt').write_text('Water elemental: authored fluid-vortex replacement by Britannia Reborn contributors, GPL-3.0-or-later. See root LICENSE.\nUnderlying upper-body mesh/65-bone rig: Quaternius Universal Base Characters Standard, CC0-1.0.\nThirteen retargeted action categories: Quaternius Universal Animation Library Standard, CC0-1.0.\nTwo death categories share one authored liquid collapse/puddle. The overhead surge and held pose were authored from visual inspection of legacy slots 7 and 8. No original UO choreography is claimed.\nSources: https://quaternius.itch.io/universal-base-characters and https://quaternius.itch.io/universal-animation-library\nExact input hashes, source pack pins and CC0 grants: provenance.json, scripts/prepare-water-elemental.py and Viewer/Art/Quaternius/manifest.json and *-LICENSE.txt.\nNo original game mesh, rig, texture or particle is included.\n',encoding='utf-8')
  print('WATER INSTALLED: independently licensed mesh/rig/actions, authored shader, measured/native route')
 def main():
  parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('mode',choices=['inputs','candidate','stage','install']);args=parser.parse_args()

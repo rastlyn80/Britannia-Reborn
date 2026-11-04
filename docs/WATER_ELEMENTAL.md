@@ -30,3 +30,11 @@ Reproduce from the repository root with the local Godot 4.7.2 tool available:
 All source-archive effects, captures, receipts, caches, test credentials and saves remain ignored. Concurrent terrain/building work, the original installation and production runtime are preserved.
 
 Shared regression and final verification: 101 existing source forms / 36 groups retain 69,171 motion checks / 21,000 skin samples and 1,395 GPU checks / 606 views. Public bird passes 117 GPU checks / 12 support cases and nine isolated distribution checks. All 163 available cadaver variants pass 1,518 rendered checks. Fresh `scripts/verify.ps1` exits 0 without script errors, including 84 developer-edit client checks / 70 server-extension checks and clean final world startup. Logs: `work/creatures/water-shared-regression.log`, `water-bird-control.log` and `water-full-verify-clean.log`. The first full attempt caught a temporary concurrent item-code inference error; that file was corrected by its owner, current item checks pass 99/99 and the full run was repeated cleanly. No changes to that item file are part of this feature.
+
+## Classic slots 7 and 8
+
+The generic high-group labels for slots 7 and 8 are bow and crossbow. Body 16's actual sprites show an unarmed overhead surge and a held pose. The client now routes those body-specific slots to independently authored `OverheadSurge` and `WaterHold` clips. The existing casting routes stay separate.
+
+The local comparison used `anim.mul`, direction 1. Slot 7 begins at offset 34,183,296 and contains three frames in 21,515 bytes (SHA-256 `11d15bd8204931b41eadfe6fd4b70cc637e912af1d06d154067c676a9f374c8c`). Slot 8 begins at 34,311,759 and contains six frames in 41,999 bytes (SHA-256 `78636d963ca9f6e6d823d43f57cad1048b4e6b8c8d69dd6d5966ec41c36bbfed`). The replacement uses the existing licensed rig. The original frame pixels were used only for visual reference.
+
+The revised Forward+ candidate passed 611 checks including wrist height, skin, surface, terrain and corpse tests. The staged server run passed 249 checks across two clients, with server fixture packets for both legacy slots. The fixture emits the two action groups directly. It does not establish whether native autonomous Water Elemental AI emits them.

@@ -143,7 +143,7 @@ func run() -> void:
 			var animal:=str(candidate.profile)=="animal";var sea:=str(candidate.profile)=="sea"
 			var actions: Array=[5,9,3,11,-1] if animal else [5,6,7,3,4,12,-1,-2] if sea else [4,17,-1]
 			if not animal and not sea:
-				for extra in [[5,"Attack2"],[6,"Attack3"],[8,"AttackXBow"],[11,"Pillage"],[12,"Cast"],[-2,"Cast"],[19,"Fly"],[20,"Land"]]:
+				for extra in [[5,"Attack2"],[6,"Attack3"],[7,"AttackBow"],[8,"AttackXBow"],[11,"Pillage"],[12,"Cast"],[-2,"Cast"],[19,"Fly"],[20,"Land"]]:
 					var category: String = actor.horse_visual.entry.get("classic_action_categories", {}).get(str(extra[0]), extra[1])
 					if actor.horse_visual.animator.has_animation(category):actions.append(extra[0])
 				for extra in [[-3,2],[-4,5],[-5,14]]:
@@ -174,7 +174,7 @@ func run() -> void:
 				if not check(both_received,"requested native action reaches both clients: "+str([body, action])):return
 				var received: Dictionary=packets[0]
 				if not check(actor.receive_native_action(received),"actual creature consumes native action"):return
-				var expected:=str({5:"Attack",9:"Fidget",3:"Eat",11:"LieDown",-1:"Hit"}.get(action,"")) if animal else str({5:"Attack",6:"Attack2",7:"Hit",3:"Fidget",4:"Fidget2",12:"Attack",-1:"Hit",-2:"Attack"}.get(action,"")) if sea else str({4:"Attack",5:"Attack2",6:"Attack3",8:"AttackXBow",11:"Pillage",12:"Cast",-2:"Cast",-3:"Hit",-4:"Fidget",-5:"Pillage",17:"Fidget",-1:"Hit",19:"Fly",20:"Land"}.get(action,""))
+				var expected:=str({5:"Attack",9:"Fidget",3:"Eat",11:"LieDown",-1:"Hit"}.get(action,"")) if animal else str({5:"Attack",6:"Attack2",7:"Hit",3:"Fidget",4:"Fidget2",12:"Attack",-1:"Hit",-2:"Attack"}.get(action,"")) if sea else str({4:"Attack",5:"Attack2",6:"Attack3",7:"AttackBow",8:"AttackXBow",11:"Pillage",12:"Cast",-2:"Cast",-3:"Hit",-4:"Fidget",-5:"Pillage",17:"Fidget",-1:"Hit",19:"Fly",20:"Land"}.get(action,""))
 				if action>=0:expected=str(actor.horse_visual.entry.get("classic_action_categories",{}).get(str(action),expected))
 				if action in [-3,-4,-5]:
 					var native_type: int={-3:2,-4:5,-5:14}[action]

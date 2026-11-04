@@ -202,6 +202,10 @@
       "source": "https://quaternius.itch.io/universal-base-characters",
       "source_interpretation": "Authored fluid-vortex replacement using the CC0 Quaternius male upper body/rig and retargeted CC0 UAL1 Standard actions. Not a recovered Third Dawn water elemental or original UO choreography.",
       "partial_hue_interpretation": "Authored moving foam zones; not a recovered original grey-pixel mask.",
+      "classic_action_categories": {
+        "7": "OverheadSurge",
+        "8": "WaterHold"
+      },
       "new_action_categories": {
         "2": "Hit",
         "5": "Fidget",
@@ -210,14 +214,14 @@
       "camera_height": 1.7,
       "pick_bounds": {
         "position": [
-          -0.823237538337708,
+          -0.823237895965576,
           -0.0350000001490116,
-          -0.785330653190613
+          -0.785331189632416
         ],
         "size": [
           1.61103856563568,
-          1.86727702617645,
-          1.67673528194427
+          1.88809359073639,
+          1.67673575878143
         ]
       },
       "stats": {
@@ -297,6 +301,12 @@
               "origin": "Retargeted Quaternius UAL1 Standard: Idle",
               "support_policy": "fluid_base"
             },
+            "OverheadSurge": {
+              "duration": 1.0,
+              "loop": false,
+              "origin": "Authored pose from visual inspection of original Water Elemental slots 7 and 8",
+              "support_policy": "fluid_base"
+            },
             "Pillage": {
               "duration": 0.833333313465118,
               "loop": false,
@@ -313,6 +323,12 @@
               "duration": 1.33333337306976,
               "loop": true,
               "origin": "Retargeted Quaternius UAL1 Standard: Walk",
+              "support_policy": "fluid_base"
+            },
+            "WaterHold": {
+              "duration": 1.0,
+              "loop": false,
+              "origin": "Authored pose from visual inspection of original Water Elemental slots 7 and 8",
               "support_policy": "fluid_base"
             }
           }
@@ -393,6 +409,12 @@
               "origin": "Retargeted Quaternius UAL1 Standard: Idle",
               "support_policy": "fluid_base"
             },
+            "OverheadSurge": {
+              "duration": 1.0,
+              "loop": false,
+              "origin": "Authored pose from visual inspection of original Water Elemental slots 7 and 8",
+              "support_policy": "fluid_base"
+            },
             "Pillage": {
               "duration": 0.833333313465118,
               "loop": false,
@@ -409,6 +431,12 @@
               "duration": 1.33333337306976,
               "loop": true,
               "origin": "Retargeted Quaternius UAL1 Standard: Walk",
+              "support_policy": "fluid_base"
+            },
+            "WaterHold": {
+              "duration": 1.0,
+              "loop": false,
+              "origin": "Authored pose from visual inspection of original Water Elemental slots 7 and 8",
               "support_policy": "fluid_base"
             }
           }
@@ -427,9 +455,11 @@
         "Hit": "Retargeted Quaternius UAL1 Standard: Hit_Chest",
         "Hit2": "Retargeted Quaternius UAL1 Standard: Hit_Head",
         "Idle": "Retargeted Quaternius UAL1 Standard: Idle",
+        "OverheadSurge": "Authored pose from visual inspection of original Water Elemental slots 7 and 8",
         "Pillage": "Retargeted Quaternius UAL1 Standard: PickUp_Table",
         "Run": "Retargeted Quaternius UAL1 Standard: Jog_Fwd",
-        "Walk": "Retargeted Quaternius UAL1 Standard: Walk"
+        "Walk": "Retargeted Quaternius UAL1 Standard: Walk",
+        "WaterHold": "Authored pose from visual inspection of original Water Elemental slots 7 and 8"
       },
       "category_aliases": {
         "Death2": "Death; same authored liquid collapse"

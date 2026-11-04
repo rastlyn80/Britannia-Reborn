@@ -1,7 +1,7 @@
 Water elemental: authored fluid-vortex replacement by Britannia Reborn contributors, GPL-3.0-or-later. See root LICENSE.
 Underlying upper-body mesh/65-bone rig: Quaternius Universal Base Characters Standard, CC0-1.0.
 Thirteen retargeted action categories: Quaternius Universal Animation Library Standard, CC0-1.0.
-Two death categories share one authored liquid collapse/puddle. No original UO choreography is claimed.
+Two death categories share one authored liquid collapse/puddle. The overhead surge and held pose were authored from visual inspection of legacy slots 7 and 8. No original UO choreography is claimed.
 Sources: https://quaternius.itch.io/universal-base-characters and https://quaternius.itch.io/universal-animation-library
 Exact input hashes, source pack pins and CC0 grants: provenance.json, scripts/prepare-water-elemental.py and Viewer/Art/Quaternius/manifest.json and *-LICENSE.txt.
 No original game mesh, rig, texture or particle is included.
