@@ -19,6 +19,7 @@ BATCHES = {
     'blistering_pillage': ((130,), 'BlisteringPillageLive.gd', ('test-gargoyle-pillage-trial.gd',)),
     'parrot_flight': ((831,), 'PreparedCreatureActionLive.gd', ('test-parrot-flight-trial.gd',)),
     'troglodyte_reach': ((267,), 'PreparedCreatureActionLive.gd', ('test-troglodyte-reach-trial.gd',)),
+    'ready_stances': ((730, 734), 'PreparedCreatureActionLive.gd', ('test-creature-ready-stance.gd',)),
 }
 
 
@@ -42,7 +43,30 @@ def compose(base, prepared, native_sha):
         row['kind'] = f"{base['kind']}_slot11_{prepared['bodies'][0]['body']}"
     for key in ('validation_sha256', 'gpu_sha256', 'gpu_runtime_sha256'):
         row.pop(key, None)
+    if prepared['family'] == 'ready_stances' and 'uop_redirect_targets' in base:
+        row['classic_action_categories'] = base['classic_action_categories'] | prepared['classic_action_categories']
+        for key in ('uop_redirect_targets', 'uop_redirect_native_sha256'):
+            row[key] = base[key]
     return row
+
+
+def without_ready_stance(row):
+    if 'classic_gesture_native_sha256' not in row or len(row['bodies']) != 1:
+        return row
+    body = int(row['bodies'][0]['body'])
+    if body not in BATCHES['ready_stances'][0]:
+        return row
+    sealed = ROOT / 'work/creatures/ready_stances/accepted-native'
+    base, = (item for item in read(sealed / 'base-rows.json') if item['bodies'][0]['body'] == body)
+    candidates = sealed / 'candidates.json'
+    receipt = read(sealed / 'native-runtime.json')
+    digest = sha(sealed / 'live.json')
+    sources = [candidate['presentation'] for candidate in read(candidates) if candidate['body'] == body]
+    if (receipt['candidate_sha256'] != sha(candidates) or receipt['report_sha256'] != digest
+            or not sources or any(source != sources[0] for source in sources)
+            or compose(base, sources[0], digest) != row):
+        raise ValueError(f'Active ready stance overlay changed for body {body}')
+    return base
 
 
 def checked(index, active, batch):
@@ -95,6 +119,12 @@ def checked(index, active, batch):
                 or witness['native_death_refused'] or len(actions) != 1
                 or any(actions[0][key] != clip for key in ('owner_clip', 'observer_clip'))):
             raise ValueError(f'Missing original body, gesture, or corpse evidence for {body}')
+        if isinstance(source, dict) and 'new_type' in source:
+            matches = [row for row in witness['actions'] if row['requested'] == -5]
+            if (len(matches) != 1 or any(matches[0][key] != clip for key in ('owner_clip', 'observer_clip'))
+                    or any(matches[0][side]['type'] != source['new_type']
+                           for side in ('owner_packet', 'observer_packet'))):
+                raise ValueError(f'Missing new-protocol ready stance evidence for {body}')
         witnesses.add(((body, witness['native_class']), witness['female']))
     if len(report['records']) != len(expected) * 2 or witnesses != {
             (pair, female) for pair in expected for female in (False, True)}:
@@ -111,7 +141,8 @@ def checked(index, active, batch):
             if body in siblings:
                 expected_row = dict(expected_row, bodies=[identity for identity in expected_row['bodies']
                                                          if identity['body'] not in bodies])
-            if [redirect(row) for row in matches] != [expected_row]:
+            compared = matches if batch == 'ready_stances' else [redirect(row) for row in matches]
+            if compared != [expected_row]:
                 raise ValueError(f'Active body {body} differs from its checked package')
     return baseline, rows
 
@@ -126,6 +157,9 @@ def test_active(batch):
     package = {'parrot_flight': 'late_donors', 'troglodyte_reach': 'late_source'}.get(batch)
     if package:
         run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', [f'--family={package}'])
+    if batch == 'ready_stances':
+        for family in ('raptor', 'slith'):
+            run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', [f'--family={family}'])
 
 
 def run_client_check(godot, env, script, args):
@@ -153,6 +187,8 @@ def main():
     index = read(INDEX)
     baseline, rows = checked(index, args.check_active, batch)
     if args.activate:
+        if batch == 'ready_stances' and any('uop_redirect_native_sha256' not in row for row in baseline):
+            raise ValueError('Activate the already verified UOP redirect layer before the ready stances')
         if any(row.get('classic_gesture_native_sha256') and
                any(identity['body'] in BATCHES[batch][0] for identity in row['bodies'])
                for row in index['entries']):

@@ -1,3 +1,11 @@
+# Raptor and Slith ready stances prepared
+
+The ten-frame UOP group 25 references show both creatures lifting their heads compared with group 1. Raptor drops its foreclaws and holds its tail close to horizontal. Slith raises its head slightly with a small tail motion. The one-second replacements keep the current licensed Raptor rig and Slith’s recovered Komodo Dragon rig. The Raptor’s first render lifted the tail too far. The corrected silhouette was rendered and retested before the final native run.
+
+The ready stances passed twelve decoded routes through Classic slot 11 and newer type 14, preserving existing animation tracks and six static corpse hue cases. Across 726 sampled poses, the planted joints stayed fixed. The posed mesh added no penetration relative to idle on flat and four 14% test planes. The Raptor’s raw pre-contact floor gap remains about 25 mm below the reference, as in its existing idle. The final isolated run passed 615 checks with Raptor, Slith, Stone Slith and Toxic Slith. Both clients witnessed each of the two actions for all four classes. Activation follows the existing 30 redirects and checks that both layers coexist.
+
+To reproduce the bake and local test, run Godot with `--headless --path Viewer --script res://../scripts/bake-creature-ready-stance.gd` and then `test-creature-ready-stance.gd`. For the isolated native run, use `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily ready_stances`, then verify the native receipt with `python -B scripts/accept-classic-gestures.py --batch ready_stances`.
+
 # Classic UOP redirects prepared
 
 Thirty body-specific redirects across Fire Gargoyle 130, Animated Weapon 692, Raptor 730, Slith 734 and Enslaved Gargoyle 753 are verified in the isolated preview. The recipe pins `AnimationSequence.uop`, `mobtypes.txt`, and the destination frame payloads. Each zero-frame redirect reuses its body’s existing destination clip and keeps all scene assets and animation tracks intact. The preview passed 90 redirected decoded routes and 30 destination checks across the three mesh treatments. Godot logged a null-material cleanup diagnostic during the preview; the decoded action checks completed.

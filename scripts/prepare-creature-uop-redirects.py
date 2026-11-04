@@ -71,6 +71,9 @@ def merge_active(row, proof, receipt_hash):
 
 
 def without_active_redirect(row):
+    if 'classic_gesture_native_sha256' in row and any(body['body'] in (730, 734) for body in row['bodies']):
+        ready = runpy.run_path(str(ROOT / 'scripts/accept-classic-gestures.py'))['without_ready_stance']
+        row = ready(row)
     if 'uop_redirect_native_sha256' not in row:
         return row
     body, = (int(item['body']) for item in row['bodies'])
@@ -182,8 +185,11 @@ def main():
         row['baseline'] = next(base for base in baseline if base['bodies'][0]['body'] == row['body'])
     if active:
         actual = {row['bodies'][0]['body']: row for row in index['entries'] if 'uop_redirect_native_sha256' in row}
-        if actual != final:
+        strip_ready = runpy.run_path(str(ROOT / 'scripts/accept-classic-gestures.py'))['without_ready_stance']
+        if {body: strip_ready(row) for body, row in actual.items()} != final:
             raise ValueError('The active redirect batch is incomplete')
+        for row in preview:
+            row['presentation'] = actual[row['body']]
         test_client(preview, True)
         return
     if INDEX.read_bytes() != original:

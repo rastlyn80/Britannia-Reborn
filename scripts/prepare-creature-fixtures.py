@@ -81,6 +81,40 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'ready_stances':
+        redirects = runpy.run_path(str(ROOT / 'scripts/prepare-creature-uop-redirects.py'))
+        entries = registry_entries if registry_entries is not None else redirects['read'](redirects['INDEX'])['entries']
+        ledger = redirects['read'](redirects['LEDGER'])
+        sources = {730: ('raptor', '64b5c5bbdb0c7ee0bbd97af107c3b30ae58a97229d43738e0d95b96ef7235d85'),
+                   734: ('slith', '3080bf857102a6b02d5e8d2cf64b5d74568a4068c7f2127da651c33c7dfe1e85')}
+        rows, constructors = [], {}
+        for body, (package, digest) in sources.items():
+            current, = (row for row in entries if row['status'] == 'validated'
+                         and [identity['body'] for identity in row['bodies']] == [body])
+            base = redirects['without_active_redirect'](current)
+            original, classes = prepared_entries(package)
+            assert base == dict(original[0], status='validated')
+            source, = (row for row in ledger['original_uop_frame_groups']
+                       if (row['body'], row['group']) == (body, 25))
+            assert (source['archive'], source['frame_headers'], source['payload_sha256']) == ('AnimationFrame3.uop', 50, digest)
+            link, = (row for row in ledger['original_group_links']
+                     if (row['body'], row['old_group']) == (body, 11))
+            assert link['frame_count'] == 0 and link['new_group'] == 25
+            type14, = (row for row in ledger['original_new_protocol_actions']
+                       if (row['body'], row['mode'], row['type'], row['subaction']) == (body, 0, 14, -1))
+            assert type14['groups'] == [25]
+            assets = {treatment: f"res://local-art/creatures/ready-stance-{body}-"
+                      f"{'shared' if body == 730 else treatment}.scn" for treatment in base['assets']}
+            rows.append(dict(base, status='prepared', family=family, assets=assets,
+                             authored_action_reference=dict(source, group=11, uop_group=25, new_type=14),
+                             authored_action_scene_sha256={name: sha(ROOT / 'Viewer' / path.removeprefix('res://'))
+                                                           for name, path in assets.items()},
+                             classic_action_categories=base.get('classic_action_categories', {}) | {'11': 'ReadyStance'},
+                             new_action_categories=base.get('new_action_categories', {}) | {'14': 'ReadyStance'},
+                             authored_replacements=base.get('authored_replacements', {}) | {
+                                 'ReadyStance': 'Authored ready stance from the ten-frame preferred UOP group 25'}))
+            constructors[body] = classes[body]
+        return rows, constructors
     if family == 'uop_redirects':
         redirects = runpy.run_path(str(ROOT / 'scripts/prepare-creature-uop-redirects.py'))
         entries = registry_entries if registry_entries is not None else redirects['read'](redirects['INDEX'])['entries']

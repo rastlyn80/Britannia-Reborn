@@ -18,6 +18,14 @@ const ACTION_RECIPES := {
 		"description": "Recovered Misc reach retimed to the five-frame Classic MUL sequence",
 		"reference": {"archive": "anim5.mul", "graphic": 26,
 			"directional_payload_sha256": "b8cea81705fc094ede2b3bbeca4e790f29b7bdf1366c7df0606a8f46d385c78e"}},
+	730: {"stem": "ready-stance-730", "shared": true, "slot": 11, "clip": "ReadyStance",
+		"description": "Authored ready stance from the ten-frame preferred UOP group 25",
+		"reference": {"archive": "AnimationFrame3.uop", "frame_headers": 50, "uop_group": 25, "new_type": 14,
+			"payload_sha256": "64b5c5bbdb0c7ee0bbd97af107c3b30ae58a97229d43738e0d95b96ef7235d85"}},
+	734: {"stem": "ready-stance-734", "slot": 11, "clip": "ReadyStance",
+		"description": "Authored ready stance from the ten-frame preferred UOP group 25",
+		"reference": {"archive": "AnimationFrame3.uop", "frame_headers": 50, "uop_group": 25, "new_type": 14,
+			"payload_sha256": "3080bf857102a6b02d5e8d2cf64b5d74568a4068c7f2127da651c33c7dfe1e85"}},
 }
 
 func _initialize() -> void:
@@ -73,11 +81,11 @@ func run() -> void:
 		else:
 			var active := Registry.entry(body)
 			expected = preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(record, active)
+			if active.has("uop_redirect_native_sha256"):
+				expect_uop_redirects(expected, active, body)
 			if ACTION_RECIPES.has(body) and active.has("classic_gesture_native_sha256"):
 				action = ACTION_RECIPES[body]
 				expect_recovered_action(expected, active, body, action)
-			if active.has("uop_redirect_native_sha256"):
-				expect_uop_redirects(expected, active, body)
 		assert(Registry.supports_body(body) and Registry.entry(body) == expected)
 		var avatar := Avatar.new()
 		avatar.initial_body = body
@@ -168,7 +176,8 @@ func expect_recovered_action(expected: Dictionary, active: Dictionary, body: int
 	for key: String in recipe.reference:
 		assert(reference[key] == recipe.reference[key])
 	for treatment: String in expected.assets.keys():
-		var path := "res://local-art/creatures/%s-%s.scn" % [recipe.stem, treatment]
+		var suffix: String = "shared" if recipe.get("shared", false) else treatment
+		var path := "res://local-art/creatures/%s-%s.scn" % [recipe.stem, suffix]
 		assert(active.assets[treatment] == path and active.authored_action_scene_sha256[treatment] == FileAccess.get_sha256(path))
 	expected.classic_gesture_base_assets = expected.assets
 	expected.classic_gesture_native_sha256 = active.classic_gesture_native_sha256
@@ -178,6 +187,9 @@ func expect_recovered_action(expected: Dictionary, active: Dictionary, body: int
 	expected.asset_sha256 = active.authored_action_scene_sha256
 	expected.import_sha256 = {}
 	expected.classic_action_categories = expected.get("classic_action_categories", {}).merged({str(recipe.slot): recipe.clip}, true)
+	if recipe.reference.has("new_type"):
+		expected.new_action_categories = expected.get("new_action_categories", {}).merged({
+			str(recipe.reference.new_type): recipe.clip}, true)
 	expected.authored_replacements = expected.get("authored_replacements", {}).merged({
 		recipe.clip: recipe.description}, true)
 	for key in ["validation_sha256", "gpu_sha256", "gpu_runtime_sha256"]:

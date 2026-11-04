@@ -33,7 +33,11 @@ func run() -> void:
 			Registry.entries[body] = registered if active else candidate.presentation
 			var actor := create_actor(body, treatment)
 			assert(actor.native_hue == baseline.native_hue and actor.native_hue == 0x8035)
-			assert(Registry.asset_path(original, treatment) == Registry.asset_path(candidate.presentation, treatment))
+			var assets: Dictionary = candidate.presentation.get("classic_gesture_base_assets", {})
+			var candidate_path := Registry.asset_path(candidate.presentation, treatment)
+			if active and body in [730, 734] and not assets.is_empty():
+				candidate_path = assets[treatment]
+			assert(Registry.asset_path(original, treatment) == candidate_path)
 			for group: String in candidate.targets:
 				var target: Dictionary = candidate.targets[group]
 				assert(baseline.receive_action(decode(game, int(group))) and baseline.current_clip == target.clip)
