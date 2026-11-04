@@ -310,6 +310,10 @@ if (Test-Path "$root/Viewer/Art/Creatures/Rabbit/rabbit.glb") {
  }
 }
 if (Test-Path "$root/Viewer/Art/Creatures/Wisp/wisp.scn") {
+  if (Test-Path "$root/Viewer/Art/Creatures/Wisp/distinct-actions.res") {
+    & python -B "$root/scripts/prepare-wisp-distinct-actions.py" --check-public
+    if ($LASTEXITCODE) {throw 'Public Wisp distinct action provenance failed'}
+  }
   & python -B "$root/scripts/test-wisp-distribution.py"
   if ($LASTEXITCODE) {throw 'Public Wisp rig/actions, deterministic energy phase and static corpse distribution failed'}
 }

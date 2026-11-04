@@ -2062,6 +2062,15 @@
               "duration": 1.2,
               "loop": true,
               "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "TallFlare": {
+              "authored": true
+            },
+            "SplitFlicker": {
+              "authored": true
+            },
+            "RayDrift": {
+              "authored": true
             }
           }
         },
@@ -2148,6 +2157,15 @@
               "duration": 1.2,
               "loop": true,
               "origin": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+            },
+            "TallFlare": {
+              "authored": true
+            },
+            "SplitFlicker": {
+              "authored": true
+            },
+            "RayDrift": {
+              "authored": true
             }
           }
         }
@@ -2168,7 +2186,10 @@
         "LieDown": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography",
         "Pillage": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography",
         "Run": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography",
-        "Walk": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography"
+        "Walk": "Explicitly authored analytic energy-root/ray animation; not recovered source choreography",
+        "TallFlare": "Authored vertical energy flare with compressed side rays",
+        "SplitFlicker": "Authored alternating pulses across opposing rays",
+        "RayDrift": "Authored slow asymmetric sweep through the rays"
       },
       "loop_categories": [
         "Idle",
@@ -2178,14 +2199,14 @@
       "camera_height": 1.0,
       "pick_bounds": {
         "position": [
-          -0.372653542757034,
-          -0.011900244951248199,
-          -0.38741227865219097
+          -0.44,
+          -0.02,
+          -0.43
         ],
         "size": [
-          0.763168302774429,
-          1.6353215849399572,
-          0.765125093460083
+          0.87,
+          1.73,
+          0.86
         ]
       },
       "new_action_categories": {
@@ -2195,7 +2216,94 @@
       },
       "recipe_sha256": "bf09202560c6c511ff0305dcc3ccb419c46f0dc4197f9a2bfc8157057fa9f401",
       "asset_sha256": "4b47a14ad1eef6c642701d11fad21787b54e685f6b6d33019503ef4e5fbaa595",
-      "native_validation": "Actual isolated Wisp and CrystalWisp constructors, two clients, native actions/hues/movement/death/corpse; repeat on installed public route"
+      "native_validation": "Actual isolated Wisp and CrystalWisp constructors, two clients, native actions/hues/movement/death/corpse; repeat on installed public route",
+      "additional_animation_library": "res://Art/Creatures/Wisp/distinct-actions.res",
+      "classic_action_categories": {
+        "10": "Hit",
+        "15": "TallFlare",
+        "16": "SplitFlicker",
+        "17": "Fidget",
+        "18": "RayDrift"
+      },
+      "classic_motion_references": {
+        "10": {
+          "body": 58,
+          "group": 10,
+          "archive": "anim.mul",
+          "graphic": 58,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 4,
+          "directional_payload_sha256": "1dea22ea883bf8a76f14fd895ae4b26304106a4a1dad1faafbec677ababfb360"
+        },
+        "15": {
+          "body": 58,
+          "group": 15,
+          "archive": "anim.mul",
+          "graphic": 58,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 3,
+          "directional_payload_sha256": "ad12a5da59cea8109382684af00bfec259823b0966409fcfd3652bbf4650e279"
+        },
+        "16": {
+          "body": 58,
+          "group": 16,
+          "archive": "anim.mul",
+          "graphic": 58,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 3,
+          "directional_payload_sha256": "362315c364b2aa9f5470b9d4b7500d0dfd870a3127fbd0d29ca94cc2000e6500"
+        },
+        "17": {
+          "body": 58,
+          "group": 17,
+          "archive": "anim.mul",
+          "graphic": 58,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 5,
+          "directional_payload_sha256": "94f4f8abc20c5681f244831d3fdc6b34e9413527dd649d0e913633d806de289c"
+        },
+        "18": {
+          "body": 58,
+          "group": 18,
+          "archive": "anim.mul",
+          "graphic": 58,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 5,
+          "directional_payload_sha256": "3fe1de5071229a783d921a699cb1e2deed9bd16d2723a76cdd91f055b77596fd"
+        }
+      },
+      "presentation_script": "res://Presentation/WispActionsVisual.gd",
+      "presentation_script_sha256": "227708d0f21a69ad3226e09928b7c8d255d6ace7d6084b0fe075a81ee8b3da21"
     },
     {
       "kind": "air_elemental",

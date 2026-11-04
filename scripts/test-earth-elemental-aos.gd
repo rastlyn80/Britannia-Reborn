@@ -23,7 +23,11 @@ func run() -> void:
 	if "--active" in OS.get_cmdline_user_args():
 		for treatment: String in TREATMENTS:
 			var path: String = accepted.assets[treatment]
-			assert(path == "res://local-art/creatures/earth-aos/" + treatment + ".scn")
+			var prior := "res://local-art/creatures/earth-aos/" + treatment + ".scn"
+			if accepted.get("classic_gesture_batch") == "earth_gazer_imp_actions":
+				assert(accepted.classic_gesture_base_assets[treatment] == prior)
+			else:
+				assert(path == prior)
 			assert(FileAccess.get_sha256(path) == accepted.authored_action_scene_sha256[treatment])
 	else:
 		var trial: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://local-art/creatures/earth-aos/candidate.json"))

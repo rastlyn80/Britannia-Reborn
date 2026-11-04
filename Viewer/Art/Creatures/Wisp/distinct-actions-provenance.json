@@ -1,0 +1,9 @@
+{
+  "license": "GPL-3.0-or-later, independently authored motions on the original project Wisp rig",
+  "source": "wisp.scn",
+  "source_sha256": "4b47a14ad1eef6c642701d11fad21787b54e685f6b6d33019503ef4e5fbaa595",
+  "animation_library_sha256": "17fddbf63fec703b9fd5ccc21422030b7dd9c18c439b9e1f86e7dbe323db4c7c",
+  "recipe_sha256": "2d1ed46b4c16f42fe63b1cd1cdcd0ea53469e1f70c32973bd842aa1d159e3b3d",
+  "native_report_sha256": "9383fcc8aa61a7da4841dc37a2caa3f2a431ecdf0d5dff27f8e77dbe88c64f36",
+  "scope": "Three authored ray and energy-root animations. The original project mesh, rig and shader remain intact."
+}

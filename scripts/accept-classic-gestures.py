@@ -76,6 +76,9 @@ BATCHES = {
     'zombie_corpser_gargoyle_actions': ((3, 8, 4), 'FieldFaunaLive.gd',
                                        ('test-zombie-corpser-gargoyle-actions.gd',
                                         'test-zombie-corpser-gargoyle-landings.gd')),
+    'earth_gazer_imp_actions': ((14, 22, 74), 'FieldFaunaLive.gd',
+                               ('test-earth-gazer-imp-actions.gd', 'test-earth-gazer-landings.gd')),
+    'wisp_distinct_actions': ((58,), 'PreparedClassicActionsLive.gd', ()),
     'skeleton_actions': ((50, 56), 'PreparedClassicActionsLive.gd', ('test-skeleton-actions.gd',)),
 }
 PREDECESSORS = {
@@ -95,6 +98,7 @@ PREDECESSORS = {
     'pig_reaper_harpy_actions': ('reaper_harpy',),
     'serpent_ogre_actions': ('giant_serpent_pillage',),
     'zombie_corpser_gargoyle_actions': ('gargoyle_classic',),
+    'earth_gazer_imp_actions': ('earth_elemental_aos', 'scorpion_imp'),
     'skeleton_actions': ('skeleton_axe',),
 }
 
@@ -231,7 +235,7 @@ def checked(index, active, batch, *, compare_registry=True):
         raise ValueError('The field collapse renderer or explicit packet test changed')
     if batch in ('lizard_actions', 'quadruped_actions', 'hart_deaths', 'dog_bear_actions', 'cat_actions',
                  'troll_actions', 'field_fauna', 'grazers_grizzly_actions', 'rabbit_distinct_actions',
-                 'serpent_ogre_actions', 'zombie_corpser_gargoyle_actions'):
+                 'serpent_ogre_actions', 'zombie_corpser_gargoyle_actions', 'earth_gazer_imp_actions'):
         visual, base_key, base_visual = (
             ('SourceLizardActionsVisual', 'armed_renderer_sha256', 'SourceArmedLizardmanVisual')
             if batch in ('lizard_actions', 'troll_actions') else
@@ -291,7 +295,8 @@ def checked(index, active, batch, *, compare_registry=True):
             raise ValueError('Corpser fixture did not verify the native rooted state')
         if batch in ('troll_actions', 'serpent_ogre_actions') or (batch, body) in (
                 ('skeleton_actions', 50), ('field_fauna', 42), ('spider_mongbat_actions', 39),
-                ('pig_reaper_harpy_actions', 30), ('zombie_corpser_gargoyle_actions', 4)):
+                ('pig_reaper_harpy_actions', 30), ('zombie_corpser_gargoyle_actions', 4),
+                ('earth_gazer_imp_actions', 14), ('earth_gazer_imp_actions', 74)):
             expected_new_clip = package['new_action_categories']['14']
             reach, = (action for action in witness['actions'] if action['requested'] == -5)
             if any(reach[client + '_clip'] != expected_new_clip or reach[client + '_packet']['protocol'] != 'new'
@@ -310,7 +315,8 @@ def checked(index, active, batch, *, compare_registry=True):
             if (batch in ('lizard_actions', 'quadruped_actions', 'hart_deaths', 'dog_bear_actions', 'cat_actions',
                           'skeleton_actions', 'troll_actions', 'field_fauna', 'spider_mongbat_actions',
                           'grazers_grizzly_actions', 'pig_reaper_harpy_actions', 'rabbit_distinct_actions',
-                          'serpent_ogre_actions', 'zombie_corpser_gargoyle_actions') or
+                          'serpent_ogre_actions', 'zombie_corpser_gargoyle_actions', 'earth_gazer_imp_actions',
+                          'wisp_distinct_actions') or
                     slot in package.get('native_extra_classic_actions', [])) and any(
                     actions[0][key]['protocol'] != 'classic' or actions[0][key]['action'] != slot
                     for key in ('owner_packet', 'observer_packet')):
@@ -416,7 +422,7 @@ def main():
     live = ROOT / 'outputs/creatures' / batch / 'live.json'
     previous = INDEX.read_bytes()
     index = read(INDEX)
-    if batch in ('cat_actions', 'rabbit_distinct_actions'):
+    if batch in ('cat_actions', 'rabbit_distinct_actions', 'wisp_distinct_actions'):
         if args.activate or args.check_active:
             parser.error('Use the public animal preparation recipe for installation and verification')
         index = read(ROOT / 'Viewer/Art/Creatures/index.json')

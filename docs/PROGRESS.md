@@ -1,3 +1,15 @@
+# Earth Elemental, Gazer, Wisp and Imp actions
+
+Earth Elemental 14 keeps its Age of Shadows rig, StoneGesture and Assemble. Its new fitted motions separate the two collapses, strikes, recoils and fidgets. During assembly the model starts below the terrain and clears the surface near the end without moving the native entity. Three sampled terrain cases ended 3 mm above their planes, and an attack could interrupt the assembly. The no-floor case preserved the native position. Native automatic summon timing and mixed ledges remain open.
+
+Gazer 22 keeps its Third Dawn hover, four separate eyes and two recovered attacks. Groups 5 and 6 have different stored Classic frames, so group 6 gets its own fitted EyeVolley and staggered eye flashes. Gazer also has a separate rolling collapse and eye-spread fidget. Imp 74 adds ShoulderRecoil for groups 15 and 16. Their registered Classic frames match across all five stored directions. The tested newer type-14 packet selects StoneGesture on Earth Elemental and WingTwitch on Imp.
+
+Wisp 58 adds a tall flare, split flicker and drifting ray motion in a separate GPL-3.0-or-later animation library. The existing independent rig, mesh and shader stay in place. The selection volume encloses the new motions. The installed package passed 855 clean-copy checks, including 608 complete skin samples, native hue flags and the frozen static corpse.
+
+The isolated ModernUO trials passed 1,255 checks for the three Earth Elemental constructors, Gazer and Imp, and 535 for Wisp and CrystalWisp. The Earth, Gazer and Imp client test passed 7,290 decoded poses, nine static corpse hue cases and six terrain death-to-corpse handoffs across 246 samples. A 68-view Forward+ review checked the new motions and Gazer’s eye flashes.
+
+Generic routing is 5,340 of 6,930 tracked slots (77.1%). The Classic pairs sharing a replacement fell from 735 to 718, and 25 of the 106 type-14 group-11 candidates have verified routes. The preceding full regression passed with the registry held steady, including 4,096 terrain samples and 2,689 statics in the world smoke check. The full regression on this release is running.
+
 # Zombie, Corpser and Gargoyle actions
 
 Zombie 3 has separate Classic strikes, recoils, fidgets and forward and backward falls on its Third Dawn rig. ArmsRaise keeps its existing keys. Corpser 8 stays rooted, with two fitted tendril attacks and two falls that fold the tendrils around a planted flower. The earlier authored fall is retained for comparison. The original emergence keys now play in all three render variants. The active emergence test also verifies three interruptions into the existing attack.

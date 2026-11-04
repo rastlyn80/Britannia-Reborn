@@ -4,7 +4,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 def main():
     target=(ROOT/'work/creatures/wisp-distribution'/uuid.uuid4().hex).resolve();assert target.is_relative_to((ROOT/'work/creatures/wisp-distribution').resolve());target.mkdir(parents=True)
-    pending=['Presentation/WispDistributionTests.gd'];copied=set();pattern=re.compile(r'(?:preload\s*\(|extends\s+|#include\s+)["\']res://([^"\']+)')
+    pending=['Presentation/WispDistributionTests.gd','Presentation/WispActionsVisual.gd'];copied=set();pattern=re.compile(r'(?:preload\s*\(|extends\s+|#include\s+)["\']res://([^"\']+)')
     while pending:
         relative=pending.pop()
         if relative in copied:continue

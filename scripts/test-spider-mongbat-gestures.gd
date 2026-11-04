@@ -57,6 +57,9 @@ func run() -> void:
 				elif body == 39 and batch == "mongbat_fidgets":
 					assert(base_assets[treatment] == path)
 					path = base.assets[treatment]
+				elif body == 74 and batch == "earth_gazer_imp_actions":
+					assert(base_assets[treatment] == path)
+					path = base.assets[treatment]
 				assert(base.assets[treatment] == path and base.authored_action_scene_sha256[treatment] == FileAccess.get_sha256(path))
 			else:
 				trial.assets[treatment] = path

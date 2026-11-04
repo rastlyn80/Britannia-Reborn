@@ -42,6 +42,25 @@ func run() -> void:
 	for code in [4,10,11,12]:
 		visual.dead=false;visual.action_remaining=0.
 		check(visual.receive_action({"protocol":"classic","action":code,"frame_count":6,"repeat_count":1,"delay":0}),"Source-free actual avatar consumes its explicit action category")
+	if Registry.entry(58).has("additional_animation_library"):
+		check(visual.animator.get_animation_list().size() == 19, "Separate library adds exactly three clips")
+		var heights := {}
+		for slot: int in [15, 16, 18]:
+			var expected: String = {15: "TallFlare", 16: "SplitFlicker", 18: "RayDrift"}[slot]
+			check(visual.receive_action({"protocol": "classic", "action": slot}) and visual.current_clip == expected,
+				"Installed reaction %d selects its own animation" % slot)
+			visual.play(expected, 0.0)
+			for frame in 21:
+				visual.animator.seek(visual.animator.current_animation_length * frame / 20.0, true)
+				rig.force_update_all_bone_transforms()
+				var bounds := Geometry.deformed_bounds(meshes[0], rig)
+				for mesh: MeshInstance3D in meshes.slice(1):
+					bounds = bounds.merge(Geometry.deformed_bounds(mesh, rig))
+				var target: AABB = visual.get_meta("pick_bounds")
+				check(target.encloses(bounds), "Picking bounds enclose the complete animated rays")
+				if frame == 10:
+					heights[slot] = bounds.size.y
+		check(heights[15] > heights[16] + 0.22, "Tall and split reactions retain distinct silhouettes")
 	actor.free()
 	var corpse:=Corpses.build(58,0x8035);check(corpse!=null,"Public body58 produces a source-free static cadaver")
 	if corpse!=null:

@@ -87,6 +87,8 @@ def prepared_entries(family, registry_entries=None):
         return runpy.run_path(str(ROOT / 'scripts/prepare-cat-actions.py'))['prepared'](registry_entries)
     if family == 'rabbit_distinct_actions':
         return runpy.run_path(str(ROOT / 'scripts/prepare-rabbit-distinct-actions.py'))['prepared'](registry_entries)
+    if family == 'wisp_distinct_actions':
+        return runpy.run_path(str(ROOT / 'scripts/prepare-wisp-distinct-actions.py'))['prepared'](registry_entries)
     if family == 'skeleton_actions':
         rows = gesture_baseline(family, registry_entries, {50, 56}, layered=True)
         return runpy.run_path(str(ROOT / 'scripts/prepare-skeleton-actions.py'))['prepared'](rows)
@@ -104,7 +106,7 @@ def prepared_entries(family, registry_entries=None):
         return runpy.run_path(str(ROOT / 'scripts/prepare-field-deaths.py'))['prepared'](rows)
     if family in ('occurrence_deaths', 'kraken_reactions', 'dog_bear_actions', 'troll_actions', 'field_fauna',
                   'spider_mongbat_actions', 'grazers_grizzly_actions', 'pig_reaper_harpy_actions',
-                  'serpent_ogre_actions', 'zombie_corpser_gargoyle_actions'):
+                  'serpent_ogre_actions', 'zombie_corpser_gargoyle_actions', 'earth_gazer_imp_actions'):
         recipe = runpy.run_path(str(ROOT / ('scripts/prepare-' + family.replace('_', '-') + '.py')))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
         return recipe['prepared'](rows)
