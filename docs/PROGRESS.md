@@ -2,7 +2,7 @@
 
 The first 13 one-body local presentations now have a tested recipe for reusing Fidget in classic slot 11. For each body, slot 17 has the same complete MUL payload in all five directions. The candidate passed 26 decoded packets through the actual avatar route. These are exact source-slot aliases. They reuse existing replacement motions and leave the packet timing unchanged.
 
-Regenerate `scripts/build-creature-catalogue.py` and `scripts/build-creature-actions.py`, then run `python -B scripts/apply-legacy-creature-aliases.py` for the isolated candidate or add `--activate` once registry checks are idle. Activation repeats the decoded tests through the normal local registry and rolls back the update on failure. `--check-active` rechecks it. Shared multi-body records and exact package gates need separate review for the remaining 56 candidates.
+Regenerate `scripts/build-creature-catalogue.py` and `scripts/build-creature-actions.py`, then run `python -B scripts/apply-legacy-creature-aliases.py` for the isolated candidate or add `--activate` once registry checks are idle. Activation repeats the decoded tests through the normal local registry and rolls back the update on failure. `--check-active` rechecks it. The Dread Spider shares its model with body 19. Run the same script with `--dread-spider` to test the body-specific route. The candidate passed both decoded packets, switched from body 11 to 19 and back without replacing the avatar or changing its scale, and confirmed that body 19 did not acquire slot 11. Activation is separate. The other 55 candidates still need review against their exact package gates.
 
 # Water Elemental legacy actions
 

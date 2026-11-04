@@ -162,7 +162,9 @@ def main():
             body=int(identity['body']);native[body]=model
             profile=identity.get('native_profile') or model['profile']
             for protocol,groups in [('classic',maps['small' if profile=='animal' else 'sea' if profile=='sea' else 'large']),('new',maps['new'])]:
-                if protocol=='classic':groups={**groups,**{int(key):value for key,value in model.get('classic_action_categories',{}).items()}}
+                if protocol=='classic':
+                    overrides = model.get('classic_action_categories', {}) | model.get('classic_action_categories_by_body', {}).get(str(body), {})
+                    groups = groups | {int(key): value for key, value in overrides.items()}
                 if protocol=='new':groups={**groups,**{int(key):value for key,value in model.get('new_action_categories',{}).items()}}
                 for group,label in groups.items():
                     rows.append({'body':body,'family':model['family'],'kind':model['kind'],'native_profile':profile,

@@ -12,7 +12,8 @@ func run() -> void:
 	var game := Game.new()
 	root.add_child(game)
 	game.set_process(false)
-	var file := "res://../work/creatures/legacy-aliases/candidates.json"
+	var file := "res://../work/creatures/legacy-aliases/"
+	file += "dread-spider.json" if "--dread-spider" in OS.get_cmdline_user_args() else "candidates.json"
 	var rows: Array = JSON.parse_string(FileAccess.get_file_as_string(file))
 	var active := "--active" in OS.get_cmdline_user_args()
 	Registry.load_index()
@@ -23,6 +24,8 @@ func run() -> void:
 			assert(Registry.entry(body) == row.presentation, str(proof.kind))
 		else:
 			Registry.entries[body] = row.presentation
+			if proof.has("unchanged_body"):
+				Registry.entries[int(proof.unchanged_body)] = row.presentation
 		var avatar := preload("res://Presentation/HumanAvatar.gd").new()
 		avatar.initial_body = body
 		root.add_child(avatar)
@@ -38,6 +41,17 @@ func run() -> void:
 			game._handle(packet)
 			assert(avatar.receive_native_action(game.last_mobile_actions[SERIAL]), str(proof.kind))
 			assert(actor.current_clip == proof.clip, "%s slot %d" % [proof.kind, slot])
+		if proof.has("unchanged_body"):
+			var sibling := int(proof.unchanged_body)
+			var scale: Vector3 = actor.model.scale
+			avatar.apply_server_appearance({"body": sibling, "hue": 0}, [])
+			assert(avatar.horse_visual == actor and actor.native_body == sibling)
+			assert(actor.model.scale.is_equal_approx(scale))
+			var unchanged: Dictionary = game.last_mobile_actions[SERIAL].duplicate(true)
+			unchanged.body = sibling
+			assert(not avatar.receive_native_action(unchanged), "Sibling body has no new slot 11 alias")
+			avatar.apply_server_appearance({"body": body, "hue": 0}, [])
+			assert(avatar.horse_visual == actor and avatar.receive_native_action(game.last_mobile_actions[SERIAL]))
 		avatar.free()
 	game.free()
 	print("LEGACY CREATURE ALIASES: ", rows.size() * 2, " decoded routes")
