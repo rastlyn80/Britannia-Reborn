@@ -1,3 +1,9 @@
+# Reviewed legacy action aliases
+
+The first 13 one-body local presentations now have a tested recipe for reusing Fidget in classic slot 11. For each body, slot 17 has the same complete MUL payload in all five directions. The candidate passed 26 decoded packets through the actual avatar route. These are exact source-slot aliases. They reuse existing replacement motions and leave the packet timing unchanged.
+
+Regenerate `scripts/build-creature-catalogue.py` and `scripts/build-creature-actions.py`, then run `python -B scripts/apply-legacy-creature-aliases.py` for the isolated candidate or add `--activate` once registry checks are idle. Activation repeats the decoded tests through the normal local registry and rolls back the update on failure. `--check-active` rechecks it. Shared multi-body records and exact package gates need separate review for the remaining 56 candidates.
+
 # Water Elemental legacy actions
 
 Body 16 classic slots 7 and 8 now play the authored overhead surge and held pose in the public client. The original frame samples show unarmed actions despite the generic ranged slot labels. Forward+ passed 611 checks, both the staged and installed native routes passed 249 checks each, and the standalone client passed 15 distribution checks. Both native clients selected the exact two clips. The earlier full regression completed with exit code zero and successful world startup. A fresh full run covers this update. [Frame provenance, recipe and limits](WATER_ELEMENTAL.md). The legacy ledger now records directional payload hashes and found 69 unresolved candidate slots with a byte-identical routed sibling across all five directions. Kraken slots 11 and 17 are one confirmed pair. The ledger records the evidence independently of client route changes.
