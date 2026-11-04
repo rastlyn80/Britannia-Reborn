@@ -15,7 +15,7 @@ class Avatar extends Node3D:
 	var horse_visual: Node3D
 
 func _initialize() -> void:
-	create_timer(15.0).timeout.connect(func(): quit(2))
+	create_timer(30.0).timeout.connect(func(): quit(2))
 	call_deferred("run")
 
 func run() -> void:
@@ -29,6 +29,8 @@ func run() -> void:
 		for axis in [Vector3.RIGHT, Vector3.FORWARD]:
 			for slope in [-0.14, 0.14]:
 				await check_handoff(body, form, axis, slope)
+		await check_handoff(body, form, Vector3.RIGHT, 0.0, 0.35)
+		await check_handoff(body, form, Vector3.RIGHT, 0.0, -0.35)
 		for hue in [0, 53, 0x8035]:
 			var posed := Corpses.posed(body, hue)
 			assert(posed != null)
@@ -59,7 +61,7 @@ func run() -> void:
 	await process_frame
 	quit()
 
-func check_handoff(body: int, form: String, axis: Vector3, slope: float) -> void:
+func check_handoff(body: int, form: String, axis: Vector3, slope: float, step_edge := INF) -> void:
 	var game := Game.new()
 	root.add_child(game)
 	game.set_process(false)
@@ -74,6 +76,7 @@ func check_handoff(body: int, form: String, axis: Vector3, slope: float) -> void
 	deaths.configure(arena, game, items)
 	deaths.set_process(false)
 
+	var stepped := is_finite(step_edge)
 	var ground := StaticBody3D.new()
 	arena.add_child(ground)
 	ground.basis = Basis(axis, slope)
@@ -83,6 +86,13 @@ func check_handoff(body: int, form: String, axis: Vector3, slope: float) -> void
 	surface.shape = box
 	surface.position.y = -0.05
 	ground.add_child(surface)
+	if stepped:
+		var upper := CollisionShape3D.new()
+		var stair := BoxShape3D.new()
+		stair.size = Vector3(2.0, 0.22, 10.0)
+		upper.shape = stair
+		upper.position = Vector3(step_edge + 1.0, 0.11, 0.0)
+		ground.add_child(upper)
 	await physics_frame
 	await physics_frame
 
@@ -93,6 +103,8 @@ func check_handoff(body: int, form: String, axis: Vector3, slope: float) -> void
 	avatar.horse_visual = Registry.create(body)
 	avatar.add_child(avatar.horse_visual)
 	avatar.horse_visual.apply_identity(body, 0x8035)
+	if step_edge < 0.0:
+		avatar.position.y = 0.22
 	arena.avatars[killed] = avatar
 	game.entities[killed] = {"serial": killed, "body": body, "hue": 0x8035, "direction": 5}
 	var holder := Node3D.new()
@@ -118,6 +130,8 @@ func check_handoff(body: int, form: String, axis: Vector3, slope: float) -> void
 		visual.support_collapse()
 		var clearance: float = visual.minimum_gap(visual.skeleton.global_transform, Vector3.ZERO, ground.basis.y)
 		assert(clearance >= 0.0028 and visual.global_transform.is_equal_approx(root_transform))
+		if stepped:
+			assert_step_clearance(visual, step_edge)
 	player.pause()
 	var weapon := visual.find_child(form, true, false) as MeshInstance3D
 	var rig := weapon.get_parent() as Skeleton3D
@@ -146,7 +160,30 @@ func check_handoff(body: int, form: String, axis: Vector3, slope: float) -> void
 		assert(point.distance_to(expected * source[i]) < 0.0001)
 		assert(bounds.grow(0.0001).has_point(holder.to_local(point)))
 	assert(items.corpse_snapshots.has(serial))
-	print(body, " slope ", axis, " ", slope, ": 41 collapse poses clear ground and corpse preserves world-space weapon pose")
+	print(body, " step " if stepped else " slope ", axis, " ", slope, ": 41 collapse poses clear ground and corpse preserves world-space weapon pose")
 	arena.queue_free()
 	game.queue_free()
 	await process_frame
+
+func assert_step_clearance(visual: Node3D, step_edge: float) -> void:
+	var rig: Skeleton3D = visual.skeleton
+	for mesh: MeshInstance3D in visual.model.find_children("*", "MeshInstance3D", true, false):
+		var transforms: Array[Transform3D] = []
+		for i in mesh.skin.get_bind_count():
+			var bone := mesh.skin.get_bind_bone(i)
+			if bone < 0:
+				bone = rig.find_bone(mesh.skin.get_bind_name(i))
+			transforms.append(rig.global_transform * rig.get_bone_global_pose(bone) * mesh.skin.get_bind_pose(i))
+		for i in mesh.mesh.get_surface_count():
+			var arrays := mesh.mesh.surface_get_arrays(i)
+			var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+			var bones: PackedInt32Array = arrays[Mesh.ARRAY_BONES]
+			var weights: PackedFloat32Array = arrays[Mesh.ARRAY_WEIGHTS]
+			var stride := bones.size() / vertices.size()
+			for vertex in vertices.size():
+				var point := Vector3.ZERO
+				for slot in stride:
+					var index := vertex * stride + slot
+					point += (transforms[bones[index]] * vertices[vertex]) * weights[index]
+				var ground := 0.22 if point.x > step_edge + 0.0001 and point.x < step_edge + 1.9999 else 0.0
+				assert(point.y - ground >= 0.0028)
