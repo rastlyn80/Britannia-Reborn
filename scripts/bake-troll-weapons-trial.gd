@@ -52,10 +52,9 @@ func floor_gap(pose: Transform3D, corners: PackedVector3Array) -> float:
 		gap = minf(gap, (pose * vertex).y)
 	return gap
 
-func settle_weapon(pose: Transform3D, corners: PackedVector3Array) -> Transform3D:
-	const MARGIN := 0.012
+func settle_weapon(pose: Transform3D, corners: PackedVector3Array, margin: float, roll_blade: bool) -> Transform3D:
 	var gap := floor_gap(pose, corners)
-	if gap >= MARGIN:
+	if gap >= margin:
 		return pose
 	var shaft := pose.basis.y.normalized()
 	var flat := Vector3(shaft.x, 0.0, shaft.z).normalized()
@@ -70,10 +69,23 @@ func settle_weapon(pose: Transform3D, corners: PackedVector3Array) -> Transform3
 			if gap > best_gap:
 				best = candidate
 				best_gap = gap
-			if gap >= MARGIN:
+			if gap >= margin:
+				break
+	if roll_blade and best_gap < margin:
+		var flat_pose := best
+		var axis := flat_pose.basis.y.normalized()
+		for i in range(1, 13):
+			for direction in [-1.0, 1.0]:
+				var candidate := flat_pose
+				candidate.basis = Basis(Quaternion(axis, deg_to_rad(5.0 * i * direction))) * flat_pose.basis
+				gap = floor_gap(candidate, corners)
+				if gap > best_gap:
+					best = candidate
+					best_gap = gap
+			if best_gap >= margin:
 				break
 	# Thick heads can still reach below the grip even when the shaft is flat.
-	best.origin.y += maxf(0.0, MARGIN - best_gap)
+	best.origin.y += maxf(0.0, margin - best_gap)
 	return best
 
 func aim_joint(rig: Skeleton3D, joint: int, child: int, target: Vector3) -> void:
@@ -106,7 +118,7 @@ func lift_hand(rig: Skeleton3D, arm: Array[int], amount: float) -> void:
 	rig.set_bone_global_pose(arm[2], pose)
 	rig.force_update_all_bone_transforms()
 
-func bake_death_grip(player: AnimationPlayer, rig: Skeleton3D, joint: int, mesh: ArrayMesh) -> void:
+func bake_death_grip(player: AnimationPlayer, rig: Skeleton3D, joint: int, mesh: ArrayMesh, roll_blade := false) -> void:
 	var corners := PackedVector3Array()
 	for surface in mesh.get_surface_count():
 		corners.append_array(mesh.surface_get_arrays(surface)[Mesh.ARRAY_VERTEX])
@@ -128,7 +140,7 @@ func bake_death_grip(player: AnimationPlayer, rig: Skeleton3D, joint: int, mesh:
 		rig.force_update_all_bone_transforms()
 		var socket := rig.global_transform * rig.get_bone_global_pose(grip)
 		var source := socket * bind
-		var settled := settle_weapon(source, corners)
+		var settled := settle_weapon(source, corners, 0.012, roll_blade)
 		var original_arm: Array[Quaternion] = []
 		for bone in arm:
 			original_arm.append(rig.get_bone_pose_rotation(bone))
@@ -145,7 +157,7 @@ func bake_death_grip(player: AnimationPlayer, rig: Skeleton3D, joint: int, mesh:
 
 	var animation_root := player.get_node(player.root_node)
 	var rig_path := animation_root.get_path_to(rig)
-	var target := NodePath("%s:%s" % [rig_path, JOINT])
+	var target := NodePath("%s:%s" % [rig_path, rig.get_bone_name(joint)])
 	for index in arm.size():
 		var channel := NodePath("%s:%s" % [rig_path, rig.get_bone_name(arm[index])])
 		var track := death.find_track(channel, Animation.TYPE_ROTATION_3D)

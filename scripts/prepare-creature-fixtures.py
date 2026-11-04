@@ -81,6 +81,62 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'ratman_hunch':
+        body = 42
+        base, = (row for row in gesture_baseline(family, registry_entries, {body})
+                 if row['status'] == 'validated' and row['kind'] == 'rat_race_ratman'
+                 and any(identity['body'] == body for identity in row['bodies']))
+        identity, = (entry for entry in base['bodies'] if entry['body'] == body)
+        ledger = json.loads((ROOT / 'outputs/creatures/actions.json').read_text(encoding='utf-8'))
+        group, = (row for row in ledger['original_mul_group_candidates']
+                  if (row['body'], row['group']) == (body, 11) and 'matching_classic_route' in row)
+        assert group['archive'] == 'anim.mul' and group['graphic'] == body and not group['mobtype_prefers_uop']
+        assert [entry['direction'] for entry in group['directions']] == list(range(5))
+        digest = hashlib.sha256(''.join(entry['payload_sha256'] for entry in group['directions']).encode('ascii')).hexdigest()
+        assert digest == '7c4ceb8be8a2d750530b92241524ed61bf6f6f1f0ee8f34df498172994aaf1d6'
+        assets = {name: 'res://local-art/creatures/slot11-42-trial'
+                  + ('' if name == 'modern' else f'-{name}') + '.scn'
+                  for name in ('original', 'rounded', 'modern')}
+        row = dict(base, status='prepared', family=family, bodies=[identity], assets=assets,
+                   authored_action_reference={'body': body, 'group': 11, 'archive': 'anim.mul',
+                                              'directional_payload_sha256': digest},
+                   authored_action_scene_sha256={name: sha(ROOT / 'Viewer' / path.removeprefix('res://'))
+                                                 for name, path in assets.items()},
+                   classic_action_categories=base.get('classic_action_categories', {}) | {'11': 'Hunch'},
+                   authored_replacements=base.get('authored_replacements', {}) | {
+                       'Hunch': 'Authored Ratman hunch from five-frame Classic MUL slot 11'})
+        return [row], {body: ['Ratman']}
+    if family == 'skeleton_axe':
+        body = 56
+        base, = (row for row in gesture_baseline(family, registry_entries, {body})
+                 if row['status'] == 'validated' and row['kind'] == 'skeletons_skeleton'
+                 and any(identity['body'] == body for identity in row['bodies']))
+        identity, = (entry for entry in base['bodies'] if entry['body'] == body)
+        ledger = json.loads((ROOT / 'outputs/creatures/actions.json').read_text(encoding='utf-8'))
+        group, = (row for row in ledger['original_mul_group_candidates']
+                  if (row['body'], row['group']) == (body, 11) and 'matching_classic_route' in row)
+        assert group['archive'] == 'anim.mul' and group['graphic'] == body and not group['mobtype_prefers_uop']
+        assert [entry['direction'] for entry in group['directions']] == list(range(5))
+        digest = hashlib.sha256(''.join(entry['payload_sha256'] for entry in group['directions']).encode('ascii')).hexdigest()
+        assert digest == 'd93d2e233a57f8c9529948f63cca8384e418b09d76e2c88554a8ad3aee977db6'
+        export = runpy.run_path(str(ROOT / 'scripts/prepare-skeleton-axe.py'))
+        models = ROOT / 'work/third-dawn/late-source-research/uoaos-source/Models'
+        assert sha(models / export['MEMBER']) == export['DIGEST']
+        renderer = 'Presentation/SourceArmedLizardmanVisual.gd'
+        assets = {name: f'res://local-art/creatures/skeleton-56-axe-trial-{name}.scn'
+                  for name in ('original', 'rounded', 'modern')}
+        row = dict(base, status='prepared', family=family, bodies=[identity], assets=assets,
+                   presentation_script=f'res://{renderer}',
+                   presentation_script_sha256=sha(ROOT / 'Viewer' / renderer),
+                   authored_action_reference={'body': body, 'group': 11, 'archive': 'anim.mul',
+                                              'directional_payload_sha256': digest,
+                                              'weapon_member': export['MEMBER'], 'weapon_sha256': export['DIGEST']},
+                   authored_action_scene_sha256={name: sha(ROOT / 'Viewer' / path.removeprefix('res://'))
+                                                 for name, path in assets.items()},
+                   classic_action_categories=base.get('classic_action_categories', {}) | {'11': 'AxeReach'},
+                   authored_replacements=base.get('authored_replacements', {}) | {
+                       'AxeReach': 'Authored Classic reach with the archived Skeleton Axe'})
+        return [row], {body: ['Skeleton', 'Spellbinder']}
     if family == 'giant_serpent_pillage':
         body = 21
         base, = (row for row in gesture_baseline(family, registry_entries, {body})

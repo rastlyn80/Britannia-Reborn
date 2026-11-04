@@ -1,6 +1,6 @@
 # Source-backed creature action queue
 
-The 30 UOP redirects and both group 25 ready stances are active in the local registry. The ledger has 5,190 of 6,840 action slots routable. Giant Serpent 21 has a recovered motion and a passing isolated server run for slot 11. Activate it after the running regression. Continue the occurrence-ordered MUL queue with Skeleton 56’s staff gesture, Ratman 42’s short hunch, Giant Spider 28’s abdomen and leg shift, and Mongbat 39’s gesture. Keep autonomous gameplay and protocol variants separate from fixture-requested action coverage.
+The 30 UOP redirects and both group 25 ready stances are active in the local registry. The ledger has 5,190 of 6,840 action slots routable. Giant Serpent 21, the armed Skeleton 56 and Ratman 42 have passing isolated slot 11 runs. Activate them after the running regression. Continue the occurrence-ordered MUL queue with Giant Spider 28’s abdomen and leg shift and Mongbat 39’s gesture. The Mage Staff recovered during the Skeleton comparison belongs in the body 148 investigation. Keep autonomous gameplay and protocol variants separate from fixture-requested action coverage.
 
 # Juka Lord active and Hydra source trial
 

@@ -5,7 +5,7 @@ const Game := preload("res://Network/GameSession.gd")
 const Wire := preload("res://Network/LoginProtocol.gd")
 const Corpses := preload("res://Presentation/CorpseModels.gd")
 const SkinBounds := preload("res://Presentation/SkinGeometry.gd")
-const CLIPS := {1: "FaceWipe", 3: "ArmsRaise", 50: "Reach"}
+const CLIPS := {1: "FaceWipe", 3: "ArmsRaise", 50: "Reach", 42: "Hunch"}
 const SERIAL := 0x4100
 
 func _initialize() -> void:
@@ -17,18 +17,25 @@ func run() -> void:
 	root.add_child(game)
 	game.set_process(false)
 	var active := "--active" in OS.get_cmdline_user_args()
+	var ratman := "--ratman" in OS.get_cmdline_user_args()
+	var bodies := [42] if ratman else [1, 3, 50]
 	var historical_skeleton := Registry.entry(56).duplicate(true)
-	for body in CLIPS:
+	var ratman_sibling := Registry.entry(142).duplicate(true)
+	for body: int in bodies:
 		for treatment in ["original", "rounded", "modern"]:
-			check_route(game, body, treatment, active)
+			if not check_route(game, body, treatment, active):
+				quit(1)
+				return
 	assert(Registry.entry(56) == historical_skeleton)
-	if active:
+	assert(Registry.entry(142) == ratman_sibling)
+	if active and not ratman:
 		check_skeleton_swap()
-		check_corpses()
+	if active:
+		check_corpses(bodies)
 	game.free()
 	quit()
 
-func check_route(game: Node, body: int, treatment: String, active: bool) -> void:
+func check_route(game: Node, body: int, treatment: String, active: bool) -> bool:
 	var clip: String = CLIPS[body]
 	var original := Registry.entry(body)
 	var base_assets: Dictionary = original.get("classic_gesture_base_assets", {})
@@ -68,12 +75,13 @@ func check_route(game: Node, body: int, treatment: String, active: bool) -> void
 	game._handle(packet)
 	assert(actor.receive_action(game.last_mobile_actions[SERIAL]) and actor.current_clip == clip)
 	assert(actor.native_body == body and actor.native_hue == 0x8035)
-	check_pose(actor, clip)
+	var passed := check_pose(actor, clip)
 	actor.free()
 	Registry.entries[body] = original
+	return passed
 
-func check_corpses() -> void:
-	for body in CLIPS:
+func check_corpses(bodies: Array) -> void:
+	for body: int in bodies:
 		for hue in [0, 53, 0x8035]:
 			var corpse := Corpses.build(body, hue)
 			assert(corpse != null and corpse.get_meta("static_cadaver"))
@@ -98,7 +106,7 @@ func check_skeleton_swap() -> void:
 	assert(returned.animator.has_animation("Reach") and returned.native_hue == 0x8035)
 	avatar.free()
 
-func check_pose(actor: Node3D, clip: String) -> void:
+func check_pose(actor: Node3D, clip: String) -> bool:
 	var rig: Skeleton3D = actor.skeleton
 	var player: AnimationPlayer = actor.animator
 	var mesh := actor.model.find_children("*", "MeshInstance3D", true, false)[0] as MeshInstance3D
@@ -113,6 +121,8 @@ func check_pose(actor: Node3D, clip: String) -> void:
 	var foot_drift := 0.0
 	var minimum := INF
 	var face_gap := INF
+	var head_start := Vector3.ZERO
+	var head_drop := 0.0
 	player.play(clip, 0.0)
 	player.advance(0.0)
 	for sample in 61:
@@ -120,17 +130,20 @@ func check_pose(actor: Node3D, clip: String) -> void:
 		rig.force_update_all_bone_transforms()
 		var hand_point := rig.to_global(rig.get_bone_global_pose(hand).origin)
 		var foot_point := rig.to_global(rig.get_bone_global_pose(foot).origin)
+		var head_point := rig.to_global(rig.get_bone_global_pose(head).origin)
 		if sample == 0:
 			hand_start = hand_point
 			foot_start = foot_point
-		face_gap = minf(face_gap, hand_point.distance_to(rig.to_global(rig.get_bone_global_pose(head).origin)))
+			head_start = head_point
+		head_drop = maxf(head_drop, head_start.y - head_point.y)
+		face_gap = minf(face_gap, hand_point.distance_to(head_point))
 		travel = maxf(travel, hand_point.distance_to(hand_start))
 		foot_drift = maxf(foot_drift, foot_point.distance_to(foot_start))
 		minimum = minf(minimum, SkinBounds.deformed_bounds(mesh, rig).position.y)
 		assert(actor.global_transform.is_equal_approx(root_pose))
 		if sample == 60:
 			assert(hand_point.distance_to(hand_start) < 0.0001)
-	print(clip, " 61 poses: wrist travel, foot drift, minimum floor, face gap ", [travel, foot_drift, minimum, face_gap])
-	assert(travel > 0.45 and foot_drift < 0.002 and minimum > -0.03)
-	if clip == "FaceWipe":
-		assert(face_gap < 0.48)
+	print(clip, " 61 poses: wrist travel, foot drift, minimum floor, face gap, head drop ",
+		[travel, foot_drift, minimum, face_gap, head_drop])
+	return (travel > (0.15 if clip == "Hunch" else 0.45) and foot_drift < 0.002 and minimum > -0.03
+		and (clip != "Hunch" or head_drop > 0.12) and (clip != "FaceWipe" or face_gap < 0.48))

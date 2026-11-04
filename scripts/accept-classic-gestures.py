@@ -21,6 +21,8 @@ BATCHES = {
     'troglodyte_reach': ((267,), 'PreparedCreatureActionLive.gd', ('test-troglodyte-reach-trial.gd',)),
     'ready_stances': ((730, 734), 'PreparedCreatureActionLive.gd', ('test-creature-ready-stance.gd',)),
     'giant_serpent_pillage': ((21,), 'PreparedCreatureActionLive.gd', ('test-giant-serpent-pillage.gd',)),
+    'skeleton_axe': ((56,), 'PreparedCreatureActionLive.gd', ('test-skeleton-axe-trial.gd',)),
+    'ratman_hunch': ((42,), 'PreparedCreatureActionLive.gd', ('test-classic-gesture-trials.gd',)),
 }
 
 
@@ -152,7 +154,7 @@ def test_active(batch):
     godot = next((ROOT / '.tools/godot').glob('*console.exe'))
     profile = str(ROOT / '.godot-user')
     env = dict(os.environ, APPDATA=profile, LOCALAPPDATA=profile)
-    trial_args = ['--blistering'] if batch == 'blistering_pillage' else []
+    trial_args = {'blistering_pillage': ['--blistering'], 'ratman_hunch': ['--ratman']}.get(batch, [])
     for script in BATCHES[batch][2]:
         run_client_check(godot, env, f'res://../scripts/{script}', ['--active', *trial_args])
     package = {'parrot_flight': 'late_donors', 'troglodyte_reach': 'late_source'}.get(batch)

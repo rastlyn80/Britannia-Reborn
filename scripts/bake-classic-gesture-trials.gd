@@ -5,6 +5,7 @@ const FORMS := {
 	1: ["ogres_ogre", "FaceWipe"],
 	3: ["walking_dead_zombie", "ArmsRaise"],
 	50: ["skeletons_skeleton", "Reach"],
+	42: ["rat_race_ratman", "Hunch"],
 }
 const LENGTH := 1.0
 const TIMES := [0.0, 0.10, 0.26, 0.43, 0.64, 0.80, 1.0]
@@ -70,9 +71,19 @@ func animate(rig: Skeleton3D, body: int, phase: int, right: Vector3) -> void:
 			rotate_joint(rig, "r upperarm", right, -1.55 * reach)
 			rotate_joint(rig, "r forearm", right, -0.12 * reach)
 			rotate_joint(rig, "l upperarm", right, -0.21 * reach)
+		42:
+			var hunch: float = [0.0, 0.42, 1.0, 0.91, 0.58, 0.23, 0.0][phase]
+			var reach: float = [0.0, 0.64, 1.0, 0.57, 0.16, 0.0, 0.0][phase]
+			rotate_joint(rig, "spine1", right, 0.25 * hunch)
+			rotate_joint(rig, "spine2", right, 0.19 * hunch)
+			rotate_joint(rig, "head", right, -0.14 * hunch)
+			rotate_joint(rig, "r upperarm", right, -0.95 * reach)
+			rotate_joint(rig, "r forearm", right, -0.45 * reach)
+			rotate_joint(rig, "l upperarm", right, 0.07 * hunch)
 
 func run() -> void:
-	for body in FORMS:
+	var bodies := [42] if "--ratman" in OS.get_cmdline_user_args() else [1, 3, 50]
+	for body: int in bodies:
 		for treatment in ["original", "rounded", "modern"]:
 			bake(body, treatment)
 	quit()
