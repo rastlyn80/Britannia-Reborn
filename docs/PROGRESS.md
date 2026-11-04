@@ -1,3 +1,11 @@
+# Ophidian Mage and Matriarch Classic actions
+
+Four added routes are active. Ophidian Mage and Archmage body 85 use the exact 62-triangle Third Dawn staff on the original right grasp, with a dip, two-handed held cast and forward release. The casting effects follow the staff tip. Matriarch body 87 uses an unarmed torso and tail dip. Its measured head drop is approximately 14 cm. Existing body motion keys are retained.
+
+The active client passed 12 decoded action cases and six static corpse hues. Sampled shaft centerlines cleared the body outside the hands, and the closest measured left-grasp distance during the brace was 30–33 mm. The raw collapse may place the staff about 51 mm below the flat plane. Runtime support cleared the body and staff in 287 collapse samples across flat ground, four slopes and two 22 cm steps, then froze the exact displayed staff pose into the static corpse. The isolated ModernUO run passed 463 checks across both clients and the Mage, Archmage and Matriarch constructors. It verified requested action packets and corpses. Autonomous casting and continuous clearance on arbitrary terrain remain open.
+
+Run `python -B scripts/prepare-ophidian-staff.py`, then bake with Godot `--headless --path Viewer --script res://../scripts/bake-ophidian-staff-gestures.gd`. The native command is `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily ophidian_staff`. The active check is `python -B scripts/accept-classic-gestures.py --batch ophidian_staff --check-active`. The ledger routes 5,234 of 6,840 slots (76.5%). Original frames are identified for 18 of the 1,606 unresolved slots.
+
 # Terathan Classic actions
 
 Terathan Warrior 70, Drone 71 and Matriarch 72 have five added Classic routes. The Warrior and Drone retime original attack rotations for the pincer dips. The Matriarch uses a shortened original fidget for the torso and abdomen dip, plus distinct held and overhead casting poses. Its two casts use green hand motes and a brief amber hand arc, based on their separate five-frame Classic sequences.

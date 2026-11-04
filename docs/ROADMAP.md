@@ -1,6 +1,6 @@
 # Source-backed creature action queue
 
-Terathan Warrior, Drone and Matriarch are active with five added Classic routes. The ledger has 5,230 of 6,840 action slots routable. The Ophidian Mage and Matriarch gestures are next. The Mage has its original Third Dawn staff on the right grasp. All three new Mage motions and the Matriarch dip have private bakes. Staff clearance against the body, two-handed grip fit, cast effects and the terrain-to-corpse handoff still need verification. Keep native spell selection separate from fixture-requested casts. Earth Elemental emergence on slopes and ledges, the native summon, the older Mongbat wing poses and body 148's recovered Mage Staff remain separate follow-ups.
+Terathan and Ophidian Mage and Matriarch are active. The ledger has 5,234 of 6,840 action slots routable. Bone Knight 57 and Cyclops 75 lead the remaining source-backed Trammel occurrence queue. Bone Knight's five-frame dip shows a scimitar and wooden shield, matching its native loot types. The original prop meshes have been identified. Fit both grips without altering native loot. Continue with Succubus, Giant Toad, Stone Gargoyle and the skeletal casters. Keep autonomous spell selection and continuous terrain clearance separate from fixture-requested routes. Earth Elemental emergence on slopes and ledges, the native summon and the older Mongbat wing poses remain separate follow-ups.
 
 # Juka Lord active and Hydra source trial
 
