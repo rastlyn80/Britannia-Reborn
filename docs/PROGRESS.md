@@ -1,3 +1,17 @@
+# Reaper and Harpy Classic actions
+
+Both actions are active in the local registry. The regenerated ledger has 5,197 of 6,840 routable slots (76.0%). Of the 1,643 unresolved slots, 54 have identified original frame records.
+
+Harpy 30 and Reaper 47 each have five frames in all five stored directions of Classic slot 11 in `anim.mul`. The Harpy starts at the crest of its recovered `harpies_harpy_fly.grn` cycle, with a 40 ms blend at the wrap. The Reaper uses a new trunk bend on its original rig and the cutout from `flails_reaper_v01.tga`. Forward+ renders show the Harpy's raised wings and downstroke, and the Reaper's branches after restoring the atlas transparency.
+
+Six decoded action routes and six static corpse hue cases passed across the original, rounded and modern treatments. Across 606 sampled poses the Harpy's visible skin stayed at least 325 mm above the test plane and both wing joints passed from 1.25 m above the pelvis to 0.53 m below it. The Reaper's neck traveled 283–285 mm with zero measured pelvis drift. The final isolated ModernUO run passed 293 checks, including both clients receiving slot 11, selecting the intended action and observing the matching static corpse. Fixture-requested actions do not establish autonomous gameplay.
+
+Reproduce with Godot `--headless --path Viewer --script res://../scripts/bake-reaper-harpy-gestures.gd` and then `test-reaper-harpy-gestures.gd`. Run `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily reaper_harpy` for the isolated native test. `python -B scripts/accept-classic-gestures.py --batch reaper_harpy` checks the native receipt. Use `--activate` to verify the same scenes through the normal local registry and `--check-active` to repeat that check.
+
+The next source comparison found five distinct Wraith slot 11 frames in each direction. None matched the registered pixels of slots 1, 17 or 18. Its outer bounds move by at most one pixel in each direction over the five frames.
+
+The Earth Elemental's current Third Dawn package uses the 202-triangle mesh with internal node `elementals_agapite_elemental`. The later Age of Shadows cabinet has a different member at the same relative path, `Models/Monsters/elementals_earth_elemental_lod2.grn`. Its 410 triangles, 235 points and 21 joints produce the expected humanoid rock silhouette. Mesh SHA-256 is `3a8c74365bbce5f8316400d20f7062ece52b7e95f103324241d14a4bf6e1452e`. The private trial matched 20 tracks in each of seven clips and rendered 25 Forward+ poses. Its death scatters the original rock parts. Classic slot 11 shows an arm gesture, and slot 12 has a ground emergence in two stored directions. These still need motion comparisons, material and terrain review, and native tests before the alternate model can replace the active route.
+
 # Giant Spider and Mongbat actions active
 
 The post-redirect root regression passed, including the ready stance checks. Giant Serpent 21, Skeleton 56 and Ratman 42 then passed their normal-registry activation checks. Giant Spider 28 and Mongbat 39 are also active after 613 isolated server checks across Giant Spider, Greater Mongbat, Mongbat and Strong Mongbat. Both clients received Classic slot 11, played the intended clip, and observed the matching static corpse. The active ledger has 5,195 routable slots out of 6,840, with 1,645 unresolved. Fifty-six have identified original frame records. A fresh full regression is running with all five actions active.

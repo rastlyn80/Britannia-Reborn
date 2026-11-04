@@ -81,12 +81,17 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
-    if family == 'spider_mongbat':
+    if family in ('spider_mongbat', 'reaper_harpy'):
         recipes = {
             28: ('arachnids_spider_giant', 'AbdomenShift',
                  'c8c8752d1c88c0d050703bfa405af03e6044aa53a78d30bd8a78aea76a8943db'),
             39: ('mongbats_mongbat', 'WingSettle',
                  '97ad0db8b2e9ed02714dd1063f7b165c760319e49299628ebaee5b6c044bfa45'),
+        } if family == 'spider_mongbat' else {
+            30: ('harpies_harpy', 'Wingbeat',
+                 'e7ec1461b9527155ab2224b9241573f10dcc03341480b49e767e1c1f6b880c65'),
+            47: ('flails_reaper', 'TrunkBend',
+                 '989d27a1410372609e3cd79b0238fed8012d57ebb290caeab9cb026775567b0c'),
         }
         entries = gesture_baseline(family, registry_entries, set(recipes))
         ledger = json.loads((ROOT / 'outputs/creatures/actions.json').read_text(encoding='utf-8'))
@@ -112,13 +117,31 @@ def prepared_entries(family, registry_entries=None):
                              classic_action_categories=base.get('classic_action_categories', {}) | {'11': clip},
                              authored_replacements=base.get('authored_replacements', {}) | {
                                  clip: 'Authored gesture from five-frame Classic MUL slot 11'})
-            if body == 39:
-                alpha = 'mongbats_mongbat-original-albedo.png'
-                alpha_sha = '0060dd037c56dd226a68c21160fefc2ebcf8b2527025783960a773a48cc15e6d'
+            alpha_hashes = {
+                39: '0060dd037c56dd226a68c21160fefc2ebcf8b2527025783960a773a48cc15e6d',
+                47: '844b97fad8b1ef92371fd45c041e84d268cf4bf41c639e412d09b460df6c8e00',
+            }
+            if body in alpha_hashes:
+                alpha = f'{kind}-original-albedo.png'
+                alpha_sha = alpha_hashes[body]
                 assert sha(ROOT / 'Viewer/local-art/creatures' / alpha) == alpha_sha
                 row['source_alpha_texture'] = alpha
                 row['art_dependency_sha256'] = base.get('art_dependency_sha256', {}) | {alpha: alpha_sha}
+            if body == 30:
+                fly = 'uotdb/uotd/Models/Monsters/harpies_harpy_fly.grn'
+                fly_sha = '6e74003a5e945b5afc4ef5a26ceb235dce63a451ac540ec95b6ff88084568501'
+                assert base['clip_sources']['Fly'] == fly
+                assert {'member': fly, 'sha256': fly_sha} in base['inputs']
+                donor = ROOT / 'work/third-dawn/late-source-research/uoaos-source/Models/Monsters' / Path(fly).name
+                assert sha(donor) == fly_sha
+                visual = 'Presentation/SourceHarpyWingbeatVisual.gd'
+                row['presentation_script'] = f'res://{visual}'
+                row['presentation_script_sha256'] = sha(ROOT / 'Viewer' / visual)
+                row['clip_sources'] = base['clip_sources'] | {clip: fly}
+                row['authored_replacements'][clip] = 'Rephased recovered Harpy flight cycle with a blended seam, following Classic MUL slot 11'
             rows.append(row)
+        if family == 'reaper_harpy':
+            return rows, {30: ['Harpy'], 47: ['Reaper']}
         return rows, {28: ['GiantSpider'], 39: ['GreaterMongbat', 'Mongbat', 'StrongMongbat']}
     if family == 'ratman_hunch':
         body = 42

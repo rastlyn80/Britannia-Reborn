@@ -24,6 +24,7 @@ BATCHES = {
     'skeleton_axe': ((56,), 'PreparedCreatureActionLive.gd', ('test-skeleton-axe-trial.gd',)),
     'ratman_hunch': ((42,), 'PreparedCreatureActionLive.gd', ('test-classic-gesture-trials.gd',)),
     'spider_mongbat': ((28, 39), 'PreparedCreatureActionLive.gd', ('test-spider-mongbat-gestures.gd',)),
+    'reaper_harpy': ((30, 47), 'PreparedCreatureActionLive.gd', ('test-reaper-harpy-gestures.gd',)),
 }
 
 
