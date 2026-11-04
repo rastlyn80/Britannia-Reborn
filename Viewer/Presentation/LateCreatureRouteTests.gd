@@ -85,6 +85,10 @@ func run() -> void:
 			Registry.entries[body] = record
 		else:
 			var active := Registry.entry(body)
+			if package_family == "khaldun_doom" and (body == 637 and active.has("khaldun_native_sha256")
+					or body == 970 and active.has("restless_soul_native_sha256")):
+				# The supplemental normal-registry test verifies this sealed replacement.
+				continue
 			expected = preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(record, active)
 			if active.has("uop_redirect_native_sha256"):
 				expect_uop_redirects(expected, active, body)

@@ -202,6 +202,14 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
    if ($lateExit -or ($lateRoutes | Select-String 'SCRIPT ERROR:|ERROR:')) {throw "Recovered creature route failed: $family"}
   }
  }
+ if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.khaldun_native_sha256 }) {
+  & python -B "$root/scripts/accept-khaldun-actions.py" check-active
+  if ($LASTEXITCODE) {throw 'Active Spectral Armour routes failed'}
+ }
+ if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.restless_soul_native_sha256 }) {
+  & python -B "$root/scripts/accept-restless-soul-actions.py" check-active
+  if ($LASTEXITCODE) {throw 'Active Restless Soul routes failed'}
+ }
  if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.family -eq 'hiryu_mount' }) {
   $hiryuRide = & $godot --headless --path "$root/Viewer" --script res://Presentation/HiryuRidingTests.gd -- --active 2>&1
   $hiryuExit = $LASTEXITCODE

@@ -83,6 +83,13 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'restless_soul_actions':
+        return runpy.run_path(str(ROOT / 'scripts/prepare-restless-soul-actions.py'))['prepared']()
+    if family == 'khaldun_actions':
+        workflow = runpy.run_path(str(ROOT / 'scripts/prepare-khaldun-actions.py'))
+        report = workflow['read'](workflow['OUTPUT'])
+        assert workflow['stage']() == report, 'Khaldun scenes or Classic action inputs changed'
+        return report['models'], {637: ['SpectralArmour'], 970: ['RestlessSoul']}
     if family == 'orc_ettin_reactions':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-orc-ettin-reactions.py'))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
