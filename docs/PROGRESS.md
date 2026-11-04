@@ -1,6 +1,6 @@
 # Expanded legacy action aliases
 
-Twenty-six additional exact aliases are active. The expanded receipt passed 78 decoded packet checks and 19 normal package suites while preserving their original asset and identity checks. Deathwatch Beetle and Deathwatch Beetle Hatchling passed 319 isolated native checks, with both clients selecting Fidget for slot 11. There are now 53 active exact aliases. Gazer Larva and Bog Thing passed the expanded 82-packet alias preview. Their separate publishers now verify the original package and the pinned additional action. Their activation and full publication checks are queued after the registry tests. The final fourteen candidates also passed the decoded preview. All five updated publishers recomputed and checked their existing base receipts without rewriting them. The complete 55-package activation is queued and will rerun these publication checks with the action receipts installed.
+All 69 identified exact classic slot 11 aliases are active in the local registry. The 55-package activation passed 110 decoded routes in preview and again through the active registry, then reran the affected exact-package checks. The separate 13-body and Dread Spider batches passed 28 further active decoded checks. These aliases represent original groups whose directional payloads match their sibling byte for byte. This count covers the identified exact-alias set.
 
 # Recovered-package legacy aliases
 
@@ -1339,7 +1339,7 @@ They will move to the real creature models once creatures exist in the animation
 - A per-graphic override inside an `only_ids` entry falls back to the equipment mesh when it has none.
 - `scorp` is the woodworking tool, not a scorpion.
 
-# Human wearable 65% checkpoint — 30 October 2026
+# Human wearable 65% checkpoint ï¿½ 30 October 2026
 
 **732/1,126 indexed graphics (65.01%), 351 registered categories**: +160 graphics / +93 category mappings from 50.80%, unchanged denominator. These additions are historical/indexed human fitted variants, **not newly certified active-server equip classes**. Source references include 103 EQUIPMENT, 9 HUMAN, 16 MONSTER and 32 absent mobtypes rows; the independent audit checks the actual wearable flag/layer/name/animation field. No creature bodies or server rules changed. See [HUMAN_WARDROBE_65.md](HUMAN_WARDROBE_65.md).
 

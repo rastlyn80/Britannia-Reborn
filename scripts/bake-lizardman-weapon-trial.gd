@@ -1,6 +1,8 @@
 extends SceneTree
 
 const SOURCE := "res://local-art/creatures/lizard_race_lizardman-modern.gltf"
+const WEAPON_BONE := "lizardman weapon"
+const HAND_BONE := "bip01 r hand"
 const OUTPUT := "res://local-art/creatures/lizardman-pillage-trial.scn"
 
 func _initialize() -> void:
@@ -8,12 +10,19 @@ func _initialize() -> void:
 	call_deferred("run")
 
 func fit_weapon(rig: Skeleton3D, form: String, owner: Node) -> MeshInstance3D:
-	var socket := BoneAttachment3D.new()
-	socket.name = "RightWeaponSocket"
-	socket.bone_name = "bip01 r hand"
-	rig.add_child(socket)
-	socket.owner = owner
-	assert(socket.bone_idx >= 0)
+	var hand := rig.find_bone(HAND_BONE)
+	assert(hand >= 0 and rig.find_bone(WEAPON_BONE) < 0)
+	var bone := rig.add_bone(WEAPON_BONE)
+	rig.set_bone_parent(bone, hand)
+	var rotation := Vector3(PI / 2.0, 0.0, 0.0)
+	var position := Vector3(0.11, 0.075, 0.0)
+	if form == "Spear":
+		rotation.x -= 0.80
+		rotation.z = -0.30
+		position.z = 0.22
+	var bind := Transform3D(Basis.from_euler(rotation), position)
+	rig.set_bone_rest(bone, bind)
+	rig.reset_bone_pose(bone)
 	var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://local-art/creatures/lizardman-weapon-trial.json"))
 	var image := Image.load_from_file("res://local-art/creatures/lizardman-weapon-trial.png")
 	assert(image != null and not image.is_empty())
@@ -26,26 +35,27 @@ func fit_weapon(rig: Skeleton3D, form: String, owner: Node) -> MeshInstance3D:
 	for row: Array in data[form]:
 		builder.set_normal(Vector3(row[3], row[4], row[5]))
 		builder.set_uv(Vector2(row[6], row[7]))
+		builder.set_bones(PackedInt32Array([0, 0, 0, 0]))
+		builder.set_weights(PackedFloat32Array([1.0, 0.0, 0.0, 0.0]))
 		builder.add_vertex(Vector3(row[0], row[1], row[2]))
 	var weapon := MeshInstance3D.new()
 	weapon.name = form
 	weapon.mesh = builder.commit()
-	socket.add_child(weapon)
+	# One rigid influence keeps the visible frame and synchronous CPU corpse
+	# bake on the same joint, including immediately after an animation seek.
+	var skin := Skin.new()
+	skin.add_bind(bone, Transform3D.IDENTITY)
+	weapon.skin = skin
+	weapon.skeleton = NodePath("..")
+	rig.add_child(weapon)
 	weapon.owner = owner
-	weapon.rotation.x = PI / 2.0
-	if form == "Spear":
-		weapon.rotation.x -= 0.80
-		weapon.rotation.z = -0.30
-		weapon.position.z = 0.22
-	weapon.position.x = 0.11
-	weapon.position.y = 0.075
 	return weapon
 
 func bake_death_grip(player: AnimationPlayer, rig: Skeleton3D, weapon: MeshInstance3D) -> void:
-	var socket := weapon.get_parent() as BoneAttachment3D
-	var bind := weapon.transform
+	var hand_bone := rig.find_bone(HAND_BONE)
+	var bind := rig.get_bone_rest(rig.find_bone(WEAPON_BONE))
 	var animation_root := player.get_node(player.root_node)
-	var target := animation_root.get_path_to(weapon)
+	var target := NodePath("%s:%s" % [animation_root.get_path_to(rig), WEAPON_BONE])
 	var vertices: PackedVector3Array = weapon.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
 	var death := player.get_animation("Death")
 	var corrections: Array[Transform3D] = []
@@ -55,7 +65,7 @@ func bake_death_grip(player: AnimationPlayer, rig: Skeleton3D, weapon: MeshInsta
 	for i in SAMPLES:
 		player.seek(death.length * float(i) / (SAMPLES - 1), true)
 		rig.force_update_all_bone_transforms()
-		var hand := rig.global_transform * rig.get_bone_global_pose(socket.bone_idx)
+		var hand := rig.global_transform * rig.get_bone_global_pose(hand_bone)
 		var pose := hand * bind
 		var min_y := INF
 		for point in vertices:
