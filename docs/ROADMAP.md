@@ -1,6 +1,6 @@
 # Source-backed creature action queue
 
-The Earth Elemental's Age of Shadows model and two Classic actions are active, as is the Wraith's slot 11 with spectral rendering. The ledger has 5,200 of 6,840 action slots routable. Continue the occurrence-ordered MUL queue with Gargoyle 4's kneeling lunge and two-handed cast, then compare Air Elemental 13 and Fire Elemental 15's similar overhead and held gestures for shared motion. Check Earth Elemental emergence on slopes and ledges and verify the actual native summon separately. Review the older Mongbat wing poses separately. The Mage Staff recovered during the Skeleton comparison belongs in the body 148 investigation. Keep autonomous gameplay and protocol variants separate from fixture-requested action coverage.
+Gargoyle 4's kneeling lunge and recovered cast are active, alongside the Earth Elemental's Age of Shadows model and the Wraith's spectral gesture. The ledger has 5,203 of 6,840 action slots routable. Continue the occurrence-ordered MUL queue with Air Elemental 13 and Fire Elemental 15's similar overhead and held gestures on their shared independent rig, then Giant Scorpion 48's tail and claw gesture. Check Earth Elemental emergence on slopes and ledges and verify the actual native summon separately. Review the older Mongbat wing poses separately. The Mage Staff recovered during the Skeleton comparison belongs in the body 148 investigation. Keep autonomous gameplay and protocol variants separate from fixture-requested action coverage.
 
 # Juka Lord active and Hydra source trial
 

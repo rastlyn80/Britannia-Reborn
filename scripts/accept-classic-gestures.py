@@ -27,6 +27,7 @@ BATCHES = {
     'reaper_harpy': ((30, 47), 'PreparedCreatureActionLive.gd', ('test-reaper-harpy-gestures.gd',)),
     'earth_elemental_aos': ((14,), 'PreparedCreatureActionLive.gd', ('test-earth-elemental-aos.gd',)),
     'wraith_sway': ((26,), 'PreparedCreatureActionLive.gd', ('test-wraith-gesture.gd',)),
+    'gargoyle_classic': ((4,), 'PreparedCreatureActionLive.gd', ('test-gargoyle-classic.gd',)),
 }
 
 

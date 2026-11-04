@@ -81,6 +81,58 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'gargoyle_classic':
+        body = 4
+        base, = (row for row in gesture_baseline(family, registry_entries, {body})
+                 if row['status'] == 'validated' and row['kind'] == 'gargoyles_gargoyle'
+                 and [identity['body'] for identity in row['bodies']] == [body])
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-gargoyle-classic.py'))
+        recipe['source_cast']()
+        art = recipe['ART']
+        bake = json.loads((art / 'gargoyle-4-classic-bake.json').read_text(encoding='utf-8'))
+        assert bake['recipe'] == sha(ROOT / 'scripts/bake-gargoyle-classic.gd')
+        assert bake['leg_solver'] == sha(ROOT / 'scripts/bake-gargoyle-pillage-trial.gd')
+        assert bake['donor'] == sha(art / 'gargoyle-4-cast-donor.gltf')
+        treatments = ('original', 'rounded', 'modern')
+        assets, scenes = {}, {}
+        for treatment in treatments:
+            file = f'gargoyle-4-classic-{treatment}.scn'
+            source = sha(art / f'gargoyles_gargoyle-{treatment}.gltf')
+            scenes[treatment] = sha(art / file)
+            assert source == base['asset_sha256'][treatment]
+            assert bake['treatments'][treatment] == {'source': source, 'scene': scenes[treatment]}
+            assets[treatment] = f'res://local-art/creatures/{file}'
+        for file, digest in base['art_dependency_sha256'].items():
+            assert sha(art / file) == digest
+        ledger = json.loads((ROOT / 'outputs/creatures/actions.json').read_text(encoding='utf-8'))
+        references = {}
+        for slot, frames, digest in (
+                (11, 5, 'e52bcba1cf0205da01607774fc5e892f14bfaf14740774b0effef9aeddd76793'),
+                (12, 7, 'be406a0b131cdc28550a1695a1297823a3c541f12c592911a8e689b3edf24885')):
+            source, = (item for item in ledger['original_mul_group_candidates']
+                       if (item['body'], item['group']) == (body, slot) and 'matching_classic_route' in item)
+            assert source['archive'] == 'anim.mul' and source['graphic'] == body and not source['mobtype_prefers_uop']
+            directions = source['directions']
+            assert [item['direction'] for item in directions] == list(range(5))
+            assert all(item['frames'] == frames for item in directions)
+            hashes = ''.join(item['payload_sha256'] for item in directions).encode('ascii')
+            assert hashlib.sha256(hashes).hexdigest() == digest
+            references[str(slot)] = dict(body=body, group=slot, archive='anim.mul', frames=frames,
+                                         directional_payload_sha256=digest)
+        member = recipe['CAST_MEMBER']
+        row = dict(base, status='prepared', family=family, assets=assets, authored_action_scene_sha256=scenes,
+                   authored_action_reference=references['11'], classic_motion_references=references,
+                   classic_action_categories=base.get('classic_action_categories', {}) | {
+                       '11': 'KneelingLunge', '12': 'Cast'},
+                   authored_replacements=base.get('authored_replacements', {}) | {
+                       'KneelingLunge': 'Authored forward step and wing opening from the Classic MUL reference'},
+                   clip_sources=base['clip_sources'] | {'Cast': member},
+                   recovered_action_source={
+                       'member': member, 'sha256': recipe['CAST_SHA'],
+                       'cabinet': 'uoaos/UOTD/models/monsters/client11.cab', 'cabinet_sha256': recipe['CAB_SHA'],
+                       'scope': '54 matched Age of Shadows tracks, with floor adjustment for the retained Third Dawn mesh',
+                   })
+        return [row], {body: ['Gargoyle']}
     if family == 'earth_elemental_aos':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-earth-elemental-aos.py'))
         return [recipe['candidate']()], {14: recipe['CLASSES']}
