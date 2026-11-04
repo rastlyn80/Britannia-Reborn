@@ -5,7 +5,6 @@ const Registry := preload("res://Presentation/CreatureRegistry.gd")
 const Game := preload("res://Network/GameSession.gd")
 const Corpses := preload("res://Presentation/CorpseModels.gd")
 const Wire := preload("res://Network/LoginProtocol.gd")
-const BODY := 753
 const SERIAL := 0x4100
 
 func _initialize() -> void:
@@ -13,34 +12,42 @@ func _initialize() -> void:
 	call_deferred("run")
 
 func run() -> void:
-	var row := Registry.entry(BODY).duplicate(true)
-	assert(row.kind == "gargoyles_gargoyle_slave")
+	var blistering := "--blistering" in OS.get_cmdline_user_args()
+	var body := 130 if blistering else 753
+	var row := Registry.entry(body).duplicate(true)
+	assert(row.kind == ("gargoyles_gargoyle_blistering" if blistering else "gargoyles_gargoyle_slave"))
 	var active := "--active" in OS.get_cmdline_user_args()
-	var originals: Dictionary = row.get("authored_action_base_assets", row.assets).duplicate(true)
+	var originals: Dictionary = row.get("classic_gesture_base_assets" if blistering else "authored_action_base_assets", {}).duplicate(true)
+	var assets: Dictionary = row.get("assets", {}).duplicate(true)
 	for treatment in ["original", "rounded", "modern"]:
+		if not originals.has(treatment):
+			originals[treatment] = Registry.asset_path(row, treatment)
 		var suffix: String = "" if treatment == "modern" else "-" + treatment
-		var path := "res://local-art/creatures/gargoyle-753-pillage-trial%s.scn" % suffix
+		var path := "res://local-art/creatures/gargoyle-%d-pillage-trial%s.scn" % [body, suffix]
 		if active:
-			assert(row.assets[treatment] == path and row.authored_action_scene_sha256[treatment] == FileAccess.get_sha256(path))
+			assert(assets[treatment] == path and row.authored_action_scene_sha256[treatment] == FileAccess.get_sha256(path))
 		else:
-			row.assets[treatment] = path
+			assets[treatment] = path
 	if active:
 		assert(row.classic_action_categories["11"] == "Pillage")
 	else:
-		row.classic_action_categories["11"] = "Pillage"
-		Registry.entries[BODY] = row
+		row.assets = assets
+		var categories: Dictionary = row.get("classic_action_categories", {}).duplicate(true)
+		categories["11"] = "Pillage"
+		row.classic_action_categories = categories
+		Registry.entries[body] = row
 
 	var game := Game.new()
 	root.add_child(game)
 	game.set_process(false)
-	game.entities[SERIAL] = {"serial": SERIAL, "body": BODY, "hue": 0x8035}
+	game.entities[SERIAL] = {"serial": SERIAL, "body": body, "hue": 0x8035}
 	for treatment in ["original", "rounded", "modern"]:
-		var actor := Registry.create(BODY)
+		var actor := Registry.create(body)
 		actor.treatment = treatment
 		root.add_child(actor)
 		actor.set_process(false)
 		actor.set_physics_process(false)
-		actor.apply_identity(BODY, 0x8035)
+		actor.apply_identity(body, 0x8035)
 		var player: AnimationPlayer = actor.animator
 		var baseline := (load(originals[treatment]) as PackedScene).instantiate()
 		var baseline_player := baseline.find_children("*", "AnimationPlayer", true, false)[0] as AnimationPlayer
@@ -53,7 +60,10 @@ func run() -> void:
 				assert(actual.track_get_path(track) == source.track_get_path(track))
 				assert(actual.get("tracks/%d/keys" % track) == source.get("tracks/%d/keys" % track))
 		baseline.free()
-		for action in [[17, "Fidget"], [12, "Cast"], [14, "Cast"], [11, "Pillage"]]:
+		var actions := [[17, "Fidget"], [11, "Pillage"]]
+		if not blistering:
+			actions.append_array([[12, "Cast"], [14, "Cast"]])
+		for action in actions:
 			var packet := PackedByteArray([0x6e])
 			packet.append_array(Wire.uint_be(SERIAL, 4))
 			packet.append_array(PackedByteArray([0, action[0], 0, 5, 0, 1, 1, 0, 0]))
@@ -61,20 +71,23 @@ func run() -> void:
 			assert(actor.receive_action(game.last_mobile_actions[SERIAL]))
 			assert(actor.current_clip == action[1])
 		assert(actor.native_hue == 0x8035)
-		check_pose(actor, treatment)
+		if not check_pose(actor, body, treatment):
+			push_error("Gargoyle Pillage pose is outside the measured tolerances")
+			quit(1)
+			return
 		actor.free()
 	for hue in [0, 53, 0x8035]:
-		var corpse := Corpses.build(BODY, hue)
+		var corpse := Corpses.build(body, hue)
 		assert(corpse != null and corpse.get_meta("static_cadaver"))
-		assert(corpse.get_meta("corpse_body") == BODY and corpse.get_meta("graphic_id") == 0x2006)
+		assert(corpse.get_meta("corpse_body") == body and corpse.get_meta("graphic_id") == 0x2006)
 		assert(corpse.get_meta("native_hue") == hue and corpse.get_meta("death_clip") == "Death")
 		assert(corpse.find_children("*", "Skeleton3D", true, false).is_empty())
 		corpse.free()
 	game.free()
-	print("Gargoyle 753: twelve decoded actions and three raw-hue static corpses")
+	print("Gargoyle ", body, ": ", 6 if blistering else 12, " decoded actions and three raw-hue static corpses")
 	quit()
 
-func check_pose(actor: Node3D, treatment: String) -> void:
+func check_pose(actor: Node3D, body: int, treatment: String) -> bool:
 	var rig: Skeleton3D = actor.skeleton
 	var mesh := actor.model.find_children("*", "MeshInstance3D", true, false)[0] as MeshInstance3D
 	var player: AnimationPlayer = actor.animator
@@ -104,9 +117,13 @@ func check_pose(actor: Node3D, treatment: String) -> void:
 		crouch = maxf(crouch, start[2].y - points[2].y)
 		reach = maxf(reach, maxf(points[3].z - start[3].z, points[4].z - start[4].z))
 		minimum = minf(minimum, Ground.minimum_plane_gap(data, rig, rig.global_transform, Vector3.ZERO, Vector3.UP))
-		assert(actor.global_transform.is_equal_approx(fixed_root))
+		if not actor.global_transform.is_equal_approx(fixed_root):
+			return false
 		if sample == 96:
 			for i in bones.size():
-				assert(points[i].distance_to(start[i]) < 0.0001)
-	print("Gargoyle 753 ", treatment, " 97 poses: ankle drift, crouch, reach, floor ", [foot_drift, crouch, reach, minimum])
-	assert(foot_drift < 0.002 and crouch > 0.45 and reach > 0.40 and minimum > -0.005)
+				if points[i].distance_to(start[i]) >= 0.0001:
+					return false
+	print("Gargoyle ", body, " ", treatment, " 97 poses: ankle drift, crouch, reach, floor ", [foot_drift, crouch, reach, minimum])
+	var minimum_crouch := 0.37 if body == 130 else 0.45
+	var minimum_reach := 0.32 if body == 130 else 0.40
+	return foot_drift < 0.002 and crouch > minimum_crouch and reach > minimum_reach and minimum > -0.005

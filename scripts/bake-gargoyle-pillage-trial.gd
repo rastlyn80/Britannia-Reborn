@@ -1,5 +1,5 @@
 extends SceneTree
-## Authored replacement for body 753's 13-frame slot 11 reference.
+## Authored replacements for the original slot 11 frame sequences.
 
 const SOURCE := "res://local-art/creatures/gargoyles_gargoyle_slave-%s.scn"
 const OUTPUT := "res://local-art/creatures/gargoyle-753-pillage-trial%s.scn"
@@ -11,6 +11,15 @@ const POSES := [
 	[0.59, 1.0, 0.75], [0.69, 0.96, 0.37], [0.79, 0.93, -0.58],
 	[0.89, 0.92, -0.28], [1.0, 0.68, 0.10], [1.12, 0.31, 0.0],
 	[LENGTH, 0.0, 0.0],
+]
+const BLISTERING_SOURCE := "res://local-art/creatures/gargoyles_gargoyle_blistering-%s.gltf"
+const BLISTERING_OUTPUT := "res://local-art/creatures/gargoyle-130-pillage-trial%s.scn"
+const BLISTERING_LENGTH := 1.10
+const BLISTERING_POSES := [
+	[0.0, 0.0, 0.0], [0.11, 0.53, 0.18], [0.22, 0.92, 0.70],
+	[0.33, 1.0, 0.42], [0.44, 0.92, -0.60], [0.55, 0.98, -0.35],
+	[0.66, 1.0, 0.58], [0.77, 0.91, -0.52], [0.88, 0.64, -0.16],
+	[0.99, 0.26, 0.0], [BLISTERING_LENGTH, 0.0, 0.0],
 ]
 
 func _initialize() -> void:
@@ -54,19 +63,24 @@ func plant_leg(rig: Skeleton3D, side: String, ankle: Transform3D, forward: Vecto
 	rig.set_bone_global_pose(foot, rotation)
 
 func run() -> void:
+	var blistering := "--blistering" in OS.get_cmdline_user_args()
 	for treatment in ["original", "rounded", "modern"]:
-		bake(treatment)
+		bake(treatment, blistering)
 	quit()
 
-func bake(treatment: String) -> void:
-	var model := (load(SOURCE % treatment) as PackedScene).instantiate()
+func bake(treatment: String, blistering: bool) -> void:
+	var source_pattern := BLISTERING_SOURCE if blistering else SOURCE
+	var output_pattern := BLISTERING_OUTPUT if blistering else OUTPUT
+	var length := BLISTERING_LENGTH if blistering else LENGTH
+	var poses := BLISTERING_POSES if blistering else POSES
+	var model := (load(source_pattern % treatment) as PackedScene).instantiate()
 	root.add_child(model)
 	var player := model.find_children("*", "AnimationPlayer", true, false)[0] as AnimationPlayer
 	var rig := model.find_children("*", "Skeleton3D", true, false)[0] as Skeleton3D
 	var library := player.get_animation_library("")
 	var idle := library.get_animation("Idle")
 	var motion := idle.duplicate(true) as Animation
-	motion.length = LENGTH
+	motion.length = length
 	motion.loop_mode = Animation.LOOP_NONE
 	var tracks: Dictionary = {}
 	for track in motion.get_track_count():
@@ -92,12 +106,13 @@ func bake(treatment: String) -> void:
 	for bone in rig.get_bone_count():
 		idle_pose.append(rig.get_bone_pose(bone))
 	var phase := 0
-	for index in 157:
-		var time := LENGTH * float(index) / 156.0
-		while phase + 1 < POSES.size() - 1 and time > float(POSES[phase + 1][0]):
+	var intervals := roundi(length * 120.0)
+	for index in intervals + 1:
+		var time := length * float(index) / float(intervals)
+		while phase + 1 < poses.size() - 1 and time > float(poses[phase + 1][0]):
 			phase += 1
-		var from: Array = POSES[phase]
-		var to: Array = POSES[phase + 1]
+		var from: Array = poses[phase]
+		var to: Array = poses[phase + 1]
 		var blend := smoothstep(float(from[0]), float(to[0]), time)
 		for bone in rig.get_bone_count():
 			var pose := idle_pose[bone]
@@ -140,6 +155,7 @@ func bake(treatment: String) -> void:
 	var scene := PackedScene.new()
 	assert(scene.pack(model) == OK)
 	var suffix := "" if treatment == "modern" else "-" + treatment
-	assert(ResourceSaver.save(scene, OUTPUT % suffix, ResourceSaver.FLAG_COMPRESS) == OK)
-	print("GARGOYLE 753 TRIAL: ", treatment, " 13 authored pose targets, baked at 120 Hz")
+	assert(ResourceSaver.save(scene, output_pattern % suffix, ResourceSaver.FLAG_COMPRESS) == OK)
+	print("GARGOYLE ", 130 if blistering else 753, " TRIAL: ", treatment,
+		" ", poses.size(), " authored pose targets, baked at 120 Hz")
 	model.free()

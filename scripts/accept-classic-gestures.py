@@ -16,6 +16,7 @@ BATCHES = {
     'classic_gestures': ((1, 3, 50), 'ClassicGestureLive.gd', ('test-classic-gesture-trials.gd',)),
     'troll_gestures': ((53, 54, 55), 'TrollGestureLive.gd',
                       ('test-troll-overhead-trial.gd', 'test-troll-weapon-trial.gd')),
+    'blistering_pillage': ((130,), 'BlisteringPillageLive.gd', ('test-gargoyle-pillage-trial.gd',)),
 }
 
 
@@ -114,9 +115,10 @@ def test_active(batch):
     godot = next((ROOT / '.tools/godot').glob('*console.exe'))
     profile = str(ROOT / '.godot-user')
     env = dict(os.environ, APPDATA=profile, LOCALAPPDATA=profile)
+    trial_args = ['--blistering'] if batch == 'blistering_pillage' else []
     for script in BATCHES[batch][2]:
         subprocess.run([str(godot), '--headless', '--path', str(ROOT / 'Viewer'), '--script',
-                        f'res://../scripts/{script}', '--', '--active'],
+                        f'res://../scripts/{script}', '--', '--active', *trial_args],
                        cwd=ROOT, env=env, check=True, timeout=65)
 
 

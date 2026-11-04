@@ -41,6 +41,27 @@ def gesture_baseline(family, registry_entries, bodies):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'blistering_pillage':
+        body = 130
+        base, = (row for row in gesture_baseline(family, registry_entries, {body})
+                 if row['status'] == 'validated' and row['kind'] == 'gargoyles_gargoyle_blistering'
+                 and [identity['body'] for identity in row['bodies']] == [body])
+        ledger = json.loads((ROOT / 'outputs/creatures/actions.json').read_text(encoding='utf-8'))
+        source, = (group for group in ledger['original_uop_frame_groups']
+                   if (group['body'], group['group']) == (body, 11))
+        assert source['archive'] == 'AnimationFrame1.uop' and source['frame_headers'] == 55
+        assert source['payload_sha256'] == 'fc5bf56283de49c0533acd72887418b43faba39bef55b6fda0e770de575d4a9c'
+        assets = {name: 'res://local-art/creatures/gargoyle-130-pillage-trial'
+                  + ('' if name == 'modern' else f'-{name}') + '.scn'
+                  for name in ('original', 'rounded', 'modern')}
+        row = dict(base, status='prepared', family=family, assets=assets,
+                   authored_action_reference=source,
+                   authored_action_scene_sha256={name: sha(ROOT / 'Viewer' / path.removeprefix('res://'))
+                                                 for name, path in assets.items()},
+                   classic_action_categories=base.get('classic_action_categories', {}) | {'11': 'Pillage'},
+                   authored_replacements=base.get('authored_replacements', {}) | {
+                       'Pillage': 'Authored crouch and alternating reach from preferred UOP reference'})
+        return [row], {body: ['FireGargoyle']}
     if family == 'troll_gestures':
         ledger = json.loads((ROOT / 'outputs/creatures/actions.json').read_text(encoding='utf-8'))
         recipes = {
