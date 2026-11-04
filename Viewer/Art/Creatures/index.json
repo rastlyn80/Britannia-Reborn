@@ -204,7 +204,9 @@
       "partial_hue_interpretation": "Authored moving foam zones; not a recovered original grey-pixel mask.",
       "classic_action_categories": {
         "7": "OverheadSurge",
-        "8": "WaterHold"
+        "8": "WaterHold",
+        "17": "WaterArmSettle",
+        "18": "Fidget2"
       },
       "new_action_categories": {
         "2": "Hit",
@@ -214,14 +216,14 @@
       "camera_height": 1.7,
       "pick_bounds": {
         "position": [
-          -0.823237895965576,
+          -0.823236286640167,
           -0.0350000001490116,
-          -0.785331189632416
+          -0.785330295562744
         ],
         "size": [
-          1.61103856563568,
-          1.88809359073639,
-          1.67673575878143
+          1.61102831363678,
+          1.88809382915497,
+          1.6767293214798
         ]
       },
       "stats": {
@@ -283,6 +285,12 @@
               "origin": "Retargeted Quaternius UAL1 Standard: Idle_Talking",
               "support_policy": "fluid_base"
             },
+            "Fidget2": {
+              "duration": 0.88,
+              "loop": false,
+              "origin": "Authored two-hand reach based on the Classic slot 18 silhouette",
+              "support_policy": "fluid_base"
+            },
             "Hit": {
               "duration": 0.333333343267441,
               "loop": false,
@@ -323,6 +331,12 @@
               "duration": 1.33333337306976,
               "loop": true,
               "origin": "Retargeted Quaternius UAL1 Standard: Walk",
+              "support_policy": "fluid_base"
+            },
+            "WaterArmSettle": {
+              "duration": 1.04,
+              "loop": false,
+              "origin": "Authored left-arm settle based on the Classic slot 17 silhouette",
               "support_policy": "fluid_base"
             },
             "WaterHold": {
@@ -391,6 +405,12 @@
               "origin": "Retargeted Quaternius UAL1 Standard: Idle_Talking",
               "support_policy": "fluid_base"
             },
+            "Fidget2": {
+              "duration": 0.88,
+              "loop": false,
+              "origin": "Authored two-hand reach based on the Classic slot 18 silhouette",
+              "support_policy": "fluid_base"
+            },
             "Hit": {
               "duration": 0.333333343267441,
               "loop": false,
@@ -433,6 +453,12 @@
               "origin": "Retargeted Quaternius UAL1 Standard: Walk",
               "support_policy": "fluid_base"
             },
+            "WaterArmSettle": {
+              "duration": 1.04,
+              "loop": false,
+              "origin": "Authored left-arm settle based on the Classic slot 17 silhouette",
+              "support_policy": "fluid_base"
+            },
             "WaterHold": {
               "duration": 1.0,
               "loop": false,
@@ -452,6 +478,7 @@
         "Death": "Authored liquid collapse",
         "Death2": "Authored liquid collapse",
         "Fidget": "Retargeted Quaternius UAL1 Standard: Idle_Talking",
+        "Fidget2": "Authored two-hand reach based on the Classic slot 18 silhouette",
         "Hit": "Retargeted Quaternius UAL1 Standard: Hit_Chest",
         "Hit2": "Retargeted Quaternius UAL1 Standard: Hit_Head",
         "Idle": "Retargeted Quaternius UAL1 Standard: Idle",
@@ -459,6 +486,7 @@
         "Pillage": "Retargeted Quaternius UAL1 Standard: PickUp_Table",
         "Run": "Retargeted Quaternius UAL1 Standard: Jog_Fwd",
         "Walk": "Retargeted Quaternius UAL1 Standard: Walk",
+        "WaterArmSettle": "Authored left-arm settle based on the Classic slot 17 silhouette",
         "WaterHold": "Authored pose from visual inspection of original Water Elemental slots 7 and 8"
       },
       "category_aliases": {

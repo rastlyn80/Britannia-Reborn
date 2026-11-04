@@ -5,8 +5,8 @@
       "Viewer/Art/Quaternius/Character/Superhero_Male_FullBody.bin": "459003f9745853ae562a85506a2b94dd56515c1f37728f9fa3d2ce1a3e4cd92f",
       "Viewer/Art/Quaternius/Animation/UAL1_Standard.glb": "69591853d817488edaa8fd9bf8fc1d821eaeaf789f8627b3cd23b41c4ed67997"
     },
-    "recipe": "f5f488aa5f943478834ae539351ee32e2f03f98e2b03a1b075df93c0f20ec793",
-    "asset_sha256": "75495bbe1d4046a7a6f2b4f97fc5226f7b8ac8d53f823cc44d7cf04ee1c20932",
+    "recipe": "2586b85c73c7050c6f93c5a179854a00de63b0d16b1ef5478f56c2e7d17e5a06",
+    "asset_sha256": "afcbae91b71e0ae2a03473f2afcce861c590a9f075e54bcee36cc4590e21be63",
     "preparation": {
       "bones": 65,
       "clips": {
@@ -64,6 +64,12 @@
           "origin": "Retargeted Quaternius UAL1 Standard: Idle_Talking",
           "support_policy": "fluid_base"
         },
+        "Fidget2": {
+          "duration": 0.88,
+          "loop": false,
+          "origin": "Authored two-hand reach based on the Classic slot 18 silhouette",
+          "support_policy": "fluid_base"
+        },
         "Hit": {
           "duration": 0.333333343267441,
           "loop": false,
@@ -106,6 +112,12 @@
           "origin": "Retargeted Quaternius UAL1 Standard: Walk",
           "support_policy": "fluid_base"
         },
+        "WaterArmSettle": {
+          "duration": 1.04,
+          "loop": false,
+          "origin": "Authored left-arm settle based on the Classic slot 17 silhouette",
+          "support_policy": "fluid_base"
+        },
         "WaterHold": {
           "duration": 1.0,
           "loop": false,
@@ -116,14 +128,14 @@
       "discarded_weight": 0.0,
       "envelope": {
         "position": [
-          -0.823237895965576,
+          -0.823236286640167,
           -0.0350000001490116,
-          -0.785331189632416
+          -0.785330295562744
         ],
         "size": [
-          1.61103856563568,
-          1.88809359073639,
-          1.67673575878143
+          1.61102831363678,
+          1.88809382915497,
+          1.6767293214798
         ]
       },
       "seam_vertices": 80,
@@ -165,13 +177,14 @@
     "Viewer/Presentation/LegacyAvatar.gd": "75c02a4a3ab0d2e763896405ff6b8270c8f129adb5ccd66a569d95f4e8899f3f",
     "Viewer/Presentation/MountVisual.gd": "9b11e0e83bac17a847b5f7da60d57586014d940db56fc49bc11ee5f4b8db6ff0",
     "Viewer/Presentation/OstardVisual.gd": "b8a05572f425c0943a9e9c40b2a6a178e51ed4a88215f60fc8c1087011f1eb1f",
-    "Viewer/Presentation/PrepareWaterElemental.gd": "f5f488aa5f943478834ae539351ee32e2f03f98e2b03a1b075df93c0f20ec793",
+    "Viewer/Presentation/PrepareWaterElemental.gd": "2586b85c73c7050c6f93c5a179854a00de63b0d16b1ef5478f56c2e7d17e5a06",
     "Viewer/Presentation/SkinGeometry.gd": "6690454dae7e23f9d4a705afa90f1b6d510dd1263a19930e4f597ee5f36c19aa",
     "Viewer/Presentation/SourceMountContact.gd": "623317c4621447faee99c9659ac4723696f342fda3576e82a9139d77fa6129e3",
+    "Viewer/Presentation/WaterElementalFidgets.gd": "b6bb7952a6c6330df7e50292eaccebcb0e2f55140a35749a7907255607cc6658",
     "Viewer/Presentation/WaterElementalMaterial.gd": "dd4a3c80187fbf80cb19a32c49caee7d5b0adef2b5db276005c2101f11fd4b95",
     "Viewer/Presentation/WaterElementalSurface.gdshader": "0112f5fa8945564bd550dd7080974ed54b9accffa11e1fdaf2032b0b27c6fb62",
-    "Viewer/Presentation/WaterElementalTrial.gd": "7f087300d4e112a9488ad0fb808aee8a88d6667c96a2e5a0cdf053f4f85c86c9"
+    "Viewer/Presentation/WaterElementalTrial.gd": "b407ecb2115b1fea0364d9cf983ffff01c73525b80e6f4905ccfd7d22d82fb64"
   },
-  "asset_sha256": "75495bbe1d4046a7a6f2b4f97fc5226f7b8ac8d53f823cc44d7cf04ee1c20932",
+  "asset_sha256": "afcbae91b71e0ae2a03473f2afcce861c590a9f075e54bcee36cc4590e21be63",
   "interpretation": "Authored fluid-vortex replacement using the CC0 Quaternius male upper body/rig and retargeted CC0 UAL1 Standard actions. Not a recovered Third Dawn water elemental or original UO choreography."
 }

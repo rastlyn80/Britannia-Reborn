@@ -38,3 +38,9 @@ The generic high-group labels for slots 7 and 8 are bow and crossbow. Body 16's 
 The local comparison used `anim.mul`, direction 1. Slot 7 begins at offset 34,183,296 and contains three frames in 21,515 bytes (SHA-256 `11d15bd8204931b41eadfe6fd4b70cc637e912af1d06d154067c676a9f374c8c`). Slot 8 begins at 34,311,759 and contains six frames in 41,999 bytes (SHA-256 `78636d963ca9f6e6d823d43f57cad1048b4e6b8c8d69dd6d5966ec41c36bbfed`). The replacement uses the existing licensed rig. The original frame pixels were used only for visual reference.
 
 The revised Forward+ candidate passed 611 checks including wrist height, skin, surface, terrain and corpse tests. The staged server run passed 249 checks across two clients, with server fixture packets for both legacy slots. The fixture emits the two action groups directly. It does not establish whether native autonomous Water Elemental AI emits them.
+
+## Classic slots 17 and 18
+
+All five stored directions for each slot are fingerprinted in `scripts/prepare-water-elemental.py`. The sampled reference sheets show a left-arm drop in group 17 and a reach with both hands in group 18. `WaterElementalFidgets.gd` authors these poses on the licensed rig over the existing talking stance, and preserves the original talking clip for its other routes.
+
+Bake and check the candidate with `./scripts/prepare-water-elemental.ps1`, then run `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily water_fidgets`. The candidate passed 680 rendered checks and the native run passed 265 checks across two clients. `python -B scripts/prepare-water-elemental.py install-fidgets` checks the exact staged scene and both native action witnesses before installing the public bundle. `python -B scripts/test-water-distribution.py` validates both slots in a clean copy of the client. The source reference frames and native receipts stay local.

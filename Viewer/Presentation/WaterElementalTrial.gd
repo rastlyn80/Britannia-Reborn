@@ -4,7 +4,7 @@ const Geometry=preload("res://Presentation/SkinGeometry.gd")
 const Registry=preload("res://Presentation/CreatureRegistry.gd")
 const Avatar=preload("res://Presentation/HumanAvatar.gd")
 const Corpses=preload("res://Presentation/CorpseModels.gd")
-const FILES=["PrepareWaterElemental.gd","WaterElementalTrial.gd","WaterElementalMaterial.gd","WaterElementalSurface.gdshader","CreatureRegistry.gd","CreatureVisual.gd","OstardVisual.gd","HumanAvatar.gd","LegacyAvatar.gd","BirdGroundSupport.gd","SourceMountContact.gd","MountVisual.gd","AnimalPoseLibrary.gd","SkinGeometry.gd","CorpseModels.gd","HumanHue.gd","HumanActions.gd","ItemStudio.gd"]
+const FILES=["PrepareWaterElemental.gd","WaterElementalFidgets.gd","WaterElementalTrial.gd","WaterElementalMaterial.gd","WaterElementalSurface.gdshader","CreatureRegistry.gd","CreatureVisual.gd","OstardVisual.gd","HumanAvatar.gd","LegacyAvatar.gd","BirdGroundSupport.gd","SourceMountContact.gd","MountVisual.gd","AnimalPoseLibrary.gd","SkinGeometry.gd","CorpseModels.gd","HumanHue.gd","HumanActions.gd","ItemStudio.gd"]
 var checks:=0
 var failures:=0
 var viewport: SubViewport
@@ -47,17 +47,32 @@ func run() -> void:
 	var player: AnimationPlayer=actor.find_children("*","AnimationPlayer",true,false)[0]
 	var material:=mesh.get_active_material(0) as ShaderMaterial
 	check(rig.get_bone_count()==65,"Retains licensed 65-bone rig")
-	check(player.get_animation_list().size()>=17,"Seventeen explicitly mapped/authored categories")
+	check(player.get_animation_list().size()>=19,"Nineteen explicitly mapped/authored categories")
 	check(mesh.mesh.surface_get_arrays(0)[Mesh.ARRAY_BONES].size()==mesh.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX].size()*8,"Eight-influence joined fluid skin")
 	var rows: Array=[];var still: Image
 	for clip in record.stats.modern.clips:
 		print("WATER SAMPLE ",clip)
 		var animation:=player.get_animation(clip)
 		var samples: Array=[]
+		var first_left := Vector3.ZERO
+		var first_right := Vector3.ZERO
 		for frame in 9:
 			var time:=animation.length*float(frame)/8.
 			player.play(clip,0.);player.seek(time,true);player.pause();rig.force_update_all_bone_transforms()
 			var bounds:=Geometry.deformed_bounds(mesh,rig)
+			if clip in ["WaterArmSettle", "Fidget2"]:
+				var left := rig.to_global(rig.get_bone_global_pose(rig.find_bone("hand_l")).origin)
+				var right := rig.to_global(rig.get_bone_global_pose(rig.find_bone("hand_r")).origin)
+				if frame == 0:
+					first_left = left
+					first_right = right
+				elif frame == 4:
+					check(left.y - first_left.y < -0.12 and absf(right.y - first_right.y) < 0.06
+						if clip == "WaterArmSettle" else left.z - first_left.z > 0.09 and right.z - first_right.z > 0.10,
+						clip + " preserves the distinct Classic arm motion")
+				elif frame == 8:
+					check(left.is_equal_approx(first_left) and right.is_equal_approx(first_right),
+						clip + " returns both hands to their initial pose")
 			if frame == 4 and clip in ["OverheadSurge", "WaterHold"]:
 				var wrist := rig.get_bone_global_pose(rig.find_bone("hand_r")).origin.y
 				var shoulder := rig.get_bone_global_pose(rig.find_bone("upperarm_r")).origin.y
@@ -99,6 +114,10 @@ func run() -> void:
 		hues.append({"hue":hue,"changed_pixels":pixels})
 	check(int(hues[1].changed_pixels)<int(hues[0].changed_pixels)*.75,"Partial foam hue preserves most water")
 	for request in [{"protocol":"classic","action":4},{"protocol":"classic","action":5},{"protocol":"classic","action":6},{"protocol":"classic","action":12},{"protocol":"new","type":11},{"protocol":"new","type":2},{"protocol":"new","type":14}]:check(avatar.receive_native_action(request),"Actual native combat category is consumed")
+	for action: int in [17, 18]:
+		check(avatar.receive_native_action({"protocol": "classic", "action": action})
+			and visual.current_clip == ("WaterArmSettle" if action == 17 else "Fidget2"),
+			"Actual avatar selects the distinct water fidget")
 	visual.action_remaining=0.;visual.dead=false;visual.contact.enabled=true
 	var ground:=StaticBody3D.new();var collider:=CollisionShape3D.new();var shape:=BoxShape3D.new();shape.size=Vector3(20.,.1,20.);collider.shape=shape;collider.position.y=-.05;ground.add_child(collider);viewport.add_child(ground)
 	avatar.set_physics_process(true);visual.set_physics_process(true)

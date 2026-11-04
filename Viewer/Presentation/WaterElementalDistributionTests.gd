@@ -23,6 +23,10 @@ func run() -> void:
 	for action: int in [7,8]:
 		check(actor.receive_native_action({"protocol":"classic","action":action})
 			and visual.current_clip == ("OverheadSurge" if action == 7 else "WaterHold"), "Legacy fluid action plays")
+	for action: int in [17,18]:
+		check(actor.receive_native_action({"protocol":"classic","action":action})
+			and visual.current_clip == ("WaterArmSettle" if action == 17 else "Fidget2"),
+			"Distinct Classic fluid fidget plays")
 	var corpse:=preload("res://Presentation/CorpseModels.gd").build(16)
 	check(corpse!=null and corpse.get_meta("corpse_body")==16 and corpse.get_child_count()==1 and corpse.get_child(0).name=="Puddle","Matching static puddle builds with no private or source artwork")
 	check(corpse.find_children("*","Skeleton3D",true,false).is_empty(),"Corpse has no running skeleton")

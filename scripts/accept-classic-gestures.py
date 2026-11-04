@@ -42,6 +42,9 @@ BATCHES = {
     'vampire_bat_actions': ((317,), 'PreparedCreatureActionLive.gd', ('test-vampire-bat-actions.gd',)),
     'hopper_horde_actions': ((302, 776), 'PreparedCreatureActionLive.gd', ('test-hopper-horde-actions.gd',)),
     'late_classic_actions': ((172, 303, 311), 'PreparedCreatureActionLive.gd', ('test-late-classic-actions.gd',)),
+    'orc_fidgets': ((17,), 'PreparedCreatureActionLive.gd', ('test-humanoid-fidgets.gd',)),
+    'kraken_fidgets': ((77,), 'PreparedCreatureActionLive.gd', ('test-kraken-fidgets.gd',)),
+    'ettin_fidgets': ((18,), 'PreparedCreatureActionLive.gd', ('test-humanoid-fidgets.gd',)),
 }
 
 
@@ -64,7 +67,9 @@ def compose(base, prepared, native_sha):
     row = dict(prepared, status='validated', family=base['family'],
                classic_gesture_base_assets=assets, classic_gesture_native_sha256=native_sha,
                asset_sha256=prepared['authored_action_scene_sha256'], import_sha256={})
-    if len(base['bodies']) > 1:
+    if prepared['family'] in ('orc_fidgets', 'ettin_fidgets'):
+        row['kind'] = f"{base['kind']}_fidgets"
+    elif len(base['bodies']) > 1:
         row['kind'] = f"{base['kind']}_slot11_{prepared['bodies'][0]['body']}"
     for key in ('validation_sha256', 'gpu_sha256', 'gpu_runtime_sha256'):
         row.pop(key, None)
@@ -144,6 +149,8 @@ def checked(index, active, batch):
         slots = [int(slot) for slot in package.get('classic_motion_references', {})]
         if not slots:
             slots = [source['group'] if isinstance(source, dict) else 11]
+            if 'authored_action_secondary_reference' in package:
+                slots.append(package['authored_action_secondary_reference']['group'])
         refuses_death = batch == 'dragon_daemon' and body == 38 and witness['native_class'] == 'ServantOfSemidar'
         if (witness['kind'] != package['kind'] or witness['corpse_suppressed']
                 or witness['native_death_refused'] != refuses_death):
@@ -195,7 +202,8 @@ def test_active(batch):
     godot = next((ROOT / '.tools/godot').glob('*console.exe'))
     profile = str(ROOT / '.godot-user')
     env = dict(os.environ, APPDATA=profile, LOCALAPPDATA=profile)
-    trial_args = {'blistering_pillage': ['--blistering'], 'ratman_hunch': ['--ratman']}.get(batch, [])
+    trial_args = {'blistering_pillage': ['--blistering'], 'ratman_hunch': ['--ratman'],
+                  'ettin_fidgets': ['--ettin']}.get(batch, [])
     for script in BATCHES[batch][2]:
         run_client_check(godot, env, f'res://../scripts/{script}', ['--active', *trial_args])
     package = {'parrot_flight': 'late_donors', 'troglodyte_reach': 'late_source',

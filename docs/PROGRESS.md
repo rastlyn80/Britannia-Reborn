@@ -1,4 +1,18 @@
-# Spectral Armour and Restless Soul source candidates
+# Four occurrence-ranked Classic fidget packages
+
+The source frames for Orc body 17 show a raised right hand in Classic group 17 and a short waist gesture in group 18. The candidate retimes the existing overhead wind-up for the first and uses a planted right-arm pose for the second. The original Fidget and all existing animation keys are preserved. Body 41 remains independent.
+
+Ettin body 18 now has separate left-hand motions for the temple and chest, each with independent head turns. Body 2 retains the shared baseline. Orc and Ettin each passed 18 decoded fidget runs, 18 walking and running terrain runs, three static corpse hue checks and 241 isolated native checks across two clients. The lowest sampled Orc skin stayed 0.398 mm above the test planes.
+
+Kraken and Leviathan body 77 now use a shallow tentacle pulse for Classic groups 11 and 17, whose registered reference frames match in all five directions. Group 18 retains the large sweep from the recovered clip with its original keys. The three model treatments passed 18 decoded action runs on the seabed and a raised deck, plus three corpse hue cases. The two native constructors passed 403 isolated checks, including wet-tile movement and the Leviathan's native `0x0481` hue.
+
+Water Elemental body 16 has separate one-arm settling and two-arm reach gestures on the existing public rig. The candidate passed 680 Forward+ checks and 265 isolated native checks. Its revised CC0-based scene passed 17 checks in a clean client copy. The other three packages use locally generated scenes that stay out of Git. All four native trials send explicit action requests across two clients. Autonomous fidget selection remains unverified.
+
+All four packages are active locally. The last full baseline regression passed, including the developer-edit tests and world startup. Each new package also passed its active presentation checks. A full regression of the new registry is running. The regenerated ledger still routes 5,278 of 6,918 protocol slots (76.3%). These changes improve distinct motion within existing routes and reduce the shared-replacement candidate count from 954 to 949. Fifty unrouted slots have original frame evidence.
+
+The private Rikktor ground-support trial cleared the tail gesture on the sampled slopes. Extending it to 90 treatment, action and plane combinations exposed a roughly 45 mm run penetration and metre-scale visual lifts on attacks and landing. The broad renderer change remains private.
+
+# Spectral Armour and Restless Soul source routes
 
 The six-facet spawn catalogue found two body types outside the original 279-body checklist. Spectral Armour 637 uses the assigned 92-triangle scimitar with seven motions adapted from the existing Animated Weapon recipe. Restless Soul 970 uses the assigned 412-triangle, 40-joint ghost mesh and nine matching human motions. Its translucent treatment retains the original atlas and uses the native palette. The original mask files contain only zeroes.
 

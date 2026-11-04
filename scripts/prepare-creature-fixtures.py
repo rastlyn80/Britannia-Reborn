@@ -82,6 +82,20 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'water_fidgets':
+        return runpy.run_path(str(ROOT / 'scripts/prepare-water-elemental.py'))['prepared_fidgets']()
+    if family == 'ettin_fidgets':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-ettin-fidgets.py'))
+        rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']))
+        return recipe['prepared'](rows)
+    if family == 'kraken_fidgets':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-kraken-fidgets.py'))
+        rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']))
+        return recipe['prepared'](rows)
+    if family == 'orc_fidgets':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-orc-fidgets.py'))
+        rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']))
+        return recipe['prepared'](rows)
     if family == 'late_classic_actions':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-late-classic-actions.py'))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']))

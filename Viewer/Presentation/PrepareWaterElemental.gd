@@ -212,6 +212,7 @@ func run() -> void:
 			elif path.ends_with("Puddle:visible"):animation.track_insert_key(track,.75,true)
 		library.add_animation(clip,animation)
 	add_legacy_water_actions(player, rig, library)
+	preload("res://Presentation/WaterElementalFidgets.gd").add(player, rig, library)
 	source.free();own(actor,actor)
 	var packed:=PackedScene.new();assert(packed.pack(actor)==OK);assert(ResourceSaver.save(packed,OUTPUT)==OK)
 	var clips: Dictionary={}
@@ -222,6 +223,10 @@ func run() -> void:
 			origin = "Authored liquid collapse"
 		elif clip in ["OverheadSurge", "WaterHold"]:
 			origin = "Authored pose from visual inspection of original Water Elemental slots 7 and 8"
+		elif clip == "WaterArmSettle":
+			origin = "Authored left-arm settle based on the Classic slot 17 silhouette"
+		elif clip == "Fidget2":
+			origin = "Authored two-hand reach based on the Classic slot 18 silhouette"
 		clips[clip]={"duration":animation.length,"loop":animation.loop_mode==Animation.LOOP_LINEAR,"origin":origin,"support_policy":"fluid_base"}
 	var envelope:=AABB();var first:=true
 	for clip in player.get_animation_list():

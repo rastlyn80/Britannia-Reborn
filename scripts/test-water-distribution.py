@@ -20,7 +20,7 @@ def main():
   result=subprocess.run([str(godot),'--headless','--path',str(target),*args],env=env,capture_output=True,text=True,timeout=120)
   output=result.stdout+result.stderr;(target/('import.log' if '--editor' in args else 'check.log')).write_text(output,encoding='utf-8')
   assert result.returncode==0 and 'ERROR:' not in output,output
-  if '--script' in args:assert 'WATER DISTRIBUTION: 15 / 15' in output,output
- print('WATER DISTRIBUTION: 15 clean checks; no local-art, original CC0 source imports, game inputs or server')
+  if '--script' in args:assert 'WATER DISTRIBUTION: 17 / 17' in output,output
+ print('WATER DISTRIBUTION: 17 clean checks; no local-art, original CC0 source imports, game inputs or server')
  print(target/'check.log')
 if __name__=='__main__':main()
