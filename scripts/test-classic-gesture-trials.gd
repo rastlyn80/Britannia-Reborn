@@ -3,6 +3,7 @@ extends SceneTree
 const Registry := preload("res://Presentation/CreatureRegistry.gd")
 const Game := preload("res://Network/GameSession.gd")
 const Wire := preload("res://Network/LoginProtocol.gd")
+const Corpses := preload("res://Presentation/CorpseModels.gd")
 const SkinBounds := preload("res://Presentation/SkinGeometry.gd")
 const CLIPS := {1: "FaceWipe", 3: "ArmsRaise", 50: "Reach"}
 const SERIAL := 0x4100
@@ -15,24 +16,35 @@ func run() -> void:
 	var game := Game.new()
 	root.add_child(game)
 	game.set_process(false)
+	var active := "--active" in OS.get_cmdline_user_args()
 	var historical_skeleton := Registry.entry(56).duplicate(true)
 	for body in CLIPS:
 		for treatment in ["original", "rounded", "modern"]:
-			check_route(game, body, treatment)
+			check_route(game, body, treatment, active)
 	assert(Registry.entry(56) == historical_skeleton)
+	if active:
+		check_skeleton_swap()
+		check_corpses()
 	game.free()
 	quit()
 
-func check_route(game: Node, body: int, treatment: String) -> void:
+func check_route(game: Node, body: int, treatment: String, active: bool) -> void:
 	var clip: String = CLIPS[body]
 	var original := Registry.entry(body)
-	var base := (load(Registry.asset_path(original, treatment)) as PackedScene).instantiate()
+	var base_assets: Dictionary = original.get("classic_gesture_base_assets", {})
+	var baseline: String = base_assets.get(treatment, Registry.asset_path(original, treatment))
+	var base := (load(baseline) as PackedScene).instantiate()
 	var source := base.find_children("*", "AnimationPlayer", true, false)[0] as AnimationPlayer
-	var entry := original.duplicate(true)
 	var suffix := "" if treatment == "modern" else "-" + treatment
-	entry.assets = {treatment: "res://local-art/creatures/slot11-%d-trial%s.scn" % [body, suffix]}
-	entry.classic_action_categories = entry.get("classic_action_categories", {}).merged({"11": clip}, true)
-	Registry.entries[body] = entry
+	var path := "res://local-art/creatures/slot11-%d-trial%s.scn" % [body, suffix]
+	if active:
+		assert(original.status == "validated" and original.assets[treatment] == path)
+		assert(original.authored_action_scene_sha256[treatment] == FileAccess.get_sha256(path))
+	else:
+		var entry := original.duplicate(true)
+		entry.assets = {treatment: path}
+		entry.classic_action_categories = entry.get("classic_action_categories", {}).merged({"11": clip}, true)
+		Registry.entries[body] = entry
 	var actor := Registry.create(body)
 	actor.treatment = treatment
 	root.add_child(actor)
@@ -59,6 +71,32 @@ func check_route(game: Node, body: int, treatment: String) -> void:
 	check_pose(actor, clip)
 	actor.free()
 	Registry.entries[body] = original
+
+func check_corpses() -> void:
+	for body in CLIPS:
+		for hue in [0, 53, 0x8035]:
+			var corpse := Corpses.build(body, hue)
+			assert(corpse != null and corpse.get_meta("static_cadaver"))
+			assert(corpse.get_meta("corpse_body") == body and corpse.get_meta("native_hue") == hue)
+			assert(corpse.get_meta("graphic_id") == 0x2006 and corpse.get_meta("death_clip") == "Death")
+			assert(corpse.find_children("*", "Skeleton3D", true, false).is_empty())
+			corpse.free()
+
+func check_skeleton_swap() -> void:
+	var avatar := preload("res://Presentation/HumanAvatar.gd").new()
+	avatar.initial_body = 50
+	root.add_child(avatar)
+	var animated: Node3D = avatar.horse_visual
+	assert(animated.animator.has_animation("Reach"))
+	avatar.apply_server_appearance({"body": 56, "hue": 0x8035}, [])
+	var sibling: Node3D = avatar.horse_visual
+	assert(sibling != animated and sibling.native_body == 56)
+	assert(not sibling.animator.has_animation("Reach"))
+	avatar.apply_server_appearance({"body": 50, "hue": 0x8035}, [])
+	var returned: Node3D = avatar.horse_visual
+	assert(returned != sibling and returned.native_body == 50)
+	assert(returned.animator.has_animation("Reach") and returned.native_hue == 0x8035)
+	avatar.free()
 
 func check_pose(actor: Node3D, clip: String) -> void:
 	var rig: Skeleton3D = actor.skeleton

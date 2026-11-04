@@ -28,15 +28,20 @@ SOURCE_COVERAGE_CLASSES = {
 
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
-def prepared_entries(family):
+def prepared_entries(family, registry_entries=None):
     if family == 'classic_gestures':
         manifest = json.loads((ROOT / 'scripts/classic-gesture-inputs.json').read_text(encoding='utf-8'))
-        index = json.loads((ROOT / 'Viewer/local-art/creatures/accepted-index.json').read_text(encoding='utf-8'))
+        if registry_entries is None:
+            index_path = ROOT / 'Viewer/local-art/creatures/accepted-index.json'
+            registry_entries = json.loads(index_path.read_text(encoding='utf-8'))['entries']
+            if any(row.get('classic_gesture_native_sha256') for row in registry_entries):
+                baseline = ROOT / 'work/creatures/classic_gestures/accepted-native/base-rows.json'
+                registry_entries = json.loads(baseline.read_text(encoding='utf-8'))
         ledger = json.loads((ROOT / 'outputs/creatures/actions.json').read_text(encoding='utf-8'))
         rows, classes = [], {}
         for key, recipe in manifest.items():
             body = int(key)
-            base, = (row for row in index['entries'] if row['status'] == 'validated'
+            base, = (row for row in registry_entries if row['status'] == 'validated'
                      and any(identity['body'] == body for identity in row['bodies']))
             identity, = (identity for identity in base['bodies'] if identity['body'] == body)
             source, = (row for row in ledger['original_mul_group_candidates']
