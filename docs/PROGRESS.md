@@ -1,3 +1,11 @@
+# Terathan Classic actions
+
+Terathan Warrior 70, Drone 71 and Matriarch 72 have five added Classic routes. The Warrior and Drone retime original attack rotations for the pincer dips. The Matriarch uses a shortened original fidget for the torso and abdomen dip, plus distinct held and overhead casting poses. Its two casts use green hand motes and a brief amber hand arc, based on their separate five-frame Classic sequences.
+
+The active client passed 1,365 complete-skin samples, six cast-effect cases and nine static corpse hues across three treatments. All sampled support joints retained their original pose. The largest measured floor overlap was 0.58 mm in the refined Matriarch dip. Existing motion keys matched the original saved scenes. The isolated ModernUO run passed 427 checks across two clients and all three native constructors. It exercised requested action packets and corpses with controlled fixtures. Autonomous spell selection and sloped-terrain clearance remain open.
+
+Bake with Godot `--headless --path Viewer --script res://../scripts/bake-terathan-gestures.gd`. Run `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily terathan_classic` and `python -B scripts/accept-classic-gestures.py --batch terathan_classic --check-active`. The action ledger routes 5,230 of 6,840 slots (76.5%). Original frames are identified for 22 of the 1,610 unresolved slots.
+
 # Dragon, Drake and Daemon Classic actions
 
 Fifteen source-backed Classic actions are active across nine body IDs. The Dragon and Drake routes share the recovered 54-joint rig and maintain the original 2:1 size difference. Their group 11 dips and group 12 breath poses follow the original Classic sequences. The breath uses the weighted jaw and tongue pose from the recovered Ancient Wyrm attack. The Daemon routes share a wing and arm recipe, with their original server facing and existing materials.

@@ -32,6 +32,7 @@ BATCHES = {
     'ophidian_bardiche': ((86,), 'PreparedCreatureActionLive.gd', ('test-ophidian-bardiche.gd',)),
     'dragon_daemon': ((9, 10, 12, 38, 40, 43, 59, 60, 61), 'PreparedCreatureActionLive.gd',
                       ('test-dragon-daemon-gestures.gd',)),
+    'terathan_classic': ((70, 71, 72), 'PreparedCreatureActionLive.gd', ('test-terathan-gestures.gd',)),
 }
 
 

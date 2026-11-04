@@ -1,6 +1,6 @@
 # Source-backed creature action queue
 
-Dragon, Drake and Daemon are active with fifteen added Classic routes. The ledger has 5,225 of 6,840 action slots routable. Move on to the Ophidian Mage and Matriarch and the Terathan Warrior, Drone and Matriarch. The Ophidian Mage staff is recovered from the original archive and a right-grasp preview verifies the attachment and measures the remaining floor clearance. The Terathan Classic frames distinguish a pincer dip, a sustained green cast and an overhead lightning release. Prepare compatible bodies together and test the cast effects separately from the decoded pose routes. Earth Elemental emergence on slopes and ledges, the native summon, the older Mongbat wing poses and body 148's recovered Mage Staff remain separate follow-ups.
+Terathan Warrior, Drone and Matriarch are active with five added Classic routes. The ledger has 5,230 of 6,840 action slots routable. The Ophidian Mage and Matriarch gestures are next. The Mage has its original Third Dawn staff on the right grasp. All three new Mage motions and the Matriarch dip have private bakes. Staff clearance against the body, two-handed grip fit, cast effects and the terrain-to-corpse handoff still need verification. Keep native spell selection separate from fixture-requested casts. Earth Elemental emergence on slopes and ledges, the native summon, the older Mongbat wing poses and body 148's recovered Mage Staff remain separate follow-ups.
 
 # Juka Lord active and Hydra source trial
 

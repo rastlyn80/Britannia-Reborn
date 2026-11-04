@@ -81,6 +81,63 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'terathan_classic':
+        recipes = {
+            70: ('terathan_terathan_warrior', 'TerathanWarrior', 'Attack',
+                 'ba7d695db8ef97706e7074cf86e7180fb4712e5da5b44c2b03ae120a44f2c16d',
+                 {11: ('PincerDip', '56d483ab12cc7e0a0dc0ceee08192dbca2038f9c639cf93086b152fba7c58ea2')}),
+            71: ('terathan_terathan_drone', 'TerathanDrone', 'Attack',
+                 '948ff146c1573d915cffb39eee915e3756596d20285eb7b3539b2c845154e8c7',
+                 {11: ('PincerDip', '5ed5d4c753e4b00b4fae43c3c3cf82e44f098caf8032d2fc483a2b7534276879')}),
+            72: ('terathan_terathan_queen', 'TerathanMatriarch', 'Fidget',
+                 '417c3c0fe846ebe2d6be69cf4a5d0766c5816dc14eee6c840f0d773529a81105',
+                 {11: ('MatriarchDip', '5f8067940b9a8dc795e15e79a39c8b86cb53d933e9d4625c60b0e53abf2f7828'),
+                  12: ('TerathanCast', '8390f524cba51b04027c6b00f272915067477d6fe70595c3467c5c6ee00f9436'),
+                  14: ('Cast2', '124f9d0002efe4aeb26d501b6cf479b818cd96f98d47cbd592d02e7b88f4d604')}),
+        }
+        descriptions = {
+            'PincerDip': 'Retimed recovered upper-body Attack rotations with the original stance held',
+            'MatriarchDip': 'Retimed recovered Fidget torso and abdomen motion with the original stance held',
+            'TerathanCast': 'Authored held cast with green hand motes referenced to Classic group 12',
+            'Cast2': 'Authored overhead release with a local hand arc referenced to Classic group 14',
+        }
+        ledger = json.loads((ROOT / 'outputs/creatures/actions.json').read_text(encoding='utf-8'))
+        bake = json.loads((ROOT / 'work/creatures/mul-motion-review/terathan-bake.json').read_text(encoding='utf-8'))
+        assert bake['recipe'] == sha(ROOT / 'scripts/bake-terathan-gestures.gd')
+        assert bake['joint_solver'] == sha(ROOT / 'scripts/bake-skeleton-axe-trial.gd')
+        reference = runpy.run_path(str(ROOT / 'scripts/prepare-dragon-daemon-actions.py'))['reference']
+        entries = gesture_baseline(family, registry_entries, set(recipes))
+        art = ROOT / 'Viewer/local-art/creatures'
+        rows, classes = [], {}
+        with zipfile.ZipFile(ROOT / 'work/third-dawn/uotdb.zip') as archive:
+            for body, (kind, native_class, donor, donor_sha, actions) in recipes.items():
+                base, = (row for row in entries if row['status'] == 'validated' and row['kind'] == kind
+                         and [identity['body'] for identity in row['bodies']] == [body])
+                assert hashlib.sha256(archive.read(base['clip_sources'][donor])).hexdigest() == donor_sha
+                references = {str(slot): reference(ledger, body, slot, ('anim.mul', body, 5, digest))
+                              for slot, (_, digest) in actions.items()}
+                assets, scenes = {}, {}
+                for treatment in ('original', 'rounded', 'modern'):
+                    file = f'terathan-{body}-classic-{treatment}.scn'
+                    source = sha(art / f'{kind}-{treatment}.gltf')
+                    scenes[treatment] = sha(art / file)
+                    assert source == base['asset_sha256'][treatment]
+                    assert bake['forms'][str(body)][treatment] == {'source': source, 'scene': scenes[treatment]}
+                    assets[treatment] = f'res://local-art/creatures/{file}'
+                categories = {str(slot): clip for slot, (clip, _) in actions.items()}
+                row = dict(base, status='prepared', family=family, assets=assets,
+                           authored_action_scene_sha256=scenes, authored_action_reference=references['11'],
+                           classic_motion_references=references,
+                           classic_action_categories=base.get('classic_action_categories', {}) | categories,
+                           authored_replacements=base.get('authored_replacements', {}) | {
+                               clip: descriptions[clip] for clip in categories.values()})
+                if body == 72:
+                    visual = 'Presentation/SourceTerathanMatriarchVisual.gd'
+                    row.update(presentation_script=f'res://{visual}',
+                               presentation_script_sha256=sha(ROOT / 'Viewer' / visual))
+                rows.append(row)
+                classes[body] = [native_class]
+        return rows, classes
     if family == 'dragon_daemon':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-dragon-daemon-actions.py'))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']))
