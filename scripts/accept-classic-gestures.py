@@ -54,6 +54,10 @@ BATCHES = {
     'field_deaths': ((237,), 'FieldDeathsLive.gd', ('test-field-deaths.gd',)),
     'lizard_actions': ((35, 36), 'LizardActionsLive.gd',
                        ('test-lizard-actions.gd', 'test-lizard-collapses.gd', 'test-lizardman-weapon-corpses.gd')),
+    'quadruped_actions': ((225, 207, 223), 'QuadrupedActionsLive.gd',
+                          ('test-quadruped-actions.gd', 'test-quadruped-corpse.gd')),
+    'hart_deaths': ((234,), 'QuadrupedActionsLive.gd', ('test-quadruped-actions.gd', 'test-quadruped-corpse.gd')),
+    'skeleton_actions': ((50, 56), 'PreparedClassicActionsLive.gd', ('test-skeleton-actions.gd',)),
 }
 PREDECESSORS = {
     'mongbat_fidgets': ('spider_mongbat',),
@@ -62,6 +66,9 @@ PREDECESSORS = {
     'kraken_reactions': ('kraken_fidgets',),
     'field_deaths': ('deer_fidgets',),
     'lizard_actions': (),
+    'quadruped_actions': (),
+    'hart_deaths': ('deer_fidgets',),
+    'skeleton_actions': ('skeleton_axe',),
 }
 
 
@@ -173,7 +180,8 @@ def checked(index, active, batch):
             or report['fixture_sha256'] != sha(ROOT / 'Server/HorseIntegrationFixtures/CreatureFixtures.cs')
             or report['failures'] or not report['prepared_trial']):
         raise ValueError('Classic gesture native evidence does not match this batch')
-    if wrapper in ('PreparedClassicActionsLive.gd', 'OccurrenceDeathsLive.gd', 'FieldDeathsLive.gd', 'LizardActionsLive.gd') and (
+    if wrapper in ('PreparedClassicActionsLive.gd', 'OccurrenceDeathsLive.gd', 'FieldDeathsLive.gd',
+                   'LizardActionsLive.gd', 'QuadrupedActionsLive.gd') and (
             report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
         raise ValueError('Supplementary action trial used a different prepared fixture loader')
     if batch == 'occurrence_deaths' and (
@@ -185,14 +193,19 @@ def checked(index, active, batch):
             or report['explicit_collapse_test_sha256'] != sha(ROOT / 'Viewer/Network/OccurrenceDeathsLive.gd')
             or report['supplemental_sha256'] != sha(ROOT / 'Viewer/Network/PreparedClassicActionsLive.gd')):
         raise ValueError('The field collapse renderer or explicit packet test changed')
-    if batch == 'lizard_actions':
+    if batch in ('lizard_actions', 'quadruped_actions', 'hart_deaths'):
+        visual, base_key, base_visual = (
+            ('SourceLizardActionsVisual', 'armed_renderer_sha256', 'SourceArmedLizardmanVisual')
+            if batch == 'lizard_actions' else
+            ('SourceQuadrupedCollapseVisual', 'field_renderer_sha256', 'FieldClassicCollapseVisual')
+        )
         paths = {
-            'renderer_sha256': 'Presentation/SourceLizardActionsVisual.gd',
-            'armed_renderer_sha256': 'Presentation/SourceArmedLizardmanVisual.gd',
+            'renderer_sha256': f'Presentation/{visual}.gd',
+            base_key: f'Presentation/{base_visual}.gd',
             'supplemental_sha256': 'Network/PreparedClassicActionsLive.gd',
         }
         if any(report[key] != sha(ROOT / 'Viewer' / path) for key, path in paths.items()):
-            raise ValueError('The armed action renderer or explicit packet test changed')
+            raise ValueError('The action renderer or explicit packet test changed')
 
     by_body = {row['bodies'][0]['body']: row for row in prepared}
     if batch == 'dragon_daemon':
@@ -221,6 +234,14 @@ def checked(index, active, batch):
         if (witness['kind'] != package['kind'] or witness['corpse_suppressed']
                 or witness['native_death_refused'] != refuses_death):
             raise ValueError(f'Missing original body or expected native death behaviour for {body}')
+        if batch == 'quadruped_actions' and witness['native_state'] != ('shorn' if body == 223 else 'constructor'):
+            raise ValueError(f'Missing native coat or constructor state for body {body}')
+        if batch == 'skeleton_actions' and body == 50:
+            reach, = (action for action in witness['actions'] if action['requested'] == -5)
+            if any(reach[client + '_clip'] != 'Reach' or reach[client + '_packet']['protocol'] != 'new'
+                   or (reach[client + '_packet']['type'], reach[client + '_packet']['subaction'],
+                       reach[client + '_packet']['variation']) != (14, 0, 0) for client in ('owner', 'observer')):
+                raise ValueError('Both clients must witness the original type-14 reach')
         if batch == 'exact_creature_fidgets' and body == 146 and (
                 witness.get('transformed_body') != 780 or not witness.get('true_form_corpse')):
             raise ValueError('Harrower evidence must include the transformation and true-form corpse')
@@ -230,7 +251,8 @@ def checked(index, active, batch):
             actions = [row for row in witness['actions'] if row['requested'] == slot]
             if len(actions) != 1 or any(actions[0][key] != clip for key in ('owner_clip', 'observer_clip')):
                 raise ValueError(f'Missing Classic gesture evidence for body {body}, slot {slot}')
-            if (batch == 'lizard_actions' or slot in package.get('native_extra_classic_actions', [])) and any(
+            if (batch in ('lizard_actions', 'quadruped_actions', 'hart_deaths', 'skeleton_actions') or
+                    slot in package.get('native_extra_classic_actions', [])) and any(
                     actions[0][key]['protocol'] != 'classic' or actions[0][key]['action'] != slot
                     for key in ('owner_packet', 'observer_packet')):
                 raise ValueError(f'Missing exact supplementary packet for body {body}, slot {slot}')
@@ -284,7 +306,7 @@ def test_active(batch):
     profile = str(ROOT / '.godot-user')
     env = dict(os.environ, APPDATA=profile, LOCALAPPDATA=profile)
     trial_args = {'blistering_pillage': ['--blistering'], 'ratman_hunch': ['--ratman'],
-                  'ettin_fidgets': ['--ettin']}.get(batch, [])
+                  'ettin_fidgets': ['--ettin'], 'hart_deaths': ['--hart']}.get(batch, [])
     for script in BATCHES[batch][2]:
         run_client_check(godot, env, f'res://../scripts/{script}', ['--active', *trial_args])
     package = {'parrot_flight': 'late_donors', 'troglodyte_reach': 'late_source',

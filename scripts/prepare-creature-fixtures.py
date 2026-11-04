@@ -83,6 +83,15 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'skeleton_actions':
+        rows = gesture_baseline(family, registry_entries, {50, 56}, layered=True)
+        return runpy.run_path(str(ROOT / 'scripts/prepare-skeleton-actions.py'))['prepared'](rows)
+    if family == 'hart_deaths':
+        rows = gesture_baseline(family, registry_entries, {234}, layered=True)
+        return runpy.run_path(str(ROOT / 'scripts/prepare-hart-deaths.py'))['prepared'](rows)
+    if family == 'quadruped_actions':
+        rows = gesture_baseline(family, registry_entries, {225, 207, 223}, layered=True)
+        return runpy.run_path(str(ROOT / 'scripts/prepare-quadruped-actions.py'))['prepared'](rows)
     if family == 'lizard_actions':
         rows = gesture_baseline(family, registry_entries, {35, 36}, layered=True)
         return runpy.run_path(str(ROOT / 'scripts/prepare-lizard-actions.py'))['prepared'](rows)

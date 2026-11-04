@@ -1,12 +1,22 @@
+# Timber Wolf, sheep, Great Hart and Skeleton actions
+
+Timber Wolf 225, woolly sheep 207 and shorn sheep 223 now distinguish their previously shared Classic attacks, gestures and collapses. They retain the original Third Dawn rigs and recovered animation keys. The fitted default deaths use the same last-ground-plane support as the explicit collapses, and the static corpse keeps the displayed endpoint. The isolated ModernUO trial passed 635 checks, including the shorn body obtained through the server's wool API. The installed client passed 4,704 decoded pose samples and nine decoded death, removal and corpse handoffs.
+
+Great Hart 234 now has a rear-and-side fall and an opposite head-first collapse. The new clips retain the original stag rig, antlers and recovered death under its own clip name. The installed client passed 882 decoded terrain poses and three decoded corpse handoffs. Great Hart and Enraged Hart passed 411 isolated checks, including the previous ground fidget and both collapses.
+
+Unarmed Skeleton 50 and axe Skeleton 56 now have separate attacks, recoils and fidgets. The two new attack donors come from the retained Patchwork Skeleton. All 29 weighted target bones have matching donor tracks. The fit uses world-space rotations relative to each rig's idle, keeping the target's lengths and accounting for the donor's extra neck parent. The fitted clips remain approximations. The axe retains its original rigid grip. The installed client passed 2,928 sampled poses and the prior axe, terrain and corpse checks. The isolated server trial passed 421 checks, including newer packet type 14, subaction 0, variation 0 on body 50. Both clients used the same reach as Classic group 11. The retained overhead and hit clips still show small floor dips in the nominal flat check.
+
+The Hind, Rat and Lizardman release passed the full project regression. The action ledger now routes 5,329 of 6,919 tracked slots (77.0%). The newer Skeleton reach adds one tracked and routed slot. The number of distinct Classic action pairs sharing a motion fell from 908 to 880. The corpse catalogue still covers 324 body keys. The full regression for this release is running.
+
+Dog 217, Black Bear 211 and Cat 201 are next. Their private previews passed 3,479 decoded poses and produced 36 rendered review frames. The Dog and Black Bear retain their recovered attacks and add separate floor-corrected versions of the same motions. The three forms still need the isolated native trial.
+
 # Hind, Rat and armed Lizardman actions
 
 Hind 237 and Rat 238 now distinguish Classic collapse groups 8 and 12. Hind rears and rolls for group 8. Rat uses a low collapse for group 12. The isolated ModernUO trial passed 565 checks across Hind, Enraged Hind and Rat. The active client passed 1,560 decoded poses on flat ground and two finite slopes. The licensed Rat upgrade ships with the client and passed 382 checks in a clean copy.
 
 Lizardman 35 and 36 now distinguish ten Classic groups on the retained Third Dawn spear and mace rigs. The seven fitted clips cover a rear collapse, three attacks, two guard reactions and a raised-weapon fidget. The existing forward collapse, hit and fidget retain their original keys. The new motions use hilt and shaft targets estimated from the Classic views. The arm solver limits reach, with a maximum sampled target adjustment of 0.319 m. The isolated server trial passed 475 checks across both bodies. The installed client passed 1,220 decoded action samples and 588 explicit collapse samples. The original armed corpse gate passed on slopes and stair edges with both weapons and all six body and hue cases.
 
-The previous full regression passed, including 4,096 terrain samples and 2,689 statics in the final world check. This batch reduces distinct Classic action pairs with a shared replacement from 926 to 908. Overall route coverage remains 5,328 of 6,918 slots (77.0%). The corpse catalogue covers 324 body keys. The full regression of the new registry is running.
-
-Timber Wolf, woolly sheep and shorn sheep remain staged. Their fitted motions passed 4,704 decoded pose samples, and the new default deaths passed nine client-side death-to-corpse handoffs over flat and sloped terrain. The three bodies still need the isolated native trial.
+The full project regression passed, including 4,096 terrain samples and 2,689 statics in the final world check. The batch reduced distinct Classic action pairs with a shared replacement from 926 to 908.
 
 The six-facet occurrence census lists 105 unresolved spawn names. An offline probe used `AssemblyHandler.FindTypeByName` from the installed ModernUO server and its configured content assemblies. All five positive controls resolved, and none of the 105 configured names resolved. This is evidence about the current compiled server content. The probe and its assembly hashes are under `work/creatures/spawn-type-probe`.
 

@@ -1,5 +1,7 @@
 extends "res://../scripts/test-spider-mongbat-gestures.gd"
 
+const QuadActions := preload("res://../scripts/test-quadruped-actions.gd")
+
 const TRIAL_FORMS := [
 	[237, "deer_doe", {4: "DeerGroundCheck", 9: "DeerPaw", 10: "Fidget2"}],
 	[234, "deer_stag", {4: "DeerGroundCheck", 9: "Fidget", 10: "Fidget2"}],
@@ -45,7 +47,10 @@ func run() -> void:
 			actor.set_process(false)
 			actor.set_physics_process(false)
 			var source := "res://Art/Creatures/Rat/rat.glb" if rat_only else "res://local-art/creatures/%s-%s.gltf" % [form[1], treatment]
-			check_tracks(actor.animator, source)
+			if row.get("classic_gesture_batch") == "hart_deaths":
+				QuadActions.check_earlier_keys(actor.animator, source)
+			else:
+				check_tracks(actor.animator, source)
 			for tilt: Vector3 in [Vector3.ZERO, Vector3(0.08, 0.0, -0.08), Vector3(-0.09, 0.0, 0.11)]:
 				deck.rotation = tilt
 				await physics_frame

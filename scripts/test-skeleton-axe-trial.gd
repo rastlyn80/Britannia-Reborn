@@ -13,7 +13,11 @@ func run() -> void:
 	for treatment in ["original", "rounded", "modern"]:
 		var path := "res://local-art/creatures/skeleton-56-axe-trial-%s.scn" % treatment
 		if active:
-			assert(original.assets[treatment] == path and original.authored_action_scene_sha256[treatment] == FileAccess.get_sha256(path))
+			if original.get("classic_gesture_batch") == "skeleton_actions":
+				assert(original.classic_gesture_base_assets[treatment] == path)
+				assert(original.authored_action_scene_sha256[treatment] == FileAccess.get_sha256(original.assets[treatment]))
+			else:
+				assert(original.assets[treatment] == path and original.authored_action_scene_sha256[treatment] == FileAccess.get_sha256(path))
 		else:
 			trial.assets[treatment] = path
 	trial.classic_action_categories = trial.get("classic_action_categories", {}).merged({"11": "AxeReach"}, true)
