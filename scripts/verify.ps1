@@ -304,6 +304,10 @@ if (Test-Path "$root/Viewer/Art/Creatures/Eagle/eagle.glb") {
 if (Test-Path "$root/Viewer/Art/Creatures/Rabbit/rabbit.glb") {
   & python -B "$root/scripts/test-rabbit-distribution.py"
   if ($LASTEXITCODE) {throw 'Public rabbit skins, source hop, alpha/normal maps and static corpse distribution failed'}
+ if (Test-Path "$root/Viewer/Art/Creatures/Rabbit/distinct-actions.res") {
+  & python -B "$root/scripts/prepare-rabbit-distinct-actions.py" --check-public
+  if ($LASTEXITCODE) {throw 'Public rabbit distinct action and corpse evidence failed'}
+ }
 }
 if (Test-Path "$root/Viewer/Art/Creatures/Wisp/wisp.scn") {
   & python -B "$root/scripts/test-wisp-distribution.py"

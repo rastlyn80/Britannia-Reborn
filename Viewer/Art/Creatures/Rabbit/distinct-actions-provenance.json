@@ -1,0 +1,9 @@
+{
+  "license": "GPL-3.0-or-later authored animations on the retained CC0-1.0 rabbit rig",
+  "source": "rabbit.glb",
+  "source_sha256": "ad5bf072996028713b2ad092bd04ff42d90f536bd7dc5bb0ab701c83d59866a4",
+  "animation_library_sha256": "121b87ab9bf869bbe6b83b2473c6621408b2011502441bfad30288b3603eaf8f",
+  "native_report_sha256": "bd6bff5d364a760eb5140f30724474c8f53287a98a9432bb6e99856bf2bd7884",
+  "recipe_sha256": "734ad931550ff24b75639073d35b33094075eabb4ccd92c17a7fd1130c73cb9d",
+  "scope": "Three authored animation clips. No proprietary sprites, meshes or motion keys are included."
+}

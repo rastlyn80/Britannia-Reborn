@@ -1,6 +1,7 @@
 extends "res://../scripts/test-spider-mongbat-gestures.gd"
 
 const HARPY_VISUAL := "res://Presentation/SourceHarpyWingbeatVisual.gd"
+const Exact := preload("res://../scripts/test-quadruped-actions.gd")
 const GESTURES := {30: "Wingbeat", 47: "TrunkBend"}
 
 func run() -> void:
@@ -24,6 +25,9 @@ func run() -> void:
 		for treatment in ["original", "rounded", "modern"]:
 			var path := "res://local-art/creatures/mul-gesture-%d-%s.scn" % [body, treatment]
 			if active:
+				if base.get("classic_gesture_batch", "") == "pig_reaper_harpy_actions":
+					assert(base.classic_gesture_base_assets[treatment] == path)
+					path = base.assets[treatment]
 				assert(base.assets[treatment] == path and base.authored_action_scene_sha256[treatment] == FileAccess.get_sha256(path))
 			else:
 				trial.assets[treatment] = path
@@ -42,7 +46,11 @@ func run() -> void:
 			actor.set_physics_process(false)
 			actor.apply_identity(body, 0x8035)
 			var base_assets: Dictionary = base.get("classic_gesture_base_assets", {})
-			check_tracks(actor.animator, base_assets.get(treatment, Registry.asset_path(base, treatment)))
+			var source: String = base_assets.get(treatment, Registry.asset_path(base, treatment))
+			if base.get("classic_gesture_batch", "") == "pig_reaper_harpy_actions":
+				Exact.check_earlier_keys(actor.animator, source)
+			else:
+				check_tracks(actor.animator, source)
 			assert(actor.receive_action(game.last_mobile_actions[SERIAL]))
 			assert(actor.current_clip == clip and actor.native_hue == 0x8035)
 			assert(actor.contact.enabled == (body == 47))

@@ -1798,6 +1798,15 @@
               "duration": 1.2,
               "loop": false,
               "origin": "Authored Alert category on the original CC0 rig; no captured or original UO choreography claim"
+            },
+            "RabbitLunge": {
+              "authored": true
+            },
+            "RabbitEarCheck": {
+              "authored": true
+            },
+            "Death2": {
+              "authored": true
             }
           }
         }
@@ -1813,7 +1822,10 @@
         "Hit": "Authored Hit category on the original CC0 rig; no captured or original UO choreography claim",
         "Eat": "Authored Eat category on the original CC0 rig; no captured or original UO choreography claim",
         "Fidget": "Authored Fidget category on the original CC0 rig; no captured or original UO choreography claim",
-        "Alert": "Authored Alert category on the original CC0 rig; no captured or original UO choreography claim"
+        "Alert": "Authored Alert category on the original CC0 rig; no captured or original UO choreography claim",
+        "RabbitLunge": "Authored short lunge on the licensed source rig",
+        "RabbitEarCheck": "Authored head turn and asymmetric ear movement",
+        "Death2": "Authored side collapse on the licensed body and fur skins"
       },
       "loop_categories": [
         "Idle",
@@ -1867,7 +1879,68 @@
       "recipe_sha256": "06980a0aaf87d681c2e3aeeada2ae03408708768722d5876287a3c4501dfe49e",
       "gait_recipe_sha256": "4ea3baebc6541b32d502b7de504af46a0c18b5ea926ba642837b83ba53dc99dd",
       "source_pin_sha256": "7fe3a7df72d7085418d76f00f6dc46d7b9b6a5b02a5093b7ba8ec4596eb503c3",
-      "native_validation": "Actual isolated two-client JackRabbit and Rabbit constructors, hues/movement/actions/hurt/death and static corpse; repeat on installed public route"
+      "native_validation": "Actual isolated two-client JackRabbit and Rabbit constructors, hues/movement/actions/hurt/death and static corpse; repeat on installed public route",
+      "additional_animation_library": "res://Art/Creatures/Rabbit/distinct-actions.res",
+      "classic_action_categories": {
+        "5": "Attack",
+        "6": "RabbitLunge",
+        "8": "Death",
+        "9": "Fidget",
+        "10": "RabbitEarCheck",
+        "12": "Death2"
+      },
+      "classic_motion_references": {
+        "5": {
+          "body": 205,
+          "group": 5,
+          "archive": "anim.mul",
+          "graphic": 205,
+          "frames": 5,
+          "directional_payload_sha256": "1f6fc9efdddad2ab21811e94d3abe1240906d9e64e6294fd028e7f43c821ff70"
+        },
+        "6": {
+          "body": 205,
+          "group": 6,
+          "archive": "anim.mul",
+          "graphic": 205,
+          "frames": 5,
+          "directional_payload_sha256": "9752b20744857b92f1d7108b5cf4031f9301e2b4b5beebaa43489f7d343b5aa2"
+        },
+        "8": {
+          "body": 205,
+          "group": 8,
+          "archive": "anim.mul",
+          "graphic": 205,
+          "frames": 6,
+          "directional_payload_sha256": "3cc523b5ae617df7a26d708956ff4c2fa61b3a902d27fcfa09a6f2af8cddbbe2"
+        },
+        "9": {
+          "body": 205,
+          "group": 9,
+          "archive": "anim.mul",
+          "graphic": 205,
+          "frames": 5,
+          "directional_payload_sha256": "bcb689b81bb59528f2a229c94642bc0407d4b32e27d34e31b376cd7fd009e0a9"
+        },
+        "10": {
+          "body": 205,
+          "group": 10,
+          "archive": "anim.mul",
+          "graphic": 205,
+          "frames": 3,
+          "directional_payload_sha256": "d8f382688c24a2425da9a6d1ee44fce705d23d5d6c73b2bb7dcbb03bee4c295b"
+        },
+        "12": {
+          "body": 205,
+          "group": 12,
+          "archive": "anim.mul",
+          "graphic": 205,
+          "frames": 6,
+          "directional_payload_sha256": "f6290c0f28fa14cfaed365d83f442915c1adb6bc8f09a40130c2fbc12d5d1e21"
+        }
+      },
+      "presentation_script": "res://Presentation/RabbitActionsVisual.gd",
+      "presentation_script_sha256": "598778fc9934e8afa525415ffb69361a3ca2051a735a9f64d4e481c8a373c822"
     },
     {
       "kind": "wisp",

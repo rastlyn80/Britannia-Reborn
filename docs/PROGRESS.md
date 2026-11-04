@@ -1,3 +1,15 @@
+# Pig, Reaper, Rabbit and Harpy actions
+
+Pig 203 now has separate strikes, fidgets and collapses on its original Third Dawn rig. The fitted motions reuse the Boar's leg controls, recalculated for the Pig's own stance and proportions. Reaper 47 keeps its original rooted behavior and TrunkBend. Its new branch attacks, recoils, crown movement and alternate collapse approximate the Classic views. The corrected recovered strike rotates one leaf at its original pivot to clear the floor, keeping the trunk planted and the original keys available.
+
+Harpy 30 now uses its recovered Third Dawn airborne fall. All 31 source motion tracks matched its 34-joint rig. The imported animation has 56 tracks and lasts 1.82 seconds. A sampled vertical correction keeps the wings clear. The client preserves the original Wingbeat and now plays it for the checked newer type-14 packet as well as Classic group 11. The grounded variants remain distinct. The isolated ModernUO trial passed 741 checks across Pig, Reaper and Harpy. It covered Reaper's native movement refusal, the controlled type-14 and explicit airborne collapse packets, and native grounded deaths. Client tests cover the death packet arriving during flight. Autonomous flight into death remains open.
+
+Those three bodies passed 7,776 decoded client poses, nine static corpse hue cases, fifteen decoded death and removal handoffs and six explicit airborne collapses across 861 terrain samples. Existing TrunkBend and Wingbeat checks passed on the new routes. The static corpse catalogue covers 324 bodies.
+
+Rabbit and JackRabbit share body 205 and now have a distinct lunge, ear check and second collapse. Their existing CC0 model, eight-weight body and fur skins, original keys and four-paw support stay in place. The three authored motions ship in a separate GPL-3.0-or-later animation library. The isolated candidate passed 407 checks across both constructors and two clients. The installed build passed 291 isolated native checks, 288 checks in a clean copy and six decoded corpse handoffs across 246 terrain poses.
+
+Generic routing is 5,335 of 6,925 tracked slots (77.0%). Harpy's type-14 Wingbeat added one routed slot. The count of distinct Classic action pairs sharing a replacement dropped from 803 to 777. The full project regression for this release is running.
+
 # Grey Wolf, Grizzly Bear, Boar and Goat actions
 
 Both Grey Wolf bodies (25 and 27) keep their Grey Wolf mesh, materials and native hue. The installed Classic body and corpse definitions point to Timber Wolf 225. Its rig matches all 32 Grey Wolf joint names, parents and rest transforms. The client uses four of the already fitted Timber Wolf clips and retains the Grey Wolf source keys. A vertical correction to the recovered strike resolves about 108 mm of floor penetration in the nominal flat sample. The retained fidget can still dip about 10 mm.
@@ -6,7 +18,7 @@ Grizzly Bear 212, Boar 290 and Goat 209 now have distinct Classic strikes, fidge
 
 The isolated ModernUO run passed 1,047 checks across both clients and all five native bodies. It used each real constructor, including both random Grey Wolf outcomes, and verified controlled action requests, native movement, raw hues, death packets and replicated corpses. The active client passed 8,019 decoded poses, fifteen static corpse hue cases and fifteen decoded death and removal handoffs across 615 terrain samples. The catalogue still covers 324 static corpse body keys.
 
-This release reduced generic Classic action pairs sharing a replacement from 818 to 803. Generic routing remains at 5,334 of 6,924 tracked slots (77.0%). The combined full project regression is running.
+This release reduced generic Classic action pairs sharing a replacement from 818 to 803. It routed 5,334 of 6,924 tracked slots (77.0%). The combined project regression for this batch and the cattle loading fix passed, including the 4,096 terrain and 2,689 static samples in the world check.
 
 # Cow and Bull actions
 

@@ -68,6 +68,9 @@ BATCHES = {
                               ('test-spider-mongbat-actions.gd', 'test-spider-mongbat-landings.gd')),
     'grazers_grizzly_actions': ((25, 27, 212, 290, 209), 'QuadrupedActionsLive.gd',
                                ('test-grazers-grizzly-actions.gd', 'test-grazers-grizzly-landings.gd')),
+    'pig_reaper_harpy_actions': ((203, 47, 30), 'PigReaperHarpyActionsLive.gd',
+                                ('test-pig-reaper-harpy-actions.gd', 'test-pig-reaper-harpy-landings.gd')),
+    'rabbit_distinct_actions': ((205,), 'QuadrupedActionsLive.gd', ()),
     'skeleton_actions': ((50, 56), 'PreparedClassicActionsLive.gd', ('test-skeleton-actions.gd',)),
 }
 PREDECESSORS = {
@@ -84,6 +87,7 @@ PREDECESSORS = {
     'field_fauna': ('ratman_hunch',),
     'spider_mongbat_actions': ('mongbat_fidgets', 'spider_mongbat'),
     'grazers_grizzly_actions': (),
+    'pig_reaper_harpy_actions': ('reaper_harpy',),
     'skeleton_actions': ('skeleton_axe',),
 }
 
@@ -198,7 +202,7 @@ def checked(index, active, batch):
         raise ValueError('Classic gesture native evidence does not match this batch')
     if wrapper in ('PreparedClassicActionsLive.gd', 'OccurrenceDeathsLive.gd', 'FieldDeathsLive.gd',
                    'LizardActionsLive.gd', 'QuadrupedActionsLive.gd', 'CatActionsLive.gd', 'TrollActionsLive.gd',
-                   'FieldFaunaLive.gd', 'SpiderMongbatActionsLive.gd') and (
+                   'FieldFaunaLive.gd', 'SpiderMongbatActionsLive.gd', 'PigReaperHarpyActionsLive.gd') and (
             report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
         raise ValueError('Supplementary action trial used a different prepared fixture loader')
     if batch == 'occurrence_deaths' and (
@@ -211,7 +215,7 @@ def checked(index, active, batch):
             or report['supplemental_sha256'] != sha(ROOT / 'Viewer/Network/PreparedClassicActionsLive.gd')):
         raise ValueError('The field collapse renderer or explicit packet test changed')
     if batch in ('lizard_actions', 'quadruped_actions', 'hart_deaths', 'dog_bear_actions', 'cat_actions',
-                 'troll_actions', 'field_fauna', 'grazers_grizzly_actions'):
+                 'troll_actions', 'field_fauna', 'grazers_grizzly_actions', 'rabbit_distinct_actions'):
         visual, base_key, base_visual = (
             ('SourceLizardActionsVisual', 'armed_renderer_sha256', 'SourceArmedLizardmanVisual')
             if batch in ('lizard_actions', 'troll_actions') else
@@ -226,13 +230,15 @@ def checked(index, active, batch):
             paths['explicit_collapse_test_sha256'] = 'Network/OccurrenceDeathsLive.gd'
         if any(report[key] != sha(ROOT / 'Viewer' / path) for key, path in paths.items()):
             raise ValueError('The action renderer or explicit packet test changed')
-    if batch == 'spider_mongbat_actions':
+    if batch in ('spider_mongbat_actions', 'pig_reaper_harpy_actions'):
         renderers = ('GiantSpiderActionsVisual', 'MongbatActionsVisual', 'SourceQuadrupedCollapseVisual',
                      'FieldClassicCollapseVisual', 'SourceGroundedGestureVisual', 'SourceGroundLookup')
+        if batch == 'pig_reaper_harpy_actions':
+            renderers += ('HarpyActionsVisual',)
         expected = {name: sha(ROOT / f'Viewer/Presentation/{name}.gd') for name in renderers}
         if (report['collapse_renderers'] != expected
                 or report['supplemental_sha256'] != sha(ROOT / 'Viewer/Network/PreparedClassicActionsLive.gd')):
-            raise ValueError('Spider or Mongbat collapse evidence does not match its renderers')
+            raise ValueError('Airborne or grounded collapse evidence does not match its renderers')
 
     by_body = {row['bodies'][0]['body']: row for row in prepared}
     if batch == 'dragon_daemon':
@@ -263,8 +269,11 @@ def checked(index, active, batch):
             raise ValueError(f'Missing original body or expected native death behaviour for {body}')
         if batch == 'quadruped_actions' and witness['native_state'] != ('shorn' if body == 223 else 'constructor'):
             raise ValueError(f'Missing native coat or constructor state for body {body}')
+        if batch == 'pig_reaper_harpy_actions' and body == 47 and witness['movement'] != 'Native AI refuses movement':
+            raise ValueError('Reaper fixture did not verify the native rooted state')
         if batch == 'troll_actions' or (batch, body) in (
-                ('skeleton_actions', 50), ('field_fauna', 42), ('spider_mongbat_actions', 39)):
+                ('skeleton_actions', 50), ('field_fauna', 42), ('spider_mongbat_actions', 39),
+                ('pig_reaper_harpy_actions', 30)):
             expected_new_clip = package['new_action_categories']['14']
             reach, = (action for action in witness['actions'] if action['requested'] == -5)
             if any(reach[client + '_clip'] != expected_new_clip or reach[client + '_packet']['protocol'] != 'new'
@@ -282,7 +291,7 @@ def checked(index, active, batch):
                 raise ValueError(f'Missing Classic gesture evidence for body {body}, slot {slot}')
             if (batch in ('lizard_actions', 'quadruped_actions', 'hart_deaths', 'dog_bear_actions', 'cat_actions',
                           'skeleton_actions', 'troll_actions', 'field_fauna', 'spider_mongbat_actions',
-                          'grazers_grizzly_actions') or
+                          'grazers_grizzly_actions', 'pig_reaper_harpy_actions', 'rabbit_distinct_actions') or
                     slot in package.get('native_extra_classic_actions', [])) and any(
                     actions[0][key]['protocol'] != 'classic' or actions[0][key]['action'] != slot
                     for key in ('owner_packet', 'observer_packet')):
@@ -386,9 +395,9 @@ def main():
     live = ROOT / 'outputs/creatures' / batch / 'live.json'
     previous = INDEX.read_bytes()
     index = read(INDEX)
-    if batch == 'cat_actions':
+    if batch in ('cat_actions', 'rabbit_distinct_actions'):
         if args.activate or args.check_active:
-            parser.error('Use prepare-cat-actions.py for public Cat installation and verification')
+            parser.error('Use the public animal preparation recipe for installation and verification')
         index = read(ROOT / 'Viewer/Art/Creatures/index.json')
     baseline, rows = checked(index, args.check_active, batch)
     if args.activate:

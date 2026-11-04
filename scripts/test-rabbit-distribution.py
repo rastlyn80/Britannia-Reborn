@@ -1,10 +1,15 @@
 """Exercise the shipped rabbit in a clean source-only project."""
-import os,re,shutil,subprocess,uuid
+import json,os,re,shutil,subprocess,uuid
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 def main():
     target=(ROOT/'work/creatures/rabbit-distribution'/uuid.uuid4().hex).resolve();assert target.is_relative_to((ROOT/'work/creatures/rabbit-distribution').resolve());target.mkdir(parents=True)
     pending=['Presentation/RabbitDistributionTests.gd'];copied=set();pattern=re.compile(r'(?:preload\s*\(|extends\s+|#include\s+)["\']res://([^"\']+)')
+    index=json.loads((ROOT/'Viewer/Art/Creatures/index.json').read_text(encoding='utf-8-sig'))
+    rabbit,=(row for row in index['entries'] if row['kind']=='rabbit')
+    if rabbit.get('additional_animation_library'):
+        assert rabbit['presentation_script']=='res://Presentation/RabbitActionsVisual.gd'
+        pending.append('Presentation/RabbitActionsVisual.gd')
     while pending:
         relative=pending.pop()
         if relative in copied:continue

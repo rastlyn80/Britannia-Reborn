@@ -42,6 +42,11 @@ func run() -> void:
 			if clip in ["Run","Walk","Jump"] and bounds.position.y>.025:airborne+=1
 			samples+=1
 	check(samples==record.stats.modern.clips.size()*9 and airborne>=6,"All shipped categories and genuine airborne phases measured")
+	if record.has("additional_animation_library"):
+		var routes := {6: "RabbitLunge", 10: "RabbitEarCheck", 12: "Death2"}
+		for group: int in routes:
+			check(actor.receive_native_action({"protocol": "classic", "action": group, "frames": 5})
+				and visual.current_clip == routes[group], "Public standalone rabbit plays its distinct Classic action")
 	for speed in [1.8,6.8]:
 		visual.dead=false;visual.action_remaining=0.;actor.animate(true,0.,1./60.,speed);var clip: String="Walk" if speed<3.6 else "Run"
 		check(visual.current_clip==clip and visual.animator.get_animation(clip).loop_mode==Animation.LOOP_LINEAR,"Standalone avatar selects looping calibrated gait")
