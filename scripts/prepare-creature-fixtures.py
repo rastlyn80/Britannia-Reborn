@@ -29,6 +29,41 @@ SOURCE_COVERAGE_CLASSES = {
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'troll_gestures':
+        index = json.loads((ROOT / 'Viewer/local-art/creatures/accepted-index.json').read_text(encoding='utf-8'))
+        ledger = json.loads((ROOT / 'outputs/creatures/actions.json').read_text(encoding='utf-8'))
+        recipes = {
+            53: ('Troll', 'troll-53-armed-trial', '801f216ae2248f69fec6ebe15b59d50d479a61d2903f67577e86e784870d975d'),
+            54: ('Troll', 'trolls_troll-slot11-trial', 'ed953fa26f763e431bc68a8c3421a93ddf609f8207e93c83074f9014c548bb3c'),
+            55: ('FrostTroll', 'troll-55-armed-trial', '38dfb903a8a9f0603d50c2be76621aebb2d5d24bda5daaf4524931780837312f'),
+        }
+        renderer = 'Presentation/SourceArmedLizardmanVisual.gd'
+        rows, classes = [], {}
+        for body, (native_class, stem, digest) in recipes.items():
+            base, = (row for row in index['entries'] if row['status'] == 'validated'
+                     and any(identity['body'] == body for identity in row['bodies']))
+            identity, = (identity for identity in base['bodies'] if identity['body'] == body)
+            source, = (row for row in ledger['original_mul_group_candidates']
+                       if (row['body'], row['group']) == (body, 11))
+            directions = source['directions']
+            payload = ''.join(item['payload_sha256'] for item in directions).encode('ascii')
+            assert source['archive'] == 'anim.mul' and not source['mobtype_prefers_uop']
+            assert [item['direction'] for item in directions] == list(range(5))
+            assert hashlib.sha256(payload).hexdigest() == digest
+            assets = {name: f'res://local-art/creatures/{stem}'
+                      + ('' if name == 'modern' else f'-{name}') + '.scn'
+                      for name in ('original', 'rounded', 'modern')}
+            rows.append(dict(base, status='prepared', family=family, bodies=[identity], assets=assets,
+                             authored_action_scene_sha256={name: sha(ROOT / 'Viewer' / path.removeprefix('res://'))
+                                                           for name, path in assets.items()},
+                             presentation_script=f'res://{renderer}',
+                             presentation_script_sha256=sha(ROOT / 'Viewer' / renderer),
+                             authored_action_reference=digest,
+                             classic_action_categories=base.get('classic_action_categories', {}) | {'11': 'KneelingSwing'},
+                             authored_replacements=base.get('authored_replacements', {}) | {
+                                 'KneelingSwing': 'Authored kneeling swing from decoded Classic slot 11 frames'}))
+            classes[body] = [native_class]
+        return rows, classes
     if family == 'classic_gestures':
         manifest = json.loads((ROOT / 'scripts/classic-gesture-inputs.json').read_text(encoding='utf-8'))
         if registry_entries is None:

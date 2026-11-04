@@ -179,12 +179,14 @@ func run() -> void:
 	material.albedo_texture = ImageTexture.create_from_image(atlas)
 	material.roughness = 0.84
 	for body in FORMS:
-		bake(body, shapes, material)
+		for treatment in ["original", "rounded", "modern"]:
+			bake(body, treatment, shapes, material)
 	quit()
 
-func bake(body: int, shapes: Dictionary, material: Material) -> void:
+func bake(body: int, treatment: String, shapes: Dictionary, material: Material) -> void:
 	var form: Array = FORMS[body]
-	var path := "res://local-art/creatures/%s-slot11-trial.scn" % form[0]
+	var suffix := "" if treatment == "modern" else "-" + treatment
+	var path := "res://local-art/creatures/%s-slot11-trial%s.scn" % [form[0], suffix]
 	var model := (load(path) as PackedScene).instantiate()
 	root.add_child(model)
 	var rig := model.find_children("*", "Skeleton3D", true, false)[0] as Skeleton3D
@@ -218,7 +220,7 @@ func bake(body: int, shapes: Dictionary, material: Material) -> void:
 	bake_death_grip(player, rig, joint, mesh)
 	var scene := PackedScene.new()
 	assert(scene.pack(model) == OK)
-	assert(ResourceSaver.save(scene, "res://local-art/creatures/troll-%d-armed-trial.scn" % body,
+	assert(ResourceSaver.save(scene, "res://local-art/creatures/troll-%d-armed-trial%s.scn" % [body, suffix],
 		ResourceSaver.FLAG_COMPRESS) == OK)
 	print("Troll ", body, " uses source grip socket and ", mesh.get_surface_count(), " weapon surfaces")
 	model.free()

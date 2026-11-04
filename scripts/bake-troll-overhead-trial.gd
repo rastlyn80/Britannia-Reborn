@@ -81,12 +81,13 @@ func shape_pose(rig: Skeleton3D, mesh: MeshInstance3D, axes: Basis, depth: float
 		rig.set_bone_global_pose(hips, pose)
 
 func run() -> void:
-	bake("trolls_troll")
-	bake("trolls_troll_frost")
+	for treatment in ["original", "rounded", "modern"]:
+		bake("trolls_troll", treatment)
+		bake("trolls_troll_frost", treatment)
 	quit()
 
-func bake(kind: String) -> void:
-	var path := "res://local-art/creatures/%s-modern.gltf" % kind
+func bake(kind: String, treatment: String) -> void:
+	var path := "res://local-art/creatures/%s-%s.gltf" % [kind, treatment]
 	var model := (load(path) as PackedScene).instantiate()
 	root.add_child(model)
 	var player := model.find_children("*", "AnimationPlayer", true, false)[0] as AnimationPlayer
@@ -140,7 +141,8 @@ func bake(kind: String) -> void:
 	player.get_animation_library("").add_animation("KneelingSwing", motion)
 	var scene := PackedScene.new()
 	assert(scene.pack(model) == OK)
-	var output := "res://local-art/creatures/%s-slot11-trial.scn" % kind
+	var suffix := "" if treatment == "modern" else "-" + treatment
+	var output := "res://local-art/creatures/%s-slot11-trial%s.scn" % [kind, suffix]
 	assert(ResourceSaver.save(scene, output, ResourceSaver.FLAG_COMPRESS) == OK)
 	print(kind, ": 121 kneeling swing keys on the original rig")
 	model.free()

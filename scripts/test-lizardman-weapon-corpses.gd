@@ -169,7 +169,9 @@ func check_handoff(body: int, form: String, axis: Vector3, slope: float, step_ed
 	var rig := weapon.get_parent() as Skeleton3D
 	rig.force_update_all_bone_transforms()
 	var expected := rig.global_transform * rig.get_bone_global_pose(weapon.skin.get_bind_bone(0))
-	var source: PackedVector3Array = weapon.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+	var source_surfaces: Array[PackedVector3Array] = []
+	for index in weapon.mesh.get_surface_count():
+		source_surfaces.append(weapon.mesh.surface_get_arrays(index)[Mesh.ARRAY_VERTEX])
 
 	var removal := PackedByteArray([0x1d])
 	removal.append_array(Wire.uint_be(killed, 4))
@@ -183,14 +185,18 @@ func check_handoff(body: int, form: String, axis: Vector3, slope: float, step_ed
 	var cadaver := holder.get_node("CorpseVisual") as Node3D
 	assert(cadaver.get_meta("corpse_body") == body and cadaver.get_meta("native_hue") == 0x8035)
 	var frozen := cadaver.get_node(form) as MeshInstance3D
-	var vertices: PackedVector3Array = frozen.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
 	var bounds: AABB = cadaver.transform * cadaver.get_meta("corpse_bounds")
 	var pick := holder.get_node("PickBody/PickShape") as CollisionShape3D
-	assert(pick.position.is_equal_approx(bounds.get_center()) and source.size() == vertices.size())
-	for i in vertices.size():
-		var point := frozen.global_transform * vertices[i]
-		assert(point.distance_to(expected * source[i]) < 0.0001)
-		assert(bounds.grow(0.0001).has_point(holder.to_local(point)))
+	assert(pick.position.is_equal_approx(bounds.get_center()))
+	assert(frozen.mesh.get_surface_count() == source_surfaces.size())
+	for surface_index in source_surfaces.size():
+		var vertices: PackedVector3Array = frozen.mesh.surface_get_arrays(surface_index)[Mesh.ARRAY_VERTEX]
+		var source := source_surfaces[surface_index]
+		assert(source.size() == vertices.size())
+		for i in vertices.size():
+			var point := frozen.global_transform * vertices[i]
+			assert(point.distance_to(expected * source[i]) < 0.0001)
+			assert(bounds.grow(0.0001).has_point(holder.to_local(point)))
 	assert(items.corpse_snapshots.has(serial))
 	print(body, " step " if stepped else " slope ", axis, " ", slope, ": 41 collapse poses clear ground and corpse preserves world-space weapon pose")
 	arena.queue_free()

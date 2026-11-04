@@ -1,12 +1,10 @@
-extends SceneTree
+extends "res://../scripts/test-lizardman-weapon-corpses.gd"
 
-const Registry := preload("res://Presentation/CreatureRegistry.gd")
-const Corpses := preload("res://Presentation/CorpseModels.gd")
 const Ground := preload("res://Presentation/SourceGroundLookup.gd")
 const FORMS := {53: "Axe", 55: "FrostClub"}
 
 func _initialize() -> void:
-	create_timer(25.0).timeout.connect(func(): quit(2))
+	create_timer(45.0).timeout.connect(func(): quit(2))
 	call_deferred("run")
 
 func run() -> void:
@@ -15,6 +13,7 @@ func run() -> void:
 		var name: String = FORMS[body]
 		var record := Registry.entry(body).duplicate(true)
 		record.assets = {"modern": "res://local-art/creatures/troll-%d-armed-trial.scn" % body}
+		record.presentation_script = "res://Presentation/SourceArmedLizardmanVisual.gd"
 		Registry.entries[body] = record
 		var actor := Registry.create(body)
 		root.add_child(actor)
@@ -25,6 +24,11 @@ func run() -> void:
 		actor.free()
 		for hue in [0, 53, 0x8035]:
 			check_corpse(body, hue, name)
+		for axis in [Vector3.RIGHT, Vector3.FORWARD]:
+			for slope in [-0.14, 0.14]:
+				await check_handoff(body, name, axis, slope)
+		await check_handoff(body, name, Vector3.RIGHT, 0.0, 0.35)
+		await check_handoff(body, name, Vector3.RIGHT, 0.0, -0.35)
 	assert(Registry.entry(54) == unarmed)
 	quit()
 
