@@ -1,3 +1,11 @@
+# Ophidian warrior bardiche and Classic action
+
+Body 86 uses the exact named `Weapon_Ophidian_Warrior_Bardiche_LOD2.grn` and `weapons_512b.tga` from the original Third Dawn archive. The 54-triangle prop follows the original right grasp in the recovered body motions and the authored `BardicheDip`. Direct `anim.mul` group 11 supplies five reference frames in each of five directions. The new route preserves the recovered body animation keys and adds a visual weapon without changing server equipment.
+
+Three client treatments pass decoded group 11 and retain the grip through nine motions. Three corpse hues preserve the final weapon geometry. The runtime collapse clears flat terrain, four slopes and two 22 cm steps in 41 sampled poses each, and transfers the exact pose to the static corpse. The rounded and modern treatments still show one sampled shaft/body crossing during the collapse. Before terrain correction the weapon can dip 11.3 mm below the flat plane. The gate checks the corrected runtime terrain and keeps the raw-pose limits visible. The isolated prepared ModernUO trial passed 271 checks across two clients and both native classes, `OphidianKnight` and `OphidianWarrior`. The activated client check passed. The ledger now routes 5,210 of 6,840 slots (76.2%), with 42 of the 1,630 unresolved slots backed by original frames.
+
+Prepare with `python -B scripts/prepare-ophidian-bardiche.py`, then bake with Godot `--headless --path Viewer --script res://../scripts/bake-ophidian-bardiche.gd`. Native command `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily ophidian_bardiche`. Active check `python -B scripts/accept-classic-gestures.py --batch ophidian_bardiche --check-active`.
+
 # Giant Scorpion and Imp Classic actions
 
 Giant Scorpion 48 and Imp 74 are active. The Scorpion retimes its recovered claw and tail tracks independently and holds its support joints at the source starting pose. The tail dips 209–212 mm and recovers while the claws are still drawn back 1.00–1.02 m and 363–369 mm. The Imp's `anim2.mul` redirect to graphic 18 has identical ordered pixels and placement across all five directions in slots 11, 17 and 18, despite distinct encoded payloads. A shared wing twitch on the recovered idle moves the measured wing joint about 50 mm. Both bodies restore their original atlas cutouts.

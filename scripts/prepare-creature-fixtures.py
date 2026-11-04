@@ -81,6 +81,51 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'ophidian_bardiche':
+        body = 86
+        base, = (row for row in gesture_baseline(family, registry_entries, {body})
+                 if row['status'] == 'validated' and row['kind'] == 'ophidians_ophidian_warrior'
+                 and [identity['body'] for identity in row['bodies']] == [body])
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-ophidian-bardiche.py'))
+        recipe['checked_members']()
+        private = recipe['OUTPUT']
+        bake = json.loads((private / 'bake.json').read_text(encoding='utf-8'))
+        source = json.loads((private / 'source.json').read_text(encoding='utf-8'))
+        assert (source['member'], source['sha256'], source['atlas'], source['atlas_sha256']) == (
+            recipe['WEAPON'], recipe['WEAPON_SHA'], recipe['ATLAS'], recipe['ATLAS_SHA'])
+        for key, script in (('recipe', 'bake-ophidian-bardiche.gd'), ('arm', 'bake-skeleton-axe-trial.gd'),
+                            ('weapon', 'bake-troll-weapons-trial.gd'), ('clearance', 'ophidian-bardiche-clearance.gd')):
+            assert bake[key] == sha(ROOT / 'scripts' / script)
+        assert bake['corners'] == source['corners_sha256'] == sha(private / 'corners.json')
+        assert bake['atlas'] == source['png_sha256'] == sha(private / 'atlas.png')
+        assets, scenes = {}, {}
+        art = ROOT / 'Viewer/local-art/creatures'
+        for treatment in ('original', 'rounded', 'modern'):
+            file = f'ophidian-86-bardiche-{treatment}.scn'
+            base_sha = sha(art / f'{base["kind"]}-{treatment}.gltf')
+            scenes[treatment] = sha(art / file)
+            assert base_sha == base['asset_sha256'][treatment]
+            assert bake['treatments'][treatment] == {'source': base_sha, 'scene': scenes[treatment]}
+            assets[treatment] = f'res://local-art/creatures/{file}'
+        ledger = json.loads((ROOT / 'outputs/creatures/actions.json').read_text(encoding='utf-8'))
+        record, = (item for item in ledger['original_mul_group_candidates']
+                   if (item['body'], item['group']) == (body, 11) and 'matching_classic_route' in item)
+        assert record['archive'] == 'anim.mul' and record['graphic'] == body and not record['mobtype_prefers_uop']
+        assert [entry['direction'] for entry in record['directions']] == list(range(5))
+        assert all(entry['frames'] == 5 for entry in record['directions'])
+        digest = '9f4cfd4af5db47a293a738ae7e70615f3f373976b4d2ffcc2f287cc10f3073aa'
+        hashes = ''.join(entry['payload_sha256'] for entry in record['directions']).encode('ascii')
+        assert hashlib.sha256(hashes).hexdigest() == digest
+        visual = 'Presentation/SourceArmedLizardmanVisual.gd'
+        row = dict(base, status='prepared', family=family, assets=assets, authored_action_scene_sha256=scenes,
+                   authored_action_reference=dict(body=body, group=11, archive='anim.mul', frames=5,
+                                                  directional_payload_sha256=digest),
+                   classic_action_categories=base.get('classic_action_categories', {}) | {'11': 'BardicheDip'},
+                   authored_replacements=base.get('authored_replacements', {}) | {
+                       'BardicheDip': 'Authored torso and tail dip with the recovered warrior bardiche on the original grasp'},
+                   source_body_prop=source,
+                   presentation_script=f'res://{visual}', presentation_script_sha256=sha(ROOT / 'Viewer' / visual))
+        return [row], {body: ['OphidianKnight', 'OphidianWarrior']}
     if family == 'scorpion_imp':
         recipes = {
             48: ('scorpions_giant', 'Fidget', '5967204bd40ddcfb10ac0478bf522eebabe2dd19f1835e823ce40ae7346cb651',

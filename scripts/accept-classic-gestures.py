@@ -29,6 +29,7 @@ BATCHES = {
     'wraith_sway': ((26,), 'PreparedCreatureActionLive.gd', ('test-wraith-gesture.gd',)),
     'gargoyle_classic': ((4,), 'PreparedCreatureActionLive.gd', ('test-gargoyle-classic.gd',)),
     'scorpion_imp': ((48, 74), 'PreparedCreatureActionLive.gd', ('test-scorpion-imp-gestures.gd',)),
+    'ophidian_bardiche': ((86,), 'PreparedCreatureActionLive.gd', ('test-ophidian-bardiche.gd',)),
 }
 
 
