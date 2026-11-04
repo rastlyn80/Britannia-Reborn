@@ -24,6 +24,22 @@ def pinned_bytes(path, digest):
     return data
 
 
+def rigid_mesh_corners(parse, path, digest, vertices, triangles):
+    model = parse(pinned_bytes(path, digest))
+    if (len(model['points']) != vertices or len(model['polygons']) != triangles
+            or model['weights'] or model['textures'] != ['weapons_512b.tga']):
+        raise ValueError(f'Unexpected rigid weapon structure: {path.name}')
+    corners = []
+    for poly, tex in zip(model['polygons'], model['texture_polygons'], strict=True):
+        # Godot front faces are clockwise; the source importer emits glTF winding.
+        for index in (0, 2, 1):
+            position = model['points'][poly[index]]
+            normal = model['normals'][poly[index + 3]]
+            uv = model['uv_sets'][-1][tex[index]][:2]
+            corners.append([*position, *normal, *uv])
+    return corners
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('source', type=Path, help='Local extracted Third Dawn Client/Models directory')
@@ -33,19 +49,7 @@ def main():
     meshes = {}
     for form, (digest, vertices, triangles) in WEAPONS.items():
         name = f'Weapon_Lizard_Man_{form}_Lod2.grn'
-        model = granny['parse'](pinned_bytes(source / 'Others' / name, digest))
-        if (len(model['points']) != vertices or len(model['polygons']) != triangles
-                or model['weights'] or model['textures'] != ['weapons_512b.tga']):
-            raise ValueError(f'Unexpected rigid weapon structure: {name}')
-        corners = []
-        for poly, tex in zip(model['polygons'], model['texture_polygons'], strict=True):
-            # Godot front faces are clockwise; the source importer emits glTF winding.
-            for index in (0, 2, 1):
-                position = model['points'][poly[index]]
-                normal = model['normals'][poly[index + 3]]
-                uv = model['uv_sets'][-1][tex[index]][:2]
-                corners.append([*position, *normal, *uv])
-        meshes[form] = corners
+        meshes[form] = rigid_mesh_corners(granny['parse'], source / 'Others' / name, digest, vertices, triangles)
     OUTPUT.mkdir(parents=True, exist_ok=True)
     (OUTPUT / 'lizardman-weapon-trial.png').write_bytes(atlas)
     (OUTPUT / 'lizardman-weapon-trial.json').write_text(json.dumps(meshes), encoding='utf-8')

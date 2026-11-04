@@ -11,10 +11,31 @@ ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / 'work/creatures/late-client-inputs/troll-action-trial'
 FIDGET2_SHA = '387142caf0dd1af9e1f731948f9438a4bff32ccbaac3d519cf96dc23562d9fb9'
 FORMS = {53: 'trolls_troll', 55: 'trolls_troll_frost'}
+WEAPONS = {
+    'Axe': ('weapon_troll_axe_lod2.grn',
+            '405def8df82f2243554f1064c5f328da93368bb3c16b51571d6649b60830d430', 36, 64),
+    'Club': ('weapon_troll_club_lod2.grn',
+             '1b37f27f702ac642edac0d9bec977a5c2c6c95995040f4bb69d12d84ddcf4903', 34, 88),
+    'Maul': ('weapon_troll_maul_lod2.grn',
+             '2de1f10dd8f0a7aefb1d208dc1571fc7019e15644fdf28e71fd824b0bec3212d', 34, 60),
+    'FrostClub': ('weapon_frost_troll_club_lod2.grn',
+                  'f510fcf50aee1a1ea840ee7d28126b8d8fcf7877d6279e12eca8aca99d2288c2', 50, 96),
+}
 CLIPS = {
     'Idle': 'idle', 'Walk': 'walk', 'Run': 'run', 'Attack': 'attack1',
     'Hit': 'gethit', 'Death': 'die1', 'Fidget': 'fidget', 'Fidget2': 'fidget2',
 }
+
+
+def export_weapons(source, importer):
+    rigid = runpy.run_path(str(ROOT / 'scripts/prepare-lizardman-weapons.py'))
+    atlas = rigid['pinned_bytes'](source / 'Maps/weapons_512b.tga', rigid['ATLAS_SHA256'])
+    meshes = {}
+    for name, (member, digest, vertices, triangles) in WEAPONS.items():
+        meshes[name] = rigid['rigid_mesh_corners'](
+            importer['parse'], source / 'Others' / member, digest, vertices, triangles)
+    (OUTPUT / 'weapon-sources.json').write_text(json.dumps(meshes), encoding='utf-8')
+    (OUTPUT / 'weapon-atlas.png').write_bytes(importer['png_from_tga'](atlas))
 
 
 def main():
@@ -52,6 +73,7 @@ def main():
         fit = report[body]['clips']['Fidget2']
         if fit['matched_tracks'] != 35 or fit['missing']:
             raise ValueError(f'Archived Fidget2 did not fully match Troll body {body}')
+    export_weapons(source, importer)
     (OUTPUT / 'source-proof.json').write_text(json.dumps({'inputs': pins, 'bodies': report}, indent=2) + '\n')
     print('Troll comparison: 35 Fidget2 tracks matched both original 38-joint rigs.')
 
