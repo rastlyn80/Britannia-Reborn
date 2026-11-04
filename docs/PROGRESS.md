@@ -1,3 +1,11 @@
+# Bone Magi and Skeletal Mage staff
+
+Body 148 uses the exact 18-triangle Third Dawn `Weapon_Skeleton_Mage_Staff_LOD2.grn` and `weapons_512b.tga` atlas on the original right grasp. The staff has authored proportions, a closed right-hand grip and a release late in the primary collapse. Its landing remains beside the static corpse. ModernUO constructors and equipment stay authoritative. The Classic group 11 action uses a 0.72-second head check over the recovered idle, based on the five stored directions in `anim2.mul` graphic 23. Group 17 retains the recovered Fidget. The bake preserves existing body motion keys apart from the four right-finger rotation tracks that shape the grip during living clips.
+
+The three treatments passed nine decoded actions and 4,293 independent samples across nine motions, with zero sampled shaft crossings. Seven flat, slope and step handoffs retained the corpse pose and staff. Static snapshots passed at three native hues. The isolated ModernUO trial passed 271 checks across two clients and both native constructors. It exercises explicit action packets, movement, hue and corpse replication. Autonomous spell behavior is separate. The ledger now routes 5,242 of 6,840 slots, with original frames identified for ten unresolved slots.
+
+Run `python -B scripts/prepare-skeletal-mage-staff.py`, then Godot `--headless --path Viewer --script res://../scripts/bake-skeletal-mage-staff.gd`. The native trial is `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily skeletal_mage_staff`. The active gate is `python -B scripts/accept-classic-gestures.py --batch skeletal_mage_staff --check-active`.
+
 # Exact fidgets for Harrower, Giant Black Widow, Mephitis and Doppleganger
 
 Classic group 11 now uses the recovered Fidget on Harrower 146, Giant Black Widow 157, Mephitis 173 and Doppleganger 777. Their `anim2.mul` graphics 22, 1, 2 and 45 have identical registered pixels in groups 11 and 17 in all five stored directions, including frame order and placement. The encoded payloads differ. The recipe pins both source signatures and reuses all twelve existing scene treatments and their materials.

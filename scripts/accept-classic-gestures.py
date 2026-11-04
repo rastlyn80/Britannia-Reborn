@@ -36,6 +36,7 @@ BATCHES = {
     'ophidian_staff': ((85, 87), 'PreparedCreatureActionLive.gd', ('test-ophidian-staff-gestures.gd',)),
     'fidget_aliases_toad': ((67, 80, 149), 'PreparedCreatureActionLive.gd', ('test-fidget-aliases-toad.gd',)),
     'exact_creature_fidgets': ((146, 157, 173, 777), 'ExactCreatureFidgetLive.gd', ()),
+    'skeletal_mage_staff': ((148,), 'PreparedCreatureActionLive.gd', ('test-skeletal-mage-staff.gd',)),
 }
 
 
