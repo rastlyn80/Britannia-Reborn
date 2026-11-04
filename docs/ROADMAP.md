@@ -1,6 +1,6 @@
 # Source-backed creature action queue
 
-Troll bodies 53–55, Blistering Gargoyle 130, Parrot 831 and Troglodyte 267 are active in the local registry with their tested action and corpse routes. The ledger has 5,156 of 6,838 action slots routable. The 30 UOP redirects with an existing destination clip passed decoded and native checks and await the regression gate before activation. Raptor and Slith group 25 now have distinct ready stances that passed both packet routes on two isolated clients. Activate them after the redirect batch, then use the 61 identified original frame records for remaining motion work. Keep autonomous gameplay and protocol variants separate from fixture-requested action coverage.
+The 30 UOP redirects and both group 25 ready stances are active in the local registry. The ledger has 5,190 of 6,840 action slots routable. Giant Serpent 21 has a recovered motion and a passing isolated server run for slot 11. Activate it after the running regression. Continue the occurrence-ordered MUL queue with Skeleton 56’s staff gesture, Ratman 42’s short hunch, Giant Spider 28’s abdomen and leg shift, and Mongbat 39’s gesture. Keep autonomous gameplay and protocol variants separate from fixture-requested action coverage.
 
 # Juka Lord active and Hydra source trial
 

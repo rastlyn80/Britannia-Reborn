@@ -1,4 +1,16 @@
-# Raptor and Slith ready stances prepared
+# UOP redirects and ready stances active
+
+The full pre-activation root regression passed. All 30 redirects and both ready stances are now active locally. The combined package checks verified the earlier clips still route correctly after the ready stances were installed. The subsequent normal-registry isolated runs passed 237 checks for Raptor and 625 checks for the three Slith variants. The ledger now has 5,190 routable slots out of 6,840, with 1,650 unresolved and no remaining candidates in the reviewed UOP redirect queue. The post-activation root run is in progress. The headless redirect recheck still logged its material cleanup diagnostic.
+
+# Giant Serpent recovered action and Classic source queue
+
+Body 21 slot 11 has a direct `anim.mul` record. All five directional payload hashes combine to SHA-256 `bfdb53aef972d86f5947473bb8808e573dbbfc4d9691aa3281f133aa96e22bdd`. The matching Third Dawn `serpents_snake_giant_pillage.grn` (SHA-256 `c1305092877edd08eb2e444847ed5a56f84dc94c86914ce418ac0cb4f343e21c`) was already decoded for Silver Serpent. Its 24 skeletal tracks matched the Giant Serpent by joint name, parent and rest transform. The bake copied their keys and recomputed only the floor-offset track for the Giant Serpent’s own mesh. Five Forward+ frames rendered. Across 191 sampled poses per treatment, the largest complete-skin floor error was 2.02 mm and the native root stayed fixed. Existing animation keys and three static corpse hues passed. The isolated GiantSerpent constructor test passed 139 checks with both clients, including the original 2001–2018 hue range, slot 11, movement and persistent corpse replication. Activation awaits the running root verifier.
+
+Reproduce with Godot `--headless --path Viewer --script res://../scripts/bake-giant-serpent-pillage.gd`, then `test-giant-serpent-pillage.gd`. Use `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily giant_serpent_pillage` for native evidence and `python -B scripts/accept-classic-gestures.py --batch giant_serpent_pillage` to check the receipt.
+
+The checked MUL decoder produced sheets for 19 source-backed gaps across the 15 highest-occurrence bodies in the tracked queue, using configured Trammel spawns as the ordering proxy. Run the Pillow-equipped project Python with `-B scripts/inspect-creature-mul-frames.py 56 42 28 39 21 47 30 14 26 4 13 48 74 15 86`. It verifies each direction against the ledger and writes private sheets and hashes under `work/creatures/mul-motion-review`. The body 56 source sheet shows a staff held out during the gesture. The archive maps 56 to the plain skeleton mesh and 148 to the mage mesh. The recovered 13-vertex, 18-triangle Mage Staff references `weapons_512b.tga`. Both skeleton rigs have original grasp sockets. Three tested mage clips share 32 named tracks with the plain rig. A private comparison imported all 33 named tracks on the mage rig. Grip fit, source-motion comparison and corpse continuity are still open for body 56.
+
+# Raptor and Slith ready stance evidence
 
 The ten-frame UOP group 25 references show both creatures lifting their heads compared with group 1. Raptor drops its foreclaws and holds its tail close to horizontal. Slith raises its head slightly with a small tail motion. The one-second replacements keep the current licensed Raptor rig and Slith’s recovered Komodo Dragon rig. The Raptor’s first render lifted the tail too far. The corrected silhouette was rendered and retested before the final native run.
 

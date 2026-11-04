@@ -81,6 +81,39 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'giant_serpent_pillage':
+        body = 21
+        base, = (row for row in gesture_baseline(family, registry_entries, {body})
+                 if row['status'] == 'validated' and row['kind'] == 'serpents_snake_giant'
+                 and [identity['body'] for identity in row['bodies']] == [body])
+        ledger = json.loads((ROOT / 'outputs/creatures/actions.json').read_text(encoding='utf-8'))
+        source, = (row for row in ledger['original_mul_group_candidates']
+                   if (row['body'], row['group']) == (body, 11) and 'matching_classic_route' in row)
+        assert source['archive'] == 'anim.mul' and source['graphic'] == body and not source['mobtype_prefers_uop']
+        assert [entry['direction'] for entry in source['directions']] == list(range(5))
+        digest = hashlib.sha256(''.join(entry['payload_sha256'] for entry in source['directions']).encode('ascii')).hexdigest()
+        assert digest == 'bfdb53aef972d86f5947473bb8808e573dbbfc4d9691aa3281f133aa96e22bdd'
+        donor, = (row for row in json.loads((ROOT / 'Viewer/local-art/creatures/accepted-index.json')
+                                           .read_text(encoding='utf-8'))['entries']
+                  if row['status'] == 'validated' and row['kind'] == 'serpents_snake_giant_silver')
+        member = 'Models/Monsters/serpents_snake_giant_pillage.grn'
+        path = ROOT / 'work/third-dawn/late-source-research/uoaos-source' / member
+        assert donor['clip_sources']['Pillage'] == f'uoaos/UOTD/{member}'
+        assert sha(path) == 'c1305092877edd08eb2e444847ed5a56f84dc94c86914ce418ac0cb4f343e21c'
+        assets = {}
+        for name in ('original', 'rounded', 'modern'):
+            donor_asset = ROOT / 'Viewer/local-art/creatures' / f'serpents_snake_giant_silver-{name}.gltf'
+            assert sha(donor_asset) == donor['asset_sha256'][name]
+            assets[name] = f'res://local-art/creatures/giant-serpent-21-pillage-{name}.scn'
+        row = dict(base, status='prepared', family=family, assets=assets,
+                   authored_action_reference={'body': body, 'group': 11, 'archive': 'anim.mul',
+                                              'directional_payload_sha256': digest, 'source_member': member},
+                   authored_action_scene_sha256={name: sha(ROOT / 'Viewer' / path.removeprefix('res://'))
+                                                 for name, path in assets.items()},
+                   classic_action_categories=base.get('classic_action_categories', {}) | {'11': 'Pillage'},
+                   clip_sources=base['clip_sources'] | {'Pillage': f'uoaos/UOTD/{member}'},
+                   native_constructor_hue_ranges={'GiantSerpent': [[2001, 2018]]})
+        return [row], {body: ['GiantSerpent']}
     if family == 'ready_stances':
         redirects = runpy.run_path(str(ROOT / 'scripts/prepare-creature-uop-redirects.py'))
         entries = registry_entries if registry_entries is not None else redirects['read'](redirects['INDEX'])['entries']
@@ -502,6 +535,8 @@ def main():
                     assert set(ranges) == set(classes) == {'Provisioner'}
                     assert len(ranges['Provisioner']) == 12
                     assert all(low == high and 0x8000 < low <= 0x8071 for low, high in ranges['Provisioner'])
+                elif native_body == 21:
+                    assert ranges == {'GiantSerpent': [[2001, 2018]]} and classes == ['GiantSerpent']
                 else:
                     assert ranges == {'TsukiWolf': [[0, 0], [1801, 1908]]} and classes == ['TsukiWolf']
                 common.pop('constructor_hues', None)

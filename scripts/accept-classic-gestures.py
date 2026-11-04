@@ -20,6 +20,7 @@ BATCHES = {
     'parrot_flight': ((831,), 'PreparedCreatureActionLive.gd', ('test-parrot-flight-trial.gd',)),
     'troglodyte_reach': ((267,), 'PreparedCreatureActionLive.gd', ('test-troglodyte-reach-trial.gd',)),
     'ready_stances': ((730, 734), 'PreparedCreatureActionLive.gd', ('test-creature-ready-stance.gd',)),
+    'giant_serpent_pillage': ((21,), 'PreparedCreatureActionLive.gd', ('test-giant-serpent-pillage.gd',)),
 }
 
 
