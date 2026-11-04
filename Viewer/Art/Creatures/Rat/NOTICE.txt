@@ -4,3 +4,4 @@ License: https://creativecommons.org/publicdomain/zero/1.0/
 Exact input hashes: scripts/rat-inputs.json and provenance.json.
 Britannia Reborn conversion, refinement, additional categories and shaders: GPL-3.0-or-later; root LICENSE.
 Five additional motions and gait/floor corrections are authored. No original UO geometry, map, rig or motion is included.
+The separate fidget scene adds an authored rear and head dip on the same CC0 rig.

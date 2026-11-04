@@ -10,7 +10,13 @@ func check(ok: bool,label: String) -> void:
 func run() -> void:
 	var registry=preload("res://Presentation/CreatureRegistry.gd");registry.load_index()
 	check(not DirAccess.dir_exists_absolute("res://local-art"),"No local/private art is present")
-	check(registry.supports_body(238) and registry.entry(238).assets.modern=="res://Art/Creatures/Rat/rat.glb","Public native Rat route resolves")
+	var scene := "res://Art/Creatures/Rat/rat-fidgets.scn"
+	var has_fidgets := FileAccess.file_exists(scene)
+	var expected := scene if has_fidgets else "res://Art/Creatures/Rat/rat.glb"
+	check(registry.supports_body(238) and registry.entry(238).assets.modern==expected,"Public native Rat route resolves")
+	if has_fidgets:
+		var provenance: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://Art/Creatures/Rat/provenance.json"))
+		check(provenance.classic_fidgets.scene_sha256 == FileAccess.get_sha256(scene), "Exact authored fidget scene ships")
 	var actor:=preload("res://Presentation/HumanAvatar.gd").new();actor.initial_body=238;root.add_child(actor);actor.set_physics_process(false)
 	check(actor.human_visual==null and actor.horse_visual!=null,"Actual public rat avatar loads")
 	if actor.horse_visual==null:quit(1);return
@@ -24,7 +30,10 @@ func run() -> void:
 		for j in stride:total+=weights[i*stride+j];valid=valid and weights[i*stride+j]>=0. and is_finite(weights[i*stride+j])
 		valid=valid and absf(total-1.)<.0001
 	check(valid,"Public skin weights remain finite and normalized")
-	for clip in ["Idle","Walk","Run","Attack","Attack2","Hit","Fidget","Eat","Alert","Death"]:
+	var clips := ["Idle","Walk","Run","Attack","Attack2","Hit","Fidget","Eat","Alert","Death"]
+	if has_fidgets:
+		clips.append_array(["RatRear", "Fidget2"])
+	for clip in clips:
 		check(visual.animator.has_animation(clip),"Every declared public category ships: "+clip)
 		visual.play(clip,0.);visual.animator.get_animation(clip).loop_mode=Animation.LOOP_NONE;visual.animator.pause()
 		for i in 13:
@@ -34,6 +43,11 @@ func run() -> void:
 			check(bounds.position.y>-.006,"Public actual skin floor correction survives distribution")
 	for action in range(13):
 		visual.dead=false;visual.action_remaining=0.;check(visual.receive_action({"protocol":"classic","action":action}),"Public animal group routes: "+str(action))
+	if has_fidgets:
+		for slot: int in [9, 10]:
+			visual.dead = false
+			check(visual.receive_action({"protocol": "classic", "action": slot}), "Public fidget packet is consumed")
+			check(visual.current_clip == ("RatRear" if slot == 9 else "Fidget2"), "Public fidget selects its own motion")
 	var corpses=preload("res://Presentation/CorpseModels.gd");var corpse: Node3D=corpses.build(238)
 	check(corpse!=null and corpse.get_meta("corpse_body")==238 and corpse.get_meta("graphic_id")==0x2006,"Native corpse graphic/body resolves without original game data")
 	if corpse:

@@ -280,5 +280,27 @@
   },
   "embedded_map_sha256": {
     "rat_rat.png": "b5ef72933348583c79f789dc3f3316163c600911fc38d5398aaa7d04bf4450bf"
+  },
+  "classic_fidgets": {
+    "scene_sha256": "ae58cfc3162b428e452aa56466d7973470ab692db962ab55fcea13d3162a108a",
+    "recipe_sha256": "035d2bbf0cd1dd35b5e5a38691c056760b73b867d29a408a69252ddf1f0875cd",
+    "reference_groups": {
+      "9": {
+        "body": 238,
+        "group": 9,
+        "archive": "anim.mul",
+        "graphic": 238,
+        "frames": 5,
+        "directional_payload_sha256": "239553488251f7ecf08f9d48c3a0d7bfd9a1ab806a44779dd5b494696cd80319"
+      },
+      "10": {
+        "body": 238,
+        "group": 10,
+        "archive": "anim.mul",
+        "graphic": 238,
+        "frames": 3,
+        "directional_payload_sha256": "f6a8fbb48f19333bd1c997004e6c477a40d726a409c9452876b95255669c2794"
+      }
+    }
   }
 }

@@ -47,8 +47,13 @@ BATCHES = {
     'ettin_fidgets': ((18,), 'PreparedCreatureActionLive.gd', ('test-humanoid-fidgets.gd',)),
     'mongbat_fidgets': ((39,), 'PreparedCreatureActionLive.gd', ('test-mongbat-fidgets.gd',)),
     'sea_serpent_actions': ((150,), 'PreparedCreatureActionLive.gd', ('test-sea-serpent-actions.gd',)),
+    'deer_fidgets': ((234, 237), 'PreparedClassicActionsLive.gd', ('test-field-fidgets.gd',)),
+    'orc_ettin_reactions': ((17, 18), 'PreparedClassicActionsLive.gd', ('test-orc-ettin-reactions.gd',)),
 }
-PREDECESSORS = {'mongbat_fidgets': 'spider_mongbat'}
+PREDECESSORS = {
+    'mongbat_fidgets': ('spider_mongbat',),
+    'orc_ettin_reactions': ('orc_fidgets', 'ettin_fidgets'),
+}
 
 
 def sha(path):
@@ -118,11 +123,12 @@ def checked(index, active, batch):
         baseline = [row for row in index['entries'] if row['status'] == 'validated'
                     and any(identity['body'] in bodies for identity in row['bodies'])]
     owners = {int(identity['body']): row for row in baseline for identity in row['bodies']}
-    if predecessor := PREDECESSORS.get(batch):
+    if predecessors := PREDECESSORS.get(batch):
         prior_entries = [row for row in index['entries'] if row.get('classic_gesture_batch') != batch]
         if active:
             prior_entries.extend(baseline)
-        checked(dict(index, entries=prior_entries), True, predecessor)
+        for predecessor in predecessors:
+            checked(dict(index, entries=prior_entries), True, predecessor)
     prepare = runpy.run_path(str(ROOT / 'scripts/prepare-creature-fixtures.py'))['prepared_entries']
     prepared, classes = prepare(batch, baseline)
 
@@ -139,6 +145,9 @@ def checked(index, active, batch):
             or report['fixture_sha256'] != sha(ROOT / 'Server/HorseIntegrationFixtures/CreatureFixtures.cs')
             or report['failures'] or not report['prepared_trial']):
         raise ValueError('Classic gesture native evidence does not match this batch')
+    if wrapper == 'PreparedClassicActionsLive.gd' and (
+            report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
+        raise ValueError('Supplementary action trial used a different prepared fixture loader')
 
     by_body = {row['bodies'][0]['body']: row for row in prepared}
     if batch == 'dragon_daemon':
@@ -176,6 +185,10 @@ def checked(index, active, batch):
             actions = [row for row in witness['actions'] if row['requested'] == slot]
             if len(actions) != 1 or any(actions[0][key] != clip for key in ('owner_clip', 'observer_clip')):
                 raise ValueError(f'Missing Classic gesture evidence for body {body}, slot {slot}')
+            if slot in package.get('native_extra_classic_actions', []) and any(
+                    actions[0][key]['protocol'] != 'classic' or actions[0][key]['action'] != slot
+                    for key in ('owner_packet', 'observer_packet')):
+                raise ValueError(f'Missing exact supplementary packet for body {body}, slot {slot}')
         if isinstance(source, dict) and 'new_type' in source:
             matches = [row for row in witness['actions'] if row['requested'] == -5]
             if (len(matches) != 1 or any(matches[0][key] != clip for key in ('owner_clip', 'observer_clip'))
@@ -207,7 +220,7 @@ def checked(index, active, batch):
             compared = matches if batch == 'ready_stances' else [redirect(row) for row in matches]
             if len(compared) == 1:
                 successor = compared[0].get('classic_gesture_batch')
-                if PREDECESSORS.get(successor) == batch:
+                if batch in PREDECESSORS.get(successor, ()):
                     earlier, _ = checked(index, True, successor)
                     compared = [row for row in earlier if any(identity['body'] == body for identity in row['bodies'])]
             if compared != [expected_row]:
@@ -301,7 +314,7 @@ def main():
         pending.replace(INDEX)
         try:
             checked(read(INDEX), True, batch)
-            if predecessor := PREDECESSORS.get(batch):
+            for predecessor in PREDECESSORS.get(batch, ()):
                 test_active(predecessor)
             test_active(batch)
         except (Exception, KeyboardInterrupt):

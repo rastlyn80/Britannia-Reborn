@@ -83,6 +83,16 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'orc_ettin_reactions':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-orc-ettin-reactions.py'))
+        rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
+        return recipe['prepared'](rows)
+    if family in ('deer_fidgets', 'rat_fidgets'):
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-field-fidgets.py'))
+        if family == 'rat_fidgets':
+            return recipe['prepared_rat']()
+        rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']))
+        return recipe['prepared_deer'](rows)
     if family == 'water_fidgets':
         return runpy.run_path(str(ROOT / 'scripts/prepare-water-elemental.py'))['prepared_fidgets']()
     if family == 'mongbat_fidgets':
