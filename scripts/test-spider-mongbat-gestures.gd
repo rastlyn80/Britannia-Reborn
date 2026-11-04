@@ -49,6 +49,9 @@ func run() -> void:
 		for treatment in ["original", "rounded", "modern"]:
 			var path := "res://local-art/creatures/mul-gesture-%d-%s.scn" % [body, treatment]
 			if active:
+				if body == 39 and base.get("classic_gesture_batch", "") == "mongbat_fidgets":
+					assert(base_assets[treatment] == path)
+					path = base.assets[treatment]
 				assert(base.assets[treatment] == path and base.authored_action_scene_sha256[treatment] == FileAccess.get_sha256(path))
 			else:
 				trial.assets[treatment] = path

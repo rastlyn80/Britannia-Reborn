@@ -28,12 +28,13 @@ SOURCE_COVERAGE_CLASSES = {
 
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
-def gesture_baseline(family, registry_entries, bodies):
+def gesture_baseline(family, registry_entries, bodies, layered=False):
     if registry_entries is not None:
         return registry_entries
     path = ROOT / 'Viewer/local-art/creatures/accepted-index.json'
     rows = json.loads(path.read_text(encoding='utf-8'))['entries']
-    if any((row.get('classic_gesture_native_sha256') or
+    if any((row.get('classic_gesture_batch') == family if layered else
+            row.get('classic_gesture_native_sha256') or
             family == 'exact_creature_fidgets' and row.get('legacy_slot11_evidence'))
            and any(identity['body'] in bodies for identity in row['bodies']) for row in rows):
         baseline = ROOT / 'work/creatures' / family / 'accepted-native/base-rows.json'
@@ -84,6 +85,14 @@ def prepared_recovered_action(family, registry_entries):
 def prepared_entries(family, registry_entries=None):
     if family == 'water_fidgets':
         return runpy.run_path(str(ROOT / 'scripts/prepare-water-elemental.py'))['prepared_fidgets']()
+    if family == 'mongbat_fidgets':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-mongbat-fidgets.py'))
+        rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
+        return recipe['prepared'](rows)
+    if family == 'sea_serpent_actions':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-sea-serpent-actions.py'))
+        rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']))
+        return recipe['prepared'](rows)
     if family == 'ettin_fidgets':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-ettin-fidgets.py'))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']))
@@ -950,6 +959,9 @@ def main():
                     assert all(low == high and 0x8000 < low <= 0x8071 for low, high in ranges['Provisioner'])
                 elif native_body == 21:
                     assert ranges == {'GiantSerpent': [[2001, 2018]]} and classes == ['GiantSerpent']
+                elif native_body == 150:
+                    assert set(classes) == {'DeepSeaSerpent', 'SeaSerpent'}
+                    assert ranges == {'DeepSeaSerpent': [[0x8A0, 0x8A4]], 'SeaSerpent': [[0x530, 0x538]]}
                 elif native_body == 14:
                     assert ranges == {'EarthElemental': [[0, 0]], 'SummonedEarthElemental': [[0, 0]],
                                       'PlagueSpawn': [[0x11, 0x1f]]}

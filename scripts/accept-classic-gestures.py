@@ -45,7 +45,10 @@ BATCHES = {
     'orc_fidgets': ((17,), 'PreparedCreatureActionLive.gd', ('test-humanoid-fidgets.gd',)),
     'kraken_fidgets': ((77,), 'PreparedCreatureActionLive.gd', ('test-kraken-fidgets.gd',)),
     'ettin_fidgets': ((18,), 'PreparedCreatureActionLive.gd', ('test-humanoid-fidgets.gd',)),
+    'mongbat_fidgets': ((39,), 'PreparedCreatureActionLive.gd', ('test-mongbat-fidgets.gd',)),
+    'sea_serpent_actions': ((150,), 'PreparedCreatureActionLive.gd', ('test-sea-serpent-actions.gd',)),
 }
+PREDECESSORS = {'mongbat_fidgets': 'spider_mongbat'}
 
 
 def sha(path):
@@ -67,8 +70,12 @@ def compose(base, prepared, native_sha):
     row = dict(prepared, status='validated', family=base['family'],
                classic_gesture_base_assets=assets, classic_gesture_native_sha256=native_sha,
                asset_sha256=prepared['authored_action_scene_sha256'], import_sha256={})
+    if prepared['family'] in PREDECESSORS:
+        row['classic_gesture_batch'] = prepared['family']
     if prepared['family'] in ('orc_fidgets', 'ettin_fidgets'):
         row['kind'] = f"{base['kind']}_fidgets"
+    elif prepared['family'] == 'sea_serpent_actions':
+        row['kind'] = f"{base['kind']}_classic"
     elif len(base['bodies']) > 1:
         row['kind'] = f"{base['kind']}_slot11_{prepared['bodies'][0]['body']}"
     for key in ('validation_sha256', 'gpu_sha256', 'gpu_runtime_sha256'):
@@ -111,6 +118,11 @@ def checked(index, active, batch):
         baseline = [row for row in index['entries'] if row['status'] == 'validated'
                     and any(identity['body'] in bodies for identity in row['bodies'])]
     owners = {int(identity['body']): row for row in baseline for identity in row['bodies']}
+    if predecessor := PREDECESSORS.get(batch):
+        prior_entries = [row for row in index['entries'] if row.get('classic_gesture_batch') != batch]
+        if active:
+            prior_entries.extend(baseline)
+        checked(dict(index, entries=prior_entries), True, predecessor)
     prepare = runpy.run_path(str(ROOT / 'scripts/prepare-creature-fixtures.py'))['prepared_entries']
     prepared, classes = prepare(batch, baseline)
 
@@ -193,6 +205,11 @@ def checked(index, active, batch):
                         raise ValueError('Bone Knight overlay must retain the independently checked sibling base')
                     continue
             compared = matches if batch == 'ready_stances' else [redirect(row) for row in matches]
+            if len(compared) == 1:
+                successor = compared[0].get('classic_gesture_batch')
+                if PREDECESSORS.get(successor) == batch:
+                    earlier, _ = checked(index, True, successor)
+                    compared = [row for row in earlier if any(identity['body'] == body for identity in row['bodies'])]
             if compared != [expected_row]:
                 raise ValueError(f'Active body {body} differs from its checked package')
     return baseline, rows
@@ -254,7 +271,8 @@ def main():
     if args.activate:
         if batch == 'ready_stances' and any('uop_redirect_native_sha256' not in row for row in baseline):
             raise ValueError('Activate the already verified UOP redirect layer before the ready stances')
-        if any((row.get('classic_gesture_native_sha256') or
+        if any((row.get('classic_gesture_batch') == batch if batch in PREDECESSORS else
+                row.get('classic_gesture_native_sha256') or
                 batch == 'exact_creature_fidgets' and row.get('legacy_slot11_evidence')) and
                any(identity['body'] in BATCHES[batch][0] for identity in row['bodies'])
                for row in index['entries']):
@@ -283,6 +301,8 @@ def main():
         pending.replace(INDEX)
         try:
             checked(read(INDEX), True, batch)
+            if predecessor := PREDECESSORS.get(batch):
+                test_active(predecessor)
             test_active(batch)
         except (Exception, KeyboardInterrupt):
             if INDEX.read_bytes() == updated:
