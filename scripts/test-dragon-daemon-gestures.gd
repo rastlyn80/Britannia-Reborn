@@ -66,6 +66,8 @@ func run() -> void:
 			var extended: bool = (body == 9 and entry.get("classic_gesture_batch") == "daemon_wyvern_polar_actions"
 				or body in [60, 61] and entry.get("classic_gesture_batch") == "wraith_drake_walrus_actions")
 			var predecessor_slots: Array = ["11", "12"] if extended else entry.classic_motion_references.keys()
+			if body == 40 and entry.get("classic_gesture_batch") == "armed_flying_creature_gestures":
+				predecessor_slots = ["12"]
 			for slot: String in predecessor_slots:
 				var action := PackedByteArray([0x6e])
 				action.append_array(Wire.uint_be(serial, 4))

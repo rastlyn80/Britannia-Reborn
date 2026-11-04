@@ -91,6 +91,14 @@ BATCHES = {
                                                              'test-daemon-distinct-landings.gd')),
     'wraith_drake_walrus_actions': ((26, 60, 61, 221), 'WraithDrakeWalrusLive.gd',
                                    ('test-wraith-drake-walrus-actions.gd', 'test-wraith-drake-walrus-landings.gd')),
+    'armed_flying_creature_gestures': ((40, 148, 764), 'ArmedFlyingCreatureGesturesLive.gd',
+                                       ('test-armed-flying-creature-gestures.gd', 'test-balron-creature-landings.gd',
+                                        'test-armed-flying-creature-slopes.gd')),
+    'lowland_creature_gestures': ((51, 80, 154), 'PreparedClassicActionsLive.gd',
+                                  ('test-lowland-creature-gestures.gd', 'test-lowland-creature-slopes.gd')),
+    'later_creature_gestures': ((57, 317, 128, 775), 'LaterCreatureGesturesLive.gd',
+                                ('test-later-creature-gestures.gd', 'test-later-creature-bat-landings.gd',
+                                 'test-later-creature-ground-gestures.gd')),
     'occurrence_gestures': ((124, 240, 250, 779), 'OccurrenceGesturesLive.gd',
                             ('test-occurrence-gestures.gd', 'test-occurrence-gesture-slopes.gd')),
     'scorpion_headless_actions': ((48, 31), 'FieldFaunaLive.gd',
@@ -98,6 +106,9 @@ BATCHES = {
     'skeleton_actions': ((50, 56), 'PreparedClassicActionsLive.gd', ('test-skeleton-actions.gd',)),
 }
 PREDECESSORS = {
+    'armed_flying_creature_gestures': ('dragon_daemon', 'skeletal_mage_staff'),
+    'lowland_creature_gestures': ('fidget_aliases_toad',),
+    'later_creature_gestures': ('bone_cyclops', 'vampire_bat_actions'),
     'occurrence_gestures': (),
     'mongbat_fidgets': ('spider_mongbat',),
     'orc_ettin_reactions': ('orc_fidgets', 'ettin_fidgets'),
@@ -232,7 +243,7 @@ def checked(index, active, batch, *, compare_registry=True):
         if active:
             prior_entries.extend(baseline)
         for predecessor in predecessors:
-            if predecessor in ('scorpion_imp', 'dragon_daemon'):
+            if predecessor in ('scorpion_imp', 'dragon_daemon', 'bone_cyclops', 'vampire_bat_actions', 'fidget_aliases_toad', 'skeletal_mage_staff'):
                 # Independent successors seal their own retained rows. Replaying a
                 # sibling here would send it back through the same predecessor.
                 _, previous = checked(index, True, predecessor, compare_registry=False)
@@ -260,7 +271,7 @@ def checked(index, active, batch, *, compare_registry=True):
     if wrapper in ('PreparedClassicActionsLive.gd', 'OccurrenceDeathsLive.gd', 'FieldDeathsLive.gd',
                    'LizardActionsLive.gd', 'QuadrupedActionsLive.gd', 'CatActionsLive.gd', 'TrollActionsLive.gd',
                    'FieldFaunaLive.gd', 'SpiderMongbatActionsLive.gd', 'PigReaperHarpyActionsLive.gd',
-                   'DaemonActionsLive.gd', 'WraithDrakeWalrusLive.gd', 'OccurrenceGesturesLive.gd') and (
+                   'DaemonActionsLive.gd', 'WraithDrakeWalrusLive.gd', 'OccurrenceGesturesLive.gd', 'LaterCreatureGesturesLive.gd', 'ArmedFlyingCreatureGesturesLive.gd') and (
             report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
         raise ValueError('Supplementary action trial used a different prepared fixture loader')
     if batch == 'occurrence_deaths' and (
@@ -362,7 +373,7 @@ def checked(index, active, batch, *, compare_registry=True):
                           'wisp_distinct_actions', 'air_distinct_actions', 'scorpion_headless_actions',
                           'alligator_lich_actions', 'fire_distinct_actions', 'gaman_gestures',
                           'chicken_distinct_actions', 'deathwatch_gestures', 'daemon_wyvern_polar_actions',
-                          'wraith_drake_walrus_actions', 'occurrence_gestures') or
+                          'wraith_drake_walrus_actions', 'occurrence_gestures', 'later_creature_gestures', 'lowland_creature_gestures', 'armed_flying_creature_gestures') or
                     slot in package.get('native_extra_classic_actions', [])) and any(
                     actions[0][key]['protocol'] != 'classic' or actions[0][key]['action'] != slot
                     for key in ('owner_packet', 'observer_packet')):

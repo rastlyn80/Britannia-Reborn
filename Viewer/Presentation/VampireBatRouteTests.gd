@@ -23,9 +23,17 @@ func run() -> void:
 		var active := Registry.entry(body)
 		assert(Registry.supports_body(body))
 		if active.has("classic_gesture_native_sha256"):
-			var path := "res://../work/creatures/vampire_bat_actions/accepted-native/base-rows.json"
-			var base: Array = JSON.parse_string(FileAccess.get_file_as_string(path))
-			assert(base == [expected_record] and active.classic_gesture_base_assets == expected_record.assets)
+			var proof := "res://../work/creatures/vampire_bat_actions/accepted-native/"
+			var base: Array = JSON.parse_string(FileAccess.get_file_as_string(proof + "base-rows.json"))
+			assert(base == [expected_record])
+			var prior_assets: Dictionary = expected_record.assets
+			if active.get("classic_gesture_batch") == "later_creature_gestures":
+				var wing_routes: Array = JSON.parse_string(FileAccess.get_file_as_string(proof + "candidates.json"))
+				assert(not wing_routes.is_empty())
+				prior_assets = wing_routes[0].presentation.assets
+				for row: Dictionary in wing_routes:
+					assert(int(row.body) == body and row.presentation.assets == prior_assets)
+			assert(active.classic_gesture_base_assets == prior_assets)
 		else:
 			assert(active == expected_record)
 		var avatar := Avatar.new()

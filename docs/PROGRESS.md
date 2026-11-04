@@ -1,3 +1,9 @@
+# Classic motions for ten creature bodies
+
+Bone Knight, Vampire Bat, Pixie, Plague Beast, Slime, Mummy, Giant Toad, Juka Warrior, Balron and Bone Magi now use verified Classic gestures on their existing rigs. The Bone Knight keeps its sword and shield and applies a small terrain correction during the five new gestures. Bone Magi keeps its recovered staff grip, and Mummy retains all original ground curves with a separate set of measured samples for its two new motions. Vampire Bat and Balron preserve the displayed head position when an airborne pose passes to a corpse.
+
+The isolated ModernUO tests passed 3,381 checks across 16 constructor cases, including Skeletal Mage, Vampire Bat Familiar, Plague Beast Lord, Pestilent Bandage and three Slime classes. Client tests passed 13,359 decoded pose samples, 3,519 ground-gesture terrain samples and 24 airborne or grounded Bat and Balron corpse handoffs across 984 samples. The original Dragon breath, Cyclops, Giant Toad gulp, Vampire Bat wing and Skeletal Mage staff replays remain covered. The catalogue routes 5,340 of 6,930 slots (77.1%), with 560 shared Classic replacement pairs, down from 609.
+
 # Bogling, Tsuki Wolf, Evil Mage and Kappa actions
 
 Bogling 779, Tsuki Wolf 250, Evil Mage 124 and Kappa 240 now use their verified action routes. The original five directional frames establish which groups can share a motion. The new gestures preserve each creature's established rig, earlier animation keys and server hue. Bogling ships its two authored gestures as a separate GPL-licensed library on the existing CC0 rig. The three recovered models remain local.

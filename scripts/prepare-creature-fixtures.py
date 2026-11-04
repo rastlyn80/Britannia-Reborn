@@ -89,6 +89,18 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'armed_flying_creature_gestures':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-armed-flying-creature-gestures.py'))
+        rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
+        return recipe['prepared'](rows)
+    if family == 'lowland_creature_gestures':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-lowland-creature-gestures.py'))
+        rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
+        return recipe['prepared'](rows)
+    if family == 'later_creature_gestures':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-later-creature-gestures.py'))
+        rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
+        return recipe['prepared'](rows)
     if family == 'occurrence_gestures':
         return runpy.run_path(str(ROOT / 'scripts/prepare-occurrence-gestures.py'))['prepared'](registry_entries)
     if family == 'cat_actions':
@@ -1047,6 +1059,9 @@ def main():
                 elif native_body == 150:
                     assert set(classes) == {'DeepSeaSerpent', 'SeaSerpent'}
                     assert ranges == {'DeepSeaSerpent': [[0x8A0, 0x8A4]], 'SeaSerpent': [[0x530, 0x538]]}
+                elif native_body == 51:
+                    recipe = runpy.run_path(str(ROOT / 'scripts/prepare-lowland-creature-gestures.py'))
+                    assert ranges == recipe['SLIME_HUES'] and set(classes) == set(ranges)
                 elif native_body == 14:
                     assert ranges == {'EarthElemental': [[0, 0]], 'SummonedEarthElemental': [[0, 0]],
                                       'PlagueSpawn': [[0x11, 0x1f]]}
