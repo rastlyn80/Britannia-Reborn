@@ -2261,3 +2261,7 @@ The Godot title/login panel show Britannia Reborn. Its custom user-directory set
 Server-owned doors/containers/signs and broader world population remain the next integration milestone. No population or map expansion is claimed by this environment change.
 
 Validation at publication: scripts/verify.ps1 passes 218 offline checks and the actual-crop load; 13 environment checks are included. Live environment and login tests pass after the rename. Controlled day/night contrast, cloud motion and real ceiling shelter pass on both Forward+ and OpenGL (3 GPU checks each). Moving-camera floor/doorway stability adds four passing checks; return-view RGB differences remain below 0.0017. No proprietary capture is included in Git.
+
+### Armed Lizardman trial
+
+Verified the classic spear/mace body split (35/36), exact rigid Third Dawn source meshes, atlas and right-hand attachment in ten Forward+ frames. See [source and reproduction](RATMEN_AND_LIZARDMEN.md#armed-lizardman-fitting-trial).
