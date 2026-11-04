@@ -174,6 +174,10 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
  & $godot --headless --path "$root/Viewer" --script res://Presentation/CreatureDeathTests.gd
  if ($LASTEXITCODE) {throw 'Existing generic decoded creature-death transitions or lifecycle regressed'}
  $lateIndex = Get-Content "$root/Viewer/local-art/creatures/accepted-index.json" -Raw | ConvertFrom-Json
+ if ($lateIndex.entries | Where-Object { $_.uop_redirect_native_sha256 }) {
+  & python -B "$root/scripts/prepare-creature-uop-redirects.py" --check-active
+  if ($LASTEXITCODE) {throw 'Active UOP creature redirect evidence failed'}
+ }
  foreach ($actionBatch in @{130='blistering_pillage';267='troglodyte_reach';831='parrot_flight'}.GetEnumerator()) {
   if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.classic_gesture_native_sha256 -and $_.bodies.body -contains $actionBatch.Key }) {
    & python -B "$root/scripts/accept-classic-gestures.py" --batch $actionBatch.Value --check-active

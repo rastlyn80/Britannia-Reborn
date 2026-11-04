@@ -76,6 +76,8 @@ func run() -> void:
 			if ACTION_RECIPES.has(body) and active.has("classic_gesture_native_sha256"):
 				action = ACTION_RECIPES[body]
 				expect_recovered_action(expected, active, body, action)
+			if active.has("uop_redirect_native_sha256"):
+				expect_uop_redirects(expected, active, body)
 		assert(Registry.supports_body(body) and Registry.entry(body) == expected)
 		var avatar := Avatar.new()
 		avatar.initial_body = body
@@ -180,3 +182,15 @@ func expect_recovered_action(expected: Dictionary, active: Dictionary, body: int
 		recipe.clip: recipe.description}, true)
 	for key in ["validation_sha256", "gpu_sha256", "gpu_runtime_sha256"]:
 		expected.erase(key)
+
+func expect_uop_redirects(expected: Dictionary, active: Dictionary, body: int) -> void:
+	var manifest: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://../scripts/creature-uop-redirects.json"))
+	var proof: Dictionary = manifest.bodies[str(body)]
+	assert(proof.kind == expected.kind and proof.targets == active.uop_redirect_targets)
+	var overrides: Dictionary = expected.get("classic_action_categories", {}).duplicate()
+	for target: Dictionary in proof.targets.values():
+		for slot: int in target.slots:
+			overrides[str(slot)] = target.clip
+	expected.classic_action_categories = overrides
+	expected.uop_redirect_targets = proof.targets
+	expected.uop_redirect_native_sha256 = active.uop_redirect_native_sha256

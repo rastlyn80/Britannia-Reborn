@@ -1,6 +1,6 @@
 # Source-backed creature action queue
 
-Troll bodies 53–55, Blistering Gargoyle 130, Parrot 831 and Troglodyte 267 are active in the local registry with their tested action and corpse routes. The ledger has 5,156 of 6,838 action slots routable. Review the 32 UOP redirect candidates as a separate reuse queue and use the 61 identified original frame records for the remaining motion work. Start with Fire Gargoyle redirects to group 4 and the bodies that already have a matching target clip. Keep autonomous gameplay and protocol variants separate from fixture-requested action coverage.
+Troll bodies 53–55, Blistering Gargoyle 130, Parrot 831 and Troglodyte 267 are active in the local registry with their tested action and corpse routes. The ledger has 5,156 of 6,838 action slots routable. The 30 UOP redirects with an existing destination clip passed decoded and native checks and await the regression gate before activation. The other two need a distinct group 25 ready stance for Raptor and Slith. Use the 61 identified original frame records for the remaining motion work. Keep autonomous gameplay and protocol variants separate from fixture-requested action coverage.
 
 # Juka Lord active and Hydra source trial
 

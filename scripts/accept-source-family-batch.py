@@ -108,11 +108,12 @@ def main():
     gargoyle = runpy.run_path(str(ROOT/'scripts/gargoyle-pillage-evidence.py'))
     base = next(row for row in rows if row['kind'] == gargoyle['KIND'])
     current = next((row for row in index['entries'] if row['kind'] == gargoyle['KIND']), {})
+    redirect = runpy.run_path(str(ROOT/'scripts/prepare-creature-uop-redirects.py'))['without_active_redirect']
     overlay_active = 'authored_action_native_sha256' in current
     if overlay_active:
         overlay = gargoyle['compose'](base, True)
-        assert current == overlay, 'Gargoyle action overlay or base package changed'
-        rows = [overlay if row is base else row for row in rows]
+        assert redirect(current) == overlay, 'Gargoyle action overlay or base package changed'
+        rows = [current if row is base else row for row in rows]
     incoming = {row['kind'] for row in rows}
     existing = {int(body['body']):row['kind'] for row in index['entries'] for body in row['bodies']}
     for row in rows:
@@ -121,7 +122,8 @@ def main():
     if args.check_active or args.activate_gargoyle_pillage:
         receipt = read(RECEIPT)
         assert receipt['publisher_sha256'] in (
-            sha(Path(__file__)), '45ba8a2a4212f2d1728b2a13c5c940f235f2e6b23bef4da99e552bc110b96950')
+            sha(Path(__file__)), '45ba8a2a4212f2d1728b2a13c5c940f235f2e6b23bef4da99e552bc110b96950',
+            '776536ad522a39f8854cf98aadc916ef5f81b9b5fe8c55e2948acbe3ba481937')
         assert receipt['evidence_pins'] == pins
         assert {row['kind']:row for row in index['entries'] if row['kind'] in incoming} == {row['kind']:row for row in rows}
     if args.activate_gargoyle_pillage:

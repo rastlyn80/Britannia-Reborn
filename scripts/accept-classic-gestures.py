@@ -102,6 +102,7 @@ def checked(index, active, batch):
 
     rows = [compose(owners[row['bodies'][0]['body']], row, native_sha) for row in prepared]
     if active:
+        redirect = runpy.run_path(str(ROOT / 'scripts/prepare-creature-uop-redirects.py'))['without_active_redirect']
         targets = {row['bodies'][0]['body']: row for row in rows}
         siblings = {body: row for body, row in owners.items() if body not in bodies}
         for body, expected_row in (targets | siblings).items():
@@ -110,7 +111,7 @@ def checked(index, active, batch):
             if body in siblings:
                 expected_row = dict(expected_row, bodies=[identity for identity in expected_row['bodies']
                                                          if identity['body'] not in bodies])
-            if matches != [expected_row]:
+            if [redirect(row) for row in matches] != [expected_row]:
                 raise ValueError(f'Active body {body} differs from its checked package')
     return baseline, rows
 

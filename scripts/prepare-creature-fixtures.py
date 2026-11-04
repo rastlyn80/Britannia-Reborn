@@ -81,6 +81,16 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'uop_redirects':
+        redirects = runpy.run_path(str(ROOT / 'scripts/prepare-creature-uop-redirects.py'))
+        entries = registry_entries if registry_entries is not None else redirects['read'](redirects['INDEX'])['entries']
+        entries = [redirects['without_active_redirect'](row) for row in entries]
+        rows = redirects['build_rows'](entries, redirects['read'](redirects['LEDGER']))
+        classes = {130: ['FireGargoyle'], 692: ['AnimatedWeapon'], 730: ['Raptor'],
+                   734: ['Slith', 'StoneSlith', 'ToxicSlith'], 753: ['EnslavedGargoyle']}
+        assert {row['body'] for row in rows} == set(classes)
+        return [dict(row['presentation'], status='prepared', family=family,
+                     uop_redirect_targets=row['targets']) for row in rows], classes
     if family in ('parrot_flight', 'troglodyte_reach'):
         return prepared_recovered_action(family, registry_entries)
     if family == 'blistering_pillage':
@@ -174,6 +184,9 @@ def prepared_entries(family, registry_entries=None):
         index = json.loads((art / 'accepted-index.json').read_text(encoding='utf-8'))
         base, = (row for row in index['entries']
                  if row['status'] == 'validated' and row['kind'] == 'gargoyles_gargoyle_slave')
+        if 'uop_redirect_native_sha256' in base:
+            redirects = runpy.run_path(str(ROOT / 'scripts/prepare-creature-uop-redirects.py'))
+            base = redirects['without_active_redirect'](base)
         if 'authored_action_native_sha256' in base:
             evidence = runpy.run_path(str(ROOT / 'scripts/gargoyle-pillage-evidence.py'))
             active = base
@@ -392,7 +405,9 @@ def main():
             gesture_gate = runpy.run_path(str(ROOT / 'scripts/accept-classic-gestures.py'))
             _, updated = gesture_gate['checked'](index, True, batch)
             expected = [updated[0] if row['bodies'][0]['body'] == body else row for row in expected]
-        if len(registered) != len(expected) or active_by_body != {
+        redirects = runpy.run_path(str(ROOT / 'scripts/prepare-creature-uop-redirects.py'))
+        original_by_body = {body: redirects['without_active_redirect'](row) for body, row in active_by_body.items()}
+        if len(registered) != len(expected) or original_by_body != {
                 int(row['bodies'][0]['body']): row for row in expected}:
             raise ValueError('Normal registry does not match the checked recovered package')
         index['entries'] = registered

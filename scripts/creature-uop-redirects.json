@@ -1,0 +1,103 @@
+{
+  "inputs": {
+    "AnimationSequence.uop": "b4de2afdba2bab6e987389cde18aee4703bbef560f66d4c26be5ffc04f2b8e0f",
+    "mobtypes.txt": "a4f1c98057c5bcf10ccdb575a9154260651e49b852bfe548059ff55fcbbf29d8"
+  },
+  "bodies": {
+    "130": {
+      "kind": "gargoyles_gargoyle_blistering",
+      "targets": {
+        "4": {
+          "clip": "Attack",
+          "slots": [7, 8, 9, 12, 14],
+          "archive": "AnimationFrame1.uop",
+          "frame_headers": 30,
+          "payload_sha256": "ab92c5ec924b838c126671d47f0b2ec9e36167e8906722186bf7d76eefd3487f"
+        }
+      }
+    },
+    "692": {
+      "kind": "animated_weapon",
+      "targets": {
+        "4": {
+          "clip": "Attack",
+          "slots": [7, 8, 9],
+          "archive": "AnimationFrame3.uop",
+          "frame_headers": 55,
+          "payload_sha256": "2e1c1d28ad301496d7828eed74f39d24c2ac370325545bb45f2099686f825943"
+        },
+        "1": {
+          "clip": "Idle",
+          "slots": [11, 12, 14, 19, 20],
+          "archive": "AnimationFrame3.uop",
+          "frame_headers": 55,
+          "payload_sha256": "c4320e5eca512de9375c9d7ce67959842727ecfdc0472f932292dec62c64c719"
+        }
+      }
+    },
+    "730": {
+      "kind": "raptor",
+      "targets": {
+        "4": {
+          "clip": "Attack",
+          "slots": [7, 8, 9, 12, 14],
+          "archive": "AnimationFrame3.uop",
+          "frame_headers": 45,
+          "payload_sha256": "3599f1ee81cd7a367d046440cae22d11f157efecbc7805d5fe694e882234a3ad"
+        },
+        "0": {
+          "clip": "Walk",
+          "slots": [19],
+          "archive": "AnimationFrame3.uop",
+          "frame_headers": 50,
+          "payload_sha256": "fdb21f946360e187b829a658696cfc708e329aaa0b004b22a10fab937365fa82"
+        },
+        "1": {
+          "clip": "Idle",
+          "slots": [20],
+          "archive": "AnimationFrame3.uop",
+          "frame_headers": 50,
+          "payload_sha256": "c9f0c6e41b736c03d20ab13516143cf7a30228562fcbda0aac5dd61107b7f2a2"
+        }
+      }
+    },
+    "734": {
+      "kind": "lizards_komodo_dragon",
+      "targets": {
+        "4": {
+          "clip": "Attack",
+          "slots": [7, 8, 9, 12, 14],
+          "archive": "AnimationFrame3.uop",
+          "frame_headers": 50,
+          "payload_sha256": "d214d83f073fa2ea3b2d122e94c4ef3a870353fd601a7e47640b65fb28c62586"
+        },
+        "0": {
+          "clip": "Walk",
+          "slots": [19],
+          "archive": "AnimationFrame3.uop",
+          "frame_headers": 50,
+          "payload_sha256": "0cd85ffbb013857c68c4e8a8c1d71173ced1cd5031061dc353524c74941145ba"
+        },
+        "1": {
+          "clip": "Idle",
+          "slots": [20],
+          "archive": "AnimationFrame3.uop",
+          "frame_headers": 40,
+          "payload_sha256": "adc1a27cc07dc267974331f107488ee33f64acbc72c24936aa948ea67660685e"
+        }
+      }
+    },
+    "753": {
+      "kind": "gargoyles_gargoyle_slave",
+      "targets": {
+        "4": {
+          "clip": "Attack",
+          "slots": [7, 8, 9],
+          "archive": "AnimationFrame4.uop",
+          "frame_headers": 35,
+          "payload_sha256": "8c554fb4233b49b49e6a4beaf6eb28da6984fb08c958bdf7983b0fb6e9427fcb"
+        }
+      }
+    }
+  }
+}
