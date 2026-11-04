@@ -51,12 +51,17 @@ BATCHES = {
     'orc_ettin_reactions': ((17, 18), 'PreparedClassicActionsLive.gd', ('test-orc-ettin-reactions.gd',)),
     'occurrence_deaths': ((17, 18), 'OccurrenceDeathsLive.gd', ('test-occurrence-deaths.gd',)),
     'kraken_reactions': ((77,), 'PreparedClassicActionsLive.gd', ('test-kraken-reactions.gd',)),
+    'field_deaths': ((237,), 'FieldDeathsLive.gd', ('test-field-deaths.gd',)),
+    'lizard_actions': ((35, 36), 'LizardActionsLive.gd',
+                       ('test-lizard-actions.gd', 'test-lizard-collapses.gd', 'test-lizardman-weapon-corpses.gd')),
 }
 PREDECESSORS = {
     'mongbat_fidgets': ('spider_mongbat',),
     'orc_ettin_reactions': ('orc_fidgets', 'ettin_fidgets'),
     'occurrence_deaths': ('orc_ettin_reactions',),
     'kraken_reactions': ('kraken_fidgets',),
+    'field_deaths': ('deer_fidgets',),
+    'lizard_actions': (),
 }
 
 
@@ -83,6 +88,9 @@ def compose(base, prepared, native_sha):
     row = dict(prepared, status='validated', family=base['family'],
                classic_gesture_base_assets=assets, classic_gesture_native_sha256=native_sha,
                asset_sha256=prepared['authored_action_scene_sha256'], import_sha256={})
+    if prepared['family'] == 'lizard_actions':
+        for field in ('assets', 'asset_sha256', 'authored_action_scene_sha256'):
+            row[field] = {'modern': row[field]['modern']}
     if prepared['family'] in PREDECESSORS:
         row['classic_gesture_batch'] = prepared['family']
     if prepared['family'] in ('orc_fidgets', 'ettin_fidgets'):
@@ -131,6 +139,10 @@ def checked(index, active, batch):
         baseline = [row for row in index['entries'] if row['status'] == 'validated'
                     and any(identity['body'] in bodies for identity in row['bodies'])]
     owners = {int(identity['body']): row for row in baseline for identity in row['bodies']}
+    if batch == 'lizard_actions':
+        armed = runpy.run_path(str(ROOT / 'scripts/accept-armed-lizardman.py'))['checked_rows']
+        prior = [row for row in index['entries'] if row.get('classic_gesture_batch') != batch]
+        armed(dict(index, entries=prior + baseline if active else prior), True)
     if predecessors := PREDECESSORS.get(batch):
         prior_entries = []
         for row in index['entries']:
@@ -161,13 +173,26 @@ def checked(index, active, batch):
             or report['fixture_sha256'] != sha(ROOT / 'Server/HorseIntegrationFixtures/CreatureFixtures.cs')
             or report['failures'] or not report['prepared_trial']):
         raise ValueError('Classic gesture native evidence does not match this batch')
-    if wrapper in ('PreparedClassicActionsLive.gd', 'OccurrenceDeathsLive.gd') and (
+    if wrapper in ('PreparedClassicActionsLive.gd', 'OccurrenceDeathsLive.gd', 'FieldDeathsLive.gd', 'LizardActionsLive.gd') and (
             report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
         raise ValueError('Supplementary action trial used a different prepared fixture loader')
     if batch == 'occurrence_deaths' and (
             report['collapse_sha256'] != sha(ROOT / 'Viewer/Presentation/SourceClassicCollapseVisual.gd')
             or report['supplemental_sha256'] != sha(ROOT / 'Viewer/Network/PreparedClassicActionsLive.gd')):
         raise ValueError('The explicit collapse renderer or supplementary packet test changed')
+    if batch == 'field_deaths' and (
+            report['field_collapse_sha256'] != sha(ROOT / 'Viewer/Presentation/FieldClassicCollapseVisual.gd')
+            or report['explicit_collapse_test_sha256'] != sha(ROOT / 'Viewer/Network/OccurrenceDeathsLive.gd')
+            or report['supplemental_sha256'] != sha(ROOT / 'Viewer/Network/PreparedClassicActionsLive.gd')):
+        raise ValueError('The field collapse renderer or explicit packet test changed')
+    if batch == 'lizard_actions':
+        paths = {
+            'renderer_sha256': 'Presentation/SourceLizardActionsVisual.gd',
+            'armed_renderer_sha256': 'Presentation/SourceArmedLizardmanVisual.gd',
+            'supplemental_sha256': 'Network/PreparedClassicActionsLive.gd',
+        }
+        if any(report[key] != sha(ROOT / 'Viewer' / path) for key, path in paths.items()):
+            raise ValueError('The armed action renderer or explicit packet test changed')
 
     by_body = {row['bodies'][0]['body']: row for row in prepared}
     if batch == 'dragon_daemon':
@@ -205,7 +230,7 @@ def checked(index, active, batch):
             actions = [row for row in witness['actions'] if row['requested'] == slot]
             if len(actions) != 1 or any(actions[0][key] != clip for key in ('owner_clip', 'observer_clip')):
                 raise ValueError(f'Missing Classic gesture evidence for body {body}, slot {slot}')
-            if slot in package.get('native_extra_classic_actions', []) and any(
+            if (batch == 'lizard_actions' or slot in package.get('native_extra_classic_actions', [])) and any(
                     actions[0][key]['protocol'] != 'classic' or actions[0][key]['action'] != slot
                     for key in ('owner_packet', 'observer_packet')):
                 raise ValueError(f'Missing exact supplementary packet for body {body}, slot {slot}')
@@ -220,7 +245,8 @@ def checked(index, active, batch):
             (pair, female) for pair in expected for female in (False, True)}:
         raise ValueError('Both clients must witness every native constructor')
 
-    rows = [compose(owners[row['bodies'][0]['body']], row, native_sha) for row in prepared]
+    rows = [compose(owners[row['bodies'][0]['body']], row, native_sha) for row in prepared
+            if batch != 'field_deaths' or row['bodies'][0]['body'] in bodies]
     if active:
         redirect = runpy.run_path(str(ROOT / 'scripts/prepare-creature-uop-redirects.py'))['without_active_redirect']
         targets = {row['bodies'][0]['body']: row for row in rows}

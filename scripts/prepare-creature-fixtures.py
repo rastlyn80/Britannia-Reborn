@@ -83,6 +83,12 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'lizard_actions':
+        rows = gesture_baseline(family, registry_entries, {35, 36}, layered=True)
+        return runpy.run_path(str(ROOT / 'scripts/prepare-lizard-actions.py'))['prepared'](rows)
+    if family == 'field_deaths':
+        rows = gesture_baseline(family, registry_entries, {237}, layered=True)
+        return runpy.run_path(str(ROOT / 'scripts/prepare-field-deaths.py'))['prepared'](rows)
     if family in ('occurrence_deaths', 'kraken_reactions'):
         recipe = runpy.run_path(str(ROOT / ('scripts/prepare-' + family.replace('_', '-') + '.py')))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)

@@ -20,6 +20,10 @@ func _initialize() -> void:
 
 func run() -> void:
 	var active := "--active" in OS.get_cmdline_user_args()
+	var action_trial := "--action-trial" in OS.get_cmdline_user_args()
+	var candidates: Array = []
+	if action_trial:
+		candidates = JSON.parse_string(FileAccess.get_file_as_string("res://../work/creatures/lizard_actions/candidates.json"))
 	var historic := Registry.entry(33)
 	assert(historic.kind == "lizard_race_lizardman")
 	for body in [35, 36]:
@@ -27,9 +31,18 @@ func run() -> void:
 		var path := "res://local-art/creatures/lizardman-pillage-trial-%s.scn" % form.to_lower()
 		var record := Registry.entry(body).duplicate(true)
 		assert(not record.is_empty())
-		if active:
+		if action_trial:
+			var matching := candidates.filter(func(candidate: Dictionary) -> bool: return int(candidate.body) == body)
+			assert(matching.size() == 1 and record.assets.modern == path)
+			record = matching[0].presentation
+			assert(FileAccess.get_sha256(record.assets.modern) == record.authored_action_scene_sha256.modern)
+			Registry.entries[body] = record
+		elif active:
 			assert(record.status == "validated" and record.kind == "lizardman_" + form.to_lower())
-			assert(record.assets.modern == path)
+			if record.get("classic_gesture_batch") == "lizard_actions":
+				assert(record.classic_gesture_base_assets.modern == path)
+			else:
+				assert(record.assets.modern == path)
 		else:
 			record.assets = {"modern": path}
 			record.presentation_script = "res://Presentation/SourceArmedLizardmanVisual.gd"

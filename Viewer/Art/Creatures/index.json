@@ -800,7 +800,7 @@
       "surface_kind": "fur_pbr",
       "head_bone": "head",
       "assets": {
-        "modern": "res://Art/Creatures/Rat/rat-fidgets.scn"
+        "modern": "res://Art/Creatures/Rat/rat-deaths.scn"
       },
       "bodies": [
         {
@@ -982,7 +982,8 @@
         "Attack2": "Authored rat category on the CC0 rig; not source or UO choreography",
         "Alert": "Authored rat category on the CC0 rig; not source or UO choreography",
         "RatRear": "Authored hind-paw rear following Classic group 9",
-        "Fidget2": "Authored low head and tail motion following Classic group 10"
+        "Fidget2": "Authored low head and tail motion following Classic group 10",
+        "Death2": "Low front collapse fitted from Classic group 12"
       },
       "camera_height": 0.15,
       "pick_bounds": {
@@ -1000,41 +1001,32 @@
       "recipe_sha256": "07c78b7afa5abe2c4112c816fccfcb04b0e4bde757d3a7d4bc1e411d90386a8e",
       "source_pin_sha256": "20392cc33a03c7f5d50400dab5d704a25540efa4dc540a7cd61d2a4e96eae137",
       "native_validation": "Actual isolated two-client native Rat constructor, movement, hues, actions, hurt and corpse",
-      "authored_action_scene_sha256": {
-        "original": "ae58cfc3162b428e452aa56466d7973470ab692db962ab55fcea13d3162a108a",
-        "rounded": "ae58cfc3162b428e452aa56466d7973470ab692db962ab55fcea13d3162a108a",
-        "modern": "ae58cfc3162b428e452aa56466d7973470ab692db962ab55fcea13d3162a108a"
-      },
       "classic_action_categories": {
         "9": "RatRear",
-        "10": "Fidget2"
+        "10": "Fidget2",
+        "8": "Death",
+        "12": "Death2"
       },
       "classic_motion_references": {
-        "9": {
+        "8": {
           "body": 238,
-          "group": 9,
+          "group": 8,
           "archive": "anim.mul",
           "graphic": 238,
-          "frames": 5,
-          "directional_payload_sha256": "239553488251f7ecf08f9d48c3a0d7bfd9a1ab806a44779dd5b494696cd80319"
+          "frames": 6,
+          "directional_payload_sha256": "863cd3c69f79471d85550b252decc3ae5bb8b470db8acee348c3839161944c7c"
         },
-        "10": {
+        "12": {
           "body": 238,
-          "group": 10,
+          "group": 12,
           "archive": "anim.mul",
           "graphic": 238,
-          "frames": 3,
-          "directional_payload_sha256": "f6a8fbb48f19333bd1c997004e6c477a40d726a409c9452876b95255669c2794"
+          "frames": 6,
+          "directional_payload_sha256": "1f026bcde688d7cb26f5524b48b29809a1e92b9782db44e391db7a43b6842aaa"
         }
       },
-      "authored_action_reference": {
-        "body": 238,
-        "group": 9,
-        "archive": "anim.mul",
-        "graphic": 238,
-        "frames": 5,
-        "directional_payload_sha256": "239553488251f7ecf08f9d48c3a0d7bfd9a1ab806a44779dd5b494696cd80319"
-      }
+      "presentation_script": "res://Presentation/FieldClassicCollapseVisual.gd",
+      "collapse_renderer_sha256": "8d42e09c7b2b89fee3227dedb7eba4cfef4b1c704db42827a8500888fbc369f9"
     },
     {
       "kind": "cat_domestic",

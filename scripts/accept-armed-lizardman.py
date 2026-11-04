@@ -43,6 +43,11 @@ def active_row(row, native_digest):
 
 
 def checked_rows(index, active):
+    if active and any(row.get('classic_gesture_batch') == 'lizard_actions' for row in index['entries']):
+        actions = runpy.run_path(str(ROOT / 'scripts/accept-classic-gestures.py'))
+        baseline, _ = actions['checked'](index, True, 'lizard_actions')
+        index = dict(index, entries=[row for row in index['entries']
+                                    if row.get('classic_gesture_batch') != 'lizard_actions'] + baseline)
     folder = SEALED if active else EVIDENCE
     report_file = SEALED / 'live.json' if active else LIVE
     runtime = read(folder / 'native-runtime.json')

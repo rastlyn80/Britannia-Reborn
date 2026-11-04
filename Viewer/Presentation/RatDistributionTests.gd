@@ -1,6 +1,7 @@
 extends SceneTree
 ## Source-only disposable project: no original game inputs or private artwork.
 const Geometry=preload("res://Presentation/SkinGeometry.gd")
+const FieldCollapse := preload("res://Presentation/FieldClassicCollapseVisual.gd")
 var checks:=0
 var failures:=0
 func _initialize() -> void:call_deferred("run")
@@ -12,7 +13,9 @@ func run() -> void:
 	check(not DirAccess.dir_exists_absolute("res://local-art"),"No local/private art is present")
 	var scene := "res://Art/Creatures/Rat/rat-fidgets.scn"
 	var has_fidgets := FileAccess.file_exists(scene)
-	var expected := scene if has_fidgets else "res://Art/Creatures/Rat/rat.glb"
+	var collapse := "res://Art/Creatures/Rat/rat-deaths.scn"
+	var has_collapses := FileAccess.file_exists(collapse)
+	var expected := collapse if has_collapses else (scene if has_fidgets else "res://Art/Creatures/Rat/rat.glb")
 	check(registry.supports_body(238) and registry.entry(238).assets.modern==expected,"Public native Rat route resolves")
 	if has_fidgets:
 		var provenance: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://Art/Creatures/Rat/provenance.json"))
@@ -21,6 +24,10 @@ func run() -> void:
 	check(actor.human_visual==null and actor.horse_visual!=null,"Actual public rat avatar loads")
 	if actor.horse_visual==null:quit(1);return
 	var visual: Node3D=actor.horse_visual;visual.set_process(false);visual.set_physics_process(false);visual.contact.enabled=false
+	if has_collapses:
+		var proof: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://Art/Creatures/Rat/deaths-provenance.json"))
+		check(visual is FieldCollapse and proof.scene_sha256 == FileAccess.get_sha256(collapse),
+			"Exact authored collapses and their public renderer ship")
 	var rig: Skeleton3D=visual.skeleton;var mesh: MeshInstance3D=visual.model.find_children("*","MeshInstance3D",true,false)[0]
 	check(rig.get_bone_count()==21 and visual.contact.feet.size()==4,"Source rig and four real two-joint legs ship")
 	check(mesh.get_active_material(0).shader==preload("res://Presentation/CreatureFurSurface.gdshader"),"Public avatar keeps matte fur")
@@ -33,6 +40,8 @@ func run() -> void:
 	var clips := ["Idle","Walk","Run","Attack","Attack2","Hit","Fidget","Eat","Alert","Death"]
 	if has_fidgets:
 		clips.append_array(["RatRear", "Fidget2"])
+	if has_collapses:
+		clips.append("Death2")
 	for clip in clips:
 		check(visual.animator.has_animation(clip),"Every declared public category ships: "+clip)
 		visual.play(clip,0.);visual.animator.get_animation(clip).loop_mode=Animation.LOOP_NONE;visual.animator.pause()
@@ -48,6 +57,12 @@ func run() -> void:
 			visual.dead = false
 			check(visual.receive_action({"protocol": "classic", "action": slot}), "Public fidget packet is consumed")
 			check(visual.current_clip == ("RatRear" if slot == 9 else "Fidget2"), "Public fidget selects its own motion")
+	if has_collapses:
+		for slot: int in [8, 12]:
+			visual.dead = false
+			check(visual.receive_action({"protocol": "classic", "action": slot}), "Public collapse packet is consumed")
+			check(visual.dead and visual.current_clip == ("Death" if slot == 8 else "Death2"),
+				"Each public death group selects a distinct collapse")
 	var corpses=preload("res://Presentation/CorpseModels.gd");var corpse: Node3D=corpses.build(238)
 	check(corpse!=null and corpse.get_meta("corpse_body")==238 and corpse.get_meta("graphic_id")==0x2006,"Native corpse graphic/body resolves without original game data")
 	if corpse:

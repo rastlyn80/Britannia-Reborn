@@ -1,0 +1,27 @@
+{
+  "license": "GPL-3.0-or-later; underlying br-n518 Rat assets CC0-1.0",
+  "predecessor": "provenance.json",
+  "scene_sha256": "315aae9a652de46d4e12635654db4efd1bce1eb7b147ac3d004ccb7d5a3e312d",
+  "source_sha256": "ae58cfc3162b428e452aa56466d7973470ab692db962ab55fcea13d3162a108a",
+  "renderer_sha256": "8d42e09c7b2b89fee3227dedb7eba4cfef4b1c704db42827a8500888fbc369f9",
+  "native_receipt_sha256": "e4dc71510aef2c7eb36f39b6a350d12747923f035a88ed2e0a574cf0fd52c950",
+  "classic_references": {
+    "8": {
+      "body": 238,
+      "group": 8,
+      "archive": "anim.mul",
+      "graphic": 238,
+      "frames": 6,
+      "directional_payload_sha256": "863cd3c69f79471d85550b252decc3ae5bb8b470db8acee348c3839161944c7c"
+    },
+    "12": {
+      "body": 238,
+      "group": 12,
+      "archive": "anim.mul",
+      "graphic": 238,
+      "frames": 6,
+      "directional_payload_sha256": "1f026bcde688d7cb26f5524b48b29809a1e92b9782db44e391db7a43b6842aaa"
+    }
+  },
+  "interpretation": "Authored low collapse on the licensed rig from visual reference. No original game artwork is included."
+}

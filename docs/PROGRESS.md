@@ -1,3 +1,15 @@
+# Hind, Rat and armed Lizardman actions
+
+Hind 237 and Rat 238 now distinguish Classic collapse groups 8 and 12. Hind rears and rolls for group 8. Rat uses a low collapse for group 12. The isolated ModernUO trial passed 565 checks across Hind, Enraged Hind and Rat. The active client passed 1,560 decoded poses on flat ground and two finite slopes. The licensed Rat upgrade ships with the client and passed 382 checks in a clean copy.
+
+Lizardman 35 and 36 now distinguish ten Classic groups on the retained Third Dawn spear and mace rigs. The seven fitted clips cover a rear collapse, three attacks, two guard reactions and a raised-weapon fidget. The existing forward collapse, hit and fidget retain their original keys. The new motions use hilt and shaft targets estimated from the Classic views. The arm solver limits reach, with a maximum sampled target adjustment of 0.319 m. The isolated server trial passed 475 checks across both bodies. The installed client passed 1,220 decoded action samples and 588 explicit collapse samples. The original armed corpse gate passed on slopes and stair edges with both weapons and all six body and hue cases.
+
+The previous full regression passed, including 4,096 terrain samples and 2,689 statics in the final world check. This batch reduces distinct Classic action pairs with a shared replacement from 926 to 908. Overall route coverage remains 5,328 of 6,918 slots (77.0%). The corpse catalogue covers 324 body keys. The full regression of the new registry is running.
+
+Timber Wolf, woolly sheep and shorn sheep remain staged. Their fitted motions passed 4,704 decoded pose samples, and the new default deaths passed nine client-side death-to-corpse handoffs over flat and sloped terrain. The three bodies still need the isolated native trial.
+
+The six-facet occurrence census lists 105 unresolved spawn names. An offline probe used `AssemblyHandler.FindTypeByName` from the installed ModernUO server and its configured content assemblies. All five positive controls resolved, and none of the 105 configured names resolved. This is evidence about the current compiled server content. The probe and its assembly hashes are under `work/creatures/spawn-type-probe`.
+
 # Occurrence-ranked collapse and recoil updates
 
 Orc 17 and Ettin 18 now use a fitted rear collapse for Classic group 2 and retain the recovered forward collapse for group 3. The explicit death poses follow the last ground plane while the native root stays fixed. The active client passed 1,764 decoded pose samples on flat ground and two finite slopes, retained the previous animation keys and passed six static corpse hue cases. The isolated ModernUO trial passed 535 checks, including both explicit collapses and real death with static corpse replication.
@@ -6,9 +18,7 @@ Kraken and Leviathan 77 retain the long recovered hit for Classic group 10. Grou
 
 Water Elemental 16 now has a high recoil and separate right- and left-arm recoils in Classic groups 10, 15 and 16. These are authored on the public Quaternius rig. The newer-protocol hit still plays the previous licensed track. The isolated native trial passed 297 checks and the installed bundle passed 25 clean-client checks, including the three motion shapes, retained keys and the static puddle corpse. The separately licensed scene ships with the client.
 
-The mounted Restless Soul registry passed the full project regression. After this batch, the ledger still routes 5,328 of 6,918 tracked slots (77.0%). Seven pairs of distinct Classic groups now have separate motions, lowering the shared-replacement count from 933 to 926. The corpse catalogue covers 324 body keys. The combined regression of these changes is running.
-
-The private Hind and Rat trials passed 1,560 decoded flat and sloped poses. The two Lizardman forms have three preview attacks each, with 366 sampled poses retaining their weapon grips. These candidates still need native validation. Run the three isolated batches with `scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily` and one of `occurrence_deaths`, `kraken_reactions` or `water_reactions`.
+The mounted Restless Soul registry and this batch both passed the full project regression. Seven pairs of distinct Classic groups gained separate motions. Run the isolated checks with `scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily` and one of `occurrence_deaths`, `kraken_reactions` or `water_reactions`.
 
 # Restless Soul mounted routes
 
