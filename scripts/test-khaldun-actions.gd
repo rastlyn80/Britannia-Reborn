@@ -31,7 +31,8 @@ func run() -> void:
 		var hue := int(row.native_constructor_hues.values()[0])
 		if active_body:
 			var family := "khaldun_actions" if active_body == 637 else "restless_soul_actions"
-			assert(body == active_body and row.status == "validated" and row.family == family)
+			var layered_mount: bool = active_body == 970 and row.family == "restless_soul_mounted" and row.has("restless_soul_mount_sha256")
+			assert(body == active_body and row.status == "validated" and (row.family == family or layered_mount))
 		else:
 			Registry.entry(body)
 			Registry.entries[body] = row

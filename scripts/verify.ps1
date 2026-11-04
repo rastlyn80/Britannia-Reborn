@@ -210,6 +210,10 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
   & python -B "$root/scripts/accept-restless-soul-actions.py" check-active
   if ($LASTEXITCODE) {throw 'Active Restless Soul routes failed'}
  }
+ if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.restless_soul_mount_sha256 }) {
+  & python -B "$root/scripts/accept-restless-soul-mounted.py" check-active
+  if ($LASTEXITCODE) {throw 'Active Restless Soul mounted routes failed'}
+ }
  if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.family -eq 'hiryu_mount' }) {
   $hiryuRide = & $godot --headless --path "$root/Viewer" --script res://Presentation/HiryuRidingTests.gd -- --active 2>&1
   $hiryuExit = $LASTEXITCODE

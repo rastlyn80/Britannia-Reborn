@@ -87,6 +87,9 @@ def main():
     position, = (i for i, entry in enumerate(entries) if any(identity['body'] == 970 for identity in entry['bodies']))
     run_active = SHARED['run_active_test']
     if mode == 'check-active':
+        if entries[position].get('restless_soul_mount_sha256'):
+            mounted = runpy.run_path(str(HERE / 'accept-restless-soul-mounted.py'))
+            active = mounted['sealed_row']()
         assert entries[position] == active
         run_active('--active-ghost', 2499)
         return

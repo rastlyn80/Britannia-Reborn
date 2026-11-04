@@ -1,3 +1,13 @@
+# Restless Soul mounted routes
+
+The mounted renderer uses the native layer 25 graphic, serial and hue to show the split robe and saddle only while a supported mount is worn. Dismount restores the original on-foot visual. The seven Classic routes use six retained seated donors and one urging gesture fitted from the five stored views. The original and rounded robes retained the ghost atlas and 40-joint rig. A separate rebuild matched the geometry, atlas, binds and 31,818 animation keys. The packed files differed, so the isolated receipt keeps the exact tested scene hashes.
+
+The actual client passed 1,575 decoded saddle poses across three treatments and three mount graphics. Forward+ captured 14 poses using a dyed horse and an ostard. The two-client ModernUO fixture passed 384 checks across Spectral Armour and Restless Soul. It used the server's mount setter and checked the worn item, independent dye, native walk and run, dismount, remount, and the seven exact Classic packets. Native death released the same live horse and both clients started the on-foot ghost collapse and received its corpse. This is an explicit fixture mount and does not establish autonomous riding. The tested saddle points and ankle positions cover the sampled poses. Continuous cloth and mount surface contact remain open.
+
+The seven mounted routes are active locally. The ledger routes 5,328 of 6,918 slots (77.0%) with zero unresolved gaps in the Classic MUL source-frame audit. It still identifies 933 pairs of different Classic source groups sharing a replacement. The corpse catalogue covers 324 body keys. The combined regression passed before activation and the mounted and on-foot checks passed against the active registry. The full regression of the mounted registry is running.
+
+Run `scripts/prepare-restless-soul.ps1 -Mounted` and `scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily restless_soul_mounted` for the isolated trial. Use `python -B scripts/accept-restless-soul-mounted.py check-active` to verify the installed routes. The mounted bake preserves any scene already in the active registry.
+
 # Restless Soul motion reconstruction
 
 The retained archive and the existing ghost rig provided 42 comparable donor clips, including seven seated candidates. A five-view mask comparison identified usable starting poses and showed that several donor names did not predict a faithful match. The 17 previously missing on-foot slots now have distinct prepared clips. The fitted replacements use original donor tracks, registered root placement and facing, and targeted posing for the bow, cast, turn and other gestures. Sixteen improve average silhouette overlap against their respective donor or idle baselines. The chest fidget matches the reference less closely than idle by 0.009 overlap, while adding the separate chest gesture. The fits remain approximations. The directed cast improved from 0.495 to 0.605 mean overlap and the bow from 0.471 to 0.556.
@@ -6,7 +16,7 @@ The on-foot package passed 2,499 decoded skin poses across the three treatments,
 
 The pinned donor library, three fitted scenes and preparation receipt regenerate byte for byte. Run `scripts/prepare-restless-soul.ps1` with the retained source files and an optional local `-Extractor` for the reviewed Unshield CLI, then `scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily restless_soul_actions`. Use `python -B scripts/accept-restless-soul-actions.py check-active` to recheck the active routes.
 
-The seven seated groups require a split robe matching the stored Classic silhouette. A private proof retained the same source atlas and leg rig, splitting the lower robe into separately weighted panels. It improved silhouette overlap for all six seated original donor trials. The seventh proof uses a separately fitted urging gesture. Mounted previews sampled 175 poses each for the original and rounded treatments, with the pelvis aligned to the existing horse saddle and both feet on opposite sides. Worn mount presentation, continuous clearance during transitions and the native relevance of these slots for body 970 remain open.
+The initial seated proof kept the source atlas and leg rig and split the lower robe into separately weighted panels. It improved silhouette overlap for all six seated donor trials. The seventh proof uses a separately fitted urging gesture. These proofs preceded the mounted routes documented above.
 
 # Spectral Armour actions and Restless Soul trials
 

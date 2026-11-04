@@ -1,4 +1,4 @@
-param([string]$Extractor)
+param([string]$Extractor, [switch]$Mounted)
 
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
@@ -32,6 +32,12 @@ try {
     Invoke-GhostGodot 'export-ghost-silhouette-poses.gd' @('--on-foot')
     Invoke-GhostPython "$review/review-ghost-on-foot.py"
     Invoke-GhostGodot 'stage-ghost-on-foot-preview.gd'
+    if ($Mounted) {
+        Invoke-GhostPython "$review/prepare-mounted-robe.py"
+        Invoke-GhostGodot 'bake-mounted-robe.gd'
+        Invoke-GhostGodot 'bake-mounted-robe.gd' @('--rounded')
+        Invoke-GhostPython "$PSScriptRoot/prepare-restless-soul-mounted.py"
+    }
 }
 finally {
     Pop-Location

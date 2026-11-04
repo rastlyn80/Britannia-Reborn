@@ -83,6 +83,8 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'restless_soul_mounted':
+        return runpy.run_path(str(ROOT / 'scripts/prepare-restless-soul-mounted.py'))['prepared']()
     if family == 'restless_soul_actions':
         return runpy.run_path(str(ROOT / 'scripts/prepare-restless-soul-actions.py'))['prepared']()
     if family == 'khaldun_actions':
