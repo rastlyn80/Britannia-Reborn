@@ -39,22 +39,29 @@ func check_motion(actor: Node3D, name: String) -> void:
 	var data := Ground.skin_points(weapon, rig)
 	var floors: Dictionary = {}
 	var worst_socket_error := 0.0
+	var collapse_offset := 0.0
 	for clip in ["Idle", "Walk", "Run", "Attack", "KneelingSwing", "Death"]:
 		player.play(clip, 0.0)
 		player.advance(0.0)
 		var floor := INF
-		for i in 61:
-			player.seek(player.get_animation(clip).length * float(i) / 60.0, true)
+		var samples := 481 if clip == "Death" else 61
+		for i in samples:
+			player.seek(player.get_animation(clip).length * float(i) / float(samples - 1), true)
 			rig.force_update_all_bone_transforms()
 			var grip := rig.get_bone_global_pose(rig.get_bone_parent(joint))
 			var pose := rig.get_bone_global_pose(joint)
-			worst_socket_error = maxf(worst_socket_error, (grip * rig.get_bone_rest(joint).origin).distance_to(pose.origin))
+			var offset := (grip * rig.get_bone_rest(joint).origin).distance_to(pose.origin)
+			if clip == "Death":
+				collapse_offset = maxf(collapse_offset, offset)
+			else:
+				worst_socket_error = maxf(worst_socket_error, offset)
 			floor = minf(floor, Ground.minimum_plane_gap(data, rig, rig.global_transform, Vector3.ZERO, Vector3.UP))
 		floors[clip] = floor
 		if clip != "Death":
 			assert(floor > 0.25)
 	assert(worst_socket_error < 0.0001)
-	print(name, " weapon clearance by clip ", floors)
+	print(name, " weapon clearance by clip ", floors, " max collapse grip offset ", collapse_offset)
+	assert(floors["Death"] >= 0.005 and collapse_offset < 0.001)
 
 func check_corpse(body: int, hue: int, name: String) -> void:
 	var posed := Corpses.posed(body, hue)
