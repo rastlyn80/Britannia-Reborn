@@ -182,7 +182,7 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
   & python -B "$root/scripts/accept-classic-gestures.py" --batch exact_creature_fidgets --check-active
   if ($LASTEXITCODE) {throw 'Native exact creature fidget evidence failed'}
  }
- foreach ($actionBatch in @{4='gargoyle_classic';9='dragon_daemon';14='earth_elemental_aos';21='giant_serpent_pillage';26='wraith_sway';28='spider_mongbat';30='reaper_harpy';42='ratman_hunch';48='scorpion_imp';56='skeleton_axe';57='bone_cyclops';67='fidget_aliases_toad';70='terathan_classic';85='ophidian_staff';86='ophidian_bardiche';130='blistering_pillage';148='skeletal_mage_staff';259='grizzle_antler';267='troglodyte_reach';317='vampire_bat_actions';730='ready_stances';831='parrot_flight'}.GetEnumerator()) {
+ foreach ($actionBatch in @{4='gargoyle_classic';9='dragon_daemon';14='earth_elemental_aos';21='giant_serpent_pillage';26='wraith_sway';28='spider_mongbat';30='reaper_harpy';42='ratman_hunch';48='scorpion_imp';56='skeleton_axe';57='bone_cyclops';67='fidget_aliases_toad';70='terathan_classic';85='ophidian_staff';86='ophidian_bardiche';130='blistering_pillage';148='skeletal_mage_staff';172='late_classic_actions';259='grizzle_antler';267='troglodyte_reach';302='hopper_horde_actions';317='vampire_bat_actions';730='ready_stances';831='parrot_flight'}.GetEnumerator()) {
   if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.classic_gesture_native_sha256 -and $_.bodies.body -contains $actionBatch.Key }) {
    & python -B "$root/scripts/accept-classic-gestures.py" --batch $actionBatch.Value --check-active
    if ($LASTEXITCODE) {throw "Active creature action evidence failed: $($actionBatch.Value)"}

@@ -82,6 +82,14 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'late_classic_actions':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-late-classic-actions.py'))
+        rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']))
+        return recipe['prepared'](rows)
+    if family == 'hopper_horde_actions':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-hopper-horde-actions.py'))
+        rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']))
+        return recipe['prepared'](rows)
     if family == 'vampire_bat_actions':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-vampire-bat-actions.py'))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']))
@@ -849,13 +857,19 @@ def main():
                 row['legacy_slot11_evidence'] = proof
                 row['classic_action_categories'] = row.get('classic_action_categories', {}) | {'11': 'Fidget'}
         action = {'late_donors_active': (831, 'parrot_flight'),
+                  'champions_active': (172, 'late_classic_actions'),
+                  'devourer_lion_hiryu_active': (303, 'late_classic_actions'),
+                  'aos_armed_active': (311, 'late_classic_actions'),
+                  'occurrence_next_active': (302, 'hopper_horde_actions'),
+                  'horde_rune_active': (776, 'hopper_horde_actions'),
                   'vampire_bat_active': (317, 'vampire_bat_actions'),
                   'late_source_active': (267, 'troglodyte_reach')}.get(args.family)
         if action and active_by_body.get(action[0], {}).get('classic_gesture_native_sha256'):
             body, batch = action
             gesture_gate = runpy.run_path(str(ROOT / 'scripts/accept-classic-gestures.py'))
             _, updated = gesture_gate['checked'](index, True, batch)
-            expected = [updated[0] if row['bodies'][0]['body'] == body else row for row in expected]
+            overlay, = (row for row in updated if row['bodies'][0]['body'] == body)
+            expected = [overlay if row['bodies'][0]['body'] == body else row for row in expected]
         redirects = runpy.run_path(str(ROOT / 'scripts/prepare-creature-uop-redirects.py'))
         original_by_body = {body: redirects['without_active_redirect'](row) for body, row in active_by_body.items()}
         if len(registered) != len(expected) or original_by_body != {

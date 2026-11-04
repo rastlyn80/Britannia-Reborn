@@ -142,6 +142,38 @@ def scan_aliases(data, ledger, bodies):
                 print(f'Body {body}: group {slot} matches routed group {donor} ({clip}) in all five directions')
 
 
+def audit_shared_routes(data, ledger, bodies):
+    def key(row):
+        return row['body'], row['archive'], row['graphic'], row['layout']
+
+    sources = {(*key(row), row['group']): row for row in ledger['original_mul_group_candidates']}
+    decoded = {}
+    reviewed = []
+    for pair in ledger['original_mul_shared_replacement_candidates']:
+        if bodies and pair['body'] not in bodies:
+            continue
+        records = []
+        for slot in pair['classic_slots']:
+            identity = (*key(pair), slot)
+            if identity not in decoded:
+                directions = group_pixels(data, sources[identity])
+                decoded[identity] = {
+                    direction: [None if frame is None else (*frame[:3], hashlib.sha256(frame[3]).digest())
+                                for frame in frames]
+                    for direction, frames in directions.items()
+                }
+            records.append(decoded[identity])
+        differences = [direction for direction in range(5) if records[0][direction] != records[1][direction]]
+        reviewed.append(dict(pair, directions_with_differences=differences))
+    OUTPUT.mkdir(parents=True, exist_ok=True)
+    suffix = '-' + '-'.join(map(str, sorted(bodies))) if bodies else ''
+    path = OUTPUT / f'shared-replacement-audit{suffix}.json'
+    path.write_text(json.dumps(reviewed, indent=2) + '\n', encoding='utf-8')
+    different = sum(bool(row['directions_with_differences']) for row in reviewed)
+    print(f'Shared replacements: {different} different, {len(reviewed) - different} identical across {len(reviewed)} archive pairs')
+    print(path)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('bodies', nargs='*', type=int)
@@ -149,11 +181,17 @@ def main():
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument('--compare', action='store_true', help='Compare registered frames in all stored directions')
     mode.add_argument('--scan-aliases', action='store_true', help='Find exact matches for unresolved Classic MUL groups')
+    mode.add_argument('--audit-shared-routes', action='store_true', help='Compare registered pixels where different MUL payloads share a replacement')
     parser.add_argument('--direction', type=int, choices=range(5), default=2)
     args = parser.parse_args()
     ledger = read(LEDGER)
     config = read(ROOT / 'Server/runtime/Configuration/modernuo.json')
     data = Path(config['dataDirectories'][0])
+    if args.audit_shared_routes:
+        if args.groups:
+            parser.error('--audit-shared-routes accepts optional bodies but no --groups')
+        audit_shared_routes(data, ledger, set(args.bodies))
+        return
     if args.scan_aliases:
         if args.groups:
             parser.error('--scan-aliases accepts optional bodies but no --groups')

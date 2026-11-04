@@ -5,6 +5,7 @@ AnimationSequence records are metadata, not decoded animation frame pixels.
 """
 import argparse,ast,hashlib,html,importlib.util,json,re,runpy,struct
 from contextlib import ExitStack
+from itertools import combinations
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 ART=ROOT/'Viewer/local-art/creatures';OUT=ROOT/'outputs/creatures'
@@ -149,6 +150,26 @@ def original_uop_redirect_candidates(sequence, mobtypes, framed, classic_routes)
                                'destination_clip': target_route.get('resolved')})
     return sorted(candidates, key=lambda row: (row['body'], row['classic_slot']))
 
+def original_mul_shared_routes(mul_groups):
+    """Find distinct stored Classic groups that play the same replacement."""
+    by_source = {}
+    for row in mul_groups:
+        route = row.get('matching_classic_route')
+        if not route or not route['resolved']:
+            continue
+        if [direction['direction'] for direction in row['directions']] != list(range(5)):
+            continue
+        key = (row['body'], row['archive'], row['graphic'], row['layout'], route['resolved'])
+        by_source.setdefault(key, []).append(row)
+    evidence = []
+    for (body, archive, graphic, layout, clip), groups in sorted(by_source.items()):
+        for first, second in combinations(sorted(groups, key=lambda row: row['group']), 2):
+            if second['group'] in first.get('same_payload_groups', ()):
+                continue
+            evidence.append({'body': body, 'archive': archive, 'graphic': graphic, 'layout': layout,
+                             'classic_slots': [first['group'], second['group']], 'replacement': clip})
+    return evidence
+
 def resolve(model,label,fallback):
     authored=model.get('authored_replacements',{}) | model.get('authored_clips',{})
     if model['kind'] in ('energy_vortex', 'sand_vortex'):
@@ -230,6 +251,7 @@ def main():
             continue
         for row in matches:
             row['same_payload_groups'] = [match['group'] for match in matches if match is not row]
+    shared_routes = original_mul_shared_routes(mul_groups)
     original=[];new_actions=[]
     for record in sequence:
         body=record['animation_ref'];model=native.get(body)
@@ -279,6 +301,7 @@ def main():
             'routable_slots':sum(r['resolved'] is not None for r in rows),
             'missing_protocol_slots':sum(r['resolved'] is None for r in rows),
             'unresolved_slots_with_source_frame_evidence':len(source_frame_gaps),
+            'mul_shared_replacement_candidate_pairs':len({(row['body'], *row['classic_slots']) for row in shared_routes}),
             'unresolved_classic_uop_redirect_candidates':len(redirect_candidates),
             'unresolved_classic_uop_redirects_with_routable_destination':sum(
                 row['destination_clip'] is not None for row in redirect_candidates),
@@ -299,13 +322,15 @@ def main():
     assert counts['original_new_entries_without_generic_model']+counts['original_new_entries_without_generic_route']==counts['original_new_entries_total_without_generic_route']
     scope=('Generic creature renderer protocol slots only; distinct from original per-body required actions and choreography quality. '
            'Source clips, aliases, authored motions and missing routes remain explicit. Original UOP sequence metadata is recorded separately; '
-           'UOP frame headers are inventoried by canonical group. MUL candidates use direct and Bodyconv slots; they do not establish Body.def or UOP precedence. Frame pixels are not decoded. Humans and earlier mount/bovine action ledgers are separate. '
+           'UOP frame headers are inventoried by canonical group. MUL candidates use direct and Bodyconv slots; they do not establish Body.def or UOP precedence. '
+           'Shared replacement candidates compare ordered payload hashes across five stored directions. Different hashes prompt a visual comparison. Frame pixels are not decoded. Humans and earlier mount/bovine action ledgers are separate. '
            'The historical original_new_entries_without_generic_route counter covers already routed bodies only; the explicit total counter also includes entries on bodies without any generic model. '
            'Those bodies can include specialized human/mount presenters; this is not a global missing-animation total or choreography completion percentage.')
     report={'counts':counts,'scope':scope,'renderer_sha256':renderer_sha,'archives':archives,'routes':rows,
             'original_sequence_metadata':sequence,'original_group_links':original,
             'original_uop_frame_groups':frame_groups,'original_mul_group_candidates':mul_groups,
             'source_frame_gaps':source_frame_gaps,
+            'original_mul_shared_replacement_candidates':shared_routes,
             'original_uop_redirect_candidates':redirect_candidates,
             'original_new_protocol_actions':new_actions}
     OUT.mkdir(parents=True,exist_ok=True);(OUT/'actions.json').write_text(json.dumps(report,indent=2),encoding='utf-8')

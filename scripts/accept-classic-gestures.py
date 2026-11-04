@@ -40,6 +40,8 @@ BATCHES = {
     'skeletal_mage_staff': ((148,), 'PreparedCreatureActionLive.gd', ('test-skeletal-mage-staff.gd',)),
     'grizzle_antler': ((259,), 'PreparedCreatureActionLive.gd', ('test-grizzle-antler.gd',)),
     'vampire_bat_actions': ((317,), 'PreparedCreatureActionLive.gd', ('test-vampire-bat-actions.gd',)),
+    'hopper_horde_actions': ((302, 776), 'PreparedCreatureActionLive.gd', ('test-hopper-horde-actions.gd',)),
+    'late_classic_actions': ((172, 303, 311), 'PreparedCreatureActionLive.gd', ('test-late-classic-actions.gd',)),
 }
 
 
@@ -196,11 +198,18 @@ def test_active(batch):
     trial_args = {'blistering_pillage': ['--blistering'], 'ratman_hunch': ['--ratman']}.get(batch, [])
     for script in BATCHES[batch][2]:
         run_client_check(godot, env, f'res://../scripts/{script}', ['--active', *trial_args])
-    package = {'parrot_flight': 'late_donors', 'troglodyte_reach': 'late_source'}.get(batch)
+    package = {'parrot_flight': 'late_donors', 'troglodyte_reach': 'late_source',
+               'late_classic_actions': 'aos_armed'}.get(batch)
     if package:
         run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', [f'--family={package}'])
     if batch == 'vampire_bat_actions':
         run_client_check(godot, env, 'res://Presentation/VampireBatRouteTests.gd', [])
+    if batch == 'hopper_horde_actions':
+        for family in ('occurrence_next', 'horde_rune'):
+            run_client_check(godot, env, 'res://Presentation/OccurrenceCreatureRouteTests.gd', [f'--family={family}'])
+    if batch == 'late_classic_actions':
+        for test in ('ChampionCreatureRouteTests', 'DevourerLionHiryuRouteTests'):
+            run_client_check(godot, env, f'res://Presentation/{test}.gd', [])
     if batch == 'ready_stances':
         for family in ('raptor', 'slith'):
             run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', [f'--family={family}'])

@@ -19,7 +19,14 @@ func run() -> void:
 		var family := str(record.kind)
 		var body := int(record.bodies[0].body)
 		var expected_record := preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(record, Registry.entry(body))
-		assert(Registry.supports_body(body) and Registry.entry(body) == expected_record)
+		var active := Registry.entry(body)
+		assert(Registry.supports_body(body))
+		if body == 172 and active.has("classic_gesture_native_sha256"):
+			var path := "res://../work/creatures/late_classic_actions/accepted-native/base-rows.json"
+			var bases: Array = JSON.parse_string(FileAccess.get_file_as_string(path))
+			assert(bases.has(expected_record) and active.classic_gesture_base_assets == expected_record.assets)
+		else:
+			assert(active == expected_record)
 		var avatar := Avatar.new()
 		avatar.initial_body = body
 		root.add_child(avatar)

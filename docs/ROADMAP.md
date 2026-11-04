@@ -1,6 +1,8 @@
 # Source-backed creature action queue
 
-Vampire Bat 317 now uses two distinct actions for Classic groups 11 and 20. The ledger has 5,247 of 6,840 action slots routable, with original frames identified for five remaining gaps. Skittering Hopper is next by configured all-facet occurrence, followed by Horde Demon and Devourer. Rikktor and Darknight Creeper also have identified Classic frames. Keep autonomous spell selection and continuous terrain clearance separate from fixture-requested routes. Earth Elemental emergence on slopes and ledges, the native summon and the older Mongbat wing poses remain separate follow-ups.
+Skittering Hopper, Horde Demon, Devourer, Rikktor and Shadow Knight have passed the local activation gate for Classic group 11. The ledger routes 5,252 of 6,840 protocol slots (76.8%) and has no unrouted Classic slots in its current list of compatible archive frame records. There are still 1,588 unresolved protocol slots. The separate shared-replacement audit found 922 pairs with different registered Classic frames playing the same replacement.
+
+Review those pairs by configured all-facet occurrence, starting with the Orc's two fidgets. Water Elemental, Kraken and Ettin also have visually distinct motions in the sampled reference directions. Finish the two additional body routes exposed by the all-facet audit, Spectral Armour and Restless Soul, and verify the four standard-human Khaldun constructors. Keep modern mode and subaction selection, autonomous spell selection and continuous terrain clearance separate from explicit fixture requests. Rikktor's inherited idle slope penetration, Earth Elemental emergence on slopes and ledges, the native summon and older Mongbat wing poses remain open.
 
 # Juka Lord active and Hydra source trial
 
