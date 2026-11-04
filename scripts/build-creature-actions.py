@@ -224,7 +224,7 @@ def main():
         spec=importlib.util.spec_from_file_location('creature_sequences',ROOT/'scripts/uo-human-sequences.py')
         reader=importlib.util.module_from_spec(spec);spec.loader.exec_module(reader)
         path=data/'AnimationSequence.uop'
-        allowed={r['body'] for r in catalogue['native_targets']}
+        allowed={r['body'] for r in catalogue['native_targets'] + catalogue.get('additional_native_targets', [])}
         if path.exists():
             sequence=reader.inspect(path,allowed)
             archives.append({'name':path.name,'sha256':sha(path),'bytes':path.stat().st_size})
@@ -235,7 +235,8 @@ def main():
     framed={(row['body'],row['group']) for row in frame_groups if row['frame_headers'] is not None}
     classic_routes = {(row['body'], row['group_or_type']): row for row in rows if row['protocol'] == 'classic'}
     redirect_candidates = original_uop_redirect_candidates(sequence, mobtypes, framed, classic_routes)
-    native_layouts = {'monster': 'large', 'animal': 'small', 'sea': 'sea'}
+    native_layouts = {'monster': 'large', 'animal': 'small', 'sea': 'sea',
+                      'equipment': 'people', 'empty': 'people'}
     mul_equivalents = {}
     for row in mul_groups:
         route = classic_routes.get((row['body'], row['group']))

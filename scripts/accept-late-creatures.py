@@ -21,7 +21,7 @@ def replace_index(payload):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check-evidence', action='store_true')
-    parser.add_argument('--family', choices=('late_source', 'hydra', 'energy_vortex', 'champions', 'fey_champions', 'crane', 'deathwatch', 'tsuki_wolf', 'kappa', 'vampire_bat', 'yomotsu', 'occurrence_next', 'sand_vortex', 'bake_kitsune', 'horde_rune', 'devourer_lion_hiryu', 'elemental_minotaur', 'meer_donors', 'captain_cu', 'clockwork_tokuno', 'aos_creatures', 'aos_aliases', 'aos_mound', 'recovered_late', 'tormented_minotaur', 'harrower', 'late_donors', 'gargoyle_vendor', 'aos_armed', 'aos_abysmal', 'animated_weapon', 'slith', 'raptor', 'fetid_essence', 'corporeal_brume'), default='late_source')
+    parser.add_argument('--family', choices=('late_source', 'hydra', 'energy_vortex', 'champions', 'fey_champions', 'crane', 'deathwatch', 'tsuki_wolf', 'kappa', 'vampire_bat', 'yomotsu', 'occurrence_next', 'sand_vortex', 'bake_kitsune', 'horde_rune', 'devourer_lion_hiryu', 'elemental_minotaur', 'meer_donors', 'captain_cu', 'clockwork_tokuno', 'aos_creatures', 'aos_aliases', 'aos_mound', 'recovered_late', 'tormented_minotaur', 'harrower', 'late_donors', 'gargoyle_vendor', 'aos_armed', 'aos_abysmal', 'animated_weapon', 'slith', 'raptor', 'fetid_essence', 'corporeal_brume', 'khaldun_doom'), default='late_source')
     args = parser.parse_args()
     rows, classes = FIXTURES['prepared_entries'](args.family)
     evidence = ROOT / 'work/creatures' / args.family
@@ -52,6 +52,12 @@ def main():
             record['native_state'] != 'vendor-morph' or not record['native_death_refused']
             for record in report['records']):
         raise ValueError('Gargoyle vendor evidence must include the regional morph and death refusal')
+    if args.family == 'khaldun_doom' and (
+            report['test_sha256'] != SHA(ROOT / 'Viewer/Network/KhaldunDoomLive.gd')
+            or report['fixture_sha256'] != SHA(ROOT / 'Server/HorseIntegrationFixtures/CreatureFixtures.cs')
+            or any(record['corpse_suppressed'] != (record['body'] == 637) or not record['explicit_attack']
+                   for record in report['records'])):
+        raise ValueError('Khaldun and Doom require both native corpse outcomes and explicit attack packets')
     by_body = {row['bodies'][0]['body']: row for row in rows}
     if (len(candidates) != len(expected)
             or {(row['body'], row['native_class']) for row in candidates} != expected

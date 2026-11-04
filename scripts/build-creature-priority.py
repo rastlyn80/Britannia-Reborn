@@ -139,6 +139,21 @@ def heartwood_elf_bodies(path):
                 identities[name.casefold()] = int(body[1], 16)
     return identities
 
+def khaldun_human_bodies(source):
+    """Read the four standard-human constructors in the Khaldun quest folder."""
+    folder = source / 'Projects/UOContent/Engines/Khaldun/Mobiles'
+    paths = [folder / f'{name}.cs' for name in
+             ('GrimmochDrummel', 'LysanderGathenwale', 'MorgBergen', 'TavaraSewel')]
+    bodies = {}
+    for path in paths:
+        text = path.read_text(encoding='utf-8-sig')
+        ctor = re.search(rf'public {path.stem}\(\)\s*:\s*base\(AIType\.AI_\w+\)\s*\{{([^}}]+)\}}', text)
+        assignments = re.findall(r'\bBody\s*=\s*(0x19[01])\s*;', ctor[1] if ctor else '')
+        if len(assignments) != 1:
+            raise ValueError(f'Khaldun constructor body changed: {path.stem}')
+        bodies[path.stem.casefold()] = int(assignments[0], 16)
+    return bodies, paths
+
 def configured_mage_identities(source, expansion):
     """Explicit reviewed branch, not an inference from a few random witnesses."""
     core = source / 'Projects/Server/Main.cs'
@@ -170,6 +185,7 @@ def main():
     configured_mages, mage_identity_inputs = configured_mage_identities(source, expansion)
     heartwood_path = source / 'Projects/UOContent/Engines/ML Quests/Definitions/Heartwood.cs'
     heartwood = heartwood_elf_bodies(heartwood_path)
+    khaldun, khaldun_paths = khaldun_human_bodies(source)
     era = 'post-uoml' if expansion['SupportedFeatures'].get('SA', False) else 'uoml'
     files = source_files(ROOT / 'Server/runtime/Data/Spawns', era, maps)
     if not files:
@@ -221,6 +237,9 @@ def main():
         if key in heartwood:
             bodies = {heartwood[key]}
             mapping = 'Named Heartwood elf vendor constructor'
+        if key in khaldun:
+            bodies = {khaldun[key]}
+            mapping = 'Named Khaldun human constructor'
         literal_bodies = bodies.copy()
         bodies, only_human = identity_candidates(literal_bodies, witnessed[key])
         if bodies != literal_bodies:
@@ -252,7 +271,7 @@ def main():
     queue = [r['name'] for r in creatures if r['graphics'] in ['unrouted', 'partial route', 'identity needs audit']]
     result = {'maps': sorted(maps), 'era': era, 'server_pin': index['server_pin'], 'active_spawners': count,
               'scope': 'Configured spawn frequency, not a live full-world census. Rank by capped probability-weighted shared capacity; spawn-location counts are exact after identical cross-file definitions are counted once. Capacity is an exposure proxy, not an exact random draw expectation or equilibrium population. Items compete for slots before being excluded. Indirect camp/quest/summon spawns, death rates, terrain failures and manual placements are not counted. Existing routes are not final fidelity/action completion.',
-              'inputs': {str(p.relative_to(ROOT)): sha(p) for p in [expansion_path, heartwood_path, *files]},
+              'inputs': {str(p.relative_to(ROOT)): sha(p) for p in [expansion_path, heartwood_path, *khaldun_paths, *files]},
               'rows': rows, 'next_unrouted_creatures': queue, 'excluded_items': sorted(excluded), 'unresolved_types': sorted(unresolved)}
     result['creature_work_order'] = [r['name'] for r in creatures]
     result['next_native_evidence_gaps'] = [

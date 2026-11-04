@@ -694,8 +694,8 @@ def prepared_entries(family, registry_entries=None):
                        authored_replacements={'Pillage': 'Authored stoop on the original idle rig'})
             rows.append(row)
         return rows, {35: ['Lizardman'], 36: ['Lizardman']}
-    assert family in ['mages','juka','juka_lord','hydra','energy_vortex','late_source','champions','fey_champions','crane','deathwatch','tsuki_wolf','kappa','vampire_bat','yomotsu','occurrence_next','horde_rune','sand_vortex','bake_kitsune','devourer_lion_hiryu','hiryu_mount','elemental_minotaur','meer_donors','captain_cu','clockwork_tokuno','aos_creatures','aos_aliases','aos_mound','recovered_late','tormented_minotaur','harrower','late_donors','gargoyle_vendor','aos_armed','aos_abysmal','animated_weapon','slith','raptor','fetid_essence','corporeal_brume','candidate_batch','solen_queens',*PREPARED_FORMS],'Prepared native trial requires an explicit checked family'
-    if family in ('late_source', 'champions', 'fey_champions', 'yomotsu', 'occurrence_next', 'horde_rune', 'sand_vortex', 'bake_kitsune', 'devourer_lion_hiryu', 'hiryu_mount', 'elemental_minotaur', 'meer_donors', 'captain_cu', 'clockwork_tokuno', 'aos_creatures', 'aos_aliases', 'aos_mound', 'recovered_late', 'tormented_minotaur', 'harrower', 'late_donors', 'gargoyle_vendor', 'aos_armed', 'aos_abysmal', 'animated_weapon', 'slith', 'raptor', 'fetid_essence', 'corporeal_brume'):
+    assert family in ['mages','juka','juka_lord','hydra','energy_vortex','late_source','champions','fey_champions','crane','deathwatch','tsuki_wolf','kappa','vampire_bat','yomotsu','occurrence_next','horde_rune','sand_vortex','bake_kitsune','devourer_lion_hiryu','hiryu_mount','elemental_minotaur','meer_donors','captain_cu','clockwork_tokuno','aos_creatures','aos_aliases','aos_mound','recovered_late','tormented_minotaur','harrower','late_donors','gargoyle_vendor','aos_armed','aos_abysmal','animated_weapon','slith','raptor','fetid_essence','corporeal_brume','khaldun_doom','candidate_batch','solen_queens',*PREPARED_FORMS],'Prepared native trial requires an explicit checked family'
+    if family in ('late_source', 'champions', 'fey_champions', 'yomotsu', 'occurrence_next', 'horde_rune', 'sand_vortex', 'bake_kitsune', 'devourer_lion_hiryu', 'hiryu_mount', 'elemental_minotaur', 'meer_donors', 'captain_cu', 'clockwork_tokuno', 'aos_creatures', 'aos_aliases', 'aos_mound', 'recovered_late', 'tormented_minotaur', 'harrower', 'late_donors', 'gargoyle_vendor', 'aos_armed', 'aos_abysmal', 'animated_weapon', 'slith', 'raptor', 'fetid_essence', 'corporeal_brume', 'khaldun_doom'):
         classes, manifest = {
             'late_source': ({266: ['InsaneDryad', 'MLDryad'], 267: ['Lurg', 'Troglodyte'], 279: ['Ferret']}, 'late-creature-inputs.json'),
             'champions': ({172: ['Rikktor'], 173: ['Mephitis']}, 'champion-creature-inputs.json'),
@@ -714,6 +714,7 @@ def prepared_entries(family, registry_entries=None):
             'raptor': ({730: ['Raptor']}, 'raptor-inputs.json'),
             'fetid_essence': ({273: ['FetidEssence', 'MantraEffervescence']}, 'fetid-essence-inputs.json'),
             'corporeal_brume': ({260: ['CorporealBrume']}, 'corporeal-brume-inputs.json'),
+            'khaldun_doom': ({637: ['SpectralArmour'], 970: ['RestlessSoul']}, 'khaldun-doom-inputs.json'),
             'aos_abysmal': ({312: ['AbysmalHorror']}, 'aos-abysmal-inputs.json'),
             'aos_armed': ({311: ['ShadowKnight'], 314: ['Ravager']}, 'aos-armed-inputs.json'),
             'gargoyle_vendor': ({758: ['Provisioner']}, 'gargoyle-vendor-inputs.json'),

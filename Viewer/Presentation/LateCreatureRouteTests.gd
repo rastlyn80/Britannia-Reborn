@@ -5,10 +5,11 @@ const Avatar = preload("res://Presentation/HumanAvatar.gd")
 const Game = preload("res://Network/GameSession.gd")
 const Wire = preload("res://Network/LoginProtocol.gd")
 const Corpses = preload("res://Presentation/CorpseModels.gd")
+const Ground = preload("res://Presentation/SourceGroundLookup.gd")
 const MONSTER := {4:"Attack", 5:"Attack2", 6:"Attack3", 10:"Hit", 17:"Fidget", 2:"Death"}
 const ANIMAL := {3:"Eat", 4:"Alert", 5:"Attack", 6:"Attack2", 7:"Hit", 11:"LieDown", 8:"Death"}
 const RECOVERED_FAMILIES := ["aos_creatures", "aos_aliases", "aos_mound", "recovered_late",
-	"tormented_minotaur", "late_donors", "gargoyle_vendor", "aos_armed", "aos_abysmal", "animated_weapon", "slith", "raptor", "fetid_essence", "corporeal_brume"]
+	"tormented_minotaur", "late_donors", "gargoyle_vendor", "aos_armed", "aos_abysmal", "animated_weapon", "slith", "raptor", "fetid_essence", "corporeal_brume", "khaldun_doom"]
 const ACTION_RECIPES := {
 	831: {"stem": "parrot-831-flight-trial", "slot": 19, "clip": "Fly",
 		"description": "Authored wingbeat from the eight-frame preferred UOP direction",
@@ -97,6 +98,14 @@ func run() -> void:
 		avatar.set_physics_process(false)
 		var actor: Node3D = avatar.horse_visual
 		assert(actor != null and avatar.human_visual == null)
+		if family == "khaldun_doom":
+			var mesh := actor.model.find_children("*", "MeshInstance3D", true, false)[0] as MeshInstance3D
+			if body == 970:
+				var material := mesh.get_active_material(0) as ShaderMaterial
+				assert(material.shader == preload("res://Presentation/RestlessSoulSurface.gdshader"))
+				assert(material.get_shader_parameter("albedo_texture") != null)
+			else:
+				assert(body == 637 and actor.skeleton.find_bone("weapon_scimitar") >= 0)
 		if family == "aos_armed":
 			var part: Dictionary = record.rigid_import.parts[0]
 			var refinement := int(record.stats.rounded.triangles) / int(record.stats.original.triangles)
@@ -112,6 +121,8 @@ func run() -> void:
 			assert(not start.is_equal_approx(actor.skeleton.get_bone_global_pose(weapon_joint)))
 		actor.set_process(false)
 		actor.set_physics_process(false)
+		if family == "khaldun_doom":
+			await check_spirit_terrain(actor, body)
 		var serial := 0x1234
 		var entity := {"serial": serial, "body": body, "hue": 0}
 		var game := Game.new()
@@ -134,6 +145,18 @@ func run() -> void:
 		elif family == "hydra":
 			actions.erase(2)
 			actions.merge({11: "Pillage", 12: "Attack2", 18: "Fidget2", 2: "Death"})
+		elif family == "khaldun_doom":
+			actions.clear()
+			for slot: String in expected.classic_action_categories:
+				var clip: String = expected.classic_action_categories[slot]
+				if not clip.is_empty():
+					assert(actor.animator.has_animation(clip))
+					actions[int(slot)] = clip
+			var unresolved := PackedByteArray([0x6e])
+			unresolved.append_array(Wire.uint_be(serial, 4))
+			unresolved.append_array(PackedByteArray([0, 13, 0, 5, 0, 1, 1, 0, 0]))
+			game._handle(unresolved)
+			assert(not avatar.receive_native_action(game.last_mobile_actions[serial]))
 		elif family in RECOVERED_FAMILIES:
 			if expected.has("legacy_slot11_evidence"):
 				var death_slot := 8 if record.bodies[0].native_profile == "animal" else 2
@@ -172,6 +195,46 @@ func run() -> void:
 		game.free()
 		print(str(record.kind) if family in RECOVERED_FAMILIES else family, " passed ", actions.size(), " decoded action routes and three static corpse hues")
 	quit()
+
+func check_spirit_terrain(actor: Node3D, body: int) -> void:
+	var floor_body := StaticBody3D.new()
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = Vector3(8.0, 0.1, 8.0)
+	shape.shape = box
+	shape.position.y = -0.05
+	floor_body.add_child(shape)
+	root.add_child(floor_body)
+	var player: AnimationPlayer = actor.animator
+	var rig: Skeleton3D = actor.skeleton
+	var mesh := actor.model.find_children("*", "MeshInstance3D", true, false)[0] as MeshInstance3D
+	var skin := Ground.skin_points(mesh, rig)
+	var native_root := actor.global_transform
+	var min_gap := INF
+	var hover_gap := INF
+	player.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
+	for tilt: Vector3 in [Vector3.ZERO, Vector3(0.08, 0, -0.08), Vector3(-0.09, 0, 0.11)]:
+		floor_body.rotation = tilt
+		await physics_frame
+		await physics_frame
+		for clip: String in ["Idle", "Walk", "Run", "Attack"]:
+			actor.play(clip, 0.0)
+			player.advance(0.0)
+			for frame in 45:
+				actor._physics_process(1.0 / 60.0)
+			for frame in 49:
+				player.seek(player.current_animation_length * float(frame) / 48.0, true)
+				actor._physics_process(1.0 / 60.0)
+				actor.contact._process_modification_with_delta(1.0 / 60.0)
+				rig.force_update_all_bone_transforms()
+				actor.contact.modification_processed.emit()
+				assert(not actor.contact.contacts.is_empty() and actor.global_transform.is_equal_approx(native_root))
+				var gap := Ground.minimum_plane_gap(skin, rig, rig.global_transform, floor_body.position, floor_body.basis.y)
+				min_gap = minf(min_gap, gap)
+				if clip == "Idle": hover_gap = minf(hover_gap, gap)
+	assert(min_gap >= -0.02 and (body != 637 or hover_gap >= 0.45))
+	floor_body.free()
+	print(body, " 588 finite plane poses, minimum clearance ", min_gap)
 
 func expect_recovered_action(expected: Dictionary, active: Dictionary, body: int, recipe: Dictionary) -> void:
 	assert(active.classic_gesture_base_assets == expected.assets)

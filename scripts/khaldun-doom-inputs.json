@@ -1,0 +1,44 @@
+{
+  "installer_sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393",
+  "model_table_sha256": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099",
+  "server_pin": "ab59efea86fd9e399d261bed9d188ab4d95ad4c2",
+  "body_table_sha256": "1a290e2cb22cdde06d3a21a47b61c25cbcc5fffe660b6e6fb985e9c1810cf5bc",
+  "files": {
+    "Client/Models/Humans/Player_Ghost_Lod2.grn": "6132d7987229397776dc402fef819bcd1c9a5a5ad7efa7a77bb36c4c613d407c",
+    "Client/Models/Maps/UT128_player_ghost.tga": "7597ac0005d71bbd96b8f823f6052cbfd52bd33b3c1818c257f83dc62d793631",
+    "Client/Models/Maps/Ut128_Player_Ghost_M.tga": "0cf07733226adb6405d4a660d9727c6535effe15e9eb26dd745cd0ca8f1562bb",
+    "Client/Models/Maps/Ut256_Player_Ghost_M.tga": "6c132a2acf827727d01be949a00b3c763db942a5a2ac4c69d2475f812a5d4842",
+    "Client/Models/Others/Weapon_Scimitar_Lod2.grn": "b75a5cec56dfc4e567919c444fd09a65e96d9743aa5e6d8a0a587f6cf92f9085",
+    "Client/Models/Maps/Weapons_512.tga": "6b6db69ff83ce1950113b4c10965a42e730eb4887fab16e11ccfb064f661f720",
+    "Client/Models/Humans/H_Male_Idle_01.grn": "f1c689dc54a5bda0e7b1b1d7682e830c413adece4a1815629d17068c2a84d6a5",
+    "Client/Models/Humans/H_Male_Walk_01.grn": "eda76e425a4520640cbebf5ddb367ac6c4aaa51a06056dbd92109966a4657111",
+    "Client/Models/Humans/H_Male_Run_01.grn": "ca6ba351891e9444f2b5276190002545d6d2e108cd75e3577e34255c3f9b2730",
+    "Client/Models/Humans/H_Male_Punch_Punch_Jab_01.grn": "f87adaf7ac628da5d0d80f4a12f12be8704f2d3145dc8356abe65b57312d2462",
+    "Client/Models/Humans/H_Male_Punch_Hook_01.grn": "0f4d0a42290d9afaffa59005b69292b8ea89a1e4fc9ff17c548c1c42c8736050",
+    "Client/Models/Humans/H_Male_Gethit_Fr_Mid_01.grn": "aac993da07abc48ab796f9e024f3ced2b8f7f11d830609086ee23508ed5dc188",
+    "Client/Models/Humans/H_Male_Fidget_Yawn_Stretch_01.grn": "d02555b83655aa35d0737d5f4b4655d0344a5205b82beff3cc84bb4d4e12b07e",
+    "Client/Models/Humans/H_Male_Die_Hard_Twist_01.grn": "091e5db43583bc83b26e238a6974eba22ec9b51030283ad489ebd6d782b81003",
+    "Client/Models/Humans/H_Male_Die_Hard_Twist_02.grn": "d87f561e031cc5f8243e5c25636ef51ab490e55108dbfc9c9878292b16e1c753"
+  },
+  "ghost_motions": {
+    "Idle": "Client/Models/Humans/H_Male_Idle_01.grn",
+    "Walk": "Client/Models/Humans/H_Male_Walk_01.grn",
+    "Run": "Client/Models/Humans/H_Male_Run_01.grn",
+    "Attack": "Client/Models/Humans/H_Male_Punch_Punch_Jab_01.grn",
+    "Attack2": "Client/Models/Humans/H_Male_Punch_Hook_01.grn",
+    "Hit": "Client/Models/Humans/H_Male_Gethit_Fr_Mid_01.grn",
+    "Fidget": "Client/Models/Humans/H_Male_Fidget_Yawn_Stretch_01.grn",
+    "Death": "Client/Models/Humans/H_Male_Die_Hard_Twist_01.grn",
+    "Death2": "Client/Models/Humans/H_Male_Die_Hard_Twist_02.grn"
+  },
+  "native": {
+    "SpectralArmour": {
+      "path": "Projects/UOContent/Mobiles/Monsters/Humanoid/Melee/SpectralArmour.cs",
+      "sha256": "65d3e6e70dd8a11f313e4b524f003e1379fdd23748c1cd9946b64ad0bc750ed1"
+    },
+    "RestlessSoul": {
+      "path": "Projects/UOContent/Mobiles/Monsters/Humanoid/Melee/RestlessSoul.cs",
+      "sha256": "9de7fae24bf65c29381206330b9b2a0f326cd3f0cd2cae49024e05a75aadfb98"
+    }
+  }
+}
