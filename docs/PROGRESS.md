@@ -1,3 +1,9 @@
+# Swamp Dragon and Ridgeback mounted verification
+
+The native Swamp Dragon, Scaled Swamp Dragon, Ridgeback and Savage Ridgeback, plus a Swamp Dragon barded through the real Dull Copper deed, passed 594 checks with two disposable clients. Both rider rigs selected all seven classic mounted action replacements on actual server packets. The test also covered mount item and dye replication, walk and run, dismount and static corpses. Barding consumed the deed, changed the same Swamp Dragon from 794 to 799, and preserved the deed hue when both clients received mount item 0x3EBE. The test supplies the deed and emits controlled rider action packets. It does not cover crafting, barding removal or damage to the armor.
+
+Reproduce with `scripts/test-horses.ps1 -Live -SkipContact -SourceMounts`. The native report stays local under `outputs/ostard-riding/source-mounts-live.json`.
+
 # Native coverage audit
 
 Three normal-registry runs added isolated server evidence for 13 body IDs and 15 native constructors. The first five constructors passed 669 checks, the next five 657, and the last five 817. Each run used two disposable clients and exercised movement, action packets, hues and death/corpse behaviour. Lava Serpent and Blood Elemental separately passed 177 and 237 checks. The loose Swamp Dragon, Scaled Swamp Dragon, Ridgeback and Savage Ridgeback passed 575 checks after the test fixture admitted those four exact body/class pairs. This verifies the loose forms. Mounted rider actions and the native barding transition need their own evidence. The occurrence report now lists routed bodies still missing native evidence in configured spawn order.

@@ -15,6 +15,7 @@ public static class EquineFixtures
     private static readonly Dictionary<Mobile, BaseCreature> Animals = [];
     private static readonly Dictionary<Mobile, EtherealMount> Ethereals = [];
     private static readonly Dictionary<Mobile, Container> Corpses = [];
+    private static readonly Dictionary<Mobile, DragonBardingDeed> BardingDeeds = [];
     private static readonly Dictionary<Mobile, Server.Factions.Faction> Memberships = [];
     private static readonly Dictionary<Mobile, Item> Ankhs = [];
     private static readonly Dictionary<Mobile, (Race Race, Item Shoes, Item Pads)> CuRiders = [];
@@ -59,6 +60,7 @@ public static class EquineFixtures
     private static void Cleanup(Mobile owner)
     {
         if (Corpses.Remove(owner, out var corpse)) corpse.Delete();
+        if (BardingDeeds.Remove(owner, out var deed)) deed.Delete();
         if (Animals.Remove(owner, out var animal))
         {
             if (animal is BaseMount mount) mount.Rider = null;
@@ -131,6 +133,10 @@ public static class EquineFixtures
         50 => new Hiryu(),
         51 => new LesserHiryu(),
         52 or 53 or 54 => new CuSidhe(),
+        55 or 59 => new SwampDragon(),
+        56 => new ScaledSwampDragon(),
+        57 => new Ridgeback(),
+        58 => new SavageRidgeback(),
         _ => throw new ArgumentOutOfRangeException(nameof(index))
     };
 
@@ -148,7 +154,7 @@ public static class EquineFixtures
         else if (command == "prepare" && args.Length > 1)
         {
             var index = args.GetInt32(1);
-            if (index < 0 || index > 54) return;
+            if (index < 0 || index > 59) return;
             Cleanup(owner);
             if (index is >= 42 and <= 45 && !PrepareBovineArena(owner))
             {
@@ -230,6 +236,26 @@ public static class EquineFixtures
         else if (command == "cu-state" && Animals.TryGetValue(owner, out var cuSubject) && cuSubject is CuSidhe)
         {
             owner.SendMessage($"UCEQUINE|cu-state|{(owner.Race == Race.Elf ? 1 : 0)}|{(owner.FindItemOnLayer(Layer.Shoes) is PadsOfTheCuSidhe ? 1 : 0)}");
+        }
+        else if (command == "barding-deed" && Animals.TryGetValue(owner, out var bardingSubject)
+            && bardingSubject is SwampDragon { HasBarding: false, Rider: null } && owner.Backpack is { } bardingPack
+            && !BardingDeeds.ContainsKey(owner))
+        {
+            var deed = new DragonBardingDeed { Resource = CraftResource.DullCopper };
+            bardingPack.DropItem(deed);
+            BardingDeeds[owner] = deed;
+            owner.SendMessage($"UCEQUINE|barding-deed|{deed.Serial.Value}|{deed.Hue}");
+        }
+        else if (command == "rider-action" && args.Length > 1 && Animals.TryGetValue(owner, out var riderSubject)
+            && riderSubject is BaseMount { Rider: var rider } && rider == owner
+            && riderSubject is SwampDragon or ScaledSwampDragon or Ridgeback or SavageRidgeback)
+        {
+            var group = args.GetInt32(1);
+            if (group is >= 23 and <= 29)
+            {
+                owner.Animate(group, 5, 1, true, false, 0);
+                owner.SendMessage($"UCEQUINE|rider-action|{group}");
+            }
         }
         else if (command == "hiryu-flight" && Animals.TryGetValue(owner, out var flightSubject)
             && flightSubject is Hiryu or LesserHiryu)
