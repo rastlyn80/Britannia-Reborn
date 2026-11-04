@@ -24,8 +24,11 @@ func run() -> void:
 		var record := Registry.entry(body).duplicate(true)
 		assert(not record.is_empty())
 		record.assets = {"modern": "res://local-art/creatures/lizardman-pillage-trial-%s.scn" % form.to_lower()}
+		record.presentation_script = "res://Presentation/SourceArmedLizardmanVisual.gd"
 		Registry.entries[body] = record
-		await check_handoff(body, form)
+		for axis in [Vector3.RIGHT, Vector3.FORWARD]:
+			for slope in [-0.14, 0.14]:
+				await check_handoff(body, form, axis, slope)
 		for hue in [0, 53, 0x8035]:
 			var posed := Corpses.posed(body, hue)
 			assert(posed != null)
@@ -46,7 +49,7 @@ func run() -> void:
 			var lift := (frozen.transform * points[0]).y - (expected * source[0]).y
 			var error := 0.0
 			for i in points.size():
-				var expected_point := expected * source[i] + Vector3.UP * lift
+				var expected_point := expected * source[i]
 				error = maxf(error, expected_point.distance_to(frozen.transform * points[i]))
 			assert(error < 0.0001)
 			assert(frozen.mesh.surface_get_arrays(0)[Mesh.ARRAY_BONES] == null)
@@ -56,7 +59,7 @@ func run() -> void:
 	await process_frame
 	quit()
 
-func check_handoff(body: int, form: String) -> void:
+func check_handoff(body: int, form: String, axis: Vector3, slope: float) -> void:
 	var game := Game.new()
 	root.add_child(game)
 	game.set_process(false)
@@ -70,6 +73,18 @@ func check_handoff(body: int, form: String) -> void:
 	arena.add_child(deaths)
 	deaths.configure(arena, game, items)
 	deaths.set_process(false)
+
+	var ground := StaticBody3D.new()
+	arena.add_child(ground)
+	ground.basis = Basis(axis, slope)
+	var box := BoxShape3D.new()
+	box.size = Vector3(10.0, 0.1, 10.0)
+	var surface := CollisionShape3D.new()
+	surface.shape = box
+	surface.position.y = -0.05
+	ground.add_child(surface)
+	await physics_frame
+	await physics_frame
 
 	var killed := 10000 + body
 	var serial := 0x40010000 + body
@@ -96,7 +111,13 @@ func check_handoff(body: int, form: String) -> void:
 	var player: AnimationPlayer = visual.animator
 	player.play("Death", 0.0)
 	player.advance(0.0)
-	player.seek(player.get_animation("Death").length, true)
+	var root_transform := visual.global_transform
+	var duration := player.get_animation("Death").length
+	for sample in 41:
+		player.seek(duration * float(sample) / 40.0, true)
+		visual.support_collapse()
+		var clearance: float = visual.minimum_gap(visual.skeleton.global_transform, Vector3.ZERO, ground.basis.y)
+		assert(clearance >= 0.0028 and visual.global_transform.is_equal_approx(root_transform))
 	player.pause()
 	var weapon := visual.find_child(form, true, false) as MeshInstance3D
 	var rig := weapon.get_parent() as Skeleton3D
@@ -120,11 +141,12 @@ func check_handoff(body: int, form: String) -> void:
 	var bounds: AABB = cadaver.transform * cadaver.get_meta("corpse_bounds")
 	var pick := holder.get_node("PickBody/PickShape") as CollisionShape3D
 	assert(pick.position.is_equal_approx(bounds.get_center()) and source.size() == vertices.size())
-	var lift := (frozen.global_transform * vertices[0]).y - (expected * source[0]).y
 	for i in vertices.size():
 		var point := frozen.global_transform * vertices[i]
-		assert(point.distance_to(expected * source[i] + Vector3.UP * lift) < 0.0001)
+		assert(point.distance_to(expected * source[i]) < 0.0001)
 		assert(bounds.grow(0.0001).has_point(holder.to_local(point)))
-	print(body, " decoded death/removal preserves weapon and world item picking")
+	assert(items.corpse_snapshots.has(serial))
+	print(body, " slope ", axis, " ", slope, ": 41 collapse poses clear ground and corpse preserves world-space weapon pose")
 	arena.queue_free()
 	game.queue_free()
+	await process_frame
