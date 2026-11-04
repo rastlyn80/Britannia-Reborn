@@ -21,6 +21,9 @@ func run() -> void:
 	for treatment in ["original", "rounded", "modern"]:
 		var path := "res://local-art/creatures/giant-serpent-21-pillage-%s.scn" % treatment
 		if active:
+			if baseline.get("classic_gesture_batch", "") == "serpent_ogre_actions":
+				assert(baseline.classic_gesture_base_assets[treatment] == path)
+				path = baseline.assets[treatment]
 			assert(baseline.assets[treatment] == path and baseline.authored_action_scene_sha256[treatment] == FileAccess.get_sha256(path))
 		else:
 			candidate.assets[treatment] = path

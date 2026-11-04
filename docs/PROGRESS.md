@@ -1,3 +1,11 @@
+# Giant Serpent and Ogre actions
+
+Giant Serpent 21 and Ogre 1 now have separate Classic attacks, reactions, fidgets and collapses on their original Third Dawn rigs. The serpent uncoils into a long strike and has a separate snapping attack. The ogre has a downward hammer swing and an upward strike. The fitted motions approximate the Classic frames. The original Pillage and FaceWipe clips remain intact and now also play for the checked newer type-14 packet on their respective bodies.
+
+The isolated ModernUO trial passed 503 checks across both clients, including the serpent's native hue range, exact controlled action packets and replicated corpses. The active client passed 5,346 decoded poses, six static corpse hue cases and six decoded death and removal handoffs across 246 terrain samples. The new collapse poses clear the sampled surfaces. A few retained source attack and recoil samples can still dip by up to 8.3 mm on the nominal flat plane. The static catalogue passed 2,431 checks across 324 body keys.
+
+Generic routing is 5,337 of 6,927 tracked slots (77.0%). The two type-14 routes increased the count to 22 of 106 known candidates. Distinct Classic action pairs sharing a replacement fell from 777 to 761.
+
 # Pig, Reaper, Rabbit and Harpy actions
 
 Pig 203 now has separate strikes, fidgets and collapses on its original Third Dawn rig. The fitted motions reuse the Boar's leg controls, recalculated for the Pig's own stance and proportions. Reaper 47 keeps its original rooted behavior and TrunkBend. Its new branch attacks, recoils, crown movement and alternate collapse approximate the Classic views. The corrected recovered strike rotates one leaf at its original pivot to clear the floor, keeping the trunk planted and the original keys available.
@@ -8,7 +16,7 @@ Those three bodies passed 7,776 decoded client poses, nine static corpse hue cas
 
 Rabbit and JackRabbit share body 205 and now have a distinct lunge, ear check and second collapse. Their existing CC0 model, eight-weight body and fur skins, original keys and four-paw support stay in place. The three authored motions ship in a separate GPL-3.0-or-later animation library. The isolated candidate passed 407 checks across both constructors and two clients. The installed build passed 291 isolated native checks, 288 checks in a clean copy and six decoded corpse handoffs across 246 terrain poses.
 
-Generic routing is 5,335 of 6,925 tracked slots (77.0%). Harpy's type-14 Wingbeat added one routed slot. The count of distinct Classic action pairs sharing a replacement dropped from 803 to 777. The full project regression for this release is running.
+Generic routing was 5,335 of 6,925 tracked slots (77.0%) at this checkpoint. Harpy's type-14 Wingbeat added one routed slot. The count of distinct Classic action pairs sharing a replacement dropped from 803 to 777.
 
 # Grey Wolf, Grizzly Bear, Boar and Goat actions
 

@@ -71,6 +71,8 @@ BATCHES = {
     'pig_reaper_harpy_actions': ((203, 47, 30), 'PigReaperHarpyActionsLive.gd',
                                 ('test-pig-reaper-harpy-actions.gd', 'test-pig-reaper-harpy-landings.gd')),
     'rabbit_distinct_actions': ((205,), 'QuadrupedActionsLive.gd', ()),
+    'serpent_ogre_actions': ((21, 1), 'FieldFaunaLive.gd',
+                             ('test-serpent-ogre-actions.gd', 'test-serpent-ogre-landings.gd')),
     'skeleton_actions': ((50, 56), 'PreparedClassicActionsLive.gd', ('test-skeleton-actions.gd',)),
 }
 PREDECESSORS = {
@@ -88,6 +90,7 @@ PREDECESSORS = {
     'spider_mongbat_actions': ('mongbat_fidgets', 'spider_mongbat'),
     'grazers_grizzly_actions': (),
     'pig_reaper_harpy_actions': ('reaper_harpy',),
+    'serpent_ogre_actions': ('giant_serpent_pillage',),
     'skeleton_actions': ('skeleton_axe',),
 }
 
@@ -154,7 +157,7 @@ def without_ready_stance(row):
     return base
 
 
-def checked(index, active, batch):
+def checked(index, active, batch, *, compare_registry=True):
     body_ids, wrapper, _ = BATCHES[batch]
     bodies = set(body_ids)
     work = ROOT / 'work/creatures' / batch
@@ -166,6 +169,13 @@ def checked(index, active, batch):
         baseline = [row for row in index['entries'] if row['status'] == 'validated'
                     and any(identity['body'] in bodies for identity in row['bodies'])]
     owners = {int(identity['body']): row for row in baseline for identity in row['bodies']}
+    if batch == 'serpent_ogre_actions':
+        # The earlier multi-body batch also contains unrelated skeleton layers.
+        # Compare only the Ogre row, after rechecking the sealed native evidence.
+        _, previous = checked(index, True, 'classic_gestures', compare_registry=False)
+        ogre, = (row for row in previous if row['bodies'][0]['body'] == 1)
+        if owners.get(1) != ogre:
+            raise ValueError('Ogre must retain its sealed FaceWipe base')
     if batch == 'lizard_actions':
         armed = runpy.run_path(str(ROOT / 'scripts/accept-armed-lizardman.py'))['checked_rows']
         prior = [row for row in index['entries'] if row.get('classic_gesture_batch') != batch]
@@ -215,7 +225,8 @@ def checked(index, active, batch):
             or report['supplemental_sha256'] != sha(ROOT / 'Viewer/Network/PreparedClassicActionsLive.gd')):
         raise ValueError('The field collapse renderer or explicit packet test changed')
     if batch in ('lizard_actions', 'quadruped_actions', 'hart_deaths', 'dog_bear_actions', 'cat_actions',
-                 'troll_actions', 'field_fauna', 'grazers_grizzly_actions', 'rabbit_distinct_actions'):
+                 'troll_actions', 'field_fauna', 'grazers_grizzly_actions', 'rabbit_distinct_actions',
+                 'serpent_ogre_actions'):
         visual, base_key, base_visual = (
             ('SourceLizardActionsVisual', 'armed_renderer_sha256', 'SourceArmedLizardmanVisual')
             if batch in ('lizard_actions', 'troll_actions') else
@@ -271,7 +282,7 @@ def checked(index, active, batch):
             raise ValueError(f'Missing native coat or constructor state for body {body}')
         if batch == 'pig_reaper_harpy_actions' and body == 47 and witness['movement'] != 'Native AI refuses movement':
             raise ValueError('Reaper fixture did not verify the native rooted state')
-        if batch == 'troll_actions' or (batch, body) in (
+        if batch in ('troll_actions', 'serpent_ogre_actions') or (batch, body) in (
                 ('skeleton_actions', 50), ('field_fauna', 42), ('spider_mongbat_actions', 39),
                 ('pig_reaper_harpy_actions', 30)):
             expected_new_clip = package['new_action_categories']['14']
@@ -291,7 +302,8 @@ def checked(index, active, batch):
                 raise ValueError(f'Missing Classic gesture evidence for body {body}, slot {slot}')
             if (batch in ('lizard_actions', 'quadruped_actions', 'hart_deaths', 'dog_bear_actions', 'cat_actions',
                           'skeleton_actions', 'troll_actions', 'field_fauna', 'spider_mongbat_actions',
-                          'grazers_grizzly_actions', 'pig_reaper_harpy_actions', 'rabbit_distinct_actions') or
+                          'grazers_grizzly_actions', 'pig_reaper_harpy_actions', 'rabbit_distinct_actions',
+                          'serpent_ogre_actions') or
                     slot in package.get('native_extra_classic_actions', [])) and any(
                     actions[0][key]['protocol'] != 'classic' or actions[0][key]['action'] != slot
                     for key in ('owner_packet', 'observer_packet')):
@@ -309,7 +321,7 @@ def checked(index, active, batch):
 
     rows = [compose(owners[row['bodies'][0]['body']], row, native_sha) for row in prepared
             if batch != 'field_deaths' or row['bodies'][0]['body'] in bodies]
-    if active:
+    if active and compare_registry:
         redirect = runpy.run_path(str(ROOT / 'scripts/prepare-creature-uop-redirects.py'))['without_active_redirect']
         targets = {row['bodies'][0]['body']: row for row in rows}
         siblings = {body: row for body, row in owners.items() if body not in bodies}
