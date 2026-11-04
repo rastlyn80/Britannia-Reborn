@@ -83,6 +83,10 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family in ('occurrence_deaths', 'kraken_reactions'):
+        recipe = runpy.run_path(str(ROOT / ('scripts/prepare-' + family.replace('_', '-') + '.py')))
+        rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
+        return recipe['prepared'](rows)
     if family == 'restless_soul_mounted':
         return runpy.run_path(str(ROOT / 'scripts/prepare-restless-soul-mounted.py'))['prepared']()
     if family == 'restless_soul_actions':
@@ -104,6 +108,8 @@ def prepared_entries(family, registry_entries=None):
         return recipe['prepared_deer'](rows)
     if family == 'water_fidgets':
         return runpy.run_path(str(ROOT / 'scripts/prepare-water-elemental.py'))['prepared_fidgets']()
+    if family == 'water_reactions':
+        return runpy.run_path(str(ROOT / 'scripts/prepare-water-reactions.py'))['prepared']()
     if family == 'mongbat_fidgets':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-mongbat-fidgets.py'))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)

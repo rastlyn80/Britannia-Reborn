@@ -1,0 +1,38 @@
+{
+  "license": "GPL-3.0-or-later; underlying Quaternius assets CC0-1.0",
+  "predecessor": "provenance.json",
+  "build": {
+    "recipe": "08e7ea3202e544911f7d9aa3c3f08a0cbbc43f681b9f4803ce4d6e30f1611a18",
+    "scene": "ebad29b74388cebd718c95aa7864321cf2b0019bd404947bebbe69f53f911c11",
+    "solver": "b6bb7952a6c6330df7e50292eaccebcb0e2f55140a35749a7907255607cc6658",
+    "source": "afcbae91b71e0ae2a03473f2afcce861c590a9f075e54bcee36cc4590e21be63"
+  },
+  "reference_groups": {
+    "10": {
+      "body": 16,
+      "group": 10,
+      "archive": "anim.mul",
+      "graphic": 16,
+      "frames": 4,
+      "directional_payload_sha256": "2af91406447557de37aa2f8e9aa1a619065bb51427d0479accb7c7c81f70e453"
+    },
+    "15": {
+      "body": 16,
+      "group": 15,
+      "archive": "anim.mul",
+      "graphic": 16,
+      "frames": 3,
+      "directional_payload_sha256": "6c8e4f1abe7356ea02ec675193930905edb8094bb200b602988bbfbfe7c027f8"
+    },
+    "16": {
+      "body": 16,
+      "group": 16,
+      "archive": "anim.mul",
+      "graphic": 16,
+      "frames": 3,
+      "directional_payload_sha256": "84b79511c4f29aae20a9d136736cc456719f0fb1b67a6d3f473163643c07b3ba"
+    }
+  },
+  "native_receipt_sha256": "3ee0c3e7775bec501b861d803e9063f6ed17944bfacfb764cddcaed225b14510",
+  "interpretation": "Three authored poses on the public rig based on visual reference. The original mesh, rig, textures and animation frames are absent."
+}

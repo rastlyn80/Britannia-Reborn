@@ -178,7 +178,7 @@
       "surface_kind": "water_pbr",
       "head_bone": "Head",
       "assets": {
-        "modern": "res://Art/Creatures/Water/water-elemental.scn"
+        "modern": "res://Art/Creatures/Water/water-reactions.scn"
       },
       "bodies": [
         {
@@ -206,12 +206,16 @@
         "7": "OverheadSurge",
         "8": "WaterHold",
         "17": "WaterArmSettle",
-        "18": "Fidget2"
+        "18": "Fidget2",
+        "10": "Hit",
+        "15": "WaterRightRecoil",
+        "16": "WaterLeftRecoil"
       },
       "new_action_categories": {
-        "2": "Hit",
+        "2": "LegacyHit",
         "5": "Fidget",
-        "14": "Pillage"
+        "14": "Pillage",
+        "4": "LegacyHit"
       },
       "camera_height": 1.7,
       "pick_bounds": {
@@ -292,9 +296,9 @@
               "support_policy": "fluid_base"
             },
             "Hit": {
-              "duration": 0.333333343267441,
+              "duration": 0.64,
               "loop": false,
-              "origin": "Retargeted Quaternius UAL1 Standard: Hit_Chest",
+              "origin": "High recoil and sinking recovery based on Classic group 10",
               "support_policy": "fluid_base"
             },
             "Hit2": {
@@ -343,6 +347,24 @@
               "duration": 1.0,
               "loop": false,
               "origin": "Authored pose from visual inspection of original Water Elemental slots 7 and 8",
+              "support_policy": "fluid_base"
+            },
+            "LegacyHit": {
+              "duration": 0.333333343267441,
+              "loop": false,
+              "origin": "Retargeted Quaternius UAL1 Standard: Hit_Chest",
+              "support_policy": "fluid_base"
+            },
+            "WaterRightRecoil": {
+              "duration": 0.48,
+              "loop": false,
+              "origin": "Short right-arm recoil based on Classic group 15",
+              "support_policy": "fluid_base"
+            },
+            "WaterLeftRecoil": {
+              "duration": 0.48,
+              "loop": false,
+              "origin": "Short left-arm recoil based on Classic group 16",
               "support_policy": "fluid_base"
             }
           }
@@ -412,9 +434,9 @@
               "support_policy": "fluid_base"
             },
             "Hit": {
-              "duration": 0.333333343267441,
+              "duration": 0.64,
               "loop": false,
-              "origin": "Retargeted Quaternius UAL1 Standard: Hit_Chest",
+              "origin": "High recoil and sinking recovery based on Classic group 10",
               "support_policy": "fluid_base"
             },
             "Hit2": {
@@ -464,6 +486,24 @@
               "loop": false,
               "origin": "Authored pose from visual inspection of original Water Elemental slots 7 and 8",
               "support_policy": "fluid_base"
+            },
+            "LegacyHit": {
+              "duration": 0.333333343267441,
+              "loop": false,
+              "origin": "Retargeted Quaternius UAL1 Standard: Hit_Chest",
+              "support_policy": "fluid_base"
+            },
+            "WaterRightRecoil": {
+              "duration": 0.48,
+              "loop": false,
+              "origin": "Short right-arm recoil based on Classic group 15",
+              "support_policy": "fluid_base"
+            },
+            "WaterLeftRecoil": {
+              "duration": 0.48,
+              "loop": false,
+              "origin": "Short left-arm recoil based on Classic group 16",
+              "support_policy": "fluid_base"
             }
           }
         }
@@ -479,7 +519,7 @@
         "Death2": "Authored liquid collapse",
         "Fidget": "Retargeted Quaternius UAL1 Standard: Idle_Talking",
         "Fidget2": "Authored two-hand reach based on the Classic slot 18 silhouette",
-        "Hit": "Retargeted Quaternius UAL1 Standard: Hit_Chest",
+        "Hit": "High recoil and sinking recovery based on Classic group 10",
         "Hit2": "Retargeted Quaternius UAL1 Standard: Hit_Head",
         "Idle": "Retargeted Quaternius UAL1 Standard: Idle",
         "OverheadSurge": "Authored pose from visual inspection of original Water Elemental slots 7 and 8",
@@ -487,10 +527,39 @@
         "Run": "Retargeted Quaternius UAL1 Standard: Jog_Fwd",
         "Walk": "Retargeted Quaternius UAL1 Standard: Walk",
         "WaterArmSettle": "Authored left-arm settle based on the Classic slot 17 silhouette",
-        "WaterHold": "Authored pose from visual inspection of original Water Elemental slots 7 and 8"
+        "WaterHold": "Authored pose from visual inspection of original Water Elemental slots 7 and 8",
+        "LegacyHit": "Retargeted Quaternius UAL1 Standard: Hit_Chest",
+        "WaterRightRecoil": "Short right-arm recoil based on Classic group 15",
+        "WaterLeftRecoil": "Short left-arm recoil based on Classic group 16"
       },
       "category_aliases": {
         "Death2": "Death; same authored liquid collapse"
+      },
+      "classic_motion_references": {
+        "10": {
+          "body": 16,
+          "group": 10,
+          "archive": "anim.mul",
+          "graphic": 16,
+          "frames": 4,
+          "directional_payload_sha256": "2af91406447557de37aa2f8e9aa1a619065bb51427d0479accb7c7c81f70e453"
+        },
+        "15": {
+          "body": 16,
+          "group": 15,
+          "archive": "anim.mul",
+          "graphic": 16,
+          "frames": 3,
+          "directional_payload_sha256": "6c8e4f1abe7356ea02ec675193930905edb8094bb200b602988bbfbfe7c027f8"
+        },
+        "16": {
+          "body": 16,
+          "group": 16,
+          "archive": "anim.mul",
+          "graphic": 16,
+          "frames": 3,
+          "directional_payload_sha256": "84b79511c4f29aae20a9d136736cc456719f0fb1b67a6d3f473163643c07b3ba"
+        }
       }
     },
     {

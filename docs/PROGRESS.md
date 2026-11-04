@@ -1,10 +1,22 @@
+# Occurrence-ranked collapse and recoil updates
+
+Orc 17 and Ettin 18 now use a fitted rear collapse for Classic group 2 and retain the recovered forward collapse for group 3. The explicit death poses follow the last ground plane while the native root stays fixed. The active client passed 1,764 decoded pose samples on flat ground and two finite slopes, retained the previous animation keys and passed six static corpse hue cases. The isolated ModernUO trial passed 535 checks, including both explicit collapses and real death with static corpse replication.
+
+Kraken and Leviathan 77 retain the long recovered hit for Classic group 10. Groups 15 and 16 share a shorter fitted recoil because their source frames are identical in all five stored directions. The active client passed 882 decoded poses across two surface heights and three treatments. The isolated native trial passed 467 checks across both constructors, including swimming, hues and real corpses.
+
+Water Elemental 16 now has a high recoil and separate right- and left-arm recoils in Classic groups 10, 15 and 16. These are authored on the public Quaternius rig. The newer-protocol hit still plays the previous licensed track. The isolated native trial passed 297 checks and the installed bundle passed 25 clean-client checks, including the three motion shapes, retained keys and the static puddle corpse. The separately licensed scene ships with the client.
+
+The mounted Restless Soul registry passed the full project regression. After this batch, the ledger still routes 5,328 of 6,918 tracked slots (77.0%). Seven pairs of distinct Classic groups now have separate motions, lowering the shared-replacement count from 933 to 926. The corpse catalogue covers 324 body keys. The combined regression of these changes is running.
+
+The private Hind and Rat trials passed 1,560 decoded flat and sloped poses. The two Lizardman forms have three preview attacks each, with 366 sampled poses retaining their weapon grips. These candidates still need native validation. Run the three isolated batches with `scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily` and one of `occurrence_deaths`, `kraken_reactions` or `water_reactions`.
+
 # Restless Soul mounted routes
 
 The mounted renderer uses the native layer 25 graphic, serial and hue to show the split robe and saddle only while a supported mount is worn. Dismount restores the original on-foot visual. The seven Classic routes use six retained seated donors and one urging gesture fitted from the five stored views. The original and rounded robes retained the ghost atlas and 40-joint rig. A separate rebuild matched the geometry, atlas, binds and 31,818 animation keys. The packed files differed, so the isolated receipt keeps the exact tested scene hashes.
 
 The actual client passed 1,575 decoded saddle poses across three treatments and three mount graphics. Forward+ captured 14 poses using a dyed horse and an ostard. The two-client ModernUO fixture passed 384 checks across Spectral Armour and Restless Soul. It used the server's mount setter and checked the worn item, independent dye, native walk and run, dismount, remount, and the seven exact Classic packets. Native death released the same live horse and both clients started the on-foot ghost collapse and received its corpse. This is an explicit fixture mount and does not establish autonomous riding. The tested saddle points and ankle positions cover the sampled poses. Continuous cloth and mount surface contact remain open.
 
-The seven mounted routes are active locally. The ledger routes 5,328 of 6,918 slots (77.0%) with zero unresolved gaps in the Classic MUL source-frame audit. It still identifies 933 pairs of different Classic source groups sharing a replacement. The corpse catalogue covers 324 body keys. The combined regression passed before activation and the mounted and on-foot checks passed against the active registry. The full regression of the mounted registry is running.
+The seven mounted routes are active locally. The batch brought the ledger to 5,328 of 6,918 slots (77.0%) with zero unresolved gaps in the Classic MUL source-frame audit. The combined regression passed before activation, and the mounted and on-foot checks and full project regression passed against the mounted registry.
 
 Run `scripts/prepare-restless-soul.ps1 -Mounted` and `scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily restless_soul_mounted` for the isolated trial. Use `python -B scripts/accept-restless-soul-mounted.py check-active` to verify the installed routes. The mounted bake preserves any scene already in the active registry.
 

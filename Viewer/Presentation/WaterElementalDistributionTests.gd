@@ -27,9 +27,51 @@ func run() -> void:
 		check(actor.receive_native_action({"protocol":"classic","action":action})
 			and visual.current_clip == ("WaterArmSettle" if action == 17 else "Fidget2"),
 			"Distinct Classic fluid fidget plays")
+	if registry.entry(16).classic_action_categories.has("15"):
+		for action: int in [10, 15, 16]:
+			var clip: String = {10: "Hit", 15: "WaterRightRecoil", 16: "WaterLeftRecoil"}[action]
+			check(actor.receive_native_action({"protocol":"classic","action":action}) and visual.current_clip == clip,
+				"Distinct Classic water recoil plays from the public bundle")
+		check(actor.receive_native_action({"protocol":"new","type":4}) and visual.current_clip == "LegacyHit",
+			"New protocol retains the original licensed hit motion")
+		check_recoil_shapes(visual)
 	var corpse:=preload("res://Presentation/CorpseModels.gd").build(16)
 	check(corpse!=null and corpse.get_meta("corpse_body")==16 and corpse.get_child_count()==1 and corpse.get_child(0).name=="Puddle","Matching static puddle builds with no private or source artwork")
 	check(corpse.find_children("*","Skeleton3D",true,false).is_empty(),"Corpse has no running skeleton")
 	if corpse:root.add_child(corpse);corpse.queue_free()
 	actor.queue_free();for frame in 2:await process_frame
 	print("WATER DISTRIBUTION: ",checks-failures," / ",checks);quit(1 if failures else 0)
+
+func check_recoil_shapes(visual: Node3D) -> void:
+	var source := (load("res://Art/Creatures/Water/water-elemental.scn") as PackedScene).instantiate()
+	var prior := source.find_children("*", "AnimationPlayer", true, false)[0] as AnimationPlayer
+	var player: AnimationPlayer = visual.animator
+	var exact := true
+	for label: String in prior.get_animation_list():
+		var before := prior.get_animation(label)
+		var after := player.get_animation("LegacyHit" if label == "Hit" else label)
+		exact = exact and before.length == after.length and before.get_track_count() == after.get_track_count()
+		for track in before.get_track_count():
+			exact = exact and before.get("tracks/%d/keys" % track) == after.get("tracks/%d/keys" % track)
+	source.free()
+	check(exact, "Previous licensed tracks survive the new motions")
+	player.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
+	var spans := {}
+	var rig: Skeleton3D = visual.skeleton
+	for clip: String in ["Hit", "WaterRightRecoil", "WaterLeftRecoil"]:
+		player.stop()
+		player.play(clip, 0.0)
+		player.advance(0.0)
+		var low := Vector2(INF, INF)
+		var high := Vector2(-INF, -INF)
+		for frame in 49:
+			player.seek(player.current_animation_length * frame / 48.0, true)
+			rig.force_update_all_bone_transforms()
+			var hands := Vector2(rig.to_global(rig.get_bone_global_pose(rig.find_bone("hand_l")).origin).y,
+				rig.to_global(rig.get_bone_global_pose(rig.find_bone("hand_r")).origin).y)
+			low = low.min(hands)
+			high = high.max(hands)
+		spans[clip] = high - low
+	check(spans.Hit.x > 0.25 and spans.Hit.y > 0.45, "Long hit keeps a distinct high recoil")
+	check(spans.WaterRightRecoil.y - spans.WaterRightRecoil.x > 0.12, "Right recoil leads with the right arm")
+	check(spans.WaterLeftRecoil.x - spans.WaterLeftRecoil.y > 0.12, "Left recoil leads with the left arm")

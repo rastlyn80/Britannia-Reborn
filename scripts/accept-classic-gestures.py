@@ -49,11 +49,19 @@ BATCHES = {
     'sea_serpent_actions': ((150,), 'PreparedCreatureActionLive.gd', ('test-sea-serpent-actions.gd',)),
     'deer_fidgets': ((234, 237), 'PreparedClassicActionsLive.gd', ('test-field-fidgets.gd',)),
     'orc_ettin_reactions': ((17, 18), 'PreparedClassicActionsLive.gd', ('test-orc-ettin-reactions.gd',)),
+    'occurrence_deaths': ((17, 18), 'OccurrenceDeathsLive.gd', ('test-occurrence-deaths.gd',)),
+    'kraken_reactions': ((77,), 'PreparedClassicActionsLive.gd', ('test-kraken-reactions.gd',)),
 }
 PREDECESSORS = {
     'mongbat_fidgets': ('spider_mongbat',),
     'orc_ettin_reactions': ('orc_fidgets', 'ettin_fidgets'),
+    'occurrence_deaths': ('orc_ettin_reactions',),
+    'kraken_reactions': ('kraken_fidgets',),
 }
+
+
+def follows(batch, successor):
+    return any(prior == batch or follows(batch, prior) for prior in PREDECESSORS.get(successor, ()))
 
 
 def sha(path):
@@ -124,7 +132,15 @@ def checked(index, active, batch):
                     and any(identity['body'] in bodies for identity in row['bodies'])]
     owners = {int(identity['body']): row for row in baseline for identity in row['bodies']}
     if predecessors := PREDECESSORS.get(batch):
-        prior_entries = [row for row in index['entries'] if row.get('classic_gesture_batch') != batch]
+        prior_entries = []
+        for row in index['entries']:
+            successor = row.get('classic_gesture_batch')
+            if successor == batch or (active and follows(batch, successor)):
+                siblings = [identity for identity in row['bodies'] if identity['body'] not in bodies]
+                if siblings:
+                    prior_entries.append(dict(row, bodies=siblings))
+            else:
+                prior_entries.append(row)
         if active:
             prior_entries.extend(baseline)
         for predecessor in predecessors:
@@ -145,9 +161,13 @@ def checked(index, active, batch):
             or report['fixture_sha256'] != sha(ROOT / 'Server/HorseIntegrationFixtures/CreatureFixtures.cs')
             or report['failures'] or not report['prepared_trial']):
         raise ValueError('Classic gesture native evidence does not match this batch')
-    if wrapper == 'PreparedClassicActionsLive.gd' and (
+    if wrapper in ('PreparedClassicActionsLive.gd', 'OccurrenceDeathsLive.gd') and (
             report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
         raise ValueError('Supplementary action trial used a different prepared fixture loader')
+    if batch == 'occurrence_deaths' and (
+            report['collapse_sha256'] != sha(ROOT / 'Viewer/Presentation/SourceClassicCollapseVisual.gd')
+            or report['supplemental_sha256'] != sha(ROOT / 'Viewer/Network/PreparedClassicActionsLive.gd')):
+        raise ValueError('The explicit collapse renderer or supplementary packet test changed')
 
     by_body = {row['bodies'][0]['body']: row for row in prepared}
     if batch == 'dragon_daemon':
@@ -218,11 +238,16 @@ def checked(index, active, batch):
                         raise ValueError('Bone Knight overlay must retain the independently checked sibling base')
                     continue
             compared = matches if batch == 'ready_stances' else [redirect(row) for row in matches]
-            if len(compared) == 1:
+            comparison_index = index
+            while len(compared) == 1:
                 successor = compared[0].get('classic_gesture_batch')
-                if batch in PREDECESSORS.get(successor, ()):
-                    earlier, _ = checked(index, True, successor)
-                    compared = [row for row in earlier if any(identity['body'] == body for identity in row['bodies'])]
+                if not follows(batch, successor):
+                    break
+                earlier, _ = checked(comparison_index, True, successor)
+                comparison_index = dict(comparison_index, entries=[
+                    row for row in comparison_index['entries'] if row.get('classic_gesture_batch') != successor
+                ] + earlier)
+                compared = [row for row in earlier if any(identity['body'] == body for identity in row['bodies'])]
             if compared != [expected_row]:
                 raise ValueError(f'Active body {body} differs from its checked package')
     return baseline, rows
