@@ -4,6 +4,7 @@ Routable protocol slots are not an original-action completion percentage.
 AnimationSequence records are metadata, not decoded animation frame pixels.
 """
 import argparse,ast,hashlib,html,importlib.util,json,re,runpy,struct
+from contextlib import ExitStack
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 ART=ROOT/'Viewer/local-art/creatures';OUT=ROOT/'outputs/creatures'
@@ -36,6 +37,87 @@ def original_frame_groups(data, allowed, reader):
                             'payload_sha256': hashlib.sha256(raw).hexdigest(),
                             'frame_headers': count if valid else None})
     return sorted(records, key=lambda row: (row['body'], row['group'], row['archive'])), archives
+
+def mul_layout(graphic, kind, flags):
+    # Offsets are in 12-byte index entries, with five directions per group.
+    if kind == 'SEA_MONSTER':
+        return graphic * 110, 13, 'sea'
+    extended = kind == 'MONSTER' or (kind == 'ANIMAL' and flags & 0x20)
+    if extended and not flags & 0x440:
+        return graphic * 110, 22, 'large'
+    if (extended and flags & 0x40 and not flags & 0x400) or (kind == 'ANIMAL' and not extended):
+        return (graphic - 200) * 65 + 22000, 13, 'small'
+    return (graphic - 400) * 175 + 35000, 35, 'people'
+
+def inferred_mul_kind(graphic, archive):
+    if archive == 2:
+        return 'MONSTER' if graphic < 200 else 'ANIMAL'
+    if archive == 3:
+        return 'ANIMAL' if graphic < 300 else 'MONSTER' if graphic < 400 else 'HUMAN'
+    return 'MONSTER' if graphic < 200 else 'ANIMAL' if graphic < 400 else 'HUMAN'
+
+def original_mul_groups(data, allowed):
+    mobtypes, conversions = {}, {}
+    definitions = [('mobtypes.txt', mobtypes), ('Bodyconv.def', conversions)]
+    inputs = []
+    for name, target in definitions:
+        path = data/name
+        if not path.exists():
+            continue
+        inputs.append({'name': name, 'sha256': sha(path), 'bytes': path.stat().st_size})
+        for line in path.read_text(encoding='utf-8-sig', errors='replace').splitlines():
+            parts = line.split('#', 1)[0].split()
+            if not parts or not parts[0].isdigit() or int(parts[0]) not in allowed:
+                continue
+            body = int(parts[0])
+            if target is mobtypes and len(parts) >= 3:
+                target[body] = (parts[1].upper(), int(parts[2], 16))
+            elif target is conversions:
+                target[body] = dict(enumerate(map(int, parts[1:6]), 2))
+    records = []
+    available = {
+        archive: (data/f'{stem}.idx', data/f'{stem}.mul')
+        for archive, stem in enumerate(('anim', 'anim2', 'anim3', 'anim4', 'anim5'), 1)
+        if (data/f'{stem}.idx').exists() and (data/f'{stem}.mul').exists()
+    }
+    with ExitStack() as opened:
+        for archive, (idx, mul) in available.items():
+            inputs.append({'name': idx.name, 'sha256': sha(idx), 'bytes': idx.stat().st_size})
+            table, size = idx.read_bytes(), mul.stat().st_size
+            stream = opened.enter_context(mul.open('rb'))
+            for body in sorted(allowed):
+                converted = conversions.get(body, {})
+                if archive == 1 and any(file in available and graphic >= 0 for file, graphic in converted.items()):
+                    continue
+                graphic = body if archive == 1 else converted.get(archive, -1)
+                if graphic < 0:
+                    continue
+                kind, flags = mobtypes.get(body, ('UNKNOWN', 0))
+                if kind == 'UNKNOWN':
+                    kind = inferred_mul_kind(graphic, archive)
+                base, groups, layout = mul_layout(graphic, kind, flags)
+                if base < 0 or (base + groups * 5) * 12 > len(table):
+                    continue
+                for group in range(groups):
+                    directions = []
+                    for direction in range(5):
+                        slot = base + group * 5 + direction
+                        offset, length, _ = struct.unpack_from('<iii', table, slot * 12)
+                        if offset < 0 or length < 520 or offset + length > size:
+                            continue
+                        stream.seek(offset + 512)
+                        frames, = struct.unpack('<I', stream.read(4))
+                        if not 0 < frames <= (length - 516) // 4:
+                            continue
+                        offsets = struct.unpack(f'<{frames}I', stream.read(frames * 4))
+                        if all(4 + frames * 4 <= start <= length - 520 for start in offsets):
+                            directions.append({'direction': direction, 'frames': frames,
+                                               'offset': offset, 'bytes': length})
+                    if directions:
+                        records.append({'body': body, 'graphic': graphic, 'archive': mul.name,
+                                        'layout': layout, 'group': group, 'directions': directions,
+                                        'mobtype_prefers_uop': bool(flags & 0x10000)})
+    return records, inputs
 
 def resolve(model,label,fallback):
     authored=model.get('authored_replacements',{}) | model.get('authored_clips',{})
@@ -84,7 +166,7 @@ def main():
     if data is None and config.exists():
         directories=json.loads(config.read_text(encoding='utf-8-sig')).get('dataDirectories',[])
         if directories:data=Path(directories[0])
-    sequence=[];archives=[];frame_groups=[]
+    sequence=[];archives=[];frame_groups=[];mul_groups=[]
     if data:
         spec=importlib.util.spec_from_file_location('creature_sequences',ROOT/'scripts/uo-human-sequences.py')
         reader=importlib.util.module_from_spec(spec);spec.loader.exec_module(reader)
@@ -95,7 +177,16 @@ def main():
             archives.append({'name':path.name,'sha256':sha(path),'bytes':path.stat().st_size})
         frame_groups, frame_archives=original_frame_groups(data, allowed, reader)
         archives.extend(frame_archives)
+        mul_groups, mul_inputs=original_mul_groups(data, allowed)
+        archives.extend(mul_inputs)
     framed={(row['body'],row['group']) for row in frame_groups if row['frame_headers'] is not None}
+    classic_routes = {(row['body'], row['group_or_type']): row for row in rows if row['protocol'] == 'classic'}
+    native_layouts = {'monster': 'large', 'animal': 'small', 'sea': 'sea'}
+    for row in mul_groups:
+        route = classic_routes.get((row['body'], row['group']))
+        if (route and not row['mobtype_prefers_uop']
+                and native_layouts.get(route['native_profile']) == row['layout']):
+            row['matching_classic_route'] = {field: route[field] for field in ('requested', 'resolved', 'status')}
     original=[];new_actions=[]
     for record in sequence:
         body=record['animation_ref'];model=native.get(body)
@@ -125,6 +216,9 @@ def main():
             'original_uop_frame_groups':len(framed),
             'original_uop_frame_bodies':len({body for body,group in framed}),
             'original_uop_frame_header_blockers':sum(row['frame_headers'] is None for row in frame_groups),
+            'original_mul_group_candidates':len(mul_groups),
+            'original_mul_candidate_bodies':len({row['body'] for row in mul_groups}),
+            'original_mul_candidates_with_matching_classic_slots':sum('matching_classic_route' in row for row in mul_groups),
             'original_new_entries_without_generic_model':sum(not r['generic_model'] for r in new_actions),
             'original_new_entries_with_generic_route':sum(bool(r['replacement'] and r['replacement']['resolved']) for r in new_actions),
             'original_new_entries_total_without_generic_route':sum(not (r['replacement'] and r['replacement']['resolved']) for r in new_actions),
@@ -133,12 +227,13 @@ def main():
     assert counts['original_new_entries_without_generic_model']+counts['original_new_entries_without_generic_route']==counts['original_new_entries_total_without_generic_route']
     scope=('Generic creature renderer protocol slots only; distinct from original per-body required actions and choreography quality. '
            'Source clips, aliases, authored motions and missing routes remain explicit. Original UOP sequence metadata is recorded separately; '
-           'UOP frame headers are inventoried by canonical group. Frame pixels and final MUL/DEF/UOP availability/precedence are not decoded here. Humans and earlier mount/bovine action ledgers are separate. '
+           'UOP frame headers are inventoried by canonical group. MUL candidates use direct and Bodyconv slots; they do not establish Body.def or UOP precedence. Frame pixels are not decoded. Humans and earlier mount/bovine action ledgers are separate. '
            'The historical original_new_entries_without_generic_route counter covers already routed bodies only; the explicit total counter also includes entries on bodies without any generic model. '
            'Those bodies can include specialized human/mount presenters; this is not a global missing-animation total or choreography completion percentage.')
     report={'counts':counts,'scope':scope,'renderer_sha256':renderer_sha,'archives':archives,'routes':rows,
             'original_sequence_metadata':sequence,'original_group_links':original,
-            'original_uop_frame_groups':frame_groups,'original_new_protocol_actions':new_actions}
+            'original_uop_frame_groups':frame_groups,'original_mul_group_candidates':mul_groups,
+            'original_new_protocol_actions':new_actions}
     OUT.mkdir(parents=True,exist_ok=True);(OUT/'actions.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
     table=''.join('<tr><td>0x%X</td><td>%s</td><td>%s %s</td><td>%s</td><td>%s</td><td>%s</td></tr>'%
         (r['body'],html.escape(r['kind']),r['protocol'],r['group_or_type'],r['requested'],r['resolved'] or '—',r['status']) for r in rows)
