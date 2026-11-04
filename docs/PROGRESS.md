@@ -1,3 +1,9 @@
+# Corpser emergence prepared
+
+Classic body 8 slot 12 shows a plant emerging through the ground. The archived Corpser has seven named model and motion members plus its atlas, with no dedicated emergence member found. The replacement adds a 1.1-second `Emerge` clip by sampling its original Idle pose and animating the original rig's vertical entry. The visual review used a flat soil surface. The current candidate omits the original sprite's debris.
+
+The actual candidate client routed slot 12 and passed 15 terrain poses across flat ground and two slopes. Three interruptions reached the same posed bounds as an unmodified Attack sample. The static corpse still built with a partial hue. Five Vulkan frames showed the growth from fully occluded to standing. The candidate is prepared with `python -B scripts/prepare-corpser-emergence.py`. Activation and the isolated server check remain pending behind registry verification.
+
 # Reviewed legacy action aliases
 
 The first 13 one-body local presentations now have a tested recipe for reusing Fidget in classic slot 11. For each body, slot 17 has the same complete MUL payload in all five directions. The candidate passed 26 decoded packets through the actual avatar route. These are exact source-slot aliases. They reuse existing replacement motions and leave the packet timing unchanged.
