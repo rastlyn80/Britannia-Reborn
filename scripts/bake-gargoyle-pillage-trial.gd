@@ -1,8 +1,8 @@
 extends SceneTree
 ## Authored replacement for body 753's 13-frame slot 11 reference.
 
-const SOURCE := "res://local-art/creatures/gargoyles_gargoyle_slave-modern.scn"
-const OUTPUT := "res://local-art/creatures/gargoyle-753-pillage-trial.scn"
+const SOURCE := "res://local-art/creatures/gargoyles_gargoyle_slave-%s.scn"
+const OUTPUT := "res://local-art/creatures/gargoyle-753-pillage-trial%s.scn"
 const LENGTH := 1.30
 # Crouch, then two alternating reaches and a return to the original idle pose.
 const POSES := [
@@ -54,7 +54,12 @@ func plant_leg(rig: Skeleton3D, side: String, ankle: Transform3D, forward: Vecto
 	rig.set_bone_global_pose(foot, rotation)
 
 func run() -> void:
-	var model := (load(SOURCE) as PackedScene).instantiate()
+	for treatment in ["original", "rounded", "modern"]:
+		bake(treatment)
+	quit()
+
+func bake(treatment: String) -> void:
+	var model := (load(SOURCE % treatment) as PackedScene).instantiate()
 	root.add_child(model)
 	var player := model.find_children("*", "AnimationPlayer", true, false)[0] as AnimationPlayer
 	var rig := model.find_children("*", "Skeleton3D", true, false)[0] as Skeleton3D
@@ -134,6 +139,7 @@ func run() -> void:
 	player.stop()
 	var scene := PackedScene.new()
 	assert(scene.pack(model) == OK)
-	assert(ResourceSaver.save(scene, OUTPUT, ResourceSaver.FLAG_COMPRESS) == OK)
-	print("GARGOYLE 753 TRIAL: 13 authored pose targets, baked at 120 Hz on the original rig")
-	quit()
+	var suffix := "" if treatment == "modern" else "-" + treatment
+	assert(ResourceSaver.save(scene, OUTPUT % suffix, ResourceSaver.FLAG_COMPRESS) == OK)
+	print("GARGOYLE 753 TRIAL: ", treatment, " 13 authored pose targets, baked at 120 Hz")
+	model.free()

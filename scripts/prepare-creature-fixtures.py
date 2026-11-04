@@ -1,5 +1,5 @@
 """Private native-constructor/state allow-list from checked identities."""
-import argparse,hashlib,json,re,subprocess,sys
+import argparse,hashlib,json,re,runpy,subprocess,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 # Reviewed native declarations, each verified by its real constructor.
@@ -181,6 +181,12 @@ def main():
         entries,prepared_classes=prepared_entries(args.family)
         index={'entries':entries}
         states={'prepared'}
+    elif args.family == 'lizard_armed_active' or (args.family == 'lizard' and
+            any(row['family'] == 'lizard_armed' and row['status'] == 'validated' for row in index['entries'])):
+        gate = runpy.run_path(str(ROOT / 'scripts/accept-armed-lizardman.py'))
+        packages, _ = gate['checked_rows'](index, True)
+        selected_kinds = {row['kind'] for row in packages}
+        prepared_classes = {35: ['Lizardman'], 36: ['Lizardman']}
     elif args.family in ('late_source_active', 'hydra_active', 'energy_vortex_active', 'champions_active', 'fey_champions_active', 'crane_active', 'deathwatch_active', 'tsuki_wolf_active', 'kappa_active', 'vampire_bat_active', 'yomotsu_active', 'occurrence_next_active', 'sand_vortex_active', 'bake_kitsune_active', 'horde_rune_active', 'devourer_lion_hiryu_active', 'elemental_minotaur_active', 'meer_donors_active', 'captain_cu_active', 'clockwork_tokuno_active', 'aos_creatures_active', 'aos_aliases_active', 'aos_mound_active', 'recovered_late_active', 'tormented_minotaur_active', 'harrower_active', 'late_donors_active', 'gargoyle_vendor_active', 'aos_armed_active', 'aos_abysmal_active', 'animated_weapon_active', 'slith_active', 'raptor_active', 'fetid_essence_active', 'corporeal_brume_active'):
         package_rows, prepared_classes = prepared_entries(args.family.removesuffix('_active'))
         selected_bodies = {body['body'] for row in package_rows for body in row['bodies']}
