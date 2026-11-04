@@ -1,6 +1,6 @@
 # Source-backed creature action queue
 
-Gargoyle 4's lunge and recovered cast and Air 13 and Fire 15's shared overhead and held gestures are active. The ledger has 5,207 of 6,840 action slots routable. Continue the occurrence-ordered MUL queue with Giant Scorpion 48's tail and claw gesture. The recovered Fidget has a small tail shift and the Attack2 stings, so the Classic sequence needs a separate claw draw and tail curl. Check Earth Elemental emergence on slopes and ledges and verify the actual native summon separately. Review the older Mongbat wing poses separately. The Mage Staff recovered during the Skeleton comparison belongs in the body 148 investigation. Keep autonomous gameplay and protocol variants separate from fixture-requested action coverage.
+Giant Scorpion 48 and Imp 74 are active alongside the Gargoyle, Air and Fire Elemental gestures. The ledger has 5,209 of 6,840 action slots routable. Continue the occurrence-ordered MUL queue with Ophidian 86's bardiche and body dip. The archive contains the exact named warrior bardiche and the rig has both original grasp sockets. Check their fit during the gesture, other recovered motions and death. Check Earth Elemental emergence on slopes and ledges and verify the actual native summon separately. Review the older Mongbat wing poses separately. The Mage Staff recovered during the Skeleton comparison belongs in the body 148 investigation. Keep autonomous gameplay and protocol variants separate from fixture-requested action coverage.
 
 # Juka Lord active and Hydra source trial
 

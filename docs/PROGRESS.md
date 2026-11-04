@@ -1,3 +1,11 @@
+# Giant Scorpion and Imp Classic actions
+
+Giant Scorpion 48 and Imp 74 are active. The Scorpion retimes its recovered claw and tail tracks independently and holds its support joints at the source starting pose. The tail dips 209–212 mm and recovers while the claws are still drawn back 1.00–1.02 m and 363–369 mm. The Imp's `anim2.mul` redirect to graphic 18 has identical ordered pixels and placement across all five directions in slots 11, 17 and 18, despite distinct encoded payloads. A shared wing twitch on the recovered idle moves the measured wing joint about 50 mm. Both bodies restore their original atlas cutouts.
+
+The three treatments passed 12 decoded routes, 606 complete-skin pose samples and six static corpse hue cases. The measured support joints stayed planted, with no meaningful flat-plane penetration. Forward+ rendered ten final poses. The isolated ModernUO trial passed 321 checks, including both clients observing all four Classic routes and matching static corpses. The current ledger has 5,209 of 6,840 routable slots (76.2%). Of 1,631 unresolved slots, 43 have identified original frames.
+
+Reproduce the source comparison with the Pillow-equipped project Python running `scripts/inspect-creature-mul-frames.py 74 --groups 11 17 18 --compare`. Bake with Godot `--headless --path Viewer --script res://../scripts/bake-scorpion-imp-gestures.gd`. The native command is `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily scorpion_imp`, and the active gate is `python -B scripts/accept-classic-gestures.py --batch scorpion_imp --check-active`.
+
 # Air and Fire Elemental Classic actions
 
 Air 13 and Fire 15 now route Classic slots 7 and 8 to an authored overhead strike and an asymmetric held reach. The `anim.mul` references contain three and six frames per stored direction. Both public actors share the same independent 65-joint carrier, so one runtime animation recipe supplies both motions while retaining their existing rigs, materials and saved clips.

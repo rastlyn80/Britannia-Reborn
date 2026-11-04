@@ -81,15 +81,55 @@ def sheet(frames, label):
     return image
 
 
+def read_direction(data, row, direction):
+    with (data / row['archive']).open('rb') as source:
+        source.seek(direction['offset'])
+        raw = source.read(direction['bytes'])
+    if hashlib.sha256(raw).hexdigest() != direction['payload_sha256']:
+        raise ValueError(f'Body {row["body"]}, group {row["group"]}: rebuild the ledger from the installed archive')
+    return decode(raw, direction['frames'])
+
+
+def registered_pixels(frames):
+    result = []
+    for frame, cx, cy in frames:
+        bounds = frame.getbbox()
+        if bounds is None:
+            result.append(None)
+            continue
+        left, top, _, _ = bounds
+        visible = frame.crop(bounds)
+        result.append((left - cx, top - frame.height - cy, visible.size, visible.tobytes()))
+    return result
+
+
+def compare_groups(data, ledger, body, groups):
+    signatures = []
+    for group in groups:
+        row, = (row for row in ledger['original_mul_group_candidates']
+                if (row['body'], row['group']) == (body, group) and 'matching_classic_route' in row)
+        signatures.append({entry['direction']: registered_pixels(read_direction(data, row, entry))
+                           for entry in row['directions']})
+    if any(signature != signatures[0] for signature in signatures[1:]):
+        raise ValueError(f'Body {body} groups {groups} differ in pixels, placement, direction, or frame order')
+    print(f'Body {body}: groups {groups} have identical ordered pixels across {len(signatures[0])} directions')
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('bodies', nargs='+', type=int)
     parser.add_argument('--groups', nargs='+', type=int, help='Default: unresolved source-backed slots')
+    parser.add_argument('--compare', action='store_true', help='Compare registered frames in all stored directions')
     parser.add_argument('--direction', type=int, choices=range(5), default=2)
     args = parser.parse_args()
     ledger = read(LEDGER)
     config = read(ROOT / 'Server/runtime/Configuration/modernuo.json')
     data = Path(config['dataDirectories'][0])
+    if args.compare:
+        if len(args.bodies) != 1 or not args.groups or len(set(args.groups)) < 2:
+            parser.error('--compare requires one body and at least two distinct --groups')
+        compare_groups(data, ledger, args.bodies[0], args.groups)
+        return
     wanted = {(row['body'], row['classic_slot']) for row in ledger['source_frame_gaps']}
     if args.groups:
         wanted = {(body, group) for body in args.bodies for group in args.groups}
@@ -103,12 +143,7 @@ def main():
             direction = next((entry for entry in row['directions'] if entry['direction'] == args.direction), None)
             if direction is None:
                 continue
-            with (data / row['archive']).open('rb') as source:
-                source.seek(direction['offset'])
-                raw = source.read(direction['bytes'])
-            if hashlib.sha256(raw).hexdigest() != direction['payload_sha256']:
-                raise ValueError(f'Body {body}, group {group}: rebuild the ledger from the installed archive')
-            frames = decode(raw, direction['frames'])
+            frames = read_direction(data, row, direction)
             prefix = f'{body}-{group}-{args.direction}-{Path(row["archive"]).stem}'
             sheet(frames, f'{body} / {group} / direction {args.direction} / {row["archive"]}').save(OUTPUT / f'{prefix}.png')
             records.append({'body': body, 'group': group, 'graphic': row['graphic'], 'archive': row['archive'],

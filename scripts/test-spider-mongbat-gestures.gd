@@ -25,6 +25,7 @@ func run() -> void:
 	root.add_child(game)
 	game.set_process(false)
 	var active := "--active" in OS.get_cmdline_user_args()
+	var checked_routes := 0
 	for body: int in forms():
 		var base := Registry.entry(body)
 		var trial := base.duplicate(true)
@@ -32,15 +33,19 @@ func run() -> void:
 		var recipe: Dictionary = forms()[body]
 		var clip: String = recipe.clip
 		var alpha: String = recipe.get("alpha", "")
+		var routes: Dictionary = recipe.get("actions", {11: clip})
 		if not active:
 			trial.assets = {}
-			trial.classic_action_categories = base.get("classic_action_categories", {}).merged({"11": clip}, true)
+			trial.classic_action_categories = base.get("classic_action_categories", {}).duplicate()
+			for slot: int in routes:
+				trial.classic_action_categories[str(slot)] = routes[slot]
 			if not alpha.is_empty():
 				trial.source_alpha_texture = alpha
 			if recipe.has("presentation_script"):
 				trial.presentation_script = recipe.presentation_script
 		else:
-			assert(base.classic_action_categories["11"] == clip)
+			for slot: int in routes:
+				assert(base.classic_action_categories[str(slot)] == routes[slot])
 		for treatment in ["original", "rounded", "modern"]:
 			var path := "res://local-art/creatures/mul-gesture-%d-%s.scn" % [body, treatment]
 			if active:
@@ -49,11 +54,7 @@ func run() -> void:
 				trial.assets[treatment] = path
 		if not active:
 			Registry.entries[body] = trial
-		var packet := PackedByteArray([0x6e])
-		packet.append_array(Wire.uint_be(SERIAL, 4))
-		packet.append_array(PackedByteArray([0, 11, 0, 5, 0, 1, 1, 0, 0]))
 		game.entities[SERIAL] = {"serial": SERIAL, "body": body, "hue": 0x8035}
-		game._handle(packet)
 		for treatment in ["original", "rounded", "modern"]:
 			var actor := Registry.create(body)
 			actor.treatment = treatment
@@ -63,8 +64,14 @@ func run() -> void:
 			actor.apply_identity(body, 0x8035)
 			var source_path: String = base_assets.get(treatment, Registry.asset_path(base, treatment))
 			check_tracks(actor.animator, source_path)
-			assert(actor.receive_action(game.last_mobile_actions[SERIAL]))
-			assert(actor.current_clip == clip and actor.native_hue == 0x8035)
+			for slot: int in routes:
+				var packet := PackedByteArray([0x6e])
+				packet.append_array(Wire.uint_be(SERIAL, 4))
+				packet.append_array(PackedByteArray([0, slot, 0, 5, 0, 1, 1, 0, 0]))
+				game._handle(packet)
+				assert(actor.receive_action(game.last_mobile_actions[SERIAL]))
+				assert(actor.current_clip == routes[slot] and actor.native_hue == 0x8035)
+				checked_routes += 1
 			if not alpha.is_empty():
 				check_source_alpha(actor, treatment, alpha)
 			check_identity_material(actor, treatment)
@@ -81,7 +88,7 @@ func run() -> void:
 			corpse.free()
 		Registry.entries[body] = base
 	game.free()
-	print("CLASSIC GESTURES: ", 3 * forms().size(), " decoded routes and static corpse hue checks")
+	print("CLASSIC GESTURES: ", checked_routes, " decoded routes and static corpse hue checks")
 	quit()
 
 func check_identity_material(_actor: Node3D, _treatment: String) -> void:

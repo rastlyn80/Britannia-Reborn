@@ -28,6 +28,7 @@ BATCHES = {
     'earth_elemental_aos': ((14,), 'PreparedCreatureActionLive.gd', ('test-earth-elemental-aos.gd',)),
     'wraith_sway': ((26,), 'PreparedCreatureActionLive.gd', ('test-wraith-gesture.gd',)),
     'gargoyle_classic': ((4,), 'PreparedCreatureActionLive.gd', ('test-gargoyle-classic.gd',)),
+    'scorpion_imp': ((48, 74), 'PreparedCreatureActionLive.gd', ('test-scorpion-imp-gestures.gd',)),
 }
 
 

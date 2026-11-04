@@ -81,6 +81,61 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'scorpion_imp':
+        recipes = {
+            48: ('scorpions_giant', 'Fidget', '5967204bd40ddcfb10ac0478bf522eebabe2dd19f1835e823ce40ae7346cb651',
+                 'anim.mul', 48, '04b43eee722df958791e69e0d59365caefd48e8b2a4575925961b745c8e72b8d',
+                 {11: ('ClawDraw', '367e0e007ee201a6ccc9ea7d8c0fff7b259a63daa994f42b10beab084cd1de95')}),
+            74: ('imps_imp', 'Idle', '363fe78f8e0040b74f9546ccd35a30685e968bb3a3bb3e02bc8e181d6fae52c7',
+                 'anim2.mul', 18, 'c5e35bc653d9c58d5fcda27d4a6e7c2c51672461d58da853e0607d4d31ae52e6',
+                 {11: ('WingTwitch', '4d1dab4e41389efd6c764effebbf66dd737acdc64ea4c2b0b204461d5863ffe1'),
+                  17: ('WingTwitch', '5d3948e1bbddce0ed77b4b34ce3c580f7fac2d11cd59df7d737265e6162a7bb1'),
+                  18: ('Fidget2', '06d5c4d2b2d4f6536db70500c3fc1d4fea3f7a6b3f11d7e73bb7103eee0841d8')}),
+        }
+        entries = gesture_baseline(family, registry_entries, set(recipes))
+        ledger = json.loads((ROOT / 'outputs/creatures/actions.json').read_text(encoding='utf-8'))
+        art = ROOT / 'Viewer/local-art/creatures'
+        rows = []
+        with zipfile.ZipFile(ROOT / 'work/third-dawn/uotdb.zip') as source_archive:
+            for body, (kind, donor, donor_sha, archive, graphic, alpha_sha, routes) in recipes.items():
+                base, = (row for row in entries if row['status'] == 'validated' and row['kind'] == kind
+                         and [identity['body'] for identity in row['bodies']] == [body])
+                donor_member = base['clip_sources'][donor]
+                assert hashlib.sha256(source_archive.read(donor_member)).hexdigest() == donor_sha
+                alpha = f'{kind}-original-albedo.png'
+                assert sha(art / alpha) == alpha_sha
+                references, categories = {}, {}
+                for slot, (clip, digest) in routes.items():
+                    source, = (item for item in ledger['original_mul_group_candidates']
+                               if (item['body'], item['group']) == (body, slot) and 'matching_classic_route' in item)
+                    assert source['archive'] == archive and source['graphic'] == graphic and not source['mobtype_prefers_uop']
+                    directions = source['directions']
+                    assert [item['direction'] for item in directions] == list(range(5))
+                    assert all(item['frames'] == 5 for item in directions)
+                    hashes = ''.join(item['payload_sha256'] for item in directions).encode('ascii')
+                    assert hashlib.sha256(hashes).hexdigest() == digest
+                    references[str(slot)] = dict(body=body, group=slot, archive=archive, graphic=graphic,
+                                                 frames=5, directional_payload_sha256=digest)
+                    categories[str(slot)] = clip
+                assets, scenes = {}, {}
+                for treatment in ('original', 'rounded', 'modern'):
+                    assert sha(art / f'{kind}-{treatment}.gltf') == base['asset_sha256'][treatment]
+                    file = f'mul-gesture-{body}-{treatment}.scn'
+                    assets[treatment] = f'res://local-art/creatures/{file}'
+                    scenes[treatment] = sha(art / file)
+                replacements = ({'ClawDraw': 'Recovered fidget claw and tail tracks retimed independently with held support'}
+                                if body == 48 else {
+                                    'WingTwitch': 'Authored restrained wing motion on the recovered idle pose',
+                                    'Fidget2': 'Same authored wing motion for the pixel-equivalent Classic slot 18'})
+                rows.append(dict(base, status='prepared', family=family, assets=assets,
+                                 authored_action_scene_sha256=scenes, authored_action_reference=references['11'],
+                                 classic_motion_references=references, source_alpha_texture=alpha,
+                                 art_dependency_sha256=base.get('art_dependency_sha256', {}) | {alpha: alpha_sha},
+                                 classic_action_categories=base.get('classic_action_categories', {}) | categories,
+                                 authored_replacements=base.get('authored_replacements', {}) | replacements,
+                                 clip_sources=base['clip_sources'] | (
+                                     {'ClawDraw': donor_member} if body == 48 else {})))
+        return rows, {48: ['Scorpion'], 74: ['Imp']}
     if family == 'gargoyle_classic':
         body = 4
         base, = (row for row in gesture_baseline(family, registry_entries, {body})
