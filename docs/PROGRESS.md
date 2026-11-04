@@ -1,3 +1,11 @@
+# Wraith, Drake and Walrus actions
+
+The four active body routes cover Shade, Spectre, Spellbinder and Wraith on body 26, both Drake colours on 60 and 61, and Walrus on 221. Wraith retains the black spectral shader and has separate forward and backward falls. Both Drakes retain the original muzzle-driven breath effect and gain independent ground and airborne falls. Walrus gains a flipper alert, tusk thrust, head hitch and alternate fall on its existing rig.
+
+The isolated ModernUO run passed 1,731 checks for seven exact body-and-constructor pairs. Client checks passed 4,941 decoded poses, 48 corpse handoffs and 1,968 terrain samples, including preserved animation phase and the spectral material on the frozen Wraith. The predecessor tests repeated the original Wraith shader checks and 12 decoded Dragon/Drake projectiles. Server verification covered explicit action packets and ordinary death. Flight into a corpse was exercised by the client test.
+
+The active ledger routes 5,340 of 6,930 slots (77.1%), with 626 shared Classic replacement pairs, down from 653. The previous full regression stopped on a GDScript type-inference error in the Drake test added during that run. The repaired predecessor tests pass, and a combined full regression covers both releases.
+
 # Daemon, Wyvern and Polar Bear actions
 
 Daemon 9 keeps the recovered Third Dawn rig, its original ground fall, WingCheck and Cast. Separate Classic routes now have fitted candidates for the alternate backward fall, low rake, shoulder stagger, chest guard, low forearm guard, tail pause and airborne fall. The rendered review caught wingtip support holding the torso too high. The alternate ground fall now uses the recovered fall as its base, and the airborne fold keeps the torso lower as the wings settle.
@@ -8,7 +16,7 @@ The three bodies are active. The combined batch passed 769 checks on the isolate
 
 Action routing remains 5,340 of 6,930 slots (77.1%). Shared Classic replacement pairs fell from 676 to 653. The Gaman, Chicken and Deathwatch Beetle release passed the full regression and was pushed to GitHub main as `07099aad`.
 
-The next occurrence audit found 44 distinct and two identical registered pairs. Wraith, both Drakes and Walrus have private previews covering 4,941 decoded poses with their source keys retained. Native tests and terrain-to-corpse checks for those previews are still open.
+The occurrence audit found 44 distinct and two identical registered pairs. The Wraith, Drake and Walrus batch above addresses 27 of the shared replacement pairs. Continue with Bogling, Tsuki Wolf, Evil Mage and Kappa in occurrence order.
 
 # Whipping Vine, Gaman, Chicken, Deathwatch Beetle and Sewer Rat
 

@@ -63,7 +63,9 @@ func run() -> void:
 			game.entities[serial] = {"serial": serial, "body": body, "hue": 0x8035}
 			arena.avatars[serial] = avatar
 			arena.avatars[serial + 0x100] = avatar
-			var predecessor_slots: Array = ["11", "12"] if body == 9 and entry.get("classic_gesture_batch") == "daemon_wyvern_polar_actions" else entry.classic_motion_references.keys()
+			var extended: bool = (body == 9 and entry.get("classic_gesture_batch") == "daemon_wyvern_polar_actions"
+				or body in [60, 61] and entry.get("classic_gesture_batch") == "wraith_drake_walrus_actions")
+			var predecessor_slots: Array = ["11", "12"] if extended else entry.classic_motion_references.keys()
 			for slot: String in predecessor_slots:
 				var action := PackedByteArray([0x6e])
 				action.append_array(Wire.uint_be(serial, 4))

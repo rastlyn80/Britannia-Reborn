@@ -120,7 +120,7 @@ def prepared_entries(family, registry_entries=None):
                   'spider_mongbat_actions', 'grazers_grizzly_actions', 'pig_reaper_harpy_actions',
                   'serpent_ogre_actions', 'zombie_corpser_gargoyle_actions', 'earth_gazer_imp_actions',
                   'scorpion_headless_actions', 'alligator_lich_actions', 'gaman_gestures', 'deathwatch_gestures',
-                  'daemon_wyvern_polar_actions'):
+                  'daemon_wyvern_polar_actions', 'wraith_drake_walrus_actions'):
         recipe = runpy.run_path(str(ROOT / ('scripts/prepare-' + family.replace('_', '-') + '.py')))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
         return recipe['prepared'](rows)

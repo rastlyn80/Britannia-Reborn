@@ -88,6 +88,8 @@ BATCHES = {
     'deathwatch_gestures': ((242,), 'PreparedClassicActionsLive.gd', ('test-deathwatch-terrain.gd',)),
     'daemon_wyvern_polar_actions': ((9, 62, 213), 'DaemonActionsLive.gd', ('test-daemon-distinct-actions.gd',
                                                              'test-daemon-distinct-landings.gd')),
+    'wraith_drake_walrus_actions': ((26, 60, 61, 221), 'WraithDrakeWalrusLive.gd',
+                                   ('test-wraith-drake-walrus-actions.gd', 'test-wraith-drake-walrus-landings.gd')),
     'scorpion_headless_actions': ((48, 31), 'FieldFaunaLive.gd',
                                  ('test-scorpion-headless-actions.gd', 'test-scorpion-headless-landings.gd')),
     'skeleton_actions': ((50, 56), 'PreparedClassicActionsLive.gd', ('test-skeleton-actions.gd',)),
@@ -115,6 +117,7 @@ PREDECESSORS = {
     'gaman_gestures': (),
     'deathwatch_gestures': (),
     'daemon_wyvern_polar_actions': ('dragon_daemon',),
+    'wraith_drake_walrus_actions': ('wraith_sway', 'dragon_daemon'),
     'skeleton_actions': ('skeleton_axe',),
 }
 
@@ -222,13 +225,13 @@ def checked(index, active, batch, *, compare_registry=True):
         if active:
             prior_entries.extend(baseline)
         for predecessor in predecessors:
-            if predecessor == 'scorpion_imp':
-                # The Scorpion and Imp updates are independent successors of one old batch.
-                # Each successor seals its own retained row. The old batch checks both.
+            if predecessor in ('scorpion_imp', 'dragon_daemon'):
+                # Independent successors seal their own retained rows. Replaying a
+                # sibling here would send it back through the same predecessor.
                 _, previous = checked(index, True, predecessor, compare_registry=False)
                 retained = [row for row in previous if row['bodies'][0]['body'] in bodies]
                 if not retained or any(owners[row['bodies'][0]['body']] != row for row in retained):
-                    raise ValueError('Scorpion or Imp must retain its sealed Classic gesture base')
+                    raise ValueError(f'{batch} must retain its sealed {predecessor} rows')
                 continue
             checked(dict(index, entries=prior_entries), True, predecessor)
     prepare = runpy.run_path(str(ROOT / 'scripts/prepare-creature-fixtures.py'))['prepared_entries']
@@ -250,7 +253,7 @@ def checked(index, active, batch, *, compare_registry=True):
     if wrapper in ('PreparedClassicActionsLive.gd', 'OccurrenceDeathsLive.gd', 'FieldDeathsLive.gd',
                    'LizardActionsLive.gd', 'QuadrupedActionsLive.gd', 'CatActionsLive.gd', 'TrollActionsLive.gd',
                    'FieldFaunaLive.gd', 'SpiderMongbatActionsLive.gd', 'PigReaperHarpyActionsLive.gd',
-                   'DaemonActionsLive.gd') and (
+                   'DaemonActionsLive.gd', 'WraithDrakeWalrusLive.gd') and (
             report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
         raise ValueError('Supplementary action trial used a different prepared fixture loader')
     if batch == 'occurrence_deaths' and (
@@ -351,7 +354,8 @@ def checked(index, active, batch, *, compare_registry=True):
                           'serpent_ogre_actions', 'zombie_corpser_gargoyle_actions', 'earth_gazer_imp_actions',
                           'wisp_distinct_actions', 'air_distinct_actions', 'scorpion_headless_actions',
                           'alligator_lich_actions', 'fire_distinct_actions', 'gaman_gestures',
-                          'chicken_distinct_actions', 'deathwatch_gestures', 'daemon_wyvern_polar_actions') or
+                          'chicken_distinct_actions', 'deathwatch_gestures', 'daemon_wyvern_polar_actions',
+                          'wraith_drake_walrus_actions') or
                     slot in package.get('native_extra_classic_actions', [])) and any(
                     actions[0][key]['protocol'] != 'classic' or actions[0][key]['action'] != slot
                     for key in ('owner_packet', 'observer_packet')):

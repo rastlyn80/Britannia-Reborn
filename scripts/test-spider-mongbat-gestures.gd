@@ -60,6 +60,9 @@ func run() -> void:
 				elif (body == 74 and batch == "earth_gazer_imp_actions") or (body == 48 and batch == "scorpion_headless_actions"):
 					assert(base_assets[treatment] == path)
 					path = base.assets[treatment]
+				elif body == 26 and batch == "wraith_drake_walrus_actions":
+					assert(base_assets[treatment] == path)
+					path = base.assets[treatment]
 				assert(base.assets[treatment] == path and base.authored_action_scene_sha256[treatment] == FileAccess.get_sha256(path))
 			else:
 				trial.assets[treatment] = path
@@ -110,7 +113,8 @@ func check_tracks(player: AnimationPlayer, source_path: String) -> void:
 	var original := base.find_children("*", "AnimationPlayer", true, false)[0] as AnimationPlayer
 	for name in original.get_animation_list():
 		var before := original.get_animation(name)
-		var after := player.get_animation(name)
+		var retained := "RecoveredDeath" if name == "Death" and player.has_animation("RecoveredDeath") else name
+		var after := player.get_animation(retained)
 		assert(before.length == after.length and before.get_track_count() == after.get_track_count())
 		for track in before.get_track_count():
 			assert(before.track_get_path(track) == after.track_get_path(track))
