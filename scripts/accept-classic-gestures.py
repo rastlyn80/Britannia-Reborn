@@ -79,6 +79,12 @@ BATCHES = {
     'earth_gazer_imp_actions': ((14, 22, 74), 'FieldFaunaLive.gd',
                                ('test-earth-gazer-imp-actions.gd', 'test-earth-gazer-landings.gd')),
     'wisp_distinct_actions': ((58,), 'PreparedClassicActionsLive.gd', ()),
+    'air_distinct_actions': ((13,), 'PreparedClassicActionsLive.gd', ()),
+    'fire_distinct_actions': ((15,), 'PreparedClassicActionsLive.gd', ()),
+    'alligator_lich_actions': ((202, 24), 'FieldFaunaLive.gd',
+                              ('test-alligator-lich-actions.gd', 'test-alligator-lich-landings.gd')),
+    'scorpion_headless_actions': ((48, 31), 'FieldFaunaLive.gd',
+                                 ('test-scorpion-headless-actions.gd', 'test-scorpion-headless-landings.gd')),
     'skeleton_actions': ((50, 56), 'PreparedClassicActionsLive.gd', ('test-skeleton-actions.gd',)),
 }
 PREDECESSORS = {
@@ -99,6 +105,8 @@ PREDECESSORS = {
     'serpent_ogre_actions': ('giant_serpent_pillage',),
     'zombie_corpser_gargoyle_actions': ('gargoyle_classic',),
     'earth_gazer_imp_actions': ('earth_elemental_aos', 'scorpion_imp'),
+    'scorpion_headless_actions': ('scorpion_imp',),
+    'alligator_lich_actions': (),
     'skeleton_actions': ('skeleton_axe',),
 }
 
@@ -202,6 +210,14 @@ def checked(index, active, batch, *, compare_registry=True):
         if active:
             prior_entries.extend(baseline)
         for predecessor in predecessors:
+            if predecessor == 'scorpion_imp':
+                # The Scorpion and Imp updates are independent successors of one old batch.
+                # Each successor seals its own retained row. The old batch checks both.
+                _, previous = checked(index, True, predecessor, compare_registry=False)
+                retained = [row for row in previous if row['bodies'][0]['body'] in bodies]
+                if not retained or any(owners[row['bodies'][0]['body']] != row for row in retained):
+                    raise ValueError('Scorpion or Imp must retain its sealed Classic gesture base')
+                continue
             checked(dict(index, entries=prior_entries), True, predecessor)
     prepare = runpy.run_path(str(ROOT / 'scripts/prepare-creature-fixtures.py'))['prepared_entries']
     prepared, classes = prepare(batch, baseline)
@@ -235,7 +251,8 @@ def checked(index, active, batch, *, compare_registry=True):
         raise ValueError('The field collapse renderer or explicit packet test changed')
     if batch in ('lizard_actions', 'quadruped_actions', 'hart_deaths', 'dog_bear_actions', 'cat_actions',
                  'troll_actions', 'field_fauna', 'grazers_grizzly_actions', 'rabbit_distinct_actions',
-                 'serpent_ogre_actions', 'zombie_corpser_gargoyle_actions', 'earth_gazer_imp_actions'):
+                 'serpent_ogre_actions', 'zombie_corpser_gargoyle_actions', 'earth_gazer_imp_actions',
+                 'scorpion_headless_actions', 'alligator_lich_actions'):
         visual, base_key, base_visual = (
             ('SourceLizardActionsVisual', 'armed_renderer_sha256', 'SourceArmedLizardmanVisual')
             if batch in ('lizard_actions', 'troll_actions') else
@@ -284,7 +301,9 @@ def checked(index, active, batch, *, compare_registry=True):
             if 'authored_action_secondary_reference' in package:
                 slots.append(package['authored_action_secondary_reference']['group'])
         refuses_death = batch == 'dragon_daemon' and body == 38 and witness['native_class'] == 'ServantOfSemidar'
-        if (witness['kind'] != package['kind'] or witness['corpse_suppressed']
+        suppresses_corpse = (batch, witness['native_class']) in {
+            ('air_distinct_actions', 'SummonedAirElemental'), ('fire_distinct_actions', 'SummonedFireElemental')}
+        if (witness['kind'] != package['kind'] or witness['corpse_suppressed'] != suppresses_corpse
                 or witness['native_death_refused'] != refuses_death):
             raise ValueError(f'Missing original body or expected native death behaviour for {body}')
         if batch == 'quadruped_actions' and witness['native_state'] != ('shorn' if body == 223 else 'constructor'):
@@ -296,7 +315,8 @@ def checked(index, active, batch, *, compare_registry=True):
         if batch in ('troll_actions', 'serpent_ogre_actions') or (batch, body) in (
                 ('skeleton_actions', 50), ('field_fauna', 42), ('spider_mongbat_actions', 39),
                 ('pig_reaper_harpy_actions', 30), ('zombie_corpser_gargoyle_actions', 4),
-                ('earth_gazer_imp_actions', 14), ('earth_gazer_imp_actions', 74)):
+                ('earth_gazer_imp_actions', 14), ('earth_gazer_imp_actions', 74), ('scorpion_headless_actions', 31),
+                ('alligator_lich_actions', 24)):
             expected_new_clip = package['new_action_categories']['14']
             reach, = (action for action in witness['actions'] if action['requested'] == -5)
             if any(reach[client + '_clip'] != expected_new_clip or reach[client + '_packet']['protocol'] != 'new'
@@ -316,7 +336,8 @@ def checked(index, active, batch, *, compare_registry=True):
                           'skeleton_actions', 'troll_actions', 'field_fauna', 'spider_mongbat_actions',
                           'grazers_grizzly_actions', 'pig_reaper_harpy_actions', 'rabbit_distinct_actions',
                           'serpent_ogre_actions', 'zombie_corpser_gargoyle_actions', 'earth_gazer_imp_actions',
-                          'wisp_distinct_actions') or
+                          'wisp_distinct_actions', 'air_distinct_actions', 'scorpion_headless_actions',
+                          'alligator_lich_actions', 'fire_distinct_actions') or
                     slot in package.get('native_extra_classic_actions', [])) and any(
                     actions[0][key]['protocol'] != 'classic' or actions[0][key]['action'] != slot
                     for key in ('owner_packet', 'observer_packet')):
@@ -422,7 +443,8 @@ def main():
     live = ROOT / 'outputs/creatures' / batch / 'live.json'
     previous = INDEX.read_bytes()
     index = read(INDEX)
-    if batch in ('cat_actions', 'rabbit_distinct_actions', 'wisp_distinct_actions'):
+    if batch in ('cat_actions', 'rabbit_distinct_actions', 'wisp_distinct_actions', 'air_distinct_actions',
+                 'fire_distinct_actions'):
         if args.activate or args.check_active:
             parser.error('Use the public animal preparation recipe for installation and verification')
         index = read(ROOT / 'Viewer/Art/Creatures/index.json')

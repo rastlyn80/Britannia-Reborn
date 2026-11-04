@@ -329,6 +329,10 @@ if ((Test-Path "$root/Viewer/Art/Creatures/Air/air-elemental.scn") -and
  if ($elementalGesturesExit -or ($elementalGestures | Select-String 'SCRIPT ERROR:|Parse Error:')) {throw 'Air and Fire Classic gesture checks failed'}
 }
 if (Test-Path "$root/Viewer/Art/Creatures/Air/air-elemental.scn") {
+  if (Test-Path "$root/Viewer/Art/Creatures/Air/distinct-actions.res") {
+    & python -B "$root/scripts/prepare-air-distinct-actions.py" --check-public
+    if ($LASTEXITCODE) {throw 'Public Air Elemental distinct action provenance failed'}
+  }
   & python -B "$root/scripts/test-air-distribution.py"
   if ($LASTEXITCODE) {throw 'Public AirElemental rig/actions, spectral hue and static dust distribution failed'}
 }
@@ -337,6 +341,10 @@ if (Test-Path "$root/Viewer/Art/Creatures/Bogling/bogling.glb") {
   if ($LASTEXITCODE) {throw 'Public Bogling rig, normal maps, action skins and static corpse distribution failed'}
 }
 if (Test-Path "$root/Viewer/Art/Creatures/Fire/fire-elemental.scn") {
+  if (Test-Path "$root/Viewer/Art/Creatures/Fire/distinct-actions.res") {
+    & python -B "$root/scripts/prepare-fire-distinct-actions.py" --check-public
+    if ($LASTEXITCODE) {throw 'Public Fire Elemental distinct action provenance failed'}
+  }
   & python -B "$root/scripts/test-fire-distribution.py"
   if ($LASTEXITCODE) {throw 'Public FireElemental rig/actions, static ash and transient death cleanup distribution failed'}
 }

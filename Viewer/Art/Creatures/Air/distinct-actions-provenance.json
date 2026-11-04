@@ -1,0 +1,9 @@
+{
+  "license": "GPL-3.0-or-later, independently authored motions on the CC0 Quaternius carrier retained by the project Air Elemental",
+  "source": "air-elemental.scn",
+  "source_sha256": "97e035049306954884bda58055433a6f11a48c708b06a548d488633ea265559c",
+  "animation_library_sha256": "d8486e3c8cb43c79f3702334ca1fe22c7792a14ecae4444e23894a10a83f46eb",
+  "recipe_sha256": "eb1a9cbdd27f28c9ad57941cb596daa71715495c29758a66032d0bdd2a926d96",
+  "native_report_sha256": "b08a04c28df1b808d8a5a122667dd810c368d7e90d2d7373fc8555fe587ab72c",
+  "scope": "Three fitted body and arm animations. The original project mesh, rig and shader remain intact."
+}

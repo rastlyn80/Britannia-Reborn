@@ -3,3 +3,4 @@ Retained rig and selected UAL1 actions: Quaternius, CC0-1.0, through the pinned 
 https://quaternius.itch.io/universal-base-characters
 https://quaternius.itch.io/universal-animation-library
 Exact input hashes/source history: provenance.json and Art/Creatures/Water/NOTICE.txt. No Ultima Online mesh, texture, rig, clip or particle definition is included.
+The three motions in distinct-actions.res are independently authored project work, GPL-3.0-or-later. See distinct-actions-provenance.json for the exact recipe and resource hashes.

@@ -1,0 +1,9 @@
+{
+  "license": "GPL-3.0-or-later, independently authored motions on the CC0 Quaternius carrier retained by the project Fire Elemental",
+  "source": "fire-elemental.scn",
+  "source_sha256": "b7118078ff6a3f2a1b7ff399341c838aae25d561d0322a0c17c16ad2d71d253b",
+  "animation_library_sha256": "002f7e5d5da984b4b2ab70f488761db814927e948fecbf46438317cbef87e645",
+  "recipe_sha256": "1c1c900995d5cfce98d9511810d29c6fd18ddbc5ac17a4701a2277b1e82966c5",
+  "native_report_sha256": "78ec7f186e8f81bfa288fa91eb391ce793c43ff1d7e954f80c2582fc139f1e77",
+  "scope": "Three fitted body and arm animations. The original project mesh, rig and shader remain intact."
+}

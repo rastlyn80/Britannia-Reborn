@@ -1,3 +1,19 @@
+# Alligator, Fire Elemental and Lich actions
+
+Alligator 202 keeps the recovered belly-down collapse for Classic group 12 and uses a fitted side roll for group 8. It also gains an alert, a jaw lunge and a slow look. Lich 24 keeps its recovered backward fall and gains a forward fall, staff stagger, hand guard, staff brace and staff shift. Its existing Cast and newer type-14 Pillage routes still resolve. The existing modern staff stays visible through death. The static handoff uses the lowest visible vertex of the body and staff together.
+
+The isolated ModernUO trials passed 529 checks for Alligator and Lich and 577 for Fire Elemental and its summon. Alligator and Lich also passed 2,916 decoded poses and 12 client death-to-corpse cases on flat ground and two slopes, including six transfers from an alternate fall already playing. The Lich transfer was sampled after its entry blend. Fire Elemental adds EmberFlinch, FlameGuard and FlareSpread in a separate GPL library on the existing CC0 carrier. Its clean package passed 365 checks, including 176 complete skin samples and four transient death cleanups.
+
+All six bodies in this and the following batch are active. The ledger routes 5,340 of 6,930 protocol slots (77.1%). The number of Classic pairs that share a replacement fell from 718 to 686. The next occurrence-ranked audit found 34 distinct stored pairs on Gaman, Chicken, Deathwatch Beetle, Daemon, Wyvern and Polar Bear.
+
+# Scorpion, Air Elemental and Headless One actions
+
+Scorpion 48 retains ClawDraw and its earlier strikes, and adds a claw snap, two recoils, a tail check and an alternate fall. Headless One 31 retains its forward collapse and Pillage, and adds a backward fall, a guard, a shoulder recoil and a low swing. The fitted motions use the original rigs. The isolated native trial passed 541 checks across both clients, including Headless One's native skin hue range.
+
+The client passed 4,374 decoded poses and six static corpse hue cases. Eighteen decoded death and removal cases covered default falls, early alternate falls and settled alternate falls on flat ground and two slopes. The transition keeps the phase, speed and displayed bones. When the source is still blending into the fall, the transition preserves its first pose and returns to the fall over up to 80 ms. The isolated native trial checked the separate action packets and ordinary server death. The compound alternate handoff was exercised in the client test.
+
+Air Elemental 13 adds GustSway, CloudBrace and WindScatter as a separate library on the existing CC0 carrier. The cloud, dust and deterministic shader phase stay in place. The isolated trial passed 865 checks across AirElemental, SummonedAirElemental and CrystalVortex, including the summon’s transient corpse. The installed package passed 367 clean-copy checks across 176 skin samples.
+
 # Earth Elemental, Gazer, Wisp and Imp actions
 
 Earth Elemental 14 keeps its Age of Shadows rig, StoneGesture and Assemble. Its new fitted motions separate the two collapses, strikes, recoils and fidgets. During assembly the model starts below the terrain and clears the surface near the end without moving the native entity. Three sampled terrain cases ended 3 mm above their planes, and an attack could interrupt the assembly. The no-floor case preserved the native position. Native automatic summon timing and mixed ledges remain open.
@@ -8,7 +24,7 @@ Wisp 58 adds a tall flare, split flicker and drifting ray motion in a separate G
 
 The isolated ModernUO trials passed 1,255 checks for the three Earth Elemental constructors, Gazer and Imp, and 535 for Wisp and CrystalWisp. The Earth, Gazer and Imp client test passed 7,290 decoded poses, nine static corpse hue cases and six terrain death-to-corpse handoffs across 246 samples. A 68-view Forward+ review checked the new motions and Gazer’s eye flashes.
 
-Generic routing is 5,340 of 6,930 tracked slots (77.1%). The Classic pairs sharing a replacement fell from 735 to 718, and 25 of the 106 type-14 group-11 candidates have verified routes. The preceding full regression passed with the registry held steady, including 4,096 terrain samples and 2,689 statics in the world smoke check. The full regression on this release is running.
+Generic routing is 5,340 of 6,930 tracked slots (77.1%). At this release the Classic pairs sharing a replacement fell from 735 to 718, and 25 of the 106 type-14 group-11 candidates had verified routes. The full regression passed, including 4,096 terrain samples and 2,689 statics in the world smoke check.
 
 # Zombie, Corpser and Gargoyle actions
 

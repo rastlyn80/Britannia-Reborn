@@ -3,3 +3,4 @@ Retained rig and UAL1 motions: Quaternius, CC0-1.0, through the pinned public Wa
 https://quaternius.itch.io/universal-base-characters
 https://quaternius.itch.io/universal-animation-library
 No Ultima Online mesh, texture, rig or animation is included. The original rigid death marker is optional separate local input.
+The separate distinct-actions.res contains three authored reactions under GPL-3.0-or-later on the retained CC0-1.0 carrier. Reproduce with scripts/bake-air-distinct-actions.gd and check distinct-actions-provenance.json for the exact pins.

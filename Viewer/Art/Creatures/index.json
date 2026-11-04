@@ -2434,6 +2434,15 @@
               "duration": 1.33333337306976,
               "loop": true,
               "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "GustSway": {
+              "authored": true
+            },
+            "CloudBrace": {
+              "authored": true
+            },
+            "WindScatter": {
+              "authored": true
             }
           }
         },
@@ -2515,13 +2524,27 @@
               "duration": 1.33333337306976,
               "loop": true,
               "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+            },
+            "GustSway": {
+              "authored": true
+            },
+            "CloudBrace": {
+              "authored": true
+            },
+            "WindScatter": {
+              "authored": true
             }
           }
         }
       },
       "classic_action_categories": {
         "7": "ElementalOverhead",
-        "8": "ElementalHeldReach"
+        "8": "ElementalHeldReach",
+        "10": "Hit",
+        "15": "GustSway",
+        "16": "CloudBrace",
+        "17": "Fidget",
+        "18": "WindScatter"
       },
       "authored_replacements": {
         "ElementalOverhead": "Authored overhead snap on the independent rig from the Classic frame reference",
@@ -2540,7 +2563,10 @@
         "Idle": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained",
         "Pillage": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained",
         "Run": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained",
-        "Walk": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained"
+        "Walk": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; no water geometry retained",
+        "GustSway": "Authored side bend and sweeping lower arms",
+        "CloudBrace": "Authored hunched brace with a raised forearm",
+        "WindScatter": "Authored opening of the arms during a cloud fidget"
       },
       "loop_categories": [
         "Fidget",
@@ -2568,7 +2594,87 @@
       },
       "recipe_sha256": "171b79206300f3bdfc14ceefe71693fb4098c26046fd07e303283f770e9d1797",
       "asset_sha256": "97e035049306954884bda58055433a6f11a48c708b06a548d488633ea265559c",
-      "native_validation": "Actual three native constructors on two clients; repeat on installed public route"
+      "native_validation": "Actual three native constructors on two clients; repeat on installed public route",
+      "additional_animation_library": "res://Art/Creatures/Air/distinct-actions.res",
+      "classic_motion_references": {
+        "10": {
+          "body": 13,
+          "group": 10,
+          "archive": "anim.mul",
+          "graphic": 13,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 4,
+          "directional_payload_sha256": "0e11d83019854d532d2ed5466c10596e22cef8358e1f6613586636eb6d267e03"
+        },
+        "15": {
+          "body": 13,
+          "group": 15,
+          "archive": "anim.mul",
+          "graphic": 13,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 3,
+          "directional_payload_sha256": "53318847a71de0cbb35c8098a5d3b7450578d34ff63750b76eb0e0159b847862"
+        },
+        "16": {
+          "body": 13,
+          "group": 16,
+          "archive": "anim.mul",
+          "graphic": 13,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 3,
+          "directional_payload_sha256": "4b8895ed1abca931cc44f2983f51244d073ef751d8767ac5a40e9810360ca6e7"
+        },
+        "17": {
+          "body": 13,
+          "group": 17,
+          "archive": "anim.mul",
+          "graphic": 13,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 5,
+          "directional_payload_sha256": "9c5d2a3639ba287a920191560f11fb530ed703890c43edd0014c1bf81fb304b1"
+        },
+        "18": {
+          "body": 13,
+          "group": 18,
+          "archive": "anim.mul",
+          "graphic": 13,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 5,
+          "directional_payload_sha256": "c25e072af425979cf287678c8a0a6f78029740ff9190908984df96a9c4b88362"
+        }
+      },
+      "presentation_script": "res://Presentation/AirActionsVisual.gd",
+      "presentation_script_sha256": "b1a77c52fed7274146158a771c90b469200aa5a21723e80eb1a293b0f7502a44"
     },
     {
       "kind": "bogling",
@@ -3137,6 +3243,15 @@
               "duration": 1.33333337306976,
               "loop": true,
               "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "EmberFlinch": {
+              "authored": true
+            },
+            "FlameGuard": {
+              "authored": true
+            },
+            "FlareSpread": {
+              "authored": true
             }
           }
         },
@@ -3218,13 +3333,27 @@
               "duration": 1.33333337306976,
               "loop": true,
               "origin": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+            },
+            "EmberFlinch": {
+              "authored": true
+            },
+            "FlameGuard": {
+              "authored": true
+            },
+            "FlareSpread": {
+              "authored": true
             }
           }
         }
       },
       "classic_action_categories": {
         "7": "ElementalOverhead",
-        "8": "ElementalHeldReach"
+        "8": "ElementalHeldReach",
+        "10": "Hit",
+        "15": "EmberFlinch",
+        "16": "FlameGuard",
+        "17": "Fidget",
+        "18": "FlareSpread"
       },
       "authored_replacements": {
         "ElementalOverhead": "Authored overhead snap on the independent rig from the Classic frame reference",
@@ -3243,7 +3372,10 @@
         "Idle": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash",
         "Pillage": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash",
         "Run": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash",
-        "Walk": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash"
+        "Walk": "Retained CC0 Quaternius UAL1 motion through the pinned Water carrier; body replaced, project-authored radial footprint retained as ash",
+        "EmberFlinch": "Authored side bend and sweeping lower arms",
+        "FlameGuard": "Authored hunched brace with a raised forearm",
+        "FlareSpread": "Authored opening of the arms during a flame fidget"
       },
       "loop_categories": [
         "Fidget",
@@ -3271,7 +3403,87 @@
       },
       "recipe_sha256": "c7b611972e87e47f073ed848ca07cd097632a097b2e4cf7fbdaf3a04aebcd6dd",
       "asset_sha256": "b7118078ff6a3f2a1b7ff399341c838aae25d561d0322a0c17c16ad2d71d253b",
-      "native_validation": "Actual native FireElemental constructor and SummonedFireElemental via real Summon API on both owners; repeat on public route"
+      "native_validation": "Actual native FireElemental constructor and SummonedFireElemental via real Summon API on both owners; repeat on public route",
+      "additional_animation_library": "res://Art/Creatures/Fire/distinct-actions.res",
+      "classic_motion_references": {
+        "10": {
+          "body": 15,
+          "group": 10,
+          "archive": "anim.mul",
+          "graphic": 15,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 4,
+          "directional_payload_sha256": "bcf69683edfc5581e71c26e73cfc642d2569cd0a898192c15dab3e221477ddd4"
+        },
+        "15": {
+          "body": 15,
+          "group": 15,
+          "archive": "anim.mul",
+          "graphic": 15,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 3,
+          "directional_payload_sha256": "c99092255c27b95021c4f1a6122892458888610b18e27396b53428d3db5b7744"
+        },
+        "16": {
+          "body": 15,
+          "group": 16,
+          "archive": "anim.mul",
+          "graphic": 15,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 3,
+          "directional_payload_sha256": "e8bb9b6a105de8b9bf6bc861263ce98bad3832b455d226ee99f119ea173c40ea"
+        },
+        "17": {
+          "body": 15,
+          "group": 17,
+          "archive": "anim.mul",
+          "graphic": 15,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 5,
+          "directional_payload_sha256": "64e66f03a0f618fd22f272b79d9527009924713f125f6956834f854047d7a76f"
+        },
+        "18": {
+          "body": 15,
+          "group": 18,
+          "archive": "anim.mul",
+          "graphic": 15,
+          "directions": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "frames": 5,
+          "directional_payload_sha256": "f1c3f88b52815a88407da725dfec5b928a64b4a4bacdda8d3d3dfb3ee424550a"
+        }
+      },
+      "presentation_script": "res://Presentation/FireActionsVisual.gd",
+      "presentation_script_sha256": "da113199090d988470bc4b448bd11f685e9e19d35b91a5368a999e040ad88d63"
     },
     {
       "kind": "chicken",

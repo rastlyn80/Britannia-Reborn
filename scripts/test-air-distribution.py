@@ -4,7 +4,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 def main():
     target=(ROOT/'work/creatures/air-distribution'/uuid.uuid4().hex).resolve();assert target.is_relative_to((ROOT/'work/creatures/air-distribution').resolve());target.mkdir(parents=True)
-    pending=['Presentation/AirElementalDistributionTests.gd'];copied=set();pattern=re.compile(r'(?:preload\s*\(|extends\s+|#include\s+)["\']res://([^"\']+)')
+    pending=['Presentation/AirElementalDistributionTests.gd','Presentation/AirActionsVisual.gd'];copied=set();pattern=re.compile(r'(?:preload\s*\(|extends\s+|#include\s+)["\']res://([^"\']+)')
     while pending:
         relative=pending.pop()
         if relative in copied:continue
@@ -18,6 +18,8 @@ def main():
         result=subprocess.run([str(godot),'--headless','--path',str(target),*args],env=env,capture_output=True,text=True,timeout=180);output=result.stdout+result.stderr
         (target/('import.log' if '--editor' in args else 'check.log')).write_text(output,encoding='utf-8');assert result.returncode==0 and 'ERROR:' not in output,output[-7000:]
         if '--script' in args:
-            match=re.search(r'AIR DISTRIBUTION: (\d+) / (\d+) checks; (\d+) complete skins',output);assert match and match[1]==match[2] and int(match[1])>=293 and int(match[3])==152,output
+            match=re.search(r'AIR DISTRIBUTION: (\d+) / (\d+) checks; (\d+) complete skins',output)
+            expected=176 if (art/'Air/distinct-actions.res').exists() else 152
+            assert match and match[1]==match[2] and int(match[1])>=293 and int(match[3])==expected,output
     print('AIR DISTRIBUTION: actual standalone avatar, retained rig/actions, complete skins, raw hues and static dry-dust corpse; only independent AirElemental art, no private art/game input/server');print(target/'check.log')
 if __name__=='__main__':main()

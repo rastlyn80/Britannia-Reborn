@@ -36,10 +36,11 @@ func run() -> void:
 	var rig: Skeleton3D=visual.skeleton;check(rig.get_bone_count()==65,"Complete CC0 rig loads independently of donor/carrier")
 	var meshes: Array=visual.model.find_children("*","MeshInstance3D",true,false)
 	check(meshes.size()==2 and visual.model.find_child("FireBody",true,false)!=null and visual.model.find_child("Ash",true,false)!=null,"Public geometry contains flame ribbons and separate dry footprint")
-	check(visual.entry.stats.modern.clips.size()==15,"Public index declares all fifteen saved action categories")
+	var distinct: bool = visual.entry.has("additional_animation_library")
+	check(visual.entry.stats.modern.clips.size() == (18 if distinct else 15), "Public index declares every packaged action category")
 	for category: String in visual.entry.stats.modern.clips:
 		check(visual.animator.has_animation(category),"Actual public animation library includes saved category: "+category)
-	check(visual.animator.get_animation_list().size()==19,"Runtime adds the two authored gestures and the Eat/LieDown compatibility poses")
+	check(visual.animator.get_animation_list().size() == (22 if distinct else 19), "Runtime adds the two authored gestures and the Eat/LieDown compatibility poses")
 	var samples:=0
 	for category: String in visual.animator.get_animation_list():
 		check((visual.animator.get_animation(category).loop_mode==Animation.LOOP_LINEAR)==(category in visual.entry.loop_categories),"Saved category loop state matches declared intent")
@@ -63,6 +64,18 @@ func run() -> void:
 	for code in [4,5,6,7,8,10,11,12,17,18]:
 		visual.dead=false;visual.action_remaining=0.
 		check(visual.receive_action({"protocol":"classic","action":code,"frame_count":6,"repeat_count":1,"delay":0}),"Actual source-free avatar consumes explicit native action")
+	if distinct:
+		var hands := {}
+		for slot: int in [15, 16, 18]:
+			var expected: String = {15: "EmberFlinch", 16: "FlameGuard", 18: "FlareSpread"}[slot]
+			check(visual.receive_action({"protocol": "classic", "action": slot}) and visual.current_clip == expected,
+				"Installed Fire Elemental reaction %d plays its declared animation" % slot)
+			visual.play(expected, 0.0)
+			visual.animator.seek(visual.animator.current_animation_length * 0.5, true)
+			rig.force_update_all_bone_transforms()
+			hands[slot] = rig.get_bone_global_pose(rig.find_bone("hand_l")).origin
+		check(hands[15].distance_to(hands[16]) > 0.08 and hands[16].distance_to(hands[18]) > 0.08,
+			"The reactions move the same hand to distinct poses")
 	actor.free()
 	var corpse:=Corpses.build(15,0x8035);check(corpse!=null,"Public native body produces its static cadaver")
 	if corpse!=null:
