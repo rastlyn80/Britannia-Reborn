@@ -109,7 +109,7 @@ if (Test-Path "$root/Viewer/local-art/creatures/source_preserving/preparation.js
  $preservingExit = $LASTEXITCODE
  $preservingSkin | ForEach-Object {Write-Output $_}
  if ($preservingExit -or ($preservingSkin | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Saved source-preserving skins/static corpses failed'}
- $preservingActions = & $godot --headless --path "$root/Viewer" --script res://Presentation/SourcePreservingActionTests.gd 2>&1
+ $preservingActions = & $godot --headless --path "$root/Viewer" --script res://Presentation/SourcePreservingBaseActionTests.gd 2>&1
  $preservingActionExit = $LASTEXITCODE
  $preservingActions | ForEach-Object {Write-Output $_}
  if ($preservingActionExit -or ($preservingActions | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Source-preserving action/material/skin reuse failed'}
