@@ -1,3 +1,13 @@
+# Grey Wolf, Grizzly Bear, Boar and Goat actions
+
+Both Grey Wolf bodies (25 and 27) keep their Grey Wolf mesh, materials and native hue. The installed Classic body and corpse definitions point to Timber Wolf 225. Its rig matches all 32 Grey Wolf joint names, parents and rest transforms. The client uses four of the already fitted Timber Wolf clips and retains the Grey Wolf source keys. A vertical correction to the recovered strike resolves about 108 mm of floor penetration in the nominal flat sample. The retained fidget can still dip about 10 mm.
+
+Grizzly Bear 212, Boar 290 and Goat 209 now have distinct Classic strikes, fidgets and collapses. Grizzly has an upright swipe and a lower strike. Boar drops onto its belly with tucked hooves or rolls onto its side. Goat has two opposite falls. The fitted motions approximate the original views. Their source meshes and animation keys are retained.
+
+The isolated ModernUO run passed 1,047 checks across both clients and all five native bodies. It used each real constructor, including both random Grey Wolf outcomes, and verified controlled action requests, native movement, raw hues, death packets and replicated corpses. The active client passed 8,019 decoded poses, fifteen static corpse hue cases and fifteen decoded death and removal handoffs across 615 terrain samples. The catalogue still covers 324 static corpse body keys.
+
+This release reduced generic Classic action pairs sharing a replacement from 818 to 803. Generic routing remains at 5,334 of 6,924 tracked slots (77.0%). The combined full project regression is running.
+
 # Cow and Bull actions
 
 Both Cow bodies (216 and 231) and both Bull bodies (232 and 233) now have separate Classic strikes, fidgets and collapses on their own Third Dawn rigs. The Classic catalogue records 44 stored body and action combinations from `anim.mul`, with all five directions checked for each. The twelve formerly shared pairs now play distinct clips. The three fitted replacements per body approximate the Classic poses. The recovered Third Dawn animation keys are preserved. Both cow coats still use the exact living tip signature and return to standing.
@@ -5,6 +15,8 @@ Both Cow bodies (216 and 231) and both Bull bodies (232 and 233) now have separa
 The isolated ModernUO trial passed 518 checks. Both clients received the requested Classic strike and fidget. Native death and removal packets took each body through its default collapse and through a second run that continued the alternate collapse already playing. The replicated static corpses retained body ID, partial hue and the settled pose. The trial also exercised normal movement packets, mount refusal and all four owner milk servings before exhaustion. It used the server's milking API and controlled action requests. Autonomous AI and client beverage-item interaction remain outside that evidence.
 
 The client passed 4,680 pose checks across 12 body and mesh combinations. Its separate decoded packet test passed 72 death, removal and static corpse handoffs across flat ground and two slopes, with 2,952 terrain poses. The static endpoint sat about 2 mm above the tested plane. The source Death dips by up to 29 mm on flat ground before correction. The bovine catalogue is counted separately from the generic 77.0% action ledger.
+
+The first full cattle regression stopped after an unrelated source-family test logged Godot resource leaks at exit. Loading the cattle renderer only when the animal registry selects cattle removed the teardown errors. All 197 source-family skin checks then passed, and the cattle batch repeated all 518 isolated ModernUO checks and its active client gates with the corrected loading path.
 
 # Giant Spider and Mongbat actions
 

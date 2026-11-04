@@ -3,6 +3,7 @@ extends SceneTree
 const Game=preload("res://Network/GameSession.gd")
 const Horse=preload("res://Presentation/MountVisual.gd")
 const HorseRig=preload("res://Presentation/HorseVisual.gd")
+const Animals := preload("res://Presentation/AnimalVisual.gd")
 const BovineActions := preload("res://Presentation/BovineActionsVisual.gd")
 const BovineTransition := preload("res://Network/BovineLiveTransition.gd")
 var sessions: Array=[]
@@ -73,7 +74,7 @@ func run() -> void:
 	ethics_only="--ethics-only" in OS.get_cmdline_user_args()
 	ethics_resume="--ethics-resume" in OS.get_cmdline_user_args()
 	bovines="--bovines" in OS.get_cmdline_user_args()
-	BovineActions.trial_enabled = "--bovine-actions" in OS.get_cmdline_user_args()
+	Animals.bovine_actions_trial = "--bovine-actions" in OS.get_cmdline_user_args()
 	sea_horse="--sea-horse" in OS.get_cmdline_user_args()
 	giant_beetle="--giant-beetle" in OS.get_cmdline_user_args()
 	fire_beetle="--fire-beetle" in OS.get_cmdline_user_args()
@@ -253,7 +254,7 @@ func run() -> void:
 					var expected: String={5:"rear",4:"hit",3:"eat",11:"lie_down"}[action_code] if loose.horse_visual is HorseRig else action_clips[action_code]
 					if not check(loose.horse_visual.current_clip==expected,"native action selects the species clip"):return
 				var bovine_probes: Array[Node3D] = []
-				if bovines and BovineActions.trial_enabled and not check(loose.horse_visual is BovineActions,"Bovine trial uses the prepared renderer"):return
+				if bovines and Animals.bovine_actions_trial and not check(loose.horse_visual is BovineActions,"Bovine trial uses the prepared renderer"):return
 				if bovines and loose.horse_visual is BovineActions:
 					bovine_probes = await begin_bovine_transition(session, observer, sex, serial, body, loose)
 					if bovine_probes.is_empty():return

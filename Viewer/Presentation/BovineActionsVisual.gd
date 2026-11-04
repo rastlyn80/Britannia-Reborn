@@ -3,8 +3,6 @@ extends "res://Presentation/BovineVisual.gd"
 const Timing := preload("res://Presentation/HumanActions.gd")
 const Ground := preload("res://Presentation/SourceGroundLookup.gd")
 const ADDITIONAL_CLIPS := {6: "Attack2", 10: "Fidget2", 12: "Death2"}
-const ACTIVE := "res://local-art/animals/bovine-actions-active.json"
-static var trial_enabled := false
 var collapse_plane: Dictionary = {}
 var collapse_skin: Dictionary = {}
 var collapse_shift := Vector3.ZERO
@@ -20,8 +18,6 @@ static func asset_path(asset_kind: String, treatment: String) -> String:
 	return "res://local-art/animals/%s-%s-actions.scn" % [asset_kind, treatment]
 
 static func available(asset_kind: String) -> bool:
-	if not (trial_enabled or FileAccess.file_exists(ACTIVE)):
-		return false
 	for variant: String in ["original", "rounded", "modern"]:
 		if not ResourceLoader.exists(asset_path(asset_kind, variant)):
 			return false

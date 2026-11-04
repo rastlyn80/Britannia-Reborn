@@ -21,7 +21,7 @@ func _initialize() -> void:
 	call_deferred("run")
 
 func run() -> void:
-	Bovine.trial_enabled = "--candidate" in OS.get_cmdline_user_args()
+	Animals.bovine_actions_trial = "--candidate" in OS.get_cmdline_user_args()
 	for body: int in Animals.BODIES:
 		for treatment: String in ["original", "rounded", "modern"]:
 			for tilt: Vector3 in PLANES:

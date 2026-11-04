@@ -66,6 +66,8 @@ BATCHES = {
                     ('test-quadruped-actions.gd', 'test-quadruped-corpse.gd')),
     'spider_mongbat_actions': ((28, 39), 'SpiderMongbatActionsLive.gd',
                               ('test-spider-mongbat-actions.gd', 'test-spider-mongbat-landings.gd')),
+    'grazers_grizzly_actions': ((25, 27, 212, 290, 209), 'QuadrupedActionsLive.gd',
+                               ('test-grazers-grizzly-actions.gd', 'test-grazers-grizzly-landings.gd')),
     'skeleton_actions': ((50, 56), 'PreparedClassicActionsLive.gd', ('test-skeleton-actions.gd',)),
 }
 PREDECESSORS = {
@@ -81,6 +83,7 @@ PREDECESSORS = {
     'troll_actions': ('troll_gestures',),
     'field_fauna': ('ratman_hunch',),
     'spider_mongbat_actions': ('mongbat_fidgets', 'spider_mongbat'),
+    'grazers_grizzly_actions': (),
     'skeleton_actions': ('skeleton_axe',),
 }
 
@@ -207,7 +210,8 @@ def checked(index, active, batch):
             or report['explicit_collapse_test_sha256'] != sha(ROOT / 'Viewer/Network/OccurrenceDeathsLive.gd')
             or report['supplemental_sha256'] != sha(ROOT / 'Viewer/Network/PreparedClassicActionsLive.gd')):
         raise ValueError('The field collapse renderer or explicit packet test changed')
-    if batch in ('lizard_actions', 'quadruped_actions', 'hart_deaths', 'dog_bear_actions', 'cat_actions', 'troll_actions', 'field_fauna'):
+    if batch in ('lizard_actions', 'quadruped_actions', 'hart_deaths', 'dog_bear_actions', 'cat_actions',
+                 'troll_actions', 'field_fauna', 'grazers_grizzly_actions'):
         visual, base_key, base_visual = (
             ('SourceLizardActionsVisual', 'armed_renderer_sha256', 'SourceArmedLizardmanVisual')
             if batch in ('lizard_actions', 'troll_actions') else
@@ -277,7 +281,8 @@ def checked(index, active, batch):
             if len(actions) != 1 or any(actions[0][key] != clip for key in ('owner_clip', 'observer_clip')):
                 raise ValueError(f'Missing Classic gesture evidence for body {body}, slot {slot}')
             if (batch in ('lizard_actions', 'quadruped_actions', 'hart_deaths', 'dog_bear_actions', 'cat_actions',
-                          'skeleton_actions', 'troll_actions', 'field_fauna', 'spider_mongbat_actions') or
+                          'skeleton_actions', 'troll_actions', 'field_fauna', 'spider_mongbat_actions',
+                          'grazers_grizzly_actions') or
                     slot in package.get('native_extra_classic_actions', [])) and any(
                     actions[0][key]['protocol'] != 'classic' or actions[0][key]['action'] != slot
                     for key in ('owner_packet', 'observer_packet')):
