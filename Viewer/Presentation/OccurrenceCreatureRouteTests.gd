@@ -29,15 +29,18 @@ func run() -> void:
 		var active := Registry.entry(body)
 		if active.has("legacy_slot11_evidence"):
 			var reviewed := active
-			if body == 309 and active.get("classic_gesture_batch") == "ophidian_patchwork_actions":
-				const BASE := "res://../work/creatures/ophidian_patchwork_actions/accepted-native/base-rows.json"
-				var baseline: Array = JSON.parse_string(FileAccess.get_file_as_string(BASE))
+			var successor: String = {309: "ophidian_patchwork_actions", 247: "hopper_fan_blood_actions"}.get(body, "")
+			if not successor.is_empty() and active.get("classic_gesture_batch") == successor:
+				var path := "res://../work/creatures/%s/accepted-native/base-rows.json" % successor
+				var baseline: Array = JSON.parse_string(FileAccess.get_file_as_string(path))
 				var skeleton := baseline.filter(func(row: Dictionary) -> bool: return row.kind == family)
 				assert(skeleton.size() == 1)
 				reviewed = skeleton[0]
 				assert(active.classic_gesture_base_assets == reviewed.assets and active.bodies == reviewed.bodies)
 				assert(active.legacy_slot11_evidence == reviewed.legacy_slot11_evidence)
 			assert(reviewed == preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(record, reviewed))
+			if body == 247:
+				Registry.entries[body] = reviewed
 		var avatar := Avatar.new()
 		avatar.initial_body = body
 		root.add_child(avatar)
@@ -108,5 +111,6 @@ func run() -> void:
 			cadaver.free()
 		avatar.free()
 		game.free()
+		Registry.entries[body] = active
 		print(family, " passed ", actions.size(), " decoded action routes and three static corpse hues")
 	quit()

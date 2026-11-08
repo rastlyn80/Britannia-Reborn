@@ -89,6 +89,14 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'hopper_fan_blood_actions':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-hopper-fan-blood-actions.py'))
+        rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
+        return recipe['prepared'](rows)
+    if family == 'ophidian_terathan_actions':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-ophidian-terathan-actions.py'))
+        rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
+        return recipe['prepared'](rows)
     if family == 'cyclops_titan_ice_actions':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-cyclops-titan-ice-actions.py'))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)

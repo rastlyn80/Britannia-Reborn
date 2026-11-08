@@ -33,6 +33,7 @@ def expected_rows_with_legacy_aliases(rows, active):
                         ('wild_guar', 'gaman_gestures'),
                         ('walking_dead_mummy', 'lowland_creature_gestures'),
                         ('elementals_ice_elemental', 'cyclops_titan_ice_actions'),
+                        ('elementals_blood_elemental', 'hopper_fan_blood_actions'),
                         ('serpents_snake_giant_lava', 'ratman_lava_actions'),
                         ('rat_race_shaman', 'ratman_lava_actions')):
         overlay = active_by_kind.get(kind, {})

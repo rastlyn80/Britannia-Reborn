@@ -1,0 +1,82 @@
+{
+  "definitions": {"Body.def": "2fbd408fcc96d1c0b382c4fd5c4efc798e2e5093e59a14ed6be9146b4a81cdab", "Bodyconv.def": "62debf90a6c5f59a885da6b0a8db1094d90c8d9e0a2c4c02b3acc234d818b665", "Corpse.def": "9bc572c3643acbcd1e299e6def4297c57da586624e373a45da88f72654b7c02a", "mobtypes.txt": "a4f1c98057c5bcf10ccdb575a9154260651e49b852bfe548059ff55fcbbf29d8"},
+  "sources": {
+    "16": {
+      "archive": "anim.mul",
+      "graphic": 16,
+      "groups": {
+        "0": {"counts": [10, 10, 10, 10, 10], "directions_sha256": "312be1eebc0dd6ff0cd348a827e55a54127cf55653c6d8bd79dc4ec8f88a93dd"},
+        "1": {"counts": [1, 1, 1, 1, 1], "directions_sha256": "9ed7005c0f0000178ca07e7087a8ba1038a03701b98e781968b27a6461f2be85"},
+        "2": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "3e370a4cb7e0a230834d64b4f9a3afbd518df031724839ab98ac95365ba19350"},
+        "3": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "a5b02ccea39a2f5736113a5598779e9bd5be2993e9d5bc11ea781964338f0774"},
+        "4": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "5c37ddf69a38116f660ee4256a7af6064eeb3fac9892c32cab621c2c3862ab24"},
+        "5": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "b14c5a746380dc97813b0519d835c6996a92fa05d96d0a4bd44e1e864c554758"},
+        "6": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "abd50787e53529063ab662489f49155e0ac7bd0f393654a3a07c901985663de1"},
+        "7": {"counts": [3, 3, 3, 3, 3], "directions_sha256": "54a00c7de95a13b1f99628bfa6beb3db9267d6684eb2a9d26d2d01cba0d2082e"},
+        "8": {"counts": [6, 6, 6, 6, 6], "directions_sha256": "cbc3220dae68dd053f2ca16e1698ee17fd0c146330d0c7aa8bdd1cfee52933ad"},
+        "10": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "2af91406447557de37aa2f8e9aa1a619065bb51427d0479accb7c7c81f70e453"},
+        "11": {"counts": [5, 5, 5, 5, 5], "directions_sha256": "375a82aa72f70c318c425785d1fe53e37da0cf868a5970d8e59d8af55139f9e0"},
+        "12": {"counts": [15, 15, 15, 15, 15], "directions_sha256": "d9cf90b8f882feb40c4235b0f3c25ef709cfcf1e09b10374b51c44da09fd1e9f"},
+        "15": {"counts": [3, 3, 3, 3, 3], "directions_sha256": "6c8e4f1abe7356ea02ec675193930905edb8094bb200b602988bbfbfe7c027f8"},
+        "16": {"counts": [3, 3, 3, 3, 3], "directions_sha256": "84b79511c4f29aae20a9d136736cc456719f0fb1b67a6d3f473163643c07b3ba"},
+        "17": {"counts": [5, 5, 5, 5, 5], "directions_sha256": "6ba9c4d533e77ebadcfc83597fd5ae4d02f55a3a27ee21775cba284ff37d9cd5"},
+        "18": {"counts": [5, 5, 5, 5, 5], "directions_sha256": "76eb3c14da1eaa5cf545d1e17374262e12bab17d383362706e51a6befb21cc11"}
+      }
+    },
+    "51": {
+      "archive": "anim.mul",
+      "graphic": 51,
+      "groups": {
+        "0": {"counts": [10, 10, 10, 10, 10], "directions_sha256": "0a4a0ca19530be8e6993d2c57f0ac594e17929e826426fd92bc0b2c934b374db"},
+        "1": {"counts": [1, 1, 1, 1, 1], "directions_sha256": "a4ac222e8b25756043f31ab39458d6628307d89e35d2676e110b767d3241764b"},
+        "2": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "507b5f85b8584d8c2011db9efd540e56a072d52fdd7715f4a12634767e051704"},
+        "3": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "c07acb96199afb3b95bc2fbb7f2b46b0621c94ef5654338d986c46042880e48e"},
+        "4": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "5b75093bbf4e2083fa7e1774cd9094388e6b4add0db13cac764a5ec3f1e71bd4"},
+        "5": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "d366b84f7899cfc5e75b3bc4b50649ec9da055e128d81a249c63f70beb44f2d7"},
+        "6": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "8af7c34c2b125898bdad262e30e4d29ffc990b48bcfb7ba6744cb65c042a6e95"},
+        "10": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "e4bdd7a6e2ab6aa52185cff7f082ef4a954552de1621b36abed20f6da3aa891e"},
+        "11": {"counts": [5, 5, 5, 5, 5], "directions_sha256": "7866232394901fc77f43da2ac704ab3247ac8d56914a92355028654dd037f5de"},
+        "17": {"counts": [5, 5, 5, 5, 5], "directions_sha256": "69104cf3517a93441080ab3423ea3d4e437282dbb8d395bb88572dd987ccaf3d"},
+        "18": {"counts": [5, 5, 5, 5, 5], "directions_sha256": "3c5e75add6824530becfddbaba814cc18f9a6a479a74a8312120c8730cdb27d2"}
+      }
+    },
+    "247": {
+      "archive": "anim4.mul",
+      "graphic": 6,
+      "groups": {
+        "0": {"counts": [10, 10, 10, 10, 10], "directions_sha256": "ff949a0c1ae115c56b6eb306ecf8805e7cf88b7a947c4455b45f5b6a9eff20c4"},
+        "1": {"counts": [1, 1, 1, 1, 1], "directions_sha256": "b2f67326a1b4f598fa385614794bdf98a6c093d42723e2a5489feb13da5e0b85"},
+        "2": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "bf63f51d3836408537fe336a40243db75dd5c79c4eadd892f9662d231e3ee74f"},
+        "3": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "651652e30b34282de8faffa160321d4f3fd3a58facd76224098b92fd9eb42dd3"},
+        "4": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "35151b5e89649c11f57e70ff61641641748b745353b99224eba4eb4e16522824"},
+        "5": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "ca861f765085959ea459d68efdad3a448fe5fc14bd1f2efe23dbfd72ccecdbc4"},
+        "6": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "d2bfc49ba653be45cdf49728c5a1a12202e50c3928f7faa422b94561fe9adc18"},
+        "10": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "90a13b04f42b5e1a380347b736d43792663e69bba290dfd4383a99c770c4146b"},
+        "11": {"counts": [5, 5, 5, 5, 5], "directions_sha256": "c3e3c327679dfe3c53d6598d2ded6605bfadd232b442ff4db3f0815ff86a692c"},
+        "15": {"counts": [3, 3, 3, 3, 3], "directions_sha256": "e2c8b92b45544fbfcd4039b95698a9f4272b83315a06b302c316f9211ae96773"},
+        "16": {"counts": [3, 3, 3, 3, 3], "directions_sha256": "a80926ced154339f0c73df884437edb2cf086c84c5573e6eeeb656b2fb200669"},
+        "17": {"counts": [5, 5, 5, 5, 5], "directions_sha256": "3ae80d71e86a409494268019ff132aa1c1796de577e1f685db8b055d8a4d85a3"},
+        "18": {"counts": [5, 5, 5, 5, 5], "directions_sha256": "c3e3c327679dfe3c53d6598d2ded6605bfadd232b442ff4db3f0815ff86a692c"}
+      }
+    },
+    "302": {
+      "archive": "anim3.mul",
+      "graphic": 302,
+      "groups": {
+        "0": {"counts": [10, 10, 10, 10, 10], "directions_sha256": "1e4eabd763affe354f8cd01da6495e87bd1ee42efb4244c278aaf88a0b4d2cb7"},
+        "1": {"counts": [1, 1, 1, 1, 1], "directions_sha256": "b9f74e9d26f053274d29a6365ab8decc97d7903571da910dc79a25e715f093fe"},
+        "2": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "57725019ec25e181df98dcaf1e8adef1634c91d4900677b9ae2a5a2ede37abc2"},
+        "3": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "57725019ec25e181df98dcaf1e8adef1634c91d4900677b9ae2a5a2ede37abc2"},
+        "4": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "bdb707b1f47f0538cb88f50fe1724a45bc526dc682556c04b59f637bb9e1f07a"},
+        "5": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "c8f84f6940fa96833855c5123322ae0803fb848134c83ea6da6e9a2791beeb18"},
+        "6": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "c8f84f6940fa96833855c5123322ae0803fb848134c83ea6da6e9a2791beeb18"},
+        "10": {"counts": [4, 4, 4, 4, 4], "directions_sha256": "e19ecb394280888b0bc7b8c3fcc07001223b9d37e64606dc278e5a20f8b44147"},
+        "11": {"counts": [5, 5, 5, 5, 5], "directions_sha256": "4379faba0a1e85d733c2a1b8620c548fdbb368159897c4a2771bbc9f00f6dc99"},
+        "15": {"counts": [3, 3, 3, 3, 3], "directions_sha256": "b21ae86f85537933a37dbab8731a54b393a59a39d23a465df918134c44b08a69"},
+        "16": {"counts": [3, 3, 3, 3, 3], "directions_sha256": "b21ae86f85537933a37dbab8731a54b393a59a39d23a465df918134c44b08a69"},
+        "17": {"counts": [5, 5, 5, 5, 5], "directions_sha256": "9034774a522a34cb95bc2f4108a0c985d0984d1600732d03ed055fc3732ea51f"},
+        "18": {"counts": [5, 5, 5, 5, 5], "directions_sha256": "8c810bfa242a7d33f8650a3e5bc098a1bb050c77528abec807a1a4d34be3d41c"}
+      }
+    }
+  }
+}

@@ -17,6 +17,12 @@ func run() -> void:
 		Registry.load_index()
 		for candidate: Dictionary in rows:
 			Registry.entries[int(candidate.body)] = candidate.presentation
+	elif Registry.entry(MAGE).get("classic_gesture_batch") == "ophidian_terathan_actions":
+		var path := "res://../work/creatures/ophidian_terathan_actions/accepted-native/base-rows.json"
+		var rows: Array = JSON.parse_string(FileAccess.get_file_as_string(path))
+		for row: Dictionary in rows:
+			if int(row.bodies[0].body) == MAGE:
+				Registry.entries[MAGE] = row
 	var game := Game.new()
 	root.add_child(game)
 	game.set_process(false)
