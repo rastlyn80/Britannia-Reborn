@@ -1,0 +1,74 @@
+{
+  "definitions": {
+    "Body.def": "2fbd408fcc96d1c0b382c4fd5c4efc798e2e5093e59a14ed6be9146b4a81cdab",
+    "Corpse.def": "9bc572c3643acbcd1e299e6def4297c57da586624e373a45da88f72654b7c02a",
+    "Bodyconv.def": "62debf90a6c5f59a885da6b0a8db1094d90c8d9e0a2c4c02b3acc234d818b665",
+    "mobtypes.txt": "a4f1c98057c5bcf10ccdb575a9154260651e49b852bfe548059ff55fcbbf29d8"
+  },
+  "groups": {
+    "8": {
+      "3": [
+        "anim.mul",
+        8,
+        4,
+        "3c871d64fe31627dca5bab84795b2802d3bb57fb6ce8d79197dea0765d157b5e"
+      ],
+      "6": [
+        "anim.mul",
+        8,
+        4,
+        "eaf0d746d59f99d9d9ca19a849a2c3efb4817225d7e52d3b5ca6f28a1b525c27"
+      ],
+      "18": [
+        "anim.mul",
+        8,
+        5,
+        "cfc36d260dfd2d3c72d3a97e4de4496cbf790c3d0ddc9cc4ac7fdbb406e0e2a1"
+      ]
+    },
+    "mage_lord": {
+      "5": [
+        "anim2.mul",
+        21,
+        4,
+        "e4745ff6f4570568b550f8465a2781a6897b7d3f902975e210037d96d4a1acc2"
+      ],
+      "6": [
+        "anim2.mul",
+        21,
+        4,
+        "e4745ff6f4570568b550f8465a2781a6897b7d3f902975e210037d96d4a1acc2"
+      ],
+      "11": [
+        "anim2.mul",
+        21,
+        5,
+        "86788d3d65da25c32fcfa622fc78c872ba2f73baad468dbefb1e2bfc809d3425"
+      ],
+      "15": [
+        "anim2.mul",
+        21,
+        3,
+        "c1b6b56ab67c0d44aee1fecc51d6ba17ae711886f440a60e9d8fe463b485d59f"
+      ],
+      "16": [
+        "anim2.mul",
+        21,
+        3,
+        "c1b6b56ab67c0d44aee1fecc51d6ba17ae711886f440a60e9d8fe463b485d59f"
+      ],
+      "17": [
+        "anim2.mul",
+        21,
+        5,
+        "86788d3d65da25c32fcfa622fc78c872ba2f73baad468dbefb1e2bfc809d3425"
+      ],
+      "18": [
+        "anim2.mul",
+        21,
+        5,
+        "3dafe5fcc212c524c610f87dbf3b781c9bd15108ab0e22bae1cf0bc69e992139"
+      ]
+    }
+  }
+}

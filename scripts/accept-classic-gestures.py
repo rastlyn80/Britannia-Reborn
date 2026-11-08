@@ -38,6 +38,8 @@ BATCHES = {
                             ('test-copper-kaze-actions.gd', 'test-copper-kaze-slopes.gd')),
     'ratman_lava_actions': ((90, 143), 'TokunoSpiderDragonLive.gd',
                             ('test-ratman-lava-actions.gd', 'test-ratman-lava-corpses.gd')),
+    'mage_lord_tentacle_actions': ((66, 125, 126), 'MageLordTentacleActionsLive.gd',
+                                  ('test-mage-lord-tentacle-actions.gd', 'test-mage-lord-tentacle-corpses.gd')),
     'dragon_daemon': ((9, 10, 12, 38, 40, 43, 59, 60, 61), 'PreparedCreatureActionLive.gd',
                       ('test-dragon-daemon-gestures.gd',)),
     'terathan_classic': ((70, 71, 72), 'PreparedCreatureActionLive.gd', ('test-terathan-gestures.gd',)),
@@ -117,6 +119,7 @@ BATCHES = {
 }
 PREDECESSORS = {
     'ratman_lava_actions': (),
+    'mage_lord_tentacle_actions': (),
     'copper_kaze_actions': (),
     'ophidian_patchwork_actions': ('ophidian_bardiche',),
     'tokuno_spider_dragon_actions': ('dragon_daemon',),
@@ -190,6 +193,11 @@ def compose(base, prepared, native_sha):
         row['kind'] = f"{base['kind']}_fidgets"
     elif prepared['family'] == 'sea_serpent_actions':
         row['kind'] = f"{base['kind']}_classic"
+    elif prepared['family'] == 'mage_lord_tentacle_actions':
+        identity, = prepared['bodies']
+        body = identity['body']
+        row['kind'] = f"{base['kind']}_actions_{body}"
+        row['bodies'] = [dict(identity, name='Swamp Tentacle' if body == 66 else 'Evil Mage Lord')]
     elif len(base['bodies']) > 1:
         row['kind'] = f"{base['kind']}_slot11_{prepared['bodies'][0]['body']}"
     for key in ('validation_sha256', 'gpu_sha256', 'gpu_runtime_sha256'):
@@ -286,7 +294,8 @@ def checked(index, active, batch, *, compare_registry=True):
                    'LizardActionsLive.gd', 'QuadrupedActionsLive.gd', 'CatActionsLive.gd', 'TrollActionsLive.gd',
                    'FieldFaunaLive.gd', 'SpiderMongbatActionsLive.gd', 'PigReaperHarpyActionsLive.gd',
                    'DaemonActionsLive.gd', 'WraithDrakeWalrusLive.gd', 'OccurrenceGesturesLive.gd',
-                   'LaterCreatureGesturesLive.gd', 'ArmedFlyingCreatureGesturesLive.gd', 'TokunoSpiderDragonLive.gd') and (
+                   'LaterCreatureGesturesLive.gd', 'ArmedFlyingCreatureGesturesLive.gd', 'TokunoSpiderDragonLive.gd',
+                   'MageLordTentacleActionsLive.gd') and (
             report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
         raise ValueError('Supplementary action trial used a different prepared fixture loader')
     if batch == 'occurrence_deaths' and (
@@ -325,6 +334,19 @@ def checked(index, active, batch, *, compare_registry=True):
         if (report['collapse_renderers'] != expected
                 or report['supplemental_sha256'] != sha(ROOT / 'Viewer/Network/PreparedClassicActionsLive.gd')):
             raise ValueError('Airborne or grounded collapse evidence does not match its renderers')
+
+    if batch == 'mage_lord_tentacle_actions':
+        costumes = report.get('mage_costumes', [])
+        if len(costumes) != 4 or {(row['body'], row['female']) for row in costumes} != {
+                (body, female) for body in (125, 126) for female in (False, True)}:
+            raise ValueError('Each native Lord must retain its costume on both clients')
+        for row in costumes:
+            worn = row['worn']
+            if worn.keys() != {'0', '1'} or worn['0'] != worn['1'] or row['death'] != worn:
+                raise ValueError('The Lord costume differs between clients or during the corpse handoff')
+            robe, hat, shoes = (worn['0'][layer] for layer in ('22', '6', '3'))
+            if (robe[0], hat[0], shoes[0]) != (7939, 5912, 5901) or robe[1] <= 0 or robe[1] != hat[1]:
+                raise ValueError('Native Lord costume lacks the original robe, hat, sandals or shared dye')
 
     by_body = {row['bodies'][0]['body']: row for row in prepared}
     if batch == 'dragon_daemon':

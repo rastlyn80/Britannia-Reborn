@@ -89,6 +89,10 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'mage_lord_tentacle_actions':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-mage-lord-tentacle-actions.py'))
+        rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
+        return recipe['prepared'](rows)
     if family == 'ratman_lava_actions':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-ratman-lava-actions.py'))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
