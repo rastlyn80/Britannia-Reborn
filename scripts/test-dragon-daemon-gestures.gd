@@ -64,6 +64,7 @@ func run() -> void:
 			arena.avatars[serial] = avatar
 			arena.avatars[serial + 0x100] = avatar
 			var extended: bool = (body == 9 and entry.get("classic_gesture_batch") == "daemon_wyvern_polar_actions"
+				or body in [12, 59] and entry.get("classic_gesture_batch") == "tokuno_spider_dragon_actions"
 				or body in [60, 61] and entry.get("classic_gesture_batch") == "wraith_drake_walrus_actions")
 			var predecessor_slots: Array = ["11", "12"] if extended else entry.classic_motion_references.keys()
 			if body == 40 and entry.get("classic_gesture_batch") == "armed_flying_creature_gestures":

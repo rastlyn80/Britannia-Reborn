@@ -89,6 +89,10 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'tokuno_spider_dragon_actions':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-tokuno-spider-dragon-actions.py'))
+        rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
+        return recipe['prepared'](rows)
     if family == 'armed_flying_creature_gestures':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-armed-flying-creature-gestures.py'))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)

@@ -21,8 +21,18 @@ func run() -> void:
 		assert(Registry.supports_body(body), family + " missing normal body route")
 		assert(Registry.entry(body).get("kind") == family)
 		var active := Registry.entry(body)
+		var reviewed := active
+		var fitted: bool = body == 245 and active.get("classic_gesture_batch") == "tokuno_spider_dragon_actions"
+		if fitted:
+			const BASE := "res://../work/creatures/tokuno_spider_dragon_actions/accepted-native/base-rows.json"
+			var baseline: Array = JSON.parse_string(FileAccess.get_file_as_string(BASE))
+			var warrior := baseline.filter(func(row: Dictionary) -> bool: return row.kind == family)
+			assert(warrior.size() == 1)
+			reviewed = warrior[0]
+			assert(active.classic_gesture_base_assets == reviewed.assets and active.bodies == reviewed.bodies)
 		if active.has("legacy_slot11_evidence"):
-			assert(active == preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(record, active))
+			assert(active.legacy_slot11_evidence == reviewed.legacy_slot11_evidence)
+			assert(reviewed == preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(record, reviewed))
 		var avatar := Avatar.new()
 		avatar.initial_body = body
 		root.add_child(avatar)
@@ -52,6 +62,8 @@ func run() -> void:
 		game.entities[serial] = entity
 		var actions := MONSTER.duplicate()
 		actions.erase(2)
+		if fitted:
+			actions[17] = "WeaponRest"
 		if body == 253:
 			actions[12] = "Cast"
 			var cast_packet := PackedByteArray([0xe2])

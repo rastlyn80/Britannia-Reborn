@@ -59,14 +59,20 @@ func run() -> void:
 		if proof.has("unchanged_body"):
 			var sibling := int(proof.unchanged_body)
 			var scale: Vector3 = actor.model.scale
+			var original_actor := actor.get_instance_id()
 			avatar.apply_server_appearance({"body": sibling, "hue": 0}, [])
-			assert(avatar.horse_visual == actor and actor.native_body == sibling)
-			assert(actor.model.scale.is_equal_approx(scale))
+			if row.has("unchanged_presentation"):
+				assert(avatar.horse_visual.get_instance_id() != original_actor and Registry.entry(sibling) == row.unchanged_presentation)
+			else:
+				assert(avatar.horse_visual == actor)
+			assert(avatar.horse_visual.native_body == sibling and avatar.horse_visual.model.scale.is_equal_approx(scale))
 			var unchanged: Dictionary = game.last_mobile_actions[SERIAL].duplicate(true)
 			unchanged.body = sibling
 			assert(not avatar.receive_native_action(unchanged), "Sibling body has no new slot 11 alias")
 			avatar.apply_server_appearance({"body": body, "hue": 0}, [])
-			assert(avatar.horse_visual == actor and avatar.receive_native_action(game.last_mobile_actions[SERIAL]))
+			if not row.has("unchanged_presentation"):
+				assert(avatar.horse_visual == actor)
+			assert(avatar.horse_visual.native_body == body and avatar.receive_native_action(game.last_mobile_actions[SERIAL]))
 		avatar.free()
 	game.free()
 	print("LEGACY CREATURE ALIASES: ", rows.size() * 2, " decoded routes")

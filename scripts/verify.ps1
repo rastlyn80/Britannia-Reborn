@@ -241,38 +241,71 @@ if (Test-Path "$root/Viewer/local-art/human-npcs/shared/death-preparation.json")
  & $godot --headless --path "$root/Viewer" --script res://Presentation/HumanNPCDeathTests.gd
  if ($LASTEXITCODE) {throw 'Decoded human death/corpse snapshot or lifecycle checks failed'}
 }
-if (Test-Path "$root/Viewer/local-art/creatures/walking_dead_mummy-ground.json") {
- & $godot --headless --path "$root/Viewer" --script res://Presentation/MummySourcePoseTests.gd
- if ($LASTEXITCODE) {throw 'Prepared Mummy source/refined rig or complete-skin residual lookup failed'}
- foreach ($trial in @('MummyRuntimeTests','MummyTerrainTests','MummyDeathTests')) {
-  & $godot --headless --path "$root/Viewer" --script "res://Presentation/$trial.gd"
-  if ($LASTEXITCODE) {throw "Prepared Mummy avatar/terrain/death test failed: $trial"}
- }
- & python -B "$root/scripts/check-prepared-mummy.py" --runtime
- if ($LASTEXITCODE) {throw 'Exact prepared Mummy source/curve/asset evidence failed'}
-}
-if (Test-Path "$root/Viewer/local-art/creatures/black_ant_warrior-ground.json") {
- foreach ($trial in @('SolenWarriorSourceTests','SolenWarriorRuntimeTests','SolenWarriorTerrainTests','SolenWarriorDeathTests')) {
-  & $godot --headless --path "$root/Viewer" --script "res://Presentation/$trial.gd"
-  if ($LASTEXITCODE) {throw "Prepared eight-slot Solen warrior test failed: $trial"}
- }
- & python -B "$root/scripts/check-solen-warrior-sources.py" --fidelity
- if ($LASTEXITCODE) {throw 'Exact original Solen warrior source/import/action/corpse proof failed'}
-}
-if (Test-Path "$root/work/creatures/ice-elemental/prepared/elementals_ice_elemental-ground.json") {
- & $godot --headless --path "$root/Viewer" --script res://Presentation/IceElementalSourceTests.gd
- if ($LASTEXITCODE) {throw 'Original Ice source/refined skin or measured model support failed'}
- & python -B "$root/scripts/check-source-ice-elemental.py"
- if ($LASTEXITCODE) {throw 'Exact original Ice source/recipe/asset pins failed'}
- if (Test-Path "$root/Viewer/local-art/creatures/ice_elementals/candidate.json") {
-  foreach ($trial in @('IceElementalRuntimeTests','IceElementalTerrainTests','IceElementalDeathTests')) {
-   & $godot --headless --path "$root/Viewer" --script "res://Presentation/$trial.gd"
-   if ($LASTEXITCODE) {throw "Original Ice candidate stage failed: $trial"}
+# These families read shared assets and each write their own evidence folder.
+$sourceCreatureChecks = [ordered]@{
+ Mummy = {
+  param($root, $godot)
+  $ErrorActionPreference = 'Stop'
+  if (Test-Path "$root/Viewer/local-art/creatures/walking_dead_mummy-ground.json") {
+   & $godot --headless --path "$root/Viewer" --script res://Presentation/MummySourcePoseTests.gd
+   if ($LASTEXITCODE) {throw 'Prepared Mummy source/refined rig or complete-skin residual lookup failed'}
+   foreach ($trial in @('MummyRuntimeTests','MummyTerrainTests','MummyDeathTests')) {
+    & $godot --headless --path "$root/Viewer" --script "res://Presentation/$trial.gd"
+    if ($LASTEXITCODE) {throw "Prepared Mummy avatar/terrain/death test failed: $trial"}
+   }
+   & python -B "$root/scripts/check-prepared-mummy.py" --runtime
+   if ($LASTEXITCODE) {throw 'Exact prepared Mummy source/curve/asset evidence failed'}
   }
-  & python -B "$root/scripts/check-source-ice-elemental.py" --candidate
-  if ($LASTEXITCODE) {throw 'Exact original Ice candidate imports/avatar/terrain/death proof failed'}
+ }
+ SolenWarrior = {
+  param($root, $godot)
+  $ErrorActionPreference = 'Stop'
+  if (Test-Path "$root/Viewer/local-art/creatures/black_ant_warrior-ground.json") {
+   foreach ($trial in @('SolenWarriorSourceTests','SolenWarriorRuntimeTests','SolenWarriorTerrainTests','SolenWarriorDeathTests')) {
+    & $godot --headless --path "$root/Viewer" --script "res://Presentation/$trial.gd"
+    if ($LASTEXITCODE) {throw "Prepared eight-slot Solen warrior test failed: $trial"}
+   }
+   & python -B "$root/scripts/check-solen-warrior-sources.py" --fidelity
+   if ($LASTEXITCODE) {throw 'Exact original Solen warrior source/import/action/corpse proof failed'}
+  }
+ }
+ IceElemental = {
+  param($root, $godot)
+  $ErrorActionPreference = 'Stop'
+  if (Test-Path "$root/work/creatures/ice-elemental/prepared/elementals_ice_elemental-ground.json") {
+   & $godot --headless --path "$root/Viewer" --script res://Presentation/IceElementalSourceTests.gd
+   if ($LASTEXITCODE) {throw 'Original Ice source/refined skin or measured model support failed'}
+   & python -B "$root/scripts/check-source-ice-elemental.py"
+   if ($LASTEXITCODE) {throw 'Exact original Ice source/recipe/asset pins failed'}
+   if (Test-Path "$root/Viewer/local-art/creatures/ice_elementals/candidate.json") {
+    foreach ($trial in @('IceElementalRuntimeTests','IceElementalTerrainTests','IceElementalDeathTests')) {
+     & $godot --headless --path "$root/Viewer" --script "res://Presentation/$trial.gd"
+     if ($LASTEXITCODE) {throw "Original Ice candidate stage failed: $trial"}
+    }
+    & python -B "$root/scripts/check-source-ice-elemental.py" --candidate
+    if ($LASTEXITCODE) {throw 'Exact original Ice candidate imports/avatar/terrain/death proof failed'}
+   }
+  }
  }
 }
+$sourceCreatureJobs = @()
+$sourceCreatureTimer = [Diagnostics.Stopwatch]::StartNew()
+try {
+ foreach ($check in $sourceCreatureChecks.GetEnumerator()) {
+  if ([Environment]::ProcessorCount -lt 4) {
+   & $check.Value $root $godot
+  } else {
+   $sourceCreatureJobs += Start-Job -Name $check.Key -ScriptBlock $check.Value -ArgumentList $root,$godot
+  }
+ }
+ foreach ($job in $sourceCreatureJobs) {
+  Receive-Job -Job $job -Wait -ErrorAction Continue
+  if ($job.State -ne 'Completed') {throw "Original creature verification failed: $($job.Name)"}
+ }
+} finally {
+ if ($sourceCreatureJobs.Count) { $sourceCreatureJobs | Remove-Job -Force }
+}
+Write-Output ('Original creature runtime checks completed in {0:N1} seconds.' -f $sourceCreatureTimer.Elapsed.TotalSeconds)
 if (Test-Path "$root/Viewer/Art/Creatures/Birds/small-bird.glb") {
   & $godot --headless --path "$root/Viewer" --script res://Presentation/BirdMotionTests.gd -- --asset=res://Art/Creatures/Birds/small-bird.glb
   if ($LASTEXITCODE) {throw 'Licensed bird skin, action continuity and static corpse checks failed'}

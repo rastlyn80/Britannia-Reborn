@@ -1,3 +1,11 @@
+# Yomotsu Warrior, Dread Spider and both Dragon variants
+
+Yomotsu Warrior 245, Dread Spider 11 and both Dragon bodies 12 and 59 are active locally. The new motions preserve their original rigs and earlier keys. Both Dragons retain the original muzzle and breath effect and gain separate ground and airborne falls. Dread Spider's fitted gestures follow sampled slopes, and body 19 retains its existing presentation.
+
+The isolated ModernUO trial passed 1,499 checks across six constructor and body pairs, including both Dragon and Greater Dragon colours. Normal client routes passed 5,490 decoded poses, 612 weighted gesture samples on flat ground and opposing slopes, and 45 corpse handoffs across 1,845 terrain samples. Twelve static corpse hue cases passed. The original Dragon and Daemon replay passed 12 decoded breath projectiles. Explicit native airfall and ordinary native death were tested separately from airborne client corpse transfer.
+
+The active ledger routes 5,340 of 6,930 tracked slots (77.1%), with 535 shared Classic replacement pairs, down from 560. The rebuilt static corpse catalogue passed 2,431 checks across 324 bodies. The previous full project regression took about 40 minutes. The verifier now runs the independent Mummy, Solen Warrior and Ice Elemental runtime groups concurrently on hosts with at least four logical processors and preserves the order of checks within each group.
+
 # Classic motions for ten creature bodies
 
 Bone Knight, Vampire Bat, Pixie, Plague Beast, Slime, Mummy, Giant Toad, Juka Warrior, Balron and Bone Magi now use verified Classic gestures on their existing rigs. The Bone Knight keeps its sword and shield and applies a small terrain correction during the five new gestures. Bone Magi keeps its recovered staff grip, and Mummy retains all original ground curves with a separate set of measured samples for its two new motions. Vampire Bat and Balron preserve the displayed head position when an airborne pose passes to a corpse.

@@ -4,6 +4,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import runpy
 import subprocess
 import sys
 
@@ -122,6 +123,19 @@ def main():
     for body, kind in selected.items():
         matches = [row for row in index['entries'] if row['status'] == 'validated'
                    and any(int(identity['body']) == body for identity in row['bodies'])]
+        if (args.dread_spider and args.check_active and matches
+                and matches[-1].get('classic_gesture_batch') == 'tokuno_spider_dragon_actions'):
+            gate = runpy.run_path(str(ROOT / 'scripts/accept-classic-gestures.py'))
+            baseline, _ = gate['checked'](index, True, 'tokuno_spider_dragon_actions')
+            original, = (row for row in baseline if row['kind'] == kind)
+            sibling, = (row for row in index['entries'] if row['kind'] == kind)
+            if (original.get('classic_action_categories_by_body') != {'11': {'11': 'Fidget'}}
+                    or sibling != dict(original, bodies=[identity for identity in original['bodies'] if identity['body'] == 19])):
+                raise ValueError('Fitted Dread Spider must retain the reviewed body 19 sibling')
+            proof = alias_proof(body, actions, (17,))
+            proof.update(kind=matches[-1]['kind'], unchanged_body=19)
+            proofs.append({'proof': proof, 'presentation': matches[-1], 'unchanged_presentation': sibling})
+            continue
         if not matches or matches[-1]['kind'] != kind:
             raise ValueError(f'Active registry does not select {kind} for {body}')
         row = matches[-1]

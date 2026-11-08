@@ -91,6 +91,9 @@ BATCHES = {
                                                              'test-daemon-distinct-landings.gd')),
     'wraith_drake_walrus_actions': ((26, 60, 61, 221), 'WraithDrakeWalrusLive.gd',
                                    ('test-wraith-drake-walrus-actions.gd', 'test-wraith-drake-walrus-landings.gd')),
+    'tokuno_spider_dragon_actions': ((11, 12, 59, 245), 'TokunoSpiderDragonLive.gd',
+                                    ('test-tokuno-spider-dragon-actions.gd', 'test-tokuno-spider-dragon-slopes.gd',
+                                     'test-tokuno-spider-dragon-corpses.gd')),
     'armed_flying_creature_gestures': ((40, 148, 764), 'ArmedFlyingCreatureGesturesLive.gd',
                                        ('test-armed-flying-creature-gestures.gd', 'test-balron-creature-landings.gd',
                                         'test-armed-flying-creature-slopes.gd')),
@@ -106,6 +109,7 @@ BATCHES = {
     'skeleton_actions': ((50, 56), 'PreparedClassicActionsLive.gd', ('test-skeleton-actions.gd',)),
 }
 PREDECESSORS = {
+    'tokuno_spider_dragon_actions': ('dragon_daemon',),
     'armed_flying_creature_gestures': ('dragon_daemon', 'skeletal_mage_staff'),
     'lowland_creature_gestures': ('fidget_aliases_toad',),
     'later_creature_gestures': ('bone_cyclops', 'vampire_bat_actions'),
@@ -271,7 +275,8 @@ def checked(index, active, batch, *, compare_registry=True):
     if wrapper in ('PreparedClassicActionsLive.gd', 'OccurrenceDeathsLive.gd', 'FieldDeathsLive.gd',
                    'LizardActionsLive.gd', 'QuadrupedActionsLive.gd', 'CatActionsLive.gd', 'TrollActionsLive.gd',
                    'FieldFaunaLive.gd', 'SpiderMongbatActionsLive.gd', 'PigReaperHarpyActionsLive.gd',
-                   'DaemonActionsLive.gd', 'WraithDrakeWalrusLive.gd', 'OccurrenceGesturesLive.gd', 'LaterCreatureGesturesLive.gd', 'ArmedFlyingCreatureGesturesLive.gd') and (
+                   'DaemonActionsLive.gd', 'WraithDrakeWalrusLive.gd', 'OccurrenceGesturesLive.gd',
+                   'LaterCreatureGesturesLive.gd', 'ArmedFlyingCreatureGesturesLive.gd', 'TokunoSpiderDragonLive.gd') and (
             report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
         raise ValueError('Supplementary action trial used a different prepared fixture loader')
     if batch == 'occurrence_deaths' and (
@@ -436,6 +441,8 @@ def test_active(batch):
     if batch == 'occurrence_gestures':
         for test in ('TsukiWolfRouteTests', 'KappaRouteTests'):
             run_client_check(godot, env, f'res://Presentation/{test}.gd', [])
+    if batch == 'tokuno_spider_dragon_actions':
+        run_client_check(godot, env, 'res://Presentation/YomotsuRouteTests.gd', [])
     if batch == 'zombie_corpser_gargoyle_actions':
         run_client_check(godot, env, 'res://Presentation/CorpserEmergenceTests.gd', ['--active'])
     package = {'parrot_flight': 'late_donors', 'troglodyte_reach': 'late_source',
