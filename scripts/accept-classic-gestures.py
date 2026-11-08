@@ -31,6 +31,13 @@ BATCHES = {
     'gargoyle_classic': ((4,), 'PreparedCreatureActionLive.gd', ('test-gargoyle-classic.gd',)),
     'scorpion_imp': ((48, 74), 'PreparedCreatureActionLive.gd', ('test-scorpion-imp-gestures.gd',)),
     'ophidian_bardiche': ((86,), 'PreparedCreatureActionLive.gd', ('test-ophidian-bardiche.gd',)),
+    'ophidian_patchwork_actions': ((86, 309), 'TokunoSpiderDragonLive.gd',
+                                  ('test-ophidian-patchwork-actions.gd', 'test-ophidian-patchwork-slopes.gd',
+                                   'test-ophidian-alternate-corpses.gd')),
+    'copper_kaze_actions': ((110, 196), 'PreparedClassicActionsLive.gd',
+                            ('test-copper-kaze-actions.gd', 'test-copper-kaze-slopes.gd')),
+    'ratman_lava_actions': ((90, 143), 'TokunoSpiderDragonLive.gd',
+                            ('test-ratman-lava-actions.gd', 'test-ratman-lava-corpses.gd')),
     'dragon_daemon': ((9, 10, 12, 38, 40, 43, 59, 60, 61), 'PreparedCreatureActionLive.gd',
                       ('test-dragon-daemon-gestures.gd',)),
     'terathan_classic': ((70, 71, 72), 'PreparedCreatureActionLive.gd', ('test-terathan-gestures.gd',)),
@@ -109,6 +116,9 @@ BATCHES = {
     'skeleton_actions': ((50, 56), 'PreparedClassicActionsLive.gd', ('test-skeleton-actions.gd',)),
 }
 PREDECESSORS = {
+    'ratman_lava_actions': (),
+    'copper_kaze_actions': (),
+    'ophidian_patchwork_actions': ('ophidian_bardiche',),
     'tokuno_spider_dragon_actions': ('dragon_daemon',),
     'armed_flying_creature_gestures': ('dragon_daemon', 'skeletal_mage_staff'),
     'lowland_creature_gestures': ('fidget_aliases_toad',),
@@ -443,6 +453,8 @@ def test_active(batch):
             run_client_check(godot, env, f'res://Presentation/{test}.gd', [])
     if batch == 'tokuno_spider_dragon_actions':
         run_client_check(godot, env, 'res://Presentation/YomotsuRouteTests.gd', [])
+    if batch in ('ophidian_patchwork_actions', 'copper_kaze_actions'):
+        run_client_check(godot, env, 'res://Presentation/OccurrenceCreatureRouteTests.gd', [])
     if batch == 'zombie_corpser_gargoyle_actions':
         run_client_check(godot, env, 'res://Presentation/CorpserEmergenceTests.gd', ['--active'])
     package = {'parrot_flight': 'late_donors', 'troglodyte_reach': 'late_source',

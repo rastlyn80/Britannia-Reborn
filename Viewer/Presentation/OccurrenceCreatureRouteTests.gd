@@ -28,7 +28,16 @@ func run() -> void:
 		assert(Registry.entry(body).get("kind") == family)
 		var active := Registry.entry(body)
 		if active.has("legacy_slot11_evidence"):
-			assert(active == preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(record, active))
+			var reviewed := active
+			if body == 309 and active.get("classic_gesture_batch") == "ophidian_patchwork_actions":
+				const BASE := "res://../work/creatures/ophidian_patchwork_actions/accepted-native/base-rows.json"
+				var baseline: Array = JSON.parse_string(FileAccess.get_file_as_string(BASE))
+				var skeleton := baseline.filter(func(row: Dictionary) -> bool: return row.kind == family)
+				assert(skeleton.size() == 1)
+				reviewed = skeleton[0]
+				assert(active.classic_gesture_base_assets == reviewed.assets and active.bodies == reviewed.bodies)
+				assert(active.legacy_slot11_evidence == reviewed.legacy_slot11_evidence)
+			assert(reviewed == preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(record, reviewed))
 		var avatar := Avatar.new()
 		avatar.initial_body = body
 		root.add_child(avatar)

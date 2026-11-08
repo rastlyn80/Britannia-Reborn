@@ -1,3 +1,13 @@
+# Ophidian, Patchwork Skeleton, Copper Elemental, Kaze Kemono, Ratman Mage and Lava Serpent actions
+
+Six body routes are active locally. Ophidian Warrior and Knight share body 86 and retain the original bardiche grip during their new attacks and alternate collapse. Patchwork Skeleton shares a replacement for each of its two verified identical frame pairs. Dull Copper Elemental keeps its own segmented rig while following the Classic frame reference redirected to body 14. Kaze Kemono retains its existing cast and movement. Ratman Mage now holds the recovered Third Dawn sword at its original grasp socket, and its Classic reference redirects to body 45. Lava Serpent keeps its own surface and adapts six motions from the compatible Giant Serpent rig, the original Classic redirect target for body 90.
+
+The isolated ModernUO runs passed 1,435 checks across seven constructor and body pairs. The normal client gates passed 6,855 decoded pose samples and 18 static corpse hue checks. Ophidian, Patchwork, Copper and Kaze added 1,989 terrain pose checks. Ophidian, Ratman and Lava added 21 decoded death-to-corpse handoffs across 861 terrain samples. The original Ophidian bardiche handoffs and the exact reviewed source packages also passed their separate checks.
+
+The generic creature ledger routes 5,341 of 6,930 protocol slots (77.1%). There are 1,589 unrouted slots and 519 Classic pairs that share a replacement, down from 535. The direct Classic source-frame audit still has zero unrouted slots. The static corpse catalogue passed 2,432 checks across 324 bodies. The six-body activation is local. The previous Yomotsu, Dread Spider and Dragon batch passed the full regression and was pushed to GitHub main as `58e925e4`. The full regression took about 34 minutes, down from about 40 minutes, and its concurrent original-creature stage took 6 minutes 19 seconds.
+
+Rebuild each local candidate with its `prepare-*-actions.py` script under `scripts/`, using the accompanying frame pins and bake recipes. The isolated server selectors are `ophidian_patchwork_actions`, `copper_kaze_actions` and `ratman_lava_actions` in `scripts/test-horses.ps1`. `python -B scripts/accept-classic-gestures.py --batch <selector> --check-active` replays the normal client checks. Source frames and generated models stay local.
+
 # Yomotsu Warrior, Dread Spider and both Dragon variants
 
 Yomotsu Warrior 245, Dread Spider 11 and both Dragon bodies 12 and 59 are active locally. The new motions preserve their original rigs and earlier keys. Both Dragons retain the original muzzle and breath effect and gain separate ground and airborne falls. Dread Spider's fitted gestures follow sampled slopes, and body 19 retains its existing presentation.

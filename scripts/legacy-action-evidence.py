@@ -31,7 +31,9 @@ def expected_rows_with_legacy_aliases(rows, active):
     expected = [expected_with_legacy_alias(row, active_by_kind.get(row['kind'], {})) for row in rows]
     for kind, batch in (('monstrousinterredgrizzle', 'grizzle_antler'),
                         ('wild_guar', 'gaman_gestures'),
-                        ('walking_dead_mummy', 'lowland_creature_gestures')):
+                        ('walking_dead_mummy', 'lowland_creature_gestures'),
+                        ('serpents_snake_giant_lava', 'ratman_lava_actions'),
+                        ('rat_race_shaman', 'ratman_lava_actions')):
         overlay = active_by_kind.get(kind, {})
         if overlay.get('classic_gesture_native_sha256') and any(row['kind'] == kind for row in expected):
             gate = runpy.run_path(str(Path(__file__).with_name('accept-classic-gestures.py')))

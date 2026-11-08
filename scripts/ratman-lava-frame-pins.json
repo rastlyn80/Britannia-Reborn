@@ -1,0 +1,72 @@
+{
+  "definition_archives": {
+    "Body.def": "2fbd408fcc96d1c0b382c4fd5c4efc798e2e5093e59a14ed6be9146b4a81cdab",
+    "Corpse.def": "9bc572c3643acbcd1e299e6def4297c57da586624e373a45da88f72654b7c02a"
+  },
+  "groups": {
+    "143": {
+      "11": [
+        "anim.mul",
+        45,
+        5,
+        "1eb1468ee9cdc674767e41a1f0bf1c3e8e9e9c8430d048110a3944608bd643dc"
+      ],
+      "15": [
+        "anim.mul",
+        45,
+        3,
+        "93328d01592db231127a5463728850a2e432b38dfc2ee62d6a78e336d56c11ed"
+      ],
+      "16": [
+        "anim.mul",
+        45,
+        3,
+        "f497f56f3fd9abd75049fefd171aee9a4fcb5573982687c796e7115d4a95bce7"
+      ],
+      "18": [
+        "anim.mul",
+        45,
+        5,
+        "d0ee921c292a7407067591d3bd343006b4f2157a997efbab775b6fee4d75ca60"
+      ]
+    },
+    "90": {
+      "3": [
+        "anim.mul",
+        21,
+        4,
+        "519b8e25499770353b94260a86cc3c1229a4ae6f7c1f7df9001bf331ed40e24c"
+      ],
+      "4": [
+        "anim.mul",
+        21,
+        4,
+        "c74caa03b0a612f6982439691708c923584287fd7ba122edd6b2ccbdafa14fb8"
+      ],
+      "6": [
+        "anim.mul",
+        21,
+        4,
+        "69628cce928ff29f52fd847da0f1c713cefe49a603db4d0295a3af30ac4f666a"
+      ],
+      "15": [
+        "anim.mul",
+        21,
+        3,
+        "79d306c692dc7cceeae178a8780b5d68a1e30f288ee62f2dcf6dc8dbd6336e09"
+      ],
+      "16": [
+        "anim.mul",
+        21,
+        3,
+        "3a27ac59320be5ad68a0284f3683ff8cc5e14d75aaf0691a1dac53f561084b48"
+      ],
+      "18": [
+        "anim.mul",
+        21,
+        5,
+        "8e388dd4fbb88ee5578a28ab3d0d12157d698090b0277f10b76f8ae937a42c41"
+      ]
+    }
+  }
+}
