@@ -1,3 +1,15 @@
+# Mountain Goat, Matriarch, Lich Lord, Succubus, Stone Harpy and Horde Minion actions
+
+Mountain Goat 88 shares the fitted goat strike and collapse motions on its matching source rig. The updated support also lifts its retained fidget clear of the sampled ground. Ophidian Matriarch 87 retains its earlier dip and adds a forward collapse, tail strike, overhead brace, recoil and tail lift. Lich Lord 79 has distinct casting, guard and recoil motions, keeps the original staff and crimson material accent, and has its own action route. The two other bodies sharing the Lich Lord artwork keep their existing routes.
+
+Succubus 149 and Horde Minion 776 reuse motions where all five decoded Classic directions match, including each body's pair of short reactions. Their other fidgets and the Horde Minion's alternate fall are distinct. Stone Harpy 73 retains its own stone mesh and textures and adapts eight motions from the matching 34-joint Harpy rig. Its native body and hue remain independent of the Classic graphics redirect. It keeps its displayed pose and playback speed when an explicit ground or air fall hands off to the corpse.
+
+The final isolated ModernUO run passed 1,875 checks across eight constructors and both clients, including Szavetra and Horde Minion Familiar. The client gate exercised 5,508 terrain poses, 18 static corpse hues and 78 decoded corpse handoffs across 3,198 poses. The earlier slope trial exposed clipping in the Stone Harpy kick and Lich Lord cast. Full-skin support cleared those cases, and a separate entry blend corrected a visible Stone Harpy jump at the corpse handoff.
+
+All six are active locally and their predecessor tests passed. The generic ledger now routes 5,344 of 6,930 slots (77.1%). Shared Classic replacement pairs fell from 470 to 456. The matching Classic source-frame audit still has zero unresolved slots. The static corpse catalogue passed 2,432 checks across 324 bodies.
+
+Use the five matching bake recipes, the archive pins in `scripts/goat-harpy-horde-frame-pins.json`, and `scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily goat_harpy_horde_actions` for the isolated native trial. The acceptance command is `python -B scripts/accept-classic-gestures.py --batch goat_harpy_horde_actions --check-active`. Generated scenes and receipts stay local.
+
 # Ophidian, Terathan, Hopper, Fan Dancer and Blood Elemental actions
 
 Ophidian Mage and Archmage share body 85 and retain the recovered staff at its original grasp. Their seven fitted motions include a sweep, an alternate collapse and a cast with red sparks following the staff tip. The final saved scenes passed 7,473 staff pose samples at 480 Hz, with no sampled shaft crossings and a maximum angular step of 0.607 degrees. Terathan Warrior 70 and Drone 71 each add six distinct motions, including a foreleg thrust and alternate collapse, while keeping the original rigs and their earlier pincer dip.
@@ -7,6 +19,8 @@ Skittering Hopper 302 shares a motion for each of three Classic frame pairs conf
 The isolated two-client ModernUO trials passed 899 checks for Ophidian and Terathan and 727 for Hopper, Fan Dancer and Blood Elemental. The client checks exercised 5,103 terrain poses, 18 static corpse hue cases and 72 decoded death-to-corpse handoffs across 2,952 terrain samples. The archive comparisons use the exact pins in `scripts/ophidian-terathan-frame-pins.json` and `scripts/hopper-fan-blood-frame-pins.json`. Use the matching `bake-*-actions.gd` recipes, run `scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily` with each batch name, then verify the active layers with `scripts/accept-classic-gestures.py --check-active`. The generated art and receipts are local.
 
 Both batches passed activation and the earlier reviewed creature gates. The generic ledger routes 5,343 of 6,930 slots (77.1%). The number of Classic group pairs sharing a replacement fell from 506 to 470, with zero unresolved slots in the matching Classic source-frame audit. The bounded catalogue still has evidence for 322 named native constructor and body pairs and four separately reviewed additional identities. The static corpse catalogue passed 2,432 checks across 324 bodies.
+
+The full project regression passed in 35 minutes and 52 seconds. GitHub main received source commit `4d7ec0ce`.
 
 # Cyclops, Titan and Ice Elemental actions
 

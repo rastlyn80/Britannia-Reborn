@@ -1,0 +1,1017 @@
+{
+  "definitions": {
+    "Body.def": "2fbd408fcc96d1c0b382c4fd5c4efc798e2e5093e59a14ed6be9146b4a81cdab",
+    "Corpse.def": "9bc572c3643acbcd1e299e6def4297c57da586624e373a45da88f72654b7c02a",
+    "Bodyconv.def": "62debf90a6c5f59a885da6b0a8db1094d90c8d9e0a2c4c02b3acc234d818b665",
+    "mobtypes.txt": "a4f1c98057c5bcf10ccdb575a9154260651e49b852bfe548059ff55fcbbf29d8"
+  },
+  "source_for": {
+    "88": 209,
+    "87": 87,
+    "79": 24,
+    "149": 149,
+    "73": 30,
+    "776": 776
+  },
+  "redirects": {
+    "73": {
+      "mobile": {
+        "graphic": 30,
+        "hue": 1402
+      },
+      "corpse": {
+        "graphic": 30,
+        "hue": 1402
+      }
+    },
+    "79": {
+      "mobile": {
+        "graphic": 24,
+        "hue": 0
+      },
+      "corpse": {
+        "graphic": 24,
+        "hue": 0
+      }
+    },
+    "87": {},
+    "88": {
+      "mobile": {
+        "graphic": 209,
+        "hue": 0
+      },
+      "corpse": {
+        "graphic": 209,
+        "hue": 0
+      }
+    },
+    "149": {
+      "mobile": {
+        "graphic": 30,
+        "hue": 1109
+      },
+      "corpse": {
+        "graphic": 30,
+        "hue": 1109
+      }
+    },
+    "776": {
+      "mobile": {
+        "graphic": 39,
+        "hue": 2120
+      },
+      "corpse": {
+        "graphic": 39,
+        "hue": 2120
+      }
+    }
+  },
+  "mobtypes": {
+    "24": [
+      "MONSTER",
+      4096
+    ],
+    "30": [
+      "MONSTER",
+      8
+    ],
+    "73": [
+      "MONSTER",
+      8
+    ],
+    "79": [
+      "MONSTER",
+      0
+    ],
+    "87": [
+      "MONSTER",
+      0
+    ],
+    "88": [
+      "ANIMAL",
+      32
+    ],
+    "149": [
+      "MONSTER",
+      0
+    ],
+    "209": [
+      "ANIMAL",
+      0
+    ],
+    "776": [
+      "MONSTER",
+      0
+    ]
+  },
+  "sources": {
+    "24": {
+      "archive": "anim.mul",
+      "graphic": 24,
+      "layout": "large",
+      "groups": {
+        "0": {
+          "counts": [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "directions_sha256": "a18ae614c367f5f2dffa950d4e72567988d3b891a29fa119cdc0d468dea11b95"
+        },
+        "1": {
+          "counts": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "directions_sha256": "db13f5f6cf7c08da9be28536131a62f64b402908811b26c908458626bd1c2951"
+        },
+        "2": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "b8cc77fabac6cdcf700bebdc15d90f175da809fe3e63ea766a4445feed4343e2"
+        },
+        "3": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "ee4c1e460d5c0c1403bf5890656d3e3905c5d5bcc8cf2113f16128174ea62159"
+        },
+        "4": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "c059df416de7482bcd57c1afc1164dacad9dbc498bca7f50c1e23f98850bab2e"
+        },
+        "5": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "fff40242facbe94884ecafff1a45a4e7bdefb1b37d47ed22fad18c91ff0b3577"
+        },
+        "6": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "d49e9a74fe90c6eded5309bbe26477d0f2455889dd157b3250d0e29424ed2410"
+        },
+        "10": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "4fbbb367f38fe3e318393d9349cf7dc6169c31870fa905eb4ee33ec8dc897858"
+        },
+        "11": {
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "09e91ad87f0ea3b794072ca1513c7ff3528e9ee8217ec9c2b4ac144037243a5e"
+        },
+        "12": {
+          "counts": [
+            7,
+            7,
+            7,
+            7,
+            7
+          ],
+          "directions_sha256": "4dd4e9c9079177756e6ebe9b612d87e4bd2964703d8d7ee02ebecdfa5d0ea663"
+        },
+        "13": {
+          "counts": [
+            7,
+            7,
+            7,
+            7,
+            7
+          ],
+          "directions_sha256": "aaa714e7a1ab4d19c14ecc73d86878d4c447277acbadf3d6078089eb079890ea"
+        },
+        "15": {
+          "counts": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "directions_sha256": "3b5b17fb2c84274efa1a4986ab30dee7b8cd4b9b29bdb07b76a914b82e4ab46f"
+        },
+        "16": {
+          "counts": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "directions_sha256": "99cf2be72d6b3929477594cd36327e1de8b06c44ca17872020c1d803fabe0ec6"
+        },
+        "17": {
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "74662e34dcce1a9aedaba25fd633982a9195191e3a2929185bb1249d07c31e10"
+        },
+        "18": {
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "2590e14deaf4487879be8d2dca9d2c557a2017aedc891722ef66d525b24f25c2"
+        }
+      },
+      "exact_registered_pixel_aliases": []
+    },
+    "30": {
+      "archive": "anim.mul",
+      "graphic": 30,
+      "layout": "large",
+      "groups": {
+        "0": {
+          "counts": [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "directions_sha256": "ebe402770deefe77557e1d1bab0d81183375f97d98fbbdd27cc0326a8a7353cb"
+        },
+        "1": {
+          "counts": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "directions_sha256": "70fe60bab4d6cac82a36f0b823258f161174af6e8d94285bab933b66a78559b3"
+        },
+        "2": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "2eefe68f09d96e66f94eacc3d43a80b7e848799bd20232bf979c77dd0709383e"
+        },
+        "3": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "e2bc58ddf359a66ed3c37fb4275e81a0082b7fe7d18b6f06fb133877f55a961c"
+        },
+        "4": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "91fd040e20d7ccaf954e1b2816911ef44bb126b2388b9566026c02d33a30f3ce"
+        },
+        "5": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "710f0036cf320b48ca876626f2bc9ca0d92e8ce0675c10dbc6f4791264931b94"
+        },
+        "6": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "d4b191715681ed1d96830cada61f6b67e278c8fc064d86b01a12b8a048c48d60"
+        },
+        "10": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "ef75a539cd10b809ccb14ff1c34ac47bd635d1c9849b6687f59ed8c71d716da5"
+        },
+        "11": {
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "e7ec1461b9527155ab2224b9241573f10dcc03341480b49e767e1c1f6b880c65"
+        },
+        "15": {
+          "counts": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "directions_sha256": "a32a2c6f0f56f69f380a63ab0c9dc752ff7777622621a4cc31e59aa9244684bb"
+        },
+        "16": {
+          "counts": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "directions_sha256": "4a747557772beb23c89f57073b92e0d5c8c7bc684c873e7bdc9dfdaf0351c11a"
+        },
+        "17": {
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "c4a3a6fd6952589d85e5494af2fd640eb0eeb0f5a96e53b2d5ff6c87740e3e73"
+        },
+        "18": {
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "e1e066f16a7d279be9b5bafe586a8baa312370da5fc8c0e882de1ded4749c4d1"
+        },
+        "19": {
+          "counts": [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "directions_sha256": "03dadd2af0baf5a1866de7dfa8ff82a4e2a77347e64d653a9f9ac20739232e03"
+        },
+        "20": {
+          "counts": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "directions_sha256": "b06e062c029e2389f31d8753b9a2781919fa5fb417b67735ffce9364c4fa02c8"
+        },
+        "21": {
+          "counts": [
+            7,
+            7,
+            7,
+            7,
+            7
+          ],
+          "directions_sha256": "7d8bb75446388f8e3fdb6e5bbcd255f3233348e0f5343170d013af61bf9662cc"
+        }
+      },
+      "exact_registered_pixel_aliases": []
+    },
+    "87": {
+      "archive": "anim.mul",
+      "graphic": 87,
+      "layout": "large",
+      "groups": {
+        "0": {
+          "counts": [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "directions_sha256": "020ee77f56bc225ed5c3c8b69dfce05cecbe1df2acbec092e1d5a48079595fb6"
+        },
+        "1": {
+          "counts": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "directions_sha256": "8ead2c1779bd75cd643b55bb5747b1514a767af6df6f540edcb75d29d8ae8494"
+        },
+        "2": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "9348970b0b903d296b86ff84ec8911fbad2802c6cd413f2d62859192d192c3ed"
+        },
+        "3": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "df680f7fd2ff0349963d085cc187b07c4cda8489c1ededd0e092968e2dfc7ebc"
+        },
+        "4": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "c4dd12aa846ee138b651096ad29e2908ad4face5f4b0752fffee3ff21aa3d2db"
+        },
+        "5": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "0778df6672bd6c39868051a70755a202ff10dfcc91c447a51dfe7242a8d73723"
+        },
+        "6": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "47a1c2ade86f41f1caf670f04c6117aad161454c2798494272a163a2b6225eed"
+        },
+        "10": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "95fac5dd930ce7036d7a63ff412ac287594272df2c81b9aa2e1402831e156371"
+        },
+        "11": {
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "38e0ca37f3bee12218a4d98c78f282a77d16966fcb4840a7cf06025daedbbd15"
+        },
+        "15": {
+          "counts": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "directions_sha256": "8598bacb66d0f46e05a7cb2ea5da185615ed07ac930b4c9a84a926ba9f99704b"
+        },
+        "16": {
+          "counts": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "directions_sha256": "28ac0142161008e1aa8afc0f351d14e203182ec2285a95c80a49b48b032e30db"
+        },
+        "17": {
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "7d34ee6f80b975102641268e8642e563a2843c9cae3b739c90b768e042297a4e"
+        },
+        "18": {
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "b97ebc8b6ab9a2c8cfd9cb25cf3577bb28bcdbc121829d6859aaf23f5fc4f14f"
+        }
+      },
+      "exact_registered_pixel_aliases": []
+    },
+    "149": {
+      "archive": "anim2.mul",
+      "graphic": 25,
+      "layout": "large",
+      "groups": {
+        "0": {
+          "counts": [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "directions_sha256": "4afc8f59889027c4cee14f06b697006b84628931525e94dd9870e83cb70a40cc"
+        },
+        "1": {
+          "counts": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "directions_sha256": "08388184bec22e9a45d1a60c6d9045e330708f86090a6b5800ac6a9b9b4b9f38"
+        },
+        "2": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "a3db36045857985354497467aca5272c81faa6a696d4db3817d3720b4e2b857d"
+        },
+        "3": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "a3db36045857985354497467aca5272c81faa6a696d4db3817d3720b4e2b857d"
+        },
+        "4": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "fe14b742720c96f4c278b7220098359d37119cf7c48557f5b1b1208436e9d515"
+        },
+        "5": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "62b43f326f3f6d94868724b70e6fcced9c8037315cbdbc9aeaad0b03b8c8f42c"
+        },
+        "6": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "62b43f326f3f6d94868724b70e6fcced9c8037315cbdbc9aeaad0b03b8c8f42c"
+        },
+        "10": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "bfcacb36e8fa80841d68f4257fa6985d22eab64a1f989d9d4071c7608b247a3e"
+        },
+        "11": {
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "35a71ab85e6ca74b3546aab642c833072323b170794c117e73645f1761fc4719"
+        },
+        "15": {
+          "counts": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "directions_sha256": "0d635a9a8b9374ac97f45e1b6fc6072e90f3f4fb3202d29a88df63795c82c062"
+        },
+        "16": {
+          "counts": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "directions_sha256": "0d635a9a8b9374ac97f45e1b6fc6072e90f3f4fb3202d29a88df63795c82c062"
+        },
+        "17": {
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "5b58523e4d7cd0e56ee994df06a7a225119a234c166fe077090be90caad8abde"
+        },
+        "18": {
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "fd661fc050388e6af8e4a20f3c5e213c7b36ba85ed44de56e360abfab33ca2da"
+        }
+      },
+      "exact_registered_pixel_aliases": [
+        [
+          2,
+          3
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          11,
+          17
+        ],
+        [
+          15,
+          16
+        ]
+      ]
+    },
+    "209": {
+      "archive": "anim.mul",
+      "graphic": 209,
+      "layout": "small",
+      "groups": {
+        "0": {
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "f9e5061b8d40ada26ed20ce529733c009ded088dcb47d70763c5c2af65fef1c7"
+        },
+        "1": {
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "1c4dd6c0647620cb934107c89b0203f031f44d1553439730d62fc17ebc644723"
+        },
+        "2": {
+          "counts": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "directions_sha256": "af594ae282b7c34210400d7b274b97af5ff91c6055b07e1be9866a6abec17f05"
+        },
+        "3": {
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "25ec019489d5d1cd85a040a303cc7517e4a9af88bc9343852cde1c0a09e93db7"
+        },
+        "4": {
+          "counts": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "directions_sha256": "4e204bbe3b34d3578a6674538206b74807e0dd8e689155f9e55994778898a210"
+        },
+        "5": {
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "7d94a09a8cf6fe1527e482c06ae02c26bb6c750fad2826120367b7c4eabbe598"
+        },
+        "6": {
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "d994457a689fd0eeb64f843f5329cbf54b08eb192ddc03d9691adef1b1b05e8a"
+        },
+        "7": {
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "282d6cf43ae4128d962b12096436e5cb8fef0e56d23a541572b693b456365db9"
+        },
+        "8": {
+          "counts": [
+            6,
+            6,
+            6,
+            6,
+            6
+          ],
+          "directions_sha256": "c6bee9c9b3645055eec696bd04b1dba3bdb52e98ba2da85f0cc304be9b7e34e9"
+        },
+        "9": {
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "3500e969c7cbdf76fa7cca74be89bdefffb1cbb23728861518e1a3001f0c0441"
+        },
+        "10": {
+          "counts": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "directions_sha256": "6f75d891c9ce90a098025f6f5453752adc6a77ba77e1f6d532a53fe2a2f6703e"
+        },
+        "11": {
+          "counts": [
+            6,
+            6,
+            6,
+            6,
+            6
+          ],
+          "directions_sha256": "c6b6ab0936250eac7e12300657398b5da71204b262b276e132b384755ab7fefb"
+        },
+        "12": {
+          "counts": [
+            6,
+            6,
+            6,
+            6,
+            6
+          ],
+          "directions_sha256": "32e0231b1df67356bbba90acc31b4db25df9492f2d65eca6923713a36cf58c07"
+        }
+      },
+      "exact_registered_pixel_aliases": []
+    },
+    "776": {
+      "archive": "anim2.mul",
+      "graphic": 44,
+      "layout": "large",
+      "groups": {
+        "0": {
+          "counts": [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "directions_sha256": "463bf3e9d3f87b131e692610dad9a2307670c264d83ae458de36e93181867b2c"
+        },
+        "1": {
+          "counts": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "directions_sha256": "bf784fe84e4b51d5252a2f3a53bc3e0eb4c9c0d2d17fc20225b90efaef73a661"
+        },
+        "2": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "1788e2e5b3b88858e2f83db94a0174b027e7878e07ea5530885ce7be7be5fb39"
+        },
+        "3": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "8492fe29c184f81ad888885f079aa7dcdf1a5fc2e4ca9e01dc0c86714fe4837e"
+        },
+        "4": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "6da8668b8e5e16700f1df82573604083db488c4256f20dcd803e86f76358e5bb"
+        },
+        "5": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "f3e62bc3dd79e2f925f3d1952fb8af05998fd69749e14c8bc4560529ace940b7"
+        },
+        "6": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "e1eb09ad3c16904e83f79b11d30854e15d8af9ff997c224fa290be63f7d26ae2"
+        },
+        "10": {
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "ab8235461bbb585bf81bffbe781161638ad68459cfdbb04f920155535abd7179"
+        },
+        "11": {
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "ff32cacf385f41d375b78c1d38b8a2c8a8d4e64b3986689c4c3cf5be93cd5f34"
+        },
+        "15": {
+          "counts": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "directions_sha256": "1506e0dff1400b67e4e97e7eef44333205cd3895ef777e51bb2c48c1ba4e9f7a"
+        },
+        "16": {
+          "counts": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "directions_sha256": "1506e0dff1400b67e4e97e7eef44333205cd3895ef777e51bb2c48c1ba4e9f7a"
+        },
+        "17": {
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "12302415989bef2fc52d446d97ec1b396128e55a7cdc722a64b363cd95dbdc3d"
+        },
+        "18": {
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "55a80c24e567c741187e0c95c147387899c9ca9888c622eea2f7d14e233d4e17"
+        }
+      },
+      "exact_registered_pixel_aliases": [
+        [
+          15,
+          16
+        ]
+      ]
+    }
+  }
+}

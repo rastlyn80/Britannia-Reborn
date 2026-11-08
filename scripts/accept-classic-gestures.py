@@ -46,6 +46,8 @@ BATCHES = {
                                  ('test-ophidian-terathan-actions.gd', 'test-ophidian-terathan-corpses.gd')),
     'hopper_fan_blood_actions': ((159, 247, 302), 'TokunoSpiderDragonLive.gd',
                                  ('test-hopper-fan-blood-actions.gd', 'test-hopper-fan-blood-corpses.gd')),
+    'goat_harpy_horde_actions': ((88, 87, 79, 149, 73, 776), 'GoatHarpyHordeLive.gd',
+                                 ('test-goat-harpy-horde-actions.gd', 'test-goat-harpy-horde-corpses.gd')),
     'dragon_daemon': ((9, 10, 12, 38, 40, 43, 59, 60, 61), 'PreparedCreatureActionLive.gd',
                       ('test-dragon-daemon-gestures.gd',)),
     'terathan_classic': ((70, 71, 72), 'PreparedCreatureActionLive.gd', ('test-terathan-gestures.gd',)),
@@ -129,6 +131,7 @@ PREDECESSORS = {
     'cyclops_titan_ice_actions': ('bone_cyclops',),
     'ophidian_terathan_actions': ('ophidian_staff', 'terathan_classic'),
     'hopper_fan_blood_actions': ('hopper_horde_actions',),
+    'goat_harpy_horde_actions': ('ophidian_staff', 'fidget_aliases_toad', 'hopper_horde_actions'),
     'copper_kaze_actions': (),
     'ophidian_patchwork_actions': ('ophidian_bardiche',),
     'tokuno_spider_dragon_actions': ('dragon_daemon',),
@@ -207,6 +210,8 @@ def compose(base, prepared, native_sha):
         body = identity['body']
         row['kind'] = f"{base['kind']}_actions_{body}"
         row['bodies'] = [dict(identity, name='Swamp Tentacle' if body == 66 else 'Evil Mage Lord')]
+    elif prepared['family'] == 'goat_harpy_horde_actions' and prepared['bodies'][0]['body'] == 79:
+        row['kind'] = f"{base['kind']}_actions_79"
     elif len(base['bodies']) > 1:
         row['kind'] = f"{base['kind']}_slot11_{prepared['bodies'][0]['body']}"
     for key in ('validation_sha256', 'gpu_sha256', 'gpu_runtime_sha256'):
@@ -304,7 +309,7 @@ def checked(index, active, batch, *, compare_registry=True):
                    'FieldFaunaLive.gd', 'SpiderMongbatActionsLive.gd', 'PigReaperHarpyActionsLive.gd',
                    'DaemonActionsLive.gd', 'WraithDrakeWalrusLive.gd', 'OccurrenceGesturesLive.gd',
                    'LaterCreatureGesturesLive.gd', 'ArmedFlyingCreatureGesturesLive.gd', 'TokunoSpiderDragonLive.gd',
-                   'MageLordTentacleActionsLive.gd') and (
+                   'MageLordTentacleActionsLive.gd', 'GoatHarpyHordeLive.gd') and (
             report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
         raise ValueError('Supplementary action trial used a different prepared fixture loader')
     if batch == 'occurrence_deaths' and (

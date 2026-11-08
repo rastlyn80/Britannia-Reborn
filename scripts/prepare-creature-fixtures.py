@@ -89,6 +89,10 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
+    if family == 'goat_harpy_horde_actions':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-goat-harpy-horde-actions.py'))
+        rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
+        return recipe['prepared'](rows)
     if family == 'hopper_fan_blood_actions':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-hopper-fan-blood-actions.py'))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
