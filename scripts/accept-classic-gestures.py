@@ -40,6 +40,8 @@ BATCHES = {
                             ('test-ratman-lava-actions.gd', 'test-ratman-lava-corpses.gd')),
     'mage_lord_tentacle_actions': ((66, 125, 126), 'MageLordTentacleActionsLive.gd',
                                   ('test-mage-lord-tentacle-actions.gd', 'test-mage-lord-tentacle-corpses.gd')),
+    'cyclops_titan_ice_actions': ((75, 76, 161), 'TokunoSpiderDragonLive.gd',
+                                 ('test-cyclops-titan-ice-actions.gd', 'test-cyclops-titan-ice-corpses.gd')),
     'dragon_daemon': ((9, 10, 12, 38, 40, 43, 59, 60, 61), 'PreparedCreatureActionLive.gd',
                       ('test-dragon-daemon-gestures.gd',)),
     'terathan_classic': ((70, 71, 72), 'PreparedCreatureActionLive.gd', ('test-terathan-gestures.gd',)),
@@ -120,6 +122,7 @@ BATCHES = {
 PREDECESSORS = {
     'ratman_lava_actions': (),
     'mage_lord_tentacle_actions': (),
+    'cyclops_titan_ice_actions': ('bone_cyclops',),
     'copper_kaze_actions': (),
     'ophidian_patchwork_actions': ('ophidian_bardiche',),
     'tokuno_spider_dragon_actions': ('dragon_daemon',),

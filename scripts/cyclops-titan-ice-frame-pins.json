@@ -1,0 +1,826 @@
+{
+  "definitions": {
+    "Body.def": "2fbd408fcc96d1c0b382c4fd5c4efc798e2e5093e59a14ed6be9146b4a81cdab",
+    "Corpse.def": "9bc572c3643acbcd1e299e6def4297c57da586624e373a45da88f72654b7c02a",
+    "Bodyconv.def": "62debf90a6c5f59a885da6b0a8db1094d90c8d9e0a2c4c02b3acc234d818b665",
+    "mobtypes.txt": "a4f1c98057c5bcf10ccdb575a9154260651e49b852bfe548059ff55fcbbf29d8"
+  },
+  "bodies": {
+    "75": {
+      "source_body": 75,
+      "groups": {
+        "0": {
+          "archive": "anim.mul",
+          "graphic": 75,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "directions_sha256": "25d974540e903077dd554b65496656b507a120a19b9e04a6058f67a5e37f46d0"
+        },
+        "1": {
+          "archive": "anim.mul",
+          "graphic": 75,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "directions_sha256": "9e76adba8177c9f982a086b05777036c6e5010dea906616b7a0131624118954d"
+        },
+        "2": {
+          "archive": "anim.mul",
+          "graphic": 75,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "01a9ef5b42a48d979fe4b2e20bb4a56d5cb343423d83fefddb1add6499b4d80b"
+        },
+        "3": {
+          "archive": "anim.mul",
+          "graphic": 75,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "17f84e766808a42062dd801ff53994d47b6339e271de0915b19faced86d7192e"
+        },
+        "4": {
+          "archive": "anim.mul",
+          "graphic": 75,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "e3ab76b604afa7fcf303aaff4754f777fb7b5c01bcd54f461bfa3bf2b57608bd"
+        },
+        "5": {
+          "archive": "anim.mul",
+          "graphic": 75,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "1ca8049e9f250ba1528ec2eca80464416f29e5e686c2f231597f4810353a60bc"
+        },
+        "6": {
+          "archive": "anim.mul",
+          "graphic": 75,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "9a2573f3b481e7058065e6b258ce2a01e3e78a1540b03747b1889195af1aeecc"
+        },
+        "10": {
+          "archive": "anim.mul",
+          "graphic": 75,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "73b494ff101b2d2303ad6bff25babb2238410c2ec42b6f384ed150f3e796e3aa"
+        },
+        "11": {
+          "archive": "anim.mul",
+          "graphic": 75,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "c2bacbb379a63b526f74c1422a6044a53e8331aa247a72446ddb92561ee0bd5b"
+        },
+        "15": {
+          "archive": "anim.mul",
+          "graphic": 75,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "directions_sha256": "316d7bdccca91d9d411fff3d459f792b96c30e01441b5e28912dc6ffb26eea5f"
+        },
+        "16": {
+          "archive": "anim.mul",
+          "graphic": 75,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "directions_sha256": "df9e021825ad4e2284a6f5b29c4ec47540d56643592be656926895307519e210"
+        },
+        "17": {
+          "archive": "anim.mul",
+          "graphic": 75,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "9b687de2512db2f4a4bff9d621fd9e97ebfe464de09a90467936708332f280ee"
+        },
+        "18": {
+          "archive": "anim.mul",
+          "graphic": 75,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "54341af32e07284173e3a32ccf4ea6fdceb89a8fad110c27f462fdf82da69085"
+        }
+      },
+      "aliases": [],
+      "routes": {
+        "3": "Death2",
+        "4": "MalletSideSweep",
+        "5": "Attack",
+        "6": "MalletLunge",
+        "11": "MalletDip",
+        "15": "MalletHighBrace",
+        "16": "MalletRearBrace",
+        "18": "MalletCheck"
+      }
+    },
+    "76": {
+      "source_body": 76,
+      "groups": {
+        "0": {
+          "archive": "anim2.mul",
+          "graphic": 27,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "directions_sha256": "ed714c06d2264afdb64356c5b66d41d218016e554aaf2e83684c58da7d8fe6da"
+        },
+        "1": {
+          "archive": "anim2.mul",
+          "graphic": 27,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "directions_sha256": "d84aeddc6a5ddf1589af053ec04734a0416e7eab04f0d0df5422cdf1222ab215"
+        },
+        "2": {
+          "archive": "anim2.mul",
+          "graphic": 27,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "65ea542ab95826b25ada774501370dff263478241fcdfe5e6e6564784b0d81b8"
+        },
+        "3": {
+          "archive": "anim2.mul",
+          "graphic": 27,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "65ea542ab95826b25ada774501370dff263478241fcdfe5e6e6564784b0d81b8"
+        },
+        "4": {
+          "archive": "anim2.mul",
+          "graphic": 27,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "7e18fef241a8b720a9179a9b84ed5cfaab19c3ccb2e787426bd6cf84435e7da0"
+        },
+        "5": {
+          "archive": "anim2.mul",
+          "graphic": 27,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "2b6d468fefd6b683c79daccd2ee415ccfe206177575d50342ca1bc9befc35948"
+        },
+        "6": {
+          "archive": "anim2.mul",
+          "graphic": 27,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "2b6d468fefd6b683c79daccd2ee415ccfe206177575d50342ca1bc9befc35948"
+        },
+        "10": {
+          "archive": "anim2.mul",
+          "graphic": 27,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "679d758c00f19d55c05bc28807bd51520a48f2e3b655131fb48144477342b8fa"
+        },
+        "11": {
+          "archive": "anim2.mul",
+          "graphic": 27,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "4205d4c4784c34147d981eac8398bf6b906fe08e9274dc40b783e93223c7ecfb"
+        },
+        "15": {
+          "archive": "anim2.mul",
+          "graphic": 27,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "directions_sha256": "08ec530e54a92e9b3c52b8c39e75c685c4611316192e9744d1a087c0cc5861c5"
+        },
+        "16": {
+          "archive": "anim2.mul",
+          "graphic": 27,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "directions_sha256": "08ec530e54a92e9b3c52b8c39e75c685c4611316192e9744d1a087c0cc5861c5"
+        },
+        "17": {
+          "archive": "anim2.mul",
+          "graphic": 27,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "4205d4c4784c34147d981eac8398bf6b906fe08e9274dc40b783e93223c7ecfb"
+        },
+        "18": {
+          "archive": "anim2.mul",
+          "graphic": 27,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "90c88b6bddd4a9b73a0a2e99155276cd72e6b3c97192237e56eab0eaf75ed69c"
+        }
+      },
+      "aliases": [
+        [
+          2,
+          3
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          11,
+          17
+        ],
+        [
+          15,
+          16
+        ]
+      ],
+      "routes": {
+        "2": "Death",
+        "3": "Death",
+        "6": "Attack2",
+        "11": "Fidget",
+        "15": "TitanBrace",
+        "16": "TitanBrace",
+        "17": "Fidget",
+        "18": "TitanOath"
+      }
+    },
+    "161": {
+      "source_body": 14,
+      "groups": {
+        "0": {
+          "archive": "anim.mul",
+          "graphic": 14,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "directions_sha256": "8865d1d441375510b6a40eccd78988b7356d90e1f6e1a241e82795b1d5eee426"
+        },
+        "1": {
+          "archive": "anim.mul",
+          "graphic": 14,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "directions_sha256": "8f530d4a669a5ac359319a52f213caf419dc422a7d6366f6d5da6d57f73cb3a6"
+        },
+        "2": {
+          "archive": "anim.mul",
+          "graphic": 14,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "f8eb74342cd4514701f763760a33ef94c959272e1a43b5446a49898909aa0197"
+        },
+        "3": {
+          "archive": "anim.mul",
+          "graphic": 14,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "45d0d739c714f2f56159a7dca0c8abd12d4861301a8929796f9790d489f052e9"
+        },
+        "4": {
+          "archive": "anim.mul",
+          "graphic": 14,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "d6ed1b809b85c27176305d92a0a4d6d2891421ce8ed88103225142782fb08564"
+        },
+        "5": {
+          "archive": "anim.mul",
+          "graphic": 14,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "ecf328006aea7c66c6c3fc9b19662d77904feb198625f6869bfb267235ecbb6c"
+        },
+        "6": {
+          "archive": "anim.mul",
+          "graphic": 14,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "311dfb1cb4a73dbd0ad67c7ec2e1c20c09a9abdbdda4ba64212f501d068d3f5f"
+        },
+        "10": {
+          "archive": "anim.mul",
+          "graphic": 14,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "directions_sha256": "c675e1ffac5436deeea843813bd138db2070049c80240d15ed862b3adb45fc23"
+        },
+        "11": {
+          "archive": "anim.mul",
+          "graphic": 14,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "afa4d8f4832115305d94b2c1c36609dca3c21dbff2ab13871841b81c9caf1406"
+        },
+        "12": {
+          "archive": "anim.mul",
+          "graphic": 14,
+          "facings": [
+            2,
+            4
+          ],
+          "counts": [
+            15,
+            15
+          ],
+          "directions_sha256": "ecea2f0cccf3b3416d2b43ab7d19f84d6c47997e43810f2875b629a7df926cd0"
+        },
+        "15": {
+          "archive": "anim.mul",
+          "graphic": 14,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "directions_sha256": "6e753f894392d1c28787b3bf991f14d8ba14b6096324d0f65d02651cc27c1cab"
+        },
+        "16": {
+          "archive": "anim.mul",
+          "graphic": 14,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "directions_sha256": "0e918f2674aa796f66b4a6384b29c78151ddfbdc107f4e726bc614fd427da89a"
+        },
+        "17": {
+          "archive": "anim.mul",
+          "graphic": 14,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "fba56d884b4a522f435d55ccae9d0ea8d673911fae5382474459141309cc187e"
+        },
+        "18": {
+          "archive": "anim.mul",
+          "graphic": 14,
+          "facings": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "counts": [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "directions_sha256": "ab4f1de496df1176236294e20973db71449b7d53b24b10b00a8d47939e9663e4"
+        }
+      },
+      "aliases": [],
+      "routes": {
+        "2": "Death",
+        "3": "Death2",
+        "15": "IceArmDraw",
+        "16": "IceForearmGuard",
+        "18": "IceWeightShift"
+      }
+    }
+  }
+}
