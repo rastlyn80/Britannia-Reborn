@@ -23,7 +23,7 @@ var status := Label.new()
 var coordinates := Label.new()
 var static_root := Node3D.new()
 var world_items := preload("res://Presentation/WorldItems.gd").new()
-var creature_deaths := preload("res://Presentation/CreatureDeathsWithBovines.gd").new()
+var creature_deaths := preload("res://Presentation/CreatureDeathsWithOstard.gd").new()
 var multis: Node3D
 var autowalk: Node
 var game := preload("res://Network/GameSession.gd").new()

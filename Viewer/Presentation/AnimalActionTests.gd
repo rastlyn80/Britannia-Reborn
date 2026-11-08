@@ -1,5 +1,5 @@
 extends SceneTree
-## All named classic low groups; unknown slot 4 remains explicitly unsupported.
+## All named classic low groups and the Desert Ostard's stored group 4.
 const Mounts=preload("res://Presentation/MountVisual.gd")
 const Horse=preload("res://Presentation/HorseVisual.gd")
 const Registry=preload("res://Presentation/EquineRegistry.gd")
@@ -16,6 +16,7 @@ func run() -> void:
 	for body: int in bodies:
 		var actor:=Mounts.create(body);root.add_child(actor);actor.apply_identity(body,53);actor.set_process(false);actor.set_physics_process(false);actor.contact.enabled=false
 		var horse:=actor is Horse
+		var desert: bool = actor.get("desert_actions") != null
 		actor.animator.play("idle" if horse else "Idle",0.);actor.animator.seek(0.,true);actor.animator.pause()
 		for frame in 2:await process_frame
 		var mouth_height: float=actor.socket("mouth_socket" if horse else "mouth").origin.y
@@ -46,7 +47,9 @@ func run() -> void:
 				actor.play_gait(true,1.8)
 				check(actor.current_clip in ["walk","Walk"] and actor.contact.enabled,"Movement resumes standing gait and foot support")
 		actor.dead=false
-		check(not actor.receive_action({"protocol":"classic","action":4}),"Unknown low slot stays unknown")
+		check(actor.receive_action({"protocol":"classic","action":4}) == desert,
+			"Only the verified Desert Ostard library supports stored group 4")
+		if desert:check(actor.current_clip=="Alert","Desert Ostard group 4 plays the separate alert motion")
 		check(not actor.receive_action({"protocol":"new","type":99}),"Unknown new protocol action stays unsupported")
 		actor.free()
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://../outputs/equines"))

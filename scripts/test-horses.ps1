@@ -1,6 +1,7 @@
-param([switch]$Live,[switch]$SkipContact,[switch]$Gpu,[switch]$LiveGpu,[switch]$Equines,[switch]$Ostards,[switch]$EquineCompletion,[switch]$LlamaCompletion,[switch]$Ethics,[switch]$Bovines,[switch]$PreparedBovineActions,[switch]$SeaHorse,[switch]$GiantBeetle,[switch]$FireBeetle,[switch]$Hiryu,[switch]$CuSidhe,[switch]$SourceMounts,[switch]$ActiveCuSidhe,[switch]$ActiveHiryu,[switch]$EtherealBeetle,[switch]$Savages,[switch]$SavageRiders,[string]$CreatureFamily='', [switch]$PreparedQueen, [switch]$ActiveJukaLord)
+param([switch]$Live,[switch]$SkipContact,[switch]$Gpu,[switch]$LiveGpu,[switch]$Equines,[switch]$Ostards,[switch]$EquineCompletion,[switch]$LlamaCompletion,[switch]$Ethics,[switch]$Bovines,[switch]$PreparedBovineActions,[switch]$SeaHorse,[switch]$GiantBeetle,[switch]$FireBeetle,[switch]$Hiryu,[switch]$CuSidhe,[switch]$SourceMounts,[switch]$ActiveCuSidhe,[switch]$ActiveHiryu,[switch]$EtherealBeetle,[switch]$Savages,[switch]$SavageRiders,[string]$CreatureFamily='', [switch]$PreparedQueen, [switch]$ActiveJukaLord, [switch]$DesertOstardActions, [switch]$PreparedDesertOstardActions)
 $ErrorActionPreference='Stop'
 if ($PreparedBovineActions -and !$Bovines) {throw '-PreparedBovineActions requires -Bovines'}
+if ($PreparedDesertOstardActions -and !$DesertOstardActions) {throw '-PreparedDesertOstardActions requires -DesertOstardActions'}
 if ($ActiveCuSidhe -and !$CuSidhe) {throw '-ActiveCuSidhe requires -CuSidhe'}
 if ($ActiveHiryu -and !$Hiryu) {throw '-ActiveHiryu requires -Hiryu'}
 $root=Split-Path $PSScriptRoot -Parent
@@ -46,6 +47,7 @@ try {
  if ($FireBeetle) {$runtime=Join-Path $root ('work/fire-beetle-session/'+[Guid]::NewGuid().ToString('N')+'/server')}
  if ($GiantBeetle) {$runtime=Join-Path $root ('work/giant-beetle-session/'+[Guid]::NewGuid().ToString('N')+'/server')}
  if ($SeaHorse) {$runtime=Join-Path $root ('work/sea-horse-session/'+[Guid]::NewGuid().ToString('N')+'/server')}
+ if ($DesertOstardActions) {$runtime=Join-Path $root ('work/desert-ostard-session/'+[Guid]::NewGuid().ToString('N')+'/server')}
  $probe=[Net.Sockets.TcpClient]::new()
  try {
   $connection=$probe.ConnectAsync('127.0.0.1',2594)
@@ -95,6 +97,7 @@ try {
  @{assemblyDirectories=@('Assemblies');dataDirectories=@($existing.dataDirectories);listeners=@('127.0.0.1:2594');settings=@{
   'serverListing.serverName'='Britannia Reborn isolated horse tests';'serverListing.address'='127.0.0.1';'serverListing.autoDetect'='False';'network.encryptionMode'='Unencrypted';'accountHandler.enableAutoAccountCreation'='True';'accountHandler.maxAccountsPerIP'='6';'pathfinding.prebakeMaps'='False';'autosave.enabled'='False';'world.savePath'=(Join-Path $runtime 'Saves');'britanniaReborn.isolatedHorseTests'='True';'britanniaReborn.isolatedKhaldunActionTests'=$(if ($CreatureFamily -in @('khaldun_actions','restless_soul_actions','restless_soul_mounted')) {'True'} else {'False'});'britanniaReborn.isolatedRestlessSoulMountTests'=$(if ($CreatureFamily -eq 'restless_soul_mounted') {'True'} else {'False'});'britanniaReborn.isolatedPlagueTests'=$(if ($CreatureFamily -eq 'amorphous') {'True'} else {'False'});'britanniaReborn.isolatedSolenTests'=$(if ($CreatureFamily -eq 'solen_workers') {'True'} else {'False'});'britanniaReborn.isolatedFluidElementalTests'=$(if ($CreatureFamily -eq 'fluid_elementals') {'True'} else {'False'});'britanniaReborn.isolatedJukaTests'=$(if ($CreatureFamily -in @('juka','juka_lord')) {'True'} else {'False'});'britanniaReborn.isolatedDragonBreathTests'=$(if ($CreatureFamily -eq 'dragon_daemon') {'True'} else {'False'});'britanniaReborn.isolatedMageTests'=$(if ($CreatureFamily -eq 'mages') {'True'} else {'False'});'britanniaReborn.isolatedSilverSerpentTests'=$(if ($CreatureFamily -eq 'silver_serpents') {'True'} else {'False'});'ethics.enable'=$(if ($Ethics -or $EquineCompletion) {'True'} else {'False'});'factions.enabled'=$(if ($Ethics -or $EquineCompletion) {'True'} else {'False'});'pingServer.enabled'='False'
   'britanniaReborn.isolatedSavageTests'=$(if ($savageTrial) {'True'} else {'False'})
+  'britanniaReborn.isolatedDesertOstardActions'=$(if ($DesertOstardActions) {'True'} else {'False'})
  }}|ConvertTo-Json -Depth 8|Set-Content "$runtime/Configuration/modernuo.json"
  $accounts=@(@{username='brhorse-test-m';password=[Guid]::NewGuid().ToString('N').Substring(0,24)},@{username='brhorse-test-f';password=[Guid]::NewGuid().ToString('N').Substring(0,24)})
  $credentials=Join-Path $root 'work/horse-session/accounts.local.json'
@@ -131,18 +134,26 @@ try {
   if ($SeaHorse) {$liveArgs+='--sea-horse'}
   if ($CreatureFamily) {$liveArgs+="--family=$CreatureFamily"}
   if ($preparedCreatureTrial) {$liveArgs+='--prepared'}
+  if ($PreparedDesertOstardActions) {$liveArgs+='--candidate'}
   if ($ActiveJukaLord) {$liveArgs+='--active-route'}
   $started=[DateTime]::UtcNow
   [string[]]$liveDisplayArgs = if ($LiveGpu) {@('--position','30000,30000','--rendering-method','forward_plus')} else {'--headless'}
   $clientScriptError=$false
   if (!$CreatureFamily -and !$savageTrial) {
-   $checkScript=if ($Ostards -or $EquineCompletion -or $LlamaCompletion -or $Ethics -or $Bovines -or $SeaHorse -or $GiantBeetle -or $FireBeetle -or $Hiryu -or $CuSidhe -or $SourceMounts -or $EtherealBeetle) {'res://Network/OstardLive.gd'} elseif ($Equines) {'res://Network/EquineLive.gd'} else {'res://Network/HorseLive.gd'}
+   $checkScript=if ($DesertOstardActions) {'res://Network/DesertOstardLive.gd'} elseif ($Ostards -or $EquineCompletion -or $LlamaCompletion -or $Ethics -or $Bovines -or $SeaHorse -or $GiantBeetle -or $FireBeetle -or $Hiryu -or $CuSidhe -or $SourceMounts -or $EtherealBeetle) {'res://Network/OstardLive.gd'} elseif ($Equines) {'res://Network/EquineLive.gd'} else {'res://Network/HorseLive.gd'}
   }
   & $godot @liveDisplayArgs --path Viewer --script $checkScript -- @liveArgs 2>&1 | ForEach-Object {
    if ($_ -match 'SCRIPT ERROR:|Parse Error:|ERROR: Failed to load script') {$clientScriptError=$true}
    Write-Output $_
   }
   if ($LASTEXITCODE -or $clientScriptError) { throw 'Native isolated integration test failed' }
+  if ($DesertOstardActions) {
+   $reportName=if ($PreparedDesertOstardActions) {'candidate-live.json'} else {'live.json'}
+   $report=Join-Path $root "outputs/creatures/desert_ostard_actions/$reportName"
+   if (!(Test-Path $report) -or (Get-Item $report).LastWriteTimeUtc -lt $started.AddSeconds(-1)) {throw 'Desert Ostard native test did not write fresh evidence'}
+   $desertReport=Get-Content $report -Raw|ConvertFrom-Json
+   if ($desertReport.failures -ne 0 -or $desertReport.candidate -ne [bool]$PreparedDesertOstardActions) {throw 'Desert Ostard native evidence did not pass in the requested mode'}
+  }
   if ($SavageRiders) {
    $riderFolder=Join-Path $root 'work/creatures/savage-riders'
    $riderReport=Get-Item "$riderFolder/native-tests.json"

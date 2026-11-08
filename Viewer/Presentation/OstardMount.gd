@@ -1,5 +1,7 @@
 extends "res://Presentation/OstardVisual.gd"
 ## Runtime adapter around the separately prepared source-rig creature.
+const DesertActions := preload("res://Presentation/DesertOstardActions.gd")
+var desert_actions: RefCounted
 var native_body:=0xd2
 var native_hue:=0
 var native_mount_item:=0
@@ -34,6 +36,9 @@ func _ready() -> void:
 	contact=preload("res://Presentation/SourceMountContact.gd").new();skeleton.add_child(contact)
 	contact.configure(model.find_children("*","MeshInstance3D",true,false)[0],kind.begins_with("kirin") or kind.begins_with("llama") or kind.begins_with("bovine_"))
 	source_model_basis=model.basis
+	if kind == "desert" and DesertActions.available():
+		var layer := DesertActions.new()
+		if layer.install(self): desert_actions = layer
 func _physics_process(_delta: float) -> void:
 	if contact!=null:
 		contact.sample(get_world_3d().direct_space_state,global_position)
@@ -87,6 +92,9 @@ func play_gait(moving: bool,speed: float) -> void:
 	var clip:="Idle" if not moving else "Run" if speed>3.6 else "Walk"
 	if current_clip=="LieDown" and not moving:return
 	contact.enabled=true
+	if desert_actions != null:
+		contact.active = true
+		desert_actions.clear_live_shift(self)
 	if current_clip!=clip:current_clip=clip;play(clip,.18)
 	animator.speed_scale=clampf(speed/(5.5 if clip=="Run" else 1.8),.65,1.65) if moving else 1.
 func _process(delta: float) -> void:
@@ -98,12 +106,22 @@ func receive_action(request: Dictionary) -> bool:
 	# ClassicUO LowAnimationGroup: 9/10 are fidgets, never hit reactions.
 	if str(request.get("protocol",""))=="classic":clip=str({0:"Walk",1:"Run",2:"Idle",3:"Eat",5:"Attack",6:"Attack",7:"Hit",8:"Death",9:"Fidget",10:"Fidget",11:"LieDown",12:"Death"}.get(int(request.get("action",-1)),""))
 	elif str(request.get("protocol",""))=="new":clip=str({0:"Attack",3:"Death",4:"Hit"}.get(int(request.get("type",-1)),""))
-	if clip.is_empty() or dead and clip!="Death":set_meta("unsupported_action",request.duplicate(true));return false
-	current_clip=clip;dead=clip=="Death"
+	if desert_actions != null and request.get("protocol") == "classic":
+		clip = str(DesertActions.CLIPS.get(int(request.get("action", -1)), clip))
+	var falling := clip == "Death" or clip == "Death2"
+	if clip.is_empty() or dead and not falling:set_meta("unsupported_action",request.duplicate(true));return false
+	current_clip=clip;dead=falling
 	contact.enabled=not dead and clip!="LieDown"
 	var duration:=preload("res://Presentation/HumanActions.gd").duration(request,animator.get_animation(clip).length)
-	action_remaining=duration;animator.play(clip,.12,animator.get_animation(clip).length/duration)
+	action_remaining=duration
+	if desert_actions != null:
+		animator.speed_scale = 1.0
+		desert_actions.accept(self)
+	animator.play(clip,.12,animator.get_animation(clip).length/duration)
+	if desert_actions != null: animator.seek(0.0, false)
 	set_meta("native_action",request.duplicate(true));return true
+func corpse_snapshot_floor() -> float:
+	return desert_actions.fall.snapshot_floor(self) if desert_actions != null else INF
 func set_reins(left: Vector3,right: Vector3) -> void:
 	rein_mesh.clear_surfaces();rein_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
 	for side in [-1.,1.]:

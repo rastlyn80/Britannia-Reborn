@@ -405,6 +405,10 @@ foreach ($kind in @('desert','forest','frenzied','ethereal')) {
   if ($LASTEXITCODE) { throw 'Original/refined ostard deformation checks failed' }
  }
 }
+if (Test-Path "$root/Viewer/local-art/ostards/desert-actions-active.json") {
+ & python -B "$root/scripts/accept-desert-ostard-actions.py" --check-active
+ if ($LASTEXITCODE) {throw 'Active Desert Ostard animation and corpse evidence failed'}
+}
 if ((Test-Path "$root/Viewer/local-art/mounts/kirin-modern.gltf") -and (Test-Path "$root/Viewer/local-art/mounts/llama_ethereal-modern.gltf") -and (Test-Path "$root/Viewer/local-art/mounts/skeletal-horse.glb")) {
  foreach ($script in @('DistinctMountTests','OstardRidingTests','MountTerrainTests','EquineCompletionTests','AnimalActionTests')) {
   & $godot --headless --path "$root/Viewer" --script "res://Presentation/$script.gd"
