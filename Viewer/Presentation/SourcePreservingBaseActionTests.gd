@@ -1,14 +1,21 @@
 extends "res://Presentation/SourcePreservingActionTests.gd"
-## Recheck the base material and skin receipt independently of the antler action.
+## Recheck the sealed base material and rig before applying newer action layers.
 
 func run() -> void:
-	var active := Registry.entry(259)
-	if active.has("classic_gesture_native_sha256"):
-		var path := "res://../work/creatures/grizzle_antler/accepted-native/base-rows.json"
-		var rows: Array = JSON.parse_string(FileAccess.get_file_as_string(path))
-		assert(rows.size() == 1)
-		var base: Dictionary = rows[0]
-		assert(base.kind == active.kind and base.assets == active.classic_gesture_base_assets)
-		assert(base.bodies == active.bodies and base.presentation_script == active.presentation_script)
-		Registry.entries[259] = base
+	if Registry.entry(259).has("classic_gesture_native_sha256"):
+		use_base(259, "grizzle_antler")
+	if Registry.entry(143).get("classic_gesture_batch") == "ratman_lava_actions":
+		use_base(143, "ratman_lava_actions")
 	super.run()
+
+func use_base(body: int, batch: String) -> void:
+	var active := Registry.entry(body)
+	var path := "res://../work/creatures/%s/accepted-native/base-rows.json" % batch
+	var rows: Array = JSON.parse_string(FileAccess.get_file_as_string(path))
+	var matches := rows.filter(func(row: Dictionary) -> bool: return row.kind == active.kind)
+	assert(matches.size() == 1)
+	var base: Dictionary = matches[0]
+	assert(base.assets == active.classic_gesture_base_assets and base.bodies == active.bodies)
+	if batch == "grizzle_antler":
+		assert(base.presentation_script == active.presentation_script)
+	Registry.entries[body] = base
