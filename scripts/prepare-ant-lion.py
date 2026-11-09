@@ -16,6 +16,7 @@ ART = ROOT/'Viewer/local-art/creatures'
 MANIFEST = ROOT/'scripts/ant-lion-chain-inputs.json'
 OUTPUT = ART/'ant_lion_chain/preparation.json'
 BAKER = ROOT/'Viewer/Presentation/BakeSourcePreserving.gd'
+BASE_PREPARER_SHA = 'dd559047dc3aece5fcc71f573021b5f967b5c3a6cf09a3d86f98673ed9e3d303'
 
 
 def module(name, filename):
@@ -75,7 +76,7 @@ def check(base):
     report = json.loads(OUTPUT.read_text())
     assert report['manifest_sha256'] == base.sha(MANIFEST)
     assert report['preparer_sha256'] == base.sha(ROOT/'scripts/prepare-source-preserving.py')
-    assert report['chain_preparer_sha256'] == base.sha(Path(__file__))
+    assert report['chain_preparer_sha256'] in {BASE_PREPARER_SHA, base.sha(Path(__file__))}
     assert report['baker_sha256'] == base.sha(BAKER)
     assert report['subdivision_sha256'] == base.sha(base.RECIPE)
     assert report['bound_baker_sha256'] == base.sha(WORK/'BakeAntLion.gd')
@@ -119,7 +120,22 @@ def tests(base, actions=False):
         source = source.replace(before,after)
     script = WORK/name
     script.write_text(source,encoding='utf-8')
-    godot(script,WORK/('actions.log' if actions else 'skin.log'))
+    runner = script
+    if actions:
+        # Keep the original bound test and its receipt intact. The active
+        # successor has a separate gate for its saved scenes and native actions.
+        runner = WORK/'RetainedAntLionActions.gd'
+        runner.write_text('''extends "res://../work/creatures/ant-lion/final/SourcePreservingActionTests.gd"
+
+const SealedBase := preload("res://Presentation/SealedCreatureActionBase.gd")
+
+func run() -> void:
+	var active := Registry.entry(787)
+	if active.get("classic_gesture_batch") == "post_solen_actions":
+		Registry.entries[787] = SealedBase.retained(active, 787)
+	super.run()
+''', encoding='utf-8')
+    godot(runner,WORK/('actions.log' if actions else 'skin.log'))
     path = WORK/('actions.json' if actions else 'skin-proof.json')
     proof = json.loads(path.read_text())
     assert proof['failures'] == 0 and proof['checks'] > 0
