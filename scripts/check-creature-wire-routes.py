@@ -96,7 +96,7 @@ def main():
     parser.add_argument('--compare-pixels', action='store_true')
     args = parser.parse_args()
     routes, pins = read(ROUTES), read(PINS)
-    assert routes.keys() == pins['routes'].keys() and len(routes) == 79 and sum(map(len, routes.values())) == 139
+    assert routes.keys() == pins['routes'].keys() and len(routes) == 79 and sum(map(len, routes.values())) == 140
     config = ROOT / 'Server/runtime/Configuration/modernuo.json'
     if args.data_dir is not None or config.is_file():
         data = args.data_dir or Path(read(config)['dataDirectories'][0])

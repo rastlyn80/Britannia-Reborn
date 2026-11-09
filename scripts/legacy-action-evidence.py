@@ -59,6 +59,12 @@ def expected_rows_with_legacy_aliases(rows, active):
                         ('lady_of_the_snow', 'quagmire_through_exodus_actions'),
                         ('gouzen_ha', 'quagmire_through_exodus_actions'),
                         ('satyr', 'quagmire_through_exodus_actions'),
+                        ('ridgeback_ridgeback', 'ridgeback_through_dragons_actions'),
+                        ('ridgeback_savage', 'ridgeback_through_dragons_actions'),
+                        ('raptalon', 'ridgeback_through_dragons_actions'),
+                        ('bonedemon', 'ridgeback_through_dragons_actions'),
+                        ('dragons_dragon_asian', 'ridgeback_through_dragons_actions'),
+                        ('dragons_dragon_skeletal', 'ridgeback_through_dragons_actions'),
                         ('wailingbanshee', 'banshee_through_queens_actions'),
                         ('minotaurarmored', 'banshee_through_queens_actions'),
                         ('npc_blackthorn_cohort', 'banshee_through_queens_actions'),
@@ -92,7 +98,8 @@ def expected_rows_with_legacy_aliases(rows, active):
             successor = overlay.get('classic_gesture_batch')
             if (batch, successor) in {('grizzle_antler', 'ranked_classic_actions'),
                                        ('gaman_gestures', 'post_solen_actions'),
-                                       ('lattice_through_meer_actions', 'meer_forward_falls')}:
+                                       ('lattice_through_meer_actions', 'meer_forward_falls'),
+                                       ('frost_through_gargoyle_actions', 'gargoyle_flight_minotaur_actions')}:
                 earlier, previous = gate['checked'](index, True, batch, compare_registry=False)
                 if [row for row in earlier if row['kind'] == kind] != [original]:
                     raise ValueError(f'{kind} earlier action overlay no longer matches the verified base package')

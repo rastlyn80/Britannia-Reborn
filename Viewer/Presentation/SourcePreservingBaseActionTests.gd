@@ -2,6 +2,9 @@ extends "res://Presentation/SourcePreservingActionTests.gd"
 ## Recheck the sealed base material and rig before applying newer action layers.
 
 func run() -> void:
+	for body in [187, 188]:
+		if Registry.entry(body).get("classic_gesture_batch") == "ridgeback_through_dragons_actions":
+			use_base(body, "ridgeback_through_dragons_actions")
 	for body in [310, 768, 249]:
 		if Registry.entry(body).get("classic_gesture_batch") == "banshee_through_queens_actions":
 			use_base(body, "banshee_through_queens_actions")
@@ -12,6 +15,8 @@ func run() -> void:
 		if Registry.entry(body).get("classic_gesture_batch") == "lattice_through_meer_actions":
 			use_base(body, "lattice_through_meer_actions")
 	for body in [792, 754, 755]:
+		if Registry.entry(body).get("classic_gesture_batch") == "gargoyle_flight_minotaur_actions":
+			use_base(body, "gargoyle_flight_minotaur_actions")
 		if Registry.entry(body).get("classic_gesture_batch") == "frost_through_gargoyle_actions":
 			use_base(body, "frost_through_gargoyle_actions")
 	if Registry.entry(248).get("classic_gesture_batch") == "post_solen_actions":

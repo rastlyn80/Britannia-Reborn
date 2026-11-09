@@ -1,0 +1,92 @@
+{
+  "755": {
+    "21": {
+      "body": 755,
+      "group": 21,
+      "archive": "anim2.mul",
+      "graphic": 73,
+      "frames": [
+        7,
+        7,
+        7,
+        7,
+        7
+      ],
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "directional_payload_sha256": "e2edc2c53356ccd73df5b00dde04e4a79e92b7b999529f212118b44c40185870"
+    }
+  },
+  "754": {
+    "21": {
+      "body": 754,
+      "group": 21,
+      "archive": "anim2.mul",
+      "graphic": 72,
+      "frames": [
+        7,
+        7,
+        7,
+        7,
+        7
+      ],
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "directional_payload_sha256": "e77b6d84ead17262243ce2d78a4d815169ec816f37cb27beaf60bb6ff4dd89df"
+    }
+  },
+  "262": {
+    "15": {
+      "body": 262,
+      "group": 15,
+      "archive": "anim5.mul",
+      "graphic": 21,
+      "frames": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "directional_payload_sha256": "a5c98518a777023d7ce1eaa9434db15844cba81c9b11f88ef5ba57c1715f3547"
+    },
+    "16": {
+      "body": 262,
+      "group": 16,
+      "archive": "anim5.mul",
+      "graphic": 21,
+      "frames": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "directional_payload_sha256": "eef52cf918e30534bc5f2375da14c156b7bca7a34a6a75dad0f0b1eb74a4c4db"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 extends "res://../scripts/test-golem-raptor-juka-solen-actions.gd"
 
+const FROST_BASE := preload("res://Presentation/SealedCreatureActionBase.gd")
 const RANK_BATCH := "frost_through_gargoyle_actions"
 const RANK_BODIES := [20, 792, 771, 265, 281, 130, 755, 754]
 const FIRE_BODY := 130
@@ -13,7 +14,12 @@ func run() -> void:
 	var index := "res://local-art/creatures/accepted-index.json"
 	var digest := FileAccess.get_sha256(index)
 	var active := "--active" in OS.get_cmdline_user_args()
-	if not active:
+	if active:
+		for body: int in [755, 754]:
+			var row := Registry.entry(body)
+			if row.get("classic_gesture_batch") == "gargoyle_flight_minotaur_actions":
+				Registry.entries[body] = FROST_BASE.retained(row, body)
+	else:
 		var path := "res://../work/creatures/%s/prepared-client.json" % RANK_BATCH
 		var rows: Array = JSON.parse_string(FileAccess.get_file_as_string(path))
 		assert(rows.size() == RANK_BODIES.size())

@@ -83,13 +83,17 @@ if (Test-Path "$root/Viewer/local-art/creatures/crystal_lattice/local-presentati
  if ($LASTEXITCODE) {throw 'Active Crystal Lattice Seeker source/presentation receipt failed'}
 }
 $beetlePublisher = 'accept-giant-beetle.py'
+$fireBeetlePublisher = 'accept-fire-beetle.py'
 $creatureIndexPath = "$root/Viewer/local-art/creatures/accepted-index.json"
 if ((Test-Path $creatureIndexPath) -and (Select-String -Path $creatureIndexPath -SimpleMatch '"beetle_rest_native_sha256"' -Quiet)) {
  $beetlePublisher = 'accept-giant-beetle-rest.py'
 }
+if ((Test-Path $creatureIndexPath) -and (Select-String -Path $creatureIndexPath -SimpleMatch '"fire_beetle_rest_native_sha256"' -Quiet)) {
+ $fireBeetlePublisher = 'accept-fire-beetle-rest.py'
+}
 foreach ($route in @(
  @{Folder='giant_beetle'; Publisher=$beetlePublisher},
- @{Folder='giant_beetle_fire'; Publisher='accept-fire-beetle.py'},
+ @{Folder='giant_beetle_fire'; Publisher=$fireBeetlePublisher},
  @{Folder='giant_beetle_ethereal'; Publisher='accept-ethereal-beetle.py'},
  @{Folder='solen_queens'; Publisher='accept-solen-queens.py'},
  @{Folder='gazer_larva'; Publisher='accept-gazer-larva.py'},

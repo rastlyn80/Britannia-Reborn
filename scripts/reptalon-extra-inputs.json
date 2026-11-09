@@ -1,0 +1,8 @@
+{
+  "installer_sha256": "b1cb9377b4cf1068823c1ab2db70982e9f01798acdabe74ace2b51dcfbcff393",
+  "files": {
+    "Client/Models/Animals/Raptalon_Lying.grn": "a461783a98d82ffe42ca9363478f05debee61864912d0c943d8c5547a95ff1c0",
+    "Client/Models/Animals/Raptalon_Grazing.grn": "0953d5f241b708fdd6ce1723e9ce571999b3b34e77badc3263f4eb9388d7e896",
+    "Client/Models/Animals/Raptalon_Idle2.grn": "757c186173394fe3decef921ee787707c7e66083c395211c53f2e8d7e4d8a093"
+  }
+}

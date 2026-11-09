@@ -76,6 +76,9 @@ BATCHES = {
                                      'SwampWidowJukaActionsLive.gd', ('test-lattice-through-meer-actions.gd',)),
     'quagmire_through_exodus_actions': ((789, 784, 266, 772, 267, 304, 46, 757, 756, 252, 199, 271),
                                         'SwampWidowJukaActionsLive.gd', ('test-quagmire-through-exodus-actions.gd',)),
+    'gargoyle_flight_minotaur_actions': ((755, 754, 262), 'SwampWidowJukaActionsLive.gd', ('test-gargoyle-flight-minotaur-actions.gd',)),
+    'ridgeback_through_dragons_actions': ((187, 276, 308, 188, 103, 104),
+                                        'SwampWidowJukaActionsLive.gd', ('test-ridgeback-through-dragons-actions.gd',)),
     'banshee_through_queens_actions': ((310, 280, 767, 43, 279, 768, 307, 807, 783, 249),
                                        'SwampWidowJukaActionsLive.gd', ('test-banshee-through-queens-actions.gd',)),
     'meer_forward_falls': ((770, 773), 'MeerForwardFallsLive.gd', ('test-meer-forward-falls.gd',)),
@@ -179,6 +182,8 @@ PREDECESSORS = {
     'meer_forward_falls': ('lattice_through_meer_actions',),
     'quagmire_through_exodus_actions': ('troglodyte_reach',),
     'banshee_through_queens_actions': ('dragon_daemon',),
+    'gargoyle_flight_minotaur_actions': ('frost_through_gargoyle_actions',),
+    'ridgeback_through_dragons_actions': (),
     'copper_kaze_actions': (),
     'ophidian_patchwork_actions': ('ophidian_bardiche',),
     'tokuno_spider_dragon_actions': ('dragon_daemon',),
@@ -248,6 +253,8 @@ def compose(base, prepared, native_sha):
             row[field] = {'modern': row[field]['modern']}
     if prepared['family'] in PREDECESSORS:
         row['classic_gesture_batch'] = prepared['family']
+    if prepared['family'] == 'gargoyle_flight_minotaur_actions':
+        row['classic_motion_references'] = base.get('classic_motion_references', {}) | prepared['classic_motion_references']
     if prepared['family'] in ('orc_fidgets', 'ettin_fidgets'):
         row['kind'] = f"{base['kind']}_fidgets"
     elif prepared['family'] == 'sea_serpent_actions':
@@ -340,7 +347,7 @@ def checked(index, active, batch, *, compare_registry=True):
             if (batch in ('slith_actions', 'ranked_classic_actions', 'swamp_widow_juka_actions',
                           'bomber_ogre_rune_dopple_actions', 'golem_raptor_juka_solen_actions',
                           'post_solen_actions', 'frost_through_gargoyle_actions', 'meer_forward_falls',
-                          'quagmire_through_exodus_actions') or
+                          'quagmire_through_exodus_actions', 'gargoyle_flight_minotaur_actions') or
                     predecessor in ('scorpion_imp', 'dragon_daemon', 'bone_cyclops', 'vampire_bat_actions',
                                     'fidget_aliases_toad', 'skeletal_mage_staff')):
                 # Independent successors seal their own retained rows. Replaying a
@@ -448,6 +455,11 @@ def checked(index, active, batch, *, compare_registry=True):
     if batch == 'frost_through_gargoyle_actions':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-frost-through-gargoyle-actions.py'))
         recipe['check_fire_stances'](report, receipt)
+    if batch == 'ridgeback_through_dragons_actions':
+        mounts = runpy.run_path(str(ROOT / 'scripts/prepare-ridgeback-reptalon-mount-trial.py'))
+        candidate = (sealed if active else work / 'mounted') / 'mounted-preview.json'
+        mounted = (sealed if active else ROOT / 'outputs/ostard-riding') / mounts['REPORT']
+        mounts['check_report'](prepared, candidate, mounted)
     if batch == 'dragon_daemon':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-dragon-daemon-actions.py'))
         recipe['check_breath'](read((sealed if active else live.parent) / 'breath.json'), candidates, by_body)
@@ -512,7 +524,7 @@ def checked(index, active, batch, *, compare_registry=True):
                         raise ValueError(f'Both clients must witness body {body} new-protocol type {kind}')
         if batch in ('swamp_widow_juka_actions', 'bomber_ogre_rune_dopple_actions',
                       'golem_raptor_juka_solen_actions', 'post_solen_actions', 'frost_through_gargoyle_actions', 'lattice_through_meer_actions', 'meer_forward_falls',
-                      'quagmire_through_exodus_actions', 'banshee_through_queens_actions'):
+                      'quagmire_through_exodus_actions', 'banshee_through_queens_actions', 'ridgeback_through_dragons_actions'):
             categories = package['new_action_categories']
             requests = [(-1, 4, 'Hit')] + [(request, kind, categories[str(kind)])
                                             for request, kind in ((-3, 2), (-4, 5), (-5, 14))
@@ -538,7 +550,7 @@ def checked(index, active, batch, *, compare_registry=True):
             if (batch in ('efreet_actions', 'orc_bog_actions', 'slith_actions', 'ranked_classic_actions',
                           'swamp_widow_juka_actions', 'bomber_ogre_rune_dopple_actions',
                           'golem_raptor_juka_solen_actions', 'post_solen_actions', 'frost_through_gargoyle_actions', 'lattice_through_meer_actions', 'meer_forward_falls',
-                          'quagmire_through_exodus_actions', 'banshee_through_queens_actions', 'lizard_actions', 'quadruped_actions', 'hart_deaths',
+                          'quagmire_through_exodus_actions', 'banshee_through_queens_actions', 'ridgeback_through_dragons_actions', 'lizard_actions', 'quadruped_actions', 'hart_deaths',
                           'dog_bear_actions', 'cat_actions',
                           'skeleton_actions', 'troll_actions', 'field_fauna', 'spider_mongbat_actions',
                           'grazers_grizzly_actions', 'pig_reaper_harpy_actions', 'rabbit_distinct_actions',
@@ -648,6 +660,13 @@ def test_active(batch):
             run_client_check(godot, env, f'res://Presentation/{test}.gd', [])
         for family in ('late_source', 'late_donors', 'recovered_late', 'aos_creatures'):
             run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', [f'--family={family}'])
+    if batch == 'gargoyle_flight_minotaur_actions':
+        run_client_check(godot, env, 'res://Presentation/SourcePreservingBaseActionTests.gd', [])
+        run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', ['--family=tormented_minotaur'])
+    if batch == 'ridgeback_through_dragons_actions':
+        run_client_check(godot, env, 'res://Presentation/SourcePreservingBaseActionTests.gd', [])
+        for family in ('recovered_late', 'aos_creatures'):
+            run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', [f'--family={family}'])
     if batch == 'ready_stances':
         for family in ('raptor', 'slith'):
             run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', [f'--family={family}'])
@@ -729,6 +748,10 @@ def main():
             shutil.copyfile(live.parent / 'breath.json', sealed / 'breath.json')
         if batch == 'swamp_widow_juka_actions':
             shutil.copyfile(live.parent / 'mounted.json', sealed / 'mounted.json')
+        if batch == 'ridgeback_through_dragons_actions':
+            mounted = runpy.run_path(str(ROOT / 'scripts/prepare-ridgeback-reptalon-mount-trial.py'))
+            for source in (work / 'mounted/mounted-preview.json', ROOT / 'outputs/ostard-riding' / mounted['REPORT']):
+                shutil.copyfile(source, sealed / source.name)
         if batch == 'golem_raptor_juka_solen_actions':
             shutil.copyfile(live.parent / 'stance.json', sealed / 'stance.json')
         if batch == 'bomber_ogre_rune_dopple_actions':

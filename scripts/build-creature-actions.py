@@ -235,15 +235,16 @@ def resolve(model,label,fallback):
     while resolved not in available and resolved in fallback and resolved not in visited:
         visited.add(resolved);resolved=fallback[resolved]
     if resolved not in available:return {'requested':label,'resolved':None,'status':'Missing replacement'}
+    runtime_rest_copy = label == 'LieDown' and label not in authored and not model.get('original_rest_retained')
     if resolved!=label:status='Runtime category substitute'
     elif label in authored:status='Authored category motion'
     elif label in model.get('category_aliases',{}):status='Prepared clip alias'
-    elif label=='LieDown':status='Runtime copy of Death clip'
+    elif runtime_rest_copy:status='Runtime copy of Death clip'
     elif label in model.get('clip_sources',{}):status='Recovered source clip'
     else:status='Runtime authored pose/category'
     return {'requested':label,'resolved':resolved,'status':status,
             'source_member':model.get('clip_sources',{}).get(resolved),
-            'declared_alias':model.get('category_aliases',{}).get(resolved) or ('Death' if label=='LieDown' else None),
+            'declared_alias':model.get('category_aliases',{}).get(resolved) or ('Death' if runtime_rest_copy else None),
             'authored_method':authored.get(resolved)}
 
 def classic_wire_clip(model, body, kind, wire_routes, fallback, parity=0):

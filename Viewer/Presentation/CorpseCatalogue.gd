@@ -14,7 +14,7 @@ func check(ok: bool,label: String) -> void:
 func bounds(actor: Node3D) -> AABB:
 	var first:=true;var result:=AABB()
 	for mesh: MeshInstance3D in actor.find_children("*","MeshInstance3D",true,false):
-		if not mesh.is_visible_in_tree() or mesh.mesh==null or mesh.has_meta("source_death_flash"):continue
+		if not mesh.is_visible_in_tree() or mesh.mesh==null or mesh.mesh.get_surface_count()==0 or mesh.has_meta("source_death_flash"):continue
 		var box: AABB
 		if mesh.skin:box=SkinBounds.deformed_bounds(mesh,mesh.get_node(mesh.skeleton))
 		else:

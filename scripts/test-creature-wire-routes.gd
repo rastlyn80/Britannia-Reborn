@@ -70,7 +70,7 @@ func run() -> void:
 			avatar.free()
 	game.free()
 	if "--require-all" in OS.get_cmdline_user_args():
-		assert(bodies == 79 and selections == 834 and unchanged == 417 and distinct == 87)
+		assert(bodies == 79 and selections == 840 and unchanged == 420 and distinct == 90)
 	print("CLASSIC WIRE: ", selections, " paired Classic/newer selections and ", unchanged, " untouched subactions across ", bodies, " local bodies. Distinct modes ", distinct)
 	quit()
 
