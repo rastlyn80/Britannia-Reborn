@@ -32,6 +32,10 @@ func run() -> void:
 						expected_script = "res://Presentation/RottingCorpseActionsVisual.gd"
 						check(visual.get_script().get_base_script().resource_path == row.presentation_script,
 							"Rotting Corpse retains its original skin and contact renderer")
+					if body == 753 and entry.has("preferred_uop_native_sha256"):
+						expected_script = "res://Presentation/ArchiveSourcePreservingGestureVisual.gd"
+						check(visual.get_script().get_base_script().resource_path == row.presentation_script,
+							"Enslaved Gargoyle retains its original skin and contact renderer")
 					check(visual!=null and actor.human_visual==null and visual.get_script().resource_path==expected_script,"Actual normal avatar selects the checked creature renderer")
 					check(visual.native_body==body and visual.native_hue==hue,"Actual avatar preserves server body and raw hue")
 					check(visual.skeleton.get_bone_count()==int(row.stats.original.bones),"Actual avatar retains every source joint")
