@@ -98,7 +98,9 @@ def main():
         source = source.replace(old, new)
         old = 'registered.presentation_script==entry.presentation_script'
         new = (f'({old} or (body==155 and registered.get("classic_gesture_batch","")=="avenger_rotting_actions"'
-               ' and registered.presentation_script=="res://Presentation/RottingCorpseActionsVisual.gd"))')
+               ' and registered.presentation_script=="res://Presentation/RottingCorpseActionsVisual.gd")'
+               ' or (body==753 and registered.has("preferred_uop_native_sha256")'
+               ' and registered.presentation_script=="res://Presentation/ArchiveSourcePreservingGestureVisual.gd"))')
         assert source.count(old) == 1
         source = source.replace(old, new)
         script = WORK/'FamilyActionTests.gd'
