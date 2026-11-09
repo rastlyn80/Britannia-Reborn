@@ -29,7 +29,11 @@ func run() -> void:
 			var suffix: String = "shared" if body == 730 else treatment
 			var path := "res://local-art/creatures/ready-stance-%d-%s.scn" % [body, suffix]
 			if active:
-				assert(registered.assets[treatment] == path and registered.authored_action_scene_sha256[treatment] == FileAccess.get_sha256(path))
+				if body == 734 and registered.get("classic_gesture_batch") == "slith_actions":
+					assert(base_assets[treatment] == path and registered.authored_action_base_sha256[treatment] == FileAccess.get_sha256(path))
+					assert(registered.authored_action_scene_sha256[treatment] == FileAccess.get_sha256(registered.assets[treatment]))
+				else:
+					assert(registered.assets[treatment] == path and registered.authored_action_scene_sha256[treatment] == FileAccess.get_sha256(path))
 			else:
 				candidate.assets[treatment] = path
 		if active:

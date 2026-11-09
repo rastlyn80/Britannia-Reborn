@@ -59,6 +59,7 @@ BATCHES = {
     'efreet_actions': ((131,), 'GoatHarpyHordeLive.gd', ('test-efreet-actions.gd', 'test-efreet-corpses.gd')),
     'orc_bog_actions': ((7, 780), 'OrcBogActionsLive.gd',
                         ('test-orc-captain-actions.gd', 'test-orc-captain-axe.gd', 'test-bog-thing-actions.gd')),
+    'slith_actions': ((734,), 'SlithActionsLive.gd', ('test-slith-actions.gd',)),
     'dragon_daemon': ((9, 10, 12, 38, 40, 43, 59, 60, 61), 'PreparedCreatureActionLive.gd',
                       ('test-dragon-daemon-gestures.gd',)),
     'terathan_classic': ((70, 71, 72), 'PreparedCreatureActionLive.gd', ('test-terathan-gestures.gd',)),
@@ -148,6 +149,7 @@ PREDECESSORS = {
     'avenger_rotting_actions': (),
     'efreet_actions': (),
     'orc_bog_actions': (),
+    'slith_actions': ('ready_stances',),
     'copper_kaze_actions': (),
     'ophidian_patchwork_actions': ('ophidian_bardiche',),
     'tokuno_spider_dragon_actions': ('dragon_daemon',),
@@ -245,6 +247,11 @@ def without_ready_stance(row):
     body = int(row['bodies'][0]['body'])
     if body not in BATCHES['ready_stances'][0]:
         return row
+    if row.get('classic_gesture_batch') == 'slith_actions':
+        baseline, overlays = checked(read(INDEX), True, 'slith_actions', compare_registry=False)
+        if overlays != [row]:
+            raise ValueError('Active Slith action overlay changed')
+        row, = baseline
     sealed = ROOT / 'work/creatures/ready_stances/accepted-native'
     base, = (item for item in read(sealed / 'base-rows.json') if item['bodies'][0]['body'] == body)
     candidates = sealed / 'candidates.json'
@@ -326,7 +333,8 @@ def checked(index, active, batch, *, compare_registry=True):
                    'DaemonActionsLive.gd', 'WraithDrakeWalrusLive.gd', 'OccurrenceGesturesLive.gd',
                    'LaterCreatureGesturesLive.gd', 'ArmedFlyingCreatureGesturesLive.gd', 'TokunoSpiderDragonLive.gd',
                    'MageLordTentacleActionsLive.gd', 'GoatHarpyHordeLive.gd',
-                   'GargoyleKitsuneLarvaLive.gd', 'SolenWorkerActionsLive.gd', 'OrcBogActionsLive.gd') and (
+                   'GargoyleKitsuneLarvaLive.gd', 'SolenWorkerActionsLive.gd', 'OrcBogActionsLive.gd',
+                   'SlithActionsLive.gd') and (
             report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
         raise ValueError('Supplementary action trial used a different prepared fixture loader')
     if batch == 'occurrence_deaths' and (
@@ -428,22 +436,25 @@ def checked(index, active, batch, *, compare_registry=True):
         if batch == 'exact_creature_fidgets' and body == 146 and (
                 witness.get('transformed_body') != 780 or not witness.get('true_form_corpse')):
             raise ValueError('Harrower evidence must include the transformation and true-form corpse')
-        if batch == 'efreet_actions':
-            for request, kind in ((-1, 4), (-2, 11), (-3, 2), (-5, 14)):
+        if batch in ('efreet_actions', 'slith_actions'):
+            requests = [(-1, 4), (-2, 11), (-3, 2), (-5, 14)]
+            if batch == 'slith_actions':
+                requests.append((-4, 5))
+            for request, kind in requests:
                 action, = (row for row in witness['actions'] if row['requested'] == request)
                 clip = package['new_action_categories'][str(kind)]
                 for client in ('owner', 'observer'):
                     packet = action[client + '_packet']
                     if (action[client + '_clip'] != clip or packet['protocol'] != 'new'
                             or (packet['type'], packet['subaction'], packet['variation']) != (kind, 0, 0)):
-                        raise ValueError(f'Both clients must witness Efreet new-protocol type {kind}')
+                        raise ValueError(f'Both clients must witness body {body} new-protocol type {kind}')
         for slot in slots:
             clip = ('Fidget' if batch == 'exact_creature_fidgets' and slot == 17
                     else package['classic_action_categories'][str(slot)])
             actions = [row for row in witness['actions'] if row['requested'] == slot]
             if len(actions) != 1 or any(actions[0][key] != clip for key in ('owner_clip', 'observer_clip')):
                 raise ValueError(f'Missing Classic gesture evidence for body {body}, slot {slot}')
-            if (batch in ('efreet_actions', 'orc_bog_actions', 'lizard_actions', 'quadruped_actions', 'hart_deaths', 'dog_bear_actions', 'cat_actions',
+            if (batch in ('efreet_actions', 'orc_bog_actions', 'slith_actions', 'lizard_actions', 'quadruped_actions', 'hart_deaths', 'dog_bear_actions', 'cat_actions',
                           'skeleton_actions', 'troll_actions', 'field_fauna', 'spider_mongbat_actions',
                           'grazers_grizzly_actions', 'pig_reaper_harpy_actions', 'rabbit_distinct_actions',
                           'serpent_ogre_actions', 'zombie_corpser_gargoyle_actions', 'earth_gazer_imp_actions',
@@ -484,7 +495,7 @@ def checked(index, active, batch, *, compare_registry=True):
                     if expected_row not in bone_base:
                         raise ValueError('Bone Knight overlay must retain the independently checked sibling base')
                     continue
-            compared = matches if batch == 'ready_stances' else [redirect(row) for row in matches]
+            compared = matches if batch in ('ready_stances', 'slith_actions') else [redirect(row) for row in matches]
             comparison_index = index
             while len(compared) == 1:
                 successor = compared[0].get('classic_gesture_batch')
@@ -509,7 +520,9 @@ def test_active(batch):
                   'dog_bear_actions': ['--dog-bear'], 'troll_actions': ['--troll'],
                   'field_fauna': ['--field-fauna']}.get(batch, [])
     for script in BATCHES[batch][2]:
-        run_client_check(godot, env, f'res://../scripts/{script}', ['--active', *trial_args])
+        # The axe sweep keeps every 360 Hz sample during the concurrent full gate.
+        timeout = 180 if script == 'test-orc-captain-axe.gd' else 65
+        run_client_check(godot, env, f'res://../scripts/{script}', ['--active', *trial_args], timeout=timeout)
     if batch == 'occurrence_gestures':
         for test in ('TsukiWolfRouteTests', 'KappaRouteTests'):
             run_client_check(godot, env, f'res://Presentation/{test}.gd', [])
@@ -542,11 +555,11 @@ def test_active(batch):
             run_client_check(godot, env, f'res://Presentation/{test}.gd', [])
 
 
-def run_client_check(godot, env, script, args):
+def run_client_check(godot, env, script, args, *, timeout=65):
     with tempfile.TemporaryDirectory(prefix='action-log-', dir=ROOT / 'work/creatures') as logs:
         result = subprocess.run([str(godot), '--headless', '--path', str(ROOT / 'Viewer'),
                                  '--log-file', str(Path(logs) / 'godot.log'), '--script', script, '--', *args],
-                                cwd=ROOT, env=env, timeout=65, capture_output=True,
+                                cwd=ROOT, env=env, timeout=timeout, capture_output=True,
                                 text=True, encoding='utf-8', errors='replace')
     output = result.stdout + result.stderr
     print(output.strip())

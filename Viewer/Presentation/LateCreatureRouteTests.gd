@@ -85,6 +85,15 @@ func run() -> void:
 			Registry.entries[body] = record
 		else:
 			var active := Registry.entry(body)
+			if body == 734 and active.get("classic_gesture_batch") == "slith_actions":
+				# Exercise the sealed ready-stance layer here. The Slith action gate
+				# checks the same keys and native identity on the installed successor.
+				var baseline: Array = JSON.parse_string(FileAccess.get_file_as_string(
+					"res://../work/creatures/slith_actions/accepted-native/base-rows.json"))
+				assert(baseline.size() == 1 and int(baseline[0].bodies[0].body) == body)
+				assert(active.classic_gesture_base_assets == baseline[0].assets)
+				active = baseline[0]
+				Registry.entries[body] = active
 			if package_family == "khaldun_doom" and (body == 637 and active.has("khaldun_native_sha256")
 					or body == 970 and active.has("restless_soul_native_sha256")):
 				# The supplemental normal-registry test verifies this sealed replacement.

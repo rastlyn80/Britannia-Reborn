@@ -37,7 +37,10 @@ func run() -> void:
 			var candidate_path := Registry.asset_path(candidate.presentation, treatment)
 			if active and body in [730, 734] and not assets.is_empty():
 				candidate_path = assets[treatment]
-			assert(Registry.asset_path(original, treatment) == candidate_path)
+			# The Slith successor retains the ready-stance scene as its immediate
+			# base. Its redirect destinations must still match the original keys below.
+			if candidate.presentation.get("classic_gesture_batch") != "slith_actions":
+				assert(Registry.asset_path(original, treatment) == candidate_path)
 			for group: String in candidate.targets:
 				var target: Dictionary = candidate.targets[group]
 				assert(baseline.receive_action(decode(game, int(group))) and baseline.current_clip == target.clip)
