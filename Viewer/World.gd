@@ -311,7 +311,7 @@ func _ready() -> void:
 	game.mobile_action_received.connect(func(request: Dictionary):
 		var serial:=int(request.get("serial",0))
 		if avatars.has(serial):
-			preload("res://Presentation/CreatureWireActions.gd").dispatch(avatars[serial], request))
+			preload("res://Presentation/NativeMobileActions.gd").dispatch(avatars[serial], request))
 	game.vendor_received.connect(func(serial: int,_stock: Array):
 		if avatars.has(serial): avatars[serial].get_node("Nameplate").text = game.entity_names.get(serial,"Vendor")+" · shopkeeper")
 	game.entity_name_received.connect(func(serial: int, name_text: String):

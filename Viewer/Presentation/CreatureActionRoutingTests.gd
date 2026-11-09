@@ -2,6 +2,13 @@ extends SceneTree
 ## Independent semantic checks against pinned server weapon/dolphin behaviour.
 class Probe extends "res://Presentation/CreatureVisual.gd":
 	func _ready() -> void:pass
+class ProbeAvatar extends Node3D:
+	var horse_visual: Node3D
+	func receive_native_action(request: Dictionary) -> bool:
+		return horse_visual.receive_action(request)
+
+const NativeActions := preload("res://Presentation/NativeMobileActions.gd")
+const Appearance := preload("res://Network/MobileAppearance.gd")
 var checks:=0
 var failures:=0
 func _initialize() -> void:call_deferred("run")
@@ -31,6 +38,7 @@ func run() -> void:
 		actor.dead=false;check(actor.receive_action({"protocol":"classic","action":group}) and actor.current_clip==("Jump" if group==3 else "Roll") and not actor.dead,"Native dolphin breach is a live explicit category")
 	check(not actor.receive_action({"protocol":"classic","action":11}),"Sea creatures do not acquire an animal lying pose from slot11")
 	actor.dead=false;check(actor.receive_action({"protocol":"classic","action":8}) and actor.dead and actor.current_clip=="Death","Native sea death8 still reaches death")
+	check_colossal_blow(actor)
 	actor.entry={};actor.animator.callback_mode_process=AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
 	for profile in ["animal","sea","monster"]:
 		actor.action_profile=profile
@@ -44,3 +52,22 @@ func run() -> void:
 					actor.animator.advance(seconds*.5)
 					check(absf(actor.animator.current_animation_position-.5)<.001,"Each new native action restarts its timeline independently of the previous phase/rate: %s/%s/%s/%s"%[profile,protocol,rate,repetition])
 	actor.contact.free();actor.free();print("CREATURE ACTION ROUTING: ",checks-failures," / ",checks);quit(1 if failures else 0)
+
+func check_colossal_blow(actor: Probe) -> void:
+	var avatar := ProbeAvatar.new()
+	avatar.horse_visual = actor
+	actor.entry = {}
+	actor.native_body = 17
+	var request := Appearance.action(PackedByteArray([0x6e, 0, 0, 0, 3, 0, 21, 0, 6, 0, 1, 0, 0, 0]))
+	request["body"] = actor.native_body
+	for profile in ["animal", "sea", "monster"]:
+		actor.action_profile = profile
+		actor.dead = false
+		check(NativeActions.dispatch(avatar, request) and actor.current_clip == "Hit" and not actor.dead,
+			"Colossal Blow plays a live reaction for " + profile)
+		check(actor.get_meta("native_action") == request and int(request.action) == 21, "Original stun packet stays intact")
+	var ordinary_fall := request.duplicate()
+	ordinary_fall["frames"] = 5
+	check(NativeActions.dispatch(avatar, ordinary_fall) and actor.dead and actor.current_clip == "Death",
+		"Ordinary monster group 21 still reaches its fall")
+	avatar.free()

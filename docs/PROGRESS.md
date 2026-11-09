@@ -1,3 +1,21 @@
+# Colossal Blow recovery
+
+ModernUO's Golem ability sends Classic group 21 with six frames for its stun. Both clients previously left a living Orc in Death and a living Drake in AirDeath even after the server unfroze them and they moved. The client now routes that exact packet to the creature's hit reaction and retains the original packet for diagnostics.
+
+The disposable two-client run passed 50 checks with the actual Golem ability and recovery timer. Both victims resumed walking on both clients. A separate five-frame Drake fall still played AirDeath. Separate native kills still emitted corpse IDs for both victims. The source-free routing suite also checks the stun against all three generic profiles. The server needed no change.
+
+# Centaur, Twaulo and Doom skin bindings
+
+The Centaur, Shadow Knight and Ravager now use the skin table belonging to each visible mesh in their original Granny files. The old conversion included two Centaur helper tables or one Doom weapon table before the body's own table. This sent vertices to the wrong joints even though the original bind pose and packet playback passed. The Centaur uses the third table's 41 bindings. The Shadow Knight uses its 43-entry body table and the Ravager its 50-entry table. Their original rigid sword and club retain their own bindings.
+
+A scan of 256 local creature models measured the original and corrected poses against each model's own skinned bind pose. Across idle, walk and run, the worst sampled 95th-percentile edge stretch fell from 3.39× to 1.32× for Centaur, 5.98× to 1.20× for Shadow Knight and 4.72× to 1.28× for Ravager. Offscreen renders verified all three corrections. The original animation curves remain except for the model-space grounding track, which is measured from the corrected skin. The largest adjustment was 0.474 metres during the Centaur's original attack. The server's position stays authoritative.
+
+Centaur and Twaulo use the original 92-triangle Third Dawn bow when the server sends its worn item. The bow follows the human wrist and fingertips, and the brace uses the rig's human arms. Both clients verified the native bow, partial dye, removal, re-equip, movement and the existing static corpse path. The fitted bow covers carrying and equipment display. ModernUO sends a projectile when the Centaur fires and omits the monster bow swing animation, so a separate client release remains open.
+
+The exact isolated runs passed 372 Centaur and Twaulo checks and 348 Shadow Knight and Ravager checks. The Centaur passed 600 full-skin and bow pose samples, 279 finite slope samples and three corpse hues. The full Doom playback suite passed 105 decoded selections, 5,022 terrain samples and 27 corpse hue cases with the two corrected models. The earlier action and corpse recipes retain their original evidence.
+
+Rebuild the local models with `scripts/prepare-centaur-mesh-binding.py`, `scripts/prepare-centaur-bow.py` and `scripts/prepare-doom-mesh-bindings.py`. The corresponding Godot bake scripts keep the original rig and recompute the visual floor track. `scripts/accept-creature-mesh-bindings.py` checks the isolated client and server receipts before installing the corrections. Game art and review evidence stay local.
+
 # Enslaved Gargoyle, Parrot and six-facet creature audit
 
 The Enslaved Gargoyle and Parrot packages use `AnimationFrame4.uop` group and timing evidence on their existing rigs. The Gargoyle adds a guard, standing recovery, lunge and step, and retains its Pillage. The Parrot uses its retained Idle for five newer packet types and also has a fitted wing tuck. The authored poses use registered sprite heights to guide their timing and shape. Five frame directions were decoded for each of the eight reviewed groups. Type 5 is still deferred because the archive selects different motions by actor mode. The existing Classic route remains active for the Troglodyte.

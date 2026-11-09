@@ -197,6 +197,10 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
   & python -B "$root/scripts/prepare-creature-uop-redirects.py" --check-active
   if ($LASTEXITCODE) {throw 'Active UOP creature redirect evidence failed'}
  }
+ if ($lateIndex.entries | Where-Object { $_.mesh_binding_native_sha256 }) {
+  & python -B "$root/scripts/accept-creature-mesh-bindings.py" --check-active
+  if ($LASTEXITCODE) {throw 'Active creature mesh bindings failed'}
+ }
  if ($lateIndex.entries | Where-Object { $_.preferred_uop_native_sha256 }) {
   & python -B "$root/scripts/accept-preferred-uop-actions.py" --check-active
   if ($LASTEXITCODE) {throw 'Active Gargoyle or Parrot UOP motions failed'}

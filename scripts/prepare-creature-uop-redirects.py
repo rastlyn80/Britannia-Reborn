@@ -71,6 +71,9 @@ def merge_active(row, proof, receipt_hash):
 
 
 def redirect_layer(row):
+    if 'mesh_binding_native_sha256' in row:
+        bindings = runpy.run_path(str(ROOT / 'scripts/accept-creature-mesh-bindings.py'))
+        return bindings['retained'](row)
     if 'preferred_uop_native_sha256' in row:
         preferred = runpy.run_path(str(ROOT / 'scripts/accept-preferred-uop-actions.py'))
         return preferred['retained'](row)
