@@ -82,8 +82,13 @@ if (Test-Path "$root/Viewer/local-art/creatures/crystal_lattice/local-presentati
  & python -B "$root/scripts/accept-crystal-lattice.py" --check-active
  if ($LASTEXITCODE) {throw 'Active Crystal Lattice Seeker source/presentation receipt failed'}
 }
+$beetlePublisher = 'accept-giant-beetle.py'
+$creatureIndexPath = "$root/Viewer/local-art/creatures/accepted-index.json"
+if ((Test-Path $creatureIndexPath) -and (Select-String -Path $creatureIndexPath -SimpleMatch '"beetle_rest_native_sha256"' -Quiet)) {
+ $beetlePublisher = 'accept-giant-beetle-rest.py'
+}
 foreach ($route in @(
- @{Folder='giant_beetle'; Publisher='accept-giant-beetle.py'},
+ @{Folder='giant_beetle'; Publisher=$beetlePublisher},
  @{Folder='giant_beetle_fire'; Publisher='accept-fire-beetle.py'},
  @{Folder='giant_beetle_ethereal'; Publisher='accept-ethereal-beetle.py'},
  @{Folder='solen_queens'; Publisher='accept-solen-queens.py'},
@@ -246,7 +251,10 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
   if ($hiryuExit -or ($hiryuRide | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Active Hiryu riding route failed'}
  }
  if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.family -eq 'cu_sidhe_mount' }) {
-  $cuRide = & $godot --headless --path "$root/Viewer" --script res://Presentation/CuSidheRidingTests.gd -- --active 2>&1
+  $cuScript = if ($lateIndex.entries | Where-Object { $_.family -eq 'cu_sidhe_mount' -and $_.classic_gesture_batch -eq 'lattice_through_meer_actions' }) {
+   'res://../scripts/test-cu-sidhe-retained.gd'
+  } else { 'res://Presentation/CuSidheRidingTests.gd' }
+  $cuRide = & $godot --headless --path "$root/Viewer" --script $cuScript -- --active 2>&1
   $cuExit = $LASTEXITCODE
   $cuRide | ForEach-Object { Write-Output $_ }
   if ($cuExit -or ($cuRide | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Active Cu Sidhe riding route failed'}

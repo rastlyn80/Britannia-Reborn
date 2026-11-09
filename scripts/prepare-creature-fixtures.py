@@ -89,7 +89,7 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
-    if family in ('efreet_actions', 'orc_bog_actions', 'slith_actions', 'ranked_classic_actions', 'swamp_widow_juka_actions', 'bomber_ogre_rune_dopple_actions', 'golem_raptor_juka_solen_actions', 'post_solen_actions', 'frost_through_gargoyle_actions'):
+    if family in ('efreet_actions', 'orc_bog_actions', 'slith_actions', 'ranked_classic_actions', 'swamp_widow_juka_actions', 'bomber_ogre_rune_dopple_actions', 'golem_raptor_juka_solen_actions', 'post_solen_actions', 'frost_through_gargoyle_actions', 'lattice_through_meer_actions', 'meer_forward_falls'):
         recipe = runpy.run_path(str(ROOT / 'scripts' / f"prepare-{family.replace('_', '-')}.py"))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
         return recipe['prepared'](rows)
@@ -1025,13 +1025,16 @@ def main():
             expected = [overlay if row['bodies'][0]['body'] == body else row for row in expected]
         overlays = {
             'hydra_active': {'frost_through_gargoyle_actions'},
-            'meer_donors_active': {'frost_through_gargoyle_actions'},
-            'elemental_minotaur_active': {'post_solen_actions', 'frost_through_gargoyle_actions'},
+            'meer_donors_active': {'frost_through_gargoyle_actions', 'lattice_through_meer_actions', 'meer_forward_falls'},
+            'captain_cu_active': {'lattice_through_meer_actions'},
+            'elemental_minotaur_active': {'post_solen_actions', 'frost_through_gargoyle_actions', 'lattice_through_meer_actions'},
         }.get(args.family, set())
         for batch in sorted(overlays & {row.get('classic_gesture_batch') for row in registered}):
             gesture_gate = runpy.run_path(str(ROOT / 'scripts/accept-classic-gestures.py'))
             base, updated = gesture_gate['checked'](index, True, batch)
             covered = {row['bodies'][0]['body'] for row in registered if row.get('classic_gesture_batch') == batch}
+            if batch == 'meer_forward_falls':
+                base, _ = gesture_gate['checked'](index, True, 'lattice_through_meer_actions')
             replacements = {row['bodies'][0]['body']: row for row in updated if row['bodies'][0]['body'] in covered}
             if [row for row in expected if row['bodies'][0]['body'] in covered and row not in base]:
                 raise ValueError(f'{batch} did not retain the earlier {args.family} package')

@@ -27,6 +27,11 @@ func run() -> void:
 		if body == 771 and active.get("classic_gesture_batch") == "frost_through_gargoyle_actions":
 			active = SealedBase.retained(active, body)
 			Registry.entries[body] = active
+		if body in [770, 773] and active.get("classic_gesture_batch") == "meer_forward_falls":
+			active = SealedBase.retained(active, body)
+		if body in [770, 773] and active.get("classic_gesture_batch") == "lattice_through_meer_actions":
+			active = SealedBase.retained(active, body)
+			Registry.entries[body] = active
 		if active.has("legacy_slot11_evidence"):
 			assert(active == preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(record, active))
 		var avatar := Avatar.new()

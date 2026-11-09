@@ -72,6 +72,9 @@ BATCHES = {
                            ('test-post-solen-actions.gd',)),
     'frost_through_gargoyle_actions': ((20, 792, 771, 265, 281, 130, 755, 754),
                                       'FrostThroughGargoyleLive.gd', ('test-frost-through-gargoyle-actions.gd',)),
+    'lattice_through_meer_actions': ((123, 785, 189, 241, 770, 301, 277, 773),
+                                     'SwampWidowJukaActionsLive.gd', ('test-lattice-through-meer-actions.gd',)),
+    'meer_forward_falls': ((770, 773), 'MeerForwardFallsLive.gd', ('test-meer-forward-falls.gd',)),
     'dragon_daemon': ((9, 10, 12, 38, 40, 43, 59, 60, 61), 'PreparedCreatureActionLive.gd',
                       ('test-dragon-daemon-gestures.gd',)),
     'terathan_classic': ((70, 71, 72), 'PreparedCreatureActionLive.gd', ('test-terathan-gestures.gd',)),
@@ -168,6 +171,8 @@ PREDECESSORS = {
     'golem_raptor_juka_solen_actions': ('ready_stances', 'slith_actions'),
     'post_solen_actions': ('gaman_gestures', 'late_classic_actions'),
     'frost_through_gargoyle_actions': ('blistering_pillage',),
+    'lattice_through_meer_actions': (),
+    'meer_forward_falls': ('lattice_through_meer_actions',),
     'copper_kaze_actions': (),
     'ophidian_patchwork_actions': ('ophidian_bardiche',),
     'tokuno_spider_dragon_actions': ('dragon_daemon',),
@@ -328,7 +333,7 @@ def checked(index, active, batch, *, compare_registry=True):
         for predecessor in predecessors:
             if (batch in ('slith_actions', 'ranked_classic_actions', 'swamp_widow_juka_actions',
                           'bomber_ogre_rune_dopple_actions', 'golem_raptor_juka_solen_actions',
-                          'post_solen_actions', 'frost_through_gargoyle_actions') or
+                          'post_solen_actions', 'frost_through_gargoyle_actions', 'meer_forward_falls') or
                     predecessor in ('scorpion_imp', 'dragon_daemon', 'bone_cyclops', 'vampire_bat_actions',
                                     'fidget_aliases_toad', 'skeletal_mage_staff')):
                 # Independent successors seal their own retained rows. Replaying a
@@ -370,7 +375,7 @@ def checked(index, active, batch, *, compare_registry=True):
                    'GargoyleKitsuneLarvaLive.gd', 'SolenWorkerActionsLive.gd', 'OrcBogActionsLive.gd',
                    'SlithActionsLive.gd', 'RankedClassicActionsLive.gd', 'SwampWidowJukaActionsLive.gd',
                    'BomberOgreRuneDoppleLive.gd', 'GolemRaptorJukaSolenLive.gd', 'PostSolenActionsLive.gd',
-                   'FrostThroughGargoyleLive.gd') and (
+                   'FrostThroughGargoyleLive.gd', 'MeerForwardFallsLive.gd') and (
             report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
         raise ValueError('Supplementary action trial used a different prepared fixture loader')
     if batch == 'occurrence_deaths' and (
@@ -499,13 +504,14 @@ def checked(index, active, batch, *, compare_registry=True):
                             or (packet['type'], packet['subaction'], packet['variation']) != (kind, 0, 0)):
                         raise ValueError(f'Both clients must witness body {body} new-protocol type {kind}')
         if batch in ('swamp_widow_juka_actions', 'bomber_ogre_rune_dopple_actions',
-                      'golem_raptor_juka_solen_actions', 'post_solen_actions', 'frost_through_gargoyle_actions'):
+                      'golem_raptor_juka_solen_actions', 'post_solen_actions', 'frost_through_gargoyle_actions', 'lattice_through_meer_actions', 'meer_forward_falls'):
             categories = package['new_action_categories']
             requests = [(-1, 4, 'Hit')] + [(request, kind, categories[str(kind)])
                                             for request, kind in ((-3, 2), (-4, 5), (-5, 14))
-                                            if str(kind) in categories]
+                                            if str(kind) in categories and (batch != 'lattice_through_meer_actions'
+                                                                          or package['profile'] != 'animal')]
             if batch in ('golem_raptor_juka_solen_actions', 'post_solen_actions',
-                         'frost_through_gargoyle_actions') and '11' in categories:
+                         'frost_through_gargoyle_actions', 'lattice_through_meer_actions', 'meer_forward_falls') and '11' in categories:
                 requests.append((-2, 11, categories['11']))
             for request, kind, clip in requests:
                 action, = (row for row in witness['actions'] if row['requested'] == request)
@@ -522,7 +528,7 @@ def checked(index, active, batch, *, compare_registry=True):
                 raise ValueError(f'Missing Classic gesture evidence for body {body}, slot {slot}')
             if (batch in ('efreet_actions', 'orc_bog_actions', 'slith_actions', 'ranked_classic_actions',
                           'swamp_widow_juka_actions', 'bomber_ogre_rune_dopple_actions',
-                          'golem_raptor_juka_solen_actions', 'post_solen_actions', 'frost_through_gargoyle_actions',
+                          'golem_raptor_juka_solen_actions', 'post_solen_actions', 'frost_through_gargoyle_actions', 'lattice_through_meer_actions', 'meer_forward_falls',
                           'lizard_actions', 'quadruped_actions', 'hart_deaths',
                           'dog_bear_actions', 'cat_actions',
                           'skeleton_actions', 'troll_actions', 'field_fauna', 'spider_mongbat_actions',
@@ -622,6 +628,9 @@ def test_active(batch):
     if batch == 'frost_through_gargoyle_actions':
         run_client_check(godot, env, 'res://Presentation/MeerDonorRouteTests.gd', [])
         run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', ['--family=hydra'])
+    if batch == 'lattice_through_meer_actions':
+        for test in ('MeerDonorRouteTests', 'ElementalMinotaurRouteTests', 'CaptainCuRouteTests'):
+            run_client_check(godot, env, f'res://Presentation/{test}.gd', [])
     if batch == 'ready_stances':
         for family in ('raptor', 'slith'):
             run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', [f'--family={family}'])

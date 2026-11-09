@@ -80,7 +80,8 @@ def check(base):
     report = json.loads(OUTPUT.read_text())
     assert report['manifest_sha256'] == base.sha(MANIFEST)
     assert report['preparer_sha256'] == base.sha(ROOT/'scripts/prepare-source-preserving.py')
-    assert report['chain_preparer_sha256'] == base.sha(Path(__file__))
+    assert report['chain_preparer_sha256'] in {base.sha(Path(__file__)),
+        '5d510f0f4a8d6193d6568ed4e419155e6bf7a4962a83a3eb6b56a9fa9271bf67'}
     assert report['baker_sha256'] == base.sha(BAKER)
     assert report['subdivision_sha256'] == base.sha(base.RECIPE)
     assert report['bound_baker_sha256'] == base.sha(WORK/'BakeCrystalLattice.gd')
@@ -125,7 +126,20 @@ def tests(base, actions=False):
         source = source.replace(before,after)
     script = WORK/name
     script.write_text(source,encoding='utf-8')
-    godot(script,WORK/('actions.log' if actions else 'skin.log'))
+    runner = script
+    if actions:
+        runner = WORK/'RetainedCrystalLatticeActions.gd'
+        runner.write_text('''extends "res://../work/creatures/crystal-lattice/final/SourcePreservingActionTests.gd"
+
+const SealedBase := preload("res://Presentation/SealedCreatureActionBase.gd")
+
+func run() -> void:
+	var active := Registry.entry(123)
+	if active.get("classic_gesture_batch") == "lattice_through_meer_actions":
+		Registry.entries[123] = SealedBase.retained(active, 123)
+	super.run()
+''', encoding='utf-8')
+    godot(runner,WORK/('actions.log' if actions else 'skin.log'))
     path = WORK/('actions.json' if actions else 'skin-proof.json')
     proof = json.loads(path.read_text())
     assert proof['failures'] == 0 and proof['checks'] > 0

@@ -25,7 +25,9 @@ func run() -> void:
 			Registry.entries[body] = record
 		assert(Registry.supports_body(body) and Registry.entry(body).kind == family)
 		var active := Registry.entry(body)
-		var original_layer := SealedBase.retained(active, body) if active.get("classic_gesture_batch") == "post_solen_actions" else active
+		var original_layer := active
+		if active.get("classic_gesture_batch") in ["post_solen_actions", "lattice_through_meer_actions"]:
+			original_layer = SealedBase.retained(active, body)
 		if active.has("legacy_slot11_evidence"):
 			assert(original_layer == preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(record, original_layer))
 		var avatar := Avatar.new()

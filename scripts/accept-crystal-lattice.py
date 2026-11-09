@@ -102,7 +102,7 @@ def main():
     if existing:
         row = ALIAS_EVIDENCE['expected_with_legacy_alias'](row, existing[0])
     if args.check_active:
-        assert existing == [row]
+        assert existing == ALIAS_EVIDENCE['expected_rows_with_legacy_aliases']([row], index['entries'])
         ALIAS_EVIDENCE['check_base_receipt'](Path(__file__).name, read(RECEIPT), pins)
     if args.publish:
         backup = WORK/'accepted-index-before-crystal-lattice.json'

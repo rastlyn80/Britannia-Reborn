@@ -1,3 +1,17 @@
+# Crystal Lattice through Meer actions, Giant Beetle rest and Meer alternate corpses
+
+Nine bodies retain their earlier meshes, skins and animation keys and now have routes for 117 directly stored Classic groups. The package fits Crystal Lattice Seeker wing gestures, Moloch's four-arm guard, Orc Brute's challenge, Oni's low guard, Treefellow's brace, the Cu Sidhe's scenting motion and the Meer Mage and Captain's sweeps and guards. The Cu Sidhe keeps its original newer hit response. Its scenting motion uses Classic group 10. Beetle groups 3 and 9 share one motion because the registered source frames match in all five directions.
+
+The Giant Beetle settles upright on its original shell rig, holds the final pose and resumes walking when it moves. The isolated mount test passed 118 checks across both clients, including the native Classic group 11 rest packet after dismount, mount dyes, the real strong backpack and the corpse. The dedicated rest command only runs on the disposable test server for the nearby dismounted Beetle owned by the test account.
+
+The ten other native constructors passed 2,927 isolated checks. The saved packages passed 351 Classic and 129 newer decoded selections, 5,859 terrain poses, 27 corpse hue checks and 315 Meer Captain crossbow samples. The earlier Crystal Lattice, Meer, Minotaur and Cu Sidhe packages still pass their retained source and riding checks.
+
+Both Meer forward falls use Classic group 3 and keep the default backward fall for group 2. The saved poses end with the head about 0.77 m on the opposite side of the pelvis from the default fall. The alternate layer passed 595 isolated checks and 18 decoded death-to-corpse handoffs over 738 terrain poses. Both fall routes keep their own final static poses, and the Captain's crossbow follows the right-hand grip through the fitted motion.
+
+The generic ledger routes 5,424 of 6,998 slots (77.5%), with 1,574 broader gaps, 276 Classic pairs using a shared replacement and zero unresolved slots with matching Classic frames. All 279 bodies in the bounded catalogue have a native witness. The separate corpse graphics catalogue covers 324 body identities.
+
+Build with `scripts/bake-lattice-through-meer-actions.gd` and `scripts/bake-meer-forward-falls.gd`. The source recipes are `scripts/prepare-lattice-through-meer-actions.py` and `scripts/prepare-meer-forward-falls.py`. Run `scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily lattice_through_meer_actions` and repeat with `meer_forward_falls` for the separate death layer. The Giant Beetle uses `scripts/prepare-lattice-through-meer-actions.py --beetle`, `scripts/test-horses.ps1 -Live -SkipContact -GiantBeetle -PreparedGiantBeetleRest` and `scripts/accept-giant-beetle-rest.py --check-active`. Recovered original art and derived renders stay local.
+
 # Frost Spider, Chaos Daemon, Meer Warrior, Hydra, Minotaur Scout and gargoyle actions
 
 The package checks 97 directly stored Classic groups across seven bodies and 16 Fire Gargoyle groups in `AnimationFrame1.uop`. Frost Spider gains a low brace and abdomen signal. Chaos Daemon, Meer Warrior, Minotaur Scout, Gargoyle Destroyer and Gargoyle Enforcer gain fitted gestures on their retained rigs. Hydra reuses its recovered left block for groups 15 and 16 because the registered silhouettes and placement agree across all five directions. The recovered Hydra scenes are repacked for the native trial. Gargoyle Destroyer and Enforcer still use their existing fall for Classic group 21. A separate falling-from-flight clip remains open.
