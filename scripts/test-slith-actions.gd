@@ -1,4 +1,5 @@
 extends "res://../scripts/test-gargoyle-kitsune-larva-corpses.gd"
+const SealedBase := preload("res://Presentation/SealedCreatureActionBase.gd")
 
 const SLITH := 734
 const MODERN := [[0, 0, 0, "Attack"], [0, 0, 1, "Attack2"], [0, 0, 2, "Attack"],
@@ -15,6 +16,9 @@ var peak_alternate_lift := 0.0
 func run() -> void:
 	var row := Registry.entry(SLITH)
 	if "--active" in OS.get_cmdline_user_args():
+		if row.get("classic_gesture_batch") == "golem_raptor_juka_solen_actions":
+			row = SealedBase.retained(row, SLITH)
+			Registry.entries[SLITH] = row
 		assert(row.classic_gesture_batch == "slith_actions")
 	else:
 		var rows: Array = JSON.parse_string(FileAccess.get_file_as_string("res://../work/creatures/slith_actions/prepared-client.json"))

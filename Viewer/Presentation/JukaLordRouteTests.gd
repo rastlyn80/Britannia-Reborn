@@ -1,4 +1,5 @@
 extends SceneTree
+const SealedBase := preload("res://Presentation/SealedCreatureActionBase.gd")
 const Registry = preload("res://Presentation/CreatureRegistry.gd")
 const Avatar = preload("res://Presentation/HumanAvatar.gd")
 const Lord = preload("res://Presentation/SourceJukaLordVisual.gd")
@@ -12,7 +13,9 @@ func run() -> void:
 	var preparation: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://local-art/creatures/juka_lord/preparation.json"))
 	var expected: Dictionary = preparation.models[0].duplicate(true)
 	expected.status = "validated"
-	assert(Registry.supports_body(766) and Registry.entry(766) == expected)
+	var active := Registry.entry(766)
+	var base := SealedBase.retained(active, 766) if active.get("classic_gesture_batch") == "golem_raptor_juka_solen_actions" else active
+	assert(Registry.supports_body(766) and base == expected)
 	var avatar := Avatar.new()
 	avatar.initial_body = 766
 	root.add_child(avatar)

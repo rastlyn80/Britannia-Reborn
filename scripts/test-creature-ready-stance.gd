@@ -1,4 +1,5 @@
 extends SceneTree
+const SealedBase := preload("res://Presentation/SealedCreatureActionBase.gd")
 
 const Registry := preload("res://Presentation/CreatureRegistry.gd")
 const Game := preload("res://Network/GameSession.gd")
@@ -23,6 +24,9 @@ func run() -> void:
 	var active := "--active" in OS.get_cmdline_user_args()
 	for body: int in PROFILE:
 		var registered := Registry.entry(body)
+		if active and registered.get("classic_gesture_batch") == "golem_raptor_juka_solen_actions":
+			registered = SealedBase.retained(registered, body)
+			Registry.entries[body] = registered
 		var candidate := registered.duplicate(true)
 		var base_assets: Dictionary = registered.get("classic_gesture_base_assets", registered.assets)
 		for treatment in ["original", "rounded", "modern"]:

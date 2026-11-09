@@ -1,0 +1,2458 @@
+{
+  "inputs": {
+    "AnimationSequence.uop": "b4de2afdba2bab6e987389cde18aee4703bbef560f66d4c26be5ffc04f2b8e0f",
+    "AnimationFrame3.uop": "16d236961cef684acaac7fd435b553337e0cb5bf2fe6e7185ded9be820b1cf6e",
+    "mobtypes.txt": "a4f1c98057c5bcf10ccdb575a9154260651e49b852bfe548059ff55fcbbf29d8",
+    "Bodyconv.def": "62debf90a6c5f59a885da6b0a8db1094d90c8d9e0a2c4c02b3acc234d818b665"
+  },
+  "mul": {
+    "752": {
+      "archive": "anim2.mul",
+      "graphic": 29,
+      "layout": "large",
+      "mobtypes": [
+        "MONSTER",
+        0
+      ],
+      "sequence": {
+        "animation_ref": 752,
+        "uop_name_hash": "0x1fbc6e3e0832ff86",
+        "bytes": 2431,
+        "replacements": [
+          {
+            "old_group": 0,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 1,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 2,
+            "frame_count": 8,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 3,
+            "frame_count": 8,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 4,
+            "frame_count": 7,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 5,
+            "frame_count": 8,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 6,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 7,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 8,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 9,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 10,
+            "frame_count": 7,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 11,
+            "frame_count": 7,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 12,
+            "frame_count": 9,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 13,
+            "frame_count": 0,
+            "new_group": 12,
+            "flags": 0
+          },
+          {
+            "old_group": 14,
+            "frame_count": 0,
+            "new_group": 12,
+            "flags": 0
+          },
+          {
+            "old_group": 15,
+            "frame_count": 7,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 16,
+            "frame_count": 0,
+            "new_group": 15,
+            "flags": 0
+          },
+          {
+            "old_group": 17,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 18,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 19,
+            "frame_count": 0,
+            "new_group": 0,
+            "flags": 0
+          },
+          {
+            "old_group": 20,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 21,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 22,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 23,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 24,
+            "frame_count": 8,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 25,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 26,
+            "frame_count": 11,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 27,
+            "frame_count": 9,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 28,
+            "frame_count": 9,
+            "new_group": -1,
+            "flags": 1091567616
+          }
+        ],
+        "modes": [
+          {
+            "mode": 0,
+            "fallback_mode": -1,
+            "default_group": 1,
+            "transitions": [],
+            "movement": [
+              {
+                "action": 0,
+                "one_handed_group": 1,
+                "two_handed_group": 1
+              },
+              {
+                "action": 1,
+                "one_handed_group": 0,
+                "two_handed_group": 0
+              },
+              {
+                "action": 2,
+                "one_handed_group": 24,
+                "two_handed_group": 24
+              }
+            ],
+            "new_protocol_actions": [
+              {
+                "type": 0,
+                "subaction": -1,
+                "groups": [
+                  4,
+                  5,
+                  4,
+                  4,
+                  4,
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 0,
+                "groups": [
+                  4,
+                  5,
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 1,
+                "groups": [
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 2,
+                "groups": [
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 9,
+                "groups": [
+                  4
+                ]
+              },
+              {
+                "type": 2,
+                "subaction": -1,
+                "groups": [
+                  15,
+                  15
+                ]
+              },
+              {
+                "type": 3,
+                "subaction": -1,
+                "groups": [
+                  2,
+                  3
+                ]
+              },
+              {
+                "type": 4,
+                "subaction": -1,
+                "groups": [
+                  10
+                ]
+              },
+              {
+                "type": 5,
+                "subaction": -1,
+                "groups": [
+                  26,
+                  27
+                ]
+              },
+              {
+                "type": 8,
+                "subaction": -1,
+                "groups": [
+                  28
+                ]
+              },
+              {
+                "type": 11,
+                "subaction": -1,
+                "groups": [
+                  12,
+                  12,
+                  12
+                ]
+              },
+              {
+                "type": 14,
+                "subaction": -1,
+                "groups": [
+                  11
+                ]
+              },
+              {
+                "type": 15,
+                "subaction": -1,
+                "groups": [
+                  23
+                ]
+              }
+            ]
+          },
+          {
+            "mode": 1,
+            "fallback_mode": 0,
+            "default_group": 25,
+            "transitions": [
+              {
+                "target_mode": 0,
+                "group": 28
+              }
+            ],
+            "movement": [
+              {
+                "action": 0,
+                "one_handed_group": 25,
+                "two_handed_group": 25
+              },
+              {
+                "action": 1,
+                "one_handed_group": 22,
+                "two_handed_group": 22
+              },
+              {
+                "action": 2,
+                "one_handed_group": 24,
+                "two_handed_group": 24
+              }
+            ],
+            "new_protocol_actions": [
+              {
+                "type": 5,
+                "subaction": -1,
+                "groups": [
+                  26
+                ]
+              }
+            ]
+          }
+        ],
+        "unparsed_bytes": 0
+      },
+      "groups": {
+        "0": [
+          [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "2b9c185f9453de043b69a3a657dd0e1be756f7ceb439b8c76e2d9829177e45e9"
+        ],
+        "1": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "b7f60d98f9e69f611fb084a371c793dd2d1245330f2cc9857cedac30b56f54b9"
+        ],
+        "2": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "ddd58cc2c84656d13ef5edcd9a07e3c048b641e48b5ae2051d70f2ca6022ad43"
+        ],
+        "3": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "ddd58cc2c84656d13ef5edcd9a07e3c048b641e48b5ae2051d70f2ca6022ad43"
+        ],
+        "4": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "50f3e9dbb5e467fb96b21e18c9f4800ef6cdbedac0066d40ee70c78762eccc13"
+        ],
+        "5": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "50f3e9dbb5e467fb96b21e18c9f4800ef6cdbedac0066d40ee70c78762eccc13"
+        ],
+        "6": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "50f3e9dbb5e467fb96b21e18c9f4800ef6cdbedac0066d40ee70c78762eccc13"
+        ],
+        "10": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "5b3143f72f719e5a34b5d9091c336f45ceedcc1a7949ae20cbe806760c85fb8e"
+        ],
+        "11": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "c07fdeb4bc6480ed0b721859944e0db92a62899459634e8bff8e7a20b72138bc"
+        ],
+        "15": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "f82279677c0090780ea1598dca9ffdc24fd45dc33ca16d6debe02fb47591cb20"
+        ],
+        "16": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "f82279677c0090780ea1598dca9ffdc24fd45dc33ca16d6debe02fb47591cb20"
+        ],
+        "17": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "c07fdeb4bc6480ed0b721859944e0db92a62899459634e8bff8e7a20b72138bc"
+        ],
+        "18": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "f28374f98bd5b45958ab5f603e82b0fec3537102cc872817dd12192c6abf5481"
+        ]
+      }
+    },
+    "766": {
+      "archive": "anim2.mul",
+      "graphic": 34,
+      "layout": "large",
+      "mobtypes": [
+        "MONSTER",
+        0
+      ],
+      "sequence": {
+        "animation_ref": 766,
+        "uop_name_hash": "0xd40c20122c0dd09b",
+        "bytes": 2431,
+        "replacements": [
+          {
+            "old_group": 0,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 1,
+            "frame_count": 11,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 2,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 3,
+            "frame_count": 9,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 4,
+            "frame_count": 8,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 5,
+            "frame_count": 9,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 6,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 7,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 8,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 9,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 10,
+            "frame_count": 6,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 11,
+            "frame_count": 11,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 12,
+            "frame_count": 12,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 13,
+            "frame_count": 0,
+            "new_group": 12,
+            "flags": 0
+          },
+          {
+            "old_group": 14,
+            "frame_count": 0,
+            "new_group": 12,
+            "flags": 0
+          },
+          {
+            "old_group": 15,
+            "frame_count": 7,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 16,
+            "frame_count": 0,
+            "new_group": 15,
+            "flags": 0
+          },
+          {
+            "old_group": 17,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 18,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 19,
+            "frame_count": 0,
+            "new_group": 0,
+            "flags": 0
+          },
+          {
+            "old_group": 20,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 21,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 22,
+            "frame_count": 9,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 23,
+            "frame_count": 9,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 24,
+            "frame_count": 7,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 25,
+            "frame_count": 12,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 26,
+            "frame_count": 12,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 27,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 28,
+            "frame_count": 6,
+            "new_group": -1,
+            "flags": 1091567616
+          }
+        ],
+        "modes": [
+          {
+            "mode": 0,
+            "fallback_mode": -1,
+            "default_group": 1,
+            "transitions": [],
+            "movement": [
+              {
+                "action": 0,
+                "one_handed_group": 1,
+                "two_handed_group": 1
+              },
+              {
+                "action": 1,
+                "one_handed_group": 0,
+                "two_handed_group": 0
+              },
+              {
+                "action": 2,
+                "one_handed_group": 24,
+                "two_handed_group": 24
+              }
+            ],
+            "new_protocol_actions": [
+              {
+                "type": 0,
+                "subaction": -1,
+                "groups": [
+                  4,
+                  5,
+                  4,
+                  4,
+                  4,
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 0,
+                "groups": [
+                  4,
+                  5,
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 1,
+                "groups": [
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 2,
+                "groups": [
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 9,
+                "groups": [
+                  4
+                ]
+              },
+              {
+                "type": 2,
+                "subaction": -1,
+                "groups": [
+                  15,
+                  15
+                ]
+              },
+              {
+                "type": 3,
+                "subaction": -1,
+                "groups": [
+                  2,
+                  3
+                ]
+              },
+              {
+                "type": 4,
+                "subaction": -1,
+                "groups": [
+                  10
+                ]
+              },
+              {
+                "type": 5,
+                "subaction": -1,
+                "groups": [
+                  26,
+                  27
+                ]
+              },
+              {
+                "type": 8,
+                "subaction": -1,
+                "groups": [
+                  28
+                ]
+              },
+              {
+                "type": 11,
+                "subaction": -1,
+                "groups": [
+                  12,
+                  12,
+                  12
+                ]
+              },
+              {
+                "type": 14,
+                "subaction": -1,
+                "groups": [
+                  11
+                ]
+              },
+              {
+                "type": 15,
+                "subaction": -1,
+                "groups": [
+                  23
+                ]
+              }
+            ]
+          },
+          {
+            "mode": 1,
+            "fallback_mode": 0,
+            "default_group": 25,
+            "transitions": [
+              {
+                "target_mode": 0,
+                "group": 28
+              }
+            ],
+            "movement": [
+              {
+                "action": 0,
+                "one_handed_group": 25,
+                "two_handed_group": 25
+              },
+              {
+                "action": 1,
+                "one_handed_group": 22,
+                "two_handed_group": 22
+              },
+              {
+                "action": 2,
+                "one_handed_group": 24,
+                "two_handed_group": 24
+              }
+            ],
+            "new_protocol_actions": [
+              {
+                "type": 5,
+                "subaction": -1,
+                "groups": [
+                  26
+                ]
+              }
+            ]
+          }
+        ],
+        "unparsed_bytes": 0
+      },
+      "groups": {
+        "0": [
+          [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "534b3b7efe3737ef6e059925e680db9d019776ba2185488e8a29b0b52c8168dd"
+        ],
+        "1": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "a6d40d77e13c468da56ba487852265ee598a59f841f5fa8e341a920199df3921"
+        ],
+        "2": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "93ec2ea6be8148122fcf02741fecac37a7494a681c2606682a3f8d228946f03f"
+        ],
+        "3": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "5bc33cdd35c23ac5a384b863766d7faf94000fb289eb9f429f472e88d545fb72"
+        ],
+        "4": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "69f1c0db64c6f9c450d81f50818d74770d348fa626d0dea19c454d75111ef189"
+        ],
+        "5": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "b8761a91c6cf659c5fe9090b68b844b7d3f48e2281551eed8e1cf36ea5ef1dea"
+        ],
+        "6": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "e2293f4f95f6002b264500217bf386e9be28421273939d7d8ec11e8a7b03dee4"
+        ],
+        "10": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "1647140c5a34da3bf81023a62e9f96caaeccc8251ef22bc39b9e6902ce68ae3c"
+        ],
+        "11": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "dcfe6995dddc276c29867734587c42945c72b7540523c09164350cbff1c594c3"
+        ],
+        "15": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "2d69f2f381ff4f8786bb5cac3696a531bf0a6ff92bcd74a73d8d0baf5089f040"
+        ],
+        "16": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "2d69f2f381ff4f8786bb5cac3696a531bf0a6ff92bcd74a73d8d0baf5089f040"
+        ],
+        "17": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "dcfe6995dddc276c29867734587c42945c72b7540523c09164350cbff1c594c3"
+        ],
+        "18": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "3e2dbd434231708370781bbb28839c51e7a9eb8db13ffb9a3bc0fbf7c6a59e37"
+        ]
+      }
+    },
+    "782": {
+      "archive": "anim2.mul",
+      "graphic": 50,
+      "layout": "large",
+      "mobtypes": [
+        "MONSTER",
+        128
+      ],
+      "sequence": null,
+      "groups": {
+        "0": [
+          [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "baaa89ddb90e34b81d266fdcbedc04a7f718c7e326dd4b1c5cb801975531d5db"
+        ],
+        "1": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "9a7cfd18517ed11e632466436d4ba6828dda4a4fa408acb741dcd018e8853363"
+        ],
+        "2": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "a4d40a8801c2c0a6cd6a63d20cab5e0f738fd558bbcb5d7db2e6a5f0f98b92dd"
+        ],
+        "3": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "a4d40a8801c2c0a6cd6a63d20cab5e0f738fd558bbcb5d7db2e6a5f0f98b92dd"
+        ],
+        "4": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "3d1fbf60bf40d40a55d26366fee2458c0f99258198df070419aece447bc425f4"
+        ],
+        "5": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "3610fd8636644b78e1bae94569e6f1b6e01a46a0828058a7579d9a661df1f11b"
+        ],
+        "6": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "3610fd8636644b78e1bae94569e6f1b6e01a46a0828058a7579d9a661df1f11b"
+        ],
+        "10": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "14aaf3e357e956665f34f93bce049980513a705d92dc24452dc06fd955083f39"
+        ],
+        "11": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "31f0b900d610c82088a4f4ca6a72f5e7e84d8338472eb17631eaead19a168e8e"
+        ],
+        "15": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "c573f52979797466caa16fc8f455b98b47fb0f62f79a7a967369da5af5e8b58f"
+        ],
+        "16": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "c573f52979797466caa16fc8f455b98b47fb0f62f79a7a967369da5af5e8b58f"
+        ],
+        "17": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "31f0b900d610c82088a4f4ca6a72f5e7e84d8338472eb17631eaead19a168e8e"
+        ],
+        "18": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "3be8da27d4cd1a1e3bb329fd08e46adf9f215fc92648bf7b2058fda614017e03"
+        ]
+      }
+    },
+    "806": {
+      "archive": "anim2.mul",
+      "graphic": 50,
+      "layout": "large",
+      "mobtypes": [
+        "MONSTER",
+        128
+      ],
+      "sequence": {
+        "animation_ref": 806,
+        "uop_name_hash": "0x8efa33eae6af619f",
+        "bytes": 2431,
+        "replacements": [
+          {
+            "old_group": 0,
+            "frame_count": 8,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 1,
+            "frame_count": 8,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 2,
+            "frame_count": 8,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 3,
+            "frame_count": 9,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 4,
+            "frame_count": 7,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 5,
+            "frame_count": 8,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 6,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 7,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 8,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 9,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 10,
+            "frame_count": 7,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 11,
+            "frame_count": 7,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 12,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 13,
+            "frame_count": 0,
+            "new_group": 12,
+            "flags": 0
+          },
+          {
+            "old_group": 14,
+            "frame_count": 0,
+            "new_group": 12,
+            "flags": 0
+          },
+          {
+            "old_group": 15,
+            "frame_count": 7,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 16,
+            "frame_count": 0,
+            "new_group": 15,
+            "flags": 0
+          },
+          {
+            "old_group": 17,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 18,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 19,
+            "frame_count": 0,
+            "new_group": 0,
+            "flags": 0
+          },
+          {
+            "old_group": 20,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 21,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 22,
+            "frame_count": 8,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 23,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 24,
+            "frame_count": 5,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 25,
+            "frame_count": 12,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 26,
+            "frame_count": 11,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 27,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 28,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          }
+        ],
+        "modes": [
+          {
+            "mode": 0,
+            "fallback_mode": -1,
+            "default_group": 1,
+            "transitions": [],
+            "movement": [
+              {
+                "action": 0,
+                "one_handed_group": 1,
+                "two_handed_group": 1
+              },
+              {
+                "action": 1,
+                "one_handed_group": 0,
+                "two_handed_group": 0
+              },
+              {
+                "action": 2,
+                "one_handed_group": 24,
+                "two_handed_group": 24
+              }
+            ],
+            "new_protocol_actions": [
+              {
+                "type": 0,
+                "subaction": -1,
+                "groups": [
+                  4,
+                  5,
+                  4,
+                  4,
+                  4,
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 0,
+                "groups": [
+                  4,
+                  5,
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 1,
+                "groups": [
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 2,
+                "groups": [
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 9,
+                "groups": [
+                  4
+                ]
+              },
+              {
+                "type": 2,
+                "subaction": -1,
+                "groups": [
+                  15,
+                  15
+                ]
+              },
+              {
+                "type": 3,
+                "subaction": -1,
+                "groups": [
+                  2,
+                  3
+                ]
+              },
+              {
+                "type": 4,
+                "subaction": -1,
+                "groups": [
+                  10
+                ]
+              },
+              {
+                "type": 5,
+                "subaction": -1,
+                "groups": [
+                  26,
+                  27
+                ]
+              },
+              {
+                "type": 8,
+                "subaction": -1,
+                "groups": [
+                  28
+                ]
+              },
+              {
+                "type": 11,
+                "subaction": -1,
+                "groups": [
+                  12,
+                  12,
+                  12
+                ]
+              },
+              {
+                "type": 14,
+                "subaction": -1,
+                "groups": [
+                  11
+                ]
+              },
+              {
+                "type": 15,
+                "subaction": -1,
+                "groups": [
+                  23
+                ]
+              }
+            ]
+          },
+          {
+            "mode": 1,
+            "fallback_mode": 0,
+            "default_group": 25,
+            "transitions": [
+              {
+                "target_mode": 0,
+                "group": 28
+              }
+            ],
+            "movement": [
+              {
+                "action": 0,
+                "one_handed_group": 25,
+                "two_handed_group": 25
+              },
+              {
+                "action": 1,
+                "one_handed_group": 22,
+                "two_handed_group": 22
+              },
+              {
+                "action": 2,
+                "one_handed_group": 24,
+                "two_handed_group": 24
+              }
+            ],
+            "new_protocol_actions": [
+              {
+                "type": 5,
+                "subaction": -1,
+                "groups": [
+                  26
+                ]
+              }
+            ]
+          }
+        ],
+        "unparsed_bytes": 0
+      },
+      "groups": {
+        "0": [
+          [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "baaa89ddb90e34b81d266fdcbedc04a7f718c7e326dd4b1c5cb801975531d5db"
+        ],
+        "1": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "9a7cfd18517ed11e632466436d4ba6828dda4a4fa408acb741dcd018e8853363"
+        ],
+        "2": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "a4d40a8801c2c0a6cd6a63d20cab5e0f738fd558bbcb5d7db2e6a5f0f98b92dd"
+        ],
+        "3": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "a4d40a8801c2c0a6cd6a63d20cab5e0f738fd558bbcb5d7db2e6a5f0f98b92dd"
+        ],
+        "4": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "3d1fbf60bf40d40a55d26366fee2458c0f99258198df070419aece447bc425f4"
+        ],
+        "5": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "3610fd8636644b78e1bae94569e6f1b6e01a46a0828058a7579d9a661df1f11b"
+        ],
+        "6": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "3610fd8636644b78e1bae94569e6f1b6e01a46a0828058a7579d9a661df1f11b"
+        ],
+        "10": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "14aaf3e357e956665f34f93bce049980513a705d92dc24452dc06fd955083f39"
+        ],
+        "11": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "31f0b900d610c82088a4f4ca6a72f5e7e84d8338472eb17631eaead19a168e8e"
+        ],
+        "15": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "c573f52979797466caa16fc8f455b98b47fb0f62f79a7a967369da5af5e8b58f"
+        ],
+        "16": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "c573f52979797466caa16fc8f455b98b47fb0f62f79a7a967369da5af5e8b58f"
+        ],
+        "17": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "31f0b900d610c82088a4f4ca6a72f5e7e84d8338472eb17631eaead19a168e8e"
+        ],
+        "18": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "3be8da27d4cd1a1e3bb329fd08e46adf9f215fc92648bf7b2058fda614017e03"
+        ]
+      }
+    }
+  },
+  "uop": {
+    "730": {
+      "mobtypes": [
+        "MONSTER",
+        65536
+      ],
+      "sequence": {
+        "animation_ref": 730,
+        "uop_name_hash": "0x9fed8396eb2a2d",
+        "bytes": 2431,
+        "replacements": [
+          {
+            "old_group": 0,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 1,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 2,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 3,
+            "frame_count": 7,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 4,
+            "frame_count": 9,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 5,
+            "frame_count": 9,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 6,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 7,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 8,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 9,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 10,
+            "frame_count": 7,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 11,
+            "frame_count": 0,
+            "new_group": 25,
+            "flags": 0
+          },
+          {
+            "old_group": 12,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 13,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 14,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 15,
+            "frame_count": 7,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 16,
+            "frame_count": 0,
+            "new_group": 15,
+            "flags": 0
+          },
+          {
+            "old_group": 17,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 18,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 19,
+            "frame_count": 0,
+            "new_group": 0,
+            "flags": 0
+          },
+          {
+            "old_group": 20,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 21,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 22,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 23,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 24,
+            "frame_count": 7,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 25,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 26,
+            "frame_count": 13,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 27,
+            "frame_count": 9,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 28,
+            "frame_count": 9,
+            "new_group": -1,
+            "flags": 1091567616
+          }
+        ],
+        "modes": [
+          {
+            "mode": 0,
+            "fallback_mode": -1,
+            "default_group": 1,
+            "transitions": [],
+            "movement": [
+              {
+                "action": 0,
+                "one_handed_group": 1,
+                "two_handed_group": 1
+              },
+              {
+                "action": 1,
+                "one_handed_group": 0,
+                "two_handed_group": 0
+              },
+              {
+                "action": 2,
+                "one_handed_group": 24,
+                "two_handed_group": 24
+              }
+            ],
+            "new_protocol_actions": [
+              {
+                "type": 0,
+                "subaction": -1,
+                "groups": [
+                  4,
+                  5,
+                  4,
+                  4,
+                  4,
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 0,
+                "groups": [
+                  4,
+                  5,
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 1,
+                "groups": [
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 2,
+                "groups": [
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 9,
+                "groups": [
+                  4
+                ]
+              },
+              {
+                "type": 2,
+                "subaction": -1,
+                "groups": [
+                  15,
+                  15
+                ]
+              },
+              {
+                "type": 3,
+                "subaction": -1,
+                "groups": [
+                  2,
+                  3
+                ]
+              },
+              {
+                "type": 4,
+                "subaction": -1,
+                "groups": [
+                  10
+                ]
+              },
+              {
+                "type": 5,
+                "subaction": -1,
+                "groups": [
+                  26,
+                  27
+                ]
+              },
+              {
+                "type": 8,
+                "subaction": -1,
+                "groups": [
+                  28
+                ]
+              },
+              {
+                "type": 11,
+                "subaction": -1,
+                "groups": [
+                  4,
+                  4,
+                  4
+                ]
+              },
+              {
+                "type": 14,
+                "subaction": -1,
+                "groups": [
+                  25
+                ]
+              },
+              {
+                "type": 15,
+                "subaction": -1,
+                "groups": [
+                  23
+                ]
+              }
+            ]
+          },
+          {
+            "mode": 1,
+            "fallback_mode": 0,
+            "default_group": 25,
+            "transitions": [
+              {
+                "target_mode": 0,
+                "group": 28
+              }
+            ],
+            "movement": [
+              {
+                "action": 0,
+                "one_handed_group": 25,
+                "two_handed_group": 25
+              },
+              {
+                "action": 1,
+                "one_handed_group": 22,
+                "two_handed_group": 22
+              },
+              {
+                "action": 2,
+                "one_handed_group": 24,
+                "two_handed_group": 24
+              }
+            ],
+            "new_protocol_actions": [
+              {
+                "type": 5,
+                "subaction": -1,
+                "groups": [
+                  26
+                ]
+              }
+            ]
+          }
+        ],
+        "unparsed_bytes": 0
+      },
+      "groups": {
+        "0": [
+          50,
+          "fdb21f946360e187b829a658696cfc708e329aaa0b004b22a10fab937365fa82"
+        ],
+        "1": [
+          50,
+          "c9f0c6e41b736c03d20ab13516143cf7a30228562fcbda0aac5dd61107b7f2a2"
+        ],
+        "2": [
+          50,
+          "20942c1ce0d42f2fbf0cb1288a5ff4a0da201b3de019789df77d8cf55657c2e6"
+        ],
+        "3": [
+          35,
+          "bbf871989a9260dd0217afd993240ed20b6e77398600018787968225a8fd13dd"
+        ],
+        "4": [
+          45,
+          "3599f1ee81cd7a367d046440cae22d11f157efecbc7805d5fe694e882234a3ad"
+        ],
+        "5": [
+          45,
+          "ec51e994175fe5957ad4d79eae1277e721373807207817ffb09b23a3999ec033"
+        ],
+        "10": [
+          35,
+          "1d8234624b70f7270d62500674d9fc3bda04ba133e65c7bb9476c6a2b157c287"
+        ],
+        "15": [
+          35,
+          "ebc0daa7a8d362552d285f3e4847c04ea02ed41793bbbef47317f6478f5d727d"
+        ],
+        "22": [
+          50,
+          "a8ac69b8ca4f3dcdb280bb3f184bb32e857c9a27c2b58017cabf021666dc97ac"
+        ],
+        "23": [
+          50,
+          "7e24a623db8327528a67416ef9871fc0b2096c0c1295a0bcae7d068867220c66"
+        ],
+        "24": [
+          35,
+          "5ddd015cd9ba3feefa86757bad2b12deb4ca39b83eacea9e4f658d3aa6c88d9d"
+        ],
+        "25": [
+          50,
+          "64b5c5bbdb0c7ee0bbd97af107c3b30ae58a97229d43738e0d95b96ef7235d85"
+        ],
+        "26": [
+          65,
+          "70116c6fbc7624f2e1f22fab5d79a15f3331501d9424fbe153caadf89e438fe3"
+        ],
+        "27": [
+          45,
+          "cd0a6770510e44b8262f61c2da932844fafc091be204b1cca5a1e1f7e5934511"
+        ],
+        "28": [
+          45,
+          "85283da84a5b4f35664287c4ac09d8cd4f9de66b34642302533aba691b15f566"
+        ]
+      }
+    },
+    "734": {
+      "mobtypes": [
+        "MONSTER",
+        65536
+      ],
+      "sequence": {
+        "animation_ref": 734,
+        "uop_name_hash": "0xafc4399ccb01be12",
+        "bytes": 2431,
+        "replacements": [
+          {
+            "old_group": 0,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 1,
+            "frame_count": 8,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 2,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 3,
+            "frame_count": 8,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 4,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 5,
+            "frame_count": 9,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 6,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 7,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 8,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 9,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 10,
+            "frame_count": 7,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 11,
+            "frame_count": 0,
+            "new_group": 25,
+            "flags": 0
+          },
+          {
+            "old_group": 12,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 13,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 14,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 15,
+            "frame_count": 7,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 16,
+            "frame_count": 0,
+            "new_group": 15,
+            "flags": 0
+          },
+          {
+            "old_group": 17,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 18,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 19,
+            "frame_count": 0,
+            "new_group": 0,
+            "flags": 0
+          },
+          {
+            "old_group": 20,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 21,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 22,
+            "frame_count": 12,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 23,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 24,
+            "frame_count": 8,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 25,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 26,
+            "frame_count": 11,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 27,
+            "frame_count": 9,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 28,
+            "frame_count": 7,
+            "new_group": -1,
+            "flags": 1091567616
+          }
+        ],
+        "modes": [
+          {
+            "mode": 0,
+            "fallback_mode": -1,
+            "default_group": 1,
+            "transitions": [],
+            "movement": [
+              {
+                "action": 0,
+                "one_handed_group": 1,
+                "two_handed_group": 1
+              },
+              {
+                "action": 1,
+                "one_handed_group": 0,
+                "two_handed_group": 0
+              },
+              {
+                "action": 2,
+                "one_handed_group": 24,
+                "two_handed_group": 24
+              }
+            ],
+            "new_protocol_actions": [
+              {
+                "type": 0,
+                "subaction": -1,
+                "groups": [
+                  4,
+                  5,
+                  4,
+                  4,
+                  4,
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 0,
+                "groups": [
+                  4,
+                  5,
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 1,
+                "groups": [
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 2,
+                "groups": [
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 9,
+                "groups": [
+                  4
+                ]
+              },
+              {
+                "type": 2,
+                "subaction": -1,
+                "groups": [
+                  15,
+                  15
+                ]
+              },
+              {
+                "type": 3,
+                "subaction": -1,
+                "groups": [
+                  2,
+                  3
+                ]
+              },
+              {
+                "type": 4,
+                "subaction": -1,
+                "groups": [
+                  10
+                ]
+              },
+              {
+                "type": 5,
+                "subaction": -1,
+                "groups": [
+                  26,
+                  27
+                ]
+              },
+              {
+                "type": 8,
+                "subaction": -1,
+                "groups": [
+                  28
+                ]
+              },
+              {
+                "type": 11,
+                "subaction": -1,
+                "groups": [
+                  4,
+                  4,
+                  4
+                ]
+              },
+              {
+                "type": 14,
+                "subaction": -1,
+                "groups": [
+                  25
+                ]
+              },
+              {
+                "type": 15,
+                "subaction": -1,
+                "groups": [
+                  23
+                ]
+              }
+            ]
+          },
+          {
+            "mode": 1,
+            "fallback_mode": 0,
+            "default_group": 25,
+            "transitions": [
+              {
+                "target_mode": 0,
+                "group": 28
+              }
+            ],
+            "movement": [
+              {
+                "action": 0,
+                "one_handed_group": 25,
+                "two_handed_group": 25
+              },
+              {
+                "action": 1,
+                "one_handed_group": 22,
+                "two_handed_group": 22
+              },
+              {
+                "action": 2,
+                "one_handed_group": 24,
+                "two_handed_group": 24
+              }
+            ],
+            "new_protocol_actions": [
+              {
+                "type": 5,
+                "subaction": -1,
+                "groups": [
+                  26
+                ]
+              }
+            ]
+          }
+        ],
+        "unparsed_bytes": 0
+      },
+      "groups": {
+        "0": [
+          50,
+          "0cd85ffbb013857c68c4e8a8c1d71173ced1cd5031061dc353524c74941145ba"
+        ],
+        "1": [
+          40,
+          "adc1a27cc07dc267974331f107488ee33f64acbc72c24936aa948ea67660685e"
+        ],
+        "2": [
+          50,
+          "34d925bf17a7cf4eb91224749ad4202588513b84d191898cd28e646e04a767f2"
+        ],
+        "3": [
+          40,
+          "751fb96cd4a81a2deaacb2bad9a2a313c58df31fb1328d9c062b2d12cab8f4db"
+        ],
+        "4": [
+          50,
+          "d214d83f073fa2ea3b2d122e94c4ef3a870353fd601a7e47640b65fb28c62586"
+        ],
+        "5": [
+          45,
+          "d421d8dc7e1a2b989aab081cf1d7b06ed276bf305b611800190e722487aa3fa8"
+        ],
+        "10": [
+          35,
+          "f88b5580ee7da3d25554644e9df334c4579429d408397d6bb6893172a707d228"
+        ],
+        "15": [
+          35,
+          "2fa3ecb2a54b90ec5d8a04db274636af2003ddf5674b3242ff2ef94e3a25e35f"
+        ],
+        "22": [
+          60,
+          "6e56f653ea22782914305dc67f5a7bc0e58c1974b9e8f739f1abef513488dca6"
+        ],
+        "23": [
+          50,
+          "ac3c9bef06ebfffdb7fbf426de0507fe0a81d25a489c0c4f539815c818299bab"
+        ],
+        "24": [
+          40,
+          "1221fd6b1d9e309c914a87a17d683fd22417e9ecd9148bd869d703c0812dede7"
+        ],
+        "25": [
+          50,
+          "3080bf857102a6b02d5e8d2cf64b5d74568a4068c7f2127da651c33c7dfe1e85"
+        ],
+        "26": [
+          55,
+          "3536dd3c86fe705c43a461a71c115c64009f5d86eb80d6732887f56010a2b2d3"
+        ],
+        "27": [
+          45,
+          "0225c9e69fd6eb584410fe4124401b321682c36df12a6e6773ce3411caa14976"
+        ],
+        "28": [
+          35,
+          "737be61c0b12b9f5ce58a5ccd2b8ce757f47bbdb713638687c574c6ff5441801"
+        ]
+      }
+    }
+  }
+}

@@ -66,6 +66,8 @@ BATCHES = {
                                  ('test-swamp-widow-juka-actions.gd',)),
     'bomber_ogre_rune_dopple_actions': ((182, 83, 244, 777), 'BomberOgreRuneDoppleLive.gd',
                                        ('test-bomber-ogre-rune-dopple-actions.gd', 'test-bomber-ogre-rune-dopple-corpses.gd')),
+    'golem_raptor_juka_solen_actions': ((752, 730, 734, 766, 782, 806), 'GolemRaptorJukaSolenLive.gd',
+                                      ('test-golem-raptor-juka-solen-actions.gd',)),
     'dragon_daemon': ((9, 10, 12, 38, 40, 43, 59, 60, 61), 'PreparedCreatureActionLive.gd',
                       ('test-dragon-daemon-gestures.gd',)),
     'terathan_classic': ((70, 71, 72), 'PreparedCreatureActionLive.gd', ('test-terathan-gestures.gd',)),
@@ -159,6 +161,7 @@ PREDECESSORS = {
     'ranked_classic_actions': ('grizzle_antler', 'terathan_classic'),
     'swamp_widow_juka_actions': ('exact_creature_fidgets',),
     'bomber_ogre_rune_dopple_actions': ('exact_creature_fidgets',),
+    'golem_raptor_juka_solen_actions': ('ready_stances', 'slith_actions'),
     'copper_kaze_actions': (),
     'ophidian_patchwork_actions': ('ophidian_bardiche',),
     'tokuno_spider_dragon_actions': ('dragon_daemon',),
@@ -256,6 +259,12 @@ def without_ready_stance(row):
     body = int(row['bodies'][0]['body'])
     if body not in BATCHES['ready_stances'][0]:
         return row
+    if row.get('classic_gesture_batch') == 'golem_raptor_juka_solen_actions':
+        baseline, overlays = checked(read(INDEX), True, 'golem_raptor_juka_solen_actions', compare_registry=False)
+        active, = (item for item in overlays if int(item['bodies'][0]['body']) == body)
+        if row != active:
+            raise ValueError(f'Active stance overlay changed for body {body}')
+        row, = (item for item in baseline if int(item['bodies'][0]['body']) == body)
     if row.get('classic_gesture_batch') == 'slith_actions':
         baseline, overlays = checked(read(INDEX), True, 'slith_actions', compare_registry=False)
         if overlays != [row]:
@@ -311,13 +320,16 @@ def checked(index, active, batch, *, compare_registry=True):
         if active:
             prior_entries.extend(baseline)
         for predecessor in predecessors:
-            if (batch in ('ranked_classic_actions', 'swamp_widow_juka_actions', 'bomber_ogre_rune_dopple_actions') or
+            if (batch in ('slith_actions', 'ranked_classic_actions', 'swamp_widow_juka_actions',
+                          'bomber_ogre_rune_dopple_actions', 'golem_raptor_juka_solen_actions') or
                     predecessor in ('scorpion_imp', 'dragon_daemon', 'bone_cyclops', 'vampire_bat_actions',
                                     'fidget_aliases_toad', 'skeletal_mage_staff')):
                 # Independent successors seal their own retained rows. Replaying a
                 # sibling here would send it back through the same predecessor.
                 _, previous = checked(index, True, predecessor, compare_registry=False)
-                retained = [row for row in previous if row['bodies'][0]['body'] in bodies]
+                retained_bodies = ({'ready_stances': {730}, 'slith_actions': {734}}[predecessor]
+                                   if batch == 'golem_raptor_juka_solen_actions' else bodies)
+                retained = [row for row in previous if row['bodies'][0]['body'] in retained_bodies]
                 if not retained or any(owners[row['bodies'][0]['body']] != row for row in retained):
                     raise ValueError(f'{batch} must retain its sealed {predecessor} rows')
                 continue
@@ -346,7 +358,7 @@ def checked(index, active, batch, *, compare_registry=True):
                    'MageLordTentacleActionsLive.gd', 'GoatHarpyHordeLive.gd',
                    'GargoyleKitsuneLarvaLive.gd', 'SolenWorkerActionsLive.gd', 'OrcBogActionsLive.gd',
                    'SlithActionsLive.gd', 'RankedClassicActionsLive.gd', 'SwampWidowJukaActionsLive.gd',
-                   'BomberOgreRuneDoppleLive.gd') and (
+                   'BomberOgreRuneDoppleLive.gd', 'GolemRaptorJukaSolenLive.gd') and (
             report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
         raise ValueError('Supplementary action trial used a different prepared fixture loader')
     if batch == 'occurrence_deaths' and (
@@ -406,6 +418,9 @@ def checked(index, active, batch, *, compare_registry=True):
     if batch == 'bomber_ogre_rune_dopple_actions':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-bomber-ogre-rune-dopple-actions.py'))
         recipe['check_bomb'](prepared, sealed if active else live.parent)
+    if batch == 'golem_raptor_juka_solen_actions':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-golem-raptor-juka-solen-actions.py'))
+        recipe['check_stance'](prepared, (sealed if active else live.parent) / 'stance.json', receipt)
     if batch == 'dragon_daemon':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-dragon-daemon-actions.py'))
         recipe['check_breath'](read((sealed if active else live.parent) / 'breath.json'), candidates, by_body)
@@ -468,11 +483,13 @@ def checked(index, active, batch, *, compare_registry=True):
                     if (action[client + '_clip'] != clip or packet['protocol'] != 'new'
                             or (packet['type'], packet['subaction'], packet['variation']) != (kind, 0, 0)):
                         raise ValueError(f'Both clients must witness body {body} new-protocol type {kind}')
-        if batch in ('swamp_widow_juka_actions', 'bomber_ogre_rune_dopple_actions'):
+        if batch in ('swamp_widow_juka_actions', 'bomber_ogre_rune_dopple_actions', 'golem_raptor_juka_solen_actions'):
             categories = package['new_action_categories']
             requests = [(-1, 4, 'Hit')] + [(request, kind, categories[str(kind)])
                                             for request, kind in ((-3, 2), (-4, 5), (-5, 14))
                                             if str(kind) in categories]
+            if batch == 'golem_raptor_juka_solen_actions' and '11' in categories:
+                requests.append((-2, 11, categories['11']))
             for request, kind, clip in requests:
                 action, = (row for row in witness['actions'] if row['requested'] == request)
                 for client in ('owner', 'observer'):
@@ -488,7 +505,7 @@ def checked(index, active, batch, *, compare_registry=True):
                 raise ValueError(f'Missing Classic gesture evidence for body {body}, slot {slot}')
             if (batch in ('efreet_actions', 'orc_bog_actions', 'slith_actions', 'ranked_classic_actions',
                           'swamp_widow_juka_actions', 'bomber_ogre_rune_dopple_actions',
-                          'lizard_actions', 'quadruped_actions', 'hart_deaths',
+                          'golem_raptor_juka_solen_actions', 'lizard_actions', 'quadruped_actions', 'hart_deaths',
                           'dog_bear_actions', 'cat_actions',
                           'skeleton_actions', 'troll_actions', 'field_fauna', 'spider_mongbat_actions',
                           'grazers_grizzly_actions', 'pig_reaper_harpy_actions', 'rabbit_distinct_actions',
@@ -530,7 +547,8 @@ def checked(index, active, batch, *, compare_registry=True):
                     if expected_row not in bone_base:
                         raise ValueError('Bone Knight overlay must retain the independently checked sibling base')
                     continue
-            compared = matches if batch in ('ready_stances', 'slith_actions') else [redirect(row) for row in matches]
+            retain_uop = batch in ('ready_stances', 'slith_actions', 'golem_raptor_juka_solen_actions')
+            compared = matches if retain_uop else [redirect(row) for row in matches]
             comparison_index = index
             while len(compared) == 1:
                 successor = compared[0].get('classic_gesture_batch')
@@ -660,6 +678,8 @@ def main():
             shutil.copyfile(live.parent / 'breath.json', sealed / 'breath.json')
         if batch == 'swamp_widow_juka_actions':
             shutil.copyfile(live.parent / 'mounted.json', sealed / 'mounted.json')
+        if batch == 'golem_raptor_juka_solen_actions':
+            shutil.copyfile(live.parent / 'stance.json', sealed / 'stance.json')
         if batch == 'bomber_ogre_rune_dopple_actions':
             for name in ('bomb.json', 'bomb-runtime.json'):
                 shutil.copyfile(live.parent / name, sealed / name)
