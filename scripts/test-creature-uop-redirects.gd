@@ -42,6 +42,9 @@ func run() -> void:
 			if active and body == 692 and redirect_layer.has("uop_motion_native_sha256"):
 				candidate_path = str(redirect_layer.uop_motion_base_asset)
 				assert(FileAccess.get_sha256(candidate_path) == redirect_layer.uop_motion_base_sha256)
+			if active and body == 753 and redirect_layer.has("preferred_uop_native_sha256"):
+				candidate_path = str(redirect_layer.preferred_uop_base_assets[treatment])
+				assert(FileAccess.get_sha256(candidate_path) == redirect_layer.preferred_uop_base_sha256[treatment])
 			if active and body in [730, 734] and not assets.is_empty():
 				candidate_path = assets[treatment]
 			# The Slith successor retains the ready-stance scene as its immediate

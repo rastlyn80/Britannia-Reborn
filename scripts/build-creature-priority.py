@@ -171,10 +171,54 @@ def configured_mage_identities(source, expansion):
         current[row['class'].casefold()] = set(row['bodies']) if expansion['Id'] >= names.index('UOR') else {400}
     return current, inputs
 
+def named_native_class(record, path):
+    """Older mount trials stored the actual server class under class."""
+    if record.get('native_class'):
+        return record['native_class']
+    legacy_mount_folders = {ROOT / 'outputs' / folder for folder in ('equines', 'ostard-riding', 'horse-session')}
+    if path.parent in legacy_mount_folders and {'body', 'mount_item', 'ethereal', 'ride_permitted'} <= record.keys():
+        name = record.get('class', '')
+        if isinstance(name, str) and name.isidentifier():
+            return name
+    return None
+
+
+def apply_native_lookup(result, path):
+    """Check the occurrence scan against a fresh isolated server lookup."""
+    report = read(path)
+    expected_assemblies = {
+        'server': ROOT / 'Server/runtime/Server.dll',
+        'content': ROOT / 'Server/ModernUO/Distribution/Assemblies/UOContent.dll',
+    }
+    for name, assembly in expected_assemblies.items():
+        if report['assemblies_sha256'][name] != sha(assembly):
+            raise ValueError(f'Native spawn lookup assembly changed: {name}')
+    actual = {}
+    for row in report['rows']:
+        key = row['name'].casefold()
+        if key in actual:
+            raise ValueError(f'Duplicate native spawn name: {key}')
+        actual[key] = row
+    expected = {row['name'].casefold(): 'mobile' for row in result['rows']}
+    expected.update((name.casefold(), 'item') for name in result['excluded_items'])
+    expected.update((name.casefold(), 'unresolved') for name in result['unresolved_types'])
+    for name, category in expected.items():
+        row = actual.get(name)
+        if row is None or row['category'] != category or row['isAbstract']:
+            raise ValueError(f'Occurrence scan differs from the native spawn lookup: {name}')
+    for row in result['unresolved_occurrences']:
+        row['native_lookup'] = 'no matching type in the pinned server'
+    result['native_spawn_name_lookup'] = {
+        'report_sha256': sha(path), 'assemblies_sha256': report['assemblies_sha256'],
+        'checked_names': len(expected), 'categories': dict(collections.Counter(expected.values())),
+    }
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--maps', nargs='+', default=['trammel'])
     parser.add_argument('--output', type=Path, default=ROOT / 'outputs/creatures/frequency.json')
+    parser.add_argument('--native-lookup', type=Path, help='isolated native spawn-name lookup report')
     args = parser.parse_args()
     maps = {v.casefold() for v in args.maps}
     if not maps <= {'trammel', 'felucca', 'ilshenar', 'malas', 'tokuno', 'termur'}:
@@ -217,8 +261,9 @@ def main():
             if 'body' not in record or record.get('ethereal'):
                 continue
             body_evidence.add(int(record['body']))
-            if record.get('native_class'):
-                witnessed[record['native_class'].casefold()].add(int(record['body']))
+            name = named_native_class(record, path)
+            if name:
+                witnessed[name.casefold()].add(int(record['body']))
     rows = []; excluded = []; unresolved = []
     human_groups = {'Vendors', 'Townfolk', 'Hireables', 'Healers', 'Guards'}
     for key, row in raw.items():
@@ -279,6 +324,15 @@ def main():
          'bodies': row['routed_bodies_missing_native_evidence']}
         for row in creatures if row['routed_bodies_missing_native_evidence']
     ]
+    named_gaps = []
+    named_pairs = sum(len(row['body_candidates']) for row in creatures)
+    for row in creatures:
+        missing = set(row['body_candidates']) - set(row['witnessed_constructor_bodies'])
+        if missing:
+            named_gaps.append({'creature_rank': row['creature_rank'], 'name': row['name'], 'bodies': sorted(missing)})
+    result['next_named_constructor_gaps'] = named_gaps
+    result['named_constructor_pairs'] = {'total': named_pairs,
+                                         'witnessed': named_pairs - sum(len(row['bodies']) for row in named_gaps)}
     measured_bodies = {body for row in creatures for body in row['body_candidates']}
     result['unmeasured_native_bodies'] = [
         {'body': int(body), 'graphics': routed.get(int(body)), 'sources': sources,
@@ -291,14 +345,20 @@ def main():
     if public.exists():result['public_index_sha256'] = sha(public)
     result['recipe_sha256'] = sha(Path(__file__))
     result['unresolved_occurrences'] = [{**raw[n.casefold()], 'files': sorted(raw[n.casefold()]['files'])} for n in sorted(unresolved)]
+    if args.native_lookup is not None:
+        apply_native_lookup(result, args.native_lookup)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2), encoding='utf-8')
     table = ''.join('<tr><td>%s</td><td>%s</td><td>%s</td><td>%.1f</td><td>%s</td></tr>' %
                     (r['creature_rank'], html.escape(r['name']), r['spawn_locations'], r['estimated_slots'], html.escape(r['graphics'])) for r in creatures)
-    args.output.with_suffix('.html').write_text('<!doctype html><meta charset="utf-8"><title>Creature occurrence order</title><style>body{background:#20303a;color:#e9edef;font:16px system-ui;margin:30px}td,th{text-align:left;padding:8px;border-bottom:1px solid #52616b}table{border-collapse:collapse}p{max-width:1000px;line-height:1.5}</style><h1>Creature work order: '+html.escape(', '.join(sorted(maps)))+'</h1><p>'+html.escape(result['scope'])+'</p><p>Next missing replacements: '+html.escape(', '.join(queue[:20]))+'</p><table><tr><th>Rank</th><th>Native type</th><th>Spawn locations</th><th>Estimated shared slots</th><th>Current graphics</th></tr>'+table+'</table>', encoding='utf-8')
+    summary = f"Named creature class and body pairs with native evidence: {result['named_constructor_pairs']['witnessed']} of {named_pairs}."
+    if args.native_lookup is not None:
+        summary += f' Configured names with no matching type in the pinned server: {len(unresolved)}.'
+    args.output.with_suffix('.html').write_text('<!doctype html><meta charset="utf-8"><title>Creature occurrence order</title><style>body{background:#20303a;color:#e9edef;font:16px system-ui;margin:30px}td,th{text-align:left;padding:8px;border-bottom:1px solid #52616b}table{border-collapse:collapse}p{max-width:1000px;line-height:1.5}</style><h1>Creature work order: '+html.escape(', '.join(sorted(maps)))+'</h1><p>'+html.escape(result['scope'])+'</p><p>'+html.escape(summary)+'</p><p>Next missing replacements: '+html.escape(', '.join(queue[:20]))+'</p><table><tr><th>Rank</th><th>Native type</th><th>Spawn locations</th><th>Estimated shared slots</th><th>Current graphics</th></tr>'+table+'</table>', encoding='utf-8')
     print('CREATURE OCCURRENCE ORDER:', count, 'active spawners;', len(creatures), 'non-human mobile types;', len(unresolved), 'unresolved types')
     print('NEXT MISSING REPLACEMENTS:', ', '.join(queue[:20]))
     print('NEXT NATIVE EVIDENCE GAPS:', ', '.join(row['name'] for row in result['next_native_evidence_gaps'][:20]))
+    print('NAMED CONSTRUCTOR WITNESSES:', result['named_constructor_pairs']['witnessed'], 'of', named_pairs)
 
 if __name__ == '__main__':
     main()

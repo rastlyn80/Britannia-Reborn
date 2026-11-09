@@ -1,0 +1,249 @@
+{
+  "inputs": {
+    "AnimationSequence.uop": "b4de2afdba2bab6e987389cde18aee4703bbef560f66d4c26be5ffc04f2b8e0f",
+    "mobtypes.txt": "a4f1c98057c5bcf10ccdb575a9154260651e49b852bfe548059ff55fcbbf29d8"
+  },
+  "bodies": {
+    "753": {
+      "frames": {
+        "11": {
+          "archive": "AnimationFrame4.uop",
+          "frame_headers": 65,
+          "payload_sha256": "7645864d894aee1d394f8c38fb235392553b3ccf8b29b0cb34913ae3cd6bfaef",
+          "median_registered_height": [
+            61,
+            48,
+            38,
+            38,
+            40,
+            39,
+            38,
+            38,
+            37,
+            37,
+            40,
+            50,
+            62
+          ]
+        },
+        "15": {
+          "archive": "AnimationFrame4.uop",
+          "frame_headers": 30,
+          "payload_sha256": "f54356425660613a5c2e7fcca96f476c4781c1fdc4c7a7c2ff55d512c5707b91",
+          "median_registered_height": [
+            58,
+            53,
+            52,
+            60,
+            64,
+            63
+          ]
+        },
+        "23": {
+          "archive": "AnimationFrame4.uop",
+          "frame_headers": 55,
+          "payload_sha256": "ffe43d55d4bf5092a2419f880d0de5d3fdfd9d7a8a86dfda989de91f72533e38",
+          "median_registered_height": [
+            36,
+            39,
+            42,
+            46,
+            52,
+            58,
+            64,
+            64,
+            63,
+            63,
+            67
+          ]
+        },
+        "26": {
+          "archive": "AnimationFrame4.uop",
+          "frame_headers": 55,
+          "payload_sha256": "f3bad881f84944e9a11fb1db21b845b4e05f630d3826707f35bb9ee4abaa5302",
+          "median_registered_height": [
+            66,
+            66,
+            66,
+            66,
+            66,
+            66,
+            66,
+            66,
+            67,
+            67,
+            66
+          ]
+        },
+        "27": {
+          "archive": "AnimationFrame4.uop",
+          "frame_headers": 45,
+          "payload_sha256": "e8c8d908d2f956f9ae15dc3ef23885c1b473bc669722e9f947112e38712bc6ef",
+          "median_registered_height": [
+            62,
+            62,
+            60,
+            58,
+            57,
+            56,
+            55,
+            57,
+            59
+          ]
+        },
+        "28": {
+          "archive": "AnimationFrame4.uop",
+          "frame_headers": 30,
+          "payload_sha256": "245465c551214e678a309375fcb4d6c8506d8cdd20f6f45904a8c511c2eec79f",
+          "median_registered_height": [
+            66,
+            63,
+            62,
+            60,
+            61,
+            63
+          ]
+        }
+      },
+      "mobtypes": [
+        "MONSTER",
+        65536
+      ],
+      "modes": [
+        {
+          "mode": 0,
+          "default_group": 1,
+          "fallback_mode": -1,
+          "transitions": [],
+          "packet_groups": {
+            "2": [
+              15,
+              15
+            ],
+            "5": [
+              26,
+              27
+            ],
+            "8": [
+              28
+            ],
+            "14": [
+              11
+            ],
+            "15": [
+              23
+            ]
+          }
+        },
+        {
+          "mode": 1,
+          "default_group": 25,
+          "fallback_mode": 0,
+          "transitions": [
+            {
+              "target_mode": 0,
+              "group": 28
+            }
+          ],
+          "packet_groups": {
+            "5": [
+              26
+            ]
+          }
+        }
+      ]
+    },
+    "831": {
+      "frames": {
+        "25": {
+          "archive": "AnimationFrame4.uop",
+          "frame_headers": 30,
+          "payload_sha256": "2568595b9e35ed0187b6048916ccdf3863148629185ebbc3c6bc9e755a31c2c4",
+          "median_registered_height": [
+            16,
+            16,
+            16,
+            15,
+            15,
+            15
+          ]
+        },
+        "26": {
+          "archive": "AnimationFrame4.uop",
+          "frame_headers": 45,
+          "payload_sha256": "c698a8bd893e6bce554eb3d0250527235db3c7c37e7a5a3a64fd88c094a97cc1",
+          "median_registered_height": [
+            15,
+            16,
+            15,
+            15,
+            15,
+            15,
+            16,
+            16,
+            15
+          ]
+        }
+      },
+      "mobtypes": [
+        "ANIMAL",
+        65544
+      ],
+      "modes": [
+        {
+          "mode": 0,
+          "default_group": 25,
+          "fallback_mode": -1,
+          "transitions": [
+            {
+              "target_mode": 3,
+              "group": 19
+            }
+          ],
+          "packet_groups": {
+            "2": [
+              25,
+              25
+            ],
+            "5": [
+              26,
+              25
+            ],
+            "8": [
+              25
+            ],
+            "11": [
+              25,
+              25,
+              25
+            ],
+            "14": [
+              25
+            ],
+            "15": [
+              25
+            ]
+          }
+        },
+        {
+          "mode": 1,
+          "default_group": 25,
+          "fallback_mode": 0,
+          "transitions": [],
+          "packet_groups": {
+            "5": [
+              26
+            ]
+          }
+        },
+        {
+          "mode": 3,
+          "default_group": 19,
+          "fallback_mode": 0,
+          "transitions": [],
+          "packet_groups": {}
+        }
+      ]
+    }
+  }
+}

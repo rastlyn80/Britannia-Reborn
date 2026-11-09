@@ -35,7 +35,7 @@ def main():
     existing|=keys(ROOT/'Viewer/Presentation/MountVisual.gd','BODIES')|keys(ROOT/'Viewer/Presentation/AnimalVisual.gd','BODIES')
     live={};live_classes={};reports=[]
     for path in [OUT/'all/live.json',*OUT.glob('*/live.json'),*(ROOT/'outputs/ostard-riding').glob('*live.json'),
-                 ROOT/'outputs/ostard-riding/live-validation.json',ROOT/'outputs/equines/live-validation.json',
+                 ROOT/'outputs/ostard-riding/live-validation.json',ROOT/'outputs/equines/live-validation.json',ROOT/'outputs/equines/ordinary-horse-live.json',
                  ROOT/'outputs/horse-session/live-validation.json',ROOT/'outputs/ostard-riding/llama-completion-live.json']:
         if not path.exists() or str(path) in reports:continue
         report=read(path)
@@ -44,7 +44,8 @@ def main():
         for record in report.get('records',[]):
             if not record.get('ethereal',False):
                 body=int(record['body']);live.setdefault(body,[]).append(str(path.relative_to(ROOT)))
-                if record.get('native_class'):live_classes.setdefault(body,set()).add(record['native_class'])
+                name = priority.named_native_class(record, path)
+                if name:live_classes.setdefault(body,set()).add(name)
             elif record.get('ride_permitted') and int(record.get('mount_item',0)) in item_routes:
                 evidence=item_routes[int(record['mount_item'])]['live_reports']
                 relative=str(path.relative_to(ROOT))

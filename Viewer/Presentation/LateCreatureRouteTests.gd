@@ -86,6 +86,14 @@ func run() -> void:
 			Registry.entries[body] = record
 		else:
 			var active := Registry.entry(body)
+			if body == 831 and active.has("preferred_uop_native_sha256"):
+				const PreferredBase := "res://../work/creatures/preferred-uop-actions/accepted-native/base.json"
+				var bases: Array = JSON.parse_string(FileAccess.get_file_as_string(PreferredBase))
+				var match_rows := bases.filter(func(row: Dictionary) -> bool: return row.bodies.size() == 1 and int(row.bodies[0].body) == body)
+				assert(match_rows.size() == 1 and match_rows[0].assets == active.preferred_uop_base_assets)
+				assert(FileAccess.get_sha256(match_rows[0].assets.modern) == active.preferred_uop_base_sha256.modern)
+				active = match_rows[0]
+				Registry.entries[body] = active
 			if body == 692 and active.has("uop_motion_native_sha256"):
 				const Base := "res://../work/creatures/halberd-uop/accepted-native/base.json"
 				var previous: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(Base))

@@ -17,10 +17,11 @@ func run() -> void:
 	assert(row.kind == "birds_parrot")
 	var active := "--active" in OS.get_cmdline_user_args()
 	var original_assets: Dictionary = row.get("classic_gesture_base_assets", row.assets).duplicate(true)
+	var flight_assets: Dictionary = row.get("preferred_uop_base_assets", row.assets)
 	for treatment in ["original", "rounded", "modern"]:
 		var path := "res://local-art/creatures/parrot-831-flight-trial-%s.scn" % treatment
 		if active:
-			assert(row.assets[treatment] == path and row.authored_action_scene_sha256[treatment] == FileAccess.get_sha256(path))
+			assert(flight_assets[treatment] == path and row.authored_action_scene_sha256[treatment] == FileAccess.get_sha256(path))
 		else:
 			row.assets[treatment] = path
 	if active:

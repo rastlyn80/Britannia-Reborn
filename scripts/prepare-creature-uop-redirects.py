@@ -71,6 +71,9 @@ def merge_active(row, proof, receipt_hash):
 
 
 def redirect_layer(row):
+    if 'preferred_uop_native_sha256' in row:
+        preferred = runpy.run_path(str(ROOT / 'scripts/accept-preferred-uop-actions.py'))
+        return preferred['retained'](row)
     if 'uop_motion_native_sha256' in row:
         halberd = runpy.run_path(str(ROOT / 'scripts/accept-halberd-uop-actions.py'))
         return halberd['retained'](row)

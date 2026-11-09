@@ -1,7 +1,6 @@
 """Activate the fitted Animated Weapon motions after exact two-client playback."""
 
 import argparse
-from itertools import product
 import json
 from pathlib import Path
 import runpy
@@ -63,41 +62,9 @@ def prepared(base):
 
 
 def native(ready, active):
-    folder = SEALED if active else ROOT / 'work/creatures' / FAMILY
-    result = folder / 'live.json' if active else RESULT
-    candidate = folder / 'candidates.json'
-    receipt = read(folder / 'native-runtime.json')
-    report = read(result)
-    digest = sha(result)
-    assert report['prepared_trial'] and report['failures'] == 0 and report['checks'] == 85
-    assert report['candidate_sha256'] == receipt['candidate_sha256'] == sha(candidate)
-    assert receipt['report_sha256'] == digest
-    assert report['routes_sha256'] == sha(NATIVE / FAMILY / 'routes.json')
-    assert report['test_sha256'] == sha(NATIVE / 'ClassicGestureBridgeLive.gd')
-    assert report['dispatcher_sha256'] == sha(VIEWER / 'Presentation/CreatureWireActions.gd')
-    assert receipt['selector_sha256'] == sha(NATIVE / 'prepare-bridge-fixtures.py')
-    assert receipt['runner_sha256'] == sha(NATIVE / 'test-native-bridge.ps1')
-    fixture = NATIVE / 'fixture/ClassicWireFixtures.cs'
-    assert receipt['build_inputs_sha256'][fixture.relative_to(ROOT).as_posix()] == sha(fixture)
-    candidate_row, = read(candidate)
-    assert (candidate_row['body'], candidate_row['native_class'], candidate_row['presentation']) == (
-        BODY, 'AnimatedWeapon', ready)
-    records = report['records']
-    assert len(records) == 2 and {(row['body'], row['native_class'], row['female']) for row in records} == {
-        (BODY, 'AnimatedWeapon', female) for female in (False, True)}
-    observed = set()
-    for witness in report['classic_wire_witnesses']:
-        kind, mode = witness['type'], witness['mode']
-        assert witness['body'] == BODY and witness['clip'] == ROUTES[str(kind)] and len(witness['packets']) == 2
-        for packet in witness['packets']:
-            assert (packet['protocol'], packet['body'], packet['type'], packet['subaction'], packet['variation'],
-                    packet['serial']) == ('new', BODY, kind, 0, mode, witness['serial'])
-        observed.add((witness['female'], str(kind), mode))
-    assert len(report['classic_wire_witnesses']) == len(observed) == 20
-    assert observed == set(product((False, True), ROUTES, (0, 1)))
-    if not active:
-        assert report['accepted_index_sha256'] == sha(INDEX)
-    return digest
+    evidence = runpy.run_path(str(SCRIPTS / 'creature-packet-evidence.py'))
+    return evidence['checked'](NATIVE, FAMILY, [ready], {BODY: 'AnimatedWeapon'}, {BODY: ROUTES}, 85,
+                               sealed=SEALED if active else None)
 
 
 def retained(row):
