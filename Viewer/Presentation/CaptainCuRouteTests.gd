@@ -21,6 +21,8 @@ func run() -> void:
 		var body := int(record.bodies[0].body)
 		if prepared:
 			Registry.entries[body] = record
+		elif body == 280 and Registry.entry(body).get("classic_gesture_batch") == "banshee_through_queens_actions":
+			Registry.entries[body] = preload("res://Presentation/SealedCreatureActionBase.gd").retained(Registry.entry(body), body)
 		assert(Registry.supports_body(body) and Registry.entry(body).kind == family)
 		var avatar := Avatar.new()
 		avatar.initial_body = body

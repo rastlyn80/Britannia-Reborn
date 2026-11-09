@@ -23,7 +23,7 @@ func run() -> void:
 			Registry.entries[body] = record
 		assert(Registry.supports_body(body) and Registry.entry(body).kind == family)
 		var active := Registry.entry(body)
-		if active.get("classic_gesture_batch") == "quagmire_through_exodus_actions":
+		if active.get("classic_gesture_batch") in ["quagmire_through_exodus_actions", "banshee_through_queens_actions"]:
 			active = preload("res://Presentation/SealedCreatureActionBase.gd").retained(active, body)
 			Registry.entries[body] = active
 		if active.has("legacy_slot11_evidence"):

@@ -204,6 +204,23 @@ def original_mul_shared_routes(mul_groups):
                              'classic_slots': [first['group'], second['group']], 'replacement': clip})
     return evidence
 
+def record_registered_pair_reviews(shared_routes, mul_groups):
+    pin = ROOT / 'scripts/creature-classic-shared-pins.json'
+    reviewed = {tuple(row[:6]): row[6:] for row in json.loads(pin.read_text(encoding='utf-8'))['reviewed_pairs']}
+    sources = {(row['body'], row['archive'], row['graphic'], row['layout'], row['group']): row
+               for row in mul_groups if [direction['direction'] for direction in row['directions']] == list(range(5))}
+    for pair in shared_routes:
+        scope = tuple(pair[name] for name in ('body', 'archive', 'graphic', 'layout'))
+        first, second = pair['classic_slots']
+        proof = reviewed.get((*scope, first, second))
+        if proof is None:
+            continue
+        hashes = [hashlib.sha256(''.join(item['payload_sha256'] for item in sources[(*scope, slot)]['directions']).encode('ascii')).hexdigest()
+                  for slot in (first, second)]
+        if hashes == proof[:2]:
+            pair['registered_source_comparison'] = proof[2]
+
+
 def resolve(model,label,fallback):
     authored=model.get('authored_replacements',{}) | model.get('authored_clips',{})
     if model['kind'] in ('energy_vortex', 'sand_vortex'):
@@ -229,15 +246,16 @@ def resolve(model,label,fallback):
             'declared_alias':model.get('category_aliases',{}).get(resolved) or ('Death' if label=='LieDown' else None),
             'authored_method':authored.get(resolved)}
 
-def classic_wire_clip(model, body, kind, wire_routes, fallback):
+def classic_wire_clip(model, body, kind, wire_routes, fallback, parity=0):
     rule = wire_routes.get(str(body), {}).get(str(kind))
     if rule is None:
         return None
-    slot = str(rule[0])
+    slot = str(rule[parity])
+    default_clip = rule[2 + parity] if len(rule) == 4 else rule[2]
     shared = model.get('classic_action_categories', {})
     per_body = model.get('classic_action_categories_by_body', {}).get(str(body), {})
-    candidate = per_body.get(slot, shared.get(slot, rule[2]))
-    return candidate if resolve(model, candidate, fallback)['resolved'] == candidate else rule[2]
+    candidate = per_body.get(slot, shared.get(slot, default_clip))
+    return candidate if resolve(model, candidate, fallback)['resolved'] == candidate else default_clip
 
 
 def main():
@@ -261,9 +279,14 @@ def main():
                             for key in wire_routes.get(str(body), {})}
                     overrides = {int(key): value for key, value in model.get('new_action_categories', {}).items()}
                     groups = groups | wire | overrides
-                for group,label in groups.items():
-                    rows.append({'body':body,'family':model['family'],'kind':model['kind'],'native_profile':profile,
-                                 'protocol':protocol,'group_or_type':group,**resolve(model,label,maps['fallback'])})
+                for group, label in groups.items():
+                    route = {'body': body, 'family': model['family'], 'kind': model['kind'], 'native_profile': profile,
+                             'protocol': protocol, 'group_or_type': group, **resolve(model, label, maps['fallback'])}
+                    rule = wire_routes.get(str(body), {}).get(str(group), ())
+                    if protocol == 'new' and len(rule) == 4 and group not in overrides:
+                        route['wire_mode_clips'] = [classic_wire_clip(model, body, group, wire_routes, maps['fallback'], parity)
+                                                    for parity in (0, 1)]
+                    rows.append(route)
     data=args.data_dir
     config=ROOT/'Server/runtime/Configuration/modernuo.json'
     if data is None and config.exists():
@@ -306,6 +329,7 @@ def main():
         for row in matches:
             row['same_payload_groups'] = [match['group'] for match in matches if match is not row]
     shared_routes = original_mul_shared_routes(mul_groups)
+    record_registered_pair_reviews(shared_routes, mul_groups)
     original=[];new_actions=[]
     for record in sequence:
         body=record['animation_ref'];model=native.get(body)
@@ -358,9 +382,15 @@ def main():
     counts={'generic_models':len(models),'generic_body_routes':len(native),'protocol_slots':len(rows),
             'routable_slots':sum(r['resolved'] is not None for r in rows),
             'source_checked_classic_newer_routes':sum(len(types) for body, types in wire_routes.items() if int(body) in native),
+            'mode_dependent_classic_newer_routes':sum('wire_mode_clips' in row for row in rows),
             'missing_protocol_slots':sum(r['resolved'] is None for r in rows),
             'unresolved_slots_with_source_frame_evidence':len(source_frame_gaps),
             'mul_shared_replacement_candidate_pairs':len({(row['body'], *row['classic_slots']) for row in shared_routes}),
+            'mul_registered_shared_pair_review': {status: sum(row.get('registered_source_comparison', 'unreviewed') == status
+                                                              for row in shared_routes)
+                                                   for status in ('exact registered pixels', 'appearance only',
+                                                                  'different frame count', 'different silhouette or registration',
+                                                                  'unreviewed')},
             'unresolved_classic_uop_redirect_candidates':len(redirect_candidates),
             'unresolved_classic_uop_redirects_with_routable_destination':sum(
                 row['destination_clip'] is not None for row in redirect_candidates),

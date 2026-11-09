@@ -158,13 +158,23 @@ def audit_shared_routes(data, ledger, bodies):
             if identity not in decoded:
                 directions = group_pixels(data, sources[identity])
                 decoded[identity] = {
-                    direction: [None if frame is None else (*frame[:3], hashlib.sha256(frame[3]).digest())
+                    direction: [None if frame is None else (*frame[:3], hashlib.sha256(frame[3][3::4]).digest(),
+                                                             hashlib.sha256(frame[3]).digest())
                                 for frame in frames]
                     for direction, frames in directions.items()
                 }
             records.append(decoded[identity])
         differences = [direction for direction in range(5) if records[0][direction] != records[1][direction]]
-        reviewed.append(dict(pair, directions_with_differences=differences))
+        if not differences:
+            classification = 'exact registered pixels'
+        elif any(len(records[0][d]) != len(records[1][d]) for d in differences):
+            classification = 'different frame count'
+        elif all(all((a[:-1] if a else None) == (b[:-1] if b else None)
+                     for a, b in zip(records[0][d], records[1][d], strict=True)) for d in differences):
+            classification = 'appearance only'
+        else:
+            classification = 'different silhouette or registration'
+        reviewed.append(dict(pair, directions_with_differences=differences, classification=classification))
     OUTPUT.mkdir(parents=True, exist_ok=True)
     suffix = '-' + '-'.join(map(str, sorted(bodies))) if bodies else ''
     path = OUTPUT / f'shared-replacement-audit{suffix}.json'

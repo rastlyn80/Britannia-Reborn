@@ -1,3 +1,15 @@
+# Wailing Banshee through Solen Queens and distinct defence modes
+
+Ten bodies retain their original rig, materials and previous animation keys and now route 135 directly stored Classic groups. The Wailing Banshee, Minotaur Captain, Blackthorn Cohort, Ice Fiend, Ferret, Juggernaut, Gibberling, both Solen Queens and Yamandon use 18 fitted clips. The Ice Fiend holds its spread-wing pose for the original flight-death group and retains its normal collapse and static cadaver. The queens retain their original ground calibration for the recovered clips and use the fitted root for their short recoil. The Ferret keeps its earlier rest playback.
+
+The exact scenes passed 3,381 isolated server checks across 13 constructors. Active playback passed 405 Classic selections, 5,301 terrain poses and 30 corpse hue cases. The previous Ice Fiend, Minotaur Captain and Solen Queen packages still pass their retained-route checks.
+
+The installed wire table now routes 139 Classic-compatible newer packet types on 79 bodies. For 29 routes, even and odd packet modes select different Classic source groups and different clips. Both clients passed 5,321 isolated checks with 556 observations, each containing both original decoded packets. Offline playback passed 834 paired selections and 417 unchanged subactions. The pinned ClassicUO decoder and the five-direction source comparison define the scope. The client preserves per-body explicit overrides.
+
+The generic ledger routes 5,563 of 7,130 slots (78.0%). It has 1,567 broader gaps. Among 184 shared Classic pairs, 28 have identical registered frames, six differ only in appearance, 74 have different frame counts and 76 differ in silhouette or placement. Source hashes attach the classification to the exact compared frames. The bounded catalogue still has evidence for all 279 native bodies. The static corpse catalogue passed 2,433 checks across 324 identities.
+
+Build with `scripts/bake-banshee-through-queens-actions.gd`, prepare with `scripts/prepare-banshee-through-queens-actions.py` and run `scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily banshee_through_queens_actions`. Use `-CreatureFamily classic_wire_aliases` for the packet table. The optional Pillow comparison in `scripts/check-creature-wire-routes.py --compare-pixels` reproduces the registered defence-frame comparison.
+
 # Quagmire through Exodus and Classic packet compatibility
 
 Twelve more bodies now route 156 directly stored Classic groups. Quagmire, Arcane Daemon, Dryad, Meer Eternal, Troglodyte, Flesh Golem, Ancient Wyrm, Exodus Minion and Overseer, Lady of the Snow, RaiJu and Satyr retain their earlier geometry and animation keys. Seventeen fitted gestures add creature-specific movement, including Quagmire's tentacle fan, the Ancient Wyrm's wing brace and the Exodus Overseer's tail curl. The Dryad and Troglodyte retain separate left and right blocks. Identical registered frames share a replacement, and Lady of the Snow shares a block for the near-identical source silhouettes.

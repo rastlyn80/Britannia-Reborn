@@ -20,7 +20,7 @@ def checked_source(data, routes, pins, compare_pixels=False):
     assert pins['metadata'] == {name: sha(data / name) for name in pins['metadata']}
     bodies = set(map(int, routes))
     ledger = runpy.run_path(str(ROOT / 'scripts/build-creature-actions.py'))
-    rows, _, _ = ledger['original_mul_groups'](data, bodies)
+    rows, _, flags = ledger['original_mul_groups'](data, bodies)
     source = {(row['body'], row['group']): row for row in rows}
     reader = runpy.run_path(str(ROOT / 'scripts/uo-human-sequences.py'))
     sequence = {row['animation_ref']: row for row in reader['inspect'](data / 'AnimationSequence.uop', bodies)}
@@ -34,17 +34,21 @@ def checked_source(data, routes, pins, compare_pixels=False):
     for body, types in routes.items():
         assert types.keys() == pins['routes'][body].keys()
         metadata = sequence[int(body)]
-        assert not metadata.get('parse_blocker')
-        for kind, (even, odd, clip) in types.items():
+        assert not metadata.get('parse_blocker') and flags[int(body)][0] == 'MONSTER'
+        for kind, rule in types.items():
+            even, odd, *clips = rule
+            distinct = len(clips) == 2
+            assert len(clips) in (1, 2) and all(clips) and len(set(clips)) == len(clips)
             groups, references = pins['routes'][body][kind]
-            assert clip and groups == new_actions(metadata)[kind]
+            assert groups == new_actions(metadata)[kind]
             if kind in {'1', '2'}:
                 assert (even, odd) == (16, 15) and set(groups) <= {15, 16}
                 assert [row[0] for row in references] == [16, 15]
                 if registered is not None:
-                    assert registered(data, source[int(body), 16]) == registered(data, source[int(body), 15])
+                    matches = registered(data, source[int(body), 16]) == registered(data, source[int(body), 15])
+                    assert matches != distinct
             else:
-                assert kind in {'11', '14'} and even == odd == (12 if kind == '11' else 11)
+                assert not distinct and kind in {'11', '14'} and even == odd == (12 if kind == '11' else 11)
                 assert set(groups) == {even} and [row[0] for row in references] == [even]
             for slot, archive, graphic, digest in references:
                 row = source[int(body), slot]
@@ -92,7 +96,7 @@ def main():
     parser.add_argument('--compare-pixels', action='store_true')
     args = parser.parse_args()
     routes, pins = read(ROUTES), read(PINS)
-    assert routes.keys() == pins['routes'].keys() and len(routes) == 66 and sum(map(len, routes.values())) == 110
+    assert routes.keys() == pins['routes'].keys() and len(routes) == 79 and sum(map(len, routes.values())) == 139
     config = ROOT / 'Server/runtime/Configuration/modernuo.json'
     if args.data_dir is not None or config.is_file():
         data = args.data_dir or Path(read(config)['dataDirectories'][0])

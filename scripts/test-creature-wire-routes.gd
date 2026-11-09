@@ -18,13 +18,14 @@ func _initialize() -> void:
 func run() -> void:
 	Registry.load_index()
 	var table: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(Dispatcher.ROUTES_PATH))
-	assert(table.size() == 66)
+	assert(table.size() == 79)
 	var game := Game.new()
 	root.add_child(game)
 	game.set_process(false)
 	var selections := 0
 	var bodies := 0
 	var unchanged := 0
+	var distinct := 0
 	for key: String in table:
 		var body := int(key)
 		if not Registry.supports_body(body):
@@ -46,13 +47,18 @@ func run() -> void:
 			actor.set_physics_process(false)
 			for kind: String in table[key]:
 				var rule: Array = table[key][kind]
+				var modes := {}
 				for mode: int in [0, 1]:
 					var classic := play(avatar, game, packet(body, 0x6e, int(rule[mode]), 0))
 					var newer := play(avatar, game, packet(body, 0xe2, int(kind), mode))
 					assert(not classic.is_empty() and classic == newer, str([body, treatment, kind, mode, classic, newer]))
 					assert(actor.get_meta("native_action") == game.last_mobile_actions[body])
 					assert(Registry.entry(body) == entry and actor.entry == entry)
+					modes[newer] = true
 					selections += 1
+				if rule.size() == 4:
+					assert(modes.size() == 2, str([body, treatment, kind, modes]))
+					distinct += 1
 				var untargeted := packet(body, 0xe2, int(kind), 0)
 				untargeted[8] = 1
 				game._handle(untargeted)
@@ -64,8 +70,8 @@ func run() -> void:
 			avatar.free()
 	game.free()
 	if "--require-all" in OS.get_cmdline_user_args():
-		assert(bodies == 66 and selections == 660 and unchanged == 330)
-	print("CLASSIC WIRE: ", selections, " paired Classic/newer selections and ", unchanged, " untouched subactions across ", bodies, " local bodies")
+		assert(bodies == 79 and selections == 834 and unchanged == 417 and distinct == 87)
+	print("CLASSIC WIRE: ", selections, " paired Classic/newer selections and ", unchanged, " untouched subactions across ", bodies, " local bodies. Distinct modes ", distinct)
 	quit()
 
 func play(avatar: Node3D, game: Node, bytes: PackedByteArray) -> String:

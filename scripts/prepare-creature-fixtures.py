@@ -94,7 +94,7 @@ def prepared_entries(family, registry_entries=None):
         entries = gesture_baseline(family, registry_entries, recipe['CONSTRUCTORS'], layered=True)
         public = ROOT / 'Viewer/Art/Creatures/index.json'
         return recipe['prepared'](json.loads(public.read_text(encoding='utf-8'))['entries'] + entries)
-    if family in ('efreet_actions', 'orc_bog_actions', 'slith_actions', 'ranked_classic_actions', 'swamp_widow_juka_actions', 'bomber_ogre_rune_dopple_actions', 'golem_raptor_juka_solen_actions', 'post_solen_actions', 'frost_through_gargoyle_actions', 'lattice_through_meer_actions', 'meer_forward_falls', 'quagmire_through_exodus_actions'):
+    if family in ('efreet_actions', 'orc_bog_actions', 'slith_actions', 'ranked_classic_actions', 'swamp_widow_juka_actions', 'bomber_ogre_rune_dopple_actions', 'golem_raptor_juka_solen_actions', 'post_solen_actions', 'frost_through_gargoyle_actions', 'lattice_through_meer_actions', 'meer_forward_falls', 'quagmire_through_exodus_actions', 'banshee_through_queens_actions'):
         recipe = runpy.run_path(str(ROOT / 'scripts' / f"prepare-{family.replace('_', '-')}.py"))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
         return recipe['prepared'](rows)
@@ -1030,10 +1030,13 @@ def main():
             expected = [overlay if row['bodies'][0]['body'] == body else row for row in expected]
         overlays = {
             'hydra_active': {'frost_through_gargoyle_actions'},
-            'late_source_active': {'quagmire_through_exodus_actions'},
-            'clockwork_tokuno_active': {'quagmire_through_exodus_actions'},
+            'late_source_active': {'quagmire_through_exodus_actions', 'banshee_through_queens_actions'},
+            'clockwork_tokuno_active': {'quagmire_through_exodus_actions', 'banshee_through_queens_actions'},
+            'recovered_late_active': {'banshee_through_queens_actions'},
+            'aos_creatures_active': {'banshee_through_queens_actions'},
+            'late_donors_active': {'banshee_through_queens_actions'},
             'meer_donors_active': {'frost_through_gargoyle_actions', 'lattice_through_meer_actions', 'meer_forward_falls'},
-            'captain_cu_active': {'lattice_through_meer_actions'},
+            'captain_cu_active': {'lattice_through_meer_actions', 'banshee_through_queens_actions'},
             'elemental_minotaur_active': {'post_solen_actions', 'frost_through_gargoyle_actions', 'lattice_through_meer_actions', 'quagmire_through_exodus_actions'},
         }.get(args.family, set())
         for batch in sorted(overlays & {row.get('classic_gesture_batch') for row in registered}):

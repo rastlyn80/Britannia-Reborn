@@ -154,7 +154,7 @@ def main():
     index = read(path)
     existing = [row for row in index['entries'] if BODY_KEYS.intersection(int(body['body']) for body in row['bodies'])]
     assert all(row['family'] == 'solen_queens' for row in existing), 'Refusing to replace an unrelated body route'
-    rows = ALIAS_EVIDENCE['expected_rows_with_legacy_aliases'](rows, existing)
+    rows = ALIAS_EVIDENCE['expected_rows_with_legacy_aliases'](rows, index['entries'])
     if args.check_active:
         assert existing == rows
         ALIAS_EVIDENCE['check_base_receipt'](Path(__file__).name, read(RECEIPT), receipt)

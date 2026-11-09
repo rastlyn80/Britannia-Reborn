@@ -22,12 +22,14 @@ static func dispatch(avatar: Node3D, request: Dictionary) -> bool:
 	var rule: Array = routes.get(body, {}).get(kind, [])
 	if rule.is_empty():
 		return avatar.receive_native_action(request)
-	var group := str(int(rule[int(request.get("variation", 0)) & 1]))
+	var parity := int(request.get("variation", 0)) & 1
+	var group := str(int(rule[parity]))
+	var fallback := str(rule[2 + parity] if rule.size() == 4 else rule[2])
 	var body_groups: Dictionary = entry.get("classic_action_categories_by_body", {}).get(body, {})
 	var shared_groups: Dictionary = entry.get("classic_action_categories", {})
-	var clip := str(body_groups.get(group, shared_groups.get(group, rule[2])))
+	var clip := str(body_groups.get(group, shared_groups.get(group, fallback)))
 	if not visual.animator.has_animation(clip):
-		clip = str(rule[2])
+		clip = fallback
 	# Give the renderer a per-call type override while retaining the original
 	# packet, timing, dispatch and metadata. Other bodies may share this row.
 	visual.entry = entry.duplicate()

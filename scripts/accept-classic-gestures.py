@@ -76,6 +76,8 @@ BATCHES = {
                                      'SwampWidowJukaActionsLive.gd', ('test-lattice-through-meer-actions.gd',)),
     'quagmire_through_exodus_actions': ((789, 784, 266, 772, 267, 304, 46, 757, 756, 252, 199, 271),
                                         'SwampWidowJukaActionsLive.gd', ('test-quagmire-through-exodus-actions.gd',)),
+    'banshee_through_queens_actions': ((310, 280, 767, 43, 279, 768, 307, 807, 783, 249),
+                                       'SwampWidowJukaActionsLive.gd', ('test-banshee-through-queens-actions.gd',)),
     'meer_forward_falls': ((770, 773), 'MeerForwardFallsLive.gd', ('test-meer-forward-falls.gd',)),
     'dragon_daemon': ((9, 10, 12, 38, 40, 43, 59, 60, 61), 'PreparedCreatureActionLive.gd',
                       ('test-dragon-daemon-gestures.gd',)),
@@ -176,6 +178,7 @@ PREDECESSORS = {
     'lattice_through_meer_actions': (),
     'meer_forward_falls': ('lattice_through_meer_actions',),
     'quagmire_through_exodus_actions': ('troglodyte_reach',),
+    'banshee_through_queens_actions': ('dragon_daemon',),
     'copper_kaze_actions': (),
     'ophidian_patchwork_actions': ('ophidian_bardiche',),
     'tokuno_spider_dragon_actions': ('dragon_daemon',),
@@ -509,7 +512,7 @@ def checked(index, active, batch, *, compare_registry=True):
                         raise ValueError(f'Both clients must witness body {body} new-protocol type {kind}')
         if batch in ('swamp_widow_juka_actions', 'bomber_ogre_rune_dopple_actions',
                       'golem_raptor_juka_solen_actions', 'post_solen_actions', 'frost_through_gargoyle_actions', 'lattice_through_meer_actions', 'meer_forward_falls',
-                      'quagmire_through_exodus_actions'):
+                      'quagmire_through_exodus_actions', 'banshee_through_queens_actions'):
             categories = package['new_action_categories']
             requests = [(-1, 4, 'Hit')] + [(request, kind, categories[str(kind)])
                                             for request, kind in ((-3, 2), (-4, 5), (-5, 14))
@@ -535,7 +538,7 @@ def checked(index, active, batch, *, compare_registry=True):
             if (batch in ('efreet_actions', 'orc_bog_actions', 'slith_actions', 'ranked_classic_actions',
                           'swamp_widow_juka_actions', 'bomber_ogre_rune_dopple_actions',
                           'golem_raptor_juka_solen_actions', 'post_solen_actions', 'frost_through_gargoyle_actions', 'lattice_through_meer_actions', 'meer_forward_falls',
-                          'quagmire_through_exodus_actions', 'lizard_actions', 'quadruped_actions', 'hart_deaths',
+                          'quagmire_through_exodus_actions', 'banshee_through_queens_actions', 'lizard_actions', 'quadruped_actions', 'hart_deaths',
                           'dog_bear_actions', 'cat_actions',
                           'skeleton_actions', 'troll_actions', 'field_fauna', 'spider_mongbat_actions',
                           'grazers_grizzly_actions', 'pig_reaper_harpy_actions', 'rabbit_distinct_actions',
@@ -640,6 +643,11 @@ def test_active(batch):
     if batch == 'quagmire_through_exodus_actions':
         for test in ('ElementalMinotaurRouteTests', 'ClockworkTokunoRouteTests', 'SourcePreservingBaseActionTests'):
             run_client_check(godot, env, f'res://Presentation/{test}.gd', [])
+    if batch == 'banshee_through_queens_actions':
+        for test in ('ClockworkTokunoRouteTests', 'CaptainCuRouteTests'):
+            run_client_check(godot, env, f'res://Presentation/{test}.gd', [])
+        for family in ('late_source', 'late_donors', 'recovered_late', 'aos_creatures'):
+            run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', [f'--family={family}'])
     if batch == 'ready_stances':
         for family in ('raptor', 'slith'):
             run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', [f'--family={family}'])
