@@ -89,7 +89,7 @@ def prepared_recovered_action(family, registry_entries):
 
 
 def prepared_entries(family, registry_entries=None):
-    if family in ('efreet_actions', 'orc_bog_actions', 'slith_actions'):
+    if family in ('efreet_actions', 'orc_bog_actions', 'slith_actions', 'ranked_classic_actions'):
         recipe = runpy.run_path(str(ROOT / 'scripts' / f"prepare-{family.replace('_', '-')}.py"))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
         return recipe['prepared'](rows)

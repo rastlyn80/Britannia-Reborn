@@ -38,14 +38,23 @@ def expected_rows_with_legacy_aliases(rows, active):
                         ('walking_dead_rotting_corpse', 'avenger_rotting_actions'),
                         ('genies_efreet', 'efreet_actions'),
                         ('orcs_orc_captain', 'orc_bog_actions'),
+                        ('changling', 'ranked_classic_actions'),
                         ('serpents_snake_giant_lava', 'ratman_lava_actions'),
                         ('rat_race_shaman', 'ratman_lava_actions')):
         overlay = active_by_kind.get(kind, {})
         if overlay.get('classic_gesture_native_sha256') and any(row['kind'] == kind for row in expected):
             gate = runpy.run_path(str(Path(__file__).with_name('accept-classic-gestures.py')))
-            base, overlays = gate['checked']({'entries': active}, True, batch)
+            index = {'entries': active}
             original, = (row for row in expected if row['kind'] == kind)
-            if ([row for row in base if row['kind'] == kind] != [original]
+            retained = original
+            if batch == 'grizzle_antler' and overlay.get('classic_gesture_batch') == 'ranked_classic_actions':
+                earlier, antler = gate['checked'](index, True, batch, compare_registry=False)
+                if [row for row in earlier if row['kind'] == kind] != [original]:
+                    raise ValueError('Grizzle antler overlay no longer matches the verified base package')
+                retained, = (row for row in antler if row['kind'] == kind)
+                batch = 'ranked_classic_actions'
+            base, overlays = gate['checked'](index, True, batch)
+            if ([row for row in base if row['kind'] == kind] != [retained]
                     or [row for row in overlays if row['kind'] == kind] != [overlay]):
                 raise ValueError(f'{kind} action overlay no longer matches the verified base package')
             expected = [overlay if row == original else row for row in expected]

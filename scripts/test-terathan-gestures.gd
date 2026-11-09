@@ -24,6 +24,20 @@ func run() -> void:
 			var body := int(row.bodies[0].body)
 			if body in [70, 71]:
 				Registry.entries[body] = row
+	if "--active" in OS.get_cmdline_user_args():
+		var current := Registry.entry(72)
+		if current.get("classic_gesture_batch") == "ranked_classic_actions":
+			var path := "res://../work/creatures/ranked_classic_actions/accepted-native/base-rows.json"
+			var rows: Array = JSON.parse_string(FileAccess.get_file_as_string(path))
+			var restored := false
+			for row: Dictionary in rows:
+				if int(row.bodies[0].body) == 72 and current.get("classic_gesture_base_assets") == row.assets:
+					Registry.entries[72] = row
+					restored = true
+			if not restored:
+				push_error("The active Matriarch must retain the tested Terathan cast package")
+				quit(1)
+				return
 	var game := Game.new()
 	root.add_child(game)
 	game.set_process(false)

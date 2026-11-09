@@ -60,6 +60,8 @@ BATCHES = {
     'orc_bog_actions': ((7, 780), 'OrcBogActionsLive.gd',
                         ('test-orc-captain-actions.gd', 'test-orc-captain-axe.gd', 'test-bog-thing-actions.gd')),
     'slith_actions': ((734,), 'SlithActionsLive.gd', ('test-slith-actions.gd',)),
+    'ranked_classic_actions': ((259, 264, 72), 'RankedClassicActionsLive.gd',
+                               ('test-ranked-classic-actions.gd',)),
     'dragon_daemon': ((9, 10, 12, 38, 40, 43, 59, 60, 61), 'PreparedCreatureActionLive.gd',
                       ('test-dragon-daemon-gestures.gd',)),
     'terathan_classic': ((70, 71, 72), 'PreparedCreatureActionLive.gd', ('test-terathan-gestures.gd',)),
@@ -150,6 +152,7 @@ PREDECESSORS = {
     'efreet_actions': (),
     'orc_bog_actions': (),
     'slith_actions': ('ready_stances',),
+    'ranked_classic_actions': ('grizzle_antler', 'terathan_classic'),
     'copper_kaze_actions': (),
     'ophidian_patchwork_actions': ('ophidian_bardiche',),
     'tokuno_spider_dragon_actions': ('dragon_daemon',),
@@ -302,7 +305,9 @@ def checked(index, active, batch, *, compare_registry=True):
         if active:
             prior_entries.extend(baseline)
         for predecessor in predecessors:
-            if predecessor in ('scorpion_imp', 'dragon_daemon', 'bone_cyclops', 'vampire_bat_actions', 'fidget_aliases_toad', 'skeletal_mage_staff'):
+            if (batch == 'ranked_classic_actions' or
+                    predecessor in ('scorpion_imp', 'dragon_daemon', 'bone_cyclops', 'vampire_bat_actions',
+                                    'fidget_aliases_toad', 'skeletal_mage_staff')):
                 # Independent successors seal their own retained rows. Replaying a
                 # sibling here would send it back through the same predecessor.
                 _, previous = checked(index, True, predecessor, compare_registry=False)
@@ -334,7 +339,7 @@ def checked(index, active, batch, *, compare_registry=True):
                    'LaterCreatureGesturesLive.gd', 'ArmedFlyingCreatureGesturesLive.gd', 'TokunoSpiderDragonLive.gd',
                    'MageLordTentacleActionsLive.gd', 'GoatHarpyHordeLive.gd',
                    'GargoyleKitsuneLarvaLive.gd', 'SolenWorkerActionsLive.gd', 'OrcBogActionsLive.gd',
-                   'SlithActionsLive.gd') and (
+                   'SlithActionsLive.gd', 'RankedClassicActionsLive.gd') and (
             report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
         raise ValueError('Supplementary action trial used a different prepared fixture loader')
     if batch == 'occurrence_deaths' and (
@@ -436,8 +441,10 @@ def checked(index, active, batch, *, compare_registry=True):
         if batch == 'exact_creature_fidgets' and body == 146 and (
                 witness.get('transformed_body') != 780 or not witness.get('true_form_corpse')):
             raise ValueError('Harrower evidence must include the transformation and true-form corpse')
-        if batch in ('efreet_actions', 'slith_actions'):
-            requests = [(-1, 4), (-2, 11), (-3, 2), (-5, 14)]
+        if batch in ('efreet_actions', 'slith_actions', 'ranked_classic_actions'):
+            requests = [(-1, 4), (-3, 2), (-5, 14)]
+            if batch != 'ranked_classic_actions' or body == 72:
+                requests.append((-2, 11))
             if batch == 'slith_actions':
                 requests.append((-4, 5))
             for request, kind in requests:
@@ -454,7 +461,8 @@ def checked(index, active, batch, *, compare_registry=True):
             actions = [row for row in witness['actions'] if row['requested'] == slot]
             if len(actions) != 1 or any(actions[0][key] != clip for key in ('owner_clip', 'observer_clip')):
                 raise ValueError(f'Missing Classic gesture evidence for body {body}, slot {slot}')
-            if (batch in ('efreet_actions', 'orc_bog_actions', 'slith_actions', 'lizard_actions', 'quadruped_actions', 'hart_deaths', 'dog_bear_actions', 'cat_actions',
+            if (batch in ('efreet_actions', 'orc_bog_actions', 'slith_actions', 'ranked_classic_actions',
+                          'lizard_actions', 'quadruped_actions', 'hart_deaths', 'dog_bear_actions', 'cat_actions',
                           'skeleton_actions', 'troll_actions', 'field_fauna', 'spider_mongbat_actions',
                           'grazers_grizzly_actions', 'pig_reaper_harpy_actions', 'rabbit_distinct_actions',
                           'serpent_ogre_actions', 'zombie_corpser_gargoyle_actions', 'earth_gazer_imp_actions',
@@ -520,8 +528,8 @@ def test_active(batch):
                   'dog_bear_actions': ['--dog-bear'], 'troll_actions': ['--troll'],
                   'field_fauna': ['--field-fauna']}.get(batch, [])
     for script in BATCHES[batch][2]:
-        # The axe sweep keeps every 360 Hz sample during the concurrent full gate.
-        timeout = 180 if script == 'test-orc-captain-axe.gd' else 65
+        # The dense axe and multi-body terrain checks keep all samples under the concurrent gate.
+        timeout = 180 if script in ('test-orc-captain-axe.gd', 'test-ranked-classic-actions.gd') else 65
         run_client_check(godot, env, f'res://../scripts/{script}', ['--active', *trial_args], timeout=timeout)
     if batch == 'occurrence_gestures':
         for test in ('TsukiWolfRouteTests', 'KappaRouteTests'):
