@@ -1,0 +1,316 @@
+{
+  "definitions": {
+    "Body.def": "2fbd408fcc96d1c0b382c4fd5c4efc798e2e5093e59a14ed6be9146b4a81cdab",
+    "Bodyconv.def": "62debf90a6c5f59a885da6b0a8db1094d90c8d9e0a2c4c02b3acc234d818b665",
+    "Corpse.def": "9bc572c3643acbcd1e299e6def4297c57da586624e373a45da88f72654b7c02a",
+    "mobtypes.txt": "a4f1c98057c5bcf10ccdb575a9154260651e49b852bfe548059ff55fcbbf29d8",
+    "AnimationSequence.uop": "b4de2afdba2bab6e987389cde18aee4703bbef560f66d4c26be5ffc04f2b8e0f"
+  },
+  "mobtypes": {
+    "13": [
+      "MONSTER",
+      4100
+    ],
+    "131": [
+      "MONSTER",
+      0
+    ]
+  },
+  "redirects": {
+    "mobile": [
+      13,
+      1654
+    ],
+    "corpse": [
+      51,
+      1654
+    ]
+  },
+  "classic": {
+    "source_body": 13,
+    "archive": "anim.mul",
+    "graphic": 13,
+    "layout": "large",
+    "groups": {
+      "0": [
+        [
+          10,
+          10,
+          10,
+          10,
+          10
+        ],
+        "9f8ce08f516b572792d98fd335c077fb1db7dd38afeefbac9c412b43e5e9a7a4"
+      ],
+      "1": [
+        [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "50e8a4c43489ae59ca55535e1638774efbb185a31a19141788ea2cbcd985b299"
+      ],
+      "2": [
+        [
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "febc8a50335220694561d3652284b18ac95246af311e6f54da8ded4319530646"
+      ],
+      "3": [
+        [
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "652af23e226be9e5b533d213a56ec40af3a009d443a46a72ca78d0c6a123d2ac"
+      ],
+      "4": [
+        [
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "ed969423f1b4aa1e58bba2782a9762a0d29b58000ca3b5388927ca3f273636b1"
+      ],
+      "5": [
+        [
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "c493556eacccfe152e7c0f03ca2195a8970e05d944cd1178b3f50f436b8d5eaa"
+      ],
+      "6": [
+        [
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "c47a3049bcc7a62124fd43be0f426a4793e051408a0040d3e9a6877b755d6210"
+      ],
+      "7": [
+        [
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "81d1bb7f8dce2e2ee5369e9d209aec3af4ff771a286b43a6aeafecebb58ad5fa"
+      ],
+      "8": [
+        [
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "2d7798d2cb38be6b7ec2028e128319a6157e159a9b382481e87993dca6d466a3"
+      ],
+      "10": [
+        [
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "0e11d83019854d532d2ed5466c10596e22cef8358e1f6613586636eb6d267e03"
+      ],
+      "11": [
+        [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "4f12f00f13107544d11f212f09578c91f3eb46eb09dc7ba41b7f47d139f6206b"
+      ],
+      "12": [
+        [
+          15,
+          15,
+          15,
+          15,
+          15
+        ],
+        "683134dbeea8ed6b97ac7f072d2f91a8cccbd2b50bcd0bd7f03ff64e8b5620d0"
+      ],
+      "15": [
+        [
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "53318847a71de0cbb35c8098a5d3b7450578d34ff63750b76eb0e0159b847862"
+      ],
+      "16": [
+        [
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "4b8895ed1abca931cc44f2983f51244d073ef751d8767ac5a40e9810360ca6e7"
+      ],
+      "17": [
+        [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "9c5d2a3639ba287a920191560f11fb530ed703890c43edd0014c1bf81fb304b1"
+      ],
+      "18": [
+        [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "c25e072af425979cf287678c8a0a6f78029740ff9190908984df96a9c4b88362"
+      ]
+    }
+  },
+  "sequence": {
+    "uop_name_hash": "0xae41645c8fb8d9a5",
+    "new_protocol_modes": {
+      "0": [
+        {
+          "type": 0,
+          "subaction": -1,
+          "groups": [
+            4,
+            5,
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "type": 0,
+          "subaction": 0,
+          "groups": [
+            4,
+            5,
+            4
+          ]
+        },
+        {
+          "type": 0,
+          "subaction": 1,
+          "groups": [
+            4
+          ]
+        },
+        {
+          "type": 0,
+          "subaction": 2,
+          "groups": [
+            4
+          ]
+        },
+        {
+          "type": 0,
+          "subaction": 9,
+          "groups": [
+            4
+          ]
+        },
+        {
+          "type": 2,
+          "subaction": -1,
+          "groups": [
+            15,
+            15
+          ]
+        },
+        {
+          "type": 3,
+          "subaction": -1,
+          "groups": [
+            2,
+            3
+          ]
+        },
+        {
+          "type": 4,
+          "subaction": -1,
+          "groups": [
+            10
+          ]
+        },
+        {
+          "type": 5,
+          "subaction": -1,
+          "groups": [
+            26,
+            27
+          ]
+        },
+        {
+          "type": 8,
+          "subaction": -1,
+          "groups": [
+            28
+          ]
+        },
+        {
+          "type": 11,
+          "subaction": -1,
+          "groups": [
+            12,
+            12,
+            12
+          ]
+        },
+        {
+          "type": 14,
+          "subaction": -1,
+          "groups": [
+            11
+          ]
+        },
+        {
+          "type": 15,
+          "subaction": -1,
+          "groups": [
+            23
+          ]
+        }
+      ],
+      "1": [
+        {
+          "type": 5,
+          "subaction": -1,
+          "groups": [
+            26
+          ]
+        }
+      ]
+    }
+  }
+}

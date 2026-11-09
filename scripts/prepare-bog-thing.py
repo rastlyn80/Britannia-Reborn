@@ -24,6 +24,10 @@ def check_active():
     index = json.loads((ART.parent / 'accepted-index.json').read_text(encoding='utf-8'))
     active, = [item for item in index['entries']
                if any(int(body['body']) == 780 for body in item['bodies'])]
+    if active.get('classic_gesture_batch') == 'orc_bog_actions':
+        gate = runpy.run_path(str(SCRIPTS / 'accept-classic-gestures.py'))
+        retained, _ = gate['checked'](index, True, 'orc_bog_actions')
+        active, = (item for item in retained if item['kind'] == 'bog_thing')
     expected = WITH_ALIAS(dict(row, status='validated'), active)
     assert {key: active[key] for key in expected} == expected
     pins = {**row['art_dependency_sha256'],

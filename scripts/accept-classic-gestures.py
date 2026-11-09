@@ -56,6 +56,9 @@ BATCHES = {
                              ('test-solen-worker-actions.gd', 'test-solen-worker-corpses.gd')),
     'avenger_rotting_actions': ((152, 155), 'GoatHarpyHordeLive.gd',
                                 ('test-avenger-rotting-actions.gd', 'test-avenger-rotting-corpses.gd')),
+    'efreet_actions': ((131,), 'GoatHarpyHordeLive.gd', ('test-efreet-actions.gd', 'test-efreet-corpses.gd')),
+    'orc_bog_actions': ((7, 780), 'OrcBogActionsLive.gd',
+                        ('test-orc-captain-actions.gd', 'test-orc-captain-axe.gd', 'test-bog-thing-actions.gd')),
     'dragon_daemon': ((9, 10, 12, 38, 40, 43, 59, 60, 61), 'PreparedCreatureActionLive.gd',
                       ('test-dragon-daemon-gestures.gd',)),
     'terathan_classic': ((70, 71, 72), 'PreparedCreatureActionLive.gd', ('test-terathan-gestures.gd',)),
@@ -143,6 +146,8 @@ PREDECESSORS = {
     'gargoyle_kitsune_larva_actions': ('fidget_aliases_toad',),
     'solen_worker_actions': (),
     'avenger_rotting_actions': (),
+    'efreet_actions': (),
+    'orc_bog_actions': (),
     'copper_kaze_actions': (),
     'ophidian_patchwork_actions': ('ophidian_bardiche',),
     'tokuno_spider_dragon_actions': ('dragon_daemon',),
@@ -321,7 +326,7 @@ def checked(index, active, batch, *, compare_registry=True):
                    'DaemonActionsLive.gd', 'WraithDrakeWalrusLive.gd', 'OccurrenceGesturesLive.gd',
                    'LaterCreatureGesturesLive.gd', 'ArmedFlyingCreatureGesturesLive.gd', 'TokunoSpiderDragonLive.gd',
                    'MageLordTentacleActionsLive.gd', 'GoatHarpyHordeLive.gd',
-                   'GargoyleKitsuneLarvaLive.gd', 'SolenWorkerActionsLive.gd') and (
+                   'GargoyleKitsuneLarvaLive.gd', 'SolenWorkerActionsLive.gd', 'OrcBogActionsLive.gd') and (
             report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
         raise ValueError('Supplementary action trial used a different prepared fixture loader')
     if batch == 'occurrence_deaths' and (
@@ -423,13 +428,22 @@ def checked(index, active, batch, *, compare_registry=True):
         if batch == 'exact_creature_fidgets' and body == 146 and (
                 witness.get('transformed_body') != 780 or not witness.get('true_form_corpse')):
             raise ValueError('Harrower evidence must include the transformation and true-form corpse')
+        if batch == 'efreet_actions':
+            for request, kind in ((-1, 4), (-2, 11), (-3, 2), (-5, 14)):
+                action, = (row for row in witness['actions'] if row['requested'] == request)
+                clip = package['new_action_categories'][str(kind)]
+                for client in ('owner', 'observer'):
+                    packet = action[client + '_packet']
+                    if (action[client + '_clip'] != clip or packet['protocol'] != 'new'
+                            or (packet['type'], packet['subaction'], packet['variation']) != (kind, 0, 0)):
+                        raise ValueError(f'Both clients must witness Efreet new-protocol type {kind}')
         for slot in slots:
             clip = ('Fidget' if batch == 'exact_creature_fidgets' and slot == 17
                     else package['classic_action_categories'][str(slot)])
             actions = [row for row in witness['actions'] if row['requested'] == slot]
             if len(actions) != 1 or any(actions[0][key] != clip for key in ('owner_clip', 'observer_clip')):
                 raise ValueError(f'Missing Classic gesture evidence for body {body}, slot {slot}')
-            if (batch in ('lizard_actions', 'quadruped_actions', 'hart_deaths', 'dog_bear_actions', 'cat_actions',
+            if (batch in ('efreet_actions', 'orc_bog_actions', 'lizard_actions', 'quadruped_actions', 'hart_deaths', 'dog_bear_actions', 'cat_actions',
                           'skeleton_actions', 'troll_actions', 'field_fauna', 'spider_mongbat_actions',
                           'grazers_grizzly_actions', 'pig_reaper_harpy_actions', 'rabbit_distinct_actions',
                           'serpent_ogre_actions', 'zombie_corpser_gargoyle_actions', 'earth_gazer_imp_actions',
