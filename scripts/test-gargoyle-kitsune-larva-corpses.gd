@@ -64,7 +64,7 @@ func witness(plane: StaticBody3D, body: int, group: int, phase: float, height :=
 	var start := skinned_points(source)
 	var expected_time := previous.current_animation_position if phase > 0.0 else 0.0
 	var speed := absf(previous.get_playing_speed()) if phase > 0.0 else 1.0
-	var clip := "Death2" if group == 12 else ("AirDeath" if group in [19, 20] else "Death")
+	var clip := expected_fall(body, group)
 	var holder := Node3D.new()
 	items.add_child(holder)
 	items.nodes[corpse] = holder
@@ -118,6 +118,9 @@ func witness(plane: StaticBody3D, body: int, group: int, phase: float, height :=
 		assert(absf(static_floor(cadaver, plane) - floor) < 0.001)
 	handoffs += 1
 	arena.free()
+
+func expected_fall(_body: int, group: int) -> String:
+	return "Death2" if group == 12 else ("AirDeath" if group in [19, 20] else "Death")
 
 func skinned_points(actor: Node3D) -> PackedVector3Array:
 	var points := PackedVector3Array()

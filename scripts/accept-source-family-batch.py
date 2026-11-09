@@ -114,6 +114,7 @@ def main():
         overlay = gargoyle['compose'](base, True)
         assert redirect(current) == overlay, 'Gargoyle action overlay or base package changed'
         rows = [current if row is base else row for row in rows]
+    rows = helpers.ALIAS_EVIDENCE['expected_rows_with_legacy_aliases'](rows, index['entries'])
     incoming = {row['kind'] for row in rows}
     existing = {int(body['body']):row['kind'] for row in index['entries'] for body in row['bodies']}
     for row in rows:
@@ -123,7 +124,8 @@ def main():
         receipt = read(RECEIPT)
         assert receipt['publisher_sha256'] in (
             sha(Path(__file__)), '45ba8a2a4212f2d1728b2a13c5c940f235f2e6b23bef4da99e552bc110b96950',
-            '776536ad522a39f8854cf98aadc916ef5f81b9b5fe8c55e2948acbe3ba481937')
+            '776536ad522a39f8854cf98aadc916ef5f81b9b5fe8c55e2948acbe3ba481937',
+            'a8baa579f918efe219d212cce57ee447e0149c3d7d4b8fbd3aeb2f481afa2751')
         assert receipt['evidence_pins'] == pins
         assert {row['kind']:row for row in index['entries'] if row['kind'] in incoming} == {row['kind']:row for row in rows}
     if args.activate_gargoyle_pillage:

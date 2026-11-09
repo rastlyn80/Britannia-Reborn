@@ -1,3 +1,15 @@
+# Solen workers, Terathan Avenger and Rotting Corpse actions
+
+Red Solen Worker 781 and Black Solen Worker 805 share the same stored Classic frames for groups 2 and 3, 11 and 17, and 15 and 16. Each keeps its own Third Dawn skin, six-leg support and recovered second fidget. The fitted head and antenna brace separates groups 15 and 16 from the normal hit. Black Solen Worker starts with the native hue `0x453`. Both workers continue an explicit collapse into the frozen corpse at the displayed phase and speed.
+
+Terathan Avenger 152 uses its two recovered attacks, a fitted pincer recoil and a raised threat display on the 57-joint source rig. Rotting Corpse 155 has a distinct forward fall, raised-arm gesture, two attacks and three reactions on its 34-joint rig. Its Classic reference comes through the graphics redirect to Zombie 3. Both Rotting Corpse and Unfrozen Mummy retain their own shared body and the existing Classic and modern cast routes. Unfrozen Mummy keeps native hue `0x480`.
+
+The four bodies are active locally. Their isolated ModernUO trials passed 471 Solen checks and 771 Avenger and Rotting Corpse checks across five named constructors. The client gates passed 5,202 terrain poses, 12 static corpse hue cases and 84 decoded corpse handoffs across 3,444 samples. The earlier Solen source, graphics and movement-transition tests and the earlier source-family routes also passed with the current client.
+
+The catalogue routes 5,345 of 6,930 tracked slots (77.1%). Shared Classic replacement pairs fell from 445 to 436. The matching Classic source-frame audit has zero unresolved slots. Use `scripts/solen-worker-frame-pins.json` and `scripts/avenger-rotting-frame-pins.json`, the bake recipes named in the corresponding prepare scripts, and `scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily` with `solen_worker_actions` or `avenger_rotting_actions`. The generated assets and receipts stay local.
+
+The preceding two packages passed the full regression in 28 minutes 51 seconds. The 66 Classic package checks took 5 minutes 35 seconds. The full run was about seven minutes shorter than the previous successful run and GitHub main reported source commit `004841c3` after publication.
+
 # Stone Gargoyle, Bake Kitsune and Gazer Larva actions
 
 Stone Gargoyle 67 keeps its Third Dawn skin and rig. Decoded Classic group 20 opens the wings from standing and now uses TakeOff. Group 21 stays grounded in all five directions and uses a fitted settling motion. A separate recovered AirDeath plays when the native creature dies during flight. Bake Kitsune 246 adds a head call for group 10 and keeps its original 37-joint rig and earlier motions.

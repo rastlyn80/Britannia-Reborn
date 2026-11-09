@@ -27,7 +27,12 @@ func run() -> void:
 					actor.apply_server_appearance({"serial":9000000+body,"body":body,"hue":hue,"direction":0,"flags":0,"x":1100,"y":1700,"z":0},[])
 					actor.set_process(false);actor.set_physics_process(false)
 					var visual: Node3D=actor.horse_visual;visual.contact.active=false
-					check(visual!=null and actor.human_visual==null and visual.get_script().resource_path==row.presentation_script,"Actual normal avatar selects the checked creature renderer")
+					var expected_script: String = row.presentation_script
+					if body == 155 and entry.get("classic_gesture_batch", "") == "avenger_rotting_actions":
+						expected_script = "res://Presentation/RottingCorpseActionsVisual.gd"
+						check(visual.get_script().get_base_script().resource_path == row.presentation_script,
+							"Rotting Corpse retains its original skin and contact renderer")
+					check(visual!=null and actor.human_visual==null and visual.get_script().resource_path==expected_script,"Actual normal avatar selects the checked creature renderer")
 					check(visual.native_body==body and visual.native_hue==hue,"Actual avatar preserves server body and raw hue")
 					check(visual.skeleton.get_bone_count()==int(row.stats.original.bones),"Actual avatar retains every source joint")
 					if row.has("asset_base_scale"):

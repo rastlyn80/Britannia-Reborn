@@ -1,0 +1,189 @@
+{
+  "definitions": {
+    "Body.def": "2fbd408fcc96d1c0b382c4fd5c4efc798e2e5093e59a14ed6be9146b4a81cdab",
+    "Corpse.def": "9bc572c3643acbcd1e299e6def4297c57da586624e373a45da88f72654b7c02a",
+    "Bodyconv.def": "62debf90a6c5f59a885da6b0a8db1094d90c8d9e0a2c4c02b3acc234d818b665",
+    "mobtypes.txt": "a4f1c98057c5bcf10ccdb575a9154260651e49b852bfe548059ff55fcbbf29d8"
+  },
+  "mobtypes": {
+    "781": [
+      "MONSTER",
+      0
+    ],
+    "805": [
+      "MONSTER",
+      0
+    ]
+  },
+  "redirects": {
+    "781": {
+      "mobile": [
+        71,
+        1645
+      ],
+      "corpse": [
+        71,
+        1645
+      ]
+    },
+    "805": {
+      "mobile": [
+        71,
+        1107
+      ],
+      "corpse": [
+        71,
+        1107
+      ]
+    }
+  },
+  "archive": "anim2.mul",
+  "graphic": 49,
+  "layout": "large",
+  "groups": {
+    "0": [
+      [
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "a0800b75cef1cf9baf05a9fa36ce7287c31cf1af006e4eb81998bb2a7932f890"
+    ],
+    "1": [
+      [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "b4eed144df995c39aac6500f2a77c7358c56f11d939c74687d81ff9c558daaa7"
+    ],
+    "2": [
+      [
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "b5af2e890fa38d6ee5ddeb564a863855a9d16fbb8cf5714929792efc30286dde"
+    ],
+    "3": [
+      [
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "b5af2e890fa38d6ee5ddeb564a863855a9d16fbb8cf5714929792efc30286dde"
+    ],
+    "4": [
+      [
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "8b4758089039c5bdf2e3a52b8efc60282e3b2946ba598070c3c538000567b170"
+    ],
+    "5": [
+      [
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "e35e287ddbc2247fcd01dbe2e0ddfdd19d8bc7911dc3b147bc6945fbab44e37b"
+    ],
+    "6": [
+      [
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "ae69c0d35de8336ebce20538799711095f4a615c74c284eaa7c05604d1b8664d"
+    ],
+    "10": [
+      [
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "53e3449fb6fd38545ba33d260ae7b32f6c15f0f362b470563200a4f70af1b365"
+    ],
+    "11": [
+      [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "539f3de20a9e928de5b28c6b1f9f93c40d89de460ccce465b702c0d0f0992c70"
+    ],
+    "15": [
+      [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "4e34cbb4dc2c7caa70e3c3e715d1f0772b69c5ae4b9c9c367465451febfb9adc"
+    ],
+    "16": [
+      [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "4e34cbb4dc2c7caa70e3c3e715d1f0772b69c5ae4b9c9c367465451febfb9adc"
+    ],
+    "17": [
+      [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "539f3de20a9e928de5b28c6b1f9f93c40d89de460ccce465b702c0d0f0992c70"
+    ],
+    "18": [
+      [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "33d700a37d8a54b7100881d4e4f5d8b136d3831c5247701dd4493dc7641bb95a"
+    ]
+  },
+  "aliases": [
+    [
+      2,
+      3
+    ],
+    [
+      11,
+      17
+    ],
+    [
+      15,
+      16
+    ]
+  ]
+}

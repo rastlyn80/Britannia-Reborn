@@ -52,6 +52,10 @@ BATCHES = {
     'gargoyle_kitsune_larva_actions': ((67, 246, 778), 'GargoyleKitsuneLarvaLive.gd',
                                        ('test-gargoyle-kitsune-larva-actions.gd',
                                         'test-gargoyle-kitsune-larva-corpses.gd')),
+    'solen_worker_actions': ((781, 805), 'SolenWorkerActionsLive.gd',
+                             ('test-solen-worker-actions.gd', 'test-solen-worker-corpses.gd')),
+    'avenger_rotting_actions': ((152, 155), 'GoatHarpyHordeLive.gd',
+                                ('test-avenger-rotting-actions.gd', 'test-avenger-rotting-corpses.gd')),
     'dragon_daemon': ((9, 10, 12, 38, 40, 43, 59, 60, 61), 'PreparedCreatureActionLive.gd',
                       ('test-dragon-daemon-gestures.gd',)),
     'terathan_classic': ((70, 71, 72), 'PreparedCreatureActionLive.gd', ('test-terathan-gestures.gd',)),
@@ -137,6 +141,8 @@ PREDECESSORS = {
     'hopper_fan_blood_actions': ('hopper_horde_actions',),
     'goat_harpy_horde_actions': ('ophidian_staff', 'fidget_aliases_toad', 'hopper_horde_actions'),
     'gargoyle_kitsune_larva_actions': ('fidget_aliases_toad',),
+    'solen_worker_actions': (),
+    'avenger_rotting_actions': (),
     'copper_kaze_actions': (),
     'ophidian_patchwork_actions': ('ophidian_bardiche',),
     'tokuno_spider_dragon_actions': ('dragon_daemon',),
@@ -315,7 +321,7 @@ def checked(index, active, batch, *, compare_registry=True):
                    'DaemonActionsLive.gd', 'WraithDrakeWalrusLive.gd', 'OccurrenceGesturesLive.gd',
                    'LaterCreatureGesturesLive.gd', 'ArmedFlyingCreatureGesturesLive.gd', 'TokunoSpiderDragonLive.gd',
                    'MageLordTentacleActionsLive.gd', 'GoatHarpyHordeLive.gd',
-                   'GargoyleKitsuneLarvaLive.gd') and (
+                   'GargoyleKitsuneLarvaLive.gd', 'SolenWorkerActionsLive.gd') and (
             report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
         raise ValueError('Supplementary action trial used a different prepared fixture loader')
     if batch == 'occurrence_deaths' and (

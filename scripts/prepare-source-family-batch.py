@@ -46,7 +46,8 @@ def check(module):
     report = json.loads(OUTPUT.read_text())
     # The earlier preparer baked the identical pinned base package.
     assert report['batch_preparer_sha256'] in (
-        sha(Path(__file__)), '7106ccdf3e7754da0bc212b6bd00591d3e0a3cfb14fac539a7340bd82d48e782')
+        sha(Path(__file__)), '7106ccdf3e7754da0bc212b6bd00591d3e0a3cfb14fac539a7340bd82d48e782',
+        'bbb3b8020275c609ea7dc5f8d18c4e5ba523554991975f51c1ee76003b5962d5')
     assert report['manifest_sha256'] == sha(MANIFEST)
     assert report['preparer_sha256'] == sha(ROOT/'scripts/prepare-source-preserving.py')
     assert report['baker_sha256'] == sha(BAKER)
@@ -91,7 +92,13 @@ def main():
             source = source.replace(before,after)
         # The publisher separately checks the exact new scenes and native receipt.
         old = 'registered.assets==entry.assets'
-        new = 'registered.get("authored_action_base_assets",registered.assets)==entry.assets'
+        new = ('registered.get("classic_gesture_base_assets",'
+               'registered.get("authored_action_base_assets",registered.assets))==entry.assets')
+        assert source.count(old) == 1
+        source = source.replace(old, new)
+        old = 'registered.presentation_script==entry.presentation_script'
+        new = (f'({old} or (body==155 and registered.get("classic_gesture_batch","")=="avenger_rotting_actions"'
+               ' and registered.presentation_script=="res://Presentation/RottingCorpseActionsVisual.gd"))')
         assert source.count(old) == 1
         source = source.replace(old, new)
         script = WORK/'FamilyActionTests.gd'
