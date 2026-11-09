@@ -4,6 +4,7 @@ const Registry=preload("res://Presentation/CreatureRegistry.gd")
 var output:="res://../work/creatures/ridgebacks/death"
 func _initialize() -> void:
 	if DisplayServer.get_name()=="headless":output+="-contact"
+	if "--verification" in OS.get_cmdline_user_args():output+="-verification"
 	create_timer(240.).timeout.connect(func():push_error("Mounted human death deadline");quit(1));call_deferred("run")
 func body_skin(human: Node3D) -> PackedVector3Array:
 	var result:=PackedVector3Array();var rig: Skeleton3D=human.skeleton

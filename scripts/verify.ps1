@@ -140,7 +140,7 @@ if (Test-Path "$root/Viewer/local-art/creatures/source_preserving/preparation.js
   $ridgebackExit = $LASTEXITCODE
   $ridgebackRiding | ForEach-Object {Write-Output $_}
   if ($ridgebackExit -or ($ridgebackRiding | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Original Ridgeback/Savage Rider presentation failed'}
-  $mountedDeath = & $godot --headless --path "$root/Viewer" --script res://Presentation/MountedHumanDeathTests.gd 2>&1
+  $mountedDeath = & $godot --headless --path "$root/Viewer" --script res://Presentation/MountedHumanDeathTests.gd -- --verification 2>&1
   $mountedDeathExit = $LASTEXITCODE
   $mountedDeath | ForEach-Object {Write-Output $_}
   if ($mountedDeathExit -or ($mountedDeath | Select-String 'SCRIPT ERROR:|ERROR:')) {throw 'Mounted human/Savage Rider death handoff failed'}
