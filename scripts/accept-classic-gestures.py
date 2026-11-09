@@ -70,6 +70,8 @@ BATCHES = {
                                       ('test-golem-raptor-juka-solen-actions.gd',)),
     'post_solen_actions': ((248, 303, 251, 787, 300, 263, 253, 305), 'PostSolenActionsLive.gd',
                            ('test-post-solen-actions.gd',)),
+    'frost_through_gargoyle_actions': ((20, 792, 771, 265, 281, 130, 755, 754),
+                                      'FrostThroughGargoyleLive.gd', ('test-frost-through-gargoyle-actions.gd',)),
     'dragon_daemon': ((9, 10, 12, 38, 40, 43, 59, 60, 61), 'PreparedCreatureActionLive.gd',
                       ('test-dragon-daemon-gestures.gd',)),
     'terathan_classic': ((70, 71, 72), 'PreparedCreatureActionLive.gd', ('test-terathan-gestures.gd',)),
@@ -165,6 +167,7 @@ PREDECESSORS = {
     'bomber_ogre_rune_dopple_actions': ('exact_creature_fidgets',),
     'golem_raptor_juka_solen_actions': ('ready_stances', 'slith_actions'),
     'post_solen_actions': ('gaman_gestures', 'late_classic_actions'),
+    'frost_through_gargoyle_actions': ('blistering_pillage',),
     'copper_kaze_actions': (),
     'ophidian_patchwork_actions': ('ophidian_bardiche',),
     'tokuno_spider_dragon_actions': ('dragon_daemon',),
@@ -325,7 +328,7 @@ def checked(index, active, batch, *, compare_registry=True):
         for predecessor in predecessors:
             if (batch in ('slith_actions', 'ranked_classic_actions', 'swamp_widow_juka_actions',
                           'bomber_ogre_rune_dopple_actions', 'golem_raptor_juka_solen_actions',
-                          'post_solen_actions') or
+                          'post_solen_actions', 'frost_through_gargoyle_actions') or
                     predecessor in ('scorpion_imp', 'dragon_daemon', 'bone_cyclops', 'vampire_bat_actions',
                                     'fidget_aliases_toad', 'skeletal_mage_staff')):
                 # Independent successors seal their own retained rows. Replaying a
@@ -334,7 +337,11 @@ def checked(index, active, batch, *, compare_registry=True):
                 retained_bodies = ({'ready_stances': {730}, 'slith_actions': {734}}[predecessor]
                                    if batch == 'golem_raptor_juka_solen_actions' else bodies)
                 retained = [row for row in previous if row['bodies'][0]['body'] in retained_bodies]
-                if not retained or any(owners[row['bodies'][0]['body']] != row for row in retained):
+                retained_owners = owners
+                if batch == 'frost_through_gargoyle_actions':
+                    redirects = runpy.run_path(str(ROOT / 'scripts/prepare-creature-uop-redirects.py'))
+                    retained_owners = owners | {130: redirects['without_active_redirect'](owners[130])}
+                if not retained or any(retained_owners[row['bodies'][0]['body']] != row for row in retained):
                     raise ValueError(f'{batch} must retain its sealed {predecessor} rows')
                 continue
             checked(dict(index, entries=prior_entries), True, predecessor)
@@ -362,7 +369,8 @@ def checked(index, active, batch, *, compare_registry=True):
                    'MageLordTentacleActionsLive.gd', 'GoatHarpyHordeLive.gd',
                    'GargoyleKitsuneLarvaLive.gd', 'SolenWorkerActionsLive.gd', 'OrcBogActionsLive.gd',
                    'SlithActionsLive.gd', 'RankedClassicActionsLive.gd', 'SwampWidowJukaActionsLive.gd',
-                   'BomberOgreRuneDoppleLive.gd', 'GolemRaptorJukaSolenLive.gd', 'PostSolenActionsLive.gd') and (
+                   'BomberOgreRuneDoppleLive.gd', 'GolemRaptorJukaSolenLive.gd', 'PostSolenActionsLive.gd',
+                   'FrostThroughGargoyleLive.gd') and (
             report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
         raise ValueError('Supplementary action trial used a different prepared fixture loader')
     if batch == 'occurrence_deaths' and (
@@ -425,6 +433,9 @@ def checked(index, active, batch, *, compare_registry=True):
     if batch == 'golem_raptor_juka_solen_actions':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-golem-raptor-juka-solen-actions.py'))
         recipe['check_stance'](prepared, (sealed if active else live.parent) / 'stance.json', receipt)
+    if batch == 'frost_through_gargoyle_actions':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-frost-through-gargoyle-actions.py'))
+        recipe['check_fire_stances'](report, receipt)
     if batch == 'dragon_daemon':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-dragon-daemon-actions.py'))
         recipe['check_breath'](read((sealed if active else live.parent) / 'breath.json'), candidates, by_body)
@@ -488,12 +499,13 @@ def checked(index, active, batch, *, compare_registry=True):
                             or (packet['type'], packet['subaction'], packet['variation']) != (kind, 0, 0)):
                         raise ValueError(f'Both clients must witness body {body} new-protocol type {kind}')
         if batch in ('swamp_widow_juka_actions', 'bomber_ogre_rune_dopple_actions',
-                      'golem_raptor_juka_solen_actions', 'post_solen_actions'):
+                      'golem_raptor_juka_solen_actions', 'post_solen_actions', 'frost_through_gargoyle_actions'):
             categories = package['new_action_categories']
             requests = [(-1, 4, 'Hit')] + [(request, kind, categories[str(kind)])
                                             for request, kind in ((-3, 2), (-4, 5), (-5, 14))
                                             if str(kind) in categories]
-            if batch in ('golem_raptor_juka_solen_actions', 'post_solen_actions') and '11' in categories:
+            if batch in ('golem_raptor_juka_solen_actions', 'post_solen_actions',
+                         'frost_through_gargoyle_actions') and '11' in categories:
                 requests.append((-2, 11, categories['11']))
             for request, kind, clip in requests:
                 action, = (row for row in witness['actions'] if row['requested'] == request)
@@ -510,7 +522,8 @@ def checked(index, active, batch, *, compare_registry=True):
                 raise ValueError(f'Missing Classic gesture evidence for body {body}, slot {slot}')
             if (batch in ('efreet_actions', 'orc_bog_actions', 'slith_actions', 'ranked_classic_actions',
                           'swamp_widow_juka_actions', 'bomber_ogre_rune_dopple_actions',
-                          'golem_raptor_juka_solen_actions', 'post_solen_actions', 'lizard_actions', 'quadruped_actions', 'hart_deaths',
+                          'golem_raptor_juka_solen_actions', 'post_solen_actions', 'frost_through_gargoyle_actions',
+                          'lizard_actions', 'quadruped_actions', 'hart_deaths',
                           'dog_bear_actions', 'cat_actions',
                           'skeleton_actions', 'troll_actions', 'field_fauna', 'spider_mongbat_actions',
                           'grazers_grizzly_actions', 'pig_reaper_harpy_actions', 'rabbit_distinct_actions',
@@ -552,7 +565,8 @@ def checked(index, active, batch, *, compare_registry=True):
                     if expected_row not in bone_base:
                         raise ValueError('Bone Knight overlay must retain the independently checked sibling base')
                     continue
-            retain_uop = batch in ('ready_stances', 'slith_actions', 'golem_raptor_juka_solen_actions')
+            retain_uop = batch in ('ready_stances', 'slith_actions', 'golem_raptor_juka_solen_actions',
+                                   'frost_through_gargoyle_actions')
             compared = matches if retain_uop else [redirect(row) for row in matches]
             comparison_index = index
             while len(compared) == 1:
@@ -605,6 +619,9 @@ def test_active(batch):
     if batch == 'post_solen_actions':
         for test in ('ElementalMinotaurRouteTests', 'YomotsuRouteTests'):
             run_client_check(godot, env, f'res://Presentation/{test}.gd', [])
+    if batch == 'frost_through_gargoyle_actions':
+        run_client_check(godot, env, 'res://Presentation/MeerDonorRouteTests.gd', [])
+        run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', ['--family=hydra'])
     if batch == 'ready_stances':
         for family in ('raptor', 'slith'):
             run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', [f'--family={family}'])

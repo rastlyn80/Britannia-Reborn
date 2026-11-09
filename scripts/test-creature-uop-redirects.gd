@@ -28,7 +28,7 @@ func run() -> void:
 		if active:
 			assert(registered == candidate.presentation)
 		var redirect_layer: Dictionary = candidate.presentation
-		if active and registered.get("classic_gesture_batch") == "golem_raptor_juka_solen_actions":
+		if active and registered.get("classic_gesture_batch") in ["golem_raptor_juka_solen_actions", "frost_through_gargoyle_actions"]:
 			redirect_layer = SealedBase.retained(registered, body)
 		game.entities[SERIAL] = {"serial": SERIAL, "body": body, "hue": 0x8035}
 		for treatment in ["original", "rounded", "modern"]:

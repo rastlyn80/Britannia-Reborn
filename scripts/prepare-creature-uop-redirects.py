@@ -70,7 +70,20 @@ def merge_active(row, proof, receipt_hash):
                 uop_redirect_targets=proof, uop_redirect_native_sha256=receipt_hash)
 
 
+def redirect_layer(row):
+    if row.get('classic_gesture_batch') == 'frost_through_gargoyle_actions' and [
+            body['body'] for body in row['bodies']] == [130]:
+        gate = runpy.run_path(str(ROOT / 'scripts/accept-classic-gestures.py'))
+        bases, rows = gate['checked']({'entries': []}, True, row['classic_gesture_batch'],
+                                      compare_registry=False)
+        if row not in rows:
+            raise ValueError('Active Fire Gargoyle does not match its sealed action package')
+        row, = (base for base in bases if base['bodies'][0]['body'] == 130)
+    return row
+
+
 def without_active_redirect(row):
+    row = redirect_layer(row)
     if 'classic_gesture_native_sha256' in row and any(body['body'] in (730, 734) for body in row['bodies']):
         ready = runpy.run_path(str(ROOT / 'scripts/accept-classic-gestures.py'))['without_ready_stance']
         row = ready(row)
@@ -186,7 +199,7 @@ def main():
     if active:
         actual = {row['bodies'][0]['body']: row for row in index['entries'] if 'uop_redirect_native_sha256' in row}
         strip_ready = runpy.run_path(str(ROOT / 'scripts/accept-classic-gestures.py'))['without_ready_stance']
-        if {body: strip_ready(row) for body, row in actual.items()} != final:
+        if {body: strip_ready(redirect_layer(row)) for body, row in actual.items()} != final:
             raise ValueError('The active redirect batch is incomplete')
         for row in preview:
             row['presentation'] = actual[row['body']]

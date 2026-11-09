@@ -2,6 +2,7 @@ extends SceneTree
 
 const Ground := preload("res://Presentation/SourceGroundLookup.gd")
 const Registry := preload("res://Presentation/CreatureRegistry.gd")
+const SealedBase := preload("res://Presentation/SealedCreatureActionBase.gd")
 const Game := preload("res://Network/GameSession.gd")
 const Corpses := preload("res://Presentation/CorpseModels.gd")
 const Wire := preload("res://Network/LoginProtocol.gd")
@@ -17,6 +18,9 @@ func run() -> void:
 	var row := Registry.entry(body).duplicate(true)
 	assert(row.kind == ("gargoyles_gargoyle_blistering" if blistering else "gargoyles_gargoyle_slave"))
 	var active := "--active" in OS.get_cmdline_user_args()
+	if active and blistering and row.get("classic_gesture_batch") == "frost_through_gargoyle_actions":
+		row = SealedBase.retained(row, body)
+		Registry.entries[body] = row
 	var originals: Dictionary = row.get("classic_gesture_base_assets" if blistering else "authored_action_base_assets", {}).duplicate(true)
 	var assets: Dictionary = row.get("assets", {}).duplicate(true)
 	for treatment in ["original", "rounded", "modern"]:

@@ -1,0 +1,1880 @@
+{
+  "inputs": {
+    "AnimationSequence.uop": "b4de2afdba2bab6e987389cde18aee4703bbef560f66d4c26be5ffc04f2b8e0f",
+    "AnimationFrame1.uop": "343ce7ec69f1c96cd040228cba2e3241cfb976362324b50db1b9cf46ae9170c2",
+    "Bodyconv.def": "62debf90a6c5f59a885da6b0a8db1094d90c8d9e0a2c4c02b3acc234d818b665",
+    "mobtypes.txt": "a4f1c98057c5bcf10ccdb575a9154260651e49b852bfe548059ff55fcbbf29d8"
+  },
+  "classic": {
+    "20": {
+      "mobtypes": [
+        "MONSTER",
+        0
+      ],
+      "archive": "anim2.mul",
+      "graphic": 4,
+      "layout": "large",
+      "groups": {
+        "0": [
+          [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "43c274ab2e9217bbacc0acb5198c4f35d41473afbfcc753b96786cfbe61ffd8b"
+        ],
+        "1": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "3640075290890c23c99e2f98bc1cd581eb89568cdad079efd5a5986629270c92"
+        ],
+        "2": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "1c1da7f7ededda8eb0c5956414ae16e47bfaa8e593ec898bc52fe9a676df29e8"
+        ],
+        "3": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "1c1da7f7ededda8eb0c5956414ae16e47bfaa8e593ec898bc52fe9a676df29e8"
+        ],
+        "4": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "9c2979a3d007d687764e897f37549561327e7dfba2134c6ae9314531764d5525"
+        ],
+        "5": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "9c2979a3d007d687764e897f37549561327e7dfba2134c6ae9314531764d5525"
+        ],
+        "6": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "9c2979a3d007d687764e897f37549561327e7dfba2134c6ae9314531764d5525"
+        ],
+        "10": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "941838de29927c5e5b62de11952979fb2584aa63d06b94a84f88162ea6295a8e"
+        ],
+        "11": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "148fec62c9afe0014602a159311a11c4b5e236f88cb153b6ccd6f79c62f1a5e8"
+        ],
+        "15": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "a8509dfbb318f82fce10785dc090e46a95be3e534f3fcdbbf6df516868f7cbbc"
+        ],
+        "16": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "a8509dfbb318f82fce10785dc090e46a95be3e534f3fcdbbf6df516868f7cbbc"
+        ],
+        "17": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "148fec62c9afe0014602a159311a11c4b5e236f88cb153b6ccd6f79c62f1a5e8"
+        ],
+        "18": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "8c8e6e4261f80083673124e1da34517c8a09b4c33e0b9813f8d5fe78df184c52"
+        ]
+      },
+      "exact_aliases": [
+        [
+          2,
+          3
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          11,
+          17
+        ],
+        [
+          15,
+          16
+        ]
+      ],
+      "same_silhouette": [],
+      "new_actions": {
+        "0": [
+          4,
+          5,
+          4,
+          4,
+          4,
+          4
+        ],
+        "2": [
+          15,
+          15
+        ],
+        "3": [
+          2,
+          3
+        ],
+        "4": [
+          10
+        ],
+        "5": [
+          26,
+          27
+        ],
+        "8": [
+          28
+        ],
+        "11": [
+          12,
+          12,
+          12
+        ],
+        "14": [
+          11
+        ],
+        "15": [
+          23
+        ]
+      },
+      "sequence_present": true
+    },
+    "265": {
+      "mobtypes": [
+        "MONSTER",
+        0
+      ],
+      "archive": "anim5.mul",
+      "graphic": 24,
+      "layout": "large",
+      "groups": {
+        "0": [
+          [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "f32a12b62e5415682054707ea09531ef9ccc7066fbf107c9c57744de88befd92"
+        ],
+        "1": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "576c91adebdb72f99a5815793bb8c98d2753e1aadba38a02ce7aa8b649cc9192"
+        ],
+        "2": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "afdd765615b0807f352dc3dfa0f979195cccd3739e077cd150851c0cfc8b24a8"
+        ],
+        "3": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "18064570d0562ea48de51ca17c6a2838c1466f83d374b61e43e69e0ad17589c4"
+        ],
+        "4": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "cbb2d6107866fbf360f4f628d33843d895a04af9d51c04da7cb14be9e6b67105"
+        ],
+        "5": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "4ef9334b76aa54a372dddc9669be0e5c5909a2cabb53d4f83f96124bd7a0e55e"
+        ],
+        "6": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "2d327a0fc17ebe0d9089beeed717f92ff62ef34d037fd8d4661be3b90f7bc366"
+        ],
+        "10": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "77cf76ddddfa432bb6604f0a2bb0924c9c007cc2d6fc7b113e813314ac95c908"
+        ],
+        "11": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "d48e4391f6d097b240de5fe2d1ad976ef042bb19610bcd5ec67143bbb029ad82"
+        ],
+        "15": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "01422c296b7b1773ff9e2773719a4e185e987bf99e809530f9dfac7a6f2afd45"
+        ],
+        "16": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "cb01be3cbedec09ca17ab896d0a1720a4c5f2a7a3a61bc04c478afaa5a268fce"
+        ],
+        "17": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "821e844c9cbcd6b0145a03ef0f6d29e36738fee7dcfebd5ea0110ece77fb280c"
+        ],
+        "18": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "40d167a9e337514a30bd302c4f504b3b1940439b7ae3721275e11c86616c3d11"
+        ]
+      },
+      "exact_aliases": [],
+      "same_silhouette": [
+        [
+          15,
+          16
+        ]
+      ],
+      "new_actions": {
+        "0": [
+          4,
+          5,
+          4,
+          4,
+          4,
+          4
+        ],
+        "2": [
+          15,
+          15
+        ],
+        "3": [
+          2,
+          3
+        ],
+        "4": [
+          10
+        ],
+        "5": [
+          26,
+          27
+        ],
+        "8": [
+          28
+        ],
+        "11": [
+          12,
+          12,
+          12
+        ],
+        "14": [
+          11
+        ],
+        "15": [
+          23
+        ]
+      },
+      "sequence_present": true
+    },
+    "281": {
+      "mobtypes": [
+        "MONSTER",
+        0
+      ],
+      "archive": "anim5.mul",
+      "graphic": 36,
+      "layout": "large",
+      "groups": {
+        "0": [
+          [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "b78c94b194ce6fb4aaf6c9089bf2e8c88a781358a15363e1dfaec09e57760c4b"
+        ],
+        "1": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "690eede9a2097e34464b9a234e09ef2e78e0287461a2dd89dba80389f2c72e50"
+        ],
+        "2": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "5a205b98eef6043c4dacadb617e312f071b6f2b24a868a37a9c661f8ea1a7a15"
+        ],
+        "3": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "7f2c1cb7cb3abbbcb3bbb134411825deb9ac8b5ba968bfe4eeee16db5ce742b2"
+        ],
+        "4": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "42a3927f2aee2002bb38723075ec5444eddcc09097b969b2a1e819e65cfc28bf"
+        ],
+        "5": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "942c9576f4610f3e2e0278d10f76d747948b0aada9b1ce5b5925e2383665fb3a"
+        ],
+        "6": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "099ca1f2a72c94eb2a9523f823e8a2b667f4770d012faa3adf77a9cea58846c8"
+        ],
+        "10": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "68b31e2a9d835c1c71c98aad181d6f4c00aa25ea8288abba6f4782575ec72999"
+        ],
+        "11": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "26c02a95c2c97586d2f0785ea1bd1fadada918a18b39791b2e8c8ae454df6100"
+        ],
+        "15": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "e9f638ea768f1c55692bcf0ea26ce59c88948b956887ed8bf0ae1670803d3846"
+        ],
+        "16": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "37875836fdfb71cc17ef186243f5560207ccd81192a8fae853c22b84b60b34e8"
+        ],
+        "17": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "91b1639bc1e4930bb907247a7a4e88d6544f35ce13c33a4771de303b88dc8bdc"
+        ],
+        "18": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "40773d9cdd9fbfc63bb24f55b3e3cddbb699d407b96c9af7ac6529c95b0890d8"
+        ]
+      },
+      "exact_aliases": [],
+      "same_silhouette": [],
+      "new_actions": {
+        "0": [
+          4,
+          5,
+          4,
+          4,
+          4,
+          4
+        ],
+        "2": [
+          15,
+          15
+        ],
+        "3": [
+          2,
+          3
+        ],
+        "4": [
+          10
+        ],
+        "5": [
+          26,
+          27
+        ],
+        "8": [
+          28
+        ],
+        "11": [
+          4,
+          4,
+          4
+        ],
+        "14": [
+          11
+        ],
+        "15": [
+          23
+        ]
+      },
+      "sequence_present": true
+    },
+    "754": {
+      "mobtypes": [
+        "MONSTER",
+        8
+      ],
+      "archive": "anim2.mul",
+      "graphic": 72,
+      "layout": "large",
+      "groups": {
+        "0": [
+          [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "e60b5ab2fdeef65f0a1029e53ef2194403ab81d87ee922483bba5b83d92fc153"
+        ],
+        "1": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "625a47ccda4977b807e8fb0798f63fc1102f7f0a0b69a9fccd2525dec7e5d675"
+        ],
+        "2": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "3ba36bd0b599dc8c7a50f6806cc55ada1c7147df3a6df5d206ff351079de66c0"
+        ],
+        "3": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "3ba36bd0b599dc8c7a50f6806cc55ada1c7147df3a6df5d206ff351079de66c0"
+        ],
+        "4": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "887555534a7246d35d82eee10e5c10131776e4d26558e4e1e06e863374ba01a8"
+        ],
+        "5": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "887555534a7246d35d82eee10e5c10131776e4d26558e4e1e06e863374ba01a8"
+        ],
+        "6": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "887555534a7246d35d82eee10e5c10131776e4d26558e4e1e06e863374ba01a8"
+        ],
+        "10": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "fc6c456323e3758c14b0781d3a5678ef021c51a0a39735765be4503bdd136870"
+        ],
+        "11": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "c4cfe3d9bf920babc48a423521a246c431c38974aca0113932801f738a95530b"
+        ],
+        "15": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "44daf653480c5032e5beab6155191ae9cee25228c99194147a57e8392fa05a5f"
+        ],
+        "16": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "44daf653480c5032e5beab6155191ae9cee25228c99194147a57e8392fa05a5f"
+        ],
+        "17": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "c4cfe3d9bf920babc48a423521a246c431c38974aca0113932801f738a95530b"
+        ],
+        "18": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "e62117bf4262d0d443ab8cc24068468d0f8e02ef8e02b35b376d70381fd2a197"
+        ],
+        "19": [
+          [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "a93bf328576bf614795a214a9e357d20001c2ab58ea0397ea8e9155d6c7aae4c"
+        ],
+        "20": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "20279c09f1cc25286563eaa6cc80e37a66991703b880a2be32d6bb4a77240450"
+        ],
+        "21": [
+          [
+            7,
+            7,
+            7,
+            7,
+            7
+          ],
+          "e77b6d84ead17262243ce2d78a4d815169ec816f37cb27beaf60bb6ff4dd89df"
+        ]
+      },
+      "exact_aliases": [
+        [
+          2,
+          3
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          11,
+          17
+        ],
+        [
+          15,
+          16
+        ]
+      ],
+      "same_silhouette": [],
+      "new_actions": {
+        "0": [
+          4,
+          5,
+          4,
+          4,
+          4,
+          4
+        ],
+        "2": [
+          15,
+          15
+        ],
+        "3": [
+          2,
+          3
+        ],
+        "4": [
+          10
+        ],
+        "5": [
+          26,
+          27
+        ],
+        "8": [
+          28
+        ],
+        "11": [
+          4,
+          4,
+          4
+        ],
+        "14": [
+          11
+        ],
+        "15": [
+          23
+        ]
+      },
+      "sequence_present": true
+    },
+    "755": {
+      "mobtypes": [
+        "MONSTER",
+        8
+      ],
+      "archive": "anim2.mul",
+      "graphic": 73,
+      "layout": "large",
+      "groups": {
+        "0": [
+          [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "7e89fa469202ede0fe1e3303f07a41f157ac2ce317c56c957909ab5dba7347ec"
+        ],
+        "1": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "7aa2d90cafcb03b8e4693ae919a4fdfbb5af75944f50a72b2e2f68870a37346a"
+        ],
+        "2": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "78573827d1999ba296fadee78d09378f140c635ce463207a0c0c095a4e9a4f9c"
+        ],
+        "3": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "78573827d1999ba296fadee78d09378f140c635ce463207a0c0c095a4e9a4f9c"
+        ],
+        "4": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "ff240dfea73b5d130a280dd992c22a0e338294d13b8f7f95e48b5e81cb2ae262"
+        ],
+        "5": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "ff240dfea73b5d130a280dd992c22a0e338294d13b8f7f95e48b5e81cb2ae262"
+        ],
+        "6": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "ff240dfea73b5d130a280dd992c22a0e338294d13b8f7f95e48b5e81cb2ae262"
+        ],
+        "10": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "8821a9b927fa60bd8deb1ee026b14ab7c4ede527866d3d2665aca1cc05052ff3"
+        ],
+        "11": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "6c2b9d8b3620ac3beb0f2dde28ac6ce0de42ad8d78702302268171b91dc55107"
+        ],
+        "15": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "501fd793124851be2ce8498bbed0292905b9b3ec93d948ac5fcff78c0250a2f3"
+        ],
+        "16": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "501fd793124851be2ce8498bbed0292905b9b3ec93d948ac5fcff78c0250a2f3"
+        ],
+        "17": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "6c2b9d8b3620ac3beb0f2dde28ac6ce0de42ad8d78702302268171b91dc55107"
+        ],
+        "18": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "10ee664a50d26704f2cb0ae0c8d723825be8af6855f37a326778b25a8d673a3f"
+        ],
+        "19": [
+          [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "79853515e28d3d33daba4a1745304458f96439fd531911a1dcec1c14993c687a"
+        ],
+        "20": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "c412a113b6dc39367efe31d5b64d03be75c9b7f83e75321fce248b8e8143d1c0"
+        ],
+        "21": [
+          [
+            7,
+            7,
+            7,
+            7,
+            7
+          ],
+          "e2edc2c53356ccd73df5b00dde04e4a79e92b7b999529f212118b44c40185870"
+        ]
+      },
+      "exact_aliases": [
+        [
+          2,
+          3
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          11,
+          17
+        ],
+        [
+          15,
+          16
+        ]
+      ],
+      "same_silhouette": [],
+      "new_actions": {
+        "0": [
+          4,
+          5,
+          4,
+          4,
+          4,
+          4
+        ],
+        "2": [
+          15,
+          15
+        ],
+        "3": [
+          2,
+          3
+        ],
+        "4": [
+          10
+        ],
+        "5": [
+          26,
+          27
+        ],
+        "8": [
+          28
+        ],
+        "11": [
+          4,
+          4,
+          4
+        ],
+        "14": [
+          11
+        ],
+        "15": [
+          23
+        ]
+      },
+      "sequence_present": true
+    },
+    "771": {
+      "mobtypes": [
+        "MONSTER",
+        0
+      ],
+      "archive": "anim2.mul",
+      "graphic": 39,
+      "layout": "large",
+      "groups": {
+        "0": [
+          [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "fe433d374628ec90ba1747a7f66ebb4bdfdb7a60261b508994e9b62a3acdab34"
+        ],
+        "1": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "d1c80e127046f91e06a51733c5d5b68b91d76c202bfbc35f8a42a06f1d867d2a"
+        ],
+        "2": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "11e8e00ce8da3a5908c9f0b79bf034bb31ae136170411288b6740661c7c027cc"
+        ],
+        "3": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "af4a904d110cf720c9fa57ffdf00ba5d0376d05057647d049b16f48f9c686f2b"
+        ],
+        "4": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "770ab3d095b6fbe8e4fd17186b450311e2296d062c0ade91c081ed1fd1c62b96"
+        ],
+        "5": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "eaef5c8fb0e4e3c74fd8494e110ce7cbb69e8ff3ba94aafb3e6131e9bb6c8174"
+        ],
+        "6": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "36409b018a2226d4161e82bf876de452f709b57e6136f6589355ee813e58c93b"
+        ],
+        "10": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "1c4a4ba687c8d60f5a494d9605a94487102562d55a2792106dba8163a10eee45"
+        ],
+        "11": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "52064c0a7e5077236db7e6829ea51beb08de2b85bd12a414bc53496a0c446303"
+        ],
+        "15": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "41ac18de02072d204076eb8556ef774d62a4e86b9ddcc4eca54705f0de1831d7"
+        ],
+        "16": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "41ac18de02072d204076eb8556ef774d62a4e86b9ddcc4eca54705f0de1831d7"
+        ],
+        "17": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "52064c0a7e5077236db7e6829ea51beb08de2b85bd12a414bc53496a0c446303"
+        ],
+        "18": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "317c64c79f15761bf3c3abc265cdf1a3c9957c106b463de1b9af9ddabc58bbae"
+        ]
+      },
+      "exact_aliases": [
+        [
+          11,
+          17
+        ],
+        [
+          15,
+          16
+        ]
+      ],
+      "same_silhouette": [],
+      "new_actions": {
+        "0": [
+          4,
+          5,
+          6,
+          4,
+          4,
+          4
+        ],
+        "2": [
+          15,
+          15
+        ],
+        "3": [
+          2,
+          3
+        ],
+        "4": [
+          10
+        ],
+        "5": [
+          26,
+          25
+        ],
+        "8": [
+          25
+        ],
+        "11": [
+          4,
+          4,
+          4
+        ],
+        "14": [
+          25
+        ],
+        "15": [
+          25
+        ]
+      },
+      "sequence_present": true
+    },
+    "792": {
+      "mobtypes": [
+        "MONSTER",
+        0
+      ],
+      "archive": "anim2.mul",
+      "graphic": 59,
+      "layout": "large",
+      "groups": {
+        "0": [
+          [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "74836387ce9dc49d1980f0901bb12479a4f1d50a67f063baaf2fabbef5a9bfd6"
+        ],
+        "1": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "b1179b5aadf7e527423cd8202ee716589166c3289e46f77335a2b5fa9febcce8"
+        ],
+        "2": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "9c6596a9e188aeede8d552f966bd0ce127aeaadedb30adb764e584f0d4996ea2"
+        ],
+        "3": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "9c6596a9e188aeede8d552f966bd0ce127aeaadedb30adb764e584f0d4996ea2"
+        ],
+        "4": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "d503ed055158bf021d855381090b5b002c741407e38c38b0c4c3e78d94aeb705"
+        ],
+        "5": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "e66c14010228628583365b92d0edd4950a428de9d22f15832f9ca0b543bc1567"
+        ],
+        "6": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "e2c56b60b41639ff873fee74c45900c87f1766e1918aad8fe30ceca9f89b3f7f"
+        ],
+        "10": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "d503ed055158bf021d855381090b5b002c741407e38c38b0c4c3e78d94aeb705"
+        ],
+        "11": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "bd16d3ede2c4385b8c70ef293573f41cd8dbe0ed1b76b5a50ba815279bc86d9e"
+        ],
+        "15": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "cfacd502e126654938892f7132be327b6d9b448daf5569cc000717d543648e16"
+        ],
+        "16": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "cfacd502e126654938892f7132be327b6d9b448daf5569cc000717d543648e16"
+        ],
+        "17": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "bd16d3ede2c4385b8c70ef293573f41cd8dbe0ed1b76b5a50ba815279bc86d9e"
+        ],
+        "18": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "1265e17d7d4b1c92d402cf746f29072dd0f2221f9f3c7bb9e44e59ab8b5f98cf"
+        ]
+      },
+      "exact_aliases": [
+        [
+          2,
+          3
+        ],
+        [
+          4,
+          10
+        ],
+        [
+          11,
+          17
+        ],
+        [
+          15,
+          16
+        ]
+      ],
+      "same_silhouette": [],
+      "new_actions": {
+        "0": [
+          4,
+          5,
+          4,
+          4,
+          4,
+          4
+        ],
+        "2": [
+          15,
+          15
+        ],
+        "3": [
+          2,
+          3
+        ],
+        "4": [
+          10
+        ],
+        "5": [
+          26,
+          27
+        ],
+        "8": [
+          28
+        ],
+        "11": [
+          12,
+          12,
+          12
+        ],
+        "14": [
+          11
+        ],
+        "15": [
+          23
+        ]
+      },
+      "sequence_present": true
+    }
+  },
+  "uop": {
+    "130": {
+      "mobtypes": [
+        "MONSTER",
+        65536
+      ],
+      "sequence": {
+        "animation_ref": 130,
+        "uop_name_hash": "0xd83f64ba26d623e2",
+        "bytes": 2431,
+        "replacements": [
+          {
+            "old_group": 0,
+            "frame_count": 9,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 1,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 2,
+            "frame_count": 11,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 3,
+            "frame_count": 9,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 4,
+            "frame_count": 6,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 5,
+            "frame_count": 7,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 6,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 7,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 8,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 9,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 10,
+            "frame_count": 6,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 11,
+            "frame_count": 11,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 12,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 13,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 14,
+            "frame_count": 0,
+            "new_group": 4,
+            "flags": 0
+          },
+          {
+            "old_group": 15,
+            "frame_count": 6,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 16,
+            "frame_count": 0,
+            "new_group": 15,
+            "flags": 0
+          },
+          {
+            "old_group": 17,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 18,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 19,
+            "frame_count": 0,
+            "new_group": 0,
+            "flags": 0
+          },
+          {
+            "old_group": 20,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 21,
+            "frame_count": 0,
+            "new_group": 1,
+            "flags": 0
+          },
+          {
+            "old_group": 22,
+            "frame_count": 9,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 23,
+            "frame_count": 11,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 24,
+            "frame_count": 8,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 25,
+            "frame_count": 10,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 26,
+            "frame_count": 8,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 27,
+            "frame_count": 11,
+            "new_group": -1,
+            "flags": 1091567616
+          },
+          {
+            "old_group": 28,
+            "frame_count": 6,
+            "new_group": -1,
+            "flags": 1091567616
+          }
+        ],
+        "modes": [
+          {
+            "mode": 0,
+            "fallback_mode": -1,
+            "default_group": 1,
+            "transitions": [],
+            "movement": [
+              {
+                "action": 0,
+                "one_handed_group": 1,
+                "two_handed_group": 1
+              },
+              {
+                "action": 1,
+                "one_handed_group": 0,
+                "two_handed_group": 0
+              },
+              {
+                "action": 2,
+                "one_handed_group": 24,
+                "two_handed_group": 24
+              }
+            ],
+            "new_protocol_actions": [
+              {
+                "type": 0,
+                "subaction": -1,
+                "groups": [
+                  4,
+                  5,
+                  4,
+                  4,
+                  4,
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 0,
+                "groups": [
+                  4,
+                  5,
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 1,
+                "groups": [
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 2,
+                "groups": [
+                  4
+                ]
+              },
+              {
+                "type": 0,
+                "subaction": 9,
+                "groups": [
+                  4
+                ]
+              },
+              {
+                "type": 2,
+                "subaction": -1,
+                "groups": [
+                  15,
+                  15
+                ]
+              },
+              {
+                "type": 3,
+                "subaction": -1,
+                "groups": [
+                  2,
+                  3
+                ]
+              },
+              {
+                "type": 4,
+                "subaction": -1,
+                "groups": [
+                  10
+                ]
+              },
+              {
+                "type": 5,
+                "subaction": -1,
+                "groups": [
+                  26,
+                  27
+                ]
+              },
+              {
+                "type": 8,
+                "subaction": -1,
+                "groups": [
+                  28
+                ]
+              },
+              {
+                "type": 11,
+                "subaction": -1,
+                "groups": [
+                  4,
+                  4,
+                  4
+                ]
+              },
+              {
+                "type": 14,
+                "subaction": -1,
+                "groups": [
+                  11
+                ]
+              },
+              {
+                "type": 15,
+                "subaction": -1,
+                "groups": [
+                  23
+                ]
+              }
+            ]
+          },
+          {
+            "mode": 1,
+            "fallback_mode": 0,
+            "default_group": 25,
+            "transitions": [
+              {
+                "target_mode": 0,
+                "group": 28
+              }
+            ],
+            "movement": [
+              {
+                "action": 0,
+                "one_handed_group": 25,
+                "two_handed_group": 25
+              },
+              {
+                "action": 1,
+                "one_handed_group": 22,
+                "two_handed_group": 22
+              },
+              {
+                "action": 2,
+                "one_handed_group": 24,
+                "two_handed_group": 24
+              }
+            ],
+            "new_protocol_actions": [
+              {
+                "type": 5,
+                "subaction": -1,
+                "groups": [
+                  26
+                ]
+              }
+            ]
+          }
+        ],
+        "unparsed_bytes": 0
+      },
+      "groups": {
+        "0": [
+          45,
+          "7ceed9b6eb02f020e1c6ff089a44714a37a2a63a83a9005673f3efd228bad2fa"
+        ],
+        "1": [
+          50,
+          "f26416245d24a7e3ce2549494a047b438b2eacacec4b1c47df66a88795274a78"
+        ],
+        "2": [
+          55,
+          "840e0f16f1f9cd72d071562ffbe67a3e9f70807c84992871445229126d063d45"
+        ],
+        "3": [
+          45,
+          "17edd686435a347ff62953bb3d39e26ebfc69acc83dc6acd000a48b2a0c88831"
+        ],
+        "4": [
+          30,
+          "ab92c5ec924b838c126671d47f0b2ec9e36167e8906722186bf7d76eefd3487f"
+        ],
+        "5": [
+          35,
+          "bf74469ea0af5dad7f37403f878f6926bfa786bbcf72215613371626bd599bb5"
+        ],
+        "10": [
+          30,
+          "c8202348963cae5e6f75032c54ee4e529b24513222fbbde7b2f905b9c8e2304a"
+        ],
+        "11": [
+          55,
+          "fc5bf56283de49c0533acd72887418b43faba39bef55b6fda0e770de575d4a9c"
+        ],
+        "15": [
+          30,
+          "8d5af1dc8e548b6dfdef96cc66f6629d7f83aa9117cbfac814660b1873fc5468"
+        ],
+        "22": [
+          45,
+          "8790cc3149ae820c7111823817b56152655d744654686d07bc02856c14a47e67"
+        ],
+        "23": [
+          55,
+          "788669d2be5db5f0bf6f70164ccd0f8241eef27460216bcc9edf803f9d6a4701"
+        ],
+        "24": [
+          40,
+          "b3041deca14fa381cbf13aea82eeef9dbf62e2c721ca44dae7678c5618cf8ca0"
+        ],
+        "25": [
+          50,
+          "1a3fd6d548485fce4716d48c654a399d4a5a9058a89b53e4d466c46841df49fe"
+        ],
+        "26": [
+          40,
+          "0f97c9ed0aefe60ee8682dfd57afc2d14dcfb51ff2ba20b5ca5891ca88fec69e"
+        ],
+        "27": [
+          55,
+          "26d217b44da8622e4d68219afd9a9d492f10f4ad9b7f2d2f159def9fe3547983"
+        ],
+        "28": [
+          30,
+          "2fa90cc550b0bdfb71a2acd5a451692f1413e5818a9efacf8a2b068ce94c67c7"
+        ]
+      }
+    }
+  }
+}

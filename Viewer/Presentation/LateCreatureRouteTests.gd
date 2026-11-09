@@ -89,6 +89,9 @@ func run() -> void:
 			if body in [730, 734] and active.get("classic_gesture_batch") == "golem_raptor_juka_solen_actions":
 				active = SealedBase.retained(active, body)
 				Registry.entries[body] = active
+			if body == 265 and active.get("classic_gesture_batch") == "frost_through_gargoyle_actions":
+				active = SealedBase.retained(active, body)
+				Registry.entries[body] = active
 			if body == 734 and active.get("classic_gesture_batch") == "slith_actions":
 				# Exercise the sealed ready-stance layer here. The Slith action gate
 				# checks the same keys and native identity on the installed successor.

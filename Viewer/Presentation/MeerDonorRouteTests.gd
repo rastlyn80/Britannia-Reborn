@@ -1,5 +1,6 @@
 extends SceneTree
 
+const SealedBase := preload("res://Presentation/SealedCreatureActionBase.gd")
 const Registry = preload("res://Presentation/CreatureRegistry.gd")
 const Avatar = preload("res://Presentation/HumanAvatar.gd")
 const Game = preload("res://Network/GameSession.gd")
@@ -23,6 +24,9 @@ func run() -> void:
 			Registry.entries[body] = record
 		assert(Registry.supports_body(body) and Registry.entry(body).kind == family)
 		var active := Registry.entry(body)
+		if body == 771 and active.get("classic_gesture_batch") == "frost_through_gargoyle_actions":
+			active = SealedBase.retained(active, body)
+			Registry.entries[body] = active
 		if active.has("legacy_slot11_evidence"):
 			assert(active == preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(record, active))
 		var avatar := Avatar.new()
