@@ -1,0 +1,1093 @@
+{
+  "definitions": {
+    "AnimationSequence.uop": "b4de2afdba2bab6e987389cde18aee4703bbef560f66d4c26be5ffc04f2b8e0f",
+    "mobtypes.txt": "a4f1c98057c5bcf10ccdb575a9154260651e49b852bfe548059ff55fcbbf29d8",
+    "Bodyconv.def": "62debf90a6c5f59a885da6b0a8db1094d90c8d9e0a2c4c02b3acc234d818b665"
+  },
+  "bodies": {
+    "157": {
+      "archive": "anim2.mul",
+      "graphic": 1,
+      "layout": "large",
+      "mobtypes": [
+        "MONSTER",
+        0
+      ],
+      "groups": {
+        "0": [
+          [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "4f938724c900bf0c735cc696e5372763d9c99c4f68fbab1598a4c276c7c2d122"
+        ],
+        "1": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "06ccb394d7304060efd84ab70886b7937fb1da9db4cb7bf67b5250e89e7349ad"
+        ],
+        "2": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "18ea3b4a32984feb764c46bc6ab9d0cf15ac302558f1402cea3d0ec0af5ab7e3"
+        ],
+        "3": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "18ea3b4a32984feb764c46bc6ab9d0cf15ac302558f1402cea3d0ec0af5ab7e3"
+        ],
+        "4": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "93d30a40ff82352c8efdf4a9665b11f524f68fdcb1b66e69ff9b64ee166522bb"
+        ],
+        "5": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "5d48cf879e654f8d6490843320e31489d3e7747c894ea5639b78069f40035522"
+        ],
+        "6": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "5d48cf879e654f8d6490843320e31489d3e7747c894ea5639b78069f40035522"
+        ],
+        "10": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "afe42ed35b22deb159745bfefe4a0d3ef7131e2266ee0ec947cbb0e2000d0db5"
+        ],
+        "11": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "c488dd7f7871e404063a3768ee172d1681a1ac5bc16824c842436ef5c16bf833"
+        ],
+        "15": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "2267f604fa407a137488289dda672ad480ad1555c90d48c2a55d8c4afb9f82cd"
+        ],
+        "16": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "8c10b6f734dfcea0b9bd9fa1e73dc72f5e8c505c1693ef349022f887e508cca2"
+        ],
+        "17": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "3aa631291557923c9302f008c27445d537892ca060ae09debf1cf1d3969c5f79"
+        ],
+        "18": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "df6a54f6c772c106aba478306d0dd338c511c0d6c654a79277cb5e949702b5d3"
+        ]
+      },
+      "sequence": {
+        "name_hash": "0x286f52cb7b588af8",
+        "modes": {
+          "0": [
+            {
+              "type": 0,
+              "subaction": -1,
+              "groups": [
+                4,
+                5,
+                4,
+                4,
+                4,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 0,
+              "groups": [
+                4,
+                5,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 1,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 2,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 9,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 2,
+              "subaction": -1,
+              "groups": [
+                15,
+                15
+              ]
+            },
+            {
+              "type": 3,
+              "subaction": -1,
+              "groups": [
+                2,
+                3
+              ]
+            },
+            {
+              "type": 4,
+              "subaction": -1,
+              "groups": [
+                10
+              ]
+            },
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                26,
+                27
+              ]
+            },
+            {
+              "type": 8,
+              "subaction": -1,
+              "groups": [
+                28
+              ]
+            },
+            {
+              "type": 11,
+              "subaction": -1,
+              "groups": [
+                12,
+                12,
+                12
+              ]
+            },
+            {
+              "type": 14,
+              "subaction": -1,
+              "groups": [
+                11
+              ]
+            },
+            {
+              "type": 15,
+              "subaction": -1,
+              "groups": [
+                23
+              ]
+            }
+          ],
+          "1": [
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                26
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "765": {
+      "archive": "anim2.mul",
+      "graphic": 33,
+      "layout": "large",
+      "mobtypes": [
+        "MONSTER",
+        0
+      ],
+      "groups": {
+        "0": [
+          [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "763b4fb33eea17a524629c1c3871d4bc2f251045434bf3ea87f1790008387ea0"
+        ],
+        "1": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "0e4782dc27631aa58d6a1c905cacc87b69698b454600aebddcb6b1052111cea6"
+        ],
+        "2": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "37966f91b1daab46f8baf0642836f54cc889606665fa3b5ba4cab6b25550503e"
+        ],
+        "3": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "f0712dc5aa0bd2e2197f626b4e04967c6925feb0ee8d3ebf17e8d8cc6426dd9c"
+        ],
+        "4": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "4bca645c17a65a49bfa757b8b9f8aae3c8e778a78a6818290848710117ddbe94"
+        ],
+        "5": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "4ad4bbc0b04e8aa2d759f6f3c25cf5a1ab69fbd581b688742db4a23a1a2cf638"
+        ],
+        "6": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "35e1e7221bb0f71a2d6efa8a634a56f4b34df3afc371a44230526ea7aa15f102"
+        ],
+        "10": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "a248ab135b7c66d8f38a89c06d17ff420724b33faa2e8bd4530da1716b96a2e5"
+        ],
+        "11": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "6811164ecd5105c47da9964b0e76022fc74f4ab581a8defbfcee35456fd39e8d"
+        ],
+        "15": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "d501a8e78fccf4f99a15e734e0743447b546aa7718ade379be6c748828920369"
+        ],
+        "16": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "d501a8e78fccf4f99a15e734e0743447b546aa7718ade379be6c748828920369"
+        ],
+        "17": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "6811164ecd5105c47da9964b0e76022fc74f4ab581a8defbfcee35456fd39e8d"
+        ],
+        "18": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "66539604716b9331f38131fac89f2068bfcdb3a39a1af5bec4bab28bee3c0c4e"
+        ]
+      },
+      "sequence": {
+        "name_hash": "0xa2cebdc9f5d4275",
+        "modes": {
+          "0": [
+            {
+              "type": 0,
+              "subaction": -1,
+              "groups": [
+                4,
+                5,
+                4,
+                4,
+                4,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 0,
+              "groups": [
+                4,
+                5,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 1,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 2,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 9,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 2,
+              "subaction": -1,
+              "groups": [
+                15,
+                15
+              ]
+            },
+            {
+              "type": 3,
+              "subaction": -1,
+              "groups": [
+                2,
+                3
+              ]
+            },
+            {
+              "type": 4,
+              "subaction": -1,
+              "groups": [
+                10
+              ]
+            },
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                26,
+                27
+              ]
+            },
+            {
+              "type": 8,
+              "subaction": -1,
+              "groups": [
+                28
+              ]
+            },
+            {
+              "type": 11,
+              "subaction": -1,
+              "groups": [
+                12,
+                12,
+                12
+              ]
+            },
+            {
+              "type": 14,
+              "subaction": -1,
+              "groups": [
+                11
+              ]
+            },
+            {
+              "type": 15,
+              "subaction": -1,
+              "groups": [
+                23
+              ]
+            }
+          ],
+          "1": [
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                26
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "794": {
+      "archive": "anim2.mul",
+      "graphic": 205,
+      "layout": "small",
+      "mobtypes": [
+        "ANIMAL",
+        0
+      ],
+      "groups": {
+        "0": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "eb903870cc059f81df3512e7e78e0e9eac9bc2d05d36f19ece1ad52310df9a98"
+        ],
+        "1": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "367aa70e776c053ed148c7d20b179575db23d708526c1edad920ae8834d7fb24"
+        ],
+        "2": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "37ff9c3edd2692782c0402c599b84c8bfab1d32675b97cd3360f7ea94f11167f"
+        ],
+        "3": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "4071fece5916e866a616a4c958c8e41043f6dc2be65a3038c779462d3108358a"
+        ],
+        "4": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "23232a788ebf76bb1d42c948e7e38e9eeac861da220e0c14471afb4d64d0ff87"
+        ],
+        "5": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "6734129a1c6e79253622ebee39172ab8a3e408f4cf46f2e6ec398e1fae00225c"
+        ],
+        "6": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "96dfa8b5aacad10ce891b446658ebfff4e1942aba57cb3e864ba36ec8040f1be"
+        ],
+        "7": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "dba09c0cde52f9c77e8a0f5d6232f9a11e7772e7843915537e62d1b05f01403c"
+        ],
+        "8": [
+          [
+            6,
+            6,
+            6,
+            6,
+            6
+          ],
+          "6912c63fcfd43f7e707e078ca71e80870c43f2241dc36d42821770e8c12bee90"
+        ],
+        "9": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "6b9af96e1f2d4a7abc8689644e51ea601ad99cc276b7385fc64603501524fcf5"
+        ],
+        "10": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "58c1fc4ed1bf4e2cb728232abd2f8fc50db783411d21c74c8a4e8eff3099a0cd"
+        ],
+        "11": [
+          [
+            6,
+            6,
+            6,
+            6,
+            6
+          ],
+          "20a20c47f3f70f08a84434af9cd2e2ed3b48c4dd9688f5016196600e852d3b50"
+        ],
+        "12": [
+          [
+            6,
+            6,
+            6,
+            6,
+            6
+          ],
+          "6912c63fcfd43f7e707e078ca71e80870c43f2241dc36d42821770e8c12bee90"
+        ]
+      },
+      "sequence": {
+        "name_hash": "0xf4cc25e7a812169e",
+        "modes": {
+          "0": [
+            {
+              "type": 0,
+              "subaction": -1,
+              "groups": [
+                4,
+                5,
+                4,
+                4,
+                4,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 0,
+              "groups": [
+                4,
+                5,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 1,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 2,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 9,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 1,
+              "subaction": -1,
+              "groups": [
+                15,
+                15
+              ]
+            },
+            {
+              "type": 2,
+              "subaction": -1,
+              "groups": [
+                15,
+                15
+              ]
+            },
+            {
+              "type": 3,
+              "subaction": -1,
+              "groups": [
+                2,
+                3
+              ]
+            },
+            {
+              "type": 4,
+              "subaction": -1,
+              "groups": [
+                10
+              ]
+            },
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                27
+              ]
+            },
+            {
+              "type": 8,
+              "subaction": -1,
+              "groups": [
+                28
+              ]
+            },
+            {
+              "type": 11,
+              "subaction": -1,
+              "groups": [
+                4,
+                4,
+                4
+              ]
+            },
+            {
+              "type": 14,
+              "subaction": -1,
+              "groups": [
+                11
+              ]
+            },
+            {
+              "type": 15,
+              "subaction": -1,
+              "groups": [
+                23
+              ]
+            }
+          ],
+          "1": [
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                1,
+                1,
+                26
+              ]
+            }
+          ],
+          "2": [
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                31
+              ]
+            }
+          ],
+          "3": [
+            {
+              "type": 4,
+              "subaction": -1,
+              "groups": [
+                19
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "799": {
+      "archive": "anim2.mul",
+      "graphic": 206,
+      "layout": "small",
+      "mobtypes": [
+        "ANIMAL",
+        0
+      ],
+      "groups": {
+        "0": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "31f4cb2e4dbbf096188d8de3a8a628592f1c2b89985503794163179755ef1f10"
+        ],
+        "1": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "7d7dadac382c306b99d63ba944f01280bb91c916d9d4da7c718eecbeb82b83db"
+        ],
+        "2": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "1982a54971452d09d02efb342a3c063501b90ef59c48427fd8a9e720b262870d"
+        ],
+        "3": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "dc0e71a84306e24adf404b76b6af91c13b972e8f8e5b087ca1ee477b8f0c5056"
+        ],
+        "4": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "d68905c611a10eb3170653878953aa78f8e55099832d7f7331f5f93b4df23f57"
+        ],
+        "5": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "dda66680a038dd8abf925f16e83933bcd73432b3f433b8275eb9037e429c8a2a"
+        ],
+        "6": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "c2757141e6d1fa02a1ce6d68dd2f3e571ab927ef944ce6327f95fa5ac79481d1"
+        ],
+        "7": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "cf6ea15f8e365776adec89186642f179b3962c6bab33f1583b4c5cf61b34bfc2"
+        ],
+        "8": [
+          [
+            6,
+            6,
+            6,
+            6,
+            6
+          ],
+          "b985f7d6897c6ecce745e8269291c6afe5d9bcef0a23d6c0046338c81301d593"
+        ],
+        "9": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "3e401c3c50086849563a1e6a75b6fe7dd943cac6e5827edd4b1f6c9d80b16824"
+        ],
+        "10": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "3844f8b7124aeb1e25b3e9349d2481194e33ed5e6718c5736e76a4c9e5414f00"
+        ],
+        "11": [
+          [
+            6,
+            6,
+            6,
+            6,
+            6
+          ],
+          "156fb3f92448621d866ec58fbba0e8fc396aebe13629554f298c887fe6e289c4"
+        ],
+        "12": [
+          [
+            6,
+            6,
+            6,
+            6,
+            6
+          ],
+          "b985f7d6897c6ecce745e8269291c6afe5d9bcef0a23d6c0046338c81301d593"
+        ]
+      },
+      "sequence": {
+        "name_hash": "0xf31c45be51828c7",
+        "modes": {
+          "0": [
+            {
+              "type": 0,
+              "subaction": -1,
+              "groups": [
+                4,
+                5,
+                4,
+                4,
+                4,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 0,
+              "groups": [
+                4,
+                5,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 1,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 2,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 9,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 1,
+              "subaction": -1,
+              "groups": [
+                15,
+                15
+              ]
+            },
+            {
+              "type": 2,
+              "subaction": -1,
+              "groups": [
+                15,
+                15
+              ]
+            },
+            {
+              "type": 3,
+              "subaction": -1,
+              "groups": [
+                2,
+                3
+              ]
+            },
+            {
+              "type": 4,
+              "subaction": -1,
+              "groups": [
+                10
+              ]
+            },
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                26,
+                27
+              ]
+            },
+            {
+              "type": 8,
+              "subaction": -1,
+              "groups": [
+                28
+              ]
+            },
+            {
+              "type": 11,
+              "subaction": -1,
+              "groups": [
+                12,
+                12,
+                12
+              ]
+            },
+            {
+              "type": 14,
+              "subaction": -1,
+              "groups": [
+                11
+              ]
+            },
+            {
+              "type": 15,
+              "subaction": -1,
+              "groups": [
+                23
+              ]
+            }
+          ],
+          "1": [
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                26
+              ]
+            }
+          ],
+          "2": [
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                31
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

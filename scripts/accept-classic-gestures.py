@@ -62,6 +62,8 @@ BATCHES = {
     'slith_actions': ((734,), 'SlithActionsLive.gd', ('test-slith-actions.gd',)),
     'ranked_classic_actions': ((259, 264, 72), 'RankedClassicActionsLive.gd',
                                ('test-ranked-classic-actions.gd',)),
+    'swamp_widow_juka_actions': ((794, 799, 157, 765), 'SwampWidowJukaActionsLive.gd',
+                                 ('test-swamp-widow-juka-actions.gd',)),
     'dragon_daemon': ((9, 10, 12, 38, 40, 43, 59, 60, 61), 'PreparedCreatureActionLive.gd',
                       ('test-dragon-daemon-gestures.gd',)),
     'terathan_classic': ((70, 71, 72), 'PreparedCreatureActionLive.gd', ('test-terathan-gestures.gd',)),
@@ -153,6 +155,7 @@ PREDECESSORS = {
     'orc_bog_actions': (),
     'slith_actions': ('ready_stances',),
     'ranked_classic_actions': ('grizzle_antler', 'terathan_classic'),
+    'swamp_widow_juka_actions': ('exact_creature_fidgets',),
     'copper_kaze_actions': (),
     'ophidian_patchwork_actions': ('ophidian_bardiche',),
     'tokuno_spider_dragon_actions': ('dragon_daemon',),
@@ -305,7 +308,7 @@ def checked(index, active, batch, *, compare_registry=True):
         if active:
             prior_entries.extend(baseline)
         for predecessor in predecessors:
-            if (batch == 'ranked_classic_actions' or
+            if (batch in ('ranked_classic_actions', 'swamp_widow_juka_actions') or
                     predecessor in ('scorpion_imp', 'dragon_daemon', 'bone_cyclops', 'vampire_bat_actions',
                                     'fidget_aliases_toad', 'skeletal_mage_staff')):
                 # Independent successors seal their own retained rows. Replaying a
@@ -339,7 +342,7 @@ def checked(index, active, batch, *, compare_registry=True):
                    'LaterCreatureGesturesLive.gd', 'ArmedFlyingCreatureGesturesLive.gd', 'TokunoSpiderDragonLive.gd',
                    'MageLordTentacleActionsLive.gd', 'GoatHarpyHordeLive.gd',
                    'GargoyleKitsuneLarvaLive.gd', 'SolenWorkerActionsLive.gd', 'OrcBogActionsLive.gd',
-                   'SlithActionsLive.gd', 'RankedClassicActionsLive.gd') and (
+                   'SlithActionsLive.gd', 'RankedClassicActionsLive.gd', 'SwampWidowJukaActionsLive.gd') and (
             report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
         raise ValueError('Supplementary action trial used a different prepared fixture loader')
     if batch == 'occurrence_deaths' and (
@@ -393,6 +396,9 @@ def checked(index, active, batch, *, compare_registry=True):
                 raise ValueError('Native Lord costume lacks the original robe, hat, sandals or shared dye')
 
     by_body = {row['bodies'][0]['body']: row for row in prepared}
+    if batch == 'swamp_widow_juka_actions':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-swamp-widow-juka-actions.py'))
+        recipe['check_mounted'](prepared, (sealed if active else live.parent) / 'mounted.json')
     if batch == 'dragon_daemon':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-dragon-daemon-actions.py'))
         recipe['check_breath'](read((sealed if active else live.parent) / 'breath.json'), candidates, by_body)
@@ -455,6 +461,18 @@ def checked(index, active, batch, *, compare_registry=True):
                     if (action[client + '_clip'] != clip or packet['protocol'] != 'new'
                             or (packet['type'], packet['subaction'], packet['variation']) != (kind, 0, 0)):
                         raise ValueError(f'Both clients must witness body {body} new-protocol type {kind}')
+        if batch == 'swamp_widow_juka_actions':
+            categories = package['new_action_categories']
+            requests = [(-1, 4, 'Hit')] + [(request, kind, categories[str(kind)])
+                                            for request, kind in ((-3, 2), (-4, 5), (-5, 14))
+                                            if str(kind) in categories]
+            for request, kind, clip in requests:
+                action, = (row for row in witness['actions'] if row['requested'] == request)
+                for client in ('owner', 'observer'):
+                    packet = action[client + '_packet']
+                    if (action[client + '_clip'] != clip or packet['protocol'] != 'new'
+                            or (packet['type'], packet['subaction'], packet['variation']) != (kind, 0, 0)):
+                        raise ValueError(f'Both clients must witness body {body} new-protocol type {kind}')
         for slot in slots:
             clip = ('Fidget' if batch == 'exact_creature_fidgets' and slot == 17
                     else package['classic_action_categories'][str(slot)])
@@ -462,7 +480,8 @@ def checked(index, active, batch, *, compare_registry=True):
             if len(actions) != 1 or any(actions[0][key] != clip for key in ('owner_clip', 'observer_clip')):
                 raise ValueError(f'Missing Classic gesture evidence for body {body}, slot {slot}')
             if (batch in ('efreet_actions', 'orc_bog_actions', 'slith_actions', 'ranked_classic_actions',
-                          'lizard_actions', 'quadruped_actions', 'hart_deaths', 'dog_bear_actions', 'cat_actions',
+                          'swamp_widow_juka_actions', 'lizard_actions', 'quadruped_actions', 'hart_deaths',
+                          'dog_bear_actions', 'cat_actions',
                           'skeleton_actions', 'troll_actions', 'field_fauna', 'spider_mongbat_actions',
                           'grazers_grizzly_actions', 'pig_reaper_harpy_actions', 'rabbit_distinct_actions',
                           'serpent_ogre_actions', 'zombie_corpser_gargoyle_actions', 'earth_gazer_imp_actions',
@@ -528,9 +547,7 @@ def test_active(batch):
                   'dog_bear_actions': ['--dog-bear'], 'troll_actions': ['--troll'],
                   'field_fauna': ['--field-fauna']}.get(batch, [])
     for script in BATCHES[batch][2]:
-        # The dense axe and multi-body terrain checks keep all samples under the concurrent gate.
-        timeout = 180 if script in ('test-orc-captain-axe.gd', 'test-ranked-classic-actions.gd') else 65
-        run_client_check(godot, env, f'res://../scripts/{script}', ['--active', *trial_args], timeout=timeout)
+        run_client_check(godot, env, f'res://../scripts/{script}', ['--active', *trial_args])
     if batch == 'occurrence_gestures':
         for test in ('TsukiWolfRouteTests', 'KappaRouteTests'):
             run_client_check(godot, env, f'res://Presentation/{test}.gd', [])
@@ -563,11 +580,13 @@ def test_active(batch):
             run_client_check(godot, env, f'res://Presentation/{test}.gd', [])
 
 
-def run_client_check(godot, env, script, args, *, timeout=65):
+def run_client_check(godot, env, script, args):
+    # Let the finite Godot test deadlines fire under concurrent load, with a
+    # separate bound for a stalled process that never reaches its own deadline.
     with tempfile.TemporaryDirectory(prefix='action-log-', dir=ROOT / 'work/creatures') as logs:
         result = subprocess.run([str(godot), '--headless', '--path', str(ROOT / 'Viewer'),
                                  '--log-file', str(Path(logs) / 'godot.log'), '--script', script, '--', *args],
-                                cwd=ROOT, env=env, timeout=timeout, capture_output=True,
+                                cwd=ROOT, env=env, timeout=180, capture_output=True,
                                 text=True, encoding='utf-8', errors='replace')
     output = result.stdout + result.stderr
     print(output.strip())
@@ -631,6 +650,8 @@ def main():
             shutil.copyfile(source, sealed / source.name)
         if batch == 'dragon_daemon':
             shutil.copyfile(live.parent / 'breath.json', sealed / 'breath.json')
+        if batch == 'swamp_widow_juka_actions':
+            shutil.copyfile(live.parent / 'mounted.json', sealed / 'mounted.json')
         (sealed / 'base-rows.json').write_text(json.dumps(baseline, indent=2) + '\n', encoding='utf-8')
         pending = INDEX.with_suffix('.classic-gestures.pending')
         updated = (json.dumps(index, indent=2) + '\n').encode()
