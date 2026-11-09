@@ -229,6 +229,17 @@ def resolve(model,label,fallback):
             'declared_alias':model.get('category_aliases',{}).get(resolved) or ('Death' if label=='LieDown' else None),
             'authored_method':authored.get(resolved)}
 
+def classic_wire_clip(model, body, kind, wire_routes, fallback):
+    rule = wire_routes.get(str(body), {}).get(str(kind))
+    if rule is None:
+        return None
+    slot = str(rule[0])
+    shared = model.get('classic_action_categories', {})
+    per_body = model.get('classic_action_categories_by_body', {}).get(str(body), {})
+    candidate = per_body.get(slot, shared.get(slot, rule[2]))
+    return candidate if resolve(model, candidate, fallback)['resolved'] == candidate else rule[2]
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--data-dir',type=Path);args=parser.parse_args()
     catalogue=json.loads((OUT/'catalogue.json').read_text())
@@ -236,6 +247,7 @@ def main():
     public=ROOT/'Viewer/Art/Creatures/index.json'
     if public.exists():models=[row for row in json.loads(public.read_text())['entries'] if row.get('status')=='validated']+models
     maps,renderer_sha=renderer_maps();rows=[];native={}
+    wire_routes = json.loads((ROOT / 'Viewer/Presentation/creature-wire-routes.json').read_text(encoding='utf-8'))
     for model in models:
         for identity in model['bodies']:
             body=int(identity['body']);native[body]=model
@@ -244,7 +256,11 @@ def main():
                 if protocol=='classic':
                     overrides = model.get('classic_action_categories', {}) | model.get('classic_action_categories_by_body', {}).get(str(body), {})
                     groups = groups | {int(key): value for key, value in overrides.items()}
-                if protocol=='new':groups={**groups,**{int(key):value for key,value in model.get('new_action_categories',{}).items()}}
+                if protocol == 'new':
+                    wire = {int(key): classic_wire_clip(model, body, key, wire_routes, maps['fallback'])
+                            for key in wire_routes.get(str(body), {})}
+                    overrides = {int(key): value for key, value in model.get('new_action_categories', {}).items()}
+                    groups = groups | wire | overrides
                 for group,label in groups.items():
                     rows.append({'body':body,'family':model['family'],'kind':model['kind'],'native_profile':profile,
                                  'protocol':protocol,'group_or_type':group,**resolve(model,label,maps['fallback'])})
@@ -304,13 +320,17 @@ def main():
                              'interpretation':'High-group category inference only; frame availability/precedence not decoded' if groups else 'Canonical UOP-to-native wire group interpretation unresolved'})
         for mode in record['modes']:
             for action in mode['new_protocol_actions']:
-                label=(model.get('new_action_categories',{}).get(str(action['type'])) if model else None) or maps['new'].get(action['type'])
+                explicit = model.get('new_action_categories', {}).get(str(action['type'])) if model else None
+                wire = (classic_wire_clip(model, body, action['type'], wire_routes, maps['fallback'])
+                        if model and (mode['mode'], action['subaction']) == (0, -1) else None)
+                label = explicit or wire or maps['new'].get(action['type'])
                 if model and model['profile']=='sea' and action['type']==0 and mode['mode']%2:label='Attack2'
                 new_actions.append({'body':body,'mode':mode['mode'],**action,
                     'groups_with_uop_frame_headers':[group for group in action['groups'] if (body,group) in framed],
                     'generic_model':model['kind'] if model else None,
                     'replacement':resolve(model,label,maps['fallback']) if model and label else None,
-                    'scope':'Type route only; exact per-body mode/subaction/variation fidelity requires separate tests.'})
+                    'scope': ('Classic subaction zero and both wire parities witnessed; Enhanced graph modes separate.'
+                              if wire and not explicit else 'Type route only; per-body mode/subaction/variation fidelity requires separate tests.')})
     # Keep the broad protocol ledger separate from work backed by an installed
     # frame record. A numeric UOP match still needs a wire-category review.
     frame_gaps = {}
@@ -337,6 +357,7 @@ def main():
     ]
     counts={'generic_models':len(models),'generic_body_routes':len(native),'protocol_slots':len(rows),
             'routable_slots':sum(r['resolved'] is not None for r in rows),
+            'source_checked_classic_newer_routes':sum(len(types) for body, types in wire_routes.items() if int(body) in native),
             'missing_protocol_slots':sum(r['resolved'] is None for r in rows),
             'unresolved_slots_with_source_frame_evidence':len(source_frame_gaps),
             'mul_shared_replacement_candidate_pairs':len({(row['body'], *row['classic_slots']) for row in shared_routes}),

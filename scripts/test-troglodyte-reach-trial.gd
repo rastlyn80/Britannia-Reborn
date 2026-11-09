@@ -11,6 +11,9 @@ func _initialize() -> void:
 
 func run() -> void:
 	var row := Registry.entry(267).duplicate(true)
+	if row.get("classic_gesture_batch") == "quagmire_through_exodus_actions":
+		row = preload("res://Presentation/SealedCreatureActionBase.gd").retained(row, 267).duplicate(true)
+		Registry.entries[267] = row
 	assert(row.kind == "troglodyte")
 	var active := "--active" in OS.get_cmdline_user_args()
 	var originals: Dictionary = row.get("classic_gesture_base_assets", row.assets).duplicate(true)

@@ -25,6 +25,9 @@ func run() -> void:
 			Registry.entries[body] = record
 		assert(Registry.supports_body(body) and Registry.entry(body).kind == family)
 		var active := Registry.entry(body)
+		if active.get("classic_gesture_batch") == "quagmire_through_exodus_actions":
+			active = SealedBase.retained(active, body)
+			Registry.entries[body] = active
 		var original_layer := active
 		if active.get("classic_gesture_batch") in ["post_solen_actions", "lattice_through_meer_actions"]:
 			original_layer = SealedBase.retained(active, body)

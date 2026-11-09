@@ -171,6 +171,10 @@ if (Test-Path "$root/Viewer/local-art/creatures/ice_elementals/candidate.json") 
 if ($LASTEXITCODE) {throw 'Actual eight-slot GLTF import, fifth-joint deformation or static corpse failed'}
 & $godot --headless --path "$root/Viewer" --script res://Presentation/CreatureActionRoutingTests.gd
 if ($LASTEXITCODE) {throw 'Native animal/sea/monster action semantics failed'}
+& python -B "$root/scripts/check-creature-wire-routes.py"
+if ($LASTEXITCODE) {throw 'Classic wire source evidence failed'}
+& $godot --headless --path "$root/Viewer" --script res://../scripts/test-creature-wire-routes.gd
+if ($LASTEXITCODE) {throw 'Classic wire playback failed'}
 & $godot --headless --path "$root/Viewer" --script res://Presentation/CorpseAttributeTests.gd
 if ($LASTEXITCODE) {throw 'Static corpse custom UV/attribute format preservation failed'}
 & $godot --headless --path "$root/Viewer" --script res://Presentation/SavagePaintAttributeTests.gd

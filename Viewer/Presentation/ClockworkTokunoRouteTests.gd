@@ -23,6 +23,9 @@ func run() -> void:
 			Registry.entries[body] = record
 		assert(Registry.supports_body(body) and Registry.entry(body).kind == family)
 		var active := Registry.entry(body)
+		if active.get("classic_gesture_batch") == "quagmire_through_exodus_actions":
+			active = preload("res://Presentation/SealedCreatureActionBase.gd").retained(active, body)
+			Registry.entries[body] = active
 		if active.has("legacy_slot11_evidence"):
 			assert(active == preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(record, active))
 		var avatar := Avatar.new()
