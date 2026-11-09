@@ -1,3 +1,13 @@
+# Stone Gargoyle, Bake Kitsune and Gazer Larva actions
+
+Stone Gargoyle 67 keeps its Third Dawn skin and rig. Decoded Classic group 20 opens the wings from standing and now uses TakeOff. Group 21 stays grounded in all five directions and uses a fitted settling motion. A separate recovered AirDeath plays when the native creature dies during flight. Bake Kitsune 246 adds a head call for group 10 and keeps its original 37-joint rig and earlier motions.
+
+Gazer Larva 778 adds separate short and wide reactions where the Classic frames differ, retains the 126-joint affine rig and all 21 source cards, and preserves hover height and action progress when an explicit fall continues into the corpse. Its rounded option uses the original geometry because the source package has two distinct geometries. The previous GPU check passed with visible full and partial dyes and alpha cutouts in all four sampled poses.
+
+The three bodies are active locally. The isolated ModernUO run passed 677 checks. The active client gate passed 765 terrain poses, 250 Gazer hover poses, nine static corpse hue cases and 66 decoded corpse handoffs across 2,706 sampled poses. The ledger remains at 5,344 of 6,930 tracked slots (77.1%). The number of Classic pairs sharing a replacement fell from 456 to 445. The matching source-frame audit has zero unresolved slots. The corpse catalogue passed 2,432 checks across 324 bodies.
+
+Use the three `bake-*.gd` recipes named in `scripts/prepare-gargoyle-kitsune-larva-actions.py`, the archived frame pins in `scripts/gargoyle-kitsune-larva-frame-pins.json`, and `scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily gargoyle_kitsune_larva_actions` for the isolated native trial. Verify the installed routes with `python -B scripts/accept-classic-gestures.py --batch gargoyle_kitsune_larva_actions --check-active`. The full verifier runs the same distinct Classic package checks concurrently on multi-core machines. Generated scenes and receipts stay local.
+
 # Mountain Goat, Matriarch, Lich Lord, Succubus, Stone Harpy and Horde Minion actions
 
 Mountain Goat 88 shares the fitted goat strike and collapse motions on its matching source rig. The updated support also lifts its retained fidget clear of the sampled ground. Ophidian Matriarch 87 retains its earlier dip and adds a forward collapse, tail strike, overhead brace, recoil and tail lift. Lich Lord 79 has distinct casting, guard and recoil motions, keeps the original staff and crimson material accent, and has its own action route. The two other bodies sharing the Lich Lord artwork keep their existing routes.

@@ -10,6 +10,7 @@ from pathlib import Path
 import runpy
 import shutil
 import subprocess
+import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
 INDEX = ROOT / 'Viewer/local-art/creatures/accepted-index.json'
@@ -48,6 +49,9 @@ BATCHES = {
                                  ('test-hopper-fan-blood-actions.gd', 'test-hopper-fan-blood-corpses.gd')),
     'goat_harpy_horde_actions': ((88, 87, 79, 149, 73, 776), 'GoatHarpyHordeLive.gd',
                                  ('test-goat-harpy-horde-actions.gd', 'test-goat-harpy-horde-corpses.gd')),
+    'gargoyle_kitsune_larva_actions': ((67, 246, 778), 'GargoyleKitsuneLarvaLive.gd',
+                                       ('test-gargoyle-kitsune-larva-actions.gd',
+                                        'test-gargoyle-kitsune-larva-corpses.gd')),
     'dragon_daemon': ((9, 10, 12, 38, 40, 43, 59, 60, 61), 'PreparedCreatureActionLive.gd',
                       ('test-dragon-daemon-gestures.gd',)),
     'terathan_classic': ((70, 71, 72), 'PreparedCreatureActionLive.gd', ('test-terathan-gestures.gd',)),
@@ -132,6 +136,7 @@ PREDECESSORS = {
     'ophidian_terathan_actions': ('ophidian_staff', 'terathan_classic'),
     'hopper_fan_blood_actions': ('hopper_horde_actions',),
     'goat_harpy_horde_actions': ('ophidian_staff', 'fidget_aliases_toad', 'hopper_horde_actions'),
+    'gargoyle_kitsune_larva_actions': ('fidget_aliases_toad',),
     'copper_kaze_actions': (),
     'ophidian_patchwork_actions': ('ophidian_bardiche',),
     'tokuno_spider_dragon_actions': ('dragon_daemon',),
@@ -309,7 +314,8 @@ def checked(index, active, batch, *, compare_registry=True):
                    'FieldFaunaLive.gd', 'SpiderMongbatActionsLive.gd', 'PigReaperHarpyActionsLive.gd',
                    'DaemonActionsLive.gd', 'WraithDrakeWalrusLive.gd', 'OccurrenceGesturesLive.gd',
                    'LaterCreatureGesturesLive.gd', 'ArmedFlyingCreatureGesturesLive.gd', 'TokunoSpiderDragonLive.gd',
-                   'MageLordTentacleActionsLive.gd', 'GoatHarpyHordeLive.gd') and (
+                   'MageLordTentacleActionsLive.gd', 'GoatHarpyHordeLive.gd',
+                   'GargoyleKitsuneLarvaLive.gd') and (
             report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
         raise ValueError('Supplementary action trial used a different prepared fixture loader')
     if batch == 'occurrence_deaths' and (
@@ -489,6 +495,8 @@ def test_active(batch):
             run_client_check(godot, env, f'res://Presentation/{test}.gd', [])
     if batch == 'tokuno_spider_dragon_actions':
         run_client_check(godot, env, 'res://Presentation/YomotsuRouteTests.gd', [])
+    if batch == 'gargoyle_kitsune_larva_actions':
+        run_client_check(godot, env, 'res://Presentation/BakeKitsuneRouteTests.gd', [])
     if batch in ('ophidian_patchwork_actions', 'copper_kaze_actions'):
         run_client_check(godot, env, 'res://Presentation/OccurrenceCreatureRouteTests.gd', [])
     if batch == 'zombie_corpser_gargoyle_actions':
@@ -515,9 +523,11 @@ def test_active(batch):
 
 
 def run_client_check(godot, env, script, args):
-    result = subprocess.run([str(godot), '--headless', '--path', str(ROOT / 'Viewer'), '--script',
-                             script, '--', *args], cwd=ROOT, env=env, timeout=65,
-                            capture_output=True, text=True, encoding='utf-8', errors='replace')
+    with tempfile.TemporaryDirectory(prefix='action-log-', dir=ROOT / 'work/creatures') as logs:
+        result = subprocess.run([str(godot), '--headless', '--path', str(ROOT / 'Viewer'),
+                                 '--log-file', str(Path(logs) / 'godot.log'), '--script', script, '--', *args],
+                                cwd=ROOT, env=env, timeout=65, capture_output=True,
+                                text=True, encoding='utf-8', errors='replace')
     output = result.stdout + result.stderr
     print(output.strip())
     if result.returncode or 'SCRIPT ERROR:' in output or 'Parse Error:' in output:

@@ -178,20 +178,45 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
   & python -B "$root/scripts/prepare-creature-uop-redirects.py" --check-active
   if ($LASTEXITCODE) {throw 'Active UOP creature redirect evidence failed'}
  }
- if ($lateIndex.entries | Where-Object { $_.legacy_slot11_evidence.matched_payload_signature }) {
-  & python -B "$root/scripts/accept-classic-gestures.py" --batch exact_creature_fidgets --check-active
-  if ($LASTEXITCODE) {throw 'Native exact creature fidget evidence failed'}
- }
+ $classicBatches = @(if ($lateIndex.entries | Where-Object { $_.legacy_slot11_evidence.matched_payload_signature }) {
+  'exact_creature_fidgets'
+ })
  foreach ($actionBatch in @{4='gargoyle_classic';9='dragon_daemon';14='earth_elemental_aos';17='orc_fidgets';18='ettin_fidgets';21='giant_serpent_pillage';26='wraith_sway';28='spider_mongbat';30='reaper_harpy';42='ratman_hunch';48='scorpion_imp';56='skeleton_axe';57='bone_cyclops';67='fidget_aliases_toad';70='terathan_classic';77='kraken_fidgets';85='ophidian_staff';86='ophidian_bardiche';130='blistering_pillage';148='skeletal_mage_staff';150='sea_serpent_actions';172='late_classic_actions';234='deer_fidgets';259='grizzle_antler';267='troglodyte_reach';302='hopper_horde_actions';317='vampire_bat_actions';730='ready_stances';831='parrot_flight'}.GetEnumerator()) {
   if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.classic_gesture_native_sha256 -and $_.bodies.body -contains $actionBatch.Key }) {
-   & python -B "$root/scripts/accept-classic-gestures.py" --batch $actionBatch.Value --check-active
-   if ($LASTEXITCODE) {throw "Active creature action evidence failed: $($actionBatch.Value)"}
+   $classicBatches += $actionBatch.Value
   }
  }
- foreach ($actionBatch in ($lateIndex.entries.classic_gesture_batch | Where-Object { $_ } | Sort-Object -Unique)) {
-  & python -B "$root/scripts/accept-classic-gestures.py" --batch $actionBatch --check-active
-  if ($LASTEXITCODE) {throw "Layered creature action evidence failed: $actionBatch"}
+ $classicBatches = @($classicBatches + $lateIndex.entries.classic_gesture_batch | Where-Object { $_ } | Sort-Object -Unique)
+ $classicCheck = {
+  param($root, $batches)
+  $ErrorActionPreference = 'Stop'
+  foreach ($batch in $batches) {
+   & python -B "$root/scripts/accept-classic-gestures.py" --batch $batch --check-active
+   if ($LASTEXITCODE) {throw "Active creature action evidence failed: $batch"}
+  }
  }
+ # These checks only read the accepted registry and their sealed evidence.
+ $workerLimit = [Math]::Max(1, [Math]::Min(4, [int][Math]::Floor([Environment]::ProcessorCount / 2)))
+ $workers = [Math]::Min($classicBatches.Count, $workerLimit)
+ $classicTimer = [Diagnostics.Stopwatch]::StartNew()
+ if ($workers -lt 2) {
+  & $classicCheck $root $classicBatches
+ } else {
+  $classicJobs = @()
+  try {
+   for ($worker = 0; $worker -lt $workers; $worker++) {
+    $assigned = @(for ($index = $worker; $index -lt $classicBatches.Count; $index += $workers) { $classicBatches[$index] })
+    $classicJobs += Start-Job -Name "ClassicCreatureActions-$worker" -ScriptBlock $classicCheck -ArgumentList $root,$assigned
+   }
+   foreach ($job in $classicJobs) {
+    Receive-Job -Job $job -Wait -ErrorAction Continue
+    if ($job.State -ne 'Completed') {throw "Creature action verification failed: $($job.Name)"}
+   }
+  } finally {
+   $classicJobs | Remove-Job -Force
+  }
+ }
+ Write-Output ('{0} Classic action packages verified in {1:N1} seconds.' -f $classicBatches.Count, $classicTimer.Elapsed.TotalSeconds)
  foreach ($family in @('late_source','hydra','energy_vortex','champions','fey_champions','crane','deathwatch','tsuki_wolf','kappa','vampire_bat','yomotsu','occurrence_next','sand_vortex','bake_kitsune','horde_rune','devourer_lion_hiryu','elemental_minotaur','meer_donors','captain_cu','clockwork_tokuno','aos_creatures','aos_aliases','aos_mound','recovered_late','tormented_minotaur','harrower','late_donors','gargoyle_vendor','aos_armed','aos_abysmal','animated_weapon', 'slith', 'raptor', 'fetid_essence', 'corporeal_brume', 'khaldun_doom')) {
   if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.assets.modern -like "res://local-art/creatures/$family/*" }) {
    $routeTest = @{energy_vortex='EnergyVortexRouteTests.gd';champions='ChampionCreatureRouteTests.gd';fey_champions='FeyChampionRouteTests.gd';crane='CraneRouteTests.gd';deathwatch='DeathwatchRouteTests.gd';tsuki_wolf='TsukiWolfRouteTests.gd';kappa='KappaRouteTests.gd';vampire_bat='VampireBatRouteTests.gd';yomotsu='YomotsuRouteTests.gd';occurrence_next='OccurrenceCreatureRouteTests.gd';sand_vortex='SandVortexRouteTests.gd';bake_kitsune='BakeKitsuneRouteTests.gd';horde_rune='OccurrenceCreatureRouteTests.gd';devourer_lion_hiryu='DevourerLionHiryuRouteTests.gd';elemental_minotaur='ElementalMinotaurRouteTests.gd';meer_donors='MeerDonorRouteTests.gd';captain_cu='CaptainCuRouteTests.gd';clockwork_tokuno='ClockworkTokunoRouteTests.gd';harrower='HarrowerMorphTests.gd'}[$family]

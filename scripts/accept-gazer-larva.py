@@ -8,7 +8,7 @@ import subprocess
 from pathlib import Path
 
 PREPARE = runpy.run_path(str(Path(__file__).with_name('prepare-gazer-larva.py')))
-WITH_ALIAS = runpy.run_path(str(Path(__file__).with_name('legacy-action-evidence.py')))['expected_with_legacy_alias']
+WITH_OVERLAYS = runpy.run_path(str(Path(__file__).with_name('legacy-action-evidence.py')))['expected_rows_with_legacy_aliases']
 ROOT = PREPARE['ROOT']
 WORK = PREPARE['WORK']
 ART = PREPARE['ART']
@@ -73,8 +73,9 @@ def main():
     existing = [item for item in index['entries'] if any(
         int(body['body']) == BODY for body in item['bodies'])]
     assert all(item['family'] == row['family'] and len(item['bodies']) == 1 for item in existing)
-    if existing:
-        row = WITH_ALIAS(row, existing[0])
+    if args.publish and any(item.get('classic_gesture_batch') for item in existing):
+        raise ValueError('Rebuild the accepted Gazer Larva action package before replacing its source route')
+    row, = WITH_OVERLAYS([row], index['entries'])
     receipt = {'body': BODY, 'preparation_sha256': PREPARE['sha'](PREPARATION)}
     if args.check_active:
         assert existing == [row] and PREPARE['read'](RECEIPT) == receipt
