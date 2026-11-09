@@ -1,5 +1,6 @@
 extends SceneTree
 const Registry := preload("res://Presentation/CreatureRegistry.gd")
+const SealedBase := preload("res://Presentation/SealedCreatureActionBase.gd")
 const Wire := preload("res://Network/LoginProtocol.gd")
 const Game := preload("res://Network/GameSession.gd")
 const Ground := preload("res://Presentation/SourceGroundLookup.gd")
@@ -10,6 +11,9 @@ func _initialize() -> void:
 
 func run() -> void:
 	var row := Registry.entry(248)
+	if row.get("classic_gesture_batch") == "post_solen_actions":
+		row = SealedBase.retained(row, 248)
+		Registry.entries[248] = row
 	assert(row.classic_gesture_batch == "gaman_gestures")
 	var game := Game.new()
 	root.add_child(game)

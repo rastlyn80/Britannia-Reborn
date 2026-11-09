@@ -1,6 +1,7 @@
 extends SceneTree
 
 const Registry = preload("res://Presentation/CreatureRegistry.gd")
+const SealedBase := preload("res://Presentation/SealedCreatureActionBase.gd")
 const Avatar = preload("res://Presentation/HumanAvatar.gd")
 const Game = preload("res://Network/GameSession.gd")
 const Wire = preload("res://Network/LoginProtocol.gd")
@@ -21,7 +22,8 @@ func run() -> void:
 		assert(Registry.supports_body(body), family + " missing normal body route")
 		assert(Registry.entry(body).get("kind") == family)
 		var active := Registry.entry(body)
-		var reviewed := active
+		var original_layer := SealedBase.retained(active, body) if active.get("classic_gesture_batch") == "post_solen_actions" else active
+		var reviewed := original_layer
 		var fitted: bool = body == 245 and active.get("classic_gesture_batch") == "tokuno_spider_dragon_actions"
 		if fitted:
 			const BASE := "res://../work/creatures/tokuno_spider_dragon_actions/accepted-native/base-rows.json"

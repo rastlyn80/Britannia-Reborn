@@ -47,6 +47,7 @@ def expected_rows_with_legacy_aliases(rows, active):
                         ('rune_beetle', 'bomber_ogre_rune_dopple_actions'),
                         ('doppleganger', 'bomber_ogre_rune_dopple_actions'),
                         ('golem_iron', 'golem_raptor_juka_solen_actions'),
+                        ('ant_lion', 'post_solen_actions'),
                         ('fire_ant_warrior', 'golem_raptor_juka_solen_actions'),
                         ('black_ant_warrior', 'golem_raptor_juka_solen_actions'),
                         ('serpents_snake_giant_lava', 'ratman_lava_actions'),
@@ -57,12 +58,14 @@ def expected_rows_with_legacy_aliases(rows, active):
             index = {'entries': active}
             original, = (row for row in expected if row['kind'] == kind)
             retained = original
-            if batch == 'grizzle_antler' and overlay.get('classic_gesture_batch') == 'ranked_classic_actions':
-                earlier, antler = gate['checked'](index, True, batch, compare_registry=False)
+            successor = overlay.get('classic_gesture_batch')
+            if (batch, successor) in {('grizzle_antler', 'ranked_classic_actions'),
+                                       ('gaman_gestures', 'post_solen_actions')}:
+                earlier, previous = gate['checked'](index, True, batch, compare_registry=False)
                 if [row for row in earlier if row['kind'] == kind] != [original]:
-                    raise ValueError('Grizzle antler overlay no longer matches the verified base package')
-                retained, = (row for row in antler if row['kind'] == kind)
-                batch = 'ranked_classic_actions'
+                    raise ValueError(f'{kind} earlier action overlay no longer matches the verified base package')
+                retained, = (row for row in previous if row['kind'] == kind)
+                batch = successor
             base, overlays = gate['checked'](index, True, batch)
             if ([row for row in base if row['kind'] == kind] != [retained]
                     or [row for row in overlays if row['kind'] == kind] != [overlay]):

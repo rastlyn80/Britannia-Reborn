@@ -98,7 +98,7 @@ def main():
     existing = [r for r in index['entries'] if any(int(b['body']) == 787 for b in r['bodies'])]
     assert all(r['kind']=='ant_lion' and r['family']=='ant_lion_chain' for r in existing), 'Refusing unrelated route replacement'
     if existing:
-        row = ALIAS_EVIDENCE['expected_with_legacy_alias'](row, existing[0])
+        row, = ALIAS_EVIDENCE['expected_rows_with_legacy_aliases']([row], index['entries'])
     if args.check_active:
         assert existing == [row]
         ALIAS_EVIDENCE['check_base_receipt'](Path(__file__).name, read(RECEIPT), pins)

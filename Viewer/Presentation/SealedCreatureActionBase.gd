@@ -10,5 +10,7 @@ static func retained(row: Dictionary, body: int) -> Dictionary:
 	var base: Dictionary = matches[0]
 	assert(row.classic_gesture_base_assets == base.assets and row.bodies == base.bodies)
 	for treatment: String in base.assets:
-		assert(FileAccess.get_sha256(base.assets[treatment]) == base.asset_sha256[treatment])
+		var digest: String = (base.asset_sha256[treatment] if base.has("asset_sha256")
+			else base.saved_scenes[treatment].scene_sha256)
+		assert(FileAccess.get_sha256(base.assets[treatment]) == digest)
 	return base

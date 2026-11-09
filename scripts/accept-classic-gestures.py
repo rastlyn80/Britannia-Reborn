@@ -68,6 +68,8 @@ BATCHES = {
                                        ('test-bomber-ogre-rune-dopple-actions.gd', 'test-bomber-ogre-rune-dopple-corpses.gd')),
     'golem_raptor_juka_solen_actions': ((752, 730, 734, 766, 782, 806), 'GolemRaptorJukaSolenLive.gd',
                                       ('test-golem-raptor-juka-solen-actions.gd',)),
+    'post_solen_actions': ((248, 303, 251, 787, 300, 263, 253, 305), 'PostSolenActionsLive.gd',
+                           ('test-post-solen-actions.gd',)),
     'dragon_daemon': ((9, 10, 12, 38, 40, 43, 59, 60, 61), 'PreparedCreatureActionLive.gd',
                       ('test-dragon-daemon-gestures.gd',)),
     'terathan_classic': ((70, 71, 72), 'PreparedCreatureActionLive.gd', ('test-terathan-gestures.gd',)),
@@ -162,6 +164,7 @@ PREDECESSORS = {
     'swamp_widow_juka_actions': ('exact_creature_fidgets',),
     'bomber_ogre_rune_dopple_actions': ('exact_creature_fidgets',),
     'golem_raptor_juka_solen_actions': ('ready_stances', 'slith_actions'),
+    'post_solen_actions': ('gaman_gestures', 'late_classic_actions'),
     'copper_kaze_actions': (),
     'ophidian_patchwork_actions': ('ophidian_bardiche',),
     'tokuno_spider_dragon_actions': ('dragon_daemon',),
@@ -321,7 +324,8 @@ def checked(index, active, batch, *, compare_registry=True):
             prior_entries.extend(baseline)
         for predecessor in predecessors:
             if (batch in ('slith_actions', 'ranked_classic_actions', 'swamp_widow_juka_actions',
-                          'bomber_ogre_rune_dopple_actions', 'golem_raptor_juka_solen_actions') or
+                          'bomber_ogre_rune_dopple_actions', 'golem_raptor_juka_solen_actions',
+                          'post_solen_actions') or
                     predecessor in ('scorpion_imp', 'dragon_daemon', 'bone_cyclops', 'vampire_bat_actions',
                                     'fidget_aliases_toad', 'skeletal_mage_staff')):
                 # Independent successors seal their own retained rows. Replaying a
@@ -358,7 +362,7 @@ def checked(index, active, batch, *, compare_registry=True):
                    'MageLordTentacleActionsLive.gd', 'GoatHarpyHordeLive.gd',
                    'GargoyleKitsuneLarvaLive.gd', 'SolenWorkerActionsLive.gd', 'OrcBogActionsLive.gd',
                    'SlithActionsLive.gd', 'RankedClassicActionsLive.gd', 'SwampWidowJukaActionsLive.gd',
-                   'BomberOgreRuneDoppleLive.gd', 'GolemRaptorJukaSolenLive.gd') and (
+                   'BomberOgreRuneDoppleLive.gd', 'GolemRaptorJukaSolenLive.gd', 'PostSolenActionsLive.gd') and (
             report['prepared_base_sha256'] != sha(ROOT / 'Viewer/Network/PreparedCreatureActionLive.gd')):
         raise ValueError('Supplementary action trial used a different prepared fixture loader')
     if batch == 'occurrence_deaths' and (
@@ -483,12 +487,13 @@ def checked(index, active, batch, *, compare_registry=True):
                     if (action[client + '_clip'] != clip or packet['protocol'] != 'new'
                             or (packet['type'], packet['subaction'], packet['variation']) != (kind, 0, 0)):
                         raise ValueError(f'Both clients must witness body {body} new-protocol type {kind}')
-        if batch in ('swamp_widow_juka_actions', 'bomber_ogre_rune_dopple_actions', 'golem_raptor_juka_solen_actions'):
+        if batch in ('swamp_widow_juka_actions', 'bomber_ogre_rune_dopple_actions',
+                      'golem_raptor_juka_solen_actions', 'post_solen_actions'):
             categories = package['new_action_categories']
             requests = [(-1, 4, 'Hit')] + [(request, kind, categories[str(kind)])
                                             for request, kind in ((-3, 2), (-4, 5), (-5, 14))
                                             if str(kind) in categories]
-            if batch == 'golem_raptor_juka_solen_actions' and '11' in categories:
+            if batch in ('golem_raptor_juka_solen_actions', 'post_solen_actions') and '11' in categories:
                 requests.append((-2, 11, categories['11']))
             for request, kind, clip in requests:
                 action, = (row for row in witness['actions'] if row['requested'] == request)
@@ -505,7 +510,7 @@ def checked(index, active, batch, *, compare_registry=True):
                 raise ValueError(f'Missing Classic gesture evidence for body {body}, slot {slot}')
             if (batch in ('efreet_actions', 'orc_bog_actions', 'slith_actions', 'ranked_classic_actions',
                           'swamp_widow_juka_actions', 'bomber_ogre_rune_dopple_actions',
-                          'golem_raptor_juka_solen_actions', 'lizard_actions', 'quadruped_actions', 'hart_deaths',
+                          'golem_raptor_juka_solen_actions', 'post_solen_actions', 'lizard_actions', 'quadruped_actions', 'hart_deaths',
                           'dog_bear_actions', 'cat_actions',
                           'skeleton_actions', 'troll_actions', 'field_fauna', 'spider_mongbat_actions',
                           'grazers_grizzly_actions', 'pig_reaper_harpy_actions', 'rabbit_distinct_actions',
@@ -596,6 +601,9 @@ def test_active(batch):
             run_client_check(godot, env, 'res://Presentation/OccurrenceCreatureRouteTests.gd', [f'--family={family}'])
     if batch == 'late_classic_actions':
         for test in ('ChampionCreatureRouteTests', 'DevourerLionHiryuRouteTests'):
+            run_client_check(godot, env, f'res://Presentation/{test}.gd', [])
+    if batch == 'post_solen_actions':
+        for test in ('ElementalMinotaurRouteTests', 'YomotsuRouteTests'):
             run_client_check(godot, env, f'res://Presentation/{test}.gd', [])
     if batch == 'ready_stances':
         for family in ('raptor', 'slith'):

@@ -1,3 +1,13 @@
+# Gaman, Devourer, Revenant Lion, Ant Lion, Crystal Elemental, Minotaur, Yomotsu Priest and Gore Fiend
+
+The active package covers 104 directly stored Classic groups across eight bodies. The Gaman retains its recovered raised alert and gains a separate low guard. The new guard stays at least 28.9 cm below the raised alert in the sampled poses while turning the head through 0.45 radians. The other rigs gain fitted braces, glances, sweeps and recoil where their original frames differ. The Revenant Lion and Yomotsu Priest each reuse one block for groups 15 and 16 because the registered silhouettes and placement agree across all five directions. Their source RGB pixels differ. The Minotaur uses its two distinct recovered blocks.
+
+All eight native constructors passed 2,325 checks across two disposable clients. Both clients selected the Minotaur's original strike from its newer attack packet. The active client passed 4,464 terrain poses, 312 Classic and 93 newer decoded selections, and 24 static corpse hue checks. The earlier Gaman, Devourer, Ant Lion, Yomotsu and Minotaur routes passed their retained evidence checks. Shadow Fiend's separate active trial confirmed native corpse suppression on both clients while the ordinary Imp left its corpse.
+
+The generic catalogue now routes 5,395 of 6,970 protocol slots (77.4%). It records 1,575 broader gaps, 341 Classic pairs with shared replacements and zero unresolved slots with matching Classic source frames.
+
+Build the local scenes with `scripts/bake-gaman-low-guard.gd` and `scripts/bake-post-solen-actions.gd`. Use `python -B scripts/prepare-post-solen-actions.py` and `scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily post_solen_actions` to repeat the source and native checks. Verify the active routes with `python -B scripts/accept-classic-gestures.py --batch post_solen_actions --check-active`.
+
 # Golem, Raptor, Slith, Juka Lord and Solen Warrior actions
 
 The action package pins 52 directly stored Classic groups for Golem 752, Juka Lord 766 and Solen Warriors 782 and 806, plus 30 groups in `AnimationFrame3.uop` for Raptor 730 and Slith 734. Golem gains a brace and reset, Juka Lord gains a backhand, brace and glance, and both Solen Warriors gain a recoil. Their earlier motion keys remain intact. The Juka Lord uses its modern treatment for the rounded option. The Raptor retains the CC0 Quaternius substitute and the Slith retains the Third Dawn Komodo donor.
