@@ -10,6 +10,8 @@ Gargoyle Destroyer and Enforcer now hold the folded-wing pose for Classic group 
 
 The full 140-route wire table passed 5,349 isolated checks with 560 two-client observations. Offline playback passed 840 paired selections and 420 unchanged subactions. The full corpse catalogue passed 2,433 checks across 324 identities. The bounds comparison now excludes meshes with zero surfaces, including the empty reins on the Reptalon cadaver.
 
+The retained Savage Rider profiles passed 222 normal client checks and 438 isolated server checks with the new Ridgeback renderer. The server trial covered both rider bodies, the native mount item, movement, dismount and remount, and the rider corpse after the server removes its mount.
+
 The generic ledger routes 5,564 of 7,131 slots (78.0%) and leaves 1,567 broader gaps. This batch replaces shared or generic clips inside existing routes and adds one newer route. The shared Classic pairs fell from 184 to 154. The current set has 28 identical pairs, six that differ only in appearance, 54 with different frame counts and 66 with different silhouettes or placement. The bounded catalogue retains native evidence for all 279 bodies.
 
 # Wailing Banshee through Solen Queens and distinct defence modes

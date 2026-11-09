@@ -1,6 +1,7 @@
 extends "res://Presentation/SavageHumanProfileTests.gd"
 ## Actual accepted profiles; no candidate injection or server-gameplay claims.
 const Mounts=preload("res://Presentation/MountVisual.gd")
+const RidgebackVisual=preload("res://Presentation/SourceRidgebackVisual.gd")
 var graphical:=false
 var output:=""
 func _initialize() -> void:
@@ -37,7 +38,7 @@ func run() -> void:
 				var rider:=Avatar.new();rider.initial_body=body;viewport.add_child(rider)
 				rider.apply_server_appearance(entity,[{"id":0x3eb8,"layer":25,"hue":hue}]);rider.set_process(false);rider.set_physics_process(false)
 				check(rider.human_visual!=null and rider.human_visual.mounted_live_enabled,"Normal native layer25 mounts the Savage Rider")
-				check(rider.horse_visual!=null and rider.horse_visual.native_body==188 and rider.horse_visual.native_hue==hue and rider.horse_visual.get_script().resource_path=="res://Presentation/SourceRidgebackVisual.gd","Native Savage Ridgeback uses the accepted original renderer and raw hue")
+				check(rider.horse_visual is RidgebackVisual and rider.horse_visual.native_body==188 and rider.horse_visual.native_hue==hue,"Native Savage Ridgeback uses the accepted original renderer and raw hue")
 				for frame in 36:rider.animate(true,0.,1./60.,1.8);await process_frame
 				if graphical:
 					camera.size=3.6;camera.look_at(Vector3(0.,1.15,0.));var image:=await capture();check(changed(empty,image)>150,"Normal walking Savage Rider occupies actual pixels");image.save_png(output+"/%d-%04x-riding.png"%[body,hue]);camera.size=2.7;camera.look_at(Vector3(0.,1.,0.))

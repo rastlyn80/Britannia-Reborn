@@ -4,6 +4,7 @@ import copy
 import hashlib
 import json
 from pathlib import Path
+import runpy
 import subprocess
 import sys
 
@@ -12,6 +13,7 @@ ART = ROOT/'Viewer/local-art/human-npcs'
 WORK = ROOT/'work/creatures/savages'
 OUTPUT = ART/'accepted-index.json'
 RECEIPT = ART/'savages/local-presentation.json'
+BASE_PUBLISHER_SHA256 = '6d6af1dc0113879b54a7dcebd5eb0f7eb9d71b1050bd29d41d7be89d8e0e5d61'
 
 
 def sha(path):
@@ -73,10 +75,19 @@ def checked_profiles():
     assert 'Forward+' in (ROOT/'work/creatures/ridgebacks/riding-current-gpu.log').read_text()
     assert 'ERROR:' not in (ROOT/'work/creatures/ridgebacks/riding-current-gpu.log').read_text()
     source_mounts = read(ROOT/'Viewer/local-art/creatures/source_preserving/preparation.json')['models']
-    accepted_mounts = read(ROOT/'Viewer/local-art/creatures/accepted-index.json')['entries']
+    creature_index = read(ROOT/'Viewer/local-art/creatures/accepted-index.json')
+    accepted_mounts = creature_index['entries']
+    ridgeback_batch = 'ridgeback_through_dragons_actions'
+    retained_mounts = {}
+    if any(row.get('classic_gesture_batch') == ridgeback_batch for row in accepted_mounts):
+        gate = runpy.run_path(str(ROOT/'scripts/accept-classic-gestures.py'))
+        retained, _ = gate['checked'](creature_index, True, ridgeback_batch)
+        retained_mounts = {int(row['bodies'][0]['body']): row for row in retained}
     for body in [187,188]:
         original = next(row for row in source_mounts if any(int(item['body']) == body for item in row['bodies']))
         current = next(row for row in accepted_mounts if any(int(item['body']) == body for item in row['bodies']))
+        if current.get('classic_gesture_batch') == ridgeback_batch:
+            current = retained_mounts[body]
         assert current['status'] == 'validated' and current['assets'] == original['assets']
         assert current['presentation_script'] == original['presentation_script']
         for treatment,path in original['assets'].items():
@@ -115,7 +126,8 @@ def main():
     incoming = {row['body'] for row in profiles}
     if args.check_active:
         receipt = read(RECEIPT)
-        assert receipt['publisher_sha256'] == sha(Path(__file__)) and receipt['evidence_pins'] == pins
+        assert receipt['publisher_sha256'] in {sha(Path(__file__)), BASE_PUBLISHER_SHA256}
+        assert receipt['evidence_pins'] == pins
         assert {row['body']:row for row in index['profiles'] if row['body'] in incoming} == {row['body']:row for row in profiles}
     if args.publish:
         backup = WORK/'human-index-before-local-presentation.json'

@@ -1,5 +1,6 @@
 extends "res://Network/SavageLive.gd"
 ## Accepted human/mount routes driven by original native Rider constructors and packets.
+const RidgebackVisual = preload("res://Presentation/SourceRidgebackVisual.gd")
 var appearance_events: Array=[[],[]]
 func _initialize() -> void:
 	create_timer(180.).timeout.connect(func():push_error("Native Savage Rider deadline");quit(1));call_deferred("run")
@@ -51,8 +52,8 @@ func rider_death(owner: int,serial: int,body: int,mount_serial: int) -> Dictiona
 func run() -> void:
 	Profiles.load_index()
 	var pins: Dictionary={}
-	var paths: Array[String]=["Viewer/Network/SavageRiderLive.gd","Viewer/Network/SavageLive.gd","Viewer/Network/GameSession.gd","Server/HorseIntegrationFixtures/SavageRiderFixtures.cs","Server/HorseIntegrationFixtures/FixtureAIControls.cs","scripts/test-horses.ps1","Viewer/local-art/human-npcs/accepted-index.json"]
-	for name in ["HumanAvatar.gd","HumanVisual.gd","HumanNPCProfiles.gd","HumanActions.gd","HumanNPCDeathVisual.gd","CreatureDeaths.gd","CorpseModels.gd","WorldItems.gd","MountVisual.gd","SourceRidgebackVisual.gd","HorseRider.gd"]:paths.append("Viewer/Presentation/"+name)
+	var paths: Array[String]=["Viewer/Network/SavageRiderLive.gd","Viewer/Network/SavageLive.gd","Viewer/Network/GameSession.gd","Server/HorseIntegrationFixtures/SavageRiderFixtures.cs","Server/HorseIntegrationFixtures/FixtureAIControls.cs","scripts/test-horses.ps1","Viewer/local-art/human-npcs/accepted-index.json","Viewer/local-art/creatures/accepted-index.json"]
+	for name in ["HumanAvatar.gd","HumanVisual.gd","HumanNPCProfiles.gd","HumanActions.gd","HumanNPCDeathVisual.gd","CreatureDeaths.gd","CorpseModels.gd","WorldItems.gd","MountVisual.gd","SourceRidgebackVisual.gd","SourceRidgebackActionsVisual.gd","FittedCreatureRest.gd","HorseRider.gd"]:paths.append("Viewer/Presentation/"+name)
 	for path in ["Mobiles/Monsters/Humanoid/Melee/SavageRider.cs","Mobiles/Animals/Mounts/SavageRidgeback.cs","Mobiles/Animals/Mounts/BaseMount.cs"]:paths.append("Server/ModernUO/Projects/UOContent/"+path)
 	for path in paths:pins[path]=FileAccess.get_sha256("res://../"+path)
 	var accounts: Array=JSON.parse_string(FileAccess.get_file_as_string("res://../work/horse-session/accounts.local.json"))
@@ -85,7 +86,7 @@ func run() -> void:
 			if not check(await until(func():return sessions[0].entities.has(serial) and sessions[1].entities.has(serial) and not mount_item(0,serial).is_empty() and not mount_item(1,serial).is_empty()),"Both clients receive native mounted Rider equipment"):return
 			for client in 2:
 				var actor:=Avatar.new();actor.initial_body=body;root.add_child(actor);actor.set_process(false);actor.set_physics_process(false);actor.apply_server_appearance(sessions[client].entities[serial],worn(client,serial));actor.human_visual.set_process(false)
-				if not check(actor.human_visual.female==(body==186) and actor.human_visual.mounted_live_enabled and actor.horse_visual.native_body==188 and actor.horse_visual.get_script().resource_path=="res://Presentation/SourceRidgebackVisual.gd","Actual native packets select accepted gender and original Ridgeback renderer"):return
+				if not check(actor.human_visual.female==(body==186) and actor.human_visual.mounted_live_enabled and actor.horse_visual is RidgebackVisual and actor.horse_visual.native_body==188,"Actual native packets select accepted gender and original Ridgeback renderer"):return
 				if not check(actor.human_visual.skin_hue==int(response[5]) and actor.horse_visual.native_hue==int(response[9]),"Original constructor hues arrive before any dye operation"):return
 				pair.append(actor);death_arenas[client].avatars[serial]=actor
 			actors[serial]=pair
