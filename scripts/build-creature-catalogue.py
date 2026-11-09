@@ -87,8 +87,15 @@ def main():
     counts['additional_routed_native_body_types']=sum(bool(row['presentation']) for row in special)
     counts['additional_native_body_types_with_live_evidence']=sum(bool(row['live_reports']) for row in special)
     counts['additional_named_native_constructor_pairs_with_evidence']=sum(len(row['tested_native_constructors']) for row in special)
+    spell_forms = [
+        {'body': int(identity['body']), 'name': identity['name'], 'presentation': row['kind'],
+         'source': row['spell_form_source']}
+        for row in accepted if row.get('spell_form_source') for identity in row['bodies']
+    ]
+    counts['player_spell_creature_routes'] = len(spell_forms)
     (OUT/'catalogue.json').write_text(json.dumps({'counts':counts,'server_pin':source['server_pin'],'native_targets':targets,
                                                 'additional_native_targets':special,
+                                                'player_spell_creature_routes':spell_forms,
                                                 'mounted_item_only_routes':item_routes,'preparation':prepared,'scope':scope},indent=2),encoding='utf-8')
     cards=[];atlases=[];materials=[]
     if public:

@@ -1,7 +1,10 @@
 extends RefCounted
 ## Native human-type identities share the licensed body/wardrobe, never monster actions.
 ## Candidates stay private until their family graphics/native/corpse gates pass.
-static var entries: Dictionary={}
+static var entries: Dictionary={
+	744: {"body":744,"name":"Vampiric Embrace / male","female":false,"skin":"vampiric"},
+	745: {"body":745,"name":"Vampiric Embrace / female","female":true,"skin":"vampiric"},
+}
 static var loaded:=false
 static func load_index() -> void:
 	if loaded:return

@@ -193,6 +193,12 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
  & $godot --headless --path "$root/Viewer" --script res://Presentation/CreatureDeathTests.gd
  if ($LASTEXITCODE) {throw 'Existing generic decoded creature-death transitions or lifecycle regressed'}
  $lateIndex = Get-Content "$root/Viewer/local-art/creatures/accepted-index.json" -Raw | ConvertFrom-Json
+ if ($lateIndex.entries | Where-Object { $_.spell_form_source }) {
+  & python -B "$root/scripts/prepare-player-spell-forms.py" --check-active
+  if ($LASTEXITCODE) {throw 'Active source-backed player forms lack evidence'}
+  & $godot --headless --path "$root/Viewer" --script res://../scripts/test-player-spell-forms.gd
+  if ($LASTEXITCODE) {throw 'Player transformation appearance or static corpse failed'}
+ }
  if ($lateIndex.entries | Where-Object { $_.uop_redirect_native_sha256 }) {
   & python -B "$root/scripts/prepare-creature-uop-redirects.py" --check-active
   if ($LASTEXITCODE) {throw 'Active UOP creature redirect evidence failed'}

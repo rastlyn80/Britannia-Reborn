@@ -1,3 +1,15 @@
+# Player spell forms
+
+The two Vampiric Embrace bodies use the existing male and female human rigs. The source client's body definitions point to human bodies 400 and 401 with hue 0x847E. The skin shader applies that native palette to the transformed skin, and the ordinary human appearance path keeps clothing and cosmetics. Recasting restored the original palette in both live clients and reproduced the original portrait pixels in the offscreen material check. A native vampire death produced the transformed collapse and the matching static 0x2006 corpse.
+
+Horrific Beast and female Wraith Form each share all 13 stored Classic groups, in five directions, with Moloch and Wailing Banshee respectively. Lich Form follows the source client's Body.def redirect to body 24. Male Wraith Form's separate Classic frames show the same violet cloak silhouette as the original Third Dawn Wraith rig. Its native hue 0x4001 selects the spectral material. The client retains the server's separate form body IDs and hues while reusing those rigs. Both clients saw the actual cast, the creature gait, and the return to the player's original body. The observer saw the native death animation and matching corpse for each form. The isolated trials passed 54 vampire and 101 creature-form checks.
+
+The local spell inventory lists 16 Animal Form and 18 Polymorph options with available models. Seven of the nine other spell variants now have a model route. The existing Ethereal Voyage body route still needs a dedicated appearance check. Reaper Form and Stone Form have distinct original silhouettes and are still open. The local preparation and acceptance command is scripts/prepare-player-spell-forms.py.
+
+Counting the four new creature bodies in the animation inventory brings it to 6,363 routed slots of 7,952 (80.0%). The Classic frame audit found a route for every tracked slot with a matching stored source group. Horrific Beast shares Moloch's two stored death groups and its current replacement fall.
+
+The rebuilt static graphics catalogue passed 2,491 checks across 330 corpse bodies. The Savage dance and shared human death clips rebuilt to identical asset bytes after refreshing the regression evidence for the updated human presentation.
+
 # Colossal Blow recovery
 
 ModernUO's Golem ability sends Classic group 21 with six frames for its stun. Both clients previously left a living Orc in Death and a living Drake in AirDeath even after the server unfroze them and they moved. The client now routes that exact packet to the creature's hit reaction and retains the original packet for diagnostics.

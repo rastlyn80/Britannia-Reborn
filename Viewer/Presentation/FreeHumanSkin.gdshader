@@ -6,9 +6,15 @@ uniform sampler2D skin_specular : hint_default_white, filter_linear_mipmap_aniso
 uniform float normal_strength : hint_range(0.0,1.0) = 0.18;
 uniform float skin_roughness : hint_range(0.3,0.9) = 0.60;
 uniform vec4 skin_tint : source_color = vec4(1.0);
+uniform sampler2D form_hue_palette : source_color, filter_nearest;
+uniform bool use_form_hue = false;
 void fragment() {
  vec3 colour = texture(albedo_texture,UV).rgb;
  float oil = texture(skin_specular,UV).r;
+ if (use_form_hue) {
+  float level = pow(clamp(dot(colour,vec3(0.2126,0.7152,0.0722)),0.0,1.0),1.0/2.2);
+  colour = texture(form_hue_palette,vec2((floor(level*31.0)+0.5)/32.0,0.5)).rgb;
+ }
  ALBEDO = colour * skin_tint.rgb;
  // Retain fine authored detail while suppressing the mismatched broad body-
  // hair/muscle relief. Geometry supplies anatomy; albedo supplies pigmentation.

@@ -92,10 +92,14 @@ func _ready() -> void:
 func set_skin(hue: int) -> void:
 	skin_hue = hue
 	if skin == null: return
+	var vampiric: bool = native_body_profile.get("skin","") == "vampiric"
 	# Three authored presets approximate native human hue groups deterministically.
-	var shade := clampi(((hue&0x3fff)-1002)/19,0,2)
+	var shade := 0 if vampiric else clampi(((hue&0x3fff)-1002)/19,0,2)
 	var names := ["young_lightskinned_female_diffuse.png","young_lightskinned_female_diffuse3.png","young_darkskinned_female_diffuse.png"] if female else ["young_lightskinned_male_diffuse2.png","young_lightskinned_male_diffuse3.png","young_darkskinned_male_diffuse.png"]
 	skin.set_shader_parameter("albedo_texture",load("res://local-art/free-equipment/"+names[shade]))
+	var palette := preload("res://Presentation/HumanHue.gd").palette(hue) if vampiric else null
+	skin.set_shader_parameter("form_hue_palette", palette)
+	skin.set_shader_parameter("use_form_hue", palette != null)
 	_apply_native_skin()
 
 func set_native_profile(profile: Dictionary,hue: int) -> void:
@@ -105,7 +109,9 @@ func set_native_profile(profile: Dictionary,hue: int) -> void:
 	preload("res://Presentation/HumanNPCMotion.gd").configure(self,native_body_profile)
 	if wardrobe_changed:
 		appearance_key="";set_equipment(server_equipment)
-	_apply_native_skin()
+		set_skin(hue)
+	else:
+		_apply_native_skin()
 
 func _apply_native_skin() -> void:
 	if skin==null:return
