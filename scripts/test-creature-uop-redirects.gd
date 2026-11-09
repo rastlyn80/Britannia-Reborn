@@ -1,6 +1,7 @@
 extends SceneTree
 
 const Registry := preload("res://Presentation/CreatureRegistry.gd")
+const SealedBase := preload("res://Presentation/SealedCreatureActionBase.gd")
 const Game := preload("res://Network/GameSession.gd")
 const Wire := preload("res://Network/LoginProtocol.gd")
 const SERIAL := 0x4100
@@ -26,6 +27,9 @@ func run() -> void:
 		assert(original.kind == candidate.kind)
 		if active:
 			assert(registered == candidate.presentation)
+		var redirect_layer: Dictionary = candidate.presentation
+		if active and registered.get("classic_gesture_batch") == "golem_raptor_juka_solen_actions":
+			redirect_layer = SealedBase.retained(registered, body)
 		game.entities[SERIAL] = {"serial": SERIAL, "body": body, "hue": 0x8035}
 		for treatment in ["original", "rounded", "modern"]:
 			Registry.entries[body] = original
@@ -33,13 +37,13 @@ func run() -> void:
 			Registry.entries[body] = registered if active else candidate.presentation
 			var actor := create_actor(body, treatment)
 			assert(actor.native_hue == baseline.native_hue and actor.native_hue == 0x8035)
-			var assets: Dictionary = candidate.presentation.get("classic_gesture_base_assets", {})
-			var candidate_path := Registry.asset_path(candidate.presentation, treatment)
+			var assets: Dictionary = redirect_layer.get("classic_gesture_base_assets", {})
+			var candidate_path := Registry.asset_path(redirect_layer, treatment)
 			if active and body in [730, 734] and not assets.is_empty():
 				candidate_path = assets[treatment]
 			# The Slith successor retains the ready-stance scene as its immediate
 			# base. Its redirect destinations must still match the original keys below.
-			if candidate.presentation.get("classic_gesture_batch") != "slith_actions":
+			if redirect_layer.get("classic_gesture_batch") != "slith_actions":
 				assert(Registry.asset_path(original, treatment) == candidate_path)
 			for group: String in candidate.targets:
 				var target: Dictionary = candidate.targets[group]
