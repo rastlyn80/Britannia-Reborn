@@ -47,7 +47,7 @@ func run() -> void:
 		actor.apply_server_appearance({"body":actor.initial_body,"hue":1002},[])
 		await create_timer(1.7).timeout
 		check(actor.horse_visual==null and absf(actor.human_visual.position.y)<.001 and actor.ground_visual_offset.length()<1.,"Server unequip completes the leg-over dismount beside the horse without moving the authoritative root")
-		actor.apply_server_appearance({"body":actor.initial_body},[{"id":0x3e90,"layer":25}])
+		actor.apply_server_appearance({"body":actor.initial_body},[{"id":0xffff,"layer":25}])
 		check(actor.horse_visual==null and not actor.human_visual.mounted_live_enabled and actor.has_meta("deferred_mount"),"Unknown/non-horse mount is explicit and never becomes a horse")
 		actor.free()
 	check(is_equal_approx(Horse.step_seconds([{"layer":25,"id":0x3e9f}],false),.2) and is_equal_approx(Horse.step_seconds([{"layer":25,"id":0x3e9f}],true),.1),"Mounted walk/run intervals match pinned ModernUO defaults")

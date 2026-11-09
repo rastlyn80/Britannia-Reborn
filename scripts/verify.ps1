@@ -183,6 +183,8 @@ if ($LASTEXITCODE) {throw 'Classic creature gesture compatibility source evidenc
 if ($LASTEXITCODE) {throw 'Classic wire playback failed'}
 & $godot --headless --path "$root/Viewer" --script res://../scripts/test-creature-wire-routes.gd -- --bridge
 if ($LASTEXITCODE) {throw 'Classic gesture compatibility playback failed'}
+& $godot --headless --path "$root/Viewer" --script res://../scripts/test-creature-wire-routes.gd -- --reactions
+if ($LASTEXITCODE) {throw 'Classic reaction compatibility playback failed'}
 & $godot --headless --path "$root/Viewer" --script res://Presentation/CorpseAttributeTests.gd
 if ($LASTEXITCODE) {throw 'Static corpse custom UV/attribute format preservation failed'}
 & $godot --headless --path "$root/Viewer" --script res://Presentation/SavagePaintAttributeTests.gd
@@ -194,6 +196,10 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
  if ($lateIndex.entries | Where-Object { $_.uop_redirect_native_sha256 }) {
   & python -B "$root/scripts/prepare-creature-uop-redirects.py" --check-active
   if ($LASTEXITCODE) {throw 'Active UOP creature redirect evidence failed'}
+ }
+ if ($lateIndex.entries | Where-Object { $_.uop_motion_native_sha256 }) {
+  & python -B "$root/scripts/accept-halberd-uop-actions.py" --check-active
+  if ($LASTEXITCODE) {throw 'Active Animated Weapon UOP motions failed'}
  }
  $classicBatches = @(if ($lateIndex.entries | Where-Object { $_.legacy_slot11_evidence.matched_payload_signature }) {
   'exact_creature_fidgets'

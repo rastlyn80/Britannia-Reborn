@@ -18,9 +18,18 @@ func _initialize() -> void:
 func run() -> void:
 	Registry.load_index()
 	var bridge := "--bridge" in OS.get_cmdline_user_args()
-	var route_file := Dispatcher.BRIDGE_PATH if bridge else Dispatcher.ROUTES_PATH
-	var table: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(route_file))
-	assert(table.size() == (155 if bridge else 79))
+	var reactions := "--reactions" in OS.get_cmdline_user_args()
+	var route_file := Dispatcher.BRIDGE_PATH if bridge or reactions else Dispatcher.ROUTES_PATH
+	var raw: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(route_file))
+	var table: Dictionary = {}
+	for body: String in raw:
+		for kind: String in raw[body]:
+			if (bridge or reactions) and ((kind in ["5", "8"]) != bridge):
+				continue
+			if not table.has(body):
+				table[body] = {}
+			table[body][kind] = raw[body][kind]
+	assert(table.size() == (154 if reactions else 155 if bridge else 79))
 	var game := Game.new()
 	root.add_child(game)
 	game.set_process(false)
@@ -72,7 +81,9 @@ func run() -> void:
 			avatar.free()
 	game.free()
 	if "--require-all" in OS.get_cmdline_user_args():
-		if bridge:
+		if reactions:
+			assert(bodies == 154 and selections == 2442 and unchanged == 1221 and distinct == 206)
+		elif bridge:
 			assert(bodies == 155 and selections == 1692 and unchanged == 846)
 		else:
 			assert(bodies == 79 and selections == 840 and unchanged == 420 and distinct == 90)

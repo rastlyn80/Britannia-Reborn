@@ -39,6 +39,9 @@ func run() -> void:
 			assert(actor.native_hue == baseline.native_hue and actor.native_hue == 0x8035)
 			var assets: Dictionary = redirect_layer.get("classic_gesture_base_assets", {})
 			var candidate_path := Registry.asset_path(redirect_layer, treatment)
+			if active and body == 692 and redirect_layer.has("uop_motion_native_sha256"):
+				candidate_path = str(redirect_layer.uop_motion_base_asset)
+				assert(FileAccess.get_sha256(candidate_path) == redirect_layer.uop_motion_base_sha256)
 			if active and body in [730, 734] and not assets.is_empty():
 				candidate_path = assets[treatment]
 			# The Slith successor retains the ready-stance scene as its immediate

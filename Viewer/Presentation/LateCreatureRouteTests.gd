@@ -86,6 +86,13 @@ func run() -> void:
 			Registry.entries[body] = record
 		else:
 			var active := Registry.entry(body)
+			if body == 692 and active.has("uop_motion_native_sha256"):
+				const Base := "res://../work/creatures/halberd-uop/accepted-native/base.json"
+				var previous: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(Base))
+				assert(previous.assets.modern == active.uop_motion_base_asset and previous.bodies == active.bodies)
+				assert(FileAccess.get_sha256(previous.assets.modern) == active.uop_motion_base_sha256)
+				active = previous
+				Registry.entries[body] = active
 			while active.get("classic_gesture_batch") in ["banshee_through_queens_actions", "ridgeback_through_dragons_actions",
 					"gargoyle_flight_minotaur_actions", "gargoyle_vendor_wings", "centaur_through_essence_actions", "doom_creature_actions"]:
 				active = SealedBase.retained(active, body)

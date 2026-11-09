@@ -354,6 +354,9 @@ def main():
                 explicit = model.get('new_action_categories', {}).get(str(action['type'])) if model else None
                 wire = (classic_wire_clip(model, body, action['type'], source_linked_wire, maps['fallback'])
                         if model and (mode['mode'], action['subaction']) == (0, -1) else None)
+                uop_group = model.get('uop_motion_packet_groups', {}).get(str(action['type'])) if model else None
+                fitted_uop = (uop_group is not None and mode['mode'] == 0 and action['subaction'] == -1
+                              and set(action['groups']) == {int(uop_group)} and (body, int(uop_group)) in framed)
                 label = explicit or wire or maps['new'].get(action['type'])
                 if model and model['profile']=='sea' and action['type']==0 and mode['mode']%2:label='Attack2'
                 new_actions.append({'body':body,'mode':mode['mode'],**action,
@@ -361,7 +364,8 @@ def main():
                     'generic_model':model['kind'] if model else None,
                     'replacement':resolve(model,label,maps['fallback']) if model and label else None,
                     'scope': ('Classic subaction zero and both wire parities witnessed; Enhanced graph modes separate.'
-                              if wire and not explicit else 'Type route only; per-body mode/subaction/variation fidelity requires separate tests.')})
+                              if wire and not explicit else 'Fitted from the stored UOP group; two-client subaction-zero playback witnessed.'
+                              if fitted_uop else 'Type route only; per-body mode/subaction/variation fidelity requires separate tests.')})
     # Keep the broad protocol ledger separate from work backed by an installed
     # frame record. A numeric UOP match still needs a wire-category review.
     frame_gaps = {}

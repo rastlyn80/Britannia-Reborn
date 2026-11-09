@@ -29,7 +29,7 @@ def edit(source, replacements):
     return source
 
 
-def prepare_fixture(classes):
+def prepare_fixture(classes, types):
     source = ROOT / 'Server/HorseIntegrationFixtures'
     fixture = WORK / 'fixture'
     fixture.mkdir(parents=True, exist_ok=True)
@@ -41,7 +41,7 @@ def prepare_fixture(classes):
             bodies = list(classes)
             lines = ['        ' + ', '.join(bodies[index:index + 15]) + ',' for index in range(0, len(bodies), 15)]
             content = content[:first] + '    [\n' + '\n'.join(lines) + '\n' + content[last:]
-            content = edit(content, {'type is not (1 or 2 or 11 or 14)': 'type is not (5 or 8)'})
+            content = edit(content, {'type is not (1 or 2 or 11 or 14)': f"type is not ({' or '.join(types)})"})
             (fixture / path.name).write_text(content, encoding='utf-8')
         elif path.suffix == '.cs' or path.name == 'global.json':
             shutil.copyfile(path, fixture / path.name)
@@ -97,7 +97,7 @@ def read(path):
 
 
 def prepared_entries(family):
-    assert family.startswith('classic_gesture_bridge_') and family.isidentifier()
+    assert family.startswith('__PREFIX__') and family.isidentifier()
     selected = read(folder / family / 'constructors.json')
     public = read(root / 'Viewer/Art/Creatures/index.json')['entries']
     local = read(root / 'Viewer/local-art/creatures/accepted-index.json')['entries']
@@ -116,16 +116,17 @@ def prepared_entries(family):
 selector['main'].__globals__['prepared_entries'] = prepared_entries
 selector['main']()
 """
-    (WORK / 'prepare-bridge-fixtures.py').write_text(selector, encoding='utf-8')
+    (WORK / 'prepare-bridge-fixtures.py').write_text(selector.replace('__PREFIX__', FAMILY_PREFIX), encoding='utf-8')
 
 
-def prepare(routes, classes):
-    assert routes.keys() == classes.keys() and VENDOR in classes
+def prepare(routes, classes, types, batch_size):
+    assert routes.keys() == classes.keys()
     bodies = [body for body in classes if body != VENDOR]
-    groups = {f'{FAMILY_PREFIX}{offset // 26 + 1:02}': bodies[offset:offset + 26]
-              for offset in range(0, len(bodies), 26)}
+    groups = {f'{FAMILY_PREFIX}{offset // batch_size + 1:02}': bodies[offset:offset + batch_size]
+              for offset in range(0, len(bodies), batch_size)}
     # The native city morph moves both disposable accounts onto another map.
-    groups[FAMILY_PREFIX + 'city'] = [VENDOR]
+    if VENDOR in classes:
+        groups[FAMILY_PREFIX + 'city'] = [VENDOR]
     for family, selected in groups.items():
         folder = WORK / family
         folder.mkdir(parents=True, exist_ok=True)
@@ -133,18 +134,29 @@ def prepare(routes, classes):
         write_json(folder / 'constructors.json', {body: classes[body] for body in selected})
     write_json(WORK / 'shards.json', groups)
     relative = WORK.relative_to(ROOT).as_posix()
-    fixture = prepare_fixture(classes)
+    fixture = prepare_fixture(classes, types)
     prepare_client(relative)
     prepare_runner(relative, fixture)
     print(f'Prepared {len(groups)} isolated trial groups for {len(classes)} bodies under {WORK}')
 
 
 def main():
+    global WORK, FAMILY_PREFIX
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--routes', type=Path, default=ROUTES)
-    parser.add_argument('--pins', type=Path, default=PINS)
+    parser.add_argument('--pins', type=Path)
+    parser.add_argument('--reactions', action='store_true')
     args = parser.parse_args()
-    prepare(read(args.routes), read(args.pins)['native_classes'])
+    types, pin_path, batch_size = ('5', '8'), PINS, 26
+    if args.reactions:
+        WORK = ROOT / 'work/creatures/classic-reaction-bridge/native-installed'
+        FAMILY_PREFIX = 'classic_reaction_bridge_installed_'
+        types = ('1', '2', '6', '9', '10', '11', '14')
+        pin_path = ROOT / 'scripts/classic-reaction-bridge-pins.json'
+        batch_size = 22
+    routes = {body: selected for body, row in read(args.routes).items()
+              if (selected := {kind: rule for kind, rule in row.items() if kind in types})}
+    prepare(routes, read(args.pins or pin_path)['native_classes'], types, batch_size)
 
 
 if __name__ == '__main__':

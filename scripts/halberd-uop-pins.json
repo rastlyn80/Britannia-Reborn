@@ -1,0 +1,120 @@
+{
+  "body": 692,
+  "inputs": {
+    "AnimationSequence.uop": "b4de2afdba2bab6e987389cde18aee4703bbef560f66d4c26be5ffc04f2b8e0f",
+    "mobtypes.txt": "a4f1c98057c5bcf10ccdb575a9154260651e49b852bfe548059ff55fcbbf29d8"
+  },
+  "mobtypes": [
+    "MONSTER",
+    65536
+  ],
+  "frames": {
+    "1": {
+      "archive": "AnimationFrame3.uop",
+      "frame_headers": 55,
+      "payload_sha256": "c4320e5eca512de9375c9d7ce67959842727ecfdc0472f932292dec62c64c719",
+      "decoded_visible_by_direction": [
+        11,
+        11,
+        11,
+        11,
+        11
+      ]
+    },
+    "10": {
+      "archive": "AnimationFrame3.uop",
+      "frame_headers": 50,
+      "payload_sha256": "eaf0ee5d87c10202f10968ea7921f449c23b2c67e864f506c8cde4c7ee3786ad",
+      "decoded_visible_by_direction": [
+        10,
+        10,
+        10,
+        10,
+        10
+      ]
+    },
+    "23": {
+      "archive": "AnimationFrame3.uop",
+      "frame_headers": 55,
+      "payload_sha256": "90430c82f60b5dec68a353f1033eedb7f205886462d7fb5398186b718a3608a8",
+      "decoded_visible_by_direction": [
+        11,
+        11,
+        11,
+        11,
+        11
+      ]
+    },
+    "25": {
+      "archive": "AnimationFrame3.uop",
+      "frame_headers": 55,
+      "payload_sha256": "689ea0b183dc76ff0e39550ca3d933130921de250c01d177b8fe47ac9510a125",
+      "decoded_visible_by_direction": [
+        11,
+        11,
+        11,
+        11,
+        11
+      ]
+    },
+    "28": {
+      "archive": "AnimationFrame3.uop",
+      "frame_headers": 55,
+      "payload_sha256": "6a57c8f9e79ebb3e3349603a8ccbf7d98637d8c119871201141bcb9dfa636d69",
+      "decoded_visible_by_direction": [
+        11,
+        11,
+        11,
+        11,
+        11
+      ]
+    }
+  },
+  "modes": [
+    {
+      "mode": 0,
+      "fallback_mode": -1,
+      "default_group": 1,
+      "transitions": [],
+      "packet_groups": {
+        "2": [
+          10,
+          10
+        ],
+        "5": [
+          1
+        ],
+        "8": [
+          28
+        ],
+        "11": [
+          1,
+          1,
+          1
+        ],
+        "14": [
+          1
+        ],
+        "15": [
+          23
+        ]
+      }
+    },
+    {
+      "mode": 1,
+      "fallback_mode": 0,
+      "default_group": 25,
+      "transitions": [
+        {
+          "target_mode": 0,
+          "group": 28
+        }
+      ],
+      "packet_groups": {
+        "5": [
+          25
+        ]
+      }
+    }
+  ]
+}

@@ -14,24 +14,28 @@ read, sha = COMMON['read'], COMMON['sha']
 ROUTES = ROOT / 'Viewer/Presentation/creature-classic-gesture-bridge.json'
 PINS = ROOT / 'scripts/classic-gesture-bridge-pins.json'
 NATIVE_WORK = ROOT / 'work/creatures/classic-gesture-bridge/native'
-GROUPS = {'5': (17, 18), '8': (11, 11)}
+GESTURES = {'5': (17, 18), '8': (11, 11)}
+REACTIONS = {'1': (16, 15), '2': (16, 15), '6': (11, 11), '9': (20, 20),
+             '10': (20, 20), '11': (12, 12), '14': (11, 11)}
+REACTION_PINS = ROOT / 'scripts/classic-reaction-bridge-pins.json'
+REACTION_NATIVE_WORK = ROOT / 'work/creatures/classic-reaction-bridge/native-installed'
 
 
-def check_shape(routes, pins):
+def check_shape(routes, pins, groups, size):
     assert routes.keys() == pins['routes'].keys() == pins['native_classes'].keys()
-    assert len(routes) == 155 and sum(map(len, routes.values())) == 288
+    assert (len(routes), sum(map(len, routes.values()))) == size
     existing = read(ROOT / 'Viewer/Presentation/creature-wire-routes.json')
     for body, types in routes.items():
-        assert set(types) <= GROUPS.keys() and types.keys() == pins['routes'][body].keys()
+        assert set(types) <= groups.keys() and types.keys() == pins['routes'][body].keys()
         assert not types.keys() & existing.get(body, {}).keys()
         for kind, rule in types.items():
-            assert tuple(rule[:2]) == GROUPS[kind]
+            assert tuple(rule[:2]) == groups[kind]
             clips = rule[2:]
             assert len(clips) in (1, 2) and len(set(clips)) == len(clips)
             assert all(isinstance(clip, str) and clip for clip in clips)
-            if kind == '8':
+            if rule[0] == rule[1]:
                 assert len(clips) == 1
-            assert [row[0] for row in pins['routes'][body][kind]] == list(dict.fromkeys(GROUPS[kind]))
+            assert [row[0] for row in pins['routes'][body][kind]] == list(dict.fromkeys(groups[kind]))
 
 
 def check_source(data, routes, pins):
@@ -59,12 +63,12 @@ def check_source(data, routes, pins):
     print(f'Classic gesture compatibility source: {sum(map(len, routes.values()))} types on {len(routes)} bodies')
 
 
-def check_native(routes, trial):
+def check_native(routes, trial, prefix):
     families = read(trial / 'shards.json')
     covered = set()
     checks, observations = 0, 0
     for family, body_keys in families.items():
-        assert family.startswith('classic_gesture_bridge_') and family.isidentifier()
+        assert family.startswith(prefix) and family.isidentifier()
         assert len(body_keys) == len(set(body_keys)) and not covered & set(body_keys)
         folder = trial / family
         table = read(folder / 'routes.json')
@@ -112,17 +116,30 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--data-dir', type=Path)
     parser.add_argument('--routes', type=Path, default=ROUTES)
-    parser.add_argument('--pins', type=Path, default=PINS)
-    parser.add_argument('--native', type=Path, nargs='?', const=NATIVE_WORK)
+    parser.add_argument('--pins', type=Path)
+    parser.add_argument('--reactions', action='store_true', help='Select the reaction route package for a custom or native check')
+    parser.add_argument('--native', type=Path, nargs='?', const=Path('.'))
     args = parser.parse_args()
-    routes, pins = read(args.routes), read(args.pins)
-    check_shape(routes, pins)
+    manifest = read(args.routes)
+    assert all(types.keys() <= (GESTURES.keys() | REACTIONS.keys()) for types in manifest.values())
+    packages = [
+        (GESTURES, (155, 288), PINS, NATIVE_WORK, 'classic_gesture_bridge_'),
+        (REACTIONS, (154, 421), REACTION_PINS, REACTION_NATIVE_WORK, 'classic_reaction_bridge_'),
+    ]
+    if args.reactions or args.native or args.routes != ROUTES or args.pins:
+        packages = [packages[int(args.reactions)]]
     config = ROOT / 'Server/runtime/Configuration/modernuo.json'
-    if args.data_dir is not None or config.is_file():
-        data = args.data_dir or Path(read(config)['dataDirectories'][0])
-        check_source(data, routes, pins)
-    if args.native:
-        check_native(routes, args.native.resolve())
+    data = args.data_dir or (Path(read(config)['dataDirectories'][0]) if config.is_file() else None)
+    for groups, size, pin_path, native_path, prefix in packages:
+        routes = {body: selected for body, types in manifest.items()
+                  if (selected := {kind: rule for kind, rule in types.items() if kind in groups})}
+        pins = read(args.pins or pin_path)
+        check_shape(routes, pins, groups, size)
+        if data is not None:
+            check_source(data, routes, pins)
+        if args.native:
+            trial = native_path if args.native == Path('.') else args.native.resolve()
+            check_native(routes, trial, prefix)
 
 
 if __name__ == '__main__':

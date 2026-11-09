@@ -71,6 +71,9 @@ def merge_active(row, proof, receipt_hash):
 
 
 def redirect_layer(row):
+    if 'uop_motion_native_sha256' in row:
+        halberd = runpy.run_path(str(ROOT / 'scripts/accept-halberd-uop-actions.py'))
+        return halberd['retained'](row)
     if row.get('classic_gesture_batch') == 'frost_through_gargoyle_actions' and [
             body['body'] for body in row['bodies']] == [130]:
         gate = runpy.run_path(str(ROOT / 'scripts/accept-classic-gestures.py'))
