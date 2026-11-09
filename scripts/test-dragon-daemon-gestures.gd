@@ -25,8 +25,10 @@ func run() -> void:
 		Registry.load_index()
 		for candidate: Dictionary in rows:
 			Registry.entries[int(candidate.body)] = candidate.presentation
-	if Registry.entry(43).get("classic_gesture_batch") == "banshee_through_queens_actions":
-		Registry.entries[43] = preload("res://Presentation/SealedCreatureActionBase.gd").retained(Registry.entry(43), 43)
+	for body: int in [10, 38, 43]:
+		var row := Registry.entry(body)
+		if row.get("classic_gesture_batch") in ["banshee_through_queens_actions", "daemon_kin_wings"]:
+			Registry.entries[body] = preload("res://Presentation/SealedCreatureActionBase.gd").retained(row, body)
 	var game := Game.new()
 	root.add_child(game)
 	game.set_process(false)

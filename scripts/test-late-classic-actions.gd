@@ -1,5 +1,12 @@
 extends "res://../scripts/test-hopper-horde-actions.gd"
 
+func run() -> void:
+	Registry.load_index()
+	var current := Registry.entry(172)
+	if current.get("classic_gesture_batch") == "related_champion_actions":
+		Registry.entries[172] = preload("res://Presentation/SealedCreatureActionBase.gd").retained(current, 172)
+	await super.run()
+
 func specifications() -> Dictionary:
 	return {
 		303: ["devourer_lion_hiryu/devourer", "DevourerMouthCheck", "bone_lrip04"],

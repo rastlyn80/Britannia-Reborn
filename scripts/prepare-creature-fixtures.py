@@ -98,6 +98,14 @@ def prepared_entries(family, registry_entries=None):
         recipe = runpy.run_path(str(ROOT / 'scripts' / f"prepare-{family.replace('_', '-')}.py"))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
         return recipe['prepared'](rows)
+    if family == 'related_champion_actions':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-related-champion-actions.py'))
+        rows = gesture_baseline(family, registry_entries, recipe['CLASSES'], layered=True)
+        return recipe['prepared'](rows)
+    if family in ('daemon_kin_wings', 'gargoyle_vendor_wings'):
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-related-wing-actions.py'))
+        rows = gesture_baseline(family, registry_entries, recipe['FAMILIES'][family], layered=True)
+        return recipe['prepared'](family, rows)
     if family == 'avenger_rotting_actions':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-avenger-rotting-actions.py'))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
@@ -1035,6 +1043,9 @@ def main():
             'recovered_late_active': {'banshee_through_queens_actions', 'ridgeback_through_dragons_actions'},
             'aos_creatures_active': {'banshee_through_queens_actions', 'ridgeback_through_dragons_actions'},
             'tormented_minotaur_active': {'gargoyle_flight_minotaur_actions'},
+            'gargoyle_vendor_active': {'gargoyle_vendor_wings'},
+            'champions_active': {'related_champion_actions'},
+            'fey_champions_active': {'related_champion_actions'},
             'late_donors_active': {'banshee_through_queens_actions'},
             'meer_donors_active': {'frost_through_gargoyle_actions', 'lattice_through_meer_actions', 'meer_forward_falls'},
             'captain_cu_active': {'lattice_through_meer_actions', 'banshee_through_queens_actions'},

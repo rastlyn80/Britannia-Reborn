@@ -18,6 +18,9 @@ func run() -> void:
 	for record: Dictionary in package.models:
 		var family := str(record.kind)
 		var body := int(record.bodies[0].body)
+		var current := Registry.entry(body)
+		if current.get("classic_gesture_batch") == "related_champion_actions":
+			Registry.entries[body] = preload("res://Presentation/SealedCreatureActionBase.gd").retained(current, body)
 		var expected_record := preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(record, Registry.entry(body))
 		var active := Registry.entry(body)
 		assert(Registry.supports_body(body))

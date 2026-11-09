@@ -76,6 +76,9 @@ BATCHES = {
                                      'SwampWidowJukaActionsLive.gd', ('test-lattice-through-meer-actions.gd',)),
     'quagmire_through_exodus_actions': ((789, 784, 266, 772, 267, 304, 46, 757, 756, 252, 199, 271),
                                         'SwampWidowJukaActionsLive.gd', ('test-quagmire-through-exodus-actions.gd',)),
+    'related_champion_actions': ((172, 173, 174, 175, 176), 'SwampWidowJukaActionsLive.gd', ('test-related-champion-actions.gd',)),
+    'daemon_kin_wings': ((10, 38), 'SwampWidowJukaActionsLive.gd', ()),
+    'gargoyle_vendor_wings': ((758,), 'SwampWidowJukaActionsLive.gd', ()),
     'gargoyle_flight_minotaur_actions': ((755, 754, 262), 'SwampWidowJukaActionsLive.gd', ('test-gargoyle-flight-minotaur-actions.gd',)),
     'ridgeback_through_dragons_actions': ((187, 276, 308, 188, 103, 104),
                                         'SwampWidowJukaActionsLive.gd', ('test-ridgeback-through-dragons-actions.gd',)),
@@ -183,6 +186,9 @@ PREDECESSORS = {
     'quagmire_through_exodus_actions': ('troglodyte_reach',),
     'banshee_through_queens_actions': ('dragon_daemon',),
     'gargoyle_flight_minotaur_actions': ('frost_through_gargoyle_actions',),
+    'related_champion_actions': ('late_classic_actions',),
+    'daemon_kin_wings': ('dragon_daemon',),
+    'gargoyle_vendor_wings': (),
     'ridgeback_through_dragons_actions': (),
     'copper_kaze_actions': (),
     'ophidian_patchwork_actions': ('ophidian_bardiche',),
@@ -253,7 +259,7 @@ def compose(base, prepared, native_sha):
             row[field] = {'modern': row[field]['modern']}
     if prepared['family'] in PREDECESSORS:
         row['classic_gesture_batch'] = prepared['family']
-    if prepared['family'] == 'gargoyle_flight_minotaur_actions':
+    if prepared['family'] in ('gargoyle_flight_minotaur_actions', 'daemon_kin_wings', 'gargoyle_vendor_wings', 'related_champion_actions'):
         row['classic_motion_references'] = base.get('classic_motion_references', {}) | prepared['classic_motion_references']
     if prepared['family'] in ('orc_fidgets', 'ettin_fidgets'):
         row['kind'] = f"{base['kind']}_fidgets"
@@ -347,7 +353,7 @@ def checked(index, active, batch, *, compare_registry=True):
             if (batch in ('slith_actions', 'ranked_classic_actions', 'swamp_widow_juka_actions',
                           'bomber_ogre_rune_dopple_actions', 'golem_raptor_juka_solen_actions',
                           'post_solen_actions', 'frost_through_gargoyle_actions', 'meer_forward_falls',
-                          'quagmire_through_exodus_actions', 'gargoyle_flight_minotaur_actions') or
+                          'quagmire_through_exodus_actions', 'gargoyle_flight_minotaur_actions', 'daemon_kin_wings', 'related_champion_actions') or
                     predecessor in ('scorpion_imp', 'dragon_daemon', 'bone_cyclops', 'vampire_bat_actions',
                                     'fidget_aliases_toad', 'skeletal_mage_staff')):
                 # Independent successors seal their own retained rows. Replaying a
@@ -482,7 +488,9 @@ def checked(index, active, batch, *, compare_registry=True):
             slots = [source['group'] if isinstance(source, dict) else 11]
             if 'authored_action_secondary_reference' in package:
                 slots.append(package['authored_action_secondary_reference']['group'])
-        refuses_death = batch == 'dragon_daemon' and body == 38 and witness['native_class'] == 'ServantOfSemidar'
+        refuses_death = ((batch in ('dragon_daemon', 'daemon_kin_wings') and body == 38
+                          and witness['native_class'] == 'ServantOfSemidar') or
+                         (batch == 'gargoyle_vendor_wings' and body == 758 and witness['native_class'] == 'Provisioner'))
         suppresses_corpse = (batch, witness['native_class']) in {
             ('air_distinct_actions', 'SummonedAirElemental'), ('fire_distinct_actions', 'SummonedFireElemental')}
         if (witness['kind'] != package['kind'] or witness['corpse_suppressed'] != suppresses_corpse
@@ -550,7 +558,8 @@ def checked(index, active, batch, *, compare_registry=True):
             if (batch in ('efreet_actions', 'orc_bog_actions', 'slith_actions', 'ranked_classic_actions',
                           'swamp_widow_juka_actions', 'bomber_ogre_rune_dopple_actions',
                           'golem_raptor_juka_solen_actions', 'post_solen_actions', 'frost_through_gargoyle_actions', 'lattice_through_meer_actions', 'meer_forward_falls',
-                          'quagmire_through_exodus_actions', 'banshee_through_queens_actions', 'ridgeback_through_dragons_actions', 'lizard_actions', 'quadruped_actions', 'hart_deaths',
+                          'quagmire_through_exodus_actions', 'banshee_through_queens_actions', 'ridgeback_through_dragons_actions',
+                          'daemon_kin_wings', 'gargoyle_vendor_wings', 'related_champion_actions', 'lizard_actions', 'quadruped_actions', 'hart_deaths',
                           'dog_bear_actions', 'cat_actions',
                           'skeleton_actions', 'troll_actions', 'field_fauna', 'spider_mongbat_actions',
                           'grazers_grizzly_actions', 'pig_reaper_harpy_actions', 'rabbit_distinct_actions',
@@ -660,6 +669,13 @@ def test_active(batch):
             run_client_check(godot, env, f'res://Presentation/{test}.gd', [])
         for family in ('late_source', 'late_donors', 'recovered_late', 'aos_creatures'):
             run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', [f'--family={family}'])
+    if batch == 'related_champion_actions':
+        for test in ('ChampionCreatureRouteTests', 'FeyChampionRouteTests'):
+            run_client_check(godot, env, f'res://Presentation/{test}.gd', [])
+    if batch in ('daemon_kin_wings', 'gargoyle_vendor_wings'):
+        run_client_check(godot, env, 'res://../scripts/test-related-wing-actions.gd', ['--active', f'--family={batch}'])
+        if batch == 'gargoyle_vendor_wings':
+            run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', ['--family=gargoyle_vendor'])
     if batch == 'gargoyle_flight_minotaur_actions':
         run_client_check(godot, env, 'res://Presentation/SourcePreservingBaseActionTests.gd', [])
         run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', ['--family=tormented_minotaur'])

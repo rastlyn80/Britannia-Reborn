@@ -1,0 +1,467 @@
+{
+  "source": {
+    "172": {
+      "5": {
+        "body": 172,
+        "group": 5,
+        "archive": "anim2.mul",
+        "graphic": 62,
+        "directions": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "frames": [
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "directional_payload_sha256": "ca583a2ff5fb643fd6b413fe19514f145fd5a29d2cd84c01dfaa942767965a47"
+      },
+      "6": {
+        "body": 172,
+        "group": 6,
+        "archive": "anim2.mul",
+        "graphic": 62,
+        "directions": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "frames": [
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "directional_payload_sha256": "5ea3d04875997b6e2e018c23f5caa0d3e42fe0c001b2863cf9622bfeacdd40a5"
+      },
+      "15": {
+        "body": 172,
+        "group": 15,
+        "archive": "anim2.mul",
+        "graphic": 62,
+        "directions": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "frames": [
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "directional_payload_sha256": "51e7d5b1f0cc09735e1b95db84d1baaf14625cc08586cee4cfa6ee44ac7f3fa6"
+      },
+      "16": {
+        "body": 172,
+        "group": 16,
+        "archive": "anim2.mul",
+        "graphic": 62,
+        "directions": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "frames": [
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "directional_payload_sha256": "51e7d5b1f0cc09735e1b95db84d1baaf14625cc08586cee4cfa6ee44ac7f3fa6"
+      },
+      "18": {
+        "body": 172,
+        "group": 18,
+        "archive": "anim2.mul",
+        "graphic": 62,
+        "directions": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "frames": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "directional_payload_sha256": "8b383b068cb78526686efdd2bbcd2147b7c38ce35af0dc6125f7e3615e0f9425"
+      }
+    },
+    "173": {
+      "15": {
+        "body": 173,
+        "group": 15,
+        "archive": "anim2.mul",
+        "graphic": 2,
+        "directions": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "frames": [
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "directional_payload_sha256": "71113df5fe56ec29aa21566582d3d6eff5c3b41887fbcbe65c57954d6a193216"
+      },
+      "16": {
+        "body": 173,
+        "group": 16,
+        "archive": "anim2.mul",
+        "graphic": 2,
+        "directions": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "frames": [
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "directional_payload_sha256": "7b3ae66b0d85f666aac8f4baf861cfd0beb1d69e08e51aa7460fb8165b448331"
+      },
+      "18": {
+        "body": 173,
+        "group": 18,
+        "archive": "anim2.mul",
+        "graphic": 2,
+        "directions": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "frames": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "directional_payload_sha256": "8137867b4f7461156a3315517cd55caeb399a3ec6723f7248bf38292b7c9d0b1"
+      }
+    },
+    "174": {
+      "15": {
+        "body": 174,
+        "group": 15,
+        "archive": "anim2.mul",
+        "graphic": 66,
+        "directions": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "frames": [
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "directional_payload_sha256": "233b4ed7f32077e8579e8684176e6ea17df6c3c19446a3e3716dc997d15832b9"
+      },
+      "16": {
+        "body": 174,
+        "group": 16,
+        "archive": "anim2.mul",
+        "graphic": 66,
+        "directions": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "frames": [
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "directional_payload_sha256": "233b4ed7f32077e8579e8684176e6ea17df6c3c19446a3e3716dc997d15832b9"
+      },
+      "18": {
+        "body": 174,
+        "group": 18,
+        "archive": "anim2.mul",
+        "graphic": 66,
+        "directions": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "frames": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "directional_payload_sha256": "1769c1b2cb9140bdc7ff79c9e6dd406562aaf587ad3cb40d39f36d9d7dccaf27"
+      }
+    },
+    "175": {
+      "5": {
+        "body": 175,
+        "group": 5,
+        "archive": "anim2.mul",
+        "graphic": 65,
+        "directions": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "frames": [
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "directional_payload_sha256": "8fbc10bacac28af4edf5b97d197b4068d4d9781d5f2af3af09176d258bbf8237"
+      },
+      "6": {
+        "body": 175,
+        "group": 6,
+        "archive": "anim2.mul",
+        "graphic": 65,
+        "directions": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "frames": [
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "directional_payload_sha256": "8fbc10bacac28af4edf5b97d197b4068d4d9781d5f2af3af09176d258bbf8237"
+      },
+      "15": {
+        "body": 175,
+        "group": 15,
+        "archive": "anim2.mul",
+        "graphic": 65,
+        "directions": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "frames": [
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "directional_payload_sha256": "9f621a2cf3d5809094449caad948a7221edf9dc21a655136a5bc7054bf3ef5dc"
+      },
+      "16": {
+        "body": 175,
+        "group": 16,
+        "archive": "anim2.mul",
+        "graphic": 65,
+        "directions": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "frames": [
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "directional_payload_sha256": "9f621a2cf3d5809094449caad948a7221edf9dc21a655136a5bc7054bf3ef5dc"
+      },
+      "18": {
+        "body": 175,
+        "group": 18,
+        "archive": "anim2.mul",
+        "graphic": 65,
+        "directions": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "frames": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "directional_payload_sha256": "e5e1ed804e30f27194e409f869c8dde3804cf144e7073ef829cf15d30811e7ce"
+      }
+    },
+    "176": {
+      "15": {
+        "body": 176,
+        "group": 15,
+        "archive": "anim2.mul",
+        "graphic": 16,
+        "directions": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "frames": [
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "directional_payload_sha256": "e8f1908eadea74ed852fd43e858502a8a47aa5e8a92186f7ac2ef0c95313d342"
+      },
+      "16": {
+        "body": 176,
+        "group": 16,
+        "archive": "anim2.mul",
+        "graphic": 16,
+        "directions": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "frames": [
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "directional_payload_sha256": "e8f1908eadea74ed852fd43e858502a8a47aa5e8a92186f7ac2ef0c95313d342"
+      },
+      "18": {
+        "body": 176,
+        "group": 18,
+        "archive": "anim2.mul",
+        "graphic": 16,
+        "directions": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "frames": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "directional_payload_sha256": "4328eb0b254821b2c15604648122f5f3d5c18f49673f842445b043f3a2a47e0e"
+      }
+    }
+  },
+  "donors": {
+    "173": {
+      "body": 157,
+      "assets": {
+        "modern": "res://local-art/creatures/swamp-widow-juka-157-actions-modern.scn",
+        "original": "res://local-art/creatures/swamp-widow-juka-157-actions-original.scn",
+        "rounded": "res://local-art/creatures/swamp-widow-juka-157-actions-rounded.scn"
+      },
+      "sha256": {
+        "modern": "7e93bdd4d591e58f01e2203686c1f3c4b9a2c65068c0409de37c9c406c6c819e",
+        "original": "760679ae28e3b002cd9b9f1398666a73b6f1a703ed54a50760e29884ab0ce87b",
+        "rounded": "80fc2ce45b04f9fcf6e847c440abfb5eef5052d22929fcf9a0849e532456ca7c"
+      }
+    },
+    "174": {
+      "body": 149,
+      "assets": {
+        "original": "res://local-art/creatures/succubus-actions-original.scn",
+        "rounded": "res://local-art/creatures/succubus-actions-rounded.scn",
+        "modern": "res://local-art/creatures/succubus-actions-modern.scn"
+      },
+      "sha256": {
+        "original": "af4bf15a02973ca07373f4cd23670e942e69040dc82921c3ceecbeb4308186d6",
+        "rounded": "ab5f98c66acb32cd5d7633004b127f73972ee84996c08fc1e3941381979ccd7e",
+        "modern": "6c9c7ad7bfa8ffd5b9f7669fa2c297fc896080596f953a6fc6c9f799bb0a2b1d"
+      }
+    },
+    "175": {
+      "body": 123,
+      "assets": {
+        "modern": "res://local-art/creatures/lattice-through-meer-123-actions-modern.scn",
+        "original": "res://local-art/creatures/lattice-through-meer-123-actions-original.scn",
+        "rounded": "res://local-art/creatures/lattice-through-meer-123-actions-rounded.scn"
+      },
+      "sha256": {
+        "modern": "06a2d81b5a9810f309a2ce9e6041f1035ddb1074e216fe23f4a34c8f824ecbb0",
+        "original": "761c28b18629ba099f7c1a57128f5642bc79becf0a8b92da8eb9474cb6adef1c",
+        "rounded": "9b829ca6e1c64810ce831f0a0f29a80dba4751ced65eebcc58ee0c7e4dd8b304"
+      }
+    },
+    "176": {
+      "body": 128,
+      "assets": {
+        "original": "res://local-art/creatures/pixie-distinct-actions-original.scn",
+        "rounded": "res://local-art/creatures/pixie-distinct-actions-rounded.scn",
+        "modern": "res://local-art/creatures/pixie-distinct-actions-modern.scn"
+      },
+      "sha256": {
+        "original": "9844d5e71e58d25ce67ca3a0cd232f8aaca8ac8bcfbd5d6be1df4bf26ccb96e3",
+        "rounded": "f26b0ad89b16dcf9cca8a7841435b95acf0f90855ca04e88dc18f7de5d11e186",
+        "modern": "e8a1635a80fbbee5194de62ff3f87267cad2435908e240acec3a7789fb4fff41"
+      }
+    }
+  }
+}

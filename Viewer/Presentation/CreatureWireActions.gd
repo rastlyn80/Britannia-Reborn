@@ -3,7 +3,16 @@ extends RefCounted
 
 const Creature := preload("res://Presentation/CreatureVisual.gd")
 const ROUTES_PATH := "res://Presentation/creature-wire-routes.json"
+const BRIDGE_PATH := "res://Presentation/creature-classic-gesture-bridge.json"
 static var routes: Dictionary
+
+static func load_routes() -> Dictionary:
+	var source: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(ROUTES_PATH))
+	var compatibility: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(BRIDGE_PATH))
+	for body: String in compatibility:
+		var existing: Dictionary = source.get(body, {})
+		source[body] = compatibility[body].merged(existing, true)
+	return source
 
 static func dispatch(avatar: Node3D, request: Dictionary) -> bool:
 	var visual: Node3D = avatar.horse_visual
@@ -18,7 +27,7 @@ static func dispatch(avatar: Node3D, request: Dictionary) -> bool:
 	if overrides.has(kind):
 		return avatar.receive_native_action(request)
 	if routes.is_empty():
-		routes = JSON.parse_string(FileAccess.get_file_as_string(ROUTES_PATH))
+		routes = load_routes()
 	var rule: Array = routes.get(body, {}).get(kind, [])
 	if rule.is_empty():
 		return avatar.receive_native_action(request)

@@ -86,7 +86,7 @@ func run() -> void:
 			Registry.entries[body] = record
 		else:
 			var active := Registry.entry(body)
-			if active.get("classic_gesture_batch") in ["banshee_through_queens_actions", "ridgeback_through_dragons_actions", "gargoyle_flight_minotaur_actions"]:
+			if active.get("classic_gesture_batch") in ["banshee_through_queens_actions", "ridgeback_through_dragons_actions", "gargoyle_flight_minotaur_actions", "gargoyle_vendor_wings"]:
 				active = SealedBase.retained(active, body)
 				Registry.entries[body] = active
 			if body in [266, 267] and active.get("classic_gesture_batch") == "quagmire_through_exodus_actions":

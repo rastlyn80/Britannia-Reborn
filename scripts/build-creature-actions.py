@@ -266,7 +266,10 @@ def main():
     public=ROOT/'Viewer/Art/Creatures/index.json'
     if public.exists():models=[row for row in json.loads(public.read_text())['entries'] if row.get('status')=='validated']+models
     maps,renderer_sha=renderer_maps();rows=[];native={}
-    wire_routes = json.loads((ROOT / 'Viewer/Presentation/creature-wire-routes.json').read_text(encoding='utf-8'))
+    source_linked_wire = json.loads((ROOT / 'Viewer/Presentation/creature-wire-routes.json').read_text(encoding='utf-8'))
+    bridge = json.loads((ROOT / 'Viewer/Presentation/creature-classic-gesture-bridge.json').read_text(encoding='utf-8'))
+    wire_routes = {body: bridge.get(body, {}) | source_linked_wire.get(body, {})
+                   for body in bridge.keys() | source_linked_wire.keys()}
     for model in models:
         for identity in model['bodies']:
             body=int(identity['body']);native[body]=model
@@ -284,6 +287,8 @@ def main():
                     route = {'body': body, 'family': model['family'], 'kind': model['kind'], 'native_profile': profile,
                              'protocol': protocol, 'group_or_type': group, **resolve(model, label, maps['fallback'])}
                     rule = wire_routes.get(str(body), {}).get(str(group), ())
+                    if protocol == 'new' and group not in overrides and str(group) in bridge.get(str(body), {}):
+                        route['wire_scope'] = 'Classic decoder compatibility, subaction zero'
                     if protocol == 'new' and len(rule) == 4 and group not in overrides:
                         route['wire_mode_clips'] = [classic_wire_clip(model, body, group, wire_routes, maps['fallback'], parity)
                                                     for parity in (0, 1)]
@@ -346,7 +351,7 @@ def main():
         for mode in record['modes']:
             for action in mode['new_protocol_actions']:
                 explicit = model.get('new_action_categories', {}).get(str(action['type'])) if model else None
-                wire = (classic_wire_clip(model, body, action['type'], wire_routes, maps['fallback'])
+                wire = (classic_wire_clip(model, body, action['type'], source_linked_wire, maps['fallback'])
                         if model and (mode['mode'], action['subaction']) == (0, -1) else None)
                 label = explicit or wire or maps['new'].get(action['type'])
                 if model and model['profile']=='sea' and action['type']==0 and mode['mode']%2:label='Attack2'
@@ -384,6 +389,8 @@ def main():
             'routable_slots':sum(r['resolved'] is not None for r in rows),
             'source_checked_classic_newer_routes':sum(len(types) for body, types in wire_routes.items() if int(body) in native),
             'mode_dependent_classic_newer_routes':sum('wire_mode_clips' in row for row in rows),
+            'classic_decoder_compatibility_routes':sum(row.get('wire_scope') == 'Classic decoder compatibility, subaction zero'
+                                                        for row in rows),
             'missing_protocol_slots':sum(r['resolved'] is None for r in rows),
             'unresolved_slots_with_source_frame_evidence':len(source_frame_gaps),
             'mul_shared_replacement_candidate_pairs':len({(row['body'], *row['classic_slots']) for row in shared_routes}),

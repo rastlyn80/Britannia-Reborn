@@ -1,5 +1,6 @@
 {
   "reviewed_pairs": [
+    [172, "anim2.mul", 62, "large", 5, 6, "ca583a2ff5fb643fd6b413fe19514f145fd5a29d2cd84c01dfaa942767965a47", "5ea3d04875997b6e2e018c23f5caa0d3e42fe0c001b2863cf9622bfeacdd40a5", "different silhouette or registration"],
     [74, "anim2.mul", 18, "large", 4, 5, "62a2d3bd1dee05e3b40e06fdfee84e6c122ef05af50230c3369bbe4656224af8", "14ad68d826ec896c8dcab3c1789587aaa77c670a42661484db4cacc0afa46eba", "exact registered pixels"],
     [74, "anim2.mul", 18, "large", 4, 6, "62a2d3bd1dee05e3b40e06fdfee84e6c122ef05af50230c3369bbe4656224af8", "14ad68d826ec896c8dcab3c1789587aaa77c670a42661484db4cacc0afa46eba", "exact registered pixels"],
     [74, "anim2.mul", 18, "large", 11, 17, "4d1dab4e41389efd6c764effebbf66dd737acdc64ea4c2b0b204461d5863ffe1", "5d3948e1bbddce0ed77b4b34ce3c580f7fac2d11cd59df7d737265e6162a7bb1", "exact registered pixels"],
