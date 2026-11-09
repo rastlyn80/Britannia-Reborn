@@ -1,0 +1,453 @@
+{
+  "101": {
+    "5": {
+      "body": 101,
+      "group": 5,
+      "archive": "anim2.mul",
+      "graphic": 6,
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": [
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "directional_payload_sha256": "6be9211e98b83b5be4e24479dd7e1f1c16f2f26a7e481a7694383a11c9c02f5f"
+    },
+    "6": {
+      "body": 101,
+      "group": 6,
+      "archive": "anim2.mul",
+      "graphic": 6,
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": [
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "directional_payload_sha256": "6be9211e98b83b5be4e24479dd7e1f1c16f2f26a7e481a7694383a11c9c02f5f"
+    },
+    "15": {
+      "body": 101,
+      "group": 15,
+      "archive": "anim2.mul",
+      "graphic": 6,
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "directional_payload_sha256": "cba0b2c63572e6d67816070a7b482442a6d728ceae6b15a3346e79dd86f2d029"
+    },
+    "16": {
+      "body": 101,
+      "group": 16,
+      "archive": "anim2.mul",
+      "graphic": 6,
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "directional_payload_sha256": "cba0b2c63572e6d67816070a7b482442a6d728ceae6b15a3346e79dd86f2d029"
+    }
+  },
+  "146": {
+    "11": {
+      "body": 146,
+      "group": 11,
+      "archive": "anim2.mul",
+      "graphic": 22,
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "directional_payload_sha256": "b1abc054f13cf1051d2a4bf946eda353c6e50a775726cc827e3f813339868e48"
+    },
+    "15": {
+      "body": 146,
+      "group": 15,
+      "archive": "anim2.mul",
+      "graphic": 22,
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "directional_payload_sha256": "92ac68fd6f14ffa90e26df07172a6d236d16a2eac9954ca1c4c92e5c9a990cfc"
+    },
+    "16": {
+      "body": 146,
+      "group": 16,
+      "archive": "anim2.mul",
+      "graphic": 22,
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "directional_payload_sha256": "92ac68fd6f14ffa90e26df07172a6d236d16a2eac9954ca1c4c92e5c9a990cfc"
+    },
+    "17": {
+      "body": 146,
+      "group": 17,
+      "archive": "anim2.mul",
+      "graphic": 22,
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "directional_payload_sha256": "73d117a4dc8472edd92cb36f3c9f5970469af11e24716ac859b411c566b76409"
+    },
+    "18": {
+      "body": 146,
+      "group": 18,
+      "archive": "anim2.mul",
+      "graphic": 22,
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "directional_payload_sha256": "98223f2e0ae54536814dd3fefe340479c78e255a9475668f9792c86ce69ca3da"
+    }
+  },
+  "255": {
+    "11": {
+      "body": 255,
+      "group": 11,
+      "archive": "anim4.mul",
+      "graphic": 12,
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "directional_payload_sha256": "f5671d943bd1b6aca9b2be7128886c245d9ff5036d1cda29d3b4e8c69508d7e3"
+    },
+    "15": {
+      "body": 255,
+      "group": 15,
+      "archive": "anim4.mul",
+      "graphic": 12,
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "directional_payload_sha256": "497f2db21e80f9bebc85f4e48bfcf3fc3498e7bb9db984acee579b12eb79f4c4"
+    },
+    "16": {
+      "body": 255,
+      "group": 16,
+      "archive": "anim4.mul",
+      "graphic": 12,
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "directional_payload_sha256": "5c9b5e4d2c054216223f5103e379244db0118ac9acf4ca4d311619b9c46c85f3"
+    },
+    "17": {
+      "body": 255,
+      "group": 17,
+      "archive": "anim4.mul",
+      "graphic": 12,
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "directional_payload_sha256": "c072c7d90e927bda0172d549851937c7bf6fbbe3f9457ea84a33df579d1f01cb"
+    },
+    "18": {
+      "body": 255,
+      "group": 18,
+      "archive": "anim4.mul",
+      "graphic": 12,
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "directional_payload_sha256": "f5671d943bd1b6aca9b2be7128886c245d9ff5036d1cda29d3b4e8c69508d7e3"
+    }
+  },
+  "262": {
+    "17": {
+      "body": 262,
+      "group": 17,
+      "archive": "anim5.mul",
+      "graphic": 21,
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "directional_payload_sha256": "240ac78eddd4392fefdb15911e1d44aa64dbd316097d301edaa6069bb0fa3117"
+    },
+    "18": {
+      "body": 262,
+      "group": 18,
+      "archive": "anim5.mul",
+      "graphic": 21,
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "directional_payload_sha256": "f38255da90a4e299e30fd8ea96b706bc5651b543078de8ee278544ce7ac5eab5"
+    }
+  },
+  "273": {
+    "1": {
+      "body": 273,
+      "group": 1,
+      "archive": "anim5.mul",
+      "graphic": 31,
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "directional_payload_sha256": "fd7eb0f6c26174bf3105672e3d8939708d9115c9e583f714ec70b301247a164c"
+    },
+    "15": {
+      "body": 273,
+      "group": 15,
+      "archive": "anim5.mul",
+      "graphic": 31,
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "directional_payload_sha256": "d822a48ff0f4eae56316c00b9d8f556933397979e5ebf639a391e68d1c0cd32d"
+    },
+    "16": {
+      "body": 273,
+      "group": 16,
+      "archive": "anim5.mul",
+      "graphic": 31,
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "directional_payload_sha256": "0e9a5c80cebe64e14324fa47cc97ee4896a697566507fa480c108457548793cf"
+    },
+    "17": {
+      "body": 273,
+      "group": 17,
+      "archive": "anim5.mul",
+      "graphic": 31,
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "directional_payload_sha256": "da50ffed2f189485f08f2aca9e7c206129429efca55c2c583766e7e91fd604b7"
+    },
+    "18": {
+      "body": 273,
+      "group": 18,
+      "archive": "anim5.mul",
+      "graphic": 31,
+      "directions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frames": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "directional_payload_sha256": "f7fd3dae5e99164169c412ce7092f5b7971bbd275a5dc0d97fd0b2886ec4624f"
+    }
+  }
+}

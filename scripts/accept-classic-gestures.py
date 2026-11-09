@@ -76,6 +76,8 @@ BATCHES = {
                                      'SwampWidowJukaActionsLive.gd', ('test-lattice-through-meer-actions.gd',)),
     'quagmire_through_exodus_actions': ((789, 784, 266, 772, 267, 304, 46, 757, 756, 252, 199, 271),
                                         'SwampWidowJukaActionsLive.gd', ('test-quagmire-through-exodus-actions.gd',)),
+    'centaur_through_essence_actions': ((101, 146, 255, 262, 273), 'SwampWidowJukaActionsLive.gd', ('test-centaur-through-essence-actions.gd',)),
+    'doom_creature_actions': ((306, 311, 312, 313, 314, 315, 316, 318, 319), 'SwampWidowJukaActionsLive.gd', ('test-doom-creature-actions.gd',)),
     'related_champion_actions': ((172, 173, 174, 175, 176), 'SwampWidowJukaActionsLive.gd', ('test-related-champion-actions.gd',)),
     'daemon_kin_wings': ((10, 38), 'SwampWidowJukaActionsLive.gd', ()),
     'gargoyle_vendor_wings': ((758,), 'SwampWidowJukaActionsLive.gd', ()),
@@ -186,7 +188,9 @@ PREDECESSORS = {
     'quagmire_through_exodus_actions': ('troglodyte_reach',),
     'banshee_through_queens_actions': ('dragon_daemon',),
     'gargoyle_flight_minotaur_actions': ('frost_through_gargoyle_actions',),
-    'related_champion_actions': ('late_classic_actions',),
+    'centaur_through_essence_actions': ('exact_creature_fidgets', 'gargoyle_flight_minotaur_actions'),
+    'doom_creature_actions': ('late_classic_actions',),
+    'related_champion_actions': ('late_classic_actions', 'exact_creature_fidgets'),
     'daemon_kin_wings': ('dragon_daemon',),
     'gargoyle_vendor_wings': (),
     'ridgeback_through_dragons_actions': (),
@@ -259,7 +263,8 @@ def compose(base, prepared, native_sha):
             row[field] = {'modern': row[field]['modern']}
     if prepared['family'] in PREDECESSORS:
         row['classic_gesture_batch'] = prepared['family']
-    if prepared['family'] in ('gargoyle_flight_minotaur_actions', 'daemon_kin_wings', 'gargoyle_vendor_wings', 'related_champion_actions'):
+    if prepared['family'] in ('gargoyle_flight_minotaur_actions', 'daemon_kin_wings', 'gargoyle_vendor_wings',
+                              'related_champion_actions', 'centaur_through_essence_actions', 'doom_creature_actions'):
         row['classic_motion_references'] = base.get('classic_motion_references', {}) | prepared['classic_motion_references']
     if prepared['family'] in ('orc_fidgets', 'ettin_fidgets'):
         row['kind'] = f"{base['kind']}_fidgets"
@@ -353,7 +358,8 @@ def checked(index, active, batch, *, compare_registry=True):
             if (batch in ('slith_actions', 'ranked_classic_actions', 'swamp_widow_juka_actions',
                           'bomber_ogre_rune_dopple_actions', 'golem_raptor_juka_solen_actions',
                           'post_solen_actions', 'frost_through_gargoyle_actions', 'meer_forward_falls',
-                          'quagmire_through_exodus_actions', 'gargoyle_flight_minotaur_actions', 'daemon_kin_wings', 'related_champion_actions') or
+                          'quagmire_through_exodus_actions', 'gargoyle_flight_minotaur_actions', 'daemon_kin_wings',
+                          'related_champion_actions', 'centaur_through_essence_actions', 'doom_creature_actions') or
                     predecessor in ('scorpion_imp', 'dragon_daemon', 'bone_cyclops', 'vampire_bat_actions',
                                     'fidget_aliases_toad', 'skeletal_mage_staff')):
                 # Independent successors seal their own retained rows. Replaying a
@@ -559,7 +565,8 @@ def checked(index, active, batch, *, compare_registry=True):
                           'swamp_widow_juka_actions', 'bomber_ogre_rune_dopple_actions',
                           'golem_raptor_juka_solen_actions', 'post_solen_actions', 'frost_through_gargoyle_actions', 'lattice_through_meer_actions', 'meer_forward_falls',
                           'quagmire_through_exodus_actions', 'banshee_through_queens_actions', 'ridgeback_through_dragons_actions',
-                          'daemon_kin_wings', 'gargoyle_vendor_wings', 'related_champion_actions', 'lizard_actions', 'quadruped_actions', 'hart_deaths',
+                          'daemon_kin_wings', 'gargoyle_vendor_wings', 'related_champion_actions', 'centaur_through_essence_actions',
+                          'doom_creature_actions', 'lizard_actions', 'quadruped_actions', 'hart_deaths',
                           'dog_bear_actions', 'cat_actions',
                           'skeleton_actions', 'troll_actions', 'field_fauna', 'spider_mongbat_actions',
                           'grazers_grizzly_actions', 'pig_reaper_harpy_actions', 'rabbit_distinct_actions',
@@ -668,6 +675,12 @@ def test_active(batch):
         for test in ('ClockworkTokunoRouteTests', 'CaptainCuRouteTests'):
             run_client_check(godot, env, f'res://Presentation/{test}.gd', [])
         for family in ('late_source', 'late_donors', 'recovered_late', 'aos_creatures'):
+            run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', [f'--family={family}'])
+    if batch == 'centaur_through_essence_actions':
+        run_client_check(godot, env, 'res://Presentation/YomotsuRouteTests.gd', [])
+        run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', ['--family=fetid_essence'])
+    if batch == 'doom_creature_actions':
+        for family in ('aos_creatures', 'aos_aliases', 'aos_abysmal', 'aos_armed', 'aos_mound'):
             run_client_check(godot, env, 'res://Presentation/LateCreatureRouteTests.gd', [f'--family={family}'])
     if batch == 'related_champion_actions':
         for test in ('ChampionCreatureRouteTests', 'FeyChampionRouteTests'):

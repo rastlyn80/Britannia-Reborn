@@ -22,7 +22,8 @@ func run() -> void:
 		assert(Registry.supports_body(body), family + " missing normal body route")
 		assert(Registry.entry(body).get("kind") == family)
 		var active := Registry.entry(body)
-		var original_layer := SealedBase.retained(active, body) if active.get("classic_gesture_batch") == "post_solen_actions" else active
+		var layer: String = active.get("classic_gesture_batch", "")
+		var original_layer := SealedBase.retained(active, body) if layer in ["post_solen_actions", "centaur_through_essence_actions"] else active
 		var reviewed := original_layer
 		var fitted: bool = body == 245 and active.get("classic_gesture_batch") == "tokuno_spider_dragon_actions"
 		if fitted:
@@ -32,7 +33,9 @@ func run() -> void:
 			assert(warrior.size() == 1)
 			reviewed = warrior[0]
 			assert(active.classic_gesture_base_assets == reviewed.assets and active.bodies == reviewed.bodies)
-		if active.has("legacy_slot11_evidence"):
+		if layer == "centaur_through_essence_actions":
+			assert(reviewed == preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(record, reviewed))
+		elif active.has("legacy_slot11_evidence"):
 			assert(active.legacy_slot11_evidence == reviewed.legacy_slot11_evidence)
 			assert(reviewed == preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(record, reviewed))
 		var avatar := Avatar.new()

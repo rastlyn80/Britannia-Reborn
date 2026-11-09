@@ -16,7 +16,11 @@ func run() -> void:
 	game.set_process(false)
 	for row: Dictionary in rows:
 		var body := int(row.bodies[0].body)
-		assert(row.get("classic_gesture_batch") == HOLD_FAMILY if active else row.family == HOLD_FAMILY)
+		if active:
+			var layer: String = row.get("classic_gesture_batch", "")
+			assert(layer == HOLD_FAMILY or body == 262 and layer == "centaur_through_essence_actions")
+		else:
+			assert(row.family == HOLD_FAMILY)
 		Registry.entries[body] = row
 		game.entities[body] = {"serial": body, "body": body, "hue": 0x8035}
 		for treatment: String in row.assets:

@@ -27,8 +27,11 @@ func run() -> void:
 	if "--prepared" in OS.get_cmdline_user_args():
 		Registry.entries[146] = preparation.models[0]
 	else:
-		var expected := preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(preparation.models[0], Registry.entry(146))
-		assert(Registry.entry(146) == expected)
+		var retained := Registry.entry(146)
+		if retained.get("classic_gesture_batch") == "centaur_through_essence_actions":
+			retained = preload("res://Presentation/SealedCreatureActionBase.gd").retained(retained, 146)
+		var expected := preload("res://Presentation/LegacyCreatureAliasEvidence.gd").expected_package(preparation.models[0], retained)
+		assert(retained == expected)
 	assert(Registry.supports_body(780))
 	var avatar := Avatar.new()
 	avatar.initial_body = 146

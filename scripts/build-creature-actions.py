@@ -289,9 +289,10 @@ def main():
                     rule = wire_routes.get(str(body), {}).get(str(group), ())
                     if protocol == 'new' and group not in overrides and str(group) in bridge.get(str(body), {}):
                         route['wire_scope'] = 'Classic decoder compatibility, subaction zero'
-                    if protocol == 'new' and len(rule) == 4 and group not in overrides:
-                        route['wire_mode_clips'] = [classic_wire_clip(model, body, group, wire_routes, maps['fallback'], parity)
-                                                    for parity in (0, 1)]
+                    if protocol == 'new' and rule and rule[0] != rule[1] and group not in overrides:
+                        other_mode = classic_wire_clip(model, body, group, wire_routes, maps['fallback'], parity=1)
+                        if label != other_mode:
+                            route['wire_mode_clips'] = [label, other_mode]
                     rows.append(route)
     data=args.data_dir
     config=ROOT/'Server/runtime/Configuration/modernuo.json'

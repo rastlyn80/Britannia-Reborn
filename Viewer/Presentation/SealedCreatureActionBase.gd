@@ -8,9 +8,14 @@ static func retained(row: Dictionary, body: int) -> Dictionary:
 		return candidate.bodies.size() == 1 and int(candidate.bodies[0].body) == body)
 	assert(matches.size() == 1)
 	var base: Dictionary = matches[0]
-	assert(row.classic_gesture_base_assets == base.assets and row.bodies == base.bodies)
-	for treatment: String in base.assets:
+	var assets: Dictionary = base.get("assets", {})
+	if assets.is_empty():
+		assets = {}
+		for treatment: String in base.asset_sha256:
+			assets[treatment] = preload("res://Presentation/CreatureRegistry.gd").asset_path(base, treatment)
+	assert(row.classic_gesture_base_assets == assets and row.bodies == base.bodies)
+	for treatment: String in assets:
 		var digest: String = (base.asset_sha256[treatment] if base.has("asset_sha256")
 			else base.saved_scenes[treatment].scene_sha256)
-		assert(FileAccess.get_sha256(base.assets[treatment]) == digest)
+		assert(FileAccess.get_sha256(assets[treatment]) == digest)
 	return base

@@ -98,6 +98,14 @@ def prepared_entries(family, registry_entries=None):
         recipe = runpy.run_path(str(ROOT / 'scripts' / f"prepare-{family.replace('_', '-')}.py"))
         rows = gesture_baseline(family, registry_entries, set(recipe['CLASSES']), layered=True)
         return recipe['prepared'](rows)
+    if family == 'centaur_through_essence_actions':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-centaur-through-essence-actions.py'))
+        rows = gesture_baseline(family, registry_entries, recipe['CLASSES'], layered=True)
+        return recipe['prepared'](rows)
+    if family == 'doom_creature_actions':
+        recipe = runpy.run_path(str(ROOT / 'scripts/prepare-doom-creature-actions.py'))
+        rows = gesture_baseline(family, registry_entries, recipe['CLASSES'], layered=True)
+        return recipe['prepared'](rows)
     if family == 'related_champion_actions':
         recipe = runpy.run_path(str(ROOT / 'scripts/prepare-related-champion-actions.py'))
         rows = gesture_baseline(family, registry_entries, recipe['CLASSES'], layered=True)
@@ -1014,7 +1022,12 @@ def main():
         active_by_body = {int(row['bodies'][0]['body']): row for row in registered}
         for row in expected:
             body = int(row['bodies'][0]['body'])
-            evidence = active_by_body.get(body, {}).get('legacy_slot11_evidence')
+            source = active_by_body.get(body, {})
+            if body == 255 and source.get('classic_gesture_batch') == 'centaur_through_essence_actions':
+                sealed = ROOT / 'work/creatures/centaur_through_essence_actions/accepted-native/base-rows.json'
+                source, = (entry for entry in json.loads(sealed.read_text(encoding='utf-8'))
+                           if entry['bodies'][0]['body'] == body)
+            evidence = source.get('legacy_slot11_evidence')
             if evidence is not None:
                 aliases_path = ROOT / 'Viewer/Presentation/legacy-late-action-aliases.json'
                 proof = json.loads(aliases_path.read_text(encoding='utf-8'))[str(body)]
@@ -1041,8 +1054,15 @@ def main():
             'late_source_active': {'quagmire_through_exodus_actions', 'banshee_through_queens_actions'},
             'clockwork_tokuno_active': {'quagmire_through_exodus_actions', 'banshee_through_queens_actions'},
             'recovered_late_active': {'banshee_through_queens_actions', 'ridgeback_through_dragons_actions'},
-            'aos_creatures_active': {'banshee_through_queens_actions', 'ridgeback_through_dragons_actions'},
-            'tormented_minotaur_active': {'gargoyle_flight_minotaur_actions'},
+            'aos_creatures_active': {'banshee_through_queens_actions', 'ridgeback_through_dragons_actions', 'doom_creature_actions'},
+            'aos_armed_active': {'doom_creature_actions'},
+            'aos_abysmal_active': {'doom_creature_actions'},
+            'aos_aliases_active': {'doom_creature_actions'},
+            'aos_mound_active': {'doom_creature_actions'},
+            'tormented_minotaur_active': {'gargoyle_flight_minotaur_actions', 'centaur_through_essence_actions'},
+            'harrower_active': {'centaur_through_essence_actions'},
+            'yomotsu_active': {'centaur_through_essence_actions'},
+            'fetid_essence_active': {'centaur_through_essence_actions'},
             'gargoyle_vendor_active': {'gargoyle_vendor_wings'},
             'champions_active': {'related_champion_actions'},
             'fey_champions_active': {'related_champion_actions'},
@@ -1057,6 +1077,8 @@ def main():
             covered = {row['bodies'][0]['body'] for row in registered if row.get('classic_gesture_batch') == batch}
             if batch == 'meer_forward_falls':
                 base, _ = gesture_gate['checked'](index, True, 'lattice_through_meer_actions')
+            if batch == 'centaur_through_essence_actions' and args.family == 'tormented_minotaur_active':
+                base, _ = gesture_gate['checked'](index, True, 'gargoyle_flight_minotaur_actions')
             replacements = {row['bodies'][0]['body']: row for row in updated if row['bodies'][0]['body'] in covered}
             if [row for row in expected if row['bodies'][0]['body'] in covered and row not in base]:
                 raise ValueError(f'{batch} did not retain the earlier {args.family} package')

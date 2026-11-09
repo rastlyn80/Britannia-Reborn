@@ -5,6 +5,9 @@ func run() -> void:
 	var current := Registry.entry(172)
 	if current.get("classic_gesture_batch") == "related_champion_actions":
 		Registry.entries[172] = preload("res://Presentation/SealedCreatureActionBase.gd").retained(current, 172)
+	current = Registry.entry(311)
+	if current.get("classic_gesture_batch") == "doom_creature_actions":
+		Registry.entries[311] = preload("res://Presentation/SealedCreatureActionBase.gd").retained(current, 311)
 	await super.run()
 
 func specifications() -> Dictionary:

@@ -1,0 +1,100 @@
+{
+  "306": {
+    "2": {"body": 306, "group": 2, "archive": "anim3.mul", "graphic": 306, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "ceaf9acb3fd9a96c0c2ad50402548e66fb40419b246bce3a90186b2a29fc0b54"},
+    "3": {"body": 306, "group": 3, "archive": "anim3.mul", "graphic": 306, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "1018bb17ceec8b2050d8a1b081e8c2bf78cbf1c10c3ae5503ddb4f6104137484"},
+    "10": {"body": 306, "group": 10, "archive": "anim3.mul", "graphic": 306, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "b4ad187f3aeaa32b0a00eca41656f61563338daae499d35149078c5b52ff28d0"},
+    "11": {"body": 306, "group": 11, "archive": "anim3.mul", "graphic": 306, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "8b11b1ec93927c2ecf44010044e538e371b4730ebb4c60897d70b63462253879"},
+    "15": {"body": 306, "group": 15, "archive": "anim3.mul", "graphic": 306, "directions": [0, 1, 2, 3, 4], "frames": [3, 3, 3, 3, 3], "directional_payload_sha256": "da147ae90b7c3eeab1a4f4b3f0e68d5a3e30326e47f956b7993c368a2d68e3cd"},
+    "16": {"body": 306, "group": 16, "archive": "anim3.mul", "graphic": 306, "directions": [0, 1, 2, 3, 4], "frames": [3, 3, 3, 3, 3], "directional_payload_sha256": "da147ae90b7c3eeab1a4f4b3f0e68d5a3e30326e47f956b7993c368a2d68e3cd"},
+    "17": {"body": 306, "group": 17, "archive": "anim3.mul", "graphic": 306, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "8b11b1ec93927c2ecf44010044e538e371b4730ebb4c60897d70b63462253879"},
+    "18": {"body": 306, "group": 18, "archive": "anim3.mul", "graphic": 306, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "f5b36c2c557a5b38df83d18bbc42e88db8eda8a1108eccc25116db7415b1d8a3"}
+  },
+  "311": {
+    "4": {"body": 311, "group": 4, "archive": "anim3.mul", "graphic": 311, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "54cd9ab1ec2a4809a5ce503e4e1abd1fcbb63fd639b0f0d84fef5ec192db3a38"},
+    "5": {"body": 311, "group": 5, "archive": "anim3.mul", "graphic": 311, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "ee3af799340546846141c691a6df75116d9eb4b87cac459d3bbf63da1f546a90"},
+    "6": {"body": 311, "group": 6, "archive": "anim3.mul", "graphic": 311, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "ee3af799340546846141c691a6df75116d9eb4b87cac459d3bbf63da1f546a90"},
+    "10": {"body": 311, "group": 10, "archive": "anim3.mul", "graphic": 311, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "09fefa3711cfc290a81db1a4c8aa6595685a4c7a6c4728486044e0170ef07dc2"},
+    "11": {"body": 311, "group": 11, "archive": "anim3.mul", "graphic": 311, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "95f3a916f52a3ea5b4ca9c651846997eb505364c9f18584c3f1c60b3f67e4d76"},
+    "15": {"body": 311, "group": 15, "archive": "anim3.mul", "graphic": 311, "directions": [0, 1, 2, 3, 4], "frames": [3, 3, 3, 3, 3], "directional_payload_sha256": "4e6933c085a7c69277bf881a427558a97b1cd027f7a018350aefd5cca0f5c0f1"},
+    "16": {"body": 311, "group": 16, "archive": "anim3.mul", "graphic": 311, "directions": [0, 1, 2, 3, 4], "frames": [3, 3, 3, 3, 3], "directional_payload_sha256": "433e3ab09be933e7792701dec519948f59d60efee1490d9482104a0c8ff3d59b"},
+    "17": {"body": 311, "group": 17, "archive": "anim3.mul", "graphic": 311, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "c82724d632522c3347b7ab65ab719aecb450b7486797e0210708ab9f8eb5d0cc"},
+    "18": {"body": 311, "group": 18, "archive": "anim3.mul", "graphic": 311, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "89909e2eb02c0e18aa967817882dce2bbc12585b6f55601a5606ec7b0e1b06d5"}
+  },
+  "312": {
+    "4": {"body": 312, "group": 4, "archive": "anim3.mul", "graphic": 312, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "e1cf598806aad7f330dd8890a7fda659e438d9587d3586b845e86b7a1b6b70c5"},
+    "5": {"body": 312, "group": 5, "archive": "anim3.mul", "graphic": 312, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "16dbfb571439c36c0c7a48cbcd2b625d247411a9954016c1ec6201df6a980096"},
+    "6": {"body": 312, "group": 6, "archive": "anim3.mul", "graphic": 312, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "16dbfb571439c36c0c7a48cbcd2b625d247411a9954016c1ec6201df6a980096"},
+    "10": {"body": 312, "group": 10, "archive": "anim3.mul", "graphic": 312, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "bfe5cffa3a2ee35193730dc31fbf2ee8a3bcb0e3b0546d79c572a20b88b6aec3"},
+    "11": {"body": 312, "group": 11, "archive": "anim3.mul", "graphic": 312, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "6b39a02dc99597c69a4ee4ee99b51ce80499d16a60e3027a0c0023b2ccd0fbc4"},
+    "15": {"body": 312, "group": 15, "archive": "anim3.mul", "graphic": 312, "directions": [0, 1, 2, 3, 4], "frames": [3, 3, 3, 3, 3], "directional_payload_sha256": "8b646e12c8211358d83e9b46491badba4538603a5a622143223971f787a0ff66"},
+    "16": {"body": 312, "group": 16, "archive": "anim3.mul", "graphic": 312, "directions": [0, 1, 2, 3, 4], "frames": [3, 3, 3, 3, 3], "directional_payload_sha256": "8b646e12c8211358d83e9b46491badba4538603a5a622143223971f787a0ff66"},
+    "17": {"body": 312, "group": 17, "archive": "anim3.mul", "graphic": 312, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "6b39a02dc99597c69a4ee4ee99b51ce80499d16a60e3027a0c0023b2ccd0fbc4"},
+    "18": {"body": 312, "group": 18, "archive": "anim3.mul", "graphic": 312, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "d45d549dc0a74769547235e2fa9af7c7999bb5d3ba5652da3569ffdf5df20c41"}
+  },
+  "313": {
+    "4": {"body": 313, "group": 4, "archive": "anim3.mul", "graphic": 313, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "cafe8622072ba0ef30bf6a596826dae5f3c755d6d2176ef7b81218de98e7a438"},
+    "5": {"body": 313, "group": 5, "archive": "anim3.mul", "graphic": 313, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "147dcb112478b058ba7e394b0bc2e06f1c415d10e4b2df914fbb2dde11b35128"},
+    "6": {"body": 313, "group": 6, "archive": "anim3.mul", "graphic": 313, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "147dcb112478b058ba7e394b0bc2e06f1c415d10e4b2df914fbb2dde11b35128"},
+    "10": {"body": 313, "group": 10, "archive": "anim3.mul", "graphic": 313, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "4b3ce63419c010ae21c79d2b6fe9c7f9b63356ee04634205b3c5cc0d29c2e933"},
+    "11": {"body": 313, "group": 11, "archive": "anim3.mul", "graphic": 313, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "0d9b68c933e0a894defa3a9a369222f4e32d468741e3fb3b0336b6b867aff80e"},
+    "15": {"body": 313, "group": 15, "archive": "anim3.mul", "graphic": 313, "directions": [0, 1, 2, 3, 4], "frames": [3, 3, 3, 3, 3], "directional_payload_sha256": "a27952812c8a1c55c2c82fbf8abff462e011f7a37c037f8b23b349fd4612dc59"},
+    "16": {"body": 313, "group": 16, "archive": "anim3.mul", "graphic": 313, "directions": [0, 1, 2, 3, 4], "frames": [3, 3, 3, 3, 3], "directional_payload_sha256": "a27952812c8a1c55c2c82fbf8abff462e011f7a37c037f8b23b349fd4612dc59"},
+    "17": {"body": 313, "group": 17, "archive": "anim3.mul", "graphic": 313, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "0d9b68c933e0a894defa3a9a369222f4e32d468741e3fb3b0336b6b867aff80e"},
+    "18": {"body": 313, "group": 18, "archive": "anim3.mul", "graphic": 313, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "b23af98aa82c1bb1c64ada8d0c7dfe15b9e878ac690a43403463a802587e6c1e"}
+  },
+  "314": {
+    "4": {"body": 314, "group": 4, "archive": "anim3.mul", "graphic": 314, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "9916292248a8a1c4241becd96a47a3139f988eade5816b6e56ba82c93cc0eb95"},
+    "5": {"body": 314, "group": 5, "archive": "anim3.mul", "graphic": 314, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "01aa7be4c37dde9d1f0e94eb265babc912fd529dd76503cd606a7ea8a5cacf21"},
+    "6": {"body": 314, "group": 6, "archive": "anim3.mul", "graphic": 314, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "01aa7be4c37dde9d1f0e94eb265babc912fd529dd76503cd606a7ea8a5cacf21"},
+    "10": {"body": 314, "group": 10, "archive": "anim3.mul", "graphic": 314, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "013e89c069c058ae6d6db80f27c50920cb4d533fe317ebe3967c408f73b6fccf"},
+    "11": {"body": 314, "group": 11, "archive": "anim3.mul", "graphic": 314, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "7ecfc19edcf3dce685ff054de00f39617223dfd0d118117666c8a96ac4b7ed4e"},
+    "15": {"body": 314, "group": 15, "archive": "anim3.mul", "graphic": 314, "directions": [0, 1, 2, 3, 4], "frames": [3, 3, 3, 3, 3], "directional_payload_sha256": "3135912e76d9da0434538fbe1860c24acc37d96a588feedacf4c138117c51f21"},
+    "16": {"body": 314, "group": 16, "archive": "anim3.mul", "graphic": 314, "directions": [0, 1, 2, 3, 4], "frames": [3, 3, 3, 3, 3], "directional_payload_sha256": "3135912e76d9da0434538fbe1860c24acc37d96a588feedacf4c138117c51f21"},
+    "17": {"body": 314, "group": 17, "archive": "anim3.mul", "graphic": 314, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "7ecfc19edcf3dce685ff054de00f39617223dfd0d118117666c8a96ac4b7ed4e"},
+    "18": {"body": 314, "group": 18, "archive": "anim3.mul", "graphic": 314, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "b90ca3f7d37b60043d9cbee4fdf89d76dbcd6f535162df1bcb47c9c746a5d999"}
+  },
+  "315": {
+    "4": {"body": 315, "group": 4, "archive": "anim3.mul", "graphic": 315, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "7647ebb18de7be617340882d1aed69d212a641f435dfc1a910c88c4f1c9688cb"},
+    "5": {"body": 315, "group": 5, "archive": "anim3.mul", "graphic": 315, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "98754c598e2782c96806cde8e6b71ea18acacc3bdaf6b4b98ce3e6fed6d198d2"},
+    "6": {"body": 315, "group": 6, "archive": "anim3.mul", "graphic": 315, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "834dedd623501424fea466af97df3b114081533e8196cc1a15c815f4a61aa1c5"},
+    "10": {"body": 315, "group": 10, "archive": "anim3.mul", "graphic": 315, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "c07c1bd6a8378f9b9b018cb796219e9f1687bedffdb494e06df6e18219b5c0a1"},
+    "11": {"body": 315, "group": 11, "archive": "anim3.mul", "graphic": 315, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "0159d3a0db2eac359b3e6fa1154a9a0371e3b1d5499befe0484c88e3862823ec"},
+    "15": {"body": 315, "group": 15, "archive": "anim3.mul", "graphic": 315, "directions": [0, 1, 2, 3, 4], "frames": [3, 3, 3, 3, 3], "directional_payload_sha256": "dde83c204e5ae3138f10ba4fd9442f681ae2bc3f1a86d99388b05defe8bbac62"},
+    "16": {"body": 315, "group": 16, "archive": "anim3.mul", "graphic": 315, "directions": [0, 1, 2, 3, 4], "frames": [3, 3, 3, 3, 3], "directional_payload_sha256": "dde83c204e5ae3138f10ba4fd9442f681ae2bc3f1a86d99388b05defe8bbac62"},
+    "17": {"body": 315, "group": 17, "archive": "anim3.mul", "graphic": 315, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "0159d3a0db2eac359b3e6fa1154a9a0371e3b1d5499befe0484c88e3862823ec"},
+    "18": {"body": 315, "group": 18, "archive": "anim3.mul", "graphic": 315, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "958d3b53b8333ea7372d632e7979f42bcbf081286ab3d47bc5da8a77792adb93"}
+  },
+  "316": {
+    "4": {"body": 316, "group": 4, "archive": "anim3.mul", "graphic": 316, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "c41d64bc3563b9a6d408007581efc8f7b15e83d858bd35a38f7f70cd4bbf7eee"},
+    "5": {"body": 316, "group": 5, "archive": "anim3.mul", "graphic": 316, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "685d1a4f05c7d398285cbfcd6899b1c5cf05e688a8374b61d8d9dd4b8be07dfc"},
+    "6": {"body": 316, "group": 6, "archive": "anim3.mul", "graphic": 316, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "685d1a4f05c7d398285cbfcd6899b1c5cf05e688a8374b61d8d9dd4b8be07dfc"},
+    "10": {"body": 316, "group": 10, "archive": "anim3.mul", "graphic": 316, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "fb06da16717df227e098152b3a73090371cbdbb46dd304b036502202fbcebb08"},
+    "11": {"body": 316, "group": 11, "archive": "anim3.mul", "graphic": 316, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "65d2c5fb48f021439b9a757ba6fbb82800a87ebaafc5844a9200d29d2ec1167f"},
+    "15": {"body": 316, "group": 15, "archive": "anim3.mul", "graphic": 316, "directions": [0, 1, 2, 3, 4], "frames": [3, 3, 3, 3, 3], "directional_payload_sha256": "f2a338ceffb2835958e3e0550afdfb6f4fe377506c86b61072471afe40143f31"},
+    "16": {"body": 316, "group": 16, "archive": "anim3.mul", "graphic": 316, "directions": [0, 1, 2, 3, 4], "frames": [3, 3, 3, 3, 3], "directional_payload_sha256": "f2a338ceffb2835958e3e0550afdfb6f4fe377506c86b61072471afe40143f31"},
+    "17": {"body": 316, "group": 17, "archive": "anim3.mul", "graphic": 316, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "65d2c5fb48f021439b9a757ba6fbb82800a87ebaafc5844a9200d29d2ec1167f"},
+    "18": {"body": 316, "group": 18, "archive": "anim3.mul", "graphic": 316, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "aa570fe78db16707e00b19e9f103837210355da5769d0ab3d95aeb43eaefeff6"}
+  },
+  "318": {
+    "4": {"body": 318, "group": 4, "archive": "anim3.mul", "graphic": 318, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "f272fda41c132b044927c16ca9c6feaaa8cfdbdbf066650408fda74135b406df"},
+    "5": {"body": 318, "group": 5, "archive": "anim3.mul", "graphic": 318, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "a950506bf0843b77727799a6ef8079192fef0a2eaa0c4f812d6e202a176b4848"},
+    "6": {"body": 318, "group": 6, "archive": "anim3.mul", "graphic": 318, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "a950506bf0843b77727799a6ef8079192fef0a2eaa0c4f812d6e202a176b4848"},
+    "10": {"body": 318, "group": 10, "archive": "anim3.mul", "graphic": 318, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "ebd6ccc5909dc342570eeb4ea2fa33fa28a07c0dd06bb362783404b19b4768cc"},
+    "11": {"body": 318, "group": 11, "archive": "anim3.mul", "graphic": 318, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "2ae500ca0095773863cad4f096e8fe31e7beb35088cbf44fc8b505b9bc8e16a1"},
+    "15": {"body": 318, "group": 15, "archive": "anim3.mul", "graphic": 318, "directions": [0, 1, 2, 3, 4], "frames": [3, 3, 3, 3, 3], "directional_payload_sha256": "dd0bf8ba184edde19ba3cf774f37401c073d707e3f878d3a76e23fae73857ec8"},
+    "16": {"body": 318, "group": 16, "archive": "anim3.mul", "graphic": 318, "directions": [0, 1, 2, 3, 4], "frames": [3, 3, 3, 3, 3], "directional_payload_sha256": "dd0bf8ba184edde19ba3cf774f37401c073d707e3f878d3a76e23fae73857ec8"},
+    "17": {"body": 318, "group": 17, "archive": "anim3.mul", "graphic": 318, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "2ae500ca0095773863cad4f096e8fe31e7beb35088cbf44fc8b505b9bc8e16a1"},
+    "18": {"body": 318, "group": 18, "archive": "anim3.mul", "graphic": 318, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "b0bc2d6e7d07cced7ab0d8ad78c209228b01c342ae869a04480b6ee15fbaf404"}
+  },
+  "319": {
+    "4": {"body": 319, "group": 4, "archive": "anim3.mul", "graphic": 319, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "4ed74d9460d98b070bb805ff6c72ae9fae8dad26199f127d0bc0fcd06cb26f98"},
+    "5": {"body": 319, "group": 5, "archive": "anim3.mul", "graphic": 319, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "dfd48bd85989ce87e67f927a7c99cc94d5b0b2d1100820aca3a4e5d8e1c1f03a"},
+    "6": {"body": 319, "group": 6, "archive": "anim3.mul", "graphic": 319, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "dfd48bd85989ce87e67f927a7c99cc94d5b0b2d1100820aca3a4e5d8e1c1f03a"},
+    "10": {"body": 319, "group": 10, "archive": "anim3.mul", "graphic": 319, "directions": [0, 1, 2, 3, 4], "frames": [4, 4, 4, 4, 4], "directional_payload_sha256": "b8cc299f8255548714a3dcb0d73f2d1682214beb9accb911ac0ca2f4148e57fd"},
+    "11": {"body": 319, "group": 11, "archive": "anim3.mul", "graphic": 319, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "0ca75e2de3a8142cc10fb7db1d2f6b3a569a12566f30c11d0b084f6df21e5536"},
+    "15": {"body": 319, "group": 15, "archive": "anim3.mul", "graphic": 319, "directions": [0, 1, 2, 3, 4], "frames": [3, 3, 3, 3, 3], "directional_payload_sha256": "c790bd0c626078c9958aa9e9c7e5bcef95713c9367c1b295f052c812db467be0"},
+    "16": {"body": 319, "group": 16, "archive": "anim3.mul", "graphic": 319, "directions": [0, 1, 2, 3, 4], "frames": [3, 3, 3, 3, 3], "directional_payload_sha256": "c790bd0c626078c9958aa9e9c7e5bcef95713c9367c1b295f052c812db467be0"},
+    "17": {"body": 319, "group": 17, "archive": "anim3.mul", "graphic": 319, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "0ca75e2de3a8142cc10fb7db1d2f6b3a569a12566f30c11d0b084f6df21e5536"},
+    "18": {"body": 319, "group": 18, "archive": "anim3.mul", "graphic": 319, "directions": [0, 1, 2, 3, 4], "frames": [5, 5, 5, 5, 5], "directional_payload_sha256": "7cdb16c912d5d25522b890c05cf3bd063f30e72409a8741aeff1c859e0723f92"}
+  }
+}
