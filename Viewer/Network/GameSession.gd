@@ -124,6 +124,8 @@ var last_ping := 0
 var next_walk := 0
 var movement_deadline := 0
 var move_interval := 410
+enum SpeedControl { NORMAL, FAST, WALK_ONLY, FAST_WALK_ONLY }
+var speed_control: int = SpeedControl.NORMAL
 var running := false
 var surface: RefCounted
 var requested_position := {}
@@ -158,7 +160,7 @@ const MODULES := {
 const POPUPS := ["Incorrect password.","This character no longer exists.","This character already exists.","Could not attach to the game server.","Could not attach to the game server.","Another character from this account is already in the world.","Synchronisation error; please reconnect.","You have been idle too long. If you do nothing in the next minute you will be logged out.","Could not attach to the game server.","This character is being transferred."]
 const OWN_PACKETS := [0x6c,0xb0,0xdd,0xd4,0x66,0x71,0xa9,0xbd,0x1b,0x55,0x20,0x21,0x22,0x78,0x77,0x6e,0xe2,0x72,0xf3,0x1a,0x27,0x74,0x3b,0x11,0xa1,0xa2,0xa3,0x3a,0x25,0xc1,0x1d,0x2e,0xbf,0x24,0x3c,0x4f,0x4e,0x65,0x1c,0xae,0x82,0x53]
 # 0xBF subcommands the match below handles itself.
-const OWN_EXTENDED := [0x04,0x08,0x14,0x19]
+const OWN_EXTENDED := [0x04,0x08,0x14,0x19,0x26]
 var modules := {}
 var routes := {}
 var extended_routes := {}
@@ -263,6 +265,7 @@ func close() -> void:
 	phase = "idle"
 	password = ""
 	sequence = 0
+	speed_control = SpeedControl.NORMAL
 	outstanding = -1
 	awaiting_position = false
 	backpack = 0
@@ -650,6 +653,9 @@ func _handle(p: PackedByteArray) -> void:
 			remember_item(item)
 			appearance_changed.emit(owner)
 		0xbf:
+			if p.size() == 6 and Login.read_be(p,3,2) == 0x26:
+				var mode := int(p[5])
+				speed_control = mode if mode <= SpeedControl.FAST_WALK_ONLY else SpeedControl.NORMAL
 			if p.size()>=12 and Login.read_be(p,3,2)==0x14:
 				context_menu = Commerce.context(p)
 				if not context_menu.is_empty(): context_received.emit(context_menu)
@@ -804,9 +810,13 @@ func walk(direction: int, run: bool = false) -> bool:
 	if not turn_only and destination_ready.is_valid():
 		var offset: Vector2i = preload("res://Presentation/MovementSurface.gd").OFFSETS[direction & 7]
 		if not destination_ready.call(Vector2i(player.x,player.y)+offset): return false
+	if speed_control >= SpeedControl.WALK_ONLY:
+		run = false
+	var fast := speed_control in [SpeedControl.FAST, SpeedControl.FAST_WALK_ONLY]
+	var step_seconds := (0.10 if run else 0.20) if fast else preload("res://Presentation/HorseVisual.gd").step_seconds(equipment.values(),run)
 	# The pinned PlayerMobile has zero-cost turns; a turn must not consume a
 	# full 410 ms walking interval. Keep a short packet-rate guard for input jitter.
-	move_interval = 20 if turn_only else roundi(preload("res://Presentation/HorseVisual.gd").step_seconds(equipment.values(),run)*1000.)+5
+	move_interval = 20 if turn_only else roundi(step_seconds*1000.)+5
 	running = run
 	next_walk = Time.get_ticks_msec()+move_interval
 	requested_direction = direction & 7

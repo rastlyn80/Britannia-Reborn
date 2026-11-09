@@ -175,6 +175,8 @@ if (Test-Path "$root/Viewer/local-art/creatures/ice_elementals/candidate.json") 
 if ($LASTEXITCODE) {throw 'Actual eight-slot GLTF import, fifth-joint deformation or static corpse failed'}
 & $godot --headless --path "$root/Viewer" --script res://Presentation/CreatureActionRoutingTests.gd
 if ($LASTEXITCODE) {throw 'Native animal/sea/monster action semantics failed'}
+& $godot --headless --path "$root/Viewer" --script res://../scripts/test-form-speed-control.gd
+if ($LASTEXITCODE) {throw 'Native movement speed controls failed'}
 & python -B "$root/scripts/check-creature-wire-routes.py"
 if ($LASTEXITCODE) {throw 'Classic wire source evidence failed'}
 & python -B "$root/scripts/check-classic-gesture-bridge.py"
@@ -198,6 +200,12 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
   if ($LASTEXITCODE) {throw 'Active source-backed player forms lack evidence'}
   & $godot --headless --path "$root/Viewer" --script res://../scripts/test-player-spell-forms.gd
   if ($LASTEXITCODE) {throw 'Player transformation appearance or static corpse failed'}
+ }
+ if ($lateIndex.entries | Where-Object { $_.fitted_spell_form_source }) {
+  & python -B "$root/scripts/prepare-fitted-spell-forms.py" --check-active
+  if ($LASTEXITCODE) {throw 'Active fitted spell forms lack evidence'}
+  & $godot --headless --path "$root/Viewer" --script res://../scripts/test-fitted-spell-forms.gd
+  if ($LASTEXITCODE) {throw 'Fitted spell form playback, terrain or static corpse failed'}
  }
  if ($lateIndex.entries | Where-Object { $_.uop_redirect_native_sha256 }) {
   & python -B "$root/scripts/prepare-creature-uop-redirects.py" --check-active

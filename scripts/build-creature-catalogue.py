@@ -89,8 +89,9 @@ def main():
     counts['additional_named_native_constructor_pairs_with_evidence']=sum(len(row['tested_native_constructors']) for row in special)
     spell_forms = [
         {'body': int(identity['body']), 'name': identity['name'], 'presentation': row['kind'],
-         'source': row['spell_form_source']}
-        for row in accepted if row.get('spell_form_source') for identity in row['bodies']
+         'source': row.get('spell_form_source') or row['fitted_spell_form_source']}
+        for row in accepted if row.get('spell_form_source') or row.get('fitted_spell_form_source')
+        for identity in row['bodies']
     ]
     counts['player_spell_creature_routes'] = len(spell_forms)
     (OUT/'catalogue.json').write_text(json.dumps({'counts':counts,'server_pin':source['server_pin'],'native_targets':targets,
