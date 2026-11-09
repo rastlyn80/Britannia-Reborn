@@ -8,6 +8,9 @@ func run() -> void:
 	for body in [794, 799]:
 		if Registry.entry(body).get("classic_gesture_batch") == "swamp_widow_juka_actions":
 			use_base(body, "swamp_widow_juka_actions")
+	for body in [182, 777]:
+		if Registry.entry(body).get("classic_gesture_batch") == "bomber_ogre_rune_dopple_actions":
+			use_base(body, "bomber_ogre_rune_dopple_actions")
 	if Registry.entry(259).has("classic_gesture_native_sha256"):
 		use_base(259, "grizzle_antler")
 	if Registry.entry(143).get("classic_gesture_batch") == "ratman_lava_actions":

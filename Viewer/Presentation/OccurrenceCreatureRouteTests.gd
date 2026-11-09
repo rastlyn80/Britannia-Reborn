@@ -29,7 +29,8 @@ func run() -> void:
 		var active := Registry.entry(body)
 		if active.has("legacy_slot11_evidence"):
 			var reviewed := active
-			var successor: String = {309: "ophidian_patchwork_actions", 247: "hopper_fan_blood_actions"}.get(body, "")
+			var successor: String = {309: "ophidian_patchwork_actions", 247: "hopper_fan_blood_actions",
+				244: "bomber_ogre_rune_dopple_actions"}.get(body, "")
 			if not successor.is_empty() and active.get("classic_gesture_batch") == successor:
 				var path := "res://../work/creatures/%s/accepted-native/base-rows.json" % successor
 				var baseline: Array = JSON.parse_string(FileAccess.get_file_as_string(path))

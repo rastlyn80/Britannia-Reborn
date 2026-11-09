@@ -35,7 +35,8 @@ func run() -> void:
 				var record := Registry.entry(body)
 				assert(record.legacy_slot11_evidence == row.presentation.legacy_slot11_evidence)
 				assert(record.kind == proof.kind)
-				if body == 157 and record.get("classic_gesture_batch") == "swamp_widow_juka_actions":
+				var successor: String = {157: "swamp_widow_juka_actions", 777: "bomber_ogre_rune_dopple_actions"}.get(body, "")
+				if not successor.is_empty() and record.get("classic_gesture_batch") == successor:
 					for treatment: String in row.presentation.asset_sha256:
 						assert(FileAccess.get_sha256(record.classic_gesture_base_assets[treatment]) == row.presentation.asset_sha256[treatment])
 				else:

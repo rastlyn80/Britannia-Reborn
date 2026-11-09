@@ -1,0 +1,1303 @@
+{
+  "definitions": {
+    "AnimationSequence.uop": "b4de2afdba2bab6e987389cde18aee4703bbef560f66d4c26be5ffc04f2b8e0f",
+    "mobtypes.txt": "a4f1c98057c5bcf10ccdb575a9154260651e49b852bfe548059ff55fcbbf29d8",
+    "Bodyconv.def": "62debf90a6c5f59a885da6b0a8db1094d90c8d9e0a2c4c02b3acc234d818b665",
+    "Body.def": "2fbd408fcc96d1c0b382c4fd5c4efc798e2e5093e59a14ed6be9146b4a81cdab",
+    "Corpse.def": "9bc572c3643acbcd1e299e6def4297c57da586624e373a45da88f72654b7c02a"
+  },
+  "bodies": {
+    "1": {
+      "mobtypes": [
+        "MONSTER",
+        0
+      ],
+      "groups": {
+        "0": [
+          [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "e5fbf2dbe56fc7c82e7b9d1deea23830ab114841a037167fdc7aa6394d2579d0"
+        ],
+        "1": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "4c63cf7c2b37430981da854555faa980c13dd940b35415429563a326d8e3f142"
+        ],
+        "2": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "0c65eea1cfa6a6008f4513e1c12893ba746014c374608dfcf73b1df7d8d4c419"
+        ],
+        "3": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "fc8caca22dbd73c2c4da506d90da26d8ba22218e7ea1fb71b2af3ce54bf8d75a"
+        ],
+        "4": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "f455fc4db69e7329cbc6b14f5e9b75225ea50942dca30be93cb999de65b3bb5f"
+        ],
+        "5": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "e61d086dd8bbd08c2d912b6c13ded971235bf705c7464ea4d9b8209e7a014239"
+        ],
+        "6": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "85291696c17dfb3fcc678d7b7442ffe85fda1b1bc5574e57c1b2d7e747195355"
+        ],
+        "10": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "e0792101a9fe50fb83380db2d4d51cfcac88eaa9aef22e8a79f1ec4cdda8d0a8"
+        ],
+        "11": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "53385c279afa40e17041f087d7dcd96a05cde8de2f23f2e66db3f45c3e8dafff"
+        ],
+        "15": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "66c2b91a553aba62e941eaed7ed56f87de3018df62cf1d45c4371321ed79872b"
+        ],
+        "16": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "ff889a30010c02de7244f6d8dae2db7085cfe6d0fc36a580e4cd2cc4ae7edcb1"
+        ],
+        "17": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "caaec1d9b5c4e432412e17e26e288be04f3344e84b061e8de18ae27142e0fcce"
+        ],
+        "18": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "98c8016b657bdcd6920ce88ce5b2516b04f6f9e855d17df098922989b04fc066"
+        ]
+      },
+      "archive": "anim.mul",
+      "graphic": 1,
+      "layout": "large",
+      "sequence": {
+        "name_hash": "0xed8b51b30f6757f0",
+        "modes": {
+          "0": [
+            {
+              "type": 0,
+              "subaction": -1,
+              "groups": [
+                4,
+                5,
+                4,
+                4,
+                4,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 0,
+              "groups": [
+                4,
+                5,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 1,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 2,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 9,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 2,
+              "subaction": -1,
+              "groups": [
+                15,
+                15
+              ]
+            },
+            {
+              "type": 3,
+              "subaction": -1,
+              "groups": [
+                2,
+                3
+              ]
+            },
+            {
+              "type": 4,
+              "subaction": -1,
+              "groups": [
+                10
+              ]
+            },
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                26,
+                27
+              ]
+            },
+            {
+              "type": 8,
+              "subaction": -1,
+              "groups": [
+                28
+              ]
+            },
+            {
+              "type": 11,
+              "subaction": -1,
+              "groups": [
+                4,
+                4,
+                4
+              ]
+            },
+            {
+              "type": 14,
+              "subaction": -1,
+              "groups": [
+                11
+              ]
+            },
+            {
+              "type": 15,
+              "subaction": -1,
+              "groups": [
+                23
+              ]
+            }
+          ],
+          "1": [
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                26
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "83": {
+      "mobtypes": [
+        "MONSTER",
+        0
+      ],
+      "groups": {},
+      "sequence": {
+        "name_hash": "0x345f12ca480cd4f1",
+        "modes": {
+          "0": [
+            {
+              "type": 0,
+              "subaction": -1,
+              "groups": [
+                4,
+                5,
+                4,
+                4,
+                4,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 0,
+              "groups": [
+                4,
+                5,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 1,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 2,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 9,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 2,
+              "subaction": -1,
+              "groups": [
+                15,
+                15
+              ]
+            },
+            {
+              "type": 3,
+              "subaction": -1,
+              "groups": [
+                2,
+                3
+              ]
+            },
+            {
+              "type": 4,
+              "subaction": -1,
+              "groups": [
+                10
+              ]
+            },
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                26,
+                27
+              ]
+            },
+            {
+              "type": 8,
+              "subaction": -1,
+              "groups": [
+                28
+              ]
+            },
+            {
+              "type": 11,
+              "subaction": -1,
+              "groups": [
+                4,
+                4,
+                4
+              ]
+            },
+            {
+              "type": 14,
+              "subaction": -1,
+              "groups": [
+                11
+              ]
+            },
+            {
+              "type": 15,
+              "subaction": -1,
+              "groups": [
+                23
+              ]
+            }
+          ],
+          "1": [
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                26
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "84": {
+      "mobtypes": [
+        "MONSTER",
+        0
+      ],
+      "groups": {},
+      "sequence": {
+        "name_hash": "0xebf543a3d927deaf",
+        "modes": {
+          "0": [
+            {
+              "type": 0,
+              "subaction": -1,
+              "groups": [
+                4,
+                5,
+                4,
+                4,
+                4,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 0,
+              "groups": [
+                4,
+                5,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 1,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 2,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 9,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 2,
+              "subaction": -1,
+              "groups": [
+                15,
+                15
+              ]
+            },
+            {
+              "type": 3,
+              "subaction": -1,
+              "groups": [
+                2,
+                3
+              ]
+            },
+            {
+              "type": 4,
+              "subaction": -1,
+              "groups": [
+                10
+              ]
+            },
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                26,
+                27
+              ]
+            },
+            {
+              "type": 8,
+              "subaction": -1,
+              "groups": [
+                28
+              ]
+            },
+            {
+              "type": 11,
+              "subaction": -1,
+              "groups": [
+                4,
+                4,
+                4
+              ]
+            },
+            {
+              "type": 14,
+              "subaction": -1,
+              "groups": [
+                11
+              ]
+            },
+            {
+              "type": 15,
+              "subaction": -1,
+              "groups": [
+                23
+              ]
+            }
+          ],
+          "1": [
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                26
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "182": {
+      "mobtypes": [
+        "MONSTER",
+        0
+      ],
+      "groups": {
+        "0": [
+          [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "99e59748e3bf0834450341b5845e6eabc8a3d1cd9a9d460c585a6a6b431e55b9"
+        ],
+        "1": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "1e17d403d17ec74a5af823ae829b1e4762656d433234ec09d5f7b8ddc4136948"
+        ],
+        "2": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "1d7d2ed2b94ebc2d40747340dab03eb9bc06490cfba9f8f984fac8a00670eda1"
+        ],
+        "3": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "1d7d2ed2b94ebc2d40747340dab03eb9bc06490cfba9f8f984fac8a00670eda1"
+        ],
+        "4": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "73b482fa8a833e1d6d7ad85c75dc38ed2bc69df793ef9df420ebd1c4066ade69"
+        ],
+        "5": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "73b482fa8a833e1d6d7ad85c75dc38ed2bc69df793ef9df420ebd1c4066ade69"
+        ],
+        "6": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "73b482fa8a833e1d6d7ad85c75dc38ed2bc69df793ef9df420ebd1c4066ade69"
+        ],
+        "10": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "08f67af4f1eece636ba78d459bb5726c6196c536059e77fc19acb126a13ce030"
+        ],
+        "11": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "469c7cdc4a09e243d21d599e1ba46f16ad8246f961cbf3188380150e3f403151"
+        ],
+        "15": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "8efda6e4c30640edb31ef479011950a621f0b926fd6825f8112d711cd650bbdf"
+        ],
+        "16": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "8efda6e4c30640edb31ef479011950a621f0b926fd6825f8112d711cd650bbdf"
+        ],
+        "17": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "469c7cdc4a09e243d21d599e1ba46f16ad8246f961cbf3188380150e3f403151"
+        ],
+        "18": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "c37107156bae209c4c2722a78c27cb7af4897eacb0600d785ffcf4256c519574"
+        ]
+      },
+      "archive": "anim2.mul",
+      "graphic": 30,
+      "layout": "large",
+      "sequence": {
+        "name_hash": "0xe2a9431f9abe3b85",
+        "modes": {
+          "0": [
+            {
+              "type": 0,
+              "subaction": -1,
+              "groups": [
+                4,
+                5,
+                4,
+                4,
+                4,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 0,
+              "groups": [
+                4,
+                5,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 1,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 2,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 9,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 2,
+              "subaction": -1,
+              "groups": [
+                15,
+                15
+              ]
+            },
+            {
+              "type": 3,
+              "subaction": -1,
+              "groups": [
+                2,
+                3
+              ]
+            },
+            {
+              "type": 4,
+              "subaction": -1,
+              "groups": [
+                10
+              ]
+            },
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                26,
+                27
+              ]
+            },
+            {
+              "type": 8,
+              "subaction": -1,
+              "groups": [
+                28
+              ]
+            },
+            {
+              "type": 11,
+              "subaction": -1,
+              "groups": [
+                4,
+                4,
+                4
+              ]
+            },
+            {
+              "type": 14,
+              "subaction": -1,
+              "groups": [
+                11
+              ]
+            },
+            {
+              "type": 15,
+              "subaction": -1,
+              "groups": [
+                23
+              ]
+            }
+          ],
+          "1": [
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                26
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "244": {
+      "mobtypes": [
+        "MONSTER",
+        0
+      ],
+      "groups": {
+        "0": [
+          [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "2c997341f1479c6360ae855181c87f230238e6d3c8828dd8c1e3b82c6e760c1b"
+        ],
+        "1": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "1a16941ba4b23d9e056cd546d01350d6c0b3cbdbe8648cc891e90be5b61cc855"
+        ],
+        "2": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "9f7aa29c79ef5186b14a80b24c8bfb8784b42ab690899d8e7c9cb21c754961a9"
+        ],
+        "3": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "80d5c3a5f565b263f6044c227875f7e4f4308c53f22d9c2234cba23d7a12b3eb"
+        ],
+        "4": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "32be8dc43163f44c16872011a6fb8a08975736a660836756a3e87d35639ff9ad"
+        ],
+        "5": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "0ed33ca2573b5e055b62c1ceecb3a5202d9d3efc17e460e8d70875de7b8a90a1"
+        ],
+        "6": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "0b36fdb2862fa459375a80878e34aa6d49c96f1222b969b78ddba82483709b22"
+        ],
+        "10": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "39e74390b106b92bdf3163bd16c0fdf0d6f419cf18460ca3bdbf9477c1aa8ec1"
+        ],
+        "11": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "a0a61777e01678274784fb2cf8569edd2c76181b3bee92fc8cb91488eb5d6701"
+        ],
+        "15": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "4f4473d77191b3d0c9881b7136a2349071f3842d81044fbd89459620bbd4accf"
+        ],
+        "16": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "be851c773690edc37667868aa8207a7a7751e07f87cb60aecbc6e7cc0acb07dc"
+        ],
+        "17": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "07dc9cc94e39306400ef65900792e02d51dcfffc2f38ba839a620cf768e8a9e7"
+        ],
+        "18": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "a0a61777e01678274784fb2cf8569edd2c76181b3bee92fc8cb91488eb5d6701"
+        ]
+      },
+      "archive": "anim4.mul",
+      "graphic": 4,
+      "layout": "large",
+      "sequence": {
+        "name_hash": "0x39591176444051b",
+        "modes": {
+          "0": [
+            {
+              "type": 0,
+              "subaction": -1,
+              "groups": [
+                4,
+                5,
+                4,
+                4,
+                4,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 0,
+              "groups": [
+                4,
+                5,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 1,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 2,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 9,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 2,
+              "subaction": -1,
+              "groups": [
+                25,
+                1
+              ]
+            },
+            {
+              "type": 3,
+              "subaction": -1,
+              "groups": [
+                2,
+                0
+              ]
+            },
+            {
+              "type": 4,
+              "subaction": -1,
+              "groups": [
+                10
+              ]
+            },
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                26,
+                27
+              ]
+            },
+            {
+              "type": 8,
+              "subaction": -1,
+              "groups": [
+                28
+              ]
+            },
+            {
+              "type": 11,
+              "subaction": -1,
+              "groups": [
+                4,
+                4,
+                4
+              ]
+            },
+            {
+              "type": 14,
+              "subaction": -1,
+              "groups": [
+                25
+              ]
+            },
+            {
+              "type": 15,
+              "subaction": -1,
+              "groups": [
+                25
+              ]
+            }
+          ],
+          "1": [
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                26
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "777": {
+      "mobtypes": [
+        "MONSTER",
+        0
+      ],
+      "groups": {
+        "0": [
+          [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "1d7b4273f99c315579cc0babd957e241f5012f2d2658b7caccaca5fa4cf4f0f3"
+        ],
+        "1": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "fa9196f48a7adc09f2ef7ec1f0f6ac861b00b0615205d4dce9fde393d1904a41"
+        ],
+        "2": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "ac3b8678e2b54da76d5001202277a2daa57a7e7421182c56b6c0b8e95cc8d57a"
+        ],
+        "3": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "d816ac250f764862210d8a54df5e4f68b1967984a9327c5328ec75029ce699c3"
+        ],
+        "4": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "1b061f4d489d78bb9aaac8465cdcd9b99a13f4ec2bf49b4fa4af5bb38523f987"
+        ],
+        "5": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "2a6bee0842a2f1e3d45c7ba2a10a9467d94a494bd8cca811d74ee7a67a62266a"
+        ],
+        "6": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "2a6bee0842a2f1e3d45c7ba2a10a9467d94a494bd8cca811d74ee7a67a62266a"
+        ],
+        "10": [
+          [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "5f2c8393d013e3d6021f4d710880bb3525ad83f8a4bc7810248100bd7d3c9552"
+        ],
+        "11": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "e776832cbcd05315b722d49f2395b9339b0042d1fdc5c7676aa737af67d298d8"
+        ],
+        "15": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "474f40db1d085237196e8825493f7cd1162a4405522db83753124984baf87200"
+        ],
+        "16": [
+          [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "474f40db1d085237196e8825493f7cd1162a4405522db83753124984baf87200"
+        ],
+        "17": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "849db3374aee9c090951a85096fd682f2b2b253939261c315888d61561fe0b92"
+        ],
+        "18": [
+          [
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "1427cadfa96e9f948b02859746fe95d9e8df499735f30ebb1f9bada10fd6c51c"
+        ]
+      },
+      "archive": "anim2.mul",
+      "graphic": 45,
+      "layout": "large",
+      "sequence": {
+        "name_hash": "0x700e7bea7cc93590",
+        "modes": {
+          "0": [
+            {
+              "type": 0,
+              "subaction": -1,
+              "groups": [
+                4,
+                5,
+                4,
+                4,
+                4,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 0,
+              "groups": [
+                4,
+                5,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 1,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 2,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 9,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 2,
+              "subaction": -1,
+              "groups": [
+                15,
+                15
+              ]
+            },
+            {
+              "type": 3,
+              "subaction": -1,
+              "groups": [
+                2,
+                3
+              ]
+            },
+            {
+              "type": 4,
+              "subaction": -1,
+              "groups": [
+                10
+              ]
+            },
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                26,
+                27
+              ]
+            },
+            {
+              "type": 8,
+              "subaction": -1,
+              "groups": [
+                28
+              ]
+            },
+            {
+              "type": 11,
+              "subaction": -1,
+              "groups": [
+                12,
+                12,
+                12
+              ]
+            },
+            {
+              "type": 14,
+              "subaction": -1,
+              "groups": [
+                11
+              ]
+            },
+            {
+              "type": 15,
+              "subaction": -1,
+              "groups": [
+                23
+              ]
+            }
+          ],
+          "1": [
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                26
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

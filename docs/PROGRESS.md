@@ -1,3 +1,13 @@
+# Orc Bomber, Ogre Lord, Rune Beetle and Doppleganger actions
+
+The local catalogue now routes 39 directly stored Classic groups and 13 groups from the ordinary Ogre that the original mobile and corpse definitions reference for Ogre Lord 83. Ogre Lord retains its own geometry and rest rig. The refitted gestures include an overhead strike, face wipe and alternate collapse. Orc Bomber gains a brace and scan, Rune Beetle gains a crest movement and uses its two recovered braces, and Doppleganger gains a recoil and a two-arm reach. Slots share a motion where the registered original frames agree in all five directions. Ogre body 84 keeps its existing compatibility route.
+
+The four native constructors passed 1,123 checks on two disposable clients. The Orc Bomber's actual throw sent the short moving-effect packet to both clients. The projectile starts at the right hand and triggers an authored follow-through, and the native timer damages the target. The original projectile packet variant with particle IDs also passes decoded playback. The original dragon presenter remains the base for effects outside the bomber route.
+
+The installed scenes passed 3,906 sampled terrain poses, 156 Classic and 54 newer selections, and 12 static corpse hues. The alternate Ogre Lord and Doppleganger falls passed 18 decoded handoffs and 738 slope poses. The generic ledger routes 5,373 of 6,950 tracked slots (77.3%), with 1,577 broader gaps, 381 shared Classic candidate pairs and zero unresolved slots with matching Classic source frames.
+
+Use `scripts/bake-bomber-rune-dopple-actions.gd`, `scripts/bake-ogre-lord-actions.gd` and `python -B scripts/prepare-bomber-ogre-rune-dopple-actions.py --audit-aliases` for the local recipe. Repeat the ordinary trial with `scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily bomber_ogre_rune_dopple_actions` and the throw with `scripts/test-horses.ps1 -Live -SkipContact -OrcBomb`. Check the active catalogue with `python -B scripts/accept-classic-gestures.py --batch bomber_ogre_rune_dopple_actions --check-active`.
+
 # Swamp Dragon, Giant Black Widow and Juka Mage actions
 
 All 52 stored Classic groups for bodies 794, 799, 157 and 765 route through the local catalogue. Both Swamp Dragons retain the original rig, mounted fittings, barding and source animation keys, and gain separate head raise, neck check, tail balance and jaw motions. Giant Black Widow gains a brace and an abdomen signal. Juka Mage gains an advancing palm, two recoil poses and a glance. Shared slots were retained where the registered original pixels match in all five directions, including both Swamp Dragon falls and the Black Widow's attack and brace pairs.

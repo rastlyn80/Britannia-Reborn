@@ -43,6 +43,9 @@ def expected_rows_with_legacy_aliases(rows, active):
                         ('swamp_dragon_armor', 'swamp_widow_juka_actions'),
                         ('arachnids_spider_black_widow', 'swamp_widow_juka_actions'),
                         ('juka_mage', 'swamp_widow_juka_actions'),
+                        ('orcs_orc_bomber', 'bomber_ogre_rune_dopple_actions'),
+                        ('rune_beetle', 'bomber_ogre_rune_dopple_actions'),
+                        ('doppleganger', 'bomber_ogre_rune_dopple_actions'),
                         ('serpents_snake_giant_lava', 'ratman_lava_actions'),
                         ('rat_race_shaman', 'ratman_lava_actions')):
         overlay = active_by_kind.get(kind, {})
