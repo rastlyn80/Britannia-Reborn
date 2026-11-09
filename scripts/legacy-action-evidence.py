@@ -26,10 +26,13 @@ def check_base_receipt(name, recorded, current):
         raise ValueError(f'Base receipt evidence changed for {name}')
 
 
+def row_identity(row):
+    return row['kind'], tuple(sorted(int(identity['body']) for identity in row['bodies']))
+
+
 def expected_rows_with_legacy_aliases(rows, active):
-    active_by_kind = {row['kind']: row for row in active}
-    expected = [expected_with_legacy_alias(row, active_by_kind.get(row['kind'], {})) for row in rows]
-    for kind, batch in (('monstrousinterredgrizzle', 'grizzle_antler'),
+    active_by_identity = {row_identity(row): row for row in active}
+    batches = dict((('monstrousinterredgrizzle', 'grizzle_antler'),
                         ('wild_guar', 'gaman_gestures'),
                         ('walking_dead_mummy', 'lowland_creature_gestures'),
                         ('elementals_ice_elemental', 'cyclops_titan_ice_actions'),
@@ -88,12 +91,17 @@ def expected_rows_with_legacy_aliases(rows, active):
                         ('fire_ant_warrior', 'golem_raptor_juka_solen_actions'),
                         ('black_ant_warrior', 'golem_raptor_juka_solen_actions'),
                         ('serpents_snake_giant_lava', 'ratman_lava_actions'),
-                        ('rat_race_shaman', 'ratman_lava_actions')):
-        overlay = active_by_kind.get(kind, {})
-        if overlay.get('classic_gesture_native_sha256') and any(row['kind'] == kind for row in expected):
+                        ('rat_race_shaman', 'ratman_lava_actions')))
+    expected = []
+    for row in rows:
+        identity = row_identity(row)
+        overlay = active_by_identity.get(identity, {})
+        original = expected_with_legacy_alias(row, overlay)
+        kind = row['kind']
+        batch = batches.get(kind)
+        if batch and overlay.get('classic_gesture_native_sha256'):
             gate = runpy.run_path(str(Path(__file__).with_name('accept-classic-gestures.py')))
             index = {'entries': active}
-            original, = (row for row in expected if row['kind'] == kind)
             retained = original
             successor = overlay.get('classic_gesture_batch')
             if (batch, successor) in {('grizzle_antler', 'ranked_classic_actions'),
@@ -101,15 +109,17 @@ def expected_rows_with_legacy_aliases(rows, active):
                                        ('lattice_through_meer_actions', 'meer_forward_falls'),
                                        ('frost_through_gargoyle_actions', 'gargoyle_flight_minotaur_actions')}:
                 earlier, previous = gate['checked'](index, True, batch, compare_registry=False)
-                if [row for row in earlier if row['kind'] == kind] != [original]:
+                if [row for row in earlier if row_identity(row) == identity] != [original]:
                     raise ValueError(f'{kind} earlier action overlay no longer matches the verified base package')
-                retained, = (row for row in previous if row['kind'] == kind)
+                retained, = (row for row in previous if row_identity(row) == identity)
                 batch = successor
             base, overlays = gate['checked'](index, True, batch)
-            if ([row for row in base if row['kind'] == kind] != [retained]
-                    or [row for row in overlays if row['kind'] == kind] != [overlay]):
+            if ([row for row in base if row_identity(row) == identity] != [retained]
+                    or [row for row in overlays if row_identity(row) == identity] != [overlay]):
                 raise ValueError(f'{kind} action overlay no longer matches the verified base package')
-            expected = [overlay if row == original else row for row in expected]
+            expected.append(overlay)
+        else:
+            expected.append(original)
     return expected
 
 
