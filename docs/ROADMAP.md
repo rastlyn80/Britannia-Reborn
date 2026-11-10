@@ -1,3 +1,29 @@
+# Orc Bomber and Ogre Lord
+
+The optional Enhanced profile reaches 119 bodies. Both bodies keep their earlier routes for the missing exact groups, including the mixed type 0 attack table. The Orc Bomber still uses the native projectile and original follow-through. The Ogre Lord's visible bone club follows the five fitted groups. The exact Enhanced appearance of the held object in the remaining groups remains open. Arctic Ogre Lord 135 stays on its established body route.
+
+Continue in occurrence order with Rune Beetle 244 and Doppleganger 777. The beetle's exact groups 1, 25, 26, 27 and 28 and the Doppleganger's groups 12, 23, 26, 27 and 28 are decoded. Keep native Rune Corruption and raw hues separate from the visual fits. The pinned Doppleganger class has no disguise logic.
+
+# Giant Black Widow and Juka Mage
+
+The optional Enhanced profile reaches 117 bodies. The Widow retains its existing paths for the missing exact Enhanced groups 11 and 15. The Juka Mage retains its earlier routes for all groups except the verified 23 and 28. Nightmare 116, 178 and 179 keep their existing equine forms while the required exact Enhanced payloads remain unlocated. Spellbinder's Wraith and Skeleton forms already have fitted profiles. Its body 56 retains the established rig and action routes pending a named Enhanced member.
+
+Continue in configured occurrence order with Orc Bomber 182 and Ogre Lord 83, then Rune Beetle 244 and Doppleganger 777. Their named sequences and 985 registered frames in twenty matching groups have been decoded. Verify the original Orc Bomber projectile cue and the Ogre Lord's held object while fitting their new clips.
+
+# Terathan Matriarch and Swamp Dragons
+
+The optional Enhanced profile reaches 115 bodies. The Matriarch keeps earlier routes for unresolved exact Enhanced groups including its cast and combat sources. Both Swamp Dragons retain their established movement and fighting where the exact source is unresolved. Keep the original Enhanced mode 2 walk and run groups 29 and 30 and mixed type 0 tables open. The ordinary dragon's Enhanced flight table names group 19, and the pinned ModernUO constructor remains grounded. Savage Rider 185/186 and Savage Shaman 183/184 retain their mounted and humanoid routes while their exact Enhanced archive entries remain unresolved.
+
+Continue in configured occurrence order with Giant Black Widow 157, Nightmare 116/178/179 and Juka Mage 765. The Widow's five available groups and the Mage's groups 23 and 28 are decoded. Nightmare 116 has a named sequence record but its relevant exact frames remain unlocated. Its existing equine animations and native mount identities remain available.
+
+# Interred Grizzle and Changeling
+
+The optional Enhanced profile reaches 112 bodies. Grizzle and Changeling keep their existing routes for groups without exact named Enhanced frames. The Changeling's controlled flight flags use the verified combat fallback. Its stock server constructor remains grounded, and ambient disguise and ooze timing need separate observation. Continue in configured occurrence order with Terathan Matriarch 72, keep Savage Rider 185 and 186 on its native mounted routes while their exact Enhanced sources are unresolved, then fit Swamp Dragon 794 and Scaled Swamp Dragon 799 with separate saddle, rein and barding checks.
+
+# Rotting Corpse and Bog Thing
+
+The optional Enhanced profile reaches 110 bodies. Rotting Corpse and Bog Thing retain their earlier routes for remaining Enhanced groups. Bog Thing’s original affine Classic collapse and point footprint remain available. Continue Interred Grizzle 259 and Changeling 264. Their ten named groups have been decoded and the first fitted passes are in visual review.
+
 # Efreet and Terathan Avenger
 
 The optional Enhanced profile reaches 108 bodies. The Efreet uses the lamp and carpet for the four exact groups. Its existing hover, combat and gait remain available. The original Enhanced movement and additional combat references need separate evidence. The Terathan Avenger retains its existing routes for the unresolved groups 4, 5, 11 and 15. Continue Rotting Corpse 155 and Bog Thing 780. Twelve pinned groups covering both bodies are decoded.

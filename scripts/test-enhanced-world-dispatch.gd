@@ -47,6 +47,11 @@ const StoneHarpyHorde := preload("test-stone-harpy-horde-world-cases.gd")
 const StoneGargoyleKitsune := preload("test-stone-gargoyle-kitsune-world-cases.gd")
 const OrcCaptainSolen := preload("test-orc-captain-solen-world-cases.gd")
 const EfreetAvenger := preload("test-efreet-avenger-world-cases.gd")
+const RottingBog := preload("test-rotting-bog-world-cases.gd")
+const GrizzleChangeling := preload("test-grizzle-changeling-world-cases.gd")
+const MatriarchSwamp := preload("test-matriarch-swamp-world-cases.gd")
+const WidowJuka := preload("test-widow-juka-world-cases.gd")
+const BomberLord := preload("test-bomber-lord-world-cases.gd")
 const SERIAL := 0x105
 const BODY := 267
 
@@ -79,6 +84,16 @@ func _initialize() -> void:
 	if "--orc-captain-solen" in OS.get_cmdline_user_args():
 		deadline += 40.0
 	if "--efreet-avenger" in OS.get_cmdline_user_args():
+		deadline += 40.0
+	if "--rotting-bog" in OS.get_cmdline_user_args():
+		deadline += 40.0
+	if "--grizzle-changeling" in OS.get_cmdline_user_args():
+		deadline += 40.0
+	if "--matriarch-swamp" in OS.get_cmdline_user_args():
+		deadline += 60.0
+	if "--widow-juka" in OS.get_cmdline_user_args():
+		deadline += 40.0
+	if "--bomber-lord" in OS.get_cmdline_user_args():
 		deadline += 40.0
 	create_timer(deadline).timeout.connect(func():
 		push_error("Combined creature replay exceeded %.0f seconds." % deadline)
@@ -358,6 +373,26 @@ func run() -> void:
 	if "--efreet-avenger" in OS.get_cmdline_user_args():
 		var fitted_batch := await EfreetAvenger.check(self, world, at, enhanced)
 		assert(fitted_batch.rows.size() == EfreetAvenger.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--rotting-bog" in OS.get_cmdline_user_args():
+		var fitted_batch := await RottingBog.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == RottingBog.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--grizzle-changeling" in OS.get_cmdline_user_args():
+		var fitted_batch := await GrizzleChangeling.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == GrizzleChangeling.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--matriarch-swamp" in OS.get_cmdline_user_args():
+		var fitted_batch := await MatriarchSwamp.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == MatriarchSwamp.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--widow-juka" in OS.get_cmdline_user_args():
+		var fitted_batch := await WidowJuka.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == WidowJuka.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--bomber-lord" in OS.get_cmdline_user_args():
+		var fitted_batch := await BomberLord.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == BomberLord.Cases.size())
 		checks += int(fitted_batch.checks)
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()

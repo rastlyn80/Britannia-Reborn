@@ -6,6 +6,8 @@ const ART := "res://local-art/creatures/"
 const MANIFEST := ART + "enhanced-creature-actions.json"
 const SCENES := ART + "enhanced-creature-actions/"
 const UniformAttacks := {88: "MountainGoatQuietStand", 246: "BakeKitsuneLowSnap"}
+const SwampMountedIdle := {794: "SwampDragonSeatedStill", 799: "BardedSwampDragonSeatedStill"}
+const SwampLowSweep := {794: "SwampDragonWingSweep", 799: "BardedSwampDragonLowSweep"}
 static var enabled := false
 
 static func enable() -> bool:
@@ -44,6 +46,11 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 			return {}
 		if flight_fallback:
 			row["flight_falls_back_to_combat"] = true
+		var mounted_idle: Variant = profile.get("mounted_idle", "")
+		if mounted_idle != SwampMountedIdle.get(body, ""):
+			return {}
+		if not str(mounted_idle).is_empty():
+			row["enhanced_mounted_idle"] = mounted_idle
 		var assets: Variant = profile.get("assets", {})
 		if not assets is Dictionary:
 			return {}
@@ -204,6 +211,25 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedEfreetVisual.gd"
 			elif body == 152:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedTerathanAvengerVisual.gd"
+			elif body == 155:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedRottingCorpseVisual.gd"
+			elif body == 780:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedBogThingVisual.gd"
+			elif body in [259, 264]:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedGrizzleChangelingVisual.gd"
+			elif body == 72:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedTerathanMatriarchVisual.gd"
+				row["grounded_gestures"] = row.get("grounded_gestures", []) + profile.grounded
+			elif body in [794, 799]:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedSwampDragonVisual.gd"
+			elif body == 157:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedBlackWidowVisual.gd"
+			elif body == 765:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedJukaMageVisual.gd"
+			elif body == 182:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedOrcBomberVisual.gd"
+			elif body == 83:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedOgreLordVisual.gd"
 			elif body == 764:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedJukaWarriorVisual.gd"
 			elif body == 8:
@@ -269,6 +295,9 @@ static func valid_groups(groups: Variant, body: int) -> bool:
 				if expected.is_empty() or mode != "0" or clips.size() != 6:
 					return false
 				if clips.any(func(clip: Variant): return clip != expected):
+					return false
+			elif kind == "1":
+				if mode != "0" or not SwampLowSweep.has(body) or clips != [SwampLowSweep[body], SwampLowSweep[body]]:
 					return false
 			elif kind not in ["2", "5", "8", "11", "14", "15"]:
 				return false
