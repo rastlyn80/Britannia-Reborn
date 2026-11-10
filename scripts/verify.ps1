@@ -262,7 +262,7 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
    if ($LASTEXITCODE) {throw 'Enhanced Orc and Water Elemental motion, terrain or corpse failed'}
    $profileTests += '--ranked'
   }
-  foreach ($extension in @('kraken','troll','bird','ettin','dolphin','field','cat','skeleton-mongbat','hound-bear','troll-ratman','brown-bear-cougar','wolf-grizzly','corpser-boar','goat-eagle','serpent-harpy','ogre-earth','zombie-wraith','gorilla-gazer','gargoyle-through-ghoul','scorpion-through-slime','alligator-direwolf','crane-fire','lich-gaman','chicken-skeletal-mage','daemon-wyvern','polar-bear','drake-walrus','ice-serpent-bogling','tsuki-wolf-ophidian','evil-mage-plague-beast','kappa-snow-elemental','giant-rat-vampire-bat','orc-shaman-ophidian-mage','knight-acid-pixie-frost','poison-elemental-dread-spider','mummy-balron','giant-toad-juka-warrior','skeletal-knight-remaining','yomotsu-warrior-dragon','ratman-mage-lava-serpent','cyclops-titan','ice-terathan','hopper-fan','blood-goat')) {
+  foreach ($extension in @('kraken','troll','bird','ettin','dolphin','field','cat','skeleton-mongbat','hound-bear','troll-ratman','brown-bear-cougar','wolf-grizzly','corpser-boar','goat-eagle','serpent-harpy','ogre-earth','zombie-wraith','gorilla-gazer','gargoyle-through-ghoul','scorpion-through-slime','alligator-direwolf','crane-fire','lich-gaman','chicken-skeletal-mage','daemon-wyvern','polar-bear','drake-walrus','ice-serpent-bogling','tsuki-wolf-ophidian','evil-mage-plague-beast','kappa-snow-elemental','giant-rat-vampire-bat','orc-shaman-ophidian-mage','knight-acid-pixie-frost','poison-elemental-dread-spider','mummy-balron','giant-toad-juka-warrior','skeletal-knight-remaining','yomotsu-warrior-dragon','ratman-mage-lava-serpent','cyclops-titan','ice-terathan','hopper-fan','blood-goat','matriarch-succubus','stone-harpy-horde','stone-gargoyle-kitsune','orc-captain-solen','efreet-avenger')) {
    if ($profile.PSObject.Properties["${extension}_native_proof_sha256"]) {
     $families = switch ($extension) {
      'drake-walrus' { 'drake','walrus' }
@@ -285,7 +285,7 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
    $modeArgs = @($profileTests)
    if ($mode -eq 'Enhanced') {
     $modeArgs += '--enhanced-creature-actions'
-    if ($modeArgs -contains '--knight-acid-pixie-frost') { $modeArgs += '--recolour-optional-props' }
+    if ($modeArgs -contains '--knight-acid-pixie-frost' -or $modeArgs -contains '--matriarch-succubus') { $modeArgs += '--recolour-optional-props' }
    }
    $checks = & $godot --headless --path "$root/Viewer" --script res://../scripts/test-enhanced-world-dispatch.gd -- @modeArgs 2>&1
    $checkExit = $LASTEXITCODE

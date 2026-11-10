@@ -42,6 +42,11 @@ const GiantPair := preload("test-cyclops-titan-world.gd")
 const IceTerathan := preload("test-ice-terathan-world.gd")
 const HopperFan := preload("test-hopper-fan-world.gd")
 const BloodGoat := preload("test-blood-goat-world.gd")
+const MatriarchSuccubus := preload("test-matriarch-succubus-world-cases.gd")
+const StoneHarpyHorde := preload("test-stone-harpy-horde-world-cases.gd")
+const StoneGargoyleKitsune := preload("test-stone-gargoyle-kitsune-world-cases.gd")
+const OrcCaptainSolen := preload("test-orc-captain-solen-world-cases.gd")
+const EfreetAvenger := preload("test-efreet-avenger-world-cases.gd")
 const SERIAL := 0x105
 const BODY := 267
 
@@ -65,6 +70,16 @@ func _initialize() -> void:
 		deadline += 50.0
 	if "--blood-goat" in OS.get_cmdline_user_args():
 		deadline += 35.0
+	if "--matriarch-succubus" in OS.get_cmdline_user_args():
+		deadline += 40.0
+	if "--stone-harpy-horde" in OS.get_cmdline_user_args():
+		deadline += 40.0
+	if "--stone-gargoyle-kitsune" in OS.get_cmdline_user_args():
+		deadline += 40.0
+	if "--orc-captain-solen" in OS.get_cmdline_user_args():
+		deadline += 40.0
+	if "--efreet-avenger" in OS.get_cmdline_user_args():
+		deadline += 40.0
 	create_timer(deadline).timeout.connect(func():
 		push_error("Combined creature replay exceeded %.0f seconds." % deadline)
 		quit(2))
@@ -323,6 +338,26 @@ func run() -> void:
 	if "--blood-goat" in OS.get_cmdline_user_args():
 		var fitted_batch := await BloodGoat.check(self, world, at, enhanced)
 		assert(fitted_batch.rows.size() == BloodGoat.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--matriarch-succubus" in OS.get_cmdline_user_args():
+		var fitted_batch := await MatriarchSuccubus.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == MatriarchSuccubus.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--stone-harpy-horde" in OS.get_cmdline_user_args():
+		var fitted_batch := await StoneHarpyHorde.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == StoneHarpyHorde.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--stone-gargoyle-kitsune" in OS.get_cmdline_user_args():
+		var fitted_batch := await StoneGargoyleKitsune.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == StoneGargoyleKitsune.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--orc-captain-solen" in OS.get_cmdline_user_args():
+		var fitted_batch := await OrcCaptainSolen.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == OrcCaptainSolen.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--efreet-avenger" in OS.get_cmdline_user_args():
+		var fitted_batch := await EfreetAvenger.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == EfreetAvenger.Cases.size())
 		checks += int(fitted_batch.checks)
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()

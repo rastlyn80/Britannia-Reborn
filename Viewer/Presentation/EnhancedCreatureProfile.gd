@@ -5,6 +5,7 @@ const Registry := preload("res://Presentation/CreatureRegistry.gd")
 const ART := "res://local-art/creatures/"
 const MANIFEST := ART + "enhanced-creature-actions.json"
 const SCENES := ART + "enhanced-creature-actions/"
+const UniformAttacks := {88: "MountainGoatQuietStand", 246: "BakeKitsuneLowSnap"}
 static var enabled := false
 
 static func enable() -> bool:
@@ -183,6 +184,26 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedBloodElementalVisual.gd"
 			elif body == 88:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedMountainGoatVisual.gd"
+			elif body == 87:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedMatriarchVisual.gd"
+			elif body == 149:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedSuccubusVisual.gd"
+			elif body == 73:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedStoneHarpyVisual.gd"
+			elif body == 776:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedHordeMinionVisual.gd"
+			elif body == 67:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedStoneGargoyleVisual.gd"
+			elif body == 246:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedBakeKitsuneVisual.gd"
+			elif body == 7:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedOrcCaptainVisual.gd"
+			elif body == 805:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedBlackSolenWorkerVisual.gd"
+			elif body == 131:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedEfreetVisual.gd"
+			elif body == 152:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedTerathanAvengerVisual.gd"
 			elif body == 764:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedJukaWarriorVisual.gd"
 			elif body == 8:
@@ -243,10 +264,11 @@ static func valid_groups(groups: Variant, body: int) -> bool:
 			if not clips is Array or clips.is_empty():
 				return false
 			if kind == "0":
-				# The named Mountain Goat record selects group 25 for every weapon subaction.
-				if body != 88 or mode != "0" or clips.size() != 6:
+				# Each named record selects one verified clip for every weapon subaction.
+				var expected: String = UniformAttacks.get(body, "")
+				if expected.is_empty() or mode != "0" or clips.size() != 6:
 					return false
-				if clips.any(func(clip: Variant): return clip != "MountainGoatQuietStand"):
+				if clips.any(func(clip: Variant): return clip != expected):
 					return false
 			elif kind not in ["2", "5", "8", "11", "14", "15"]:
 				return false

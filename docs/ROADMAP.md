@@ -1,3 +1,23 @@
+# Efreet and Terathan Avenger
+
+The optional Enhanced profile reaches 108 bodies. The Efreet uses the lamp and carpet for the four exact groups. Its existing hover, combat and gait remain available. The original Enhanced movement and additional combat references need separate evidence. The Terathan Avenger retains its existing routes for the unresolved groups 4, 5, 11 and 15. Continue Rotting Corpse 155 and Bog Thing 780. Twelve pinned groups covering both bodies are decoded.
+
+# Orc Captain and Black Solen Worker
+
+The optional Enhanced profile reaches 106 bodies. The Captain retains the Classic routes for groups 4, 5, 11, 15, 26 and 27. The Black Solen Worker retains the mixed type 0 selections and the remaining groups 11 and 15. Red Solen Worker 781 and Slith 734 retain their existing routes while their exact Enhanced inputs remain unresolved. The next pinned references are Efreet 131 and Terathan Avenger 152, followed by Rotting Corpse and Bog Thing.
+
+# Stone Gargoyle and Bake Kitsune
+
+The optional Enhanced profile reaches 104 bodies. Continue with Orc Captain body 7 and Black Solen Worker body 805 in the configured occurrence order. Keep Stone Gargoyle types 0, 2 and 14 on the retained paths pending exact source, and keep Gazer Larva body 778 open where its exact frame groups remain unresolved. The Bake Kitsune native trial directly invoked the disguise and Blood Bath. Autonomous disguise timing, retaliation and taming need separate observations.
+
+# Stone Harpy and Horde Minion
+
+The optional Enhanced profile reaches 102 bodies. Continue the configured occurrence queue with Stone Gargoyle body 67 and Bake Kitsune body 246. Keep missing or mixed exact Enhanced selectors open. The Horde Minion familiar has a separate constructor and needs dedicated native summoning and behavior coverage.
+
+# Ophidian Matriarch and Succubus
+
+The optional Enhanced profile reaches 100 bodies. Continue the configured occurrence queue with Stone Harpy body 73, Horde Minion body 776, Stone Gargoyle body 67 and Bake Kitsune body 246. The exact named sources for Matriarch and Succubus types 0, 2 and 14 are incomplete. The Succubus’s type 11 also needs its exact group 12. Retain current routes for those gaps. Test remaining native abilities through ordinary server combat where practical.
+
 # Blood Elemental and Mountain Goat
 
 The optional Enhanced profile reaches 98 bodies. Blood Elemental's remaining exact Enhanced groups stay on its retained routes. Mountain Goat uses its quiet stand in the exact named Enhanced table, and its stock melee still uses the retained Classic strike. Continue the configured occurrence queue with Ophidian Matriarch and Succubus. Their nine named official inputs have been decoded.
