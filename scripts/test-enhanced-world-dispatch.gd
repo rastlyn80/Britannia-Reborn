@@ -33,24 +33,38 @@ func run() -> void:
 		assert(avatar.horse_visual.current_clip == ("TroglodyteOpenReach" if enhanced else "Pillage"))
 		assert(avatar.horse_visual.native_body == BODY and avatar.horse_visual.native_hue == 1109)
 		checks += 3
+	if "--ranked" in OS.get_cmdline_user_args():
+		for form: Array in [[16, "WaterEmerge", "WaterAlert"], [17, "OrcRise", "OrcAlert"]]:
+			var body: int = form[0]
+			var serial := SERIAL + body
+			for flags: int in [0, 0x40]:
+				world.game._handle(mobile_packet(at, flags, serial, body, 0x8035))
+				var avatar: Node3D = world.avatars[serial]
+				var prior: String = avatar.horse_visual.current_clip
+				world.game._handle(action_packet(15, serial))
+				assert(avatar.horse_visual.current_clip == (form[1] if enhanced else prior))
+				world.game._handle(action_packet(8, serial))
+				assert(avatar.horse_visual.current_clip == (form[2] if enhanced else "Pillage"))
+				assert(avatar.horse_visual.native_body == body and avatar.horse_visual.native_hue == 0x8035)
+				checks += 3
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()
 	await process_frame
 	quit()
 
-func mobile_packet(at: Vector2i, flags: int) -> PackedByteArray:
+func mobile_packet(at: Vector2i, flags: int, serial: int = SERIAL, body: int = BODY, hue: int = 1109) -> PackedByteArray:
 	var bytes := PackedByteArray([0x77])
-	bytes.append_array(Wire.uint_be(SERIAL, 4))
-	bytes.append_array(Wire.uint_be(BODY, 2))
+	bytes.append_array(Wire.uint_be(serial, 4))
+	bytes.append_array(Wire.uint_be(body, 2))
 	bytes.append_array(Wire.uint_be(at.x, 2))
 	bytes.append_array(Wire.uint_be(at.y, 2))
 	bytes.append_array(PackedByteArray([0, 0]))
-	bytes.append_array(Wire.uint_be(1109, 2))
+	bytes.append_array(Wire.uint_be(hue, 2))
 	bytes.append_array(PackedByteArray([flags, 1]))
 	return bytes
 
-func action_packet(kind: int) -> PackedByteArray:
+func action_packet(kind: int, serial: int = SERIAL) -> PackedByteArray:
 	var bytes := PackedByteArray([0xe2])
-	bytes.append_array(Wire.uint_be(SERIAL, 4))
+	bytes.append_array(Wire.uint_be(serial, 4))
 	bytes.append_array(PackedByteArray([0, kind, 0, 0, 1]))
 	return bytes

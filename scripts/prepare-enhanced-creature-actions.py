@@ -145,8 +145,22 @@ def main():
     modes.add_argument('--stage', action='store_true')
     modes.add_argument('--install', action='store_true')
     modes.add_argument('--check-installed', action='store_true')
+    parser.add_argument('--ranked-source', type=Path, help='Local folder holding the pinned Enhanced sequence and AMOU files')
     args = parser.parse_args()
     manifest, copies = prepare()
+    source = args.ranked_source
+    if source is None and ACTIVE.is_file():
+        recorded = read(ACTIVE).get('ranked_source')
+        if recorded:
+            source = Path(recorded)
+    if source is not None:
+        source = source.resolve(strict=True)
+        ranked = runpy.run_path(str(HERE / 'prepare-ranked-enhanced-actions.py'))['prepare_ranked']
+        rows, ranked_copies, proof = ranked(ROOT, source)
+        manifest['bodies'].update(rows)
+        copies.update(ranked_copies)
+        manifest['ranked_source'] = str(source)
+        manifest['ranked_native_proof_sha256'] = proof
     if args.stage:
         (GAPS / ACTIVE.name).write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
     elif args.install:

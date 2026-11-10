@@ -33,7 +33,7 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 		var profile: Variant = payload.bodies[key]
 		if base.is_empty() or not profile is Dictionary or base.get("kind") != profile.get("kind"):
 			return {}
-		if base.get("asset_sha256") != profile.get("base_sha256") or not valid_groups(profile.get("groups")):
+		if not matches_base(base, profile.get("base_sha256")) or not valid_groups(profile.get("groups")):
 			return {}
 		var row := base.duplicate(true)
 		row["enhanced_source_action_groups"] = profile.groups
@@ -41,9 +41,10 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 		if not assets is Dictionary:
 			return {}
 		if not assets.is_empty():
-			if not profile.get("grounded") is Array or not base.get("archive_grounded_gestures") is Array \
+			if not profile.get("grounded") is Array or not base.get("archive_grounded_gestures", []) is Array \
 				or assets.size() != base.assets.size():
 				return {}
+			row["asset_sha256"] = {}
 			for treatment: String in base.assets:
 				var asset: Variant = assets.get(treatment)
 				if not asset is Dictionary:
@@ -54,21 +55,38 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 					return {}
 				row.assets[treatment] = path
 				row.asset_sha256[treatment] = digest
-			row.archive_grounded_gestures.append_array(profile.grounded)
+			if not profile.grounded.is_empty():
+				var grounded: Array = row.get("archive_grounded_gestures", [])
+				grounded.append_array(profile.grounded)
+				row["archive_grounded_gestures"] = grounded
 		rows[body] = row
 	return rows
+
+static func matches_base(base: Dictionary, expected: Variant) -> bool:
+	if not expected is Dictionary or not base.get("assets") is Dictionary or expected.size() != base.assets.size():
+		return false
+	if base.has("asset_sha256"):
+		return base.asset_sha256 == expected
+	# Bundled assets have no local acceptance receipt.
+	for treatment: String in base.assets:
+		var digest := FileAccess.get_sha256(base.assets[treatment])
+		if digest.is_empty() or digest != expected.get(treatment):
+			return false
+	return not expected.is_empty()
 
 static func valid_groups(groups: Variant) -> bool:
 	if not groups is Dictionary or groups.size() != 2:
 		return false
+	var count := 0
 	for mode in ["0", "1"]:
 		var actions: Variant = groups.get(mode)
-		if not actions is Dictionary or not actions.has("5"):
+		if not actions is Dictionary:
 			return false
 		for kind: String in actions:
 			var clips: Variant = actions[kind]
-			if kind not in ["5", "8"] or not clips is Array or clips.is_empty():
+			if kind not in ["5", "8", "15"] or not clips is Array or clips.is_empty():
 				return false
 			if not clips.all(func(clip: Variant): return clip is String and not clip.is_empty()):
 				return false
-	return true
+			count += 1
+	return count > 0

@@ -2,6 +2,8 @@ $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 & python -B "$root/scripts/test-uo-human-sequences.py"
 if ($LASTEXITCODE) { throw 'Human sequence parser bounds/format checks failed' }
+& python -B "$root/scripts/test-enhanced-frame-decoder.py"
+if ($LASTEXITCODE) { throw 'Enhanced sprite decoder bounds/format checks failed' }
 & python -B "$root/scripts/test-mhclo.py"
 if ($LASTEXITCODE) { throw 'Static clothing importer checks failed' }
 & python -B "$root/scripts/test-third-dawn.py"
@@ -247,14 +249,21 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
   }
   if ($LASTEXITCODE) {throw 'Troglodyte motion, terrain or corpse failed'}
  }
- if (Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions.json") {
+ $enhancedManifest = "$root/Viewer/local-art/creatures/enhanced-creature-actions.json"
+ if (Test-Path $enhancedManifest) {
   & python -B "$root/scripts/prepare-enhanced-creature-actions.py" --check-installed
   if ($LASTEXITCODE) {throw 'Enhanced creature profile source and prepared art failed'}
   & $godot --headless --path "$root/Viewer" --script res://../scripts/test-enhanced-fidget-dispatch.gd -- --installed
   if ($LASTEXITCODE) {throw 'Enhanced and Classic creature dispatch comparison failed'}
-  & $godot --headless --path "$root/Viewer" --script res://../scripts/test-enhanced-world-dispatch.gd -- --world=res://world.json
+  $profileTests = @('--world=res://world.json')
+  if ((Get-Content -LiteralPath $enhancedManifest -Raw | ConvertFrom-Json).ranked_source) {
+   & $godot --headless --path "$root/Viewer" --script res://../scripts/test-ranked-enhanced.gd -- --installed
+   if ($LASTEXITCODE) {throw 'Enhanced Orc and Water Elemental motion, terrain or corpse failed'}
+   $profileTests += '--ranked'
+  }
+  & $godot --headless --path "$root/Viewer" --script res://../scripts/test-enhanced-world-dispatch.gd -- @profileTests
   if ($LASTEXITCODE) {throw 'Classic world creature dispatch failed'}
-  & $godot --headless --path "$root/Viewer" --script res://../scripts/test-enhanced-world-dispatch.gd -- --world=res://world.json --enhanced-creature-actions
+  & $godot --headless --path "$root/Viewer" --script res://../scripts/test-enhanced-world-dispatch.gd -- @profileTests --enhanced-creature-actions
   if ($LASTEXITCODE) {throw 'Enhanced world creature dispatch failed'}
  }
  if ($lateIndex.entries | Where-Object { $_.preferred_uop_native_sha256 }) {
