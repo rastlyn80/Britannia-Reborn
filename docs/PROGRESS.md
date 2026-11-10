@@ -1,3 +1,43 @@
+# Enhanced Evil Mage and Plague Beast
+
+Eight fitted motions use 355 registered frames from eight official AMOU members. Evil Mage 124 and Plague Beast 775 keep their Third Dawn rigs, surfaces and all retained animation keys. Their two emergence clips begin at 7.4 cm and 19.6 cm high respectively in the modern treatments. The Plague Beast's maw lunge moves its upper mass nearly 88 cm horizontally. The new Plague Beast feeding, tongue and tail motions use the original appendage joints. The optional profile reaches 69 bodies and 172 fitted local scenes. The default ledger stays at 6,489 of 8,090 tracked action slots.
+
+The candidates passed 168 decoded selections, 126 Classic comparisons, 3,720 terrain poses, 240 interrupted falls, 12 growth-to-attack or walk recoveries, six static corpse hues and 80 Vulkan views. The targeted fixture and Britain each passed 30 Classic and 40 Enhanced replay checks, including the Plague Beast's death while regaining full size after a Classic attack interrupted its hatch. The full replay's time limit now covers the longer sequence of independent actions.
+
+The isolated server trial passed 325 checks across Evil Mage, Plague Beast and Plague Beast Lord. It covered stock movement, colours and corpse replication and 72 controlled Enhanced actions. The Evil Mage's native Lightning dealt 23 damage via a fixture-selected legal target. The pinned spell timer emits no Classic cast action for that NPC body. The ordinary Plague Beast inflicted Deadly poison with a real melee hit, and its native OnThink consumed its own kill and raised maximum health from 333 to 561. The fixture triggered that OnThink step after a controlled kill. Both Plague Beast identities retain their own server behaviour. The Lord's dissection sequence and the mapping from automatic feeding to a fitted action remain open.
+
+Rebuild with `scripts/bake-evil-mage-plague-beast-enhanced.gd`. Run `scripts/test-evil-mage-plague-beast-enhanced.gd` and the disposable native recipe. Install with `python -B scripts/prepare-enhanced-creature-actions.py --install --drake-walrus --ice-serpent-bogling --tsuki-wolf-ophidian --evil-mage-plague-beast`. Original frames, fitted scenes, renders and native trial outputs stay local.
+
+# Enhanced Tsuki Wolf and Ophidian
+
+Ten fitted motions use 465 registered frames from ten official AMOU members. The Tsuki Wolf retains its three-headed Third Dawn rig, with independent jaw motion in all five actions. The Ophidian Warrior and Knight use the retained body 86 rig and recovered bardiche. The thrust moves the right hand 1.92 metres in the modern treatment. The uncoil raises the head by 96 cm. The blade clears the measured floor and body through the fitted motions and remains attached to the grip through the death handoff and on the static cadaver. The optional profile reaches 67 bodies and 166 fitted local scenes. The default ledger stays at 6,489 of 8,090 tracked action slots.
+
+The candidates passed 192 decoded selections, 144 Classic comparisons, 4,650 terrain poses, 300 interrupted falls, six static corpse hues and 80 Vulkan views. The targeted fixture and Britain replays each passed 24 Classic and 32 Enhanced checks. The largest sampled joint jump on interruption in the world was 2.15 micrometres.
+
+The isolated server trial passed 344 checks across Tsuki Wolf, Ophidian Warrior and Ophidian Knight. Both clients received stock movement, melee and corpse identity and hue. The trial sent 72 controlled Enhanced actions. A controlled invocation of the registered Tsuki Blood Bath dealt ten additional damage over five ticks and expired. Human carving produced four ribs and 28 hides, including the pinned server's human bonus. Both Ophidian corpses yielded their native meat amounts and the Knight retained its Lesser Poison Potion. The trial checked the Knight's Lethal venom and immunity settings. Its autonomous poison application remains open.
+
+Rebuild with `scripts/bake-tsuki-wolf-enhanced.gd` and `scripts/bake-ophidian-enhanced.gd`. Run `scripts/test-tsuki-wolf-ophidian-enhanced.gd` and the isolated native recipe. Install with `python -B scripts/prepare-enhanced-creature-actions.py --install --drake-walrus --ice-serpent-bogling --tsuki-wolf-ophidian`. Original frames, fitted scenes, renders and native trial outputs stay local.
+
+# Enhanced Ice Serpent and Bogling
+
+Three Ice Serpent and two Bogling motions use 210 registered frames from five official AMOU members. The Ice Serpent keeps its Third Dawn rig and cold cutout material. Its emergence starts with about 6.5 cm above the ground and lifts the head 58 cm. The Bogling uses the existing licensed CC0 treant substitute. Its sprout grows from 14 cm to 1.17 metres. Walking and Classic melee interruptions return it to full size.
+
+The fits passed 88 decoded selections, 66 Classic comparisons, 1,705 living poses, 110 interrupted falls, six static corpse hues and 40 hardware-rendered views. The world cases kept the displayed shape through interrupted emergence and growth, including when turning. Both profiles passed the targeted cases on the release fixture and in Britain.
+
+The isolated server trial passed 157 checks across the two stock constructors. It covered movement, ordinary Classic melee, hues, native corpse identity and 30 controlled Enhanced packets. The Ice Serpent retains its Death Adder charm flag and yielded four ribs and 17 spined hides through human carving. The Bogling corpse held its seed and four logs and yielded one rib and seven regular hides.
+
+Rebuild with `scripts/bake-ice-serpent-bogling-enhanced.gd` and install with `python -B scripts/prepare-enhanced-creature-actions.py --install --ice-serpent-bogling`. Exact source frames, fitted scenes and trial artifacts stay local.
+
+# Enhanced Drake and Walrus
+
+Four Drake body 60 and five Walrus motions use 405 registered frames from nine official AMOU members. Both keep their Third Dawn rigs and coats. The Drake's flight record inherits combat actions, and the fitted flight gestures preserve the previous clearance. Body 61 keeps its existing routes. The pinned sequence archive has no separate named record for that body. The Walrus raises its tusks with 52 cm of head travel, and its stock movement on land remains available.
+
+The fits passed 288 decoded selections, 162 Classic comparisons, 6,045 living terrain poses and 390 interrupted falls, including 120 airborne Drake falls. They passed six static corpse hues and 72 hardware-rendered views. The targeted cases passed in Britain and on the release fixture. The new motions continue into their static corpses without snapping to the server's last facing.
+
+The two-client isolated server trial passed 351 checks across the two Drake colours and Walrus. Both Drakes used the stock Fire Breath ability and its actual timers after the test selected a target. Both clients received the five-frame windup, launched the projectile at the animated muzzle about 1.3 seconds later and saw damage occur after the launch. The trial also exercised stock melee, exact corpses and 72 controlled Enhanced packets. The Walrus corpse yielded one rib and 14 regular hides for the human test character.
+
+Rebuild with `scripts/bake-drake-walrus-enhanced.gd` and install with `python -B scripts/prepare-enhanced-creature-actions.py --install --drake-walrus`. The optional profile reaches 65 bodies and 160 fitted local scenes. The default ledger remains at 6,489 of 8,090 tracked slots.
+
 # Enhanced Polar Bear
 
 Seven fitted motions use 305 registered frames from seven official AMOU members. The original Third Dawn Polar Bear rig and materials remain in place. The upright rake moves the striking paw 73 cm, the high guard lifts its left paw 6.6 cm above the skull joint, and the low-to-upright alert lifts the head 1.33 metres. The hind midpoint stays within 0.02 mm of its starting position on the flat pose bake. The optional Enhanced profile reaches 61 bodies and 150 fitted local scenes. The default ledger stays at 6,489 of 8,090 tracked action slots.

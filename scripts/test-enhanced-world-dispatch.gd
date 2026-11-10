@@ -23,11 +23,17 @@ const LichGaman := preload("test-lich-gaman-world.gd")
 const ChickenSkeletalMage := preload("test-chicken-skeletal-mage-world.gd")
 const DaemonWyvern := preload("test-daemon-wyvern-world.gd")
 const PolarBear := preload("test-polar-bear-world.gd")
+const DrakeWalrus := preload("test-drake-walrus-world.gd")
+const IceSerpentBogling := preload("test-ice-serpent-bogling-world.gd")
+const TsukiWolfOphidian := preload("test-tsuki-wolf-ophidian-world.gd")
+const EvilMagePlagueBeast := preload("test-evil-mage-plague-beast-world.gd")
 const SERIAL := 0x105
 const BODY := 267
 
 func _initialize() -> void:
-	create_timer(90.0).timeout.connect(func(): quit(2))
+	create_timer(150.0).timeout.connect(func():
+		push_error("Combined creature replay exceeded 150 seconds.")
+		quit(2))
 	call_deferred("run")
 
 func make_world() -> Node:
@@ -210,6 +216,22 @@ func run() -> void:
 	if "--polar-bear" in OS.get_cmdline_user_args():
 		var fitted_batch := await PolarBear.check(self, world, at, enhanced)
 		assert(fitted_batch.rows.size() == PolarBear.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--drake-walrus" in OS.get_cmdline_user_args():
+		var fitted_batch := await DrakeWalrus.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == DrakeWalrus.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--ice-serpent-bogling" in OS.get_cmdline_user_args():
+		var fitted_batch := await IceSerpentBogling.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == IceSerpentBogling.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--tsuki-wolf-ophidian" in OS.get_cmdline_user_args():
+		var fitted_batch := await TsukiWolfOphidian.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == TsukiWolfOphidian.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--evil-mage-plague-beast" in OS.get_cmdline_user_args():
+		var fitted_batch := await EvilMagePlagueBeast.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == EvilMagePlagueBeast.Cases.size())
 		checks += int(fitted_batch.checks)
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()

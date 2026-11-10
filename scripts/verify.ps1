@@ -262,12 +262,15 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
    if ($LASTEXITCODE) {throw 'Enhanced Orc and Water Elemental motion, terrain or corpse failed'}
    $profileTests += '--ranked'
   }
-  foreach ($extension in @('kraken','troll','bird','ettin','dolphin','field','cat','skeleton-mongbat','hound-bear','troll-ratman','brown-bear-cougar','wolf-grizzly','corpser-boar','goat-eagle','serpent-harpy','ogre-earth','zombie-wraith','gorilla-gazer','gargoyle-through-ghoul','scorpion-through-slime','alligator-direwolf','crane-fire','lich-gaman','chicken-skeletal-mage','daemon-wyvern','polar-bear')) {
+  foreach ($extension in @('kraken','troll','bird','ettin','dolphin','field','cat','skeleton-mongbat','hound-bear','troll-ratman','brown-bear-cougar','wolf-grizzly','corpser-boar','goat-eagle','serpent-harpy','ogre-earth','zombie-wraith','gorilla-gazer','gargoyle-through-ghoul','scorpion-through-slime','alligator-direwolf','crane-fire','lich-gaman','chicken-skeletal-mage','daemon-wyvern','polar-bear','drake-walrus','ice-serpent-bogling','tsuki-wolf-ophidian','evil-mage-plague-beast')) {
    if ($profile.PSObject.Properties["${extension}_native_proof_sha256"]) {
-    $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-${extension}-enhanced.gd" -- --installed 2>&1
-    $checkExit = $LASTEXITCODE
-    $checks | ForEach-Object { Write-Output $_ }
-    if ($checkExit -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) {throw "Enhanced $extension motion, terrain or corpse failed"}
+    $families = if ($extension -eq 'drake-walrus') { 'drake','walrus' } else { $extension }
+    foreach ($family in $families) {
+     $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-${family}-enhanced.gd" -- --installed 2>&1
+     $checkExit = $LASTEXITCODE
+     $checks | ForEach-Object { Write-Output $_ }
+     if ($checkExit -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) {throw "Enhanced $family motion, terrain or corpse failed"}
+    }
     $profileTests += "--$extension"
    }
   }
