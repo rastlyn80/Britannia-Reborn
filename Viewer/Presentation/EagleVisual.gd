@@ -8,6 +8,21 @@ var wanted_moving:=false
 var wanted_speed:=0.
 var pending_ground_clip:=""
 var pending_ground_duration:=0.
+const FallPlayback := preload("res://Presentation/DisplayedCreatureFallPlayback.gd")
+var fall := FallPlayback.new()
+
+func _ready() -> void:
+	super._ready()
+	animator.mixer_applied.connect(func(): fall.settle(self))
+
+func begin_death_from(source: Node3D) -> float:
+	var torso: Vector3 = source.skeleton.to_global(source.skeleton.get_bone_global_pose(0).origin)
+	var airborne := (torso - source.global_position).dot(source.global_basis.y.normalized()) > .30
+	return fall.begin_from_display(self, source, source.fall, source.animator.assigned_animation, airborne)
+
+func corpse_snapshot_floor() -> float:
+	return fall.snapshot_floor(self)
+
 func set_hue(value: int) -> void:
 	super.set_hue(value)
 	if model==null or treatment!="modern":return
@@ -51,7 +66,8 @@ func receive_action(request: Dictionary) -> bool:
 		animator.play(clip,.12,animator.get_animation(clip).length/maxf(.01,action_remaining))
 		set_meta("rendered_action_clip",clip)
 		return true
-	if airborne and current_clip in ["Eat","Fidget","Alert","LieDown"]:
+	if airborne and (current_clip in ["Eat","Fidget","Alert","LieDown"]
+		or current_clip in entry.get("archive_grounded_gestures", [])):
 		pending_ground_clip=current_clip;pending_ground_duration=action_remaining
 		flight_state="landing_action";transition_remaining=animator.get_animation("Land").length
 		action_remaining+=transition_remaining;animator.play("Land",.12);set_meta("rendered_action_clip","Land")

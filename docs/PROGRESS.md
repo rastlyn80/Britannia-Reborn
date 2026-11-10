@@ -1,3 +1,25 @@
+# Enhanced Goat and Eagle
+
+The optional Enhanced profile covers 34 bodies and 75 fitted local scenes. Goat body 209 uses its retained Third Dawn rig for the quiet stand and horn check. Its head drops by 28 cm during the horn check. Eagle body 5 keeps the bundled CC0 rig and adds two perched fits plus a two-stroke dive with ground and air variants. A perched action received during flight plays after landing. The pinned Enhanced flight mode falls back to the combat table. The Eagle's altitude and takeoff remain part of client presentation.
+
+The fits use 265 registered frames from five official Enhanced members. The pair passed 192 decoded selections, 144 Classic comparisons, 1,550 finite terrain poses, six static corpse hues and 36 Forward+ poses. Fifteen additional checks compare the explicit flight and combat flags. The isolated server trial passed 284 checks across both constructors, including stock melee and dyed native corpses witnessed by both clients. The fixture supplies the controlled Enhanced packets.
+
+Both Eagle profiles now choose the world death transition from the displayed pose. An Eagle that has left the ground falls through its airborne clip, and a fall already playing continues from its current time. The displayed-clip selection is isolated from the fall playback used by previously verified creatures. Twenty handoffs cover ground, flight, interruption during a hop and explicit airborne death across five slopes. The largest measured head shift was 1.3 mm. The normal world passed 836 Classic and 842 Enhanced replay checks, including both Eagle death paths and their frozen corpses.
+
+Rebuild with `scripts/bake-goat-enhanced.gd` and `scripts/bake-eagle-enhanced.gd`, then install with `python -B scripts/prepare-enhanced-creature-actions.py --install --wolf-grizzly --corpser-boar --goat-eagle`. The default action ledger remains at 6,489 of 8,090 tracked slots.
+
+
+# Enhanced Grey Wolf, Grizzly Bear, Corpser and Boar
+
+Grey Wolf body 25 has six fitted motions, including a low recoil, snap and sustained howl on its retained rig. Its head sweeps through 47 degrees and its jaw opens 19 degrees. The pinned Enhanced archive has no separate sequence for the other stock Grey Wolf roll, body 27. Both clients saw that form keep its existing actions and corpse. Grizzly Bear body 212 uses its own retained rig and coat with seven fitted movements, including a longer wake and rise. The Grizzly and Raging Grizzly share that body and keep their separate server classes.
+
+The Grey Wolf and Grizzly fits use 620 registered frames from 13 official Enhanced members. They passed 288 decoded selections, 216 Classic comparisons, 6,045 terrain poses, six static corpse hues and 78 Forward+ poses. The isolated trial passed 423 checks across both Grey Wolf rolls and both Grizzly classes, including controlled Enhanced packets, stock Classic attacks and dyed native corpses.
+
+Corpser body 8 and Boar body 290 each add six fits using 530 registered frames from 13 members. The Corpser’s group 23 reuses the retained emergence. The tendril sweep keeps the plant’s base aligned to the sampled slope, with less than 41 mm of trunk travel over the checked gestures. Boar keeps the archived bristled coat while using the paler Enhanced reference sprites for movement. The bodies passed 288 decoded selections, 216 Classic comparisons, 5,580 terrain poses, six static corpse hues and 72 Forward+ poses. All 15 emergence cases reached the correct visible endpoint. In 273 isolated checks, the Corpser retained its immobile AI rule while the Boar’s AI allowed movement. Both clients saw stock melee, the test hue changes and native corpses with the matching hues.
+
+The normal world scene passed 750 Classic and 754 Enhanced replay checks. Rebuild with `scripts/bake-wolf-grizzly-enhanced.gd` and `scripts/bake-corpser-boar-enhanced.gd`, then install with `python -B scripts/prepare-enhanced-creature-actions.py --install --wolf-grizzly --corpser-boar`. Original frames, fitted scenes, rendered captures and isolated trial outputs stay local. The default action ledger remains at 6,489 of 8,090 tracked slots.
+
+
 # Enhanced Troll, Ratman, Brown Bear and Cougar
 
 The optional Enhanced profile covers 28 bodies and 59 fitted local scenes. The unarmed Troll uses body 53’s retained Third Dawn rig for five fitted gestures. The other stock roll, body 54, keeps its separate profile. Ratman body 42 adds the recovered Age of Shadows axe as a visual prop with the source atlas and UVs. Its five fitted motions include a full axe somersault. ModernUO’s stock Ratman still fights with Wrestling and has empty equipment layers. The axe keeps its own material when the server dyes the body.
