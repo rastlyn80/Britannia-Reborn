@@ -34,7 +34,7 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 		if base.is_empty() or not profile is Dictionary or base.get("kind") != profile.get("kind"):
 			return {}
 		var base_assets := registered_assets(base)
-		if not matches_base(base, base_assets, profile.get("base_sha256")) or not valid_groups(profile.get("groups")):
+		if not matches_base(base, base_assets, profile.get("base_sha256")) or not valid_groups(profile.get("groups"), body):
 			return {}
 		var row := base.duplicate(true)
 		row["enhanced_source_action_groups"] = profile.groups
@@ -171,6 +171,18 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedCyclopsVisual.gd"
 			elif body == 76:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedTitanVisual.gd"
+			elif body == 161:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedIceElementalVisual.gd"
+			elif body in [70, 71]:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedTerathanVisual.gd"
+			elif body == 302:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedHopperVisual.gd"
+			elif body == 247:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedFanDancerVisual.gd"
+			elif body == 159:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedBloodElementalVisual.gd"
+			elif body == 88:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedMountainGoatVisual.gd"
 			elif body == 764:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedJukaWarriorVisual.gd"
 			elif body == 8:
@@ -218,7 +230,7 @@ static func matches_base(base: Dictionary, assets: Dictionary, expected: Variant
 			return false
 	return not expected.is_empty()
 
-static func valid_groups(groups: Variant) -> bool:
+static func valid_groups(groups: Variant, body: int) -> bool:
 	if not groups is Dictionary or groups.size() != 2:
 		return false
 	var count := 0
@@ -228,7 +240,15 @@ static func valid_groups(groups: Variant) -> bool:
 			return false
 		for kind: String in actions:
 			var clips: Variant = actions[kind]
-			if kind not in ["2", "5", "8", "11", "14", "15"] or not clips is Array or clips.is_empty():
+			if not clips is Array or clips.is_empty():
+				return false
+			if kind == "0":
+				# The named Mountain Goat record selects group 25 for every weapon subaction.
+				if body != 88 or mode != "0" or clips.size() != 6:
+					return false
+				if clips.any(func(clip: Variant): return clip != "MountainGoatQuietStand"):
+					return false
+			elif kind not in ["2", "5", "8", "11", "14", "15"]:
 				return false
 			if not clips.all(func(clip: Variant): return clip is String and not clip.is_empty()):
 				return false

@@ -1,3 +1,15 @@
+# Blood Elemental and Mountain Goat
+
+The optional Enhanced profile reaches 98 bodies. Blood Elemental's remaining exact Enhanced groups stay on its retained routes. Mountain Goat uses its quiet stand in the exact named Enhanced table, and its stock melee still uses the retained Classic strike. Continue the configured occurrence queue with Ophidian Matriarch and Succubus. Their nine named official inputs have been decoded.
+
+# Skittering Hopper and Fan Dancer
+
+The optional Enhanced profile reaches 96 bodies. Retain the Classic routes for the exact source records that remain unlocated, including group 5 in both mixed type 0 tables. The native Fan Throw packet reports positions with zero source and target serials. The dedicated moving-fan presentation uses the original right-hand fan and requires a unique fitted Fan Dancer on the exact launch tile. The server-side ordinary melee issue remains open. Continue Blood Elemental and Mountain Goat in the six-facet occurrence order.
+
+# Ice Elemental and two Terathans
+
+The optional Enhanced profile reaches 94 bodies. Ice Elemental's remaining unlocated sequence records and the Terathans' mixed groups stay on their retained client routes. Continue the configured occurrence queue with Skittering Hopper and Fan Dancer, then Blood Elemental and Mountain Goat. The Hopper's Enhanced sprite reference shows wing pairs absent from its retained Third Dawn mesh, so fit supplemental wings while preserving the original body.
+
 # Ratman Mage, Lava Serpent, Cyclops and Titan
 
 The optional Enhanced profile reaches 91 bodies. Continue Ice Elemental, Terathan Drone and Terathan Warrior in the six-facet occurrence queue. The Lava Serpent's type 0 actions and the giants' mixed type 0 group 5 remain open. Keep the retained routes available for unresolved exact Enhanced frames, including the giants' types 2 and 14.

@@ -39,6 +39,9 @@ const KnightRemaining := preload("test-skeletal-knight-remaining-world.gd")
 const YomotsuDragon := preload("test-yomotsu-warrior-dragon-world.gd")
 const RatmanLava := preload("test-ratman-mage-lava-serpent-world.gd")
 const GiantPair := preload("test-cyclops-titan-world.gd")
+const IceTerathan := preload("test-ice-terathan-world.gd")
+const HopperFan := preload("test-hopper-fan-world.gd")
+const BloodGoat := preload("test-blood-goat-world.gd")
 const SERIAL := 0x105
 const BODY := 267
 
@@ -56,6 +59,12 @@ func _initialize() -> void:
 		deadline += 55.0
 	if "--cyclops-titan" in OS.get_cmdline_user_args():
 		deadline += 50.0
+	if "--ice-terathan" in OS.get_cmdline_user_args():
+		deadline += 55.0
+	if "--hopper-fan" in OS.get_cmdline_user_args():
+		deadline += 50.0
+	if "--blood-goat" in OS.get_cmdline_user_args():
+		deadline += 35.0
 	create_timer(deadline).timeout.connect(func():
 		push_error("Combined creature replay exceeded %.0f seconds." % deadline)
 		quit(2))
@@ -302,6 +311,18 @@ func run() -> void:
 	if "--cyclops-titan" in OS.get_cmdline_user_args():
 		var fitted_batch := await GiantPair.check(self, world, at, enhanced)
 		assert(fitted_batch.rows.size() == GiantPair.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--ice-terathan" in OS.get_cmdline_user_args():
+		var fitted_batch := await IceTerathan.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == IceTerathan.cases().size())
+		checks += int(fitted_batch.checks)
+	if "--hopper-fan" in OS.get_cmdline_user_args():
+		var fitted_batch := await HopperFan.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == HopperFan.cases().size())
+		checks += int(fitted_batch.checks)
+	if "--blood-goat" in OS.get_cmdline_user_args():
+		var fitted_batch := await BloodGoat.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == BloodGoat.Cases.size())
 		checks += int(fitted_batch.checks)
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()
