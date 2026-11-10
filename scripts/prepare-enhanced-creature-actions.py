@@ -154,6 +154,8 @@ def main():
     parser.add_argument('--dolphin', action='store_true', help='Include the fitted Enhanced Dolphin')
     parser.add_argument('--field', action='store_true', help='Include fitted Enhanced rabbits, sheep and deer')
     parser.add_argument('--cat', action='store_true', help='Include the fitted Enhanced Cat')
+    parser.add_argument('--skeleton-mongbat', action='store_true', help='Include fitted Enhanced Skeleton and Mongbat')
+    parser.add_argument('--hound-bear', action='store_true', help='Include fitted Enhanced Hound and Black Bear')
     args = parser.parse_args()
     manifest, copies = prepare()
     source = args.ranked_source
@@ -162,8 +164,9 @@ def main():
         recorded = previous.get('ranked_source')
         if recorded:
             source = Path(recorded)
-    extensions = [name for name in ('kraken', 'troll', 'bird', 'ettin', 'dolphin', 'field', 'cat')
-                  if getattr(args, name) or f'{name}_native_proof_sha256' in previous]
+    names = ('kraken', 'troll', 'bird', 'ettin', 'dolphin', 'field', 'cat', 'skeleton-mongbat', 'hound-bear')
+    extensions = [name for name in names
+                  if getattr(args, name.replace('-', '_')) or f'{name}_native_proof_sha256' in previous]
     if extensions and source is None:
         parser.error('The fitted extensions require --ranked-source or a previously recorded ranked source')
     if source is not None:
@@ -175,7 +178,8 @@ def main():
         manifest['ranked_source'] = str(source)
         manifest['ranked_native_proof_sha256'] = proof
         for name in extensions:
-            prepare_extension = runpy.run_path(str(HERE / f'prepare-{name}-enhanced.py'))[f'prepare_{name}']
+            function = 'prepare_' + name.replace('-', '_')
+            prepare_extension = runpy.run_path(str(HERE / f'prepare-{name}-enhanced.py'))[function]
             rows, extension_copies, proof = prepare_extension(ROOT, source, ranked)
             manifest['bodies'].update(rows)
             copies.update(extension_copies)

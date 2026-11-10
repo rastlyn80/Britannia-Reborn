@@ -4,6 +4,8 @@ extends SceneTree
 const Wire := preload("res://Network/LoginProtocol.gd")
 const Field := preload("res://../scripts/test-field-enhanced.gd")
 const Cats := preload("res://../scripts/test-cat-enhanced.gd")
+const RankedWings := preload("res://../scripts/test-skeleton-mongbat-enhanced.gd")
+const HoundBear := preload("res://../scripts/test-hound-bear-enhanced.gd")
 const SERIAL := 0x105
 const BODY := 267
 
@@ -131,6 +133,10 @@ func run() -> void:
 		checks += check_field(world, at, enhanced)
 	if "--cat" in OS.get_cmdline_user_args():
 		checks += check_cat(world, at, enhanced)
+	if "--skeleton-mongbat" in OS.get_cmdline_user_args():
+		checks += check_skeleton_mongbat(world, at, enhanced)
+	if "--hound-bear" in OS.get_cmdline_user_args():
+		checks += check_hound_bear(world, at, enhanced)
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()
 	await process_frame
@@ -179,7 +185,68 @@ func check_cat(world: Node, at: Vector2i, enhanced: bool) -> int:
 	assert(hell_cat.get_meta("native_action") == world.game.last_mobile_actions[serial])
 	return checks + 2
 
-func check_fitted_actions(world: Node, actor: Node3D, serial: int, modes: Dictionary, flags: int, enhanced: bool) -> int:
+func check_skeleton_mongbat(world: Node, at: Vector2i, enhanced: bool) -> int:
+	var checks := 0
+	for body: int in [50, 39]:
+		var serial := SERIAL + body
+		var modes: Dictionary = RankedWings.SkeletonModes if body == 50 else RankedWings.MongbatModes
+		var classic := {"5": ["BoneStretch", "Fidget2"], "8": ["Reach", "Reach"]} if body == 50 else {
+			"5": ["MongbatArmLift", "Fidget2"], "8": ["WingSettle", "WingSettle"]}
+		for flags: int in ([0, 64] if body == 50 else [0, 4, 64, 68]):
+			world.game._handle(mobile_packet(at, flags, serial, body, 0x8035))
+			var visual: Node3D = world.avatars[serial].horse_visual
+			assert(visual.native_body == body and visual.native_hue == 0x8035)
+			checks += check_fitted_actions(world, visual, serial, modes, flags, enhanced, classic)
+		var actor: Node3D = world.avatars[serial].horse_visual
+		world.game._handle(action_packet(15, serial, 0))
+		actor.animator.advance(.13)
+		actor.animator.seek(.56 if body == 39 else .30, true)
+		if body == 50 and enhanced:
+			assert(actor.pieces.visible and not actor.living_mesh.visible)
+			world.game._handle(action_packet(0, serial, 0))
+			assert(not actor.pieces.visible and actor.living_mesh.visible and not actor.dead)
+			checks += 2
+		var death := PackedByteArray([0xaf])
+		death.append_array(Wire.uint_be(serial, 4))
+		death.append_array(Wire.uint_be(0, 4))
+		death.append_array(Wire.uint_be(0, 4))
+		world.game._handle(death)
+		var fallen: Node3D = world.creature_deaths.active[serial].visual
+		assert(fallen.current_clip == ("AirDeath" if enhanced and body == 39 else "Death"))
+		assert(fallen.native_body == body and fallen.native_hue == 0x8035)
+		world.creature_deaths.finish(serial)
+		checks += 2
+	var other := SERIAL + 56
+	world.game._handle(mobile_packet(at, 64, other, 56, 0x8035))
+	var alternate: Node3D = world.avatars[other].horse_visual
+	assert(alternate.native_body == 56 and not alternate.animator.has_animation("SkeletonAssemble"))
+	return checks + 1
+
+func check_hound_bear(world: Node, at: Vector2i, enhanced: bool) -> int:
+	var checks := 0
+	for body: int in [217, 211]:
+		var serial := SERIAL + body
+		var modes: Dictionary = HoundBear.HoundModes if body == 217 else HoundBear.BearModes
+		var hue := 2301 if body == 217 else 0x455
+		for flags: int in [0, 64]:
+			world.game._handle(mobile_packet(at, flags, serial, body, hue))
+			var actor: Node3D = world.avatars[serial].horse_visual
+			assert(actor.native_body == body and actor.native_hue == hue)
+			assert(actor.animator.has_animation(modes["1"]["5"][0]) == enhanced)
+			checks += check_fitted_actions(world, actor, serial, modes, flags, enhanced)
+		var death := PackedByteArray([0xaf])
+		death.append_array(Wire.uint_be(serial, 4))
+		death.append_array(Wire.uint_be(0, 4))
+		death.append_array(Wire.uint_be(0, 4))
+		world.game._handle(death)
+		var visual: Node3D = world.creature_deaths.active[serial].visual
+		assert(visual.current_clip == "Death" and visual.native_body == body and visual.native_hue == hue)
+		world.creature_deaths.finish(serial)
+		checks += 2
+	return checks
+
+func check_fitted_actions(world: Node, actor: Node3D, serial: int, modes: Dictionary, flags: int, enhanced: bool,
+		classic: Dictionary = {}) -> int:
 	var checks := 0
 	var mode: Dictionary = modes["0" if flags else "1"]
 	var prior: String = actor.current_clip
@@ -187,7 +254,8 @@ func check_fitted_actions(world: Node, actor: Node3D, serial: int, modes: Dictio
 		var clips: Array = mode.get(kind, modes["0"][kind])
 		for variation in [0, 1, 255]:
 			world.game._handle(action_packet(int(kind), serial, variation))
-			var expected: String = clips[variation % clips.size()] if enhanced and variation < 128 else prior
+			var previous: Array = classic.get(kind, [prior, prior])
+			var expected: String = clips[variation % clips.size()] if enhanced and variation < 128 else previous[variation & 1]
 			assert(actor.current_clip == expected)
 			prior = expected
 			checks += 1
