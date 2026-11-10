@@ -149,6 +149,9 @@ def fitted(base, folder, report_path, client_path, require_index=False):
 
 
 def without_fit(row):
+    if 'troglodyte_gaits' in row:
+        without_gaits = runpy.run_path(str(SCRIPTS / 'accept-troglodyte-gaits.py'))['without_gaits']
+        row = without_gaits(row)
     base = read(SEALED / 'base.json')
     assert fitted(base, SEALED, SEALED / 'live.json', SEALED / 'client.json') == row
     return base

@@ -238,7 +238,13 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
  if ($lateIndex.entries | Where-Object { $_.troglodyte_enhanced }) {
   & python -B "$root/scripts/accept-troglodyte-enhanced.py"
   if ($LASTEXITCODE) {throw 'Troglodyte source and native packet evidence failed'}
-  & $godot --headless --path "$root/Viewer" --script res://../scripts/test-troglodyte-enhanced.gd -- --active
+  if ($lateIndex.entries | Where-Object { $_.troglodyte_gaits }) {
+   & $godot --headless --path "$root/Viewer" --script res://../scripts/test-troglodyte-gaits.gd -- --retained --active
+   if ($LASTEXITCODE) {throw 'Retained Troglodyte packet, motion, terrain or corpse failed'}
+   & $godot --headless --path "$root/Viewer" --script res://../scripts/test-troglodyte-gaits.gd -- --active
+  } else {
+   & $godot --headless --path "$root/Viewer" --script res://../scripts/test-troglodyte-enhanced.gd -- --active
+  }
   if ($LASTEXITCODE) {throw 'Troglodyte motion, terrain or corpse failed'}
  }
  if ($lateIndex.entries | Where-Object { $_.preferred_uop_native_sha256 }) {
