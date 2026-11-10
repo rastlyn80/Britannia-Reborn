@@ -1,3 +1,13 @@
+# Vorpal Bunny tunnel and scripted encounters
+
+The Vorpal Bunny now scratches at the ground and disappears into the native tunnel hole. The client uses the rabbit's own localized announcement (1114450), body 205 and serial to select the actor. Ordinary ear fidgets yield to the dig, and a native death can still interrupt it. Graphic 0x0913 uses the existing CC0 Poly Haven brown mud texture for both the furrows and the tunnel hole. The original sprite informed the size and shape of the decal.
+
+The isolated two-client trial passed 41 checks. Ordinary Green Thorns use produced the rabbit, its native timer opened the hue-1 hole after about 180 seconds, and both clients saw the announcement, sound 0x0247 and removal. An earlier run caught a genuine ear fidget after the tunnel notice. Flat and sloped client regressions each sampled 620 frames and checked the normal item renderer, nearby rabbits, fidget priority and death interruption. The native server supplied the trigger and lifecycle. The dig motion is a fitted client pose.
+
+Doom's Lamp Room trial passed 80 checks. Five disposable players operated the real levers and occupied the required pads. The native controller moved the winner into the room, where the ordinary box interaction spawned a Wanderer of the Void. The winner and an observer received body 316, hue zero and the matching native static corpse. The fixture positioned players for the puzzle. The short run yielded no autonomous action samples.
+
+The Harrower altar and gate trial passed 84 checks. Two disposable clients observed the wrong-skull refusal and six valid offerings, the native gate and its travel warning, and the same-serial change from body 146 to true form 780 with hue 1175 and native tentacles of body 129. Both clients received the final corpse and the gate was removed. The fixture placed the altar and observers and delivered controlled lethal hits. Autonomous combat, rewards and streamed Malas and Felucca remain open. Native trial evidence is under `work/creatures/native-form-audit`.
+
 # Centaur archery, Quagmire scale and scripted creature checks
 
 Centaur and Twaulo now raise and release their original bow when the native AI sends moving arrow 0x0F42. Body 101 still equips Bow graphic 0x13B2. The client fits the original arm joints, launches after a 90 ms visual lead-in, and recovers over 450 ms while the original gait plays. The projectile uses Teslov's CC BY 4.0 Low-Poly Arrow v2.0 from the existing Objaverse manifest. Both native classes passed 43 isolated checks across two clients. Neither sent a separate Classic animation for the shot. The decoded client test covers nine gait and direction cases, unrelated effects, and release interrupted by death or source removal.

@@ -3,9 +3,15 @@ extends "res://Network/Packets/PacketModule.gd"
 # or after it, optionally forced to a system message. ClassicUO:
 # DisplayClilocString. (0xC1 without affix stays in GameSession.)
 signal spoken(serial: int, text: String, system: bool)
+signal localized_speech(serial: int, graphic: int, kind: int, cliloc: int)
 
 func routes() -> void:
+	session.route(0xc1,_localized)
 	session.route(0xcc,_affixed)
+
+func _localized(p: PackedByteArray) -> void:
+	if p.size() >= 50:
+		localized_speech.emit(u32(p,3),u16(p,7),u8(p,9),u32(p,14))
 
 func _affixed(p: PackedByteArray) -> void:
 	if p.size() < 49: return

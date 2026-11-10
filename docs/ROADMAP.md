@@ -8,7 +8,7 @@ Colossal Blow now has a recoverable creature reaction. The pinned server's real 
 
 The corrected Centaur, Twaulo, Shadow Knight and Ravager bindings passed source, render, terrain, corpse and isolated packet checks. Centaur and Twaulo now release the native bow from the actual server arrow event. Quagmire's original rig is corrected to game scale, including its picking volume and static corpse. Continue checking deformation and world-scale outliers on the normal avatar route.
 
-The rare Energy Vortex llama and the furrows and snow Green Thorns branches now have two-client evidence. Continue with indirect quest, summon and event factories, including Green Thorns on other terrain and the Vorpal Bunny's timed tunnel.
+The rare Energy Vortex llama, the furrows and snow Green Thorns branches, and the Vorpal Bunny's timed tunnel now have two-client evidence. The isolated native trials also cover Doom's five-player Lamp Room puzzle and the Harrower's altar, gate and two forms. Continue with Green Thorns on other terrain, indirect quest and event factories, and autonomous combat and rewards for scripted bosses.
 
 Skittering Hopper, Horde Demon, Devourer, Rikktor and Shadow Knight have passed the local activation gate for Classic group 11. Spectral Armour and Restless Soul are active locally. The current ledger routes 6,487 of 8,089 tracked slots (80.2%). The matching Classic source-frame audit has no unresolved slots. The broader ledger has 1,602 unrouted protocol slots. The Centaur-to-Essence and Doom updates reduced the shared Classic replacement pairs from 109 to 51, and the new Horrific Beast route adds the same death-group pair already reviewed for Moloch. Of the 52 pairs, 28 have identical registered pixels, six have appearance differences and 18 differ in silhouette or placement. Spectral Armour's two walk groups and Restless Soul's paired walk and run groups keep shared motion after comparing the same ten registered frames across the five directions.
 
@@ -1068,7 +1068,7 @@ Juggernaut, Yamandon/Serado and loose Reptalon are active and passed isolated tw
 
 Tormented Minotaur is active using its original rig. The archived motion hierarchy adds parents above two unweighted toe ends. Only those channels are omitted during motion matching. The client, finite terrain, Vulkan and native checks passed.
 
-The Harrower first-form route is active. The isolated two-client lifecycle verified the native same-serial transformation, tentacle appearance and the true-form death and static corpse. This leaves native altar and portal spawning, autonomous combat and rewards open.
+The Harrower first-form route is active. The isolated two-client lifecycle and altar trials verified all six native offerings, gate travel, the same-serial transformation, tentacle appearance, and the true-form death and static corpse. Autonomous combat and rewards remain open.
 
 The archived model table supplied explicit shared motion links for Parrot, Betrayer and Gargoyle Shopkeeper. Parrot and Betrayer are active. The Shopkeeper body is a regional vendor morph, so its constructor alone cannot establish body 758. The Fetid Essence source is a two-triangle unskinned card with no tracks. Preserve its texture and document authored motion and rendering separately.
 

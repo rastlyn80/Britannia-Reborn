@@ -577,6 +577,10 @@ if ($polishExit) { throw 'Gameplay polish (gains, paperdoll, target, cast bar) c
 if ($LASTEXITCODE) { throw 'Native item response/appearance checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/WorldItemTests.gd
 if ($LASTEXITCODE) { throw 'World item/doorway/sign regression checks failed' }
+& $godot --headless --fixed-fps 120 --path "$root/Viewer" --script res://../scripts/test-rabbit-tunnel.gd
+if ($LASTEXITCODE) { throw 'Vorpal Bunny tunnel and native hole checks failed' }
+& $godot --headless --fixed-fps 120 --path "$root/Viewer" --script res://../scripts/test-rabbit-tunnel.gd -- --slope
+if ($LASTEXITCODE) { throw 'Vorpal Bunny tunnel slope checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/EnvironmentTests.gd
 if ($LASTEXITCODE) { throw 'Server environment regression checks failed' }
 & $godot --headless --path "$root\Viewer" --script res://Network/GameTests.gd

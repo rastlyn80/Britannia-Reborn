@@ -130,6 +130,7 @@ static func _resolve(id: int,info: Dictionary) -> Dictionary:
  if n in ["no draw","nodraw","light"]:
   return base.merged({"kind":"invisible","reason":"native authoring/no-draw marker"})
  if n=="town_cryer": return base.merged({"kind":"prop","model":"newspaper","confidence":"local visual inspection: printed news sheet"})
+ if id==0x0913: return base.merged({"kind":"decal","decal":"rabbit tunnel","confidence":"native green thorn and rabbit tunnel graphic"})
  if id==13040: return base.merged({"kind":"asset","asset":"Nature/Rock_Medium_1.gltf","dimensions":[0.65,3.0,0.65],"confidence":"local visual inspection: tall crag fragment"})
  if id==7185: return base.merged({"kind":"prop","model":"gem","confidence":"local visual inspection: faceted blue ornament"})
  var flags := int(info.get("flags",0))

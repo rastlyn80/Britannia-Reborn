@@ -6,6 +6,12 @@ const WireActions := preload("res://Presentation/CreatureWireActions.gd")
 
 static func dispatch(avatar: Node3D, request: Dictionary) -> bool:
 	var visual: Node3D = avatar.horse_visual
+	# The native AI can send an ear fidget after the tunnel notice. Keep the
+	# established tunnel pose while still allowing hit and death actions.
+	if visual is Creature and visual.native_body == 205 and int(request.get("body", 0)) == 205 \
+		and request.get("protocol") == "classic" and int(request.get("action", -1)) in [9, 10] \
+		and visual.skeleton.has_node("NativeTunnelPose"):
+		return true
 	if not visual is Creature or int(request.get("body", 0)) != visual.native_body or not is_colossal_blow(request):
 		return WireActions.dispatch(avatar, request)
 
