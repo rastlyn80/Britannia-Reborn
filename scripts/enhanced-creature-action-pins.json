@@ -1,0 +1,115 @@
+{
+  "enhanced_version": "4.0.117.33",
+  "bodies": {
+    "267": {
+      "archive": "AnimationFrame1.uop",
+      "groups": {
+        "26": {
+          "clip": "TroglodyteSettleFidget",
+          "frame_headers": 50,
+          "sha256": "62626c56fc0d5cbd247369221951e37f768932291b1d7d63db71add6605c1887"
+        },
+        "27": {
+          "clip": "TroglodyteRaisedFidget",
+          "frame_headers": 50,
+          "sha256": "6c86991d766f04c3bb787b58f6f0f880faef5e79f9a51ed777f3d6f35643522c"
+        },
+        "28": {
+          "clip": "TroglodyteOpenReach",
+          "frame_headers": 35,
+          "sha256": "068c979cd9efe5e2a983b2c16febe66daaf66f3c4553b1c4bda4eab01c995f04"
+        }
+      }
+    },
+    "692": {
+      "archive": "AnimationFrame3.uop",
+      "groups": {
+        "1": {
+          "clip": "UopHalberdHover",
+          "frame_headers": 55,
+          "sha256": "c4320e5eca512de9375c9d7ce67959842727ecfdc0472f932292dec62c64c719"
+        },
+        "25": {
+          "clip": "UopHalberdReadyHover",
+          "frame_headers": 55,
+          "sha256": "689ea0b183dc76ff0e39550ca3d933130921de250c01d177b8fe47ac9510a125"
+        }
+      }
+    },
+    "705": {
+      "archive": "AnimationFrame3.uop",
+      "groups": {
+        "26": {
+          "clip": "StonePeaceGesture",
+          "frame_headers": 150,
+          "sha256": "31fe1122eeba142d3a13089e5ef991083718218a1e28edcf4b4daa33cebf775f"
+        },
+        "27": {
+          "clip": "StoneWarGesture",
+          "frame_headers": 90,
+          "sha256": "8c0f99ecb657dca068e2121a04e801bed36907c78e0a61258d53ccdad3fe07b8"
+        }
+      }
+    },
+    "753": {
+      "archive": "AnimationFrame4.uop",
+      "groups": {
+        "26": {
+          "clip": "UopGargoyleQuietFidget",
+          "frame_headers": 55,
+          "sha256": "f3bad881f84944e9a11fb1db21b845b4e05f630d3826707f35bb9ee4abaa5302"
+        },
+        "27": {
+          "clip": "UopGargoyleLunge",
+          "frame_headers": 45,
+          "sha256": "e8c8d908d2f956f9ae15dc3ef23885c1b473bc669722e9f947112e38712bc6ef"
+        }
+      }
+    },
+    "831": {
+      "archive": "AnimationFrame4.uop",
+      "groups": {
+        "25": {
+          "clip": "Idle",
+          "frame_headers": 30,
+          "sha256": "2568595b9e35ed0187b6048916ccdf3863148629185ebbc3c6bc9e755a31c2c4"
+        },
+        "26": {
+          "clip": "UopParrotWingTuck",
+          "frame_headers": 45,
+          "sha256": "c698a8bd893e6bce554eb3d0250527235db3c7c37e7a5a3a64fd88c094a97cc1"
+        }
+      }
+    },
+    "1246": {
+      "archive": "AnimationFrame2.uop",
+      "groups": {
+        "1": {
+          "clip": "Idle",
+          "frame_headers": 85,
+          "sha256": "92aec5efdfb6ff7bd023c1177c25c03e1437fd50e9f3ff545ebaa0d18a12eba7"
+        },
+        "26": {
+          "clip": "DormantShuffle",
+          "frame_headers": 15,
+          "sha256": "020924aad878b9816fb9b9ee689f4eca8fe5d62d80988f9329278c7ecd39a1d4"
+        }
+      }
+    },
+    "1247": {
+      "archive": "AnimationFrame2.uop",
+      "groups": {
+        "1": {
+          "clip": "Idle",
+          "frame_headers": 85,
+          "sha256": "9a9841e8dbd4fcd3b258340428a0e81304c83347520406fe2a7f334c6053943b"
+        },
+        "25": {
+          "clip": "Dormant",
+          "frame_headers": 15,
+          "sha256": "cff1d63a51a255d996050c5b84c5232f7db74a98d895f1f99d523c37c5feaa84"
+        }
+      }
+    }
+  }
+}

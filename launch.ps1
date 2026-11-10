@@ -1,4 +1,4 @@
-param([string]$Godot,[switch]$Synthetic,[switch]$SecondClient,[switch]$Compatibility,[switch]$ReferencePatch,[string]$Region)
+param([string]$Godot,[switch]$Synthetic,[switch]$SecondClient,[switch]$Compatibility,[switch]$ReferencePatch,[string]$Region,[switch]$EnhancedCreatureActions)
 $ErrorActionPreference = 'Stop'
 if (!(Test-Path "$PSScriptRoot\Viewer\world.json")) { & "$PSScriptRoot\build.ps1" }
 if (!$Godot) {
@@ -16,6 +16,7 @@ if (!(Test-Path "$PSScriptRoot\Viewer\local-audio\index.json") -and (Get-Command
 if (!(Test-Path "$PSScriptRoot\Viewer\local-items\wearables.json") -and (Get-Command python -ErrorAction SilentlyContinue)) { python "$PSScriptRoot\scripts\prepare-wearables.py" }
 $renderArgs = @()
 if ($Compatibility) { $renderArgs = @('--rendering-method','gl_compatibility') }
+$actionArgs = if ($EnhancedCreatureActions) { @('--enhanced-creature-actions') } else { @() }
 $local = Join-Path $PSScriptRoot 'Viewer\local-world.json'
 $play = Join-Path $PSScriptRoot 'Viewer\play-world.json'
 if (Test-Path "$PSScriptRoot\Server\credentials.local.json") {
@@ -25,28 +26,29 @@ if (Test-Path "$PSScriptRoot\Server\credentials.local.json") {
   $env:UO_DEV_PASSWORD = $credentials.password
 }
 try {
-  if ($Synthetic) { & $Godot @renderArgs --path "$PSScriptRoot\Viewer" -- '--world=res://world.json' }
+  if ($Synthetic) { & $Godot @renderArgs --path "$PSScriptRoot\Viewer" -- '--world=res://world.json' @actionArgs }
   elseif ($Region) {
     # A larger streamed region (scripts/prepare-region.ps1); only its modern bake exists so far.
     $dataset = Join-Path $PSScriptRoot "outputs/$Region"
     if (!(Test-Path "$dataset/atlas.json")) { throw "Region $Region is not prepared; run scripts/prepare-region.ps1 first" }
     & "$PSScriptRoot/scripts/prepare-streaming.ps1" -Dataset $dataset -Modern
     & "$PSScriptRoot/scripts/prepare-minimap.ps1" -Dataset $dataset
-    & $Godot @renderArgs --path "$PSScriptRoot/Viewer" -- --city --modern-britain "--region=$Region" --front-end
+    & $Godot @renderArgs --path "$PSScriptRoot/Viewer" -- --city --modern-britain "--region=$Region" --front-end @actionArgs
   }
   elseif (!$ReferencePatch -and (Test-Path "$PSScriptRoot/outputs/trammel/prepared-modern/index.json")) {
     # All of Trammel, baked once in windows (scripts/bake-facet.ps1, docs/COMPACT_STREAMING.md);
     # a facet bake takes hours, so the launcher never re-prepares it.
-    & $Godot @renderArgs --path "$PSScriptRoot/Viewer" -- --city --modern-britain --region=trammel --front-end
+    & $Godot @renderArgs --path "$PSScriptRoot/Viewer" -- --city --modern-britain --region=trammel --front-end @actionArgs
   }
   elseif (!$ReferencePatch) {
     if (!(Test-Path "$PSScriptRoot/outputs/britain/atlas.json")) { & "$PSScriptRoot/scripts/prepare-britain.ps1" }
     & "$PSScriptRoot/scripts/prepare-streaming.ps1"
     & "$PSScriptRoot/scripts/prepare-minimap.ps1"
     # --front-end: sign in on the front-end stage; districts load at the character.
-    & $Godot @renderArgs --path "$PSScriptRoot/Viewer" -- --city --front-end
+    & $Godot @renderArgs --path "$PSScriptRoot/Viewer" -- --city --front-end @actionArgs
   }
-  elseif (Test-Path $play) { & $Godot @renderArgs --path "$PSScriptRoot\Viewer" -- "--world=$play" }
-  elseif (Test-Path $local) { & $Godot @renderArgs --path "$PSScriptRoot\Viewer" -- "--world=$local" }
+  elseif (Test-Path $play) { & $Godot @renderArgs --path "$PSScriptRoot\Viewer" -- "--world=$play" @actionArgs }
+  elseif (Test-Path $local) { & $Godot @renderArgs --path "$PSScriptRoot\Viewer" -- "--world=$local" @actionArgs }
+  elseif ($EnhancedCreatureActions) { & $Godot @renderArgs --path "$PSScriptRoot\Viewer" -- @actionArgs }
   else { & $Godot @renderArgs --path "$PSScriptRoot\Viewer" }
 } finally { Remove-Item Env:\UO_DEV_USER,Env:\UO_DEV_PASSWORD -ErrorAction SilentlyContinue }

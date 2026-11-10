@@ -37,6 +37,7 @@ const PersonalSpace = preload("res://Presentation/PersonalSpace.gd")
 var personal_space := PersonalSpace.new()
 const Motion = preload("res://Presentation/MotionTrack.gd")
 const Avatar = preload("res://Presentation/Avatar.gd")
+const EnhancedCreatureActions := preload("res://Presentation/EnhancedCreatureActions.gd")
 const Reconstruction = preload("res://Presentation/Reconstruction.gd")
 var tracks := {}
 var directions := {}
@@ -75,6 +76,7 @@ var audio: Node3D
 var paperdoll_window: Control
 var skills_window: Control
 var vitals_card: Control
+var enhanced_creature_actions := false
 
 func point(x: int, y: int, z: int) -> Vector3:
 	return Vector3(x - int(world.originX), z * float(world.elevationScale), y - int(world.originY))
@@ -95,6 +97,10 @@ func _ready() -> void:
 	get_viewport().use_taa = RenderingServer.get_current_rendering_method() == "forward_plus"
 	var city_mode := "--city" in OS.get_cmdline_user_args()
 	front_end = city_mode and "--front-end" in OS.get_cmdline_user_args()
+	if "--enhanced-creature-actions" in OS.get_cmdline_user_args():
+		enhanced_creature_actions = preload("res://Presentation/EnhancedCreatureProfile.gd").enable()
+		if not enhanced_creature_actions:
+			push_warning("The optional Enhanced creature action profile needs its prepared local assets.")
 	var path := "res://world.json"
 	if FileAccess.file_exists("res://play-world.json"): path = "res://play-world.json"
 	for arg in OS.get_cmdline_user_args():
@@ -311,7 +317,11 @@ func _ready() -> void:
 	game.mobile_action_received.connect(func(request: Dictionary):
 		var serial:=int(request.get("serial",0))
 		if avatars.has(serial):
-			preload("res://Presentation/NativeMobileActions.gd").dispatch(avatars[serial], request))
+			var flags := -1
+			if enhanced_creature_actions:
+				var mobile: Dictionary = game.player if serial == int(game.player.serial) else game.entities.get(serial, {})
+				flags = int(mobile.get("flags", -1))
+			EnhancedCreatureActions.dispatch(avatars[serial], request, enhanced_creature_actions, flags))
 	game.vendor_received.connect(func(serial: int,_stock: Array):
 		if avatars.has(serial): avatars[serial].get_node("Nameplate").text = game.entity_names.get(serial,"Vendor")+" · shopkeeper")
 	game.entity_name_received.connect(func(serial: int, name_text: String):

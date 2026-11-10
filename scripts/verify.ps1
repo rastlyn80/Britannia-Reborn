@@ -247,6 +247,16 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
   }
   if ($LASTEXITCODE) {throw 'Troglodyte motion, terrain or corpse failed'}
  }
+ if (Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions.json") {
+  & python -B "$root/scripts/prepare-enhanced-creature-actions.py" --check-installed
+  if ($LASTEXITCODE) {throw 'Enhanced creature profile source and prepared art failed'}
+  & $godot --headless --path "$root/Viewer" --script res://../scripts/test-enhanced-fidget-dispatch.gd -- --installed
+  if ($LASTEXITCODE) {throw 'Enhanced and Classic creature dispatch comparison failed'}
+  & $godot --headless --path "$root/Viewer" --script res://../scripts/test-enhanced-world-dispatch.gd -- --world=res://world.json
+  if ($LASTEXITCODE) {throw 'Classic world creature dispatch failed'}
+  & $godot --headless --path "$root/Viewer" --script res://../scripts/test-enhanced-world-dispatch.gd -- --world=res://world.json --enhanced-creature-actions
+  if ($LASTEXITCODE) {throw 'Enhanced world creature dispatch failed'}
+ }
  if ($lateIndex.entries | Where-Object { $_.preferred_uop_native_sha256 }) {
   & python -B "$root/scripts/accept-preferred-uop-actions.py" --check-active
   if ($LASTEXITCODE) {throw 'Active Gargoyle or Parrot UOP motions failed'}
