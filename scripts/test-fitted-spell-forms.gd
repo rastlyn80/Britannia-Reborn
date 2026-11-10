@@ -33,6 +33,7 @@ func run() -> void:
 		var plane := await support(tilt)
 		for body: int in BODIES:
 			var row := Registry.entry(body)
+			var base: Dictionary = row.get("stone_mode_predecessor", row)
 			for treatment: String in row.assets:
 				var actor := Registry.create(body)
 				actor.treatment = treatment
@@ -49,7 +50,7 @@ func run() -> void:
 				assert(mesh.mesh.get_surface_count() == 2 and skin.unique_vertices > 300)
 				var anchor := actor.global_transform
 				var contacts := 0
-				for group: String in row.classic_action_categories:
+				for group: String in base.classic_action_categories:
 					player.stop()
 					actor.dead = false
 					assert(actor.receive_action(decode(game, body, int(group))), str([body, treatment, group]))

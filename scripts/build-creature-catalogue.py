@@ -59,22 +59,24 @@ def main():
         (special if unusual else targets).append({'body':body,'profile':unusual or profile,'native_group':native_group,'sources':sources,
                         'presentation':routed[body]['kind'] if body in routed else human_routes.get(body,'previously integrated horse/ostard/ki-rin/llama/bovine' if body in existing else None),
                         'live_reports':live.get(body,[]),'tested_native_constructors':sorted(live_classes.get(body,set()))})
-    # The literal scanner cannot resolve Utility.Random(125, 2). These two
-    # prepared identities carry exact source pins and real constructor receipts.
+    # Explicit random-expression variants need exact class source and a named witness.
+    random_bodies = {125: ('EvilMageLord', 'Humanoid/Magic'), 126: ('EvilMageLord', 'Humanoid/Magic'),
+                     1246: ('PumpkinHead', 'Seasonal/Halloween'), 1247: ('PumpkinHead', 'Seasonal/Halloween')}
     catalogued = {row['body'] for row in targets + special}
-    for body in (125, 126):
+    for body, (native_class, family) in random_bodies.items():
         model = routed.get(body, {})
-        if body in catalogued or 'EvilMageLord' not in live_classes.get(body, set()):
+        if body in catalogued or native_class not in live_classes.get(body, set()):
             continue
         bindings = [identity for identity in model.get('bodies', []) if int(identity['body']) == body]
-        if len(bindings) != 1 or bindings[0].get('native_class') != 'EvilMageLord':
+        if len(bindings) != 1 or bindings[0].get('native_class') != native_class:
             continue
         sources = bindings[0]['native_sources']
         assert sources and all(hashlib.sha256((ROOT / 'Server/ModernUO' / item['path']).read_bytes()).hexdigest()
                                == item['sha256'] for item in sources)
-        special.append({'body': body, 'profile': 'monster', 'native_group': 'Humanoid/Magic', 'sources': sources,
+        special.append({'body': body, 'profile': 'monster', 'native_group': family, 'sources': sources,
                         'presentation': model['kind'], 'live_reports': live[body],
-                        'tested_native_constructors': ['EvilMageLord'], 'source_scope': bindings[0]['native_identity_scope']})
+                        'tested_native_constructors': [native_class],
+                        'source_scope': bindings[0].get('native_identity_scope', 'Exact native random constructor and two-client witness')})
     targets.sort(key=lambda row:(row['native_group'],row['body']))
     special.sort(key=lambda row:row['body'])
     counts={'bounded_native_literal_bodies':len(targets),'routed_native_literals':sum(bool(row['presentation']) for row in targets),

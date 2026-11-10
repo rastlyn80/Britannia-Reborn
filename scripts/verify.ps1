@@ -207,6 +207,18 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
   & $godot --headless --path "$root/Viewer" --script res://../scripts/test-fitted-spell-forms.gd
   if ($LASTEXITCODE) {throw 'Fitted spell form playback, terrain or static corpse failed'}
  }
+ if ($lateIndex.entries | Where-Object { $_.jack_o_lantern_source }) {
+  & python -B "$root/scripts/prepare-jack-o-lanterns.py" --check-active
+  if ($LASTEXITCODE) {throw 'Lantern source or native gameplay evidence failed'}
+  & $godot --headless --path "$root/Viewer" --script res://../scripts/test-jack-o-lanterns.gd
+  if ($LASTEXITCODE) {throw 'Lantern playback, terrain or static corpse failed'}
+ }
+ if ($lateIndex.entries | Where-Object { $_.stone_mode_source }) {
+  & python -B "$root/scripts/prepare-stone-modes.py" --check-active
+  if ($LASTEXITCODE) {throw 'Stone Form mode provenance or native gait evidence failed'}
+  & $godot --headless --path "$root/Viewer" --script res://../scripts/test-stone-modes.gd
+  if ($LASTEXITCODE) {throw 'Stone Form mode playback or terrain failed'}
+ }
  if ($lateIndex.entries | Where-Object { $_.uop_redirect_native_sha256 }) {
   & python -B "$root/scripts/prepare-creature-uop-redirects.py" --check-active
   if ($LASTEXITCODE) {throw 'Active UOP creature redirect evidence failed'}

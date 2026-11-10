@@ -134,7 +134,7 @@ def main():
     candidate = read(files["index.json"])
     fitted = rows_for(candidate)
     if args.check_active:
-        assert rows_for(active) == fitted
+        assert [row.get("stone_mode_predecessor", row) for row in rows_for(active)] == fitted
         validate_rows(fitted, active, VIEWER, data)
         assert validate_proof(files, False) == read(RECEIPT)
     else:

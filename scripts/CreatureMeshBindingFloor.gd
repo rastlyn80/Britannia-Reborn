@@ -3,7 +3,7 @@ extends RefCounted
 
 const Ground := preload("res://Presentation/SourceGroundLookup.gd")
 
-static func fit_source_floor(model: Node3D) -> void:
+static func fit_source_floor(model: Node3D, clips := PackedStringArray()) -> void:
 	var rig := model.find_children("*", "Skeleton3D", true, false)[0] as Skeleton3D
 	var mesh := model.find_children("*", "MeshInstance3D", true, false)[0] as MeshInstance3D
 	var player := model.find_children("*", "AnimationPlayer", true, false)[0] as AnimationPlayer
@@ -13,7 +13,7 @@ static func fit_source_floor(model: Node3D) -> void:
 	var path := player.get_node(player.root_node).get_path_to(source_space)
 	var up := source_space.get_parent_node_3d().global_basis.inverse() * Vector3.UP
 	player.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
-	for name: String in player.get_animation_list():
+	for name: String in (player.get_animation_list() if clips.is_empty() else clips):
 		var clip := player.get_animation(name)
 		var track := clip.find_track(path, Animation.TYPE_POSITION_3D)
 		assert(track >= 0, str([name, path]))

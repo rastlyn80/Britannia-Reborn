@@ -180,7 +180,8 @@ func rotate_world(rig: Skeleton3D, joint_name: String, axis: Vector3, angle: flo
 	rig.force_update_all_bone_transforms()
 
 func bake_pose(player: AnimationPlayer, rig: Skeleton3D, mesh: MeshInstance3D, name: String,
-		base: String, duration: float, pose: Callable, ground_fall := false) -> void:
+		base: String, duration: float, pose: Callable, ground_fall := false,
+		additional_joints: Array = []) -> void:
 	var original := player.get_animation(base)
 	var clip := original.duplicate(true) as Animation
 	clip.length = duration
@@ -202,7 +203,7 @@ func bake_pose(player: AnimationPlayer, rig: Skeleton3D, mesh: MeshInstance3D, n
 			for key in range(clip.track_get_key_count(track) - 1, -1, -1):
 				clip.track_remove_key(track, key)
 	var rig_path := str(player.get_node(player.root_node).get_path_to(rig))
-	for name_at_joint: String in POSE_JOINTS:
+	for name_at_joint: String in POSE_JOINTS + additional_joints:
 		var index := rig.find_bone(name_at_joint)
 		if index < 0 or index in rotations.values(): continue
 		var track := clip.add_track(Animation.TYPE_ROTATION_3D)
