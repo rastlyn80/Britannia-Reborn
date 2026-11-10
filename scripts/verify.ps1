@@ -235,6 +235,12 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
   & $godot --headless --fixed-fps 120 --path "$root/Viewer" --script res://../scripts/test-quagmire-metres.gd
   if ($LASTEXITCODE) {throw 'Quagmire scale, terrain or corpse failed'}
  }
+ if ($lateIndex.entries | Where-Object { $_.troglodyte_enhanced }) {
+  & python -B "$root/scripts/accept-troglodyte-enhanced.py"
+  if ($LASTEXITCODE) {throw 'Troglodyte source and native packet evidence failed'}
+  & $godot --headless --path "$root/Viewer" --script res://../scripts/test-troglodyte-enhanced.gd -- --active
+  if ($LASTEXITCODE) {throw 'Troglodyte motion, terrain or corpse failed'}
+ }
  if ($lateIndex.entries | Where-Object { $_.preferred_uop_native_sha256 }) {
   & python -B "$root/scripts/accept-preferred-uop-actions.py" --check-active
   if ($LASTEXITCODE) {throw 'Active Gargoyle or Parrot UOP motions failed'}
@@ -577,6 +583,8 @@ if ($polishExit) { throw 'Gameplay polish (gains, paperdoll, target, cast bar) c
 if ($LASTEXITCODE) { throw 'Native item response/appearance checks failed' }
 & $godot --headless --path "$root/Viewer" --script res://Presentation/WorldItemTests.gd
 if ($LASTEXITCODE) { throw 'World item/doorway/sign regression checks failed' }
+& $godot --headless --path "$root/Viewer" --script res://../scripts/test-corpse-snapshot-hue.gd
+if ($LASTEXITCODE) { throw 'Native corpse hue and fitted pose preservation failed' }
 & $godot --headless --fixed-fps 120 --path "$root/Viewer" --script res://../scripts/test-rabbit-tunnel.gd
 if ($LASTEXITCODE) { throw 'Vorpal Bunny tunnel and native hole checks failed' }
 & $godot --headless --fixed-fps 120 --path "$root/Viewer" --script res://../scripts/test-rabbit-tunnel.gd -- --slope

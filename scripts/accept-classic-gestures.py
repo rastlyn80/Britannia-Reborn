@@ -614,6 +614,9 @@ def checked(index, active, batch, *, compare_registry=True):
             if body == 789 and len(compared) == 1 and 'quagmire_metres' in compared[0]:
                 without_scale = runpy.run_path(str(ROOT / 'scripts/prepare-quagmire-metres.py'))['without_scale']
                 compared = [without_scale(compared[0])]
+            if body == 267 and len(compared) == 1 and 'troglodyte_enhanced' in compared[0]:
+                without_fit = runpy.run_path(str(ROOT / 'scripts/accept-troglodyte-enhanced.py'))['without_fit']
+                compared = [without_fit(compared[0])]
             comparison_index = index
             while len(compared) == 1:
                 successor = compared[0].get('classic_gesture_batch')

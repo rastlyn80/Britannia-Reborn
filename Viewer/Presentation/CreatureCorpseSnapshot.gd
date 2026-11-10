@@ -35,6 +35,9 @@ static func apply(holder: Node3D, snapshot: Dictionary) -> bool:
 	var frozen := scene.instantiate() as Node3D
 	if frozen == null:
 		return false
+	if frozen.get_meta("native_hue") != old.get_meta("native_hue") and not use_current_materials(frozen, old):
+		frozen.free()
+		return false
 	old.free()
 	holder.add_child(frozen)
 	frozen.global_transform = snapshot.placement
@@ -43,4 +46,20 @@ static func apply(holder: Node3D, snapshot: Dictionary) -> bool:
 	shape.size = bounds.size.max(Vector3.ONE * .15)
 	pick.shape = shape
 	pick.position = bounds.get_center()
+	return true
+
+static func use_current_materials(frozen: Node3D, current: Node3D) -> bool:
+	# A native corpse update may dye the same serial after its death pose was
+	# captured. Keep that geometry and placement with the current appearance.
+	if frozen.get_child_count() != current.get_child_count():
+		return false
+	for part: MeshInstance3D in frozen.get_children():
+		var latest := current.get_node_or_null(NodePath(part.name)) as MeshInstance3D
+		if latest == null or latest.mesh.get_surface_count() != part.mesh.get_surface_count():
+			return false
+		for surface in part.mesh.get_surface_count():
+			if part.mesh.surface_get_array_len(surface) != latest.mesh.surface_get_array_len(surface):
+				return false
+			part.set_surface_override_material(surface, latest.get_active_material(surface))
+	frozen.set_meta("native_hue", current.get_meta("native_hue"))
 	return true

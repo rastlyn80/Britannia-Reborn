@@ -23,9 +23,12 @@ func run() -> void:
 	root.add_child(game)
 	game.set_process(false)
 	var expected := 0
+	var expected_newer := 9
 	var expected_poses := 0
 	for row: Dictionary in rows:
 		var body := int(row.bodies[0].body)
+		if body == 267 and row.has("troglodyte_enhanced"):
+			expected_newer += 3 * row.assets.size()
 		Registry.entries[body] = row
 		game.entities[body] = {"serial": body, "body": body, "hue": 53}
 		for treatment: String in row.assets:
@@ -46,7 +49,7 @@ func run() -> void:
 				sample_ranked_ground(plane, int(row.bodies[0].body), treatment)
 		plane.free()
 		await physics_frame
-	assert(classic == expected and ground_poses == expected_poses and static_corpses == 36 and newer == 9 and lowest > 0.0004)
+	assert(classic == expected and ground_poses == expected_poses and static_corpses == 36 and newer == expected_newer and lowest > 0.0004)
 	assert(FileAccess.get_sha256(index) == digest)
 	print("QUAGMIRE THROUGH EXODUS: ", classic, " Classic and ", newer, " newer selections, ",
 		ground_poses, " grounded samples and ", static_corpses, " corpse hues, minimum gap ", lowest)
