@@ -4,8 +4,9 @@
   "scene_sha256": "575ef1b8708520fac6d1ad887e9007cef272d57380733cfd91f2f5b4e3b3ffa0",
   "source_sha256": "2bd553e48a337d36862c72f3abbd5033a43999cfe6cf10e9e59bfded430ca9ce",
   "recipe_sha256": "d331938b35c8458a199710cf56de29d0dc11d9ea081350a37b84c56f950355b2",
-  "renderer_sha256": "8d540a38336627353eda7df72f7bf816fbc04a9e691c941db3710d0846a44856",
+  "renderer_sha256": "ee992d2834630278075d6bfe8b58161f9e99df60488fc8bd493eca4169d48cbf",
   "native_receipt_sha256": "2e03dc0dd3e0a43ca4625c18ec2e915e80677216035c82785d402ba333a58312",
+  "fire_breath_native_receipt_sha256": "9ba9d2b8295258907987a93f0bd091d5062d074d5158c0b61611800bf17b82ab",
   "classic_references": {
     "8": {
       "body": 201,

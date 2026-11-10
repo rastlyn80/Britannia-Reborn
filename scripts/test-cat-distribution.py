@@ -1,5 +1,5 @@
 """Exercise the shipped cat in a new project without original/private inputs."""
-import os,re,shutil,subprocess,uuid
+import json,os,re,shutil,subprocess,uuid
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 def main():
@@ -7,7 +7,9 @@ def main():
     assert target.is_relative_to((ROOT/'work/creatures/cat-distribution').resolve());target.mkdir(parents=True)
     pending=['Presentation/CatDistributionTests.gd'];copied=set();pattern=re.compile(r'(?:preload\s*\(|extends\s+|#include\s+)["\']res://([^"\']+)')
     if (ROOT/'Viewer/Art/Creatures/Cat/cat-actions.scn').is_file():
-        pending.append('Presentation/SourceQuadrupedCollapseVisual.gd')
+        entries=json.loads((ROOT/'Viewer/Art/Creatures/index.json').read_text(encoding='utf-8-sig'))['entries']
+        cat=next(row for row in entries if row['kind']=='cat_domestic')
+        pending.append(cat['presentation_script'].removeprefix('res://'))
     while pending:
         relative=pending.pop()
         if relative in copied:continue

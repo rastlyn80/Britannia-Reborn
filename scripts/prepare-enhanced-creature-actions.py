@@ -152,6 +152,8 @@ def main():
     parser.add_argument('--bird', action='store_true', help='Include the fitted Bird and Tropical Bird')
     parser.add_argument('--ettin', action='store_true', help='Include the fitted Enhanced Ettin')
     parser.add_argument('--dolphin', action='store_true', help='Include the fitted Enhanced Dolphin')
+    parser.add_argument('--field', action='store_true', help='Include fitted Enhanced rabbits, sheep and deer')
+    parser.add_argument('--cat', action='store_true', help='Include the fitted Enhanced Cat')
     args = parser.parse_args()
     manifest, copies = prepare()
     source = args.ranked_source
@@ -160,7 +162,7 @@ def main():
         recorded = previous.get('ranked_source')
         if recorded:
             source = Path(recorded)
-    extensions = [name for name in ('kraken', 'troll', 'bird', 'ettin', 'dolphin')
+    extensions = [name for name in ('kraken', 'troll', 'bird', 'ettin', 'dolphin', 'field', 'cat')
                   if getattr(args, name) or f'{name}_native_proof_sha256' in previous]
     if extensions and source is None:
         parser.error('The fitted extensions require --ranked-source or a previously recorded ranked source')

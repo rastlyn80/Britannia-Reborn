@@ -1279,8 +1279,8 @@
           "directional_payload_sha256": "31d1a35e814bef49bf204c9c04f84d5d6f7d4471079c80bd24dc7ddc071331a7"
         }
       },
-      "presentation_script": "res://Presentation/SourceQuadrupedCollapseVisual.gd",
-      "presentation_script_sha256": "8d540a38336627353eda7df72f7bf816fbc04a9e691c941db3710d0846a44856"
+      "presentation_script": "res://Presentation/CatActionsVisual.gd",
+      "presentation_script_sha256": "ee992d2834630278075d6bfe8b58161f9e99df60488fc8bd493eca4169d48cbf"
     },
     {
       "kind": "eagle",

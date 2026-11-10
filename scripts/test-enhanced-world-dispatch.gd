@@ -2,6 +2,8 @@
 extends SceneTree
 
 const Wire := preload("res://Network/LoginProtocol.gd")
+const Field := preload("res://../scripts/test-field-enhanced.gd")
+const Cats := preload("res://../scripts/test-cat-enhanced.gd")
 const SERIAL := 0x105
 const BODY := 267
 
@@ -125,10 +127,71 @@ func run() -> void:
 				world.game._handle(action_packet(kind, serial))
 				assert(actor.current_clip == (fitted if enhanced and kind != 11 else classic))
 				checks += 1
+	if "--field" in OS.get_cmdline_user_args():
+		checks += check_field(world, at, enhanced)
+	if "--cat" in OS.get_cmdline_user_args():
+		checks += check_cat(world, at, enhanced)
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()
 	await process_frame
 	quit()
+
+func check_field(world: Node, at: Vector2i, enhanced: bool) -> int:
+	var checks := 0
+	var hue := 0x8035
+	for body: int in [205, 207, 223, 234, 237]:
+		var serial := SERIAL + (207 if body == 223 else body)
+		var previous: Node3D = world.avatars[serial].horse_visual if body == 223 else null
+		var modes: Dictionary = Field.Profiles[body]
+		for flags: int in [0, 0x40]:
+			world.game._handle(mobile_packet(at, flags, serial, body, hue))
+			var actor: Node3D = world.avatars[serial].horse_visual
+			assert(actor != previous and actor.native_body == body and actor.native_hue == hue)
+			checks += check_fitted_actions(world, actor, serial, modes, flags, enhanced)
+		if body == 207:
+			continue  # Keep this serial alive for the stock shearing body change.
+		var death := PackedByteArray([0xaf])
+		death.append_array(Wire.uint_be(serial, 4))
+		death.append_array(Wire.uint_be(0, 4))
+		death.append_array(Wire.uint_be(0, 4))
+		world.game._handle(death)
+		var visual: Node3D = world.creature_deaths.active[serial].visual
+		assert(visual.current_clip == "Death" and visual.native_body == body and visual.native_hue == hue)
+		world.creature_deaths.finish(serial)
+		checks += 1
+	return checks
+
+func check_cat(world: Node, at: Vector2i, enhanced: bool) -> int:
+	var serial := SERIAL + 201
+	var checks := 0
+	for flags: int in [0, 0x40]:
+		world.game._handle(mobile_packet(at, flags, serial, 201, 0x647))
+		var actor: Node3D = world.avatars[serial].horse_visual
+		assert(actor.native_body == 201 and actor.native_hue == 0x647)
+		assert(actor.animator.has_animation("CatSpring") == enhanced)
+		checks += check_fitted_actions(world, actor, serial, Cats.CatModes, flags, enhanced)
+	var packet := PackedByteArray([0x6e])
+	packet.append_array(Wire.uint_be(serial, 4))
+	packet.append_array(PackedByteArray([0, 12, 0, 5, 0, 1, 0, 0, 0]))
+	world.game._handle(packet)
+	var hell_cat: Node3D = world.avatars[serial].horse_visual
+	assert(hell_cat.current_clip == "Alert" and not hell_cat.dead)
+	assert(hell_cat.get_meta("native_action") == world.game.last_mobile_actions[serial])
+	return checks + 2
+
+func check_fitted_actions(world: Node, actor: Node3D, serial: int, modes: Dictionary, flags: int, enhanced: bool) -> int:
+	var checks := 0
+	var mode: Dictionary = modes["0" if flags else "1"]
+	var prior: String = actor.current_clip
+	for kind: String in modes["0"]:
+		var clips: Array = mode.get(kind, modes["0"][kind])
+		for variation in [0, 1, 255]:
+			world.game._handle(action_packet(int(kind), serial, variation))
+			var expected: String = clips[variation % clips.size()] if enhanced and variation < 128 else prior
+			assert(actor.current_clip == expected)
+			prior = expected
+			checks += 1
+	return checks
 
 func mobile_packet(at: Vector2i, flags: int, serial: int = SERIAL, body: int = BODY, hue: int = 1109) -> PackedByteArray:
 	var bytes := PackedByteArray([0x77])
@@ -141,8 +204,8 @@ func mobile_packet(at: Vector2i, flags: int, serial: int = SERIAL, body: int = B
 	bytes.append_array(PackedByteArray([flags, 1]))
 	return bytes
 
-func action_packet(kind: int, serial: int = SERIAL) -> PackedByteArray:
+func action_packet(kind: int, serial: int = SERIAL, variation: int = 1) -> PackedByteArray:
 	var bytes := PackedByteArray([0xe2])
 	bytes.append_array(Wire.uint_be(serial, 4))
-	bytes.append_array(PackedByteArray([0, kind, 0, 0, 1]))
+	bytes.append_array(PackedByteArray([0, kind, 0, 0, variation]))
 	return bytes

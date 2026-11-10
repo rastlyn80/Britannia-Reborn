@@ -49,7 +49,8 @@ func run() -> void:
 		var action_provenance: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://Art/Creatures/Cat/actions-provenance.json"))
 		check(action_provenance.scene_sha256 == FileAccess.get_sha256(ActionsAsset) and action_provenance.source_sha256 == provenance.asset_sha256,
 			"Public additional actions derive from the exact licensed source")
-		check(action_provenance.renderer_sha256 == FileAccess.get_sha256(registry.entry(201).presentation_script),
+		var renderer := FileAccess.get_file_as_string(registry.entry(201).presentation_script).replace("\r\n", "\n")
+		check(action_provenance.renderer_sha256 == renderer.sha256_text(),
 			"Public collapse renderer matches the tested version")
 		for slot: int in [8, 9, 10, 12]:
 			var clip: String = {8: "Death2", 9: "CatStretch", 10: "Fidget2", 12: "Death"}[slot]
@@ -64,6 +65,14 @@ func run() -> void:
 				var bounds := Geometry.deformed_bounds(mesh, rig)
 				check(bounds.position.is_finite() and bounds.position.y >= -0.005 and bounds.size.length() > 0.30,
 					"Public %s stays bounded above the floor" % clip)
+		for example: Array in [[0x647, 5, "Alert"], [0x8647, 5, "Alert"], [2301, 5, "Death"], [0x647, 6, "Death"]]:
+			visual.dead = false
+			visual.apply_identity(201, example[0])
+			var request := {"protocol": "classic", "body": 201, "action": 12, "frames": example[1],
+				"repeat_count": 1, "reverse": false, "repeat": false, "delay": 0}
+			check(visual.receive_action(request) and visual.current_clip == example[2]
+				and visual.dead == (example[2] == "Death") and visual.get_meta("native_action") == request,
+				"Public body 201 distinguishes the exact stock fire-breath windup and retains the packet")
 	var corpses=preload("res://Presentation/CorpseModels.gd");var corpse: Node3D=corpses.build(201)
 	check(corpse!=null and corpse.get_meta("corpse_body")==201 and corpse.get_meta("graphic_id")==0x2006,"Public native corpse graphic/body resolves")
 	if corpse:
