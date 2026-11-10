@@ -5,6 +5,12 @@ const BODY := 267
 const SLOTS := {8: "TroglodyteOpenReach", 11: "TroglodyteHighSweep", 15: "TroglodyteLowRecoil"}
 const PATTERN := "res://local-art/creatures/troglodyte-enhanced-%s.scn"
 const Exact := preload("res://../scripts/test-quadruped-actions.gd")
+const Dispatcher := preload("res://Presentation/NativeMobileActions.gd")
+
+class RouteAvatar extends Node3D:
+	var horse_visual: Node3D
+	func receive_native_action(request: Dictionary) -> bool:
+		return horse_visual.receive_action(request)
 
 func run() -> void:
 	var row := Registry.entry(BODY).duplicate(true)
@@ -17,7 +23,8 @@ func run() -> void:
 			assert(row.assets[treatment] == PATTERN % treatment)
 			assert(row.asset_sha256[treatment] == FileAccess.get_sha256(row.assets[treatment]))
 		for slot: int in SLOTS:
-			assert(row.new_action_categories[str(slot)] == SLOTS[slot] and SLOTS[slot] in row.archive_grounded_gestures)
+			assert(SLOTS[slot] in row.archive_grounded_gestures)
+			assert(row.new_action_categories.get(str(slot), "") == ("" if slot == 8 else SLOTS[slot]))
 	else:
 		for treatment: String in originals:
 			row.assets[treatment] = PATTERN % treatment
@@ -39,17 +46,23 @@ func run() -> void:
 		actor.set_process(false)
 		actor.set_physics_process(false)
 		Exact.check_earlier_keys(actor.animator, originals[treatment])
+		var avatar := RouteAvatar.new()
+		avatar.horse_visual = actor
 		for slot: int in SLOTS:
+			var expected: String = "Pillage" if active and slot == 8 else SLOTS[slot]
 			for variation in [0, 1, 2, 255]:
-				assert(actor.receive_action(NewPacket.decode_new(game, BODY, slot, 0, variation)))
-				assert(actor.current_clip == SLOTS[slot] and actor.action_remaining > 0.0 and not actor.dead)
+				assert(Dispatcher.dispatch(avatar, NewPacket.decode_new(game, BODY, slot, 0, variation)))
+				assert(actor.current_clip == expected and actor.action_remaining > 0.0 and not actor.dead)
 				trials += 1
 		assert(actor.receive_action({"body": BODY, "protocol": "classic", "action": 4}))
 		assert(actor.current_clip == "Attack")
 		assert(actor.receive_action({"body": BODY, "protocol": "classic", "action": 11}))
 		assert(actor.current_clip == "Pillage")
 		assert(not actor.receive_action(NewPacket.decode_new(game, BODY, 5, 0, 0)))
+		assert(Dispatcher.dispatch(avatar, NewPacket.decode_new(game, BODY, 5, 0, 0)) and actor.current_clip == "Fidget")
+		assert(Dispatcher.dispatch(avatar, NewPacket.decode_new(game, BODY, 5, 0, 1)) and actor.current_clip == "TroglodyteSway")
 		motions[treatment] = measure_motion(actor)
+		avatar.free()
 		actor.free()
 	for hue: int in [0, 53, 0x8035]:
 		var cadaver := Corpses.build(BODY, hue)

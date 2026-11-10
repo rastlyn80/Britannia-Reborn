@@ -28,7 +28,7 @@ func run() -> void:
 	for row: Dictionary in rows:
 		var body := int(row.bodies[0].body)
 		if body == 267 and row.has("troglodyte_enhanced"):
-			expected_newer += 3 * row.assets.size()
+			expected_newer += 2 * row.assets.size()
 		Registry.entries[body] = row
 		game.entities[body] = {"serial": body, "body": body, "hue": 53}
 		for treatment: String in row.assets:

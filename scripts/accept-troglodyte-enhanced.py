@@ -19,6 +19,9 @@ SEALED = EVIDENCE / 'accepted'
 INDEX = ROOT / 'Viewer/local-art/creatures/accepted-index.json'
 ROUTES = {'8': (28, 'TroglodyteOpenReach'), '11': (4, 'TroglodyteHighSweep'),
           '15': (23, 'TroglodyteLowRecoil')}
+# The same Classic-compatible type 8 packet already has a proven Pillage
+# route. Keep the Enhanced group fitted until the client can distinguish it.
+ACTIVE_ROUTES = ('11', '15')
 PAYLOADS = {
     4: (45, '2e24759c6e4668bc9d5e9295a862bc2ca5663f260e42927b61e3711957888569'),
     23: (40, 'e3ac1d804a734ee945e4dccf7054593b0ec6de06bd885d75be1c4fbae49edb9e'),
@@ -128,17 +131,19 @@ def fitted(base, folder, report_path, client_path, require_index=False):
     assert client['test_sha256'] == sha(SCRIPTS / 'test-troglodyte-enhanced.gd')
     assert (client['routes'], client['terrain'], client['corpses']) == (36, 1674, 3)
     assert client['minimum_gap'] > .0019
-    groups = {kind: str(group) for kind, (group, _) in ROUTES.items()}
+    groups = {kind: str(ROUTES[kind][0]) for kind in ACTIVE_ROUTES}
     authored = {clip: f'Fitted to the five registered Enhanced UOP directions for group {group}'
                 for group, clip in ROUTES.values()}
     layer = {'source_assets': source_assets, 'source_sha256': source_hashes, 'archive': 'AnimationFrame1.uop',
              'groups': source, 'wire': wire, 'client_sha256': sha(client_path),
+             'retained_classic_wire': {'8': 'Pillage'},
              'baker_sha256': sha(SCRIPTS / 'bake-troglodyte-enhanced.gd')}
     # JSON object keys are strings on disk.
     layer['groups'] = {str(group): proof for group, proof in source.items()}
     return dict(candidate, status='validated', family=base['family'],
                 authored_action_scene_sha256=candidate['asset_sha256'],
                 authored_replacements=base['authored_replacements'] | authored,
+                new_action_categories=base['new_action_categories'] | {kind: names[kind] for kind in ACTIVE_ROUTES},
                 uop_motion_packet_groups=base.get('uop_motion_packet_groups', {}) | groups,
                 troglodyte_enhanced=layer)
 
@@ -177,7 +182,7 @@ def main():
     if INDEX.read_bytes() != previous:
         raise SystemExit('The local creature index changed during verification')
     temporary.replace(INDEX)
-    print('TROGLODYTE ENHANCED: three source groups installed in the local client')
+    print('TROGLODYTE ENHANCED: two source groups active, open reach kept for the Enhanced route')
 
 
 if __name__ == '__main__':
