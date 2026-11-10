@@ -186,6 +186,8 @@ def main():
     parser.add_argument('--giant-toad-juka-warrior', action='store_true', help='Include the fitted Giant Toad and Juka Warrior')
     parser.add_argument('--skeletal-knight-remaining', action='store_true', help='Complete the five additional fitted Skeletal Knight groups')
     parser.add_argument('--yomotsu-warrior-dragon', action='store_true', help='Include the fitted Yomotsu Warrior and red Dragon')
+    parser.add_argument('--ratman-mage-lava-serpent', action='store_true', help='Include the fitted Ratman Mage and Lava Serpent')
+    parser.add_argument('--cyclops-titan', action='store_true', help='Include the fitted Cyclops and Titan')
     args = parser.parse_args()
     manifest, copies = prepare()
     source = args.ranked_source
@@ -194,7 +196,7 @@ def main():
         recorded = previous.get('ranked_source')
         if recorded:
             source = Path(recorded)
-    names = ('kraken', 'troll', 'bird', 'ettin', 'dolphin', 'field', 'cat', 'skeleton-mongbat', 'hound-bear', 'troll-ratman', 'brown-bear-cougar', 'wolf-grizzly', 'corpser-boar', 'goat-eagle', 'serpent-harpy', 'ogre-earth', 'zombie-wraith', 'gorilla-gazer', 'gargoyle-through-ghoul', 'scorpion-through-slime', 'alligator-direwolf', 'crane-fire', 'lich-gaman', 'chicken-skeletal-mage', 'daemon-wyvern', 'polar-bear', 'drake-walrus', 'ice-serpent-bogling', 'tsuki-wolf-ophidian', 'evil-mage-plague-beast', 'kappa-snow-elemental', 'giant-rat-vampire-bat', 'orc-shaman-ophidian-mage', 'knight-acid-pixie-frost', 'poison-elemental-dread-spider', 'mummy-balron', 'giant-toad-juka-warrior', 'skeletal-knight-remaining', 'yomotsu-warrior-dragon')
+    names = ('kraken', 'troll', 'bird', 'ettin', 'dolphin', 'field', 'cat', 'skeleton-mongbat', 'hound-bear', 'troll-ratman', 'brown-bear-cougar', 'wolf-grizzly', 'corpser-boar', 'goat-eagle', 'serpent-harpy', 'ogre-earth', 'zombie-wraith', 'gorilla-gazer', 'gargoyle-through-ghoul', 'scorpion-through-slime', 'alligator-direwolf', 'crane-fire', 'lich-gaman', 'chicken-skeletal-mage', 'daemon-wyvern', 'polar-bear', 'drake-walrus', 'ice-serpent-bogling', 'tsuki-wolf-ophidian', 'evil-mage-plague-beast', 'kappa-snow-elemental', 'giant-rat-vampire-bat', 'orc-shaman-ophidian-mage', 'knight-acid-pixie-frost', 'poison-elemental-dread-spider', 'mummy-balron', 'giant-toad-juka-warrior', 'skeletal-knight-remaining', 'yomotsu-warrior-dragon','ratman-mage-lava-serpent','cyclops-titan')
     extensions = [name for name in names
                   if (getattr(args, name.replace('-', '_')) or f'{name}_native_proof_sha256' in previous
                       or (name == 'troll' and args.troll_ratman))]
@@ -219,6 +221,8 @@ def main():
         (GAPS / ACTIVE.name).write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
     elif args.install:
         for target, source in copies.items():
+            if target.is_file() and sha(target) == sha(source):
+                continue
             target.parent.mkdir(parents=True, exist_ok=True)
             temporary = target.with_suffix('.pending')
             shutil.copyfile(source, temporary)

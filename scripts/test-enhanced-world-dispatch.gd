@@ -37,6 +37,8 @@ const MummyBalron := preload("test-mummy-balron-world.gd")
 const ToadJuka := preload("test-giant-toad-juka-warrior-world.gd")
 const KnightRemaining := preload("test-skeletal-knight-remaining-world.gd")
 const YomotsuDragon := preload("test-yomotsu-warrior-dragon-world.gd")
+const RatmanLava := preload("test-ratman-mage-lava-serpent-world.gd")
+const GiantPair := preload("test-cyclops-titan-world.gd")
 const SERIAL := 0x105
 const BODY := 267
 
@@ -50,6 +52,10 @@ func _initialize() -> void:
 		deadline += 35.0
 	if "--yomotsu-warrior-dragon" in OS.get_cmdline_user_args():
 		deadline += 55.0
+	if "--ratman-mage-lava-serpent" in OS.get_cmdline_user_args():
+		deadline += 55.0
+	if "--cyclops-titan" in OS.get_cmdline_user_args():
+		deadline += 50.0
 	create_timer(deadline).timeout.connect(func():
 		push_error("Combined creature replay exceeded %.0f seconds." % deadline)
 		quit(2))
@@ -288,6 +294,14 @@ func run() -> void:
 	if "--yomotsu-warrior-dragon" in OS.get_cmdline_user_args():
 		var fitted_batch := await YomotsuDragon.check(self, world, at, enhanced)
 		assert(fitted_batch.rows.size() == YomotsuDragon.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--ratman-mage-lava-serpent" in OS.get_cmdline_user_args():
+		var fitted_batch := await RatmanLava.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == RatmanLava.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--cyclops-titan" in OS.get_cmdline_user_args():
+		var fitted_batch := await GiantPair.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == GiantPair.Cases.size())
 		checks += int(fitted_batch.checks)
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()

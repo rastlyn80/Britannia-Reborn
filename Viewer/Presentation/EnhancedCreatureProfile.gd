@@ -163,6 +163,14 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedGiantToadVisual.gd"
 			elif body == 245:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedYomotsuWarriorVisual.gd"
+			elif body == 143:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedRatmanMageVisual.gd"
+			elif body == 90:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedLavaSerpentVisual.gd"
+			elif body == 75:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedCyclopsVisual.gd"
+			elif body == 76:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedTitanVisual.gd"
 			elif body == 764:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedJukaWarriorVisual.gd"
 			elif body == 8:

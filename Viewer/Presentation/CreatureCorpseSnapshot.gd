@@ -19,14 +19,18 @@ static func capture(visual: Node3D, actor_floor: float) -> Dictionary:
 	if status != OK:
 		return {}
 	var hidden_props: Array[StringName] = []
+	var retained_prop_materials: Array[StringName] = []
 	for prop: MeshInstance3D in visual.find_children("*", "MeshInstance3D", true, false):
-		if not prop.is_visible_in_tree() and prop.get_meta("optional_corpse_visual_prop", false):
+		if prop.is_visible_in_tree() and prop.get_meta("corpse_prop_keeps_material", false):
+			retained_prop_materials.append(prop.name)
+		elif not prop.is_visible_in_tree() and prop.get_meta("optional_corpse_visual_prop", false):
 			hidden_props.append(prop.name)
 	return {
 		"body": visual.native_body,
 		"scene": scene,
 		"placement": visual.global_transform * Transform3D(Basis.IDENTITY, Vector3.UP * actor_floor),
 		"hidden_props": hidden_props,
+		"retained_prop_materials": retained_prop_materials,
 	}
 
 static func apply(holder: Node3D, snapshot: Dictionary) -> bool:
@@ -40,7 +44,8 @@ static func apply(holder: Node3D, snapshot: Dictionary) -> bool:
 	var frozen := scene.instantiate() as Node3D
 	if frozen == null:
 		return false
-	if frozen.get_meta("native_hue") != old.get_meta("native_hue") and not use_current_materials(frozen, old, snapshot.get("hidden_props", [])):
+	if frozen.get_meta("native_hue") != old.get_meta("native_hue") and not use_current_materials(
+			frozen, old, snapshot.get("hidden_props", []), snapshot.get("retained_prop_materials", [])):
 		frozen.free()
 		return false
 	old.free()
@@ -53,7 +58,8 @@ static func apply(holder: Node3D, snapshot: Dictionary) -> bool:
 	pick.position = bounds.get_center()
 	return true
 
-static func use_current_materials(frozen: Node3D, current: Node3D, hidden_props: Array) -> bool:
+static func use_current_materials(frozen: Node3D, current: Node3D, hidden_props: Array,
+		retained_prop_materials: Array = []) -> bool:
 	# A native corpse update may dye the same serial after its death pose was
 	# captured. Keep that geometry and placement with the current appearance.
 	for part: MeshInstance3D in current.get_children():
@@ -62,6 +68,10 @@ static func use_current_materials(frozen: Node3D, current: Node3D, hidden_props:
 			return false
 	for part: MeshInstance3D in frozen.get_children():
 		var latest := current.get_node_or_null(NodePath(part.name)) as MeshInstance3D
+		# A fitted prop can differ from the default corpse's weapon and have its
+		# own material when the server updates only the creature's hue.
+		if latest == null and part.name in retained_prop_materials:
+			continue
 		if latest == null or latest.mesh.get_surface_count() != part.mesh.get_surface_count():
 			return false
 		for surface in part.mesh.get_surface_count():

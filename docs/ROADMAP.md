@@ -1,3 +1,7 @@
+# Ratman Mage, Lava Serpent, Cyclops and Titan
+
+The optional Enhanced profile reaches 91 bodies. Continue Ice Elemental, Terathan Drone and Terathan Warrior in the six-facet occurrence queue. The Lava Serpent's type 0 actions and the giants' mixed type 0 group 5 remain open. Keep the retained routes available for unresolved exact Enhanced frames, including the giants' types 2 and 14.
+
 # Yomotsu Warrior and red Dragon
 
 The optional Enhanced profile reaches 87 bodies. The Yomotsu Warrior's six unarmed actions and the red Dragon's four wing actions passed the client and isolated server checks. Keep the remaining named sequence groups open, including the yellow Dragon's exact Enhanced source. Continue the six-facet occurrence queue and keep the Classic routes available for unlocated references.

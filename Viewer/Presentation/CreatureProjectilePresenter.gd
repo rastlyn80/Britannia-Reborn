@@ -6,6 +6,17 @@ const BowRelease := preload("res://Presentation/CentaurBowRelease.gd")
 # Low-Poly Arrow v2.0 by Teslov, CC BY 4.0. See Art/Objaverse/manifest.json.
 const ARROW := preload("res://Art/Objaverse/arrow_lowpoly/arrow_lowpoly.glb")
 
+func _bolt_origin(effect: Dictionary) -> Vector3:
+	if int(effect.graphic) == 0x36d4:
+		var avatar := scene.avatars.get(int(effect.source)) as Avatar
+		if avatar != null and avatar.native_body == 90 and is_instance_valid(avatar.horse_visual):
+			var creature := avatar.horse_visual
+			if creature.has_method("fire_breath_origin"):
+				var origin: Variant = creature.fire_breath_origin()
+				if origin is Vector3:
+					return origin
+	return super._bolt_origin(effect)
+
 func _bolt(effect: Dictionary, tint: Color) -> void:
 	var actor := scene.avatars.get(int(effect.source)) as Avatar
 	if int(effect.graphic) != 0x0f42 or effect.explodes or actor == null or not actor.horse_visual is BowVisual:
