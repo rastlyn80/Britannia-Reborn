@@ -611,6 +611,9 @@ def checked(index, active, batch, *, compare_registry=True):
             retain_uop = batch in ('ready_stances', 'slith_actions', 'golem_raptor_juka_solen_actions',
                                    'frost_through_gargoyle_actions')
             compared = matches if retain_uop else [redirect(row) for row in matches]
+            if body == 789 and len(compared) == 1 and 'quagmire_metres' in compared[0]:
+                without_scale = runpy.run_path(str(ROOT / 'scripts/prepare-quagmire-metres.py'))['without_scale']
+                compared = [without_scale(compared[0])]
             comparison_index = index
             while len(compared) == 1:
                 successor = compared[0].get('classic_gesture_batch')

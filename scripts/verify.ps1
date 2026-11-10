@@ -226,6 +226,14 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
  if ($lateIndex.entries | Where-Object { $_.mesh_binding_native_sha256 }) {
   & python -B "$root/scripts/accept-creature-mesh-bindings.py" --check-active
   if ($LASTEXITCODE) {throw 'Active creature mesh bindings failed'}
+  & $godot --headless --fixed-fps 120 --path "$root/Viewer" --script res://../scripts/test-centaur-release.gd
+  if ($LASTEXITCODE) {throw 'Centaur release, projectile or interruption failed'}
+ }
+ if ($lateIndex.entries | Where-Object { $_.quagmire_metres }) {
+  & python -B "$root/scripts/prepare-quagmire-metres.py"
+  if ($LASTEXITCODE) {throw 'Quagmire scale evidence failed'}
+  & $godot --headless --fixed-fps 120 --path "$root/Viewer" --script res://../scripts/test-quagmire-metres.gd
+  if ($LASTEXITCODE) {throw 'Quagmire scale, terrain or corpse failed'}
  }
  if ($lateIndex.entries | Where-Object { $_.preferred_uop_native_sha256 }) {
   & python -B "$root/scripts/accept-preferred-uop-actions.py" --check-active

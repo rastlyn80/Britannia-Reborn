@@ -262,7 +262,7 @@ No human/horse replacement, wearable count, remembered-login location, server ru
 | bovines | 4 | Refined source rigs/coats, native actions and live bodies; see ETHICS_AND_BOVINES.md |
 | bruins | 4 | Queued; source preflight only |
 | canines | 8 | Queued; source preflight only |
-| centaurs | 1 | Queued; source preflight only |
+| centaurs | 1 | Original body 101 active for Centaur and Twaulo. Native bow, projectile-driven release and static corpse verified. |
 | cyclops | 1 | Queued; source preflight only |
 | daemons | 5 | Queued; source preflight only |
 | deer | 2 | Queued; source preflight only |
