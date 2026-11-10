@@ -1,3 +1,53 @@
+# Enhanced Black Solen Warrior
+
+The optional Enhanced profile reaches 127 bodies and 346 fitted local scenes. Black Solen Warrior 806 retains its original Third Dawn 44-joint rig, dark carapace, six legs and all previous motion keys. Eight fitted clips follow 385 registered frames from the named member 0x8efa33eae6af619f. The peace idle uses its own motion, and both Black Solen constructors keep the server’s native hue.
+
+The candidate passed 80 Forward+ views and 5,541 dense poses at 240 Hz. The measured claws and forearm segments cleared the torso across all three treatments. Focused checks covered 3,720 terrain poses, 240 interrupted falls, 144 Enhanced selections, 108 Classic comparisons and 18 gait selections. The combined staged replays passed 348 Classic fixture checks and 462 Enhanced Britain checks.
+
+The isolated ModernUO trial passed 419 checks across the stock Black and Red Warriors and their Infiltrator forms. All four dealt actual melee damage and kept the native corpse identity, raw hues and Zoogi Fungus loot. Each ordinary Warrior produced four native acid pools at death. Both Infiltrators produced zero. The Red variants retain their original presentation.
+
+Rebuild with scripts/bake-black-solen-warrior-enhanced.gd and verify using scripts/check-black-solen-warrior-clearance.gd, scripts/render-black-solen-warrior.gd and scripts/test-black-solen-warrior-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --black-solen-warrior after preparing the required earlier batches and reproducing the local evidence.
+
+# Enhanced Juka Lord
+
+The optional Enhanced profile reaches 126 bodies and 343 fitted local scenes. The Juka Lord keeps the original Third Dawn Kabur rig and bow. Four fitted motions follow 185 registered frames from the named sequence member 0xd40c20122c0dd09b. The native bow packet controls its graphic and item hue independently of the body dye. A stock arrow effect starts the retained bow motion and leaves the displayed bowstring. During a fall the bow pivots around the original grip to clear the ground.
+
+The scenes passed 40 Forward+ views and 2,631 dense samples at 240 Hz. The measured bow edges cleared the torso throughout the four fitted actions. The focused client test covered 1,860 terrain poses, 120 interrupted falls, 72 Enhanced selections and 54 Classic comparisons. The living bow stayed at least 6.95 cm above the tested planes and the fallen bow stayed at least 3 mm above them. The combined staged replays passed 330 Classic fixture checks and 438 Enhanced Britain checks.
+
+The isolated ModernUO trial passed 86 checks across two clients, including 18 controlled packet comparisons. The stock ArcherAI fired a native arrow that dealt 29 damage. The client released it from the displayed bowstring at phase 0.49. The native corpse retained its body hue and carried the separately dyed bow, 28 arrows, eight bandages and one Arcane Gem.
+
+Rebuild with scripts/bake-juka-lord-enhanced.gd and check using scripts/check-juka-lord-bow.gd, scripts/render-juka-lord.gd and scripts/test-juka-lord-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --juka-lord after reproducing the earlier required batches and the local evidence.
+
+# Enhanced Raptor and Slith
+
+The optional Enhanced profile reaches 125 bodies and 340 fitted local scenes. The Raptor retains its CC0 Quaternius rig and Slith retains its fitted Third Dawn Komodo rig. Fourteen motions follow 655 frames from the official named sequence members 0x9fed8396eb2a2d and 0xafc4399ccb01be12. Each body keeps its native combat and peace gait selections. The separate Slith Fire Breath windup uses the verified Classic group 12 packet signature and emits the native effect from the displayed mouth.
+
+The final scenes passed 150 Forward+ views and 10,911 samples at 240 Hz. The measured forearm and tail centrelines cleared the body triangles in all three treatments. Focused checks covered 6,510 terrain poses, 420 interrupted falls, 288 Enhanced selections, 216 Classic comparisons, 36 gait selections and 465 breath poses. The combined staged replays passed 492 Classic fixture checks and 654 Enhanced Britain checks.
+
+The isolated ModernUO trial passed 784 checks across Raptor, Slith, Stone Slith and Toxic Slith. Both Slith breath attacks dealt server damage and the two client views placed their effects at the displayed mouth. Stone Slith’s Grasping Claw temporarily reduced Physical Resistance and Tail Swipe exercised the stun branch. The four constructors retained their native melee, raw spawn and dye hues, corpse identities and respective hide types.
+
+Rebuild with scripts/bake-raptor-slith-enhanced.gd and verify using scripts/check-raptor-slith-clearance.gd, scripts/render-raptor-slith.gd and scripts/test-raptor-slith-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --raptor-slith after preparing the required earlier batches and reproducing the local source, scenes and receipts.
+
+# Enhanced Golem and Sand Vortex
+
+The optional Enhanced profile reaches 123 bodies and 334 fitted local scenes. Golem 752 keeps the original Third Dawn rig, metal atlas and prior animation keys. Sand Vortex 790 uses the project's reshaped Air Elemental geometry and its CC0 Quaternius rig for the humanoid silhouette. The recovered Third Dawn Sand Vortex file is a small transparent effect proxy with three bones. The existing default client keeps its dust-ribbon model. Twelve motions follow 590 registered frames from named sequence members `0x1fbc6e3e0832ff86` and `0x9a4c9b9804aa53eb`.
+
+The Golem winds up, sweeps a piston arm and raises its fist. The Sand Vortex forms above a low dust plume, recoils and reaches with its own sand shader. Its shape recovers when an ordinary attack interrupts the formation. Across 5,254 samples at 240 Hz, the measured forearm segments clear the torso triangles. The final fits passed 120 Forward+ views, 3,410 terrain poses, 220 interrupted falls, 144 Enhanced selections and 108 Classic comparisons. The staged world replays passed 456 Classic fixture and 606 Enhanced Britain checks.
+
+Two disposable ModernUO clients passed 336 checks for the final scenes. Controlled calls to stock abilities showed the Golem's Colossal Blow freezing its target and recovering after 5.020 seconds, and the Sand Vortex's fixed effect `0x36B0` followed by 28 damage outside melee range after 1.099 seconds. The Golem corpse held 13 iron ingots. The Sand Vortex corpse held one bone and 119 gold. Both corpses kept their native identity and raw hue.
+
+Rebuild using `scripts/bake-golem-enhanced.gd` and `scripts/bake-sand-vortex-enhanced.gd`. Run `scripts/check-golem-sand-clearance.gd`, `scripts/render-golem-sand.gd` and `scripts/test-golem-sand-enhanced.gd`, then install using `python -B scripts/prepare-enhanced-creature-actions.py --install --golem-sand` after preparing the local native receipts. Pass `--rune-dopple` as well when installing directly over the 119-body profile. Keep original game files, fitted scenes, captures and disposable native data local.
+
+# Enhanced Rune Beetle and Doppleganger
+
+The optional Enhanced profile reaches 121 bodies and 328 fitted local scenes. Rune Beetle 244 and Doppleganger 777 retain their Third Dawn rigs, surfaces and earlier motion keys. Ten fitted motions follow 520 registered frames from named sequence members `0x39591176444051b` and `0x700e7bea7cc93590`. The beetle keeps separate combat and peace watches and opens its original head appendages during the crest motions. The Doppleganger rises from a ground seal through a translucent diamond. A Classic attack interrupts the emergence, and its seal and veil clear at death.
+
+The final fits passed 100 Forward+ views, 6,930 clearance samples at 240 Hz, 4,650 terrain poses, 300 interrupted falls, 216 Enhanced choices and 162 Classic comparisons. The three treatments showed no sampled appendage crossings in the measured core. The beetle passed 24 gait transitions and the Doppleganger passed 15 growth interruption checks. The sealed world replay passed 558 Enhanced Britain checks and 420 Classic fixture checks across the staged batches.
+
+Two disposable ModernUO clients passed 312 checks covering movement, body hues, loot, corpses and the controlled Enhanced selections. A controlled call to the beetle's stock Rune Corruption applied effect `0x37B9` to both observers and reduced the target's five resistances from 21, 9, 20, 8 and 7 to 11, 5, 10, 4 and 4. The stock timer restored them after 10.288 seconds. The Doppleganger used its stock melee AI and yielded seven hides and one rib with the native human carving bonus. The pinned server class has no disguise logic.
+
+Rebuild using `scripts/bake-rune-dopple-enhanced.gd`, then run `scripts/check-rune-dopple-clearance.gd` and `scripts/test-rune-dopple-enhanced.gd`. Install using `python -B scripts/prepare-enhanced-creature-actions.py --install --rune-dopple` on the preceding profile after preparing the local scenes and receipts. Keep the original art, fitted scenes, screenshots and native test state local.
+
 # Enhanced Orc Bomber and Ogre Lord
 
 The optional Enhanced profile reaches 119 bodies and 322 fitted local scenes. Orc Bomber 182 and Ogre Lord 83 retain their original Third Dawn rigs, surfaces and earlier animation keys. Ten additional motions follow 465 frames from the named sequence members 0xe2a9431f9abe3b85 and 0x345f12ca480cd4f1. The Bomber casts and dips, rises from a crouch and uses three distinct hand gestures. The Ogre Lord carries an authored bone club on the original right-hand grasp socket during the five fitted actions. The material stays independent of the body's dye. The temporary display club clears at death, while the server still supplies the native loot Club.

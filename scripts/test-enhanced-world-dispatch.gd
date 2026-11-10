@@ -52,6 +52,11 @@ const GrizzleChangeling := preload("test-grizzle-changeling-world-cases.gd")
 const MatriarchSwamp := preload("test-matriarch-swamp-world-cases.gd")
 const WidowJuka := preload("test-widow-juka-world-cases.gd")
 const BomberLord := preload("test-bomber-lord-world-cases.gd")
+const RuneDopple := preload("test-rune-dopple-world-cases.gd")
+const GolemSand := preload("test-golem-sand-world-cases.gd")
+const RaptorSlith := preload("test-raptor-slith-world-cases.gd")
+const JukaLord := preload("test-juka-lord-world-cases.gd")
+const BlackSolenWarrior := preload("test-black-solen-warrior-world-cases.gd")
 const SERIAL := 0x105
 const BODY := 267
 
@@ -95,6 +100,16 @@ func _initialize() -> void:
 		deadline += 40.0
 	if "--bomber-lord" in OS.get_cmdline_user_args():
 		deadline += 40.0
+	if "--rune-dopple" in OS.get_cmdline_user_args():
+		deadline += 40.0
+	if "--golem-sand" in OS.get_cmdline_user_args():
+		deadline += 40.0
+	if "--raptor-slith" in OS.get_cmdline_user_args():
+		deadline += 40.0
+	if "--juka-lord" in OS.get_cmdline_user_args():
+		deadline += 25.0
+	if "--black-solen-warrior" in OS.get_cmdline_user_args():
+		deadline += 25.0
 	create_timer(deadline).timeout.connect(func():
 		push_error("Combined creature replay exceeded %.0f seconds." % deadline)
 		quit(2))
@@ -393,6 +408,26 @@ func run() -> void:
 	if "--bomber-lord" in OS.get_cmdline_user_args():
 		var fitted_batch := await BomberLord.check(self, world, at, enhanced)
 		assert(fitted_batch.rows.size() == BomberLord.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--rune-dopple" in OS.get_cmdline_user_args():
+		var fitted_batch := await RuneDopple.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == RuneDopple.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--golem-sand" in OS.get_cmdline_user_args():
+		var fitted_batch := await GolemSand.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == GolemSand.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--raptor-slith" in OS.get_cmdline_user_args():
+		var fitted_batch := await RaptorSlith.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == RaptorSlith.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--juka-lord" in OS.get_cmdline_user_args():
+		var fitted_batch := await JukaLord.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == JukaLord.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--black-solen-warrior" in OS.get_cmdline_user_args():
+		var fitted_batch := await BlackSolenWarrior.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == BlackSolenWarrior.Cases.size())
 		checks += int(fitted_batch.checks)
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()

@@ -48,7 +48,7 @@ static func witness(driver, world: Node, at: Vector2i, enhanced: bool, info: Dic
 			world.game._handle(attack_packet(serial))
 			assert(source.current_clip == "Attack")
 			source.animator.advance(.037)
-			assert(source.growth.active)
+			assert(source.get_indexed(NodePath(info.get("growth_state", "growth:active"))))
 		source.rotate_y(.32)
 		source._physics_process(1.0 / 60.0)
 		source.contact.modification_processed.emit()

@@ -1,3 +1,33 @@
+# Solen Warriors
+
+The optional Enhanced profile reaches 127 bodies. Black Solen Warrior 806 has eight fitted clips and preserves existing routes for the remaining nine indexed groups. The Red Warrior 782 has a separate original rig and atlas. Its exact named Enhanced sequence and frame members remain unlocated across the indexed patch and loose archives. Its stock Classic motions, melee and acid behaviour are already available.
+
+Continue in configured occurrence order with Devourer 303. All 17 indexed groups and 920 frames are decoded. Crystal Wisp 58 has no named or indexed exact group in the current audit, and Frenzied Ostard 218 has 18 indexed groups to compare with its existing mounted presentation. Revenant Lion 251 has 15 indexed groups. The next checks cover Shadow Fiend 168 and Lesser Hiryu 243, including the existing native corpse and mount distinctions.
+
+# Juka Lord
+
+The optional Enhanced profile reaches 126 bodies. Juka Lord 766 has four fitted groups and retains its native bow on the held item layer and in the native corpse. The full loose archive audit also identified 13 additional indexed groups. Decode and compare those against the retained movement, hits, attacks and falls. Enhanced group 3 scatters the armour in the reference, so the visual treatment must still preserve the native corpse identity.
+
+Continue in configured occurrence order with Black and Red Solen Warriors 806 and 782. The Black Warrior has 17 indexed groups with 725 registered frames. The Red Warrior keeps its separate original Third Dawn rig, atlas and Classic motion while exact Enhanced sources remain unresolved. Devourer 303, Revenant Lion 251 and AntLion 787 have named Enhanced sequence records and exact indexed members.
+
+# Raptor and Slith
+
+The optional Enhanced profile reaches 125 bodies. The Raptor and Slith retain their earlier routes for the unresolved exact groups, including the mixed type 0 attack table. The existing Slith donor has a simpler crest colour and shoulder silhouette than the indexed 2D reference. The three Slith classes share body 734 and keep their separate native hue, combat ability and loot data.
+
+Continue in configured occurrence order with Juka Lord 766. Its four available official groups are 23, 26, 27 and 28. Verify the original bow grip, equipment and body hues, and placement during the corpse transition. Elder Gazer 22 and Toxic Slith 734 already have fitted profiles.
+
+# Golem and Sand Vortex
+
+The optional Enhanced profile reaches 123 bodies. Golem keeps its Classic brace, reset, combat and locomotion. Sand Vortex has its named quiet spiral and dust formation while retaining the default client model and the previous Classic action names. The remaining mixed type 0 choices keep their Classic routes pending the missing group fits.
+
+Raptor 730 and Slith 734 now have 655 decoded reference frames from fourteen official patch members. Their first seven motions each are baked on the retained CC0 Raptor rig and Third Dawn Komodo donor. Verify stance, tails, native variants and static corpses before activating them. Continue with Juka Lord 766, whose four fitted motions have a first equipped-bow render. Check bow clearance and native archer behaviour.
+
+# Rune Beetle and Doppleganger
+
+The optional Enhanced profile reaches 121 bodies. The Rune Beetle's separate combat and peace watches preserve the existing walk and run. The Doppleganger's ground seal and emergence are confined to the named fitted clip. Both bodies retain their original routes for the mixed type 0 table and remaining groups whose exact frames are unavailable.
+
+Continue with Golem 752 and Sand Vortex 790. The Golem's five and the Sand Vortex's seven named groups are decoded. Strong Mongbat 39 retains its existing fitted route. An expanded search of all 53 cached official manifests found 30 Raptor 730 and Slith 734 frame entries. Fourteen selected members decoded into 655 reference frames. Juka Lord 766 has four decoded groups for the next pass.
+
 # Orc Bomber and Ogre Lord
 
 The optional Enhanced profile reaches 119 bodies. Both bodies keep their earlier routes for the missing exact groups, including the mixed type 0 attack table. The Orc Bomber still uses the native projectile and original follow-through. The Ogre Lord's visible bone club follows the five fitted groups. The exact Enhanced appearance of the held object in the remaining groups remains open. Arctic Ogre Lord 135 stays on its established body route.

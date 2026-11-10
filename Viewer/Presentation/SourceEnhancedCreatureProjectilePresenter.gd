@@ -4,10 +4,50 @@ extends "res://Presentation/CreatureProjectilePresenter.gd"
 const Tessen := preload("SourceTessenMesh.gd")
 
 
+func _bolt_origin(effect: Dictionary) -> Vector3:
+	if int(effect.graphic) == 0x36d4:
+		var avatar := scene.avatars.get(int(effect.source)) as Avatar
+		if avatar != null and avatar.native_body == 734 and is_instance_valid(avatar.horse_visual) \
+				and avatar.horse_visual.has_method("fire_breath_origin"):
+			var origin: Variant = avatar.horse_visual.fire_breath_origin()
+			if origin is Vector3:
+				return origin
+	return super._bolt_origin(effect)
+
+
 func _bolt(effect: Dictionary, tint: Color) -> void:
 	if int(effect.graphic) == 0x27a3 and not effect.explodes and throw_tessen(effect):
 		return
+	if int(effect.graphic) == 0x0f42 and not effect.explodes and release_juka_arrow(effect):
+		return
 	super._bolt(effect, tint)
+
+
+func release_juka_arrow(effect: Dictionary) -> bool:
+	var avatar := scene.avatars.get(int(effect.source)) as Avatar
+	if avatar == null or avatar.native_body != 766 or not is_instance_valid(avatar.horse_visual):
+		return false
+	var archer: Node3D = avatar.horse_visual
+	if not archer.has_method("begin_bow_release"):
+		return false
+	var delay: float = archer.begin_bow_release()
+	if delay < 0.0:
+		return false
+	var fallback: Vector3 = archer.bow_arrow_origin()
+	var target := _point(int(effect.target), effect.to)
+	var speed := float(effect.speed)
+	var reference: WeakRef = weakref(archer)
+	var release := func():
+		var current: Node3D = reference.get_ref()
+		var origin: Vector3 = current.bow_arrow_origin() if current != null and current.bow_release_available() else fallback
+		_fly_arrow(origin, target, speed)
+	if delay > 0.0:
+		var flight := create_tween()
+		flight.tween_interval(delay)
+		flight.tween_callback(release)
+	else:
+		release.call()
+	return true
 
 
 func throw_tessen(effect: Dictionary) -> bool:

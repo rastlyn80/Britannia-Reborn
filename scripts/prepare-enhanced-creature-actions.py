@@ -201,6 +201,11 @@ def main():
     parser.add_argument('--matriarch-swamp', action='store_true', help='Include the fitted Matriarch and both Swamp Dragons')
     parser.add_argument('--widow-juka', action='store_true', help='Include the fitted Giant Black Widow and Juka Mage')
     parser.add_argument('--bomber-lord', action='store_true', help='Include the fitted Orc Bomber and Ogre Lord')
+    parser.add_argument('--rune-dopple', action='store_true', help='Include the fitted Rune Beetle and Doppleganger')
+    parser.add_argument('--golem-sand', action='store_true', help='Include the fitted Golem and Sand Vortex')
+    parser.add_argument('--raptor-slith', action='store_true', help='Include the fitted Raptor and Slith')
+    parser.add_argument('--juka-lord', action='store_true', help='Include the fitted Juka Lord')
+    parser.add_argument('--black-solen-warrior', action='store_true', help='Include the fitted Black Solen Warrior')
     args = parser.parse_args()
     manifest, copies = prepare()
     source = args.ranked_source
@@ -209,7 +214,7 @@ def main():
         recorded = previous.get('ranked_source')
         if recorded:
             source = Path(recorded)
-    names = ('kraken', 'troll', 'bird', 'ettin', 'dolphin', 'field', 'cat', 'skeleton-mongbat', 'hound-bear', 'troll-ratman', 'brown-bear-cougar', 'wolf-grizzly', 'corpser-boar', 'goat-eagle', 'serpent-harpy', 'ogre-earth', 'zombie-wraith', 'gorilla-gazer', 'gargoyle-through-ghoul', 'scorpion-through-slime', 'alligator-direwolf', 'crane-fire', 'lich-gaman', 'chicken-skeletal-mage', 'daemon-wyvern', 'polar-bear', 'drake-walrus', 'ice-serpent-bogling', 'tsuki-wolf-ophidian', 'evil-mage-plague-beast', 'kappa-snow-elemental', 'giant-rat-vampire-bat', 'orc-shaman-ophidian-mage', 'knight-acid-pixie-frost', 'poison-elemental-dread-spider', 'mummy-balron', 'giant-toad-juka-warrior', 'skeletal-knight-remaining', 'yomotsu-warrior-dragon','ratman-mage-lava-serpent','cyclops-titan','ice-terathan','hopper-fan','blood-goat','matriarch-succubus','stone-harpy-horde','stone-gargoyle-kitsune','orc-captain-solen','efreet-avenger','rotting-bog','grizzle-changeling','matriarch-swamp','widow-juka','bomber-lord')
+    names = ('kraken', 'troll', 'bird', 'ettin', 'dolphin', 'field', 'cat', 'skeleton-mongbat', 'hound-bear', 'troll-ratman', 'brown-bear-cougar', 'wolf-grizzly', 'corpser-boar', 'goat-eagle', 'serpent-harpy', 'ogre-earth', 'zombie-wraith', 'gorilla-gazer', 'gargoyle-through-ghoul', 'scorpion-through-slime', 'alligator-direwolf', 'crane-fire', 'lich-gaman', 'chicken-skeletal-mage', 'daemon-wyvern', 'polar-bear', 'drake-walrus', 'ice-serpent-bogling', 'tsuki-wolf-ophidian', 'evil-mage-plague-beast', 'kappa-snow-elemental', 'giant-rat-vampire-bat', 'orc-shaman-ophidian-mage', 'knight-acid-pixie-frost', 'poison-elemental-dread-spider', 'mummy-balron', 'giant-toad-juka-warrior', 'skeletal-knight-remaining', 'yomotsu-warrior-dragon','ratman-mage-lava-serpent','cyclops-titan','ice-terathan','hopper-fan','blood-goat','matriarch-succubus','stone-harpy-horde','stone-gargoyle-kitsune','orc-captain-solen','efreet-avenger','rotting-bog','grizzle-changeling','matriarch-swamp','widow-juka','bomber-lord','rune-dopple','golem-sand','raptor-slith','juka-lord','black-solen-warrior')
     extensions = [name for name in names
                   if (getattr(args, name.replace('-', '_')) or f'{name}_native_proof_sha256' in previous
                       or (name == 'troll' and args.troll_ratman))]
