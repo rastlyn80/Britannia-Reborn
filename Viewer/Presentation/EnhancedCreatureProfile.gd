@@ -128,11 +128,22 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedEvilMageVisual.gd"
 			elif body == 775:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedPlagueBeastVisual.gd"
+			elif body == 240:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedKappaVisual.gd"
+			elif body == 163:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedSnowElementalVisual.gd"
+			elif body == 215:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedGiantRatVisual.gd"
+			elif body == 317:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedVampireBatVisual.gd"
 			elif body == 213:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedPolarBearVisual.gd"
 			elif body == 208:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedChickenVisual.gd"
-			elif body == 148:
+			elif body == 85:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedOphidianMageVisual.gd"
+				row["grounded_gestures"] = row.get("grounded_gestures", []) + profile.grounded
+			elif body in [140, 148]:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedSkeletalMageVisual.gd"
 			elif body == 8:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedCorpserVisual.gd"

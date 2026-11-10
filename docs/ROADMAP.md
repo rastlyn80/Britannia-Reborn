@@ -1,3 +1,15 @@
+# Orc Shaman and Ophidian Mage
+
+The optional Enhanced profile reaches 75 bodies. Orcish Mage 140 and both Ophidian casters on body 85 retain their Third Dawn rigs, fitted staffs, stock server identities and native corpse appearances. Six fitted actions pass both world replays, including death during a visible turn. Controlled Lightning confirms actual server damage. The pinned server's native caster animation remains open, as do the Orcish Mage's unlocated Enhanced fidget frames. Continue the occurrence queue with Skeletal Knight 147 and Acid Elemental 158. Bone Knight is the distinct body 57.
+
+# Giant Rat and Vampire Bat
+
+The optional Enhanced profile reaches 73 bodies. Giant Rat 215 has seven new poses and motions. Vampire Bat 317 has four new flying actions and a displayed airborne fall that hands off to the static corpse. The exact Enhanced flight mode inherits combat. Both stock constructors pass the isolated server and client checks. Keep Sewer Rat 238 separate. Continue the configured occurrence order with Orc Shaman 140 and Ophidian Mage 85.
+
+# Kappa and Snow Elemental
+
+The optional Enhanced profile reaches 71 bodies. Kappa 240 has five fitted actions, including an airborne hop and pose-preserving landing into death. Snow Elemental 163 has two fitted motions and retains full size when a Classic action interrupts its emergence. Native movement, melee, colours, corpses, loot and the controlled Kappa Drain Life timer passed. Continue in configured occurrence order with Giant Rat 215 and Vampire Bat 317. Sewer Rat 238 has its separate public rat presentation and no named sequence record in the pinned Enhanced archive.
+
 # Evil Mage and Plague Beast
 
 The optional Enhanced profile reaches 69 bodies. Evil Mage 124 and Plague Beast 775 have fitted emergence motions with a tested recovery to full size after a Classic attack or walk. The displayed pose passes into a static corpse through the normal world packet path. The native trial covers both Plague Beast constructors, real Lightning damage, and ordinary Plague Beast poison and feeding. The pinned server leaves NPC monster spell animations and the link from autonomous feeding to a fitted gesture open. Continue in configured occurrence order with Kappa 240 and Snow Elemental 163.

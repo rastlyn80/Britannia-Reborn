@@ -27,12 +27,15 @@ const DrakeWalrus := preload("test-drake-walrus-world.gd")
 const IceSerpentBogling := preload("test-ice-serpent-bogling-world.gd")
 const TsukiWolfOphidian := preload("test-tsuki-wolf-ophidian-world.gd")
 const EvilMagePlagueBeast := preload("test-evil-mage-plague-beast-world.gd")
+const KappaSnow := preload("test-kappa-snow-elemental-world.gd")
+const GiantRatVampireBat := preload("test-giant-rat-vampire-bat-world.gd")
+const ArmedMages := preload("test-orc-shaman-ophidian-mage-world.gd")
 const SERIAL := 0x105
 const BODY := 267
 
 func _initialize() -> void:
-	create_timer(150.0).timeout.connect(func():
-		push_error("Combined creature replay exceeded 150 seconds.")
+	create_timer(210.0).timeout.connect(func():
+		push_error("Combined creature replay exceeded 210 seconds.")
 		quit(2))
 	call_deferred("run")
 
@@ -232,6 +235,18 @@ func run() -> void:
 	if "--evil-mage-plague-beast" in OS.get_cmdline_user_args():
 		var fitted_batch := await EvilMagePlagueBeast.check(self, world, at, enhanced)
 		assert(fitted_batch.rows.size() == EvilMagePlagueBeast.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--kappa-snow-elemental" in OS.get_cmdline_user_args():
+		var fitted_batch := await KappaSnow.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == KappaSnow.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--giant-rat-vampire-bat" in OS.get_cmdline_user_args():
+		var fitted_batch := await GiantRatVampireBat.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == GiantRatVampireBat.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--orc-shaman-ophidian-mage" in OS.get_cmdline_user_args():
+		var fitted_batch := await ArmedMages.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == ArmedMages.Cases.size())
 		checks += int(fitted_batch.checks)
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()

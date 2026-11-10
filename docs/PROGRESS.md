@@ -1,3 +1,33 @@
+# Enhanced Orc Shaman and Ophidian Mage
+
+Six fitted motions use 295 registered frames from six official AMOU members. Orcish Mage body 140 retains the Third Dawn rig and uses its original 50-point, 96-triangle staff and weapons atlas. The staff is 83 percent of the source length and 70 percent of the source width and depth to better match the reference and give the rise clearance. Only the right upper-arm rotations in the retained fall and fidget receive a clearance adjustment. Ophidian Mage body 85 retains its original rig, staff, and all existing motion keys. The optional profile reaches 75 bodies and 190 local fitted scenes. The default ledger remains 6,489 of 8,090 tracked slots.
+
+The candidates passed 120 decoded selections, 90 Classic comparisons, 4,338 between-key staff pose checks, 2,790 terrain poses, 180 interrupted falls, six static corpse hues and 60 Vulkan views. The fixture and prepared Britain each passed 36 Classic and 48 Enhanced replay checks. In the Enhanced replay the dying Ophidian keeps the displayed yaw even while its last server heading differs. The largest measured joint jump among the six cases was 0.69 micrometres. Both staff meshes persist into the static corpses.
+
+The isolated ModernUO run passed 262 checks across Orcish Mage, Ophidian Mage and Ophidian Archmage, with 48 controlled Enhanced actions and native movement, hues and corpse replication. Controlled invocation of the stock Lightning target cursor dealt 24, 30 and 30 damage respectively. The pinned server emitted no Classic cast animation for these NPCs. Autonomous cast selection and its presentation link remain separate. The Orcish Mage retains its corpse-rummaging capability and all three corpses yielded a rib.
+
+Rebuild with `scripts/prepare-orc-shaman-staff.py`, `scripts/bake-orc-shaman-enhanced.gd` and `scripts/bake-ophidian-mage-enhanced.gd`. Run `scripts/test-orc-shaman-ophidian-mage-enhanced.gd` and the disposable server recipe. Install with `python -B scripts/prepare-enhanced-creature-actions.py --install --kappa-snow-elemental --giant-rat-vampire-bat --orc-shaman-ophidian-mage`. Original game inputs, fitted scenes, captures and disposable server data stay local.
+
+# Enhanced Giant Rat and Vampire Bat
+
+Eleven fitted motions use 430 registered frames from eleven official AMOU members. The Giant Rat uses body 215 and retains its Third Dawn rig and materials. The new tail unfurl moves the sampled tail joint by 59 cm. The Vampire Bat uses body 317 and retains its source wing skin and donor wing keys. Its folded emergence expands from a 68 cm wing width to just over 4 m in the modern treatment. The named sequence maps flight mode back to combat and shares wing dip across the original group 25 selections. The optional profile reaches 73 bodies and 184 fitted local scenes. The default ledger stays at 6,489 of 8,090 tracked action slots.
+
+The candidates passed 264 decoded selections, 198 Classic comparisons, six flight fallback selections, 5,115 terrain poses, 330 interrupted falls, six static corpse hues and 110 Vulkan views. The targeted fixture and Britain replays each passed 24 Classic and 32 Enhanced checks. Both fitted Vampire Bat actions went directly into its displayed airborne fall and then its static corpse.
+
+The isolated server trial passed 263 checks across the stock Giant Rat and wild Vampire Bat constructors, including 66 controlled Enhanced actions, stock movement, melee, body colours and static corpse replication. The Giant Rat remains tamable and yields one rib and seven hides to the human carver. The native Vampire Bat Familiar spell and ownership already have a separate trial. The new animation trial uses the wild constructor. Sewer Rat uses native body 238, retains its existing public rat presentation, and has no named sequence record in the pinned Enhanced archive.
+
+Rebuild with `scripts/bake-giant-rat-enhanced.gd` and `scripts/bake-vampire-bat-enhanced.gd`. Run `scripts/test-giant-rat-vampire-bat-enhanced.gd` and the isolated native recipe. Install with `python -B scripts/prepare-enhanced-creature-actions.py --install --kappa-snow-elemental --giant-rat-vampire-bat`. Original frames, fitted scenes, renders and native trial outputs stay local.
+
+# Enhanced Kappa and Snow Elemental
+
+Seven fitted motions use 305 registered frames from seven official AMOU members. Kappa 240 keeps its Third Dawn shell, jaw and limbs. The new startled hop reaches 43.6 cm of measured flat-ground clearance. The Snow Elemental 163 keeps the recovered elemental rig and frost surface. Its compressed source pose starts at 25 cm and rises to 2.20 m. It recovers its original scale when a Classic attack or walk interrupts the rise. The optional profile reaches 71 bodies and 178 fitted local scenes. The default ledger stays at 6,489 of 8,090 tracked action slots.
+
+The candidates passed 144 decoded selections, 108 Classic comparisons, 3,255 terrain poses, 210 interrupted falls, six static corpse hues and 70 Vulkan views. The fixture and Britain replays each passed 30 Classic and 40 Enhanced checks, including Kappa's airborne fall and the Snow Elemental's death during growth recovery. The largest sampled joint jump on interruption was 1.22 micrometres.
+
+The isolated server trial passed 206 checks, including stock movement, melee and corpses, and 36 controlled Enhanced actions. The controlled Kappa Drain Life invocation expired after dealing 24 damage, draining 89 net mana and healing the Kappa. Its corpse held three fish steaks. Snow Elemental retained its bleed immunity and its corpse held three black pearls and three iron ore.
+
+Rebuild with `scripts/bake-kappa-snow-elemental-enhanced.gd` and run `scripts/test-kappa-snow-elemental-enhanced.gd` plus the isolated native recipe. Install with `python -B scripts/prepare-enhanced-creature-actions.py --install --kappa-snow-elemental` on the prepared profile. Original frames, fitted scenes and trial artifacts stay local.
+
 # Enhanced Evil Mage and Plague Beast
 
 Eight fitted motions use 355 registered frames from eight official AMOU members. Evil Mage 124 and Plague Beast 775 keep their Third Dawn rigs, surfaces and all retained animation keys. Their two emergence clips begin at 7.4 cm and 19.6 cm high respectively in the modern treatments. The Plague Beast's maw lunge moves its upper mass nearly 88 cm horizontally. The new Plague Beast feeding, tongue and tail motions use the original appendage joints. The optional profile reaches 69 bodies and 172 fitted local scenes. The default ledger stays at 6,489 of 8,090 tracked action slots.
