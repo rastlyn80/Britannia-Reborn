@@ -14,9 +14,8 @@ static func dispatch(avatar: Node3D, request: Dictionary, enhanced: bool, native
 			var type := str(int(request.get("type", -1)))
 			var prepared: Dictionary = entry.get("enhanced_source_action_groups", {})
 			var mode := "1" if (native_flags & 0x40) == 0 else "0"
-			if body == 831 and (native_flags & 0x04) != 0:
+			if (native_flags & 0x04) != 0 and (body == 831 or entry.get("flight_falls_back_to_combat", false)):
 				# The negotiated 7.x mobile flags carry flight on bit 2.
-				# The parrot's source flight mode falls back to combat.
 				mode = "0"
 			var mode_groups: Dictionary = prepared.get(mode, {})
 			var combat_groups: Dictionary = prepared.get("0", {})

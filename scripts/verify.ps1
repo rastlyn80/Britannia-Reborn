@@ -262,7 +262,7 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
    if ($LASTEXITCODE) {throw 'Enhanced Orc and Water Elemental motion, terrain or corpse failed'}
    $profileTests += '--ranked'
   }
-  foreach ($extension in @('kraken','troll')) {
+  foreach ($extension in @('kraken','troll','bird','ettin','dolphin')) {
    if ($profile.PSObject.Properties["${extension}_native_proof_sha256"]) {
     & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-${extension}-enhanced.gd" -- --installed
     if ($LASTEXITCODE) {throw "Enhanced $extension motion, terrain or corpse failed"}

@@ -74,6 +74,57 @@ func run() -> void:
 				world.game._handle(action_packet(selection[0], serial))
 				assert(actor.current_clip == selection[1 if enhanced else 2])
 				checks += 1
+	if "--bird" in OS.get_cmdline_user_args():
+		for flags: int in [0, 0x04, 0x40, 0x44]:
+			var serial := SERIAL + 6
+			world.game._handle(mobile_packet(at, flags, serial, 6, 0x901))
+			var actor: Node3D = world.avatars[serial].horse_visual
+			assert(actor.native_body == 6 and actor.native_hue == 0x901)
+			assert(actor.animator.has_animation("BirdGlance") == enhanced)
+			var prior: String = actor.current_clip
+			for kind: int in [2, 5, 8, 14, 15, 11]:
+				var classic := "Cast" if kind == 11 else prior
+				var fitted := "BirdGlance" if kind == 5 and flags == 0 else "BirdQuietSettle"
+				world.game._handle(action_packet(kind, serial))
+				assert(actor.current_clip == (fitted if enhanced else classic))
+				checks += 1
+	if "--ettin" in OS.get_cmdline_user_args():
+		for flags: int in [0, 0x40]:
+			var serial := SERIAL + 18
+			world.game._handle(mobile_packet(at, flags, serial, 18, 0x8035))
+			var actor: Node3D = world.avatars[serial].horse_visual
+			assert(actor.native_body == 18 and actor.native_hue == 0x8035)
+			assert((actor.find_child("EnhancedHammer", true, false) != null) == enhanced)
+			var prior: String = actor.current_clip
+			world.game._handle(action_packet(15, serial))
+			assert(actor.current_clip == ("EttinRise" if enhanced else prior))
+			world.game._handle(action_packet(8, serial))
+			assert(actor.current_clip == ("EttinAlert" if enhanced else "Pillage"))
+			var death := PackedByteArray([0xaf])
+			death.append_array(Wire.uint_be(serial, 4))
+			death.append_array(Wire.uint_be(0, 4))
+			death.append_array(Wire.uint_be(0, 4))
+			world.game._handle(death)
+			var visual: Node3D = world.creature_deaths.active[serial].visual
+			assert(visual.current_clip == "Death" and visual.native_hue == 0x8035)
+			assert((visual.find_child("EnhancedHammer", true, false) != null) == enhanced)
+			world.creature_deaths.finish(serial)
+			checks += 3
+	if "--dolphin" in OS.get_cmdline_user_args():
+		for flags: int in [0, 0x40]:
+			var serial := SERIAL + 151
+			world.game._handle(mobile_packet(at, flags, serial, 151, 0x8035))
+			var actor: Node3D = world.avatars[serial].horse_visual
+			assert(actor.native_body == 151 and actor.native_hue == 0x8035)
+			assert(actor.entry.movement_mode == "native_waterline")
+			assert(actor.animator.has_animation("DolphinBank") == enhanced)
+			var prior: String = actor.current_clip
+			for kind: int in [2, 5, 8, 14, 15, 11]:
+				var classic := "Attack" if kind == 11 else prior
+				var fitted := "DolphinBank" if kind == 5 and flags == 0 else "DolphinHover"
+				world.game._handle(action_packet(kind, serial))
+				assert(actor.current_clip == (fitted if enhanced and kind != 11 else classic))
+				checks += 1
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()
 	await process_frame

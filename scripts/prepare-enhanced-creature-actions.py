@@ -75,16 +75,17 @@ def source_modes(pins):
 
 
 def verify_native_proof(assets, tables):
-    path = WORK / 'enhanced-actions-native.json'
+    proof = WORK.parent / 'native-enhanced-flight-proof'
+    path = proof / 'enhanced-actions-native.json'
     native = read(path)
-    receipt = read(WORK / 'enhanced-actions-native-runtime.json')
+    receipt = read(proof / 'enhanced-actions-native-runtime.json')
     assert sha(path) == receipt['report_sha256'].lower()
     assert sha(ROOT / 'Server/runtime/Server.dll') == receipt['server_sha256'].lower()
     assert sha(ROOT / 'Server/runtime/Assemblies/UOContent.dll') == receipt['content_sha256'].lower()
     assert native['checks'] == 91 and len(native['records']) == 2
     assert native['asset_sha256'] == assets['267']['assets']
     assert native['dispatcher_sha256'] == sha(DISPATCHER)
-    assert native['test_sha256'] == sha(WORK / 'NativeEnhancedActionLive.gd')
+    assert native['test_sha256'] == sha(proof / 'NativeEnhancedActionLive.gd')
     assert {row['class']: row['hue'] for row in native['records']} == {'Troglodyte': 0, 'Lurg': 1109}
     for row in native['records']:
         assert {(v['combat'], v['type'], v['variation']) for v in row['variants']} == {
@@ -148,6 +149,9 @@ def main():
     parser.add_argument('--ranked-source', type=Path, help='Local folder holding the pinned Enhanced sequence and AMOU files')
     parser.add_argument('--kraken', action='store_true', help='Include the verified compact Kraken and Leviathan')
     parser.add_argument('--troll', action='store_true', help='Include the fitted Enhanced Troll')
+    parser.add_argument('--bird', action='store_true', help='Include the fitted Bird and Tropical Bird')
+    parser.add_argument('--ettin', action='store_true', help='Include the fitted Enhanced Ettin')
+    parser.add_argument('--dolphin', action='store_true', help='Include the fitted Enhanced Dolphin')
     args = parser.parse_args()
     manifest, copies = prepare()
     source = args.ranked_source
@@ -156,7 +160,7 @@ def main():
         recorded = previous.get('ranked_source')
         if recorded:
             source = Path(recorded)
-    extensions = [name for name in ('kraken', 'troll')
+    extensions = [name for name in ('kraken', 'troll', 'bird', 'ettin', 'dolphin')
                   if getattr(args, name) or f'{name}_native_proof_sha256' in previous]
     if extensions and source is None:
         parser.error('The fitted extensions require --ranked-source or a previously recorded ranked source')

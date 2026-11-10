@@ -28,7 +28,7 @@ def read(path):
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
-def source_tables(root, source, sprites, types):
+def source_tables(root, source, sprites, types, flight_fallback=False):
     scripts = root / "scripts"
     sequence = source / "AnimationSequence.uop"
     assert sha(sequence) == SEQUENCE_SHA256
@@ -40,8 +40,14 @@ def source_tables(root, source, sprites, types):
         assert not record.get("unparsed_bytes")
         table = {}
         seen = set()
+        flight_mode = False
         for mode in record["modes"]:
             number = mode["mode"]
+            if number == 3 and flight_fallback:
+                assert not flight_mode and mode["fallback_mode"] == 0
+                assert not any(row["type"] in types for row in mode["new_protocol_actions"])
+                flight_mode = True
+                continue
             assert number in (0, 1) and str(number) not in table
             assert mode["fallback_mode"] == (-1 if number == 0 else 0)
             actions = {}
@@ -53,7 +59,7 @@ def source_tables(root, source, sprites, types):
                 actions[action] = [sprites[body][group][0] for group in row["groups"]]
                 seen.update(row["groups"])
             table[str(number)] = actions
-        assert table.keys() == {"0", "1"} and seen == sprites[body].keys()
+        assert flight_mode == flight_fallback and table.keys() == {"0", "1"} and seen == sprites[body].keys()
         for group, (_, count, digest) in sprites[body].items():
             payload = source / f"ec-frame-{body}-{group}.bin"
             assert sha(payload) == digest
@@ -79,7 +85,7 @@ def fitted_row(viewer, body, groups, grounded, scenes, candidate_hashes):
     digests = {treatment: sha(viewer / asset.removeprefix("res://"))
                for treatment, asset in base["assets"].items()}
     assert digests == base.get("asset_sha256", digests)
-    assert digests.keys() == candidate_hashes.keys() == scenes.keys() == {"original", "rounded", "modern"}
+    assert digests.keys() == candidate_hashes.keys() == scenes.keys() and "modern" in digests
     row = {"kind": base["kind"], "base_sha256": digests, "groups": groups, "grounded": grounded, "assets": {}}
     copies = {}
     for treatment, scene in scenes.items():
