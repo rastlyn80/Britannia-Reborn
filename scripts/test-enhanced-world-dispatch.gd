@@ -13,6 +13,8 @@ const CorpserBoar := preload("res://../scripts/test-corpser-boar-enhanced.gd")
 const GoatEagle := preload("res://../scripts/test-goat-eagle-enhanced.gd")
 const SerpentHarpy := preload("res://../scripts/test-serpent-harpy-enhanced.gd")
 const OgreEarth := preload("res://../scripts/test-ogre-earth-enhanced.gd")
+const Undead := preload("res://../scripts/test-zombie-wraith-enhanced.gd")
+const Fitted := preload("res://../scripts/test-gorilla-gazer-enhanced.gd")
 const SERIAL := 0x105
 const BODY := 267
 
@@ -158,6 +160,14 @@ func run() -> void:
 		checks += check_serpent_harpy(world, at, enhanced)
 	if "--ogre-earth" in OS.get_cmdline_user_args():
 		checks += await check_ogre_earth(world, at, enhanced)
+	if "--zombie-wraith" in OS.get_cmdline_user_args():
+		var undead := await check_undead_deaths(world, at, enhanced)
+		assert(undead.size() == 4)
+		checks += 34 if enhanced else 24
+	if "--gorilla-gazer" in OS.get_cmdline_user_args():
+		var gorilla_gazer := await check_gorilla_gazer(world, at, enhanced)
+		assert(gorilla_gazer.size() == 2)
+		checks += 16 if enhanced else 12
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()
 	await process_frame
@@ -564,6 +574,131 @@ func check_ogre_earth_death(world: Node, at: Vector2i, body: int, enhanced: bool
 	assert(frozen.get_meta("native_hue") == hue and frozen.get_meta("death_clip") == clip)
 	assert(frozen.get_child_count() == expected_count and frozen.find_children("*", "Skeleton3D", true, false).is_empty())
 	return {"clip": clip, "pieces": expected_count, "jump": jump, "hue": hue, "corpse": corpse}
+
+
+func check_undead_deaths(world: Node, at: Vector2i, enhanced: bool) -> Dictionary:
+	var results := {}
+	var cases := [[3, 15, 0, .34, Undead.Rise], [26, 15, 0, .29, Undead.Gather],
+		[26, 15, 0, .78, Undead.Gather], [26, 5, 1, .44, "WraithVeilDive"]]
+	for index in cases.size():
+		var report := await check_undead_death(world, at, enhanced, index, cases[index])
+		assert(not report.is_empty())
+		results[str(index)] = report
+	return results
+
+func check_undead_death(world: Node, at: Vector2i, enhanced: bool, index: int, test: Array) -> Dictionary:
+	var body: int = test[0]
+	var serial := 0x1000 + index
+	var corpse := 0x40000000 + serial
+	var hue := 0x4001 if body == 26 else 0x8035
+	world.game._handle(mobile_packet(at, 64, serial, body, hue))
+	var actor: Node3D = world.avatars[serial].horse_visual
+	assert(actor.native_body == body and actor.native_hue == hue)
+	var scatter := enhanced and index == 1
+	var expected := Undead.Scatter if scatter else "Death"
+	var parts := 1
+	var before := Vector3.ZERO
+	var head: int = actor.skeleton.find_bone("bip01 head")
+	if enhanced:
+		world.game._handle(action_packet(test[1], serial, test[2]))
+		assert(actor.current_clip == test[4])
+		actor.animator.advance(.13)
+		actor.animator.seek(0.0, true)
+		actor.animator.seek(actor.animator.current_animation_length * float(test[3]), true)
+		actor._physics_process(1.0 / 60.0)
+		actor.skeleton.force_update_all_bone_transforms()
+		if scatter:
+			assert(actor.pieces.visible and not actor.living_mesh.visible)
+			parts = actor.pieces.get_children().filter(func(part: Node3D): return part.visible).size()
+			assert(parts == 6)
+			before = actor.pieces.get_node("Skull").global_position
+		else:
+			before = actor.skeleton.to_global(actor.skeleton.get_bone_global_pose(head).origin)
+	if index % 2 == 0:
+		world.game._handle(corpse_packet(at, corpse, body, hue))
+	var death := PackedByteArray([0xaf])
+	death.append_array(Wire.uint_be(serial, 4))
+	death.append_array(Wire.uint_be(corpse, 4))
+	death.append_array(Wire.uint_be(0, 4))
+	world.game._handle(death)
+	if index % 2 != 0:
+		world.game._handle(corpse_packet(at, corpse, body, hue))
+	var holder: Node3D = world.world_items.nodes[corpse]
+	var state: Dictionary = world.creature_deaths.active[serial]
+	var visual: Node3D = state.visual
+	assert(not holder.visible and visual.current_clip == expected and visual.native_hue == hue)
+	var jump := 0.0
+	if enhanced:
+		visual.skeleton.force_update_all_bone_transforms()
+		var after: Vector3 = visual.pieces.get_node("Skull").global_position if scatter else (
+			visual.skeleton.to_global(visual.skeleton.get_bone_global_pose(head).origin))
+		jump = before.distance_to(after)
+		assert(jump < .002, "World body %d case %d first-frame jump %f" % [body, index, jump])
+	await create_timer(float(state.remaining) + .15).timeout
+	assert(holder.visible and world.world_items.corpse_snapshots.has(corpse))
+	var frozen: Node3D = holder.get_node("CorpseVisual")
+	assert(frozen.get_meta("native_hue") == hue and frozen.get_meta("death_clip") == expected)
+	assert(frozen.get_child_count() == parts and frozen.find_children("*", "Skeleton3D", true, false).is_empty())
+	if body == 26:
+		for part: MeshInstance3D in frozen.get_children():
+			var material := part.get_active_material(0) as ShaderMaterial
+			assert(material != null and material.shader == Undead.Spectral)
+	return {"body": body, "clip": expected, "hue": hue, "parts": parts, "jump": jump, "corpse": corpse}
+
+
+func check_gorilla_gazer(world: Node, at: Vector2i, enhanced: bool) -> Dictionary:
+	var result := {}
+	for body: int in [29, 22]:
+		var data := await witness_gorilla_gazer(world, at, enhanced, body)
+		assert(not data.is_empty())
+		result[str(body)] = data
+	return result
+
+func witness_gorilla_gazer(world: Node, at: Vector2i, enhanced: bool, body: int) -> Dictionary:
+	var serial := 0x1100 + body
+	var corpse := 0x40000000 + serial
+	var hue := 0x8035 if body == 29 else 0x455
+	world.game._handle(mobile_packet(at, 64, serial, body, hue))
+	var source: Node3D = world.avatars[serial].horse_visual
+	assert(source.native_body == body and source.native_hue == hue)
+	if body == 29:
+		assert(source.contact.get_script().resource_path == "res://Presentation/MeasuredCreatureSupport.gd")
+	var before := Vector3.ZERO
+	var head: int = source.skeleton.find_bone("bip01 head")
+	if enhanced:
+		world.game._handle(action_packet(5 if body == 29 else 15, serial, 1 if body == 29 else 0))
+		assert(source.current_clip == ("GorillaChestBeat" if body == 29 else "GazerUnfurl"))
+		source.animator.advance(.13)
+		source.animator.seek(source.animator.current_animation_length * .38, true)
+		source._physics_process(1.0 / 60.0)
+		source.skeleton.force_update_all_bone_transforms()
+		before = source.skeleton.to_global(source.skeleton.get_bone_global_pose(head).origin)
+	if body == 22:
+		world.game._handle(corpse_packet(at, corpse, body, hue))
+	var death := PackedByteArray([0xaf])
+	death.append_array(Wire.uint_be(serial, 4))
+	death.append_array(Wire.uint_be(corpse, 4))
+	death.append_array(Wire.uint_be(0, 4))
+	world.game._handle(death)
+	if body == 29:
+		world.game._handle(corpse_packet(at, corpse, body, hue))
+	var holder: Node3D = world.world_items.nodes[corpse]
+	var state: Dictionary = world.creature_deaths.active[serial]
+	var fallen: Node3D = state.visual
+	assert(not holder.visible and fallen.current_clip == "Death" and fallen.native_hue == hue)
+	var jump := 0.0
+	if enhanced:
+		fallen.skeleton.force_update_all_bone_transforms()
+		jump = before.distance_to(fallen.skeleton.to_global(fallen.skeleton.get_bone_global_pose(head).origin))
+		assert(jump < .002, "Body %d world fall jumped %f metres" % [body, jump])
+	await create_timer(float(state.remaining) + .15).timeout
+	assert(holder.visible)
+	var retained: bool = world.world_items.corpse_snapshots.has(corpse)
+	assert(retained == (enhanced or body == 22))
+	var frozen: Node3D = holder.get_node("CorpseVisual")
+	assert(frozen.get_meta("native_hue") == hue and frozen.get_meta("death_clip") == "Death")
+	assert(frozen.find_children("*", "Skeleton3D", true, false).is_empty())
+	return {"hue": hue, "jump": jump, "corpse": corpse, "retained": retained}
 
 
 func corpse_packet(at: Vector2i, serial: int, body: int, hue: int) -> PackedByteArray:

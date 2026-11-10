@@ -163,6 +163,8 @@ def main():
     parser.add_argument('--goat-eagle', action='store_true', help='Include the fitted Goat and Eagle')
     parser.add_argument('--serpent-harpy', action='store_true', help='Include the fitted Giant Serpent and Harpy')
     parser.add_argument('--ogre-earth', action='store_true', help='Include the fitted Ogre and Earth Elemental')
+    parser.add_argument('--zombie-wraith', action='store_true', help='Include the fitted Zombie and Wraith')
+    parser.add_argument('--gorilla-gazer', action='store_true', help='Include the fitted Gorilla and Gazer')
     args = parser.parse_args()
     manifest, copies = prepare()
     source = args.ranked_source
@@ -171,7 +173,7 @@ def main():
         recorded = previous.get('ranked_source')
         if recorded:
             source = Path(recorded)
-    names = ('kraken', 'troll', 'bird', 'ettin', 'dolphin', 'field', 'cat', 'skeleton-mongbat', 'hound-bear', 'troll-ratman', 'brown-bear-cougar', 'wolf-grizzly', 'corpser-boar', 'goat-eagle', 'serpent-harpy', 'ogre-earth')
+    names = ('kraken', 'troll', 'bird', 'ettin', 'dolphin', 'field', 'cat', 'skeleton-mongbat', 'hound-bear', 'troll-ratman', 'brown-bear-cougar', 'wolf-grizzly', 'corpser-boar', 'goat-eagle', 'serpent-harpy', 'ogre-earth', 'zombie-wraith', 'gorilla-gazer')
     extensions = [name for name in names
                   if (getattr(args, name.replace('-', '_')) or f'{name}_native_proof_sha256' in previous
                       or (name == 'troll' and args.troll_ratman))]

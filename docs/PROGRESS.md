@@ -1,3 +1,17 @@
+# Enhanced Gorilla and Gazer
+
+The optional Enhanced profile now has 42 bodies. Gorilla body 29 and Gazer body 22 have 13 fitted motions based on 670 registered frames. Gorilla's named sequence member `build/animationsequence/00000029.bin` selects the low watch or chest beat in combat. Member `00001308.bin` shares animation body 29 and chooses the chest beat for both variations. The profile uses the named member for the normal Gorilla and leaves the separate body 1308 route open. The Gorilla keeps its four-limb contact solver in the retained gaits. Its chest beat and overhead drop lift the head by 35 cm above the opening crouch.
+
+The Gazer's unfurl extends its upper eye stalk by 1.00 m and keeps the mesh above the sampled slopes. Its original Classic eye flashes stayed on the animated eyes. The pair passed 288 decoded selections, 216 Classic comparisons, 6,045 terrain poses, 120 death handoffs, six static corpse hues and 104 rendered poses. The isolated server test passed 539 checks across Gorilla, the Gorilla-bodied Plague Spawn constructor, Gazer and Elder Gazer, including their stock melee, native deaths and 144 controlled Enhanced packets.
+
+# Enhanced Zombie and Wraith
+
+Zombie body 3 and Wraith body 26 have eleven fitted motions based on 565 registered frames. The Zombie's grave rise starts with the visible tip about 5 cm above level terrain and its skull still below the surface. The Wraith's reconstitution gathers five bone groups before the veil appears, then hands off to the retained Third Dawn rig. The assembly groups come from the original atlas and skin weights and preserve every source triangle and its UVs. The largest measured change in visible bounds across 15 joins was 0.04 mm.
+
+The fits passed 216 decoded selections, 162 Classic comparisons, 5,115 terrain poses, 135 death handoffs, seven static corpse hues and 128 rendered poses. The world replay covered the Zombie mid-rise, the Wraith before and after the assembly joined, and an interrupted veil dive. The early Wraith corpse retained its six displayed pieces and native spectral shader. The isolated server trial passed 512 checks across Zombie, Wraith, Shade, Spectre and the Spellbinder's body-26 constructor roll, including stock melee, deaths and 126 controlled Enhanced packets. Both clients received the native body and hue of each corpse. The default action ledger remains at 6,489 of 8,090 slots.
+
+The installed four-creature batch passed both terrain and corpse suites. The normal world replay passed 906 Classic and 935 Enhanced checks. Rebuild with `scripts/bake-zombie-wraith-enhanced.gd`, `scripts/bake-wraith-reconstitution.gd` and `scripts/bake-gorilla-gazer-enhanced.gd`. Install with `python -B scripts/prepare-enhanced-creature-actions.py --install --zombie-wraith --gorilla-gazer`. The 99 fitted scenes in the full optional profile, original art and isolated test receipts remain local.
+
 # Enhanced Ogre and Earth Elemental
 
 The optional profile now contains 38 bodies. Ogre body 1 and Earth Elemental body 14 add five fitted motions each from 465 frames in ten official Enhanced members. The Ogre has a turning sweep, crouch and rise, downward glance, brow guard and ready lean. The Earth Elemental has a two-hand slam, fist check, heavy guard, low brace and a stone formation. The formation animates 15 connected meshes from the retained Third Dawn body, preserving their UVs and materials. It starts with one visible stone and hands off to the exact posed rig. The largest measured bounds change across 15 joins was 0.09 mm.

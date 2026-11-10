@@ -33,7 +33,8 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 		var profile: Variant = payload.bodies[key]
 		if base.is_empty() or not profile is Dictionary or base.get("kind") != profile.get("kind"):
 			return {}
-		if not matches_base(base, profile.get("base_sha256")) or not valid_groups(profile.get("groups")):
+		var base_assets := registered_assets(base)
+		if not matches_base(base, base_assets, profile.get("base_sha256")) or not valid_groups(profile.get("groups")):
 			return {}
 		var row := base.duplicate(true)
 		row["enhanced_source_action_groups"] = profile.groups
@@ -47,10 +48,11 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 			return {}
 		if not assets.is_empty():
 			if not profile.get("grounded") is Array or not base.get("archive_grounded_gestures", []) is Array \
-				or assets.size() != base.assets.size():
+				or assets.size() != base_assets.size():
 				return {}
 			row["asset_sha256"] = {}
-			for treatment: String in base.assets:
+			row["assets"] = {}
+			for treatment: String in base_assets:
 				var asset: Variant = assets.get(treatment)
 				if not asset is Dictionary:
 					return {}
@@ -72,6 +74,14 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedEttinVisual.gd"
 			elif body == 205:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedRabbitVisual.gd"
+			elif body == 3:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedZombieVisual.gd"
+			elif body == 26:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedWraithVisual.gd"
+			elif body == 29:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedGorillaVisual.gd"
+			elif body == 22:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedGazerVisual.gd"
 			elif body == 8:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedCorpserVisual.gd"
 			elif body == 14:
@@ -89,14 +99,27 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 		rows[body] = row
 	return rows
 
-static func matches_base(base: Dictionary, expected: Variant) -> bool:
-	if not expected is Dictionary or not base.get("assets") is Dictionary or expected.size() != base.assets.size():
+static func registered_assets(base: Dictionary) -> Dictionary:
+	var assets: Variant = base.get("assets", {})
+	if assets is Dictionary and not assets.is_empty():
+		return assets
+	var digests: Variant = base.get("asset_sha256")
+	var paths := {}
+	if digests is Dictionary:
+		for treatment: String in digests:
+			if treatment not in ["original", "rounded", "modern"]:
+				return {}
+			paths[treatment] = Registry.asset_path(base, treatment)
+	return paths
+
+static func matches_base(base: Dictionary, assets: Dictionary, expected: Variant) -> bool:
+	if not expected is Dictionary or assets.is_empty() or expected.size() != assets.size():
 		return false
 	if base.has("asset_sha256"):
 		return base.asset_sha256 == expected
 	# Bundled assets have no local acceptance receipt.
-	for treatment: String in base.assets:
-		var digest := FileAccess.get_sha256(base.assets[treatment])
+	for treatment: String in assets:
+		var digest := FileAccess.get_sha256(assets[treatment])
 		if digest.is_empty() or digest != expected.get(treatment):
 			return false
 	return not expected.is_empty()

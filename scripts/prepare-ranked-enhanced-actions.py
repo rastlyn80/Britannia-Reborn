@@ -28,7 +28,7 @@ def read(path):
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
-def source_tables(root, source, sprites, types, flight_fallback=False):
+def source_tables(root, source, sprites, types, flight_fallback=False, member_hashes=None):
     scripts = root / "scripts"
     sequence = source / "AnimationSequence.uop"
     assert sha(sequence) == SEQUENCE_SHA256
@@ -37,6 +37,9 @@ def source_tables(root, source, sprites, types, flight_fallback=False):
     tables = {}
     for record in inspect(sequence, set(sprites)):
         body = record["animation_ref"]
+        member = (member_hashes or {}).get(body)
+        if member is not None and record["uop_name_hash"] != member:
+            continue
         assert not record.get("unparsed_bytes")
         table = {}
         seen = set()
@@ -82,8 +85,11 @@ def base_rows(viewer):
 
 def fitted_row(viewer, body, groups, grounded, scenes, candidate_hashes):
     base = base_rows(viewer)[body]
-    digests = {treatment: sha(viewer / asset.removeprefix("res://"))
-               for treatment, asset in base["assets"].items()}
+    base_assets = base.get("assets") or {
+        treatment: f"res://local-art/creatures/{base['kind']}-{treatment}.gltf"
+        for treatment in base.get("asset_sha256", {})
+    }
+    digests = {treatment: sha(viewer / asset.removeprefix("res://")) for treatment, asset in base_assets.items()}
     assert digests == base.get("asset_sha256", digests)
     assert digests.keys() == candidate_hashes.keys() == scenes.keys() and "modern" in digests
     row = {"kind": base["kind"], "base_sha256": digests, "groups": groups, "grounded": grounded, "assets": {}}
