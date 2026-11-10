@@ -20,7 +20,7 @@ func run() -> void:
 	prepare_body(211, BearClips, BearLengths, CommonJoints + ["bip01 spine2", "box01"], pose_bear)
 	quit()
 
-func prepare_body(body: int, clips: Dictionary, lengths: Dictionary, joints: Array, pose: Callable) -> void:
+func prepare_body(body: int, clips: Dictionary, lengths: Dictionary, joints: Array, pose: Callable, destination: String = Folder) -> void:
 	var row := Registry.entry(body)
 	for treatment: String in row.assets:
 		var source := Registry.asset_path(row, treatment)
@@ -43,7 +43,7 @@ func prepare_body(body: int, clips: Dictionary, lengths: Dictionary, joints: Arr
 		rig.reset_bone_poses()
 		var scene := PackedScene.new()
 		assert(scene.pack(model) == OK)
-		assert(ResourceSaver.save(scene, Folder + "%d-%s.scn" % [body, treatment], ResourceSaver.FLAG_COMPRESS) == OK)
+		assert(ResourceSaver.save(scene, destination + "%d-%s.scn" % [body, treatment], ResourceSaver.FLAG_COMPRESS) == OK)
 		model.free()
 		print("HOUND AND BEAR ENHANCED ", body, "/", treatment, ": ", clips.size(), " fitted source gestures")
 

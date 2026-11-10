@@ -156,6 +156,8 @@ def main():
     parser.add_argument('--cat', action='store_true', help='Include the fitted Enhanced Cat')
     parser.add_argument('--skeleton-mongbat', action='store_true', help='Include fitted Enhanced Skeleton and Mongbat')
     parser.add_argument('--hound-bear', action='store_true', help='Include fitted Enhanced Hound and Black Bear')
+    parser.add_argument('--troll-ratman', action='store_true', help='Include the fitted unarmed Troll and Ratman')
+    parser.add_argument('--brown-bear-cougar', action='store_true', help='Include the fitted Brown Bear and Cougar')
     args = parser.parse_args()
     manifest, copies = prepare()
     source = args.ranked_source
@@ -164,9 +166,10 @@ def main():
         recorded = previous.get('ranked_source')
         if recorded:
             source = Path(recorded)
-    names = ('kraken', 'troll', 'bird', 'ettin', 'dolphin', 'field', 'cat', 'skeleton-mongbat', 'hound-bear')
+    names = ('kraken', 'troll', 'bird', 'ettin', 'dolphin', 'field', 'cat', 'skeleton-mongbat', 'hound-bear', 'troll-ratman', 'brown-bear-cougar')
     extensions = [name for name in names
-                  if getattr(args, name.replace('-', '_')) or f'{name}_native_proof_sha256' in previous]
+                  if (getattr(args, name.replace('-', '_')) or f'{name}_native_proof_sha256' in previous
+                      or (name == 'troll' and args.troll_ratman))]
     if extensions and source is None:
         parser.error('The fitted extensions require --ranked-source or a previously recorded ranked source')
     if source is not None:

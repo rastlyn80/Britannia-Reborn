@@ -6,6 +6,8 @@ const Field := preload("res://../scripts/test-field-enhanced.gd")
 const Cats := preload("res://../scripts/test-cat-enhanced.gd")
 const RankedWings := preload("res://../scripts/test-skeleton-mongbat-enhanced.gd")
 const HoundBear := preload("res://../scripts/test-hound-bear-enhanced.gd")
+const TrollRatman := preload("res://../scripts/test-troll-ratman-enhanced.gd")
+const BrownCougar := preload("res://../scripts/test-brown-bear-cougar-enhanced.gd")
 const SERIAL := 0x105
 const BODY := 267
 
@@ -137,6 +139,10 @@ func run() -> void:
 		checks += check_skeleton_mongbat(world, at, enhanced)
 	if "--hound-bear" in OS.get_cmdline_user_args():
 		checks += check_hound_bear(world, at, enhanced)
+	if "--troll-ratman" in OS.get_cmdline_user_args():
+		checks += check_troll_ratman(world, at, enhanced)
+	if "--brown-bear-cougar" in OS.get_cmdline_user_args():
+		checks += check_brown_bear_cougar(world, at, enhanced)
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()
 	await process_frame
@@ -244,6 +250,97 @@ func check_hound_bear(world: Node, at: Vector2i, enhanced: bool) -> int:
 		world.creature_deaths.finish(serial)
 		checks += 2
 	return checks
+
+func check_troll_ratman(world: Node, at: Vector2i, enhanced: bool) -> int:
+	var checks := 0
+	var hue := 0x8035
+	for body: int in [53, 42]:
+		var serial := SERIAL + body
+		var classic := {"5": ["Fidget", "KnuckleCheck"], "8": ["KneelingSwing", "KneelingSwing"]} if body == 53 else {
+			"5": ["Fidget", "RatmanSniff"], "8": ["Hunch", "Hunch"]}
+		for flags: int in [0, 64]:
+			world.game._handle(mobile_packet(at, flags, serial, body, hue))
+			var actor: Node3D = world.avatars[serial].horse_visual
+			assert(actor.native_body == body and actor.native_hue == hue)
+			assert((actor.find_child(TrollRatman.Axe, true, false) != null) == (enhanced and body == 42))
+			checks += check_fitted_actions(world, actor, serial, TrollRatman.Modes[body], flags, enhanced, classic)
+		var actor: Node3D = world.avatars[serial].horse_visual
+		world.game._handle(action_packet(15, serial, 0))
+		if enhanced and body == 42:
+			assert(actor.current_clip == "RatmanAxeSomersault")
+			actor.animator.advance(.13)
+			actor.animator.seek(actor.animator.current_animation_length * .36, true)
+		var corpse := 0x40000500 + body
+		var death := PackedByteArray([0xaf])
+		death.append_array(Wire.uint_be(serial, 4))
+		death.append_array(Wire.uint_be(corpse, 4))
+		death.append_array(Wire.uint_be(0, 4))
+		world.game._handle(death)
+		var state: Dictionary = world.creature_deaths.active[serial]
+		var fallen: Node3D = state.visual
+		assert(fallen.current_clip == "Death" and fallen.native_body == body and fallen.native_hue == hue)
+		world.game._handle(corpse_packet(at, corpse, body, hue))
+		var holder: Node3D = world.world_items.nodes[corpse]
+		assert(not holder.visible and holder.get_meta("corpse_body") == body)
+		fallen.animator.advance(.13)
+		fallen.animator.seek(fallen.animator.current_animation_length, true)
+		world.creature_deaths._process(float(state.remaining) + .05)
+		var frozen: Node3D = holder.get_node("CorpseVisual")
+		assert(holder.visible and not world.creature_deaths.active.has(serial))
+		assert(frozen.get_meta("native_hue") == hue and frozen.find_children("*", "Skeleton3D", true, false).is_empty())
+		assert((frozen.get_node_or_null(TrollRatman.Axe) != null) == (enhanced and body == 42))
+		if enhanced and body == 42:
+			assert(world.world_items.corpse_snapshots.has(corpse))
+			checks += 2
+		checks += 5
+	return checks
+
+func check_brown_bear_cougar(world: Node, at: Vector2i, enhanced: bool) -> int:
+	var checks := 0
+	for body: int in [167, 63]:
+		var serial := SERIAL + body
+		var hue := 0x455 if body == 167 else 0x8035
+		for flags: int in [0, 64]:
+			world.game._handle(mobile_packet(at, flags, serial, body, hue))
+			var actor: Node3D = world.avatars[serial].horse_visual
+			var modes: Dictionary = BrownCougar.Modes[body]
+			assert(actor.native_body == body and actor.native_hue == hue)
+			assert(actor.animator.has_animation(modes["1"]["5"][0]) == enhanced)
+			checks += check_fitted_actions(world, actor, serial, modes, flags, enhanced)
+		var corpse := 0x40000500 + body
+		world.game._handle(corpse_packet(at, corpse, body, hue))
+		var death := PackedByteArray([0xaf])
+		death.append_array(Wire.uint_be(serial, 4))
+		death.append_array(Wire.uint_be(corpse, 4))
+		death.append_array(Wire.uint_be(0, 4))
+		world.game._handle(death)
+		var holder: Node3D = world.world_items.nodes[corpse]
+		var state: Dictionary = world.creature_deaths.active[serial]
+		var fallen: Node3D = state.visual
+		assert(not holder.visible and fallen.current_clip == "Death")
+		assert(fallen.native_body == body and fallen.native_hue == hue)
+		fallen.animator.advance(.13)
+		fallen.animator.seek(fallen.animator.current_animation_length, true)
+		world.creature_deaths._process(float(state.remaining) + .05)
+		var frozen: Node3D = holder.get_node("CorpseVisual")
+		assert(holder.visible and world.world_items.corpse_snapshots.has(corpse))
+		assert(frozen.get_meta("native_hue") == hue and frozen.find_children("*", "Skeleton3D", true, false).is_empty())
+		checks += 4
+	return checks
+
+func corpse_packet(at: Vector2i, serial: int, body: int, hue: int) -> PackedByteArray:
+	var packet := PackedByteArray([0xf3, 0, 1, 0])
+	packet.append_array(Wire.uint_be(serial, 4))
+	packet.append_array(Wire.uint_be(0x2006, 2))
+	packet.append(0)
+	packet.append_array(Wire.uint_be(body, 2))
+	packet.append_array(Wire.uint_be(body, 2))
+	packet.append_array(Wire.uint_be(at.x, 2))
+	packet.append_array(Wire.uint_be(at.y, 2))
+	packet.append_array(PackedByteArray([0, 1]))
+	packet.append_array(Wire.uint_be(hue, 2))
+	packet.append_array(PackedByteArray([0, 0, 0]))
+	return packet
 
 func check_fitted_actions(world: Node, actor: Node3D, serial: int, modes: Dictionary, flags: int, enhanced: bool,
 		classic: Dictionary = {}) -> int:

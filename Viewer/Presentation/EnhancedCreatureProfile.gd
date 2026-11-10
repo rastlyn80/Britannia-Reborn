@@ -64,13 +64,15 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 				var grounded: Array = row.get("archive_grounded_gestures", [])
 				grounded.append_array(profile.grounded)
 				row["archive_grounded_gestures"] = grounded
-			if body == 54:
+			if body in [53, 54]:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedTrollVisual.gd"
+			elif body == 42:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedRatmanVisual.gd"
 			elif body == 18:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedEttinVisual.gd"
 			elif body == 205:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedRabbitVisual.gd"
-			elif body in [207, 211, 217, 223, 234, 237]:
+			elif body in [63, 167, 207, 211, 217, 223, 234, 237]:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedFieldVisual.gd"
 			elif body == 50:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedSkeletonVisual.gd"
