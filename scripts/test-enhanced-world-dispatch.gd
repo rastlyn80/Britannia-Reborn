@@ -15,6 +15,7 @@ const SerpentHarpy := preload("res://../scripts/test-serpent-harpy-enhanced.gd")
 const OgreEarth := preload("res://../scripts/test-ogre-earth-enhanced.gd")
 const Undead := preload("res://../scripts/test-zombie-wraith-enhanced.gd")
 const Fitted := preload("res://../scripts/test-gorilla-gazer-enhanced.gd")
+const GargoyleThroughGhoul := preload("test-gargoyle-through-ghoul-world.gd")
 const SERIAL := 0x105
 const BODY := 267
 
@@ -168,6 +169,10 @@ func run() -> void:
 		var gorilla_gazer := await check_gorilla_gazer(world, at, enhanced)
 		assert(gorilla_gazer.size() == 2)
 		checks += 16 if enhanced else 12
+	if "--gargoyle-through-ghoul" in OS.get_cmdline_user_args():
+		var fitted_batch := await GargoyleThroughGhoul.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == GargoyleThroughGhoul.Cases.size())
+		checks += int(fitted_batch.checks)
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()
 	await process_frame

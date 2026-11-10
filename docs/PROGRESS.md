@@ -1,3 +1,15 @@
+# Enhanced Gargoyle, Headless One, Imp and Ghoul
+
+The optional Enhanced profile contains 46 bodies and 111 fitted local scenes. Gargoyle 4, Headless One 31, Imp 74 and Ghoul 153 add 13 motions on their retained Third Dawn rigs. The fits use 605 registered frames across 13 `AMOU` members. The preparation script pins each member, its matching named `AnimationSequence.uop` record, and the source and fitted asset hashes.
+
+The Gargoyle's wing-tip joints spread from 0.52 to 1.90 m during its rise. Its source flight mode falls back to the peaceful table. The Imp's sequence has no flight table. Its hover, wing flick and banking feint keep the ordinary peaceful or combat choice while it is flying. Its single original fall starts from the displayed hover or wing pose. The Headless One rises 0.49 m at the neck. The fitted, transient spine effect follows the neck and left hand during both new gestures. It clears on death, leaving the original body as a static corpse. The Ghoul retains its Third Dawn rig and material. The Enhanced sprite reference has a larger pale garment, which remains a visual difference.
+
+The candidates passed 300 decoded selections, 198 Classic comparisons, 6,045 terrain poses, 390 death handoffs, 12 static corpse hues and 104 rendered poses. The isolated trials passed 499 checks across Gargoyle, Headless One, Imp, Ghoul and Bogle, including ordinary Classic melee, native corpse bodies and hues, and 120 controlled Enhanced packets. The world replay covers the Gargoyle's ground and airborne falls, two Imp interruptions, and both undead rises. The default action ledger remains at 6,489 of 8,090 tracked slots.
+
+The installed profile passed the terrain and corpse suite, followed by 980 Classic and 1,023 Enhanced checks through the normal world scene. The loader rejected a preview with a mismatched Headless One asset fingerprint.
+
+Rebuild the local scenes with `scripts/bake-gargoyle-headless-enhanced.gd` and `scripts/bake-imp-ghoul-enhanced.gd`. Run `python -B scripts/prepare-enhanced-creature-actions.py --install --gargoyle-through-ghoul` to seal and install the optional batch. The cached archive audit has no matching Gargoyle groups 4, 11 or 15, or Headless One groups 4, 11, 15, 26 or 27. Those choices keep the existing Classic dispatch and are outside the fitted batch.
+
 # Enhanced Gorilla and Gazer
 
 The optional Enhanced profile now has 42 bodies. Gorilla body 29 and Gazer body 22 have 13 fitted motions based on 670 registered frames. Gorilla's named sequence member `build/animationsequence/00000029.bin` selects the low watch or chest beat in combat. Member `00001308.bin` shares animation body 29 and chooses the chest beat for both variations. The profile uses the named member for the normal Gorilla and leaves the separate body 1308 route open. The Gorilla keeps its four-limb contact solver in the retained gaits. Its chest beat and overhead drop lift the head by 35 cm above the opening crouch.

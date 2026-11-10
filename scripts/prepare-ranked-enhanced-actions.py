@@ -28,7 +28,7 @@ def read(path):
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
-def source_tables(root, source, sprites, types, flight_fallback=False, member_hashes=None):
+def source_tables(root, source, sprites, types, flight_fallback=False, member_hashes=None, flight_mode_fallback=0):
     scripts = root / "scripts"
     sequence = source / "AnimationSequence.uop"
     assert sha(sequence) == SEQUENCE_SHA256
@@ -47,7 +47,7 @@ def source_tables(root, source, sprites, types, flight_fallback=False, member_ha
         for mode in record["modes"]:
             number = mode["mode"]
             if number == 3 and flight_fallback:
-                assert not flight_mode and mode["fallback_mode"] == 0
+                assert not flight_mode and mode["fallback_mode"] == flight_mode_fallback
                 assert not any(row["type"] in types for row in mode["new_protocol_actions"])
                 flight_mode = True
                 continue
