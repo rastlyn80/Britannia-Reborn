@@ -30,12 +30,16 @@ const EvilMagePlagueBeast := preload("test-evil-mage-plague-beast-world.gd")
 const KappaSnow := preload("test-kappa-snow-elemental-world.gd")
 const GiantRatVampireBat := preload("test-giant-rat-vampire-bat-world.gd")
 const ArmedMages := preload("test-orc-shaman-ophidian-mage-world.gd")
+const KnightAcid := preload("test-skeletal-knight-acid-elemental-world.gd")
+const PixieFrost := preload("test-pixie-frost-troll-world.gd")
+const PoisonSpider := preload("test-poison-elemental-dread-spider-world.gd")
 const SERIAL := 0x105
 const BODY := 267
 
 func _initialize() -> void:
-	create_timer(210.0).timeout.connect(func():
-		push_error("Combined creature replay exceeded 210 seconds.")
+	var deadline := 300.0 if "--knight-acid-pixie-frost" in OS.get_cmdline_user_args() else 210.0
+	create_timer(deadline).timeout.connect(func():
+		push_error("Combined creature replay exceeded %.0f seconds." % deadline)
 		quit(2))
 	call_deferred("run")
 
@@ -247,6 +251,15 @@ func run() -> void:
 	if "--orc-shaman-ophidian-mage" in OS.get_cmdline_user_args():
 		var fitted_batch := await ArmedMages.check(self, world, at, enhanced)
 		assert(fitted_batch.rows.size() == ArmedMages.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--knight-acid-pixie-frost" in OS.get_cmdline_user_args():
+		for family in [KnightAcid, PixieFrost]:
+			var fitted_batch: Dictionary = await family.check(self, world, at, enhanced)
+			assert(fitted_batch.rows.size() == family.Cases.size())
+			checks += int(fitted_batch.checks)
+	if "--poison-elemental-dread-spider" in OS.get_cmdline_user_args():
+		var fitted_batch := await PoisonSpider.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == PoisonSpider.Cases.size())
 		checks += int(fitted_batch.checks)
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()

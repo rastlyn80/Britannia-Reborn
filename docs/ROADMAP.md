@@ -1,3 +1,13 @@
+# Poison Elemental and Dread Spider
+
+The optional Enhanced profile reaches 81 bodies. Poison Elemental 162 and Dread Spider 11 retain their Third Dawn rigs and have seven fitted motions. The Dread Spider's silk clears from the static corpse and its displayed slope survives the fall. Both stock creatures passed isolated movement, lethal melee poison, hues, corpses and reagent loot. Continue the configured occurrence queue with Mummy and Pestilent Bandage on body 154 and Balron on body 40, which uses the Daemon Elder art. Compare the five additionally decoded Skeletal Knight groups with the corresponding retained actions.
+
+# Skeletal Knight, Acid Elemental, Pixie and Frost Troll
+
+The optional Enhanced profile reaches 79 bodies. Skeletal Knight 147 has two fitted living actions with an uninterrupted scimitar grip and a measured shield release on death. Acid Elemental 158 has fitted emergence and guard motions with tested size recovery and native lethal melee poison. Pixie 128 and Frost Troll 55 have nine fitted actions. The Pixie's emergence effect clears before the corpse appears. The Frost Troll retains its unarmed displayed corpse across late hue updates. The four native constructors, the fitted motions and the static corpse handoffs passed their targeted checks.
+
+Compare the five remaining Skeletal Knight reference groups 4, 11, 15, 26 and 27 with its existing routes. Keep exact source gaps for Pixie and Frost Troll open. Continue the occurrence queue with Poison Elemental 162 and Dread Spider 11. The seven available Enhanced groups for these two bodies have been decoded.
+
 # Orc Shaman and Ophidian Mage
 
 The optional Enhanced profile reaches 75 bodies. Orcish Mage 140 and both Ophidian casters on body 85 retain their Third Dawn rigs, fitted staffs, stock server identities and native corpse appearances. Six fitted actions pass both world replays, including death during a visible turn. Controlled Lightning confirms actual server damage. The pinned server's native caster animation remains open, as do the Orcish Mage's unlocated Enhanced fidget frames. Continue the occurrence queue with Skeletal Knight 147 and Acid Elemental 158. Bone Knight is the distinct body 57.

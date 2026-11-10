@@ -1,3 +1,27 @@
+# Enhanced Poison Elemental and Dread Spider
+
+Poison Elemental 162 and Dread Spider 11 add seven fitted motions from 335 registered frames in seven official AMOU members. The optional Enhanced profile reaches 81 bodies and 208 local fitted scenes. Poison Elemental keeps its original fluid surface and rig. It rises from a crouch at full scale and lifts its knee into the guard. Dread Spider retains the original mesh, eight leg chains, existing Classic motions and both falls. The modern surface uses the original abdomen marking for the warm Enhanced colour while preserving the native full and partial dye rules. A procedural silk opening follows the emergence. It fades out before the static corpse appears.
+
+The pair passed 3,255 terrain poses, 210 interrupted falls, 144 decoded selections, 108 Classic comparisons and 70 Vulkan views. Dread Spider keeps its displayed slope angle into the fall. Its sampled joints move less than one micrometre when the fall starts. The fixture and prepared Britain each passed 42 Classic and 56 Enhanced world checks, including death during the silk emergence.
+
+The isolated server run passed 203 checks across both stock constructors, including 36 controlled Enhanced actions and native movement, melee, body colours and corpse replication. Both stock AI paths delivered lethal melee poison. The Poison Elemental dropped four nightshade and the Dread Spider dropped eight spider silk. The Dread Spider uses the existing Third Dawn source mesh, which has a narrower front silhouette than the official Enhanced sprites.
+
+Rebuild with `scripts/bake-poison-elemental-enhanced.gd` and `scripts/bake-dread-spider-enhanced.gd`. Run `scripts/test-poison-elemental-dread-spider-enhanced.gd` and the disposable server recipe. Install using `python -B scripts/prepare-enhanced-creature-actions.py --install --knight-acid-pixie-frost --poison-elemental-dread-spider`.
+
+# Enhanced Skeletal Knight, Acid Elemental, Pixie and Frost Troll
+
+Thirteen fitted motions use 575 registered 2D reference frames from thirteen official AMOU members. The optional profile reaches 79 bodies and 202 local fitted scenes. The default action ledger remains at 6,489 of 8,090 tracked slots.
+
+Skeletal Knight body 147 retains the Third Dawn rig, scimitar and wooden shield. Both props stay in their grips during the two new living motions. During the fall the shield releases along a continuous path and settles about 12 mm above the flat plane in the bake. The scimitar stays attached to its hand. The two props cleared 11,016 samples across the three mesh treatments. The five additional Enhanced references for groups 4, 11, 15, 26 and 27 are decoded and await comparison with the retained Classic actions. Bone Knight has the separate native body 57.
+
+Acid Elemental body 158 retains its source rig and fluid shader. Its compressed emergence rises from 7.6 cm to 2.19 m and recovers full size after an interrupted rise. Pixie body 128 retains the native wing joints, and the warm emergence effect fades before the static corpse appears. Frost Troll body 55 keeps the Classic club appearance. The five new motions use bare hands as in the Enhanced references. The held corpse pose stays unarmed if the server sends a new colour.
+
+The fitted scenes passed 6,045 terrain poses, 390 interrupted falls and 140 Vulkan views. The targeted world replay passed 66 Classic and 88 Enhanced checks on both the fixture and prepared Britain. An additional corpse update replay preserved the Frost Troll's frozen geometry, placement and missing club while applying the actual new dye palette.
+
+The isolated ModernUO trials passed 148 Skeletal Knight and Acid Elemental checks and 200 Pixie and Frost Troll checks, with 66 controlled Enhanced actions in total. The four bodies retained native movement, colours, corpses and expected loot. Acid Elemental's stock melee applied lethal poison. Frost Troll's stock melee and axe drop passed. The Pixie's stock Lightning target cursor dealt real damage when invoked under controlled conditions. The pinned server emitted no Classic cast animation for that NPC spell.
+
+Rebuild with `scripts/bake-skeletal-knight-enhanced.gd`, `scripts/bake-acid-elemental-enhanced.gd` and `scripts/bake-pixie-frost-troll-enhanced.gd`. The optional profile verifier checks the named sequence records, individual frame payloads, candidate scene hashes and isolated native receipts. Install using `python -B scripts/prepare-enhanced-creature-actions.py --install --knight-acid-pixie-frost`. Original inputs, fitted scenes and disposable test data stay local.
+
 # Enhanced Orc Shaman and Ophidian Mage
 
 Six fitted motions use 295 registered frames from six official AMOU members. Orcish Mage body 140 retains the Third Dawn rig and uses its original 50-point, 96-triangle staff and weapons atlas. The staff is 83 percent of the source length and 70 percent of the source width and depth to better match the reference and give the rise clearance. Only the right upper-arm rotations in the retained fall and fidget receive a clearance adjustment. Ophidian Mage body 85 retains its original rig, staff, and all existing motion keys. The optional profile reaches 75 bodies and 190 local fitted scenes. The default ledger remains 6,489 of 8,090 tracked slots.

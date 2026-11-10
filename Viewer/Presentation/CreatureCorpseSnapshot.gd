@@ -18,10 +18,15 @@ static func capture(visual: Node3D, actor_floor: float) -> Dictionary:
 	frozen.free()
 	if status != OK:
 		return {}
+	var hidden_props: Array[StringName] = []
+	for prop: MeshInstance3D in visual.find_children("*", "MeshInstance3D", true, false):
+		if not prop.is_visible_in_tree() and prop.get_meta("optional_corpse_visual_prop", false):
+			hidden_props.append(prop.name)
 	return {
 		"body": visual.native_body,
 		"scene": scene,
 		"placement": visual.global_transform * Transform3D(Basis.IDENTITY, Vector3.UP * actor_floor),
+		"hidden_props": hidden_props,
 	}
 
 static func apply(holder: Node3D, snapshot: Dictionary) -> bool:
@@ -35,7 +40,7 @@ static func apply(holder: Node3D, snapshot: Dictionary) -> bool:
 	var frozen := scene.instantiate() as Node3D
 	if frozen == null:
 		return false
-	if frozen.get_meta("native_hue") != old.get_meta("native_hue") and not use_current_materials(frozen, old):
+	if frozen.get_meta("native_hue") != old.get_meta("native_hue") and not use_current_materials(frozen, old, snapshot.get("hidden_props", [])):
 		frozen.free()
 		return false
 	old.free()
@@ -48,11 +53,13 @@ static func apply(holder: Node3D, snapshot: Dictionary) -> bool:
 	pick.position = bounds.get_center()
 	return true
 
-static func use_current_materials(frozen: Node3D, current: Node3D) -> bool:
+static func use_current_materials(frozen: Node3D, current: Node3D, hidden_props: Array) -> bool:
 	# A native corpse update may dye the same serial after its death pose was
 	# captured. Keep that geometry and placement with the current appearance.
-	if frozen.get_child_count() != current.get_child_count():
-		return false
+	for part: MeshInstance3D in current.get_children():
+		# The default corpse can have a visual prop hidden in the captured pose.
+		if not frozen.has_node(NodePath(part.name)) and part.name not in hidden_props:
+			return false
 	for part: MeshInstance3D in frozen.get_children():
 		var latest := current.get_node_or_null(NodePath(part.name)) as MeshInstance3D
 		if latest == null or latest.mesh.get_surface_count() != part.mesh.get_surface_count():

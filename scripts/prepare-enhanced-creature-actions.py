@@ -180,6 +180,8 @@ def main():
     parser.add_argument('--kappa-snow-elemental', action='store_true', help='Include the fitted Kappa and Snow Elemental')
     parser.add_argument('--giant-rat-vampire-bat', action='store_true', help='Include the fitted Giant Rat and Vampire Bat')
     parser.add_argument('--orc-shaman-ophidian-mage', action='store_true', help='Include the fitted Orc Shaman and Ophidian Mage')
+    parser.add_argument('--knight-acid-pixie-frost', action='store_true', help='Include the fitted Skeletal Knight, Acid Elemental, Pixie and Frost Troll')
+    parser.add_argument('--poison-elemental-dread-spider', action='store_true', help='Include the fitted Poison Elemental and Dread Spider')
     args = parser.parse_args()
     manifest, copies = prepare()
     source = args.ranked_source
@@ -188,7 +190,7 @@ def main():
         recorded = previous.get('ranked_source')
         if recorded:
             source = Path(recorded)
-    names = ('kraken', 'troll', 'bird', 'ettin', 'dolphin', 'field', 'cat', 'skeleton-mongbat', 'hound-bear', 'troll-ratman', 'brown-bear-cougar', 'wolf-grizzly', 'corpser-boar', 'goat-eagle', 'serpent-harpy', 'ogre-earth', 'zombie-wraith', 'gorilla-gazer', 'gargoyle-through-ghoul', 'scorpion-through-slime', 'alligator-direwolf', 'crane-fire', 'lich-gaman', 'chicken-skeletal-mage', 'daemon-wyvern', 'polar-bear', 'drake-walrus', 'ice-serpent-bogling', 'tsuki-wolf-ophidian', 'evil-mage-plague-beast', 'kappa-snow-elemental', 'giant-rat-vampire-bat', 'orc-shaman-ophidian-mage')
+    names = ('kraken', 'troll', 'bird', 'ettin', 'dolphin', 'field', 'cat', 'skeleton-mongbat', 'hound-bear', 'troll-ratman', 'brown-bear-cougar', 'wolf-grizzly', 'corpser-boar', 'goat-eagle', 'serpent-harpy', 'ogre-earth', 'zombie-wraith', 'gorilla-gazer', 'gargoyle-through-ghoul', 'scorpion-through-slime', 'alligator-direwolf', 'crane-fire', 'lich-gaman', 'chicken-skeletal-mage', 'daemon-wyvern', 'polar-bear', 'drake-walrus', 'ice-serpent-bogling', 'tsuki-wolf-ophidian', 'evil-mage-plague-beast', 'kappa-snow-elemental', 'giant-rat-vampire-bat', 'orc-shaman-ophidian-mage', 'knight-acid-pixie-frost', 'poison-elemental-dread-spider')
     extensions = [name for name in names
                   if (getattr(args, name.replace('-', '_')) or f'{name}_native_proof_sha256' in previous
                       or (name == 'troll' and args.troll_ratman))]
