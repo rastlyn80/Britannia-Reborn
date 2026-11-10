@@ -256,10 +256,18 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
   & $godot --headless --path "$root/Viewer" --script res://../scripts/test-enhanced-fidget-dispatch.gd -- --installed
   if ($LASTEXITCODE) {throw 'Enhanced and Classic creature dispatch comparison failed'}
   $profileTests = @('--world=res://world.json')
-  if ((Get-Content -LiteralPath $enhancedManifest -Raw | ConvertFrom-Json).ranked_source) {
+  $profile = Get-Content -LiteralPath $enhancedManifest -Raw | ConvertFrom-Json
+  if ($profile.ranked_source) {
    & $godot --headless --path "$root/Viewer" --script res://../scripts/test-ranked-enhanced.gd -- --installed
    if ($LASTEXITCODE) {throw 'Enhanced Orc and Water Elemental motion, terrain or corpse failed'}
    $profileTests += '--ranked'
+  }
+  foreach ($extension in @('kraken','troll')) {
+   if ($profile.PSObject.Properties["${extension}_native_proof_sha256"]) {
+    & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-${extension}-enhanced.gd" -- --installed
+    if ($LASTEXITCODE) {throw "Enhanced $extension motion, terrain or corpse failed"}
+    $profileTests += "--$extension"
+   }
   }
   & $godot --headless --path "$root/Viewer" --script res://../scripts/test-enhanced-world-dispatch.gd -- @profileTests
   if ($LASTEXITCODE) {throw 'Classic world creature dispatch failed'}

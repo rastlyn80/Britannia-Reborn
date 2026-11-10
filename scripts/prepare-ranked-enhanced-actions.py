@@ -28,17 +28,14 @@ def read(path):
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
-def prepare_ranked(root, source):
+def source_tables(root, source, sprites, types):
     scripts = root / "scripts"
-    viewer = root / "Viewer"
-    work = root / "work/creatures"
-    scenes = work / "native-form-audit/enhanced-source-gaps/amou"
     sequence = source / "AnimationSequence.uop"
     assert sha(sequence) == SEQUENCE_SHA256
     inspect = runpy.run_path(str(scripts / "uo-human-sequences.py"))["inspect"]
     decode = runpy.run_path(str(scripts / "uo-enhanced-frames.py"))["read_amou"]
     tables = {}
-    for record in inspect(sequence, set(SPRITES)):
+    for record in inspect(sequence, set(sprites)):
         body = record["animation_ref"]
         assert not record.get("unparsed_bytes")
         table = {}
@@ -50,21 +47,55 @@ def prepare_ranked(root, source):
             actions = {}
             for row in mode["new_protocol_actions"]:
                 action = str(row["type"])
-                if row["type"] not in (8, 15):
+                if row["type"] not in types:
                     continue
                 assert row["subaction"] == -1 and action not in actions
-                actions[action] = [SPRITES[body][group][0] for group in row["groups"]]
+                actions[action] = [sprites[body][group][0] for group in row["groups"]]
                 seen.update(row["groups"])
             table[str(number)] = actions
-        assert table.keys() == {"0", "1"} and seen == SPRITES[body].keys()
-        for group, (_, count, digest) in SPRITES[body].items():
+        assert table.keys() == {"0", "1"} and seen == sprites[body].keys()
+        for group, (_, count, digest) in sprites[body].items():
             payload = source / f"ec-frame-{body}-{group}.bin"
             assert sha(payload) == digest
             identity, frames = decode(payload.read_bytes())
             assert identity == body and len(frames) == count and all(frame.group == group for frame in frames)
         tables[body] = table
-    assert tables.keys() == SPRITES.keys()
+    assert tables.keys() == sprites.keys()
+    return tables
 
+
+def base_rows(viewer):
+    rows = {}
+    for index in (viewer / "Art/Creatures/index.json", viewer / "local-art/creatures/accepted-index.json"):
+        for row in read(index)["entries"]:
+            if row["status"] == "validated":
+                for identity in row["bodies"]:
+                    rows[identity["body"]] = row
+    return rows
+
+
+def fitted_row(viewer, body, groups, grounded, scenes, candidate_hashes):
+    base = base_rows(viewer)[body]
+    digests = {treatment: sha(viewer / asset.removeprefix("res://"))
+               for treatment, asset in base["assets"].items()}
+    assert digests == base.get("asset_sha256", digests)
+    assert digests.keys() == candidate_hashes.keys() == scenes.keys() == {"original", "rounded", "modern"}
+    row = {"kind": base["kind"], "base_sha256": digests, "groups": groups, "grounded": grounded, "assets": {}}
+    copies = {}
+    for treatment, scene in scenes.items():
+        digest = sha(scene)
+        assert digest == candidate_hashes[treatment]
+        target = f"local-art/creatures/enhanced-creature-actions/{body}-{treatment}.scn"
+        row["assets"][treatment] = {"path": "res://" + target, "sha256": digest}
+        copies[viewer / target] = scene
+    return row, copies
+
+
+def prepare_ranked(root, source):
+    scripts, viewer = root / "scripts", root / "Viewer"
+    work = root / "work/creatures"
+    scenes = work / "native-form-audit/enhanced-source-gaps/amou"
+    tables = source_tables(root, source, SPRITES, (8, 15))
     candidate = read(scenes / "ranked-enhanced-candidate.json")
     assert candidate["test_sha256"] == sha(scripts / "test-ranked-enhanced.gd")
     assert (candidate["routes"], candidate["classic_compatibility"], candidate["corpse_hues"],
@@ -83,16 +114,11 @@ def prepare_ranked(root, source):
     assert native["test_sha256"] == sha(native_folder / "NativeRankedActionsLive.gd")
     assert native["checks"] == 79 and native["records"].keys() == {"orc", "water"}
 
-    base_rows = {}
-    for index in (viewer / "Art/Creatures/index.json", viewer / "local-art/creatures/accepted-index.json"):
-        for row in read(index)["entries"]:
-            if row["status"] == "validated":
-                for identity in row["bodies"]:
-                    base_rows[identity["body"]] = row
+    baseline = base_rows(viewer)
     rows = {}
     copies = {}
     for body, name in ((16, "water"), (17, "orc")):
-        base = base_rows[body]
+        base = baseline[body]
         table = tables[body]
         report = native["records"][name]
         assert report["body"] == body and len(report["cases"]) == 10

@@ -47,6 +47,33 @@ func run() -> void:
 				assert(avatar.horse_visual.current_clip == (form[2] if enhanced else "Pillage"))
 				assert(avatar.horse_visual.native_body == body and avatar.horse_visual.native_hue == 0x8035)
 				checks += 3
+	if "--kraken" in OS.get_cmdline_user_args():
+		for flags: int in [0, 0x40]:
+			var serial := SERIAL + 77
+			world.game._handle(mobile_packet(at, flags, serial, 77, 0x481))
+			var avatar: Node3D = world.avatars[serial]
+			assert(avatar.horse_visual.native_body == 77 and avatar.horse_visual.native_hue == 0x481)
+			var old_scene: String = avatar.horse_visual.entry.assets.modern
+			assert(old_scene.ends_with("enhanced-creature-actions/77-modern.scn") == enhanced)
+			var fidget := "KrakenScan" if flags == 0 else "KrakenFinThrust"
+			for selection: Array in [[5, fidget, "Fidget2"], [8, "KrakenAlert", "Fidget"],
+					[14, "KrakenPoise", "Fidget"], [15, "KrakenSurface", "Fidget"]]:
+				world.game._handle(action_packet(selection[0], serial))
+				assert(avatar.horse_visual.current_clip == selection[1 if enhanced else 2])
+				checks += 1
+	if "--troll" in OS.get_cmdline_user_args():
+		for flags: int in [0, 0x40]:
+			var serial := SERIAL + 54
+			world.game._handle(mobile_packet(at, flags, serial, 54, 0x8035))
+			var actor: Node3D = world.avatars[serial].horse_visual
+			assert(actor.native_body == 54 and actor.native_hue == 0x8035)
+			assert((actor.find_child("EnhancedAxe", true, false) != null) == enhanced)
+			var fidget := "TrollWatch" if flags == 0 else "TrollRaiseAxe"
+			for selection: Array in [[5, fidget, "KnuckleCheck"], [8, "TrollAlert", "KneelingSwing"],
+					[11, "TrollOverheadChop", "KneelingSwing"], [15, "TrollRise", "KneelingSwing"]]:
+				world.game._handle(action_packet(selection[0], serial))
+				assert(actor.current_clip == selection[1 if enhanced else 2])
+				checks += 1
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()
 	await process_frame

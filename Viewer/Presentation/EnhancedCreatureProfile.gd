@@ -59,6 +59,8 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 				var grounded: Array = row.get("archive_grounded_gestures", [])
 				grounded.append_array(profile.grounded)
 				row["archive_grounded_gestures"] = grounded
+			if body == 54:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedTrollVisual.gd"
 		rows[body] = row
 	return rows
 
@@ -84,7 +86,7 @@ static func valid_groups(groups: Variant) -> bool:
 			return false
 		for kind: String in actions:
 			var clips: Variant = actions[kind]
-			if kind not in ["5", "8", "15"] or not clips is Array or clips.is_empty():
+			if kind not in ["5", "8", "11", "14", "15"] or not clips is Array or clips.is_empty():
 				return false
 			if not clips.all(func(clip: Variant): return clip is String and not clip.is_empty()):
 				return false

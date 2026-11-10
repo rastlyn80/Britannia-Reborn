@@ -146,21 +146,34 @@ def main():
     modes.add_argument('--install', action='store_true')
     modes.add_argument('--check-installed', action='store_true')
     parser.add_argument('--ranked-source', type=Path, help='Local folder holding the pinned Enhanced sequence and AMOU files')
+    parser.add_argument('--kraken', action='store_true', help='Include the verified compact Kraken and Leviathan')
+    parser.add_argument('--troll', action='store_true', help='Include the fitted Enhanced Troll')
     args = parser.parse_args()
     manifest, copies = prepare()
     source = args.ranked_source
-    if source is None and ACTIVE.is_file():
-        recorded = read(ACTIVE).get('ranked_source')
+    previous = read(ACTIVE) if ACTIVE.is_file() else {}
+    if source is None:
+        recorded = previous.get('ranked_source')
         if recorded:
             source = Path(recorded)
+    extensions = [name for name in ('kraken', 'troll')
+                  if getattr(args, name) or f'{name}_native_proof_sha256' in previous]
+    if extensions and source is None:
+        parser.error('The fitted extensions require --ranked-source or a previously recorded ranked source')
     if source is not None:
         source = source.resolve(strict=True)
-        ranked = runpy.run_path(str(HERE / 'prepare-ranked-enhanced-actions.py'))['prepare_ranked']
-        rows, ranked_copies, proof = ranked(ROOT, source)
+        ranked = runpy.run_path(str(HERE / 'prepare-ranked-enhanced-actions.py'))
+        rows, ranked_copies, proof = ranked['prepare_ranked'](ROOT, source)
         manifest['bodies'].update(rows)
         copies.update(ranked_copies)
         manifest['ranked_source'] = str(source)
         manifest['ranked_native_proof_sha256'] = proof
+        for name in extensions:
+            prepare_extension = runpy.run_path(str(HERE / f'prepare-{name}-enhanced.py'))[f'prepare_{name}']
+            rows, extension_copies, proof = prepare_extension(ROOT, source, ranked)
+            manifest['bodies'].update(rows)
+            copies.update(extension_copies)
+            manifest[f'{name}_native_proof_sha256'] = proof
     if args.stage:
         (GAPS / ACTIVE.name).write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
     elif args.install:
