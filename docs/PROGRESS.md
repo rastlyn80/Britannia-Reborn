@@ -1,3 +1,25 @@
+# Enhanced Lich and Gaman
+
+Lich 24 and Gaman 248 add nine fitted motions from 445 registered frames in nine official AMOU members. The Lich keeps the original rig and visible staff, with an authored spiral during its rise and a raised ward. The staff stays in the displayed grip when a fit is interrupted by death and remains on the static corpse. The temporary spiral clears when the action ends. Gaman keeps the Third Dawn `wild_guar` model, including its jaws, horns and dense surface. Its seven fits include the shoulder lunge, nose dip, recoil and hind-leg rear. With Crane and Fire Elemental, the optional profile reaches 56 bodies and 137 local scenes. The default ledger remains at 6,489 of 8,090 slots.
+
+The two fits passed 192 decoded selections, 144 Classic comparisons, 4,185 terrain poses, 270 interrupted death handoffs, six static corpse hues and 72 rendered poses. Two isolated clients confirmed actual one-tile movement, stock melee, server hues and corpses in 211 checks, including 48 controlled Enhanced packets. The stock Lich packs a Gnarled Staff as loot. Its visible staff comes from the model. The stock Gaman is tameable and drops one or two horns. The targeted world replay passed 24 Classic and 32 Enhanced checks.
+
+On mixed terrain, the Deathwatch Beetle's feet sampled different planes. Its fitted living pose now also clears the centre plane used by the death handoff. The correction removed an 8.5 mm entry lift in the release test map. A fresh isolated trial rechecked the Scorpion, Deathwatch Beetle and hatchling, including the adult beetle's regular poison.
+
+The installed profile passed 1,112 Classic and 1,197 Enhanced checks on the release test map and 1,197 Enhanced checks on the local Britain map. These replays include the corrected beetle handoff and the removal of transient Fire Elemental corpses with and without a preceding item packet.
+
+Rebuild with `scripts/bake-lich-gaman-enhanced.gd` and install with `python -B scripts/prepare-enhanced-creature-actions.py --install --crane-fire --lich-gaman`. Source frames, fitted scenes and isolated trial artifacts stay local.
+
+# Enhanced Crane and Fire Elemental
+
+Crane 254 and Fire Elemental 15 add eight fitted motions from 320 registered frames in eight official AMOU members. Crane keeps its Third Dawn model and measured foot support. Its wings open at both joints during the fan, thrust and wing beat. Fire Elemental keeps the bundled flame and ash model on the CC0 carrier. The new actions kindle from a small flame and raise both arms into a crown. The optional profile reaches 54 bodies and 131 local fitted scenes. The default ledger stays at 6,489 of 8,090 slots.
+
+The fits passed 160 decoded selections, 120 Classic comparisons, 3,100 terrain poses, 200 interrupted death handoffs, six static corpse hues and 64 rendered poses. Fire ignition also yields to Enhanced alert, Classic melee and walking. Both isolated clients received the stock melee actions, hue changes and native deaths. The trial passed 271 checks across Crane, Fire Elemental and the real Fire Elemental summon, including 60 controlled Enhanced packets. The Crane supplies 25 feathers and both Fire forms carry the native light item.
+
+The summon sends a death packet with a real corpse serial before deleting the temporary item. The client drops its pending snapshot on that removal, even if the world-item packet never arrived. The fall can finish after the mobile is removed. Normal Crane and wild Fire corpses retain their final pose. The targeted world replay passed 36 Classic and 48 Enhanced checks.
+
+Rebuild with `scripts/bake-crane-fire-enhanced.gd` and validate with `python -B scripts/prepare-enhanced-creature-actions.py --install --crane-fire`. Original sprites, derived scenes, renders and native test receipts stay local.
+
 # Enhanced Alligator and Dire Wolf
 
 Alligator 202 and Dire Wolf 23 add 13 fitted motions from 570 registered frames across 13 official AMOU members. Their retained Third Dawn rigs, materials and earlier action keys are preserved. The Alligator uses its original jaw joint for the snap and hiss, with separate rising and curling tail gestures. The Dire Wolf has a forepaw snap, low recoil, scent check and short howl. With the Scorpion through Slime batch, the optional profile reaches 52 bodies and 127 local fitted scenes. The default action ledger stays at 6,489 of 8,090 slots.

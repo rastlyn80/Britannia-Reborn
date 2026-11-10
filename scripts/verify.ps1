@@ -262,17 +262,23 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
    if ($LASTEXITCODE) {throw 'Enhanced Orc and Water Elemental motion, terrain or corpse failed'}
    $profileTests += '--ranked'
   }
-  foreach ($extension in @('kraken','troll','bird','ettin','dolphin','field','cat','skeleton-mongbat','hound-bear','troll-ratman','brown-bear-cougar','wolf-grizzly','corpser-boar','goat-eagle','serpent-harpy','ogre-earth','zombie-wraith','gorilla-gazer','gargoyle-through-ghoul','scorpion-through-slime','alligator-direwolf')) {
+  foreach ($extension in @('kraken','troll','bird','ettin','dolphin','field','cat','skeleton-mongbat','hound-bear','troll-ratman','brown-bear-cougar','wolf-grizzly','corpser-boar','goat-eagle','serpent-harpy','ogre-earth','zombie-wraith','gorilla-gazer','gargoyle-through-ghoul','scorpion-through-slime','alligator-direwolf','crane-fire','lich-gaman')) {
    if ($profile.PSObject.Properties["${extension}_native_proof_sha256"]) {
-    & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-${extension}-enhanced.gd" -- --installed
-    if ($LASTEXITCODE) {throw "Enhanced $extension motion, terrain or corpse failed"}
+    $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-${extension}-enhanced.gd" -- --installed 2>&1
+    $checkExit = $LASTEXITCODE
+    $checks | ForEach-Object { Write-Output $_ }
+    if ($checkExit -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) {throw "Enhanced $extension motion, terrain or corpse failed"}
     $profileTests += "--$extension"
    }
   }
-  & $godot --headless --path "$root/Viewer" --script res://../scripts/test-enhanced-world-dispatch.gd -- @profileTests
-  if ($LASTEXITCODE) {throw 'Classic world creature dispatch failed'}
-  & $godot --headless --path "$root/Viewer" --script res://../scripts/test-enhanced-world-dispatch.gd -- @profileTests --enhanced-creature-actions
-  if ($LASTEXITCODE) {throw 'Enhanced world creature dispatch failed'}
+  foreach ($mode in @('Classic', 'Enhanced')) {
+   $modeArgs = @($profileTests)
+   if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+   $checks = & $godot --headless --path "$root/Viewer" --script res://../scripts/test-enhanced-world-dispatch.gd -- @modeArgs 2>&1
+   $checkExit = $LASTEXITCODE
+   $checks | ForEach-Object { Write-Output $_ }
+   if ($checkExit -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) {throw "$mode world creature dispatch failed"}
+  }
  }
  if ($lateIndex.entries | Where-Object { $_.preferred_uop_native_sha256 }) {
   & python -B "$root/scripts/accept-preferred-uop-actions.py" --check-active

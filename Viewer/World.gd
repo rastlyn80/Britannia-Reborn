@@ -983,6 +983,12 @@ func _appearance_changed(serial: int) -> void:
 		game.mobile_equipment.get(serial, {}).values(), game.appearance_for(serial))
 
 func _entity_removed(serial: int) -> void:
+	# A transient corpse can be removed while its death pose is still playing.
+	if creature_deaths.held_corpses.has(serial):
+		var killed: int = creature_deaths.held_corpses[serial]
+		creature_deaths.held_corpses.erase(serial)
+		if creature_deaths.active.has(killed):
+			creature_deaths.active[killed].corpse = 0
 	if avatars.has(serial):
 		avatars[serial].queue_free()
 		avatars.erase(serial)

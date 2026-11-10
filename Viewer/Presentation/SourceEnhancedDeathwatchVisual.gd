@@ -1,7 +1,24 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 extends "res://Presentation/DeathwatchActionsVisual.gd"
 
-var gesture_ground := preload("res://Presentation/ArchiveGestureGround.gd").new()
+class BeetleGestureGround extends "res://Presentation/ArchiveGestureGround.gd":
+	func support(actor: Node3D) -> void:
+		super.support(actor)
+		if actor.dead or actor.current_clip not in actor.entry.get("archive_grounded_gestures", []):
+			return
+		# The two stance contacts can land on different facets. Also clear
+		# the centre plane that will support an interrupted fall.
+		var hit: Dictionary = actor.fitted_fall.floor_under(actor)
+		var gap := Ground.minimum_plane_gap(skin, actor.skeleton, actor.skeleton.global_transform,
+			hit.position, hit.normal)
+		if gap >= .002:
+			return
+		if not applied:
+			restore_pose = actor.model.transform
+			applied = true
+		actor.model.global_position.y += (.002 - gap) / float(hit.normal.y)
+
+var gesture_ground := BeetleGestureGround.new()
 var fitted_fall := preload("res://Presentation/SourceSpaceDisplayedFallPlayback.gd").new()
 
 func _ready() -> void:

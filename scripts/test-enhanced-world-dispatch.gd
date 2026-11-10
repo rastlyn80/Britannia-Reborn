@@ -18,6 +18,8 @@ const Fitted := preload("res://../scripts/test-gorilla-gazer-enhanced.gd")
 const GargoyleThroughGhoul := preload("test-gargoyle-through-ghoul-world.gd")
 const ScorpionThroughSlime := preload("test-scorpion-through-slime-world.gd")
 const AlligatorDireWolf := preload("test-alligator-direwolf-world.gd")
+const CraneFire := preload("test-crane-fire-world.gd")
+const LichGaman := preload("test-lich-gaman-world.gd")
 const SERIAL := 0x105
 const BODY := 267
 
@@ -25,8 +27,11 @@ func _initialize() -> void:
 	create_timer(90.0).timeout.connect(func(): quit(2))
 	call_deferred("run")
 
+func make_world() -> Node:
+	return (load("res://Main.tscn") as PackedScene).instantiate()
+
 func run() -> void:
-	var world := (load("res://Main.tscn") as PackedScene).instantiate()
+	var world := make_world()
 	root.add_child(world)
 	world.set_process(false)
 	world.set_physics_process(false)
@@ -182,6 +187,14 @@ func run() -> void:
 	if "--alligator-direwolf" in OS.get_cmdline_user_args():
 		var fitted_batch := await AlligatorDireWolf.check(self, world, at, enhanced)
 		assert(fitted_batch.rows.size() == AlligatorDireWolf.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--crane-fire" in OS.get_cmdline_user_args():
+		var fitted_batch := await CraneFire.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == CraneFire.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--lich-gaman" in OS.get_cmdline_user_args():
+		var fitted_batch := await LichGaman.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == LichGaman.Cases.size())
 		checks += int(fitted_batch.checks)
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()
