@@ -32,7 +32,9 @@ static func witness(driver, world: Node, at: Vector2i, enhanced: bool, info: Dic
 	var body: int = info.body
 	var hue: int = info.hue
 	var corpse := 0x40000000 + serial
-	world.game._handle(driver.mobile_packet(at, 64, serial, body, hue))
+	var flags: int = info.get("flags", 64) if enhanced else 64
+	var fall_clip := "AirDeath" if (flags & 4) != 0 else "Death"
+	world.game._handle(driver.mobile_packet(at, flags, serial, body, hue))
 	var source: Node3D = world.avatars[serial].horse_visual
 	assert(source.native_body == body and source.native_hue == hue)
 	var before: Array[Vector3] = []
@@ -64,7 +66,7 @@ static func witness(driver, world: Node, at: Vector2i, enhanced: bool, info: Dic
 		world.game._handle(driver.corpse_packet(at, corpse, body, hue))
 	var state: Dictionary = world.creature_deaths.active[serial]
 	var fallen: Node3D = state.visual
-	assert(fallen.current_clip == "Death" and fallen.native_hue == hue)
+	assert(fallen.current_clip == fall_clip and fallen.native_hue == hue)
 	var jump := 0.0
 	for index in before.size():
 		jump = maxf(jump, before[index].distance_to(point(fallen, info.joints[index])))
@@ -75,7 +77,7 @@ static func witness(driver, world: Node, at: Vector2i, enhanced: bool, info: Dic
 	await driver.create_timer(float(state.remaining) + .15).timeout
 	assert(holder.visible and (not enhanced or world.world_items.corpse_snapshots.has(corpse)))
 	var frozen: Node3D = holder.get_node("CorpseVisual")
-	assert(frozen.get_meta("native_hue") == hue and frozen.get_meta("death_clip") == "Death")
+	assert(frozen.get_meta("native_hue") == hue and frozen.get_meta("death_clip") == fall_clip)
 	assert(frozen.find_children("*", "Skeleton3D", true, false).is_empty())
 	if enhanced:
 		for part: String in info.get("visible", []):

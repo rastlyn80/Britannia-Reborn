@@ -33,11 +33,23 @@ const ArmedMages := preload("test-orc-shaman-ophidian-mage-world.gd")
 const KnightAcid := preload("test-skeletal-knight-acid-elemental-world.gd")
 const PixieFrost := preload("test-pixie-frost-troll-world.gd")
 const PoisonSpider := preload("test-poison-elemental-dread-spider-world.gd")
+const MummyBalron := preload("test-mummy-balron-world.gd")
+const ToadJuka := preload("test-giant-toad-juka-warrior-world.gd")
+const KnightRemaining := preload("test-skeletal-knight-remaining-world.gd")
+const YomotsuDragon := preload("test-yomotsu-warrior-dragon-world.gd")
 const SERIAL := 0x105
 const BODY := 267
 
 func _initialize() -> void:
 	var deadline := 300.0 if "--knight-acid-pixie-frost" in OS.get_cmdline_user_args() else 210.0
+	if "--mummy-balron" in OS.get_cmdline_user_args():
+		deadline += 45.0
+	if "--giant-toad-juka-warrior" in OS.get_cmdline_user_args():
+		deadline += 35.0
+	if "--skeletal-knight-remaining" in OS.get_cmdline_user_args():
+		deadline += 35.0
+	if "--yomotsu-warrior-dragon" in OS.get_cmdline_user_args():
+		deadline += 55.0
 	create_timer(deadline).timeout.connect(func():
 		push_error("Combined creature replay exceeded %.0f seconds." % deadline)
 		quit(2))
@@ -260,6 +272,22 @@ func run() -> void:
 	if "--poison-elemental-dread-spider" in OS.get_cmdline_user_args():
 		var fitted_batch := await PoisonSpider.check(self, world, at, enhanced)
 		assert(fitted_batch.rows.size() == PoisonSpider.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--mummy-balron" in OS.get_cmdline_user_args():
+		var fitted_batch := await MummyBalron.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == MummyBalron.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--giant-toad-juka-warrior" in OS.get_cmdline_user_args():
+		var fitted_batch := await ToadJuka.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == ToadJuka.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--skeletal-knight-remaining" in OS.get_cmdline_user_args():
+		var fitted_batch := await KnightRemaining.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == KnightRemaining.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--yomotsu-warrior-dragon" in OS.get_cmdline_user_args():
+		var fitted_batch := await YomotsuDragon.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == YomotsuDragon.Cases.size())
 		checks += int(fitted_batch.checks)
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()

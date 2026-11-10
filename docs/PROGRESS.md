@@ -1,3 +1,41 @@
+# Enhanced Yomotsu Warrior and red Dragon
+
+Ten fitted motions use 455 registered reference frames from ten official AMOU members. The optional Enhanced profile reaches 87 bodies and 226 local fitted scenes. Yomotsu Warrior body 245 uses the retained Third Dawn rig and armour. The 38 original sword triangles form their own skinned mesh, with 608 in each refined treatment. Every source position, UV and skin influence survives the split. The sword remains visible in Classic actions. Enhanced claw gestures and corpses interrupted during those gestures stay unarmed, including after a late dye packet.
+
+Red Dragon body 59 retains its original rig, Fire Breath clip and fall. Its wingtip span opens from 4.22 to 7.14 metres during the mantle gesture. The four clips passed 5,703 dense wing samples across all treatments. The named flight table falls back to the combat choices. The retained body 12 route stays available while its exact Enhanced reference remains unlocated.
+
+Both bodies passed 4,650 ground poses, 1,515 airborne poses, 420 interrupted falls, 192 decoded selections, 144 Classic comparisons and 100 Vulkan views. The fixture and prepared Britain each passed 66 Classic and 88 Enhanced world checks. Two clients on isolated ModernUO passed 284 checks across the stock constructors and 66 controlled action packets. Controlled use of the stock Fire Breath ability dealt real timed damage. The red Dragon yielded seven red scales and at least 20 barbed hides. The Warrior dropped its axe and gourd.
+
+Rebuild with `scripts/bake-yomotsu-warrior-dragon-enhanced.gd`. Install using `python -B scripts/prepare-enhanced-creature-actions.py --install --yomotsu-warrior-dragon`.
+
+# Five more Skeletal Knight motions
+
+Skeletal Knight body 147 adds an overhead sweep, low brace, shield flinch, horizontal blade check and wide stagger from 245 registered frames in five official AMOU members. The seven fitted groups retain the original Third Dawn rig, scimitar and wooden shield. The earlier animations, including the fitted shield release, retain their exact keys.
+
+The five new motions passed 6,618 close prop samples and 50 rendered poses. The complete seven-motion profile passed 3,255 terrain samples, 315 interrupted falls, 144 decoded choices and 108 Classic comparisons. The test map and prepared Britain each passed 40 Enhanced world checks through the static corpse handoff. The isolated server passed 145 checks, including 36 controlled action packets and native movement, melee and both corpse drops. The mixed type 0 sequence still awaits exact group 5.
+
+Rebuild with `scripts/bake-skeletal-knight-remaining.gd` after the earlier Skeletal Knight bake. Install with `python -B scripts/prepare-enhanced-creature-actions.py --install --skeletal-knight-remaining`.
+
+# Enhanced Giant Toad and Juka Warrior
+
+Four fitted actions use 170 registered 2D frames from four official AMOU members. The optional profile reaches 85 bodies and 220 local fitted scenes. Giant Toad body 80 retains the Third Dawn skin and four-segment tongue. Its tongue snap extends 89.9 cm from the closed pose, and quiet breathing moves the sampled body point by 1.1 cm. Juka Warrior body 764 retains its original rig and armour. The guard kick reaches 69.8 cm forward and the emergence raises the head by 71.9 cm.
+
+The fitted pair passed 1,860 terrain poses, 120 interrupted falls, 192 decoded selections, 144 Classic comparisons and 40 Vulkan views. The fixture and prepared Britain each passed 24 Classic and 32 Enhanced world checks, including corpse placement and dye during the tongue snap and guard kick.
+
+The disposable ModernUO run passed 236 checks for both stock constructors. Two clients observed movement, melee, hue and corpse packets. The Juka's stock AI froze its target in melee and the corpse yielded a rib. The tameable Giant Toad yielded 14 spined hides in the carver trial. Forty-eight controlled packets tested the new routes separately. The Juka's exact Enhanced frames for the remaining action types are still open.
+
+Rebuild with `scripts/bake-giant-toad-juka-warrior-enhanced.gd`. Run `scripts/test-giant-toad-juka-warrior-enhanced.gd` and the disposable server recipe. Install using `python -B scripts/prepare-enhanced-creature-actions.py --install --mummy-balron --giant-toad-juka-warrior`.
+
+# Enhanced Mummy and Balron
+
+Seven fitted motions use 385 registered frames from seven official AMOU members. The optional Enhanced profile reaches 83 bodies and 214 local fitted scenes. Mummy and Pestilent Bandage share body 154 and retain the Third Dawn bandaged rig. The fitted crouch, recoil and two-arm alert preserve the existing Classic clips and floor curves. Balron uses the separate Daemon Elder model on body 40. Its cocoon folds the original wing chains around its shoulders and flanks. The modern silhouette opens from 4.13 m to 11.16 m across the full mesh. In 6,957 between-key wing poses across three treatments, the largest link-length error was 3.70 micrometres in source rig space.
+
+The fitted scenes passed 3,255 grounded terrain poses, 1,560 client-only airborne terrain poses, 330 interrupted falls and 70 Vulkan views. The fixture and prepared Britain each passed 48 Classic and 64 Enhanced world replay checks. The archive's flight table falls back to the combat choices and retains the source airborne fall. The controlled flight flag test covers that client path. Stock ModernUO Balron has no flight capability.
+
+The isolated two-client trial passed 262 checks across Mummy, Pestilent Bandage and Balron, including 54 controlled Enhanced packets and ordinary stock movement, melee and corpse replication. Pestilent Bandage kept its 0x515 constructor hue and applied lethal poison on a stock melee hit. Mummy dropped five garlic and ten bandages, Pestilent Bandage dropped five bandages, and Balron dropped its longsword.
+
+Rebuild with `scripts/bake-mummy-balron-enhanced.gd` and run `scripts/check-balron-wings.gd` and `scripts/test-mummy-balron-enhanced.gd`. Install the verified local profile using `python -B scripts/prepare-enhanced-creature-actions.py --install --mummy-balron`.
+
 # Enhanced Poison Elemental and Dread Spider
 
 Poison Elemental 162 and Dread Spider 11 add seven fitted motions from 335 registered frames in seven official AMOU members. The optional Enhanced profile reaches 81 bodies and 208 local fitted scenes. Poison Elemental keeps its original fluid surface and rig. It rises from a crouch at full scale and lifts its knee into the guard. Dread Spider retains the original mesh, eight leg chains, existing Classic motions and both falls. The modern surface uses the original abdomen marking for the warm Enhanced colour while preserving the native full and partial dye rules. A procedural silk opening follows the emergence. It fades out before the static corpse appears.

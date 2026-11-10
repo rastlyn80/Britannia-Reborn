@@ -262,11 +262,14 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
    if ($LASTEXITCODE) {throw 'Enhanced Orc and Water Elemental motion, terrain or corpse failed'}
    $profileTests += '--ranked'
   }
-  foreach ($extension in @('kraken','troll','bird','ettin','dolphin','field','cat','skeleton-mongbat','hound-bear','troll-ratman','brown-bear-cougar','wolf-grizzly','corpser-boar','goat-eagle','serpent-harpy','ogre-earth','zombie-wraith','gorilla-gazer','gargoyle-through-ghoul','scorpion-through-slime','alligator-direwolf','crane-fire','lich-gaman','chicken-skeletal-mage','daemon-wyvern','polar-bear','drake-walrus','ice-serpent-bogling','tsuki-wolf-ophidian','evil-mage-plague-beast','kappa-snow-elemental','giant-rat-vampire-bat','orc-shaman-ophidian-mage','knight-acid-pixie-frost','poison-elemental-dread-spider')) {
+  foreach ($extension in @('kraken','troll','bird','ettin','dolphin','field','cat','skeleton-mongbat','hound-bear','troll-ratman','brown-bear-cougar','wolf-grizzly','corpser-boar','goat-eagle','serpent-harpy','ogre-earth','zombie-wraith','gorilla-gazer','gargoyle-through-ghoul','scorpion-through-slime','alligator-direwolf','crane-fire','lich-gaman','chicken-skeletal-mage','daemon-wyvern','polar-bear','drake-walrus','ice-serpent-bogling','tsuki-wolf-ophidian','evil-mage-plague-beast','kappa-snow-elemental','giant-rat-vampire-bat','orc-shaman-ophidian-mage','knight-acid-pixie-frost','poison-elemental-dread-spider','mummy-balron','giant-toad-juka-warrior','skeletal-knight-remaining','yomotsu-warrior-dragon')) {
    if ($profile.PSObject.Properties["${extension}_native_proof_sha256"]) {
     $families = switch ($extension) {
      'drake-walrus' { 'drake','walrus' }
-     'knight-acid-pixie-frost' { 'skeletal-knight','acid-elemental','pixie-frost-troll' }
+     'knight-acid-pixie-frost' {
+      if (!$profile.PSObject.Properties['skeletal-knight-remaining_native_proof_sha256']) { 'skeletal-knight' }
+      'acid-elemental','pixie-frost-troll'
+     }
      default { $extension }
     }
     foreach ($family in $families) {

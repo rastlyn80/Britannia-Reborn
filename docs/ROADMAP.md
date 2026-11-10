@@ -1,3 +1,19 @@
+# Yomotsu Warrior and red Dragon
+
+The optional Enhanced profile reaches 87 bodies. The Yomotsu Warrior's six unarmed actions and the red Dragon's four wing actions passed the client and isolated server checks. Keep the remaining named sequence groups open, including the yellow Dragon's exact Enhanced source. Continue the six-facet occurrence queue and keep the Classic routes available for unlocated references.
+
+# Skeletal Knight action follow-up
+
+Skeletal Knight 147 has all seven recovered Enhanced groups fitted. Keep type 0 open while exact group 5 is missing from the named source. Continue Yomotsu Warrior and the red Dragon on their retained rigs.
+
+# Giant Toad and Juka Warrior
+
+The optional Enhanced profile reaches 85 bodies. Giant Toad 80 retains its four-segment tongue and Juka Warrior 764 retains its armour. Their four fitted actions passed terrain, corpse, world and isolated server checks. Keep the unlocated Juka exact frames open. Ratman Archer 142 has no matching named sequence in the pinned Enhanced index. Keep its existing route while checking for an authoritative redirect. Continue the configured occurrence queue with Yomotsu Warrior 245 and Dragon 59, and compare the remaining five Skeletal Knight actions.
+
+# Mummy and Balron
+
+The optional Enhanced profile reaches 83 bodies. Mummy and Pestilent Bandage share body 154 and retain their native differences. Balron 40 has four fitted wing motions, a folded emergence and separate grounded and airborne corpse replays. Stock ModernUO keeps Balron grounded. Keep the unlocated exact Mummy and Balron frame groups open and continue the occurrence queue.
+
 # Poison Elemental and Dread Spider
 
 The optional Enhanced profile reaches 81 bodies. Poison Elemental 162 and Dread Spider 11 retain their Third Dawn rigs and have seven fitted motions. The Dread Spider's silk clears from the static corpse and its displayed slope survives the fall. Both stock creatures passed isolated movement, lethal melee poison, hues, corpses and reagent loot. Continue the configured occurrence queue with Mummy and Pestilent Bandage on body 154 and Balron on body 40, which uses the Daemon Elder art. Compare the five additionally decoded Skeletal Knight groups with the corresponding retained actions.
