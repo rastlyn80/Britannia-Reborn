@@ -20,6 +20,9 @@ const ScorpionThroughSlime := preload("test-scorpion-through-slime-world.gd")
 const AlligatorDireWolf := preload("test-alligator-direwolf-world.gd")
 const CraneFire := preload("test-crane-fire-world.gd")
 const LichGaman := preload("test-lich-gaman-world.gd")
+const ChickenSkeletalMage := preload("test-chicken-skeletal-mage-world.gd")
+const DaemonWyvern := preload("test-daemon-wyvern-world.gd")
+const PolarBear := preload("test-polar-bear-world.gd")
 const SERIAL := 0x105
 const BODY := 267
 
@@ -195,6 +198,18 @@ func run() -> void:
 	if "--lich-gaman" in OS.get_cmdline_user_args():
 		var fitted_batch := await LichGaman.check(self, world, at, enhanced)
 		assert(fitted_batch.rows.size() == LichGaman.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--chicken-skeletal-mage" in OS.get_cmdline_user_args():
+		var fitted_batch := await ChickenSkeletalMage.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == ChickenSkeletalMage.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--daemon-wyvern" in OS.get_cmdline_user_args():
+		var fitted_batch := await DaemonWyvern.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == DaemonWyvern.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--polar-bear" in OS.get_cmdline_user_args():
+		var fitted_batch := await PolarBear.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == PolarBear.Cases.size())
 		checks += int(fitted_batch.checks)
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()

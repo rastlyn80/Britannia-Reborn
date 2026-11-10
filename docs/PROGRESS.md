@@ -1,3 +1,31 @@
+# Enhanced Polar Bear
+
+Seven fitted motions use 305 registered frames from seven official AMOU members. The original Third Dawn Polar Bear rig and materials remain in place. The upright rake moves the striking paw 73 cm, the high guard lifts its left paw 6.6 cm above the skull joint, and the low-to-upright alert lifts the head 1.33 metres. The hind midpoint stays within 0.02 mm of its starting position on the flat pose bake. The optional Enhanced profile reaches 61 bodies and 150 fitted local scenes. The default ledger stays at 6,489 of 8,090 tracked action slots.
+
+The fits passed 144 decoded selections, 108 Classic comparisons, 3,255 living poses across five terrain planes, 210 interrupted falls, three static corpse hues and 56 Vulkan views. The tested world handoffs kept the displayed pose while turning. The isolated two-client trial passed 144 checks, including 36 controlled Enhanced packets, stock movement and melee, native hues and corpse identity. Native carving produced two raw ribs and 18 regular hides for the human test character under the pinned server rules.
+
+Rebuild with `scripts/bake-polar-bear-enhanced.gd` and install with `python -B scripts/prepare-enhanced-creature-actions.py --install --chicken-skeletal-mage --daemon-wyvern --polar-bear`. Original frames, fitted scenes and trial artifacts stay local.
+
+# Enhanced Daemon and Wyvern
+
+Four Daemon and five Wyvern motions use 510 registered frames from nine official AMOU members. Both creatures keep their original Third Dawn rigs and materials. The Daemon rises from folded wings and opens them to a nine-metre span. The Wyvern reaches 1.22 metres with its neck thrust and curls its tail during the watch. The revised wing-rise fit keeps a toe within 28 cm of the floor throughout. Both official flight records inherit their combat actions. Airborne fits carry the preceding flight clearance through the gesture.
+
+The fits passed 336 decoded selections, 126 Classic comparisons, 8,370 living terrain poses and 540 interrupted falls, half airborne. They passed six static corpse hues and 72 Vulkan views. Targeted world replays passed in both profiles on the release fixture and local Britain. Ground and airborne falls retain the displayed facing and pose when triggered by the death packet. All four fitted world handoffs remained within 7 micrometres.
+
+The two-client isolated server trial passed 319 checks including stock melee, the Wyvern applying Deadly poison, actual one-tile movement, native body and hue and the static corpse. The trial sent 84 controlled Enhanced packets across the native flight and combat flag combinations. Existing Classic routes cover the unlocated Enhanced groups. The optional profile reaches 60 bodies and 147 fitted local scenes. The default ledger remains at 6,489 of 8,090 action slots.
+
+Rebuild with `scripts/bake-daemon-wyvern-enhanced.gd` and install with `python -B scripts/prepare-enhanced-creature-actions.py --install --chicken-skeletal-mage --daemon-wyvern`. Source frames, fitted scenes and trial artifacts stay local.
+
+# Enhanced Chicken and Skeletal Mage
+
+Three Chicken motions and five Skeletal Mage motions use 315 registered frames from eight official AMOU members. The Chicken keeps the bundled CC0 model and its separate foot and curved-bone chains. The Skeletal Mage keeps the Third Dawn rig and its original visual staff. The new thrust travels 94 cm at the staff, and the rise lifts the head by 80 cm on flat ground. The optional Enhanced profile reaches 58 bodies and 141 fitted local scenes. The default ledger remains at 6,489 of 8,090 action slots.
+
+The fits passed 120 decoded selections, 90 Classic comparisons, 2,790 living terrain poses, 180 interrupted death handoffs, six static corpse hues and 64 Vulkan render poses. The weighted skin stayed above all five sampled planes. In the world replay, the Mage's staff remained attached during the fall and on the static corpse. The turning death cases had less than one micrometre of entry displacement. The combined release map replay passed 1,136 Classic and 1,229 Enhanced checks. Targeted cases also passed on the local Britain map.
+
+Two isolated clients verified the stock constructors, one-tile movement, ordinary Classic melee, server hues and native corpse packets in 193 checks. The native Chicken corpse yielded 25 feathers and one raw bird through the carving path. The Skeletal Mage corpse retained the packed bone. The 42 Enhanced action packets were controlled by the test.
+
+Rebuild with `scripts/bake-chicken-enhanced.gd` and `scripts/bake-skeletal-mage-enhanced.gd`. Install with `python -B scripts/prepare-enhanced-creature-actions.py --install --chicken-skeletal-mage`. The exact source frames, fitted scenes, renders and isolated trial artifacts stay local.
+
 # Enhanced Lich and Gaman
 
 Lich 24 and Gaman 248 add nine fitted motions from 445 registered frames in nine official AMOU members. The Lich keeps the original rig and visible staff, with an authored spiral during its rise and a raised ward. The staff stays in the displayed grip when a fit is interrupted by death and remains on the static corpse. The temporary spiral clears when the action ends. Gaman keeps the Third Dawn `wild_guar` model, including its jaws, horns and dense surface. Its seven fits include the shoulder lunge, nose dip, recoil and hind-leg rear. With Crane and Fire Elemental, the optional profile reaches 56 bodies and 137 local scenes. The default ledger remains at 6,489 of 8,090 slots.

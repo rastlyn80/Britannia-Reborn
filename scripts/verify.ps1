@@ -262,7 +262,7 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
    if ($LASTEXITCODE) {throw 'Enhanced Orc and Water Elemental motion, terrain or corpse failed'}
    $profileTests += '--ranked'
   }
-  foreach ($extension in @('kraken','troll','bird','ettin','dolphin','field','cat','skeleton-mongbat','hound-bear','troll-ratman','brown-bear-cougar','wolf-grizzly','corpser-boar','goat-eagle','serpent-harpy','ogre-earth','zombie-wraith','gorilla-gazer','gargoyle-through-ghoul','scorpion-through-slime','alligator-direwolf','crane-fire','lich-gaman')) {
+  foreach ($extension in @('kraken','troll','bird','ettin','dolphin','field','cat','skeleton-mongbat','hound-bear','troll-ratman','brown-bear-cougar','wolf-grizzly','corpser-boar','goat-eagle','serpent-harpy','ogre-earth','zombie-wraith','gorilla-gazer','gargoyle-through-ghoul','scorpion-through-slime','alligator-direwolf','crane-fire','lich-gaman','chicken-skeletal-mage','daemon-wyvern','polar-bear')) {
    if ($profile.PSObject.Properties["${extension}_native_proof_sha256"]) {
     $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-${extension}-enhanced.gd" -- --installed 2>&1
     $checkExit = $LASTEXITCODE

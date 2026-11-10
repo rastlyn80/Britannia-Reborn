@@ -170,6 +170,9 @@ def main():
     parser.add_argument('--alligator-direwolf', action='store_true', help='Include the fitted Alligator and Dire Wolf')
     parser.add_argument('--crane-fire', action='store_true', help='Include the fitted Crane and Fire Elemental')
     parser.add_argument('--lich-gaman', action='store_true', help='Include the fitted Lich and Gaman')
+    parser.add_argument('--chicken-skeletal-mage', action='store_true', help='Include the fitted Chicken and Skeletal Mage')
+    parser.add_argument('--daemon-wyvern', action='store_true', help='Include the fitted Daemon and Wyvern')
+    parser.add_argument('--polar-bear', action='store_true', help='Include the fitted Polar Bear')
     args = parser.parse_args()
     manifest, copies = prepare()
     source = args.ranked_source
@@ -178,7 +181,7 @@ def main():
         recorded = previous.get('ranked_source')
         if recorded:
             source = Path(recorded)
-    names = ('kraken', 'troll', 'bird', 'ettin', 'dolphin', 'field', 'cat', 'skeleton-mongbat', 'hound-bear', 'troll-ratman', 'brown-bear-cougar', 'wolf-grizzly', 'corpser-boar', 'goat-eagle', 'serpent-harpy', 'ogre-earth', 'zombie-wraith', 'gorilla-gazer', 'gargoyle-through-ghoul', 'scorpion-through-slime', 'alligator-direwolf', 'crane-fire', 'lich-gaman')
+    names = ('kraken', 'troll', 'bird', 'ettin', 'dolphin', 'field', 'cat', 'skeleton-mongbat', 'hound-bear', 'troll-ratman', 'brown-bear-cougar', 'wolf-grizzly', 'corpser-boar', 'goat-eagle', 'serpent-harpy', 'ogre-earth', 'zombie-wraith', 'gorilla-gazer', 'gargoyle-through-ghoul', 'scorpion-through-slime', 'alligator-direwolf', 'crane-fire', 'lich-gaman', 'chicken-skeletal-mage', 'daemon-wyvern', 'polar-bear')
     extensions = [name for name in names
                   if (getattr(args, name.replace('-', '_')) or f'{name}_native_proof_sha256' in previous
                       or (name == 'troll' and args.troll_ratman))]
