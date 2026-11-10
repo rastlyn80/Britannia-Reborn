@@ -20,7 +20,7 @@ func run() -> void:
 	prepare_body(211, BearClips, BearLengths, CommonJoints + ["bip01 spine2", "box01"], pose_bear)
 	quit()
 
-func prepare_body(body: int, clips: Dictionary, lengths: Dictionary, joints: Array, pose: Callable, destination: String = Folder) -> void:
+func prepare_body(body: int, clips: Dictionary, lengths: Dictionary, joints: Array, pose: Callable, destination: String = Folder, finish := Callable()) -> void:
 	var row := Registry.entry(body)
 	for treatment: String in row.assets:
 		var source := Registry.asset_path(row, treatment)
@@ -37,6 +37,8 @@ func prepare_body(body: int, clips: Dictionary, lengths: Dictionary, joints: Arr
 			skins.append(Ground.skin_points(mesh, rig))
 		for group: int in clips:
 			var motion := fit_grounded(player, rig, skins, lengths[group], RootJoint, joints, pose.bind(group), .004)
+			if finish.is_valid():
+				finish.call(motion, rig, group)
 			assert(library.add_animation(clips[group], motion) == OK)
 		verify_base_clips(player, source)
 		player.stop()

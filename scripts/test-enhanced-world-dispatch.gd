@@ -11,6 +11,8 @@ const BrownCougar := preload("res://../scripts/test-brown-bear-cougar-enhanced.g
 const WolfGrizzly := preload("res://../scripts/test-wolf-grizzly-enhanced.gd")
 const CorpserBoar := preload("res://../scripts/test-corpser-boar-enhanced.gd")
 const GoatEagle := preload("res://../scripts/test-goat-eagle-enhanced.gd")
+const SerpentHarpy := preload("res://../scripts/test-serpent-harpy-enhanced.gd")
+const OgreEarth := preload("res://../scripts/test-ogre-earth-enhanced.gd")
 const SERIAL := 0x105
 const BODY := 267
 
@@ -152,6 +154,10 @@ func run() -> void:
 		checks += check_rooted_and_quadruped(world, at, enhanced, CorpserBoar.Modes)
 	if "--goat-eagle" in OS.get_cmdline_user_args():
 		checks += check_goat_eagle(world, at, enhanced)
+	if "--serpent-harpy" in OS.get_cmdline_user_args():
+		checks += check_serpent_harpy(world, at, enhanced)
+	if "--ogre-earth" in OS.get_cmdline_user_args():
+		checks += await check_ogre_earth(world, at, enhanced)
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()
 	await process_frame
@@ -437,6 +443,128 @@ func check_goat_eagle(world: Node, at: Vector2i, enhanced: bool) -> int:
 		assert(frozen.find_children("*", "Skeleton3D", true, false).is_empty())
 		checks += 5
 	return checks
+
+func check_serpent_harpy(world: Node, at: Vector2i, enhanced: bool) -> int:
+	var checks := 0
+	for body: int in SerpentHarpy.Modes:
+		for settled: bool in [true, false]:
+			var evidence := check_serpent_harpy_death(world, at, body, enhanced, settled)
+			assert(not evidence.is_empty())
+			checks += 6
+			if enhanced:
+				checks += 2 if body == 30 else 1
+	return checks
+
+
+func check_serpent_harpy_death(world: Node, at: Vector2i, body: int, enhanced: bool, settled: bool) -> Dictionary:
+	var serial := 0xb00 + body + (0 if settled else 0x100)
+	var corpse := 0x40000000 + serial
+	var hue := 0x8035 if body == 21 else 0x455
+	world.game._handle(mobile_packet(at, 64, serial, body, hue))
+	if settled:
+		world.avatars[serial].animate(false, world.directions[serial], 4.0, 0.0)
+	var source: Node3D = world.avatars[serial].horse_visual
+	assert(source.native_body == body and source.native_hue == hue)
+	if body == 30 and enhanced:
+		world.game._handle(mobile_packet(at, 4, serial, body, hue))
+		world.game._handle(action_packet(5, serial, 1))
+		assert(source.current_clip == "HarpyBank")
+	world.game._handle(action_packet(15, serial, 0))
+	var live_clip := "SerpentSurface" if body == 21 else "HarpyGlideSettle"
+	assert(source.animator.has_animation(live_clip) == enhanced)
+	if enhanced:
+		assert(source.current_clip == live_clip)
+		source.animator.advance(.13)
+		source.animator.seek(source.animator.current_animation_length * .35 if body == 21 else .55, true)
+		source._physics_process(1.0 / 60.0)
+	source.skeleton.force_update_all_bone_transforms()
+	var head := int(source.skeleton.find_bone("bip01 head"))
+	var before: Vector3 = source.skeleton.to_global(source.skeleton.get_bone_global_pose(head).origin)
+	if body == 21:
+		world.game._handle(corpse_packet(at, corpse, body, hue))
+	var death := PackedByteArray([0xaf])
+	death.append_array(Wire.uint_be(serial, 4))
+	death.append_array(Wire.uint_be(corpse, 4))
+	death.append_array(Wire.uint_be(0, 4))
+	world.game._handle(death)
+	if body == 30:
+		world.game._handle(corpse_packet(at, corpse, body, hue))
+	var holder: Node3D = world.world_items.nodes[corpse]
+	var state: Dictionary = world.creature_deaths.active[serial]
+	var fallen: Node3D = state.visual
+	var expected := "AirDeath" if enhanced and body == 30 else "Death"
+	assert(not holder.visible and fallen.current_clip == expected)
+	assert(fallen.native_body == body and fallen.native_hue == hue)
+	fallen.skeleton.force_update_all_bone_transforms()
+	var jump := before.distance_to(fallen.skeleton.to_global(fallen.skeleton.get_bone_global_pose(head).origin))
+	if enhanced:
+		assert(jump < .002, "World transition body %d moved the head %f metres" % [body, jump])
+	fallen.animator.advance(.13)
+	fallen.animator.seek(fallen.animator.current_animation_length, true)
+	world.creature_deaths._process(float(state.remaining) + .05)
+	var frozen: Node3D = holder.get_node("CorpseVisual")
+	assert(holder.visible and world.world_items.corpse_snapshots.has(corpse))
+	assert(frozen.get_meta("native_hue") == hue and frozen.get_meta("death_clip") == expected)
+	assert(frozen.find_children("*", "Skeleton3D", true, false).is_empty())
+	return {"clip": expected, "head_jump": jump, "native_hue": hue, "corpse": corpse}
+
+
+func check_ogre_earth(world: Node, at: Vector2i, enhanced: bool) -> int:
+	var checks := 0
+	for body: int in OgreEarth.Modes:
+		var evidence := await check_ogre_earth_death(world, at, body, enhanced)
+		assert(not evidence.is_empty())
+		checks += 5
+		if enhanced and body == 14:
+			checks += 3
+	return checks
+
+
+func check_ogre_earth_death(world: Node, at: Vector2i, body: int, enhanced: bool) -> Dictionary:
+	var serial := 0xd00 + body
+	var corpse := 0x40000000 + serial
+	var hue := 0x8035 if body == 14 else 0x455
+	world.game._handle(mobile_packet(at, 64, serial, body, hue))
+	var actor: Node3D = world.avatars[serial].horse_visual
+	var forming := body == 14 and enhanced
+	var expected_count := 1
+	var first_corner := Vector3.ZERO
+	if enhanced:
+		world.game._handle(action_packet(15, serial, 0))
+		assert(actor.current_clip == (OgreEarth.Formation if forming else "OgreCrouchRise"))
+		actor.animator.advance(.13)
+		actor.animator.seek(0.0, true)
+		actor.animator.seek(actor.animator.current_animation_length * .42, true)
+		if forming:
+			assert(actor.pieces.visible and not actor.living_mesh.visible)
+			expected_count = actor.pieces.get_children().filter(func(piece: Node3D): return piece.visible).size()
+			assert(expected_count == 15)
+			first_corner = actor.pieces.get_node("Piece13").global_position
+	if body == 14:
+		world.game._handle(corpse_packet(at, corpse, body, hue))
+	var death := PackedByteArray([0xaf])
+	death.append_array(Wire.uint_be(serial, 4))
+	death.append_array(Wire.uint_be(corpse, 4))
+	death.append_array(Wire.uint_be(0, 4))
+	world.game._handle(death)
+	if body == 1:
+		world.game._handle(corpse_packet(at, corpse, body, hue))
+	var holder: Node3D = world.world_items.nodes[corpse]
+	var state: Dictionary = world.creature_deaths.active[serial]
+	var visual: Node3D = state.visual
+	var clip := OgreEarth.StoneFall if forming else "Death"
+	assert(not holder.visible and visual.current_clip == clip and visual.native_hue == hue)
+	var jump := 0.0
+	if forming:
+		jump = first_corner.distance_to(visual.pieces.get_node("Piece13").global_position)
+		assert(jump < .002 and not visual.living_mesh.visible)
+	await create_timer(float(state.remaining) + .15).timeout
+	assert(holder.visible and world.world_items.corpse_snapshots.has(corpse))
+	var frozen: Node3D = holder.get_node("CorpseVisual")
+	assert(frozen.get_meta("native_hue") == hue and frozen.get_meta("death_clip") == clip)
+	assert(frozen.get_child_count() == expected_count and frozen.find_children("*", "Skeleton3D", true, false).is_empty())
+	return {"clip": clip, "pieces": expected_count, "jump": jump, "hue": hue, "corpse": corpse}
+
 
 func corpse_packet(at: Vector2i, serial: int, body: int, hue: int) -> PackedByteArray:
 	var packet := PackedByteArray([0xf3, 0, 1, 0])

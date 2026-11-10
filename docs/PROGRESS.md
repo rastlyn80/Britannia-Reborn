@@ -1,3 +1,17 @@
+# Enhanced Ogre and Earth Elemental
+
+The optional profile now contains 38 bodies. Ogre body 1 and Earth Elemental body 14 add five fitted motions each from 465 frames in ten official Enhanced members. The Ogre has a turning sweep, crouch and rise, downward glance, brow guard and ready lean. The Earth Elemental has a two-hand slam, fist check, heavy guard, low brace and a stone formation. The formation animates 15 connected meshes from the retained Third Dawn body, preserving their UVs and materials. It starts with one visible stone and hands off to the exact posed rig. The largest measured bounds change across 15 joins was 0.09 mm.
+
+The two fits passed 192 selections, 144 Classic comparisons, 4,650 terrain poses and 80 rendered poses. Forty-five interruptions during Earth Elemental assembly preserved the visible stones and produced a static, terrain-supported corpse. The normal world replay confirmed that the timed fall keeps all 15 stones and the server hue. The isolated server test passed 298 checks for the Ogre, Earth Elemental and Earth Elemental body returned by the Plague Spawn constructor. It covered ordinary Classic attacks and death packets, and 72 controlled Enhanced packets. The spell-summon lifecycle remains separate from this test. The installed four-creature batch passed both terrain suites and the normal world replay with 870 Classic and 885 Enhanced checks.
+
+# Enhanced Giant Serpent and Harpy
+
+The prepared optional profile has fitted Giant Serpent body 21 and Harpy body 30 on their retained Third Dawn rigs. Ten official Enhanced members contain 515 registered source frames. The serpent gains a low watch, raised coil, alert, uncoiling strike and rise from below the terrain. The fitted strike moves the head 31 cm across the support plane. The Harpy gains a folded glance, bank, alert, double wingbeat and settling glide. Its flight flag uses the official fallback to combat action records. The fit keeps the archived golden feathers and native hue support.
+
+The candidate passed 192 fitted selections, 144 Classic comparisons, 4,650 terrain poses, six static corpse hues and 60 rendered poses. It keeps the visible pose during death, including 60 serpent deaths while surfacing and 30 Harpy falls during wingbeats and glides. The normal world replay preserves the fitted pose and corpse hues with the body already facing or still turning. The Classic replay preserves the existing server-facing rule. It can still snap the visual to the server direction mid-turn.
+
+The isolated two-client server trial passed 298 checks for Giant Serpent, Harpy and the serpent body returned by the Plague Spawn constructor. Both clients received the stock Classic attacks, native deaths and matching corpse graphics and hues. The 72 Enhanced actions were controlled packets. The test covers the Plague Spawn constructor and display, with its spell and ownership lifecycle tracked separately. The default action ledger remains at 6,489 of 8,090 slots.
+
 # Enhanced Goat and Eagle
 
 The optional Enhanced profile covers 34 bodies and 75 fitted local scenes. Goat body 209 uses its retained Third Dawn rig for the quiet stand and horn check. Its head drops by 28 cm during the horn check. Eagle body 5 keeps the bundled CC0 rig and adds two perched fits plus a two-stroke dive with ground and air variants. A perched action received during flight plays after landing. The pinned Enhanced flight mode falls back to the combat table. The Eagle's altitude and takeoff remain part of client presentation.
