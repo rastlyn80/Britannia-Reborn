@@ -90,7 +90,11 @@ def fitted_row(viewer, body, groups, grounded, scenes, candidate_hashes):
         for treatment in base.get("asset_sha256", {})
     }
     digests = {treatment: sha(viewer / asset.removeprefix("res://")) for treatment, asset in base_assets.items()}
-    assert digests == base.get("asset_sha256", digests)
+    pinned = base.get("asset_sha256", digests)
+    if isinstance(pinned, str):
+        assert len(digests) == 1 and pinned == next(iter(digests.values()))
+    else:
+        assert digests == pinned
     assert digests.keys() == candidate_hashes.keys() == scenes.keys() and "modern" in digests
     row = {"kind": base["kind"], "base_sha256": digests, "groups": groups, "grounded": grounded, "assets": {}}
     copies = {}

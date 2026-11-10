@@ -16,11 +16,13 @@ const OgreEarth := preload("res://../scripts/test-ogre-earth-enhanced.gd")
 const Undead := preload("res://../scripts/test-zombie-wraith-enhanced.gd")
 const Fitted := preload("res://../scripts/test-gorilla-gazer-enhanced.gd")
 const GargoyleThroughGhoul := preload("test-gargoyle-through-ghoul-world.gd")
+const ScorpionThroughSlime := preload("test-scorpion-through-slime-world.gd")
+const AlligatorDireWolf := preload("test-alligator-direwolf-world.gd")
 const SERIAL := 0x105
 const BODY := 267
 
 func _initialize() -> void:
-	create_timer(60.0).timeout.connect(func(): quit(2))
+	create_timer(90.0).timeout.connect(func(): quit(2))
 	call_deferred("run")
 
 func run() -> void:
@@ -172,6 +174,14 @@ func run() -> void:
 	if "--gargoyle-through-ghoul" in OS.get_cmdline_user_args():
 		var fitted_batch := await GargoyleThroughGhoul.check(self, world, at, enhanced)
 		assert(fitted_batch.rows.size() == GargoyleThroughGhoul.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--scorpion-through-slime" in OS.get_cmdline_user_args():
+		var fitted_batch := await ScorpionThroughSlime.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == ScorpionThroughSlime.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--alligator-direwolf" in OS.get_cmdline_user_args():
+		var fitted_batch := await AlligatorDireWolf.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == AlligatorDireWolf.Cases.size())
 		checks += int(fitted_batch.checks)
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()

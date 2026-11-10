@@ -90,6 +90,18 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedImpVisual.gd"
 			elif body == 153:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedGhoulVisual.gd"
+			elif body == 48:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedScorpionVisual.gd"
+			elif body == 242:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedDeathwatchVisual.gd"
+			elif body == 13:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedAirVisual.gd"
+			elif body == 51:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedSlimeVisual.gd"
+			elif body == 202:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedAlligatorVisual.gd"
+			elif body == 23:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedDireWolfVisual.gd"
 			elif body == 8:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedCorpserVisual.gd"
 			elif body == 14:
@@ -123,9 +135,12 @@ static func registered_assets(base: Dictionary) -> Dictionary:
 static func matches_base(base: Dictionary, assets: Dictionary, expected: Variant) -> bool:
 	if not expected is Dictionary or assets.is_empty() or expected.size() != assets.size():
 		return false
-	if base.has("asset_sha256"):
-		return base.asset_sha256 == expected
-	# Bundled assets have no local acceptance receipt.
+	var pins: Variant = base.get("asset_sha256")
+	if pins is Dictionary:
+		return pins == expected
+	if pins != null and (not pins is String or assets.size() != 1 or pins != expected.values()[0]):
+		return false
+	# Bundled entries may pin one public model instead of a treatment dictionary.
 	for treatment: String in assets:
 		var digest := FileAccess.get_sha256(assets[treatment])
 		if digest.is_empty() or digest != expected.get(treatment):

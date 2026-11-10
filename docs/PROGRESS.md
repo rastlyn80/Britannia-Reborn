@@ -1,3 +1,23 @@
+# Enhanced Alligator and Dire Wolf
+
+Alligator 202 and Dire Wolf 23 add 13 fitted motions from 570 registered frames across 13 official AMOU members. Their retained Third Dawn rigs, materials and earlier action keys are preserved. The Alligator uses its original jaw joint for the snap and hiss, with separate rising and curling tail gestures. The Dire Wolf has a forepaw snap, low recoil, scent check and short howl. With the Scorpion through Slime batch, the optional profile reaches 52 bodies and 127 local fitted scenes. The default action ledger stays at 6,489 of 8,090 slots.
+
+The fits passed 288 decoded selections, 216 Classic comparisons, 6,045 terrain poses, 390 interrupted death handoffs, six static corpse hues and 104 rendered poses. Two clients received actual native movement by one tile, stock melee, body and hue updates, and the static corpse for both identities. The isolated test passed 279 checks, including 72 controlled Enhanced packets. Both stock creatures are tameable and lack a swim flag. The normal world scene replay covered two interrupted gestures per body and the existing Alligator alternate fall. The optional renderer keeps the displayed facing through that alternate fall. The default Classic renderer still changes to the last packet direction at the handoff.
+
+The combined six-body preview and installed profile both passed 1,052 Classic and 1,117 Enhanced checks through the normal world scene. Both focused terrain and corpse suites also passed on the installed profile. The four new interrupted gestures held the measured joints within one micrometre at death entry. The alternate fall had no measurable entry displacement in the optional profile.
+
+Rebuild with `scripts/bake-alligator-direwolf-enhanced.gd`. Run `python -B scripts/prepare-enhanced-creature-actions.py --install --scorpion-through-slime --alligator-direwolf` to validate and install both optional batches. Original art, fitted scenes and test artifacts remain local.
+
+# Enhanced Scorpion, Deathwatch Beetle, Air Elemental and Slime
+
+This batch fits 16 motions from 755 registered frames across 16 official AMOU members. The Scorpion, Deathwatch Beetle and Slime use their retained Third Dawn rigs. The Air Elemental uses the bundled wind model because the recovered original is a death-mote marker. The preparation script pins the named sequence records and source frames, base model fingerprints, and fitted scenes. The optional profile reaches 50 bodies and 121 local fitted scenes. The default action ledger stays at 6,489 of 8,090 slots.
+
+The Scorpion checks its claws and raises its tail, and the Deathwatch Beetle has separate breathing, tucked watch and forelimb gestures. The adult and hatchling share body 242. The retained green chitin differs from the patterned Enhanced sprite. The cache has no matching Scorpion group 15, so that choice keeps its Classic route. The Air Elemental forms from a wisp and spreads into an alert pose. Three interruption checks cover Enhanced alert, Classic melee and walking. Slime and Corrosive Slime share body 51, including the fitted crest lash.
+
+The staged profile passed 424 decoded selections, 318 Classic comparisons, 6,820 terrain poses, 440 death handoffs, 12 static corpse hues and 128 rendered poses. The normal world scene passed 1,020 Classic and 1,077 Enhanced checks across the installed and staged profiles. The loader rejected a preview with a mismatched bundled Air Elemental fingerprint. The two isolated server trials passed 795 checks across seven native identities, including stock melee, the adult beetle's regular-poison projectile, the temporary Air Elemental summon and 198 controlled Enhanced packets. The pinned Corrosive Slime source leaves acid weapon damage as a TODO.
+
+Rebuild with `scripts/bake-scorpion-deathwatch-enhanced.gd` and `scripts/bake-air-slime-enhanced.gd`. Run `python -B scripts/prepare-enhanced-creature-actions.py --install --scorpion-through-slime` to validate and install the optional batch. Original art, derived scenes, renders and native test receipts stay local.
+
 # Enhanced Gargoyle, Headless One, Imp and Ghoul
 
 The optional Enhanced profile contains 46 bodies and 111 fitted local scenes. Gargoyle 4, Headless One 31, Imp 74 and Ghoul 153 add 13 motions on their retained Third Dawn rigs. The fits use 605 registered frames across 13 `AMOU` members. The preparation script pins each member, its matching named `AnimationSequence.uop` record, and the source and fitted asset hashes.
