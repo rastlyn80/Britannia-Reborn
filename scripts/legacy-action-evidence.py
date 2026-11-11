@@ -30,7 +30,13 @@ def row_identity(row):
     return row['kind'], tuple(sorted(int(identity['body']) for identity in row['bodies']))
 
 
-def expected_rows_with_legacy_aliases(rows, active):
+def expected_rows_with_legacy_aliases(rows, active, *, refreshed_review_fields=()):
+    def same_base_row(previous, current):
+        if not refreshed_review_fields:
+            return previous == current
+        return ({key: value for key, value in previous.items() if key not in refreshed_review_fields}
+                == {key: value for key, value in current.items() if key not in refreshed_review_fields})
+
     active_by_identity = {row_identity(row): row for row in active}
     batches = dict((('monstrousinterredgrizzle', 'grizzle_antler'),
                         ('wild_guar', 'gaman_gestures'),
@@ -109,17 +115,19 @@ def expected_rows_with_legacy_aliases(rows, active):
                                        ('lattice_through_meer_actions', 'meer_forward_falls'),
                                        ('frost_through_gargoyle_actions', 'gargoyle_flight_minotaur_actions')}:
                 earlier, previous = gate['checked'](index, True, batch, compare_registry=False)
-                if [row for row in earlier if row_identity(row) == identity] != [original]:
+                earlier_base = [row for row in earlier if row_identity(row) == identity]
+                if len(earlier_base) != 1 or not same_base_row(earlier_base[0], original):
                     raise ValueError(f'{kind} earlier action overlay no longer matches the verified base package')
                 retained, = (row for row in previous if row_identity(row) == identity)
                 batch = successor
             base, overlays = gate['checked'](index, True, batch)
-            if ([row for row in base if row_identity(row) == identity] != [retained]
+            matched_base = [row for row in base if row_identity(row) == identity]
+            if (len(matched_base) != 1 or not same_base_row(matched_base[0], retained)
                     or [row for row in overlays if row_identity(row) == identity] != [overlay]):
                 raise ValueError(f'{kind} action overlay no longer matches the verified base package')
             expected.append(overlay)
         else:
-            expected.append(original)
+            expected.append(overlay if same_base_row(overlay, original) else original)
     return expected
 
 

@@ -17,6 +17,10 @@ ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT/'Viewer/local-art/creatures'
 PREPARATION = ART/'source_preserving/preparation.json'
 RECEIPT = ART/'source_preserving/local-presentation.json'
+REVIEW_FIELDS = frozenset({
+    'validation_sha256', 'action_validation_sha256', 'gpu_sha256',
+    'presentation_validation_sha256', 'gpu_runtime_sha256',
+})
 
 
 def sha(path):
@@ -129,13 +133,16 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--presentation', type=Path, default=ROOT/'work/creatures/next-family/presentation-final/validation.json')
     parser.add_argument('--appearance', type=Path, default=ROOT/'work/creatures/next-family/appearance-final/appearance.json')
-    parser.add_argument('--publish', action='store_true', help='Atomically update the private local presentation index after every gate passes')
-    parser.add_argument('--check-active', action='store_true', help='Verify current locally activated rows against their exact evidence receipt')
+    operation = parser.add_mutually_exclusive_group()
+    operation.add_argument('--publish', action='store_true', help='Atomically update the private local presentation index after every gate passes')
+    operation.add_argument('--check-active', action='store_true', help='Verify current locally activated rows against their exact evidence receipt')
+    operation.add_argument('--refresh-active', action='store_true', help='Record fresh review evidence for the same installed routes')
     args = parser.parse_args()
-    assert not (args.publish and args.check_active)
-    if args.check_active:
+    receipt = {}
+    if args.check_active or args.refresh_active:
         receipt = read(RECEIPT)
         ALIAS_EVIDENCE['check_publisher'](Path(__file__).name, receipt['publisher_sha256'], sha(Path(__file__)))
+    if args.check_active:
         args.presentation = ROOT/receipt['presentation']
         args.appearance = ROOT/receipt['appearance']
     for path in [args.presentation,args.appearance]:
@@ -144,15 +151,30 @@ def main():
     accepted = ART/'accepted-index.json'
     report = read(accepted)
     incoming = {row['kind'] for row in rows}
-    rows = ALIAS_EVIDENCE['expected_rows_with_legacy_aliases'](rows, report['entries'])
+    review_fields = REVIEW_FIELDS if args.refresh_active or 'retained_routes_sha256' in receipt else ()
+    rows = ALIAS_EVIDENCE['expected_rows_with_legacy_aliases'](
+        rows, report['entries'], refreshed_review_fields=review_fields)
     bodies = {identity['body']:row['kind'] for row in report['entries'] for identity in row['bodies']}
     for row in rows:
         for identity in row['bodies']:
             assert identity['body'] not in bodies or bodies[identity['body']] == row['kind'], 'Refusing to replace an unrelated working creature'
-    if args.check_active:
-        assert receipt['preparation_sha256'] == sha(PREPARATION)
+    active_hash = ''
+    if args.check_active or args.refresh_active:
         active = {row['kind']:row for row in report['entries'] if row['kind'] in incoming}
         assert active == {row['kind']:row for row in rows}, 'Activated presentation differs from checked evidence'
+        active_hash = hashlib.sha256(json.dumps(active, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+        if 'retained_routes_sha256' in receipt:
+            assert receipt['retained_routes_sha256'] == active_hash, 'Retained route records changed'
+    current_evidence = {
+        'skin': sha(ROOT/'work/creatures/source-preserving/skin-proof.json'),
+        'actions': sha(ROOT/'work/creatures/source-preserving/actions.json'),
+        'presentation': sha(args.presentation),
+        'appearance': sha(args.appearance),
+    }
+    if args.check_active:
+        assert receipt['preparation_sha256'] == sha(PREPARATION)
+        if 'retained_routes_sha256' in receipt:
+            assert receipt['review_sha256'] == current_evidence, 'Refreshed presentation evidence changed'
     if args.publish:
         backup = ROOT/'work/creatures/next-family/accepted-index-before-source-batch.json'
         if not backup.exists():backup.write_bytes(accepted.read_bytes())
@@ -161,14 +183,18 @@ def main():
         pending = accepted.with_suffix('.json.pending')
         pending.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
         pending.replace(accepted)
+    if args.publish or args.refresh_active:
         receipt = {'publisher_sha256':sha(Path(__file__)), 'preparation_sha256':sha(PREPARATION),
                    'presentation':args.presentation.resolve().relative_to(ROOT).as_posix(),
                    'appearance':args.appearance.resolve().relative_to(ROOT).as_posix(),
                    'scope':'Local presentation activation only; native witnesses and remaining fidelity are separate.'}
+        if args.refresh_active:
+            receipt.update(retained_routes_sha256=active_hash, review_sha256=current_evidence)
         pending_receipt = RECEIPT.with_suffix('.json.pending')
         pending_receipt.write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8')
         pending_receipt.replace(RECEIPT)
-    print('SOURCE LOCAL PRESENTATIONS:', 'published' if args.publish else 'active verified' if args.check_active else 'dry run', len(rows),'forms;',sum(len(row['bodies']) for row in rows),'native body routes; excluded',excluded,'; no new native-server witness')
+    result = 'published' if args.publish else 'active verified' if args.check_active else 'review refreshed' if args.refresh_active else 'dry run'
+    print('SOURCE LOCAL PRESENTATIONS:', result, len(rows),'forms;',sum(len(row['bodies']) for row in rows),'native body routes; excluded',excluded,'; no new native-server witness')
 
 
 if __name__ == '__main__':
