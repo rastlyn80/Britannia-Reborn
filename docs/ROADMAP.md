@@ -1,3 +1,24 @@
+# Oni
+
+The optional Enhanced profile reaches 149 bodies. Oni has twelve fitted motions and a hand-tracked cast effect. Both retained falls keep their own static corpse poses and late dye. Group 27 keeps the established gesture while its exact reference is unlocated. Stock MageAI was witnessed at spell range. Angry Fire remains an explicit server behavior gap.
+
+Continue with Giant Beetle 791, Meer Mage 770 and Treefellow 301 in configured encounter order. The Giant Beetle's seated mode has separate walk, run and idle groups. Its open-shell group 0 also appears in a death selector, so the registered gait and the actual native corpse need separate handling.
+
+
+# Orc Brute
+
+The optional Enhanced profile reaches 148 bodies. The Orc Brute retains the original Third Dawn donor rig and gains thirteen fitted motions, a broader silhouette and two fall directions. The isolated stock spell reaction creates a separate Orcish Lord body and its corpse is transient. Both Brute falls keep the authored spines on the static corpse.
+
+Continue in configured encounter order with Oni 241, Giant Beetle 791, Meer Mage 770 and Treefellow 301. Their exact decoded local references contain 675, 710, 235 and 835 frames respectively. Oni group 27 is absent from the inspected patch archives. The stock ModernUO Oni implements ordinary MageAI and leaves Angry Fire unfinished. Keep the authored source cast visuals separate from that server behavior.
+
+
+# Moloch
+
+The optional Enhanced profile reaches 147 bodies. Moloch has fourteen fitted motions on its original four-arm rig and two Enhanced falls. The isolated ModernUO trial verified the stock Concussion Blow against balanced and imbalanced targets. The client uses the stock victim-side effects.
+
+Continue with Orc Brute 189. The Third Dawn table assigns the Orc Lord rig and geometry, while the exact Enhanced body is broader with a spiked head and shoulders. The candidate retains the existing animation source and fits to 725 registered frames. Review the reshaped appearance, both falls and the stock spell retaliation that spawns nearby Orcish Lords.
+
+
 # Crystal Lattice Seeker
 
 The optional Enhanced profile reaches 146 bodies. The Crystal Lattice Seeker has thirteen new fits and three native drain cues. Lord Oaks retains its established shared source rig and separate presentation. Frost Ooze keeps its verified Classic presentation while the current Enhanced archive audit has no exact indexed group for it.

@@ -18,6 +18,30 @@ const ArmoredGargoyleAttacks := {
 		"GargoyleWingRake", "GargoyleWingRake", "GargoyleWingRake"],
 }
 const FittedAttackSubactions := {
+	241: {
+		"0": ["OniSweepingClaw", "OniDoubleClaw", "OniSweepingClaw"],
+		"1": ["OniSweepingClaw"],
+		"2": ["OniSweepingClaw"],
+		"9": ["OniSweepingClaw"],
+		"255": ["OniSweepingClaw", "OniDoubleClaw", "OniSweepingClaw",
+			"OniSweepingClaw", "OniSweepingClaw", "OniSweepingClaw"],
+	},
+	189: {
+		"0": ["BruteDoubleHammer", "BruteTurningSweep", "BruteDoubleHammer"],
+		"1": ["BruteDoubleHammer"],
+		"2": ["BruteDoubleHammer"],
+		"9": ["BruteDoubleHammer"],
+		"255": ["BruteDoubleHammer", "BruteTurningSweep", "BruteDoubleHammer",
+			"BruteDoubleHammer", "BruteDoubleHammer", "BruteDoubleHammer"],
+	},
+	785: {
+		"0": ["MolochLeftHammer", "MolochRightHammer", "MolochLeftHammer"],
+		"1": ["MolochLeftHammer"],
+		"2": ["MolochLeftHammer"],
+		"9": ["MolochLeftHammer"],
+		"255": ["MolochLeftHammer", "MolochRightHammer", "MolochLeftHammer",
+			"MolochLeftHammer", "MolochLeftHammer", "MolochLeftHammer"],
+	},
 	123: {
 		"0": ["LatticeRisingStrike", "LatticeCrossingStrike", "LatticeRisingStrike"],
 		"1": ["LatticeRisingStrike"],
@@ -322,6 +346,12 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedHydraVisual.gd"
 			elif body == 130:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedFireGargoyleVisual.gd"
+			elif body == 241:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedOniVisual.gd"
+			elif body == 189:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedOrcBruteVisual.gd"
+			elif body == 785:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedMolochVisual.gd"
 			elif body == 123:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedLatticeSeekerVisual.gd"
 			elif body in [754, 755]:
@@ -415,6 +445,12 @@ static func valid_groups(groups: Variant, body: int) -> bool:
 				var expected: Array = []
 				if body == 165:
 					expected = ["Death", "Death"] if kind == "3" else ["ShadowWispRecoil"]
+				elif body == 241:
+					expected = ["Death", "Death2"] if kind == "3" else ["OniRecoil"]
+				elif body == 189:
+					expected = ["Death", "Death2"] if kind == "3" else ["BruteRecoil"]
+				elif body == 785:
+					expected = ["Death", "Death2"] if kind == "3" else ["MolochRecoil"]
 				elif body in [123, 754, 755]:
 					expected = ["Death", "Death2"] if kind == "3" else ["LatticeRecoil" if body == 123 else "Hit"]
 				if mode != "0" or clips != expected:

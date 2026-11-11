@@ -1,3 +1,42 @@
+# Enhanced Oni
+
+The optional Enhanced profile reaches 149 bodies and 410 fitted local scenes. Oni body 241 retains the original Third Dawn mesh, atlas, horns, claws, rig and established fall animations. Twelve fitted motions follow named sequence 0xab3fd539c59b1666. The inspected official archives supplied 675 registered frames in sixteen groups. The archive references group 27 in one combat gesture selector. Its frames remain unlocated, and that selector keeps the established high gesture.
+
+The long double spiral from source group 12 is an authored, hand-tracked Enhanced cast effect. It follows the hand during the matching phase and disappears when the cast finishes or a fall begins. The stock Oni is a grounded MageAI creature. Its Angry Fire attack remains a server TODO.
+
+The scenes passed 140 Forward+ views, 8,157 dense limb poses at 240 Hz, 492 route selections, 5,580 terrain poses and 960 fall samples over 60 handoffs. The measured forearms and hands cleared the torso. The largest sampled joint displacement at a fall handoff was 1.25 micrometres. Both falls pass the normal client replay and freeze into static corpses. A later partial hue update preserves their placement and geometry.
+
+Two isolated clients passed 87 checks. They saw native movement, stock MageAI spell effects and damage at four tiles, the raw partial dye and the persistent corpse with gold. A separate controlled type 11 packet exercised the fitted hand flame on both clients.
+
+Rebuild with scripts/bake-oni-enhanced.gd and verify with scripts/check-oni-clearance.gd, scripts/render-oni.gd and scripts/test-oni-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --oni after reproducing the required earlier batches and local evidence.
+
+
+# Enhanced Orc Brute
+
+The optional Enhanced profile reaches 148 bodies and 407 fitted local scenes. The original Third Dawn table assigns the Orc Brute body 189 the Orc Lord mesh and rig. The optional Brute keeps that rig, original animation keys and native size ratios. It has a broader torso and limbs, a shorter crest and authored skin-bound spines on the head, shoulders and back. The Orc Lord body 138 keeps its own established appearance.
+
+Thirteen fitted motions follow named sequence 0xc04e4e5da697b64e, with 725 registered reference frames across 16 indexed groups. The separate peaceful walk keeps the original leg tracks. The source requests the low ready stance when peace changes to combat. Its spell action uses the double hammer motion. The original forward death remains available alongside the separate fitted backward death.
+
+The fitted scenes passed 140 Forward+ views, 9,276 dense poses at 240 Hz with zero measured forearm or hand crossings of the torso, 492 action and gait selections, 5,580 supported terrain poses and 960 fall samples over 60 handoffs. The largest sampled handoff joint displacement was 2.48 micrometres. The paired world replays froze both falls with the spines attached and preserved the pose and placement after a late partial hue packet. The neutral, full hue and partial hue renders matched their frozen appearances. The partial dye produced a smaller measured colour change than the full dye.
+
+Two isolated clients passed 40 checks with a disposable player casting Magic Arrow through the server's target cursor. Spell damage caused a stock body-138 Orcish Lord to target the caster. Ordinary damage caused no spawn. Both clients saw the summoned Lord die and its corpse disappear. The dyed Orc Brute corpse persisted with gold, 25 Shadow Iron Ore and 10 Iron Ingots.
+
+Rebuild with scripts/bake-orc-brute-enhanced.gd and the --brute-silhouette option. Verify with scripts/check-orc-brute-clearance.gd, scripts/render-orc-brute.gd, scripts/render-orc-brute-hues.gd and scripts/test-orc-brute-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --orc-brute after reproducing the earlier required batches and local evidence.
+
+
+# Enhanced Moloch
+
+The optional Enhanced profile reaches 147 bodies and 404 fitted local scenes. Moloch body 785 retains the Third Dawn rig, mesh, atlas and established action clips. Fourteen fitted motions use registered references from named sequence 0x7dd809e7721b6576. The archive audit found 17 indexed groups and 785 frames. The new combat and peaceful stances move all four arms independently. The peaceful walk retains the source leg tracks. The prior combat walk, run and forward fall are reused.
+
+The Enhanced death references have two different trajectories. Across all 40 registered frames of each group, the positioned silhouettes overlap by about 12 percent on average. The new alternate fall goes backward. The synthetic world replay transferred that pose to a static corpse and preserved the geometry and placement on a later dye update. The Classic replay retained its established single fall.
+
+The prepared scenes passed 150 Forward+ views, 10,062 dense poses at 240 Hz, 492 route selections, 30 alternate-death handoffs and 480 terrain samples. The four measured forearms and hands cleared the torso. The smallest distance between the measured same-side forearm centre lines was 33.4 cm before arm thickness. The largest sampled handoff moved a traced joint by less than one micrometre.
+
+An isolated two-client trial passed 36 checks against stock ModernUO. Concussion Blow dealt 10 extra damage to the target at balanced health and mana percentages and 30 to the imbalanced target. Each trial after the stock cooldown consumed 25 mana. Ordinary hits from a Moloch with zero mana dealt damage without concussion. Both clients saw the stock effects on the victim. The trial also verified partial dye, the body-785 corpse with gold and resistance to regular poison.
+
+Rebuild with scripts/bake-moloch-enhanced.gd and verify with scripts/check-moloch-clearance.gd, scripts/render-moloch.gd and scripts/test-moloch-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --moloch after reproducing the earlier required batches and local evidence.
+
+
 # Enhanced Crystal Lattice Seeker
 
 The optional Enhanced profile reaches 146 bodies and 401 fitted local scenes. Crystal Lattice Seeker 123 retains its original 40-bone Third Dawn rig, mesh and atlas. Named sequence 0x2b773a8ac8564a09 points to 830 decoded reference frames across 17 indexed groups. Thirteen new motions include the separate peaceful walk, wing cocoon and unfurl, recoil, cast and forward alternate fall. The peaceful walk preserves the earlier leg tracks. Four groups reuse the established combat walk, idle, run and first fall.
@@ -196,7 +235,7 @@ Rebuild with scripts/bake-devourer-enhanced.gd and check with scripts/check-devo
 
 # Enhanced Black Solen Warrior
 
-The optional Enhanced profile reaches 127 bodies and 346 fitted local scenes. Black Solen Warrior 806 retains its original Third Dawn 44-joint rig, dark carapace, six legs and all previous motion keys. Eight fitted clips follow 385 registered frames from the named member 0x8efa33eae6af619f. The peace idle uses its own motion, and both Black Solen constructors keep the server’s native hue.
+The optional Enhanced profile reaches 127 bodies and 346 fitted local scenes. Black Solen Warrior 806 retains its original Third Dawn 44-joint rig, dark carapace, six legs and all previous motion keys. Eight fitted clips follow 385 registered frames from the named member 0x8efa33eae6af619f. The peace idle uses its own motion, and both Black Solen constructors keep the serverâ€™s native hue.
 
 The candidate passed 80 Forward+ views and 5,541 dense poses at 240 Hz. The measured claws and forearm segments cleared the torso across all three treatments. Focused checks covered 3,720 terrain poses, 240 interrupted falls, 144 Enhanced selections, 108 Classic comparisons and 18 gait selections. The combined staged replays passed 348 Classic fixture checks and 462 Enhanced Britain checks.
 
@@ -220,7 +259,7 @@ The optional Enhanced profile reaches 125 bodies and 340 fitted local scenes. Th
 
 The final scenes passed 150 Forward+ views and 10,911 samples at 240 Hz. The measured forearm and tail centrelines cleared the body triangles in all three treatments. Focused checks covered 6,510 terrain poses, 420 interrupted falls, 288 Enhanced selections, 216 Classic comparisons, 36 gait selections and 465 breath poses. The combined staged replays passed 492 Classic fixture checks and 654 Enhanced Britain checks.
 
-The isolated ModernUO trial passed 784 checks across Raptor, Slith, Stone Slith and Toxic Slith. Both Slith breath attacks dealt server damage and the two client views placed their effects at the displayed mouth. Stone Slith’s Grasping Claw temporarily reduced Physical Resistance and Tail Swipe exercised the stun branch. The four constructors retained their native melee, raw spawn and dye hues, corpse identities and respective hide types.
+The isolated ModernUO trial passed 784 checks across Raptor, Slith, Stone Slith and Toxic Slith. Both Slith breath attacks dealt server damage and the two client views placed their effects at the displayed mouth. Stone Slithâ€™s Grasping Claw temporarily reduced Physical Resistance and Tail Swipe exercised the stun branch. The four constructors retained their native melee, raw spawn and dye hues, corpse identities and respective hide types.
 
 Rebuild with scripts/bake-raptor-slith-enhanced.gd and verify using scripts/check-raptor-slith-clearance.gd, scripts/render-raptor-slith.gd and scripts/test-raptor-slith-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --raptor-slith after preparing the required earlier batches and reproducing the local source, scenes and receipts.
 
@@ -290,7 +329,7 @@ The optional Enhanced profile reaches 110 bodies and 295 fitted local scenes. Ro
 
 The client passed 5,580 terrain poses, 360 interrupted falls, 240 Enhanced choices and 180 Classic comparisons. All 30 continued Classic Bog Thing collapses retained their displayed timing. Bog Thing preserved all 103 original footprint points and kept its scale through the affine fall handoff. Its tongue clears on death and late corpse dye still reaches the frozen mesh. Separate Britain and Classic fixture replays passed 48 and 36 checks respectively.
 
-Two disposable ModernUO clients passed 509 checks across Rotting Corpse, Unfrozen Mummy, Bog Thing and Tangle. Stock Rotting Corpse melee applied Lethal poison. Unfrozen Mummy kept its native hue and the controlled Magic Arrow dealt 112 damage. Bog Thing’s native routine summoned a Bogling. When the fixture placed it within feeding range, both clients saw the Bogling disappear and Bog Thing regain 33 hits. Tangle kept its native hue. All four kept their stock movement and corpse identities.
+Two disposable ModernUO clients passed 509 checks across Rotting Corpse, Unfrozen Mummy, Bog Thing and Tangle. Stock Rotting Corpse melee applied Lethal poison. Unfrozen Mummy kept its native hue and the controlled Magic Arrow dealt 112 damage. Bog Thingâ€™s native routine summoned a Bogling. When the fixture placed it within feeding range, both clients saw the Bogling disappear and Bog Thing regain 33 hits. Tangle kept its native hue. All four kept their stock movement and corpse identities.
 
 The exact sequence members are `0x29e342164e92e540` and `0x535b1e5dfab48d7b`. Rebuild using `scripts/bake-rotting-corpse-enhanced.gd` and `scripts/bake-bog-thing-enhanced.gd`. The clearance and runtime checks use `scripts/check-rotting-bog-geometry.gd` and `scripts/test-rotting-bog-enhanced.gd`. Install using `python -B scripts/prepare-enhanced-creature-actions.py --install --rotting-bog` after generating the local scenes and receipts. Keep original art, fitted scenes, screenshots and test state local.
 
@@ -298,15 +337,15 @@ The exact sequence members are `0x29e342164e92e540` and `0x535b1e5dfab48d7b`. Re
 
 The optional Enhanced profile reaches 108 bodies and 289 fitted local scenes. Efreet body 131 and Terathan Avenger body 152 retain their original Third Dawn rigs, skins and prior animations. Nine new motions follow 510 registered frames from the named Enhanced members. The Efreet keeps its cross-legged posture while an authored brass lamp, smoke and woven carpet follow the arrival and three carpet gestures. Those props follow the Enhanced references and stay separate from the body dye and the static corpse. The Terathan crosses, thrusts and raises its original pincers. Across 3,747 samples the measured pincer centrelines cleared the body and came within 3.3 cm of one another. The exact scenes passed 20 Efreet and 50 Avenger Forward+ views.
 
-The fitted routes passed 4,185 terrain poses, 270 interrupted falls, 15 Efreet growth recoveries, 168 Enhanced choices and 126 Classic comparisons. The separate Britain replay passed 48 Enhanced checks and the Classic fixture passed 36. Two disposable ModernUO clients passed 207 checks. They saw stock movement, body hues and corpses. The Efreet’s controlled native Magic Arrow dealt 66 damage. The Avenger started the fight with a deliberately exhausted mana pool, used its stock melee AI and applied Deadly poison. The Avenger yielded two ribs with the native human carving bonus. The lamp, carpet and smoke clear when the Efreet dies, and a late corpse dye still applies to the frozen body.
+The fitted routes passed 4,185 terrain poses, 270 interrupted falls, 15 Efreet growth recoveries, 168 Enhanced choices and 126 Classic comparisons. The separate Britain replay passed 48 Enhanced checks and the Classic fixture passed 36. Two disposable ModernUO clients passed 207 checks. They saw stock movement, body hues and corpses. The Efreetâ€™s controlled native Magic Arrow dealt 66 damage. The Avenger started the fight with a deliberately exhausted mana pool, used its stock melee AI and applied Deadly poison. The Avenger yielded two ribs with the native human carving bonus. The lamp, carpet and smoke clear when the Efreet dies, and a late corpse dye still applies to the frozen body.
 
 The named sequence members are `0xae41645c8fb8d9a5` and `0x1564279b544a7dff`. Rebuild using `scripts/bake-efreet-enhanced.gd` and `scripts/bake-terathan-avenger-enhanced.gd`. The measured clearance and visual checks use `scripts/check-avenger-pincers.gd` and `scripts/render-efreet-props.gd`. Install using `python -B scripts/prepare-enhanced-creature-actions.py --install --efreet-avenger` after generating the local scenes and receipts. Keep the original art, fitted scenes, screenshots and native test state local.
 
 # Enhanced Orc Captain and Black Solen Worker
 
-The optional Enhanced profile reaches 106 bodies and 283 fitted local scenes. Orc Captain body 7 and Black Solen Worker body 805 retain the original Third Dawn rigs, materials and earlier animations. Seven additional motions follow 315 registered frames. The Captain carries the recovered double axe while rising into a brace and lowering into a guard. The Worker raises its claws, unfolds and keeps separate antenna and feint gestures. Across three treatments, 1,227 sampled axe shaft and blade paths cleared the Captain’s body. The Worker’s 3,822 flat-ground samples kept the lowest foot within 4.014 mm of the floor. The modern treatment rendered in 70 Forward+ views.
+The optional Enhanced profile reaches 106 bodies and 283 fitted local scenes. Orc Captain body 7 and Black Solen Worker body 805 retain the original Third Dawn rigs, materials and earlier animations. Seven additional motions follow 315 registered frames. The Captain carries the recovered double axe while rising into a brace and lowering into a guard. The Worker raises its claws, unfolds and keeps separate antenna and feint gestures. Across three treatments, 1,227 sampled axe shaft and blade paths cleared the Captainâ€™s body. The Workerâ€™s 3,822 flat-ground samples kept the lowest foot within 4.014 mm of the floor. The modern treatment rendered in 70 Forward+ views.
 
-The fitted actions passed 3,255 terrain poses, 210 interrupted falls, 15 alternate Captain falls, 15 independent axe dye cases, 144 Enhanced selections and 108 Classic comparisons. The separate prepared Britain replay passed 48 Enhanced checks and the Classic fixture passed 36. The isolated ModernUO trial passed 186 checks across the two stock constructors. Both moved and used stock melee. The Orcish Kin Mask made the Captain friendly until the wearer attacked. The native response destroyed the mask and dealt 49 fire damage in the trial. The Worker’s stock damage response revoked its explicitly assigned Black Solen friendship and sent message 1054103. The Worker kept native hue 0x453 at spawn and dropped one Zoogi Fungus. The client kept the body hues and the Captain’s independent axe material through the static corpse handoff.
+The fitted actions passed 3,255 terrain poses, 210 interrupted falls, 15 alternate Captain falls, 15 independent axe dye cases, 144 Enhanced selections and 108 Classic comparisons. The separate prepared Britain replay passed 48 Enhanced checks and the Classic fixture passed 36. The isolated ModernUO trial passed 186 checks across the two stock constructors. Both moved and used stock melee. The Orcish Kin Mask made the Captain friendly until the wearer attacked. The native response destroyed the mask and dealt 49 fire damage in the trial. The Workerâ€™s stock damage response revoked its explicitly assigned Black Solen friendship and sent message 1054103. The Worker kept native hue 0x453 at spawn and dropped one Zoogi Fungus. The client kept the body hues and the Captainâ€™s independent axe material through the static corpse handoff.
 
 The named sequence members are `0xceb98539aea3f4c2` and `0x6d7bd036c8e91939`. Rebuild using `scripts/bake-orc-captain-solen-enhanced.gd`, then run `scripts/check-captain-solen-geometry.gd` and `scripts/test-orc-captain-solen-enhanced.gd`. Install with `python -B scripts/prepare-enhanced-creature-actions.py --install --orc-captain-solen` once the local scenes and receipts are available. Keep game files, fitted scenes, captures and native test state local.
 
@@ -322,15 +361,15 @@ Rebuild using `scripts/bake-stone-gargoyle-kitsune-enhanced.gd`, then run `scrip
 
 The optional Enhanced profile reaches 102 bodies and 271 fitted local scenes. Stone Harpy body 73 and wild Horde Minion body 776 use their original Third Dawn rigs and materials. Twelve new motions follow 575 registered frames from the named Enhanced archive members. The Stone Harpy folds her wings, launches, banks and settles with the original airborne fall. Her measured folded launch widens from 1.08 to 2.77 metres and lifts 0.55 metres off the ground. The Horde Minion uncurls, raises its claws and lunges without moving the server position. Both retain their original action keys. The fitted clips passed 8,763 dense samples across all treatments and 120 Forward+ views.
 
-The client passed 5,580 terrain poses, 360 interrupted falls, 15 controlled airborne poses with fall handoffs, 240 Enhanced choices and 180 Classic comparisons. The prepared Britain replay passed 48 Enhanced checks and the Classic fixture passed 36. Two disposable clients passed 355 native checks covering both stock constructors, movement, melee, hues, loot and corpse graphics. The Stone Harpy yielded 50 feathers and one rib, and the wild Horde Minion retained its LightSource and dropped a three-bone stack. The fixture controlled the Harpy’s flight flags for the Enhanced packet tests. The separate Horde Minion familiar is outside this native trial.
+The client passed 5,580 terrain poses, 360 interrupted falls, 15 controlled airborne poses with fall handoffs, 240 Enhanced choices and 180 Classic comparisons. The prepared Britain replay passed 48 Enhanced checks and the Classic fixture passed 36. Two disposable clients passed 355 native checks covering both stock constructors, movement, melee, hues, loot and corpse graphics. The Stone Harpy yielded 50 feathers and one rib, and the wild Horde Minion retained its LightSource and dropped a three-bone stack. The fixture controlled the Harpyâ€™s flight flags for the Enhanced packet tests. The separate Horde Minion familiar is outside this native trial.
 
 Rebuild using `scripts/bake-stone-harpy-horde-minion-enhanced.gd`, then run `scripts/check-stone-harpy-horde-motion.gd` and `scripts/test-stone-harpy-horde-enhanced.gd`. The named sequence members are `0x54dd45112cdc03fd` and `0x2b623c50cddffa83`. Install using `python -B scripts/prepare-enhanced-creature-actions.py --install --stone-harpy-horde` after the scenes and receipts are prepared. Original game files, fitted scenes, rendered samples and native test state stay local.
 
 # Enhanced Ophidian Matriarch and Succubus
 
-The optional Enhanced profile reaches 100 bodies and 265 fitted local scenes. Ophidian Matriarch body 87 and Succubus body 149 retain their original Third Dawn rigs, materials and action keys. Nine new motions follow 450 registered frames from the official named sequence members. The Matriarch’s ceremonial sceptre adapts the 62-triangle Ophidian Mage staff and sits in her original right-hand grasp. The arm and sceptre cleared 3,951 samples across all three treatments. The held sceptre stays with her through the fall and remains on the frozen corpse after a late native hue update. The Succubus retains her six original wing joints. Across 3,063 samples neither distal wing link crossed the body triangles in the measured core. The original mesh’s sampled width grows from 0.86 to 2.69 metres. The stock server Succubus has no flight capability. The optional client checks the named combat fallback when a controlled flight flag is supplied.
+The optional Enhanced profile reaches 100 bodies and 265 fitted local scenes. Ophidian Matriarch body 87 and Succubus body 149 retain their original Third Dawn rigs, materials and action keys. Nine new motions follow 450 registered frames from the official named sequence members. The Matriarchâ€™s ceremonial sceptre adapts the 62-triangle Ophidian Mage staff and sits in her original right-hand grasp. The arm and sceptre cleared 3,951 samples across all three treatments. The held sceptre stays with her through the fall and remains on the frozen corpse after a late native hue update. The Succubus retains her six original wing joints. Across 3,063 samples neither distal wing link crossed the body triangles in the measured core. The original meshâ€™s sampled width grows from 0.86 to 2.69 metres. The stock server Succubus has no flight capability. The optional client checks the named combat fallback when a controlled flight flag is supplied.
 
-The fits passed 4,185 terrain poses, 270 interrupted falls and 12,870 fall samples, 168 Enhanced choices, 126 Classic comparisons, and 90 Forward+ views. The separate world replay passed 36 Classic fixture checks and 48 Enhanced checks in prepared Britain. Two disposable ModernUO clients passed 204 checks for the native constructors, movement, spells, hues, loot and corpses, with controlled Enhanced packets sent separately. The Matriarch’s native Magic Arrow dealt timed damage. Controlled invocation of the Succubus’s native area life drain damaged its target and restored the same amount to the Succubus. Both clients received effect 0x374A. The fitted sceptre is a visual prop.
+The fits passed 4,185 terrain poses, 270 interrupted falls and 12,870 fall samples, 168 Enhanced choices, 126 Classic comparisons, and 90 Forward+ views. The separate world replay passed 36 Classic fixture checks and 48 Enhanced checks in prepared Britain. Two disposable ModernUO clients passed 204 checks for the native constructors, movement, spells, hues, loot and corpses, with controlled Enhanced packets sent separately. The Matriarchâ€™s native Magic Arrow dealt timed damage. Controlled invocation of the Succubusâ€™s native area life drain damaged its target and restored the same amount to the Succubus. Both clients received effect 0x374A. The fitted sceptre is a visual prop.
 
 Rebuild using `scripts/bake-matriarch-succubus-enhanced.gd`. The named Enhanced sequence members are `0x561c66aff546ec1b` and `0x97f4c7cd39b05b56`. Run `scripts/check-matriarch-sceptre.gd`, `scripts/check-succubus-wings.gd` and `scripts/test-matriarch-succubus-enhanced.gd`, then install with `python -B scripts/prepare-enhanced-creature-actions.py --install --matriarch-succubus` after preparing the local scenes and receipts. Original inputs, fitted scenes, native accounts, and render outputs stay in the local workspace.
 
@@ -625,14 +664,14 @@ Grey Wolf body 25 has six fitted motions, including a low recoil, snap and susta
 
 The Grey Wolf and Grizzly fits use 620 registered frames from 13 official Enhanced members. They passed 288 decoded selections, 216 Classic comparisons, 6,045 terrain poses, six static corpse hues and 78 Forward+ poses. The isolated trial passed 423 checks across both Grey Wolf rolls and both Grizzly classes, including controlled Enhanced packets, stock Classic attacks and dyed native corpses.
 
-Corpser body 8 and Boar body 290 each add six fits using 530 registered frames from 13 members. The Corpser’s group 23 reuses the retained emergence. The tendril sweep keeps the plant’s base aligned to the sampled slope, with less than 41 mm of trunk travel over the checked gestures. Boar keeps the archived bristled coat while using the paler Enhanced reference sprites for movement. The bodies passed 288 decoded selections, 216 Classic comparisons, 5,580 terrain poses, six static corpse hues and 72 Forward+ poses. All 15 emergence cases reached the correct visible endpoint. In 273 isolated checks, the Corpser retained its immobile AI rule while the Boar’s AI allowed movement. Both clients saw stock melee, the test hue changes and native corpses with the matching hues.
+Corpser body 8 and Boar body 290 each add six fits using 530 registered frames from 13 members. The Corpserâ€™s group 23 reuses the retained emergence. The tendril sweep keeps the plantâ€™s base aligned to the sampled slope, with less than 41 mm of trunk travel over the checked gestures. Boar keeps the archived bristled coat while using the paler Enhanced reference sprites for movement. The bodies passed 288 decoded selections, 216 Classic comparisons, 5,580 terrain poses, six static corpse hues and 72 Forward+ poses. All 15 emergence cases reached the correct visible endpoint. In 273 isolated checks, the Corpser retained its immobile AI rule while the Boarâ€™s AI allowed movement. Both clients saw stock melee, the test hue changes and native corpses with the matching hues.
 
 The normal world scene passed 750 Classic and 754 Enhanced replay checks. Rebuild with `scripts/bake-wolf-grizzly-enhanced.gd` and `scripts/bake-corpser-boar-enhanced.gd`, then install with `python -B scripts/prepare-enhanced-creature-actions.py --install --wolf-grizzly --corpser-boar`. Original frames, fitted scenes, rendered captures and isolated trial outputs stay local. The default action ledger remains at 6,489 of 8,090 tracked slots.
 
 
 # Enhanced Troll, Ratman, Brown Bear and Cougar
 
-The optional Enhanced profile covers 28 bodies and 59 fitted local scenes. The unarmed Troll uses body 53’s retained Third Dawn rig for five fitted gestures. The other stock roll, body 54, keeps its separate profile. Ratman body 42 adds the recovered Age of Shadows axe as a visual prop with the source atlas and UVs. Its five fitted motions include a full axe somersault. ModernUO’s stock Ratman still fights with Wrestling and has empty equipment layers. The axe keeps its own material when the server dyes the body.
+The optional Enhanced profile covers 28 bodies and 59 fitted local scenes. The unarmed Troll uses body 53â€™s retained Third Dawn rig for five fitted gestures. The other stock roll, body 54, keeps its separate profile. Ratman body 42 adds the recovered Age of Shadows axe as a visual prop with the source atlas and UVs. Its five fitted motions include a full axe somersault. ModernUOâ€™s stock Ratman still fights with Wrestling and has empty equipment layers. The axe keeps its own material when the server dyes the body.
 
 The Troll and Ratman fits use 505 registered frames from 10 official Enhanced members. Their 192 decoded selections and 144 Classic comparisons passed, along with 4,650 terrain poses, 1,845 Ratman fall poses, 45 corpse handoffs and six static corpse hues. The largest measured axe grip shift at a handoff was under 0.001 mm. The sampled death poses kept the body and axe at least 2 mm above the plane within floating-point precision. Forward+ rendered 60 poses. The 274-check isolated trial covered both Troll bodies and Ratman. Both clients received the stock melee swings and selected the same retained motions in both profiles. The clients also received the native death and corpse packets.
 
@@ -689,7 +728,7 @@ Run `scripts/bake-kraken-enhanced.gd` and `scripts/bake-troll-enhanced.gd`, then
 
 The optional Enhanced profile now covers nine bodies. Orc 17 rises from a planted crouch and shifts into a staggered alert stance on the retained Third Dawn rig. Water Elemental 16 starts as a small column, unfolds and spreads its arms using the existing public rig and water material. The four fitted clips use the official group 23 spawn and group 28 alert images as pose guides. They use an authored 100 ms cadence. The default Classic-compatible routes still play Pillage for type 8.
 
-The source decoder recovered all 19,380 registered frames from 392 official sprite members across 87 bodies. Every pixel stream consumed its complete byte range and matched the registered dimensions. This also covers body 165's one-colour palette and body 574's group 23, which omits the first frame ordinal in each direction. These members supply every ordered choice for 406 Enhanced action records. They contain 2D pose references. The decoder was checked against the community viewer's published format and tested independently on the official Enhanced 4.0.117.33 data. [Official client downloads](https://uo.com/client-download/) · [Community format reference](https://github.com/pincoide/UO-EC-Super-Viewer/blob/master/MobileData/FrameEntry.cs#L360-L437)
+The source decoder recovered all 19,380 registered frames from 392 official sprite members across 87 bodies. Every pixel stream consumed its complete byte range and matched the registered dimensions. This also covers body 165's one-colour palette and body 574's group 23, which omits the first frame ordinal in each direction. These members supply every ordered choice for 406 Enhanced action records. They contain 2D pose references. The decoder was checked against the community viewer's published format and tested independently on the official Enhanced 4.0.117.33 data. [Official client downloads](https://uo.com/client-download/) Â· [Community format reference](https://github.com/pincoide/UO-EC-Super-Viewer/blob/master/MobileData/FrameEntry.cs#L360-L437)
 
 The installed clips passed 48 selections, 48 Classic comparisons and six static corpse hue cases. Orc passed 558 supported poses. The Water Elemental's formed mesh stayed at least 4 mm above the flat plane across 31 measured poses. Idle, attack and death each cleared the formation shape when interrupting the rise. Offscreen Vulkan rendered 80 poses per creature. The normal world scene passed 18 replay checks in each mode. The native trial passed 79 checks on two real constructors and 20 controlled packets delivered to two disposable clients. The fixture sends those Enhanced packets. The pinned server's ordinary creature gameplay does not currently emit them.
 
@@ -755,7 +794,7 @@ The native Energy Vortex constructor produced its rare llama after 76 attempts i
 
 The animation ledger remains at 6,487 of 8,089 tracked slots. The bow uses a moving effect and the other changes reuse existing animation routes. The configured census leaves 105 unresolved server names and indirect quest, summon and event appearances outside its denominator.
 
-# Jack O’ Lanterns and Stone Form stances
+# Jack Oâ€™ Lanterns and Stone Form stances
 
 The prepared client now renders both PumpkinHead bodies, 1246 and 1247. The original AnimationFrame2.uop contains nine groups per body. Its sequence records link the Classic alternates and distinguish the dormant pumpkin from ignition. The fitted 3D versions pair an orange horned spirit and a blue clown spirit with the existing CC-BY-4.0 Pumpkin LP by Karolina Renkiewicz. Both packed scenes reference that shared asset. The masks and flame surfaces are authored. The collapse extinguishes the spirit and leaves the landed gourd as the static corpse.
 
@@ -765,7 +804,7 @@ Stone Form now has fitted replacements for all 17 stored groups. The added motio
 
 Mirror Image passed for both human body types with their copied cosmetics and dyed shirt. The seasonal Naughty Twin helper copied body, skin hue and dyed shirt, and removed the twin on the native timer. The server sent zero hair and beard IDs for the twin despite both being set on the caster. Ethereal Voyage used the existing Meer Mage rig with body 770 and the native 0x048F palette. The two-client trial covered movement, reversion on an attack and death while transformed. These three features passed 62 native checks together.
 
-The current generic animation ledger routes 6,487 of 8,089 tracked slots (80.2%). The broader ledger has 1,602 unrouted slots. Every tracked slot with matching stored Classic frames has a route. The static catalogue passed 2,525 checks across 334 corpse bodies. The Jack O’ Lantern and Stone mode recipes are scripts/bake-jack-o-lanterns.gd and scripts/bake-stone-modes.gd. Their matching preparation scripts verify the source and gameplay fingerprints before installation.
+The current generic animation ledger routes 6,487 of 8,089 tracked slots (80.2%). The broader ledger has 1,602 unrouted slots. Every tracked slot with matching stored Classic frames has a route. The static catalogue passed 2,525 checks across 334 corpse bodies. The Jack Oâ€™ Lantern and Stone mode recipes are scripts/bake-jack-o-lanterns.gd and scripts/bake-stone-modes.gd. Their matching preparation scripts verify the source and gameplay fingerprints before installation.
 
 # Reaper and Stone Forms
 
@@ -801,7 +840,7 @@ The disposable two-client run passed 50 checks with the actual Golem ability and
 
 The Centaur, Shadow Knight and Ravager now use the skin table belonging to each visible mesh in their original Granny files. The old conversion included two Centaur helper tables or one Doom weapon table before the body's own table. This sent vertices to the wrong joints even though the original bind pose and packet playback passed. The Centaur uses the third table's 41 bindings. The Shadow Knight uses its 43-entry body table and the Ravager its 50-entry table. Their original rigid sword and club retain their own bindings.
 
-A scan of 256 local creature models measured the original and corrected poses against each model's own skinned bind pose. Across idle, walk and run, the worst sampled 95th-percentile edge stretch fell from 3.39× to 1.32× for Centaur, 5.98× to 1.20× for Shadow Knight and 4.72× to 1.28× for Ravager. Offscreen renders verified all three corrections. The original animation curves remain except for the model-space grounding track, which is measured from the corrected skin. The largest adjustment was 0.474 metres during the Centaur's original attack. The server's position stays authoritative.
+A scan of 256 local creature models measured the original and corrected poses against each model's own skinned bind pose. Across idle, walk and run, the worst sampled 95th-percentile edge stretch fell from 3.39Ã— to 1.32Ã— for Centaur, 5.98Ã— to 1.20Ã— for Shadow Knight and 4.72Ã— to 1.28Ã— for Ravager. Offscreen renders verified all three corrections. The original animation curves remain except for the model-space grounding track, which is measured from the corrected skin. The largest adjustment was 0.474 metres during the Centaur's original attack. The server's position stays authoritative.
 
 Centaur and Twaulo use the original 92-triangle Third Dawn bow when the server sends its worn item. The bow follows the human wrist and fingertips, and the brace uses the rig's human arms. Both clients verified the native bow, partial dye, removal, re-equip, movement and the existing static corpse path. The fitted bow covers carrying and equipment display. ModernUO sends a projectile when the Centaur fires and omits the monster bow swing animation, so a separate client release remains open.
 
@@ -1143,7 +1182,7 @@ Scorpion 48 retains ClawDraw and its earlier strikes, and adds a claw snap, two 
 
 The client passed 4,374 decoded poses and six static corpse hue cases. Eighteen decoded death and removal cases covered default falls, early alternate falls and settled alternate falls on flat ground and two slopes. The transition keeps the phase, speed and displayed bones. When the source is still blending into the fall, the transition preserves its first pose and returns to the fall over up to 80 ms. The isolated native trial checked the separate action packets and ordinary server death. The compound alternate handoff was exercised in the client test.
 
-Air Elemental 13 adds GustSway, CloudBrace and WindScatter as a separate library on the existing CC0 carrier. The cloud, dust and deterministic shader phase stay in place. The isolated trial passed 865 checks across AirElemental, SummonedAirElemental and CrystalVortex, including the summon’s transient corpse. The installed package passed 367 clean-copy checks across 176 skin samples.
+Air Elemental 13 adds GustSway, CloudBrace and WindScatter as a separate library on the existing CC0 carrier. The cloud, dust and deterministic shader phase stay in place. The isolated trial passed 865 checks across AirElemental, SummonedAirElemental and CrystalVortex, including the summonâ€™s transient corpse. The installed package passed 367 clean-copy checks across 176 skin samples.
 
 # Earth Elemental, Gazer, Wisp and Imp actions
 
@@ -1153,7 +1192,7 @@ Gazer 22 keeps its Third Dawn hover, four separate eyes and two recovered attack
 
 Wisp 58 adds a tall flare, split flicker and drifting ray motion in a separate GPL-3.0-or-later animation library. The existing independent rig, mesh and shader stay in place. The selection volume encloses the new motions. The installed package passed 855 clean-copy checks, including 608 complete skin samples, native hue flags and the frozen static corpse.
 
-The isolated ModernUO trials passed 1,255 checks for the three Earth Elemental constructors, Gazer and Imp, and 535 for Wisp and CrystalWisp. The Earth, Gazer and Imp client test passed 7,290 decoded poses, nine static corpse hue cases and six terrain death-to-corpse handoffs across 246 samples. A 68-view Forward+ review checked the new motions and Gazer’s eye flashes.
+The isolated ModernUO trials passed 1,255 checks for the three Earth Elemental constructors, Gazer and Imp, and 535 for Wisp and CrystalWisp. The Earth, Gazer and Imp client test passed 7,290 decoded poses, nine static corpse hue cases and six terrain death-to-corpse handoffs across 246 samples. A 68-view Forward+ review checked the new motions and Gazerâ€™s eye flashes.
 
 Generic routing is 5,340 of 6,930 tracked slots (77.1%). At this release the Classic pairs sharing a replacement fell from 735 to 718, and 25 of the 106 type-14 group-11 candidates had verified routes. The full regression passed, including 4,096 terrain samples and 2,689 statics in the world smoke check.
 
@@ -1404,7 +1443,7 @@ Reproduce the pixel check with `.tools/pyenv/Scripts/python.exe scripts/inspect-
 
 Three Classic group 11 routes are active. Stone Gargoyle 67 and Succubus 149 use their existing recovered Fidget. Classic groups 11 and 17 in `anim2.mul` have identical ordered visible pixels and placement in all five directions for both bodies. Giant Toad 80 uses a new short throat and tongue movement on its recovered idle, based on the five-frame `anim.mul` reference. The recovered body, rig and existing animation keys are retained.
 
-The active client gate passed 15 decoded action routes and nine static corpse hue cases. Across 91 samples per treatment the toad head moved 14.2–14.7 mm, the tongue moved 7.6–7.9 mm and the skin reached up to 3.3 mm below the flat test plane. The isolated ModernUO run passed 621 checks across two clients and four native constructors, including Szavetra. These fixtures request actions explicitly. The ledger routes 5,237 of 6,840 protocol slots. Fifteen of the 1,603 unresolved slots have identified original frames.
+The active client gate passed 15 decoded action routes and nine static corpse hue cases. Across 91 samples per treatment the toad head moved 14.2â€“14.7 mm, the tongue moved 7.6â€“7.9 mm and the skin reached up to 3.3 mm below the flat test plane. The isolated ModernUO run passed 621 checks across two clients and four native constructors, including Szavetra. These fixtures request actions explicitly. The ledger routes 5,237 of 6,840 protocol slots. Fifteen of the 1,603 unresolved slots have identified original frames.
 
 Use `.tools/pyenv/Scripts/python.exe scripts/inspect-creature-mul-frames.py --scan-aliases` to find exact matches for unresolved Classic MUL groups. To reproduce the two comparisons after activation, run the inspector for body 67 and then 149 with `--groups 11 17 --compare`. Bake with Godot `--headless --path Viewer --script res://../scripts/bake-fidget-aliases-toad.gd`, run `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily fidget_aliases_toad`, and check `python -B scripts/accept-classic-gestures.py --batch fidget_aliases_toad --check-active`.
 
@@ -1412,7 +1451,7 @@ Use `.tools/pyenv/Scripts/python.exe scripts/inspect-creature-mul-frames.py --sc
 
 Four added routes are active. Ophidian Mage and Archmage body 85 use the exact 62-triangle Third Dawn staff on the original right grasp, with a dip, two-handed held cast and forward release. The casting effects follow the staff tip. Matriarch body 87 uses an unarmed torso and tail dip. Its measured head drop is approximately 14 cm. Existing body motion keys are retained.
 
-The active client passed 12 decoded action cases and six static corpse hues. Sampled shaft centerlines cleared the body outside the hands, and the closest measured left-grasp distance during the brace was 30–33 mm. The raw collapse may place the staff about 51 mm below the flat plane. Runtime support cleared the body and staff in 287 collapse samples across flat ground, four slopes and two 22 cm steps, then froze the exact displayed staff pose into the static corpse. The isolated ModernUO run passed 463 checks across both clients and the Mage, Archmage and Matriarch constructors. It verified requested action packets and corpses. Autonomous casting and continuous clearance on arbitrary terrain remain open.
+The active client passed 12 decoded action cases and six static corpse hues. Sampled shaft centerlines cleared the body outside the hands, and the closest measured left-grasp distance during the brace was 30â€“33 mm. The raw collapse may place the staff about 51 mm below the flat plane. Runtime support cleared the body and staff in 287 collapse samples across flat ground, four slopes and two 22 cm steps, then froze the exact displayed staff pose into the static corpse. The isolated ModernUO run passed 463 checks across both clients and the Mage, Archmage and Matriarch constructors. It verified requested action packets and corpses. Autonomous casting and continuous clearance on arbitrary terrain remain open.
 
 Run `python -B scripts/prepare-ophidian-staff.py`, then bake with Godot `--headless --path Viewer --script res://../scripts/bake-ophidian-staff-gestures.gd`. The native command is `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily ophidian_staff`. The active check is `python -B scripts/accept-classic-gestures.py --batch ophidian_staff --check-active`. The ledger routes 5,234 of 6,840 slots (76.5%). Original frames are identified for 18 of the 1,606 unresolved slots.
 
@@ -1428,7 +1467,7 @@ Bake with Godot `--headless --path Viewer --script res://../scripts/bake-teratha
 
 Fifteen source-backed Classic actions are active across nine body IDs. The Dragon and Drake routes share the recovered 54-joint rig and maintain the original 2:1 size difference. Their group 11 dips and group 12 breath poses follow the original Classic sequences. The breath uses the weighted jaw and tongue pose from the recovered Ancient Wyrm attack. The Daemon routes share a wing and arm recipe, with their original server facing and existing materials.
 
-The active client passed 2,745 complete-skin samples, 27 static corpse hue cases and 12 decoded fire projectiles across the three treatments. The isolated ModernUO run passed 1,997 checks across both clients and eleven constructor/body combinations. Servant of Semidar refused native death as expected. Its local static corpse route was checked separately. In six additional native breath cases, Dragon, Greater Dragon and Drake sent group 12 and the fire projectile to both clients, which placed it at the animated mouth 1,300–1,318 ms after the action. The server then reduced the Ogre Lord's health by 24–130. The fixture triggered the real ability with AI stopped. Autonomous ability selection and slope clearance remain open.
+The active client passed 2,745 complete-skin samples, 27 static corpse hue cases and 12 decoded fire projectiles across the three treatments. The isolated ModernUO run passed 1,997 checks across both clients and eleven constructor/body combinations. Servant of Semidar refused native death as expected. Its local static corpse route was checked separately. In six additional native breath cases, Dragon, Greater Dragon and Drake sent group 12 and the fire projectile to both clients, which placed it at the animated mouth 1,300â€“1,318 ms after the action. The server then reduced the Ogre Lord's health by 24â€“130. The fixture triggered the real ability with AI stopped. Autonomous ability selection and slope clearance remain open.
 
 Bake with Godot `--headless --path Viewer --script res://../scripts/bake-dragon-daemon-gestures.gd`. Run `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily dragon_daemon` and `python -B scripts/accept-classic-gestures.py --batch dragon_daemon --check-active`. The ledger now routes 5,225 of 6,840 slots (76.4%). Original frames have been identified for 27 of the 1,615 unresolved slots.
 
@@ -1442,7 +1481,7 @@ Prepare with `python -B scripts/prepare-ophidian-bardiche.py`, then bake with Go
 
 # Giant Scorpion and Imp Classic actions
 
-Giant Scorpion 48 and Imp 74 are active. The Scorpion retimes its recovered claw and tail tracks independently and holds its support joints at the source starting pose. The tail dips 209–212 mm and recovers while the claws are still drawn back 1.00–1.02 m and 363–369 mm. The Imp's `anim2.mul` redirect to graphic 18 has identical ordered pixels and placement across all five directions in slots 11, 17 and 18, despite distinct encoded payloads. A shared wing twitch on the recovered idle moves the measured wing joint about 50 mm. Both bodies restore their original atlas cutouts.
+Giant Scorpion 48 and Imp 74 are active. The Scorpion retimes its recovered claw and tail tracks independently and holds its support joints at the source starting pose. The tail dips 209â€“212 mm and recovers while the claws are still drawn back 1.00â€“1.02 m and 363â€“369 mm. The Imp's `anim2.mul` redirect to graphic 18 has identical ordered pixels and placement across all five directions in slots 11, 17 and 18, despite distinct encoded payloads. A shared wing twitch on the recovered idle moves the measured wing joint about 50 mm. Both bodies restore their original atlas cutouts.
 
 The three treatments passed 12 decoded routes, 606 complete-skin pose samples and six static corpse hue cases. The measured support joints stayed planted, with no meaningful flat-plane penetration. Forward+ rendered ten final poses. The isolated ModernUO trial passed 321 checks, including both clients observing all four Classic routes and matching static corpses. The current ledger has 5,209 of 6,840 routable slots (76.2%). Of 1,631 unresolved slots, 43 have identified original frames.
 
@@ -1460,7 +1499,7 @@ The ledger has 5,207 of 6,840 routable slots (76.1%). Of the 1,633 unresolved sl
 
 # Gargoyle Classic actions
 
-Gargoyle body 4 retains its Third Dawn mesh, atlas, rig and existing animation keys. Classic slot 11 uses a new kneeling lunge on that rig. The front foot steps 588–595 mm and the pelvis drops 564–571 mm while the wings open behind the body. Classic slot 12 uses the 54 matched joint tracks of Age of Shadows `gargoyles_gargoyle_cast2.grn`, with a floor adjustment measured separately for each mesh treatment. Both hands rise above the head during the cast. The existing new-protocol cast category can use the same clip.
+Gargoyle body 4 retains its Third Dawn mesh, atlas, rig and existing animation keys. Classic slot 11 uses a new kneeling lunge on that rig. The front foot steps 588â€“595 mm and the pelvis drops 564â€“571 mm while the wings open behind the body. Classic slot 12 uses the 54 matched joint tracks of Age of Shadows `gargoyles_gargoyle_cast2.grn`, with a floor adjustment measured separately for each mesh treatment. Both hands rise above the head during the cast. The existing new-protocol cast category can use the same clip.
 
 The original, rounded and modern treatments passed six decoded Classic routes, 606 complete-skin poses and three static corpse hues. The two actions stayed between 0.4 mm below and 5.7 mm above the flat test plane, and 18 final poses rendered with the original wing cutout. The final isolated ModernUO run passed 189 checks, including both clients receiving the two Classic actions and matching corpse. The normal-registry action gate passed and the ledger now has 5,203 of 6,840 routable slots. Of the 1,637 open slots, 49 have identified original frames. Continuous mixed terrain, autonomous casting and gameplay effects remain open.
 
@@ -1468,7 +1507,7 @@ Reproduce with `python -B scripts/prepare-gargoyle-classic.py`, then Godot `--he
 
 # Earth Elemental and Wraith Classic actions
 
-The Age of Shadows Earth Elemental is active on body 14 at the recovered model table's 1.3 scale. The original variant retains 410 triangles and 21 joints. The rounded and modern variants use 6,560 triangles. The modern variant uses the existing pinned CC0 rock surface. Classic slot 11 uses a one-shot version of the recovered fidget. Slot 12 assembles the rocks using reversed source collapse, authored timing and a below-grade start. All three treatments passed six decoded action routes and 486 complete-skin pose checks. The emergence starts 49–92 mm below the flat test plane and returns to the source idle floor. The fidget reaches about 1.12 m of wrist travel with up to 9 mm of flat-plane penetration.
+The Age of Shadows Earth Elemental is active on body 14 at the recovered model table's 1.3 scale. The original variant retains 410 triangles and 21 joints. The rounded and modern variants use 6,560 triangles. The modern variant uses the existing pinned CC0 rock surface. Classic slot 11 uses a one-shot version of the recovered fidget. Slot 12 assembles the rocks using reversed source collapse, authored timing and a below-grade start. All three treatments passed six decoded action routes and 486 complete-skin pose checks. The emergence starts 49â€“92 mm below the flat test plane and returns to the source idle floor. The fidget reaches about 1.12 m of wrist travel with up to 9 mm of flat-plane penetration.
 
 The final isolated ModernUO trial passed 439 checks across Earth Elemental, Summoned Earth Elemental and the body-14 Plague Spawn. Both clients observed the two action packets, the matching clips and the native static rock-pile corpse. Plague Spawn retained its randomized constructor hue. The Summoned Earth Elemental witness covers its constructor. Actual spell summoning and summoned corpse suppression still need separate tests. Emergence on slopes and ledges also remains open.
 
@@ -1484,7 +1523,7 @@ Both actions are active in the local registry. The regenerated ledger has 5,197 
 
 Harpy 30 and Reaper 47 each have five frames in all five stored directions of Classic slot 11 in `anim.mul`. The Harpy starts at the crest of its recovered `harpies_harpy_fly.grn` cycle, with a 40 ms blend at the wrap. The Reaper uses a new trunk bend on its original rig and the cutout from `flails_reaper_v01.tga`. Forward+ renders show the Harpy's raised wings and downstroke, and the Reaper's branches after restoring the atlas transparency.
 
-Six decoded action routes and six static corpse hue cases passed across the original, rounded and modern treatments. Across 606 sampled poses the Harpy's visible skin stayed at least 325 mm above the test plane and both wing joints passed from 1.25 m above the pelvis to 0.53 m below it. The Reaper's neck traveled 283–285 mm with zero measured pelvis drift. The final isolated ModernUO run passed 293 checks, including both clients receiving slot 11, selecting the intended action and observing the matching static corpse. Fixture-requested actions do not establish autonomous gameplay.
+Six decoded action routes and six static corpse hue cases passed across the original, rounded and modern treatments. Across 606 sampled poses the Harpy's visible skin stayed at least 325 mm above the test plane and both wing joints passed from 1.25 m above the pelvis to 0.53 m below it. The Reaper's neck traveled 283â€“285 mm with zero measured pelvis drift. The final isolated ModernUO run passed 293 checks, including both clients receiving slot 11, selecting the intended action and observing the matching static corpse. Fixture-requested actions do not establish autonomous gameplay.
 
 Reproduce with Godot `--headless --path Viewer --script res://../scripts/bake-reaper-harpy-gestures.gd` and then `test-reaper-harpy-gestures.gd`. Run `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily reaper_harpy` for the isolated native test. `python -B scripts/accept-classic-gestures.py --batch reaper_harpy` checks the native receipt. Use `--activate` to verify the same scenes through the normal local registry and `--check-active` to repeat that check.
 
@@ -1496,11 +1535,11 @@ The Earth Elemental's previous Third Dawn package used the 202-triangle mesh wit
 
 The post-redirect root regression passed, including the ready stance checks. Giant Serpent 21, Skeleton 56 and Ratman 42 then passed their normal-registry activation checks. Giant Spider 28 and Mongbat 39 are also active after 613 isolated server checks across Giant Spider, Greater Mongbat, Mongbat and Strong Mongbat. Both clients received Classic slot 11, played the intended clip, and observed the matching static corpse. The active ledger has 5,195 routable slots out of 6,840, with 1,645 unresolved. Fifty-six have identified original frame records. A fresh full regression is running with all five actions active.
 
-The Giant Spider uses its original 30-joint rig for an abdomen shift and one front-leg lift. The recovered fidget has a different, symmetric leg motion. The Mongbat’s original idle render exposed stretched-looking opaque wing panels and an asymmetric pose. The new slot 11 gesture starts from the symmetric wing bind poses and folds them behind the body. The original `mongbats_mongbat_v04.tga` alpha is restored across all three treatments, including through the remastered surface shader. The old idle keys are still asymmetric and need a separate visual review. The checked original alpha conversion has SHA-256 `0060dd037c56dd226a68c21160fefc2ebcf8b2527025783960a773a48cc15e6d`.
+The Giant Spider uses its original 30-joint rig for an abdomen shift and one front-leg lift. The recovered fidget has a different, symmetric leg motion. The Mongbatâ€™s original idle render exposed stretched-looking opaque wing panels and an asymmetric pose. The new slot 11 gesture starts from the symmetric wing bind poses and folds them behind the body. The original `mongbats_mongbat_v04.tga` alpha is restored across all three treatments, including through the remastered surface shader. The old idle keys are still asymmetric and need a separate visual review. The checked original alpha conversion has SHA-256 `0060dd037c56dd226a68c21160fefc2ebcf8b2527025783960a773a48cc15e6d`.
 
-The package tests replayed six decoded action routes and six static corpse hue cases. Across 606 pose samples the Spider’s seven planted leg joints and the Mongbat’s toe joints had zero measured drift, and the complete skin cleared the flat plane. The moving joint traveled 445–453 mm on the Spider and 127–128 mm on the Mongbat. Ten Forward+ phases rendered across the final gestures. Reproduce with Godot `--headless --path Viewer --script res://../scripts/bake-spider-mongbat-gestures.gd` and then `test-spider-mongbat-gestures.gd`. Native reproduction uses `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily spider_mongbat`.
+The package tests replayed six decoded action routes and six static corpse hue cases. Across 606 pose samples the Spiderâ€™s seven planted leg joints and the Mongbatâ€™s toe joints had zero measured drift, and the complete skin cleared the flat plane. The moving joint traveled 445â€“453 mm on the Spider and 127â€“128 mm on the Mongbat. Ten Forward+ phases rendered across the final gestures. Reproduce with Godot `--headless --path Viewer --script res://../scripts/bake-spider-mongbat-gestures.gd` and then `test-spider-mongbat-gestures.gd`. Native reproduction uses `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily spider_mongbat`.
 
-The next source comparison rendered Reaper 47’s archived Fidget and Harpy 30’s archived Fly. The Reaper’s Classic slot 11 bends its trunk more visibly than Fidget. The Harpy’s recovered Fly has a similar wingbeat to slot 11, with a different start phase in the first side-by-side render. Check the exact phase and stance before assigning that clip.
+The next source comparison rendered Reaper 47â€™s archived Fidget and Harpy 30â€™s archived Fly. The Reaperâ€™s Classic slot 11 bends its trunk more visibly than Fidget. The Harpyâ€™s recovered Fly has a similar wingbeat to slot 11, with a different start phase in the first side-by-side render. Check the exact phase and stance before assigning that clip.
 
 # Skeleton Axe and Ratman evidence
 
@@ -1508,7 +1547,7 @@ Classic body 56 idle, attack, reach and collapse frames identify the long-handle
 
 Across three Skeleton mesh treatments, 3,621 sampled poses preserved the root and showed zero measured grip drift. The axe cleared the flat reference by at least 6.55 mm during collapse. The three static corpse hues matched the final animated axe geometry, and 246 additional collapse samples covered four slopes and both sides of a step with six successful corpse handoffs. The isolated server passed 271 checks with Skeleton and Spellbinder on two clients. The sibling body 57 keeps its existing package. The active check also exercises the body switch.
 
-Ratman 42 now has an authored short hunch and reach on its 45-joint source rig, based on the five Classic slot 11 frames. Five Forward+ phases rendered. All 183 sampled poses retained the existing motion keys and fixed the native root, with roughly 14 cm of head drop and 16–17 cm of wrist travel. The isolated two-client run passed 139 checks, including the new gesture and static corpse replication. Both body-specific packages are verified for activation after the running regression and Giant Serpent update.
+Ratman 42 now has an authored short hunch and reach on its 45-joint source rig, based on the five Classic slot 11 frames. Five Forward+ phases rendered. All 183 sampled poses retained the existing motion keys and fixed the native root, with roughly 14 cm of head drop and 16â€“17 cm of wrist travel. The isolated two-client run passed 139 checks, including the new gesture and static corpse replication. Both body-specific packages are verified for activation after the running regression and Giant Serpent update.
 
 For the axe, run `python -B scripts/prepare-skeleton-axe.py PATH_TO_EXTRACTED_MODELS`, then Godot `--headless --path Viewer --script res://../scripts/bake-skeleton-axe-trial.gd` and `test-skeleton-axe-trial.gd`. For Ratman use the corresponding `bake-classic-gesture-trials.gd` and `test-classic-gesture-trials.gd` commands with `-- --ratman`. The isolated test families are `skeleton_axe` and `ratman_hunch`.
 
@@ -1518,7 +1557,7 @@ The full pre-activation root regression passed. All 30 redirects and both ready 
 
 # Giant Serpent recovered action and Classic source queue
 
-Body 21 slot 11 has a direct `anim.mul` record. All five directional payload hashes combine to SHA-256 `bfdb53aef972d86f5947473bb8808e573dbbfc4d9691aa3281f133aa96e22bdd`. The matching Third Dawn `serpents_snake_giant_pillage.grn` (SHA-256 `c1305092877edd08eb2e444847ed5a56f84dc94c86914ce418ac0cb4f343e21c`) was already decoded for Silver Serpent. Its 24 skeletal tracks matched the Giant Serpent by joint name, parent and rest transform. The bake copied their keys and recomputed only the floor-offset track for the Giant Serpent’s own mesh. Five Forward+ frames rendered. Across 191 sampled poses per treatment, the largest complete-skin floor error was 2.02 mm and the native root stayed fixed. Existing animation keys and three static corpse hues passed. The isolated GiantSerpent constructor test passed 139 checks with both clients, including the original 2001–2018 hue range, slot 11, movement and persistent corpse replication. Activation awaits the running root verifier.
+Body 21 slot 11 has a direct `anim.mul` record. All five directional payload hashes combine to SHA-256 `bfdb53aef972d86f5947473bb8808e573dbbfc4d9691aa3281f133aa96e22bdd`. The matching Third Dawn `serpents_snake_giant_pillage.grn` (SHA-256 `c1305092877edd08eb2e444847ed5a56f84dc94c86914ce418ac0cb4f343e21c`) was already decoded for Silver Serpent. Its 24 skeletal tracks matched the Giant Serpent by joint name, parent and rest transform. The bake copied their keys and recomputed only the floor-offset track for the Giant Serpentâ€™s own mesh. Five Forward+ frames rendered. Across 191 sampled poses per treatment, the largest complete-skin floor error was 2.02 mm and the native root stayed fixed. Existing animation keys and three static corpse hues passed. The isolated GiantSerpent constructor test passed 139 checks with both clients, including the original 2001â€“2018 hue range, slot 11, movement and persistent corpse replication. Activation awaits the running root verifier.
 
 Reproduce with Godot `--headless --path Viewer --script res://../scripts/bake-giant-serpent-pillage.gd`, then `test-giant-serpent-pillage.gd`. Use `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily giant_serpent_pillage` for native evidence and `python -B scripts/accept-classic-gestures.py --batch giant_serpent_pillage` to check the receipt.
 
@@ -1526,15 +1565,15 @@ The checked MUL decoder produced sheets for 19 source-backed gaps across the 15 
 
 # Raptor and Slith ready stance evidence
 
-The ten-frame UOP group 25 references show both creatures lifting their heads compared with group 1. Raptor drops its foreclaws and holds its tail close to horizontal. Slith raises its head slightly with a small tail motion. The one-second replacements keep the current licensed Raptor rig and Slith’s recovered Komodo Dragon rig. The Raptor’s first render lifted the tail too far. The corrected silhouette was rendered and retested before the final native run.
+The ten-frame UOP group 25 references show both creatures lifting their heads compared with group 1. Raptor drops its foreclaws and holds its tail close to horizontal. Slith raises its head slightly with a small tail motion. The one-second replacements keep the current licensed Raptor rig and Slithâ€™s recovered Komodo Dragon rig. The Raptorâ€™s first render lifted the tail too far. The corrected silhouette was rendered and retested before the final native run.
 
-The ready stances passed twelve decoded routes through Classic slot 11 and newer type 14, preserving existing animation tracks and six static corpse hue cases. Across 726 sampled poses, the planted joints stayed fixed. The posed mesh added no penetration relative to idle on flat and four 14% test planes. The Raptor’s raw pre-contact floor gap remains about 25 mm below the reference, as in its existing idle. The final isolated run passed 615 checks with Raptor, Slith, Stone Slith and Toxic Slith. Both clients witnessed each of the two actions for all four classes. Activation follows the existing 30 redirects and checks that both layers coexist.
+The ready stances passed twelve decoded routes through Classic slot 11 and newer type 14, preserving existing animation tracks and six static corpse hue cases. Across 726 sampled poses, the planted joints stayed fixed. The posed mesh added no penetration relative to idle on flat and four 14% test planes. The Raptorâ€™s raw pre-contact floor gap remains about 25 mm below the reference, as in its existing idle. The final isolated run passed 615 checks with Raptor, Slith, Stone Slith and Toxic Slith. Both clients witnessed each of the two actions for all four classes. Activation follows the existing 30 redirects and checks that both layers coexist.
 
 To reproduce the bake and local test, run Godot with `--headless --path Viewer --script res://../scripts/bake-creature-ready-stance.gd` and then `test-creature-ready-stance.gd`. For the isolated native run, use `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily ready_stances`, then verify the native receipt with `python -B scripts/accept-classic-gestures.py --batch ready_stances`.
 
 # Classic UOP redirects prepared
 
-Thirty body-specific redirects across Fire Gargoyle 130, Animated Weapon 692, Raptor 730, Slith 734 and Enslaved Gargoyle 753 are verified in the isolated preview. The recipe pins `AnimationSequence.uop`, `mobtypes.txt`, and the destination frame payloads. Each zero-frame redirect reuses its body’s existing destination clip and keeps all scene assets and animation tracks intact. The preview passed 90 redirected decoded routes and 30 destination checks across the three mesh treatments. Godot logged a null-material cleanup diagnostic during the preview; the decoded action checks completed.
+Thirty body-specific redirects across Fire Gargoyle 130, Animated Weapon 692, Raptor 730, Slith 734 and Enslaved Gargoyle 753 are verified in the isolated preview. The recipe pins `AnimationSequence.uop`, `mobtypes.txt`, and the destination frame payloads. Each zero-frame redirect reuses its bodyâ€™s existing destination clip and keeps all scene assets and animation tracks intact. The preview passed 90 redirected decoded routes and 30 destination checks across the three mesh treatments. Godot logged a null-material cleanup diagnostic during the preview; the decoded action checks completed.
 
 The isolated ModernUO run passed 1,705 checks and recorded 88 two-client redirect witnesses across all seven reviewed native classes. The run also verified movement, raw hues and persistent corpses or, for Animated Weapon, native corpse suppression. Activation is queued after the full regression run. Its local registry update is scoped to the verified rows and rolls back if an existing package gate fails. Reproduce with `python -B scripts/prepare-creature-uop-redirects.py`, then `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily uop_redirects` and `python -B scripts/prepare-creature-uop-redirects.py --check-native`.
 
@@ -1544,7 +1583,7 @@ The two other redirects send Classic slot 11 to canonical group 25 on Raptor and
 
 The full root verifier passed before activation. The local registry now selects the new action for body 130 slot 11, body 831 slot 19, and body 267 slot 11. Activation rechecked the sealed evidence and all three mesh treatments. The recovered Parrot and Troglodyte family suites also passed with the active packages, including the other bodies in each family. The regenerated ledger has 5,156 of 6,838 tracked protocol slots routable, with 1,682 unresolved. Of those, 61 have identified original frame records. The 32 UOP redirect candidates remain a separate review queue.
 
-Parrot passed 141 prepared native checks across two clients. Troglodyte and Lurg passed 319 prepared native checks across both constructors and clients. The normal-registry family runs then passed 285 and 907 checks respectively, including both new actions. These controlled runs exercised server-sent actions, movement, hues and static corpse replication. The Parrot’s client flight-to-idle test restored foot contact, and the posed skin cleared four 14% test planes by at least 44 mm. The Troglodyte trial retimes one reach from the recovered 10.12-second Misc clip, sampling its 56 tracks into a 0.6-second action. Five Forward+ frames rendered. Across all three treatments the posed mesh stayed between 1.66 mm below and 11.32 mm above the flat plane during 73 samples each, preserving existing tracks and static corpse hues. The source crop is a visual fit to the five-frame Classic motion.
+Parrot passed 141 prepared native checks across two clients. Troglodyte and Lurg passed 319 prepared native checks across both constructors and clients. The normal-registry family runs then passed 285 and 907 checks respectively, including both new actions. These controlled runs exercised server-sent actions, movement, hues and static corpse replication. The Parrotâ€™s client flight-to-idle test restored foot contact, and the posed skin cleared four 14% test planes by at least 44 mm. The Troglodyte trial retimes one reach from the recovered 10.12-second Misc clip, sampling its 56 tracks into a 0.6-second action. Five Forward+ frames rendered. Across all three treatments the posed mesh stayed between 1.66 mm below and 11.32 mm above the flat plane during 73 samples each, preserving existing tracks and static corpse hues. The source crop is a visual fit to the five-frame Classic motion.
 
 Reproduce the prepared tests with `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily parrot_flight` or `troglodyte_reach`. For the Troglodyte bake and client check, run Godot with `--headless --path Viewer --script res://../scripts/bake-troglodyte-reach-trial.gd` and then `test-troglodyte-reach-trial.gd`. The active package checks are also part of `scripts/verify.ps1`.
 
@@ -1552,7 +1591,7 @@ Reproduce the prepared tests with `./scripts/test-horses.ps1 -Live -SkipContact 
 
 Full root verification passed, and the exact prepared native packages for bodies 53, 54 and 55 are now active locally. Activation rechecked weapon grips, 492 sampled slope and step poses, and twelve corpse handoffs. The regenerated ledger has 5,153 routable slots out of 6,838, with 1,685 unresolved. Of those, 64 have identified original frame records. Run `python -B scripts/accept-classic-gestures.py --help` for the activation and check modes.
 
-The Blistering Gargoyle's UOP body 130, group 11 record has 55 frame headers in `AnimationFrame1.uop`, payload SHA-256 `fc5bf56283de49c0533acd72887418b43faba39bef55b6fda0e770de575d4a9c`. One complete direction shows eleven frames of crouching and alternating ground reaches. The authored 1.1-second trial uses the original 55-joint rig. Five Forward+ frames rendered. All three treatments passed six decoded action checks in total, preserved the existing clip tracks and keys, and built three raw-hue static corpses. Across 97 samples per treatment, ankle drift was below 0.40 mm, the hips lowered 408–413 mm, and maximum forward hand travel was 360–364 mm. The isolated FireGargoyle test passed 165 checks across two clients, including the requested slot 11 action, movement, hues, the existing Fly and Land actions, and static corpse replication. The body-scoped activation gate matched the recorded assets and report. With Godot use `--headless --path Viewer --script res://../scripts/bake-gargoyle-pillage-trial.gd -- --blistering`, then use the same arguments with `test-gargoyle-pillage-trial.gd`. Reproduce native evidence with `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily blistering_pillage`.
+The Blistering Gargoyle's UOP body 130, group 11 record has 55 frame headers in `AnimationFrame1.uop`, payload SHA-256 `fc5bf56283de49c0533acd72887418b43faba39bef55b6fda0e770de575d4a9c`. One complete direction shows eleven frames of crouching and alternating ground reaches. The authored 1.1-second trial uses the original 55-joint rig. Five Forward+ frames rendered. All three treatments passed six decoded action checks in total, preserved the existing clip tracks and keys, and built three raw-hue static corpses. Across 97 samples per treatment, ankle drift was below 0.40 mm, the hips lowered 408â€“413 mm, and maximum forward hand travel was 360â€“364 mm. The isolated FireGargoyle test passed 165 checks across two clients, including the requested slot 11 action, movement, hues, the existing Fly and Land actions, and static corpse replication. The body-scoped activation gate matched the recorded assets and report. With Godot use `--headless --path Viewer --script res://../scripts/bake-gargoyle-pillage-trial.gd -- --blistering`, then use the same arguments with `test-gargoyle-pillage-trial.gd`. Reproduce native evidence with `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily blistering_pillage`.
 
 Troglodyte body 267, group 11 has 45 headers in `AnimationFrame1.uop`, payload SHA-256 `df0f0208447e355048dd60bcc3f8701a1b576e86978a2cfd44a50f16de2bf999`. The nine decoded frames show a sustained crouch. The installed `mobtypes.txt` has flags 0 for body 267, and `Bodyconv.def` selects graphic 26 in `anim5.mul`. The five frames of direction 1 from that group (SHA-256 `db1d668938e24035012afc7551b72542fbfa3142fe93cc56df32e0611c7487c2`) show the Troglodyte rising and reaching overhead. They take precedence for the Classic route. The archived Misc clip has similar poses but repeats the rise in a much longer sequence. Compare a short source segment against the five Classic frames before deciding how much motion to author.
 
@@ -1574,7 +1613,7 @@ Body 753 prefers UOP and has a real 65-frame slot 11 record in `AnimationFrame4.
 
 # Classic slot 11 choreography references
 
-Decoded one complete five-frame direction for bodies 1, 3, 4, 42, 50, 53, 54 and 55 from `anim.mul`. They show different movements: Ogre raises a hand to its face, Zombie throws its arms up then stoops, Gargoyle advances with wing movement, Ratman shifts in a hunched posture, Skeleton reaches, and the three Troll forms sweep one arm overhead. Body 53 shows a bladed weapon in the later group 4–6 comparison, body 54 is unarmed, and body 55 carries a spiked weapon. The archived axe is the closest tested fit for body 53, and body 54 stays unarmed. The archived Frost Club has a smooth swollen head. Matching the Classic silhouette for body 55 requires adding its visible spikes. These are visual references for candidate motions. The frames do not establish which gameplay conditions send slot 11.
+Decoded one complete five-frame direction for bodies 1, 3, 4, 42, 50, 53, 54 and 55 from `anim.mul`. They show different movements: Ogre raises a hand to its face, Zombie throws its arms up then stoops, Gargoyle advances with wing movement, Ratman shifts in a hunched posture, Skeleton reaches, and the three Troll forms sweep one arm overhead. Body 53 shows a bladed weapon in the later group 4â€“6 comparison, body 54 is unarmed, and body 55 carries a spiked weapon. The archived axe is the closest tested fit for body 53, and body 54 stays unarmed. The archived Frost Club has a smooth swollen head. Matching the Classic silhouette for body 55 requires adding its visible spikes. These are visual references for candidate motions. The frames do not establish which gameplay conditions send slot 11.
 
 The first three separate replacements bake on the original Ogre, Zombie and Skeleton rigs, with 37, 34 and 35 joints. Body 1 uses FaceWipe, body 3 uses ArmsRaise, and body 50 uses Reach. Fifteen Forward+ frames and three decoded action routes passed. Across 183 sampled poses the native root stayed fixed and measured right-ankle drift stayed below 0.001 mm. The original, rounded and modern treatments then passed 549 sampled poses and nine decoded routes, retaining the existing track paths and keys. The isolated ModernUO run passed 535 checks on Ogre, Zombie, Skeleton and Spellbinder, including slot 11, movement, hues and corpses on both clients. These are authored interpretations. The body-scoped publication gate matches the tested packages and preserves the other Skeleton identities. The three routes are now active locally. The active tests passed nine decoded routes, 549 sampled poses and nine hue/corpse cases. The avatar successfully switched from body 50 to 56 and back, loading Reach only on body 50. The updated ledger has 5,150 routable and 1,688 unresolved protocol slots. Reproduce the native test with `./scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily classic_gestures`. Run Godot with `--headless --path Viewer --script res://../scripts/bake-classic-gesture-trials.gd` then `--script res://../scripts/test-classic-gesture-trials.gd`.
 
@@ -1738,7 +1777,7 @@ Giant Beetle body 791 passed 110 isolated checks in the new native run. Both own
 
 # Ethereal Beetle mounted item 0x3E97
 
-The Ethereal Beetle is active locally as mounted-item art. Its original 51-joint mesh, ten linked clips and 128×128 RGBA atlas were rebuilt from pinned source members. A blended spectral material uses the original alpha. The client passed 134 riding checks over 36 poses and 25 normal-route checks, covering exact item identity, default spectral hue, full and partial dye parameters, and exclusion from loose mobiles and static corpses. The isolated two-client native run passed 60 checks, including native summon, mounted walking and running, default spectral and custom hues, observer replication, and return of the same dyed 0x260F statuette to the backpack. The mounted-item route is counted separately from the 279 loose creature bodies.
+The Ethereal Beetle is active locally as mounted-item art. Its original 51-joint mesh, ten linked clips and 128Ã—128 RGBA atlas were rebuilt from pinned source members. A blended spectral material uses the original alpha. The client passed 134 riding checks over 36 poses and 25 normal-route checks, covering exact item identity, default spectral hue, full and partial dye parameters, and exclusion from loose mobiles and static corpses. The isolated two-client native run passed 60 checks, including native summon, mounted walking and running, default spectral and custom hues, observer replication, and return of the same dyed 0x260F statuette to the backpack. The mounted-item route is counted separately from the 279 loose creature bodies.
 
 # Fire Beetle body 169
 
@@ -2440,7 +2479,7 @@ Eight earth/ore elemental forms have pinned CC0 photographic albedo, normal and 
 
 Bounded native-evidence coverage is125/279 bodies (44.8%):98 generic forms/33 groups/116 routes. Human wearable coverage remains732/1,126. Air's death-mote source, original action gaps, anatomy/terrain polish and later native identities remain open. Derived art, prompts, captures and source inputs stay ignored. Full scripts/verify.ps1 exits0 with the focused rider test included. Its final startup exposed a concurrent fence type-inference error despite Godot exiting0; one explicit Vector2i declaration closes that error, and fresh WorldItemTests passes95 checks plus a clean final world startup. The smoke harness now rejects startup script errors even on exit0. A fresh full run will cover the next creature checkpoint and concurrent ghost/editor changes. Continue all remaining families, starting efreet, while preserving concurrent terrain/editor work and production.
 
-# All of Trammel baked in the compact streaming format — 31 October 2026
+# All of Trammel baked in the compact streaming format â€” 31 October 2026
 
 Owner request: rebake the whole Trammel map (dungeons included) in the compact format, then clean up the old caches.
 
@@ -2526,7 +2565,7 @@ The added original-source monster groups include ogres/orcs/trolls, giants, plan
 
 The action ledger (outputs/creatures/actions.html) also contains 211 original AnimationSequence metadata records, zero parse blockers. Its protocol-slot counts distinguish source, aliases, authored motion and missing routes; they are not original-action completion percentages. Continue autonomously through remaining monsters, source blockers, sea creatures, modern native identities and other mount fitting. Preserve 732/1,126 human wearable coverage and concurrent terrain/cache work. Generated art, exact prompts, IR, captures and private local server corrections remain excluded from Git.
 
-# Paperdoll replaces the early character sheet; all of Trammel populated on the server — 31 October 2026
+# Paperdoll replaces the early character sheet; all of Trammel populated on the server â€” 31 October 2026
 
 Owner decisions: remove the early character sheet, and extend the world to all of Trammel, client and server.
 
@@ -2559,12 +2598,12 @@ The local work board is outputs/creatures/index.html; review launcher is Reviews
 
 Continue autonomously through ogres/orcs/trolls, other monsters, remaining source repairs, sea creatures and missing modern native identities. Keep other rideable bodies separate until rider fitting/native mount tests pass. Preserve 732/1,126 human wearable coverage, equines/llamas/bovines, production saves and concurrent house/terrain work. The generic server-overlay installer now validates full build-input receipts and uses a replacement operation supported by Windows PowerShell 5.1.
 
-# Houses: hipped roofs, narrow roof strips, per-cell gables; server restarted — 31 October 2026
+# Houses: hipped roofs, narrow roof strips, per-cell gables; server restarted â€” 31 October 2026
 
 - **Server restarted:** the ActionTimers extension is installed and loaded (quickbar dials now follow ModernUO's real waits).
   - `Start-Server.cmd` launched from PowerShell 7 failed in Windows PowerShell 5.1: the inherited PSModulePath hid `Get-FileHash`.
   - `scripts/install-server-fixes.ps1` (Codex's uncommitted overlay work) also calls the .NET Core-only `[IO.File]::Move(a,b,$true)`, which 5.1 lacks. That script was left untouched for Codex.
-  - The verified fix assembly (`UOContent.dll`, matching its build receipt `c74141…`) was installed by hand, and the server was started with a clean module path. It listens on 127.0.0.1:2593.
+  - The verified fix assembly (`UOContent.dll`, matching its build receipt `c74141â€¦`) was installed by hand, and the server was started with a clean module path. It listens on 127.0.0.1:2593.
 - **Hipped roofs:** a block whose end rows never reach its ridge (and whose ends carry no gable wall tiles) gets hip ends at the same pitch, with no gable walls.
 - **Roof coverage:** up to 40 roof blocks, including one-cell strips (walkways, lean-tos); slivers of under three cells join the roof beside them.
 - **Gable infill judged per cell:** a short wall piece is gable infill only within two cells of a roof tile and at or above it, so houses with awnings at every storey keep their parapets and trims.
@@ -2579,7 +2618,7 @@ Continue autonomously through ogres/orcs/trolls, other monsters, remaining sourc
 
 **Tests:** WorldItemTests 85/85. Regression renders of every supported house: the two-storey and patio houses have clean cross gables. The full verify passes.
 
-# Houses: bracket gap closed, columns and arcades — 31 October 2026
+# Houses: bracket gap closed, columns and arcades â€” 31 October 2026
 
 - **Tower brackets bonded:** the owner saw a gap between the gallery brackets and the tower. Walls stand on their cell's centre line, so a bracket cell next to a wall now runs back half a cell into it.
 - **Columns:** free-standing pillar tiles (no wall beside them) are real columns, no longer wall stubs:
@@ -2594,7 +2633,7 @@ Continue autonomously through ogres/orcs/trolls, other monsters, remaining sourc
 
 **Tests:** WorldItemTests 86/86. A regression render of all classic houses matches the previous review apart from the new columns. The full verify passes.
 
-# Houses: tower corbels and 15 contest keeps and castles — 31 October 2026
+# Houses: tower corbels and 15 contest keeps and castles â€” 31 October 2026
 
 - **Tower (0x7A) side walls fixed.** The owner found the walls sticking out under the roof gallery detached and senseless.
   - Cause: the gallery's stepped stone landings were tested against the whole house's extent (which includes the gallery parapet), so they were built as solid 3 m blocks from the floor below.
@@ -2619,7 +2658,7 @@ Four cow/bull bodies (0xD8/0xE7/0xE8/0xE9) now route with original rigs/clips, b
 
 Next: owner art review and precise anatomy/UV polish; continue ordinary animals with bears, then canines/deer/felines. Preserve 732/1,126 human wearable coverage, the separate 26-body equine catalogue, native server authority and concurrent terrain/building work. Keep asset distribution/rights and arbitrary outfit/terrain coverage explicit.
 
-# Houses: cross-gable wings and tower galleries fixed — 31 October 2026
+# Houses: cross-gable wings and tower galleries fixed â€” 31 October 2026
 
 Owner review of the house sheet:
 - **"Double roof" on the two-storey houses (0x76/0x78):** the front wing took its ridge direction and height from the main roof's ridge tiles running through it, which made a second tall gable parallel to the main one.
@@ -2635,7 +2674,7 @@ Owner review of the house sheet:
 
 **Tests:** WorldItemTests 70/70; all 19 houses rebaked; the full verify passes.
 
-# Houses, batch 3: every classic house is a whole model — 31 October 2026
+# Houses, batch 3: every classic house is a whole model â€” 31 October 2026
 
 `HouseModel` now covers all 19 classic house multis ModernUO builds (Houses.cs):
 - the five small houses;
@@ -2672,7 +2711,7 @@ Owner review of the house sheet:
 - custom (designed) houses still draw tile by tile;
 - castle doorways carry the cottage door canopy, a candidate for a stone hood later.
 
-# Houses, batch 2: all small houses, the guild house and the patio house — 31 October 2026
+# Houses, batch 2: all small houses, the guild house and the patio house â€” 31 October 2026
 
 The owner approved the whole-house approach on the small house; it now covers seven of ModernUO's classic houses.
 - **Supported:**
@@ -2721,7 +2760,7 @@ Review entry points are now under Reviews/: all 14 former root review launchers 
 
 Limits: category artwork, retained coarse source silhouettes, finite sampled support/outfit/action coverage and held corpse poses; no universal collision or all-creature action-fidelity claim. Female ki-rin forcing is an unsupported diagnostic preview (eight upper-chest skin pixels in one attack); the real server rejects that ride and it is excluded from supported GPU coverage. No numeric threshold was relaxed or body-hiding mask added. Nine historical equine aliases, other animal/monster families, exact final art and separately distributable client assets remain work. Human wearables stay 732/1,126; mounted creatures do not inflate that denominator.
 
-# Closed bags, status-bar menus, Equip, server-opened backpack — 31 October 2026
+# Closed bags, status-bar menus, Equip, server-opened backpack â€” 31 October 2026
 
 Owner reports from live play:
 - **Closed reagent bag:**
@@ -2737,7 +2776,7 @@ Owner reports from live play:
 - PolishTests 43/0: a bar's single click asks for the server menu.
 - The full verify passes. One earlier verify run failed once in FuzzTests; the suite passed alone (12,040 packets) and on the next full run.
 
-# Pet orders, tool targeting, real action timers, worn tools — 31 October 2026
+# Pet orders, tool targeting, real action timers, worn tools â€” 31 October 2026
 
 Owner requests from live play:
 - **Pet menu:** a single click on any creature, horses included, now asks the server for its context menu. ModernUO lists a pet's orders for its owner (Kill, Follow, Guard, Stop, Stay, Drop, then Rename, Add/Remove Friend, Transfer, Release) and Follow/Stop/Stay for a pet friend. The menu shows them under "Orders" as plain verbs, then the rest under "Pet". A blank cliloc (Rename, 3006098) falls back to its name.
@@ -2764,7 +2803,7 @@ Owner requests from live play:
 - The extension is not loaded on the running server: its DLL is locked, so it needs a saved, graceful restart and then `scripts/build-preview-tools.ps1`.
 - Not yet checked live with a hatchet on a tree.
 
-# Window handling, creature bars, blood and bare trees — 30 October 2026
+# Window handling, creature bars, blood and bare trees â€” 30 October 2026
 
 Owner requests from live play:
 - **Right-click closes** every modern window (paperdoll, backpack, containers, skills, spellbook, maps, ...) and every server gump that is closable (it answers button 0, as the native client does). The HUD, the developer console, the house designer, server no-close gumps and map canvases (where right-drag pans) keep it.
@@ -2806,7 +2845,7 @@ Owner directs us to **try and modernise original Third Dawn models first for dis
 
 Read-only audit of the pinned local preservation archive: desert/forest/frenzied/ethereal ostards each parse as 98 vertices / 185 triangles / 24 bones. Seven desert animation clips have 23 named tracks matching these rigs; deformation/rider reuse is not yet validated. The original ki-rin mesh and seven clip files are also present, but model parsing rejects a non-finite value; no export is claimed. Exact source/member hashes and correspondence are in ignored outputs/third-dawn/creature-source-audit.json. No game executable was run, no gameplay/art route changed, and no coverage added. Next trial: desert ostard baseline and modernised comparison. Documentation-only tracked change; full runtime verification was not repeated.
 
-# Small house rebuilt as a whole house from its own layout — 30 October 2026
+# Small house rebuilt as a whole house from its own layout â€” 30 October 2026
 
 Owner direction: try the small house first, built with our own materials by copying the existing multi layout, and baked; then do the others progressively.
 
@@ -2842,7 +2881,7 @@ Evidence: **4,537 runtime checks / 1,152 rider poses**, **15 scaled flat/slope s
 
 **Eleven equine body IDs remain deferred**: skeletal/HellSteed and ki-rin need distinct meshes; remaining historical/client-only aliases need identity audit. Free candidates researched with exact primary pages/licences; skeletal CC0 download requires sign-in, and the Meshy ki-rin candidate has no verified acquired rig. No unsuitable ordinary-horse substitutes are counted. This is category routing/art reuse, not 15 bespoke models or a completed animal action library. Wearables remain **732/1,126 (65.01%)**. No new production spawn/gameplay/core changes; generated art remains local, with a distributable-client pack still pending. Concurrent ship/building/item work preserved.
 
-# Ships and houses — 30 October 2026
+# Ships and houses â€” 30 October 2026
 
 Owner request: full houses and ships, "surprise me".
 
@@ -2881,7 +2920,7 @@ Owner request: full houses and ships, "surprise me".
 
 `WorldItemTests` covers the caravel, longship, swaying hull and stern lantern (39/39).
 
-# Horse corpses use the horse model — 30 October 2026
+# Horse corpses use the horse model â€” 30 October 2026
 
 Owner request: use the new horse model as the base for horse corpses.
 
@@ -2893,16 +2932,16 @@ Owner request: use the new horse model as the base for horse corpses.
 - **Process note:** while reverting a temporary edit, the Codex session's uncommitted `HorseVisual.gd` changes were discarded by `git checkout`. They were rebuilt line for line from earlier reads; every function sits at its original line and `EquineTests` passes 4,477/4,477. The file is left uncommitted for that session.
 - **Codex WIP fails a committed test:** `HorsePolishTests` reports 32 failures against the work-in-progress registry names ("Horse / golden tan" against "golden tan"). This is outside this change.
 
-# Item catalogue: everything except corpses — 30 October 2026
+# Item catalogue: everything except corpses â€” 30 October 2026
 
-Owner request: do everything except corpses. **World 99.9% (214 → 7 open).** The 7 left are creature corpses, waiting for creature models. Britain and Trinsic stay at 100%.
+Owner request: do everything except corpses. **World 99.9% (214 â†’ 7 open).** The 7 left are creature corpses, waiting for creature models. Britain and Trinsic stay at 100%.
 
 **Creature figurines and trophies** (about 60) reuse statue scans by body type, small, in stone or bronze:
-- dragons, serpents, the hydra and dinosaurs → the dragon statuette;
-- four-legged beasts → the tiger statue;
-- humanoids and demons → the stone figure;
-- insects and small crawlers → the newt;
-- gargoyles → the stone gargoyle.
+- dragons, serpents, the hydra and dinosaurs â†’ the dragon statuette;
+- four-legged beasts â†’ the tiger statue;
+- humanoids and demons â†’ the stone figure;
+- insects and small crawlers â†’ the newt;
+- gargoyles â†’ the stone gargoyle.
 
 They will move to the real creature models once creatures exist in the animations.
 
@@ -2923,7 +2962,7 @@ They will move to the real creature models once creatures exist in the animation
 - A per-graphic override inside an `only_ids` entry falls back to the equipment mesh when it has none.
 - `scorp` is the woodworking tool, not a scorpion.
 
-# Human wearable 65% checkpoint � 30 October 2026
+# Human wearable 65% checkpoint ï¿½ 30 October 2026
 
 **732/1,126 indexed graphics (65.01%), 351 registered categories**: +160 graphics / +93 category mappings from 50.80%, unchanged denominator. These additions are historical/indexed human fitted variants, **not newly certified active-server equip classes**. Source references include 103 EQUIPMENT, 9 HUMAN, 16 MONSTER and 32 absent mobtypes rows; the independent audit checks the actual wearable flag/layer/name/animation field. No creature bodies or server rules changed. See [HUMAN_WARDROBE_65.md](HUMAN_WARDROBE_65.md).
 
@@ -2933,7 +2972,7 @@ Backpack 0x0E75/0x09B2 was rejected after 16 hair failures and is uncounted. Ear
 
 Next: review `outputs/human-wardrobe65/index.html` (372 real frames/eight sheets), repair precise garment/hair gaps, and build a separately versioned redistributable character pack with a clean-install test. **A Git clone still does not contain these ignored generated assets**; no playable-client asset distribution is claimed. Licensed inputs/provenance, local game-derived references and captures remain ignored. Concurrent terrain/item work was preserved.
 
-# Item catalogue: Ter Mur architecture, reuse pass, character equipment — 30 October 2026
+# Item catalogue: Ter Mur architecture, reuse pass, character equipment â€” 30 October 2026
 
 Owner direction: creature corpses (and creature figurines and trophy frames) wait for creature models. Reuse models whenever suitable, including the character equipment.
 
@@ -2964,9 +3003,9 @@ Garments, crafting materials and tools are crafted laid-out cloth, reagents, spo
 - `ItemCompare` used the catalogue label "unnamed" instead of the empty name the client sees.
 - The catalogue labelling step had stalled for over an hour, most likely in Godot's debugger; run with stdin closed, it finishes.
 
-**Count:** world 94.8% → 98.0% (559 → 214 open). Britain and Trinsic stay at 100%. Most of what remains is creature corpses, figurines and frames (deferred), ship-wreck pieces, unnamed records, nets and a few dozen one-offs.
+**Count:** world 94.8% â†’ 98.0% (559 â†’ 214 open). Britain and Trinsic stay at 100%. Most of what remains is creature corpses, figurines and frames (deferred), ship-wreck pieces, unnamed records, nets and a few dozen one-offs.
 
-# Human wearable 50% checkpoint — 30 October 2026
+# Human wearable 50% checkpoint â€” 30 October 2026
 
 **572/1,126 indexed graphics (50.80%), 258 equipment categories**: +172 graphics / +106 categories from the 35% checkpoint, with the same denominator. The new set has 280 local exports, including 34 independent riding variants per body. Class/property/counterpart evidence covers 92 graphics; 80 are curated client EQUIPMENT variants without an active pinned-server eligibility claim. See [HUMAN_WARDROBE_50.md](HUMAN_WARDROBE_50.md).
 
@@ -2976,14 +3015,14 @@ Rejected/unmapped: 17 mask/veil graphics failed visual review, eight middle-garm
 
 Next: review `outputs/human-wardrobe50/index.html`, then repair apron/middle-layer construction and source accurate masks, shorts/shoes and remaining natural hair. Keep category coverage distinct from final native art and server eligibility.
 
-# Spell scrolls share one look — 30 October 2026
+# Spell scrolls share one look â€” 30 October 2026
 
 Owner direction: spell scrolls reuse the same models with small variations of hue and size.
 
-`PropReplacements.spell_scroll(id)` covers all 113 scroll graphics by range: Magery 0x1F2D–0x1F6C, Necromancy 0x2260–0x2270, Spellweaving 0x2D51–0x2D60 and Mysticism 0x2D9E–0x2DAD.
+`PropReplacements.spell_scroll(id)` covers all 113 scroll graphics by range: Magery 0x1F2Dâ€“0x1F6C, Necromancy 0x2260â€“0x2270, Spellweaving 0x2D51â€“0x2D60 and Mysticism 0x2D9Eâ€“0x2DAD.
 - **Look:** a tied bundle of two or three rolls made from the three scroll scans already pinned (old scroll, ancient scroll, rolled parchment), laid flat side by side.
 - **School tint:** each school has a base tint, matched to the original art: warm tan for Magery, green for Necromancy, pale tan for Spellweaving and olive for Mysticism.
-- **Per-spell variation:** each spell shifts that tint's hue and brightness slightly and gets a length step of 0.26–0.34 m.
+- **Per-spell variation:** each spell shifts that tint's hue and brightness slightly and gets a length step of 0.26â€“0.34 m.
 
 **New replacement keys:**
 - `tint` multiplies a scan's own colours while keeping its texture.
@@ -2992,7 +3031,7 @@ Owner direction: spell scrolls reuse the same models with small variations of hu
 
 The 113 graphics are approved. Most scrolls appear only in packs and on vendors, so the placed-graphics count moves by 6. The world stands at 559 open; Britain and Trinsic stay at 100%.
 
-# Item catalogue wave 19 — 30 October 2026
+# Item catalogue wave 19 â€” 30 October 2026
 
 Owner request: continue finding models. The sourcing run reviewed curated queries for about 55 unsearched object families on compact sheets (art beside six candidates).
 
@@ -3006,13 +3045,13 @@ Owner request: continue finding models. The sourcing run reviewed curated querie
 
 **Rejected after rendering:** crab (broken bounds), bonsai (leafless), mossy boulder (shows as wire). Those families stay open.
 
-**Count:** world 94.5% → 94.8% (596 → 565 open); Britain and Trinsic stay at 100%.
+**Count:** world 94.5% â†’ 94.8% (596 â†’ 565 open); Britain and Trinsic stay at 100%.
 
 **Tooling fix:** bash `/tmp` and Python's `C:/tmp` are different folders on this machine, so a match-regex file passed between them was empty. As a result the wave-19 search covered every open family; its `candidates.json` is a full-backlog index for later picks.
 
-# Trinsic graphics complete — 30 October 2026
+# Trinsic graphics complete â€” 30 October 2026
 
-Owner request: finish Trinsic. Trinsic was measured with the same extraction as Britain, using the server's Trinsic town region (1796,2636 + 321×291), into a local `outputs/item-catalog-trinsic`. Before this pass: 758 of 765 placed graphics final, 99.85% of 64,500 placements.
+Owner request: finish Trinsic. Trinsic was measured with the same extraction as Britain, using the server's Trinsic town region (1796,2636 + 321Ã—291), into a local `outputs/item-catalog-trinsic`. Before this pass: 758 of 765 placed graphics final, 99.85% of 64,500 placements.
 
 The last seven:
 - **"Crystalline fragment" 512** (92 placements in Trinsic, 142 in the world) is a dressed sandstone wall section by its art. It is now a sandstone wall (`RegionalRules`).
@@ -3024,7 +3063,7 @@ The last seven:
 
 **Result:** Trinsic is 100% (765 of 765 placed graphics, 100.00% of placements); Britain stays at 100%; the world is at 94.5% (596 open). The britain-trinsic bake rebuilds on the next launch (`RegionalRules` changed).
 
-# Human wearable 35% checkpoint — 30 October 2026
+# Human wearable 35% checkpoint â€” 30 October 2026
 
 **400/1,126 native wearable graphics (35.52%), 152 categories**: +152 graphics / +79 categories. The denominator is unchanged. Added armour, Tokuno headwear, blades/polearms/martial weapons, two bows and six school books on both bodies. Generated art remains local/ignored; source/class/hash evidence and construction are recorded in [HUMAN_FRONTIER_BATCH.md](HUMAN_FRONTIER_BATCH.md).
 
@@ -3034,9 +3073,9 @@ Coverage means fitted category replacements. This batch includes shared armour s
 
 Next: owner visual review of `outputs/human-frontier/index.html`, targeted art/weapon-motion refinement, then the rejected apron waist/lap fit and missing dresses/surcoats before further expansion.
 
-# Britain graphics complete — 30 October 2026
+# Britain graphics complete â€” 30 October 2026
 
-Owner request: finish Britain's graphics. **Britain is at 100.0% of 3,247 placed graphics (0 open).** The world is at 94.4% (625 → 603 open).
+Owner request: finish Britain's graphics. **Britain is at 100.0% of 3,247 placed graphics (0 open).** The world is at 94.4% (625 â†’ 603 open).
 
 The last 16 Britain graphics:
 - **New CC-BY Sketchfab scans:**
@@ -3057,7 +3096,7 @@ The last 16 Britain graphics:
   - a tied flax bundle;
   - a tall standing mirror for the gargoyle floor mirrors.
 
-# Item catalogue waves 17–18 — 30 October 2026
+# Item catalogue waves 17â€“18 â€” 30 October 2026
 
 **Bulk sourcing over the open backlog** with the Sketchfab API. About 120 candidate families were reviewed on sheets. Only honest matches were pinned; rejects were unpinned and their entries removed. 40 CC-BY/CC0 scans were added:
 - **Furniture and fittings:** hammock, futon, bookstand, barrel lid, shackles, pulley, vise, tea set.
@@ -3069,28 +3108,28 @@ The last 16 Britain graphics:
 
 **Rejected after rendering:** scaffolding (fell apart), shell necklace, molehill (grass disc), skull totem, minotaur (carries a cube), windchime (broken bounds), ant nest (77k triangles after reduction), animated mandrake (Blender reduce failed).
 
-**Counts:** world 93.4% → 94.2% (713 → 625 graphics open); Britain stays at 99.5% (16 open).
+**Counts:** world 93.4% â†’ 94.2% (713 â†’ 625 graphics open); Britain stays at 99.5% (16 open).
 
 **Next:**
 - Ter Mur architecture, which needs builders rather than models: floor tile 39807, angle walls, staitcube, canals, gargoyle spouts and windows.
 - Exodus nexus pieces, horde statues and dragon heads.
 - The remaining long tail of single-placement items.
 
-# Item catalogue wave 16 — 30 October 2026
+# Item catalogue wave 16 â€” 30 October 2026
 
 The owner provided a Sketchfab API token; it is stored only in the ignored `.tools/sketchfab-token.txt`. Sourcing and pinning now reach every downloadable CC0/CC-BY Sketchfab model, not only the Objaverse mirror. `source-candidates.py` lists such models as `sketchfab:UID`, and `add-objaverse.py` downloads them with the same licence checks and provenance records.
 
 **New CC-BY scans:**
-- **Harpsichords** (south and east sets): "Clavecin" by Favier, fitted to the 2×3 footprint with the keyboard toward the bench.
+- **Harpsichords** (south and east sets): "Clavecin" by Favier, fitted to the 2Ã—3 footprint with the keyboard toward the bench.
 - **Harpsichord benches:** "Antique Bench" (red upholstery). Harpsichord benches are now one seat, not a bench run (`RegionalRules`).
 - **Britain decorations:** pitcher, roast chicken, arrows (arrow fletching), dummy head on a stand (wig stand), corn cob, jester hat, porcelain milk jug and canned meat (spam). The pitcher and corn scans carried no usable texture, so they are recoloured.
 - **Contribution statue:** uses the stone lantern scan already in the repo.
 
-**Counts:** world 93.2% → 93.4% (733 → 713 graphics open); Britain 99.1% → 99.5% (30 → 16 open).
+**Counts:** world 93.2% â†’ 93.4% (733 â†’ 713 graphics open); Britain 99.1% â†’ 99.5% (30 â†’ 16 open).
 
 **Still open in Britain, because no honest free match was found yet:** crossbow bolts, donuts, green onions, rabbit on a spit, gargoyle mirrors and sculpture, floor saw, inshave, flax bundle, elven wash basin, clock frame, crystalline blackrock, horse statue.
 
-# Item catalogue wave 15 — 30 October 2026
+# Item catalogue wave 15 â€” 30 October 2026
 
 Owner request: search deeper for free models (elven chair, harpsichord) and use real textures for the tapestries.
 
@@ -3110,9 +3149,9 @@ Owner request: search deeper for free models (elven chair, harpsichord) and use 
 
 **Harpsichord:** the CC-BY "Clavecin" by Favier on Sketchfab is a real harpsichord, but it is not in the Objaverse mirror. `add-objaverse.py` now accepts `NAME=sketchfab:UID`, which downloads through Sketchfab's API with the same licence checks. This needs a personal API token in `SKETCHFAB_TOKEN` or `.tools/sketchfab-token.txt` (ignored).
 
-**Counts:** world 92.9% → 93.2% (761 → 733 graphics open); Britain 98.4% → 99.1% (51 → 30 open). Sheets are local only (`tap15`, `tap15b`, `chair15`, `ice15`, `misc15`, `misc15b`, `rocks15b`).
+**Counts:** world 92.9% â†’ 93.2% (761 â†’ 733 graphics open); Britain 98.4% â†’ 99.1% (51 â†’ 30 open). Sheets are local only (`tap15`, `tap15b`, `chair15`, `ice15`, `misc15`, `misc15b`, `rocks15b`).
 
-# Human body sash and native cloth cutouts — 30 October 2026
+# Human body sash and native cloth cutouts â€” 30 October 2026
 
 Added the previously missing body sash (0x1541/0x1542, native MiddleTorso 17) to male/female humans and NPCs, with civilian and rigid plate-fit meshes. Catalogue regenerated: **248/1,126 graphics (22.02%), 73 categories**, 39,410 item/action rows and 332 UOP mode/action rows. Existing 35 classic / 28 on-foot / seven ordinary-horse action groups are unchanged.
 
@@ -3124,15 +3163,15 @@ Verification: coverage source validator **110 accepted exports**, runtime covera
 
 Held back: full/half apron experiments still show waist/lap defects and failed stricter pose/plate review. They remain **unmapped and uncounted**; rejected code/poses/renders are preserved only in ignored work/output folders. Next: a clean apron seam, then surcoat/dresses and remaining armour/weapon families. The sash and other torso/outer-leg combinations still need owner/combination-specific art review. Shared terrain/item work is preserved.
 
-# Item catalogue wave 14 — 30 October 2026
+# Item catalogue wave 14 â€” 30 October 2026
 
 Owner request: carry on with the item catalogue, choosing free art without asking.
 
 **Seasonal trees** (owner tree pack, local): bare, autumn and white trees all drew the same green tree. `LocalTrees.seasonal()` now picks by graphic or by the crowns over a trunk (`Reconstruction.tree_crowns`):
-- bare oak, plum and willow → leafless species;
-- maple → autumn tree with crimson-tinted leaves (`TINTS`, also used by the baked far trees);
-- fruit trees with "fall leaves" crowns → autumn species;
-- cherry and silver sapling → snow-white species.
+- bare oak, plum and willow â†’ leafless species;
+- maple â†’ autumn tree with crimson-tinted leaves (`TINTS`, also used by the baked far trees);
+- fruit trees with "fall leaves" crowns â†’ autumn species;
+- cherry and silver sapling â†’ snow-white species.
 
 **New CC0 Poly Haven models:**
 - **Yucca:** quiver tree, slimmed, leaves recoloured green.
@@ -3147,7 +3186,7 @@ Owner request: carry on with the item catalogue, choosing free art without askin
 - **Gargoyle furniture** now uses existing scans: beds (Gothic bed), couches and chairs (carved chairs, facings checked), chests, dressers and banners.
 - **Other existing scans now in use:** boots, limes, squash (pumpkin recoloured), arcanist statue.
 
-**Counts:** world 92.3% → 92.9% (832 → 761 graphics open); Britain 98.0% → 98.4% (65 → 51 open). Sheets are local only (`trees14b`, `plants14`, `plants14b`, `garg14c`, `garg14d`, `graves14`, `food14`).
+**Counts:** world 92.3% â†’ 92.9% (832 â†’ 761 graphics open); Britain 98.0% â†’ 98.4% (65 â†’ 51 open). Sheets are local only (`trees14b`, `plants14`, `plants14b`, `garg14c`, `garg14d`, `graves14`, `food14`).
 
 **Next:**
 - big elven chair, small elven tapestry and harpsichord (crafted);
@@ -3157,7 +3196,7 @@ Owner request: carry on with the item catalogue, choosing free art without askin
 
 The Britain bake rebuilds once on next launch (Reconstruction changed).
 
-# Item catalogue wave 13 — 30 October 2026
+# Item catalogue wave 13 â€” 30 October 2026
 
 Owner request: carry on with the item catalogue.
 
@@ -3177,11 +3216,11 @@ Comparison sheets showed most remaining "guess" looks were wrong:
 - Oak crown 3295 is approved, consistent with the approved oak crowns.
 - The cypress library slot is removed.
 
-**Counts:** world 92.0% → 92.3% (862 → 832 graphics open); Britain 97.7% → 98.0% (75 → 65 open). Britain's counted area grew to 3,247 graphics since the last 100% count. Sheets are local only (`w13trees`, `w13after`, `w13wheat`, `w13brit`, `w13rose`).
+**Counts:** world 92.0% â†’ 92.3% (862 â†’ 832 graphics open); Britain 97.7% â†’ 98.0% (75 â†’ 65 open). Britain's counted area grew to 3,247 graphics since the last 100% count. Sheets are local only (`w13trees`, `w13after`, `w13wheat`, `w13brit`, `w13rose`).
 
 **Next:** elven chairs, tapestries and harpsichord (crafted, since no free scans were found), gravestones, yucca, flax, cotton, white poppies, Ter Mur pieces.
 
-# Voice chat by speech-to-text — 30 October 2026
+# Voice chat by speech-to-text â€” 30 October 2026
 
 Hold V (or the talk-line microphone) and speak. Local Whisper turns your speech into text, which is said in game as normal speech: it appears in the journal and over your head. Settings, per character: language, translate into English, review before sending, and microphone.
 
@@ -3189,7 +3228,7 @@ Live evidence: a spoken clip went through the chat recognizer and came back from
 
 Gaps: no real voice relay, because ModernUO carries no audio. Translation is into English only, Whisper's built-in mode. See MODERN_UI.md.
 
-# Gameplay polish: paperdoll, gains, combat target, casting — 29 October 2026
+# Gameplay polish: paperdoll, gains, combat target, casting â€” 29 October 2026
 
 Owner request. Details are in [MODERN_UI.md](MODERN_UI.md) under "Gameplay polish".
 - **Paperdoll:** drag to wear onto the model or any slot, with the target slot lit from local tiledata layers. Slots flash on equip, refusals give their reason, and four more slots were added.
@@ -3207,15 +3246,15 @@ Owner request. Details are in [MODERN_UI.md](MODERN_UI.md) under "Gameplay polis
 - Other casters get no glow.
 - Overhead bars for party members are not separate from the party frames.
 
-# Human accessories: seven catalogue gaps — 29 October 2026
+# Human accessories: seven catalogue gaps â€” 29 October 2026
 
 Added bonnet, feathered hat, tricorne, jester hat, chain coif, spellbook and native lit/unlit lantern on both human bodies. Corrected flipped coif routing; native dyes/emission, closed holding fingers, arm clearance and coif/long-hair/cape layering are connected. Catalogue: **246/1,126 graphics (21.85%), 72 categories**, twelve newly covered graphics; action counts remain 35/35 classic and 28/28 on foot with seven supported horse rider groups. Rejected apron/sash experiments are not mapped or counted.
 
 Evidence: 16 accessory + eight hair exports; 995 checks / 448 actual GPU views; 256 hair views; 32 direct posed prop-geometry checks; all passed. Reproduction, sources, finite-test limits and the next clothing gaps: [HUMAN_TAILORING_BATCH.md](HUMAN_TAILORING_BATCH.md). Full verify passes assertions/exit status but retains existing bridge fixture script errors and teardown diagnostics; that shared work is preserved. Login: eight unit checks and the existing server list/relay smoke passed; no new live world-entry claim. Original body/bind inputs, upstream source, saves and remembered login are unchanged.
 
-# Trinsic bridges: timber footbridges and solid stone piers — 29 October 2026
+# Trinsic bridges: timber footbridges and solid stone piers â€” 29 October 2026
 
-Owner report: a Trinsic bridge "looks really bad", and asked to look for a free model. Captures showed two defects. Trinsic's six canal footbridges were flat boxes on stilts with loose rail pieces. The long sandstone east bridge (2067–2104, 2790–2800) had wooden balustrades on its pier tops and hollow, slotted piers.
+Owner report: a Trinsic bridge "looks really bad", and asked to look for a free model. Captures showed two defects. Trinsic's six canal footbridges were flat boxes on stilts with loose rail pieces. The long sandstone east bridge (2067â€“2104, 2790â€“2800) had wooden balustrades on its pier tops and hollow, slotted piers.
 
 **Model search.** Sketchfab and the Objaverse mirror were searched through the existing pinning pipeline (CC0 / CC-BY 4.0 only), with eight bridge queries and 33 licensed candidates; Poly Haven was also checked. None fits a UO bridge footprint. The candidates are single fixed-proportion spans (stylised, low-poly or multi-million-triangle scans), while UO bridges are tile-built at exact walking heights and every crossing has its own length, width and ramps. Poly Haven's CC0 `modular_wooden_pier` and `modular_fort_01` kits are the best free matches for later dock and tower work.
 
@@ -3226,7 +3265,7 @@ Owner report: a Trinsic bridge "looks really bad", and asked to look for a free 
   - trestle bents with cap beams and cross bracing, down to the bank or riverbed;
   - sills, and post-and-rail handrails on both sides.
   Its members are accounted as components, and source XYZ is unchanged.
-- **Solid piers.** A closed 2×2 ring of masonry wall pieces under a paved top is drawn as solid blocks. This applies to bridge piers and to paved thick-wall walks.
+- **Solid piers.** A closed 2Ã—2 ring of masonry wall pieces under a paved top is drawn as solid blocks. This applies to bridge piers and to paved thick-wall walks.
 - **Stairwell rails.** They no longer appear on a pier top, and a stone block paved on top counts as a foundation, not a stairwell step.
 - **Stacked landings.** A stack of stone blocks draws one paved top.
 
@@ -3237,19 +3276,19 @@ Owner report: a Trinsic bridge "looks really bad", and asked to look for a free 
 
 **Remaining:** Trinsic's sandstone still reads dark brown, because of the regional art tint on `medieval_blocks_03`. The east bridge stays a solid causeway, as the source stacks it. The docks keep their individual planks and posts.
 
-# Horse colours and riding polish — 29 October 2026
+# Horse colours and riding polish â€” 29 October 2026
 
 Implemented four native base coats (matched against private original stand frames) and server-driven full/partial hues, stable coat/tack regions, cycle-preserving gait transitions, turn balance, real bounded hoof support, authored interruptible leg-over mount/dismount, fitted riding garments and continuous robe lining. Camera/nameplate/picking track the dismounted visual body. Added canter-derived fast gait and prototype hit/death poses; corpse art, eating/lying, distinct fidgets and other mount families remain gaps. No source textures, bind/UV inputs, authoritative coordinates or upstream source changed.
 
 Evidence: 414 native server/observer/re-entry checks; 134 actual GPU appearance checks; expanded 512 clothing views; 267 runtime/transition/slope checks and the prior 2,468 saddle/runtime checks. Latest evidence and finite-test limits: [HORSE_POLISH.md](HORSE_POLISH.md); separate worklist: `Viewer/Presentation/horse-catalogue.json`. Human wearables remain 234/1,126 (20.78%). Shared verify passes assertions but reports an error in concurrent uncommitted bridge fixture handling; committed reconstruction passes the same street tests. That parallel work is preserved.
 
-# Ordinary horses and seated human actions — 29 October 2026
+# Ordinary horses and seated human actions â€” 29 October 2026
 
 Implemented the first horse batch in the shared client: real skinned horse art with idle/walk/canter/rear, male and female saddle/stirrup/rein fitting, native double-click mounting/dismounting, mounted speed/camera/picking and observer updates. The four ordinary UO horse identities currently share one dark-bay warhorse. Seven rider groups now connect live; other mount families, exact coats, climb-on motion and the full animal action library remain deferred. Riding robe/skirt/kilt variants keep covered legs opaque; final tailoring remains open.
 
 Evidence: 2,468 contact/runtime checks including 768 poses; 384 actual GPU clothing views; 270 native checks on two characters/clients in an isolated pinned ModernUO world (loopback 2594), all passed. Production 2593, remembered login, upstream source and original UO data remain unchanged. Human catalogue: 35/35 classic categories connected for supported humans/horses, 28/28 on-foot, unchanged 234/1,126 wearable graphics (20.78%). These are category counts, not exact item or universal animation fidelity. Source/licence pins, reproduction, local visual review and remaining gaps: [HORSE_RIDING.md](HORSE_RIDING.md). Licensed raw art stays ignored; standalone redistribution is prohibited.
 
-# Full protocol layer: every ModernUO packet parsed or built — 29 October 2026
+# Full protocol layer: every ModernUO packet parsed or built â€” 29 October 2026
 
 The owner requires full interaction with the server: nothing it sends dropped, nothing it accepts unreachable. Following the second blueprint (PROTOCOL_BLUEPRINT.md), with ClassicUO and ModernUO's source as references:
 
@@ -3268,7 +3307,7 @@ The owner requires full interaction with the server: nothing it sends dropped, n
   - Phase 6 is built: fuzzing of every packet type in verify (12,040 packets, no failures; a full-scene pass also clean), proper logout, Change character, Reconnect, character deletion, server popup reasons (the idle warning no longer disconnects), every facet's map with a notice away from Trammel, and the race-change card. Live long census: 42 packet types, 0 unhandled, logout acknowledged, reconnect into the same character.
   - Remaining: mounts and creature bodies (in progress elsewhere), full models for houses and ships (owner-approved sourcing), and 3D for the other facets (world pipeline). The board and quest arrow are shown with sample data only, and there is no chat-channel window.
 
-# Front end without a district; the right-hand panel replaced — 29 October 2026
+# Front end without a district; the right-hand panel replaced â€” 29 October 2026
 
 The play launchers now open on a front end with its own small moonlit stage, with nothing from the map loaded: sign in, choose a character (shown on a plinth with its remembered look), create one with live swatches, and a loading screen.
 
@@ -3283,9 +3322,9 @@ Reached the owner's category targets with unchanged denominators: 35/35 original
 
 Evidence: 94 new exports, 118 clips, 761 focused runtime checks, 1,152 cloth poses, 2,400 armour rigidity/floor poses, 320 actual GPU armour coverage cases and 400 hair-depth cases. Full verification, native login and live human re-entry/equipment/action checks pass. Remaining: category prototype silhouettes and layer polish, exact designs/dye masks, two-handed/support-hand/string/reload detail, remaining wearables and protocol variations. Category coverage is separate from final per-item quality and owner approval. Monsters remain out of scope. Sources, reproduction and finite-test limits: HUMAN_COVERAGE_SESSION.md and HUMAN_COVERAGE_SOURCES.md.
 
-# Commit, persistent rules and talking to the world — 29 October 2026
+# Commit, persistent rules and talking to the world â€” 29 October 2026
 
-Roadmap items 1–3 done plus the owner's follow-up.
+Roadmap items 1â€“3 done plus the owner's follow-up.
 
 - **Talking to the world.** An Ask box (typed, or Windows voice typing) feeds an offline interpreter that maps requests to the shared command grammar and never guesses; everything else goes to Claude Code through a server-side ask/answer/propose queue and `scripts/dev-edit-bridge.ps1`. A real round trip answered a developer's request with a scoped proposal.
 - **Group edits.** Bounded rule scopes and shift-click multi-select apply as atomic batches with one undo.
@@ -3296,59 +3335,59 @@ Roadmap items 1–3 done plus the owner's follow-up.
 
 Tests: server 65, client 72 (headless and GPU), converter 15, live 40; verify.ps1 and test-login.ps1 pass. See DEV_EDIT.md.
 
-# Live collaborative developer editing — 28 October 2026
+# Live collaborative developer editing â€” 28 October 2026
 
 Owner goal: build and fix the world from inside it, together, and eventually just by talking (Claude Code now, voice later). Delivered a working vertical slice in live Britain. F9 opens a developer panel that joins a server-authoritative edit session in the isolated ModernUO extension (`[DevEdit` over the native connection; explicit account allowlist plus loopback; separate journal, never world saves). Supported: select and inspect statics (identity, coordinates, prepared source record), place approved decorative assets, move/rotate/replace/hide existing decorative statics, and bounded terrain height/surface brushes. Drafts, shared previews and accepted edits are visually distinct; preview/accept/cancel, history-derived undo/redo, reservations, revision conflicts, reconnect/late-join snapshots and deterministic edit sets all work. The converted bake stays immutable. It now records per-static render ownership, so edits collapse or restore only that static's geometry, and terrain deforms only affected district meshes on a worker thread, crack-free across borders. `scripts/dev-edit.ps1` is a Claude Code bridge using the same command model.
 
-Evidence: 49/49 server-logic, 43/43 client (headless and GPU byte-level), 31/31 live two-client checks; edit survived a server restart (4/4). Two graphical clients saw each other's edits in 134–256 ms; the cross-border brush rebuilt 2 of 9 districts; worst edit frame 72 ms against a 19–45 ms two-client baseline. verify.ps1 and test-login.ps1 pass. Everything is visual overlay: ModernUO movement, collision, line of sight and saves are unchanged and the UI labels gameplay-affecting edits as preview-only. Joined architecture is inspect-only. Details, launch steps and gaps: DEV_EDIT.md.
+Evidence: 49/49 server-logic, 43/43 client (headless and GPU byte-level), 31/31 live two-client checks; edit survived a server restart (4/4). Two graphical clients saw each other's edits in 134â€“256 ms; the cross-border brush rebuilt 2 of 9 districts; worst edit frame 72 ms against a 19â€“45 ms two-client baseline. verify.ps1 and test-login.ps1 pass. Everything is visual overlay: ModernUO movement, collision, line of sight and saves are unchanged and the UI labels gameplay-affecting edits as preview-only. Joined architecture is inspect-only. Details, launch steps and gaps: DEV_EDIT.md.
 
-# Civilian equipment and long-hair layering — 28 October 2026
+# Civilian equipment and long-hair layering â€” 28 October 2026
 
 Added fitted leather doublet, authored cloak, low leather shoes and ankle sandals for both human bodies. The wardrobe now has 20 equipment categories and 86/1,126 indexed graphics category-mapped; exact item fidelity remains separate. Long hair/ponytails retain visible tails over clothing and headwear; cloak-specific bindings follow its moving panel. Native hair/beard/item dyes, identity, fixed body/61-joint rig and 45 clips per sex remain intact. Rejected the rough pointy-shoe candidate; accepted low shoes derive from the traced CC0 boots. Sandals are Elvaerwyn CC BY 4.0 with source/licence/modification notices and login-screen art credits.
 
 Evidence: 22 pinned source assets; 134 exported parts/masks; 768 civilian poses (three near contacts, no deep/floor failures), 816 prior cloth poses, unchanged 90 clips/body error below 0.000001 m, 46 new civilian/hair checks, 168 GPU tail-visibility cases (all retain over 99.5% of reference pixels) and 37 Forward+ render jobs. Full verification passes on the current shared project with zero engine/script errors, and on an isolated committed-world-plus-character copy. Concurrent world edits remain intact and outside this character commit. Eight native login tests pass; live re-entry/observer/equipment/login smoke remains unverified this checkpoint because connections abort before login despite the local listener (Godot Login send failed; delayed socket probe Windows 10053). No server/account/config/save changes were made. See HUMAN_CIVILIAN_BATCH.md for sources, reproduction, logs and limits. Artwork/captures/accounts remain ignored. Owner artistic acceptance, hair-card volume/edges, more layer/action combinations, shields/ranged/two-handed equipment and broader skin hues remain open.
 
-# Tighter skirts and the human port catalogue — 28 October 2026
+# Tighter skirts and the human port catalogue â€” 28 October 2026
 
-Owner asks to narrow skirt-like garments, preserve native dyes and continue human player/NPC wearables/actions without monsters. Refit robe/skirt/kilt from anatomical pelvis/leg samples, excluding A-pose fingers; compress deep pleats and rebake the existing controls while retaining full legs, body/UV/bind and sleeves. Matched Idle thigh widths: skirts 28.3–35.8% narrower, kilts 23.4–36.9%; female robe 10.8% narrower, male robe within 0.4% of its prior width. Added CC0 civilian shirt, soft cap and cloth hat on both bodies (16 equipment categories); rejected the bodice/doublet candidate after layered review. Native hue/partial-hue updates preserve independent hair/beard colours and walk phase. Two fidgets bring each body to 45 clips and 23/35 classic groups connected.
+Owner asks to narrow skirt-like garments, preserve native dyes and continue human player/NPC wearables/actions without monsters. Refit robe/skirt/kilt from anatomical pelvis/leg samples, excluding A-pose fingers; compress deep pleats and rebake the existing controls while retaining full legs, body/UV/bind and sleeves. Matched Idle thigh widths: skirts 28.3â€“35.8% narrower, kilts 23.4â€“36.9%; female robe 10.8% narrower, male robe within 0.4% of its prior width. Added CC0 civilian shirt, soft cap and cloth hat on both bodies (16 equipment categories); rejected the bodice/doublet candidate after layered review. Native hue/partial-hue updates preserve independent hair/beard colours and walk phase. Two fidgets bring each body to 45 clips and 23/35 classic groups connected.
 
 Reviews/Review-Human-Catalogue.cmd generates a searchable local worklist: 1,126 indexed wearable graphics (84 category-mapped), all 35 classic human groups, 17 selected human/equipment UOP sequence records with 39 body / 293 equipment mode-action rows and 39,410 item/action review rows. Raw MUL availability, category art, per-item fidelity and pending QA are separate. Non-human candidates are flagged; mounted human groups are deferred. Sources, archive/member hashes, reproduction, evidence and gaps: HUMAN_WEARABLE_CATALOGUE.md.
 
 Validation: 102 exported models, 90 motion clips with body error below 0.000001 m, 816 modern cloth poses, 192 native skirt/kilt + 96 native robe poses; 8 parser, 20 new wardrobe/dye and 60 motion checks. Full project verification passes. Existing dedicated server characters pass re-entry, robe removal/re-equip (including the new female shirt/kilt), reconnect, observer appearance/action updates, war/peace/bow and native login/relay. Logs: work/human-wardrobe-batch/verify-accepted.log, live-accepted.log, final-motion7.log and asset-checks6.log. Artistic approval, exact item shapes, some layered waist overlap/deep pleats, two-handed/ranged/turn/salute, racial class audit and broader skin hue fidelity remain open. All artwork/captures/native data and test accounts stay ignored; concurrent world work is preserved.
 
-# Closed holding hand and slow-walk review — 28 October 2026
+# Closed holding hand and slow-walk review â€” 28 October 2026
 
 Owner approves the relaxed arm pass and asks for it in walking, with the holding hand closed. Normal/slow walking use the prepared moving arms; new current-only previews show both bodies. A close-up exposed static open fingers in the sword-idle reference despite the active grip helper. WeaponGrip now fits finger curls/thumb opposition on the fifteen right finger bones; it leaves the wrist/free hand animated and releases on unequip. Both bodies pass rendered-modifier checks with sword/hammer/sceptre through idle, walk/jog/run, cast and attack, plus actual avatar-controller walking at 0.98 and 2.44 m/s: 60 motion checks. Full verification passes; Forward+/Compatibility hand views inspected. See HUMAN_ARM_MOTION.md and work/human-grip/verify.log. Exact per-handle contact, left/two-handed equipment and robe drape remain open. Concurrent world work stays separate.
 
-# Walking arms refined after owner feedback — 28 October 2026
+# Walking arms refined after owner feedback â€” 28 October 2026
 
 Replaced the idle-arm override in armed/unarmed-guard locomotion with stride-driven shoulder/elbow blends. The free hand relaxes; the carrying arm retains a bounded swing and native fitted finger grip. Slow-walk elbow variation and jog shoulder motion are stronger, preserving authored arm/leg opposition. Both bodies remain 43 clips on the same mesh/61-joint bind, with garment-safe footwork and authoritative server state unchanged. New review snapshots compare the immediately preceding prepared motion with this revision. Preparation/86-clip checks and 816 garment poses pass; 52 motion checks include independent arm joints, all locomotion loop seams and actual avatar-controller playback at 2.44 m/s. Full verification passes without engine/script errors. See HUMAN_ARM_MOTION.md and work/human-arm-motion/verify.log. Owner quality acceptance, inflated-looking robe poses and exact hammer/sceptre grip fitting remain open; concurrent world/prop edits are separate.
 
-# Human locomotion, armed stances and native action playback — 28 October 2026
+# Human locomotion, armed stances and native action playback â€” 28 October 2026
 
 Prepared 43 CC0 motion clips per sex, with neutral-pose/limb-axis retargeting, grounded presentation pelvis, short-stride jog, armed/unarmed locomotion/guard, separate sword strikes with authored recoveries, punches, casting, hit/death and bow. Body/UV/weights/inverse binds and the 61-joint rest rig remain unchanged. Shared cached motion resources keep independent NPC clocks. Native classic and selected new-format human actions now reach the world avatar; 0xe2 preserves canonical type/subaction/variation alongside historical aliases. Native war/peace selects ready/relaxed poses; starter katana IDs retain their identity while using the fitted sword category. Coverage is now 82/1,126 indexed wearable graphics. Server references, hair/beard fields and received statistics remain authoritative.
 
 Robes/skirts/kilts use rebaked pelvis-space controls and garment-safe footwork; full leg geometry remains. Evidence: 86 exported clips, body error below 0.000001 m, 816 garment poses, 48 motion tests plus the prior 19 human/39 expansion checks. Native dedicated-account war/peace, bow, actual world avatar, reconnect and second-client action playback pass. Full verification and native login/relay pass; final logs are work/human-motion/verify-accepted.log, live-accepted.log and login-final.log. A one-line unused lamp-model cleanup fixes a prop leak exposed during live teardown; concurrent world artwork is preserved. Animated before/after: Reviews/Review-Human-Motion.cmd; sources, reproduction and limits: HUMAN_MOTION_PASS.md. Artistic approval, full turn/start/stop motion, exact two-handed/ranged/moving combat and non-human/mounted families remain open.
 
-# Expanded human wardrobe and native appearance — 28 October 2026
+# Expanded human wardrobe and native appearance â€” 28 October 2026
 
 Added eight equipment meshes per sex (skirt, kilt, gloves, two helmets, sword, hammer, sceptre/staff), bringing the fitted wardrobe to 13 category meshes. Added four fitted hair meshes beside short/bald and four beard components covering all seven native human beard IDs. Shared player/NPC profiles preserve server serial/body, raw equipment, independent hair/beard IDs/hues, flags/notoriety and received statistics; absent NPC stats stay unknown. Creation sends these native fields, with reconnect/other-client checks. Native 32-entry hue palettes drive per-instance materials; skin remains three approximate presets. Animation requests are retained with native values/body, but general action playback is unfinished. Coverage audit: 80/1,126 indexed wearable graphics, only bodies 400/401; this is category coverage, not a complete port. See CHARACTER_PORT_PLAN.md and CHARACTER_EQUIPMENT_EXPANSION.md.
 
 Evidence: 96 exported models, 192 sampled skirt poses, five proxy parser tests, 19 baseline + 39 expansion checks, dedicated styled character creation/re-entry, reconnect/observer equipment and hair checks, and eight native login checks plus login/relay smoke pass. Full verification passes against isolated committed world 69fb534 plus the character overlay and bounded nil-colour guard, with prepared local dependencies (work/character-expansion/isolated-verify-prepared.log, exit 0, no engine/script errors). Shared-tree full checks encountered bottle-colour expectations in concurrent world/art work; those edits were preserved. Forward+/Compatibility captures reviewed. Gait/armed stances, exact item/head-style art, non-human mobiles and full action playback remain open. Assets/evidence/test accounts remain ignored and local.
 
-# Male/female first wardrobe batch integrated — 27 October 2026
+# Male/female first wardrobe batch integrated â€” 27 October 2026
 
 Both fitted CC0 humans now render in the live world and character-sheet portrait. Native creation offers male/female; server body/skin/equipment drives one shared skeleton with five independently fitted pieces and 32 coverage masks per sex. Full project checks, native login, actual asset/48-pose robe validation, all combinations, dedicated character creation/reconnect and a second client's robe updates pass. Corrected the female cuff/skirt weighting overlap. Category substitutes remain explicit, including trousers for native starter skirts/kilts; universal wardrobe and full graphical creation remain open. Owner rejects mannequin-like movement: animation quality is a priority requirement, not completed/accepted. Bundled UAL walk/jog/sprint retargeting was probed on both rigs; gait/foot-contact tuning and robe rebaking are next. See HUMAN_BATCH_INTEGRATION.md and CHARACTER_SYSTEM_PLAN.md. Art and test accounts remain local/ignored.
 
-# Character plan, robe continuity and natural appearance — 27 October 2026
+# Character plan, robe continuity and natural appearance â€” 27 October 2026
 
 Saved CHARACTER_SYSTEM_PLAN.md. Implemented its first two stages in the private free-equipment review: retain all 6,386 lower-body triangles, eight garment-only controls following native leg motion, graduated hem lift around raised heels, cleaner pinned CC0 system skin, restrained detail/roughness/Forward+ SSS, eye/brow/hair treatment, three skin presets and short/bald choices. Original 53 bones/tracks remain numerically unchanged; 61 total bones include skirt controls. Actual GLB checks, 48-pose animated-opening/floor checks, both-renderer sampled motion and GPU material response checks pass; scripts/verify.ps1 passes (exit 0). Source and evidence: CHARACTER_FOUNDATION_POLISH.md and outputs/third-dawn/natural-human-review-evidence.json. Creator/live avatar/server integration remains planned, not implemented here. Additional hair candidates failed visual fitting review and stay off the UI. Skirt motion is fitted deformation, not cloth simulation; other poses and body shapes need review. All art/captures remain local and ignored.
 
-# Five free wearable substitutes + human PBR pass — 27 October 2026
+# Five free wearable substitutes + human PBR pass â€” 27 October 2026
 
 Fitted the CC0 MakeHuman Viking mail tunic, trousers and boots (RehmanPolanski), plus monk robe/hood (Donitz), independently of UO geometry. Individual pieces and two layered outfits use the fixed 53-bone free body. Added matching Aksel diffuse/normal/specular maps (Mindfront, CC0), skin roughness/normal/Forward+ SSS, eye/hair adjustments and matched AgX studio views. Body geometry is unchanged within 5.96e-7 m round-trip error. Four new parser tests + ten prior tests, actual GLB skin/rig/animation checks, both-renderer 108 actor/120 worn-piece samples and GPU material probes pass. Full scripts/verify.ps1 passes (exit 0); log: outputs/third-dawn/free-equipment-full-verify.log. A local inventory finds 143 normalized human-prefixed names in 370 original Others GRNs; this is not all modern item IDs. Exact specialty armour and universal combinations remain gaps. No default live Avatar/server/login changes. All art/captures stay local/ignored. See FREE_EQUIPMENT_TRIAL.md and Reviews/Review-Free-Equipment.cmd.
 
-# Britain defect sweep: shops, windows, arches, doors, rugs — 27 October 2026
+# Britain defect sweep: shops, windows, arches, doors, rugs â€” 27 October 2026
 
 - Counters follow their real footprint cell by cell (an L counter had become one bounding-box table) with a panelled photoscanned-oak carcass; the stand-in Quaternius cabinet is gone. Display-case blocks are one glazed cabinet per cell (timber carcass, felt bed, rim, thin non-depth-writing glass) instead of one case stretched over 5x3 m; the flicker came from that stretched depth-pre-pass glass.
 - Server decoration (potted plants, goods) rests on the presented surface by a downward ray; reviewed floor/surface items get the same final correction. Potted plants/trees are pinned CC0 Poly Haven scans (potted_plant_02/04); chests and metal boxes are iron-bound photoscanned chests.
@@ -3384,14 +3423,14 @@ Fitted the CC0 MakeHuman Viking mail tunic, trousers and boots (RehmanPolanski),
 - Modern quickbar and classic macros (2026-10-28): the first build of the owner-approved modern UI (docs/MODERN_UI.md). ActionCatalog lists all 76 actions: every action of the classic macro list (as ClassicUO implements it) plus party chat and two item actions, with every option (all Magery spells with reagents and mana, every other spell school, usable skills, windows, directions, potions and objects). ActionProtocol builds their packets in ClassicUO/ModernUO byte formats. ActionRunner runs slots and macro sequences: it auto-answers target cursors on yourself, your last target or under the mouse, creatures included, and explains missing reagents, mana or items. The Quickbar has two rows of twelve, with Shift, Ctrl and Alt sets swapped while held (48 actions per row), native item art, counts, warnings, drag-and-drop between sets and per-character saving. SlotEditor is the classic macro editor (steps, aim, label, key binding). ModernSkin brings Cinzel and Inter (OFL) and line icons. World hooks: clicking a creature with an open cursor targets it; otherwise it selects it. QuickbarTests 37/0 (packet bytes, full classic list, runner on a recorded session, layers, keys, saving). Rendered check of bar and editor. Live check scripts/test-quickbar.ps1 passes against the local ModernUO: the server confirms the War/Peace round trip; a self-aimed Anatomy slot answers the cursor ("You know yourself quite well enough already."); Night Sight is held back with the missing reagents named; speech, bow and Select Nearest work; a missing item is explained. verify.ps1 passes. Open: the purpose-built skills/spellbook/backpack/gump windows, drag from them onto slots, the client-only actions (health bars, roofs, ranges...), cooldown display, settings page.
 - Modern HUD (2026-10-28): the rest of the approved HUD, wired to the live session (docs/MODERN_UI.md). It adds a shared window frame (drag, close, remembered place), the vitals card (replaces the old box), a target frame with notoriety, health and distance, a journal with talk line and chat prefixes, a window menu (C B K P J M) and fading notices for skill and gold changes. Skills window: groups, search, locks sent to the server, Use, session gains, drag to bar. Spellbook: every school, Magery circles, pack reagents, missing reagents named, words of power for all 64, Cast, add or drag to bar. Backpack: item art grid, search and sort, weight, details, Use, Drop, add or drag to bar. QuickbarTests 42/0. Rendered with sample data and checked live in the game scene over streamed Britain with a real character; verify.ps1 passes. Owner requirement recorded: per-kind action timers on slots. Open: paperdoll, other containers, world map, buffs, party, journal speaker names.
 - Britain NPCs and creatures (2026-10-28): the new loopback-only PreviewSpawn extension command builds ModernUO's own Trammel spawners inside the streamed Britain bounds: 110 spawners, all kept on a repeat run, which leaves 415 NPCs and creatures (100 vendors) of 114 kinds alive. There are no core or content changes, and the saves were backed up first. The client asks for creature status on sight (MobileNames.gd), so nameplates carry native names; checked live in the town centre. Open: 3D bodies for animals and monsters (non-human bodies are not drawn yet). Details in docs/WORLD_OBJECTS.md.
-- Britain to Trinsic (2026-10-29): the first streamed region beyond Britain. scripts/prepare-region.ps1 converts the union of native towns (408 districts, X 1088–2175, Y 1408–2943). The bake accepts up to 512 districts and logs its memory (planning peak 3.65 GB, run peak 5.55 GB, 14 GB disk for modern), and the region minimap is baked. The client takes --region=britain-trinsic. The stress walk Britain to Trinsic and back twice (54 stops) peaked at 1.52 GB GPU and 1.48 GB CPU, retained +2 MB between laps, with p99 26.6 ms. Server: the region limit is raised to 2048 tiles per side; after a backup and a graceful restart, the region now has 6,899 server items (1,683 decorations, 115 doors and 32 signs new) and 231 spawners holding 1,678 NPCs and creatures (164 vendors) of 147 kinds, with repeats creating nothing. Checked live in a Trinsic shop (a named vendor) and in aerial stills of Trinsic. Open: out-of-core bake and shared assets (disk over budget), classic-mode bake of the region, animals and monsters still undrawn. Measurements in docs/WORLD_SCALE_MEMORY_PLAN.md.
+- Britain to Trinsic (2026-10-29): the first streamed region beyond Britain. scripts/prepare-region.ps1 converts the union of native towns (408 districts, X 1088â€“2175, Y 1408â€“2943). The bake accepts up to 512 districts and logs its memory (planning peak 3.65 GB, run peak 5.55 GB, 14 GB disk for modern), and the region minimap is baked. The client takes --region=britain-trinsic. The stress walk Britain to Trinsic and back twice (54 stops) peaked at 1.52 GB GPU and 1.48 GB CPU, retained +2 MB between laps, with p99 26.6 ms. Server: the region limit is raised to 2048 tiles per side; after a backup and a graceful restart, the region now has 6,899 server items (1,683 decorations, 115 doors and 32 signs new) and 231 spawners holding 1,678 NPCs and creatures (164 vendors) of 147 kinds, with repeats creating nothing. Checked live in a Trinsic shop (a named vendor) and in aerial stills of Trinsic. Open: out-of-core bake and shared assets (disk over budget), classic-mode bake of the region, animals and monsters still undrawn. Measurements in docs/WORLD_SCALE_MEMORY_PLAN.md.
 - Gaps: inventory finds 1,951 Britain graphics (about 38,000 placements) still on code-built or stylised-kit stand-ins; a curated replacement pass (Poly Haven CC0 / owner packs) has started. Door opening direction report, a raised staircase on a brick house and the chimney screenshot are still to locate.
 
-# Free human base + UO3D wardrobe fit — 27 October 2026
+# Free human base + UO3D wardrobe fit â€” 27 October 2026
 
 Owner rejected further old-body anatomy work and requested a free human base with real wearable adaptation. Downloaded/pinned CC0 MakeHuman/MPFB-derived CharacterCreator exports plus official male skin; no downloaded code executed. New review compares old body, free 53-bone human and refitted original UO chain shirt/robe on target Idle/Walk/Run. Full source skeleton endpoints fix omitted garment-child bones; pose/segment fitting, surface correction, body masks and skirt hem reweighting replace direct bone-name attachment. Independent exported GLB rig/weights/animation checks, source input hashes, ten source-free tests and sampled checks in both renderers pass. Full scripts/verify.ps1 passes (exit 0); input hashes and actual GLB checks also pass. Art quality, cuffs/collars/skirt dynamics and universal wearable coverage remain open. Default Avatar/server/login unchanged; all combined art remains ignored/local. See FREE_HUMAN_WARDROBE.md for sources, licences, reproduction, evidence and limits.
 
-# Scene audit, classic/modern Britain, gables, plaster — 27 October 2026
+# Scene audit, classic/modern Britain, gables, plaster â€” 27 October 2026
 
 - SceneAudit.gd audits the built 3D city (not source records) per district: eave roof gaps, roof components touching no wall, floating loose objects, walls buried by terrain, overlapping props. After fixes: 33 eave gaps (one brick hall whose source roof starts 0.6 m above its parapet), 3 isolated roof tiles, remaining "floating" are mostly wall-hung decor and source-height props.
 - ContactSettle.gd rests loose objects on the presented surface under them in every district build; terrain is capped at wall bases (no buried houses); stacked duplicate props draw once; display-case glass uses a depth pre-pass (no flicker).
@@ -3399,29 +3438,29 @@ Owner rejected further old-body anatomy work and requested a free human base wit
 - Gables of timber houses continue the framing (post per one-metre bay, tie beam); a roof's gable material comes from the storey directly under it (no stone gables over timber houses).
 - Plaster: photoscanned Poly Haven white_rough_plaster (limewash) and clay_plaster, softened; lighter haze; ground textures sampled with anti-tiling offsets.
 
-Next (owner order): multi-variant surfaces (5–6 photoscans per repeated surface, never the same variant adjacent, blended).
+Next (owner order): multi-variant surfaces (5â€“6 photoscans per repeated surface, never the same variant adjacent, blended).
 
-# Male chest/face refinement — 27 October 2026
+# Male chest/face refinement â€” 27 October 2026
 
 Owner requested softer chest/face angles after approving local rounding. Added the optional --anatomy recipe and retained previous rounded assets for comparison. Reduced/raised the low chest wedge, broadened chest rounding and softened cheek/jaw/chin transitions without increasing the existing 5,792 triangles. Orthographic head/bust comparisons and Front/Three-quarter/Profile controls show identical materials at matched angles. Ten synthetic tests, byte-level rig/animation preservation checks (34 bones / 186 channels), and sampled animation/garment checks in both renderers pass. Profile and three-quarter captures were inspected. Full project verification passes (exit 0); log: outputs/third-dawn/anatomy-full-verify.log; its first attempt found a separate one-line roof negative-shift parser error, corrected with parentheses. Proprietary derivatives remain ignored/local. See THIRD_DAWN_ANATOMY.md for exact bounds and remaining facial/garment limits.
 
-# Focused male head/joint rounding — 27 October 2026
+# Focused male head/joint rounding â€” 27 October 2026
 
 Owner requested local silhouette improvements after the material pass. Added a masked rounding recipe for the head, elbows, knees, shoulders and ankles, with the same PBR v2 material on both comparison bodies. 93 unselected source vertices remain exactly fixed in the rest cage; selected geometry moves at most 32.585 mm in source coordinates. A bounded skin-weight pass softens joint transitions. Native rig/animations and original garment bindings remain in use. Head close-up visibly removes the pointed crown. Nine source-free tests and both-renderer sampled body/garment animation validation pass; final full verification log is outputs/third-dawn/rounded-full-verify.log. Generated assets/provenance/captures remain ignored/local. No live Avatar/server/login changes. See THIRD_DAWN_ROUNDING.md for reproduction and remaining limits.
 
-# Male material pass v2 — 27 October 2026
+# Male material pass v2 â€” 27 October 2026
 
 Owner prefers shaders/textures over subdivision. Human review now compares the prior material and PBR v2 on the original 362-triangle body; shirt/robe also use original coarse configurations. Added a generated normal atlas, approximate shader de-lighting/neutral skin colour, differentiated face/palm/skin/linen roughness, derivative tangent reconstruction and mipmaps/filtering. Previous shader remains separately available. Skin detail/sheen sliders and a close material view support review. A new colour-atlas generation was blocked by the image tool; the existing atlas remains in use.
 
 Actual GPU normal, roughness and light-response tests pass in Forward+ and Compatibility, with stationary actor roots. Eight source-free tests, both-renderer sampled animation/garment checks and full verify pass. Fresh matching-camera and side-light captures were inspected. No live login/server/default Avatar changes. Source-derived maps and provenance remain local/ignored. These are approximate materials on coarse geometry, not scanned skin or final modern anatomy. See THIRD_DAWN_SKIN.md.
 
-# Male Third Dawn refresh, subdivision and first wardrobe — 27 October 2026
+# Male Third Dawn refresh, subdivision and first wardrobe â€” 27 October 2026
 
-`Reviews/Review-Third-Dawn-Human.cmd` compares original, AI-textured, subdivided, chain-shirt and robe variants in the existing Viewer. The warm-skin atlas follows the original UV layout as a prompt constraint (front/rear visually inspected), with a shared skin shader and retained briefs. Bounded Loop subdivision softens the cage without replacing its skeleton: body 362→5,792 triangles (≤18 mm source movement), shirt 106→424 and robe 210→840 (≤9 mm). UV seams and normalized skin weights are preserved; no new anatomy is reconstructed.
+`Reviews/Review-Third-Dawn-Human.cmd` compares original, AI-textured, subdivided, chain-shirt and robe variants in the existing Viewer. The warm-skin atlas follows the original UV layout as a prompt constraint (front/rear visually inspected), with a shared skin shader and retained briefs. Bounded Loop subdivision softens the cage without replacing its skeleton: body 362â†’5,792 triangles (â‰¤18 mm source movement), shirt 106â†’424 and robe 210â†’840 (â‰¤9 mm). UV seams and normalized skin weights are preserved; no new anatomy is reconstructed.
 
 Garments use named Skin bindings on the same human skeleton/animator. Prototype coverage masks retain head/open collars/hands/feet and hide covered body regions. Eight synthetic tests and engine validation pass (60 body poses + 24 garment poses across Idle/Walk/Run, stationary roots, grounding and bounded deformation) in Forward+ and Compatibility. Reviewed front/rear/locomotion captures; full verify passes including the actual-crop smoke load. No live login/server/default Avatar changes. All source-derived art, prompts, provenance and captures remain ignored/local. Details and limits: THIRD_DAWN_HUMAN.md.
 
-# Britain defect pass 1, doors/windows, cannons and sign art — 27 October 2026
+# Britain defect pass 1, doors/windows, cannons and sign art â€” 27 October 2026
 
 Owner-reported defects fixed with shared rules (each checked in offline captures):
 - Walkable wall pieces (gateways, arch openings; tiledata Wall without Impassable) join along their axis into masonry archways with real openings (collision follows the mesh); solid arch pieces are masonry piers. The Britain castle gateway after the drawbridge is open; no more Quaternius wooden arch frames.
@@ -3437,13 +3476,13 @@ Owner-reported defects fixed with shared rules (each checked in offline captures
 
 Still open (owner screenshots): roofs standing off brick walls, floating interior windows/plants/boxes, mixed materials around a shop passage roof, flickering display cases, low-poly procedural props inside buildings, plaster material quality, terrain tiling. Next: an audit over the built 3D scene (not the source) for floating/misaligned visuals and coplanar surfaces. Tests: full verify passes.
 
-# Modern sign-face textures — 27 October 2026
+# Modern sign-face textures â€” 27 October 2026
 
-Generated all 54 local sign references as separate modern painted fantasy sign-face PNGs in ignored `outputs/item-catalog/signs/modern`, preserving each `*_flat.png` filename. Every output decodes at 1254×1254; source/output filename parity is 54/54. Inspected the completed `review.png` contact sheet. `provenance.json` records exact source/output SHA-256 hashes and dimensions; `prompts.json` records all 54 built-in image-generation prompts. Originals remain unchanged. These reference-inspired outputs stay local and are not asserted to have a redistribution licence.
+Generated all 54 local sign references as separate modern painted fantasy sign-face PNGs in ignored `outputs/item-catalog/signs/modern`, preserving each `*_flat.png` filename. Every output decodes at 1254Ã—1254; source/output filename parity is 54/54. Inspected the completed `review.png` contact sheet. `provenance.json` records exact source/output SHA-256 hashes and dimensions; `prompts.json` records all 54 built-in image-generation prompts. Originals remain unchanged. These reference-inspired outputs stay local and are not asserted to have a redistribution licence.
 
 The artwork omits posts and frames and can supply sign albedo; Godot material assignment, UV fitting to individual sign meshes and in-world visual validation remain undone. No gameplay/server changes. `scripts/verify.ps1` completed successfully.
 
-# Catalogue matching: owner packs, free kits and rules — 27 October 2026
+# Catalogue matching: owner packs, free kits and rules â€” 27 October 2026
 
 Goal: give as many original graphics as possible a modern look from the owner's purchased packs, the CC0 kits and procedural rules, reviewed side by side.
 - Regional rules (graphics outside the reviewed Britain set; Britain rule outputs diffed and unchanged except the intended wall-cap fix) cover named floors, walls, roofs, lava/acid, waterfalls, reeds, ferns, cacti, crystals, stalagmites, palisades, lily pads, leaf litter, snow and mats. New facade families (sandstone, marble, dungeon, cave, basalt, log, clay, cloth, hide); optional local original-colour tints (`item-colors.local.json`, never committed, Britain excluded).
@@ -3455,7 +3494,7 @@ Goal: give as many original graphics as possible a modern look from the owner's 
 
 Remaining: bone piles, blood/web decals, sarcophagi, graves, banners, braziers, hedges, yucca/century plants and the long tail; owner-reported Britain defects are queued in ROADMAP.md. Tests: art fidelity 87 checks, full verify passes.
 
-# Original item catalogue — 27 October 2026
+# Original item catalogue â€” 27 October 2026
 
 `scripts/build-item-catalog.ps1` (new converter command `item-catalog`) builds a local art-direction catalogue in ignored `outputs/item-catalog`, in about 30 seconds:
 - every original item graphic with art (36,527 PNGs, 141 MB) plus its tiledata name, flags, height, weight and worn layer;
@@ -3469,15 +3508,15 @@ Remaining: bone piles, blood/web decals, sarcophagi, graves, banners, braziers, 
 
 Limits: categories are name/flag heuristics (about 2,100 families remain "other"). Family grouping uses names and nearby IDs only, not picture similarity or mirrored pairs. Vendor stock, loot and multi (house/boat) components are not counted, so wearables and weapons rank near the bottom. The catalogue is proprietary-derived reference material; only the extractor and the viewer page are committed. Converter self-tests gained a PNG CRC check; scripts/verify.ps1 passes.
 
-# Window shutters, Dexsoft props, character sheet and skills — 27 October 2026
+# Window shutters, Dexsoft props, character sheet and skills â€” 27 October 2026
 
 **Shutters and flower boxes.** UO walls carry no inside/outside information. WindowDressing.gd reads the outdoor side from the source: indoor cells have a roof, upper floor or landing overhead within three cells. Outdoor cells are open to the sky two cells out, with at most a roof eave directly beside the wall. Windows covered on both sides, open on both sides, or facing another wall stay undressed. Of 1,042 Britain windows, 1,012 got an outdoor side and 30 stayed undressed. 946 got MedievalKit (CC0) open shutter pairs, because both neighbouring cells along the wall are solid wall; about half of those also got a flower box. Bridges and masonry slits/arches are never dressed. Dressing is excluded from collision and distant massing. Interior captures (tavern, two-storey house) show none indoors.
 
-**Dexsoft props (owner-licensed, local only).** scripts/import-dexsoft-props.py converts five small Dexsoft Medieval Village props into ignored Viewer/local-art/props: two barrels, a crate, a tub and a haystack (220–784 triangles each, with albedo and normal textures). They replace the procedural barrel/keg (44 statics), crate (13), water tub (3) and hay (13) models, and server barrels/crates. Each cell picks a stable variant. Without the local conversion the procedural/CC0 models remain. Log piles (6) now use the MedievalKit woodpile. The Dexsoft houses and the 12 m wood shed are not used: they cannot fit UO footprints.
+**Dexsoft props (owner-licensed, local only).** scripts/import-dexsoft-props.py converts five small Dexsoft Medieval Village props into ignored Viewer/local-art/props: two barrels, a crate, a tub and a haystack (220â€“784 triangles each, with albedo and normal textures). They replace the procedural barrel/keg (44 statics), crate (13), water tub (3) and hay (13) models, and server barrels/crates. Each cell picks a stable variant. Without the local conversion the procedural/CC0 models remain. Log piles (6) now use the MedievalKit woodpile. The Dexsoft houses and the 12 m wood shed are not used: they cannot fit UO footprints.
 
 **Character sheet (C) and skills (K).** CharacterProtocol.gd handles:
 - the full 0x11 status: attributes, vitals, gold, weight/max, stat cap, followers, AOS resistances, luck, damage and tithing;
-- 0xA1–0xA3 vitals;
+- 0xA1â€“0xA3 vitals;
 - 0x3A skill lists and single updates, including caps and locks;
 - 0xBF/0x19 stat locks;
 - the outgoing status/skills query, skill use (0x12/0x24), skill lock (0x3A) and stat lock (0xBF/0x1A).
@@ -3488,7 +3527,7 @@ Field layouts follow ModernUO's packet writers. The sheet shows:
 - hits/stamina/mana and weight bars;
 - the five resistances and the belongings figures.
 
-The skills page groups all 58 skills as the classic client does. It has a search box, value/base/cap tooltips, raise/lower/lock toggles, Use buttons for the 23 skills ModernUO registers a use handler for, and a skill total. A vitals HUD (top left) is always shown in game. Window art comes from the owner's Necromancer GUI pack (scripts/import-unity-gui.py → ignored Viewer/local-art/gui: parchment window, buttons, seal, Kingthings fonts); without it a drawn parchment style is used.
+The skills page groups all 58 skills as the classic client does. It has a search box, value/base/cap tooltips, raise/lower/lock toggles, Use buttons for the 23 skills ModernUO registers a use handler for, and a skill total. A vitals HUD (top left) is always shown in game. Window art comes from the owner's Necromancer GUI pack (scripts/import-unity-gui.py â†’ ignored Viewer/local-art/gui: parchment window, buttons, seal, Kingthings fonts); without it a drawn parchment style is used.
 
 **Verification:**
 - Offline:
@@ -3501,7 +3540,7 @@ The skills page groups all 58 skills as the classic client does. It has a search
   - Magery lock change confirmed by re-query, then restored;
   - Anatomy opened the server target cursor, then cancelled.
 - Live world-item, city and login tests pass.
-- Same-route streaming profile p95 18.8–18.9 ms, p99 20.3–20.5 ms (was 18.5/19.8); startup 4.8 s (was 2.8 s).
+- Same-route streaming profile p95 18.8â€“18.9 ms, p99 20.3â€“20.5 ms (was 18.5/19.8); startup 4.8 s (was 2.8 s).
 
 **Remaining gaps:**
 - The portrait is the generic avatar, not equipment-accurate.
@@ -3510,7 +3549,7 @@ The skills page groups all 58 skills as the classic client does. It has a search
 - Combat, spells and skill training loops are untested.
 - Kegs share the barrel model.
 
-# MedievalKit modules and surfaces (step 3) — 27 October 2026
+# MedievalKit modules and surfaces (step 3) â€” 27 October 2026
 
 The owner-supplied MedievalKit 5.1.1 (CC0) was exported with Blender 5.2.1 (portable, ignored in .tools; scripts/export-medievalkit.py) into Viewer/Art/MedievalKit. That is 20 lightweight modules (doors, shutters, lantern post, chimney, fence, sacks, woodpile, well, handcart, flower box, pots, plaque, basket, rope, crate, barrel, fountain statue) with a manifest of source hash, triangle counts and file SHA-256s. In use:
 - the square-headed plank door for all 377 server door leaves;
@@ -3519,19 +3558,19 @@ The owner-supplied MedievalKit 5.1.1 (CC0) was exported with Blender 5.2.1 (port
 - the sack for flour sacks;
 - the kit chimney, with clay pots, as the crown of every grouped chimney stack.
 
-The kit's limewash and dark-oak PBR sets (with ambientCG Plaster002/Wood062 normals) replace the plaster and timber-frame surfaces of every facade. Whole-building kit modules are not tiled: a 2 m roof or stone-wall module is 24k–38k triangles, and UO buildings must keep their source footprints. Dexsoft Medieval Village 1–3 and Old Village were extracted locally (owner-licensed, ignored) but not used yet. They are mostly complete prefab houses with baked lighting; their props remain candidates.
+The kit's limewash and dark-oak PBR sets (with ambientCG Plaster002/Wood062 normals) replace the plaster and timber-frame surfaces of every facade. Whole-building kit modules are not tiled: a 2 m roof or stone-wall module is 24kâ€“38k triangles, and UO buildings must keep their source footprints. Dexsoft Medieval Village 1â€“3 and Old Village were extracted locally (owner-licensed, ignored) but not used yet. They are mostly complete prefab houses with baked lighting; their props remain candidates.
 
 Verification: art fidelity 71 checks and all Godot suites pass; the live city, commerce and login tests pass. The live world-item test passed on rerun; its first run hit a transient single-door close timing failure.
 
-# Depth-aware water — 27 October 2026
+# Depth-aware water â€” 27 October 2026
 
 Water.gdshader reads the depth buffer and screen. Beds, piers and banks refract through the shallows and are absorbed with depth (red first). Contact foam forms wherever the surface meets anything, including piers, hulls and banks. Seabeds now shelve away from the shore (1.5 m plus 0.45 m per tile, up to 6 m), so open sea reads deep blue and the coast reads teal. When converted locally (scripts/import-unity-water.py), the owner's Tasharen Water normal map (RGB) and foam mask (alpha) replace the analytic ripples and noise foam; the public build keeps the analytic version. Verified in Forward+ and Compatibility. Same-route profile: p95 18.5 ms, p99 19.8 ms (was 18.4/20.3). All Godot suites pass.
 
-# City defect pass: chimneys, signs, bridges, roofs, walls — 27 October 2026
+# City defect pass: chimneys, signs, bridges, roofs, walls â€” 27 October 2026
 
-Fixes from owner screenshots, each traced to a source cause and covered by checks (art fidelity 61→69):
+Fixes from owner screenshots, each traced to a source cause and covered by checks (art fidelity 61â†’69):
 - **Chimneys:** UO builds a chimney from stacked/adjacent sprite tiles; each was drawn as a full 3.2 m model at its own Z (floating clusters). Connected chimney tiles now form one capped stone stack over the group footprint, rooted at the roof/wall record beneath.
-- **Signs:** street signs (0x1297–0x129E) now sit on their post top, and plank plaques (0x1F28/0x1F29) lie flat against their wall or stand on two posts. Neither hangs from a shop bracket any more. On click, the server-confirmed text is engraved on both board faces ("the Great Northern Road", "the Northern Bridge").
+- **Signs:** street signs (0x1297â€“0x129E) now sit on their post top, and plank plaques (0x1F28/0x1F29) lie flat against their wall or stand on two posts. Neither hangs from a shop bracket any more. On click, the server-confirmed text is engraved on both board faces ("the Great Northern Road", "the Northern Bridge").
 - **Bridges:** BridgePlan records the deck side of edge parapets, which now sit flush on the deck edge instead of mid-tile over the water. This is a presentation offset; source XYZ is unchanged.
 - **Roofs:**
   - "wooden shingles" hip/corner pieces were mapped to slate, which made blue zigzags and broke joins.
@@ -3539,93 +3578,93 @@ Fixes from owner screenshots, each traced to a source cause and covered by check
   - Timber/brick gable wedges (24, 25, 193, 194, 85, 86; stacked in >90% of Britain placements) assemble like the plaster ones instead of poking through rakes as teeth.
   - Roofs with no walls beneath default to timber ends.
 - **White bands and blocks:** the interior shell's wall caps (wall top up to ceiling) and the masonry over arches were hard-coded to plaster. They now take the wall's or arch's own family.
-- **Furniture through walls:** bookcases 2713/2714/2716, chests 3648/3650, drawer 2616 and wardrobe 2641 occur only in north–south runs in upstream placements (e.g. 53/63/51 neighbour pairs along y). They now face east instead of standing sideways through walls.
+- **Furniture through walls:** bookcases 2713/2714/2716, chests 3648/3650, drawer 2616 and wardrobe 2641 occur only in northâ€“south runs in upstream placements (e.g. 53/63/51 neighbour pairs along y). They now face east instead of standing sideways through walls.
 
 All Godot suites and the live world-item, city, commerce and login tests pass.
 
-# Server objects across the whole city — 27 October 2026
+# Server objects across the whole city â€” 27 October 2026
 
 ModernUO had populated doors, signs and decoration only for the first 64x64 crop. The bounded population tool now accepts the streamed city region, and it ran once against the real server: +3,935 decorations, +249 doors, +116 signs, existing items preserved, repeat run created zero, persisted across a restart. Doors and furniture render live in distant districts. Also fixed: build-preview-tools.ps1 nested assemblies.json on rerun, which stopped the server from starting. Details in WORLD_OBJECTS.md.
 
-# Realistic plants and cheaper trees (local only) — 27 October 2026
+# Realistic plants and cheaper trees (local only) â€” 27 October 2026
 
-`scripts/import-unity-nature.py` (renamed from import-unity-trees.py) now also converts 40 Tree Creator bushes and 51 mesh plants (ferns, tall grass, wildflower groups, lavender, ground cover) from the owner's Unity packs; `LocalPlants.gd` uses them for UO grass, fern, flower and bush records, falling back to the CC0 library. Fixes found while integrating: the BIG Environment Pack meshes are authored Z-up and are now stood upright; plants are emitted as plain mesh nodes because material overrides inside instanced FBX scenes were lost when districts were packed (they rendered as white cards); every converted foliage texture is now mipmapped and VRAM-compressed (all 159 were imported without mipmaps). Tree cost: instanced vegetation is batched per 16 m cell so mesh LOD applies per cell, and `mesh_lod/lod_change/threshold_pixels=2.0`. Same Forward+ route versus the first local-tree profile: p95 25.4→18.4 ms, p99 →20.3 ms, startup 2.8 s. Open: one 147 ms frame with no streaming phase (likely a first-use foliage pipeline compile) and the existing ~70 ms near-district instantiate stalls. Godot suites (graphics 19/19, art fidelity 61, prepared 16, contact 55, street 43 and the rest) pass.
+`scripts/import-unity-nature.py` (renamed from import-unity-trees.py) now also converts 40 Tree Creator bushes and 51 mesh plants (ferns, tall grass, wildflower groups, lavender, ground cover) from the owner's Unity packs; `LocalPlants.gd` uses them for UO grass, fern, flower and bush records, falling back to the CC0 library. Fixes found while integrating: the BIG Environment Pack meshes are authored Z-up and are now stood upright; plants are emitted as plain mesh nodes because material overrides inside instanced FBX scenes were lost when districts were packed (they rendered as white cards); every converted foliage texture is now mipmapped and VRAM-compressed (all 159 were imported without mipmaps). Tree cost: instanced vegetation is batched per 16 m cell so mesh LOD applies per cell, and `mesh_lod/lod_change/threshold_pixels=2.0`. Same Forward+ route versus the first local-tree profile: p95 25.4â†’18.4 ms, p99 â†’20.3 ms, startup 2.8 s. Open: one 147 ms frame with no streaming phase (likely a first-use foliage pipeline compile) and the existing ~70 ms near-district instantiate stalls. Godot suites (graphics 19/19, art fidelity 61, prepared 16, contact 55, street 43 and the rest) pass.
 
-# Realistic trees from owner-licensed packs (local only) — 26 October 2026
+# Realistic trees from owner-licensed packs (local only) â€” 26 October 2026
 
-46 Tree Creator trees from the owner's Unity Asset Store packs are converted locally (UnityPy-based `scripts/import-unity-trees.py`) with generated detail levels; Britain's 10,448 trees map by UO name to suitable species (cedar, willow, oak, birch saplings, elm/maple/beech, dead trees) and the distant layer uses the coarsest level of the same variants. Without the local packs the CC0 trees remain. Same-route Forward+ profile: p50 16.8→17.3 ms, p95 21.0→25.4 ms, GPU p99 21.6→26.7 ms, worst 91→80 ms; tree LOD/shadow cost reduction is still open. Grass tufts and bushes are still the stylized library. 442 Godot checks, parity, GPU and native city checks pass.
+46 Tree Creator trees from the owner's Unity Asset Store packs are converted locally (UnityPy-based `scripts/import-unity-trees.py`) with generated detail levels; Britain's 10,448 trees map by UO name to suitable species (cedar, willow, oak, birch saplings, elm/maple/beech, dead trees) and the distant layer uses the coarsest level of the same variants. Without the local packs the CC0 trees remain. Same-route Forward+ profile: p50 16.8â†’17.3 ms, p95 21.0â†’25.4 ms, GPU p99 21.6â†’26.7 ms, worst 91â†’80 ms; tree LOD/shadow cost reduction is still open. Grass tufts and bushes are still the stylized library. 442 Godot checks, parity, GPU and native city checks pass.
 
-# Poly Haven props — 26 October 2026
+# Poly Haven props â€” 26 October 2026
 
 Stylized props are being replaced with realistic CC0 Poly Haven photoscans (ten models, 53 pinned files). Barrels, crates, stools and tables are reviewed in tavern, castle and barrel-stack captures; lantern, candlestick, bucket, bowl and plate entries are provisional. Chairs, benches, bookcases, beds, bags and chests keep the previous library models where Poly Haven has no period match. Armour names ("platemail", "plate helm") no longer match the dish rule. 442 Godot checks, parity, GPU, native city and object checks pass.
 
-# Rooted vegetation and flower-bed planters — 26 October 2026
+# Rooted vegetation and flower-bed planters â€” 26 October 2026
 
 Owner-reported flying trees and flowers. 90 "FlowerBed" pieces were classified as flowers (name match), so the 1 m raised beds were missing and the flowers/trees planted on them floated; they are now stone-curbed planters with soil at source height. UO stores one height per tile while the presented terrain interpolates between tiles, so vegetation at raw tile height floated or sank on slopes; trees, flowers, grass, bushes, mushrooms, rocks and logs now root on the higher of the rendered terrain at the tile centre and any planter/floor top beneath them, as a presentation offset (source XYZ unchanged; cases more than 2.5 m away keep their source height). 442 Godot checks (+5), parity, GPU and native city checks pass.
 
-# Roof ends follow their walls — 26 October 2026
+# Roof ends follow their walls â€” 26 October 2026
 
 Owner-reported white blocks and "sails" over brick and timber buildings: every roof end (and source gable piece) was drawn in plaster regardless of the building, which became glaring once plaster was brightened. Each roof now takes the dominant family of the walls beneath it within three cells (brick, stone, timber or plaster), and source gables use their own family. 437 Godot checks (+1), parity, GPU and native city checks pass. Still open from the same screenshots: crude placeholder statues and an unidentified white board-on-posts prop near Britain's west bank.
 
-# Stair facing from tiledata — 26 October 2026
+# Stair facing from tiledata â€” 26 October 2026
 
 Owner-reported crossing staircases: stair direction was inferred only from a same-graphic neighbour one step higher and otherwise defaulted to "rises north", so 316 of 926 Britain stair tiles (flight ends, landings, wide stairs, daises) faced the wrong way and intersected their flights. UO stair graphics carry their facing in tiledata (StairBack = east, StairRight = west, both = south, neither = north), which agreed with every unambiguous neighbour inference; it is now authoritative for "stairs" graphics, while low "step" pieces keep inference. 434 Godot checks (new four-direction test), parity, GPU and native city checks pass.
 
-# Sea, Tudor plaster, stone merlons and water — 26 October 2026
+# Sea, Tudor plaster, stone merlons and water â€” 26 October 2026
 
 Owner-reported defects fixed through shared rules. (1) 95,546 open-sea land tiles (map.mul "water", ~18% of the city dataset) had no water presentation and rendered as grass; terrain now presents them as a 1.5 m bed under a merged sea surface, the shoreline field includes them, and the ground shader treats them as silt. (2) Flicker: 935 river cells had a water plane exactly at terrain height, and plank/dock decks sat coplanar with the ground; sea quads skip cells that already have water objects and terrain under ground-level floors drops 6 cm (presentation only; movement uses source data). (3) Plaster houses follow owner-supplied York references: close-studded near-black oak (studs every 0.5 m, sill rail, heavy bressumer, run-end posts, braces) proud of bright white rough-cast using the photoscanned plaster relief, and leaded diamond-pane windows; studs never cross source openings. (4) Stone/brick wall tops (castle and tower merlons, parapets) were the village plaster/timber kit wall; they are now solid masonry with a coping. (5) Water shading is a continuous world-space normal (directional swells plus smooth analytic ripples, distance-faded), deep/shallow colour from shoreline depth and shore foam; the old tangent-space normal made each tile visibly different.
 
-The stream bake now fails (no stamps, no index) when any prepared resource cannot be written — a running client keeps its districts open and previously caused stale districts to be stamped current. Evidence: 428 Godot checks (+5 new), prepared parity, GPU checks in both renderers, native city traversal and world-object checks pass; owner captures inspected locally. Remaining: trees (stylized library), stairs with crossing flights, roof/gable shapes and the converter test block.
+The stream bake now fails (no stamps, no index) when any prepared resource cannot be written â€” a running client keeps its districts open and previously caused stale districts to be stamped current. Evidence: 428 Godot checks (+5 new), prepared parity, GPU checks in both renderers, native city traversal and world-object checks pass; owner captures inspected locally. Remaining: trees (stylized library), stairs with crossing flights, roof/gable shapes and the converter test block.
 
-# Free visual upgrade (step 2) — 26 October 2026
+# Free visual upgrade (step 2) â€” 26 October 2026
 
 Turf now uses two pinned Poly Haven CC0 photoscans (`leafy_grass` close detail, `aerial_grass_rock` 15 m colour field) instead of a procedural green ramp. Lighting uses the AgX tonemapper, a light contrast/saturation grade and SSAO that also affects lit areas. Facade plaster takes tonal variation from its photoscan, varies between cream/ochre/grey lime washes by neighbourhood, and gains base damp, staining and streaks recovered from each piece's base/height (also under MultiMesh instancing); timber is darker, deeper-grained and its framing now projects from the infill. The bake now refuses to run when a pinned surface is not imported (a previous bake had silently stamped blank materials as current).
 
-Tried and rejected: SDFGI bounce light plus volumetric haze made the streamed city GPU-bound (median ~30 ms, GPU p99 49 ms on the profile route); lower-cost SDFGI settings were still unstable while moving, so both are disabled. Measured back to back on the same route: GPU p99 20.6 → 21.6 ms, frame p99 22.5 → 22.5 ms.
+Tried and rejected: SDFGI bounce light plus volumetric haze made the streamed city GPU-bound (median ~30 ms, GPU p99 49 ms on the profile route); lower-cost SDFGI settings were still unstable while moving, so both are disabled. Measured back to back on the same route: GPU p99 20.6 â†’ 21.6 ms, frame p99 22.5 â†’ 22.5 ms.
 
 Honest status: ground and timber read clearly better; plaster walls still look smooth at street distance, and trees/props/building geometry remain the stylized low-poly library and simple box construction. Those are the dominant remaining "toy" cues and need better models (owner-approved art kit decision), not shader work.
 
-# Streaming stalls reduced — 26 October 2026
+# Streaming stalls reduced â€” 26 October 2026
 
-District loading no longer produces 100 ms+ frames on the profiled walking route: worst frame 326 → 40 ms (OpenGL) and 306 → 80 ms (Forward+), frames over 100 ms 22/24 → 0, p99 32.1 → 18.7 ms / 29.3 → 21.3 ms, startup ~1 s faster. Cause and fix: collision shapes are now baked as bounded triangle slices built within the frame budget, and source-window/support indexing is incremental. Retained memory +~40 MiB; a few 60–80 ms Forward+ frames remain. See STREAMING_AND_MINIMAP.md.
+District loading no longer produces 100 ms+ frames on the profiled walking route: worst frame 326 â†’ 40 ms (OpenGL) and 306 â†’ 80 ms (Forward+), frames over 100 ms 22/24 â†’ 0, p99 32.1 â†’ 18.7 ms / 29.3 â†’ 21.3 ms, startup ~1 s faster. Cause and fix: collision shapes are now baked as bounded triangle slices built within the frame budget, and source-window/support indexing is incremental. Retained memory +~40 MiB; a few 60â€“80 ms Forward+ frames remain. See STREAMING_AND_MINIMAP.md.
 
-# Bridges, wall attachments and contact corrections — 26 October 2026
+# Bridges, wall attachments and contact corrections â€” 26 October 2026
 
 Shared `BridgePlan.gd` recognizes plank decks over water/riverbed, bridge-flagged stone piers and parapets from source relationships. Window art standing on bridge piers (graphic 94, 12 placements) now renders as dressed-stone towers with the source's barred slit instead of plaster walls with timber casements; low stone walls along decks render as stone parapets with a coping. Explicitly plaster/wooden construction beside a bridge is untouched, and the same graphic away from bridges is not reinterpreted. Fourteen window/battlement graphics whose tiledata names are generic ("window", "arrow loop", "battlement") now carry inspected art facts (stone/brick family, slit/arched opening) in `reviewed-catalog.json`; the castle curtain walls lost their plaster window slabs.
 
-"Wall torch", "wall sconce" and "wall map" names were classified as walls (152 placements rendered as plaster panels). They are now wall-hung props: each is hung on the face of the adjacent west/north source wall as a recorded presentation offset; source XYZ is unchanged and unsupported cases stay put. Contact now recognizes exact/surface-flag supports, procedural table/counter tops (0.82/1.0 m rather than native 1.2 m), legacy rugs and same-graphic barrel stacks; duplicate beds stacked above identical beds are context-suppressed like benches/tables. The bridge/bank audit no longer reports water statics over riverbed as bank gaps — all 301 earlier candidates were that case.
+"Wall torch", "wall sconce" and "wall map" names were classified as walls (152 placements rendered as plaster panels). They are now wall-hung props: each is hung on the face of the adjacent west/north source wall as a recorded presentation offset; source XYZ is unchanged and unsupported cases stay put. Contact now recognizes exact/surface-flag supports, procedural table/counter tops (0.82/1.0 m rather than native 1.2 m), legacy rugs and same-graphic barrel stacks; duplicate beds stacked above identical beds are context-suppressed like benches/tables. The bridge/bank audit no longer reports water statics over riverbed as bank gaps â€” all 301 earlier candidates were that case.
 
 Follow-up: legacy "bar" art (39 placements, panelled serving counters) rendered as garden fences; it now uses the shared counter construction and counter contact height. The refreshed context-aware audit inspects 1,409 reviewed placements: 1,286 supported, 103 presentation contact adjustments, 13 context-suppressed duplicates and **7 unsupported candidates** (was 53): two wine bottles above bar tops (gaps 3/5), a bottle on cards on a table, an elevated table and cards over a rug, one bed and one bench with no source support. Bridge/bank candidates fell from 301 to 1. Native headless city traversal (62 accepted steps, reconciliation, minimap, F6) and native world-object checks pass after the change.
 
 Evidence: 447 offline checks pass (27 new); prepared parity passes for all 360,448 terrain / 136,662 statics; GPU matrix/ownership checks pass in Forward+ and OpenGL. Before/after local captures of the bridges, castle walls, dining hall, barracks, barrels and torches were inspected. Not yet re-measured: the refreshed full-city contact audit (the run was stopped by low system memory), native object/city traversal tests, and streaming-hitch profiling. Remaining visible contact gaps: items on bar/shelf pieces whose stand-in models are too short (e.g. castle dining hall), isolated beds/benches without source support.
 
-# Reviewed art catalogue checkpoint — 26 October 2026
+# Reviewed art catalogue checkpoint â€” 26 October 2026
 
 Implemented the first art-led reference-block pass: 108 per-ID choices (88 reviewed, 20 provisional), 35 curated CC0 Fantasy Props library models, detailed village doors/windows and six new stone/brick PBR maps. Imported and procedural rendering are explicitly distinguished. Shared source-backed contact rules align tabletop objects and stacked furniture without changing native XYZ; unsupported cases stay unresolved. Original code-generated wardrobes, canopy details and type-specific mugs remain where suitable imported replacements were unavailable. See ART_CATALOGUE_PASS.md.
 
 A double-click Reviews/Review-Art.cmd builds the local source/model gallery, per-ID inventory and automatic block/river/bridge inspection captures. All proprietary references remain local. Full offline verification passes 420 checks; prepared source parity and GPU ownership/matrices pass in both renderers. Native object actions pass headless and with actual mouse input under OpenGL; both renderers pass native 62-step city traversal, minimap and recovery. Repeated streaming stays bounded at roughly 317 MiB OpenGL / 435 MiB Forward+, with loading hitches still visible. This is a substantive first art pass, not completed visual approval across Britain. Bridge/roof silhouettes, rare IDs, material refinement and broader attachment/intersection checks remain. No region expansion or server-code edits in this pass.
 
-# Prepared streaming and original radar checkpoint — 26 October 2026
+# Prepared streaming and original radar checkpoint â€” 26 October 2026
 
-Live Britain now loads prebuilt compact geometry/collision, decodes source only for nine active districts, streams bounded far/coarse scenery, and incrementally activates/retires scene parts. OpenGL prepared startup 3.591 s versus 41.864 s; retained engine allocations about 311 MB versus 1,491 MB; nodes 2,916 versus 83,705. Fourteen-destination reload tests plateau in both renderers. Loading hitches remain (worst rapid-move frames 1.27–2.05 s); full-facet offline topology is not bounded and is guarded at 128 chunks. See STREAMING_AND_MINIMAP.md.
+Live Britain now loads prebuilt compact geometry/collision, decodes source only for nine active districts, streams bounded far/coarse scenery, and incrementally activates/retires scene parts. OpenGL prepared startup 3.591 s versus 41.864 s; retained engine allocations about 311 MB versus 1,491 MB; nodes 2,916 versus 83,705. Fourteen-destination reload tests plateau in both renderers. Loading hitches remain (worst rapid-move frames 1.27â€“2.05 s); full-facet offline topology is not bounded and is guarded at 128 chunks. See STREAMING_AND_MINIMAP.md.
 
 A north-up, zoomable original-colour minimap follows native character position/facing. Six local radar tiles cover Britain; zoom wheel/+/- does not zoom the camera, and the texture window is bounded. All 397 offline checks pass without warnings/errors. Native 62-step route, door, reconciliation and recovery, actual mouse-wheel map zoom, all-record prepared parity, incremental scene equivalence, GPU transforms and near/far ownership pass in both renderers. No server code/gameplay edits or new art imports; user's saved login is unchanged.
 
 Owner's visual feedback now governs the next milestone: improve exteriors AND interiors before artistic expansion. Existing mappings often remain crude semantic substitutes. Plan reviewed per-graphic models/assemblies with scale/pivot/support/material policies, exact licences and side-by-side source review. Directional signs with attractive destination text on their surfaces are recorded as an idea, not implemented. See ART_FIDELITY.md and CLASSICUOMOSHU_REVIEW.md.
 
-Live Britain checkpoint (2026-10-26): Launch.cmd now connects native gameplay to the converted 704×512 city, with nine physical districts, shared source-relative coordinates, full-city movement prediction, native movement packets and far scenery. A graphical development-account test completed 62 server-accepted run steps across x=1600 and beyond the former y=1568 boundary, reconciled exact XYZ (1599,1567,20), then returned home through the native recovery command. District retention/eviction and physical terrain checks are automated. Population/commerce remains concentrated in the original patch; combat, skills and city-wide native population are not claimed. See LIVE_BRITAIN.md.
+Live Britain checkpoint (2026-10-26): Launch.cmd now connects native gameplay to the converted 704Ã—512 city, with nine physical districts, shared source-relative coordinates, full-city movement prediction, native movement packets and far scenery. A graphical development-account test completed 62 server-accepted run steps across x=1600 and beyond the former y=1568 boundary, reconciled exact XYZ (1599,1567,20), then returned home through the native recovery command. District retention/eviction and physical terrain checks are automated. Population/commerce remains concentrated in the original patch; combat, skills and city-wide native population are not claimed. See LIVE_BRITAIN.md.
 
 Current mapping/seam checkpoint (2026-10-26): all 1,597 Britain IDs / 136,662 static records have explicit shared rendering coverage, with honest semantic-substitute confidence. Joined full-region plans feed both a city architecture bake and nine nearby draw chunks. Shared terrain/roof normals, floors, ceilings, UV phase, stable grouped ownership and source-based overhang switching address district seams. New props and stone/thatched/flat-roof families replace missing markers. Source/context parity, 357 offline checks and graphical boundary/reload checks pass. Live gameplay/population is still the original patch. See BRITAIN_MAPPING_AND_SEAMS.md for evidence, first-plan timing and remaining art/production limits.
 
-Latest scope clarification: the requested expansion is the whole **city of Britain**. Explore-Britain.cmd (and the retained Explore-Britannia.cmd alias) now opens the native city bounds including castle/western outskirts, rounded to 704×512 / 88 chunks. All 360,448 terrain and 136,662 static records pass independent source parity. The city overview renders 42,382 simplified architectural/tree features; close-detail art and chunk seams remain unfinished. Live gameplay/population stays in the proven patch. See BRITANNIA_EXPLORER.md.
+Latest scope clarification: the requested expansion is the whole **city of Britain**. Explore-Britain.cmd (and the retained Explore-Britannia.cmd alias) now opens the native city bounds including castle/western outskirts, rounded to 704Ã—512 / 88 chunks. All 360,448 terrain and 136,662 static records pass independent source parity. The city overview renders 42,382 simplified architectural/tree features; close-detail art and chunk seams remain unfinished. Live gameplay/population stays in the proven patch. See BRITANNIA_EXPLORER.md.
 
-# Current checkpoint — interaction, recovery and Britannia explorer (2026-10-26)
+# Current checkpoint â€” interaction, recovery and Britannia explorer (2026-10-26)
 
-The user-approved forced restart recovered the saved world; native autosaving resumed. Commerce passes headless and in Forward+: correct native gold debits, tavern/inn stock, owned backpack purchase, public ownership rejection, ground/container transfers and equipment. The separate ClassicUO development character entered the matching street and its sign returned The Wayfarer’s Inn. Gump frame bounds, draggable windows, icons/hues and item actions have regression coverage. See COMMERCE_PASS.md for exact limits.
+The user-approved forced restart recovered the saved world; native autosaving resumed. Commerce passes headless and in Forward+: correct native gold debits, tavern/inn stock, owned backpack purchase, public ownership rejection, ground/container transfers and equipment. The separate ClassicUO development character entered the matching street and its sign returned The Wayfarerâ€™s Inn. Gump frame bounds, draggable windows, icons/hues and item actions have regression coverage. See COMMERCE_PASS.md for exact limits.
 
-Building signs now project perpendicular to source facades on brackets, including their click targets. A separate whole-Britannia explorer converts Trammel X=0–5119/Y=0–4095 into 5,120 chunks. Every one of 20,971,520 terrain samples and 2,376,103 statics independently matches the owned inputs. The overview renders in Forward+, and a new district loads through shared terrain/reconstruction rules. Full-world art, chunk architecture ownership and gameplay streaming remain incomplete: new IDs appear as gold markers, not silently invented finished buildings. Live population/gameplay still uses the original validated crop. See BRITANNIA_EXPLORER.md.
+Building signs now project perpendicular to source facades on brackets, including their click targets. A separate whole-Britannia explorer converts Trammel X=0â€“5119/Y=0â€“4095 into 5,120 chunks. Every one of 20,971,520 terrain samples and 2,376,103 statics independently matches the owned inputs. The overview renders in Forward+, and a new district loads through shared terrain/reconstruction rules. Full-world art, chunk architecture ownership and gameplay streaming remain incomplete: new IDs appear as gold markers, not silently invented finished buildings. Live population/gameplay still uses the original validated crop. See BRITANNIA_EXPLORER.md.
 
-# Current checkpoint — native world objects, artwork and gumps (2026-10-25)
+# Current checkpoint â€” native world objects, artwork and gumps (2026-10-25)
 
 The 64x64 Britain crop has 148 native root placements (131 decorations, 12 door leaves, 5 signs). Doors preserve eight singles and two linked double pairs; human-height leaves, shared lintels and PBR timber replace the earlier oversized door presentation. Native sign replies display actual building names. Graphic/type mappings distinguish small objects and furniture; local classic sign art is applied to 3D faces without publishing it.
 
@@ -3633,7 +3672,7 @@ Native containers and contained items are clickable; read-only books, dice-scrip
 
 Saved graceful restart loaded 297 items and 3 mobiles. Population remains idempotent and current interactions work after reload. Live development-character movement now tests against a native closed door, replacing the obsolete route assumption. Latest full offline verification and renderer checks are recorded in docs/TESTING.md. No source client data, derived local art, credentials or saves are included in Git.
 
-# Progress — 25 October 2026
+# Progress â€” 25 October 2026
 
 ## 1 November 2026 - Private friends' test package
 
@@ -3769,7 +3808,7 @@ Added double-click ClassicUO primary/observer launchers for the existing ModernU
 
 Implemented continuous visible facing, correct source-to-equipped rest-pose animation retargeting, native stride pacing, and bounded source-backed prediction. The pinned server has zero-cost turns; the previous full walking delay on turns and per-step resync caused avoidable pauses. Flat/gentle steps now start immediately; server ACK/rejection and idle/12-step reconciliation remain authoritative. Live production-scene walk/run matched exact server XYZ, a second client observed the movement, and first visible motion measured 16-17 ms locally. Arbitrary-angle authoritative physics and latency/stress tests remain out of scope.
 
-Façade runs now share metre-authored structure/openings and kit surface materials. Connected roofs share mesh samples and have gable/ridge/fascia treatment. Both full building footprints showed the same one-coordinate east/south roof-art anchor bias; persistent [-1,-1] visual offsets correct it without changing source XYZ. Roof normals, ground materials/diagonal triangulation, lighting, hooded appearance and the HUD were improved. 2,689 records remain accounted for: 2,470 visible owners, 184 grouped components and 35 retained boundary roof fragments suppressed in perspective.
+FaÃ§ade runs now share metre-authored structure/openings and kit surface materials. Connected roofs share mesh samples and have gable/ridge/fascia treatment. Both full building footprints showed the same one-coordinate east/south roof-art anchor bias; persistent [-1,-1] visual offsets correct it without changing source XYZ. Roof normals, ground materials/diagonal triangulation, lighting, hooded appearance and the HUD were improved. 2,689 records remain accounted for: 2,470 visible owners, 184 grouped components and 35 retained boundary roof fragments suppressed in perspective.
 
 Added F6/Return to Britain, a native text command panel, crop-edge guard and isolated loopback-only PreviewTools server extension. The latest saved account character was returned to Trammel (1602,1591,20), confirmed by a server position reply. No privilege promotion. The world was explicitly saved, gracefully stopped, backed up under ignored work/server-backups, then successfully reloaded with the extension; upstream source remains unchanged. The server is running.
 
@@ -3790,7 +3829,7 @@ All 187 used static IDs now have explicit persistent rules. All 2,689 source rec
 
 Real Shift run packets and per-segment walk/run timing are implemented, with speed-scaled animation and consistent tile-centre presentation. Space produces a ceiling-aware animated local hop, tested through apex and landing; it does not alter server Z or replicate physical jumping. Server remains unchanged and authoritative. All 73 offline checks pass. Live wall rejection/recovery/backpack and actual run/camera/jump pass; real corridor camera retracts to ~0.697 units, jump peaks ~0.95. Existing server remains running. See GRAPHICS_PASS.md for reproduction, source/asset provenance, screenshots and limitations. Earlier 54-check / 556-unmapped notes below are historical.
 
-Added reproducible original-colour radar comparison: scripts/capture-radar.ps1 renders terrain-only, static-overlay radar and an aligned north-up orthographic 3D view for the exact play crop. Local radarcol.mul/hues.mul supply original colours; highest drawable static base Z selects the overlay. Inspected outputs/validation/britain-map-comparison.png and separate 64×64/enlarged radar PNGs. This is a reconstruction of the static radar data, not an original-client UI screenshot; live mobiles and multis are excluded. Images remain ignored/local.
+Added reproducible original-colour radar comparison: scripts/capture-radar.ps1 renders terrain-only, static-overlay radar and an aligned north-up orthographic 3D view for the exact play crop. Local radarcol.mul/hues.mul supply original colours; highest drawable static base Z selects the overlay. Inspected outputs/validation/britain-map-comparison.png and separate 64Ã—64/enlarged radar PNGs. This is a reconstruction of the static radar data, not an original-client UI screenshot; live mobiles and multis are excluded. Images remain ignored/local.
 
 ## Latest checkpoint: Quaternius art and smooth confirmed movement
 
@@ -3808,7 +3847,7 @@ Asset survey: inspected current Britain crop and local tiledata read-only; saved
 
 Added streaming Huffman and modern packet framing; creation/selection/spawn; server ACK/rejection and exact XYZ resynchronisation; nearby mobile replication; backpack open/content parsing; a character UI, interpolated capsule avatars and third-person WASD controller. Actual ModernUO created two distinct characters in Britain. Live tests verified wall rejection/recovery and a second client observing movement. The real viewer passed injected keyboard movement and captured outputs/validation/playable.png. Offline suite now has 39 checks. Server source remains unchanged; ClassicUO wire tables are adapted under BSD-2-Clause with retained notice.
 
-Launch.cmd opens the primary account; Launch-Second-Client.cmd offers the second account. The 64×64 play-world crop covers Britain starting coordinates (1602,1591,20); the original region remains separate. scripts/prepare-play-world.ps1 regenerates it read-only. The pre-existing server was left running. Do not start another instance on the same runtime; the launcher now probes TCP and holds an exclusive lock.
+Launch.cmd opens the primary account; Launch-Second-Client.cmd offers the second account. The 64Ã—64 play-world crop covers Britain starting coordinates (1602,1591,20); the original region remains separate. scripts/prepare-play-world.ps1 regenerates it read-only. The pre-existing server was left running. Do not start another instance on the same runtime; the launcher now probes TCP and holds an exclusive lock.
 
 Read PLAYABLE_POC.md for evidence, temporary resync overhead, fixed creation preset, reconnect caveat and the duplicate-server/save-collision observation. Next: improve session efficiency/reliability, character/geometry presentation and item pickup/drop. The older notes below record the imported baseline and have been superseded where they describe character entry as unimplemented.
 
@@ -3818,7 +3857,7 @@ Imported the working prototype into UltimaClone, preserving the original; correc
 
 Audited/pinned ModernUO ab59efea86fd9e399d261bed9d188ab4d95ad4c2 and ClassicUO ee79d7ebc1cc0e53ff84fe6cae17d389e2737f93. Server code unchanged; ClassicUO reference-only. Installed local SDK 10.0.201; server build has zero warnings/errors. Added NuGet locks, setup/build/start/configure wrappers and separate local runtime.
 
-Godot now has direct login transport and a local connection panel. Eight packet tests pass. Live Godot → ModernUO authenticated, received one-server list and game relay. Tests print no password/token. A normal Player account was created through ModernUO and persisted via the server save command.
+Godot now has direct login transport and a local connection panel. Eight packet tests pass. Live Godot â†’ ModernUO authenticated, received one-server list and game relay. Tests print no password/token. A normal Player account was created through ModernUO and persisted via the server save command.
 
 Runtime binds TCP 127.0.0.1:2593 and UDP loopback ping 12000. Provisional profile: upstream default Endless Journey with Trammel selected; not a final era decision. No game-file edits, purchases or publication.
 
@@ -3834,7 +3873,7 @@ Conversion pipeline and floor stability: end-to-end conversion now bakes the sha
 
 Reproduced doorway flicker with moving GPU captures: lower-storey wall caps intersected upper floors. Tall facade caps no longer render through floors; sills/gables retained. Constructed indoor land floors replace blended landscape floors, screen-space leakage disabled, and connected coastal spurs use a two-cell source halo. Visible crop unchanged. 205 offline + four GPU stability checks, full conversion/bake/reload and compatibility pass. See GLITCH_STABILITY_PASS.md.
 
-## Britannia Reborn and server environment — 25 October 2026
+## Britannia Reborn and server environment â€” 25 October 2026
 
 The project is now Britannia Reborn, with canonical public repository https://github.com/rastlyn80/Britannia-Reborn. Original project code is GPL-3.0-or-later; NOTICE.md retains BSD/CC0 and separately fetched dependency distinctions. README and CONTRIBUTING describe the actual early scope, public setup and data exclusions. The full local history was checked for proprietary inputs, real converted worlds, credentials and saves before publication; none matched the restricted paths or secret-assignment checks. Largest history blob is approximately 14 MB of licensed CC0 art. This is a bounded scan, not a complete transitive dependency/legal audit.
 

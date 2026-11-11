@@ -73,6 +73,9 @@ const MinotaurScout := preload("test-minotaur-scout-world-cases.gd")
 const Hydra := preload("test-hydra-world-cases.gd")
 const FireGargoyleFitted := preload("test-fire-gargoyle-world-cases.gd")
 const CrystalLattice := preload("test-crystal-lattice-world-cases.gd")
+const Moloch := preload("test-moloch-world-cases.gd")
+const OrcBrute := preload("test-orc-brute-world-cases.gd")
+const Oni := preload("test-oni-world-cases.gd")
 const ArmoredGargoyles := preload("test-armored-gargoyles-world-cases.gd")
 const ShadowWisp := preload("test-shadow-wisp-world-cases.gd")
 const SERIAL := 0x105
@@ -551,6 +554,18 @@ func run() -> void:
 		var lattice := await replay_batch(CrystalLattice, world, at, enhanced)
 		checks += int(lattice.checks)
 		print("CRYSTAL LATTICE WORLD: ", lattice)
+	if "--moloch" in OS.get_cmdline_user_args():
+		var moloch := await replay_batch(Moloch, world, at, enhanced)
+		checks += int(moloch.checks)
+		print("MOLOCH WORLD: ", moloch)
+	if "--orc-brute" in OS.get_cmdline_user_args():
+		var brute := await replay_batch(OrcBrute, world, at, enhanced)
+		checks += int(brute.checks)
+		print("ORC BRUTE WORLD: ", brute)
+	if "--oni" in OS.get_cmdline_user_args():
+		var oni := await replay_batch(Oni, world, at, enhanced)
+		checks += int(oni.checks)
+		print("ONI WORLD: ", oni)
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()
 	await process_frame
