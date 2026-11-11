@@ -2,7 +2,7 @@
 extends "res://Presentation/BaseHorseVisual.gd"
 ## Optional Enhanced actions for ordinary horse bodies on the live saddle rig.
 
-const Motion := preload("DappleHorseMotion.gd")
+const Motion := preload("res://Presentation/DappleHorseMotion.gd")
 const Timing := preload("res://Presentation/HumanActions.gd")
 const Ground := preload("res://Presentation/SourceGroundLookup.gd")
 const Fall := preload("res://Presentation/CreatureFallPlayback.gd")
