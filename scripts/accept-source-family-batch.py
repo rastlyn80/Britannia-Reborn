@@ -1,6 +1,7 @@
 """Activate the checked source-family/reused-asset batch; art remains local."""
 import argparse
 import copy
+import hashlib
 import importlib.util
 import json
 import os
@@ -17,6 +18,7 @@ spec = importlib.util.spec_from_file_location('batch_helpers',ROOT/'scripts/acce
 helpers = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(helpers)
 sha, read, resource = helpers.sha, helpers.read, helpers.resource
+REVIEW_FIELDS = frozenset({'gpu_sha256', 'presentation_validation_sha256'})
 
 
 def checked_rows():
@@ -100,6 +102,8 @@ def main():
     mode.add_argument('--publish',action='store_true')
     mode.add_argument('--activate-gargoyle-pillage',action='store_true')
     mode.add_argument('--check-active',action='store_true')
+    mode.add_argument('--refresh-active',action='store_true',
+                      help='Record fresh presentation evidence for the same active routes')
     args = parser.parse_args()
     rows, pins = checked_rows()
     path = ART/'accepted-index.json'
@@ -108,26 +112,47 @@ def main():
     gargoyle = runpy.run_path(str(ROOT/'scripts/gargoyle-pillage-evidence.py'))
     base = next(row for row in rows if row['kind'] == gargoyle['KIND'])
     current = next((row for row in index['entries'] if row['kind'] == gargoyle['KIND']), {})
+    receipt = {}
+    if args.check_active or args.refresh_active or args.activate_gargoyle_pillage:
+        receipt = read(RECEIPT)
+        assert receipt['publisher_sha256'] in (
+            sha(Path(__file__)), '45ba8a2a4212f2d1728b2a13c5c940f235f2e6b23bef4da99e552bc110b96950',
+            '776536ad522a39f8854cf98aadc916ef5f81b9b5fe8c55e2948acbe3ba481937',
+            'a8baa579f918efe219d212cce57ee447e0149c3d7d4b8fbd3aeb2f481afa2751')
+    refreshed = args.refresh_active or 'retained_routes_sha256' in receipt
     redirect = runpy.run_path(str(ROOT/'scripts/prepare-creature-uop-redirects.py'))['without_active_redirect']
     overlay_active = 'authored_action_native_sha256' in current
     if overlay_active:
-        overlay = gargoyle['compose'](base, True)
+        # The sealed native candidate includes the hashes of its earlier visual
+        # review. The fresh review was checked above against the same base art.
+        retained_base = dict(base, **{field: current[field] for field in REVIEW_FIELDS}) if refreshed else base
+        overlay = gargoyle['compose'](retained_base, True)
         assert redirect(current) == overlay, 'Gargoyle action overlay or base package changed'
         rows = [current if row is base else row for row in rows]
-    rows = helpers.ALIAS_EVIDENCE['expected_rows_with_legacy_aliases'](rows, index['entries'])
+    rows = helpers.ALIAS_EVIDENCE['expected_rows_with_legacy_aliases'](
+        rows, index['entries'], refreshed_review_fields=REVIEW_FIELDS if refreshed else ())
     incoming = {row['kind'] for row in rows}
     existing = {int(body['body']):row['kind'] for row in index['entries'] for body in row['bodies']}
     for row in rows:
         for body in row['bodies']:
             assert int(body['body']) not in existing or existing[int(body['body'])] == row['kind'], 'Refusing to replace an unrelated working creature'
     if args.check_active or args.activate_gargoyle_pillage:
-        receipt = read(RECEIPT)
-        assert receipt['publisher_sha256'] in (
-            sha(Path(__file__)), '45ba8a2a4212f2d1728b2a13c5c940f235f2e6b23bef4da99e552bc110b96950',
-            '776536ad522a39f8854cf98aadc916ef5f81b9b5fe8c55e2948acbe3ba481937',
-            'a8baa579f918efe219d212cce57ee447e0149c3d7d4b8fbd3aeb2f481afa2751')
         assert receipt['evidence_pins'] == pins
-        assert {row['kind']:row for row in index['entries'] if row['kind'] in incoming} == {row['kind']:row for row in rows}
+    if args.check_active or args.refresh_active or args.activate_gargoyle_pillage:
+        active = {row['kind']: row for row in index['entries'] if row['kind'] in incoming}
+        assert active == {row['kind']: row for row in rows}, 'Active source family routes changed'
+        retained_hash = hashlib.sha256(json.dumps(active, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+        if 'retained_routes_sha256' in receipt:
+            assert receipt['retained_routes_sha256'] == retained_hash, 'Retained route records changed'
+    if args.refresh_active:
+        assert path.read_bytes() == previous, 'Registry changed during presentation review'
+        receipt.update(publisher_sha256=sha(Path(__file__)), evidence_pins=pins,
+                       retained_routes_sha256=retained_hash)
+        temporary = RECEIPT.with_suffix('.json.pending')
+        temporary.write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
+        temporary.replace(RECEIPT)
+        print('SOURCE FAMILY BATCH: refreshed review for', len(rows), 'unchanged active routes')
+        return
     if args.activate_gargoyle_pillage:
         if overlay_active:
             raise ValueError('Gargoyle Pillage is already active')

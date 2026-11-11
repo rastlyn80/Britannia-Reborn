@@ -5,6 +5,7 @@ GPU evidence is additional; this does not certify native multiplayer behaviour.
 """
 import argparse
 import copy
+from hashlib import sha256
 import importlib.util
 import json
 import runpy
@@ -115,27 +116,37 @@ def checked_rows(folder):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--evidence',type=Path,default=ROOT/'work/creatures/route-promotion')
-    parser.add_argument('--publish',action='store_true')
-    parser.add_argument('--check-active',action='store_true')
+    operation = parser.add_mutually_exclusive_group()
+    operation.add_argument('--publish',action='store_true')
+    operation.add_argument('--check-active',action='store_true')
+    operation.add_argument('--refresh-active',action='store_true',help='Record fresh review evidence for the same installed routes')
     args = parser.parse_args()
-    assert not (args.publish and args.check_active)
-    if args.check_active:
+    receipt = {}
+    if args.check_active or args.refresh_active:
         receipt = read(RECEIPT)
         ALIAS_EVIDENCE['check_publisher'](Path(__file__).name, receipt['publisher_sha256'], sha(Path(__file__)))
+    if args.check_active:
         args.evidence = ROOT/receipt['evidence']
     assert args.evidence.resolve().is_relative_to(ROOT/'work'), 'Keep local evidence private under work/'
     rows, evidence = checked_rows(args.evidence)
     accepted = ART/'accepted-index.json'
     report = read(accepted)
     incoming = {row['kind'] for row in rows}
-    rows = ALIAS_EVIDENCE['expected_rows_with_legacy_aliases'](rows, report['entries'])
+    review_fields = common.REVIEW_FIELDS if args.refresh_active or 'retained_routes_sha256' in receipt else ()
+    rows = ALIAS_EVIDENCE['expected_rows_with_legacy_aliases'](
+        rows, report['entries'], refreshed_review_fields=review_fields)
     existing = {int(identity['body']):row['kind'] for row in report['entries'] for identity in row['bodies']}
     for row in rows:
         for identity in row['bodies']:
             assert int(identity['body']) not in existing or existing[int(identity['body'])] == row['kind'], 'Refusing to replace an unrelated working creature'
-    if args.check_active:
+    active_hash = ''
+    if args.check_active or args.refresh_active:
         active = {row['kind']:row for row in report['entries'] if row['kind'] in incoming}
         assert active == {row['kind']:row for row in rows}, 'Active reviewed presentations changed'
+        active_hash = sha256(json.dumps(active, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+        if 'retained_routes_sha256' in receipt:
+            assert receipt['retained_routes_sha256'] == active_hash, 'Retained route records changed'
+    if args.check_active:
         assert receipt['evidence_pins'] == evidence
     if args.publish:
         backup = args.evidence/'accepted-index-before-reviewed.json'
@@ -144,13 +155,17 @@ def main():
         pending = accepted.with_suffix('.json.pending')
         pending.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
         pending.replace(accepted)
+    if args.publish or args.refresh_active:
         RECEIPT.parent.mkdir(parents=True,exist_ok=True)
         receipt = {'publisher_sha256':sha(Path(__file__)),'evidence':args.evidence.resolve().relative_to(ROOT).as_posix(),'evidence_pins':evidence,
                    'scope':'Six local presentations; native server witnesses remain separate.'}
+        if args.refresh_active:
+            receipt['retained_routes_sha256'] = active_hash
         pending = RECEIPT.with_suffix('.json.pending')
         pending.write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8')
         pending.replace(RECEIPT)
-    print('REVIEWED LOCAL PRESENTATIONS:', 'published' if args.publish else 'active verified' if args.check_active else 'dry run',len(rows),'forms /',sum(len(row['bodies']) for row in rows),'body routes; no new live-server witness')
+    result = 'published' if args.publish else 'active verified' if args.check_active else 'review refreshed' if args.refresh_active else 'dry run'
+    print('REVIEWED LOCAL PRESENTATIONS:', result,len(rows),'forms /',sum(len(row['bodies']) for row in rows),'body routes; no new live-server witness')
 
 
 if __name__ == '__main__':
