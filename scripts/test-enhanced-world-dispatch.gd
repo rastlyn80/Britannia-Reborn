@@ -76,6 +76,9 @@ const CrystalLattice := preload("test-crystal-lattice-world-cases.gd")
 const Moloch := preload("test-moloch-world-cases.gd")
 const OrcBrute := preload("test-orc-brute-world-cases.gd")
 const Oni := preload("test-oni-world-cases.gd")
+const GiantBeetle := preload("test-giant-beetle-world-cases.gd")
+const MeerMage := preload("test-meer-mage-world-cases.gd")
+const Treefellow := preload("test-treefellow-world-cases.gd")
 const ArmoredGargoyles := preload("test-armored-gargoyles-world-cases.gd")
 const ShadowWisp := preload("test-shadow-wisp-world-cases.gd")
 const SERIAL := 0x105
@@ -566,6 +569,18 @@ func run() -> void:
 		var oni := await replay_batch(Oni, world, at, enhanced)
 		checks += int(oni.checks)
 		print("ONI WORLD: ", oni)
+	if "--giant-beetle" in OS.get_cmdline_user_args():
+		var beetle := await replay_batch(GiantBeetle, world, at, enhanced)
+		checks += int(beetle.checks)
+		print("GIANT BEETLE WORLD: ", beetle)
+	if "--meer-mage" in OS.get_cmdline_user_args():
+		var mage := await replay_batch(MeerMage, world, at, enhanced)
+		checks += int(mage.checks)
+		print("MEER MAGE WORLD: ", mage)
+	if "--treefellow" in OS.get_cmdline_user_args():
+		var tree := await replay_batch(Treefellow, world, at, enhanced)
+		checks += int(tree.checks)
+		print("TREEFELLOW WORLD: ", tree)
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()
 	await process_frame

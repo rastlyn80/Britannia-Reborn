@@ -1,3 +1,36 @@
+# Enhanced Treefellow
+
+The optional Enhanced profile reaches 152 bodies and 419 fitted local scenes. Treefellow 301 retains its original Third Dawn mesh, 63-joint rig and root toes. Fourteen motions follow 835 registered reference frames in 17 groups from sequence 0x5c4d9a10c6b2c4c7. Combat and peaceful idles are distinct. The peaceful walk preserves the original root and leg tracks. The modern material layers bark relief and green moss over the source atlas and applies the server's full or partial dye.
+
+The first fall topples onto the ground. The other lowers the canopy and leaves the rooted trunk upright. Across the focused samples the upright frozen corpse was at least 1.68 times as tall as the toppled corpse. Forward+ rendered 170 poses. The dense check covered 11,508 samples at 240 Hz with no measured hand or forearm crossing of the torso. Focused tests passed 405 routes, 4,875 terrain poses, and 960 samples across 60 fall handoffs. The largest sampled displacement was 1.17 micrometres. The staged build passed 2,954 Classic and 3,736 Enhanced world replay checks. A late partial dye preserved both static corpse poses and positions in the replay.
+
+The isolated native trial passed 32 checks. A stock swing selected Dismount, spent 20 mana and dealt 53 total damage in the recorded hit. Both clients saw the horse return, the rider's mount layer clear and the stock particles. A regular double-click was refused during the daze and succeeded after the block expired. The dyed native corpse contained the Treefellow's logs and gold. The fixture established aggression and invoked the ordinary weapon swing against a test rider.
+
+Rebuild with scripts/bake-treefellow-enhanced.gd. Verify with scripts/render-treefellow.gd, scripts/check-treefellow-clearance.gd and scripts/test-treefellow-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --treefellow after reproducing the required local evidence.
+
+
+# Enhanced Meer Mage
+
+The optional Enhanced profile reaches 151 bodies and 416 fitted local scenes. Meer Mage 770 retains the original Third Dawn rig, robe, atlas and two falls. The official sequence 0x6d6f75a039140a6d identifies 235 registered frames across ten groups. Eight new motions include three distinct attacks, guard, recoil, idle, hip check and a measured walk using the original leg tracks. The Enhanced run slot points to standing frames, so the client keeps the original Third Dawn run at running speed.
+
+Forward+ rendered 110 poses. At 240 Hz the clearance check sampled 4,113 poses without a measured hand or forearm crossing of the torso. The focused client run checked 402 routes, 3,000 terrain poses and 960 samples across 60 fall handoffs. The largest sampled handoff displacement was 0.82 micrometres. Both falls freeze to dyed static corpses.
+
+The native insect call uses the retained spell cast. Both clients received the swarm effect and the torch dispersal cue. The renderer follows the affected character and clears on torch dispersal, death or expiry. The actual stock attack dealt 31 damage in the recorded trial. The player used a regular torch from the backpack. The forest call spawned stock enraged rabbit, hart, black bear and eagle bodies on the sampled terrain. Both clients received those animals and the dyed Meer Mage corpse. The test advanced the stock ability cooldown to exercise its two branches.
+
+Rebuild with scripts/bake-meer-mage-enhanced.gd. Verify with scripts/render-meer-mage.gd, scripts/check-meer-mage-clearance.gd, scripts/test-meer-mage-enhanced.gd and scripts/test-meer-mage-swarm.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --meer-mage after reproducing the required local evidence.
+
+
+# Enhanced Giant Beetle
+
+The optional Enhanced profile reaches 150 bodies and 413 fitted local scenes. Giant Beetle 791 keeps its Third Dawn carapace, atlas, six articulated legs and 51 original joints. The Enhanced sequence 0x8a7365d17b57b517 identifies 710 registered frames in 15 groups. Eight additional joints articulate the original wing covers and two authored hindwing membranes. The hidden abdomen uses the original texture atlas. The retained body remains closed for the three seated gaits and opens for the combat walk, idle, attacks and displays.
+
+The three treatments preserve the original animation tracks and 5,460 sampled seat and sole transforms. Forward+ rendered 170 poses. Focused client checks covered 387 routes, 2,565 gait poses, 60 death handoffs and 60 frozen corpses across flat and sloped terrain. The largest sampled handoff displacement was 0.80 micrometres. The complete world replays passed 2,908 Classic and 3,677 Enhanced checks. A later dye preserved the world corpse's pose and placement. Enhanced type 3 selects a fall that folds the wings for its first variant. The source sends the combat gait for its alternate type 3 entry, so the client preserves the established fall on that branch.
+
+The isolated two-client ModernUO trial passed 161 checks. Both riders mounted, walked, ran and dismounted with the exact layer 25 item 0x3EBC. Full and partial hues replicated. The owner opened the native strong backpack and both clients saw the native corpse. Four controlled Enhanced actions exercised the combat flags and wing motions on each rider's dismounted Beetle. The fitted rider review passed 145 checks across 36 poses.
+
+Rebuild with scripts/bake-giant-beetle-enhanced.gd and verify with scripts/render-giant-beetle.gd and scripts/test-giant-beetle-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --giant-beetle after reproducing the required local evidence.
+
+
 # Enhanced Oni
 
 The optional Enhanced profile reaches 149 bodies and 410 fitted local scenes. Oni body 241 retains the original Third Dawn mesh, atlas, horns, claws, rig and established fall animations. Twelve fitted motions follow named sequence 0xab3fd539c59b1666. The inspected official archives supplied 675 registered frames in sixteen groups. The archive references group 27 in one combat gesture selector. Its frames remain unlocated, and that selector keeps the established high gesture.

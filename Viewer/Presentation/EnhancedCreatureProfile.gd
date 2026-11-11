@@ -18,6 +18,24 @@ const ArmoredGargoyleAttacks := {
 		"GargoyleWingRake", "GargoyleWingRake", "GargoyleWingRake"],
 }
 const FittedAttackSubactions := {
+	301: {
+		"0": ["TreefellowBranchHammer", "TreefellowRakingSwipe", "TreefellowBranchHammer"],
+		"1": ["TreefellowBranchHammer"], "2": ["TreefellowBranchHammer"], "9": ["TreefellowBranchHammer"],
+		"255": ["TreefellowBranchHammer", "TreefellowRakingSwipe", "TreefellowBranchHammer",
+			"TreefellowBranchHammer", "TreefellowBranchHammer", "TreefellowBranchHammer"],
+	},
+	770: {
+		"0": ["MeerMageCrossingStrike", "MeerMageRaisedStrike", "MeerMageShortThrust"],
+		"1": ["MeerMageCrossingStrike"], "2": ["MeerMageCrossingStrike"], "9": ["MeerMageCrossingStrike"],
+		"255": ["MeerMageCrossingStrike", "MeerMageRaisedStrike", "MeerMageShortThrust",
+			"MeerMageCrossingStrike", "MeerMageCrossingStrike", "MeerMageCrossingStrike"],
+	},
+	791: {
+		"0": ["BeetleWingedBite", "BeetleWingedHook", "BeetleWingedBite"],
+		"1": ["BeetleWingedBite"], "2": ["BeetleWingedBite"], "9": ["BeetleWingedBite"],
+		"255": ["BeetleWingedBite", "BeetleWingedHook", "BeetleWingedBite",
+			"BeetleWingedBite", "BeetleWingedBite", "BeetleWingedBite"],
+	},
 	241: {
 		"0": ["OniSweepingClaw", "OniDoubleClaw", "OniSweepingClaw"],
 		"1": ["OniSweepingClaw"],
@@ -346,6 +364,13 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedHydraVisual.gd"
 			elif body == 130:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedFireGargoyleVisual.gd"
+			elif body == 301:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedTreefellowVisual.gd"
+			elif body == 770:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedMeerMageVisual.gd"
+				row["archive_align_gesture_slope"] = true
+			elif body == 791:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedGiantBeetleVisual.gd"
 			elif body == 241:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedOniVisual.gd"
 			elif body == 189:
@@ -445,6 +470,12 @@ static func valid_groups(groups: Variant, body: int) -> bool:
 				var expected: Array = []
 				if body == 165:
 					expected = ["Death", "Death"] if kind == "3" else ["ShadowWispRecoil"]
+				elif body == 301:
+					expected = ["Death", "Death2"] if kind == "3" else ["TreefellowBarkRecoil"]
+				elif body == 770:
+					expected = ["Death", "Death2"] if kind == "3" else ["MeerMageRecoil"]
+				elif body == 791:
+					expected = ["Death2", "Death"] if kind == "3" else ["BeetleWingedHit"]
 				elif body == 241:
 					expected = ["Death", "Death2"] if kind == "3" else ["OniRecoil"]
 				elif body == 189:

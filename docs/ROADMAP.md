@@ -1,3 +1,24 @@
+# Treefellow
+
+The optional Enhanced profile reaches 152 bodies. Treefellow 301 has independent combat and peaceful gaits, foliage movement, the original topple and a rooted upright corpse. Stock Dismount, temporary remount refusal and log loot have isolated two-client evidence.
+
+Continue with dapple-grey Horse 226 and the four bovine bodies in configured occurrence order. The official patch archives supplied 670 registered frames for Horse 226 and 1,590 across both cow and both bull bodies. Sea Horse 144 has 765 frames with a distinct upright body and curled tail. Its native server identity remains a rideable BaseMount. The llama and both other ostards also have exact references. Body aliases for the common Sea Serpent, Rat, Lizardman and Timber Wolf still need a source recheck.
+
+
+# Meer Mage
+
+The optional Enhanced profile reaches 151 bodies. Meer Mage 770 has fitted strikes, recoil, guard, gait and idle. Both retained falls lead into static corpses. The stock insect swarm and its dispersal by a burning torch have isolated native evidence. The forest call has live evidence for four of the five possible constructor types in one encounter.
+
+Continue with Treefellow 301. Its 835 registered reference frames include a conventional topple and a separate upright, rooted settling pose. Verify its native Dismount on a mounted player and retain the native log loot.
+
+
+# Giant Beetle
+
+The optional Enhanced profile reaches 150 bodies. Giant Beetle 791 keeps the original carapace and leg rig, with separate combat wing poses and closed seated gaits. The source's alternate death selector points to its combat walk. The normal native death and corpse use the established fall on that branch.
+
+Continue in configured encounter order with Meer Mage 770 and Treefellow 301. The Meer Mage has 235 registered reference frames, two established falls, and a stock insect swarm that follows its target until death or a burning torch disperses it. The Treefellow has 835 registered frames, and its native behaviour needs a separate review.
+
+
 # Oni
 
 The optional Enhanced profile reaches 149 bodies. Oni has twelve fitted motions and a hand-tracked cast effect. Both retained falls keep their own static corpse poses and late dye. Group 27 keeps the established gesture while its exact reference is unlocated. Stock MageAI was witnessed at spell range. Angry Fire remains an explicit server behavior gap.
