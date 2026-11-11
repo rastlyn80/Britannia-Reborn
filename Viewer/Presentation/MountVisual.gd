@@ -2,6 +2,7 @@ extends RefCounted
 ## Dispatch presentation only. Native riding permissions stay with ModernUO.
 const Horse=preload("res://Presentation/HorseVisual.gd")
 const Ostard=preload("res://Presentation/OstardMount.gd")
+const Magical = preload("res://Presentation/SourceMagicalEquine.gd")
 const Animals=preload("res://Presentation/AnimalVisual.gd")
 const BODIES={0xd2:["desert",0x3ea3],0xda:["frenzied",0x3ea4],0xdb:["forest",0x3ea5],0x84:["kirin",0x3ead],0xdc:["llama",0x3ea6],0x124:["llama",0]}
 static func available() -> bool:
@@ -11,6 +12,7 @@ static func available() -> bool:
 		if ResourceLoader.exists(asset_path(body)):return true
 	return false
 static func mount_available(body: int,item: int) -> bool:
+	if Magical.selected(body, item):return true
 	var entry := Animals.Creatures.entry(body)
 	if entry.get("mount_only",false):
 		return item > 0 and item == int(entry.get("mount_item",0)) and Animals.Creatures.supports_body(body)
@@ -20,6 +22,7 @@ static func kind(body: int,item: int=0) -> String:
 static func asset_path(body: int,item: int=0) -> String:
 	var label:=kind(body,item);return "res://local-art/"+("mounts" if label in ["kirin","kirin_ethereal","llama","llama_ethereal"] else "ostards")+"/"+("kirin" if label=="kirin_ethereal" else label)+"-modern.gltf"
 static func supports_body(body: int) -> bool:
+	if Magical.selected(body, 0):return true
 	if Animals.Creatures.entry(body).get("mount_only",false):return false
 	if Animals.supports_body(body):return true
 	if body==0x319:return ResourceLoader.exists("res://local-art/mounts/skeletal-horse.glb")
@@ -42,20 +45,38 @@ static func horse_body(item: int) -> int:
 		if item!=0 and int(entry.get("mount_item",0))==item and Animals.Creatures.supports_body(body):return body
 	return 0
 static func matches(visual: Node3D,body: int,item: int=0) -> bool:
+	var form:=Magical.configuration(body,item)
+	if not form.is_empty():return visual is Magical and visual.kind==form.kind
+	if visual is Magical:return false
 	if Animals.Creatures.entry(body).get("mount_only",false):
 		return mount_available(body,item) and Animals.Creatures.matches(visual,body)
 	if Animals.Creatures.supports_body(body):return Animals.Creatures.matches(visual,body)
 	if Animals.supports_body(body):return visual is Ostard and visual.kind==Animals.kind(body)
 	if body==0x319:return visual is Horse and not visual.visual_path.is_empty()
 	if visual is Horse and not visual.visual_path.is_empty():return false
-	return visual is Ostard and visual.kind==kind(body,item) if BODIES.has(body) else visual is Horse
+	if not BODIES.has(body):
+		return visual is Horse
+	return visual is Ostard and visual.kind == kind(body, item) \
+		and visual.original_llama_pack == uses_original_pack(body, item)
+
+static func uses_original_pack(body: int, item: int) -> bool:
+	return body == Ostard.LlamaActions.PackBody and item == 0 and Ostard.LlamaActions.active_pack
 static func create(body: int,item: int=0) -> Node3D:
+	var form:=Magical.configuration(body,item)
+	if not form.is_empty():
+		var original := Magical.new()
+		original.form = form
+		original.kind = original.form.kind
+		return original
 	if Animals.Creatures.entry(body).get("mount_only",false):
 		return Animals.Creatures.create(body) if mount_available(body,item) else null
 	if Animals.supports_body(body):return Animals.create(body)
 	if body==0x319:
 		var skeleton:=Horse.new();skeleton.visual_path="res://local-art/mounts/skeletal-horse.glb";return skeleton
 	if BODIES.has(body):
-		var visual:=Ostard.new();visual.kind=kind(body,item);return visual
+		var visual := Ostard.new()
+		visual.kind = kind(body, item)
+		visual.original_llama_pack = uses_original_pack(body, item)
+		return visual
 	return Horse.new()
 static func step_seconds(worn: Array,running: bool) -> float:return Horse.step_seconds(worn,running)

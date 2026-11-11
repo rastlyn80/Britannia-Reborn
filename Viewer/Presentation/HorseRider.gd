@@ -136,8 +136,13 @@ func _process_modification_with_delta(delta: float) -> void:
 		var acting_hand: bool=not left and rider.action_clip in ["Rider_Attack","Rider_Slap"]
 		if not ranged and not busy and not acting_hand:
 			var grip:=Vector3(sign*.14,.30,.46)
+			var fitted_grip:=horse.has_method("rein_grip_target")
+			if fitted_grip:
+				grip=horse.rein_grip_target(left)
 			if transition:grip=Vector3(.24,.18,.31 if left else -.25).lerp(grip,smoothstep(.70,1.,t))
 			var hand_target: Vector3=inverse*(saddle*grip)
+			if fitted_grip:
+				hand_target=limit_rein_reach(rig,side,hand_target)
 			var elbow_pole: Vector3=inverse*(saddle*Vector3(sign*.34,.34,0.))
 			solve(rig,"upperarm_"+side,"lowerarm_"+side,"hand_"+side,hand_target,elbow_pole)
 			fit_rein_wrist(rig,side,smoothstep(.7,1.,t) if transition else 1.)
@@ -153,3 +158,13 @@ func _process_modification_with_delta(delta: float) -> void:
 	elif outfit.pieces.has("weapon"):right_hand=left_hand
 	horse.set_reins(left_hand,right_hand)
 	seat_error=(rig.global_transform*rig.get_bone_global_pose(pelvis).origin).distance_to(saddle*Vector3(0,.105,0))
+
+
+func limit_rein_reach(rig: Skeleton3D, side: String, target: Vector3) -> Vector3:
+	var shoulder := rig.get_bone_global_pose(rig.find_bone("upperarm_" + side)).origin
+	var elbow := rig.get_bone_global_pose(rig.find_bone("lowerarm_" + side)).origin
+	var wrist := rig.get_bone_global_pose(rig.find_bone("hand_" + side)).origin
+	var upper := shoulder.distance_to(elbow)
+	var lower := elbow.distance_to(wrist)
+	var reach := sqrt(upper * upper + lower * lower + 2. * upper * lower * cos(.40))
+	return shoulder + (target - shoulder).limit_length(reach)

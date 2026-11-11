@@ -1,3 +1,17 @@
+# Original magical equines
+
+The optional Enhanced ki-rin and unicorn use their original living and spectral rigs. Both native rider restrictions and the separate ethereal items have isolated two-client evidence. Continue with Forest and Desert Ostard, then Nightmare and Fire Steed. The exact official ki-rin and unicorn frame archive groups are accounted for in the fit ledger.
+
+
+# Enhanced Sea Horse and llamas
+
+The optional Enhanced profiles cover the distinct Sea Horse reconstruction and the native ordinary, ridden and pack llama forms. Both families have isolated two-client evidence for their stock native routes. The recovered Pack Llama keeps its original load and uses its own rig and static corpse. The ethereal llama remains an item-only spectral form.
+
+Continue the remaining original ostard and magical-equine actions. The later Third Dawn Ki-rin uses a different UV layout from the early mesh and has a recovered original atlas. The original Unicorn includes a separate rigid surface. Confirm its attachment and finite normal treatment before replacing the current horse-based visual. Check the Nightmare and Fire Steed's distinct original coats against the existing licensed horse presentations.
+
+The default action ledger still contains 6,489 mapped slots of 8,090 tracked possibilities. The current original Classic frame audit has no unresolved source-backed slot in that ledger. Keep native behavior, source evidence and the optional Enhanced motion fits separately traceable while looking for additional reachable groups.
+
+
 # Ordinary horses, cattle and seahorse
 
 The optional fits cover all four ordinary horse variants and all four native cattle variants. Ordinary horses retain the licensed saddle rig, stock riding and exact worn-item pairs. The cattle retain their Third Dawn rigs and living cow-tip recovery. Both families use their verified fitted falls and late-hue corpse transfer.

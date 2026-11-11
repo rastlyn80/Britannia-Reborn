@@ -103,6 +103,10 @@ func _ready() -> void:
 		if not enhanced_creature_actions:
 			push_warning("The optional Enhanced creature action profile needs its prepared local assets.")
 	MountVisual.Horse.enhanced_ordinary_horses = enhanced_creature_actions
+	MountVisual.Ostard.LlamaActions.configure(enhanced_creature_actions)
+	MountVisual.Magical.configure(enhanced_creature_actions)
+	if enhanced_creature_actions:
+		preload("res://Presentation/SeaHorseProfile.gd").enable()
 	MountVisual.Animals.enhanced_bovine_actions = enhanced_creature_actions and MountVisual.Animals.EnhancedBovine.enable()
 	var path := "res://world.json"
 	if FileAccess.file_exists("res://play-world.json"): path = "res://play-world.json"

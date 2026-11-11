@@ -1,3 +1,46 @@
+# Original ki-rin and unicorn mounts
+
+Living ki-rin body 132 and unicorn body 122 now use their own later Third Dawn models, colour atlases and rigs in the optional Enhanced profile. The ki-rin retains its 30-joint rig and alpha-cutout mane. The living unicorn has a 38-joint rig and an original seven-vertex horn on the head. The unicorn body palette was verified against the table-linked dappled horse weights. Six of the nine original horn faces have coincident points and stay invisible under all rigid poses. The three visible faces use normals reconstructed from their winding.
+
+The official Enhanced files yielded all 35 named groups for the two living mounts, with 910 registered ki-rin frames and 675 unicorn frames. Twenty-nine fitted clips and six retained original movement clips cover those groups. The client selects the original combat, peaceful and ki-rin mounted gaits, plus body-specific attacks, recoil, casting, alerts and two falls. The ki-rin's original hover is a client animation selection under the flight flag. Pinned ModernUO retains its own movement authority.
+
+Ethereal ki-rin and unicorn use their separate original Third Dawn rigs and atlases when native items `0x3E9C` and `0x3E9B` are worn. The ethereal ki-rin uses the living cutout mask after verification that triangle and texture coordinates register exactly. Its RGB still comes from the original spectral atlas. Both forms preserve the default ethereal hue and full and partial server dyes.
+
+Normal client replay passed 426 checks, including both corpse packet orders, late dye and the two fitted falls. Terrain checks covered 2,091 skinned poses and 36 fall transfers. The largest joint displacement during a fall transfer was 0.68 micrometres. Rider checks passed 1,033 assertions across 180 poses with 18 Forward+ captures. The seat, stirrups, reins and bent elbows were measured on the normal rider rigs. Two native clients passed 129 checks across both living and both ethereal classes for both riders. Pinned ModernUO allowed male riders on the living ki-rin, female riders on the living unicorn, and both on the ethereal forms. The test fixture controls ownership and the recoil selector. Stock mounting, movement, dismount, dye, death and corpses pass through the normal server and client paths.
+
+To build locally, run `python -B scripts/prepare-magical-mounts.py --models <private Third Dawn Models directory> --install`. The recipe reads the extracted `Animals`, `Monsters` and `Maps` folders and writes its four bundled scenes and manifest under `Viewer/local-art/mounts`. Launch with the prepared Enhanced profile. The original game inputs, generated scenes, source-frame exports and screenshots remain private.
+
+
+# Enhanced llamas and original Pack Llama
+
+The optional Enhanced llama presentation keeps the original 29-joint rig and seven Third Dawn motions for ordinary and rideable body 220. Seven fitted motions use 445 registered Enhanced reference frames from ten members of `AnimationFrame4.uop` and sequence `0x676fc8f05e092c96`. Combat walking lowers the head by 23.2 cm on average with no measured change to the original hoof trajectories. The rear strike, recoil, quiet idle, forward check, paw alert and rear-and-fall have separate motion. Riding keeps the neutral gaits. Classic group 6 retains the original attack for the Energy Vortex llama. The ethereal item `0x3EAB` keeps its separate spectral presentation.
+
+Pack Llama body 292 uses its own original 30-joint asset. The recovered file `llamas_llama_pack_lod2.grn` in `models/animals/client8.cab` has a 120-vertex skinned body and a separate 20-vertex rigid load. The two surface groups share the declared `llamas_llama_v04.tga` atlas from `models/maps/client10.cab`. The body and load use different texture regions. The source body weight buffer matches the ordinary llama byte for byte and starts at offset one in the shared palette. Index zero belongs to the load joint under the spine. The conversion keeps the original load mesh, texture coordinates and seven original gaits and actions. Subdivision rounds the body with a measured displacement cap and preserves the hooves. The modern mesh has 5,828 triangles, including the original 36 load triangles. Classic mode continues to use the established local panniers.
+
+The original and modern Pack Llama passed 42 hardware-rendered views and 350 full-skin samples. The load joint moved about 11 cm during the gait with less than a micrometre of measured change in the sampled rigid edge. The flat source bake touched about 3 mm below its plane at the lowest sample. The client support checks passed 1,404 skin samples over three finite slopes and three headings. The 36 fall handoffs displaced a joint by at most 0.76 micrometres. The normal World checks covered 153 Enhanced and four Classic cases, including actual animation playback, both corpse packet orders, the load surface on the static corpse and the late dye packet.
+
+Two isolated ModernUO clients passed 141 checks across the four constructors with both human rigs. The stock server allowed the rideable and ethereal forms and refused the ordinary and pack forms. Movement, full and partial mount hues, dismount, loose motion, death and static cadavers passed. The test explicitly sets fixture ownership and sends a controlled recoil packet. It exercises the stock client/server paths for mounting, movement, item replication and death.
+
+## Preparing local art
+
+With the ordinary llama already prepared by `scripts/prepare-distinct-mounts.py`, run Godot with `--path Viewer --headless --script res://../scripts/bake-llama-enhanced.gd -- --output-dir=<absolute private directory>`. To include the original load, first run `python -B scripts/recover-pack-llama.py --models <private Third Dawn Models directory> --output-dir <private working directory>`. Pass the resulting absolute `--pack-model=<directory>/pack-llama-modern.gltf` to the bake. Place the generated `llama-enhanced.json`, `llama-enhanced.res` and optional `pack-llama-modern.scn` in `Viewer/local-art/mounts`. Launch with the prepared Enhanced profile using `--enhanced-creature-actions`.
+
+The source recovery script validates each input member against its recorded SHA-256. It retains only local assets. Original meshes, atlases, captures and generated binary scenes are excluded from Git.
+
+
+# Distinct Enhanced Sea Horse
+
+Sea Horse body 144 and ridden item 0x3EB3 now have a distinct Enhanced presentation. The original Third Dawn sea horse colour atlas was recovered. The inspected later cabinets contained fourteen human rider animation members and two sea horse atlases. Their audited rider files contain animation tracks and no creature mesh. The new rig and mesh were authored from the 765 registered official frames in all seventeen members of `AnimationFrame4.uop` and the sequence `0xed9ffc90ed69c840`. The private material adds scale relief and uses native full and partial hues. Mounted Sea Horses have fitted leather saddles and stirrups.
+
+The seventeen fitted clips use 2,482 vertices, 4,940 triangles and 13 joints, including the mouth, saddle and fin anchors. Forward+ rendered 51 loose views and six ridden views with both human rigs. The focused tests passed 312 checks, including 216 weighted terrain poses over nine fall handoffs. The largest sampled position change at a handoff was 0.12 micrometres. The normal client replay passed three Classic and 24 Enhanced checks. Both Enhanced falls end in static corpses and preserve their position and geometry after a partial dye packet.
+
+The staged normal client and a second isolated ModernUO client passed 47 checks. Both rider sexes used the stock double-click mount and dismount paths, walked and ran mounted and loose, replicated full and partial dyes, and observed a stock death and the static native corpse. The fixture controlled ownership and sent the recoil selector. The stock walking, non-swimming and untamable flags remain authoritative. The current Classic client uses its documented horse-art fallback.
+
+## Preparing the Sea Horse locally
+
+Run `python -B scripts/prepare-seahorse.py --atlas <private sea_horse_sea_horse.tga> --output-dir <private working directory>`. The script requires the recovered original atlas with SHA-256 `67a3fbf5dcd5e5479a67720c0e8d371fbb4f49688a965e8b47c9ef5e0898c68b`. Run Godot with `--path Viewer --headless --script res://../scripts/bake-seahorse.gd -- --study=<absolute private working directory>` to bundle the scene and produce its manifest. Place `sea-horse.scn` and `sea-horse.json` in `Viewer/local-art/mounts` and launch with the prepared Enhanced profile. The reconstruction's animated mesh and the private atlas are generated locally.
+
+
 # Enhanced cattle
 
 The optional cattle presentation covers cow bodies 216 and 231 and bull bodies 232 and 233. Each retains its Third Dawn rig, existing geometry, coat material and base gait tracks. Six fitted actions cover the fall, head recoil, short nudge, grazing, a tail flick and the raise to alert. The cow-tip packet retains the living lie-down and returns to grazing. The two bulls have separate body-specific fall trajectories. The official alternate bull selector points to standing frames, and the real death packet then starts the fitted fall.

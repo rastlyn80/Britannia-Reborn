@@ -1,6 +1,9 @@
 extends "res://Presentation/OstardVisual.gd"
 ## Runtime adapter around the separately prepared source-rig creature.
 const DesertActions := preload("res://Presentation/DesertOstardActions.gd")
+const LlamaActions := preload("res://Presentation/LlamaActions.gd")
+var llama_actions: RefCounted
+var original_llama_pack := false
 var desert_actions: RefCounted
 var native_body:=0xd2
 var native_hue:=0
@@ -18,6 +21,13 @@ var mouth_bone:=-1
 var pack_fitting: Node3D
 var contact: SkeletonModifier3D
 var source_model_basis:=Basis.IDENTITY
+
+
+func model_resource_path(folder: String, asset_kind: String) -> String:
+	if original_llama_pack:
+		return LlamaActions.PackScene
+	return super.model_resource_path(folder, asset_kind)
+
 func _ready() -> void:
 	super._ready()
 	seat_bone=find_source_bone("spine1");mouth_bone=find_source_bone("head")
@@ -54,7 +64,7 @@ func build_eyes() -> void:
 	for side in [-1.,1.]:
 		var point:=Vector3(side*.105,1.63,1.26)
 		if kind.begins_with("kirin"):point=Vector3(.038+side*.096,1.72,1.28)
-		var mesh:=MeshInstance3D.new();mesh.name="AuthoredEye";var sphere:=SphereMesh.new();sphere.radius=.023;sphere.height=.046;sphere.radial_segments=16;sphere.rings=8;mesh.mesh=sphere
+		var mesh:=MeshInstance3D.new();mesh.name=("AuthoredEyeLeft" if side<0 else "AuthoredEyeRight") if kind=="llama" else "AuthoredEye";var sphere:=SphereMesh.new();sphere.radius=.023;sphere.height=.046;sphere.radial_segments=16;sphere.rings=8;mesh.mesh=sphere
 		var material:=StandardMaterial3D.new();material.albedo_color=Color("24180c") if kind.begins_with("kirin") else Color("140f0b");material.roughness=.21;material.metallic_specular=.65;mesh.material_override=material
 		attachment.add_child(mesh);mesh.transform=rest.affine_inverse()*Transform3D(global_basis.scaled(Vector3(.45,1.,1.)),global_transform*point)
 func find_source_bone(suffix: String) -> int:
@@ -65,8 +75,31 @@ func apply_identity(body: int,value: int,item: int=0) -> void:
 	native_body=body;native_hue=value;native_mount_item=item;set_hue(value)
 	set_meta("native_body",body);set_meta("native_hue",value);set_meta("native_mount_item",item)
 	set_meta("equine_profile",{"style":kind,"ethereal":kind in ["ethereal","llama_ethereal","kirin_ethereal"]})
-	if body==0x124 and pack_fitting==null:build_pack()
+	if body==0x124 and not original_llama_pack and pack_fitting==null:build_pack()
 	elif body!=0x124 and pack_fitting!=null:pack_fitting.free();pack_fitting=null
+
+	if original_llama_pack:
+		if llama_actions == null:
+			llama_actions = LlamaActions.new()
+			llama_actions.install_pack(self)
+		reins.hide()
+		return
+	var fitted := LlamaActions.applies(kind, treatment, body, item)
+	if fitted and llama_actions == null:
+		llama_actions = LlamaActions.new()
+		llama_actions.install(self)
+	elif not fitted and llama_actions != null:
+		llama_actions.uninstall(self)
+		llama_actions = null
+	if fitted:
+		reins.visible = item == LlamaActions.RidingItem
+
+func set_native_combat_flags(flags: int) -> void:
+	if llama_actions != null:
+		llama_actions.combat = (flags & 0x40) != 0
+
+func receive_enhanced_action(request: Dictionary, flags: int) -> bool:
+	return llama_actions != null and llama_actions.receive_enhanced(self, request, flags)
 func build_pack() -> void:
 	var attachment:=BoneAttachment3D.new();attachment.bone_name=skeleton.get_bone_name(seat_bone);skeleton.add_child(attachment);pack_fitting=attachment
 	var rest:=skeleton.global_transform*skeleton.get_bone_global_rest(seat_bone)
@@ -87,6 +120,8 @@ func socket(_name: String,_rotation_delta: bool=false) -> Transform3D:return anc
 func motion(speed: float,turn_rate: float,delta: float) -> void:
 	lean=lerpf(lean,clampf(turn_rate*minf(speed,6.)*.009,-.065,.065),1.-exp(-6.*delta))
 func play_gait(moving: bool,speed: float) -> void:
+	if llama_actions != null and llama_actions.gait(self, moving, speed):
+		return
 	if current_clip=="LieDown" and moving:action_remaining=0.
 	if dead or action_remaining>0.:return
 	var clip:="Idle" if not moving else "Run" if speed>3.6 else "Walk"
@@ -102,6 +137,11 @@ func _process(delta: float) -> void:
 		action_remaining=maxf(0.,action_remaining-delta)
 		if action_remaining==0. and (dead or current_clip=="LieDown"):animator.seek(animator.current_animation_length,true);animator.pause()
 func receive_action(request: Dictionary) -> bool:
+	if llama_actions != null:
+		if llama_actions.receive_classic_fall(self, request):
+			return true
+		if not dead:
+			contact.active = true
 	var clip:=""
 	# ClassicUO LowAnimationGroup: 9/10 are fidgets, never hit reactions.
 	if str(request.get("protocol",""))=="classic":clip=str({0:"Walk",1:"Run",2:"Idle",3:"Eat",5:"Attack",6:"Attack",7:"Hit",8:"Death",9:"Fidget",10:"Fidget",11:"LieDown",12:"Death"}.get(int(request.get("action",-1)),""))
@@ -121,6 +161,8 @@ func receive_action(request: Dictionary) -> bool:
 	if desert_actions != null: animator.seek(0.0, false)
 	set_meta("native_action",request.duplicate(true));return true
 func corpse_snapshot_floor() -> float:
+	if llama_actions != null:
+		return llama_actions.snapshot_floor(self)
 	return desert_actions.fall.snapshot_floor(self) if desert_actions != null else INF
 func set_reins(left: Vector3,right: Vector3) -> void:
 	rein_mesh.clear_surfaces();rein_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)

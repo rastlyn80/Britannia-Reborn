@@ -333,6 +333,44 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
     if ($LASTEXITCODE) {throw "$mode cattle world replay failed"}
    }
   }
+  $mountArt = "$root/Viewer/local-art/mounts"
+  if (Test-Path "$mountArt/sea-horse.json") {
+   foreach ($mode in @('Classic', 'Enhanced')) {
+    $modeArgs = @('--world=res://world.json')
+    if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+    $checks = & $godot --headless --path "$root/Viewer" --script res://../scripts/test-seahorse-world.gd -- @modeArgs 2>&1
+    $code = $LASTEXITCODE
+    $checks | ForEach-Object { Write-Output $_ }
+    if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "$mode Sea Horse world replay failed" }
+   }
+  }
+  if (Test-Path "$mountArt/llama-enhanced.json") {
+   $llama = Get-Content -LiteralPath "$mountArt/llama-enhanced.json" -Raw | ConvertFrom-Json
+   $packArgs = @()
+   if ($llama.'pack-llama-modern.scn') { $packArgs += '--original-pack' }
+   $checks = & $godot --headless --path "$root/Viewer" --script res://../scripts/test-llama-terrain.gd -- @packArgs 2>&1
+   $code = $LASTEXITCODE
+   $checks | ForEach-Object { Write-Output $_ }
+   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw 'Llama fall and terrain support failed' }
+   foreach ($mode in @('Classic', 'Enhanced')) {
+    $modeArgs = @('--world=res://world.json') + $packArgs
+    if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+    $checks = & $godot --headless --path "$root/Viewer" --script res://../scripts/test-llama-world.gd -- @modeArgs 2>&1
+    $code = $LASTEXITCODE
+    $checks | ForEach-Object { Write-Output $_ }
+    if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "$mode llama world replay failed" }
+   }
+  }
+  if (Test-Path "$mountArt/magical-equines.json") {
+   $riderArgs = @('--magical-spectral')
+   foreach ($test in @('riders', 'terrain', 'world')) {
+    $arguments = if ($test -eq 'world') { @('--world=res://world.json', '--enhanced-creature-actions') } else { $riderArgs }
+    $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-magical-equine-$test.gd" -- @arguments 2>&1
+    $code = $LASTEXITCODE
+    $checks | ForEach-Object { Write-Output $_ }
+    if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "Original magical equine $test verification failed" }
+   }
+  }
  }
  if ($lateIndex.entries | Where-Object { $_.preferred_uop_native_sha256 }) {
   & python -B "$root/scripts/accept-preferred-uop-actions.py" --check-active
