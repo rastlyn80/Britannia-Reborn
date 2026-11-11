@@ -364,7 +364,7 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
   if (Test-Path "$mountArt/magical-equines.json") {
    $riderArgs = @('--magical-spectral')
    foreach ($test in @('riders', 'terrain', 'world')) {
-    $arguments = if ($test -eq 'world') { @('--world=res://world.json', '--enhanced-creature-actions') } else { $riderArgs }
+    [string[]]$arguments = if ($test -eq 'world') { @('--world=res://world.json', '--enhanced-creature-actions') } else { $riderArgs }
     $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-magical-equine-$test.gd" -- @arguments 2>&1
     $code = $LASTEXITCODE
     $checks | ForEach-Object { Write-Output $_ }
