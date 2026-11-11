@@ -1,3 +1,57 @@
+# Frost Spider
+
+The optional Enhanced profile reaches 137 bodies. Frost Spider 20 has eight fitted groups and keeps its existing walk, run, attack and fall for the other nine indexed groups. Its retained Third Dawn atlas is more muted than the bright cyan Enhanced sprite reference. Continue with Chaos Daemon 792 and Meer Warrior 771 in the configured occurrence order.
+
+# Gore Fiend
+
+The optional Enhanced profile reaches 136 bodies. Gore Fiend 305 has eight fitted groups and retains its existing routes for the remaining nine indexed groups. Continue in configured occurrence order with Frost Spider 20, Chaos Daemon 792 and Meer Warrior 771. Their indexed Enhanced reference frames are decoded.
+
+# Minotaur
+
+The optional Enhanced profile reaches 135 bodies. Minotaur 263 has eight fitted groups and retains the previous routes for eight other indexed groups. Its stock Paralyzing Blow was witnessed on an isolated target. The Tormented Minotaur constructor returns its distinct body 262. Continue with the occurrence-ranked Gore Fiend and Frost Spider. Yomotsu Priest 253 keeps its existing presentation while an exact Enhanced frame source is unlocated.
+
+# Crystal Elemental
+
+The optional Enhanced profile reaches 134 bodies. Crystal Elemental 300 has eight fitted groups and retains the previous routes for nine other indexed groups. The assembly uses the original surface in eight independently moving pieces. Native death may interrupt it and retain the displayed pieces as the corpse. A later raw hue update preserves that geometry.
+
+Continue with Minotaur 263, then the remaining occurrence-ranked entries. The Minotaur's first eight fits retain its original rig and move its horns, hands, hooves and tail. Yomotsu Priest 253 remains available through the established route while its exact Enhanced source is unlocated. Gore Fiend 305 has 17 decoded source groups.
+
+# AntLion
+
+The optional Enhanced profile reaches 133 bodies. AntLion 787 has eight fitted groups and keeps the established routes for the remaining eight indexed groups. The isolated trial exercised the native body, melee, dye, corpse and stock loot. The current source audit has exact registered Enhanced frames for Crystal Elemental 300, Minotaur 263 and Gore Fiend 305. Yomotsu Priest 253 has an established route and no exact named or indexed Enhanced sequence in the current audit.
+
+Continue in configured occurrence order. Crystal Elemental's first fit preserves the original shard rig and uses the actual cast and disassembly tracks to build its shard cast and assembly poses.
+
+# Hiryu and Lesser Hiryu
+
+The optional Enhanced profile reaches 132 bodies. The shared body 243 has eleven fitted groups and preserves established routes for the nine other indexed groups. Native constructor variants and mounted versus loose gameplay are both exercised on the isolated server. The tested outfits and terrain planes bound the current rider evidence.
+
+Continue with AntLion 787 and Crystal Elemental 300 in configured occurrence order. AntLion has 16 indexed groups and a source-backed first fit. The Crystal Elemental has 17 indexed groups and a named Enhanced sequence.
+
+# Shadow Fiend
+
+The optional Enhanced profile reaches 131 bodies. Shadow Fiend 168 uses eight fitted groups on its original winged Third Dawn rig and preserves the earlier routes for the other nine indexed groups. Native death uses effect 0x376a and removes the temporary corpse. The shrouded Enhanced appearance remains a separate art pass.
+
+Continue with both native Hiryu constructors on body 243. The first seven gesture fits and four gait loops use the retained original rig. Continue in occurrence order to AntLion 787. Its 16 indexed groups and 805 frames are decoded, and the first eight actions have been authored.
+
+# Revenant Lion
+
+The optional Enhanced profile reaches 130 bodies. Revenant Lion 251 has seven fitted actions and retains its existing routes for eight other indexed groups. Review the tail silhouette separately. The retained Third Dawn mesh and rig are tailless and the Enhanced reference shows a mobile tail.
+
+Continue with Shadow Fiend 168, Lesser Hiryu 243 and AntLion 787. Their 17, 20 and 16 exact groups have been extracted and decoded. Keep the Shadow Fiend's native corpse suppression and death effect. Check the Lesser Hiryu using both native constructors and the loose and mounted routes for shared body 243.
+
+# Frenzied Ostard
+
+The optional Enhanced profile reaches 129 bodies. Frenzied Ostard 218 has eight loose fits, including a separate peace walk, and three mounted loops. The seven other indexed groups keep their established routes. The stock server still controls the mount graphic, hue, position and corpse. The client tests sampled three rider outfit sets on five slopes.
+
+Continue with Revenant Lion 251, Shadow Fiend 168, Lesser Hiryu 243 and AntLion 787 in configured occurrence order. Compare the Shadow Fiend's stock corpse suppression and the Lesser Hiryu's ground and mount paths before installing their Enhanced fits. Crystal Wisp 58 has an established route and no exact matching Enhanced frame member in the current archive audit.
+
+# Devourer and the next mount
+
+The optional Enhanced profile reaches 128 bodies. Devourer 303 has eight fitted motions and a native spell cue. The remaining nine exact indexed groups retain the established action and movement routes. Crystal Wisp 58 has no exact named Enhanced member in the current audit and keeps its verified Wisp-family route.
+
+Continue with Frenzied Ostard 218 in configured occurrence order. Its 18 indexed groups include three separate ridden movements, and the original Third Dawn mesh and coat are already available. Exercise both riders, layer 25 item 0x3ea4, raw hues, terrain, reins and dismounting. Revenant Lion 251 has 15 decoded groups and follows it.
+
 # Solen Warriors
 
 The optional Enhanced profile reaches 127 bodies. Black Solen Warrior 806 has eight fitted clips and preserves existing routes for the remaining nine indexed groups. The Red Warrior 782 has a separate original rig and atlas. Its exact named Enhanced sequence and frame members remain unlocated across the indexed patch and loose archives. Its stock Classic motions, melee and acid behaviour are already available.

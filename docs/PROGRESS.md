@@ -1,3 +1,105 @@
+# Enhanced Frost Spider
+
+The optional Enhanced profile reaches 137 bodies and 376 fitted local scenes. Frost Spider 20 keeps its original Third Dawn mesh, atlas and eight-leg rig. Eight fitted motions follow named sequence 0x41b6bd075a5204d7. Its 17 exact indexed groups contain 720 registered frames. During the high defence, the front feet lift about 80 cm and the four rear foot landmarks move horizontally by less than half a millimetre.
+
+The candidate passed 80 Forward+ views, 5,361 dense poses at 240 Hz, 3,720 terrain poses and 240 interrupted falls. It passed 144 Enhanced selections, 108 Classic comparisons and 18 gait selections. The staged world replays passed 218 Classic and 338 Enhanced checks on the Britain extract, plus 290 Enhanced checks on the synthetic fixture.
+
+The isolated ModernUO trial passed 195 checks. Both clients received the stock melee, exact body and dye, and native corpse. The corpse held gold and seven spider silk. A separate Frost Spider accepted the stock Animal Taming skill through the normal client target cursor and received its new owner and Follow order. The trial gave the disposable character 120.0 skill and held the second spider in targeting range. The native creature has a 74.7 skill requirement, occupies one control slot and deals 80 percent cold melee damage.
+
+Rebuild with scripts/bake-frost-spider-enhanced.gd and verify using scripts/check-frost-spider-clearance.gd, scripts/render-frost-spider.gd and scripts/test-frost-spider-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --frost-spider after reproducing the earlier required batches and the local evidence.
+
+# Enhanced Gore Fiend
+
+The optional Enhanced profile reaches 136 bodies and 373 fitted local scenes. Gore Fiend body 305 keeps its original Third Dawn mesh, rig, long neck and jaw. Eight fitted motions use the exact Enhanced sequence 0x68d63e7167db3a74. The source audit decoded 17 indexed groups and 800 frames.
+
+The candidate passed 80 Forward+ views and 5,349 dense poses at 240 Hz. The measured limbs cleared the torso, and the largest sampled gap at the supporting hands and feet was 14.5 mm. The focused client tests passed 3,720 terrain poses, 240 interrupted falls, 144 Enhanced selections and 108 Classic comparisons. The staged cumulative replays passed 262 Classic and 372 Enhanced checks.
+
+The isolated ModernUO trial passed 183 checks, including stock melee damage, movement, dye, native corpse identity, corpse gold and 48 controlled Enhanced actions. The stock Bleed Attack left the Gore Fiend unaffected and caused bleeding on the Walrus control.
+
+Rebuild with scripts/bake-gore-fiend-enhanced.gd and verify using scripts/check-gore-fiend-clearance.gd, scripts/render-gore-fiend.gd and scripts/test-gore-fiend-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --gore-fiend after reproducing the earlier required batches and the local evidence.
+
+# Enhanced Minotaur
+
+The optional Enhanced profile reaches 135 bodies and 370 fitted local scenes. The unarmed Minotaur body 263 keeps its original Third Dawn mesh, atlas, horns, tail, rig and previous animation keys. Eight fitted motions use 405 frames from named sequence 0x5525127d1d79047b. The horn hook, crouching rise and wide threat use the original arm, torso and hoof joints. Tormented Minotaur 262 retains its existing presentation.
+
+The candidate passed 80 Forward+ views and 5,316 dense poses at 240 Hz. The measured forearms and hands cleared the torso. The client passed 3,720 terrain poses, 240 interrupted falls, 144 Enhanced selections and 108 Classic comparisons. The staged cumulative replays passed 244 Classic and 348 Enhanced checks.
+
+The isolated ModernUO trial passed 197 checks. Both clients received the stock melee swing, dye and the native body-263 corpse. A stock strike damaged and paralyzed the test target. The trial also verified movement, corpse gold and 48 controlled Enhanced actions.
+
+Rebuild with scripts/bake-minotaur-enhanced.gd and verify using scripts/check-minotaur-clearance.gd, scripts/render-minotaur.gd and scripts/test-minotaur-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --minotaur after reproducing the earlier required batches and the local evidence.
+
+# Enhanced Crystal Elemental
+
+The optional Enhanced profile reaches 134 bodies and 367 fitted local scenes. Crystal Elemental 300 keeps the original rig, mesh, materials and all previous motion keys. Eight motions use the exact registered Enhanced frame reference. The shard cast resamples the original cast track. The assembly uses eight rigid partitions of every triangle in the original mesh, joins them to the posed source surface, and hands back to the articulated rig.
+
+The candidate passed 80 Forward+ views and 5,580 samples at 240 Hz. Of these, 759 samples showed separate pieces. The pieces retained all 1,021 original or 4,084 rounded/modern triangles. The measured join mismatch was at most 0.12 mm. The terrain tests passed 3,720 poses, 240 interrupted deaths, 144 Enhanced selections, 108 Classic comparisons, 345 separated poses and 30 deaths while pieces were apart. A separated cadaver keeps eight static pieces. Its later dye update preserves their geometry and placement.
+
+The focused shared snapshot regressions passed 42 human-transfer and 48 Bog Thing checks. The new material-source mapping applies to authored fragment children and checks their surface type, shader and albedo texture before copying the corpse's current material. The staged world replays passed 226 Classic and 324 Enhanced checks across the selected recent batches, including a separated corpse and subsequent dye.
+
+The isolated ModernUO trial passed 193 checks. It exercised stock MageAI and Fists, native movement, Lethal poison immunity and bleed immunity, actual damage and bleeding on a target, raw dye and the native corpse with gold. The trial sent 48 controlled Enhanced action packets.
+
+Rebuild with scripts/bake-crystal-elemental-enhanced.gd. Check with scripts/check-crystal-elemental-shards.gd, scripts/render-crystal-elemental.gd and scripts/test-crystal-elemental-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --crystal-elemental after reproducing the earlier required batches and the local evidence.
+
+# Enhanced AntLion
+
+The optional Enhanced profile reaches 133 bodies and 364 fitted local scenes. AntLion 787 uses the original articulated mesh, atlas and preserved motions. Eight fitted actions use 405 registered frames from named sequence 0xf64feeee4faf54cb. The combat and peace watches use separate motions. The native action table selects the low and high pincer actions and the burrow rise.
+
+The candidate passed 80 Forward+ views and 5,226 dense poses at 240 Hz with no measured pincer segments crossing the torso. The client passed 3,720 terrain poses, 240 interrupted falls, 144 Enhanced selections and 108 Classic comparisons. The staged cumulative world replays passed 208 Classic and 290 Enhanced checks.
+
+The isolated ModernUO trial passed 181 checks with 48 controlled Enhanced packets. Both observers decoded the stock melee swing, and the stock target took 24 damage. Both clients received the same body and raw hue 0x8035 on the native corpse. The stock corpse carried three bones, four fertile dirt and five ore with graphic 0x19b9.
+
+Rebuild with scripts/bake-antlion-enhanced.gd and check using scripts/check-antlion-clearance.gd, scripts/render-antlion.gd and scripts/test-antlion-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --antlion after reproducing the earlier required batches and the local evidence.
+
+# Enhanced Hiryu and Lesser Hiryu
+
+The optional Enhanced profile reaches 132 bodies and 361 fitted local scenes. Hiryu and Lesser Hiryu share body 243 and mount item 0x3e94. The original Third Dawn mesh, rig, atlas and existing motion keys are retained. Seven gesture fits and four gait loops use 475 registered frames from named sequence 0x350b9aa48ccc2efd. The loose and seated loops follow their separate native modes. The stock server keeps its grounded movement and both constructors' distinct native palettes.
+
+The candidate passed 110 Forward+ views, 6,975 dense poses at 240 Hz and 360 mounted contact poses on both human rigs, three outfits and five terrain planes. The sampled wing and tail segments cleared the torso. The client also passed 2,625 loose terrain poses, 210 interrupted falls, 144 Enhanced and 108 Classic comparisons.
+
+The two-client isolated trial passed 563 checks across both stock constructors and both rider rigs. It covered grounded capability, normal double-click mounting and dismounting, walking, running, dye, the original loose serial, native corpses, and 144 controlled Enhanced actions. The world replay additionally verified both rider appearances and complete dismount transitions.
+
+Rebuild with scripts/bake-lesser-hiryu-enhanced.gd and check using scripts/check-lesser-hiryu-clearance.gd, scripts/render-lesser-hiryu.gd and scripts/test-lesser-hiryu-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --lesser-hiryu after reproducing the earlier required batches and the local evidence.
+
+# Enhanced Shadow Fiend
+
+The optional Enhanced profile reaches 131 bodies and 358 fitted local scenes. Shadow Fiend 168 retains its original Third Dawn winged rig, atlas and motion keys. Eight fitted motions use 335 registered Enhanced frames from named sequence 0xaf4b33c0941b7fc0. The source appearance is winged. The Enhanced sprite's shrouded silhouette remains an art fidelity gap.
+
+The candidate passed 80 Forward+ views and 5,229 dense samples at 240 Hz, with no measured forearm or distal claw crossings against the torso. The client passed 3,720 terrain poses, 240 interrupted transitions, 144 Enhanced selections, 108 Classic comparisons and 18 gait choices.
+
+The isolated ModernUO trial passed 203 checks. Both clients saw the stock Classic attack and the live target took 21 damage. They received the native partial dye, death animation, location effect 0x376a and removal of the same temporary corpse. The world replay checked that removal also clears the client corpse model and that no static snapshot remains after the transition. The native trial included 48 controlled Enhanced packets.
+
+Rebuild with scripts/bake-shadow-fiend-enhanced.gd and check using scripts/check-shadow-fiend-clearance.gd, scripts/render-shadow-fiend.gd and scripts/test-shadow-fiend-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --shadow-fiend after reproducing the earlier required batches and the local evidence.
+
+# Enhanced Revenant Lion
+
+The optional Enhanced profile reaches 130 bodies and 355 fitted local scenes. Body 251 keeps its original Third Dawn vampyric beast rig, mesh, materials and motion keys. Seven fits follow 315 registered Enhanced frames from sequence 0xc5ef80038f3963f7. The pounce, scent dip and rise were adjusted to keep a paw in support during the lowered poses. The original model has no tail, while the indexed sprite has a moving tail. The tail is an art fidelity gap.
+
+The corrected candidate passed 70 Forward+ views and 4,629 dense samples at 240 Hz, with no measured distal foreleg intersections against the torso and one supported paw within the 3 mm pose margin. The client passed 3,255 terrain poses, 210 interrupted falls, 144 Enhanced selections, 108 Classic comparisons and 18 gait choices. The staged world replays also passed 140 Classic and 204 Enhanced checks across the selected recent batches.
+
+The isolated ModernUO trial passed 239 checks. Both observers decoded the same stock melee swing. The live target sustained damage, Greater poison and bleeding. The Lion rejected Greater poison and reported its stock bleed immunity. Both observers received the native 0x2006 corpse with body 251 and raw hue 0x8035. The corpse contained seven necromancy reagents, one bone part and 621 gold. The trial also sent 48 controlled Enhanced packets and verified one-tile movement.
+
+Rebuild with scripts/bake-revenant-lion-enhanced.gd and check using scripts/check-revenant-lion-clearance.gd, scripts/render-revenant-lion.gd and scripts/test-revenant-lion-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --revenant-lion after reproducing the earlier required batches and the local evidence.
+
+# Enhanced Frenzied Ostard
+
+The optional Enhanced profile reaches 129 bodies and 352 fitted local scenes. Body 218 keeps its original Third Dawn Frenzied Ostard mesh and atlas and its established Desert Ostard locomotion rig. Eleven fitted motions follow 515 registered 2D frames from the named sequence 0x9009e0d47c5e15ec. The loose bird gets its own quiet stand and walk. Mount item 0x3ea4 selects three seated loops, preserving the seat, mouth and stirrup targets. Classic retains its existing stock presenter and motions.
+
+The fitted scenes passed 110 Forward+ views and 7,293 samples at 240 Hz. The measured beak, distal neck and tail segments cleared the torso. The client regression passed 2,625 terrain poses, 210 interrupted falls, 144 Enhanced selections, 108 Classic comparisons and 360 rider poses with both human rigs, three outfit sets and five slopes. Measured mounted ground clearance was at least 2 mm. The Classic and Enhanced world replays cover the static corpse, both rider appearances and full dismount transitions.
+
+The two-client isolated server trial passed 281 checks. It exercised ordinary mounting, riding, dismounting, full and partial mount dyes, and both clients seeing the same loose Ostard serial and the native dyed corpse. Seventy-two Enhanced action packets were controlled selections across the two rider trials.
+
+Rebuild with scripts/bake-frenzied-ostard-enhanced.gd and check using scripts/check-frenzied-ostard-clearance.gd, scripts/render-frenzied-ostard.gd and scripts/test-frenzied-ostard-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --frenzied-ostard after reproducing the earlier required batches and the local evidence.
+
+# Enhanced Devourer
+
+The optional Enhanced profile reaches 128 bodies and 349 fitted local scenes. Devourer 303 keeps its original Third Dawn rig, articulated rib-mouth and existing Classic motion keys. Eight fitted clips follow 420 registered frames from named member 0xc8e38b9bd552d147. The stock Magic Arrow effect starts the fitted cast and releases from the original right-hand grasp socket.
+
+The scenes passed 80 Forward+ views and 6,210 dense poses at 240 Hz. The measured hands and forearms cleared the torso in all three treatments. Focused checks covered 3,720 terrain poses, 240 interrupted falls, 144 Enhanced selections, 108 Classic comparisons and 18 gait selections. The staged spell and Fan Dancer regression replay passed 90 Classic fixture checks and 142 Enhanced Britain checks.
+
+The isolated ModernUO test passed 195 checks, including 48 controlled animation packets observed by two clients. The Devourer rejected lethal poison and the stock Magic Arrow dealt 15 attributed damage. The client released its effect from the displayed hand during the fitted motion. Both clients saw the exact native corpse, and the server reported 36 necromancy reagents, 1,153 gold and a stock meat yield of three.
+
+Rebuild with scripts/bake-devourer-enhanced.gd and check with scripts/check-devourer-clearance.gd, scripts/render-devourer.gd and scripts/test-devourer-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --devourer after reproducing the local scene and native evidence.
+
 # Enhanced Black Solen Warrior
 
 The optional Enhanced profile reaches 127 bodies and 346 fitted local scenes. Black Solen Warrior 806 retains its original Third Dawn 44-joint rig, dark carapace, six legs and all previous motion keys. Eight fitted clips follow 385 registered frames from the named member 0x8efa33eae6af619f. The peace idle uses its own motion, and both Black Solen constructors keep the server’s native hue.

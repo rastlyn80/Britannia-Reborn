@@ -3,6 +3,7 @@ extends RefCounted
 
 const Wire := preload("res://Network/LoginProtocol.gd")
 const Effects := preload("res://Presentation/CreatureProjectilePresenter.gd")
+const EnhancedEffects := preload("res://Presentation/SourceEnhancedCreatureProjectilePresenter.gd")
 const Tessen := preload("res://Presentation/SourceTessenMesh.gd")
 const Serial := 0x2350
 
@@ -15,7 +16,7 @@ static func check(driver, world: Node, at: Vector2i, enhanced: bool) -> int:
 			effects = child
 			break
 	assert(effects != null)
-	assert(effects.get_script().resource_path.ends_with("SourceEnhancedCreatureProjectilePresenter.gd") == enhanced)
+	assert((effects is EnhancedEffects) == enhanced)
 	var origin := Vector3i(at.x, at.y, 0)
 	var target := origin + Vector3i(5, 0, 0)
 	world.game._handle(driver.mobile_packet(at, 64, Serial, 247, 0x8035))

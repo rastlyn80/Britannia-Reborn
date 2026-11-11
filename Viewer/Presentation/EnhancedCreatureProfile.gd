@@ -2,6 +2,7 @@
 extends RefCounted
 
 const Registry := preload("res://Presentation/CreatureRegistry.gd")
+const Frenzied := preload("res://Presentation/FrenziedOstardProfile.gd")
 const ART := "res://local-art/creatures/"
 const MANIFEST := ART + "enhanced-creature-actions.json"
 const SCENES := ART + "enhanced-creature-actions/"
@@ -33,6 +34,8 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 			return {}
 		var body := int(key)
 		var base := Registry.entry(body)
+		if body == Frenzied.Body and base.is_empty():
+			base = Frenzied.retained_row()
 		var profile: Variant = payload.bodies[key]
 		if base.is_empty() or not profile is Dictionary or base.get("kind") != profile.get("kind"):
 			return {}
@@ -234,6 +237,26 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedRaptorVisual.gd"
 			elif body == 734:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedSlithVisual.gd"
+			elif body == Frenzied.Body:
+				row["presentation_script"] = Frenzied.Renderer
+			elif body == 251:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedRevenantLionVisual.gd"
+			elif body == 168:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedShadowFiendVisual.gd"
+			elif body == 243:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedHiryuVisual.gd"
+			elif body == 787:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedAntLionVisual.gd"
+			elif body == 300:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedCrystalElementalVisual.gd"
+			elif body == 263:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedMinotaurVisual.gd"
+			elif body == 305:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedGoreFiendVisual.gd"
+			elif body == 20:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedFrostSpiderVisual.gd"
+			elif body == 303:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedDevourerVisual.gd"
 			elif body == 806:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedBlackSolenWarriorVisual.gd"
 			elif body == 766:

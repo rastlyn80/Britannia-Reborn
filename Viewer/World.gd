@@ -533,7 +533,7 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	canvas.add_child(bars)
 	canvas.move_child(bars,1)
 	bars.configure(self)
-	var effects: Node3D = preload("res://Presentation/SourceEnhancedCreatureProjectilePresenter.gd").new() \
+	var effects: Node3D = preload("res://Presentation/SourceEnhancedDevourerProjectilePresenter.gd").new() \
 		if enhanced_creature_actions else preload("res://Presentation/CreatureProjectilePresenter.gd").new()
 	add_child(effects)
 	effects.configure(self)

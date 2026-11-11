@@ -57,6 +57,16 @@ const GolemSand := preload("test-golem-sand-world-cases.gd")
 const RaptorSlith := preload("test-raptor-slith-world-cases.gd")
 const JukaLord := preload("test-juka-lord-world-cases.gd")
 const BlackSolenWarrior := preload("test-black-solen-warrior-world-cases.gd")
+const Devourer := preload("test-devourer-world-cases.gd")
+const FrenziedOstard := preload("test-frenzied-ostard-world-cases.gd")
+const RevenantLion := preload("test-revenant-lion-world-cases.gd")
+const ShadowFiend := preload("test-shadow-fiend-world-cases.gd")
+const LesserHiryu := preload("test-lesser-hiryu-world-cases.gd")
+const AntLion := preload("test-antlion-world-cases.gd")
+const CrystalElemental := preload("test-crystal-elemental-world-cases.gd")
+const Minotaur := preload("test-minotaur-world-cases.gd")
+const GoreFiend := preload("test-gore-fiend-world-cases.gd")
+const FrostSpider := preload("test-frost-spider-world-cases.gd")
 const SERIAL := 0x105
 const BODY := 267
 
@@ -109,6 +119,26 @@ func _initialize() -> void:
 	if "--juka-lord" in OS.get_cmdline_user_args():
 		deadline += 25.0
 	if "--black-solen-warrior" in OS.get_cmdline_user_args():
+		deadline += 25.0
+	if "--devourer" in OS.get_cmdline_user_args():
+		deadline += 25.0
+	if "--frenzied-ostard" in OS.get_cmdline_user_args():
+		deadline += 25.0
+	if "--revenant-lion" in OS.get_cmdline_user_args():
+		deadline += 25.0
+	if "--shadow-fiend" in OS.get_cmdline_user_args():
+		deadline += 25.0
+	if "--lesser-hiryu" in OS.get_cmdline_user_args():
+		deadline += 25.0
+	if "--antlion" in OS.get_cmdline_user_args():
+		deadline += 25.0
+	if "--crystal-elemental" in OS.get_cmdline_user_args():
+		deadline += 25.0
+	if "--minotaur" in OS.get_cmdline_user_args():
+		deadline += 25.0
+	if "--gore-fiend" in OS.get_cmdline_user_args():
+		deadline += 25.0
+	if "--frost-spider" in OS.get_cmdline_user_args():
 		deadline += 25.0
 	create_timer(deadline).timeout.connect(func():
 		push_error("Combined creature replay exceeded %.0f seconds." % deadline)
@@ -428,6 +458,46 @@ func run() -> void:
 	if "--black-solen-warrior" in OS.get_cmdline_user_args():
 		var fitted_batch := await BlackSolenWarrior.check(self, world, at, enhanced)
 		assert(fitted_batch.rows.size() == BlackSolenWarrior.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--devourer" in OS.get_cmdline_user_args():
+		var fitted_batch := await Devourer.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == Devourer.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--frenzied-ostard" in OS.get_cmdline_user_args():
+		var fitted_batch := await FrenziedOstard.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == FrenziedOstard.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--revenant-lion" in OS.get_cmdline_user_args():
+		var fitted_batch := await RevenantLion.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == RevenantLion.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--shadow-fiend" in OS.get_cmdline_user_args():
+		var fitted_batch := await ShadowFiend.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == ShadowFiend.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--lesser-hiryu" in OS.get_cmdline_user_args():
+		var fitted_batch := await LesserHiryu.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == LesserHiryu.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--antlion" in OS.get_cmdline_user_args():
+		var fitted_batch := await AntLion.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == AntLion.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--crystal-elemental" in OS.get_cmdline_user_args():
+		var fitted_batch := await CrystalElemental.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == CrystalElemental.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--minotaur" in OS.get_cmdline_user_args():
+		var fitted_batch := await Minotaur.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == Minotaur.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--gore-fiend" in OS.get_cmdline_user_args():
+		var fitted_batch := await GoreFiend.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == GoreFiend.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--frost-spider" in OS.get_cmdline_user_args():
+		var fitted_batch := await FrostSpider.check(self, world, at, enhanced)
+		assert(fitted_batch.rows.size() == FrostSpider.Cases.size())
 		checks += int(fitted_batch.checks)
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()

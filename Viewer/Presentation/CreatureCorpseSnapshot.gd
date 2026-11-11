@@ -20,8 +20,11 @@ static func capture(visual: Node3D, actor_floor: float) -> Dictionary:
 		return {}
 	var hidden_props: Array[StringName] = []
 	var retained_prop_materials: Array[StringName] = []
+	var material_sources := {}
 	for prop: MeshInstance3D in visual.find_children("*", "MeshInstance3D", true, false):
-		if prop.is_visible_in_tree() and prop.get_meta("corpse_prop_keeps_material", false):
+		if prop.is_visible_in_tree() and prop.has_meta("corpse_material_source"):
+			material_sources[prop.name] = prop.get_meta("corpse_material_source")
+		elif prop.is_visible_in_tree() and prop.get_meta("corpse_prop_keeps_material", false):
 			retained_prop_materials.append(prop.name)
 		elif not prop.is_visible_in_tree() and prop.get_meta("optional_corpse_visual_prop", false):
 			hidden_props.append(prop.name)
@@ -31,6 +34,7 @@ static func capture(visual: Node3D, actor_floor: float) -> Dictionary:
 		"placement": visual.global_transform * Transform3D(Basis.IDENTITY, Vector3.UP * actor_floor),
 		"hidden_props": hidden_props,
 		"retained_prop_materials": retained_prop_materials,
+		"material_sources": material_sources,
 	}
 
 static func apply(holder: Node3D, snapshot: Dictionary) -> bool:
@@ -45,7 +49,8 @@ static func apply(holder: Node3D, snapshot: Dictionary) -> bool:
 	if frozen == null:
 		return false
 	if frozen.get_meta("native_hue") != old.get_meta("native_hue") and not use_current_materials(
-			frozen, old, snapshot.get("hidden_props", []), snapshot.get("retained_prop_materials", [])):
+			frozen, old, snapshot.get("hidden_props", []), snapshot.get("retained_prop_materials", []),
+			snapshot.get("material_sources", {})):
 		frozen.free()
 		return false
 	old.free()
@@ -59,7 +64,7 @@ static func apply(holder: Node3D, snapshot: Dictionary) -> bool:
 	return true
 
 static func use_current_materials(frozen: Node3D, current: Node3D, hidden_props: Array,
-		retained_prop_materials: Array = []) -> bool:
+		retained_prop_materials: Array = [], material_sources: Dictionary = {}) -> bool:
 	# A native corpse update may dye the same serial after its death pose was
 	# captured. Keep that geometry and placement with the current appearance.
 	for part: MeshInstance3D in current.get_children():
@@ -67,7 +72,11 @@ static func use_current_materials(frozen: Node3D, current: Node3D, hidden_props:
 		if not frozen.has_node(NodePath(part.name)) and part.name not in hidden_props:
 			return false
 	for part: MeshInstance3D in frozen.get_children():
-		var latest := current.get_node_or_null(NodePath(part.name)) as MeshInstance3D
+		var remapped := material_sources.has(part.name)
+		var source_name := String(material_sources.get(part.name, part.name))
+		if remapped and (source_name.is_empty() or source_name in [".", ".."] or "/" in source_name or ":" in source_name):
+			return false
+		var latest := current.get_node_or_null(NodePath(source_name)) as MeshInstance3D
 		# A fitted prop can differ from the default corpse's weapon and have its
 		# own material when the server updates only the creature's hue.
 		if latest == null and part.name in retained_prop_materials:
@@ -75,8 +84,18 @@ static func use_current_materials(frozen: Node3D, current: Node3D, hidden_props:
 		if latest == null or latest.mesh.get_surface_count() != part.mesh.get_surface_count():
 			return false
 		for surface in part.mesh.get_surface_count():
-			if part.mesh.surface_get_array_len(surface) != latest.mesh.surface_get_array_len(surface):
+			if not remapped and part.mesh.surface_get_array_len(surface) != latest.mesh.surface_get_array_len(surface):
+				return false
+			if remapped and not shares_surface(part.get_active_material(surface), latest.get_active_material(surface)):
 				return false
 			part.set_surface_override_material(surface, latest.get_active_material(surface))
 	frozen.set_meta("native_hue", current.get_meta("native_hue"))
 	return true
+
+
+static func shares_surface(previous: Material, latest: Material) -> bool:
+	if previous is ShaderMaterial and latest is ShaderMaterial:
+		return previous.shader == latest.shader and previous.get_shader_parameter("albedo_texture") == latest.get_shader_parameter("albedo_texture")
+	if previous is StandardMaterial3D and latest is StandardMaterial3D:
+		return previous.albedo_texture == latest.albedo_texture
+	return false
