@@ -251,6 +251,10 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
  }
  $enhancedManifest = "$root/Viewer/local-art/creatures/enhanced-creature-actions.json"
  if (Test-Path $enhancedManifest) {
+  $effectChecks = & $godot --headless --path "$root/Viewer" --script res://../scripts/test-enhanced-effect-lifetime.gd 2>&1
+  $effectExit = $LASTEXITCODE
+  $effectChecks | ForEach-Object {Write-Output $_}
+  if ($effectExit -or ($effectChecks | Select-String 'SCRIPT ERROR:|Parse Error:')) {throw 'Enhanced creature effect lifetime checks failed'}
   & python -B "$root/scripts/prepare-enhanced-creature-actions.py" --check-installed
   if ($LASTEXITCODE) {throw 'Enhanced creature profile source and prepared art failed'}
   & $godot --headless --path "$root/Viewer" --script res://../scripts/test-enhanced-fidget-dispatch.gd -- --installed

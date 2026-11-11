@@ -114,9 +114,7 @@ func _light(at: Vector3, tint: Color, energy: float, reach: float) -> OmniLight3
 	return light
 
 func _expire(node: Node, seconds: float) -> void:
-	var timer := node.create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-	timer.tween_interval(seconds)
-	timer.tween_callback(node.queue_free)
+	get_tree().create_timer(seconds).timeout.connect(func(): if is_instance_valid(node): node.queue_free())
 
 func _bolt_origin(effect: Dictionary) -> Vector3:
 	var source := int(effect.source)
@@ -182,25 +180,14 @@ func _bloom(at: Vector3, tint: Color, effect: Dictionary, follow := 0) -> void:
 	bloom.add_child(halo)
 	var light := _light(at+Vector3.UP*0.3,tint,2.2,4.5)
 	if follow and scene.avatars.has(follow):
-		var tree := get_tree()
-		var target_ref: WeakRef = weakref(scene.avatars[follow])
-		var cloud_ref: WeakRef = weakref(bloom)
-		var light_ref: WeakRef = weakref(light)
+		var target: Node3D = scene.avatars[follow]
 		var track := func():
-			var target := target_ref.get_ref() as Node3D
-			var cloud := cloud_ref.get_ref() as Node3D
-			var lamp := light_ref.get_ref() as OmniLight3D
-			if target != null and cloud != null:
-				cloud.global_position = target.global_position + Vector3.UP
-				if lamp != null:
-					lamp.global_position = cloud.global_position
-		tree.process_frame.connect(track)
-		bloom.tree_exiting.connect(func():
-			if tree.process_frame.is_connected(track):
-				tree.process_frame.disconnect(track), CONNECT_ONE_SHOT)
-	var stop := bloom.create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-	stop.tween_interval(seconds)
-	stop.tween_callback(bloom.set.bind("emitting", false))
+			if is_instance_valid(target) and is_instance_valid(bloom):
+				bloom.global_position = target.global_position+Vector3.UP*1.0
+				light.global_position = bloom.global_position
+		get_tree().process_frame.connect(track)
+		get_tree().create_timer(seconds+0.9).timeout.connect(func(): get_tree().process_frame.disconnect(track))
+	get_tree().create_timer(seconds).timeout.connect(func(): if is_instance_valid(bloom): bloom.emitting = false)
 	create_tween().tween_property(light,"light_energy",0.0,seconds+0.4)
 	_expire(bloom,seconds+1.0)
 	_expire(light,seconds+0.5)

@@ -184,6 +184,8 @@ Rebuild with scripts/bake-frenzied-ostard-enhanced.gd and check using scripts/ch
 
 # Enhanced Devourer
 
+The Enhanced effects presenter tracks fixed effects until their target or presenter leaves the scene. The lifetime test exercises both removals. The established Dragon, Drake and Orc Bomber presentation dependencies retain their sealed source.
+
 The optional Enhanced profile reaches 128 bodies and 349 fitted local scenes. Devourer 303 keeps its original Third Dawn rig, articulated rib-mouth and existing Classic motion keys. Eight fitted clips follow 420 registered frames from named member 0xc8e38b9bd552d147. The stock Magic Arrow effect starts the fitted cast and releases from the original right-hand grasp socket.
 
 The scenes passed 80 Forward+ views and 6,210 dense poses at 240 Hz. The measured hands and forearms cleared the torso in all three treatments. Focused checks covered 3,720 terrain poses, 240 interrupted falls, 144 Enhanced selections, 108 Classic comparisons and 18 gait selections. The staged spell and Fan Dancer regression replay passed 90 Classic fixture checks and 142 Enhanced Britain checks.
