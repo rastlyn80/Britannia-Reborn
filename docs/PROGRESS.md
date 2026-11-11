@@ -1,3 +1,95 @@
+# Enhanced Crystal Lattice Seeker
+
+The optional Enhanced profile reaches 146 bodies and 401 fitted local scenes. Crystal Lattice Seeker 123 retains its original 40-bone Third Dawn rig, mesh and atlas. Named sequence 0x2b773a8ac8564a09 points to 830 decoded reference frames across 17 indexed groups. Thirteen new motions include the separate peaceful walk, wing cocoon and unfurl, recoil, cast and forward alternate fall. The peaceful walk preserves the earlier leg tracks. Four groups reuse the established combat walk, idle, run and first fall.
+
+The fitted strikes and cast show a short authored spectral arc at the striking hand. Three additional flashes follow the stock Seeker's localized mana, health and stamina drain notices. Their colours are client presentation choices. The stock Seeker remains an unarmed MageAI creature.
+
+Both isolated clients received all three actual stat transfers, localized notices and matching sound effects while the Seeker both dealt and took melee damage. The fixture invoked the stock unarmed weapon swing against a disposable target and reset stats between bounded attempts. The final 116 checks also covered the stock body, hue 0x47e, one-tile move, partial hue and gold in the corpse.
+
+The fitted scenes passed 130 Forward+ views, 492 focused route checks, 3,570 terrain poses and 4,320 fall samples over 360 handoffs. The largest measured handoff at the sampled head, hand and wing joints was 1.44 micrometres. The synthetic world suite carried the alternate fall into a skeleton-free corpse and preserved its pose and placement on a later dye packet. Classic group 3 retains its established fall.
+
+Rebuild with scripts/bake-crystal-lattice-seeker-enhanced.gd. Verify with scripts/render-crystal-lattice-seeker.gd and scripts/test-crystal-lattice-seeker-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --crystal-lattice-seeker after reproducing the required earlier batches and local evidence.
+
+
+# Enhanced Gargoyle Destroyer and Enforcer
+
+The optional Enhanced profile reaches 145 bodies and 398 fitted local scenes. The Destroyer 755 and Enforcer 754 retain their individual Third Dawn rigs, armour atlases and wing meshes. Each uses 795 decoded frames in 17 indexed groups. Named sequences 0xeb16abd2efa90f38 and 0x7c84bf0bf87ed6b1 select distinct combat and peaceful walks, with flight inheriting the peaceful glance. The same stock attacks stay available in Classic mode. An additional alternate fall follows Enhanced group 3. The existing Classic group 21 still selects the folded-wing pose. The fitted peaceful walk preserves the original leg tracks and adjusts the torso, arms and wings.
+
+The installed candidate passed 2,034 routing and effect checks. The 240 Forward+ views and 16,164 dense samples cover both bodies and all fitted clips. The measured forearms and hands cleared the torso. The supported foot gaps for the non-fall clips were at most 3 mm. The local world fixture passed 78 Classic and 119 Enhanced checks with Fire Gargoyle and Shadow Wisp enabled in the batch. Both alternate falls continued into skeleton-free cadavers. The greatest observed discontinuity at the sampled joints was 1.17 micrometres. A subsequent dye packet preserved each cadaver's geometry and placement.
+
+The two-client isolated ModernUO trial passed 94 checks. A real stock bow swing prompted the Destroyer's moving hatchet and counter damage. Unarmed swings damaged the Destroyer without a hatchet reply. The visual projectile started at the displayed right grip and uses project-authored geometry. The stock Enforcer hit both adjacent test targets with Whirlwind and spent 15 mana. Its fixed graphic starts the new turning sweep and a short ring. Both stock creatures moved one tile and produced dyed corpses with gold. The fixture invoked the stock weapon swings against disposable targets. No server code changes were required.
+
+Rebuild with scripts/bake-gargoyle-destroyer-enhanced.gd. Verify with scripts/check-gargoyle-destroyer-clearance.gd, scripts/render-gargoyle-destroyer.gd and scripts/test-armored-gargoyles-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --armored-gargoyles after reproducing the earlier required batches and local evidence.
+
+
+# Enhanced Shadow Wisp
+
+The optional Enhanced profile reaches 143 bodies and 392 fitted local scenes. Body 165 keeps the project-owned Wisp rig and its 16 retained clips. Named Enhanced sequence 0xaa70d35798ac1dd5 points to 276 registered frames across five groups. All weapon subactions select the same arc and all locomotion slots select the same hover cycle. The new recoil and kindling fit groups 10 and 23. Group 10 has five inferred directional strips of eleven frames and a distinct trailing neutral frame whose exact use remains open.
+
+The optional material responds to the attack, recoil and emergence while retaining the wild and familiar hues. The source-based arc curls around the core, extends forward and fades. A dying Wisp blends its displayed pose into the retained fall and freezes at the measured height. Transient sparks clear at the handoff. Forward+ rendered 30 views. Focused tests passed 186 checks including all three hue modes and 18 cadavers. A finite-slope trial passed 620 hover poses. The staged Britain replays passed 418 Classic and 561 Enhanced checks.
+
+Both native forms passed 148 isolated server checks. The stock Summon Familiar spell assigned hue 0x901 and one follower slot. Both clients received the periodic effect on the familiar and eligible caster. The caster gained eight mana and the positive-karma observer gained zero during the pulse. Releasing the familiar cleared the follower slot without a death packet. The wild Shadow Wisp used stock MageAI, accepted the controlled fitted action packets, and left a partially dyed corpse with its native bone loot.
+
+The combined world runner removes finished fixture mobiles and corpses through the ordinary removal packet after each suite has asserted its results. The staged replays retained their check totals. In this workstation sample the Enhanced run fell from about 194 seconds to 148 seconds and the Classic run from 133 seconds to 130 seconds.
+
+Rebuild with scripts/bake-shadow-wisp-enhanced.gd, then run scripts/check-shadow-wisp-clearance.gd, scripts/render-shadow-wisp.gd and scripts/test-shadow-wisp-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --shadow-wisp after reproducing the earlier required batches and local evidence.
+
+
+# Enhanced Fire Gargoyle
+
+The optional Enhanced profile reaches 142 bodies and 391 fitted local scenes. Fire Gargoyle body 130 keeps its Third Dawn rig, wings and base animation library. The named Enhanced sequence 0xd83f64ba26d623e2 has 690 frames across 16 indexed groups. New motions fit the two exact attack variants and ash search. Stock Classic group 12 selects a separate fire breath on the five-frame windup. The native flight flag selects the retained Third Dawn flight loop. Existing peaceful and combat gait and fall motions remain available.
+
+The modern material uses the retained atlas with an authored ash and ember pattern. Forward+ rendered 40 views. Across 3,321 poses sampled at 240 Hz, the measured hands and forearms cleared the torso and the soles stayed within 3 mm of the lowest skin point. The focused gate passed 561 routing checks, 1,860 slope poses and 120 interrupted falls, covering 1,320 fall samples and frozen cadavers with the raw dye. Both Britain dispatch modes pass with the Fire Gargoyle included.
+
+The isolated ModernUO trial checked the stock flight capability, native flag replication and the stock transition to ground combat. The fixture set the initial flight flag. Stock MageAI selected Fire Breath and the client launched the exact 0x36D4 effect from the animated mouth. The native damage timer hit after the projectile. With the combatants kept outside melee range during breath cooldown, the stock mage cast a spell and dealt ranged damage. Both clients received the native dyed charred corpse with gold. Controlled Enhanced actions are recorded separately from stock combat.
+
+Rebuild with scripts/bake-fire-gargoyle-enhanced.gd, then run scripts/check-fire-gargoyle-clearance.gd, scripts/render-fire-gargoyle.gd and scripts/test-fire-gargoyle-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --fire-gargoyle after reproducing the earlier required batches and local evidence.
+
+
+# Enhanced Hydra and Abscess
+
+The optional Enhanced profile reaches 141 bodies and 388 fitted local scenes. Hydra and Abscess share body 265 and the retained Third Dawn five-headed rig, mesh and atlas. Ten fitted motions follow the named Enhanced sequence 0x1e91857b69064898, with 865 frames across 17 indexed groups. The stock Classic breath windup selects an eleventh motion, timed to keep the jaw open at the delayed launch. The native effect graphic 0x36D4 starts at the animated central mouth. Ordinary Classic group 12 retains its existing route.
+
+The modern treatment adds an authored palette for the head chains over the source atlas. Forward+ rendered 110 motion views and compared neutral, constructor, full and partial hues with matching static cadavers. A 240 Hz audit checked 8,166 poses. The minimum measured separation between head landmarks was 0.955 metres. Weighted trunk or tail contact matched the lowest skin point within 4 mm. The focused tests passed 5,115 terrain poses, 330 interrupted falls, 336 attack selections, 192 attack fallbacks, 144 other Enhanced selections, 108 Classic comparisons and 18 gait selections.
+
+The two-client ModernUO trial passed 763 checks across Hydra and Abscess. Stock MeleeAI selected Fire Breath. The fixture paused further melee after the windup to isolate the native delayed projectile and damage. Both clients received the same exact source, target and effect graphic about 1.3 seconds after the windup. Both corpses retained their native body, hue, gold and Hydra Scale. Only Abscess dropped Abscess Tail. The additional Enhanced action packets were controlled test inputs.
+
+Rebuild using scripts/bake-hydra-enhanced.gd and verify with scripts/check-hydra-clearance.gd, scripts/render-hydra.gd, scripts/render-hydra-hues.gd and scripts/test-hydra-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --hydra after reproducing the earlier required batches and local evidence.
+
+The focused Enhanced suites run in up to four isolated Godot processes. The verifier preserves family order in its report and still runs both complete world replays after the focused suites. Six representative suites passed in 95 seconds with one worker and 34 seconds with four on this workstation.
+
+
+# Enhanced Minotaur Scout
+
+The optional Enhanced profile reaches 140 bodies and 385 fitted local scenes. The Minotaur Scout uses body 281 and retains its original Third Dawn armoured rig and shield check. Nine new motions follow named sequence 0xd0a9f670a911fb7f, which contains 805 registered frames across 16 indexed groups. The attack selector follows the official low-byte subaction table, including the wildcard. The remaining indexed groups use the retained gait, hit and fall presentation.
+
+Forward+ rendered 90 views. The clearance audit sampled 6,108 poses at 240 Hz with no measured hand or forearm intersections with the torso. The focused client run passed 4,185 terrain poses and 270 interrupted falls. It also checked 336 exact attack selections, 192 attack fallbacks, 144 other Enhanced selections, 108 Classic comparisons and 18 gait selections. The staged Britain replays passed 332 Classic and 434 Enhanced checks.
+
+The isolated ModernUO trial passed 399 checks. Stock melee dealt damage and applied Paralyzing Blow. Both clients received the exact body, dye and corpse. The native corpse contained gold. The 112 Enhanced action packets were controlled test inputs.
+
+Rebuild with scripts/bake-minotaur-scout-enhanced.gd, then run scripts/check-minotaur-scout-clearance.gd, scripts/render-minotaur-scout.gd and scripts/test-minotaur-scout-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --minotaur-scout after reproducing the earlier required batches and local evidence.
+
+
+# Enhanced Meer Warrior
+
+The optional Enhanced profile reaches 139 bodies and 382 fitted local scenes. Meer Warrior 771 retains its original Third Dawn rig, arms and armour. Six fitted motions follow 125 registered frames from named sequence 0x8814417571f6f36f. Its attack table distinguishes exact subactions and the wildcard. The official client reads the low byte of the two-byte subaction field. The peaceful mode inherits the combat choices for these attacks. Existing Classic attack selection remains available.
+
+The candidate passed 60 Forward+ views and 2,961 dense poses at 240 Hz. The measured hands and forearms cleared the torso. Focused tests checked 336 exact attack selections, 192 attack fallbacks, 144 other Enhanced selections, 108 Classic comparisons, 2,790 terrain poses and 180 interrupted falls. The staged Britain replays passed 302 Classic and 398 Enhanced checks.
+
+The isolated ModernUO trial passed 387 checks, including 112 controlled Enhanced packet selections. Stock melee dealt damage and the corpse retained its native body, hue and gold. A nonlethal hit from eight tiles caused the stock moving retaliation effect and delayed damage. Both clients received the same effect. The matching six-tile control received neither effect nor damage.
+
+Rebuild with scripts/bake-meer-warrior-enhanced.gd and verify using scripts/check-meer-warrior-clearance.gd, scripts/render-meer-warrior.gd and scripts/test-meer-warrior-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --meer-warrior after reproducing the earlier required batches and the local evidence.
+
+# Enhanced Chaos Daemon
+
+The optional Enhanced profile reaches 138 bodies and 379 fitted local scenes. Chaos Daemon 792 keeps the original Third Dawn mesh, atlas, long claws, hock joints and Classic motion keys. Eight fitted motions follow named sequence 0x6501ed1a3fab533a. The source audit decoded 17 indexed groups and 865 registered frames.
+
+The candidate passed 80 Forward+ views and 5,832 dense poses at 240 Hz. The measured hands and forearms cleared the torso. The hock and knee fit kept a foot sole within 3 mm of the sampled support plane, including during the crouch and rise. The focused client checks covered 3,720 terrain poses, 240 interrupted falls, 144 Enhanced selections and 108 Classic comparisons. Staged Britain replays passed 272 Classic and 362 Enhanced checks.
+
+The isolated ModernUO trial passed 197 checks. The stock MeleeAI dealt damage and both clients received the Crushing Blow effect at the same target. Native body, hue, corpse, corpse gold and 48 controlled Enhanced selections also passed.
+
+Rebuild with scripts/bake-chaos-daemon-enhanced.gd and verify using scripts/check-chaos-daemon-clearance.gd, scripts/render-chaos-daemon.gd and scripts/test-chaos-daemon-enhanced.gd. Install with python -B scripts/prepare-enhanced-creature-actions.py --install --chaos-daemon after reproducing the earlier required batches and the local evidence.
+
 # Enhanced Frost Spider
 
 The optional Enhanced profile reaches 137 bodies and 376 fitted local scenes. Frost Spider 20 keeps its original Third Dawn mesh, atlas and eight-leg rig. Eight fitted motions follow named sequence 0x41b6bd075a5204d7. Its 17 exact indexed groups contain 720 registered frames. During the high defence, the front feet lift about 80 cm and the four rear foot landmarks move horizontally by less than half a millimetre.

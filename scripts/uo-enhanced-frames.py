@@ -72,7 +72,7 @@ def decode_pixels(source, area, coverage):
     return bytes(rgba)
 
 
-def read_amou(data):
+def read_amou(data, *, directions=5):
     if len(data) < HEADER.size:
         raise ValueError("truncated AMOU header")
     magic, version, length, body, *tail = HEADER.unpack_from(data)
@@ -81,7 +81,7 @@ def read_amou(data):
         raise ValueError("expected length-checked AMOU v1")
     if not (0 < colours <= 256 and HEADER.size <= palette_at
             and palette_at + 4 * colours <= table_at
-            and 0 < count <= FRAME_COUNT_LIMIT and count % 5 == 0):
+            and 0 < count <= FRAME_COUNT_LIMIT and directions in (1, 5) and count % directions == 0):
         raise ValueError("invalid palette or five-direction frame table")
     table_end = table_at + FRAME.size * count
     if not table_end < len(data):
@@ -103,8 +103,8 @@ def read_amou(data):
         pixels += (x1 - x0) * (y1 - y0)
         if pixels > PIXEL_LIMIT:
             raise ValueError("decoded group exceeds pixel limit")
-    per_direction = count // 5
-    stride = rows[per_direction][1] - rows[0][1]
+    per_direction = count // directions
+    stride = rows[per_direction][1] - rows[0][1] if directions > 1 else rows[-1][1]
     ordinals = [row[1] for row in rows[:per_direction]]
     if not (ordinals[-1] <= stride and all(
             rows[index][1] == stride * (index // per_direction) + ordinals[index % per_direction]

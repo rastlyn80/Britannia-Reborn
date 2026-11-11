@@ -1,3 +1,45 @@
+# Crystal Lattice Seeker
+
+The optional Enhanced profile reaches 146 bodies. The Crystal Lattice Seeker has thirteen new fits and three native drain cues. Lord Oaks retains its established shared source rig and separate presentation. Frost Ooze keeps its verified Classic presentation while the current Enhanced archive audit has no exact indexed group for it.
+
+Continue with Moloch 785 and Orc Brute 189 in configured occurrence order. The local archive audit recovered 785 Moloch frames and 725 Orc Brute frames. Keep Moloch's four arms independently animated and check the stock Concussion Blow. The client receives the concussion particles on the victim. The damage and mana cost remain server-driven.
+
+
+# Gargoyle Destroyer and Enforcer
+
+The optional Enhanced profile reaches 145 bodies. The Destroyer 755 and Enforcer 754 retain their source rigs and separate ground, flight and corpse paths. Eleven motions per body follow the exact Enhanced references. Each body adds its own stock combat cue. Six indexed groups per body use the established gait, idle, hit, flight and fall clips.
+
+Continue in configured occurrence order with Crystal Lattice Seeker 123. Its named sequence 0x2b773a8ac8564a09 and 830 frames in 17 indexed groups are decoded. Verify its three native drain outcomes and preserve the shared Lord Oaks geometry. The early fit retains the Seeker's 40-bone rig.
+
+
+# Shadow Wisp
+
+The optional Enhanced profile reaches 143 bodies. Both native Shadow Wisp forms use the fitted arc, recoil and kindling. Continue with Gargoyle Destroyer, Gargoyle Enforcer and Crystal Lattice Seeker in configured occurrence order. The Destroyer uses a native ranged-counter hatchet and the Enforcer has a separate Whirlwind Attack ability.
+
+
+# Fire Gargoyle
+
+The optional Enhanced profile reaches 142 bodies. The Fire Gargoyle has fitted attacks, ash search and the verified native breath. Continue with Shadow Wisp, Gargoyle Destroyer, Gargoyle Enforcer and Crystal Lattice Seeker in configured occurrence order.
+
+
+# Hydra and Abscess
+
+The optional Enhanced profile reaches 141 bodies. Hydra and Abscess have ten fitted archive groups and a separate verified native fire breath. Keep the remaining indexed gait, hit and fall selections on their existing routes. Continue with Fire Gargoyle, Shadow Wisp, Gargoyle Destroyer and Gargoyle Enforcer in configured occurrence order. The Shadow Wisp hit source has five plausible 11-frame direction strips plus a trailing neutral frame. The exact use of that trailing frame remains open.
+
+
+# Minotaur Scout
+
+The optional Enhanced profile reaches 140 bodies. The Minotaur Scout has nine fitted groups, including both exact attack motions. Its earlier shield check stays available on its existing route. Continue with Hydra 265, Fire Gargoyle 130 and Shadow Wisp 165 in the configured occurrence order.
+
+
+# Meer Warrior
+
+The optional Enhanced profile reaches 139 bodies. Meer Warrior 771 has six fitted source groups, including all three attacks selected by the original type 0 table. Its remaining four indexed groups use the existing walk, hit and fall presentation. Continue with Hydra 265 and Minotaur Scout 281, then Fire Gargoyle 130 and Shadow Wisp 165. Their official frame sources have been recovered. Shadow Wisp group 10 contains 56 ordered frames whose direction layout still needs a separate check.
+
+# Chaos Daemon
+
+The optional Enhanced profile reaches 138 bodies. Chaos Daemon 792 has eight fitted groups. The nine other indexed groups retain existing routes. Its stock server creature remains a grounded melee fighter and uses Crushing Blow. Continue with Meer Warrior 771. Its six relevant gestures are baked, including the three mixed attack choices. Confirm exact subaction selection and retain its stock retaliation behaviour.
+
 # Frost Spider
 
 The optional Enhanced profile reaches 137 bodies. Frost Spider 20 has eight fitted groups and keeps its existing walk, run, attack and fall for the other nine indexed groups. Its retained Third Dawn atlas is more muted than the bright cyan Enhanced sprite reference. Continue with Chaos Daemon 792 and Meer Warrior 771 in the configured occurrence order.

@@ -256,13 +256,14 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
   & $godot --headless --path "$root/Viewer" --script res://../scripts/test-enhanced-fidget-dispatch.gd -- --installed
   if ($LASTEXITCODE) {throw 'Enhanced and Classic creature dispatch comparison failed'}
   $profileTests = @('--world=res://world.json')
+  $focusedFamilies = @()
   $profile = Get-Content -LiteralPath $enhancedManifest -Raw | ConvertFrom-Json
   if ($profile.ranked_source) {
    & $godot --headless --path "$root/Viewer" --script res://../scripts/test-ranked-enhanced.gd -- --installed
    if ($LASTEXITCODE) {throw 'Enhanced Orc and Water Elemental motion, terrain or corpse failed'}
    $profileTests += '--ranked'
   }
-  foreach ($extension in @('kraken','troll','bird','ettin','dolphin','field','cat','skeleton-mongbat','hound-bear','troll-ratman','brown-bear-cougar','wolf-grizzly','corpser-boar','goat-eagle','serpent-harpy','ogre-earth','zombie-wraith','gorilla-gazer','gargoyle-through-ghoul','scorpion-through-slime','alligator-direwolf','crane-fire','lich-gaman','chicken-skeletal-mage','daemon-wyvern','polar-bear','drake-walrus','ice-serpent-bogling','tsuki-wolf-ophidian','evil-mage-plague-beast','kappa-snow-elemental','giant-rat-vampire-bat','orc-shaman-ophidian-mage','knight-acid-pixie-frost','poison-elemental-dread-spider','mummy-balron','giant-toad-juka-warrior','skeletal-knight-remaining','yomotsu-warrior-dragon','ratman-mage-lava-serpent','cyclops-titan','ice-terathan','hopper-fan','blood-goat','matriarch-succubus','stone-harpy-horde','stone-gargoyle-kitsune','orc-captain-solen','efreet-avenger','rotting-bog','grizzle-changeling','matriarch-swamp','widow-juka','bomber-lord','rune-dopple','golem-sand','raptor-slith','juka-lord','black-solen-warrior','devourer','frenzied-ostard','revenant-lion','shadow-fiend','lesser-hiryu','antlion','crystal-elemental','minotaur','gore-fiend','frost-spider')) {
+  foreach ($extension in @('kraken','troll','bird','ettin','dolphin','field','cat','skeleton-mongbat','hound-bear','troll-ratman','brown-bear-cougar','wolf-grizzly','corpser-boar','goat-eagle','serpent-harpy','ogre-earth','zombie-wraith','gorilla-gazer','gargoyle-through-ghoul','scorpion-through-slime','alligator-direwolf','crane-fire','lich-gaman','chicken-skeletal-mage','daemon-wyvern','polar-bear','drake-walrus','ice-serpent-bogling','tsuki-wolf-ophidian','evil-mage-plague-beast','kappa-snow-elemental','giant-rat-vampire-bat','orc-shaman-ophidian-mage','knight-acid-pixie-frost','poison-elemental-dread-spider','mummy-balron','giant-toad-juka-warrior','skeletal-knight-remaining','yomotsu-warrior-dragon','ratman-mage-lava-serpent','cyclops-titan','ice-terathan','hopper-fan','blood-goat','matriarch-succubus','stone-harpy-horde','stone-gargoyle-kitsune','orc-captain-solen','efreet-avenger','rotting-bog','grizzle-changeling','matriarch-swamp','widow-juka','bomber-lord','rune-dopple','golem-sand','raptor-slith','juka-lord','black-solen-warrior','devourer','frenzied-ostard','revenant-lion','shadow-fiend','lesser-hiryu','antlion','crystal-elemental','minotaur','gore-fiend','frost-spider','chaos-daemon','meer-warrior','minotaur-scout','hydra','fire-gargoyle','shadow-wisp','armored-gargoyles','crystal-lattice-seeker')) {
    if ($profile.PSObject.Properties["${extension}_native_proof_sha256"]) {
     $families = switch ($extension) {
      'drake-walrus' { 'drake','walrus' }
@@ -273,13 +274,24 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
      'matriarch-swamp' { 'terathan-matriarch','swamp-dragon' }
      default { $extension }
     }
-    foreach ($family in $families) {
-     $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-${family}-enhanced.gd" -- --installed 2>&1
-     $checkExit = $LASTEXITCODE
-     $checks | ForEach-Object { Write-Output $_ }
-     if ($checkExit -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) {throw "Enhanced $family motion, terrain or corpse failed"}
-    }
+    $focusedFamilies += @($families)
     $profileTests += "--$extension"
+   }
+  }
+  # Focused suites use separate Godot processes and write family-specific receipts.
+  $focused = $focusedFamilies | ForEach-Object -Parallel {
+   $family = $_
+   $viewer = Join-Path $using:root 'Viewer'
+   $engine = $using:godot
+   $checks = & $engine --headless --path $viewer --script "res://../scripts/test-${family}-enhanced.gd" -- --installed 2>&1
+   [pscustomobject]@{Family = $family; ExitCode = $LASTEXITCODE; Output = @($checks)}
+  } -ThrottleLimit 4
+  foreach ($family in $focusedFamilies) {
+   $result = @($focused | Where-Object Family -eq $family)
+   if ($result.Count -ne 1) {throw "Enhanced $family did not return one focused result"}
+   $result[0].Output | ForEach-Object { Write-Output $_ }
+   if ($result[0].ExitCode -or ($result[0].Output | Select-String 'SCRIPT ERROR:|Parse Error:')) {
+    throw "Enhanced $family motion, terrain or corpse failed"
    }
   }
   foreach ($mode in @('Classic', 'Enhanced')) {

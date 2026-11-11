@@ -6,9 +6,61 @@ const Frenzied := preload("res://Presentation/FrenziedOstardProfile.gd")
 const ART := "res://local-art/creatures/"
 const MANIFEST := ART + "enhanced-creature-actions.json"
 const SCENES := ART + "enhanced-creature-actions/"
-const UniformAttacks := {88: "MountainGoatQuietStand", 246: "BakeKitsuneLowSnap"}
+const UniformAttacks := {88: "MountainGoatQuietStand", 246: "BakeKitsuneLowSnap", 165: "ShadowWispArc"}
 const SwampMountedIdle := {794: "SwampDragonSeatedStill", 799: "BardedSwampDragonSeatedStill"}
 const SwampLowSweep := {794: "SwampDragonWingSweep", 799: "BardedSwampDragonLowSweep"}
+const ArmoredGargoyleAttacks := {
+	"0": ["GargoyleWingRake", "GargoyleDrivingPalms", "GargoyleWingRake"],
+	"1": ["GargoyleWingRake"],
+	"2": ["GargoyleWingRake"],
+	"9": ["GargoyleWingRake"],
+	"255": ["GargoyleWingRake", "GargoyleDrivingPalms", "GargoyleWingRake",
+		"GargoyleWingRake", "GargoyleWingRake", "GargoyleWingRake"],
+}
+const FittedAttackSubactions := {
+	123: {
+		"0": ["LatticeRisingStrike", "LatticeCrossingStrike", "LatticeRisingStrike"],
+		"1": ["LatticeRisingStrike"],
+		"2": ["LatticeRisingStrike"],
+		"9": ["LatticeRisingStrike"],
+		"255": ["LatticeRisingStrike", "LatticeCrossingStrike", "LatticeRisingStrike",
+			"LatticeRisingStrike", "LatticeRisingStrike", "LatticeRisingStrike"],
+	},
+	754: ArmoredGargoyleAttacks,
+	755: ArmoredGargoyleAttacks,
+	130: {
+		"0": ["FireGargoyleOverheadRake", "FireGargoyleSwoopingClaw", "FireGargoyleOverheadRake"],
+		"1": ["FireGargoyleOverheadRake"],
+		"2": ["FireGargoyleOverheadRake"],
+		"9": ["FireGargoyleOverheadRake"],
+		"255": ["FireGargoyleOverheadRake", "FireGargoyleSwoopingClaw", "FireGargoyleOverheadRake",
+			"FireGargoyleOverheadRake", "FireGargoyleOverheadRake", "FireGargoyleOverheadRake"],
+	},
+	265: {
+		"0": ["HydraBlueHeadSnap", "HydraCascadeLash", "HydraBlueHeadSnap"],
+		"1": ["HydraBlueHeadSnap"],
+		"2": ["HydraBlueHeadSnap"],
+		"9": ["HydraBlueHeadSnap"],
+		"255": ["HydraBlueHeadSnap", "HydraCascadeLash", "HydraBlueHeadSnap",
+			"HydraBlueHeadSnap", "HydraBlueHeadSnap", "HydraBlueHeadSnap"],
+	},
+	281: {
+		"0": ["ScoutDownwardClaw", "ScoutTurningHook", "ScoutDownwardClaw"],
+		"1": ["ScoutDownwardClaw"],
+		"2": ["ScoutDownwardClaw"],
+		"9": ["ScoutDownwardClaw"],
+		"255": ["ScoutDownwardClaw", "ScoutTurningHook", "ScoutDownwardClaw",
+			"ScoutDownwardClaw", "ScoutDownwardClaw", "ScoutDownwardClaw"],
+	},
+	771: {
+		"0": ["MeerWarriorSweepingJab", "MeerWarriorRisingStrike", "MeerWarriorPivotingBackhand"],
+		"1": ["MeerWarriorSweepingJab"],
+		"2": ["MeerWarriorSweepingJab"],
+		"9": ["MeerWarriorSweepingJab"],
+		"255": ["MeerWarriorSweepingJab", "MeerWarriorRisingStrike", "MeerWarriorPivotingBackhand",
+			"MeerWarriorSweepingJab", "MeerWarriorSweepingJab", "MeerWarriorSweepingJab"],
+	},
+}
 static var enabled := false
 
 static func enable() -> bool:
@@ -44,6 +96,11 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 			return {}
 		var row := base.duplicate(true)
 		row["enhanced_source_action_groups"] = profile.groups
+		var attacks: Variant = profile.get("attack_subactions", {})
+		if attacks != FittedAttackSubactions.get(body, {}):
+			return {}
+		if not attacks.is_empty():
+			row["enhanced_attack_subactions"] = attacks
 		var flight_fallback: Variant = profile.get("flight_falls_back_to_combat", false)
 		if not flight_fallback is bool:
 			return {}
@@ -255,6 +312,22 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedGoreFiendVisual.gd"
 			elif body == 20:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedFrostSpiderVisual.gd"
+			elif body == 792:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedChaosDaemonVisual.gd"
+			elif body == 771:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedMeerWarriorVisual.gd"
+			elif body == 281:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedMinotaurScoutVisual.gd"
+			elif body == 265:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedHydraVisual.gd"
+			elif body == 130:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedFireGargoyleVisual.gd"
+			elif body == 123:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedLatticeSeekerVisual.gd"
+			elif body in [754, 755]:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedArmoredGargoyleVisual.gd"
+			elif body == 165:
+				row["presentation_script"] = "res://Presentation/SourceEnhancedShadowWispVisual.gd"
 			elif body == 303:
 				row["presentation_script"] = "res://Presentation/SourceEnhancedDevourerVisual.gd"
 			elif body == 806:
@@ -337,6 +410,14 @@ static func valid_groups(groups: Variant, body: int) -> bool:
 					return false
 			elif kind == "1":
 				if mode != "0" or not SwampLowSweep.has(body) or clips != [SwampLowSweep[body], SwampLowSweep[body]]:
+					return false
+			elif kind in ["3", "4"]:
+				var expected: Array = []
+				if body == 165:
+					expected = ["Death", "Death"] if kind == "3" else ["ShadowWispRecoil"]
+				elif body in [123, 754, 755]:
+					expected = ["Death", "Death2"] if kind == "3" else ["LatticeRecoil" if body == 123 else "Hit"]
+				if mode != "0" or clips != expected:
 					return false
 			elif kind not in ["2", "5", "8", "11", "14", "15"]:
 				return false

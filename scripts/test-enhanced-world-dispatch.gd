@@ -67,6 +67,14 @@ const CrystalElemental := preload("test-crystal-elemental-world-cases.gd")
 const Minotaur := preload("test-minotaur-world-cases.gd")
 const GoreFiend := preload("test-gore-fiend-world-cases.gd")
 const FrostSpider := preload("test-frost-spider-world-cases.gd")
+const ChaosDaemon := preload("test-chaos-daemon-world-cases.gd")
+const MeerWarrior := preload("test-meer-warrior-world-cases.gd")
+const MinotaurScout := preload("test-minotaur-scout-world-cases.gd")
+const Hydra := preload("test-hydra-world-cases.gd")
+const FireGargoyleFitted := preload("test-fire-gargoyle-world-cases.gd")
+const CrystalLattice := preload("test-crystal-lattice-world-cases.gd")
+const ArmoredGargoyles := preload("test-armored-gargoyles-world-cases.gd")
+const ShadowWisp := preload("test-shadow-wisp-world-cases.gd")
 const SERIAL := 0x105
 const BODY := 267
 
@@ -139,6 +147,18 @@ func _initialize() -> void:
 	if "--gore-fiend" in OS.get_cmdline_user_args():
 		deadline += 25.0
 	if "--frost-spider" in OS.get_cmdline_user_args():
+		deadline += 25.0
+	if "--chaos-daemon" in OS.get_cmdline_user_args():
+		deadline += 25.0
+	if "--meer-warrior" in OS.get_cmdline_user_args():
+		deadline += 25.0
+	if "--minotaur-scout" in OS.get_cmdline_user_args():
+		deadline += 25.0
+	if "--hydra" in OS.get_cmdline_user_args():
+		deadline += 25.0
+	if "--fire-gargoyle" in OS.get_cmdline_user_args():
+		deadline += 25.0
+	if "--shadow-wisp" in OS.get_cmdline_user_args():
 		deadline += 25.0
 	create_timer(deadline).timeout.connect(func():
 		push_error("Combined creature replay exceeded %.0f seconds." % deadline)
@@ -295,214 +315,268 @@ func run() -> void:
 		assert(gorilla_gazer.size() == 2)
 		checks += 16 if enhanced else 12
 	if "--gargoyle-through-ghoul" in OS.get_cmdline_user_args():
-		var fitted_batch := await GargoyleThroughGhoul.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(GargoyleThroughGhoul, world, at, enhanced)
 		assert(fitted_batch.rows.size() == GargoyleThroughGhoul.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--scorpion-through-slime" in OS.get_cmdline_user_args():
-		var fitted_batch := await ScorpionThroughSlime.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(ScorpionThroughSlime, world, at, enhanced)
 		assert(fitted_batch.rows.size() == ScorpionThroughSlime.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--alligator-direwolf" in OS.get_cmdline_user_args():
-		var fitted_batch := await AlligatorDireWolf.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(AlligatorDireWolf, world, at, enhanced)
 		assert(fitted_batch.rows.size() == AlligatorDireWolf.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--crane-fire" in OS.get_cmdline_user_args():
-		var fitted_batch := await CraneFire.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(CraneFire, world, at, enhanced)
 		assert(fitted_batch.rows.size() == CraneFire.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--lich-gaman" in OS.get_cmdline_user_args():
-		var fitted_batch := await LichGaman.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(LichGaman, world, at, enhanced)
 		assert(fitted_batch.rows.size() == LichGaman.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--chicken-skeletal-mage" in OS.get_cmdline_user_args():
-		var fitted_batch := await ChickenSkeletalMage.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(ChickenSkeletalMage, world, at, enhanced)
 		assert(fitted_batch.rows.size() == ChickenSkeletalMage.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--daemon-wyvern" in OS.get_cmdline_user_args():
-		var fitted_batch := await DaemonWyvern.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(DaemonWyvern, world, at, enhanced)
 		assert(fitted_batch.rows.size() == DaemonWyvern.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--polar-bear" in OS.get_cmdline_user_args():
-		var fitted_batch := await PolarBear.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(PolarBear, world, at, enhanced)
 		assert(fitted_batch.rows.size() == PolarBear.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--drake-walrus" in OS.get_cmdline_user_args():
-		var fitted_batch := await DrakeWalrus.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(DrakeWalrus, world, at, enhanced)
 		assert(fitted_batch.rows.size() == DrakeWalrus.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--ice-serpent-bogling" in OS.get_cmdline_user_args():
-		var fitted_batch := await IceSerpentBogling.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(IceSerpentBogling, world, at, enhanced)
 		assert(fitted_batch.rows.size() == IceSerpentBogling.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--tsuki-wolf-ophidian" in OS.get_cmdline_user_args():
-		var fitted_batch := await TsukiWolfOphidian.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(TsukiWolfOphidian, world, at, enhanced)
 		assert(fitted_batch.rows.size() == TsukiWolfOphidian.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--evil-mage-plague-beast" in OS.get_cmdline_user_args():
-		var fitted_batch := await EvilMagePlagueBeast.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(EvilMagePlagueBeast, world, at, enhanced)
 		assert(fitted_batch.rows.size() == EvilMagePlagueBeast.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--kappa-snow-elemental" in OS.get_cmdline_user_args():
-		var fitted_batch := await KappaSnow.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(KappaSnow, world, at, enhanced)
 		assert(fitted_batch.rows.size() == KappaSnow.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--giant-rat-vampire-bat" in OS.get_cmdline_user_args():
-		var fitted_batch := await GiantRatVampireBat.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(GiantRatVampireBat, world, at, enhanced)
 		assert(fitted_batch.rows.size() == GiantRatVampireBat.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--orc-shaman-ophidian-mage" in OS.get_cmdline_user_args():
-		var fitted_batch := await ArmedMages.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(ArmedMages, world, at, enhanced)
 		assert(fitted_batch.rows.size() == ArmedMages.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--knight-acid-pixie-frost" in OS.get_cmdline_user_args():
 		for family in [KnightAcid, PixieFrost]:
-			var fitted_batch: Dictionary = await family.check(self, world, at, enhanced)
+			var fitted_batch: Dictionary = await replay_batch(family, world, at, enhanced)
 			assert(fitted_batch.rows.size() == family.Cases.size())
 			checks += int(fitted_batch.checks)
 	if "--poison-elemental-dread-spider" in OS.get_cmdline_user_args():
-		var fitted_batch := await PoisonSpider.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(PoisonSpider, world, at, enhanced)
 		assert(fitted_batch.rows.size() == PoisonSpider.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--mummy-balron" in OS.get_cmdline_user_args():
-		var fitted_batch := await MummyBalron.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(MummyBalron, world, at, enhanced)
 		assert(fitted_batch.rows.size() == MummyBalron.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--giant-toad-juka-warrior" in OS.get_cmdline_user_args():
-		var fitted_batch := await ToadJuka.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(ToadJuka, world, at, enhanced)
 		assert(fitted_batch.rows.size() == ToadJuka.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--skeletal-knight-remaining" in OS.get_cmdline_user_args():
-		var fitted_batch := await KnightRemaining.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(KnightRemaining, world, at, enhanced)
 		assert(fitted_batch.rows.size() == KnightRemaining.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--yomotsu-warrior-dragon" in OS.get_cmdline_user_args():
-		var fitted_batch := await YomotsuDragon.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(YomotsuDragon, world, at, enhanced)
 		assert(fitted_batch.rows.size() == YomotsuDragon.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--ratman-mage-lava-serpent" in OS.get_cmdline_user_args():
-		var fitted_batch := await RatmanLava.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(RatmanLava, world, at, enhanced)
 		assert(fitted_batch.rows.size() == RatmanLava.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--cyclops-titan" in OS.get_cmdline_user_args():
-		var fitted_batch := await GiantPair.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(GiantPair, world, at, enhanced)
 		assert(fitted_batch.rows.size() == GiantPair.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--ice-terathan" in OS.get_cmdline_user_args():
-		var fitted_batch := await IceTerathan.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(IceTerathan, world, at, enhanced)
 		assert(fitted_batch.rows.size() == IceTerathan.cases().size())
 		checks += int(fitted_batch.checks)
 	if "--hopper-fan" in OS.get_cmdline_user_args():
-		var fitted_batch := await HopperFan.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(HopperFan, world, at, enhanced)
 		assert(fitted_batch.rows.size() == HopperFan.cases().size())
 		checks += int(fitted_batch.checks)
 	if "--blood-goat" in OS.get_cmdline_user_args():
-		var fitted_batch := await BloodGoat.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(BloodGoat, world, at, enhanced)
 		assert(fitted_batch.rows.size() == BloodGoat.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--matriarch-succubus" in OS.get_cmdline_user_args():
-		var fitted_batch := await MatriarchSuccubus.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(MatriarchSuccubus, world, at, enhanced)
 		assert(fitted_batch.rows.size() == MatriarchSuccubus.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--stone-harpy-horde" in OS.get_cmdline_user_args():
-		var fitted_batch := await StoneHarpyHorde.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(StoneHarpyHorde, world, at, enhanced)
 		assert(fitted_batch.rows.size() == StoneHarpyHorde.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--stone-gargoyle-kitsune" in OS.get_cmdline_user_args():
-		var fitted_batch := await StoneGargoyleKitsune.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(StoneGargoyleKitsune, world, at, enhanced)
 		assert(fitted_batch.rows.size() == StoneGargoyleKitsune.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--orc-captain-solen" in OS.get_cmdline_user_args():
-		var fitted_batch := await OrcCaptainSolen.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(OrcCaptainSolen, world, at, enhanced)
 		assert(fitted_batch.rows.size() == OrcCaptainSolen.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--efreet-avenger" in OS.get_cmdline_user_args():
-		var fitted_batch := await EfreetAvenger.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(EfreetAvenger, world, at, enhanced)
 		assert(fitted_batch.rows.size() == EfreetAvenger.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--rotting-bog" in OS.get_cmdline_user_args():
-		var fitted_batch := await RottingBog.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(RottingBog, world, at, enhanced)
 		assert(fitted_batch.rows.size() == RottingBog.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--grizzle-changeling" in OS.get_cmdline_user_args():
-		var fitted_batch := await GrizzleChangeling.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(GrizzleChangeling, world, at, enhanced)
 		assert(fitted_batch.rows.size() == GrizzleChangeling.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--matriarch-swamp" in OS.get_cmdline_user_args():
-		var fitted_batch := await MatriarchSwamp.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(MatriarchSwamp, world, at, enhanced)
 		assert(fitted_batch.rows.size() == MatriarchSwamp.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--widow-juka" in OS.get_cmdline_user_args():
-		var fitted_batch := await WidowJuka.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(WidowJuka, world, at, enhanced)
 		assert(fitted_batch.rows.size() == WidowJuka.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--bomber-lord" in OS.get_cmdline_user_args():
-		var fitted_batch := await BomberLord.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(BomberLord, world, at, enhanced)
 		assert(fitted_batch.rows.size() == BomberLord.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--rune-dopple" in OS.get_cmdline_user_args():
-		var fitted_batch := await RuneDopple.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(RuneDopple, world, at, enhanced)
 		assert(fitted_batch.rows.size() == RuneDopple.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--golem-sand" in OS.get_cmdline_user_args():
-		var fitted_batch := await GolemSand.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(GolemSand, world, at, enhanced)
 		assert(fitted_batch.rows.size() == GolemSand.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--raptor-slith" in OS.get_cmdline_user_args():
-		var fitted_batch := await RaptorSlith.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(RaptorSlith, world, at, enhanced)
 		assert(fitted_batch.rows.size() == RaptorSlith.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--juka-lord" in OS.get_cmdline_user_args():
-		var fitted_batch := await JukaLord.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(JukaLord, world, at, enhanced)
 		assert(fitted_batch.rows.size() == JukaLord.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--black-solen-warrior" in OS.get_cmdline_user_args():
-		var fitted_batch := await BlackSolenWarrior.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(BlackSolenWarrior, world, at, enhanced)
 		assert(fitted_batch.rows.size() == BlackSolenWarrior.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--devourer" in OS.get_cmdline_user_args():
-		var fitted_batch := await Devourer.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(Devourer, world, at, enhanced)
 		assert(fitted_batch.rows.size() == Devourer.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--frenzied-ostard" in OS.get_cmdline_user_args():
-		var fitted_batch := await FrenziedOstard.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(FrenziedOstard, world, at, enhanced)
 		assert(fitted_batch.rows.size() == FrenziedOstard.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--revenant-lion" in OS.get_cmdline_user_args():
-		var fitted_batch := await RevenantLion.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(RevenantLion, world, at, enhanced)
 		assert(fitted_batch.rows.size() == RevenantLion.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--shadow-fiend" in OS.get_cmdline_user_args():
-		var fitted_batch := await ShadowFiend.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(ShadowFiend, world, at, enhanced)
 		assert(fitted_batch.rows.size() == ShadowFiend.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--lesser-hiryu" in OS.get_cmdline_user_args():
-		var fitted_batch := await LesserHiryu.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(LesserHiryu, world, at, enhanced)
 		assert(fitted_batch.rows.size() == LesserHiryu.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--antlion" in OS.get_cmdline_user_args():
-		var fitted_batch := await AntLion.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(AntLion, world, at, enhanced)
 		assert(fitted_batch.rows.size() == AntLion.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--crystal-elemental" in OS.get_cmdline_user_args():
-		var fitted_batch := await CrystalElemental.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(CrystalElemental, world, at, enhanced)
 		assert(fitted_batch.rows.size() == CrystalElemental.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--minotaur" in OS.get_cmdline_user_args():
-		var fitted_batch := await Minotaur.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(Minotaur, world, at, enhanced)
 		assert(fitted_batch.rows.size() == Minotaur.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--gore-fiend" in OS.get_cmdline_user_args():
-		var fitted_batch := await GoreFiend.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(GoreFiend, world, at, enhanced)
 		assert(fitted_batch.rows.size() == GoreFiend.Cases.size())
 		checks += int(fitted_batch.checks)
 	if "--frost-spider" in OS.get_cmdline_user_args():
-		var fitted_batch := await FrostSpider.check(self, world, at, enhanced)
+		var fitted_batch := await replay_batch(FrostSpider, world, at, enhanced)
 		assert(fitted_batch.rows.size() == FrostSpider.Cases.size())
 		checks += int(fitted_batch.checks)
+	if "--chaos-daemon" in OS.get_cmdline_user_args():
+		var fitted_batch := await replay_batch(ChaosDaemon, world, at, enhanced)
+		assert(fitted_batch.rows.size() == ChaosDaemon.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--meer-warrior" in OS.get_cmdline_user_args():
+		var fitted_batch := await replay_batch(MeerWarrior, world, at, enhanced)
+		assert(fitted_batch.rows.size() == MeerWarrior.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--minotaur-scout" in OS.get_cmdline_user_args():
+		var fitted_batch := await replay_batch(MinotaurScout, world, at, enhanced)
+		assert(fitted_batch.rows.size() == MinotaurScout.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--hydra" in OS.get_cmdline_user_args():
+		var fitted_batch := await replay_batch(Hydra, world, at, enhanced)
+		assert(fitted_batch.rows.size() == Hydra.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--fire-gargoyle" in OS.get_cmdline_user_args():
+		var fitted_batch := await replay_batch(FireGargoyleFitted, world, at, enhanced)
+		assert(fitted_batch.rows.size() == FireGargoyleFitted.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--shadow-wisp" in OS.get_cmdline_user_args():
+		var fitted_batch := await replay_batch(ShadowWisp, world, at, enhanced)
+		assert(fitted_batch.rows.size() == ShadowWisp.Cases.size())
+		checks += int(fitted_batch.checks)
+	if "--armored-gargoyles" in OS.get_cmdline_user_args():
+		var gargoyles := await replay_batch(ArmoredGargoyles, world, at, enhanced)
+		checks += int(gargoyles.checks)
+		print("ARMORED GARGOYLE WORLD: ", gargoyles)
+	if "--crystal-lattice-seeker" in OS.get_cmdline_user_args():
+		var lattice := await replay_batch(CrystalLattice, world, at, enhanced)
+		checks += int(lattice.checks)
+		print("CRYSTAL LATTICE WORLD: ", lattice)
 	print("WORLD CREATURE DISPATCH: ", checks, " checks, Enhanced profile ", enhanced)
 	world.queue_free()
 	await process_frame
 	quit()
+
+func replay_batch(suite: GDScript, world: Node, at: Vector2i, enhanced: bool) -> Dictionary:
+	# Later fixtures reuse this world. Release mobiles and corpses after each
+	# suite has checked its own results, through the regular removal packet.
+	var existing_mobiles: Array = world.game.entities.keys()
+	var existing_items: Array = world.game.world_items.keys()
+	var report: Dictionary = await suite.check(self, world, at, enhanced)
+	for serial: int in world.game.entities.keys():
+		if serial not in existing_mobiles:
+			remove_fixture(world.game, serial)
+	for serial: int in world.game.world_items.keys():
+		if serial not in existing_items:
+			remove_fixture(world.game, serial)
+	await process_frame
+	return report
+
+
+func remove_fixture(game: Node, serial: int) -> void:
+	var bytes := PackedByteArray([0x1d])
+	bytes.append_array(Wire.uint_be(serial, 4))
+	game._handle(bytes)
+
 
 func check_field(world: Node, at: Vector2i, enhanced: bool) -> int:
 	var checks := 0

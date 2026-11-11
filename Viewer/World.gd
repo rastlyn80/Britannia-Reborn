@@ -37,7 +37,7 @@ const PersonalSpace = preload("res://Presentation/PersonalSpace.gd")
 var personal_space := PersonalSpace.new()
 const Motion = preload("res://Presentation/MotionTrack.gd")
 const Avatar = preload("res://Presentation/Avatar.gd")
-const EnhancedCreatureActions := preload("res://Presentation/EnhancedCreatureActions.gd")
+const CreatureAttackActions := preload("res://Presentation/EnhancedCreatureAttackActions.gd")
 const Reconstruction = preload("res://Presentation/Reconstruction.gd")
 var tracks := {}
 var directions := {}
@@ -321,7 +321,7 @@ func _ready() -> void:
 			if enhanced_creature_actions:
 				var mobile: Dictionary = game.player if serial == int(game.player.serial) else game.entities.get(serial, {})
 				flags = int(mobile.get("flags", -1))
-			EnhancedCreatureActions.dispatch(avatars[serial], request, enhanced_creature_actions, flags))
+			CreatureAttackActions.dispatch(avatars[serial], request, enhanced_creature_actions, flags))
 	game.vendor_received.connect(func(serial: int,_stock: Array):
 		if avatars.has(serial): avatars[serial].get_node("Nameplate").text = game.entity_names.get(serial,"Vendor")+" · shopkeeper")
 	game.entity_name_received.connect(func(serial: int, name_text: String):
@@ -533,11 +533,12 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	canvas.add_child(bars)
 	canvas.move_child(bars,1)
 	bars.configure(self)
-	var effects: Node3D = preload("res://Presentation/SourceEnhancedDevourerProjectilePresenter.gd").new() \
+	var effects: Node3D = preload("res://Presentation/SourceEnhancedArmoredGargoyleProjectilePresenter.gd").new() \
 		if enhanced_creature_actions else preload("res://Presentation/CreatureProjectilePresenter.gd").new()
 	add_child(effects)
 	effects.configure(self)
-	var creature_events := preload("res://Presentation/CreatureEventPresenter.gd").new()
+	var creature_events: Node = preload("res://Presentation/SourceEnhancedLatticeEventPresenter.gd").new() \
+		if enhanced_creature_actions else preload("res://Presentation/CreatureEventPresenter.gd").new()
 	add_child(creature_events)
 	creature_events.configure(self)
 	audio = preload("res://Presentation/AudioPlayer.gd").new()

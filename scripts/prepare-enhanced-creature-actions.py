@@ -216,6 +216,14 @@ def main():
     parser.add_argument('--minotaur', action='store_true', help='Include the fitted Minotaur')
     parser.add_argument('--gore-fiend', action='store_true', help='Include the fitted Gore Fiend')
     parser.add_argument('--frost-spider', action='store_true', help='Include the fitted Frost Spider')
+    parser.add_argument('--chaos-daemon', action='store_true', help='Include the fitted Chaos Daemon')
+    parser.add_argument('--meer-warrior', action='store_true', help='Include the fitted Meer Warrior')
+    parser.add_argument('--minotaur-scout', action='store_true', help='Include the fitted Minotaur Scout')
+    parser.add_argument('--hydra', action='store_true', help='Include the fitted Hydra')
+    parser.add_argument('--fire-gargoyle', action='store_true', help='Include the fitted Fire Gargoyle')
+    parser.add_argument('--shadow-wisp', action='store_true', help='Include the fitted Shadow Wisp')
+    parser.add_argument('--armored-gargoyles', action='store_true', help='Include the fitted Gargoyle Destroyer and Enforcer')
+    parser.add_argument("--crystal-lattice-seeker", action="store_true", help="Include the fitted Crystal Lattice Seeker")
     args = parser.parse_args()
     manifest, copies = prepare()
     source = args.ranked_source
@@ -224,7 +232,7 @@ def main():
         recorded = previous.get('ranked_source')
         if recorded:
             source = Path(recorded)
-    names = ('kraken', 'troll', 'bird', 'ettin', 'dolphin', 'field', 'cat', 'skeleton-mongbat', 'hound-bear', 'troll-ratman', 'brown-bear-cougar', 'wolf-grizzly', 'corpser-boar', 'goat-eagle', 'serpent-harpy', 'ogre-earth', 'zombie-wraith', 'gorilla-gazer', 'gargoyle-through-ghoul', 'scorpion-through-slime', 'alligator-direwolf', 'crane-fire', 'lich-gaman', 'chicken-skeletal-mage', 'daemon-wyvern', 'polar-bear', 'drake-walrus', 'ice-serpent-bogling', 'tsuki-wolf-ophidian', 'evil-mage-plague-beast', 'kappa-snow-elemental', 'giant-rat-vampire-bat', 'orc-shaman-ophidian-mage', 'knight-acid-pixie-frost', 'poison-elemental-dread-spider', 'mummy-balron', 'giant-toad-juka-warrior', 'skeletal-knight-remaining', 'yomotsu-warrior-dragon','ratman-mage-lava-serpent','cyclops-titan','ice-terathan','hopper-fan','blood-goat','matriarch-succubus','stone-harpy-horde','stone-gargoyle-kitsune','orc-captain-solen','efreet-avenger','rotting-bog','grizzle-changeling','matriarch-swamp','widow-juka','bomber-lord','rune-dopple','golem-sand','raptor-slith','juka-lord','black-solen-warrior','devourer','frenzied-ostard','revenant-lion','shadow-fiend','lesser-hiryu','antlion','crystal-elemental','minotaur','gore-fiend','frost-spider')
+    names = ('kraken', 'troll', 'bird', 'ettin', 'dolphin', 'field', 'cat', 'skeleton-mongbat', 'hound-bear', 'troll-ratman', 'brown-bear-cougar', 'wolf-grizzly', 'corpser-boar', 'goat-eagle', 'serpent-harpy', 'ogre-earth', 'zombie-wraith', 'gorilla-gazer', 'gargoyle-through-ghoul', 'scorpion-through-slime', 'alligator-direwolf', 'crane-fire', 'lich-gaman', 'chicken-skeletal-mage', 'daemon-wyvern', 'polar-bear', 'drake-walrus', 'ice-serpent-bogling', 'tsuki-wolf-ophidian', 'evil-mage-plague-beast', 'kappa-snow-elemental', 'giant-rat-vampire-bat', 'orc-shaman-ophidian-mage', 'knight-acid-pixie-frost', 'poison-elemental-dread-spider', 'mummy-balron', 'giant-toad-juka-warrior', 'skeletal-knight-remaining', 'yomotsu-warrior-dragon','ratman-mage-lava-serpent','cyclops-titan','ice-terathan','hopper-fan','blood-goat','matriarch-succubus','stone-harpy-horde','stone-gargoyle-kitsune','orc-captain-solen','efreet-avenger','rotting-bog','grizzle-changeling','matriarch-swamp','widow-juka','bomber-lord','rune-dopple','golem-sand','raptor-slith','juka-lord','black-solen-warrior','devourer','frenzied-ostard','revenant-lion','shadow-fiend','lesser-hiryu','antlion','crystal-elemental','minotaur','gore-fiend','frost-spider','chaos-daemon','meer-warrior','minotaur-scout','hydra','fire-gargoyle','shadow-wisp','armored-gargoyles','crystal-lattice-seeker')
     extensions = [name for name in names
                   if (getattr(args, name.replace('-', '_')) or f'{name}_native_proof_sha256' in previous
                       or (name == 'troll' and args.troll_ratman))]
