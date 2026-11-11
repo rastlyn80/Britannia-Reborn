@@ -1,3 +1,10 @@
+# Ordinary horses, cattle and seahorse
+
+The optional fits cover all four ordinary horse variants and all four native cattle variants. Ordinary horses retain the licensed saddle rig, stock riding and exact worn-item pairs. The cattle retain their Third Dawn rigs and living cow-tip recovery. Both families use their verified fitted falls and late-hue corpse transfer.
+
+Continue with Sea Horse 144, then llama and the remaining ostard and magical-equine sequences in the configured queue. The official Enhanced archive supplied 765 seahorse frames. The later Third Dawn cabinets supply two seahorse atlases and fourteen named human rider clips. The inspected rider clips contain animation tracks, and none contains a seahorse mesh. The existing native item and rideable class remain authoritative while preparing a distinct visual for the seahorse.
+
+
 # Treefellow
 
 The optional Enhanced profile reaches 152 bodies. Treefellow 301 has independent combat and peaceful gaits, foliage movement, the original topple and a rooted upright corpse. Stock Dismount, temporary remount refusal and log loot have isolated two-client evidence.

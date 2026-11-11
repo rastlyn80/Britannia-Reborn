@@ -309,6 +309,30 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
    $checks | ForEach-Object { Write-Output $_ }
    if ($checkExit -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) {throw "$mode world creature dispatch failed"}
   }
+  if (Test-Path "$root/Viewer/local-art/horses/warhorse.glb") {
+   & $godot --headless --path "$root/Viewer" --script res://../scripts/test-ordinary-horse-routing.gd
+   if ($LASTEXITCODE) {throw 'Ordinary horse action selection failed'}
+   & $godot --headless --path "$root/Viewer" --script res://../scripts/test-ordinary-horse-terrain.gd -- --terrain
+   if ($LASTEXITCODE) {throw 'Ordinary horse fall support failed'}
+   foreach ($mode in @('Classic', 'Enhanced')) {
+    $modeArgs = @('--world=res://world.json')
+    if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+    & $godot --headless --path "$root/Viewer" --script res://../scripts/test-ordinary-horse-world.gd -- @modeArgs
+    if ($LASTEXITCODE) {throw "$mode ordinary horse world replay failed"}
+   }
+  }
+  if (Test-Path "$root/Viewer/local-art/animals/enhanced-cattle/manifest.json") {
+   & python -B "$root/scripts/install-cattle-enhanced.py" --check-installed
+   if ($LASTEXITCODE) {throw 'Prepared cattle art differs from the manifest'}
+   & $godot --headless --path "$root/Viewer" --script res://../scripts/test-cattle-terrain.gd
+   if ($LASTEXITCODE) {throw 'Cattle fall support failed'}
+   foreach ($mode in @('Classic', 'Enhanced')) {
+    $modeArgs = @('--world=res://world.json')
+    if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+    & $godot --headless --path "$root/Viewer" --script res://../scripts/test-cattle-world.gd -- @modeArgs
+    if ($LASTEXITCODE) {throw "$mode cattle world replay failed"}
+   }
+  }
  }
  if ($lateIndex.entries | Where-Object { $_.preferred_uop_native_sha256 }) {
   & python -B "$root/scripts/accept-preferred-uop-actions.py" --check-active

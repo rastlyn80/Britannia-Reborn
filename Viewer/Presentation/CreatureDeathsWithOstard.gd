@@ -5,7 +5,10 @@ const Mounts := preload("res://Presentation/MountVisual.gd")
 
 func begin_death(killed: int, corpse: int) -> void:
 	var entity: Dictionary = session.entities.get(killed, {})
-	if int(entity.get("body", 0)) != 210:
+	var body := int(entity.get("body", 0))
+	if body in Mounts.Horse.BODIES and begin_horse_death(killed, corpse, entity):
+		return
+	if body != 210:
 		super.begin_death(killed, corpse)
 		return
 	var avatar: Node3D = scene.get("avatars").get(killed)
@@ -24,3 +27,20 @@ func begin_death(killed: int, corpse: int) -> void:
 	visual.set_physics_process(false)
 	var duration: float = visual.desert_actions.begin_death_from(visual, source)
 	track_transition(killed, corpse, 210, avatar, visual, duration)
+
+
+func begin_horse_death(killed: int, corpse: int, entity: Dictionary) -> bool:
+	var avatar: Node3D = scene.get("avatars").get(killed)
+	if active.has(killed) or not is_instance_valid(avatar):
+		return false
+	var source: Node3D = avatar.horse_visual
+	if not source is Mounts.Horse or not source.fitted_enabled() or avatar.human_visual != null:
+		return false
+	var body := int(entity.body)
+	var visual := Mounts.Horse.new()
+	add_child(visual)
+	visual.apply_identity(body, int(entity.get("hue", 0)))
+	visual.set_physics_process(false)
+	var duration := visual.begin_native_fall(source)
+	track_transition(killed, corpse, body, avatar, visual, duration)
+	return true

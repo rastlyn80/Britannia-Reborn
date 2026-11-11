@@ -6,10 +6,17 @@ const ADDITIONAL_CLIPS := {6: "Attack2", 10: "Fidget2", 12: "Death2"}
 var collapse_plane: Dictionary = {}
 var collapse_skin: Dictionary = {}
 var collapse_shift := Vector3.ZERO
+var collapse_blend_pose: Array[Transform3D] = []
+var collapse_blend_start := 0.0
+var collapse_blend_length := 0.0
+var rendered_pose := preload("res://Presentation/SourceRenderedPose.gd").new()
 
 func _ready() -> void:
 	super._ready()
 	animator.mixer_applied.connect(settle_collapse)
+	contact.modification_processed.connect(func():
+		if not dead:
+			rendered_pose.capture(skeleton))
 
 func model_resource_path(_folder: String, asset_kind: String) -> String:
 	return asset_path(asset_kind, treatment)
@@ -67,24 +74,58 @@ func set_collapse_plane(hit: Dictionary) -> void:
 		collapse_skin = Ground.skin_points(mesh, skeleton)
 
 func begin_death_from(source: Node3D) -> float:
+	global_transform = source.global_transform
+	model.transform = source.model.transform
 	recovering_tip = false
 	dead = true
 	contact.enabled = false
-	set_collapse_plane(source.support_plane())
+	set_collapse_plane(source.support_plane().duplicate())
 	model.position -= source.collapse_shift
 	current_clip = str(source.current_clip) if source.dead else "Death"
 	var position: float = source.animator.current_animation_position if source.dead else 0.0
+	var speed: float = absf(source.animator.get_playing_speed()) if source.dead else 1.0
+	if is_zero_approx(speed):
+		speed = 1.0
+	var length := animator.get_animation(current_clip).length
+	collapse_blend_start = position
+	collapse_blend_length = minf(.12 * speed, length - position)
+	if collapse_blend_length > 0.0:
+		capture_collapse_pose(source)
 	animator.speed_scale = 1.0
-	animator.play(current_clip, 0.0)
+	animator.play(current_clip, 0.0, speed)
 	animator.advance(0.0)
 	animator.seek(position, true)
-	action_remaining = animator.current_animation_length - position
+	action_remaining = maxf(0.0, length - position) / speed
 	return action_remaining
+
+func capture_collapse_pose(source: Node3D) -> void:
+	var original: Skeleton3D = source.skeleton
+	var displayed: Skeleton3D = original if source.dead else source.rendered_pose.source(original)
+	for bone in displayed.get_bone_count():
+		collapse_blend_pose.append(displayed.get_bone_pose(bone))
+	# Keep the source's settled model offset in the displayed pose. Put it on
+	# the animated pelvis root so the ordinary collapse tracks take it back out.
+	var pelvis := skeleton.find_bone("bip01")
+	var parent := skeleton.get_bone_parent(pelvis)
+	var pose := collapse_blend_pose[pelvis]
+	var delta: Vector3 = original.global_position - skeleton.global_position
+	var parent_basis := skeleton.global_basis * original.get_bone_global_pose(parent).basis
+	pose.origin += parent_basis.inverse() * delta
+	collapse_blend_pose[pelvis] = pose
+	if displayed != original:
+		displayed.free()
 
 func settle_collapse() -> void:
 	if not dead or collapse_plane.is_empty():
 		return
 	model.position -= collapse_shift
+	if not collapse_blend_pose.is_empty():
+		var weight := clampf((animator.current_animation_position - collapse_blend_start) / collapse_blend_length, 0.0, 1.0)
+		if weight < 1.0:
+			for bone in collapse_blend_pose.size():
+				skeleton.set_bone_pose(bone, collapse_blend_pose[bone].interpolate_with(skeleton.get_bone_pose(bone), weight))
+		else:
+			collapse_blend_pose.clear()
 	skeleton.force_update_all_bone_transforms()
 	var gap := Ground.minimum_plane_gap(collapse_skin, skeleton, skeleton.global_transform,
 		collapse_plane.position, collapse_plane.normal)

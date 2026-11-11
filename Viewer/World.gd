@@ -36,6 +36,7 @@ var ocean: MeshInstance3D
 const PersonalSpace = preload("res://Presentation/PersonalSpace.gd")
 var personal_space := PersonalSpace.new()
 const Motion = preload("res://Presentation/MotionTrack.gd")
+const MountVisual := preload("res://Presentation/MountVisual.gd")
 const Avatar = preload("res://Presentation/Avatar.gd")
 const CreatureAttackActions := preload("res://Presentation/EnhancedCreatureAttackActions.gd")
 const Reconstruction = preload("res://Presentation/Reconstruction.gd")
@@ -101,6 +102,8 @@ func _ready() -> void:
 		enhanced_creature_actions = preload("res://Presentation/EnhancedCreatureProfile.gd").enable()
 		if not enhanced_creature_actions:
 			push_warning("The optional Enhanced creature action profile needs its prepared local assets.")
+	MountVisual.Horse.enhanced_ordinary_horses = enhanced_creature_actions
+	MountVisual.Animals.enhanced_bovine_actions = enhanced_creature_actions and MountVisual.Animals.EnhancedBovine.enable()
 	var path := "res://world.json"
 	if FileAccess.file_exists("res://play-world.json"): path = "res://play-world.json"
 	for arg in OS.get_cmdline_user_args():
@@ -317,11 +320,16 @@ func _ready() -> void:
 	game.mobile_action_received.connect(func(request: Dictionary):
 		var serial:=int(request.get("serial",0))
 		if avatars.has(serial):
+			var avatar: Node3D = avatars[serial]
 			var flags := -1
 			if enhanced_creature_actions:
 				var mobile: Dictionary = game.player if serial == int(game.player.serial) else game.entities.get(serial, {})
 				flags = int(mobile.get("flags", -1))
-			CreatureAttackActions.dispatch(avatars[serial], request, enhanced_creature_actions, flags))
+				var visual: Node3D = avatar.horse_visual
+				if avatar.human_visual == null and is_instance_valid(visual) and visual.has_method("receive_enhanced_action") \
+						and visual.receive_enhanced_action(request, flags):
+					return
+			CreatureAttackActions.dispatch(avatar, request, enhanced_creature_actions, flags))
 	game.vendor_received.connect(func(serial: int,_stock: Array):
 		if avatars.has(serial): avatars[serial].get_node("Nameplate").text = game.entity_names.get(serial,"Vendor")+" · shopkeeper")
 	game.entity_name_received.connect(func(serial: int, name_text: String):

@@ -1,3 +1,26 @@
+# Enhanced cattle
+
+The optional cattle presentation covers cow bodies 216 and 231 and bull bodies 232 and 233. Each retains its Third Dawn rig, existing geometry, coat material and base gait tracks. Six fitted actions cover the fall, head recoil, short nudge, grazing, a tail flick and the raise to alert. The cow-tip packet retains the living lie-down and returns to grazing. The two bulls have separate body-specific fall trajectories. The official alternate bull selector points to standing frames, and the real death packet then starts the fitted fall.
+
+The four named `AnimationSequence.uop` records are `0xf407df1a5e94dc5c`, `0xccb899bfb8d1529a`, `0x8170ad892018e264` and `0x9d39436ce1f1a38e` respectively. The official `AnimationFrame4.uop` supplied 1,590 registered AMOU frames in 36 members. Cow 216 group 24 advertises 35 frames and its validated member contains 40. Its fitted presentation retains the established running gait.
+
+The twelve baked scenes passed 11,592 weighted pose checks and retained all 132 pre-existing clip instances. The sampled grazing hoof displacement stayed within 3.01 mm. The current scenes passed 240 Forward+ views. The finite terrain replay measured 4,104 skinned poses and 108 handoffs, with a maximum displayed joint displacement of 6.23 micrometres during continued falls. The normal client replay verified 434 Enhanced and 33 Classic selections and corpse checks. Classic now blends from the pose, facing and ground offset shown when the death packet arrives. The largest sampled head displacement at the handoff was 0.86 micrometres. The dedicated Classic replay passed 72 packet and corpse handoffs with 2,952 weighted pose samples.
+
+Two disposable ModernUO clients passed 87 checks in Enhanced mode. Both cow bodies tipped and recovered alive, yielded four eligible milk servings and refused the fifth while depleted. All four native bodies walked, ran and retained raw server dye. Stock death packets produced fitted static corpses, and late partial dye kept their shape and placement. The fixture called the ordinary native APIs and sent the Enhanced alert and alternate selectors explicitly. The separate Classic run passed 518 checks across all eight body and sex combinations.
+
+With the existing bovine actions prepared, rebuild using Godot's `scripts/bake-cattle-enhanced.gd`, then run `python -B scripts/install-cattle-enhanced.py`. `scripts/verify.ps1` checks the installed manifest, finite terrain and both modes. Local Third Dawn scenes, official sprite references and captures stay outside Git.
+
+
+# Enhanced ordinary horses
+
+The optional presentation covers ordinary horses 200, 204, 226 and 228. It retains the licensed Warhorse Lite rig, established rider sockets, coat materials and mounted gaits. Nine additional motions cover the two falls, rearing, recoil, short bound, head dip and quiet reset. The client selects the exact body and combat-mode action mapping. The tan and dapple-grey references share almost all registered silhouettes, as do the dark-brown and dun references. The first 3D fit shares the saddle rig and common motion curves across the four coats. The two reference pairs differ visibly in shape and timing, and the exact limb curves remain an art refinement.
+
+The official Enhanced `AnimationFrame3.uop` and `AnimationSequence.uop` yielded 2,540 AMOU frames. The named sequence hashes are `0x86e9fff3f17efa4a` for 200, `0x3169a88ccc260b18` for 204, `0x797d7f9e5af48cdc` for 226 and `0xa1e2f9a8b3300b9` for 228. Bodies 200 and 226 have 13 source groups and bodies 204 and 228 have 12. The exact sources supplied the two separate fall poses and the variant-specific long rear. The horse rig and texture licence remains recorded in `scripts/horse-inputs.json`.
+
+Local verification covered 10,247 action selections, 82 staged Enhanced and 46 Classic world replay checks, 90 rendered dapple-grey poses and 1,584 skinned fall poses on level and tilted physical platforms. The maximum sampled handoff displacement was 5.01 micrometres. The isolated two-client ModernUO trial passed 89 checks across the four native bodies, including stock mounting, walk, run, dismount, death and late partial dye. The fixture sent the Enhanced gesture and alternate fall packets explicitly. The ordinary stock death uses the fitted first fall. Both static cadavers keep their pose and placement when dyed.
+
+
+
 # Enhanced Treefellow
 
 The optional Enhanced profile reaches 152 bodies and 419 fitted local scenes. Treefellow 301 retains its original Third Dawn mesh, 63-joint rig and root toes. Fourteen motions follow 835 registered reference frames in 17 groups from sequence 0x5c4d9a10c6b2c4c7. Combat and peaceful idles are distinct. The peaceful walk preserves the original root and leg tracks. The modern material layers bark relief and green moss over the source atlas and applies the server's full or partial dye.

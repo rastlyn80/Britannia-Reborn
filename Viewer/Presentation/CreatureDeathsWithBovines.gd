@@ -19,14 +19,11 @@ func begin_death(killed: int, corpse: int) -> void:
 	if not source is Bovine:
 		super.begin_death(killed, corpse)
 		return
-	var visual := Bovine.new()
+	var visual: Node3D = source.get_script().new()
 	visual.kind = source.kind
 	visual.treatment = source.treatment
 	add_child(visual)
 	visual.apply_identity(body, int(entity.get("hue", 0)))
-	visual.global_transform = source.global_transform
-	visual.rotation.y = PI - float(int(entity.get("direction", 0)) & 7) * PI / 4.0
-	visual.model.transform = source.model.transform
 	visual.set_physics_process(false)
-	var duration := visual.begin_death_from(source)
+	var duration: float = visual.begin_death_from(source)
 	track_transition(killed, corpse, body, avatar, visual, duration)
