@@ -2,8 +2,8 @@ extends RefCounted
 ## Loose animal identities only. This registry invents no ridden items.
 const Visual=preload("res://Presentation/BovineVisual.gd")
 const EnhancedBovine=preload("res://Presentation/SourceEnhancedBovineVisual.gd")
-const LivingBull := preload("res://Presentation/BullLivingVisual.gd")
-const EnhancedLivingBull := preload("res://Presentation/EnhancedBullLivingVisual.gd")
+const LivingBovine := preload("res://Presentation/BullLivingVisual.gd")
+const EnhancedLivingBovine := preload("res://Presentation/EnhancedBullLivingVisual.gd")
 static var enhanced_bovine_actions := false
 const BOVINE_ACTIONS_MARKER := "res://local-art/animals/bovine-actions-active.json"
 static var bovine_actions_trial := false
@@ -22,11 +22,11 @@ static func create(body: int) -> Node3D:
 	var asset_kind := kind(body)
 	var renderer: Script = Visual
 	if enhanced_bovine_actions and not asset_kind.is_empty():
-		renderer = EnhancedLivingBull if body in [232, 233] else EnhancedBovine
+		renderer = EnhancedLivingBovine
 	elif not asset_kind.is_empty() and (bovine_actions_trial or FileAccess.file_exists(BOVINE_ACTIONS_MARKER)):
 		var actions := load("res://Presentation/BovineActionsVisual.gd") as GDScript
 		if actions.available(asset_kind):
-			renderer = LivingBull if body in [232, 233] else actions
+			renderer = LivingBovine
 	var result: Node3D = renderer.new()
 	result.kind = asset_kind
 	return result

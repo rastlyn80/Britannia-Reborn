@@ -1,0 +1,13 @@
+# Skeleton footing, assembly and static corpses
+
+Stock Skeleton and Spellbinder can use body 50 or 56. Szandor shares body 50 and keeps his stock partial hue `0x83f2` and invulnerability. Both Skeleton bodies use `Monsters/skeletons_skeleton_lod2.grn`, with 167 points, 258 triangles, 35 joints and the source `skeletons_skeleton.tga`. The mesh SHA-256 is `c7df15c84e3c084888c10a354bb3dc51b586d0f690f29ebc581f4b37ecdd2e26`. Body 56 keeps the separately prepared axe from `Others/weapon_skeleton_axe_lod2.grn`, pinned in `scripts/prepare-skeleton-axe.py`.
+
+The retained clips preserve the source leg cycles and blend the mismatched ends of Walk and Run. The two client modes passed 9,000 sampled gait poses on flat ground, a slope and a 22 cm ledge. The maximum sampled gait seam fell from 268 mm to 18 mm, and skin and weapon clearance stayed about 3 mm or higher.
+
+Body 50 retains the five fitted actions from Enhanced sequence `0x46d03aca9d98b374`. The cached sequence and definitions contain no direct body 56 match, so both modes keep its established Classic actions. Body 50's assembly uses 15 pieces from the original mesh. They rest on the appropriate tread, then gather into the source rig. Ground support holds through the join and eases down as the visible feet clear the edge. Across 488 samples, the largest measured whole-model shift was 28 mm per sample. The separate pieces still move quickly during the authored leap.
+
+The Enhanced assembly starts with the authored visibility at time zero. A real death while the bones are still loose completes their join in at most 240 ms before playing the stock collapse. The client passed 144 decoded transfers and 2,448 collapse poses, including eight from the loose-bone stage. The frozen corpse kept the correct body, hue and axe, and the sampled fall's first joint movement was below 4 micrometres.
+
+The two-client isolated trials passed 138 Classic and 140 Enhanced checks. They cover both stock Skeleton and Spellbinder rolls, the stock Skeleton wrestling action, Szandor's exact appearance and invulnerability, native movement, dye and static corpses. The fixture supplied the Enhanced assembly packet and then used the native kill path. The live check witnessed the loose pieces and their transition before the corpse appeared.
+
+Run Godot headless with `--path Viewer --script res://../scripts/test-skeleton-living-terrain.gd` or `res://../scripts/test-skeleton-living-fall.gd`. Add `-- --enhanced-creature-actions` to use the optional fitted profile. The terrain test also accepts `-- --baseline` to use the existing renderer. The verifier uses the locally prepared scenes. Original and derived art remains outside Git.

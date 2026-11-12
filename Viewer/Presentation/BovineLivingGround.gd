@@ -6,6 +6,8 @@ const Ground := preload("res://Presentation/SourceGroundLookup.gd")
 const SplitFall := preload("res://Presentation/CougarTerrainFall.gd")
 const Probes := [Vector3(-.50, 0, -.76), Vector3(.50, 0, -.76),
 	Vector3(-.50, 0, .76), Vector3(.50, 0, .76)]
+const CowProbes := [Vector3(-.53, 0, -1.42), Vector3(.53, 0, -1.42),
+	Vector3(-.53, 0, 1.42), Vector3(.53, 0, 1.42), Vector3.FORWARD * 1.55, Vector3.BACK * 1.55]
 var actor: Node3D
 var skins: Array[Dictionary] = []
 var floor := {}
@@ -33,7 +35,8 @@ func bind(visual: Node3D) -> void:
 
 
 func sample(delta: float) -> void:
-	if actor.dead or not actor.contact.enabled:
+	# A living cow tip disables hoof IK while the body still needs terrain support.
+	if actor.dead or (not actor.contact.enabled and not actor.recovering_tip):
 		return
 	release()
 	var space := actor.get_world_3d().direct_space_state
@@ -49,7 +52,8 @@ func sample(delta: float) -> void:
 			split = true
 			break
 	if not split:
-		for offset: Vector3 in Probes:
+		var probes := CowProbes if actor.kind.begins_with("bovine_cow_") else Probes
+		for offset: Vector3 in probes:
 			var hit := hit_under(actor.to_global(offset))
 			if not hit.is_empty() and different(hit):
 				split = true

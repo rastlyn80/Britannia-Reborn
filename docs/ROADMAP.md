@@ -1,3 +1,7 @@
+# Ratman, Giant Spider, Cow and Skeleton terrain
+
+The Ratman family, Giant Spider, both Cow coats and both stock Skeleton bodies have moving terrain and corpse evidence in both modes. The Ratman hand, Giant Spider leg tips and Cow hooves can still move abruptly on high steps. Continue in configured occurrence order with Goat and Mountain Goat, then Grizzly Bear and Grey Wolf.
+
 # Ratman weapons and terrain
 
 The Archer's original bow, native arrow, body hue and static corpse passed both client profiles and the isolated stock server. Continue the common Ratman family with finite step support for the original axe, unarmed and mage forms. Preserve the independent native body records when they use the same original mesh.

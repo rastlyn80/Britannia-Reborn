@@ -9,6 +9,7 @@ const Snapshots := preload("res://Presentation/CreatureCorpseSnapshot.gd")
 const StepHeight := .22
 const Living := [["Fidget", .25], ["Fidget", .833333], ["Walk", .5], ["Hit", .25]]
 var enhanced := "--enhanced" in OS.get_cmdline_user_args()
+var cows := "--cows" in OS.get_cmdline_user_args()
 var body := 232
 var transfers := 0
 var frames := 0
@@ -28,7 +29,7 @@ func run() -> void:
 	var lower := box(Vector3(6, .2, 6))
 	var upper := box(Vector3(4, .2, 6))
 	upper.position = Vector3(2, StepHeight - .1, 0)
-	for native: int in [232, 233]:
+	for native: int in ([216, 231] if cows else [232, 233]):
 		body = native
 		for normal: Vector3 in [Vector3.UP, Vector3(.17, 1, -.10).normalized(), Vector3.ZERO]:
 			var split := normal == Vector3.ZERO
@@ -43,11 +44,15 @@ func run() -> void:
 				for yaw: float in [0.0, PI * .5, PI * 1.5]:
 					for start: Array in Living:
 						replay(x, yaw, normal, start[0], start[1])
+					if cows:
+						replay(x, yaw, normal, "Tip", .25)
+						replay(x, yaw, normal, "Tip", .68)
+						replay(x, yaw, normal, "TipRecovery", .10)
 					var falls := ["Death", "Death2", Enhanced.FittedFall] if enhanced else ["Death", "Death2"]
 					for clip: String in falls:
 						replay(x, yaw, normal, clip, .32)
-	assert(transfers == (168 if enhanced else 144) and frames == transfers * 25)
-	print("BULL FALL: ", transfers, " transfers, ", frames, " poses, maximum initial jump ", greatest_jump,
+	assert(transfers == (168 if enhanced else 144) + (72 if cows else 0) and frames == transfers * 25)
+	print("COW FALL: " if cows else "BULL FALL: ", transfers, " transfers, ", frames, " poses, maximum initial jump ", greatest_jump,
 		" m, minimum gap ", minimum_gap, " m, largest final gap ", highest_final_gap, " m")
 	lower.queue_free()
 	upper.queue_free()
@@ -82,7 +87,14 @@ func actor_at(x: float, yaw: float) -> Node3D:
 func replay(x: float, yaw: float, normal: Vector3, start: String, phase: float) -> void:
 	var source := actor_at(x, yaw)
 	var split := normal == Vector3.ZERO
-	if start in ["Death", "Death2", Enhanced.FittedFall]:
+	if start in ["Tip", "TipRecovery"]:
+		source._physics_process(1.0 / 60.0)
+		assert(source.receive_action({"protocol": "classic", "action": 8, "frames": 0, "repeat_count": 3}))
+		assert(source.recovering_tip and not source.dead and source.current_clip == "LieDown")
+		if start == "TipRecovery":
+			source._process(source.action_remaining + .01)
+			assert(not source.recovering_tip and not source.dead)
+	elif start in ["Death", "Death2", Enhanced.FittedFall]:
 		source._physics_process(1.0 / 60.0)
 		if start == Enhanced.FittedFall:
 			assert(source.receive_enhanced_action({"protocol": "new", "body": body, "type": 3, "variation": 0}, 0x40))
@@ -108,7 +120,7 @@ func replay(x: float, yaw: float, normal: Vector3, start: String, phase: float) 
 	var jump := maximum_joint_delta(source.skeleton, transition.skeleton)
 	if jump > greatest_jump:
 		greatest_jump = jump
-		print("BULL FALL NEW MAX ", start, " ", phase, " at ", [x, yaw, str(normal)], " = ", jump)
+		print("COW FALL NEW MAX " if cows else "BULL FALL NEW MAX ", start, " ", phase, " at ", [x, yaw, str(normal)], " = ", jump)
 	var beginning: float = transition.animator.current_animation_position
 	for frame in 25:
 		var time := lerpf(beginning, transition.animator.current_animation_length, frame / 24.0)

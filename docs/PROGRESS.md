@@ -1,3 +1,13 @@
+# Ratman, Giant Spider, Cow and Skeleton footing
+
+The five Ratman body routes keep their existing art and actions, with corrected walking loops, step clearance and a continuous fall to the static corpse. Both profiles passed 6,360 moving poses combined, 256 corpse transitions and 218 isolated native checks. See [Ratman terrain](RATMAN_TERRAIN.md).
+
+The Giant Spider uses its original eight-legged rig on slopes and steps. The server's movement now drives its position without adding the source clip's forward travel a second time. Its original falls continue into matching static corpses. See [Giant Spider terrain](GIANT_SPIDER_TERRAIN.md).
+
+Both Cow coats use the shared hoof support, keep the stock living tip and recover into standing or movement. Two isolated clients used actual pitchers and confirmed the owner's fill and the foreign player's refusal. See [Cow terrain](COW_TERRAIN.md).
+
+Both Skeleton bodies keep their original rigs and body 56 keeps its axe. The Enhanced assembly fits the loose bones to the terrain and completes the join before a native death during the scatter. The isolated server trials also verified both Spellbinder rolls and Szandor. See [Skeleton terrain](SKELETON_TERRAIN.md).
+
 # Ratman Archer
 
 The stock Ratman Archer uses its original rig, recovered bow, separate item dye, and a release pose driven by the native arrow packet. Both client profiles passed 45 normal World checks and 31 isolated server checks. The stock corpse keeps its body and hue after the server removes the worn bow. See [Ratman Archer](RATMAN_ARCHER.md) for the source and test details.

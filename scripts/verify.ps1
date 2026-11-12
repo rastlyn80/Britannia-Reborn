@@ -1114,11 +1114,58 @@ if ($worldExit -or ($worldSmoke | Select-String 'SCRIPT ERROR:|ERROR: Failed to 
 if ((Test-Path "$root/Viewer/local-art/creatures/rat_race_ratman-modern.gltf") -and
     (Test-Path "$root/Viewer/local-art/creatures/centaur-bow/weapon-bow-original.gltf")) {
  foreach ($mode in @('classic','enhanced')) {
-  $arguments = @()
+  $arguments = @('--ratman-terrain')
   if ($mode -eq 'enhanced') { $arguments += '--enhanced-creature-actions' }
   $checks = & $godot --headless --fixed-fps 120 --path "$root/Viewer" --script res://../scripts/test-ratman-archer.gd -- @arguments 2>&1
   $code = $LASTEXITCODE
   $checks | ForEach-Object { Write-Output $_ }
   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "$mode Ratman Archer verification failed" }
+ }
+}
+
+
+# These full-skin terrain checks require the locally prepared creature assets.
+foreach ($mode in @('classic','enhanced')) {
+ $terrainArguments = @()
+ if ($mode -eq 'enhanced') { $terrainArguments += '--enhanced-creature-actions' }
+ $terrainChecks = @()
+ if ((Test-Path "$root/Viewer/local-art/creatures/rat_race_ratman-modern.gltf") -and
+     (Test-Path "$root/Viewer/local-art/creatures/centaur-bow/weapon-bow-original.gltf") -and
+     (Test-Path "$root/Viewer/local-art/creatures/ratman-mage-actions-modern.scn")) {
+  $terrainChecks += @('ratman-living-crossing','ratman-living-fall')
+ }
+ if (Test-Path "$root/Viewer/local-art/creatures/giant-spider-actions-modern.scn") {
+  $terrainChecks += @('giant-spider-living-crossing','giant-spider-living-fall')
+ }
+ if ((Test-Path "$root/Viewer/local-art/creatures/skeleton-actions-50-modern.scn") -and
+     (Test-Path "$root/Viewer/local-art/creatures/skeleton-actions-56-modern.scn")) {
+  if ($mode -eq 'classic' -or (Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions/50-modern.scn")) {
+   $terrainChecks += @('skeleton-living-terrain','skeleton-living-fall')
+  }
+ }
+ foreach ($test in $terrainChecks) {
+  $results = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-$test.gd" -- @terrainArguments 2>&1
+  $code = $LASTEXITCODE
+  $results | ForEach-Object { Write-Output $_ }
+  if ($code -or ($results | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "$mode $test verification failed" }
+ }
+}
+
+if ((Test-Path "$root/Viewer/local-art/animals/bovine_cow_spotted-modern-actions.scn") -and
+    (Test-Path "$root/Viewer/local-art/animals/bovine_cow_brown-modern-actions.scn")) {
+ foreach ($mode in @('classic','enhanced')) {
+  $cowArguments = @()
+  if ($mode -eq 'enhanced') {
+   if (!(Test-Path "$root/Viewer/local-art/animals/enhanced-cattle/manifest.json")) { continue }
+   $cowArguments += '--enhanced'
+  }
+  foreach ($test in @('cow-living-crossing','bull-living-fall')) {
+   $arguments = $cowArguments
+   if ($test -eq 'bull-living-fall') { $arguments = @('--cows') + $cowArguments }
+   $results = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-$test.gd" -- @arguments 2>&1
+   $code = $LASTEXITCODE
+   $results | ForEach-Object { Write-Output $_ }
+   if ($code -or ($results | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "$mode $test Cow verification failed" }
+  }
  }
 }

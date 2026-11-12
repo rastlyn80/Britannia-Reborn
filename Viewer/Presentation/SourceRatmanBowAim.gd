@@ -4,6 +4,7 @@ extends SkeletonModifier3D
 const ArmFit := preload("res://Presentation/CentaurBowRelease.gd")
 const ReleaseTime := .12
 const RecoveryTime := .46
+signal released(origin: Vector3)
 var archer: Node3D
 var left: PackedInt32Array
 var right: PackedInt32Array
@@ -43,6 +44,7 @@ func _process_modification_with_delta(delta: float) -> void:
 	if not archer.bow_release_available():
 		elapsed = RecoveryTime
 		return
+	var previous := elapsed
 	elapsed = minf(elapsed + delta, RecoveryTime)
 	var weight := smoothstep(0.0, .075, elapsed) * (1.0 - smoothstep(.18, RecoveryTime, elapsed))
 	var draw := smoothstep(0.0, .075, elapsed) * (1.0 - smoothstep(ReleaseTime, .17, elapsed))
@@ -71,6 +73,8 @@ func _process_modification_with_delta(delta: float) -> void:
 	var draw_hand: Vector3 = archer.bow_draw_target(flight, across, .19 * draw + .23 * recoil)
 	ArmFit.place_arm(rig, right, draw_hand, aim * .75 - up * .17, -across - aim * .55, weight, 1.0)
 	archer.pose_bow_release(flight, across, weight, draw)
+	if previous < ReleaseTime and elapsed >= ReleaseTime:
+		released.emit(archer.bow_arrow_origin())
 
 
 func yaw_joint(rig: Skeleton3D, joint: int, axis: Vector3, radians: float) -> void:

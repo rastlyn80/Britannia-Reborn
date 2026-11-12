@@ -28,12 +28,22 @@ func present_ratman_arrow(effect: Dictionary) -> bool:
 		return false
 	var fallback := archer.bow_arrow_origin()
 	var speed := float(effect.speed)
-	var archer_ref: WeakRef = weakref(archer)
-	var flight := create_tween()
-	flight.tween_interval(release_time)
-	flight.tween_callback(func():
-		var current := archer_ref.get_ref() as Archer
-		var from := current.bow_arrow_origin() if current != null and current.bow_release_available() else fallback
+	var aim_ref: WeakRef = weakref(archer.aim)
+	var shot := {"launched": false}
+	var launch := func(from: Vector3):
+		if shot.launched:
+			return
+		shot.launched = true
 		_fly_arrow(from, to, speed)
-		get_child(-1).name = &"NativeRatmanArrow")
+		get_child(-1).name = &"NativeRatmanArrow"
+	archer.aim.released.connect(launch, CONNECT_ONE_SHOT)
+	var flight := create_tween()
+	flight.tween_interval(release_time + 1.0 / 60.0)
+	flight.tween_callback(func():
+		if shot.launched:
+			return
+		var aim := aim_ref.get_ref() as Archer.BowAim
+		if aim != null and aim.released.is_connected(launch):
+			aim.released.disconnect(launch)
+		launch.call(fallback))
 	return true
