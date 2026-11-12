@@ -1,3 +1,23 @@
+# Ratman weapons and terrain
+
+The Archer's original bow, native arrow, body hue and static corpse passed both client profiles and the isolated stock server. Continue the common Ratman family with finite step support for the original axe, unarmed and mage forms. Preserve the independent native body records when they use the same original mesh.
+
+
+# Bull terrain and Ratman
+
+Both Bull profiles now have terrain and native corpse evidence. Continue with Ratman, including the Archer's server-worn bow and stock arrow packet.
+
+
+# Cat terrain
+
+Both Cat profiles have terrain, native combat and static corpse evidence. The 22 cm step still produces abrupt movement at full gallop and during the Enhanced spring at the edge. Keep those cases in the movement review while continuing the occurrence queue.
+
+
+# Panther and cattle
+
+Panther and Summoned Panther have verified terrain and native corpse routes. The pinned Enhanced archive has no direct Panther entry, so both modes use the existing Classic animation routes. Continue Bull bodies 232 and 233 with their original coats, optional source-based motions and native randomized hue, then Ratman in configured occurrence order.
+
+
 # Common Dog and Cat
 
 The common Troll, bear, Cougar and Dog terrain and corpse routes have staged client and native evidence. Continue with Cat 201 and the server's Hell Cat variant. Both use the same body ID. Keep the eight-influence cat paws and the distinct Hell Cat fire-breath action.

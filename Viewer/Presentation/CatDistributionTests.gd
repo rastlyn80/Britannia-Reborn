@@ -49,7 +49,11 @@ func run() -> void:
 		var action_provenance: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://Art/Creatures/Cat/actions-provenance.json"))
 		check(action_provenance.scene_sha256 == FileAccess.get_sha256(ActionsAsset) and action_provenance.source_sha256 == provenance.asset_sha256,
 			"Public additional actions derive from the exact licensed source")
-		var renderer := FileAccess.get_file_as_string(registry.entry(201).presentation_script).replace("\r\n", "\n")
+		var current: Dictionary = registry.entry(201)
+		var historical_path: String = action_provenance.get("renderer_path", current.presentation_script)
+		var renderer := FileAccess.get_file_as_string(historical_path).replace("\r\n", "\n")
+		var active := FileAccess.get_file_as_string(current.presentation_script).replace("\r\n", "\n")
+		check(active.sha256_text() == current.presentation_script_sha256, "Public current Cat renderer matches the asset index")
 		check(action_provenance.renderer_sha256 == renderer.sha256_text(),
 			"Public collapse renderer matches the tested version")
 		for slot: int in [8, 9, 10, 12]:

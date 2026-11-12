@@ -72,6 +72,13 @@ func run() -> void:
 	session.items_changed.emit()
 	session.status_changed.emit({"str":61,"dex":41,"int":30})
 	check(not toasts.cards.has("stat:dex"),"just after equipment changes, a changed stat is not a gain")
+	for notice in toasts.MOST:
+		toasts.notify("Recent activity", str(notice))
+	check(not is_instance_valid(card), "older gain card is evicted at the visible limit")
+	session.skills_changed.emit({25:{"base":40.3,"cap":100.0}})
+	var reopened: PanelContainer = toasts.cards.get("skill:25") if is_instance_valid(toasts.cards.get("skill:25")) else null
+	check(reopened != null and is_equal_approx(float(reopened.get_meta("total")),0.1)
+		and toasts.get_child_count() == toasts.MOST,"skill gain recreates its evicted card")
 	# Paperdoll.
 	var Paperdoll := preload("res://Network/PaperdollWindow.gd")
 	if FileAccess.file_exists("res://local-items/wearables.json"):

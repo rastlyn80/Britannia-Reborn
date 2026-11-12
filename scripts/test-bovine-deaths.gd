@@ -8,6 +8,7 @@ const COLLAPSES := {8: "Death", 12: "Death2"}
 const PLANES := [Vector3.ZERO, Vector3(0.14, 0.0, 0.10), Vector3(-0.12, 0.0, -0.08)]
 const Deaths := preload("res://Presentation/CreatureDeathsWithBovines.gd")
 const Bovine := preload("res://Presentation/BovineActionsVisual.gd")
+const Terrain := preload("res://Presentation/BovineLivingGround.gd")
 const Items := preload("res://Presentation/WorldItems.gd")
 
 class Arena extends Node3D:
@@ -22,15 +23,19 @@ func _initialize() -> void:
 
 func run() -> void:
 	Animals.bovine_actions_trial = "--candidate" in OS.get_cmdline_user_args()
+	var transfers := 0
 	for body: int in Animals.BODIES:
 		for treatment: String in ["original", "rounded", "modern"]:
 			for tilt: Vector3 in PLANES:
 				for group: int in COLLAPSES:
-					await witness(body, group, treatment, tilt)
-	print("BOVINE DEATH PACKETS: 72 decoded death, removal and corpse handoffs with 2952 poses")
+					if not await witness(body, group, treatment, tilt):
+						quit(1)
+						return
+					transfers += 1
+	print("BOVINE DEATH PACKETS: ", transfers, " decoded death, removal and corpse handoffs with ", transfers * 41, " poses")
 	quit()
 
-func witness(body: int, group: int, treatment: String, tilt: Vector3) -> void:
+func witness(body: int, group: int, treatment: String, tilt: Vector3) -> bool:
 	var arena := Arena.new()
 	root.add_child(arena)
 	var game := Game.new()
@@ -91,13 +96,16 @@ func witness(body: int, group: int, treatment: String, tilt: Vector3) -> void:
 	assert(visual.current_clip == COLLAPSES[group])
 	var start := player.current_animation_position
 	assert(absf(start / player.current_animation_length - (0.4 if group == 12 else 0.0)) < 0.001)
-	var plane: Dictionary = visual.collapse_plane
-	assert(plane.collider == ground)
+	var terrain := visual.get("ground") as Terrain
+	var transferred := terrain != null and terrain.transferring
+	var plane: Dictionary = terrain.fall.plane if transferred else visual.collapse_plane
+	var skin: Dictionary = terrain.fall.skin if transferred else visual.collapse_skin
+	assert(plane.get("collider") == ground)
 	var anchor := visual.global_transform
 	var rig: Skeleton3D = visual.skeleton
 	for frame in 41:
 		player.seek(lerpf(start, player.current_animation_length, frame / 40.0), true)
-		var gap := Ground.minimum_plane_gap(visual.collapse_skin, rig, rig.global_transform, plane.position, plane.normal)
+		var gap := Ground.minimum_plane_gap(skin, rig, rig.global_transform, plane.position, plane.normal)
 		assert(is_finite(gap) and gap > -0.001 and visual.global_transform == anchor)
 		if frame == 40:
 			assert(absf(gap - 0.002) < 0.001)
@@ -120,3 +128,4 @@ func witness(body: int, group: int, treatment: String, tilt: Vector3) -> void:
 				minimum = minf(minimum, plane.normal.dot(mesh.to_global(point) - plane.position))
 	assert(absf(minimum - 0.002) < 0.001)
 	arena.free()
+	return true

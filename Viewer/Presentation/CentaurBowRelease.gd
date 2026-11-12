@@ -75,14 +75,14 @@ func pose_release(weight: float, recoil: float) -> void:
 	var basis := archer.bow.global_basis.slerp(upright, weight)
 	archer.bow.global_transform = Transform3D(basis, archer.left_palm() - basis * BowVisual.BOW_GRIP)
 
-func place_arm(rig: Skeleton3D, bones: PackedInt32Array, palm: Vector3, knuckles: Vector3, elbow_hint: Vector3, weight: float) -> void:
+static func place_arm(rig: Skeleton3D, bones: PackedInt32Array, palm: Vector3, knuckles: Vector3, elbow_hint: Vector3, weight: float, palm_fraction := .46) -> void:
 	var shoulder := rig.get_bone_global_pose(bones[0]).origin
 	var elbow := rig.get_bone_global_pose(bones[1]).origin
 	var wrist := rig.get_bone_global_pose(bones[2]).origin
 	var fingers := rig.get_bone_global_pose(bones[3]).origin
 	var into_rig := rig.global_basis.inverse()
 	var knuckle_axis := (into_rig * knuckles).normalized()
-	var target := rig.to_local(palm) - knuckle_axis * wrist.distance_to(fingers) * .46
+	var target := rig.to_local(palm) - knuckle_axis * wrist.distance_to(fingers) * palm_fraction
 	var arm := target - shoulder
 	var a := shoulder.distance_to(elbow)
 	var b := elbow.distance_to(wrist)
@@ -101,7 +101,7 @@ func place_arm(rig: Skeleton3D, bones: PackedInt32Array, palm: Vector3, knuckles
 		var fitted := rig.get_bone_pose_rotation(bones[joint])
 		rig.set_bone_pose_rotation(bones[joint], start[joint].slerp(fitted, weight))
 
-func aim_bone(rig: Skeleton3D, bone: int, child: int, target: Vector3) -> void:
+static func aim_bone(rig: Skeleton3D, bone: int, child: int, target: Vector3) -> void:
 	var pose := rig.get_bone_global_pose(bone)
 	var from := rig.get_bone_global_pose(child).origin - pose.origin
 	var to := target - pose.origin

@@ -887,6 +887,53 @@ if (Test-Path "$root/Viewer/local-art/creatures/dog-bear-actions-217-modern.scn"
   }
  }
 }
+if (Test-Path "$root/Viewer/local-art/animals/bovine-actions-active.json") {
+ $bullModes = @('Classic')
+ if (Test-Path "$root/Viewer/local-art/animals/enhanced-cattle/manifest.json") { $bullModes += 'Enhanced' }
+ foreach ($mode in $bullModes) {
+  $bullArgs = @()
+  if ($mode -eq 'Enhanced') { $bullArgs += '--enhanced' }
+  foreach ($test in @('terrain', 'fall')) {
+   $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-bull-living-$test.gd" -- @bullArgs 2>&1
+   $code = $LASTEXITCODE
+   $checks | ForEach-Object { Write-Output $_ }
+   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "$mode Bull living $test verification failed" }
+  }
+ }
+}
+if (Test-Path "$root/Viewer/Art/Creatures/Cat/cat-actions.scn") {
+ $catModes = @('Classic')
+ $catManifest = "$root/Viewer/local-art/creatures/enhanced-creature-actions.json"
+ if (Test-Path $catManifest) {
+  $catProfile = Get-Content -LiteralPath $catManifest -Raw | ConvertFrom-Json
+  if ($catProfile.cat_native_proof_sha256) { $catModes += 'Enhanced' }
+ }
+ foreach ($mode in $catModes) {
+  $arguments = @('--world=res://world.json')
+  if ($mode -eq 'Enhanced') { $arguments += '--enhanced', '--enhanced-creature-actions' }
+  foreach ($test in @('terrain','fall','world')) {
+   $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-cat-living-$test.gd" -- @arguments 2>&1
+   $code = $LASTEXITCODE
+   $checks | ForEach-Object { Write-Output $_ }
+   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "$mode Cat living $test verification failed" }
+  }
+ }
+}
+if (Test-Path "$root/Viewer/local-art/creatures/field-fauna-214-modern.scn") {
+ foreach ($case in @(
+   @{ script='terrain'; extra=@() },
+   @{ script='fall'; extra=@() },
+   @{ script='world'; extra=@('--world=res://world.json') },
+   @{ script='world'; extra=@('--world=res://world.json','--enhanced-creature-actions') }
+ )) {
+  if ($case.extra -contains '--enhanced-creature-actions' -and !(Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions.json")) { continue }
+  $arguments = $case.extra
+  $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-panther-living-$($case.script).gd" -- @arguments 2>&1
+  $code = $LASTEXITCODE
+  $checks | ForEach-Object { Write-Output $_ }
+  if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "Panther living $($case.script) verification failed" }
+ }
+}
 if ((Test-Path "$root/Viewer/local-art/mounts/kirin-modern.gltf") -and (Test-Path "$root/Viewer/local-art/mounts/llama_ethereal-modern.gltf") -and (Test-Path "$root/Viewer/local-art/mounts/skeletal-horse.glb")) {
  foreach ($script in @('DistinctMountTests','OstardRidingTests','MountTerrainTests','EquineCompletionTests','AnimalActionTests')) {
   & $godot --headless --path "$root/Viewer" --script "res://Presentation/$script.gd"
@@ -1063,3 +1110,15 @@ $worldExit = $LASTEXITCODE
 $worldSmoke | ForEach-Object { Write-Output $_ }
 # Godot can exit zero after a startup script fails to compile.
 if ($worldExit -or ($worldSmoke | Select-String 'SCRIPT ERROR:|ERROR: Failed to load script')) { throw 'World smoke test failed' }
+
+if ((Test-Path "$root/Viewer/local-art/creatures/rat_race_ratman-modern.gltf") -and
+    (Test-Path "$root/Viewer/local-art/creatures/centaur-bow/weapon-bow-original.gltf")) {
+ foreach ($mode in @('classic','enhanced')) {
+  $arguments = @()
+  if ($mode -eq 'enhanced') { $arguments += '--enhanced-creature-actions' }
+  $checks = & $godot --headless --fixed-fps 120 --path "$root/Viewer" --script res://../scripts/test-ratman-archer.gd -- @arguments 2>&1
+  $code = $LASTEXITCODE
+  $checks | ForEach-Object { Write-Output $_ }
+  if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "$mode Ratman Archer verification failed" }
+ }
+}

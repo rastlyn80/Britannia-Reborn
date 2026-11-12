@@ -103,10 +103,12 @@ func _ready() -> void:
 		if not enhanced_creature_actions:
 			push_warning("The optional Enhanced creature action profile needs its prepared local assets.")
 	preload("res://Presentation/SourceLizardLivingTerrainProfile.gd").enable()
+	preload("res://Presentation/SourceRatmanArcherProfile.gd").enable()
 	preload("res://Presentation/SourceTrollLivingTerrainProfile.gd").enable()
 	preload("res://Presentation/SourceBearLivingTerrainProfile.gd").enable()
 	preload("res://Presentation/SourceDogLivingTerrainProfile.gd").enable()
 	preload("res://Presentation/SourceCougarLivingTerrainProfile.gd").enable()
+	preload("res://Presentation/SourcePantherLivingTerrainProfile.gd").enable()
 	MountVisual.Horse.enhanced_ordinary_horses = enhanced_creature_actions
 	MountVisual.Ostard.LlamaActions.configure(enhanced_creature_actions)
 	MountVisual.Magical.configure(enhanced_creature_actions)
@@ -563,6 +565,9 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 		if enhanced_creature_actions else preload("res://Presentation/CreatureProjectilePresenter.gd").new()
 	add_child(effects)
 	effects.configure(self)
+	var ratman_arrows := preload("res://Presentation/RatmanArrowPresenter.gd").new()
+	add_child(ratman_arrows)
+	ratman_arrows.route_alongside(self, effects)
 	var creature_events: Node = preload("res://Presentation/SourceEnhancedLatticeEventPresenter.gd").new() \
 		if enhanced_creature_actions else preload("res://Presentation/CreatureEventPresenter.gd").new()
 	add_child(creature_events)

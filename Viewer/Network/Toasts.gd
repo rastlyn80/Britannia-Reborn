@@ -71,8 +71,9 @@ func _status(status: Dictionary) -> void:
 # A gain card: name, new value, the change and a bar toward the cap. The
 # same key again within the card's life adds up on that card.
 func gain(key: String, title: String, change: float, value: float, cap: float, number: String) -> void:
-	var card: PanelContainer = cards.get(key)
-	if card == null or not is_instance_valid(card) or card.is_queued_for_deletion():
+	var cached: Variant = cards.get(key)
+	var card: PanelContainer = cached if is_instance_valid(cached) else null
+	if card == null or card.is_queued_for_deletion():
 		card = PanelContainer.new()
 		card.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		card.custom_minimum_size = Vector2(250,0)

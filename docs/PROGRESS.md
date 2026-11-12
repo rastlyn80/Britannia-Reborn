@@ -1,3 +1,23 @@
+# Ratman Archer
+
+The stock Ratman Archer uses its original rig, recovered bow, separate item dye, and a release pose driven by the native arrow packet. Both client profiles passed 45 normal World checks and 31 isolated server checks. The stock corpse keeps its body and hue after the server removes the worn bow. See [Ratman Archer](RATMAN_ARCHER.md) for the source and test details.
+
+
+# Bull footing and corpse handoff
+
+Both Bull bodies passed 13,000 terrain samples, 312 corpse handoffs and 80 native checks covering taming, movement, combat, hues and corpses. See [Bull terrain](BULL_TERRAIN.md).
+
+
+# Cat terrain and corpse continuity
+
+Cat, Hell Cat and Diseased Cat use their existing licensed body with bounded paw bends and exact two-tread clearance. The client passed 6,760 sampled poses, 156 fall transfers and 556 clean-distribution checks. The isolated server passed 172 checks, including Hell Cat's autonomous fire breath and matching native corpse hues. See [Cat terrain](CAT_TERRAIN.md) for the measured high-step limits.
+
+
+# Panther and talisman Panther on uneven ground
+
+Body 214 keeps its original Third Dawn rig, atlas and Classic action routes. The client passed 2,600 terrain poses, 72 corpse handoffs and both World profiles. Two isolated clients passed 58 native checks, including wild taming, stock talisman activation and both native static corpses. See [Panther terrain](PANTHER_TERRAIN.md) for the exact source audit and tests.
+
+
 # Dog terrain and native coat hues
 
 The original hound now has checked step support and collapse continuity. Two isolated clients passed 58 checks for server coat hues, stock taming and the visible corpse. See [Dog terrain](DOG_TERRAIN.md) for coverage and reproduction.

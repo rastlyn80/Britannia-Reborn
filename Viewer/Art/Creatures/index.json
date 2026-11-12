@@ -1279,8 +1279,8 @@
           "directional_payload_sha256": "31d1a35e814bef49bf204c9c04f84d5d6f7d4471079c80bd24dc7ddc071331a7"
         }
       },
-      "presentation_script": "res://Presentation/CatActionsVisual.gd",
-      "presentation_script_sha256": "ee992d2834630278075d6bfe8b58161f9e99df60488fc8bd493eca4169d48cbf"
+      "presentation_script": "res://Presentation/SourceLivingCatVisual.gd",
+      "presentation_script_sha256": "ab6ccd37f4122e05b03e7a494677bdee44e0cb84834d363420541e13af6c5916"
     },
     {
       "kind": "eagle",
