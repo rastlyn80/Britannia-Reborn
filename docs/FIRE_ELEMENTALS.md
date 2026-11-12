@@ -42,3 +42,12 @@ Current local receipts/renders: `outputs/creatures/fire-trial/`; native records:
 5. Refresh affected Air/Bogling controls, run all accepted local creature groups and the rendered corpse catalogue, then `scripts/verify.ps1`. The normal verification includes the independent Fire package and transient-death regression without requiring the carrier model or game inputs in the clean project.
 
 Remaining work includes unsupported generic action groups, original choreography/particle recovery, arbitrary terrain/overlapping floors, dynamic lighting and autonomous native gameplay. This is bounded integration evidence, not full creature-port completion or final visual polish.
+
+
+## Split treads, flame phase and Fireball
+
+The client measures the visible weighted flame ribbons and the rigid ash separately. The split-tread test accounts for the flame ripple around the tread edge. The 22 cm test found about 218 mm of vertical correction at the sharpest sampled moment of the Enhanced Kindle and Rise.
+
+Both profiles retain the original authored flame-to-ash timing. The complete skin and ash tests passed 8,680 Classic and 9,548 Enhanced living samples, and 88 Classic and 104 Enhanced decoded corpse handoffs. The final ordinary corpse keeps the static ash shape and native hue. The summoned elemental sends a native death packet and its short-lived corpse is removed in both clients.
+
+The two disposable native runs passed 94 Classic and 102 Enhanced checks. They verified stock movement, dye, the presence of the native light, the Fireball target cursor and projectile, delayed damage, native sulfurous ash loot and the two fitted Enhanced gestures. The Enhanced gesture packets were controlled test inputs.

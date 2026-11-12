@@ -2,7 +2,10 @@
 extends "res://Presentation/SourceRigMountVisual.gd"
 ## A rigged reconstruction following the Enhanced SeaHorse sequences.
 
-const Fall := preload("res://Presentation/CreatureFallPlayback.gd")
+const Fall := preload("res://Presentation/CougarTerrainFall.gd")
+const Terrain := preload("res://Presentation/SourceFlyingCreatureTerrain.gd")
+const TailContact := preload("res://Presentation/SourceSeaHorseTailContact.gd")
+const Displayed := preload("res://Presentation/SourceRenderedPose.gd")
 const Actions := preload("res://Presentation/HumanActions.gd")
 const CLASSIC := {
 	0: "CombatGlide", 1: "CombatIdle", 2: "Death", 3: "Death2", 4: "Attack", 5: "Attack2",
@@ -16,6 +19,9 @@ const COMBAT_ACTIONS := {
 }
 
 var fall := Fall.new()
+var terrain := Terrain.new()
+var tail_contact := TailContact.new()
+var displayed := Displayed.new()
 var combat := false
 var harness: BoneAttachment3D
 
@@ -40,8 +46,33 @@ func _ready() -> void:
 	for clip in ["CombatIdle", "CombatGlide"]:
 		animator.get_animation(clip).loop_mode = Animation.LOOP_LINEAR
 	fall.skin = control_skin
+	terrain.actor = self
+	terrain.skin = control_skin
+	terrain.extent = Vector2(.63, 1.08)
+	skeleton.add_child(tail_contact)
+	tail_contact.active = false
+	tail_contact.bind(control_skin)
 	animator.mixer_applied.connect(_settle)
 	build_harness()
+
+
+func _physics_process(delta: float) -> void:
+	if dead:
+		return
+	terrain.release_live()
+	super._physics_process(delta)
+	terrain.sample()
+	terrain.settle_live()
+
+
+func support_control_plane() -> void:
+	if dead:
+		return
+	terrain.release_live()
+	if terrain.split:
+		tail_contact.clear_treads(float(terrain.plane.position.y))
+	terrain.settle_live()
+	displayed.capture(skeleton)
 
 
 func apply_identity(body: int, value: int, item: int = 0) -> void:
@@ -134,7 +165,9 @@ func receive_action(request: Dictionary) -> bool:
 	if clip in Fall.FALLS:
 		dead = true
 		contact.enabled = false
-		fall.remember_floor(self, fall.floor_under(self))
+		fall.split = terrain.split
+		fall.remember_floor(self, terrain.plane if not terrain.plane.is_empty() else fall.floor_under(self))
+		terrain.live_lift = 0.0
 	animator.play(clip, 0.1, length / maxf(0.01, action_remaining))
 	animator.seek(0.0, false)
 	set_meta("native_action", request.duplicate(true))
@@ -143,11 +176,12 @@ func receive_action(request: Dictionary) -> bool:
 
 func begin_death_from(source: Node3D) -> float:
 	global_transform = source.global_transform
-	var previous: RefCounted = source.fall
+	var previous: RefCounted = source.fall if source.dead else source.terrain
 	var continuing: bool = source.dead and source.current_clip in Fall.FALLS
 	var support: Dictionary = previous.plane if not previous.plane.is_empty() else fall.floor_under(source)
 	model.position -= previous.shift
 	current_clip = source.current_clip if continuing else "Death"
+	fall.split = previous.split
 	fall.remember_floor(self, support)
 	var time: float = source.animator.current_animation_position if continuing else 0.0
 	var rate: float = maxf(0.01, absf(source.animator.get_playing_speed())) if continuing else 1.0
@@ -159,8 +193,12 @@ func begin_death_from(source: Node3D) -> float:
 	fall.blend_start = time
 	fall.blend_length = minf(0.12 * rate, animator.get_animation(current_clip).length - time)
 	if fall.blend_length > 0.0:
+		var previous_pose = source.displayed
+		var recorded: bool = not continuing and previous_pose.rig_id == source.skeleton.get_instance_id() \
+			and Engine.get_process_frames() - previous_pose.frame <= 1
 		for bone in source.skeleton.get_bone_count():
-			fall.blend_pose.append(source.skeleton.get_bone_pose(bone))
+			var pose: Transform3D = previous_pose.poses[bone] if recorded else source.skeleton.get_bone_pose(bone)
+			fall.blend_pose.append(pose)
 	animator.play(current_clip, 0.0, rate)
 	animator.advance(0.0)
 	animator.seek(time, true)

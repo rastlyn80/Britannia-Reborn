@@ -1,5 +1,13 @@
 # Chicken: independent source, original motions and native body208
 
+## Terrain and native corpse update
+
+The regular client uses the terrain-aware hen with the checked public mesh and distinct-action library or the checked Enhanced scene. Both the body and eyes take part in surface clearance and the frozen corpse. The existing feather material, two Classic falls, and three fitted Enhanced gestures remain available.
+
+The original presentation clipped up to 219 mm into the sampled 22 cm tread. The new support keeps the minimum visible clearance near 3 mm through 4,774 Classic and 6,076 Enhanced moving poses. The fastest tested run still has a visible 136 mm model lift in a sampled interval. The 72 Classic and 96 Enhanced decoded corpse transfers start from the displayed pose, including the live gestures and both collapse directions.
+
+The normal client and isolated stock server passed 35 Classic and 41 Enhanced checks across both owners. The tests covered the real hen constructor and hue, walking and running, a fidget interrupted by movement, the distinct rear strike and the frozen native corpse. The three Enhanced gestures were sent through controlled protocol packets. Reproduce the occurrence world, terrain and fall checks with `--body=208`. Add `--enhanced-creature-actions` for the second profile.
+
 The replacement is a natural hen from CDmir / Čestmír Dammer, with the artist's feather albedo/normal maps and source motions. It is an independently licensed substitute, not a recovered Ultima Online Chicken mesh or original UO choreography. Native identity, gameplay, hues and corpse packets remain authoritative on ModernUO.
 
 ## Source, licence and reproducibility

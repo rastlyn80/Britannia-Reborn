@@ -7,6 +7,7 @@ class ProbeAvatar extends Node3D:
 	func receive_native_action(request: Dictionary) -> bool:
 		return horse_visual.receive_action(request)
 
+const ApproachActions := preload("res://Presentation/CreatureApproachActions.gd")
 const NativeActions := preload("res://Presentation/NativeMobileActions.gd")
 const Appearance := preload("res://Network/MobileAppearance.gd")
 var checks:=0
@@ -39,6 +40,7 @@ func run() -> void:
 	check(not actor.receive_action({"protocol":"classic","action":11}),"Sea creatures do not acquire an animal lying pose from slot11")
 	actor.dead=false;check(actor.receive_action({"protocol":"classic","action":8}) and actor.dead and actor.current_clip=="Death","Native sea death8 still reaches death")
 	check_colossal_blow(actor)
+	check_monster_approach(actor, library)
 	actor.entry={};actor.animator.callback_mode_process=AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
 	for profile in ["animal","sea","monster"]:
 		actor.action_profile=profile
@@ -70,4 +72,33 @@ func check_colossal_blow(actor: Probe) -> void:
 	ordinary_fall["frames"] = 5
 	check(NativeActions.dispatch(avatar, ordinary_fall) and actor.dead and actor.current_clip == "Death",
 		"Ordinary monster group 21 still reaches its fall")
+	avatar.free()
+
+
+func check_monster_approach(actor: Probe, library: AnimationLibrary) -> void:
+	var avatar := ProbeAvatar.new()
+	avatar.horse_visual = actor
+	var request := Appearance.action(PackedByteArray([0x6e, 0, 0, 0, 3, 0, 11, 0, 5, 0, 1, 0, 0, 1]))
+	actor.entry = {}
+	actor.action_profile = "monster"
+	actor.dead = false
+	for body: int in [8, 22, 49, 66, 89, 94, 106, 107, 108, 109, 110, 111, 112, 113, 129, 135, 142, 147, 166, 168, 180, 206, 215, 790]:
+		actor.native_body = body
+		request["body"] = body
+		check(ApproachActions.dispatch(avatar, request, false, -1) and actor.current_clip == "Fidget",
+			"Native approach uses the retained alert on body %d" % body)
+		check(actor.get_meta("native_action") == request, "Original approach packet stays intact")
+		var other := request.merged({"delay": 0}, true)
+		check(not ApproachActions.dispatch(avatar, other, false, -1), "A generic missing group 11 stays unsupported")
+	actor.native_body = 17
+	request["body"] = 17
+	check(not ApproachActions.dispatch(avatar, request, false, -1), "Unreviewed bodies keep their existing routing")
+	var source_notice := Animation.new()
+	source_notice.length = 1.
+	library.add_animation("SourceNotice", source_notice)
+	actor.native_body = 22
+	request["body"] = 22
+	actor.entry = {"classic_action_categories": {"11": "SourceNotice"}}
+	check(ApproachActions.dispatch(avatar, request, false, -1) and actor.current_clip == "SourceNotice",
+		"An explicit available group 11 takes priority")
 	avatar.free()

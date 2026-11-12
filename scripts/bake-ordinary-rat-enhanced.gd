@@ -83,6 +83,7 @@ func run() -> void:
 	verify_base_clips(player, RatScene)
 	player.stop()
 	rig.reset_bone_poses()
+	player.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_IDLE
 	var packed := PackedScene.new()
 	var scene := folder.path_join("rat-enhanced.scn")
 	assert(packed.pack(model) == OK and ResourceSaver.save(packed, scene, ResourceSaver.FLAG_COMPRESS) == OK)

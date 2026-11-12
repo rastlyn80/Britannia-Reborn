@@ -4,7 +4,7 @@ extends "res://Presentation/CougarTerrainFall.gd"
 var setting_up := false
 
 
-func enter(actor: Node3D, source: Node3D) -> float:
+func enter(actor: Node3D, source: Node3D, in_flight := false) -> float:
 	var continuing: bool = source.dead and source.current_clip in FALLS
 	var source_rig: Skeleton3D = source.skeleton
 	var sampled = source.contact.displayed
@@ -29,7 +29,8 @@ func enter(actor: Node3D, source: Node3D) -> float:
 	skin = supported_skin(actor)
 	actor.global_transform = source.global_transform
 	actor.model.global_transform = source.model.global_transform
-	actor.current_clip = source.current_clip if continuing else "Death"
+	var fall_clip := "AirDeath" if in_flight and actor.animator.has_animation("AirDeath") else "Death"
+	actor.current_clip = source.current_clip if continuing else fall_clip
 	var time: float = source.animator.current_animation_position if continuing else 0.0
 	var speed: float = absf(source.animator.get_playing_speed()) if continuing else 1.0
 	if is_zero_approx(speed):

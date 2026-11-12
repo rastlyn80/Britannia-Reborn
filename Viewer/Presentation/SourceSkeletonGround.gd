@@ -38,8 +38,9 @@ func bind(actor: Node3D, mesh: MeshInstance3D, detached_bones: Node3D) -> void:
 	pieces = detached_bones
 	include_toe_descendants = true
 	align_skinned_soles = true
-	configure(mesh, false)
-	assert(feet.size() == 2)
+	var quadruped: bool = actor.entry.get("limb_support", "") == "quadruped"
+	configure(mesh, quadruped)
+	assert(feet.size() == (4 if quadruped else 2))
 	for part: MeshInstance3D in actor.model.find_children("*", "MeshInstance3D", true, false):
 		if part.skin != null and part.name != &"SourceContactReference":
 			surfaces[part] = Ground.skin_points(part, get_skeleton())

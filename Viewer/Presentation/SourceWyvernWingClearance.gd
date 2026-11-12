@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+extends "res://Presentation/SourceWingSlopeClearance.gd"
+
+
+func bind(skin: Dictionary) -> void:
+	var rig := get_skeleton()
+	for chain: Array in [["box01", "box02", "box03"], ["box06", "box05", "box04"]]:
+		var joints := PackedInt32Array()
+		for label: String in chain:
+			joints.append(rig.find_bone(label))
+		assert(not joints.has(-1))
+		var descendants := {}
+		for bone in rig.get_bone_count():
+			var ancestor := bone
+			while ancestor >= 0 and ancestor != joints[0]:
+				ancestor = rig.get_bone_parent(ancestor)
+			if ancestor >= 0:
+				descendants[bone] = true
+		wings.append({"joints": joints, "skin": [select_vertices(skin, descendants)]})

@@ -68,7 +68,8 @@ static func witness(driver, world: Node, at: Vector2i, enhanced: bool, info: Arr
 	var holder: Node3D = world.world_items.nodes[corpse]
 	assert(not holder.visible)
 	await driver.create_timer(float(state.remaining) + .15).timeout
-	assert(holder.visible and world.world_items.corpse_snapshots.has(corpse) == (enhanced or body in [48, 242]))
+	var grounded_air: bool = body == 13 and source.get_script().resource_path == "res://Presentation/SourceTerrainAirElementalVisual.gd"
+	assert(holder.visible and world.world_items.corpse_snapshots.has(corpse) == (enhanced or body in [48, 242] or grounded_air))
 	var frozen: Node3D = holder.get_node("CorpseVisual")
 	assert(frozen.get_meta("native_hue") == hue and frozen.get_meta("death_clip") == "Death")
 	assert(frozen.find_children("*", "Skeleton3D", true, false).is_empty())

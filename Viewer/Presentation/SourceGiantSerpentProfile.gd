@@ -9,7 +9,8 @@ const Renderer := "res://Presentation/SourceEnhancedGiantSerpentVisual.gd"
 
 static func enable() -> bool:
 	var base := Registry.entry(Body)
-	if base.get("presentation_script") == Renderer:
+	if base.get("presentation_script") in [Renderer, "res://Presentation/SourceTerrainGiantSerpentVisual.gd"] \
+			and Registry.asset_path(base).begins_with(Art):
 		return true
 	if base.get("kind") != "serpents_snake_giant" or not FileAccess.file_exists(Art + "manifest.json"):
 		return false
@@ -28,6 +29,7 @@ static func enable() -> bool:
 		assets[style] = path
 	var row := base.duplicate(true)
 	row["assets"] = assets
+	row["asset_sha256"] = manifest.scene_sha256
 	row["presentation_script"] = Renderer
 	Registry.entries[Body] = row
 	return true

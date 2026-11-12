@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 extends RefCounted
 
-const Fit := preload("test-alligator-direwolf-enhanced.gd")
+const Fit := preload("res://../scripts/test-alligator-direwolf-enhanced.gd")
 const Wire := preload("res://Network/LoginProtocol.gd")
 const Cases := [
 	[202, 11, 0, "AlligatorSideSnap", .43, 0x8035],
@@ -73,7 +73,7 @@ static func witness(driver, world: Node, at: Vector2i, enhanced: bool, info: Arr
 	var holder: Node3D = world.world_items.nodes[corpse]
 	assert(not holder.visible)
 	await driver.create_timer(float(state.remaining) + .15).timeout
-	assert(holder.visible and world.world_items.corpse_snapshots.has(corpse) == (enhanced or body == 202))
+	assert(holder.visible and world.world_items.corpse_snapshots.has(corpse))
 	var frozen: Node3D = holder.get_node("CorpseVisual")
 	assert(frozen.get_meta("native_hue") == hue and frozen.get_meta("death_clip") == fall_clip)
 	assert(frozen.find_children("*", "Skeleton3D", true, false).is_empty())

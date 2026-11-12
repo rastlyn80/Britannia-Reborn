@@ -52,3 +52,10 @@ Local receipts and renders: `outputs/creatures/bogling-trial/`; native records: 
 6. Run the accepted local creature groups through `scripts/test-creatures.ps1`, the rendered whole corpse catalogue and `scripts/verify.ps1`. Never replace current evidence with stale receipts.
 
 The shipped package can be tested by `scripts/verify.ps1` without original source inputs; the source-comparison tests additionally require the pinned donor. Remaining gaps include final art/anatomy polish, original UO choreography/masks, arbitrary terrain, autonomous native gameplay, six unsupported generic extended action slots and separate unimplemented plant bodies such as BogThing780. No overall creature-port completion is claimed.
+
+
+## Tread contact and displayed collapse
+
+Body 779 keeps the licensed eight-influence bark rig. Each foot now checks its own tread from the skinned sole before the complete body receives any remaining vertical correction. The same native anchor supports the neck and branch gestures. On the 22 cm step, the largest sampled run correction fell from 298 mm with the initial whole-body correction to 219 mm with the local foot solve. It remains visible on the highest step.
+
+The tested client cleared 6,944 Classic and 7,812 Enhanced living poses. Decoded death preserved the displayed pose across 72 Classic and 88 Enhanced handoffs. The Enhanced checks include the fitted Sprout and Branch Alert. Isolated native runs passed 46 Classic and 50 Enhanced checks, including movement after an idle packet, stock action packets, constructor and custom hues and a static body-779 corpse. The native corpse held four logs and a seed.

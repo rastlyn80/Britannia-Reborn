@@ -38,7 +38,7 @@ var personal_space := PersonalSpace.new()
 const Motion = preload("res://Presentation/MotionTrack.gd")
 const MountVisual := preload("res://Presentation/MountVisual.gd")
 const Avatar = preload("res://Presentation/Avatar.gd")
-const CreatureAttackActions := preload("res://Presentation/EnhancedCreatureAttackActions.gd")
+const CreatureActions := preload("res://Presentation/CreatureApproachActions.gd")
 const Reconstruction = preload("res://Presentation/Reconstruction.gd")
 var tracks := {}
 var directions := {}
@@ -128,6 +128,7 @@ func _ready() -> void:
 		preload("res://Presentation/SourceSilverSerpentProfile.gd").enable()
 		preload("res://Presentation/SourceOrdinaryRatProfile.gd").enable()
 		preload("res://Presentation/SourceTimberWolfProfile.gd").enable()
+	preload("res://Presentation/SourceOccurrenceTerrainProfile.gd").enable()
 	MountVisual.Animals.enhanced_bovine_actions = enhanced_creature_actions and MountVisual.Animals.EnhancedBovine.enable()
 	var path := "res://world.json"
 	if FileAccess.file_exists("res://play-world.json"): path = "res://play-world.json"
@@ -354,7 +355,7 @@ func _ready() -> void:
 				if avatar.human_visual == null and is_instance_valid(visual) and visual.has_method("receive_enhanced_action") \
 						and visual.receive_enhanced_action(request, flags):
 					return
-			CreatureAttackActions.dispatch(avatar, request, enhanced_creature_actions, flags))
+			CreatureActions.dispatch(avatar, request, enhanced_creature_actions, flags))
 	game.vendor_received.connect(func(serial: int,_stock: Array):
 		if avatars.has(serial): avatars[serial].get_node("Nameplate").text = game.entity_names.get(serial,"Vendor")+" · shopkeeper")
 	game.entity_name_received.connect(func(serial: int, name_text: String):
@@ -567,7 +568,7 @@ func _add_modern_hud(canvas: CanvasLayer, login_panel: Control) -> void:
 	canvas.move_child(bars,1)
 	bars.configure(self)
 	var effects: Node3D = preload("res://Presentation/SourceEnhancedMeerMageEffects.gd").new() \
-		if enhanced_creature_actions else preload("res://Presentation/CreatureProjectilePresenter.gd").new()
+		if enhanced_creature_actions else preload("res://Presentation/ClassicCreatureEffects.gd").new()
 	add_child(effects)
 	effects.configure(self)
 	var ratman_arrows := preload("res://Presentation/RatmanArrowPresenter.gd").new()

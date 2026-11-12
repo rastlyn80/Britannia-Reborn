@@ -1096,8 +1096,13 @@ func witness_gorilla_gazer(world: Node, at: Vector2i, enhanced: bool, body: int)
 	world.game._handle(mobile_packet(at, 64, serial, body, hue))
 	var source: Node3D = world.avatars[serial].horse_visual
 	assert(source.native_body == body and source.native_hue == hue)
+	var prepared_grounding := false
 	if body == 29:
-		assert(source.contact.get_script().resource_path == "res://Presentation/MeasuredCreatureSupport.gd")
+		var registry := preload("res://Presentation/CreatureRegistry.gd")
+		var terrain := preload("res://Presentation/SourceOccurrenceTerrainProfile.gd")
+		prepared_grounding = terrain.ready_for_terrain(body, registry.entry(body))
+		var expected := "SourceSkeletonGround.gd" if prepared_grounding else "MeasuredCreatureSupport.gd"
+		assert(source.contact.get_script().resource_path == "res://Presentation/" + expected)
 	var before := Vector3.ZERO
 	var head: int = source.skeleton.find_bone("bip01 head")
 	if enhanced:
@@ -1105,6 +1110,7 @@ func witness_gorilla_gazer(world: Node, at: Vector2i, enhanced: bool, body: int)
 		assert(source.current_clip == ("GorillaChestBeat" if body == 29 else "GazerUnfurl"))
 		source.animator.advance(.13)
 		source.animator.seek(source.animator.current_animation_length * .38, true)
+	if enhanced or prepared_grounding:
 		source._physics_process(1.0 / 60.0)
 		source.skeleton.force_update_all_bone_transforms()
 		before = source.skeleton.to_global(source.skeleton.get_bone_global_pose(head).origin)
@@ -1122,14 +1128,14 @@ func witness_gorilla_gazer(world: Node, at: Vector2i, enhanced: bool, body: int)
 	var fallen: Node3D = state.visual
 	assert(not holder.visible and fallen.current_clip == "Death" and fallen.native_hue == hue)
 	var jump := 0.0
-	if enhanced:
+	if enhanced or prepared_grounding:
 		fallen.skeleton.force_update_all_bone_transforms()
 		jump = before.distance_to(fallen.skeleton.to_global(fallen.skeleton.get_bone_global_pose(head).origin))
 		assert(jump < .002, "Body %d world fall jumped %f metres" % [body, jump])
 	await create_timer(float(state.remaining) + .15).timeout
 	assert(holder.visible)
 	var retained: bool = world.world_items.corpse_snapshots.has(corpse)
-	assert(retained == (enhanced or body == 22))
+	assert(retained == (enhanced or body == 22 or prepared_grounding))
 	var frozen: Node3D = holder.get_node("CorpseVisual")
 	assert(frozen.get_meta("native_hue") == hue and frozen.get_meta("death_clip") == "Death")
 	assert(frozen.find_children("*", "Skeleton3D", true, false).is_empty())

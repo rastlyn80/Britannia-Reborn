@@ -10,6 +10,13 @@ var fall := preload("res://Presentation/SourceSpaceDisplayedFallPlayback.gd").ne
 var living_floor: Dictionary = {}
 
 
+func _ready() -> void:
+	super._ready()
+	# A prepared scene can retain the manual clock used by its baker.
+	if animator.callback_mode_process == AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL:
+		animator.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_IDLE
+
+
 func set_native_combat_flags(value: int) -> void:
 	var entering := flags >= 0 and (flags & 0x40) == 0 and (value & 0x40) != 0
 	flags = value

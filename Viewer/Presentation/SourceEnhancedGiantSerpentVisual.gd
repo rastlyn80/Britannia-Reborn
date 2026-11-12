@@ -13,10 +13,15 @@ const IdleGestures := ["Fidget", "TailRipple", "SerpentLowWatch", "SerpentRaised
 var flags := -1
 var fall := preload("res://Presentation/SourceSpaceDisplayedFallPlayback.gd").new()
 var living_floor: Dictionary = {}
+var fitted_actions := false
 
 
 func _ready() -> void:
 	super._ready()
+	# A prepared scene can retain the manual clock used by its baker.
+	if animator.callback_mode_process == AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL:
+		animator.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_IDLE
+	fitted_actions = animator.has_animation(Groups[25])
 	var mesh := model.find_children("*", "MeshInstance3D", true, false)[0] as MeshInstance3D
 	fall.skin = Ground.skin_points(mesh, skeleton)
 	# The belly and tail bear weight along the full skinned surface.
@@ -27,11 +32,16 @@ func _ready() -> void:
 func set_native_combat_flags(value: int) -> void:
 	var entering := flags >= 0 and (flags & 0x40) == 0 and (value & 0x40) != 0
 	flags = value
-	if entering and not dead and action_remaining <= 0.:
+	if fitted_actions and entering and not dead and action_remaining <= 0.:
 		start_clip(Groups[28], {})
 
 
 func play_gait(moving: bool, speed: float) -> void:
+	if not fitted_actions:
+		if moving and current_clip in IdleGestures:
+			action_remaining = 0.0
+		super.play_gait(moving, speed)
+		return
 	if dead:
 		return
 	if action_remaining > 0.:
@@ -75,7 +85,7 @@ static func group_for(type: int, variation: int, war: bool) -> int:
 
 
 func receive_enhanced_action(request: Dictionary, wire_flags: int) -> bool:
-	if dead or wire_flags < 0 or request.get("protocol") != "new" or int(request.get("body", 0)) != native_body:
+	if not fitted_actions or dead or wire_flags < 0 or request.get("protocol") != "new" or int(request.get("body", 0)) != native_body:
 		return false
 	var group := group_for(int(request.get("type", -1)), int(request.get("variation", -1)), (wire_flags & 0x40) != 0)
 	if not Groups.has(group):

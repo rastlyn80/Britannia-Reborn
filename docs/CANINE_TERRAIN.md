@@ -1,0 +1,11 @@
+# Hell Hound and Dire Wolf
+
+Bodies 98 and 23 use the locally prepared `canines_hell_hound` and `canines_wolf_dire` rigs. The terrain profile checks the exact original, rounded and modern scene hashes before selecting the new renderers. The skins, material textures and base motions still come from the original Third Dawn preparation; the six optional Dire Wolf actions still use the fitted Enhanced sequence. The source and all derived art remain local.
+
+On a 22 cm tread the previous gait penetrated up to 224 mm on the Hell Hound and 221 mm on the Dire Wolf. The revised four-foot support passed 4,500 gait samples per profile and 488 Classic or 3,416 Enhanced gesture samples. It closes the source gait loops and corrects the paws and body at the tread. The largest measured frame-to-frame lift during running was about 69 mm on the Hell Hound and 90 mm on the Dire Wolf. Those motions remain in the visual review.
+
+The decoded fall replay passed 72 Classic and 80 Enhanced handoffs, including the Hell Hound at projectile release. The largest first-pose difference was 0.007 mm. Both freeze to body variants of native corpse graphic `0x2006`. The isolated Dire Wolf trials passed 40 and 44 checks respectively with stock movements, native deaths and controlled gesture packets. A fixture applied a partial hue in the second case.
+
+The pinned ModernUO Hell Hound uses the stock FireBreath ability. Its five-frame Classic group 12 previously selected a death pose. The renderer identifies the exact windup, animates the original head and jaw, and uses the mid-point between the two measured lips as the moving effect origin. It preserves the separate ten-frame alternate-fall replay. Both isolated profiles passed 21 checks with controlled targeting, two actual connections, the stock moving graphic `0x36D4` approximately 1.3 seconds after the cue, delayed native damage, and a frozen corpse retaining native sulphurous ash. The trial invokes the real ability with a chosen target.
+
+Run `scripts/verify.ps1` with both locally prepared rigs. The individual sampled gates are `scripts/test-source-canines-terrain.gd` and `scripts/test-source-canines-falls.gd`, using `--step-quadruped-candidate`. Add `--enhanced-creature-actions` for the optional profile.

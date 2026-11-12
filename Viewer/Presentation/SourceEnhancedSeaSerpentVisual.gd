@@ -20,6 +20,9 @@ var transfer_duration := 0.
 
 func _ready() -> void:
 	super._ready()
+	# A prepared scene can retain the manual clock used by its baker.
+	if animator.callback_mode_process == AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL:
+		animator.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_IDLE
 	classic_death = animator.get_animation("Death")
 	var library := animator.get_animation_library("")
 	library.add_animation("Death2", library.get_animation("SeaRollFall"))

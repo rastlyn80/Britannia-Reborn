@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 extends SceneTree
 
-const Presenter := preload("res://Presentation/EnhancedCreatureEffects.gd")
+const Enhanced := preload("res://Presentation/EnhancedCreatureEffects.gd")
+const Classic := preload("res://Presentation/ClassicCreatureEffects.gd")
 
 
 class FixtureWorld extends Node3D:
@@ -10,17 +11,24 @@ class FixtureWorld extends Node3D:
 
 
 func _initialize() -> void:
-	create_timer(4.0).timeout.connect(func(): quit(2))
+	create_timer(6.0).timeout.connect(func(): quit(2))
 	call_deferred("run")
 
 
 func run() -> void:
+	await check(Enhanced)
+	await check(Classic)
+	print("CREATURE EFFECT LIFETIME: both presenters follow and safely release their target")
+	quit()
+
+
+func check(presenter: GDScript) -> void:
 	var world := FixtureWorld.new()
 	root.add_child(world)
 	var subject := Node3D.new()
 	world.add_child(subject)
 	world.avatars[72] = subject
-	var effects := Presenter.new()
+	var effects: Node3D = presenter.new()
 	world.add_child(effects)
 	effects.scene = world
 	effects.present({"kind": "fixed_mobile", "source": 72, "target": 0, "graphic": 0x3728,
@@ -42,5 +50,4 @@ func run() -> void:
 	effects.queue_free()
 	await create_timer(1.7).timeout
 	assert(not is_instance_valid(cloud) and not is_instance_valid(lamp))
-	print("ENHANCED EFFECT LIFETIME: smoke followed its target, held on removal and cleared with the presenter")
-	quit()
+	world.queue_free()

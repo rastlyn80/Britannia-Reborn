@@ -298,16 +298,31 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
     throw "Enhanced $family motion, terrain or corpse failed"
    }
   }
-  foreach ($mode in @('Classic', 'Enhanced')) {
-   $modeArgs = @($profileTests)
+  $worldReplayFolder = Join-Path $root ("work/verification/world-replay-" + [Guid]::NewGuid().ToString('N'))
+  New-Item -ItemType Directory -Path $worldReplayFolder -Force | Out-Null
+  Write-Output "World creature replay logs are in $worldReplayFolder"
+  $worldModes = @('Classic', 'Enhanced')
+  $worldResults = $worldModes | ForEach-Object -Parallel {
+   $mode = $_
+   $modeArgs = @($using:profileTests)
    if ($mode -eq 'Enhanced') {
     $modeArgs += '--enhanced-creature-actions'
     if ($modeArgs -contains '--knight-acid-pixie-frost' -or $modeArgs -contains '--matriarch-succubus') { $modeArgs += '--recolour-optional-props' }
    }
-   $checks = & $godot --headless --path "$root/Viewer" --script res://../scripts/test-enhanced-world-dispatch.gd -- @modeArgs 2>&1
-   $checkExit = $LASTEXITCODE
-   $checks | ForEach-Object { Write-Output $_ }
-   if ($checkExit -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) {throw "$mode world creature dispatch failed"}
+   $engine = $using:godot
+   $viewer = Join-Path $using:root 'Viewer'
+   $log = Join-Path $using:worldReplayFolder "$mode.log"
+   $checks = & $engine --headless --path $viewer --script res://../scripts/test-enhanced-world-dispatch.gd --log-file $log -- @modeArgs 2>&1
+   [pscustomobject]@{Mode = $mode; ExitCode = $LASTEXITCODE; Output = @($checks)}
+  } -ThrottleLimit 2
+  foreach ($mode in $worldModes) {
+   $result = @($worldResults | Where-Object Mode -eq $mode)
+   if ($result.Count -ne 1) { throw "$mode world creature dispatch did not return one result" }
+   $result[0].Output | ForEach-Object { Write-Output $_ }
+   if ($result[0].ExitCode -or ($result[0].Output | Select-String 'SCRIPT ERROR:|Parse Error:') -or
+       !($result[0].Output | Select-String '^WORLD CREATURE DISPATCH:')) {
+    throw "$mode world creature dispatch failed"
+   }
   }
   if (Test-Path "$root/Viewer/local-art/horses/warhorse.glb") {
    & $godot --headless --path "$root/Viewer" --script res://../scripts/test-ordinary-horse-routing.gd
@@ -564,6 +579,9 @@ if (Test-Path "$root/Viewer/Art/Creatures/Eagle/eagle.glb") {
   & python -B "$root/scripts/test-eagle-distribution.py"
   if ($LASTEXITCODE) {throw 'Public eagle skin, flight transitions and static corpse distribution failed'}
 }
+if (Test-Path "$root/Viewer/Art/Creatures/Air/air-elemental.scn") { $availableOccurrence += 13 }
+if (Test-Path "$root/Viewer/Art/Creatures/Fire/fire-elemental.scn") { $availableOccurrence += 15 }
+if (Test-Path "$root/Viewer/Art/Creatures/Wisp/wisp.scn") { $availableOccurrence += 58 }
 if (Test-Path "$root/Viewer/Art/Creatures/Rabbit/rabbit.glb") {
   & python -B "$root/scripts/test-rabbit-distribution.py"
   if ($LASTEXITCODE) {throw 'Public rabbit skins, source hop, alpha/normal maps and static corpse distribution failed'}
@@ -1191,6 +1209,195 @@ if ((Test-Path "$root/Viewer/local-art/animals/bovine_cow_spotted-modern-actions
    $code = $LASTEXITCODE
    $results | ForEach-Object { Write-Output $_ }
    if ($code -or ($results | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "$mode $test Cow verification failed" }
+  }
+ }
+}
+
+$sourceOccurrence = @{
+ 1 = 'serpent-ogre-actions-1-modern.scn'
+ 3 = 'zombie-actions-modern.scn'
+ 8 = 'corpser-actions-modern.scn'
+ 21 = 'serpent-ogre-actions-21-modern.scn'
+ 22 = 'gazer-actions-modern.scn'
+ 30 = 'harpy-actions-modern.scn'
+ 39 = 'mongbat-actions-modern.scn'
+ 47 = 'reaper-actions-modern.scn'
+ 52 = 'small_snakes-modern.gltf'
+ 9 = 'daemon-distinct-actions-modern.scn'
+ 62 = 'wyvern-distinct-actions-modern.scn'
+ 81 = 'frogs_bullfrog-modern.gltf'
+ 163 = 'elementals_snow_elemental-modern.gltf'
+ 221 = 'walrus-distinct-actions-modern.scn'
+ 24 = 'lich-actions-modern.scn'
+ 89 = 'serpents_snake_giant_ice-modern.gltf'
+ 29 = 'gorillas_silverback-modern.gltf'
+ 31 = 'headless-actions-modern.scn'
+ 153 = 'walking_dead_ghoul-modern.gltf'
+}
+$availableOccurrence = @($sourceOccurrence.Keys | Sort-Object | Where-Object {
+ Test-Path "$root/Viewer/local-art/creatures/$($sourceOccurrence[$_])"
+})
+if ((Test-Path "$root/Viewer/Art/Creatures/Chicken/chicken.glb") -and
+    (Test-Path "$root/Viewer/Art/Creatures/Chicken/distinct-actions.res")) { $availableOccurrence += 208 }
+if (Test-Path "$root/Viewer/local-art/creatures/orc-lord-prepared/manifest.json") { $availableOccurrence += 138 }
+if (Test-Path "$root/Viewer/Art/Creatures/Birds/small-bird.glb") { $availableOccurrence += 6 }
+if (Test-Path "$root/Viewer/Art/Creatures/Bogling/bogling.glb") { $availableOccurrence += 779 }
+if (Test-Path "$root/Viewer/Art/Creatures/Air/air-elemental.scn") { $availableOccurrence += 13 }
+if (Test-Path "$root/Viewer/Art/Creatures/Fire/fire-elemental.scn") { $availableOccurrence += 15 }
+if (Test-Path "$root/Viewer/Art/Creatures/Wisp/wisp.scn") { $availableOccurrence += 58 }
+if (Test-Path "$root/Viewer/Art/Creatures/Rabbit/rabbit.glb") { $availableOccurrence += 205 }
+if (Test-Path "$root/Viewer/Art/Creatures/Rat/rat-deaths.scn") { $availableOccurrence += 238 }
+$arcticArt = (Test-Path "$root/Viewer/local-art/creatures/polar-bear-distinct-actions-modern.scn") -and
+ (Test-Path "$root/Viewer/local-art/creatures/canines_wolf_white-modern.gltf")
+if ($arcticArt) { $availableOccurrence += @(34, 37, 213) }
+$drakeArt = (Test-Path "$root/Viewer/local-art/creatures/drake-distinct-60-actions-modern.scn") -and
+ (Test-Path "$root/Viewer/local-art/creatures/drake-distinct-61-actions-modern.scn")
+if ($drakeArt) { $availableOccurrence += @(60, 61) }
+$optionalCreatures = Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions.json"
+foreach ($mode in @('classic','enhanced')) {
+ $arguments = @()
+ if ($mode -eq 'enhanced') {
+  if (!$optionalCreatures) { continue }
+  $arguments += '--enhanced-creature-actions'
+ }
+ foreach ($body in $availableOccurrence) {
+  if ($body -in @(34, 37, 60, 61, 213)) { continue }
+  if ($body -eq 13 -or $body -eq 15 -or $body -eq 58) {
+   if ($body -eq 58 -and $mode -eq 'enhanced') { continue }
+   $checks = @('test-source-hover-clearance.gd')
+   if ($body -eq 15) { $checks += 'test-source-fire-falls.gd' }
+  } elseif ($body -eq 21) {
+   if ($mode -eq 'enhanced' -and !(Test-Path "$root/Viewer/local-art/creatures/giant-serpent-enhanced/manifest.json")) { continue }
+   $checks = @('test-source-giant-serpent-terrain.gd','test-source-giant-serpent-falls.gd')
+  } elseif ($body -eq 9) {
+   if ($mode -eq 'enhanced' -and !(Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions/9-modern.scn")) { continue }
+   $checks = @('test-source-daemon-terrain.gd','test-source-daemon-falls.gd')
+  } elseif ($body -eq 62) {
+   if ($mode -eq 'enhanced' -and !(Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions/62-modern.scn")) { continue }
+   $checks = @('test-source-wyvern-terrain.gd','test-source-wyvern-falls.gd')
+  } elseif ($body -eq 238) {
+   if ($mode -eq 'enhanced' -and !(Test-Path "$root/Viewer/local-art/creatures/ordinary-rat-enhanced/manifest.json")) { continue }
+   $checks = @('test-source-rat-terrain.gd','test-source-rat-falls.gd')
+  } elseif ($body -eq 81) {
+   $checks = @('test-source-frog-terrain.gd','test-source-frog-falls.gd')
+  } elseif ($body -in @(163, 221)) {
+   if ($mode -eq 'enhanced' -and !(Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions/$body-modern.scn")) { continue }
+   $family = if ($body -eq 163) { 'snow' } else { 'walrus' }
+   $checks = @("test-source-$family-terrain.gd","test-source-$family-falls.gd")
+  } elseif ($body -eq 89) {
+   if ($mode -eq 'enhanced' -and !(Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions/89-modern.scn")) { continue }
+   $checks = @('test-source-ice-serpent-terrain.gd','test-source-ice-serpent-falls.gd')
+  } elseif ($body -eq 24) {
+   if ($mode -eq 'enhanced' -and !(Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions/24-modern.scn")) { continue }
+   $checks = @('test-source-lich-terrain.gd','test-source-lich-falls.gd')
+  } elseif ($body -eq 22 -or $body -eq 205) {
+   if ($mode -eq 'enhanced' -and !(Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions/$body-modern.scn")) { continue }
+   $family = if ($body -eq 22) { 'gazer' } else { 'rabbit' }
+   $checks = @('test-rabbit-gazer-seahorse-terrain.gd',"test-source-$family-falls.gd")
+  } else {
+   $checks = @('test-source-occurrence-terrain.gd','test-source-occurrence-fall.gd')
+  }
+  foreach ($test in $checks) {
+   $testArguments = @("--body=$body") + $arguments
+   if ($body -eq 24) { $testArguments += '--lich-candidate' }
+   if ($body -eq 163) { $testArguments += '--snow-candidate' }
+   if ($body -eq 221) { $testArguments += '--walrus-candidate' }
+   if ($body -eq 89) { $testArguments += '--ice-serpent-candidate' }
+   if ($body -eq 9) { $testArguments += '--daemon-candidate' }
+   if ($body -eq 62) { $testArguments += '--wyvern-candidate' }
+   if ($body -eq 81) { $testArguments += '--frog-candidate' }
+   if ($body -eq 238) { $testArguments += '--rat-candidate' }
+   $results = & $godot --headless --path "$root/Viewer" --script "res://../scripts/$test" -- @testArguments 2>&1
+   $code = $LASTEXITCODE
+   $results | ForEach-Object { Write-Output $_ }
+   if ($code -or ($results | Select-String 'SCRIPT ERROR:|Parse Error:')) {
+    throw "$mode creature $body $test verification failed"
+   }
+  }
+ }
+ if (9 -in $availableOccurrence -and 62 -in $availableOccurrence -and
+     ($mode -eq 'classic' -or ((Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions/9-modern.scn") -and
+       (Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions/62-modern.scn")))) {
+  $results = & $godot --headless --path "$root/Viewer" --script res://../scripts/test-source-winged-world.gd -- '--world=res://world.json' @arguments 2>&1
+  $code = $LASTEXITCODE
+  $results | ForEach-Object { Write-Output $_ }
+  if ($code -or ($results | Select-String 'SCRIPT ERROR:|Parse Error:') -or
+      !($results | Select-String '^WINGED TERRAIN WORLD:')) { throw "$mode winged World dispatch failed" }
+ }
+ if ($availableOccurrence.Count) {
+  $results = & $godot --headless --path "$root/Viewer" --script res://../scripts/test-source-occurrence-world.gd -- "--bodies=$($availableOccurrence -join ',')" @arguments 2>&1
+  $code = $LASTEXITCODE
+  $results | ForEach-Object { Write-Output $_ }
+  if ($code -or ($results | Select-String 'SCRIPT ERROR:|Parse Error:')) {
+   throw "$mode creature World dispatch failed"
+  }
+ }
+}
+$canineArt = (Test-Path "$root/Viewer/local-art/creatures/canines_hell_hound-modern.gltf") -and
+ (Test-Path "$root/Viewer/local-art/creatures/canines_wolf_dire-modern.gltf")
+if ($canineArt) {
+ foreach ($mode in @('classic','enhanced')) {
+  $arguments = @('--step-quadruped-candidate')
+  if ($mode -eq 'enhanced') {
+   if (!$optionalCreatures -or !(Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions/23-modern.scn")) { continue }
+   $arguments += '--enhanced-creature-actions'
+  }
+  foreach ($test in @('test-source-canines-terrain.gd','test-source-canines-falls.gd')) {
+   $results = & $godot --headless --path "$root/Viewer" --script "res://../scripts/$test" -- @arguments 2>&1
+   $code = $LASTEXITCODE
+   $results | ForEach-Object { Write-Output $_ }
+   if ($code -or ($results | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "$mode $test verification failed" }
+  }
+ }
+}
+if ($drakeArt) {
+ foreach ($mode in @('classic','enhanced')) {
+  $arguments = @('--drake-candidate')
+  if ($mode -eq 'enhanced') {
+   if (!$optionalCreatures -or !(Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions/60-modern.scn")) { continue }
+   $arguments += '--enhanced-creature-actions'
+  }
+  foreach ($test in @('test-source-drake-terrain.gd','test-source-drake-falls.gd')) {
+   $results = & $godot --headless --path "$root/Viewer" --script "res://../scripts/$test" -- @arguments 2>&1
+   $code = $LASTEXITCODE
+   $results | ForEach-Object { Write-Output $_ }
+   if ($code -or ($results | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "$mode $test verification failed" }
+  }
+ }
+}
+if ($arcticArt) {
+ foreach ($mode in @('classic','enhanced')) {
+  $arguments = @('--step-quadruped-candidate')
+  if ($mode -eq 'enhanced') {
+   if (!$optionalCreatures -or !(Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions/213-modern.scn")) { continue }
+   $arguments += '--enhanced-creature-actions'
+  }
+  foreach ($test in @('test-source-arctic-terrain.gd','test-source-arctic-falls.gd')) {
+   $results = & $godot --headless --path "$root/Viewer" --script "res://../scripts/$test" -- @arguments 2>&1
+   $code = $LASTEXITCODE
+   $results | ForEach-Object { Write-Output $_ }
+   if ($code -or ($results | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "$mode $test verification failed" }
+  }
+ }
+}
+$clockModes = @(@{Arguments = @()})
+if ($optionalCreatures) { $clockModes += @{Arguments = @('--enhanced-creature-actions')} }
+foreach ($mode in $clockModes) {
+ $arguments = $mode.Arguments
+ $results = & $godot --headless --path "$root/Viewer" --script res://../scripts/test-source-creature-clock.gd -- @arguments 2>&1
+ $code = $LASTEXITCODE
+ $results | ForEach-Object { Write-Output $_ }
+ if ($code -or ($results | Select-String 'SCRIPT ERROR:|Parse Error:')) {
+  throw 'Prepared creature live playback failed'
+ }
+}
+if ($optionalCreatures -and (Test-Path "$root/Viewer/local-art/mounts/sea-horse.json")) {
+ foreach ($test in @('test-rabbit-gazer-seahorse-terrain.gd','test-source-seahorse-falls.gd','test-source-seahorse-rider-terrain.gd')) {
+  $results = & $godot --headless --path "$root/Viewer" --script "res://../scripts/$test" -- --body=144 --enhanced-creature-actions 2>&1
+  $code = $LASTEXITCODE
+  $results | ForEach-Object { Write-Output $_ }
+  if ($code -or ($results | Select-String 'SCRIPT ERROR:|Parse Error:')) {
+   throw "Distinct Sea Horse $test failed"
   }
  }
 }

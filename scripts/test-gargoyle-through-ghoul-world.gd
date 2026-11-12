@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 extends RefCounted
 
-const Fit := preload("test-gargoyle-through-ghoul-enhanced.gd")
+const Fit := preload("res://../scripts/test-gargoyle-through-ghoul-enhanced.gd")
 const Wire := preload("res://Network/LoginProtocol.gd")
 const Cases := [[4, .10], [4, .58], [31, .58], [74, .10], [74, .58], [153, .58]]
 const Rise := {4: "GargoyleWingRise", 31: "HeadlessGatherRise", 74: "ImpUnfurl", 153: "GhoulKneelingRise"}
@@ -74,5 +74,6 @@ static func witness(driver, world: Node, at: Vector2i, enhanced: bool, body: int
 	assert(frozen.find_children("*", "Skeleton3D", true, false).is_empty())
 	assert(frozen.find_children("*", "MultiMeshInstance3D", true, false).is_empty())
 	var retained: bool = world.world_items.corpse_snapshots.has(corpse)
-	assert(retained == (enhanced or body != 153))
+	var grounded_ghoul: bool = body == 153 and source.get_script().resource_path.ends_with("/SourceTerrainGhoulVisual.gd")
+	assert(retained == (enhanced or body != 153 or grounded_ghoul))
 	return {"hue": hue, "jump": jump, "corpse": corpse, "retained": retained, "clip": clip, "routes": routes}

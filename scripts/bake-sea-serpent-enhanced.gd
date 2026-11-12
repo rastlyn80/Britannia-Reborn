@@ -38,6 +38,7 @@ func run() -> void:
 		var receipt := verify_fit(player, rig, mesh, source)
 		player.stop()
 		rig.reset_bone_poses()
+		player.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_IDLE
 		var scene := PackedScene.new()
 		assert(scene.pack(actor) == OK)
 		var output := folder.path_join("sea-serpent-enhanced-" + treatment + ".scn")

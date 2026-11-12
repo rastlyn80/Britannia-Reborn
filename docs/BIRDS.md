@@ -29,3 +29,10 @@ Reproduction from the repository root:
 Finite collision planes do not certify arbitrary steps, obstacles or every terrain edge. The global occurrence order, unresolved identities, anatomy and original-action gaps remain active. Orc reviews are next, then the common water/sea creatures.
 
 Shared regression:101 existing source forms/36 groups pass68,115 motion checks/20,664 skin samples and1,395 GPU checks/606 views. All162 available corpse variants pass1,509 rendered checks. Fresh full `scripts/verify.ps1` exits0 with no script errors, including79 developer-edit checks and final world startup (`work/birds/full-verify-clean.log`). A street-test fixture needed its required terrain graphic ID; its43 checks now pass cleanly and verification rejects a script error even when Godot exits0. No terrain runtime was changed.
+
+
+## Ordinary and Tropical Bird terrain and corpses
+
+The two stock constructors share body 6, with distinct native hues and sounds. The same licensed shrike keeps its wing and independent foot controls. The client samples the support beneath the actual skinned body, preserving the model's height above the ground during flight and adjusting clearance where the terrain rises.
+
+The tested client cleared 6,510 Classic and 7,378 Enhanced living poses. The biggest measured single-frame correction on the 22 cm step was about 40 mm in Run. Both collapse groups and the corpse transfer from a flight pose passed 64 Classic and 80 Enhanced decoded handoffs. Isolated server runs passed 92 Classic and 100 Enhanced checks across both constructors and test characters. They checked stock movement, combat reactions, full and partial hues, actual Animal Taming through the player's cursor, and the replicated static corpse. The flight poses were tested by replay.

@@ -1,3 +1,95 @@
+# Wyvern, ordinary rat and BullFrog terrain
+
+The recovered Wyvern keeps its wing and tail joints. Its landings clear slopes and treads, and native venom still poisons and damages an actual target. The public Rat rig and its optional Enhanced gestures now clear stepped ground and settle into body 238 static corpses. The BullFrog retains its original hop and tongue action and passed stock feeding and harvesting on both client profiles. See [Wyvern, Rat and BullFrog terrain evidence](WYVERN_RAT_TERRAIN.md).
+
+
+# Polar Bear, White Wolf, Walrus and Snow Elemental
+
+Both White Wolf body rolls, the Polar Bear and the Walrus passed native movement, hue, corpse and harvesting checks. The Snow Elemental keeps its compact Enhanced rise and recovers its original scale when a native run interrupts it. Its corpse preserves the packed iron ore and black pearls. [Northern creature evidence](NORTHERN_CREATURE_TERRAIN.md).
+
+
+# Daemon flight and frozen corpses
+
+The original Daemon follows slopes and steps on the recovered wings. Both client profiles passed native movement and deaths, the native Lightning spell and its effects, and controlled Classic and Enhanced gesture packets. [Daemon evidence](DAEMON_TERRAIN.md).
+
+
+# Both Drake colours on slopes and treads
+
+The yellow and red Drakes keep their Third Dawn rigs, native fireball origin, and distinct land and airborne falls. The terrain support keeps flight steady and smooths the body descent during landing. Both profiles passed native movement, fire-breath, corpse, scale and hide checks. [Drake evidence](DRAKE_TERRAIN.md).
+
+
+# Ice Serpent terrain and corpse
+
+The original ice mesh and cold cutout material now follow the sampled slope and tread. The Enhanced rise retains its buried opening. Both profiles passed native movement, partial hue, actions, static corpse and the guaranteed bone and equipment loot checks. [Ice Serpent source and terrain evidence](ICE_SERPENTS.md).
+
+
+# Hell Hound and Dire Wolf terrain
+
+Both native canines retain their Third Dawn rig and materials. Body 98 now answers the stock fire breath cue with a jaw animation and starts the server fireball at the moving muzzle. The Hell Hound and Dire Wolf passed the two-profile isolated server and frozen corpse checks. [Canine evidence](CANINE_TERRAIN.md).
+
+
+# Lich terrain and held staff
+
+Body 24 uses its original Third Dawn rig and staff in both profiles. The living pose keeps the staff in the hand on treads, then carries the displayed rig and prop through the fall into graphic 0x2006. Isolated checks confirmed both gait transitions, native actions, a partial hue, both collapse routes and the packed GnarledStaff. [Lich terrain and source evidence](LICHES.md).
+
+
+# Ore elemental approach and corpses
+
+Seven ore elemental bodies now play a retained gesture for the stock notice packet. Both profiles passed 188 isolated checks, covering receipt by two clients, an advancing animation, a frozen corpse and the matching 25-ore stack. Verified stock notice coverage is 24 of the 37 audited body entries. [Creature action reachability](CREATURE_ACTION_REACHABILITY.md).
+
+
+# Chicken terrain and corpse
+
+Chicken body 208 retains its licensed hen mesh, animated eyes and distinct falls. Both stock client profiles passed the movement and frozen corpse checks, along with the two-surface terrain test. [Chicken evidence](CHICKENS.md).
+
+
+# Creature approach and small-snake terrain
+
+Seventeen body IDs now have a verified replacement for the stock hostile approach packet. The test used a real walk across the notice range, and both client modes passed 386 checks. The action audit records 37 potentially affected Classic group 11 body entries and retains the broad ledger total of 6,489 mapped slots. [Creature action reachability](CREATURE_ACTION_REACHABILITY.md).
+
+Small Snake, IceSnake and LavaSnake retain their shared Third Dawn-derived rig and individual native hues. Neck and tail rotations reduce the largest tested walk/run step correction from 200 mm to 96 mm. Both client modes passed the stock movement and static corpse trial. [Small snake evidence](SMALL_SNAKES.md).
+
+
+# Fire Elemental on split treads
+
+The Fire Elemental and its stock summoned form keep their flame ribbons, ash and shader phase. The normal client and both isolated server modes passed movement, full and partial dyes, the stock Fireball projectile and delayed damage. The summoned form's temporary corpse was removed on both clients. See [Fire Elemental terrain](FIRE_ELEMENTALS.md).
+
+
+# Original Orcish Lord axe
+
+The Orcish Lord's Third Dawn rig now carries its recovered axe on the original right-hand grip. Both client modes preserve the full and partial skin hues and the original axe atlas through movement and the static corpse. The native corpse retains its stock ringmail loot. See [Orcish Lord source and verification](ORC_ACTIONS.md).
+
+
+# Bogling and Tropical Bird
+
+Bogling's licensed rig now checks each foot against its own tread before lifting the body. Tropical Bird and ordinary Bird share the same terrain and flight support with separate native constructor hues. Both bodies have continuous falls and static corpse evidence in both modes. See [Bogling](BOGLINGS.md) and [Bird and Tropical Bird](BIRDS.md).
+
+
+# Headless One and Whipping Vine
+
+The original Headless One retains both collapses and the fitted Enhanced vertebrae gestures. Full-skin terrain and corpse tests passed in both modes. Whipping Vine now leaves its idle motion when a native run begins. The two native runs passed 46 checks each, including the stock body and hue, combat packets and the static corpse with fertile dirt and vines. See [Headless One terrain](GHOUL_GORILLA_HEADLESS.md).
+
+
+# Air Elemental, Wisp, Ghoul and Gorilla on terrain
+
+The Air Elemental and Wisp retain their original project shaders and freeze native corpses through continuous transitions. Ghoul, Bogle and Gorilla retain the recovered Third Dawn models and have full-skin step tests in both profiles. The Air and Ghoul Enhanced gestures passed isolated native packet checks. See [terrain and corpse evidence](HOVER_AND_WALKING_TERRAIN.md).
+
+
+# Rabbit, Gazer and Sea Horse terrain
+
+Rabbit and JackRabbit keep their licensed original donor rig and both fur surfaces. The same body handles the native Vorpal Bunny tunnel and death without a pose jump. Gazer and Elder Gazer retain the original eyes and casting effects. The distinct Enhanced Sea Horse keeps its saddle and rein fittings on slopes and steps. See [Rabbit, Gazer and Sea Horse terrain](RABBIT_GAZER_SEAHORSE_TERRAIN.md).
+
+
+# Giant Serpent terrain and Enhanced playback
+
+The three native Giant Serpent identities use their original rig and have ground and static corpse evidence in both modes. The client now advances 13 Enhanced scenes that retained the bakers' manual clock. See [Giant Serpent and the playback audit](GIANT_SERPENT_TERRAIN.md).
+
+
+# Common creature terrain and Wandering Healer
+
+The six creature rigs passed 74,214 terrain poses and 776 decoded corpse handoffs. Native checks covered Ogre, Zombie, Corpser, Harpy, Mongbat, Reaper and both stock Wandering Healer bodies. See [Creature terrain and healer checks](OCCURRENCE_TERRAIN.md).
+
+
 # Original Eagle, Pig and Boar
 
 The recovered Eagle art keeps eight original motions and adds linked flight transitions, an airborne fall and the native static corpse. The two isolated profiles passed 168 checks across Eagle, Phoenix and Enraged Eagle. See [Original Eagle](EAGLE_ORIGINAL.md).

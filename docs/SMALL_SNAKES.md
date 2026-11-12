@@ -1,5 +1,13 @@
 # Snake, IceSnake and LavaSnake
 
+## Stepped terrain and corpse handoff
+
+The regular client selects the terrain renderer for body 52 once the three prepared art files pass their existing hashes. The neck and tail use the same rotation-based support as the giant serpent, preserving the donor rig's segment lengths. On the sampled 22 cm tread, the largest single-interval model lift fell from 200 mm to 96 mm during the slither and from 220 mm to 106 mm during the strike. The sharpest remaining sample was 119 mm during the resting fall pose. The highest tested tread is still visible in motion.
+
+The two stock player clients repeated the IceSnake, Snake and LavaSnake cases with their native constructor hues, a walk, a run that interrupted a fidget, a strike and a static corpse. Both modes passed 91 checks across six class/owner cases. The two Classic death groups still use the same retained collapse for this body. The full-skin terrain test covers 3,906 poses per mode. Decoded packet tests cover 72 corpse handoffs per mode and preserve the displayed pose to within 0.007 mm. The generated small-snake art remains local and uses the existing source preparation.
+
+Run the occurrence world, terrain and fall tests with `--body=52`. Add `--enhanced-creature-actions` for the second profile.
+
 Native body52 now reuses the retained Third Dawn giant-serpent design at18% scale. This is an explicitly authored small-snake assignment: the inspected pinned archive has no matching named small-snake mesh/table52 row. The existing body21 giant serpent remains unchanged. The native body classification is **animal**, verified against the pinned/runtime ModernUO body table, despite all three constructors using melee AI.
 
 ## Source and conversion

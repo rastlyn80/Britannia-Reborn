@@ -52,6 +52,7 @@ func run() -> void:
 		player.stop()
 		rig.reset_bone_poses()
 		space.transform = source_space
+		player.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_IDLE
 		var output := PackedScene.new()
 		assert(output.pack(model) == OK)
 		assert(ResourceSaver.save(output, folder.path_join("giant-serpent-enhanced-%s.scn" % style),

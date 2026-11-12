@@ -10,6 +10,9 @@ var fall := Fall.new()
 
 func _ready() -> void:
 	super._ready()
+	# A prepared scene can retain the manual clock used by its baker.
+	if animator.callback_mode_process == AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL:
+		animator.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_IDLE
 	gesture.bind(self)
 	animator.mixer_applied.connect(settle_fall)
 

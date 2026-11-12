@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 extends "res://../scripts/test-llama-world.gd"
 
-const Rat := preload("res://Presentation/SourceEnhancedOrdinaryRatVisual.gd")
+const Rat := preload("res://Presentation/SourceTerrainOrdinaryRatVisual.gd")
 const Body := 238
 
 
@@ -22,7 +22,8 @@ func run() -> void:
 	world.game._handle(packet)
 	var avatar: Node3D = world.avatars[serial]
 	var actor: Node3D = avatar.horse_visual
-	if not expect((actor is Rat) == enhanced and actor.native_body == Body and actor.native_hue == CorpseHue
+	if not expect(actor is Rat and actor.animator.has_animation("RatForwardBite") == enhanced
+			and actor.native_body == Body and actor.native_hue == CorpseHue
 			and actor.kind == "rat_ordinary" and actor.skeleton.get_bone_count() == 21
 			and actor.contact.feet.size() == 4, "native ordinary Rat retains its public rig and four ground contacts"):
 		return

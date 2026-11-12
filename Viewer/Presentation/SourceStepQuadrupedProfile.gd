@@ -4,6 +4,11 @@ extends RefCounted
 const Registry := preload("res://Presentation/CreatureRegistry.gd")
 const Renderer := "res://Presentation/SourceLivingStepQuadrupedVisual.gd"
 const Forms := {
+	213: ["bruins_bear_polar", ["PolarStillWatch", "PolarWindScent", "PolarMuzzleUpAndRise"]],
+	34: ["canines_wolf_white", []],
+	37: ["canines_wolf_white", []],
+	98: ["canines_hell_hound", []],
+	23: ["canines_wolf_dire", ["DireWolfQuietStand", "DireWolfScentCheck", "DireWolfShortHowl", "DireWolfAlert"]],
 	209: ["ruminants_goat_billy", ["GoatQuietStand"]],
 	88: ["ruminants_goat_mountain", ["MountainGoatQuietStand"]],
 	212: ["bruins_bear_grizzly", ["GrizzlyQuietStand", "GrizzlyScentTurn", "GrizzlyWakeAndRise"]],
@@ -23,7 +28,7 @@ static func enable() -> bool:
 		if not matches_saved_scenes(original):
 			continue
 		var row := original.duplicate()
-		row.presentation_script = Renderer
+		row.presentation_script = "res://Presentation/SourceTerrainHellHoundVisual.gd" if body == 98 else Renderer
 		row.step_idle_gestures = Forms[body][1]
 		row.porcine_step_support = body in [203, 290]
 		Registry.entries[body] = row

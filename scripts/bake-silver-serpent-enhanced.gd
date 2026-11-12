@@ -54,6 +54,7 @@ func run() -> void:
 		new_player.stop()
 		new_rig.reset_bone_poses()
 		new_space.transform = rest_space
+		new_player.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_IDLE
 		var packed := PackedScene.new()
 		assert(packed.pack(silver) == OK)
 		var scene_path := folder.path_join("silver-serpent-enhanced-%s.scn" % style)

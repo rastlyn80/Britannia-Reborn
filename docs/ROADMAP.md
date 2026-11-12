@@ -1,3 +1,73 @@
+# Wyvern, Rat and BullFrog terrain
+
+Continue with the remaining Plague Spawn forms in configured occurrence order. Wyvern and BullFrog gestures and the small Rat's run still produce visible lifts on the highest treads. Both native Rat classes share the public rig and retain separate gameplay identities.
+
+
+# Northern creature terrain and verification
+
+Continue with Wyvern, then Sewer Rat in configured occurrence order. Keep the visible high-tread lift on the Arctic animals and the Snow Elemental rise in review. The two independent World dispatch profiles now run concurrently and keep separate logs in the ignored verification folder.
+
+
+# Drake landing and wings
+
+Both Drakes and the Daemon now clear the measured steps and slopes. Keep visible lift on the highest tread during Drake gait and during Daemon takeoff and the second attack. The optional Drake fits still apply to body 60. Continue Polar Bear, White Wolf and Walrus in configured occurrence order.
+
+
+# Canine terrain and fire breath
+
+The Hell Hound, Dire Wolf and Ice Serpent now clear the sampled treads in both profiles. Keep visible high-tread lift in the review, including running on the canines and the Enhanced Ice Serpent rise. Continue with both Drake bodies and then Daemon in configured occurrence order.
+
+
+# Chicken terrain and corpse
+
+Lich body 24 now clears the sampled 22 cm step and keeps its held staff through the fall. Keep the abrupt lift in its lie-down pose and Chicken's high-step run correction in the movement review. Continue with Hell Hound and Dire Wolf in occurrence order.
+
+
+# Creature approach and small-snake terrain
+
+The shared small-snake body now clears the sampled 22 cm tread. High-tread motion remains visible during the resting fall pose. The seven ore elementals have stock notice and corpse proof. Check which of the 13 remaining bodies can receive the stock group 11 notice, and which player forms can reach group 12 casting. Keep the separate Enhanced animation catalogue open. [Creature action reachability](CREATURE_ACTION_REACHABILITY.md).
+
+
+# Fire Elemental terrain
+
+Both Fire Elemental forms have verified flame, ash and native movement on the prepared route. The Enhanced Kindle and Rise still shows a noticeable lift on the highest test tread. Continue IceSnake on body 52, then Chicken and the remaining occurrence-ranked creatures.
+
+
+# Orcish Lord
+
+Body 138 has an optional original Third Dawn axe with stock native movement and corpse evidence. Continue with Fire Elemental and the remaining creatures in configured occurrence order. The Orc Lord source rig has one original collapse and uses the established fallback for the alternate Classic death request.
+
+
+# Bogling and Tropical Bird terrain
+
+Bogling and both body-6 bird identities passed the terrain, native movement and static corpse checks. The Bogling still shows an abrupt correction at the highest tread. Continue with the original Orcish Lord, then Fire Elemental, in configured occurrence order.
+
+
+# Headless One and Whipping Vine
+
+The Headless One and Whipping Vine have native movement and corpse evidence. Continue with Bogling and the Tropical Bird in configured occurrence order. Preserve the Vine's shared original body-8 rig and its moving behavior alongside the rooted Corpser. The default animation ledger remains at 6,489 of 8,090 tracked slots.
+
+
+# Air Elemental, Wisp, Ghoul and Gorilla terrain
+
+Continue in configured occurrence order with Headless One after Gorilla. The tested highest tread still produces an abrupt lift on the Air and Gorilla lie-down poses and the Ghoul attack. The default action ledger remains at 6,489 of 8,090 tracked possibilities.
+
+
+# Rabbit, Gazer and Sea Horse terrain
+
+The common Rabbit, Gazer and Sea Horse routes have native and client terrain evidence. The highest tested step still causes visible lift during the rabbit lunge, the Gazer's second strike and the Sea Horse hit reaction. The distinct Sea Horse remains an Enhanced reconstruction from the registered frames and recovered atlas. Continue Wisp, Air Elemental and the rest of the configured occurrence queue.
+
+
+# Giant Serpent terrain and Enhanced playback
+
+The isolated Giant Serpent, Death Adder and serpent-shaped Plague Spawn trials covered stock movement, damage, hues and corpses. The Enhanced trial also killed a Giant Serpent during its fitted rise. Keep the abrupt extreme-step Pillage shift in visual review. Continue JackRabbit and Rabbit, preserving the original authored tunnel sequence.
+
+
+# Common creature terrain and Wandering Healer
+
+Ogre, Zombie, Corpser, Harpy, Mongbat and Reaper have terrain and corpse evidence in both profiles. High steps still cause abrupt lift on some Harpy, Mongbat and Corpser actions. Continue Giant Serpent, JackRabbit and Rabbit in configured occurrence order.
+
+
 # Eagle and porcine terrain
 
 The original Eagle candidate has verified living terrain, fall, native class and hue evidence. The highest tested step still produces abrupt body lift on the original attack. Pig and Boar have verified gait and corpse routes in both modes. Continue Mongbat, Wandering Healer, Reaper and Zombie in configured occurrence order.

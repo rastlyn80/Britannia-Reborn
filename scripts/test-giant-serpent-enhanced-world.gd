@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 extends "res://../scripts/test-llama-world.gd"
 
-const Serpent := preload("res://Presentation/SourceEnhancedGiantSerpentVisual.gd")
+const Serpent := preload("res://Presentation/SourceTerrainGiantSerpentVisual.gd")
 const Registry := preload("res://Presentation/CreatureRegistry.gd")
 const Body := 21
 
@@ -23,7 +23,7 @@ func run() -> void:
 	world.game._handle(packet)
 	var avatar: Node3D = world.avatars[serial]
 	var actor: Node3D = avatar.horse_visual
-	if not expect((actor is Serpent) == enhanced and actor.native_body == Body and actor.native_hue == CorpseHue,
+	if not expect(actor is Serpent and actor.fitted_actions == enhanced and actor.native_body == Body and actor.native_hue == CorpseHue,
 			"native giant serpent identity and hue select the intended presentation"):
 		return
 	var silver := Registry.entry(92)
@@ -58,9 +58,16 @@ func run() -> void:
 					world.game._handle(action_packet(serial, sample[0], variation))
 					if not expect(actor.current_clip == sample[1], "the wire selector plays its registered archive motion"):
 						return
+		actor.action_remaining = 0.0
+		avatar.animate(false, 0., .16, 0.)
 		world.game._handle(classic_packet(serial, 17))
+		if not expect(actor.current_clip == "Fidget", "a standing serpent plays the Classic fidget"):
+			return
 		avatar.animate(true, 0., .16, 5.4)
 		if not expect(actor.current_clip == "Run", "native movement interrupts a standing fidget"):
+			return
+		world.game._handle(classic_packet(serial, 17))
+		if not expect(actor.current_clip == "Run", "a Classic fidget does not replace the running slither"):
 			return
 		world.game._handle(action_packet(serial, 0, 0))
 		avatar.animate(true, 0., .16, 1.8)

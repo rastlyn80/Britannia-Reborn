@@ -62,3 +62,12 @@ Receipts: `outputs/creatures/ice_serpents/{validation,appearance,actions,transit
 4. Run `IceSerpentTransitionTests.gd`, `IceSerpentActionTests.gd`, `CreatureTests.gd -- --family=ice_serpents`, `CreatureAppearanceTests.gd -- --family=ice_serpents` with Forward+, and full `IceSerpentPresentationTests.gd`. Its optional `--appearance-only` probe does not produce a full acceptance receipt.
 5. `python scripts/accept-creatures.py ice_serpents` requires exact current pose, paired-skin, complete terrain, material, lookup and corpse evidence. Then use the already-authorized disposable loopback2594 native harness: `scripts/test-horses.ps1 -Live -SkipContact -CreatureFamily ice_serpents`. Do not use production saves/accounts.
 6. Refresh current public controls, all accepted source groups, rendered corpse catalogue and `scripts/verify.ps1`; rebuild the creature/action work boards. Publish only verified owned code/notices/documentation and independently licensed assets, retaining proprietary-derived data outside Git.
+
+
+## Slopes, treads and corpse handoff
+
+Body 89 keeps the recovered Ice Serpent mesh, cutout coat and the source Silver Serpent rig motions used by the earlier preparation. The 22 cm tread baseline measured 220 mm of bite overlap, and the slope measured 12 mm. The corrected Classic replay passed 3,038 skinned poses and Enhanced passed 4,340, with at least 2 mm of clearance outside the intentionally buried rise. Enhanced retains that buried start, with a visible lift during emergence on the highest tested tread.
+
+Decoded falls passed 56 Classic and 88 Enhanced handoffs, including early and late emergence. Maximum first-pose change was 0.002 mm. The frozen body uses native corpse graphic `0x2006`. Two isolated cases per profile passed 42 and 48 checks, with stock movement and kills, controlled gesture packets, stock and partial test hues, and the guaranteed bone drop and equipment. The tests do not require the rare Glacial Staff roll.
+
+Run `scripts/verify.ps1` with the locally prepared Ice Serpent. The terrain replay is `scripts/test-source-ice-serpent-terrain.gd` with `--ice-serpent-candidate`. The death replay is `scripts/test-source-ice-serpent-falls.gd`. Add `--enhanced-creature-actions` for the optional profile.
