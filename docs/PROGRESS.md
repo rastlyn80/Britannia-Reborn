@@ -1,3 +1,23 @@
+# Dog terrain and native coat hues
+
+The original hound now has checked step support and collapse continuity. Two isolated clients passed 58 checks for server coat hues, stock taming and the visible corpse. See [Dog terrain](DOG_TERRAIN.md) for coverage and reproduction.
+
+
+# Cougar terrain and collapse
+
+The original Cougar now clears the sampled steps and slopes. Native death carries over the displayed pose, and late dye keeps the settled geometry. Two isolated clients passed 58 checks, including stock taming. See [Cougar terrain](COUGAR_TERRAIN.md) for the coverage and reproduction steps.
+
+
+# Black and Brown Bear terrain
+
+Both original bears now clear slopes and steps with four-paw support. The full-skin sweeps covered 5,200 Classic and 8,840 Enhanced poses. Four native identities passed 105 isolated server checks, including two ordinary taming cases and Grobu's fur loot. See [Bear terrain](BEAR_TERRAIN.md) for the coverage and reproduction steps.
+
+
+# Common Troll terrain and corpse handoff
+
+The original axe, unarmed and Frost Troll bodies clear the sampled slopes and 22 cm step. The optional action renderer uses the correct visible weapon and freezes that state with the server body and hue. Two isolated clients passed 127 checks across six native constructor cases. See [Troll terrain](TROLL_TERRAIN.md) for coverage and build steps.
+
+
 # Armed Lizardman living terrain
 
 The original spear and mace bodies now correct their living feet, tail and weapon on slopes and low steps. The client passed 3,672 planar poses and 1,728 step poses, with less than 10 mm of whole-model lift on the tested step. A running creature can leave an idle fidget. The isolated server passed 74 native checks for both weapon forms and player sexes, including rummage refusal and permitted loot transfer. See [reproduction and evidence](ARMED_LIZARDMAN_TERRAIN.md).

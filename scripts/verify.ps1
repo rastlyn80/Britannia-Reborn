@@ -800,6 +800,93 @@ if ((Test-Path "$root/Viewer/local-art/creatures/lizard-actions-35.scn") -and (T
   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "Armed Lizardman living $test verification failed" }
  }
 }
+$trollAssets = @(53, 54, 55 | Where-Object { Test-Path "$root/Viewer/local-art/creatures/troll-actions-$_-modern.scn" })
+if ($trollAssets.Count -eq 3) {
+ $trollModes = @('Classic')
+ $profilePath = "$root/Viewer/local-art/creatures/enhanced-creature-actions.json"
+ if (Test-Path $profilePath) {
+  $trollProfile = Get-Content -LiteralPath $profilePath -Raw | ConvertFrom-Json
+  if ($trollProfile.'troll_native_proof_sha256' -and $trollProfile.'troll-ratman_native_proof_sha256' -and
+      $trollProfile.'knight-acid-pixie-frost_native_proof_sha256') { $trollModes += 'Enhanced' }
+ }
+ foreach ($mode in $trollModes) {
+  foreach ($test in @('planes','steps','world')) {
+   $arguments = @('--world=res://world.json')
+   if ($mode -eq 'Enhanced') { $arguments += '--enhanced', '--enhanced-creature-actions' }
+   $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-troll-living-$test.gd" -- @arguments 2>&1
+   $code = $LASTEXITCODE
+   $checks | ForEach-Object { Write-Output $_ }
+   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "$mode Troll living $test verification failed" }
+  }
+ }
+}
+$bearAssets = @('dog-bear-actions-211','field-fauna-167' | Where-Object {
+ Test-Path "$root/Viewer/local-art/creatures/$_-modern.scn"
+})
+if ($bearAssets.Count -eq 2) {
+ $bearModes = @('Classic')
+ $profilePath = "$root/Viewer/local-art/creatures/enhanced-creature-actions.json"
+ if (Test-Path $profilePath) {
+  $bearProfile = Get-Content -LiteralPath $profilePath -Raw | ConvertFrom-Json
+  if ($bearProfile.'hound-bear_native_proof_sha256' -and $bearProfile.'brown-bear-cougar_native_proof_sha256') {
+   $bearModes += 'Enhanced'
+  }
+ }
+ foreach ($mode in $bearModes) {
+  foreach ($test in @('terrain','world')) {
+   $arguments = @('--world=res://world.json')
+   if ($mode -eq 'Enhanced') { $arguments += '--enhanced', '--enhanced-creature-actions' }
+   $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-bear-living-$test.gd" -- @arguments 2>&1
+   $code = $LASTEXITCODE
+   $checks | ForEach-Object { Write-Output $_ }
+   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "$mode bear living $test verification failed" }
+  }
+ }
+}
+if (Test-Path "$root/Viewer/local-art/creatures/field-fauna-63-modern.scn") {
+ $cougarModes = @('Classic')
+ $profilePath = "$root/Viewer/local-art/creatures/enhanced-creature-actions.json"
+ if (Test-Path $profilePath) {
+  $cougarProfile = Get-Content -LiteralPath $profilePath -Raw | ConvertFrom-Json
+  if ($cougarProfile.'brown-bear-cougar_native_proof_sha256') { $cougarModes += 'Enhanced' }
+ }
+ foreach ($mode in $cougarModes) {
+  $cougarTests = @('terrain','fall','world')
+  $arguments = @('--world=res://world.json')
+  if ($mode -eq 'Enhanced') {
+   $arguments += '--enhanced', '--enhanced-creature-actions'
+   $cougarTests += 'continuity'
+  }
+  foreach ($test in $cougarTests) {
+   $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-cougar-living-$test.gd" -- @arguments 2>&1
+   $code = $LASTEXITCODE
+   $checks | ForEach-Object { Write-Output $_ }
+   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "$mode Cougar living $test verification failed" }
+  }
+ }
+}
+if (Test-Path "$root/Viewer/local-art/creatures/dog-bear-actions-217-modern.scn") {
+ $dogModes = @('Classic')
+ $profilePath = "$root/Viewer/local-art/creatures/enhanced-creature-actions.json"
+ if (Test-Path $profilePath) {
+  $dogProfile = Get-Content -LiteralPath $profilePath -Raw | ConvertFrom-Json
+  if ($dogProfile.'hound-bear_native_proof_sha256') { $dogModes += 'Enhanced' }
+ }
+ foreach ($mode in $dogModes) {
+  $dogTests = @('terrain','fall','world')
+  $arguments = @('--world=res://world.json')
+  if ($mode -eq 'Enhanced') {
+   $arguments += '--enhanced', '--enhanced-creature-actions'
+   $dogTests += 'continuity'
+  }
+  foreach ($test in $dogTests) {
+   $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-dog-living-$test.gd" -- @arguments 2>&1
+   $code = $LASTEXITCODE
+   $checks | ForEach-Object { Write-Output $_ }
+   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "$mode Dog living $test verification failed" }
+  }
+ }
+}
 if ((Test-Path "$root/Viewer/local-art/mounts/kirin-modern.gltf") -and (Test-Path "$root/Viewer/local-art/mounts/llama_ethereal-modern.gltf") -and (Test-Path "$root/Viewer/local-art/mounts/skeletal-horse.glb")) {
  foreach ($script in @('DistinctMountTests','OstardRidingTests','MountTerrainTests','EquineCompletionTests','AnimalActionTests')) {
   & $godot --headless --path "$root/Viewer" --script "res://Presentation/$script.gd"

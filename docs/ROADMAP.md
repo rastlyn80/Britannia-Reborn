@@ -1,3 +1,8 @@
+# Common Dog and Cat
+
+The common Troll, bear, Cougar and Dog terrain and corpse routes have staged client and native evidence. Continue with Cat 201 and the server's Hell Cat variant. Both use the same body ID. Keep the eight-influence cat paws and the distinct Hell Cat fire-breath action.
+
+
 # Armed Lizardman and common Trolls
 
 Both armed Lizardman bodies have tested living terrain support and keep their original Classic motions, grip and corpse routes. The Enhanced archive audit found no direct frame member for bodies 35 and 36. Continue with the next occurrence-ranked Troll bodies, checking the separate axe, club and unarmed native identities against their archive references and existing fits.

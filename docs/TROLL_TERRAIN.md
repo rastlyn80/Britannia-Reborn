@@ -1,0 +1,11 @@
+# Troll movement and corpses
+
+ModernUO's ordinary Troll constructor selects body 53 or 54. Frost Troll uses body 55. The client keeps each body's accepted Third Dawn skin, rest rig, Classic clips and atlas. The Classic presentations show an axe on 53, bare hands on 54 and the frost club on 55.
+
+The optional Enhanced profile keeps its existing archive fits for groups 4, 23 and 26–28 on each body. The five fitted actions show the axe on 54 and bare hands on 53 and 55, following the registered source frames. The Classic swings and idle actions remain available in the optional profile. A death that interrupts a bare-handed fit preserves that weapon state through the frozen corpse and later server hue updates.
+
+The terrain renderer measures the skinned foot against the surface and lifts the leg through its own joints. On a step it can turn the knee around the hip and planted ankle before adding whole-body clearance. The server continues to supply position, direction and movement. The sampled planar baseline reached 124 mm of penetration. The tested renderer kept at least 2.99 mm of clearance across 5,508 Classic and 7,803 Enhanced poses with less than 1 mm of whole-body lift. On the 22 cm step, 2,592 Classic and 4,752 Enhanced poses also kept at least 2.99 mm of clearance. The largest step lift was 35.35 mm in one running pose.
+
+Normal World replay passed 36 Classic and 90 Enhanced checks, including motion interruption, both corpse packet orders and late dye. Nine Forward+ views exercised the live terrain modifier. Two isolated clients passed 127 checks across six native constructor cases for both player sexes. They checked actual movement, melee, recoil, native corpses and hue, ordinary Troll rummaging and the Frost Troll's Double Axe loot. Fifteen explicitly sent Enhanced selectors exercised the optional client motions and weapon states.
+
+The original archive and fit digests remain in `scripts/prepare-troll-enhanced.py`, `scripts/prepare-troll-ratman-enhanced.py` and `scripts/prepare-knight-acid-pixie-frost-enhanced.py`. With the existing local art prepared, run `scripts/verify.ps1` or run the three `scripts/test-troll-living-*.gd` scripts using Godot with `--path Viewer`. Pass `--enhanced --enhanced-creature-actions` to exercise the optional profile. The isolated fixture, prepared game assets and rendered captures are local.

@@ -103,6 +103,10 @@ func _ready() -> void:
 		if not enhanced_creature_actions:
 			push_warning("The optional Enhanced creature action profile needs its prepared local assets.")
 	preload("res://Presentation/SourceLizardLivingTerrainProfile.gd").enable()
+	preload("res://Presentation/SourceTrollLivingTerrainProfile.gd").enable()
+	preload("res://Presentation/SourceBearLivingTerrainProfile.gd").enable()
+	preload("res://Presentation/SourceDogLivingTerrainProfile.gd").enable()
+	preload("res://Presentation/SourceCougarLivingTerrainProfile.gd").enable()
 	MountVisual.Horse.enhanced_ordinary_horses = enhanced_creature_actions
 	MountVisual.Ostard.LlamaActions.configure(enhanced_creature_actions)
 	MountVisual.Magical.configure(enhanced_creature_actions)
