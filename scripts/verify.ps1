@@ -639,6 +639,74 @@ if (Test-Path "$root/Viewer/local-art/ostards/desert-actions-active.json") {
  & python -B "$root/scripts/accept-desert-ostard-actions.py" --check-active
  if ($LASTEXITCODE) {throw 'Active Desert Ostard animation and corpse evidence failed'}
 }
+if (Test-Path "$root/Viewer/local-art/ostards/enhanced-ostards.json") {
+ & python -B "$root/scripts/install-enhanced-source-ostards.py" --check-installed
+ if ($LASTEXITCODE) {throw 'Prepared Enhanced Ostard art differs from the manifest'}
+ foreach ($test in @('terrain', 'riders', 'world', 'world-enhanced')) {
+  $arguments = @()
+  $scriptName = $test
+  if ($test -like 'world*') {
+   $scriptName = 'world'
+   $arguments += '--world=res://world.json'
+   if ($test -eq 'world-enhanced') { $arguments += '--enhanced-creature-actions' }
+  }
+  $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-source-ostards-$scriptName.gd" -- @arguments 2>&1
+  $code = $LASTEXITCODE
+  $checks | ForEach-Object { Write-Output $_ }
+  if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "Enhanced source Ostard $test verification failed" }
+ }
+}
+if (Test-Path "$root/Viewer/local-art/mounts/dark-horses.json") {
+ & python -B "$root/scripts/prepare-dark-horse-mounts.py" --check-installed
+ if ($LASTEXITCODE) {throw 'Prepared dark horse art differs from the manifest'}
+ foreach ($test in @('terrain', 'riders', 'world', 'world-enhanced')) {
+  $arguments = @()
+  $scriptName = $test
+  if ($test -like 'world*') {
+   $scriptName = 'world'
+   $arguments += '--world=res://world.json'
+   if ($test -eq 'world-enhanced') { $arguments += '--enhanced-creature-actions' }
+  }
+  $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-dark-horse-$scriptName.gd" -- @arguments 2>&1
+  $code = $LASTEXITCODE
+  $checks | ForEach-Object { Write-Output $_ }
+  if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "Dark horse $test verification failed" }
+ }
+}
+if (Test-Path "$root/Viewer/local-art/mounts/skeletal-mount.json") {
+ & python -B "$root/scripts/prepare-skeletal-mount.py" --check-installed
+ if ($LASTEXITCODE) {throw 'Prepared Skeletal Mount art differs from the manifest'}
+ foreach ($test in @('terrain', 'riders', 'world', 'world-enhanced')) {
+  $arguments = @()
+  $scriptName = $test
+  if ($test -like 'world*') {
+   $scriptName = 'world'
+   $arguments += '--world=res://world.json'
+   if ($test -eq 'world-enhanced') { $arguments += '--enhanced-creature-actions' }
+  }
+  $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-skeletal-mount-$scriptName.gd" -- @arguments 2>&1
+  $code = $LASTEXITCODE
+  $checks | ForEach-Object { Write-Output $_ }
+  if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "Skeletal Mount $test verification failed" }
+ }
+}
+if (Test-Path "$root/Viewer/local-art/mounts/original-war-horses.json") {
+ & python -B "$root/scripts/prepare-original-war-horses.py" --check-installed
+ if ($LASTEXITCODE) {throw 'Prepared original horse art differs from the manifest'}
+ foreach ($test in @('terrain', 'riders', 'world', 'world-enhanced')) {
+  $arguments = @()
+  $scriptName = $test
+  if ($test -like 'world*') {
+   $scriptName = 'world'
+   $arguments += '--world=res://world.json'
+   if ($test -eq 'world-enhanced') { $arguments += '--enhanced-creature-actions' }
+  }
+  $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-war-horse-$scriptName.gd" -- @arguments 2>&1
+  $code = $LASTEXITCODE
+  $checks | ForEach-Object { Write-Output $_ }
+  if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "Original horse $test verification failed" }
+ }
+}
 if ((Test-Path "$root/Viewer/local-art/mounts/kirin-modern.gltf") -and (Test-Path "$root/Viewer/local-art/mounts/llama_ethereal-modern.gltf") -and (Test-Path "$root/Viewer/local-art/mounts/skeletal-horse.glb")) {
  foreach ($script in @('DistinctMountTests','OstardRidingTests','MountTerrainTests','EquineCompletionTests','AnimalActionTests')) {
   & $godot --headless --path "$root/Viewer" --script "res://Presentation/$script.gd"

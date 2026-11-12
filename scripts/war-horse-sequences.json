@@ -1,0 +1,269 @@
+{
+  "scope": "Original reference registration and authored 3D action mapping. Reference payloads are local.",
+  "bodies": {
+    "118": {
+      "sequence": "0x5aae42ff0b7b22d4",
+      "groups": [
+        {
+          "group": 1,
+          "name": "build/animationframe/000118/01.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "cf4081b3a500ea13a20d1e010f1b9b6611f01b7d96ced2f05b8d6d11a6f00a2a",
+          "frames": 50,
+          "sequence_frames": 50,
+          "clip": "HorseCombatIdle",
+          "treatment": "authored fit"
+        },
+        {
+          "group": 2,
+          "name": "build/animationframe/000118/02.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "d3019195a0ec89ddfaf963acfa48fc19f4f73cbf739735bd2f5e4c0b3c82d7a7",
+          "frames": 50,
+          "sequence_frames": 50,
+          "clip": "HorseSideFall",
+          "treatment": "authored fit"
+        },
+        {
+          "group": 3,
+          "name": "build/animationframe/000118/03.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "e4b48de2b2fbf4213df7b8d90321e8706ea3af1ff2a62e9e2a4a3d6072e3285d",
+          "frames": 60,
+          "sequence_frames": 60,
+          "clip": "Death2",
+          "treatment": "authored fit"
+        },
+        {
+          "group": 4,
+          "name": "build/animationframe/000118/04.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "5235b36e17ab6daa40d17043bdd4a3de7fc7a5c2951bbf77269c7b3eb11d1925",
+          "frames": 50,
+          "sequence_frames": 50,
+          "clip": "HorseRearStrike",
+          "treatment": "authored fit"
+        },
+        {
+          "group": 10,
+          "name": "build/animationframe/000118/10.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "be31854e2331da071184bf11c3c3358e5c7c781ca3c39798896eb84a025061e4",
+          "frames": 50,
+          "sequence_frames": 50,
+          "clip": "HorseHeadRecoil",
+          "treatment": "authored fit"
+        },
+        {
+          "group": 15,
+          "name": "build/animationframe/000118/15.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "6fcf65682cb58d2dd4443de9585b08d393f596c4f43525381dac263bef2b60cc",
+          "frames": 50,
+          "sequence_frames": 50,
+          "clip": "HorseForelegGuard",
+          "treatment": "authored fit"
+        },
+        {
+          "group": 22,
+          "name": "build/animationframe/000118/22.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "df7b0dd0b8fc229d6a7b22ca6349ef699063e0bc23a72d093175c8a46fdde59e",
+          "frames": 50,
+          "sequence_frames": 50,
+          "clip": "Walk",
+          "treatment": "retained original gait"
+        },
+        {
+          "group": 24,
+          "name": "build/animationframe/000118/24.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "98d77536bc915b14a42921106ac496b742dba7dddf7091841f45b3eb195a3366",
+          "frames": 50,
+          "sequence_frames": 50,
+          "clip": "Run",
+          "treatment": "retained original gait"
+        },
+        {
+          "group": 25,
+          "name": "build/animationframe/000118/25.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "7c4e3869937265f585660b956e57727cfe9449453d2a6853e42d8fe074d4b152",
+          "frames": 50,
+          "sequence_frames": 50,
+          "clip": "Idle",
+          "treatment": "retained original gait"
+        },
+        {
+          "group": 26,
+          "name": "build/animationframe/000118/26.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "e4d7c768dc1ab804206c799295701a4905fc591168e73ee374abbb879b61d5f2",
+          "frames": 50,
+          "sequence_frames": 50,
+          "clip": "HorseQuietNod",
+          "treatment": "authored fit"
+        },
+        {
+          "group": 27,
+          "name": "build/animationframe/000118/27.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "bb9431f3506766e311321aafe1c42bebea0f5abb4ce6ae4ffe76806aa2aecb79",
+          "frames": 50,
+          "sequence_frames": 50,
+          "clip": "HorseHighFidget",
+          "treatment": "authored fit"
+        },
+        {
+          "group": 28,
+          "name": "build/animationframe/000118/28.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "78f6bdd4f34849f13c825c131e481b86ca9aa6a04b61568565e4db17ea148289",
+          "frames": 40,
+          "sequence_frames": 40,
+          "clip": "HorseAlert",
+          "treatment": "authored fit"
+        }
+      ]
+    },
+    "291": {
+      "sequence": "0xd30ee8a2f8213ced",
+      "groups": [
+        {
+          "group": 1,
+          "name": "build/animationframe/000291/01.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "497a1f3bcb7df2ad38bb14fb717c21f5ea67e37f9721c16f01d8b943ee82781c",
+          "frames": 50,
+          "sequence_frames": 50,
+          "clip": "HorseCombatIdle",
+          "treatment": "authored fit"
+        },
+        {
+          "group": 2,
+          "name": "build/animationframe/000291/02.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "8e4953537f0b1bd9490d8727adf93c38bb6de85f37ef80f71cd9a13fb7596a26",
+          "frames": 50,
+          "sequence_frames": 50,
+          "clip": "HorseSideFall",
+          "treatment": "authored fit"
+        },
+        {
+          "group": 3,
+          "name": "build/animationframe/000291/03.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "be683dc3755524b7bbb274f12efa7d5dc989293156dcfea8f6b0e22cbff4ffdd",
+          "frames": 60,
+          "sequence_frames": 60,
+          "clip": "Death2",
+          "treatment": "authored fit"
+        },
+        {
+          "group": 4,
+          "name": "build/animationframe/000291/04.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "2193b09207546330495e57dee1de0c5cca26bf4353187cf47dd6808b49a26499",
+          "frames": 50,
+          "sequence_frames": 50,
+          "clip": "HorseRearStrike",
+          "treatment": "authored fit"
+        },
+        {
+          "group": 10,
+          "name": "build/animationframe/000291/10.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "ab73e29f93e26f75b13de1e7f6162fc96740f1cc4c8ffab079d9027ac81ef0db",
+          "frames": 50,
+          "sequence_frames": 50,
+          "clip": "HorseHeadRecoil",
+          "treatment": "authored fit"
+        },
+        {
+          "group": 12,
+          "name": "build/animationframe/000291/12.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "87b5b6b6700d69ab9b5d3ba9897764371235bd818376392310c15e8dbec6bed4",
+          "frames": 70,
+          "sequence_frames": 70,
+          "clip": "HorseRearCast",
+          "treatment": "authored fit"
+        },
+        {
+          "group": 15,
+          "name": "build/animationframe/000291/15.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "dc089c0a87aa4d18c944ea1aab737e9c7edd014b1539e93e9089fae6ac9b55f2",
+          "frames": 50,
+          "sequence_frames": 50,
+          "clip": "HorseForelegGuard",
+          "treatment": "authored fit"
+        },
+        {
+          "group": 22,
+          "name": "build/animationframe/000291/22.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "50a46d9115336b3008718cf6882149bf644ad106f6b10309f72d2ef19cdf9eff",
+          "frames": 50,
+          "sequence_frames": 50,
+          "clip": "Walk",
+          "treatment": "retained original gait"
+        },
+        {
+          "group": 24,
+          "name": "build/animationframe/000291/24.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "20e31b8f659ca44b4f4651e552afaf26f3d000942bb9deebf8226dd3b64e1750",
+          "frames": 50,
+          "sequence_frames": 50,
+          "clip": "Run",
+          "treatment": "retained original gait"
+        },
+        {
+          "group": 25,
+          "name": "build/animationframe/000291/25.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "ca73b1e2271296f812c2827fa5f0482328919c07799f751fcd5100236509c641",
+          "frames": 50,
+          "sequence_frames": 50,
+          "clip": "Idle",
+          "treatment": "retained original gait"
+        },
+        {
+          "group": 26,
+          "name": "build/animationframe/000291/26.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "2d8ff19886938adad375fc1a34220f91b57d0ccec542f6eb580ac21332184da5",
+          "frames": 50,
+          "sequence_frames": 50,
+          "clip": "HorseQuietNod",
+          "treatment": "authored fit"
+        },
+        {
+          "group": 27,
+          "name": "build/animationframe/000291/27.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "d714813be07efd05cee7b882a2b8afa16a0ac612dbf042c725ae5d3499705c29",
+          "frames": 50,
+          "sequence_frames": 50,
+          "clip": "HorseHighFidget",
+          "treatment": "authored fit"
+        },
+        {
+          "group": 28,
+          "name": "build/animationframe/000291/28.bin",
+          "archive": "AnimationFrame3.uop",
+          "sha256": "86ecc63a0ba17e64e7ce4032ec5a30b671ee6d2daaea56ef511ef8ec8fcb2388",
+          "frames": 5,
+          "sequence_frames": 40,
+          "clip": "HorseAlert",
+          "treatment": "single reference pose"
+        }
+      ]
+    }
+  },
+  "asset_exclusions": [
+    "No exact direct Enhanced sequence registration was found for 115, 117, 119, 120 or 121.",
+    "Historical body 115 artwork is selected only by worn item 0x3EAA."
+  ]
+}

@@ -6,7 +6,11 @@ const Mounts := preload("res://Presentation/MountVisual.gd")
 func begin_death(killed: int, corpse: int) -> void:
 	var entity: Dictionary = session.entities.get(killed, {})
 	var body := int(entity.get("body", 0))
-	if Mounts.Magical.selected(body, 0) and begin_magical_death(killed, corpse, entity):
+	if Mounts.SourceOstard.selected(body, 0) and begin_source_ostard_death(killed, corpse, entity):
+		return
+	if (Mounts.Magical.selected(body, 0) or Mounts.DarkHorse.accepts_source(body, 0)
+			or Mounts.SkeletalHorse.selected_skeletal(body, 0) or Mounts.WarHorse.selected_war_horse(body, 0)) \
+			and begin_magical_death(killed, corpse, entity):
 		return
 	if body in [Mounts.Ostard.LlamaActions.Body, Mounts.Ostard.LlamaActions.PackBody] and begin_llama_death(killed, corpse, entity):
 		return
@@ -70,6 +74,24 @@ func begin_llama_death(killed: int, corpse: int, entity: Dictionary) -> bool:
 	track_transition(killed, corpse, body, avatar, visual, duration)
 	return true
 
+
+
+func begin_source_ostard_death(killed: int, corpse: int, entity: Dictionary) -> bool:
+	var avatar: Node3D = scene.get("avatars").get(killed)
+	if active.has(killed) or not is_instance_valid(avatar) or not avatar.horse_visual is Mounts.SourceOstard:
+		return false
+	var source: Node3D = avatar.horse_visual
+	var body := int(entity.body)
+	var visual := Mounts.SourceOstard.create(body)
+	visual.treatment = source.treatment
+	add_child(visual)
+	visual.apply_identity(body, int(entity.get("hue", 0)))
+	visual.global_transform = source.global_transform
+	visual.model.transform = source.model.transform
+	visual.set_physics_process(false)
+	var duration: float = visual.begin_source_death(source)
+	track_transition(killed, corpse, body, avatar, visual, duration)
+	return true
 
 
 func begin_magical_death(killed: int, corpse: int, entity: Dictionary) -> bool:

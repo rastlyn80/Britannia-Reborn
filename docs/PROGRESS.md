@@ -1,3 +1,28 @@
+# Original Silver, faction, Ethereal and Pack Horses
+
+Seven original Third Dawn forms now have tested optional Enhanced presentation. Silver and Holy Steed share body 117. The four faction horses use their own original coats, the Ethereal Horse uses historical artwork through its native worn item, and Pack Horse keeps its original cargo on the living rig and static corpse. Nineteen fitted clips and six retained gaits cover the 25 indexed groups for True Britannians Warhorse and Pack Horse. Both human rigs and the stock mounting, faction, ethics and pack routes passed 561 native checks across 38 cases. The Holy Steed breath passed 23 more native checks. See [Original war horses](ORIGINAL_WAR_HORSES.md) for the build and evidence.
+
+# Original skeletal mounts
+
+The optional Enhanced body 793 retains the original 34-joint skeletal horse for Skeletal Mount, Hell Steed, Grizzled Mare and Red Death. Nine fits and four retained motions cover thirteen groups from 670 verified Enhanced reference frames. Isolated native tests passed 175 riding and corpse checks, including Red Death’s original bridle loot, and 55 Chaos Breath checks. Both riders passed 108 fitted poses, and the client preserved both fitted falls, the original Classic fall, and the server’s hues. See [Skeletal mounts](SKELETAL_MOUNTS.md) for local build and verification.
+
+
+# Original Nightmare, Fire Steed and Unholy Steed
+
+The optional Enhanced profile uses two original Third Dawn models, their separate coats and eight table-linked original clips. The native body/item pairs remain authoritative. The authored fire-breath motion uses the stock action selector and the stock projectile starts at the animated muzzle. The final isolated tests passed 195 riding and ethics checks, 71 stock fire-breath checks, 432 rider poses and 36 terrain-to-corpse transfers. See [Dark horses](DARK_HORSES.md) for build steps and scope.
+
+
+# Enhanced Desert and Forest Ostards
+
+The optional Enhanced profile covers Desert Ostard body 210 and Forest Ostard body 219 with their original Third Dawn rigs and separate coats. Three existing source movement clips and fifteen fitted clips cover all 18 official groups per form, including combat, peaceful and seated movement, a leaping kick and two falls. Both falls transfer to grounded static corpses. The Classic Desert routes still select their original Classic actions.
+
+The official Enhanced sequence hashes are `0xc52bb7353f8a8faa` and `0x996796c22ae4d572`. The registered `AnimationFrame3.uop` members supplied 835 frame pairs in five directions. The silhouettes overlap by at least 99.767% at the original registrations, so both forms share the fitted motion. Their early and later Third Dawn models retain the same topology and skin weights. The ModernUO body and worn item determine the named Forest or Desert art.
+
+Two isolated ModernUO clients passed 87 checks for both rider sexes, including stock mounting, walk, run, dismount, full and partial dye and native static corpses. The fixture sets controlled ownership and sends an explicit recoil selector. The Forest constructor's partial hue passes through both clients. Classic and Enhanced replays passed 26 and 188 checks, including both corpse packet orders and late dye. The terrain suite measured 5,346 poses and 54 fall transfers. The largest sampled joint displacement during a handoff was 2.123 mm. The final resting pelvis heights stayed under 0.299 m. Rider checks covered 288 poses with measured bent elbows, and 24 Forward+ captures show both mounts.
+
+After preparing the local Third Dawn Ostard scenes, run Godot's `scripts/bake-enhanced-source-ostards.gd`, then run `python -B scripts/install-enhanced-source-ostards.py`. The client validates the six local scenes before selecting the profile. The original archives, baked art and screenshots stay in local storage.
+
+
 # Original ki-rin and unicorn mounts
 
 Living ki-rin body 132 and unicorn body 122 now use their own later Third Dawn models, colour atlases and rigs in the optional Enhanced profile. The ki-rin retains its 30-joint rig and alpha-cutout mane. The living unicorn has a 38-joint rig and an original seven-vertex horn on the head. The unicorn body palette was verified against the table-linked dappled horse weights. Six of the nine original horn faces have coincident points and stay invisible under all rigid poses. The three visible faces use normals reconstructed from their winding.

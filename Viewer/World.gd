@@ -105,6 +105,10 @@ func _ready() -> void:
 	MountVisual.Horse.enhanced_ordinary_horses = enhanced_creature_actions
 	MountVisual.Ostard.LlamaActions.configure(enhanced_creature_actions)
 	MountVisual.Magical.configure(enhanced_creature_actions)
+	MountVisual.SourceOstard.configure(enhanced_creature_actions)
+	MountVisual.DarkHorse.configure_sources(enhanced_creature_actions)
+	MountVisual.SkeletalHorse.configure_skeletal(enhanced_creature_actions)
+	MountVisual.WarHorse.configure_war_horses(enhanced_creature_actions)
 	if enhanced_creature_actions:
 		preload("res://Presentation/SeaHorseProfile.gd").enable()
 	MountVisual.Animals.enhanced_bovine_actions = enhanced_creature_actions and MountVisual.Animals.EnhancedBovine.enable()

@@ -1,3 +1,22 @@
+# Original Silver, faction, Ethereal and Pack Horses
+
+The seven original forms passed the normal client and disposable server checks. Continue with the common Sea Serpent. Enhanced artwork ID 145 supplies fourteen exact groups and the Third Dawn model table names the same original mesh for live body 150. Keep the distinct native Sea Serpent and Deep Sea Serpent hues and waterline. Both forms already have a verified Classic route.
+
+# Silver, faction, spectral and pack horses
+
+The original Skeletal Mount route now has staged client, terrain, rider, corpse and native evidence. Continue Silver and Holy Steed, the four faction warhorses, Ethereal Horse and Pack Horse. The source review verified their seven atlas and rig combinations. The original Pack Horse has a rigid 36-triangle load bound under the spine. The recovered Enhanced War Horse and Pack Horse references contain 25 named groups and 1,235 decoded frames. Resolve the exact per-body archive aliases and the Pack Horse alert count discrepancy before treating those references as interchangeable.
+
+
+# Original skeletal equines
+
+Continue body 793 for Skeletal Mount, Hell Steed, Grizzled Mare and Red Death. The later Third Dawn model has its own 34-joint rig, 858 triangles, 256px atlas and ten named motion entries. Actual Forward+ source review covers 660 weighted poses and the Red Death tint. Next fit both riders, terrain, native corpse transfers and stock Chaos Breath. The previous Nightmare and Fire Steed source profiles have isolated native evidence. Their exact Enhanced archive payloads remain unlocated.
+
+
+# Enhanced Desert and Forest Ostards
+
+The locally prepared profile has the two original coats and native mount identities, separate fitted falls, grounded static corpses and corrected rein reach. Both native classes have stock mounting, movement, dye and death evidence with both rider sexes. Continue with Nightmare and Fire Steed. Their original Third Dawn rigs and shared donor clips are present, with separate coat atlases. The default creature action ledger remains at 6,489 of 8,090 tracked slots.
+
+
 # Original magical equines
 
 The optional Enhanced ki-rin and unicorn use their original living and spectral rigs. Both native rider restrictions and the separate ethereal items have isolated two-client evidence. Continue with Forest and Desert Ostard, then Nightmare and Fire Steed. The exact official ki-rin and unicorn frame archive groups are accounted for in the fit ledger.

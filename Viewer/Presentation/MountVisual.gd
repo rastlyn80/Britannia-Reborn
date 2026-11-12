@@ -2,17 +2,27 @@ extends RefCounted
 ## Dispatch presentation only. Native riding permissions stay with ModernUO.
 const Horse=preload("res://Presentation/HorseVisual.gd")
 const Ostard=preload("res://Presentation/OstardMount.gd")
+const SourceOstard := preload("res://Presentation/SourceEnhancedOstard.gd")
+const WarHorse := preload("res://Presentation/SourceWarHorseVisual.gd")
+const SkeletalHorse := preload("res://Presentation/SourceSkeletalHorseVisual.gd")
+const DarkHorse := preload("res://Presentation/SourceDarkHorseVisual.gd")
 const Magical = preload("res://Presentation/SourceMagicalEquine.gd")
 const Animals=preload("res://Presentation/AnimalVisual.gd")
 const BODIES={0xd2:["desert",0x3ea3],0xda:["frenzied",0x3ea4],0xdb:["forest",0x3ea5],0x84:["kirin",0x3ead],0xdc:["llama",0x3ea6],0x124:["llama",0]}
 static func available() -> bool:
+	if not WarHorse.war_scenes.is_empty():return true
+	if SkeletalHorse.source_available or not DarkHorse.available_scenes.is_empty():return true
 	if Animals.available():return true
 	if Horse.available() or ResourceLoader.exists("res://local-art/mounts/skeletal-horse.glb"):return true
 	for body: int in BODIES:
 		if ResourceLoader.exists(asset_path(body)):return true
 	return false
 static func mount_available(body: int,item: int) -> bool:
-	if Magical.selected(body, item):return true
+	if WarHorse.war_scenes.has(body) and body != WarHorse.EtherealBody:
+		return item > 0 and WarHorse.selected_war_horse(body, item)
+	if WarHorse.selected_war_horse(body, item):return true
+	if SkeletalHorse.source_available and body == SkeletalHorse.Body:return SkeletalHorse.selected_skeletal(body, item)
+	if SourceOstard.selected(body, item) or Magical.selected(body, item) or DarkHorse.accepts_source(body, item):return true
 	var entry := Animals.Creatures.entry(body)
 	if entry.get("mount_only",false):
 		return item > 0 and item == int(entry.get("mount_item",0)) and Animals.Creatures.supports_body(body)
@@ -22,7 +32,9 @@ static func kind(body: int,item: int=0) -> String:
 static func asset_path(body: int,item: int=0) -> String:
 	var label:=kind(body,item);return "res://local-art/"+("mounts" if label in ["kirin","kirin_ethereal","llama","llama_ethereal"] else "ostards")+"/"+("kirin" if label=="kirin_ethereal" else label)+"-modern.gltf"
 static func supports_body(body: int) -> bool:
-	if Magical.selected(body, 0):return true
+	if WarHorse.selected_war_horse(body, 0):return true
+	if SkeletalHorse.selected_skeletal(body, 0):return true
+	if SourceOstard.selected(body, 0) or Magical.selected(body, 0) or DarkHorse.accepts_source(body, 0):return true
 	if Animals.Creatures.entry(body).get("mount_only",false):return false
 	if Animals.supports_body(body):return true
 	if body==0x319:return ResourceLoader.exists("res://local-art/mounts/skeletal-horse.glb")
@@ -45,6 +57,13 @@ static func horse_body(item: int) -> int:
 		if item!=0 and int(entry.get("mount_item",0))==item and Animals.Creatures.supports_body(body):return body
 	return 0
 static func matches(visual: Node3D,body: int,item: int=0) -> bool:
+	if WarHorse.selected_war_horse(body, item):return visual is WarHorse and visual.source_body == body
+	if visual is WarHorse:return false
+	if SkeletalHorse.selected_skeletal(body, item):return visual is SkeletalHorse
+	if DarkHorse.accepts_source(body, item):return visual is DarkHorse and visual.source_body==body
+	if visual is DarkHorse:return false
+	if SourceOstard.selected(body, item):return visual is SourceOstard and visual.source_body==body
+	if visual is SourceOstard:return false
 	var form:=Magical.configuration(body,item)
 	if not form.is_empty():return visual is Magical and visual.kind==form.kind
 	if visual is Magical:return false
@@ -62,6 +81,10 @@ static func matches(visual: Node3D,body: int,item: int=0) -> bool:
 static func uses_original_pack(body: int, item: int) -> bool:
 	return body == Ostard.LlamaActions.PackBody and item == 0 and Ostard.LlamaActions.active_pack
 static func create(body: int,item: int=0) -> Node3D:
+	if WarHorse.selected_war_horse(body, item):return WarHorse.create_war_horse(body)
+	if SkeletalHorse.selected_skeletal(body, item):return SkeletalHorse.create_skeletal()
+	if DarkHorse.accepts_source(body, item):return DarkHorse.create_source(body)
+	if SourceOstard.selected(body, item):return SourceOstard.create(body)
 	var form:=Magical.configuration(body,item)
 	if not form.is_empty():
 		var original := Magical.new()

@@ -1,0 +1,136 @@
+{
+  "body": 793,
+  "sequence_hash": "0xbc9dc469e5ea0386",
+  "groups": [
+    {
+      "group": 1,
+      "name": "build/animationframe/000793/01.bin",
+      "archive": "AnimationFrame3.uop",
+      "cdn_key": "ec5119b6d086340a",
+      "bytes": 237168,
+      "frames": 50,
+      "sha256": "2b441bce71f699d19194719409e44e156f736a344aa9fdb3880463b1f320d180",
+      "clip": "SkeletalCombatIdle"
+    },
+    {
+      "group": 2,
+      "name": "build/animationframe/000793/02.bin",
+      "archive": "AnimationFrame3.uop",
+      "cdn_key": "689e50ca0fd76833",
+      "bytes": 263534,
+      "frames": 50,
+      "sha256": "fb7fccc9e87c8073cef21a01c69e0322778e02f1471c1674f5a67eb3972b039b",
+      "clip": "SkeletalSideFall"
+    },
+    {
+      "group": 3,
+      "name": "build/animationframe/000793/03.bin",
+      "archive": "AnimationFrame3.uop",
+      "cdn_key": "3066daf7e237dce4",
+      "bytes": 305495,
+      "frames": 60,
+      "sha256": "1c4042bd557a6ed0a5e57fc34fb48d884749ac4f2864c95d6404048749e170df",
+      "clip": "Death2"
+    },
+    {
+      "group": 4,
+      "name": "build/animationframe/000793/04.bin",
+      "archive": "AnimationFrame3.uop",
+      "cdn_key": "f62573bb7db15fe9",
+      "bytes": 240412,
+      "frames": 50,
+      "sha256": "55b6b19f9e8fd2f42021664097b7e643c09ff14c3c6099082cc0de1ce9e7a328",
+      "clip": "SkeletalRearStrike"
+    },
+    {
+      "group": 10,
+      "name": "build/animationframe/000793/10.bin",
+      "archive": "AnimationFrame3.uop",
+      "cdn_key": "dd83769b82f13bd5",
+      "bytes": 241916,
+      "frames": 50,
+      "sha256": "c822ed79d003d26cab4502773768dd321fd407f56fd95e8e46a1fea03feeff72",
+      "clip": "Hit"
+    },
+    {
+      "group": 12,
+      "name": "build/animationframe/000793/12.bin",
+      "archive": "AnimationFrame3.uop",
+      "cdn_key": "67787ecaa43e18b4",
+      "bytes": 334602,
+      "frames": 70,
+      "sha256": "6c0fc13f06fc37b60a86440eadd45ff586a65c1e98aae38ba99e6a2f737efda8",
+      "clip": "SkeletalRearCast"
+    },
+    {
+      "group": 15,
+      "name": "build/animationframe/000793/15.bin",
+      "archive": "AnimationFrame3.uop",
+      "cdn_key": "f6dcc8696df12dd9",
+      "bytes": 242935,
+      "frames": 50,
+      "sha256": "f0362abe417f0dae2284c7c0fc83fcdd2e27307cc54d7e7a233d4527a86ec49b",
+      "clip": "SkeletalForelegGuard"
+    },
+    {
+      "group": 22,
+      "name": "build/animationframe/000793/22.bin",
+      "archive": "AnimationFrame3.uop",
+      "cdn_key": "8835dacc8b01ea0e",
+      "bytes": 239038,
+      "frames": 50,
+      "sha256": "0a2608e3a1de46ef3764c8648da67d81c5206a8d19b6a8fa9ad53def0a03547f",
+      "clip": "Walk"
+    },
+    {
+      "group": 24,
+      "name": "build/animationframe/000793/24.bin",
+      "archive": "AnimationFrame3.uop",
+      "cdn_key": "ca2bc670040c5755",
+      "bytes": 239917,
+      "frames": 50,
+      "sha256": "90ec8b49360cdad423adb6c66af40898b3214b157a805f22740c7b804388cf1f",
+      "clip": "Run"
+    },
+    {
+      "group": 25,
+      "name": "build/animationframe/000793/25.bin",
+      "archive": "AnimationFrame3.uop",
+      "cdn_key": "be0af121745c6567",
+      "bytes": 237176,
+      "frames": 50,
+      "sha256": "4dc3c4b13de75e463ec9f39c395a3be772854df5c390ffb542dad185ea13a408",
+      "clip": "Idle"
+    },
+    {
+      "group": 26,
+      "name": "build/animationframe/000793/26.bin",
+      "archive": "AnimationFrame3.uop",
+      "cdn_key": "17a245bd0dee8993",
+      "bytes": 239537,
+      "frames": 50,
+      "sha256": "8239bccaaefcb5272e22f42f5717d50590e130c7281596c75d1a2956dfe7f350",
+      "clip": "SkeletalQuietNod"
+    },
+    {
+      "group": 27,
+      "name": "build/animationframe/000793/27.bin",
+      "archive": "AnimationFrame3.uop",
+      "cdn_key": "89cee83ee68f1c4a",
+      "bytes": 235176,
+      "frames": 50,
+      "sha256": "d687661a3cef0879069e928386a8d21313a311d98e6f05ff3f0017437f818dfc",
+      "clip": "SkeletalHighFidget"
+    },
+    {
+      "group": 28,
+      "name": "build/animationframe/000793/28.bin",
+      "archive": "AnimationFrame3.uop",
+      "cdn_key": "8d9cc6a14218d74c",
+      "bytes": 194649,
+      "frames": 40,
+      "sha256": "7899a54850b8a1e6d1bfa9bd00e5571bf61f258aef0a15a34dcb870fe3175f66",
+      "clip": "SkeletalAlert"
+    }
+  ]
+}
