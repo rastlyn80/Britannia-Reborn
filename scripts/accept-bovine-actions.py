@@ -102,7 +102,9 @@ def check_client(candidate):
                 '--path', str(VIEWER), '--script', f'res://../scripts/{name}.gd']
         if candidate and name == 'test-bovine-deaths':
             args.extend(('--', '--candidate'))
-        result = subprocess.run(args, capture_output=True, text=True, timeout=50)
+        # The full 72-handoff corpse replay can exceed 50 wall-clock seconds.
+        timeout = 180 if name == 'test-bovine-deaths' else 50
+        result = subprocess.run(args, capture_output=True, text=True, timeout=timeout)
         print(result.stdout, end='')
         assert result.returncode == 0 and 'SCRIPT ERROR:' not in result.stderr
         assert 'ERROR:' not in result.stdout + result.stderr, result.stderr

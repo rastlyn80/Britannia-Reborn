@@ -1,0 +1,93 @@
+{
+  "uoaos/UOTD/models/models.txt": {
+    "sha256": "bac2a817c30773a0d3c1943b61555df4373a0eadbc1b10dfbc94f55d1615b97a",
+    "bytes": 55735,
+    "cabinet": "uoaos/UOTD/models/client7.cab",
+    "cabinet_sha256": "8180b7c2b7cb4ca6e868a3ff460e25c0e6aa710367b8d5487d2d455bfef29859",
+    "archive_url": "https://zuluarchive.com/static/files/uoaos.zip"
+  },
+  "uoaos/UOTD/models/Animals/birds_eagle_attack1.grn": {
+    "sha256": "50b8c5b701fa129d3354b07c5a4ad1b7df114df5636c0399e6b53c20bcdb124e",
+    "bytes": 36552,
+    "cabinet": "uoaos/UOTD/models/animals/client8.cab",
+    "cabinet_sha256": "155fe820d8c0e2a08650f81ec037829bed49aeca74efd2a07479a907287a1afc",
+    "archive_url": "https://zuluarchive.com/static/files/uoaos.zip"
+  },
+  "uoaos/UOTD/models/Animals/birds_eagle_death1.grn": {
+    "sha256": "97b1efd7749a83d190af04be26f8082dcd530de833ae77499ae301197b7493d4",
+    "bytes": 44868,
+    "cabinet": "uoaos/UOTD/models/animals/client8.cab",
+    "cabinet_sha256": "155fe820d8c0e2a08650f81ec037829bed49aeca74efd2a07479a907287a1afc",
+    "archive_url": "https://zuluarchive.com/static/files/uoaos.zip"
+  },
+  "uoaos/UOTD/models/Animals/birds_eagle_die1.grn": {
+    "sha256": "97b1efd7749a83d190af04be26f8082dcd530de833ae77499ae301197b7493d4",
+    "bytes": 44868,
+    "cabinet": "uoaos/UOTD/models/animals/client8.cab",
+    "cabinet_sha256": "155fe820d8c0e2a08650f81ec037829bed49aeca74efd2a07479a907287a1afc",
+    "archive_url": "https://zuluarchive.com/static/files/uoaos.zip"
+  },
+  "uoaos/UOTD/models/Animals/birds_eagle_eat.grn": {
+    "sha256": "d881fdab3a5c4b6e0dd1dc679b946cfc03c319d029cf736d9e2a1aaacd248492",
+    "bytes": 34376,
+    "cabinet": "uoaos/UOTD/models/animals/client8.cab",
+    "cabinet_sha256": "155fe820d8c0e2a08650f81ec037829bed49aeca74efd2a07479a907287a1afc",
+    "archive_url": "https://zuluarchive.com/static/files/uoaos.zip"
+  },
+  "uoaos/UOTD/models/Animals/birds_eagle_fidget.grn": {
+    "sha256": "577b94ba7b66aa10996a75682041d19383784cc9b6684ed33ee0d82e2b867941",
+    "bytes": 37812,
+    "cabinet": "uoaos/UOTD/models/animals/client8.cab",
+    "cabinet_sha256": "155fe820d8c0e2a08650f81ec037829bed49aeca74efd2a07479a907287a1afc",
+    "archive_url": "https://zuluarchive.com/static/files/uoaos.zip"
+  },
+  "uoaos/UOTD/models/Animals/birds_eagle_gethit.grn": {
+    "sha256": "328d9678f69ed86e26e2e134c2b3b0aa1d10b81288f36b909c8a965b5f7543f9",
+    "bytes": 27552,
+    "cabinet": "uoaos/UOTD/models/animals/client8.cab",
+    "cabinet_sha256": "155fe820d8c0e2a08650f81ec037829bed49aeca74efd2a07479a907287a1afc",
+    "archive_url": "https://zuluarchive.com/static/files/uoaos.zip"
+  },
+  "uoaos/UOTD/models/Animals/birds_eagle_idle.grn": {
+    "sha256": "e2253ee012ddd92703c12a33e242ec4f84fe5bbf7f85b0fc8985737392dfa4a5",
+    "bytes": 23948,
+    "cabinet": "uoaos/UOTD/models/animals/client8.cab",
+    "cabinet_sha256": "155fe820d8c0e2a08650f81ec037829bed49aeca74efd2a07479a907287a1afc",
+    "archive_url": "https://zuluarchive.com/static/files/uoaos.zip"
+  },
+  "uoaos/UOTD/models/Animals/birds_eagle_lod2.grn": {
+    "sha256": "d95c9c4075db7faee369c8515cb701fe6be49213c2ebb7dd37d220b96b3a3e73",
+    "bytes": 17608,
+    "cabinet": "uoaos/UOTD/models/animals/client8.cab",
+    "cabinet_sha256": "155fe820d8c0e2a08650f81ec037829bed49aeca74efd2a07479a907287a1afc",
+    "archive_url": "https://zuluarchive.com/static/files/uoaos.zip"
+  },
+  "uoaos/UOTD/models/Animals/birds_eagle_run.grn": {
+    "sha256": "5194e066f9e1d58d1c3f6ccb771c073c64d11a3bedc5ccfee155a4019918c7a4",
+    "bytes": 29320,
+    "cabinet": "uoaos/UOTD/models/animals/client8.cab",
+    "cabinet_sha256": "155fe820d8c0e2a08650f81ec037829bed49aeca74efd2a07479a907287a1afc",
+    "archive_url": "https://zuluarchive.com/static/files/uoaos.zip"
+  },
+  "uoaos/UOTD/models/Animals/birds_eagle_walk.grn": {
+    "sha256": "41f9aee3e9079a867b7fd4fe5f83c135766b7c1c8bf4de6854476a27e2c1b778",
+    "bytes": 29364,
+    "cabinet": "uoaos/UOTD/models/animals/client8.cab",
+    "cabinet_sha256": "155fe820d8c0e2a08650f81ec037829bed49aeca74efd2a07479a907287a1afc",
+    "archive_url": "https://zuluarchive.com/static/files/uoaos.zip"
+  },
+  "uoaos/UOTD/models/Maps/birds_eagle.tga": {
+    "sha256": "a119da736bba1df54f0b5db9abbec25adc005a51b82c0b17661ac5c94f4706cd",
+    "bytes": 65580,
+    "cabinet": "uoaos/UOTD/models/maps/client10.cab",
+    "cabinet_sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9",
+    "archive_url": "https://zuluarchive.com/static/files/uoaos.zip"
+  },
+  "uoaos/UOTD/models/Maps/birds_eagle_m.tga": {
+    "sha256": "27b381325ec1c501b15714ef2e364180b29ed8a54158c1af5810b8e567b37849",
+    "bytes": 65580,
+    "cabinet": "uoaos/UOTD/models/maps/client10.cab",
+    "cabinet_sha256": "92e9b23c0c226a0d20af5402af7624b188d3bf6e1c4adb510c9d0575d2daa1d9",
+    "archive_url": "https://zuluarchive.com/static/files/uoaos.zip"
+  }
+}

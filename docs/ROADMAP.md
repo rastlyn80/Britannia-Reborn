@@ -1,3 +1,13 @@
+# Eagle and porcine terrain
+
+The original Eagle candidate has verified living terrain, fall, native class and hue evidence. The highest tested step still produces abrupt body lift on the original attack. Pig and Boar have verified gait and corpse routes in both modes. Continue Mongbat, Wandering Healer, Reaper and Zombie in configured occurrence order.
+
+
+# Goats, Grizzly and Grey Wolf
+
+Both native goats, Grizzly and Raging Grizzly, and the two Grey Wolf bodies passed the shared terrain, action and corpse checks. The largest shifts at the highest tested step remain open for visual review. Continue Eagle body 5, then Pig and Boar, in configured occurrence order.
+
+
 # Ratman, Giant Spider, Cow and Skeleton terrain
 
 The Ratman family, Giant Spider, both Cow coats and both stock Skeleton bodies have moving terrain and corpse evidence in both modes. The Ratman hand, Giant Spider leg tips and Cow hooves can still move abruptly on high steps. Continue in configured occurrence order with Goat and Mountain Goat, then Grizzly Bear and Grey Wolf.

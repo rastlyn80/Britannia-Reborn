@@ -1124,6 +1124,17 @@ if ((Test-Path "$root/Viewer/local-art/creatures/rat_race_ratman-modern.gltf") -
 }
 
 
+if (Test-Path "$root/Viewer/local-art/creatures/original-eagle/manifest.json") {
+ & python -B "$root/scripts/prepare-original-eagle.py" --check-installed
+ if ($LASTEXITCODE) { throw 'Original Eagle asset verification failed' }
+ foreach ($test in @('bake','terrain','falls')) {
+  $results = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-original-eagle-$test.gd" 2>&1
+  $code = $LASTEXITCODE
+  $results | ForEach-Object { Write-Output $_ }
+  if ($code -or ($results | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "Original Eagle $test verification failed" }
+ }
+}
+
 # These full-skin terrain checks require the locally prepared creature assets.
 foreach ($mode in @('classic','enhanced')) {
  $terrainArguments = @()
@@ -1141,6 +1152,20 @@ foreach ($mode in @('classic','enhanced')) {
      (Test-Path "$root/Viewer/local-art/creatures/skeleton-actions-56-modern.scn")) {
   if ($mode -eq 'classic' -or (Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions/50-modern.scn")) {
    $terrainChecks += @('skeleton-living-terrain','skeleton-living-fall')
+  }
+ }
+ if ((Test-Path "$root/Viewer/local-art/creatures/grazers-grizzly-actions-209-modern.scn") -and
+     (Test-Path "$root/Viewer/local-art/creatures/mountain-goat-actions-modern.scn") -and
+     (Test-Path "$root/Viewer/local-art/creatures/grazers-grizzly-actions-212-modern.scn") -and
+     (Test-Path "$root/Viewer/local-art/creatures/grey-wolf-actions-modern.scn") -and
+     (Test-Path "$root/Viewer/local-art/creatures/pig-actions-modern.scn") -and
+     (Test-Path "$root/Viewer/local-art/creatures/grazers-grizzly-actions-290-modern.scn")) {
+  if ($mode -eq 'classic' -or ((Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions/209-modern.scn") -and
+      (Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions/88-modern.scn") -and
+      (Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions/212-modern.scn") -and
+      (Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions/25-modern.scn") -and
+      (Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions/290-modern.scn"))) {
+   $terrainChecks += @('quadruped-living-terrain','quadruped-living-fall')
   }
  }
  foreach ($test in $terrainChecks) {

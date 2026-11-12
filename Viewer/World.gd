@@ -107,6 +107,8 @@ func _ready() -> void:
 	preload("res://Presentation/SourceRatmanTerrainProfile.gd").enable()
 	preload("res://Presentation/SourceGiantSpiderTerrainProfile.gd").enable()
 	preload("res://Presentation/SourceSkeletonTerrainProfile.gd").enable()
+	preload("res://Presentation/SourceStepQuadrupedProfile.gd").enable()
+	preload("res://Presentation/SourceOriginalEagleProfile.gd").enable()
 	preload("res://Presentation/SourceTrollLivingTerrainProfile.gd").enable()
 	preload("res://Presentation/SourceBearLivingTerrainProfile.gd").enable()
 	preload("res://Presentation/SourceDogLivingTerrainProfile.gd").enable()

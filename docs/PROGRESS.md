@@ -1,3 +1,15 @@
+# Original Eagle, Pig and Boar
+
+The recovered Eagle art keeps eight original motions and adds linked flight transitions, an airborne fall and the native static corpse. The two isolated profiles passed 168 checks across Eagle, Phoenix and Enraged Eagle. See [Original Eagle](EAGLE_ORIGINAL.md).
+
+Pig and Boar retain their separate Third Dawn coats and stock identities. Local rotations preserve the Boar's limb scales and prepare the hooves for nearby treads. Both modes passed 9,000 moving poses and 148 isolated native checks combined. See [Pig and Boar terrain](PORCINE_TERRAIN.md).
+
+
+# Goats, Grizzly and Grey Wolf on steps
+
+The source rigs now share four-foot terrain support, a continuous collapse and a static corpse with the native body and hue. Both modes passed 22,500 moving poses, 352 decoded death transfers and 416 isolated server checks. See [Goat, Grizzly and Grey Wolf terrain](QUADRUPED_TERRAIN.md) for the Enhanced gestures, exact source members and remaining ledge motion.
+
+
 # Ratman, Giant Spider, Cow and Skeleton footing
 
 The five Ratman body routes keep their existing art and actions, with corrected walking loops, step clearance and a continuous fall to the static corpse. Both profiles passed 6,360 moving poses combined, 256 corpse transitions and 218 isolated native checks. See [Ratman terrain](RATMAN_TERRAIN.md).
