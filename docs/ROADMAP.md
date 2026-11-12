@@ -1,3 +1,23 @@
+# Armed Lizardman and common Trolls
+
+Both armed Lizardman bodies have tested living terrain support and keep their original Classic motions, grip and corpse routes. The Enhanced archive audit found no direct frame member for bodies 35 and 36. Continue with the next occurrence-ranked Troll bodies, checking the separate axe, club and unarmed native identities against their archive references and existing fits.
+
+
+# Timber Wolf and common armed forms
+
+The Timber Wolf and Injured Wolf have isolated native and client replay evidence. Next check living terrain contact for the two armed Lizardman bodies in occurrence order. Both have existing Classic actions and static corpses. The inspected Enhanced archives have no direct named sequence for the two weapon bodies, so retain their original motion while validating feet, tails and weapons.
+
+
+# Ordinary Rat source link
+
+Body 238 has its own named Third Dawn cabinet member and a documented animation link to body 215. The small distributed rig now has an optional fit for seven linked gestures. Continue the remaining configured common-form source audits with Timber Wolf, then both armed Lizardman variants. Keep unknown Enhanced frame references explicit and preserve their original Classic motion.
+
+
+# Enhanced serpents
+
+The Sea, Giant and Silver Serpent profiles have isolated native and client replay evidence. The default Classic action count remains 6,489 of 8,090 tracked possibilities, and the current Classic source audit has no unresolved frame-backed slots in that ledger. Continue in configured occurrence order with the remaining common-form archive aliases. Retain the existing Classic presentation wherever the decoded reference or the body-to-animation link is unresolved.
+
+
 # Original Silver, faction, Ethereal and Pack Horses
 
 The seven original forms passed the normal client and disposable server checks. Continue with the common Sea Serpent. Enhanced artwork ID 145 supplies fourteen exact groups and the Third Dawn model table names the same original mesh for live body 150. Keep the distinct native Sea Serpent and Deep Sea Serpent hues and waterline. Both forms already have a verified Classic route.

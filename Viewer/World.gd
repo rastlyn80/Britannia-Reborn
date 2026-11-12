@@ -102,6 +102,7 @@ func _ready() -> void:
 		enhanced_creature_actions = preload("res://Presentation/EnhancedCreatureProfile.gd").enable()
 		if not enhanced_creature_actions:
 			push_warning("The optional Enhanced creature action profile needs its prepared local assets.")
+	preload("res://Presentation/SourceLizardLivingTerrainProfile.gd").enable()
 	MountVisual.Horse.enhanced_ordinary_horses = enhanced_creature_actions
 	MountVisual.Ostard.LlamaActions.configure(enhanced_creature_actions)
 	MountVisual.Magical.configure(enhanced_creature_actions)
@@ -111,6 +112,11 @@ func _ready() -> void:
 	MountVisual.WarHorse.configure_war_horses(enhanced_creature_actions)
 	if enhanced_creature_actions:
 		preload("res://Presentation/SeaHorseProfile.gd").enable()
+		preload("res://Presentation/SourceSeaSerpentProfile.gd").enable()
+		preload("res://Presentation/SourceGiantSerpentProfile.gd").enable()
+		preload("res://Presentation/SourceSilverSerpentProfile.gd").enable()
+		preload("res://Presentation/SourceOrdinaryRatProfile.gd").enable()
+		preload("res://Presentation/SourceTimberWolfProfile.gd").enable()
 	MountVisual.Animals.enhanced_bovine_actions = enhanced_creature_actions and MountVisual.Animals.EnhancedBovine.enable()
 	var path := "res://world.json"
 	if FileAccess.file_exists("res://play-world.json"): path = "res://play-world.json"

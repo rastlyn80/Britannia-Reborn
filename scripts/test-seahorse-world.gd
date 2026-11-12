@@ -31,6 +31,8 @@ func run() -> void:
 		if not expect(actor is Mounts.Horse and ridden is Mounts.Horse, "Classic uses its available horse fallback"):
 			return
 		print("SEAHORSE WORLD: ", checks, " checks, Enhanced false")
+		world.queue_free()
+		await process_frame
 		quit()
 		return
 	for case in [[0, 0, 1, "Attack2"], [0, 0, 4, "Attack2"], [0, 1, 1, "Attack"],
@@ -50,6 +52,8 @@ func run() -> void:
 		if not await verify_fall(world, at, serial, variant):
 			return
 	print("SEAHORSE WORLD: ", checks, " checks, Enhanced true")
+	world.queue_free()
+	await process_frame
 	quit()
 
 

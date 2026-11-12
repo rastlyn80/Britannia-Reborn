@@ -48,6 +48,9 @@ func run() -> void:
 		return
 	print("LLAMA TERRAIN: ", posed, " skin poses, ", falls, " falls, ", handoffs,
 		" handoffs, minimum gap ", minimum_gap, " m, maximum joint transfer ", maximum_handoff, " m")
+	unsupported.queue_free()
+	board.queue_free()
+	await process_frame
 	quit()
 
 

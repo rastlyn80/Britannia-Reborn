@@ -1,0 +1,156 @@
+{
+  "body": 21,
+  "sequence": "0x7239e9944db1c3b3",
+  "groups": [
+    {
+      "group": 0,
+      "archive": "AnimationFrame4.uop",
+      "name": "build/animationframe/000021/00.bin",
+      "sha256": "dd7c852989f9dbbcb78b42be9ea52c6fcf024ce9996b4996ee71e3ffcfef5cef",
+      "frames": 45,
+      "sequence_frames": 45,
+      "clip": "SerpentCombatSlither",
+      "treatment": "new fit"
+    },
+    {
+      "group": 1,
+      "archive": "AnimationFrame4.uop",
+      "name": "build/animationframe/000021/01.bin",
+      "sha256": "fad5cd37f255fc995d2c18391b5510d1dd97389319bb15b97aa853611f3db808",
+      "frames": 40,
+      "sequence_frames": 40,
+      "clip": "Idle",
+      "treatment": "retained source or Classic fit"
+    },
+    {
+      "group": 2,
+      "archive": "AnimationFrame4.uop",
+      "name": "build/animationframe/000021/02.bin",
+      "sha256": "d3685f380c06471b2df60a714989e07fb61c170e2171711377e940d817c0e11c",
+      "frames": 50,
+      "sequence_frames": 50,
+      "clip": "Death2",
+      "treatment": "retained source or Classic fit"
+    },
+    {
+      "group": 3,
+      "archive": "AnimationFrame4.uop",
+      "name": "build/animationframe/000021/03.bin",
+      "sha256": "e1702df721e9d3884644b9e5697b0e20b310e406d315609b49a354feb60d5bac",
+      "frames": 40,
+      "sequence_frames": 40,
+      "clip": "Death",
+      "treatment": "retained source or Classic fit"
+    },
+    {
+      "group": 4,
+      "archive": "AnimationFrame4.uop",
+      "name": "build/animationframe/000021/04.bin",
+      "sha256": "659d312e5e6817fb9e3f7034c73702fdd8297abae0f2f624249646a27a6b60bf",
+      "frames": 35,
+      "sequence_frames": 35,
+      "clip": "SerpentUncoilStrike",
+      "treatment": "retained Enhanced fit"
+    },
+    {
+      "group": 10,
+      "archive": "AnimationFrame4.uop",
+      "name": "build/animationframe/000021/10.bin",
+      "sha256": "a09b1b0525ac721a0104e3236ee614a69b5d38285349f555832f1b3f687b5244",
+      "frames": 30,
+      "sequence_frames": 30,
+      "clip": "Hit",
+      "treatment": "retained source or Classic fit"
+    },
+    {
+      "group": 11,
+      "archive": "AnimationFrame4.uop",
+      "name": "build/animationframe/000021/11.bin",
+      "sha256": "f1492f224e2ab2b5b8e08c8c64759e6ac8c27d0331802087c52ee4c9777d13f8",
+      "frames": 40,
+      "sequence_frames": 40,
+      "clip": "Pillage",
+      "treatment": "retained source or Classic fit"
+    },
+    {
+      "group": 15,
+      "archive": "AnimationFrame4.uop",
+      "name": "build/animationframe/000021/15.bin",
+      "sha256": "2202f465504239ba9e7b9553211bd4d10491bc50f58f7b2a79b674317e51e5f2",
+      "frames": 30,
+      "sequence_frames": 30,
+      "clip": "LowNeckRecoil",
+      "treatment": "retained source or Classic fit"
+    },
+    {
+      "group": 22,
+      "archive": "AnimationFrame4.uop",
+      "name": "build/animationframe/000021/22.bin",
+      "sha256": "48c461dab36d04e5752dcc6478c856bd562675c26f586041283cd5ec5460b5cf",
+      "frames": 40,
+      "sequence_frames": 40,
+      "clip": "Walk",
+      "treatment": "retained source or Classic fit"
+    },
+    {
+      "group": 23,
+      "archive": "AnimationFrame4.uop",
+      "name": "build/animationframe/000021/23.bin",
+      "sha256": "2f025413cb83e4fd61ced90d4b1696b02c02507dbb7a868f83c33d516817b5a1",
+      "frames": 55,
+      "sequence_frames": 55,
+      "clip": "SerpentSurface",
+      "treatment": "retained Enhanced fit"
+    },
+    {
+      "group": 24,
+      "archive": "AnimationFrame4.uop",
+      "name": "build/animationframe/000021/24.bin",
+      "sha256": "fc92b35b4656e3a1717ceb571f1d9f6b66a2d8898b23b760afb343a2950791fc",
+      "frames": 20,
+      "sequence_frames": 20,
+      "clip": "Run",
+      "treatment": "retained source or Classic fit"
+    },
+    {
+      "group": 25,
+      "archive": "AnimationFrame4.uop",
+      "name": "build/animationframe/000021/25.bin",
+      "sha256": "1e03ff564577bea7041755a0ec2b7411f5e4213c6a3a094346b6202c8bb5f0ee",
+      "frames": 60,
+      "sequence_frames": 60,
+      "clip": "SerpentQuietIdle",
+      "treatment": "new fit"
+    },
+    {
+      "group": 26,
+      "archive": "AnimationFrame4.uop",
+      "name": "build/animationframe/000021/26.bin",
+      "sha256": "8f91560e6df9a421b58fe71ba84e8d136bbcedab10f44d8c17b9956322c51657",
+      "frames": 75,
+      "sequence_frames": 75,
+      "clip": "SerpentLowWatch",
+      "treatment": "retained Enhanced fit"
+    },
+    {
+      "group": 27,
+      "archive": "AnimationFrame4.uop",
+      "name": "build/animationframe/000021/27.bin",
+      "sha256": "e19516a96f4cff4b6756a0342e5567ee50bf266c4adc578aeeaf4dbaeccc17bc",
+      "frames": 65,
+      "sequence_frames": 65,
+      "clip": "SerpentRaisedCoil",
+      "treatment": "retained Enhanced fit"
+    },
+    {
+      "group": 28,
+      "archive": "AnimationFrame4.uop",
+      "name": "build/animationframe/000021/28.bin",
+      "sha256": "e17417cf1705093d67933e890b63a2f7fe5121de27b469a0844b6391fb574a0c",
+      "frames": 35,
+      "sequence_frames": 35,
+      "clip": "SerpentCoilAlert",
+      "treatment": "retained Enhanced fit"
+    }
+  ]
+}

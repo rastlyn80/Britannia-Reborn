@@ -140,6 +140,8 @@ static func build(body: int,hue: int=0,worn: Array=[]) -> Node3D:
 	var actor:=posed(body,hue,worn)
 	if actor==null:return null
 	var result:=freeze(actor)
+	if result != null and actor.has_method("corpse_waterline_offset"):
+		result.position.y = actor.corpse_waterline_offset()
 	actor.get_parent().remove_child(actor)
 	# Release overrides while their MeshInstance still exists. This also avoids
 	# headless-renderer material callbacks during immediate actor destruction.

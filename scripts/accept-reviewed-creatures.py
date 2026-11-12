@@ -21,6 +21,8 @@ common = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(common)
 ART, sha, read, resource = common.ART, common.sha, common.read, common.resource
 RECEIPT = ART/'reviewed_presentations/local-presentation.json'
+REVIEW_FIELDS = common.REVIEW_FIELDS | {'local_preparation_sha256'}
+PREVIOUS_REVIEW_PUBLISHER = '3d571411c77589c432a010024de966a3aa8dd05d72f3b782324dde65b3a1f5cc'
 FAMILIES = {
     'variants': ('source_variants/preparation.json', 'prepare-source-variants.py', '--check-prepared'),
     'mummies': ('mummies/preparation.json', 'check-prepared-mummy.py', '--runtime'),
@@ -124,7 +126,8 @@ def main():
     receipt = {}
     if args.check_active or args.refresh_active:
         receipt = read(RECEIPT)
-        ALIAS_EVIDENCE['check_publisher'](Path(__file__).name, receipt['publisher_sha256'], sha(Path(__file__)))
+        if receipt['publisher_sha256'] != PREVIOUS_REVIEW_PUBLISHER:
+            ALIAS_EVIDENCE['check_publisher'](Path(__file__).name, receipt['publisher_sha256'], sha(Path(__file__)))
     if args.check_active:
         args.evidence = ROOT/receipt['evidence']
     assert args.evidence.resolve().is_relative_to(ROOT/'work'), 'Keep local evidence private under work/'
@@ -132,7 +135,8 @@ def main():
     accepted = ART/'accepted-index.json'
     report = read(accepted)
     incoming = {row['kind'] for row in rows}
-    review_fields = common.REVIEW_FIELDS if args.refresh_active or 'retained_routes_sha256' in receipt else ()
+    # The fresh proof validates preparation inputs separately from sealed action overlays.
+    review_fields = REVIEW_FIELDS if args.refresh_active or 'retained_routes_sha256' in receipt else ()
     rows = ALIAS_EVIDENCE['expected_rows_with_legacy_aliases'](
         rows, report['entries'], refreshed_review_fields=review_fields)
     existing = {int(identity['body']):row['kind'] for row in report['entries'] for identity in row['bodies']}

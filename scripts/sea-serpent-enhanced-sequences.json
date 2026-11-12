@@ -1,0 +1,148 @@
+{
+  "source_body": 145,
+  "native_body": 150,
+  "sequence": "0xf17460e083cd7e82",
+  "scope": "The two Third Dawn model-table rows name the same rig. Body 145 supplies the reference for the authored fit. Native wire body 150 stays unchanged.",
+  "groups": [
+    {
+      "group": 0,
+      "name": "build/animationframe/000145/00.bin",
+      "archive": "AnimationFrame3.uop",
+      "sha256": "5278a3e8b8fccd7f98c47bd132aa88ae6ca038e12d722ffa141c7be2247d891b",
+      "frames": 60,
+      "sequence_frames": 60,
+      "clip": "SeaCombatSwim",
+      "treatment": "authored fit"
+    },
+    {
+      "group": 1,
+      "name": "build/animationframe/000145/01.bin",
+      "archive": "AnimationFrame3.uop",
+      "sha256": "83903b9378d2d59275c8996f800c4deeaba175a3fe28c2a0adbdb9a54cd5c053",
+      "frames": 60,
+      "sequence_frames": 60,
+      "clip": "SeaCombatIdle",
+      "treatment": "authored fit"
+    },
+    {
+      "group": 2,
+      "name": "build/animationframe/000145/02.bin",
+      "archive": "AnimationFrame3.uop",
+      "sha256": "ed9da62c5f42233310142331522f3eac01cf6e9081b17fca00f73642b2144b0e",
+      "frames": 60,
+      "sequence_frames": 60,
+      "clip": "SeaSideFall",
+      "treatment": "authored fit"
+    },
+    {
+      "group": 3,
+      "name": "build/animationframe/000145/03.bin",
+      "archive": "AnimationFrame3.uop",
+      "sha256": "cf0cca4c225fa04f2ca8729398106a95436c5533a4f71ad8a11d5c8ae5ccedaf",
+      "frames": 70,
+      "sequence_frames": 70,
+      "clip": "SeaRollFall",
+      "treatment": "authored fit"
+    },
+    {
+      "group": 4,
+      "name": "build/animationframe/000145/04.bin",
+      "archive": "AnimationFrame3.uop",
+      "sha256": "0a86913b811c97610e865ff2c82a4afc5690bd21e937ddd04bd2da804a74955c",
+      "frames": 40,
+      "sequence_frames": 40,
+      "clip": "SeaSnap",
+      "treatment": "authored fit"
+    },
+    {
+      "group": 5,
+      "name": "build/animationframe/000145/05.bin",
+      "archive": "AnimationFrame3.uop",
+      "sha256": "710215b187acea51b482ce970d58cc321a814972bd6aecf147a12ca0d315acf1",
+      "frames": 40,
+      "sequence_frames": 40,
+      "clip": "SeaDiveStrike",
+      "treatment": "authored fit"
+    },
+    {
+      "group": 10,
+      "name": "build/animationframe/000145/10.bin",
+      "archive": "AnimationFrame3.uop",
+      "sha256": "64d7d161b2457797454802303e25b6ae62b6afc0b6f5eb771e2a4ae21e7eeef2",
+      "frames": 30,
+      "sequence_frames": 30,
+      "clip": "SeaRecoil",
+      "treatment": "authored fit"
+    },
+    {
+      "group": 15,
+      "name": "build/animationframe/000145/15.bin",
+      "archive": "AnimationFrame3.uop",
+      "sha256": "30270de2d58478ccf18ac910effd1db80caa1d3717954ec591d6aff24bd2fb70",
+      "frames": 25,
+      "sequence_frames": 25,
+      "clip": "SeaGuard",
+      "treatment": "authored fit"
+    },
+    {
+      "group": 22,
+      "name": "build/animationframe/000145/22.bin",
+      "archive": "AnimationFrame3.uop",
+      "sha256": "c32716f7fc4905d23c48deb7b3f1e707fce46ea97560f86b6dd73333deb94478",
+      "frames": 60,
+      "sequence_frames": 60,
+      "clip": "Walk",
+      "treatment": "retained Third Dawn gait"
+    },
+    {
+      "group": 24,
+      "name": "build/animationframe/000145/24.bin",
+      "archive": "AnimationFrame3.uop",
+      "sha256": "f388036322578be51857619ffaaa4ca0a8dc1a9330f9a8fdf6c2634c53ced3b0",
+      "frames": 45,
+      "sequence_frames": 45,
+      "clip": "Run",
+      "treatment": "retained Third Dawn gait"
+    },
+    {
+      "group": 25,
+      "name": "build/animationframe/000145/25.bin",
+      "archive": "AnimationFrame3.uop",
+      "sha256": "953ffb76747a3cf24aea2dfd855a51bee00456a59b6f89814425d5d7c8b29a91",
+      "frames": 60,
+      "sequence_frames": 60,
+      "clip": "SeaQuietIdle",
+      "treatment": "authored fit"
+    },
+    {
+      "group": 26,
+      "name": "build/animationframe/000145/26.bin",
+      "archive": "AnimationFrame3.uop",
+      "sha256": "a98fe5213bcc187fb27947ff1f252dc520395f018af1d28156d4602940cf1317",
+      "frames": 45,
+      "sequence_frames": 45,
+      "clip": "SeaQuietFidget",
+      "treatment": "authored fit"
+    },
+    {
+      "group": 27,
+      "name": "build/animationframe/000145/27.bin",
+      "archive": "AnimationFrame3.uop",
+      "sha256": "4bd3542f015cf40e0d4ed3e4440cd652e808f72d31cd45d2992db1c7e26b2fc4",
+      "frames": 60,
+      "sequence_frames": 60,
+      "clip": "SeaDeepFidget",
+      "treatment": "authored fit"
+    },
+    {
+      "group": 28,
+      "name": "build/animationframe/000145/28.bin",
+      "archive": "AnimationFrame3.uop",
+      "sha256": "e59a63b4cfdfe0703d3fd44abfcb2b8a52446d02113d8b463475e2a0e446f96c",
+      "frames": 35,
+      "sequence_frames": 35,
+      "clip": "SeaAlert",
+      "treatment": "authored fit"
+    }
+  ]
+}

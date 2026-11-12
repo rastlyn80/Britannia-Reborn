@@ -1,6 +1,6 @@
 # Ordinary rat body 238
 
-The ordinary Rat uses an independent CC0 model by **br-n518**, rather than a miniature of the scarred Third Dawn giant rat. The source table has no body 238 entry; its giant-rat body 215 remains a separate actor. A rendered scaled-donor trial looked visibly monstrous, and inspection of the original giant-rat atlas found entirely opaque alpha, so its white markings were not a missing cutout problem. That trial remains unaccepted and local.
+The default client uses the small CC0 Rat by **br-n518**. A later Third Dawn archive contains the original body 238 model and links its motion to Giant Rat body 215. The original ordinary Rat shares the Giant Rat atlas and has the original table scale of about 49 cm. Its private comparison and optional action fit are documented in [Ordinary Rat Enhanced actions](ORDINARY_RAT_ENHANCED.md).
 
 ## Source and conversion
 

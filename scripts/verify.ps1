@@ -707,6 +707,99 @@ if (Test-Path "$root/Viewer/local-art/mounts/original-war-horses.json") {
   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "Original horse $test verification failed" }
  }
 }
+if (Test-Path "$root/Viewer/local-art/creatures/sea-serpent-enhanced/manifest.json") {
+ & python -B "$root/scripts/prepare-sea-serpent-enhanced.py" --check-installed
+ if ($LASTEXITCODE) {throw 'Prepared Sea Serpent art differs from the manifest'}
+ foreach ($test in @('terrain','world','world-enhanced')) {
+  $arguments = @()
+  $scriptName = $test
+  if ($test -like 'world*') {
+   $scriptName = 'world'
+   $arguments += '--world=res://world.json'
+   if ($test -eq 'world-enhanced') { $arguments += '--enhanced-creature-actions' }
+  }
+  $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-sea-serpent-enhanced-$scriptName.gd" -- @arguments 2>&1
+  $code = $LASTEXITCODE
+  $checks | ForEach-Object { Write-Output $_ }
+  if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "Sea Serpent $test verification failed" }
+ }
+}
+if (Test-Path "$root/Viewer/local-art/creatures/giant-serpent-enhanced/manifest.json") {
+ & python -B "$root/scripts/prepare-giant-serpent-enhanced.py" --check-installed
+ if ($LASTEXITCODE) {throw 'Prepared Giant Serpent art differs from the manifest'}
+ foreach ($test in @('terrain','world','world-enhanced')) {
+  $arguments = @()
+  $scriptName = $test
+  if ($test -like 'world*') {
+   $scriptName = 'world'
+   $arguments += '--world=res://world.json'
+   if ($test -eq 'world-enhanced') { $arguments += '--enhanced-creature-actions' }
+  }
+  $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-giant-serpent-enhanced-$scriptName.gd" -- @arguments 2>&1
+  $code = $LASTEXITCODE
+  $checks | ForEach-Object { Write-Output $_ }
+  if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "Giant Serpent $test verification failed" }
+ }
+}
+if (Test-Path "$root/Viewer/local-art/creatures/silver-serpent-enhanced/manifest.json") {
+ & python -B "$root/scripts/prepare-silver-serpent-enhanced.py" --check-installed
+ if ($LASTEXITCODE) {throw 'Prepared Silver Serpent art differs from the manifest'}
+ foreach ($test in @('terrain','world','world-enhanced')) {
+  $arguments = @()
+  $scriptName = $test
+  if ($test -like 'world*') {
+   $scriptName = 'world'
+   $arguments += '--world=res://world.json'
+   if ($test -eq 'world-enhanced') { $arguments += '--enhanced-creature-actions' }
+  }
+  $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-silver-serpent-enhanced-$scriptName.gd" -- @arguments 2>&1
+  $code = $LASTEXITCODE
+  $checks | ForEach-Object { Write-Output $_ }
+  if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "Silver Serpent $test verification failed" }
+ }
+}
+if (Test-Path "$root/Viewer/local-art/creatures/ordinary-rat-enhanced/manifest.json") {
+ & python -B "$root/scripts/prepare-ordinary-rat-enhanced.py" --check-installed
+ if ($LASTEXITCODE) {throw 'Prepared Ordinary Rat art differs from the manifest'}
+ foreach ($test in @('terrain','world','world-enhanced')) {
+  $arguments = @()
+  $scriptName = $test
+  if ($test -like 'world*') {
+   $scriptName = 'world'
+   $arguments += '--world=res://world.json'
+   if ($test -eq 'world-enhanced') { $arguments += '--enhanced-creature-actions' }
+  }
+  $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-ordinary-rat-enhanced-$scriptName.gd" -- @arguments 2>&1
+  $code = $LASTEXITCODE
+  $checks | ForEach-Object { Write-Output $_ }
+  if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "Ordinary Rat $test verification failed" }
+ }
+}
+if (Test-Path "$root/Viewer/local-art/creatures/timber-wolf-enhanced/manifest.json") {
+ & python -B "$root/scripts/prepare-timber-wolf-enhanced.py" --check-installed
+ if ($LASTEXITCODE) {throw 'Prepared Timber Wolf art differs from the manifest'}
+ foreach ($test in @('terrain','world','world-enhanced')) {
+  $arguments = @()
+  $scriptName = $test
+  if ($test -like 'world*') {
+   $scriptName = 'world'
+   $arguments += '--world=res://world.json'
+   if ($test -eq 'world-enhanced') { $arguments += '--enhanced-creature-actions' }
+  }
+  $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-timber-wolf-enhanced-$scriptName.gd" -- @arguments 2>&1
+  $code = $LASTEXITCODE
+  $checks | ForEach-Object { Write-Output $_ }
+  if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "Timber Wolf $test verification failed" }
+ }
+}
+if ((Test-Path "$root/Viewer/local-art/creatures/lizard-actions-35.scn") -and (Test-Path "$root/Viewer/local-art/creatures/lizard-actions-36.scn")) {
+ foreach ($test in @('terrain','steps')) {
+  $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-lizard-living-$test.gd" 2>&1
+  $code = $LASTEXITCODE
+  $checks | ForEach-Object { Write-Output $_ }
+  if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "Armed Lizardman living $test verification failed" }
+ }
+}
 if ((Test-Path "$root/Viewer/local-art/mounts/kirin-modern.gltf") -and (Test-Path "$root/Viewer/local-art/mounts/llama_ethereal-modern.gltf") -and (Test-Path "$root/Viewer/local-art/mounts/skeletal-horse.glb")) {
  foreach ($script in @('DistinctMountTests','OstardRidingTests','MountTerrainTests','EquineCompletionTests','AnimalActionTests')) {
   & $godot --headless --path "$root/Viewer" --script "res://Presentation/$script.gd"

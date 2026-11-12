@@ -1,3 +1,23 @@
+# Armed Lizardman living terrain
+
+The original spear and mace bodies now correct their living feet, tail and weapon on slopes and low steps. The client passed 3,672 planar poses and 1,728 step poses, with less than 10 mm of whole-model lift on the tested step. A running creature can leave an idle fidget. The isolated server passed 74 native checks for both weapon forms and player sexes, including rummage refusal and permitted loot transfer. See [reproduction and evidence](ARMED_LIZARDMAN_TERRAIN.md).
+
+
+# Enhanced Timber Wolf and Injured Wolf
+
+Body 225 keeps its original Third Dawn rig, coat and Classic clips. Six optional motions use the Grey Wolf reference frames and matched 32-joint rest rig. The Enhanced archive has no direct Timber Wolf sequence. The client passed 4,860 terrain poses and 162 fall transfers. The isolated server passed 125 checks across the Timber Wolf and Injured Wolf with both player sexes, including taming, pack behavior and Haochi's third trial. See [build and evidence](TIMBER_WOLF_ENHANCED.md).
+
+
+# Ordinary Rat Enhanced motions
+
+The small licensed Rat now has seven fitted gestures linked to body 215 by the later Third Dawn table. The fitted scene keeps the existing thirteen animation clips and uses the small rig's two tail joints and four ground contacts. The corrected ear placement follows the existing head weights. The normal client passed 11 Classic and 106 Enhanced checks, 1,890 skinned terrain poses and 63 fall transfers. Two isolated clients passed 119 native checks for Rat and Sewer Rat. See the [Ordinary Rat build and evidence](ORDINARY_RAT_ENHANCED.md).
+
+
+# Enhanced Sea, Giant and Silver Serpents
+
+The optional Enhanced profiles retain the original Third Dawn rigs and separate atlases. Sea and Deep Sea Serpents share fourteen source groups. Giant Serpent, Death Adder and serpent-shaped Plague Spawn use fifteen source groups. Silver Serpent receives nine fits on its own rig from the donor named by the Third Dawn table. The native clients passed 75 Sea, 129 Giant and 47 Silver presentation checks. An additional Silver trial passed 56 stock charm and poison checks. See the [Sea](SEA_SERPENT_ENHANCED.md), [Giant](GIANT_SERPENT_ENHANCED.md) and [Silver](SILVER_SERPENT_ENHANCED.md) evidence and build steps.
+
+
 # Original Silver, faction, Ethereal and Pack Horses
 
 Seven original Third Dawn forms now have tested optional Enhanced presentation. Silver and Holy Steed share body 117. The four faction horses use their own original coats, the Ethereal Horse uses historical artwork through its native worn item, and Pack Horse keeps its original cargo on the living rig and static corpse. Nineteen fitted clips and six retained gaits cover the 25 indexed groups for True Britannians Warhorse and Pack Horse. Both human rigs and the stock mounting, faction, ethics and pack routes passed 561 native checks across 38 cases. The Holy Steed breath passed 23 more native checks. See [Original war horses](ORIGINAL_WAR_HORSES.md) for the build and evidence.
