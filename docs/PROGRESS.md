@@ -1,3 +1,128 @@
+# Raptor and Sand Vortex terrain
+
+The CC0 Raptor retains its walk, run, attack and two fall paths on slopes and treads. The Sand Vortex retains the Classic ribbons and Enhanced dust carrier. Both display frozen remains under graphic 0x2006. The Enhanced fall preserves the settled dust footprint, including when the cloud body has dissipated.
+
+
+# Giant Black Widow and Rune Beetle
+
+Both profiles retain the Third Dawn rigs, separate Classic and Enhanced gestures, and static corpses. The Giant Black Widow's fitted unfold preserves scale during an interrupted action. Isolated native trials observed the Widow's deadly poison and silk and the Rune Beetle's stock Rune Corruption and resistance recovery.
+
+
+# Slith terrain and native effects
+
+Slith, Stone Slith and Toxic Slith keep the retained Komodo rig, their peace and combat gaits, both falls and separate server hues. Both profiles clear slopes and treads. The isolated trial replayed 784 checks across Raptor and the three Slith constructors. It verified both native breath paths from the displayed mouth, the Stone Slith's temporary resistance effect and stun, native damage, hues and corpse harvest.
+
+
+# Bake Kitsune and Greater Mongbat terrain
+
+The Bake Kitsune keeps all three original tails, fitted gestures and both fall clips. Stock trials verified the two-slot tamability, physical and energy strike, living dye and the stock hue reset on death. The existing Greater Mongbat renderer passed the expanded living sweep with 5,270 Classic and 6,820 Enhanced samples.
+
+
+# Mountain Goat and Horde Minion
+
+The Mountain Goat keeps its original horns, gait, fitted horn check and both falls. The wild Horde Minion retains its original rig and separate peace and combat gestures. Both profiles passed the living terrain and static corpse tests. The isolated trials confirmed their native movement, physical strikes, dyes, corpse names, the goat's single-slot tamability and the wild Minion's light item and three bones.
+
+
+# Skittering Hopper and Fan Dancer
+
+The Hopper retains its original body, and the Enhanced wings and their material move and tint with it. The Fan Dancer keeps her eight-weight skin, retained guards, fitted motions and alternate fall. Both profiles passed the living and corpse terrain checks. Native trials covered stock damage, movement, hue and corpse loot, Hopper tamability and Fan Throw Counter registration.
+
+
+# Patchwork Skeleton and Kaze Kemono
+
+Both profiles keep the recovered rigs and Classic motions through slopes, treads and the static corpse handoff. The isolated trials verified both stock identities, movement, damage types, native hues and corpse gold. Patchwork Skeleton keeps its stock Dismount selection, bleed immunity and lethal poison immunity. The Kaze Kemono keeps its stock four-way damage split and bleed immunity.
+
+
+# Pixie and Yomotsu Warrior
+
+The Pixie retains the original wings and its Enhanced rise effect. The Yomotsu Warrior keeps the original rig and fitted blade treatment. The raised claw gestures keep their unarmed silhouette. The visible skinned blade is sampled through grounded falls and preserved on the static corpse. Both profiles passed the terrain and fall tests. Isolated trials verified the Pixie's native innocent status and gem loot and the Yomotsu Warrior's Double Strike selection and Executioner's Axe loot.
+
+
+# Kappa and Vampire Bat
+
+The Kappa retains its original shell and the extended fall from the startled hop. The Vampire Bat retains the separate ground and airborne falls, including the folded-wing emergence and interrupted swoop. Both profiles passed living support and corpse transfers. Isolated stock trials checked movement, dyed corpses, damage, the Kappa's three raw fish steaks and the bat's gold.
+
+
+# Tsuki Wolf terrain
+
+The original three-headed rig clears slopes and treads through its retained and fitted gestures. Both profiles keep the displayed pose as the static corpse is made. Native trials covered walk, run, the 90/5/5 physical, cold and energy strike, Blood Bath registration, dye and the stock corpse. The earlier controlled trial measured Blood Bath's five damage ticks and expiry.
+
+
+# Crane and Deathwatch Beetles
+
+The Crane retains its long-toe correction and the optional fan, beak and wing gestures. Both Deathwatch constructors use the retained beetle rig, native colour and separate corpse names. Both profiles keep the visible pose through the death handoff, including the beetle's alternate fall and fitted reactions. Isolated trials verified movement, physical melee, stock harvest properties, the adult's Crushing Blow selection and native static corpses.
+
+
+# White Wyrm
+
+Both stock White Wyrm bodies keep the existing white dragon source rig, including the explicit visual alias for body 180. Each profile passed 5,580 living poses and 176 fall handoffs across both bodies. Isolated trials witnessed both stock constructor rolls, movement, equal physical and cold damage, three-slot tamability, native hues and static corpses with the stock name and gold.
+
+
+# Thrasher and Ancient Wyrm
+
+The Thrasher keeps the original Alligator rig, both fall clips and the optional Enhanced gestures. The isolated trial verified movement, stock paragon status, Armor Ignore selection, native hues and the blessed Thrasher's Tail on its corpse. The Ancient Wyrm keeps the original rig and fitted wing brace and head sweep. Its stock breath uses the retained second attack as the windup and launches from the animated mouth. Both clients received the projectile and the stock breath dealt delayed damage. Both bodies passed living terrain and corpse transfers in Classic and Enhanced.
+
+
+# Shadow Wyrm, Ferret and Hydra
+
+The Shadow Wyrm retains its original silhouette and reuses the recovered second attack for the stock breath windup. The projectile follows the animated mouth. The Ferret keeps its original gait and rest, and its stock call reaches both clients. The five-headed Hydra and Abscess retain their separate native hues, Fire Breath and corpse harvest. All three bodies passed living support and static corpse checks in both profiles.
+
+
+# Red Solen Queen, Rotting Corpse and Unfrozen Mummy
+
+The Queen keeps her original skin and six walking legs. A native step now interrupts her idle gesture. Both body-155 creatures keep their recovered rig and distinct native attack damage, hues and corpse names. The isolated trials verified movement, melee and the static corpse through the normal client.
+
+
+# Arctic Ogre Lord and Ice Fiend
+
+The Arctic Ogre Lord keeps its pale original body and stock 70 percent cold strike. Its corpse retains the native club and gold. The Ice Fiend preserves the original spread-wing hold and settles into a normal collapse when the server announces the corpse. The isolated trials confirmed native movement, damage and corpse identities and hues for both bodies.
+
+
+# Gargoyle Destroyer and Gargoyle Enforcer
+
+Both distinct source meshes clear slopes and treads through living poses and collapse. The client retains the Classic flight fall and the separate Enhanced fall. The isolated trial confirmed the stock Destroyer hatchet, the Enforcer whirlwind, and both native corpse identities and hues.
+
+
+# Lurg and Troglodyte
+
+The shared body 267 retains the original rig, its peaceful walk, sprint and combat reach. Both profiles passed 112 fall handoffs to static corpses. Native checks covered both constructors, their movement and corpse loot, and Lurg's stock Crushing Blow selection.
+
+
+# Insane Dryad
+
+The original foliage and rig clear 4,030 living poses and 120 sampled fall entries per profile. The isolated native trial verified walking, running, a physical strike, native hue and the dyed static corpse. The fixture invoked the stock area abilities. Peace cleared the player's combat target, disrobing sent the worn shirt to the backpack and both localized notices reached the client.
+
+
+# Black Solen Infiltrator Queen and Crystal Daemon
+
+Both original rigs now clear sampled slopes and treads through movement and the static corpse transition. The isolated two-client trials confirmed native walk, run, melee and corpse hues. The Infiltrator Queen retains the stock poison strike and Zoogi Fungus, and the Crystal Daemon retains the stock cold and energy strike and corpse gold.
+
+
+# Moloch and Orc Brute
+
+The Moloch keeps its four-arm rig and the isolated server trial exercised Concussion Blow and native loot. The Orc Brute retains the shared Third Dawn rig, original size ratios and Enhanced spines. Both bodies have static corpses in both profiles. A native Magic Arrow summoned the stock Orcish Lord. The Lord's corpse disappeared, while the dyed Brute corpse remained with gold, 25 Shadow Iron Ore and 10 Iron Ingots. The Lord's combat target was not consistent at the moment of observation.
+
+
+# Fire Gargoyle and Chaos Daemon
+
+Both original rigs clear the sampled terrain. The Fire Gargoyle keeps the stock fire breath and distinct Enhanced flight and collapse. The Chaos Daemon preserves its idle and fitted gestures, and the isolated trial exercised its stock Crushing Blow and corpse loot.
+
+
+# Crystal Lattice Seeker and Giant Beetle
+
+The Seeker retains its original rig and native drain effects. The Giant Beetle keeps the fitted wing cases, both rider rigs, the closed shell while mounted and the native strong backpack. Both bodies retain terrain-supported static corpses.
+
+
+# Golem, Shadow Wisp, Frost Spider and Frost Ooze
+
+The iron Golem retains its original metal surface and both death routes. Native checks covered Colossal Blow damage and timed recovery. The Shadow Wisp's Enhanced collapse clears raised treads and keeps its aura and dyed static corpse, while the summoned familiar retains its mana pulse and release. The Frost Spider retains the original pincer motions and accepts native taming. The Frost Ooze preserves the original icy gel rig and native gem loot.
+
+
+# Frenzied Ostard through Lich Lord
+
+The Frenzied Ostard retains the native ridden and loose models, dyes, reins and a static corpse from the displayed Classic fall. The Swamp Tentacle keeps both falls on its original seven-branch rig. Both profiles retain the Juka Lord's independently dyed bow through the fall and corpse. The Juka Mage retains its casting and stock Arcane Gem. The Ant Lion keeps its original pincer motions and corpse loot. The Lich Lord retains its staff and crimson material accent.
+
+
 # Doppleganger, Changeling and Efreet
 
 Both profiles preserve the original rigs and static corpses. Native checks covered the Doppleganger's melee and harvest, the Changeling's disguise and cloned dyed equipment, and the Efreet's fire and energy strike, Lightning and corpse gold. Enhanced runs interrupt the Doppleganger's rise and Efreet's lamp arrival. The Efreet's lamp and shader-deformed rug cleared all 1,240 sampled prop poses.

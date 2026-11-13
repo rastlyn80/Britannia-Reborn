@@ -16,6 +16,8 @@ func begin_death(killed: int, corpse: int) -> void:
 		return
 	if body in Mounts.Horse.BODIES and begin_horse_death(killed, corpse, entity):
 		return
+	if body == 218 and begin_frenzied_death(killed, corpse, entity):
+		return
 	if body != 210:
 		super.begin_death(killed, corpse)
 		return
@@ -108,4 +110,22 @@ func begin_magical_death(killed: int, corpse: int, entity: Dictionary) -> bool:
 	visual.set_physics_process(false)
 	var remaining: float = visual.begin_source_death(source)
 	track_transition(killed, corpse, body, avatar, visual, remaining)
+	return true
+
+
+func begin_frenzied_death(killed: int, corpse: int, entity: Dictionary) -> bool:
+	var avatar: Node3D = scene.get("avatars").get(killed)
+	if active.has(killed) or not is_instance_valid(avatar) or not avatar.horse_visual is Mounts.Ostard:
+		return false
+	var source: Node3D = avatar.horse_visual
+	if source.terrain == null:
+		return false
+	var visual := Mounts.Ostard.new()
+	visual.kind = source.kind
+	visual.treatment = source.treatment
+	add_child(visual)
+	visual.apply_identity(218, int(entity.get("hue", 0)))
+	visual.set_physics_process(false)
+	var duration: float = visual.terrain.begin_fall(source)
+	track_transition(killed, corpse, 218, avatar, visual, duration)
 	return true

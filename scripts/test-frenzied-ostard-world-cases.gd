@@ -37,7 +37,7 @@ static func check_classic(driver, world: Node, at: Vector2i) -> Dictionary:
 		var corpse := 0x40000000 + serial
 		world.game._handle(driver.mobile_packet(at, 64, serial, Body, info.hue))
 		var source: Node3D = world.avatars[serial].horse_visual
-		assert(source is Stock and source.native_hue == info.hue)
+		assert(source is Stock and source.terrain != null and source.native_hue == info.hue)
 		var death := PackedByteArray([0xaf])
 		death.append_array(Wire.uint_be(serial, 4))
 		death.append_array(Wire.uint_be(corpse, 4))
@@ -45,10 +45,13 @@ static func check_classic(driver, world: Node, at: Vector2i) -> Dictionary:
 		world.game._handle(death)
 		world.game._handle(driver.corpse_packet(at, corpse, Body, info.hue))
 		var holder: Node3D = world.world_items.nodes[corpse]
-		assert(holder.get_meta("corpse_body") == Body)
+		assert(world.creature_deaths.active.has(serial) and not holder.visible)
+		var remaining: float = world.creature_deaths.active[serial].remaining
+		await driver.create_timer(remaining + .15).timeout
+		assert(holder.visible and world.world_items.corpse_snapshots.has(corpse))
 		var frozen: Node3D = holder.get_node("CorpseVisual")
-		assert(frozen.get_meta("native_hue") == info.hue and frozen.get_meta("static_cadaver"))
-		assert(frozen.find_children("*", "Skeleton3D", true, false).is_empty())
+		assert(frozen.get_meta("corpse_body") == Body and frozen.get_meta("native_hue") == info.hue)
+		assert(frozen.get_meta("static_cadaver") and frozen.find_children("*", "Skeleton3D", true, false).is_empty())
 		rows[info.clip] = {"corpse": corpse, "hue": info.hue}
 	return {"rows": rows, "checks": 6 * Cases.size()}
 
@@ -60,7 +63,7 @@ static func check_mounted(driver, world: Node, at: Vector2i, gender: int, enhanc
 	var rider: Node3D = world.avatars[serial]
 	var mount: Node3D = rider.horse_visual
 	assert(mount != null and (mount is Renderer if enhanced else mount is Stock))
-	assert(mount.native_body == Body and mount.native_mount_item == MountItem and mount.native_hue == hue)
+	assert(mount.terrain != null and mount.native_body == Body and mount.native_mount_item == MountItem and mount.native_hue == hue)
 	assert(rider.human_visual.female == (gender == 401))
 	rider.rider_contact.begin_mount(false)
 	var clips := Renderer.Seated if enhanced else ["Idle", "Walk", "Run"]

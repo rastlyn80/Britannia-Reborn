@@ -75,7 +75,8 @@ static func witness(driver, world: Node, at: Vector2i, enhanced: bool, info: Arr
 	assert(fallen.current_clip == fall_clip and fallen.native_hue == hue)
 	var jump := 0.0
 	if enhanced and body == 240 and info[3] == "KappaStartledHop":
-		assert(fallen.fitted_fall.blend_length > .20, "The airborne pose takes the longer terrain landing path")
+		var playback: RefCounted = fallen.terrain if "terrain" in fallen else fallen.fitted_fall
+		assert(playback.blend_length > .20, "The airborne pose takes the longer terrain landing path")
 	for i in before.size():
 		jump = maxf(jump, before[i].distance_to(Fit.bone(fallen, labels[i])))
 	if enhanced:
@@ -83,8 +84,9 @@ static func witness(driver, world: Node, at: Vector2i, enhanced: bool, info: Arr
 	var holder: Node3D = world.world_items.nodes[corpse]
 	assert(not holder.visible)
 	await driver.create_timer(float(state.remaining) + .15).timeout
+	var grounded_kappa: bool = body == 240 and source.get_script().resource_path.ends_with("/SourceTerrainKappaVisual.gd")
 	var grounded_snow: bool = body == 163 and source.get_script().resource_path.ends_with("/SourceTerrainSnowElementalVisual.gd")
-	assert(holder.visible and world.world_items.corpse_snapshots.has(corpse) == (enhanced or grounded_snow), "%d corpse visibility or snapshot" % body)
+	assert(holder.visible and world.world_items.corpse_snapshots.has(corpse) == (enhanced or grounded_snow or grounded_kappa), "%d corpse visibility or snapshot" % body)
 	var frozen: Node3D = holder.get_node("CorpseVisual")
 	assert(frozen.get_meta("native_hue") == hue and frozen.get_meta("death_clip") == fall_clip)
 	assert(frozen.find_children("*", "Skeleton3D", true, false).is_empty())

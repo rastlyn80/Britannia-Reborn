@@ -28,6 +28,58 @@ const OrcLord := 138
 const OrcLordAssets := "res://local-art/creatures/orc-lord-prepared"
 const OrcLordRenderer := "res://Presentation/SourceTerrainOrcishLordVisual.gd"
 const Forms := {
+	752: ["golem_iron", "res://Presentation/SourceTerrainGolemVisual.gd"],
+	165: ["shadow_wisp", "res://Presentation/SourceTerrainShadowWispVisual.gd"],
+	20: ["arachnids_spider_frost", "res://Presentation/SourceTerrainFrostSpiderVisual.gd"],
+	94: ["slimes_slime_frost", "res://Presentation/SourceTerrainFrostOozeVisual.gd"],
+	123: ["ethereal_warriors_male", "res://Presentation/SourceTerrainLatticeSeekerVisual.gd"],
+	791: ["giant_beetle", "res://Presentation/SourceTerrainGiantBeetleVisual.gd"],
+	130: ["gargoyles_gargoyle_blistering", "res://Presentation/SourceTerrainFireGargoyleVisual.gd"],
+	792: ["chaos_demon", "res://Presentation/SourceTerrainChaosDaemonVisual.gd"],
+	785: ["four_armed_demon", "res://Presentation/SourceTerrainMolochVisual.gd"],
+	189: ["orcs_orc_brute", "res://Presentation/SourceTerrainOrcBruteVisual.gd"],
+	807: ["black_ant_queen", "res://Presentation/SourceTerrainBlackSolenQueenVisual.gd"],
+	784: ["arcane_demon", "res://Presentation/SourceTerrainCrystalDaemonVisual.gd"],
+	266: ["dryad", "res://Presentation/SourceTerrainDryadVisual.gd"],
+	267: ["troglodyte", "res://Presentation/SourceTerrainTroglodyteVisual.gd"],
+	755: ["gargoyles_gargoyle_guard", "res://Presentation/SourceTerrainArmoredGargoyleVisual.gd"],
+	754: ["gargoyles_gargoyle_enforcer", "res://Presentation/SourceTerrainArmoredGargoyleVisual.gd"],
+	135: ["ogres_ogre_lord_arctic", "res://Presentation/SourceTerrainArcticOgreLordVisual.gd"],
+	43: ["daemons_daemon_ice_fiend", "res://Presentation/SourceTerrainIceFiendVisual.gd"],
+	783: ["fire_ant_queen", "res://Presentation/SourceTerrainRedSolenQueenVisual.gd"],
+	155: ["walking_dead_rotting_corpse", "res://Presentation/SourceTerrainRottingCorpseVisual.gd"],
+	106: ["dragons_wyrm_shadow", "res://Presentation/SourceTerrainShadowWyrmVisual.gd"],
+	279: ["ferret", "res://Presentation/SourceTerrainFerretVisual.gd"],
+	265: ["hydra", "res://Presentation/SourceTerrainHydraVisual.gd"],
+	202: ["lizards_alligator_brown", "res://Presentation/SourceTerrainThrasherVisual.gd"],
+	46: ["dragons_wyrm_ancient", "res://Presentation/SourceTerrainAncientWyrmVisual.gd"],
+	49: ["dragons_dragon_ice", "res://Presentation/SourceTerrainWhiteWyrmVisual.gd"],
+	180: ["dragons_dragon_ice", "res://Presentation/SourceTerrainWhiteWyrmVisual.gd"],
+	254: ["crane", "res://Presentation/SourceTerrainCraneVisual.gd"],
+	242: ["bimbobushi", "res://Presentation/SourceTerrainDeathwatchBeetleVisual.gd"],
+	250: ["tri_wolf", "res://Presentation/SourceTerrainTsukiWolfVisual.gd"],
+	240: ["kappa", "res://Presentation/SourceTerrainKappaVisual.gd"],
+	317: ["vampire_bat", "res://Presentation/SourceTerrainVampireBatVisual.gd"],
+	128: ["fey_race_pixie", "res://Presentation/SourceTerrainPixieVisual.gd"],
+	245: ["yomotsu_warrior", "res://Presentation/SourceTerrainYomotsuWarriorVisual.gd"],
+	309: ["patchskeleton", "res://Presentation/SourceTerrainPatchworkSkeletonVisual.gd"],
+	196: ["denkou_yajuu", "res://Presentation/SourceTerrainKazeKemonoVisual.gd"],
+	302: ["skittering_hopper", "res://Presentation/SourceTerrainHopperVisual.gd"],
+	247: ["fan_dancer", "res://Presentation/SourceTerrainFanDancerVisual.gd"],
+	88: ["ruminants_goat_mountain", "res://Presentation/SourceTerrainMountainGoatVisual.gd"],
+	776: ["horde_demon", "res://Presentation/SourceTerrainHordeMinionVisual.gd"],
+	246: ["kitsun_tsuki", "res://Presentation/SourceTerrainBakeKitsuneVisual.gd"],
+	734: ["lizards_komodo_dragon", "res://Presentation/SourceTerrainSlithVisual.gd"],
+	157: ["arachnids_spider_black_widow", "res://Presentation/SourceTerrainBlackWidowVisual.gd"],
+	244: ["rune_beetle", "res://Presentation/SourceTerrainRuneBeetleVisual.gd"],
+	730: ["raptor", "res://Presentation/SourceTerrainRaptorVisual.gd"],
+	790: ["sand_vortex", "res://Presentation/SourceTerrainSandVortexVisual.gd"],
+	218: ["frenzied", "res://Presentation/SourceTerrainFrenziedOstardVisual.gd"],
+	66: ["flails_swamp_tentacles_actions_66", "res://Presentation/SourceTerrainSwampTentacleVisual.gd"],
+	766: ["npc_kabur", "res://Presentation/SourceTerrainJukaLordVisual.gd"],
+	765: ["juka_mage", "res://Presentation/SourceTerrainJukaMageVisual.gd"],
+	787: ["ant_lion", "res://Presentation/SourceTerrainAntLionVisual.gd"],
+	79: ["liche_liche_lord_retro_actions_79", "res://Presentation/SourceTerrainLichLordVisual.gd"],
 	131: ["genies_efreet", "res://Presentation/SourceTerrainEfreetVisual.gd"],
 	264: ["changling", "res://Presentation/SourceTerrainChangelingVisual.gd"],
 	777: ["doppleganger", "res://Presentation/SourceTerrainDopplegangerVisual.gd"],
@@ -111,6 +163,8 @@ const Forms := {
 
 
 static func enable() -> Array[int]:
+	var ostard := preload("res://Presentation/OstardMount.gd")
+	ostard.frenzied_terrain = ResourceLoader.exists("res://local-art/ostards/frenzied-modern.gltf", "PackedScene")
 	var enabled: Array[int] = []
 	for body: int in Forms:
 		var row := Registry.entry(body)
@@ -118,6 +172,36 @@ static func enable() -> Array[int]:
 			continue
 		var prepared := row.duplicate()
 		prepared.presentation_script = Forms[body][1]
+		if body == 790 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicSandVortexVisual.gd"
+		if body == 730 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicRaptorVisual.gd"
+		if body == 244 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicRuneBeetleVisual.gd"
+		if body == 157 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicBlackWidowVisual.gd"
+		if body == 734 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicSlithVisual.gd"
+		if body == 302 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicHopperVisual.gd"
+		if body == 245 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicYomotsuWarriorVisual.gd"
+		if body == 128 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicPixieVisual.gd"
+		if body == 265 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicHydraVisual.gd"
+		if body in [754, 755] and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicArmoredGargoyleVisual.gd"
+		if body == 785 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicMolochVisual.gd"
+		if body == 189 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicOrcBruteVisual.gd"
+		if body == 130 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicFireGargoyleVisual.gd"
+		if body == 123 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicLatticeSeekerVisual.gd"
+		if body == 791 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicGiantBeetleVisual.gd"
 		if body in [90, 147] and not row.has("enhanced_source_action_groups"):
 			apply_local_fitted_scene(prepared, body)
 		if body == 14 and row.get("presentation_script") in [
@@ -150,6 +234,8 @@ static func apply_local_fitted_scene(row: Dictionary, body: int) -> void:
 
 
 static func ready_for_terrain(body: int, row: Dictionary) -> bool:
+	if body == 165:
+		return row.has("enhanced_source_action_groups") and checked_asset(row, "modern")
 	if body == 238:
 		return checked_rat(row)
 	if checked_owned(body, row):

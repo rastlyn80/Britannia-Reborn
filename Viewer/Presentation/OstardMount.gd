@@ -1,6 +1,9 @@
 extends "res://Presentation/OstardVisual.gd"
 ## Runtime adapter around the separately prepared source-rig creature.
 const DesertActions := preload("res://Presentation/DesertOstardActions.gd")
+const FrenziedTerrain := preload("res://Presentation/SourceFrenziedOstardTerrain.gd")
+static var frenzied_terrain := false
+var terrain: RefCounted
 const LlamaActions := preload("res://Presentation/LlamaActions.gd")
 var llama_actions: RefCounted
 var original_llama_pack := false
@@ -46,10 +49,17 @@ func _ready() -> void:
 	contact=preload("res://Presentation/SourceMountContact.gd").new();skeleton.add_child(contact)
 	contact.configure(model.find_children("*","MeshInstance3D",true,false)[0],kind.begins_with("kirin") or kind.begins_with("llama") or kind.begins_with("bovine_"))
 	source_model_basis=model.basis
+	if kind == "frenzied" and frenzied_terrain:
+		terrain = FrenziedTerrain.new()
+		terrain.prepare(self)
 	if kind == "desert" and DesertActions.available():
 		var layer := DesertActions.new()
 		if layer.install(self): desert_actions = layer
 func _physics_process(_delta: float) -> void:
+	if terrain != null:
+		terrain.release_live()
+		if not dead:
+			terrain.sample()
 	if contact!=null:
 		contact.sample(get_world_3d().direct_space_state,global_position)
 		if contact.enabled and not contact.contacts.is_empty():
@@ -58,6 +68,9 @@ func _physics_process(_delta: float) -> void:
 			normal=(global_basis.inverse()*normal.normalized()).normalized()
 			var slope:=Basis.from_euler(Vector3(clampf(atan2(normal.z,normal.y),-.2,.2),0.,clampf(-atan2(normal.x,normal.y),-.15,.15)))
 			model.basis=model.basis.slerp(slope*source_model_basis,1.-exp(-8.*_delta))
+	if terrain != null:
+		terrain.ground_pose()
+
 func build_eyes() -> void:
 	var attachment:=BoneAttachment3D.new();attachment.bone_name=skeleton.get_bone_name(mouth_bone);skeleton.add_child(attachment)
 	var rest:=skeleton.global_transform*skeleton.get_bone_global_rest(mouth_bone)
@@ -75,6 +88,8 @@ func apply_identity(body: int,value: int,item: int=0) -> void:
 	native_body=body;native_hue=value;native_mount_item=item;set_hue(value)
 	set_meta("native_body",body);set_meta("native_hue",value);set_meta("native_mount_item",item)
 	set_meta("equine_profile",{"style":kind,"ethereal":kind in ["ethereal","llama_ethereal","kirin_ethereal"]})
+	if terrain != null:
+		reins.visible = item == 0x3ea4 and not dead
 	if body==0x124 and not original_llama_pack and pack_fitting==null:build_pack()
 	elif body!=0x124 and pack_fitting!=null:pack_fitting.free();pack_fitting=null
 
@@ -150,7 +165,12 @@ func receive_action(request: Dictionary) -> bool:
 		clip = str(DesertActions.CLIPS.get(int(request.get("action", -1)), clip))
 	var falling := clip == "Death" or clip == "Death2"
 	if clip.is_empty() or dead and not falling:set_meta("unsupported_action",request.duplicate(true));return false
+	if terrain != null and not dead:
+		terrain.release_live()
 	current_clip=clip;dead=falling
+	if terrain != null and dead:
+		reins.hide()
+		terrain.prepare_collapse()
 	contact.enabled=not dead and clip!="LieDown"
 	var duration:=preload("res://Presentation/HumanActions.gd").duration(request,animator.get_animation(clip).length)
 	action_remaining=duration
@@ -161,6 +181,8 @@ func receive_action(request: Dictionary) -> bool:
 	if desert_actions != null: animator.seek(0.0, false)
 	set_meta("native_action",request.duplicate(true));return true
 func corpse_snapshot_floor() -> float:
+	if terrain != null:
+		return terrain.snapshot_floor(self)
 	if llama_actions != null:
 		return llama_actions.snapshot_floor(self)
 	return desert_actions.fall.snapshot_floor(self) if desert_actions != null else INF

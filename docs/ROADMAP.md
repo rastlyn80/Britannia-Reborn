@@ -1,3 +1,128 @@
+# Creature occurrence after Sand Vortex
+
+Stone and Toxic Slith share the verified body 734 route and the Black Solen Warrior keeps its existing route. Continue with Devourer of Souls in configured occurrence order. The pinned Raptor constructor leaves pack reinforcements and the pottery fragment drop unported.
+
+
+# Creature occurrence after Rune Beetle
+
+Continue with Raptor and Sand Vortex in configured occurrence order. Retain the Raptor's native prey behavior and the Sand Vortex's existing animated dust and targeting rules.
+
+
+# Creature occurrence after Slith
+
+Continue with Giant Black Widow and Rune Beetle. Retain the native class distinctions even when the source rig is shared.
+
+
+# Creature occurrence after Bake Kitsune
+
+Black Solen Worker already uses its verified terrain route. Continue with Slith, Stone Slith and Toxic Slith and preserve their distinct stock effects, then Giant Black Widow.
+
+
+# Creature occurrence after Horde Minion
+
+Continue with Greater Mongbat and Bake Kitsune in the six-facet occurrence order. Keep the wild Horde Minion and its familiar's native gold collection traceable as separate constructors. Review visible slope lifts on the Ancient Wyrm, White Wyrm and Vampire Bat.
+
+
+# Creature occurrence after Fan Dancer
+
+Continue with Mountain Goat and Horde Minion in configured six-facet order. Keep the Fan Dancer's stock triggered counter and thrown effect evidence traceable separately from the new terrain tests.
+
+
+# Creature occurrence after Kaze Kemono
+
+Continue with Skittering Hopper and Fan Dancer in configured occurrence order. The new terrain trials exercised the Patchwork Skeleton's Dismount selection and Kaze Kemono's damage types. Actual dismount and the Kaze Kemono's random resistance effects still need separate native checks.
+
+
+# Creature occurrence after Yomotsu Warrior
+
+Continue with Patchwork Skeleton and Kaze Kemono in the six-facet occurrence order for forms absent from Trammel.
+
+
+# Creature occurrence after Vampire Bat
+
+Continue with Pixie and Yomotsu Warrior in the six-facet occurrence order for forms absent from Trammel.
+
+
+# Creature occurrence after Tsuki Wolf
+
+Continue with Kappa and Vampire Bat in the configured six-facet order for forms absent from Trammel.
+
+
+# Creature occurrence after Deathwatch Beetle
+
+Continue with Tsuki Wolf in configured occurrence order outside Trammel, then Kappa and Vampire Bat. The adult beetle has earlier native poison-spit evidence. Keep exact visual verification of that effect separate from the melee and corpse checks on the new terrain renderer.
+
+
+# Creature occurrence after White Wyrm
+
+The Trammel census has 197 resolved non-human types with bounded body and named-constructor evidence. Continue visual and stock action checks on the remaining bodies, starting with the highest-occurrence forms outside Trammel. Unresolved spawn labels and indirect spawns are tracked separately. Keep exact source evidence for any new animation routing.
+
+
+# Creature occurrence after Ancient Wyrm
+
+Continue in configured Trammel occurrence order and keep the remaining equal-frequency named constructor cases traceable. The ordinary Alligator shares body 202 with the Thrasher and retains its original motion routes.
+
+
+# Creature occurrence after Hydra
+
+Continue with Coil, Thrasher and Tangle. Keep the largest tread lifts on the armored gargoyles, Arctic Ogre Lord and Ice Fiend in visual review.
+
+
+# Creature occurrence after Rotting Corpse
+
+Continue with Shadow Wyrm and Ferret. Crystal Sea Serpent retains the verified shared body and named constructor.
+
+
+# Creature occurrence after Ice Fiend
+
+Continue with Jwilson and the next configured forms. The names sharing the Balron, Giant Toad, Harpy and Ettin bodies retain separate constructor evidence.
+
+
+# Creature occurrence after Gargoyle Enforcer
+
+Szavetra, Saliva and Moug Guur retain their verified shared bodies and named identities. Continue with Arctic Ogre Lord and Ice Fiend.
+
+
+# Creature occurrence after Troglodyte
+
+Continue with Putrefier and the armored gargoyles. Putrefier shares the Balron rig and retains separate named-constructor evidence.
+
+
+# Creature occurrence after Insane Dryad
+
+Grobu retains the verified Black Bear body and its native fur loot. Continue with Lurg and Troglodyte, and verify Putrefier on the existing Balron rig.
+
+
+# Creature occurrence after Crystal Daemon
+
+Continue with Insane Dryad and Grobu in configured occurrence order.
+
+
+# Creature occurrence after Orc Brute
+
+Continue with Black Solen Infiltrator Queen, Crystal Daemon and Insane Dryad in configured occurrence order. Skeletal Mage retains the verified body-148 staff and stock corpse.
+
+
+# Creature occurrence after Chaos Daemon
+
+Continue with Moloch, then the remaining configured forms. Crystal Vortex retains the previously verified Air Elemental body and its own native identity.
+
+
+# Creature occurrence after Giant Beetle
+
+Continue with Fire Gargoyle and Chaos Daemon in configured occurrence order.
+
+
+# Creature occurrence after Frost Ooze
+
+Chiikkaha retains the Ratman Mage's verified body and the distinct stock constructor. Continue with Crystal Lattice Seeker and Giant Beetle in configured occurrence order. Keep the largest tread corrections in visual review.
+
+
+# Creature occurrence after Lich Lord
+
+The Elder Gazer and Black Solen Infiltrator retain their verified shared body routes and distinct native identities. Continue with Golem and Shadow Wisp in configured occurrence order. Keep the largest adjacent lifts on the Juka Lord, Juka Mage, Swamp Tentacle and Frenzied Ostard in visual review.
+
+
 # Creature occurrence after Efreet
 
 Continue with Frenzied Ostard and Swamp Tentacle in configured occurrence order. Keep the largest sampled tread lifts in visual review for the Doppleganger attack, Changeling third attack and Efreet lamp arrival. Crystal Wisp retains the existing public Wisp route and native identity evidence.
