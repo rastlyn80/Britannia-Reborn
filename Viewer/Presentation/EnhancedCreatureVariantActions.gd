@@ -15,7 +15,10 @@ static func dispatch(avatar: Node3D, request: Dictionary, enhanced: bool, flags:
 	var entry: Dictionary = actor.entry
 	var falls: Array = entry.get("enhanced_variant_falls", [])
 	if kind == 3 and not falls.is_empty():
-		actor.entry = entry.merged({"enhanced_selected_fall": falls[variant % falls.size()]}, true)
+		var clip: String = falls[variant % falls.size()]
+		if clip == entry.get("enhanced_nonfatal_death_choice", ""):
+			return Attack.dispatch(avatar, request, enhanced, flags)
+		actor.entry = entry.merged({"enhanced_selected_fall": clip}, true)
 		var accepted: bool = avatar.receive_native_action(request)
 		actor.entry = entry
 		return accepted

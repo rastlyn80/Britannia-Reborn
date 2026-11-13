@@ -1,0 +1,321 @@
+{
+  "schema": 1,
+  "bodies": {
+    "692": {
+      "kind": "animated_weapon",
+      "base_sha256": {
+        "original": "85228360f772c964dd2a8f30fc838eec62077cbd4eb44e54c14d1737a64d474f",
+        "rounded": "85228360f772c964dd2a8f30fc838eec62077cbd4eb44e54c14d1737a64d474f",
+        "modern": "85228360f772c964dd2a8f30fc838eec62077cbd4eb44e54c14d1737a64d474f"
+      },
+      "groups": {
+        "0": {
+          "5": [
+            "UopHalberdHover"
+          ],
+          "0": [
+            "EnhancedHalberdSweep",
+            "EnhancedHalberdSweep",
+            "EnhancedHalberdSweep",
+            "EnhancedHalberdSweep",
+            "EnhancedHalberdSweep",
+            "EnhancedHalberdSweep"
+          ],
+          "2": [
+            "EnhancedHalberdRecoil",
+            "EnhancedHalberdRecoil"
+          ],
+          "3": [
+            "EnhancedHalberdCollapse",
+            "EnhancedHalberdCollapse"
+          ],
+          "4": [
+            "EnhancedHalberdRecoil"
+          ],
+          "8": [
+            "EnhancedHalberdSpin"
+          ],
+          "11": [
+            "UopHalberdHover",
+            "UopHalberdHover",
+            "UopHalberdHover"
+          ],
+          "14": [
+            "UopHalberdHover"
+          ],
+          "15": [
+            "EnhancedHalberdRise"
+          ]
+        },
+        "1": {
+          "5": [
+            "UopHalberdReadyHover"
+          ]
+        }
+      },
+      "grounded": [
+        "EnhancedHalberdSweep",
+        "EnhancedHalberdRecoil",
+        "EnhancedHalberdRise",
+        "EnhancedHalberdSpin"
+      ]
+    },
+    "705": {
+      "kind": "spell_form_stone",
+      "base_sha256": {
+        "modern": "0cf1e45fb7041df47a6c70f315cae359c572f139f0767a2d3aaa08cac0e71366",
+        "original": "8e998c5e171b8cc6106ce50c76a399abd5771628e000a934131a47733ce31c52",
+        "rounded": "b336573b06bd238c755e4f2cb0b737c49ee3b27702ce53f18d53a9bdb0bce671"
+      },
+      "groups": {
+        "0": {
+          "5": [
+            "StonePeaceGesture",
+            "StoneWarGesture"
+          ],
+          "2": [
+            "StoneHunch",
+            "StoneHunch"
+          ],
+          "3": [
+            "EnhancedStoneFallback",
+            "EnhancedStoneFallForward"
+          ],
+          "4": [
+            "Hit"
+          ],
+          "8": [
+            "StoneStanceRise"
+          ],
+          "11": [
+            "StoneFormCast",
+            "StoneFormCast",
+            "StoneFormCast"
+          ],
+          "14": [
+            "StoneGesture"
+          ],
+          "15": [
+            "StoneKneelRise"
+          ]
+        },
+        "1": {
+          "5": [
+            "StonePeaceGesture"
+          ]
+        }
+      },
+      "grounded": [
+        "EnhancedStoneBackhand",
+        "EnhancedStoneOverhead"
+      ],
+      "attack_subactions": {
+        "0": [
+          "EnhancedStoneBackhand",
+          "EnhancedStoneOverhead",
+          "EnhancedStoneBackhand"
+        ],
+        "1": [
+          "EnhancedStoneBackhand"
+        ],
+        "2": [
+          "EnhancedStoneBackhand"
+        ],
+        "9": [
+          "EnhancedStoneBackhand"
+        ],
+        "255": [
+          "EnhancedStoneBackhand",
+          "EnhancedStoneOverhead",
+          "EnhancedStoneBackhand",
+          "EnhancedStoneBackhand",
+          "EnhancedStoneBackhand",
+          "EnhancedStoneBackhand"
+        ]
+      }
+    },
+    "831": {
+      "kind": "birds_parrot",
+      "base_sha256": {
+        "original": "f190f66bd068623e31971d75b755db6f41b8a6b6fdae1418373d759fd3815fff",
+        "rounded": "9fd51e44f31f1fcbef403b02f4a6bbe365987418fb1d7d5ab88084490f72974b",
+        "modern": "b8df304424bff62e3867e022ee678be1b19254e0db42a2e7dde9e4a4f1ca08fb"
+      },
+      "groups": {
+        "0": {
+          "0": [
+            "ParrotRestingCrouch",
+            "ParrotRestingCrouch",
+            "ParrotRestingCrouch",
+            "ParrotRestingCrouch",
+            "ParrotRestingCrouch",
+            "ParrotRestingCrouch"
+          ],
+          "2": [
+            "ParrotRestingCrouch",
+            "ParrotRestingCrouch"
+          ],
+          "3": [
+            "ParrotFallingTuck",
+            "ParrotRestingCrouch"
+          ],
+          "4": [
+            "ParrotRaisedWingRecoil"
+          ],
+          "5": [
+            "UopParrotWingTuck",
+            "ParrotRestingCrouch"
+          ],
+          "8": [
+            "ParrotRestingCrouch"
+          ],
+          "11": [
+            "ParrotRestingCrouch",
+            "ParrotRestingCrouch",
+            "ParrotRestingCrouch"
+          ],
+          "14": [
+            "ParrotRestingCrouch"
+          ],
+          "15": [
+            "ParrotRestingCrouch"
+          ]
+        },
+        "1": {
+          "5": [
+            "UopParrotWingTuck"
+          ]
+        }
+      },
+      "grounded": [
+        "ParrotRestingCrouch",
+        "ParrotRaisedWingRecoil"
+      ],
+      "flight_falls_back_to_combat": true
+    },
+    "1246": {
+      "kind": "jack_o_lantern_orange",
+      "base_sha256": {
+        "modern": "90330c396c93fd7acc8011cf881788d48bcf4b2908020ccd6b375140acf6138c",
+        "original": "90330c396c93fd7acc8011cf881788d48bcf4b2908020ccd6b375140acf6138c",
+        "rounded": "90330c396c93fd7acc8011cf881788d48bcf4b2908020ccd6b375140acf6138c"
+      },
+      "groups": {
+        "0": {
+          "5": [
+            "Idle"
+          ],
+          "2": [
+            "EnhancedPumpkinSway"
+          ],
+          "3": [
+            "EnhancedPumpkinCollapse"
+          ],
+          "4": [
+            "EnhancedPumpkinRecoil"
+          ],
+          "8": [
+            "EnhancedPumpkinIgnition"
+          ],
+          "11": [
+            "EnhancedPumpkinLunge"
+          ],
+          "14": [
+            "EnhancedPumpkinDormant"
+          ],
+          "15": [
+            "EnhancedPumpkinDormant"
+          ]
+        },
+        "1": {
+          "5": [
+            "DormantShuffle"
+          ]
+        }
+      },
+      "grounded": [],
+      "attack_subactions": {
+        "0": [
+          "EnhancedPumpkinLunge"
+        ],
+        "1": [
+          "EnhancedPumpkinLunge"
+        ],
+        "2": [
+          "EnhancedPumpkinLunge"
+        ],
+        "9": [
+          "EnhancedPumpkinLunge"
+        ],
+        "255": [
+          "EnhancedPumpkinLunge",
+          "EnhancedPumpkinLunge",
+          "EnhancedPumpkinLunge",
+          "EnhancedPumpkinLunge"
+        ]
+      }
+    },
+    "1247": {
+      "kind": "jack_o_lantern_blue",
+      "base_sha256": {
+        "modern": "e2b49cc6d16177ced88d0467bb1be248e00ae51b1e53d966f77621f77a554e1f",
+        "original": "e2b49cc6d16177ced88d0467bb1be248e00ae51b1e53d966f77621f77a554e1f",
+        "rounded": "e2b49cc6d16177ced88d0467bb1be248e00ae51b1e53d966f77621f77a554e1f"
+      },
+      "groups": {
+        "0": {
+          "5": [
+            "Idle"
+          ],
+          "2": [
+            "EnhancedPumpkinSway"
+          ],
+          "3": [
+            "EnhancedPumpkinCollapse"
+          ],
+          "4": [
+            "EnhancedPumpkinRecoil"
+          ],
+          "8": [
+            "EnhancedPumpkinIgnition"
+          ],
+          "11": [
+            "EnhancedPumpkinPlume"
+          ],
+          "14": [
+            "EnhancedPumpkinDormant"
+          ],
+          "15": [
+            "EnhancedPumpkinDormant"
+          ]
+        },
+        "1": {
+          "5": [
+            "EnhancedPumpkinDormant"
+          ]
+        }
+      },
+      "grounded": [],
+      "attack_subactions": {
+        "0": [
+          "EnhancedPumpkinLunge"
+        ],
+        "1": [
+          "EnhancedPumpkinLunge"
+        ],
+        "2": [
+          "EnhancedPumpkinLunge"
+        ],
+        "9": [
+          "EnhancedPumpkinLunge"
+        ],
+        "255": [
+          "EnhancedPumpkinLunge",
+          "EnhancedPumpkinLunge",
+          "EnhancedPumpkinLunge",
+          "EnhancedPumpkinLunge"
+        ]
+      }
+    }
+  }
+}

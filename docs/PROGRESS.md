@@ -1,3 +1,8 @@
+# Remaining indexed Enhanced actions and native Spellweaving
+
+The Parrot, Animated Weapon, Stone Form and both Pumpkin Head forms passed a combined isolated client run with 20,610 Enhanced replay checks. The same batch passed 121 Classic checks and retained native dye and corpse handling. A separate 61-check ModernUO trial verified the completed quest flags, actual Summon Fey and Summon Fiend casts, paired player observations and both stock corpses. The separate Witch Apprentice trial passed 19 checks for the real Magic Flute trigger, body 74 appearance, recipe notice and timed disappearance. [Input evidence and build steps](ENHANCED_INDEXED_VARIANTS.md)
+
+
 # Enhanced Gargoyle and Troglodyte action variants
 
 New source-fitted actions and falls passed the decoded world, terrain and static corpse tests for Fire Gargoyle, Troglodyte and Enslaved Gargoyle. [Source and evidence](ENHANCED_GARGOYLE_TROGLODYTE.md)

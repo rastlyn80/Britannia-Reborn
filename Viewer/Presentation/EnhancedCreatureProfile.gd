@@ -7,8 +7,31 @@ const ART := "res://local-art/creatures/"
 const MANIFEST := ART + "enhanced-creature-actions.json"
 const SCENES := ART + "enhanced-creature-actions/"
 const REPTILE_SCENES := ART + "enhanced-reptile-variants/"
+const IndexedScenes := ART + "enhanced-indexed-variants/"
+const IndexedRenderers := {
+	692: "res://Presentation/SourceEnhancedHalberdVariantsVisual.gd",
+	705: "res://Presentation/SourceEnhancedStoneVariantsVisual.gd",
+	831: "res://Presentation/SourceTerrainParrotVariantsVisual.gd",
+	1246: "res://Presentation/SourceEnhancedPumpkinVisual.gd",
+	1247: "res://Presentation/SourceEnhancedPumpkinVisual.gd",
+}
+const IndexedFalls := {
+	692: ["EnhancedHalberdCollapse", "EnhancedHalberdCollapse"],
+	705: ["EnhancedStoneFallback", "EnhancedStoneFallForward"],
+	831: ["ParrotFallingTuck", "ParrotRestingCrouch"],
+	1246: ["EnhancedPumpkinCollapse"],
+	1247: ["EnhancedPumpkinCollapse"],
+}
+const IndexedHits := {
+	692: ["EnhancedHalberdRecoil"],
+	705: ["Hit"],
+	831: ["ParrotRaisedWingRecoil"],
+	1246: ["EnhancedPumpkinRecoil"],
+	1247: ["EnhancedPumpkinRecoil"],
+}
+const PumpkinAttack := {"0": ["EnhancedPumpkinLunge"], "1": ["EnhancedPumpkinLunge"], "2": ["EnhancedPumpkinLunge"], "9": ["EnhancedPumpkinLunge"], "255": ["EnhancedPumpkinLunge", "EnhancedPumpkinLunge", "EnhancedPumpkinLunge", "EnhancedPumpkinLunge"]}
 const REPTILE_MANIFEST := REPTILE_SCENES + "profile.json"
-const UniformAttacks := {88: "MountainGoatQuietStand", 246: "BakeKitsuneLowSnap", 165: "ShadowWispArc"}
+const UniformAttacks := {692: "EnhancedHalberdSweep", 831: "ParrotRestingCrouch", 88: "MountainGoatQuietStand", 246: "BakeKitsuneLowSnap", 165: "ShadowWispArc"}
 const SwampMountedIdle := {794: "SwampDragonSeatedStill", 799: "BardedSwampDragonSeatedStill"}
 const SwampLowSweep := {794: "SwampDragonWingSweep", 799: "BardedSwampDragonLowSweep"}
 const ArmoredGargoyleAttacks := {
@@ -20,6 +43,9 @@ const ArmoredGargoyleAttacks := {
 		"GargoyleWingRake", "GargoyleWingRake", "GargoyleWingRake"],
 }
 const FittedAttackSubactions := {
+	705: {"0": ["EnhancedStoneBackhand", "EnhancedStoneOverhead", "EnhancedStoneBackhand"], "1": ["EnhancedStoneBackhand"], "2": ["EnhancedStoneBackhand"], "9": ["EnhancedStoneBackhand"], "255": ["EnhancedStoneBackhand", "EnhancedStoneOverhead", "EnhancedStoneBackhand", "EnhancedStoneBackhand", "EnhancedStoneBackhand", "EnhancedStoneBackhand"]},
+	1246: PumpkinAttack,
+	1247: PumpkinAttack,
 	753: {
 		"0": ["EnslavedGargoyleCrossingSwipe", "EnslavedGargoyleFlyingKick", "EnslavedGargoyleCrossingSwipe"],
 		"1": ["EnslavedGargoyleCrossingSwipe"],
@@ -149,6 +175,14 @@ static func enable() -> bool:
 			staged.merge(reptiles, true)
 		else:
 			push_warning("Enhanced Raptor and Slith variant files failed validation.")
+	var indexed_manifest := IndexedScenes + "profile.json"
+	if FileAccess.file_exists(indexed_manifest):
+		for body: int in IndexedRenderers:
+			var indexed := read_rows(indexed_manifest, IndexedScenes, body)
+			if indexed.has(body):
+				staged[body] = indexed[body]
+			else:
+				push_warning("Enhanced creature %d could not load its indexed variant." % body)
 	for body: int in staged:
 		Registry.entries[body] = staged[body]
 	enabled = true
@@ -178,11 +212,19 @@ static func read_rows(manifest: String, scene_folder: String, only_body := -1) -
 		row["enhanced_source_action_groups"] = profile.groups
 		if scene_folder == REPTILE_SCENES and profile.groups["0"].has("3"):
 			row["enhanced_variant_falls"] = profile.groups["0"]["3"]
+		if scene_folder == IndexedScenes:
+			if not IndexedRenderers.has(body) or profile.groups["0"].get("3") != IndexedFalls[body]:
+				return {}
+			row["enhanced_variant_falls"] = IndexedFalls[body]
+			row["presentation_script"] = IndexedRenderers[body]
+			if body == 831:
+				row["enhanced_nonfatal_death_choice"] = "ParrotRestingCrouch"
 		var attacks: Variant = profile.get("attack_subactions", {})
+		var existing_fidgets := scene_folder != IndexedScenes and body in [705, 1246, 1247]
 		# Older profiles predate the recovered alternate attacks.
 		var expected_attacks: Dictionary = FittedAttackSubactions.get(body, {})
 		var legacy_reptile: bool = body in [267, 730, 734, 753] and not profile.groups["0"].has("4")
-		if attacks != ({} if legacy_reptile else expected_attacks):
+		if attacks != ({} if legacy_reptile or existing_fidgets else expected_attacks):
 			return {}
 		if not attacks.is_empty():
 			row["enhanced_attack_subactions"] = attacks
@@ -197,7 +239,7 @@ static func read_rows(manifest: String, scene_folder: String, only_body := -1) -
 		if not str(mounted_idle).is_empty():
 			row["enhanced_mounted_idle"] = mounted_idle
 		var assets: Variant = profile.get("assets", {})
-		if not assets is Dictionary:
+		if not assets is Dictionary or (scene_folder == IndexedScenes and assets.is_empty()):
 			return {}
 		if not assets.is_empty():
 			if not profile.get("grounded") is Array or not base.get("archive_grounded_gestures", []) is Array \
@@ -511,7 +553,9 @@ static func valid_groups(groups: Variant, body: int) -> bool:
 					return false
 			elif kind in ["3", "4"]:
 				var expected: Array = []
-				if body == 165:
+				if IndexedFalls.has(body):
+					expected = IndexedFalls[body] if kind == "3" else IndexedHits[body]
+				elif body == 165:
 					expected = ["Death", "Death"] if kind == "3" else ["ShadowWispRecoil"]
 				elif body == 301:
 					expected = ["Death", "Death2"] if kind == "3" else ["TreefellowBarkRecoil"]

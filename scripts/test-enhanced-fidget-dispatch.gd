@@ -37,7 +37,14 @@ func run() -> void:
 			for mode_key: String in tables[key]:
 				var actual: Dictionary = entry.enhanced_source_action_groups.get(mode_key, {})
 				for action: String in tables[key][mode_key]:
-					if actual.get(action) != tables[key][mode_key][action]:
+					var expected: Array = tables[key][mode_key][action]
+					if entry.has("enhanced_variant_falls") and action == "5":
+						if body == 831 and mode_key == "0":
+							expected = ["UopParrotWingTuck", "ParrotRestingCrouch"]
+						elif body == 1247 and mode_key == "1":
+							expected = ["EnhancedPumpkinDormant"]
+						tables[key][mode_key][action] = expected
+					if actual.get(action) != expected:
 						push_error("Unexpected Enhanced fidget routing: %s" % str([body, mode_key, action, actual.get(action)]))
 						game.free()
 						quit(1)
@@ -89,7 +96,7 @@ func run() -> void:
 			if body == 831:
 				game._handle(packet(body, 0xe2, 5, 1))
 				assert(SourceAction.dispatch(avatar, game.last_mobile_actions[body], true, 0x04))
-				assert(visual.current_clip == "Idle")
+				assert(visual.current_clip == ("ParrotRestingCrouch" if entry.has("enhanced_variant_falls") else "Idle"))
 				tested += 1
 			avatar.free()
 		Registry.entries[body] = base

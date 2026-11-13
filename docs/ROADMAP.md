@@ -1,3 +1,8 @@
+# After the indexed Enhanced action audit
+
+Rebuild and release the five staged bodies after the preceding exact project verification. Continue native quest and event factories, summon and pet behavior, autonomous attacks, and the separate audit of spawn names the pinned server could not resolve. The Spellweaving trial covered the real casts after separately testing both quest refusals. Quest completion and autonomous actions remain to be exercised.
+
+
 # Remaining indexed Enhanced forms
 
 The five remaining audited bodies have 31 newly verified reference files. Continue with the Parrot, armed daemon and stone or dormant forms. Review the independent native identity and autonomous behavior backlog.

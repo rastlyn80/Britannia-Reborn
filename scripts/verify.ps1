@@ -361,6 +361,22 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
     }
    }
   }
+  $indexedProfile = "$root/Viewer/local-art/creatures/enhanced-indexed-variants/profile.json"
+  if (Test-Path -LiteralPath $indexedProfile) {
+   foreach ($mode in @('Classic', 'Enhanced')) {
+    $indexedArgs = @('--world=res://world.json')
+    if ($mode -eq 'Enhanced') { $indexedArgs += '--enhanced-creature-actions' }
+    foreach ($suite in @('parrot','animated-weapon','stone-form','pumpkin-head')) {
+     $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-$suite-world.gd" -- @indexedArgs 2>&1
+     $code = $LASTEXITCODE
+     $checks | ForEach-Object { Write-Output $_ }
+     if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or
+         !($checks | Select-String '^(PARROT VARIANTS|ANIMATED WEAPON|STONE FORM ENHANCED|PUMPKIN HEAD ENHANCED) WORLD:')) {
+      throw "$mode indexed $suite replay failed"
+     }
+    }
+   }
+  }
   if (Test-Path "$root/Viewer/local-art/horses/warhorse.glb") {
    & $godot --headless --path "$root/Viewer" --script res://../scripts/test-ordinary-horse-routing.gd
    if ($LASTEXITCODE) {throw 'Ordinary horse action selection failed'}

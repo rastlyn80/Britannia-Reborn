@@ -1,0 +1,946 @@
+{
+  "enhanced_client_version": "4.0.117.33",
+  "sequence_sha256": "d474b11e3f7e68d3651e3feea1d063ab8f20b77fa0c92fec1fa1eb473a14c7d6",
+  "sequence_records": [
+    {
+      "animation_ref": 692,
+      "uop_name_hash": "0xaa8ee3d222f16560",
+      "modes": [
+        {
+          "mode": 0,
+          "fallback_mode": -1,
+          "transitions": [],
+          "new_protocol_actions": [
+            {
+              "type": 0,
+              "subaction": -1,
+              "groups": [
+                4,
+                4,
+                4,
+                4,
+                4,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 0,
+              "groups": [
+                4,
+                4,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 1,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 2,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 9,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 2,
+              "subaction": -1,
+              "groups": [
+                10,
+                10
+              ]
+            },
+            {
+              "type": 3,
+              "subaction": -1,
+              "groups": [
+                2,
+                2
+              ]
+            },
+            {
+              "type": 4,
+              "subaction": -1,
+              "groups": [
+                10
+              ]
+            },
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                1
+              ]
+            },
+            {
+              "type": 8,
+              "subaction": -1,
+              "groups": [
+                28
+              ]
+            },
+            {
+              "type": 11,
+              "subaction": -1,
+              "groups": [
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "type": 14,
+              "subaction": -1,
+              "groups": [
+                1
+              ]
+            },
+            {
+              "type": 15,
+              "subaction": -1,
+              "groups": [
+                23
+              ]
+            }
+          ]
+        },
+        {
+          "mode": 1,
+          "fallback_mode": 0,
+          "transitions": [
+            {
+              "target_mode": 0,
+              "group": 28
+            }
+          ],
+          "new_protocol_actions": [
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                25
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "animation_ref": 705,
+      "uop_name_hash": "0x24f3ee42ef046bc0",
+      "modes": [
+        {
+          "mode": 0,
+          "fallback_mode": -1,
+          "transitions": [],
+          "new_protocol_actions": [
+            {
+              "type": 0,
+              "subaction": -1,
+              "groups": [
+                4,
+                5,
+                4,
+                4,
+                4,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 0,
+              "groups": [
+                4,
+                5,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 1,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 2,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 9,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 2,
+              "subaction": -1,
+              "groups": [
+                15,
+                15
+              ]
+            },
+            {
+              "type": 3,
+              "subaction": -1,
+              "groups": [
+                2,
+                3
+              ]
+            },
+            {
+              "type": 4,
+              "subaction": -1,
+              "groups": [
+                10
+              ]
+            },
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                26,
+                27
+              ]
+            },
+            {
+              "type": 8,
+              "subaction": -1,
+              "groups": [
+                28
+              ]
+            },
+            {
+              "type": 11,
+              "subaction": -1,
+              "groups": [
+                12,
+                12,
+                12
+              ]
+            },
+            {
+              "type": 14,
+              "subaction": -1,
+              "groups": [
+                11
+              ]
+            },
+            {
+              "type": 15,
+              "subaction": -1,
+              "groups": [
+                23
+              ]
+            }
+          ]
+        },
+        {
+          "mode": 1,
+          "fallback_mode": 0,
+          "transitions": [
+            {
+              "target_mode": 0,
+              "group": 28
+            }
+          ],
+          "new_protocol_actions": [
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                26
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "animation_ref": 831,
+      "uop_name_hash": "0xf0c406501df90f0f",
+      "modes": [
+        {
+          "mode": 0,
+          "fallback_mode": -1,
+          "transitions": [
+            {
+              "target_mode": 3,
+              "group": 19
+            }
+          ],
+          "new_protocol_actions": [
+            {
+              "type": 0,
+              "subaction": -1,
+              "groups": [
+                25,
+                25,
+                25,
+                25,
+                25,
+                25
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 0,
+              "groups": [
+                25,
+                25,
+                25
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 1,
+              "groups": [
+                25
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 2,
+              "groups": [
+                25
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 9,
+              "groups": [
+                25
+              ]
+            },
+            {
+              "type": 2,
+              "subaction": -1,
+              "groups": [
+                25,
+                25
+              ]
+            },
+            {
+              "type": 3,
+              "subaction": -1,
+              "groups": [
+                2,
+                25
+              ]
+            },
+            {
+              "type": 4,
+              "subaction": -1,
+              "groups": [
+                10
+              ]
+            },
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                26,
+                25
+              ]
+            },
+            {
+              "type": 8,
+              "subaction": -1,
+              "groups": [
+                25
+              ]
+            },
+            {
+              "type": 11,
+              "subaction": -1,
+              "groups": [
+                25,
+                25,
+                25
+              ]
+            },
+            {
+              "type": 14,
+              "subaction": -1,
+              "groups": [
+                25
+              ]
+            },
+            {
+              "type": 15,
+              "subaction": -1,
+              "groups": [
+                25
+              ]
+            }
+          ]
+        },
+        {
+          "mode": 1,
+          "fallback_mode": 0,
+          "transitions": [],
+          "new_protocol_actions": [
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                26
+              ]
+            }
+          ]
+        },
+        {
+          "mode": 3,
+          "fallback_mode": 0,
+          "transitions": [],
+          "new_protocol_actions": []
+        }
+      ]
+    },
+    {
+      "animation_ref": 1246,
+      "uop_name_hash": "0x41f70c112ab5a634",
+      "modes": [
+        {
+          "mode": 0,
+          "fallback_mode": -1,
+          "transitions": [],
+          "new_protocol_actions": [
+            {
+              "type": 0,
+              "subaction": -1,
+              "groups": [
+                4,
+                4,
+                4,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 0,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 1,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 2,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 9,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 2,
+              "subaction": -1,
+              "groups": [
+                15
+              ]
+            },
+            {
+              "type": 3,
+              "subaction": -1,
+              "groups": [
+                2
+              ]
+            },
+            {
+              "type": 4,
+              "subaction": -1,
+              "groups": [
+                10
+              ]
+            },
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                1
+              ]
+            },
+            {
+              "type": 8,
+              "subaction": -1,
+              "groups": [
+                28
+              ]
+            },
+            {
+              "type": 11,
+              "subaction": -1,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 14,
+              "subaction": -1,
+              "groups": [
+                25
+              ]
+            },
+            {
+              "type": 15,
+              "subaction": -1,
+              "groups": [
+                25
+              ]
+            }
+          ]
+        },
+        {
+          "mode": 1,
+          "fallback_mode": 0,
+          "transitions": [
+            {
+              "target_mode": 0,
+              "group": 28
+            }
+          ],
+          "new_protocol_actions": [
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                26
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "animation_ref": 1247,
+      "uop_name_hash": "0x8e513990e34733e1",
+      "modes": [
+        {
+          "mode": 0,
+          "fallback_mode": -1,
+          "transitions": [],
+          "new_protocol_actions": [
+            {
+              "type": 0,
+              "subaction": -1,
+              "groups": [
+                4,
+                4,
+                4,
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 0,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 1,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 2,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 0,
+              "subaction": 9,
+              "groups": [
+                4
+              ]
+            },
+            {
+              "type": 2,
+              "subaction": -1,
+              "groups": [
+                15
+              ]
+            },
+            {
+              "type": 3,
+              "subaction": -1,
+              "groups": [
+                2
+              ]
+            },
+            {
+              "type": 4,
+              "subaction": -1,
+              "groups": [
+                10
+              ]
+            },
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                1
+              ]
+            },
+            {
+              "type": 8,
+              "subaction": -1,
+              "groups": [
+                28
+              ]
+            },
+            {
+              "type": 11,
+              "subaction": -1,
+              "groups": [
+                12
+              ]
+            },
+            {
+              "type": 14,
+              "subaction": -1,
+              "groups": [
+                25
+              ]
+            },
+            {
+              "type": 15,
+              "subaction": -1,
+              "groups": [
+                25
+              ]
+            }
+          ]
+        },
+        {
+          "mode": 1,
+          "fallback_mode": 0,
+          "transitions": [
+            {
+              "target_mode": 0,
+              "group": 28
+            }
+          ],
+          "new_protocol_actions": [
+            {
+              "type": 5,
+              "subaction": -1,
+              "groups": [
+                25
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "frame_members": [
+    {
+      "body": 692,
+      "group": 2,
+      "archive": "AnimationFrame2.uop",
+      "member": "build/animationframe/000692/02.bin",
+      "key": "1f56f4e2ad7f3415",
+      "frames": 55,
+      "sha256": "eac068f11ce5343a2523f71006032f1fbfb0460f47e2a1c920982ee1e8082608"
+    },
+    {
+      "body": 692,
+      "group": 4,
+      "archive": "AnimationFrame2.uop",
+      "member": "build/animationframe/000692/04.bin",
+      "key": "3efbdffc78603ecf",
+      "frames": 55,
+      "sha256": "be2856cf5f0c518efde19031ec8a4f4e0f6865a49060f1da4031374f6260d29f"
+    },
+    {
+      "body": 692,
+      "group": 10,
+      "archive": "AnimationFrame2.uop",
+      "member": "build/animationframe/000692/10.bin",
+      "key": "eaf7c5b7848d0ec6",
+      "frames": 50,
+      "sha256": "5a284cd3ec8c6a957661f5e4a61e357504a4a455808b2de9cc54eb8739aa34b2"
+    },
+    {
+      "body": 692,
+      "group": 23,
+      "archive": "AnimationFrame2.uop",
+      "member": "build/animationframe/000692/23.bin",
+      "key": "19619ccdd1bc9397",
+      "frames": 55,
+      "sha256": "1cbb5b8ad05fbdd151dcf2b8e60f48773b709e934dd709382aaf39b6cf50bf95"
+    },
+    {
+      "body": 692,
+      "group": 28,
+      "archive": "AnimationFrame2.uop",
+      "member": "build/animationframe/000692/28.bin",
+      "key": "0ca8623f3e5ab0a5",
+      "frames": 55,
+      "sha256": "f0677faf463ee9d9741f84a2533b8f7fda93ec72823ad5834ccbf73ba8268a0d"
+    },
+    {
+      "body": 705,
+      "group": 2,
+      "archive": "AnimationFrame2.uop",
+      "member": "build/animationframe/000705/02.bin",
+      "key": "e3a45a6cbeee7647",
+      "frames": 45,
+      "sha256": "a1f85aae4ab7963904fcb56382d69079094d36650c6067059b59783280936588"
+    },
+    {
+      "body": 705,
+      "group": 3,
+      "archive": "AnimationFrame2.uop",
+      "member": "build/animationframe/000705/03.bin",
+      "key": "207462761d0fa0c1",
+      "frames": 50,
+      "sha256": "e3fcdeda1e49325f01e3ab7c72a4e5a6bead8c6718bddf4d20f2462fa1e0fc3b"
+    },
+    {
+      "body": 705,
+      "group": 4,
+      "archive": "AnimationFrame2.uop",
+      "member": "build/animationframe/000705/04.bin",
+      "key": "3f7676a8b545cde2",
+      "frames": 65,
+      "sha256": "9e8295df592238f96a77b492c45aad6ffda504ec5b967f94efee7c3ef010f140"
+    },
+    {
+      "body": 705,
+      "group": 5,
+      "archive": "AnimationFrame2.uop",
+      "member": "build/animationframe/000705/05.bin",
+      "key": "98c89002221f8f5c",
+      "frames": 70,
+      "sha256": "755aa90fbfa0029b627ca489a1d45a2f93a9c5c4dc1cf9d5acfb55255c5676ad"
+    },
+    {
+      "body": 705,
+      "group": 10,
+      "archive": "AnimationFrame2.uop",
+      "member": "build/animationframe/000705/10.bin",
+      "key": "c94324c262aeb58c",
+      "frames": 55,
+      "sha256": "414a0aec8458319f1cf8f0121895b15481b830e70349587390ad4e471dac2179"
+    },
+    {
+      "body": 705,
+      "group": 11,
+      "archive": "AnimationFrame2.uop",
+      "member": "build/animationframe/000705/11.bin",
+      "key": "0f529af5d9048e95",
+      "frames": 70,
+      "sha256": "398d89aeda1e2266c882bf4154e8ce001fc7b413b759d7fa9c204d697a596bf9"
+    },
+    {
+      "body": 705,
+      "group": 12,
+      "archive": "AnimationFrame2.uop",
+      "member": "build/animationframe/000705/12.bin",
+      "key": "05de542cfeebe341",
+      "frames": 85,
+      "sha256": "3071a63da40e956af788ab51266e3b829baefa50ddb52855cc53439cea8692e8"
+    },
+    {
+      "body": 705,
+      "group": 15,
+      "archive": "AnimationFrame2.uop",
+      "member": "build/animationframe/000705/15.bin",
+      "key": "0d37988b9558d42c",
+      "frames": 55,
+      "sha256": "b2766b8e918ea0436c7d8b214d97bda84fbafc0a07b0bf3b236b4ea8493ba63a"
+    },
+    {
+      "body": 705,
+      "group": 23,
+      "archive": "AnimationFrame2.uop",
+      "member": "build/animationframe/000705/23.bin",
+      "key": "766b1b1eb9814c65",
+      "frames": 95,
+      "sha256": "79745d97b324de82472e5496bd9d7952e1c2ec5c123cce4d678d36e1aa91dc10"
+    },
+    {
+      "body": 705,
+      "group": 28,
+      "archive": "AnimationFrame2.uop",
+      "member": "build/animationframe/000705/28.bin",
+      "key": "c10f73595fd6a93e",
+      "frames": 55,
+      "sha256": "0c1911b41771587b818c0b64bc12d59248b6fe1218b0ce2031915df407b2532f"
+    },
+    {
+      "body": 831,
+      "group": 2,
+      "archive": "AnimationFrame4.uop",
+      "member": "build/animationframe/000831/02.bin",
+      "frames": 45,
+      "sha256": "8edd0268ac10d58aa4e565c8a2f621b7e5cf80788d27d29bea1ed2d331736f5e"
+    },
+    {
+      "body": 831,
+      "group": 10,
+      "archive": "AnimationFrame4.uop",
+      "member": "build/animationframe/000831/10.bin",
+      "frames": 35,
+      "sha256": "7f16fdd946798f800d7955fe7f131d9c5ba67ac9de04d2f59ed45ea1fb40d68e"
+    },
+    {
+      "body": 831,
+      "group": 25,
+      "archive": "AnimationFrame4.uop",
+      "member": "build/animationframe/000831/25.bin",
+      "frames": 30,
+      "sha256": "9d004184764cc6523f3f4ceaeda4724bcca2129f7975e2cbefa2e228ba706bdd"
+    },
+    {
+      "body": 1246,
+      "group": 2,
+      "archive": "AnimationFrame3.uop",
+      "member": "build/animationframe/001246/02.bin",
+      "key": "43ec1a2c061fb508",
+      "frames": 110,
+      "sha256": "1e0957c37615f00171a0aed753a7feedf80425c59523673a156b78f3d33dac22"
+    },
+    {
+      "body": 1246,
+      "group": 4,
+      "archive": "AnimationFrame3.uop",
+      "member": "build/animationframe/001246/04.bin",
+      "key": "ac4eab05de3ce3b0",
+      "frames": 85,
+      "sha256": "33563c2df508c1e7853fb53b8140f26e0a9e114af4adf37fae52de7b84abae8c"
+    },
+    {
+      "body": 1246,
+      "group": 10,
+      "archive": "AnimationFrame3.uop",
+      "member": "build/animationframe/001246/10.bin",
+      "key": "df3ae3f2ffdf6181",
+      "frames": 80,
+      "sha256": "94dafc7b818e68670f55eb0cbcfa9ee60bcee79b9fdf3b21146d58bdb04e9b47"
+    },
+    {
+      "body": 1246,
+      "group": 15,
+      "archive": "AnimationFrame3.uop",
+      "member": "build/animationframe/001246/15.bin",
+      "key": "5f13af2229519f7c",
+      "frames": 85,
+      "sha256": "e518be19fde04bc868829d4c35b768eabac91ce7f5f42119138eb5b38d605b44"
+    },
+    {
+      "body": 1246,
+      "group": 25,
+      "archive": "AnimationFrame3.uop",
+      "member": "build/animationframe/001246/25.bin",
+      "key": "ada2f49744555897",
+      "frames": 15,
+      "sha256": "fc532aefec0069062f92d2a3e2aa3fa0ec180ad943a9f9aba0006d041dc2ff95"
+    },
+    {
+      "body": 1246,
+      "group": 28,
+      "archive": "AnimationFrame3.uop",
+      "member": "build/animationframe/001246/28.bin",
+      "key": "34d8d5897ab688a2",
+      "frames": 80,
+      "sha256": "5b7c387a00affd09e7c5af57bb163fee00c5672cead768dd822c346af3012c9c"
+    },
+    {
+      "body": 1247,
+      "group": 2,
+      "archive": "AnimationFrame3.uop",
+      "member": "build/animationframe/001247/02.bin",
+      "key": "717bf891dfbb3922",
+      "frames": 105,
+      "sha256": "2c47abb28479b2724f39f7847c6a5355cdac60204342b9f6dd4abc36feb5e5c5"
+    },
+    {
+      "body": 1247,
+      "group": 4,
+      "archive": "AnimationFrame3.uop",
+      "member": "build/animationframe/001247/04.bin",
+      "key": "c39096bb89175844",
+      "frames": 85,
+      "sha256": "12263bf64d4a74ca5bc8978be6f5914256c054089e87b406510ba0b7d484ed3a"
+    },
+    {
+      "body": 1247,
+      "group": 10,
+      "archive": "AnimationFrame3.uop",
+      "member": "build/animationframe/001247/10.bin",
+      "key": "68c2d4c7fe2861f9",
+      "frames": 80,
+      "sha256": "ba2251fd9e5df6cbe374450ea10a478c50c951ebad2fcc49bd3cd41ca60f1ad4"
+    },
+    {
+      "body": 1247,
+      "group": 12,
+      "archive": "AnimationFrame3.uop",
+      "member": "build/animationframe/001247/12.bin",
+      "key": "6d349e85301338dd",
+      "frames": 105,
+      "sha256": "4b49d142de10d822fc09707529caeb807c502c460d80112e1c71dfda07920239"
+    },
+    {
+      "body": 1247,
+      "group": 15,
+      "archive": "AnimationFrame3.uop",
+      "member": "build/animationframe/001247/15.bin",
+      "key": "8df40fb8bdda4bbf",
+      "frames": 85,
+      "sha256": "0dec12f01f073f18b16d53a11dd5322da3baca4fe5b9f58ec4b9bf8a70a15147"
+    },
+    {
+      "body": 1247,
+      "group": 25,
+      "archive": "AnimationFrame3.uop",
+      "member": "build/animationframe/001247/25.bin",
+      "key": "d5878cb00d25b91e",
+      "frames": 15,
+      "sha256": "74edcf1d07e1b8623ee798c22b19986ff020202294d8f0aeb38b501b405aa9d4"
+    },
+    {
+      "body": 1247,
+      "group": 28,
+      "archive": "AnimationFrame3.uop",
+      "member": "build/animationframe/001247/28.bin",
+      "key": "0a530015e0dbdd40",
+      "frames": 80,
+      "sha256": "d720c2966edc58a7f838183671b90703f8947a8034fba57d6ad7a3c5a0f226ba"
+    }
+  ]
+}

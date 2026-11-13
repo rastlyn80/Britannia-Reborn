@@ -43,13 +43,13 @@ func run() -> void:
 			var body: int = row[0]
 			var flags: int = row[1]
 			var type: int = row[2]
-			var clips: Array = row[3]
 			var serial := 0x278000 + body
 			world.game._handle(mobile_packet(at, serial, body, flags))
 			var avatar: Node3D = world.avatars.get(serial)
 			if not expect(avatar != null and avatar.horse_visual != null, "Resolved renderer for body %d" % body):
 				return
 			var actor: Node3D = avatar.horse_visual
+			var clips := expected_choices(row, actor)
 			for variation in range(128):
 				world.game._handle(action_packet(serial, type, variation))
 				var expected: String = clips[variation % clips.size()]
@@ -72,3 +72,13 @@ func run() -> void:
 				checked += 1
 		print("CLASSIC ARCHIVE PARITY: ", checked, " decoded selections")
 	quit()
+
+
+func expected_choices(row: Array, actor: Node3D) -> Array:
+	if not actor.entry.has("enhanced_variant_falls"):
+		return row[3]
+	if row[0] == 831 and row[1] != PEACE:
+		return ["UopParrotWingTuck", "ParrotRestingCrouch"]
+	if row[0] == 1247 and row[1] == PEACE:
+		return ["EnhancedPumpkinDormant"]
+	return row[3]

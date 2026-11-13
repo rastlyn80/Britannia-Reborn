@@ -204,6 +204,12 @@ static func enable() -> Array[int]:
 	if reptalon.get("presentation_script") == "res://Presentation/SourceReptalonActionsVisual.gd":
 		Registry.entries[276] = reptalon.merged({"presentation_script": "res://Presentation/SourceLooseReptalonBreathVisual.gd"}, true)
 	var enabled: Array[int] = []
+	var parrot := Registry.entry(831)
+	if parrot.has("enhanced_variant_falls") and checked_assets(parrot):
+		Registry.entries[831] = parrot.merged({
+			"presentation_script": "res://Presentation/SourceTerrainParrotVariantsVisual.gd",
+		}, true)
+		enabled.append(831)
 	for body: int in Forms:
 		var row := Registry.entry(body)
 		if row.get("kind") != Forms[body][0] or not ready_for_terrain(body, row):
