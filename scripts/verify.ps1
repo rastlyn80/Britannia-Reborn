@@ -257,8 +257,11 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
   if ($effectExit -or ($effectChecks | Select-String 'SCRIPT ERROR:|Parse Error:')) {throw 'Enhanced creature effect lifetime checks failed'}
   & python -B "$root/scripts/prepare-enhanced-creature-actions.py" --check-installed
   if ($LASTEXITCODE) {throw 'Enhanced creature profile source and prepared art failed'}
-  & $godot --headless --path "$root/Viewer" --script res://../scripts/test-enhanced-fidget-dispatch.gd -- --installed
-  if ($LASTEXITCODE) {throw 'Enhanced and Classic creature dispatch comparison failed'}
+  $fidgetChecks = & $godot --headless --quit-after 600 --path "$root/Viewer" --script res://../scripts/test-enhanced-fidget-dispatch.gd -- --installed 2>&1
+  $fidgetExit = $LASTEXITCODE
+  $fidgetChecks | ForEach-Object {Write-Output $_}
+  if ($fidgetExit -or ($fidgetChecks | Select-String 'SCRIPT ERROR:|Parse Error:') -or
+      !($fidgetChecks | Select-String '^ENHANCED DISPATCH TRIAL:')) {throw 'Enhanced and Classic creature dispatch comparison failed'}
   $profileTests = @('--world=res://world.json')
   $focusedFamilies = @()
   $profile = Get-Content -LiteralPath $enhancedManifest -Raw | ConvertFrom-Json
@@ -322,6 +325,40 @@ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
    if ($result[0].ExitCode -or ($result[0].Output | Select-String 'SCRIPT ERROR:|Parse Error:') -or
        !($result[0].Output | Select-String '^WORLD CREATURE DISPATCH:')) {
     throw "$mode world creature dispatch failed"
+   }
+  }
+  if (Test-Path "$root/Viewer/local-art/creatures/enhanced-reptile-variants/profile.json") {
+   foreach ($mode in @('Classic', 'Enhanced')) {
+    $modeArgs = @('--world=res://world.json')
+    if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+    $checks = & $godot --headless --path "$root/Viewer" --script res://../scripts/test-enhanced-reptile-variants-world.gd -- @modeArgs 2>&1
+    $code = $LASTEXITCODE
+    $checks | ForEach-Object { Write-Output $_ }
+    if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or
+        !($checks | Select-String '^REPTILE FALL WORLD: 48 decoded fall and dyed static corpse checks')) {
+     throw "$mode reptile action and corpse replay failed"
+    }
+   }
+  }
+  $enhancedVariants = "$root/Viewer/local-art/creatures/enhanced-reptile-variants/profile.json"
+  if (Test-Path $enhancedVariants) {
+   $variants = Get-Content -LiteralPath $enhancedVariants -Raw | ConvertFrom-Json -AsHashtable
+   $checksByBody = @{
+    '130' = @('test-enhanced-fire-gargoyle-variants-world')
+    '267' = @('test-enhanced-troglodyte-combat-world', 'test-enhanced-troglodyte-fall-world')
+    '753' = @('test-enhanced-enslaved-combat-world', 'test-enhanced-enslaved-fall-world')
+   }
+   foreach ($body in @('130', '267', '753')) {
+    if (!$variants.bodies.Contains($body)) { continue }
+    foreach ($test in $checksByBody[$body]) {
+     $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/$test.gd" -- '--world=res://world.json' '--enhanced-creature-actions' 2>&1
+     $code = $LASTEXITCODE
+     $checks | ForEach-Object { Write-Output $_ }
+     if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or
+         !($checks | Select-String '^(FIRE GARGOYLE VARIANTS|HUMANOID VARIANTS|TROGLODYTE COMBAT WORLD|ENSLAVED GARGOYLE COMBAT WORLD)')) {
+      throw "Enhanced creature $body variant replay failed"
+     }
+    }
    }
   }
   if (Test-Path "$root/Viewer/local-art/horses/warhorse.glb") {

@@ -34,7 +34,14 @@ func run() -> void:
 		var base: Dictionary = baseline[body]
 		var entry := Registry.entry(body)
 		if installed:
-			assert(entry.enhanced_source_action_groups == tables[key])
+			for mode_key: String in tables[key]:
+				var actual: Dictionary = entry.enhanced_source_action_groups.get(mode_key, {})
+				for action: String in tables[key][mode_key]:
+					if actual.get(action) != tables[key][mode_key][action]:
+						push_error("Unexpected Enhanced fidget routing: %s" % str([body, mode_key, action, actual.get(action)]))
+						game.free()
+						quit(1)
+						return
 		else:
 			entry = base.duplicate(true)
 			entry["enhanced_source_action_groups"] = tables[key]

@@ -6,6 +6,8 @@ const Frenzied := preload("res://Presentation/FrenziedOstardProfile.gd")
 const ART := "res://local-art/creatures/"
 const MANIFEST := ART + "enhanced-creature-actions.json"
 const SCENES := ART + "enhanced-creature-actions/"
+const REPTILE_SCENES := ART + "enhanced-reptile-variants/"
+const REPTILE_MANIFEST := REPTILE_SCENES + "profile.json"
 const UniformAttacks := {88: "MountainGoatQuietStand", 246: "BakeKitsuneLowSnap", 165: "ShadowWispArc"}
 const SwampMountedIdle := {794: "SwampDragonSeatedStill", 799: "BardedSwampDragonSeatedStill"}
 const SwampLowSweep := {794: "SwampDragonWingSweep", 799: "BardedSwampDragonLowSweep"}
@@ -18,6 +20,34 @@ const ArmoredGargoyleAttacks := {
 		"GargoyleWingRake", "GargoyleWingRake", "GargoyleWingRake"],
 }
 const FittedAttackSubactions := {
+	753: {
+		"0": ["EnslavedGargoyleCrossingSwipe", "EnslavedGargoyleFlyingKick", "EnslavedGargoyleCrossingSwipe"],
+		"1": ["EnslavedGargoyleCrossingSwipe"],
+		"2": ["EnslavedGargoyleCrossingSwipe"],
+		"9": ["EnslavedGargoyleCrossingSwipe"],
+		"255": ["EnslavedGargoyleCrossingSwipe", "EnslavedGargoyleFlyingKick", "EnslavedGargoyleCrossingSwipe", "EnslavedGargoyleCrossingSwipe", "EnslavedGargoyleCrossingSwipe", "EnslavedGargoyleCrossingSwipe"],
+	},
+	267: {
+		"0": ["TroglodyteHighSweep", "TroglodyteCrossingStrike", "TroglodyteHighSweep"],
+		"1": ["TroglodyteHighSweep"],
+		"2": ["TroglodyteHighSweep"],
+		"9": ["TroglodyteHighSweep"],
+		"255": ["TroglodyteHighSweep", "TroglodyteCrossingStrike", "TroglodyteHighSweep", "TroglodyteHighSweep", "TroglodyteHighSweep", "TroglodyteHighSweep"],
+	},
+	734: {
+		"0": ["SlithHeadFeint", "SlithLowTailStrike", "SlithHeadFeint"],
+		"1": ["SlithHeadFeint"],
+		"2": ["SlithHeadFeint"],
+		"9": ["SlithHeadFeint"],
+		"255": ["SlithHeadFeint", "SlithLowTailStrike", "SlithHeadFeint", "SlithHeadFeint", "SlithHeadFeint", "SlithHeadFeint"],
+	},
+	730: {
+		"0": ["RaptorRearAndSnap", "RaptorRearingKick", "RaptorRearAndSnap"],
+		"1": ["RaptorRearAndSnap"],
+		"2": ["RaptorRearAndSnap"],
+		"9": ["RaptorRearAndSnap"],
+		"255": ["RaptorRearAndSnap", "RaptorRearingKick", "RaptorRearAndSnap", "RaptorRearAndSnap", "RaptorRearAndSnap", "RaptorRearAndSnap"],
+	},
 	301: {
 		"0": ["TreefellowBranchHammer", "TreefellowRakingSwipe", "TreefellowBranchHammer"],
 		"1": ["TreefellowBranchHammer"], "2": ["TreefellowBranchHammer"], "9": ["TreefellowBranchHammer"],
@@ -113,6 +143,12 @@ static func enable() -> bool:
 	var staged := read_rows(MANIFEST, SCENES)
 	if staged.is_empty():
 		return false
+	if FileAccess.file_exists(REPTILE_MANIFEST):
+		var reptiles := read_rows(REPTILE_MANIFEST, REPTILE_SCENES)
+		if reptiles.size() in [2, 3, 4, 5] and reptiles.has(730) and reptiles.has(734):
+			staged.merge(reptiles, true)
+		else:
+			push_warning("Enhanced Raptor and Slith variant files failed validation.")
 	for body: int in staged:
 		Registry.entries[body] = staged[body]
 	enabled = true
@@ -140,8 +176,13 @@ static func read_rows(manifest: String, scene_folder: String, only_body := -1) -
 			return {}
 		var row := base.duplicate(true)
 		row["enhanced_source_action_groups"] = profile.groups
+		if scene_folder == REPTILE_SCENES and profile.groups["0"].has("3"):
+			row["enhanced_variant_falls"] = profile.groups["0"]["3"]
 		var attacks: Variant = profile.get("attack_subactions", {})
-		if attacks != FittedAttackSubactions.get(body, {}):
+		# Older profiles predate the recovered alternate attacks.
+		var expected_attacks: Dictionary = FittedAttackSubactions.get(body, {})
+		var legacy_reptile: bool = body in [267, 730, 734, 753] and not profile.groups["0"].has("4")
+		if attacks != ({} if legacy_reptile else expected_attacks):
 			return {}
 		if not attacks.is_empty():
 			row["enhanced_attack_subactions"] = attacks
@@ -486,6 +527,16 @@ static func valid_groups(groups: Variant, body: int) -> bool:
 					expected = ["Death", "Death2"] if kind == "3" else ["MolochRecoil"]
 				elif body in [123, 754, 755]:
 					expected = ["Death", "Death2"] if kind == "3" else ["LatticeRecoil" if body == 123 else "Hit"]
+				elif body == 130:
+					expected = ["FireGargoyleTwistingFall", "FireGargoyleBackFall"] if kind == "3" else ["FireGargoyleRaisedRecoil"]
+				elif body == 753:
+					expected = ["EnslavedGargoyleTwistingFall", "EnslavedGargoyleBackFall"] if kind == "3" else ["EnslavedGargoyleChestRecoil"]
+				elif body == 267:
+					expected = ["TroglodyteTwistingFall", "TroglodyteForwardFall"] if kind == "3" else ["TroglodyteArmRecoil"]
+				elif body == 730:
+					expected = ["RaptorForwardFall", "RaptorRearFall"] if kind == "3" else ["RaptorHeadRecoil"]
+				elif body == 734:
+					expected = ["SlithDippingFall", "SlithRearingFall"] if kind == "3" else ["SlithRaisedRecoil"]
 				if mode != "0" or clips != expected:
 					return false
 			elif kind not in ["2", "5", "8", "11", "14", "15"]:

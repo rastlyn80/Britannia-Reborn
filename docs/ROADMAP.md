@@ -1,3 +1,188 @@
+# Remaining indexed Enhanced forms
+
+The five remaining audited bodies have 31 newly verified reference files. Continue with the Parrot, armed daemon and stone or dormant forms. Review the independent native identity and autonomous behavior backlog.
+
+
+# Enhanced action work after Raptor and Slith
+
+Continue the indexed Enhanced actions in configured occurrence order. Check the actual specialized route before treating a catalogue row as open. Carry forward the human and indirect native identity audits.
+
+
+# Remaining Enhanced variants
+
+Check source-specific variants where the client still selects a general motion. Prioritize the Raptor and Slith attack, hit and death paths. Keep independent Enhanced frame coverage separate from the Classic action ledger.
+
+
+# Animation reachability after spell forms
+
+The eight audited player-form group 12 gaps now have stock packet evidence and a retained gesture. Continue the remaining stock approach cases, unresolved Enhanced inputs and indirect or autonomous behaviors. Keep the broad inventory distinct from actions observed in play.
+
+
+# Remaining player-form cast routes
+
+The next spell-form batch verified all four remaining candidates from this audit.
+
+
+# Creature occurrence after Swoop
+
+Swoop is the last configured nonhuman row in the current six-facet run. Audit the remaining human wardrobes and native duties, indirect creatures, unresolved spawn aliases, Enhanced actions and autonomous behavior before closing the portfolio. Keep original-source and compatible artwork distinct in the catalogue.
+
+
+# Creature occurrence after Rend
+
+Red Death and Savage Ridgeback retain their existing native rider, hue and corpse evidence. Serpentine Dragon and Skeletal Dragon keep their evidence for the retained rigs and fitted Classic actions. Continue with Swoop's physical resistance reduction and the remaining human identities. Keep Rend's autonomous breath and Pyre's autonomous aura and casting in the behavior audit.
+
+
+# Creature occurrence after Lady Sabrix
+
+Continue with the remaining human identities and Miasma, then Pyre, Red Death and Rend. Keep named drops unavailable in the pinned server visible in the audit.
+
+
+# Creature occurrence after Harrower tentacles
+
+Glassblower, Grimmoch Drummel, Gypsy Maiden and Iron Worker remain in the human appearance and behavior audit. Living Ki-rin retains the verified equine profile. Continue to Lady Lissith and Lady Sabrix, preserving the shared Giant Black Widow rig and each stock hue and ability.
+
+
+# Creature occurrence after Enslaved Gargoyle
+
+Fire Beetle retains its verified riding, loose body, and native ore-smelting routes. Smithing recipes and autonomous combat remain open. Continue with the next human identities and nonhuman bodies in configured occurrence order. Keep the Enslaved Gargoyle's chance pickaxe drop distinct from the verified corpse gold and meat.
+
+
+# Creature occurrence after Bone Demon
+
+Continue with the quest Dryad's separate role, then Enslaved Gargoyle and Fire Beetle in configured occurrence order. Keep the Arcane Daemon's uncontrolled encounter and Bone Demon's casting in the native behavior audit.
+
+
+# Creature occurrence after Guile and Spite
+
+Phoenix retains the previously verified Eagle rig, stock hue and feather count. Continue with Arcane Daemon and Bone Demon, then the next configured bodies with terrain or native behavior still open.
+
+
+# Creature occurrence after Ancient Lich
+
+Continue with remaining Heartwood wardrobe identities, then Phoenix, Guile and Spite in configured occurrence order. Keep the Ancient Lich's optional counter polymorph in the native behavior audit.
+
+
+# Creature occurrence after Gnaw
+
+Tangle retains the verified Bog Thing presentation. Continue with the Heartwood human identities and the Ancient Lich's original rig and undead counter. Irk's Angry Fire and the named drops for Irk and Gnaw remain unported in the pinned server.
+
+
+# Creature occurrence after Reptalon
+
+The stock mount test covers Reptalon on the ground. The pinned server exposes CanFly, clears flight on entering combat and has a Gargoyle-specific player flight toggle. A reachable mounted Reptalon takeoff remains unverified. Continue with remaining Restless Soul and named peer cases in configured occurrence order.
+
+
+# Creature occurrence after Yamandon
+
+Continue with Holy Mage and then any remaining Ridgeback, Spectral Armour and Reptalon cases. The grounded Reptalon mount already has native evidence. Verify reachable native flight before marking it complete.
+
+
+# Creature occurrence after the Khaldun humans
+
+Continue with Yamandon in configured occurrence order and retain Serado's distinct native hue and encounter behavior on the shared body. Keep the Executioner surcoat fit in the wardrobe queue.
+
+
+# Creature occurrence after the Solen Infiltrators
+
+Continue with the Khaldun Summoner and Zealot and then Yamandon. Both human Executioner constructors already delivered native hair, equipment, hues and axe-bearing corpses. Finish the fitted surcoat and the remaining hair silhouettes.
+
+
+# Creature occurrence after Silk
+
+Check the Executioner's two human bodies, native dyes and equipped axe, then continue through the configured Khaldun and Solen forms. Silk keeps the tested shared spider terrain and corpse paths.
+
+
+# Creature occurrence after Gibberling
+
+Unfrozen Mummy and Ethereal Warrior already have separately verified native identities. Continue with Silk's shared spider body and the next configured creature with an open action, terrain or native behavior check.
+
+
+# Creature occurrence after Juggernaut
+
+Continue in configured occurrence order. Crystal Sea Serpent keeps the verified Sea Serpent renderer and its distinct native hue and damage profile. Its special loot entries remain commented out in the pinned server.
+
+
+# Creature occurrence after Betrayer
+
+Ice Fiend, Shadow Wyrm and Ferret retain their verified original routes. Check Crystal Sea Serpent's distinct server behavior and appearance, then continue with Juggernaut in configured occurrence order.
+
+
+# Creature occurrence after Squirrel
+
+Szavetra, Saliva, Moug Guur and Arctic Ogre Lord retain their previously verified routes. Continue with the Betrayer's terrain and native combat abilities, then the next configured names in occurrence order.
+
+
+# Creature occurrence after Minotaur Captain
+
+Continue with Squirrel, then revisit any remaining cases for Szavetra, Saliva and Moug Guur in configured occurrence order.
+
+
+# Creature occurrence after Satyr
+
+Continue with the named Dread Spider variants and Wailing Banshee in configured occurrence order. Keep Satyr's other bard abilities separate from the verified Peace and Suppress cases.
+
+
+# Creature occurrence after Lady of the Snow
+
+Both Solen Infiltrator Warriors already have native movement, combat, colour and corpse evidence. Continue in configured occurrence order with Malefic after the verified Unicorn.
+
+
+# Creature occurrence after Exodus Overseer
+
+Jwilson retains the verified shared slime body. Continue with Lady of the Snow and check both Solen Infiltrator Warriors in configured occurrence order. Keep Ancient Wyrm's largest sampled wing lift in visual review.
+
+
+# Creature occurrence after Grobu
+
+Lurg and Putrefier retain their verified Troglodyte and Balron routes. Continue in configured occurrence order with Flesh Golem and the next creature whose presentation needs terrain work. Keep the missing Putrefier drops in the server fidelity audit.
+
+
+# Creature occurrence after Quagmire
+
+Crystal Daemon and Insane Dryad retain their earlier tested presentations. Continue with Meer Eternal and Grobu in configured occurrence order. Follow up on the Crystal Vortex loot entries and Coil's Paragon poison discrepancy in the server fidelity audit.
+
+
+# Creature occurrence after Meer Captain
+
+Continue with Crystal Vortex and Quagmire in configured occurrence order. Preserve the Crystal Vortex's native differences from the ordinary Air Elemental and the Quagmire's original source scale.
+
+
+# Creature occurrence after Feral Treefellow
+
+Dark Wisp shares body 165 and retains its stock identity. Continue with Coil and Cu Sidhe in configured occurrence order. Keep the Oni's unavailable original Enhanced group 27 recorded separately from its tested replacement.
+
+
+# Creature occurrence after Minotaur Scout
+
+Hydra, Fire Gargoyle, Shadow Wisp and both Armored Gargoyles already have terrain and corpse routes. Continue with the Oni, then the Meer Mage and both Treefellow classes in configured occurrence order. The Giant Beetle between Oni and Meer Mage already has riding, terrain and corpse evidence.
+
+
+# Creature occurrence after Gore Fiend
+
+Frost Spider and Chaos Daemon already have verified terrain and corpse routes. Continue with Meer Warrior and Minotaur Scout in configured occurrence order.
+
+
+# Creature occurrence after Minotaur
+
+Continue with Yomotsu Priest and Gore Fiend. Keep the separate Minotaur Scout and Captain identities in the occurrence queue.
+
+
+# Creature occurrence after Hiryu
+
+Ant Lion already has the original rig and separate burrowing evidence. Check both profile routes and continue to Crystal Elemental and Minotaur in configured occurrence order.
+
+
+# Creature occurrence after Shadow Fiend
+
+Continue with Lesser Hiryu and Hiryu, then Ant Lion. Preserve the shared Hiryu rig, separate constructor hues and stock mount and dismount paths.
+
+
+# Creature occurrence after Devourer
+
+Crystal Wisp uses the existing verified Wisp route and the Frenzied Ostard has separate mounted and loose tests. Continue with Revenant Lion and Shadow Fiend.
+
+
 # Creature occurrence after Sand Vortex
 
 Stone and Toxic Slith share the verified body 734 route and the Black Solen Warrior keeps its existing route. Continue with Devourer of Souls in configured occurrence order. The pinned Raptor constructor leaves pack reinforcements and the pottery fragment drop unported.

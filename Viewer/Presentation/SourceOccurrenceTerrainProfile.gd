@@ -74,6 +74,41 @@ const Forms := {
 	244: ["rune_beetle", "res://Presentation/SourceTerrainRuneBeetleVisual.gd"],
 	730: ["raptor", "res://Presentation/SourceTerrainRaptorVisual.gd"],
 	790: ["sand_vortex", "res://Presentation/SourceTerrainSandVortexVisual.gd"],
+	303: ["devourer", "res://Presentation/SourceTerrainDevourerVisual.gd"],
+	251: ["vampyric_beast", "res://Presentation/SourceTerrainRevenantLionVisual.gd"],
+	168: ["imps_shadow_fiend", "res://Presentation/SourceTerrainShadowFiendVisual.gd"],
+	243: ["hai_riyo", "res://Presentation/SourceTerrainHiryuVisual.gd"],
+	300: ["crystal_elemental", "res://Presentation/SourceTerrainCrystalElementalVisual.gd"],
+	263: ["minotaur", "res://Presentation/SourceTerrainMinotaurVisual.gd"],
+	253: ["yomotsu_priest", "res://Presentation/SourceTerrainYomotsuPriestVisual.gd"],
+	305: ["gore_fiend", "res://Presentation/SourceTerrainGoreFiendVisual.gd"],
+	771: ["meer_warrior", "res://Presentation/SourceTerrainMeerWarriorVisual.gd"],
+	281: ["leatherminotaur", "res://Presentation/SourceTerrainMinotaurScoutVisual.gd"],
+	241: ["oni", "res://Presentation/SourceTerrainOniVisual.gd"],
+	770: ["meer_mage", "res://Presentation/SourceTerrainMeerMageVisual.gd"],
+	301: ["treefellow", "res://Presentation/SourceTerrainTreefellowVisual.gd"],
+	92: ["serpents_snake_giant_silver", "res://Presentation/SourceTerrainSilverSerpentVisual.gd"],
+	277: ["cushidhe", "res://Presentation/SourceTerrainCuSidheVisual.gd"],
+	773: ["npc_cpt_dasha", "res://Presentation/SourceTerrainMeerCaptainVisual.gd"],
+	789: ["quagmire", "res://Presentation/SourceTerrainQuagmireVisual.gd"],
+	772: ["npc_adranath", "res://Presentation/SourceTerrainMeerEternalVisual.gd"],
+	304: ["flesh_golem", "res://Presentation/SourceTerrainFleshGolemVisual.gd"],
+	757: ["clockwork_minion", "res://Presentation/SourceTerrainExodusMinionVisual.gd"],
+	756: ["clockwork_overseer", "res://Presentation/SourceTerrainExodusOverseerVisual.gd"],
+	252: ["lady_of_the_snow", "res://Presentation/SourceTerrainSnowLadyVisual.gd"],
+	199: ["gouzen_ha", "res://Presentation/SourceTerrainRaiJuVisual.gd"],
+	271: ["satyr", "res://Presentation/SourceTerrainSatyrVisual.gd"],
+	310: ["wailingbanshee", "res://Presentation/SourceTerrainWailingBansheeVisual.gd"],
+	280: ["minotaurarmored", "res://Presentation/SourceTerrainMinotaurCaptainVisual.gd"],
+	278: ["squirrel", "res://Presentation/SourceTerrainSquirrelVisual.gd"],
+	767: ["npc_blackthorn_cohort", "res://Presentation/SourceTerrainBetrayerVisual.gd"],
+	768: ["juggernaut", "res://Presentation/SourceTerrainJuggernautVisual.gd"],
+	307: ["gibberling", "res://Presentation/SourceTerrainGibberlingVisual.gd"],
+	249: ["yamandon", "res://Presentation/SourceTerrainYamandonVisual.gd"],
+	78: ["liche_liche_lord_retro", "res://Presentation/SourceTerrainAncientLichVisual.gd"],
+	308: ["bonedemon", "res://Presentation/SourceTerrainBoneDemonVisual.gd"],
+	753: ["gargoyles_gargoyle_slave", "res://Presentation/SourceTerrainEnslavedGargoyleVisual.gd"],
+	129: ["flails_swamp_tentacles", "res://Presentation/SourceTerrainHarrowerTentaclesVisual.gd"],
 	218: ["frenzied", "res://Presentation/SourceTerrainFrenziedOstardVisual.gd"],
 	66: ["flails_swamp_tentacles_actions_66", "res://Presentation/SourceTerrainSwampTentacleVisual.gd"],
 	766: ["npc_kabur", "res://Presentation/SourceTerrainJukaLordVisual.gd"],
@@ -165,6 +200,9 @@ const Forms := {
 static func enable() -> Array[int]:
 	var ostard := preload("res://Presentation/OstardMount.gd")
 	ostard.frenzied_terrain = ResourceLoader.exists("res://local-art/ostards/frenzied-modern.gltf", "PackedScene")
+	var reptalon := Registry.entry(276)
+	if reptalon.get("presentation_script") == "res://Presentation/SourceReptalonActionsVisual.gd":
+		Registry.entries[276] = reptalon.merged({"presentation_script": "res://Presentation/SourceLooseReptalonBreathVisual.gd"}, true)
 	var enabled: Array[int] = []
 	for body: int in Forms:
 		var row := Registry.entry(body)
@@ -172,6 +210,34 @@ static func enable() -> Array[int]:
 			continue
 		var prepared := row.duplicate()
 		prepared.presentation_script = Forms[body][1]
+		if body == 92 and row.get("presentation_script") in [
+				"res://Presentation/SourceEnhancedSilverSerpentVisual.gd",
+				"res://Presentation/SourceTerrainEnhancedSilverSerpentVisual.gd"]:
+			prepared.presentation_script = "res://Presentation/SourceTerrainEnhancedSilverSerpentVisual.gd"
+		if body == 241 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicOniVisual.gd"
+		if body == 770 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicMeerMageVisual.gd"
+		if body == 301 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicTreefellowVisual.gd"
+		if body == 281 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicMinotaurScoutVisual.gd"
+		if body == 771 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicMeerWarriorVisual.gd"
+		if body == 305 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicGoreFiendVisual.gd"
+		if body == 263 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicMinotaurVisual.gd"
+		if body == 300 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicCrystalElementalVisual.gd"
+		if body == 243 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicHiryuVisual.gd"
+		if body == 168 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicShadowFiendVisual.gd"
+		if body == 251 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicRevenantLionVisual.gd"
+		if body == 303 and not row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainClassicDevourerVisual.gd"
 		if body == 790 and not row.has("enhanced_source_action_groups"):
 			prepared.presentation_script = "res://Presentation/SourceTerrainClassicSandVortexVisual.gd"
 		if body == 730 and not row.has("enhanced_source_action_groups"):
@@ -211,6 +277,8 @@ static func enable() -> Array[int]:
 			prepared.presentation_script = "res://Presentation/SourceTerrainEnhancedWraithVisual.gd"
 		if body == 87 and row.has("enhanced_source_action_groups"):
 			prepared.presentation_script = "res://Presentation/SourceTerrainEnhancedMatriarchVisual.gd"
+		if row.has("enhanced_variant_falls"):
+			prepared.presentation_script = prepared.presentation_script.trim_suffix("Visual.gd") + "VariantsVisual.gd"
 		Registry.entries[body] = prepared
 		enabled.append(body)
 	if preload("res://Presentation/SourceSnowLeopardProfile.gd").enable():
@@ -236,6 +304,12 @@ static func apply_local_fitted_scene(row: Dictionary, body: int) -> void:
 static func ready_for_terrain(body: int, row: Dictionary) -> bool:
 	if body == 165:
 		return row.has("enhanced_source_action_groups") and checked_asset(row, "modern")
+	if body == 92 and Registry.asset_path(row).begins_with("res://local-art/creatures/silver-serpent-enhanced/"):
+		# The optional Silver Serpent profile validates each fitted scene before
+		# replacing its base paths. The base hashes intentionally remain intact.
+		return row.get("presentation_script") in [
+			"res://Presentation/SourceEnhancedSilverSerpentVisual.gd",
+			"res://Presentation/SourceTerrainEnhancedSilverSerpentVisual.gd"]
 	if body == 238:
 		return checked_rat(row)
 	if checked_owned(body, row):

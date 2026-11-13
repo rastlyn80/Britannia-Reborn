@@ -35,6 +35,22 @@ All seven bodies use the retained group 18 fidget for the stock notice. Isolated
 
 The fixture uses the same 25-ore constructor as the stock gargoyle pickaxe mining branch, then places the creature without a combatant to test the normal movement notice. Stock mining immediately sets the miner as combatant, so this test does not exercise the harvest roll or imply that a mining spawn opens with the notice.
 
+### Other Classic group 11 entries
+
+Of the 37 broad gaps for group 11, 24 have isolated stock approach evidence. The source audit of the other 13 found ten historical bodies without a corresponding current constructor, two ordinary spell summons excluded by the approach guard, and one passive constructor excluded by its fight mode.
+
+| Body IDs | Reviewed stock path |
+| --- | --- |
+| 19, 33, 44, 45, 68, 69, 84, 102, 136, 137 | Current Dread Spider, Lizardman, Ratman, Elder Gazer, Ogre Lord, Exodus constructs and Ophidians use other bodies. Lizardman 33 remains reachable through player Polymorph. |
+| 164, 574 | Energy Vortex and Blade Spirits enter via the stock summon path, which sets the flag that excludes the approach cue. |
+| 831 | The stock Parrot constructor uses Aggressor fight mode, which the approach cue excludes. |
+
+Those checks cover the pinned stock constructor and spell paths. Save overrides and staff body changes have separate reachability.
+
+## Player-form casting
+
+Two isolated clients received the same seven-frame Classic group 12 after real casts on Ogre 1, Lizardman 33, Slime 51, Troll 54, Reaper 285, Horrific Beast 746 and both Wraiths 747 and 748. Horrific Beast cast a transformation spell under the stock exemption. The other seven cast Heal. All eight play a retained gesture for that exact packet. The client keeps the original action metadata and prefers a dedicated cast when present.
+
 ## Remaining work
 
-Twenty-four of the 37 audited group 11 entries now have isolated stock notice evidence. Check reachability for the remaining 13, including historical body variants and summoned forms, before assigning a replacement. The stock generic weapon swing returns early for monster bows and crossbows. Monster player forms can emit Classic group 12 when the stock casting timer runs, subject to the form and spell restrictions. Their exact reachable combinations still need testing. The optional Enhanced source graph, specialized scripts and effect-driven attacks retain their own checks.
+The stock generic weapon swing returns early for monster bows and crossbows. Optional Enhanced source groups, specialized scripts and effect-driven attacks still need their own reachability and presentation checks.

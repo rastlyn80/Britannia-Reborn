@@ -44,10 +44,17 @@ func run() -> void:
 	game.entities[Fire.Body] = {"serial": Fire.Body, "body": Fire.Body, "hue": 0}
 	var base := Registry.entry(Fire.Body)
 	var row := fitted_row(base)
-	if "--installed" in OS.get_cmdline_user_args():
+	var installed := "--installed" in OS.get_cmdline_user_args()
+	if installed:
 		assert(Installed.enable())
 		row = Registry.entry(Fire.Body)
-		assert(row.presentation_script == Renderer and row.enhanced_source_action_groups == source_routes())
+		assert(row.presentation_script == Renderer)
+		var expected := source_routes()
+		for mode: String in expected:
+			var actual: Dictionary = row.enhanced_source_action_groups.get(mode, {})
+			for action: String in expected[mode]:
+				assert(actual.get(action) == expected[mode][action],
+					"Fire Gargoyle mode %s action %s" % [mode, action])
 		assert(row.enhanced_attack_subactions == source_attacks())
 	var renderer := load(Renderer) as GDScript
 	var checks := 0
@@ -105,10 +112,12 @@ func run() -> void:
 	geometry.hashes = {}
 	for treatment: String in row.assets:
 		geometry.hashes[treatment] = FileAccess.get_sha256(row.assets[treatment])
-	var receipt := FileAccess.open(Fire.Destination + "runtime-receipt.json", FileAccess.WRITE)
-	assert(receipt != null)
-	receipt.store_string(JSON.stringify(geometry, "\t"))
-	receipt.close()
+	# Installed scenes may add motions to the inputs used by the original proof.
+	if not installed:
+		var receipt := FileAccess.open(Fire.Destination + "runtime-receipt.json", FileAccess.WRITE)
+		assert(receipt != null)
+		receipt.store_string(JSON.stringify(geometry, "\t"))
+		receipt.close()
 	print("FIRE GARGOYLE RUNTIME ", geometry)
 	game.free()
 	await process_frame

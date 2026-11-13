@@ -2,7 +2,7 @@
 extends RefCounted
 
 const Creature := preload("res://Presentation/CreatureVisual.gd")
-const Actions := preload("res://Presentation/EnhancedCreatureAttackActions.gd")
+const Actions := preload("res://Presentation/CreatureMorphCastActions.gd")
 const Bodies := [8, 22, 49, 66, 89, 94, 106, 107, 108, 109, 110, 111, 112, 113, 129, 135, 142, 147,
 	166, 168, 180, 206, 215, 790]
 

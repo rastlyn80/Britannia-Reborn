@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 extends "res://../scripts/test-llama-world.gd"
 
-const Serpent := preload("res://Presentation/SourceEnhancedSilverSerpentVisual.gd")
+const ClassicSerpent := preload("res://Presentation/SourceTerrainSilverSerpentVisual.gd")
+const EnhancedSerpent := preload("res://Presentation/SourceTerrainEnhancedSilverSerpentVisual.gd")
 const Registry := preload("res://Presentation/CreatureRegistry.gd")
 const Body := 92
 
@@ -23,7 +24,7 @@ func run() -> void:
 	world.game._handle(packet)
 	var avatar: Node3D = world.avatars[serial]
 	var actor: Node3D = avatar.horse_visual
-	if not expect((actor is Serpent) == enhanced and actor.native_body == Body and actor.native_hue == CorpseHue,
+	if not expect((actor is EnhancedSerpent if enhanced else actor is ClassicSerpent) and actor.native_body == Body and actor.native_hue == CorpseHue,
 			"native silver serpent identity and hue select the intended presentation"):
 		return
 	if not expect(Registry.entry(91).get("presentation_script") == "res://Presentation/SourceSilverSerpentVisual.gd",

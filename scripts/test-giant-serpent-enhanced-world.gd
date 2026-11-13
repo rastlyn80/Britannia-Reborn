@@ -27,12 +27,10 @@ func run() -> void:
 			"native giant serpent identity and hue select the intended presentation"):
 		return
 	var silver := Registry.entry(92)
-	var silver_renderers := ["res://Presentation/SourceSilverSerpentVisual.gd"]
-	if enhanced:
-		silver_renderers.append("res://Presentation/SourceEnhancedSilverSerpentVisual.gd")
+	var silver_asset := Registry.asset_path(silver)
 	if not expect(silver.get("kind") == "serpents_snake_giant_silver"
-			and silver.get("presentation_script") in silver_renderers,
-			"the silver serpent keeps its own original appearance in the active profile"):
+			and Registry.supports_body(92) and silver_asset != Registry.asset_path(Registry.entry(Body)),
+			"the silver serpent keeps its own verified scene in the active profile"):
 		return
 	for test: Array in [[4, "CoilSnap"], [5, "Attack"], [6, "LongStrike"], [10, "Hit"], [11, "Pillage"],
 			[15, "NeckDrawback"], [16, "LowNeckRecoil"], [17, "Fidget"], [18, "TailRipple"]]:

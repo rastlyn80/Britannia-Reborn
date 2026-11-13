@@ -1,3 +1,206 @@
+# Enhanced Gargoyle and Troglodyte action variants
+
+New source-fitted actions and falls passed the decoded world, terrain and static corpse tests for Fire Gargoyle, Troglodyte and Enslaved Gargoyle. [Source and evidence](ENHANCED_GARGOYLE_TROGLODYTE.md)
+
+
+# Enhanced Raptor and Slith combat and falls
+
+Eight recovered official references provide alternate attacks, hit reactions and two falls per body. The fitted Raptor and Slith scenes passed 4,608 Enhanced World attack and hit selections, 48 fall and dyed corpse checks, and terrain tests on level ground, slopes and steps. The Classic fixture passed 140 attacks and hits and 48 fall and corpse checks. See [the source and local build notes](ENHANCED_REPTILE_VARIANTS.md).
+
+
+# Enhanced indexed animation replay
+
+The current optional Enhanced profile resolves all 15 older unresolved action records with indexed frames. The fixture drove 2,048 actual World selections across those records and Parrot flight, and four Classic compatibility selections. Run `test-indexed-enhanced-world.gd` with the installed Enhanced profile and the fixture world in both modes. These are decoded packet replays. The pinned stock server has no gameplay caller for that newer animation packet.
+
+
+# Reaper, Horrific Beast and Wraith casting
+
+The live spell trial witnessed Classic group 12 from Reaper 285, Horrific Beast 746 and female and male Wraith 747 and 748. Horrific Beast cast another transformation through the stock exemption. The other three cast Heal. Each uses a retained gesture for the otherwise unsupported stock packet. In both profiles the normal world view passed 48 checks across all eight transformed bodies, including dedicated cast priority and return to the human rig.
+
+
+# Creature-form player casting
+
+Real Polymorph gump selections and Heal casts produced the stock seven-frame group 12 on both clients for Ogre 1, Lizardman 33, Slime 51 and Troll 54. Their prior scenes had no dedicated cast. The client now plays the Ogre's chest brace, the Slime's crest rise and the two other rigs' retained gestures for that packet. Both world profiles verified the four selections, the original packet metadata, the priority of an installed dedicated cast and the return to the human rig.
+
+
+# Swoop
+
+Swoop keeps the original eagle rig, native hue and separate corpse identity. Two isolated clients saw the stock claw strike on a real swing. The target's physical resistance fell from 70 to 60 and restored to 70 through the native timer. The constructor declares 72 feathers. This trial verified gold and the static dyed corpse; feather harvesting has separate earlier eagle evidence.
+
+
+# Miasma, Pyre and Rend
+
+Miasma, Pyre and Rend retain their existing scorpion, eagle and Reptalon forms, with stock hues and named corpses. The isolated trial observed Miasma's Mortal Strike and its applied Lesser Darkglow poison. The constructor declares Lethal poison, and the pinned server's Paragon adjustment selected Lesser Darkglow in the live hit. Pyre and Rend both landed the two stock weapon abilities against a reset disposable target. A separate controlled call tested Pyre's stock fire aura. Both clients received the stock attack packets and each static corpse.
+
+
+# Lady Lissith and Lady Sabrix
+
+Both named Paragons keep the original Giant Black Widow rig and their native hues. The isolated stock swing trial observed Lissith's Bleed Attack and subsequent damage, and Sabrix's Armor Ignore. Both clients saw the matching attack and impact effect. Their distinct names and hues reached the static corpse renderer. The pinned server has their special named loot drops commented out.
+
+
+# Harrower tentacles
+
+The rooted body 129 keeps its original model and retained action set. Both profiles passed 1,550 living poses and 56 packet-decoded collapse and static corpse transitions. In the isolated encounter the stock five-second timer damaged a player five tiles away, healed the tentacles and sent both clients the drain effect. The native corpse carried gold and the test dye. The attached Harrower's healing and full encounter rewards still need their own witness.
+
+
+# Quest Dryad and Enslaved Gargoyle
+
+Anwin Brenna retains the stock invulnerable female body, dyed fancy shirt and kilt, ponytail and bow. Both isolated clients received the outfit and used the existing human graphics. After the test set the starting objective, the normal Talk context action decoded the quest conversation and awarded Fertile Dirt through stock ModernUO.
+
+Enslaved Gargoyle retains the original body 753 rig, the retained Pillage replacement and the two existing Enhanced gestures. The new terrain route cleared 2,480 Classic and 3,100 Enhanced living poses and 80 and 96 fall-to-corpse transitions respectively. Two isolated clients saw its stock melee and dyed corpse. The regular client targeting cursor carved one raw rib from the real corpse.
+
+
+# Arcane Daemon and Bone Demon
+
+Arcane Daemon shares body 784 and the retained rig with Crystal Daemon. Bone Demon keeps its distinct original body 308, melee motions and both fitted Enhanced gestures. Each rig cleared 3,100 living poses and 96 packet-decoded fall-to-corpse transitions in each profile. Two isolated clients saw the distinct stock melee selections, gold-bearing corpses and corpse dyes. The Arcane Daemon's stock swing rolled Concussion Blow, spent 25 mana and sent its target notice and two effects. Bone Demon retained its physical and cold damage split, lethal poison immunity and current expansion's bard flags.
+
+
+# Guile and Spite
+
+Both named Changelings keep their original shared body and distinct native hues. The isolated trial invoked Guile's registered life drain and observed the immediate and timed mana loss, damage, healing and expiration notice. The client uses the native notices to start, refresh and clear a visible effect on the affected player. Spite keeps its stock ability set and both native corpses preserve their own hues.
+
+
+# Ancient Lich and Heartwood elves
+
+The Ancient Lich keeps the retained Lich Lord rig and staff. Its existing source assignment is an authored reuse. Both profiles clear the sampled terrain and keep the staff through the collapse and frozen corpse. A controlled call to the native counter produced four owned undead and their stock effects with self-polymorph suppressed. Its native corpse retained gold and necromancy reagents.
+
+Alelle and Aluniol retain their female and male elf bodies, native outfit fields and hues. The isolated observers received both wardrobes. Elven boots, leaf gloves, leaf legs and the sampled elf hairstyle still need their own fitted geometry.
+
+
+# Irk and Gnaw
+
+The isolated test used Irk's stock morph setter to copy male and female characters, including their hair, beard, skin and equipment. The client switched between human rigs and restored Irk's original Changeling mesh and hue on reversion. Gnaw retains the original Dire Wolf body with its own hue. Carving through the normal client yielded four ribs and 31 spined hides with the human bonus applied to the base 28. Both native corpses preserve their distinct hues.
+
+
+# Reptalon breath and Holy Mage outfits
+
+The loose Reptalon's five-frame native breath windup now plays a retimed original attack. Its fireball starts at the animated muzzle. A separate death packet still plays the original second fall. Both client profiles passed the packet replay, and the isolated stock ability emitted the windup and projectile before damaging a target outside melee range.
+
+Both Holy Mage constructors sent all five stock wearables and their exact 0x47E equipment and hair hues. The shared human wardrobe resolves their staff and other mapped garments. Both human static corpse models accept the corresponding outfit.
+
+
+# Yamandon and Serado
+
+Both profiles retain the original body and distinct native hues through 3,100 terrain poses and 96 corpse handoffs. The isolated trial invoked each stock spell-damage callback and observed the Lethal poison counter, damage, particles and both native corpses. Serado's physical resistance rose from 30 to 62 at half health. Yamandon retained two eggs. Serado's separate lightning-area ability remains a TODO in the pinned server.
+
+
+# Khaldun humans and Executioner equipment
+
+The stock Summoner and Zealot show their native six- and eight-piece wardrobes. On death the Summoner is replaced by Bone Magi body 148 and the Zealot by Bone Knight body 57. Both clients received the transformation effect, removal and new undead body. Each undead body keeps its own static corpse route.
+
+The male and female Executioners sent their axe, boots, leg garment, surcoat and hair graphics and hues. The supported wardrobe resolves the axe and keeps both native body IDs and corpse identities. The surcoat graphic remains open pending a fitted overlay, and some hair IDs still use an approximate style.
+
+
+# Crystal Sea Serpent and Solen Infiltrator Queens
+
+The Crystal Sea Serpent keeps its inherited body and distinct hue and damage split. Both Solen Infiltrator Queens reuse the original queen rigs and retain their own hues and fungus loot. The isolated server trial verified that matching friendship suppresses hostility and damage revokes it. The affected player received the stock notice, and both clients received matching corpse bodies and hues.
+
+
+# Silk
+
+Silk uses the original Giant Black Widow rig and keeps the native Paragon hue. Separate stock swings applied Lethal poison and Paralyzing Blow in the isolated trial. Both clients received the dyed corpse, which retained gold and five spider silk. The native constructor remains eligible for the Mondain's Legacy minor artifact roll.
+
+
+# Gibberling
+
+The original body and fitted duck and reach pass the living terrain and frozen corpse checks in both profiles. A stock melee hit dismounted and dazed a rider. Both clients received the ordinary attack, lost the mount layer and saw the loose horse. The rider remounted after the server's delay and both clients received the dyed Gibberling corpse.
+
+
+# Blackthorn Juggernaut
+
+The Juggernaut retains its Third Dawn body and fitted recoil and arm sweep. Both client modes passed 2,790 terrain samples and 88 corpse handoffs. The isolated trial invoked its registered Colossal Blow and observed damage, freeze and recovery, along with the stock damage split and immunities. Both clients received its dyed corpse with the original body identity.
+
+
+# Betrayer
+
+The Betrayer retains its Third Dawn mesh, original linked motions and fitted reactions through 2,790 living terrain samples and 88 corpse handoffs in each profile. The normal client follows the Betrayer's animated left hand for the native poison effect. The isolated trial invoked its registered stock abilities and observed Deadly poison, Colossal Blow damage and timed recovery. The dyed corpse retained its power crystal and stock gold.
+
+
+# Squirrel
+
+Both client modes passed 2,480 terrain poses and 80 corpse handoffs with the original rig and its two distinct falls. A player tamed the native Squirrel through the ordinary skill target, gained one follower and fed it apples to restore loyalty. Both live clients received its dyed corpse under graphic 0x2006. The stock creature defines one meat.
+
+
+# Wailing Banshee, Minotaur Captain and named Dread Spiders
+
+The Wailing Banshee and Minotaur Captain keep their original rigs, action routes and separate dyed corpses. Both named spiders retain the original Dread Spider rig and their different server hues. An isolated 83-check trial confirmed the Banshee's and Virulent's Mortal Strike and the Captain's Paralyzing Blow. A separate live trial observed Malefic dismount and daze a rider with a stock melee hit, followed by a normal remount when the native delay expired.
+
+
+# Rai-Ju and Satyr
+
+Both original rigs retain their attacks and distinct frozen corpses. The Satyr's native sound packets cue its retained lean when exactly one eligible Satyr occupies the reported tile. The isolated trial checked the stock Peace and Suppress sounds and skill reduction, and the Rai-Ju's four-second stun and recovery. The pinned Rai-Ju bonus energy damage remains commented out.
+
+
+# Lady of the Snow
+
+The original robe and rig clear 3,410 living terrain poses and 104 corpse handoffs in each client mode. The isolated server test observed the freezing-wind start, refresh and expiry notices and ten damage over five ticks. The normal client uses those notices to start, refresh and clear the mist on the affected player. The stock corpse retains its necklace and native hue. The snowball ability remains a TODO on the pinned server.
+
+
+# Flesh Golem and Exodus constructs
+
+Flesh Golem, Exodus Minion and Exodus Overseer keep their original rigs, gestures and dyed static corpses. The isolated server trial observed Flesh Golem's Bleed Attack and both Exodus constructs' stock Energy Bolt Counter. The fixture invoked the normal weapon swing and the spell-damage callback to trigger these responses. Minion retained its crystal, gem and assembly loot. Overseer retained its native crystal-or-gem roll.
+
+
+# Meer Eternal and Grobu
+
+The Meer Eternal keeps its original robe, rig and gestures. Each profile passed 3,100 living terrain poses and 96 fall handoffs. The stock life-leech effects now cue the cast and use the animated hand for departure and return. Both the hued and particle packet forms are recognised. The normal client passed 11 focused decoded checks in each mode.
+
+The isolated server trial passed 83 checks across Meer Eternal and Grobu. Both observers received the actual leech return effect. Grobu retains the verified Black Bear renderer, its own server hue and fur loot. The pinned Meer Eternal resurrection ability remains a TODO.
+
+Lurg keeps the previously verified Troglodyte body and its stock Crushing Blow selection. Putrefier keeps the Balron rig. Its own 25-check native trial confirmed hue 63, the Paragon melee upgrade to Lethal poison and gold and spell-scroll corpse loot. Its spleen and parrot drops remain commented out on the pinned server.
+
+
+# Quagmire and Crystal Vortex
+
+The Quagmire retains its original tentacle rig and the verified one-centimetre source scale. Both profiles keep the separate draw-in and fan gestures. Each passed 3,100 living poses and 96 fall transitions on flat ground, slopes and treads. The isolated trial observed its Lethal poison on a stock melee hit and confirmed the dyed native corpse.
+
+Crystal Vortex uses the terrain-aware Air Elemental mesh with the server's crystal hue, cold and energy damage profile and native corpse. The paired isolated trial passed 115 checks across both constructors. The pinned server still has commented-out crystal fragment and jagged crystal drops.
+
+
+# Coil, Cu Sidhe and Meer Captain terrain
+
+Coil keeps the Silver Serpent's original body, hue and fitted Enhanced actions. Its belly and tail adapt to slopes and treads, including the deliberate emergence. The Cu Sidhe retains the original saddle and rein anchors, with 72 checked riding poses across male and female humans and elves. The Meer Captain carries the original crossbow on layer 2. The terrain checks include the crossbow's separate rig, and the frozen corpse preserves the equipped weapon when the server supplies it.
+
+The isolated native tests passed 259 Cu Sidhe checks, including rider eligibility, walk/run, full and partial dyes, dismount and corpse. Coil and Meer Captain passed 52 checks, including the Fang drop, the crossbow projectile and the Captain's magic ward. The pinned server's Coil constructor specifies Lethal poison. Its Paragon upgrade looks up the next registered poison entry and applied Lesser Darkglow in the native trial. This discrepancy remains on the server fidelity list.
+
+
+# Oni, Meer Mage and Treefellow terrain
+
+The original Third Dawn rigs now clear slopes and raised treads in both profiles. The Oni retains its hand-tracked flame and both falls. The Meer Mage keeps its fitted gait, forest call and swarm effect. Treefellow and Feral Treefellow use the same branch rig, retain their server-side combat differences and leave separate native corpses with the correct hue.
+
+
+# Meer Warrior and Minotaur Scout
+
+Both keep their original rigs, distinct Classic falls and fitted Enhanced attack variants. The Meer Warrior passed 3,100 Classic and 4,960 Enhanced living terrain poses, plus 96 and 144 fall transitions. The Minotaur Scout passed 3,720 and 6,200 living poses, plus 112 and 184 falls. The normal client retains each native body and hue when it places a frozen corpse.
+
+The isolated native trials passed 387 Meer Warrior checks and 375 Minotaur Scout checks. Both clients received the stock melee swing, accepted the server hue and displayed the corpse with its original body. The stock corpses held gold. The Meer Warrior did not retaliate from six tiles. Controlled Enhanced packets separately exercised the fitted attack variants.
+
+
+# Yomotsu Priest and Gore Fiend
+
+The Priest keeps its original motion routes and now walks immediately when the stock approach gesture arrives with a step. The Gore Fiend retains both profiles, including its fitted neck and claw gestures. Both use their own body and hue for the frozen corpse.
+
+
+# Crystal Elemental and Minotaur terrain
+
+The Crystal Elemental retains the original crystal body and the Enhanced assembly and fragment fall. The Minotaur retains both original falls and its fitted Enhanced gestures. Both preserve server hues and use native graphic 0x2006 for frozen remains.
+
+
+# Hiryu and Lesser Hiryu terrain
+
+Both stock constructors retain the shared Third Dawn rig, separate hues and original mount item. Classic and Enhanced clear sampled slopes and treads. The isolated trial passed 563 checks across both rider rigs, including native mounting, dye, walk, run, dismount and frozen corpses.
+
+
+# Revenant Lion and Shadow Fiend
+
+Both forms keep their original rigs and distinct Classic and Enhanced gestures. Native trials confirmed the Revenant Lion's stock poison and bleeding behavior and the Shadow Fiend's death effect and transient corpse removal. Static body graphics remain available where the server supplies a corpse.
+
+
+# Devourer of Souls
+
+The Devourer keeps its original Third Dawn mesh, rig and Classic actions, plus the fitted Enhanced gestures. In the isolated trial, the stock Magic Arrow reached both clients and launched from the displayed hand. The trial also confirmed lethal poison immunity, native hues and a static corpse with stock loot.
+
+
 # Raptor and Sand Vortex terrain
 
 The CC0 Raptor retains its walk, run, attack and two fall paths on slopes and treads. The Sand Vortex retains the Classic ribbons and Enhanced dust carrier. Both display frozen remains under graphic 0x2006. The Enhanced fall preserves the settled dust footprint, including when the cloud body has dissipated.
