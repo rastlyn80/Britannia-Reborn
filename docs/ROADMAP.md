@@ -1,3 +1,28 @@
+# Creature occurrence after Efreet
+
+Continue with Frenzied Ostard and Swamp Tentacle in configured occurrence order. Keep the largest sampled tread lifts in visual review for the Doppleganger attack, Changeling third attack and Efreet lamp arrival. Crystal Wisp retains the existing public Wisp route and native identity evidence.
+
+
+# Creature occurrence after Ogre Lord
+
+Continue with Interred Grizzle and Ogre Lord in configured occurrence order. The Nightmare variants retain their separately verified mount and corpse routes. Keep the Lava Serpent's high-tread strike and Orc Captain's high-tread walk in visual review.
+
+
+# Creature occurrence after Stone Gargoyle
+
+Continue with Lava Serpent and Orc Captain in configured occurrence order. Keep the Stone Gargoyle's slope landing in visual review.
+
+
+# Creature occurrence after Giant Toad
+
+Ratman Mage already has its terrain and native proofs. Continue with Stone Gargoyle, then Lava Serpent in configured occurrence order. Keep the Giant Toad's high-tread lunge in visual review. The Skeletal Knight's equipment requires the locally prepared fitted scenes.
+
+
+# Creature occurrence and Gazer Larva references
+
+Continue with Skeletal Knight and Giant Toad in configured Trammel occurrence order. Swamp Dragon and Scaled Swamp Dragon retain their verified mounted and corpse routes. Keep the visible Gaman slope lift in review. Keep the Stone Harpy slope landing and the Bog Thing growth and Succubus attack on the highest tread in visual review. Six optional Enhanced source records for the Larva still need exact inputs. Keep the largest sampled lifts on the Ice Elemental and Cyclops in visual review. Savage, Ratman Archer and Hell Cat already have native movement, appearance and corpse evidence. Keep the highest-tread lift on the Black Solen Warrior, Bone Knight, Dull Copper, Dread Spider, Titan, Lava Lizard, Mummy, Terathan Drone, Ophidian Mage and Balron in visual review. The Lava Lizard's taming and native diet, autonomous encounters and the full Plague Beast Lord dissection puzzle need separate evidence. The default ledger remains at 6,489 mapped body/action slots.
+
+
 # Wyvern, Rat and BullFrog terrain
 
 Continue with the remaining Plague Spawn forms in configured occurrence order. Wyvern and BullFrog gestures and the small Rat's run still produce visible lifts on the highest treads. Both native Rat classes share the public rig and retain separate gameplay identities.

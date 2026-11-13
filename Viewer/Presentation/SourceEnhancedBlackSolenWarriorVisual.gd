@@ -13,7 +13,8 @@ var in_combat := false
 func _ready() -> void:
 	super._ready()
 	fitted_fall.skin = support_skin
-	animator.get_animation(Quiet).loop_mode = Animation.LOOP_LINEAR
+	if animator.has_animation(Quiet):
+		animator.get_animation(Quiet).loop_mode = Animation.LOOP_LINEAR
 
 
 func set_native_combat_flags(flags: int) -> void:
@@ -22,7 +23,7 @@ func set_native_combat_flags(flags: int) -> void:
 
 
 func play_gait(moving: bool, speed: float) -> void:
-	if moving or not known_warmode or in_combat:
+	if moving or not known_warmode or in_combat or not animator.has_animation(Quiet):
 		super.play_gait(moving, speed)
 	elif not dead and action_remaining <= 0.0 and current_clip != Quiet:
 		current_clip = Quiet

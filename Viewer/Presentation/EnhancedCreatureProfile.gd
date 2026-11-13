@@ -118,7 +118,7 @@ static func enable() -> bool:
 	enabled = true
 	return true
 
-static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
+static func read_rows(manifest: String, scene_folder: String, only_body := -1) -> Dictionary:
 	var payload: Variant = JSON.parse_string(FileAccess.get_file_as_string(manifest))
 	if not payload is Dictionary or payload.get("schema") != 1 or not payload.get("bodies") is Dictionary:
 		return {}
@@ -127,6 +127,8 @@ static func read_rows(manifest: String, scene_folder: String) -> Dictionary:
 		if not key.is_valid_int():
 			return {}
 		var body := int(key)
+		if only_body >= 0 and body != only_body:
+			continue
 		var base := Registry.entry(body)
 		if body == Frenzied.Body and base.is_empty():
 			base = Frenzied.retained_row()

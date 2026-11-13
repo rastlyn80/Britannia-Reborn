@@ -28,6 +28,57 @@ const OrcLord := 138
 const OrcLordAssets := "res://local-art/creatures/orc-lord-prepared"
 const OrcLordRenderer := "res://Presentation/SourceTerrainOrcishLordVisual.gd"
 const Forms := {
+	131: ["genies_efreet", "res://Presentation/SourceTerrainEfreetVisual.gd"],
+	264: ["changling", "res://Presentation/SourceTerrainChangelingVisual.gd"],
+	777: ["doppleganger", "res://Presentation/SourceTerrainDopplegangerVisual.gd"],
+	83: ["ogres_ogre_lord_slot11_83", "res://Presentation/SourceTerrainOgreLordVisual.gd"],
+	259: ["monstrousinterredgrizzle", "res://Presentation/SourceTerrainInterredGrizzleVisual.gd"],
+	182: ["orcs_orc_bomber", "res://Presentation/SourceTerrainOrcBomberVisual.gd"],
+	148: ["skeletons_skeleton_mage", "res://Presentation/SourceTerrainBoneMagiVisual.gd"],
+	159: ["elementals_blood_elemental", "res://Presentation/SourceTerrainBloodElementalVisual.gd"],
+	7: ["orcs_orc_captain", "res://Presentation/SourceTerrainOrcCaptainVisual.gd"],
+	90: ["serpents_snake_giant_lava", "res://Presentation/SourceTerrainLavaSerpentVisual.gd"],
+	67: ["gargoyles_gargoyle_stone", "res://Presentation/SourceTerrainStoneGargoyleVisual.gd"],
+	147: ["skeletons_skeleton_knight", "res://Presentation/SourceTerrainOrcishMageVisual.gd"],
+	80: ["frogs_frog_giant", "res://Presentation/SourceTerrainFrogVisual.gd"],
+	14: ["elementals_earth_elemental", "res://Presentation/SourceTerrainEarthVisual.gd"],
+	51: ["slimes_slime", "res://Presentation/SourceTerrainSlimeVisual.gd"],
+	140: ["orcs_orc_shaman", "res://Presentation/SourceTerrainOrcishMageVisual.gd"],
+	775: ["plague_beast", "res://Presentation/SourceTerrainPlagueBeastVisual.gd"],
+	26: ["spirits_ghost", "res://Presentation/SourceTerrainWraithVisual.gd"],
+	781: ["fire_ant_worker", "res://Presentation/SourceTerrainSolenWorkerVisual.gd"],
+	805: ["black_ant_worker", "res://Presentation/SourceTerrainSolenWorkerVisual.gd"],
+	158: ["elementals_acid_elemental", "res://Presentation/SourceTerrainAcidElementalVisual.gd"],
+	162: ["elementals_poison_elemental", "res://Presentation/SourceTerrainPoisonElementalVisual.gd"],
+	215: ["rodents_rat_giant", "res://Presentation/SourceTerrainGiantRatVisual.gd"],
+	86: ["ophidians_ophidian_warrior", "res://Presentation/SourceTerrainOphidianVisual.gd"],
+	124: ["mages_evil_mage", "res://Presentation/SourceTerrainEvilMageVisual.gd"],
+	764: ["juka_warrior", "res://Presentation/SourceTerrainJukaWarriorVisual.gd"],
+	12: ["dragons_dragon_blasted_slot11_12", "res://Presentation/SourceTerrainDrakeVisual.gd"],
+	59: ["dragons_dragon_blasted_red_slot11_59", "res://Presentation/SourceTerrainDrakeVisual.gd"],
+	40: ["daemons_daemon_elder", "res://Presentation/SourceTerrainBalronVisual.gd"],
+	85: ["ophidians_ophidian_mage", "res://Presentation/SourceTerrainOphidianMageVisual.gd"],
+	70: ["terathan_terathan_warrior", "res://Presentation/SourceTerrainTerathanVisual.gd"],
+	71: ["terathan_terathan_drone", "res://Presentation/SourceTerrainTerathanVisual.gd"],
+	154: ["walking_dead_mummy", "res://Presentation/SourceTerrainMummyVisual.gd"],
+	206: ["lizards_lava_lizard", "res://Presentation/SourceTerrainLavaLizardVisual.gd"],
+	76: ["titans_titan", "res://Presentation/SourceTerrainTitanVisual.gd"],
+	87: ["ophidians_ophidian_queen", "res://Presentation/SourceTerrainMatriarchVisual.gd"],
+	11: ["arachnids_spider_dread_slot11_11", "res://Presentation/SourceTerrainDreadSpiderVisual.gd"],
+	782: ["fire_ant_warrior", "res://Presentation/SourceTerrainSolenWarriorVisual.gd"],
+	806: ["black_ant_warrior", "res://Presentation/SourceTerrainSolenWarriorVisual.gd"],
+	125: ["mages_evil_mage_master_actions_125", "res://Presentation/SourceTerrainEvilMageLordVisual.gd"],
+	126: ["mages_evil_mage_master_actions_126", "res://Presentation/SourceTerrainEvilMageLordVisual.gd"],
+	57: ["skeletons_skeleton", "res://Presentation/SourceTerrainBoneKnightVisual.gd"],
+	110: ["elementals_copper_dull_elemental", "res://Presentation/SourceTerrainDullCopperVisual.gd"],
+	161: ["elementals_ice_elemental", "res://Presentation/SourceTerrainIceElementalVisual.gd"],
+	75: ["cyclops_cyclops", "res://Presentation/SourceTerrainCyclopsVisual.gd"],
+	152: ["terathan_terathan_avenger", "res://Presentation/SourceTerrainTerathanVisual.gd"],
+	778: ["gazer_larva", "res://Presentation/SourceTerrainGazerLarvaVisual.gd"],
+	73: ["harpies_harpy_stone", "res://Presentation/SourceTerrainStoneHarpyVisual.gd"],
+	149: ["succubi_succubus", "res://Presentation/SourceTerrainTerathanVisual.gd"],
+	248: ["wild_guar", "res://Presentation/SourceTerrainGamanVisual.gd"],
+	72: ["terathan_terathan_queen", "res://Presentation/SourceTerrainTerathanMatriarchVisual.gd"],
 	81: ["frogs_bullfrog", "res://Presentation/SourceTerrainFrogVisual.gd"],
 	238: ["rat_ordinary", "res://Presentation/SourceTerrainOrdinaryRatVisual.gd"],
 	62: ["dragons_wyvern", "res://Presentation/SourceTerrainWyvernVisual.gd"],
@@ -67,14 +118,35 @@ static func enable() -> Array[int]:
 			continue
 		var prepared := row.duplicate()
 		prepared.presentation_script = Forms[body][1]
+		if body in [90, 147] and not row.has("enhanced_source_action_groups"):
+			apply_local_fitted_scene(prepared, body)
+		if body == 14 and row.get("presentation_script") in [
+				"res://Presentation/SourceEnhancedEarthVisual.gd", "res://Presentation/SourceTerrainEnhancedEarthVisual.gd"]:
+			prepared.presentation_script = "res://Presentation/SourceTerrainEnhancedEarthVisual.gd"
+		if body == 26 and row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainEnhancedWraithVisual.gd"
+		if body == 87 and row.has("enhanced_source_action_groups"):
+			prepared.presentation_script = "res://Presentation/SourceTerrainEnhancedMatriarchVisual.gd"
 		Registry.entries[body] = prepared
 		enabled.append(body)
+	if preload("res://Presentation/SourceSnowLeopardProfile.gd").enable():
+		enabled.append(64)
+		enabled.append(65)
 	if enable_orc_lord():
 		enabled.append(OrcLord)
-	enable_bog_clock()
+	if enable_bog_clock():
+		enabled.append(780)
 	if enable_rabbit():
 		enabled.append(RabbitBody)
 	return enabled
+
+
+static func apply_local_fitted_scene(row: Dictionary, body: int) -> void:
+	const Fitted := preload("res://Presentation/EnhancedCreatureProfile.gd")
+	var fitted: Dictionary = Fitted.read_rows(Fitted.MANIFEST, Fitted.SCENES, body).get(body, {})
+	if not fitted.is_empty():
+		row.assets = fitted.assets
+		row.asset_sha256 = fitted.asset_sha256
 
 
 static func ready_for_terrain(body: int, row: Dictionary) -> bool:
@@ -178,25 +250,26 @@ static func enable_rabbit() -> bool:
 
 
 
-static func enable_bog_clock() -> void:
+static func enable_bog_clock() -> bool:
 	const Body := 780
 	var row := Registry.entry(Body)
 	if row.get("kind") != "bog_thing":
-		return
+		return false
 	var renderer: String = row.get("presentation_script", "")
 	var path := Registry.asset_path(row)
 	var script: String
 	if renderer == "res://Presentation/BogThingActionsVisual.gd" and path == "res://local-art/creatures/bog-thing-actions.scn":
 		var digest: String = row.get("authored_action_scene_sha256", {}).get("modern", "")
 		if digest.length() == 64 and FileAccess.get_sha256(path) == digest:
-			script = "res://Presentation/SourceClockBogThingVisual.gd"
+			script = "res://Presentation/SourceTerrainBogThingVisual.gd"
 	elif renderer == "res://Presentation/SourceEnhancedBogThingVisual.gd" \
 			and path == "res://local-art/creatures/enhanced-creature-actions/780-modern.scn" and checked_asset(row, "modern"):
-		script = "res://Presentation/SourceEnhancedClockBogThingVisual.gd"
+		script = "res://Presentation/SourceTerrainBogThingVisual.gd"
 	if not script.is_empty():
 		var prepared := row.duplicate()
 		prepared.presentation_script = script
 		Registry.entries[Body] = prepared
+	return not script.is_empty()
 
 
 

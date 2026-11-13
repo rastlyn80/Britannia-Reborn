@@ -24,7 +24,7 @@ func _ready() -> void:
 
 func receive_action(request: Dictionary) -> bool:
 	# The stock ability emits this Classic packet 1.3 seconds before its fireball.
-	if (native_body == 90 and not dead and request.get("protocol") == "classic" and request.get("action") == 12
+	if (native_body == 90 and not dead and animator.has_animation(Breath) and request.get("protocol") == "classic" and request.get("action") == 12
 			and request.get("frames") == 5 and request.get("repeat_count") == 1
 			and request.get("reverse") == false and request.get("repeat") == false and request.get("delay") == 0):
 		current_clip = Breath

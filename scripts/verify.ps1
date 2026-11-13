@@ -1254,7 +1254,11 @@ $drakeArt = (Test-Path "$root/Viewer/local-art/creatures/drake-distinct-60-actio
  (Test-Path "$root/Viewer/local-art/creatures/drake-distinct-61-actions-modern.scn")
 if ($drakeArt) { $availableOccurrence += @(60, 61) }
 $optionalCreatures = Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions.json"
+$occurrenceReplayFolder = Join-Path $root ("work/verification/occurrence-replay-" + [Guid]::NewGuid().ToString('N'))
+$occurrenceWorkers = if (Get-ChildItem Env:BR_*_METRICS) { 1 } else { 4 }
+New-Item -ItemType Directory -Path $occurrenceReplayFolder -Force | Out-Null
 foreach ($mode in @('classic','enhanced')) {
+ $terrainCases = [Collections.Generic.List[object]]::new()
  $arguments = @()
  if ($mode -eq 'enhanced') {
   if (!$optionalCreatures) { continue }
@@ -1307,12 +1311,33 @@ foreach ($mode in @('classic','enhanced')) {
    if ($body -eq 62) { $testArguments += '--wyvern-candidate' }
    if ($body -eq 81) { $testArguments += '--frog-candidate' }
    if ($body -eq 238) { $testArguments += '--rat-candidate' }
-   $results = & $godot --headless --path "$root/Viewer" --script "res://../scripts/$test" -- @testArguments 2>&1
-   $code = $LASTEXITCODE
-   $results | ForEach-Object { Write-Output $_ }
-   if ($code -or ($results | Select-String 'SCRIPT ERROR:|Parse Error:')) {
-    throw "$mode creature $body $test verification failed"
-   }
+   $terrainCases.Add([pscustomobject]@{
+    Key = "$body-$test"
+    Body = $body
+    Script = $test
+    Arguments = $testArguments
+    Log = Join-Path $occurrenceReplayFolder "$mode-$body-$test.log"
+   })
+  }
+ }
+ $terrainResults = @{}
+ $terrainCases | ForEach-Object -Parallel {
+  $case = $_
+  $viewer = Join-Path $using:root 'Viewer'
+  $engine = $using:godot
+  $arguments = $case.Arguments
+  $checks = & $engine --headless --path $viewer --script "res://../scripts/$($case.Script)" --log-file $case.Log -- @arguments 2>&1
+  [pscustomobject]@{Key = $case.Key; ExitCode = $LASTEXITCODE; Output = @($checks)}
+ } -ThrottleLimit $occurrenceWorkers | ForEach-Object {
+  if ($terrainResults.ContainsKey($_.Key)) { throw "Duplicate terrain replay result for $($_.Key)" }
+  $terrainResults[$_.Key] = $_
+ }
+ foreach ($case in $terrainCases) {
+  $result = $terrainResults[$case.Key]
+  if ($null -eq $result) { throw "No $mode terrain replay result for $($case.Key)" }
+  $result.Output | ForEach-Object { Write-Output $_ }
+  if ($result.ExitCode -or ($result.Output | Select-String 'SCRIPT ERROR:|Parse Error:')) {
+   throw "$mode creature $($case.Body) $($case.Script) verification failed"
   }
  }
  if (9 -in $availableOccurrence -and 62 -in $availableOccurrence -and

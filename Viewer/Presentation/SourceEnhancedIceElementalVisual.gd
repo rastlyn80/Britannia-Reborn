@@ -9,8 +9,8 @@ var fitted_transform_active := false
 func _ready() -> void:
 	super._ready()
 	var shell := model.find_child("IceCrystalShell", true, false) as MeshInstance3D
-	assert(shell != null)
-	fitted_fall.skin = combined_skin(Ground.skin_points(shell, skeleton))
+	assert(shell != null or not entry.has("enhanced_source_action_groups"))
+	fitted_fall.skin = combined_skin(Ground.skin_points(shell, skeleton)) if shell != null else support_skin
 
 
 func combined_skin(shell: Dictionary) -> Dictionary:

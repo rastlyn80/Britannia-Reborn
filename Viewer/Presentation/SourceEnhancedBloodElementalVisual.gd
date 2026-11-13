@@ -13,6 +13,10 @@ var pool: MeshInstance3D
 
 func _ready() -> void:
 	super._ready()
+	if entry.get("archive_grounded_gestures", []).is_empty():
+		fitted_fall.skin = support_skin
+		fall.skin = support_skin
+		return
 	var crest := model.find_child("BloodSurgeCrest", true, false) as MeshInstance3D
 	assert(crest != null)
 	add_crest_skin(Ground.skin_points(crest, skeleton))

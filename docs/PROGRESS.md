@@ -1,3 +1,138 @@
+# Doppleganger, Changeling and Efreet
+
+Both profiles preserve the original rigs and static corpses. Native checks covered the Doppleganger's melee and harvest, the Changeling's disguise and cloned dyed equipment, and the Efreet's fire and energy strike, Lightning and corpse gold. Enhanced runs interrupt the Doppleganger's rise and Efreet's lamp arrival. The Efreet's lamp and shader-deformed rug cleared all 1,240 sampled prop poses.
+
+
+# Ogre Lord terrain and bone club
+
+The Ogre Lord clears sampled slopes and treads in both profiles. In Enhanced, the fitted club follows the grasp without passing through the ground. Isolated native trials verified melee, immunity, corpse appearance and the stock club in the loot. [Ogre Lord](OGRE_LORD_TERRAIN.md).
+
+
+# Bone Magi terrain and staff
+
+Both profiles retain the recovered staff and both Classic falls. Full-skin support keeps the staff poses stable on treads. Isolated trials verified Lightning damage, immunities, opposition and the stock corpse loot. [Bone Magi](BONE_MAGI_TERRAIN.md).
+
+
+# Blood Elemental terrain and spell effects
+
+The Blood Elemental preserves the original gel material, stock damage, spell and corpse. Enhanced retains the crest and temporary rise pool. [Blood Elemental](BLOOD_ELEMENTAL_TERRAIN.md).
+
+
+# Lava Serpent and Orc Captain terrain
+
+The Lava Serpent keeps its original atlas and both falls. Its stock fireball starts at the animated jaw in both profiles with the locally fitted scene. The Orc Captain keeps the axe through the static corpse and walks when the server sends an idle gesture immediately before a step. Isolated stock combat and harvest checks passed. [Lava Serpent](LAVA_SERPENT_TERRAIN.md), [Orc Captain](ORC_CAPTAIN_TERRAIN.md).
+
+
+# Stone Gargoyle terrain
+
+The Stone Gargoyle keeps its wing motions, grounded gestures and original fall. Both profiles passed living and corpse terrain checks. Native tests verified physical melee damage, twelve iron ingots and the combat flag that selects the fitted Enhanced feint. [Stone Gargoyle](STONE_GARGOYLE_TERRAIN.md).
+
+
+# Skeletal Knight and Giant Toad terrain
+
+The Skeletal Knight retains the recovered sword and shield through both falls and on its frozen corpse. Classic uses the verified local fitted scenes for the equipment while preserving its action routes. The Giant Toad retains its hop and tongue animations and passed stock taming, feeding, swing and harvest checks in both profiles. [Skeletal Knight](SKELETAL_KNIGHT_TERRAIN.md), [Giant Toad](GIANT_TOAD_TERRAIN.md).
+
+
+# Gaman and Terathan Matriarch terrain
+
+The original Gaman retains both falls and stock taming, feeding and corpse yields. The Terathan Matriarch keeps its hand effects, pincers and fitted actions through the static corpse. Its native Lightning, opposition and packed reagents passed the isolated tests. [Gaman](GAMAN_TERRAIN.md), [Terathan Matriarch](TERATHAN_MATRIARCH_TERRAIN.md).
+
+
+# Stone Harpy, Bog Thing, Tangle and Succubus
+
+The Stone Harpy retains distinct grounded and airborne falls on its original rig. Both Bog Thing classes spawn and consume a stock Bogling and preserve their own corpse hues and loot. The Succubus retains the original wing motions and drains life from an opposing target while leaving a same-team target unharmed. All three body IDs passed both client profiles. [Stone Harpy](STONE_HARPY_TERRAIN.md), [Bog Thing and Tangle](BOG_THING_TERRAIN.md), [Succubus](SUCCUBUS_TERRAIN.md).
+
+
+# Creature terrain verification
+
+The independent occurrence terrain and fall tests now run up to four at a time with separate logs. The same four Enhanced Small Snake and BullFrog cases completed in 241 seconds with one worker and 96 seconds with four. Their pose counts, gap measurements and fall results matched.
+
+
+# Snow Leopard, Terathan Avenger and Gazer Larva
+
+Both Snow Leopard body rolls now use distinct swipe, stretch, sniff and alternate fall motions fitted on their own original rig. Their native taming, dyes, movement and static corpses passed in both profiles. The Terathan Avenger retains its own rig and fitted pincer actions, with native Deadly poison and frozen corpse evidence. Gazer Larva keeps the original hover and translucent skin cards through the displayed fall and frozen corpse. [Snow Leopard](SNOW_LEOPARD_TERRAIN.md), [Terathan Avenger](TERATHAN_AVENGER_TERRAIN.md), [Gazer Larva](GAZER_LARVA_TERRAIN.md).
+
+
+# Ice Elemental and Cyclops terrain
+
+The Ice Elemental retains its original skin and optional crystal shell through slopes and the static corpse. Its stock Magic Arrow dealt damage in both native profiles. The Cyclops clears the sampled treads with its recovered mallet and retains it on the frozen corpse. Its native weapon swing dealt damage and human carving yielded four ribs. [Ice Elemental](ICE_ELEMENTAL_TERRAIN.md), [Cyclops](CYCLOPS_TERRAIN.md).
+
+
+# Evil Mage Lords, Bone Knight and Dull Copper terrain
+
+Both Evil Mage Lords keep their robe, hat and sandal colours through the native fall. Their hit reactions clear the measured step with a smaller lift. The Bone Knight retains its sword and shield through the fall, and its native corpse holds the matching loot. The Dull Copper Elemental's stock death explosion damages a nearby target, and both ore constructor amounts appear in the native corpse. [Evil Mage Lords](EVIL_MAGE_LORD_TERRAIN.md), [Bone Knight](BONE_KNIGHT_TERRAIN.md), [Dull Copper Elemental](DULL_COPPER_TERRAIN.md).
+
+
+# Solen Warrior terrain and native acid
+
+Both Solen Warrior bodies and both Infiltrator classes passed terrain, movement, hue and corpse checks. The native Warriors leave four acid pools, while Infiltrators leave none. Both Black Solen classes retain their Enhanced quiet idle when the server's combat flag is off. [Solen Warrior terrain and native checks](SOLEN_WARRIOR_TERRAIN.md).
+
+
+# Dread Spider terrain and silk
+
+The Dread Spider retains its original eight-legged rig, both falls and the Enhanced silk opening. Both profiles passed native lethal poison, movement, hue and corpse checks. The corpse retains its native silk loot and the opening effect disappears at death. [Dread Spider terrain and native checks](DREAD_SPIDER_TERRAIN.md).
+
+
+# Ophidian Matriarch terrain and sceptre
+
+The Matriarch retains its separate Classic falls and keeps the ceremonial sceptre during Enhanced gestures and the matching static corpse. The stock server trials verified Lightning damage, greater poison immunity and Terathan hostility. [Ophidian Matriarch terrain](OPHIDIAN_MATRIARCH_TERRAIN.md).
+
+
+# Titan terrain and Lightning
+
+The Titan keeps its original rig, stock and fitted gestures, and the displayed fall through its static corpse. Both profiles passed native movement, Lightning damage, regular poison immunity and human carving checks. [Titan terrain and native checks](TITAN_TERRAIN.md).
+
+
+# Lava Lizard terrain and fire breath
+
+The original Lava Lizard clears the sampled steps and slopes and emits its stock fireball from the recovered mouth socket. Both client profiles passed native movement, fire damage, hue and corpse checks. A human carver retrieved 14 spined hides. [Lava Lizard terrain and fire breath](LAVA_LIZARD_TERRAIN.md).
+
+
+# Mummy and Pestilent Bandage terrain
+
+Both stock body-154 forms retain the Third Dawn rig and bandages through slopes, treads and the static corpse. The isolated tests verified their original hues and loot, the ordinary Mummy's lesser poison immunity and the Pestilent Bandage's lethal melee poison. [Mummy terrain and native checks](MUMMY_TERRAIN.md).
+
+
+# Ophidian Mage and Terathan terrain
+
+The Ophidian Mage and Archmage retain the source staff in the active rig and frozen corpse. Both classes dealt damage with the stock Lightning spell in the isolated trial. The Terathan Drone and Warrior retain separate Third Dawn bodies and pincer actions. Both client modes passed movement, hue, opposition, corpse and human carving checks for the two stock classes. [Ophidian Mage and Archmage](OPHIDIAN_MAGE_TERRAIN.md), [Terathan Drone and Warrior](TERATHAN_TERRAIN.md).
+
+
+# Dragon and Balron terrain
+
+Both stock Dragon colours retain their original rigs and animated muzzle. The live trials verified breath damage, both scale colours and barbed hides. The Balron's original wings clear the sampled treads and retain the displayed pose through death. The stock server trial verifies grounded movement, poison immunity and the packed longsword. [Dragon terrain and breath](DRAGON_TERRAIN.md), [Balron wing clearance](BALRON_TERRAIN.md).
+
+
+# Juka Warrior terrain
+
+The Juka Warrior retains its original armour, native colour and both optional Enhanced gestures. Both profiles passed terrain and corpse tests. Its stock melee hook froze the disposable target and landed a critical strike. [Juka Warrior terrain](JUKA_WARRIOR_TERRAIN.md).
+
+
+# Evil Mage terrain and Lightning
+
+The Evil Mage retains body 124, its original robe colour route and fitted Manifest. The isolated run verified stock Lightning damage, a native run interrupting Manifest and the matching static corpse. The revised step handling reduced the largest sampled correction to about 22 cm. [Evil Mage terrain](EVIL_MAGE_TERRAIN.md).
+
+
+# Giant Rat and Ophidian terrain
+
+The Giant Rat keeps its own Third Dawn rig, both Classic death routes and seven fitted Enhanced motions. The isolated server trials verified native taming and human harvesting. The Ophidian Warrior and Knight preserve the recovered bardiche through slopes, treads and the static corpse. The Knight's stock melee hook applied lethal poison, and ordinary Slime passed its native constructor and corpse checks on the shared terrain route. [Giant Rat terrain](GIANT_RAT_TERRAIN.md), [Ophidian terrain](OPHIDIAN_TERRAIN.md).
+
+
+# Poison Elemental and Corrosive Slime
+
+The Poison Elemental keeps its original fluid rig and both Enhanced motions on the measured slopes and treads. Corrosive Slime uses the terrain-aware Slime presentation with its own constructor colour. The isolated trials verified stock lethal and regular poison respectively, along with matching static corpses. [Poison Elemental and Corrosive Slime](POISON_ELEMENTAL_TERRAIN.md).
+
+
+# Solen workers and Acid Elemental
+
+The Red and Black Solen workers retain their six source legs, second fidget and distinct native colours. Their terrain and static corpses passed both profiles. The Acid Elemental retained stock lethal melee poison, and native running interrupted the optional emergence and restored the original scale. [Solen worker terrain](SOLEN_WORKER_TERRAIN.md), [Acid Elemental terrain](ACID_ELEMENTAL_TERRAIN.md).
+
+
+# Plague forms, Orcish Mage and Wraith terrain
+
+The Earth Elemental and Slime body rolls passed native Plague Spawn lifecycle and both terrain profiles. The Orcish Mage keeps the recovered staff through its fall and still applies stock kin-mask retaliation. The Plague Beast retains native feeding, while the Lord's stock paralysis allows the organ dissection. Wraith, Spectre, Shade and the body-26 Spellbinder retain native immunities and their own hues. The Wraith's Enhanced fragments settle across both treads and freeze into a static corpse. [Plague Spawn forms](PLAGUE_FORMS_TERRAIN.md), [Orcish Mage](ORCISH_MAGE_TERRAIN.md), [Plague Beast and Lord](PLAGUE_BEAST_TERRAIN.md), [Wraith family](WRAITH_TERRAIN.md).
+
+
 # Wyvern, ordinary rat and BullFrog terrain
 
 The recovered Wyvern keeps its wing and tail joints. Its landings clear slopes and treads, and native venom still poisons and damages an actual target. The public Rat rig and its optional Enhanced gestures now clear stepped ground and settle into body 238 static corpses. The BullFrog retains its original hop and tongue action and passed stock feeding and harvesting on both client profiles. See [Wyvern, Rat and BullFrog terrain evidence](WYVERN_RAT_TERRAIN.md).

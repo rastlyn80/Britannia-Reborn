@@ -1,0 +1,13 @@
+# Wraith, Spectre, Shade and Spellbinder terrain
+
+Body 26 keeps its recovered Third Dawn rig, source atlas and two Classic death motions. The native Wraith, Spectre and Shade carry hue `0x4001`, which selects the existing translucent source-atlas shader. The Spellbinder's body-26 constructor roll keeps its native hue of zero. Its other rolls retain their own routes.
+
+The terrain replay measured 3,410 Classic and 4,650 Enhanced full weighted-skin poses on flat ground, a slope and a 22 cm tread. Before the change, 2,561 Classic and 2,611 Enhanced samples fell below the 2 mm clearance target. The updated renderer cleared it in every measured living pose. The highest tread can still visibly lift the whole mesh by about 224 mm between samples during Hit and 221 mm during Attack.
+
+Both preserved Classic death groups and transfers from living motions passed the decoded death and removal replay. It tested 64 Classic and 88 Enhanced handoffs with 1,088 and 1,496 complete-skin samples. First-pose joint displacement was below 0.518 mm. The final body was frozen into the native graphic `0x2006` and cleared the support by about 2 mm.
+
+The Enhanced formation test measured 114 assembly poses. It retained the original sequence from five to six visible pieces. The displayed bounds moved at most 0.500 mm when the pieces joined the intact mesh. Eighteen early deaths produced 558 scatter poses. The fall started within 0.76 micrometres of the visible pose and each fragment stayed at least 1.999 mm above its tread. The static corpse retained the visible fragments and spectral material.
+
+The isolated server passed 101 Classic and 133 Enhanced checks across eight stock construction cases in each profile. Two clients observed native walk, run, death and corpse packets. Stock poison application returned immune at the appropriate tier for each class, and each class reported native bleed immunity. The early Enhanced reconstitution packet was selected by the fixture. The deaths came from stock Kill and produced body-26 corpses that retained their native hues. These checks cover movement and death in the tested arena. Autonomous AI and spell selection remain open.
+
+To reproduce the geometry and packet replays, run `scripts/audit-wraith-terrain.gd` with `--wraith-candidate` and `scripts/test-wraith-falls.gd` in both modes. Add `--enhanced-creature-actions` for the Enhanced pass. Run `scripts/test-wraith-reconstitution-tread.gd` with the prepared Enhanced profile. The isolated server harness and evidence remain in `work/creatures/native-form-audit/enhanced-source-gaps/common-forms-enhanced/wraith-living-source/native/`.

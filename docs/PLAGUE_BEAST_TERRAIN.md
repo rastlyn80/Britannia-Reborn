@@ -1,0 +1,11 @@
+# Plague Beast and Plague Beast Lord terrain
+
+Both stock identities use body 775 and retain the recovered Third Dawn rig, appendages and materials. Classic movement and both client profiles use the same measured support on slopes and treads. Enhanced keeps the fitted hatch, maw lunge and tail alert. When native movement interrupts the compact hatch, the walk or run releases the action lock and the root returns to its normal scale.
+
+The terrain replay measured 3,100 Classic and 4,960 Enhanced complete weighted-skin poses on flat ground, slopes and a 22 cm tread. The candidate cleared the measured floor at every pose. Some Enhanced poses still produce a visible vertical correction on the highest tread, up to about 217 mm during the maw lunge and 144 mm during the hatch.
+
+The decoded death replay transfers the displayed pose into graphic `0x2006` and freezes the source geometry. It covered 56 Classic and 80 Enhanced handoffs with 952 and 1,360 complete-skin samples. First-pose joint motion was under 0.515 mm. Frozen endpoints cleared the sampled surface by about 2 mm.
+
+The isolated ModernUO run passed 55 Classic and 67 Enhanced checks across four stock construction cases in each mode. Two clients received movement, death and corpse packets. A native Plague Beast melee hook applied deadly poison, native damage recorded the Beast as the prey's killer, and its stock think hook consumed that corpse and increased maximum health. Native Lord paralysis enabled access, sent hue `0x480` and allowed a stock dagger carve to create the populated organ container. The static corpses retained the body and observed hue. The controlled Enhanced hatch packet and selected movement are fixture inputs. The complete dissection puzzle and autonomous encounters remain outside these results.
+
+The local evidence is under `work/creatures/native-form-audit/enhanced-source-gaps/common-forms-enhanced/plague-beast-living-source/`. Run `audit-plague-beast-terrain.gd` and `test-plague-beast-falls.gd` through the folder's `run-stage.gd` in both client modes. For isolated native evidence run `native/run.ps1 -Case classic` and `native/run.ps1 -Case enhanced` sequentially. Local art, server fixtures, accounts, runtime and saves are excluded from publication.

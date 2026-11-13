@@ -11,7 +11,7 @@ var silk_material: ShaderMaterial
 
 
 func set_hue(value: int) -> void:
-	if treatment != "modern" or model == null:
+	if treatment != "modern" or model == null or not entry.has("enhanced_source_action_groups"):
 		super.set_hue(value)
 		return
 	hue = value
@@ -32,6 +32,8 @@ func set_hue(value: int) -> void:
 func _ready() -> void:
 	super._ready()
 	fitted_fall.skin = gesture_skin
+	if not entry.has("enhanced_source_action_groups"):
+		return
 	silk = MeshInstance3D.new()
 	silk.name = "DreadSilkOpening"
 	var web := QuadMesh.new()

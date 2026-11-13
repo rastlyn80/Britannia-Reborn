@@ -1,0 +1,55 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+extends "res://Presentation/SourceEnhancedTerathanMatriarchVisual.gd"
+
+const DisplayedPose := preload("res://Presentation/CreatureFallPlayback.gd")
+var terrain := preload("res://Presentation/SourceCreatureTreadTerrain.gd").new()
+
+
+func _ready() -> void:
+	entry = entry.merged({"grounded_gestures": entry.grounded_gestures + entry.get("archive_grounded_gestures", [])}, true)
+	super._ready()
+	terrain.bind(self, Vector2(2.7, 2.7))
+	contact.modification_processed.connect(settle)
+
+
+func _physics_process(delta: float) -> void:
+	if dead:
+		return
+	terrain.release_live()
+	restore_gesture()
+	terrain.sample()
+	super._physics_process(delta)
+	if not contact.enabled:
+		settle()
+
+
+func settle() -> void:
+	if dead:
+		terrain.settle(self)
+		return
+	terrain.release_live()
+	super.settle()
+	terrain.settle_live(.0005)
+
+
+func receive_action(request: Dictionary) -> bool:
+	terrain.release_live()
+	if not super.receive_action(request):
+		return false
+	if dead:
+		terrain.prepare_collapse()
+	return true
+
+
+func begin_death_from(source: Node3D) -> float:
+	var previous: RefCounted = source.terrain
+	terrain.split = previous.split
+	if not source.dead:
+		model.transform = source.model.transform
+		previous = DisplayedPose.new()
+		previous.plane = source.terrain.plane
+	return terrain.begin_from_source(self, source, previous, false)
+
+
+func corpse_snapshot_floor() -> float:
+	return terrain.snapshot_floor(self)
