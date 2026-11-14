@@ -12,6 +12,8 @@ var chest: int
 var neck: int
 var target := Vector3.ZERO
 var elapsed := RecoveryTime
+var reach_scale := 1.0
+var close_grip := Callable()
 
 
 func bind(visual: Node3D) -> void:
@@ -40,6 +42,8 @@ func start(destination: Vector3) -> void:
 
 func _process_modification_with_delta(delta: float) -> void:
 	if elapsed >= RecoveryTime:
+		if close_grip.is_valid() and archer.bow_release_available():
+			close_grip.call()
 		return
 	if not archer.bow_release_available():
 		elapsed = RecoveryTime
@@ -67,12 +71,14 @@ func _process_modification_with_delta(delta: float) -> void:
 	yaw_joint(rig, chest, local_up, turn * weight)
 	yaw_joint(rig, neck, local_up, (angle - turn) * weight)
 	shoulder = rig.to_global(rig.get_bone_global_pose(left[0]).origin)
-	var palm := shoulder + flight * .38 - across * .065 - up * .11
+	var palm := shoulder + (flight * .38 - across * .065 - up * .11) * reach_scale
 	ArmFit.place_arm(rig, left, palm, aim * .20 - up, across * .4 - up * .75, weight, 1.0)
 	var recoil := smoothstep(ReleaseTime, .18, elapsed)
-	var draw_hand: Vector3 = archer.bow_draw_target(flight, across, .19 * draw + .23 * recoil)
+	var draw_hand: Vector3 = archer.bow_draw_target(flight, across, (.19 * draw + .23 * recoil) * reach_scale)
 	ArmFit.place_arm(rig, right, draw_hand, aim * .75 - up * .17, -across - aim * .55, weight, 1.0)
 	archer.pose_bow_release(flight, across, weight, draw)
+	if close_grip.is_valid():
+		close_grip.call()
 	if previous < ReleaseTime and elapsed >= ReleaseTime:
 		released.emit(archer.bow_arrow_origin())
 

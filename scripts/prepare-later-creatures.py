@@ -13,11 +13,12 @@ from tempfile import TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parent.parent
 VIEWER = ROOT / "Viewer"
-RECIPES = {181: "orc-scout", 287: "bloodworm", 334: "enslaved-goblin",
+RECIPES = {181: "orc-scout", 258: "lady-melisande", 282: "pet-parrot", 287: "bloodworm", 334: "enslaved-goblin",
            714: "iron-beetle", 715: "ruddy-boura", 716: "chicken-lizard", 717: "clockwork-scorpion", 718: "fairy-dragon", 720: "lava-elemental",
-           722: "undead-guardian", 723: "goblin",
+           722: "undead-guardian", 723: "goblin", 724: "gremlin",
            726: "kepetch", 732: "rotworm", 733: "skree", 736: "wolf-spider", 737: "trapdoor-spider", 738: "fire-ant"}
 STYLES = ("original", "rounded", "modern")
+LEGACY_ONLY_REFERENCES = {282}
 
 
 def digest(path):
@@ -26,6 +27,9 @@ def digest(path):
 
 
 def check_references(sequence, classic, reference, selected):
+    selected = [body for body in selected if body not in LEGACY_ONLY_REFERENCES]
+    if not selected:
+        return
     reader = runpy.run_path(str(ROOT / "scripts/uo-human-sequences.py"))
     sequence_digest = digest(sequence)
     alternate = sequence_digest == reference.get("alternate_sequence_sha256")
@@ -48,16 +52,22 @@ def check_references(sequence, classic, reference, selected):
         info = reference["bodies"][str(body)]["reference"]
         if named.get(body) != info["sequence"]:
             raise ValueError(f"The Enhanced sequence record for body {body} differs.")
-        for frame in info["classic_members"].values():
+        for frame in info.get("classic_members", {}).values():
             archive = members.setdefault(frame["archive"], {})
             archive[int(frame["name_hash"], 16)] = frame["sha256"]
+        for archive, spans in info.get("classic_mul", {}).items():
+            with (classic / archive).open("rb") as source:
+                for offset, length, expected in spans:
+                    source.seek(offset)
+                    if sha256(source.read(length)).hexdigest() != expected:
+                        raise ValueError(f"Reviewed Classic body {body} reference differs in {archive} at {offset}.")
     for archive, expected in members.items():
         actual = {key: sha256(payload).hexdigest() for key, payload in reader["payloads"](classic / archive, expected)}
         if actual != expected:
             raise ValueError(f"Reviewed Classic body references differ in {archive}.")
 
 
-def build_selected(godot, folder, selected):
+def build_selected(godot, folder, selected, legacy_source=None):
     env = dict(os.environ, BR_LATER_CREATURE_OUTPUT=str(folder),
                APPDATA=str(ROOT / ".godot-user"), LOCALAPPDATA=str(ROOT / ".godot-user"))
     if 716 in selected:
@@ -71,6 +81,16 @@ def build_selected(godot, folder, selected):
     if 181 in selected:
         subprocess.run([sys.executable, "-B", str(ROOT / "scripts/prepare-later-orc-scout.py"),
                         "--output", str(folder)], check=True, timeout=120)
+    if 258 in selected:
+        if legacy_source is None:
+            raise ValueError("Provide the extracted Mondain's Legacy model table and Lady Melisande members.")
+        subprocess.run([sys.executable, "-B", str(ROOT / "scripts/prepare-later-lady-melisande.py"),
+                        "--source", str(legacy_source), "--output", str(folder)], check=True, timeout=120)
+    if 282 in selected:
+        if legacy_source is None:
+            raise ValueError("Provide the extracted Mondain's Legacy perch parrot members and model table.")
+        subprocess.run([sys.executable, "-B", str(ROOT / "scripts/prepare-later-pet-parrot.py"),
+                        "--source", str(legacy_source), "--output", str(folder)], check=True, timeout=120)
     order = sorted(set(selected) | ({723} if 334 in selected else set()),
                    key=lambda body: (body == 334, body))
     for body in order:
@@ -111,9 +131,11 @@ def main():
     parser.add_argument("--sequence", type=Path, required=True)
     parser.add_argument("--classic", type=Path, required=True)
     parser.add_argument("--body", type=int, choices=RECIPES, action="append")
+    parser.add_argument("--legacy-source", type=Path, help="Extracted Mondain's Legacy client directory for Lady Melisande and the perch parrot")
     parser.add_argument("--output", type=Path, default=VIEWER / "local-art/creatures/later-prepared")
     args = parser.parse_args()
-    selected = sorted(set(args.body or RECIPES))
+    defaults = RECIPES.keys() if args.legacy_source else RECIPES.keys() - {258, 282}
+    selected = sorted(set(args.body or defaults))
     reference = json.loads((ROOT / "scripts/later-creature-inputs.json").read_bytes())
     inputs = sorted(set(selected) | ({723} if 334 in selected else set()))
     check_references(args.sequence, args.classic, reference, inputs)
@@ -122,7 +144,7 @@ def main():
     target.mkdir(parents=True, exist_ok=True)
     with TemporaryDirectory(prefix="bake-", dir=target) as temporary:
         folder = Path(temporary)
-        build_selected(executable, folder, selected)
+        build_selected(executable, folder, selected, args.legacy_source)
         install(folder, target, reference, selected)
 
 

@@ -14,10 +14,11 @@ const Shared := {
 	128: ["fey_race_pixie", [0]],
 	158: ["elementals_acid_elemental", [0]],
 	238: ["rat_ordinary", [52]],
+	282: ["parrot", [3, 13, 89]],
 	303: ["devourer", [0]],
 	309: ["patchskeleton", [1345]],
 }
-const Fitted := [287, 334, 714, 715, 716, 717, 718, 720, 722, 723, 726, 732, 733, 736, 737, 738]
+const Fitted := [258, 287, 334, 714, 715, 716, 717, 718, 720, 722, 723, 724, 726, 732, 733, 736, 737, 738]
 const GargoyleSpectral := preload("res://Presentation/WraithSpectralSurface.gdshader")
 
 
@@ -48,6 +49,9 @@ func run() -> void:
 	else:
 		if not await check_creature(world, at, body):
 			return
+		if body == 724 and FileAccess.file_exists("res://local-art/creatures/centaur-bow/weapon-bow-original.gltf"):
+			if not await check_gremlin_bow(world, at):
+				return
 	print("LATER CREATURE WORLD: ", body, ", ", checks, " checks, Enhanced ", world.enhanced_creature_actions)
 	quit(0)
 
@@ -123,6 +127,10 @@ func check_orc_scout(world: Node, at: Vector2i) -> bool:
 func check_creature(world: Node, at: Vector2i, body: int) -> bool:
 	var entry := Registry.entry(body)
 	var renderer := "SourceLaterFlyingVisual.gd" if body in [718, 733] else "SourceModeCreatureVisual.gd"
+	if body == 724:
+		renderer = "SourceGremlinVisual.gd"
+	if body == 258:
+		renderer = "SourceLadyMelisandeVisual.gd"
 	if not expect(entry.get("presentation_script") == "res://Presentation/" + renderer, "Local model profile is active"):
 		return false
 	var actions: Dictionary = entry.classic_action_categories
@@ -133,11 +141,15 @@ func check_creature(world: Node, at: Vector2i, body: int) -> bool:
 		var actor: Node3D = world.avatars[serial].horse_visual
 		if not expect(actor != null and actor.native_body == body and actor.native_hue == hue, "Birth packet retains body and hue"):
 			return false
-		if body in [714, 716, 723]:
+		if body in [714, 716, 723, 724, 258]:
 			var mesh := actor.model.find_children("*", "MeshInstance3D", true, false)[0] as MeshInstance3D
 			var material := mesh.get_surface_override_material(0) as ShaderMaterial
 			if not expect(material != null and material.get_shader_parameter("use_hue") == (hue != 0),
 					"Dyed variants get their native palette and neutral forms keep the base palette"):
+				return false
+			if body == 258 and not expect(material.shader == preload("res://Presentation/CreatureCutoutSurface.gdshader")
+					and material.get_shader_parameter("source_alpha_texture") != null,
+					"The original cape cutout is active for both native hues"):
 				return false
 		actor.play_gait(true, 2.0)
 		if not expect(actor.current_clip == actions["0" if flags else "22"], "Combat flag selects the walk"):
@@ -160,10 +172,10 @@ func check_creature(world: Node, at: Vector2i, body: int) -> bool:
 				return false
 		var death_group := 3 if flags else 2
 		if world.enhanced_creature_actions:
-			if body in [718, 733]:
+			if body in [718, 724, 733]:
 				if not check_flight(world, actor, serial, wire, flags, actions):
 					return false
-			if body in [720, 722]:
+			if body in [258, 720, 722, 724]:
 				world.game._handle(action_packet(serial, 11, 1))
 				if not expect(actor.current_clip == actions["12"], "Enhanced type 11 selects the indexed casting group"):
 					return false
@@ -184,9 +196,72 @@ func check_creature(world: Node, at: Vector2i, body: int) -> bool:
 			return false
 		if body == 717 and not check_scorpion_shell(actor, death_group == 3):
 			return false
-		if not await check_corpse(world, at, serial, body, hue if body in [714, 716, 723] else CorpseHue, fall):
+		if not await check_corpse(world, at, serial, body, hue if body in [258, 714, 716, 723, 724] else CorpseHue, fall):
 			return false
 	return true
+
+
+func check_gremlin_bow(world: Node, at: Vector2i) -> bool:
+	const Serial := 0x37765
+	const Target := Serial + 1
+	const Item := 0x40037765
+	const BowHue := 1109
+	const BowSource := preload("res://Presentation/SourceRatmanArcherVisual.gd")
+	var to := at + Vector2i(4, 0)
+	create_actor(world, at, Serial, 724, 64, 0)
+	create_actor(world, to, Target, 400, 0, 0)
+	var archer: Node3D = world.avatars[Serial].horse_visual
+	var worn := PackedByteArray([0x2e])
+	worn.append_array(Wire.uint_be(Item, 4))
+	worn.append_array(Wire.uint_be(0x13b2, 2))
+	worn.append_array(PackedByteArray([0, 2]))
+	worn.append_array(Wire.uint_be(Serial, 4))
+	worn.append_array(Wire.uint_be(BowHue, 2))
+	world.game._handle(worn)
+	if not expect(archer.bow_release_available(), "The native two-handed bow is visible"):
+		return false
+	var material: ShaderMaterial = archer.bow.get_surface_override_material(0)
+	if not expect(material != null and material.get_shader_parameter("use_hue"),
+			"The bow takes its own equipment hue"):
+		return false
+
+	var packet := PackedByteArray([0x70, 0])
+	packet.append_array(Wire.uint_be(Serial, 4))
+	packet.append_array(Wire.uint_be(Target, 4))
+	packet.append_array(Wire.uint_be(0xf42, 2))
+	for tile: Vector2i in [at, to]:
+		packet.append_array(Wire.uint_be(tile.x, 2))
+		packet.append_array(Wire.uint_be(tile.y, 2))
+		packet.append(0)
+	packet.append_array(PackedByteArray([18, 0, 0, 0, 0, 0]))
+	var phase: String = world.game.phase
+	world.game.phase = "world"
+	world.game._handle(packet)
+	world.game.phase = phase
+	var flight_presenter := world.find_children("*", "Node3D", false, false).filter(
+		func(node: Node3D): return node.has_method("present_aimed_arrow")).front() as Node3D
+	if not expect(flight_presenter.get_node_or_null("NativeGremlinArrow") == null and archer.aim.elapsed == 0,
+			"One decoded arrow starts the draw before flight"):
+		return false
+	archer.aim._process_modification_with_delta(.08)
+	var grip: Vector3 = archer.bow.to_global(BowSource.Grip)
+	var nock: Vector3 = archer.bow.to_global(BowSource.string_center + archer.draw_offset)
+	var draw_error: float = nock.distance_to(archer.grasp(archer.right_grasp))
+	if not expect(grip.distance_to(archer.grasp(archer.left_grasp)) < .002 and archer.draw_offset.length() > .06,
+			"The bow stays in the left grip while its string is drawn"):
+		return false
+	if not expect(draw_error < .032, "The right grip reaches the drawn string within 3.2 cm: %.4f" % draw_error):
+		return false
+	archer.aim._process_modification_with_delta(.041)
+	var arrow := flight_presenter.get_node_or_null("NativeGremlinArrow") as Node3D
+	if not expect(arrow != null and arrow.global_position.distance_to(archer.bow_arrow_origin()) < .002,
+			"The original release launches one arrow from the moving bowstring"):
+		return false
+	var remove := PackedByteArray([0x1d])
+	remove.append_array(Wire.uint_be(Item, 4))
+	world.game._handle(remove)
+	await process_frame
+	return expect(not archer.bow_release_available(), "The removed equipment clears the visible bow")
 
 
 func check_scorpion_shell(actor: Node3D, scatters: bool) -> bool:
@@ -224,10 +299,14 @@ func check_scorpion_shell(actor: Node3D, scatters: bool) -> bool:
 
 func body_hue(body: int, flags: int) -> int:
 	match body:
+		258:
+			return 1109 if flags else 0
 		714:
 			return 2219 if flags else 0
 		716:
 			return 1173 if flags else 0
+		724:
+			return 1109 if flags else 0
 		723:
 			return 1900 if flags else 0
 		_:
@@ -265,8 +344,17 @@ func classic_action(world: Node, serial: int, group: int) -> void:
 
 func check_corpse(world: Node, at: Vector2i, serial: int, body: int, hue: int, fall: String) -> bool:
 	var corpse := 0x40000000 + serial
-	world.game._handle(corpse_packet(at, corpse, body, hue))
-	world.game._handle(death_packet(serial, corpse))
+	if body == 282 and hue == 89:
+		# Death can arrive before the corpse item or after the item was shown.
+		world.game._handle(death_packet(serial, corpse))
+		world.game._handle(corpse_packet(at, corpse, body, hue))
+		var holder: Node3D = world.world_items.nodes.get(corpse)
+		var posed := holder.get_node_or_null("CorpseVisual") as Node3D if holder else null
+		if not expect(has_corpse_facing(holder, posed, 5), "A late parrot corpse inherits the recorded facing"):
+			return false
+	else:
+		if not check_early_corpse_facing(world, at, serial, corpse, body, hue):
+			return false
 	var state: Dictionary = world.creature_deaths.active.get(serial, {})
 	if not fall.is_empty() and not expect(not state.is_empty() and state.visual.current_clip == fall, "The death packet continues the selected fall"):
 		return false
@@ -276,6 +364,31 @@ func check_corpse(world: Node, at: Vector2i, serial: int, body: int, hue: int, f
 		and frozen.find_children("*", "Skeleton3D", true, false).is_empty(), "The static corpse retains body and hue")
 
 
+func check_early_corpse_facing(world: Node, at: Vector2i, serial: int, corpse: int, body: int, hue: int) -> bool:
+	world.game._handle(corpse_packet(at, corpse, body, hue))
+	var holder: Node3D = world.world_items.nodes.get(corpse)
+	var before := holder.get_node_or_null("CorpseVisual") as Node3D if holder else null
+	world.game._handle(death_packet(serial, corpse))
+	if body != 282:
+		return true
+	if not expect(is_instance_valid(before) and world.world_items.nodes[corpse] == holder
+			and holder.get_node_or_null("CorpseVisual") == before,
+			"The death packet turns the existing parrot corpse without rebuilding it"):
+		return false
+	return expect(has_corpse_facing(holder, before, 5),
+			"The corpse and its selection bounds both face the direction sent by the server")
+
+
+func has_corpse_facing(holder: Node3D, corpse: Node3D, direction: int) -> bool:
+	if not is_instance_valid(corpse):
+		return false
+	var pick := holder.get_node("PickBody/PickShape") as CollisionShape3D
+	var bounds: AABB = corpse.transform * corpse.get_meta("corpse_bounds")
+	return is_equal_approx(corpse.rotation.y, PI - direction * PI / 4.0) \
+			and pick.position.is_equal_approx(bounds.get_center()) \
+			and (pick.shape as BoxShape3D).size.is_equal_approx(bounds.size.max(Vector3.ONE * .15))
+
+
 func check_shared_body(world: Node, at: Vector2i, body: int) -> bool:
 	var kind: String = Shared[body][0]
 	var hues: Array = Shared[body][1]
@@ -283,7 +396,14 @@ func check_shared_body(world: Node, at: Vector2i, body: int) -> bool:
 		return false
 	for hue: int in hues:
 		var serial := 0x37700 + hue
-		create_actor(world, at, serial, body, 0, hue)
+		if body == 282:
+			var wire := mobile_packet(at, serial, body, 0)
+			wire[12] = 5
+			wire[13] = hue >> 8
+			wire[14] = hue & 255
+			world.game._handle(wire)
+		else:
+			create_actor(world, at, serial, body, 0, hue)
 		var actor: Node3D = world.avatars[serial].horse_visual
 		if not expect(actor != null and actor.native_body == body and actor.native_hue == hue, "The living model retains its appearance"):
 			return false
@@ -295,6 +415,15 @@ func check_shared_body(world: Node, at: Vector2i, body: int) -> bool:
 		if hue == 0 and not expect(material == null or material.get_shader_parameter("use_hue") != true,
 				"The living model retains its original surface with no dye"):
 			return false
+		if body == 282:
+			actor.play_gait(false, 0.0)
+			if not expect(actor.current_clip == "Idle", "The perch parrot starts in its original animal idle"):
+				return false
+			for group: int in [9, 10]:
+				classic_action(world, serial, group)
+				var expected := "Fidget" if group == 9 else "Fidget2"
+				if not expect(actor.current_clip == expected, "The perch parrot plays " + expected):
+					return false
 		if not await check_corpse(world, at, serial, body, hue, ""):
 			return false
 	return true

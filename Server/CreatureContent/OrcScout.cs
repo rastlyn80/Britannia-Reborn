@@ -45,6 +45,10 @@ public sealed partial class OrcScout : BaseCreature
         PackItem(new Arrow(Utility.RandomMinMax(60, 70)));
         PackItem(new Bandage(Utility.RandomMinMax(1, 15)));
         AddItem(Utility.RandomDouble() < 0.1 ? new OrcishBow() : new OrcScoutBow());
+        if (Utility.RandomDouble() < 0.5)
+        {
+            PackItem(new Yeast());
+        }
     }
 
     public override string DefaultName => "an orc scout";

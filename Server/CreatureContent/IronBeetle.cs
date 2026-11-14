@@ -69,9 +69,13 @@ public sealed partial class IronBeetle : BaseCreature
     public override void OnDeath(Container corpse)
     {
         base.OnDeath(corpse);
-        if (!Controlled && Utility.RandomDouble() < 0.10)
+        if (!Controlled)
         {
-            corpse.DropItem(new UndamagedIronBeetleScale());
+            if (Utility.RandomDouble() < 0.10)
+            {
+                corpse.DropItem(new UndamagedIronBeetleScale());
+            }
+            UnderworldFortune.DropCoin(corpse, 0.03);
         }
     }
 

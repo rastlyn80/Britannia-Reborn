@@ -37,11 +37,18 @@ func run() -> void:
 		["button","15","80","4005","4007","1","0",str(id(0,0))],["xmfhtmlgump","50","83","150","18","1011074","0","0"],
 		["button","15","100","4005","4007","1","0",str(id(0,1))],["xmfhtmlgump","50","103","150","18","1011075","0","0"],
 		["page","1"],["button","220","60","4005","4007","1","0",str(id(1,0))],["xmfhtmlgump","255","63","220","18","1025099","0","0"],["button","480","60","4011","4012","1","0",str(id(2,0))],
-		["button","220","80","4005","4007","1","0",str(id(1,1))],["xmfhtmlgump","255","83","220","18","1025055","0","0"],["button","480","80","4011","4012","1","0",str(id(2,1))],
+		["page","2"],["button","220","60","4005","4007","1","0",str(id(1,10))],["xmfhtmlgump","255","63","220","18","1025055","0","0"],["button","480","60","4011","4012","1","0",str(id(2,10))],
 		["xmfhtmlgump","170","295","350","40","1044154","0","0"]]
 	var gump := {"serial":7,"type":0x1234,"x":40,"y":40,"commands":commands,"texts":[]}
 	var Craft := preload("res://Network/CraftWindow.gd")
 	check(Craft.is_craft(gump),"A craft gump is recognised by its headings")
+	var colored := {"commands": [
+		["xmfhtmlgumpcolor","10","37","200","22","1044010","0","0","32767"],
+		["xmfhtmlgumpcolor","215","37","305","22","1044011","0","0","32767"]
+	]}
+	check(Craft.is_craft(colored),"The native colored Cooking headings open the modern craft window")
+	colored.commands[1][5] = "1044010"
+	check(not Craft.is_craft(colored),"Both craft headings are required")
 	check(not Craft.is_craft({"commands":[["xmfhtmlgump","0","0","1","1","1044010"]]}),"Other gumps are left to the generic window")
 	var session := FakeSession.new()
 	root.add_child(session)
@@ -53,11 +60,13 @@ func run() -> void:
 	await process_frame
 	var parsed: Dictionary = window._parse()
 	check(parsed.groups.size() == 2 and parsed.items.size() == 2,"Categories and the selection are read from the button scheme")
-	check(Craft.graphic_of(int(parsed.items[0].cliloc)) == 5099,"Item cards take the item graphic from its name cliloc")
+	check(Craft.graphic_of(int(parsed.items[0].cliloc)) == 5099
+		and Craft.graphic_of(int(parsed.items[1].cliloc)) == 5055,
+		"Each recipe card keeps the label from its own page when row coordinates repeat")
 	check(parsed.details.size() == 2 and parsed.misc.size() == 2,"Details buttons and the make-last / last-ten actions are found")
 	check(window.visible and window.grid.get_child_count() == 2 and window.groups.get_child_count() == 3,"The window shows the cards, the categories and Last ten")
 	check(str(parsed.notice) != "","The server's notice is shown")
 	window.grid.get_child(1).pressed.emit()
-	check(session.replies == [id(1,1)],"Clicking a card answers the gump with that item's make button")
+	check(session.replies == [id(1,10)],"Clicking the second-page card sends that recipe's make button")
 	print("CRAFT TESTS: %d checks / %d failures" % [checks,failures])
 	quit(1 if failures else 0)

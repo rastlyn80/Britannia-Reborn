@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 using ModernUO.Serialization;
+using Server.Engines.MLQuests;
+using Server.Engines.MLQuests.Objectives;
 using Server.Items;
 
 namespace Server.Mobiles;
@@ -7,7 +9,14 @@ namespace Server.Mobiles;
 [SerializationGenerator(0)]
 public abstract partial class AbyssGoblin : BaseCreature
 {
-    protected AbyssGoblin(AIType ai, int hue) : base(ai, FightMode.Closest, 10, 1)
+    public static OppositionGroup UnderworldClans { get; } = new(
+        [
+            [typeof(GreenGoblin), typeof(GreenGoblinAlchemist), typeof(GreenGoblinScout)],
+            [typeof(GrayGoblin), typeof(GrayGoblinMage), typeof(GrayGoblinKeeper)]
+        ]
+    );
+
+    protected AbyssGoblin(AIType ai, int hue, bool clanSupplies = true) : base(ai, FightMode.Closest, 10, 1)
     {
         Body = 723;
         Hue = hue;
@@ -17,6 +26,10 @@ public abstract partial class AbyssGoblin : BaseCreature
         Fame = 1500;
         Karma = -1500;
         VirtualArmor = 28;
+        if (!clanSupplies)
+        {
+            return;
+        }
 
         Item? weapon = Utility.Random(20) switch
         {
@@ -48,6 +61,7 @@ public abstract partial class AbyssGoblin : BaseCreature
     }
 
     public override string CorpseName => "a goblin corpse";
+    public override OppositionGroup OppositionGroup => UnderworldClans;
     public override int GetAngerSound() => 0x600;
     public override int GetIdleSound() => 0x600;
     public override int GetAttackSound() => 0x5FD;
@@ -57,6 +71,13 @@ public abstract partial class AbyssGoblin : BaseCreature
     public override int TreasureMapLevel => 1;
     public override int Meat => 1;
     public override void GenerateLoot() => AddLoot(LootPack.Meager);
+    protected virtual double LuckyCoinChance => 0;
+
+    public override void OnDeath(Container corpse)
+    {
+        base.OnDeath(corpse);
+        UnderworldFortune.DropCoin(corpse, LuckyCoinChance);
+    }
 
     public override void GetSpeeds(out double activeSpeed, out double passiveSpeed)
     {
@@ -68,6 +89,8 @@ public abstract partial class AbyssGoblin : BaseCreature
 [SerializationGenerator(0)]
 public sealed partial class GreenGoblin : AbyssGoblin
 {
+    private bool _captainAppeared;
+
     [Constructible]
     public GreenGoblin() : base(AIType.AI_Melee, 0)
     {
@@ -88,6 +111,20 @@ public sealed partial class GreenGoblin : AbyssGoblin
     }
 
     public override string DefaultName => "a green goblin";
+    protected override double LuckyCoinChance => 0.01;
+
+    public override void OnKilledBy(Mobile mobile)
+    {
+        base.OnKilledBy(mobile);
+        if (!_captainAppeared && mobile is PlayerMobile player && Map == Map.TerMur && Region.IsPartOf("Underworld")
+            && MLQuestSystem.GetContext(player)?.FindInstance(typeof(BadCompany)) is { ClaimReward: false } quest
+            && quest.Objectives[0] is KillObjectiveInstance { Slain: 9, Expired: false })
+        {
+            _captainAppeared = true;
+            var captain = new GreenGoblinCaptain();
+            captain.MoveToWorld(Location, Map);
+        }
+    }
 }
 
 [SerializationGenerator(0)]
@@ -113,6 +150,7 @@ public sealed partial class GreenGoblinAlchemist : AbyssGoblin
     }
 
     public override string DefaultName => "a green goblin alchemist";
+    protected override double LuckyCoinChance => 0.02;
 }
 
 [SerializationGenerator(0)]

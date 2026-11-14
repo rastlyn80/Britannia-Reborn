@@ -105,6 +105,473 @@
         "sequence_payload_sha256": "1ab1f65eb75eab53b3b73596e332e9ef3b618d9c6acf747b7b7041a7e4c1dda7"
       }
     },
+    "258": {
+      "classic_action_categories": {
+        "0": "Walk",
+        "1": "Idle",
+        "10": "Hit",
+        "11": "Pillage",
+        "12": "Attack",
+        "15": "BlockRight",
+        "16": "BlockLeft",
+        "17": "Fidget",
+        "18": "Fidget2",
+        "2": "Death",
+        "22": "Walk",
+        "23": "Fidget2",
+        "24": "Run",
+        "25": "ReadyStance",
+        "26": "Fidget",
+        "27": "Pillage",
+        "28": "Fidget2",
+        "3": "Death2",
+        "4": "Attack",
+        "5": "Attack2",
+        "6": "Attack3"
+      },
+      "enhanced_attack_subactions": {
+        "0": [
+          "Attack",
+          "Attack2",
+          "Attack"
+        ],
+        "1": [
+          "Attack"
+        ],
+        "2": [
+          "Attack"
+        ],
+        "255": [
+          "Attack",
+          "Attack2",
+          "Attack",
+          "Attack",
+          "Attack",
+          "Attack"
+        ],
+        "9": [
+          "Attack"
+        ]
+      },
+      "enhanced_source_action_groups": {
+        "0": {
+          "11": [
+            "Attack",
+            "Attack",
+            "Attack"
+          ],
+          "14": [
+            "Pillage"
+          ],
+          "15": [
+            "Fidget2"
+          ],
+          "2": [
+            "BlockRight",
+            "BlockRight"
+          ],
+          "3": [
+            "Death",
+            "Death2"
+          ],
+          "4": [
+            "Hit"
+          ],
+          "5": [
+            "Fidget",
+            "Pillage"
+          ],
+          "8": [
+            "Fidget2"
+          ]
+        },
+        "1": {
+          "5": [
+            "Fidget"
+          ]
+        }
+      },
+      "family": "dryads",
+      "kind": "ladymelisande",
+      "loop_categories": [
+        "ReadyStance"
+      ],
+      "new_action_categories": {
+        "0": "Attack",
+        "11": "Attack",
+        "14": "Pillage",
+        "15": "Fidget2",
+        "2": "BlockRight",
+        "3": "Death",
+        "4": "Hit",
+        "5": "Fidget",
+        "8": "Fidget2"
+      },
+      "reference": {
+        "body": 258,
+        "classic_mul": {
+          "anim5.mul": [
+            [
+              3939189,
+              17307,
+              "479fa1e2810caa3954b24fedbc750265706154e35f56adb838794cd758df7597"
+            ],
+            [
+              3956496,
+              16984,
+              "612ddfd35800adb491cf8283c111fb50dfc3a2d519a4742dad07aae7923f5148"
+            ],
+            [
+              3973480,
+              17786,
+              "3f4da1c224f85a44fa5d3803babc60fe5680ce2004d9ed379995aaaeaa75e382"
+            ],
+            [
+              3991266,
+              20857,
+              "deafa0c2b8f8ea229291a79cc5dac15147a6c326a167fce37c70c64eedfb1018"
+            ],
+            [
+              4012123,
+              22490,
+              "ead6a09abdccdf70dac500a61f25dd77f6666e9a799ce93556e804a887cf0d63"
+            ],
+            [
+              4034613,
+              2336,
+              "fe417dd8cd4c3e61116503c58c36b90eddcfdeba93efe4eb531316a00a0f5d43"
+            ],
+            [
+              4036949,
+              2003,
+              "94f09878d8125b6c4a936777a80317c86ad878e2de15b1e68b3897877fc379d4"
+            ],
+            [
+              4038952,
+              2218,
+              "cef8555039a4de39f14ecabeecd6b3699d564c6b8fd2f4f4d583d1650f8e92b8"
+            ],
+            [
+              4041170,
+              2515,
+              "d02455abf30932c2ae2e514ad49b2321799ff979a578a5dd77df703414b3697f"
+            ],
+            [
+              4043685,
+              2398,
+              "2bc6dd832960d749609a65fcd4f9a8c7b915aeed6af08278e7a6b4b5a7d8502e"
+            ],
+            [
+              4046083,
+              9047,
+              "8ae4abc88b91d8504856d469dcaff90dbe3372dff901765b2819e5e109b334b2"
+            ],
+            [
+              4055130,
+              8476,
+              "0176c3d7df3bd62b6c2ab0e8b3dcca3b586a0d17482ff33120ac401252768e95"
+            ],
+            [
+              4063606,
+              7811,
+              "03dfb73bdaa3283a7f96e7b61dd48b7950c8d65ce82719978852e58bb14a5dad"
+            ],
+            [
+              4071417,
+              7782,
+              "c6a1434621de8243c38e40aad266e59256c70852e53e47cf12a0fd8a4ac7ac06"
+            ],
+            [
+              4079199,
+              7452,
+              "7159caaec8d2ebe5895ae234eeb89bed35ee336697e9775d5cc45a5c2018c91a"
+            ],
+            [
+              4086651,
+              8213,
+              "c2997a530736da6127668576d9fc853e4951d577a6c7034d7aea4d61560a78d2"
+            ],
+            [
+              4094864,
+              7278,
+              "b6127be7feadc8a97303200b7bec494e341e40a92cd44aafacff7d48e9e356ce"
+            ],
+            [
+              4102142,
+              6801,
+              "04f8e2cfaaf7c3a8e9ba10c1a64223432dcef5c7b9887b6fc886d6c252b63b4d"
+            ],
+            [
+              4108943,
+              7484,
+              "68dd1e3487302971b76e8e294f92647907def39db8af29d74249078870ff02af"
+            ],
+            [
+              4116427,
+              7679,
+              "3ff4157e992ae08680007c767ee0f92373b14507d37096cea270630afae31ccd"
+            ],
+            [
+              4124106,
+              10134,
+              "93dfb5612eae624c5d83f86881e040c577a2e5ae8bafaefc31cd11ef5f1cc06a"
+            ],
+            [
+              4134240,
+              8484,
+              "e9d162093ea26d73d4a0ad22624bae7997f5786d52c1599bb3d900a38e18b91f"
+            ],
+            [
+              4142724,
+              7056,
+              "7176105a2dc86d64bb4494efc8bdc9087779063e40cd063d6f99ee51a9618582"
+            ],
+            [
+              4149780,
+              8558,
+              "ef99e3326f133d395d5924526bcf88b3adf9a4be995a31b8bea6a34beecb96ff"
+            ],
+            [
+              4158338,
+              9662,
+              "3c481ed220bca09c1d0380cd3aa20ad14e2e6bdf695eda4ddd6ab7cedc23fed6"
+            ],
+            [
+              4168000,
+              8442,
+              "d758c66ed1ae15edde9d4beb5ad0a4b1e2c031410b241dd38695f40a38d94041"
+            ],
+            [
+              4176442,
+              7354,
+              "781eee0d15b4f9ca77698bcf3f52c5a85710c99886110fa41e1ec3f6391a4653"
+            ],
+            [
+              4183796,
+              7509,
+              "f6dde7988d9c0c1b8f2669a469b4bd07c993775ce02959448c6e50eee5164eda"
+            ],
+            [
+              4191305,
+              9357,
+              "821417f0e9fa669da0979777baac9958eb97c062be38a4437538bea57e2671ba"
+            ],
+            [
+              4200662,
+              9710,
+              "f5d5f5873ac21d5ff5c4ee0e7df61eccf00c53c65cc66b74c306cfa9b432ee20"
+            ],
+            [
+              4210372,
+              7471,
+              "4163fdaf8696c16b800eceac967e0c7b410b75e4391b92f0fba50ea49a1bd07d"
+            ],
+            [
+              4217843,
+              7688,
+              "7afebde284e449389e03852033ba9bdf3d9cda0ab8e6a736660b879b28cbd0bd"
+            ],
+            [
+              4225531,
+              7666,
+              "381f0c0877bf5557d1a00c7655bad673727a612da68423620b2afd418bff6d63"
+            ],
+            [
+              4233197,
+              7984,
+              "74ec67612f59e35a156d1e463b6aa132e0852bce0778dbe853de7ad61eb5ef09"
+            ],
+            [
+              4241181,
+              8306,
+              "1310a2ff1596c5e5e93436cdabec50be3cfe782702ec6bcbaebba2b8ef4974ef"
+            ],
+            [
+              4249487,
+              8453,
+              "1ae6aeaf564ddc6f302ec3d58193ade04afa31f9d1e71eeb6f6fc1956e84b141"
+            ],
+            [
+              4257940,
+              7017,
+              "116c8135e42ff4556bd7d7c87afa8ec32ab48e3a3f35aeb8098a47b3e339d68a"
+            ],
+            [
+              4264957,
+              8472,
+              "1e6db75ec70584f28bb3adc5c13e1e1acd2d51ab09399263bef16cfba85ee4ad"
+            ],
+            [
+              4273429,
+              10585,
+              "39da995e0643fbe4e60ce1cfa5922a571088bf67ba2183fbbafae997348d3f6f"
+            ],
+            [
+              4284014,
+              10038,
+              "7716e6a4814f08f5e1cd5a32e89c84a269c99647e9b1617a2555457a1e125627"
+            ],
+            [
+              4294052,
+              6815,
+              "221d299e3588c53deadf2654d4bf590733ed542687563c09045493d7d52037aa"
+            ],
+            [
+              4300867,
+              7337,
+              "01026d196c7de08f90e65947632fe5dd650cce9e163351e622c3d07ee10ad2e5"
+            ],
+            [
+              4308204,
+              9752,
+              "05662924a425eb2583bda9c7eb8113de7ad111b0a9bf0c7a3cede898d8a951fc"
+            ],
+            [
+              4317956,
+              11510,
+              "367a8487b49a07b7fbea02584a1fc6852777af46c0e47f2200548bc7cf884cf1"
+            ],
+            [
+              4329466,
+              11933,
+              "d4e6faa2b3911d8ef23cf4e485b3e03ea92701b4ddda6b8f14b59dc6e21adb24"
+            ],
+            [
+              4341399,
+              6045,
+              "db8987be319f97daaba4f66bcedca65205cdb5ceb51857170f646ce7f3f293eb"
+            ],
+            [
+              4347444,
+              6114,
+              "63088191899621c69d7431bbb28fbc7c6c1c841bb116df88a51098191e4bbfc7"
+            ],
+            [
+              4353558,
+              6146,
+              "b32b418db2e133564163b75d31a5ba6282fa111993b4043b5153c14909a757d6"
+            ],
+            [
+              4359704,
+              6549,
+              "2810f2390a3ec23abb2ef892222d63c1fad9e43c24b56a8262fbb751d2678e3e"
+            ],
+            [
+              4366253,
+              6439,
+              "b3a600161ae7bc34e43d2270aaa295810fa8abaca295eddc6a524bdfada50aaa"
+            ],
+            [
+              4372692,
+              6273,
+              "8ec7221b8a5111ba22280541712440230b8e583b3b15057c885d8b49e6e94527"
+            ],
+            [
+              4378965,
+              6067,
+              "2c403cd01d96e2589b0f00442cb2eeb3d529f336c5dac1f345460e2b51463ff4"
+            ],
+            [
+              4385032,
+              5850,
+              "293243de9c336c41ac2558aa41988de471b87abd16f2f5148c58bf47947f5bb0"
+            ],
+            [
+              4390882,
+              6367,
+              "cb53dc5d611a28ef614617cec8520245ddae133f6c7037a072eabf995c693959"
+            ],
+            [
+              4397249,
+              6718,
+              "faab450fb07f458f66d9c9d28da2fcf04dec5a58855b3cd713147669c22176ef"
+            ],
+            [
+              4403967,
+              9851,
+              "dba773b8c090277bec9e6f9850d9fd1b8d4c4a9583c6a1fc6b03e5308ce93a7c"
+            ],
+            [
+              4413818,
+              8678,
+              "7a1cdad78e017de5a5bb0e7808a6a9fad396bfd1d5d70cf1fd4c813396e7a979"
+            ],
+            [
+              4422496,
+              7783,
+              "f1fdb9ec503ede91f7553fc93850689d969d75cd05a020733c8abd4b451161cf"
+            ],
+            [
+              4430279,
+              8575,
+              "da471495dfc7c3fc681a0baf88add34003d789c0b4f33ade8e334587a304034c"
+            ],
+            [
+              4438854,
+              8409,
+              "46e71f97317360b8531ce0bff3ad5be00d9ec2d333b52532412e2b0409d97ca9"
+            ],
+            [
+              4447263,
+              11084,
+              "ddac8d1eaf5f1f6edfdb7728dbdecc62d934956a2db9f078a978f5ea9967666f"
+            ],
+            [
+              4458347,
+              8566,
+              "56e0407db6ee5e5e971cb8843c858f60992244325276cebc9b7be79798f1d06c"
+            ],
+            [
+              4466913,
+              7899,
+              "31ef627a254dd7e1aaad1557540f9dc5f5b3e4746c82b0f30862c55c1a3ac808"
+            ],
+            [
+              4474812,
+              9820,
+              "65b40bf989167ee4e21e764fb40841651d3001cf9e9ac27d4679366a49f5ddda"
+            ],
+            [
+              4484632,
+              10259,
+              "588ada2d9fae69d0f178b4c15f7f77fe0c0063694c0c93b58c4d2a9076cf0bb7"
+            ]
+          ]
+        },
+        "identities": {
+          "LadyMelisande": {
+            "blob": "ae226eb017f4059690167dcdbcbb8c0d3938cbff",
+            "named_hues": [],
+            "url": "https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/Bosses/LadyMelisande.cs"
+          }
+        },
+        "legacy_cabinet": {
+          "data1.cab": "78110fcad7a3bf0d459c6f58f30764064fa2868dd2eea92ffc3983390846ce42",
+          "data1.hdr": "bc7c394bab19ece161bdd482bd21d16f946d4f04eb64aca67d6c8c45ffa79587",
+          "data2.cab": "247b9305c2f6d3af18c2c5bc7018d0d8ae27b5ae394187b6ffccbc9d174db95d"
+        },
+        "legacy_members": {
+          "Client/Models.txt": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099",
+          "Client/Models/Maps/Lady_Melisande.tga": "499644f9d501c97446a9752350e9dd7cc29f938516e8a095b800d8bb84d1aced",
+          "Client/Models/Monsters/LadyMelisande_Attack1.grn": "06dd4cf2ab0413a3a7069415acf2692b235175e62067723db8dbc6170089402b",
+          "Client/Models/Monsters/LadyMelisande_Attack2.grn": "db58f94c200380408e2089a3fe67e55e8fee5bb116d253ba5f6664c2a3906805",
+          "Client/Models/Monsters/LadyMelisande_Attack3.grn": "d8de10b67a74fd61adbf17f5bb8ef10143f4eff87a75859770a91782521134b2",
+          "Client/Models/Monsters/LadyMelisande_BlockLeft.grn": "7511f93f8c05cdc908fd556ff5918adba03c408af150633991f6000d5ad4309f",
+          "Client/Models/Monsters/LadyMelisande_BlockRight.grn": "78cf7026aecc5ba44454a42020f6ce86d27ab4b26058e932ea4bdb317c60150e",
+          "Client/Models/Monsters/LadyMelisande_Die1.grn": "2d57e950a109a9e415f85497d5146a0c17c82cb31a648c3d87aef8cac7a341e5",
+          "Client/Models/Monsters/LadyMelisande_Die2.grn": "9a19334337b814e26ca95ee38ad346befbf603044bf99db3123b528281c8fb21",
+          "Client/Models/Monsters/LadyMelisande_Fidget.grn": "7af5948c2da29390386a15974213ea9cbf4c9e61df52d5bc80b878f7dc5e7c0f",
+          "Client/Models/Monsters/LadyMelisande_Fidget2.grn": "99f8c6f4f71ce9d33a9bd09d4ef1456c192e577b39d336525a9acebf7122a6c2",
+          "Client/Models/Monsters/LadyMelisande_LOD2.grn": "86ef41c010b258e8fe870098fcb706b9bfd540949ae692714a22ee8e9802077c",
+          "Client/Models/Monsters/LadyMelisande_Pillage.grn": "0f71a541106d1ea1d24f55dea2472efa7a31ca1f1f017d97b8bc940fcacf798f",
+          "Client/Models/Monsters/LadyMelisande_TakeDamage.grn": "091119ef91bf5af87b140a2719b77b7cb6fc852059bbccd0d263da98ba44a903",
+          "Client/Models/Monsters/LadyMelisande_Walk.grn": "f2b1eb009259713a63eab391675765856d44f2fd5d5b75055de4e7b20ff45848",
+          "Client/Models/Monsters/LadyMelisande_idle.grn": "1bb37aa61f835feb0529049caadc565ecd73ee096bb19f5940cfc9ef21734549"
+        },
+        "sequence": "0x3a09b183f15817af",
+        "sequence_payload_sha256": "1d04f0353d4a614d3b25c900607d0e0849f5dec621b3878ad4572f110250e12d"
+      }
+    },
     "287": {
       "classic_action_categories": {
         "0": "Walk",
@@ -2153,6 +2620,232 @@
         "sequence_payload_sha256": "df5f7d05b31b0844ab74ae31982668c07bfeb0c31438feaded1f5858c01b55bb"
       }
     },
+    "724": {
+      "classic_action_categories": {
+        "0": "Walk",
+        "1": "Idle",
+        "10": "GremlinStagger",
+        "11": "GremlinGuard",
+        "12": "GremlinOverheadLunge",
+        "15": "GremlinDuck",
+        "19": "Fly",
+        "2": "Death",
+        "22": "GremlinPeaceWalk",
+        "23": "GremlinLookBack",
+        "24": "Run",
+        "25": "ReadyStance",
+        "26": "GremlinWarning",
+        "27": "GremlinBrace",
+        "28": "GremlinReady",
+        "3": "Death2",
+        "4": "GremlinSwipe",
+        "5": "GremlinLowStrike"
+      },
+      "enhanced_attack_subactions": {
+        "0": [
+          "GremlinSwipe",
+          "GremlinLowStrike",
+          "GremlinSwipe"
+        ],
+        "1": [
+          "GremlinSwipe"
+        ],
+        "2": [
+          "GremlinSwipe"
+        ],
+        "255": [
+          "GremlinSwipe",
+          "GremlinLowStrike",
+          "GremlinSwipe",
+          "GremlinSwipe",
+          "GremlinSwipe",
+          "GremlinSwipe"
+        ],
+        "9": [
+          "GremlinSwipe"
+        ]
+      },
+      "enhanced_source_action_groups": {
+        "0": {
+          "11": [
+            "GremlinOverheadLunge",
+            "GremlinOverheadLunge",
+            "GremlinOverheadLunge"
+          ],
+          "14": [
+            "GremlinGuard"
+          ],
+          "15": [
+            "GremlinLookBack"
+          ],
+          "2": [
+            "GremlinDuck",
+            "GremlinDuck"
+          ],
+          "3": [
+            "Death",
+            "Death2"
+          ],
+          "4": [
+            "GremlinStagger"
+          ],
+          "5": [
+            "GremlinWarning",
+            "GremlinBrace"
+          ],
+          "8": [
+            "GremlinReady"
+          ]
+        },
+        "1": {
+          "5": [
+            "GremlinWarning"
+          ]
+        }
+      },
+      "family": "goblins",
+      "flight_falls_back_to_combat": true,
+      "kind": "gremlin",
+      "loop_categories": [
+        "ReadyStance",
+        "GremlinPeaceWalk",
+        "Fly"
+      ],
+      "new_action_categories": {
+        "0": "GremlinSwipe",
+        "11": "GremlinOverheadLunge",
+        "14": "GremlinGuard",
+        "15": "GremlinLookBack",
+        "2": "GremlinDuck",
+        "3": "Death",
+        "4": "GremlinStagger",
+        "5": "GremlinWarning",
+        "8": "GremlinReady"
+      },
+      "reference": {
+        "body": 724,
+        "classic_members": {
+          "0": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 70,
+            "name_hash": "d12118b3d6763454",
+            "sha256": "538ca3a11b113e3b16cd3a1ad6408cf8b072c464e1fb09a1c722087d0fedb543"
+          },
+          "1": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 50,
+            "name_hash": "eaa6dd282e31a7b9",
+            "sha256": "8c7ce920a60d81eca88c79bb134ce2cab003dc3b73b575a70250c15da6d761c6"
+          },
+          "10": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 30,
+            "name_hash": "b1fac224def7bec6",
+            "sha256": "ff173bbc02033b31d88152f9da1d898cbfbd00a0bb94f189410f7b8a7f5d395e"
+          },
+          "11": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 55,
+            "name_hash": "6e92f848d16caf93",
+            "sha256": "56465badf2edc01d485ecc8bedb8b5185b39142795dbf5d32ca99e2fa25eabf3"
+          },
+          "12": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 40,
+            "name_hash": "08afaae050c778b0",
+            "sha256": "155ace23aaa22ee2dc79535c67d8af7a370efb8d8d27d4f2f866b52bd4ec7608"
+          },
+          "15": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 40,
+            "name_hash": "376b8a6269688839",
+            "sha256": "195c5a140d31788989b931d2c4e8e67e2f5b9032df941e2cb654b74803e58198"
+          },
+          "19": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 30,
+            "name_hash": "42c768adfd80351b",
+            "sha256": "20cb6f4ee45b8646aa53c1b535832242cdb1b3dfb87f23cbac97ce818da81268"
+          },
+          "2": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 45,
+            "name_hash": "83402e022002d4c3",
+            "sha256": "83aed2a41cb6fb91cac386bef01619d3735bd1f3defb9e95aad22ece7a30b22a"
+          },
+          "22": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 40,
+            "name_hash": "7e063b688232f172",
+            "sha256": "b2b7b10d8034e877f26fd5be0e63772e01afad8ecf173817f8085f7ad8e9cfe8"
+          },
+          "23": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 35,
+            "name_hash": "fa3e00b2b5a9eb10",
+            "sha256": "3a2e2bd69ae50fed2e76c831b606e583aa0f829d01703383b36d567b86b1633b"
+          },
+          "24": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 30,
+            "name_hash": "beea035e152f0871",
+            "sha256": "105b27a5c36ea3f61eac75a71e3ec01439e93cece31f12f148efbba33530346d"
+          },
+          "25": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 50,
+            "name_hash": "5ff0ca959b0ae69c",
+            "sha256": "a4182ac044c255e8b1ebc945242e234b5c2775f957a393e633405b653062abb9"
+          },
+          "26": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 75,
+            "name_hash": "99b05b9fcc02808a",
+            "sha256": "ca578970242a4368ef3d41e8d92d6cb96c23389386e56583c1ebfe724c410b21"
+          },
+          "27": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 55,
+            "name_hash": "831832aa35da90c9",
+            "sha256": "43a0f71ff614a5dbcd6ca58cfcfe520c9e7aea03b258549a114e042bfe6c54db"
+          },
+          "28": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 40,
+            "name_hash": "356f70c37b1dfa23",
+            "sha256": "f0a4a4785297b0f3f7ca866b13510a75321236578c42d2698643b3bef16b2b28"
+          },
+          "3": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 50,
+            "name_hash": "22b010106ddf45fc",
+            "sha256": "b292d7dfd078afaf4a3f8a078b8077716066784989a8354f3b99cec248559b3d"
+          },
+          "4": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 35,
+            "name_hash": "4611220712e8527d",
+            "sha256": "9f0d7e75ea36712a80c98435a19acb38cdeafbbf8a944fb7740f7652ff478de6"
+          },
+          "5": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 30,
+            "name_hash": "22a59162b75c15f8",
+            "sha256": "9497f08275441c96cd6288b14f62003047a29da2d372f6eebed625502988c3b3"
+          }
+        },
+        "donor": 17,
+        "identities": {
+          "Gremlin": {
+            "blob": "98efe35fcb4d49f1666f92cf2eb3e6cf518847f6",
+            "named_hues": [],
+            "url": "https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/Normal/Gremlin.cs"
+          }
+        },
+        "sequence": "0xbf2468bda704ed47",
+        "sequence_payload_sha256": "8ee876a8849b906414051b0cae2b266b11b7e0987a1f14b2ed8d18b44fc24eb8"
+      }
+    },
     "726": {
       "classic_action_categories": {
         "0": "Walk",
@@ -3388,6 +4081,38 @@
         "sequence": "0x230e47191fa69d2d",
         "sequence_payload_sha256": "e858403999ac6c429607d1330243d691ad3e7a0548ac8bc19b3d60864e08ed3b"
       }
+    },
+    "282": {
+      "reference": {
+        "legacy_members": {
+          "Client/Models/Animals/Parrot_Fidget.grn": "5630d8853c511242cbf797540187e226c2e7e716f5ae9cee56499a2af2a30f13",
+          "Client/Models/Animals/Parrot_Fidget2.grn": "2ec5f32a8d82949af579f674c7fdbb398feed311ea0b9675d4e1b200f163adb4",
+          "Client/Models/Animals/Parrot_idle.grn": "a2cf060129b164887b75c29bdd0e74215d1cc453dc9b13fbf2c9d207e8956dc3",
+          "Client/Models/Animals/Parrot_LOD2.grn": "82f653001d0dd9bb7bdf99fa30d72c282f8b797e319ce55bca5e910983bf8ab8",
+          "Client/Models/Animals/Parrot_Walk.grn": "6ffd358891badeaa5b93422ab9af28b800d1138e1f3272460855de63f571407a",
+          "Client/Models/Maps/Parrot.tga": "d505668fe4885801fc947557ef4603a6e3a96f6764de501668d9b7f33e10fcbf",
+          "Client/Models.txt": "e978c080f4c82a8f914d9b94db92946f1d4c72a9efe8248aac49a5630dfee099"
+        }
+      },
+      "classic_action_categories": {
+        "0": "Walk",
+        "1": "Run",
+        "2": "Idle",
+        "3": "Fidget",
+        "4": "Fidget",
+        "5": "Attack",
+        "6": "Attack",
+        "7": "Hit",
+        "8": "Death",
+        "9": "Fidget",
+        "10": "Fidget2",
+        "12": "Death"
+      },
+      "loop_categories": [
+        "Idle",
+        "Walk",
+        "Run"
+      ]
     }
   },
   "schema": 1,

@@ -399,7 +399,7 @@ static func build(name: String, seed := 0, id := -1) -> Node3D:
 		"perch":
 			# Parrot perch: a turned post on a foot with a crossbar.
 			_box(root,Vector3(0.4,0.04,0.4),Vector3(0,0.02,0),_wood())
-			_cyl(root,0.025,1.4,Vector3(0,0.72,0),_wood(),Vector3.ZERO,-1,8)
+			_cyl(root,0.025,1.38,Vector3(0,0.71,0),_wood(),Vector3.ZERO,-1,8)
 			_cyl(root,0.015,0.5,Vector3(0,1.4,0),_wood(),flat,-1,8)
 		"snowman":
 			var snow := _mat("snow_02",Color("ffffff"),0.0,0.9,2.0)

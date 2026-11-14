@@ -1,14 +1,42 @@
+# Orc Scout follow-up
+
+The Scout's recovered yeast can be saved and looted. Brewing remains open. [Current evidence](LATER_NATIVE_CREATURES.md#orc-scout-and-bloodworm)
+
+# Perch parrot follow-up
+
+Verify shipboard placement when the Britannian Ship is available on the pinned server. [Current server and client evidence](PERCH_PARROT.md)
+
+# Lady Melisande follow-up
+
+Complete autonomous combat, nausea penalties, and remaining helpers. Observe the crystal's random boss drop and fit the remaining exact Enhanced action differences. Verify the rebuilt profile against live packets. [Current evidence](LADY_MELISANDE.md)
+
+# Underworld Gremlin follow-up
+
+Keep the fitted 18 action groups, native bow fire, and both frozen falls. Keep the equipped bow hue, drawn string and projectile release as verified in both client modes. Continue with the next configured Underworld creatures. [Current evidence](UNDERWORLD_GREMLIN.md)
+
+# Named Labyrinth creatures and Greater Poison Elemental
+
+Keep all five named spawn routes and the Greater Poison Elemental's Lucky Coin drop. The Labyrinth approach trigger, escorts, cooldown and corpse packets have isolated evidence. Both client profiles preserve six native dye combinations through both falls. All four named leaders and both Grim bodies have native approach and corpse evidence. Independent spell casts, Grim’s breath and Crushing Blow, the Greater Poison Elemental’s lethal poison and rewards from all four named leaders have live evidence. Grim’s alternate body has a live client projectile and dyed corpse handoff in both profiles. All four elemental cases now have live 3D effect or poison feedback and dyed corpse evidence in both profiles. Compare the remaining death camera angles and the combined encounter presentation on the Malas and Ter Mur maps. [Native evidence and source](LABYRINTH_UNDERWORLD_NAMED.md)
+
+# Twisted Weald Dryads and Underworld hunts
+
+Both Twisted Weald Dryad names have native body, spawn and corpse evidence. Both native Dryad area abilities have isolated server evidence. Verify their full rendered sequence. The separate Frightened Dryad has native appearance, quest and reward evidence on both Blighted Grove facets. The basket and single-player Melisande admission have isolated native evidence. Jaacar's goblin and blood-creature hunts and the Rotworm Stew recipe have native evidence. The Green Goblin Captain and empty corpse now have two-client native evidence. Continue the separate Blackrock Stew recipe and Elder Dugan's missing pioneers, Neville escort prerequisite and Candlewood Torch quest.
+
+# Cavern ratmen and alchemist follow-up
+
+Keep the verified death-to-corpse transitions in both client profiles. Verify the original individual ratman body and hue assignments, and Essence of Balance and the other Cavern drops. Implement the official staged mini-champion waves and verify them against the mixed stock spawns. Continue Zosilem's remaining quests and verify the prerequisite turn-ins in ordinary play. [Ratmen](CAVERN_RAT_CLANS.md) · [Alchemists](ALCHEMIST_CREATURE_TURNINS.md)
+
 # Additional Abyss and Underworld follow-up
 
-Keep the verified native spawn, movement, combat and corpse fixtures for the Orc Scout, Bloodworm, Crystal Hydra, Enslaved Goblins and four Renowned forms. Verify the Scout's detection, stealth and equipment clearance, the Fountain of Fortune protections, fall continuity on uneven ground and the goblin encounter progression. Continue the remaining configured occurrence rows and give separately pinned attention to unsettled aliases, artifact effects and quest systems. [Remaining cases](LATER_NATIVE_CREATURES.md)
+Keep the verified native spawn, movement, combat and corpse fixtures for the Orc Scout, Bloodworm, Crystal Hydra, Enslaved Goblins and four Renowned forms. Verify the goblin encounter progression. Retain the tested flat, slope and step corpse handoffs. Continue the remaining configured occurrence rows and give separately pinned attention to unsettled aliases, artifact effects and quest systems. [Remaining cases](LATER_NATIVE_CREATURES.md)
 
 # Abyss goblin follow-up
 
-Retain the four working native classes and their common body 723 presentation. Verify normal roaming and implement the remaining clan opposition and green goblin's rare coin drop. Continue the separate Renowned and Enslaved forms by configured occurrence.
+Retain the common body 723 presentation. Both clans have native opposition evidence, the scout has stock-spawn, roaming and retreat evidence, and the seven Lucky Coin drop paths have corpse evidence. Verify stat expiry, recover exact coin art and implement the missing rewards. Continue the separate Renowned and Enslaved forms by configured occurrence. [Goblin clans](UNDERWORLD_GOBLIN_CLANS.md) · [Font of Fortune](UNDERWORLD_FORTUNE.md)
 
 # Skree follow-up
 
-Keep the client flight and corpse routes and native Mystic AI. Verify the remaining spells, ordinary taming and the rendered transition from a native aerial action.
+Keep the client flight and corpse routes and native Mystic AI. Ordinary taming, anger and ownership after restart have native evidence. Verify the remaining spells and the rendered transition from a native aerial action. [Taming trial](SKREE_IRON_BEETLE_TAMING.md)
 
 # Abyss ambushers and Fire Ant follow-up
 
@@ -28,7 +56,7 @@ Retain the three tested evolution paths, delayed poison attribution, natural Voi
 
 # Later configured creature names
 
-The extension resolves all six configured Citadel spawn names and verifies native drops for all three key holders. The isolated table verifies individual key offerings, temporary party admission and timed Tokuno exit. The active-fight restart and timeout now have isolated native evidence. The unused reservation and expired partial offering have native restart evidence. The party guest logged back in at the exact Tokuno exit after the interrupted fight timed out. Sarakki and the quest-gated dungeon entrance have native acceptance and restart evidence. The badge turn-in, Elder Acob’s five hunts and his separate access path have native evidence. Fit the jin-baori and verify kill credits during natural dungeon combat. The Elite Ninja's dart and shuriken have separate native witnesses. Verify its special moves, hiding and mirror images in live encounters. The wild Clockwork Scorpion's poison and alternate fall have evidence. The controlled Clockwork Scorpion has native assembly, repair and restart evidence. Sutek's manual reward has native quest and restart evidence. Connect natural Void Essence drops and verify the ridden workshop route against the per-ingredient timer. Verify transfer and the rendered controlled corpse. Both clients already received the controlled corpse packet and the owner recovered the follower slot. Verify Chicken Lizard carpentry, dry-egg expiry and hatch probabilities, and connect the scale collar. Connect the acid items to the Garamon and Thepem quests and the Rotworm to Elder Dugan and the cooking recipe. Verify the remaining Boura taming variants and special loot. Check autonomous Fire Breath and the Wolf Spider coin drop. Fit the remaining human hair families and seek original shard evidence for the disputed Clan Scratch wolf body. [Source and scope](LATER_CREATURE_ROUTES.md)
+The extension resolves all six configured Citadel spawn names and verifies native drops for all three key holders. The isolated table verifies individual key offerings, temporary party admission and timed Tokuno exit. The active-fight restart and timeout now have isolated native evidence. The unused reservation and expired partial offering have native restart evidence. The party guest logged back in at the exact Tokuno exit after the interrupted fight timed out. Sarakki and the quest-gated dungeon entrance have native acceptance and restart evidence. The badge turn-in, Elder Acob’s five hunts and his separate access path have native evidence. Fit the jin-baori and verify kill credits during natural dungeon combat. The Elite Ninja's dart and shuriken have separate native witnesses. Verify its special moves, hiding and mirror images in live encounters. The wild Clockwork Scorpion's poison and alternate fall have evidence. The controlled Clockwork Scorpion has native assembly, repair and restart evidence. Sutek's manual reward has native quest and restart evidence. Connect natural Void Essence drops and verify the ridden workshop route against the per-ingredient timer. Verify transfer and the rendered controlled corpse. Both clients already received the controlled corpse packet and the owner recovered the follower slot. Keep the verified Chicken Lizard carpentry recipes and burnt egg persistence. Keep the verified Scale Collar craft, catch, natural escape and taming behavior. Verify unattended egg expiry, hatch probabilities, crafted collar color and maker marks, and the 3D feedback when used on a moving hatchling. Connect the acid items to the Garamon and Thepem quests and the Rotworm to Elder Dugan and the cooking recipe. Verify the remaining Boura taming variants and special loot. Check autonomous Fire Breath and the Wolf Spider coin drop. Fit the remaining human hair families and seek original shard evidence for the disputed Clan Scratch wolf body. [Source and scope](LATER_CREATURE_ROUTES.md)
 
 
 

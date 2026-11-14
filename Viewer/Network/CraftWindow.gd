@@ -21,10 +21,14 @@ static func button_id(type: int, index: int) -> int: return 1+type+index*7
 
 # A craft gump: the "CATEGORIES" and "SELECTIONS" headings (1044010/1044011).
 static func is_craft(value: Dictionary) -> bool:
-	var marks := 0
+	var category_heading := false
+	var selection_heading := false
 	for command in value.get("commands",[]):
-		if str(command[0]) == "xmfhtmlgump" and command.size() > 5 and int(command[5]) in [1044010,1044011]: marks += 1
-	return marks >= 2
+		if command.size() <= 5 or str(command[0]) not in ["xmfhtmlgump", "xmfhtmlgumpcolor"]:
+			continue
+		category_heading = category_heading or int(command[5]) == 1044010
+		selection_heading = selection_heading or int(command[5]) == 1044011
+	return category_heading and selection_heading
 
 func _ready() -> void:
 	setup("craft","Crafting",Vector2(940,600),Vector2(320,90))
@@ -98,15 +102,23 @@ func _label(command: Array) -> Dictionary:
 func _parse() -> Dictionary:
 	var buttons: Array = []
 	var labels: Array = []
+	var page := 0
 	for command in gump.commands:
 		var name := str(command[0])
-		if name == "button" and command.size() >= 8 and int(command[5]) == 1: buttons.append({"x":int(command[1]),"y":int(command[2]),"id":int(command[7])})
+		if name == "page" and command.size() >= 2:
+			page = int(command[1])
+		elif name == "button" and command.size() >= 8 and int(command[5]) == 1:
+			buttons.append({"x": int(command[1]), "y": int(command[2]), "id": int(command[7]), "page": page})
 		else:
 			var found := _label(command)
-			if not found.is_empty(): labels.append(found)
+			if not found.is_empty():
+				found.page = page
+				labels.append(found)
 	var label_for := func(button: Dictionary) -> Dictionary:
 		for label in labels:
-			if absi(int(label.y)-int(button.y)) <= 5 and int(label.x) > int(button.x) and int(label.x)-int(button.x) <= 45: return label
+			if label.page == button.page and absi(int(label.y)-int(button.y)) <= 5 \
+					and int(label.x) > int(button.x) and int(label.x)-int(button.x) <= 45:
+				return label
 		return {}
 	var result := {"title":"","notice":"","groups":[],"items":[],"misc":[],"details":{},"resources":[]}
 	for label in labels:

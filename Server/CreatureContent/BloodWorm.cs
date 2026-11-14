@@ -47,6 +47,12 @@ public sealed partial class BloodWorm : BaseCreature
         AddLoot(LootPack.Average);
     }
 
+    public override void OnDeath(Container corpse)
+    {
+        base.OnDeath(corpse);
+        UnderworldFortune.DropCoin(corpse, 0.02);
+    }
+
     public override void GetSpeeds(out double activeSpeed, out double passiveSpeed)
     {
         activeSpeed = 0.2;
@@ -93,6 +99,7 @@ public sealed partial class BloodWorm : BaseCreature
         var now = Core.TickCount;
         if (damage <= 0 || !Alive || !target.Alive || target.IsDeadBondedPet || target.Map != Map ||
             target.AccessLevel > AccessLevel.Player || !InRange(target, 1) || !CanBeHarmful(target, false) ||
+            UnderworldFortune.ProtectsFromSpecialAttack(target) ||
             now < _nextDrain || Utility.RandomDouble() >= 0.10)
         {
             return;

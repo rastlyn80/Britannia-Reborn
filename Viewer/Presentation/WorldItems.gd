@@ -46,7 +46,9 @@ func configure(owner_scene: Node3D, connection: Node) -> void:
  session.module("items").corpse_equipment.connect(func(corpse: int,_worn: Dictionary):refresh_corpse_equipment(corpse))
  session.items_changed.connect(queue_corpse_refresh)
  session.module("player").death_animation.connect(func(_killed: int,corpse: int):
-  if nodes.has(corpse) and nodes[corpse].has_node("CorpseVisual") and session.world_items.has(corpse):upsert(corpse,session.world_items[corpse]))
+  var directions: Dictionary = session.module("player").corpse_directions
+  if not nodes.has(corpse) or not directions.has(corpse) or corpse_snapshots.has(corpse): return
+  _face_corpse(nodes[corpse], int(directions[corpse])))
  session.item_label_received.connect(func(serial: int, label: String):
   if serial == selected: hint.text = label
   if nodes.has(serial) and nodes[serial].get_meta("family","") == "sign":
@@ -235,6 +237,22 @@ func upsert(serial: int, item: Dictionary) -> void:
    root.add_child(built)
    _body(root,Vector3(0.6,0.4,0.6),Vector3(0,0.2,0),serial,(int(rule.get("flags",0))&64)!=0)
    return
+ # The original perch component can arrive before local tile definitions.
+ if int(item.id) == 0x2ff4:
+  var perch := preload("res://Presentation/CraftedProps.gd").build("parrot perch",serial,int(item.id))
+  perch.name = "CraftedVisual"
+  # Match the housing server's bird height while retaining the crossbar width.
+  var top := 12.0 * float(scene.world.elevationScale)
+  var boxes: Array = []
+  scene.reconstruction._collect_bounds(perch,Transform3D.IDENTITY,boxes)
+  var model_top := 0.0
+  for box: AABB in boxes: model_top = maxf(model_top,box.end.y)
+  perch.scale.y = top / model_top
+  root.add_child(perch)
+  root.set_meta("family","parrot_perch")
+  root.set_meta("appearance","parrot_perch")
+  _body(root,Vector3(0.5,top,0.4),Vector3(0,top / 2.0,0),serial,false)
+  return
  # Simple objects built from photoscanned materials (CraftedProps.gd).
  var crafted_name := str(rule.get("display_name",scene.world.get("staticData",{}).get(str(int(item.id)),{}).get("name","")))
  if not str(rule.family) in FIXED_FAMILIES and not preload("res://Presentation/PropReplacements.gd").has(crafted_name,int(item.id)) and preload("res://Presentation/CraftedProps.gd").handles(crafted_name):
@@ -562,8 +580,9 @@ func _equine_corpse(root: Node3D,item: Dictionary,serial: int) -> bool:
  root.add_child(corpse)
  var directions: Dictionary=session.module("player").corpse_directions if is_instance_valid(session) else {}
  if directions.has(serial) or item.has("direction"):
-  corpse.rotation.y=PI-float(int(directions.get(serial,item.get("direction",0)))&7)*PI/4.
- else:corpse.rotation.y=fposmod(float(serial)*0.618034,1.0)*TAU
+  corpse.rotation.y = _corpse_yaw(int(directions.get(serial,item.get("direction",0))))
+ else:
+  corpse.rotation.y = fposmod(float(serial)*0.618034,1.0)*TAU
  root.set_meta("corpse_body",body)
  root.set_meta("corpse_worn",worn.duplicate(true))
  root.set_meta("corpse_look_key",JSON.stringify(worn))
@@ -572,6 +591,19 @@ func _equine_corpse(root: Node3D,item: Dictionary,serial: int) -> bool:
  if corpse_snapshots.has(serial):
   preload("res://Presentation/CreatureCorpseSnapshot.gd").apply(root,corpse_snapshots[serial])
  return true
+
+func _corpse_yaw(direction: int) -> float:
+ return PI - float(direction & 7) * PI / 4.0
+
+func _face_corpse(holder: Node3D, direction: int) -> void:
+ var corpse := holder.get_node_or_null("CorpseVisual") as Node3D
+ if corpse == null: return
+ corpse.rotation.y = _corpse_yaw(direction)
+ var pick := holder.get_node_or_null("PickBody/PickShape") as CollisionShape3D
+ if pick != null and pick.shape is BoxShape3D:
+  var bounds: AABB = corpse.transform * corpse.get_meta("corpse_bounds")
+  (pick.shape as BoxShape3D).size = bounds.size.max(Vector3.ONE * .15)
+  pick.position = bounds.get_center()
 
 func retain_corpse_snapshot(serial: int,snapshot: Dictionary) -> void:
  corpse_snapshots[serial]=snapshot
@@ -1108,7 +1140,7 @@ func request_contact_refresh() -> void:
 # heights, and imported models do not all have their pivot at their base. The
 # item's lowest mesh point (not its origin) is put on the surface found by a
 # downward ray. Doors, signs and wall-hung pieces stay where they are.
-const FIXED_FAMILIES := ["door","sign","noticeboard","street_sign","plaque","light","lamp"]
+const FIXED_FAMILIES := ["door","sign","noticeboard","street_sign","plaque","light","lamp","parrot_perch"]
 func _free_standing(node: Node3D) -> bool:
  if not node.is_inside_tree() or str(node.get_meta("family","")) in FIXED_FAMILIES: return false
  var item: Dictionary = session.world_items.get(int(node.get_meta("serial",0)),{})

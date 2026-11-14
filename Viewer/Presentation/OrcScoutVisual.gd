@@ -26,6 +26,9 @@ func _ready() -> void:
 	var orientation := Basis(Vector3.RIGHT, PI * .5).scaled(Vector3.ONE / skeleton.global_basis.x.length())
 	prop.transform = Transform3D(orientation, -(orientation * Grip))
 	bow_mesh = prop.find_children("*", "MeshInstance3D", true, false)[0] as MeshInstance3D
+	bow_mesh.name = "OrcScoutBow"
+	bow_mesh.set_meta("corpse_prop_keeps_material", true)
+	bow_mesh.set_meta("optional_corpse_visual_prop", true)
 	bow_mount.hide()
 
 

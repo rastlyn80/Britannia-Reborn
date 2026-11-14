@@ -62,4 +62,13 @@ public partial class WolfSpider : BaseCreature
         activeSpeed = 0.2;
         passiveSpeed = 0.4;
     }
+
+    public override void OnDeath(Container corpse)
+    {
+        base.OnDeath(corpse);
+        if (!Controlled)
+        {
+            UnderworldFortune.DropCoin(corpse, 0.01);
+        }
+    }
 }

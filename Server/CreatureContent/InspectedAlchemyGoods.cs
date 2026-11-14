@@ -19,13 +19,14 @@ public sealed partial class InspectedAlchemyGoods : Item
     public override int LabelNumber => _localizedName == 0 ? base.LabelNumber : _localizedName;
 
     public static bool CanInspect(CraftResource resource) =>
-        resource is CraftResource.DullCopper or CraftResource.ShadowIron or CraftResource.Bronze
+        resource is CraftResource.DullCopper or CraftResource.ShadowIron or CraftResource.Copper or CraftResource.Bronze
             or CraftResource.Gold or CraftResource.Agapite or CraftResource.Verite or CraftResource.Valorite;
 
     public static (int Hue, int Label, string? Name) ForResource(CraftResource resource) => resource switch
     {
         CraftResource.DullCopper => (2419, 1113021, null),
         CraftResource.ShadowIron => (2406, 1113022, null),
+        CraftResource.Copper => (2413, 1113023, null),
         CraftResource.Bronze => (2418, 1113024, null),
         CraftResource.Gold => (2213, 1113027, null),
         CraftResource.Agapite => (2425, 1113770, null),

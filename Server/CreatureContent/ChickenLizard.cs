@@ -120,6 +120,11 @@ public partial class ChickenLizard : ChickenLizardBase
 public partial class BattleChickenLizard : ChickenLizardBase
 {
     private bool _wildFleeing;
+    private ScaleCollar? _holdingCollar;
+    private Mobile? _collarThrower;
+    private DateTime _collarReleaseAt;
+    private TimerExecutionToken _collarTimer;
+
     [Constructible]
     public BattleChickenLizard()
     {
@@ -153,6 +158,11 @@ public partial class BattleChickenLizard : ChickenLizardBase
 
     public override void OnThink()
     {
+        if (Controlled && _holdingCollar != null)
+        {
+            EndCollarHold();
+        }
+
         if (Controlled && (_wildFleeing || ActiveSpeed != 0.2))
         {
             _wildFleeing = false;
@@ -161,5 +171,58 @@ public partial class BattleChickenLizard : ChickenLizardBase
             PassiveSpeed = 0.4;
         }
         base.OnThink();
+    }
+
+    internal void BeginCollarHold(ScaleCollar collar, Mobile thrower)
+    {
+        _holdingCollar = collar;
+        _collarThrower = thrower;
+        _collarReleaseAt = Core.Now.AddSeconds(30);
+        Frozen = true;
+        FixedEffect(0x376A, 1, 32);
+        Timer.StartTimer(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), UpdateCollarHold, out _collarTimer);
+    }
+
+    private void UpdateCollarHold()
+    {
+        if (!Alive || Deleted || Controlled || Core.Now >= _collarReleaseAt)
+        {
+            var escaped = Alive && !Deleted && !Controlled;
+            var thrower = _collarThrower;
+            EndCollarHold();
+            if (escaped)
+            {
+                thrower?.SendLocalizedMessage(1112482);
+            }
+            return;
+        }
+
+        FixedEffect(0x376A, 1, 32);
+    }
+
+    internal void EndCollarHold()
+    {
+        if (_holdingCollar is not { } collar)
+        {
+            return;
+        }
+
+        _collarTimer.Cancel();
+        _holdingCollar = null;
+        _collarThrower = null;
+        Frozen = false;
+        collar.ClearHold(this);
+    }
+
+    public override void OnDeath(Container corpse)
+    {
+        EndCollarHold();
+        base.OnDeath(corpse);
+    }
+
+    public override void OnAfterDelete()
+    {
+        EndCollarHold();
+        base.OnAfterDelete();
     }
 }

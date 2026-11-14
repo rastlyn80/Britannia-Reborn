@@ -1,3 +1,89 @@
+# Corpse facing and selection
+
+When a death packet brings the direction for an existing static corpse, the client now turns the same corpse and updates its selection bounds in place. A corpse arriving later starts in the recorded direction. Snapshots retain the exact pose and placement captured at the end of the fall. The combined profile passed both Classic and Enhanced replays for Lady Melisande, the Perch Parrot and the Underworld Gremlin. The parrot passed 25 checks per profile in headless Godot and on the Forward+ renderer, including both packet orders and three native hues. Headless still logs a dummy-renderer material diagnostic. Forward+ completed both runs without that diagnostic. Late dye updates continued to preserve the captured rabbit and drake poses for bodies 205, 60 and 61.
+
+# Combined creature profile
+
+The combined client candidate loads Lady Melisande (258), Perch Parrot (282) and Underworld Gremlin (724) through one 20-body profile. The six headless World replays preserved their native identity, hues and static corpse routes. The parrot replay logged the dummy renderer's null-material warning, while its action and corpse assertions passed in both client profiles. The private scene files are prepared locally and excluded from the repository.
+
+# Battle Chicken Lizard Scale Collar
+
+The isolated ModernUO and client trial passed 95 initial and 16 restart checks. The normal Tinkering menu made the collar from four yellow dragon scales and one Scourge. An ordinary chicken lizard ignored the collar. A wild battle bird with hue 1173 was caught, sent its native effect, refused a second use of the same collar and escaped after 30 seconds. A second catch let normal Animal Taming grant ownership and restore normal movement speed. The dyed bird and crafted collar survived restart at their original serials. The collar could not restrain the tamed bird. [Source and trial scope](LATER_CREATURE_ROUTES.md#chicken-lizard-taming-and-breeding)
+
+# Chicken Lizard carpentry and egg expiry
+
+The isolated native carpentry trial passed 50 initial and 18 restart checks. The normal client's recipe cards made an incubator from 100 boards and a coop from 150 boards, spending one saw use per item. Both crafted items and the unused supplies kept their serials through restart. ModernUO puts recipe labels and make buttons on gump pages with repeated screen coordinates. The client now matches labels and buttons within their own page and recognizes both native heading formats. The crafting-window regression test passed 10 checks. The burnt egg retained its stage after restart and crumbled through the hatch confirmation. [Source and test scope](LATER_CREATURE_ROUTES.md#chicken-lizard-taming-and-breeding)
+
+# Cavern ratman combat
+
+A focused combat trial passed 258 initial and 52 restart checks. All six ratmen were created by the shipped spawners. Each found the target independently and landed damage. Both Clan Chitter archers fired real arrows at five tiles. The Ribbon and Scratch ratmen attacked in melee at one tile. The fixture moved the six rats to a clear arena, constrained their positions and raised their combat skill for the trial. It returned them to their original spawners before saving. The normal Godot World script instantiated all six native bodies in the isolated Classic and Enhanced trials. After save and restart, each defeat played an animated death and revealed a skeleton-free static corpse with the same body and hue. The harness staged the encounters in Trammel and ran headless. [Source and test scope](CAVERN_RAT_CLANS.md)
+
+# Bloodworm and goblin corpse handoffs
+
+The controlled corpse handoff trial covered Bloodworm 287 and goblin bodies 334 and 723 on a flat floor, slope and step. Each profile passed 96 handoffs and 1,632 posed meshes. The test sampled falls from walk, run, attack and a death animation already in progress. It checked continuity, exact body and dye, and placement of the frozen skin. The smallest ground clearance was 1.99 mm. [Source and test scope](LATER_NATIVE_CREATURES.md)
+
+# Font of Fortune creature protection
+
+A focused trial passed 21 initial and 21 restart checks. A normal coin toss granted the thirty-minute protection. Controlled native creature callbacks confirmed that it blocked Bloodworm drain, Rotworm disease and the Tangling Roots hold before and after a save and restart. The fixture shortened the isolated deadline to test expiry. After expiry, all three abilities took effect again and the client received the disease and hold messages. [Source and test scope](UNDERWORLD_FORTUNE.md)
+
+# Orc Scout behaviour
+
+A focused isolated Trammel trial passed 164 initial checks and 17 after restart. A real spawner created body 181, the Scout used Detect Hidden on a nearby player and both clients received the living identity. It consumed a bandage while wounded, recovered health, hid and moved while it still had stealth steps. It ignored the player in an Orcish Kin Mask, then destroyed the mask, damaged the wearer and sent the fire effect after that player attacked with the normal combat request. The originally spawned Scout survived restart and both clients received the corpse at graphic 0x2006 with body 181 and hue zero. The fixture set the witness's Hiding skill, wounded the Scout, and supplied and equipped the disguise.  [Source and test scope](LATER_NATIVE_CREATURES.md#orc-scout-and-bloodworm)
+
+The isolated retreat trial passed 126 initial and 18 restart checks. A normal attack request started combat. The client observed the Scout's native retreat effect and a 3-tile displacement. The test restored both combatants' health during the wait so the ordinary AI could continue fighting.
+
+The Scout's held bow now keeps its own material in the frozen corpse snapshot. Both profiles passed 32 fall handoffs and 544 sampled poses each across a flat floor, slope and step. The trial fell from walk, run, bow attack and an in-progress fall. It confirmed the body stayed above the tested support, and the static bow retained its item dye and world position. The largest measured jump when the fall began was under 0.002 mm. These are controlled presentation tests.
+
+The Orc Scout now carries the five-grade yeast item from the pinned reference. The extended test passed 143 initial and 18 restart checks. It found yeast in 20 of 48 Scout corpses and confirmed the sampled item ID, colour and grade. The recovered yeast kept its grade and hue after a server restart. The 50% constructor chance follows the pinned source. Brewing support remains pending. [Source and test scope](LATER_NATIVE_CREATURES.md#orc-scout-and-bloodworm)
+
+# Native perch parrot
+
+The expanded isolated ModernUO trial passed 44 initial and 22 restart checks. A visitor was refused placement and renaming. The owner placed the dyed bird on a stock perch, and the registered co-owner renamed it and received the refusal for an occupied perch. Both clients received the correct body and hue, the feeding response and echoed nearby speech. Feeding used one wafer from a stack. The trial checked the registered cooking recipe and used a supplied stack to test the normal drag and drop packets. The same frozen bird survived save and restart. Chopping the perch returned a deed and removed the old bird. Placing that deed restored a single dyed bird with the same name. The test used 24 native deaths per boss and obtained the reward from 18 Lady Melisande and 2 Crystal Hydra corpses.
+
+The two isolated live World runs passed 52 initial and 35 restart checks in Classic mode and 49 initial and 35 restart checks in Enhanced mode. Native packets created the original rig and hue, kept it in the animal idle, and built graphic 0x2FF4 as the wooden perch when tile definitions were absent. The rendered perch's upper bound and the bird's native anchor agreed within 3 mm at initial placement, after restart and after redeeding. The horizontal anchors also agreed within 3 mm. The live runs use the normal World node tree headlessly and extend its local terrain bounds around the disposable house.
+
+A further isolated run passed 75 initial and 22 restart checks. A registered co-owner placed their own dyed parrot on an empty perch through the normal item target. Two clients received the bird. A player then opened the Cooking menu with a skillet, selected Preparations and crafted a wafer. The native recipe consumed the dough, honey and ten raw fish steaks. The fixture added one wafer to the resulting stack to test that feeding consumed a single wafer.
+
+Forward+ captures showed the need to resolve the weighted body through its own 25-entry joint palette. The two helper objects each have a separate one-joint palette. The recovered tail extends below the feet, so the live perch neutralizes terrain corrections on the model and pins the midpoint of the original toe joints to the crossbar. All 300 sampled source poses passed again. The greatest flat-plane penetration of the source scenes was 0.030 mm. With the corrected scenes and toe grip, the normal live viewer passed 121 Classic and 121 Enhanced checks. The measured toe midpoint stayed within 3 mm at placement, restart and redeeding. [Local preparation and outstanding cases](PERCH_PARROT.md)
+
+# Lady Melisande
+
+The original Mondain's Legacy model and 13 motion files feed the normal optional creature route. The boss passed both client modes, both static falls, and 5,208 live terrain poses in replay. The native basket, admission, restart, four guards and matching corpse have isolated evidence. [Source and test scope](LADY_MELISANDE.md)
+
+The isolated lair test passed 28 initial and 58 restart checks, covering party admission, return on expiry, stale key rejection, a reinforcement wave and the bonded albino squirrel reward.
+
+# Frightened Dryad
+
+The Blighted Grove quest giver is restored at the original tile on Trammel and Felucca. Both clients saw body 266. Bound to the Land, the blessing, both saved placements and reward expiry passed the isolated 40 initial and 20 restart checks. [Source and test scope](FRIGHTENED_DRYAD.md)
+
+# Green Goblin Captain
+
+Two isolated clients saw Jaacar's yellow-name Captain appear and fall on the tenth qualifying kill. Both received the empty body 723 corpse. The expanded quest trial passed 67 initial and nine restart checks. [Source and test scope](JAACAR_ROTWORM_STEW.md)
+
+# Underworld Gremlin
+
+The shipped Underworld spawner resolves body 724. Two isolated clients saw it fire a native arrow, rejoined after restart, and received its matching corpse. The 3D adaptation covers all 18 indexed action groups and passed Classic and Enhanced replay and 6,510 grounded poses. An equipped Third Dawn bow follows the left hand, carries the item hue, and draws and releases from the native arrow packet. [Source and test scope](UNDERWORLD_GREMLIN.md)
+
+# Named Labyrinth creatures and Greater Poison Elemental
+
+Flurry, Mistral, Tempest and Grim resolve under the shipped Malas Labyrinth spawn names. The Greater Poison Elemental resolves through its Ter Mur spawn. All five retained their serials, native bodies and hues through restart and sent matching corpses to both clients. A sample also recovered Lucky Coins from Greater Poison Elemental corpses. [Native evidence and source](LABYRINTH_UNDERWORLD_NAMED.md)
+
+The expanded Labyrinth approach trial passed 42 initial and 215 restart checks, including normal movement, every leader with its escorts, corpse packets and cooldown. Twelve dyed corpse handoffs passed in each client profile. Live trials observed the three named elementals casting, both of Grim’s signature attacks, lethal poison and the four native artifact rewards. Both client profiles also handled live elemental spell effects, lethal poison and cure feedback, and the four dyed elemental corpses. Grim’s alternate body launched the live projectile from its animated muzzle and handed off to its dyed static corpse. [Placement and evidence](LABYRINTH_UNDERWORLD_NAMED.md#approach-encounter)
+
+# Twisted Weald Dryads and Jaacar
+
+The stock-spawned Dryad triggered both inherited area abilities. Both isolated clients received the peace notice and effect. The male test player lost the equipped robe and trousers while the female witness retained hers. [Native test scope](TWISTED_WEALD_DRYAD.md)
+
+The two shipped Twisted Weald Dryad spellings now resolve to body 266 with its native mage behavior. The isolated test retained both mobs and spawners across restart and both clients received matching corpses. Jaacar's two native quests and Rotworm Stew recipe passed through live quest and Cooking packets in the disposable server. [Dryad spawn evidence](TWISTED_WEALD_DRYAD.md) · [Jaacar and Cooking evidence](JAACAR_ROTWORM_STEW.md)
+
+# Cavern ratmen and alchemist scale turn-ins
+
+Six Cavern of the Discarded ratmen now spawn under the shipped Clan Chitter, Clan Ribbon and Clan Scratch names. Both clients received all six bodies and their matching corpses. The native trial passed 36 initial and 52 restart checks. Thepem's Metal Head and Zosilem's Armor Up now consume the Iron Beetle Scale with their other requirements. The isolated quest trial verified their rewards and restart behavior with 139 initial and 10 restart checks. [Ratman assignments and scope](CAVERN_RAT_CLANS.md) · [Alchemist trials](ALCHEMIST_CREATURE_TURNINS.md)
+
+# Underworld goblin clans, Lucky Coins and taming
+
+The two goblin clans oppose each other through native AI. The Green Goblin Scout spawned through the stock Underworld entry, roamed, hid, revealed a player and performed its retreat. Seven Underworld creatures dropped Lucky Coins. The Font healed and resurrected test players and preserved its cooldowns and active stat blessings through a restart. The Skree and Iron Beetle were tamed through the regular skill and retained their owners after a restart. A wild Iron Beetle corpse yielded an Undamaged Iron Beetle Scale. [Goblin clans](UNDERWORLD_GOBLIN_CLANS.md) · [Font of Fortune](UNDERWORLD_FORTUNE.md) · [Taming and loot](SKREE_IRON_BEETLE_TAMING.md)
+
 # Additional Abyss and Underworld creatures
 
 The Orc Scout, Bloodworm and Enslaved Goblin bodies now have reproducible local preparation, client movement and combat, dyed static corpses and sampled ground contact. Isolated ModernUO trials verified all six Enslaved Goblin classes, Crystal Hydra's two-target breath and loot, the Bloodworm's anemia and corpse feeding, and the four Renowned variants and their reward pools. [Provenance, local preparation and exact test scope](LATER_NATIVE_CREATURES.md)

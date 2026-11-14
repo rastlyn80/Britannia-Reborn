@@ -60,6 +60,7 @@ public sealed partial class CrystalHydra : BaseCreature
     {
         AddLoot(LootPack.UltraRich, 2);
         AddLoot(LootPack.HighScrolls);
+        AddLoot(PerchParrotItem.Loot);
     }
 
     public override void OnDeath(Container corpse)

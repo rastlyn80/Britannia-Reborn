@@ -46,6 +46,12 @@ public sealed partial class TanglingRoots : BaseCreature
     public override OppositionGroup OppositionGroup => OppositionGroup.FeyAndUndead;
     public override void GenerateLoot() => AddLoot(LootPack.FilthyRich);
 
+    public override void OnDeath(Container corpse)
+    {
+        base.OnDeath(corpse);
+        UnderworldFortune.DropCoin(corpse, 0.02);
+    }
+
     public override void OnMovement(Mobile mobile, Point3D previous)
     {
         base.OnMovement(mobile, previous);
@@ -81,7 +87,8 @@ public sealed partial class TanglingRoots : BaseCreature
     private bool CanCatch(PlayerMobile player, int range) =>
         player is { Deleted: false, Alive: true, Hidden: false, AccessLevel: AccessLevel.Player } &&
         player.Map == Map && player.InRange(this, range) && CanSee(player) && InLOS(player) &&
-        CanBeHarmful(player, false) && !TransformationSpellHelper.UnderTransformation(player, typeof(EtherealVoyageSpell));
+        CanBeHarmful(player, false) && !UnderworldFortune.ProtectsFromSpecialAttack(player) &&
+        !TransformationSpellHelper.UnderTransformation(player, typeof(EtherealVoyageSpell));
 
     private void AcidTick(PlayerMobile player)
     {

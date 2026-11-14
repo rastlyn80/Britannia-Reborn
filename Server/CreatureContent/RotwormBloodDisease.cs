@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Server.Engines.BuffIcons;
+using Server.Items;
 
 namespace Server.Mobiles;
 
@@ -15,7 +16,8 @@ internal sealed class RotwormBloodDisease : MonsterAbilitySingleTarget
     public override double ChanceToTrigger => 0.25;
 
     protected override bool CanEffectTarget(MonsterAbilityTrigger trigger, BaseCreature source, Mobile target) =>
-        target != null && source.InRange(target, 1) && base.CanEffectTarget(trigger, source, target);
+        target != null && source.InRange(target, 1) && !UnderworldFortune.ProtectsFromSpecialAttack(target) &&
+        base.CanEffectTarget(trigger, source, target);
 
     protected override void OnTarget(MonsterAbilityTrigger trigger, BaseCreature source, Mobile defender)
     {
