@@ -3,12 +3,15 @@ extends RefCounted
 
 const Registry := preload("res://Presentation/CreatureRegistry.gd")
 const Manifest := "res://local-art/creatures/later-prepared/profile.json"
-const SupportedBodies := {714: "iron_beetle", 715: "ruddy_boura", 716: "chicken_lizard", 717: "clockwork_scorpion", 718: "fairy_dragon", 720: "lava_elemental",
+const SupportedBodies := {181: "orcs_orc_scout", 287: "bloodworm", 334: "enslaved_goblin",
+	714: "iron_beetle", 715: "ruddy_boura", 716: "chicken_lizard", 717: "clockwork_scorpion", 718: "fairy_dragon", 720: "lava_elemental",
 	722: "undead_guardian", 723: "goblin",
 	726: "kepetch", 732: "rotworm", 733: "skree", 736: "wolf_spider", 737: "trapdoor_spider", 738: "fire_ant"}
 const Styles := ["original", "rounded", "modern"]
 const Renderer := "res://Presentation/SourceModeCreatureVisual.gd"
 const FlyingRenderer := "res://Presentation/SourceLaterFlyingVisual.gd"
+const SpecialRenderers := {181: "res://Presentation/OrcScoutVisual.gd", 718: FlyingRenderer, 733: FlyingRenderer}
+const Scales := {181: [1.3, 1.3, 1.3], 287: [1.28, 1.28, 1.28]}
 
 
 static func enable() -> Array[int]:
@@ -36,8 +39,8 @@ static func enable() -> Array[int]:
 			continue
 		var entry: Dictionary = prepared.duplicate(true)
 		entry.merge({"kind": SupportedBodies[body], "assets": assets, "status": "validated",
-			"presentation_script": FlyingRenderer if body in [718, 733] else Renderer, "profile": "monster",
-			"bodies": [{"body": body, "scale": [1.0, 1.0, 1.0], "native_profile": "monster"}]}, true)
+			"presentation_script": SpecialRenderers.get(body, Renderer), "profile": "monster",
+			"bodies": [{"body": body, "scale": Scales.get(body, [1.0, 1.0, 1.0]), "native_profile": "monster"}]}, true)
 		Registry.entries[body] = entry
 		enabled.append(body)
 	return enabled

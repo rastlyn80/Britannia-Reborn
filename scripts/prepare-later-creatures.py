@@ -7,12 +7,14 @@ import os
 from pathlib import Path
 import runpy
 import subprocess
+import sys
 from tempfile import TemporaryDirectory
 
 
 ROOT = Path(__file__).resolve().parent.parent
 VIEWER = ROOT / "Viewer"
-RECIPES = {714: "iron-beetle", 715: "ruddy-boura", 716: "chicken-lizard", 717: "clockwork-scorpion", 718: "fairy-dragon", 720: "lava-elemental",
+RECIPES = {181: "orc-scout", 287: "bloodworm", 334: "enslaved-goblin",
+           714: "iron-beetle", 715: "ruddy-boura", 716: "chicken-lizard", 717: "clockwork-scorpion", 718: "fairy-dragon", 720: "lava-elemental",
            722: "undead-guardian", 723: "goblin",
            726: "kepetch", 732: "rotworm", 733: "skree", 736: "wolf-spider", 737: "trapdoor-spider", 738: "fire-ant"}
 STYLES = ("original", "rounded", "modern")
@@ -25,8 +27,20 @@ def digest(path):
 
 def check_references(sequence, classic, reference, selected):
     reader = runpy.run_path(str(ROOT / "scripts/uo-human-sequences.py"))
-    if digest(sequence) != reference["sequence_sha256"]:
+    sequence_digest = digest(sequence)
+    alternate = sequence_digest == reference.get("alternate_sequence_sha256")
+    if sequence_digest != reference["sequence_sha256"] and not alternate:
         raise ValueError("AnimationSequence.uop differs from the reviewed build.")
+    if alternate:
+        expected = {
+            int(reference["bodies"][str(body)]["reference"]["sequence"], 16):
+                reference["bodies"][str(body)]["reference"]["sequence_payload_sha256"]
+            for body in selected
+        }
+        actual = {key: sha256(payload).hexdigest()
+                  for key, payload in reader["payloads"](sequence, expected)}
+        if actual != expected:
+            raise ValueError("The alternate sequence archive contains different creature records.")
     records = reader["inspect"](sequence, selected)
     named = {record["animation_ref"]: record.get("uop_name_hash") for record in records if "parse_blocker" not in record}
     members = {}
@@ -54,7 +68,12 @@ def build_selected(godot, folder, selected):
                 raise ValueError(f"Chicken Lizard's CC0 donor source differs: {filename}")
         if not (VIEWER / "local-art/creatures/raptor/raptor.scn").is_file():
             raise ValueError("Prepare the reviewed Raptor donor before building the Chicken Lizard.")
-    for body in selected:
+    if 181 in selected:
+        subprocess.run([sys.executable, "-B", str(ROOT / "scripts/prepare-later-orc-scout.py"),
+                        "--output", str(folder)], check=True, timeout=120)
+    order = sorted(set(selected) | ({723} if 334 in selected else set()),
+                   key=lambda body: (body == 334, body))
+    for body in order:
         script = ROOT / "scripts" / f"bake-later-{RECIPES[body]}.gd"
         result = subprocess.run(
             [str(godot), "--headless", "--path", str(VIEWER), "--log-file", str(folder / f"{body}-engine.log"),
@@ -96,7 +115,8 @@ def main():
     args = parser.parse_args()
     selected = sorted(set(args.body or RECIPES))
     reference = json.loads((ROOT / "scripts/later-creature-inputs.json").read_bytes())
-    check_references(args.sequence, args.classic, reference, selected)
+    inputs = sorted(set(selected) | ({723} if 334 in selected else set()))
+    check_references(args.sequence, args.classic, reference, inputs)
     executable = next((ROOT / ".tools/godot").glob("*console.exe"))
     target = args.output.resolve()
     target.mkdir(parents=True, exist_ok=True)

@@ -17,7 +17,7 @@ const Shared := {
 	303: ["devourer", [0]],
 	309: ["patchskeleton", [1345]],
 }
-const Fitted := [714, 715, 716, 717, 718, 720, 722, 723, 726, 732, 733, 736, 737, 738]
+const Fitted := [287, 334, 714, 715, 716, 717, 718, 720, 722, 723, 726, 732, 733, 736, 737, 738]
 const GargoyleSpectral := preload("res://Presentation/WraithSpectralSurface.gdshader")
 
 
@@ -26,7 +26,7 @@ func run() -> void:
 	for argument: String in OS.get_cmdline_user_args():
 		if argument.begins_with("--body="):
 			body = int(argument.trim_prefix("--body="))
-	if not expect(body == 4 or body in Fitted or Shared.has(body), "Specify one reviewed body"):
+	if not expect(body in [4, 181] or body in Fitted or Shared.has(body), "Specify one reviewed body"):
 		return
 	var world := (load("res://Main.tscn") as PackedScene).instantiate()
 	root.add_child(world)
@@ -38,6 +38,9 @@ func run() -> void:
 	var at := Vector2i(int(world.world.originX) + 4, int(world.world.originY) + 4)
 	if body == 4:
 		if not await check_gargoyle_shade(world, at):
+			return
+	elif body == 181:
+		if not await check_orc_scout(world, at):
 			return
 	elif Shared.has(body):
 		if not await check_shared_body(world, at, body):
@@ -88,6 +91,33 @@ func create_actor(world: Node, at: Vector2i, serial: int, body: int, flags: int,
 	wire[14] = hue & 255
 	world.game._handle(wire)
 	return wire
+
+
+func check_orc_scout(world: Node, at: Vector2i) -> bool:
+	const Body := 181
+	const Serial := 0x377B5
+	const Hue := 0x8359
+	create_actor(world, at, Serial, Body, 64, Hue)
+	var actor: Node3D = world.avatars[Serial].horse_visual
+	if not expect(actor != null and actor.native_body == Body and actor.native_hue == Hue,
+			"The Orc Scout retains its original body and the supplied hue"):
+		return false
+	if not expect(actor.bow_mount != null and not actor.bow_mount.visible, "No bow appears without worn equipment"):
+		return false
+	actor.set_equipment([{"layer": 2, "id": 0x13B2, "hue": 1107}])
+	var material := actor.bow_mesh.get_surface_override_material(0) as ShaderMaterial
+	if not expect(actor.bow_mount.visible and material != null and material.get_shader_parameter("use_hue"),
+			"The server's bow layer sets the visible grip and dye"):
+		return false
+	classic_action(world, Serial, 7)
+	if not expect(actor.current_clip == "AttackBow", "The real Classic bow action plays the original motion"):
+		return false
+	if world.enhanced_creature_actions:
+		world.game._handle(action_packet(Serial, 0, 0))
+		if not expect(actor.current_clip == "AttackBow", "The Enhanced primary attack also draws the bow"):
+			return false
+	classic_action(world, Serial, 2)
+	return await check_corpse(world, at, Serial, Body, Hue, "Death")
 
 
 func check_creature(world: Node, at: Vector2i, body: int) -> bool:

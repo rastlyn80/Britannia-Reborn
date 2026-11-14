@@ -1,5 +1,509 @@
 {
+  "alternate_sequence_sha256": "b4de2afdba2bab6e987389cde18aee4703bbef560f66d4c26be5ffc04f2b8e0f",
   "bodies": {
+    "181": {
+      "classic_action_categories": {
+        "0": "Walk",
+        "1": "Idle",
+        "10": "Hit",
+        "11": "Fidget",
+        "15": "Hit",
+        "18": "Fidget",
+        "2": "Death",
+        "22": "Walk",
+        "23": "Fidget",
+        "24": "Run",
+        "25": "Idle",
+        "26": "Stomp",
+        "27": "Fidget",
+        "28": "Idle",
+        "3": "Death",
+        "4": "AttackBow",
+        "5": "Attack",
+        "7": "AttackBow"
+      },
+      "enhanced_attack_subactions": {
+        "0": [
+          "AttackBow",
+          "Attack",
+          "AttackBow"
+        ],
+        "1": [
+          "AttackBow"
+        ],
+        "2": [
+          "AttackBow"
+        ],
+        "255": [
+          "AttackBow",
+          "Attack",
+          "AttackBow",
+          "AttackBow",
+          "AttackBow",
+          "AttackBow"
+        ],
+        "9": [
+          "AttackBow"
+        ]
+      },
+      "enhanced_source_action_groups": {
+        "0": {
+          "11": [
+            "AttackBow",
+            "AttackBow",
+            "AttackBow"
+          ],
+          "14": [
+            "Fidget"
+          ],
+          "15": [
+            "Fidget"
+          ],
+          "2": [
+            "Hit",
+            "Hit"
+          ],
+          "3": [
+            "Death",
+            "Death"
+          ],
+          "4": [
+            "Hit"
+          ],
+          "5": [
+            "Stomp",
+            "Fidget"
+          ],
+          "8": [
+            "Idle"
+          ]
+        },
+        "1": {
+          "5": [
+            "Stomp"
+          ]
+        }
+      },
+      "family": "orcs",
+      "kind": "orcs_orc_scout",
+      "new_action_categories": {
+        "0": "AttackBow",
+        "11": "AttackBow",
+        "14": "Fidget",
+        "15": "Fidget",
+        "2": "Hit",
+        "3": "Death",
+        "4": "Hit",
+        "5": "Stomp",
+        "8": "Idle"
+      },
+      "reference": {
+        "body": 181,
+        "classic_members": {},
+        "donor": "Third Dawn Orc Scout and model-table Orc Shaman motions",
+        "sequence": "0x86de7ca827a85ebb",
+        "sequence_payload_sha256": "1ab1f65eb75eab53b3b73596e332e9ef3b618d9c6acf747b7b7041a7e4c1dda7"
+      }
+    },
+    "287": {
+      "classic_action_categories": {
+        "0": "Walk",
+        "1": "Idle",
+        "10": "Hit",
+        "15": "RotwormDuck",
+        "2": "Death",
+        "22": "RotwormPeaceWalk",
+        "23": "RotwormScan",
+        "24": "Run",
+        "25": "ReadyStance",
+        "26": "RotwormReach",
+        "27": "RotwormInspect",
+        "28": "RotwormRise",
+        "3": "Death2",
+        "4": "Attack",
+        "5": "Attack2"
+      },
+      "enhanced_attack_subactions": {
+        "0": [
+          "Attack",
+          "Attack2",
+          "Attack"
+        ],
+        "1": [
+          "Attack"
+        ],
+        "2": [
+          "Attack"
+        ],
+        "255": [
+          "Attack",
+          "Attack2",
+          "Attack",
+          "Attack",
+          "Attack",
+          "Attack"
+        ],
+        "9": [
+          "Attack"
+        ]
+      },
+      "enhanced_source_action_groups": {
+        "0": {
+          "11": [
+            "Attack",
+            "Attack",
+            "Attack"
+          ],
+          "14": [
+            "ReadyStance"
+          ],
+          "15": [
+            "RotwormScan"
+          ],
+          "2": [
+            "RotwormDuck",
+            "RotwormDuck"
+          ],
+          "3": [
+            "Death",
+            "Death2"
+          ],
+          "4": [
+            "Hit"
+          ],
+          "5": [
+            "RotwormReach",
+            "RotwormInspect"
+          ],
+          "8": [
+            "RotwormRise"
+          ]
+        },
+        "1": {
+          "5": [
+            "RotwormReach"
+          ]
+        }
+      },
+      "family": "worms",
+      "kind": "bloodworm",
+      "loop_categories": [
+        "ReadyStance",
+        "RotwormPeaceWalk"
+      ],
+      "new_action_categories": {
+        "0": "Attack",
+        "11": "Attack",
+        "14": "ReadyStance",
+        "15": "RotwormScan",
+        "2": "RotwormDuck",
+        "3": "Death",
+        "4": "Hit",
+        "5": "RotwormReach",
+        "8": "RotwormRise"
+      },
+      "reference": {
+        "body": 287,
+        "classic_members": {
+          "0": {
+            "archive": "AnimationFrame1.uop",
+            "frames": 50,
+            "name_hash": "9e55aa006c23b66c",
+            "sha256": "5ad0b554fb205703e396b33232be45141c7869882ace3e8066387632c1a96a87"
+          },
+          "1": {
+            "archive": "AnimationFrame1.uop",
+            "frames": 40,
+            "name_hash": "c5decf6712f7b259",
+            "sha256": "88ea26796182a504898f9bea7c54be4913e2ea032bc1c85e12f3fa9538af42d7"
+          },
+          "10": {
+            "archive": "AnimationFrame1.uop",
+            "frames": 35,
+            "name_hash": "7a4aa2315ef40a5e",
+            "sha256": "9be3015ab5c3dddbdcbc30ee74ac359af9e7cea704460985b807e530d29a0398"
+          },
+          "15": {
+            "archive": "AnimationFrame1.uop",
+            "frames": 35,
+            "name_hash": "8104ddfbfa03acbf",
+            "sha256": "f93363cc14f7c1eee31669a295f442fd39ce25b4a080e2e3dfba10f5fb94a8fe"
+          },
+          "2": {
+            "archive": "AnimationFrame1.uop",
+            "frames": 50,
+            "name_hash": "036d198813863eb2",
+            "sha256": "61c89af2e6b3ecd55a636b44b72c5eaa4f5a9c8fadaf42d95355dbbf897f296e"
+          },
+          "22": {
+            "archive": "AnimationFrame1.uop",
+            "frames": 60,
+            "name_hash": "f6cf109653ce89b3",
+            "sha256": "76192bcc32039bf7546c4ebe38aeadb6c2bd203d75f4cc362835a6495a808adf"
+          },
+          "23": {
+            "archive": "AnimationFrame1.uop",
+            "frames": 45,
+            "name_hash": "b7b908d0fe342b0c",
+            "sha256": "f5269369eebe6e09aab13ac57190cefc4c43b8cb52eee1368657e20d4c92ea9f"
+          },
+          "24": {
+            "archive": "AnimationFrame1.uop",
+            "frames": 30,
+            "name_hash": "7b1e965e4c3a6c04",
+            "sha256": "32807744de9489ac82428c58d155038378b3beec88a46c289a574ef059e81ec4"
+          },
+          "25": {
+            "archive": "AnimationFrame1.uop",
+            "frames": 50,
+            "name_hash": "e07cb90ebb62211c",
+            "sha256": "bd833eeb7d6c34bf8697c2ece531a1c98ba75e8247855681d42f44ea87b4cc5d"
+          },
+          "26": {
+            "archive": "AnimationFrame1.uop",
+            "frames": 55,
+            "name_hash": "c707f75338a5e9ff",
+            "sha256": "9bb59a7a885a1f286da57755a09bdfb1769573b342f155b8e9139c7be3601f2a"
+          },
+          "27": {
+            "archive": "AnimationFrame1.uop",
+            "frames": 45,
+            "name_hash": "c313e2e6d5641669",
+            "sha256": "f16e6c9ac3f72ba7a6973cabae7555740d534cf2d8f7c25d7c7f67fe6c2baa12"
+          },
+          "28": {
+            "archive": "AnimationFrame1.uop",
+            "frames": 35,
+            "name_hash": "a483607010b1b2a3",
+            "sha256": "f3c69e71ae1d310c0e2cd18b1680b7a97bc3499907696850939b4e39a97ad5c6"
+          },
+          "3": {
+            "archive": "AnimationFrame1.uop",
+            "frames": 60,
+            "name_hash": "feb3239b7a2f1350",
+            "sha256": "99ecdfe79b134209fdc91900f591e9c31e4f0a9e70687f859726bcebf4e0ef21"
+          },
+          "4": {
+            "archive": "AnimationFrame1.uop",
+            "frames": 55,
+            "name_hash": "51fded3b9c47fccc",
+            "sha256": "a2faf3c13c7dfb04679a6fb567925ebe797786485932606d71b81a7f8028a431"
+          },
+          "5": {
+            "archive": "AnimationFrame1.uop",
+            "frames": 45,
+            "name_hash": "eb01d4ea3138869a",
+            "sha256": "b4fc78f36ba2744a2fab6fc4f35e8d21d6962f811207b01ec9a571730eb1aa2f"
+          }
+        },
+        "donor": "Authored mesh and motions on the worm rig",
+        "sequence": "0x3aeb64b8f3720745",
+        "sequence_payload_sha256": "3e0c8f9e173a8064d0444c349d73377baec3990301d107ec6e85244c4ce65c15"
+      }
+    },
+    "334": {
+      "classic_action_categories": {
+        "0": "Walk",
+        "1": "Idle",
+        "10": "GoblinRecoil",
+        "11": "GoblinGuard",
+        "15": "GoblinDuck",
+        "2": "Death",
+        "22": "GoblinPeaceWalk",
+        "23": "GoblinLookBack",
+        "24": "Run",
+        "25": "ReadyStance",
+        "26": "GoblinWarning",
+        "27": "GoblinLowWatch",
+        "28": "GoblinReady",
+        "3": "Death2",
+        "4": "GoblinStrike",
+        "5": "GoblinBackhand"
+      },
+      "enhanced_attack_subactions": {
+        "0": [
+          "GoblinStrike",
+          "GoblinBackhand",
+          "GoblinStrike"
+        ],
+        "1": [
+          "GoblinStrike"
+        ],
+        "2": [
+          "GoblinStrike"
+        ],
+        "255": [
+          "GoblinStrike",
+          "GoblinBackhand",
+          "GoblinStrike",
+          "GoblinStrike",
+          "GoblinStrike",
+          "GoblinStrike"
+        ],
+        "9": [
+          "GoblinStrike"
+        ]
+      },
+      "enhanced_source_action_groups": {
+        "0": {
+          "11": [
+            "GoblinStrike",
+            "GoblinStrike",
+            "GoblinStrike"
+          ],
+          "14": [
+            "GoblinGuard"
+          ],
+          "15": [
+            "GoblinLookBack"
+          ],
+          "2": [
+            "GoblinDuck",
+            "GoblinDuck"
+          ],
+          "3": [
+            "Death",
+            "Death2"
+          ],
+          "4": [
+            "GoblinRecoil"
+          ],
+          "5": [
+            "GoblinWarning",
+            "GoblinLowWatch"
+          ],
+          "8": [
+            "GoblinReady"
+          ]
+        },
+        "1": {
+          "5": [
+            "GoblinWarning"
+          ]
+        }
+      },
+      "family": "goblins",
+      "kind": "enslaved_goblin",
+      "loop_categories": [
+        "ReadyStance",
+        "GoblinPeaceWalk"
+      ],
+      "new_action_categories": {
+        "0": "GoblinStrike",
+        "11": "GoblinStrike",
+        "14": "GoblinGuard",
+        "15": "GoblinLookBack",
+        "2": "GoblinDuck",
+        "3": "Death",
+        "4": "GoblinRecoil",
+        "5": "GoblinWarning",
+        "8": "GoblinReady"
+      },
+      "reference": {
+        "body": 334,
+        "classic_members": {
+          "0": {
+            "archive": "AnimationFrame2.uop",
+            "frames": 50,
+            "name_hash": "683586244e43a532",
+            "sha256": "01898ad46a9077528809d8ee89e55728b47ef8c1f02db2b0a993fe45c555a82d"
+          },
+          "1": {
+            "archive": "AnimationFrame2.uop",
+            "frames": 60,
+            "name_hash": "e0423f50d13de46c",
+            "sha256": "6d4d90d29521f8f77711f6fe69efd9f966e6031f7cb7a617d0eed6bba9b70936"
+          },
+          "10": {
+            "archive": "AnimationFrame2.uop",
+            "frames": 30,
+            "name_hash": "2b48562bf55324e5",
+            "sha256": "7106e631a1b8705e5f880a9a3b6ad97bd7761b75e931d8add37353b3d747de37"
+          },
+          "11": {
+            "archive": "AnimationFrame2.uop",
+            "frames": 55,
+            "name_hash": "fdf59217d75f09e2",
+            "sha256": "458938767e163090068d36d9ed05e91dbc33418d897e7a96215b2a9642d14a7a"
+          },
+          "15": {
+            "archive": "AnimationFrame2.uop",
+            "frames": 30,
+            "name_hash": "d2a4ecfbff9ca1c5",
+            "sha256": "f304916f8af7b9478667e5b10400d479100ca98620c6d24c8d14a4a59bb29d7f"
+          },
+          "2": {
+            "archive": "AnimationFrame2.uop",
+            "frames": 50,
+            "name_hash": "9faff556779bb3a7",
+            "sha256": "e9ee54dd9cb742fe0821b0e2d30bf29ac56b5b91dcdfac389a9bb65fedcddd0e"
+          },
+          "22": {
+            "archive": "AnimationFrame2.uop",
+            "frames": 40,
+            "name_hash": "58c81dd406472c18",
+            "sha256": "4eeeb375bb8fb590d5163f20dd5e2a736bb8dde8ef3bcebcfeba608878c8dff3"
+          },
+          "23": {
+            "archive": "AnimationFrame2.uop",
+            "frames": 35,
+            "name_hash": "b573378f3f0b5f09",
+            "sha256": "0127bb440ff3de88e415a1f880fa6c201ad4938481de012e99e5767f8ec80036"
+          },
+          "24": {
+            "archive": "AnimationFrame2.uop",
+            "frames": 35,
+            "name_hash": "1a27aea4200f7e44",
+            "sha256": "af3c4d37839bb3e977920d710f148c93f744b7f91efbb64971cb81ebbd4844c3"
+          },
+          "25": {
+            "archive": "AnimationFrame2.uop",
+            "frames": 60,
+            "name_hash": "0cd2edeab82e1ac2",
+            "sha256": "9c6bddc680da31262a6252474df28e8eccb1cc3dade323360c5b170795a78457"
+          },
+          "26": {
+            "archive": "AnimationFrame2.uop",
+            "frames": 50,
+            "name_hash": "f46523c7dca8a422",
+            "sha256": "69630c59e80d5a56771da916fe81642644ad21e0401ea82d06fc4956ce787958"
+          },
+          "27": {
+            "archive": "AnimationFrame2.uop",
+            "frames": 75,
+            "name_hash": "96787d3c41b1e7b7",
+            "sha256": "1e0206b9fc1721add9fa64c3249e1044bd589477222bb0cb855aba3bb5f21070"
+          },
+          "28": {
+            "archive": "AnimationFrame2.uop",
+            "frames": 40,
+            "name_hash": "539ff9abe538277d",
+            "sha256": "23732021562586ae20a578badc11eb2a3b71a59b4f2ca283560044222d47d3d3"
+          },
+          "3": {
+            "archive": "AnimationFrame2.uop",
+            "frames": 45,
+            "name_hash": "bb464aae07208768",
+            "sha256": "8615c6c6b5a35c8882699a206fdb08f0a82ba17431658e0f84624b24e653674c"
+          },
+          "4": {
+            "archive": "AnimationFrame2.uop",
+            "frames": 50,
+            "name_hash": "b122a5fca1a05675",
+            "sha256": "dbc4906317dcd476aa9d9138e6dcef057755ebbe68c5539b41402cf09ab1b2e5"
+          },
+          "5": {
+            "archive": "AnimationFrame2.uop",
+            "frames": 40,
+            "name_hash": "9ba27c118ff4edef",
+            "sha256": "b7019d3c1cfe544025784c59f25ca9898580a2ac0b23700967abf4f28362fa68"
+          }
+        },
+        "donor": 723,
+        "sequence": "0x45a9362a418fb14",
+        "sequence_payload_sha256": "c55f5f5d39ee5d635d943a70e6d4bdd181f375075b5790ddc1f1008e4eebebf8"
+      }
+    },
     "714": {
       "classic_action_categories": {
         "0": "Walk",
@@ -192,7 +696,8 @@
         },
         "donor": 48,
         "identity_reference": "https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/Normal/IronBeetle.cs",
-        "sequence": "0xdf6129c83c660a13"
+        "sequence": "0xdf6129c83c660a13",
+        "sequence_payload_sha256": "9113fc828cac37355e6b0ebbae75963c6def2a4197ca7457ea6cfa4f87faa722"
       }
     },
     "715": {
@@ -388,7 +893,8 @@
         },
         "donor": 248,
         "identity_reference": "https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/Normal/RuddyBoura.cs",
-        "sequence": "0xd9e742afa5d0c78f"
+        "sequence": "0xd9e742afa5d0c78f",
+        "sequence_payload_sha256": "26022fc7462f76cde1da554a50322a4f491472c38d43ef24223468dea704e355"
       }
     },
     "716": {
@@ -585,7 +1091,8 @@
         },
         "donor": "Quaternius Velociraptor",
         "identity_reference": "https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/Normal/ChickenLizard.cs",
-        "sequence": "0x579288b0a0185957"
+        "sequence": "0x579288b0a0185957",
+        "sequence_payload_sha256": "682bfaeb929b29ebb1fd08c3bf0bc5e6b7de19f2ec830d6fb9ce3daf35331212"
       }
     },
     "717": {
@@ -781,7 +1288,8 @@
         },
         "donor": 48,
         "identity_reference": "https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/Normal/ClockworkScorpion.cs",
-        "sequence": "0xa1e963c83fdc787e"
+        "sequence": "0xa1e963c83fdc787e",
+        "sequence_payload_sha256": "d624ba6e49c158fb7b994bfc44aaafd949459e0a11b30c521e0baba7855bb674"
       }
     },
     "718": {
@@ -992,7 +1500,8 @@
             "url": "https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/Normal/FairyDragon.cs"
           }
         },
-        "sequence": "0x6e10b486c518b72c"
+        "sequence": "0x6e10b486c518b72c",
+        "sequence_payload_sha256": "823a9cb28f0114b5d88bc62730309f34b46628794e0a4307c438b7b70648e098"
       }
     },
     "720": {
@@ -1201,7 +1710,8 @@
             "url": "https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/Normal/LavaElemental.cs"
           }
         },
-        "sequence": "0x934fca928d0eefc4"
+        "sequence": "0x934fca928d0eefc4",
+        "sequence_payload_sha256": "6e2a840a5cb606c4fb6d80a82f8797258d4aca9ae34eb0a3eb9d839cf5f644ce"
       }
     },
     "722": {
@@ -1417,7 +1927,8 @@
             "url": "https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/Normal/UndeadGuardian.cs"
           }
         },
-        "sequence": "0xfb84f93613b02652"
+        "sequence": "0xfb84f93613b02652",
+        "sequence_payload_sha256": "04396fe33fba92e3bc0be06ad5bf35ba2dc2cba6170c44c16c70b4740f60622a"
       }
     },
     "723": {
@@ -1638,7 +2149,8 @@
             "url": "https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/Normal/GreenGoblinAlchemist.cs"
           }
         },
-        "sequence": "0xbc020f9db38b175b"
+        "sequence": "0xbc020f9db38b175b",
+        "sequence_payload_sha256": "df5f7d05b31b0844ab74ae31982668c07bfeb0c31438feaded1f5858c01b55bb"
       }
     },
     "726": {
@@ -1840,7 +2352,8 @@
             "url": "https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/Normal/KepetchAmbusher.cs"
           }
         },
-        "sequence": "0xeabcb2afca516eca"
+        "sequence": "0xeabcb2afca516eca",
+        "sequence_payload_sha256": "f7cf5b572940aecf84e6d927d87bc152845dade9d0b1857feb9df0a478e5f79b"
       }
     },
     "732": {
@@ -2036,7 +2549,8 @@
         },
         "donor": "authored mesh and motion",
         "identity_reference": "https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/Normal/Rotworm.cs",
-        "sequence": "0xb07b5291824f8445"
+        "sequence": "0xb07b5291824f8445",
+        "sequence_payload_sha256": "bad6cad54f5c78ffe5a662a2086a4dc356a5f7714214cbfaa9fad561d6ee8922"
       }
     },
     "733": {
@@ -2254,7 +2768,8 @@
             "url": "https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/Normal/Skree.cs"
           }
         },
-        "sequence": "0x9b476e547050ef9e"
+        "sequence": "0x9b476e547050ef9e",
+        "sequence_payload_sha256": "086aae85fc71d4f0d1728c612e18dc6697cb80106954b89a6a9aeb98563b1c87"
       }
     },
     "736": {
@@ -2450,7 +2965,8 @@
         },
         "donor": 28,
         "identity_reference": "https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/Normal/WolfSpider.cs",
-        "sequence": "0x562961b0fbc9942b"
+        "sequence": "0x562961b0fbc9942b",
+        "sequence_payload_sha256": "e675fa8bb665ed9b733a83bef1598b07b8520d60aa984db0f916bad1074f02f1"
       }
     },
     "737": {
@@ -2659,7 +3175,8 @@
             "url": "https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/Normal/TrapdoorSpider.cs"
           }
         },
-        "sequence": "0x352ae8154f62a82b"
+        "sequence": "0x352ae8154f62a82b",
+        "sequence_payload_sha256": "42b9b3764e44b79f1a98650ecbdaa4c5bb92cce6cd83729aa250273de936dbbe"
       }
     },
     "738": {
@@ -2868,7 +3385,8 @@
             "url": "https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/Normal/FireAnt.cs"
           }
         },
-        "sequence": "0x230e47191fa69d2d"
+        "sequence": "0x230e47191fa69d2d",
+        "sequence_payload_sha256": "e858403999ac6c429607d1330243d691ad3e7a0548ac8bc19b3d60864e08ed3b"
       }
     }
   },

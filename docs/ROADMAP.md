@@ -1,3 +1,7 @@
+# Additional Abyss and Underworld follow-up
+
+Keep the verified native spawn, movement, combat and corpse fixtures for the Orc Scout, Bloodworm, Crystal Hydra, Enslaved Goblins and four Renowned forms. Verify the Scout's detection, stealth and equipment clearance, the Fountain of Fortune protections, fall continuity on uneven ground and the goblin encounter progression. Continue the remaining configured occurrence rows and give separately pinned attention to unsettled aliases, artifact effects and quest systems. [Remaining cases](LATER_NATIVE_CREATURES.md)
+
 # Abyss goblin follow-up
 
 Retain the four working native classes and their common body 723 presentation. Verify normal roaming and implement the remaining clan opposition and green goblin's rare coin drop. Continue the separate Renowned and Enslaved forms by configured occurrence.

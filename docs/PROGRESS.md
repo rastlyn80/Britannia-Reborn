@@ -1,3 +1,7 @@
+# Additional Abyss and Underworld creatures
+
+The Orc Scout, Bloodworm and Enslaved Goblin bodies now have reproducible local preparation, client movement and combat, dyed static corpses and sampled ground contact. Isolated ModernUO trials verified all six Enslaved Goblin classes, Crystal Hydra's two-target breath and loot, the Bloodworm's anemia and corpse feeding, and the four Renowned variants and their reward pools. [Provenance, local preparation and exact test scope](LATER_NATIVE_CREATURES.md)
+
 # Four Abyss goblins
 
 Green Goblin, Green Goblin Alchemist, Gray Goblin and Gray Goblin Mage resolve by their configured spawn names. They share body 723 and retain the green base palette or gray hue 1900. The Gray Goblin Mage damaged a player at range. All four survived a restart and both clients received the matching corpses. The isolated trial passed 76 initial and 40 restart checks. [Source and test scope](LATER_CREATURE_ROUTES.md#abyss-goblins)
