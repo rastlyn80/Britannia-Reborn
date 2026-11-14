@@ -1,0 +1,16 @@
+{
+  "version": 0,
+  "type": "Server.Mobiles.Travesty",
+  "properties": [
+    {
+      "name": "CalledReinforcements",
+      "type": "bool",
+      "rule": "PrimitiveTypeMigrationRule"
+    },
+    {
+      "name": "BorrowedHealing",
+      "type": "bool",
+      "rule": "PrimitiveTypeMigrationRule"
+    }
+  ]
+}

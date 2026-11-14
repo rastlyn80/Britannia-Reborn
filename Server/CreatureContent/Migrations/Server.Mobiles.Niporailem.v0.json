@@ -1,0 +1,30 @@
+{
+  "version": 0,
+  "type": "Server.Mobiles.Niporailem",
+  "properties": [
+    {
+      "name": "Defenders",
+      "type": "System.Collections.Generic.List\u003CServer.Mobiles.SpectralArmour\u003E",
+      "rule": "ListMigrationRule",
+      "ruleArguments": [
+        "Server.Mobiles.SpectralArmour",
+        "SerializableInterfaceMigrationRule"
+      ]
+    },
+    {
+      "name": "NextTreasure",
+      "type": "System.DateTime",
+      "rule": "PrimitiveTypeMigrationRule"
+    },
+    {
+      "name": "NextDefender",
+      "type": "System.DateTime",
+      "rule": "PrimitiveTypeMigrationRule"
+    },
+    {
+      "name": "SecondThrow",
+      "type": "bool",
+      "rule": "PrimitiveTypeMigrationRule"
+    }
+  ]
+}

@@ -48,7 +48,7 @@ static func posed(body: int,hue: int=0,worn: Array=[]) -> Node3D:
 	else:actor=Mounts.create(body)
 	tree.root.add_child(actor)
 	if actor is Humans:
-		actor.set_skin(hue);actor.set_equipment(worn);actor.set_native_profile(HumanNPCs.entry(body),hue)
+		actor.set_skin(hue, body in [400, 401]);actor.set_equipment(worn);actor.set_native_profile(HumanNPCs.entry(body),hue)
 	else:
 		actor.apply_identity(body,hue);actor.dead=true;actor.contact.enabled=false
 		if actor.has_method("set_equipment"):actor.set_equipment(worn)

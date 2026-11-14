@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>BritanniaReborn.CreatureContent</AssemblyName>
+    <ServerRuntime Condition="'$(ServerRuntime)' == ''">$(MSBuildProjectDirectory)/../runtime</ServerRuntime>
+  </PropertyGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="Migrations/*.v*.json" />
+    <Reference Include="Server">
+      <HintPath>$(ServerRuntime)/Server.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UOContent">
+      <HintPath>$(ServerRuntime)/Assemblies/UOContent.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <PackageReference Include="ModernUO.Serialization.Annotations" Version="4.3.0" />
+    <PackageReference Include="ModernUO.Serialization.Generator" Version="4.3.0" PrivateAssets="all" />
+  </ItemGroup>
+</Project>

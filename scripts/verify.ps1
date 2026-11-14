@@ -31,6 +31,7 @@ if (Test-Path "$root/Server/ModernUO/Projects/UOContent/Engines/Ethics/Core/Ethi
 & "$root/scripts/prepare-polyhaven.ps1" -VerifyOnly
 & "$root\build.ps1"
 if (Test-Path "$root/Server/runtime/Server.dll") { & "$root/scripts/build-preview-tools.ps1" -BuildOnly }
+if (Test-Path "$root/Server/runtime/Server.dll") { & "$root/scripts/build-creature-content.ps1" }
 $godot = (Get-ChildItem "$root\.tools\godot\*console.exe" | Select-Object -First 1).FullName
 $env:APPDATA = Join-Path $root '.godot-user'
 $env:LOCALAPPDATA = $env:APPDATA
@@ -1476,6 +1477,118 @@ if ($optionalCreatures -and (Test-Path "$root/Viewer/local-art/mounts/sea-horse.
   $results | ForEach-Object { Write-Output $_ }
   if ($code -or ($results | Select-String 'SCRIPT ERROR:|Parse Error:')) {
    throw "Distinct Sea Horse $test failed"
+  }
+ }
+}
+
+if ((Test-Path "$root/Viewer/local-art/free-equipment/runtime/body-mask-00.glb") -and
+    (Test-Path "$root/Viewer/local-art/free-equipment-female/runtime/body-mask-00.glb") -and
+    (Test-Path "$root/Viewer/local-art/free-equipment/coverage/bandana.glb") -and
+    (Test-Path "$root/Viewer/local-art/free-equipment-female/coverage/bandana.glb") -and
+    (Test-Path "$root/Viewer/local-art/free-equipment/expansion/shirt.glb") -and
+    (Test-Path "$root/Viewer/local-art/free-equipment-female/expansion/skirt.glb")) {
+ $servantModes = @('Classic')
+ if ($optionalCreatures) { $servantModes += 'Enhanced' }
+ foreach ($mode in $servantModes) {
+  $arguments = @('--world=res://world.json')
+  if ($mode -eq 'Enhanced') { $arguments += '--enhanced-creature-actions' }
+  $checks = & $godot --headless --path "$root/Viewer" --script res://../scripts/test-forgotten-servant-world.gd -- @arguments 2>&1
+  $code = $LASTEXITCODE
+  $checks | ForEach-Object { Write-Output $_ }
+  if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or !($checks | Select-String '^FORGOTTEN SERVANT WORLD:')) {
+   throw "$mode Forgotten Servant wardrobe or corpse replay failed"
+  }
+ }
+}
+$playerItemActions = "$root/Viewer/local-art/creatures/player-item-actions"
+if (Test-Path "$playerItemActions/1-modern-CreatureDaggerThrow.res") {
+ $terrain = & $godot --headless --path "$root/Viewer" --script res://../scripts/test-item-terrain.gd 2>&1
+ $code = $LASTEXITCODE
+ $terrain | ForEach-Object { Write-Output $_ }
+ if ($code -or ($terrain | Select-String 'SCRIPT ERROR:|Parse Error:') -or !($terrain | Select-String '^PLAYER ITEM TERRAIN:')) {
+  throw 'Player-form item animation terrain verification failed'
+ }
+ $itemModes = @('Classic')
+ if ($optionalCreatures) { $itemModes += 'Enhanced' }
+ foreach ($mode in $itemModes) {
+  $arguments = @('--world=res://world.json')
+  if ($mode -eq 'Enhanced') { $arguments += '--enhanced-creature-actions' }
+  $actionChecks = & $godot --headless --path "$root/Viewer" --script res://../scripts/test-item-world.gd -- @arguments 2>&1
+  $code = $LASTEXITCODE
+  $actionChecks | ForEach-Object { Write-Output $_ }
+  if ($code -or ($actionChecks | Select-String 'SCRIPT ERROR:|Parse Error:') -or
+      !($actionChecks | Select-String '^PLAYER ITEM ACTION WORLD:')) {
+   throw "$mode player-form item animation replay failed"
+  }
+ }
+}
+
+$terMurProfile = "$root/Viewer/local-art/creatures/ter-mur-prepared/profile.json"
+if (Test-Path -LiteralPath $terMurProfile) {
+ $terMurModes = @('Classic')
+ if ($optionalCreatures) { $terMurModes += 'Enhanced' }
+ foreach ($mode in $terMurModes) {
+  $modeArgs = @()
+  if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+  $checks = & $godot --headless --path "$root/Viewer" --script res://../scripts/test-ter-mur-creatures-world.gd -- @modeArgs 2>&1
+  $code = $LASTEXITCODE
+  $checks | ForEach-Object { Write-Output $_ }
+  if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or
+      !($checks | Select-String '^TER MUR MODEL WORLD:')) {
+   throw "$mode Ter Mur creature appearance and native action replay failed"
+  }
+ }
+}
+$laterManifest = "$root/Viewer/local-art/creatures/later-prepared/profile.json"
+if (Test-Path -LiteralPath $laterManifest) {
+ $bodyIds = (Get-Content -LiteralPath $laterManifest -Raw | ConvertFrom-Json -AsHashtable).bodies.Keys
+ $laterModes = @('Classic')
+ if ($optionalCreatures) { $laterModes += 'Enhanced' }
+ if (Test-Path "$root/Viewer/local-art/creatures/slime-distinct-actions-modern.scn") {
+  $bodyIds = @('51') + @($bodyIds)
+ }
+ if (Test-Path "$root/Viewer/local-art/creatures/daemon-distinct-actions-modern.scn") {
+  $bodyIds = @('9') + @($bodyIds)
+ }
+ if (Test-Path "$root/Viewer/local-art/creatures/canines_hell_hound-modern.gltf") {
+  $bodyIds = @('98') + @($bodyIds)
+ }
+ $bodyIds = @('238') + @($bodyIds)
+ if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
+  $bodyIds = @('4') + @($bodyIds)
+ }
+ foreach ($mode in $laterModes) {
+  $arguments = @('--world=res://world.json')
+  if ($mode -eq 'Enhanced') { $arguments += '--enhanced-creature-actions' }
+  $arguments += '--niporailem-projectile'
+  $checks = & $godot --headless --path "$root/Viewer" --script res://../scripts/test-citadel-projectile-world.gd -- @arguments 2>&1
+  $code = $LASTEXITCODE
+  $checks | ForEach-Object { Write-Output $_ }
+  if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or
+      !($checks | Select-String '^CITADEL PROJECTILE WORLD: 24 checks')) {
+   throw "$mode Citadel projectile World replay failed"
+  }
+  if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
+   $checks = & $godot --headless --path "$root/Viewer" --script res://../scripts/test-travesty-world.gd -- @arguments 2>&1
+   $code = $LASTEXITCODE
+   $checks | ForEach-Object { Write-Output $_ }
+   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or
+       !($checks | Select-String '^TRAVESTY WORLD: 6 checks')) {
+    throw "$mode Travesty World replay failed"
+   }
+  }
+ }
+ foreach ($body in $bodyIds) {
+  foreach ($mode in $laterModes) {
+   $arguments = @("--body=$body")
+   if ($mode -eq 'Enhanced') { $arguments += '--enhanced-creature-actions' }
+   $checks = & $godot --headless --path "$root/Viewer" --script res://../scripts/test-later-creature-world.gd -- @arguments 2>&1
+   $code = $LASTEXITCODE
+   $checks | ForEach-Object { Write-Output $_ }
+   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or
+       !($checks | Select-String "^LATER CREATURE WORLD: $body,")) {
+    throw "$mode late creature body $body World replay failed"
+   }
   }
  }
 }

@@ -1,6 +1,7 @@
 extends Node3D
 ## Licensed male/female body and individual garments on one animated skeleton.
 const Wardrobe = preload("res://Presentation/HumanWardrobe.gd")
+const BodyHue := preload("res://Presentation/HumanBodyHue.gd")
 var female := false
 var model: Node3D
 var skeleton: Skeleton3D
@@ -11,6 +12,7 @@ var outfit_bits := -1
 var appearance_key := ""
 var unsupported_items: Array[int] = []
 var skin_hue := 1002
+var use_exact_body_hue := false
 var current_clip := "Idle"
 var missing_art: Array[int] = []
 var native_cosmetics := {}
@@ -89,7 +91,8 @@ func _ready() -> void:
 	animator.play("Idle")
 	set_equipment([])
 
-func set_skin(hue: int) -> void:
+func set_skin(hue: int, exact_body_hue: bool = false) -> void:
+	use_exact_body_hue = exact_body_hue
 	skin_hue = hue
 	if skin == null: return
 	var vampiric: bool = native_body_profile.get("skin","") == "vampiric"
@@ -97,9 +100,7 @@ func set_skin(hue: int) -> void:
 	var shade := 0 if vampiric else clampi(((hue&0x3fff)-1002)/19,0,2)
 	var names := ["young_lightskinned_female_diffuse.png","young_lightskinned_female_diffuse3.png","young_darkskinned_female_diffuse.png"] if female else ["young_lightskinned_male_diffuse2.png","young_lightskinned_male_diffuse3.png","young_darkskinned_male_diffuse.png"]
 	skin.set_shader_parameter("albedo_texture",load("res://local-art/free-equipment/"+names[shade]))
-	var palette := preload("res://Presentation/HumanHue.gd").palette(hue) if vampiric else null
-	skin.set_shader_parameter("form_hue_palette", palette)
-	skin.set_shader_parameter("use_form_hue", palette != null)
+	BodyHue.apply(skin, hue, str(native_body_profile.get("skin", "")), use_exact_body_hue)
 	_apply_native_skin()
 
 func set_native_profile(profile: Dictionary,hue: int) -> void:
@@ -109,7 +110,7 @@ func set_native_profile(profile: Dictionary,hue: int) -> void:
 	preload("res://Presentation/HumanNPCMotion.gd").configure(self,native_body_profile)
 	if wardrobe_changed:
 		appearance_key="";set_equipment(server_equipment)
-		set_skin(hue)
+		set_skin(hue, use_exact_body_hue)
 	else:
 		_apply_native_skin()
 

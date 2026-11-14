@@ -20,6 +20,10 @@ func model_resource_path(folder: String,asset_kind: String) -> String:
 func set_hue(value: int) -> void:
 	super.set_hue(value)
 	if model==null:return
+
+	if native_body == 4 and (value & 0x4000) != 0:
+		_apply_gargoyle_spectral_hue()
+		return
 	if treatment=="modern" and entry.get("surface_kind","")=="water_pbr":
 		for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
 			for surface in mesh.mesh.get_surface_count():mesh.set_surface_override_material(surface,preload("res://Presentation/WaterElementalMaterial.gd").build(value,water_phase))
@@ -73,6 +77,19 @@ func set_hue(value: int) -> void:
 			material.set_shader_parameter("metallic_strength",source.metallic if source!=null else 0.)
 			if entry.get("movement_mode","")=="native_waterline":material.set_shader_parameter("wetness",.7)
 			mesh.set_surface_override_material(surface,material)
+
+func _apply_gargoyle_spectral_hue() -> void:
+	var surface_shader := preload("res://Presentation/WraithSpectralSurface.gdshader")
+	for mesh: MeshInstance3D in model.find_children("*", "MeshInstance3D", true, false):
+		for surface in mesh.mesh.get_surface_count():
+			var source := mesh.mesh.surface_get_material(surface) as StandardMaterial3D
+			if source == null or source.albedo_texture == null:
+				continue
+			var material := ShaderMaterial.new()
+			material.shader = surface_shader
+			material.set_shader_parameter("source_atlas", source.albedo_texture)
+			mesh.set_surface_override_material(surface, material)
+
 func _ready() -> void:
 	kind=str(entry.kind)
 	action_profile=str(entry.get("profile","monster"))

@@ -126,6 +126,11 @@ func _ready() -> void:
 	world_controls.hide()
 	button(world_controls,"Open backpack (B)",func(): session.open_backpack())
 	button(world_controls,"Toggle war / peace",func(): session.set_war_mode((int(session.player.get("flags",0))&0x40)==0))
+	var flight := button(world_controls, "Take flight", func(): session.toggle_gargoyle_flight())
+	flight.hide()
+	var update_flight := func(position: Dictionary):
+		flight.visible = int(position.get("body", 0)) in [666, 667]
+		flight.text = "Land" if (int(position.get("flags", 0)) & 4) != 0 else "Take flight"
 	button(world_controls,"Bow",func(): session.request_emote("bow"))
 	button(world_controls,"Return to Britain (F6)",func(): session.return_to_britain())
 	sky_button = button(world_controls,"Sky: server time (F7)",func(): sky_requested.emit())
@@ -180,11 +185,13 @@ func _ready() -> void:
 		custom_minimum_size.x = 240
 		self.position = Vector2(1015,24)
 		world_controls.show()
+		update_flight.call(position)
 		reset_size.call_deferred()
 		message.text = "Online / Trammel")
 	session.entity_changed.connect(func(serial: int,position: Dictionary):
 		if serial == session.player.serial:
-			message.text = "Online / Trammel")
+			message.text = "Online / Trammel"
+			update_flight.call(position))
 	var item_browser := preload("res://Network/ItemBrowser.gd").new()
 	add_child(item_browser)
 	item_browser.configure(session)

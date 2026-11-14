@@ -1,3 +1,122 @@
+# Regular Kepetch and live shearing
+
+The regular Kepetch now spawns visibly on body 726. Both Kepetch forms accepted the stock blade target once and refused the repeat. The regular creature's chance-based bite produced its first wound tick after 20 seconds. The five-form trial passed 113 initial and seven restart checks. [Sources and test scope](LATER_CREATURE_ROUTES.md#kepetch-trapdoor-spider-and-fire-ant)
+
+# Lava Elemental
+
+The native spawner now resolves the body 720 mage. It independently acquired and damaged a player outside melee range. Both isolated clients received the elemental's corpse, which contained the pinned lesser poison potion. [Source and trial scope](LATER_CREATURE_ROUTES.md#lava-elemental)
+
+# Kepetch, Trapdoor Spider and Fire Ant
+
+Native spawners resolve all three names. In the isolated trial, ordinary movement revealed both ambushers and the Fire Ant independently applied its delayed fire damage. Both clients received their matching corpses. The 47 initial and seven restart checks also confirmed one hidden spider retained its serial and concealment. [Sources and test scope](LATER_CREATURE_ROUTES.md#kepetch-trapdoor-spider-and-fire-ant)
+
+# Niporailem's cursed metallic defenders
+
+Dropping the boss's gold now summons a cursed metallic knight or mage. They reuse the original skeletal knight and mage rigs with distinct server hues. Spectral Armour remains a separate defender. The isolated trial passed 30 initial and 17 restart checks, including both cursed corpses and their hues. [Sources, reconstruction choices and test scope](LATER_CREATURE_ROUTES.md#serpents-breath-and-niporailem)
+
+# Tomb of Kings hidden access
+
+The original east wall and west return passed 18 initial and 14 restart checks on two isolated clients. The wall stopped a normal walk, retracted on double-click, and allowed the player to cross the threshold. The saved wall stayed open across restart and closed at the test deadline. The west sparkle returned the player to the entrance hall with its original notice. [Placement and test scope](LATER_CREATURE_ROUTES.md#serpents-breath-and-niporailem)
+
+# Serpent's Breath and Niporailem
+
+Both spoken passwords, independent field openings, one-way passage, saved state and relighting passed 30 initial and 14 restart checks. Niporailem's autonomous gold attack damaged and dismounted a rider, and a normal ground drop produced sand. Its corpse and defender cleanup passed after restart. The client draws the thrown pile in both profiles. [Placement, reconstruction choices and test scope](LATER_CREATURE_ROUTES.md#serpents-breath-and-niporailem)
+
+# Holy City Arisen and Naxatilor
+
+Four Arisen identities populate the Holy City through 11 native spawners. The isolated clock test counted 45 creatures at night and removed them at dawn after restarting. The native quest trial delivered Egwexem's writ, reloaded three separate kill counters, claimed the Necklace of Diligence, checked the wrong-answer delay, answered four shrine questions and verified both stone guardians. Admission and the two guardians survived the completed trial's server restart. [Placement, sources and trial scope](LATER_CREATURE_ROUTES.md#holy-city-arisen-and-naxatilor)
+
+# Tomb of Kings creatures
+
+Three configured names now resolve natively. Two isolated clients saw Undead Guardian and Putrid Undead Guardian as body 722, and Gargoyle Shade as body 4 with the original spectral hue. The 42 initial and 19 restart checks witnessed their corpses and the persistence of all three living forms. The Shade's original Gargoyle rig retains its translucency on the static corpse. [Sources and test scope](LATER_CREATURE_ROUTES.md#tomb-of-kings-creatures)
+
+# Underworld laboratories and Tyball's Shadow
+
+Both secret rooms now give their own fragment through native switches, rising globes and key copying. In 72 isolated server checks, the player copied both pieces, used both shrine gates, received a yellow fragment for Tyball's defeat, assembled the Tripartite Key and entered through the spiral stair. Tyball cast and damaged the player autonomously. The fixture repositioned testers and applied the lethal hit. Nineteen restart checks verified persistent personal admission and denial on the other lane. Classic and Enhanced replays verify the dyed hood, robe and static corpse. [Placement, reconstruction choices and test scope](LATER_CREATURE_ROUTES.md#laboratory-fragments-and-tyballs-shadow)
+
+# Acid Slug sacs and the Underworld vine passages
+
+Both reconstructed laboratory entrances use the native Acid Sac and secret door interactions. Two isolated clients passed 69 checks including backpack targeting, consumption, the revealed wall, and walking through both entrances. The 28 restart checks verified the remaining burn state, timed regrowth and the ability to leave a laboratory after its vines recover. [Placement, map evidence and test scope](LATER_CREATURE_ROUTES.md#underworld-vine-passages)
+
+# Garamon in the Underworld
+
+The configured Garamon spawn resolves to a native human quest guide with his reference robe, shoes, hue, hair and facial hair. Two isolated clients received that appearance and his responses to Abyss, vines and shrine. The same NPC and dialogue survived a real save and restart. The trial passed 20 checks on spawn and 15 after restart. [Quest guide scope and evidence](LATER_CREATURE_ROUTES.md#garamon-in-the-underworld)
+
+# Ter Mur Gargoyles and Sutek constructs
+
+The staged Gargoyle male and female, Vollem and Leather Wolf 3D scenes pass 140 decoded World checks per client mode. Gargoyle creation uses native male and female bodies, colourable horns and starter cloth. An isolated native trial passed 33 checks on creation and 24 after restart. The server saves both sets of cosmetics and stock equipment and repeats the native flight actions. The server currently applies one starter skin hue. Leather Wolf and Vollem pass native crafting, repair, secure transfer, living save and restart, follower accounting and corpse checks. Native Vollem combat produces the fire breath and the viewer starts it at the animated muzzle. [Models and test results](TER_MUR_GARGOYLES_AND_CONSTRUCTS.md)
+
+# Ter Mur Void creatures
+
+Eleven identities now have native constructors and matching server body, hue and corpse evidence. The isolated trial advanced every stage of the survival, grouping and killing paths, sampled natural corpse resources over 640 deaths, and confirmed that all three evolved spawner slots reloaded. Classic and Enhanced World replays each passed 46 checks for their retained walk and static corpse routes. Agralem's Void hunt passed 75 checks covering acceptance, kill credit through restart and the real Abyss Reaver reward. [Source and trial scope](TER_MUR_VOID_CREATURES.md)
+
+# Sutek and Perfect Timing
+
+The workshop passed 155 native checks before restart and 10 afterwards. The isolated server placed one Sutek and 57 native workshop props, tested wrong-item rejection and real timer expiry, accepted a fresh quest, completed 20 randomized requests, and awarded the Mechanical Life Manual and dirty gear. The observed training construct had body 717 and disappeared on its timer. The same Sutek, manual and polished music-box gear survived restart. The fixture moved the player between reachable props. [Source and test scope](LATER_CREATURE_ROUTES.md)
+
+# Crafted Clockwork Scorpion
+
+The isolated test used the registered Tinkering recipe, ordinary item activation and the scorpion context menu. Both clients observed body 717. The crafter kept the same one-slot unbonded scorpion after restart, together with learned knowledge and the construction cooldown. The fixture supplied the manual and Void Essence and assigned the test skill and damage. The trial passed 58 checks before restart and 17 afterwards. [Sources and scope](LATER_CREATURE_ROUTES.md)
+
+# Elite Ninja shuriken
+
+The isolated server passed 36 checks before restart and eight afterwards. The fixture froze movement and stood eight tiles away, beyond fukiya range. The ordinary ninja AI selected and fired shuriken graphic 0x27AC. Both clients received it, the target took Greater poison, and the belt consumed exactly one shuriken and one poison charge. The corpse held the Book of Ninjitsu. A separate saved instance reloaded with its original body, hue, hair and weapon. [Test scope](LATER_CREATURE_ROUTES.md)
+
+# Citadel reservation expiry
+
+The isolated server passed 15 checks before restart and 74 afterwards. The saved table remembered the first yellow key and rejected a duplicate after restart. The fixture advanced the offering, reservation and key deadlines. The actual timers cleared the incomplete set, removed the unopened boss and expired all three admission keys. The old confirmation could not move the player. A fresh set reserved a different boss and admitted the player normally. [Test scope](LATER_CREATURE_ROUTES.md)
+
+# Elder Acob and the Black Order badges
+
+All five Elder Acob hunts accepted through native dialogs. Ex-Assassins alone granted access. Female targets and kills outside the Citadel did not count for the three sect hunts. Both ninja classes counted, and New Leadership needed each distinct leader. Kill totals persisted and all five rewards were claimed through normal interactions after restart. The native hunt run passed 87 checks before restart and 43 afterwards. The Sarakki run passed 72 before restart and 60 afterwards, including the fifteen-badge turn-in. [Source and test scope](LATER_CREATURE_ROUTES.md)
+
+# Citadel dungeon entrance
+
+An earlier isolated ModernUO run passed 78 checks and 11 more after restart. Sarakki offered Evidence and Black Order Badges through the standard quest system. The crate refused an unqualified or distant player and admitted a qualified player with a controlled horse. Evidence consumed the Orders from Minax and awarded one strongbox. Black Order Badges opened the same entrance after the save was loaded. [Source and evidence](LATER_CREATURE_ROUTES.md)
+
+# Citadel active fight across restart
+
+A separate active-fight trial passed 59 checks before restart and 20 afterwards. The same living boss, all three unused admission keys and twelve reinforcements survived. The boss returned to its Changeling appearance on load, and another threshold hit did not summon a second wave. The fixture advanced the active deadline. The server removed the undefeated boss and surviving reinforcements, returned the online player to Tokuno and set the offline guest's saved return map to Tokuno. The guest then logged in at the exact Tokuno exit (1355, 779, 17). [Source and evidence](LATER_CREATURE_ROUTES.md)
+
+# Citadel admission and timed exit
+
+The isolated server passed 75 checks and five more after restart. A player offered the three colored keys individually and received three temporary Black Order keys. Two party members entered Travesty's chamber through separate confirmations. Advancing the post-fight deadline returned both to Tokuno and removed the surviving reinforcements. [Source and evidence](LATER_CREATURE_ROUTES.md)
+
+# Travesty and the Citadel key table
+
+The isolated server passed 45 encounter checks and five after restart. A full set of keys opened the room. The boss retained its serial while copying the witness's appearance, called twelve reinforcements, and left a Changeling corpse containing the Eye of the Travesty and Orders from Minax. The placement command produced one table and one Master Thief spawner when run twice. Both survived restart. [Source and evidence](LATER_CREATURE_ROUTES.md)
+
+# Citadel configured spawns and three key holders
+
+All six names in the pinned Citadel spawn file resolve through the extension. The isolated server passed 236 checks across nine cases and 32 more after restart. Both Dragon's Flame mages cast through their normal AI. The Executioner, Master Thief and Grand Mage produced the yellow, blue and red keys. The Elite Ninja fired a poisoned dart using its normal combat logic while the fixture held its movement. Both client modes passed 21 checks for hand and mouth release points, flight and cleanup with male and female avatars. [Source and evidence](LATER_CREATURE_ROUTES.md)
+
+# Clockwork Scorpion and Serpent's Fang Assassin
+
+The Clockwork Scorpion's alternate fall now scatters eleven pieces of the original scorpion mesh. Classic and Enhanced passed 47 and 559 normal world checks respectively. Each mode verified 5,642 living terrain poses and 24 corpse handoffs across 408 fall poses. In the isolated ModernUO trial the scorpion, both Serpent's Fang Assassin variants, the High Executioner and a Tiger's Claw Thief passed 131 checks before restart and 20 afterwards. The High Executioner's native death produced the yellow key. The Black Order's jin-baori packets are verified. The client fit is still open. [Source and evidence](LATER_CREATURE_ROUTES.md)
+
+# Chicken Lizard taming and breeding
+
+The isolated ModernUO trial passed 126 checks before restart and 23 afterwards, including native taming, hay feeding, watering, incubation, coop storage and hatching. The fixture advanced the clocks and selected the battle variant to exercise its hatch directly. The Classic and optional Enhanced world replays passed 43 and 555 checks respectively, including the battle hue on the living model and static corpse. The client and extension changes are staged for a later release. [Source and evidence](LATER_CREATURE_ROUTES.md)
+
+# Rotworm, Clan Scratch Savage Wolf and Boura persistence
+
+The isolated ModernUO extension passed 530 checks across twelve cases and 83 checks after save and restart. The Rotworm infected a player through a real strike, continued dealing attributed damage after retreat and yielded original meat through the stock blade target. The Clan Scratch wolf used Paralyzing Blow and produced a Reflective Wolf Eye in a controlled death. High Plains Boura used both native abilities and kept its tamer after restart. All three Boura kept their sheared state. The Acid Slug refused an actual Underworld uphill step, could descend it and produced the Vial of Vitriol at Passage of Tears. [Evidence and source choices](LATER_CREATURE_ROUTES.md)
+
+# Acid Slug and Boura
+
+The staged ModernUO extension adds Acid Slug and the Ruddy, High Plains and Lowland Boura to the configured spawner names. Acid Slug retains body 51 with four native hues. The three Boura share body 715 and keep separate taming requirements, abilities and harvest variants. Both client profiles passed their living model and static corpse checks. The disposable server passed 369 combat, loot, harvesting and presentation packet checks across ten cases, followed by 35 checks after a save and restart. [Source and evidence](LATER_CREATURE_ROUTES.md)
+
+# Native Abyss creature extension
+
+The stock spawner resolved Forgotten Servant, Coral Snake, Clan Ribbon Plague Rat, Fire Daemon and Wolf Spider through the isolated extension. The trial passed 194 checks covering combat, retaliation, the daemon's heat aura, taming, loot and corpse identity. A second server process passed 23 checks on six saved bodies. The normal client replay passed 75 checks in both modes for the Forgotten Servant's wardrobe, palette and static corpse. [Source, build and evidence](LATER_CREATURE_ROUTES.md)
+
+
+# Abyss and later creature client appearances
+
+Thirteen local 3D bodies cover Wolf Spider, Chicken Lizard, Rotworm, Clockwork Scorpion, Ruddy Boura, Skree, the shared goblins, Kepetch Ambusher, Trapdoor Spider, Fire Ant, Lava Elemental, Undead Guardian and Fairy Dragon. All passed Classic and Enhanced packet replays, terrain and static cadaver checks. Skree and Fairy Dragon have checked airborne falls and the three goblin identities share body 723. Acid Slug, Clan Ribbon Plague Rat and Fire Daemon reuse existing routes with their reference hues. The pinned ModernUO build lacks the named spawn classes. [Source and local build](LATER_CREATURE_ROUTES.md)
+
+
+
 # Remaining indexed Enhanced actions and native Spellweaving
 
 The Parrot, Animated Weapon, Stone Form and both Pumpkin Head forms passed a combined isolated client run with 20,610 Enhanced replay checks. The same batch passed 121 Classic checks and retained native dye and corpse handling. A separate 61-check ModernUO trial verified the completed quest flags, actual Summon Fey and Summon Fiend casts, paired player observations and both stock corpses. The separate Witch Apprentice trial passed 19 checks for the real Magic Flute trigger, body 74 appearance, recipe notice and timed disappearance. [Input evidence and build steps](ENHANCED_INDEXED_VARIANTS.md)

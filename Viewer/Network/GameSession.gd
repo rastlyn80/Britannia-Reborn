@@ -772,6 +772,9 @@ func create_character(name: String, slot: int, city: int, female: bool = false, 
 	deadline = Time.get_ticks_msec()+20000
 	send(creation_packet(name,slot,city,female,appearance))
 
+func supports_gargoyle_creation() -> bool:
+	return (int(module("environment").features) & 0x10000) != 0
+
 static func creation_packet(name: String, slot: int, city: int, female: bool = false, appearance: Dictionary = {}) -> PackedByteArray:
 	var p := PackedByteArray([0xf8])
 	p.append_array(Login.uint_be(0xedededed,4))
@@ -784,7 +787,8 @@ static func creation_packet(name: String, slot: int, city: int, female: bool = f
 	p.append_array(Login.uint_be(0,4))
 	p.append(0) # custom profession: selected city is respected
 	p.resize(70)
-	p.append_array(PackedByteArray([3 if female else 2,40,30,20,40,30,27,30,17,30,1,30]))
+	var gender_race := (6 if appearance.get("gargoyle", false) else 2) + int(female)
+	p.append_array(PackedByteArray([gender_race,40,30,20,40,30,27,30,17,30,1,30]))
 	for value in [int(appearance.get("skin_hue",0x03ea)),int(appearance.get("hair_id",0)),int(appearance.get("hair_hue",0)),int(appearance.get("beard_id",0)),int(appearance.get("beard_hue",0)),city]: p.append_array(Login.uint_be(value,2))
 	p.append_array(Login.uint_be(slot,4))
 	p.append_array(Login.uint_be(0x7f000001,4))
@@ -1112,6 +1116,11 @@ func appearance_for(serial: int) -> Dictionary:
 	return MobileLook.profile(entity,mobile_equipment.get(serial,{}).values(),stats,str(entity_names.get(serial,stats.get("name",""))))
 func set_war_mode(enabled: bool) -> void:
 	if phase=="world":send(PackedByteArray([0x72,1 if enabled else 0,0,0x32,0]))
+func toggle_gargoyle_flight() -> bool:
+	if phase != "world" or int(player.get("body", 0)) not in [666, 667]:
+		return false
+	send(PackedByteArray([0xbf, 0, 5, 0, 0x32]))
+	return true
 func request_emote(name: String) -> bool:
 	if phase!="world" or name!="bow":return false
 	var payload:=PackedByteArray([0xc7]);payload.append_array(name.to_ascii_buffer());payload.append(0)

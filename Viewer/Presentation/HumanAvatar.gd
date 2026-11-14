@@ -205,7 +205,7 @@ func apply_server_appearance(entity: Dictionary, worn: Array, details: Dictionar
 	var sex := Wardrobe.female(body)
 	if not Human.available(sex): return
 	if human_visual == null or human_visual.female != sex: _switch_human(sex)
-	human_visual.set_skin(int(entity.get("hue",1002)))
+	human_visual.set_skin(int(entity.get("hue",1002)), body in [400, 401])
 	human_visual.war_mode=(int(entity.get("flags",0))&0x40)!=0
 	if horse_visual!=null and human_visual.mounted_live_enabled and Horse.mount_item(worn).is_empty():human_visual.mount_transition_active=true
 	human_visual.set_equipment(worn)

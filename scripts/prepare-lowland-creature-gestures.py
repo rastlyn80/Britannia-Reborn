@@ -1,6 +1,7 @@
 """Check Slime, Mummy and Giant Toad motion overlays and source floor samples."""
 
 import argparse
+from hashlib import sha256
 import json
 from pathlib import Path
 import runpy
@@ -68,11 +69,10 @@ def prepared(entries):
     return rows, CLASSES
 
 
-def combined_mummy_curves(prior_path):
-    original = read(prior_path)
+def combined_mummy_curves(original, original_digest):
     measured = read(LOCAL / 'mummy-distinct-actions-ground-measured.json')
     assert original['sample_rate'] == measured['sample_rate'] == 960
-    assert measured['predecessor_sha256'] == sha(prior_path)
+    assert measured['predecessor_sha256'] == original_digest
     assert measured['overlay_recipe_sha256'] == sha(ROOT / 'scripts/bake-mummy-distinct-ground.gd')
     treatments = {}
     for name, prior in original['treatments'].items():
@@ -86,7 +86,17 @@ def mummy_ground_overlay(base, scene_hashes):
     prior_path = VIEWER / base['ground_lookup'].removeprefix('res://')
     overlay = LOCAL / 'mummy-distinct-actions-ground.json'
     old, new = read(prior_path), read(overlay)
-    assert new == combined_mummy_curves(prior_path)
+    predecessor_bytes = prior_path.read_bytes()
+    if old['preparation_sha256'] != new['preparation_sha256']:
+        # A new presentation test can reseal an otherwise identical ground bake.
+        # Verify the exact original bytes and every curve before reusing this overlay.
+        current_pin = old['preparation_sha256'].encode('ascii')
+        sealed_pin = new['preparation_sha256'].encode('ascii')
+        assert predecessor_bytes.count(current_pin) == 1
+        predecessor_bytes = predecessor_bytes.replace(current_pin, sealed_pin)
+        old['preparation_sha256'] = new['preparation_sha256']
+    predecessor_digest = sha256(predecessor_bytes).hexdigest()
+    assert new == combined_mummy_curves(old, predecessor_digest)
     fitted = {'MummyRecoil', 'MummyCurl'}
     for treatment, previous in old['treatments'].items():
         updated = new['treatments'][treatment]
@@ -99,12 +109,13 @@ def mummy_ground_overlay(base, scene_hashes):
             assert all(abs(offset) < 0.01 for _, offset in samples)
             assert all(0 < b[0] - a[0] <= 1 / 959 for a, b in zip(samples, samples[1:]))
     return dict(ground_lookup='res://local-art/creatures/' + overlay.name,
-                ground_lookup_sha256=sha(overlay), predecessor_ground_lookup_sha256=sha(prior_path))
+                ground_lookup_sha256=sha(overlay), predecessor_ground_lookup_sha256=predecessor_digest)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--compose-mummy-ground', action='store_true', required=True)
     parser.parse_args()
     overlay = LOCAL / 'mummy-distinct-actions-ground.json'
-    combined = combined_mummy_curves(LOCAL / 'walking_dead_mummy-ground.json')
+    prior = LOCAL / 'walking_dead_mummy-ground.json'
+    combined = combined_mummy_curves(read(prior), sha(prior))
     overlay.write_text(json.dumps(combined, separators=(',', ':')), encoding='utf-8')

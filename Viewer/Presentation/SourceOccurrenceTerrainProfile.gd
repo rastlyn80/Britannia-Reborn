@@ -287,6 +287,8 @@ static func enable() -> Array[int]:
 			prepared.presentation_script = prepared.presentation_script.trim_suffix("Visual.gd") + "VariantsVisual.gd"
 		Registry.entries[body] = prepared
 		enabled.append(body)
+	enabled.append_array(preload("res://Presentation/SourceLaterCreatureProfile.gd").enable())
+	enabled.append_array(preload("res://Presentation/SourceTerMurProfile.gd").enable())
 	if preload("res://Presentation/SourceSnowLeopardProfile.gd").enable():
 		enabled.append(64)
 		enabled.append(65)

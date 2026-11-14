@@ -6,6 +6,9 @@ extends Control
 signal finished
 const Look = preload("res://Network/ModernSkin.gd")
 const Looks = preload("res://Network/CharacterLooks.gd")
+const Gargoyles = preload("res://Presentation/GargoyleAppearance.gd")
+const Registry = preload("res://Presentation/CreatureRegistry.gd")
+const Art = preload("res://Network/Artwork.gd")
 const HAIR := [["Bald",0],["Short",0x203b],["Long",0x203c],["Ponytail",0x203d],["Pageboy",0x2045],["Afro",0x2047]]
 const BEARD := [["None",0],["Long",0x203e],["Short",0x203f],["Goatee",0x2040],["Moustache",0x2041],["Short + moustache",0x204b],["Long + moustache",0x204c],["Vandyke",0x204d]]
 const HAIR_HUES := [["Dark brown",1147,"3b2a1f"],["Charcoal",1109,"24242a"],["Blond",1118,"c9a95c"],["Copper",1135,"9a4f26"],["Silver",1102,"b9b7b0"]]
@@ -27,11 +30,15 @@ var shown_name: Label
 var shown_detail: Label
 var looks := {}
 var account := ""
-var creation := {"female":false,"skin":1021,"hair":0x203c,"hair_hue":1147,"beard":0,"beard_hue":1147,"city":-1}
+var creation := {"female":false,"gargoyle":false,"skin":1021,"hair":0x203c,"hair_hue":1147,"beard":0,"beard_hue":1147,"city":-1}
 var creation_rows := {}
 var new_name := LineEdit.new()
 var cities_box: VBoxContainer
 var beard_rows: Array = []
+var race_picker: HBoxContainer
+var appearance_options: VBoxContainer
+var shown_gargoyle_options := false
+var shown_female_options := false
 var loading_title: Label
 var loading_bar: ProgressBar
 var loading_detail: Label
@@ -462,8 +469,10 @@ func _choose(entry: Dictionary) -> void:
 		shown_detail.text = "Its look appears here after you play it once on this computer."
 		if stage: stage.show_character({"body":400,"hue":1002},Looks.starter(false))
 	else:
-		var female := int(look.get("body",400)) in [401,403,606,608]
-		shown_detail.text = "Human · %s · last seen: %s" % ["Female" if female else "Male",look.get("place","")]
+		var body := int(look.get("body",400))
+		var female := body in [401,403,606,608,667]
+		var race := "Gargoyle" if body in [666,667] else ("Elf" if body in [605,606,607,608] else "Human")
+		shown_detail.text = "%s · %s · last seen: %s" % [race,"Female" if female else "Male",look.get("place","")]
 		if stage: stage.show_character({"body":int(look.body),"hue":int(look.hue)},look.get("worn",[]))
 
 # --- 3 · create ----------------------------------------------------------
@@ -476,6 +485,17 @@ func _create() -> Control:
 	column.add_theme_constant_override("separation",16)
 	left.add_child(column)
 	column.add_child(_heading("Appearance",24))
+	race_picker = HBoxContainer.new()
+	race_picker.hide()
+	race_picker.add_theme_constant_override("separation",8)
+	column.add_child(race_picker)
+	creation_rows.gargoyle = []
+	for entry in [["Human",false],["Gargoyle",true]]:
+		var button := _choice(entry[0],func(): _choose_creation_race(entry[1]))
+		button.set_meta("value",entry[1])
+		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		race_picker.add_child(button)
+		creation_rows.gargoyle.append(button)
 	var sexes := HBoxContainer.new()
 	sexes.add_theme_constant_override("separation",8)
 	column.add_child(sexes)
@@ -484,19 +504,17 @@ func _create() -> Control:
 		var button := _choice(entry[0],func():
 			creation.female = entry[1]
 			if entry[1]: creation.beard = 0
+			if creation.gargoyle:
+				creation.hair = 0
 			_preview_creation())
 		button.set_meta("value",entry[1])
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		sexes.add_child(button)
 		creation_rows.sex.append(button)
-	column.add_child(_swatches("Skin","skin",SKINS,50))
-	column.add_child(_options("Hair","hair",HAIR,3))
-	column.add_child(_swatches("Hair colour","hair_hue",HAIR_HUES,40))
-	var beard := _options("Beard","beard",BEARD,4)
-	column.add_child(beard)
-	var beard_colour := _swatches("Beard colour","beard_hue",HAIR_HUES,40)
-	column.add_child(beard_colour)
-	beard_rows = [beard,beard_colour]
+	appearance_options = VBoxContainer.new()
+	appearance_options.add_theme_constant_override("separation",12)
+	column.add_child(appearance_options)
+	_build_creation_options()
 	var right := _card(380)
 	right.anchor_left = 1.0
 	right.anchor_right = 1.0
@@ -542,6 +560,49 @@ func _create() -> Control:
 		turns.add_child(b)
 	return screen
 
+func _choose_creation_race(gargoyle: bool) -> void:
+	if creation.gargoyle == gargoyle:
+		return
+	creation.gargoyle = gargoyle
+	creation.skin = Gargoyles.StarterSkin if gargoyle else 1021
+	creation.hair = 0 if gargoyle else 0x203c
+	creation.hair_hue = Gargoyles.HornHues[0] if gargoyle else 1147
+	creation.beard = 0
+	creation.beard_hue = creation.hair_hue
+	_preview_creation()
+
+func _build_creation_options() -> void:
+	_clear(appearance_options)
+	for key in ["skin","hair","hair_hue","beard","beard_hue"]:
+		creation_rows.erase(key)
+	shown_gargoyle_options = creation.gargoyle
+	shown_female_options = creation.female
+	if not creation.gargoyle:
+		appearance_options.add_child(_swatches("Skin","skin",SKINS,50))
+		appearance_options.add_child(_options("Hair","hair",HAIR,3))
+		appearance_options.add_child(_swatches("Hair colour","hair_hue",HAIR_HUES,40))
+		beard_rows = [_options("Beard","beard",BEARD,4), _swatches("Beard colour","beard_hue",HAIR_HUES,40)]
+		for row: Control in beard_rows:
+			appearance_options.add_child(row)
+		return
+	var options := [["None",0]]
+	var horns := Gargoyles.horn_graphics(creation.female)
+	for i in horns.size():
+		options.append([str(i + 1),horns[i]])
+	appearance_options.add_child(_options("Horns","hair",options,5))
+	var colours := []
+	for value: int in Gargoyles.HornHues:
+		colours.append(["Hue %d" % value,value,Art.color(value).to_html(false)])
+	appearance_options.add_child(_swatches("Horn colour","hair_hue",colours,31,8))
+	beard_rows = []
+	if not creation.female:
+		var facial := [["None",0]]
+		for i in Gargoyles.FacialHorns.size():
+			facial.append([str(i + 1),Gargoyles.FacialHorns[i]])
+		beard_rows = [_options("Facial horns","beard",facial,5), _swatches("Facial horn colour","beard_hue",colours,31,8)]
+		for row: Control in beard_rows:
+			appearance_options.add_child(row)
+
 func _choice(text: String, action: Callable) -> Button:
 	var button := Button.new()
 	button.text = text
@@ -572,12 +633,20 @@ func _options(title: String, key: String, entries: Array, columns: int) -> VBoxC
 		creation_rows[key].append(button)
 	return box
 
-func _swatches(title: String, key: String, entries: Array, size: int) -> VBoxContainer:
+func _swatches(title: String, key: String, entries: Array, size: int, columns := 0) -> VBoxContainer:
 	var box := VBoxContainer.new()
 	box.add_theme_constant_override("separation",8)
 	box.add_child(Look.label(title,13,Look.ASH,500))
-	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation",10)
+	var row: Container
+	if columns:
+		var grid := GridContainer.new()
+		grid.columns = columns
+		grid.add_theme_constant_override("h_separation", 7)
+		grid.add_theme_constant_override("v_separation", 5)
+		row = grid
+	else:
+		row = HBoxContainer.new()
+		row.add_theme_constant_override("separation",10)
 	box.add_child(row)
 	creation_rows[key] = []
 	for entry in entries:
@@ -599,16 +668,24 @@ func _swatches(title: String, key: String, entries: Array, size: int) -> VBoxCon
 	return box
 
 func _preview_creation() -> void:
+	race_picker.visible = session != null and session.has_method("supports_gargoyle_creation") \
+		and session.supports_gargoyle_creation() and Registry.supports_body(666) and Registry.supports_body(667)
+	if not race_picker.visible and creation.gargoyle:
+		_choose_creation_race(false)
+		return
+	if shown_gargoyle_options != creation.gargoyle or (creation.gargoyle and shown_female_options != creation.female):
+		_build_creation_options()
 	for key in creation_rows:
 		var value = creation.female if key == "sex" else creation[key]
 		for button in creation_rows[key]: button.set_pressed_no_signal(button.get_meta("value") == value)
 	for row in beard_rows: row.visible = not creation.female
 	if cities_box.get_child_count() == 0 and session: _fill_cities()
 	if stage == null: return
-	var worn: Array = Looks.starter(creation.female)
+	var worn: Array = Gargoyles.starter(creation.female) if creation.gargoyle else Looks.starter(creation.female)
 	if int(creation.hair) != 0: worn.append({"id":int(creation.hair),"hue":int(creation.hair_hue),"layer":11})
 	if not creation.female and int(creation.beard) != 0: worn.append({"id":int(creation.beard),"hue":int(creation.beard_hue),"layer":16})
-	stage.show_character({"body":401 if creation.female else 400,"hue":int(creation.skin)},worn)
+	var body := Gargoyles.body(creation.female) if creation.gargoyle else (401 if creation.female else 400)
+	stage.show_character({"body":body,"hue":int(creation.skin)},worn)
 
 # Starting cities the server offers inside the prepared region (outside it the
 # world would be empty); Britain is preselected.
@@ -629,6 +706,8 @@ func _fill_cities() -> void:
 	if cities_box.get_child_count() == 0: cities_box.add_child(Look.label("No starting city inside this region.",13,Look.BLOOD,500))
 
 func _create_character() -> void:
+	if creation.gargoyle and not race_picker.visible:
+		return
 	var slot := -1
 	for character in session.characters:
 		if str(character.name).is_empty():
@@ -642,7 +721,7 @@ func _create_character() -> void:
 		return
 	message.text = "Creating your character…"
 	chosen = {"slot":slot,"name":new_name.text.strip_edges()}
-	session.create_character(new_name.text.strip_edges(),slot,int(creation.city),creation.female,{"skin_hue":creation.skin,"hair_id":creation.hair,"hair_hue":creation.hair_hue,"beard_id":creation.beard,"beard_hue":creation.beard_hue})
+	session.create_character(new_name.text.strip_edges(),slot,int(creation.city),creation.female,{"gargoyle":creation.gargoyle,"skin_hue":creation.skin,"hair_id":creation.hair,"hair_hue":creation.hair_hue,"beard_id":creation.beard,"beard_hue":creation.beard_hue})
 
 # --- 4 · loading -------------------------------------------------------
 func _loading() -> Control:

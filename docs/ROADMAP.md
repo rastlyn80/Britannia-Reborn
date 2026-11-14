@@ -1,3 +1,25 @@
+# Abyss ambushers and Fire Ant follow-up
+
+Keep the original rig adaptations, the native ambushes, the ant's autonomous damage and the corpses. The Kepetch living blade targets and the first Vicious Bite tick have isolated evidence. Verify multi-target goo, chance drops, fur quantities and the later wound ticks. Continue Iron Beetle and the alchemist turn-ins from the pinned references.
+
+# Underworld guide follow-up
+
+Retain Garamon's native spawn, clothing, dialogue and persistence. Both vine passages, both laboratory fragments, Tyball's autonomous combat and the key's permanent stair admission have isolated evidence. Verify continuous travel between the quest rooms, expiry and rare loot. Egwexem's writ, Naxatilor's hunt, the four Holy City night forms, the shrine quiz and the stone guardians have isolated evidence. Completed guardian access survived restart. Serpent's Breath and Niporailem's main combat and corpse paths now have native evidence. The Tomb wall and west return pass native movement and persistence checks. The cursed metallic variants now have native drop, hue, corpse and persistence evidence. Verify the rest of the shrine corridor and autonomous boss variants, then continue with the museum books and separate Thepem and Zosilem turn-ins.
+
+# Ter Mur Gargoyle and construct follow-up
+
+Continue the full Gargoyle wardrobe and the original racial combat and casting sets. Native creation, 21 horn choices across both equipment layers, starter cloth, and native flight now have isolated server or World evidence. The server's creation order still clamps the selected skin hue. Verify native player-death costume handoff and flight falls. Improve the Vollem and Leather Wolf silhouettes against the decoded references and fit additional terrain poses. Keep the 47 verified source members and native repair, transfer, reload, breath and corpse evidence.
+
+# Ter Mur Void creature follow-up
+
+Retain the three tested evolution paths, delayed poison attribution, natural Void Essence and native spawner persistence. Verify autonomous spell kill attribution, the Ortanord encounter, and actual live rendered movement and corpses for the later Void bodies. Look for original Ter Mur shard placement evidence before assigning any overwrite or automatic population. Fit proper male and female Gargoyle presentation using the recovered references. Use the Vollem and Leather Wolf frames to guide the respective winged construct and armored wolf donor trials. Continue filling native creature and quest gaps in configured occurrence order.
+
+# Later configured creature names
+
+The extension resolves all six configured Citadel spawn names and verifies native drops for all three key holders. The isolated table verifies individual key offerings, temporary party admission and timed Tokuno exit. The active-fight restart and timeout now have isolated native evidence. The unused reservation and expired partial offering have native restart evidence. The party guest logged back in at the exact Tokuno exit after the interrupted fight timed out. Sarakki and the quest-gated dungeon entrance have native acceptance and restart evidence. The badge turn-in, Elder Acob’s five hunts and his separate access path have native evidence. Fit the jin-baori and verify kill credits during natural dungeon combat. The Elite Ninja's dart and shuriken have separate native witnesses. Verify its special moves, hiding and mirror images in live encounters. The wild Clockwork Scorpion's poison and alternate fall have evidence. The controlled Clockwork Scorpion has native assembly, repair and restart evidence. Sutek's manual reward has native quest and restart evidence. Connect natural Void Essence drops and verify the ridden workshop route against the per-ingredient timer. Verify transfer and the rendered controlled corpse. Both clients already received the controlled corpse packet and the owner recovered the follower slot. Verify Chicken Lizard carpentry, dry-egg expiry and hatch probabilities, and connect the scale collar. Connect the acid items to the Garamon and Thepem quests and the Rotworm to Elder Dugan and the cooking recipe. Verify the remaining Boura taming variants and special loot. Check autonomous Fire Breath and the Wolf Spider coin drop. Fit the remaining human hair families and seek original shard evidence for the disputed Clan Scratch wolf body. [Source and scope](LATER_CREATURE_ROUTES.md)
+
+
+
 # After the indexed Enhanced action audit
 
 Rebuild and release the five staged bodies after the preceding exact project verification. Continue native quest and event factories, summon and pet behavior, autonomous attacks, and the separate audit of spawn names the pinned server could not resolve. The Spellweaving trial covered the real casts after separately testing both quest refusals. Quest completion and autonomous actions remain to be exercised.

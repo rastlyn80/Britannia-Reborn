@@ -1,0 +1,11 @@
+{
+  "version": 0,
+  "type": "Server.Items.CitadelKeyTable",
+  "properties": [
+    {
+      "name": "ActiveBoss",
+      "type": "Server.Mobiles.Travesty",
+      "rule": "SerializableInterfaceMigrationRule"
+    }
+  ]
+}

@@ -47,7 +47,7 @@ func begin_human(killed: int,corpse: int,entity: Dictionary,avatar: Node3D) -> v
 	visual.female=Wardrobe.female(body);add_child(visual)
 	if not visual.animator.has_animation("Death"):visual.free();return
 	visual.native_body=body;visual.native_hue=int(entity.get("hue",0))
-	visual.set_skin(visual.native_hue)
+	visual.set_skin(visual.native_hue, body in [400, 401])
 	visual.set_equipment(human_death_equipment(corpse,avatar))
 	visual.set_native_profile(HumanNPCs.entry(body),visual.native_hue)
 	visual.global_transform=source.global_transform;visual.rotation.y=PI-float(int(entity.get("direction",0))&7)*PI/4.
