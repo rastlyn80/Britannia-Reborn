@@ -1,5 +1,200 @@
 {
   "bodies": {
+    "714": {
+      "classic_action_categories": {
+        "0": "Walk",
+        "1": "Idle",
+        "10": "Hit",
+        "15": "IronGuard",
+        "2": "Death",
+        "22": "Walk",
+        "23": "IronAlert",
+        "24": "Run",
+        "25": "ReadyStance",
+        "26": "IronLift",
+        "27": "IronSift",
+        "28": "IronArm",
+        "3": "Death2",
+        "4": "Attack",
+        "5": "Attack2"
+      },
+      "enhanced_attack_subactions": {
+        "0": [
+          "Attack",
+          "Attack2",
+          "Attack"
+        ],
+        "1": [
+          "Attack"
+        ],
+        "2": [
+          "Attack"
+        ],
+        "255": [
+          "Attack",
+          "Attack2",
+          "Attack",
+          "Attack",
+          "Attack",
+          "Attack"
+        ],
+        "9": [
+          "Attack"
+        ]
+      },
+      "enhanced_source_action_groups": {
+        "0": {
+          "11": [
+            "Attack",
+            "Attack",
+            "Attack"
+          ],
+          "14": [
+            "Idle"
+          ],
+          "15": [
+            "Idle"
+          ],
+          "2": [
+            "Idle",
+            "Idle"
+          ],
+          "3": [
+            "Death",
+            "Death2"
+          ],
+          "4": [
+            "Hit"
+          ],
+          "5": [
+            "Idle",
+            "Idle"
+          ],
+          "8": [
+            "Idle"
+          ]
+        },
+        "1": {
+          "5": [
+            "Idle"
+          ]
+        }
+      },
+      "family": "arachnids",
+      "kind": "iron_beetle",
+      "loop_categories": [
+        "ReadyStance"
+      ],
+      "new_action_categories": {
+        "0": "Attack",
+        "11": "Attack",
+        "14": "Idle",
+        "15": "Idle",
+        "2": "Idle",
+        "3": "Death",
+        "4": "Hit",
+        "5": "Idle",
+        "8": "Idle"
+      },
+      "reference": {
+        "body": 714,
+        "classic_members": {
+          "0": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 50,
+            "name_hash": "c5d488dccb567d57",
+            "sha256": "9ec65c281fdfb7bb1d725dc406ad3362ff3cb0654cf7ffe46cb2fb734b1d5be9"
+          },
+          "1": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 50,
+            "name_hash": "782614a4dbdcfe16",
+            "sha256": "04a746a64ff56fe2571e81ef3d0d07902b63961e54bf84428f95dc40e14c445a"
+          },
+          "10": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 35,
+            "name_hash": "5740bb8587c9bf6a",
+            "sha256": "daab87d354d23c0edee7be4d3ed63242b4dcaa2a19475160d6ee190e96597b8b"
+          },
+          "15": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 35,
+            "name_hash": "8d2d4db9cc4eab3a",
+            "sha256": "b436fba5bd42a271761ca4107f3664ebd3c25b573da8a7a92f697b98a50d0277"
+          },
+          "2": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 40,
+            "name_hash": "198c5c4aa447cab2",
+            "sha256": "d02e47f685d300a6272d835ca6924f1e9a5f1fa7baa0ded69cac61ecf76a804c"
+          },
+          "22": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 40,
+            "name_hash": "c1f050454fbe4c44",
+            "sha256": "1988f7f9aabaab30b1dd38b09200a8171c7ea357fa4cc71074bbaeea80bcdbcd"
+          },
+          "23": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 45,
+            "name_hash": "e949455a4d4cb89a",
+            "sha256": "872b06b65d11b77b241825282bccef161c339ae60a7da32621a593f5235f799e"
+          },
+          "24": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 50,
+            "name_hash": "ec09e73701bdd258",
+            "sha256": "7336f40bbd90c1b65253433c929784d786377b5d2aa59764b34afdc234cab668"
+          },
+          "25": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 50,
+            "name_hash": "fe1326ca853e720e",
+            "sha256": "888dadc7062038bd425f860e0ca1d9cc955278c12b399a17389c507b439adfca"
+          },
+          "26": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 50,
+            "name_hash": "9520424149ded4c7",
+            "sha256": "4569d2de04c582f45d6ec80c998c6b57d372837162f9c68f35912b9af106a24f"
+          },
+          "27": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 40,
+            "name_hash": "b9670b65826f5705",
+            "sha256": "6bbe8d0cf641277892fcc3249b24b80a0e952e6b0520ebb4c6f5537c774dddd1"
+          },
+          "28": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 35,
+            "name_hash": "165f46420729c6fe",
+            "sha256": "1d34ec9648bfe32ceb023d6e0d9c23c65f8d4635f25c1765d7e7941bb67d3594"
+          },
+          "3": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 40,
+            "name_hash": "0480f259d7805aff",
+            "sha256": "e57b85aded3e037a531958097eeb558151dede48b16ac819482fdbd49099ba3f"
+          },
+          "4": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 40,
+            "name_hash": "7fcd7b7211243376",
+            "sha256": "68b40390dbf4b9458881e4ae00408ecdfa48de5ee79d5bd6894158be34c6c9b2"
+          },
+          "5": {
+            "archive": "AnimationFrame3.uop",
+            "frames": 35,
+            "name_hash": "a18a998b43879de8",
+            "sha256": "1f11e64f305918df6b484f92e8676174bf5e05026877c53df35669b34bb3bce0"
+          }
+        },
+        "donor": 48,
+        "identity_reference": "https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/Normal/IronBeetle.cs",
+        "sequence": "0xdf6129c83c660a13"
+      }
+    },
     "715": {
       "classic_action_categories": {
         "0": "Walk",

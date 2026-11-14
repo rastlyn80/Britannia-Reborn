@@ -1,3 +1,15 @@
+# Four Abyss goblins
+
+Green Goblin, Green Goblin Alchemist, Gray Goblin and Gray Goblin Mage resolve by their configured spawn names. They share body 723 and retain the green base palette or gray hue 1900. The Gray Goblin Mage damaged a player at range. All four survived a restart and both clients received the matching corpses. The isolated trial passed 76 initial and 40 restart checks. [Source and test scope](LATER_CREATURE_ROUTES.md#abyss-goblins)
+
+# Skree
+
+The configured native spawn resolves body 733 with four follower slots and the Mystic AI. Both isolated clients received its Eagle Strike during autonomous combat. The same creature and its Mystic AI survived restart and both clients received its corpse. The native trial passed 54 initial and 13 restart checks. [Source and test scope](LATER_CREATURE_ROUTES.md#skree)
+
+# Iron Beetle
+
+The configured Underworld spawn now resolves body 714. Two isolated clients observed it eating valorite ore, retaining the ore hue after restart and leaving a matching corpse. The restored timer mined ore at a valid tile and sent its sifting animation to both clients. The fitted Third Dawn Scorpion adaptation passed 43 Classic and 555 Enhanced world replay checks, 5,208 living terrain samples and 40 decoded falls into dyed static corpses. [Source and test scope](LATER_CREATURE_ROUTES.md#iron-beetle)
+
 # Regular Kepetch and live shearing
 
 The regular Kepetch now spawns visibly on body 726. Both Kepetch forms accepted the stock blade target once and refused the repeat. The regular creature's chance-based bite produced its first wound tick after 20 seconds. The five-form trial passed 113 initial and seven restart checks. [Sources and test scope](LATER_CREATURE_ROUTES.md#kepetch-trapdoor-spider-and-fire-ant)

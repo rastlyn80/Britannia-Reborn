@@ -1,6 +1,14 @@
+# Abyss goblin follow-up
+
+Retain the four working native classes and their common body 723 presentation. Verify normal roaming and implement the remaining clan opposition and green goblin's rare coin drop. Continue the separate Renowned and Enslaved forms by configured occurrence.
+
+# Skree follow-up
+
+Keep the client flight and corpse routes and native Mystic AI. Verify the remaining spells, ordinary taming and the rendered transition from a native aerial action.
+
 # Abyss ambushers and Fire Ant follow-up
 
-Keep the original rig adaptations, the native ambushes, the ant's autonomous damage and the corpses. The Kepetch living blade targets and the first Vicious Bite tick have isolated evidence. Verify multi-target goo, chance drops, fur quantities and the later wound ticks. Continue Iron Beetle and the alchemist turn-ins from the pinned references.
+Keep the original rig adaptations, the native ambushes, the ant's autonomous damage and the corpses. The Kepetch living blade targets and the first Vicious Bite tick have isolated evidence. Verify multi-target goo, chance drops, fur quantities and the later wound ticks. The Iron Beetle has client terrain and fall coverage and native ore, hue and persistence evidence. Verify ordinary taming and the scale drop. Connect the scale to the alchemist turn-ins from the pinned references.
 
 # Underworld guide follow-up
 

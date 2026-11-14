@@ -23,7 +23,7 @@ The configured occurrence order begins with Acid Slug, Wolf Spider and Chicken L
 | Rotworm | 732 | An authored 32-joint body and four independently animated tendrils. Its 16 clips include a roll that exposes the pale underside and a second, shallow fall. | 41 Classic and 553 Enhanced world checks. Each terrain mode sampled 5,642 poses. The Classic fall run sampled 24 handoffs across 408 poses. The GPU atlas shows 60 samples. |
 | Clockwork Scorpion | 717 | The Third Dawn Scorpion rig for body 48, compressed proportions, bronze plating, a skinned orange core and eleven animated shell pieces for the alternate fall. | 47 Classic and 559 Enhanced world checks. Each terrain mode sampled 5,642 living poses and 24 decoded handoffs across 408 fall poses. Two Forward+ angles produced 40 review frames. |
 | Ruddy, High Plains and Lowland Boura | 715 | The Third Dawn Gaman donor from body 248 with a lower, wider profile, an adapted textured mantle, skinned dorsal plates and separate ram and foreleg attacks. | 41 Classic and 553 Enhanced world checks. Each terrain mode sampled 5,642 poses. The Classic fall run sampled 24 handoffs across 408 poses. The GPU atlas shows 60 samples. The donor silhouette remains visible in the head and shoulder texture. |
-| Green Goblin, Green Goblin Alchemist and Gray Goblin | 723 | Resized Third Dawn Orc rig with skinned ears, an olive and brown atlas and fitted guard, strikes and falls. The gray variant carries server hue 1900. | 45 Classic and 557 Enhanced world checks, 12,152 terrain poses and 24 corpse handoffs. The green identities share appearance and motion. |
+| Green Goblin, Green Goblin Alchemist, Gray Goblin and Gray Goblin Mage | 723 | Resized Third Dawn Orc rig with skinned ears, an olive and brown atlas and fitted guard, strikes and falls. Both gray variants carry server hue 1900. | 45 Classic and 557 Enhanced world checks, 12,152 terrain poses and 24 corpse handoffs. Appearance and motion are shared within each palette. |
 | Kepetch Ambusher | 726 | Third Dawn Giant Serpent rig with a raised neck, paired head fins and two coils for the falls. | 41 Classic and 553 Enhanced world checks, 11,284 terrain poses and 24 corpse handoffs. Native trial observed a hidden ambush and the matching corpse. |
 | Skree | 733 | Scaled Third Dawn Wyvern rig with a green atlas and separate combat, flight and fall routes. | 45 Classic and 565 Enhanced world checks, 13,020 terrain poses and 32 corpse handoffs. The flight tests cover group 19 at rest and in motion, at least 36 cm clearance in the sampled terrain and a continuous airborne fall. |
 | Trapdoor Spider | 737 | The Third Dawn Black Widow donor gives this creature its low stance, claw sweep and pounce. Its two falls either splay or draw the legs in. | 43 Classic and 555 Enhanced world checks, 12,152 terrain poses and 24 corpse handoffs. The original sprite has thicker legs. Native trial observed its reveal, corpse and persistence while hidden. |
@@ -32,7 +32,7 @@ The configured occurrence order begins with Acid Slug, Wolf Spider and Chicken L
 | Undead Guardian | 722 | The original Third Dawn Gargoyle rig with folded wings, a dusty gray atlas, separate claw and wing attacks, a cast and two distinct falls. | 45 Classic and 559 Enhanced world checks, 13,020 terrain poses and 24 corpse handoffs. The replay selected the dedicated group 12 cast. Its live behavior remains open. |
 | Fairy Dragon | 718 | Resized Third Dawn Wyvern rig, with a narrower wingspan, olive and gold atlas, fitted neck motion and two ground falls. | 43 Classic and 563 Enhanced World checks, 12,152 terrain poses and 32 corpse handoffs including airborne falls. The original sprite has a more upright outline. |
 
-The original references span 204 Classic members with 9,160 frame headers and thirteen Enhanced sequence members. Wolf Spider, Trapdoor Spider and Fire Ant come from `AnimationFrame4.uop`. The other fitted bodies come from `AnimationFrame3.uop`. The sequences use a peaceful-to-combat transition through group 28. Skree and Fairy Dragon have a flight state that inherits combat action choices. Fairy Dragon's type 14 chooses group 25 and Skree's chooses group 11. The pinned reference names, numeric identities, member hashes and source links are in [the input catalogue](../scripts/later-creature-inputs.json). The original sprites informed the poses and remain local. The Velociraptor license and import pins are in [the Raptor source catalogue](../scripts/raptor-inputs.json).
+The original references span 219 Classic members with 9,795 frame headers and fourteen Enhanced sequence members. Wolf Spider, Trapdoor Spider and Fire Ant come from `AnimationFrame4.uop`. The other fitted bodies come from `AnimationFrame3.uop`. The sequences use a peaceful-to-combat transition through group 28. Skree and Fairy Dragon have a flight state that inherits combat action choices. Fairy Dragon's type 14 chooses group 25 and Skree's chooses group 11. The pinned reference names, numeric identities, member hashes and source links are in [the input catalogue](../scripts/later-creature-inputs.json). The original sprites informed the poses and remain local. The Velociraptor license and import pins are in [the Raptor source catalogue](../scripts/raptor-inputs.json).
 
 ## Build and verify
 
@@ -49,6 +49,32 @@ Use `scripts/test-later-creature-world.gd` with the numeric `--body` listed abov
 ## Native creature content
 
 Run `scripts/build-creature-content.ps1` after preparing ModernUO. Pass `-Install` to add the extension to a chosen server runtime for its next start. Use `-ServerRuntime` for a disposable runtime. The original configured spawners already contain the names ForgottenServant and CoralSnake.
+
+### Iron Beetle
+
+The configured Underworld spawner at Ter Mur (1147, 993, -41) resolves body 714. The local Third Dawn table has no entry for this body. The renderer uses the original Scorpion rig with a shortened rear, the raised stinger faces removed, a segmented steel shell and fitted gestures and falls. It shares the donor's walk in the two ground modes. The fitted poses approximate the 15 indexed members in `AnimationFrame3.uop`. The Enhanced sequence member is `0xdf6129c83c660a13`.
+
+In the isolated native trial, a wild Iron Beetle ate a real stack of valorite ore and retained raw hue 2219 after save and restart. The fixture placed it by a valid mining tile and set maximum Mining skill. Its restored timer produced visible ore and sent group 27 to both clients. The stock player mining group 11 is absent from this body's indexed archive. Both clients received the ore-hued corpse. The server declares four follower slots and requires subdual. The trial passed 17 initial and 19 restart checks. The standard taming interaction and occasional undamaged scale drop remain unverified.
+
+Build this model with `--body 714`. The normal client route passed 43 Classic and 555 Enhanced checks. The terrain trial passed 5,208 living samples and 40 deaths into frozen, ore-hued corpses across level ground, a cross-slope and a 22 cm stair.
+
+[Pinned Iron Beetle reference](https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/Normal/IronBeetle.cs)
+
+### Abyss goblins
+
+The four configured goblins use server body 723. Green Goblin, Green Goblin Alchemist and Gray Goblin use melee AI. Gray Goblin Mage uses mage AI with its own skills and mana range. The green pair keeps the base palette and the gray pair supplies hue 1900.
+
+The isolated native test passed 76 initial and 40 restart checks. The mage damaged a player outside melee range. Both clients received all four living bodies and later received their matching native corpses. Each contained the pinned thigh boots. The fixture constrained movement for repeatable combat range and applied lethal damage. Clan opposition and the green pair's rare Lucky Coin drops are pending.
+
+[Pinned Green Goblin](https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/Normal/GreenGoblin.cs) · [Pinned alchemist](https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/Normal/GreenGoblinAlchemist.cs) · [Pinned Gray Goblin](https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/Normal/GrayGoblin.cs) · [Pinned mage](https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/Normal/GrayGoblinMage.cs)
+
+### Skree
+
+The native Skree resolves by its configured spawn name as body 733. It retains the reference combat statistics, four follower slots, taming threshold, anger response flag, harvest yields and sound set. Its Mystic AI uses ModernUO's Eagle Strike, Bombard, Hail Storm, Nether Cyclone, Spell Plague and Cleansing Winds. Wild Skree can also use Magery. Some spells from the reference Mystic AI have no corresponding spell in the pinned ModernUO build.
+
+Two isolated clients entered the world and observed its autonomous Eagle Strike. The target was in range and outside melee reach. The fixture saved and restarted the server, recovered the same creature with its Mystic AI and applied lethal damage. Both clients received the body 733 corpse. The trial passed 54 initial and 13 restart checks. The full taming interaction and the other spell choices still need native evidence.
+
+[Pinned Skree](https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/Normal/Skree.cs) · [Pinned Mystic AI](https://github.com/ServUO/ServUO/blob/d76bf4443cf76d081ddaf8f57c87ff33749256af/Scripts/Mobiles/AI/Magical%20AI/MysticAI.cs)
 
 ### Garamon in the Underworld
 

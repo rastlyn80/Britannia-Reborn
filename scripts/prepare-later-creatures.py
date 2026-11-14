@@ -12,7 +12,7 @@ from tempfile import TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parent.parent
 VIEWER = ROOT / "Viewer"
-RECIPES = {715: "ruddy-boura", 716: "chicken-lizard", 717: "clockwork-scorpion", 718: "fairy-dragon", 720: "lava-elemental",
+RECIPES = {714: "iron-beetle", 715: "ruddy-boura", 716: "chicken-lizard", 717: "clockwork-scorpion", 718: "fairy-dragon", 720: "lava-elemental",
            722: "undead-guardian", 723: "goblin",
            726: "kepetch", 732: "rotworm", 733: "skree", 736: "wolf-spider", 737: "trapdoor-spider", 738: "fire-ant"}
 STYLES = ("original", "rounded", "modern")

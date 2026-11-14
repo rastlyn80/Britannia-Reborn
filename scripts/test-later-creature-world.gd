@@ -17,7 +17,7 @@ const Shared := {
 	303: ["devourer", [0]],
 	309: ["patchskeleton", [1345]],
 }
-const Fitted := [715, 716, 717, 718, 720, 722, 723, 726, 732, 733, 736, 737, 738]
+const Fitted := [714, 715, 716, 717, 718, 720, 722, 723, 726, 732, 733, 736, 737, 738]
 const GargoyleSpectral := preload("res://Presentation/WraithSpectralSurface.gdshader")
 
 
@@ -103,7 +103,7 @@ func check_creature(world: Node, at: Vector2i, body: int) -> bool:
 		var actor: Node3D = world.avatars[serial].horse_visual
 		if not expect(actor != null and actor.native_body == body and actor.native_hue == hue, "Birth packet retains body and hue"):
 			return false
-		if body in [716, 723]:
+		if body in [714, 716, 723]:
 			var mesh := actor.model.find_children("*", "MeshInstance3D", true, false)[0] as MeshInstance3D
 			var material := mesh.get_surface_override_material(0) as ShaderMaterial
 			if not expect(material != null and material.get_shader_parameter("use_hue") == (hue != 0),
@@ -143,7 +143,7 @@ func check_creature(world: Node, at: Vector2i, body: int) -> bool:
 				if not expect(actor.current_clip == expected, "Enhanced attack selects variant %d" % variant):
 					return false
 				world.game._handle(action_packet(serial, 5, variant))
-				expected = actions["27" if flags and variant % 2 else "26"]
+				expected = actions["1"] if body == 714 else actions["27" if flags and variant % 2 else "26"]
 				if not expect(actor.current_clip == expected, "Enhanced gesture selects mode and variant %d" % variant):
 					return false
 			world.game._handle(action_packet(serial, 3, death_group - 2))
@@ -154,7 +154,7 @@ func check_creature(world: Node, at: Vector2i, body: int) -> bool:
 			return false
 		if body == 717 and not check_scorpion_shell(actor, death_group == 3):
 			return false
-		if not await check_corpse(world, at, serial, body, hue if body in [716, 723] else CorpseHue, fall):
+		if not await check_corpse(world, at, serial, body, hue if body in [714, 716, 723] else CorpseHue, fall):
 			return false
 	return true
 
@@ -194,6 +194,8 @@ func check_scorpion_shell(actor: Node3D, scatters: bool) -> bool:
 
 func body_hue(body: int, flags: int) -> int:
 	match body:
+		714:
+			return 2219 if flags else 0
 		716:
 			return 1173 if flags else 0
 		723:
