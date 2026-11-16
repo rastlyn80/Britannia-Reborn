@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "body": 741,
+  "donor": 9,
+  "archive_frames": [
+    {
+      "group": 2,
+      "frames": 65,
+      "sha256": "cdb9a9e6a1133247cf03131cb0cea2f428c6f7a8f16b583463d1869154d9b689",
+      "url": "http://patch.ak-cdn.eamythic.com/uopatch-sa/283/release/uo/files/base/AnimationFrame2.uop/08ce7f65d423f054"
+    },
+    {
+      "group": 22,
+      "frames": 60,
+      "sha256": "530f717068714c07b3afbb3ad31df2ff78451f71002f552d911f3412fb0252dd",
+      "url": "http://patch.ak-cdn.eamythic.com/uopatch-sa/283/release/uo/files/base/AnimationFrame2.uop/0b65862afbf03fdd"
+    },
+    {
+      "group": 10,
+      "frames": 40,
+      "sha256": "7e693121fb09eec9b7c0df3f1866f7f71abc4072e021d7672b32024672abbe0f",
+      "url": "http://patch.ak-cdn.eamythic.com/uopatch-sa/283/release/uo/files/base/AnimationFrame2.uop/2369f7a24045563f"
+    },
+    {
+      "group": 3,
+      "frames": 55,
+      "sha256": "4c0763aecbb6b5784f82492d9683e4e6deeed3bd32039b3e1b7bdbeffef78771",
+      "url": "http://patch.ak-cdn.eamythic.com/uopatch-sa/283/release/uo/files/base/AnimationFrame2.uop/29e82cf80b61e9d2"
+    },
+    {
+      "group": 24,
+      "frames": 35,
+      "sha256": "64d18f833124bd578c26920001c35b591fad42b9c3ece8889f388cadbc6258a2",
+      "url": "http://patch.ak-cdn.eamythic.com/uopatch-sa/283/release/uo/files/base/AnimationFrame2.uop/4299d9505fca3711"
+    },
+    {
+      "group": 25,
+      "frames": 65,
+      "sha256": "65e328042ea0ec519bb6e05c52e87eb43cbc04dbbd2f067961e24adbdbe733ec",
+      "url": "http://patch.ak-cdn.eamythic.com/uopatch-sa/283/release/uo/files/base/AnimationFrame2.uop/42a99fe4e1bc699c"
+    },
+    {
+      "group": 11,
+      "frames": 55,
+      "sha256": "0540a056629ac9e5403ffadeabc69e6a079abb8d5f9c643acbf0210c5819c120",
+      "url": "http://patch.ak-cdn.eamythic.com/uopatch-sa/283/release/uo/files/base/AnimationFrame2.uop/5f6a52920d245206"
+    },
+    {
+      "group": 0,
+      "frames": 65,
+      "sha256": "e334b584434e03819034827493213196eef1aeada82d812831d4afd4bb99c144",
+      "url": "http://patch.ak-cdn.eamythic.com/uopatch-sa/283/release/uo/files/base/AnimationFrame2.uop/65c6e08635c2b58d"
+    },
+    {
+      "group": 28,
+      "frames": 60,
+      "sha256": "252d1d47744b7881d68a4e587592b9f16e0ea58e89f5b8f2d98a2d0b40e92dad",
+      "url": "http://patch.ak-cdn.eamythic.com/uopatch-sa/283/release/uo/files/base/AnimationFrame2.uop/6e5999a8a443daca"
+    },
+    {
+      "group": 1,
+      "frames": 65,
+      "sha256": "827f17b0cae1f12e90bbbb7ec51c55a27d394c0202392d2fe8694ede57e1df28",
+      "url": "http://patch.ak-cdn.eamythic.com/uopatch-sa/283/release/uo/files/base/AnimationFrame2.uop/72b9277ab71b8230"
+    },
+    {
+      "group": 4,
+      "frames": 65,
+      "sha256": "d284ae28ede5c6cc5bbada26bb7af3ccb261a269160b862bad5ed07113c39905",
+      "url": "http://patch.ak-cdn.eamythic.com/uopatch-sa/283/release/uo/files/base/AnimationFrame2.uop/828660b07f674a69"
+    },
+    {
+      "group": 15,
+      "frames": 40,
+      "sha256": "5b1d8e30a432e1c0b691550db91ed8c2e3e877c00f2d8d547d2a7ef6c6574fb7",
+      "url": "http://patch.ak-cdn.eamythic.com/uopatch-sa/283/release/uo/files/base/AnimationFrame2.uop/929defa3c9effece"
+    },
+    {
+      "group": 26,
+      "frames": 105,
+      "sha256": "94d9358b0274c1d3ab8c78d199adda0d65e49fc55fb683496eb3075ae48d1848",
+      "url": "http://patch.ak-cdn.eamythic.com/uopatch-sa/283/release/uo/files/base/AnimationFrame2.uop/a2da383577cce430"
+    },
+    {
+      "group": 5,
+      "frames": 80,
+      "sha256": "f9863989625350234d35df63a969b99de3b2cce346b2967c0f37253cbec6f1f7",
+      "url": "http://patch.ak-cdn.eamythic.com/uopatch-sa/283/release/uo/files/base/AnimationFrame2.uop/a7d5342e54c0e9de"
+    },
+    {
+      "group": 12,
+      "frames": 75,
+      "sha256": "7fe7e2c36077186e5135411aee5b4ff266bf6b94b63805064cc5b9c3daf24e78",
+      "url": "http://patch.ak-cdn.eamythic.com/uopatch-sa/283/release/uo/files/base/AnimationFrame2.uop/e3534d6f104921da"
+    },
+    {
+      "group": 27,
+      "frames": 80,
+      "sha256": "4121b465c05592398988b244ac4fc5abfddaea562193720ef55000beb9c3b06a",
+      "url": "http://patch.ak-cdn.eamythic.com/uopatch-sa/283/release/uo/files/base/AnimationFrame2.uop/eaf3c13ff9dbc0ef"
+    },
+    {
+      "group": 23,
+      "frames": 95,
+      "sha256": "b80aac86ff0b9b697b8956a3186aafe721bc9627c72427b2983594a4edb8fb22",
+      "url": "http://patch.ak-cdn.eamythic.com/uopatch-sa/283/release/uo/files/base/AnimationFrame2.uop/f5cd85c26398dd44"
+    }
+  ],
+  "donors": {
+    "original": "4f47299804ea0d97e847b8e83c55283b34042d1f22eb2643e9318d92522cc1b8",
+    "rounded": "8aada06b9aa88b7cde96a359540eff1240220d65138ae992370c09ca848f71a9",
+    "modern": "93e925b9d085a4c099299065c80a87fb98a3d4125a66fce06c1f8bf674b437f1"
+  }
+}

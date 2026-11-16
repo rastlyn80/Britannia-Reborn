@@ -39,7 +39,7 @@ static func check(driver, world: Node, at: Vector2i, enhanced: bool) -> Dictiona
 	report.checks += 1
 	if enhanced:
 		report.fire_breath = check_breath(driver, world, at)
-		report.checks += 8
+		report.checks += 9
 	return report
 
 
@@ -86,6 +86,9 @@ static func check_breath(driver, world: Node, at: Vector2i) -> Dictionary:
 	assert(effects.get_child_count() == previous + 1)
 	var bolt := effects.get_child(previous) as MeshInstance3D
 	assert(bolt.global_position.is_equal_approx(origin))
+	world.game._handle(Replay.attack_packet(serial))
+	assert(actor.current_clip == Breath and actor.get_meta("native_action").action == 12 and actor.fire_breath_origin() is Vector3)
+	actor._process(actor.action_remaining + .001)
 	world.game._handle(Replay.attack_packet(serial))
 	assert(actor.current_clip != Breath and actor.get_meta("native_action").action == 4 and actor.fire_breath_origin() == null)
 	return {"jaw_open_radians": opening, "chest_distance": chest.distance_to(origin)}

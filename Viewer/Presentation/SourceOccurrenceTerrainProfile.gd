@@ -288,6 +288,16 @@ static func enable() -> Array[int]:
 		Registry.entries[body] = prepared
 		enabled.append(body)
 	enabled.append_array(preload("res://Presentation/SourceLaterCreatureProfile.gd").enable())
+	if preload("res://Presentation/NavreyProfile.gd").enable():
+		enabled.append(735)
+	if preload("res://Presentation/StygianDragonProfile.gd").enable():
+		enabled.append(826)
+	if preload("res://Presentation/MaddeningHorrorProfile.gd").enable():
+		enabled.append(721)
+	if preload("res://Presentation/MedusaProfile.gd").enable():
+		enabled.append(728)
+	if preload("res://Presentation/SlasherProfile.gd").enable():
+		enabled.append(741)
 	enabled.append_array(preload("res://Presentation/SourceTerMurProfile.gd").enable())
 	if preload("res://Presentation/SourceSnowLeopardProfile.gd").enable():
 		enabled.append(64)

@@ -6,6 +6,10 @@ const Ground := preload("res://Presentation/SourceGroundLookup.gd")
 const Registry := preload("res://Presentation/CreatureRegistry.gd")
 const Snapshots := preload("res://Presentation/CreatureCorpseSnapshot.gd")
 const StepHeight := .22
+const Breath := preload("res://Presentation/HellCatFireBreath.gd")
+const TerrainProfile := preload("res://Presentation/SourcePantherLivingTerrainProfile.gd")
+var predator := "--predator" in OS.get_cmdline_user_args()
+var body := TerrainProfile.PredatorBody if predator else TerrainProfile.Body
 const Living := [["Fidget", .25], ["Fidget", .833333], ["Walk", .5], ["Hit", .25]]
 var enhanced := "--enhanced" in OS.get_cmdline_user_args()
 var transfers := 0
@@ -23,6 +27,10 @@ func _initialize() -> void:
 func run() -> void:
 	if enhanced:
 		assert(preload("res://Presentation/EnhancedCreatureProfile.gd").enable())
+	TerrainProfile.enable()
+	assert(Registry.entry(body).get("presentation_script") == TerrainProfile.Renderer)
+	var living := Living + [[Breath.Clip, .82]] if predator else Living
+	var death_clips := ["Death"] if predator else ["Death", "Death2"]
 	var lower := box(Vector3(6, .2, 6))
 	var upper := box(Vector3(4, .2, 6))
 	upper.position = Vector3(2, StepHeight - .1, 0)
@@ -37,13 +45,13 @@ func run() -> void:
 		await physics_frame
 		for x: float in ([-.14, .14] if split else [0.0]):
 			for yaw: float in [0.0, PI * .5, PI * 1.5]:
-				for start: Array in Living:
+				for start: Array in living:
 					replay(x, yaw, normal, start[0], start[1])
-				for clip: String in ["Death", "Death2"]:
+				for clip: String in death_clips:
 					replay(x, yaw, normal, clip, .32)
 	assert(transfers == 72 and frames == transfers * 25)
 	assert(greatest_jump < .001 and minimum_gap >= .0019 and highest_final_gap < .0021)
-	print("PANTHER FALL: ", transfers, " transfers, ", frames, " poses, maximum initial jump ", greatest_jump,
+	print("PREDATOR HELLCAT FALL: " if predator else "PANTHER FALL: ", transfers, " transfers, ", frames, " poses, maximum initial jump ", greatest_jump,
 		" m, minimum gap ", minimum_gap, " m, largest final gap ", highest_final_gap, " m")
 	lower.queue_free()
 	upper.queue_free()
@@ -63,12 +71,12 @@ func box(size: Vector3) -> StaticBody3D:
 
 
 func actor_at(x: float, yaw: float) -> Node3D:
-	var actor := Cougar.new()
-	actor.entry = Registry.entry(214)
+	var actor := Registry.create(body) as Cougar
+	assert(actor != null)
 	actor.position = Vector3(x, StepHeight if x > 0.0 else 0.0, 0)
 	actor.rotation.y = yaw
 	root.add_child(actor)
-	actor.apply_identity(214, 0x901)
+	actor.apply_identity(body, 0x901)
 	actor.set_process(false)
 	actor.set_physics_process(false)
 	actor.animator.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
@@ -80,9 +88,11 @@ func replay(x: float, yaw: float, normal: Vector3, start: String, phase: float) 
 	var split := normal == Vector3.ZERO
 	if start in ["Death", "Death2"]:
 		source._physics_process(1.0 / 60.0)
-		assert(source.receive_action({"protocol": "classic", "action": 12 if start == "Death" else 8}))
+		assert(source.receive_action({"protocol": "classic", "action": 8 if predator or start == "Death2" else 12}))
 		assert(source.current_clip == start)
 	else:
+		if start == Breath.Clip:
+			assert(Breath.prepare(source, body))
 		source.current_clip = start
 		source.animator.play(start, 0)
 	source.animator.advance(0.0)
@@ -114,7 +124,7 @@ func replay(x: float, yaw: float, normal: Vector3, start: String, phase: float) 
 			highest_final_gap = maxf(highest_final_gap, gap)
 		frames += 1
 	var captured := Snapshots.capture(transition, transition.corpse_snapshot_floor())
-	assert(not captured.is_empty() and captured.body == 214)
+	assert(not captured.is_empty() and captured.body == body)
 	var frozen := captured.scene.instantiate() as Node3D
 	assert(frozen.get_meta("native_hue") == 0x901 and frozen.get_meta("death_clip") == expected)
 	frozen.free()

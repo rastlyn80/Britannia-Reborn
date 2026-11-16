@@ -1,3 +1,35 @@
+# Slasher of Veils
+
+Body 741 has a refitted Third Dawn daemon, animated mantle, two falls and a dyed static corpse. Both isolated clients saw approach fear, timed recovery, fire and mana drain. [Source and test scope](SLASHER_OF_VEILS.md)
+
+# Medusa
+
+Body 728 now has nine jointed snake locks and the dyed held composite bow. Both native clients witnessed the AI gaze, timed recovery, arrow nock and dyed corpse. [Source and verification](MEDUSA.md)
+
+# Maddening Horror
+
+Body 721 now has animated facial and lower-body tendrils. The shipped Abyss spawner, both native mana-drain trials and both dyed static corpse orders have isolated evidence. [Source and test scope](MADDENING_HORROR.md)
+
+# Stygian Dragon
+
+The shipped Ter Mur lair now spawns body 826. The refitted Third Dawn red dragon passed both native breath and dyed corpse trials. Its two falls were checked on both corpse packet orders. [Sources and evidence](STYGIAN_DRAGON.md)
+
+# Navrey Night-Eyes
+
+The shipped Underworld spawner created body 735. Its refitted Third Dawn spider passed the isolated web, Acid Popper, timeout and corpse trials in both client profiles. Terrain tests sampled 3,510 poses. [Source, scope and reproduction](NAVREY_NIGHT_EYES.md)
+
+# Underworld Sentinel Spider
+
+The shipped Ter Mur spawner created body 157 with hue 1141. Separate Classic and Enhanced arena trials passed 13 checks each for the original spider rig, native combat and the dyed static corpse. [Sentinel evidence](UNDERWORLD_SENTINEL_AND_ABYSS_REFERENCES.md)
+
+# Six-facet creature extension audit
+
+ModernUO matched all 535 configured spawn names with the extension active. The audit resolves 480 mobiles, including 77 extension names. Each extension name passed 16 isolated constructor samples. [Occurrence order and scope](CREATURE_OCCURRENCE_ORDER.md)
+
+# Creature breath attacks
+
+Twenty-six native fire-breath cases and the cold breath of Crystal Hydra, both Skeletal Dragons and Leviathan preserve the animated muzzle through the 1.3-second server windup. Classic and Enhanced passed isolated native trials using stock AI or directly invoking the native ability, as described in each test record. Crystal Hydra hit five of six eligible targets. The dyed Crystal Hydra and Renowned Skeletal Dragon kept their hues through the static corpse handoff. Reptalon and Rend retain their animal melee and separate mounted action routes. The Lava Snake's six native hues select its fire-breath windup while the ordinary and Ice Snake retain their collapse. [Dragons, Drakes and Wyrms](DRAGON_BREATH_TIMING.md) · [Sea serpents](SEA_SERPENT_BREATH.md) · [Hell Hound](HELL_HOUND_BREATH.md) · [Slith](SLITH_BREATH.md) · [Hydra and Abscess](HYDRA_BREATH.md) · [Crystal Hydra](CRYSTAL_HYDRA_BREATH.md) · [Fire Gargoyle](FIRE_GARGOYLE_BREATH.md) · [Reptalon and Rend](REPTALON_BREATH.md) · [Skeletal Dragons](SKELETAL_DRAGON_BREATH.md) · [Lava Snake](LAVA_SNAKE_BREATH.md) · [Hell Cat and Predator Hellcat](HELL_CAT_BREATH.md) · [Lava Lizard and Lava Serpent](LAVA_LIZARD_AND_SERPENT_BREATH.md) · [Predator Hellcat terrain](PREDATOR_HELLCAT_TERRAIN.md) · [Leviathan](LEVIATHAN_BREATH.md) · [Fire Daemon](FIRE_DAEMON_BREATH.md) · [Vollem](VOLLEM_BREATH_TIMING.md) · [Chaos Dragoons](CHAOS_DRAGOON_BREATH.md)
+
 # Corpse facing and selection
 
 When a death packet brings the direction for an existing static corpse, the client now turns the same corpse and updates its selection bounds in place. A corpse arriving later starts in the recorded direction. Snapshots retain the exact pose and placement captured at the end of the fall. The combined profile passed both Classic and Enhanced replays for Lady Melisande, the Perch Parrot and the Underworld Gremlin. The parrot passed 25 checks per profile in headless Godot and on the Forward+ renderer, including both packet orders and three native hues. Headless still logs a dummy-renderer material diagnostic. Forward+ completed both runs without that diagnostic. Late dye updates continued to preserve the captured rabbit and drake poses for bodies 205, 60 and 61.

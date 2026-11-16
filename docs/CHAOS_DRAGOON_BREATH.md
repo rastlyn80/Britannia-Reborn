@@ -1,0 +1,13 @@
+# Chaos Dragoon and Elite fire breath
+
+ModernUO's stock Chaos Dragoon and Chaos Dragoon Elite use human body 400. The ordinary rider wears layer 25 item `0x3EBD`, which displays Swamp Dragon 794. The Elite wears `0x3EBE`, which displays barded Swamp Dragon 799 with the server's armour hue. Both riders send the five-frame Classic action 12 through their own serial, even when the Enhanced presentation is enabled. The moving effect uses the same rider serial and graphic `0x36D4`.
+
+In the baseline client, the mount stayed idle and the projectile started 2.33–2.35 metres from its mouth. The client now interprets the exact cue for the named stock riders wearing the Dragon Helm and Chaos Shield. The mounted dragon reuses its own archived `Attack2` motion for the windup, and the projectile starts from the animated head socket. The rider stays seated. The dragon returns to its usual gait after the cue, and dismount or a mount replacement invalidates the old projectile origin.
+
+The disposable ModernUO trial instantiated both stock constructors and invoked their native ability with a competing melee cue scheduled by the test. Classic and Enhanced passed 26 checks each, covering both mount forms, stock identity, the timing, damage, rider seating and distance from the mouth. All four shots started at the mouth to the precision measured. The server launched at 1,301–1,306 ms and the native damage callback dealt 18–36 damage. The control gave the exact action packet to a rider with the same equipment under a different name and the mount stayed out of the breath pose.
+
+A second pair of trials let the stock AI choose the attack after a nearby Ogre Lord provoked the rider. Classic and Enhanced passed 26 checks each without invoking the ability or injecting a melee cue. The Ogre Lord was held in the arena to keep the test repeatable.
+
+The full prepared Trammel client passed 35 checks per mode with the native death sequence included. The fixture called the rider's normal death method after combat. The server released both mounts as separate plain Swamp Dragons (body 794, hue `0x851`), removing the Elite's barding. Both clients played the rider fall and handed it off to the visible static corpse (`0x2006`, body 400). The loose dragon stayed independent of the corpse and kept its server hue. An encounter at a naturally placed spawner is still unverified.
+
+The Swamp Dragon's mesh, texture and source animation hashes are in [the creature art pipeline](CREATURE_ART_PIPELINE.md#source-preserving-orcswamp-integration---3-november-2026) and `scripts/source-preserving-inputs.json`. The staged native fixture and original baseline output are private. The public change uses the existing mount assets and adds no game data.

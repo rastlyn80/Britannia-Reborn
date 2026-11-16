@@ -267,6 +267,13 @@ func check_vollem_breath(world: Node, visual: Node3D, serial: int, request: Pack
 	if not expect(visual.current_clip == "VollemFireBreath" and visual.action_remaining > 2.0,
 			"The stock five-frame Vollem windup starts the dedicated visible breath"):
 		return false
+	var melee := request.duplicate()
+	melee[6] = 5
+	world.game._handle(melee)
+	world.game._handle(action_packet(serial, 0, 1))
+	if not expect(visual.current_clip == "VollemFireBreath" and visual.action_remaining > 2.0,
+			"Overlapping native melee keeps Vollem's breath windup"):
+		return false
 	var length: float = visual.animator.get_animation(visual.current_clip).length
 	visual.animator.seek(length * 1.3 / 2.1, true)
 	visual.animator.advance(0.0)

@@ -7,8 +7,17 @@ of the generated report; raw spawn inputs and reports remain local.
 import argparse, collections, hashlib, html, json, re
 from pathlib import Path
 
+from creature_native_literals import native_body_literals
+
 ROOT = Path(__file__).resolve().parents[1]
-CLASS = re.compile(r'\bpublic\s+(?P<mods>(?:(?:abstract|sealed|partial|static|new)\s+)*)class\s+(?P<name>\w+)(?:<[^>{}]+>)?\s*(?::\s*(?P<base>[\w.]+))?')
+CREATURE_EXTENSION = 'Server/CreatureContent'
+CREATURE_ASSEMBLY = 'BritanniaReborn.CreatureContent'
+CLASS = re.compile(
+    r'^(?P<indent>[ \t]*)(?P<attributes>(?:\[[^\]\n]*\]\s*)*)\bpublic\s+'
+    r'(?P<mods>(?:(?:abstract|sealed|partial|static|new)\s+)*)class\s+'
+    r'(?P<name>\w+)(?:<[^>{}]+>)?\s*(?::\s*(?P<base>[\w.]+))?',
+    re.M,
+)
 
 def read(path):
     return json.loads(path.read_text(encoding='utf-8-sig'))
@@ -48,23 +57,43 @@ def allocate(count, entries):
         active -= capped
     return result
 
-def class_index(source):
+def class_index(source, extension=None):
     classes = {}
-    paths = [p for project in ['UOContent', 'Server'] for p in (source / 'Projects' / project).rglob('*.cs')]
-    for path in sorted(paths):
-        if set(path.relative_to(source).parts) & {'obj', 'bin'}:
-            continue
-        text = path.read_text(encoding='utf-8-sig')
-        for match in CLASS.finditer(text):
-            name = match['name']
-            row = classes.setdefault(name.casefold(), {'name': name, 'base': None, 'paths': [], 'abstract': False})
-            if match['base']:
-                parent = match['base'].rsplit('.', 1)[-1]
-                if row['base'] not in [None, parent]:
-                    row['ambiguous'] = True
-                row['base'] = parent
-            row['paths'].append(path.relative_to(source).as_posix())
-            row['abstract'] |= 'abstract' in match['mods'].split()
+    aliases = {}
+    roots = [(source / 'Projects' / project, source, '') for project in ('UOContent', 'Server')]
+    if extension is not None:
+        roots.append((extension, extension, CREATURE_EXTENSION + '/'))
+    for folder, relative_root, prefix in roots:
+        for path in sorted(folder.rglob('*.cs')):
+            relative = path.relative_to(relative_root)
+            if set(relative.parts) & {'obj', 'bin'}:
+                continue
+            text = path.read_text(encoding='utf-8-sig')
+            for match in CLASS.finditer(text):
+                name = match['name']
+                row = classes.setdefault(name.casefold(), {'name': name, 'base': None, 'paths': [], 'abstract': False})
+                if match['base']:
+                    parent = match['base'].rsplit('.', 1)[-1]
+                    if row['base'] not in [None, parent]:
+                        row['ambiguous'] = True
+                    row['base'] = parent
+                row['paths'].append(prefix + relative.as_posix())
+                row['abstract'] |= 'abstract' in match['mods'].split()
+                if prefix:
+                    # The extension uses same-indent closing braces for each
+                    # declaration. Attribute and constructor lines are deeper.
+                    end = re.search(r'^' + re.escape(match['indent']) + r'\}', text[match.end():], re.M)
+                    if end:
+                        declaration = text[match.start():match.end() + end.start()]
+                        row.setdefault('body_literals', set()).update(native_body_literals(declaration))
+                    declared = re.findall(r'\bTypeAlias\(([^)]*)\)', match['attributes'])
+                    for value in re.findall(r'"([\w.]+)"', ' '.join(declared)):
+                        alias = value.rsplit('.', 1)[-1].casefold()
+                        names = aliases.setdefault(alias, set())
+                        names.add(name.casefold())
+    for alias, names in aliases.items():
+        if len(names) == 1 and alias not in classes:
+            classes[alias] = classes[next(iter(names))]
     return classes
 
 def ancestors(name, classes):
@@ -74,6 +103,35 @@ def ancestors(name, classes):
         chain.append(key)
         name = classes.get(key, {}).get('base')
     return chain
+
+
+def later_prepared_routes(art, profile_script):
+    kinds = re.search(r'const SupportedBodies\s*:?=\s*\{([^}]*)\}', profile_script.read_text(encoding='utf-8'))
+    if not kinds:
+        raise ValueError('Later creature profile body list changed')
+    folder = art / 'later-prepared'
+    manifest = folder / 'profile.json'
+    if not manifest.is_file():
+        return {}
+    profile = read(manifest)
+    if not isinstance(profile, dict) or profile.get('schema') != 1 or not isinstance(profile.get('bodies'), dict):
+        return {}
+    routes = {}
+    for body, kind in re.findall(r'(\d+)\s*:\s*"([^"]+)"', kinds[1]):
+        prepared = profile['bodies'].get(body)
+        hashes = prepared.get('asset_sha256') if isinstance(prepared, dict) else None
+        if not isinstance(hashes, dict):
+            continue
+        for style in ('original', 'rounded', 'modern'):
+            digest = hashes.get(style, '')
+            if not isinstance(digest, str) or not re.fullmatch(r'[0-9a-f]{64}', digest):
+                break
+            model = folder / f'{body}-{style}-{digest}.scn'
+            if not model.is_file() or sha(model) != digest:
+                break
+        else:
+            routes[int(body)] = kind
+    return routes
 
 def source_files(folder, era, maps):
     return sorted(p for group in ['shared', era] for facet in maps
@@ -183,22 +241,31 @@ def named_native_class(record, path):
     return None
 
 
-def apply_native_lookup(result, path):
-    """Check the occurrence scan against a fresh isolated server lookup."""
+def read_native_lookup(path, project_creature_extension):
+    """Read results from an isolated server with the declared assembly scope."""
     report = read(path)
     expected_assemblies = {
         'server': ROOT / 'Server/runtime/Server.dll',
         'content': ROOT / 'Server/ModernUO/Distribution/Assemblies/UOContent.dll',
     }
+    if project_creature_extension:
+        expected_assemblies['creatures'] = ROOT / CREATURE_EXTENSION / 'bin/Release/net10.0' / (CREATURE_ASSEMBLY + '.dll')
     for name, assembly in expected_assemblies.items():
-        if report['assemblies_sha256'][name] != sha(assembly):
+        if report['assemblies_sha256'].get(name) != sha(assembly):
             raise ValueError(f'Native spawn lookup assembly changed: {name}')
+    if not project_creature_extension and 'creatures' in report['assemblies_sha256']:
+        raise ValueError('The native lookup must use the same project extension scope as the occurrence scan')
     actual = {}
     for row in report['rows']:
         key = row['name'].casefold()
         if key in actual:
             raise ValueError(f'Duplicate native spawn name: {key}')
         actual[key] = row
+    return report, actual
+
+
+def apply_native_lookup(result, path, report, actual):
+    """Check the occurrence scan against the isolated server lookup."""
     expected = {row['name'].casefold(): 'mobile' for row in result['rows']}
     expected.update((name.casefold(), 'item') for name in result['excluded_items'])
     expected.update((name.casefold(), 'unresolved') for name in result['unresolved_types'])
@@ -206,11 +273,19 @@ def apply_native_lookup(result, path):
         row = actual.get(name)
         if row is None or row['category'] != category or row['isAbstract']:
             raise ValueError(f'Occurrence scan differs from the native spawn lookup: {name}')
+    for row in result['rows']:
+        native = actual[row['name'].casefold()]
+        if any(relative.startswith(CREATURE_EXTENSION + '/') for relative in row['source_paths']):
+            if native['assembly'] != CREATURE_ASSEMBLY or native['type'].rsplit('.', 1)[-1] != row['canonical_type']:
+                raise ValueError(f'Project creature resolved to a different type: {row["name"]}')
     for row in result['unresolved_occurrences']:
-        row['native_lookup'] = 'no matching type in the pinned server'
+        row['native_lookup'] = 'no matching type in the tested server'
+    constructor_rows = [row for row in result['rows'] if row['sampled_constructor_bodies']]
     result['native_spawn_name_lookup'] = {
         'report_sha256': sha(path), 'assemblies_sha256': report['assemblies_sha256'],
         'checked_names': len(expected), 'categories': dict(collections.Counter(expected.values())),
+        'sampled_constructor_names': len(constructor_rows),
+        'successful_constructor_samples': sum(row['successful_constructor_samples'] for row in constructor_rows),
     }
 
 
@@ -219,6 +294,7 @@ def main():
     parser.add_argument('--maps', nargs='+', default=['trammel'])
     parser.add_argument('--output', type=Path, default=ROOT / 'outputs/creatures/frequency.json')
     parser.add_argument('--native-lookup', type=Path, help='isolated native spawn-name lookup report')
+    parser.add_argument('--stock-only', action='store_true', help='exclude project creature classes for a stock server audit')
     args = parser.parse_args()
     maps = {v.casefold() for v in args.maps}
     if not maps <= {'trammel', 'felucca', 'ilshenar', 'malas', 'tokuno', 'termur'}:
@@ -234,7 +310,12 @@ def main():
     files = source_files(ROOT / 'Server/runtime/Data/Spawns', era, maps)
     if not files:
         raise ValueError('No active spawn definitions')
-    classes = class_index(source)
+    extension = None if args.stock_only else ROOT / CREATURE_EXTENSION
+    classes = class_index(source, extension)
+    native_report, native_types = read_native_lookup(args.native_lookup, extension is not None) if args.native_lookup else ({}, {})
+    extension_inputs = {relative: sha(ROOT / relative) for relative in sorted({
+        path for info in classes.values() for path in info['paths'] if path.startswith(CREATURE_EXTENSION + '/')
+    })}
     raw, count = occurrences(files, maps)
     art = ROOT / 'Viewer/local-art/creatures'
     index = read(art / 'source-index.json')
@@ -242,7 +323,10 @@ def main():
     public = ROOT / 'Viewer/Art/Creatures/index.json'
     if public.exists():accepted = [row for row in read(public)['entries'] if row.get('status')=='validated'] + accepted
     routed = {int(b['body']): row['kind'] for row in accepted if not row.get('mount_only') for b in row['bodies']}
-    routed.update(human_npc_routes())
+    profile_script = ROOT / 'Viewer/Presentation/SourceLaterCreatureProfile.gd'
+    for body, kind in later_prepared_routes(art, profile_script).items():
+        routed.setdefault(body, kind)
+    routed.update(human_npc_routes(ROOT))
     for file, constants in [('EquineRegistry.gd', ['BODIES', 'COMPATIBILITY', 'DISTINCT']), ('MountVisual.gd', ['BODIES']), ('AnimalVisual.gd', ['BODIES'])]:
         for constant in constants:
             for body in literal_registry(ROOT / 'Viewer/Presentation' / file, constant):
@@ -275,9 +359,11 @@ def main():
         human = any(set(p.split('/')) & human_groups for c in chain for p in classes.get(c, {}).get('paths', []))
         bodies = set(); mapping = 'unresolved'
         for c in chain:
-            bodies = set().union(*(paths_to_bodies[p] for p in classes.get(c, {}).get('paths', [])))
+            declaration = classes.get(c, {})
+            bodies = set(declaration.get('body_literals', ())).union(
+                *(paths_to_bodies[p] for p in declaration.get('paths', [])))
             if bodies:
-                mapping = 'literal source file' if c == key else 'inherited literal candidates'
+                mapping = 'literal class body' if c == key else 'inherited literal candidates'
                 break
         if key in heartwood:
             bodies = {heartwood[key]}
@@ -286,23 +372,33 @@ def main():
             bodies = {khaldun[key]}
             mapping = 'Named Khaldun human constructor'
         literal_bodies = bodies.copy()
-        bodies, only_human = identity_candidates(literal_bodies, witnessed[key])
+        named_witnesses = witnessed[key] | witnessed[info['name'].casefold()]
+        bodies, only_human = identity_candidates(literal_bodies, named_witnesses)
         if bodies != literal_bodies:
             mapping += '; positive named constructor witnesses (not exhaustive)'
+        native = native_types.get(key, {})
+        sample_count = native.get('successfulConstructors', 0)
+        sampled = set(native.get('bodies', ())) if sample_count and not native.get('constructorError') else set()
+        if sampled:
+            if sampled - bodies:
+                mapping = 'Isolated default constructor samples (not exhaustive)' if not bodies else mapping + '; isolated default constructor samples'
+            bodies, only_human = identity_candidates(bodies, sampled)
         inactive_bodies = set()
         if key in configured_mages:
             inactive_bodies = bodies - configured_mages[key]
             bodies, only_human = identity_candidates(configured_mages[key], set())
             mapping = 'Reviewed exact native mage source and configured Core.UOR branch; other-era candidates retained separately'
         human |= only_human
-        missing = missing_routes(bodies, routed, witnessed[key])
+        missing = missing_routes(bodies, routed, named_witnesses)
         state = 'shared human graphics; race/cosmetics audit separate' if human else 'unrouted' if bodies and missing == bodies else 'partial route' if missing else 'body route present; fidelity/action work remains' if bodies else 'identity needs audit'
         row.update(estimated_slots=round(row['estimated_slots'], 6), files=sorted(row['files']),
+                   canonical_type=info['name'],
                    body_candidates=sorted(bodies), body_mapping=mapping, missing_body_routes=sorted(missing),
                    literal_body_candidates=sorted(literal_bodies),
                    inactive_era_body_candidates=sorted(inactive_bodies),
-                   graphics=state, human=human, witnessed_constructor_bodies=sorted(witnessed[key]),
-                   specialized_human_bodies_with_native_evidence=sorted(bodies & witnessed[key] & {400,401,402,403}),
+                   graphics=state, human=human, witnessed_constructor_bodies=sorted(named_witnesses),
+                   sampled_constructor_bodies=sorted(sampled), successful_constructor_samples=sample_count,
+                   specialized_human_bodies_with_native_evidence=sorted(bodies & named_witnesses & {400,401,402,403}),
                    bodies_with_native_evidence=sorted(bodies & body_evidence),
                    routed_bodies_missing_native_evidence=sorted((bodies & routed.keys()) - body_evidence),
                    source_paths=info['paths'])
@@ -315,8 +411,9 @@ def main():
         row['creature_rank'] = rank
     queue = [r['name'] for r in creatures if r['graphics'] in ['unrouted', 'partial route', 'identity needs audit']]
     result = {'maps': sorted(maps), 'era': era, 'server_pin': index['server_pin'], 'active_spawners': count,
+              'project_creature_extension': extension is not None,
               'scope': 'Configured spawn frequency, not a live full-world census. Rank by capped probability-weighted shared capacity; spawn-location counts are exact after identical cross-file definitions are counted once. Capacity is an exposure proxy, not an exact random draw expectation or equilibrium population. Items compete for slots before being excluded. Indirect camp/quest/summon spawns, death rates, terrain failures and manual placements are not counted. Existing routes are not final fidelity/action completion.',
-              'inputs': {str(p.relative_to(ROOT)): sha(p) for p in [expansion_path, heartwood_path, *khaldun_paths, *files]},
+              'inputs': {str(p.relative_to(ROOT)): sha(p) for p in [expansion_path, heartwood_path, profile_script, *khaldun_paths, *files]} | extension_inputs,
               'rows': rows, 'next_unrouted_creatures': queue, 'excluded_items': sorted(excluded), 'unresolved_types': sorted(unresolved)}
     result['creature_work_order'] = [r['name'] for r in creatures]
     result['next_native_evidence_gaps'] = [
@@ -346,14 +443,14 @@ def main():
     result['recipe_sha256'] = sha(Path(__file__))
     result['unresolved_occurrences'] = [{**raw[n.casefold()], 'files': sorted(raw[n.casefold()]['files'])} for n in sorted(unresolved)]
     if args.native_lookup is not None:
-        apply_native_lookup(result, args.native_lookup)
+        apply_native_lookup(result, args.native_lookup, native_report, native_types)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2), encoding='utf-8')
     table = ''.join('<tr><td>%s</td><td>%s</td><td>%s</td><td>%.1f</td><td>%s</td></tr>' %
                     (r['creature_rank'], html.escape(r['name']), r['spawn_locations'], r['estimated_slots'], html.escape(r['graphics'])) for r in creatures)
     summary = f"Named creature class and body pairs with native evidence: {result['named_constructor_pairs']['witnessed']} of {named_pairs}."
     if args.native_lookup is not None:
-        summary += f' Configured names with no matching type in the pinned server: {len(unresolved)}.'
+        summary += f' Configured names with no matching type in the tested server: {len(unresolved)}.'
     args.output.with_suffix('.html').write_text('<!doctype html><meta charset="utf-8"><title>Creature occurrence order</title><style>body{background:#20303a;color:#e9edef;font:16px system-ui;margin:30px}td,th{text-align:left;padding:8px;border-bottom:1px solid #52616b}table{border-collapse:collapse}p{max-width:1000px;line-height:1.5}</style><h1>Creature work order: '+html.escape(', '.join(sorted(maps)))+'</h1><p>'+html.escape(result['scope'])+'</p><p>'+html.escape(summary)+'</p><p>Next missing replacements: '+html.escape(', '.join(queue[:20]))+'</p><table><tr><th>Rank</th><th>Native type</th><th>Spawn locations</th><th>Estimated shared slots</th><th>Current graphics</th></tr>'+table+'</table>', encoding='utf-8')
     print('CREATURE OCCURRENCE ORDER:', count, 'active spawners;', len(creatures), 'non-human mobile types;', len(unresolved), 'unresolved types')
     print('NEXT MISSING REPLACEMENTS:', ', '.join(queue[:20]))

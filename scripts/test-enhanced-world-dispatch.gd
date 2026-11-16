@@ -647,7 +647,7 @@ func check_cat(world: Node, at: Vector2i, enhanced: bool) -> int:
 	packet.append_array(PackedByteArray([0, 12, 0, 5, 0, 1, 0, 0, 0]))
 	world.game._handle(packet)
 	var hell_cat: Node3D = world.avatars[serial].horse_visual
-	assert(hell_cat.current_clip == "Alert" and not hell_cat.dead)
+	assert(hell_cat.current_clip == "hell_cat/FireBreath" and not hell_cat.dead)
 	assert(hell_cat.get_meta("native_action") == world.game.last_mobile_actions[serial])
 	return checks + 2
 

@@ -1,3 +1,31 @@
+# Slasher of Veils follow-up
+
+Verify spell retaliation and add encounter rewards. Refine the claws, mantle and remaining source poses. [Current evidence](SLASHER_OF_VEILS.md)
+
+# Medusa follow-up
+
+Verify autonomous bow shots and add Gorgon Lens deflection, helpers, harvesting and encounter rewards. Refine the head, snake shapes and shield. [Current evidence](MEDUSA.md)
+
+# Maddening Horror follow-up
+
+Fit finer tentacle variants and verify autonomous necromancy, mana-drain timing and the rare corpse drop. [Current evidence](MADDENING_HORROR.md)
+
+# Stygian Dragon encounter follow-up
+
+Add the meteor, fire line, stygian fireball, boss head and reward progression. Fit closer armour, horns and aerial motions. [Current evidence](STYGIAN_DRAGON.md)
+
+# Navrey encounter follow-up
+
+Add the encounter controller, pillars, silk geometry, quests and reward progression at the verified Underworld spawn. Continue the other missing Abyss bodies against the decoded reference. [Navrey trial scope](NAVREY_NIGHT_EYES.md)
+
+# Remaining configured spawn names
+
+The Sentinel Spider resolves through the shipped spawner. Rebuild the full occurrence audit with it installed and continue the remaining names. The next Abyss creatures have 2D animation references and need body fitting and encounter code. Keep runtime name lookup, sampled body IDs and real client encounter evidence separate. [Occurrence audit](CREATURE_OCCURRENCE_ORDER.md)
+
+# Creature breath follow-up
+
+Collect wild encounter evidence for the arena cases and review the remaining breath attacks in configured occurrence order. Crystal Hydra still needs a native Ter Mur encounter and full peerless progression. Predator Hellcat has a stock Deceit Brazier spawn and corpse witness. Leviathan has a Fabled Fishing Net spawn and native corpse loot witness. The Chaos Dragoons have native rider-death and loose-mount evidence and still need a placed encounter trial. Deceit placement, Leviathan artifact rewards and the remaining encounter routes still need verification. [Crystal Hydra evidence](CRYSTAL_HYDRA_BREATH.md)
+
 # Orc Scout follow-up
 
 The Scout's recovered yeast can be saved and looted. Brewing remains open. [Current evidence](LATER_NATIVE_CREATURES.md#orc-scout-and-bloodworm)

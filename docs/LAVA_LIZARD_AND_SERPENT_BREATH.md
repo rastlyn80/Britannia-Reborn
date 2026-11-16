@@ -1,0 +1,7 @@
+# Lava Lizard and Lava Serpent fire breath
+
+The Lava Lizard was already using its original Third Dawn `cp_emit_mouth` bone. The Lava Serpent was already using a fitted mouth offset on its own Third Dawn head. Both retained their original prepared meshes, materials, movement and corpse handling. See the provenance and terrain results for [Lava Lizard](LAVA_LIZARD_TERRAIN.md) and [Lava Serpent](LAVA_SERPENT_TERRAIN.md).
+
+The earlier trials invoked the native ability with a controlled target. With stock combat AI, a Lava Lizard sent a native melee cue 1,014 ms into the breath. That cue replaced the windup before the projectile at 1,294 ms. The client now lets the active breath finish when it receives an overlapping melee action from either creature. A fall can still interrupt the breath and hand off to the normal static corpse.
+
+The decoded World replay passed 13 checks in Classic and 13 in Enhanced. Each profile exercises both creatures, intervening Classic and new melee cues, the actual effect presenter, and the corpse. The corrected isolated server trial passed 18 checks per profile with stock AI. Across four observations, the bolts left the animated mouths 1,301–1,308 ms after the cue and target health dropped by 7–47. One Lava Serpent sent a native melee cue 1,021 ms into the windup. The replay exercises the overlap even when the server's combat decision does not produce it. Wild encounters and the Lava Lizard diet and taming remain open.

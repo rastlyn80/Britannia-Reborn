@@ -39,6 +39,14 @@ const Motion = preload("res://Presentation/MotionTrack.gd")
 const MountVisual := preload("res://Presentation/MountVisual.gd")
 const Avatar = preload("res://Presentation/Avatar.gd")
 const CreatureActions := preload("res://Presentation/CreatureApproachActions.gd")
+const SeaSerpentBreath := preload("res://Presentation/SeaSerpentFireBreath.gd")
+const SkeletalBreath := preload("res://Presentation/SkeletalDragonColdBreath.gd")
+const LavaSnakeBreath := preload("res://Presentation/LavaSnakeFireBreath.gd")
+const HellCatBreath := preload("res://Presentation/HellCatFireBreath.gd")
+const Leviathan := preload("res://Presentation/LeviathanBreath.gd")
+const FireDaemonBreath := preload("res://Presentation/FireDaemonBreath.gd")
+const DragoonBreath := preload("res://Presentation/ChaosDragoonBreath.gd")
+const HoundBreath := preload("res://Presentation/HellHoundBreathOrigin.gd")
 const Reconstruction = preload("res://Presentation/Reconstruction.gd")
 var tracks := {}
 var directions := {}
@@ -347,11 +355,29 @@ func _ready() -> void:
 		var serial:=int(request.get("serial",0))
 		if avatars.has(serial):
 			var avatar: Node3D = avatars[serial]
+			if DragoonBreath.dispatch(avatar, request, game.entity_names.get(serial, "")):
+				return
+			if avatar.human_visual == null and SkeletalBreath.dispatch(avatar.horse_visual, request):
+				return
+			if avatar.human_visual == null and LavaSnakeBreath.dispatch(avatar.horse_visual, request):
+				return
+			if avatar.human_visual == null and HellCatBreath.dispatch(avatar.horse_visual, request):
+				return
+			if avatar.human_visual == null and Leviathan.dispatch(avatar.horse_visual, request):
+				return
+			if avatar.human_visual == null and FireDaemonBreath.dispatch(avatar.horse_visual, request):
+				return
+			if avatar.human_visual == null and SeaSerpentBreath.dispatch(avatar.horse_visual, request):
+				return
+			if avatar.human_visual == null and HoundBreath.holds_melee(avatar.horse_visual, request):
+				return
+			var visual: Node3D = avatar.horse_visual
+			if creature_breath_holds_melee(visual, request):
+				return
 			var flags := -1
 			if enhanced_creature_actions:
 				var mobile: Dictionary = game.player if serial == int(game.player.serial) else game.entities.get(serial, {})
 				flags = int(mobile.get("flags", -1))
-				var visual: Node3D = avatar.horse_visual
 				if avatar.human_visual == null and is_instance_valid(visual) and visual.has_method("receive_enhanced_action") \
 						and visual.receive_enhanced_action(request, flags):
 					return
@@ -1014,6 +1040,16 @@ func _entity_changed(serial: int,position: Dictionary) -> void:
 	if tracks[serial].position.distance_to(location) > 8.0: avatars[serial].reset_presentation()
 	tracks[serial].push(location,float(game.move_interval)/1000.0 if serial == player_serial else preload("res://Presentation/HorseVisual.gd").step_seconds(game.mobile_equipment.get(serial,{}).values(),bool(position.get("running",false)))+.005)
 	targets[serial] = location
+
+func creature_breath_holds_melee(visual: Node3D, request: Dictionary) -> bool:
+	var body := int(request.get("body", 0))
+	if body not in [90, 130, 206, 265, 276, 293, 734] or not is_instance_valid(visual) or not visual.has_method("fire_breath_origin"):
+		return false
+	var classic_melee := [5, 6] if body == 276 else [4, 5, 6]
+	var melee: bool = (request.get("protocol") == "classic" and request.get("action") in classic_melee) \
+		or (request.get("protocol") == "new" and request.get("type") == 0)
+	return melee and visual.fire_breath_origin() is Vector3
+
 
 func _appearance_changed(serial: int) -> void:
 	if not avatars.has(serial): return

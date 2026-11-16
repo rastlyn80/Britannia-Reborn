@@ -4,6 +4,10 @@ extends SceneTree
 const Registry := preload("res://Presentation/CreatureRegistry.gd")
 const Ground := preload("res://Presentation/SourceGroundLookup.gd")
 const Height := .22
+const Breath := preload("res://Presentation/HellCatFireBreath.gd")
+const TerrainProfile := preload("res://Presentation/SourcePantherLivingTerrainProfile.gd")
+var predator := "--predator" in OS.get_cmdline_user_args()
+var body := TerrainProfile.PredatorBody if predator else TerrainProfile.Body
 const Motions := ["Idle", "Walk", "Run", "Eat", "Attack", "Attack2", "Hit", "Fidget", "Fidget2",
 	"FelineRearSwipe", "FelineRoll", "FelineStretch", "FelineSniff"]
 var enhanced := "--enhanced" in OS.get_cmdline_user_args()
@@ -21,7 +25,8 @@ func _initialize() -> void:
 func run() -> void:
 	if enhanced:
 		assert(preload("res://Presentation/EnhancedCreatureProfile.gd").enable())
-	assert(preload("res://Presentation/SourcePantherLivingTerrainProfile.gd").enable())
+	var panther_ready := TerrainProfile.enable()
+	assert(Registry.entry(body).get("presentation_script") == TerrainProfile.Renderer if predator else panther_ready)
 	var flat := board(Vector3(6.0, .2, 6.0))
 	var step := board(Vector3(4.0, .2, 6.0))
 	step.position = Vector3(2.0, Height - .1, 0.0)
@@ -35,12 +40,12 @@ func run() -> void:
 		step.collision_layer = 1 if split else 0
 		await physics_frame
 		await physics_frame
-		for body: int in [214]:
-			for heading: float in [0.0, PI / 2.0, PI, PI * 1.5]:
-				for x: float in ([-.14, .14] if split else [0.0]):
-					scan(body, x, heading, normal)
-	assert(poses == 2600 and joint_count == 32 and worst_gap >= .0029 and maximum_lift < .115)
-	print("PANTHER LIVING SUPPORT: ", poses, " full-skin poses; minimum gap ", worst_gap,
+		for heading: float in [0.0, PI / 2.0, PI, PI * 1.5]:
+			for x: float in ([-.14, .14] if split else [0.0]):
+				scan(x, heading, normal)
+	assert(poses == (2080 if predator else 2600) and joint_count == 32 and worst_gap >= .0029)
+	assert(maximum_lift < (.14 if predator else .115))
+	print("PREDATOR HELLCAT LIVING SUPPORT: " if predator else "PANTHER LIVING SUPPORT: ", poses, " full-skin poses; minimum gap ", worst_gap,
 		" m; largest visual lift ", maximum_lift, " m; joints ", joint_count)
 	flat.queue_free()
 	step.queue_free()
@@ -59,7 +64,7 @@ func board(size: Vector3) -> StaticBody3D:
 	return tile
 
 
-func scan(body: int, x: float, heading: float, normal: Vector3) -> void:
+func scan(x: float, heading: float, normal: Vector3) -> void:
 	var split := normal == Vector3.ZERO
 	var row := Registry.entry(body)
 	var actor := Registry.create(body)
@@ -78,6 +83,9 @@ func scan(body: int, x: float, heading: float, normal: Vector3) -> void:
 	animator.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
 	var clips := Motions.duplicate()
 	clips.append_array(row.get("archive_grounded_gestures", []))
+	if predator:
+		assert(Breath.prepare(actor, body))
+		clips.append(Breath.Clip)
 	for clip: String in clips:
 		if not animator.has_animation(clip):
 			continue

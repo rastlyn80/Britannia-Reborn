@@ -3,6 +3,7 @@ extends "res://Presentation/CreatureProjectilePresenter.gd"
 
 const Archer := preload("res://Presentation/SourceRatmanArcherVisual.gd")
 const Gremlin := preload("res://Presentation/SourceGremlinVisual.gd")
+const Medusa := preload("res://Presentation/MedusaVisual.gd")
 
 
 func route_alongside(world: Node3D, fallback: Node3D) -> void:
@@ -18,7 +19,7 @@ func present_aimed_arrow(effect: Dictionary) -> bool:
 	if scene.game.phase != "world" or effect.kind != "moving" or int(effect.graphic) != 0x0f42 or effect.explodes:
 		return false
 	var actor := scene.avatars.get(int(effect.source)) as Avatar
-	if actor == null or actor.native_body not in [142, 724]:
+	if actor == null or actor.native_body not in [142, 724, 728]:
 		return false
 	var archer: Node3D = actor.horse_visual
 	if not (archer is Archer or archer is Gremlin):
@@ -31,7 +32,7 @@ func present_aimed_arrow(effect: Dictionary) -> bool:
 	var speed := float(effect.speed)
 	var aim_ref: WeakRef = weakref(archer.aim)
 	var shot := {"launched": false}
-	var label := &"NativeGremlinArrow" if archer is Gremlin else &"NativeRatmanArrow"
+	var label: StringName = {142: &"NativeRatmanArrow", 724: &"NativeGremlinArrow", 728: &"NativeMedusaArrow"}[actor.native_body]
 	var launch := func(from: Vector3):
 		if shot.launched:
 			return

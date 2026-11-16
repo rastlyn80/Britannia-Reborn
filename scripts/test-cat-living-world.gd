@@ -47,7 +47,7 @@ func run() -> void:
 			breath[8] = 5
 			breath[11] = 0
 			world.game._handle(breath)
-			if not expect(visual.current_clip == "Alert" and not visual.dead,
+			if not expect(visual.current_clip == "hell_cat/FireBreath" and not visual.dead,
 					"the exact stock Hell Cat breath signature stays upright"):
 				return
 			world.game._handle(classic_packet(serial, 8))

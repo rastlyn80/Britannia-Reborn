@@ -194,10 +194,263 @@ if ($LASTEXITCODE) {throw 'Classic reaction compatibility playback failed'}
 if ($LASTEXITCODE) {throw 'Static corpse custom UV/attribute format preservation failed'}
 & $godot --headless --path "$root/Viewer" --script res://Presentation/SavagePaintAttributeTests.gd
 if ($LASTEXITCODE) {throw 'Human NPC paint/source attributes, 16/32-bit LOD or static snapshot preservation failed'}
+$hellCatModes = @('Classic')
+if (Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions.json") { $hellCatModes += 'Enhanced' }
+foreach ($mode in $hellCatModes) {
+ $modeArgs = @()
+ if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+ $checks = & $godot --headless --quit-after 600 --path "$root/Viewer" --script res://../scripts/test-hell-cat-breath-world.gd -- @modeArgs 2>&1
+ $code = $LASTEXITCODE
+ $checks | ForEach-Object { Write-Output $_ }
+ if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or !($checks | Select-String '^HELL CAT WORLD:')) {
+  throw "$mode Hell Cat breath presentation failed"
+ }
+}
+if (Test-Path -LiteralPath "$root/Viewer/local-art/creatures/navrey/profile.json" -PathType Leaf) {
+ & $godot --headless --path "$root/Viewer" --script res://../scripts/test-navrey-terrain.gd
+ if ($LASTEXITCODE) { throw 'Navrey terrain support failed' }
+ foreach ($mode in $hellCatModes) {
+  $modeArgs = @()
+  if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+  $checks = & $godot --headless --quit-after 600 --path "$root/Viewer" --script res://../scripts/test-navrey-world.gd -- @modeArgs 2>&1
+  $code = $LASTEXITCODE
+  $checks | ForEach-Object { Write-Output $_ }
+  if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or !($checks | Select-String '^NAVREY WORLD:')) {
+   throw "$mode Navrey actions or static corpse failed"
+  }
+ }
+}
+if (Test-Path -LiteralPath "$root/Viewer/local-art/creatures/stygian-dragon/profile.json" -PathType Leaf) {
+ & $godot --headless --path "$root/Viewer" --script res://../scripts/test-stygian-dragon-terrain.gd
+ if ($LASTEXITCODE) { throw 'Stygian Dragon terrain support failed' }
+ foreach ($mode in $hellCatModes) {
+  $modeArgs = @()
+  if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+  $checks = & $godot --headless --quit-after 600 --path "$root/Viewer" --script res://../scripts/test-stygian-dragon-world.gd -- @modeArgs 2>&1
+  $code = $LASTEXITCODE
+  $checks | ForEach-Object { Write-Output $_ }
+  if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or !($checks | Select-String '^STYGIAN DRAGON WORLD:')) {
+   throw "$mode Stygian Dragon actions or static corpse failed"
+  }
+ }
+}
+if (Test-Path -LiteralPath "$root/Viewer/local-art/creatures/maddening-horror/profile.json" -PathType Leaf) {
+ & $godot --headless --path "$root/Viewer" --script res://../scripts/test-maddening-horror-terrain.gd
+ if ($LASTEXITCODE) { throw 'Maddening Horror terrain support failed' }
+ foreach ($mode in $hellCatModes) {
+  $modeArgs = @()
+  if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+  $checks = & $godot --headless --quit-after 600 --path "$root/Viewer" --script res://../scripts/test-maddening-horror-world.gd -- @modeArgs 2>&1
+  $code = $LASTEXITCODE
+  $checks | ForEach-Object { Write-Output $_ }
+  if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or !($checks | Select-String '^MADDENING HORROR WORLD:')) {
+   throw "$mode Maddening Horror actions or static corpse failed"
+  }
+ }
+}
+if (Test-Path -LiteralPath "$root/Viewer/local-art/creatures/medusa/profile.json" -PathType Leaf) {
+ & $godot --headless --path "$root/Viewer" --script res://../scripts/test-medusa-terrain.gd
+ if ($LASTEXITCODE) { throw 'Medusa terrain support failed' }
+ foreach ($mode in $hellCatModes) {
+  $modeArgs = @()
+  if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+  $checks = & $godot --headless --quit-after 600 --path "$root/Viewer" --script res://../scripts/test-medusa-world.gd -- @modeArgs 2>&1
+  $code = $LASTEXITCODE
+  $checks | ForEach-Object { Write-Output $_ }
+  if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or !($checks | Select-String '^MEDUSA WORLD:')) {
+   throw "$mode Medusa actions or static corpse failed"
+  }
+ }
+}
+if (Test-Path -LiteralPath "$root/Viewer/local-art/creatures/slasher-of-veils/profile.json" -PathType Leaf) {
+ & $godot --headless --path "$root/Viewer" --script res://../scripts/test-slasher-terrain.gd
+ if ($LASTEXITCODE) { throw 'Slasher of Veils terrain support failed' }
+ foreach ($mode in $hellCatModes) {
+  $modeArgs = @()
+  if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+  $checks = & $godot --headless --quit-after 600 --path "$root/Viewer" --script res://../scripts/test-slasher-world.gd -- @modeArgs 2>&1
+  $code = $LASTEXITCODE
+  $checks | ForEach-Object { Write-Output $_ }
+  if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or !($checks | Select-String '^SLASHER WORLD:')) {
+   throw "$mode Slasher of Veils actions or static corpse failed"
+  }
+ }
+}
 if (Test-Path "$root/Viewer/local-art/creatures/accepted-index.json") {
  & $godot --headless --path "$root/Viewer" --script res://Presentation/CreatureDeathTests.gd
  if ($LASTEXITCODE) {throw 'Existing generic decoded creature-death transitions or lifecycle regressed'}
  $lateIndex = Get-Content "$root/Viewer/local-art/creatures/accepted-index.json" -Raw | ConvertFrom-Json
+ if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.kind -eq 'daemons_daemon_slot11_9' -and $_.bodies.body -contains 9 }) {
+  foreach ($mode in $hellCatModes) {
+   $modeArgs = @()
+   if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+   $checks = & $godot --headless --quit-after 600 --path "$root/Viewer" --script res://../scripts/test-fire-daemon-breath-world.gd -- @modeArgs 2>&1
+   $code = $LASTEXITCODE
+   $checks | ForEach-Object { Write-Output $_ }
+   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or !($checks | Select-String '^FIRE DAEMON BREATH WORLD:')) {
+    throw "$mode Fire Daemon breath presentation failed"
+   }
+  }
+ }
+ if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.kind -eq 'krakens_kraken' -and $_.bodies.body -contains 77 }) {
+  foreach ($mode in $hellCatModes) {
+   $modeArgs = @()
+   if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+   $checks = & $godot --headless --quit-after 600 --path "$root/Viewer" --script res://../scripts/test-leviathan-breath-world.gd -- @modeArgs 2>&1
+   $code = $LASTEXITCODE
+   $checks | ForEach-Object { Write-Output $_ }
+   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or !($checks | Select-String '^LEVIATHAN BREATH WORLD:')) {
+    throw "$mode Leviathan breath presentation failed"
+   }
+  }
+ }
+ if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.bodies.body -contains 206 }) {
+  foreach ($mode in $hellCatModes) {
+   $modeArgs = @()
+   if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+   $checks = & $godot --headless --quit-after 600 --path "$root/Viewer" --script res://../scripts/test-lava-reptile-breath-world.gd -- @modeArgs 2>&1
+   $code = $LASTEXITCODE
+   $checks | ForEach-Object { Write-Output $_ }
+   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or !($checks | Select-String '^LAVA REPTILE WORLD:')) {
+    throw "$mode Lava Lizard or Lava Serpent breath presentation failed"
+   }
+  }
+ }
+ if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.kind -eq 'small_snakes' -and $_.bodies.body -contains 52 }) {
+  $lavaSnakeBreathModes = @('Classic')
+  if (Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions.json") { $lavaSnakeBreathModes += 'Enhanced' }
+  foreach ($mode in $lavaSnakeBreathModes) {
+   $modeArgs = @()
+   if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+   $checks = & $godot --headless --quit-after 600 --path "$root/Viewer" --script res://../scripts/test-lava-snake-breath-world.gd -- @modeArgs 2>&1
+   $code = $LASTEXITCODE
+   $checks | ForEach-Object { Write-Output $_ }
+   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or !($checks | Select-String '^LAVA SNAKE WORLD:')) {
+    throw "$mode Lava Snake fire breath presentation failed"
+   }
+  }
+ }
+ if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.kind -eq 'dragons_dragon_skeletal' -and $_.bodies.body -contains 104 }) {
+  $skeletalBreathModes = @('Classic')
+  if (Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions.json") { $skeletalBreathModes += 'Enhanced' }
+  foreach ($mode in $skeletalBreathModes) {
+   $modeArgs = @()
+   if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+   $checks = & $godot --headless --quit-after 600 --path "$root/Viewer" --script res://../scripts/test-skeletal-breath-world.gd -- @modeArgs 2>&1
+   $code = $LASTEXITCODE
+   $checks | ForEach-Object { Write-Output $_ }
+   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or !($checks | Select-String '^SKELETAL DRAGON WORLD:')) {
+    throw "$mode Skeletal Dragon cold breath presentation failed"
+   }
+  }
+ }
+ if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.presentation_script -eq 'res://Presentation/SourceReptalonActionsVisual.gd' -and $_.bodies.body -contains 276 }) {
+  $reptalonBreathModes = @('Classic')
+  if (Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions.json") { $reptalonBreathModes += 'Enhanced' }
+  foreach ($mode in $reptalonBreathModes) {
+   $modeArgs = @()
+   if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+   $checks = & $godot --headless --quit-after 600 --path "$root/Viewer" --script res://../scripts/test-reptalon-breath-world.gd -- @modeArgs 2>&1
+   $code = $LASTEXITCODE
+   $checks | ForEach-Object { Write-Output $_ }
+   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or !($checks | Select-String '^REPTALON WORLD:')) {
+    throw "$mode Reptalon breath presentation failed"
+   }
+  }
+ }
+ if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.kind -eq 'gargoyles_gargoyle_blistering' -and $_.bodies.body -contains 130 }) {
+  $fireGargoyleBreathModes = @('Classic')
+  if (Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions.json") { $fireGargoyleBreathModes += 'Enhanced' }
+  foreach ($mode in $fireGargoyleBreathModes) {
+   $modeArgs = @()
+   if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+   $checks = & $godot --headless --quit-after 600 --path "$root/Viewer" --script res://../scripts/test-fire-gargoyle-breath-world.gd -- @modeArgs 2>&1
+   $code = $LASTEXITCODE
+   $checks | ForEach-Object { Write-Output $_ }
+   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or !($checks | Select-String '^FIRE GARGOYLE BREATH WORLD:')) {
+    throw "$mode Fire Gargoyle breath presentation failed"
+   }
+  }
+ }
+ if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.kind -eq 'hydra' -and $_.bodies.body -contains 265 }) {
+  $hydraBreathModes = @('Classic')
+  if (Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions.json") { $hydraBreathModes += 'Enhanced' }
+  foreach ($mode in $hydraBreathModes) {
+   $modeArgs = @()
+   if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+   foreach ($script in @('test-hydra-breath-world','test-crystal-hydra-world')) {
+    $checks = & $godot --headless --quit-after 600 --path "$root/Viewer" --script "res://../scripts/$script.gd" -- @modeArgs 2>&1
+    $code = $LASTEXITCODE
+    $checks | ForEach-Object { Write-Output $_ }
+    $success = '^HYDRA BREATH WORLD:|^CRYSTAL HYDRA WORLD:'
+    if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or !($checks | Select-String $success)) {
+     throw "$mode failed $script"
+    }
+   }
+  }
+ }
+ if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.kind -eq 'lizards_komodo_dragon' -and $_.bodies.body -contains 734 }) {
+  $slithBreathModes = @('Classic')
+  if (Test-Path "$root/Viewer/local-art/creatures/enhanced-reptile-variants/profile.json") { $slithBreathModes += 'Enhanced' }
+  foreach ($mode in $slithBreathModes) {
+   $modeArgs = @()
+   if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+   $checks = & $godot --headless --quit-after 600 --path "$root/Viewer" --script res://../scripts/test-slith-breath-world.gd -- @modeArgs 2>&1
+   $code = $LASTEXITCODE
+   $checks | ForEach-Object { Write-Output $_ }
+   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or !($checks | Select-String '^SLITH BREATH WORLD:')) {
+    throw "$mode Slith breath presentation failed"
+   }
+  }
+ }
+ if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.kind -eq 'canines_hell_hound' -and $_.asset_sha256 }) {
+  $houndBreathModes = @('Classic')
+  if (Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions.json") { $houndBreathModes += 'Enhanced' }
+  foreach ($mode in $houndBreathModes) {
+   $modeArgs = @()
+   if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+   $checks = & $godot --headless --quit-after 600 --path "$root/Viewer" --script res://../scripts/test-hell-hound-breath-world.gd -- @modeArgs 2>&1
+   $code = $LASTEXITCODE
+   $checks | ForEach-Object { Write-Output $_ }
+   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or
+       !($checks | Select-String '^HELL HOUND BREATH WORLD:')) {
+    throw "$mode Hell Hound breath presentation failed"
+   }
+  }
+ }
+ if ($lateIndex.entries | Where-Object { $_.status -eq 'validated' -and $_.kind -eq 'sea_serpents_sea_serpent_classic' -and $_.bodies.body -contains 150 }) {
+  $seaBreathModes = @('Classic')
+  if (Test-Path "$root/Viewer/local-art/creatures/sea-serpent-enhanced/manifest.json") { $seaBreathModes += 'Enhanced' }
+  foreach ($mode in $seaBreathModes) {
+   $modeArgs = @('--world=res://world.json')
+   if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+   $checks = & $godot --headless --quit-after 600 --path "$root/Viewer" --script res://../scripts/test-sea-serpent-breath-world.gd -- @modeArgs 2>&1
+   $code = $LASTEXITCODE
+   $checks | ForEach-Object { Write-Output $_ }
+   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or
+       !($checks | Select-String '^SEA SERPENT BREATH WORLD:')) {
+    throw "$mode Sea Serpent breath presentation failed"
+   }
+  }
+ }
+ $breathBodies = @(12,46,59,60,61,103,106)
+ $availableBreathBodies = @($lateIndex.entries | Where-Object status -eq 'validated' |
+     ForEach-Object { $_.bodies.body } | Where-Object { $_ -in $breathBodies } | Sort-Object -Unique)
+ if ($availableBreathBodies.Count -eq $breathBodies.Count) {
+  $breathModes = @('Classic')
+  if (Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions.json") { $breathModes += 'Enhanced' }
+  foreach ($mode in $breathModes) {
+   $modeArgs = @('--world=res://world.json')
+   if ($mode -eq 'Enhanced') { $modeArgs += '--enhanced-creature-actions' }
+   $checks = & $godot --headless --quit-after 600 --path "$root/Viewer" --script res://../scripts/test-dragon-breath-world.gd -- @modeArgs 2>&1
+   $code = $LASTEXITCODE
+   $checks | ForEach-Object { Write-Output $_ }
+   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or
+       !($checks | Select-String '^DRAGON BREATH WORLD:')) {
+    throw "$mode Dragon and Serpentine breath presentation failed"
+   }
+  }
+ }
  if ($lateIndex.entries | Where-Object { $_.spell_form_source }) {
   & python -B "$root/scripts/prepare-player-spell-forms.py" --check-active
   if ($LASTEXITCODE) {throw 'Active source-backed player forms lack evidence'}
@@ -1004,6 +1257,23 @@ if (Test-Path "$root/Viewer/local-art/creatures/field-fauna-214-modern.scn") {
   $code = $LASTEXITCODE
   $checks | ForEach-Object { Write-Output $_ }
   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:')) { throw "Panther living $($case.script) verification failed" }
+ }
+}
+if (Test-Path "$root/Viewer/local-art/creatures/felines_predator_hellcat-modern.gltf") {
+ $predatorModes = @(@{ Arguments = @('--predator') })
+ if (Test-Path "$root/Viewer/local-art/creatures/enhanced-creature-actions.json") {
+  $predatorModes += @{ Arguments = @('--predator', '--enhanced') }
+ }
+ foreach ($mode in $predatorModes) {
+  foreach ($test in @('terrain', 'fall')) {
+   $arguments = $mode.Arguments
+   $checks = & $godot --headless --path "$root/Viewer" --script "res://../scripts/test-panther-living-$test.gd" -- @arguments 2>&1
+   $code = $LASTEXITCODE
+   $checks | ForEach-Object { Write-Output $_ }
+   if ($code -or ($checks | Select-String 'SCRIPT ERROR:|Parse Error:') -or !($checks | Select-String '^PREDATOR HELLCAT (LIVING SUPPORT|FALL):')) {
+    throw "Predator Hellcat $test verification failed"
+   }
+  }
  }
 }
 if ((Test-Path "$root/Viewer/local-art/mounts/kirin-modern.gltf") -and (Test-Path "$root/Viewer/local-art/mounts/llama_ethereal-modern.gltf") -and (Test-Path "$root/Viewer/local-art/mounts/skeletal-horse.glb")) {

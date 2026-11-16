@@ -79,7 +79,7 @@ static func check_breath(driver, world: Node, at: Vector2i) -> Dictionary:
 	assert(actor.current_clip == Breath and is_equal_approx(actor.animator.current_animation_position, 1.3))
 	var opening := closed.angle_to(actor.skeleton.get_bone_pose_rotation(jaw))
 	assert(opening > .35)
-	var origin: Vector3 = actor.fire_breath_origin()
+	var origin: Vector3 = preload("res://Presentation/SourceTerrainClassicHydraVisual.gd").mouth_position(actor)
 	var chest := avatar.global_position + Vector3.UP * 1.2
 	assert(chest.distance_to(origin) > .50)
 	assert(effects._bolt_origin({"source": serial, "graphic": 0x36d3, "from": Vector3i.ZERO}).is_equal_approx(chest))
@@ -101,6 +101,7 @@ static func check_breath(driver, world: Node, at: Vector2i) -> Dictionary:
 	assert(effects.get_child_count() == previous + 1)
 	var bolt := effects.get_child(previous) as MeshInstance3D
 	assert(bolt.global_position.is_equal_approx(origin))
+	actor._process(actor.action_remaining + .01)
 	world.game._handle(Replay.attack_packet(serial))
 	assert(actor.current_clip != Breath and actor.get_meta("native_action").action == 4 and actor.fire_breath_origin() == null)
 	return {"jaw_open_radians": opening, "chest_distance": chest.distance_to(origin)}

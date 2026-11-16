@@ -6,6 +6,20 @@ const SnowWind := preload("res://Presentation/SourceSnowLadyWind.gd")
 const LifeDrain := preload("res://Presentation/SourceLifeDrainNotice.gd")
 const SatyrSong := preload("res://Presentation/SourceSatyrSong.gd")
 const BetrayerPoison := preload("res://Presentation/SourceBetrayerPoison.gd")
+const Serpentine := preload("res://Presentation/SerpentineDragonBreath.gd")
+const SkeletalBreath := preload("res://Presentation/SkeletalDragonColdBreath.gd")
+const LavaSnakeBreath := preload("res://Presentation/LavaSnakeFireBreath.gd")
+const HellCatBreath := preload("res://Presentation/HellCatFireBreath.gd")
+const Leviathan := preload("res://Presentation/LeviathanBreath.gd")
+const FireDaemonBreath := preload("res://Presentation/FireDaemonBreath.gd")
+const DragoonBreath := preload("res://Presentation/ChaosDragoonBreath.gd")
+const Navrey := preload("res://Presentation/NavreyVisual.gd")
+const Stygian := preload("res://Presentation/StygianDragonVisual.gd")
+const Creature := preload("res://Presentation/CreatureVisual.gd")
+const SeaSerpentBreath := preload("res://Presentation/SeaSerpentFireBreath.gd")
+const Slith := preload("res://Presentation/SourceTerrainClassicSlithVisual.gd")
+const Hydra := preload("res://Presentation/SourceTerrainClassicHydraVisual.gd")
+const FireGargoyle := preload("res://Presentation/SourceTerrainClassicFireGargoyleVisual.gd")
 func configure(effects: Node3D, world_scene: Node3D) -> void:
 	presenter = effects
 	scene = world_scene
@@ -41,13 +55,45 @@ func bolt_origin(effect: Dictionary) -> Variant:
 	var leech: Variant = MeerLeech.bolt_origin(scene, effect)
 	if leech is Vector3:
 		return leech
-	if int(effect.graphic) != 0x36d4:
+	var graphic := int(effect.graphic)
+	if graphic >= 0x0ee3 and graphic <= 0x0ee6:
+		var source: Node3D = scene.avatars.get(int(effect.source))
+		if source != null and source.native_body == 735 and source.horse_visual is Navrey:
+			return source.horse_visual.web_origin()
+	if graphic != 0x36d4:
 		return null
 	var avatar: Node3D = scene.avatars.get(int(effect.source))
-	if avatar == null or avatar.native_body != 276:
+	if avatar == null:
 		return null
 	var creature: Node3D = avatar.horse_visual
-	return creature.fire_breath_origin() if is_instance_valid(creature) and creature.has_method("fire_breath_origin") else null
+	if avatar.native_body == 826 and creature is Stygian:
+		return creature.breath_origin()
+	if avatar.native_body == DragoonBreath.HumanBody:
+		return DragoonBreath.origin(avatar, effect)
+	if avatar.native_body == FireDaemonBreath.Body:
+		return FireDaemonBreath.origin(creature)
+	if avatar.native_body == Leviathan.Body and (int(effect.get("hue", 0)) & 0x3fff) == Leviathan.ProjectileHue:
+		return Leviathan.origin(creature)
+	if avatar.native_body in [HellCatBreath.CatBody, HellCatBreath.PredatorBody]:
+		return HellCatBreath.origin(creature)
+	if avatar.native_body == LavaSnakeBreath.Body:
+		return LavaSnakeBreath.origin(creature)
+	if avatar.native_body == SkeletalBreath.Body and (int(effect.get("hue", 0)) & 0x3fff) == SkeletalBreath.Hue:
+		return SkeletalBreath.origin(creature)
+	if avatar.native_body == Serpentine.Body and creature is Creature:
+		return Serpentine.origin(creature)
+	if avatar.native_body == SeaSerpentBreath.Body:
+		return SeaSerpentBreath.origin(creature)
+	if avatar.native_body in [130, 265, 276, 734] and is_instance_valid(creature) and creature.has_method("fire_breath_origin"):
+		var mouth: Variant = creature.fire_breath_origin()
+		if mouth is Vector3 and avatar.native_body == 130:
+			return FireGargoyle.mouth_position(creature)
+		if mouth is Vector3 and avatar.native_body == 265:
+			return Hydra.mouth_position(creature)
+		if mouth is Vector3 and avatar.native_body == 734:
+			return Slith.muzzle_point(creature)
+		return mouth
+	return null
 
 
 func mobile_bloom(at: Vector3, tint: Color, effect: Dictionary, follow: int, origin := Callable()) -> void:

@@ -90,5 +90,49 @@ class FrequencyTests(unittest.TestCase):
         classes['mobile']['base'] = 'Bird'
         self.assertEqual(len(priority.ancestors('Bird', classes)), 3)
 
+    def test_extension_literals_follow_declarations_and_skip_generated_files(self):
+        with tempfile.TemporaryDirectory(dir=priority.ROOT / 'work', prefix='creature-extension-') as folder:
+            root = Path(folder)
+            stock = root / 'Server/ModernUO/Projects/UOContent'
+            extension = root / 'Server/CreatureContent'
+            stock.mkdir(parents=True)
+            extension.mkdir()
+            (stock / 'Mobile.cs').write_text('public class Mobile {}\npublic class BaseCreature : Mobile {}')
+            (extension / 'Scout.cs').write_text(
+                '[TypeAlias("Server.Mobiles.FormerScout")]\n'
+                'public sealed class Scout : BaseCreature\n{\n    Scout() { Body = 0xB5; }\n}\n')
+            (extension / 'Sharing.cs').write_text(
+                'public class Alpha : BaseCreature\n{\n    Alpha() { Body = 101; }\n}\n'
+                'public class Beta : BaseCreature\n{\n    Beta() { Body = 102; }\n}\n')
+            (extension / 'obj').mkdir()
+            (extension / 'obj/Generated.cs').write_text('public class Generated : BaseCreature {}')
+            with patch.object(priority, 'ROOT', root):
+                classes = priority.class_index(stock.parents[1], extension)
+                self.assertIn('mobile', priority.ancestors('Scout', classes))
+                self.assertIs(classes['formerscout'], classes['scout'])
+                self.assertEqual(classes['scout']['body_literals'], {181})
+                self.assertEqual(classes['alpha']['body_literals'], {101})
+                self.assertEqual(classes['beta']['body_literals'], {102})
+                self.assertNotIn('generated', classes)
+
+    def test_later_profile_requires_every_pinned_scene(self):
+        with tempfile.TemporaryDirectory(dir=priority.ROOT / 'work', prefix='creature-profile-') as folder:
+            root = Path(folder)
+            profile = root / 'Profile.gd'
+            profile.write_text('const SupportedBodies := {181: "orc_scout"}', encoding='utf-8')
+            models = root / 'later-prepared'
+            models.mkdir()
+            hashes = {}
+            for style in ('original', 'rounded', 'modern'):
+                source = models / style
+                source.write_text(style)
+                digest = priority.sha(source)
+                source.rename(models / f'181-{style}-{digest}.scn')
+                hashes[style] = digest
+            (models / 'profile.json').write_text(json.dumps({'schema': 1, 'bodies': {'181': {'asset_sha256': hashes}}}))
+            self.assertEqual(priority.later_prepared_routes(root, profile), {181: 'orc_scout'})
+            (models / f'181-modern-{hashes["modern"]}.scn').write_text('changed scene')
+            self.assertEqual(priority.later_prepared_routes(root, profile), {})
+
 if __name__ == '__main__':
     unittest.main()
